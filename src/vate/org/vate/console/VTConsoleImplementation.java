@@ -1,0 +1,55 @@
+package org.vate.console;
+
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.util.Locale;
+
+public interface VTConsoleImplementation
+{
+	public abstract String readLine(boolean echo) throws InterruptedException;
+	
+	// public abstract boolean isReadingLine();
+	public abstract void interruptReadLine();
+	
+	public abstract void print(String str);
+	
+	public abstract void println(String str);
+	
+	public abstract void printf(String format, Object... args);
+	
+	public abstract void printfln(String format, Object... args);
+	
+	public abstract void printf(Locale l, String format, Object... args);
+	
+	public abstract void printfln(Locale l, String format, Object... args);
+	
+	public abstract void write(String str);
+	
+	public abstract void write(char[] buf, int off, int len);
+	
+	public abstract void flush();
+	
+	public abstract void clear();
+	
+	public abstract void bell();
+	
+	public abstract void setTitle(String title);
+	
+	public abstract void setColors(int backgroundColor, int foregroundColor);
+	
+	public abstract void setBold(boolean bold);
+	
+	public abstract void resetAttributes();
+	
+	public abstract void setSystemIn();
+	
+	public abstract void setSystemOut();
+	
+	public abstract void setSystemErr();
+	
+	public abstract InputStream getSystemIn();
+	
+	public abstract PrintStream getSystemOut();
+	
+	public abstract PrintStream getSystemErr();
+}

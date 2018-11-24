@@ -1,0 +1,747 @@
+package org.vate.console.standard;
+
+import java.io.BufferedWriter;
+// import java.io.Console;
+import java.io.FileDescriptor;
+// import java.io.FileInputStream;
+import java.io.BufferedReader;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
+// import java.nio.channels.ClosedByInterruptException;
+import java.util.Locale;
+
+import org.vate.console.VTConsole;
+import org.vate.console.VTConsoleImplementation;
+import org.vate.nativeutils.VTNativeUtils;
+
+// import jline.ConsoleReader;
+// import java.nio.channels.Channels;
+// import java.nio.channels.ClosedByInterruptException;
+// import java.nio.charset.Charset;
+
+import com.sun.jna.Platform;
+
+public class VTStandardConsole implements VTConsoleImplementation
+{
+	// private static volatile boolean jlineConsoleSupport;
+	// private static volatile boolean systemConsoleSupport;
+	// private static volatile boolean bright;
+	// private static volatile int foregroundColor;
+	// private static volatile int backgroundColor;
+	private static VTStandardConsole instance;
+	private static VTStandardConsoleInterruptibleInputStream inputStream;
+	// private static InputStream inputStream;
+	private static PrintStream printStream;
+	private static PrintStream errorStream;
+	private static BufferedReader standardTerminalReader;
+	private static BufferedWriter standardTerminalWriter;
+	private static StringBuilder colorCode;
+	public static volatile boolean isatty = false;
+	// public static volatile boolean ansidetected = false;
+	public static volatile boolean systemconsoleclass = false;
+	public static volatile boolean systemconsolesupport = false;
+	
+	// private static Console systemConsole;
+	// private static ConsoleReader jlineConsole;
+	// private static Object console;
+	// private static BufferedWriter errorWriter;
+	
+	private VTStandardConsole()
+	{
+		VTNativeUtils.initialize();
+		
+		// standardTerminalReader = new BufferedReader(new InputStreamReader(new
+		// VTStandardTerminalInterruptibleStream(System.in)));
+		// standardTerminalReader = new BufferedReader(new
+		// InputStreamReader(System.in));
+		inputStream = new VTStandardConsoleInterruptibleInputStream();
+		standardTerminalReader = new BufferedReader(new InputStreamReader(inputStream));
+		standardTerminalWriter = new BufferedWriter(new OutputStreamWriter(System.out));
+		// bright = true;
+		isatty = VTNativeUtils.isatty(1) != 0;
+		colorCode = new StringBuilder();
+		// jlineConsoleSupport = false;
+		// systemConsoleSupport = false;
+		/* try { jlineConsole = new ConsoleReader();
+		 * jlineConsole.setBellEnabled(false); jlineConsole.setUseHistory(true);
+		 * jlineConsole.setUsePagination(true);
+		 * jlineConsoleSupport = true; } catch (Throwable e) {
+		 * } */
+		/* try { Class.forName("java.io.Console"); //console =
+		 * Class.forName("System").getMethod("console").invoke(null);
+		 * systemConsole = System.console(); if (systemConsole != null) {
+		 * systemConsoleSupport = true; } } catch (Throwable e) {
+		 * } */
+		// System.out.println("jlineConsoleSupport = " + jlineConsoleSupport);
+		// System.out.println("systemConsoleSupport = " + systemConsoleSupport);
+		/* foregroundColor = VTTerminal.VT_CONSOLE_COLOR_GREEN;
+		 * backgroundColor = VTTerminal.VT_CONSOLE_COLOR_BLACK; bright = true;
+		 * trueSetColors(foregroundColor, backgroundColor);
+		 * trueSetBright(true); */
+		// errorWriter = new BufferedWriter(new OutputStreamWriter(System.err));
+		// try
+		// {
+		// standardTerminalWriter.write("\u001B[6n\n");
+		// standardTerminalWriter.flush();
+		// }
+		// catch (Throwable t)
+		// {
+		// //t.printStackTrace();
+		// }
+	}
+	
+	public synchronized static VTStandardConsole getInstance()
+	{
+		if (instance == null)
+		{
+			instance = new VTStandardConsole();
+		}
+		return instance;
+	}
+	
+	public String readLine(boolean echo) throws InterruptedException
+	{
+		inputStream.setEcho(echo);
+		try
+		{
+			String data = standardTerminalReader.readLine();
+			return data;
+		}
+		catch (Throwable e)
+		{
+			// e.printStackTrace();
+			return "";
+		}
+		// String line = null;
+		/* if (jlineConsoleSupport) { if (echo) { try { line =
+		 * jlineConsole.readLine(); } catch (Throwable e) {
+		 * //e.printStackTrace(); } } else { try { line =
+		 * jlineConsole.readLine('\0'); } catch (Throwable e) {
+		 * //e.printStackTrace(); } } } */
+		/* if (systemConsoleSupport) { if (!echo) { try { //return
+		 * console.getClass().getMethod("readPassword").invoke(console).toString
+		 * (); line = new String(systemConsole.readPassword()); } catch
+		 * (Throwable e) { //e.printStackTrace(); } } else { try { //return
+		 * console.getClass().getMethod("readPassword").invoke(console).toString
+		 * (); line = systemConsole.readLine(); } catch (Throwable e) {
+		 * //e.printStackTrace(); } } } */
+		/* if (line != null) { return line; } else { try { line =
+		 * standardTerminalReader.readLine(); } catch
+		 * (ClosedByInterruptException e) { //e.printStackTrace();
+		 * Thread.interrupted(); //standardTerminalReader = new
+		 * BufferedReader(new InputStreamReader(Channels.newInputStream((new
+		 * FileInputStream(FileDescriptor.in)).getChannel()))); throw new
+		 * InterruptedException(e.getMessage()); } catch (IOException e) {
+		 * //e.printStackTrace(); //throw new
+		 * InterruptedException(e.getMessage()); //standardTerminalReader = new
+		 * BufferedReader(new InputStreamReader(Channels.newInputStream((new
+		 * FileInputStream(FileDescriptor.in)).getChannel())));
+		 * //e.printStackTrace(); return ""; } catch (Throwable e) {
+		 * //e.printStackTrace(); //standardTerminalReader = new
+		 * BufferedReader(new InputStreamReader(Channels.newInputStream((new
+		 * FileInputStream(FileDescriptor.in)).getChannel())));
+		 * //e.printStackTrace(); return ""; } catch (Throwable e) {
+		 * //e.printStackTrace(); //standardTerminalReader = new
+		 * BufferedReader(new InputStreamReader(Channels.newInputStream((new
+		 * FileInputStream(FileDescriptor.in)).getChannel())));
+		 * //e.printStackTrace(); return ""; } return line; } */
+	}
+	
+	public void print(String str)
+	{
+		System.out.print(str);
+		System.out.flush();
+	}
+	
+	public void println(String str)
+	{
+		System.out.println(str);
+	}
+	
+	public void printf(String format, Object... args)
+	{
+		System.out.printf(format, args);
+	}
+	
+	public void printfln(String format, Object... args)
+	{
+		System.out.printf(format + "\n", args);
+	}
+	
+	public void printf(Locale l, String format, Object... args)
+	{
+		System.out.printf(l, format, args);
+	}
+	
+	public void printfln(Locale l, String format, Object... args)
+	{
+		System.out.printf(l, format + "\n", args);
+	}
+	
+	public void write(String str)
+	{
+		try
+		{
+			standardTerminalWriter.write(str);
+		}
+		catch (IOException e)
+		{
+			
+		}
+	}
+	
+	public void write(char[] buf, int off, int len)
+	{
+		try
+		{
+			standardTerminalWriter.write(buf, off, len);
+		}
+		catch (IOException e)
+		{
+			
+		}
+	}
+	
+	/* public void trueWrite(byte[] buf, int off, int len) {
+	 * System.out.write(buf, off, len); } */
+	
+	public void flush()
+	{
+		try
+		{
+			standardTerminalWriter.flush();
+		}
+		catch (IOException e)
+		{
+			
+		}
+	}
+	
+	public void clear()
+	{
+		if (!isatty)
+		{
+			return;
+		}
+		if (Platform.isWindows())
+		{
+			System.out.print("\u001B[2J");
+			System.out.print("\u001B[H");
+			VTNativeUtils.system("cls");
+		}
+		else
+		{
+			// VT100 here
+			// VTNativeUtils.system("tput clear");
+			System.out.print("\u001B[2J");
+			System.out.print("\u001B[H");
+		}
+	}
+	
+	public void bell()
+	{
+		// VTNativeUtils.printf("\u0007");
+		System.out.print("\u0007");
+	}
+	
+	public void setTitle(String title)
+	{
+		if (!isatty)
+		{
+			return;
+		}
+		if (Platform.isWindows())
+		{
+			System.out.print("\u001B]0;" + title + "\u0007");
+			VTNativeUtils.system("title " + title);
+		}
+		else
+		{
+			// VTNativeUtils.system("echo -n \"\\033]0;" + title + "\\007\"");
+			// VTNativeUtils.printf("\u001B]0;" + title + "\u0007");
+			// VTNativeUtils.printf("\u001B]1;" + title + "\u0007");
+			// VTNativeUtils.printf("\u001B]2;" + title + "\u0007");
+			System.out.print("\u001B]0;" + title + "\u0007");
+			// System.out.print("\u001B]1;" + title + "\u0007");
+			// System.out.print("\u001B]2;" + title + "\u0007");
+		}
+	}
+	
+	public void setColors(int foregroundColor, int backgroundColor)
+	{
+		if (!isatty)
+		{
+			return;
+		}
+		if (Platform.isWindows())
+		{
+			System.out.print("\u001B[" + getUnixForegroundColor(foregroundColor) + "m");
+			System.out.print("\u001B[" + getUnixBackgroundColor(backgroundColor) + "m");
+			// Windows 2000 and beyond only
+			colorCode.setLength(0);
+			switch (backgroundColor)
+			{
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_BLACK:
+				{
+					colorCode.append("0");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_RED:
+				{
+					colorCode.append("4");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_GREEN:
+				{
+					colorCode.append("2");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_YELLOW:
+				{
+					colorCode.append("6");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_BLUE:
+				{
+					colorCode.append("1");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_MAGENTA:
+				{
+					colorCode.append("5");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_CYAN:
+				{
+					colorCode.append("3");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_WHITE:
+				{
+					colorCode.append("7");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_LIGHT_RED:
+				{
+					colorCode.append("C");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN:
+				{
+					colorCode.append("A");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_LIGHT_YELLOW:
+				{
+					colorCode.append("E");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_LIGHT_BLUE:
+				{
+					colorCode.append("9");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_LIGHT_MAGENTA:
+				{
+					colorCode.append("D");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_LIGHT_CYAN:
+				{
+					colorCode.append("B");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_LIGHT_WHITE:
+				{
+					colorCode.append("F");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_DEFAULT:
+				{
+					colorCode.append("0");
+					break;
+				}
+			}
+			switch (foregroundColor)
+			{
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_BLACK:
+				{
+					colorCode.append("0");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_RED:
+				{
+					colorCode.append("4");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_GREEN:
+				{
+					colorCode.append("2");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_YELLOW:
+				{
+					colorCode.append("6");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_BLUE:
+				{
+					colorCode.append("1");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_MAGENTA:
+				{
+					colorCode.append("5");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_CYAN:
+				{
+					colorCode.append("3");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_NORMAL_WHITE:
+				{
+					colorCode.append("7");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_LIGHT_RED:
+				{
+					colorCode.append("C");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN:
+				{
+					colorCode.append("A");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_LIGHT_YELLOW:
+				{
+					colorCode.append("E");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_LIGHT_BLUE:
+				{
+					colorCode.append("9");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_LIGHT_MAGENTA:
+				{
+					colorCode.append("D");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_LIGHT_CYAN:
+				{
+					colorCode.append("B");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_LIGHT_WHITE:
+				{
+					colorCode.append("F");
+					break;
+				}
+				case VTConsole.VT_CONSOLE_COLOR_DEFAULT:
+				{
+					colorCode.append("A");
+					break;
+				}
+			}
+			VTNativeUtils.system("color " + colorCode.toString());
+		}
+		else
+		{
+			// Unix
+			// VT100 here
+			/* VTNativeUtils.system("tput sgr0");
+			 * VTNativeUtils.system("tput bold");
+			 * VTNativeUtils.system("tput setaf " + foregroundColor);
+			 * VTNativeUtils.system("tput setf " + foregroundColor);
+			 * VTNativeUtils.system("tput setab " + backgroundColor);
+			 * VTNativeUtils.system("tput setb " + backgroundColor); */
+			// System.out.print("\u001B[0m");
+			// System.out.print("\u001B[1;3" + foregroundColor + ";4" +
+			// backgroundColor +
+			// "m");
+			System.out.print("\u001B[" + getUnixForegroundColor(foregroundColor) + "m");
+			System.out.print("\u001B[" + getUnixBackgroundColor(backgroundColor) + "m");
+		}
+		// VTStandardTerminal.foregroundColor = foregroundColor;
+		// VTStandardTerminal.backgroundColor = backgroundColor;
+	}
+	
+	private static String getUnixForegroundColor(int foregroundColor)
+	{
+		switch (foregroundColor)
+		{
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_BLACK:
+			{
+				return "30";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_RED:
+			{
+				return "31";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_GREEN:
+			{
+				return "32";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_YELLOW:
+			{
+				return "33";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_BLUE:
+			{
+				return "34";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_MAGENTA:
+			{
+				return "35";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_CYAN:
+			{
+				return "36";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_WHITE:
+			{
+				return "37";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_LIGHT_RED:
+			{
+				// return 91;
+				return "31;91";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN:
+			{
+				// return 92;
+				return "32;92";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_LIGHT_YELLOW:
+			{
+				// return 93;
+				return "33;93";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_LIGHT_BLUE:
+			{
+				// return 94;
+				return "34;94";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_LIGHT_MAGENTA:
+			{
+				// return 95;
+				return "35;95";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_LIGHT_CYAN:
+			{
+				// return 96;
+				return "36;96";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_LIGHT_WHITE:
+			{
+				// return 97;
+				return "37;97";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_DEFAULT:
+			{
+				return "39";
+			}
+			default:
+			{
+				return "32;92";
+			}
+		}
+	}
+	
+	private static String getUnixBackgroundColor(int backgroundColor)
+	{
+		switch (backgroundColor)
+		{
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_BLACK:
+			{
+				return "40";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_RED:
+			{
+				return "41";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_GREEN:
+			{
+				return "42";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_YELLOW:
+			{
+				return "43";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_BLUE:
+			{
+				return "44";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_MAGENTA:
+			{
+				return "45";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_CYAN:
+			{
+				return "46";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_NORMAL_WHITE:
+			{
+				return "47";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_LIGHT_RED:
+			{
+				// return 101;
+				return "41;101";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN:
+			{
+				// return 102;
+				return "42;102";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_LIGHT_YELLOW:
+			{
+				// return 103;
+				return "43;103";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_LIGHT_BLUE:
+			{
+				// return 104;
+				return "44;104";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_LIGHT_MAGENTA:
+			{
+				// return 105;
+				return "45;105";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_LIGHT_CYAN:
+			{
+				// return 106;
+				return "46;106";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_LIGHT_WHITE:
+			{
+				// return 107;
+				return "47;107";
+			}
+			case VTConsole.VT_CONSOLE_COLOR_DEFAULT:
+			{
+				return "49";
+			}
+			default:
+			{
+				return "32";
+			}
+		}
+	}
+	
+	public void setBold(boolean bold)
+	{
+		if (!isatty)
+		{
+			return;
+		}
+		if (bold)
+		{
+			if (Platform.isWindows())
+			{
+				
+			}
+			else
+			{
+				System.out.print("\u001B[1m");
+			}
+		}
+		else
+		{
+			if (Platform.isWindows())
+			{
+				
+			}
+			else
+			{
+				System.out.print("\u001B[21m");
+			}
+		}
+	}
+	
+	public void resetAttributes()
+	{
+		if (!isatty)
+		{
+			return;
+		}
+		if (Platform.isWindows())
+		{
+			// setColors(VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN,
+			// VTConsole.VT_CONSOLE_COLOR_NORMAL_BLACK);
+			// setBold(true);
+			VTNativeUtils.system("color");
+		}
+		else
+		{
+			System.out.print("\u001B[0m");
+		}
+	}
+	
+	public void setSystemIn()
+	{
+		/* if (inputStream == null) { inputStream = new
+		 * FileInputStream(FileDescriptor.in); } */
+		System.setIn(inputStream);
+	}
+	
+	public void setSystemOut()
+	{
+		if (printStream == null)
+		{
+			printStream = new PrintStream(new FileOutputStream(FileDescriptor.out));
+		}
+		System.setOut(printStream);
+	}
+	
+	public void setSystemErr()
+	{
+		if (errorStream == null)
+		{
+			errorStream = new PrintStream(new FileOutputStream(FileDescriptor.err));
+		}
+		System.setErr(errorStream);
+	}
+	
+	public InputStream getSystemIn()
+	{
+		/* if (inputStream == null) { inputStream = new
+		 * FileInputStream(FileDescriptor.in); } */
+		return inputStream;
+	}
+	
+	public PrintStream getSystemOut()
+	{
+		if (printStream == null)
+		{
+			printStream = new PrintStream(new FileOutputStream(FileDescriptor.out));
+		}
+		return printStream;
+	}
+	
+	public PrintStream getSystemErr()
+	{
+		if (errorStream == null)
+		{
+			errorStream = new PrintStream(new FileOutputStream(FileDescriptor.err));
+		}
+		return errorStream;
+	}
+	
+	public void interruptReadLine()
+	{
+		inputStream.interruptRead();
+	}
+	
+	// public boolean isReadingLine()
+	// {
+	// return inputStream.usingRead();
+	// }
+}

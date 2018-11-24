@@ -1,0 +1,35 @@
+﻿(*) Update to MIT license
+(*) Add support for configuration file as first argument
+(*) Add option to set server to daemon mode in configuration file
+(*) Explain new startup argument options
+(*) Maybe add option to set another configuration file in configuration files
+(*) Add command to load/save server configuration files in client console
+(*) Add option to configure client reconnector thread timeout value
+(*) Add option to configure client ping verification interval
+(*) Experiment with console with current command separated from output
+(*) Research more remote cursor drawing techniques
+(*) Add option for remote cursor resizing in *VTGRAPHICSLINK
+(*) Add audio codec option for command *VTAUDIOLINK
+(*) Add audio line buffer size option for command *VTAUDIOLINK
+(*) Research port mapping using portmapper
+(*) Research dynamic multiplexed channel negotiation
+(*) Add support for i18n internationalization standards
+(*) Instead of enforcing connection, it may be a command in client
+(*) Add *VTSCRIPT command to execute script files
+(*) Create standards for all task commands using class abstraction
+	(*) Must have unique complete name
+	(*) Must have unique abbreviated name
+	(*) Must have complete command help
+	(*) Must have abbreviated command help
+	(*) Must validate command syntax
+	(*) Must have status message
+	(*) Must have numeric progress value
+	(*) Must have numeric result code
+	(*) Must execute in separated tread
+	(*) Must have initialization method
+	(*) Must have numeric task identifier
+	(*) Must be separated in client-side, server-side and both-side commands
+	(*) Must handle most command logic in task classes
+	(*) Must handle its own resources
+	(*) Should be interruptible
+	(*) Should support multiple command instances of the same command

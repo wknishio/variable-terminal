@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/vate"/>
+	<classpathentry kind="src" path="src/bric"/>
+	<classpathentry kind="src" path="src/compress"/>
+	<classpathentry kind="src" path="src/jsocks"/>
+	<classpathentry kind="src" path="src/lz4"/>
+	<classpathentry kind="src" path="src/nat"/>
+	<classpathentry kind="src" path="src/opus"/>
+	<classpathentry kind="src" path="src/portmapper"/>
+	<classpathentry kind="src" path="src/throttle"/>
+	<classpathentry kind="src" path="src/xz"/>
+	<classpathentry kind="src" path="src/compat"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/commons-collections4.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io.jar"/>
+	<classpathentry kind="lib" path="lib/commons-jxpath.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3.jar"/>
+	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/jna-platform.jar"/>
+	<classpathentry kind="lib" path="lib/jna.jar"/>
+	<classpathentry kind="lib" path="lib/jsap.jar"/>
+	<classpathentry kind="lib" path="lib/jspeex.jar"/>
+	<classpathentry kind="lib" path="lib/jzlib.jar"/>
+	<classpathentry kind="lib" path="lib/png-encoder.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-jdk14.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

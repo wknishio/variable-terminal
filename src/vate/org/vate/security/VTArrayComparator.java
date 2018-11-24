@@ -1,0 +1,22 @@
+package org.vate.security;
+
+public class VTArrayComparator
+{
+	public static boolean arrayEquals(byte[] array1, byte[] array2)
+	{
+		return arrayEquals(array1, array2, 0, array1.length);
+	}
+	
+	public static boolean arrayEquals(byte[] array1, byte[] array2, int offset, int length)
+	{
+		int bits = 0;
+		int limit = offset + length;
+		{
+			for (int i = offset; i < limit; i++)
+			{
+				bits |= array1[i] ^ array2[i];
+			}
+		}
+		return bits == 0;
+	}
+}

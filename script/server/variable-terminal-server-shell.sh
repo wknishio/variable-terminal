@@ -1,0 +1,2 @@
+#/bin/sh
+java -cp variable-terminal-server-shell.jar org.vate.server.startup.VTServerStandardStart $*
