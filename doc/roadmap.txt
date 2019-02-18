@@ -2,8 +2,7 @@
 (*) Add support for configuration file as first argument
 (*) Add option to set server to daemon mode in configuration file
 (*) Explain new startup argument options
-(*) Maybe add option to set another configuration file in configuration files
-(*) Add command to load/save server configuration files in client console
+(*) Add command to save client configuration files in console
 (*) Add option to configure client reconnector thread timeout value
 (*) Add option to configure client ping verification interval
 (*) Experiment with console with current command separated from output
@@ -11,6 +10,7 @@
 (*) Add option for remote cursor resizing in *VTGRAPHICSLINK
 (*) Add audio codec option for command *VTAUDIOLINK
 (*) Add audio line buffer size option for command *VTAUDIOLINK
+(*) Add command to show specific print service capabilities
 (*) Research port mapping using portmapper
 (*) Research dynamic multiplexed channel negotiation
 (*) Add support for i18n internationalization standards

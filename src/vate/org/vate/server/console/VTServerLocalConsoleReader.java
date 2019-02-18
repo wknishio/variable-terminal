@@ -74,11 +74,30 @@ public class VTServerLocalConsoleReader extends VTTask
 			}
 			catch (Throwable e)
 			{
+				//e.printStackTrace();
 				VTConsole.print("\rVT>Error while processing command!\nVT>");
 				// e.printStackTrace(VTConsole.getSystemOut());
 				// return;
 				/* VTTerminal.setSystemErr(); VTTerminal.setSystemOut();
 				 * VTTerminal.setSystemIn(); e.printStackTrace(); */
+			}
+			if (VTConsole.isDaemon())
+			{
+				Object waiter = VTConsole.getSynchronizationObject();
+				synchronized (waiter)
+				{
+					while (VTConsole.isDaemon())
+					{
+						try
+						{
+							waiter.wait();
+						}
+						catch (Throwable e)
+						{
+							
+						}
+					}
+				}
 			}
 		}
 	}
@@ -580,7 +599,7 @@ public class VTServerLocalConsoleReader extends VTTask
 			 * + defaultPrintService.getName() + "]\nVT>"); } else {
 			 * VTTerminal.print("\rVT>Default print service not found!" +
 			 * "\nVT>"); } } */
-			else if (splitCommand[0].equalsIgnoreCase("*VTENVIRONMENT") || splitCommand[0].equalsIgnoreCase("*VTENV"))
+			else if (splitCommand[0].equalsIgnoreCase("*VTVARIABLE") || splitCommand[0].equalsIgnoreCase("*VTVAR"))
 			{
 				if (splitCommand.length == 1)
 				{
@@ -826,7 +845,91 @@ public class VTServerLocalConsoleReader extends VTTask
 				}
 				else if (splitCommand.length >= 2)
 				{
-					if (splitCommand[1].equalsIgnoreCase("SL"))
+					if (splitCommand[1].equalsIgnoreCase("SF"))
+					{
+						if (splitCommand.length == 2)
+						{
+							try
+							{
+								server.saveServerSettingsFile("variable-terminal-server.properties");
+								VTConsole.print("\rVT>Saved configuration file:[variable-terminal-server.properties]\nVT>");
+							}
+							catch (Throwable t)
+							{
+								VTConsole.print("\rVT>Failed to save configuration file:[variable-terminal-server.properties]\nVT>");
+							}
+						}
+						else if (splitCommand.length >= 3)
+						{
+							try
+							{
+								server.saveServerSettingsFile(splitCommand[2]);
+								VTConsole.print("\rVT>Saved configuration file:[" + splitCommand[2] + "]\nVT>");
+							}
+							catch (Throwable t)
+							{
+								VTConsole.print("\rVT>Failed to save configuration file:[" + splitCommand[2] + "]\nVT>");
+							}
+						}
+						else
+						{
+							VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(splitCommand[0]));
+						}
+					}
+					else if (splitCommand[1].equalsIgnoreCase("LF"))
+					{
+						if (splitCommand.length == 2)
+						{
+							boolean ok = false;
+							try
+							{
+								server.loadServerSettingsFile("variable-terminal-server.properties");
+								VTConsole.print("\rVT>Loaded configuration file:[variable-terminal-server.properties]\nVT>");
+								ok = true;
+							}
+							catch (Throwable t)
+							{
+								VTConsole.print("\rVT>Failed to load configuration file:[variable-terminal-server.properties]\nVT>");
+							}
+							if (ok)
+							{
+								VTServerConnector connector = server.getServerConnector();
+								synchronized (connector)
+								{
+									connector.interruptConnector();
+									connector.notify();
+								}
+							}
+						}
+						else if (splitCommand.length >= 3)
+						{
+							boolean ok = false;
+							try
+							{
+								server.loadServerSettingsFile(splitCommand[2]);
+								VTConsole.print("\rVT>Loaded configuration file:[" + splitCommand[2] + "]\nVT>");
+								ok = true;
+							}
+							catch (Throwable t)
+							{
+								VTConsole.print("\rVT>Failed to load configuration file:[" + splitCommand[2] + "]\nVT>");
+							}
+							if (ok)
+							{
+								VTServerConnector connector = server.getServerConnector();
+								synchronized (connector)
+								{
+									connector.interruptConnector();
+									connector.notify();
+								}
+							}
+						}
+						else
+						{
+							VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(splitCommand[0]));
+						}
+					}
+					else if (splitCommand[1].equalsIgnoreCase("SL"))
 					{
 						if (splitCommand.length == 2)
 						{
@@ -1300,7 +1403,7 @@ public class VTServerLocalConsoleReader extends VTTask
 				clock.setTime(Calendar.getInstance().getTime());
 				VTConsole.print("\rVT>Date/time ([ER-Y-MM-DD][HH:MM:SS:MS-TZ]) on server:\nVT>[" + firstDateTimeFormat.format(clock.getTime()) + "-" + clock.get(GregorianCalendar.YEAR) + "-" + secondDateTimeFormat.format(clock.getTime()) + "\nVT>");
 			}
-			else if (splitCommand[0].equalsIgnoreCase("*VTRESETLOCK") || splitCommand[0].equalsIgnoreCase("*VTRSL"))
+			else if (splitCommand[0].equalsIgnoreCase("*VTLOCK") || splitCommand[0].equalsIgnoreCase("*VTLK"))
 			{
 				if (splitCommand.length >= 3)
 				{
@@ -1372,7 +1475,8 @@ public class VTServerLocalConsoleReader extends VTTask
 							
 							if (address != null)
 							{
-								long estimated = 0;
+								long millisseconds = 0;
+								long nanosseconds = 0;
 								String hostAddress = "";
 								try
 								{
@@ -1380,7 +1484,8 @@ public class VTServerLocalConsoleReader extends VTTask
 									VTServerSession session = handler.getSessionHandler().getSession();
 									long clientTime = session.getLocalNanoDelay();
 									long serverTime = session.getRemoteNanoDelay();
-									estimated = ((clientTime + serverTime) / 2) / 1000000;
+									nanosseconds = ((clientTime + serverTime) / 2);
+									millisseconds = ((clientTime + serverTime) / 2) / 1000000;
 								}
 								catch (Throwable t)
 								{
@@ -1388,12 +1493,12 @@ public class VTServerLocalConsoleReader extends VTTask
 								}
 								
 								message.append("\nVT>Host address: [" + hostAddress +
-								"]\nVT>Estimated connection latency: [" + estimated + 
+								"]\nVT>Estimated connection latency: [" + millisseconds + "] ms or [" + nanosseconds + 
 								// "]\nVT>Host name: [" +
 								// address.getHostName() +
 								// "]\nVT>Canonical host name: [" +
 								// address.getCanonicalHostName() +
-								"] ms\nVT>");
+								"] ns\nVT>");
 							}
 						}
 						message.append("\nVT>End of current client connection latencies list\nVT>");
@@ -1405,6 +1510,36 @@ public class VTServerLocalConsoleReader extends VTTask
 					}
 				}
 				VTConsole.print("\nVT>");
+			}
+			else if (splitCommand[0].equalsIgnoreCase("*VTCOVER") || splitCommand[0].equalsIgnoreCase("*VTCV"))
+			{
+				if (server.isDaemon())
+				{
+					
+				}
+				else
+				{
+					if (VTConsole.isDaemon())
+					{
+						server.enableTrayIcon();
+						VTConsole.print("\rVT>Server console interface enabled\nVT>");
+						VTConsole.setDaemon(false);
+					}
+					else
+					{
+						server.disableTrayIcon();
+						VTConsole.print("\rVT>Server console interface disabled\nVT>");
+						VTConsole.setDaemon(true);
+						Object waiter = VTConsole.getSynchronizationObject();
+						synchronized (waiter)
+						{
+							while (VTConsole.isDaemon())
+							{
+								waiter.wait();
+							}
+						}
+					}
+				}
 			}
 			else
 			{

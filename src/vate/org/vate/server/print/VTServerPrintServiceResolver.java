@@ -42,16 +42,13 @@ public class VTServerPrintServiceResolver extends VTTask
 				for (PrintService printService : printServices)
 				{
 					message.append("\nVT>Number: [" + i++ + "]" + (defaultPrintService.getName().equals(printService.getName()) ? " (Default)" : "") + "\nVT>Name: [" + printService.getName() + "]");
-					// for (DocFlavor flavor :
-					// printService.getSupportedDocFlavors())
-					// {
-					// message.append("\nVT>MIME:" + flavor.getMimeType());
-					// message.append("\nVT>MEDIA:" + flavor.getMediaType());
-					// message.append("\nVT>MEDIASUBTYPE:" +
-					// flavor.getMediaSubtype());
-					// message.append("\nVT>CLASS:" +
-					// flavor.getRepresentationClassName());
-					// }
+//					for (DocFlavor flavor : printService.getSupportedDocFlavors())
+//					{
+//						message.append("\nVT>MIME:[" + flavor.getMimeType() + "]");
+//						message.append("\nVT>MediaType:[" + flavor.getMediaType() + "]");
+//						message.append("\nVT>MediaSubtype:[" + flavor.getMediaSubtype() + "]");
+//						message.append("\nVT>Class:[" + flavor.getRepresentationClassName() + "]");
+//					}
 					message.append("\nVT>");
 				}
 				message.append("\nVT>End of print services list\nVT>");

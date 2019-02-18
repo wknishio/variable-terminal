@@ -73,7 +73,7 @@ public class VTNanoPingService extends VTTask
 			{
 				// wait first interval
 				// Thread.sleep(initial);
-				//first cycle has no delays and is discarded
+				//first 2 cycles has no delays and are just to warmup
 				if (!stopped)
 				{
 					startNanoTime = System.nanoTime();
@@ -89,12 +89,7 @@ public class VTNanoPingService extends VTTask
 					if (endNanoTime >= startNanoTime)
 					{
 						localNanoDelay = endNanoTime - startNanoTime;
-					}
-					for (VTNanoPingListener listener : listeners)
-					{
-						listener.pingObtained(localNanoDelay, remoteNanoDelay);
-					}
-					
+					}					
 					// wait remote interval
 					
 					// wait delay
@@ -102,10 +97,31 @@ public class VTNanoPingService extends VTTask
 					// send delay
 					out.writeLong(localNanoDelay);
 					out.flush();
-					for (VTNanoPingListener listener : listeners)
+				}
+				
+				if (!stopped)
+				{
+					startNanoTime = System.nanoTime();
+					//startNanoTime = System.currentTimeMillis();
+					// send delay
+					out.writeLong(localNanoDelay);
+					out.flush();
+					// wait delay
+					remoteNanoDelay = in.readLong();
+					// end timer
+					endNanoTime = System.nanoTime();
+					//endNanoTime = System.currentTimeMillis();
+					if (endNanoTime >= startNanoTime)
 					{
-						listener.pingObtained(localNanoDelay, remoteNanoDelay);
-					}
+						localNanoDelay = endNanoTime - startNanoTime;
+					}					
+					// wait remote interval
+					
+					// wait delay
+					remoteNanoDelay = in.readLong();
+					// send delay
+					out.writeLong(localNanoDelay);
+					out.flush();
 				}
 				
 				while (!stopped)

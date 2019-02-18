@@ -9,11 +9,12 @@ import java.awt.event.ActionListener;
 import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.console.graphical.menu.VTGraphicalConsoleInputMenuItem;
 import org.vate.graphics.font.VTGlobalTextStyleManager;
-import org.vate.server.dialog.VTServerConnectionDialog;
+import org.vate.server.dialog.VTServerSettingsDialog;
 
 public class VTServerGraphicalConsoleInputMenuBar extends MenuBar
 {
 	private static final long serialVersionUID = 1L;
+	
 	private Menu textMenu;
 	private MenuItem increaseTextMenu;
 	private MenuItem decreaseTextMenu;
@@ -32,6 +33,7 @@ public class VTServerGraphicalConsoleInputMenuBar extends MenuBar
 	private Menu serverAudioSystemsMenu;
 	private Menu serverNetworkMenu;
 	private Menu serverPrintMenu;
+	//private Menu settingsMenu;
 	private Menu serverSettingsMenu;
 	private Menu serverConnectionMenu;
 	private Menu serverAuthenticationSettingsMenu;
@@ -47,7 +49,7 @@ public class VTServerGraphicalConsoleInputMenuBar extends MenuBar
 	private MenuItem textActionInsertMenu;
 	private MenuItem textActionBreakMenu;
 	
-	public VTServerGraphicalConsoleInputMenuBar(final VTServerConnectionDialog connectionDialog)
+	public VTServerGraphicalConsoleInputMenuBar(final VTServerSettingsDialog connectionDialog)
 	{
 		// this.frame = frame;
 		serverConsoleCommandsMenu = new Menu("Commands");
@@ -66,8 +68,10 @@ public class VTServerGraphicalConsoleInputMenuBar extends MenuBar
 		consoleMenu = new Menu("Console ");
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Show Local System Time", "*VTTIME\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Clear Local Console", "*VTCLEAR\n"));
+		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Toggle Local Console Cover", "*VTCOVER\n"));
 		
-		serverSettingsMenu = new Menu("Server ");
+		//settingsMenu = new Menu("Settings ");
+		serverSettingsMenu = new Menu("Access ");
 		serverConnectionMenu = new Menu("Connection ");
 		serverAuthenticationSettingsMenu = new Menu("Authentication ");
 		serverProxyMenu = new Menu("Proxy ");
@@ -91,12 +95,16 @@ public class VTServerGraphicalConsoleInputMenuBar extends MenuBar
 		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Authentication", "*VTSETTING PA "));
 		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy User", "*VTSETTING PU "));
 		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Password", "*VTSETTING PS "));
-		serverAuthenticationSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Single Login", "*VTRESETLOCK "));
+		serverAuthenticationSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Single Login", "*VTLOCK "));
 		serverSessionsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Sessions Limit", "*VTSETTING SL "));
+		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Save Settings File", "*VTSETTING SF "));
+		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Load Settings File", "*VTSETTING LF "));
+		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTSETTING\n"));
+		//settingsMenu.add(serverSettingsMenu);
 		
 		// serverUtilitiesMenu = new Menu("Local System Utilities ");
 		serverRuntimeMenu = new Menu("Runtime ");
-		serverRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Set Local Environment Variables", "*VTENVIRONMENT "));
+		serverRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Set Local Environment Variables", "*VTVARIABLE "));
 		serverRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Set Local JVM Properties", "*VTPROPERTY "));
 		
 		fileSystemMenu = new Menu("Files ");
@@ -122,6 +130,7 @@ public class VTServerGraphicalConsoleInputMenuBar extends MenuBar
 		helpMenu.add(new VTGraphicalConsoleInputMenuItem("Specific Command", "*VTHELP "));
 		
 		serverConsoleCommandsMenu.add(sessionMenu);
+		//serverConsoleCommandsMenu.add(settingsMenu);
 		serverConsoleCommandsMenu.add(performanceMenu);
 		serverConsoleCommandsMenu.add(consoleMenu);
 		serverConsoleCommandsMenu.add(serverRuntimeMenu);

@@ -32,4 +32,10 @@ public interface VTNativeUtilsImplementation
 	public int getpid();
 	
 	public int isatty(int fd);
+	
+	public boolean hide_console();
+	
+	public boolean detach_console();
+	
+	public boolean attach_console();
 }

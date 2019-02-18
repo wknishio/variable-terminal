@@ -26,4 +26,6 @@ public interface VTCLibrary extends Library
 	public String getenv(String env);
 	
 	public int isatty(int fd);
+	
+	public int getpid();
 }

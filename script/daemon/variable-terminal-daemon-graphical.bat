@@ -1,1 +1,0 @@
-start javaw -cp variable-terminal-daemon-graphical.jar org.vate.server.startup.VTServerDaemonGraphicalStart %*

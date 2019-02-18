@@ -15,7 +15,7 @@ import org.vate.VT;
 import org.vate.audio.VTAudioSystem;
 import org.vate.client.connection.VTClientConnector;
 import org.vate.client.console.VTClientGraphicalConsoleInputMenuBar;
-import org.vate.client.dialog.VTClientConnectionDialog;
+import org.vate.client.dialog.VTClientConfigurationDialog;
 import org.vate.console.VTConsole;
 import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.exception.VTUncaughtExceptionHandler;
@@ -49,7 +49,7 @@ public class VTClient implements Runnable
 	private VTClientConnector clientConnector;
 	private VTClientGraphicalConsoleInputMenuBar inputMenuBar;
 	private VTAudioSystem audioSystem;
-	private VTClientConnectionDialog connectionDialog;
+	private VTClientConfigurationDialog connectionDialog;
 	private ExecutorService threads;
 	private volatile boolean skipConfiguration;
 	private static final String VT_CLIENT_SETTINGS_COMMENTS = 
@@ -58,7 +58,7 @@ public class VTClient implements Runnable
 	"#vate.client.encryption.type      values: N(none, default), R(RC4) or A(AES)\r\n" + 
 	"#vate.client.proxy.type           values: N(none, default), S(SOCKS) or H(HTTP)\r\n" + 
 	"#vate.client.proxy.authentication values: D(disabled, default) or E(enabled)\r\n" + 
-	"#vate.client.session.commands     format: cmd1;cmd2;cmd3;...";
+	"#vate.client.session.commands     format: cmd1*;cmd2*;cmd3*;...";
 	
 	static
 	{
@@ -308,7 +308,7 @@ public class VTClient implements Runnable
 		return inputMenuBar;
 	}
 	
-	public VTClientConnectionDialog getConnectionDialog()
+	public VTClientConfigurationDialog getConnectionDialog()
 	{
 		return connectionDialog;
 	}
@@ -1505,7 +1505,7 @@ public class VTClient implements Runnable
 		{
 			VTConsole.initialize();
 			VTConsole.setTitle("Variable-Terminal Client " + VT.VT_VERSION + " - Console");
-			connectionDialog = new VTClientConnectionDialog(VTGraphicalConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Connection", true, this);
+			connectionDialog = new VTClientConfigurationDialog(VTGraphicalConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Connection", true, this);
 			inputMenuBar = new VTClientGraphicalConsoleInputMenuBar(connectionDialog);
 			VTGraphicalConsole.getFrame().setMenuBar(inputMenuBar);
 			VTGraphicalConsole.getFrame().pack();

@@ -1476,11 +1476,12 @@ public class VTClientRemoteConsoleWriter extends VTTask
 				// connection.getCommandWriter().flush();
 				long clientTime = session.getLocalNanoDelay();
 				long serverTime = session.getRemoteNanoDelay();
-				long estimated = ((clientTime + serverTime) / 2) / 1000000;
+				long nanoseconds = ((clientTime + serverTime) / 2);
+				long millisseconds = ((clientTime + serverTime) / 2) / 1000000;
 				//long estimated = ((clientTime + serverTime) / 2);
 				// VTTerminal.printf("\nVT>Current client/server network
 				// connection latency: %.2f ms\nVT>", estimated);
-				VTConsole.printf("\nVT>Estimated connection latency: [%d] ms\nVT>", estimated);
+				VTConsole.printf("\nVT>Estimated connection latency: [%d] ms or [%d] ns\nVT>", millisseconds, nanoseconds);
 			}
 			else if (splitCommand[0].equalsIgnoreCase("*VTAUDIOMIXERS") || splitCommand[0].equalsIgnoreCase("*VTAM"))
 			{

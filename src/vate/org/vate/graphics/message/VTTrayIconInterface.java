@@ -111,18 +111,18 @@ public class VTTrayIconInterface
 		}
 	}
 	
-	// public void removeTrayIcon()
-	// {
-	// try
-	// {
-	// if (trayIcon != null)
-	// {
-	// systemTray.remove(trayIcon);
-	// }
-	// }
-	// catch (Throwable t)
-	// {
-	// //t.printStackTrace();
-	// }
-	// }
+	public void removeTrayIcon()
+	{
+		try
+		{
+			if (trayIcon != null)
+			{
+				systemTray.remove(trayIcon);
+			}
+		}
+		catch (Throwable t)
+		{
+			
+		}
+	}
 }

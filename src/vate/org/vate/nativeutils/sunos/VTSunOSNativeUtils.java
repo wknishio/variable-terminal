@@ -155,4 +155,35 @@ public class VTSunOSNativeUtils implements VTNativeUtilsImplementation
 	{
 		return sunosCLibrary.isatty(fd);
 	}
+	
+	public boolean detach_console()
+	{
+		try
+		{
+			sunosCLibrary.system("disown -h");
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		return true;
+	}
+	
+	public boolean attach_console()
+	{
+		return false;
+	}
+
+	public boolean hide_console()
+	{
+		try
+		{
+			sunosCLibrary.system("disown -h");
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		return true;
+	}
 }

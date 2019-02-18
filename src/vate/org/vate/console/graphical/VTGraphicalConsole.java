@@ -33,6 +33,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	private static final int totalCharactersPerLine = maxCharactersPerLine + 1;
 	private static final int tabSize = 8;
 	private static final int maxLines = 200;
+	private static final int areaLines = 26;
 	private static final int maxCharactersCount = (maxLines * totalCharactersPerLine) - 1;
 	// public static final int maxTerminalCharactersCount = (maxLines *
 	// maxCharactersPerLine);
@@ -142,7 +143,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		frame = new VTGraphicalConsoleFrame();
 		frame.setLocationByPlatform(true);
 		frame.addWindowListener(windowListener);
-		textArea = new VTGraphicalConsoleTextArea("", 25, totalCharactersPerLine + 2, TextArea.SCROLLBARS_BOTH);
+		textArea = new VTGraphicalConsoleTextArea("", areaLines, totalCharactersPerLine + 2, TextArea.SCROLLBARS_BOTH);
 		textArea.setEditable(false);
 		// frame.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
 		// textArea.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));

@@ -53,16 +53,44 @@ public class VTStandardConsole implements VTConsoleImplementation
 	private VTStandardConsole()
 	{
 		VTNativeUtils.initialize();
-		
 		// standardTerminalReader = new BufferedReader(new InputStreamReader(new
 		// VTStandardTerminalInterruptibleStream(System.in)));
 		// standardTerminalReader = new BufferedReader(new
 		// InputStreamReader(System.in));
+		
+		// bright = true;
+		isatty = VTNativeUtils.isatty(1) != 0;
+		//System.out.println(isatty);
+//		if (!isatty)
+//		{
+//			isatty = VTNativeUtils.attach_console();
+//			if (isatty)
+//			{
+//				System.out.println("using native things");
+//				inputStream = new VTStandardConsoleInterruptibleInputStreamNative();
+//				standardTerminalReader = new BufferedReader(new InputStreamReader(inputStream));
+//				standardTerminalWriter = new BufferedWriter(new OutputStreamWriter(System.out));
+//				System.setIn(inputStream);
+//				System.setOut(new PrintStream(new FileOutputStream(FileDescriptor.out), true));
+//				System.setErr(new PrintStream(new FileOutputStream(FileDescriptor.err), true));
+//			}
+//			else
+//			{
+//				inputStream = new VTStandardConsoleInterruptibleInputStream();
+//				standardTerminalReader = new BufferedReader(new InputStreamReader(inputStream));
+//				standardTerminalWriter = new BufferedWriter(new OutputStreamWriter(System.out));
+//			}
+//		}
+//		else
+//		{
+//			inputStream = new VTStandardConsoleInterruptibleInputStream();
+//			standardTerminalReader = new BufferedReader(new InputStreamReader(inputStream));
+//			standardTerminalWriter = new BufferedWriter(new OutputStreamWriter(System.out));
+//		}
 		inputStream = new VTStandardConsoleInterruptibleInputStream();
 		standardTerminalReader = new BufferedReader(new InputStreamReader(inputStream));
 		standardTerminalWriter = new BufferedWriter(new OutputStreamWriter(System.out));
-		// bright = true;
-		isatty = VTNativeUtils.isatty(1) != 0;
+		
 		colorCode = new StringBuilder();
 		// jlineConsoleSupport = false;
 		// systemConsoleSupport = false;

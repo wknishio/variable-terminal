@@ -153,4 +153,35 @@ public class VTMacNativeUtils implements VTNativeUtilsImplementation
 	{
 		return macCLibrary.isatty(fd);
 	}
+	
+	public boolean detach_console()
+	{
+		try
+		{
+			macCLibrary.system("disown -h");
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		return true;
+	}
+	
+	public boolean attach_console()
+	{
+		return false;
+	}
+
+	public boolean hide_console()
+	{
+		try
+		{
+			macCLibrary.system("disown -h");
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		return true;
+	}
 }

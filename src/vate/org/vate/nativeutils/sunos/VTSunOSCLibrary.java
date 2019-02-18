@@ -1,8 +1,8 @@
 package org.vate.nativeutils.sunos;
 
-import org.vate.nativeutils.VTCLibrary;
+import org.vate.nativeutils.unix.VTUnixCLibrary;
 
-public interface VTSunOSCLibrary extends VTCLibrary
+public interface VTSunOSCLibrary extends VTUnixCLibrary
 {
 	public int open(String path, int flags);
 	
@@ -11,6 +11,4 @@ public interface VTSunOSCLibrary extends VTCLibrary
 	public int close(int fd);
 	
 	public int putenv(String env);
-	
-	public int getpid();
 }

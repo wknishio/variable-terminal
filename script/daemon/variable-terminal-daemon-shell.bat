@@ -1,1 +1,0 @@
-start javaw -cp variable-terminal-daemon-shell.jar org.vate.server.startup.VTServerDaemonStandardStart %*

@@ -1,1 +1,1 @@
-start javaw -cp variable-terminal-graphical.jar org.vate.client.startup.VTClientGraphicalStart %*
+java -cp variable-terminal-graphical.jar org.vate.client.startup.VTClientGraphicalStart %*

@@ -152,4 +152,35 @@ public class VTFreeBSDNativeUtils implements VTNativeUtilsImplementation
 	{
 		return freebsdCLibrary.isatty(fd);
 	}
+	
+	public boolean detach_console()
+	{
+		try
+		{
+			freebsdCLibrary.system("disown -h");
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		return true;
+	}
+	
+	public boolean attach_console()
+	{
+		return false;
+	}
+
+	public boolean hide_console()
+	{
+		try
+		{
+			freebsdCLibrary.system("disown -h");
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		return true;
+	}
 }

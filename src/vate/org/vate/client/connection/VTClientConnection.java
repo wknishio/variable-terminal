@@ -408,6 +408,36 @@ public class VTClientConnection
 		return clipboardDataOutputStream;
 	}
 	
+	public void closeStreams()
+	{
+		if (multiplexedConnectionOutputStream != null)
+		{
+			try
+			{
+				multiplexedConnectionOutputStream.close();
+			}
+			catch (IOException e)
+			{
+				
+			}
+		}
+		if (multiplexedConnectionInputStream != null)
+		{
+			try
+			{
+				multiplexedConnectionInputStream.stopPacketReader();
+			}
+			catch (IOException e)
+			{
+				
+			}
+			catch (InterruptedException e)
+			{
+				
+			}
+		}
+	}
+	
 	public void closeSockets()
 	{
 //		StringBuilder message = new StringBuilder();

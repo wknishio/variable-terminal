@@ -32,7 +32,7 @@ import org.vate.parser.VTPropertiesBuilder;
 import org.vate.server.connection.VTServerConnector;
 import org.vate.server.console.VTServerGraphicalConsoleInputMenuBar;
 import org.vate.server.console.VTServerLocalConsoleReader;
-import org.vate.server.dialog.VTServerConnectionDialog;
+import org.vate.server.dialog.VTServerSettingsDialog;
 
 public class VTServer implements Runnable
 {
@@ -67,7 +67,7 @@ public class VTServer implements Runnable
 	private VTServerLocalConsoleReader consoleReader;
 	private VTServerGraphicalConsoleInputMenuBar inputMenuBar;
 	private VTAudioSystem audioSystem;
-	private VTServerConnectionDialog connectionDialog;
+	private VTServerSettingsDialog connectionDialog;
 	private ExecutorService threads;
 	private VTTrayIconInterface trayIconInterface;
 	private volatile boolean skipConfiguration;
@@ -170,6 +170,7 @@ public class VTServer implements Runnable
 		{
 			hostPort = 6060;
 		}
+		VTConsole.setDaemon(daemon);
 	}
 	
 	public void setSessionsLimit(int sessionsLimit)
@@ -398,6 +399,22 @@ public class VTServer implements Runnable
 		if (trayIconInterface != null)
 		{
 			trayIconInterface.displayMessage(caption, text);
+		}
+	}
+	
+	public void enableTrayIcon()
+	{
+		if (trayIconInterface != null)
+		{
+			trayIconInterface.install(VTGraphicalConsole.getFrame(), "Variable-Terminal Server");
+		}
+	}
+	
+	public void disableTrayIcon()
+	{
+		if (trayIconInterface != null)
+		{
+			trayIconInterface.removeTrayIcon();
 		}
 	}
 	
@@ -1686,7 +1703,7 @@ public class VTServer implements Runnable
 			VTConsole.setTitle("Variable-Terminal Server " + VT.VT_VERSION + " - Console");
 			if (!VTConsole.isDaemon() && !daemon)
 			{
-				connectionDialog = new VTServerConnectionDialog(VTGraphicalConsole.getFrame(), "Variable-Terminal Server " + VT.VT_VERSION + " - Connection", true, this);
+				connectionDialog = new VTServerSettingsDialog(VTGraphicalConsole.getFrame(), "Variable-Terminal Server " + VT.VT_VERSION + " - Connection", true, this);
 				inputMenuBar = new VTServerGraphicalConsoleInputMenuBar(connectionDialog);
 				VTGraphicalConsole.getFrame().setMenuBar(inputMenuBar);
 				VTGraphicalConsole.getFrame().pack();
@@ -1764,11 +1781,6 @@ public class VTServer implements Runnable
 				serverConnector.setEncryptionType("None");
 				serverConnector.setEncryptionKey(encryptionKey);
 			}
-			if (!daemon)
-			{
-				consoleReader = new VTServerLocalConsoleReader(this);
-				consoleReader.startThread();
-			}
 			if (!(userCredentials.size() > 0))
 			{
 				this.setUniqueUserCredential("", "");
@@ -1800,14 +1812,14 @@ public class VTServer implements Runnable
 			serverConnector.setEncryptionType("None");
 			serverConnector.setEncryptionKey(encryptionKey);
 		}
+		if (!(userCredentials.size() > 0))
+		{
+			this.setUniqueUserCredential("", "");
+		}
 		if (!daemon)
 		{
 			consoleReader = new VTServerLocalConsoleReader(this);
 			consoleReader.startThread();
-		}
-		if (!(userCredentials.size() > 0))
-		{
-			this.setUniqueUserCredential("", "");
 		}
 		serverConnector.run();
 	}

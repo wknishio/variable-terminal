@@ -27,6 +27,7 @@ import javax.sound.sampled.Mixer;
 import org.vate.VT;
 import org.vate.console.VTConsole;
 import org.vate.console.graphical.VTGraphicalConsole;
+import org.vate.filesystem.VTRootList;
 import org.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vate.graphics.message.VTGraphicsMessager;
 import org.vate.help.VTHelpManager;
@@ -36,6 +37,7 @@ import org.vate.server.connection.VTServerConnectionHandler;
 import org.vate.server.connection.VTServerConnector;
 import org.vate.server.filesystem.VTServerFileModifyOperation;
 import org.vate.server.filesystem.VTServerFileScanOperation;
+import org.vate.server.print.VTServerPrintDataTask;
 import org.vate.server.session.VTServerSession;
 import org.vate.task.VTTask;
 import org.vate.tunnel.channel.VTTunnelChannelSocketListener;
@@ -696,7 +698,7 @@ public class VTServerRemoteConsoleReader extends VTTask
 				connection.getResultWriter().flush();
 			}
 		}
-		else if (splitCommand[0].equalsIgnoreCase("*VTENVIRONMENT") || splitCommand[0].equalsIgnoreCase("*VTENV"))
+		else if (splitCommand[0].equalsIgnoreCase("*VTVARIABLE") || splitCommand[0].equalsIgnoreCase("*VTVAR"))
 		{
 			// connection.getResultWriter().write(command);
 			// connection.getResultWriter().flush();
@@ -984,15 +986,15 @@ public class VTServerRemoteConsoleReader extends VTTask
 			VTConsole.print("\rVT>Client finalizing...\nVT>");
 			connection.closeSockets();
 		}
-		else if (splitCommand[0].equalsIgnoreCase("*VTRESTARTSHELL") || splitCommand[0].equalsIgnoreCase("*VTRTSH"))
-		{
-			// connection.getResultWriter().write(command);
-			// connection.getResultWriter().flush();
-			connection.getResultWriter().write("\nVT>Restarting external shell...\nVT>");
-			connection.getResultWriter().flush();
-			session.setRestartingShell(true);
-			session.restartShell();
-		}
+//		else if (splitCommand[0].equalsIgnoreCase("*VTRESTARTSHELL") || splitCommand[0].equalsIgnoreCase("*VTRTSH"))
+//		{
+//			// connection.getResultWriter().write(command);
+//			// connection.getResultWriter().flush();
+//			connection.getResultWriter().write("\nVT>Restarting external shell...\nVT>");
+//			connection.getResultWriter().flush();
+//			session.setRestartingShell(true);
+//			session.restartShell();
+//		}
 		else if (splitCommand[0].equalsIgnoreCase("*VTPRINTSERVICES") || splitCommand[0].equalsIgnoreCase("*VTPSVS"))
 		{
 			synchronized (session.getPrintServiceResolver())
@@ -1015,129 +1017,336 @@ public class VTServerRemoteConsoleReader extends VTTask
 				}
 			}
 		}
-		else if (splitCommand[0].equalsIgnoreCase("*VTPRINTTEXT") || splitCommand[0].equalsIgnoreCase("*VTPRTX"))
+//		else if (splitCommand[0].equalsIgnoreCase("*VTPRINTTEXT") || splitCommand[0].equalsIgnoreCase("*VTPRTX"))
+//		{
+//			// splitCommand[1] =
+//			// StringEscapeUtils.unescapeJava(splitCommand[1]);
+//			try
+//			{
+//				if (splitCommand.length == 2)
+//				{
+//					synchronized (session.getPrintTextTask())
+//					{
+//						// connection.getResultWriter().write(command);
+//						// connection.getResultWriter().flush();
+//						if (session.getPrintTextTask().isFinished())
+//						{
+//							session.getPrintTextTask().joinThread();
+//						}
+//						if (!session.getPrintTextTask().aliveThread())
+//						{
+//							session.getPrintTextTask().setFinished(false);
+//							session.getPrintTextTask().setText(splitCommand[1]);
+//							session.getPrintTextTask().setPrintServiceNumber(null);
+//							connection.getResultWriter().write("\nVT>Text to print: [" + splitCommand[1] + "], print service: [Default]\nVT>");
+//							connection.getResultWriter().flush();
+//							session.getPrintTextTask().startThread();
+//						}
+//						else
+//						{
+//							connection.getResultWriter().write("\nVT>Another print text task is still running!\nVT>");
+//							connection.getResultWriter().flush();
+//						}
+//					}
+//				}
+//				else if (splitCommand.length >= 3)
+//				{
+//					synchronized (session.getPrintTextTask())
+//					{
+//						// connection.getResultWriter().write(command);
+//						// connection.getResultWriter().flush();
+//						if (session.getPrintTextTask().isFinished())
+//						{
+//							session.getPrintTextTask().joinThread();
+//						}
+//						if (!session.getPrintTextTask().aliveThread())
+//						{
+//							session.getPrintTextTask().setFinished(false);
+//							session.getPrintTextTask().setText(splitCommand[1]);
+//							session.getPrintTextTask().setPrintServiceNumber(Integer.parseInt(splitCommand[2]));
+//							connection.getResultWriter().write("\nVT>Text to print: [" + splitCommand[1] + "], print service: [" + splitCommand[2] + "]\nVT>");
+//							connection.getResultWriter().flush();
+//							session.getPrintTextTask().startThread();
+//						}
+//						else
+//						{
+//							connection.getResultWriter().write("\nVT>Another print text task is still running!\nVT>");
+//							connection.getResultWriter().flush();
+//						}
+//					}
+//				}
+//				else
+//				{
+//					connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+//					connection.getResultWriter().flush();
+//				}
+//			}
+//			catch (NumberFormatException e)
+//			{
+//				connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+//				connection.getResultWriter().flush();
+//			}
+//		}
+//		else if (splitCommand[0].equalsIgnoreCase("*VTPRINTFILE") || splitCommand[0].equalsIgnoreCase("*VTPRFL"))
+//		{
+//			try
+//			{
+//				if (splitCommand.length == 2)
+//				{
+//					synchronized (session.getPrintFileTask())
+//					{
+//						// connection.getResultWriter().write(command);
+//						// connection.getResultWriter().flush();
+//						if (session.getPrintFileTask().isFinished())
+//						{
+//							session.getPrintFileTask().joinThread();
+//						}
+//						if (!session.getPrintFileTask().aliveThread())
+//						{
+//							session.getPrintFileTask().setFinished(false);
+//							session.getPrintFileTask().setFile(splitCommand[1]);
+//							session.getPrintFileTask().setPrintServiceNumber(null);
+//							connection.getResultWriter().write("\nVT>File to print: [" + splitCommand[1] + "], print service: [Default]\nVT>");
+//							connection.getResultWriter().flush();
+//							session.getPrintFileTask().startThread();
+//						}
+//						else
+//						{
+//							connection.getResultWriter().write("\nVT>Another print file task is still running!\nVT>");
+//							connection.getResultWriter().flush();
+//						}
+//					}
+//				}
+//				else if (splitCommand.length >= 3)
+//				{
+//					synchronized (session.getPrintFileTask())
+//					{
+//						// connection.getResultWriter().write(command);
+//						// connection.getResultWriter().flush();
+//						if (session.getPrintFileTask().isFinished())
+//						{
+//							session.getPrintFileTask().joinThread();
+//						}
+//						if (!session.getPrintFileTask().aliveThread())
+//						{
+//							session.getPrintFileTask().setFinished(false);
+//							session.getPrintFileTask().setFile(splitCommand[1]);
+//							session.getPrintFileTask().setPrintServiceNumber(Integer.parseInt(splitCommand[2]));
+//							connection.getResultWriter().write("\nVT>File to print: [" + splitCommand[1] + "], print service: [" + splitCommand[2] + "]\nVT>");
+//							connection.getResultWriter().flush();
+//							session.getPrintFileTask().startThread();
+//						}
+//						else
+//						{
+//							connection.getResultWriter().write("\nVT>Another print file task is still running!\nVT>");
+//							connection.getResultWriter().flush();
+//						}
+//					}
+//				}
+//				else
+//				{
+//					connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+//					connection.getResultWriter().flush();
+//				}
+//			}
+//			catch (NumberFormatException e)
+//			{
+//				connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+//				connection.getResultWriter().flush();
+//			}
+//		}
+		else if (splitCommand[0].equalsIgnoreCase("*VTPRINTDATA") || splitCommand[0].equalsIgnoreCase("*VTPRDT"))
 		{
-			// splitCommand[1] =
-			// StringEscapeUtils.unescapeJava(splitCommand[1]);
 			try
 			{
-				if (splitCommand.length == 2)
+				if (splitCommand.length == 1)
 				{
-					synchronized (session.getPrintTextTask())
+					if (session.getPrintDataTask().isFinished())
 					{
-						// connection.getResultWriter().write(command);
-						// connection.getResultWriter().flush();
-						if (session.getPrintTextTask().isFinished())
+						session.getPrintDataTask().joinThread();
+					}
+					if (!session.getPrintDataTask().aliveThread())
+					{
+						connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
+						connection.getResultWriter().flush();
+					}
+					else
+					{
+						connection.getResultWriter().write("\nVT>Another print data task is still running!\nVT>");
+						connection.getResultWriter().flush();
+					}
+				}
+				else if (splitCommand.length == 2)
+				{
+					if (splitCommand[1].toUpperCase().startsWith("S"))
+					{
+						if (session.getPrintDataTask().isFinished())
 						{
-							session.getPrintTextTask().joinThread();
+							session.getPrintDataTask().joinThread();
 						}
-						if (!session.getPrintTextTask().aliveThread())
+						if (!session.getPrintDataTask().aliveThread())
 						{
-							session.getPrintTextTask().setFinished(false);
-							session.getPrintTextTask().setText(splitCommand[1]);
-							session.getPrintTextTask().setPrintServiceNumber(null);
-							connection.getResultWriter().write("\nVT>Text to print: [" + splitCommand[1] + "], print service: [Default]\nVT>");
+							connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
 							connection.getResultWriter().flush();
-							session.getPrintTextTask().startThread();
 						}
 						else
 						{
-							connection.getResultWriter().write("\nVT>Another print text task is still running!\nVT>");
+							connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
 							connection.getResultWriter().flush();
+							session.getPrintDataTask().setStopped(true);
+						}
+					}
+					else
+					{
+						connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+						connection.getResultWriter().flush();
+					}
+				}
+				else if (splitCommand.length == 3)
+				{
+					synchronized (session.getPrintDataTask())
+					{
+						// connection.getResultWriter().write(command);
+						// connection.getResultWriter().flush();
+						if (session.getPrintDataTask().isFinished())
+						{
+							session.getPrintDataTask().joinThread();
+						}
+						if (!session.getPrintDataTask().aliveThread())
+						{
+							if (splitCommand[1].toUpperCase().startsWith("S"))
+							{
+								connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
+								connection.getResultWriter().flush();
+							}
+							else
+							{
+								if (splitCommand[1].toUpperCase().startsWith("T")
+								|| splitCommand[1].toUpperCase().startsWith("F")
+								|| splitCommand[1].toUpperCase().startsWith("U")
+								|| splitCommand[1].toUpperCase().startsWith("N"))
+								{
+									session.getPrintDataTask().setFinished(false);
+									session.getPrintDataTask().setData(splitCommand[2]);
+									session.getPrintDataTask().setPrintServiceNumber(null);
+									if (splitCommand[1].toUpperCase().startsWith("T"))
+									{
+										session.getPrintDataTask().setMode(VTServerPrintDataTask.MODE_TEXT);
+									}
+									else
+									{
+										session.getPrintDataTask().setMode(VTServerPrintDataTask.MODE_FILE);
+									}
+									if (splitCommand[1].toUpperCase().startsWith("F"))
+									{
+										session.getPrintDataTask().setFileEncoding("F");
+									}
+									if (splitCommand[1].toUpperCase().startsWith("U"))
+									{
+										session.getPrintDataTask().setFileEncoding("U");
+									}
+									if (splitCommand[1].toUpperCase().startsWith("N"))
+									{
+										session.getPrintDataTask().setFileEncoding("N");
+									}
+									connection.getResultWriter().write("\nVT>Print mode: [" + splitCommand[1] + "], data: [" + splitCommand[2] + "], service: [Default]\nVT>");
+									connection.getResultWriter().flush();
+									session.getPrintDataTask().startThread();
+								}
+								else
+								{
+									connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
+									connection.getResultWriter().flush();
+								}
+							}
+						}
+						else
+						{
+							if (splitCommand[1].toUpperCase().startsWith("S"))
+							{
+								connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
+								connection.getResultWriter().flush();
+								session.getPrintDataTask().setStopped(true);
+							}
+							else
+							{
+								connection.getResultWriter().write("\nVT>Another print data task is still running!\nVT>");
+								connection.getResultWriter().flush();
+							}
 						}
 					}
 				}
-				else if (splitCommand.length >= 3)
+				else if (splitCommand.length >= 4)
 				{
-					synchronized (session.getPrintTextTask())
+					synchronized (session.getPrintDataTask())
 					{
 						// connection.getResultWriter().write(command);
 						// connection.getResultWriter().flush();
-						if (session.getPrintTextTask().isFinished())
+						if (session.getPrintDataTask().isFinished())
 						{
-							session.getPrintTextTask().joinThread();
+							session.getPrintDataTask().joinThread();
 						}
-						if (!session.getPrintTextTask().aliveThread())
+						if (!session.getPrintDataTask().aliveThread())
 						{
-							session.getPrintTextTask().setFinished(false);
-							session.getPrintTextTask().setText(splitCommand[1]);
-							session.getPrintTextTask().setPrintServiceNumber(Integer.parseInt(splitCommand[2]));
-							connection.getResultWriter().write("\nVT>Text to print: [" + splitCommand[1] + "], print service: [" + splitCommand[2] + "]\nVT>");
-							connection.getResultWriter().flush();
-							session.getPrintTextTask().startThread();
-						}
-						else
-						{
-							connection.getResultWriter().write("\nVT>Another print text task is still running!\nVT>");
-							connection.getResultWriter().flush();
-						}
-					}
-				}
-				else
-				{
-					connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
-					connection.getResultWriter().flush();
-				}
-			}
-			catch (NumberFormatException e)
-			{
-				connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
-				connection.getResultWriter().flush();
-			}
-		}
-		else if (splitCommand[0].equalsIgnoreCase("*VTPRINTFILE") || splitCommand[0].equalsIgnoreCase("*VTPRFL"))
-		{
-			try
-			{
-				if (splitCommand.length == 2)
-				{
-					synchronized (session.getPrintFileTask())
-					{
-						// connection.getResultWriter().write(command);
-						// connection.getResultWriter().flush();
-						if (session.getPrintFileTask().isFinished())
-						{
-							session.getPrintFileTask().joinThread();
-						}
-						if (!session.getPrintFileTask().aliveThread())
-						{
-							session.getPrintFileTask().setFinished(false);
-							session.getPrintFileTask().setFile(splitCommand[1]);
-							session.getPrintFileTask().setPrintServiceNumber(null);
-							connection.getResultWriter().write("\nVT>File to print: [" + splitCommand[1] + "], print service: [Default]\nVT>");
-							connection.getResultWriter().flush();
-							session.getPrintFileTask().startThread();
+							if (splitCommand[1].toUpperCase().startsWith("S"))
+							{
+								connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
+								connection.getResultWriter().flush();
+							}
+							else
+							{
+								if (splitCommand[1].toUpperCase().startsWith("T")
+								|| splitCommand[1].toUpperCase().startsWith("F")
+								|| splitCommand[1].toUpperCase().startsWith("U")
+								|| splitCommand[1].toUpperCase().startsWith("N"))
+								{
+									session.getPrintDataTask().setFinished(false);
+									session.getPrintDataTask().setData(splitCommand[2]);
+									session.getPrintDataTask().setPrintServiceNumber(Integer.parseInt(splitCommand[3]));
+									if (splitCommand[1].toUpperCase().startsWith("T"))
+									{
+										session.getPrintDataTask().setMode(VTServerPrintDataTask.MODE_TEXT);
+									}
+									else
+									{
+										session.getPrintDataTask().setMode(VTServerPrintDataTask.MODE_FILE);
+									}
+									if (splitCommand[1].toUpperCase().startsWith("F"))
+									{
+										session.getPrintDataTask().setFileEncoding("F");
+									}
+									if (splitCommand[1].toUpperCase().startsWith("U"))
+									{
+										session.getPrintDataTask().setFileEncoding("U");
+									}
+									if (splitCommand[1].toUpperCase().startsWith("N"))
+									{
+										session.getPrintDataTask().setFileEncoding("N");
+									}
+									connection.getResultWriter().write("\nVT>Print mode: [" + splitCommand[1] + "], data: [" + splitCommand[2] + "], service: [" + splitCommand[3] + "]\nVT>");
+									connection.getResultWriter().flush();
+									session.getPrintDataTask().startThread();
+								}
+								else
+								{
+									connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
+									connection.getResultWriter().flush();
+								}
+							}
 						}
 						else
 						{
-							connection.getResultWriter().write("\nVT>Another print file task is still running!\nVT>");
-							connection.getResultWriter().flush();
-						}
-					}
-				}
-				else if (splitCommand.length >= 3)
-				{
-					synchronized (session.getPrintFileTask())
-					{
-						// connection.getResultWriter().write(command);
-						// connection.getResultWriter().flush();
-						if (session.getPrintFileTask().isFinished())
-						{
-							session.getPrintFileTask().joinThread();
-						}
-						if (!session.getPrintFileTask().aliveThread())
-						{
-							session.getPrintFileTask().setFinished(false);
-							session.getPrintFileTask().setFile(splitCommand[1]);
-							session.getPrintFileTask().setPrintServiceNumber(Integer.parseInt(splitCommand[2]));
-							connection.getResultWriter().write("\nVT>File to print: [" + splitCommand[1] + "], print service: [" + splitCommand[2] + "]\nVT>");
-							connection.getResultWriter().flush();
-							session.getPrintFileTask().startThread();
-						}
-						else
-						{
-							connection.getResultWriter().write("\nVT>Another print file task is still running!\nVT>");
-							connection.getResultWriter().flush();
+							if (splitCommand[1].toUpperCase().startsWith("S"))
+							{
+								connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
+								connection.getResultWriter().flush();
+								session.getPrintDataTask().setStopped(true);
+							}
+							else
+							{
+								connection.getResultWriter().write("\nVT>Another print data task is still running!\nVT>");
+								connection.getResultWriter().flush();
+							}
 						}
 					}
 				}
@@ -1222,6 +1431,25 @@ public class VTServerRemoteConsoleReader extends VTTask
 						else
 						{
 							connection.getResultWriter().write("\nVT>No remote file inspection is running!\nVT>");
+							connection.getResultWriter().flush();
+						}
+					}
+					else if (splitCommand[1].toUpperCase().startsWith("L"))
+					{
+						if (session.getFileScanOperation().isFinished())
+						{
+							session.getFileScanOperation().joinThread();
+						}
+						if (!session.getFileScanOperation().aliveThread())
+						{
+							session.getFileScanOperation().setFinished(false);
+							session.getFileScanOperation().setTarget(new VTRootList());
+							session.getFileScanOperation().setOperation(VTServerFileScanOperation.LIST_FILES);
+							session.getFileScanOperation().startThread();
+						}
+						else
+						{
+							connection.getResultWriter().write("\nVT>Another remote file inspection is still running!\nVT>");
 							connection.getResultWriter().flush();
 						}
 					}
@@ -1423,29 +1651,29 @@ public class VTServerRemoteConsoleReader extends VTTask
 				}
 			}
 		}
-		else if (splitCommand[0].equalsIgnoreCase("*VTCLOSESHELL") || splitCommand[0].equalsIgnoreCase("*VTCLSH"))
-		{
-			// connection.getResultWriter().write(command);
-			// connection.getResultWriter().flush();
-			synchronized (session.getShellExitListener())
-			{
-				if (!session.getShellExitListener().isStopped() && session.getShellExitListener().aliveThread())
-				{
-					connection.getResultWriter().write("\nVT>Stopping external shell...\nVT>");
-					connection.getResultWriter().flush();
-					session.setStoppingShell(true);
-					session.stopShell();
-					session.tryStopShellThreads();
-				}
-				else
-				{
-					connection.getResultWriter().write("\nVT>External shell is still stopped!\nVT>");
-					connection.getResultWriter().flush();
-				}
-			}
-			session.waitShell();
-			session.waitShellThreads();
-		}
+//		else if (splitCommand[0].equalsIgnoreCase("*VTCLOSESHELL") || splitCommand[0].equalsIgnoreCase("*VTCLSH"))
+//		{
+//			// connection.getResultWriter().write(command);
+//			// connection.getResultWriter().flush();
+//			synchronized (session.getShellExitListener())
+//			{
+//				if (!session.getShellExitListener().isStopped() && session.getShellExitListener().aliveThread())
+//				{
+//					connection.getResultWriter().write("\nVT>Stopping external shell...\nVT>");
+//					connection.getResultWriter().flush();
+//					session.setStoppingShell(true);
+//					session.stopShell();
+//					session.tryStopShellThreads();
+//				}
+//				else
+//				{
+//					connection.getResultWriter().write("\nVT>External shell is still stopped!\nVT>");
+//					connection.getResultWriter().flush();
+//				}
+//			}
+//			session.waitShell();
+//			session.waitShellThreads();
+//		}
 		else if (splitCommand[0].equalsIgnoreCase("*VTBELL") || splitCommand[0].equalsIgnoreCase("*VTBL"))
 		{
 			// connection.getResultWriter().write(command);
@@ -1675,7 +1903,91 @@ public class VTServerRemoteConsoleReader extends VTTask
 			}
 			else if (splitCommand.length >= 2)
 			{
-				if (splitCommand[1].equalsIgnoreCase("SL"))
+				if (splitCommand[1].equalsIgnoreCase("SF"))
+				{
+					if (splitCommand.length == 2)
+					{
+						try
+						{
+							session.getServer().saveServerSettingsFile("variable-terminal-server.properties");
+							connection.getResultWriter().write("\nVT>Saved configuration file:[variable-terminal-server.properties]");
+							connection.getResultWriter().flush();
+						}
+						catch (Throwable t)
+						{
+							connection.getResultWriter().write("\nVT>Failed to save configuration file:[variable-terminal-server.properties]");
+							connection.getResultWriter().flush();
+						}
+					}
+					else if (splitCommand.length >= 3)
+					{
+						try
+						{
+							session.getServer().saveServerSettingsFile(splitCommand[2]);
+							connection.getResultWriter().write("\nVT>Saved configuration file:[" + splitCommand[2] + "]");
+							connection.getResultWriter().flush();
+						}
+						catch (Throwable t)
+						{
+							connection.getResultWriter().write("\nVT>Failed to save configuration file:[" + splitCommand[2] + "]");
+							connection.getResultWriter().flush();
+						}
+					}
+					else
+					{
+						connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+						connection.getResultWriter().flush();
+					}
+				}
+				else if (splitCommand[1].equalsIgnoreCase("LF"))
+				{
+					if (splitCommand.length == 2)
+					{
+						try
+						{
+							session.getServer().loadServerSettingsFile("variable-terminal-server.properties");
+							VTServerConnector connector = session.getServer().getServerConnector();
+							synchronized (connector)
+							{
+								connector.interruptConnector();
+								connector.notify();
+							}
+							connection.getResultWriter().write("\nVT>Loaded configuration file:[variable-terminal-server.properties]");
+							connection.getResultWriter().flush();
+						}
+						catch (Throwable t)
+						{
+							connection.getResultWriter().write("\nVT>Failed to load configuration file:[variable-terminal-server.properties]");
+							connection.getResultWriter().flush();
+						}
+					}
+					else if (splitCommand.length >= 3)
+					{
+						try
+						{
+							session.getServer().loadServerSettingsFile(splitCommand[2]);
+							VTServerConnector connector = session.getServer().getServerConnector();
+							synchronized (connector)
+							{
+								connector.interruptConnector();
+								connector.notify();
+							}
+							connection.getResultWriter().write("\nVT>Loaded configuration file:[" + splitCommand[2] + "]");
+							connection.getResultWriter().flush();
+						}
+						catch (Throwable t)
+						{
+							connection.getResultWriter().write("\nVT>Failed to load configuration file:[" + splitCommand[2] + "]");
+							connection.getResultWriter().flush();
+						}
+					}
+					else
+					{
+						connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+						connection.getResultWriter().flush();
+					}
+				}
+				else if (splitCommand[1].equalsIgnoreCase("SL"))
 				{
 					if (splitCommand.length == 2)
 					{
@@ -2206,51 +2518,51 @@ public class VTServerRemoteConsoleReader extends VTTask
 				}
 			}
 		}
-		else if (splitCommand[0].equalsIgnoreCase("*VTRUNTIMEDIRECTORY") || splitCommand[0].equalsIgnoreCase("*VTRD"))
-		{
-			if (splitCommand.length == 1)
-			{
-				if (session.getRuntimeBuilderWorkingDirectory() != null)
-				{
-					connection.getResultWriter().write("\nVT>Server runtime working directory: [" + session.getRuntimeBuilderWorkingDirectory() + "]\nVT>");
-					connection.getResultWriter().flush();
-				}
-				else
-				{
-					connection.getResultWriter().write("\nVT>Server runtime working directory: []\nVT>");
-					connection.getResultWriter().flush();
-				}
-			}
-			else if (splitCommand.length >= 2)
-			{
-				if (splitCommand[1].length() > 0)
-				{
-					File workingDirectory = new File(splitCommand[1]);
-					if (workingDirectory.isDirectory())
-					{
-						session.setRuntimeBuilderWorkingDirectory(workingDirectory);
-						connection.getResultWriter().write("\nVT>Server runtime working directory set to: [" + workingDirectory + "]\nVT>");
-						connection.getResultWriter().flush();
-					}
-					else
-					{
-						connection.getResultWriter().write("\nVT>File path: [" + workingDirectory + "] is not a valid directory on server!\nVT>");
-						connection.getResultWriter().flush();
-					}
-				}
-				else
-				{
-					session.setRuntimeBuilderWorkingDirectory(null);
-					connection.getResultWriter().write("\nVT>Server runtime working directory set to: []\nVT>");
-					connection.getResultWriter().flush();
-				}
-			}
-			else
-			{
-				connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
-				connection.getResultWriter().flush();
-			}
-		}
+//		else if (splitCommand[0].equalsIgnoreCase("*VTRUNTIMEDIRECTORY") || splitCommand[0].equalsIgnoreCase("*VTRD"))
+//		{
+//			if (splitCommand.length == 1)
+//			{
+//				if (session.getRuntimeBuilderWorkingDirectory() != null)
+//				{
+//					connection.getResultWriter().write("\nVT>Server runtime working directory: [" + session.getRuntimeBuilderWorkingDirectory() + "]\nVT>");
+//					connection.getResultWriter().flush();
+//				}
+//				else
+//				{
+//					connection.getResultWriter().write("\nVT>Server runtime working directory: []\nVT>");
+//					connection.getResultWriter().flush();
+//				}
+//			}
+//			else if (splitCommand.length >= 2)
+//			{
+//				if (splitCommand[1].length() > 0)
+//				{
+//					File workingDirectory = new File(splitCommand[1]);
+//					if (workingDirectory.isDirectory())
+//					{
+//						session.setRuntimeBuilderWorkingDirectory(workingDirectory);
+//						connection.getResultWriter().write("\nVT>Server runtime working directory set to: [" + workingDirectory + "]\nVT>");
+//						connection.getResultWriter().flush();
+//					}
+//					else
+//					{
+//						connection.getResultWriter().write("\nVT>File path: [" + workingDirectory + "] is not a valid directory on server!\nVT>");
+//						connection.getResultWriter().flush();
+//					}
+//				}
+//				else
+//				{
+//					session.setRuntimeBuilderWorkingDirectory(null);
+//					connection.getResultWriter().write("\nVT>Server runtime working directory set to: []\nVT>");
+//					connection.getResultWriter().flush();
+//				}
+//			}
+//			else
+//			{
+//				connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+//				connection.getResultWriter().flush();
+//			}
+//		}
 		else if (splitCommand[0].equalsIgnoreCase("*VTTCPTUNNEL") || splitCommand[0].equalsIgnoreCase("*VTTCPTN"))
 		{
 			if (splitCommand.length == 1)
@@ -2941,7 +3253,7 @@ public class VTServerRemoteConsoleReader extends VTTask
 			}
 		}
 		
-		else if (splitCommand[0].equalsIgnoreCase("*VTRESETLOCK") || splitCommand[0].equalsIgnoreCase("*VTRSL"))
+		else if (splitCommand[0].equalsIgnoreCase("*VTLOCK") || splitCommand[0].equalsIgnoreCase("*VTLK"))
 		{
 			if (splitCommand.length >= 3)
 			{
@@ -2974,26 +3286,68 @@ public class VTServerRemoteConsoleReader extends VTTask
 				connection.getResultWriter().flush();
 			}
 		}
-		else if (splitCommand[0].equalsIgnoreCase("*VTSETSHELL") || splitCommand[0].equalsIgnoreCase("*VTSTSH"))
+		else if (splitCommand[0].equalsIgnoreCase("*VTSHELL") || splitCommand[0].equalsIgnoreCase("*VTSH"))
 		{
-			if (splitCommand.length == 1)
+			if (splitCommand.length >= 2)
 			{
-				connection.getResultWriter().write("\nVT>Setting external shell to: [Default]");
-				connection.getResultWriter().flush();
-				session.setShellBuilder(null, null, null);
-				session.restartShell();
-			}
-			else if (splitCommand.length >= 2)
-			{
-				String[] shell = new String[splitCommand.length - 1];
-				for (int i = 0; i < shell.length; i++)
+				if (splitCommand[1].toUpperCase().contains("O"))
 				{
-					shell[i] = splitCommand[i + 1];
+					connection.getResultWriter().write("\nVT>Opening external shell...\nVT>");
+					connection.getResultWriter().flush();
+					session.setRestartingShell(true);
+					session.restartShell();
 				}
-				connection.getResultWriter().write("\nVT>Setting external shell to: [" + Arrays.toString(shell) + "]");
-				connection.getResultWriter().flush();
-				session.setShellBuilder(shell, null, null);
-				session.restartShell();
+				else if (splitCommand[1].toUpperCase().contains("C"))
+				{
+					synchronized (session.getShellExitListener())
+					{
+						if (!session.getShellExitListener().isStopped() && session.getShellExitListener().aliveThread())
+						{
+							connection.getResultWriter().write("\nVT>Closing external shell...\nVT>");
+							connection.getResultWriter().flush();
+							session.setStoppingShell(true);
+							session.stopShell();
+							session.tryStopShellThreads();
+						}
+						else
+						{
+							connection.getResultWriter().write("\nVT>External shell already closed!\nVT>");
+							connection.getResultWriter().flush();
+						}
+					}
+					session.waitShell();
+					session.waitShellThreads();
+				}
+				else if (splitCommand[1].toUpperCase().contains("D"))
+				{
+					if (splitCommand.length >= 3 && (splitCommand[2].length() > 0))
+					{
+						String[] shell = new String[splitCommand.length - 2];
+						for (int i = 0; i < shell.length; i++)
+						{
+							shell[i] = splitCommand[i + 1];
+						}
+						connection.getResultWriter().write("\nVT>Defining external shell to: [" + Arrays.toString(shell) + "]");
+						connection.getResultWriter().flush();
+						session.setShellBuilder(shell, null, null);
+						session.restartShell();
+					}
+					else
+					{
+						session.setShellBuilder(null, null, null);
+						connection.getResultWriter().write("\nVT>Defining external shell to: [Default]");
+						connection.getResultWriter().flush();
+						
+						session.restartShell();
+					}
+				}
+				else
+				{
+					connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+					connection.getResultWriter().flush();
+				}
+				
+				
 			}
 			else
 			{
@@ -3134,6 +3488,31 @@ public class VTServerRemoteConsoleReader extends VTTask
 				catch (NumberFormatException e)
 				{
 					
+				}
+			}
+		}
+		else if (splitCommand[0].equalsIgnoreCase("*VTCOVER") || splitCommand[0].equalsIgnoreCase("*VTCV"))
+		{
+			if (session.getServer().isDaemon())
+			{
+				connection.getResultWriter().write("\nVT>Server console interface is unavailable\nVT>");
+				connection.getResultWriter().flush();
+			}
+			else
+			{
+				if (VTConsole.isDaemon())
+				{
+					session.getServer().enableTrayIcon();
+					VTConsole.setDaemon(false);
+					connection.getResultWriter().write("\nVT>Server console interface enabled\nVT>");
+					connection.getResultWriter().flush();
+				}
+				else
+				{
+					session.getServer().disableTrayIcon();
+					VTConsole.setDaemon(true);
+					connection.getResultWriter().write("\nVT>Server console interface disabled\nVT>");
+					connection.getResultWriter().flush();
 				}
 			}
 		}

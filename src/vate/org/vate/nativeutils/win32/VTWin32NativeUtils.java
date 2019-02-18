@@ -58,6 +58,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 	private VTWinmm winmmLib;
 	// private VTPsapi psapiLib;
 	private VTWin32CLibrary win32CLibrary;
+	//private Kernel32 jnaKernel32Lib;
 	// private VTWin32Isatty win32Isatty;
 	
 	public VTWin32NativeUtils()
@@ -66,6 +67,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 		kernel32Lib = (VTKernel32) Native.loadLibrary("Kernel32", VTKernel32.class);
 		winmmLib = (VTWinmm) Native.loadLibrary("WinMM", VTWinmm.class);
 		win32CLibrary = (VTWin32CLibrary) Native.loadLibrary("msvcrt", VTWin32CLibrary.class);
+		//jnaKernel32Lib = (Kernel32) Native.loadLibrary("Kernel32", Kernel32.class);
 		// may not be able to load isatty
 		// psapiLib = (VTPsapi) Native.loadLibrary("Psapi", VTPsapi.class);
 	}
@@ -267,6 +269,111 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 	{
 		return win32CLibrary._isatty(fd);
 	}
+	
+	public boolean hide_console()
+	{
+		int hwnd = kernel32Lib.GetConsoleWindow();
+		if (hwnd != 0)
+		{
+			//hide window
+			boolean ok = user32Lib.ShowWindow(hwnd, 0);
+			if (ok)
+			{
+				try
+				{
+					Runtime.getRuntime().addShutdownHook(showHook);
+				}
+				catch (Throwable t)
+				{
+					
+				}
+			}
+			return ok;
+		}
+		else
+		{
+			return kernel32Lib.FreeConsole();
+		}
+	}
+	
+	public boolean detach_console()
+	{
+		int hwnd = kernel32Lib.GetConsoleWindow();
+		if (hwnd != 0)
+		{
+			//hide window
+			user32Lib.ShowWindow(hwnd, 0);
+		}
+		return kernel32Lib.FreeConsole();
+		//return kernel32Lib.FreeConsole();
+	}
+	
+	public boolean attach_console()
+	{
+		//kernel32Lib.AttachConsole(-1);
+		int hwnd = kernel32Lib.GetConsoleWindow();
+		if (hwnd != 0)
+		{
+			//show window
+			boolean ok =  user32Lib.ShowWindow(hwnd, 5);
+			if (ok)
+			{
+				try
+				{
+					Runtime.getRuntime().removeShutdownHook(showHook);
+				}
+				catch (Throwable t)
+				{
+					
+				}
+			}
+			return ok;
+		}
+		if (kernel32Lib.AttachConsole(-1))
+		{
+			return true;
+		}
+//		if (kernel32Lib.AllocConsole())
+//		{
+//			kernel32Lib.AttachConsole(-1);
+//			final int GENERIC_READ = (0x80000000);
+//			final int GENERIC_WRITE = (0x40000000);
+//			final int FILE_SHARE_READ = 1;
+//			final int FILE_SHARE_WRITE = 2; 
+//			final int OPEN_EXISTING = 3;
+//			HANDLE input_handle = null;
+//			HANDLE output_handle = null;
+//			input_handle = kernel32Lib.CreateFileA("CONIN$", GENERIC_READ, FILE_SHARE_READ, null, OPEN_EXISTING, 0, null);
+//			output_handle = kernel32Lib.CreateFileA("CONOUT$", GENERIC_WRITE, FILE_SHARE_WRITE, null, OPEN_EXISTING, 0, null);
+//			kernel32Lib.SetStdHandle(10, input_handle);
+//			kernel32Lib.SetStdHandle(11, output_handle);
+//			kernel32Lib.SetStdHandle(12, output_handle);
+//			win32CLibrary.freopen("CON", "r", kernel32Lib.GetStdHandle(-10).getPointer());
+//			win32CLibrary.freopen("CON", "w", kernel32Lib.GetStdHandle(-11).getPointer());
+//			win32CLibrary.freopen("CON", "w", kernel32Lib.GetStdHandle(-12).getPointer());
+//			return true;
+//		}
+		return false;
+	}
+	
+	private class ShowWindowThread extends Thread
+	{
+		public void run()
+		{
+			try
+			{
+				attach_console();
+			}
+			catch (Throwable t)
+			{
+				
+			}
+		}
+	}
+	
+	private ShowWindowThread showHook = new ShowWindowThread();
+
+	
 	
 	/* public void changeFocusToWindow(String windowTitle) { int hWnd =
 	 * user32Lib.FindWindowA(null, windowTitle); if (hWnd != 0) {

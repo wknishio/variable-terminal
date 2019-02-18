@@ -36,9 +36,8 @@ import org.vate.server.graphicsmode.VTGraphicsModeServer;
 import org.vate.server.network.VTServerHostResolver;
 import org.vate.server.network.VTServerNetworkInterfaceResolver;
 import org.vate.server.opticaldrive.VTServerOpticalDriveOperation;
-import org.vate.server.print.VTServerPrintFileTask;
+import org.vate.server.print.VTServerPrintDataTask;
 import org.vate.server.print.VTServerPrintServiceResolver;
-import org.vate.server.print.VTServerPrintTextTask;
 import org.vate.server.runtime.VTServerRuntimeExecutor;
 import org.vate.server.screenshot.VTServerScreenshotTask;
 import org.vate.tunnel.connection.VTTunnelConnection;
@@ -88,8 +87,9 @@ public class VTServerSession
 	private VTServerOpticalDriveOperation cdOperation;
 	private VTServerSessionListViewer connectionListViewer;
 	private VTServerFileSystemRootsResolver fileSystemRootsResolver;
-	private VTServerPrintTextTask printTextTask;
-	private VTServerPrintFileTask printFileTask;
+	//private VTServerPrintTextTask printTextTask;
+	//private VTServerPrintFileTask printFileTask;
+	private VTServerPrintDataTask printDataTask;
 	// private VTServerDefaultPrintServiceResolver defaultPrintServiceResolver;
 	private VTClipboardTransferTask clipboardTransferTask;
 	private VTServerGraphicsDeviceResolver graphicsDeviceResolver;
@@ -139,8 +139,9 @@ public class VTServerSession
 		this.fileSystemRootsResolver = new VTServerFileSystemRootsResolver(this);
 		this.clipboardTransferTask = new VTClipboardTransferTask();
 		this.graphicsDeviceResolver = new VTServerGraphicsDeviceResolver(this);
-		this.printTextTask = new VTServerPrintTextTask(this);
-		this.printFileTask = new VTServerPrintFileTask(this);
+		//this.printTextTask = new VTServerPrintTextTask(this);
+		//this.printFileTask = new VTServerPrintFileTask(this);
+		this.printDataTask = new VTServerPrintDataTask(this);
 		this.tcpTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_TCP, threads), threads);
 		this.socksTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_SOCKS, threads), threads);
 		this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL, true);
@@ -497,14 +498,19 @@ public class VTServerSession
 		return fileSystemRootsResolver;
 	}
 	
-	public VTServerPrintTextTask getPrintTextTask()
-	{
-		return printTextTask;
-	}
+	//public VTServerPrintTextTask getPrintTextTask()
+	//{
+		//return printTextTask;
+	//}
 	
-	public VTServerPrintFileTask getPrintFileTask()
+	//public VTServerPrintFileTask getPrintFileTask()
+	//{
+		//return printFileTask;
+	//}
+	
+	public VTServerPrintDataTask getPrintDataTask()
 	{
-		return printFileTask;
+		return printDataTask;
 	}
 	
 	public VTClipboardTransferTask getClipboardTransferTask()
@@ -564,10 +570,11 @@ public class VTServerSession
 		// runtimeExecutor.setStopped(stopped);
 		graphicsServer.setStopped(stopped);
 		// System.out.println("graphicsServer.setStopped");
-		printTextTask.setStopped(stopped);
+		//printTextTask.setStopped(stopped);
 		// System.out.println("printTextTask.setStopped");
-		printFileTask.setStopped(stopped);
+		//printFileTask.setStopped(stopped);
 		// System.out.println("printFileTask.setStopped");
+		printDataTask.setStopped(stopped);
 		pingService.setStopped(stopped);
 		pingService.ping();
 		// System.out.println("pingService.setStopped");
@@ -823,15 +830,20 @@ public class VTServerSession
 		{
 			clipboardTransferTask.interruptThread();
 		}
-		if (printTextTask.aliveThread())
+//		if (printTextTask.aliveThread())
+//		{
+//			printTextTask.interruptThread();
+//			printTextTask.stopThread();
+//		}
+//		if (printFileTask.aliveThread())
+//		{
+//			printFileTask.interruptThread();
+//			printFileTask.stopThread();
+//		}
+		if (printDataTask.aliveThread())
 		{
-			printTextTask.interruptThread();
-			printTextTask.stopThread();
-		}
-		if (printFileTask.aliveThread())
-		{
-			printFileTask.interruptThread();
-			printFileTask.stopThread();
+			printDataTask.interruptThread();
+			printDataTask.stopThread();
 		}
 		if (printServiceResolver.aliveThread())
 		{
@@ -992,10 +1004,11 @@ public class VTServerSession
 			// System.out.println("connectionListViewer.joinThread()");
 			this.fileSystemRootsResolver.joinThread();
 			// System.out.println("fileSystemRootsResolver.joinThread()");
-			this.printTextTask.joinThread();
+			//this.printTextTask.joinThread();
 			// System.out.println("printTextTask.joinThread()");
-			this.printFileTask.joinThread();
+			//this.printFileTask.joinThread();
 			// System.out.println("printFileTask.joinThread()");
+			this.printDataTask.joinThread();
 			this.graphicsDeviceResolver.joinThread();
 			// System.out.println("graphicsDeviceResolver.joinThread()");
 			this.clipboardTransferTask.joinThread();

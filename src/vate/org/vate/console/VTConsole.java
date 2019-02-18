@@ -1,5 +1,6 @@
 package org.vate.console;
 
+import java.awt.EventQueue;
 import java.awt.GraphicsEnvironment;
 import java.io.FileDescriptor;
 import java.io.InputStream;
@@ -8,6 +9,7 @@ import java.util.Locale;
 
 import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.console.standard.VTStandardConsole;
+import org.vate.nativeutils.VTNativeUtils;
 
 public class VTConsole
 {
@@ -34,6 +36,18 @@ public class VTConsole
 	// private static boolean split;
 	private static VTConsoleImplementation console;
 	
+	private static Object synchronizationObject = new Object();
+	
+	static
+	{
+		VTNativeUtils.initialize();
+	}
+	
+	public static Object getSynchronizationObject()
+	{
+		return synchronizationObject;
+	}
+	
 	public synchronized static void initialize()
 	{
 		if (console == null)
@@ -43,6 +57,7 @@ public class VTConsole
 				if (graphical)
 				{
 					// VTGraphicalConsole.setSplit(split);
+					VTNativeUtils.detach_console();
 					console = VTGraphicalConsole.getInstance();
 					// setBold(true);
 					// VTGraphicalConsole.setTitle(title);
@@ -61,7 +76,7 @@ public class VTConsole
 			}
 			else
 			{
-				
+				VTNativeUtils.detach_console();
 			}
 		}
 	}
@@ -136,11 +151,88 @@ public class VTConsole
 		return daemon;
 	}
 	
+	private static class HideGraphicalConsole implements Runnable
+	{
+		public void run()
+		{
+			try
+			{
+				VTGraphicalConsole.getFrame().setVisible(false);
+			}
+			catch (Throwable t)
+			{
+				//t.printStackTrace();
+			}
+		}
+	}
+	
+	private static class ShowGraphicalConsole implements Runnable
+	{
+		public void run()
+		{
+			try
+			{
+				VTGraphicalConsole.getFrame().setVisible(true);
+				Object waiter = VTConsole.getSynchronizationObject();
+				synchronized (waiter)
+				{
+					waiter.notifyAll();
+				}
+			}
+			catch (Throwable t)
+			{
+				//t.printStackTrace();
+			}
+		}
+	}
+	
+	private static HideGraphicalConsole daemonizeThread = new HideGraphicalConsole();
+	private static ShowGraphicalConsole undaemonizeThread = new ShowGraphicalConsole();
+	
 	public synchronized static void setDaemon(boolean daemon)
 	{
+		if (VTConsole.daemon == daemon)
+		{
+			return;
+		}
 		if (console == null)
 		{
 			VTConsole.daemon = daemon;
+		}
+		else
+		{
+			if (isGraphical())
+			{
+				if (daemon == true)
+				{
+					VTConsole.daemon = daemon;
+					EventQueue.invokeLater(daemonizeThread);
+				}
+				else
+				{
+					VTConsole.daemon = daemon;
+					EventQueue.invokeLater(undaemonizeThread);
+				}
+			}
+			else
+			{
+				if (daemon == true)
+				{
+					VTConsole.daemon = daemon;
+					VTNativeUtils.hide_console();
+				}
+				else
+				{
+					VTConsole.daemon = daemon;
+					VTNativeUtils.attach_console();
+					Object waiter = VTConsole.getSynchronizationObject();
+					synchronized (waiter)
+					{
+						waiter.notifyAll();
+					}
+					//if using a tty console, it may be unable to reattach
+				}
+			}
 		}
 	}
 	

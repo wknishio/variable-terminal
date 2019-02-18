@@ -86,7 +86,9 @@ public class VTClientSessionHandler implements Runnable
 			//session.getClient().getClientConnector().setConnectedOnce(true);
 			session.waitSession();
 			session.tryStopSessionThreads();
+			//TODO: try to reestablish session
 			connection.closeConnection();
+			
 			session.waitThreads();
 		}
 		catch (Throwable e)

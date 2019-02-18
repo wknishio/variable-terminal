@@ -25,6 +25,10 @@ public class VTNativeUtils
 	
 	public synchronized static void initialize()
 	{
+		if (nativeUtils != null)
+		{
+			return;
+		}
 		try
 		{
 			if (Platform.isWindows())
@@ -365,5 +369,20 @@ public class VTNativeUtils
 	public static int isatty(int fd)
 	{
 		return nativeUtils.isatty(fd);
+	}
+	
+	public static boolean hide_console()
+	{
+		return nativeUtils.hide_console();
+	}
+	
+	public static boolean detach_console()
+	{
+		return nativeUtils.detach_console();
+	}
+	
+	public static boolean attach_console()
+	{
+		return nativeUtils.attach_console();
 	}
 }

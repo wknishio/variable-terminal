@@ -1,8 +1,8 @@
 package org.vate.nativeutils.linux;
 
-import org.vate.nativeutils.VTCLibrary;
+import org.vate.nativeutils.unix.VTUnixCLibrary;
 
-public interface VTLinuxCLibrary extends VTCLibrary
+public interface VTLinuxCLibrary extends VTUnixCLibrary
 {
 	public int open(String path, int flags);
 	

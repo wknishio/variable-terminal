@@ -1,5 +1,6 @@
 package org.vate.server.runtime;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class VTServerRuntimeExecutor extends VTTask
 	private static int PROCESS_COMMAND_REMOVE = 5; //D
 	private static int PROCESS_COMMAND_INPUT = 6; //I 
 	private static int PROCESS_COMMAND_LINE = 7; //N
+	private static int PROCESS_COMMAND_PATH = 8; //P
 	
 	private static int PROCESS_SCOPE_NOT_FOUND = -1; //?
 	private static int PROCESS_SCOPE_ALL = 1; //A
@@ -120,7 +122,8 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& !main_command_string.contains("S")
 				&& !main_command_string.contains("D")
 				&& !main_command_string.contains("I")
-				&& !main_command_string.contains("N"))
+				&& !main_command_string.contains("N")
+				&& !main_command_string.contains("P"))
 				{
 					process_command = PROCESS_COMMAND_MANAGED;
 				}
@@ -130,7 +133,8 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& !main_command_string.contains("S")
 				&& !main_command_string.contains("D")
 				&& !main_command_string.contains("I")
-				&& !main_command_string.contains("N"))
+				&& !main_command_string.contains("N")
+				&& !main_command_string.contains("P"))
 				{
 					process_command = PROCESS_COMMAND_FREE;
 				}
@@ -140,7 +144,8 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& !main_command_string.contains("S")
 				&& !main_command_string.contains("D")
 				&& !main_command_string.contains("I")
-				&& !main_command_string.contains("N"))
+				&& !main_command_string.contains("N")
+				&& !main_command_string.contains("P"))
 				{
 					process_command = PROCESS_COMMAND_LIST;
 					need_managed_scope = true;
@@ -151,7 +156,8 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& main_command_string.contains("S")
 				&& !main_command_string.contains("D")
 				&& !main_command_string.contains("I")
-				&& !main_command_string.contains("N"))
+				&& !main_command_string.contains("N")
+				&& !main_command_string.contains("P"))
 				{
 					process_command = PROCESS_COMMAND_STOP;
 					need_managed_scope = true;
@@ -162,7 +168,8 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& !main_command_string.contains("S")
 				&& main_command_string.contains("D")
 				&& !main_command_string.contains("I")
-				&& !main_command_string.contains("N"))
+				&& !main_command_string.contains("N")
+				&& !main_command_string.contains("P"))
 				{
 					process_command = PROCESS_COMMAND_REMOVE;
 					need_managed_scope = true;
@@ -173,7 +180,8 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& !main_command_string.contains("S")
 				&& !main_command_string.contains("D")
 				&& main_command_string.contains("I")
-				&& !main_command_string.contains("N"))
+				&& !main_command_string.contains("N")
+				&& !main_command_string.contains("P"))
 				{
 					process_command = PROCESS_COMMAND_INPUT;
 					need_managed_scope = true;
@@ -185,32 +193,47 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& !main_command_string.contains("S")
 				&& !main_command_string.contains("D")
 				&& !main_command_string.contains("I")
-				&& main_command_string.contains("N"))
+				&& main_command_string.contains("N")
+				&& !main_command_string.contains("P"))
 				{
 					process_command = PROCESS_COMMAND_LINE;
 					need_managed_scope = true;
 					parameter_amount += 1;
 				}
+				else if (!main_command_string.contains("M")
+				&& !main_command_string.contains("F")
+				&& !main_command_string.contains("L")
+				&& !main_command_string.contains("S")
+				&& !main_command_string.contains("D")
+				&& !main_command_string.contains("I")
+				&& !main_command_string.contains("N")
+				&& main_command_string.contains("P"))
+				{
+					process_command = PROCESS_COMMAND_PATH;
+				}
 
-				if (main_command_string.contains("A")
-				&& !main_command_string.contains("C")
-				&& !main_command_string.contains("O"))
+				if (need_managed_scope)
 				{
-					process_scope = PROCESS_SCOPE_ALL;
-				}
-				else if (!main_command_string.contains("A")
-				&& main_command_string.contains("C")
-				&& !main_command_string.contains("O"))
-				{
-					process_scope = PROCESS_SCOPE_COMMAND;
-					parameter_amount += 1;
-				}
-				else if (!main_command_string.contains("A")
-				&& !main_command_string.contains("C")
-				&& main_command_string.contains("O"))
-				{
-					process_scope = PROCESS_SCOPE_NUMBER;
-					parameter_amount += 1;
+					if (main_command_string.contains("A")
+					&& !main_command_string.contains("C")
+					&& !main_command_string.contains("O"))
+					{
+						process_scope = PROCESS_SCOPE_ALL;
+					}
+					else if (!main_command_string.contains("A")
+					&& main_command_string.contains("C")
+					&& !main_command_string.contains("O"))
+					{
+						process_scope = PROCESS_SCOPE_COMMAND;
+						parameter_amount += 1;
+					}
+					else if (!main_command_string.contains("A")
+					&& !main_command_string.contains("C")
+					&& main_command_string.contains("O"))
+					{
+						process_scope = PROCESS_SCOPE_NUMBER;
+						parameter_amount += 1;
+					}
 				}
 				
 				if (main_command_string.contains("V"))
@@ -295,6 +318,52 @@ public class VTServerRuntimeExecutor extends VTTask
 						}
 						finished = true;
 						return;
+					}
+				}
+				
+				if (process_command == PROCESS_COMMAND_PATH)
+				{
+					if (splitCommand.length == 2)
+					{
+						if (session.getRuntimeBuilderWorkingDirectory() != null)
+						{
+							connection.getResultWriter().write("\nVT>Server runtime working directory: [" + session.getRuntimeBuilderWorkingDirectory() + "]\nVT>");
+							connection.getResultWriter().flush();
+						}
+						else
+						{
+							connection.getResultWriter().write("\nVT>Server runtime working directory: []\nVT>");
+							connection.getResultWriter().flush();
+						}
+					}
+					else if (splitCommand.length >= 3)
+					{
+						if (splitCommand[2].length() > 0)
+						{
+							File workingDirectory = new File(splitCommand[2]);
+							if (workingDirectory.isDirectory())
+							{
+								session.setRuntimeBuilderWorkingDirectory(workingDirectory);
+								connection.getResultWriter().write("\nVT>Server runtime working directory set to: [" + workingDirectory + "]\nVT>");
+								connection.getResultWriter().flush();
+							}
+							else
+							{
+								connection.getResultWriter().write("\nVT>File path: [" + workingDirectory + "] is not a valid directory on server!\nVT>");
+								connection.getResultWriter().flush();
+							}
+						}
+						else
+						{
+							session.setRuntimeBuilderWorkingDirectory(null);
+							connection.getResultWriter().write("\nVT>Server runtime working directory set to: []\nVT>");
+							connection.getResultWriter().flush();
+						}
+					}
+					else
+					{
+						connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+						connection.getResultWriter().flush();
 					}
 				}
 				

@@ -9,6 +9,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.print.CancelablePrintJob;
 import javax.print.Doc;
@@ -23,6 +24,7 @@ import javax.print.attribute.HashDocAttributeSet;
 import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.attribute.standard.Copies;
+import javax.print.attribute.standard.OrientationRequested;
 import javax.print.event.PrintJobEvent;
 import javax.print.event.PrintJobListener;
 
@@ -85,6 +87,17 @@ public class VTServerPrintTextTask extends VTTask
 		this.finished = finished;
 	}
 	
+//	private static PageFormat getMinimumMarginPageFormat(PrinterJob printJob)
+//	{
+//	    PageFormat pf0 = printJob.defaultPage();
+//	    PageFormat pf1 = (PageFormat) pf0.clone();
+//	    Paper p = pf0.getPaper();
+//	    p.setImageableArea(0, 0,pf0.getWidth(), pf0.getHeight());
+//	    pf1.setPaper(p);
+//	    PageFormat pf2 = printJob.validatePage(pf1);
+//	    return pf2;     
+//	}
+	
 	public void run()
 	{
 		try
@@ -109,6 +122,9 @@ public class VTServerPrintTextTask extends VTTask
 					 * printService.getSupportedDocFlavors()) {
 					 * System.out.println(flavor.getMimeType()); } */
 					DocFlavor docFlavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
+					//final PrinterJob pjob = PrinterJob.getPrinterJob();
+					//pjob.setPrintService(printService);
+					//final PageFormat minimum = getMinimumMarginPageFormat(pjob);
 					docPrintJob = printService.createPrintJob();
 					docPrintJob.addPrintJobListener(new PrintJobListener()
 					{
@@ -222,6 +238,8 @@ public class VTServerPrintTextTask extends VTTask
 					DocAttributeSet docAttributes = new HashDocAttributeSet();
 					PrintRequestAttributeSet printRequestAttributes = new HashPrintRequestAttributeSet();
 					printRequestAttributes.add(new Copies(1));
+					printRequestAttributes.add(OrientationRequested.LANDSCAPE);
+					//printRequestAttributes.add(Margin.A);
 					// printRequestAttributes.add(MediaSize.ISO.A4);
 					// Doc doc = new SimpleDoc(new FileInputStream(text),
 					// docFlavor, docAttributes);
@@ -229,28 +247,92 @@ public class VTServerPrintTextTask extends VTTask
 					{
 						public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException
 						{
+							System.out.println("pageIndex=" + pageIndex);
 							if (pageIndex > 0)
 							{
+								System.out.println("NO_SUCH_PAGE");
 								return NO_SUCH_PAGE;
 							}
+							//Paper paper = pageFormat.getPaper();
+							//paper.setImageableArea(minimum.getImageableX(), minimum.getImageableY(), minimum.getImageableWidth(), minimum.getImageableHeight());
+							//pageFormat.setPaper(paper);
 							Graphics2D g2d = (Graphics2D) graphics;
 							g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
 							g2d.setPaint(Color.black);
-							Font font = new Font("Monospaced", Font.BOLD, 24);
+							Font font = new Font("Monospaced", Font.BOLD, 12);
 							g2d.setFont(font);
 							FontMetrics fontMetrics = g2d.getFontMetrics();
 							float x = 0;
 							float y = 0;
 							int z = 0;
+							int limit = 80;
 							String[] words = text.split("\\s+");
+							ArrayList<String> lines = new ArrayList<String>();
+							StringBuilder lineBuilder = new StringBuilder();
+							for (int i = 0; i < limit; i++)
+							{
+								lineBuilder.append("X");
+							}
+							String full = lineBuilder.toString();
+							lineBuilder.setLength(0);
+							
+							if (fontMetrics.stringWidth(full) >= pageFormat.getImageableWidth())
+							{
+								//page cannot handle 80 characters in landscape, will use 40
+								limit = 40;
+								for (int i = 0; i < limit; i++)
+								{
+									lineBuilder.append("X");
+								}
+								full = lineBuilder.toString();
+								lineBuilder.setLength(0);
+							}
 							
 							for (String word : words)
 							{
-								x = (float) ((pageFormat.getImageableWidth() / 2) - (fontMetrics.stringWidth(word) / 2));
-								y = (++z) * fontMetrics.getHeight();
-								g2d.drawString(word, x, y);
+								if (lineBuilder.length() + word.length() > limit)
+								{
+									lines.add(lineBuilder.toString());
+									lineBuilder.setLength(0);
+									lineBuilder.append(word);
+								}
+								else
+								{
+									if (lineBuilder.length() > 0)
+									{
+										lineBuilder.append(" ");
+									}
+									lineBuilder.append(word);
+								}
 							}
 							
+							if (lineBuilder.length() > 0)
+							{
+								lines.add(lineBuilder.toString());
+								lineBuilder.setLength(0);
+							}
+							
+							for (String line : lines)
+							{
+								if (line.length() <= 0)
+								{
+									continue;
+								}
+								int size = line.length();
+								int start = 0;
+								int end = start + Math.min(size - start, limit);
+								for (; start < size; start += Math.min(size - start, limit))
+								{
+									end = start + Math.min(size - start, limit);
+									String part = line.substring(start, end);
+									x = (float) ((pageFormat.getImageableWidth() / 2) - (fontMetrics.stringWidth(full) / 2));
+									y = (++z) * fontMetrics.getHeight();
+									g2d.drawString(part, x, y);
+									System.out.println("g2d.drawString(part, x, y)" + "part=" + part + ", x=" + x + ", y=" + y);
+								}
+							}
+							
+							System.out.println("PAGE_EXISTS");
 							return PAGE_EXISTS;
 						}
 					};

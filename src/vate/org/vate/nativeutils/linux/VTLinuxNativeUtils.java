@@ -151,4 +151,35 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
 	{
 		return linuxCLibrary.isatty(fd);
 	}
+	
+	public boolean detach_console()
+	{
+		try
+		{
+			linuxCLibrary.system("disown -h");
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		return true;
+	}
+	
+	public boolean attach_console()
+	{
+		return false;
+	}
+
+	public boolean hide_console()
+	{
+		try
+		{
+			linuxCLibrary.system("disown -h");
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		return true;
+	}
 }

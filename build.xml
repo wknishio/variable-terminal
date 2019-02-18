@@ -107,7 +107,7 @@
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
 		</jar>
 		
-		<jar destfile="dist/all/variable-terminal-shell.jar" filesetmanifest="mergewithoutmain" update="false">
+		<jar destfile="dist/all/variable-terminal-standard.jar" filesetmanifest="mergewithoutmain" update="false">
 			<manifest>
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
@@ -139,7 +139,7 @@
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
 		</jar>
 		
-		<jar destfile="dist/client/variable-terminal-client-shell.jar" filesetmanifest="mergewithoutmain" update="false">
+		<jar destfile="dist/client/variable-terminal-client-standard.jar" filesetmanifest="mergewithoutmain" update="false">
 			<manifest>
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
@@ -173,7 +173,7 @@
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
 		</jar>
 		
-		<jar destfile="dist/server/variable-terminal-server-shell.jar" filesetmanifest="mergewithoutmain" update="false">
+		<jar destfile="dist/server/variable-terminal-server-standard.jar" filesetmanifest="mergewithoutmain" update="false">
 			<manifest>
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
@@ -185,16 +185,7 @@
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
 		</jar>
 		
-		<delete dir="dist/daemon"/>
-		<mkdir dir="dist/daemon"/>
-		<copy todir="dist/daemon" overwrite="true">
-			<fileset dir="script/daemon"/>
-			<fileset dir="util"/>
-			<fileset dir="doc"/>
-			<fileset dir="conf/server"/>
-		</copy>
-		
-		<jar destfile="dist/daemon/variable-terminal-daemon-graphical.jar" filesetmanifest="mergewithoutmain" update="false">
+		<jar destfile="dist/server/variable-terminal-daemon-graphical.jar" filesetmanifest="mergewithoutmain" update="false">
 			<manifest>
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
@@ -206,7 +197,7 @@
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
 		</jar>
 		
-		<jar destfile="dist/daemon/variable-terminal-daemon-shell.jar" filesetmanifest="mergewithoutmain" update="false">
+		<jar destfile="dist/server/variable-terminal-daemon-standard.jar" filesetmanifest="mergewithoutmain" update="false">
 			<manifest>
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
@@ -217,11 +208,7 @@
 			<fileset dir="build" excludes="org/vate/client/**,org/vate/startup/**"/>
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
 		</jar>
-		
-		<copy todir="dist/daemon" overwrite="true">
-			<fileset dir="doc"/>
-		</copy>
-		
+				
 		<delete dir="dist/tools"/>
 		<mkdir dir="dist/tools"/>
 		<jar destfile="dist/tools/variable-terminal-arguments-launcher.jar" filesetmanifest="mergewithoutmain" update="false">

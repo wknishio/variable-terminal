@@ -78,4 +78,19 @@ public class VTNullNativeUtils implements VTNativeUtilsImplementation
 	{
 		return 0;
 	}
+	
+	public boolean detach_console()
+	{
+		return false;
+	}
+	
+	public boolean attach_console()
+	{
+		return false;
+	}
+
+	public boolean hide_console()
+	{
+		return false;
+	}
 }

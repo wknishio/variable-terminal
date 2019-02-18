@@ -1,8 +1,8 @@
 package org.vate.nativeutils.openbsd;
 
-import org.vate.nativeutils.VTCLibrary;
+import org.vate.nativeutils.unix.VTUnixCLibrary;
 
-public interface VTOpenBSDCLibrary extends VTCLibrary
+public interface VTOpenBSDCLibrary extends VTUnixCLibrary
 {
 	public int open(String path, int flags);
 	
@@ -11,6 +11,4 @@ public interface VTOpenBSDCLibrary extends VTCLibrary
 	public int close(int fd);
 	
 	public int putenv(String env);
-	
-	public int getpid();
 }

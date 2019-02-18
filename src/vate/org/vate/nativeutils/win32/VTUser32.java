@@ -13,4 +13,6 @@ public interface VTUser32 extends Library
 	public boolean SendMessageA(int hWnd, int Msg, int wParam, int lParam);
 	
 	public boolean SetForegroundWindow(int hWnd);
+	
+	public boolean ShowWindow(int hWnd, int flags);
 }

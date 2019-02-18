@@ -93,7 +93,9 @@ public class VTServerSessionHandler implements Runnable
 			session.waitSession();
 			session.stopShell();
 			session.tryStopSessionThreads();
+			//TODO: try to reestablish session
 			connection.closeConnection();
+			
 			session.waitThreads();
 		}
 		catch (Throwable e)

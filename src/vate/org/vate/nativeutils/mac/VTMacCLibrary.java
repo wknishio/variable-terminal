@@ -1,8 +1,8 @@
 package org.vate.nativeutils.mac;
 
-import org.vate.nativeutils.VTCLibrary;
+import org.vate.nativeutils.unix.VTUnixCLibrary;
 
-public interface VTMacCLibrary extends VTCLibrary
+public interface VTMacCLibrary extends VTUnixCLibrary
 {
 	public int open(String path, int flags);
 	
@@ -11,6 +11,4 @@ public interface VTMacCLibrary extends VTCLibrary
 	public int close(int fd);
 	
 	public int putenv(String env);
-	
-	public int getpid();
 }

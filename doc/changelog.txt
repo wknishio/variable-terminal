@@ -49,8 +49,13 @@
 * Changed passive mode in client and server to bind to specific host address
 * Added options in tunnel commands to bind tunnels to specific host address
 * Added *; as optional command delimiter for multiple commands per line
+* Added *VTCOVER command to show/hide server console interface
+* Removed command *VTFILEROOTS from client console, usable in server console
+* Merged all external shell manipulation commands in new command *VTSHELL
+* Added command *VTPRINTDATA to replace commands *VTPRINTTEXT and *VTPRINTFILE
+* Added options in command *VTSETTING to save and load server settings files
 * Changed application icon/logo
-* Reduced server cpu usage and memory usage for commands with screen capture
+* Reduced server processor usage and memory usage for screen capture commands
 * Added support for hidpi displays when using java 1.8 or lesser
 * Modified the readme file to english language
 * Changed license from GPLv3 license to MIT license

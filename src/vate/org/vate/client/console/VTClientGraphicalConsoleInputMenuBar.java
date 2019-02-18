@@ -8,7 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.vate.VT;
-import org.vate.client.dialog.VTClientConnectionDialog;
+import org.vate.client.dialog.VTClientConfigurationDialog;
 import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.console.graphical.menu.VTGraphicalConsoleInputMenuItem;
 import org.vate.dialog.VTFileDialog;
@@ -52,6 +52,7 @@ public class VTClientGraphicalConsoleInputMenuBar extends MenuBar
 	private Menu audioSoundMenu;
 	private Menu beepSoundMenu;
 	private Menu opticalDriveMenu;
+	//private Menu settingsMenu;
 	private Menu serverSettingsMenu;
 	private Menu serverAuthenticationSettingsMenu;
 	private Menu serverConnectionSettingsMenu;
@@ -70,7 +71,7 @@ public class VTClientGraphicalConsoleInputMenuBar extends MenuBar
 	private MenuItem textActionInsertMenu;
 	private MenuItem textActionBreakMenu;
 	
-	public VTClientGraphicalConsoleInputMenuBar(final VTClientConnectionDialog connectionDialog)
+	public VTClientGraphicalConsoleInputMenuBar(final VTClientConfigurationDialog connectionDialog)
 	{
 		// this.dialog = dialog;
 		// this.frame = frame;
@@ -138,7 +139,7 @@ public class VTClientGraphicalConsoleInputMenuBar extends MenuBar
 		// serverFileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("Set
 		// Working
 		// Directory", "*VTWORKDIRECTORY R "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("List File System Roots", "*VTFILEROOTS\n"));
+		serverFileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("List File System Roots", "*VTFILEINSPECT L\n"));
 		serverFileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("Show File Information", "*VTFILEINSPECT I "));
 		serverFileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("List Directory Contents", "*VTFILEINSPECT L "));
 		serverFileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("Stop File Inspection", "*VTFILEINSPECT S\n"));
@@ -162,12 +163,14 @@ public class VTClientGraphicalConsoleInputMenuBar extends MenuBar
 		consoleMenu = new Menu("Console ");
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Show Remote System Time", "*VTTIME\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Clear Remote Console", "*VTCLEAR\n"));
+		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Toggle Remote Console Cover", "*VTCOVER\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Detect Chained Instances", "*VTCHAINS\n"));
-		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Restart Remote External Shell", "*VTRESTARTSHELL\n"));
-		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Close Remote External Shell", "*VTCLOSESHELL\n"));
-		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Change Remote External Shell", "*VTSETSHELL "));
+		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Open Remote External Shell", "*VTSHELL O\n"));
+		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Close Remote External Shell", "*VTSHELL C\n"));
+		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Define Remote External Shell", "*VTSHELL D "));
 		
-		serverSettingsMenu = new Menu("Server ");
+		//settingsMenu = new Menu("Settings ");
+		serverSettingsMenu = new Menu("Access ");
 		serverConnectionSettingsMenu = new Menu("Connection ");
 		serverAuthenticationSettingsMenu = new Menu("Authentication ");
 		serverProxySettingsMenu = new Menu("Proxy ");
@@ -191,20 +194,24 @@ public class VTClientGraphicalConsoleInputMenuBar extends MenuBar
 		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Authentication", "*VTSETTING PA "));
 		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy User", "*VTSETTING PU "));
 		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Password", "*VTSETTING PS "));
-		serverAuthenticationSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Single Login", "*VTRESETLOCK "));
+		serverAuthenticationSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Single Login", "*VTLOCK "));
 		serverSessionsSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Sessions Limit", "*VTSETTING SL "));
+		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Save Settings File", "*VTSETTING SF "));
+		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Load Settings File", "*VTSETTING LF "));
+		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTSETTING\n"));
+		//settingsMenu.add(serverSettingsMenu);
 		
 		serverRuntimeMenu = new Menu("Runtime ");
 		serverManageRuntimeMenu = new Menu("Remote Process Control ");
-		serverRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Set Remote Environment Variables", "*VTENVIRONMENT "));
+		serverRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Set Remote Environment Variables", "*VTVARIABLE "));
 		serverRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Set Remote JVM Properties", "*VTPROPERTY "));
-		serverRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Set Remote Runtime Directory", "*VTRUNTIMEDIRECTORY "));
 		serverRuntimeMenu.add(serverManageRuntimeMenu);
-		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Start Managed Process", "*VTRUNTIME M "));
-		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Start Free Process", "*VTRUNTIME F "));
+		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Add Managed Process", "*VTRUNTIME M "));
+		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Add Free Process", "*VTRUNTIME F "));
 		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("List All Managed Processes", "*VTRUNTIME LA\n"));
 		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Stop All Managed Processes", "*VTRUNTIME SA\n"));
 		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Delete All Managed Processes", "*VTRUNTIME DA\n"));
+		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Set Runtime Path", "*VTRUNTIME P "));
 		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTRUNTIME\n"));
 		
 		performanceMenu = new Menu("Rates ");
@@ -236,9 +243,9 @@ public class VTClientGraphicalConsoleInputMenuBar extends MenuBar
 		
 		serverPrintMenu = new Menu("Printing ");
 		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("List Remote Print Services", "*VTPRINTSERVICES\n"));
-		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Print Text In Remote Printer", "*VTPRINTTEXT "));
-		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Print File In Remote Printer", "*VTPRINTFILE "));
-		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Commands Usage", "*VTHELP *VTPRINTTEXT\n*VTHELP *VTPRINTFILE\n"));
+		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Print Text In Remote Printer", "*VTPRINTDATA T "));
+		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Print File In Remote Printer", "*VTPRINTDATA F "));
+		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTPRINTDATA\n"));
 		
 		audioSoundMenu = new Menu("Audio ");
 		
@@ -270,6 +277,7 @@ public class VTClientGraphicalConsoleInputMenuBar extends MenuBar
 		helpMenu.add(new VTGraphicalConsoleInputMenuItem("Specific Command", "*VTHELP "));
 		
 		clientConsoleCommandsMenu.add(sessionMenu);
+		//clientConsoleCommandsMenu.add(settingsMenu);
 		clientConsoleCommandsMenu.add(performanceMenu);
 		clientConsoleCommandsMenu.add(consoleMenu);
 		clientConsoleCommandsMenu.add(serverRuntimeMenu);
