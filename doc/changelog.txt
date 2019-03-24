@@ -4,14 +4,14 @@
 * Modified authentication protocol, backward compatibility broken
 * Changed the default connection port to 6060
 * Console commands now start with *VT instead of *SAW
-* Merged server access settings commands to *VTSETTING
+* Merged server access settings commands to *VTACCESS
 * Changed snappy compression for LZ4 compression
 * Renamed command *VTREMOTEGRAPHICSMODE to *VTGRAPHICSLINK
 * Renamed command *VTGRAPHICSALERT to *VTSCREENALERT
 * Modified *VTGRAPHICSLINK protocol
 * Modified the video codec used in *VTGRAPHICSLINK
-* Renamed client configuration file to variable-terminal-client.properties
-* Renamed server configuration file to variable-terminal-server.properties
+* Renamed client settings file to variable-terminal-client.properties
+* Renamed server settings file to variable-terminal-server.properties
 * Removed file user-database.properties
 * Remote cursor on screen captures scales with current server dpi
 * Included email in copyright notice
@@ -53,10 +53,15 @@
 * Removed command *VTFILEROOTS from client console, usable in server console
 * Merged all external shell manipulation commands in new command *VTSHELL
 * Added command *VTPRINTDATA to replace commands *VTPRINTTEXT and *VTPRINTFILE
-* Added options in command *VTSETTING to save and load server settings files
+* Added options in command *VTACCESS to save and load server settings files
 * Changed application icon/logo
 * Reduced server processor usage and memory usage for screen capture commands
 * Added support for hidpi displays when using java 1.8 or lesser
+* Added option to change remote cursor size in command *VTGRAPHICSLINK
+* Changed command *VTPRINTSERVICES to *VTPRINTERS
+* Command *VTPRINTERS now allows specifying a print service for more details
+* Added command *VTSAVE to save current client connection settings to file
+* Changed startup parameter format, parameters now have a dash(-) as in unix
 * Modified the readme file to english language
 * Changed license from GPLv3 license to MIT license
 

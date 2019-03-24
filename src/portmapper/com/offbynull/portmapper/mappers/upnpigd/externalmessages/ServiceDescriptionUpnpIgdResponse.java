@@ -89,6 +89,7 @@ public final class ServiceDescriptionUpnpIgdResponse extends UpnpIgdHttpResponse
     }
 
     private static IdentifiedService getAsOldPortMappingService(String content) {
+    	//System.out.println("getAsOldPortMappingService.content=" + content);
         List<String> actionBlocks = TextUtils.findAllBlocks(content, "<action>", "</action>", true);
         List<String> stateVarBlocks = TextUtils.findAllBlocks(content, "<stateVariable>", "</stateVariable>", true);
 
@@ -99,6 +100,7 @@ public final class ServiceDescriptionUpnpIgdResponse extends UpnpIgdHttpResponse
         
         if (getExtIpActionBlock == null || getMappingActionBlock == null || deleteMappingActionBlock == null
                 || addMappingActionBlock == null) {
+        	//System.out.println("getAsOldPortMappingService() = null");
             return null;
         }
         
@@ -111,12 +113,14 @@ public final class ServiceDescriptionUpnpIgdResponse extends UpnpIgdHttpResponse
                 addMappingActionBlock,
                 stateVarBlocks,
                 "NewLeaseDuration",
-                Range.between(1L, 604800L)); // based on docs
+                Range.between(0L, 604800L)); // based on docs
         
+        //System.out.println("getAsOldPortMappingService() = true");
         return new IdentifiedService(leaseTimeRange, externalPortRange);
     }
 
     private static IdentifiedService getAsNewPortMappingService(String content) {
+    	//System.out.println("getAsNewPortMappingService.content=" + content);
         List<String> actionBlocks = TextUtils.findAllBlocks(content, "<action>", "</action>", true);
         List<String> stateVarBlocks = TextUtils.findAllBlocks(content, "<stateVariable>", "</stateVariable>", true);
 
@@ -127,6 +131,7 @@ public final class ServiceDescriptionUpnpIgdResponse extends UpnpIgdHttpResponse
         
         if (getExtIpActionBlock == null || getMappingActionBlock == null || deleteMappingActionBlock == null
                 || addAnyMappingActionBlock == null) {
+        	//System.out.println("getAsNewPortMappingService() = null");
             return null;
         }
         
@@ -139,8 +144,9 @@ public final class ServiceDescriptionUpnpIgdResponse extends UpnpIgdHttpResponse
                 addAnyMappingActionBlock,
                 stateVarBlocks,
                 "NewLeaseDuration",
-                Range.between(1L, 604800L)); // based on docs
+                Range.between(0L, 604800L)); // based on docs
         
+        //System.out.println("getAsNewPortMappingService() = true");
         return new IdentifiedService(leaseTimeRange, externalPortRange);
     }
     
@@ -168,12 +174,12 @@ public final class ServiceDescriptionUpnpIgdResponse extends UpnpIgdHttpResponse
                 addPinholeActionBlock,
                 stateVarBlocks,
                 "LeaseTime",
-                Range.between(1L, 86400L)); // based on docs
+                Range.between(0L, 86400L)); // based on docs
         Range<Long> updatePinholeLeaseTimeRange = getAllowedValueRange(
                 updatePinholeActionBlock,
                 stateVarBlocks,
                 "LeaseTime",
-                Range.between(1L, 86400L)); // based on docs
+                Range.between(0L, 86400L)); // based on docs
         
         // in the case leasetime range for add and update are different, get the intersection (just to be safe)
         Range<Long> leaseTimeRange = addPinholeLeaseTimeRange.intersectionWith(updatePinholeLeaseTimeRange);

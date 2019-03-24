@@ -161,6 +161,14 @@ public class VTSunOSNativeUtils implements VTNativeUtilsImplementation
 		try
 		{
 			sunosCLibrary.system("disown -h");
+			try
+			{
+				sunosCLibrary.system("exit");
+			}
+			catch (Throwable t)
+			{
+				
+			}
 		}
 		catch (Throwable t)
 		{
@@ -179,6 +187,14 @@ public class VTSunOSNativeUtils implements VTNativeUtilsImplementation
 		try
 		{
 			sunosCLibrary.system("disown -h");
+			try
+			{
+				sunosCLibrary.system("exit");
+			}
+			catch (Throwable t)
+			{
+				
+			}
 		}
 		catch (Throwable t)
 		{

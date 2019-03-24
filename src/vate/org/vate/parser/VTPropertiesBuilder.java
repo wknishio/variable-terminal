@@ -46,7 +46,6 @@ public class VTPropertiesBuilder
 	
 	public static void saveProperties(OutputStream out, VTConfigurationProperties properties, String comments, String encoding) throws Exception
 	{
-		
 		if ("UTF-8".equalsIgnoreCase(encoding) || "UTF8".equalsIgnoreCase(encoding))
 		{
 			ByteArrayOutputStream arrayOutputStream = new ByteArrayOutputStream();

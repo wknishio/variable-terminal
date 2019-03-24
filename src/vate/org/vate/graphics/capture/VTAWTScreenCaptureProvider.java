@@ -1,6 +1,7 @@
 package org.vate.graphics.capture;
 
 import com.bric.image.VTARGBPixelGrabber;
+import com.sun.jna.Platform;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -18,6 +19,9 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
 import java.awt.image.DataBufferUShort;
 //import java.awt.peer.RobotPeer;
+
+import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 import org.vate.VT;
 import org.vate.graphics.device.VTGraphicalDeviceResolver;
@@ -70,6 +74,42 @@ public final class VTAWTScreenCaptureProvider
 	private DataBuffer recyclableScreenDataBuffer;
 	private DataBuffer recyclableScaledDataBuffer;
 //	private DataBuffer recyclableSectionDataBuffer;
+	private int drawnCursorSize = 32;
+	private int initialDrawnCursorSize;
+	
+	private int roundUp(int numToRound, int multiple)
+	{
+		if (multiple == 0)
+	    {
+			return numToRound;
+	    }
+		int remainder = numToRound % multiple;
+		if (remainder == 0)
+		{
+			return numToRound;
+		}
+		return numToRound + multiple - remainder;
+	}
+
+	
+	public void increaseDrawnCursorSize()
+	{
+		drawnCursorSize += 8;
+	}
+	
+	public void decreaseDrawnCursorSize()
+	{
+		drawnCursorSize -= 8;
+		if (drawnCursorSize < 24)
+		{
+			drawnCursorSize = 24;
+		}
+	}
+	
+	public void normalizeDrawnCursorSize()
+	{
+		drawnCursorSize = initialDrawnCursorSize;
+	}
 	
 	public final void setScaledDimensions(int scaledWidth, int scaledHeight, boolean keepRatio)
 	{
@@ -185,6 +225,29 @@ public final class VTAWTScreenCaptureProvider
 		{
 			// e.printStackTrace(VTTerminal.getSystemOut());
 		}
+		int dpi = toolkit.getScreenResolution();
+		drawnCursorSize = Math.max(32, dpi / 3);
+		if (Platform.isLinux())
+		{
+			try
+			{
+				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+			}
+			catch (Throwable t1)
+			{
+				
+			}
+			try
+			{
+				double DPI_SCALING_MULTIPLIER = Math.max(1, new JLabel().getFont().getSize() / 15.0);
+				drawnCursorSize = (int) Math.max(32, 32 * DPI_SCALING_MULTIPLIER);
+			}
+			catch (Throwable t)
+			{
+				
+			}
+		}
+		initialDrawnCursorSize = roundUp(drawnCursorSize, 8);
 		/* try { bestCursorSize =
 		 * Toolkit.getDefaultToolkit().getBestCursorSize(32, 32); } catch
 		 * (Throwable e) {
@@ -2183,11 +2246,11 @@ public final class VTAWTScreenCaptureProvider
 			}
 		}
 		int x, y, m, n, o;
-		int dpi = toolkit.getScreenResolution();
-		int dpiCursorSize = Math.max(32, dpi / 3);
+		//int dpi = toolkit.getScreenResolution();
+		//int dpiCursorSize = Math.max(32, dpi / 3);
 		// int displayDimensionCursorSize = Math.min(displayMode.getWidth(),
 		// displayMode.getHeight()) / 25;
-		o = dpiCursorSize;
+		o = drawnCursorSize;
 		// o = Math.min(displayMode.getWidth(), displayMode.getHeight()) / 25;
 		// o = Math.min(26, displayMode.getHeight()) / 32;
 		// o = 45;
@@ -2341,111 +2404,111 @@ public final class VTAWTScreenCaptureProvider
 				image.setRGB(x - 1, y - 4, (image.getRGB(x - 1, y - 4) ^ 0x00FFFFFF));
 			}
 			
-			if (o > 26)
+			if (o > 24)
 			{
-				n = (o / 2) - 2;
+				n = (o / 2);
+			}
+			else
+			{
+				n = 12;
+			}
+			
+			// First quadrant
+			x = pointerLocation.x - 2;
+			y = pointerLocation.y + 2;
+			if (area.contains(x, y))
+			{
+				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+			}
+			for (m = 1; (m < n); m++)
+			{
+				if (area.contains(x - m, y))
+				{
+					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ 0x00FFFFFF));
+				}
+			}
+			for (m = 1; (m < n); m++)
+			{
+				if (area.contains(x, y + m))
+				{
+					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ 0x00FFFFFF));
+				}
+			}
+			// Second quadrant
+			x = pointerLocation.x + 2;
+			y = pointerLocation.y + 2;
+			if (area.contains(x, y))
+			{
+				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+			}
+			for (m = 1; (m < n); m++)
+			{
+				if (area.contains(x + m, y))
+				{
+					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ 0x00FFFFFF));
+				}
+			}
+			for (m = 1; (m < n); m++)
+			{
+				if (area.contains(x, y + m))
+				{
+					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ 0x00FFFFFF));
+				}
+			}
+			// Third quadrant
+			x = pointerLocation.x + 2;
+			y = pointerLocation.y - 2;
+			if (area.contains(x, y))
+			{
+				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+			}
+			for (m = 1; (m < n); m++)
+			{
+				if (area.contains(x + m, y))
+				{
+					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ 0x00FFFFFF));
+				}
+			}
+			for (m = 1; (m < n); m++)
+			{
+				if (area.contains(x, y - m))
+				{
+					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ 0x00FFFFFF));
+				}
+			}
+			// Fourth quadrant
+			x = pointerLocation.x - 2;
+			y = pointerLocation.y - 2;
+			if (area.contains(x, y))
+			{
+				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+			}
+			for (m = 1; (m < n); m++)
+			{
+				if (area.contains(x - m, y))
+				{
+					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ 0x00FFFFFF));
+				}
+			}
+			for (m = 1; (m < n); m++)
+			{
+				if (area.contains(x, y - m))
+				{
+					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ 0x00FFFFFF));
+				}
+			}
+			
+			if (o > 24)
+			{
+				n = (o / 2) - 1;
 			}
 			else
 			{
 				n = 11;
-				// n = 11;
-				// n = 14;
-			}
-			// First quadrant
-			x = pointerLocation.x - 2;
-			y = pointerLocation.y + 2;
-			if (area.contains(x, y))
-			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
-			}
-			for (m = 1; (m < n); m++)
-			{
-				if (area.contains(x - m, y))
-				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ 0x00FFFFFF));
-				}
-			}
-			for (m = 1; (m < n); m++)
-			{
-				if (area.contains(x, y + m))
-				{
-					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ 0x00FFFFFF));
-				}
-			}
-			// Second quadrant
-			x = pointerLocation.x + 2;
-			y = pointerLocation.y + 2;
-			if (area.contains(x, y))
-			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
-			}
-			for (m = 1; (m < n); m++)
-			{
-				if (area.contains(x + m, y))
-				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ 0x00FFFFFF));
-				}
-			}
-			for (m = 1; (m < n); m++)
-			{
-				if (area.contains(x, y + m))
-				{
-					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ 0x00FFFFFF));
-				}
-			}
-			// Third quadrant
-			x = pointerLocation.x + 2;
-			y = pointerLocation.y - 2;
-			if (area.contains(x, y))
-			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
-			}
-			for (m = 1; (m < n); m++)
-			{
-				if (area.contains(x + m, y))
-				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ 0x00FFFFFF));
-				}
-			}
-			for (m = 1; (m < n); m++)
-			{
-				if (area.contains(x, y - m))
-				{
-					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ 0x00FFFFFF));
-				}
-			}
-			// Fourth quadrant
-			x = pointerLocation.x - 2;
-			y = pointerLocation.y - 2;
-			if (area.contains(x, y))
-			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
-			}
-			for (m = 1; (m < n); m++)
-			{
-				if (area.contains(x - m, y))
-				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ 0x00FFFFFF));
-				}
-			}
-			for (m = 1; (m < n); m++)
-			{
-				if (area.contains(x, y - m))
-				{
-					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ 0x00FFFFFF));
-				}
-			}
-			
-			if (o > 26)
-			{
-				n = (o / 2) - 3;
-			}
-			else
-			{
-				n = 10;
 				// n = 10;
 				// n = 13;
 			}
+			
 			// First quadrant
 			x = pointerLocation.x - 3;
 			y = pointerLocation.y + 3;
@@ -2531,31 +2594,16 @@ public final class VTAWTScreenCaptureProvider
 				}
 			}
 			
-			// n = n / 2;
+			//n = n / 2;
 			n = n - 1;
 			// First quadrant
 			x = pointerLocation.x - 4;
 			y = pointerLocation.y + 4;
+			
 			if (area.contains(x, y))
 			{
 				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
 			}
-			/* if (area.contains(x - 1, y)) { image.setRGB(x - 1, y,
-			 * (image.getRGB(x - 1, y) ^ 0x00FFFFFF)); } if (area.contains(x, y
-			 * + 1)) { image.setRGB(x, y + 1, (image.getRGB(x, y + 1) ^
-			 * 0x00FFFFFF)); } */
-			/* for (m = 1;(m < (n / 2));m++) { if (area.contains(x - m, y + m))
-			 * { image.setRGB(x - m, y + m, (image.getRGB(x - m, y + m) ^
-			 * 0x00FFFFFF)); } } for (m = 1;(m < (n / 2) - 1);m++) { if
-			 * (area.contains(x - 1 - m, y + m)) { image.setRGB(x - 1 - m, y +
-			 * m, (image.getRGB(x - 1 - m, y + m) ^ 0x00FFFFFF)); } if
-			 * (area.contains(x - m, y + 1 + m)) { image.setRGB(x - m, y + 1 +
-			 * m, (image.getRGB(x - m, y + 1 + m) ^ 0x00FFFFFF)); } } for (m =
-			 * 1;(m < (n / 2) - 2);m++) { if (area.contains(x - 2 - m, y + m)) {
-			 * image.setRGB(x - 2 - m, y + m, (image.getRGB(x - 2 - m, y + m) ^
-			 * 0x00FFFFFF)); } if (area.contains(x - m, y + 2 + m)) {
-			 * image.setRGB(x - m, y + 2 + m, (image.getRGB(x - m, y + 2 + m) ^
-			 * 0x00FFFFFF)); } } */
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x - m, y))
@@ -2570,29 +2618,91 @@ public final class VTAWTScreenCaptureProvider
 					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ 0x00FFFFFF));
 				}
 			}
+			
+			x = pointerLocation.x - (4 + n - 1);
+			y = pointerLocation.y + (4 + n - 1);
+			
+			for (m = 0;(m < 3);m++)
+			{
+				if (area.contains(x + m, y - m))
+				{
+					image.setRGB(x + m, y - m, (image.getRGB(x + m, y - m) ^ 0x00FFFFFF));
+				}
+			}
+						
+			for (m = 1;(m < (n / 2) + 1);m++)
+			{
+				if (area.contains(x, y - m))
+				{
+					image.setRGB(x, y -	m, (image.getRGB(x, y - m) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x + m, y))
+				{
+					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x + 1, y - m))
+				{
+					image.setRGB(x + 1, y -	m, (image.getRGB(x + 1, y - m) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x + m, y - 1))
+				{
+					image.setRGB(x + m, y - 1, (image.getRGB(x + m, y - 1) ^ 0x00FFFFFF));
+				}
+			}
+			
+			for (m = 3;(m < (n / 2) + 1);m++)
+			{
+				if (area.contains(x + 2, y - m))
+				{
+					image.setRGB(x + 2, y -	m, (image.getRGB(x + 2, y - m) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x + m, y - 2))
+				{
+					image.setRGB(x + m, y - 2, (image.getRGB(x + m, y - 2) ^ 0x00FFFFFF));
+				}
+			}
+			
+//			x = pointerLocation.x - (4 + (n / 2));
+//			y = pointerLocation.y + (4 + (n / 2));
+//			
+//			for (m = 1;(m < (n / 2));m++)
+//			{
+//				if (area.contains(x - m, y + m))
+//				{
+//					image.setRGB(x - m, y + m, (image.getRGB(x - m, y + m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < (n / 2) - 1);m++)
+//			{
+//				if (area.contains(x - 1 - m, y + m))
+//				{
+//					image.setRGB(x - 1 - m, y +	m, (image.getRGB(x - 1 - m, y + m) ^ 0x00FFFFFF));
+//				}
+//				if	(area.contains(x - m, y + 1 + m))
+//				{
+//					image.setRGB(x - m, y + 1 +	m, (image.getRGB(x - m, y + 1 + m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < (n / 2) - 2);m++)
+//			{
+//				if (area.contains(x - 2 - m, y + m))
+//				{
+//					image.setRGB(x - 2 - m, y + m, (image.getRGB(x - 2 - m, y + m) ^ 0x00FFFFFF));
+//				}
+//				if (area.contains(x - m, y + 2 + m))
+//				{
+//					image.setRGB(x - m, y + 2 + m, (image.getRGB(x - m, y + 2 + m) ^ 0x00FFFFFF));
+//				}
+//			}
+			
 			// Second quadrant
 			x = pointerLocation.x + 4;
 			y = pointerLocation.y + 4;
+			
 			if (area.contains(x, y))
 			{
 				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
 			}
-			/* if (area.contains(x + 1, y)) { image.setRGB(x + 1, y,
-			 * (image.getRGB(x + 1, y) ^ 0x00FFFFFF)); } if (area.contains(x, y
-			 * + 1)) { image.setRGB(x, y + 1, (image.getRGB(x, y + 1) ^
-			 * 0x00FFFFFF)); } */
-			/* for (m = 1;(m < (n / 2));m++) { if (area.contains(x + m, y + m))
-			 * { image.setRGB(x + m, y + m, (image.getRGB(x + m, y + m) ^
-			 * 0x00FFFFFF)); } } for (m = 1;(m < (n / 2) - 1);m++) { if
-			 * (area.contains(x + 1 + m, y + m)) { image.setRGB(x + 1 + m, y +
-			 * m, (image.getRGB(x + 1 + m, y + m) ^ 0x00FFFFFF)); } if
-			 * (area.contains(x + m, y + 1 + m)) { image.setRGB(x + m, y + 1 +
-			 * m, (image.getRGB(x + m, y + 1 + m) ^ 0x00FFFFFF)); } } for (m =
-			 * 1;(m < (n / 2) - 2);m++) { if (area.contains(x + 2 + m, y + m)) {
-			 * image.setRGB(x + 2 + m, y + m, (image.getRGB(x + 2 + m, y + m) ^
-			 * 0x00FFFFFF)); } if (area.contains(x + m, y + 2 + m)) {
-			 * image.setRGB(x + m, y + 2 + m, (image.getRGB(x + m, y + 2 + m) ^
-			 * 0x00FFFFFF)); } } */
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x + m, y))
@@ -2607,29 +2717,91 @@ public final class VTAWTScreenCaptureProvider
 					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ 0x00FFFFFF));
 				}
 			}
+			
+			x = pointerLocation.x + (4 + n - 1);
+			y = pointerLocation.y + (4 + n - 1);
+			
+			for (m = 0;(m < 3);m++)
+			{
+				if (area.contains(x - m, y - m))
+				{
+					image.setRGB(x - m, y - m, (image.getRGB(x - m, y - m) ^ 0x00FFFFFF));
+				}
+			}
+						
+			for (m = 1;(m < (n / 2) + 1);m++)
+			{
+				if (area.contains(x, y - m))
+				{
+					image.setRGB(x, y -	m, (image.getRGB(x, y - m) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x - m, y))
+				{
+					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x - 1, y - m))
+				{
+					image.setRGB(x - 1, y -	m, (image.getRGB(x - 1, y - m) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x - m, y - 1))
+				{
+					image.setRGB(x - m, y - 1, (image.getRGB(x - m, y - 1) ^ 0x00FFFFFF));
+				}
+			}
+			
+			for (m = 3;(m < (n / 2) + 1);m++)
+			{
+				if (area.contains(x - 2, y - m))
+				{
+					image.setRGB(x - 2, y -	m, (image.getRGB(x - 2, y - m) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x + m, y - 2))
+				{
+					image.setRGB(x - m, y - 2, (image.getRGB(x - m, y - 2) ^ 0x00FFFFFF));
+				}
+			}
+			
+//			x = pointerLocation.x + (4 + (n / 2));
+//			y = pointerLocation.y + (4 + (n / 2));
+//			
+//			for (m = 1;(m < (n / 2));m++)
+//			{
+//				if (area.contains(x + m, y + m))
+//				{
+//					image.setRGB(x + m, y + m, (image.getRGB(x + m, y + m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < (n / 2) - 1);m++)
+//			{
+//				if (area.contains(x + 1 + m, y + m))
+//				{
+//					image.setRGB(x + 1 + m, y +	m, (image.getRGB(x + 1 + m, y + m) ^ 0x00FFFFFF));
+//				}
+//				if (area.contains(x + m, y + 1 + m))
+//				{
+//					image.setRGB(x + m, y + 1 +	m, (image.getRGB(x + m, y + 1 + m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < (n / 2) - 2);m++)
+//			{
+//				if (area.contains(x + 2 + m, y + m))
+//				{
+//					image.setRGB(x + 2 + m, y + m, (image.getRGB(x + 2 + m, y + m) ^ 0x00FFFFFF));
+//				}
+//				if (area.contains(x + m, y + 2 + m))
+//				{
+//					image.setRGB(x + m, y + 2 + m, (image.getRGB(x + m, y + 2 + m) ^ 0x00FFFFFF));
+//				}
+//			}
+			
 			// Third quadrant
 			x = pointerLocation.x + 4;
 			y = pointerLocation.y - 4;
+			
 			if (area.contains(x, y))
 			{
 				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
 			}
-			/* if (area.contains(x + 1, y)) { image.setRGB(x + 1, y,
-			 * (image.getRGB(x + 1, y) ^ 0x00FFFFFF)); } if (area.contains(x, y
-			 * - 1)) { image.setRGB(x, y - 1, (image.getRGB(x, y - 1) ^
-			 * 0x00FFFFFF)); } */
-			/* for (m = 1;(m < (n / 2));m++) { if (area.contains(x + m, y - m))
-			 * { image.setRGB(x + m, y - m, (image.getRGB(x + m, y - m) ^
-			 * 0x00FFFFFF)); } } for (m = 1;(m < (n / 2) - 1);m++) { if
-			 * (area.contains(x + 1 + m, y - m)) { image.setRGB(x + 1 + m, y -
-			 * m, (image.getRGB(x + 1 + m, y - m) ^ 0x00FFFFFF)); } if
-			 * (area.contains(x + m, y - 1 - m)) { image.setRGB(x + m, y - 1 -
-			 * m, (image.getRGB(x + m, y - 1 - m) ^ 0x00FFFFFF)); } } for (m =
-			 * 1;(m < (n / 2) - 2);m++) { if (area.contains(x + 2 + m, y - m)) {
-			 * image.setRGB(x + 2 + m, y - m, (image.getRGB(x + 2 + m, y - m) ^
-			 * 0x00FFFFFF)); } if (area.contains(x + m, y - 2 - m)) {
-			 * image.setRGB(x + m, y - 2 - m, (image.getRGB(x + m, y - 2 - m) ^
-			 * 0x00FFFFFF)); } } */
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x + m, y))
@@ -2644,29 +2816,91 @@ public final class VTAWTScreenCaptureProvider
 					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ 0x00FFFFFF));
 				}
 			}
+			
+			x = pointerLocation.x + (4 + n - 1);
+			y = pointerLocation.y - (4 + n - 1);
+			
+			for (m = 0;(m < 3);m++)
+			{
+				if (area.contains(x - m, y + m))
+				{
+					image.setRGB(x - m, y + m, (image.getRGB(x - m, y + m) ^ 0x00FFFFFF));
+				}
+			}
+						
+			for (m = 1;(m < (n / 2) + 1);m++)
+			{
+				if (area.contains(x, y + m))
+				{
+					image.setRGB(x, y +	m, (image.getRGB(x, y + m) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x - m, y))
+				{
+					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x - 1, y + m))
+				{
+					image.setRGB(x - 1, y +	m, (image.getRGB(x - 1, y + m) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x - m, y + 1))
+				{
+					image.setRGB(x - m, y + 1, (image.getRGB(x - m, y + 1) ^ 0x00FFFFFF));
+				}
+			}
+			
+			for (m = 3;(m < (n / 2) + 1);m++)
+			{
+				if (area.contains(x - 2, y + m))
+				{
+					image.setRGB(x - 2, y +	m, (image.getRGB(x - 2, y + m) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x + m, y + 2))
+				{
+					image.setRGB(x - m, y + 2, (image.getRGB(x - m, y + 2) ^ 0x00FFFFFF));
+				}
+			}
+						
+//			x = pointerLocation.x + (4 + (n / 2));
+//			y = pointerLocation.y - (4 + (n / 2));
+//			
+//			for (m = 1;(m < (n / 2));m++)
+//			{
+//				if (area.contains(x + m, y - m))
+//				{
+//					image.setRGB(x + m, y - m, (image.getRGB(x + m, y - m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < (n / 2) - 1);m++)
+//			{
+//				if (area.contains(x + 1 + m, y - m))
+//				{
+//					image.setRGB(x + 1 + m, y -	m, (image.getRGB(x + 1 + m, y - m) ^ 0x00FFFFFF));
+//				}
+//				if (area.contains(x + m, y - 1 - m))
+//				{
+//					image.setRGB(x + m, y - 1 -	m, (image.getRGB(x + m, y - 1 - m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < (n / 2) - 2);m++)
+//			{
+//				if (area.contains(x + 2 + m, y - m))
+//				{
+//					image.setRGB(x + 2 + m, y - m, (image.getRGB(x + 2 + m, y - m) ^ 0x00FFFFFF));
+//				}
+//				if (area.contains(x + m, y - 2 - m))
+//				{
+//					image.setRGB(x + m, y - 2 - m, (image.getRGB(x + m, y - 2 - m) ^ 0x00FFFFFF));
+//				}
+//			}
+			
 			// Fourth quadrant
 			x = pointerLocation.x - 4;
 			y = pointerLocation.y - 4;
+			
 			if (area.contains(x, y))
 			{
 				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
 			}
-			/* if (area.contains(x - 1, y)) { image.setRGB(x - 1, y,
-			 * (image.getRGB(x - 1, y) ^ 0x00FFFFFF)); } if (area.contains(x, y
-			 * - 1)) { image.setRGB(x, y - 1, (image.getRGB(x, y - 1) ^
-			 * 0x00FFFFFF)); } */
-			/* for (m = 1;(m < (n / 2));m++) { if (area.contains(x - m, y - m))
-			 * { image.setRGB(x - m, y - m, (image.getRGB(x - m, y - m) ^
-			 * 0x00FFFFFF)); } } for (m = 1;(m < (n / 2) - 1);m++) { if
-			 * (area.contains(x - 1 - m, y - m)) { image.setRGB(x - 1 - m, y -
-			 * m, (image.getRGB(x - 1 - m, y - m) ^ 0x00FFFFFF)); } if
-			 * (area.contains(x - m, y - 1 - m)) { image.setRGB(x - m, y - 1 -
-			 * m, (image.getRGB(x - m, y - 1 - m) ^ 0x00FFFFFF)); } } for (m =
-			 * 1;(m < (n / 2) - 2);m++) { if (area.contains(x - 2 - m, y - m)) {
-			 * image.setRGB(x - 2 - m, y - m, (image.getRGB(x - 2 - m, y - m) ^
-			 * 0x00FFFFFF)); } if (area.contains(x - m, y - 2 - m)) {
-			 * image.setRGB(x - m, y - 2 - m, (image.getRGB(x - m, y - 2 - m) ^
-			 * 0x00FFFFFF)); } } */
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x - m, y))
@@ -2682,87 +2916,335 @@ public final class VTAWTScreenCaptureProvider
 				}
 			}
 			
-			/* n = n - 1; //First quadrant x = pointerLocation.x - 5; y =
-			 * pointerLocation.y + 5; if (area.contains(x, y)) { image.setRGB(x,
-			 * y, (image.getRGB(x, y) ^ 0x00FFFFFF)); } for (m = 1;(m < n);m++)
-			 * { if (area.contains(x - m, y)) { image.setRGB(x - m, y,
-			 * (image.getRGB(x - m, y) ^ 0x00FFFFFF)); } } for (m = 1;(m <
-			 * n);m++) { if (area.contains(x, y + m)) { image.setRGB(x, y + m,
-			 * (image.getRGB(x, y + m) ^ 0x00FFFFFF)); } } x = pointerLocation.x
-			 * + 5; y = pointerLocation.y + 5; //Second quadrant if
-			 * (area.contains(x, y)) { image.setRGB(x, y, (image.getRGB(x, y) ^
-			 * 0x00FFFFFF)); } for (m = 1;(m < n);m++) { if (area.contains(x +
-			 * m, y)) { image.setRGB(x + m, y, (image.getRGB(x + m, y) ^
-			 * 0x00FFFFFF)); } } for (m = 1;(m < n);m++) { if (area.contains(x,
-			 * y + m)) { image.setRGB(x, y + m, (image.getRGB(x, y + m) ^
-			 * 0x00FFFFFF)); } } //Third quadrant x = pointerLocation.x + 5; y =
-			 * pointerLocation.y - 5; if (area.contains(x, y)) { image.setRGB(x,
-			 * y, (image.getRGB(x, y) ^ 0x00FFFFFF)); } for (m = 1;(m < n);m++)
-			 * { if (area.contains(x + m, y)) { image.setRGB(x + m, y,
-			 * (image.getRGB(x + m, y) ^ 0x00FFFFFF)); } } for (m = 1;(m <
-			 * n);m++) { if (area.contains(x, y - m)) { image.setRGB(x, y - m,
-			 * (image.getRGB(x, y - m) ^ 0x00FFFFFF)); } } //Fourth quadrant x =
-			 * pointerLocation.x - 5; y = pointerLocation.y - 5; if
-			 * (area.contains(x, y)) { image.setRGB(x, y, (image.getRGB(x, y) ^
-			 * 0x00FFFFFF)); } for (m = 1;(m < n);m++) { if (area.contains(x -
-			 * m, y)) { image.setRGB(x - m, y, (image.getRGB(x - m, y) ^
-			 * 0x00FFFFFF)); } } for (m = 1;(m < n);m++) { if (area.contains(x,
-			 * y - m)) { image.setRGB(x, y - m, (image.getRGB(x, y - m) ^
-			 * 0x00FFFFFF)); } } */
+			x = pointerLocation.x - (4 + n - 1);
+			y = pointerLocation.y - (4 + n - 1);
 			
-			/* n = n / 2; //First quadrant x = pointerLocation.x - 6; y =
-			 * pointerLocation.y + 6; if (area.contains(x, y)) { image.setRGB(x,
-			 * y, (image.getRGB(x, y) ^ 0x00FFFFFF)); } for (m = 1;(m < n);m++)
-			 * { if (area.contains(x - m, y)) { image.setRGB(x - m, y,
-			 * (image.getRGB(x - m, y) ^ 0x00FFFFFF)); } } for (m = 1;(m <
-			 * n);m++) { if (area.contains(x, y + m)) { image.setRGB(x, y + m,
-			 * (image.getRGB(x, y + m) ^ 0x00FFFFFF)); } } //Second quadrant x =
-			 * pointerLocation.x + 6; y = pointerLocation.y + 6; if
-			 * (area.contains(x, y)) { image.setRGB(x, y, (image.getRGB(x, y) ^
-			 * 0x00FFFFFF)); } for (m = 1;(m < n);m++) { if (area.contains(x +
-			 * m, y)) { image.setRGB(x + m, y, (image.getRGB(x + m, y) ^
-			 * 0x00FFFFFF)); } } for (m = 1;(m < n);m++) { if (area.contains(x,
-			 * y + m)) { image.setRGB(x, y + m, (image.getRGB(x, y + m) ^
-			 * 0x00FFFFFF)); } } //Third quadrant x = pointerLocation.x + 6; y =
-			 * pointerLocation.y - 6; if (area.contains(x, y)) { image.setRGB(x,
-			 * y, (image.getRGB(x, y) ^ 0x00FFFFFF)); } for (m = 1;(m < n);m++)
-			 * { if (area.contains(x + m, y)) { image.setRGB(x + m, y,
-			 * (image.getRGB(x + m, y) ^ 0x00FFFFFF)); } } for (m = 1;(m <
-			 * n);m++) { if (area.contains(x, y - m)) { image.setRGB(x, y - m,
-			 * (image.getRGB(x, y - m) ^ 0x00FFFFFF)); } } //Fourth quadrant x =
-			 * pointerLocation.x - 6; y = pointerLocation.y - 6; if
-			 * (area.contains(x, y)) { image.setRGB(x, y, (image.getRGB(x, y) ^
-			 * 0x00FFFFFF)); } for (m = 1;(m < n);m++) { if (area.contains(x -
-			 * m, y)) { image.setRGB(x - m, y, (image.getRGB(x - m, y) ^
-			 * 0x00FFFFFF)); } } for (m = 1;(m < n);m++) { if (area.contains(x,
-			 * y - m)) { image.setRGB(x, y - m, (image.getRGB(x, y - m) ^
-			 * 0x00FFFFFF)); } }
-			 * n = n - 1; x = pointerLocation.x - 7; y = pointerLocation.y + 7;
-			 * if (area.contains(x, y)) { image.setRGB(x, y, (image.getRGB(x, y)
-			 * ^ 0x00FFFFFF)); } for (m = 1;(m < n);m++) { if (area.contains(x -
-			 * m, y)) { image.setRGB(x - m, y, (image.getRGB(x - m, y) ^
-			 * 0x00FFFFFF)); } } for (m = 1;(m < n);m++) { if (area.contains(x,
-			 * y + m)) { image.setRGB(x, y + m, (image.getRGB(x, y + m) ^
-			 * 0x00FFFFFF)); } } x = pointerLocation.x + 7; y =
-			 * pointerLocation.y + 7; if (area.contains(x, y)) { image.setRGB(x,
-			 * y, (image.getRGB(x, y) ^ 0x00FFFFFF)); } for (m = 1;(m < n);m++)
-			 * { if (area.contains(x + m, y)) { image.setRGB(x + m, y,
-			 * (image.getRGB(x + m, y) ^ 0x00FFFFFF)); } } for (m = 1;(m <
-			 * n);m++) { if (area.contains(x, y + m)) { image.setRGB(x, y + m,
-			 * (image.getRGB(x, y + m) ^ 0x00FFFFFF)); } } x = pointerLocation.x
-			 * + 7; y = pointerLocation.y - 7; if (area.contains(x, y)) {
-			 * image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF)); }
-			 * for (m = 1;(m < n);m++) { if (area.contains(x + m, y)) {
-			 * image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ 0x00FFFFFF)); }
-			 * } for (m = 1;(m < n);m++) { if (area.contains(x, y - m)) {
-			 * image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ 0x00FFFFFF)); }
-			 * } x = pointerLocation.x - 7; y = pointerLocation.y - 7; if
-			 * (area.contains(x, y)) { image.setRGB(x, y, (image.getRGB(x, y) ^
-			 * 0x00FFFFFF)); } for (m = 1;(m < n);m++) { if (area.contains(x -
-			 * m, y)) { image.setRGB(x - m, y, (image.getRGB(x - m, y) ^
-			 * 0x00FFFFFF)); } } for (m = 1;(m < n);m++) { if (area.contains(x,
-			 * y - m)) { image.setRGB(x, y - m, (image.getRGB(x, y - m) ^
-			 * 0x00FFFFFF)); } } */
+			for (m = 0;(m < 3);m++)
+			{
+				if (area.contains(x + m, y + m))
+				{
+					image.setRGB(x + m, y + m, (image.getRGB(x + m, y + m) ^ 0x00FFFFFF));
+				}
+			}
+						
+			for (m = 1;(m < (n / 2) + 1);m++)
+			{
+				if (area.contains(x, y + m))
+				{
+					image.setRGB(x, y +	m, (image.getRGB(x, y + m) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x + m, y))
+				{
+					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x + 1, y + m))
+				{
+					image.setRGB(x + 1, y +	m, (image.getRGB(x + 1, y + m) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x + m, y + 1))
+				{
+					image.setRGB(x + m, y + 1, (image.getRGB(x + m, y + 1) ^ 0x00FFFFFF));
+				}
+			}
+			
+			for (m = 3;(m < (n / 2) + 1);m++)
+			{
+				if (area.contains(x + 2, y + m))
+				{
+					image.setRGB(x + 2, y +	m, (image.getRGB(x + 2, y + m) ^ 0x00FFFFFF));
+				}
+				if (area.contains(x + m, y + 2))
+				{
+					image.setRGB(x + m, y + 2, (image.getRGB(x + m, y + 2) ^ 0x00FFFFFF));
+				}
+			}
+						
+//			x = pointerLocation.x - (4 + (n / 2));
+//			y = pointerLocation.y - (4 + (n / 2));
+//			
+//			for (m = 1;(m < (n / 2));m++)
+//			{
+//				if (area.contains(x - m, y - m))
+//				{
+//					image.setRGB(x - m, y - m, (image.getRGB(x - m, y - m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < (n / 2) - 1);m++)
+//			{
+//				if (area.contains(x - 1 - m, y - m))
+//				{
+//					image.setRGB(x - 1 - m, y -	m, (image.getRGB(x - 1 - m, y - m) ^ 0x00FFFFFF));
+//				}
+//				if (area.contains(x - m, y - 1 - m))
+//				{
+//					image.setRGB(x - m, y - 1 - m, (image.getRGB(x - m, y - 1 - m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < (n / 2) - 2);m++)
+//			{
+//				if (area.contains(x - 2 - m, y - m))
+//				{
+//					image.setRGB(x - 2 - m, y - m, (image.getRGB(x - 2 - m, y - m) ^ 0x00FFFFFF));
+//				}
+//				if (area.contains(x - m, y - 2 - m))
+//				{
+//					image.setRGB(x - m, y - 2 - m, (image.getRGB(x - m, y - 2 - m) ^ 0x00FFFFFF));
+//				}
+//			}
+			
+//			n = n - 1;
+//			//First quadrant
+//			x = pointerLocation.x - 5;
+//			y =	pointerLocation.y + 5;
+//			if (area.contains(x, y))
+//			{
+//				image.setRGB(x,	y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x - m, y))
+//				{
+//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m <	n);m++)
+//			{
+//				if (area.contains(x, y + m))
+//				{
+//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			x = pointerLocation.x+ 5;
+//			y = pointerLocation.y + 5;
+//			//Second quadrant
+//			if (area.contains(x, y))
+//			{
+//				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x + m, y))
+//				{
+//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x, y + m))
+//				{
+//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			//Third quadrant
+//			x = pointerLocation.x + 5;
+//			y =	pointerLocation.y - 5;
+//			if (area.contains(x, y))
+//			{
+//				image.setRGB(x,	y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x + m, y))
+//				{
+//					image.setRGB(x + m, y,(image.getRGB(x + m, y) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m <	n);m++)
+//			{
+//				if (area.contains(x, y - m))
+//				{
+//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			//Fourth quadrant
+//			x =	pointerLocation.x - 5;
+//			y = pointerLocation.y - 5;
+//			if (area.contains(x, y))
+//			{
+//				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x - m, y))
+//				{
+//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x, y - m))
+//				{
+//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			
+//			n = n / 2;
+//			//First quadrant
+//			x = pointerLocation.x - 6;
+//			y =	pointerLocation.y + 6;
+//			if (area.contains(x, y))
+//			{
+//				image.setRGB(x,	y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x - m, y))
+//				{
+//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m <	n);m++)
+//			{
+//				if (area.contains(x, y + m))
+//				{
+//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			//Second quadrant
+//			x =	pointerLocation.x + 6;
+//			y = pointerLocation.y + 6;
+//			if	(area.contains(x, y))
+//			{
+//				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x + m, y))
+//				{
+//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x, y + m))
+//				{
+//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			//Third quadrant
+//			x = pointerLocation.x + 6;
+//			y = pointerLocation.y - 6;
+//			if (area.contains(x, y))
+//			{
+//				image.setRGB(x,	y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x + m, y))
+//				{
+//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m <	n);m++)
+//			{
+//				if (area.contains(x, y - m))
+//				{
+//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			//Fourth quadrant
+//			x =	pointerLocation.x - 6;
+//			y = pointerLocation.y - 6;
+//			if (area.contains(x, y))
+//			{
+//				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x - m, y))
+//				{
+//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x, y - m))
+//				{
+//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			
+//			n = n - 1;
+//			x = pointerLocation.x - 7;
+//			y = pointerLocation.y + 7;
+//			if (area.contains(x, y))
+//			{
+//				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x - m, y))
+//				{
+//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x, y + m))
+//				{
+//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			x = pointerLocation.x + 7;
+//			y =	pointerLocation.y + 7;
+//			if (area.contains(x, y))
+//			{
+//				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x + m, y))
+//				{
+//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m <	n);m++)
+//			{
+//				if (area.contains(x, y + m))
+//				{
+//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			x = pointerLocation.x + 7;
+//			y = pointerLocation.y - 7;
+//			if (area.contains(x, y))
+//			{
+//				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x + m, y))
+//				{
+//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x, y - m))
+//				{
+//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ 0x00FFFFFF));
+//				}
+//			}
+//			x = pointerLocation.x - 7;
+//			y = pointerLocation.y - 7;
+//			if (area.contains(x, y))
+//			{
+//				image.setRGB(x, y, (image.getRGB(x, y) ^ 0x00FFFFFF));
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x - m, y))
+//				{
+//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ 0x00FFFFFF));
+//				}
+//			}
+//			for (m = 1;(m < n);m++)
+//			{
+//				if (area.contains(x, y - m))
+//				{
+//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ 0x00FFFFFF));
+//				}
+//			}
 		}
 		catch (Throwable e)
 		{

@@ -58,12 +58,15 @@ final class ProcessMonitorRunnable implements Runnable {
             
             stdoutThread.join();
             stderrThread.join();
-        } catch (RuntimeException e) {
-            LOG.error(id + " Encountered exception", e);
-        } catch (InterruptedException ie) {
+        }
+         catch (InterruptedException ie) {
             Thread.interrupted();
             LOG.debug(id + " Interrupted", ie);
-        } finally {
+        }
+        catch (Throwable e) {
+            LOG.debug(id + " Encountered exception", e);
+        }
+         finally {
             // make sure it's destroyed
             try {
                 process.destroy();

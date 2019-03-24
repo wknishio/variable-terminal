@@ -115,9 +115,9 @@ final class NetworkRunnable implements Runnable {
                             throw new IllegalStateException(); // should never happen
                         }
                         updateSelectionKey(entry, (AbstractSelectableChannel) channel);
-                    } catch (RuntimeException e) {
+                    } catch (Throwable e) {
                         int id = entry.getId();
-                        LOG.error(id + " Exception encountered", e);
+                        LOG.debug(id + " Exception encountered", e);
                         entry.getResponseBus().send(new IdentifiableErrorNetworkNotification(id));
                     }
                 }
@@ -129,9 +129,9 @@ final class NetworkRunnable implements Runnable {
             }
         } catch (KillRequestException kre) {
             // do nothing
-        } catch (Exception e) {
-            LOG.error("Encountered unexpected exception", e);
-            throw new RuntimeException(e); // rethrow exception
+        } catch (Throwable e) {
+            LOG.debug("Encountered unexpected exception", e);
+            //throw new RuntimeException(e); // rethrow exception
         } finally {
             LOG.debug("Stopping gateway");
             shutdownResources();
@@ -501,8 +501,8 @@ final class NetworkRunnable implements Runnable {
         
         try {
             selector.close();
-        } catch (Exception e) {
-            LOG.error("Error shutting down selector", e);
+        } catch (Throwable e) {
+            LOG.debug("Error shutting down selector", e);
         }
         channelMap.clear();
         idMap.clear();
@@ -519,8 +519,8 @@ final class NetworkRunnable implements Runnable {
             channelMap.remove(channel);
             
             ne.getResponseBus().send(new IdentifiableErrorNetworkNotification(id));
-        } catch (RuntimeException e) {
-            LOG.error(id + " Error shutting down resource", e);
+        } catch (Throwable e) {
+            LOG.debug(id + " Error shutting down resource", e);
         } finally {
             IOUtils.closeQuietly(channel);
         }

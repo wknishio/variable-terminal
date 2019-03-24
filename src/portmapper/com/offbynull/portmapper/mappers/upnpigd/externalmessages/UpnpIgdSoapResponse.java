@@ -46,10 +46,23 @@ public abstract class UpnpIgdSoapResponse extends UpnpIgdHttpResponse {
 //            throw new IllegalArgumentException("Response contains fault: " + content);
 //        }
         
-        
+        //System.out.println("UpnpIgdSoapResponse.content:" + content);
+        //System.out.println("UpnpIgdSoapResponse.expectedResponseAction:" + expectedResponseAction);
         String responseBlock = TextUtils.findFirstBlock(content,
-                /*<soapprefix*/":" + expectedResponseAction,
-                /*</soapprefix:*/":" + expectedResponseAction, true);
+                ///*<soapprefix*/":" + expectedResponseAction,
+                //*</soapprefix:*/":" + expectedResponseAction, true);
+        		":" + expectedResponseAction,
+        		":" + expectedResponseAction, true);
+        //System.out.println("UpnpIgdSoapResponse.responseBlock:" + responseBlock);
+        if (responseBlock == null)
+        {
+        	//for empty xml responses
+        	responseBlock = TextUtils.findFirstBlock(content,
+                    ///*<soapprefix*/":" + expectedResponseAction,
+                    //*</soapprefix:*/":" + expectedResponseAction, true);
+            		":" + expectedResponseAction,
+            		"/>", true);
+        }
         Validate.isTrue(responseBlock != null);
         
         Map<String, String> args = new HashMap<String, String>();

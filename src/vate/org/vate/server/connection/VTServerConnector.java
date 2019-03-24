@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.vate.VT;
 import org.vate.console.VTConsole;
-import org.vate.network.nat.mapping.VTNATSinglePortMappingManager;
+import org.vate.network.nat.mapping.VTNATSinglePortMappingManagerMKII;
 import org.vate.server.VTServer;
 
 public class VTServerConnector implements Runnable
@@ -31,14 +31,14 @@ public class VTServerConnector implements Runnable
 	private int sessionsLimit;
 	private ServerSocket connectionServerSocket;
 	private List<VTServerConnectionHandler> connectionHandlers;
-	private VTNATSinglePortMappingManager portMappingManager;
+	private VTNATSinglePortMappingManagerMKII portMappingManager;
 	private VTServer server;
 	
 	public VTServerConnector(VTServer server)
 	{
 		this.server = server;
 		this.connectionHandlers = Collections.synchronizedList(new LinkedList<VTServerConnectionHandler>());
-		portMappingManager = new VTNATSinglePortMappingManager(3, 60);
+		portMappingManager = new VTNATSinglePortMappingManagerMKII(3, 60);
 		portMappingManager.start();
 	}
 	

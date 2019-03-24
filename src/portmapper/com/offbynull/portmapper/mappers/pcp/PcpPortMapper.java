@@ -81,7 +81,7 @@ public final class PcpPortMapper implements PortMapper {
      * @throws InterruptedException if interrupted
      */
     public static List<PcpPortMapper> identify(Bus networkBus, Bus processBus, InetAddress ... additionalIps) throws InterruptedException {
-        LOG.info("Attempting to identify devices");
+        LOG.debug("Attempting to identify devices");
         
         Validate.notNull(networkBus);
         Validate.notNull(processBus);
@@ -216,11 +216,11 @@ public final class PcpPortMapper implements PortMapper {
 
     
     public MappedPort mapPort(PortType portType, int internalPort, int externalPort, long lifetime) throws InterruptedException {
-        LOG.info("Attempting to map {} Internal:{} External:{} Lifetime:{}", portType, internalPort, externalPort, lifetime);
+        LOG.debug("Attempting to map {} Internal:{} External:{} Lifetime:{}", portType, internalPort, externalPort, lifetime);
         
         Validate.notNull(portType);
         Validate.inclusiveBetween(1, 65535, internalPort);
-        Validate.inclusiveBetween(1L, Long.MAX_VALUE, lifetime);
+        Validate.inclusiveBetween(0L, Long.MAX_VALUE, lifetime);
 
         //
         // PERFORM MAPPING
@@ -244,7 +244,7 @@ public final class PcpPortMapper implements PortMapper {
 
     
     public void unmapPort(MappedPort mappedPort) throws InterruptedException {
-        LOG.info("Attempting to unmap {}", mappedPort);
+        LOG.debug("Attempting to unmap {}", mappedPort);
         
         Validate.notNull(mappedPort);
         Validate.isTrue(mappedPort instanceof PcpMappedPort);
@@ -264,11 +264,11 @@ public final class PcpPortMapper implements PortMapper {
 
     
     public MappedPort refreshPort(MappedPort mappedPort, long lifetime) throws InterruptedException {
-        LOG.info("Attempting to refresh mapping {} for {}", mappedPort, lifetime);
+        LOG.debug("Attempting to refresh mapping {} for {}", mappedPort, lifetime);
         
         Validate.notNull(mappedPort);
         Validate.isTrue(mappedPort instanceof PcpMappedPort);
-        Validate.inclusiveBetween(1L, Long.MAX_VALUE, lifetime);
+        Validate.inclusiveBetween(0L, Long.MAX_VALUE, lifetime);
         MappedPort newMappedPort = mapPort(mappedPort.getPortType(), mappedPort.getInternalPort(), mappedPort.getExternalPort(), lifetime);
         
         if (mappedPort.getExternalPort() != newMappedPort.getExternalPort()

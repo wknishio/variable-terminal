@@ -69,8 +69,9 @@ final class ProcessRunnable implements Runnable {
         } catch (KillRequestException kre) {
             // do nothing
         } catch (Exception e) {
-            LOG.error("Encountered unexpected exception", e);
-            throw new RuntimeException(e); // rethrow exception
+        	//dont even care to log the damn thing
+           LOG.debug("Encountered expected exception", e);
+            //throw new RuntimeException(e); // rethrow exception
         } finally {
             LOG.debug("Stopping gateway");
             shutdownResources();
@@ -140,7 +141,8 @@ final class ProcessRunnable implements Runnable {
                 monitorThread.start();
             } catch (Exception re) {
                 idMap.remove(id);
-                LOG.error("Unable to create process", re);
+                //dont even care to log the damn thing
+                LOG.debug("Unable to create process", re);
                 if (stdoutThread != null) {
                     stdoutThread.interrupt();
                 }
@@ -182,7 +184,9 @@ final class ProcessRunnable implements Runnable {
                     entry.getStdinThread().interrupt();
                     entry.getExitThread().interrupt();
                 } catch (RuntimeException re) {
-                    LOG.error("Unable to process terminate message", re);
+                    LOG.debug("Unable to process terminate message", re);
+                } catch (Throwable re) {
+                    LOG.debug("Unable to process terminate message", re);
                 } finally {
                     Bus responseBus = entry.getResponseBus();
                     responseBus.send(new ExitProcessNotification(id, exitCode));
@@ -241,7 +245,9 @@ final class ProcessRunnable implements Runnable {
             } catch (InterruptedException ie) {
                 throw new RuntimeException(ie);
             } catch (RuntimeException e) {
-                LOG.error(id + " Error shutting down resource", e);
+                LOG.debug(id + " Error shutting down resource", e);
+            } catch (Throwable e) {
+                LOG.debug(id + " Error shutting down resource", e);
             }
 
             // shutdownResources() is the last thing that gets called before the ProcessRunnable thread gets shut down. Any messages put on

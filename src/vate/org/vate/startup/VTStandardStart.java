@@ -4,6 +4,7 @@ import org.vate.VT;
 import org.vate.client.VTClient;
 import org.vate.console.VTConsole;
 import org.vate.console.graphical.VTGraphicalConsole;
+import org.vate.help.VTHelpManager;
 import org.vate.server.VTServer;
 
 public final class VTStandardStart
@@ -87,110 +88,195 @@ public final class VTStandardStart
 		}
 		else
 		{
-			if (args[0].toUpperCase().startsWith("S"))
+			int type = 0;
+			for (int i = 0; i < args.length; i++)
 			{
-				if (args.length >= 2)
+				if ("-C".equalsIgnoreCase(args[i]))
 				{
-					VTServer server = new VTServer();
-					try
-					{
-						server.parseParameters(args);
-					}
-					catch (Throwable e)
-					{
-						VTConsole.initialize();
-						VTConsole.clear();
-						VTConsole.setTitle("Variable-Terminal Server " + VT.VT_VERSION + " - Console");
-						VTConsole.println("VT>Invalid parameter syntax!" + "\nVT>Mode parameter:" + "\nVT>c(client)|s(server)|d(daemon)" + "\nVT>Host parameter:" + "\nVT>[connectionhost/]connectionport[;natport]" + "\nVT>Settings file parameter:" + "\nVT>settingsfile" + "\nVT>Optional parameters:" + "\nVT>[login/password]" + "\nVT>[encryptiontype;encryptionpassword]" + "\nVT>[proxytype/proxyhost/proxyport[/proxyuser/proxypassword]]" + "\nVT>[sessionslimit]");
-						System.exit(-1);
-					}
-					// server.initialize();
-					server.setDaemon(false);
-					server.start();
+					type = 1;
 				}
-				else
+				if ("-S".equalsIgnoreCase(args[i]))
 				{
-					VTServer server = new VTServer();
-					server.setDaemon(false);
-					// server.initialize();
-					// server.configure();
-					server.start();
+					type = 2;
+				}
+				if ("-D".equalsIgnoreCase(args[i]))
+				{
+					type = 3;
+				}
+				if ("-H".equalsIgnoreCase(args[i]))
+				{
+					type = 4;
 				}
 			}
-			else if (args[0].toUpperCase().startsWith("D"))
+			if (type == 1)
+			{
+				VTClient client = new VTClient();
+				try
+				{
+					client.parseParameters(args);
+				}
+				catch (Throwable e)
+				{
+					System.exit(-1);
+				}
+				// client.initialize();
+				client.start();
+			}
+			else if (type == 2)
+			{
+				VTServer server = new VTServer();
+				try
+				{
+					server.parseParameters(args);
+				}
+				catch (Throwable e)
+				{
+					System.exit(-1);
+				}
+				// server.initialize();
+				server.setDaemon(false);
+				server.start();
+			}
+			else if (type == 3)
 			{
 				VTConsole.setDaemon(true);
-				if (args.length >= 2)
+				VTServer server = new VTServer();
+				try
 				{
-					VTServer server = new VTServer();
-					server.setDaemon(true);
-					try
-					{
-						server.parseParameters(args);
-					}
-					catch (Throwable e)
-					{
-						VTConsole.initialize();
-						VTConsole.clear();
-						VTConsole.setTitle("Variable-Terminal Server " + VT.VT_VERSION + " - Console");
-						VTConsole.println("VT>Invalid parameter syntax!" + "\nVT>Mode parameter:" + "\nVT>c(client)|s(server)|d(daemon)" + "\nVT>Host parameter:" + "\nVT>[connectionhost/]connectionport[;natport]" + "\nVT>Settings file parameter:" + "\nVT>settingsfile" + "\nVT>Optional parameters:" + "\nVT>[login/password]" + "\nVT>[encryptiontype;encryptionpassword]" + "\nVT>[proxytype/proxyhost/proxyport[/proxyuser/proxypassword]]" + "\nVT>[sessionslimit]");
-						System.exit(-1);
-					}
-					// server.initialize();
-					server.start();
+					server.parseParameters(args);
 				}
-				else
+				catch (Throwable e)
 				{
-					VTServer server = new VTServer();
-					server.setDaemon(true);
-					// server.initialize();
-					// server.configure();
-					server.start();
+					System.exit(-1);
 				}
+				// server.initialize();
+				server.setDaemon(true);
+				server.start();
 			}
-			else if (args[0].toUpperCase().startsWith("C"))
+			else if (type == 4)
 			{
-				if (args.length >= 2)
+				VTConsole.initialize();
+				VTConsole.clear();
+				VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
+				VTConsole.print(VTHelpManager.printManualParameterHelp());
+				VTConsole.print(VTHelpManager.printApplicationParametersHelp());
+				VTConsole.print(VTHelpManager.printConnnectionParametersHelp());
+				if (VTConsole.isGraphical())
 				{
-					VTClient client = new VTClient();
 					try
 					{
-						client.parseParameters(args);
+						VTConsole.readLine();
 					}
 					catch (Throwable e)
 					{
-						VTConsole.initialize();
-						VTConsole.clear();
-						VTConsole.setTitle("Variable-Terminal Client " + VT.VT_VERSION + " - Console");
-						VTConsole.println("VT>Invalid parameter syntax!" + "\nVT>Mode parameter:" + "\nVT>c(client)|s(server)|d(daemon)" + "\nVT>Host parameter:" + "\nVT>[connectionhost/]connectionport[;natport]" + "\nVT>Settings file parameter:" + "\nVT>settingsfile" + "\nVT>Optional parameters:" + "\nVT>[login/password]" + "\nVT>[encryptiontype;encryptionpassword]" + "\nVT>[proxytype/proxyhost/proxyport[/proxyuser/proxypassword]]" + "\nVT>[sessionslimit]");
-						try
-						{
-							VTConsole.readLine(false);
-						}
-						catch (InterruptedException e1)
-						{
-							
-						}
-						System.exit(-1);
+						
 					}
-					// client.initialize();
-					client.start();
 				}
-				else
-				{
-					VTClient client = new VTClient();
-					// client.initialize();
-					// client.configure();
-					client.start();
-				}
+				//VTConsole.println("VT>Invalid parameter syntax!" + "\nVT>Mode parameter:" + "\nVT>c(client)|s(server)|d(daemon)" + "\nVT>Host parameter:" + "\nVT>[connectionhost/]connectionport[;natport]" + "\nVT>Settings file parameter:" + "\nVT>settingsfile" + "\nVT>Optional parameters:" + "\nVT>[login/password]" + "\nVT>[encryptiontype;encryptionpassword]" + "\nVT>[proxytype/proxyhost/proxyport[/proxyuser/proxypassword]]" + "\nVT>[sessionslimit]");
+				System.exit(0);
 			}
 			else
 			{
 				VTConsole.initialize();
 				VTConsole.clear();
 				VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
-				VTConsole.println("VT>Invalid parameter syntax!" + "\nVT>Mode parameter:" + "\nVT>c(client)|s(server)|d(daemon)" + "\nVT>Host parameter:" + "\nVT>[connectionhost/]connectionport[;natport]" + "\nVT>Settings file parameter:" + "\nVT>settingsfile" + "\nVT>Optional parameters:" + "\nVT>[login/password]" + "\nVT>[encryptiontype;encryptionpassword]" + "\nVT>[proxytype/proxyhost/proxyport[/proxyuser/proxypassword]]" + "\nVT>[sessionslimit]");
-				System.exit(-1);
+				VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + "\nVT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n"
+				+ "VT>This software is under MIT license, see license.txt!\n"
+				+ "VT>This software comes with no warranty, use at your own risk!\n");
+				
+				if (VTConsole.isGraphical())
+				{
+					VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTGraphicalConsole.getFrame());
+					dialog.setVisible(true);
+					if (dialog.getMode() == 1)
+					{
+						try
+						{
+							VTClient client = new VTClient();
+							// client.initialize();
+							// client.configure();
+							try
+							{
+								client.parseParameters(args);
+							}
+							catch (Throwable e)
+							{
+								
+							}
+							client.start();
+							return;
+						}
+						catch (Throwable e)
+						{
+							// e.printStackTrace();
+						}
+					}
+					else if (dialog.getMode() == 2)
+					{
+						try
+						{
+							VTServer server = new VTServer();
+							server.setDaemon(false);
+							// server.initialize();
+							// server.configure();
+							try
+							{
+								server.parseParameters(args);
+							}
+							catch (Throwable e)
+							{
+								
+							}
+							server.start();
+							return;
+						}
+						catch (Throwable e)
+						{
+							// e.printStackTrace();
+						}
+					}
+				}
+				
+				VTConsole.print("VT>Enter the module(client as C or server as S, default:C):");
+				try
+				{
+					option = VTConsole.readLine(true);
+					if (option.toUpperCase().startsWith("S"))
+					{
+						VTServer server = new VTServer();
+						server.setDaemon(false);
+						try
+						{
+							server.parseParameters(args);
+						}
+						catch (Throwable e)
+						{
+							
+						}
+						// server.initialize();
+						// server.configure();
+						server.start();
+					}
+					else
+					{
+						VTClient client = new VTClient();
+						try
+						{
+							client.parseParameters(args);
+						}
+						catch (Throwable e)
+						{
+							
+						}
+						// client.initialize();
+						// client.configure();
+						client.start();
+					}
+				}
+				catch (Throwable e)
+				{
+					System.exit(0);
+				}
 			}
 		}
 	}

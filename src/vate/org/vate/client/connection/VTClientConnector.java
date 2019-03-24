@@ -9,7 +9,7 @@ import java.net.Socket;
 import org.vate.VT;
 import org.vate.client.VTClient;
 import org.vate.console.VTConsole;
-import org.vate.network.nat.mapping.VTNATSinglePortMappingManager;
+import org.vate.network.nat.mapping.VTNATSinglePortMappingManagerMKII;
 
 public class VTClientConnector implements Runnable
 {
@@ -33,7 +33,7 @@ public class VTClientConnector implements Runnable
 	private boolean skipConfiguration;
 	//private volatile boolean connectedOnce;
 	private volatile boolean timeoutEnabled;
-	private VTNATSinglePortMappingManager portMappingManager;
+	private VTNATSinglePortMappingManagerMKII portMappingManager;
 	private VTConnectionRetryTimeoutTask connectionRetryTimeoutTask = new VTConnectionRetryTimeoutTask();
 	
 	public VTClientConnector(VTClient client)
@@ -41,7 +41,7 @@ public class VTClientConnector implements Runnable
 		this.client = client;
 		this.connection = new VTClientConnection();
 		this.handler = new VTClientConnectionHandler(client, connection);
-		portMappingManager = new VTNATSinglePortMappingManager(3, 60);
+		portMappingManager = new VTNATSinglePortMappingManagerMKII(3, 60);
 		portMappingManager.start();
 	}
 	
@@ -773,7 +773,7 @@ public class VTClientConnector implements Runnable
 			}
 			else
 			{
-				VTConsole.print("VT>Enter the configuration file(if available):");
+				VTConsole.print("VT>Enter the settings file(if available):");
 				try
 				{
 					line = VTConsole.readLine(true);

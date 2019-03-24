@@ -8,7 +8,7 @@ Some of the available features are:
 
 * RC4 and AES encryption.
 * SOCKS and HTTP network proxies.
-* UPnP and NAT-PMP NAT port forwarding.
+* UPnP, NAT-PMP and PCP NAT port forwarding.
 * Multiple simultaneous sessions.
 * Adjustable text font size.
 * Simple text messaging.
@@ -28,6 +28,7 @@ Some of the available features are:
 * Optical drive control.
 
 The minimum required java version to execute is at least 1.5.
+
 This software comes with no warranty, use at your own risk!
 
 ## Installation and initialization
@@ -49,19 +50,17 @@ configuration dialogs and helper menus for commands.
 in environments without graphical interface but with a text terminal.
 
 The default and recommended user interface is the graphical console, as most
-consumer computers nowadays have support for graphical environments.
+computers nowadays have support for graphical environments.
 
-The included scripts in the format variable-terminal-[mode]-[interface].[*] can
+The included scripts in the format variable-terminal-[mode]-[interface].[*] can  
 be used to start this software used in a specific combination of mode and user
 interface.
 
-## Connection configuration
+## Connection settings
 
-To start running effectively, connection configurations must be set for client
-and server.
-
-When using graphical console, a dialog will appear to ease the connection
-configuration.
+To start running effectively, connection settings must be set for client
+and server, when using graphical console, a dialog will appear to ease the
+configuration of connection settings.
 
 The connection settings are these:
 
@@ -76,7 +75,7 @@ the other must be in passive connection mode.
 * Connection host controls which TCP host address will be used for connection.
 * Connection port controls which TCP port will be used for connection, default
 TCP port is 6060.
-* Connection NAT port sets a NAT port forwarding using UPnP or NAT-PMP protocols.
+* Connection NAT port sets a NAT port mapping using UPnP or NAT-PMP protocols.
 * Encryption type enables connection encryption using RC4 or AES algorithms.
 * Encryption password sets the password for connection encryption.
 * Proxy type enables support for connections using HTTP or SOCKS proxies.
@@ -95,23 +94,30 @@ All connection settings can be set using the files
 "variable-terminal-server.properties" for server instances,  
 those files support UTF-8 encoding.
 
-The connection settings can also be set using program arguments at startup:
+The connection settings can also be set using program arguments at startup,
+these are the available program arguments:
 
-Module parameter (if module is not decided by the startup class):
-
-* c(client) | s(server) | d(daemon)
-
-Host parameter or settings file parameter (the next argument):
-
-* [connectionhost/]connectionport[;natport]
-* [settingsfile]
-
-Optional parameters (autodetect by format):
-
-* [login/password]
-* [encryptiontype;encryptionpassword]
-* [proxytype[/proxyuser/proxypassword]/proxyhost/proxyport]
-* [sessionslimit]  
+* -H: show available program arguments
+* -C: use client module
+* -S: use server module
+* -D: use daemon module
+* -LF: load settings file
+* -CM: connection mode, passive(P), active(A)
+* -CH: connection host, default null
+* -CP: connection port, default 6060
+* -NP: NAT port, default null
+* -ET: encryption type, AES(A), RC4(R), disabled(D), default disabled
+* -EK: encryption password, default null
+* -PT: proxy type, SOCKS(S), HTTP(H), disabled(D), default disabled
+* -PH: proxy host, default null
+* -PP: proxy port, default 1080 for SOCKS or 8080 for HTTP
+* -PA: proxy authentication, enabled(E), disabled(D), default disabled
+* -PU: proxy user, default null
+* -PK: proxy password, default null
+* -AL: authentication login, default null
+* -AK: authentication password, default null
+* -SL: sessions limit, default 0, available in server
+* -SC: session commands, separated by *;, default null, available in client
 
 ## Console commands
 
@@ -166,7 +172,7 @@ Those are the third party libraries used in this software:
 * Java Native Access by Todd Fast/Timothy Wall/Liang Chen, for native calls
 * jsocks by Kirill Kouzoubov/Robert Simac, for SOCKS tunneling support
 * JSAP by Martian Software, for command parsing
-* PngEncoder by ObjectPlanet, for PNG image encoding
+* PngEncoder by ObjectPlanet, for better PNG image encoding
 * ARGBPixelGrabber by pumpernickel, for image data extraction
 * UPNPLib by sbbi, for UPnP NAT port forwarding support
 * TomP2P by Thomas Bocek, for NAT-PMP NAT port forwarding support
@@ -175,7 +181,8 @@ Those are the third party libraries used in this software:
 * Commons-compress by Apache Software Foundation, for ZIP64 format support
 * client-side Throttle by James Edwards, for network data rate limiter
 * zstd-jni by Luben Karavelov, for zstd compression
-* DirectRobot by Killer 99, for faster and lighter screen capture
+* DirectRobot by Killer99@rune-server.ee, for better screen capture
+* PortMapper by Kasra Faghihi(offbynull) for PCP port forwarding support
 
 ## Additional utilities
 
@@ -192,7 +199,7 @@ Some additional utilities are included with server distributions:
 
 This software is under MIT license
 
-Copyright (c) 2018 William Kendi Nishio
+Copyright (c) 2019 William Kendi Nishio
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

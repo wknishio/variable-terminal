@@ -33,8 +33,13 @@ public class VTGlobalTextStyleManager
 		try
 		{
 			Class<?> runtime = Class.forName("java.lang.Runtime");
-			Method version = runtime.getMethod("version", null);
+			Method version = runtime.getMethod("version", (Class<?>)null);
+			version.toString();
 			//boolean java9 = version.invoke(Runtime.getRuntime(), null) instanceof Object;
+			//if (java9)
+			//{
+				
+			//}
 			//in java 9 and beyond font size scaling for hidpi displays is done by jvm
 		}
 		catch (Throwable t)

@@ -154,7 +154,7 @@ public class VTNATSinglePortMappingManager implements Runnable
 	{
 		try
 		{
-			Thread.sleep(500);
+			Thread.sleep(250);
 			return InternetGatewayDevice.getDevices(discoveryTime * 1000);
 		}
 		catch (Throwable e)
@@ -186,7 +186,7 @@ public class VTNATSinglePortMappingManager implements Runnable
 			String protocol = mapping.getProtocol();
 			try
 			{
-				Thread.sleep(500);
+				//Thread.sleep(500);
 				ActionResponse response = device.getSpecificPortMappingEntry(remoteHost, externalPort, protocol);
 				if (response != null)
 				{
@@ -215,8 +215,8 @@ public class VTNATSinglePortMappingManager implements Runnable
 			// String description = mapping.getDescription();
 			try
 			{
-				Thread.sleep(500);
 				device.deletePortMapping(remoteHost, externalPort, protocol);
+				Thread.sleep(250);
 				/* ActionResponse response =
 				 * device.getSpecificPortMappingEntry(remoteHost, externalPort,
 				 * protocol); if (response != null) { String current =
@@ -250,8 +250,10 @@ public class VTNATSinglePortMappingManager implements Runnable
 			String protocol = mapping.getProtocol();
 			try
 			{
-				Thread.sleep(500);
 				device.addPortMapping(description, remoteHost, internalPort, externalPort, localAddress, 0, protocol);
+				Thread.sleep(250);
+				//boolean ok = device.addPortMapping(description, remoteHost, internalPort, externalPort, localAddress, 0, protocol);
+				//System.out.println("setUPNPPortMapping.ok=" + ok);
 				/* ActionResponse response =
 				 * device.getSpecificPortMappingEntry(remoteHost, externalPort,
 				 * protocol); if (response == null) { Thread.sleep(500);
@@ -265,7 +267,7 @@ public class VTNATSinglePortMappingManager implements Runnable
 			}
 			catch (Throwable e)
 			{
-				
+				//e.printStackTrace();
 			}
 		}
 		return;

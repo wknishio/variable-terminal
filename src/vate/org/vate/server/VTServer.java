@@ -955,7 +955,7 @@ public class VTServer implements Runnable
 					}
 				}
 			}
-			VTConsole.print("VT>Enter the configuration file(if available):");
+			VTConsole.print("VT>Enter the settings file(if available):");
 			try
 			{
 				String line = VTConsole.readLine(true);
@@ -1525,7 +1525,7 @@ public class VTServer implements Runnable
 			}
 		}
 	}
-	
+		
 	public void parseParameters(String[] parameters) throws Exception
 	{
 		int i;
@@ -1536,7 +1536,18 @@ public class VTServer implements Runnable
 		for (i = 0; i < parameters.length; i++)
 		{
 			parameterName = parameters[i].toUpperCase();
-			if (parameterName.contains("CF"))
+			if (!parameterName.startsWith("-"))
+			{
+				try
+				{
+					loadServerSettingsFile(parameterName);
+				}
+				catch (Throwable t)
+				{
+					
+				}
+			}
+			if (parameterName.contains("-LF"))
 			{
 				parameterValue = parameters[++i];
 				try
@@ -1548,7 +1559,7 @@ public class VTServer implements Runnable
 					
 				}
 			}
-			if (parameterName.contains("CM"))
+			if (parameterName.contains("-CM"))
 			{
 				parameterValue = parameters[++i];
 				if (parameterValue.toUpperCase().startsWith("A"))
@@ -1560,12 +1571,12 @@ public class VTServer implements Runnable
 					passive = true;
 				}
 			}
-			if (parameterName.contains("CH"))
+			if (parameterName.contains("-CH"))
 			{
 				parameterValue = parameters[++i];
 				hostAddress = parameterValue;
 			}
-			if (parameterName.contains("CP"))
+			if (parameterName.contains("-CP"))
 			{
 				parameterValue = parameters[++i];
 				try
@@ -1581,7 +1592,7 @@ public class VTServer implements Runnable
 					
 				}
 			}
-			if (parameterName.contains("NP"))
+			if (parameterName.contains("-NP"))
 			{
 				parameterValue = parameters[++i];
 				try
@@ -1597,27 +1608,27 @@ public class VTServer implements Runnable
 					
 				}
 			}
-			if (parameterName.contains("ET"))
+			if (parameterName.contains("-ET"))
 			{
 				parameterValue = parameters[++i];
 				encryptionType = parameterValue;
 			}
-			if (parameterName.contains("EK"))
+			if (parameterName.contains("-EK"))
 			{
 				parameterValue = parameters[++i];
 				encryptionKey = parameterValue.getBytes("UTF-8");
 			}
-			if (parameterName.contains("PT"))
+			if (parameterName.contains("-PT"))
 			{
 				parameterValue = parameters[++i];
 				proxyType = parameterValue;
 			}
-			if (parameterName.contains("PH"))
+			if (parameterName.contains("-PH"))
 			{
 				parameterValue = parameters[++i];
 				proxyAddress = parameterValue;
 			}
-			if (parameterName.contains("PP"))
+			if (parameterName.contains("-PP"))
 			{
 				parameterValue = parameters[++i];
 				try
@@ -1633,7 +1644,7 @@ public class VTServer implements Runnable
 					
 				}
 			}
-			if (parameterName.contains("PA"))
+			if (parameterName.contains("-PA"))
 			{
 				parameterValue = parameters[++i];
 				if (parameterValue.toUpperCase().startsWith("E"))
@@ -1645,17 +1656,17 @@ public class VTServer implements Runnable
 					useProxyAuthentication = false;
 				}
 			}
-			if (parameterName.contains("PU"))
+			if (parameterName.contains("-PU"))
 			{
 				parameterValue = parameters[++i];
 				proxyUser = parameterValue;
 			}
-			if (parameterName.contains("PS"))
+			if (parameterName.contains("-PK"))
 			{
 				parameterValue = parameters[++i];
 				proxyPassword = parameterValue;
 			}
-			if (parameterName.contains("SL"))
+			if (parameterName.contains("-SL"))
 			{
 				parameterValue = parameters[++i];
 				try
@@ -1671,7 +1682,7 @@ public class VTServer implements Runnable
 					
 				}
 			}
-			if (parameterName.contains("AL"))
+			if (parameterName.contains("-AL"))
 			{
 				parameterValue = parameters[++i];
 				parameterLogin = parameterValue;
@@ -1680,7 +1691,7 @@ public class VTServer implements Runnable
 					setUniqueUserCredential(parameterLogin, parameterPassword);
 				}
 			}
-			if (parameterName.contains("AP"))
+			if (parameterName.contains("-AK"))
 			{
 				parameterValue = parameters[++i];
 				parameterPassword = parameterValue;

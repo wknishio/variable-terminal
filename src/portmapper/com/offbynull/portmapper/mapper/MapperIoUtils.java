@@ -729,7 +729,9 @@ public final class MapperIoUtils {
                                     it.remove();
                                 }
                             } catch (RuntimeException e) {
-                                LOG.error("Encountered error while parsing response from {}", respData, e);
+                                LOG.debug("Encountered error while parsing response from {}", respData, e);
+                            } catch (Throwable e) {
+                                LOG.debug("Encountered error while parsing response from {}", respData, e);
                             }
 
                             break;
@@ -1077,8 +1079,8 @@ public final class MapperIoUtils {
                     Object response = req.getBytesToResponseTransformer().create(respData);
                     LOG.debug("Parsed the following response to {} from {}", response, respData);
                     req.setResponse(response);
-                } catch (RuntimeException e) {
-                    LOG.error("Encountered error while parsing response from {}", respData, e);
+                } catch (Throwable e) {
+                    LOG.debug("Encountered error while parsing response from {}", respData, e);
                 }
             }
         }

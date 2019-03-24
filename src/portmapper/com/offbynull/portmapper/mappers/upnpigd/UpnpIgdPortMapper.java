@@ -182,7 +182,7 @@ public abstract class UpnpIgdPortMapper implements PortMapper {
      * @throws InterruptedException if interrupted
      */
     public static List<UpnpIgdPortMapper> identify(Bus networkBus) throws InterruptedException {
-        LOG.info("Attempting to identify devices");
+        LOG.debug("Attempting to identify devices");
         
         Validate.notNull(networkBus);
 
@@ -264,7 +264,9 @@ public abstract class UpnpIgdPortMapper implements PortMapper {
 
                     rootRequests.add(req);
                 } catch (RuntimeException iae) {
-                    LOG.error("Encountered error", iae);
+                    LOG.debug("Encountered error", iae);
+                } catch (Throwable iae) {
+                    LOG.debug("Encountered error", iae);
                 }
             }
         }
@@ -295,7 +297,9 @@ public abstract class UpnpIgdPortMapper implements PortMapper {
                     serviceDescRequests.add(req);
                 }
             } catch (RuntimeException iae) {
-                LOG.error("Encountered error", iae);
+                LOG.debug("Encountered error", iae);
+            } catch (Throwable iae) {
+                LOG.debug("Encountered error", iae);
             }
         }
         performBatchedTcpRequests(networkBus, serviceDescRequests, 3, 5000L, 5000L, 5000L);
@@ -306,8 +310,13 @@ public abstract class UpnpIgdPortMapper implements PortMapper {
             LOG.debug("Processing description {}", serviceDescRequest);
             try {
                 ServiceDescriptionUpnpIgdResponse serviceDescResp = (ServiceDescriptionUpnpIgdResponse) serviceDescRequest.getResponse();
-
+                //System.out.println("serviceDescRequest = " + serviceDescRequest.toString());
                 RootRequestResult rootReqRes = (RootRequestResult) serviceDescRequest.getOther();
+                if (serviceDescResp == null || serviceDescResp.getIdentifiedServices() == null)
+                {
+                	//System.out.println("serviceDescResp = null");
+                	continue;
+                }
                 for (Entry<ServiceType, IdentifiedService> e : serviceDescResp.getIdentifiedServices().entrySet()) {
                     ServiceType serviceType = e.getKey();
                     IdentifiedService identifiedService = e.getValue();
@@ -350,7 +359,9 @@ public abstract class UpnpIgdPortMapper implements PortMapper {
                     ret.add(upnpIgdPortMapper);
                 }
             } catch (RuntimeException iae) {
-                LOG.error("Encountered error", iae);
+                LOG.debug("Encountered error", iae);
+            } catch (Throwable iae) {
+                LOG.debug("Encountered error", iae);
             }
         }
 

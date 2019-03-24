@@ -63,9 +63,11 @@ final class ProcessReaderRunnable implements Runnable {
                 processBus.send(new ReadMessage(id, VTArrays.copyOf(buffer, count), readType));
             }
         } catch (RuntimeException ioe) {
-            LOG.error(id + " " + readType + " encountered exception", ioe);
+            LOG.debug(id + " " + readType + " encountered exception", ioe);
         } catch (IOException ioe) {
-            LOG.error(id + " " + readType + " encountered exception", ioe);
+            LOG.debug(id + " " + readType + " encountered exception", ioe);
+        } catch (Throwable t) {
+            LOG.debug(id + " " + readType + " encountered exception", t);
         }
         finally {
             IOUtils.closeQuietly(inputStream);

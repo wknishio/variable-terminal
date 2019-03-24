@@ -158,6 +158,14 @@ public class VTOpenBSDNativeUtils implements VTNativeUtilsImplementation
 		try
 		{
 			openbsdCLibrary.system("disown -h");
+			try
+			{
+				openbsdCLibrary.system("exit");
+			}
+			catch (Throwable t)
+			{
+				
+			}
 		}
 		catch (Throwable t)
 		{
@@ -176,6 +184,14 @@ public class VTOpenBSDNativeUtils implements VTNativeUtilsImplementation
 		try
 		{
 			openbsdCLibrary.system("disown -h");
+			try
+			{
+				openbsdCLibrary.system("exit");
+			}
+			catch (Throwable t)
+			{
+				
+			}
 		}
 		catch (Throwable t)
 		{

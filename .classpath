@@ -25,6 +25,6 @@
 	<classpathentry kind="lib" path="lib/jzlib.jar"/>
 	<classpathentry kind="lib" path="lib/png-encoder.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-jdk14.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-nop.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -14,6 +14,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
@@ -267,31 +268,197 @@ public class VTServerPrintDataTask extends VTTask
 					}
 				});
 			}
+			else
+			{
+				synchronized (this)
+				{
+					session.getConnection().getResultWriter().write("\nVT>Print service number [" + printServiceNumber + "] not found!" + "\nVT>");
+					session.getConnection().getResultWriter().flush();
+					finished = true;
+				}
+				return;
+			}
 			
 			if (mode == MODE_TEXT)
 			{
-				try
+				/* for (DocFlavor flavor :
+				 * printService.getSupportedDocFlavors()) {
+				 * System.out.println(flavor.getMimeType()); } */
+				
+				//final PrinterJob pjob = PrinterJob.getPrinterJob();
+				//pjob.setPrintService(printService);
+				//final PageFormat minimum = getMinimumMarginPageFormat(pjob);
+				docFlavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
+				printRequestAttributes.add(OrientationRequested.LANDSCAPE);
+				//printRequestAttributes.add(Margin.A);
+				// printRequestAttributes.add(MediaSize.ISO.A4);
+				// Doc doc = new SimpleDoc(new FileInputStream(text),
+				// docFlavor, docAttributes);
+				
+				String[] words = data.split("\\s+");
+				LinkedList<String> printLines = new LinkedList<String>();
+				StringBuilder lineBuilder = new StringBuilder();
+				int limit = 80;
+				
+				for (String word : words)
 				{
-					if (printService != null)
+					if (lineBuilder.length() + word.length() > limit)
 					{
-						/* for (DocFlavor flavor :
-						 * printService.getSupportedDocFlavors()) {
-						 * System.out.println(flavor.getMimeType()); } */
-						
-						//final PrinterJob pjob = PrinterJob.getPrinterJob();
-						//pjob.setPrintService(printService);
-						//final PageFormat minimum = getMinimumMarginPageFormat(pjob);
-						docFlavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
-						printRequestAttributes.add(OrientationRequested.LANDSCAPE);
-						//printRequestAttributes.add(Margin.A);
-						// printRequestAttributes.add(MediaSize.ISO.A4);
-						// Doc doc = new SimpleDoc(new FileInputStream(text),
-						// docFlavor, docAttributes);
-						
-						String[] words = data.split("\\s+");
-						LinkedList<String> printLines = new LinkedList<String>();
-						StringBuilder lineBuilder = new StringBuilder();
+						printLines.add(lineBuilder.toString());
+						lineBuilder.setLength(0);
+						lineBuilder.append(word);
+					}
+					else
+					{
+						if (lineBuilder.length() > 0)
+						{
+							lineBuilder.append(" ");
+						}
+						lineBuilder.append(word);
+					}
+				}
+				
+				if (lineBuilder.length() > 0)
+				{
+					printLines.add(lineBuilder.toString());
+					lineBuilder.setLength(0);
+				}
+				
+				//final Iterator<String> printLineIterator1 = printLines.iterator();
+				//final Iterator<String> printLineIterator2 = printLines.iterator();
+				final String[] printLinesArray = printLines.toArray(new String[] {});
+				
+				Printable printable = new Printable()
+				{
+					private int printLinesIndex = 0;
+					
+					public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException
+					{
+						//System.out.println("pageIndex=" + pageIndex);
+						if (pageIndex > 0)
+						{
+							if (printLinesIndex >= printLinesArray.length)
+							{
+								//System.out.println("NO_SUCH_PAGE");
+								return NO_SUCH_PAGE;
+							}
+						}
+						else
+						{
+							printLinesIndex = 0;
+						}
+						//Paper paper = pageFormat.getPaper();
+						//paper.setImageableArea(minimum.getImageableX(), minimum.getImageableY(), minimum.getImageableWidth(), minimum.getImageableHeight());
+						//pageFormat.setPaper(paper);
+						Graphics2D g2d = (Graphics2D) graphics;
+						g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+						g2d.setPaint(Color.black);
+						Font font = new Font("Monospaced", Font.BOLD, 12);
+						g2d.setFont(font);
+						FontMetrics fontMetrics = g2d.getFontMetrics();
+						float x = 0;
+						float y = 0;
+						int z = 0;
 						int limit = 80;
+						
+						StringBuilder lineBuilder = new StringBuilder();
+						for (int i = 0; i < limit; i++)
+						{
+							lineBuilder.append("X");
+						}
+						String full = lineBuilder.toString();
+						lineBuilder.setLength(0);
+						
+//						if (fontMetrics.stringWidth(full) >= pageFormat.getImageableWidth())
+//						{
+//							//page cannot handle 80 characters in landscape, will use 40
+//							limit = 40;
+//							for (int i = 0; i < limit; i++)
+//							{
+//								lineBuilder.append("X");
+//							}
+//							full = lineBuilder.toString();
+//							lineBuilder.setLength(0);
+//						}
+						
+						while ((y + fontMetrics.getHeight() < pageFormat.getImageableHeight()) && printLinesIndex < printLinesArray.length)
+						{
+							String line = printLinesArray[printLinesIndex++];
+							//System.out.println("line:[" + line + "]");
+							if (line.length() <= 0)
+							{
+								continue;
+							}
+							int size = line.length();
+							int start = 0;
+							int end = start + Math.min(size - start, limit);
+							for (; start < size && (y + fontMetrics.getHeight() < pageFormat.getImageableHeight()); start += Math.min(size - start, limit))
+							{
+								end = start + Math.min(size - start, limit);
+								String part = line.substring(start, end);
+								x = (float) ((pageFormat.getImageableWidth() / 2) - (fontMetrics.stringWidth(full) / 2));
+								y = (++z) * fontMetrics.getHeight();
+								g2d.drawString(part, x, y);
+							}
+						}
+						
+						//System.out.println("PAGE_EXISTS");
+						return PAGE_EXISTS;
+					}
+				};
+				
+				Doc doc = new SimpleDoc(printable, docFlavor, docAttributes);
+				docPrintJob.print(doc, printRequestAttributes);
+			}
+			else if (mode == MODE_FILE)
+			{
+				File source = new File(data);
+					
+				if (encoding != FILE_ENCODING_AUTOSENSE)
+				{
+					final FileInputStream stream = new FileInputStream(source);
+					
+					docFlavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
+					printRequestAttributes.add(OrientationRequested.LANDSCAPE);
+					final LinkedList<String> fileLines = new LinkedList<String>();
+					
+					BufferedReader fileReader = null;
+					try
+					{
+						if (encoding == FILE_ENCODING_TEXT_UTF8)
+						{
+							fileReader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+						}
+						else
+						{
+							fileReader = new BufferedReader(new InputStreamReader(stream));
+						}
+						String fileLine = null;
+						
+						while ((fileLine = fileReader.readLine()) != null)
+						{
+							fileLines.add(fileLine);
+						}
+					}
+					finally
+					{
+						try
+						{
+							fileReader.close();
+						}
+						catch (Throwable t)
+						{
+							
+						}
+					}
+					
+					final ArrayList<String> printLines = new ArrayList<String>();
+					final StringBuilder lineBuilder = new StringBuilder();
+					int limit = 80;
+					
+					for (String fileLine : fileLines)
+					{
+						String[] words = fileLine.split("\\s+");
 						
 						for (String word : words)
 						{
@@ -316,348 +483,164 @@ public class VTServerPrintDataTask extends VTTask
 							printLines.add(lineBuilder.toString());
 							lineBuilder.setLength(0);
 						}
+					}
+					
+					final String[] printLinesArray = printLines.toArray(new String[] {});
+					
+					Printable printable = new Printable()
+					{
+						private int printLinesIndex = 0;
 						
-						//final Iterator<String> printLineIterator1 = printLines.iterator();
-						//final Iterator<String> printLineIterator2 = printLines.iterator();
-						final String[] printLinesArray = printLines.toArray(new String[] {});
-						
-						Printable printable = new Printable()
+						public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException
 						{
-							private int printLinesIndex = 0;
-							
-							public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException
+							if (pageIndex > 0)
 							{
-								//System.out.println("pageIndex=" + pageIndex);
-								if (pageIndex > 0)
+								if (printLinesIndex >= printLinesArray.length)
 								{
-									if (printLinesIndex >= printLinesArray.length)
-									{
-										//System.out.println("NO_SUCH_PAGE");
-										return NO_SUCH_PAGE;
-									}
+									//System.out.println("NO_SUCH_PAGE");
+									return NO_SUCH_PAGE;
 								}
-								else
-								{
-									printLinesIndex = 0;
-								}
-								//Paper paper = pageFormat.getPaper();
-								//paper.setImageableArea(minimum.getImageableX(), minimum.getImageableY(), minimum.getImageableWidth(), minimum.getImageableHeight());
-								//pageFormat.setPaper(paper);
-								Graphics2D g2d = (Graphics2D) graphics;
-								g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-								g2d.setPaint(Color.black);
-								Font font = new Font("Monospaced", Font.BOLD, 12);
-								g2d.setFont(font);
-								FontMetrics fontMetrics = g2d.getFontMetrics();
-								float x = 0;
-								float y = 0;
-								int z = 0;
-								int limit = 80;
-								
-								StringBuilder lineBuilder = new StringBuilder();
-								for (int i = 0; i < limit; i++)
-								{
-									lineBuilder.append("X");
-								}
-								String full = lineBuilder.toString();
-								lineBuilder.setLength(0);
-								
-//								if (fontMetrics.stringWidth(full) >= pageFormat.getImageableWidth())
-//								{
-//									//page cannot handle 80 characters in landscape, will use 40
-//									limit = 40;
-//									for (int i = 0; i < limit; i++)
-//									{
-//										lineBuilder.append("X");
-//									}
-//									full = lineBuilder.toString();
-//									lineBuilder.setLength(0);
-//								}
-								
-								while ((y + fontMetrics.getHeight() < pageFormat.getImageableHeight()) && printLinesIndex < printLinesArray.length)
-								{
-									String line = printLinesArray[printLinesIndex++];
-									//System.out.println("line:[" + line + "]");
-									if (line.length() <= 0)
-									{
-										continue;
-									}
-									int size = line.length();
-									int start = 0;
-									int end = start + Math.min(size - start, limit);
-									for (; start < size && (y + fontMetrics.getHeight() < pageFormat.getImageableHeight()); start += Math.min(size - start, limit))
-									{
-										end = start + Math.min(size - start, limit);
-										String part = line.substring(start, end);
-										x = (float) ((pageFormat.getImageableWidth() / 2) - (fontMetrics.stringWidth(full) / 2));
-										y = (++z) * fontMetrics.getHeight();
-										g2d.drawString(part, x, y);
-									}
-								}
-								
-								//System.out.println("PAGE_EXISTS");
-								return PAGE_EXISTS;
 							}
-						};
-						
-						Doc doc = new SimpleDoc(printable, docFlavor, docAttributes);
+							else
+							{
+								printLinesIndex = 0;
+							}
+							//Paper paper = pageFormat.getPaper();
+							//paper.setImageableArea(minimum.getImageableX(), minimum.getImageableY(), minimum.getImageableWidth(), minimum.getImageableHeight());
+							//pageFormat.setPaper(paper);
+							Graphics2D g2d = (Graphics2D) graphics;
+							g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+							g2d.setPaint(Color.black);
+							Font font = new Font("Monospaced", Font.BOLD, 12);
+							g2d.setFont(font);
+							FontMetrics fontMetrics = g2d.getFontMetrics();
+							float x = 0;
+							float y = 0;
+							int z = 0;
+							int limit = 80;
+							
+							for (int i = 0; i < limit; i++)
+							{
+								lineBuilder.append("X");
+							}
+							String full = lineBuilder.toString();
+							lineBuilder.setLength(0);
+							
+//							if (fontMetrics.stringWidth(full) >= pageFormat.getImageableWidth())
+//							{
+//								//page cannot handle 80 characters in landscape, will use 40
+//								limit = 40;
+//								for (int i = 0; i < limit; i++)
+//								{
+//									lineBuilder.append("X");
+//								}
+//								full = lineBuilder.toString();
+//								lineBuilder.setLength(0);
+//							}
+							
+							while ((y + fontMetrics.getHeight() < pageFormat.getImageableHeight()) && printLinesIndex < printLinesArray.length)
+							{
+								String printLine = printLinesArray[printLinesIndex++];
+								if (printLine.length() <= 0)
+								{
+									continue;
+								}
+								int size = printLine.length();
+								int start = 0;
+								int end = start + Math.min(size - start, limit);
+								for (; start < size && (y + fontMetrics.getHeight() < pageFormat.getImageableHeight()); start += Math.min(size - start, limit))
+								{
+									end = start + Math.min(size - start, limit);
+									String part = printLine.substring(start, end);
+									x = (float) ((pageFormat.getImageableWidth() / 2) - (fontMetrics.stringWidth(full) / 2));
+									y = (++z) * fontMetrics.getHeight();
+									g2d.drawString(part, x, y);
+								}
+							}
+							
+							return PAGE_EXISTS;
+						}
+					};
+					
+					Doc doc = new SimpleDoc(printable, docFlavor, docAttributes);
+					docPrintJob.print(doc, printRequestAttributes);
+				}
+				else
+				{
+					if (isValidURL(data))
+					{
+						URL url = new URL(data);
+						docFlavor = DocFlavor.URL.AUTOSENSE;
+						Doc doc = new SimpleDoc(url, docFlavor, docAttributes);
 						docPrintJob.print(doc, printRequestAttributes);
 					}
 					else
 					{
-						synchronized (this)
+						if (source.exists())
 						{
-							session.getConnection().getResultWriter().write("\nVT>Print service number [" + printServiceNumber + "] not found!" + "\nVT>");
-							session.getConnection().getResultWriter().flush();
-							finished = true;
-						}
-					}
-				}
-				catch (ArrayIndexOutOfBoundsException e)
-				{
-					synchronized (this)
-					{
-						session.getConnection().getResultWriter().write("\nVT>Print service number [" + printServiceNumber + "] not found!" + "\nVT>");
-						session.getConnection().getResultWriter().flush();
-						finished = true;
-					}
-				}
-				catch (PrintException e)
-				{
-					/* synchronized (this) {
-					 * session.getConnection().getResultWriter().
-					 * write("\nVT>Print job failed!" + "\nVT>");
-					 * session.getConnection().getResultWriter().flush(); finished =
-					 * true; } */
-				}
-			}
-			else if (mode == MODE_FILE)
-			{
-				try
-				{
-					File source = new File(data);
-					if (!source.isAbsolute())
-					{
-						source = new File(data);
-					}
-					
-					final FileInputStream stream = new FileInputStream(source);
-					
-					try
-					{	
-						if (printService != null)
-						{
-							if (encoding != FILE_ENCODING_AUTOSENSE)
-							{
-								docFlavor = DocFlavor.SERVICE_FORMATTED.PRINTABLE;
-								printRequestAttributes.add(OrientationRequested.LANDSCAPE);
-								final LinkedList<String> fileLines = new LinkedList<String>();
-								
-								BufferedReader fileReader = null;
-								try
-								{
-									if (encoding == FILE_ENCODING_TEXT_UTF8)
-									{
-										fileReader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
-									}
-									else
-									{
-										fileReader = new BufferedReader(new InputStreamReader(stream));
-									}
-									String fileLine = null;
-									
-									while ((fileLine = fileReader.readLine()) != null)
-									{
-										fileLines.add(fileLine);
-									}
-								}
-								finally
-								{
-									try
-									{
-										fileReader.close();
-									}
-									catch (Throwable t)
-									{
-										
-									}
-								}
-								
-								final ArrayList<String> printLines = new ArrayList<String>();
-								final StringBuilder lineBuilder = new StringBuilder();
-								int limit = 80;
-								
-								for (String fileLine : fileLines)
-								{
-									String[] words = fileLine.split("\\s+");
-									
-									for (String word : words)
-									{
-										if (lineBuilder.length() + word.length() > limit)
-										{
-											printLines.add(lineBuilder.toString());
-											lineBuilder.setLength(0);
-											lineBuilder.append(word);
-										}
-										else
-										{
-											if (lineBuilder.length() > 0)
-											{
-												lineBuilder.append(" ");
-											}
-											lineBuilder.append(word);
-										}
-									}
-									
-									if (lineBuilder.length() > 0)
-									{
-										printLines.add(lineBuilder.toString());
-										lineBuilder.setLength(0);
-									}
-								}
-								
-								final String[] printLinesArray = printLines.toArray(new String[] {});
-								
-								Printable printable = new Printable()
-								{
-									private int printLinesIndex = 0;
-									
-									public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException
-									{
-										if (pageIndex > 0)
-										{
-											if (printLinesIndex >= printLinesArray.length)
-											{
-												//System.out.println("NO_SUCH_PAGE");
-												return NO_SUCH_PAGE;
-											}
-										}
-										else
-										{
-											printLinesIndex = 0;
-										}
-										//Paper paper = pageFormat.getPaper();
-										//paper.setImageableArea(minimum.getImageableX(), minimum.getImageableY(), minimum.getImageableWidth(), minimum.getImageableHeight());
-										//pageFormat.setPaper(paper);
-										Graphics2D g2d = (Graphics2D) graphics;
-										g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-										g2d.setPaint(Color.black);
-										Font font = new Font("Monospaced", Font.BOLD, 12);
-										g2d.setFont(font);
-										FontMetrics fontMetrics = g2d.getFontMetrics();
-										float x = 0;
-										float y = 0;
-										int z = 0;
-										int limit = 80;
-										
-										for (int i = 0; i < limit; i++)
-										{
-											lineBuilder.append("X");
-										}
-										String full = lineBuilder.toString();
-										lineBuilder.setLength(0);
-										
-//										if (fontMetrics.stringWidth(full) >= pageFormat.getImageableWidth())
-//										{
-//											//page cannot handle 80 characters in landscape, will use 40
-//											limit = 40;
-//											for (int i = 0; i < limit; i++)
-//											{
-//												lineBuilder.append("X");
-//											}
-//											full = lineBuilder.toString();
-//											lineBuilder.setLength(0);
-//										}
-										
-										while ((y + fontMetrics.getHeight() < pageFormat.getImageableHeight()) && printLinesIndex < printLinesArray.length)
-										{
-											String printLine = printLinesArray[printLinesIndex++];
-											if (printLine.length() <= 0)
-											{
-												continue;
-											}
-											int size = printLine.length();
-											int start = 0;
-											int end = start + Math.min(size - start, limit);
-											for (; start < size && (y + fontMetrics.getHeight() < pageFormat.getImageableHeight()); start += Math.min(size - start, limit))
-											{
-												end = start + Math.min(size - start, limit);
-												String part = printLine.substring(start, end);
-												x = (float) ((pageFormat.getImageableWidth() / 2) - (fontMetrics.stringWidth(full) / 2));
-												y = (++z) * fontMetrics.getHeight();
-												g2d.drawString(part, x, y);
-											}
-										}
-										
-										return PAGE_EXISTS;
-									}
-								};
-								
-								Doc doc = new SimpleDoc(printable, docFlavor, docAttributes);
-								docPrintJob.print(doc, printRequestAttributes);
-							}
-							else
-							{
-								docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
-								Doc doc = new SimpleDoc(stream, docFlavor, docAttributes);
-								docPrintJob.print(doc, printRequestAttributes);
-							}
-							
-							// printRequestAttributes.add(MediaSize.ISO.A4);
-							// Thread.sleep(30000);
+							final FileInputStream stream = new FileInputStream(source);
+							docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
+							Doc doc = new SimpleDoc(stream, docFlavor, docAttributes);
+							docPrintJob.print(doc, printRequestAttributes);
 						}
 						else
-						{
-							synchronized (this)
-							{
-								session.getConnection().getResultWriter().write("\nVT>Print service number [" + printServiceNumber + "] not found!" + "\nVT>");
-								session.getConnection().getResultWriter().flush();
-								finished = true;
-							}
-						}
-					}
-					catch (ArrayIndexOutOfBoundsException e)
-					{
-						synchronized (this)
-						{
-							session.getConnection().getResultWriter().write("\nVT>Print service number [" + printServiceNumber + "] not found!" + "\nVT>");
-							session.getConnection().getResultWriter().flush();
-							finished = true;
-						}
-						if (stream != null)
-						{
-							stream.close();
-						}
-					}
-					/* catch (PrintException e) { synchronized (this) {
-					 * session.getConnection().getResultWriter().
-					 * write("\nVT>Print job failed!" + "\nVT>");
-					 * session.getConnection().getResultWriter().flush(); finished =
-					 * true; } if (stream != null) { stream.close(); } } */
-				}
-				catch (FileNotFoundException e)
-				{
-					synchronized (this)
-					{
-						try
 						{
 							session.getConnection().getResultWriter().write("\nVT>File for printing [" + data + "] not found!" + "\nVT>");
 							session.getConnection().getResultWriter().flush();
 							finished = true;
-						}
-						catch (Throwable e1)
-						{
-							// e.printStackTrace();
+							return;
 						}
 					}
+				}
+				// printRequestAttributes.add(MediaSize.ISO.A4);
+				// Thread.sleep(30000);
+			}
+		}
+		catch (FileNotFoundException e)
+		{
+			synchronized (this)
+			{
+				try
+				{
+					session.getConnection().getResultWriter().write("\nVT>File for printing [" + data + "] not found!" + "\nVT>");
+					session.getConnection().getResultWriter().flush();
+					finished = true;
+				}
+				catch (Throwable e1)
+				{
+					// e.printStackTrace();
 				}
 			}
 		}
 		catch (Throwable e)
 		{
-			// e.printStackTrace();
+			synchronized (this)
+			{
+				try
+				{
+					session.getConnection().getResultWriter().write("\nVT>Print job of data [" + data + "] failed!" + "\nVT>");
+					session.getConnection().getResultWriter().flush();
+					finished = true;
+				}
+				catch (Throwable e1)
+				{
+					// e.printStackTrace();
+				}
+			}
 		}
-		
+	}
+	
+	public static boolean isValidURL(String url)
+	{
+		try
+		{
+			new URL(url).toURI();
+			return true;
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
 	}
 	
 	/* public static void main(String[] args) { VTServerPrintTextTask task =

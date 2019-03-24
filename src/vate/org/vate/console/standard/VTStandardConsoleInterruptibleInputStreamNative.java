@@ -1,7 +1,6 @@
 package org.vate.console.standard;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.vate.stream.pipe.VTPipedInputStream;
 import org.vate.stream.pipe.VTPipedOutputStream;

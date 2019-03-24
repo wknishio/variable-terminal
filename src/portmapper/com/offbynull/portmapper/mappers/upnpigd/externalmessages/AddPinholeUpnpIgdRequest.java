@@ -85,7 +85,7 @@ public final class AddPinholeUpnpIgdRequest extends UpnpIgdSoapRequest {
         
         ret.put("Protocol", (protocol == null ? "65535" : "" + protocol.getProtocolNumber())); // 65535 is wildcard
         
-        Validate.inclusiveBetween(1L, 0xFFFFFFFFL, leaseDuration);
+        Validate.inclusiveBetween(0L, 0xFFFFFFFFL, leaseDuration);
         ret.put("LeaseTime", "" + leaseDuration);
         
         return ret;

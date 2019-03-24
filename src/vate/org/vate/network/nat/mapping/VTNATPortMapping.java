@@ -46,4 +46,13 @@ public class VTNATPortMapping
 	{
 		return protocol + ";" + internalPort + ";" + remoteHost + ";" + externalPort + ";" + description;
 	}
+	
+	public boolean equals(Object other)
+	{
+		if (other == null)
+		{
+			return false;
+		}
+		return toString().equals(other.toString());
+	}
 }

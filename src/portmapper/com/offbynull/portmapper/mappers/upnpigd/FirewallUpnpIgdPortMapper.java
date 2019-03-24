@@ -73,11 +73,11 @@ public final class FirewallUpnpIgdPortMapper extends UpnpIgdPortMapper {
 
     
     public MappedPort mapPort(PortType portType, int internalPort, int externalPort, long lifetime) throws InterruptedException {
-        LOG.info("Attempting to map {} Internal:{} External:{} Lifetime:{}", portType, internalPort, externalPort, lifetime);
+        LOG.debug("Attempting to map {} Internal:{} External:{} Lifetime:{}", portType, internalPort, externalPort, lifetime);
         
         Validate.notNull(portType);
         Validate.inclusiveBetween(1, 65535, internalPort);
-        Validate.inclusiveBetween(1L, Long.MAX_VALUE, lifetime);
+        Validate.inclusiveBetween(0L, Long.MAX_VALUE, lifetime);
 
         Bus networkBus = getNetworkBus();
         URL controlUrl = getControlUrl();
@@ -152,7 +152,7 @@ public final class FirewallUpnpIgdPortMapper extends UpnpIgdPortMapper {
 
     
     public void unmapPort(MappedPort mappedPort) throws InterruptedException {
-        LOG.info("Attempting to unmap {}", mappedPort);
+        LOG.debug("Attempting to unmap {}", mappedPort);
         
         Validate.notNull(mappedPort);
         Validate.isTrue(mappedPort instanceof FirewallMappedPort);
@@ -193,7 +193,7 @@ public final class FirewallUpnpIgdPortMapper extends UpnpIgdPortMapper {
 
     
     public MappedPort refreshPort(MappedPort mappedPort, long lifetime) throws InterruptedException {
-        LOG.info("Attempting to refresh mapping {} for {}", mappedPort, lifetime);
+        LOG.debug("Attempting to refresh mapping {} for {}", mappedPort, lifetime);
         
         Validate.notNull(mappedPort);
         Validate.isTrue(mappedPort instanceof FirewallMappedPort);

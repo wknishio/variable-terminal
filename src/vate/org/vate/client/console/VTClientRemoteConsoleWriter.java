@@ -1618,6 +1618,33 @@ public class VTClientRemoteConsoleWriter extends VTTask
 						VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
 					}
 				}
+				else if (splitCommand[0].equalsIgnoreCase("*VTSAVE") || splitCommand[0].equalsIgnoreCase("*VTSV"))
+				{
+					if (splitCommand.length == 1)
+					{
+						try
+						{
+							session.getClient().saveClientSettingsFile("variable-terminal-client.properties");
+							VTConsole.print("\nVT>Saved client settings file [variable-terminal-client.properties]\nVT>");
+						}
+						catch (Throwable t)
+						{
+							VTConsole.print("\nVT>Cannot save client settings file [variable-terminal-client.properties]\nVT>");
+						}
+					}
+					else if (splitCommand.length >= 2)
+					{
+						try
+						{
+							session.getClient().saveClientSettingsFile(splitCommand[1]);
+							VTConsole.print("\nVT>Saved client settings file [" + splitCommand[1] + "]\nVT>");
+						}
+						catch (Throwable t)
+						{
+							VTConsole.print("\nVT>Cannot save client settings file [" + splitCommand[1] + "]\nVT>");
+						}
+					}
+				}
 			}
 			else
 			{

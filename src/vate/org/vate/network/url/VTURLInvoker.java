@@ -1,6 +1,5 @@
 package org.vate.network.url;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -72,7 +71,7 @@ public class VTURLInvoker
 				{
 					inputStream.close();
 				}
-				catch (IOException e)
+				catch (Throwable e)
 				{
 					
 				}
@@ -83,7 +82,7 @@ public class VTURLInvoker
 				{
 					outputStream.close();
 				}
-				catch (IOException e)
+				catch (Throwable e)
 				{
 					
 				}

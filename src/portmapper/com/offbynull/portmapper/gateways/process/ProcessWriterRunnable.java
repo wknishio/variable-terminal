@@ -69,13 +69,16 @@ final class ProcessWriterRunnable implements Runnable {
                 LOG.debug("{} Write {} bytes", id, buffer.length);
             }
         } catch (RuntimeException ioe) {
-            LOG.error(id + " Encountered exception", ioe);
+            LOG.debug(id + " Encountered exception", ioe);
         } catch (IOException ioe) {
-            LOG.error(id + " Encountered exception", ioe);
+            LOG.debug(id + " Encountered exception", ioe);
         } catch (InterruptedException ie) {
             Thread.interrupted();
             LOG.debug(id + " Interrupted");
-        } finally {
+        } catch (Throwable ioe) {
+            LOG.debug(id + " Encountered exception", ioe);
+        }
+        finally {
             IOUtils.closeQuietly(outputStream);
             LOG.debug("{} Shutting down writer", id);
         }

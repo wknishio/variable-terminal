@@ -16,6 +16,7 @@ import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptions
 import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuDefaultDeviceOptionListener;
 import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuDeltaCodingOptionsListener;
 import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuDrawPointerOptionsListener;
+import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuDrawPointerSizeOptionsListener;
 import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener;
 import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuInterruptRefreshOptionListener;
 import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuNextDeviceOptionListener;
@@ -35,6 +36,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 	private Menu colorQualityMenu;
 	private Menu refreshModeMenu;
 	private Menu drawPointerMenu;
+	private Menu drawPointerSizeMenu;
 	private Menu refreshIntervalMenu;
 	private Menu captureModeMenu;
 	private Menu scaledCaptureMenu;
@@ -85,6 +87,9 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 	// private CheckboxMenuItem imageCodingGIFOption;
 	
 	private Map<Integer, CheckboxMenuItem> captureIntervalOptions;
+	private MenuItem increasePointerOption;
+	private MenuItem decreasePointerOption;
+	private MenuItem normalizePointerOption;
 	
 	public VTGraphicsModeClientOptionsMenuBarViewMenu(VTGraphicsModeClientWriter writer)
 	{
@@ -143,6 +148,12 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		this.showPointerOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuDrawPointerOptionsListener(writer, showPointerOption));
 		this.hidePointerOption = new CheckboxMenuItem("Hide", false);
 		this.hidePointerOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuDrawPointerOptionsListener(writer, hidePointerOption));
+		this.increasePointerOption = new MenuItem("Increase");
+		this.increasePointerOption.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuDrawPointerSizeOptionsListener(writer, 1));
+		this.decreasePointerOption = new MenuItem("Decrease");
+		this.decreasePointerOption.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuDrawPointerSizeOptionsListener(writer, -1));
+		this.normalizePointerOption = new MenuItem("Normalize");
+		this.normalizePointerOption.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuDrawPointerSizeOptionsListener(writer, 0));
 		this.captureIntervalOptions = new TreeMap<Integer, CheckboxMenuItem>();
 		this.captureIntervalOptions.put(0, new CheckboxMenuItem());
 		this.captureIntervalOptions.put(1, new CheckboxMenuItem());
@@ -201,6 +212,10 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		// imageCodingGIFOption,
 		// VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GIF));
 		// VTGraphicsModeClientOptionsMenuBarViewMenuScreenCaptureScaleOptionsListener
+		this.drawPointerSizeMenu = new Menu("Size ");
+		this.drawPointerSizeMenu.add(increasePointerOption);
+		this.drawPointerSizeMenu.add(decreasePointerOption);
+		this.drawPointerSizeMenu.add(normalizePointerOption);
 		
 		this.colorQualityMenu.add(worstColorOption);
 		this.colorQualityMenu.add(lowColorOption);
@@ -212,6 +227,8 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		this.refreshModeMenu.add(interruptedRefreshOption);
 		this.drawPointerMenu.add(showPointerOption);
 		this.drawPointerMenu.add(hidePointerOption);
+		this.drawPointerMenu.add(drawPointerSizeMenu);
+		
 		for (Entry<Integer, CheckboxMenuItem> captureIntervalOption : this.captureIntervalOptions.entrySet())
 		{
 			Integer screenCaptureInterval = captureIntervalOption.getKey();

@@ -50,7 +50,7 @@ public final class UpdatePinholeUpnpIgdRequest extends UpnpIgdSoapRequest {
         Validate.notNull(uniqueId);
         ret.put("UniqueID", uniqueId);
         
-        Validate.inclusiveBetween(1L, 0xFFFFFFFFL, leaseDuration);
+        Validate.inclusiveBetween(0L, 0xFFFFFFFFL, leaseDuration);
         ret.put("NewLeaseTime", "" + leaseDuration);
         
         return ret;

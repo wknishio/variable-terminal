@@ -159,6 +159,7 @@ public class VTClientGraphicalConsoleInputMenuBar extends MenuBar
 		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Disconnect From Server", "*VTDISCONNECT\n"));
 		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Close Client Application", "*VTQUIT\n"));
 		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Close Server Application", "*VTTERMINATE\n"));
+		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Save Client Connection Settings", "*VTSAVE "));
 		
 		consoleMenu = new Menu("Console ");
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Show Remote System Time", "*VTTIME\n"));
@@ -176,29 +177,29 @@ public class VTClientGraphicalConsoleInputMenuBar extends MenuBar
 		serverProxySettingsMenu = new Menu("Proxy ");
 		serverEncryptionSettingsMenu = new Menu("Encryption ");
 		serverSessionsSettingsMenu = new Menu("Sessions ");
-		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("List All Settings", "*VTSETTING\n"));
+		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("List All Settings", "*VTACCESS\n"));
 		serverSettingsMenu.add(serverConnectionSettingsMenu);
 		serverSettingsMenu.add(serverEncryptionSettingsMenu);
 		serverSettingsMenu.add(serverProxySettingsMenu);
 		serverSettingsMenu.add(serverAuthenticationSettingsMenu);
 		serverSettingsMenu.add(serverSessionsSettingsMenu);
-		serverConnectionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Mode", "*VTSETTING CM "));
-		serverConnectionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Host", "*VTSETTING CH "));
-		serverConnectionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Port", "*VTSETTING CP "));
-		serverConnectionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection NAT Port", "*VTSETTING NP "));
-		serverEncryptionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Encryption Type", "*VTSETTING ET "));
-		serverEncryptionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Encryption Password", "*VTSETTING EK "));
-		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Type", "*VTSETTING PT "));
-		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Host", "*VTSETTING PH "));
-		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Port", "*VTSETTING PP "));
-		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Authentication", "*VTSETTING PA "));
-		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy User", "*VTSETTING PU "));
-		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Password", "*VTSETTING PS "));
+		serverConnectionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Mode", "*VTACCESS CM "));
+		serverConnectionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Host", "*VTACCESS CH "));
+		serverConnectionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Port", "*VTACCESS CP "));
+		serverConnectionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection NAT Port", "*VTACCESS NP "));
+		serverEncryptionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Encryption Type", "*VTACCESS ET "));
+		serverEncryptionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Encryption Password", "*VTACCESS EK "));
+		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Type", "*VTACCESS PT "));
+		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Host", "*VTACCESS PH "));
+		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Port", "*VTACCESS PP "));
+		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Authentication", "*VTACCESS PA "));
+		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy User", "*VTACCESS PU "));
+		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Password", "*VTACCESS PK "));
 		serverAuthenticationSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Single Login", "*VTLOCK "));
-		serverSessionsSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Sessions Limit", "*VTSETTING SL "));
-		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Save Settings File", "*VTSETTING SF "));
-		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Load Settings File", "*VTSETTING LF "));
-		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTSETTING\n"));
+		serverSessionsSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Sessions Limit", "*VTACCESS SL "));
+		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Save Settings File", "*VTACCESS SF "));
+		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Load Settings File", "*VTACCESS LF "));
+		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTACCESS\n"));
 		//settingsMenu.add(serverSettingsMenu);
 		
 		serverRuntimeMenu = new Menu("Runtime ");
@@ -242,7 +243,8 @@ public class VTClientGraphicalConsoleInputMenuBar extends MenuBar
 		serverNetworkMenu.add(serverSOCKSProxyTunnelsMenu);
 		
 		serverPrintMenu = new Menu("Printing ");
-		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("List Remote Print Services", "*VTPRINTSERVICES\n"));
+		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("List Remote Printers", "*VTPRINTERS\n"));
+		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Detail Specific Remote Printer", "*VTPRINTERS "));
 		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Print Text In Remote Printer", "*VTPRINTDATA T "));
 		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Print File In Remote Printer", "*VTPRINTDATA F "));
 		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTPRINTDATA\n"));

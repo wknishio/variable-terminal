@@ -157,6 +157,14 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
 		try
 		{
 			linuxCLibrary.system("disown -h");
+			try
+			{
+				linuxCLibrary.system("exit");
+			}
+			catch (Throwable t)
+			{
+				
+			}
 		}
 		catch (Throwable t)
 		{
@@ -175,6 +183,14 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
 		try
 		{
 			linuxCLibrary.system("disown -h");
+			try
+			{
+				linuxCLibrary.system("exit");
+			}
+			catch (Throwable t)
+			{
+				
+			}
 		}
 		catch (Throwable t)
 		{

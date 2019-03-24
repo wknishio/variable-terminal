@@ -995,7 +995,7 @@ public class VTServerRemoteConsoleReader extends VTTask
 //			session.setRestartingShell(true);
 //			session.restartShell();
 //		}
-		else if (splitCommand[0].equalsIgnoreCase("*VTPRINTSERVICES") || splitCommand[0].equalsIgnoreCase("*VTPSVS"))
+		else if (splitCommand[0].equalsIgnoreCase("*VTPRINTERS") || splitCommand[0].equalsIgnoreCase("*VTPRTS"))
 		{
 			synchronized (session.getPrintServiceResolver())
 			{
@@ -1007,12 +1007,29 @@ public class VTServerRemoteConsoleReader extends VTTask
 				}
 				if (!session.getPrintServiceResolver().aliveThread())
 				{
+					if (splitCommand.length >= 2)
+					{
+						try
+						{
+							int order = Integer.parseInt(splitCommand[1]);
+							session.getPrintServiceResolver().setOrder(order);
+						}
+						catch (Throwable t)
+						{
+							connection.getResultWriter().write("\nVT>Print service order number [" + splitCommand[1] + "] is invalid!\nVT>");
+							connection.getResultWriter().flush();
+						}
+					}
+					else
+					{
+						session.getPrintServiceResolver().setOrder(-1);
+					}
 					session.getPrintServiceResolver().setFinished(false);
 					session.getPrintServiceResolver().startThread();
 				}
 				else
 				{
-					connection.getResultWriter().write("\nVT>Another print service listing is still running!\nVT>");
+					connection.getResultWriter().write("\nVT>Another print service search is still running!\nVT>");
 					connection.getResultWriter().flush();
 				}
 			}
@@ -1807,7 +1824,7 @@ public class VTServerRemoteConsoleReader extends VTTask
 				session.getShellCommandExecutor().flush();
 			}
 		}
-		else if (splitCommand[0].equalsIgnoreCase("*VTSETTING") || splitCommand[0].equalsIgnoreCase("*VTSTG"))
+		else if (splitCommand[0].equalsIgnoreCase("*VTACCESS") || splitCommand[0].equalsIgnoreCase("*VTAC"))
 		{
 			if (splitCommand.length == 1)
 			{
@@ -1894,7 +1911,7 @@ public class VTServerRemoteConsoleReader extends VTTask
 					message.append("\nVT>Proxy authentication(PA): [Disabled]");
 				}
 				message.append("\nVT>Proxy user(PU): [" + proxyUser + "]");
-				message.append("\nVT>Proxy password(PS): [" + proxyPassword + "]");
+				message.append("\nVT>Proxy password(PK): [" + proxyPassword + "]");
 				message.append("\nVT>Sessions limit(SL): [" + sessionsLimit + "]");
 				message.append("\nVT>\nVT>End of connection settings list on server\nVT>");
 				connection.getResultWriter().write(message.toString());
@@ -1910,12 +1927,12 @@ public class VTServerRemoteConsoleReader extends VTTask
 						try
 						{
 							session.getServer().saveServerSettingsFile("variable-terminal-server.properties");
-							connection.getResultWriter().write("\nVT>Saved configuration file:[variable-terminal-server.properties]");
+							connection.getResultWriter().write("\nVT>Saved settings file:[variable-terminal-server.properties]");
 							connection.getResultWriter().flush();
 						}
 						catch (Throwable t)
 						{
-							connection.getResultWriter().write("\nVT>Failed to save configuration file:[variable-terminal-server.properties]");
+							connection.getResultWriter().write("\nVT>Failed to save settings file:[variable-terminal-server.properties]");
 							connection.getResultWriter().flush();
 						}
 					}
@@ -1924,12 +1941,12 @@ public class VTServerRemoteConsoleReader extends VTTask
 						try
 						{
 							session.getServer().saveServerSettingsFile(splitCommand[2]);
-							connection.getResultWriter().write("\nVT>Saved configuration file:[" + splitCommand[2] + "]");
+							connection.getResultWriter().write("\nVT>Saved settings file:[" + splitCommand[2] + "]");
 							connection.getResultWriter().flush();
 						}
 						catch (Throwable t)
 						{
-							connection.getResultWriter().write("\nVT>Failed to save configuration file:[" + splitCommand[2] + "]");
+							connection.getResultWriter().write("\nVT>Failed to save settings file:[" + splitCommand[2] + "]");
 							connection.getResultWriter().flush();
 						}
 					}
@@ -1952,12 +1969,12 @@ public class VTServerRemoteConsoleReader extends VTTask
 								connector.interruptConnector();
 								connector.notify();
 							}
-							connection.getResultWriter().write("\nVT>Loaded configuration file:[variable-terminal-server.properties]");
+							connection.getResultWriter().write("\nVT>Loaded settings file:[variable-terminal-server.properties]");
 							connection.getResultWriter().flush();
 						}
 						catch (Throwable t)
 						{
-							connection.getResultWriter().write("\nVT>Failed to load configuration file:[variable-terminal-server.properties]");
+							connection.getResultWriter().write("\nVT>Failed to load settings file:[variable-terminal-server.properties]");
 							connection.getResultWriter().flush();
 						}
 					}
@@ -1972,12 +1989,12 @@ public class VTServerRemoteConsoleReader extends VTTask
 								connector.interruptConnector();
 								connector.notify();
 							}
-							connection.getResultWriter().write("\nVT>Loaded configuration file:[" + splitCommand[2] + "]");
+							connection.getResultWriter().write("\nVT>Loaded settings file:[" + splitCommand[2] + "]");
 							connection.getResultWriter().flush();
 						}
 						catch (Throwable t)
 						{
-							connection.getResultWriter().write("\nVT>Failed to load configuration file:[" + splitCommand[2] + "]");
+							connection.getResultWriter().write("\nVT>Failed to load settings file:[" + splitCommand[2] + "]");
 							connection.getResultWriter().flush();
 						}
 					}
@@ -2333,12 +2350,12 @@ public class VTServerRemoteConsoleReader extends VTTask
 						connection.getResultWriter().flush();
 					}
 				}
-				else if (splitCommand[1].equalsIgnoreCase("PS"))
+				else if (splitCommand[1].equalsIgnoreCase("PK"))
 				{
 					if (splitCommand.length == 2)
 					{
 						String proxyPassword = session.getServer().getServerConnector().getProxyPassword();
-						connection.getResultWriter().write("\nVT>Proxy password(PS): [" + proxyPassword + "]\nVT>");
+						connection.getResultWriter().write("\nVT>Proxy password(PK): [" + proxyPassword + "]\nVT>");
 						connection.getResultWriter().flush();
 					}
 					else if (splitCommand.length >= 3)
@@ -2351,7 +2368,7 @@ public class VTServerRemoteConsoleReader extends VTTask
 							connector.interruptConnector();
 							connector.notify();
 						}
-						connection.getResultWriter().write("\nVT>Proxy password(PS) set to: [" + proxyPassword + "]\nVT>");
+						connection.getResultWriter().write("\nVT>Proxy password(PK) set to: [" + proxyPassword + "]\nVT>");
 						connection.getResultWriter().flush();
 					}
 					else

@@ -1259,6 +1259,45 @@ public class VTGraphicsModeClientWriter implements Runnable
 		}
 	}
 	
+	public void increaseDrawPointerSize()
+	{
+		try
+		{
+			connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DRAW_POINTER_INCREASE);
+			connection.getGraphicsControlDataOutputStream().flush();
+		}
+		catch (Throwable t)
+		{
+			
+		}
+	}
+	
+	public void decreaseDrawPointerSize()
+	{
+		try
+		{
+			connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DRAW_POINTER_DECREASE);
+			connection.getGraphicsControlDataOutputStream().flush();
+		}
+		catch (Throwable t)
+		{
+			
+		}
+	}
+	
+	public void normalizeDrawPointerSize()
+	{
+		try
+		{
+			connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DRAW_POINTER_NORMALIZE);
+			connection.getGraphicsControlDataOutputStream().flush();
+		}
+		catch (Throwable t)
+		{
+			
+		}
+	}
+	
 	public void toggleSuppressLocalKeyCombinations()
 	{
 		if (suppressLocalKeyCombinations)

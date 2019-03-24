@@ -135,6 +135,7 @@ public abstract class UpnpIgdHttpResponse {
     }
 
     final String getContent() {
+    	//System.out.println("UpnpIgdHttpResponse.getContent()=" + content);
         return content;
     }
 

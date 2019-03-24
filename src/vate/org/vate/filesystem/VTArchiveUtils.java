@@ -218,7 +218,7 @@ public class VTArchiveUtils
 			zipWriter = new ZipArchiveOutputStream(output);
 			zipWriter.setLevel(level);
 			zipWriter.setStrategy(strategy);
-			zipWriter.setUseZip64(Zip64Mode.Always);
+			zipWriter.setUseZip64(Zip64Mode.AsNeeded);
 			// zipWriter.setCreateUnicodeExtraFields(UnicodeExtraFieldPolicy.ALWAYS);
 			for (String contentPath : sourcePaths)
 			{

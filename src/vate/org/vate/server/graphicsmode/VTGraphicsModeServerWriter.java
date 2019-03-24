@@ -249,6 +249,21 @@ public class VTGraphicsModeServerWriter implements Runnable
 		this.drawPointer = drawPointer;
 	}
 	
+	public void increaseDrawPointer()
+	{
+		this.viewProvider.increaseDrawnCursorSize();
+	}
+	
+	public void decreaseDrawPointer()
+	{
+		this.viewProvider.decreaseDrawnCursorSize();
+	}
+	
+	public void normalizeDrawPointer()
+	{
+		this.viewProvider.normalizeDrawnCursorSize();
+	}
+	
 	public void setColorQuality(int colorQuality)
 	{
 		this.viewProvider.setColorQuality(colorQuality);

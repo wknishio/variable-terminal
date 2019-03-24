@@ -37,7 +37,7 @@ final class PcpMappedPort implements MappedPort {
         Validate.inclusiveBetween(1, 65535, externalPort);
         Validate.notNull(externalAddress);
         Validate.notNull(portType);
-        Validate.inclusiveBetween(1L, Long.MAX_VALUE, duration);
+        Validate.inclusiveBetween(0L, Long.MAX_VALUE, duration);
         Validate.isTrue(nonce.length == 12);
         this.nonce = VTArrays.copyOf(nonce, nonce.length);
         this.internalPort = internalPort;

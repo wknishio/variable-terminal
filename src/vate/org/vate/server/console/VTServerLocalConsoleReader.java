@@ -561,7 +561,7 @@ public class VTServerLocalConsoleReader extends VTTask
 				message.append("\nVT>\nVT>End of file system roots list\nVT>");
 				VTConsole.print(message.toString());
 			}
-			else if (splitCommand[0].equalsIgnoreCase("*VTPRINTSERVICES") || splitCommand[0].equalsIgnoreCase("*VTPSVS"))
+			else if (splitCommand[0].equalsIgnoreCase("*VTPRINTERS") || splitCommand[0].equalsIgnoreCase("*VTPRTS"))
 			{
 				message.setLength(0);
 				PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
@@ -750,7 +750,7 @@ public class VTServerLocalConsoleReader extends VTTask
 					VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(splitCommand[0]));
 				}
 			}
-			else if (splitCommand[0].equalsIgnoreCase("*VTSETTING") || splitCommand[0].equalsIgnoreCase("*VTSTG"))
+			else if (splitCommand[0].equalsIgnoreCase("*VTACCESS") || splitCommand[0].equalsIgnoreCase("VTAC"))
 			{
 				if (splitCommand.length == 1)
 				{
@@ -837,7 +837,7 @@ public class VTServerLocalConsoleReader extends VTTask
 						message.append("\nVT>Proxy authentication(PA): [Disabled]");
 					}
 					message.append("\nVT>Proxy user(PU): [" + proxyUser + "]");
-					message.append("\nVT>Proxy password(PS): [" + proxyPassword + "]");
+					message.append("\nVT>Proxy password(PK): [" + proxyPassword + "]");
 					message.append("\nVT>Sessions limit(SL): [" + sessionsLimit + "]");
 					message.append("\nVT>\nVT>End of connection settings list on server\nVT>");
 					VTConsole.print(message.toString());
@@ -852,11 +852,11 @@ public class VTServerLocalConsoleReader extends VTTask
 							try
 							{
 								server.saveServerSettingsFile("variable-terminal-server.properties");
-								VTConsole.print("\rVT>Saved configuration file:[variable-terminal-server.properties]\nVT>");
+								VTConsole.print("\rVT>Saved settings file:[variable-terminal-server.properties]\nVT>");
 							}
 							catch (Throwable t)
 							{
-								VTConsole.print("\rVT>Failed to save configuration file:[variable-terminal-server.properties]\nVT>");
+								VTConsole.print("\rVT>Failed to save settings file:[variable-terminal-server.properties]\nVT>");
 							}
 						}
 						else if (splitCommand.length >= 3)
@@ -864,11 +864,11 @@ public class VTServerLocalConsoleReader extends VTTask
 							try
 							{
 								server.saveServerSettingsFile(splitCommand[2]);
-								VTConsole.print("\rVT>Saved configuration file:[" + splitCommand[2] + "]\nVT>");
+								VTConsole.print("\rVT>Saved settings file:[" + splitCommand[2] + "]\nVT>");
 							}
 							catch (Throwable t)
 							{
-								VTConsole.print("\rVT>Failed to save configuration file:[" + splitCommand[2] + "]\nVT>");
+								VTConsole.print("\rVT>Failed to save settings file:[" + splitCommand[2] + "]\nVT>");
 							}
 						}
 						else
@@ -884,12 +884,12 @@ public class VTServerLocalConsoleReader extends VTTask
 							try
 							{
 								server.loadServerSettingsFile("variable-terminal-server.properties");
-								VTConsole.print("\rVT>Loaded configuration file:[variable-terminal-server.properties]\nVT>");
+								VTConsole.print("\rVT>Loaded settings file:[variable-terminal-server.properties]\nVT>");
 								ok = true;
 							}
 							catch (Throwable t)
 							{
-								VTConsole.print("\rVT>Failed to load configuration file:[variable-terminal-server.properties]\nVT>");
+								VTConsole.print("\rVT>Failed to load settings file:[variable-terminal-server.properties]\nVT>");
 							}
 							if (ok)
 							{
@@ -907,12 +907,12 @@ public class VTServerLocalConsoleReader extends VTTask
 							try
 							{
 								server.loadServerSettingsFile(splitCommand[2]);
-								VTConsole.print("\rVT>Loaded configuration file:[" + splitCommand[2] + "]\nVT>");
+								VTConsole.print("\rVT>Loaded settings file:[" + splitCommand[2] + "]\nVT>");
 								ok = true;
 							}
 							catch (Throwable t)
 							{
-								VTConsole.print("\rVT>Failed to load configuration file:[" + splitCommand[2] + "]\nVT>");
+								VTConsole.print("\rVT>Failed to load settings file:[" + splitCommand[2] + "]\nVT>");
 							}
 							if (ok)
 							{
@@ -1235,12 +1235,12 @@ public class VTServerLocalConsoleReader extends VTTask
 							VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(splitCommand[0]));
 						}
 					}
-					else if (splitCommand[1].equalsIgnoreCase("PS"))
+					else if (splitCommand[1].equalsIgnoreCase("PK"))
 					{
 						if (splitCommand.length == 2)
 						{
 							String proxyPassword = server.getServerConnector().getProxyPassword();
-							VTConsole.print("\rVT>Proxy password(PS): [" + proxyPassword + "]\nVT>");
+							VTConsole.print("\rVT>Proxy password(PK): [" + proxyPassword + "]\nVT>");
 						}
 						else if (splitCommand.length >= 3)
 						{
@@ -1252,7 +1252,7 @@ public class VTServerLocalConsoleReader extends VTTask
 								connector.interruptConnector();
 								connector.notify();
 							}
-							VTConsole.print("\rVT>Proxy password(PS) set to: [" + proxyPassword + "]\nVT>");
+							VTConsole.print("\rVT>Proxy password(PK) set to: [" + proxyPassword + "]\nVT>");
 						}
 						else
 						{
