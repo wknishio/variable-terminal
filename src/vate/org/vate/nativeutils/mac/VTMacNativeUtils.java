@@ -161,7 +161,7 @@ public class VTMacNativeUtils implements VTNativeUtilsImplementation
 			macCLibrary.system("disown -h");
 			try
 			{
-				macCLibrary.system("exit");
+				//macCLibrary.system("exit");
 			}
 			catch (Throwable t)
 			{
@@ -187,7 +187,7 @@ public class VTMacNativeUtils implements VTNativeUtilsImplementation
 			macCLibrary.system("disown -h");
 			try
 			{
-				macCLibrary.system("exit");
+				//macCLibrary.system("exit");
 			}
 			catch (Throwable t)
 			{
