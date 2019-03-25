@@ -21,4 +21,4 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #*******************************************************************************
-java -jar ant.jar -buildfile build.xml clean
+java -jar ant/ant.jar -buildfile build.xml clean

@@ -21,4 +21,4 @@
 @rem OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 @rem SOFTWARE.
 @rem ***************************************************************************
-java -jar ant.jar -buildfile build.xml clean
+java -jar ant/ant.jar -buildfile build.xml clean
