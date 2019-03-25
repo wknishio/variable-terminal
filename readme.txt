@@ -27,12 +27,13 @@ Some of the available features are:
 * Audio playback.
 * Optical drive control.
 
-The minimum required java version to execute is at least 1.5.<br>
+The minimum required java version to execute is at least 1.5.
+
 This software comes with no warranty, use at your own risk!
 
 ## Installation and initialization
 
-To install this software, just extract the contents of the released zip file in<br>
+To install this software, just extract the contents of the released zip file in
 any folder.
 
 There are 3 main modes of operation for this software:
@@ -43,36 +44,37 @@ There are 3 main modes of operation for this software:
 
 In user interface 2 options are available:
 
-* Graphical console needs a graphical environment but have connection<br>
-configuration dialogs and helper menus for commands.
-
-* Shell console uses the native shell of the operating system and can be used<br>
+* Graphical console needs a graphical environment but have connection
+configuration dialogs and helper menus for commands.  
+* Shell console uses the native shell of the operating system and can be used
 in environments without graphical interface but with a text terminal.
 
-The default and recommended user interface is the graphical console, as most<br>
+The default and recommended user interface is the graphical console, as most
 computers nowadays have support for graphical environments.
 
-The included scripts in the format variable-terminal-[mode]-[interface].[*] can<br>
-be used to start this software in the desired mode and user interface.
+The included scripts in the format variable-terminal-[mode]-[interface].[*] can  
+be used to start this software used in a specific combination of mode and user
+interface.
 
 ## Connection settings
 
-To start running effectively, connection settings must be set for client<br>
-and server, when using graphical console, a dialog will appear to ease the<br>
+To start running effectively, connection settings must be set for client
+and server, when using graphical console, a dialog will appear to ease the
 configuration of connection settings.
 
 The connection settings are these:
 
-* Connection mode controls which instance will attempt to connect and which<br>
-instance will listen for connections, as in a TCP connection.
-    * Active connection mode means it will attempt to connect, it is the<br>
-    default connection mode of the client.
-    * Passive connection mode means it will listen for connections, it is the<br>
-    default connection mode of the server.
-    * To connect successfully, one instance must be in active connection mode while<br>
-    the other must be in passive connection mode.
+* Connection mode controls which instance will attempt to connect and which
+instance will listen for connections, as in a TCP connection.  
+Active connection mode indicates that it will attempt to connect, it is the
+default connection mode of the client.  
+Passive connection mode indicates that it will listen for connections, it is
+the default connection mode of the server.  
+To connect successfully, one instance must be in active connection mode while
+the other must be in passive connection mode.
 * Connection host controls which TCP host address will be used for connection.
-* Connection port controls which TCP port will be used for connection, default 6060.
+* Connection port controls which TCP port will be used for connection, default
+TCP port is 6060.
 * Connection NAT port sets a NAT port mapping using UPnP or NAT-PMP protocols.
 * Encryption type enables connection encryption using RC4 or AES algorithms.
 * Encryption password sets the password for connection encryption.
@@ -87,12 +89,12 @@ instance will listen for connections, as in a TCP connection.
 * Sessions limit define a limit for simultaneous sessions in server.
 * Session commands define commands to be sent to server when session starts.
 
-All connection settings can be set using the files<br>
-"variable-terminal-client.properties" for client instances and<br>
-"variable-terminal-server.properties" for server instances,<br>
+All connection settings can be set using the files  
+"variable-terminal-client.properties" for client instances and  
+"variable-terminal-server.properties" for server instances,  
 those files support UTF-8 encoding.
 
-The connection settings can also be set using program arguments at startup,<br>
+The connection settings can also be set using program arguments at startup,
 these are the available program arguments:
 
 * -H: show available program arguments
@@ -119,43 +121,43 @@ these are the available program arguments:
 
 This software is primarily a command-line tool driven by text commands.
 
-After successfully connecting and authenticating to a server, the client console<br>
+After successfully connecting and authenticating to a server, the client console
 can receive text command inputs from the user.
 
-When the user types a command in client and press enter, this software checks if<br>
-the command must be redirected to the external shell running on the server or if<br>
+When the user types a command in client and press enter, this software checks if
+the command must be redirected to the external shell running on the server or if
 the command is a exclusive command of this software.
 
 Most of the functions of this software are executed by these exclusive commands.
 
-After configuring the server, the server console can also receive text command<br>
+After configuring the server, the server console can also receive text command
 inputs, but only exclusive commands of this software.
 
-When using graphical console, the helper menu "Commands" will be available,<br>
+When using graphical console, the helper menu "Commands" will be available,
 assisting the use of all exclusive commands of this software.
 
 Some of the available exclusive commands in client console:
 
-* Commands \*VTFILETRANSFER or \*VTFT do file transfers.
-* Commands \*VTSCREENSHOT or \*VTSCS do remote screen captures.
-* Commands \*VTGRAPHICSLINK or \*VTGL toggle remote desktop control.
-* Commands \*VTAUDIOLINK or \*VTAL toggle audio chat communication.
-* Commands \*VTBELL or \*VTBL play remote system audio alert.
+* Commands *VTFILETRANSFER or *VTFT do file transfers.
+* Commands *VTSCREENSHOT or *VTSCS do remote screen captures.
+* Commands *VTGRAPHICSLINK or *VTGL toggle remote desktop control.
+* Commands *VTAUDIOLINK or *VTAL toggle audio chat communication.
+* Commands *VTBELL or *VTBL play remote system audio alert.
 
 There are more exclusive commands in client console and server console:
 
-* Commands \*VTHELP or \*VTHLP show a list of available exclusive commands./pre>
-* Commands \*VTHELP [COMMAND] or \*VTHLP [CMD] show more details about<br>
+* Commands *VTHELP or *VTHLP show a list of available exclusive commands.
+* Commands *VTHELP [COMMAND] or *VTHLP [CMD] show more details about
 specific exclusive commands.
 
 ## Building from sources
 
 The minimum required java version to build from sources is at least JDK 1.7.
 
-The included scripts "build.bat" and "build.sh" perform the build process using<br>
+The included scripts "build.bat" and "build.sh" perform the build process using
 ant and the file "build.xml" is an ant build file for this software.
 
-After running the ant build file, the packaged application distributions can be<br>
+After running the ant build file, the packaged application distributions can be
 found in the "dist" folder.
 
 ## Used libraries
@@ -193,24 +195,24 @@ Some additional utilities are included with server distributions:
 
 ## License
 
-<pre>This software is under MIT license</pre>
+This software is under MIT license
 
-<pre>Copyright (c) 2019 William Kendi Nishio</pre>
+Copyright (c) 2019 William Kendi Nishio
 
-<pre>Permission is hereby granted, free of charge, to any person obtaining a copy<br>
-of this software and associated documentation files (the "Software"), to deal<br>
-in the Software without restriction, including without limitation the rights<br>
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell<br>
-copies of the Software, and to permit persons to whom the Software is<br>
-furnished to do so, subject to the following conditions:</pre>
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-<pre>The above copyright notice and this permission notice shall be included in all<br>
-copies or substantial portions of the Software.</pre>
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-<pre>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR<br>
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,<br>
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE<br>
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER<br>
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,<br>
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE<br>
-SOFTWARE.</pre>
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
