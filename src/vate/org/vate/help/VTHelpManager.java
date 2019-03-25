@@ -102,7 +102,7 @@ public class VTHelpManager
 		builder.append("\n -AL: authentication login, default null");
 		builder.append("\n -AK: authentication password, default null");
 		builder.append("\n -SL: sessions limit, default 0, available in server");
-		builder.append("\n -SC: session commands, separated by *;, default null, available in client");
+		builder.append("\n -SC: session commands, separated by \"*;\", default null, available in client");
 		return builder.toString();
 	}
 }
