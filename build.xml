@@ -16,6 +16,8 @@
 		<delete dir="dist"/>
 		<mkdir dir="build"/>
 		<mkdir dir="dist"/>
+		<touch file="build/keep"/>
+		<touch file="dist/keep"/>
 		
 	</target>
 	
