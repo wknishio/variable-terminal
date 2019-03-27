@@ -144,7 +144,7 @@ Some of the available exclusive commands in client console:
 
 There are more exclusive commands in client console and server console:
 
-* Commands \*VTHELP or \*VTHLP show a list of available exclusive commands./pre>
+* Commands \*VTHELP or \*VTHLP show a list of available exclusive commands.
 * Commands \*VTHELP [COMMAND] or \*VTHLP [CMD] show more details about<br>
 specific exclusive commands.
 
