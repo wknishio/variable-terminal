@@ -10,7 +10,7 @@ import org.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vate.stream.limit.VTThrottlingOutputStream;
 
 public class VTLinkableDynamicMultiplexingOutputStream
-{	
+{
 	public class VTLinkableDynamicMultiplexedOutputStream extends OutputStream
 	{
 		private static final int headerSize = 8;

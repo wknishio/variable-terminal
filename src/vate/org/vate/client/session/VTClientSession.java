@@ -34,8 +34,10 @@ public class VTClientSession
 	private VTGraphicsModeClient graphicsClient;
 	private VTClipboardTransferTask clipboardTransferTask;
 	private VTClientZipFileOperation zipFileOperation;
-	private VTTunnelConnectionHandler tcpTunnelsHandler;
-	private VTTunnelConnectionHandler socksTunnelsHandler;
+	private VTTunnelConnectionHandler tcpTunnelsClientHandler;
+	private VTTunnelConnectionHandler tcpTunnelsServerHandler;
+	private VTTunnelConnectionHandler socksTunnelsClientHandler;
+	private VTTunnelConnectionHandler socksTunnelsServerHandler;
 	private VTNanoPingService pingService;
 	
 	public VTClientSession(VTClient client, VTClientConnection connection)
@@ -61,9 +63,10 @@ public class VTClientSession
 		this.graphicsClient = new VTGraphicsModeClient(this);
 		this.clipboardTransferTask = new VTClipboardTransferTask();
 		this.zipFileOperation = new VTClientZipFileOperation(this);
-		
-		this.tcpTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_TCP, threads), threads);
-		this.socksTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_SOCKS, threads), threads);
+		this.tcpTunnelsClientHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_TCP, threads), threads);
+		this.tcpTunnelsServerHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_TCP, threads), threads);
+		this.socksTunnelsClientHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_SOCKS, threads), threads);
+		this.socksTunnelsServerHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_SOCKS, threads), threads);
 		this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL, false);
 		this.pingService.addListener(new VTNanoPingListener()
 		{
@@ -148,14 +151,24 @@ public class VTClientSession
 		return pingService;
 	}
 	
-	public VTTunnelConnectionHandler getTCPTunnelsHandler()
+	public VTTunnelConnectionHandler getTCPTunnelsClientHandler()
 	{
-		return tcpTunnelsHandler;
+		return tcpTunnelsClientHandler;
 	}
 	
-	public VTTunnelConnectionHandler getSOCKSTunnelsHandler()
+	public VTTunnelConnectionHandler getTCPTunnelsServerHandler()
 	{
-		return socksTunnelsHandler;
+		return tcpTunnelsServerHandler;
+	}
+	
+	public VTTunnelConnectionHandler getSOCKSTunnelsClientHandler()
+	{
+		return socksTunnelsClientHandler;
+	}
+	
+	public VTTunnelConnectionHandler getSOCKSTunnelsServerHandler()
+	{
+		return socksTunnelsServerHandler;
 	}
 	
 	public boolean isStopped()
@@ -182,14 +195,22 @@ public class VTClientSession
 		runningAudio = false;
 		serverReader.setStopped(false);
 		clientWriter.setStopped(false);
-		tcpTunnelsHandler.getConnection().setControlInputStream(connection.getTunnelControlInputStream());
-		tcpTunnelsHandler.getConnection().setControlOutputStream(connection.getTunnelControlOutputStream());
-		tcpTunnelsHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
-		tcpTunnelsHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
-		socksTunnelsHandler.getConnection().setControlInputStream(connection.getSocksControlInputStream());
-		socksTunnelsHandler.getConnection().setControlOutputStream(connection.getSocksControlOutputStream());
-		socksTunnelsHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
-		socksTunnelsHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
+		tcpTunnelsClientHandler.getConnection().setControlInputStream(connection.getTunnelClientControlInputStream());
+		tcpTunnelsClientHandler.getConnection().setControlOutputStream(connection.getTunnelClientControlOutputStream());
+		tcpTunnelsServerHandler.getConnection().setControlInputStream(connection.getTunnelServerControlInputStream());
+		tcpTunnelsServerHandler.getConnection().setControlOutputStream(connection.getTunnelServerControlOutputStream());
+		tcpTunnelsClientHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
+		tcpTunnelsClientHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
+		tcpTunnelsServerHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
+		tcpTunnelsServerHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
+		socksTunnelsClientHandler.getConnection().setControlInputStream(connection.getSocksClientControlInputStream());
+		socksTunnelsClientHandler.getConnection().setControlOutputStream(connection.getSocksClientControlOutputStream());
+		socksTunnelsServerHandler.getConnection().setControlInputStream(connection.getSocksServerControlInputStream());
+		socksTunnelsServerHandler.getConnection().setControlOutputStream(connection.getSocksServerControlOutputStream());
+		socksTunnelsClientHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
+		socksTunnelsClientHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
+		socksTunnelsServerHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
+		socksTunnelsServerHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
 		pingService.setInputStream(connection.getPingInputStream());
 		pingService.setOutputStream(connection.getPingOutputStream());
 		// tunnelHandler.getConnection().start();
@@ -201,8 +222,10 @@ public class VTClientSession
 		pingService.startThread();
 		serverReader.startThread();
 		clientWriter.startThread();
-		tcpTunnelsHandler.startThread();
-		socksTunnelsHandler.startThread();
+		tcpTunnelsClientHandler.startThread();
+		tcpTunnelsServerHandler.startThread();
+		socksTunnelsClientHandler.startThread();
+		socksTunnelsServerHandler.startThread();
 		if (client.getInputMenuBar() != null)
 		{
 			client.getInputMenuBar().setEnabled(true);
@@ -254,8 +277,10 @@ public class VTClientSession
 			pingService.interruptThread();
 			pingService.stopThread();
 		}
-		tcpTunnelsHandler.getConnection().close();
-		socksTunnelsHandler.getConnection().close();
+		tcpTunnelsClientHandler.getConnection().close();
+		tcpTunnelsServerHandler.getConnection().close();
+		socksTunnelsClientHandler.getConnection().close();
+		socksTunnelsServerHandler.getConnection().close();
 	}
 	
 	public void waitThreads()
@@ -271,8 +296,10 @@ public class VTClientSession
 			graphicsClient.joinThread();
 			clipboardTransferTask.joinThread();
 			zipFileOperation.joinThread();
-			tcpTunnelsHandler.joinThread();
-			socksTunnelsHandler.joinThread();
+			tcpTunnelsClientHandler.joinThread();
+			tcpTunnelsServerHandler.joinThread();
+			socksTunnelsClientHandler.joinThread();
+			socksTunnelsServerHandler.joinThread();
 			pingService.joinThread();
 		}
 		catch (Throwable e)

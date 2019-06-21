@@ -47,7 +47,15 @@ public class VTTunnelConnectionControlThread implements Runnable
 						{
 							// server 2
 							Socket socket = new Socket();
-							socket.connect(new InetSocketAddress(host, port));
+							//System.out.println("host:" + host);
+							if (host.length() == 0 || host.equals("*"))
+							{
+								socket.connect(new InetSocketAddress(port));
+							}
+							else
+							{
+								socket.connect(new InetSocketAddress(host, port));
+							}
 							socket.setTcpNoDelay(true);
 							socket.setKeepAlive(true);
 							socket.setSoLinger(true, 0);
@@ -167,7 +175,7 @@ public class VTTunnelConnectionControlThread implements Runnable
 			}
 			catch (Throwable e)
 			{
-				// e.printStackTrace();
+				//e.printStackTrace();
 				return;
 			}
 		}

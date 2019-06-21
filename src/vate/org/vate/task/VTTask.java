@@ -1,6 +1,6 @@
 package org.vate.task;
 
-public class VTTask implements Runnable
+public abstract class VTTask implements Runnable
 {
 	protected volatile boolean stopped;
 	private Thread taskThread;
@@ -72,8 +72,5 @@ public class VTTask implements Runnable
 		taskThread.start();
 	}
 	
-	public void run()
-	{
-		
-	}
+	public abstract void run();
 }

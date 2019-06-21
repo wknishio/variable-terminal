@@ -90,15 +90,16 @@ public class VTServerConnection
 	private VTLinkableDynamicMultiplexedInputStream graphicsDeflatedImageInputStream;
 	private VTLinkableDynamicMultiplexedInputStream graphicsSnappedImageInputStream;
 	private VTLinkableDynamicMultiplexedInputStream graphicsClipboardInputStream;
-	private VTLinkableDynamicMultiplexedInputStream tunnelControlInputStream;
-	private InputStream tunnelDataInputStream;
+	private InputStream clipboardDataInputStream;
 	// private VTLinkableDynamicMultiplexedInputStream audioInputStream;
 	private VTLinkableDynamicMultiplexedInputStream audioDataInputStream;
 	private VTLinkableDynamicMultiplexedInputStream audioControlInputStream;
 	private VTLinkableDynamicMultiplexedInputStream pingInputStream;
-	private VTLinkableDynamicMultiplexedInputStream socksControlInputStream;
-	private InputStream socksDataInputStream;
-	private InputStream clipboardDataInputStream;
+	private VTLinkableDynamicMultiplexedInputStream tunnelServerControlInputStream;
+	private VTLinkableDynamicMultiplexedInputStream tunnelClientControlInputStream;
+	private VTLinkableDynamicMultiplexedInputStream socksServerControlInputStream;
+	private VTLinkableDynamicMultiplexedInputStream socksClientControlInputStream;
+
 	
 	// private OutputStream authenticationOutputStream;
 	private VTLinkableDynamicMultiplexedOutputStream shellOutputStream;
@@ -110,15 +111,16 @@ public class VTServerConnection
 	private VTLinkableDynamicMultiplexedOutputStream graphicsDeflatedImageOutputStream;
 	private VTLinkableDynamicMultiplexedOutputStream graphicsSnappedImageOutputStream;
 	private VTLinkableDynamicMultiplexedOutputStream graphicsClipboardOutputStream;
-	private VTLinkableDynamicMultiplexedOutputStream tunnelControlOutputStream;
-	private OutputStream tunnelDataOutputStream;
+	private OutputStream clipboardDataOutputStream;
 	// private VTLinkableDynamicMultiplexedOutputStream audioOutputStream;
 	private VTLinkableDynamicMultiplexedOutputStream audioDataOutputStream;
 	private VTLinkableDynamicMultiplexedOutputStream audioControlOutputStream;
 	private VTLinkableDynamicMultiplexedOutputStream pingOutputStream;
-	private VTLinkableDynamicMultiplexedOutputStream socksControlOutputStream;
-	private OutputStream socksDataOutputStream;
-	private OutputStream clipboardDataOutputStream;
+	private VTLinkableDynamicMultiplexedOutputStream tunnelServerControlOutputStream;
+	private VTLinkableDynamicMultiplexedOutputStream tunnelClientControlOutputStream;
+	private VTLinkableDynamicMultiplexedOutputStream socksServerControlOutputStream;
+	private VTLinkableDynamicMultiplexedOutputStream socksClientControlOutputStream;
+
 	
 	private VTLittleEndianInputStream authenticationReader;
 	private VTLittleEndianOutputStream authenticationWriter;
@@ -321,16 +323,16 @@ public class VTServerConnection
 		return snappedImageDataOutputStream;
 	}
 	
-	public OutputStream getTunnelControlOutputStream()
+	public OutputStream getTunnelServerControlOutputStream()
 	{
-		return tunnelControlOutputStream;
+		return tunnelServerControlOutputStream;
 	}
 	
-	public OutputStream getTunnelDataOutputStream()
+	public OutputStream getTunnelClientControlOutputStream()
 	{
-		return tunnelDataOutputStream;
+		return tunnelClientControlOutputStream;
 	}
-	
+		
 	public OutputStream getAudioDataOutputStream()
 	{
 		return audioDataOutputStream;
@@ -346,31 +348,31 @@ public class VTServerConnection
 		return pingOutputStream;
 	}
 	
-	public OutputStream getSocksControlOutputStream()
+	public OutputStream getSocksServerControlOutputStream()
 	{
-		return socksControlOutputStream;
+		return socksServerControlOutputStream;
 	}
 	
-	public OutputStream getSocksDataOutputStream()
+	public OutputStream getSocksClientControlOutputStream()
 	{
-		return socksDataOutputStream;
+		return socksClientControlOutputStream;
 	}
-	
+		
 	public InputStream getGraphicsClipboardInputStream()
 	{
 		return graphicsClipboardInputStream;
 	}
 	
-	public InputStream getTunnelControlInputStream()
+	public InputStream getTunnelServerControlInputStream()
 	{
-		return tunnelControlInputStream;
+		return tunnelServerControlInputStream;
 	}
 	
-	public InputStream getTunnelDataInputStream()
+	public InputStream getTunnelClientControlInputStream()
 	{
-		return tunnelDataInputStream;
+		return tunnelClientControlInputStream;
 	}
-	
+		
 	public InputStream getAudioDataInputStream()
 	{
 		return audioDataInputStream;
@@ -386,16 +388,16 @@ public class VTServerConnection
 		return pingInputStream;
 	}
 	
-	public InputStream getSocksControlInputStream()
+	public InputStream getSocksServerControlInputStream()
 	{
-		return socksControlInputStream;
+		return socksServerControlInputStream;
 	}
 	
-	public InputStream getSocksDataInputStream()
+	public InputStream getSocksClientControlInputStream()
 	{
-		return socksDataInputStream;
+		return socksClientControlInputStream;
 	}
-	
+		
 	public OutputStream getGraphicsClipboardOutputStream()
 	{
 		return graphicsClipboardOutputStream;
@@ -661,29 +663,24 @@ public class VTServerConnection
 		graphicsSnappedImageOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 7);
 		graphicsClipboardInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 8);
 		graphicsClipboardOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 8);
+			
+		audioDataInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 9);
+		audioDataOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 9);
+		audioControlInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 10);
+		audioControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 10);
 		
-		tunnelControlInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 9);
-		tunnelControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 9);
-		// tunnelDataInputStream = new
-		// SnappyInputStream(multiplexedConnectionInputStream.getInputStream(10),
-		// false);
-		// tunnelDataOutputStream = new
-		// SnappyOutputStream(multiplexedConnectionOutputStream.getOutputStream(10),
-		// false);
+		tunnelClientControlInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 11);
+		tunnelClientControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 11);
+
+		tunnelServerControlInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 12);		
+		tunnelServerControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 12);
 		
-		socksControlInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 10);
-		socksControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 10);
-		// socksDataInputStream = new
-		// SnappyInputStream(multiplexedConnectionInputStream.getInputStream(12),
-		// false);
-		// socksDataOutputStream = new
-		// SnappyOutputStream(multiplexedConnectionOutputStream.getOutputStream(12),
-		// false);
+		socksClientControlInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 13);
+		socksClientControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 13);
 		
-		audioDataInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 11);
-		audioDataOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 11);
-		audioControlInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 12);
-		audioControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 12);
+		socksServerControlInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 14);
+		socksServerControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 14);
+
 		
 		// shellDataOutputStream = new SnappyOutputStream(shellOutputStream,
 		// false);
