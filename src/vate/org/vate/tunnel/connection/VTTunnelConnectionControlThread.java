@@ -36,16 +36,16 @@ public class VTTunnelConnectionControlThread implements Runnable
 				String[] data = line.split(";:;");
 				if (data.length >= 3)
 				{
+					//first message received
 					if (connection.getTunnelType() == VTTunnelConnection.TUNNEL_TYPE_TCP)
 					{
-						int input = Integer.parseInt(data[0]);
+						int number = Integer.parseInt(data[0]);
 						String host = data[1];
 						int port = Integer.parseInt(data[2]);
-						VTTunnelSession session = new VTTunnelSession(connection, connection.getInputStream(input));
+						VTTunnelSession session = new VTTunnelSession(connection, connection.getInputStream(number));
 						VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, null);
 						try
 						{
-							// server 2
 							Socket socket = new Socket();
 							//System.out.println("host:" + host);
 							if (host.length() == 0 || host.equals("*"))
@@ -60,35 +60,39 @@ public class VTTunnelConnectionControlThread implements Runnable
 							socket.setKeepAlive(true);
 							socket.setSoLinger(true, 0);
 							session.setSocket(socket);
-							VTLinkableDynamicMultiplexedOutputStream stream = connection.getOutputStream(handler);
+							VTLinkableDynamicMultiplexedOutputStream stream = connection.getOutputStream(number, handler);
 							if (stream != null)
 							{
 								session.setTunnelOutputStream(stream);
 								session.getTunnelOutputStream().open();
 								session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream());
-								connection.getControlWriter().write(input + ";:;" + session.getTunnelOutputStream().number() + "\n");
+								//second message sent with ok
+								connection.getControlWriter().write(number + ";:;" + session.getTunnelOutputStream().number() + "\n");
 								connection.getControlWriter().flush();
+								threads.execute(handler);
 							}
 							else
 							{
 								session.close();
-								connection.getControlWriter().write(input + ";:;-1\n");
+								//second message sent with error
+								connection.getControlWriter().write(number + ";:;-1\n");
 								connection.getControlWriter().flush();
 							}
 						}
 						catch (Throwable e)
 						{
 							session.close();
-							connection.getControlWriter().write(input + ";:;-1\n");
+							//second message sent with error
+							connection.getControlWriter().write(number + ";:;-1\n");
 							connection.getControlWriter().flush();
 						}
 					}
 					else if (connection.getTunnelType() == VTTunnelConnection.TUNNEL_TYPE_SOCKS)
 					{
-						int input = Integer.parseInt(data[0]);
+						int number = Integer.parseInt(data[0]);
 						String socksUsername = data[1];
 						String socksPassword = data[2];
-						VTTunnelSession session = new VTTunnelSession(connection, connection.getInputStream(input));
+						VTTunnelSession session = new VTTunnelSession(connection, connection.getInputStream(number));
 						VTTunnelSocksSessionHandler handler = null;
 						if (data.length == 4)
 						{
@@ -100,77 +104,85 @@ public class VTTunnelConnectionControlThread implements Runnable
 						}
 						try
 						{
-							// server 2
-							VTLinkableDynamicMultiplexedOutputStream stream = connection.getOutputStream(handler);
+							VTLinkableDynamicMultiplexedOutputStream stream = connection.getOutputStream(number, handler);
 							VTTunnelVirtualSocket socket = new VTTunnelVirtualSocket(stream);
 							session.setSocket(socket);
-							
 							if (stream != null)
 							{
 								session.setTunnelOutputStream(stream);
 								session.getTunnelOutputStream().open();
 								session.getTunnelInputStream().setOutputStream(socket.getInputStreamSource());
-								connection.getControlWriter().write(input + ";:;" + session.getTunnelOutputStream().number() + "\n");
+								//second message sent with ok
+								connection.getControlWriter().write(number + ";:;" + session.getTunnelOutputStream().number() + "\n");
 								connection.getControlWriter().flush();
+								threads.execute(handler);
 							}
 							else
 							{
 								session.close();
-								connection.getControlWriter().write(input + ";:;-1\n");
+								//second message sent with error
+								connection.getControlWriter().write(number + ";:;-1\n");
 								connection.getControlWriter().flush();
 							}
 						}
 						catch (Throwable e)
 						{
 							session.close();
-							connection.getControlWriter().write(input + ";:;-1\n");
+							//second message sent with error
+							connection.getControlWriter().write(number + ";:;-1\n");
 							connection.getControlWriter().flush();
 						}
 					}
 				}
 				else if (data.length == 2)
 				{
-					int output = Integer.parseInt(data[0]);
-					int input = Integer.parseInt(data[1]);
-					VTTunnelSessionHandler handler = (VTTunnelSessionHandler) (connection.getOutputStream(output).getLink());
+					//second or third message received
+					int number = Integer.parseInt(data[0]);
+					int result = Integer.parseInt(data[1]);
+					VTTunnelSessionHandler handler = (VTTunnelSessionHandler) (connection.getOutputStream(number).getLink());
 					VTTunnelSession session = handler.getSession();
-					if (input > -1)
+					if (result > -1)
 					{
-						if (session.getTunnelInputStream() == null)
+						if (session.isOriginator())
 						{
-							// client 3
-							session.setTunnelInputStream(connection.getInputStream(input));
-							session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream());
-							connection.getControlWriter().write(input + ";:;" + output + "\n");
-							connection.getControlWriter().flush();
+							//second message ok
+							//session.setTunnelInputStream(connection.getInputStream(number));
+							//session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream());
+							//third message sent
+							//connection.getControlWriter().write(channel + ";:;" + result + "\n");
+							//connection.getControlWriter().flush();
+							threads.execute(handler);
 						}
 						else
 						{
-							if (session.isOriginator())
-							{
-								// client 5
-								threads.execute(handler);
-								// Thread handlerThread = new Thread(handler,
-								// handler.getClass().getSimpleName());
-								// handlerThread.start();
-							}
-							else
-							{
-								// server 4
-								connection.getControlWriter().write(input + ";:;" + output + "\n");
-								connection.getControlWriter().flush();
-								threads.execute(handler);
-								// Thread handlerThread = new Thread(handler,
-								// handler.getClass().getSimpleName());
-								// handlerThread.start();
-							}
+							//third message received
+							//threads.execute(handler);
+							// Thread handlerThread = new Thread(handler,
+							// handler.getClass().getSimpleName());
+							// handlerThread.start();
 						}
 					}
 					else
 					{
-						// client 3
+						//second message has error
 						session.close();
 					}
+				}
+				else if (data.length == 1)
+				{
+					//fourth message received
+					//int output = Integer.parseInt(data[0]);
+					//VTTunnelSessionHandler handler = (VTTunnelSessionHandler) (connection.getOutputStream(output).getLink());
+					//VTTunnelSession session = handler.getSession();
+					//fourth message received
+					//threads.execute(handler);
+					// Thread handlerThread = new Thread(handler,
+					// handler.getClass().getSimpleName());
+					// handlerThread.start();
+				}
+				else
+				{
+					//unable to handle
 				}
 			}
 			catch (Throwable e)

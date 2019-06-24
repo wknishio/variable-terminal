@@ -93,10 +93,8 @@ public class VTServerSession
 	// private VTServerDefaultPrintServiceResolver defaultPrintServiceResolver;
 	private VTClipboardTransferTask clipboardTransferTask;
 	private VTServerGraphicsDeviceResolver graphicsDeviceResolver;
-	private VTTunnelConnectionHandler tcpTunnelsClientHandler;
-	private VTTunnelConnectionHandler tcpTunnelsServerHandler;
-	private VTTunnelConnectionHandler socksTunnelsClientHandler;
-	private VTTunnelConnectionHandler socksTunnelsServerHandler;
+	private VTTunnelConnectionHandler tcpTunnelsHandler;
+	private VTTunnelConnectionHandler socksTunnelsHandler;
 	private VTNanoPingService pingService;
 	
 	public VTServerSession(VTServer server, VTServerConnection connection)
@@ -144,10 +142,8 @@ public class VTServerSession
 		//this.printTextTask = new VTServerPrintTextTask(this);
 		//this.printFileTask = new VTServerPrintFileTask(this);
 		this.printDataTask = new VTServerPrintDataTask(this);
-		this.tcpTunnelsClientHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_TCP, threads), threads);
-		this.tcpTunnelsServerHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_TCP, threads), threads);
-		this.socksTunnelsClientHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_SOCKS, threads), threads);
-		this.socksTunnelsServerHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_SOCKS, threads), threads);
+		this.tcpTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_TCP, threads), threads);
+		this.socksTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_SOCKS, threads), threads);
 		this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL, true);
 		this.pingService.addListener(new VTNanoPingListener()
 		{
@@ -531,25 +527,15 @@ public class VTServerSession
 	{
 		return pingService;
 	}
-	
-	public VTTunnelConnectionHandler getTCPTunnelsClientHandler()
+		
+	public VTTunnelConnectionHandler getTCPTunnelsHandler()
 	{
-		return tcpTunnelsClientHandler;
+		return tcpTunnelsHandler;
 	}
-	
-	public VTTunnelConnectionHandler getTCPTunnelsServerHandler()
+		
+	public VTTunnelConnectionHandler getSOCKSTunnelsHandler()
 	{
-		return tcpTunnelsServerHandler;
-	}
-	
-	public VTTunnelConnectionHandler getSOCKSTunnelsClientHandler()
-	{
-		return socksTunnelsClientHandler;
-	}
-	
-	public VTTunnelConnectionHandler getSOCKSTunnelsServerHandler()
-	{
-		return socksTunnelsServerHandler;
+		return socksTunnelsHandler;
 	}
 	
 	public boolean isRunningAudio()
@@ -744,22 +730,14 @@ public class VTServerSession
 		clientReader.setStopped(false);
 		shellOutputWriter.setStopped(false);
 		shellExitListener.setStopped(false);
-		tcpTunnelsClientHandler.getConnection().setControlInputStream(connection.getTunnelClientControlInputStream());
-		tcpTunnelsClientHandler.getConnection().setControlOutputStream(connection.getTunnelClientControlOutputStream());
-		tcpTunnelsServerHandler.getConnection().setControlInputStream(connection.getTunnelServerControlInputStream());
-		tcpTunnelsServerHandler.getConnection().setControlOutputStream(connection.getTunnelServerControlOutputStream());
-		tcpTunnelsClientHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
-		tcpTunnelsClientHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
-		tcpTunnelsServerHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
-		tcpTunnelsServerHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
-		socksTunnelsClientHandler.getConnection().setControlInputStream(connection.getSocksClientControlInputStream());
-		socksTunnelsClientHandler.getConnection().setControlOutputStream(connection.getSocksClientControlOutputStream());
-		socksTunnelsServerHandler.getConnection().setControlInputStream(connection.getSocksServerControlInputStream());
-		socksTunnelsServerHandler.getConnection().setControlOutputStream(connection.getSocksServerControlOutputStream());
-		socksTunnelsClientHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
-		socksTunnelsClientHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
-		socksTunnelsServerHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
-		socksTunnelsServerHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
+		tcpTunnelsHandler.getConnection().setControlInputStream(connection.getTunnelControlInputStream());
+		tcpTunnelsHandler.getConnection().setControlOutputStream(connection.getTunnelControlOutputStream());
+		tcpTunnelsHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
+		tcpTunnelsHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
+		socksTunnelsHandler.getConnection().setControlOutputStream(connection.getSocksControlOutputStream());
+		socksTunnelsHandler.getConnection().setControlInputStream(connection.getSocksControlInputStream());
+		socksTunnelsHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
+		socksTunnelsHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
 		pingService.setInputStream(connection.getPingInputStream());
 		pingService.setOutputStream(connection.getPingOutputStream());
 		// tunnelHandler.getConnection().start();
@@ -771,10 +749,8 @@ public class VTServerSession
 		clientReader.startThread();
 		shellOutputWriter.startThread();
 		shellExitListener.startThread();
-		tcpTunnelsClientHandler.startThread();
-		tcpTunnelsServerHandler.startThread();
-		socksTunnelsClientHandler.startThread();
-		socksTunnelsServerHandler.startThread();
+		tcpTunnelsHandler.startThread();
+		socksTunnelsHandler.startThread();
 	}
 	
 	public void restartShellThreads()
@@ -919,10 +895,8 @@ public class VTServerSession
 			pingService.interruptThread();
 			pingService.stopThread();
 		}
-		tcpTunnelsClientHandler.getConnection().close();
-		tcpTunnelsServerHandler.getConnection().close();
-		socksTunnelsClientHandler.getConnection().close();
-		socksTunnelsServerHandler.getConnection().close();
+		tcpTunnelsHandler.getConnection().close();
+		socksTunnelsHandler.getConnection().close();
 		// System.out.println("tryStopSessionThreads end");
 	}
 	
@@ -1039,10 +1013,8 @@ public class VTServerSession
 			// System.out.println("graphicsDeviceResolver.joinThread()");
 			clipboardTransferTask.joinThread();
 			// System.out.println("clipboardTransferTask.joinThread()");
-			tcpTunnelsClientHandler.joinThread();
-			tcpTunnelsServerHandler.joinThread();
-			socksTunnelsClientHandler.joinThread();
-			socksTunnelsServerHandler.joinThread();
+			tcpTunnelsHandler.joinThread();
+			socksTunnelsHandler.joinThread();
 			pingService.joinThread();
 			// System.out.println("pingService.joinThread()");
 		}

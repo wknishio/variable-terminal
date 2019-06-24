@@ -233,6 +233,13 @@ public class VTTunnelConnection
 		return dataOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT, link);
 	}
 	
+	public synchronized VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number, Object link)
+	{
+		VTLinkableDynamicMultiplexedOutputStream stream = dataOutputStream.getOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT, number);
+		stream.setLink(link);
+		return stream;
+	}
+	
 	public synchronized void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
 	{
 		if (stream != null)

@@ -102,13 +102,17 @@ public class VTTunnelChannelSocketListener implements Runnable
 					VTLinkableDynamicMultiplexedOutputStream stream = channel.getConnection().getOutputStream(handler);
 					if (stream != null)
 					{
+						int number = stream.number();
 						session.setTunnelOutputStream(stream);
 						session.getTunnelOutputStream().open();
+						session.setTunnelInputStream(channel.getConnection().getInputStream(number));
+						session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream());
 						if (channel.getConnection().getTunnelType() == VTTunnelConnection.TUNNEL_TYPE_TCP)
 						{
 							String host = channel.getRedirectHost();
 							int port = channel.getRedirectPort();
-							channel.getConnection().getControlWriter().write(session.getTunnelOutputStream().number() + ";:;" + host + ";:;" + port + "\n");
+							//first message sent
+							channel.getConnection().getControlWriter().write(number + ";:;" + host + ";:;" + port + "\n");
 							channel.getConnection().getControlWriter().flush();
 						}
 						else if (channel.getConnection().getTunnelType() == VTTunnelConnection.TUNNEL_TYPE_SOCKS)
@@ -120,7 +124,8 @@ public class VTTunnelChannelSocketListener implements Runnable
 								socksUsername = "*";
 								socksPassword = "*;:;*";
 							}
-							channel.getConnection().getControlWriter().write(session.getTunnelOutputStream().number() + ";:;" + socksUsername + ";:;" + socksPassword + "\n");
+							//first message sent
+							channel.getConnection().getControlWriter().write(number + ";:;" + socksUsername + ";:;" + socksPassword + "\n");
 							channel.getConnection().getControlWriter().flush();
 						}
 						// System.out.println(session.getOutputStream().number()
@@ -129,7 +134,7 @@ public class VTTunnelChannelSocketListener implements Runnable
 					}
 					else
 					{
-						// limite esgotado
+						//cannot handle more sessions
 						session.close();
 					}
 				}
