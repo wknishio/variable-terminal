@@ -126,17 +126,17 @@ can receive text command inputs from the user.
 
 When the user types a command in client and press enter, this software checks if
 the command must be redirected to the external shell running on the server or if
-the command is a exclusive command of this software.
+the command is a internal command of this software.
 
-Most of the functions of this software are executed by these exclusive commands.
+Most of the functions of this software are executed by these internal commands.
 
 After configuring the server, the server console can also receive text command
-inputs, but only exclusive commands of this software.
+inputs, but only internal commands of this software.
 
 When using graphical console, the helper menu "Commands" will be available,
-assisting the use of all exclusive commands of this software.
+assisting the use of all internal commands of this software.
 
-Some of the available exclusive commands in client console:
+Some of the available internal commands in client console:
 
 * Commands *VTFILETRANSFER or *VTFT do file transfers.
 * Commands *VTSCREENSHOT or *VTSCS do remote screen captures.
@@ -144,11 +144,11 @@ Some of the available exclusive commands in client console:
 * Commands *VTAUDIOLINK or *VTAL toggle audio chat communication.
 * Commands *VTBELL or *VTBL play remote system audio alert.
 
-There are more exclusive commands in client console and server console:
+There are more internal commands in client console and server console:
 
-* Commands *VTHELP or *VTHLP show a list of available exclusive commands.
+* Commands *VTHELP or *VTHLP show a list of available internal commands.
 * Commands *VTHELP [COMMAND] or *VTHLP [CMD] show more details about
-specific exclusive commands.
+specific internal commands.
 
 ## Building from sources
 
