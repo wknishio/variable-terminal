@@ -74,14 +74,14 @@ instance will listen for connections, as in a TCP connection.
 * Connection host controls which TCP host address will be used for connection.
 * Connection port controls which TCP port will be used for connection, default 6060.
 * Connection NAT port sets a NAT port mapping using UPnP or NAT-PMP protocols.
-* Encryption type enables connection encryption using RC4 or AES algorithms.
-* Encryption password sets the password for connection encryption.
 * Proxy type enables support for connections using HTTP or SOCKS proxies.
 * Proxy host controls the TCP host address of the proxy.
 * Proxy port controls the TCP port of the proxy.
 * Proxy authentication enables HTTP or SOCKS proxy authentication.
 * Proxy user controls the user for proxy authentication.
 * Proxy password controls the password for proxy authentication.
+* Encryption type enables connection encryption using RC4 or AES algorithms.
+* Encryption password sets the password for connection encryption.
 * Authentication login sets the authentication login for connection.
 * Authentication password sets the authentication password for connection.
 * Sessions limit define a limit for simultaneous sessions in server.

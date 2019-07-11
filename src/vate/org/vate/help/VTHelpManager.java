@@ -91,14 +91,14 @@ public class VTHelpManager
 		builder.append("\n -CH: connection host, default null");
 		builder.append("\n -CP: connection port, default 6060");
 		builder.append("\n -NP: NAT port, default null");
-		builder.append("\n -ET: encryption type, AES(A), RC4(R), disabled(D), default disabled");
-		builder.append("\n -EK: encryption password, default null");
 		builder.append("\n -PT: proxy type, SOCKS(S), HTTP(H), disabled(D), default disabled");
 		builder.append("\n -PH: proxy host, default null");
 		builder.append("\n -PP: proxy port, default 1080 for SOCKS or 8080 for HTTP");
 		builder.append("\n -PA: proxy authentication, enabled(E), disabled(D), default disabled");
 		builder.append("\n -PU: proxy user, default null");
 		builder.append("\n -PK: proxy password, default null");
+		builder.append("\n -ET: encryption type, AES(A), RC4(R), disabled(D), default disabled");
+		builder.append("\n -EK: encryption password, default null");
 		builder.append("\n -AL: authentication login, default null");
 		builder.append("\n -AK: authentication password, default null");
 		builder.append("\n -SL: sessions limit, default 0, available in server");

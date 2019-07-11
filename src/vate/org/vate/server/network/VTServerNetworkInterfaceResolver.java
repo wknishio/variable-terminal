@@ -48,7 +48,24 @@ public class VTServerNetworkInterfaceResolver extends VTTask
 					{
 						continue;
 					}
-					message.append("\nVT>Name: [" + networkInterface.getName() + "]\nVT>Display name: [" + networkInterface.getDisplayName() + "]");
+					message.append("\nVT>Name: [" + networkInterface.getName() + "]"
+					+ "\nVT>Display name: [" + networkInterface.getDisplayName() + "]");
+					
+					try
+					{
+						byte[] hardwareAddress = networkInterface.getHardwareAddress();
+						message.append("\nVT>Hardware address: [");
+						for (int i = 0; i < hardwareAddress.length; i++)
+						{
+							message.append(String.format("%02X%s", hardwareAddress[i], (i < hardwareAddress.length - 1) ? "-" : ""));
+						}
+						message.append("]");
+					}
+					catch (Throwable t)
+					{
+						//Hardware address available in 1.6 and beyond but we support 1.5
+					}
+					
 					while (addresses.hasMoreElements())
 					{
 						InetAddress address = addresses.nextElement();

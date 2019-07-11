@@ -74,9 +74,9 @@ public class VTServer implements Runnable
 	private static final String VT_SERVER_SETTINGS_COMMENTS = 
 	"Variable-Terminal server settings file, supports UTF-8\r\n" + 
 	"#vate.server.connection.mode      values: P(passive, default) or A(active)\r\n" + 
-	"#vate.server.encryption.type      values: N(none, default), R(RC4) or A(AES)\r\n" + 
 	"#vate.server.proxy.type           values: N(none, default), S(SOCKS) or H(HTTP)\r\n" + 
 	"#vate.server.proxy.authentication values: D(disabled, default) or E(enabled)\r\n" + 
+	"#vate.server.encryption.type      values: N(none, default), R(RC4) or A(AES)\r\n" + 
 	"#vate.server.authentication.users format: login1/password1;login2/password2;...";
 	
 	static
@@ -1091,57 +1091,6 @@ public class VTServer implements Runnable
 					}
 					if (hostPort != null)
 					{
-						if (encryptionType == null)
-						{
-							VTConsole.print("VT>Use encryption in connection?(Y/N, default:N):");
-							line = VTConsole.readLine(true);
-							if (line == null)
-							{
-								System.exit(0);
-							}
-							else if (skipConfiguration)
-							{
-								return;
-							}
-							if (line.toUpperCase().startsWith("Y"))
-							{
-								VTConsole.print("VT>Enter the encryption type(RC4 as R, AES as A, default:R):");
-								line = VTConsole.readLine(false);
-								if (line == null)
-								{
-									System.exit(0);
-								}
-								else if (skipConfiguration)
-								{
-									return;
-								}
-								if (line.toUpperCase().startsWith("A"))
-								{
-									encryptionType = "AES";
-								}
-								/* else if (line.toUpperCase().startsWith("H"))
-								 * { encryptionType = "H"; } */
-								else
-								{
-									encryptionType = "RC4";
-								}
-								VTConsole.print("VT>Enter the encryption password:");
-								line = VTConsole.readLine(false);
-								if (line == null)
-								{
-									System.exit(0);
-								}
-								else if (skipConfiguration)
-								{
-									return;
-								}
-								encryptionKey = line.getBytes("UTF-8");
-							}
-							else
-							{
-								encryptionType = "None";
-							}
-						}
 						if (proxyType == null)
 						{
 							VTConsole.print("VT>Use proxy in connection?(Y/N, default:N):");
@@ -1285,6 +1234,57 @@ public class VTServer implements Runnable
 							else
 							{
 								proxyType = "None";
+							}
+						}
+						if (encryptionType == null)
+						{
+							VTConsole.print("VT>Use encryption in connection?(Y/N, default:N):");
+							line = VTConsole.readLine(true);
+							if (line == null)
+							{
+								System.exit(0);
+							}
+							else if (skipConfiguration)
+							{
+								return;
+							}
+							if (line.toUpperCase().startsWith("Y"))
+							{
+								VTConsole.print("VT>Enter the encryption type(RC4 as R, AES as A, default:R):");
+								line = VTConsole.readLine(false);
+								if (line == null)
+								{
+									System.exit(0);
+								}
+								else if (skipConfiguration)
+								{
+									return;
+								}
+								if (line.toUpperCase().startsWith("A"))
+								{
+									encryptionType = "AES";
+								}
+								/* else if (line.toUpperCase().startsWith("H"))
+								 * { encryptionType = "H"; } */
+								else
+								{
+									encryptionType = "RC4";
+								}
+								VTConsole.print("VT>Enter the encryption password:");
+								line = VTConsole.readLine(false);
+								if (line == null)
+								{
+									System.exit(0);
+								}
+								else if (skipConfiguration)
+								{
+									return;
+								}
+								encryptionKey = line.getBytes("UTF-8");
+							}
+							else
+							{
+								encryptionType = "None";
 							}
 						}
 					}

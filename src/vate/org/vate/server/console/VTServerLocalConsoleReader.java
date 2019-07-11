@@ -482,7 +482,24 @@ public class VTServerLocalConsoleReader extends VTTask
 						{
 							continue;
 						}
-						message.append("\nVT>Name: [" + networkInterface.getName() + "]\nVT>Display name: [" + networkInterface.getDisplayName() + "]");
+						message.append("\nVT>Name: [" + networkInterface.getName() + "]"
+						+ "\nVT>Display name: [" + networkInterface.getDisplayName() + "]");
+						
+						try
+						{
+							byte[] hardwareAddress = networkInterface.getHardwareAddress();
+							message.append("\nVT>Hardware address: [");
+							for (int i = 0; i < hardwareAddress.length; i++)
+							{
+								message.append(String.format("%02X%s", hardwareAddress[i], (i < hardwareAddress.length - 1) ? "-" : ""));
+							}
+							message.append("]");
+						}
+						catch (Throwable t)
+						{
+							//Hardware address available in 1.6 and beyond but we support 1.5
+						}
+						
 						while (addresses.hasMoreElements())
 						{
 							InetAddress address = addresses.nextElement();
@@ -790,19 +807,6 @@ public class VTServerLocalConsoleReader extends VTTask
 					{
 						message.append("\nVT>Connection nat port(NP): []");
 					}
-					if (encryptionType.toUpperCase().startsWith("R"))
-					{
-						message.append("\nVT>Encryption type(ET): RC4");
-					}
-					else if (encryptionType.toUpperCase().startsWith("A"))
-					{
-						message.append("\nVT>Encryption type(ET): [AES]");
-					}
-					else
-					{
-						message.append("\nVT>Encryption type(ET): [None]");
-					}
-					message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
 					if (proxyType == null)
 					{
 						message.append("\nVT>Proxy type(PT): [None]");
@@ -838,6 +842,19 @@ public class VTServerLocalConsoleReader extends VTTask
 					}
 					message.append("\nVT>Proxy user(PU): [" + proxyUser + "]");
 					message.append("\nVT>Proxy password(PK): [" + proxyPassword + "]");
+					if (encryptionType.toUpperCase().startsWith("R"))
+					{
+						message.append("\nVT>Encryption type(ET): RC4");
+					}
+					else if (encryptionType.toUpperCase().startsWith("A"))
+					{
+						message.append("\nVT>Encryption type(ET): [AES]");
+					}
+					else
+					{
+						message.append("\nVT>Encryption type(ET): [None]");
+					}
+					message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
 					message.append("\nVT>Sessions limit(SL): [" + sessionsLimit + "]");
 					message.append("\nVT>\nVT>End of connection settings list on server\nVT>");
 					VTConsole.print(message.toString());

@@ -127,11 +127,7 @@ public class VTServerSettingsDialog extends Dialog
 		
 		VTGlobalTextStyleManager.registerWindow(this);
 		
-		Panel centerPanel = new Panel();
-		GridLayout centerLayout = new GridLayout(17, 1);
-		centerLayout.setHgap(1);
-		centerLayout.setVgap(1);
-		centerPanel.setLayout(centerLayout);
+		
 		//centerPanel.getInsets().set(4, 4, 4, 4);	
 		
 		Choice connectionModeChoice = new Choice();
@@ -262,14 +258,7 @@ public class VTServerSettingsDialog extends Dialog
 		encryptionPasswordField.setEchoChar('*');
 		encryptionPassword = new VTServerSettingsDialogParameter("Encryption Password:", encryptionPasswordField, false);
 		
-		Panel mainPanel = new Panel();
-		mainPanel.setLayout(new BorderLayout());
-		mainPanel.add(new Panel(), BorderLayout.EAST);
-		mainPanel.add(new Panel(), BorderLayout.WEST);
-		mainPanel.add(new Panel(), BorderLayout.NORTH);
-		mainPanel.add(new Panel(), BorderLayout.SOUTH);
-		mainPanel.add(centerPanel, BorderLayout.CENTER);
-		add(mainPanel);
+		
 		//try
 		//{
 			//BorderLayout layout = (BorderLayout) this.getLayout();
@@ -401,25 +390,6 @@ public class VTServerSettingsDialog extends Dialog
 		connectionPasswordField.setEchoChar('*');
 		authenticationPassword = new VTServerSettingsDialogParameter("Authentication Password:", connectionPasswordField, true);
 		
-		centerPanel.add(connectionMode);
-		centerPanel.add(connectionHost);
-		centerPanel.add(connectionPort);
-		centerPanel.add(natPort);
-		
-		centerPanel.add(encryptionType);
-		centerPanel.add(encryptionPassword);
-		centerPanel.add(proxyType);
-		centerPanel.add(proxyHost);
-		centerPanel.add(proxyPort);
-		centerPanel.add(proxySecurity);
-		centerPanel.add(proxyUser);
-		centerPanel.add(proxyPassword);
-		
-		centerPanel.add(authenticationLogin);
-		centerPanel.add(authenticationPassword);
-		
-		centerPanel.add(sessionsLimit);
-		
 		addKeyListener(new KeyListener()
 		{
 			public void keyPressed(KeyEvent e)
@@ -458,62 +428,6 @@ public class VTServerSettingsDialog extends Dialog
 		});
 		
 		
-		for (Component component : centerPanel.getComponents())
-		{
-			if (component instanceof Panel)
-			{
-				Panel panel1 = (Panel) component;
-				for (Component element1 : panel1.getComponents())
-				{
-					if (element1 instanceof Panel)
-					{
-						Panel panel2 = (Panel) element1;
-						for (Component element2 : panel2.getComponents())
-						{
-							element2.addKeyListener(new KeyListener()
-							{
-								public void keyPressed(KeyEvent e)
-								{
-									if (VTGlobalTextStyleManager.processKeyEvent(e))
-									{
-										return;
-									}
-									if (e.getKeyCode() == KeyEvent.VK_ENTER)
-									{
-										execute();
-										return;
-									}
-									if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
-									{
-										close();
-										return;
-									}
-								}
-								
-								public void keyReleased(KeyEvent e)
-								{
-									
-								}
-								
-								public void keyTyped(KeyEvent e)
-								{
-									if (e.getKeyChar() == '\n')
-									{
-										execute();
-										return;
-									}
-									if (e.getKeyChar() == '\u001B')
-									{
-										close();
-										return;
-									}
-								}
-							});
-						}
-					}
-				}
-			}
-		}
 		
 		Button loadButton = new Button("Load");
 		Button saveButton = new Button("Save");
@@ -525,7 +439,6 @@ public class VTServerSettingsDialog extends Dialog
 		buttonPanel1.setLayout(buttonLayout1);
 		buttonPanel1.add(loadButton);
 		buttonPanel1.add(saveButton);
-		centerPanel.add(buttonPanel1);
 		
 		loadButton.addActionListener(new ActionListener()
 		{
@@ -677,7 +590,6 @@ public class VTServerSettingsDialog extends Dialog
 		buttonPanel2.setLayout(buttonLayout2);
 		buttonPanel2.add(okButton);
 		buttonPanel2.add(closeButton);
-		centerPanel.add(buttonPanel2);
 		
 		// okButton.setEnabled(false);
 		okButton.addActionListener(new ActionListener()
@@ -763,6 +675,104 @@ public class VTServerSettingsDialog extends Dialog
 				}
 			}
 		});
+		
+		Panel centerPanel = new Panel();
+		GridLayout centerLayout = new GridLayout(17, 1);
+		centerLayout.setHgap(1);
+		centerLayout.setVgap(1);
+		centerPanel.setLayout(centerLayout);
+		
+		Panel mainPanel = new Panel();
+		mainPanel.setLayout(new BorderLayout());
+		mainPanel.add(new Panel(), BorderLayout.EAST);
+		mainPanel.add(new Panel(), BorderLayout.WEST);
+		mainPanel.add(new Panel(), BorderLayout.NORTH);
+		mainPanel.add(new Panel(), BorderLayout.SOUTH);
+		mainPanel.add(centerPanel, BorderLayout.CENTER);
+		add(mainPanel);
+		
+		centerPanel.add(connectionMode);
+		centerPanel.add(connectionHost);
+		centerPanel.add(connectionPort);
+		centerPanel.add(natPort);
+		
+		centerPanel.add(proxyType);
+		centerPanel.add(proxyHost);
+		centerPanel.add(proxyPort);
+		centerPanel.add(proxySecurity);
+		centerPanel.add(proxyUser);
+		centerPanel.add(proxyPassword);
+		
+		centerPanel.add(encryptionType);
+		centerPanel.add(encryptionPassword);
+		
+		centerPanel.add(authenticationLogin);
+		centerPanel.add(authenticationPassword);
+		
+		centerPanel.add(sessionsLimit);
+		
+		centerPanel.add(buttonPanel1);
+		
+		centerPanel.add(buttonPanel2);
+		
+		
+		
+		for (Component component : centerPanel.getComponents())
+		{
+			if (component instanceof Panel)
+			{
+				Panel panel1 = (Panel) component;
+				for (Component element1 : panel1.getComponents())
+				{
+					if (element1 instanceof Panel)
+					{
+						Panel panel2 = (Panel) element1;
+						for (Component element2 : panel2.getComponents())
+						{
+							element2.addKeyListener(new KeyListener()
+							{
+								public void keyPressed(KeyEvent e)
+								{
+									if (VTGlobalTextStyleManager.processKeyEvent(e))
+									{
+										return;
+									}
+									if (e.getKeyCode() == KeyEvent.VK_ENTER)
+									{
+										execute();
+										return;
+									}
+									if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+									{
+										close();
+										return;
+									}
+								}
+								
+								public void keyReleased(KeyEvent e)
+								{
+									
+								}
+								
+								public void keyTyped(KeyEvent e)
+								{
+									if (e.getKeyChar() == '\n')
+									{
+										execute();
+										return;
+									}
+									if (e.getKeyChar() == '\u001B')
+									{
+										close();
+										return;
+									}
+								}
+							});
+						}
+					}
+				}
+			}
+		}
 		
 		MenuBar menubar = new MenuBar();
 		Menu textMenu = new Menu("Fonts");

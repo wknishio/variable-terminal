@@ -1864,19 +1864,6 @@ public class VTServerRemoteConsoleReader extends VTTask
 				{
 					message.append("\nVT>Connection nat port(NP): []");
 				}
-				if (encryptionType.toUpperCase().startsWith("R"))
-				{
-					message.append("\nVT>Encryption type(ET): [RC4]");
-				}
-				else if (encryptionType.toUpperCase().startsWith("A"))
-				{
-					message.append("\nVT>Encryption type(ET): [AES]");
-				}
-				else
-				{
-					message.append("\nVT>Encryption type(ET): [None]");
-				}
-				message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
 				if (proxyType == null)
 				{
 					message.append("\nVT>Proxy type(PT): [None]");
@@ -1912,6 +1899,19 @@ public class VTServerRemoteConsoleReader extends VTTask
 				}
 				message.append("\nVT>Proxy user(PU): [" + proxyUser + "]");
 				message.append("\nVT>Proxy password(PK): [" + proxyPassword + "]");
+				if (encryptionType.toUpperCase().startsWith("R"))
+				{
+					message.append("\nVT>Encryption type(ET): [RC4]");
+				}
+				else if (encryptionType.toUpperCase().startsWith("A"))
+				{
+					message.append("\nVT>Encryption type(ET): [AES]");
+				}
+				else
+				{
+					message.append("\nVT>Encryption type(ET): [None]");
+				}
+				message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
 				message.append("\nVT>Sessions limit(SL): [" + sessionsLimit + "]");
 				message.append("\nVT>\nVT>End of connection settings list on server\nVT>");
 				connection.getResultWriter().write(message.toString());
