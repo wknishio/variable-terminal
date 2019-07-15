@@ -102,14 +102,14 @@ these are the available program arguments:
 * -CH: connection host, default null
 * -CP: connection port, default 6060
 * -NP: NAT port, default null
-* -ET: encryption type, AES(A), RC4(R), disabled(D), default disabled
-* -EK: encryption password, default null
 * -PT: proxy type, SOCKS(S), HTTP(H), disabled(D), default disabled
 * -PH: proxy host, default null
 * -PP: proxy port, default 1080 for SOCKS or 8080 for HTTP
 * -PA: proxy authentication, enabled(E), disabled(D), default disabled
 * -PU: proxy user, default null
 * -PK: proxy password, default null
+* -ET: encryption type, AES(A), RC4(R), disabled(D), default disabled
+* -EK: encryption password, default null
 * -AL: authentication login, default null
 * -AK: authentication password, default null
 * -SL: sessions limit, default 0, available in server
