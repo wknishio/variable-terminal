@@ -449,6 +449,7 @@ public class VTGraphicsModeClientWriter implements Runnable
 	public void finishClipboardContentsTransfer()
 	{
 		menuBar.finishClipboardContentsTransfer();
+		//System.out.println("Clipboard Transfer Finished");
 		/* try { connection.resetClipboardStreams(); } catch (Throwable e) {
 		 * } session.getSession().getClipboardTransferTask().setInputStream(
 		 * connection.getGraphicsClipboardDataInputStream());

@@ -21,6 +21,7 @@ import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.exception.VTUncaughtExceptionHandler;
 import org.vate.help.VTHelpManager;
 import org.vate.nativeutils.VTNativeUtils;
+import org.vate.network.ssl.SSLVerificationDisabler;
 import org.vate.parser.VTConfigurationProperties;
 import org.vate.parser.VTPropertiesBuilder;
 
@@ -64,6 +65,7 @@ public class VTClient implements Runnable
 	{
 		ImageIO.setUseCache(false);
 		VTHelpManager.initialize();
+		SSLVerificationDisabler.install();
 	}
 	
 	public VTClient()

@@ -62,6 +62,7 @@
 * Command *VTPRINTERS now allows specifying a print service for more details
 * Added command *VTSAVE to save current client connection settings to file
 * Changed startup parameter format, parameters now have a dash(-) as in unix
+* Modified *VTFILETRANSFER command to transfer directories and multiple files
 * Modified the readme file to english language
 * Changed license from GPLv3 license to MIT license
 

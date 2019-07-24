@@ -32,7 +32,7 @@ import org.vate.VT;
 import org.vate.console.VTConsole;
 import org.vate.security.VTArrayComparator;
 import org.vate.security.VTCryptographicEngine;
-import org.vate.stream.compress.VTDeflaterOutputStream;
+import org.vate.stream.compress.VTSyncFlushDeflaterOutputStream;
 import org.vate.stream.endian.VTLittleEndianInputStream;
 import org.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vate.stream.filter.VTBufferedOutputStream;
@@ -650,20 +650,28 @@ public class VTServerConnection
 		
 		socksControlInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 12);
 		socksControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 12);
-
 		
-		// shellDataOutputStream = new SnappyOutputStream(shellOutputStream,
-		// false);
-		// shellDataOutputStream = new ZstdOutputStream(shellOutputStream, 1,
-		// true);
 		shellDataOutputStream = new VTBufferedOutputStream(new LZ4BlockOutputStream(shellOutputStream, 1024 * 8, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), 1024 * 32);
+//		try
+//		{
+//			java.util.zip.Deflater javaShellDeflater = new java.util.zip.Deflater(Deflater.BEST_SPEED, true);
+//			javaShellDeflater.setStrategy(Deflater.FILTERED);
+//			javaShellDeflater.setLevel(Deflater.BEST_SPEED);
+//			VTDeflaterOutputStream javaShellDeflaterOutputStream = new VTDeflaterOutputStream(shellOutputStream, javaShellDeflater, 1024 * 8, true);
+//			shellDataOutputStream = javaShellDeflaterOutputStream;
+//		}
+//		catch (Throwable t)
+//		{
+//			DeflaterOutputStream jzlibShellDeflater = new DeflaterOutputStream(shellOutputStream, 1024 * 8, JZlib.Z_BEST_SPEED, true);
+//			jzlibShellDeflater.getDeflater().params(JZlib.Z_BEST_SPEED, JZlib.Z_FILTERED);
+//			jzlibShellDeflater.setSyncFlush(true);
+//			shellDataOutputStream = jzlibShellDeflater;
+//		}
+		//shellDataOutputStream = shellOutputStream;
 		
-		// shellDataInputStream = new SnappyInputStream(shellInputStream,
-		// false);
-		// shellDataInputStream = new ZstdInputStream(shellInputStream);
-		// shellDataInputStream = new LZ4FrameInputStream(shellInputStream,
-		// false);
 		shellDataInputStream = new BufferedInputStream(new LZ4BlockInputStream(shellInputStream, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), 1024 * 32);
+		//shellDataInputStream = new InflaterInputStream(shellInputStream, true);
+		//shellDataInputStream = shellInputStream;
 		
 		commandReader = new BufferedReader(new InputStreamReader(shellDataInputStream, "UTF-8"));
 		resultWriter = new BufferedWriter(new OutputStreamWriter(shellDataOutputStream, "UTF-8"));
@@ -730,12 +738,12 @@ public class VTServerConnection
 			java.util.zip.Deflater javaImageDeflater = new java.util.zip.Deflater(Deflater.BEST_SPEED, true);
 			javaImageDeflater.setStrategy(Deflater.FILTERED);
 			javaImageDeflater.setLevel(Deflater.BEST_SPEED);
-			VTDeflaterOutputStream javaImageDeflaterOutputStream = new VTDeflaterOutputStream(graphicsDeflatedImageOutputStream, javaImageDeflater, 1024 * 32, true);
+			VTSyncFlushDeflaterOutputStream javaImageDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(graphicsDeflatedImageOutputStream, javaImageDeflater, 1024 * 32);
 			deflatedImageDataOutputStream = (new VTBufferedOutputStream(javaImageDeflaterOutputStream, 1024 * 32));
 		}
 		catch (Throwable t)
 		{
-			DeflaterOutputStream jzlibImageDeflater = new DeflaterOutputStream(graphicsDeflatedImageOutputStream, 1024 * 32, JZlib.Z_BEST_SPEED, true);
+			DeflaterOutputStream jzlibImageDeflater = new com.jcraft.jzlib.DeflaterOutputStream(graphicsDeflatedImageOutputStream, 1024 * 32, JZlib.Z_BEST_SPEED, true);
 			jzlibImageDeflater.getDeflater().params(JZlib.Z_BEST_SPEED, JZlib.Z_FILTERED);
 			jzlibImageDeflater.setSyncFlush(true);
 			deflatedImageDataOutputStream = (new VTBufferedOutputStream(jzlibImageDeflater, 1024 * 32));
@@ -744,7 +752,23 @@ public class VTServerConnection
 		snappedImageDataInputStream = (graphicsSnappedImageInputStream);
 		snappedImageDataOutputStream = (new VTBufferedOutputStream(new LZ4BlockOutputStream(graphicsSnappedImageOutputStream, 1024 * 8, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), 1024 * 32));
 		
+//		try
+//		{
+//			java.util.zip.Deflater javaClipDeflater = new java.util.zip.Deflater(Deflater.BEST_SPEED, true);
+//			javaClipDeflater.setStrategy(Deflater.FILTERED);
+//			javaClipDeflater.setLevel(Deflater.BEST_SPEED);
+//			VTDeflaterOutputStream javaClipDeflaterOutputStream = new VTDeflaterOutputStream(graphicsClipboardOutputStream, javaClipDeflater, 1024 * 32, true);
+//			clipboardDataOutputStream = (new VTBufferedOutputStream(javaClipDeflaterOutputStream, 1024 * 32));
+//		}
+//		catch (Throwable t)
+//		{
+//			DeflaterOutputStream jzlibClipDeflater = new DeflaterOutputStream(graphicsClipboardOutputStream, 1024 * 32, JZlib.Z_BEST_SPEED, true);
+//			jzlibClipDeflater.getDeflater().params(JZlib.Z_BEST_SPEED, JZlib.Z_FILTERED);
+//			jzlibClipDeflater.setSyncFlush(true);
+//			clipboardDataOutputStream = (new VTBufferedOutputStream(jzlibClipDeflater, 1024 * 32));
+//		}
 		clipboardDataOutputStream = new VTBufferedOutputStream(new LZ4BlockOutputStream(graphicsClipboardOutputStream, 1024 * 8, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), 1024 * 32);
+		//clipboardDataInputStream = new BufferedInputStream(new InflaterInputStream(graphicsClipboardInputStream, 1024 * 32, true));
 		clipboardDataInputStream = new BufferedInputStream(new LZ4BlockInputStream(graphicsClipboardInputStream, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), 1024 * 32);
 		
 		fileTransferControlDataInputStream = new VTLittleEndianInputStream(new BufferedInputStream(fileTransferControlInputStream));
@@ -903,12 +927,12 @@ public class VTServerConnection
 			java.util.zip.Deflater javaImageDeflater = new java.util.zip.Deflater(Deflater.BEST_SPEED, true);
 			javaImageDeflater.setStrategy(Deflater.FILTERED);
 			javaImageDeflater.setLevel(Deflater.BEST_SPEED);
-			VTDeflaterOutputStream javaImageDeflaterOutputStream = new VTDeflaterOutputStream(graphicsDeflatedImageOutputStream, javaImageDeflater, 1024 * 32, true);
+			VTSyncFlushDeflaterOutputStream javaImageDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(graphicsDeflatedImageOutputStream, javaImageDeflater, 1024 * 32);
 			deflatedImageDataOutputStream = (new VTBufferedOutputStream(javaImageDeflaterOutputStream, 1024 * 32));
 		}
 		catch (Throwable t)
 		{
-			DeflaterOutputStream jzlibImageDeflater = new DeflaterOutputStream(graphicsDeflatedImageOutputStream, 1024 * 32, JZlib.Z_BEST_SPEED, true);
+			DeflaterOutputStream jzlibImageDeflater = new com.jcraft.jzlib.DeflaterOutputStream(graphicsDeflatedImageOutputStream, 1024 * 32, JZlib.Z_BEST_SPEED, true);
 			jzlibImageDeflater.getDeflater().params(JZlib.Z_BEST_SPEED, JZlib.Z_FILTERED);
 			jzlibImageDeflater.setSyncFlush(true);
 			deflatedImageDataOutputStream = (new VTBufferedOutputStream(jzlibImageDeflater, 1024 * 32));
@@ -927,7 +951,23 @@ public class VTServerConnection
 		graphicsClipboardOutputStream.open();
 		graphicsClipboardInputStream.open();
 		
+//		try
+//		{
+//			java.util.zip.Deflater javaClipDeflater = new java.util.zip.Deflater(Deflater.BEST_SPEED, true);
+//			javaClipDeflater.setStrategy(Deflater.FILTERED);
+//			javaClipDeflater.setLevel(Deflater.BEST_SPEED);
+//			VTDeflaterOutputStream javaClipDeflaterOutputStream = new VTDeflaterOutputStream(graphicsClipboardOutputStream, javaClipDeflater, 1024 * 32, true);
+//			clipboardDataOutputStream = (new VTBufferedOutputStream(javaClipDeflaterOutputStream, 1024 * 32));
+//		}
+//		catch (Throwable t)
+//		{
+//			DeflaterOutputStream jzlibClipDeflater = new DeflaterOutputStream(graphicsClipboardOutputStream, 1024 * 32, JZlib.Z_BEST_SPEED, true);
+//			jzlibClipDeflater.getDeflater().params(JZlib.Z_BEST_SPEED, JZlib.Z_FILTERED);
+//			jzlibClipDeflater.setSyncFlush(true);
+//			clipboardDataOutputStream = (new VTBufferedOutputStream(jzlibClipDeflater, 1024 * 32));
+//		}
 		clipboardDataOutputStream = new VTBufferedOutputStream(new LZ4BlockOutputStream(graphicsClipboardOutputStream, 1024 * 8, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), 1024 * 32);
+		//clipboardDataInputStream = new BufferedInputStream(new InflaterInputStream(graphicsClipboardInputStream, 1024 * 32, true));
 		clipboardDataInputStream = new BufferedInputStream(new LZ4BlockInputStream(graphicsClipboardInputStream, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), 1024 * 32);
 	}
 	

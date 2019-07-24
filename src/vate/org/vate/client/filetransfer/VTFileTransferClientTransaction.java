@@ -52,8 +52,12 @@ public class VTFileTransferClientTransaction implements Runnable
 	// private final byte[] checksumBuffer = new byte[checksumBufferSize];
 	private Checksum checksum = XXHashFactory.fastestJavaInstance().newStreamingHash32(-1).asChecksum();
 	private String command;
-	private String localFilePath;
-	private String remoteFilePath;
+	private String source;
+	private String destination;
+	private String filePaths;
+	private volatile String filePath;
+	//private volatile String localFilePath;
+	//private volatile String remoteFilePath;
 	private String transferParameters;
 	// private String[] splitCommand;
 	private File fileTransferFile;
@@ -614,7 +618,7 @@ public class VTFileTransferClientTransaction implements Runnable
 	private boolean tryUpload(String currentPath)
 	{
 		// VTConsole.print("\nVT>Trying to send file to server...\nVT>");
-		// System.out.println("tryUpload: " + currentPath);
+		//System.out.println("tryUpload: " + currentPath);
 		if (verifyUpload(currentPath))
 		{
 			return (setUploadStreams(currentPath) && uploadFilePath(currentPath));
@@ -627,11 +631,12 @@ public class VTFileTransferClientTransaction implements Runnable
 		verified = true;
 		directory = false;
 		resumable = false;
-		fileTransferFile = new File(convertFilePath(appendToPath(localFilePath, currentPath)));
+		fileTransferFile = new File(convertFilePath(currentPath));
 		if (!fileTransferFile.isAbsolute())
 		{
-			fileTransferFile = new File(convertFilePath(appendToPath(localFilePath, currentPath)));
+			fileTransferFile = new File(convertFilePath(currentPath));
 		}
+		//System.out.println("verifyUpload: " + fileTransferFile.getAbsolutePath());
 		try
 		{
 			if (getFileStatus())
@@ -660,10 +665,10 @@ public class VTFileTransferClientTransaction implements Runnable
 				}
 				if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_DIRECTORY)
 				{
-					if (currentPath == null)
-					{
-						remoteFilePath = appendToPath(remoteFilePath, getFileNameFromPath(localFilePath));
-					}
+					//if (currentPath == null)
+					//{
+						//remoteFilePath = appendToPath(remoteFilePath, getFileNameFromPath(localFilePath));
+					//}
 				}
 				if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_UNKNOWN)
 				{
@@ -771,26 +776,6 @@ public class VTFileTransferClientTransaction implements Runnable
 		}
 		try
 		{
-			if (currentPath == null)
-			{
-				if (compression)
-				{
-					// fileTransferOutputStream = new
-					// ZOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream(),
-					// JZlib.Z_DEFAULT_COMPRESSION, true, 4096);
-					// ((ZOutputStream)fileTransferOutputStream).setFlushMode(JZlib.Z_SYNC_FLUSH);
-					// fileTransferOutputStream = new
-					// GZIPOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream());
-					// fileTransferRemoteOutputStream = new
-					// SnappyFramedOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream(),
-					// 1024 * 8, 0.85d, false);
-					fileTransferRemoteOutputStream = new LZ4BlockOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream(), 1024 * 8, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true);
-				}
-				else
-				{
-					fileTransferRemoteOutputStream = session.getClient().getConnection().getFileTransferDataOutputStream();
-				}
-			}
 			if (!directory)
 			{
 				if (resumable)
@@ -803,6 +788,7 @@ public class VTFileTransferClientTransaction implements Runnable
 		}
 		catch (Throwable e)
 		{
+			//e.printStackTrace();
 			try
 			{
 				fileTransferRemoteOutputStream.close();
@@ -866,19 +852,9 @@ public class VTFileTransferClientTransaction implements Runnable
 				File[] subFiles = fileTransferFile.listFiles();
 				String[] subPaths = new String[subFiles.length];
 				int i = 0;
-				if (currentPath == null)
+				for (File file : subFiles)
 				{
-					for (File file : subFiles)
-					{
-						subPaths[i++] = file.getName();
-					}
-				}
-				else
-				{
-					for (File file : subFiles)
-					{
-						subPaths[i++] = appendToPath(currentPath, file.getName());
-					}
+					subPaths[i++] = file.getName();
 				}
 				for (String nextPath : subPaths)
 				{
@@ -888,7 +864,7 @@ public class VTFileTransferClientTransaction implements Runnable
 						if (writeNextFilePath(nextPath))
 						{
 							// send next path try subfile upload
-							ok = tryUpload(nextPath);
+							ok = tryUpload(appendToPath(currentPath, nextPath));
 						}
 						else
 						{
@@ -1008,6 +984,7 @@ public class VTFileTransferClientTransaction implements Runnable
 		}
 		catch (Throwable t)
 		{
+			//t.printStackTrace();
 			ok = false;
 			try
 			{
@@ -1037,14 +1014,14 @@ public class VTFileTransferClientTransaction implements Runnable
 		return ok;
 	}
 	
-	private boolean tryDownload(String currentPath)
+	private boolean tryDownload(String currentPath, boolean rootLevel)
 	{
 		// VTConsole.print("\nVT>Trying to receive file from
 		// server...\nVT>");
-		// System.out.println("tryDownload: " + currentPath);
+		//System.out.println("tryDownload: " + currentPath);
 		if (verifyDownload(currentPath))
 		{
-			return (setDownloadStreams(currentPath) && downloadFilePath(currentPath));
+			return (setDownloadStreams(currentPath) && downloadFilePath(currentPath, rootLevel));
 		}
 		else
 		{
@@ -1057,21 +1034,22 @@ public class VTFileTransferClientTransaction implements Runnable
 		verified = true;
 		directory = false;
 		resumable = false;
-		fileTransferFile = new File(convertFilePath(appendToPath(localFilePath, currentPath)));
+		fileTransferFile = new File(convertFilePath(currentPath));
 		if (!fileTransferFile.isAbsolute())
 		{
-			fileTransferFile = new File(convertFilePath(appendToPath(localFilePath, currentPath)));
+			fileTransferFile = new File(convertFilePath(currentPath));
 		}
+		//System.out.println("verifyDownload: " + fileTransferFile.getAbsolutePath());
 		try
 		{
 			if (getFileStatus())
 			{
 				if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_DIRECTORY)
 				{
-					if (currentPath == null)
-					{
-						localFilePath = appendToPath(localFilePath, getFileNameFromPath(remoteFilePath));
-					}
+					//if (currentPath == null)
+					//{
+						//localFilePath = appendToPath(localFilePath, getFileNameFromPath(remoteFilePath));
+					//}
 				}
 				if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_UNKNOWN)
 				{
@@ -1114,17 +1092,17 @@ public class VTFileTransferClientTransaction implements Runnable
 						transferFileCount++;
 						if (!fileTransferFile.exists())
 						{
-							fileTransferFile = new File(convertFilePath(appendToPath(localFilePath, currentPath) + ".tmp"));
+							fileTransferFile = new File(convertFilePath(currentPath + ".tmp"));
 							if (!fileTransferFile.isAbsolute())
 							{
-								fileTransferFile = new File(convertFilePath(appendToPath(localFilePath, currentPath) + ".tmp"));
+								fileTransferFile = new File(convertFilePath(currentPath + ".tmp"));
 							}
 						}
 					}
 					else
 					{
 						transferDirectoryCount++;
-						fileTransferFile = new File(convertFilePath(appendToPath(localFilePath, currentPath)));
+						fileTransferFile = new File(convertFilePath(currentPath));
 						if (fileTransferFile.exists() && !fileTransferFile.isDirectory())
 						{
 							fileTransferFile.delete();
@@ -1213,26 +1191,6 @@ public class VTFileTransferClientTransaction implements Runnable
 		}
 		try
 		{
-			if (currentPath == null)
-			{
-				if (compression)
-				{
-					// fileTransferInputStream = new
-					// ZInputStream(session.getClient().getConnection().getFileTransferDataInputStream(),
-					// true, 4096);
-					// ((ZInputStream)fileTransferInputStream).setFlushMode(JZlib.Z_SYNC_FLUSH);
-					// fileTransferInputStream = new
-					// GZIPInputStream(fileTransferInputStream);
-					// fileTransferRemoteInputStream = new
-					// SnappyFramedInputStream(session.getClient().getConnection().getFileTransferDataInputStream(),
-					// false);
-					fileTransferRemoteInputStream = new LZ4BlockInputStream(session.getClient().getConnection().getFileTransferDataInputStream(), LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false);
-				}
-				else
-				{
-					fileTransferRemoteInputStream = session.getClient().getConnection().getFileTransferDataInputStream();
-				}
-			}
 			if (!directory)
 			{
 				if (resumable)
@@ -1265,7 +1223,7 @@ public class VTFileTransferClientTransaction implements Runnable
 		}
 	}
 	
-	private boolean downloadFilePath(String currentPath)
+	private boolean downloadFilePath(String currentPath, boolean rootLevel)
 	{
 		boolean ok = true;
 		try
@@ -1326,10 +1284,10 @@ public class VTFileTransferClientTransaction implements Runnable
 					}
 					try
 					{
-						fileTransferFinalFile = new File(convertFilePath(appendToPath(localFilePath, currentPath)));
+						fileTransferFinalFile = new File(convertFilePath(currentPath));
 						if (!fileTransferFinalFile.isAbsolute())
 						{
-							fileTransferFinalFile = new File(convertFilePath(appendToPath(localFilePath, currentPath)));
+							fileTransferFinalFile = new File(convertFilePath(currentPath));
 						}
 						if (!fileTransferFile.renameTo(fileTransferFinalFile))
 						{
@@ -1356,6 +1314,16 @@ public class VTFileTransferClientTransaction implements Runnable
 			}
 			else
 			{
+				String rootFolder = null;
+				if (rootLevel)
+				{
+					rootFolder = getFileNameFromPath(this.filePath);
+					new File(appendToPath(currentPath, rootFolder)).mkdirs();
+				}
+				else
+				{
+					fileTransferFile.mkdirs();
+				}
 				String nextPath = " ";
 				// String subPath = appendToPath(localFilePath, currentPath);
 				while (true)
@@ -1364,12 +1332,20 @@ public class VTFileTransferClientTransaction implements Runnable
 					if (ok)
 					{
 						nextPath = readNextFilePath();
+						//System.out.println("nextPath:" + nextPath);
 						if (nextPath != null)
 						{
 							if (!("".equals(nextPath)))
 							{
 								// receive next path try subfile download
-								ok = tryDownload(nextPath);
+								if (rootLevel)
+								{
+									ok = tryDownload(appendToPath(appendToPath(currentPath, rootFolder), nextPath), false);
+								}
+								else
+								{
+									ok = tryDownload(appendToPath(currentPath, nextPath), false);
+								}
 							}
 							else
 							{
@@ -1582,11 +1558,13 @@ public class VTFileTransferClientTransaction implements Runnable
 			}
 			if (splitCommand[0].equalsIgnoreCase("*VTFILETRANSFER") || splitCommand[0].equalsIgnoreCase("*VTFT"))
 			{
+				source = splitCommand[2];
+				destination = splitCommand[3];
 				transferParameters = splitCommand[1];
 				if (transferParameters.toUpperCase().contains("P"))
 				{
-					localFilePath = splitCommand[2];
-					remoteFilePath = splitCommand[3];
+					filePaths = splitCommand[2];
+					//remoteFilePath = splitCommand[3];
 					compression = false;
 					resume = false;
 					check = false;
@@ -1602,56 +1580,84 @@ public class VTFileTransferClientTransaction implements Runnable
 					{
 						check = true;
 					}
-					if (tryUpload(null))
+					String[] localFiles = filePaths.split(";");
+					
+					if (compression)
 					{
-						if (!session.getClient().getConnection().isConnected())
-						{
-							return;
-						}
-						synchronized (this)
-						{
-							if (!stopped)
-							{
-								if (interrupted)
-								{
-									VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + localFilePath + "]" + "\nVT>Remote file: [" + remoteFilePath + "]\nVT>");
-								}
-								else
-								{
-									VTConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + localFilePath + "]" + "\nVT>Remote file: [" + remoteFilePath + "]\nVT>");
-								}
-							}
-							else
-							{
-								VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + localFilePath + "]" + "\nVT>Remote file: [" + remoteFilePath + "]\nVT>");
-							}
-							finished = true;
-						}
+						// fileTransferOutputStream = new
+						// ZOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream(),
+						// JZlib.Z_DEFAULT_COMPRESSION, true, 4096);
+						// ((ZOutputStream)fileTransferOutputStream).setFlushMode(JZlib.Z_SYNC_FLUSH);
+						// fileTransferOutputStream = new
+						// GZIPOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream());
+						// fileTransferRemoteOutputStream = new
+						// SnappyFramedOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream(),
+						// 1024 * 8, 0.85d, false);
+						fileTransferRemoteOutputStream = new LZ4BlockOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream(), 1024 * 8, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true);
 					}
 					else
 					{
-						if (!session.getClient().getConnection().isConnected())
+						fileTransferRemoteOutputStream = session.getClient().getConnection().getFileTransferDataOutputStream();
+					}
+					
+					for (String localFile : localFiles)
+					{
+						//this.remoteFilePath = destination;
+						//this.localFilePath = localFile;
+						this.filePath = localFile;
+						if (tryUpload(localFile))
 						{
+							if (!session.getClient().getConnection().isConnected())
+							{
+								finished = true;
+								return;
+							}
+						}
+						else
+						{
+							if (!session.getClient().getConnection().isConnected())
+							{
+								return;
+							}
+							synchronized (this)
+							{
+								if (interrupted)
+								{
+									VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
+								}
+								else
+								{
+									VTConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
+								}
+								finished = true;
+							}
 							return;
 						}
-						synchronized (this)
+					}
+					synchronized (this)
+					{
+						if (!stopped)
 						{
 							if (interrupted)
 							{
-								VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + localFilePath + "]" + "\nVT>Remote file: [" + remoteFilePath + "]\nVT>");
+								VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
 							}
 							else
 							{
-								VTConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + localFilePath + "]" + "\nVT>Remote file: [" + remoteFilePath + "]\nVT>");
+								VTConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
 							}
-							finished = true;
 						}
+						else
+						{
+							VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
+						}
+						finished = true;
 					}
 				}
 				else if (transferParameters.toUpperCase().contains("G"))
 				{
-					localFilePath = splitCommand[3];
-					remoteFilePath = splitCommand[2];
+					filePaths = splitCommand[2];
+					//localFilePath = splitCommand[3];
 					compression = false;
 					resume = false;
 					check = false;
@@ -1667,50 +1673,78 @@ public class VTFileTransferClientTransaction implements Runnable
 					{
 						check = true;
 					}
-					if (tryDownload(null))
+					
+					if (compression)
 					{
-						if (!session.getClient().getConnection().isConnected())
-						{
-							return;
-						}
-						synchronized (this)
-						{
-							if (!stopped)
-							{
-								if (interrupted)
-								{
-									VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + localFilePath + "]" + "\nVT>Remote file: [" + remoteFilePath + "]\nVT>");
-								}
-								else
-								{
-									VTConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + localFilePath + "]" + "\nVT>Remote file: [" + remoteFilePath + "]\nVT>");
-								}
-							}
-							else
-							{
-								VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + localFilePath + "]" + "\nVT>Remote file: [" + remoteFilePath + "]\nVT>");
-							}
-							finished = true;
-						}
+						// fileTransferInputStream = new
+						// ZInputStream(session.getClient().getConnection().getFileTransferDataInputStream(),
+						// true, 4096);
+						// ((ZInputStream)fileTransferInputStream).setFlushMode(JZlib.Z_SYNC_FLUSH);
+						// fileTransferInputStream = new
+						// GZIPInputStream(fileTransferInputStream);
+						// fileTransferRemoteInputStream = new
+						// SnappyFramedInputStream(session.getClient().getConnection().getFileTransferDataInputStream(),
+						// false);
+						fileTransferRemoteInputStream = new LZ4BlockInputStream(session.getClient().getConnection().getFileTransferDataInputStream(), LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false);
 					}
 					else
 					{
-						if (!session.getClient().getConnection().isConnected())
+						fileTransferRemoteInputStream = session.getClient().getConnection().getFileTransferDataInputStream();
+					}
+					
+					String[] remoteFiles = filePaths.split(";");
+					for (String remoteFile : remoteFiles)
+					{
+						//this.localFilePath = destination;
+						//this.remoteFilePath = remoteFile;
+						this.filePath = remoteFile;
+						if (tryDownload(destination, true))
 						{
+							if (!session.getClient().getConnection().isConnected())
+							{
+								finished = true;
+								return;
+							}
+						}
+						else
+						{
+							if (!session.getClient().getConnection().isConnected())
+							{
+								return;
+							}
+							synchronized (this)
+							{
+								if (interrupted)
+								{
+									VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+								}
+								else
+								{
+									VTConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+								}
+								finished = true;
+							}
 							return;
 						}
-						synchronized (this)
+					}
+					synchronized (this)
+					{
+						if (!stopped)
 						{
 							if (interrupted)
 							{
-								VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + localFilePath + "]" + "\nVT>Remote file: [" + remoteFilePath + "]\nVT>");
+								VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
 							}
 							else
 							{
-								VTConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + localFilePath + "]" + "\nVT>Remote file: [" + remoteFilePath + "]\nVT>");
+								VTConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
 							}
-							finished = true;
 						}
+						else
+						{
+							VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+						}
+						finished = true;
 					}
 				}
 				else

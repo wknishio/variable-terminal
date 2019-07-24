@@ -26,6 +26,7 @@ import org.vate.exception.VTUncaughtExceptionHandler;
 import org.vate.graphics.message.VTTrayIconInterface;
 import org.vate.help.VTHelpManager;
 import org.vate.nativeutils.VTNativeUtils;
+import org.vate.network.ssl.SSLVerificationDisabler;
 import org.vate.parser.VTArgumentParser;
 import org.vate.parser.VTConfigurationProperties;
 import org.vate.parser.VTPropertiesBuilder;
@@ -83,6 +84,7 @@ public class VTServer implements Runnable
 	{
 		ImageIO.setUseCache(false);
 		VTHelpManager.initialize();
+		SSLVerificationDisabler.install();
 	}
 	
 	public class Credential
