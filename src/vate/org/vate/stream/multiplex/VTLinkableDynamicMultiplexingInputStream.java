@@ -64,6 +64,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 		private OutputStream outputStream;
 		//private short type;
 		private int number;
+		private volatile Object link;
 		private VTLinkableDynamicMultiplexedOutputStream propagated;
 		
 		private VTLinkableDynamicMultiplexedInputStream(short type, int number, int bufferSize)
@@ -88,6 +89,16 @@ public class VTLinkableDynamicMultiplexingInputStream
 		public int number()
 		{
 			return number;
+		}
+		
+		public Object getLink()
+		{
+			return link;
+		}
+		
+		public void setLink(Object link)
+		{
+			this.link = link;
 		}
 		
 		private OutputStream getOutputStream()
@@ -198,6 +209,40 @@ public class VTLinkableDynamicMultiplexingInputStream
 		if (startPacketReader)
 		{
 			this.packetReaderThread.start();
+		}
+	}
+	
+	public synchronized VTLinkableDynamicMultiplexedInputStream linkInputStream(short type, Object link)
+	{
+		VTLinkableDynamicMultiplexedInputStream stream = null;
+		if (link instanceof Integer)
+		{
+			stream = getInputStream(type, (Integer)link);
+			if (stream.getLink() != null)
+			{
+				return null;
+			}
+			stream.setLink(link);
+			return stream;
+		}
+		//search for a multiplexed outputstream that has no link
+		for (int i = 0; i < 1048576; i++)
+		{
+			stream = getInputStream(type, i);
+			if (stream.getLink() == null)
+			{
+				stream.setLink(link);
+				return stream;
+			}
+		}
+		return stream;
+	}
+	
+	public synchronized void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)
+	{
+		if (stream != null)
+		{
+			stream.setLink(null);
 		}
 	}
 	

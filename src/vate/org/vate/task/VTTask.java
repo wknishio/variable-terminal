@@ -72,5 +72,5 @@ public abstract class VTTask implements Runnable
 		taskThread.start();
 	}
 	
-	public abstract void run();
+	public abstract void run();	
 }

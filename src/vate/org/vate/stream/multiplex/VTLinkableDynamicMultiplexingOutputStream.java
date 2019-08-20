@@ -275,6 +275,10 @@ public class VTLinkableDynamicMultiplexingOutputStream
 		if (link instanceof Integer)
 		{
 			stream = getOutputStream(type, (Integer)link);
+			if (stream.getLink() != null)
+			{
+				return null;
+			}
 			stream.setLink(link);
 			return stream;
 		}

@@ -270,6 +270,11 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 		return win32CLibrary._isatty(fd);
 	}
 	
+	public int getch()
+	{
+		return win32CLibrary.getch();
+	}
+	
 	public boolean hide_console()
 	{
 		int hwnd = kernel32Lib.GetConsoleWindow();
@@ -373,7 +378,15 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 	
 	private ShowWindowThread showHook = new ShowWindowThread();
 
-	
+	public void raw()
+	{
+		return;
+	}
+
+	public void icanon()
+	{
+		return;
+	}
 	
 	/* public void changeFocusToWindow(String windowTitle) { int hWnd =
 	 * user32Lib.FindWindowA(null, windowTitle); if (hWnd != 0) {

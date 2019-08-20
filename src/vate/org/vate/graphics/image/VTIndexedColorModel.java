@@ -106,7 +106,7 @@ public class VTIndexedColorModel
 	    return (r) | (g) | (b) | intensity;
 	}
 		
-	private static int get3LevelValue(int level)
+	private static int get3LevelRGBValue(int level)
 	{
 		if (level == 0)
 		{
@@ -123,7 +123,7 @@ public class VTIndexedColorModel
 		return 0;
 	}
 	
-	private static int get5LevelValue(int level)
+	private static int get5LevelRGBValue(int level)
 	{
 		if (level == 0)
 		{
@@ -223,9 +223,9 @@ public class VTIndexedColorModel
 			{
 				for (k = 0; k < 3; k++)
 				{
-					r[l] = (byte) (get3LevelValue(i) & 0xFF);
-					g[l] = (byte) (get3LevelValue(j) & 0xFF);
-					b[l] = (byte) (get3LevelValue(k) & 0xFF);
+					r[l] = (byte) (get3LevelRGBValue(i) & 0xFF);
+					g[l] = (byte) (get3LevelRGBValue(j) & 0xFF);
+					b[l] = (byte) (get3LevelRGBValue(k) & 0xFF);
 					l++;
 				}
 			}
@@ -273,9 +273,9 @@ public class VTIndexedColorModel
 			{
 				for (k = 0; k < 5; k++)
 				{
-					r[l] = (byte) (get5LevelValue(i) & 0xFF);
-					g[l] = (byte) (get5LevelValue(j) & 0xFF);
-					b[l] = (byte) (get5LevelValue(k) & 0xFF);
+					r[l] = (byte) (get5LevelRGBValue(i) & 0xFF);
+					g[l] = (byte) (get5LevelRGBValue(j) & 0xFF);
+					b[l] = (byte) (get5LevelRGBValue(k) & 0xFF);
 					l++;
 				}
 			}

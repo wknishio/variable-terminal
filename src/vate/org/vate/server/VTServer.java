@@ -31,8 +31,10 @@ import org.vate.parser.VTArgumentParser;
 import org.vate.parser.VTConfigurationProperties;
 import org.vate.parser.VTPropertiesBuilder;
 import org.vate.server.connection.VTServerConnector;
-import org.vate.server.console.VTServerGraphicalConsoleInputMenuBar;
-import org.vate.server.console.VTServerLocalConsoleReader;
+import org.vate.server.console.local.VTServerLocalConsoleCommandSelector;
+import org.vate.server.console.local.VTServerLocalConsoleReader;
+import org.vate.server.console.local.VTServerLocalGraphicalConsoleInputMenuBar;
+import org.vate.server.console.remote.VTServerRemoteConsoleCommandSelector;
 import org.vate.server.dialog.VTServerSettingsDialog;
 
 public class VTServer implements Runnable
@@ -66,7 +68,7 @@ public class VTServer implements Runnable
 	private InputStream serverSettingsReader;
 	private VTServerConnector serverConnector;
 	private VTServerLocalConsoleReader consoleReader;
-	private VTServerGraphicalConsoleInputMenuBar inputMenuBar;
+	private VTServerLocalGraphicalConsoleInputMenuBar inputMenuBar;
 	private VTAudioSystem audioSystem;
 	private VTServerSettingsDialog connectionDialog;
 	private ExecutorService threads;
@@ -101,6 +103,8 @@ public class VTServer implements Runnable
 	
 	public VTServer()
 	{
+		VTServerLocalConsoleCommandSelector.initialize();
+		VTServerRemoteConsoleCommandSelector.initialize();
 		try
 		{
 			sha256Digester = MessageDigest.getInstance("SHA-256");
@@ -357,7 +361,7 @@ public class VTServer implements Runnable
 		this.serverConnector = serverConnector;
 	}
 	
-	public void setInputMenuBar(VTServerGraphicalConsoleInputMenuBar inputMenuBar)
+	public void setInputMenuBar(VTServerLocalGraphicalConsoleInputMenuBar inputMenuBar)
 	{
 		this.inputMenuBar = inputMenuBar;
 	}
@@ -367,7 +371,7 @@ public class VTServer implements Runnable
 		this.audioSystem = audioSystem;
 	}
 	
-	public VTServerGraphicalConsoleInputMenuBar getInputMenuBar()
+	public VTServerLocalGraphicalConsoleInputMenuBar getInputMenuBar()
 	{
 		return inputMenuBar;
 	}
@@ -1717,7 +1721,7 @@ public class VTServer implements Runnable
 			if (!VTConsole.isDaemon() && !daemon)
 			{
 				connectionDialog = new VTServerSettingsDialog(VTGraphicalConsole.getFrame(), "Variable-Terminal Server " + VT.VT_VERSION + " - Connection", true, this);
-				inputMenuBar = new VTServerGraphicalConsoleInputMenuBar(connectionDialog);
+				inputMenuBar = new VTServerLocalGraphicalConsoleInputMenuBar(connectionDialog);
 				VTGraphicalConsole.getFrame().setMenuBar(inputMenuBar);
 				VTGraphicalConsole.getFrame().pack();
 				trayIconInterface = new VTTrayIconInterface();

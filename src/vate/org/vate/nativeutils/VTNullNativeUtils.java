@@ -93,4 +93,19 @@ public class VTNullNativeUtils implements VTNativeUtilsImplementation
 	{
 		return false;
 	}
+
+	public int getch()
+	{
+		return 0;
+	}
+	
+	public void raw()
+	{
+		
+	}
+
+	public void icanon()
+	{
+		
+	}
 }

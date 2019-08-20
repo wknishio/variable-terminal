@@ -160,14 +160,14 @@ public class VTTunnelConnection
 	
 	public synchronized void start()
 	{
-		dataInputStream.startPacketReader();
+		//dataInputStream.startPacketReader();
 	}
 	
 	public synchronized void stop()
 	{
 		try
 		{
-			dataInputStream.stopPacketReader();
+			//dataInputStream.stopPacketReader();
 		}
 		catch (Throwable e)
 		{
@@ -177,7 +177,7 @@ public class VTTunnelConnection
 	
 	public synchronized void close()
 	{
-		stop();
+		//stop();
 		for (VTTunnelChannelSocketListener listener : channels)
 		{
 			try
@@ -192,22 +192,6 @@ public class VTTunnelConnection
 		channels.clear();
 		try
 		{
-			dataInputStream.close();
-		}
-		catch (Throwable e)
-		{
-			// e.printStackTrace();
-		}
-		try
-		{
-			dataOutputStream.close();
-		}
-		catch (Throwable e)
-		{
-			// e.printStackTrace();
-		}
-		try
-		{
 			controlReader.close();
 		}
 		catch (Throwable e)
@@ -217,6 +201,22 @@ public class VTTunnelConnection
 		try
 		{
 			controlWriter.close();
+		}
+		catch (Throwable e)
+		{
+			// e.printStackTrace();
+		}
+		try
+		{
+			//dataInputStream.close();
+		}
+		catch (Throwable e)
+		{
+			// e.printStackTrace();
+		}
+		try
+		{
+			//dataOutputStream.close();
 		}
 		catch (Throwable e)
 		{
@@ -266,9 +266,6 @@ public class VTTunnelConnection
 	
 	public void setDataInputStream(VTLinkableDynamicMultiplexingInputStream in)
 	{
-		// this.dataInputStream = new
-		// VTDirectableDynamicMultiplexingInputStream(in, 0,
-		// 1016, 1, false);
 		this.dataInputStream = in;
 	}
 	
@@ -279,9 +276,6 @@ public class VTTunnelConnection
 	
 	public void setDataOutputStream(VTLinkableDynamicMultiplexingOutputStream out)
 	{
-		// this.dataOutputStream = new
-		// VTDirectableDynamicMultiplexingOutputStream(out,
-		// 0, 1016, 1, true);
 		this.dataOutputStream = out;
 	}
 	

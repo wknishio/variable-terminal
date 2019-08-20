@@ -198,4 +198,33 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
 		}
 		return true;
 	}
+	
+	public int getch()
+	{
+		return getchar();
+	}
+	
+	public void raw()
+	{
+		try
+		{
+			Runtime.getRuntime().exec(new String[]{"/bin/sh","-c","stty -icanon min 1 < /dev/tty"});
+		}
+		catch (Throwable t)
+		{
+			
+		}
+	}
+
+	public void icanon()
+	{
+		try
+		{
+			Runtime.getRuntime().exec(new String[]{"/bin/sh","-c","stty icanon < /dev/tty"});
+		}
+		catch (Throwable t)
+		{
+			
+		}
+	}
 }

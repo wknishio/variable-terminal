@@ -6,6 +6,12 @@ public interface VTNativeUtilsImplementation
 	
 	public int getchar();
 	
+	public int getch();
+	
+	public void raw();
+	
+	public void icanon();
+	
 	public void printf(String format, Object... args);
 	
 	/* public boolean beep(int freq, int dur); */

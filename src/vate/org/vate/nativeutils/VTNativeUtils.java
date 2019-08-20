@@ -88,6 +88,33 @@ public class VTNativeUtils
 		return nativeUtils.getchar();
 	}
 	
+	public static int getch()
+	{
+		if (nativeUtils == null)
+		{
+			initialize();
+		}
+		return nativeUtils.getch();
+	}
+	
+	public static void raw()
+	{
+		if (nativeUtils == null)
+		{
+			initialize();
+		}
+		nativeUtils.raw();
+	}
+	
+	public static void icanon()
+	{
+		if (nativeUtils == null)
+		{
+			initialize();
+		}
+		nativeUtils.icanon();
+	}
+	
 	public static void printf(String format, Object... args)
 	{
 		if (nativeUtils == null)

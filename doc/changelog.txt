@@ -61,8 +61,10 @@
 * Changed command *VTPRINTSERVICES to *VTPRINTERS
 * Command *VTPRINTERS now allows specifying a print service for more details
 * Added command *VTSAVE to save current client connection settings to file
+* Command *VTNETWORKINTERFACES now shows hardware address with java 1.6
 * Changed startup parameter format, parameters now have a dash(-) as in unix
 * Modified *VTFILETRANSFER command to transfer directories and multiple files
+* Added capacity of adding custom plugin console commands in client and server
 * Modified the readme file to english language
 * Changed license from GPLv3 license to MIT license
 

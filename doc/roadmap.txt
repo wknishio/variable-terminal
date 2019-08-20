@@ -12,7 +12,7 @@
 (*) Instead of enforcing connection, it may be a command in client
 (*) Add *VTSCRIPT command to execute script files
 (*) Create standards for all task commands using class abstraction
-	(*) Must have unique complete name
+	(*) Must have unique full name
 	(*) Must have unique abbreviated name
 	(*) Must have complete command help
 	(*) Must have abbreviated command help
@@ -22,9 +22,11 @@
 	(*) Must have numeric result code
 	(*) Must execute in separated tread
 	(*) Must have initialization method
+	(*) Must have cleanup method
 	(*) Must have numeric task identifier
 	(*) Must be separated in client-side, server-side and both-side commands
 	(*) Must handle most command logic in task classes
 	(*) Must handle its own resources
 	(*) Should be interruptible
 	(*) Should support multiple command instances of the same command
+(*) Add possibility of creating additional custom commands via plugin
