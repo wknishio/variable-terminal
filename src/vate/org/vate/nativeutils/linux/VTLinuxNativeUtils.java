@@ -204,7 +204,7 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
 		return getchar();
 	}
 	
-	public void raw()
+	public void unbuffered()
 	{
 		try
 		{
@@ -215,12 +215,24 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
 			
 		}
 	}
-
-	public void icanon()
+	
+	public void noecho()
 	{
 		try
 		{
-			Runtime.getRuntime().exec(new String[]{"/bin/sh","-c","stty icanon < /dev/tty"});
+			Runtime.getRuntime().exec(new String[]{"/bin/sh","-c","stty -echo < /dev/tty"});
+		}
+		catch (Throwable t)
+		{
+			
+		}
+	}
+
+	public void normal()
+	{
+		try
+		{
+			Runtime.getRuntime().exec(new String[]{"/bin/sh","-c","stty icanon echo < /dev/tty"});
 		}
 		catch (Throwable t)
 		{

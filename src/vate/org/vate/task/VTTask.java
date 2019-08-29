@@ -1,6 +1,9 @@
 package org.vate.task;
 
-public abstract class VTTask implements Runnable
+import java.io.Closeable;
+import java.io.IOException;
+
+public abstract class VTTask implements Runnable, Closeable
 {
 	protected volatile boolean stopped;
 	private Thread taskThread;
@@ -72,5 +75,21 @@ public abstract class VTTask implements Runnable
 		taskThread.start();
 	}
 	
-	public abstract void run();	
+	public abstract void run();
+	
+	public void close() throws IOException
+	{
+		this.setStopped(true);
+		if (taskThread != null)
+		{
+			try
+			{
+				taskThread.interrupt();
+			}
+			catch (Throwable t)
+			{
+				
+			}
+		}
+	}
 }

@@ -104,7 +104,7 @@ public class VTTCPTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
 						connection.getResultWriter().flush();
 					}
 				}
-				catch (Throwable e1)
+				catch (NumberFormatException e1)
 				{
 					try
 					{

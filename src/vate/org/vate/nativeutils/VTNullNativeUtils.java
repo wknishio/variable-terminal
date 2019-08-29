@@ -99,12 +99,17 @@ public class VTNullNativeUtils implements VTNativeUtilsImplementation
 		return 0;
 	}
 	
-	public void raw()
+	public void unbuffered()
 	{
 		
 	}
 
-	public void icanon()
+	public void normal()
+	{
+		
+	}
+	
+	public void noecho()
 	{
 		
 	}

@@ -26,5 +26,6 @@
 	<classpathentry kind="lib" path="lib/png-encoder.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-nop.jar"/>
+	<classpathentry kind="lib" path="lib/commons-codec-1.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

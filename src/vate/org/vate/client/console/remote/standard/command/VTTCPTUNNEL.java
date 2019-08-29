@@ -136,7 +136,7 @@ public class VTTCPTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
 						VTConsole.print("\nVT>TCP tunnel bound in client address [*" + " " + bindPort + "] set!\nVT>");
 					}
 				}
-				catch (Throwable e1)
+				catch (NumberFormatException e1)
 				{
 					try
 					{

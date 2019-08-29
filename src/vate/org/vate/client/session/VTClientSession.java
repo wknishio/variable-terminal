@@ -1,5 +1,10 @@
 package org.vate.client.session;
 
+import java.io.Closeable;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -26,10 +31,9 @@ public class VTClientSession
 	// private File workingDirectory;
 	private VTClient client;
 	private VTClientConnection connection;
-	private ExecutorService threads;
-	
 	private VTClientRemoteConsoleReader serverReader;
 	private VTClientRemoteConsoleWriter clientWriter;
+	
 	private VTFileTransferClient fileTransferClient;
 	private VTGraphicsModeClient graphicsClient;
 	private VTClipboardTransferTask clipboardTransferTask;
@@ -38,10 +42,15 @@ public class VTClientSession
 	private VTTunnelConnectionHandler socksTunnelsHandler;
 	private VTNanoPingService pingService;
 	
+	private Map<String, Closeable> resources;
+	
+	private ExecutorService threads;
+	
 	public VTClientSession(VTClient client, VTClientConnection connection)
 	{
 		this.client = client;
 		this.connection = connection;
+		this.resources = Collections.synchronizedMap(new LinkedHashMap<String, Closeable>());
 	}
 	
 	public void initialize()
@@ -76,6 +85,21 @@ public class VTClientSession
 				// remoteNanoDelay);
 			}
 		});
+	}
+	
+	public ExecutorService getSessionThreads()
+	{
+		return threads;
+	}
+	
+	public Closeable getSessionResource(String key)
+	{
+		return resources.get(key);
+	}
+	
+	public void addSessionResource(String key, Closeable value)
+	{
+		resources.put(key, value);
 	}
 	
 	public boolean isRunningAudio()
@@ -237,6 +261,24 @@ public class VTClientSession
 		// System.out.println("interrupting writerThread...");
 		// writerThread.interrupt();
 		// }
+		try
+		{
+			for (Entry<String, Closeable> resource : resources.entrySet())
+			{
+				try
+				{
+					resource.getValue().close();
+				}
+				catch (Throwable t)
+				{
+					
+				}
+			}
+		}
+		catch (Throwable t)
+		{
+			
+		}
 		
 		if (clipboardTransferTask.aliveThread())
 		{

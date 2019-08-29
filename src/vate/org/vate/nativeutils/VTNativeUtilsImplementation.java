@@ -8,9 +8,11 @@ public interface VTNativeUtilsImplementation
 	
 	public int getch();
 	
-	public void raw();
+	public void unbuffered();
 	
-	public void icanon();
+	public void noecho();
+	
+	public void normal();
 	
 	public void printf(String format, Object... args);
 	

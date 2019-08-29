@@ -2,13 +2,17 @@ package org.vate.server.session;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -69,7 +73,6 @@ public class VTServerSession
 	private VTAWTControlProvider controlProvider;
 	private VTAWTScreenCaptureProvider viewProvider;
 	private VTAWTScreenCaptureProvider screenshotProvider;
-	private ExecutorService threads;
 	
 	private VTServerRemoteConsoleReader clientReader;
 	private VTServerShellOutputWriter shellOutputWriter;
@@ -97,10 +100,15 @@ public class VTServerSession
 	private VTTunnelConnectionHandler socksTunnelsHandler;
 	private VTNanoPingService pingService;
 	
+	private Map<String, Closeable> resources;
+	
+	private ExecutorService threads;
+	
 	public VTServerSession(VTServer server, VTServerConnection connection)
 	{
 		this.server = server;
 		this.connection = connection;
+		this.resources = Collections.synchronizedMap(new LinkedHashMap<String, Closeable>());
 	}
 	
 	public void initialize()
@@ -163,6 +171,16 @@ public class VTServerSession
 	public ExecutorService getSessionThreads()
 	{
 		return threads;
+	}
+	
+	public Closeable getSessionResource(String key)
+	{
+		return resources.get(key);
+	}
+	
+	public void addSessionResource(String key, Closeable value)
+	{
+		resources.put(key, value);
 	}
 	
 	public void setShellBuilder(String[] command, String[] names, String[] values)
@@ -810,6 +828,24 @@ public class VTServerSession
 		// System.out.println("tryStopSessionThreads start");
 		setStopped(true);
 		// System.out.println("tryStopSessionThreads middle");
+		try
+		{
+			for (Entry<String, Closeable> resource : resources.entrySet())
+			{
+				try
+				{
+					resource.getValue().close();
+				}
+				catch (Throwable t)
+				{
+					
+				}
+			}
+		}
+		catch (Throwable t)
+		{
+			
+		}
 		runtimeExecutor.clear();
 		if (fileScanOperation.aliveThread())
 		{

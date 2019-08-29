@@ -97,22 +97,31 @@ public class VTNativeUtils
 		return nativeUtils.getch();
 	}
 	
-	public static void raw()
+	public static void unbuffered()
 	{
 		if (nativeUtils == null)
 		{
 			initialize();
 		}
-		nativeUtils.raw();
+		nativeUtils.unbuffered();
 	}
 	
-	public static void icanon()
+	public static void noecho()
 	{
 		if (nativeUtils == null)
 		{
 			initialize();
 		}
-		nativeUtils.icanon();
+		nativeUtils.noecho();
+	}
+	
+	public static void normal()
+	{
+		if (nativeUtils == null)
+		{
+			initialize();
+		}
+		nativeUtils.normal();
 	}
 	
 	public static void printf(String format, Object... args)

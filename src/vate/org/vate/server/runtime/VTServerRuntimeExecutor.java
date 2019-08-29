@@ -13,6 +13,7 @@ import org.vate.server.session.VTServerSession;
 import org.vate.task.VTTask;
 
 import com.martiansoftware.jsap.CommandLineTokenizer;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 public class VTServerRuntimeExecutor extends VTTask
 {
@@ -38,6 +39,8 @@ public class VTServerRuntimeExecutor extends VTTask
 	private static int PROCESS_COMMAND_INPUT = 6; //I 
 	private static int PROCESS_COMMAND_LINE = 7; //N
 	private static int PROCESS_COMMAND_PATH = 8; //P
+	private static int PROCESS_COMMAND_BASE64 = 9; //P
+	private static int PROCESS_COMMAND_UTF8 = 10; //U
 	
 	private static int PROCESS_SCOPE_NOT_FOUND = -1; //?
 	private static int PROCESS_SCOPE_ALL = 1; //A
@@ -123,7 +126,9 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& !main_command_string.contains("D")
 				&& !main_command_string.contains("I")
 				&& !main_command_string.contains("N")
-				&& !main_command_string.contains("P"))
+				&& !main_command_string.contains("P")
+				&& !main_command_string.contains("B")
+				&& !main_command_string.contains("U"))
 				{
 					process_command = PROCESS_COMMAND_MANAGED;
 				}
@@ -134,7 +139,9 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& !main_command_string.contains("D")
 				&& !main_command_string.contains("I")
 				&& !main_command_string.contains("N")
-				&& !main_command_string.contains("P"))
+				&& !main_command_string.contains("P")
+				&& !main_command_string.contains("B")
+				&& !main_command_string.contains("U"))
 				{
 					process_command = PROCESS_COMMAND_FREE;
 				}
@@ -145,7 +152,9 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& !main_command_string.contains("D")
 				&& !main_command_string.contains("I")
 				&& !main_command_string.contains("N")
-				&& !main_command_string.contains("P"))
+				&& !main_command_string.contains("P")
+				&& !main_command_string.contains("B")
+				&& !main_command_string.contains("U"))
 				{
 					process_command = PROCESS_COMMAND_LIST;
 					need_managed_scope = true;
@@ -157,7 +166,9 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& !main_command_string.contains("D")
 				&& !main_command_string.contains("I")
 				&& !main_command_string.contains("N")
-				&& !main_command_string.contains("P"))
+				&& !main_command_string.contains("P")
+				&& !main_command_string.contains("B")
+				&& !main_command_string.contains("U"))
 				{
 					process_command = PROCESS_COMMAND_STOP;
 					need_managed_scope = true;
@@ -169,7 +180,9 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& main_command_string.contains("D")
 				&& !main_command_string.contains("I")
 				&& !main_command_string.contains("N")
-				&& !main_command_string.contains("P"))
+				&& !main_command_string.contains("P")
+				&& !main_command_string.contains("B")
+				&& !main_command_string.contains("U"))
 				{
 					process_command = PROCESS_COMMAND_REMOVE;
 					need_managed_scope = true;
@@ -181,7 +194,9 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& !main_command_string.contains("D")
 				&& main_command_string.contains("I")
 				&& !main_command_string.contains("N")
-				&& !main_command_string.contains("P"))
+				&& !main_command_string.contains("P")
+				&& !main_command_string.contains("B")
+				&& !main_command_string.contains("U"))
 				{
 					process_command = PROCESS_COMMAND_INPUT;
 					need_managed_scope = true;
@@ -194,7 +209,9 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& !main_command_string.contains("D")
 				&& !main_command_string.contains("I")
 				&& main_command_string.contains("N")
-				&& !main_command_string.contains("P"))
+				&& !main_command_string.contains("P")
+				&& !main_command_string.contains("B")
+				&& !main_command_string.contains("U"))
 				{
 					process_command = PROCESS_COMMAND_LINE;
 					need_managed_scope = true;
@@ -207,9 +224,41 @@ public class VTServerRuntimeExecutor extends VTTask
 				&& !main_command_string.contains("D")
 				&& !main_command_string.contains("I")
 				&& !main_command_string.contains("N")
-				&& main_command_string.contains("P"))
+				&& main_command_string.contains("P")
+				&& !main_command_string.contains("B")
+				&& !main_command_string.contains("U"))
 				{
 					process_command = PROCESS_COMMAND_PATH;
+				}
+				else if (!main_command_string.contains("M")
+				&& !main_command_string.contains("F")
+				&& !main_command_string.contains("L")
+				&& !main_command_string.contains("S")
+				&& !main_command_string.contains("D")
+				&& !main_command_string.contains("I")
+				&& !main_command_string.contains("N")
+				&& !main_command_string.contains("P")
+				&& main_command_string.contains("B")
+				&& !main_command_string.contains("U"))
+				{
+					process_command = PROCESS_COMMAND_BASE64;
+					need_managed_scope = true;
+					parameter_amount += 1;
+				}
+				else if (!main_command_string.contains("M")
+				&& !main_command_string.contains("F")
+				&& !main_command_string.contains("L")
+				&& !main_command_string.contains("S")
+				&& !main_command_string.contains("D")
+				&& !main_command_string.contains("I")
+				&& !main_command_string.contains("N")
+				&& !main_command_string.contains("P")
+				&& !main_command_string.contains("B")
+				&& main_command_string.contains("U"))
+				{
+					process_command = PROCESS_COMMAND_UTF8;
+					need_managed_scope = true;
+					parameter_amount += 1;
 				}
 
 				if (need_managed_scope)
@@ -1137,6 +1186,376 @@ public class VTServerRuntimeExecutor extends VTTask
 								}
 								finished = true;
 							}
+						}
+						catch (Throwable e)
+						{
+							
+						}
+						finished = true;
+					}
+					
+					return;
+				}
+				
+				if (process_command == PROCESS_COMMAND_BASE64)
+				{
+					if (process_scope == PROCESS_SCOPE_ALL)
+					{
+						for (VTRuntimeProcess process : processList)
+						{
+							try
+							{
+								command = command.substring(splitCommand[0].length() + splitCommand[1].length() + 2);
+								byte[] data = null;
+								try
+								{
+									data = Base64.decode(command);
+								}
+								catch (Throwable e)
+								{
+									synchronized (this)
+									{
+										connection.getResultWriter().write("\nVT>Detected invalid Basee64 data!\nVT>");
+										connection.getResultWriter().flush();
+										finished = true;
+									}
+								}
+								if (data != null)
+								{
+									process.getOut().write(data);
+									process.getOut().flush();
+								}
+							}
+							catch (Throwable e)
+							{
+								
+							}
+						}
+						synchronized (this)
+						{
+							connection.getResultWriter().write("\nVT>All managed processes received data!\nVT>");
+							connection.getResultWriter().flush();
+							finished = true;
+						}
+					}
+					
+					if (process_scope == PROCESS_SCOPE_NUMBER)
+					{
+						try
+						{
+							command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
+							byte[] data = null;
+							try
+							{
+								data = Base64.decode(command);
+							}
+							catch (Throwable e)
+							{
+								synchronized (this)
+								{
+									connection.getResultWriter().write("\nVT>Detected invalid Basee64 data!\nVT>");
+									connection.getResultWriter().flush();
+									finished = true;
+								}
+							}
+							if (data != null)
+							{
+								processList.get(Integer.parseInt(splitCommand[2])).getOut().write(data);
+								processList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
+								synchronized (this)
+								{
+									connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] received data!\nVT>");
+									connection.getResultWriter().flush();
+									finished = true;
+								}
+							}
+						}
+						catch (ArrayIndexOutOfBoundsException e)
+						{
+							synchronized (this)
+							{
+								try
+								{
+									connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] not found on session list!\nVT>");
+									connection.getResultWriter().flush();
+								}
+								catch (Throwable e1)
+								{
+									
+								}
+								finished = true;
+							}
+						}
+						catch (NumberFormatException e)
+						{
+							synchronized (this)
+							{
+								try
+								{
+									connection.getResultWriter().write("\nVT>Process number [" + splitCommand[2] + "] is not valid!\nVT>");
+									connection.getResultWriter().flush();
+								}
+								catch (Throwable e1)
+								{
+									
+								}
+								finished = true;
+							}
+						}
+						catch (Throwable e)
+						{
+							
+						}
+					}
+					
+					if (process_scope == PROCESS_SCOPE_COMMAND)
+					{
+						try
+						{
+							command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
+							byte[] data = null;
+							try
+							{
+								data = Base64.decode(command);
+							}
+							catch (Throwable e)
+							{
+								synchronized (this)
+								{
+									connection.getResultWriter().write("\nVT>Detected invalid Basee64 data!\nVT>");
+									connection.getResultWriter().flush();
+									finished = true;
+								}
+							}
+							if (data != null)
+							{
+								found = false;
+								// VTTerminal.println(splitCommand[1]);
+								for (VTRuntimeProcess process : processList)
+								{
+									if (process.getCommand().equals(splitCommand[2]))
+									{
+										found = true;
+										process.getOut().write(data);
+										process.getOut().flush();
+									}
+								}
+								if (!found)
+								{
+									synchronized (this)
+									{
+										try
+										{
+											connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] not found on session list!\nVT>");
+											connection.getResultWriter().flush();
+										}
+										catch (Throwable e)
+										{
+											
+										}
+										finished = true;
+									}
+								}
+								else
+								{
+									try
+									{
+										connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] received line!\nVT>");
+										connection.getResultWriter().flush();
+									}
+									catch (Throwable e1)
+									{
+										
+									}
+									finished = true;
+								}
+							}
+							
+						}
+						catch (Throwable e)
+						{
+							
+						}
+						finished = true;
+					}
+					
+					return;
+				}
+				
+				if (process_command == PROCESS_COMMAND_UTF8)
+				{
+					if (process_scope == PROCESS_SCOPE_ALL)
+					{
+						for (VTRuntimeProcess process : processList)
+						{
+							try
+							{
+								command = command.substring(splitCommand[0].length() + splitCommand[1].length() + 2);
+								byte[] data = null;
+								try
+								{
+									data = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(command).getBytes("UTF-8");
+								}
+								catch (Throwable e)
+								{
+									synchronized (this)
+									{
+										connection.getResultWriter().write("\nVT>Detected invalid unicode utf8 data!\nVT>");
+										connection.getResultWriter().flush();
+										finished = true;
+									}
+								}
+								if (data != null)
+								{
+									process.getOut().write(data);
+									process.getOut().flush();
+								}
+							}
+							catch (Throwable e)
+							{
+								
+							}
+						}
+						synchronized (this)
+						{
+							connection.getResultWriter().write("\nVT>All managed processes received data!\nVT>");
+							connection.getResultWriter().flush();
+							finished = true;
+						}
+					}
+					
+					if (process_scope == PROCESS_SCOPE_NUMBER)
+					{
+						try
+						{
+							command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
+							byte[] data = null;
+							try
+							{
+								data = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(command).getBytes("UTF-8");
+							}
+							catch (Throwable e)
+							{
+								synchronized (this)
+								{
+									connection.getResultWriter().write("\nVT>Detected invalid unicode utf8 data!\nVT>");
+									connection.getResultWriter().flush();
+									finished = true;
+								}
+							}
+							if (data != null)
+							{
+								processList.get(Integer.parseInt(splitCommand[2])).getOut().write(data);
+								processList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
+								synchronized (this)
+								{
+									connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] received data!\nVT>");
+									connection.getResultWriter().flush();
+									finished = true;
+								}
+							}
+						}
+						catch (ArrayIndexOutOfBoundsException e)
+						{
+							synchronized (this)
+							{
+								try
+								{
+									connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] not found on session list!\nVT>");
+									connection.getResultWriter().flush();
+								}
+								catch (Throwable e1)
+								{
+									
+								}
+								finished = true;
+							}
+						}
+						catch (NumberFormatException e)
+						{
+							synchronized (this)
+							{
+								try
+								{
+									connection.getResultWriter().write("\nVT>Process number [" + splitCommand[2] + "] is not valid!\nVT>");
+									connection.getResultWriter().flush();
+								}
+								catch (Throwable e1)
+								{
+									
+								}
+								finished = true;
+							}
+						}
+						catch (Throwable e)
+						{
+							
+						}
+					}
+					
+					if (process_scope == PROCESS_SCOPE_COMMAND)
+					{
+						try
+						{
+							command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
+							byte[] data = null;
+							try
+							{
+								data = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(command).getBytes("UTF-8");
+							}
+							catch (Throwable e)
+							{
+								synchronized (this)
+								{
+									connection.getResultWriter().write("\nVT>Detected invalid unicode utf8 data!\nVT>");
+									connection.getResultWriter().flush();
+									finished = true;
+								}
+							}
+							if (data != null)
+							{
+								found = false;
+								// VTTerminal.println(splitCommand[1]);
+								for (VTRuntimeProcess process : processList)
+								{
+									if (process.getCommand().equals(splitCommand[2]))
+									{
+										found = true;
+										process.getOut().write(data);
+										process.getOut().flush();
+									}
+								}
+								if (!found)
+								{
+									synchronized (this)
+									{
+										try
+										{
+											connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] not found on session list!\nVT>");
+											connection.getResultWriter().flush();
+										}
+										catch (Throwable e)
+										{
+											
+										}
+										finished = true;
+									}
+								}
+								else
+								{
+									try
+									{
+										connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] received line!\nVT>");
+										connection.getResultWriter().flush();
+									}
+									catch (Throwable e1)
+									{
+										
+									}
+									finished = true;
+								}
+							}
+							
 						}
 						catch (Throwable e)
 						{
