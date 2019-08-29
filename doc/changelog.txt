@@ -1,4 +1,5 @@
-﻿Changes since 1.4.2:
+﻿
+Changes since 1.4.2:
 
 * Renamed the entire project from Satan-AnyWhere to Variable-Terminal
 * Modified authentication protocol, backward compatibility broken
