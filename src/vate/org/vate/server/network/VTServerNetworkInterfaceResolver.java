@@ -54,12 +54,15 @@ public class VTServerNetworkInterfaceResolver extends VTTask
 					try
 					{
 						byte[] hardwareAddress = networkInterface.getHardwareAddress();
-						message.append("\nVT>Hardware address: [");
-						for (int i = 0; i < hardwareAddress.length; i++)
+						if (hardwareAddress != null && hardwareAddress.length > 0)
 						{
-							message.append(String.format("%02X%s", hardwareAddress[i], (i < hardwareAddress.length - 1) ? "-" : ""));
+							message.append("\nVT>Hardware address: [");
+							for (int i = 0; i < hardwareAddress.length; i++)
+							{
+								message.append(String.format("%02X%s", hardwareAddress[i], (i < hardwareAddress.length - 1) ? "-" : ""));
+							}
+							message.append("]");
 						}
-						message.append("]");
 					}
 					catch (Throwable t)
 					{
