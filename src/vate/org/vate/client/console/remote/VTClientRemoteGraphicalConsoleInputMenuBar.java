@@ -247,7 +247,7 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Detail Specific Remote Printer", "*VTPRINTERS "));
 		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Print Text In Remote Printer", "*VTPRINTDATA T "));
 		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Print File In Remote Printer", "*VTPRINTDATA F "));
-		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTPRINTDATA\n"));
+		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Commands Usage", "*VTHELP *VTPRINTERS\n*VTHELP *VTPRINTDATA\n"));
 		
 		audioSoundMenu = new Menu("Audio ");
 		

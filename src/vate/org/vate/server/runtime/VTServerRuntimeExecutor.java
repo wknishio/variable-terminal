@@ -1233,7 +1233,7 @@ public class VTServerRuntimeExecutor extends VTTask
 						}
 						synchronized (this)
 						{
-							connection.getResultWriter().write("\nVT>All managed processes received data!\nVT>");
+							connection.getResultWriter().write("\nVT>All managed processes received base64!\nVT>");
 							connection.getResultWriter().flush();
 							finished = true;
 						}
@@ -1264,7 +1264,7 @@ public class VTServerRuntimeExecutor extends VTTask
 								processList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
 								synchronized (this)
 								{
-									connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] received data!\nVT>");
+									connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] received base64!\nVT>");
 									connection.getResultWriter().flush();
 									finished = true;
 								}
@@ -1360,7 +1360,7 @@ public class VTServerRuntimeExecutor extends VTTask
 								{
 									try
 									{
-										connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] received line!\nVT>");
+										connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] received base64!\nVT>");
 										connection.getResultWriter().flush();
 									}
 									catch (Throwable e1)
@@ -1400,7 +1400,7 @@ public class VTServerRuntimeExecutor extends VTTask
 								{
 									synchronized (this)
 									{
-										connection.getResultWriter().write("\nVT>Detected invalid unicode utf8 data!\nVT>");
+										connection.getResultWriter().write("\nVT>Detected invalid unicode UTF-8 data!\nVT>");
 										connection.getResultWriter().flush();
 										finished = true;
 									}
@@ -1418,7 +1418,7 @@ public class VTServerRuntimeExecutor extends VTTask
 						}
 						synchronized (this)
 						{
-							connection.getResultWriter().write("\nVT>All managed processes received data!\nVT>");
+							connection.getResultWriter().write("\nVT>All managed processes received unicode!\nVT>");
 							connection.getResultWriter().flush();
 							finished = true;
 						}
@@ -1438,7 +1438,7 @@ public class VTServerRuntimeExecutor extends VTTask
 							{
 								synchronized (this)
 								{
-									connection.getResultWriter().write("\nVT>Detected invalid unicode utf8 data!\nVT>");
+									connection.getResultWriter().write("\nVT>Detected invalid unicode UTF-8 data!\nVT>");
 									connection.getResultWriter().flush();
 									finished = true;
 								}
@@ -1449,7 +1449,7 @@ public class VTServerRuntimeExecutor extends VTTask
 								processList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
 								synchronized (this)
 								{
-									connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] received data!\nVT>");
+									connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] received unicode!\nVT>");
 									connection.getResultWriter().flush();
 									finished = true;
 								}
@@ -1507,7 +1507,7 @@ public class VTServerRuntimeExecutor extends VTTask
 							{
 								synchronized (this)
 								{
-									connection.getResultWriter().write("\nVT>Detected invalid unicode utf8 data!\nVT>");
+									connection.getResultWriter().write("\nVT>Detected invalid unicode UTF-8 data!\nVT>");
 									connection.getResultWriter().flush();
 									finished = true;
 								}
@@ -1545,7 +1545,7 @@ public class VTServerRuntimeExecutor extends VTTask
 								{
 									try
 									{
-										connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] received line!\nVT>");
+										connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] received unicode!\nVT>");
 										connection.getResultWriter().flush();
 									}
 									catch (Throwable e1)
