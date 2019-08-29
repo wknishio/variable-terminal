@@ -1257,11 +1257,18 @@ public class VTFileTransferClientTransaction implements Runnable
 				if (rootLevel)
 				{
 					rootFolder = getFileNameFromPath(this.filePath);
-					ok = new File(appendToPath(currentPath, rootFolder)).mkdirs();
+					File rootFile = new File(appendToPath(currentPath, rootFolder));
+					if (!rootFile.exists())
+					{
+						ok = rootFile.mkdirs();
+					}
 				}
 				else
 				{
-					ok = fileTransferFile.mkdirs();
+					if (!fileTransferFile.exists())
+					{
+						ok = fileTransferFile.mkdirs();
+					}
 				}
 				String nextPath = " ";
 				// String subPath = appendToPath(localFilePath, currentPath);

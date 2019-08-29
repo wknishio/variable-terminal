@@ -13,7 +13,6 @@ import org.vate.server.session.VTServerSession;
 import org.vate.task.VTTask;
 
 import com.martiansoftware.jsap.CommandLineTokenizer;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 public class VTServerRuntimeExecutor extends VTTask
 {
@@ -1209,7 +1208,7 @@ public class VTServerRuntimeExecutor extends VTTask
 								byte[] data = null;
 								try
 								{
-									data = Base64.decode(command);
+									data = org.apache.commons.codec.binary.Base64.decodeBase64(command);
 								}
 								catch (Throwable e)
 								{
@@ -1247,7 +1246,7 @@ public class VTServerRuntimeExecutor extends VTTask
 							byte[] data = null;
 							try
 							{
-								data = Base64.decode(command);
+								data = org.apache.commons.codec.binary.Base64.decodeBase64(command);
 							}
 							catch (Throwable e)
 							{
@@ -1316,7 +1315,7 @@ public class VTServerRuntimeExecutor extends VTTask
 							byte[] data = null;
 							try
 							{
-								data = Base64.decode(command);
+								data = org.apache.commons.codec.binary.Base64.decodeBase64(command);
 							}
 							catch (Throwable e)
 							{
