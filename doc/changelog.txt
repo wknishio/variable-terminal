@@ -45,8 +45,6 @@ Changes since 1.4.2:
 * Client now tries to reconnect with server in 180 seconds after disconnection
 * Added command *VTRATELIMIT to set connection rate limits in bytes per second
 * Modified *VTRUNTIME command, now allows processes to restart automatically
-* Modified *VTRUNTIME command, now able to send Base64 data to input
-* Modified *VTRUNTIME command, now able to send unicode utf8 data to input
 * Added session commands parameter in client to run after authentication
 * Added option in client to interrupt listening in passive connection mode
 * Changed passive mode in client and server to bind to specific host address
@@ -68,6 +66,9 @@ Changes since 1.4.2:
 * Changed startup parameter format, parameters now have a dash(-) as in unix
 * Modified *VTFILETRANSFER command to transfer directories and multiple files
 * Added capacity of adding custom plugin console commands in client and server
+* Modified *VTRUNTIME command to be able to send Base64 data to input
+* Modified *VTRUNTIME command to be able to send unicode utf8 data to input
+* Modified *VTFILETRANSFER to try sending file again if checksum dont match
 * Modified the readme file to english language
 * Changed license from GPLv3 license to MIT license
 
