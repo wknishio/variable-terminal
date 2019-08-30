@@ -1214,7 +1214,7 @@ public class VTServerRuntimeExecutor extends VTTask
 								{
 									synchronized (this)
 									{
-										connection.getResultWriter().write("\nVT>Detected invalid Basee64 data!\nVT>");
+										connection.getResultWriter().write("\nVT>Detected invalid base64 data!\nVT>");
 										connection.getResultWriter().flush();
 										finished = true;
 									}
@@ -1252,7 +1252,7 @@ public class VTServerRuntimeExecutor extends VTTask
 							{
 								synchronized (this)
 								{
-									connection.getResultWriter().write("\nVT>Detected invalid Basee64 data!\nVT>");
+									connection.getResultWriter().write("\nVT>Detected invalid base64 data!\nVT>");
 									connection.getResultWriter().flush();
 									finished = true;
 								}
@@ -1321,7 +1321,7 @@ public class VTServerRuntimeExecutor extends VTTask
 							{
 								synchronized (this)
 								{
-									connection.getResultWriter().write("\nVT>Detected invalid Basee64 data!\nVT>");
+									connection.getResultWriter().write("\nVT>Detected invalid base64 data!\nVT>");
 									connection.getResultWriter().flush();
 									finished = true;
 								}
