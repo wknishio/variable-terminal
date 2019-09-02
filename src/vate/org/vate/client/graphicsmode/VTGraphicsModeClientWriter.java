@@ -257,7 +257,7 @@ public class VTGraphicsModeClientWriter implements Runnable
 		this.colorQuality = VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_MEDIUM;
 		this.screenCaptureMode = VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_PARTIAL;
 		this.imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF;
-		this.terminalRefreshPolicy = TERMINAL_STATE_VISIBLE;
+		this.terminalRefreshPolicy = TERMINAL_STATE_FOCUSED;
 		this.terminalControlPolicy = TERMINAL_STATE_FOCUSED;
 		this.synchronousRefresh = false;
 		this.dynamicCoding = false;
@@ -470,7 +470,7 @@ public class VTGraphicsModeClientWriter implements Runnable
 		// ignoreFocus = false;
 		// ignoreIconification = false;
 		
-		terminalRefreshPolicy = TERMINAL_STATE_VISIBLE;
+		terminalRefreshPolicy = TERMINAL_STATE_FOCUSED;
 		terminalControlPolicy = TERMINAL_STATE_FOCUSED;
 		open = false;
 		colorQuality = VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_MEDIUM;
