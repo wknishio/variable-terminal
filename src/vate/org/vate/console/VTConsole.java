@@ -34,7 +34,7 @@ public class VTConsole
 	private static boolean graphical;
 	private static boolean daemon;
 	// private static boolean split;
-	private static VTConsoleImplementation console;
+	private static volatile VTConsoleImplementation console;
 	
 	private static Object synchronizationObject = new Object();
 	
@@ -243,14 +243,10 @@ public class VTConsole
 	
 	public static void setTitle(String title)
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			console.setTitle(title);
-			clear();
+			console.clear();
 		}
 	}
 	
@@ -261,12 +257,8 @@ public class VTConsole
 	
 	public static String readLine(boolean echo) throws InterruptedException
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			try
 			{
 				return console.readLine(echo);
@@ -275,27 +267,15 @@ public class VTConsole
 			{
 				return "";
 			}
-			// return console.readLine(echo);
 		}
-		else
-		{
-			return null;
-		}
+		return null;
 	}
 	
 	public static void interruptReadLine()
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			console.interruptReadLine();
-		}
-		else
-		{
-			
 		}
 	}
 	
@@ -317,68 +297,64 @@ public class VTConsole
 	
 	public static void print(String str)
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			console.print(str);
 		}
 	}
 	
 	public static void println(String str)
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			console.println(str);
 		}
 	}
 	
 	public static void printf(String format, Object... args)
 	{
-		console.printf(format, args);
+		if (checkConsole())
+		{
+			console.printf(format, args);
+		}
 	}
 	
 	public static void printfln(String format, Object... args)
 	{
-		console.printfln(format, args);
+		if (checkConsole())
+		{
+			console.printfln(format, args);
+		}
 	}
 	
 	public static void printf(Locale l, String format, Object... args)
 	{
-		console.printf(l, format, args);
+		if (checkConsole())
+		{
+			console.printf(l, format, args);
+		}
 	}
 	
 	public static void printfln(Locale l, String format, Object... args)
 	{
-		console.printfln(l, format, args);
+		if (checkConsole())
+		{
+			console.printfln(l, format, args);
+		}
 	}
 	
 	public static void write(String str)
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			console.write(str);
 		}
 	}
 	
 	public static void write(char[] cbuf, int off, int len)
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			console.write(cbuf, off, len);
 		}
 	}
@@ -388,24 +364,16 @@ public class VTConsole
 	
 	public static void flush()
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			console.flush();
 		}
 	}
 	
 	public static void clear()
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			console.clear();
 		}
 	}
@@ -416,11 +384,10 @@ public class VTConsole
 		{
 			if (!daemon)
 			{
-				if (console == null)
+				if (checkConsole())
 				{
-					initialize();
+					console.bell();
 				}
-				console.bell();
 			}
 			else
 			{
@@ -442,85 +409,57 @@ public class VTConsole
 	
 	public static void setColors(int foregroundColor, int backgroundColor)
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			console.setColors(foregroundColor, backgroundColor);
-			clear();
+			console.clear();
 		}
 	}
 	
 	public static void setBold(boolean bold)
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			console.setBold(bold);
 		}
 	}
 	
 	public static void resetAttributes()
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			console.resetAttributes();
 		}
 	}
 	
 	public static void setSystemIn()
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			console.setSystemIn();
 		}
 	}
 	
 	public static void setSystemOut()
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			console.setSystemOut();
 		}
 	}
 	
 	public static void setSystemErr()
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			console.setSystemErr();
 		}
 	}
 	
 	public static InputStream getSystemIn()
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			return console.getSystemIn();
 		}
 		return null;
@@ -528,12 +467,8 @@ public class VTConsole
 	
 	public static PrintStream getSystemOut()
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			return console.getSystemOut();
 		}
 		return null;
@@ -541,12 +476,8 @@ public class VTConsole
 	
 	public static PrintStream getSystemErr()
 	{
-		if (!daemon)
+		if (checkConsole())
 		{
-			if (console == null)
-			{
-				initialize();
-			}
 			return console.getSystemErr();
 		}
 		return null;
@@ -574,5 +505,17 @@ public class VTConsole
 			}
 		};
 		thread.start();
+	}
+	
+	private static boolean checkConsole()
+	{
+		if (!daemon)
+		{
+			if (console == null)
+			{
+				initialize();
+			}
+		}
+		return console != null;
 	}
 }

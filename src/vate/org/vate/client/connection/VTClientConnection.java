@@ -56,7 +56,6 @@ public class VTClientConnection
 		}
 	}
 	
-	//private volatile boolean dialog = false;
 	private int encryptionType;
 	private byte[] encryptionKey;
 	private byte[] digestedClient;
