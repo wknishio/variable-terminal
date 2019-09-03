@@ -100,7 +100,7 @@ public class VTServerSession
 	private VTTunnelConnectionHandler socksTunnelsHandler;
 	private VTNanoPingService pingService;
 	
-	private Map<String, Closeable> resources;
+	private Map<String, Closeable> sessionResources;
 	
 	private ExecutorService threads;
 	
@@ -108,7 +108,7 @@ public class VTServerSession
 	{
 		this.server = server;
 		this.connection = connection;
-		this.resources = Collections.synchronizedMap(new LinkedHashMap<String, Closeable>());
+		this.sessionResources = Collections.synchronizedMap(new LinkedHashMap<String, Closeable>());
 	}
 	
 	public void initialize()
@@ -175,12 +175,12 @@ public class VTServerSession
 	
 	public Closeable getSessionResource(String key)
 	{
-		return resources.get(key);
+		return sessionResources.get(key);
 	}
 	
 	public void addSessionResource(String key, Closeable value)
 	{
-		resources.put(key, value);
+		sessionResources.put(key, value);
 	}
 	
 	public void setShellBuilder(String[] command, String[] names, String[] values)
@@ -830,7 +830,7 @@ public class VTServerSession
 		// System.out.println("tryStopSessionThreads middle");
 		try
 		{
-			for (Entry<String, Closeable> resource : resources.entrySet())
+			for (Entry<String, Closeable> resource : sessionResources.entrySet())
 			{
 				try
 				{
@@ -1007,6 +1007,7 @@ public class VTServerSession
 	public void waitThreads()
 	{
 		// System.out.println("waitThreads");
+		sessionResources.clear();
 		try
 		{
 			clientReader.joinThread();

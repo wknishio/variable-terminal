@@ -11,6 +11,7 @@ public class VTGraphicalConsoleWindowListener implements WindowListener
 	public void windowActivated(WindowEvent e)
 	{
 		// VTGraphicalConsole.setShowing(true);
+		VTGraphicalConsole.deiconifyFrame();
 	}
 	
 	public void windowClosed(WindowEvent e)
@@ -30,17 +31,18 @@ public class VTGraphicalConsoleWindowListener implements WindowListener
 	
 	public void windowDeactivated(WindowEvent e)
 	{
+		VTGraphicalConsole.iconifyFrame();
 		// VTGraphicalConsole.setShowing(false);
 	}
 	
 	public void windowDeiconified(WindowEvent e)
 	{
-		VTGraphicalConsole.deiconifyFrame();
+		//VTGraphicalConsole.deiconifyFrame();
 	}
 	
 	public void windowIconified(WindowEvent e)
 	{
-		VTGraphicalConsole.iconifyFrame();
+		//VTGraphicalConsole.iconifyFrame();
 	}
 	
 	public void windowOpened(WindowEvent e)

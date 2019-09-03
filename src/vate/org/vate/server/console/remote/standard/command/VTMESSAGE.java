@@ -19,6 +19,7 @@ public class VTMESSAGE extends VTServerStandardRemoteConsoleCommandProcessor
 
 	public void execute(String command, String[] parsed) throws Exception
 	{
+		//System.out.println("command:" + command);
 		if (command.contains("\""))
 		{
 			if (parsed.length >= 2)
@@ -101,7 +102,7 @@ public class VTMESSAGE extends VTServerStandardRemoteConsoleCommandProcessor
 		}
 		else
 		{
-			if (command.length() >= 12 && command.charAt(11) == ' ')
+			if (command.toUpperCase().startsWith("*VTMESSAGE "))
 			{
 				// command = StringEscapeUtils.unescapeJava(command);
 				List<VTServerConnectionHandler> connections = session.getServer().getServerConnector().getConnectionHandlers();
@@ -119,7 +120,7 @@ public class VTMESSAGE extends VTServerStandardRemoteConsoleCommandProcessor
 									{
 										try
 										{
-											connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from client: [" + command.substring(12) + "]\nVT>");
+											connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from client: [" + command.substring(11) + "]\nVT>");
 											connectionHandler.getConnection().getResultWriter().flush();
 										}
 										catch (Throwable e)
@@ -131,14 +132,14 @@ public class VTMESSAGE extends VTServerStandardRemoteConsoleCommandProcessor
 							}
 						}
 					}
-					session.getServer().displayTrayIconMessage("Variable-Terminal Server", "[" + command.substring(12) + "]");
-					VTConsole.print("\u0007\rVT>Message from client: [" + command.substring(12) + "]\nVT>");
+					session.getServer().displayTrayIconMessage("Variable-Terminal Server", "[" + command.substring(11) + "]");
+					VTConsole.print("\u0007\rVT>Message from client: [" + command.substring(11) + "]\nVT>");
 					// VTConsole.bell();
 					connection.getResultWriter().write("\nVT>Message received by server!\nVT>");
 					connection.getResultWriter().flush();
 				}
 			}
-			else if (command.length() >= 8 && command.charAt(7) == ' ')
+			else if (command.toUpperCase().startsWith("*VTMSG "))
 			{
 				// command = StringEscapeUtils.unescapeJava(command);
 				List<VTServerConnectionHandler> connections = session.getServer().getServerConnector().getConnectionHandlers();
@@ -156,7 +157,7 @@ public class VTMESSAGE extends VTServerStandardRemoteConsoleCommandProcessor
 									{
 										try
 										{
-											connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from client: [" + command.substring(12) + "]\nVT>");
+											connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from client: [" + command.substring(7) + "]\nVT>");
 											connectionHandler.getConnection().getResultWriter().flush();
 										}
 										catch (Throwable e)
@@ -168,8 +169,8 @@ public class VTMESSAGE extends VTServerStandardRemoteConsoleCommandProcessor
 							}
 						}
 					}
-					session.getServer().displayTrayIconMessage("Variable-Terminal Server", "[" + command.substring(8) + "]");
-					VTConsole.print("\u0007\rVT>Message from client: [" + command.substring(8) + "]\nVT>");
+					session.getServer().displayTrayIconMessage("Variable-Terminal Server", "[" + command.substring(7) + "]");
+					VTConsole.print("\u0007\rVT>Message from client: [" + command.substring(7) + "]\nVT>");
 					// VTConsole.bell();
 					connection.getResultWriter().write("\nVT>Message received by server!\nVT>");
 					connection.getResultWriter().flush();

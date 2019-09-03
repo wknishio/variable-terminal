@@ -18,6 +18,7 @@ public class VTMESSAGE extends VTServerStandardLocalConsoleCommandProcessor
 
 	public void execute(String command, String[] parsed) throws Exception
 	{
+		//System.out.println("command:" + command);
 		if (command.contains("\""))
 		{
 			if (parsed.length >= 2)
@@ -93,7 +94,7 @@ public class VTMESSAGE extends VTServerStandardLocalConsoleCommandProcessor
 		}
 		else
 		{
-			if (command.length() >= 12 && command.charAt(11) == ' ')
+			if (command.toUpperCase().startsWith("*VTMESSAGE "))
 			{
 				// command = StringEscapeUtils.unescapeJava(command);
 				List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
@@ -109,7 +110,7 @@ public class VTMESSAGE extends VTServerStandardLocalConsoleCommandProcessor
 								{
 									try
 									{
-										connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: [" + command.substring(12) + "]\nVT>");
+										connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: [" + command.substring(11) + "]\nVT>");
 										connectionHandler.getConnection().getResultWriter().flush();
 									}
 									catch (Throwable e)
@@ -129,7 +130,7 @@ public class VTMESSAGE extends VTServerStandardLocalConsoleCommandProcessor
 					}
 				}
 			}
-			else if (command.length() >= 8 && command.charAt(7) == ' ')
+			else if (command.toUpperCase().startsWith("*VTMSG "))
 			{
 				// command = StringEscapeUtils.unescapeJava(command);
 				List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
@@ -145,7 +146,7 @@ public class VTMESSAGE extends VTServerStandardLocalConsoleCommandProcessor
 								{
 									try
 									{
-										connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: [" + command.substring(8) + "]\nVT>");
+										connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: [" + command.substring(7) + "]\nVT>");
 										connectionHandler.getConnection().getResultWriter().flush();
 									}
 									catch (Throwable e)

@@ -31,9 +31,9 @@ public class VTClientSession
 	// private File workingDirectory;
 	private VTClient client;
 	private VTClientConnection connection;
+	
 	private VTClientRemoteConsoleReader serverReader;
 	private VTClientRemoteConsoleWriter clientWriter;
-	
 	private VTFileTransferClient fileTransferClient;
 	private VTGraphicsModeClient graphicsClient;
 	private VTClipboardTransferTask clipboardTransferTask;
@@ -42,7 +42,7 @@ public class VTClientSession
 	private VTTunnelConnectionHandler socksTunnelsHandler;
 	private VTNanoPingService pingService;
 	
-	private Map<String, Closeable> resources;
+	private Map<String, Closeable> sessionResources;
 	
 	private ExecutorService threads;
 	
@@ -50,7 +50,7 @@ public class VTClientSession
 	{
 		this.client = client;
 		this.connection = connection;
-		this.resources = Collections.synchronizedMap(new LinkedHashMap<String, Closeable>());
+		this.sessionResources = Collections.synchronizedMap(new LinkedHashMap<String, Closeable>());
 	}
 	
 	public void initialize()
@@ -94,12 +94,12 @@ public class VTClientSession
 	
 	public Closeable getSessionResource(String key)
 	{
-		return resources.get(key);
+		return sessionResources.get(key);
 	}
 	
 	public void addSessionResource(String key, Closeable value)
 	{
-		resources.put(key, value);
+		sessionResources.put(key, value);
 	}
 	
 	public boolean isRunningAudio()
@@ -263,7 +263,7 @@ public class VTClientSession
 		// }
 		try
 		{
-			for (Entry<String, Closeable> resource : resources.entrySet())
+			for (Entry<String, Closeable> resource : sessionResources.entrySet())
 			{
 				try
 				{
@@ -304,6 +304,7 @@ public class VTClientSession
 		/* while (readerThread.isAlive() || writerThread.isAlive() ||
 		 * fileTransferThread.isAlive() || graphicsThread.isAlive()) { try {
 		 * Thread.sleep(1); } catch (Throwable e) { return; } } */
+		sessionResources.clear();
 		try
 		{
 			serverReader.joinThread();
