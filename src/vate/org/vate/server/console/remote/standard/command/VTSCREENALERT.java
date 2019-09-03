@@ -14,8 +14,8 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
 	{
 		this.setFullName("*VTSCREENALERT");
 		this.setAbbreviatedName("*VTSA");
-		this.setFullSyntax("*VTSCREENALERT <ALERT[/TITLE]> [DISPLAY]");
-		this.setAbbreviatedSyntax("*VTSA <ALT[/TI]> [DP]");
+		this.setFullSyntax("*VTSCREENALERT <[TITLE/]ALERT> [DISPLAY]");
+		this.setAbbreviatedSyntax("*VTSA <[TI/]ALT> [DP]");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception
@@ -33,8 +33,8 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
 				}
 				else
 				{
-					String message = parsed[1].substring(0, parsed[1].indexOf('/'));
-					String title = parsed[1].substring(parsed[1].indexOf('/') + 1);
+					String title = parsed[1].substring(0, parsed[1].indexOf('/'));
+					String message = parsed[1].substring(parsed[1].indexOf('/') + 1);
 					VTGraphicsMessager.showAlert(VTGraphicalConsole.getFrame(), title, message);
 					session.getServer().displayTrayIconMessage(title, "[" + message + "]");
 				}
@@ -64,8 +64,8 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
 						}
 						else
 						{
-							String message = parsed[1].substring(0, parsed[1].indexOf('/'));
-							String title = parsed[1].substring(parsed[1].indexOf('/') + 1);
+							String title = parsed[1].substring(0, parsed[1].indexOf('/'));
+							String message = parsed[1].substring(parsed[1].indexOf('/') + 1);
 							VTGraphicsMessager.showAlert(devices[number], VTGraphicalConsole.getFrame(), title, message);
 							session.getServer().displayTrayIconMessage(title, "[" + message + "]");
 						}
