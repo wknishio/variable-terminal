@@ -173,7 +173,7 @@ public class VTServerScreenshotTask extends VTTask
 			// clock.setTimeInMillis(System.currentTimeMillis());
 			clock.setTime(Calendar.getInstance().getTime());
 			screenshotFile = new File(firstFormat.format(clock.getTime()) + "-" + clock.get(GregorianCalendar.YEAR) + "-" + secondFormat.format(clock.getTime()) + ".png");
-			photoOutputStream = new VTBufferedOutputStream(Channels.newOutputStream(new FileOutputStream(screenshotFile).getChannel()), 1024 * 32);
+			photoOutputStream = new VTBufferedOutputStream(Channels.newOutputStream(new FileOutputStream(screenshotFile).getChannel()), 1024 * 64);
 			// screenshotProvider.writeHighQualityScreenshot(photoOutputStream,
 			// SWT.IMAGE_BMP);
 			BufferedImage screenCapture = screenshotProvider.createScreenCapture(drawPointer);

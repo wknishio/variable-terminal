@@ -23,7 +23,7 @@ public class VTClientZipFileOperation extends VTTask
 	{
 		// this.session = session;
 		this.finished = true;
-		this.readBuffer = new byte[1024 * 32];
+		this.readBuffer = new byte[1024 * 64];
 	}
 	
 	public void setOperation(int operation)

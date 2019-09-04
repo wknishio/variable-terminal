@@ -65,7 +65,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 	private Graphics2D convertedGraphics;
 	private volatile GraphicsDevice nextDevice;
 	private volatile GraphicsDevice currentDevice;
-	private VTByteArrayOutputStream imageOutputBuffer = new VTByteArrayOutputStream(1024 * 32);
+	private VTByteArrayOutputStream imageOutputBuffer = new VTByteArrayOutputStream(1024 * 64);
 	// private ZOutputStream deflateOutputStream;
 	// private SnappyOutputStream snappyOutputStream;
 	// private VTByteArrayOutputStream compressedOutputBuffer;

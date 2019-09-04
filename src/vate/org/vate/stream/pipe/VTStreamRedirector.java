@@ -5,7 +5,7 @@ import java.io.OutputStream;
 
 public class VTStreamRedirector implements Runnable
 {
-	private static final int redirectorBufferSize = 1024 * 32;
+	private static final int redirectorBufferSize = 1024 * 64;
 	private volatile boolean stopped;
 	private int readed = 0;
 	private final byte[] redirectorBuffer = new byte[redirectorBufferSize];

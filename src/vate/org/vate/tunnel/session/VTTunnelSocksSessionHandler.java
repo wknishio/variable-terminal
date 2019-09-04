@@ -39,14 +39,14 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
 			if (validation != null)
 			{
 				ProxyServer socksServer = new ProxyServer(new UserPasswordAuthenticator(validation), session.getSocket());
-				socksServer.setPipeBufferSize(1024 * 32);
+				socksServer.setPipeBufferSize(1024 * 64);
 				socksServer.run();
 				session.close();
 			}
 			else
 			{
 				ProxyServer socksServer = new ProxyServer(new ServerAuthenticatorNone(), session.getSocket());
-				socksServer.setPipeBufferSize(1024 * 32);
+				socksServer.setPipeBufferSize(1024 * 64);
 				socksServer.run();
 				session.close();
 			}

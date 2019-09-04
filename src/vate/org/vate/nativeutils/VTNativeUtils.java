@@ -72,155 +72,148 @@ public class VTNativeUtils
 	
 	public static int system(String command)
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			return nativeUtils.system(command);
 		}
-		return nativeUtils.system(command);
+		return -1;
 	}
 	
 	public static int getchar()
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			return nativeUtils.getchar();
 		}
-		return nativeUtils.getchar();
+		return -1;
 	}
 	
 	public static int getch()
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			return nativeUtils.getch();
 		}
-		return nativeUtils.getch();
+		return -1;
 	}
 	
 	public static void unbuffered()
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			nativeUtils.unbuffered();
 		}
-		nativeUtils.unbuffered();
 	}
 	
 	public static void noecho()
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			nativeUtils.noecho();
 		}
-		nativeUtils.noecho();
 	}
 	
 	public static void normal()
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			nativeUtils.normal();
 		}
-		nativeUtils.normal();
 	}
 	
 	public static void printf(String format, Object... args)
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			nativeUtils.printf(format, args);
 		}
-		nativeUtils.printf(format, args);
 	}
 	
 	public static boolean beep(int freq, int dur, boolean block)
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			return nativeUtils.beep(freq, dur, block);
 		}
-		return nativeUtils.beep(freq, dur, block);
+		return false;
 	}
 	
 	public static boolean openCD()
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			return nativeUtils.openCD();
 		}
-		return nativeUtils.openCD();
+		return false;
 	}
 	
 	public static boolean closeCD()
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			return nativeUtils.closeCD();
 		}
-		return nativeUtils.closeCD();
+		return false;
 	}
 	
 	public static void exit(int status)
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			nativeUtils.exit(status);
 		}
-		nativeUtils.exit(status);
 	}
 	
 	public static void abort()
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			nativeUtils.abort();
 		}
-		nativeUtils.abort();
 	}
 	
 	public static int raise(int signal)
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			return nativeUtils.raise(signal);
 		}
-		return nativeUtils.raise(signal);
+		return -1;
 	}
 	
 	public static int rand()
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			return nativeUtils.rand();
 		}
-		return nativeUtils.rand();
+		return -1;
 	}
 	
 	public static void srand(int seed)
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			nativeUtils.srand(seed);
 		}
-		nativeUtils.srand(seed);
 	}
 	
 	public static String getenv(String env)
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			return nativeUtils.getenv(env);
 		}
-		return nativeUtils.getenv(env);
+		return null;
 	}
 	
 	public static int putenv(String env)
 	{
-		if (nativeUtils == null)
+		if (checkNativeUtils())
 		{
-			initialize();
+			return nativeUtils.putenv(env);
 		}
-		return nativeUtils.putenv(env);
+		return -1;
 	}
 	
 	/* public static int isatty(int fd) { return nativeUtils.true_isatty(fd);
@@ -399,26 +392,55 @@ public class VTNativeUtils
 	
 	public static int getpid()
 	{
-		return nativeUtils.getpid();
+		if (checkNativeUtils())
+		{
+			return nativeUtils.getpid();
+		}
+		return -1;
 	}
 	
 	public static int isatty(int fd)
 	{
-		return nativeUtils.isatty(fd);
+		if (checkNativeUtils())
+		{
+			return nativeUtils.isatty(fd);
+		}
+		return -1;
 	}
 	
 	public static boolean hide_console()
 	{
-		return nativeUtils.hide_console();
+		if (checkNativeUtils())
+		{
+			return nativeUtils.hide_console();
+		}
+		return false;
 	}
 	
 	public static boolean detach_console()
 	{
-		return nativeUtils.detach_console();
+		if (checkNativeUtils())
+		{
+			return nativeUtils.detach_console();
+		}
+		return false;
 	}
 	
 	public static boolean attach_console()
 	{
-		return nativeUtils.attach_console();
+		if (checkNativeUtils())
+		{
+			return nativeUtils.attach_console();
+		}
+		return false;
+	}
+	
+	private static boolean checkNativeUtils()
+	{
+		if (nativeUtils == null)
+		{
+			initialize();
+		}
+		return false;
 	}
 }

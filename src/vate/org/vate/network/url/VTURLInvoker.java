@@ -12,7 +12,7 @@ import org.vate.stream.array.VTByteArrayOutputStream;
 public class VTURLInvoker
 {
 	private int readed;
-	private final byte[] readBuffer = new byte[1024 * 32];
+	private final byte[] readBuffer = new byte[1024 * 64];
 	private VTByteArrayOutputStream dataBuffer = new VTByteArrayOutputStream();
 	
 	public byte[] getURLData(String URL, byte[] outputData, int outputOffset, int outputLength) throws Exception
