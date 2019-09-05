@@ -441,6 +441,6 @@ public class VTNativeUtils
 		{
 			initialize();
 		}
-		return false;
+		return nativeUtils != null;
 	}
 }
