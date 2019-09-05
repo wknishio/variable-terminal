@@ -57,7 +57,7 @@ public class VTConsole
 				if (graphical)
 				{
 					// VTGraphicalConsole.setSplit(split);
-					VTNativeUtils.detach_console();
+					VTNativeUtils.detachConsole();
 					console = VTGraphicalConsole.getInstance();
 					// setBold(true);
 					// VTGraphicalConsole.setTitle(title);
@@ -76,7 +76,7 @@ public class VTConsole
 			}
 			else
 			{
-				VTNativeUtils.detach_console();
+				VTNativeUtils.detachConsole();
 			}
 		}
 	}
@@ -219,12 +219,12 @@ public class VTConsole
 				if (daemon == true)
 				{
 					VTConsole.daemon = daemon;
-					VTNativeUtils.hide_console();
+					VTNativeUtils.hideConsole();
 				}
 				else
 				{
 					VTConsole.daemon = daemon;
-					VTNativeUtils.attach_console();
+					VTNativeUtils.attachConsole();
 					Object waiter = VTConsole.getSynchronizationObject();
 					synchronized (waiter)
 					{

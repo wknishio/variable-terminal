@@ -83,17 +83,17 @@ public class VTMinimalNativeUtils implements VTNativeUtilsImplementation
 		return 0;
 	}
 	
-	public boolean detach_console()
+	public boolean detachConsole()
 	{
 		return false;
 	}
 	
-	public boolean attach_console()
+	public boolean attachConsole()
 	{
 		return false;
 	}
 
-	public boolean hide_console()
+	public boolean hideConsole()
 	{
 		return false;
 	}

@@ -154,7 +154,7 @@ public class VTMacNativeUtils implements VTNativeUtilsImplementation
 		return macCLibrary.isatty(fd);
 	}
 	
-	public boolean detach_console()
+	public boolean detachConsole()
 	{
 		try
 		{
@@ -175,12 +175,12 @@ public class VTMacNativeUtils implements VTNativeUtilsImplementation
 		return true;
 	}
 	
-	public boolean attach_console()
+	public boolean attachConsole()
 	{
 		return false;
 	}
 
-	public boolean hide_console()
+	public boolean hideConsole()
 	{
 		try
 		{

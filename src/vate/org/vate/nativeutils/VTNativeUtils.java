@@ -408,29 +408,29 @@ public class VTNativeUtils
 		return -1;
 	}
 	
-	public static boolean hide_console()
+	public static boolean hideConsole()
 	{
 		if (checkNativeUtils())
 		{
-			return nativeUtils.hide_console();
+			return nativeUtils.hideConsole();
 		}
 		return false;
 	}
 	
-	public static boolean detach_console()
+	public static boolean detachConsole()
 	{
 		if (checkNativeUtils())
 		{
-			return nativeUtils.detach_console();
+			return nativeUtils.detachConsole();
 		}
 		return false;
 	}
 	
-	public static boolean attach_console()
+	public static boolean attachConsole()
 	{
 		if (checkNativeUtils())
 		{
-			return nativeUtils.attach_console();
+			return nativeUtils.attachConsole();
 		}
 		return false;
 	}

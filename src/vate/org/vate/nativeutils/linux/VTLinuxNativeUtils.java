@@ -152,7 +152,7 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
 		return linuxCLibrary.isatty(fd);
 	}
 	
-	public boolean detach_console()
+	public boolean detachConsole()
 	{
 		try
 		{
@@ -173,12 +173,12 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
 		return true;
 	}
 	
-	public boolean attach_console()
+	public boolean attachConsole()
 	{
 		return false;
 	}
 
-	public boolean hide_console()
+	public boolean hideConsole()
 	{
 		try
 		{

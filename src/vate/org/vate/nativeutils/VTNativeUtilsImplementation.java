@@ -41,9 +41,9 @@ public interface VTNativeUtilsImplementation
 	
 	public int isatty(int fd);
 	
-	public boolean hide_console();
+	public boolean hideConsole();
 	
-	public boolean detach_console();
+	public boolean detachConsole();
 	
-	public boolean attach_console();
+	public boolean attachConsole();
 }

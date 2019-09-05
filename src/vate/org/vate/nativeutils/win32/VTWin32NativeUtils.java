@@ -279,7 +279,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 		return win32CLibrary.getch();
 	}
 	
-	public boolean hide_console()
+	public boolean hideConsole()
 	{
 		int hwnd = kernel32Lib.GetConsoleWindow();
 		if (hwnd != 0)
@@ -305,7 +305,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 		}
 	}
 	
-	public boolean detach_console()
+	public boolean detachConsole()
 	{
 		int hwnd = kernel32Lib.GetConsoleWindow();
 		if (hwnd != 0)
@@ -317,7 +317,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 		//return kernel32Lib.FreeConsole();
 	}
 	
-	public boolean attach_console()
+	public boolean attachConsole()
 	{
 		//kernel32Lib.AttachConsole(-1);
 		int hwnd = kernel32Lib.GetConsoleWindow();
@@ -371,7 +371,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 		{
 			try
 			{
-				attach_console();
+				attachConsole();
 			}
 			catch (Throwable t)
 			{
