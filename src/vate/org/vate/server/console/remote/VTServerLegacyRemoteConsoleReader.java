@@ -3116,7 +3116,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				connection.getResultWriter().flush();
 			}
 		}
-		else if (parsed[0].equalsIgnoreCase("*VTRUNPRINT") || parsed[0].equalsIgnoreCase("*VTRPR"))
+		else if (parsed[0].equalsIgnoreCase("*VTPRINTRUN") || parsed[0].equalsIgnoreCase("*VTPRRN"))
 		{
 			if (parsed.length >= 2)
 			{

@@ -8,16 +8,30 @@ public class VTGraphicalConsoleFrame extends Frame
 {
 	private static final long serialVersionUID = 1L;
 	
-	public VTGraphicalConsoleFrame()
+	public VTGraphicalConsoleFrame(boolean remote)
 	{
 		super();
-		try
+		if (remote)
 		{
-			this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/terminal.png")));
+			try
+			{
+				this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
+			}
+			catch (Throwable t)
+			{
+				
+			}
 		}
-		catch (Throwable t)
+		else
 		{
-			
+			try
+			{
+				this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/terminal.png")));
+			}
+			catch (Throwable t)
+			{
+				
+			}
 		}
 	}
 	

@@ -4,6 +4,7 @@ import java.awt.GraphicsEnvironment;
 
 import org.vate.VT;
 import org.vate.console.VTConsole;
+import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.help.VTHelpManager;
 import org.vate.server.VTServer;
 
@@ -15,6 +16,7 @@ public class VTServerDaemonGraphicalStart
 		{
 			VTConsole.setGraphical(true);
 		}
+		VTGraphicalConsole.setRemoteIcon(true);
 		VTConsole.setDaemon(true);
 		VTServer server = new VTServer();
 		server.setDaemon(true);

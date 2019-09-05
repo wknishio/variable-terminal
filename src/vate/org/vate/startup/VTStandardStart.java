@@ -14,6 +14,7 @@ public final class VTStandardStart
 	public static final void main(String args[])
 	{
 		VTConsole.setGraphical(false);
+		VTGraphicalConsole.setRemoteIcon(true);
 		
 		if (args.length == 0)
 		{

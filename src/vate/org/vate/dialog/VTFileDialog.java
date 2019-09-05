@@ -19,7 +19,7 @@ public class VTFileDialog extends FileDialog
 		// this.application = application;
 		try
 		{
-			this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/terminal.png")));
+			this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
 		}
 		catch (Throwable e)
 		{
@@ -34,7 +34,7 @@ public class VTFileDialog extends FileDialog
 		// this.application = application;
 		try
 		{
-			this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/terminal.png")));
+			this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
 		}
 		catch (Throwable e)
 		{

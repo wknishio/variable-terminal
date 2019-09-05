@@ -115,8 +115,8 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		serverGraphicsAlertMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTSCREENALERT\n"));
 		serverBrowseMenu.add(new VTGraphicalConsoleInputMenuItem("Browse URI", "*VTBROWSE "));
 		serverBrowseMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTBROWSE\n"));
-		serverPrintApplicationMenu.add(new VTGraphicalConsoleInputMenuItem("Print File", "*VTRUNPRINT "));
-		serverPrintApplicationMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTRUNPRINT\n"));
+		serverPrintApplicationMenu.add(new VTGraphicalConsoleInputMenuItem("Print File", "*VTPRINTRUN "));
+		serverPrintApplicationMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTPRINTRUN\n"));
 		
 		fileSystemMenu = new Menu("Files ");
 		fileTransferMenu = new Menu("File Transfer Function ");

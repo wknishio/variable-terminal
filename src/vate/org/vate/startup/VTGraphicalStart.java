@@ -14,6 +14,7 @@ public final class VTGraphicalStart
 	public static final void main(String[] args)
 	{
 		VTConsole.setGraphical(true);
+		VTGraphicalConsole.setRemoteIcon(true);
 		// VTTerminal.setSplit(true);
 		
 		if (args.length == 0)

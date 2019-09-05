@@ -37,7 +37,7 @@ public class VTGraphicalStartDialog extends Dialog
 		setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
 		try
 		{
-			terminalIcon = ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/terminal.png"));
+			terminalIcon = ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png"));
 			setIconImage(terminalIcon);
 		}
 		catch (Throwable t)

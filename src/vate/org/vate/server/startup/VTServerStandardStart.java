@@ -2,6 +2,7 @@ package org.vate.server.startup;
 
 import org.vate.VT;
 import org.vate.console.VTConsole;
+import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.help.VTHelpManager;
 import org.vate.server.VTServer;
 
@@ -10,6 +11,7 @@ public class VTServerStandardStart
 	public static void main(String[] args)
 	{
 		VTConsole.setGraphical(false);
+		VTGraphicalConsole.setRemoteIcon(true);
 		
 		if (args.length >= 1)
 		{

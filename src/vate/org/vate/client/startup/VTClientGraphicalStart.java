@@ -6,6 +6,7 @@ import java.awt.GraphicsEnvironment;
 import org.vate.VT;
 import org.vate.client.VTClient;
 import org.vate.console.VTConsole;
+import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.help.VTHelpManager;
 
 public class VTClientGraphicalStart
@@ -16,6 +17,7 @@ public class VTClientGraphicalStart
 		{
 			VTConsole.setGraphical(true);
 		}
+		VTGraphicalConsole.setRemoteIcon(true);
 		
 		if (args.length >= 1)
 		{
