@@ -35,6 +35,8 @@ public class VTClientConnector implements Runnable
 	private volatile boolean timeoutEnabled;
 	private VTNATSinglePortMappingManagerMKII portMappingManager;
 	private VTConnectionRetryTimeoutTask connectionRetryTimeoutTask = new VTConnectionRetryTimeoutTask();
+	private volatile boolean retry = false;
+	private volatile boolean retryDialog = false;
 	
 	public VTClientConnector(VTClient client)
 	{
@@ -94,7 +96,14 @@ public class VTClientConnector implements Runnable
 					{
 						
 					}
-					VTConsole.print("\nVT>Retrying connection with server...");
+					if (retryDialog)
+					{
+						VTConsole.print("VT>Retrying connection with server...");
+					}
+					else
+					{
+						VTConsole.print("\nVT>Retrying connection with server...");
+					}
 					if (client.getConnectionDialog() != null)
 					{
 						if (client.getConnectionDialog().isVisible())
@@ -134,7 +143,14 @@ public class VTClientConnector implements Runnable
 					{
 						
 					}
-					VTConsole.print("\nVT>Retrying connection with server...");
+					if (retryDialog)
+					{
+						VTConsole.print("VT>Retrying connection with server...");
+					}
+					else
+					{
+						VTConsole.print("\nVT>Retrying connection with server...");
+					}
 					if (client.getConnectionDialog() != null)
 					{
 						if (client.getConnectionDialog().isVisible())
@@ -487,7 +503,15 @@ public class VTClientConnector implements Runnable
 	
 	public boolean listenConnection(VTClientConnection connection)
 	{
-		VTConsole.print("\nVT>Listening to connection with server, interrupt with ENTER...");
+		if (retry)
+		{
+			VTConsole.print("\nVT>Listening to connection with server, interrupt with ENTER...");
+		}
+		else
+		{
+			retry = true;
+			VTConsole.print("VT>Listening to connection with server, interrupt with ENTER...");
+		}
 		connection.closeSockets();
 		resetSockets(connection);
 		if (!setServerSocket(hostAddress, hostPort != null && hostPort > 0 ? hostPort : 6060))
@@ -577,7 +601,15 @@ public class VTClientConnector implements Runnable
 	
 	public boolean establishConnection(VTClientConnection connection, String address, int port)
 	{
-		VTConsole.print("\nVT>Establishing connection with server...");
+		if (retry)
+		{
+			VTConsole.print("\nVT>Establishing connection with server...");
+		}
+		else
+		{
+			retry = true;
+			VTConsole.print("VT>Establishing connection with server...");
+		}
 		try
 		{
 			resetSockets(connection);
@@ -678,6 +710,7 @@ public class VTClientConnector implements Runnable
 	
 	public boolean retryConnection()
 	{
+		retryDialog = false;
 		startConnectionRetryTimeoutThread();
 		if (skipConfiguration)
 		{
@@ -686,19 +719,11 @@ public class VTClientConnector implements Runnable
 		}
 		else
 		{
-			if (client.getConnectionDialog() != null)
-			{
-				client.getConnectionDialog().open();
-			}
-			if (skipConfiguration)
-			{
-				skipConfiguration = false;
-				return true;
-			}
+			
 		}
 		try
 		{
-			VTConsole.print("\nVT>Retry connection with server?(Y/N, default:N):");
+			VTConsole.print("\nVT>Retry connection with server?(Y/N, default:Y):");
 			String line = VTConsole.readLine(true);
 			if (line == null)
 			{
@@ -709,10 +734,20 @@ public class VTClientConnector implements Runnable
 			{
 				return true;
 			}
-			if (!line.toUpperCase().startsWith("Y"))
+			if (line.toUpperCase().startsWith("N"))
 			{
 				System.exit(0);
 				return false;
+			}
+			if (client.getConnectionDialog() != null)
+			{
+				client.getConnectionDialog().open();
+			}
+			if (skipConfiguration)
+			{
+				skipConfiguration = false;
+				retryDialog = true;
+				return true;
 			}
 			VTConsole.print("VT>Repeat current connection settings?(Y/N, default:N):");
 			line = VTConsole.readLine(true);
@@ -1248,6 +1283,7 @@ public class VTClientConnector implements Runnable
 				return true;
 			}
 			setSessionCommands(commands);
+			retry = false;
 			return true;
 		}
 		catch (NumberFormatException e)

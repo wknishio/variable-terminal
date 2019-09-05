@@ -475,4 +475,9 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		/* for (int i = 0;i < this.getMenuCount();i++) {
 		 * this.getMenu(i).setEnabled(enabled); } */
 	}
+	
+	public void setEnabledDialogMenu(boolean enabled)
+	{
+		dialogMenu.setEnabled(enabled);
+	}
 }

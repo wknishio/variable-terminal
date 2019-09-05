@@ -949,6 +949,27 @@ public class VTServer implements Runnable
 				skipConfiguration = false;
 				return;
 			}
+			VTConsole.print("VT>Press enter to start server:");
+			try
+			{
+				if (inputMenuBar != null)
+				{
+					inputMenuBar.setEnabledDialogMenu(false);
+				}
+				VTConsole.readLine(true);
+				if (inputMenuBar != null)
+				{
+					inputMenuBar.setEnabledDialogMenu(true);
+				}
+				if (skipConfiguration)
+				{
+					return;
+				}
+			}
+			catch (Throwable e)
+			{
+				System.exit(0);
+			}
 			if (connectionDialog != null)
 			{
 				if ((passive && hostPort == null) || (!passive && (hostAddress == null || hostPort == null)) || sessionsLimit < 0)

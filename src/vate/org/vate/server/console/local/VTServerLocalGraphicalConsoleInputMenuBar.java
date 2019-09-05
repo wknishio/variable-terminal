@@ -285,4 +285,9 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		 * this.getMenu(i).setEnabled(enabled); } */
 		serverConsoleCommandsMenu.setEnabled(enabled);
 	}
+	
+	public void setEnabledDialogMenu(boolean enabled)
+	{
+		serverSettingsDialogMenu.setEnabled(enabled);
+	}
 }

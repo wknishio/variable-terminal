@@ -128,8 +128,6 @@ public class VTClientConfigurationDialog extends Dialog
 		
 		VTGlobalTextStyleManager.registerWindow(this);
 		
-		
-		
 		Choice connectionModeChoice = new Choice();
 		connectionMode = new VTClientConfigurationDialogParameter("Connection Mode:", connectionModeChoice, true);
 		TextField connectionHostField = new TextField(20);
@@ -790,8 +788,6 @@ public class VTClientConfigurationDialog extends Dialog
 		
 		centerPanel.add(buttonPanel2);
 		
-		
-		
 		for (Component component : centerPanel.getComponents())
 		{
 			if (component instanceof Panel)
@@ -1415,7 +1411,7 @@ public class VTClientConfigurationDialog extends Dialog
 //		}
 		// VTTerminal.interruptReadLine();
 	}
-	
+		
 	/* public static void main(String[] args) throws Exception { Frame frame =
 	 * new Frame(); VTConnectionDialog dialog = new VTConnectionDialog(frame,
 	 * "ABC", false, null); dialog.initialize();

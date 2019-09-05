@@ -839,15 +839,6 @@ public class VTClient implements Runnable
 				skipConfiguration = false;
 				return;
 			}
-			if (connectionDialog != null)
-			{
-				connectionDialog.open();
-				if (skipConfiguration)
-				{
-					skipConfiguration = false;
-					return;
-				}
-			}
 			if (retry)
 			{
 				VTConsole.print("\nVT>Retry connection with server?(Y/N, default:N):");
@@ -871,6 +862,36 @@ public class VTClient implements Runnable
 			else
 			{
 				retry = true;
+				//VTConsole.print("\nVT>Press enter to try connecting with server");
+				try
+				{
+					if (inputMenuBar != null)
+					{
+						inputMenuBar.setEnabledDialogMenu(false);
+					}
+					VTConsole.readLine(true);
+					if (inputMenuBar != null)
+					{
+						inputMenuBar.setEnabledDialogMenu(true);
+					}
+					if (skipConfiguration)
+					{
+						return;
+					}
+				}
+				catch (Throwable e)
+				{
+					System.exit(0);
+				}
+			}
+			if (connectionDialog != null)
+			{
+				connectionDialog.open();
+				if (skipConfiguration)
+				{
+					skipConfiguration = false;
+					return;
+				}
 			}
 			VTConsole.print("\nVT>Enter the settings file(if available):");
 			try
@@ -1548,7 +1569,8 @@ public class VTClient implements Runnable
 		}
 		VTConsole.print("VT>Variable-Terminal Client " + VT.VT_VERSION + "\nVT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n"
 		+ "VT>This software is under MIT license, see license.txt!\n"
-		+ "VT>This software comes with no warranty, use at your own risk!");
+		+ "VT>This software comes with no warranty, use at your own risk!\n"
+		+ "VT>Press enter start client:");
 		configure();
 		if (skipConfiguration)
 		{

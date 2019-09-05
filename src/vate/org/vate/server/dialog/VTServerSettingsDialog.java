@@ -127,7 +127,6 @@ public class VTServerSettingsDialog extends Dialog
 		
 		VTGlobalTextStyleManager.registerWindow(this);
 		
-		
 		//centerPanel.getInsets().set(4, 4, 4, 4);	
 		
 		Choice connectionModeChoice = new Choice();
@@ -714,8 +713,6 @@ public class VTServerSettingsDialog extends Dialog
 		centerPanel.add(buttonPanel1);
 		
 		centerPanel.add(buttonPanel2);
-		
-		
 		
 		for (Component component : centerPanel.getComponents())
 		{
