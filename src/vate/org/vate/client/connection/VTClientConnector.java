@@ -30,13 +30,13 @@ public class VTClientConnector implements Runnable
 	private VTClient client;
 	private VTClientConnection connection;
 	private VTClientConnectionHandler handler;
-	private boolean skipConfiguration;
+	private volatile boolean skipConfiguration;
 	//private volatile boolean connectedOnce;
 	private volatile boolean timeoutEnabled;
 	private VTNATSinglePortMappingManagerMKII portMappingManager;
 	private VTConnectionRetryTimeoutTask connectionRetryTimeoutTask = new VTConnectionRetryTimeoutTask();
 	private volatile boolean retry = false;
-	private volatile boolean retryDialog = false;
+	private volatile boolean dialog = false;
 	
 	public VTClientConnector(VTClient client)
 	{
@@ -96,12 +96,14 @@ public class VTClientConnector implements Runnable
 					{
 						
 					}
-					if (retryDialog)
+					if (dialog)
 					{
+						//System.out.println("dialog == true");
 						VTConsole.print("VT>Retrying connection with server...");
 					}
 					else
 					{
+						//System.out.println("dialog == false");
 						VTConsole.print("\nVT>Retrying connection with server...");
 					}
 					if (client.getConnectionDialog() != null)
@@ -143,7 +145,7 @@ public class VTClientConnector implements Runnable
 					{
 						
 					}
-					if (retryDialog)
+					if (dialog)
 					{
 						VTConsole.print("VT>Retrying connection with server...");
 					}
@@ -710,7 +712,7 @@ public class VTClientConnector implements Runnable
 	
 	public boolean retryConnection()
 	{
-		retryDialog = false;
+		dialog = false;
 		startConnectionRetryTimeoutThread();
 		if (skipConfiguration)
 		{
@@ -741,14 +743,16 @@ public class VTClientConnector implements Runnable
 			}
 			if (client.getConnectionDialog() != null)
 			{
+				dialog = true;
 				client.getConnectionDialog().open();
 			}
 			if (skipConfiguration)
 			{
+				//System.out.println("skipConfiguration");
 				skipConfiguration = false;
-				retryDialog = true;
 				return true;
 			}
+			dialog = false;
 			VTConsole.print("VT>Repeat current connection settings?(Y/N, default:N):");
 			line = VTConsole.readLine(true);
 			if (line == null)

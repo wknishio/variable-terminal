@@ -861,7 +861,6 @@ public class VTClient implements Runnable
 			}
 			else
 			{
-				retry = true;
 				//VTConsole.print("\nVT>Press enter to try connecting with server");
 				try
 				{
@@ -893,7 +892,15 @@ public class VTClient implements Runnable
 					return;
 				}
 			}
-			VTConsole.print("\nVT>Enter the settings file(if available):");
+			if (retry)
+			{
+				VTConsole.print("\nVT>Enter the settings file(if available):");
+			}
+			else
+			{
+				VTConsole.print("VT>Enter the settings file(if available):");
+			}
+			retry = true;
 			try
 			{
 				String line = VTConsole.readLine(true);
