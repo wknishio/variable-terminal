@@ -54,6 +54,8 @@ public class VTClient implements Runnable
 	private VTClientConfigurationDialog connectionDialog;
 	private ExecutorService threads;
 	private volatile boolean skipConfiguration;
+	private volatile boolean retry = false;
+	private volatile boolean manual = false;
 	private static final String VT_CLIENT_SETTINGS_COMMENTS = 
 	"Variable-Terminal client settings file, supports UTF-8\r\n" + 
 	"#vate.client.connection.mode      values: A(active, default) or P(passive)\r\n" + 
@@ -102,6 +104,16 @@ public class VTClient implements Runnable
 	{
 		this.skipConfiguration = skipConfiguration;
 		// System.out.println("skipConfiguration = " + skipConfiguration);
+	}
+	
+	public void setManual(boolean manual)
+	{
+		this.manual = manual;
+	}
+	
+	public boolean isManual()
+	{
+		return manual;
 	}
 	
 	public VTClientConnector getClientConnector()
@@ -831,7 +843,6 @@ public class VTClient implements Runnable
 	
 	private void configure()
 	{
-		boolean retry = false;
 		while ((active && (hostAddress == null || hostPort == null)) || (!active && hostPort == null))
 		{
 			if (skipConfiguration)
@@ -869,6 +880,7 @@ public class VTClient implements Runnable
 						inputMenuBar.setEnabledDialogMenu(false);
 					}
 					VTConsole.readLine(true);
+					
 					if (inputMenuBar != null)
 					{
 						inputMenuBar.setEnabledDialogMenu(true);
@@ -883,6 +895,7 @@ public class VTClient implements Runnable
 					System.exit(0);
 				}
 			}
+			manual = false;
 			if (connectionDialog != null)
 			{
 				connectionDialog.open();
@@ -892,6 +905,7 @@ public class VTClient implements Runnable
 					return;
 				}
 			}
+			manual = true;
 			if (retry)
 			{
 				VTConsole.print("\nVT>Enter the settings file(if available):");

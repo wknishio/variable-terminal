@@ -124,6 +124,7 @@ public class VTClientConnector implements Runnable
 		
 		public void trigger()
 		{
+			//System.out.println("trigger");
 			try
 			{
 				if (timeoutEnabled)

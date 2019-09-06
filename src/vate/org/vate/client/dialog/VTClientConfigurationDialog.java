@@ -32,6 +32,7 @@ import org.vate.VT;
 import org.vate.client.VTClient;
 import org.vate.client.connection.VTClientConnection;
 import org.vate.client.connection.VTClientConnector;
+import org.vate.console.VTConsole;
 import org.vate.dialog.VTFileDialog;
 import org.vate.graphics.font.VTGlobalTextStyleManager;
 
@@ -1290,6 +1291,12 @@ public class VTClientConfigurationDialog extends Dialog
 			}
 			else
 			{
+				if (client.isManual())
+				{
+					//System.out.println("manual");
+					VTConsole.println("");
+					VTConsole.interruptReadLine();
+				}
 				//VTConsole.println("");
 			}
 		}
