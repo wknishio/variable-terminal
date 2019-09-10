@@ -2,10 +2,13 @@ package org.vate.runtime;
 
 import java.io.BufferedInputStream;
 
+import org.vate.nativeutils.VTNativeUtils;
+
 public class VTArgumentsRuntimeRelauncher
 {
 	public static void main(String[] args) throws Exception
 	{
+		VTNativeUtils.detachConsole();
 		try
 		{
 			while (true)
@@ -14,8 +17,8 @@ public class VTArgumentsRuntimeRelauncher
 				try
 				{
 					Process process = Runtime.getRuntime().exec(args);
-					VTInputConsumer in = new VTInputConsumer(new BufferedInputStream(process.getInputStream()));
-					VTInputConsumer err = new VTInputConsumer(new BufferedInputStream(process.getErrorStream()));
+					VTLauncherOutputConsumer in = new VTLauncherOutputConsumer(new BufferedInputStream(process.getInputStream()));
+					VTLauncherOutputConsumer err = new VTLauncherOutputConsumer(new BufferedInputStream(process.getErrorStream()));
 					Thread tin = new Thread(in);
 					Thread terr = new Thread(err);
 					tin.start();

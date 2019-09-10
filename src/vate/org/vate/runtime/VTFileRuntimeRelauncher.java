@@ -4,10 +4,13 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
+import org.vate.nativeutils.VTNativeUtils;
+
 public class VTFileRuntimeRelauncher
 {
 	public static void main(String[] args) throws Exception
 	{
+		VTNativeUtils.detachConsole();
 		String file = "relauncher.txt";
 		if (args.length > 0)
 		{
@@ -24,8 +27,8 @@ public class VTFileRuntimeRelauncher
 				try
 				{
 					Process process = Runtime.getRuntime().exec(command);
-					VTInputConsumer in = new VTInputConsumer(new BufferedInputStream(process.getInputStream()));
-					VTInputConsumer err = new VTInputConsumer(new BufferedInputStream(process.getErrorStream()));
+					VTLauncherOutputConsumer in = new VTLauncherOutputConsumer(new BufferedInputStream(process.getInputStream()));
+					VTLauncherOutputConsumer err = new VTLauncherOutputConsumer(new BufferedInputStream(process.getErrorStream()));
 					Thread tin = new Thread(in);
 					Thread terr = new Thread(err);
 					tin.start();
