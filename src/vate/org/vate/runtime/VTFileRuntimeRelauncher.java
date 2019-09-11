@@ -10,7 +10,6 @@ public class VTFileRuntimeRelauncher
 {
 	public static void main(String[] args) throws Exception
 	{
-		VTNativeUtils.detachConsole();
 		String file = "relauncher.txt";
 		if (args.length > 0)
 		{

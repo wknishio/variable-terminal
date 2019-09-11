@@ -4,10 +4,11 @@ import java.io.BufferedInputStream;
 
 import org.vate.nativeutils.VTNativeUtils;
 
-public class VTArgumentsRuntimeRelauncher
+public class VTArgumentsRuntimeRelauncherDaemon
 {
 	public static void main(String[] args) throws Exception
 	{
+		VTNativeUtils.detachConsole();
 		try
 		{
 			while (true)
