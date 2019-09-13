@@ -235,6 +235,17 @@
 			<fileset dir="build" excludes="org/vate/client/**,org/vate/startup/**,org/vate/server/**"/>
 		</jar>
 		
+		<jar destfile="dist/tools/variable-terminal-arguments-relauncher-daemon.jar" filesetmanifest="mergewithoutmain" update="false">
+			<manifest>
+				<attribute name="Built-By" value="William Kendi Nishio"/>
+				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
+				<attribute name="Created-By" value="${java.version}"/>
+				<attribute name="Main-Class" value="org.vate.runtime.VTArgumentsRuntimeRelauncherDaemon"/>
+				<attribute name="Class-Path" value="."/>
+			</manifest>
+			<fileset dir="build" excludes="org/vate/client/**,org/vate/startup/**,org/vate/server/**"/>
+		</jar>
+		
 		<jar destfile="dist/tools/variable-terminal-file-launcher.jar" filesetmanifest="mergewithoutmain" update="false">
 			<manifest>
 				<attribute name="Built-By" value="William Kendi Nishio"/>
@@ -252,6 +263,17 @@
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
 				<attribute name="Created-By" value="${java.version}"/>
 				<attribute name="Main-Class" value="org.vate.runtime.VTFileRuntimeRelauncher"/>
+				<attribute name="Class-Path" value="."/>
+			</manifest>
+			<fileset dir="build" excludes="org/vate/client/**,org/vate/startup/**,org/vate/server/**"/>
+		</jar>
+		
+		<jar destfile="dist/tools/variable-terminal-file-relauncher-daemon.jar" filesetmanifest="mergewithoutmain" update="false">
+			<manifest>
+				<attribute name="Built-By" value="William Kendi Nishio"/>
+				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
+				<attribute name="Created-By" value="${java.version}"/>
+				<attribute name="Main-Class" value="org.vate.runtime.VTFileRuntimeRelauncherDaemon"/>
 				<attribute name="Class-Path" value="."/>
 			</manifest>
 			<fileset dir="build" excludes="org/vate/client/**,org/vate/startup/**,org/vate/server/**"/>
