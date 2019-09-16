@@ -264,6 +264,6 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
 	
 	public boolean isClipboardControlEnabled()
 	{
-		return !interruptedOption.getState() && clearLocalClipboardContents.isEnabled();
+		return clearLocalClipboardContents.isEnabled();
 	}
 }
