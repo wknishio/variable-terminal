@@ -387,12 +387,12 @@ public class VTGraphicsModeClientWriter implements Runnable
 	{
 		try
 		{
+			menuBar.sendLocalClipboardContents();
 			connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_CLIPBOARD_TRANSFER_SEND_REQUEST);
 			connection.getGraphicsControlDataOutputStream().flush();
 			session.getSession().getClipboardTransferTask().joinThread();
 			session.getSession().getClipboardTransferTask().setSending(true);
 			session.getSession().getClipboardTransferTask().startThread();
-			menuBar.sendLocalClipboardContents();
 		}
 		catch (Throwable e)
 		{
@@ -405,12 +405,12 @@ public class VTGraphicsModeClientWriter implements Runnable
 	{
 		try
 		{
+			menuBar.receiveRemoteClipboardContents();
 			connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_CLIPBOARD_TRANSFER_RECEIVE_REQUEST);
 			connection.getGraphicsControlDataOutputStream().flush();
 			session.getSession().getClipboardTransferTask().joinThread();
 			session.getSession().getClipboardTransferTask().setSending(false);
 			session.getSession().getClipboardTransferTask().startThread();
-			menuBar.receiveRemoteClipboardContents();
 		}
 		catch (Throwable e)
 		{
@@ -1667,6 +1667,31 @@ public class VTGraphicsModeClientWriter implements Runnable
 	public void setRefreshArea(Rectangle area)
 	{
 		remoteInterface.setRefreshArea(area);
+	}
+	
+	public void increaseCaptureInterval()
+	{
+		menuBar.increaseCaptureInterval();
+	}
+	
+	public void decreaseCaptureInterval()
+	{
+		menuBar.decreaseCaptureInterval();
+	}
+	
+	public void decreaseColorQuality()
+	{
+		menuBar.decreaseColorQuality();
+	}
+	
+	public void increaseColorQuality()
+	{
+		menuBar.increaseColorQuality();
+	}
+	
+	public boolean isClipboardControlEnabled()
+	{
+		return menuBar.isClipBoardControlEnabled();
 	}
 	
 	private void updateRemoteGraphics()

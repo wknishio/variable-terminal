@@ -3,6 +3,7 @@ package org.vate.client.graphicsmode.options;
 import java.awt.CheckboxMenuItem;
 import java.awt.Menu;
 import java.awt.MenuItem;
+import java.awt.event.ItemEvent;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
@@ -241,6 +242,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 			option.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuScreenCaptureIntervalOptionsListener(writer, option, screenCaptureInterval));
 			this.refreshIntervalMenu.add(option);
 		}
+		
 		this.scaledCaptureFactorMenu.add(increaseCaptureFactorMenu);
 		this.scaledCaptureFactorMenu.add(decreaseCaptureFactorMenu);
 		this.scaledCaptureFactorMenu.add(resetCaptureFactorMenu);
@@ -525,6 +527,120 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 			imageCodingPNGOption.setState(false);
 			imageCodingJPGOption.setState(false);
 			// imageCodingGIFOption.setState(false);
+		}
+	}
+	
+	public void increaseCaptureInterval()
+	{
+		CheckboxMenuItem current = null;
+		CheckboxMenuItem disable = null;
+		for (Entry<Integer, CheckboxMenuItem> captureIntervalOption : captureIntervalOptions.entrySet())
+		{
+			current = captureIntervalOption.getValue();
+			if (disable != null)
+			{
+				disable.setState(false);
+				current.setState(true);
+				ItemEvent event = new ItemEvent(current, ItemEvent.ITEM_STATE_CHANGED, current.getLabel(), ItemEvent.SELECTED);
+				current.getItemListeners()[0].itemStateChanged(event);
+				return;
+			}
+			if (current.getState())
+			{
+				disable = current;
+			}
+		}
+	}
+	
+	public void decreaseCaptureInterval()
+	{
+		CheckboxMenuItem current = null;
+		CheckboxMenuItem disable = null;
+		CheckboxMenuItem previous = null;
+		CheckboxMenuItem enable = null;
+		for (Entry<Integer, CheckboxMenuItem> captureIntervalOption : captureIntervalOptions.entrySet())
+		{
+			previous = current;
+			current = captureIntervalOption.getValue();
+			if (current.getState())
+			{
+				enable = previous;
+				disable = current;
+				break;
+			}
+		}
+		if (enable != null)
+		{
+			disable.setState(false);
+			enable.setState(true);
+			ItemEvent event = new ItemEvent(enable, ItemEvent.ITEM_STATE_CHANGED, enable.getLabel(), ItemEvent.SELECTED);
+			enable.getItemListeners()[0].itemStateChanged(event);
+		}
+	}
+	
+	public void decreaseColorQuality()
+	{
+		CheckboxMenuItem enable = null;
+		CheckboxMenuItem disable = null;
+		if (lowColorOption.getState())
+		{
+			disable = lowColorOption;
+			enable = worstColorOption;
+		}
+		if (mediumColorOption.getState())
+		{
+			disable = mediumColorOption;
+			enable = lowColorOption;
+		}
+		if (highColorOption.getState())
+		{
+			disable = highColorOption;
+			enable = mediumColorOption;
+		}
+		if (bestColorOption.getState())
+		{
+			disable = bestColorOption;
+			enable = highColorOption;
+		}
+		if (enable != null)
+		{
+			disable.setState(false);
+			enable.setState(true);
+			ItemEvent event = new ItemEvent(enable, ItemEvent.ITEM_STATE_CHANGED, enable.getLabel(), ItemEvent.SELECTED);
+			enable.getItemListeners()[0].itemStateChanged(event);
+		}
+	}
+	
+	public void increaseColorQuality()
+	{
+		CheckboxMenuItem enable = null;
+		CheckboxMenuItem disable = null;
+		if (worstColorOption.getState())
+		{
+			disable = worstColorOption;
+			enable = lowColorOption;
+		}
+		if (lowColorOption.getState())
+		{
+			disable = lowColorOption;
+			enable = mediumColorOption;
+		}
+		if (mediumColorOption.getState())
+		{
+			disable = mediumColorOption;
+			enable = highColorOption;
+		}
+		if (highColorOption.getState())
+		{
+			disable = highColorOption;
+			enable = bestColorOption;
+		}
+		if (enable != null)
+		{
+			disable.setState(false);
+			enable.setState(true);
+			ItemEvent event = new ItemEvent(enable, ItemEvent.ITEM_STATE_CHANGED, enable.getLabel(), ItemEvent.SELECTED);
+			enable.getItemListeners()[0].itemStateChanged(event);
 		}
 	}
 }

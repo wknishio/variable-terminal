@@ -33,6 +33,7 @@ Changes since 1.4.2:
 * Added shortcut control+shift+insert to reset scale in *VTGRAPHICSLINK
 * Added shortcut control+shift+home to use previous device in *VTGRAPHICSLINK
 * Added shortcut control+shift+end to use next device in *VTGRAPHICSLINK
+* Added 10 keyboard shorcuts to *VTGRAPHICSLINK
 * Added tips for *VTGRAPHICSLINK interface keyboard shortcuts
 * Modified AES 128 bit encryption transformation to CTR instead of CBC
 * Added command *VTAUDIOMIXERS to list available audio mixers

@@ -179,6 +179,52 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
 		{
 			writer.nextDevice();
 		}
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_1))
+		{
+			writer.increaseCaptureInterval();
+		}
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_2))
+		{
+			writer.decreaseCaptureInterval();
+		}
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_3))
+		{
+			writer.decreaseColorQuality();
+		}
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_4))
+		{
+			writer.increaseColorQuality();
+		}
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_5))
+		{
+			writer.decreaseDrawPointerSize();
+		}
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_6))
+		{
+			writer.increaseDrawPointerSize();
+		}
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_7))
+		{
+			writer.normalizeDrawPointerSize();
+		}
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_8))
+		{
+			writer.toggleDrawPointer();
+		}
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_9))
+		{
+			if (writer.isClipboardControlEnabled())
+			{
+				writer.sendClipboardContents();
+			}
+		}
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_0))
+		{
+			if (writer.isClipboardControlEnabled())
+			{
+				writer.receiveClipboardContents();
+			}
+		}
 		// else if (pressedKeys.contains(KeyEvent.VK_CONTROL)
 		// && pressedKeys.contains(KeyEvent.VK_SHIFT)
 		// && (event.getKeyCode() == KeyEvent.VK_3

@@ -31,15 +31,25 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
 		this.add(controlMenu);
 		
 		keyboardShortcutsMenu = new Menu("Shortcuts");
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Alt : Toggle remote control"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Space : Toggle interface refresh"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Backspace : Toggle menu bar"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Enter : Toggle full screen mode"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+PageDown : Decrease image scale"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+PageUp : Increase image scale"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Insert : Reset image scale"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Home : Use previous display device"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+End : Use next display device"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Alt : Toggle Remote Control"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Space : Toggle Interface Refresh"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Backspace : Toggle Menu Bar"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Enter : Toggle Full Screen Mode"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+PageDown : Decrease Image Scale"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+PageUp : Increase Image Scale"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Insert : Reset Image Scale"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Home : Use Previous Display Device"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+End : Use Next Display Device"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+1 : Increase Capture Interval"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+2 : Decrease Capture Interval"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+3 : Decrease Color Quality"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+4 : Increase Color Quality"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+5 : Decrease Remote Pointer Size"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+6 : Increase Remote Pointer Size"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+7 : Normalize Remote Pointer Size"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+8 : Toggle Remote Pointer"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+9 : Send Local Clipboard"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+0 : Receive Lemote Clipboard"));
 		
 		this.add(keyboardShortcutsMenu);
 		keyboardShortcutsMenu.setEnabled(true);
@@ -169,5 +179,30 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
 	public void setImageCoding(int imageCoding)
 	{
 		viewMenu.setImageCoding(imageCoding);
+	}
+	
+	public void increaseCaptureInterval()
+	{
+		viewMenu.increaseCaptureInterval();
+	}
+	
+	public void decreaseCaptureInterval()
+	{
+		viewMenu.decreaseCaptureInterval();
+	}
+	
+	public void decreaseColorQuality()
+	{
+		viewMenu.decreaseColorQuality();
+	}
+	
+	public void increaseColorQuality()
+	{
+		viewMenu.increaseColorQuality();
+	}
+	
+	public boolean isClipBoardControlEnabled()
+	{
+		return controlMenu.isClipboardControlEnabled();
 	}
 }

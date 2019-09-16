@@ -163,10 +163,10 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
 		this.modifierKeyUpControlMenu.add(upAltGr);
 		this.modifierKeyUpControlMenu.add(upWin);
 		this.modifierKeyUpControlMenu.add(upMeta);
-		this.clipboardControlMenu.add(clearLocalClipboardContents);
-		this.clipboardControlMenu.add(clearRemoteClipboardContents);
 		this.clipboardControlMenu.add(sendLocalClipboardContents);
 		this.clipboardControlMenu.add(receiveRemoteClipboardContents);
+		this.clipboardControlMenu.add(clearLocalClipboardContents);
+		this.clipboardControlMenu.add(clearRemoteClipboardContents);
 		this.clipboardControlMenu.add(cancelClipboardContentsTransfer);
 		
 		this.add(remoteControlMenu);
@@ -260,5 +260,10 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
 			needFocusOption.setState(false);
 			needVisibleOption.setState(true);
 		}
+	}
+	
+	public boolean isClipboardControlEnabled()
+	{
+		return !interruptedOption.getState() && clearLocalClipboardContents.isEnabled();
 	}
 }
