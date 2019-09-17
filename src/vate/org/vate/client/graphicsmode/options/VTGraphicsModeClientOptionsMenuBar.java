@@ -40,8 +40,8 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Insert : Reset Image Scale"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Home : Use Previous Display Device"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+End : Use Next Display Device"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+1 : Increase Capture Interval"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+2 : Decrease Capture Interval"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+1 : Decrease Refresh Rate"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+2 : Increase Refresh Rate"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+3 : Decrease Color Quality"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+4 : Increase Color Quality"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+5 : Decrease Remote Pointer Size"));
