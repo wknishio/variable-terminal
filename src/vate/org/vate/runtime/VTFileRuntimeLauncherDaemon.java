@@ -2,6 +2,7 @@ package org.vate.runtime;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 
 import org.vate.nativeutils.VTNativeUtils;
 
@@ -40,6 +41,29 @@ public class VTFileRuntimeLauncherDaemon
 			{
 				
 			}
+		}
+		try
+		{
+			BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+			String command = "";
+			while (command != null)
+			{
+				command = input.readLine();
+				final String currentCommand = command;
+				Thread commandThread = new Thread()
+				{
+					public void run()
+					{
+						command(currentCommand);
+					}
+				};
+				commandThread.start();
+			}
+			input.close();
+		}
+		catch (Throwable t)
+		{
+			
 		}
 	}
 	
