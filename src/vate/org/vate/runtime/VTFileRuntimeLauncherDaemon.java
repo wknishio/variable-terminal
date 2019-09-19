@@ -18,9 +18,10 @@ public class VTFileRuntimeLauncherDaemon
 		}
 		for (String file : files)
 		{
+			BufferedReader input = null;
 			try
 			{
-				BufferedReader input = new BufferedReader(new FileReader(file));
+				input = new BufferedReader(new FileReader(file));
 				String command = "";
 				while (command != null)
 				{
@@ -41,10 +42,25 @@ public class VTFileRuntimeLauncherDaemon
 			{
 				
 			}
+			finally
+			{
+				if (input != null)
+				{
+					try
+					{
+						input.close();
+					}
+					catch (Throwable t)
+					{
+						
+					}
+				}
+			}
 		}
+		BufferedReader input = null;
 		try
 		{
-			BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+			input = new BufferedReader(new InputStreamReader(System.in));
 			String command = "";
 			while (command != null)
 			{
@@ -64,6 +80,20 @@ public class VTFileRuntimeLauncherDaemon
 		catch (Throwable t)
 		{
 			
+		}
+		finally
+		{
+			if (input != null)
+			{
+				try
+				{
+					input.close();
+				}
+				catch (Throwable t)
+				{
+					
+				}
+			}
 		}
 	}
 	
