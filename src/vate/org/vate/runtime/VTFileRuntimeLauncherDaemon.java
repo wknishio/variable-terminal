@@ -10,40 +10,60 @@ public class VTFileRuntimeLauncherDaemon
 	public static void main(String[] args) throws Exception
 	{
 		VTNativeUtils.detachConsole();
-		String file = "launcher.txt";
+		String[] files = {"launcher.txt"};
 		if (args.length > 0)
 		{
-			file = args[0];
+			files = args;
 		}
-		BufferedReader input = new BufferedReader(new FileReader(file));
-		String command = input.readLine();
-		Thread.sleep(2000);
+		for (String file : files)
+		{
+			try
+			{
+				BufferedReader input = new BufferedReader(new FileReader(file));
+				String command = "";
+				while (command != null)
+				{
+					command = input.readLine();
+					final String currentCommand = command;
+					Thread commandThread = new Thread()
+					{
+						public void run()
+						{
+							command(currentCommand);
+						}
+					};
+					commandThread.start();
+				}
+				input.close();
+			}
+			catch (Throwable t)
+			{
+				
+			}
+		}
+	}
+	
+	public static void command(String command)
+	{
 		try
 		{
+			Thread.sleep(2000);
 			Process process = Runtime.getRuntime().exec(command);
-			VTRuntimeProcessInputRedirector in = new VTRuntimeProcessInputRedirector(process.getInputStream(), System.out);
-			VTRuntimeProcessInputRedirector err = new VTRuntimeProcessInputRedirector(process.getErrorStream(), System.err);
-			VTRuntimeProcessTextRedirector out = new VTRuntimeProcessTextRedirector(input, process.getOutputStream());
+			VTLauncherOutputConsumer in = new VTLauncherOutputConsumer(process.getInputStream());
+			VTLauncherOutputConsumer err = new VTLauncherOutputConsumer(process.getErrorStream());
 			Thread tin = new Thread(in);
 			Thread terr = new Thread(err);
-			Thread tout = new Thread(out);
 			tin.start();
 			terr.start();
-			tout.start();
 			process.waitFor();
 			in.close();
 			err.close();
-			out.close();
 			tin.join();
 			terr.join();
-			tout.join();
-			input.close();
 		}
 		catch (Throwable e)
 		{
 			
 		}
-		
-		System.exit(0);
 	}
 }

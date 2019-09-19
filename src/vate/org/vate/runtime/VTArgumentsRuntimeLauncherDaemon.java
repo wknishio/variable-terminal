@@ -9,9 +9,9 @@ public class VTArgumentsRuntimeLauncherDaemon
 	{
 		VTStandardConsoleInterruptibleInputStreamByte stream = new VTStandardConsoleInterruptibleInputStreamByte();
 		VTNativeUtils.detachConsole();
-		Thread.sleep(2000);
 		try
 		{
+			Thread.sleep(2000);
 			Process process = Runtime.getRuntime().exec(args);
 			VTRuntimeProcessInputRedirector in = new VTRuntimeProcessInputRedirector(process.getInputStream(), System.out);
 			VTRuntimeProcessInputRedirector err = new VTRuntimeProcessInputRedirector(process.getErrorStream(), System.err);

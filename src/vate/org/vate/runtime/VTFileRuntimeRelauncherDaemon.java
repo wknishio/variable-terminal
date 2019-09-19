@@ -1,6 +1,5 @@
 package org.vate.runtime;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
@@ -11,48 +10,63 @@ public class VTFileRuntimeRelauncherDaemon
 	public static void main(String[] args) throws Exception
 	{
 		VTNativeUtils.detachConsole();
-		String file = "relauncher.txt";
+		String[] files = {"relauncher.txt"};
 		if (args.length > 0)
 		{
-			file = args[0];
+			files = args;
 		}
-		try
+		for (String file : files)
 		{
-			BufferedReader input = new BufferedReader(new FileReader(file));
-			String command = input.readLine();
-			while (true)
+			try
 			{
-				Thread.sleep(2000);
-				try
+				BufferedReader input = new BufferedReader(new FileReader(file));
+				String command = "";
+				while (command != null)
 				{
-					Process process = Runtime.getRuntime().exec(command);
-					VTLauncherOutputConsumer in = new VTLauncherOutputConsumer(new BufferedInputStream(process.getInputStream()));
-					VTLauncherOutputConsumer err = new VTLauncherOutputConsumer(new BufferedInputStream(process.getErrorStream()));
-					VTRuntimeProcessTextRedirector out = new VTRuntimeProcessTextRedirector(input, process.getOutputStream());
-					Thread tin = new Thread(in);
-					Thread terr = new Thread(err);
-					Thread tout = new Thread(out);
-					tin.start();
-					terr.start();
-					tout.start();
-					process.waitFor();
-					in.close();
-					err.close();
-					out.close();
-					tin.join();
-					terr.join();
-					tout.join();
-					input.close();
+					command = input.readLine();
+					final String currentCommand = command;
+					Thread commandThread = new Thread()
+					{
+						public void run()
+						{
+							command(currentCommand);
+						}
+					};
+					commandThread.start();
 				}
-				catch (Throwable e)
-				{
-					
-				}
+				input.close();
+			}
+			catch (Throwable t)
+			{
+				
 			}
 		}
-		finally
+	}
+	
+	public static void command(String command)
+	{
+		while (true)
 		{
-			System.exit(0);
+			try
+			{
+				Thread.sleep(2000);
+				Process process = Runtime.getRuntime().exec(command);
+				VTLauncherOutputConsumer in = new VTLauncherOutputConsumer(process.getInputStream());
+				VTLauncherOutputConsumer err = new VTLauncherOutputConsumer(process.getErrorStream());
+				Thread tin = new Thread(in);
+				Thread terr = new Thread(err);
+				tin.start();
+				terr.start();
+				process.waitFor();
+				in.close();
+				err.close();
+				tin.join();
+				terr.join();
+			}
+			catch (Throwable e)
+			{
+				
+			}
 		}
 	}
 }

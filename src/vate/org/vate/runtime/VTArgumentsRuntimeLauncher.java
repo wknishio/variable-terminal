@@ -7,9 +7,9 @@ public class VTArgumentsRuntimeLauncher
 	public static void main(String[] args) throws Exception
 	{
 		VTStandardConsoleInterruptibleInputStreamByte stream = new VTStandardConsoleInterruptibleInputStreamByte();
-		Thread.sleep(2000);
 		try
 		{
+			Thread.sleep(2000);
 			Process process = Runtime.getRuntime().exec(args);
 			VTRuntimeProcessInputRedirector in = new VTRuntimeProcessInputRedirector(process.getInputStream(), System.out);
 			VTRuntimeProcessInputRedirector err = new VTRuntimeProcessInputRedirector(process.getErrorStream(), System.err);
