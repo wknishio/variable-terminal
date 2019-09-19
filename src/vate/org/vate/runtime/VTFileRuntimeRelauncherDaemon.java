@@ -16,11 +16,10 @@ public class VTFileRuntimeRelauncherDaemon
 		{
 			file = args[0];
 		}
-		BufferedReader input = new BufferedReader(new FileReader(file));
-		String command = input.readLine();
-		input.close();
 		try
 		{
+			BufferedReader input = new BufferedReader(new FileReader(file));
+			String command = input.readLine();
 			while (true)
 			{
 				Thread.sleep(2000);
@@ -29,15 +28,21 @@ public class VTFileRuntimeRelauncherDaemon
 					Process process = Runtime.getRuntime().exec(command);
 					VTLauncherOutputConsumer in = new VTLauncherOutputConsumer(new BufferedInputStream(process.getInputStream()));
 					VTLauncherOutputConsumer err = new VTLauncherOutputConsumer(new BufferedInputStream(process.getErrorStream()));
+					VTRuntimeProcessTextRedirector out = new VTRuntimeProcessTextRedirector(input, process.getOutputStream());
 					Thread tin = new Thread(in);
 					Thread terr = new Thread(err);
+					Thread tout = new Thread(out);
 					tin.start();
 					terr.start();
+					tout.start();
 					process.waitFor();
 					in.close();
 					err.close();
+					out.close();
 					tin.join();
 					terr.join();
+					tout.join();
+					input.close();
 				}
 				catch (Throwable e)
 				{

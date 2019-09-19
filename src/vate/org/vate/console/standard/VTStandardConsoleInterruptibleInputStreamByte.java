@@ -1,20 +1,19 @@
 package org.vate.console.standard;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.vate.stream.pipe.VTPipedInputStream;
 import org.vate.stream.pipe.VTPipedOutputStream;
 
-public class VTStandardConsoleInterruptibleInputStream extends InputStream
+public class VTStandardConsoleInterruptibleInputStreamByte extends VTStandardConsoleInterruptibleInputStream
 {
 	private VTPipedInputStream inputPipe;
 	private VTPipedOutputStream outputPipe;
 	// private VTByteArrayOutputStream lineBuffer;
-	private VTStandardConsoleInterruptibleReader reader;
+	private VTStandardConsoleInterruptibleReaderByte reader;
 	private volatile Thread currentThread;
 	
-	public VTStandardConsoleInterruptibleInputStream()
+	public VTStandardConsoleInterruptibleInputStreamByte()
 	{
 		try
 		{
@@ -27,7 +26,7 @@ public class VTStandardConsoleInterruptibleInputStream extends InputStream
 			
 		}
 		// this.lineBuffer = new VTByteArrayOutputStream();
-		this.reader = new VTStandardConsoleInterruptibleReader();
+		this.reader = new VTStandardConsoleInterruptibleReaderByte();
 		// Thread readerThread = new Thread(reader,
 		// "VTStandardTerminalInterruptibleReader");
 		// readerThread.setDaemon(true);
@@ -77,12 +76,12 @@ public class VTStandardConsoleInterruptibleInputStream extends InputStream
 		{
 			try
 			{
-				String line = null;
-				while (line == null || line.length() == 0)
+				byte[] line = null;
+				while (line == null || line.length == 0)
 				{
 					line = reader.read();
 				}
-				outputPipe.write(line.getBytes("UTF-8"));
+				outputPipe.write(line);
 				outputPipe.flush();
 			}
 			catch (InterruptedException e)
@@ -110,6 +109,7 @@ public class VTStandardConsoleInterruptibleInputStream extends InputStream
 	
 	public void close() throws IOException
 	{
+		interruptRead();
 		// unclosable!
 	}
 }

@@ -88,8 +88,11 @@ public class VTStandardConsoleInterruptibleInputStreamNative extends VTStandardC
 			{
 				throw new IOException(e.getMessage());
 			}
+			finally
+			{
+				currentThread = null;
+			}
 		}
-		currentThread = null;
 		return inputPipe.read();
 	}
 	

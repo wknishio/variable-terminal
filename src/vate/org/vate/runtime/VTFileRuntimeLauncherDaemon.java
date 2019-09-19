@@ -3,10 +3,13 @@ package org.vate.runtime;
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-public class VTFileRuntimeLauncher
+import org.vate.nativeutils.VTNativeUtils;
+
+public class VTFileRuntimeLauncherDaemon
 {
 	public static void main(String[] args) throws Exception
 	{
+		VTNativeUtils.detachConsole();
 		String file = "launcher.txt";
 		if (args.length > 0)
 		{
