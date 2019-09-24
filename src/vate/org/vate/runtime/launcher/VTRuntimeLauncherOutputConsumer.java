@@ -1,13 +1,13 @@
-package org.vate.runtime;
+package org.vate.runtime.launcher;
 
 import java.io.InputStream;
 
-public class VTLauncherOutputConsumer implements Runnable
+public class VTRuntimeLauncherOutputConsumer implements Runnable
 {
 	private final byte[] buffer = new byte[1024 * 8];
 	private InputStream in;
 	
-	public VTLauncherOutputConsumer(InputStream in)
+	public VTRuntimeLauncherOutputConsumer(InputStream in)
 	{
 		this.in = in;
 	}

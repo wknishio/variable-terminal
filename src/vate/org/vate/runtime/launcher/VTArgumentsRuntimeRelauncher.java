@@ -1,14 +1,13 @@
-package org.vate.runtime;
+package org.vate.runtime.launcher;
 
 import org.vate.console.standard.VTStandardConsoleInterruptibleInputStreamByte;
-import org.vate.nativeutils.VTNativeUtils;
+import org.vate.runtime.VTRuntimeProcessInputRedirector;
 
-public class VTArgumentsRuntimeRelauncherDaemon
+public class VTArgumentsRuntimeRelauncher
 {
 	public static void main(String[] args) throws Exception
 	{
 		VTStandardConsoleInterruptibleInputStreamByte stream = new VTStandardConsoleInterruptibleInputStreamByte();
-		VTNativeUtils.detachConsole();
 		try
 		{
 			while (true)

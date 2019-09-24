@@ -218,7 +218,7 @@
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
 				<attribute name="Created-By" value="${java.version}"/>
-				<attribute name="Main-Class" value="org.vate.runtime.VTArgumentsRuntimeLauncher"/>
+				<attribute name="Main-Class" value="org.vate.runtime.launcher.VTArgumentsRuntimeLauncher"/>
 				<attribute name="Class-Path" value="."/>
 			</manifest>
 			<fileset dir="build" excludes="org/vate/client/**,org/vate/startup/**,org/vate/server/**"/>
@@ -229,7 +229,7 @@
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
 				<attribute name="Created-By" value="${java.version}"/>
-				<attribute name="Main-Class" value="org.vate.runtime.VTArgumentsRuntimeRelauncher"/>
+				<attribute name="Main-Class" value="org.vate.runtime.launcher.VTArgumentsRuntimeRelauncher"/>
 				<attribute name="Class-Path" value="."/>
 			</manifest>
 			<fileset dir="build" excludes="org/vate/client/**,org/vate/startup/**,org/vate/server/**"/>
@@ -240,7 +240,7 @@
 						<attribute name="Built-By" value="William Kendi Nishio"/>
 						<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
 						<attribute name="Created-By" value="${java.version}"/>
-						<attribute name="Main-Class" value="org.vate.runtime.VTArgumentsRuntimeLauncherDaemon"/>
+						<attribute name="Main-Class" value="org.vate.runtime.launcher.VTArgumentsRuntimeLauncherDaemon"/>
 						<attribute name="Class-Path" value="."/>
 					</manifest>
 					<fileset dir="build" excludes="org/vate/client/**,org/vate/startup/**,org/vate/server/**"/>
@@ -251,7 +251,7 @@
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
 				<attribute name="Created-By" value="${java.version}"/>
-				<attribute name="Main-Class" value="org.vate.runtime.VTArgumentsRuntimeRelauncherDaemon"/>
+				<attribute name="Main-Class" value="org.vate.runtime.launcher.VTArgumentsRuntimeRelauncherDaemon"/>
 				<attribute name="Class-Path" value="."/>
 			</manifest>
 			<fileset dir="build" excludes="org/vate/client/**,org/vate/startup/**,org/vate/server/**"/>
@@ -262,7 +262,7 @@
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
 				<attribute name="Created-By" value="${java.version}"/>
-				<attribute name="Main-Class" value="org.vate.runtime.VTFileRuntimeLauncher"/>
+				<attribute name="Main-Class" value="org.vate.runtime.launcher.VTFileRuntimeLauncher"/>
 				<attribute name="Class-Path" value="."/>
 			</manifest>
 			<fileset dir="build" excludes="org/vate/client/**,org/vate/startup/**,org/vate/server/**"/>
@@ -273,7 +273,7 @@
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
 				<attribute name="Created-By" value="${java.version}"/>
-				<attribute name="Main-Class" value="org.vate.runtime.VTFileRuntimeRelauncher"/>
+				<attribute name="Main-Class" value="org.vate.runtime.launcher.VTFileRuntimeRelauncher"/>
 				<attribute name="Class-Path" value="."/>
 			</manifest>
 			<fileset dir="build" excludes="org/vate/client/**,org/vate/startup/**,org/vate/server/**"/>
@@ -284,7 +284,7 @@
 						<attribute name="Built-By" value="William Kendi Nishio"/>
 						<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
 						<attribute name="Created-By" value="${java.version}"/>
-						<attribute name="Main-Class" value="org.vate.runtime.VTFileRuntimeLauncherDaemon"/>
+						<attribute name="Main-Class" value="org.vate.runtime.launcher.VTFileRuntimeLauncherDaemon"/>
 						<attribute name="Class-Path" value="."/>
 					</manifest>
 					<fileset dir="build" excludes="org/vate/client/**,org/vate/startup/**,org/vate/server/**"/>
@@ -295,7 +295,7 @@
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
 				<attribute name="Created-By" value="${java.version}"/>
-				<attribute name="Main-Class" value="org.vate.runtime.VTFileRuntimeRelauncherDaemon"/>
+				<attribute name="Main-Class" value="org.vate.runtime.launcher.VTFileRuntimeRelauncherDaemon"/>
 				<attribute name="Class-Path" value="."/>
 			</manifest>
 			<fileset dir="build" excludes="org/vate/client/**,org/vate/startup/**,org/vate/server/**"/>

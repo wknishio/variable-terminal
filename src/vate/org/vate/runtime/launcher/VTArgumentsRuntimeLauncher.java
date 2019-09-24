@@ -1,6 +1,7 @@
-package org.vate.runtime;
+package org.vate.runtime.launcher;
 
 import org.vate.console.standard.VTStandardConsoleInterruptibleInputStreamByte;
+import org.vate.runtime.VTRuntimeProcessInputRedirector;
 
 public class VTArgumentsRuntimeLauncher
 {
