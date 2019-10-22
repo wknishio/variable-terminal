@@ -46,8 +46,8 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+4 : Increase Color Quality"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+5 : Decrease Remote Pointer Size"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+6 : Increase Remote Pointer Size"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+7 : Normalize Remote Pointer Size"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+8 : Toggle Remote Pointer"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+7 : Decrease Font Size"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+8 : Increase Font Size"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+9 : Send Local Clipboard"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+0 : Receive Lemote Clipboard"));
 		

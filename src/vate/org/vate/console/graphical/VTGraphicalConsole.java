@@ -18,6 +18,7 @@ import org.vate.console.graphical.listener.VTGraphicalConsoleKeyListener;
 import org.vate.console.graphical.listener.VTGraphicalConsoleMouseListener;
 import org.vate.console.graphical.listener.VTGraphicalConsoleWindowListener;
 import org.vate.console.graphical.menu.VTGraphicalConsolePopupMenu;
+import org.vate.graphics.font.VTGlobalTextStyleManager;
 
 public class VTGraphicalConsole implements VTConsoleImplementation
 {
@@ -216,6 +217,8 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		textArea.setText(replacedBlankArea);
 		screenBuffer.append(trueBlankArea);
 		textArea.setCaretPosition(0);
+		VTGlobalTextStyleManager.registerWindow(frame);
+		VTGlobalTextStyleManager.registerMonospacedComponent(textArea);
 		frame.pack();
 		frame.toFront();
 		// reader = new VTGraphicalConsoleReader();

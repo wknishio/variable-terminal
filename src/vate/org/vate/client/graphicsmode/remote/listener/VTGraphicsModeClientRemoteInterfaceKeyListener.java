@@ -8,6 +8,7 @@ import java.util.Set;
 
 import org.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 import org.vate.graphics.control.VTAWTControlEvent;
+import org.vate.graphics.font.VTGlobalTextStyleManager;
 
 public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListener
 {
@@ -205,11 +206,13 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
 		}
 		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_7))
 		{
-			writer.normalizeDrawPointerSize();
+			//writer.normalizeDrawPointerSize();
+			VTGlobalTextStyleManager.decreaseFontSize();
 		}
 		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_8))
 		{
-			writer.toggleDrawPointer();
+			//writer.toggleDrawPointer();
+			VTGlobalTextStyleManager.increaseFontSize();
 		}
 		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_9))
 		{

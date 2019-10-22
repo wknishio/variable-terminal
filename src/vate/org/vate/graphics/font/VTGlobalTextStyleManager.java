@@ -261,7 +261,10 @@ public class VTGlobalTextStyleManager
 				{
 					Frame frame = (Frame) window;
 					MenuBar menubar = frame.getMenuBar();
-					menubar.setFont(windowFont);
+					if (menubar != null)
+					{
+						menubar.setFont(windowFont);
+					}
 					frame.setMenuBar(null);
 					frame.setMenuBar(menubar);
 					if (window instanceof VTGraphicalConsoleFrame)

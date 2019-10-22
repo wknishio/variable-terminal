@@ -24,8 +24,6 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
 		this.popupMenu = popupMenu;
 		this.scrolled = false;
 		this.systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		VTGlobalTextStyleManager.registerWindow(VTGraphicalConsole.getFrame());
-		VTGlobalTextStyleManager.registerMonospacedComponent(VTGraphicalConsole.getTextArea());
 	}
 	
 	public void toggleScrollMode()
