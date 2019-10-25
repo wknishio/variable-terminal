@@ -51,14 +51,14 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
 			{
 				if (parsed.length >= 3 && (parsed[2].length() > 0))
 				{
-					String[] shell = new String[parsed.length - 2];
-					for (int i = 0; i < shell.length; i++)
+					String[] nextShell = new String[parsed.length - 2];
+					for (int i = 0; i < nextShell.length; i++)
 					{
-						shell[i] = parsed[i + 1];
+						nextShell[i] = parsed[i + 2];
 					}
-					connection.getResultWriter().write("\nVT>Defining external shell to: [" + Arrays.toString(shell) + "]");
+					connection.getResultWriter().write("\nVT>Defining external shell to: " + Arrays.toString(nextShell) + "");
 					connection.getResultWriter().flush();
-					session.setShellBuilder(shell, null, null);
+					session.setShellBuilder(nextShell, null, null);
 					session.restartShell();
 				}
 				else

@@ -54,7 +54,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
         ;
     }
 
-    private final List<String> lines;
+    protected final List<String> lines;
     private final Style style;
 
     private TerminalPosition caretPosition;
@@ -455,6 +455,15 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
         }
         String line = lines.get(caretPosition.getRow());
         switch(keyStroke.getKeyType()) {
+//        	case Tab:
+//        		if(maxLineLength == -1 || maxLineLength > line.length() + 1) {
+//                    line = line.substring(0, caretPosition.getColumn()) + keyStroke.getCharacter() + line.substring(caretPosition.getColumn());
+//                    if(validated(line)) {
+//                        lines.set(caretPosition.getRow(), line);
+//                        caretPosition = caretPosition.withRelativeColumn(1);
+//                    }
+//                }
+//                return Result.HANDLED;
             case Character:
                 if(maxLineLength == -1 || maxLineLength > line.length() + 1) {
                     line = line.substring(0, caretPosition.getColumn()) + keyStroke.getCharacter() + line.substring(caretPosition.getColumn());
@@ -598,7 +607,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
         return validationPattern == null || line.isEmpty() || validationPattern.matcher(line).matches();
     }
 
-    private Result handleKeyStrokeReadOnly(KeyStroke keyStroke) {
+    protected Result handleKeyStrokeReadOnly(KeyStroke keyStroke) {
         switch (keyStroke.getKeyType()) {
             case ArrowLeft:
                 if(getRenderer().getViewTopLeft().getColumn() == 0 && horizontalFocusSwitching) {

@@ -87,19 +87,19 @@ public class AWTTerminalFontConfiguration {
         int fontSize = getFontSize();
         return Collections.unmodifiableList(Arrays.asList(
                 new Font("DejaVu Sans Mono", Font.PLAIN, fontSize),
-                new Font("Monospaced", Font.PLAIN, fontSize),
+                new Font("Monospaced", Font.PLAIN, fontSize)));
                 //Below, these should be redundant (Monospaced is supposed to catch-all)
                 // but Java 6 seems to have issues with finding monospaced fonts sometimes
-                new Font("Ubuntu Mono", Font.PLAIN, fontSize),
-                new Font("FreeMono", Font.PLAIN, fontSize),
-                new Font("Liberation Mono", Font.PLAIN, fontSize),
-                new Font("VL Gothic Regular", Font.PLAIN, fontSize),
-                new Font("NanumGothic", Font.PLAIN, fontSize),
-                new Font("WenQuanYi Zen Hei Mono", Font.PLAIN, fontSize),
-                new Font("WenQuanYi Zen Hei", Font.PLAIN, fontSize),
-                new Font("AR PL UMing TW", Font.PLAIN, fontSize),
-                new Font("AR PL UMing HK", Font.PLAIN, fontSize),
-                new Font("AR PL UMing CN", Font.PLAIN, fontSize)));
+                //new Font("Ubuntu Mono", Font.PLAIN, fontSize),
+                //new Font("FreeMono", Font.PLAIN, fontSize),
+                //new Font("Liberation Mono", Font.PLAIN, fontSize),
+                //new Font("VL Gothic Regular", Font.PLAIN, fontSize),
+                //new Font("NanumGothic", Font.PLAIN, fontSize),
+                //new Font("WenQuanYi Zen Hei Mono", Font.PLAIN, fontSize),
+                //new Font("WenQuanYi Zen Hei", Font.PLAIN, fontSize),
+                //new Font("AR PL UMing TW", Font.PLAIN, fontSize),
+                //new Font("AR PL UMing HK", Font.PLAIN, fontSize),
+                //new Font("AR PL UMing CN", Font.PLAIN, fontSize)));
     }
 
     private static List<Font> getDefaultFonts() {
@@ -110,7 +110,7 @@ public class AWTTerminalFontConfiguration {
 
     // Here we check the screen resolution on the primary monitor and make a guess at if it's high-DPI or not
     private static int getFontSize() {
-        int baseFontSize = 14;
+        int baseFontSize = 12;
         String[] javaVersion = System.getProperty("java.version", "1").split("\\.");
         if (System.getProperty("os.name", "").startsWith("Windows") && Integer.parseInt(javaVersion[0]) >= 9) {
             // Java 9+ reports itself as HiDPI-unaware on Windows and will be scaled by the OS
