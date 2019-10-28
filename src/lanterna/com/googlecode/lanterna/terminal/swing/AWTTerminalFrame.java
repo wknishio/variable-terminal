@@ -113,9 +113,28 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         this.awtTerminal = awtTerminal;
         this.autoCloseTriggers = EnumSet.copyOf(Arrays.asList(autoCloseTrigger));
         this.disposed = false;
-
-        setLayout(new BorderLayout());
+        BorderLayout layout = new BorderLayout();
+        layout.setHgap(1);
+        layout.setVgap(1);
+        
+        setLayout(layout);
+        
+        //ScrollPane scroll = new ScrollPane(ScrollPane.SCROLLBARS_NEVER);
+        
+        //scroll.setLayout(new BorderLayout());
+        //scroll.add(awtTerminal, BorderLayout.CENTER);
+        //scroll.add(awtTerminal);
+        //Dimension size = awtTerminal.getPreferredSize();
+        //Insets insets = scroll.getInsets();
+        //size.width += insets.left;
+        //size.width += insets.right;
+        //size.height += insets.bottom;
+        //size.height += insets.top;
+        //scroll.setPreferredSize(size);
+        //add(scroll, BorderLayout.CENTER);
+        
         add(awtTerminal, BorderLayout.CENTER);
+        
         setBackground(Color.BLACK); //This will reduce white flicker when resizing the window
         pack();
 

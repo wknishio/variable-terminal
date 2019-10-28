@@ -33,6 +33,7 @@ public class VTGraphicalConsoleFrame extends Frame
 				
 			}
 		}
+		setIgnoreRepaint(true);
 	}
 	
 	public void pack()

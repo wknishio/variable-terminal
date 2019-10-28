@@ -42,7 +42,7 @@ public class SwingTerminalFontConfiguration extends AWTTerminalFontConfiguration
      */
     @SuppressWarnings("WeakerAccess")
     public static SwingTerminalFontConfiguration newInstance(Font... fontsInOrderOfPriority) {
-        return new SwingTerminalFontConfiguration(true, BoldMode.EVERYTHING_BUT_SYMBOLS, fontsInOrderOfPriority);
+        return new SwingTerminalFontConfiguration(false, BoldMode.EVERYTHING_BUT_SYMBOLS, fontsInOrderOfPriority);
     }
 
     /**

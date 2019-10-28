@@ -78,6 +78,8 @@ public class TerminalPosition implements Comparable<TerminalPosition> {
         if(row == 0 && this.column == 0) {
             return TOP_LEFT_CORNER;
         }
+        //this.row = row;
+        //return this;
         return new TerminalPosition(this.column, row);
     }
 
@@ -91,6 +93,8 @@ public class TerminalPosition implements Comparable<TerminalPosition> {
         if(column == 0 && this.row == 0) {
             return TOP_LEFT_CORNER;
         }
+        //this.column = column;
+        //return this;
         return new TerminalPosition(column, this.row);
     }
 

@@ -1,5 +1,6 @@
 package org.vate.console.graphical;
 
+import java.awt.Graphics;
 import java.awt.TextArea;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -21,6 +22,7 @@ public class VTGraphicalConsoleTextArea extends TextArea
 	{
 		super(text, rows, columns, scrollbars);
 		systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		setIgnoreRepaint(true);
 	}
 	
 	public void copyText()
@@ -79,4 +81,24 @@ public class VTGraphicalConsoleTextArea extends TextArea
 			
 		}
 	}
+	
+//	public void repaint()
+//	{
+//		
+//	}
+//	
+//	public void update(Graphics g)
+//	{
+//		this.paint
+//	}
+//	
+//	public void paint()
+//	{
+//		
+//	}
+//	
+//	public void paint(Graphics g)
+//	{
+//		
+//    }
 }

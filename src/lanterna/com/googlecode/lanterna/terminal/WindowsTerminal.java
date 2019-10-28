@@ -112,6 +112,7 @@ public class WindowsTerminal extends UnixLikeTerminal {
 
     
     public void registerTerminalResizeListener(Runnable runnable) throws IOException {
+    	//TODO: implement terminal resize listener
         // Not implemented yet
     }
 

@@ -46,7 +46,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	private static volatile boolean flushInterrupted;
 	private static volatile boolean frameIconified;
 	private static volatile boolean replaceActivated;
-	private static boolean changedTerminal;
+	private static volatile boolean changedTerminal;
 	// private static volatile int foregroundColor;
 	// private static volatile int backgroundColor;
 	// private static final int replaceCharacterCountLimit = maxCharacterCount -
@@ -86,8 +86,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	private static VTGraphicalConsoleMouseListener mouseListener;
 	private static VTGraphicalConsoleDropTargetListener dropTargetListener;
 	private static VTGraphicalConsoleWindowListener windowListener;
-	private static volatile boolean remote = false;
-	
+	private static volatile boolean remote = false;	
 	// private static VTGraphicalConsoleReader reader;
 	// private static VTGraphicalConsoleWriter writer;
 	
@@ -221,6 +220,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		VTGlobalTextStyleManager.registerMonospacedComponent(textArea);
 		frame.pack();
 		frame.toFront();
+		//frame.createBufferStrategy(3);
 		// reader = new VTGraphicalConsoleReader();
 		// writer = new VTGraphicalConsoleWriter();
 	}
@@ -1260,7 +1260,6 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	public static void flushBuffered(boolean updateCaretPosition)
 	{
 		// System.out.println("flushBuffered!");
-		// boolean changed = false;
 		changedTerminal = false;
 		try
 		{
@@ -1395,6 +1394,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 				{
 					updateCaretPosition();
 				}
+				
 			}
 		}
 		finally
@@ -1405,6 +1405,17 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 				outputSynchronizer.notify();
 			}
 		}
+//		if (!isFlushInterrupted() && changedTerminal)
+//		{
+//			try
+//			{
+//				Thread.sleep(20);
+//			}
+//			catch (Throwable e)
+//			{
+//				
+//			}
+//		}
 		// System.out.println("lineCount: " + (lineCount));
 		// System.out.println("charactersInLineCount: " +
 		// charactersInLineCount);

@@ -153,12 +153,7 @@ public class VTGraphicalConsoleReader
 							currentLineBuffer.deleteCharAt(currentLineBuffer.length() - 1 - VTGraphicalConsole.getCaretRecoilCount());
 							// VTGraphicalConsole.setCaretRecoilCount(VTGraphicalConsole.getCaretRecoilCount()
 							// - 1);
-							if (!VTGraphicalConsole.isFlushInterrupted()/* &&
-																			 * VTGraphicalConsole.
-																			 * getCaretRecoilCount(
-																			 * )
-																			 * >
-																			 * 0 */)
+							if (!VTGraphicalConsole.isFlushInterrupted())
 							{
 								VTGraphicalConsole.setCaretRecoilCount(0);
 								if (checkReplace)
@@ -244,12 +239,7 @@ public class VTGraphicalConsoleReader
 							currentLineBuffer.deleteCharAt(currentLineBuffer.length() - 1 - VTGraphicalConsole.getCaretRecoilCount());
 							// VTGraphicalConsole.setCaretRecoilCount(VTGraphicalConsole.getCaretRecoilCount()
 							// - 1);
-							if (!VTGraphicalConsole.isFlushInterrupted()/* &&
-																			 * VTGraphicalConsole.
-																			 * getCaretRecoilCount(
-																			 * )
-																			 * >
-																			 * 0 */)
+							if (!VTGraphicalConsole.isFlushInterrupted())
 							{
 								VTGraphicalConsole.setCaretRecoilCount(0);
 								if (checkReplace)

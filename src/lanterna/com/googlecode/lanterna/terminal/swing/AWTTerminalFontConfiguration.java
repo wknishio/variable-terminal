@@ -195,7 +195,7 @@ public class AWTTerminalFontConfiguration {
      */
     @SuppressWarnings("WeakerAccess")
     public static AWTTerminalFontConfiguration newInstance(Font... fontsInOrderOfPriority) {
-        return new AWTTerminalFontConfiguration(true, BoldMode.EVERYTHING_BUT_SYMBOLS, fontsInOrderOfPriority);
+        return new AWTTerminalFontConfiguration(false, BoldMode.EVERYTHING_BUT_SYMBOLS, fontsInOrderOfPriority);
     }
 
     private final List<Font> fontPriority;
@@ -298,7 +298,7 @@ public class AWTTerminalFontConfiguration {
         FontRenderContext frc = new FontRenderContext(
                 null,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_OFF,
-                RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT);
+                RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
         Rectangle2D iBounds = font.getStringBounds("i", frc);
         Rectangle2D mBounds = font.getStringBounds("W", frc);
         return iBounds.getWidth() == mBounds.getWidth();
@@ -317,7 +317,7 @@ public class AWTTerminalFontConfiguration {
                 null,
                 useAntiAliasing ?
                         RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF,
-                RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT);
+                RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
     }
 
     

@@ -55,17 +55,17 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
     }
 
     protected final List<String> lines;
-    private final Style style;
+    protected final Style style;
 
-    private TerminalPosition caretPosition;
+    protected TerminalPosition caretPosition;
     private boolean caretWarp;
     private boolean readOnly;
     private boolean horizontalFocusSwitching;
     private boolean verticalFocusSwitching;
     private final int maxLineLength;
-    private int longestRow;
+    public int longestRow;
     private Character mask;
-    private Pattern validationPattern;
+    public Pattern validationPattern;
 
     /**
      * Default constructor, this creates a single-line {@code TextBox} of size 10 which is initially empty
@@ -434,6 +434,23 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
     public synchronized String getLine(int index) {
         return lines.get(index);
     }
+    
+    public synchronized String getLastLine() {
+        return lines.get(lines.size() - 1);
+    }
+    
+    public synchronized void setLastLine(String line)
+    {
+    	lines.set(lines.size() - 1, line);
+    }
+    
+    public synchronized void removeLastLine()
+	{
+    	if (getLineCount() >= 1)
+		{
+    		lines.remove(getLineCount() - 1);
+		}
+	}
 
     /**
      * Returns the number of lines currently in this TextBox. For single-line TextBox:es, this will always return 1.
@@ -465,7 +482,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
 //                }
 //                return Result.HANDLED;
             case Character:
-                if(maxLineLength == -1 || maxLineLength > line.length() + 1) {
+                if(getMaxLineLength() == -1 || getMaxLineLength() > line.length() + 1) {
                     line = line.substring(0, caretPosition.getColumn()) + keyStroke.getCharacter() + line.substring(caretPosition.getColumn());
                     if(validated(line)) {
                         lines.set(caretPosition.getRow(), line);
@@ -603,7 +620,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
         return super.handleKeyStroke(keyStroke);
     }
 
-    private boolean validated(String line) {
+    protected boolean validated(String line) {
         return validationPattern == null || line.isEmpty() || validationPattern.matcher(line).matches();
     }
 
@@ -650,7 +667,11 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
         return super.handleKeyStroke(keyStroke);
     }
 
-    /**
+    public int getMaxLineLength() {
+		return maxLineLength;
+	}
+
+	/**
      * Helper interface that doesn't add any new methods but makes coding new text box renderers a little bit more clear
      */
     public interface TextBoxRenderer extends InteractableRenderer<TextBox> {
