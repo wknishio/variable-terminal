@@ -50,6 +50,11 @@ public class AWTTerminal extends Panel implements IOSafeTerminal {
     public AWTTerminal() {
         this(new TerminalScrollController.Null());
     }
+    
+    public AWTTerminalImplementation getTerminalImplementation()
+    {
+    	return this.terminalImplementation;
+    }
 
 
     /**

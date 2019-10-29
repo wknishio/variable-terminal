@@ -30,7 +30,7 @@ import java.util.Collections;
  * AWT implementation of {@link GraphicalTerminalImplementation} that contains all the overrides for AWT
  * Created by martin on 08/02/16.
  */
-class AWTTerminalImplementation extends GraphicalTerminalImplementation {
+public class AWTTerminalImplementation extends GraphicalTerminalImplementation {
     private final Component component;
     private final AWTTerminalFontConfiguration fontConfiguration;
 
@@ -88,12 +88,12 @@ class AWTTerminalImplementation extends GraphicalTerminalImplementation {
     }
 
     
-    protected int getFontHeight() {
+    public int getFontHeight() {
         return fontConfiguration.getFontHeight();
     }
 
     
-    protected int getFontWidth() {
+    public int getFontWidth() {
         return fontConfiguration.getFontWidth();
     }
 

@@ -434,23 +434,6 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
     public synchronized String getLine(int index) {
         return lines.get(index);
     }
-    
-    public synchronized String getLastLine() {
-        return lines.get(lines.size() - 1);
-    }
-    
-    public synchronized void setLastLine(String line)
-    {
-    	lines.set(lines.size() - 1, line);
-    }
-    
-    public synchronized void removeLastLine()
-	{
-    	if (getLineCount() >= 1)
-		{
-    		lines.remove(getLineCount() - 1);
-		}
-	}
 
     /**
      * Returns the number of lines currently in this TextBox. For single-line TextBox:es, this will always return 1.

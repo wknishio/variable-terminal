@@ -1,14 +1,19 @@
 package org.vate.console.lanterna;
 
+import java.io.IOException;
+
+import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TerminalTextUtils;
 import com.googlecode.lanterna.gui2.TextBox;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.Terminal;
+
 public class VTLanternaOutputTextBox extends TextBox
 {
 	private volatile int maximumlines = 0;
 	private int hiddenColumn = 0;
+	private int carriageColumn = -1;
 	private Terminal terminal;
 	//private int hiddenRow;
 	
@@ -23,6 +28,11 @@ public class VTLanternaOutputTextBox extends TextBox
 		this.terminal = terminal;
 	}
 	
+	public void setCarriageColumn(int column)
+	{
+		this.carriageColumn = column;
+	}
+	
 	public void setHiddenColumn(int column)
 	{
 		this.hiddenColumn = column;
@@ -32,15 +42,20 @@ public class VTLanternaOutputTextBox extends TextBox
 	{
 		return hiddenColumn;
 	}
-		
-	public String getLastLine()
+	
+	public TerminalPosition getCursorLocation()
 	{
-		return lines.get(getLineCount() - 1);
+		return getRenderer().getCursorLocation(this);
 	}
 	
-	public void setLastLine(String line)
+	public TerminalPosition getTopLeft()
 	{
-		lines.set(getLineCount() - 1, line);
+		return getRenderer().getViewTopLeft();
+	}
+				
+	public void setViewportToLastLine()
+	{
+		getRenderer().setViewTopLeft(TerminalPosition.TOP_LEFT_CORNER.withRow(getLineCount() - getSize().getRows()));
 	}
 	
 	//TODO:must support \n line feed
@@ -49,6 +64,101 @@ public class VTLanternaOutputTextBox extends TextBox
 	//TODO:must support \d delete 127
 	//TODO:must support bell
 	//TODO:must support clear
+	
+	private String outputToLastLine(String data)
+	{
+		String lastLine = getLastLine();
+		StringBuilder builder = new StringBuilder(lastLine);
+		
+		int maxWidth = 80;
+		
+		try
+		{
+			maxWidth = terminal.getTerminalSize().getColumns();
+		}
+		catch (Throwable e)
+		{
+			
+		}
+		
+		int remainingWidth = (carriageColumn >= 0 ? (maxWidth * 2) - carriageColumn : maxWidth) - lastLine.length();
+		
+		if (carriageColumn >= 0)
+		{
+			if (data.length() <= remainingWidth)
+			{
+				lastLine = builder.replace(carriageColumn, carriageColumn + data.length(), data).toString();
+				carriageColumn += data.length();
+				if (carriageColumn >= lastLine.length())
+				{
+					carriageColumn = -1;
+				}
+				setLastLine(lastLine);
+				if (longestRow < lastLine.length())
+				{
+					longestRow = lastLine.length();
+				}
+			}
+			else
+			{
+				String appended = data.substring(0, remainingWidth);
+				String remainder = data.substring(remainingWidth);
+				lastLine = builder.replace(carriageColumn, carriageColumn + appended.length(), appended).toString();
+				carriageColumn += appended.length();
+				if (carriageColumn >= lastLine.length())
+				{
+					carriageColumn = -1;
+				}
+				setLastLine(lastLine);
+				if (longestRow < lastLine.length())
+				{
+					longestRow = lastLine.length();
+				}
+				addLine("");
+				return remainder;
+			}
+		}
+		else
+		{
+			if (data.length() <= remainingWidth)
+			{
+				lastLine = builder.append(data).toString();
+				setLastLine(lastLine);
+				if (longestRow < lastLine.length())
+				{
+					longestRow = lastLine.length();
+				}
+			}
+			else
+			{
+				String appended = data.substring(0, remainingWidth);
+				String remainder = data.substring(remainingWidth);
+				lastLine = builder.append(appended).toString();
+				setLastLine(lastLine);
+				if (longestRow < lastLine.length())
+				{
+					longestRow = lastLine.length();
+				}
+				addLine("");
+				return remainder;
+			}
+		}
+		return null;
+	}
+	
+	//break string in multiple lines if needed
+	private void outputMultiline(String data)
+	{
+		if (data.length() == 0)
+		{
+			return;
+		}
+		String remainder = data;
+		while ((remainder = outputToLastLine(remainder)) != null)
+		{
+			
+		}
+	}
 	
 	public synchronized void output(char data)
 	{
@@ -63,102 +173,123 @@ public class VTLanternaOutputTextBox extends TextBox
 			{
 				data = ' ';
 			}
-			String lastLine = getLastLine();
-			lastLine += data;
-			setLastLine(lastLine);
+			outputToLastLine(String.valueOf(data));
 		}
 		else
 		{
 			addLine("");
 		}
-		invalidate();
 		if (getLineCount() > 0)
 		{
 			setCaretPosition(getLineCount(), 0);
+			setViewportToLastLine();
 		}
+		invalidate();
 	}
 	
-	public synchronized void output(char[] data, int off, int len)
+	public synchronized void output(char[] buff, int off, int len)
 	{
-		String stringData = new String(data, off, len);
-		stringData = stringData.replace('\t', ' ');
-		//System.out.println("data:[" + data + "]");
-		String lastLine = getLastLine();
+		String data = new String(buff, off, len);
 		
-		boolean addline = stringData.indexOf('\n') >= 0;
+		data = data.replace('\t', ' ');
 		
-		String[] newlines = stringData.split("\n");
-		
+		String[] newlines = data.split("\\n", -1);
+				
 		if (newlines.length > 0)
 		{
-			lastLine += newlines[0];
-			setLastLine(lastLine);
+			outputMultiline(newlines[0]);
 			if (newlines.length > 1)
 			{
 				for (int i = 1; i < newlines.length; i++)
 				{
-					addLine(newlines[i].replaceAll("\\p{Cntrl}", ""));
+					addLine("");
+					outputMultiline(newlines[i]);
+					
 				}
 			}
-			else if (addline)
-			{
-				addLine("");
-			}
-			invalidate();
 			if (getLineCount() > 0)
 			{
 				setCaretPosition(getLineCount(), 0);
+				setViewportToLastLine();
 			}
-		}
-		else if (addline)
-		{
-			addLine("");
+			invalidate();
 		}
 	}
 
 	public synchronized void output(String data)
 	{
 		data = data.replace('\t', ' ');
-		//System.out.println("data:[" + data + "]");
-		String lastLine = getLastLine();
-		
-		boolean addline = data.indexOf('\n') >= 0;
-		
-		String[] newlines = data.split("\n");
-		
+				
+		String[] newlines = data.split("\\n", -1);
+				
 		if (newlines.length > 0)
 		{
-			lastLine += newlines[0];
-			setLastLine(lastLine);
+			outputMultiline(newlines[0]);
 			if (newlines.length > 1)
 			{
 				for (int i = 1; i < newlines.length; i++)
 				{
-					addLine(newlines[i].replaceAll("\\p{Cntrl}", ""));
+					addLine("");
+					outputMultiline(newlines[i]);
 				}
 			}
-			else if (addline)
-			{
-				addLine("");
-			}
-			invalidate();
 			if (getLineCount() > 0)
 			{
 				setCaretPosition(getLineCount(), 0);
+				setViewportToLastLine();
+			}
+			invalidate();
+		}
+	}
+	
+	private void removeLastLine()
+	{
+		if (getLineCount() >= 1)
+		{
+			String removed = lines.remove(0);
+			if (removed.length() > 80 && removed.length() >= longestRow)
+			{
+				longestRow = 80;
+				try
+				{
+					longestRow = terminal.getTerminalSize().getColumns();
+				}
+				catch (Throwable e)
+				{
+					
+				}
+				for (String line : lines)
+				{
+					if (line.length() > longestRow)
+					{
+						longestRow = line.length();
+					}
+				}
 			}
 		}
-		else if (addline)
+	}
+	
+	public synchronized String getLastLine()
+	{
+		if (getLineCount() > 0)
 		{
-			addLine("");
+			return lines.get(lines.size() - 1);
 		}
+		return null;
+	}
+	
+	public synchronized void setLastLine(String line)
+	{
+		lines.set(lines.size() - 1, line);
 	}
 	
 	public synchronized TextBox addLine(String data)
 	{
 		if (getLineCount() > 0 && maximumlines > 0 && getLineCount() == maximumlines)
 		{
-			lines.remove(0);
+			removeLastLine();
 		}
+		carriageColumn = -1;
 		if (lines.size() == 1 && lines.get(0).length() == 0)
 		{
 			output(data);
@@ -169,6 +300,7 @@ public class VTLanternaOutputTextBox extends TextBox
 		if (getLineCount() > 1)
 		{
 			setCaretPosition(getLineCount(), 0);
+			setViewportToLastLine();
 		}
 		return result;
 	}
@@ -210,18 +342,15 @@ public class VTLanternaOutputTextBox extends TextBox
 	{
 		//String line = lines.get(caretPosition.getRow());
 		int column = hiddenColumn;
-		if (getMaxLineLength() == -1 || getMaxLineLength() > inputBuffer.length() + 1)
+		if (replace && column < inputBuffer.length())
 		{
-			if (replace && column < inputBuffer.length())
-			{
-				inputBuffer.setCharAt(column, data);
-			}
-			else
-			{
-				inputBuffer.insert(column, data);
-			}
-			hiddenColumn++;
-        }
+			inputBuffer.setCharAt(column, data);
+		}
+		else
+		{
+			inputBuffer.insert(column, data);
+		}
+		hiddenColumn++;
 		return inputBuffer;
 	}
 	

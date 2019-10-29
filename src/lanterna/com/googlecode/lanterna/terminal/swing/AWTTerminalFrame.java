@@ -141,6 +141,11 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         //Put input focus on the terminal component by default
         awtTerminal.requestFocusInWindow();
     }
+    
+    public AWTTerminal getTerminal()
+    {
+    	return this.awtTerminal;
+    }
 
     /**
      * Returns the auto-close triggers used by the AWTTerminalFrame

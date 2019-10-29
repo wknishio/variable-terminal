@@ -57,6 +57,11 @@ public class ScrollingAWTTerminal extends Container implements IOSafeTerminal {
                 SwingTerminalFontConfiguration.getDefault(),
                 TerminalEmulatorColorConfiguration.getDefault());
     }
+    
+    public AWTTerminal getTerminal()
+    {
+    	return this.awtTerminal;
+    }
 
     /**
      * Creates a new {@code ScrollingAWTTerminal} with customizable settings.
