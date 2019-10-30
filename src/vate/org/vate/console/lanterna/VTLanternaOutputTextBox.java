@@ -6,6 +6,7 @@ import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TerminalTextUtils;
 import com.googlecode.lanterna.gui2.TextBox;
+import com.googlecode.lanterna.gui2.Interactable.Result;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.Terminal;
 
@@ -51,6 +52,62 @@ public class VTLanternaOutputTextBox extends TextBox
 	public TerminalPosition getTopLeft()
 	{
 		return getRenderer().getViewTopLeft();
+	}
+	
+	public void scrollup()
+	{
+		if (isReadOnly())
+		{
+			 if(getRenderer().getViewTopLeft().getRow() == 0)
+			 {
+                 return;
+             }
+			 else
+			 {
+				 getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeRow(-1));
+			 }
+			 return;
+		}
+		String line = lines.get(caretPosition.getRow());
+		if(caretPosition.getRow() > 0) {
+            int trueColumnPosition = TerminalTextUtils.getColumnIndex(lines.get(caretPosition.getRow()), caretPosition.getColumn());
+            caretPosition = caretPosition.withRelativeRow(-1);
+            line = lines.get(caretPosition.getRow());
+            if(trueColumnPosition > TerminalTextUtils.getColumnWidth(line)) {
+                caretPosition = caretPosition.withColumn(line.length());
+            }
+            else {
+                caretPosition = caretPosition.withColumn(TerminalTextUtils.getStringCharacterIndex(line, trueColumnPosition));
+            }
+        }
+	}
+	
+	public void scrolldown()
+	{
+		if (isReadOnly())
+		{
+			if(getRenderer().getViewTopLeft().getRow() + getSize().getRows() == lines.size())
+			{
+				return;
+            }
+			else
+			{
+				getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeRow(1));
+			}
+			return;
+		}
+		String line = lines.get(caretPosition.getRow());
+		if(caretPosition.getRow() < lines.size() - 1) {
+            int trueColumnPosition = TerminalTextUtils.getColumnIndex(lines.get(caretPosition.getRow()), caretPosition.getColumn());
+            caretPosition = caretPosition.withRelativeRow(1);
+            line = lines.get(caretPosition.getRow());
+            if(trueColumnPosition > TerminalTextUtils.getColumnWidth(line)) {
+                caretPosition = caretPosition.withColumn(line.length());
+            }
+            else {
+                caretPosition = caretPosition.withColumn(TerminalTextUtils.getStringCharacterIndex(line, trueColumnPosition));
+            }
+        }
 	}
 				
 	public void setViewportToLastLine()

@@ -41,6 +41,7 @@ import com.googlecode.lanterna.input.MouseActionType;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
+import com.googlecode.lanterna.terminal.MouseCaptureMode;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.swing.AWTTerminal;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
@@ -87,7 +88,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		DefaultTerminalFactory factory = new DefaultTerminalFactory();
 		factory.setForceAWTOverSwing(true);
 		//factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
-		//factory.setMouseCaptureMode(MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE);
+		factory.setMouseCaptureMode(MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE);
 		factory.setPreferTerminalEmulator(true);
 		//factory.setForceTextTerminal(true);
         final Terminal terminal = factory.createTerminal();
@@ -115,14 +116,6 @@ public class VTLanternaConsole implements VTConsoleImplementation
         	{        		
 				public void mouseClicked(MouseEvent e)
 				{
-					//System.out.println("mouseClicked:" + e.getX() + "," + e.getY());
-					
-					//System.out.println("MouseAction.CLICK_DOWN:" + pos.getColumn() + "," + pos.getRow());
-					//awtterminal.getTerminalImplementation().setCursorPosition(pos);
-				}
-
-				public void mousePressed(MouseEvent e)
-				{
 					int x = e.getX();
 					int y = e.getY();
 					int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
@@ -131,38 +124,33 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					MouseAction mouseAction = new MouseAction(MouseActionType.CLICK_DOWN, e.getButton(), pos);
 					awtterminal.addInput(mouseAction);
 				}
-
+				public void mousePressed(MouseEvent e)
+				{
+					
+				}
 				public void mouseReleased(MouseEvent e)
 				{
-					int x = e.getX();
-					int y = e.getY();
-					int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
-					int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
-					TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
-					MouseAction mouseAction = new MouseAction(MouseActionType.CLICK_RELEASE, e.getButton(), pos);
-					awtterminal.addInput(mouseAction);
+					
 				}
-
 				public void mouseEntered(MouseEvent e)
 				{
-					// TODO Auto-generated method stub
-				}
 
+				}
 				public void mouseExited(MouseEvent e) 
 				{
-					// TODO Auto-generated method stub
+					
 				}
         	});
         	awtterminal.addMouseMotionListener(new MouseMotionListener()
         	{
 				public void mouseDragged(MouseEvent e)
 				{
-					// TODO Auto-generated method stub
+					
 				}
 
 				public void mouseMoved(MouseEvent e)
 				{
-					// TODO Auto-generated method stub
+					
 				}
         	});
         	awtterminal.addMouseWheelListener(new MouseWheelListener()
@@ -175,11 +163,25 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
 					TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
 					int rotation = e.getWheelRotation();
-					//System.out.println("rotation:" + rotation);
 					MouseAction mouseAction = new MouseAction(rotation > 0 ? MouseActionType.SCROLL_DOWN : MouseActionType.SCROLL_UP, e.getButton(), pos);
 					awtterminal.addInput(mouseAction);
 				}
         	});
+//        	awtframe.addMouseWheelListener(new MouseWheelListener()
+//        	{
+//				public void mouseWheelMoved(MouseWheelEvent e)
+//				{
+//					outputBox.takeFocus();
+//					int x = e.getX();
+//					int y = e.getY();
+//					int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
+//					int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
+//					TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
+//					int rotation = e.getWheelRotation();
+//					MouseAction mouseAction = new MouseAction(rotation > 0 ? MouseActionType.SCROLL_DOWN : MouseActionType.SCROLL_UP, e.getButton(), pos);
+//					awtterminal.addInput(mouseAction);
+//				}
+//        	});
         }
         else
         {
@@ -189,10 +191,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
 //		awtframe = new Frame();
 //		awtframe.add(terminal, java.awt.BorderLayout.CENTER);
 //		if (awtframe != null)
-//        {
-//        	awtframe.setVisible(true);
+//      {
+//      	awtframe.setVisible(true);
 //        	awtframe.pack();
-//        }
+//      }
 		
         terminal.setBackgroundColor(TextColor.ANSI.BLACK);
         terminal.setForegroundColor(TextColor.ANSI.GREEN);
@@ -206,7 +208,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 
         //outputBox.setReadOnly(true);
         outputBox.setTerminal(terminal);
-        //outputBox.setCaretWarp(true);
+        outputBox.setCaretWarp(true);
         ((DefaultTextBoxRenderer) outputBox.getRenderer()).setHideScrollBars(true);
         
         commandBox.setTerminal(terminal);
@@ -219,14 +221,32 @@ public class VTLanternaConsole implements VTConsoleImplementation
 			{
 				if (keyStroke.getKeyType() == KeyType.MouseEvent)
 				{
-					outputBox.takeFocus();
 					MouseAction mouse = (MouseAction)keyStroke;
 					TerminalPosition topLeft = outputBox.getTopLeft();
 					
-					outputBox.setCaretPosition(topLeft.getRow() + mouse.getPosition().getRow(), topLeft.getColumn() + mouse.getPosition().getColumn());
-					outputBox.invalidate();
+					if (mouse.getActionType() == MouseActionType.CLICK_DOWN)
+					{
+						outputBox.takeFocus();					
+						outputBox.setCaretPosition(topLeft.getRow() + mouse.getPosition().getRow(), topLeft.getColumn() + mouse.getPosition().getColumn());
+						outputBox.invalidate();
+						return false;
+					}
 					
-					return false;
+					if (mouse.getActionType() == MouseActionType.SCROLL_UP)
+					{
+						outputBox.takeFocus();		
+						outputBox.scrollup();
+						outputBox.invalidate();
+						return false;
+					}
+					
+					if (mouse.getActionType() == MouseActionType.SCROLL_DOWN)
+					{
+						outputBox.takeFocus();
+						outputBox.scrolldown();
+						outputBox.invalidate();
+						return false;
+					}
 				}
 				if (keyStroke.getKeyType() == KeyType.Escape)
 				{
@@ -259,14 +279,36 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					MouseAction mouse = (MouseAction)keyStroke;
 					TerminalPosition topLeft = commandBox.getTopLeft();
 					
-					int max = commandBox.getLastLine().length();
-					int location = topLeft.getColumn();
-					int position = Math.min(location + mouse.getPosition().getColumn(), max);
 					
-					commandBox.takeFocus();
-					commandBox.setHiddenColumn(position);
-					commandBox.setCaretPosition(position);
-					commandBox.invalidate();
+					if (mouse.getActionType() == MouseActionType.CLICK_DOWN)
+					{
+						int max = commandBox.getLastLine().length();
+						int location = topLeft.getColumn();
+						int position = Math.min(location + mouse.getPosition().getColumn(), max);
+						
+						commandBox.takeFocus();
+						commandBox.setHiddenColumn(position);
+						commandBox.setCaretPosition(position);
+						commandBox.invalidate();
+						return false;
+					}
+					
+					if (mouse.getActionType() == MouseActionType.SCROLL_UP)
+					{
+						outputBox.takeFocus();
+						outputBox.scrollup();
+						outputBox.invalidate();
+						return false;
+					}
+					
+					if (mouse.getActionType() == MouseActionType.SCROLL_DOWN)
+					{
+						outputBox.takeFocus();
+						outputBox.scrolldown();
+						outputBox.invalidate();
+						return false;
+					}
+					
 					return false;
 				}
 				if (keyStroke.getKeyType() == KeyType.Enter)
@@ -275,12 +317,12 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					if (echoInput)
 					{
 						outputBox.output(command + "\n");
+						registerCurrentLine();
 					}
 					else
 					{
 						outputBox.output("\n");
 					}
-					registerCurrentLine();
 					currentLineBuffer.setLength(0);
 					commandBox.setHiddenColumn(0);
 					commandBox.setText("");
