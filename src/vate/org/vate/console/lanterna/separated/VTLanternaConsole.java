@@ -1,4 +1,4 @@
-package org.vate.console.lanterna;
+package org.vate.console.lanterna.separated;
 
 import java.awt.Frame;
 import java.awt.Toolkit;
@@ -279,7 +279,6 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					MouseAction mouse = (MouseAction)keyStroke;
 					TerminalPosition topLeft = commandBox.getTopLeft();
 					
-					
 					if (mouse.getActionType() == MouseActionType.CLICK_DOWN)
 					{
 						int max = commandBox.getLastLine().length();
@@ -369,8 +368,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				if (keyStroke.getKeyType() == KeyType.ArrowLeft
 				|| keyStroke.getKeyType() == KeyType.ArrowRight
 				|| keyStroke.getKeyType() == KeyType.Backspace
-				|| keyStroke.getKeyType() == KeyType.Delete
-				)
+				|| keyStroke.getKeyType() == KeyType.Delete)
 				{
 					commandBox.handleDataInput(currentLineBuffer, keyStroke.getKeyType());
 					if (!echoInput)

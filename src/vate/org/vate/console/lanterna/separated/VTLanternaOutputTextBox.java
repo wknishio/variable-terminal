@@ -1,4 +1,4 @@
-package org.vate.console.lanterna;
+package org.vate.console.lanterna.separated;
 
 import java.io.IOException;
 
