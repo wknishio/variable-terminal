@@ -63,6 +63,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	private static volatile int deleteLaterCharactersCount;
 	private static Object inputSynchronizer;
 	private static Object outputSynchronizer;
+	private static Object updateSynchronizer = new Object();
 	private static String trueBlankLine;
 	// private static String replacedBlankLine;
 	private static String trueBlankLineEnd;
@@ -87,6 +88,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	private static VTGraphicalConsoleDropTargetListener dropTargetListener;
 	private static VTGraphicalConsoleWindowListener windowListener;
 	private static volatile boolean remote = false;	
+	private static UpdateTask updateTask = new UpdateTask();
 	// private static VTGraphicalConsoleReader reader;
 	// private static VTGraphicalConsoleWriter writer;
 	
@@ -220,9 +222,85 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		VTGlobalTextStyleManager.registerMonospacedComponent(textArea);
 		frame.pack();
 		frame.toFront();
+		updateTask.start();
+		//updateTask.flush(true, 0, 0);
 		//frame.createBufferStrategy(3);
 		// reader = new VTGraphicalConsoleReader();
 		// writer = new VTGraphicalConsoleWriter();
+	}
+	
+	private static class UpdateTask implements Runnable
+	{
+		private volatile boolean running = true;
+		private volatile boolean updated = false;
+		private volatile boolean caret = false;
+		private volatile int start = 0;
+		private volatile int end = 0;
+		
+		public void start()
+		{
+			Thread newThread = new Thread(this);
+			newThread.start();
+		}
+		
+		@SuppressWarnings("unused")
+		public void stop()
+		{
+			synchronized (updateSynchronizer)
+			{
+				running = false;
+				updateSynchronizer.notifyAll();
+			}
+		}
+		
+		public void flush(boolean caret, int start, int end)
+		{
+			this.caret = caret;
+			//System.out.println("flush:" + caret);
+			synchronized (updateSynchronizer)
+			{
+				if (!updated)
+				{
+					this.start = Integer.MAX_VALUE;
+					this.end = 0;
+				}
+				this.updated = true;
+				if (start <= this.start)
+				{
+					this.start = start;
+				}
+				if (end >= this.end)
+				{
+					this.end = end;
+				}
+				updateSynchronizer.notifyAll();
+			}
+		}
+
+		public void run()
+		{
+			while (running)
+			{
+				try
+				{
+					synchronized (updateSynchronizer)
+					{
+						while (!updated)
+						{
+							updateSynchronizer.wait();
+						}
+						updated = false;
+					}
+					update(caret, start, end);
+					Thread.sleep(50);
+				}
+				catch (Throwable e)
+				{
+					
+				}
+			}
+		}
+		
 	}
 	
 	public synchronized static VTGraphicalConsole getInstance()
@@ -426,6 +504,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	
 	public static void updateCaretPosition()
 	{
+		//System.out.println("updateCaretPosition():" + Thread.currentThread().getStackTrace()[2]);
 		if (!isFlushInterrupted())
 		{
 			if (replaceActivated)
@@ -1257,10 +1336,27 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		output(c);
 	}
 	
-	public static void flushBuffered(boolean updateCaretPosition)
+	private static void update(boolean caret, int start, int end)
 	{
-		// System.out.println("flushBuffered!");
+		//System.out.println("update:" + caret);
+		//System.out.println("updateCaretPosition:" + updateCaretPosition);
+		if (end > 0)
+		{
+			String data = screenBuffer.substring(start, end).replace('\r', ' ').replace('\t', ' ').replace('\b', ' ').replace('\f', ' ');
+			textArea.replaceRange(data, start, end);
+			updateCaretPosition();
+		}
+		else if (caret)
+		{
+			updateCaretPosition();
+		}
+	}
+	
+	public static void flushBuffered(boolean caret)
+	{
 		changedTerminal = false;
+		int start = 0;
+		int end = 0;
 		try
 		{
 			synchronized (outputSynchronizer)
@@ -1287,20 +1383,12 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 						{
 							flushBuffer.append(" ");
 						}
-						textArea.replaceRange(flushBuffer.toString(), totalCharactersCount - overwriteCharactersCount, totalCharactersCount - overwriteCharactersCount + deleteLaterCharactersCount);
-						// screenBuffer.replace(totalCharactersCount -
-						// caretRecoilCount,
-						// totalCharactersCount - caretRecoilCount +
-						// deleteLaterCharactersCount,
-						// flushBuffer.toString());
-						// screenBuffer.replace(totalCharactersCount -
-						// overwriteCharactersCount,
-						// totalCharactersCount - overwriteCharactersCount +
-						// deleteLaterCharactersCount,
-						// flushBuffer.toString());
+						String flushBufferContents = flushBuffer.toString();
+						start = totalCharactersCount - overwriteCharactersCount;
+						end = totalCharactersCount - overwriteCharactersCount + deleteLaterCharactersCount;
+						screenBuffer.replace(start, end, flushBufferContents);
+						//textArea.replaceRange(flushBufferContents.replace('\r', ' ').replace('\t', ' ').replace('\b', ' ').replace('\f', ' '), totalCharactersCount - overwriteCharactersCount, totalCharactersCount - overwriteCharactersCount + deleteLaterCharactersCount);
 						flushBuffer.setLength(0);
-						// updateCaretPosition();
-						// changed = true;
 					}
 					deleteLaterCharactersCount = 0;
 					if (deletedLastLinesCount > 0)
@@ -1310,9 +1398,6 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 						{
 							flushBuffer.setLength(0);
 							flushBuffer.append(screenBuffer.substring(totalCharactersPerLine * deletedLastLinesCount));
-							// flushBuffer.append(textArea.getText().substring(totalCharactersPerLine
-							// *
-							// deletedLastLinesCount));
 							for (int i = 0; i < deletedLastLinesCount; i++)
 							{
 								flushBuffer.append(trueBlankLineEnd);
@@ -1327,9 +1412,10 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 								flushBuffer.setLength(maxCharactersCount);
 							}
 							String flushBufferContents = flushBuffer.toString();
-							textArea.replaceRange(flushBufferContents.replace('\r', ' ').replace('\t', ' ').replace('\b', ' ').replace('\f', ' '), Math.max(maxCharactersCount - flushBuffer.length(), 0), maxCharactersCount);
-							screenBuffer.replace(Math.max(maxCharactersCount - flushBuffer.length(), 0), maxCharactersCount, flushBufferContents);
-							// updateCaretPosition();
+							start = Math.max(maxCharactersCount - flushBuffer.length(), 0);
+							end = maxCharactersCount;
+							screenBuffer.replace(start, end, flushBufferContents);
+							//textArea.replaceRange(flushBufferContents.replace('\r', ' ').replace('\t', ' ').replace('\b', ' ').replace('\f', ' '), Math.max(maxCharactersCount - flushBuffer.length(), 0), maxCharactersCount);
 							flushBuffer.setLength(0);
 							outputBuffer.setLength(0);
 						}
@@ -1347,9 +1433,10 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 								flushBuffer.setLength(maxCharactersCount);
 							}
 							String flushBufferContents = flushBuffer.toString();
-							textArea.replaceRange(flushBufferContents.replace('\r', ' ').replace('\t', ' ').replace('\b', ' ').replace('\f', ' '), Math.max(maxCharactersCount - flushBuffer.length(), 0), maxCharactersCount);
-							screenBuffer.replace(Math.max(maxCharactersCount - flushBuffer.length(), 0), maxCharactersCount, flushBufferContents);
-							// updateCaretPosition();
+							start = Math.max(maxCharactersCount - flushBuffer.length(), 0);
+							end = maxCharactersCount;
+							screenBuffer.replace(start, end, flushBufferContents);
+							//textArea.replaceRange(flushBufferContents.replace('\r', ' ').replace('\t', ' ').replace('\b', ' ').replace('\f', ' '), Math.max(maxCharactersCount - flushBuffer.length(), 0), maxCharactersCount);
 							flushBuffer.setLength(0);
 							outputBuffer.setLength(0);
 						}
@@ -1365,36 +1452,22 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 								outputBuffer.setLength(maxCharactersCount);
 							}
 							String outputBufferContents = outputBuffer.toString();
-							// System.out.println("outputBufferContents: [" +
-							// outputBufferContents + "]");
-							textArea.replaceRange(outputBufferContents.replace('\r', ' ').replace('\t', ' ').replace('\b', ' ').replace('\f', ' '), Math.max(totalCharactersCount - overwriteCharactersCount - outputBuffer.length(), 0), totalCharactersCount - overwriteCharactersCount);
-							screenBuffer.replace(Math.max(totalCharactersCount - overwriteCharactersCount - outputBuffer.length(), 0), totalCharactersCount - overwriteCharactersCount, outputBufferContents);
-							// updateCaretPosition();
+							start = Math.max(totalCharactersCount - overwriteCharactersCount - outputBuffer.length(), 0);
+							end = totalCharactersCount - overwriteCharactersCount;
+							screenBuffer.replace(start, end, outputBufferContents);
+							//textArea.replaceRange(outputBufferContents.replace('\r', ' ').replace('\t', ' ').replace('\b', ' ').replace('\f', ' '), Math.max(totalCharactersCount - overwriteCharactersCount - outputBuffer.length(), 0), totalCharactersCount - overwriteCharactersCount);
 							outputBuffer.setLength(0);
 						}
-						/* else { updateCaretPosition(); } */
 					}
-					/* String outputBufferContents = outputBuffer.toString();
-					 * screenBuffer.replace(totalCharactersCount -
-					 * outputBuffer.length(), totalCharactersCount,
-					 * outputBufferContents); String screenBufferContents =
-					 * screenBuffer.toString().replace('\r', ' ').replace('\t',
-					 * ' ').replace('\b', ' ').replace('\f', ' ').substring(0,
-					 * totalCharactersCount + (maxCharactersCount %
-					 * totalCharactersCount));
-					 * textArea.replaceRange(screenBufferContents, 0,
-					 * screenBufferContents.length()); updateCaretPosition();
-					 * outputBuffer.setLength(0); */
-					/* if (deleteLaterCharactersCount > 0) {
-					 * updateCaretPosition(); } */
 				}
-				// System.out.println("textArea.getText().length():" +
-				// textArea.getText().length());
-				if (changedTerminal && updateCaretPosition)
+				if (changedTerminal)
 				{
-					updateCaretPosition();
+					updateTask.flush(caret, start, end);
 				}
-				
+				//if (changedTerminal && updateCaretPosition)
+				//{
+					//updateCaretPosition();
+				//}
 			}
 		}
 		finally
@@ -1405,25 +1478,125 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 				outputSynchronizer.notify();
 			}
 		}
-//		if (!isFlushInterrupted() && changedTerminal)
+	}
+	
+//	public static void flushBuffered(boolean updateCaretPosition)
+//	{
+//		updateTask.flush(updateCaretPosition);
+//	}
+	
+//	public static void flushBuffered(boolean updateCaretPosition)
+//	{
+//		changedTerminal = false;
+//		try
 //		{
-//			try
+//			synchronized (outputSynchronizer)
 //			{
-//				Thread.sleep(20);
-//			}
-//			catch (Throwable e)
-//			{
-//				
+//				while (updatingTerminal)
+//				{
+//					try
+//					{
+//						outputSynchronizer.wait();
+//					}
+//					catch (InterruptedException e)
+//					{
+//						
+//					}
+//				}
+//				updatingTerminal = true;
+//				if (!isFlushInterrupted())
+//				{
+//					if (deleteLaterCharactersCount > 0)
+//					{
+//						changedTerminal = true;
+//						flushBuffer.setLength(0);
+//						for (int i = 0; i < deleteLaterCharactersCount; i++)
+//						{
+//							flushBuffer.append(" ");
+//						}
+//						String flushBufferContents = flushBuffer.toString();
+//						screenBuffer.replace(totalCharactersCount - overwriteCharactersCount, totalCharactersCount - overwriteCharactersCount + deleteLaterCharactersCount, flushBufferContents);
+//						textArea.replaceRange(flushBufferContents.replace('\r', ' ').replace('\t', ' ').replace('\b', ' ').replace('\f', ' '), totalCharactersCount - overwriteCharactersCount, totalCharactersCount - overwriteCharactersCount + deleteLaterCharactersCount);
+//					}
+//					deleteLaterCharactersCount = 0;
+//					if (deletedLastLinesCount > 0)
+//					{
+//						changedTerminal = true;
+//						if (deletedLastLinesCount < maxLines)
+//						{
+//							flushBuffer.setLength(0);
+//							flushBuffer.append(screenBuffer.substring(totalCharactersPerLine * deletedLastLinesCount));
+//							for (int i = 0; i < deletedLastLinesCount; i++)
+//							{
+//								flushBuffer.append(trueBlankLineEnd);
+//							}
+//							if (outputBuffer.length() > maxCharactersCount)
+//							{
+//								outputBuffer.setLength(maxCharactersCount);
+//							}
+//							flushBuffer.replace(Math.max(totalCharactersCount - overwriteCharactersCount - outputBuffer.length(), 0), totalCharactersCount - overwriteCharactersCount, outputBuffer.toString());
+//							if (flushBuffer.length() > maxCharactersCount)
+//							{
+//								flushBuffer.setLength(maxCharactersCount);
+//							}
+//							String flushBufferContents = flushBuffer.toString();
+//							textArea.replaceRange(flushBufferContents.replace('\r', ' ').replace('\t', ' ').replace('\b', ' ').replace('\f', ' '), Math.max(maxCharactersCount - flushBuffer.length(), 0), maxCharactersCount);
+//							screenBuffer.replace(Math.max(maxCharactersCount - flushBuffer.length(), 0), maxCharactersCount, flushBufferContents);
+//							flushBuffer.setLength(0);
+//							outputBuffer.setLength(0);
+//						}
+//						else
+//						{
+//							flushBuffer.setLength(0);
+//							flushBuffer.append(trueBlankArea);
+//							if (outputBuffer.length() > maxCharactersCount)
+//							{
+//								outputBuffer.setLength(maxCharactersCount);
+//							}
+//							flushBuffer.replace(Math.max(totalCharactersCount - overwriteCharactersCount - outputBuffer.length(), 0), totalCharactersCount - overwriteCharactersCount, outputBuffer.toString());
+//							if (flushBuffer.length() > maxCharactersCount)
+//							{
+//								flushBuffer.setLength(maxCharactersCount);
+//							}
+//							String flushBufferContents = flushBuffer.toString();
+//							textArea.replaceRange(flushBufferContents.replace('\r', ' ').replace('\t', ' ').replace('\b', ' ').replace('\f', ' '), Math.max(maxCharactersCount - flushBuffer.length(), 0), maxCharactersCount);
+//							screenBuffer.replace(Math.max(maxCharactersCount - flushBuffer.length(), 0), maxCharactersCount, flushBufferContents);
+//							flushBuffer.setLength(0);
+//							outputBuffer.setLength(0);
+//						}
+//						deletedLastLinesCount = 0;
+//					}
+//					else
+//					{
+//						if (outputBuffer.length() > 0)
+//						{
+//							changedTerminal = true;
+//							if (outputBuffer.length() > maxCharactersCount)
+//							{
+//								outputBuffer.setLength(maxCharactersCount);
+//							}
+//							String outputBufferContents = outputBuffer.toString();
+//							textArea.replaceRange(outputBufferContents.replace('\r', ' ').replace('\t', ' ').replace('\b', ' ').replace('\f', ' '), Math.max(totalCharactersCount - overwriteCharactersCount - outputBuffer.length(), 0), totalCharactersCount - overwriteCharactersCount);
+//							screenBuffer.replace(Math.max(totalCharactersCount - overwriteCharactersCount - outputBuffer.length(), 0), totalCharactersCount - overwriteCharactersCount, outputBufferContents);
+//							outputBuffer.setLength(0);
+//						}
+//					}
+//				}
+//				if (changedTerminal && updateCaretPosition)
+//				{
+//					updateCaretPosition();
+//				}
 //			}
 //		}
-		// System.out.println("lineCount: " + (lineCount));
-		// System.out.println("charactersInLineCount: " +
-		// charactersInLineCount);
-		// System.out.println("totalCharactersCount: " + totalCharactersCount);
-		// System.out.println("overwriteCharactersCount: " +
-		// overwriteCharactersCount);
-		// System.out.println("text: " + textArea.getText().length());
-	}
+//		finally
+//		{
+//			synchronized (outputSynchronizer)
+//			{
+//				updatingTerminal = false;
+//				outputSynchronizer.notify();
+//			}
+//		}
+//	}
 	
 	/* public static void test() { char key; while (true) { key = read(); if
 	 * (key == '*') { break; } write(key); flushBuffered(); } frame.dispose();
