@@ -234,7 +234,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					
 					if (mouse.getActionType() == MouseActionType.SCROLL_UP)
 					{
-						outputBox.takeFocus();		
+						outputBox.takeFocus();
 						outputBox.scrollup();
 						outputBox.invalidate();
 						return false;
@@ -308,7 +308,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 						return false;
 					}
 					
-					return false;
+					//return false;
 				}
 				if (keyStroke.getKeyType() == KeyType.Enter)
 				{
@@ -339,20 +339,24 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				}
 				if (keyStroke.getKeyType() == KeyType.ArrowUp)
 				{
-					scrollCommandHistoryUp(echoInput);
-					return false;
+					if (scrollCommandHistoryUp(echoInput))
+					{
+						return false;
+					}
 				}
 				if (keyStroke.getKeyType() == KeyType.ArrowDown)
 				{
-					scrollCommandHistoryDown(echoInput);
-					return false;
+					if (scrollCommandHistoryDown(echoInput))
+					{
+						return false;
+					}
 				}
 				if (keyStroke.getKeyType() == KeyType.Escape)
 				{
 					//outputBox.takeFocus();
 					//outputBox.setCarriageColumn(0);
-					toggleEcho();
-					return false;
+					//toggleEcho();
+					//return false;
 				}
 				if (keyStroke.getKeyType() == KeyType.Insert)
 				{
@@ -557,7 +561,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		// currentLineBuffer.trimToSize();
 	}
 	
-	private void scrollCommandHistoryUp(boolean echo)
+	private boolean scrollCommandHistoryUp(boolean echo)
 	{
 		// System.out.println("scrollCommandHistoryUp!");
 		if (commandHistory.size() > 0)
@@ -567,11 +571,13 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				commandHistoryPosition--;
 				resetCurrentLine(echo);
 				restoreCurrentLine(echo);
+				return true;
 			}
 		}
+		return false;
 	}
 	
-	private void scrollCommandHistoryDown(boolean echo)
+	private boolean scrollCommandHistoryDown(boolean echo)
 	{
 		// System.out.println("scrollCommandHistoryDown!");
 		if (commandHistory.size() > 0)
@@ -581,8 +587,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				commandHistoryPosition++;
 				resetCurrentLine(echo);
 				restoreCurrentLine(echo);
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	public void appendToPendingInputLine(String line)
