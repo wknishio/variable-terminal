@@ -353,6 +353,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				}
 				if (keyStroke.getKeyType() == KeyType.Escape)
 				{
+					//outputBox.output("12345\r678\b\b");
 					//outputBox.takeFocus();
 					//outputBox.setCarriageColumn(0);
 					//toggleEcho();

@@ -1,12 +1,9 @@
 package org.vate.console.lanterna.separated;
 
-import java.io.IOException;
-
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TerminalTextUtils;
 import com.googlecode.lanterna.gui2.TextBox;
-import com.googlecode.lanterna.gui2.Interactable.Result;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.Terminal;
 
@@ -69,14 +66,17 @@ public class VTLanternaOutputTextBox extends TextBox
 			 return;
 		}
 		String line = lines.get(caretPosition.getRow());
-		if(caretPosition.getRow() > 0) {
+		if(caretPosition.getRow() > 0)
+		{
             int trueColumnPosition = TerminalTextUtils.getColumnIndex(lines.get(caretPosition.getRow()), caretPosition.getColumn());
             caretPosition = caretPosition.withRelativeRow(-1);
             line = lines.get(caretPosition.getRow());
-            if(trueColumnPosition > TerminalTextUtils.getColumnWidth(line)) {
+            if(trueColumnPosition > TerminalTextUtils.getColumnWidth(line))
+            {
                 caretPosition = caretPosition.withColumn(line.length());
             }
-            else {
+            else
+            {
                 caretPosition = caretPosition.withColumn(TerminalTextUtils.getStringCharacterIndex(line, trueColumnPosition));
             }
         }
@@ -97,14 +97,17 @@ public class VTLanternaOutputTextBox extends TextBox
 			return;
 		}
 		String line = lines.get(caretPosition.getRow());
-		if(caretPosition.getRow() < lines.size() - 1) {
+		if(caretPosition.getRow() < lines.size() - 1)
+		{
             int trueColumnPosition = TerminalTextUtils.getColumnIndex(lines.get(caretPosition.getRow()), caretPosition.getColumn());
             caretPosition = caretPosition.withRelativeRow(1);
             line = lines.get(caretPosition.getRow());
-            if(trueColumnPosition > TerminalTextUtils.getColumnWidth(line)) {
+            if(trueColumnPosition > TerminalTextUtils.getColumnWidth(line))
+            {
                 caretPosition = caretPosition.withColumn(line.length());
             }
-            else {
+            else
+            {
                 caretPosition = caretPosition.withColumn(TerminalTextUtils.getStringCharacterIndex(line, trueColumnPosition));
             }
         }
@@ -115,12 +118,97 @@ public class VTLanternaOutputTextBox extends TextBox
 		getRenderer().setViewTopLeft(TerminalPosition.TOP_LEFT_CORNER.withRow(getLineCount() - getSize().getRows()));
 	}
 	
-	//TODO:must support \n line feed
-	//TODO:must support \r carriage return
-	//TODO:must support \b backspace
-	//TODO:must support \d delete 127
-	//TODO:must support bell
-	//TODO:must support clear
+	//support \n line feed
+	//support \r carriage return
+	//support \b backspace
+	//TODO:support \d delete \u007f
+	//TODO:support \f clear
+	//TODO:support bell \u0007
+	
+	private void outputToLastLineDirect(String data)
+	{
+		String lastLine = getLastLine();
+		StringBuilder builder = new StringBuilder(lastLine);
+		
+		if (carriageColumn >= 0)
+		{
+			lastLine = builder.replace(carriageColumn, carriageColumn + data.length(), data).toString();
+			carriageColumn += data.length();
+			if (carriageColumn >= lastLine.length())
+			{
+				carriageColumn = -1;
+			}
+			setLastLine(lastLine);
+			if (longestRow < lastLine.length())
+			{
+				longestRow = lastLine.length();
+			}
+		}
+		else
+		{
+			lastLine = builder.append(data).toString();
+			setLastLine(lastLine);
+			if (longestRow < lastLine.length())
+			{
+				longestRow = lastLine.length();
+			}
+		}
+	}
+	
+	private String outputSingleChar(String data)
+	{
+		char output = '\0';
+		int current = data.indexOf('\r');
+		if (current >= 0)
+		{
+			output = '\r';
+		}
+		else
+		{
+			current = Integer.MAX_VALUE;
+		}
+		int next = data.indexOf('\b');
+		if (next >= 0 && next <= current)
+		{
+			output = '\b';
+			current = next;
+		}
+		next = data.indexOf('\f');
+		if (next >= 0 && next <= current)
+		{
+			output = '\f';
+			current = next;
+		}
+		
+		if (output != '\0')
+		{
+			outputToLastLineDirect(data.substring(0, current));
+			data = data.substring(current);
+			data = data.replaceFirst("\\p{Cntrl}", "");
+			output(output);
+		}
+		else
+		{
+			data = null;
+		}
+		return data;
+	}
+	
+	private String outputMultiChar(String data)
+	{
+		String result = outputSingleChar(data);
+		if (result == null)
+		{
+			return data;
+		}
+		String last = null;
+		while (result != null)
+		{
+			last = result;
+			result = outputSingleChar(result);
+		}
+		return last;
+	}
 	
 	private String outputToLastLine(String data)
 	{
@@ -144,6 +232,13 @@ public class VTLanternaOutputTextBox extends TextBox
 		{
 			if (data.length() <= remainingWidth)
 			{
+				data = outputMultiChar(data);
+				
+				if (data.length() <= 0)
+				{
+					return null;
+				}
+				
 				lastLine = builder.replace(carriageColumn, carriageColumn + data.length(), data).toString();
 				carriageColumn += data.length();
 				if (carriageColumn >= lastLine.length())
@@ -158,8 +253,16 @@ public class VTLanternaOutputTextBox extends TextBox
 			}
 			else
 			{
+				data = outputMultiChar(data);
+				
+				if (data.length() <= 0)
+				{
+					return null;
+				}
+				
 				String appended = data.substring(0, remainingWidth);
 				String remainder = data.substring(remainingWidth);
+				
 				lastLine = builder.replace(carriageColumn, carriageColumn + appended.length(), appended).toString();
 				carriageColumn += appended.length();
 				if (carriageColumn >= lastLine.length())
@@ -179,6 +282,13 @@ public class VTLanternaOutputTextBox extends TextBox
 		{
 			if (data.length() <= remainingWidth)
 			{
+				data = outputMultiChar(data);
+				
+				if (data.length() <= 0)
+				{
+					return null;
+				}
+				
 				lastLine = builder.append(data).toString();
 				setLastLine(lastLine);
 				if (longestRow < lastLine.length())
@@ -188,8 +298,16 @@ public class VTLanternaOutputTextBox extends TextBox
 			}
 			else
 			{
+				data = outputMultiChar(data);
+				
+				if (data.length() <= 0)
+				{
+					return null;
+				}
+				
 				String appended = data.substring(0, remainingWidth);
 				String remainder = data.substring(remainingWidth);
+				
 				lastLine = builder.append(appended).toString();
 				setLastLine(lastLine);
 				if (longestRow < lastLine.length())
@@ -221,14 +339,44 @@ public class VTLanternaOutputTextBox extends TextBox
 	{
 		if (data !=-'\n')
 		{
+			if (data == '\t')
+			{
+				data = ' ';
+				outputToLastLine(String.valueOf(data));
+				return;
+			}
+			if (data == '\r')
+			{
+				carriageColumn = 0;
+				return;
+			}
+			if (data == '\b')
+			{
+				String lastLine = getLastLine();
+				StringBuilder builder = new StringBuilder(lastLine);
+				if (lastLine.length() > 0)
+				{
+					if (carriageColumn > 0)
+					{
+						setLastLine(builder.deleteCharAt(carriageColumn - 1).toString());
+						carriageColumn--;
+					}
+					else
+					{
+						setLastLine(builder.deleteCharAt(lastLine.length()).toString());	
+					}
+				}
+				return;
+			}
+			if (data == '\f')
+			{
+				//clear screen
+				return;
+			}
 			if ((data > 0 && data < 32) || data == 127)
 			{
 				//reject
 				return;
-			}
-			if (data == '\t')
-			{
-				data = ' ';
 			}
 			outputToLastLine(String.valueOf(data));
 		}
@@ -261,7 +409,6 @@ public class VTLanternaOutputTextBox extends TextBox
 				{
 					addLine("");
 					outputMultiline(newlines[i]);
-					
 				}
 			}
 			if (getLineCount() > 0)
@@ -276,9 +423,9 @@ public class VTLanternaOutputTextBox extends TextBox
 	public synchronized void output(String data)
 	{
 		data = data.replace('\t', ' ');
-				
+		
 		String[] newlines = data.split("\\n", -1);
-				
+		
 		if (newlines.length > 0)
 		{
 			outputMultiline(newlines[0]);
