@@ -43,6 +43,7 @@
 			<src path="src/bric"/>
 			<src path="src/portmapper"/>
 			<src path="src/vate"/>
+			<src path="src/lanterna"/>
 			<classpath>
 				<fileset dir="lib">
 					<include name="**/*.jar"/>

@@ -34,7 +34,7 @@ public class FatWindowDecorationRenderer implements WindowDecorationRenderer {
         if(title == null) {
             title = "";
         }
-        boolean hasTitle = !title.trim().isEmpty();
+        boolean hasTitle = !(title.trim().length() == 0);
         if(hasTitle) {
             title = " " + title.trim() + " ";
         }
@@ -133,6 +133,6 @@ public class FatWindowDecorationRenderer implements WindowDecorationRenderer {
     }
 
     private boolean hasTitle(Window window) {
-        return !(window.getTitle() == null || window.getTitle().trim().isEmpty());
+        return !(window.getTitle() == null || window.getTitle().trim().length() == 0);
     }
 }

@@ -297,8 +297,8 @@ public class AWTTerminalFontConfiguration {
         }
         FontRenderContext frc = new FontRenderContext(
                 null,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_OFF,
-                RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+                false,
+                false);
         Rectangle2D iBounds = font.getStringBounds("i", frc);
         Rectangle2D mBounds = font.getStringBounds("W", frc);
         return iBounds.getWidth() == mBounds.getWidth();
@@ -315,9 +315,8 @@ public class AWTTerminalFontConfiguration {
     private FontRenderContext getFontRenderContext() {
         return new FontRenderContext(
                 null,
-                useAntiAliasing ?
-                        RenderingHints.VALUE_TEXT_ANTIALIAS_ON : RenderingHints.VALUE_TEXT_ANTIALIAS_OFF,
-                RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+                useAntiAliasing,
+                        false);
     }
 
     

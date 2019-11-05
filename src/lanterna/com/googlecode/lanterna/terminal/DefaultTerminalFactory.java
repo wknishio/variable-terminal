@@ -108,29 +108,67 @@ public class DefaultTerminalFactory implements TerminalFactory {
         // 3 different reasons for tty-based terminal:
         //   "explicit preference", "no alternative",
         //       ("because we can" - unless "rather not")
-        if (forceTextTerminal || isAwtHeadless() ||
-                (System.console() != null && !preferTerminalEmulator) ) {
-            // if tty but have no tty, but do have a port, then go telnet:
-            if( telnetPort > 0 && System.console() == null) {
-                return createTelnetTerminal();
-            }
-            if(isOperatingSystemWindows()) {
-                return createWindowsTerminal();
-            }
-            else {
-                return createUnixTerminal(outputStream, inputStream, charset);
-            }
-        }
-        else {
-            // while Lanterna's TerminalEmulator lacks mouse support:
-            // if user wanted mouse AND set a telnetPort, and didn't
-            //   explicitly ask for a graphical Terminal, then go telnet:
-            if (!preferTerminalEmulator && mouseCaptureMode != null && telnetPort > 0) {
-                return createTelnetTerminal();
-            } else {
-                return createTerminalEmulator();
-            }
-        }
+    	boolean ioConsole = false;
+    	try
+    	{
+    		Class.forName("java.io.Console");
+    		ioConsole = true;
+    	}
+    	catch (Throwable t)
+    	{
+    		
+    	}
+    	if (ioConsole)
+    	{
+	        if (forceTextTerminal || isAwtHeadless() ||
+	                (System.console() != null && !preferTerminalEmulator) ) {
+	            // if tty but have no tty, but do have a port, then go telnet:
+	            if( telnetPort > 0 && System.console() == null) {
+	                return createTelnetTerminal();
+	            }
+	            if(isOperatingSystemWindows()) {
+	                return createWindowsTerminal();
+	            }
+	            else {
+	                return createUnixTerminal(outputStream, inputStream, charset);
+	            }
+	        }
+	        else {
+	            // while Lanterna's TerminalEmulator lacks mouse support:
+	            // if user wanted mouse AND set a telnetPort, and didn't
+	            //   explicitly ask for a graphical Terminal, then go telnet:
+	            if (!preferTerminalEmulator && mouseCaptureMode != null && telnetPort > 0) {
+	                return createTelnetTerminal();
+	            } else {
+	                return createTerminalEmulator();
+	            }
+	        }
+    	}
+    	else
+    	{
+    		if (forceTextTerminal || isAwtHeadless() && !preferTerminalEmulator) {
+	            // if tty but have no tty, but do have a port, then go telnet:
+	            if( telnetPort > 0) {
+	                return createTelnetTerminal();
+	            }
+	            if(isOperatingSystemWindows()) {
+	                return createWindowsTerminal();
+	            }
+	            else {
+	                return createUnixTerminal(outputStream, inputStream, charset);
+	            }
+	        }
+	        else {
+	            // while Lanterna's TerminalEmulator lacks mouse support:
+	            // if user wanted mouse AND set a telnetPort, and didn't
+	            //   explicitly ask for a graphical Terminal, then go telnet:
+	            if (!preferTerminalEmulator && mouseCaptureMode != null && telnetPort > 0) {
+	                return createTelnetTerminal();
+	            } else {
+	                return createTerminalEmulator();
+	            }
+	        }
+    	}
     }
 
     /**
@@ -443,7 +481,8 @@ public class DefaultTerminalFactory implements TerminalFactory {
             try {
                 return createCygwinTerminal(outputStream, inputStream, charset);
             } catch(IOException e) {
-                throw new IOException("To start java on Windows, use javaw! (see https://github.com/mabe02/lanterna/issues/335 )", e);
+            	throw e;
+                //throw new IOException("To start java on Windows, use javaw! (see https://github.com/mabe02/lanterna/issues/335 )", e);
             }
         }
     }

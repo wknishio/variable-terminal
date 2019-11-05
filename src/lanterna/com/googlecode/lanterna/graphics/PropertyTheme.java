@@ -66,9 +66,9 @@ public class PropertyTheme extends AbstractTheme {
         super( (WindowPostRenderer)instanceByClassName(properties.getProperty("postrenderer", "")),
                (WindowDecorationRenderer)instanceByClassName(properties.getProperty("windowdecoration", "")));
 
-        for(String key: properties.stringPropertyNames()) {
-            String definition = getDefinition(key);
-            if(!addStyle(definition, getStyle(key), properties.getProperty(key))) {
+        for(Object key: properties.keySet()) {
+            String definition = getDefinition(key.toString());
+            if(!addStyle(definition, getStyle(key.toString()), properties.getProperty(key.toString()))) {
                 if(!ignoreUnknownClasses) {
                     throw new IllegalArgumentException("Unknown class encountered when parsing theme: '" + definition + "'");
                 }

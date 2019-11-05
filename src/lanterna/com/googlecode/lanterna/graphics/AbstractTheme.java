@@ -71,7 +71,7 @@ public abstract class AbstractTheme implements Theme {
 
     private ThemeTreeNode getNode(String definition) {
         try {
-            if(definition == null || definition.trim().isEmpty()) {
+            if(definition == null || definition.trim().length() == 0) {
                 return getNode(Object.class);
             }
             else {
@@ -133,7 +133,7 @@ public abstract class AbstractTheme implements Theme {
     }
 
     protected static Object instanceByClassName(String className) {
-        if(className == null || className.trim().isEmpty()) {
+        if(className == null || className.trim().length() == 0) {
             return null;
         }
         try {
@@ -407,16 +407,16 @@ public abstract class AbstractTheme implements Theme {
                 sgrMap.put(getCategory(group), parseSGR(value));
             }
             else if(styleComponent.toLowerCase().trim().equals("char")) {
-                characterMap.put(getCategory(group), value.isEmpty() ? ' ' : value.charAt(0));
+                characterMap.put(getCategory(group), value.length() == 0 ? ' ' : value.charAt(0));
             }
             else if(styleComponent.toLowerCase().trim().equals("cursor")) {
                 cursorVisible = Boolean.parseBoolean(value);
             }
             else if(styleComponent.toLowerCase().trim().equals("property")) {
-                propertyMap.put(getCategory(group), value.isEmpty() ? null : value.trim());
+                propertyMap.put(getCategory(group), value.length() == 0 ? null : value.trim());
             }
             else if(styleComponent.toLowerCase().trim().equals("renderer")) {
-                renderer = value.trim().isEmpty() ? null : value.trim();
+                renderer = value.trim().length() == 0 ? null : value.trim();
             }
             else if(styleComponent.toLowerCase().trim().equals("postrenderer") ||
                     styleComponent.toLowerCase().trim().equals("windowdecoration")) {
@@ -437,7 +437,7 @@ public abstract class AbstractTheme implements Theme {
             EnumSet<SGR> sgrSet = EnumSet.noneOf(SGR.class);
             for(String entry: sgrEntries) {
                 entry = entry.trim().toUpperCase();
-                if(!entry.isEmpty()) {
+                if(!(entry.length() == 0)) {
                     try {
                         sgrSet.add(SGR.valueOf(entry));
                     }

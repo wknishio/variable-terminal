@@ -21,6 +21,8 @@ package com.googlecode.lanterna.input;
 import java.util.Arrays;
 import java.util.List;
 
+import org.vate.compatibility.VTArrays;
+
 /**
  * Very simple pattern that matches the input stream against a pre-defined list of characters. For the pattern to match,
  * the list of characters must match exactly what's coming in on the input stream.
@@ -46,7 +48,7 @@ public class BasicCharacterPattern implements CharacterPattern {
      * @return Array of characters that defines this pattern
      */
     public char[] getPattern() {
-        return Arrays.copyOf(pattern, pattern.length);
+        return VTArrays.copyOf(pattern, pattern.length);
     }
 
     /**

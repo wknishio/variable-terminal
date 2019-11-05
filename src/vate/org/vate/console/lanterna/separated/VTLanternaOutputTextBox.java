@@ -121,9 +121,9 @@ public class VTLanternaOutputTextBox extends TextBox
 	//support \n line feed
 	//support \r carriage return
 	//support \b backspace
-	//TODO:support \d delete \u007f
-	//TODO:support \f clear
-	//TODO:support bell \u0007
+	//support \d delete \u007f
+	//support \f clear
+	//support bell \u0007
 	
 	private void outputToLastLineDirect(String data)
 	{
@@ -168,15 +168,27 @@ public class VTLanternaOutputTextBox extends TextBox
 			current = Integer.MAX_VALUE;
 		}
 		int next = data.indexOf('\b');
-		if (next >= 0 && next <= current)
+		if (next >= 0 && next < current)
 		{
 			output = '\b';
 			current = next;
 		}
 		next = data.indexOf('\f');
-		if (next >= 0 && next <= current)
+		if (next >= 0 && next < current)
 		{
 			output = '\f';
+			current = next;
+		}
+		next = data.indexOf('\u007f');
+		if (next >= 0 && next < current)
+		{
+			output = '\u007f';
+			current = next;
+		}
+		next = data.indexOf('\u0007');
+		if (next >= 0 && next < current)
+		{
+			output = '\u0007';
 			current = next;
 		}
 		
@@ -219,7 +231,7 @@ public class VTLanternaOutputTextBox extends TextBox
 		
 		try
 		{
-			maxWidth = terminal.getTerminalSize().getColumns();
+			maxWidth = Math.max(terminal.getTerminalSize().getColumns(), 80);
 		}
 		catch (Throwable e)
 		{
@@ -370,7 +382,40 @@ public class VTLanternaOutputTextBox extends TextBox
 			}
 			if (data == '\f')
 			{
-				//clear screen
+				//TODO: clear screen
+				return;
+			}
+			if (data == '\u007f')
+			{
+				String lastLine = getLastLine();
+				StringBuilder builder = new StringBuilder(lastLine);
+				if (lastLine.length() > 0)
+				{
+					if (carriageColumn >= 0)
+					{
+						setLastLine(builder.deleteCharAt(carriageColumn).toString());
+						if (carriageColumn >= lastLine.length())
+						{
+							carriageColumn = -1;
+						}
+					}
+					else
+					{
+						//setLastLine(builder.deleteCharAt(lastLine.length()).toString());	
+					}
+				}
+				return;
+			}
+			if (data == '\u0007')
+			{
+				try
+				{
+					terminal.bell();
+				}
+				catch (Throwable t)
+				{
+					
+				}
 				return;
 			}
 			if ((data > 0 && data < 32) || data == 127)

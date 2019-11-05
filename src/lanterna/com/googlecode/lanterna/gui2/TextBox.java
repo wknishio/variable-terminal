@@ -326,7 +326,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      */
     public String getTextOrDefault(String defaultValueIfEmpty) {
         String text = getText();
-        if(text.isEmpty()) {
+        if(text.length() == 0) {
             return defaultValueIfEmpty;
         }
         return text;
@@ -604,7 +604,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
     }
 
     protected boolean validated(String line) {
-        return validationPattern == null || line.isEmpty() || validationPattern.matcher(line).matches();
+        return validationPattern == null || line.length() == 0 || validationPattern.matcher(line).matches();
     }
 
     protected Result handleKeyStrokeReadOnly(KeyStroke keyStroke) {

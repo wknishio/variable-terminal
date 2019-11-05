@@ -69,44 +69,46 @@ public abstract class BundleLocator {
      * @return the instance of the bundle.
      */
     private ResourceBundle getBundle(Locale locale) {
-        return ResourceBundle.getBundle(bundleName, locale, loader, new UTF8Control());
+        //return ResourceBundle.getBundle(bundleName, locale, loader, new UTF8Control());
+    	return ResourceBundle.getBundle(bundleName, locale, loader);
     }
 
     // Taken from:
     // http://stackoverflow.com/questions/4659929/how-to-use-utf-8-in-resource-properties-with-resourcebundle
     // I politely refuse to use ISO-8859-1 in these *multi-lingual* property files
     // All credits to poster BalusC (http://stackoverflow.com/users/157882/balusc)
-    private static class UTF8Control extends ResourceBundle.Control {
-        public ResourceBundle newBundle
-                (String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
-                throws IllegalAccessException, InstantiationException, IOException
-        {
-            // The below is a copy of the default implementation.
-            String bundleName = toBundleName(baseName, locale);
-            String resourceName = toResourceName(bundleName, "properties");
-            ResourceBundle bundle = null;
-            InputStream stream = null;
-            if (reload) {
-                URL url = loader.getResource(resourceName);
-                if (url != null) {
-                    URLConnection connection = url.openConnection();
-                    if (connection != null) {
-                        connection.setUseCaches(false);
-                        stream = connection.getInputStream();
-                    }
-                }
-            } else {
-                stream = loader.getResourceAsStream(resourceName);
-            }
-            if (stream != null) {
-                try {
-                    // Only this line is changed to make it to read properties files as UTF-8.
-                    bundle = new PropertyResourceBundle(new InputStreamReader(stream, "UTF-8"));
-                } finally {
-                    stream.close();
-                }
-            }
-            return bundle;
-        }
-    }
+//    private static class UTF8Control extends ResourceBundle.Control {
+//        public ResourceBundle newBundle
+//                (String baseName, Locale locale, String format, ClassLoader loader, boolean reload)
+//                throws IllegalAccessException, InstantiationException, IOException
+//        {
+//            // The below is a copy of the default implementation.
+//            String bundleName = toBundleName(baseName, locale);
+//            String resourceName = toResourceName(bundleName, "properties");
+//            ResourceBundle bundle = null;
+//            InputStream stream = null;
+//            if (reload) {
+//                URL url = loader.getResource(resourceName);
+//                if (url != null) {
+//                    URLConnection connection = url.openConnection();
+//                    if (connection != null) {
+//                        connection.setUseCaches(false);
+//                        stream = connection.getInputStream();
+//                    }
+//                }
+//            } else {
+//                stream = loader.getResourceAsStream(resourceName);
+//            }
+//            if (stream != null) {
+//                try {
+//                    // Only this line is changed to make it to read properties files as UTF-8.
+//                    //bundle = new PropertyResourceBundle(new InputStreamReader(stream, "UTF-8"));
+//                	bundle = new PropertyResourceBundle(stream);
+//                } finally {
+//                    stream.close();
+//                }
+//            }
+//            return bundle;
+//        }
+//    }
 }

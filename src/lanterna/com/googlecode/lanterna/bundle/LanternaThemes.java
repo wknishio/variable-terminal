@@ -80,7 +80,7 @@ public class LanternaThemes {
         if(theme == null) {
             throw new IllegalArgumentException("Name cannot be null");
         }
-        else if(name.isEmpty()) {
+        else if(name.length() == 0) {
             throw new IllegalArgumentException("Name cannot be empty");
         }
         Theme result = REGISTERED_THEMES.putIfAbsent(name, theme);

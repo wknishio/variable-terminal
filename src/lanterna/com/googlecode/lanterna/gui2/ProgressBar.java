@@ -250,7 +250,7 @@ public class ProgressBar extends AbstractComponent<ProgressBar> {
             if(preferredWidth > 0) {
                 return new TerminalSize(preferredWidth, 1);
             }
-            else if(component.getLabelFormat() != null && !component.getLabelFormat().trim().isEmpty()) {
+            else if(component.getLabelFormat() != null && !(component.getLabelFormat().trim().length() == 0)) {
                 return new TerminalSize(TerminalTextUtils.getColumnWidth(String.format(component.getLabelFormat(), 100.0f)) + 2, 1);
             }
             else {

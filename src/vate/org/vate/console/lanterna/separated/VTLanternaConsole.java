@@ -69,19 +69,19 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	private StringBuilder inputBuffer = new StringBuilder();
 	private StringBuilder outputBuffer = new StringBuilder();
 	
-	//added command history
-	//added echo input
-	//added support for maximum line width in output
-	//TODO:add support for special characters in input and output
-	//TODO:add support for flush interrupted output
-	//TODO:add support for keyboard shortcuts
-	//TODO:add support for window listener for awtframe
-	//TODO:add support for custom icon for awtframe
-	//TODO:add support for mouse scroll listener for awtframe
-	//TODO:add support for font options for awtframe
-	//TODO:add support for command drag drop for awtframe
-	//TODO:add support for context menu for awtframe
-	//TODO:add support for command menubar for awtframe
+	//support command history
+	//support echo input
+	//support support for maximum line width in output
+	//support special characters in input and output
+	//TODO:support flush interrupted output
+	//TODO:support keyboard shortcuts
+	//TODO:support window listener for awtframe
+	//TODO:support custom icon for awtframe
+	//support mouse scroll listener for awtframe
+	//TODO:support font options for awtframe
+	//TODO:support command drag drop for awtframe
+	//TODO:support context menu for awtframe
+	//TODO:support command menubar for awtframe
 	
 	public VTLanternaConsole() throws IOException
 	{
@@ -202,7 +202,6 @@ public class VTLanternaConsole implements VTConsoleImplementation
         //screen.setTabBehaviour(TabBehaviour.ALIGN_TO_COLUMN_4);
         screen.startScreen();
 
-        // Create panel to hold components
         Panel mainPanel = new Panel();
         mainPanel.setLayoutManager(new BorderLayout());
 
@@ -429,11 +428,18 @@ public class VTLanternaConsole implements VTConsoleImplementation
         // Create gui and start gui
         MultiWindowTextGUI gui = new MultiWindowTextGUI(screen, new DefaultWindowManager(), new EmptySpace(TextColor.ANSI.BLACK));
         
-        Properties properties = new Properties();
-        properties.load(this.getClass().getResourceAsStream("/default-theme.properties"));
-        PropertyTheme theme = new PropertyTheme(properties);
+        Properties commandproperties = new Properties();
+        commandproperties.load(this.getClass().getResourceAsStream("/command-theme.properties"));
+        PropertyTheme commandtheme = new PropertyTheme(commandproperties);
         
-        gui.setTheme(theme);
+        Properties outputproperties = new Properties();
+        outputproperties.load(this.getClass().getResourceAsStream("/output-theme.properties"));
+        PropertyTheme outputtheme = new PropertyTheme(outputproperties);
+        
+        commandBox.setTheme(commandtheme);
+        outputBox.setTheme(outputtheme);
+        
+        //gui.setTheme(theme);
         
         setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
         
@@ -574,6 +580,12 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				restoreCurrentLine(echo);
 				return true;
 			}
+			if (commandHistoryPosition == 0)
+			{
+				commandHistoryPosition--;
+				resetCurrentLine(echo);
+				return true;
+			}
 		}
 		return false;
 	}
@@ -588,6 +600,12 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				commandHistoryPosition++;
 				resetCurrentLine(echo);
 				restoreCurrentLine(echo);
+				return true;
+			}
+			if (commandHistoryPosition == commandHistory.size() - 1)
+			{
+				commandHistoryPosition++;
+				resetCurrentLine(echo);
 				return true;
 			}
 		}

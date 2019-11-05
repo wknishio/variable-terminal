@@ -163,7 +163,7 @@ public class FileDialog extends DialogWindow {
     private class OkHandler implements Runnable {
         
         public void run() {
-            if(!fileBox.getText().isEmpty()) {
+            if(!(fileBox.getText().length() == 0)) {
                 File file = new File(fileBox.getText());
                 selectedFile = file.isAbsolute() ? file : new File(directory, fileBox.getText());
                 close();

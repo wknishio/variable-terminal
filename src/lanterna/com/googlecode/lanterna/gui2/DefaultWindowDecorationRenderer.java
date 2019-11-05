@@ -68,7 +68,7 @@ public class DefaultWindowDecorationRenderer implements WindowDecorationRenderer
         graphics.setCharacter(0, 0, topLeftCorner);
         graphics.setCharacter(0, drawableArea.getRows() - 1, bottomLeftCorner);
 
-        if(!actualTitle.isEmpty() && drawableArea.getColumns() > 8) {
+        if(!(actualTitle.length() == 0) && drawableArea.getColumns() > 8) {
             int separatorOffset = 1;
             if(useTitlePadding) {
                 graphics.setCharacter(titleHorizontalPosition - 1, 0, ' ');
@@ -92,7 +92,7 @@ public class DefaultWindowDecorationRenderer implements WindowDecorationRenderer
         graphics.setCharacter(drawableArea.getColumns() - 1, 0, topRightCorner);
         graphics.setCharacter(drawableArea.getColumns() - 1, drawableArea.getRows() - 1, bottomRightCorner);
 
-        if(!actualTitle.isEmpty()) {
+        if(!(actualTitle.length() == 0)) {
             if(textGUI.getActiveWindow() == window) {
                 graphics.applyThemeStyle(themeDefinition.getActive());
             }

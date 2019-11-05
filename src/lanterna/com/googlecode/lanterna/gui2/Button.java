@@ -110,7 +110,7 @@ public class Button extends AbstractInteractableComponent<Button> {
         if(label == null) {
             throw new IllegalArgumentException("null label to a button is not allowed");
         }
-        if(label.isEmpty()) {
+        if(label.length() == 0) {
             label = " ";
         }
         this.label = label;

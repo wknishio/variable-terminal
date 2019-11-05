@@ -364,7 +364,7 @@ public class TerminalTextUtils {
     private static Integer[] mapCodesToIntegerArray(String[] codes) {
         Integer[] result = new Integer[codes.length];
         for (int i = 0; i < result.length; i++) {
-            if (codes[i].isEmpty()) {
+            if (codes[i].length() == 0) {
                 result[i] = 0;
             } else {
                 try {

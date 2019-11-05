@@ -2,8 +2,8 @@ package com.googlecode.lanterna.bundle;
 
 import com.googlecode.lanterna.graphics.PropertyTheme;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.Properties;
 
 class DefaultTheme extends PropertyTheme {
@@ -14,7 +14,7 @@ class DefaultTheme extends PropertyTheme {
     private static Properties definitionAsProperty() {
         Properties properties = new Properties();
         try {
-            properties.load(new StringReader(definition));
+            properties.load(new ByteArrayInputStream(definition.getBytes()));
             return properties;
         }
         catch(IOException e) {
