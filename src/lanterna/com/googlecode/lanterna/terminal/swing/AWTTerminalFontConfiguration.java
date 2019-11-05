@@ -118,11 +118,11 @@ public class AWTTerminalFontConfiguration {
             return baseFontSize;
         }
         else {
-            return getHPIAdjustedFontSize(baseFontSize);
+            return getHDPIAdjustedFontSize(baseFontSize);
         }
     }
 
-    private static int getHPIAdjustedFontSize(int baseFontSize) {
+    private static int getHDPIAdjustedFontSize(int baseFontSize) {
         if (Toolkit.getDefaultToolkit().getScreenResolution() >= 110) {
             // Rely on DPI if it is a high value.
             return Toolkit.getDefaultToolkit().getScreenResolution() / (baseFontSize/2) + 1;

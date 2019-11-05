@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.console.graphical.listener.VTGraphicalConsoleCopyActionListener;
 import org.vate.console.graphical.listener.VTGraphicalConsolePasteActionListener;
+import org.vate.graphics.font.VTGlobalTextStyleManager;
 
 public class VTGraphicalConsolePopupMenu extends PopupMenu
 {

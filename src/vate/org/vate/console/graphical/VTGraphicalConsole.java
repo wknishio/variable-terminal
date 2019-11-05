@@ -804,14 +804,6 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 				}
 				else
 				{
-					/* String[] parts = string.split("\n"); if (parts.length >
-					 * 0) {
-					 * VTGraphicalConsoleReader.appendToCurrentLine(parts[0]);
-					 * int i; for (i = 1;i < parts.length - 1;i++) {
-					 * VTGraphicalConsoleReader.appendToPendingLine(parts[i] +
-					 * "\n"); } if (i < parts.length) {
-					 * VTGraphicalConsoleReader.appendToPendingLine(parts[i]);
-					 * } } */
 					int i = 0, j = 0;
 					i = string.indexOf('\n');
 					VTGraphicalConsoleReader.appendToCurrentLine(string.substring(0, i));
@@ -846,14 +838,6 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 				}
 				else
 				{
-					
-					/* String[] parts = string.split("\n"); int i = 0; for (i =
-					 * 0;i < parts.length - 1;i++) {
-					 * VTGraphicalConsoleReader.appendToPendingLine(parts[i] +
-					 * "\n"); } if (i < parts.length) {
-					 * VTGraphicalConsoleReader.appendToPendingLine(parts[i]);
-					 * } */
-					
 					int i = 0, j = 0;
 					i = string.indexOf('\n');
 					VTGraphicalConsoleReader.appendToPendingLine(string.substring(0, i) + "\n");

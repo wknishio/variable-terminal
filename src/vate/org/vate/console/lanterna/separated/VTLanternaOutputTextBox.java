@@ -173,6 +173,12 @@ public class VTLanternaOutputTextBox extends TextBox
 			output = '\b';
 			current = next;
 		}
+		next = data.indexOf('\n');
+		if (next >= 0 && next < current)
+		{
+			output = '\n';
+			current = next;
+		}
 		next = data.indexOf('\f');
 		if (next >= 0 && next < current)
 		{
