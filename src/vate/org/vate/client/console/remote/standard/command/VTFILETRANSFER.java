@@ -124,7 +124,7 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
 						// "\nVT>Transferred [" + transferDataCount +
 						// "] of [" + transferDataSize + "] bytes
 						// (%.2f%%)\nVT>", completeness);
-						VTConsole.printf("\nVT>A file transfer is running!" + "\nVT>Transferred [" + transferDataCount + "] bytes!\nVT>");
+						VTConsole.print("\nVT>A file transfer is running!" + "\nVT>Transferred [" + transferDataCount + "] bytes!\nVT>");
 					}
 					else
 					{

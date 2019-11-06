@@ -3003,14 +3003,14 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 					// StringEscapeUtils.unescapeJava(splitCommand[1]);
 					if (parsed[1].indexOf('/') < 0)
 					{
-						VTGraphicsMessager.showAlert(VTGraphicalConsole.getFrame(), "Variable-Terminal Server", parsed[1]);
+						VTGraphicsMessager.showAlert(VTConsole.getFrame(), "Variable-Terminal Server", parsed[1]);
 						session.getServer().displayTrayIconMessage("Variable-Terminal Server", "["+ parsed[1] + "]");
 					}
 					else
 					{
 						String message = parsed[1].substring(0, parsed[1].indexOf('/'));
 						String title = parsed[1].substring(parsed[1].indexOf('/') + 1);
-						VTGraphicsMessager.showAlert(VTGraphicalConsole.getFrame(), title, message);
+						VTGraphicsMessager.showAlert(VTConsole.getFrame(), title, message);
 						session.getServer().displayTrayIconMessage(title, "[" + message + "]");
 					}
 					connection.getResultWriter().write("\nVT>Graphical alert sent to server!\nVT>");
@@ -3034,14 +3034,14 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 							}
 							if (parsed[1].indexOf('/') < 0)
 							{
-								VTGraphicsMessager.showAlert(devices[number], VTGraphicalConsole.getFrame(), "Variable-Terminal Server", parsed[1]);
+								VTGraphicsMessager.showAlert(devices[number], VTConsole.getFrame(), "Variable-Terminal Server", parsed[1]);
 								session.getServer().displayTrayIconMessage("Variable-Terminal Server", "[" + parsed[1] + "]");
 							}
 							else
 							{
 								String message = parsed[1].substring(0, parsed[1].indexOf('/'));
 								String title = parsed[1].substring(parsed[1].indexOf('/') + 1);
-								VTGraphicsMessager.showAlert(devices[number], VTGraphicalConsole.getFrame(), title, message);
+								VTGraphicsMessager.showAlert(devices[number], VTConsole.getFrame(), title, message);
 								session.getServer().displayTrayIconMessage(title, "[" + message + "]");
 							}
 						}

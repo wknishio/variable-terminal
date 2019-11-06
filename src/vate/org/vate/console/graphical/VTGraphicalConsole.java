@@ -63,7 +63,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	private static volatile int deleteLaterCharactersCount;
 	private static Object inputSynchronizer;
 	private static Object outputSynchronizer;
-	private static Object updateSynchronizer = new Object();
+	private static Object updateSynchronizer;
 	private static String trueBlankLine;
 	// private static String replacedBlankLine;
 	private static String trueBlankLineEnd;
@@ -106,6 +106,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		}
 		inputSynchronizer = new Object();
 		outputSynchronizer = new Object();
+		updateSynchronizer = new Object();
 		inputBuffer = new StringBuilder();
 		outputBuffer = new StringBuilder();
 		spacesBuffer = new StringBuilder();
@@ -180,7 +181,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		updatingTerminal = false;
 		readingInput = false;
 		// popupMenu = new VTGraphicalConsolePopupMenu();
-		VTGraphicalConsolePopupMenu popupMenu = new VTGraphicalConsolePopupMenu();
+		VTGraphicalConsolePopupMenu popupMenu = new VTGraphicalConsolePopupMenu(frame);
 		keyListener = new VTGraphicalConsoleKeyListener(popupMenu);
 		mouseListener = new VTGraphicalConsoleMouseListener(popupMenu);
 		dropTargetListener = new VTGraphicalConsoleDropTargetListener();
@@ -1739,7 +1740,12 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		}
 	}
 	
-	public static VTGraphicalConsoleFrame getFrame()
+	public VTGraphicalConsoleFrame getFrame()
+	{
+		return frame;
+	}
+	
+	public static VTGraphicalConsoleFrame getStaticFrame()
 	{
 		return frame;
 	}

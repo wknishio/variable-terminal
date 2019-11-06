@@ -165,7 +165,6 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		textActionCopyMenu = new MenuItem("Copy ");
 		textActionCopyMenu.addActionListener(new ActionListener()
 		{
-
 			public void actionPerformed(ActionEvent e)
 			{
 				VTGraphicalConsole.copyText();
@@ -175,7 +174,6 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		textActionPasteMenu = new MenuItem("Paste ");
 		textActionPasteMenu.addActionListener(new ActionListener()
 		{
-
 			public void actionPerformed(ActionEvent e)
 			{
 				VTGraphicalConsole.pasteText();
@@ -185,7 +183,6 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		textActionInsertMenu = new MenuItem("Insert ");
 		textActionInsertMenu.addActionListener(new ActionListener()
 		{
-
 			public void actionPerformed(ActionEvent e)
 			{
 				VTGraphicalConsole.alternateInputMode();
@@ -195,7 +192,6 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		textActionBreakMenu = new MenuItem("Break ");
 		textActionBreakMenu.addActionListener(new ActionListener()
 		{
-
 			public void actionPerformed(ActionEvent e)
 			{
 				VTGraphicalConsole.toggleScrollMode();

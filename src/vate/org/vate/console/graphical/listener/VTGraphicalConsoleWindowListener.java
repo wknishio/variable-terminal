@@ -23,7 +23,7 @@ public class VTGraphicalConsoleWindowListener implements WindowListener
 	{
 		if (VTGraphicalConsole.getIgnoreClose())
 		{
-			VTGraphicalConsole.getFrame().setExtendedState(Frame.ICONIFIED);
+			VTGraphicalConsole.getStaticFrame().setExtendedState(Frame.ICONIFIED);
 			return;
 		}
 		System.exit(0);

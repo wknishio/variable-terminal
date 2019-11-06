@@ -3,6 +3,7 @@ package org.vate.console.standard;
 import java.io.BufferedWriter;
 // import java.io.Console;
 import java.io.FileDescriptor;
+import java.awt.Frame;
 // import java.io.FileInputStream;
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -766,6 +767,11 @@ public class VTStandardConsole implements VTConsoleImplementation
 	public void interruptReadLine()
 	{
 		inputStream.interruptRead();
+	}
+
+	public Frame getFrame()
+	{
+		return null;
 	}
 	
 	// public boolean isReadingLine()

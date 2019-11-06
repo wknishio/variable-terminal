@@ -412,7 +412,7 @@ public class VTServer implements Runnable
 	{
 		if (trayIconInterface != null)
 		{
-			trayIconInterface.install(VTGraphicalConsole.getFrame(), "Variable-Terminal Server");
+			trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal Server");
 		}
 	}
 	
@@ -1741,12 +1741,12 @@ public class VTServer implements Runnable
 			VTConsole.setTitle("Variable-Terminal Server " + VT.VT_VERSION + " - Console");
 			if (!VTConsole.isDaemon() && !daemon)
 			{
-				connectionDialog = new VTServerSettingsDialog(VTGraphicalConsole.getFrame(), "Variable-Terminal Server " + VT.VT_VERSION + " - Connection", true, this);
+				connectionDialog = new VTServerSettingsDialog(VTConsole.getFrame(), "Variable-Terminal Server " + VT.VT_VERSION + " - Connection", true, this);
 				inputMenuBar = new VTServerLocalGraphicalConsoleInputMenuBar(connectionDialog);
-				VTGraphicalConsole.getFrame().setMenuBar(inputMenuBar);
-				VTGraphicalConsole.getFrame().pack();
+				VTConsole.getFrame().setMenuBar(inputMenuBar);
+				VTConsole.getFrame().pack();
 				trayIconInterface = new VTTrayIconInterface();
-				trayIconInterface.install(VTGraphicalConsole.getFrame(), "Variable-Terminal Server");
+				trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal Server");
 			}
 		}
 		else

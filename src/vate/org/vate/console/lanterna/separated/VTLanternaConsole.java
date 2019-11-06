@@ -7,16 +7,25 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
+import javax.imageio.ImageIO;
+
 import org.vate.VT;
 import org.vate.console.VTConsoleImplementation;
+import org.vate.console.graphical.VTGraphicalConsoleNullOutputStream;
+
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
@@ -67,10 +76,15 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	//private volatile int caretRecoilCount = 0;
 	private StringBuilder inputBuffer = new StringBuilder();
 	private StringBuilder outputBuffer = new StringBuilder();
-	private static Object inputSynchronizer = new Object();
-	private static Object outputSynchronizer = new Object();
+	private final Object inputSynchronizer = new Object();
+	private final Object outputSynchronizer = new Object();
+	private final Object updateSynchronizer = new Object();
 	private MultiWindowTextGUI gui;
 	private BasicWindow window;
+	private VTLanternaConsolePrintStream printStream;
+	private VTLanternaConsoleInputStream inputStream;
+	private volatile boolean ignoreClose = false;
+	private volatile boolean started = false;
 	
 	//support command history
 	//support echo input
@@ -78,9 +92,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	//support special characters in input and output
 	//support mouse scroll listener for awtframe
 	//support flush interrupted output
+	//support custom icon for awtframe
+	//support window listener for awtframe
+	//TODO:replace calls to VTGraphicalConsole static methods for VTConsole calls
 	//TODO:support keyboard shortcuts
-	//TODO:support window listener for awtframe
-	//TODO:support custom icon for awtframe
 	//TODO:support font options for awtframe
 	//TODO:support command drag drop for awtframe
 	//TODO:support context menu for awtframe
@@ -103,6 +118,422 @@ public class VTLanternaConsole implements VTConsoleImplementation
 			}
 		};
 		builderThread.start();
+		synchronized (this)
+		{
+			while (!started)
+			{
+				try
+				{
+					wait();
+				}
+				catch (InterruptedException e)
+				{
+					
+				}
+			}
+		}
+	}
+	
+	private class VTLanternaConsoleWindowListener implements WindowListener
+	{
+		private VTLanternaConsole console;
+		
+		public VTLanternaConsoleWindowListener(VTLanternaConsole console)
+		{
+			this.console = console;
+		}
+		
+		public void windowActivated(WindowEvent e)
+		{
+			console.deiconifyFrame();
+		}
+		
+		public void windowClosed(WindowEvent e)
+		{
+			
+		}
+		
+		public void windowClosing(WindowEvent e)
+		{
+			if (console.getIgnoreClose())
+			{
+				console.getFrame().setExtendedState(Frame.ICONIFIED);
+				return;
+			}
+			System.exit(0);
+		}
+		
+		public void windowDeactivated(WindowEvent e)
+		{
+			console.iconifyFrame();
+		}
+		
+		public void windowDeiconified(WindowEvent e)
+		{
+			//VTGraphicalConsole.deiconifyFrame();
+		}
+		
+		public void windowIconified(WindowEvent e)
+		{
+			//VTGraphicalConsole.iconifyFrame();
+		}
+		
+		public void windowOpened(WindowEvent e)
+		{
+			
+		}
+	}
+	
+	private class VTLanternaConsolePrintStream extends PrintStream
+	{
+		private PrintWriter outWriter;
+		
+		public VTLanternaConsolePrintStream(VTLanternaConsole console)
+		{
+			super(new VTGraphicalConsoleNullOutputStream(), false);
+			this.outWriter = new PrintWriter(new VTLanternaConsolePrintStreamWriter(console));
+		}
+		
+		public PrintStream append(char c)
+		{
+			outWriter.append(c);
+			return this;
+		}
+		
+		public PrintStream append(CharSequence csq, int start, int end)
+		{
+			outWriter.append(csq, start, end);
+			return this;
+		}
+		
+		public PrintStream append(CharSequence csq)
+		{
+			outWriter.append(csq);
+			return this;
+		}
+		
+		public boolean checkError()
+		{
+			return super.checkError();
+		}
+		
+		protected void clearError()
+		{
+			try
+			{
+				super.clearError();
+			}
+			catch (Throwable t)
+			{
+				
+			}
+		}
+		
+		public void close()
+		{
+			outWriter.close();
+		}
+		
+		public void flush()
+		{
+			outWriter.flush();
+		}
+		
+		public PrintStream format(Locale l, String format, Object... args)
+		{
+			outWriter.format(l, format, args);
+			return this;
+		}
+		
+		public PrintStream format(String format, Object... args)
+		{
+			outWriter.format(format, args);
+			return this;
+		}
+		
+		public void print(boolean b)
+		{
+			outWriter.print(b);
+			outWriter.flush();
+		}
+		
+		public void print(char c)
+		{
+			outWriter.print(c);
+			outWriter.flush();
+		}
+		
+		public void print(char[] s)
+		{
+			outWriter.print(s);
+			outWriter.flush();
+		}
+		
+		public void print(double d)
+		{
+			outWriter.print(d);
+			outWriter.flush();
+		}
+		
+		public void print(float f)
+		{
+			outWriter.print(f);
+			outWriter.flush();
+		}
+		
+		public void print(int i)
+		{
+			outWriter.print(i);
+			outWriter.flush();
+		}
+		
+		public void print(long l)
+		{
+			outWriter.print(l);
+			outWriter.flush();
+		}
+		
+		public void print(Object obj)
+		{
+			outWriter.print(obj);
+			outWriter.flush();
+		}
+		
+		public void print(String s)
+		{
+			outWriter.print(s);
+			outWriter.flush();
+		}
+		
+		public PrintStream printf(Locale l, String format, Object... args)
+		{
+			outWriter.printf(l, format, args);
+			outWriter.flush();
+			return this;
+		}
+		
+		public PrintStream printf(String format, Object... args)
+		{
+			outWriter.printf(format, args);
+			outWriter.flush();
+			return this;
+		}
+		
+		public void println()
+		{
+			outWriter.println();
+			outWriter.flush();
+		}
+		
+		public void println(boolean x)
+		{
+			outWriter.println(x);
+			outWriter.flush();
+		}
+		
+		public void println(char x)
+		{
+			outWriter.println(x);
+			outWriter.flush();
+		}
+		
+		public void println(char[] x)
+		{
+			outWriter.println(x);
+			outWriter.flush();
+		}
+		
+		public void println(double x)
+		{
+			outWriter.println(x);
+			outWriter.flush();
+		}
+		
+		public void println(float x)
+		{
+			outWriter.println(x);
+			outWriter.flush();
+		}
+		
+		public void println(int x)
+		{
+			outWriter.println(x);
+			outWriter.flush();
+		}
+		
+		public void println(long x)
+		{
+			outWriter.println(x);
+			outWriter.flush();
+		}
+		
+		public void println(Object x)
+		{
+			outWriter.println(x);
+			outWriter.flush();
+		}
+		
+		public void println(String x)
+		{
+			outWriter.println(x);
+			outWriter.flush();
+		}
+		
+		protected void setError()
+		{
+			super.setError();
+		}
+		
+		public void write(byte[] buf, int off, int len)
+		{
+			outWriter.write(new String(buf, off, len));
+		}
+		
+		public void write(int b)
+		{
+			outWriter.write(b);
+		}
+		
+		public void write(byte[] b) throws IOException
+		{
+			outWriter.write(new String(b, 0, b.length));
+		}
+	}
+	
+	private class VTLanternaConsolePrintStreamWriter extends Writer
+	{
+		private VTLanternaConsole console;
+		
+		public VTLanternaConsolePrintStreamWriter(VTLanternaConsole console)
+		{
+			this.console = console;
+		}
+		
+		public void close() throws IOException
+		{
+			
+		}
+		
+		public void flush() throws IOException
+		{
+			console.flush();
+		}
+		
+		public void write(char[] cbuf, int off, int len) throws IOException
+		{
+			console.write(cbuf, off, len);
+		}
+		
+		public Writer append(char c) throws IOException
+		{
+			return super.append(c);
+		}
+		
+		public Writer append(CharSequence csq, int start, int end) throws IOException
+		{
+			return super.append(csq, start, end);
+		}
+		
+		public Writer append(CharSequence csq) throws IOException
+		{
+			return super.append(csq);
+		}
+		
+		public void write(char[] cbuf) throws IOException
+		{
+			console.write(cbuf, 0, cbuf.length);
+		}
+		
+		public void write(int c) throws IOException
+		{
+			console.write(String.valueOf((char) c));
+		}
+		
+		public void write(String str, int off, int len) throws IOException
+		{
+			console.write(str.toCharArray(), off, len);
+		}
+		
+		public void write(String str) throws IOException
+		{
+			console.write(str);
+		}
+	}
+	
+	public class VTLanternaConsoleInputStream extends InputStream
+	{
+		private volatile byte[] lineBuffer;
+		private volatile int readed;
+		private VTLanternaConsole console;
+		
+		public VTLanternaConsoleInputStream(VTLanternaConsole console)
+		{
+			lineBuffer = new byte[0];
+			this.console = console;
+		}
+		
+		public int read() throws IOException
+		{
+			if (lineBuffer == null || readed >= lineBuffer.length)
+			{
+				try
+				{
+					lineBuffer = (console.readLine(true) + "\n").getBytes("UTF-8");
+					readed = 0;
+				}
+				catch (InterruptedException e)
+				{
+					return -1;
+				}
+			}
+			return lineBuffer[readed++];
+		}
+		
+		public int available() throws IOException
+		{
+			return lineBuffer.length - readed;
+		}
+				
+		public int read(byte[] b, int off, int len) throws IOException
+		{
+			int transferred;
+			for (transferred = 0; transferred < len; transferred++)
+			{
+				if (lineBuffer == null || readed >= lineBuffer.length)
+				{
+					if (transferred == 0)
+					{
+						try
+						{
+							lineBuffer = (console.readLine(true) + "\n").getBytes("UTF-8");
+							readed = 0;
+						}
+						catch (InterruptedException e)
+						{
+							return transferred;
+						}
+					}
+					else
+					{
+						return transferred;
+					}
+				}
+				b[off + transferred] = lineBuffer[readed++];
+			}
+			return transferred;
+		}
+		
+		public int read(byte[] b) throws IOException
+		{
+			return super.read(b);
+		}
+		
+		/* public synchronized void reset() throws IOException { super.reset(); } */
+		
+		public long skip(long n) throws IOException
+		{
+			return super.skip(n);
+		}
 	}
 	
 	public void build() throws Exception
@@ -126,6 +557,15 @@ public class VTLanternaConsole implements VTConsoleImplementation
         		
         	}
         	awtframe = (Frame) terminal;
+        	try
+			{
+				awtframe.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
+			}
+			catch (Throwable t)
+			{
+				
+			}
+        	awtframe.addWindowListener(new VTLanternaConsoleWindowListener(this));
         	if (terminal instanceof AWTTerminalFrame)
         	{
         		awtterminal = ((AWTTerminalFrame) awtframe).getTerminal();
@@ -189,21 +629,6 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					awtterminal.addInput(mouseAction);
 				}
         	});
-//        	awtframe.addMouseWheelListener(new MouseWheelListener()
-//        	{
-//				public void mouseWheelMoved(MouseWheelEvent e)
-//				{
-//					outputBox.takeFocus();
-//					int x = e.getX();
-//					int y = e.getY();
-//					int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
-//					int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
-//					TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
-//					int rotation = e.getWheelRotation();
-//					MouseAction mouseAction = new MouseAction(rotation > 0 ? MouseActionType.SCROLL_DOWN : MouseActionType.SCROLL_UP, e.getButton(), pos);
-//					awtterminal.addInput(mouseAction);
-//				}
-//        	});
         }
         else
         {
@@ -331,8 +756,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					//System.out.println("command:[" + command + "]");
 					input(command + "\n");
 			
-					inputBox.setHiddenColumn(0);
 					inputBox.setText("");
+					inputBox.setHiddenColumn(0);
 					inputBox.setCaretPosition(0);
 					inputBox.invalidate();
 					//terminal.getTerminalSize();
@@ -450,29 +875,52 @@ public class VTLanternaConsole implements VTConsoleImplementation
         
         //gui.setTheme(theme);
         
+        inputStream = new VTLanternaConsoleInputStream(this);
+        printStream = new VTLanternaConsolePrintStream(this);
+        
         setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
         
         if (awtframe != null)
         {
         	awtframe.setVisible(true);
         	awtframe.pack();
-        	//awtframe.getInsets().set(4, 4, 4, 4);
-        	//awtframe.pack();
+        }
+        
+        synchronized (this)
+        {
+        	this.started = true;
+        	this.notifyAll();
         }
         
         gui.addWindowAndWait(window);
 	}
 	
-	public void start()
+	public void setIgnoreClose(boolean ignoreClose)
 	{
-		Thread startThread = new Thread()
+		this.ignoreClose = ignoreClose;
+	}
+	
+	public boolean getIgnoreClose()
+	{
+		return ignoreClose;
+	}
+
+	
+	public void iconifyFrame()
+	{
+		synchronized (outputSynchronizer)
 		{
-			public void run()
-			{
-				gui.addWindowAndWait(window);
-			}
-		};
-		startThread.start();
+			frameIconified = true;
+		}
+	}
+	
+	public void deiconifyFrame()
+	{
+		synchronized (outputSynchronizer)
+		{
+			frameIconified = false;
+		}
+		resumeOutputFlush();
 	}
 	
 	public void toggleReplace()
@@ -827,32 +1275,32 @@ public class VTLanternaConsole implements VTConsoleImplementation
 
 	public void print(String str)
 	{
-		// TODO Auto-generated method stub
+		printStream.print(str);
 	}
 
 	public void println(String str)
 	{
-		// TODO Auto-generated method stub
+		printStream.println(str);
 	}
 
 	public void printf(String format, Object... args)
 	{
-		// TODO Auto-generated method stub
+		printStream.printf(format, args);
 	}
 
 	public void printfln(String format, Object... args)
 	{
-		// TODO Auto-generated method stub
+		printStream.printf(format + "\n", args);
 	}
 
 	public void printf(Locale l, String format, Object... args)
 	{
-		// TODO Auto-generated method stub
+		printStream.printf(l, format, args);
 	}
 
 	public void printfln(Locale l, String format, Object... args)
 	{
-		// TODO Auto-generated method stub
+		printStream.printf(l, format + "\n", args);
 	}
 
 	public void write(String str)
@@ -930,35 +1378,32 @@ public class VTLanternaConsole implements VTConsoleImplementation
 
 	public void setSystemIn()
 	{
-		// TODO Auto-generated method stub
+		System.setIn(inputStream);
 	}
 
 	public void setSystemOut()
 	{
-		// TODO Auto-generated method stub
+		System.setOut(printStream);
 	}
 
 	public void setSystemErr()
 	{
-		// TODO Auto-generated method stub
+		System.setErr(printStream);
 	}
 
 	public InputStream getSystemIn()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return inputStream;
 	}
 
 	public PrintStream getSystemOut()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return printStream;
 	}
 
 	public PrintStream getSystemErr()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return printStream;
 	}
 	
 	public static void main(String[] args) throws Throwable

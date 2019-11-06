@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 
 import org.vate.VT;
 import org.vate.client.dialog.VTClientConfigurationDialog;
+import org.vate.console.VTConsole;
 import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.console.graphical.menu.VTGraphicalConsoleInputMenuItem;
 import org.vate.dialog.VTFileDialog;
@@ -75,8 +76,8 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 	{
 		// this.dialog = dialog;
 		// this.frame = frame;
-		final VTFileDialog loadFileDialog = new VTFileDialog(VTGraphicalConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Load File", FileDialog.LOAD);
-		final VTFileDialog saveFileDialog = new VTFileDialog(VTGraphicalConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Save File", FileDialog.SAVE);
+		final VTFileDialog loadFileDialog = new VTFileDialog(VTConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Load File", FileDialog.LOAD);
+		final VTFileDialog saveFileDialog = new VTFileDialog(VTConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Save File", FileDialog.SAVE);
 		clientConsoleCommandsMenu = new Menu("Commands");
 		//clientConsoleCommandsMenu.setShortcut(new MenuShortcut(KeyEvent.VK_C, true));
 		

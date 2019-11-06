@@ -388,7 +388,7 @@ public class VTLanternaOutputTextBox extends TextBox
 			}
 			if (data == '\f')
 			{
-				//TODO: clear screen
+				setText("");
 				return;
 			}
 			if (data == '\u007f')

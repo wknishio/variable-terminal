@@ -1562,10 +1562,10 @@ public class VTClient implements Runnable
 		{
 			VTConsole.initialize();
 			VTConsole.setTitle("Variable-Terminal Client " + VT.VT_VERSION + " - Console");
-			connectionDialog = new VTClientConfigurationDialog(VTGraphicalConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Connection", true, this);
+			connectionDialog = new VTClientConfigurationDialog(VTConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Connection", true, this);
 			inputMenuBar = new VTClientRemoteGraphicalConsoleInputMenuBar(connectionDialog);
-			VTGraphicalConsole.getFrame().setMenuBar(inputMenuBar);
-			VTGraphicalConsole.getFrame().pack();
+			VTConsole.getFrame().setMenuBar(inputMenuBar);
+			VTConsole.getFrame().pack();
 		}
 		else
 		{

@@ -27,7 +27,7 @@ public final class VTStandardStart
 			
 			if (VTConsole.isGraphical())
 			{
-				VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTGraphicalConsole.getFrame());
+				VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTConsole.getFrame());
 				dialog.setVisible(true);
 				if (dialog.getMode() == 1)
 				{
@@ -187,7 +187,7 @@ public final class VTStandardStart
 				
 				if (VTConsole.isGraphical())
 				{
-					VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTGraphicalConsole.getFrame());
+					VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTConsole.getFrame());
 					dialog.setVisible(true);
 					if (dialog.getMode() == 1)
 					{

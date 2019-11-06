@@ -2,19 +2,21 @@ package org.vate.console.graphical.menu;
 
 // import java.awt.CheckboxMenuItem;
 import java.awt.Component;
+import java.awt.Frame;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.vate.console.VTConsole;
 import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.console.graphical.listener.VTGraphicalConsoleCopyActionListener;
 import org.vate.console.graphical.listener.VTGraphicalConsolePasteActionListener;
-import org.vate.graphics.font.VTGlobalTextStyleManager;
 
 public class VTGraphicalConsolePopupMenu extends PopupMenu
 {
 	private static final long serialVersionUID = 1L;
+	private Frame frame;
 	private MenuItem copy;
 	private MenuItem paste;
 	private MenuItem scroll;
@@ -27,8 +29,9 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
 	private VTGraphicalConsoleCopyActionListener copyActionListener;
 	private VTGraphicalConsolePasteActionListener pasteActionListener;
 	
-	public VTGraphicalConsolePopupMenu()
+	public VTGraphicalConsolePopupMenu(Frame frame)
 	{
+		this.frame = frame;
 		// this.keyListener = keyListener;
 		copy = new MenuItem("Copy");
 		paste = new MenuItem("Paste");
@@ -79,15 +82,15 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
 		//this.insert(expand, 4);
 		//this.insert(reduce, 5);
 		// this.insert(scroll, 2);
-		VTGraphicalConsole.getFrame().add(this);
+		frame.add(this);
 	}
 	
 	/* public boolean getScroll() { return scroll.getState(); } */
 	
 	public void show(Component origin, int x, int y)
 	{
-		VTGraphicalConsole.getFrame().remove(this);
-		VTGraphicalConsole.getFrame().add(this);
+		frame.remove(this);
+		frame.add(this);
 		// scroll.setState(b)
 		super.show(origin, x, y);
 	}

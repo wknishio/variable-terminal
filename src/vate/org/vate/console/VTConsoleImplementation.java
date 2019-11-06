@@ -1,5 +1,6 @@
 package org.vate.console;
 
+import java.awt.Frame;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Locale;
@@ -52,4 +53,6 @@ public interface VTConsoleImplementation
 	public abstract PrintStream getSystemOut();
 	
 	public abstract PrintStream getSystemErr();
+	
+	public abstract Frame getFrame();
 }

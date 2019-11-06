@@ -1,6 +1,7 @@
 package org.vate.console;
 
 import java.awt.EventQueue;
+import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.io.FileDescriptor;
 import java.io.InputStream;
@@ -8,6 +9,7 @@ import java.io.PrintStream;
 import java.util.Locale;
 
 import org.vate.console.graphical.VTGraphicalConsole;
+import org.vate.console.lanterna.separated.VTLanternaConsole;
 import org.vate.console.standard.VTStandardConsole;
 import org.vate.nativeutils.VTNativeUtils;
 
@@ -31,6 +33,7 @@ public class VTConsole
 	public static final int VT_CONSOLE_COLOR_LIGHT_WHITE = 17;
 	public static final int VT_CONSOLE_COLOR_DEFAULT = 9;
 	
+	private static boolean lanterna = false;
 	private static boolean graphical;
 	private static boolean daemon;
 	// private static boolean split;
@@ -54,6 +57,11 @@ public class VTConsole
 		{
 			if (!daemon)
 			{
+				if (lanterna)
+				{
+					console = new VTLanternaConsole();
+					return;
+				}
 				if (graphical)
 				{
 					// VTGraphicalConsole.setSplit(split);
@@ -84,6 +92,11 @@ public class VTConsole
 	public synchronized static boolean isGraphical()
 	{
 		return graphical;
+	}
+	
+	public synchronized static void setLanterna(boolean lanterna)
+	{
+		VTConsole.lanterna = lanterna;
 	}
 	
 	public synchronized static void setGraphical(boolean graphical)
@@ -157,7 +170,7 @@ public class VTConsole
 		{
 			try
 			{
-				VTGraphicalConsole.getFrame().setVisible(false);
+				VTConsole.getFrame().setVisible(false);
 			}
 			catch (Throwable t)
 			{
@@ -172,7 +185,7 @@ public class VTConsole
 		{
 			try
 			{
-				VTGraphicalConsole.getFrame().setVisible(true);
+				VTConsole.getFrame().setVisible(true);
 				Object waiter = VTConsole.getSynchronizationObject();
 				synchronized (waiter)
 				{
@@ -517,5 +530,14 @@ public class VTConsole
 			}
 		}
 		return console != null;
+	}
+	
+	public static Frame getFrame()
+	{
+		if (checkConsole())
+		{
+			return console.getFrame();
+		}
+		return null;
 	}
 }

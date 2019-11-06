@@ -77,6 +77,7 @@ public class AWTTerminalFontConfiguration {
 
     private static List<Font> getDefaultWindowsFonts() {
         int fontSize = getFontSize();
+        //System.out.println("fontSize:" + fontSize);
         return Collections.unmodifiableList(Arrays.asList(
                 new Font("Consolas", Font.PLAIN, fontSize), //Monospaced can look pretty bad on Windows, so let's override it
                 new Font("Courier New", Font.PLAIN, fontSize),
@@ -85,6 +86,7 @@ public class AWTTerminalFontConfiguration {
 
     private static List<Font> getDefaultLinuxFonts() {
         int fontSize = getFontSize();
+        //System.out.println("fontSize:" + fontSize);
         return Collections.unmodifiableList(Arrays.asList(
                 new Font("DejaVu Sans Mono", Font.PLAIN, fontSize),
                 new Font("Monospaced", Font.PLAIN, fontSize)));
@@ -104,6 +106,7 @@ public class AWTTerminalFontConfiguration {
 
     private static List<Font> getDefaultFonts() {
         int fontSize = getFontSize();
+        //System.out.println("fontSize:" + fontSize);
         return Collections.unmodifiableList(Collections.singletonList(
                 new Font("Monospaced", Font.PLAIN, fontSize)));
     }
@@ -123,9 +126,14 @@ public class AWTTerminalFontConfiguration {
     }
 
     private static int getHDPIAdjustedFontSize(int baseFontSize) {
+    	//System.out.println("dpi:" + Toolkit.getDefaultToolkit().getScreenResolution());
         if (Toolkit.getDefaultToolkit().getScreenResolution() >= 110) {
             // Rely on DPI if it is a high value.
-            return Toolkit.getDefaultToolkit().getScreenResolution() / (baseFontSize/2) + 1;
+        	double standard = 72;
+        	double factor = Toolkit.getDefaultToolkit().getScreenResolution() / standard;
+        	//System.out.println("factor:" + factor);
+        	return (int) (factor * baseFontSize);
+            //return Toolkit.getDefaultToolkit().getScreenResolution() / (baseFontSize/2) + 1;
         } else {
             // Otherwise try to guess it from the monitor size:
             // If the width is wider than Full HD (1080p, or 1920x1080), then assume it's high-DPI.

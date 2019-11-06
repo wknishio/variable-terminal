@@ -13,6 +13,7 @@ public final class VTGraphicalStart
 	
 	public static final void main(String[] args)
 	{
+		//VTConsole.setLanterna(true);
 		VTConsole.setGraphical(true);
 		VTGraphicalConsole.setRemoteIcon(true);
 		// VTTerminal.setSplit(true);
@@ -27,7 +28,7 @@ public final class VTGraphicalStart
 			
 			if (VTConsole.isGraphical())
 			{
-				VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTGraphicalConsole.getFrame());
+				VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTConsole.getFrame());
 				dialog.setVisible(true);
 				if (dialog.getMode() == 1)
 				{
@@ -185,7 +186,7 @@ public final class VTGraphicalStart
 				
 				if (VTConsole.isGraphical())
 				{
-					VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTGraphicalConsole.getFrame());
+					VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTConsole.getFrame());
 					dialog.setVisible(true);
 					if (dialog.getMode() == 1)
 					{

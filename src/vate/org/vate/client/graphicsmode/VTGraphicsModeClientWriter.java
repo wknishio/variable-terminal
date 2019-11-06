@@ -1832,7 +1832,7 @@ public class VTGraphicsModeClientWriter implements Runnable
 			// selfControlProvider.initializeInputControl();
 			if (VTConsole.isGraphical())
 			{
-				GraphicsDevice device = VTGraphicalDeviceResolver.getCurrentDevice(VTGraphicalConsole.getFrame());
+				GraphicsDevice device = VTGraphicalDeviceResolver.getCurrentDevice(VTConsole.getFrame());
 				if (device != null)
 				{
 					frame = new VTGraphicsModeClientWriterFrame(device.getDefaultConfiguration());
