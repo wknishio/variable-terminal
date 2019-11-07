@@ -9,14 +9,16 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JLabel;
+import javax.swing.ListModel;
 import javax.swing.UIManager;
-
+import org.vate.console.VTConsole;
 import org.vate.console.graphical.VTGraphicalConsoleFrame;
-
+import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
 import com.sun.jna.Platform;
 
 public class VTGlobalTextStyleManager
@@ -24,6 +26,9 @@ public class VTGlobalTextStyleManager
 	private static final List<Component> monospaceds = new LinkedList<Component>();
 	private static final List<Component> texts = new LinkedList<Component>();
 	private static final List<Window> windows = new LinkedList<Window>();
+	private static final List<Component> scaleds = new LinkedList<Component>();
+	private static final List<List<Font>> lists = new LinkedList<List<Font>>();
+	private static final List<List<Font>> defaultlists = new LinkedList<List<Font>>();
 	
 	private static double FONT_SCALING_FACTOR;
 	
@@ -69,6 +74,7 @@ public class VTGlobalTextStyleManager
 				
 			}
 		}
+		AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
 	}
 	
 	private static Font windowFont = Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
@@ -167,6 +173,22 @@ public class VTGlobalTextStyleManager
 		windows.remove(window);
 	}
 	
+	public static void registerScaledComponent(Component component)
+	{
+		scaleds.add(component);
+	}
+	
+	public static void unregisterScaledComponent(Component component)
+	{
+		scaleds.remove(component);
+	}
+	
+	public static void registerFontList(List<Font> list)
+	{
+		lists.add(list);
+		defaultlists.add(Arrays.asList(list.toArray(new Font[]{})));
+	}
+	
 	public static void defaultFontSize()
 	{
 		//System.out.println("FONT_SCALING_FACTOR:" + FONT_SCALING_FACTOR);
@@ -174,6 +196,8 @@ public class VTGlobalTextStyleManager
 		//System.out.println("defaultWindowFontSize:" + defaultWindowFontSize);
 		monospacedFont = monospacedFont.deriveFont(defaultMonospacedFontSize);
 		windowFont = windowFont.deriveFont(defaultWindowFontSize);
+		//plainScaleds();
+		defaultLists();
 		updateComponents();
 	}
 	
@@ -185,20 +209,10 @@ public class VTGlobalTextStyleManager
 	
 	public static void enableFontStyleBold()
 	{
-//		Font nextFont = monospacedFonts.get(currentMonospacedFontIndex);
-//		currentMonospacedFontIndex++;
-//		if (currentMonospacedFontIndex >= monospacedFonts.size())
-//		{
-//			currentMonospacedFontIndex = 0;
-//		}
-//		nextFont = nextFont.deriveFont(windowFont.getSize2D());
-		
-		//System.out.println("newFont: [" + nextFont.getFontName() + "]");
-		
-		//monospacedFont = nextFont;
-		//windowFont = nextFont;
 		monospacedFont = monospacedFont.deriveFont(Font.BOLD);
 		windowFont = windowFont.deriveFont(Font.BOLD);
+		boldScaleds();
+		//boldLists();
 		updateComponents();
 	}
 	
@@ -206,6 +220,8 @@ public class VTGlobalTextStyleManager
 	{
 		monospacedFont = monospacedFont.deriveFont(Font.PLAIN);
 		windowFont = windowFont.deriveFont(Font.PLAIN);
+		plainScaleds();
+		//plainLists();
 		updateComponents();
 	}
 	
@@ -213,6 +229,8 @@ public class VTGlobalTextStyleManager
 	{
 		monospacedFont = monospacedFont.deriveFont((float) (monospacedFont.getSize2D() + 1));
 		windowFont = windowFont.deriveFont((float) (windowFont.getSize2D() + 1));
+		increaseScaleds();
+		increaseLists();
 		updateComponents();
 	}
 	
@@ -220,12 +238,114 @@ public class VTGlobalTextStyleManager
 	{
 		monospacedFont = monospacedFont.deriveFont((float) (monospacedFont.getSize2D() - 1));
 		windowFont = windowFont.deriveFont((float) (windowFont.getSize2D() - 1));
+		decreaseScaleds();
+		decreaseLists();
 		updateComponents();
 	}
 	
 	public static void packComponents()
 	{
 		updateComponents();
+	}
+	
+	private static void boldScaleds()
+	{
+		for (Component component : scaleds)
+		{
+			Font font = component.getFont();
+			component.setFont(font.deriveFont(Font.BOLD));
+		}
+	}
+	
+	private static void plainScaleds()
+	{
+		for (Component component : scaleds)
+		{
+			Font font = component.getFont();
+			component.setFont(font.deriveFont(Font.PLAIN));
+		}
+	}
+	
+	private static void increaseScaleds()
+	{
+		for (Component component : scaleds)
+		{
+			Font font = component.getFont();
+			component.setFont(font.deriveFont((float) (font.getSize2D() + 1)));
+		}
+	}
+	
+	private static void decreaseScaleds()
+	{
+		for (Component component : scaleds)
+		{
+			Font font = component.getFont();
+			component.setFont(font.deriveFont((float) (font.getSize2D() - 1)));
+		}
+	}
+	
+	private static void increaseLists()
+	{
+		for (List<Font> list : lists)
+		{
+			Font[] fonts = Arrays.copyOf(list.toArray(new Font[]{}), list.size());
+			list.clear();
+			for (Font font : fonts)
+			{
+				list.add(font.deriveFont((float) (font.getSize2D() + 1)));
+			}
+		}
+	}
+	
+	private static void decreaseLists()
+	{
+		for (List<Font> list : lists)
+		{
+			Font[] fonts = Arrays.copyOf(list.toArray(new Font[]{}), list.size());
+			list.clear();
+			for (Font font : fonts)
+			{
+				list.add(font.deriveFont((float) (font.getSize2D() - 1)));
+			}
+		}
+	}
+	
+	private static void defaultLists()
+	{
+		int i = 0;
+		for (List<Font> list : lists)
+		{
+			list.clear();
+			list.addAll(defaultlists.get(i++));
+		}
+	}
+	
+	@SuppressWarnings("unused")
+	private static void boldLists()
+	{
+		for (List<Font> list : lists)
+		{
+			Font[] fonts = Arrays.copyOf(list.toArray(new Font[]{}), list.size());
+			list.clear();
+			for (Font font : fonts)
+			{
+				list.add(font.deriveFont(Font.BOLD, font.getSize2D()));
+			}
+		}
+	}
+	
+	@SuppressWarnings("unused")
+	private static void plainLists()
+	{
+		for (List<Font> list : lists)
+		{
+			Font[] fonts = Arrays.copyOf(list.toArray(new Font[]{}), list.size());
+			list.clear();
+			for (Font font : fonts)
+			{
+				list.add(font.deriveFont(Font.PLAIN, font.getSize2D()));
+			}
+		}
 	}
 	
 	private static void updateComponents()
@@ -267,11 +387,14 @@ public class VTGlobalTextStyleManager
 					}
 					frame.setMenuBar(null);
 					frame.setMenuBar(menubar);
-					if (window instanceof VTGraphicalConsoleFrame)
-					{
-						window.invalidate();
-						window.pack();
-					}
+					window.invalidate();
+					window.pack();
+//					if (window instanceof VTGraphicalConsoleFrame)
+//					{
+//						window.invalidate();
+//						window.pack();
+//					}
+					window.repaint();
 				}
 				if (window instanceof Dialog)
 				{
@@ -294,5 +417,6 @@ public class VTGlobalTextStyleManager
 				
 			}
 		}
+		VTConsole.refreshText();
 	}
 }

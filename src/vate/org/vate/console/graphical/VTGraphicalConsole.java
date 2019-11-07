@@ -2100,6 +2100,11 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		VTGraphicalConsole.remote = remote;
 	}
 	
+	public void refreshText()
+	{
+		
+	}
+	
 	// public boolean isReadingLine()
 	// {
 	// return VTGraphicalConsoleReader.isReadingLine();

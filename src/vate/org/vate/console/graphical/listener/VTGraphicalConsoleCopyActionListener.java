@@ -19,16 +19,13 @@ public class VTGraphicalConsoleCopyActionListener implements ActionListener
 	
 	public void actionPerformed(ActionEvent e)
 	{
+		
 		try
 		{
 			StringSelection text = new StringSelection(VTConsole.getSelectedText());
 			systemClipboard.setContents(text, null);
+			//System.out.println("copy:" + text.toString());
 			VTConsole.flush();
-//			VTGraphicalConsole.updateCaretPosition();
-//			if (VTGraphicalConsole.isFlushInterrupted())
-//			{
-//				VTGraphicalConsole.clearCaretPosition();
-//			}
 		}
 		catch (Throwable ex)
 		{

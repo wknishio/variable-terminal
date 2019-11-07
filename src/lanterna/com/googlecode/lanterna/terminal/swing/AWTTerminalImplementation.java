@@ -34,7 +34,12 @@ public class AWTTerminalImplementation extends GraphicalTerminalImplementation {
     private final Component component;
     private final AWTTerminalFontConfiguration fontConfiguration;
 
-    /**
+    public AWTTerminalFontConfiguration getFontConfiguration()
+	{
+		return fontConfiguration;
+	}
+
+	/**
      * Creates a new {@code AWTTerminalImplementation}
      * @param component Component that is the AWT terminal surface
      * @param fontConfiguration Font configuration to use
@@ -138,5 +143,10 @@ public class AWTTerminalImplementation extends GraphicalTerminalImplementation {
             throw new UnsupportedOperationException("Cannot call SwingTerminal.readInput() on the AWT thread");
         }
         return super.readInput();
+    }
+    
+    public void resetFont()
+    {
+    	component.setMinimumSize(new Dimension(fontConfiguration.getFontWidth(), fontConfiguration.getFontHeight()));
     }
 }

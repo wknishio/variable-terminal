@@ -74,11 +74,18 @@ public class AWTTerminalFontConfiguration {
             "AR PL UMing HK",
             "AR PL UMing CN"
     )));
+    
+	private static double FONT_SCALING_FACTOR = 1.0;
 
     private static List<Font> getDefaultWindowsFonts() {
         int fontSize = getFontSize();
         //System.out.println("fontSize:" + fontSize);
-        return Collections.unmodifiableList(Arrays.asList(
+        //ArrayList<Font> fonts = new ArrayList<Font>();
+        //fonts.add(new Font("Consolas", Font.PLAIN, fontSize));
+        //fonts.add(new Font("Courier New", Font.PLAIN, fontSize));
+        //fonts.add(new Font("Monospaced", Font.PLAIN, fontSize));
+        //return fonts;
+        return (Arrays.asList(
                 new Font("Consolas", Font.PLAIN, fontSize), //Monospaced can look pretty bad on Windows, so let's override it
                 new Font("Courier New", Font.PLAIN, fontSize),
                 new Font("Monospaced", Font.PLAIN, fontSize)));
@@ -87,7 +94,11 @@ public class AWTTerminalFontConfiguration {
     private static List<Font> getDefaultLinuxFonts() {
         int fontSize = getFontSize();
         //System.out.println("fontSize:" + fontSize);
-        return Collections.unmodifiableList(Arrays.asList(
+        //ArrayList<Font> fonts = new ArrayList<Font>();
+        //fonts.add(new Font("DejaVu Sans Mono", Font.PLAIN, fontSize));
+        //fonts.add(new Font("Monospaced", Font.PLAIN, fontSize));
+        //return fonts;
+        return (Arrays.asList(
                 new Font("DejaVu Sans Mono", Font.PLAIN, fontSize),
                 new Font("Monospaced", Font.PLAIN, fontSize)));
                 //Below, these should be redundant (Monospaced is supposed to catch-all)
@@ -107,46 +118,54 @@ public class AWTTerminalFontConfiguration {
     private static List<Font> getDefaultFonts() {
         int fontSize = getFontSize();
         //System.out.println("fontSize:" + fontSize);
-        return Collections.unmodifiableList(Collections.singletonList(
-                new Font("Monospaced", Font.PLAIN, fontSize)));
+        //ArrayList<Font> fonts = new ArrayList<Font>();
+        //fonts.add(new Font("Monospaced", Font.PLAIN, fontSize));
+        //return fonts;
+        return (Arrays.asList(new Font("Monospaced", Font.PLAIN, fontSize)));
+    }
+    
+    public static void setFontScalingFactor(double factor)
+    {
+    	FONT_SCALING_FACTOR = factor;
     }
 
     // Here we check the screen resolution on the primary monitor and make a guess at if it's high-DPI or not
     private static int getFontSize() {
         int baseFontSize = 12;
-        String[] javaVersion = System.getProperty("java.version", "1").split("\\.");
-        if (System.getProperty("os.name", "").startsWith("Windows") && Integer.parseInt(javaVersion[0]) >= 9) {
-            // Java 9+ reports itself as HiDPI-unaware on Windows and will be scaled by the OS
-            // Keep in mind that Java 8 and earlier reports itself as version 1.X.0_YYY
-            return baseFontSize;
-        }
-        else {
-            return getHDPIAdjustedFontSize(baseFontSize);
-        }
+        return (int) (baseFontSize * FONT_SCALING_FACTOR);
+//        String[] javaVersion = System.getProperty("java.version", "1").split("\\.");
+//        if (System.getProperty("os.name", "").startsWith("Windows") && Integer.parseInt(javaVersion[0]) >= 9) {
+//            // Java 9+ reports itself as HiDPI-unaware on Windows and will be scaled by the OS
+//            // Keep in mind that Java 8 and earlier reports itself as version 1.X.0_YYY
+//            return baseFontSize;
+//        }
+//        else {
+//            return getHDPIAdjustedFontSize(baseFontSize);
+//        }
     }
 
-    private static int getHDPIAdjustedFontSize(int baseFontSize) {
-    	//System.out.println("dpi:" + Toolkit.getDefaultToolkit().getScreenResolution());
-        if (Toolkit.getDefaultToolkit().getScreenResolution() >= 110) {
-            // Rely on DPI if it is a high value.
-        	double standard = 72;
-        	double factor = Toolkit.getDefaultToolkit().getScreenResolution() / standard;
-        	//System.out.println("factor:" + factor);
-        	return (int) (factor * baseFontSize);
-            //return Toolkit.getDefaultToolkit().getScreenResolution() / (baseFontSize/2) + 1;
-        } else {
-            // Otherwise try to guess it from the monitor size:
-            // If the width is wider than Full HD (1080p, or 1920x1080), then assume it's high-DPI.
-            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            if (ge.getMaximumWindowBounds().getWidth() > 4096) {
-                return baseFontSize * 4;
-            } else if (ge.getMaximumWindowBounds().getWidth() > 2048) {
-                return baseFontSize * 2;
-            } else {
-                return baseFontSize;
-            }
-        }
-    }
+//    private static int getHDPIAdjustedFontSize(int baseFontSize) {
+//    	//System.out.println("dpi:" + Toolkit.getDefaultToolkit().getScreenResolution());
+//        if (Toolkit.getDefaultToolkit().getScreenResolution() >= 110) {
+//            // Rely on DPI if it is a high value.
+//        	double standard = 96;
+//        	double factor = Toolkit.getDefaultToolkit().getScreenResolution() / standard;
+//        	//System.out.println("factor:" + factor);
+//        	return (int) (factor * baseFontSize);
+//            //return Toolkit.getDefaultToolkit().getScreenResolution() / (baseFontSize/2) + 1;
+//        } else {
+//            // Otherwise try to guess it from the monitor size:
+//            // If the width is wider than Full HD (1080p, or 1920x1080), then assume it's high-DPI.
+//            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//            if (ge.getMaximumWindowBounds().getWidth() > 4096) {
+//                return baseFontSize * 4;
+//            } else if (ge.getMaximumWindowBounds().getWidth() > 2048) {
+//                return baseFontSize * 2;
+//            } else {
+//                return baseFontSize;
+//            }
+//        }
+//    }
 
     /**
      * Returns the default font to use depending on the platform
@@ -207,8 +226,14 @@ public class AWTTerminalFontConfiguration {
     }
 
     private final List<Font> fontPriority;
-    private final int fontWidth;
-    private final int fontHeight;
+    
+    public List<Font> getFontPriority()
+	{
+		return fontPriority;
+	}
+
+	//private final int fontWidth;
+    //private final int fontHeight;
     private final boolean useAntiAliasing;
     private final BoldMode boldMode;
 
@@ -220,8 +245,8 @@ public class AWTTerminalFontConfiguration {
         this.useAntiAliasing = useAntiAliasing;
         this.boldMode = boldMode;
         this.fontPriority = new ArrayList<Font>(Arrays.asList(fontsInOrderOfPriority));
-        this.fontWidth = getFontWidth(fontPriority.get(0));
-        this.fontHeight = getFontHeight(fontPriority.get(0));
+        int fontWidth = getFontWidth(fontPriority.get(0));
+        int fontHeight = getFontHeight(fontPriority.get(0));
 
         //Make sure all the fonts are monospace
         for(Font font: fontPriority) {
@@ -280,7 +305,7 @@ public class AWTTerminalFontConfiguration {
      * @return Horizontal size in pixels of the fonts configured
      */
     int getFontWidth() {
-        return fontWidth;
+        return getFontWidth(fontPriority.get(0));
     }
 
     /**
@@ -288,7 +313,7 @@ public class AWTTerminalFontConfiguration {
      * @return Vertical size in pixels of the fonts configured
      */
     int getFontHeight() {
-        return fontHeight;
+        return getFontHeight(fontPriority.get(0));
     }
 
     /**

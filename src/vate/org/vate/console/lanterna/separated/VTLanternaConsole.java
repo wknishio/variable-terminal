@@ -6,6 +6,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.dnd.DropTarget;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -31,7 +32,9 @@ import org.vate.VT;
 import org.vate.console.VTConsole;
 import org.vate.console.VTConsoleImplementation;
 import org.vate.console.graphical.VTGraphicalConsoleNullOutputStream;
-
+import org.vate.console.graphical.listener.VTGraphicalConsoleDropTargetListener;
+import org.vate.console.graphical.menu.VTGraphicalConsolePopupMenu;
+import org.vate.graphics.font.VTGlobalTextStyleManager;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
@@ -52,6 +55,7 @@ import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.input.MouseAction;
 import com.googlecode.lanterna.input.MouseActionType;
 import com.googlecode.lanterna.screen.Screen;
+import com.googlecode.lanterna.screen.Screen.RefreshType;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.MouseCaptureMode;
@@ -63,6 +67,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 {
 	private volatile Frame awtframe;
 	private Terminal terminal;
+	private Screen screen;
 	private AWTTerminal awtterminal;
 	private VTLanternaOutputTextBox outputBox = new VTLanternaOutputTextBox(new TerminalSize(80, 24), "", Style.MULTI_LINE, 200);
 	private VTLanternaOutputTextBox inputBox = new VTLanternaOutputTextBox(new TerminalSize(80, 1), "", Style.SINGLE_LINE, 1);
@@ -91,7 +96,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	private VTLanternaConsoleInputStream inputStream;
 	private volatile boolean ignoreClose = false;
 	private volatile boolean started = false;
-	
+	private VTGraphicalConsolePopupMenu popupMenu;
 	//support command history
 	//support echo input
 	//support maximum line width in output
@@ -102,10 +107,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	//support window listener for awtframe
 	//support command menubar for awtframe
 	//replaced calls to VTGraphicalConsole static methods for VTConsole calls
+	//support font options for awtframe
+	//support context menu for awtframe
+	//support command drag drop for awtframe
 	//TODO:support keyboard shortcuts
-	//TODO:support font options for awtframe
-	//TODO:support command drag drop for awtframe
-	//TODO:support context menu for awtframe
 	
 	public VTLanternaConsole()
 	{
@@ -563,6 +568,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         		
         	}
         	awtframe = (Frame) terminal;
+        	//awtframe.setLocationByPlatform(true);
         	try
 			{
 				awtframe.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
@@ -584,13 +590,20 @@ public class VTLanternaConsole implements VTConsoleImplementation
         	{        		
 				public void mouseClicked(MouseEvent e)
 				{
-					int x = e.getX();
-					int y = e.getY();
-					int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
-					int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
-					TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
-					MouseAction mouseAction = new MouseAction(MouseActionType.CLICK_DOWN, e.getButton(), pos);
-					awtterminal.addInput(mouseAction);
+					if (e.getButton() == MouseEvent.BUTTON1)
+					{
+						int x = e.getX();
+						int y = e.getY();
+						int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
+						int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
+						TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
+						MouseAction mouseAction = new MouseAction(MouseActionType.CLICK_DOWN, e.getButton(), pos);
+						awtterminal.addInput(mouseAction);
+					}
+					else if (e.getButton() == MouseEvent.BUTTON3)
+					{
+						popupMenu.show(awtterminal, e.getX(), e.getY());
+					}
 				}
 				public void mousePressed(MouseEvent e)
 				{
@@ -635,6 +648,12 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					awtterminal.addInput(mouseAction);
 				}
         	});
+        	VTGlobalTextStyleManager.registerWindow(awtframe);
+        	VTGlobalTextStyleManager.registerFontList(awtterminal.getTerminalFontConfiguration().getFontPriority());
+        	popupMenu = new VTGraphicalConsolePopupMenu(awtframe);
+        	awtterminal.setDropTarget(new DropTarget());
+        	awtterminal.getDropTarget().setActive(true);
+        	awtterminal.getDropTarget().addDropTargetListener(new VTGraphicalConsoleDropTargetListener());
         }
         else
         {
@@ -642,7 +661,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         }		
         terminal.setBackgroundColor(TextColor.ANSI.BLACK);
         terminal.setForegroundColor(TextColor.ANSI.GREEN);
-        Screen screen = new TerminalScreen(terminal);
+        screen = new TerminalScreen(terminal);
         //screen.setTabBehaviour(TabBehaviour.ALIGN_TO_COLUMN_4);
         screen.startScreen();
 
@@ -887,8 +906,9 @@ public class VTLanternaConsole implements VTConsoleImplementation
         
         if (awtframe != null)
         {
-        	awtframe.setVisible(true);
+        	//awtframe.setLocationByPlatform(true);
         	awtframe.pack();
+        	awtframe.setVisible(true);
         }
         
         synchronized (this)
@@ -1276,6 +1296,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 			write("\n");
 			flush();
 		}
+		readingInput = false;
 		return data;
 	}
 
@@ -1344,8 +1365,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
 			synchronized (outputSynchronizer)
 			{
 				String data = outputBuffer.toString();
-				outputBox.output(data);
-				outputBuffer.setLength(0);
+				if (data.length() > 0)
+				{
+					outputBox.output(data);
+					outputBuffer.setLength(0);
+				}
 			}
 		}
 	}
@@ -1539,5 +1563,17 @@ public class VTLanternaConsole implements VTConsoleImplementation
 			}
 		}
 		return "";
+	}
+
+	public void refreshText()
+	{
+		try
+		{
+			screen.refresh(RefreshType.COMPLETE);
+		}
+		catch (Throwable e)
+		{
+			
+		}
 	}
 }

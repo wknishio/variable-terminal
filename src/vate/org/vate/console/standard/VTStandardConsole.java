@@ -810,6 +810,11 @@ public class VTStandardConsole implements VTConsoleImplementation
 		return null;
 	}
 	
+	public void refreshText()
+	{
+		
+	}
+	
 	// public boolean isReadingLine()
 	// {
 	// return inputStream.usingRead();

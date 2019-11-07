@@ -303,4 +303,10 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
     public void removeResizeListener(TerminalResizeListener listener) {
         awtTerminal.removeResizeListener(listener);
     }
+    
+    public void pack()
+    {
+    	awtTerminal.getTerminalImplementation().resetFont();
+    	super.pack();
+    }
 }

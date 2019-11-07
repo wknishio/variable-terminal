@@ -597,4 +597,12 @@ public class VTConsole
 		}
 		return "";
 	}
+	
+	public static void refreshText()
+	{
+		if (checkConsole())
+		{
+			console.refreshText();
+		}
+	}
 }

@@ -70,4 +70,6 @@ public interface VTConsoleImplementation
 	public abstract void clearInput();
 	
 	public abstract String getSelectedText();
+	
+	public abstract void refreshText();
 }

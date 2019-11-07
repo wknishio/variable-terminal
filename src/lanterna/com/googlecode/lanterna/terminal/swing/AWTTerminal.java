@@ -322,4 +322,9 @@ public class AWTTerminal extends Panel implements IOSafeTerminal {
     public void removeResizeListener(TerminalResizeListener listener) {
         terminalImplementation.removeResizeListener(listener);
     }
+    
+    public AWTTerminalFontConfiguration getTerminalFontConfiguration()
+    {
+		return terminalImplementation.getFontConfiguration();
+    }
 }

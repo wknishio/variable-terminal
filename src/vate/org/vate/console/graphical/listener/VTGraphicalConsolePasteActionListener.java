@@ -24,12 +24,14 @@ public class VTGraphicalConsolePasteActionListener implements ActionListener
 	@SuppressWarnings("unchecked")
 	public void actionPerformed(ActionEvent e)
 	{
+		
 		try
 		{
 			if (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor))
 			{
 				String text = systemClipboard.getData(DataFlavor.stringFlavor).toString();
 				VTConsole.input(text);
+				//System.out.println("paste:" + text);
 			}
 			else if (systemClipboard.isDataFlavorAvailable(DataFlavor.javaFileListFlavor))
 			{
@@ -43,6 +45,7 @@ public class VTGraphicalConsolePasteActionListener implements ActionListener
 					}
 					fileList.deleteCharAt(fileList.length() - 1);
 					VTConsole.input(fileList.toString());
+					//System.out.println("paste:" + fileList.toString());
 				}
 			}
 		}
