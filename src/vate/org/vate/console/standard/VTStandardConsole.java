@@ -773,6 +773,42 @@ public class VTStandardConsole implements VTConsoleImplementation
 	{
 		return null;
 	}
+
+	public void toggleScrollMode()
+	{
+		// TODO Auto-generated method stub
+	}
+
+	public void toggleInputMode()
+	{
+		// TODO Auto-generated method stub
+	}
+
+	public void input(String text)
+	{
+		// TODO Auto-generated method stub
+	}
+
+	public void copyText()
+	{
+		// TODO Auto-generated method stub
+	}
+
+	public void pasteText()
+	{
+		// TODO Auto-generated method stub
+	}
+
+	public void clearInput()
+	{
+		// TODO Auto-generated method stub
+	}
+
+	public String getSelectedText()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	// public boolean isReadingLine()
 	// {

@@ -10,6 +10,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import org.vate.console.VTConsole;
 
 public class VTGraphicalConsoleTextArea extends TextArea
 {
@@ -29,13 +30,14 @@ public class VTGraphicalConsoleTextArea extends TextArea
 	{
 		try
 		{
-			StringSelection text = new StringSelection(VTGraphicalConsole.getSelectedText());
+			StringSelection text = new StringSelection(VTConsole.getSelectedText());
 			systemClipboard.setContents(text, null);
-			VTGraphicalConsole.updateCaretPosition();
-			if (VTGraphicalConsole.isFlushInterrupted())
-			{
-				VTGraphicalConsole.clearCaretPosition();
-			}
+			VTConsole.flush();
+//			VTGraphicalConsole.updateCaretPosition();
+//			if (VTGraphicalConsole.isFlushInterrupted())
+//			{
+//				VTGraphicalConsole.clearCaretPosition();
+//			}
 		}
 		catch (Throwable ex)
 		{
@@ -50,7 +52,7 @@ public class VTGraphicalConsoleTextArea extends TextArea
 			if (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor))
 			{
 				String text = systemClipboard.getData(DataFlavor.stringFlavor).toString();
-				VTGraphicalConsole.input(text);
+				VTConsole.input(text);
 			}
 			else if (systemClipboard.isDataFlavorAvailable(DataFlavor.javaFileListFlavor))
 			{
@@ -64,7 +66,7 @@ public class VTGraphicalConsoleTextArea extends TextArea
 						fileList.append(file.getAbsolutePath() + ";");
 					}
 					fileList.deleteCharAt(fileList.length() - 1);
-					VTGraphicalConsole.input(fileList.toString());
+					VTConsole.input(fileList.toString());
 				}
 			}
 		}

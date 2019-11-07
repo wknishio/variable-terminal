@@ -494,7 +494,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		}
 	}
 	
-	public static void alternateInputMode()
+	public void toggleInputMode()
 	{
 		synchronized (outputSynchronizer)
 		{
@@ -782,7 +782,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		}
 	}
 	
-	public static void clearInput()
+	public void clearInput()
 	{
 		synchronized (inputSynchronizer)
 		{
@@ -792,7 +792,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		}
 	}
 	
-	public static void input(String string)
+	public void input(String string)
 	{
 		// System.out.println("input: [" + string + "]");
 		synchronized (inputSynchronizer)
@@ -1690,7 +1690,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		}
 	}
 	
-	public static String getSelectedText()
+	public String getSelectedText()
 	{
 		try
 		{
@@ -1750,7 +1750,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		return frame;
 	}
 	
-	public static void toggleScrollMode()
+	public void toggleScrollMode()
 	{
 		if (keyListener != null)
 		{
@@ -1758,7 +1758,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		}
 	}
 	
-	public static void copyText()
+	public void copyText()
 	{
 		if (textArea != null)
 		{
@@ -1767,7 +1767,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		
 	}
 	
-	public static void pasteText()
+	public void pasteText()
 	{
 		if (textArea != null)
 		{

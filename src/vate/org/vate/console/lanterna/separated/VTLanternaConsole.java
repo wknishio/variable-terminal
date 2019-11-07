@@ -2,6 +2,10 @@ package org.vate.console.lanterna.separated;
 
 import java.awt.Frame;
 import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -9,6 +13,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -23,6 +28,7 @@ import java.util.Properties;
 import javax.imageio.ImageIO;
 
 import org.vate.VT;
+import org.vate.console.VTConsole;
 import org.vate.console.VTConsoleImplementation;
 import org.vate.console.graphical.VTGraphicalConsoleNullOutputStream;
 
@@ -94,12 +100,12 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	//support flush interrupted output
 	//support custom icon for awtframe
 	//support window listener for awtframe
-	//TODO:replace calls to VTGraphicalConsole static methods for VTConsole calls
+	//support command menubar for awtframe
+	//replaced calls to VTGraphicalConsole static methods for VTConsole calls
 	//TODO:support keyboard shortcuts
 	//TODO:support font options for awtframe
 	//TODO:support command drag drop for awtframe
 	//TODO:support context menu for awtframe
-	//TODO:support command menubar for awtframe
 	
 	public VTLanternaConsole()
 	{
@@ -750,7 +756,6 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				if (keyStroke.getKeyType() == KeyType.Enter)
 				{
 					String command = currentLineBuffer.toString();
-					registerCurrentLine();
 					currentLineBuffer.setLength(0);
 					
 					//System.out.println("command:[" + command + "]");
@@ -904,7 +909,6 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	{
 		return ignoreClose;
 	}
-
 	
 	public void iconifyFrame()
 	{
@@ -927,6 +931,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	{
 		replaceActivated = !replaceActivated;
 		//updateCaretPosition();
+	}
+	
+	public void toggleFlush()
+	{
+		flushInterrupted = !flushInterrupted;
 	}
 	
 	public void toggleEcho()
@@ -973,21 +982,22 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		resetCurrentLine(echoInput);
 	}
 	
-	private void registerCurrentLine()
+	private void registerLine(String command)
 	{
+		if (command == null || command.length() == 0)
+		{
+			return;
+		}
 		if (!echoInput)
 		{
 			return;
 		}
-		if (currentLineBuffer.length() > 0)
+		if (!(commandHistory.size() < commandHistoryMaxSize))
 		{
-			if (!(commandHistory.size() < commandHistoryMaxSize))
-			{
-				commandHistory.remove(0);
-			}
-			commandHistory.remove(currentLineBuffer.toString());
-			commandHistory.add(currentLineBuffer.toString());
+			commandHistory.remove(0);
 		}
+		commandHistory.remove(command.toString());
+		commandHistory.add(command.toString());
 		commandHistoryPosition = commandHistory.size();
 	}
 	
@@ -1140,7 +1150,14 @@ public class VTLanternaConsole implements VTConsoleImplementation
 			{
 				if (string.indexOf('\n') == -1)
 				{
-					currentLineBuffer.append(string);
+					inputBox.handleDataInput(currentLineBuffer, string, replaceActivated);
+					//inputBox.setHiddenColumn(currentLineBuffer.length());
+					if (echoInput)
+					{
+						inputBox.setText(currentLineBuffer.toString());
+						inputBox.setCaretPosition(inputBox.getHiddenColumn());
+						inputBox.invalidate();
+					}
 				}
 				else
 				{
@@ -1250,6 +1267,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		}
 		if (echoInput)
 		{
+			registerLine(data);
 			write(data + "\n");
 			flush();
 		}
@@ -1334,7 +1352,13 @@ public class VTLanternaConsole implements VTConsoleImplementation
 
 	public void clear()
 	{
-		outputBox.setText("");
+		synchronized (outputSynchronizer)
+		{
+			outputBuffer.setLength(0);
+			outputBox.setText("");
+			outputBox.setCaretPosition(0, 0);
+			outputBox.invalidate();
+		}
 	}
 
 	public void bell()
@@ -1406,13 +1430,114 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		return printStream;
 	}
 	
-	public static void main(String[] args) throws Throwable
+//	public static void main(String[] args) throws Throwable
+//	{
+//		final VTLanternaConsole console = new VTLanternaConsole();
+//		while (true)
+//		{
+//			String line = console.readLine(true);
+//			//System.out.println("line:[" + line + "]");
+//		}
+//	}
+
+	public void toggleScrollMode()
 	{
-		final VTLanternaConsole console = new VTLanternaConsole();
-		while (true)
+		toggleFlush();
+	}
+
+	public void toggleInputMode()
+	{
+		toggleReplace();
+	}
+
+	public void copyText()
+	{
+		String selectedText = getSelectedText();
+		StringSelection text = null;
+		if (selectedText != null)
 		{
-			String line = console.readLine(true);
-			System.out.println("line:[" + line + "]");
+			text = new StringSelection(selectedText);
 		}
+		else
+		{
+			text = new StringSelection("");
+		}
+		try
+		{
+			Toolkit.getDefaultToolkit().getSystemClipboard().setContents(text, null);
+		}
+		catch (Throwable e)
+		{
+			
+		}
+		VTConsole.flush();
+	}
+
+	public void pasteText()
+	{
+		try
+		{
+			Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+			if (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor))
+			{
+				String text = systemClipboard.getData(DataFlavor.stringFlavor).toString();
+				VTConsole.input(text);
+			}
+			else if (systemClipboard.isDataFlavorAvailable(DataFlavor.javaFileListFlavor))
+			{
+				@SuppressWarnings("unchecked")
+				List<File> files = (List<File>) systemClipboard.getData(DataFlavor.javaFileListFlavor);
+				if (files.size() > 0)
+				{
+					StringBuilder fileList = new StringBuilder();
+					for (File file : files)
+					{
+						fileList.append(file.getAbsolutePath() + ";");
+					}
+					fileList.deleteCharAt(fileList.length() - 1);
+					VTConsole.input(fileList.toString());
+				}
+			}
+		}
+		catch (UnsupportedFlavorException e1)
+		{
+			
+		}
+		catch (IOException e1)
+		{
+			
+		}
+		catch (Throwable e1)
+		{
+			
+		}
+	}
+
+	public String getSelectedText()
+	{
+		if (inputBox.isFocused())
+		{
+			try
+			{
+				return inputBox.getLine(0);
+			}
+			catch (Throwable e)
+			{
+				
+			}
+		}
+		if (outputBox.isFocused())
+		{
+			try
+			{
+				int number = outputBox.getCaretPosition().getRow();
+				return outputBox.getLine(number);
+			}
+			catch (Throwable e)
+			{
+				
+			}
+		}
+		return "";
 	}
 }

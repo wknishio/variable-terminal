@@ -5,7 +5,7 @@ import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import org.vate.console.VTConsole;
 import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.console.graphical.menu.VTGraphicalConsoleInputMenuItem;
 import org.vate.graphics.font.VTGlobalTextStyleManager;
@@ -167,7 +167,7 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				VTGraphicalConsole.copyText();
+				VTConsole.copyText();
 			}
 		});
 		
@@ -176,7 +176,7 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				VTGraphicalConsole.pasteText();
+				VTConsole.pasteText();
 			}
 		});
 		
@@ -185,7 +185,7 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				VTGraphicalConsole.alternateInputMode();
+				VTConsole.toggleInputMode();
 			}
 		});
 		
@@ -194,7 +194,7 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				VTGraphicalConsole.toggleScrollMode();
+				VTConsole.toggleScrollMode();
 			}
 		});
 		

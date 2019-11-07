@@ -540,4 +540,61 @@ public class VTConsole
 		}
 		return null;
 	}
+	
+	public static void toggleScrollMode()
+	{
+		if (checkConsole())
+		{
+			console.toggleScrollMode();
+		}
+	}
+	
+	public static void toggleInputMode()
+	{
+		if (checkConsole())
+		{
+			console.toggleInputMode();
+		}
+	}
+		
+	public static void input(String text)
+	{
+		if (checkConsole())
+		{
+			console.input(text);
+		}
+	}
+	
+	public static void copyText()
+	{
+		if (checkConsole())
+		{
+			console.copyText();
+		}
+	}
+	
+	public static void pasteText()
+	{
+		if (checkConsole())
+		{
+			console.pasteText();
+		}
+	}
+	
+	public static void clearInput()
+	{
+		if (checkConsole())
+		{
+			console.clearInput();
+		}
+	}
+	
+	public static String getSelectedText()
+	{
+		if (checkConsole())
+		{
+			return console.getSelectedText();
+		}
+		return "";
+	}
 }

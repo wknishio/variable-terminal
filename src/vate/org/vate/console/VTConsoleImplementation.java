@@ -4,6 +4,7 @@ import java.awt.Frame;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Locale;
+import com.sun.media.jfxmedia.control.VideoDataBuffer;
 
 public interface VTConsoleImplementation
 {
@@ -55,4 +56,18 @@ public interface VTConsoleImplementation
 	public abstract PrintStream getSystemErr();
 	
 	public abstract Frame getFrame();
+	
+	public abstract void toggleScrollMode();
+	
+	public abstract void toggleInputMode();
+	
+	public abstract void input(String text);
+	
+	public abstract void copyText();
+	
+	public abstract void pasteText();
+	
+	public abstract void clearInput();
+	
+	public abstract String getSelectedText();
 }

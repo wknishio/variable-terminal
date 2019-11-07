@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
+import org.vate.console.VTConsole;
 import org.vate.console.graphical.VTGraphicalConsole;
 
 public class VTGraphicalConsolePasteActionListener implements ActionListener
@@ -29,7 +29,7 @@ public class VTGraphicalConsolePasteActionListener implements ActionListener
 			if (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor))
 			{
 				String text = systemClipboard.getData(DataFlavor.stringFlavor).toString();
-				VTGraphicalConsole.input(text);
+				VTConsole.input(text);
 			}
 			else if (systemClipboard.isDataFlavorAvailable(DataFlavor.javaFileListFlavor))
 			{
@@ -42,7 +42,7 @@ public class VTGraphicalConsolePasteActionListener implements ActionListener
 						fileList.append(file.getAbsolutePath() + ";");
 					}
 					fileList.deleteCharAt(fileList.length() - 1);
-					VTGraphicalConsole.input(fileList.toString());
+					VTConsole.input(fileList.toString());
 				}
 			}
 		}

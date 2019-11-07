@@ -5,7 +5,7 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import org.vate.console.VTConsole;
 import org.vate.console.graphical.VTGraphicalConsole;
 
 public class VTGraphicalConsoleCopyActionListener implements ActionListener
@@ -21,13 +21,14 @@ public class VTGraphicalConsoleCopyActionListener implements ActionListener
 	{
 		try
 		{
-			StringSelection text = new StringSelection(VTGraphicalConsole.getSelectedText());
+			StringSelection text = new StringSelection(VTConsole.getSelectedText());
 			systemClipboard.setContents(text, null);
-			VTGraphicalConsole.updateCaretPosition();
-			if (VTGraphicalConsole.isFlushInterrupted())
-			{
-				VTGraphicalConsole.clearCaretPosition();
-			}
+			VTConsole.flush();
+//			VTGraphicalConsole.updateCaretPosition();
+//			if (VTGraphicalConsole.isFlushInterrupted())
+//			{
+//				VTGraphicalConsole.clearCaretPosition();
+//			}
 		}
 		catch (Throwable ex)
 		{

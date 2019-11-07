@@ -48,14 +48,14 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				VTGraphicalConsole.toggleScrollMode();
+				VTConsole.toggleScrollMode();
 			}
 		});
 		insert.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				VTGraphicalConsole.alternateInputMode();
+				VTConsole.toggleInputMode();
 			}
 		});
 //		expand.addActionListener(new ActionListener()

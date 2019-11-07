@@ -9,7 +9,7 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import java.util.List;
-
+import org.vate.console.VTConsole;
 import org.vate.console.graphical.VTGraphicalConsole;
 
 public class VTGraphicalConsoleDropTargetListener implements DropTargetListener
@@ -47,7 +47,7 @@ public class VTGraphicalConsoleDropTargetListener implements DropTargetListener
 						fileList.append(file.getAbsolutePath() + ";");
 					}
 					fileList.deleteCharAt(fileList.length() - 1);
-					VTGraphicalConsole.input(fileList.toString());
+					VTConsole.input(fileList.toString());
 				}
 				dtde.dropComplete(true);
 			}
@@ -55,7 +55,7 @@ public class VTGraphicalConsoleDropTargetListener implements DropTargetListener
 			{
 				dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 				String data = (String) transferable.getTransferData(DataFlavor.stringFlavor);
-				VTGraphicalConsole.input(data);
+				VTConsole.input(data);
 				dtde.dropComplete(true);
 			}
 			else

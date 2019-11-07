@@ -319,7 +319,7 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 				loadFileDialog.setVisible(true);
 				if (loadFileDialog.getFile() != null)
 				{
-					VTGraphicalConsole.input(loadFileDialog.getDirectory() + loadFileDialog.getFile());
+					VTConsole.input(loadFileDialog.getDirectory() + loadFileDialog.getFile());
 				}
 			}
 		});
@@ -331,7 +331,7 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 				saveFileDialog.setVisible(true);
 				if (saveFileDialog.getFile() != null)
 				{
-					VTGraphicalConsole.input(saveFileDialog.getDirectory() + saveFileDialog.getFile());
+					VTConsole.input(saveFileDialog.getDirectory() + saveFileDialog.getFile());
 				}
 			}
 		});
@@ -353,7 +353,7 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 
 			public void actionPerformed(ActionEvent e)
 			{
-				VTGraphicalConsole.copyText();
+				VTConsole.copyText();
 			}
 		});
 		
@@ -363,7 +363,7 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 
 			public void actionPerformed(ActionEvent e)
 			{
-				VTGraphicalConsole.pasteText();
+				VTConsole.pasteText();
 			}
 		});
 		
@@ -373,7 +373,7 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 
 			public void actionPerformed(ActionEvent e)
 			{
-				VTGraphicalConsole.alternateInputMode();
+				VTConsole.toggleInputMode();
 			}
 		});
 		
@@ -383,7 +383,7 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 
 			public void actionPerformed(ActionEvent e)
 			{
-				VTGraphicalConsole.toggleScrollMode();
+				VTConsole.toggleScrollMode();
 			}
 		});
 		

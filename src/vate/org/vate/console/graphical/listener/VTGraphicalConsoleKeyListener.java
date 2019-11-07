@@ -9,7 +9,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.util.List;
-
+import org.vate.console.VTConsole;
 import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.graphics.font.VTGlobalTextStyleManager;
 
@@ -60,7 +60,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
 				if (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor))
 				{
 					String text = systemClipboard.getData(DataFlavor.stringFlavor).toString();
-					VTGraphicalConsole.input(text);
+					VTConsole.input(text);
 				}
 				else if (systemClipboard.isDataFlavorAvailable(DataFlavor.javaFileListFlavor))
 				{
@@ -73,7 +73,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
 							fileList.append(file.getAbsolutePath() + ";");
 						}
 						fileList.deleteCharAt(fileList.length() - 1);
-						VTGraphicalConsole.input(fileList.toString());
+						VTConsole.input(fileList.toString());
 					}
 				}
 			}
@@ -86,7 +86,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
 		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_INSERT)
 		{
 			e.consume();
-			String selectedText = VTGraphicalConsole.getSelectedText();
+			String selectedText = VTConsole.getSelectedText();
 			StringSelection text = null;
 			if (selectedText != null)
 			{
@@ -97,29 +97,30 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
 				text = new StringSelection("");
 			}
 			systemClipboard.setContents(text, null);
-			VTGraphicalConsole.updateCaretPosition();
-			if (VTGraphicalConsole.isFlushInterrupted())
-			{
-				VTGraphicalConsole.clearCaretPosition();
-			}
+			VTConsole.flush();
+//			VTGraphicalConsole.updateCaretPosition();
+//			if (VTGraphicalConsole.isFlushInterrupted())
+//			{
+//				VTGraphicalConsole.clearCaretPosition();
+//			}
 			return;
 		}
 		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_DELETE)
 		{
 			e.consume();
-			VTGraphicalConsole.toggleScrollMode();
+			VTConsole.toggleScrollMode();
 			return;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_INSERT)
 		{
 			e.consume();
-			VTGraphicalConsole.alternateInputMode();
+			VTConsole.toggleInputMode();
 			return;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_PAUSE)
 		{
 			e.consume();
-			VTGraphicalConsole.toggleScrollMode();
+			VTConsole.toggleScrollMode();
 			return;
 		}
 		
