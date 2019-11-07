@@ -94,7 +94,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	
 	//support command history
 	//support echo input
-	//support support for maximum line width in output
+	//support maximum line width in output
 	//support special characters in input and output
 	//support mouse scroll listener for awtframe
 	//support flush interrupted output
