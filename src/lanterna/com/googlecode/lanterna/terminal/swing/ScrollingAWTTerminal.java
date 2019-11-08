@@ -54,7 +54,7 @@ public class ScrollingAWTTerminal extends Container implements IOSafeTerminal {
      */
     public ScrollingAWTTerminal() {
         this(TerminalEmulatorDeviceConfiguration.getDefault(),
-                SwingTerminalFontConfiguration.getDefault(),
+                AWTTerminalFontConfiguration.getDefault(),
                 TerminalEmulatorColorConfiguration.getDefault());
     }
     
@@ -72,7 +72,7 @@ public class ScrollingAWTTerminal extends Container implements IOSafeTerminal {
     @SuppressWarnings({"SameParameterValue", "WeakerAccess"})
     public ScrollingAWTTerminal(
             TerminalEmulatorDeviceConfiguration deviceConfiguration,
-            SwingTerminalFontConfiguration fontConfiguration,
+            AWTTerminalFontConfiguration fontConfiguration,
             TerminalEmulatorColorConfiguration colorConfiguration) {
 
         this.scrollBar = new Scrollbar(Scrollbar.VERTICAL);
@@ -296,4 +296,9 @@ public class ScrollingAWTTerminal extends Container implements IOSafeTerminal {
     public void removeResizeListener(TerminalResizeListener listener) {
         awtTerminal.removeResizeListener(listener);
     }
+
+	public AWTTerminalImplementation getTerminalImplementation()
+	{
+		return awtTerminal.getTerminalImplementation();
+	}
 }

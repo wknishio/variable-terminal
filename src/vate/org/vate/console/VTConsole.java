@@ -59,7 +59,7 @@ public class VTConsole
 			{
 				if (lanterna)
 				{
-					console = new VTLanternaConsole();
+					console = new VTLanternaConsole(graphical);
 					return;
 				}
 				if (graphical)

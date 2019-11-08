@@ -2,6 +2,7 @@ package com.googlecode.lanterna.terminal;
 
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.terminal.WinDef.COORD;
 import com.googlecode.lanterna.terminal.ansi.UnixLikeTerminal;
 import com.sun.jna.Native;
 import com.sun.jna.ptr.IntByReference;
@@ -18,7 +19,7 @@ import java.nio.charset.Charset;
  */
 public class WindowsTerminal extends UnixLikeTerminal {
 
-    private static final Wincon WINDOWS_CONSOLE = (Wincon) Native.loadLibrary("kernel32", Wincon.class, W32APIOptions.UNICODE_OPTIONS);
+    private static final Wincon WINDOWS_CONSOLE = (Wincon) Native.loadLibrary("kernel32", Wincon.class, W32APIOptions.DEFAULT_OPTIONS);
     private static final WinDef.HANDLE CONSOLE_INPUT_HANDLE = WINDOWS_CONSOLE.GetStdHandle(Wincon.STD_INPUT_HANDLE);
     private static final WinDef.HANDLE CONSOLE_OUTPUT_HANDLE = WINDOWS_CONSOLE.GetStdHandle(Wincon.STD_OUTPUT_HANDLE);
 
@@ -47,6 +48,7 @@ public class WindowsTerminal extends UnixLikeTerminal {
         int terminalOutputMode = getConsoleOutputMode();
         terminalOutputMode |= Wincon.ENABLE_VIRTUAL_TERMINAL_PROCESSING;
         terminalOutputMode |= Wincon.DISABLE_NEWLINE_AUTO_RETURN;
+        //terminalOutputMode &= ~Wincon.ENABLE_PROCESSED_OUTPUT;
         WINDOWS_CONSOLE.SetConsoleMode(CONSOLE_OUTPUT_HANDLE, terminalOutputMode);
     }
 
@@ -69,9 +71,11 @@ public class WindowsTerminal extends UnixLikeTerminal {
         int mode = getConsoleInputMode();
         if(enabled) {
             mode |= Wincon.ENABLE_ECHO_INPUT;
+            mode |= Wincon.ENABLE_LINE_INPUT;
         }
         else {
             mode &= ~Wincon.ENABLE_ECHO_INPUT;
+            mode &= ~Wincon.ENABLE_LINE_INPUT;
         }
         WINDOWS_CONSOLE.SetConsoleMode(CONSOLE_INPUT_HANDLE, mode);
     }
@@ -81,9 +85,11 @@ public class WindowsTerminal extends UnixLikeTerminal {
         int mode = getConsoleInputMode();
         if(enabled) {
             mode |= Wincon.ENABLE_LINE_INPUT;
+            mode |= Wincon.ENABLE_ECHO_INPUT;
         }
         else {
             mode &= ~Wincon.ENABLE_LINE_INPUT;
+            mode &= ~Wincon.ENABLE_ECHO_INPUT;
         }
         WINDOWS_CONSOLE.SetConsoleMode(CONSOLE_INPUT_HANDLE, mode);
     }
@@ -135,4 +141,12 @@ public class WindowsTerminal extends UnixLikeTerminal {
         WINDOWS_CONSOLE.GetConsoleMode(CONSOLE_OUTPUT_HANDLE, lpMode);
         return lpMode.getValue();
     }
+    
+//    public void setCursorPosition(int x, int y)
+//    {
+//    	COORD coord = new COORD();
+//    	coord.X = (short) x;
+//    	coord.Y = (short) y;
+//    	WINDOWS_CONSOLE.SetConsoleCursorPosition(CONSOLE_OUTPUT_HANDLE, coord);
+//    }
 }

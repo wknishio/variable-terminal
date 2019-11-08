@@ -100,11 +100,13 @@ public class VTClientConnector implements Runnable
 					{
 						//System.out.println("dialog == true");
 						VTConsole.print("VT>Retrying connection with server...");
+						//retry = true;
 					}
 					else
 					{
 						//System.out.println("dialog == false");
 						VTConsole.print("\nVT>Retrying connection with server...");
+						//retry = true;
 					}
 					if (client.getConnectionDialog() != null)
 					{
@@ -780,6 +782,7 @@ public class VTClientConnector implements Runnable
 				}
 				if (line.toUpperCase().startsWith("Y"))
 				{
+					retry = false;
 					return true;
 				}
 				else
@@ -808,6 +811,7 @@ public class VTClientConnector implements Runnable
 						return true;
 					}
 					client.setPassword(password);
+					retry = false;
 				}
 				return true;
 			}
@@ -1248,6 +1252,7 @@ public class VTClientConnector implements Runnable
 			}
 			if (line.toUpperCase().startsWith("Y"))
 			{
+				retry = false;
 				return true;
 			}
 			else
@@ -1276,6 +1281,7 @@ public class VTClientConnector implements Runnable
 					return true;
 				}
 				client.setPassword(password);
+				retry = false;
 			}
 			VTConsole.print("VT>Enter the session commands:");
 			String commands = VTConsole.readLine(true);

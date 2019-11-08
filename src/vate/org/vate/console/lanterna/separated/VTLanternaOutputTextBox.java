@@ -666,9 +666,8 @@ public class VTLanternaOutputTextBox extends TextBox
 	public StringBuilder handleDataInput(StringBuilder inputBuffer, String data, boolean replace)
 	{
 		//String line = lines.get(caretPosition.getRow());
-		//TODO:more accurate calculation of hidden column
 		int column = hiddenColumn;
-		//int size = inputBuffer.length();
+		///int size = inputBuffer.length();
 		if (replace && column < inputBuffer.length())
 		{
 			inputBuffer.replace(column, column + data.length(), data);
@@ -677,7 +676,11 @@ public class VTLanternaOutputTextBox extends TextBox
 		{
 			inputBuffer.insert(column, data);
 		}
-		hiddenColumn = inputBuffer.length();
+		hiddenColumn += data.length();
+		if (hiddenColumn > inputBuffer.length())
+		{
+			hiddenColumn = inputBuffer.length();
+		}
 		return inputBuffer;
 	}
 	

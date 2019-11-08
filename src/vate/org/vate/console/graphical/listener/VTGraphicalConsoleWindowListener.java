@@ -47,6 +47,6 @@ public class VTGraphicalConsoleWindowListener implements WindowListener
 	
 	public void windowOpened(WindowEvent e)
 	{
-		
+		//VTGraphicalConsole.deiconifyFrame();
 	}
 }

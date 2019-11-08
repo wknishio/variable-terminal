@@ -21,11 +21,15 @@ package com.googlecode.lanterna.terminal;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.ansi.CygwinTerminal;
+import com.googlecode.lanterna.terminal.ansi.RawTerminalInputStream;
 import com.googlecode.lanterna.terminal.ansi.TelnetTerminal;
 import com.googlecode.lanterna.terminal.ansi.TelnetTerminalServer;
 import com.googlecode.lanterna.terminal.ansi.UnixLikeTTYTerminal;
 import com.googlecode.lanterna.terminal.ansi.UnixTerminal;
 import com.googlecode.lanterna.terminal.swing.*;
+
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -127,7 +131,9 @@ public class DefaultTerminalFactory implements TerminalFactory {
 	                return createTelnetTerminal();
 	            }
 	            if(isOperatingSystemWindows()) {
-	                return createWindowsTerminal();
+	            	//System.out.println("createWindowsTerminal()");
+	                //return createWindowsTerminal();
+	            	return createUnixTerminal(outputStream, inputStream, charset);
 	            }
 	            else {
 	                return createUnixTerminal(outputStream, inputStream, charset);
@@ -152,7 +158,8 @@ public class DefaultTerminalFactory implements TerminalFactory {
 	                return createTelnetTerminal();
 	            }
 	            if(isOperatingSystemWindows()) {
-	                return createWindowsTerminal();
+	                //return createWindowsTerminal();
+	            	return createUnixTerminal(outputStream, inputStream, charset);
 	            }
 	            else {
 	                return createUnixTerminal(outputStream, inputStream, charset);
@@ -519,6 +526,6 @@ public class DefaultTerminalFactory implements TerminalFactory {
      * operating system name system property
      */
     private static boolean isOperatingSystemWindows() {
-        return System.getProperty("os.name", "").toLowerCase().startsWith("windows");
+        return System.getProperty("os.name", "").toLowerCase().contains("windows");
     }
 }

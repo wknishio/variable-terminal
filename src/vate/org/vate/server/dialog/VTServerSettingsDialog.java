@@ -1259,7 +1259,17 @@ public class VTServerSettingsDialog extends Dialog
 		{
 			
 		}
-		
+//		try
+//		{
+//			if (this.getOwner() != null)
+//			{
+//				this.getOwner().requestFocus();
+//			}
+//		}
+//		catch (Throwable t)
+//		{
+//			
+//		}
 //		EventQueue.invokeLater(new Runnable()
 //		{
 //			public void run()

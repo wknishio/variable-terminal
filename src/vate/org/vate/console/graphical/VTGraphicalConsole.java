@@ -444,17 +444,22 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	{
 		synchronized (outputSynchronizer)
 		{
-			return flushInterrupted || frameIconified;
+			return flushInterrupted && frame.isActive();
 		}
+		//System.out.println("flushInterrupted:" + flushInterrupted);
+		//System.out.println("frameIconified:" + frameIconified);
+		//return flushInterrupted || frameIconified;
 	}
 	
 	public static void interruptOutputFlush()
 	{
+		//System.out.println("interruptOutputFlush");
 		// VTGraphicalConsole.setCaretRecoilCount(0);
 		synchronized (outputSynchronizer)
 		{
 			flushInterrupted = true;
 		}
+		//flushInterrupted = true;
 	}
 	
 	public static void resumeOutputFlush()
@@ -463,25 +468,35 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		{
 			flushInterrupted = false;
 		}
+		//flushInterrupted = false;
 		VTGraphicalConsoleReader.resumeOutputFlush();
 		flushBuffered(true);
 	}
 	
 	public static void iconifyFrame()
 	{
-		VTGraphicalConsole.setCaretRecoilCount(0);
+		//System.out.println("iconifyFrame");
 		synchronized (outputSynchronizer)
 		{
 			frameIconified = true;
 		}
+		//frameIconified = true;
+		VTGraphicalConsole.setCaretRecoilCount(0);
+//		synchronized (outputSynchronizer)
+//		{
+//			frameIconified = true;
+//		}
 	}
 	
 	public static void deiconifyFrame()
 	{
+		//System.out.println("deiconifyFrame");
 		synchronized (outputSynchronizer)
 		{
 			frameIconified = false;
 		}
+		//frameIconified = false;
+		//frameIconified = false;
 		VTGraphicalConsoleReader.resumeOutputFlush();
 		flushBuffered(true);
 	}
@@ -647,7 +662,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 			// totalCharactersCount = 0;
 			charactersInLineCount = 0;
 		}
-		if (flushInterrupted || frameIconified)
+		if (!isFlushInterrupted())
 		{
 			if (outputBuffer.lastIndexOf("\n") != -1)
 			{
@@ -885,7 +900,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 					if (totalCharactersCount - overwriteCharactersCount > 0)
 					{
 						reduceCharacterCount();
-						if (flushInterrupted || frameIconified)
+						if (isFlushInterrupted())
 						{
 							if (outputBuffer.length() > 0)
 							{
@@ -941,7 +956,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 				}
 				else if (c == '\t')
 				{
-					if (flushInterrupted || frameIconified)
+					if (isFlushInterrupted())
 					{
 						if (deleteLaterCharactersCount > 0)
 						{
@@ -975,7 +990,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 					 * overwriteCharactersCount = 0;
 					 * overwriteBufferedCharactersCount = 0;
 					 * deletedLastLinesCount = 0; updateCaretPosition(); */
-					if (flushInterrupted || frameIconified)
+					if (isFlushInterrupted())
 					{
 						if (deleteLaterCharactersCount > 0)
 						{
@@ -1026,7 +1041,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 				{
 					// System.out.println("overwriteCharactersCount: " +
 					// overwriteCharactersCount);
-					if (flushInterrupted || frameIconified)
+					if (isFlushInterrupted())
 					{
 						if (deleteLaterCharactersCount > 0)
 						{
@@ -1153,7 +1168,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	{
 		while ((charactersInLineCount & (tabSize - 1)) != 0)
 		{
-			if (flushInterrupted || frameIconified)
+			if (isFlushInterrupted())
 			{
 				if (deleteLaterCharactersCount > 0)
 				{
@@ -1276,7 +1291,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 					if (deleted > 0)
 					{
 						String spacesBufferContents = spacesBuffer.toString();
-						if (flush && (!flushInterrupted && !frameIconified))
+						if (flush && (!isFlushInterrupted()))
 						{
 							textArea.replaceRange(spacesBufferContents.replace('\b', ' '), totalCharactersCount - overwriteCharactersCount, totalCharactersCount - overwriteCharactersCount + deleted);
 						}

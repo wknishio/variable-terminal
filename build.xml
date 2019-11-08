@@ -44,6 +44,7 @@
 			<src path="src/portmapper"/>
 			<src path="src/vate"/>
 			<src path="src/lanterna"/>
+			<src path="src/rawconsoleinput"/>
 			<classpath>
 				<fileset dir="lib">
 					<include name="**/*.jar"/>
@@ -54,6 +55,7 @@
 			<fileset dir="src/vate" includes="**/*.png,**/*.properties"/>
 			<fileset dir="src/jsocks" includes="**/*.png,**/*.properties"/>
 			<fileset dir="src/nat" includes="**/*.png,**/*.properties"/>
+			<fileset dir="src/lanterna" includes="**/*.png,**/*.properties"/>
 		</copy>
 		
 	</target>

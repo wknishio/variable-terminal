@@ -30,7 +30,7 @@ public class VTGlobalTextStyleManager
 	private static final List<List<Font>> lists = new LinkedList<List<Font>>();
 	private static final List<List<Font>> defaultlists = new LinkedList<List<Font>>();
 	
-	private static double FONT_SCALING_FACTOR;
+	public static double FONT_SCALING_FACTOR;
 	
 	static
 	{
@@ -74,7 +74,7 @@ public class VTGlobalTextStyleManager
 				
 			}
 		}
-		AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
+		//AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
 	}
 	
 	private static Font windowFont = Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));

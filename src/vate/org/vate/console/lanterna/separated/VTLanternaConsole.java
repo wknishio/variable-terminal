@@ -61,6 +61,7 @@ import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.MouseCaptureMode;
 import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.swing.AWTTerminal;
+import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
 
 public class VTLanternaConsole implements VTConsoleImplementation
@@ -97,6 +98,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	private volatile boolean ignoreClose = false;
 	private volatile boolean started = false;
 	private VTGraphicalConsolePopupMenu popupMenu;
+	private volatile boolean graphical;
 	//support command history
 	//support echo input
 	//support maximum line width in output
@@ -112,8 +114,9 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	//support command drag drop for awtframe
 	//TODO:support keyboard shortcuts
 	
-	public VTLanternaConsole()
+	public VTLanternaConsole(boolean graphical)
 	{
+		this.graphical = graphical;
 		Thread builderThread = new Thread()
 		{
 			public void run()
@@ -124,7 +127,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				}
 				catch (Throwable e)
 				{
-					
+					//e.printStackTrace();
 				}
 			}
 		};
@@ -232,7 +235,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		{
 			try
 			{
-				super.clearError();
+				//super.clearError();
 			}
 			catch (Throwable t)
 			{
@@ -549,11 +552,20 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	
 	public void build() throws Exception
 	{
+		AWTTerminalFontConfiguration.setFontScalingFactor(VTGlobalTextStyleManager.FONT_SCALING_FACTOR);
 		DefaultTerminalFactory factory = new DefaultTerminalFactory();
 		factory.setForceAWTOverSwing(true);
 		//factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
 		factory.setMouseCaptureMode(MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE);
-		factory.setPreferTerminalEmulator(true);
+		if (graphical)
+		{
+			factory.setPreferTerminalEmulator(true);
+		}
+		else
+		{
+			factory.setForceTextTerminal(true);
+		}
+		
 		//factory.setForceTextTerminal(true);
         terminal = factory.createTerminal();
 		//ScrollingAWTTerminal terminal = new ScrollingAWTTerminal();
@@ -671,6 +683,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         //outputBox.setReadOnly(true);
         outputBox.setTerminal(terminal);
         outputBox.setCaretWarp(true);
+        //outputBox.setEnabled(false);
         ((DefaultTextBoxRenderer) outputBox.getRenderer()).setHideScrollBars(true);
         
         inputBox.setTerminal(terminal);
@@ -688,7 +701,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					
 					if (mouse.getActionType() == MouseActionType.CLICK_DOWN)
 					{
-						outputBox.takeFocus();					
+						outputBox.takeFocus();
 						outputBox.setCaretPosition(topLeft.getRow() + mouse.getPosition().getRow(), topLeft.getColumn() + mouse.getPosition().getColumn());
 						outputBox.invalidate();
 						return false;
@@ -776,8 +789,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				{
 					String command = currentLineBuffer.toString();
 					currentLineBuffer.setLength(0);
+					//String command = inputBox.getText();
 					
-					//System.out.println("command:[" + command + "]");
 					input(command + "\n");
 			
 					inputBox.setText("");
@@ -853,12 +866,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
 						inputBox.setText(currentLineBuffer.toString());
 						inputBox.setCaretPosition(inputBox.getHiddenColumn());
 						inputBox.invalidate();
-						return false;
 					}
-					else
-					{
-						return false;
-					}
+					return false;
 				}
 				return true;
 			}
@@ -1269,7 +1278,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		//System.out.println("readLine()");
 		inputThread = Thread.currentThread();
 		readingInput = true;
-		echoInput = echo;
+		setEchoInput(echo);
 		String data = null;
 		if (getPendingInputLineSize() > 0 && !getFromPendingInputLine().contains("\n"))
 		{
