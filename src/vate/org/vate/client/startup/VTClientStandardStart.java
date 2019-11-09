@@ -10,6 +10,7 @@ public class VTClientStandardStart
 {
 	public static void main(String[] args)
 	{
+		VTConsole.setLanterna(true);
 		VTConsole.setGraphical(false);
 		VTGraphicalConsole.setRemoteIcon(true);
 		

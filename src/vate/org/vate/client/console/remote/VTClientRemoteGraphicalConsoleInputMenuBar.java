@@ -380,7 +380,6 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		textActionBreakMenu = new MenuItem("Break ");
 		textActionBreakMenu.addActionListener(new ActionListener()
 		{
-
 			public void actionPerformed(ActionEvent e)
 			{
 				VTConsole.toggleScrollMode();

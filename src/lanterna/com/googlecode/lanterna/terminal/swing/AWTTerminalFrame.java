@@ -50,8 +50,9 @@ import java.util.concurrent.TimeUnit;
 public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
     private final AWTTerminal awtTerminal;
     private final EnumSet<TerminalEmulatorAutoCloseTrigger> autoCloseTriggers;
-
+    private Dimension initialSize;
     private boolean disposed;
+	private TerminalSize defaultTerminalSize;
 
     /**
      * Creates a new AWTTerminalFrame with an optional list of auto-close triggers
@@ -137,7 +138,7 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         
         setBackground(Color.BLACK); //This will reduce white flicker when resizing the window
         pack();
-
+        initialSize = this.getPreferredSize();
         //Put input focus on the terminal component by default
         awtTerminal.requestFocusInWindow();
     }
@@ -304,9 +305,26 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         awtTerminal.removeResizeListener(listener);
     }
     
+    public void setDefaultTerminalSize(TerminalSize size)
+    {
+    	this.defaultTerminalSize = size;
+    }
+    
+    public void resetTerminalSize()
+    {
+    	if (defaultTerminalSize != null)
+    	{
+    		awtTerminal.getTerminalImplementation().setTerminalSize(defaultTerminalSize);
+    	}
+    }
+    
+    //public TerminalSize getTerminalSize()
+    //{
+    	//return awtTerminal.getTerminalSize();
+    //}
+    
     public void pack()
     {
-    	awtTerminal.getTerminalImplementation().resetFont();
     	super.pack();
     }
 }

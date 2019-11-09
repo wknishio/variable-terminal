@@ -12,6 +12,7 @@ public class VTServerDaemonGraphicalStart
 {
 	public static final void main(String[] args)
 	{
+		VTConsole.setLanterna(true);
 		if (!GraphicsEnvironment.isHeadless())
 		{
 			VTConsole.setGraphical(true);

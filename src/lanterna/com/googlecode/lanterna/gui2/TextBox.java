@@ -24,6 +24,9 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.graphics.ThemeDefinition;
 import com.googlecode.lanterna.input.KeyStroke;
 
+import java.awt.Adjustable;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -66,6 +69,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
     public int longestRow;
     private Character mask;
     public Pattern validationPattern;
+   
 
     /**
      * Default constructor, this creates a single-line {@code TextBox} of size 10 which is initially empty
@@ -139,7 +143,6 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
         this.mask = null;
         this.validationPattern = null;
         setText(initialContent);
-
         // Re-adjust caret position
         this.caretPosition = TerminalPosition.TOP_LEFT_CORNER.withColumn(getLine(0).length());
 
@@ -148,6 +151,111 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
         }
         setPreferredSize(preferredSize);
     }
+    
+    public void setVerticalAdjustable(Adjustable adjustable)
+    {
+    	this.getRenderer().setVerticalAdjustable(adjustable);
+    	adjustable.addAdjustmentListener(new AdjustmentListener()
+    	{
+			public void adjustmentValueChanged(AdjustmentEvent e)
+			{
+				//System.out.println("adjustmentValueChanged:" + e.getValue());
+				int value = e.getValue();
+				if (isReadOnly())
+				{
+					getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRow(value));
+					invalidate();
+				}
+				else
+				{
+					int row = getRenderer().getViewTopLeft().getRow();
+					int difference = value - row;
+					if (difference > 0)
+					{
+						for (int i = 0; i < difference; i++)
+						{
+							scrolldown();
+						}
+					}
+					else
+					{
+						difference = difference * -1;
+						for (int i = 0; i < difference; i++)
+						{
+							scrollup();
+						}
+					}
+					getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRow(value));
+					invalidate();
+				}
+				//setCaretPosition(e.getValue(), getCaretPosition().getColumn());
+				//getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRow(e.getValue()));
+				//invalidate();
+			}
+    	});
+    }
+    
+    public void scrollup()
+	{
+		if (isReadOnly())
+		{
+			 if(getRenderer().getViewTopLeft().getRow() == 0)
+			 {
+                 return;
+             }
+			 else
+			 {
+				 getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeRow(-1));
+			 }
+			 return;
+		}
+		String line = lines.get(caretPosition.getRow());
+		if(caretPosition.getRow() > 0)
+		{
+            int trueColumnPosition = TerminalTextUtils.getColumnIndex(lines.get(caretPosition.getRow()), caretPosition.getColumn());
+            caretPosition = caretPosition.withRelativeRow(-1);
+            line = lines.get(caretPosition.getRow());
+            if(trueColumnPosition > TerminalTextUtils.getColumnWidth(line))
+            {
+                caretPosition = caretPosition.withColumn(line.length());
+            }
+            else
+            {
+                caretPosition = caretPosition.withColumn(TerminalTextUtils.getStringCharacterIndex(line, trueColumnPosition));
+            }
+        }
+	}
+	
+	public void scrolldown()
+	{
+		if (isReadOnly())
+		{
+			if(getRenderer().getViewTopLeft().getRow() + getSize().getRows() == lines.size())
+			{
+				return;
+            }
+			else
+			{
+				getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeRow(1));
+			}
+			return;
+		}
+		String line = lines.get(caretPosition.getRow());
+		if(caretPosition.getRow() < lines.size() - 1)
+		{
+            int trueColumnPosition = TerminalTextUtils.getColumnIndex(lines.get(caretPosition.getRow()), caretPosition.getColumn());
+            caretPosition = caretPosition.withRelativeRow(1);
+            line = lines.get(caretPosition.getRow());
+            if(trueColumnPosition > TerminalTextUtils.getColumnWidth(line))
+            {
+                caretPosition = caretPosition.withColumn(line.length());
+            }
+            else
+            {
+                caretPosition = caretPosition.withColumn(TerminalTextUtils.getStringCharacterIndex(line, trueColumnPosition));
+            }
+        }
+	}
 
     /**
      * Sets a pattern on which the content of the text box is to be validated. For multi-line TextBox:s, the pattern is
@@ -660,6 +768,8 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
     public interface TextBoxRenderer extends InteractableRenderer<TextBox> {
         TerminalPosition getViewTopLeft();
         void setViewTopLeft(TerminalPosition position);
+        void setVerticalAdjustable(Adjustable adjustable);
+        void setHorizontalAdjustable(Adjustable adjustable);
     }
 
     /**
@@ -673,7 +783,8 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
         private final ScrollBar horizontalScrollBar;
         private boolean hideScrollBars;
         private Character unusedSpaceCharacter;
-
+        private Adjustable verticalAdjustable;
+        private Adjustable horizontalAdjustable;
         /**
          * Default constructor
          */
@@ -683,6 +794,20 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
             horizontalScrollBar = new ScrollBar(Direction.HORIZONTAL);
             hideScrollBars = false;
             unusedSpaceCharacter = null;
+        }
+        
+        public void setVerticalAdjustable(Adjustable adjustable)
+        {
+        	this.verticalAdjustable = adjustable;
+        	adjustable.setMinimum(0);
+        	
+        }
+        
+        public void setHorizontalAdjustable(Adjustable adjustable)
+        {
+        	this.horizontalAdjustable = adjustable;
+        	adjustable.setMinimum(0);
+        	
         }
 
         /**
@@ -771,6 +896,13 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
             drawTextArea(graphics.newTextGraphics(TerminalPosition.TOP_LEFT_CORNER, realTextArea), component);
 
             //Draw scrollbars, if any
+            if (verticalAdjustable != null)
+            {
+            	verticalAdjustable.setVisibleAmount(realTextArea.getRows());
+            	verticalAdjustable.setMaximum(textBoxLineCount);
+            	verticalAdjustable.setValue(viewTopLeft.getRow());
+            	verticalAdjustable.setBlockIncrement(graphics.getSize().getRows());
+            }
             if(drawVerticalScrollBar) {
                 verticalScrollBar.onAdded(component.getParent());
                 verticalScrollBar.setViewSize(realTextArea.getRows());

@@ -240,6 +240,10 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
                 getFontHeight() * virtualTerminal.getTerminalSize().getRows());
     }
 
+    public void setTerminalSize(TerminalSize size)
+    {
+    	virtualTerminal.setTerminalSize(size);
+    }
     /**
      * Updates the back buffer (if necessary) and draws it to the component's surface
      * @param componentGraphics Object to use when drawing to the component's surface
@@ -928,6 +932,9 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             }
             else if(e.getKeyCode() == KeyEvent.VK_F12) {
                 keyQueue.add(new KeyStroke(KeyType.F12, ctrlDown, altDown, shiftDown));
+            }
+            else if(e.getKeyCode() == KeyEvent.VK_PAUSE) {
+                keyQueue.add(new KeyStroke(KeyType.Pause, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_TAB) {
                 if(e.isShiftDown()) {

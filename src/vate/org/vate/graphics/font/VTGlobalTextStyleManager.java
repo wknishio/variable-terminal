@@ -19,6 +19,7 @@ import javax.swing.UIManager;
 import org.vate.console.VTConsole;
 import org.vate.console.graphical.VTGraphicalConsoleFrame;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
+import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
 import com.sun.jna.Platform;
 
 public class VTGlobalTextStyleManager
@@ -77,8 +78,8 @@ public class VTGlobalTextStyleManager
 		//AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
 	}
 	
-	private static Font windowFont = Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
-	private static Font monospacedFont = Font.decode("Monospaced").deriveFont((float) ((((Font.decode("Monospaced").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
+	private static Font windowFont = Font.decode("Serif").deriveFont((float) ((((Font.decode("Serif 14").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
+	private static Font monospacedFont = Font.decode("Monospaced").deriveFont((float) ((((Font.decode("Monospaced 14").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
 	private static float defaultWindowFontSize = windowFont.getSize2D();
 	private static float defaultMonospacedFontSize = monospacedFont.getSize2D();
 	
@@ -198,7 +199,7 @@ public class VTGlobalTextStyleManager
 		windowFont = windowFont.deriveFont(defaultWindowFontSize);
 		//plainScaleds();
 		defaultLists();
-		updateComponents();
+		updateComponents(true);
 	}
 	
 	public static boolean isFontStyleBold()
@@ -213,7 +214,7 @@ public class VTGlobalTextStyleManager
 		windowFont = windowFont.deriveFont(Font.BOLD);
 		boldScaleds();
 		//boldLists();
-		updateComponents();
+		updateComponents(false);
 	}
 	
 	public static void disableFontStyleBold()
@@ -222,7 +223,7 @@ public class VTGlobalTextStyleManager
 		windowFont = windowFont.deriveFont(Font.PLAIN);
 		plainScaleds();
 		//plainLists();
-		updateComponents();
+		updateComponents(false);
 	}
 	
 	public static void increaseFontSize()
@@ -231,7 +232,7 @@ public class VTGlobalTextStyleManager
 		windowFont = windowFont.deriveFont((float) (windowFont.getSize2D() + 1));
 		increaseScaleds();
 		increaseLists();
-		updateComponents();
+		updateComponents(false);
 	}
 	
 	public static void decreaseFontSize()
@@ -240,12 +241,7 @@ public class VTGlobalTextStyleManager
 		windowFont = windowFont.deriveFont((float) (windowFont.getSize2D() - 1));
 		decreaseScaleds();
 		decreaseLists();
-		updateComponents();
-	}
-	
-	public static void packComponents()
-	{
-		updateComponents();
+		updateComponents(false);
 	}
 	
 	private static void boldScaleds()
@@ -348,7 +344,7 @@ public class VTGlobalTextStyleManager
 		}
 	}
 	
-	private static void updateComponents()
+	private static void updateComponents(boolean useDefaults)
 	{
 		for (Component component : monospaceds)
 		{
@@ -387,6 +383,10 @@ public class VTGlobalTextStyleManager
 					}
 					frame.setMenuBar(null);
 					frame.setMenuBar(menubar);
+					if (useDefaults && frame instanceof AWTTerminalFrame)
+					{
+						((AWTTerminalFrame)frame).resetTerminalSize();
+					}
 					window.invalidate();
 					window.pack();
 //					if (window instanceof VTGraphicalConsoleFrame)
@@ -394,7 +394,7 @@ public class VTGlobalTextStyleManager
 //						window.invalidate();
 //						window.pack();
 //					}
-					window.repaint();
+					//window.repaint();
 				}
 				if (window instanceof Dialog)
 				{

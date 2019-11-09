@@ -13,6 +13,7 @@ public class VTServerGraphicalStart
 {
 	public static void main(String[] args)
 	{
+		VTConsole.setLanterna(true);
 		if (!GraphicsEnvironment.isHeadless())
 		{
 			VTConsole.setGraphical(true);

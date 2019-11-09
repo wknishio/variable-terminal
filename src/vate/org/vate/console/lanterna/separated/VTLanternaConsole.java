@@ -1,12 +1,16 @@
 package org.vate.console.lanterna.separated;
 
 import java.awt.Frame;
+import java.awt.Scrollbar;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DropTarget;
+import java.awt.event.AdjustmentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -35,6 +39,8 @@ import org.vate.console.graphical.VTGraphicalConsoleNullOutputStream;
 import org.vate.console.graphical.listener.VTGraphicalConsoleDropTargetListener;
 import org.vate.console.graphical.menu.VTGraphicalConsolePopupMenu;
 import org.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vate.nativeutils.VTNativeUtils;
+
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
@@ -63,10 +69,11 @@ import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.swing.AWTTerminal;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
+import com.sun.jna.Platform;
 
 public class VTLanternaConsole implements VTConsoleImplementation
 {
-	private volatile Frame awtframe;
+	private volatile AWTTerminalFrame awtframe;
 	private Terminal terminal;
 	private Screen screen;
 	private AWTTerminal awtterminal;
@@ -90,7 +97,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	private StringBuilder outputBuffer = new StringBuilder();
 	private final Object inputSynchronizer = new Object();
 	private final Object outputSynchronizer = new Object();
-	private final Object updateSynchronizer = new Object();
+	//private final Object updateSynchronizer = new Object();
 	private MultiWindowTextGUI gui;
 	private BasicWindow window;
 	private VTLanternaConsolePrintStream printStream;
@@ -112,7 +119,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	//support font options for awtframe
 	//support context menu for awtframe
 	//support command drag drop for awtframe
-	//TODO:support keyboard shortcuts
+	//support keyboard shortcuts
 	
 	public VTLanternaConsole(boolean graphical)
 	{
@@ -557,6 +564,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		factory.setForceAWTOverSwing(true);
 		//factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
 		factory.setMouseCaptureMode(MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE);
+		factory.setAutoOpenTerminalEmulatorWindow(false);
 		if (graphical)
 		{
 			factory.setPreferTerminalEmulator(true);
@@ -565,11 +573,12 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		{
 			factory.setForceTextTerminal(true);
 		}
+		//final Scrollbar scrollBar = null;
 		
 		//factory.setForceTextTerminal(true);
         terminal = factory.createTerminal();
 		//ScrollingAWTTerminal terminal = new ScrollingAWTTerminal();
-        if (terminal instanceof Frame)
+        if (terminal instanceof AWTTerminalFrame)
         {
         	try
         	{
@@ -579,7 +588,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         	{
         		
         	}
-        	awtframe = (Frame) terminal;
+        	awtframe = (AWTTerminalFrame) terminal;
         	//awtframe.setLocationByPlatform(true);
         	try
 			{
@@ -646,7 +655,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					
 				}
         	});
-        	awtterminal.addMouseWheelListener(new MouseWheelListener()
+        	awtframe.addMouseWheelListener(new MouseWheelListener()
         	{
 				public void mouseWheelMoved(MouseWheelEvent e)
 				{
@@ -657,7 +666,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
 					int rotation = e.getWheelRotation();
 					MouseAction mouseAction = new MouseAction(rotation > 0 ? MouseActionType.SCROLL_DOWN : MouseActionType.SCROLL_UP, e.getButton(), pos);
-					awtterminal.addInput(mouseAction);
+					outputBox.handleInput(mouseAction);
 				}
         	});
         	VTGlobalTextStyleManager.registerWindow(awtframe);
@@ -683,6 +692,42 @@ public class VTLanternaConsole implements VTConsoleImplementation
         //outputBox.setReadOnly(true);
         outputBox.setTerminal(terminal);
         outputBox.setCaretWarp(true);
+        if (awtframe != null)
+        {
+        	final Scrollbar scrollBar = new Scrollbar(Scrollbar.VERTICAL);
+        	scrollBar.setUnitIncrement(1);
+        	outputBox.setVerticalAdjustable(scrollBar);
+        	awtframe.add(scrollBar, java.awt.BorderLayout.EAST);
+        	scrollBar.addKeyListener(new KeyListener()
+        	{
+				public void keyTyped(KeyEvent e)
+				{
+					awtterminal.dispatchEvent(e);
+				}
+				public void keyPressed(KeyEvent e)
+				{
+					awtterminal.dispatchEvent(e);
+				}
+				public void keyReleased(KeyEvent e)
+				{
+					awtterminal.dispatchEvent(e);
+				}
+        	});
+//        	scrollBar.addMouseWheelListener(new MouseWheelListener()
+//        	{
+//				public void mouseWheelMoved(MouseWheelEvent e)
+//				{
+//					//int x = e.getX();
+//					//int y = e.getY();
+//					//int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
+//					//int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
+//					TerminalPosition pos = new TerminalPosition(0, 0);
+//					int rotation = e.getWheelRotation();
+//					MouseAction mouseAction = new MouseAction(rotation > 0 ? MouseActionType.SCROLL_DOWN : MouseActionType.SCROLL_UP, e.getButton(), pos);
+//					outputBox.handleInput(mouseAction);
+//				}
+//        	});
+        }
         //outputBox.setEnabled(false);
         ((DefaultTextBoxRenderer) outputBox.getRenderer()).setHideScrollBars(true);
         
@@ -727,6 +772,49 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				{
 					//inputBox.takeFocus();
 					//return false;
+				}
+				if (keyStroke.isShiftDown())
+				{
+					if (keyStroke.getKeyType() == KeyType.Insert)
+					{
+						VTConsole.pasteText();
+						return false;
+					}
+				}
+				if (keyStroke.isCtrlDown())
+				{
+					if (keyStroke.getKeyType() == KeyType.Insert)
+					{
+						VTConsole.copyText();
+						return false;
+					}
+					if (keyStroke.getKeyType() == KeyType.PageUp)
+					{
+						VTGlobalTextStyleManager.increaseFontSize();
+						return false;
+					}
+					if (keyStroke.getKeyType() == KeyType.PageDown)
+					{
+						VTGlobalTextStyleManager.decreaseFontSize();
+						return false;
+					}
+					if (keyStroke.getKeyType() == KeyType.Home)
+					{
+						VTGlobalTextStyleManager.defaultFontSize();
+						return false;
+					}
+					if (keyStroke.getKeyType() == KeyType.End)
+					{
+						if (VTGlobalTextStyleManager.isFontStyleBold())
+						{
+							VTGlobalTextStyleManager.disableFontStyleBold();
+						}
+						else
+						{
+							VTGlobalTextStyleManager.enableFontStyleBold();
+						}
+						return false;
+					}
 				}
 				if (keyStroke.getKeyType() != KeyType.ArrowDown
 				&& keyStroke.getKeyType() != KeyType.ArrowUp
@@ -803,6 +891,18 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				if (keyStroke.getKeyType() == KeyType.PageDown
 				|| keyStroke.getKeyType() == KeyType.PageUp)
 				{
+					if (keyStroke.isCtrlDown())
+					{
+						if (keyStroke.getKeyType() == KeyType.PageUp)
+						{
+							VTGlobalTextStyleManager.increaseFontSize();
+						}
+						else
+						{
+							VTGlobalTextStyleManager.decreaseFontSize();
+						}
+						return false;
+					}
 					outputBox.takeFocus();
 					outputBox.handleInput(keyStroke);
 					return false;
@@ -831,20 +931,64 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				}
 				if (keyStroke.getKeyType() == KeyType.Insert)
 				{
-					if (keyStroke.isAltDown()
-					|| keyStroke.isCtrlDown()
-					|| keyStroke.isShiftDown())
+					if (!keyStroke.isAltDown()
+					&& !keyStroke.isCtrlDown()
+					&& !keyStroke.isShiftDown())
 					{
-						return true;
+						toggleReplace();
+						return false;
 					}
-					toggleReplace();
+					if (!keyStroke.isAltDown()
+					&& !keyStroke.isCtrlDown()
+					&& keyStroke.isShiftDown())
+					{
+						VTConsole.pasteText();
+						return false;
+					}
+					if (!keyStroke.isAltDown()
+					&& keyStroke.isCtrlDown()
+					&& !keyStroke.isShiftDown())
+					{
+						VTConsole.copyText();
+						return false;
+					}
+				}
+				if (keyStroke.getKeyType() == KeyType.Pause)
+				{
+					toggleFlush();
 					return false;
 				}
 				if (keyStroke.getKeyType() == KeyType.ArrowLeft
 				|| keyStroke.getKeyType() == KeyType.ArrowRight
 				|| keyStroke.getKeyType() == KeyType.Backspace
-				|| keyStroke.getKeyType() == KeyType.Delete)
+				|| keyStroke.getKeyType() == KeyType.Delete
+				|| keyStroke.getKeyType() == KeyType.Home
+				|| keyStroke.getKeyType() == KeyType.End)
 				{
+					if (keyStroke.getKeyType() == KeyType.Delete
+					&& keyStroke.isCtrlDown())
+					{
+						toggleFlush();
+						return false;
+					}
+					if (keyStroke.getKeyType() == KeyType.Home
+					&& keyStroke.isCtrlDown())
+					{
+						VTGlobalTextStyleManager.defaultFontSize();
+						return false;
+					}
+					if (keyStroke.getKeyType() == KeyType.End
+					&& keyStroke.isCtrlDown())
+					{
+						if (VTGlobalTextStyleManager.isFontStyleBold())
+						{
+							VTGlobalTextStyleManager.disableFontStyleBold();
+						}
+						else
+						{
+							VTGlobalTextStyleManager.enableFontStyleBold();
+						}
+					}
 					inputBox.handleDataInput(currentLineBuffer, keyStroke.getKeyType());
 					if (!echoInput)
 					{
@@ -911,13 +1055,14 @@ public class VTLanternaConsole implements VTConsoleImplementation
         inputStream = new VTLanternaConsoleInputStream(this);
         printStream = new VTLanternaConsolePrintStream(this);
         
-        setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
+        setTitle("");
         
         if (awtframe != null)
         {
-        	//awtframe.setLocationByPlatform(true);
+        	awtframe.setLocationByPlatform(true);
         	awtframe.pack();
         	awtframe.setVisible(true);
+        	awtframe.setDefaultTerminalSize(awtframe.getTerminalSize());
         }
         
         synchronized (this)
@@ -953,7 +1098,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		{
 			frameIconified = false;
 		}
-		resumeOutputFlush();
+		flush();
 	}
 	
 	public void toggleReplace()
@@ -965,6 +1110,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	public void toggleFlush()
 	{
 		flushInterrupted = !flushInterrupted;
+		flush();
 	}
 	
 	public void toggleEcho()
@@ -1157,15 +1303,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 			return inputLineBuffer.size();
 		}
 	}
-	
-	public void resumeOutputFlush()
-	{
-		if (!flushInterrupted)
-		{
-			flush();
-		}
-	}
-	
+		
 	public Frame getFrame()
 	{
 		return awtframe;
@@ -1414,7 +1552,21 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		}
 		else
 		{
-			//TODO:use unix and windows console skills
+			if (Platform.isWindows())
+			{
+				System.out.print("\u001B]0;" + title + "\u0007");
+				VTNativeUtils.system("title " + title);
+			}
+			else
+			{
+				// VTNativeUtils.system("echo -n \"\\033]0;" + title + "\\007\"");
+				// VTNativeUtils.printf("\u001B]0;" + title + "\u0007");
+				// VTNativeUtils.printf("\u001B]1;" + title + "\u0007");
+				// VTNativeUtils.printf("\u001B]2;" + title + "\u0007");
+				System.out.print("\u001B]0;" + title + "\u0007");
+				// System.out.print("\u001B]1;" + title + "\u0007");
+				// System.out.print("\u001B]2;" + title + "\u0007");
+			}
 		}
 	}
 
@@ -1486,6 +1638,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	public void copyText()
 	{
 		String selectedText = getSelectedText();
+		//System.out.println("selectedText:" + selectedText);
 		StringSelection text = null;
 		if (selectedText != null)
 		{
