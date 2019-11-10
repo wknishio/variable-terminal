@@ -820,9 +820,16 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
      * Class that translates AWT key events into Lanterna {@link KeyStroke}
      */
     protected class TerminalInputListener extends KeyAdapter {
+    	
+    	public void keyReleased(KeyEvent e)
+    	{
+    		e.consume();
+    	}
         
         public void keyTyped(KeyEvent e) {
+        	e.consume();
             char character = e.getKeyChar();
+            //System.out.println("keychar:" + (int)e.getKeyChar());
             boolean altDown = (e.getModifiersEx() & InputEvent.ALT_DOWN_MASK) != 0;
             boolean ctrlDown = (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0;
             boolean shiftDown = (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0;
@@ -849,6 +856,8 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
 
         
         public void keyPressed(KeyEvent e) {
+        	//System.out.println("keyPressed:" + e.getc);
+        	e.consume();
             boolean altDown = (e.getModifiersEx() & InputEvent.ALT_DOWN_MASK) != 0;
             boolean ctrlDown = (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0;
             boolean shiftDown = (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0;
@@ -935,6 +944,9 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             }
             else if(e.getKeyCode() == KeyEvent.VK_PAUSE) {
                 keyQueue.add(new KeyStroke(KeyType.Pause, ctrlDown, altDown, shiftDown));
+            }
+            else if(e.getKeyCode() == KeyEvent.VK_CONTEXT_MENU) {
+                keyQueue.add(new KeyStroke(KeyType.ContextMenu, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_TAB) {
                 if(e.isShiftDown()) {

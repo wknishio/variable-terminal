@@ -63,35 +63,35 @@ public class VTGraphicalConsoleMouseListener implements MouseListener
 			 * } } */
 			e.consume();
 		}
-		else
-		{
-			if (!VTGraphicalConsole.isFlushInterrupted())
-			{
-				if (VTConsole.getSelectedText() != null)
-				{
-					
-				}
-				else
-				{
-					if (!VTGraphicalConsole.isCaretPositionUpdated())
-					{
-						// VTGraphicalConsole.updateCaretPosition();
-					}
-				}
-			}
-			else
-			{
-				if (VTConsole.getSelectedText() != null)
-				{
-					
-				}
-				else
-				{
-					// VTGraphicalConsole.refreshCaretPosition();
-				}
-			}
-			/* if (e.getClickCount() > 1) { e.consume(); } */
-		}
+//		else
+//		{
+//			if (!VTGraphicalConsole.isFlushInterrupted())
+//			{
+//				if (VTConsole.getSelectedText() != null)
+//				{
+//					
+//				}
+//				else
+//				{
+//					if (!VTGraphicalConsole.isCaretPositionUpdated())
+//					{
+//						// VTGraphicalConsole.updateCaretPosition();
+//					}
+//				}
+//			}
+//			else
+//			{
+//				if (VTConsole.getSelectedText() != null)
+//				{
+//					
+//				}
+//				else
+//				{
+//					// VTGraphicalConsole.refreshCaretPosition();
+//				}
+//			}
+//			/* if (e.getClickCount() > 1) { e.consume(); } */
+//		}
 	}
 	
 	public void mouseReleased(MouseEvent e)
@@ -116,34 +116,34 @@ public class VTGraphicalConsoleMouseListener implements MouseListener
 			 * } } */
 			e.consume();
 		}
-		else
-		{
-			if (!VTGraphicalConsole.isFlushInterrupted())
-			{
-				if (VTConsole.getSelectedText() != null)
-				{
-					
-				}
-				else
-				{
-					if (!VTGraphicalConsole.isCaretPositionUpdated())
-					{
-						// VTGraphicalConsole.updateCaretPosition();
-					}
-				}
-			}
-			else
-			{
-				if (VTConsole.getSelectedText() != null)
-				{
-					
-				}
-				else
-				{
-					// VTGraphicalConsole.refreshCaretPosition();
-				}
-			}
-			/* if (e.getClickCount() > 1) { e.consume(); } */
-		}
+//		else
+//		{
+//			if (!VTGraphicalConsole.isFlushInterrupted())
+//			{
+//				if (VTConsole.getSelectedText() != null)
+//				{
+//					
+//				}
+//				else
+//				{
+//					if (!VTGraphicalConsole.isCaretPositionUpdated())
+//					{
+//						// VTGraphicalConsole.updateCaretPosition();
+//					}
+//				}
+//			}
+//			else
+//			{
+//				if (VTConsole.getSelectedText() != null)
+//				{
+//					
+//				}
+//				else
+//				{
+//					// VTGraphicalConsole.refreshCaretPosition();
+//				}
+//			}
+//			/* if (e.getClickCount() > 1) { e.consume(); } */
+//		}
 	}
 }

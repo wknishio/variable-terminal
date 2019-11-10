@@ -242,11 +242,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
 		// System.out.println("e.getKeyChar():[" + e.getKeyChar() + "] [" +
 		// (int)
 		// e.getKeyChar() + "]");
-		if (e.getKeyChar() == KeyEvent.CHAR_UNDEFINED)
-		{
-			e.consume();
-			return;
-		}
+		e.consume();
 		if (e.getKeyChar() == '\t' && e.isShiftDown())
 		{
 			VTGraphicalConsole.inputSpecial('\b');
@@ -255,10 +251,28 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
 		{
 			
 		}
+		else if (e.getKeyChar() == '\u0003')
+		{
+			if (!VTGraphicalConsole.getIgnoreClose())
+			{
+				System.exit(0);
+			}
+		}
+		else if (e.getKeyChar() == '\u001A')
+		{
+			if (VTGraphicalConsole.isFlushInterrupted())
+			{
+				VTGraphicalConsole.resumeOutputFlush();
+			}
+			else
+			{
+				VTGraphicalConsole.interruptOutputFlush();
+			}
+		}
 		else
 		{
 			VTGraphicalConsole.input(e.getKeyChar());
 		}
-		e.consume();
+		
 	}
 }

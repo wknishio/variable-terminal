@@ -44,7 +44,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	private static volatile boolean readingInput;
 	private static volatile boolean updatingTerminal;
 	private static volatile boolean flushInterrupted;
-	private static volatile boolean frameIconified;
+	//private static volatile boolean frameIconified;
 	private static volatile boolean replaceActivated;
 	private static volatile boolean changedTerminal;
 	// private static volatile int foregroundColor;
@@ -476,10 +476,10 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	public static void iconifyFrame()
 	{
 		//System.out.println("iconifyFrame");
-		synchronized (outputSynchronizer)
-		{
-			frameIconified = true;
-		}
+//		synchronized (outputSynchronizer)
+//		{
+//			frameIconified = true;
+//		}
 		//frameIconified = true;
 		VTGraphicalConsole.setCaretRecoilCount(0);
 //		synchronized (outputSynchronizer)
@@ -491,10 +491,10 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	public static void deiconifyFrame()
 	{
 		//System.out.println("deiconifyFrame");
-		synchronized (outputSynchronizer)
-		{
-			frameIconified = false;
-		}
+//		synchronized (outputSynchronizer)
+//		{
+//			frameIconified = false;
+//		}
 		//frameIconified = false;
 		//frameIconified = false;
 		VTGraphicalConsoleReader.resumeOutputFlush();
@@ -763,6 +763,17 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 			}
 			System.exit(0);
 		}
+		if (c == '\u001A')
+		{
+			if (flushInterrupted)
+			{
+				VTGraphicalConsole.resumeOutputFlush();
+			}
+			else
+			{
+				VTGraphicalConsole.interruptOutputFlush();
+			}
+		}
 		if (c != VT_VK_DELETE && c != VT_VK_RIGHT && c != VT_VK_LEFT && c != VT_VK_UP && c != VT_VK_DOWN && c != VT_VK_HOME && c != VT_VK_END)
 		{
 			synchronized (inputSynchronizer)
@@ -786,6 +797,17 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 				return;
 			}
 			System.exit(0);
+		}
+		if (c == '\u001A')
+		{
+			if (flushInterrupted)
+			{
+				VTGraphicalConsole.resumeOutputFlush();
+			}
+			else
+			{
+				VTGraphicalConsole.interruptOutputFlush();
+			}
 		}
 		synchronized (inputSynchronizer)
 		{

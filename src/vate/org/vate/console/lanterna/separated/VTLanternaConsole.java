@@ -564,6 +564,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		factory.setForceAWTOverSwing(true);
 		//factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
 		factory.setMouseCaptureMode(MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE);
+		//factory.setTerminalEmulatorDeviceConfiguration(deviceConfiguration)
 		factory.setAutoOpenTerminalEmulatorWindow(false);
 		if (graphical)
 		{
@@ -611,28 +612,31 @@ public class VTLanternaConsole implements VTConsoleImplementation
         	{        		
 				public void mouseClicked(MouseEvent e)
 				{
-					if (e.getButton() == MouseEvent.BUTTON1)
-					{
-						int x = e.getX();
-						int y = e.getY();
-						int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
-						int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
-						TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
-						MouseAction mouseAction = new MouseAction(MouseActionType.CLICK_DOWN, e.getButton(), pos);
-						awtterminal.addInput(mouseAction);
-					}
-					else if (e.getButton() == MouseEvent.BUTTON3)
-					{
-						popupMenu.show(awtterminal, e.getX(), e.getY());
-					}
+					
 				}
 				public void mousePressed(MouseEvent e)
 				{
-					
+					if (e.isPopupTrigger())
+					{
+						e.consume();
+						popupMenu.show(awtterminal, e.getX(), e.getY());
+					}
+					e.consume();
+					int x = e.getX();
+					int y = e.getY();
+					int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
+					int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
+					TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
+					MouseAction mouseAction = new MouseAction(MouseActionType.CLICK_DOWN, e.getButton(), pos);
+					awtterminal.addInput(mouseAction);
 				}
 				public void mouseReleased(MouseEvent e)
 				{
-					
+					if (e.isPopupTrigger())
+					{
+						e.consume();
+						popupMenu.show(awtterminal, e.getX(), e.getY());
+					}
 				}
 				public void mouseEntered(MouseEvent e)
 				{
@@ -958,6 +962,14 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					toggleFlush();
 					return false;
 				}
+				if (keyStroke.getKeyType() == KeyType.ContextMenu)
+				{
+					if (popupMenu != null)
+					{
+						popupMenu.show(awtterminal, 0, 0);
+					}
+					return false;
+				}
 				if (keyStroke.getKeyType() == KeyType.ArrowLeft
 				|| keyStroke.getKeyType() == KeyType.ArrowRight
 				|| keyStroke.getKeyType() == KeyType.Backspace
@@ -1004,6 +1016,42 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				}
 				if (keyStroke.getKeyType() == KeyType.Character)
 				{
+					if (keyStroke.getCharacter() == '\u001A')
+					{
+						toggleFlush();
+						return false;
+					}
+					if (keyStroke.getCharacter() == '\u001C')
+					{
+						System.exit(0);
+						return false;
+					}
+					if (keyStroke.getCharacter() == '\u0003')
+					{
+						System.exit(0);
+						return false;
+					}
+					if (keyStroke.isCtrlDown())
+					{
+						if (keyStroke.getCharacter() == 'C'
+						|| keyStroke.getCharacter() == 'c')
+						{
+							System.exit(0);
+							return false;
+						}
+						if (keyStroke.getCharacter() == '\\')
+						{
+							System.exit(0);
+							return false;
+						}
+						if (keyStroke.getCharacter() == 'Z'
+						|| keyStroke.getCharacter() == 'z')
+						{
+							//System.out.println("ctrl+z");
+							toggleFlush();
+							return false;
+						}
+					}
 					inputBox.handleDataInput(currentLineBuffer, keyStroke.getCharacter(), replaceActivated);
 					if (echoInput)
 					{

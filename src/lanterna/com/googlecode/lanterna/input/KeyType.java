@@ -87,5 +87,7 @@ public enum KeyType {
      * This value is returned when you try to read input and the input stream has been closed.
      */
     EOF,
-    Pause;
+    Pause,
+    ContextMenu
+    ;
 }

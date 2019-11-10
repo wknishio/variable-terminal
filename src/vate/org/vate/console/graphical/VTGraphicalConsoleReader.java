@@ -283,7 +283,24 @@ public class VTGraphicalConsoleReader
 					{
 						/* out.write('\n'); out.flush(); */
 						currentThread = null;
+						if (!VTGraphicalConsole.getIgnoreClose())
+						{
+							System.exit(0);
+						}
 						return null;
+						// System.exit(0);
+					}
+					else if (character == '\u001A')
+					{
+						/* out.write('\n'); out.flush(); */
+						if (VTGraphicalConsole.isFlushInterrupted())
+						{
+							VTGraphicalConsole.resumeOutputFlush();
+						}
+						else
+						{
+							VTGraphicalConsole.interruptOutputFlush();
+						}
 						// System.exit(0);
 					}
 					/* else if (character == (char) -1) { return ""; } */
@@ -494,7 +511,24 @@ public class VTGraphicalConsoleReader
 					else if (character == '\u0003')
 					{
 						currentThread = null;
+						if (!VTGraphicalConsole.getIgnoreClose())
+						{
+							System.exit(0);
+						}
 						return null;
+						// System.exit(0);
+					}
+					else if (character == '\u001A')
+					{
+						/* out.write('\n'); out.flush(); */
+						if (VTGraphicalConsole.isFlushInterrupted())
+						{
+							VTGraphicalConsole.resumeOutputFlush();
+						}
+						else
+						{
+							VTGraphicalConsole.interruptOutputFlush();
+						}
 						// System.exit(0);
 					}
 					else if (character == (char) -1)
@@ -569,13 +603,13 @@ public class VTGraphicalConsoleReader
 		}
 		if (currentLineBuffer.toString().startsWith("\u001A"))
 		{
-			if (!VTGraphicalConsole.getIgnoreClose())
+			if (VTGraphicalConsole.isFlushInterrupted())
 			{
-				System.exit(0);
+				VTGraphicalConsole.resumeOutputFlush();
 			}
 			else
 			{
-				
+				VTGraphicalConsole.interruptOutputFlush();
 			}
 		}
 		if (echo)
