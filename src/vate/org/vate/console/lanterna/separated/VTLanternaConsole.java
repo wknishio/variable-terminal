@@ -1,14 +1,17 @@
 package org.vate.console.lanterna.separated;
 
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.ScrollPane;
 import java.awt.Scrollbar;
+import java.awt.SystemColor;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DropTarget;
-import java.awt.event.AdjustmentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -32,7 +35,6 @@ import java.util.Properties;
 
 import javax.imageio.ImageIO;
 
-import org.vate.VT;
 import org.vate.console.VTConsole;
 import org.vate.console.VTConsoleImplementation;
 import org.vate.console.graphical.VTGraphicalConsoleNullOutputStream;
@@ -74,6 +76,7 @@ import com.sun.jna.Platform;
 public class VTLanternaConsole implements VTConsoleImplementation
 {
 	private volatile AWTTerminalFrame awtframe;
+	private java.awt.Panel spacer;
 	private Terminal terminal;
 	private Screen screen;
 	private AWTTerminal awtterminal;
@@ -106,6 +109,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	private volatile boolean started = false;
 	private VTGraphicalConsolePopupMenu popupMenu;
 	private volatile boolean graphical;
+	private Scrollbar horizontalScrollbar;
+	private Scrollbar verticalScrollbar;
 	//support command history
 	//support echo input
 	//support maximum line width in output
@@ -698,11 +703,33 @@ public class VTLanternaConsole implements VTConsoleImplementation
         outputBox.setCaretWarp(true);
         if (awtframe != null)
         {
-        	final Scrollbar scrollBar = new Scrollbar(Scrollbar.VERTICAL);
-        	scrollBar.setUnitIncrement(1);
-        	outputBox.setVerticalAdjustable(scrollBar);
-        	awtframe.add(scrollBar, java.awt.BorderLayout.EAST);
-        	scrollBar.addKeyListener(new KeyListener()
+        	verticalScrollbar = new Scrollbar(Scrollbar.VERTICAL);
+        	verticalScrollbar.setUnitIncrement(1);
+        	outputBox.setVerticalAdjustable(verticalScrollbar);
+        	awtframe.add(verticalScrollbar, java.awt.BorderLayout.EAST);
+        	verticalScrollbar.addKeyListener(new KeyListener()
+        	{
+				public void keyTyped(KeyEvent e)
+				{
+					awtterminal.dispatchEvent(e);
+				}
+				public void keyPressed(KeyEvent e)
+				{
+					awtterminal.dispatchEvent(e);
+				}
+				public void keyReleased(KeyEvent e)
+				{
+					awtterminal.dispatchEvent(e);
+				}
+        	});
+        	horizontalScrollbar = new Scrollbar(Scrollbar.HORIZONTAL);
+        	horizontalScrollbar.setUnitIncrement(1);
+        	outputBox.setHorizontalAdjustable(horizontalScrollbar);
+        	spacer = new java.awt.Panel();
+        	spacer.setBackground(SystemColor.scrollbar);
+        	awtframe.getBottomPanel().add(horizontalScrollbar, java.awt.BorderLayout.CENTER);
+        	awtframe.getBottomPanel().add(spacer, java.awt.BorderLayout.EAST);
+        	horizontalScrollbar.addKeyListener(new KeyListener()
         	{
 				public void keyTyped(KeyEvent e)
 				{
@@ -980,7 +1007,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					if (keyStroke.getKeyType() == KeyType.Delete
 					&& keyStroke.isCtrlDown())
 					{
-						toggleFlush();
+						toggleReplace();
 						return false;
 					}
 					if (keyStroke.getKeyType() == KeyType.Home
@@ -1109,6 +1136,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
         {
         	awtframe.setLocationByPlatform(true);
         	awtframe.pack();
+        	spacer.setSize(verticalScrollbar.getPreferredSize().width, spacer.getSize().height);
+        	spacer.setPreferredSize(new Dimension(verticalScrollbar.getPreferredSize().width, spacer.getSize().height));
         	awtframe.setVisible(true);
         	awtframe.setDefaultTerminalSize(awtframe.getTerminalSize());
         }

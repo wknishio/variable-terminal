@@ -165,6 +165,7 @@ public class AWTTerminal extends Panel implements IOSafeTerminal {
                 deviceConfiguration,
                 colorConfiguration,
                 scrollController);
+        //this.setLayout(new BorderLayout());
     }
 
     /**

@@ -53,6 +53,7 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
     private Dimension initialSize;
     private boolean disposed;
 	private TerminalSize defaultTerminalSize;
+	private Panel bottomPanel;
 
     /**
      * Creates a new AWTTerminalFrame with an optional list of auto-close triggers
@@ -115,8 +116,8 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         this.autoCloseTriggers = EnumSet.copyOf(Arrays.asList(autoCloseTrigger));
         this.disposed = false;
         BorderLayout layout = new BorderLayout();
-        layout.setHgap(1);
-        layout.setVgap(1);
+        layout.setHgap(0);
+        layout.setVgap(0);
         
         setLayout(layout);
         
@@ -134,7 +135,12 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         //scroll.setPreferredSize(size);
         //add(scroll, BorderLayout.CENTER);
         
+        bottomPanel = new Panel();
+        bottomPanel.setLayout(new BorderLayout());
+        bottomPanel.add(awtTerminal, BorderLayout.CENTER);
+        
         add(awtTerminal, BorderLayout.CENTER);
+        add(bottomPanel, BorderLayout.SOUTH);
         
         setBackground(Color.BLACK); //This will reduce white flicker when resizing the window
         pack();
@@ -322,6 +328,11 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
     //{
     	//return awtTerminal.getTerminalSize();
     //}
+    
+    public Panel getBottomPanel()
+    {
+    	return bottomPanel;
+    }
     
     public void pack()
     {

@@ -451,12 +451,13 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		
 		keyboardShortcutsMenu = new Menu("Shortcuts");
 		//keyboardShortcutsMenu.setShortcut(new MenuShortcut(KeyEvent.VK_S, true));
-		
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+C : Quit Application"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Z : Interrupt Text"));
+		keyboardShortcutsMenu.add(new MenuItem("Break/Pause : Interrupt Text"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert : Copy Text"));
 		keyboardShortcutsMenu.add(new MenuItem("Shift+Insert : Paste Text"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Delete : Toggle Insert/Replace"));
 		keyboardShortcutsMenu.add(new MenuItem("Insert : Toggle Insert/Replace"));
-		keyboardShortcutsMenu.add(new MenuItem("Break/Pause : Interrupt Text"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Delete : Interrupt Text"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown : Decrease Font"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp : Increase Font"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home : Normalize Font"));

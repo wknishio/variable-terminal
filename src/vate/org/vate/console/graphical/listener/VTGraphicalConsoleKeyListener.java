@@ -108,7 +108,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
 		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_DELETE)
 		{
 			e.consume();
-			VTConsole.toggleScrollMode();
+			VTConsole.toggleInputMode();
 			return;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_INSERT)

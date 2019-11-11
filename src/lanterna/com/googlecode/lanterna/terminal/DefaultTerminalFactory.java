@@ -132,8 +132,8 @@ public class DefaultTerminalFactory implements TerminalFactory {
 	            }
 	            if(isOperatingSystemWindows()) {
 	            	//System.out.println("createWindowsTerminal()");
-	                //return createWindowsTerminal();
-	            	return createUnixTerminal(outputStream, inputStream, charset);
+	                return createWindowsTerminal(outputStream, inputStream, charset);
+	            	//return createUnixTerminal(outputStream, inputStream, charset);
 	            }
 	            else {
 	                return createUnixTerminal(outputStream, inputStream, charset);
@@ -158,8 +158,8 @@ public class DefaultTerminalFactory implements TerminalFactory {
 	                return createTelnetTerminal();
 	            }
 	            if(isOperatingSystemWindows()) {
-	                //return createWindowsTerminal();
-	            	return createUnixTerminal(outputStream, inputStream, charset);
+	                return createWindowsTerminal(outputStream, inputStream, charset);
+	            	//return createUnixTerminal(outputStream, inputStream, charset);
 	            }
 	            else {
 	                return createUnixTerminal(outputStream, inputStream, charset);
@@ -478,7 +478,7 @@ public class DefaultTerminalFactory implements TerminalFactory {
         return new TerminalScreen(createTerminal());
     }
 
-    private Terminal createWindowsTerminal() throws IOException {
+    private Terminal createWindowsTerminal(OutputStream outputStream, InputStream inputStream, Charset charset) throws IOException {
         try {
             Class<?> nativeImplementation = Class.forName("com.googlecode.lanterna.terminal.WindowsTerminal");
             Constructor<?> constructor = nativeImplementation.getConstructor(InputStream.class, OutputStream.class, Charset.class, UnixLikeTTYTerminal.CtrlCBehaviour.class);

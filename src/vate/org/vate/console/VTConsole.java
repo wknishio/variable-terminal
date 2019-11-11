@@ -13,8 +13,6 @@ import org.vate.console.lanterna.separated.VTLanternaConsole;
 import org.vate.console.standard.VTStandardConsole;
 import org.vate.nativeutils.VTNativeUtils;
 
-import com.sun.jna.Platform;
-
 public class VTConsole
 {
 	// private static boolean initialized;
@@ -79,25 +77,28 @@ public class VTConsole
 				}
 				else
 				{
-					if (lanterna)
-					{
-						if (Platform.isWindows())
-						{
-							console = VTStandardConsole.getInstance();
-							resetAttributes();
-							setColors(VT_CONSOLE_COLOR_LIGHT_GREEN, VT_CONSOLE_COLOR_NORMAL_BLACK);
-						}
-						else
-						{
-							console = new VTLanternaConsole(graphical);
-						}
-					}
-					else
-					{
-						console = VTStandardConsole.getInstance();
-						resetAttributes();
-						setColors(VT_CONSOLE_COLOR_LIGHT_GREEN, VT_CONSOLE_COLOR_NORMAL_BLACK);
-					}
+					console = VTStandardConsole.getInstance();
+					resetAttributes();
+					setColors(VT_CONSOLE_COLOR_LIGHT_GREEN, VT_CONSOLE_COLOR_NORMAL_BLACK);
+//					if (lanterna)
+//					{
+//						if (Platform.isWindows())
+//						{
+//							console = VTStandardConsole.getInstance();
+//							resetAttributes();
+//							setColors(VT_CONSOLE_COLOR_LIGHT_GREEN, VT_CONSOLE_COLOR_NORMAL_BLACK);
+//						}
+//						else
+//						{
+//							console = new VTLanternaConsole(graphical);
+//						}
+//					}
+//					else
+//					{
+//						console = VTStandardConsole.getInstance();
+//						resetAttributes();
+//						setColors(VT_CONSOLE_COLOR_LIGHT_GREEN, VT_CONSOLE_COLOR_NORMAL_BLACK);
+//					}
 				}
 			}
 			else

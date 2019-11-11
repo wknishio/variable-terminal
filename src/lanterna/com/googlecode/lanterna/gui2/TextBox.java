@@ -195,6 +195,51 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
     	});
     }
     
+    public void setHorizontalAdjustable(Adjustable adjustable)
+    {
+    	this.getRenderer().setHorizontalAdjustable(adjustable);
+    	adjustable.addAdjustmentListener(new AdjustmentListener()
+    	{
+			public void adjustmentValueChanged(AdjustmentEvent e)
+			{
+				//System.out.println(e.toString());
+				//System.out.println("visible:" + e.getAdjustable().getVisibleAmount());
+				//System.out.println("maximum:" + e.getAdjustable().getMaximum());
+				int value = e.getValue();
+				if (isReadOnly())
+				{
+					getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withColumn(value));
+					invalidate();
+				}
+				else
+				{
+					int column = getRenderer().getViewTopLeft().getColumn();
+					int difference = value - column;
+					if (difference > 0)
+					{
+						for (int i = 0; i < difference; i++)
+						{
+							scrollright();
+						}
+					}
+					else
+					{
+						difference = difference * -1;
+						for (int i = 0; i < difference; i++)
+						{
+							scrollleft();
+						}
+					}
+					getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withColumn(value));
+					invalidate();
+				}
+				//setCaretPosition(e.getValue(), getCaretPosition().getColumn());
+				//getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRow(e.getValue()));
+				//invalidate();
+			}
+    	});
+    }
+    
     public void scrollup()
 	{
 		if (isReadOnly())
@@ -256,6 +301,30 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
             }
         }
 	}
+	
+	public void scrollleft()
+	{
+		if (isReadOnly())
+		{
+			getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeColumn(-1));
+			return;
+		}
+		if(caretPosition.getColumn() > 0) {
+            caretPosition = caretPosition.withRelativeColumn(-1);
+        }
+	}
+	
+	public void scrollright()
+	{
+		if (isReadOnly())
+		{
+			getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeColumn(+1));
+			return;
+		}
+		if(caretPosition.getColumn() < lines.get(caretPosition.getRow()).length()) {
+            caretPosition = caretPosition.withRelativeColumn(1);
+        }
+    }
 
     /**
      * Sets a pattern on which the content of the text box is to be validated. For multi-line TextBox:s, the pattern is
@@ -560,6 +629,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
     public synchronized Result handleKeyStroke(KeyStroke keyStroke) {
         if(readOnly) {
             return handleKeyStrokeReadOnly(keyStroke);
+        	//handleKeyStrokeReadOnly(keyStroke);
         }
         String line = lines.get(caretPosition.getRow());
         switch(keyStroke.getKeyType()) {
@@ -902,6 +972,13 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
             	verticalAdjustable.setMaximum(textBoxLineCount);
             	verticalAdjustable.setValue(viewTopLeft.getRow());
             	verticalAdjustable.setBlockIncrement(graphics.getSize().getRows());
+            }
+            if (horizontalAdjustable != null)
+            {
+            	horizontalAdjustable.setVisibleAmount(realTextArea.getColumns());
+            	horizontalAdjustable.setMaximum(component.longestRow);
+            	horizontalAdjustable.setValue(viewTopLeft.getColumn());
+            	horizontalAdjustable.setBlockIncrement(graphics.getSize().getColumns());
             }
             if(drawVerticalScrollBar) {
                 verticalScrollBar.onAdded(component.getParent());
