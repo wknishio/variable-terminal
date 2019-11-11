@@ -8,7 +8,7 @@ public class VTGraphicalConsoleReader
 	// maybe: advanced command line editing capabilities
 	private static volatile boolean echo = false;
 	private static volatile boolean readingLine = false;
-	private static final int commandHistoryMaxSize = 50;
+	private static final int commandHistoryMaxSize = 100;
 	private static int commandHistoryPosition;
 	private static int key;
 	private static char character;

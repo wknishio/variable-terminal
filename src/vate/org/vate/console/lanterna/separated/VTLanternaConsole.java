@@ -1,9 +1,7 @@
 package org.vate.console.lanterna.separated;
 
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.ScrollPane;
 import java.awt.Scrollbar;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -82,7 +80,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	private AWTTerminal awtterminal;
 	private VTLanternaOutputTextBox outputBox = new VTLanternaOutputTextBox(new TerminalSize(80, 24), "", Style.MULTI_LINE, 200);
 	private VTLanternaOutputTextBox inputBox = new VTLanternaOutputTextBox(new TerminalSize(80, 1), "", Style.SINGLE_LINE, 1);
-	private static final int commandHistoryMaxSize = 50;
+	private static final int commandHistoryMaxSize = 100;
 	private List<String> commandHistory = new LinkedList<String>();
 	private volatile int commandHistoryPosition;
 	private List<String> inputLineBuffer = new LinkedList<String>();
@@ -645,7 +643,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				}
 				public void mouseEntered(MouseEvent e)
 				{
-
+					
 				}
 				public void mouseExited(MouseEvent e) 
 				{
@@ -688,7 +686,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         else
         {
         	awtterminal = null;
-        }		
+        }
         terminal.setBackgroundColor(TextColor.ANSI.BLACK);
         terminal.setForegroundColor(TextColor.ANSI.GREEN);
         screen = new TerminalScreen(terminal);

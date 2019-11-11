@@ -14,11 +14,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JLabel;
-import javax.swing.ListModel;
 import javax.swing.UIManager;
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsoleFrame;
-import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
 import com.sun.jna.Platform;
 
