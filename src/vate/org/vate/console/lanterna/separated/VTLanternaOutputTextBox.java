@@ -3,11 +3,12 @@ package org.vate.console.lanterna.separated;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TerminalTextUtils;
-import com.googlecode.lanterna.gui2.TextBox;
+import com.googlecode.lanterna.gui2.TextBoxModified;
+import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.Terminal;
 
-public class VTLanternaOutputTextBox extends TextBox
+public class VTLanternaOutputTextBox extends TextBoxModified
 {
 	private volatile int maximumlines = 0;
 	private int hiddenColumn = 0;
@@ -20,6 +21,10 @@ public class VTLanternaOutputTextBox extends TextBox
 		super(terminalSize, string, multiLine);
 		this.maximumlines = maximumlines;
 	}
+	
+//    protected TextBoxRenderer createDefaultRenderer() {
+//        return new DefaultTextBoxRenderer2();
+//    }
 	
 	public void setTerminal(Terminal terminal)
 	{
@@ -51,7 +56,305 @@ public class VTLanternaOutputTextBox extends TextBox
 		return getRenderer().getViewTopLeft();
 	}
 	
+	public void scrollup()
+	{
+		if (isReadOnly())
+		{
+			 if(getRenderer().getViewTopLeft().getRow() == 0)
+			 {
+                 return;
+             }
+			 else
+			 {
+				 getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeRow(-1));
+			 }
+			 return;
+		}
+		//String line = lines.get(caretPosition.getRow());
+		if(caretPosition.getRow() > 0)
+		{
+            String caretLine = getLine(caretPosition.getRow());
+			
+			int trueColumnPosition = caretPosition.getColumn();
+            //int trueColumnPosition = TerminalTextUtils.getColumnIndex(caretLine, caretPosition.getColumn());
+            //int trueColumnPosition = caretPosition.getColumn();
+            if (caretLine.length() > trueColumnPosition)
+            {
+            	trueColumnPosition = TerminalTextUtils.getColumnIndex(caretLine, caretPosition.getColumn());
+            }
+            
+            caretPosition = caretPosition.withRelativeRow(-1).withColumn(trueColumnPosition);
+            
+        }
+	}
 	
+	public void scrolldown()
+	{
+		if (isReadOnly())
+		{
+			if(getRenderer().getViewTopLeft().getRow() + getSize().getRows() == lines.size())
+			{
+				return;
+            }
+			else
+			{
+				getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeRow(1));
+			}
+			return;
+		}
+		//String line = lines.get(caretPosition.getRow());
+		if(caretPosition.getRow() < lines.size() - 1)
+		{
+			String caretLine = getLine(caretPosition.getRow());
+			
+			int trueColumnPosition = caretPosition.getColumn();
+            //int trueColumnPosition = TerminalTextUtils.getColumnIndex(caretLine, caretPosition.getColumn());
+            //int trueColumnPosition = caretPosition.getColumn();
+            if (caretLine.length() > trueColumnPosition)
+            {
+            	trueColumnPosition = TerminalTextUtils.getColumnIndex(caretLine, caretPosition.getColumn());
+            }
+            
+            caretPosition = caretPosition.withRelativeRow(+1).withColumn(trueColumnPosition);
+        }
+	}
+	
+	public void scrollleft()
+	{
+		if (isReadOnly())
+		{
+			getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeColumn(-1));
+			return;
+		}
+		if(caretPosition.getColumn() > 0) {
+            caretPosition = caretPosition.withRelativeColumn(-1);
+        }
+	}
+	
+	public void scrollright()
+	{
+		if (isReadOnly())
+		{
+			getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeColumn(+1));
+			return;
+		}
+//		if(caretPosition.getColumn() < lines.get(caretPosition.getRow()).length()) {
+//            caretPosition = caretPosition.withRelativeColumn(1);
+//        }
+		if(caretPosition.getColumn() < longestRow + 1) {
+			caretPosition = caretPosition.withRelativeColumn(1);
+		}
+    }
+	
+	public synchronized Result handleKeyStroke(KeyStroke keyStroke) {
+        if(readOnly) {
+            return handleKeyStrokeReadOnly(keyStroke);
+        	//handleKeyStrokeReadOnly(keyStroke);
+        }
+        String line = lines.get(caretPosition.getRow());
+        switch(keyStroke.getKeyType()) {
+//        	case Tab:
+//        		if(maxLineLength == -1 || maxLineLength > line.length() + 1) {
+//                    line = line.substring(0, caretPosition.getColumn()) + keyStroke.getCharacter() + line.substring(caretPosition.getColumn());
+//                    if(validated(line)) {
+//                        lines.set(caretPosition.getRow(), line);
+//                        caretPosition = caretPosition.withRelativeColumn(1);
+//                    }
+//                }
+//                return Result.HANDLED;
+            case Character:
+                if(getMaxLineLength() == -1 || getMaxLineLength() > line.length() + 1) {
+                    line = line.substring(0, caretPosition.getColumn()) + keyStroke.getCharacter() + line.substring(caretPosition.getColumn());
+                    if(validated(line)) {
+                        lines.set(caretPosition.getRow(), line);
+                        caretPosition = caretPosition.withRelativeColumn(1);
+                    }
+                }
+                return Result.HANDLED;
+            case Backspace:
+                if(caretPosition.getColumn() > 0) {
+                    line = line.substring(0, caretPosition.getColumn() - 1) + line.substring(caretPosition.getColumn());
+                    if(validated(line)) {
+                        lines.set(caretPosition.getRow(), line);
+                        caretPosition = caretPosition.withRelativeColumn(-1);
+                    }
+                }
+                else if(style == Style.MULTI_LINE && caretPosition.getRow() > 0) {
+                    String concatenatedLines = lines.get(caretPosition.getRow() - 1) + line;
+                    if(validated(concatenatedLines)) {
+                        lines.remove(caretPosition.getRow());
+                        caretPosition = caretPosition.withRelativeRow(-1);
+                        caretPosition = caretPosition.withColumn(lines.get(caretPosition.getRow()).length());
+                        lines.set(caretPosition.getRow(), concatenatedLines);
+                    }
+                }
+                return Result.HANDLED;
+            case Delete:
+                if(caretPosition.getColumn() < line.length()) {
+                    line = line.substring(0, caretPosition.getColumn()) + line.substring(caretPosition.getColumn() + 1);
+                    if(validated(line)) {
+                        lines.set(caretPosition.getRow(), line);
+                    }
+                }
+                else if(style == Style.MULTI_LINE && caretPosition.getRow() < lines.size() - 1) {
+                    String concatenatedLines = line + lines.get(caretPosition.getRow() + 1);
+                    if(validated(concatenatedLines)) {
+                        lines.set(caretPosition.getRow(), concatenatedLines);
+                        lines.remove(caretPosition.getRow() + 1);
+                    }
+                }
+                return Result.HANDLED;
+            case ArrowLeft:
+                if(caretPosition.getColumn() > 0) {
+                    caretPosition = caretPosition.withRelativeColumn(-1);
+                }
+                else if(style == Style.MULTI_LINE && caretWarp && caretPosition.getRow() > 0) {
+                    caretPosition = caretPosition.withRelativeRow(-1);
+                    caretPosition = caretPosition.withColumn(lines.get(caretPosition.getRow()).length());
+                }
+                else if(horizontalFocusSwitching) {
+                    return Result.MOVE_FOCUS_LEFT;
+                }
+                return Result.HANDLED;
+            case ArrowRight:
+                //if(caretPosition.getColumn() < lines.get(caretPosition.getRow()).length()) {
+                    //caretPosition = caretPosition.withRelativeColumn(1);
+                //}
+            	if(caretPosition.getColumn() < longestRow) {
+                    caretPosition = caretPosition.withRelativeColumn(1);
+                }
+                else if(style == Style.MULTI_LINE && caretWarp && caretPosition.getRow() < lines.size() - 1) {
+                    caretPosition = caretPosition.withRelativeRow(1);
+                    caretPosition = caretPosition.withColumn(0);
+                }
+                else if(horizontalFocusSwitching) {
+                    return Result.MOVE_FOCUS_RIGHT;
+                }
+                return Result.HANDLED;
+            case ArrowUp:
+                if(caretPosition.getRow() > 0) {
+                	 String caretLine = getLine(caretPosition.getRow());
+         			
+         			int trueColumnPosition = caretPosition.getColumn();
+                     //int trueColumnPosition = TerminalTextUtils.getColumnIndex(caretLine, caretPosition.getColumn());
+                     //int trueColumnPosition = caretPosition.getColumn();
+                     if (caretLine.length() > trueColumnPosition)
+                     {
+                     	trueColumnPosition = TerminalTextUtils.getColumnIndex(caretLine, caretPosition.getColumn());
+                     }
+                     
+                     caretPosition = caretPosition.withRelativeRow(-1).withColumn(trueColumnPosition);
+                }
+                else if(verticalFocusSwitching) {
+                    return Result.MOVE_FOCUS_UP;
+                }
+                return Result.HANDLED;
+            case ArrowDown:
+                if(caretPosition.getRow() < lines.size() - 1) {
+                	
+                	String caretLine = getLine(caretPosition.getRow());
+        			
+        			int trueColumnPosition = caretPosition.getColumn();
+                    //int trueColumnPosition = TerminalTextUtils.getColumnIndex(caretLine, caretPosition.getColumn());
+                    //int trueColumnPosition = caretPosition.getColumn();
+                    if (caretLine.length() > trueColumnPosition)
+                    {
+                    	trueColumnPosition = TerminalTextUtils.getColumnIndex(caretLine, caretPosition.getColumn());
+                    }
+                    
+                    caretPosition = caretPosition.withRelativeRow(+1).withColumn(trueColumnPosition);
+                }
+                else if(verticalFocusSwitching) {
+                    return Result.MOVE_FOCUS_DOWN;
+                }
+                return Result.HANDLED;
+            case End:
+                caretPosition = caretPosition.withColumn(longestRow);
+                return Result.HANDLED;
+            case Enter:
+                if(style == Style.SINGLE_LINE) {
+                    return Result.MOVE_FOCUS_NEXT;
+                }
+                String newLine = line.substring(caretPosition.getColumn());
+                String oldLine = line.substring(0, caretPosition.getColumn());
+                if(validated(newLine) && validated(oldLine)) {
+                    lines.set(caretPosition.getRow(), oldLine);
+                    lines.add(caretPosition.getRow() + 1, newLine);
+                    caretPosition = caretPosition.withColumn(0).withRelativeRow(1);
+                }
+                return Result.HANDLED;
+            case Home:
+                caretPosition = caretPosition.withColumn(0);
+                return Result.HANDLED;
+            case PageDown:
+                caretPosition = caretPosition.withRelativeRow(getSize().getRows());
+                if(caretPosition.getRow() > lines.size() - 1) {
+                    caretPosition = caretPosition.withRow(lines.size() - 1);
+                }
+                //if(lines.get(caretPosition.getRow()).length() < caretPosition.getColumn()) {
+                    //caretPosition = caretPosition.withColumn(lines.get(caretPosition.getRow()).length());
+                //}
+                return Result.HANDLED;
+            case PageUp:
+                caretPosition = caretPosition.withRelativeRow(-getSize().getRows());
+                if(caretPosition.getRow() < 0) {
+                    caretPosition = caretPosition.withRow(0);
+                }
+                //if(lines.get(caretPosition.getRow()).length() < caretPosition.getColumn()) {
+                    //caretPosition = caretPosition.withColumn(lines.get(caretPosition.getRow()).length());
+                //}
+                return Result.HANDLED;
+            default:
+        }
+        return super.handleKeyStroke(keyStroke);
+    }
+
+    protected boolean validated(String line) {
+        return validationPattern == null || line.length() == 0 || validationPattern.matcher(line).matches();
+    }
+
+    protected Result handleKeyStrokeReadOnly(KeyStroke keyStroke) {
+        switch (keyStroke.getKeyType()) {
+            case ArrowLeft:
+                if(getRenderer().getViewTopLeft().getColumn() == 0 && horizontalFocusSwitching) {
+                    return Result.MOVE_FOCUS_LEFT;
+                }
+                getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeColumn(-1));
+                return Result.HANDLED;
+            case ArrowRight:
+                if(getRenderer().getViewTopLeft().getColumn() + getSize().getColumns() == longestRow && horizontalFocusSwitching) {
+                    return Result.MOVE_FOCUS_RIGHT;
+                }
+                getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeColumn(1));
+                return Result.HANDLED;
+            case ArrowUp:
+                if(getRenderer().getViewTopLeft().getRow() == 0 && verticalFocusSwitching) {
+                    return Result.MOVE_FOCUS_UP;
+                }
+                getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeRow(-1));
+                return Result.HANDLED;
+            case ArrowDown:
+                if(getRenderer().getViewTopLeft().getRow() + getSize().getRows() == lines.size() && verticalFocusSwitching) {
+                    return Result.MOVE_FOCUS_DOWN;
+                }
+                getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeRow(1));
+                return Result.HANDLED;
+            case Home:
+                getRenderer().setViewTopLeft(TerminalPosition.TOP_LEFT_CORNER);
+                return Result.HANDLED;
+            case End:
+                getRenderer().setViewTopLeft(TerminalPosition.TOP_LEFT_CORNER.withRow(getLineCount() - getSize().getRows()));
+                return Result.HANDLED;
+            case PageDown:
+                getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeRow(getSize().getRows()));
+                return Result.HANDLED;
+            case PageUp:
+                getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeRow(-getSize().getRows()));
+                return Result.HANDLED;
+            default:
+        }
+        return super.handleKeyStroke(keyStroke);
+    }
 				
 	public void setViewportToLastLine()
 	{
@@ -152,7 +455,7 @@ public class VTLanternaOutputTextBox extends TextBox
 		return null;
 	}
 	
-	private String outputSingleChar(String data)
+	private String outputSingleControl(String data)
 	{
 		char output = '\0';
 		int current = data.indexOf('\r');
@@ -213,9 +516,9 @@ public class VTLanternaOutputTextBox extends TextBox
 		return data;
 	}
 	
-	private String outputMultiChar(String data)
+	private String outputMultiControl(String data)
 	{
-		String result = outputSingleChar(data);
+		String result = outputSingleControl(data);
 		if (result == null)
 		{
 			return data;
@@ -224,7 +527,7 @@ public class VTLanternaOutputTextBox extends TextBox
 		while (result != null)
 		{
 			last = result;
-			result = outputSingleChar(result);
+			result = outputSingleControl(result);
 		}
 		return last;
 	}
@@ -251,7 +554,7 @@ public class VTLanternaOutputTextBox extends TextBox
 				
 		if (data.length() <= remaining)
 		{
-			data = outputMultiChar(data);
+			data = outputMultiControl(data);
 			
 			if (data.length() <= 0)
 			{
@@ -329,7 +632,7 @@ public class VTLanternaOutputTextBox extends TextBox
 		}
 		else
 		{
-			data = outputMultiChar(data);
+			data = outputMultiControl(data);
 			
 			if (data.length() <= 0)
 			{
@@ -610,7 +913,7 @@ public class VTLanternaOutputTextBox extends TextBox
 		lines.set(lines.size() - 1, line);
 	}
 	
-	public synchronized TextBox addLine(String data)
+	public synchronized TextBoxModified addLine(String data)
 	{
 		//System.out.println("addLine:[" + data + "]");
 		//System.out.println("getLastLine:[" + getLastLine() + "]");
@@ -625,7 +928,7 @@ public class VTLanternaOutputTextBox extends TextBox
 			return this;
 		}
 		data = data.replace('\t', ' ');
-		TextBox result = putLine(data);
+		TextBoxModified result = putLine(data);
 		if (getLineCount() > 1)
 		{
 			setCaretPosition(getLineCount(), 0);
@@ -634,7 +937,7 @@ public class VTLanternaOutputTextBox extends TextBox
 		return result;
 	}
 	
-	public synchronized TextBox putLine(String line) {
+	public synchronized TextBoxModified putLine(String line) {
         StringBuilder bob = new StringBuilder();
         for(int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
@@ -746,4 +1049,10 @@ public class VTLanternaOutputTextBox extends TextBox
 		}
 		return inputBuffer;
 	}
+    /**
+     * This is the default text box renderer that is used if you don't override anything. With this renderer, the text
+     * box is filled with a solid background color and the text is drawn on top of it. Scrollbars are added for
+     * multi-line text whenever the text inside the {@code TextBox} does not fit in the available area.
+     */
+
 }

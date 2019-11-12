@@ -39,7 +39,7 @@ import java.util.regex.Pattern;
  * Size-wise, a {@code TextBox} should be hard-coded to a particular size, it's not good at guessing how large it should
  * be. You can do this through the constructor.
  */
-public class TextBox extends AbstractInteractableComponent<TextBox> {
+public class TextBoxModified extends AbstractInteractableComponent<TextBoxModified> {
 
     /**
      * Enum value to force a {@code TextBox} to be either single line or multi line. This is usually auto-detected if
@@ -74,7 +74,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
     /**
      * Default constructor, this creates a single-line {@code TextBox} of size 10 which is initially empty
      */
-    public TextBox() {
+    public TextBoxModified() {
         this(new TerminalSize(10, 1), "", Style.SINGLE_LINE);
     }
 
@@ -83,7 +83,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      * the whole text at once without scrollbars
      * @param initialContent Initial content of the {@code TextBox}
      */
-    public TextBox(String initialContent) {
+    public TextBoxModified(String initialContent) {
         this(null, initialContent, initialContent.contains("\n") ? Style.MULTI_LINE : Style.SINGLE_LINE);
     }
 
@@ -94,7 +94,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      * @param initialContent Initial content of the {@code TextBox}
      * @param style Forced style instead of auto-detecting
      */
-    public TextBox(String initialContent, Style style) {
+    public TextBoxModified(String initialContent, Style style) {
         this(null, initialContent, style);
     }
 
@@ -102,7 +102,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      * Creates a new empty {@code TextBox} with a specific size
      * @param preferredSize Size of the {@code TextBox}
      */
-    public TextBox(TerminalSize preferredSize) {
+    public TextBoxModified(TerminalSize preferredSize) {
         this(preferredSize, (preferredSize != null && preferredSize.getRows() > 1) ? Style.MULTI_LINE : Style.SINGLE_LINE);
     }
 
@@ -111,7 +111,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      * @param preferredSize Size of the {@code TextBox}
      * @param style Style to use
      */
-    public TextBox(TerminalSize preferredSize, Style style) {
+    public TextBoxModified(TerminalSize preferredSize, Style style) {
         this(preferredSize, "", style);
     }
 
@@ -120,7 +120,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      * @param preferredSize Size of the {@code TextBox}
      * @param initialContent Initial content of the {@code TextBox}
      */
-    public TextBox(TerminalSize preferredSize, String initialContent) {
+    public TextBoxModified(TerminalSize preferredSize, String initialContent) {
         this(preferredSize, initialContent, (preferredSize != null && preferredSize.getRows() > 1) || initialContent.contains("\n") ? Style.MULTI_LINE : Style.SINGLE_LINE);
     }
 
@@ -130,7 +130,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      * @param initialContent Initial content of the {@code TextBox}
      * @param style Style to use for this {@code TextBox}, instead of auto-detecting
      */
-    public TextBox(TerminalSize preferredSize, String initialContent, Style style) {
+    public TextBoxModified(TerminalSize preferredSize, String initialContent, Style style) {
         this.lines = new ArrayList<String>();
         this.style = style;
         this.readOnly = false;
@@ -338,7 +338,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      * @param validationPattern Pattern to validate the lines in this TextBox against, or {@code null} to disable
      * @return itself
      */
-    public synchronized TextBox setValidationPattern(Pattern validationPattern) {
+    public synchronized TextBoxModified setValidationPattern(Pattern validationPattern) {
         if(validationPattern != null) {
             for(String line: lines) {
                 if(!validated(line)) {
@@ -355,7 +355,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      * @param text New text to assign to the {@code TextBox}
      * @return Itself
      */
-    public synchronized TextBox setText(String text) {
+    public synchronized TextBoxModified setText(String text) {
         String[] split = text.split("\n");
         if (split.length == 0) {
             split = new String[] { "" };
@@ -385,7 +385,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      * @param line Line to add at the end of the content in this {@code TextBox}
      * @return Itself
      */
-    public synchronized TextBox addLine(String line) {
+    public synchronized TextBoxModified addLine(String line) {
         StringBuilder bob = new StringBuilder();
         for(int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
@@ -426,7 +426,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      * @param caretWarp Whether the caret will warp at the beginning/end of lines
      * @return Itself
      */
-    public TextBox setCaretWarp(boolean caretWarp) {
+    public TextBoxModified setCaretWarp(boolean caretWarp) {
         this.caretWarp = caretWarp;
         return this;
     }
@@ -449,26 +449,26 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
     }
 
     /**
-     * Moves the text caret position horizontally to a new position in the {@link TextBox}. For multi-line
-     * {@link TextBox}:es, this will move the cursor within the current line. If the position is out of bounds, it is
+     * Moves the text caret position horizontally to a new position in the {@link TextBoxModified}. For multi-line
+     * {@link TextBoxModified}:es, this will move the cursor within the current line. If the position is out of bounds, it is
      * automatically set back into range.
-     * @param column Position, in characters, within the {@link TextBox} (on the current line for multi-line
-     * {@link TextBox}:es) to where the text cursor should be moved
+     * @param column Position, in characters, within the {@link TextBoxModified} (on the current line for multi-line
+     * {@link TextBoxModified}:es) to where the text cursor should be moved
      * @return Itself
      */
-    public synchronized TextBox setCaretPosition(int column) {
+    public synchronized TextBoxModified setCaretPosition(int column) {
         return setCaretPosition(getCaretPosition().getRow(), column);
     }
 
     /**
-     * Moves the text caret position to a new position in the {@link TextBox}. For single-line {@link TextBox}:es, the
+     * Moves the text caret position to a new position in the {@link TextBoxModified}. For single-line {@link TextBoxModified}:es, the
      * line component is not used. If one of the positions are out of bounds, it is automatically set back into range.
-     * @param line Which line inside the {@link TextBox} to move the caret to (0 being the first line), ignored if the
-     *             {@link TextBox} is single-line
+     * @param line Which line inside the {@link TextBoxModified} to move the caret to (0 being the first line), ignored if the
+     *             {@link TextBoxModified} is single-line
      * @param column  What column on the specified line to move the text caret to (0 being the first column)
      * @return Itself
      */
-    public synchronized TextBox setCaretPosition(int line, int column) {
+    public synchronized TextBoxModified setCaretPosition(int line, int column) {
         if(line < 0) {
             line = 0;
         }
@@ -478,12 +478,12 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
         if(column < 0) {
             column = 0;
         }
-        else if(column > lines.get(line).length()) {
-            column = lines.get(line).length();
-        }
-//        else if(column > longestRow) {
-//          column = longestRow;
-      //}
+//        else if(column > lines.get(line).length()) {
+//            column = lines.get(line).length();
+//        }
+        else if(column > longestRow) {
+          column = longestRow;
+      }
         caretPosition = caretPosition.withRow(line).withColumn(column);
         return this;
     }
@@ -530,7 +530,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      * @param mask New text mask or {@code null} if there is no mask
      * @return Itself
      */
-    public TextBox setMask(Character mask) {
+    public TextBoxModified setMask(Character mask) {
         if(mask != null && TerminalTextUtils.isCharCJK(mask)) {
             throw new IllegalArgumentException("Cannot use a CJK character as a mask");
         }
@@ -554,7 +554,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      * @param readOnly If {@code true} then the {@code TextBox} will switch to read-only mode
      * @return Itself
      */
-    public TextBox setReadOnly(boolean readOnly) {
+    public TextBoxModified setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
         invalidate();
         return this;
@@ -579,7 +579,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      * @param verticalFocusSwitching If called with true, vertical focus switching will be enabled
      * @return Itself
      */
-    public TextBox setVerticalFocusSwitching(boolean verticalFocusSwitching) {
+    public TextBoxModified setVerticalFocusSwitching(boolean verticalFocusSwitching) {
         this.verticalFocusSwitching = verticalFocusSwitching;
         return this;
     }
@@ -601,7 +601,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
      * @param horizontalFocusSwitching If called with true, horizontal focus switching will be enabled
      * @return Itself
      */
-    public TextBox setHorizontalFocusSwitching(boolean horizontalFocusSwitching) {
+    public TextBoxModified setHorizontalFocusSwitching(boolean horizontalFocusSwitching) {
         this.horizontalFocusSwitching = horizontalFocusSwitching;
         return this;
     }
@@ -841,7 +841,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
 	/**
      * Helper interface that doesn't add any new methods but makes coding new text box renderers a little bit more clear
      */
-    public interface TextBoxRenderer extends InteractableRenderer<TextBox> {
+    public interface TextBoxRenderer extends InteractableRenderer<TextBoxModified> {
         TerminalPosition getViewTopLeft();
         void setViewTopLeft(TerminalPosition position);
         void setVerticalAdjustable(Adjustable adjustable);
@@ -889,7 +889,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
         /**
          * Sets the character to represent an empty untyped space in the text box. This will be an empty space by
          * default but you can override it to anything that isn't double-width.
-         * @param unusedSpaceCharacter Character to draw in unused space of the {@link TextBox}
+         * @param unusedSpaceCharacter Character to draw in unused space of the {@link TextBoxModified}
          * @throws IllegalArgumentException If unusedSpaceCharacter is a double-width character
          */
         public void setUnusedSpaceCharacter(char unusedSpaceCharacter) {
@@ -916,7 +916,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
         }
 
         
-        public TerminalPosition getCursorLocation(TextBox component) {
+        public TerminalPosition getCursorLocation(TextBoxModified component) {
             if(component.isReadOnly()) {
                 return null;
             }
@@ -924,17 +924,27 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
             //Adjust caret position if necessary
             TerminalPosition caretPosition = component.getCaretPosition();
             String line = component.getLine(caretPosition.getRow());
-            caretPosition = caretPosition.withColumn(Math.min(caretPosition.getColumn(), line.length()));
-            //caretPosition = caretPosition.withColumn(Math.min(caretPosition.getColumn(), component.longestRow));
+            //caretPosition = caretPosition.withColumn(Math.min(caretPosition.getColumn(), line.length()));
+            caretPosition = caretPosition.withColumn(Math.min(caretPosition.getColumn(), component.longestRow));
             
-        	return caretPosition
-                    .withColumn(TerminalTextUtils.getColumnIndex(line, caretPosition.getColumn()))
-                    .withRelativeColumn(-viewTopLeft.getColumn())
-                    .withRelativeRow(-viewTopLeft.getRow());
+            if (caretPosition.getColumn() < line.length())
+            {
+            	return caretPosition
+                        .withColumn(TerminalTextUtils.getColumnIndex(line, caretPosition.getColumn()))
+                        .withRelativeColumn(-viewTopLeft.getColumn())
+                        .withRelativeRow(-viewTopLeft.getRow());
+            }
+            else
+            {
+            	return caretPosition
+                        //.withColumn(TerminalTextUtils.getColumnIndex(line, caretPosition.getColumn()))
+                        .withRelativeColumn(-viewTopLeft.getColumn())
+                        .withRelativeRow(-viewTopLeft.getRow());
+            }
         }
 
         
-        public TerminalSize getPreferredSize(TextBox component) {
+        public TerminalSize getPreferredSize(TextBoxModified component) {
             return new TerminalSize(component.longestRow, component.lines.size());
         }
 
@@ -949,7 +959,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
         }
 
         
-        public void drawComponent(TextGUIGraphics graphics, TextBox component) {
+        public void drawComponent(TextGUIGraphics graphics, TextBoxModified component) {
             TerminalSize realTextArea = graphics.getSize();
             if(realTextArea.getRows() == 0 || realTextArea.getColumns() == 0) {
                 return;
@@ -1007,7 +1017,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
             }
         }
 
-        private void drawTextArea(TextGUIGraphics graphics, TextBox component) {
+        private void drawTextArea(TextGUIGraphics graphics, TextBoxModified component) {
             TerminalSize textAreaSize = graphics.getSize();
             if(viewTopLeft.getColumn() + textAreaSize.getColumns() > component.longestRow) {
                 viewTopLeft = viewTopLeft.withColumn(component.longestRow - textAreaSize.getColumns());
@@ -1049,10 +1059,17 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
                 //Adjust caret position if necessary
                 TerminalPosition caretPosition = component.getCaretPosition();
                 String caretLine = component.getLine(caretPosition.getRow());
-                caretPosition = caretPosition.withColumn(Math.min(caretPosition.getColumn(), caretLine.length()));
+                //caretPosition = caretPosition.withColumn(Math.min(caretPosition.getColumn(), caretLine.length()));
+                caretPosition = caretPosition.withColumn(Math.min(caretPosition.getColumn(), component.longestRow));
 
                 //Adjust the view if necessary
-                int trueColumnPosition = TerminalTextUtils.getColumnIndex(caretLine, caretPosition.getColumn());
+                int trueColumnPosition = caretPosition.getColumn();
+                //int trueColumnPosition = TerminalTextUtils.getColumnIndex(caretLine, caretPosition.getColumn());
+                //int trueColumnPosition = caretPosition.getColumn();
+                if (caretLine.length() > trueColumnPosition)
+                {
+                	trueColumnPosition = TerminalTextUtils.getColumnIndex(caretLine, caretPosition.getColumn());
+                }
                 
                 if (trueColumnPosition < viewTopLeft.getColumn()) {
                     viewTopLeft = viewTopLeft.withColumn(trueColumnPosition);

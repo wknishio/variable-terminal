@@ -53,8 +53,8 @@ import com.googlecode.lanterna.gui2.InputFilter;
 import com.googlecode.lanterna.gui2.Interactable;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.Panel;
-import com.googlecode.lanterna.gui2.TextBox.DefaultTextBoxRenderer;
-import com.googlecode.lanterna.gui2.TextBox.Style;
+import com.googlecode.lanterna.gui2.TextBoxModified.Style;
+import com.googlecode.lanterna.gui2.TextBoxModified.DefaultTextBoxRenderer;
 import com.googlecode.lanterna.gui2.Window.Hint;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
@@ -698,7 +698,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 
         //outputBox.setReadOnly(true);
         outputBox.setTerminal(terminal);
-        outputBox.setCaretWarp(true);
+        //outputBox.setCaretWarp(true);
         if (awtframe != null)
         {
         	verticalScrollbar = new Scrollbar(Scrollbar.VERTICAL);
