@@ -10,16 +10,16 @@ import com.googlecode.lanterna.terminal.Terminal;
 
 public class VTLanternaOutputTextBox extends TextBoxModified
 {
-	private volatile int maximumlines = 0;
+	private volatile int maximumLines = 0;
 	private int hiddenColumn = 0;
 	private int carriageColumn = -1;
 	private Terminal terminal;
 	//private int hiddenRow;
 	
-	public VTLanternaOutputTextBox(TerminalSize terminalSize, String string, Style multiLine, int maximumlines)
+	public VTLanternaOutputTextBox(TerminalSize terminalSize, String string, Style multiLine, int maximumLines)
 	{
 		super(terminalSize, string, multiLine);
-		this.maximumlines = maximumlines;
+		this.maximumLines = maximumLines;
 	}
 	
 //    protected TextBoxRenderer createDefaultRenderer() {
@@ -917,7 +917,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 	{
 		//System.out.println("addLine:[" + data + "]");
 		//System.out.println("getLastLine:[" + getLastLine() + "]");
-		if (getLineCount() > 0 && maximumlines > 0 && getLineCount() == maximumlines)
+		if (getLineCount() > 0 && maximumLines > 0 && getLineCount() == maximumLines)
 		{
 			removeLastLine();
 		}
