@@ -160,7 +160,7 @@ public class VTSunOSNativeUtils implements VTNativeUtilsImplementation
 	{
 		try
 		{
-			sunosCLibrary.system("disown -h");
+			//sunosCLibrary.system("disown -h");
 			try
 			{
 				//sunosCLibrary.system("exit");
@@ -186,7 +186,7 @@ public class VTSunOSNativeUtils implements VTNativeUtilsImplementation
 	{
 		try
 		{
-			sunosCLibrary.system("disown -h");
+			//sunosCLibrary.system("disown -h");
 			try
 			{
 				//sunosCLibrary.system("exit");

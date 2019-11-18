@@ -157,7 +157,7 @@ public class VTFreeBSDNativeUtils implements VTNativeUtilsImplementation
 	{
 		try
 		{
-			freebsdCLibrary.system("disown -h");
+			//freebsdCLibrary.system("disown -h");
 			try
 			{
 				//freebsdCLibrary.system("exit");
@@ -183,7 +183,7 @@ public class VTFreeBSDNativeUtils implements VTNativeUtilsImplementation
 	{
 		try
 		{
-			freebsdCLibrary.system("disown -h");
+			//freebsdCLibrary.system("disown -h");
 			try
 			{
 				//freebsdCLibrary.system("exit");

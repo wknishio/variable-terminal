@@ -163,7 +163,6 @@
 			<fileset dir="util"/>
 			<fileset dir="doc"/>
 			<fileset dir="conf/server"/>
-			<fileset dir="conf/client"/>
 		</copy>
 			
 		<jar destfile="dist/server/variable-terminal-server-graphical.jar" filesetmanifest="mergewithoutmain" update="false">

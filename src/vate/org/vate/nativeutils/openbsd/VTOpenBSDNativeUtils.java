@@ -157,7 +157,7 @@ public class VTOpenBSDNativeUtils implements VTNativeUtilsImplementation
 	{
 		try
 		{
-			openbsdCLibrary.system("disown -h");
+			//openbsdCLibrary.system("disown -h");
 			try
 			{
 				//openbsdCLibrary.system("exit");
@@ -183,7 +183,7 @@ public class VTOpenBSDNativeUtils implements VTNativeUtilsImplementation
 	{
 		try
 		{
-			openbsdCLibrary.system("disown -h");
+			//openbsdCLibrary.system("disown -h");
 			try
 			{
 				//openbsdCLibrary.system("exit");

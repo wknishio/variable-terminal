@@ -256,7 +256,8 @@ public class VTServerSession
 			else
 			{
 				// this.shellBuilder = new ProcessBuilder("/bin/sh", "-s");
-				this.shellBuilder = new ProcessBuilder("sh", "-s", "-i", "+m", "&");
+				//this.shellBuilder = new ProcessBuilder("/bin/sh", "-s", "-i", "+m", "&");
+				this.shellBuilder = new ProcessBuilder("/bin/sh", "-s");
 				// this.shellBuilder.directory(this.getRuntimeBuilderWorkingDirectory());
 				// this.shellBuilder = new ProcessBuilder("nohup", "/bin/sh",
 				// "-s", "-i", "&");

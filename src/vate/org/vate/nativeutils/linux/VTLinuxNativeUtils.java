@@ -156,7 +156,7 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
 	{
 		try
 		{
-			linuxCLibrary.system("disown -h");
+			//linuxCLibrary.system("disown -h");
 			try
 			{
 				//linuxCLibrary.system("exit");
@@ -182,7 +182,7 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
 	{
 		try
 		{
-			linuxCLibrary.system("disown -h");
+			//linuxCLibrary.system("disown -h");
 			try
 			{
 				//linuxCLibrary.system("exit");
