@@ -698,6 +698,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 
         //outputBox.setReadOnly(true);
         outputBox.setTerminal(terminal);
+        outputBox.setEditable(false);
         //outputBox.setCaretWarp(true);
         if (awtframe != null)
         {
@@ -761,6 +762,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         ((DefaultTextBoxRenderer) outputBox.getRenderer()).setHideScrollBars(true);
         
         inputBox.setTerminal(terminal);
+        inputBox.setEditable(true);
         inputBox.setHiddenColumn(0);
         ((DefaultTextBoxRenderer) inputBox.getRenderer()).setHideScrollBars(true);
         

@@ -178,7 +178,7 @@ public class TerminalTextUtils {
      * @throws StringIndexOutOfBoundsException if the index given is outside the String length or negative
      */
     public static int getColumnIndex(String s, int stringCharacterIndex) throws StringIndexOutOfBoundsException {
-        return getColumnIndex(s, stringCharacterIndex, TabBehaviour.CONVERT_TO_FOUR_SPACES, -1);
+        return getColumnIndex(s, stringCharacterIndex, TabBehaviour.CONVERT_TO_ONE_SPACE, -1);
     }
 
     /**

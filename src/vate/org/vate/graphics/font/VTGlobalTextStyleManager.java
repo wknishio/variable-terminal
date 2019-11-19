@@ -210,7 +210,7 @@ public class VTGlobalTextStyleManager
 		monospacedFont = monospacedFont.deriveFont(Font.BOLD);
 		windowFont = windowFont.deriveFont(Font.BOLD);
 		boldScaleds();
-		//boldLists();
+		boldLists();
 		updateComponents(false);
 	}
 	
@@ -219,7 +219,7 @@ public class VTGlobalTextStyleManager
 		monospacedFont = monospacedFont.deriveFont(Font.PLAIN);
 		windowFont = windowFont.deriveFont(Font.PLAIN);
 		plainScaleds();
-		//plainLists();
+		plainLists();
 		updateComponents(false);
 	}
 	

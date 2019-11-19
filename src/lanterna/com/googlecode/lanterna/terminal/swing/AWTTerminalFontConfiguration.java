@@ -224,7 +224,7 @@ public class AWTTerminalFontConfiguration {
      */
     @SuppressWarnings("WeakerAccess")
     public static AWTTerminalFontConfiguration newInstance(Font... fontsInOrderOfPriority) {
-        return new AWTTerminalFontConfiguration(false, BoldMode.EVERYTHING_BUT_SYMBOLS, fontsInOrderOfPriority);
+        return new AWTTerminalFontConfiguration(false, BoldMode.NOTHING, fontsInOrderOfPriority);
     }
 
     private final List<Font> fontPriority;

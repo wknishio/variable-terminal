@@ -993,7 +993,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
             if (horizontalAdjustable != null)
             {
             	horizontalAdjustable.setVisibleAmount(realTextArea.getColumns());
-            	horizontalAdjustable.setMaximum(component.longestRow + 1);
+            	horizontalAdjustable.setMaximum(component.longestRow);
             	horizontalAdjustable.setValue(viewTopLeft.getColumn());
             	horizontalAdjustable.setBlockIncrement(graphics.getSize().getColumns());
             }
