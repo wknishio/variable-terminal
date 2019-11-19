@@ -1,2 +1,2 @@
 #/bin/sh
-java -cp variable-terminal-daemon-graphical.jar org.vate.server.startup.VTServerDaemonGraphicalStart $* &
+nohup java -cp variable-terminal-daemon-graphical.jar org.vate.server.startup.VTServerDaemonGraphicalStart $* &
