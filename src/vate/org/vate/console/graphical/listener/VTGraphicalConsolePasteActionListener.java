@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
 
 public class VTGraphicalConsolePasteActionListener implements ActionListener
 {

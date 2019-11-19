@@ -30,7 +30,6 @@ import org.vate.client.graphicsmode.remote.listener.VTGraphicsModeClientRemoteIn
 import org.vate.client.graphicsmode.remote.listener.VTGraphicsModeClientRemoteInterfaceMouseMoveListener;
 import org.vate.client.graphicsmode.remote.listener.VTGraphicsModeClientRemoteInterfaceMouseWheelListener;
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vate.graphics.clipboard.VTEmptyTransferable;
 import org.vate.graphics.control.VTAWTControlEvent;

@@ -26,7 +26,6 @@ import javax.sound.sampled.Mixer;
 
 import org.vate.VT;
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.filesystem.VTRootList;
 import org.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vate.graphics.message.VTGraphicsMessager;
@@ -911,7 +910,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 //		}
 		else if (parsed[0].equalsIgnoreCase("*VTOPTICALDRIVE") || parsed[0].equalsIgnoreCase("*VTOPDR"))
 		{
-			synchronized (session.getCDOperation())
+			synchronized (session.getOpticalDriveOperation())
 			{
 				// connection.getResultWriter().write(command);
 				// connection.getResultWriter().flush();
@@ -919,15 +918,15 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				{
 					if (parsed[1].toUpperCase().startsWith("O"))
 					{
-						if (session.getCDOperation().isFinished())
+						if (session.getOpticalDriveOperation().isFinished())
 						{
-							session.getCDOperation().joinThread();
+							session.getOpticalDriveOperation().joinThread();
 						}
-						if (!session.getCDOperation().aliveThread())
+						if (!session.getOpticalDriveOperation().aliveThread())
 						{
-							session.getCDOperation().setFinished(false);
-							session.getCDOperation().setOpen(true);
-							session.getCDOperation().startThread();
+							session.getOpticalDriveOperation().setFinished(false);
+							session.getOpticalDriveOperation().setOpen(true);
+							session.getOpticalDriveOperation().startThread();
 						}
 						else
 						{
@@ -937,15 +936,15 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 					}
 					else if (parsed[1].toUpperCase().startsWith("C"))
 					{
-						if (session.getCDOperation().isFinished())
+						if (session.getOpticalDriveOperation().isFinished())
 						{
-							session.getCDOperation().joinThread();
+							session.getOpticalDriveOperation().joinThread();
 						}
-						if (!session.getCDOperation().aliveThread())
+						if (!session.getOpticalDriveOperation().aliveThread())
 						{
-							session.getCDOperation().setFinished(false);
-							session.getCDOperation().setOpen(false);
-							session.getCDOperation().startThread();
+							session.getOpticalDriveOperation().setFinished(false);
+							session.getOpticalDriveOperation().setOpen(false);
+							session.getOpticalDriveOperation().startThread();
 						}
 						else
 						{

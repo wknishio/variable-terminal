@@ -4,7 +4,6 @@ import java.awt.Frame;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Locale;
-import com.sun.media.jfxmedia.control.VideoDataBuffer;
 
 public interface VTConsoleImplementation
 {

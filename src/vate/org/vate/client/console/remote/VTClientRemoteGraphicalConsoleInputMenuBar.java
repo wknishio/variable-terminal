@@ -10,7 +10,6 @@ import java.awt.event.ActionListener;
 import org.vate.VT;
 import org.vate.client.dialog.VTClientConfigurationDialog;
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.console.graphical.menu.VTGraphicalConsoleInputMenuItem;
 import org.vate.dialog.VTFileDialog;
 import org.vate.graphics.font.VTGlobalTextStyleManager;

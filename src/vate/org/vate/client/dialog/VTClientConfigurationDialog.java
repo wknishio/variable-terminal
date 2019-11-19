@@ -33,8 +33,6 @@ import org.vate.client.VTClient;
 import org.vate.client.connection.VTClientConnection;
 import org.vate.client.connection.VTClientConnector;
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
-import org.vate.console.graphical.VTGraphicalConsoleFrame;
 import org.vate.dialog.VTFileDialog;
 import org.vate.graphics.font.VTGlobalTextStyleManager;
 

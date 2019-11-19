@@ -4,7 +4,6 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.graphics.message.VTGraphicsMessager;
 import org.vate.help.VTHelpManager;
 import org.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;

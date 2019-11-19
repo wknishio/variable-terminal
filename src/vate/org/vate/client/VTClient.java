@@ -18,7 +18,6 @@ import org.vate.client.console.remote.VTClientRemoteConsoleCommandSelector;
 import org.vate.client.console.remote.VTClientRemoteGraphicalConsoleInputMenuBar;
 import org.vate.client.dialog.VTClientConfigurationDialog;
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.exception.VTUncaughtExceptionHandler;
 import org.vate.help.VTHelpManager;
 import org.vate.nativeutils.VTNativeUtils;

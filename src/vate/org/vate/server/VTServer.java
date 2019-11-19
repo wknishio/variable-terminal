@@ -21,7 +21,6 @@ import javax.imageio.ImageIO;
 import org.vate.VT;
 import org.vate.audio.VTAudioSystem;
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.exception.VTUncaughtExceptionHandler;
 import org.vate.graphics.message.VTTrayIconInterface;
 import org.vate.help.VTHelpManager;

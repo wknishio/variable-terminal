@@ -10,7 +10,6 @@ import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import java.util.List;
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
 
 public class VTGraphicalConsoleDropTargetListener implements DropTargetListener
 {

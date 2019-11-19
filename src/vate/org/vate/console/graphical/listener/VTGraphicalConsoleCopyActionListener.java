@@ -6,7 +6,6 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
 
 public class VTGraphicalConsoleCopyActionListener implements ActionListener
 {

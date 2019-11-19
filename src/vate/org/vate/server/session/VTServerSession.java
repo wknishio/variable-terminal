@@ -87,7 +87,7 @@ public class VTServerSession
 	private VTServerHostResolver hostResolver;
 	private VTServerNetworkInterfaceResolver networkInterfaceResolver;
 	private VTServerPrintServiceResolver printServiceResolver;
-	private VTServerOpticalDriveOperation cdOperation;
+	private VTServerOpticalDriveOperation opticalDriveOperation;
 	private VTServerSessionListViewer connectionListViewer;
 	private VTServerFileSystemRootsResolver fileSystemRootsResolver;
 	//private VTServerPrintTextTask printTextTask;
@@ -139,7 +139,7 @@ public class VTServerSession
 		this.fileScanOperation = new VTServerFileScanOperation(this);
 		this.fileModifyOperation = new VTServerFileModifyOperation(this);
 		this.zipFileOperation = new VTServerZipFileOperation(this);
-		this.cdOperation = new VTServerOpticalDriveOperation(this);
+		this.opticalDriveOperation = new VTServerOpticalDriveOperation(this);
 		this.hostResolver = new VTServerHostResolver(this);
 		this.networkInterfaceResolver = new VTServerNetworkInterfaceResolver(this);
 		this.printServiceResolver = new VTServerPrintServiceResolver(this);
@@ -257,7 +257,7 @@ public class VTServerSession
 			{
 				// this.shellBuilder = new ProcessBuilder("/bin/sh", "-s");
 				//this.shellBuilder = new ProcessBuilder("/bin/sh", "-s", "-i", "+m", "&");
-				this.shellBuilder = new ProcessBuilder("/bin/sh", "-s");
+				this.shellBuilder = new ProcessBuilder("/bin/sh", "-i", "-l");
 				// this.shellBuilder.directory(this.getRuntimeBuilderWorkingDirectory());
 				// this.shellBuilder = new ProcessBuilder("nohup", "/bin/sh",
 				// "-s", "-i", "&");
@@ -502,9 +502,9 @@ public class VTServerSession
 		return printServiceResolver;
 	}
 	
-	public VTServerOpticalDriveOperation getCDOperation()
+	public VTServerOpticalDriveOperation getOpticalDriveOperation()
 	{
-		return cdOperation;
+		return opticalDriveOperation;
 	}
 	
 	public VTServerSessionListViewer getConnectionListViewer()
@@ -922,10 +922,10 @@ public class VTServerSession
 			graphicsDeviceResolver.interruptThread();
 			graphicsDeviceResolver.stopThread();
 		}
-		if (cdOperation.aliveThread())
+		if (opticalDriveOperation.aliveThread())
 		{
-			cdOperation.interruptThread();
-			cdOperation.stopThread();
+			opticalDriveOperation.interruptThread();
+			opticalDriveOperation.stopThread();
 		}
 		if (pingService.aliveThread())
 		{

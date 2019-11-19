@@ -6,7 +6,6 @@ import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.console.graphical.menu.VTGraphicalConsoleInputMenuItem;
 import org.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vate.server.dialog.VTServerSettingsDialog;

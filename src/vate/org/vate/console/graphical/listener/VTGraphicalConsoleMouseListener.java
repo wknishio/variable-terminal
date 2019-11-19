@@ -8,8 +8,6 @@ package org.vate.console.graphical.listener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 // import java.io.IOException;
-import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.console.graphical.menu.VTGraphicalConsolePopupMenu;
 
 public class VTGraphicalConsoleMouseListener implements MouseListener

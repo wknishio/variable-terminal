@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.console.graphical.listener.VTGraphicalConsoleCopyActionListener;
 import org.vate.console.graphical.listener.VTGraphicalConsolePasteActionListener;
 

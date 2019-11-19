@@ -15,7 +15,7 @@ public class VTOPTICALDRIVE extends VTServerStandardRemoteConsoleCommandProcesso
 
 	public void execute(String command, String[] parsed) throws Exception
 	{
-		synchronized (session.getCDOperation())
+		synchronized (session.getOpticalDriveOperation())
 		{
 			// connection.getResultWriter().write(command);
 			// connection.getResultWriter().flush();
@@ -23,15 +23,15 @@ public class VTOPTICALDRIVE extends VTServerStandardRemoteConsoleCommandProcesso
 			{
 				if (parsed[1].toUpperCase().startsWith("O"))
 				{
-					if (session.getCDOperation().isFinished())
+					if (session.getOpticalDriveOperation().isFinished())
 					{
-						session.getCDOperation().joinThread();
+						session.getOpticalDriveOperation().joinThread();
 					}
-					if (!session.getCDOperation().aliveThread())
+					if (!session.getOpticalDriveOperation().aliveThread())
 					{
-						session.getCDOperation().setFinished(false);
-						session.getCDOperation().setOpen(true);
-						session.getCDOperation().startThread();
+						session.getOpticalDriveOperation().setFinished(false);
+						session.getOpticalDriveOperation().setOpen(true);
+						session.getOpticalDriveOperation().startThread();
 					}
 					else
 					{
@@ -41,15 +41,15 @@ public class VTOPTICALDRIVE extends VTServerStandardRemoteConsoleCommandProcesso
 				}
 				else if (parsed[1].toUpperCase().startsWith("C"))
 				{
-					if (session.getCDOperation().isFinished())
+					if (session.getOpticalDriveOperation().isFinished())
 					{
-						session.getCDOperation().joinThread();
+						session.getOpticalDriveOperation().joinThread();
 					}
-					if (!session.getCDOperation().aliveThread())
+					if (!session.getOpticalDriveOperation().aliveThread())
 					{
-						session.getCDOperation().setFinished(false);
-						session.getCDOperation().setOpen(false);
-						session.getCDOperation().startThread();
+						session.getOpticalDriveOperation().setFinished(false);
+						session.getOpticalDriveOperation().setOpen(false);
+						session.getOpticalDriveOperation().startThread();
 					}
 					else
 					{
