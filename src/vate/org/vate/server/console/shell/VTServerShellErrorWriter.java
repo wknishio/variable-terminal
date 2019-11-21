@@ -4,7 +4,7 @@ import org.vate.server.connection.VTServerConnection;
 import org.vate.server.session.VTServerSession;
 import org.vate.task.VTTask;
 
-public class VTServerShellOutputWriter extends VTTask
+public class VTServerShellErrorWriter extends VTTask
 {
 	private static final int resultBufferSize = 1024 * 64;
 	private int readChars;
@@ -12,7 +12,7 @@ public class VTServerShellOutputWriter extends VTTask
 	private VTServerConnection connection;
 	private VTServerSession session;
 	
-	public VTServerShellOutputWriter(VTServerSession session)
+	public VTServerShellErrorWriter(VTServerSession session)
 	{
 		this.session = session;
 		this.connection = session.getConnection();
@@ -35,7 +35,7 @@ public class VTServerShellOutputWriter extends VTTask
 		{
 			try
 			{
-				readChars = session.getShellOutputReader().read(resultBuffer, 0, resultBufferSize);
+				readChars = session.getShellErrorReader().read(resultBuffer, 0, resultBufferSize);
 				if (readChars > 0 && !stopped)
 				{
 					connection.getResultWriter().write(resultBuffer, 0, readChars);

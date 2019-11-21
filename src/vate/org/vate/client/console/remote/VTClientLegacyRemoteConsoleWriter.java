@@ -476,7 +476,7 @@ public class VTClientLegacyRemoteConsoleWriter extends VTTask
 				stopped = true;
 				return;
 			}
-			else if (parsed[0].equalsIgnoreCase("*VTTERMINATE") || parsed[0].equalsIgnoreCase("*VTTMNT"))
+			else if (parsed[0].equalsIgnoreCase("*VTSTOP") || parsed[0].equalsIgnoreCase("*VTSTP"))
 			{
 				connection.getCommandWriter().write(command + "\n");
 				connection.getCommandWriter().flush();

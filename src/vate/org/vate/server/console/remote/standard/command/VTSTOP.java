@@ -3,14 +3,14 @@ package org.vate.server.console.remote.standard.command;
 import org.vate.console.VTConsole;
 import org.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
-public class VTTERMINATE extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTSTOP extends VTServerStandardRemoteConsoleCommandProcessor
 {
-	public VTTERMINATE()
+	public VTSTOP()
 	{
-		this.setFullName("*VTTERMINATE");
-		this.setAbbreviatedName("*VTTMNT");
-		this.setFullSyntax("*VTTERMINATE");
-		this.setAbbreviatedSyntax("*VTTMNT");
+		this.setFullName("*VTSTOP");
+		this.setAbbreviatedName("*VTSTP");
+		this.setFullSyntax("*VTSTOP");
+		this.setAbbreviatedSyntax("*VTSTP");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

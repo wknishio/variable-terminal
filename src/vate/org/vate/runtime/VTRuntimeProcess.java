@@ -11,8 +11,10 @@ public class VTRuntimeProcess
 	private ProcessBuilder builder;
 	private Process process;
 	private InputStream in;
+	private InputStream err;
 	private OutputStream out;
 	private VTRuntimeProcessOutputConsumer outputConsumer;
+	private VTRuntimeProcessOutputConsumer errorConsumer;
 	private VTRuntimeProcessExitListener exitListener;
 	private ExecutorService threads;
 	private BufferedWriter writer;
@@ -33,10 +35,13 @@ public class VTRuntimeProcess
 	{
 		this.process = builder.start();
 		this.in = process.getInputStream();
+		this.err = process.getErrorStream();
 		this.out = process.getOutputStream();
 		this.outputConsumer = new VTRuntimeProcessOutputConsumer(in, writer, verbose);
+		this.errorConsumer = new VTRuntimeProcessOutputConsumer(err, writer, verbose);
 		this.exitListener = new VTRuntimeProcessExitListener(this, outputConsumer);
 		threads.execute(outputConsumer);
+		threads.execute(errorConsumer);
 		threads.execute(exitListener);
 	}
 	
@@ -68,6 +73,11 @@ public class VTRuntimeProcess
 	public InputStream getIn()
 	{
 		return in;
+	}
+	
+	public InputStream getErr()
+	{
+		return err;
 	}
 	
 	public OutputStream getOut()

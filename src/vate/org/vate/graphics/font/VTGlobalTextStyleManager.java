@@ -53,6 +53,10 @@ public class VTGlobalTextStyleManager
 				if (Platform.isWindows())
 				{
 					FONT_SCALING_FACTOR = (Math.max(1.0, Toolkit.getDefaultToolkit().getScreenResolution() / 96.0));
+					//if (FONT_SCALING_FACTOR > 1.0)
+					//{
+						//FONT_SCALING_FACTOR = FONT_SCALING_FACTOR * (1.0 + (1.0 / 4.0));
+					//}
 				}
 				else
 				{

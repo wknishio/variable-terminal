@@ -557,7 +557,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 			VTConsole.print("\rVT>Client disconnecting...\nVT>");
 			connection.closeSockets();
 		}
-		else if (parsed[0].equalsIgnoreCase("*VTTERMINATE") || parsed[0].equalsIgnoreCase("*VTTMNT"))
+		else if (parsed[0].equalsIgnoreCase("*VTSTOP") || parsed[0].equalsIgnoreCase("*VTSTP"))
 		{
 			VTConsole.print("\rVT>Client finalizing server...\nVT>");
 			connection.closeSockets();

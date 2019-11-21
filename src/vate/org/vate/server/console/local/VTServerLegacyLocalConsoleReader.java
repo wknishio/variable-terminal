@@ -412,7 +412,7 @@ public class VTServerLegacyLocalConsoleReader extends VTTask
 					}
 				}
 			}
-			else if (parsed[0].equalsIgnoreCase("*VTTERMINATE") || parsed[0].equalsIgnoreCase("*VTTMNT"))
+			else if (parsed[0].equalsIgnoreCase("*VTSTOP") || parsed[0].equalsIgnoreCase("*VTSTP"))
 			{
 				System.exit(0);
 			}

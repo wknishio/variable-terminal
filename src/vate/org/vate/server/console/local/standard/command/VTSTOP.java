@@ -2,14 +2,14 @@ package org.vate.server.console.local.standard.command;
 
 import org.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-public class VTTERMINATE extends VTServerStandardLocalConsoleCommandProcessor
+public class VTSTOP extends VTServerStandardLocalConsoleCommandProcessor
 {	
-	public VTTERMINATE()
+	public VTSTOP()
 	{
-		this.setFullName("*VTTERMINATE");
-		this.setAbbreviatedName("*VTTMNT");
-		this.setFullSyntax("*VTTERMINATE");
-		this.setAbbreviatedSyntax("*VTTMNT");
+		this.setFullName("*VTSTOP");
+		this.setAbbreviatedName("*VTSTP");
+		this.setFullSyntax("*VTSTOP");
+		this.setAbbreviatedSyntax("*VTSTP");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception
