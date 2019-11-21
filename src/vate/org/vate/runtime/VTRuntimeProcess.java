@@ -14,7 +14,7 @@ public class VTRuntimeProcess
 	private InputStream err;
 	private OutputStream out;
 	private VTRuntimeProcessOutputConsumer outputConsumer;
-	private VTRuntimeProcessOutputConsumer errorConsumer;
+	//private VTRuntimeProcessOutputConsumer errorConsumer;
 	private VTRuntimeProcessExitListener exitListener;
 	private ExecutorService threads;
 	private BufferedWriter writer;
@@ -38,10 +38,10 @@ public class VTRuntimeProcess
 		this.err = process.getErrorStream();
 		this.out = process.getOutputStream();
 		this.outputConsumer = new VTRuntimeProcessOutputConsumer(in, writer, verbose);
-		this.errorConsumer = new VTRuntimeProcessOutputConsumer(err, writer, verbose);
+		//this.errorConsumer = new VTRuntimeProcessOutputConsumer(err, writer, verbose);
 		this.exitListener = new VTRuntimeProcessExitListener(this, outputConsumer);
 		threads.execute(outputConsumer);
-		threads.execute(errorConsumer);
+		//threads.execute(errorConsumer);
 		threads.execute(exitListener);
 	}
 	

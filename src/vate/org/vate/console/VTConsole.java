@@ -624,4 +624,12 @@ public class VTConsole
 			console.refreshText();
 		}
 	}
+	
+	public static void toggleCommandEcho()
+	{
+		if (checkConsole())
+		{
+			console.toggleCommandEcho();
+		}
+	}
 }

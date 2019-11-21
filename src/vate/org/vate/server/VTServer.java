@@ -73,6 +73,7 @@ public class VTServer implements Runnable
 	private ExecutorService threads;
 	private VTTrayIconInterface trayIconInterface;
 	private volatile boolean skipConfiguration;
+	private volatile boolean echoCommands = false;
 	private static final String VT_SERVER_SETTINGS_COMMENTS = 
 	"Variable-Terminal server settings file, supports UTF-8\r\n" + 
 	"#vate.server.connection.mode      values: P(passive, default) or A(active)\r\n" + 
@@ -1859,5 +1860,15 @@ public class VTServer implements Runnable
 			consoleReader.startThread();
 		}
 		serverConnector.run();
+	}
+
+	public void setEchoCommands(boolean echoCommands)
+	{
+		this.echoCommands  = echoCommands;
+	}
+
+	public boolean isEchoCommands()
+	{
+		return echoCommands;
 	}
 }

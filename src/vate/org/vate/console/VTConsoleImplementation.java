@@ -71,4 +71,6 @@ public interface VTConsoleImplementation
 	public abstract String getSelectedText();
 	
 	public abstract void refreshText();
+
+	public abstract void toggleCommandEcho();
 }

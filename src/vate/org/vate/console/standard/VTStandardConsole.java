@@ -814,6 +814,11 @@ public class VTStandardConsole implements VTConsoleImplementation
 	{
 		
 	}
+
+	public void toggleCommandEcho()
+	{
+		
+	}
 	
 	// public boolean isReadingLine()
 	// {

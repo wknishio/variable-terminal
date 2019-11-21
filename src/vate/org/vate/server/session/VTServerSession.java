@@ -28,7 +28,6 @@ import org.vate.ping.VTNanoPingService;
 import org.vate.server.VTServer;
 import org.vate.server.connection.VTServerConnection;
 import org.vate.server.console.remote.VTServerRemoteConsoleReader;
-import org.vate.server.console.shell.VTServerShellErrorWriter;
 import org.vate.server.console.shell.VTServerShellExitListener;
 import org.vate.server.console.shell.VTServerShellOutputWriter;
 import org.vate.server.filesystem.VTServerFileModifyOperation;
@@ -55,6 +54,7 @@ public class VTServerSession
 	private volatile boolean stoppingShell;
 	private volatile boolean restartingShell;
 	private volatile boolean runningAudio;
+	private volatile boolean echoCommands;
 	private volatile long sessionLocalNanoDelay;
 	private volatile long sessionRemoteNanoDelay;
 	private Process shell;
@@ -77,6 +77,7 @@ public class VTServerSession
 	
 	private VTServerRemoteConsoleReader clientReader;
 	private VTServerShellOutputWriter shellOutputWriter;
+	//private VTServerShellErrorWriter shellErrorWriter;
 	private VTServerShellExitListener shellExitListener;
 	private VTFileTransferServer fileTransferServer;
 	private VTServerScreenshotTask screenshotTask;
@@ -104,7 +105,6 @@ public class VTServerSession
 	private Map<String, Closeable> sessionResources;
 	
 	private ExecutorService threads;
-	private VTServerShellErrorWriter shellErrorWriter;
 	
 	public VTServerSession(VTServer server, VTServerConnection connection)
 	{
@@ -126,10 +126,12 @@ public class VTServerSession
 		});
 		this.stoppingShell = false;
 		this.restartingShell = false;
+		this.runningAudio = false;
+		this.echoCommands = false;
 		
 		this.clientReader = new VTServerRemoteConsoleReader(this);
 		this.shellOutputWriter = new VTServerShellOutputWriter(this);
-		this.shellErrorWriter = new VTServerShellErrorWriter(this);
+		//this.shellErrorWriter = new VTServerShellErrorWriter(this);
 		this.shellExitListener = new VTServerShellExitListener(this);
 		
 		this.controlProvider = new VTAWTControlProvider();
@@ -321,7 +323,7 @@ public class VTServerSession
 				}
 			}
 		}
-		//this.shellBuilder.redirectErrorStream(true);
+		this.shellBuilder.redirectErrorStream(true);
 	}
 	
 	public long getLocalNanoDelay()
@@ -593,7 +595,7 @@ public class VTServerSession
 		clientReader.setStopped(stopped);
 		// System.out.println("clientReader.setStopped");
 		shellOutputWriter.setStopped(stopped);
-		shellErrorWriter.setStopped(stopped);
+		//shellErrorWriter.setStopped(stopped);
 		// System.out.println("shellOutputWriter.setStopped");
 		shellExitListener.setStopped(stopped);
 		// System.out.println("shellExitListener.setStopped");
@@ -761,7 +763,7 @@ public class VTServerSession
 		runningAudio = false;
 		clientReader.setStopped(false);
 		shellOutputWriter.setStopped(false);
-		shellErrorWriter.setStopped(false);
+		//shellErrorWriter.setStopped(false);
 		shellExitListener.setStopped(false);
 		tcpTunnelsHandler.getConnection().setControlInputStream(connection.getTunnelControlInputStream());
 		tcpTunnelsHandler.getConnection().setControlOutputStream(connection.getTunnelControlOutputStream());
@@ -781,7 +783,7 @@ public class VTServerSession
 		pingService.startThread();
 		clientReader.startThread();
 		shellOutputWriter.startThread();
-		shellErrorWriter.startThread();
+		//shellErrorWriter.startThread();
 		shellExitListener.startThread();
 		tcpTunnelsHandler.startThread();
 		socksTunnelsHandler.startThread();
@@ -790,10 +792,10 @@ public class VTServerSession
 	public void restartShellThreads()
 	{
 		shellOutputWriter.setStopped(false);
-		shellErrorWriter.setStopped(false);
+		//shellErrorWriter.setStopped(false);
 		shellExitListener.setStopped(false);
 		shellOutputWriter.startThread();
-		shellErrorWriter.startThread();
+		//shellErrorWriter.startThread();
 		shellExitListener.startThread();
 	}
 	
@@ -838,7 +840,7 @@ public class VTServerSession
 	public void tryStopShellThreads()
 	{
 		shellOutputWriter.setStopped(true);
-		shellErrorWriter.setStopped(true);
+		//shellErrorWriter.setStopped(true);
 		shellExitListener.setStopped(true);
 	}
 	
@@ -1032,7 +1034,7 @@ public class VTServerSession
 			clientReader.joinThread();
 			// System.out.println("clientReader.joinThread()");
 			shellOutputWriter.joinThread();
-			shellErrorWriter.joinThread();
+			//shellErrorWriter.joinThread();
 			// System.out.println("shellOutputWriter.joinThread()");
 			shellExitListener.joinThread();
 			// System.out.println("shellExitListener.joinThread()");
@@ -1091,12 +1093,22 @@ public class VTServerSession
 		try
 		{
 			shellOutputWriter.joinThread();
-			shellErrorWriter.joinThread();
+			//shellErrorWriter.joinThread();
 			shellExitListener.joinThread();
 		}
 		catch (Throwable e)
 		{
 			// return;
 		}
+	}
+	
+	public boolean isEchoCommands()
+	{
+		return echoCommands;
+	}
+
+	public void setEchoCommands(boolean echoCommands)
+	{
+		this.echoCommands = echoCommands;
 	}
 }

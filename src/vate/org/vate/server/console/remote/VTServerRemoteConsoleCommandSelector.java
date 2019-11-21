@@ -57,6 +57,7 @@ public class VTServerRemoteConsoleCommandSelector <T> extends VTConsoleCommandSe
 			knownStandardCommandProcessorClasses.add(VTTIME.class);
 			knownStandardCommandProcessorClasses.add(VTVARIABLE.class);
 			knownStandardCommandProcessorClasses.add(VTZIP.class);
+			knownStandardCommandProcessorClasses.add(VTECHO.class);
 		}
 		catch (Throwable t)
 		{

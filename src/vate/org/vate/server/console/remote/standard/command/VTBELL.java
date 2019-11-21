@@ -8,8 +8,8 @@ public class VTBELL extends VTServerStandardRemoteConsoleCommandProcessor
 	public VTBELL()
 	{
 		this.setFullName("*VTBELL");
-		this.setAbbreviatedName("*VTDPDS");
-		this.setFullSyntax("*VTBL");
+		this.setAbbreviatedName("*VTBL");
+		this.setFullSyntax("*VTBELL");
 		this.setAbbreviatedSyntax("*VTBL");
 	}
 

@@ -93,6 +93,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	private volatile boolean flushInterrupted = false;
 	private volatile boolean frameIconified = false;
 	private volatile boolean replaceActivated = false;
+	private volatile boolean commandEcho = true;
 	//private volatile int caretRecoilCount = 0;
 	private StringBuilder inputBuffer = new StringBuilder();
 	private StringBuilder outputBuffer = new StringBuilder();
@@ -1512,13 +1513,19 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		if (echoInput)
 		{
 			registerLine(data);
-			write(data + "\n");
-			flush();
+			if (commandEcho)
+			{
+				write(data + "\n");
+				flush();
+			}
 		}
 		else
 		{
-			write("\n");
-			flush();
+			if (commandEcho)
+			{
+				write("\n");
+				flush();
+			}
 		}
 		readingInput = false;
 		return data;
@@ -1814,5 +1821,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		{
 			
 		}
+	}
+
+	public void toggleCommandEcho()
+	{
+		commandEcho = !commandEcho;
 	}
 }

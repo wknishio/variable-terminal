@@ -190,6 +190,11 @@ public class VTServerRemoteConsoleReader extends VTTask
 		{
 			parsed = new String[] { "" };
 		}
+		if (command != null && session.isEchoCommands())
+		{
+			connection.getResultWriter().write(command + "\n");
+			connection.getResultWriter().flush();
+		}
 		if (!selector.selectCommand(command, parsed))
 		{
 			if (!stopped)

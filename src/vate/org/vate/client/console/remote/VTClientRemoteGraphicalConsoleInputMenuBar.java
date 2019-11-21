@@ -164,6 +164,7 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		consoleMenu = new Menu("Console ");
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Show Remote System Time", "*VTTIME\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Clear Remote Console", "*VTCLEAR\n"));
+		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Toggle Remote Console Echo", "*VTECHO\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Toggle Remote Console Cover", "*VTCOVER\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Detect Chained Instances", "*VTCHAINS\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Open Remote External Shell", "*VTSHELL O\n"));

@@ -2141,6 +2141,11 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	{
 		
 	}
+
+	public void toggleCommandEcho()
+	{
+		
+	}
 	
 	// public boolean isReadingLine()
 	// {

@@ -38,6 +38,7 @@ public class VTServerLocalConsoleCommandSelector <T> extends VTConsoleCommandSel
 			knownStandardCommandProcessorClasses.add(VTSTOP.class);
 			knownStandardCommandProcessorClasses.add(VTTIME.class);
 			knownStandardCommandProcessorClasses.add(VTVARIABLE.class);
+			//knownStandardCommandProcessorClasses.add(VTECHO.class);
 		}
 		catch (Throwable t)
 		{

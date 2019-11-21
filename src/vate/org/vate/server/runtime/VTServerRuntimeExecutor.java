@@ -426,7 +426,7 @@ public class VTServerRuntimeExecutor extends VTTask
 						processBuilder.environment().clear();
 						processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
 						// processBuilder.environment().putAll(System.getenv());
-						//processBuilder.redirectErrorStream(true);
+						processBuilder.redirectErrorStream(true);
 						VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, connection.getResultWriter(), process_verbose, session.getSessionThreads(), process_restart);
 						process.start();
 						processList.add(process);
@@ -471,7 +471,7 @@ public class VTServerRuntimeExecutor extends VTTask
 						processBuilder.environment().clear();
 						processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
 						// processBuilder.environment().putAll(System.getenv());
-						//processBuilder.redirectErrorStream(true);
+						processBuilder.redirectErrorStream(true);
 						VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, connection.getResultWriter(), process_verbose, session.getSessionThreads(), process_restart);
 						process.start();
 						synchronized (this)

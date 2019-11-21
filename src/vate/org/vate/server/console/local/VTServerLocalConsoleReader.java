@@ -19,12 +19,12 @@ public class VTServerLocalConsoleReader extends VTTask
 {
 	// private String command;
 	// private String[] splitCommand;
-	//private VTServer server;
+	private VTServer server;
 	private VTServerLocalConsoleCommandSelector<VTServerLocalConsoleCommandProcessor> selector;
 	
 	public VTServerLocalConsoleReader(VTServer server)
 	{
-		//this.server = server;
+		this.server = server;
 		this.selector = new VTServerLocalConsoleCommandSelector<VTServerLocalConsoleCommandProcessor>(server);
 	}
 	
@@ -196,6 +196,10 @@ public class VTServerLocalConsoleReader extends VTTask
 			else
 			{
 				parsed = new String[] { "" };
+			}
+			if (server.isEchoCommands())
+			{
+				VTConsole.print("VT>" + command + "\n");
 			}
 			if (!selector.selectCommand(command, parsed))
 			{
