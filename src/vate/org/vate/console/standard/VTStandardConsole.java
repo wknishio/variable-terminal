@@ -815,10 +815,18 @@ public class VTStandardConsole implements VTConsoleImplementation
 		
 	}
 
-	public void toggleCommandEcho()
+	public boolean isCommandEcho()
 	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void setCommandEcho(boolean commandEcho)
+	{
+		// TODO Auto-generated method stub
 		
 	}
+
 	
 	// public boolean isReadingLine()
 	// {

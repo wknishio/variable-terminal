@@ -505,6 +505,7 @@ public class VTClientConnection
 //		}
 //		dialog = false;
 		VTConsole.print("\nVT>Connection with server closed!");
+		VTConsole.setCommandEcho(true);
 		closeSockets();
 		try
 		{

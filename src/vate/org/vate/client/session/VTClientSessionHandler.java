@@ -88,7 +88,6 @@ public class VTClientSessionHandler implements Runnable
 			session.tryStopSessionThreads();
 			//TODO: try to reestablish session
 			connection.closeConnection();
-			
 			session.waitThreads();
 		}
 		catch (Throwable e)

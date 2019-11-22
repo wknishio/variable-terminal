@@ -1823,8 +1823,13 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		}
 	}
 
-	public void toggleCommandEcho()
+	public boolean isCommandEcho()
 	{
-		commandEcho = !commandEcho;
+		return this.commandEcho;
+	}
+
+	public void setCommandEcho(boolean commandEcho)
+	{
+		this.commandEcho = commandEcho;
 	}
 }

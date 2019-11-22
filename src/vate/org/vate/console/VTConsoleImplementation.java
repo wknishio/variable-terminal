@@ -72,5 +72,7 @@ public interface VTConsoleImplementation
 	
 	public abstract void refreshText();
 
-	public abstract void toggleCommandEcho();
+	public abstract boolean isCommandEcho();
+
+	public abstract void setCommandEcho(boolean commandEcho);
 }

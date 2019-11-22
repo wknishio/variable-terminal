@@ -625,11 +625,20 @@ public class VTConsole
 		}
 	}
 	
-	public static void toggleCommandEcho()
+	public static boolean isCommandEcho()
 	{
 		if (checkConsole())
 		{
-			console.toggleCommandEcho();
+			return console.isCommandEcho();
+		}
+		return true;
+	}
+	
+	public static void setCommandEcho(boolean commandEcho)
+	{
+		if (checkConsole())
+		{
+			console.setCommandEcho(commandEcho);
 		}
 	}
 }

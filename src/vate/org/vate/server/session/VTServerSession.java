@@ -1,6 +1,5 @@
 package org.vate.server.session;
 
-import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -66,8 +66,8 @@ public class VTServerSession
 	private InputStream shellInputStream;
 	private InputStream shellErrorStream;
 	private OutputStream shellOutputStream;
-	private BufferedReader shellOutputReader;
-	private BufferedReader shellErrorReader;
+	private Reader shellOutputReader;
+	private Reader shellErrorReader;
 	private Writer shellCommandExecutor;
 	private VTServer server;
 	private VTServerConnection connection;
@@ -271,7 +271,7 @@ public class VTServerSession
 //				{
 //					this.shellBuilder = new ProcessBuilder("/bin/sh", "-l", "-s");
 //				}
-				this.shellBuilder = new ProcessBuilder("/bin/sh", "-l", "-s");
+				this.shellBuilder = new ProcessBuilder("/bin/sh", "--noediting", "-i", "-l", "-s");
 				// this.shellBuilder.directory(this.getRuntimeBuilderWorkingDirectory());
 				// this.shellBuilder = new ProcessBuilder("nohup", "/bin/sh",
 				// "-s", "-i", "&");
@@ -471,12 +471,12 @@ public class VTServerSession
 		return shellOutputStream;
 	}
 	
-	public BufferedReader getShellOutputReader()
+	public Reader getShellOutputReader()
 	{
 		return shellOutputReader;
 	}
 	
-	public BufferedReader getShellErrorReader()
+	public Reader getShellErrorReader()
 	{
 		return shellErrorReader;
 	}
@@ -658,8 +658,10 @@ public class VTServerSession
 			shellErrorStream = shell.getErrorStream();
 			shellOutputStream = shell.getOutputStream();
 			
-			shellOutputReader = new BufferedReader(new InputStreamReader(shellInputStream), 1024 * 8);
-			shellErrorReader = new BufferedReader(new InputStreamReader(shellErrorStream), 1024 * 8);
+			//shellOutputReader = new BufferedReader(new InputStreamReader(shellInputStream), 1024 * 8);
+			//shellErrorReader = new BufferedReader(new InputStreamReader(shellErrorStream), 1024 * 8);
+			shellOutputReader = new InputStreamReader(shellInputStream);
+			shellErrorReader = new InputStreamReader(shellErrorStream);
 			shellCommandExecutor = new OutputStreamWriter(shellOutputStream);
 			
 			// if (Platform.isWindows())

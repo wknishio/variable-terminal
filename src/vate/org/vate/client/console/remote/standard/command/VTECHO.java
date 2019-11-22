@@ -14,7 +14,14 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
 
 	public void execute(String command, String[] parsed) throws Exception
 	{
-		//VTConsole.toggleCommandEcho();
+//		if (VTConsole.isCommandEcho())
+//		{
+//			VTConsole.setCommandEcho(false);
+//		}
+//		else
+//		{
+//			VTConsole.setCommandEcho(true);
+//		}
 		session.getConnection().getCommandWriter().write(command + "\n");
 		session.getConnection().getCommandWriter().flush();
 	}

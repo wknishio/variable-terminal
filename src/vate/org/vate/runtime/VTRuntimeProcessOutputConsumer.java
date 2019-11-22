@@ -50,27 +50,27 @@ public class VTRuntimeProcessOutputConsumer implements Runnable
 		{
 			try
 			{
-				/* if (in.ready()) { readChars = in.read(resultBuffer, 0,
-				 * resultBufferSize); if (readChars > 0 && running) { if
-				 * (verbose) { out.write(resultBuffer, 0, readChars);
-				 * out.flush(); } } else { running = false; break; } } else {
-				 * Thread.sleep(1); } */
-				
-				readChars = in.read(resultBuffer, 0, resultBufferSize);
-				if (readChars > 0 && running)
+				if (in.ready())
 				{
-					if (verbose)
+					readChars = in.read(resultBuffer, 0, resultBufferSize);
+					if (readChars > 0 && running)
 					{
-						out.write(resultBuffer, 0, readChars);
-						out.flush();
+						if (verbose)
+						{
+							out.write(resultBuffer, 0, readChars);
+							out.flush();
+						}
+					}
+					else
+					{
+						running = false;
+						break;
 					}
 				}
 				else
 				{
-					running = false;
-					break;
+					Thread.sleep(5);
 				}
-				
 			}
 			catch (Throwable e)
 			{
