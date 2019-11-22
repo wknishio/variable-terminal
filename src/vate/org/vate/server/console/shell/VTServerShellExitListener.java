@@ -45,17 +45,17 @@ public class VTServerShellExitListener extends VTTask
 					if (session.isStoppingShell())
 					{
 						session.setStoppingShell(false);
-						session.getConnection().getResultWriter().write("\nVT>External shell stopped!\nVT>");
+						session.getConnection().getResultWriter().write("\nVT>Remote shell stopped!\nVT>");
 						session.getConnection().getResultWriter().flush();
 					}
 					else if (session.isRestartingShell())
 					{
-						session.getConnection().getResultWriter().write("\nVT>External shell stopped!\nVT>");
+						session.getConnection().getResultWriter().write("\nVT>Remote shell stopped!\nVT>");
 						session.getConnection().getResultWriter().flush();
 					}
 					else
 					{
-						session.getConnection().getResultWriter().write("\nVT>External shell stopped!\nVT>");
+						session.getConnection().getResultWriter().write("\nVT>Remote shell stopped!\nVT>");
 						session.getConnection().getResultWriter().flush();
 					}
 				}

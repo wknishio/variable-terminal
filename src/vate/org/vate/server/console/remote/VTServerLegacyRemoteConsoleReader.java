@@ -996,7 +996,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 //		{
 //			// connection.getResultWriter().write(command);
 //			// connection.getResultWriter().flush();
-//			connection.getResultWriter().write("\nVT>Restarting external shell...\nVT>");
+//			connection.getResultWriter().write("\nVT>Restarting remote shell...\nVT>");
 //			connection.getResultWriter().flush();
 //			session.setRestartingShell(true);
 //			session.restartShell();
@@ -1682,7 +1682,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 //			{
 //				if (!session.getShellExitListener().isStopped() && session.getShellExitListener().aliveThread())
 //				{
-//					connection.getResultWriter().write("\nVT>Stopping external shell...\nVT>");
+//					connection.getResultWriter().write("\nVT>Stopping remote shell...\nVT>");
 //					connection.getResultWriter().flush();
 //					session.setStoppingShell(true);
 //					session.stopShell();
@@ -1690,7 +1690,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 //				}
 //				else
 //				{
-//					connection.getResultWriter().write("\nVT>External shell is still stopped!\nVT>");
+//					connection.getResultWriter().write("\nVT>Remote shell is still stopped!\nVT>");
 //					connection.getResultWriter().flush();
 //				}
 //			}
@@ -3336,7 +3336,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 			{
 				if (parsed[1].toUpperCase().contains("O"))
 				{
-					connection.getResultWriter().write("\nVT>Opening external shell...\nVT>");
+					connection.getResultWriter().write("\nVT>Opening remote shell...\nVT>");
 					connection.getResultWriter().flush();
 					session.setRestartingShell(true);
 					session.restartShell();
@@ -3347,7 +3347,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 					{
 						if (!session.getShellExitListener().isStopped() && session.getShellExitListener().aliveThread())
 						{
-							connection.getResultWriter().write("\nVT>Closing external shell...\nVT>");
+							connection.getResultWriter().write("\nVT>Closing remote shell...\nVT>");
 							connection.getResultWriter().flush();
 							session.setStoppingShell(true);
 							session.stopShell();
@@ -3355,7 +3355,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 						}
 						else
 						{
-							connection.getResultWriter().write("\nVT>External shell already closed!\nVT>");
+							connection.getResultWriter().write("\nVT>Remote shell already closed!\nVT>");
 							connection.getResultWriter().flush();
 						}
 					}
@@ -3371,7 +3371,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 						{
 							shell[i] = parsed[i + 1];
 						}
-						connection.getResultWriter().write("\nVT>Defining external shell to: [" + Arrays.toString(shell) + "]");
+						connection.getResultWriter().write("\nVT>Defining remote shell to: [" + Arrays.toString(shell) + "]");
 						connection.getResultWriter().flush();
 						session.setShellBuilder(shell, null, null);
 						session.restartShell();
@@ -3379,7 +3379,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 					else
 					{
 						session.setShellBuilder(null, null, null);
-						connection.getResultWriter().write("\nVT>Defining external shell to: [Default]");
+						connection.getResultWriter().write("\nVT>Defining remote shell to: [Default]");
 						connection.getResultWriter().flush();
 						
 						session.restartShell();

@@ -167,9 +167,10 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Toggle Remote Console Echo", "*VTECHO\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Toggle Remote Console Cover", "*VTCOVER\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Detect Chained Instances", "*VTCHAINS\n"));
-		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Open Remote External Shell", "*VTSHELL O\n"));
-		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Close Remote External Shell", "*VTSHELL C\n"));
-		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Define Remote External Shell", "*VTSHELL D "));
+		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Open Remote Shell", "*VTSHELL O\n"));
+		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Close Remote Shell", "*VTSHELL C\n"));
+		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Define Remote Shell", "*VTSHELL D "));
+		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Change Remote Shell Encoding", "*VTSHELL E "));
 		
 		//settingsMenu = new Menu("Settings ");
 		serverSettingsMenu = new Menu("Access ");

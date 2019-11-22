@@ -9,8 +9,10 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
@@ -48,6 +50,7 @@ import org.vate.tunnel.connection.VTTunnelConnection;
 import org.vate.tunnel.connection.VTTunnelConnectionHandler;
 
 import com.sun.jna.Platform;
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.LocalAttribute;
 
 public class VTServerSession
 {
@@ -57,7 +60,7 @@ public class VTServerSession
 	private volatile boolean echoCommands;
 	private volatile long sessionLocalNanoDelay;
 	private volatile long sessionRemoteNanoDelay;
-	private Process shell;
+	private Process shellProcess;
 	private ProcessBuilder shellBuilder;
 	private Map<String, String> shellEnvironment;
 	private File runtimeDirectory;
@@ -106,6 +109,8 @@ public class VTServerSession
 	
 	private ExecutorService threads;
 	
+	private volatile Charset shellCharset;
+	
 	public VTServerSession(VTServer server, VTServerConnection connection)
 	{
 		this.server = server;
@@ -115,6 +120,7 @@ public class VTServerSession
 	
 	public void initialize()
 	{
+		this.shellCharset = null;
 		this.threads = Executors.newCachedThreadPool(new ThreadFactory()
 		{
 			public Thread newThread(Runnable r)
@@ -188,6 +194,25 @@ public class VTServerSession
 		sessionResources.put(key, value);
 	}
 	
+	public boolean setShellEncoding(String shellEncoding)
+	{
+		if (shellEncoding == null)
+		{
+			shellCharset = null;
+			return true;
+		}
+		try
+		{
+			shellCharset = Charset.forName(shellEncoding);
+			return true;
+		}
+		catch (Throwable e)
+		{
+			
+		}
+		return false;
+	}
+	
 	public void setShellBuilder(String[] command, String[] names, String[] values)
 	{
 		if (command == null)
@@ -229,6 +254,8 @@ public class VTServerSession
 					// "/E:ON", "/F:ON");
 					// this.shellBuilder = new ProcessBuilder("cmd.exe",
 					// "/E:ON", "/F:ON", "/Q", "/K", "chcp", "65001");
+					//this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A", "/K", "@chcp 65001");
+					//this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/K", "@chcp 65001>nul");
 					this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
 					// this.shellBuilder = new ProcessBuilder("sh", "-s", "-i",
 					// "+m", "&");
@@ -271,7 +298,7 @@ public class VTServerSession
 //				{
 //					this.shellBuilder = new ProcessBuilder("/bin/sh", "-l", "-s");
 //				}
-				this.shellBuilder = new ProcessBuilder("/bin/sh", "--noediting", "-i", "-l", "-s");
+				this.shellBuilder = new ProcessBuilder("/bin/sh", "-l", "-s");
 				// this.shellBuilder.directory(this.getRuntimeBuilderWorkingDirectory());
 				// this.shellBuilder = new ProcessBuilder("nohup", "/bin/sh",
 				// "-s", "-i", "&");
@@ -290,6 +317,14 @@ public class VTServerSession
 					this.shellEnvironment.put("PS1", "$PWD>");
 					this.shellEnvironment.remove("PROMPT");
 					this.shellEnvironment.put("PROMPT", "'pwd'>");
+//					this.shellEnvironment.remove("LANG");
+//					this.shellEnvironment.put("LANG", "en_US.UTF-8");
+//					this.shellEnvironment.remove("LANGUAGE");
+//					this.shellEnvironment.put("LANGUAGE", "en_US.UTF-8");
+//					this.shellEnvironment.remove("LC_TYPE");
+//					this.shellEnvironment.put("LC_TYPE", "en_US.UTF-8");
+//					this.shellEnvironment.remove("LC_ALL");
+//					this.shellEnvironment.put("LC_ALL", "en_US.UTF-8");
 				}
 				// VTNativeUtils.system("set +m");
 				// shell = server.getRun().exec(new String[]{"/bin/sh"});
@@ -373,7 +408,7 @@ public class VTServerSession
 	
 	public Process getShell()
 	{
-		return shell;
+		return shellProcess;
 	}
 	
 	public Map<String, String> getShellEnvironment()
@@ -637,12 +672,12 @@ public class VTServerSession
 			if (restartingShell)
 			{
 				/* connection.getResultWriter().
-				 * write("\nVT>Starting external shell...\nVT>");
+				 * write("\nVT>Starting remote shell...\nVT>");
 				 * connection.getResultWriter().flush(); */
 			}
 			else
 			{
-				connection.getResultWriter().write("\nVT>Starting external shell...");
+				connection.getResultWriter().write("\nVT>Starting remote shell...");
 				connection.getResultWriter().flush();
 			}
 			// shellBuilder.directory(getRuntimeBuilderWorkingDirectory());
@@ -653,16 +688,25 @@ public class VTServerSession
 			}
 			shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
 			shellEnvironment = shellBuilder.environment();
-			shell = shellBuilder.start();
-			shellInputStream = shell.getInputStream();
-			shellErrorStream = shell.getErrorStream();
-			shellOutputStream = shell.getOutputStream();
+			shellProcess = shellBuilder.start();
+			shellInputStream = shellProcess.getInputStream();
+			shellErrorStream = shellProcess.getErrorStream();
+			shellOutputStream = shellProcess.getOutputStream();
 			
 			//shellOutputReader = new BufferedReader(new InputStreamReader(shellInputStream), 1024 * 8);
 			//shellErrorReader = new BufferedReader(new InputStreamReader(shellErrorStream), 1024 * 8);
-			shellOutputReader = new InputStreamReader(shellInputStream);
-			shellErrorReader = new InputStreamReader(shellErrorStream);
-			shellCommandExecutor = new OutputStreamWriter(shellOutputStream);
+			if (shellCharset != null)
+			{
+				shellOutputReader = new InputStreamReader(shellInputStream, shellCharset);
+				shellErrorReader = new InputStreamReader(shellErrorStream, shellCharset);
+				shellCommandExecutor = new OutputStreamWriter(shellOutputStream, shellCharset);
+			}
+			else
+			{
+				shellOutputReader = new InputStreamReader(shellInputStream);
+				shellErrorReader = new InputStreamReader(shellErrorStream);
+				shellCommandExecutor = new OutputStreamWriter(shellOutputStream);
+			}
 			
 			// if (Platform.isWindows())
 			// {
@@ -690,17 +734,17 @@ public class VTServerSession
 		catch (IOException e)
 		{
 			// e.printStackTrace();
-			VTConsole.print("\rVT>External shell not available!");
+			VTConsole.print("\rVT>Remote shell not available!");
 			try
 			{
 				if (restartingShell)
 				{
-					connection.getResultWriter().write("\nVT>External shell not available!" + "\nVT>");
+					connection.getResultWriter().write("\nVT>Remote shell not available!" + "\nVT>");
 					connection.getResultWriter().flush();
 				}
 				else
 				{
-					connection.getResultWriter().write("\nVT>External shell not available!" + "\nVT>Enter *VTHELP or *VTHLP to list available commands in client console\nVT>\n");
+					connection.getResultWriter().write("\nVT>Remote shell not available!" + "\nVT>Enter *VTHELP or *VTHLP to list available commands in client console\nVT>\n");
 					connection.getResultWriter().flush();
 				}
 			}
@@ -738,12 +782,12 @@ public class VTServerSession
 			{
 				if (restartingShell)
 				{
-					connection.getResultWriter().write("\nVT>External shell started!" + "\nVT>\n\n");
+					connection.getResultWriter().write("\nVT>Remote shell started!" + "\nVT>\n\n");
 					connection.getResultWriter().flush();
 				}
 				else
 				{
-					connection.getResultWriter().write("\nVT>External shell started!" + "\nVT>Enter *VTHELP or *VTHLP to list available commands in client console\nVT>\n");
+					connection.getResultWriter().write("\nVT>Remote shell started!" + "\nVT>Enter *VTHELP or *VTHLP to list available commands in client console\nVT>\n");
 					connection.getResultWriter().flush();
 				}
 			}
@@ -825,11 +869,11 @@ public class VTServerSession
 	{
 		try
 		{
-			synchronized (shell)
+			synchronized (shellProcess)
 			{
 				while (!shellOutputWriter.isStopped() && !shellExitListener.isStopped())
 				{
-					shell.wait();
+					shellProcess.wait();
 				}
 			}
 		}
@@ -963,7 +1007,7 @@ public class VTServerSession
 	{
 		try
 		{
-			shell.destroy();
+			shellProcess.destroy();
 		}
 		catch (Throwable e)
 		{
@@ -971,7 +1015,7 @@ public class VTServerSession
 		}
 		try
 		{
-			shell.waitFor();
+			shellProcess.waitFor();
 		}
 		catch (Throwable e)
 		{
@@ -1003,7 +1047,7 @@ public class VTServerSession
 		}
 		try
 		{
-			shell.getInputStream().close();
+			shellProcess.getInputStream().close();
 		}
 		catch (Throwable e)
 		{
@@ -1011,7 +1055,7 @@ public class VTServerSession
 		}
 		try
 		{
-			shell.getErrorStream().close();
+			shellProcess.getErrorStream().close();
 		}
 		catch (Throwable e)
 		{
@@ -1019,7 +1063,7 @@ public class VTServerSession
 		}
 		try
 		{
-			shell.getOutputStream().close();
+			shellProcess.getOutputStream().close();
 		}
 		catch (Throwable e)
 		{

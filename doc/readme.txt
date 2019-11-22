@@ -126,9 +126,9 @@ This software is primarily a command-line tool driven by text commands.
 After successfully connecting and authenticating to a server, the client console
 can receive text command inputs from the user.
 
-When the user types a command in client and press enter, this software checks if
-the command must be redirected to the external shell running on the server or if
-the command is a internal command of this software.
+When the user types a command in client and press enter, this software checks
+if the command must be redirected to the remote shell running on the server or
+if the command is a internal command of this software.
 
 Most of the functions of this software are executed by these internal commands.
 

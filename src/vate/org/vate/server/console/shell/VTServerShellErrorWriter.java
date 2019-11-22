@@ -35,23 +35,34 @@ public class VTServerShellErrorWriter extends VTTask
 		{
 			try
 			{
-				if (session.getShellOutputReader().ready())
+//				if (session.getShellOutputReader().ready())
+//				{
+//					readChars = session.getShellErrorReader().read(resultBuffer, 0, resultBufferSize);
+//					if (readChars > 0 && !stopped)
+//					{
+//						connection.getResultWriter().write(resultBuffer, 0, readChars);
+//						connection.getResultWriter().flush();
+//					}
+//					else
+//					{
+//						stopped = true;
+//						break;
+//					}
+//				}
+//				else
+//				{
+//					Thread.sleep(5);
+//				}
+				readChars = session.getShellErrorReader().read(resultBuffer, 0, resultBufferSize);
+				if (readChars > 0 && !stopped)
 				{
-					readChars = session.getShellErrorReader().read(resultBuffer, 0, resultBufferSize);
-					if (readChars > 0 && !stopped)
-					{
-						connection.getResultWriter().write(resultBuffer, 0, readChars);
-						connection.getResultWriter().flush();
-					}
-					else
-					{
-						stopped = true;
-						break;
-					}
+					connection.getResultWriter().write(resultBuffer, 0, readChars);
+					connection.getResultWriter().flush();
 				}
 				else
 				{
-					Thread.sleep(5);
+					stopped = true;
+					break;
 				}
 			}
 			catch (Throwable e)

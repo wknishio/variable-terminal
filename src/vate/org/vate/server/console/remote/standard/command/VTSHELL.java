@@ -21,7 +21,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
 		{
 			if (parsed[1].toUpperCase().contains("O"))
 			{
-				connection.getResultWriter().write("\nVT>Opening external shell...\nVT>");
+				connection.getResultWriter().write("\nVT>Opening remote shell...\nVT>");
 				connection.getResultWriter().flush();
 				session.setRestartingShell(true);
 				session.restartShell();
@@ -32,7 +32,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
 				{
 					if (!session.getShellExitListener().isStopped() && session.getShellExitListener().aliveThread())
 					{
-						connection.getResultWriter().write("\nVT>Closing external shell...\nVT>");
+						connection.getResultWriter().write("\nVT>Closing remote shell...\nVT>");
 						connection.getResultWriter().flush();
 						session.setStoppingShell(true);
 						session.stopShell();
@@ -40,7 +40,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
 					}
 					else
 					{
-						connection.getResultWriter().write("\nVT>External shell already closed!\nVT>");
+						connection.getResultWriter().write("\nVT>Remote shell already closed!\nVT>");
 						connection.getResultWriter().flush();
 					}
 				}
@@ -56,17 +56,41 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
 					{
 						nextShell[i] = parsed[i + 2];
 					}
-					connection.getResultWriter().write("\nVT>Defining external shell to: " + Arrays.toString(nextShell) + "");
+					connection.getResultWriter().write("\nVT>Defining remote shell to: " + Arrays.toString(nextShell) + "");
 					connection.getResultWriter().flush();
 					session.setShellBuilder(nextShell, null, null);
 					session.restartShell();
 				}
 				else
 				{
-					session.setShellBuilder(null, null, null);
-					connection.getResultWriter().write("\nVT>Defining external shell to: [Default]");
+					connection.getResultWriter().write("\nVT>Defining remote shell to: [Default]");
 					connection.getResultWriter().flush();
-					
+					session.setShellBuilder(null, null, null);
+					session.restartShell();
+				}
+			}
+			else if (parsed[1].toUpperCase().contains("E"))
+			{
+				if (parsed.length >= 3 && (parsed[2].length() > 0))
+				{
+					String encoding = parsed[2];
+					if (session.setShellEncoding(encoding))
+					{
+						connection.getResultWriter().write("\nVT>Defining remote shell encoding to: [" + encoding + "]");
+						connection.getResultWriter().flush();
+						session.restartShell();
+					}
+					else
+					{
+						connection.getResultWriter().write("\nVT>Invalid remote shell encoding: [" + encoding + "]");
+						connection.getResultWriter().flush();
+					}
+				}
+				else
+				{
+					session.setShellEncoding(null);
+					connection.getResultWriter().write("\nVT>Defining remote shell encoding to: [Default]");
+					connection.getResultWriter().flush();
 					session.restartShell();
 				}
 			}
@@ -75,8 +99,6 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
 				connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
 				connection.getResultWriter().flush();
 			}
-			
-			
 		}
 		else
 		{
