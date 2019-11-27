@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class WinDef {
 
-    public static final HANDLE INVALID_HANDLE_VALUE = new HANDLE(Pointer.createConstant(Pointer.SIZE == 8?-1L:4294967295L));
+    public static final HANDLE INVALID_HANDLE_VALUE = new HANDLE(Pointer.createConstant(Native.POINTER_SIZE == 8?-1L:4294967295L));
 
     public static class HANDLE extends PointerType {
         private boolean immutable;

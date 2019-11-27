@@ -5,6 +5,8 @@ import java.awt.peer.*;
 import sun.awt.*;
 import java.lang.reflect.*;
 
+import com.sun.jna.Platform;
+
 public final class VTDirectRobot
 {
 	public VTDirectRobot() throws AWTException
@@ -254,6 +256,10 @@ public final class VTDirectRobot
 
 	public boolean getRGBPixels(int x, int y, int width, int height, int[] pixels)
 	{
+//		if (Platform.isWindows())
+//		{
+//			return VTWin32JNAScreenShot.getPixelData(x, y, width, height, pixels, null);
+//		}
 		if (getRGBPixelsMethod != null)
 		{
 			try

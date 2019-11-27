@@ -3,8 +3,6 @@ package org.vate.nativeutils.win32;
 import org.vate.nativeutils.VTNativeUtilsImplementation;
 
 import com.sun.jna.Native;
-import com.sun.jna.platform.win32.WinNT.HANDLE;
-import com.sun.jna.ptr.IntByReference;
 
 public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 {
@@ -384,10 +382,10 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 	
 	public void normal()
 	{
-		HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(-10);
-		IntByReference lpMode = new IntByReference();
-		kernel32Lib.GetConsoleMode(hConsoleHandle, lpMode);
-		kernel32Lib.SetConsoleMode(hConsoleHandle, lpMode.getValue() |  (ENABLE_ECHO_INPUT));
+		//HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(-10);
+		//IntByReference lpMode = new IntByReference();
+		//kernel32Lib.GetConsoleMode(hConsoleHandle, lpMode);
+		//kernel32Lib.SetConsoleMode(hConsoleHandle, lpMode.getValue() |  (ENABLE_ECHO_INPUT));
 	}
 
 	public void unbuffered()
@@ -397,10 +395,10 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 	
 	public void noecho()
 	{
-		HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(-10);
-		IntByReference lpMode = new IntByReference();
-		kernel32Lib.GetConsoleMode(hConsoleHandle, lpMode);
-		kernel32Lib.SetConsoleMode(hConsoleHandle, lpMode.getValue() & (~ENABLE_ECHO_INPUT));
+		//HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(-10);
+		//IntByReference lpMode = new IntByReference();
+		//kernel32Lib.GetConsoleMode(hConsoleHandle, lpMode);
+		//kernel32Lib.SetConsoleMode(hConsoleHandle, lpMode.getValue() & (~ENABLE_ECHO_INPUT));
 	}
 	
 	/* public void changeFocusToWindow(String windowTitle) { int hWnd =

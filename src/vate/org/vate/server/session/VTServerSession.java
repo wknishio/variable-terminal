@@ -12,7 +12,6 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
@@ -50,7 +49,6 @@ import org.vate.tunnel.connection.VTTunnelConnection;
 import org.vate.tunnel.connection.VTTunnelConnectionHandler;
 
 import com.sun.jna.Platform;
-import com.sun.xml.internal.bind.v2.schemagen.xmlschema.LocalAttribute;
 
 public class VTServerSession
 {
@@ -77,7 +75,6 @@ public class VTServerSession
 	private VTAWTControlProvider controlProvider;
 	private VTAWTScreenCaptureProvider viewProvider;
 	private VTAWTScreenCaptureProvider screenshotProvider;
-	
 	private VTServerRemoteConsoleReader clientReader;
 	private VTServerShellOutputWriter shellOutputWriter;
 	//private VTServerShellErrorWriter shellErrorWriter;
