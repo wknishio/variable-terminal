@@ -30,6 +30,7 @@ import com.googlecode.lanterna.terminal.TerminalResizeListener;
 import java.awt.*;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
 
@@ -292,4 +293,24 @@ public class ScrollingSwingTerminal extends JComponent implements IOSafeTerminal
     public void removeResizeListener(TerminalResizeListener listener) {
         swingTerminal.removeResizeListener(listener);
     }
+    
+    public TerminalPosition getSelectionStartPosition() throws IOException
+	{
+		return swingTerminal.getSelectionStartPosition();
+	}
+
+	public void setSelectionStartPosition(TerminalPosition position) throws IOException
+	{
+		swingTerminal.setSelectionStartPosition(position);
+	}
+
+	public TerminalPosition getSelectionEndPosition() throws IOException
+	{
+		return swingTerminal.getSelectionEndPosition();
+	}
+
+	public void setSelectionEndPosition(TerminalPosition position) throws IOException
+	{
+		swingTerminal.setSelectionEndPosition(position);
+	}
 }

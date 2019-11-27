@@ -640,7 +640,16 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					{
 						e.consume();
 						popupMenu.show(awtterminal, e.getX(), e.getY());
+						return;
 					}
+					e.consume();
+					int x = e.getX();
+					int y = e.getY();
+					int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
+					int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
+					TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
+					MouseAction mouseAction = new MouseAction(MouseActionType.CLICK_RELEASE, e.getButton(), pos);
+					awtterminal.addInput(mouseAction);
 				}
 				public void mouseEntered(MouseEvent e)
 				{
@@ -781,6 +790,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
 						outputBox.takeFocus();
 						outputBox.setCaretPosition(topLeft.getRow() + mouse.getPosition().getRow(), topLeft.getColumn() + mouse.getPosition().getColumn());
 						outputBox.invalidate();
+						return false;
+					}
+					
+					if (mouse.getActionType() == MouseActionType.CLICK_RELEASE)
+					{
 						return false;
 					}
 					

@@ -24,6 +24,7 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.TabBehaviour;
 import com.googlecode.lanterna.terminal.AbstractTerminal;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -52,8 +53,6 @@ public class DefaultVirtualTerminal extends AbstractTerminal implements VirtualT
 
     // Used when switching back from private mode, to restore the earlier cursor position
     private TerminalPosition savedCursorPosition;
-
-
     /**
      * Creates a new virtual terminal with an initial size set
      */
@@ -445,5 +444,29 @@ public class DefaultVirtualTerminal extends AbstractTerminal implements VirtualT
                         Math.max(cursorPosition.getColumn(), 0),
                         Math.max(cursorPosition.getRow(), 0));
     }
+    
+    private TerminalPosition selectionStartPosition;
+    
+    private TerminalPosition selectionEndPosition;
+
+	public TerminalPosition getSelectionStartPosition() throws IOException
+	{
+		return selectionStartPosition;
+	}
+
+	public void setSelectionStartPosition(TerminalPosition position) throws IOException
+	{
+		selectionStartPosition = position;
+	}
+
+	public TerminalPosition getSelectionEndPosition() throws IOException
+	{
+		return selectionEndPosition;
+	}
+
+	public void setSelectionEndPosition(TerminalPosition position) throws IOException
+	{
+		selectionEndPosition = position;
+	}
 
 }

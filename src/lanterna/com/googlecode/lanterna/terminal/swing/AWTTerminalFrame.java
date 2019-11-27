@@ -29,6 +29,7 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.terminal.TerminalResizeListener;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.Set;
@@ -338,4 +339,24 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
     {
     	super.pack();
     }
+
+	public TerminalPosition getSelectionStartPosition() throws IOException
+	{
+		return awtTerminal.getSelectionStartPosition();
+	}
+
+	public void setSelectionStartPosition(TerminalPosition position) throws IOException
+	{
+		awtTerminal.setSelectionStartPosition(position);
+	}
+
+	public TerminalPosition getSelectionEndPosition() throws IOException
+	{
+		return awtTerminal.getSelectionEndPosition();
+	}
+
+	public void setSelectionEndPosition(TerminalPosition position) throws IOException
+	{
+		awtTerminal.setSelectionEndPosition(position);
+	}
 }

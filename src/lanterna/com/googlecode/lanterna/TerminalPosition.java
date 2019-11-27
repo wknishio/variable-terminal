@@ -38,7 +38,7 @@ public class TerminalPosition implements Comparable<TerminalPosition> {
 
     private final int row;
     private final int column;
-
+    
     /**
      * Creates a new TerminalPosition object, which represents a location on the screen. There is no check to verify
      * that the position you specified is within the size of the current terminal and you can specify negative positions

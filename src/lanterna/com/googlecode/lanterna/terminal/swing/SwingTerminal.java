@@ -29,6 +29,7 @@ import com.googlecode.lanterna.terminal.TerminalResizeListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -309,4 +310,24 @@ public class SwingTerminal extends JComponent implements IOSafeTerminal {
     public void removeResizeListener(TerminalResizeListener listener) {
         terminalImplementation.removeResizeListener(listener);
     }
+    
+    public TerminalPosition getSelectionStartPosition() throws IOException
+	{
+		return terminalImplementation.getSelectionStartPosition();
+	}
+
+	public void setSelectionStartPosition(TerminalPosition position) throws IOException
+	{
+		terminalImplementation.setSelectionStartPosition(position);
+	}
+
+	public TerminalPosition getSelectionEndPosition() throws IOException
+	{
+		return terminalImplementation.getSelectionEndPosition();
+	}
+
+	public void setSelectionEndPosition(TerminalPosition position) throws IOException
+	{
+		terminalImplementation.setSelectionEndPosition(position);
+	}
 }

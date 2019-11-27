@@ -28,6 +28,7 @@ import com.googlecode.lanterna.terminal.IOSafeTerminal;
 import com.googlecode.lanterna.terminal.TerminalResizeListener;
 
 import java.awt.*;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 
@@ -328,4 +329,25 @@ public class AWTTerminal extends Panel implements IOSafeTerminal {
     {
 		return terminalImplementation.getFontConfiguration();
     }
+    
+	public TerminalPosition getSelectionStartPosition() throws IOException
+	{
+		return terminalImplementation.getSelectionStartPosition();
+	}
+
+	public void setSelectionStartPosition(TerminalPosition position) throws IOException
+	{
+		terminalImplementation.setSelectionStartPosition(position);
+	}
+
+	public TerminalPosition getSelectionEndPosition() throws IOException
+	{
+		return terminalImplementation.getSelectionEndPosition();
+	}
+
+	public void setSelectionEndPosition(TerminalPosition position) throws IOException
+	{
+		terminalImplementation.setSelectionEndPosition(position);
+	}
+
 }

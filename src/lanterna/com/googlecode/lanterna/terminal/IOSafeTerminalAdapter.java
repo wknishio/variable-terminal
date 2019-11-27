@@ -446,4 +446,25 @@ public class IOSafeTerminalAdapter implements IOSafeTerminal {
         }
 
     }
+    
+	public TerminalPosition getSelectionStartPosition() throws IOException
+	{
+		return backend.getSelectionStartPosition();
+	}
+
+	public void setSelectionStartPosition(TerminalPosition position) throws IOException
+	{
+		backend.setSelectionStartPosition(position);
+	}
+
+	public TerminalPosition getSelectionEndPosition() throws IOException
+	{
+		return backend.getSelectionEndPosition();
+	}
+
+	public void setSelectionEndPosition(TerminalPosition position) throws IOException
+	{
+		backend.setSelectionEndPosition(position);
+	}
+
 }

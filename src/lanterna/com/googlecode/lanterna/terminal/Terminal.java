@@ -104,6 +104,14 @@ public interface Terminal extends InputProvider, Closeable {
      * @throws IOException In there was an underlying I/O error
      */
     TerminalPosition getCursorPosition() throws IOException;
+    
+    TerminalPosition getSelectionStartPosition() throws IOException;
+    
+    void setSelectionStartPosition(TerminalPosition position) throws IOException;
+    
+    TerminalPosition getSelectionEndPosition() throws IOException;
+    
+    void setSelectionEndPosition(TerminalPosition position) throws IOException;
 
     /**
      * Hides or shows the text cursor, but not all terminal (-emulators) supports this. The text cursor is normally a
@@ -127,7 +135,7 @@ public interface Terminal extends InputProvider, Closeable {
      * their construction as opposed to the somewhat rectangular shape we fit latin characters in. As it's very
      * difficult to create a monospace font for CJK with a 2:1 height-width proportion, it seems like the implementers
      * back in the days simply gave up and made each character take 2 column. It causes issues for the random terminal
-     * programmer because you can't really trust 1 character = 1 column, but I suppose it's "しょうがない".
+     * programmer because you can't really trust 1 character = 1 column, but I suppose it's "".
      *
      * If you try to print non-printable control characters, the terminal is likely to ignore them (all {@link Terminal}
      * implementations bundled with Lanterna will).

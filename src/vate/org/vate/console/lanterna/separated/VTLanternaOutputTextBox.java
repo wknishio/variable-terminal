@@ -146,9 +146,17 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 		}
 //		if(caretPosition.getColumn() < lines.get(caretPosition.getRow()).length()) {
 //            caretPosition = caretPosition.withRelativeColumn(1);
-//        }
-		if(caretPosition.getColumn() < longestRow + 1) {
-			caretPosition = caretPosition.withRelativeColumn(1);
+		if (editable)
+        {
+			if(caretPosition.getColumn() < longestRow + 1) {
+				caretPosition = caretPosition.withRelativeColumn(1);
+			}
+        }
+		else
+		{
+			if(caretPosition.getColumn() < longestRow) {
+				caretPosition = caretPosition.withRelativeColumn(1);
+			}
 		}
     }
 	
@@ -1004,9 +1012,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 		if (getLineCount() >= 1)
 		{
 			String removed = lines.remove(0);
-			if (removed.length() > 80 && removed.length() >= longestRow)
+			if (removed.length() >= longestRow)
 			{
-				longestRow = 0;
+				longestRow = 1;
 //				try
 //				{
 //					longestRow = terminal.getTerminalSize().getColumns();

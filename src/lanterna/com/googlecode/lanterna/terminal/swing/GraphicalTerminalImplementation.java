@@ -1094,4 +1094,29 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             }
         }
     }
+    
+    private TerminalPosition selectionStartPosition;
+    
+    private TerminalPosition selectionEndPosition;
+
+	public TerminalPosition getSelectionStartPosition() throws IOException
+	{
+		return selectionStartPosition;
+	}
+
+	public void setSelectionStartPosition(TerminalPosition position) throws IOException
+	{
+		selectionStartPosition = position;
+	}
+
+	public TerminalPosition getSelectionEndPosition() throws IOException
+	{
+		return selectionEndPosition;
+	}
+
+	public void setSelectionEndPosition(TerminalPosition position) throws IOException
+	{
+		selectionEndPosition = position;
+	}
+
 }
