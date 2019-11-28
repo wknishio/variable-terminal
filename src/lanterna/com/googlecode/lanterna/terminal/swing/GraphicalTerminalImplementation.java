@@ -36,6 +36,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.StringReader;
+import java.text.ParsePosition;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -400,11 +401,15 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             }
         }
 
+        //System.out.println("selectionstart:" + this.getSelectionStartPosition());
+        //System.out.println("selectionend:" + this.getSelectionEndPosition());
+        //System.out.println("cursor:" + cursorPosition);
         virtualTerminal.forEachLine(firstVisibleRowIndex, lastVisibleRowIndex, new VirtualTerminal.BufferWalker() {
             
             public void onLine(int rowNumber, VirtualTerminal.BufferLine bufferLine) {
                 for(int column = 0; column < viewportSize.getColumns(); column++) {
                     TextCharacter textCharacter = bufferLine.getCharacterAt(column);
+                    //boolean atCursorLocation = cursorPosition.equals(column, rowNumber) || isSelectedPosition(column, rowNumber);
                     boolean atCursorLocation = cursorPosition.equals(column, rowNumber);
                     //If next position is the cursor location and this is a CJK character (i.e. cursor is on the padding),
                     //consider this location the cursor position since otherwise the cursor will be skipped
@@ -1099,24 +1104,61 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
     
     private TerminalPosition selectionEndPosition;
 
-	public TerminalPosition getSelectionStartPosition() throws IOException
+	public TerminalPosition getSelectionStartPosition()
 	{
 		return selectionStartPosition;
 	}
 
-	public void setSelectionStartPosition(TerminalPosition position) throws IOException
+	public void setSelectionStartPosition(TerminalPosition position)
 	{
 		selectionStartPosition = position;
 	}
 
-	public TerminalPosition getSelectionEndPosition() throws IOException
+	public TerminalPosition getSelectionEndPosition()
 	{
 		return selectionEndPosition;
 	}
 
-	public void setSelectionEndPosition(TerminalPosition position) throws IOException
+	public void setSelectionEndPosition(TerminalPosition position)
 	{
 		selectionEndPosition = position;
 	}
-
+	
+	public boolean isSelectedPosition(int column, int row)
+	{
+		//System.out.println("isSelectedPosition:" + column + " " + row);
+		try
+		{
+			if (selectionStartPosition != null && selectionEndPosition != null)
+			{
+				int targetX = column;
+				int targetY = row;
+				
+				int startX = selectionStartPosition.getColumn();
+				int startY = selectionStartPosition.getRow();
+				
+				int endX = selectionEndPosition.getColumn();
+				int endY = selectionEndPosition.getRow();
+				
+				if (targetY >= startY)
+				{
+					if (targetY <= endY)
+					{
+						if (targetX >= startX)
+						{
+							if (targetX <= endX)
+							{
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		return false;
+	}
 }

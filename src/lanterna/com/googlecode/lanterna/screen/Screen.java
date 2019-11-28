@@ -261,4 +261,14 @@ public interface Screen extends InputProvider, Scrollable, Closeable {
         COMPLETE,
         ;
     }
+    
+    public TerminalPosition getSelectionStartPosition();
+    
+    public TerminalPosition getSelectionEndPosition();
+    
+    public void setSelectionStartPosition(TerminalPosition position);
+    
+    public void setSelectionEndPosition(TerminalPosition position);
+    
+    public boolean isSelectedPosition(int row, int column);
 }

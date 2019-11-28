@@ -330,22 +330,22 @@ public class AWTTerminal extends Panel implements IOSafeTerminal {
 		return terminalImplementation.getFontConfiguration();
     }
     
-	public TerminalPosition getSelectionStartPosition() throws IOException
+	public TerminalPosition getSelectionStartPosition()
 	{
 		return terminalImplementation.getSelectionStartPosition();
 	}
 
-	public void setSelectionStartPosition(TerminalPosition position) throws IOException
+	public void setSelectionStartPosition(TerminalPosition position)
 	{
 		terminalImplementation.setSelectionStartPosition(position);
 	}
 
-	public TerminalPosition getSelectionEndPosition() throws IOException
+	public TerminalPosition getSelectionEndPosition()
 	{
 		return terminalImplementation.getSelectionEndPosition();
 	}
 
-	public void setSelectionEndPosition(TerminalPosition position) throws IOException
+	public void setSelectionEndPosition(TerminalPosition position)
 	{
 		terminalImplementation.setSelectionEndPosition(position);
 	}

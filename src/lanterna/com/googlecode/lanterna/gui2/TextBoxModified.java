@@ -19,15 +19,17 @@
 package com.googlecode.lanterna.gui2;
 
 import com.googlecode.lanterna.TerminalTextUtils;
+import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.graphics.ThemeDefinition;
 import com.googlecode.lanterna.input.KeyStroke;
-
+import com.googlecode.lanterna.terminal.Terminal;
 import java.awt.Adjustable;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -69,68 +71,16 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
     public int longestRow;
     protected Character mask;
     public Pattern validationPattern;
+    
+    private Terminal terminal;
    
-
-    /**
-     * Default constructor, this creates a single-line {@code TextBox} of size 10 which is initially empty
-     */
-    public TextBoxModified() {
-        this(new TerminalSize(10, 1), "", Style.SINGLE_LINE);
-    }
-
-    /**
-     * Constructor that creates a {@code TextBox} with an initial content and attempting to be big enough to display
-     * the whole text at once without scrollbars
-     * @param initialContent Initial content of the {@code TextBox}
-     */
-    public TextBoxModified(String initialContent) {
-        this(null, initialContent, initialContent.contains("\n") ? Style.MULTI_LINE : Style.SINGLE_LINE);
-    }
-
-    /**
-     * Creates a {@code TextBox} that has an initial content and attempting to be big enough to display the whole text
-     * at once without scrollbars.
-     *
-     * @param initialContent Initial content of the {@code TextBox}
-     * @param style Forced style instead of auto-detecting
-     */
-    public TextBoxModified(String initialContent, Style style) {
-        this(null, initialContent, style);
-    }
-
-    /**
-     * Creates a new empty {@code TextBox} with a specific size
-     * @param preferredSize Size of the {@code TextBox}
-     */
-    public TextBoxModified(TerminalSize preferredSize) {
-        this(preferredSize, (preferredSize != null && preferredSize.getRows() > 1) ? Style.MULTI_LINE : Style.SINGLE_LINE);
-    }
-
-    /**
-     * Creates a new empty {@code TextBox} with a specific size and style
-     * @param preferredSize Size of the {@code TextBox}
-     * @param style Style to use
-     */
-    public TextBoxModified(TerminalSize preferredSize, Style style) {
-        this(preferredSize, "", style);
-    }
-
-    /**
-     * Creates a new empty {@code TextBox} with a specific size and initial content
-     * @param preferredSize Size of the {@code TextBox}
-     * @param initialContent Initial content of the {@code TextBox}
-     */
-    public TextBoxModified(TerminalSize preferredSize, String initialContent) {
-        this(preferredSize, initialContent, (preferredSize != null && preferredSize.getRows() > 1) || initialContent.contains("\n") ? Style.MULTI_LINE : Style.SINGLE_LINE);
-    }
-
     /**
      * Main constructor of the {@code TextBox} which decides size, initial content and style
      * @param preferredSize Size of the {@code TextBox}
      * @param initialContent Initial content of the {@code TextBox}
      * @param style Style to use for this {@code TextBox}, instead of auto-detecting
      */
-    public TextBoxModified(TerminalSize preferredSize, String initialContent, Style style) {
+    public TextBoxModified(TerminalSize preferredSize, String initialContent, Style style, Terminal terminal) {
         this.lines = new ArrayList<String>();
         this.style = style;
         this.readOnly = false;
@@ -150,6 +100,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
             preferredSize = new TerminalSize(Math.max(10, longestRow), lines.size());
         }
         setPreferredSize(preferredSize);
+        this.terminal = terminal;
     }
     
     public void setVerticalAdjustable(Adjustable adjustable)
@@ -628,7 +579,9 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
 
     
     protected TextBoxRenderer createDefaultRenderer() {
-        return new DefaultTextBoxRenderer();
+    	DefaultTextBoxRenderer renderer = new DefaultTextBoxRenderer();
+    	renderer.setTerminal(terminal);
+        return renderer;
     }
 
     
@@ -846,6 +799,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
         void setViewTopLeft(TerminalPosition position);
         void setVerticalAdjustable(Adjustable adjustable);
         void setHorizontalAdjustable(Adjustable adjustable);
+        void setTerminal(Terminal terminal);
     }
 
     /**
@@ -861,6 +815,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
         protected Character unusedSpaceCharacter;
         protected Adjustable verticalAdjustable;
         protected Adjustable horizontalAdjustable;
+		private Terminal terminal;
         /**
          * Default constructor
          */
@@ -942,7 +897,28 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                         .withRelativeRow(-viewTopLeft.getRow());
             }
         }
-
+        
+        public TerminalPosition getSelectionStartLocation(TextBoxModified component) {
+            if(component.getSelectionStartPosition() == null) {
+                return null;
+            }
+            
+            TerminalPosition selectionStart = component.getSelectionStartPosition();
+            return selectionStart
+            .withRelativeColumn(-viewTopLeft.getColumn())
+            .withRelativeRow(-viewTopLeft.getRow());
+        }
+        
+        public TerminalPosition getSelectionEndLocation(TextBoxModified component) {
+            if(component.getSelectionEndPosition() == null) {
+                return null;
+            }
+            
+            TerminalPosition selectionEnd = component.getSelectionEndPosition();
+            return selectionEnd
+            .withRelativeColumn(-viewTopLeft.getColumn())
+            .withRelativeRow(-viewTopLeft.getRow());
+        }
         
         public TerminalSize getPreferredSize(TextBoxModified component) {
             return new TerminalSize(component.longestRow, component.lines.size());
@@ -1092,22 +1068,116 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                     }
                 }
             }
-
-            for (int row = 0; row < textAreaSize.getRows(); row++) {
-                int rowIndex = row + viewTopLeft.getRow();
-                if(rowIndex >= component.lines.size()) {
-                    continue;
-                }
-                String line = component.lines.get(rowIndex);
-                if(component.getMask() != null) {
-                    StringBuilder builder = new StringBuilder();
-                    for(int i = 0; i < line.length(); i++) {
-                        builder.append(component.getMask());
+            
+            TerminalPosition selectionStartLocation = getSelectionStartLocation(component);
+            TerminalPosition selectionEndLocation = getSelectionEndLocation(component);
+            
+            if (selectionStartLocation != null && selectionEndLocation != null)
+            {
+            	for (int row = 0; row < textAreaSize.getRows(); row++) {
+                    int rowIndex = row + viewTopLeft.getRow();
+                    if(rowIndex >= component.lines.size()) {
+                        continue;
                     }
-                    line = builder.toString();
+                    String line = component.lines.get(rowIndex);
+                    if(component.getMask() != null) {
+                        StringBuilder builder = new StringBuilder();
+                        for(int i = 0; i < line.length(); i++) {
+                            builder.append(component.getMask());
+                        }
+                        line = builder.toString();
+                    }
+                    String fitString = TerminalTextUtils.fitString(line, viewTopLeft.getColumn(), textAreaSize.getColumns());
+                    try
+                    {
+                    	if (row >= selectionStartLocation.getRow() && row <= selectionEndLocation.getRow())
+                        {
+                    		EnumSet<SGR> modifiers = graphics.getActiveModifiers();
+                    		modifiers.remove(SGR.REVERSE);
+                        	int i = selectionStartLocation.getColumn();
+                        	if (i > fitString.length())
+                        	{
+                        		i = fitString.length();
+                        	}
+                        	int j = selectionEndLocation.getColumn();
+                        	if (j > fitString.length())
+                        	{
+                        		j = fitString.length();
+                        	}
+                        	String start = fitString.substring(0, i);
+                        	String selected = fitString.substring(i, j);
+                        	String end = fitString.substring(j);
+                        	graphics.putString(0, row, start, modifiers);
+                        	modifiers.add(SGR.REVERSE);
+                            graphics.putString(selectionStartLocation.getColumn(), row, selected, modifiers);
+                            modifiers.remove(SGR.REVERSE);
+                            graphics.putString(selectionEndLocation.getColumn(), row, end, modifiers);
+                        }
+                        else
+                        {
+                        	EnumSet<SGR> modifiers = graphics.getActiveModifiers();
+                        	modifiers.remove(SGR.REVERSE);
+                        	graphics.putString(0, row, fitString, modifiers);
+                        }
+                    }
+                    catch (Throwable t)
+                    {
+                    	//t.printStackTrace();
+                    	EnumSet<SGR> modifiers = graphics.getActiveModifiers();
+                    	modifiers.remove(SGR.REVERSE);
+                    	graphics.putString(0, row, fitString, modifiers);
+                    }
                 }
-                graphics.putString(0, row, TerminalTextUtils.fitString(line, viewTopLeft.getColumn(), textAreaSize.getColumns()));
+            }
+            else
+            {
+            	for (int row = 0; row < textAreaSize.getRows(); row++) {
+                    int rowIndex = row + viewTopLeft.getRow();
+                    if(rowIndex >= component.lines.size()) {
+                        continue;
+                    }
+                    String line = component.lines.get(rowIndex);
+                    if(component.getMask() != null) {
+                        StringBuilder builder = new StringBuilder();
+                        for(int i = 0; i < line.length(); i++) {
+                            builder.append(component.getMask());
+                        }
+                        line = builder.toString();
+                    }
+                    EnumSet<SGR> modifiers = graphics.getActiveModifiers();
+                	modifiers.remove(SGR.REVERSE);
+                    graphics.putString(0, row, TerminalTextUtils.fitString(line, viewTopLeft.getColumn(), textAreaSize.getColumns()), modifiers);
+                }
             }
         }
+
+		public void setTerminal(Terminal terminal)
+		{
+			this.terminal = terminal;
+		}
     }
+    
+    private TerminalPosition selectionStartPosition;
+    
+    private TerminalPosition selectionEndPosition;
+
+	public TerminalPosition getSelectionStartPosition()
+	{
+		return selectionStartPosition;
+	}
+
+	public void setSelectionStartPosition(TerminalPosition position)
+	{
+		selectionStartPosition = position;
+	}
+
+	public TerminalPosition getSelectionEndPosition()
+	{
+		return selectionEndPosition;
+	}
+
+	public void setSelectionEndPosition(TerminalPosition position)
+	{
+		selectionEndPosition = position;
+	}
 }

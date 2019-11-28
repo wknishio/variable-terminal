@@ -419,4 +419,64 @@ public class TerminalScreen extends AbstractScreen {
         }
     }
 
+private TerminalPosition selectionStartPosition;
+    
+    private TerminalPosition selectionEndPosition;
+
+	public TerminalPosition getSelectionStartPosition()
+	{
+		return selectionStartPosition;
+	}
+
+	public void setSelectionStartPosition(TerminalPosition position)
+	{
+		selectionStartPosition = position;
+	}
+
+	public TerminalPosition getSelectionEndPosition()
+	{
+		return selectionEndPosition;
+	}
+
+	public void setSelectionEndPosition(TerminalPosition position)
+	{
+		selectionEndPosition = position;
+	}
+	
+	public boolean isSelectedPosition(int column, int row)
+	{
+		try
+		{
+			if (selectionStartPosition != null && selectionEndPosition != null)
+			{
+				int targetX = column;
+				int targetY = row;
+				
+				int startX = selectionStartPosition.getColumn();
+				int startY = selectionStartPosition.getRow();
+				
+				int endX = selectionEndPosition.getColumn();
+				int endY = selectionEndPosition.getRow();
+				
+				if (targetY >= startY)
+				{
+					if (targetY <= endY)
+					{
+						if (targetX >= startX)
+						{
+							if (targetX <= endX)
+							{
+								return true;
+							}
+						}
+					}
+				}
+			}
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		return false;
+	}
 }

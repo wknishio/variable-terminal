@@ -305,22 +305,22 @@ public class SwingTerminalFrame extends JFrame implements IOSafeTerminal {
         swingTerminal.removeResizeListener(listener);
     }
     
-    public TerminalPosition getSelectionStartPosition() throws IOException
+    public TerminalPosition getSelectionStartPosition()
 	{
 		return swingTerminal.getSelectionStartPosition();
 	}
 
-	public void setSelectionStartPosition(TerminalPosition position) throws IOException
+	public void setSelectionStartPosition(TerminalPosition position)
 	{
 		swingTerminal.setSelectionStartPosition(position);
 	}
 
-	public TerminalPosition getSelectionEndPosition() throws IOException
+	public TerminalPosition getSelectionEndPosition()
 	{
 		return swingTerminal.getSelectionEndPosition();
 	}
 
-	public void setSelectionEndPosition(TerminalPosition position) throws IOException
+	public void setSelectionEndPosition(TerminalPosition position)
 	{
 		swingTerminal.setSelectionEndPosition(position);
 	}

@@ -340,22 +340,22 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
     	super.pack();
     }
 
-	public TerminalPosition getSelectionStartPosition() throws IOException
+	public TerminalPosition getSelectionStartPosition()
 	{
 		return awtTerminal.getSelectionStartPosition();
 	}
 
-	public void setSelectionStartPosition(TerminalPosition position) throws IOException
+	public void setSelectionStartPosition(TerminalPosition position)
 	{
 		awtTerminal.setSelectionStartPosition(position);
 	}
 
-	public TerminalPosition getSelectionEndPosition() throws IOException
+	public TerminalPosition getSelectionEndPosition()
 	{
 		return awtTerminal.getSelectionEndPosition();
 	}
 
-	public void setSelectionEndPosition(TerminalPosition position) throws IOException
+	public void setSelectionEndPosition(TerminalPosition position)
 	{
 		awtTerminal.setSelectionEndPosition(position);
 	}

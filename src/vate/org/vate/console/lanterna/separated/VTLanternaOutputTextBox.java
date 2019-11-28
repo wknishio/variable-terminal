@@ -17,9 +17,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 	private boolean editable;
 	//private int hiddenRow;
 	
-	public VTLanternaOutputTextBox(TerminalSize terminalSize, String string, Style multiLine, int maximumLines)
+	public VTLanternaOutputTextBox(TerminalSize terminalSize, String string, Style multiLine, int maximumLines, Terminal terminal)
 	{
-		super(terminalSize, string, multiLine);
+		super(terminalSize, string, multiLine, terminal);
 		this.maximumLines = maximumLines;
 	}
 	
@@ -1217,5 +1217,4 @@ public class VTLanternaOutputTextBox extends TextBoxModified
      * box is filled with a solid background color and the text is drawn on top of it. Scrollbars are added for
      * multi-line text whenever the text inside the {@code TextBox} does not fit in the available area.
      */
-
 }

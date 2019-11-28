@@ -105,13 +105,13 @@ public interface Terminal extends InputProvider, Closeable {
      */
     TerminalPosition getCursorPosition() throws IOException;
     
-    TerminalPosition getSelectionStartPosition() throws IOException;
+    TerminalPosition getSelectionStartPosition();
     
-    void setSelectionStartPosition(TerminalPosition position) throws IOException;
+    void setSelectionStartPosition(TerminalPosition position);
     
-    TerminalPosition getSelectionEndPosition() throws IOException;
+    TerminalPosition getSelectionEndPosition();
     
-    void setSelectionEndPosition(TerminalPosition position) throws IOException;
+    void setSelectionEndPosition(TerminalPosition position);
 
     /**
      * Hides or shows the text cursor, but not all terminal (-emulators) supports this. The text cursor is normally a

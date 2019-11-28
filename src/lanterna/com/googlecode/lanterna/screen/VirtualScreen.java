@@ -344,4 +344,29 @@ public class VirtualScreen extends AbstractScreen {
                     Symbols.BLOCK_MIDDLE);
         }
     }
+
+	public TerminalPosition getSelectionStartPosition()
+	{
+		return realScreen.getSelectionStartPosition();
+	}
+
+	public TerminalPosition getSelectionEndPosition()
+	{
+		return realScreen.getSelectionEndPosition();
+	}
+
+	public void setSelectionStartPosition(TerminalPosition position)
+	{
+		realScreen.setSelectionStartPosition(position);
+	}
+
+	public void setSelectionEndPosition(TerminalPosition position)
+	{
+		realScreen.setSelectionEndPosition(position);
+	}
+
+	public boolean isSelectedPosition(int column, int row)
+	{
+		return realScreen.isSelectedPosition(column, row);
+	}
 }

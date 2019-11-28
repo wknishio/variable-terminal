@@ -449,22 +449,22 @@ public class DefaultVirtualTerminal extends AbstractTerminal implements VirtualT
     
     private TerminalPosition selectionEndPosition;
 
-	public TerminalPosition getSelectionStartPosition() throws IOException
+	public TerminalPosition getSelectionStartPosition()
 	{
 		return selectionStartPosition;
 	}
 
-	public void setSelectionStartPosition(TerminalPosition position) throws IOException
+	public void setSelectionStartPosition(TerminalPosition position)
 	{
 		selectionStartPosition = position;
 	}
 
-	public TerminalPosition getSelectionEndPosition() throws IOException
+	public TerminalPosition getSelectionEndPosition()
 	{
 		return selectionEndPosition;
 	}
 
-	public void setSelectionEndPosition(TerminalPosition position) throws IOException
+	public void setSelectionEndPosition(TerminalPosition position)
 	{
 		selectionEndPosition = position;
 	}
