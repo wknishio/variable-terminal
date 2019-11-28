@@ -1747,6 +1747,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		synchronized (outputSynchronizer)
 		{
 			outputBuffer.append(str);
+			if (outputBuffer.length() > 65536)
+			{
+				int truncate = outputBuffer.length() - 65536;
+				outputBuffer.delete(0, truncate);
+			}
 		}
 	}
 
@@ -1755,6 +1760,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		synchronized (outputSynchronizer)
 		{
 			outputBuffer.append(buf, off, len);
+			if (outputBuffer.length() > 65536)
+			{
+				int truncate = outputBuffer.length() - 65536;
+				outputBuffer.delete(0, truncate);
+			}
 		}
 	}
 

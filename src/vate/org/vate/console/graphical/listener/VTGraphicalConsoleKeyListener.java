@@ -97,7 +97,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
 				text = new StringSelection("");
 			}
 			systemClipboard.setContents(text, null);
-			VTConsole.flush();
+			//VTConsole.flush();
 //			VTGraphicalConsole.updateCaretPosition();
 //			if (VTGraphicalConsole.isFlushInterrupted())
 //			{
@@ -119,7 +119,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
 				text = new StringSelection("");
 			}
 			systemClipboard.setContents(text, null);
-			VTConsole.flush();
+			//VTConsole.flush();
 //			VTGraphicalConsole.updateCaretPosition();
 //			if (VTGraphicalConsole.isFlushInterrupted())
 //			{

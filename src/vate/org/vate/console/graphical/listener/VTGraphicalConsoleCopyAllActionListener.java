@@ -24,7 +24,7 @@ public class VTGraphicalConsoleCopyAllActionListener implements ActionListener
 			StringSelection text = new StringSelection(VTConsole.getAllText());
 			systemClipboard.setContents(text, null);
 			//System.out.println("copy:" + text.toString());
-			VTConsole.flush();
+			//VTConsole.flush();
 		}
 		catch (Throwable ex)
 		{

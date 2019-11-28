@@ -8,7 +8,7 @@ import org.vate.task.VTTask;
 public class VTClientRemoteConsoleReader extends VTTask
 {
 	private static final int resultBufferSize = 1024 * 64;
-	private int available;
+	//private int available;
 	private int readChars;
 	private final char[] resultBuffer = new char[resultBufferSize];
 	// private VTClient client;
@@ -28,28 +28,32 @@ public class VTClientRemoteConsoleReader extends VTTask
 		{
 			try
 			{
-				available = connection.getShellInputStream().available();
-				if (available > 0)
-				{
-					while ((available = connection.getShellInputStream().available()) > 0)
-					{
-						readChars = connection.getResultReader().read(resultBuffer, 0, resultBufferSize);
-						VTConsole.write(resultBuffer, 0, readChars);
-					}
-					if (!stopped)
-					{
-						VTConsole.flush();
-					}
-				}
-				else if (available < 0)
-				{
-					stopped = true;
-					break;
-				}
-				else
-				{
-					Thread.sleep(1);
-				}
+//				available = connection.getShellInputStream().available();
+//				if (available > 0)
+//				{
+//					while ((available = connection.getShellInputStream().available()) > 0)
+//					{
+//						readChars = connection.getResultReader().read(resultBuffer, 0, resultBufferSize);
+//						VTConsole.write(resultBuffer, 0, readChars);
+//						VTConsole.flush();
+//					}
+////					if (!stopped)
+////					{
+////						VTConsole.flush();
+////					}
+//				}
+//				else if (available < 0)
+//				{
+//					stopped = true;
+//					break;
+//				}
+//				else
+//				{
+//					Thread.sleep(1);
+//				}
+				readChars = connection.getResultReader().read(resultBuffer, 0, resultBufferSize);
+				VTConsole.write(resultBuffer, 0, readChars);
+				VTConsole.flush();
 			}
 			catch (Throwable e)
 			{
@@ -58,6 +62,7 @@ public class VTClientRemoteConsoleReader extends VTTask
 				break;
 			}
 		}
+		stopped = true;
 		synchronized (session)
 		{
 			session.notify();

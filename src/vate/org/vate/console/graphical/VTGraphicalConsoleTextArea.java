@@ -43,7 +43,7 @@ public class VTGraphicalConsoleTextArea extends TextArea
 		{
 			StringSelection text = new StringSelection(VTConsole.getSelectedText());
 			systemClipboard.setContents(text, null);
-			VTConsole.flush();
+			//VTConsole.flush();
 //			VTGraphicalConsole.updateCaretPosition();
 //			if (VTGraphicalConsole.isFlushInterrupted())
 //			{
@@ -62,7 +62,7 @@ public class VTGraphicalConsoleTextArea extends TextArea
 		{
 			StringSelection text = new StringSelection(VTConsole.getAllText());
 			systemClipboard.setContents(text, null);
-			VTConsole.flush();
+			//VTConsole.flush();
 //			VTGraphicalConsole.updateCaretPosition();
 //			if (VTGraphicalConsole.isFlushInterrupted())
 //			{
