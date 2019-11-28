@@ -817,12 +817,22 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					{
 						if (mouse.getButton() != 0)
 						{
-							if (selectingText && draggedMouseButton == mouse.getButton())
+							if (selectingText)
 							{
-								selectingText = false;
-								resetSelection();
+								if (draggedMouseButton == mouse.getButton())
+								{
+									selectingText = false;
+									resetSelection();
+								}
+								else
+								{
+									
+								}
 							}
-							draggedMouseButton = mouse.getButton();
+							else
+							{
+								draggedMouseButton = mouse.getButton();
+							}
 							outputBox.takeFocus();
 							outputBox.setCaretPosition(topLeft.getRow() + mouse.getPosition().getRow(), topLeft.getColumn() + mouse.getPosition().getColumn());
 							outputBox.invalidate();
@@ -832,6 +842,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					
 					if (mouse.getActionType() == MouseActionType.CLICK_RELEASE)
 					{
+						//selectingText = false;
 						return false;
 						//selectingText = false;
 						//outputBox.invalidate();
@@ -971,12 +982,22 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					{
 						if (mouse.getButton() != 0)
 						{
-							if (selectingText && draggedMouseButton == mouse.getButton())
+							if (selectingText)
 							{
-								selectingText = false;
-								resetSelection();
+								if (draggedMouseButton == mouse.getButton())
+								{
+									selectingText = false;
+									resetSelection();
+								}
+								else
+								{
+									
+								}
 							}
-							draggedMouseButton = mouse.getButton();
+							else
+							{
+								draggedMouseButton = mouse.getButton();
+							}
 							
 							int max = inputBox.getLastLine().length();
 							int location = topLeft.getColumn();
