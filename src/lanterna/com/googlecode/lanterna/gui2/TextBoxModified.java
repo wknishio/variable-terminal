@@ -72,7 +72,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
     protected Character mask;
     public Pattern validationPattern;
     
-    private Terminal terminal;
+    //private Terminal terminal;
    
     /**
      * Main constructor of the {@code TextBox} which decides size, initial content and style
@@ -80,7 +80,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
      * @param initialContent Initial content of the {@code TextBox}
      * @param style Style to use for this {@code TextBox}, instead of auto-detecting
      */
-    public TextBoxModified(TerminalSize preferredSize, String initialContent, Style style, Terminal terminal) {
+    public TextBoxModified(TerminalSize preferredSize, String initialContent, Style style) {
         this.lines = new ArrayList<String>();
         this.style = style;
         this.readOnly = false;
@@ -100,7 +100,6 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
             preferredSize = new TerminalSize(Math.max(10, longestRow), lines.size());
         }
         setPreferredSize(preferredSize);
-        this.terminal = terminal;
     }
     
     public void setVerticalAdjustable(Adjustable adjustable)
@@ -580,7 +579,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
     
     protected TextBoxRenderer createDefaultRenderer() {
     	DefaultTextBoxRenderer renderer = new DefaultTextBoxRenderer();
-    	renderer.setTerminal(terminal);
+    	//renderer.setTerminal(terminal);
         return renderer;
     }
 
@@ -799,7 +798,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
         void setViewTopLeft(TerminalPosition position);
         void setVerticalAdjustable(Adjustable adjustable);
         void setHorizontalAdjustable(Adjustable adjustable);
-        void setTerminal(Terminal terminal);
+        //void setTerminal(Terminal terminal);
     }
 
     /**
@@ -815,7 +814,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
         protected Character unusedSpaceCharacter;
         protected Adjustable verticalAdjustable;
         protected Adjustable horizontalAdjustable;
-		private Terminal terminal;
+		//private Terminal terminal;
         /**
          * Default constructor
          */
@@ -899,22 +898,22 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
         }
         
         public TerminalPosition getSelectionStartLocation(TextBoxModified component) {
-            if(component.getSelectionStartPosition() == null) {
+            if(!component.selectingText()) {
                 return null;
             }
             
-            TerminalPosition selectionStart = component.getSelectionStartPosition();
+            TerminalPosition selectionStart = new TerminalPosition(component.getMinColumn(), component.getMinRow());
             return selectionStart
             .withRelativeColumn(-viewTopLeft.getColumn())
             .withRelativeRow(-viewTopLeft.getRow());
         }
         
         public TerminalPosition getSelectionEndLocation(TextBoxModified component) {
-            if(component.getSelectionEndPosition() == null) {
+            if(!component.selectingText()) {
                 return null;
             }
             
-            TerminalPosition selectionEnd = component.getSelectionEndPosition();
+            TerminalPosition selectionEnd = new TerminalPosition(component.getMaxColumn(), component.getMaxRow());
             return selectionEnd
             .withRelativeColumn(-viewTopLeft.getColumn())
             .withRelativeRow(-viewTopLeft.getRow());
@@ -1099,7 +1098,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                         	{
                         		i = fitString.length();
                         	}
-                        	int j = selectionEndLocation.getColumn();
+                        	int j = selectionEndLocation.getColumn() + 1;
                         	if (j > fitString.length())
                         	{
                         		j = fitString.length();
@@ -1107,11 +1106,20 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                         	String start = fitString.substring(0, i);
                         	String selected = fitString.substring(i, j);
                         	String end = fitString.substring(j);
-                        	graphics.putString(0, row, start, modifiers);
+                        	if (start.length() > 0)
+                        	{
+                        		graphics.putString(0, row, start, modifiers);
+                        	}
                         	modifiers.add(SGR.REVERSE);
-                            graphics.putString(selectionStartLocation.getColumn(), row, selected, modifiers);
-                            modifiers.remove(SGR.REVERSE);
-                            graphics.putString(selectionEndLocation.getColumn(), row, end, modifiers);
+                        	if (selected.length() > 0)
+                        	{
+                        		 graphics.putString(i, row, selected, modifiers);
+                        	}
+                        	modifiers.remove(SGR.REVERSE);
+                        	if (end.length() > 0)
+                        	{
+                        		graphics.putString(j, row, end, modifiers);
+                        	}
                         }
                         else
                         {
@@ -1150,34 +1158,54 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                 }
             }
         }
-
-		public void setTerminal(Terminal terminal)
-		{
-			this.terminal = terminal;
-		}
     }
     
-    private TerminalPosition selectionStartPosition;
+    private volatile TerminalPosition selectionStartPosition;
     
-    private TerminalPosition selectionEndPosition;
-
-	public TerminalPosition getSelectionStartPosition()
-	{
-		return selectionStartPosition;
-	}
-
+    private volatile TerminalPosition selectionEndPosition;
+	
 	public void setSelectionStartPosition(TerminalPosition position)
 	{
 		selectionStartPosition = position;
+	}
+
+	public void setSelectionEndPosition(TerminalPosition position)
+	{
+		selectionEndPosition = position;
+	}
+	
+	public TerminalPosition getSelectionStartPosition()
+	{
+		return selectionStartPosition;
 	}
 
 	public TerminalPosition getSelectionEndPosition()
 	{
 		return selectionEndPosition;
 	}
-
-	public void setSelectionEndPosition(TerminalPosition position)
+	
+	public int getMinColumn()
 	{
-		selectionEndPosition = position;
+		return Math.min(selectionStartPosition.getColumn(), selectionEndPosition.getColumn());
+	}
+	
+	public int getMaxColumn()
+	{
+		return Math.max(selectionStartPosition.getColumn(), selectionEndPosition.getColumn());
+	}
+	
+	public int getMinRow()
+	{
+		return Math.min(selectionStartPosition.getRow(), selectionEndPosition.getRow());
+	}
+	
+	public int getMaxRow()
+	{
+		return Math.max(selectionStartPosition.getRow(), selectionEndPosition.getRow());
+	}
+	
+	public boolean selectingText()
+	{
+		return (selectionStartPosition != null) && (selectionEndPosition != null);
 	}
 }

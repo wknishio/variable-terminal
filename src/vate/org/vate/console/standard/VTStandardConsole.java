@@ -827,6 +827,18 @@ public class VTStandardConsole implements VTConsoleImplementation
 		
 	}
 
+	public String getAllText()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void copyAllText() 
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	// public boolean isReadingLine()
 	// {

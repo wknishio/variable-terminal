@@ -56,6 +56,25 @@ public class VTGraphicalConsoleTextArea extends TextArea
 		}
 	}
 	
+	public void copyAllText()
+	{
+		try
+		{
+			StringSelection text = new StringSelection(VTConsole.getAllText());
+			systemClipboard.setContents(text, null);
+			VTConsole.flush();
+//			VTGraphicalConsole.updateCaretPosition();
+//			if (VTGraphicalConsole.isFlushInterrupted())
+//			{
+//				VTGraphicalConsole.clearCaretPosition();
+//			}
+		}
+		catch (Throwable ex)
+		{
+			
+		}
+	}
+	
 	public void pasteText()
 	{
 		try

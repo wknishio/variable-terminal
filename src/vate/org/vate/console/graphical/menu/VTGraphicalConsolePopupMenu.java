@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 
 import org.vate.console.VTConsole;
 import org.vate.console.graphical.listener.VTGraphicalConsoleCopyActionListener;
+import org.vate.console.graphical.listener.VTGraphicalConsoleCopyAllActionListener;
 import org.vate.console.graphical.listener.VTGraphicalConsolePasteActionListener;
 
 public class VTGraphicalConsolePopupMenu extends PopupMenu
@@ -18,6 +19,7 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
 	private Frame frame;
 	private MenuItem copy;
 	private MenuItem paste;
+	private MenuItem all;
 	private MenuItem scroll;
 	private MenuItem insert;
 	//private MenuItem expand;
@@ -26,6 +28,7 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
 	// private CheckboxMenuItem scroll;
 	// private VTGraphicalConsoleKeyListener keyListener;
 	private VTGraphicalConsoleCopyActionListener copyActionListener;
+	private VTGraphicalConsoleCopyAllActionListener allActionListener;
 	private VTGraphicalConsolePasteActionListener pasteActionListener;
 	
 	public VTGraphicalConsolePopupMenu(Frame frame)
@@ -34,15 +37,18 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
 		// this.keyListener = keyListener;
 		copy = new MenuItem("Copy");
 		paste = new MenuItem("Paste");
-		scroll = new MenuItem("Break");
+		all = new MenuItem("All");
 		insert = new MenuItem("Insert");
+		scroll = new MenuItem("Break");
 		//expand = new MenuItem("Expand");
 		//reduce = new MenuItem("Reduce");
 		// scroll = new CheckboxMenuItem("Scroll", false);
 		copyActionListener = new VTGraphicalConsoleCopyActionListener();
+		allActionListener = new VTGraphicalConsoleCopyAllActionListener();
 		pasteActionListener = new VTGraphicalConsolePasteActionListener();
 		copy.addActionListener(copyActionListener);
 		paste.addActionListener(pasteActionListener);
+		all.addActionListener(allActionListener);
 		scroll.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -76,8 +82,9 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
 		// this.setFont(new Font("Dialog", Font.PLAIN, 12));
 		this.insert(copy, 0);
 		this.insert(paste, 1);
-		this.insert(insert, 2);
-		this.insert(scroll, 3);
+		this.insert(all, 2);
+		this.insert(insert, 3);
+		this.insert(scroll, 4);
 		//this.insert(expand, 4);
 		//this.insert(reduce, 5);
 		// this.insert(scroll, 2);

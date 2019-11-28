@@ -17,9 +17,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 	private boolean editable;
 	//private int hiddenRow;
 	
-	public VTLanternaOutputTextBox(TerminalSize terminalSize, String string, Style multiLine, int maximumLines, Terminal terminal)
+	public VTLanternaOutputTextBox(TerminalSize terminalSize, String string, Style multiLine, int maximumLines)
 	{
-		super(terminalSize, string, multiLine, terminal);
+		super(terminalSize, string, multiLine);
 		this.maximumLines = maximumLines;
 	}
 	

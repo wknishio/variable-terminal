@@ -617,6 +617,15 @@ public class VTConsole
 		return "";
 	}
 	
+	public static String getAllText()
+	{
+		if (checkConsole())
+		{
+			return console.getAllText();
+		}
+		return "";
+	}
+	
 	public static void refreshText()
 	{
 		if (checkConsole())
@@ -639,6 +648,14 @@ public class VTConsole
 		if (checkConsole())
 		{
 			console.setCommandEcho(commandEcho);
+		}
+	}
+	
+	public static void copyAllText()
+	{
+		if (checkConsole())
+		{
+			console.copyAllText();
 		}
 	}
 }

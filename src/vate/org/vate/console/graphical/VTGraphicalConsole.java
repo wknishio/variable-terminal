@@ -2152,6 +2152,16 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	{
 		// TODO Auto-generated method stub
 	}
+
+	public void copyAllText()
+	{
+		textArea.copyAllText();
+	}
+
+	public String getAllText()
+	{
+		return screenBuffer.substring(0).replace("\b", "").replace("\n", "").replaceAll("\\t{1," + tabSize + "}", "\t").replace('\r', '\n');
+	}
 	
 	
 	// public boolean isReadingLine()

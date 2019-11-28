@@ -45,6 +45,7 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 	private Menu textActionsMenu;
 	private MenuItem textActionCopyMenu;
 	private MenuItem textActionPasteMenu;
+	private MenuItem textActionAllMenu;
 	private MenuItem textActionInsertMenu;
 	private MenuItem textActionBreakMenu;
 	
@@ -179,6 +180,15 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 			}
 		});
 		
+		textActionAllMenu = new MenuItem("All ");
+		textActionAllMenu.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				VTConsole.copyAllText();
+			}
+		});
+		
 		textActionInsertMenu = new MenuItem("Insert ");
 		textActionInsertMenu.addActionListener(new ActionListener()
 		{
@@ -199,6 +209,7 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		
 		textActionsMenu.add(textActionCopyMenu);
 		textActionsMenu.add(textActionPasteMenu);
+		textActionsMenu.add(textActionAllMenu);
 		textActionsMenu.add(textActionInsertMenu);
 		textActionsMenu.add(textActionBreakMenu);
 		
@@ -264,6 +275,7 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		keyboardShortcutsMenu.add(new MenuItem("Break/Pause : Interrupt Text"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert : Copy Text"));
 		keyboardShortcutsMenu.add(new MenuItem("Shift+Insert : Paste Text"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace : Copy All Text"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Delete : Toggle Insert/Replace"));
 		keyboardShortcutsMenu.add(new MenuItem("Insert : Toggle Insert/Replace"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown : Decrease Font"));

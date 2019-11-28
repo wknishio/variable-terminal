@@ -75,4 +75,9 @@ public interface VTConsoleImplementation
 	public abstract boolean isCommandEcho();
 
 	public abstract void setCommandEcho(boolean commandEcho);
+	
+	public abstract String getAllText();
+
+	public abstract void copyAllText();
+
 }

@@ -105,6 +105,28 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
 //			}
 			return;
 		}
+		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+		{
+			e.consume();
+			String selectedText = VTConsole.getAllText();
+			StringSelection text = null;
+			if (selectedText != null)
+			{
+				text = new StringSelection(selectedText);
+			}
+			else
+			{
+				text = new StringSelection("");
+			}
+			systemClipboard.setContents(text, null);
+			VTConsole.flush();
+//			VTGraphicalConsole.updateCaretPosition();
+//			if (VTGraphicalConsole.isFlushInterrupted())
+//			{
+//				VTGraphicalConsole.clearCaretPosition();
+//			}
+			return;
+		}
 		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_DELETE)
 		{
 			e.consume();
