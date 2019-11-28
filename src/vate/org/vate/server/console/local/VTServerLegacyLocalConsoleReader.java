@@ -479,7 +479,7 @@ public class VTServerLegacyLocalConsoleReader extends VTTask
 				VTConsole.clear();
 				VTConsole.print("VT>");
 			}
-			else if (parsed[0].equalsIgnoreCase("*VTNETWORKINTERFACES") || parsed[0].equalsIgnoreCase("*VTNTIS"))
+			else if (parsed[0].equalsIgnoreCase("*VTNETWORKS") || parsed[0].equalsIgnoreCase("*VTNTS"))
 			{
 				message.setLength(0);
 				Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
@@ -533,7 +533,7 @@ public class VTServerLegacyLocalConsoleReader extends VTTask
 				}
 				VTConsole.print(message.toString());
 			}
-			else if (parsed[0].equalsIgnoreCase("*VTDISPLAYDEVICES") || parsed[0].equalsIgnoreCase("*VTDPDS"))
+			else if (parsed[0].equalsIgnoreCase("*VTDISPLAYS") || parsed[0].equalsIgnoreCase("*VTDPS"))
 			{
 				message.setLength(0);
 				int count = 0;

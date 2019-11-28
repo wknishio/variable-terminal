@@ -7,14 +7,14 @@ import java.util.Enumeration;
 import org.vate.console.VTConsole;
 import org.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-public class VTNETWORKINTERFACES extends VTServerStandardLocalConsoleCommandProcessor
+public class VTNETWORKS extends VTServerStandardLocalConsoleCommandProcessor
 {
-	public VTNETWORKINTERFACES()
+	public VTNETWORKS()
 	{
-		this.setFullName("*VTNETWORKINTERFACES");
-		this.setAbbreviatedName("*VTNTIS");
-		this.setFullSyntax("*VTNETWORKINTERFACES");
-		this.setAbbreviatedSyntax("*VTNTIS");
+		this.setFullName("*VTNETWORKS");
+		this.setAbbreviatedName("*VTNTS");
+		this.setFullSyntax("*VTNETWORKS");
+		this.setAbbreviatedSyntax("*VTNTS");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

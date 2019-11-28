@@ -2,14 +2,14 @@ package org.vate.server.console.remote.standard.command;
 
 import org.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
-public class VTNETWORKINTERFACES extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTNETWORKS extends VTServerStandardRemoteConsoleCommandProcessor
 {
-	public VTNETWORKINTERFACES()
+	public VTNETWORKS()
 	{
-		this.setFullName("*VTNETWORKINTERFACES");
-		this.setAbbreviatedName("*VTNTIS");
-		this.setFullSyntax("*VTNETWORKINTERFACES");
-		this.setAbbreviatedSyntax("*VTNTIS");
+		this.setFullName("*VTNETWORKS");
+		this.setAbbreviatedName("*VTNTS");
+		this.setFullSyntax("*VTNETWORKS");
+		this.setAbbreviatedSyntax("*VTNTS");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

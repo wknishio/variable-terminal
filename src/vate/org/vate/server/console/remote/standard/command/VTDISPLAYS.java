@@ -2,14 +2,14 @@ package org.vate.server.console.remote.standard.command;
 
 import org.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
-public class VTDISPLAYDEVICES extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTDISPLAYS extends VTServerStandardRemoteConsoleCommandProcessor
 {
-	public VTDISPLAYDEVICES()
+	public VTDISPLAYS()
 	{
-		this.setFullName("*VTDISPLAYDEVICES");
-		this.setAbbreviatedName("*VTDPDS");
-		this.setFullSyntax("*VTDISPLAYDEVICES");
-		this.setAbbreviatedSyntax("*VTDPDS");
+		this.setFullName("*VTDISPLAYS");
+		this.setAbbreviatedName("*VTDPS");
+		this.setFullSyntax("*VTDISPLAYS");
+		this.setAbbreviatedSyntax("*VTDPS");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

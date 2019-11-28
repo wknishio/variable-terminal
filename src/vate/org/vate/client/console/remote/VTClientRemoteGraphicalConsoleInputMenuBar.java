@@ -82,7 +82,7 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		//clientConsoleCommandsMenu.setShortcut(new MenuShortcut(KeyEvent.VK_C, true));
 		
 		serverGraphicalSystemsMenu = new Menu("Graphics ");
-		serverGraphicalSystemsMenu.add(new VTGraphicalConsoleInputMenuItem("List Remote Display Devices", "*VTDISPLAYDEVICES\n"));
+		serverGraphicalSystemsMenu.add(new VTGraphicalConsoleInputMenuItem("List Remote Display Devices", "*VTDISPLAYS\n"));
 		serverGraphicsModeMenu = new Menu("Remote Graphics Link ");
 		serverScreenCaptureMenu = new Menu("Remote Screen Capture ");
 		serverGraphicsAlertMenu = new Menu("Remote Screen Alert ");
@@ -223,7 +223,7 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		performanceMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Rate Limits", "*VTRATELIMIT "));
 		
 		serverNetworkMenu = new Menu("Networks ");
-		serverNetworkMenu.add(new VTGraphicalConsoleInputMenuItem("List Remote Network Interfaces", "*VTNETWORKINTERFACES\n"));
+		serverNetworkMenu.add(new VTGraphicalConsoleInputMenuItem("List Remote Network Interfaces", "*VTNETWORKS\n"));
 		serverNetworkMenu.add(new VTGraphicalConsoleInputMenuItem("Resolve Remote Network Host", "*VTRESOLVEHOST "));
 		
 		//serverNetworkMenu.add(serverNetworkTunnelsMenu);

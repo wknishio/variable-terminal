@@ -111,10 +111,10 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		fileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("List Local File System Roots", "*VTFILEROOTS\n"));
 		
 		serverNetworkMenu = new Menu("Networks ");
-		serverNetworkMenu.add(new VTGraphicalConsoleInputMenuItem("List Local Network Interfaces", "*VTNETWORKINTERFACES\n"));
+		serverNetworkMenu.add(new VTGraphicalConsoleInputMenuItem("List Local Network Interfaces", "*VTNETWORKS\n"));
 		
 		serverGraphicalSystemsMenu = new Menu("Graphics ");
-		serverGraphicalSystemsMenu.add(new VTGraphicalConsoleInputMenuItem("List Local Display Devices", "*VTDISPLAYDEVICES\n"));
+		serverGraphicalSystemsMenu.add(new VTGraphicalConsoleInputMenuItem("List Local Display Devices", "*VTDISPLAYS\n"));
 		
 		serverAudioSystemsMenu = new Menu("Audio ");
 		serverAudioSystemsMenu.add(new VTGraphicalConsoleInputMenuItem("List Local Audio Mixers", "*VTAUDIOMIXERS\n"));

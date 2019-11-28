@@ -8,14 +8,14 @@ import org.vate.console.VTConsole;
 import org.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-public class VTDISPLAYDEVICES extends VTServerStandardLocalConsoleCommandProcessor
+public class VTDISPLAYS extends VTServerStandardLocalConsoleCommandProcessor
 {
-	public VTDISPLAYDEVICES()
+	public VTDISPLAYS()
 	{
-		this.setFullName("*VTDISPLAYDEVICES");
-		this.setAbbreviatedName("*VTDPDS");
-		this.setFullSyntax("*VTDISPLAYDEVICES");
-		this.setAbbreviatedSyntax("*VTDPDS");
+		this.setFullName("*VTDISPLAYS");
+		this.setAbbreviatedName("*VTDPS");
+		this.setFullSyntax("*VTDISPLAYS");
+		this.setAbbreviatedSyntax("*VTDPS");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

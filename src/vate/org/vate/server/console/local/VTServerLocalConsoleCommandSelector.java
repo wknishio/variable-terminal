@@ -25,12 +25,12 @@ public class VTServerLocalConsoleCommandSelector <T> extends VTConsoleCommandSel
 			knownStandardCommandProcessorClasses.add(VTCLEAR.class);
 			knownStandardCommandProcessorClasses.add(VTCOVER.class);
 			knownStandardCommandProcessorClasses.add(VTDISCONNECT.class);
-			knownStandardCommandProcessorClasses.add(VTDISPLAYDEVICES.class);
+			knownStandardCommandProcessorClasses.add(VTDISPLAYS.class);
 			knownStandardCommandProcessorClasses.add(VTFILEROOTS.class);
 			knownStandardCommandProcessorClasses.add(VTHELP.class);
 			knownStandardCommandProcessorClasses.add(VTLOCK.class);
 			knownStandardCommandProcessorClasses.add(VTMESSAGE.class);
-			knownStandardCommandProcessorClasses.add(VTNETWORKINTERFACES.class);
+			knownStandardCommandProcessorClasses.add(VTNETWORKS.class);
 			knownStandardCommandProcessorClasses.add(VTPING.class);
 			knownStandardCommandProcessorClasses.add(VTPRINTERS.class);
 			knownStandardCommandProcessorClasses.add(VTPROPERTY.class);

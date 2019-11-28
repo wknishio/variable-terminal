@@ -842,7 +842,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				}
 			}
 		}
-		else if (parsed[0].equalsIgnoreCase("*VTNETWORKINTERFACES") || parsed[0].equalsIgnoreCase("*VTNTIS"))
+		else if (parsed[0].equalsIgnoreCase("*VTNETWORKS") || parsed[0].equalsIgnoreCase("*VTNTS"))
 		{
 			synchronized (session.getNetworkInterfaceResolver())
 			{
@@ -864,7 +864,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				}
 			}
 		}
-		else if (parsed[0].equalsIgnoreCase("*VTDISPLAYDEVICES") || parsed[0].equalsIgnoreCase("*VTDPDS"))
+		else if (parsed[0].equalsIgnoreCase("*VTDISPLAYS") || parsed[0].equalsIgnoreCase("*VTDPS"))
 		{
 			synchronized (session.getGraphicsDeviceResolver())
 			{
