@@ -677,13 +677,14 @@ public class VTLanternaConsole implements VTConsoleImplementation
         	{
 				public void mouseDragged(MouseEvent e)
 				{
+					e.consume();
 					int x = e.getX();
 					int y = e.getY();
 					int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
 					int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
 					TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
 					MouseAction mouseAction = new MouseAction(MouseActionType.DRAG, e.getButton(), pos);
-					outputBox.handleInput(mouseAction);
+					awtterminal.addInput(mouseAction);
 				}
 
 				public void mouseMoved(MouseEvent e)
@@ -976,6 +977,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 								resetSelection();
 							}
 							draggedMouseButton = mouse.getButton();
+							
 							int max = inputBox.getLastLine().length();
 							int location = topLeft.getColumn();
 							int position = Math.min(location + mouse.getPosition().getColumn(), max);
