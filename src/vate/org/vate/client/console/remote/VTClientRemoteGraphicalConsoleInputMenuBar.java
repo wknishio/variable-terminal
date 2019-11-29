@@ -160,13 +160,13 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Disconnect From Server", "*VTDISCONNECT\n"));
 		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Close Client Application", "*VTQUIT\n"));
 		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Close Server Application", "*VTSTOP\n"));
+		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Toggle Server Console Cover", "*VTCOVER\n"));
 		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Save Client Connection Settings", "*VTSAVE "));
 		
 		consoleMenu = new Menu("Console ");
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Show Remote System Time", "*VTTIME\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Clear Remote Console", "*VTCLEAR\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Toggle Remote Console Echo", "*VTECHO\n"));
-		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Toggle Remote Console Cover", "*VTCOVER\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Detect Chained Instances", "*VTCHAINS\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Open Remote Shell", "*VTSHELL O\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Close Remote Shell", "*VTSHELL C\n"));
