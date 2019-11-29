@@ -287,13 +287,13 @@ public class VTAudioCapturer
 			// int frames = 0;
 			// int processed = 0;
 			int offset = 0;
-			while (running)
+			
+			try
 			{
-				try
+				if (codec == VT.VT_AUDIO_CODEC_OPUS)
 				{
-					if (codec == VT.VT_AUDIO_CODEC_OPUS)
+					while (running)
 					{
-						//decodedFrameSize = line.read(inputBuffer, 0, Math.max(1, line.available() / (frameSize >> 1)) * (frameSize >> 1));
 						decodedFrameSize = line.read(inputBuffer, 0, Math.max(1, line.available() / (frameSize)) * (frameSize));
 						if (decodedFrameSize > 0 && streams.size() > 0)
 						{
@@ -357,7 +357,10 @@ public class VTAudioCapturer
 							}
 						}
 					}
-					else
+				}
+				else
+				{
+					while (running)
 					{
 						decodedFrameSize = line.read(inputBuffer, 0, Math.max(1, line.available() / frameSize) * frameSize);
 						if (decodedFrameSize > 0 && streams.size() > 0)
@@ -418,16 +421,14 @@ public class VTAudioCapturer
 						}
 					}
 				}
-				catch (Throwable e)
-				{
-					// running = false;
-					close();
-					// e.printStackTrace();
-				}
+			}
+			catch (Throwable e)
+			{
+				// running = false;
+				close();
+				// e.printStackTrace();
 			}
 			close();
-			// system.stop();
-			// System.out.println("stopped capture");
 		}
 	}
 	
