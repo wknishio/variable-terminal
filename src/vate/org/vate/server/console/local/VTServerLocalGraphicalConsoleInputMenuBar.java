@@ -61,6 +61,7 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Send Message To Clients", "*VTMESSAGE "));
 		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Disconnect Client From Server", "*VTDISCONNECT "));
 		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Close Server Application", "*VTSTOP\n"));
+		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Toggle Server Cover", "*VTCOVER\n"));
 		
 		performanceMenu = new Menu("Rates ");
 		performanceMenu.add(new VTGraphicalConsoleInputMenuItem("Calculate Connection Latencies", "*VTPING\n"));
@@ -68,9 +69,7 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		consoleMenu = new Menu("Console ");
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Show Local System Time", "*VTTIME\n"));
 		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Clear Local Console", "*VTCLEAR\n"));
-		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Toggle Local Console Cover", "*VTCOVER\n"));
 		
-		//settingsMenu = new Menu("Settings ");
 		serverSettingsMenu = new Menu("Access ");
 		serverConnectionMenu = new Menu("Connection ");
 		serverAuthenticationSettingsMenu = new Menu("Authentication ");

@@ -160,7 +160,7 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Disconnect From Server", "*VTDISCONNECT\n"));
 		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Close Client Application", "*VTQUIT\n"));
 		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Close Server Application", "*VTSTOP\n"));
-		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Toggle Server Console Cover", "*VTCOVER\n"));
+		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Toggle Server Cover", "*VTCOVER\n"));
 		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Save Client Connection Settings", "*VTSAVE "));
 		
 		consoleMenu = new Menu("Console ");
