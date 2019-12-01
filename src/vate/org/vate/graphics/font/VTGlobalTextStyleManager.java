@@ -317,7 +317,6 @@ public class VTGlobalTextStyleManager
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private static void boldLists()
 	{
 		for (List<Font> list : lists)
@@ -331,7 +330,6 @@ public class VTGlobalTextStyleManager
 		}
 	}
 	
-	@SuppressWarnings("unused")
 	private static void plainLists()
 	{
 		for (List<Font> list : lists)

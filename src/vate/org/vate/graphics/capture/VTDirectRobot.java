@@ -5,8 +5,6 @@ import java.awt.peer.*;
 import sun.awt.*;
 import java.lang.reflect.*;
 
-import com.sun.jna.Platform;
-
 public final class VTDirectRobot
 {
 	public VTDirectRobot() throws AWTException
