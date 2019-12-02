@@ -53,6 +53,10 @@ public class VTGlobalTextStyleManager
 				if (Platform.isWindows())
 				{
 					FONT_SCALING_FACTOR = (Math.max(1.0, Toolkit.getDefaultToolkit().getScreenResolution() / 96.0));
+					if (FONT_SCALING_FACTOR > 1.0)
+					{
+						FONT_SCALING_FACTOR = FONT_SCALING_FACTOR * (7d / 6d);
+					}
 					//if (FONT_SCALING_FACTOR > 1.0)
 					//{
 						//FONT_SCALING_FACTOR = FONT_SCALING_FACTOR * (1.0 + (1.0 / 4.0));
@@ -76,11 +80,12 @@ public class VTGlobalTextStyleManager
 				
 			}
 		}
+		
 		//AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
 	}
 	
-	private static Font windowFont = Font.decode("Serif").deriveFont((float) ((((Font.decode("Serif 14").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
-	private static Font monospacedFont = Font.decode("Monospaced").deriveFont((float) ((((Font.decode("Monospaced 14").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
+	private static Font windowFont = Font.decode("Serif").deriveFont((float) ((((Font.decode("Serif 12").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
+	private static Font monospacedFont = Font.decode("Monospaced").deriveFont((float) ((((Font.decode("Monospaced 12").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
 	private static float defaultWindowFontSize = windowFont.getSize2D();
 	private static float defaultMonospacedFontSize = monospacedFont.getSize2D();
 	
