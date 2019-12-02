@@ -210,8 +210,8 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		serverRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Set Remote Environment Variables", "*VTVARIABLE "));
 		serverRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Set Remote JVM Properties", "*VTPROPERTY "));
 		serverRuntimeMenu.add(serverManageRuntimeMenu);
-		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Add Managed Process", "*VTRUNTIME M "));
-		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Add Free Process", "*VTRUNTIME F "));
+		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Add Managed Process", "*VTRUNTIME M"));
+		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Add Free Process", "*VTRUNTIME F"));
 		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("List All Managed Processes", "*VTRUNTIME LA\n"));
 		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Stop All Managed Processes", "*VTRUNTIME SA\n"));
 		serverManageRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Delete All Managed Processes", "*VTRUNTIME DA\n"));

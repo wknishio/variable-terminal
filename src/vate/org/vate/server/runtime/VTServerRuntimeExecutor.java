@@ -111,8 +111,10 @@ public class VTServerRuntimeExecutor extends VTTask
 			int process_scope = PROCESS_SCOPE_NOT_FOUND;
 			boolean process_verbose = false;
 			boolean process_restart = false;
+			//boolean process_timeout = false;
 			boolean need_managed_scope = false;
 			int parameter_amount = 2;
+			int timeout_value = 0;
 			
 			if (splitCommand.length >= 2)
 			{
@@ -294,6 +296,19 @@ public class VTServerRuntimeExecutor extends VTTask
 					process_restart = true;
 				}
 				
+				if (main_command_string.contains("T"))
+				{
+					//process_timeout = true;
+					try
+					{
+						timeout_value = Integer.parseInt(main_command_string.replaceAll("[\\D]", ""));
+					}
+					catch (Throwable t)
+					{
+						
+					}
+				}
+				
 				if (splitCommand.length < parameter_amount)
 				{
 					synchronized (this)
@@ -427,7 +442,7 @@ public class VTServerRuntimeExecutor extends VTTask
 						processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
 						// processBuilder.environment().putAll(System.getenv());
 						processBuilder.redirectErrorStream(true);
-						VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, connection.getResultWriter(), process_verbose, session.getSessionThreads(), process_restart);
+						VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, connection.getResultWriter(), process_verbose, session.getSessionThreads(), process_restart, timeout_value);
 						process.start();
 						processList.add(process);
 						synchronized (this)
@@ -472,7 +487,7 @@ public class VTServerRuntimeExecutor extends VTTask
 						processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
 						// processBuilder.environment().putAll(System.getenv());
 						processBuilder.redirectErrorStream(true);
-						VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, connection.getResultWriter(), process_verbose, session.getSessionThreads(), process_restart);
+						VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, connection.getResultWriter(), process_verbose, session.getSessionThreads(), process_restart, timeout_value);
 						process.start();
 						synchronized (this)
 						{
@@ -520,6 +535,7 @@ public class VTServerRuntimeExecutor extends VTTask
 								"\nVT>Command: [" + process.getCommand() + "]" +
 								"\nVT>Verbose: [" + (process.isVerbose() ? "Enabled" : "Disabled") + "]" +
 								"\nVT>Restart: [" + (process.isRestart() ? "Enabled" : "Disabled") + "]" +
+								"\nVT>Timeout: [" + (process.getTimeout() > 0 ? process.getTimeout() : "Disabled") + "]" +
 								"\nVT>State: [" + (exitValue == null ? "Running" : "Terminated]\nVT>Return Code: [" + exitValue) + "]" + "\nVT>");
 							}
 							catch (Throwable e)
@@ -560,6 +576,7 @@ public class VTServerRuntimeExecutor extends VTTask
 							"\nVT>Command: [" + process.getCommand() + "]" +
 							"\nVT>Verbose: [" + (process.isVerbose() ? "Enabled" : "Disabled") + "]" +
 							"\nVT>Restart: [" + (process.isRestart() ? "Enabled" : "Disabled") + "]" +
+							"\nVT>Timeout: [" + (process.getTimeout() > 0 ? process.getTimeout() : "Disabled") + "]" +
 							"\nVT>State: [" + (exitValue == null ? "Running" : "Terminated]\nVT>Return Code: [" + exitValue) + "]" + "\nVT>");
 							synchronized (this)
 							{
@@ -635,6 +652,7 @@ public class VTServerRuntimeExecutor extends VTTask
 									"\nVT>Command: [" + process.getCommand() + "]" +
 									"\nVT>Verbose: [" + (process.isVerbose() ? "Enabled" : "Disabled") + "]" +
 									"\nVT>Restart: [" + (process.isRestart() ? "Enabled" : "Disabled") + "]" +
+									"\nVT>Timeout: [" + (process.getTimeout() > 0 ? process.getTimeout() : "Disabled") + "]" +
 									"\nVT>State: [" + (exitValue == null ? "Running" : "Terminated]\nVT>Return Code: [" + exitValue) + "]" + "\nVT>");
 								}
 								else

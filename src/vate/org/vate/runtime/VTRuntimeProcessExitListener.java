@@ -3,12 +3,10 @@ package org.vate.runtime;
 public class VTRuntimeProcessExitListener implements Runnable
 {
 	private VTRuntimeProcess process;
-	private VTRuntimeProcessOutputConsumer consumer;
 	
-	public VTRuntimeProcessExitListener(VTRuntimeProcess process, VTRuntimeProcessOutputConsumer consumer)
+	public VTRuntimeProcessExitListener(VTRuntimeProcess process)
 	{
 		this.process = process;
-		this.consumer = consumer;
 	}
 	
 	public void finalize()
@@ -30,10 +28,10 @@ public class VTRuntimeProcessExitListener implements Runnable
 		{
 			
 		}
-		consumer.stop();
 		
 		if (process.isRestart())
 		{
+			process.stop();
 			try
 			{
 				Thread.sleep(1000);
@@ -53,6 +51,10 @@ public class VTRuntimeProcessExitListener implements Runnable
 					
 				}
 			}
+		}
+		else
+		{
+			process.stop();
 		}
 	}
 }

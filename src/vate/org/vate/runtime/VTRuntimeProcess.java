@@ -16,12 +16,14 @@ public class VTRuntimeProcess
 	private VTRuntimeProcessOutputConsumer outputConsumer;
 	//private VTRuntimeProcessOutputConsumer errorConsumer;
 	private VTRuntimeProcessExitListener exitListener;
+	private VTRuntimeProcessTimeoutDestroyer timeoutDestroyer;
 	private ExecutorService threads;
 	private BufferedWriter writer;
 	private volatile boolean verbose;
 	private volatile boolean restart;
+	private volatile long timeout;
 	
-	public VTRuntimeProcess(String command, ProcessBuilder builder, BufferedWriter writer, boolean verbose, ExecutorService threads, boolean restart)
+	public VTRuntimeProcess(String command, ProcessBuilder builder, BufferedWriter writer, boolean verbose, ExecutorService threads, boolean restart, long timeout)
 	{
 		this.command = command;
 		this.builder = builder;
@@ -29,6 +31,7 @@ public class VTRuntimeProcess
 		this.verbose = verbose;
 		this.threads = threads;
 		this.restart = restart;
+		this.timeout = timeout;
 	}
 	
 	public void start() throws Throwable
@@ -39,10 +42,16 @@ public class VTRuntimeProcess
 		this.out = process.getOutputStream();
 		this.outputConsumer = new VTRuntimeProcessOutputConsumer(in, writer, verbose);
 		//this.errorConsumer = new VTRuntimeProcessOutputConsumer(err, writer, verbose);
-		this.exitListener = new VTRuntimeProcessExitListener(this, outputConsumer);
+		this.exitListener = new VTRuntimeProcessExitListener(this);
+		
 		threads.execute(outputConsumer);
 		//threads.execute(errorConsumer);
 		threads.execute(exitListener);
+		if (timeout > 0)
+		{
+			this.timeoutDestroyer = new VTRuntimeProcessTimeoutDestroyer(process, timeout);
+			threads.execute(timeoutDestroyer);
+		}
 	}
 	
 	/* public boolean isRunning() { try { process.exitValue(); return false; }
@@ -83,6 +92,11 @@ public class VTRuntimeProcess
 	public OutputStream getOut()
 	{
 		return out;
+	}
+	
+	public long getTimeout()
+	{
+		return timeout;
 	}
 	
 	public void setRestart(boolean restart)
@@ -127,6 +141,25 @@ public class VTRuntimeProcess
 			try
 			{
 				process.destroy();
+			}
+			catch (Throwable e)
+			{
+				
+			}
+		}
+		try
+		{
+			outputConsumer.stop();
+		}
+		catch (Throwable e)
+		{
+			
+		}
+		if (timeoutDestroyer != null)
+		{
+			try
+			{
+				timeoutDestroyer.stop();
 			}
 			catch (Throwable e)
 			{
