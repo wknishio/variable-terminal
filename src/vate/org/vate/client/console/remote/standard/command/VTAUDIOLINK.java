@@ -13,7 +13,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
 	{
 		this.setFullName("*VTAUDIOLINK");
 		this.setAbbreviatedName("*VTAL");
-		this.setFullSyntax("*VTAUDIOLINK [SIDE/TYPE/MIXER] [...]");
+		this.setFullSyntax("*VTAUDIOLINK [SIDE/TYPE/MIXER] [.]");
 		this.setAbbreviatedSyntax("*VTAL [SD/TP/MX] [.]");
 	}
 

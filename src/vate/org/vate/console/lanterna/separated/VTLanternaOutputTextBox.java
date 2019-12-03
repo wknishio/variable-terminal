@@ -1014,7 +1014,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 			String removed = lines.remove(0);
 			if (removed.length() >= longestRow)
 			{
-				longestRow = 1;
+				longestRow = 79;
 //				try
 //				{
 //					longestRow = terminal.getTerminalSize().getColumns();

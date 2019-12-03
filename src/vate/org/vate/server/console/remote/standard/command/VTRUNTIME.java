@@ -9,8 +9,8 @@ public class VTRUNTIME extends VTServerStandardRemoteConsoleCommandProcessor
 	{
 		this.setFullName("*VTRUNTIME");
 		this.setAbbreviatedName("*VTRT");
-		this.setFullSyntax("*VTRUNTIME <COMMAND>");
-		this.setAbbreviatedSyntax("*VTRT <CMD>");
+		this.setFullSyntax("*VTRUNTIME <MODE> [.]");
+		this.setAbbreviatedSyntax("*VTRT <MD> [.]");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

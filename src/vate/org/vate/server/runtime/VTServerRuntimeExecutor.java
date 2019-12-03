@@ -111,7 +111,7 @@ public class VTServerRuntimeExecutor extends VTTask
 			int process_scope = PROCESS_SCOPE_NOT_FOUND;
 			boolean process_verbose = false;
 			boolean process_restart = false;
-			//boolean process_timeout = false;
+			boolean process_timeout = false;
 			boolean need_managed_scope = false;
 			int parameter_amount = 2;
 			int timeout_value = 0;
@@ -261,7 +261,7 @@ public class VTServerRuntimeExecutor extends VTTask
 					need_managed_scope = true;
 					parameter_amount += 1;
 				}
-
+				
 				if (need_managed_scope)
 				{
 					if (main_command_string.contains("A")
@@ -298,15 +298,16 @@ public class VTServerRuntimeExecutor extends VTTask
 				
 				if (main_command_string.contains("T"))
 				{
-					//process_timeout = true;
-					try
-					{
-						timeout_value = Integer.parseInt(main_command_string.replaceAll("[\\D]", ""));
-					}
-					catch (Throwable t)
-					{
-						
-					}
+					process_timeout = true;
+//					try
+//					{
+//						timeout_value = Integer.parseInt(main_command_string.replaceAll("[\\D]", ""));
+//					}
+//					catch (Throwable t)
+//					{
+//						
+//					}
+					//parameter_amount += 1;
 				}
 				
 				if (splitCommand.length < parameter_amount)
@@ -434,22 +435,67 @@ public class VTServerRuntimeExecutor extends VTTask
 				{
 					try
 					{
-						command = command.substring(splitCommand[0].length() + splitCommand[1].length() + 2);
-						splitCommand = CommandLineTokenizer.tokenize(command);
-						ProcessBuilder processBuilder = new ProcessBuilder(splitCommand);
-						processBuilder.directory(session.getRuntimeBuilderWorkingDirectory());
-						processBuilder.environment().clear();
-						processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
-						// processBuilder.environment().putAll(System.getenv());
-						processBuilder.redirectErrorStream(true);
-						VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, connection.getResultWriter(), process_verbose, session.getSessionThreads(), process_restart, timeout_value);
-						process.start();
-						processList.add(process);
-						synchronized (this)
+						if (process_timeout && splitCommand.length >= 4)
 						{
-							connection.getResultWriter().write("\nVT>Managed process with command [" + command + "] created!\nVT>");
-							connection.getResultWriter().flush();
-							finished = true;
+							String timeout_string = splitCommand[2].replaceAll("[\\D]", "");
+							if (timeout_string.length() > 0)
+							{
+								timeout_value = Integer.parseInt(splitCommand[2].replaceAll("[\\D]", ""));
+								command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
+								ProcessBuilder processBuilder = new ProcessBuilder(CommandLineTokenizer.tokenize(command));
+								processBuilder.directory(session.getRuntimeBuilderWorkingDirectory());
+								processBuilder.environment().clear();
+								processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+								// processBuilder.environment().putAll(System.getenv());
+								processBuilder.redirectErrorStream(true);
+								VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, connection.getResultWriter(), process_verbose, session.getSessionThreads(), process_restart, timeout_value);
+								process.start();
+								processList.add(process);
+								synchronized (this)
+								{
+									connection.getResultWriter().write("\nVT>Managed process with command [" + command + "] created!\nVT>");
+									connection.getResultWriter().flush();
+									finished = true;
+								}
+							}
+							else
+							{
+								command = command.substring(splitCommand[0].length() + splitCommand[1].length() + 2);
+								ProcessBuilder processBuilder = new ProcessBuilder(CommandLineTokenizer.tokenize(command));
+								processBuilder.directory(session.getRuntimeBuilderWorkingDirectory());
+								processBuilder.environment().clear();
+								processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+								// processBuilder.environment().putAll(System.getenv());
+								processBuilder.redirectErrorStream(true);
+								VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, connection.getResultWriter(), process_verbose, session.getSessionThreads(), process_restart, timeout_value);
+								process.start();
+								processList.add(process);
+								synchronized (this)
+								{
+									connection.getResultWriter().write("\nVT>Managed process with command [" + command + "] created!\nVT>");
+									connection.getResultWriter().flush();
+									finished = true;
+								}
+							}
+						}
+						else
+						{
+							command = command.substring(splitCommand[0].length() + splitCommand[1].length() + 2);
+							ProcessBuilder processBuilder = new ProcessBuilder(CommandLineTokenizer.tokenize(command));
+							processBuilder.directory(session.getRuntimeBuilderWorkingDirectory());
+							processBuilder.environment().clear();
+							processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+							// processBuilder.environment().putAll(System.getenv());
+							processBuilder.redirectErrorStream(true);
+							VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, connection.getResultWriter(), process_verbose, session.getSessionThreads(), process_restart, timeout_value);
+							process.start();
+							processList.add(process);
+							synchronized (this)
+							{
+								connection.getResultWriter().write("\nVT>Managed process with command [" + command + "] created!\nVT>");
+								connection.getResultWriter().flush();
+								finished = true;
+							}
 						}
 					}
 					catch (Throwable e)
@@ -479,21 +525,64 @@ public class VTServerRuntimeExecutor extends VTTask
 				{
 					try
 					{
-						command = command.substring(splitCommand[0].length() + splitCommand[1].length() + 2);
-						splitCommand = CommandLineTokenizer.tokenize(command);
-						ProcessBuilder processBuilder = new ProcessBuilder(splitCommand);
-						processBuilder.directory(session.getRuntimeBuilderWorkingDirectory());
-						processBuilder.environment().clear();
-						processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
-						// processBuilder.environment().putAll(System.getenv());
-						processBuilder.redirectErrorStream(true);
-						VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, connection.getResultWriter(), process_verbose, session.getSessionThreads(), process_restart, timeout_value);
-						process.start();
-						synchronized (this)
+						if (process_timeout && splitCommand.length >= 4)
 						{
-							connection.getResultWriter().write("\nVT>Free process with command [" + command + "] executed!\nVT>");
-							connection.getResultWriter().flush();
-							finished = true;
+							String timeout_string = splitCommand[2].replaceAll("[\\D]", "");
+							if (timeout_string.length() > 0)
+							{
+								timeout_value = Integer.parseInt(splitCommand[2].replaceAll("[\\D]", ""));
+								command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
+								ProcessBuilder processBuilder = new ProcessBuilder(CommandLineTokenizer.tokenize(command));
+								processBuilder.directory(session.getRuntimeBuilderWorkingDirectory());
+								processBuilder.environment().clear();
+								processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+								// processBuilder.environment().putAll(System.getenv());
+								processBuilder.redirectErrorStream(true);
+								VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, connection.getResultWriter(), process_verbose, session.getSessionThreads(), process_restart, timeout_value);
+								process.start();
+								synchronized (this)
+								{
+									connection.getResultWriter().write("\nVT>Free process with command [" + command + "] executed!\nVT>");
+									connection.getResultWriter().flush();
+									finished = true;
+								}
+							}
+							else
+							{
+								command = command.substring(splitCommand[0].length() + splitCommand[1].length() + 2);
+								ProcessBuilder processBuilder = new ProcessBuilder(CommandLineTokenizer.tokenize(command));
+								processBuilder.directory(session.getRuntimeBuilderWorkingDirectory());
+								processBuilder.environment().clear();
+								processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+								// processBuilder.environment().putAll(System.getenv());
+								processBuilder.redirectErrorStream(true);
+								VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, connection.getResultWriter(), process_verbose, session.getSessionThreads(), process_restart, timeout_value);
+								process.start();
+								synchronized (this)
+								{
+									connection.getResultWriter().write("\nVT>Free process with command [" + command + "] executed!\nVT>");
+									connection.getResultWriter().flush();
+									finished = true;
+								}
+							}
+						}
+						else
+						{
+							command = command.substring(splitCommand[0].length() + splitCommand[1].length() + 2);
+							ProcessBuilder processBuilder = new ProcessBuilder(CommandLineTokenizer.tokenize(command));
+							processBuilder.directory(session.getRuntimeBuilderWorkingDirectory());
+							processBuilder.environment().clear();
+							processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+							// processBuilder.environment().putAll(System.getenv());
+							processBuilder.redirectErrorStream(true);
+							VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, connection.getResultWriter(), process_verbose, session.getSessionThreads(), process_restart, timeout_value);
+							process.start();
+							synchronized (this)
+							{
+								connection.getResultWriter().write("\nVT>Free process with command [" + command + "] executed!\nVT>");
+								connection.getResultWriter().flush();
+								finished = true;
+							}
 						}
 					}
 					catch (Throwable e)

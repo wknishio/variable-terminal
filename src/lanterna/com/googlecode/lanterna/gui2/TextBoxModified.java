@@ -88,7 +88,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
         this.horizontalFocusSwitching = (style == Style.SINGLE_LINE);
         this.caretPosition = TerminalPosition.TOP_LEFT_CORNER;
         this.maxLineLength = -1;
-        this.longestRow = 1;    //To fit the cursor
+        this.longestRow = 79;    //To fit the cursor
         this.mask = null;
         this.validationPattern = null;
         setText(initialContent);
@@ -310,7 +310,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
             split = new String[] { "" };
         }
         lines.clear();
-        longestRow = 1;
+        longestRow = 79;
         for(String line : split) {
             addLine(line);
         }
