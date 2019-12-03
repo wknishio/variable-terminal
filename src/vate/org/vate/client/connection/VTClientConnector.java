@@ -756,7 +756,7 @@ public class VTClientConnector implements Runnable
 				return true;
 			}
 			dialog = false;
-			VTConsole.print("VT>Repeat current connection settings?(Y/N, default:N):");
+			VTConsole.print("VT>Repeat current connection settings?(Y/N, default:Y):");
 			line = VTConsole.readLine(true);
 			if (line == null)
 			{
@@ -767,9 +767,9 @@ public class VTClientConnector implements Runnable
 			{
 				return true;
 			}
-			if (line.toUpperCase().startsWith("Y"))
+			if (!line.toUpperCase().startsWith("N"))
 			{
-				VTConsole.print("VT>Repeat current authentication login and password?(Y/N, default:N):");
+				VTConsole.print("VT>Repeat current authentication login and password?(Y/N, default:Y):");
 				line = VTConsole.readLine(true);
 				if (line == null)
 				{
@@ -780,7 +780,7 @@ public class VTClientConnector implements Runnable
 				{
 					return true;
 				}
-				if (line.toUpperCase().startsWith("Y"))
+				if (!line.toUpperCase().startsWith("N"))
 				{
 					retry = false;
 					return true;
@@ -1239,7 +1239,7 @@ public class VTClientConnector implements Runnable
 					proxyType = "None";
 				}
 			}
-			VTConsole.print("VT>Repeat current authentication login and password?(Y/N, default:N):");
+			VTConsole.print("VT>Repeat current authentication login and password?(Y/N, default:Y):");
 			line = VTConsole.readLine(true);
 			if (line == null)
 			{
@@ -1250,7 +1250,7 @@ public class VTClientConnector implements Runnable
 			{
 				return true;
 			}
-			if (line.toUpperCase().startsWith("Y"))
+			if (!line.toUpperCase().startsWith("N"))
 			{
 				retry = false;
 				return true;

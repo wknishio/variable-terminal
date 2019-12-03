@@ -291,11 +291,18 @@ public class VTConsole
 	{
 		if (checkConsole())
 		{
-			try
+			if (!daemon)
 			{
-				return console.readLine(echo);
+				try
+				{
+					return console.readLine(echo);
+				}
+				catch (Throwable t)
+				{
+					return "";
+				}
 			}
-			catch (Throwable t)
+			else
 			{
 				return "";
 			}
@@ -307,7 +314,14 @@ public class VTConsole
 	{
 		if (checkConsole())
 		{
-			console.interruptReadLine();
+			if (!daemon)
+			{
+				console.interruptReadLine();
+			}
+			else
+			{
+				
+			}
 		}
 	}
 	
