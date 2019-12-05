@@ -45,7 +45,8 @@ public class VTServerHostResolver extends VTTask
 			message.append("\nVT>List of host addresses for host [" + host + "]:\nVT>");
 			for (InetAddress address : addresses)
 			{
-				message.append("\nVT>Host address: [" + address.getHostAddress() + "]" + "\nVT>Host name: [" + address.getHostName() + "]");
+				message.append("\nVT>Host address: [" + address.getHostAddress() + "]" +
+				"\nVT>Host name: [" + address.getHostName() + "]");
 				// "]\nVT>Canonical host name: [" +
 				// address.getCanonicalHostName() +
 				// "]\nVT>");
