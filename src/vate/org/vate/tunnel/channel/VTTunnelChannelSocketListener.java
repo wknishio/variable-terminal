@@ -80,6 +80,7 @@ public class VTTunnelChannelSocketListener implements Runnable
 			{
 				try
 				{
+					serverSocket.setReuseAddress(true);
 					serverSocket.bind(channel.getBindAddress());
 				}
 				catch (Throwable e)
@@ -96,7 +97,7 @@ public class VTTunnelChannelSocketListener implements Runnable
 					socket = serverSocket.accept();
 					socket.setTcpNoDelay(true);
 					socket.setKeepAlive(true);
-					socket.setSoLinger(true, 0);
+					//socket.setSoLinger(true, 0);
 					VTTunnelSession session = new VTTunnelSession(channel.getConnection(), socket);
 					VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, channel);
 					VTLinkableDynamicMultiplexedOutputStream stream = channel.getConnection().getOutputStream(handler);

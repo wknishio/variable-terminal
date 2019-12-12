@@ -133,7 +133,7 @@ public class SocksServerSocket extends ServerSocket {
 			s = super.accept();
 			s.setKeepAlive(true);
 			s.setTcpNoDelay(true);
-			s.setSoLinger(true, 0);
+			//s.setSoLinger(true, 0);
 			// if(s.getInetAddress().equals(remoteAddr)){
 			// got the connection from the right host
 			// Close listenning socket.

@@ -179,14 +179,18 @@ public class ProxyServer implements Runnable {
 	 */
 	public void start(int port, int backlog, InetAddress localIP) {
 		try {
-			ss = new ServerSocket(port, backlog, localIP);
+			//ss = new ServerSocket(port, backlog, localIP);
+			ss = new ServerSocket();
+			ss.setReuseAddress(true);
+			ss.bind(new InetSocketAddress(localIP, port), backlog);
+			//ss.bind(new InetSocketAddress(port));
 			// LOG.info("Starting SOCKS Proxy on:" +
 			// ss.getInetAddress().getHostAddress() + ":" + ss.getLocalPort());
 			while (true) {
 				Socket s = ss.accept();
 				s.setKeepAlive(true);
 				s.setTcpNoDelay(true);
-				s.setSoLinger(true, 0);
+				//s.setSoLinger(true, 0);
 				// String connectionId = newConnectionId();
 				// LOG.info(connectionId + " Accepted from:" +
 				// s.getInetAddress().getHostName() + ":" +s.getPort());
@@ -359,15 +363,17 @@ public class ProxyServer implements Runnable {
 		ProxyMessage response = null;
 
 		if (proxy == null) {
-			s = new Socket(msg.ip, msg.port);
+			s = new Socket();
+			s.setReuseAddress(true);
+			s.connect(new InetSocketAddress(msg.ip, msg.port));
 			s.setTcpNoDelay(true);
 			s.setKeepAlive(true);
-			s.setSoLinger(true, 0);
+			//s.setSoLinger(true, 0);
 		} else {
 			s = new SocksSocket(proxy, msg.ip, msg.port);
 			s.setTcpNoDelay(true);
 			s.setKeepAlive(true);
-			s.setSoLinger(true, 0);
+			//s.setSoLinger(true, 0);
 		}
 		// LOG.info(connectionId + " Connected to " + s.getInetAddress() + ":" +
 		// s.getPort());
@@ -481,10 +487,11 @@ public class ProxyServer implements Runnable {
 		// System.out.println("ProxyServer doAccept()");
 		// System.out.println("ProxyServer port: " + ss.getLocalPort());
 		while (true) {
+			//ss.setReuseAddress(true);
 			s = ss.accept();
 			s.setTcpNoDelay(true);
 			s.setKeepAlive(true);
-			s.setSoLinger(true, 0);
+			//s.setSoLinger(true, 0);
 			// if(s.getInetAddress().equals(msg.ip)){
 			if (s != null) {
 				// got the connection from the right host

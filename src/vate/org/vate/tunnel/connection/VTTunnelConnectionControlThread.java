@@ -47,6 +47,7 @@ public class VTTunnelConnectionControlThread implements Runnable
 						try
 						{
 							Socket socket = new Socket();
+							socket.setReuseAddress(true);
 							//System.out.println("host:" + host);
 							if (host.length() == 0 || host.equals("*"))
 							{
@@ -58,7 +59,7 @@ public class VTTunnelConnectionControlThread implements Runnable
 							}
 							socket.setTcpNoDelay(true);
 							socket.setKeepAlive(true);
-							socket.setSoLinger(true, 0);
+							//socket.setSoLinger(true, 0);
 							session.setSocket(socket);
 							VTLinkableDynamicMultiplexedOutputStream stream = connection.getOutputStream(number, handler);
 							if (stream != null)

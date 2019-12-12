@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -250,6 +251,7 @@ public class VTServerConnector implements Runnable
 			{
 				connectionServerSocket.close();
 				connectionServerSocket = new ServerSocket();
+				connectionServerSocket.setReuseAddress(true);
 				if (port != null)
 				{
 					if (address != null && address.length() > 0)
@@ -325,7 +327,7 @@ public class VTServerConnector implements Runnable
 		return false;
 	}
 	
-	public void resetSockets(VTServerConnection connection)
+	public void resetSockets(VTServerConnection connection) throws SocketException
 	{
 		if (!passive && useProxyAuthentication)
 		{
@@ -351,19 +353,21 @@ public class VTServerConnector implements Runnable
 		{
 			connection.setConnectionSocket(new Socket());
 		}
+		connection.getConnectionSocket().setReuseAddress(true);
 	}
 	
 	public boolean listenConnection(VTServerConnection connection)
 	{
 		VTConsole.print("\rVT>Listening to connections with clients...\nVT>");
 		connection.closeSockets();
-		resetSockets(connection);
+		
 		if (!setServerSocket(hostAddress, hostPort != null && hostPort > 0 ? hostPort : 6060))
 		{
 			return false;
 		}
 		try
 		{
+			resetSockets(connection);
 			if (natPort != null && natPort > 0)
 			{
 				portMappingManager.setPortMapping(hostPort != null && hostPort > 0 ? hostPort : 6060, null, natPort, "TCP", "Variable-Terminal-Port-Mapping");
@@ -376,8 +380,8 @@ public class VTServerConnector implements Runnable
 			connection.setConnectionSocket(connectionServerSocket.accept());
 			connection.getConnectionSocket().setTcpNoDelay(true);
 			connection.getConnectionSocket().setKeepAlive(true);
-			connection.getConnectionSocket().setSoLinger(true, 0);
-			// connection.getConnectionSocket().setSoLinger(false, 5000);
+			//connection.getConnectionSocket().setSoLinger(true, 0);
+			//connection.getConnectionSocket().setSoLinger(false, 5000);
 			connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
 			if (encryptionType == null)
 			{
@@ -422,9 +426,9 @@ public class VTServerConnector implements Runnable
 		VTConsole.print("\rVT>Establishing connection with client...\nVT>");
 		portMappingManager.deletePortMapping();
 		connection.closeSockets();
-		resetSockets(connection);
 		try
 		{
+			resetSockets(connection);
 			InetSocketAddress socketAddress = null;
 			if (port != null)
 			{
@@ -455,8 +459,8 @@ public class VTServerConnector implements Runnable
 			connection.getConnectionSocket().connect(socketAddress);
 			connection.getConnectionSocket().setTcpNoDelay(true);
 			connection.getConnectionSocket().setKeepAlive(true);
-			connection.getConnectionSocket().setSoLinger(true, 0);
-			// connection.getConnectionSocket().setSoLinger(false, 5000);
+			//connection.getConnectionSocket().setSoLinger(true, 0);
+			//connection.getConnectionSocket().setSoLinger(false, 5000);
 			connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
 			if (encryptionType == null)
 			{
