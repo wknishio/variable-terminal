@@ -190,6 +190,7 @@ public class ProxyServer implements Runnable {
 				Socket s = ss.accept();
 				s.setKeepAlive(true);
 				s.setTcpNoDelay(true);
+				s.setSoTimeout(30000);
 				//s.setSoLinger(true, 0);
 				// String connectionId = newConnectionId();
 				// LOG.info(connectionId + " Accepted from:" +
@@ -369,11 +370,13 @@ public class ProxyServer implements Runnable {
 			s = new Socket(msg.ip, msg.port);
 			s.setTcpNoDelay(true);
 			s.setKeepAlive(true);
+			s.setSoTimeout(30000);
 			//s.setSoLinger(true, 0);
 		} else {
 			s = new SocksSocket(proxy, msg.ip, msg.port);
 			s.setTcpNoDelay(true);
 			s.setKeepAlive(true);
+			s.setSoTimeout(30000);
 			//s.setSoLinger(true, 0);
 		}
 		// LOG.info(connectionId + " Connected to " + s.getInetAddress() + ":" +
@@ -492,6 +495,7 @@ public class ProxyServer implements Runnable {
 			s = ss.accept();
 			s.setTcpNoDelay(true);
 			s.setKeepAlive(true);
+			s.setSoTimeout(30000);
 			//s.setSoLinger(true, 0);
 			// if(s.getInetAddress().equals(msg.ip)){
 			if (s != null) {

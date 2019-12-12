@@ -59,6 +59,7 @@ public class VTTunnelConnectionControlThread implements Runnable
 							}
 							socket.setTcpNoDelay(true);
 							socket.setKeepAlive(true);
+							socket.setSoTimeout(30000);
 							//socket.setSoLinger(true, 0);
 							session.setSocket(socket);
 							VTLinkableDynamicMultiplexedOutputStream stream = connection.getOutputStream(number, handler);

@@ -97,6 +97,7 @@ public class VTTunnelChannelSocketListener implements Runnable
 					socket = serverSocket.accept();
 					socket.setTcpNoDelay(true);
 					socket.setKeepAlive(true);
+					socket.setSoTimeout(30000);
 					//socket.setSoLinger(true, 0);
 					VTTunnelSession session = new VTTunnelSession(channel.getConnection(), socket);
 					VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, channel);
