@@ -47,7 +47,7 @@ public class VTTunnelConnectionControlThread implements Runnable
 						try
 						{
 							Socket socket = new Socket();
-							socket.setReuseAddress(true);
+							//socket.setReuseAddress(true);
 							//System.out.println("host:" + host);
 							if (host.length() == 0 || host.equals("*"))
 							{

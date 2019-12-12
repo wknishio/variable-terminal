@@ -251,7 +251,7 @@ public class VTServerConnector implements Runnable
 			{
 				connectionServerSocket.close();
 				connectionServerSocket = new ServerSocket();
-				connectionServerSocket.setReuseAddress(true);
+				//connectionServerSocket.setReuseAddress(true);
 				if (port != null)
 				{
 					if (address != null && address.length() > 0)
@@ -353,7 +353,7 @@ public class VTServerConnector implements Runnable
 		{
 			connection.setConnectionSocket(new Socket());
 		}
-		connection.getConnectionSocket().setReuseAddress(true);
+		//connection.getConnectionSocket().setReuseAddress(true);
 	}
 	
 	public boolean listenConnection(VTServerConnection connection)
@@ -380,7 +380,7 @@ public class VTServerConnector implements Runnable
 			connection.setConnectionSocket(connectionServerSocket.accept());
 			connection.getConnectionSocket().setTcpNoDelay(true);
 			connection.getConnectionSocket().setKeepAlive(true);
-			//connection.getConnectionSocket().setSoLinger(true, 0);
+			connection.getConnectionSocket().setSoLinger(true, 0);
 			//connection.getConnectionSocket().setSoLinger(false, 5000);
 			connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
 			if (encryptionType == null)
@@ -459,7 +459,7 @@ public class VTServerConnector implements Runnable
 			connection.getConnectionSocket().connect(socketAddress);
 			connection.getConnectionSocket().setTcpNoDelay(true);
 			connection.getConnectionSocket().setKeepAlive(true);
-			//connection.getConnectionSocket().setSoLinger(true, 0);
+			connection.getConnectionSocket().setSoLinger(true, 0);
 			//connection.getConnectionSocket().setSoLinger(false, 5000);
 			connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
 			if (encryptionType == null)

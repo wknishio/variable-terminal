@@ -367,16 +367,16 @@ public abstract class Proxy {
 
 	protected void startSession() throws SocksException {
 		try {
-			proxySocket = new Socket();
-			proxySocket.setReuseAddress(true);
+			//proxySocket = new Socket();
+			//proxySocket.setReuseAddress(true);
 			if (chainProxy == null) {
 				if (localSocketPort > 0) {
-					//proxySocket = new Socket(proxyIP, proxyPort, InetAddress.getLocalHost(), localSocketPort);
-					proxySocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), localSocketPort));
-					proxySocket.connect(new InetSocketAddress(proxyIP, proxyPort));
+					proxySocket = new Socket(proxyIP, proxyPort, InetAddress.getLocalHost(), localSocketPort);
+					//proxySocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), localSocketPort));
+					//proxySocket.connect(new InetSocketAddress(proxyIP, proxyPort));
 				} else {
-					//proxySocket = new Socket(proxyIP, proxyPort);
-					proxySocket.connect(new InetSocketAddress(proxyIP, proxyPort));
+					proxySocket = new Socket(proxyIP, proxyPort);
+					//proxySocket.connect(new InetSocketAddress(proxyIP, proxyPort));
 				}
 				localSocketPortAssigned = proxySocket.getLocalPort();
 			} else if (proxyIP != null)

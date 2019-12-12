@@ -179,10 +179,10 @@ public class ProxyServer implements Runnable {
 	 */
 	public void start(int port, int backlog, InetAddress localIP) {
 		try {
-			//ss = new ServerSocket(port, backlog, localIP);
-			ss = new ServerSocket();
-			ss.setReuseAddress(true);
-			ss.bind(new InetSocketAddress(localIP, port), backlog);
+			ss = new ServerSocket(port, backlog, localIP);
+			//ss = new ServerSocket();
+			//ss.setReuseAddress(true);
+			//ss.bind(new InetSocketAddress(localIP, port), backlog);
 			//ss.bind(new InetSocketAddress(port));
 			// LOG.info("Starting SOCKS Proxy on:" +
 			// ss.getInetAddress().getHostAddress() + ":" + ss.getLocalPort());
@@ -363,9 +363,10 @@ public class ProxyServer implements Runnable {
 		ProxyMessage response = null;
 
 		if (proxy == null) {
-			s = new Socket();
-			s.setReuseAddress(true);
-			s.connect(new InetSocketAddress(msg.ip, msg.port));
+			//s = new Socket();
+			//s.setReuseAddress(true);
+			//s.connect(new InetSocketAddress(msg.ip, msg.port));
+			s = new Socket(msg.ip, msg.port);
 			s.setTcpNoDelay(true);
 			s.setKeepAlive(true);
 			//s.setSoLinger(true, 0);

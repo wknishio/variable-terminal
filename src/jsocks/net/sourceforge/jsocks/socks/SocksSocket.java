@@ -352,9 +352,10 @@ public class SocksSocket extends Socket{
    private void doDirect()throws SocksException{
       try{
          //System.out.println("IP:"+remoteIP+":"+remotePort);
-         directSock = new Socket();
-         directSock.setReuseAddress(true);
-         directSock.connect(new InetSocketAddress(remoteIP, remotePort));
+         //directSock = new Socket();
+         //directSock.setReuseAddress(true);
+         //directSock.connect(new InetSocketAddress(remoteIP, remotePort));
+         directSock = new Socket(remoteIP, remotePort);
          proxy.out = directSock.getOutputStream();
          proxy.in  = directSock.getInputStream();
          directSock.setTcpNoDelay(true);
