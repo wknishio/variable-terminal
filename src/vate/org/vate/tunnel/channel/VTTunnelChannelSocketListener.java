@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import org.vate.VT;
 import org.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vate.tunnel.connection.VTTunnelConnection;
 import org.vate.tunnel.session.VTTunnelSession;
@@ -97,7 +98,7 @@ public class VTTunnelChannelSocketListener implements Runnable
 					socket = serverSocket.accept();
 					socket.setTcpNoDelay(true);
 					socket.setKeepAlive(true);
-					socket.setSoTimeout(30000);
+					socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
 					//socket.setSoLinger(true, 0);
 					VTTunnelSession session = new VTTunnelSession(channel.getConnection(), socket);
 					VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, channel);
