@@ -607,8 +607,12 @@ public class VTClientConnector implements Runnable
 		return false;
 	}
 	
-	public boolean establishConnection(VTClientConnection connection, String address, int port)
+	public boolean establishConnection(VTClientConnection connection, String address, Integer port)
 	{
+		if (port == null)
+		{
+			port = 6060;
+		}
 		if (retry)
 		{
 			VTConsole.print("\nVT>Establishing connection with server...");

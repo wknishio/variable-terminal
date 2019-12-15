@@ -423,6 +423,10 @@ public class VTServerConnector implements Runnable
 	
 	public boolean establishConnection(VTServerConnection connection, String address, Integer port)
 	{
+		if (port == null)
+		{
+			port = 6060;
+		}
 		VTConsole.print("\rVT>Establishing connection with client...\nVT>");
 		portMappingManager.deletePortMapping();
 		connection.closeSockets();
@@ -430,30 +434,14 @@ public class VTServerConnector implements Runnable
 		{
 			resetSockets(connection);
 			InetSocketAddress socketAddress = null;
-			if (port != null)
+			if (proxyType.toUpperCase().startsWith("H")
+			|| proxyType.toUpperCase().startsWith("S"))
 			{
-				if (proxyType.toUpperCase().startsWith("H")
-				|| proxyType.toUpperCase().startsWith("S"))
-				{
-					socketAddress = InetSocketAddress.createUnresolved(address, port);
-				}
-				else
-				{
-					socketAddress = new InetSocketAddress(address, port);
-				}
-				
+				socketAddress = InetSocketAddress.createUnresolved(address, port);
 			}
 			else
 			{
-				if (proxyType.toUpperCase().startsWith("H")
-				|| proxyType.toUpperCase().startsWith("S"))
-				{
-					socketAddress = InetSocketAddress.createUnresolved(address, 6060);
-				}
-				else
-				{
-					socketAddress = new InetSocketAddress(address, 6060);
-				}
+				socketAddress = new InetSocketAddress(address, port);
 			}
 			// connection.getShellSocket().setPerformancePreferences(1, 3, 2);
 			connection.getConnectionSocket().connect(socketAddress);
