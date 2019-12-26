@@ -54,9 +54,9 @@ public class VTClientConfigurationDialog extends Dialog
 	private VTClientConfigurationDialogParameter proxyPassword;
 	private VTClientConfigurationDialogParameter encryptionType;
 	private VTClientConfigurationDialogParameter encryptionPassword;
+	
 	private VTClientConfigurationDialogParameter sessionCommands;
 	
-	// private VTConnectionDialogParameter sessionsLimit;
 	private Runnable application;
 	private Frame owner;
 	//private volatile boolean opened;
@@ -255,7 +255,7 @@ public class VTClientConfigurationDialog extends Dialog
 		encryptionType = new VTClientConfigurationDialogParameter("Encryption Type:", encryptionTypeChoice, true);
 		TextField encryptionPasswordField = new TextField(20);
 		encryptionPasswordField.setEchoChar('*');
-		encryptionPassword = new VTClientConfigurationDialogParameter("Encryption Password:", encryptionPasswordField, false);
+		encryptionPassword = new VTClientConfigurationDialogParameter("Encryption Password:", encryptionPasswordField, true);
 		TextField sessionCommandField = new TextField(20);
 		sessionCommands = new VTClientConfigurationDialogParameter("Session Commands:", sessionCommandField, true);
 		
@@ -1055,22 +1055,22 @@ public class VTClientConfigurationDialog extends Dialog
 		if (encryption == null)
 		{
 			encryptionType.setParameter("None");
-			encryptionPassword.setEnabled(false);
+			//encryptionPassword.setEnabled(false);
 		}
 		else if (encryption.toUpperCase().startsWith("R"))
 		{
 			encryptionType.setParameter("RC4");
-			encryptionPassword.setEnabled(true);
+			//encryptionPassword.setEnabled(true);
 		}
 		else if (encryption.toUpperCase().startsWith("A"))
 		{
 			encryptionType.setParameter("AES");
-			encryptionPassword.setEnabled(true);
+			//encryptionPassword.setEnabled(true);
 		}
 		else
 		{
 			encryptionType.setParameter("None");
-			encryptionPassword.setEnabled(false);
+			//encryptionPassword.setEnabled(false);
 		}
 	}
 	

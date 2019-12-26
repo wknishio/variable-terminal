@@ -55,6 +55,7 @@ public class VTServerSettingsDialog extends Dialog
 	private VTServerSettingsDialogParameter encryptionPassword;
 	
 	private VTServerSettingsDialogParameter sessionsLimit;
+	
 	private Runnable application;
 	private Frame owner;
 	//private volatile boolean opened;
@@ -255,7 +256,7 @@ public class VTServerSettingsDialog extends Dialog
 		encryptionType = new VTServerSettingsDialogParameter("Encryption Type:", encryptionTypeChoice, true);
 		TextField encryptionPasswordField = new TextField(20);
 		encryptionPasswordField.setEchoChar('*');
-		encryptionPassword = new VTServerSettingsDialogParameter("Encryption Password:", encryptionPasswordField, false);
+		encryptionPassword = new VTServerSettingsDialogParameter("Encryption Password:", encryptionPasswordField, true);
 		
 		
 		//try
@@ -977,22 +978,22 @@ public class VTServerSettingsDialog extends Dialog
 		if (encryption == null)
 		{
 			encryptionType.setParameter("None");
-			encryptionPassword.setEnabled(false);
+			//encryptionPassword.setEnabled(false);
 		}
 		else if (encryption.toUpperCase().startsWith("R"))
 		{
 			encryptionType.setParameter("RC4");
-			encryptionPassword.setEnabled(true);
+			//encryptionPassword.setEnabled(true);
 		}
 		else if (encryption.toUpperCase().startsWith("A"))
 		{
 			encryptionType.setParameter("AES");
-			encryptionPassword.setEnabled(true);
+			//encryptionPassword.setEnabled(true);
 		}
 		else
 		{
 			encryptionType.setParameter("None");
-			encryptionPassword.setEnabled(false);
+			//encryptionPassword.setEnabled(false);
 		}
 	}
 	
