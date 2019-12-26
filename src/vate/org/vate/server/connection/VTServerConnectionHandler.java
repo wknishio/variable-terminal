@@ -42,7 +42,7 @@ public class VTServerConnectionHandler implements Runnable
 			sessionHandler.getAuthenticator().startTimeoutThread();
 			connection.setNonceStreams();
 			connection.exchangeNonces(false);
-			connection.setAuthenticationStreams();
+			connection.setVerificationStreams();
 			VTConsole.print("\rVT>Verifying connection with client...\nVT>");
 			if (connection.verifyConnection())
 			{

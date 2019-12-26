@@ -49,6 +49,7 @@ public class VTServerSessionHandler implements Runnable
 		VTConsole.print("\rVT>Authenticating session with client...\nVT>");
 		try
 		{
+			connection.setAuthenticationStreams();
 			if (authenticator.tryAuthentication())
 			{
 				connection.setConnectionStreams(authenticator.getDigestedLogin(), authenticator.getDigestedPassword(), authenticator.getLogin(), authenticator.getPassword());

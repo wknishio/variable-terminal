@@ -38,7 +38,7 @@ public class VTClientConnectionHandler implements Runnable
 			sessionHandler.getAuthenticator().startTimeoutThread();
 			connection.setNonceStreams();
 			connection.exchangeNonces(false);
-			connection.setAuthenticationStreams();
+			connection.setVerificationStreams();
 			VTConsole.print("\nVT>Verifying connection with server...");
 			if (connection.verifyConnection())
 			{

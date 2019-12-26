@@ -43,15 +43,23 @@ import org.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLin
 
 public class VTServerConnection
 {
-	private static byte[] VT_SERVER_CHECK_STRING = new byte[16];
-	private static byte[] VT_CLIENT_CHECK_STRING = new byte[16];
+	private static byte[] VT_SERVER_CHECK_STRING_NONE = new byte[16];
+	private static byte[] VT_CLIENT_CHECK_STRING_NONE = new byte[16];
+	private static byte[] VT_SERVER_CHECK_STRING_RC4 = new byte[16];
+	private static byte[] VT_CLIENT_CHECK_STRING_RC4 = new byte[16];
+	private static byte[] VT_SERVER_CHECK_STRING_AES = new byte[16];
+	private static byte[] VT_CLIENT_CHECK_STRING_AES = new byte[16];
 	
 	static
 	{
 		try
 		{
-			VT_SERVER_CHECK_STRING = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION).getBytes("UTF-8");
-			VT_CLIENT_CHECK_STRING = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION).getBytes("UTF-8");
+			VT_SERVER_CHECK_STRING_NONE = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/NONE").getBytes("UTF-8");
+			VT_CLIENT_CHECK_STRING_NONE = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/NONE").getBytes("UTF-8");
+			VT_SERVER_CHECK_STRING_RC4 = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/RC4").getBytes("UTF-8");
+			VT_CLIENT_CHECK_STRING_RC4 = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/RC4").getBytes("UTF-8");
+			VT_SERVER_CHECK_STRING_AES = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/AES").getBytes("UTF-8");
+			VT_CLIENT_CHECK_STRING_AES = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/AES").getBytes("UTF-8");
 		}
 		catch (UnsupportedEncodingException e)
 		{
@@ -63,7 +71,6 @@ public class VTServerConnection
 	private byte[] encryptionKey;
 	private byte[] digestedClient;
 	private byte[] digestedServer;
-	// private byte[] digestedRemote = new byte[32];
 	private byte[] localNonce = new byte[512];
 	private byte[] remoteNonce = new byte[512];
 	private byte[] randomData = new byte[512];
@@ -117,7 +124,8 @@ public class VTServerConnection
 	private VTLinkableDynamicMultiplexedOutputStream tunnelControlOutputStream;
 	private VTLinkableDynamicMultiplexedOutputStream socksControlOutputStream;
 
-	
+	private VTLittleEndianInputStream verificationReader;
+	private VTLittleEndianOutputStream verificationWriter;
 	private VTLittleEndianInputStream authenticationReader;
 	private VTLittleEndianOutputStream authenticationWriter;
 	private BufferedReader commandReader;
@@ -549,6 +557,12 @@ public class VTServerConnection
 		}
 	}
 	
+	public void setVerificationStreams()
+	{
+		verificationReader = new VTLittleEndianInputStream(connectionSocketInputStream);
+		verificationWriter = new VTLittleEndianOutputStream(connectionSocketOutputStream);
+	}
+	
 	public void setAuthenticationStreams() throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
 	{
 		if (encryptionType == VT.VT_CONNECTION_ENCRYPT_RC4)
@@ -783,21 +797,155 @@ public class VTServerConnection
 	public boolean verifyConnection() throws IOException, NoSuchAlgorithmException
 	{
 		exchangeNonces(true);
-		sha256Digester.reset();
-		sha256Digester.update(remoteNonce);
-		sha256Digester.update(localNonce);
-		digestedServer = sha256Digester.digest(VT_SERVER_CHECK_STRING);
-		sha256Digester.update(localNonce);
-		sha256Digester.update(remoteNonce);
-		digestedClient = sha256Digester.digest(VT_CLIENT_CHECK_STRING);
-		authenticationWriter.write(digestedServer);
-		authenticationWriter.flush();
-		authenticationReader.readFully(digestedServer);
-		if (!VTArrayComparator.arrayEquals(digestedServer, digestedClient))
+		byte[] VT_CLIENT_STRING = VT_CLIENT_CHECK_STRING_NONE;
+		byte[] VT_SERVER_STRING = VT_SERVER_CHECK_STRING_NONE;
+		if (encryptionType == VT.VT_CONNECTION_ENCRYPT_NONE)
 		{
-			return false;
+			VT_SERVER_STRING = VT_SERVER_CHECK_STRING_NONE;
+			sha256Digester.reset();
+			sha256Digester.update(remoteNonce);
+			sha256Digester.update(localNonce);
+			digestedServer = sha256Digester.digest(VT_SERVER_STRING);
+			verificationWriter.write(digestedServer);
+			verificationWriter.flush();
+			verificationReader.readFully(digestedServer);
+			
+			//check for client string none
+			VT_CLIENT_STRING = VT_CLIENT_CHECK_STRING_NONE;
+			sha256Digester.reset();
+			sha256Digester.update(localNonce);
+			sha256Digester.update(remoteNonce);
+			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
+			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
+			{
+				setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
+				return true;
+			}
+			
+			//check for client string rc4
+			VT_CLIENT_STRING = VT_CLIENT_CHECK_STRING_RC4;
+			sha256Digester.reset();
+			sha256Digester.update(localNonce);
+			sha256Digester.update(remoteNonce);
+			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
+			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
+			{
+				setEncryptionType(VT.VT_CONNECTION_ENCRYPT_RC4);
+				return true;
+			}
+			
+			//check for client string aes
+			VT_CLIENT_STRING = VT_CLIENT_CHECK_STRING_AES;
+			sha256Digester.reset();
+			sha256Digester.update(localNonce);
+			sha256Digester.update(remoteNonce);
+			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
+			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
+			{
+				setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
+				return true;
+			}
 		}
-		return true;
+		else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_RC4)
+		{
+			VT_SERVER_STRING = VT_SERVER_CHECK_STRING_RC4;
+			sha256Digester.reset();
+			sha256Digester.update(remoteNonce);
+			sha256Digester.update(localNonce);
+			digestedServer = sha256Digester.digest(VT_SERVER_STRING);
+			verificationWriter.write(digestedServer);
+			verificationWriter.flush();
+			verificationReader.readFully(digestedServer);
+			
+			//check for client string none
+			VT_CLIENT_STRING = VT_CLIENT_CHECK_STRING_NONE;
+			sha256Digester.reset();
+			sha256Digester.update(localNonce);
+			sha256Digester.update(remoteNonce);
+			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
+			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
+			{
+				//setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
+				return true;
+			}
+			
+			//check for client string rc4
+			VT_CLIENT_STRING = VT_CLIENT_CHECK_STRING_RC4;
+			sha256Digester.reset();
+			sha256Digester.update(localNonce);
+			sha256Digester.update(remoteNonce);
+			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
+			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
+			{
+				//setEncryptionType(VT.VT_CONNECTION_ENCRYPT_RC4);
+				return true;
+			}
+			
+			//check for client string aes
+			VT_CLIENT_STRING = VT_CLIENT_CHECK_STRING_AES;
+			sha256Digester.reset();
+			sha256Digester.update(localNonce);
+			sha256Digester.update(remoteNonce);
+			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
+			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
+			{
+				setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
+				return true;
+			}
+		}
+		else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
+		{
+			VT_SERVER_STRING = VT_SERVER_CHECK_STRING_AES;
+			sha256Digester.reset();
+			sha256Digester.update(remoteNonce);
+			sha256Digester.update(localNonce);
+			digestedServer = sha256Digester.digest(VT_SERVER_STRING);
+			verificationWriter.write(digestedServer);
+			verificationWriter.flush();
+			verificationReader.readFully(digestedServer);
+			
+			//check for client string none
+			VT_CLIENT_STRING = VT_CLIENT_CHECK_STRING_NONE;
+			sha256Digester.reset();
+			sha256Digester.update(localNonce);
+			sha256Digester.update(remoteNonce);
+			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
+			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
+			{
+				//setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
+				return true;
+			}
+			
+			//check for client string rc4
+			VT_CLIENT_STRING = VT_CLIENT_CHECK_STRING_RC4;
+			sha256Digester.reset();
+			sha256Digester.update(localNonce);
+			sha256Digester.update(remoteNonce);
+			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
+			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
+			{
+				setEncryptionType(VT.VT_CONNECTION_ENCRYPT_RC4);
+				return true;
+			}
+			
+			//check for client string aes
+			VT_CLIENT_STRING = VT_CLIENT_CHECK_STRING_AES;
+			sha256Digester.reset();
+			sha256Digester.update(localNonce);
+			sha256Digester.update(remoteNonce);
+			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
+			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
+			{
+				//setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
+				return true;
+			}
+		}
+//		if (!VTArrayComparator.arrayEquals(digestedServer, digestedClient))
+//		{
+//			return false;
+//		}
+//		return true;
+		return false;
 	}
 	
 	public void startConnection() throws IOException
