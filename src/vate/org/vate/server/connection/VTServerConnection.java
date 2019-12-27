@@ -805,6 +805,10 @@ public class VTServerConnection
 			sha256Digester.reset();
 			sha256Digester.update(remoteNonce);
 			sha256Digester.update(localNonce);
+			if (encryptionKey != null)
+			{
+				sha256Digester.update(encryptionKey);
+			}
 			digestedServer = sha256Digester.digest(VT_SERVER_STRING);
 			verificationWriter.write(digestedServer);
 			verificationWriter.flush();
@@ -815,6 +819,10 @@ public class VTServerConnection
 			sha256Digester.reset();
 			sha256Digester.update(localNonce);
 			sha256Digester.update(remoteNonce);
+			if (encryptionKey != null)
+			{
+				sha256Digester.update(encryptionKey);
+			}
 			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
 			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
 			{
@@ -827,6 +835,10 @@ public class VTServerConnection
 			sha256Digester.reset();
 			sha256Digester.update(localNonce);
 			sha256Digester.update(remoteNonce);
+			if (encryptionKey != null)
+			{
+				sha256Digester.update(encryptionKey);
+			}
 			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
 			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
 			{
@@ -839,6 +851,10 @@ public class VTServerConnection
 			sha256Digester.reset();
 			sha256Digester.update(localNonce);
 			sha256Digester.update(remoteNonce);
+			if (encryptionKey != null)
+			{
+				sha256Digester.update(encryptionKey);
+			}
 			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
 			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
 			{
@@ -852,6 +868,10 @@ public class VTServerConnection
 			sha256Digester.reset();
 			sha256Digester.update(remoteNonce);
 			sha256Digester.update(localNonce);
+			if (encryptionKey != null)
+			{
+				sha256Digester.update(encryptionKey);
+			}
 			digestedServer = sha256Digester.digest(VT_SERVER_STRING);
 			verificationWriter.write(digestedServer);
 			verificationWriter.flush();
@@ -862,6 +882,10 @@ public class VTServerConnection
 			sha256Digester.reset();
 			sha256Digester.update(localNonce);
 			sha256Digester.update(remoteNonce);
+			if (encryptionKey != null)
+			{
+				sha256Digester.update(encryptionKey);
+			}
 			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
 			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
 			{
@@ -874,6 +898,10 @@ public class VTServerConnection
 			sha256Digester.reset();
 			sha256Digester.update(localNonce);
 			sha256Digester.update(remoteNonce);
+			if (encryptionKey != null)
+			{
+				sha256Digester.update(encryptionKey);
+			}
 			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
 			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
 			{
@@ -886,6 +914,10 @@ public class VTServerConnection
 			sha256Digester.reset();
 			sha256Digester.update(localNonce);
 			sha256Digester.update(remoteNonce);
+			if (encryptionKey != null)
+			{
+				sha256Digester.update(encryptionKey);
+			}
 			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
 			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
 			{
@@ -899,6 +931,10 @@ public class VTServerConnection
 			sha256Digester.reset();
 			sha256Digester.update(remoteNonce);
 			sha256Digester.update(localNonce);
+			if (encryptionKey != null)
+			{
+				sha256Digester.update(encryptionKey);
+			}
 			digestedServer = sha256Digester.digest(VT_SERVER_STRING);
 			verificationWriter.write(digestedServer);
 			verificationWriter.flush();
@@ -909,6 +945,10 @@ public class VTServerConnection
 			sha256Digester.reset();
 			sha256Digester.update(localNonce);
 			sha256Digester.update(remoteNonce);
+			if (encryptionKey != null)
+			{
+				sha256Digester.update(encryptionKey);
+			}
 			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
 			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
 			{
@@ -921,6 +961,10 @@ public class VTServerConnection
 			sha256Digester.reset();
 			sha256Digester.update(localNonce);
 			sha256Digester.update(remoteNonce);
+			if (encryptionKey != null)
+			{
+				sha256Digester.update(encryptionKey);
+			}
 			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
 			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
 			{
@@ -933,6 +977,10 @@ public class VTServerConnection
 			sha256Digester.reset();
 			sha256Digester.update(localNonce);
 			sha256Digester.update(remoteNonce);
+			if (encryptionKey != null)
+			{
+				sha256Digester.update(encryptionKey);
+			}
 			digestedClient = sha256Digester.digest(VT_CLIENT_STRING);
 			if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
 			{
