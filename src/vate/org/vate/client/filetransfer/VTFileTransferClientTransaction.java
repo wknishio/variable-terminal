@@ -520,6 +520,21 @@ public class VTFileTransferClientTransaction implements Runnable
 		return false;
 	}
 	
+	private boolean writeNextFileChunkSize(int size)
+	{
+		try
+		{
+			session.getClient().getConnection().getFileTransferControlDataOutputStream().writeInt(size);
+			session.getClient().getConnection().getFileTransferControlDataOutputStream().flush();
+			return true;
+		}
+		catch (Throwable e)
+		{
+				
+		}
+		return false;
+	}
+	
 	private boolean readRemoteFileStatus()
 	{
 		try
@@ -612,6 +627,19 @@ public class VTFileTransferClientTransaction implements Runnable
 			
 		}
 		return null;
+	}
+	
+	private int readNextFileChunkSize()
+	{
+		try
+		{
+			return session.getClient().getConnection().getFileTransferControlDataInputStream().readInt();
+		}
+		catch (Throwable e)
+		{
+			
+		}
+		return -1;
 	}
 	
 	private boolean tryUpload(String currentPath)
@@ -922,22 +950,25 @@ public class VTFileTransferClientTransaction implements Runnable
 	private boolean uploadFileData()
 	{
 		boolean ok = true;
-		//currentTransferSize = localFileSize - currentOffset;
 		try
 		{
-			while (!stopped && currentOffset < localFileSize)
+			while (!stopped && ok && currentOffset < localFileSize)
 			{
 				readedBytes = fileTransferFileInputStream.read(fileTransferBuffer, 0, (int) Math.min(fileTransferBufferSize, localFileSize - currentOffset));
-				if (readedBytes == -1)
+				if (readedBytes <= 0)
 				{
-					ok = false;
-					fileTransferRemoteOutputStream.close();
+					localFileSize = currentOffset;
+					ok = writeNextFileChunkSize(0);
 					break;
 				}
 				else
 				{
-					fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, readedBytes);
-					fileTransferRemoteOutputStream.flush();
+					ok = writeNextFileChunkSize(readedBytes);
+					if (ok)
+					{
+						fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, readedBytes);
+						fileTransferRemoteOutputStream.flush();
+					}
 				}
 				currentOffset += readedBytes;
 				transferDataCount += readedBytes;
@@ -1334,27 +1365,40 @@ public class VTFileTransferClientTransaction implements Runnable
 	{
 		boolean ok = true;
 		writtenBytes = 0;
-		//currentTransferSize = remoteFileSize - currentOffset;
 		try
 		{
-			while (!stopped && currentOffset < remoteFileSize)
+			while (!stopped && ok && currentOffset < remoteFileSize)
 			{
-				readedBytes = fileTransferRemoteInputStream.read(fileTransferBuffer, 0, (int) Math.min(fileTransferBufferSize, remoteFileSize - currentOffset));
-				if (readedBytes == -1)
+				writtenBytes = readNextFileChunkSize();
+				if (writtenBytes == 0)
+				{
+					remoteFileSize = currentOffset;
+				}
+				else if (writtenBytes == -1)
 				{
 					ok = false;
-					fileTransferRemoteInputStream.close();
 					break;
 				}
-				fileTransferFileOutputStream.write(fileTransferBuffer, 0, readedBytes);
-				writtenBytes += readedBytes;
-				if (writtenBytes >= fileTransferBufferSize)
+				else
 				{
+					while (!stopped && ok && writtenBytes > 0)
+					{
+						readedBytes = fileTransferRemoteInputStream.read(fileTransferBuffer, 0, writtenBytes);
+						if (readedBytes >= 0)
+						{
+							fileTransferFileOutputStream.write(fileTransferBuffer, 0, readedBytes);
+							writtenBytes -= readedBytes;
+							currentOffset += readedBytes;
+							transferDataCount += readedBytes;
+						}
+						else
+						{
+							ok = false;
+							break;
+						}
+					}
 					fileTransferFileOutputStream.flush();
-					writtenBytes = 0;
 				}
-				currentOffset += readedBytes;
-				transferDataCount += readedBytes;
 			}
 			fileTransferFileOutputStream.flush();
 		}
