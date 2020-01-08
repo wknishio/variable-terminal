@@ -38,7 +38,7 @@ public class VTServerRuntimeExecutor extends VTTask
 	private static int PROCESS_COMMAND_INPUT = 6; //I 
 	private static int PROCESS_COMMAND_LINE = 7; //N
 	private static int PROCESS_COMMAND_PATH = 8; //P
-	private static int PROCESS_COMMAND_BASE64 = 9; //P
+	private static int PROCESS_COMMAND_BASE64 = 9; //B
 	private static int PROCESS_COMMAND_UTF8 = 10; //U
 	
 	private static int PROCESS_SCOPE_NOT_FOUND = -1; //?

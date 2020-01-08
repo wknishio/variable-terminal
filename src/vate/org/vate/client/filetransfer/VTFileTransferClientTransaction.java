@@ -21,7 +21,7 @@ import net.jpountz.xxhash.XXHashFactory;
 
 public class VTFileTransferClientTransaction implements Runnable
 {
-	private static final int fileTransferBufferSize = 1024 * 64;
+	private static final int fileTransferBufferSize = 1024 * 32;
 	private volatile boolean stopped;
 	private volatile boolean finished;
 	private volatile boolean interrupted;
