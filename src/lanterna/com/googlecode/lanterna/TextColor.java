@@ -84,7 +84,26 @@ public interface TextColor {
         MAGENTA((byte)5, 170, 0, 170),
         CYAN((byte)6, 0, 170, 170),
         WHITE((byte)7, 170, 170, 170),
-        DEFAULT((byte)9, 0, 0, 0);
+        DEFAULT((byte)9, 0, 0, 0),
+   
+    	NORMALBLACK((byte)0, 0, 0, 0),
+    	NORMALRED((byte)1, 170, 0, 0),
+    	NORMALGREEN((byte)2, 0, 170, 0),
+    	NORMALYELLOW((byte)3, 170, 85, 0),
+    	NORMALBLUE((byte)4, 0, 0, 170),
+    	NORMALMAGENTA((byte)5, 170, 0, 170),
+    	NORMALCYAN((byte)6, 0, 170, 170),
+    	NORMALWHITE((byte)7, 170, 170, 170),
+    	
+    	BRIGHTBLACK((byte)0, 0, 0, 0),
+    	BRIGHTRED((byte)1, 170, 0, 0),
+    	BRIGHTGREEN((byte)2, 0, 170, 0),
+    	BRIGHTYELLOW((byte)3, 170, 85, 0),
+    	BRIGHTBLUE((byte)4, 0, 0, 170),
+    	BRIGHTMAGENTA((byte)5, 170, 0, 170),
+    	BRIGHTCYAN((byte)6, 0, 170, 170),
+    	BRIGHTWHITE((byte)7, 170, 170, 170);
+
 
         private final byte index;
         private final int red;

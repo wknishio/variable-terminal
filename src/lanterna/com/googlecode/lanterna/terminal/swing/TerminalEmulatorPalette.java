@@ -302,6 +302,38 @@ public class TerminalEmulatorPalette {
                     return brightWhite;
                 case YELLOW:
                     return brightYellow;
+                case NORMALBLACK:
+                    return normalBlack;
+                case NORMALBLUE:
+                    return normalBlue;
+                case NORMALCYAN:
+                    return normalCyan;
+                case NORMALGREEN:
+                    return normalGreen;
+                case NORMALMAGENTA:
+                    return normalMagenta;
+                case NORMALRED:
+                    return normalRed;
+                case NORMALWHITE:
+                    return normalWhite;
+                case NORMALYELLOW:
+                    return normalYellow;
+                case BRIGHTBLACK:
+                    return brightBlack;
+                case BRIGHTBLUE:
+                    return brightBlue;
+                case BRIGHTCYAN:
+                    return brightCyan;
+                case BRIGHTGREEN:
+                    return brightGreen;
+                case BRIGHTMAGENTA:
+                    return brightMagenta;
+                case BRIGHTRED:
+                    return brightRed;
+                case BRIGHTWHITE:
+                    return brightWhite;
+                case BRIGHTYELLOW:
+                    return brightYellow;
             }
         }
         else {
@@ -324,6 +356,38 @@ public class TerminalEmulatorPalette {
                     return normalWhite;
                 case YELLOW:
                     return normalYellow;
+                case NORMALBLACK:
+                    return normalBlack;
+                case NORMALBLUE:
+                    return normalBlue;
+                case NORMALCYAN:
+                    return normalCyan;
+                case NORMALGREEN:
+                    return normalGreen;
+                case NORMALMAGENTA:
+                    return normalMagenta;
+                case NORMALRED:
+                    return normalRed;
+                case NORMALWHITE:
+                    return normalWhite;
+                case NORMALYELLOW:
+                    return normalYellow;
+                case BRIGHTBLACK:
+                    return brightBlack;
+                case BRIGHTBLUE:
+                    return brightBlue;
+                case BRIGHTCYAN:
+                    return brightCyan;
+                case BRIGHTGREEN:
+                    return brightGreen;
+                case BRIGHTMAGENTA:
+                    return brightMagenta;
+                case BRIGHTRED:
+                    return brightRed;
+                case BRIGHTWHITE:
+                    return brightWhite;
+                case BRIGHTYELLOW:
+                    return brightYellow;
             }
         }
         throw new IllegalArgumentException("Unknown text color " + color);

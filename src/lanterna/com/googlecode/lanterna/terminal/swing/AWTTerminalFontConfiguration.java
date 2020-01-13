@@ -97,19 +97,19 @@ public class AWTTerminalFontConfiguration {
         //return fonts;
         return (Arrays.asList(
                 new Font("DejaVu Sans Mono", Font.PLAIN, fontSize),
-                new Font("Monospaced", Font.PLAIN, fontSize)));
+                new Font("Monospaced", Font.PLAIN, fontSize),
                 //Below, these should be redundant (Monospaced is supposed to catch-all)
                 // but Java 6 seems to have issues with finding monospaced fonts sometimes
-                //new Font("Ubuntu Mono", Font.PLAIN, fontSize),
-                //new Font("FreeMono", Font.PLAIN, fontSize),
-                //new Font("Liberation Mono", Font.PLAIN, fontSize),
-                //new Font("VL Gothic Regular", Font.PLAIN, fontSize),
-                //new Font("NanumGothic", Font.PLAIN, fontSize),
-                //new Font("WenQuanYi Zen Hei Mono", Font.PLAIN, fontSize),
-                //new Font("WenQuanYi Zen Hei", Font.PLAIN, fontSize),
-                //new Font("AR PL UMing TW", Font.PLAIN, fontSize),
-                //new Font("AR PL UMing HK", Font.PLAIN, fontSize),
-                //new Font("AR PL UMing CN", Font.PLAIN, fontSize)));
+                new Font("Ubuntu Mono", Font.PLAIN, fontSize),
+                new Font("FreeMono", Font.PLAIN, fontSize),
+                new Font("Liberation Mono", Font.PLAIN, fontSize),
+                new Font("VL Gothic Regular", Font.PLAIN, fontSize),
+                new Font("NanumGothic", Font.PLAIN, fontSize),
+                new Font("WenQuanYi Zen Hei Mono", Font.PLAIN, fontSize),
+                new Font("WenQuanYi Zen Hei", Font.PLAIN, fontSize),
+                new Font("AR PL UMing TW", Font.PLAIN, fontSize),
+                new Font("AR PL UMing HK", Font.PLAIN, fontSize),
+                new Font("AR PL UMing CN", Font.PLAIN, fontSize)));
     }
 
     private static List<Font> getDefaultFonts() {
