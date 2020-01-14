@@ -39,13 +39,13 @@ public class VTServerRemoteConsoleCommandSelector <T> extends VTConsoleCommandSe
 			knownStandardCommandProcessorClasses.add(VTMESSAGE.class);
 			knownStandardCommandProcessorClasses.add(VTNETWORKS.class);
 			knownStandardCommandProcessorClasses.add(VTOPTICALDRIVE.class);
-			knownStandardCommandProcessorClasses.add(VTPRINTDATA.class);
+			knownStandardCommandProcessorClasses.add(VTDATAPRINT.class);
 			knownStandardCommandProcessorClasses.add(VTPRINTERS.class);
 			knownStandardCommandProcessorClasses.add(VTPROPERTY.class);
 			knownStandardCommandProcessorClasses.add(VTQUIT.class);
 			knownStandardCommandProcessorClasses.add(VTRATELIMIT.class);
-			knownStandardCommandProcessorClasses.add(VTRESOLVEHOST.class);
-			knownStandardCommandProcessorClasses.add(VTPRINTRUN.class);
+			knownStandardCommandProcessorClasses.add(VTHOSTRESOLVE.class);
+			knownStandardCommandProcessorClasses.add(VTRUNPRINT.class);
 			knownStandardCommandProcessorClasses.add(VTRUNTIME.class);
 			knownStandardCommandProcessorClasses.add(VTSCREENALERT.class);
 			knownStandardCommandProcessorClasses.add(VTSCREENSHOT.class);

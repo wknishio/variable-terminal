@@ -116,8 +116,8 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		serverGraphicsAlertMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTSCREENALERT\n"));
 		serverBrowseMenu.add(new VTGraphicalConsoleInputMenuItem("Browse URI", "*VTBROWSE "));
 		serverBrowseMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTBROWSE\n"));
-		serverPrintApplicationMenu.add(new VTGraphicalConsoleInputMenuItem("Print File", "*VTPRINTRUN "));
-		serverPrintApplicationMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTPRINTRUN\n"));
+		serverPrintApplicationMenu.add(new VTGraphicalConsoleInputMenuItem("Print File", "*VTRUNPRINT "));
+		serverPrintApplicationMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTRUNPRINT\n"));
 		
 		fileSystemMenu = new Menu("Files ");
 		fileTransferMenu = new Menu("File Transfer Function ");
@@ -224,7 +224,7 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		
 		serverNetworkMenu = new Menu("Networks ");
 		serverNetworkMenu.add(new VTGraphicalConsoleInputMenuItem("List Remote Network Interfaces", "*VTNETWORKS\n"));
-		serverNetworkMenu.add(new VTGraphicalConsoleInputMenuItem("Resolve Remote Network Host", "*VTRESOLVEHOST "));
+		serverNetworkMenu.add(new VTGraphicalConsoleInputMenuItem("Resolve Remote Network Host", "*VTHOSTRESOLVE "));
 		
 		//serverNetworkMenu.add(serverNetworkTunnelsMenu);
 		//serverNetworkMenu.add(serverSocksProxyTunnelsMenu);
@@ -248,9 +248,9 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		serverPrintMenu = new Menu("Printing ");
 		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("List Remote Printers", "*VTPRINTERS\n"));
 		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Detail Specific Remote Printer", "*VTPRINTERS "));
-		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Print Text In Remote Printer", "*VTPRINTDATA T "));
-		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Print File In Remote Printer", "*VTPRINTDATA F "));
-		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Commands Usage", "*VTHELP *VTPRINTERS\n*VTHELP *VTPRINTDATA\n"));
+		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Print Text In Remote Printer", "*VTDATAPRINT T "));
+		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Print File In Remote Printer", "*VTDATAPRINT F "));
+		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("Commands Usage", "*VTHELP *VTPRINTERS\n*VTHELP *VTDATAPRINT\n"));
 		
 		audioSoundMenu = new Menu("Audio ");
 		

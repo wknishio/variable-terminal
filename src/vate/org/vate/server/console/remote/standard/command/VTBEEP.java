@@ -10,8 +10,8 @@ public class VTBEEP extends VTServerStandardRemoteConsoleCommandProcessor
 	{
 		this.setFullName("*VTBEEP");
 		this.setAbbreviatedName("*VTBP");
-		this.setFullSyntax("*VTBEEP <FREQUENCY TIME>");
-		this.setAbbreviatedSyntax("*VTBP <FQ TM>");
+		this.setFullSyntax("*VTBEEP <HERTZ TIME>");
+		this.setAbbreviatedSyntax("*VTBP <HZ TM>");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

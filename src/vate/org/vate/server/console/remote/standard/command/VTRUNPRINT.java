@@ -7,14 +7,14 @@ import java.io.IOException;
 import org.vate.help.VTHelpManager;
 import org.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
-public class VTPRINTRUN extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTRUNPRINT extends VTServerStandardRemoteConsoleCommandProcessor
 {
-	public VTPRINTRUN()
+	public VTRUNPRINT()
 	{
-		this.setFullName("*VTPRINTRUN");
-		this.setAbbreviatedName("*VTPRRN");
-		this.setFullSyntax("*VTPRINTRUN <FILE>");
-		this.setAbbreviatedSyntax("*VTPRRN <FL>");
+		this.setFullName("*VTRUNPRINT");
+		this.setAbbreviatedName("*VTRNPR");
+		this.setFullSyntax("*VTRUNPRINT <FILE>");
+		this.setAbbreviatedSyntax("*VTRNPR <FL>");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

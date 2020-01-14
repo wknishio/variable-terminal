@@ -811,7 +811,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 			connection.getResultWriter().write("\nVT>Date/time ([ER-Y-MM-DD][HH:MM:SS:MS-TZ]) on server:\nVT>[" + firstDateTimeFormat.format(clock.getTime()) + "-" + clock.get(GregorianCalendar.YEAR) + "-" + secondDateTimeFormat.format(clock.getTime()) + "\nVT>");
 			connection.getResultWriter().flush();
 		}
-		else if (parsed[0].equalsIgnoreCase("*VTRESOLVEHOST") || parsed[0].equalsIgnoreCase("*VTRHT"))
+		else if (parsed[0].equalsIgnoreCase("*VTHOSTRESOLVE") || parsed[0].equalsIgnoreCase("*VTHTR"))
 		{
 			synchronized (session.getHostResolver())
 			{
@@ -1178,7 +1178,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 //				connection.getResultWriter().flush();
 //			}
 //		}
-		else if (parsed[0].equalsIgnoreCase("*VTPRINTDATA") || parsed[0].equalsIgnoreCase("*VTPRDT"))
+		else if (parsed[0].equalsIgnoreCase("*VTDATAPRINT") || parsed[0].equalsIgnoreCase("*VTDTPR"))
 		{
 			try
 			{
@@ -3115,7 +3115,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				connection.getResultWriter().flush();
 			}
 		}
-		else if (parsed[0].equalsIgnoreCase("*VTPRINTRUN") || parsed[0].equalsIgnoreCase("*VTPRRN"))
+		else if (parsed[0].equalsIgnoreCase("*VTRUNPRINT") || parsed[0].equalsIgnoreCase("*VTRNPR"))
 		{
 			if (parsed.length >= 2)
 			{

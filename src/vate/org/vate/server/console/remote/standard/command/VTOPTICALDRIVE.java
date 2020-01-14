@@ -9,8 +9,8 @@ public class VTOPTICALDRIVE extends VTServerStandardRemoteConsoleCommandProcesso
 	{
 		this.setFullName("*VTOPTICALDRIVE");
 		this.setAbbreviatedName("*VTOPDR");
-		this.setFullSyntax("*VTOPTICALDRIVE <MODE>");
-		this.setAbbreviatedSyntax("*VTOPDR <MD>");
+		this.setFullSyntax("*VTOPTICALDRIVE <STATE>");
+		this.setAbbreviatedSyntax("*VTOPDR <ST>");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception
