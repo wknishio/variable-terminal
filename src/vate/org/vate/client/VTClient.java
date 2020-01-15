@@ -14,7 +14,6 @@ import javax.imageio.ImageIO;
 import org.vate.VT;
 import org.vate.audio.VTAudioSystem;
 import org.vate.client.connection.VTClientConnector;
-import org.vate.client.console.remote.VTClientRemoteConsoleCommandSelector;
 import org.vate.client.console.remote.VTClientRemoteGraphicalConsoleInputMenuBar;
 import org.vate.client.dialog.VTClientConfigurationDialog;
 import org.vate.console.VTConsole;
@@ -72,7 +71,7 @@ public class VTClient implements Runnable
 	
 	public VTClient()
 	{
-		VTClientRemoteConsoleCommandSelector.initialize();
+		//VTClientRemoteConsoleCommandSelector.initialize();
 		this.threads = Executors.newCachedThreadPool(new ThreadFactory()
 		{
 			public Thread newThread(Runnable r)

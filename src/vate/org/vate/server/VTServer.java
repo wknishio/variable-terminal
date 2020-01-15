@@ -30,10 +30,8 @@ import org.vate.parser.VTArgumentParser;
 import org.vate.parser.VTConfigurationProperties;
 import org.vate.parser.VTPropertiesBuilder;
 import org.vate.server.connection.VTServerConnector;
-import org.vate.server.console.local.VTServerLocalConsoleCommandSelector;
 import org.vate.server.console.local.VTServerLocalConsoleReader;
 import org.vate.server.console.local.VTServerLocalGraphicalConsoleInputMenuBar;
-import org.vate.server.console.remote.VTServerRemoteConsoleCommandSelector;
 import org.vate.server.dialog.VTServerSettingsDialog;
 
 public class VTServer implements Runnable
@@ -103,8 +101,8 @@ public class VTServer implements Runnable
 	
 	public VTServer()
 	{
-		VTServerLocalConsoleCommandSelector.initialize();
-		VTServerRemoteConsoleCommandSelector.initialize();
+		//VTServerLocalConsoleCommandSelector.initialize();
+		//VTServerRemoteConsoleCommandSelector.initialize();
 		try
 		{
 			sha256Digester = MessageDigest.getInstance("SHA-256");

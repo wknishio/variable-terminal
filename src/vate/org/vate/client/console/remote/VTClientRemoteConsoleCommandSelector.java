@@ -40,6 +40,7 @@ public class VTClientRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
 		{
 			
 		}
+		installedCommandProcessorClasses.addAll(knownStandardCommandProcessorClasses);
 	}
 	
 	public static void addCustomCommandProcessorClass(String className)
@@ -70,15 +71,7 @@ public class VTClientRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
 			}
 		}
 	}
-	
-	public static void initialize()
-	{
-		if (installedCommandProcessorClasses.isEmpty())
-		{
-			installedCommandProcessorClasses.addAll(knownStandardCommandProcessorClasses);
-		}
-	}
-	
+		
 	public VTClientRemoteConsoleCommandSelector(VTClientSession session)
 	{
 		this.session = session;
