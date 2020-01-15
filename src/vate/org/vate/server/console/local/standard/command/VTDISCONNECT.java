@@ -12,9 +12,9 @@ public class VTDISCONNECT extends VTServerStandardLocalConsoleCommandProcessor
 	public VTDISCONNECT()
 	{
 		this.setFullName("*VTDISCONNECT");
-		this.setAbbreviatedName("*VTDSCT");
+		this.setAbbreviatedName("*VTDCT");
 		this.setFullSyntax("*VTDISCONNECT [CLIENT]");
-		this.setAbbreviatedSyntax("*VTDSCT [CT]");
+		this.setAbbreviatedSyntax("*VTDCT [CT]");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

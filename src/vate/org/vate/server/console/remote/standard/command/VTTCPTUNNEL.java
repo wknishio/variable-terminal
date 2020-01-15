@@ -10,9 +10,9 @@ public class VTTCPTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
 	public VTTCPTUNNEL()
 	{
 		this.setFullName("*VTTCPTUNNEL");
-		this.setAbbreviatedName("*VTTCPTN");
+		this.setAbbreviatedName("*VTTTN");
 		this.setFullSyntax("*VTTCPTUNNEL [SIDE] [[BIND] PORT] [[HOST] PORT]|");
-		this.setAbbreviatedSyntax("*VTTCPTN [SD] [[BD] PT] [[HT] PT]");
+		this.setAbbreviatedSyntax("*VTTTN [SD] [[BD] PT] [[HT] PT]");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

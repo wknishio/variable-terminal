@@ -9,9 +9,9 @@ public class VTDATAPRINT extends VTServerStandardRemoteConsoleCommandProcessor
 	public VTDATAPRINT()
 	{
 		this.setFullName("*VTDATAPRINT");
-		this.setAbbreviatedName("*VTDTPR");
+		this.setAbbreviatedName("*VTDPR");
 		this.setFullSyntax("*VTDATAPRINT [MODE] [DATA] [PRINTER]");
-		this.setAbbreviatedSyntax("*VTDTPR [MD] [DT] [PR]");
+		this.setAbbreviatedSyntax("*VTDPR [MD] [DT] [PR]");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

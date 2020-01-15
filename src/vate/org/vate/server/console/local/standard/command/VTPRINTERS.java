@@ -11,9 +11,9 @@ public class VTPRINTERS extends VTServerStandardLocalConsoleCommandProcessor
 	public VTPRINTERS()
 	{
 		this.setFullName("*VTPRINTERS");
-		this.setAbbreviatedName("*VTPRTS");
+		this.setAbbreviatedName("*VTPRS");
 		this.setFullSyntax("*VTPRINTERS");
-		this.setAbbreviatedSyntax("*VTPRTS");
+		this.setAbbreviatedSyntax("*VTPRS");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

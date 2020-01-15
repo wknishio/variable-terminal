@@ -552,7 +552,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				}
 			}
 		}
-		else if (parsed[0].equalsIgnoreCase("*VTDISCONNECT") || parsed[0].equalsIgnoreCase("*VTDSCT"))
+		else if (parsed[0].equalsIgnoreCase("*VTDISCONNECT") || parsed[0].equalsIgnoreCase("*VTDCT"))
 		{
 			VTConsole.print("\rVT>Client disconnecting...\nVT>");
 			connection.closeSockets();
@@ -908,7 +908,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 //				}
 //			}
 //		}
-		else if (parsed[0].equalsIgnoreCase("*VTOPTICALDRIVE") || parsed[0].equalsIgnoreCase("*VTOPDR"))
+		else if (parsed[0].equalsIgnoreCase("*VTOPTICALDRIVE") || parsed[0].equalsIgnoreCase("*VTOPD"))
 		{
 			synchronized (session.getOpticalDriveOperation())
 			{
@@ -1001,7 +1001,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 //			session.setRestartingShell(true);
 //			session.restartShell();
 //		}
-		else if (parsed[0].equalsIgnoreCase("*VTPRINTERS") || parsed[0].equalsIgnoreCase("*VTPRTS"))
+		else if (parsed[0].equalsIgnoreCase("*VTPRINTERS") || parsed[0].equalsIgnoreCase("*VTPRS"))
 		{
 			synchronized (session.getPrintServiceResolver())
 			{
@@ -1178,7 +1178,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 //				connection.getResultWriter().flush();
 //			}
 //		}
-		else if (parsed[0].equalsIgnoreCase("*VTDATAPRINT") || parsed[0].equalsIgnoreCase("*VTDTPR"))
+		else if (parsed[0].equalsIgnoreCase("*VTDATAPRINT") || parsed[0].equalsIgnoreCase("*VTDPR"))
 		{
 			try
 			{
@@ -2586,7 +2586,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 //				connection.getResultWriter().flush();
 //			}
 //		}
-		else if (parsed[0].equalsIgnoreCase("*VTTCPTUNNEL") || parsed[0].equalsIgnoreCase("*VTTCPTN"))
+		else if (parsed[0].equalsIgnoreCase("*VTTCPTUNNEL") || parsed[0].equalsIgnoreCase("*VTTTN"))
 		{
 			if (parsed.length == 1)
 			{
@@ -2799,7 +2799,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				
 			}
 		}
-		else if (parsed[0].equalsIgnoreCase("*VTSOCKSTUNNEL") || parsed[0].equalsIgnoreCase("*VTSCKTN"))
+		else if (parsed[0].equalsIgnoreCase("*VTSOCKSTUNNEL") || parsed[0].equalsIgnoreCase("*VTSTN"))
 		{
 			if (parsed.length == 1)
 			{
@@ -2992,7 +2992,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				}
 			}
 		}
-		else if (parsed[0].equalsIgnoreCase("*VTSCREENALERT") || parsed[0].equalsIgnoreCase("*VTSA"))
+		else if (parsed[0].equalsIgnoreCase("*VTSCREENALERT") || parsed[0].equalsIgnoreCase("*VTSCA"))
 		{
 			if (!GraphicsEnvironment.isHeadless())
 			{
@@ -3068,7 +3068,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				connection.getResultWriter().flush();
 			}
 		}
-		else if (parsed[0].equalsIgnoreCase("*VTBROWSE") || parsed[0].equalsIgnoreCase("*VTBRWS"))
+		else if (parsed[0].equalsIgnoreCase("*VTBROWSE") || parsed[0].equalsIgnoreCase("*VTBRW"))
 		{
 			if (parsed.length >= 2)
 			{
@@ -3115,7 +3115,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				connection.getResultWriter().flush();
 			}
 		}
-		else if (parsed[0].equalsIgnoreCase("*VTRUNPRINT") || parsed[0].equalsIgnoreCase("*VTRNPR"))
+		else if (parsed[0].equalsIgnoreCase("*VTRUNPRINT") || parsed[0].equalsIgnoreCase("*VTRPR"))
 		{
 			if (parsed.length >= 2)
 			{

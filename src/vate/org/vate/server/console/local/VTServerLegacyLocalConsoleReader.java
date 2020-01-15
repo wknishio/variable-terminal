@@ -593,7 +593,7 @@ public class VTServerLegacyLocalConsoleReader extends VTTask
 				message.append("\nVT>\nVT>End of file system roots list\nVT>");
 				VTConsole.print(message.toString());
 			}
-			else if (parsed[0].equalsIgnoreCase("*VTPRINTERS") || parsed[0].equalsIgnoreCase("*VTPRTS"))
+			else if (parsed[0].equalsIgnoreCase("*VTPRINTERS") || parsed[0].equalsIgnoreCase("*VTPRS"))
 			{
 				message.setLength(0);
 				PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
@@ -716,7 +716,7 @@ public class VTServerLegacyLocalConsoleReader extends VTTask
 					VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
 				}
 			}
-			else if (parsed[0].equalsIgnoreCase("*VTDISCONNECT") || parsed[0].equalsIgnoreCase("*VTDSCT"))
+			else if (parsed[0].equalsIgnoreCase("*VTDISCONNECT") || parsed[0].equalsIgnoreCase("*VTDCT"))
 			{
 				if (parsed.length == 1)
 				{

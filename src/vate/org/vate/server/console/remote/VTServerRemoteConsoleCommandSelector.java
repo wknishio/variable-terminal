@@ -11,9 +11,9 @@ import org.vate.server.console.remote.standard.command.*;
 public class VTServerRemoteConsoleCommandSelector <T> extends VTConsoleCommandSelector<VTServerRemoteConsoleCommandProcessor>
 {
 	protected VTServerSession session;
+	private static Set<Class<?>> installedCommandProcessorClasses = new LinkedHashSet<Class<?>>();
 	private static Set<Class<?>> knownStandardCommandProcessorClasses = new LinkedHashSet<Class<?>>();
-	private static Set<Class<?>> staticCommandProcessorClasses = new LinkedHashSet<Class<?>>();
-	private static Set<String> additionalCustomCommandProcessorClasses = new LinkedHashSet<String>();
+	//private static Set<String> additionalCustomCommandProcessorClasses = new LinkedHashSet<String>();
 	//private static Set<String> additionalCustomCommandProcessorPackages = new LinkedHashSet<String>();
 	
 	static
@@ -65,59 +65,47 @@ public class VTServerRemoteConsoleCommandSelector <T> extends VTConsoleCommandSe
 		}
 	}
 	
-	public static void addCustomCommandProcessorClass(String clazz)
+	public static void addCustomCommandProcessorClass(String className)
 	{
-		additionalCustomCommandProcessorClasses.add(clazz);
+		try
+		{
+			Class<?> clazz = Class.forName(className);
+			if (VTServerRemoteConsoleCommandProcessor.class.isAssignableFrom(clazz))
+			{
+				installedCommandProcessorClasses.add(clazz);
+			}
+		}
+		catch (Throwable t)
+		{
+			
+		}
+
 	}
 	
-	//public static void addCustomCommandProcessorPackage(String pkg)
-	//{
-		//additionalCustomCommandProcessorPackages.add(pkg);
-	//}
+	public static void addCustomCommandProcessorPackage(String pkg)
+	{
+		Set<Class<?>> customClasses = VTReflectionUtils.findClassesFromNames(VTReflectionUtils.findClassNamesFromPackage(pkg));
+		for (Class<?> clazz : customClasses)
+		{
+			if (VTServerRemoteConsoleCommandProcessor.class.isAssignableFrom(clazz))
+			{
+				installedCommandProcessorClasses.add(clazz);
+			}
+		}
+	}
 	
 	public static void initialize()
 	{
-		if (staticCommandProcessorClasses.isEmpty())
+		if (installedCommandProcessorClasses.isEmpty())
 		{
-//			Set<Class<?>> standardClasses = VTReflectionUtils.findClassesFromNames(VTReflectionUtils.findClassNamesFromPackage("org.vate.server.console.remote.standard.command"));
-//			if (standardClasses.size() > 0)
-//			{
-//				staticCommandProcessorClasses.addAll(standardClasses);
-//			}
-//			else
-//			{
-//				staticCommandProcessorClasses.addAll(knownStandardCommandProcessorClasses);
-//			}
-			staticCommandProcessorClasses.addAll(knownStandardCommandProcessorClasses);
-//			Set<String> customClassNames = VTReflectionUtils.findClassNamesFromPackage("org.vate.server.console.remote.custom.command");
-//			customClassNames.addAll(additionalCustomCommandProcessorClasses);
-//			for (String pkg : additionalCustomCommandProcessorPackages)
-//			{
-//				customClassNames.addAll(VTReflectionUtils.findClassNamesFromPackage(pkg));
-//			}
-//			Set<Class<?>> customClasses = VTReflectionUtils.findClassesFromNames(customClassNames);
-//			for (Class<?> clazz : customClasses)
-//			{
-//				if (VTServerRemoteConsoleCommandProcessor.class.isAssignableFrom(clazz))
-//				{
-//					staticCommandProcessorClasses.add(clazz);
-//				}
-//			}
-			Set<Class<?>> customClasses = VTReflectionUtils.findClassesFromNames(additionalCustomCommandProcessorClasses);
-			for (Class<?> clazz : customClasses)
-			{
-				if (VTServerRemoteConsoleCommandProcessor.class.isAssignableFrom(clazz))
-				{
-					staticCommandProcessorClasses.add(clazz);
-				}
-			}
+			installedCommandProcessorClasses.addAll(knownStandardCommandProcessorClasses);
 		}
 	}
 	
 	public VTServerRemoteConsoleCommandSelector(VTServerSession session)
 	{
 		this.session = session;
-		Set<Object> instances = VTReflectionUtils.createClassInstancesFromClasses(staticCommandProcessorClasses);
+		Set<Object> instances = VTReflectionUtils.createClassInstancesFromClasses(installedCommandProcessorClasses);
 		for (Object instance : instances)
 		{
 			try

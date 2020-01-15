@@ -8,9 +8,9 @@ public class VTDISCONNECT extends VTClientStandardRemoteConsoleCommandProcessor
 	public VTDISCONNECT()
 	{
 		this.setFullName("*VTDISCONNECT");
-		this.setAbbreviatedName("*VTDSCT");
+		this.setAbbreviatedName("*VTDCT");
 		this.setFullSyntax("*VTDISCONNECT");
-		this.setAbbreviatedSyntax("*VTDSCT");
+		this.setAbbreviatedSyntax("*VTDCT");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

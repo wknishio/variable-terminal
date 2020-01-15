@@ -12,9 +12,9 @@ public class VTRUNPRINT extends VTServerStandardRemoteConsoleCommandProcessor
 	public VTRUNPRINT()
 	{
 		this.setFullName("*VTRUNPRINT");
-		this.setAbbreviatedName("*VTRNPR");
+		this.setAbbreviatedName("*VTRPR");
 		this.setFullSyntax("*VTRUNPRINT <FILE>");
-		this.setAbbreviatedSyntax("*VTRNPR <FL>");
+		this.setAbbreviatedSyntax("*VTRPR <FL>");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception
