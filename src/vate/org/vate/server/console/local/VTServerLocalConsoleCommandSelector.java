@@ -60,7 +60,6 @@ public class VTServerLocalConsoleCommandSelector <T> extends VTConsoleCommandSel
 		{
 			
 		}
-
 	}
 	
 	public static void addCustomCommandProcessorPackage(String pkg)

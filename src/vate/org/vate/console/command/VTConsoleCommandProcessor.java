@@ -2,10 +2,10 @@ package org.vate.console.command;
 
 public abstract class VTConsoleCommandProcessor
 {
-	private String fullName;
-	private String abbreviatedName;
-	private String fullSyntax;
-	private String abbreviatedSyntax;
+	private String fullName = "";
+	private String abbreviatedName = "";
+	private String fullSyntax = "";
+	private String abbreviatedSyntax = "";
 	
 	public VTConsoleCommandProcessor()
 	{
@@ -112,4 +112,6 @@ public abstract class VTConsoleCommandProcessor
 	public abstract void close();
 	
 	public abstract String help(String name);
+	
+	public abstract void register();
 }

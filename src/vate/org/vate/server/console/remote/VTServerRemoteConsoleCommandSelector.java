@@ -80,7 +80,6 @@ public class VTServerRemoteConsoleCommandSelector <T> extends VTConsoleCommandSe
 		{
 			
 		}
-
 	}
 	
 	public static void addCustomCommandProcessorPackage(String pkg)

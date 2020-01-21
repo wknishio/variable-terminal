@@ -10,11 +10,16 @@ public abstract class VTServerLocalConsoleCommandProcessor extends VTConsoleComm
 
 	public VTServerLocalConsoleCommandProcessor()
 	{
-		
+		//VTServerLocalConsoleCommandSelector.addCustomCommandProcessorClass(this.getClass().getName());
 	}
 	
 	public void setServer(VTServer server)
 	{
 		this.server = server;
+	}
+	
+	public void register()
+	{
+		VTServerLocalConsoleCommandSelector.addCustomCommandProcessorClass(this.getClass().getName());
 	}
 }

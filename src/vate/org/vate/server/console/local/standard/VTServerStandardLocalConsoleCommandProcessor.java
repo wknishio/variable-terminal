@@ -5,7 +5,7 @@ import org.vate.server.console.local.VTServerLocalConsoleCommandProcessor;
 
 public abstract class VTServerStandardLocalConsoleCommandProcessor extends VTServerLocalConsoleCommandProcessor
 {
-	protected VTServerStandardLocalConsoleCommandProcessor()
+	public VTServerStandardLocalConsoleCommandProcessor()
 	{
 		
 	}

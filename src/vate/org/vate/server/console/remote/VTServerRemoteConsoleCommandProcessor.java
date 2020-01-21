@@ -15,7 +15,7 @@ public abstract class VTServerRemoteConsoleCommandProcessor extends VTConsoleCom
 
 	public VTServerRemoteConsoleCommandProcessor()
 	{
-		
+		//VTServerRemoteConsoleCommandSelector.addCustomCommandProcessorClass(this.getClass().getName());
 	}
 	
 	public void setSession(VTServerSession session)
@@ -23,5 +23,10 @@ public abstract class VTServerRemoteConsoleCommandProcessor extends VTConsoleCom
 		this.session = session;
 		this.connection = session.getConnection();
 		this.resultWriter = session.getConnection().getResultWriter();
+	}
+	
+	public void register()
+	{
+		VTServerRemoteConsoleCommandSelector.addCustomCommandProcessorClass(this.getClass().getName());
 	}
 }
