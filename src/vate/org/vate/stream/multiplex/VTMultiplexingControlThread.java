@@ -23,6 +23,7 @@ public class VTMultiplexingControlThread implements Runnable
 				String line = connection.getControlReader().readLine();
 				if (line != null && line.length() > 0)
 				{
+					//TODO: implement multiplexer
 					threads.hashCode();
 				}
 			}

@@ -12,7 +12,7 @@ public class VTServerRemoteConsoleCommandSelector <T> extends VTConsoleCommandSe
 {
 	protected VTServerSession session;
 	private static Set<Class<?>> installedCommandProcessorClasses = new LinkedHashSet<Class<?>>();
-	private static Set<Class<?>> knownStandardCommandProcessorClasses = new LinkedHashSet<Class<?>>();
+	private static Set<Class<?>> standardCommandProcessorClasses = new LinkedHashSet<Class<?>>();
 	//private static Set<String> additionalCustomCommandProcessorClasses = new LinkedHashSet<String>();
 	//private static Set<String> additionalCustomCommandProcessorPackages = new LinkedHashSet<String>();
 	
@@ -20,50 +20,50 @@ public class VTServerRemoteConsoleCommandSelector <T> extends VTConsoleCommandSe
 	{
 		try
 		{
-			knownStandardCommandProcessorClasses.add(VTACCESS.class);
-			knownStandardCommandProcessorClasses.add(VTAUDIOLINK.class);
-			knownStandardCommandProcessorClasses.add(VTAUDIOMIXERS.class);
-			knownStandardCommandProcessorClasses.add(VTBEEP.class);
-			knownStandardCommandProcessorClasses.add(VTBELL.class);
-			knownStandardCommandProcessorClasses.add(VTBROWSE.class);
-			knownStandardCommandProcessorClasses.add(VTCHAINS.class);
-			knownStandardCommandProcessorClasses.add(VTCOVER.class);
-			knownStandardCommandProcessorClasses.add(VTDISCONNECT.class);
-			knownStandardCommandProcessorClasses.add(VTDISPLAYS.class);
-			knownStandardCommandProcessorClasses.add(VTFILEINSPECT.class);
-			knownStandardCommandProcessorClasses.add(VTFILEMODIFY.class);
-			knownStandardCommandProcessorClasses.add(VTFILETRANSFER.class);
-			knownStandardCommandProcessorClasses.add(VTGRAPHICSLINK.class);
-			knownStandardCommandProcessorClasses.add(VTHELP.class);
-			knownStandardCommandProcessorClasses.add(VTLOCK.class);
-			knownStandardCommandProcessorClasses.add(VTMESSAGE.class);
-			knownStandardCommandProcessorClasses.add(VTNETWORKS.class);
-			knownStandardCommandProcessorClasses.add(VTOPTICALDRIVE.class);
-			knownStandardCommandProcessorClasses.add(VTDATAPRINT.class);
-			knownStandardCommandProcessorClasses.add(VTPRINTERS.class);
-			knownStandardCommandProcessorClasses.add(VTPROPERTY.class);
-			knownStandardCommandProcessorClasses.add(VTQUIT.class);
-			knownStandardCommandProcessorClasses.add(VTRATELIMIT.class);
-			knownStandardCommandProcessorClasses.add(VTHOSTRESOLVE.class);
-			knownStandardCommandProcessorClasses.add(VTRUNPRINT.class);
-			knownStandardCommandProcessorClasses.add(VTRUNTIME.class);
-			knownStandardCommandProcessorClasses.add(VTSCREENALERT.class);
-			knownStandardCommandProcessorClasses.add(VTSCREENSHOT.class);
-			knownStandardCommandProcessorClasses.add(VTSESSIONS.class);
-			knownStandardCommandProcessorClasses.add(VTSHELL.class);
-			knownStandardCommandProcessorClasses.add(VTSOCKSTUNNEL.class);
-			knownStandardCommandProcessorClasses.add(VTTCPTUNNEL.class);
-			knownStandardCommandProcessorClasses.add(VTSTOP.class);
-			knownStandardCommandProcessorClasses.add(VTTIME.class);
-			knownStandardCommandProcessorClasses.add(VTVARIABLE.class);
-			knownStandardCommandProcessorClasses.add(VTZIP.class);
-			knownStandardCommandProcessorClasses.add(VTECHO.class);
+			standardCommandProcessorClasses.add(VTACCESS.class);
+			standardCommandProcessorClasses.add(VTAUDIOLINK.class);
+			standardCommandProcessorClasses.add(VTAUDIOMIXERS.class);
+			standardCommandProcessorClasses.add(VTBEEP.class);
+			standardCommandProcessorClasses.add(VTBELL.class);
+			standardCommandProcessorClasses.add(VTBROWSE.class);
+			standardCommandProcessorClasses.add(VTCHAINS.class);
+			standardCommandProcessorClasses.add(VTCOVER.class);
+			standardCommandProcessorClasses.add(VTDISCONNECT.class);
+			standardCommandProcessorClasses.add(VTDISPLAYS.class);
+			standardCommandProcessorClasses.add(VTFILEINSPECT.class);
+			standardCommandProcessorClasses.add(VTFILEMODIFY.class);
+			standardCommandProcessorClasses.add(VTFILETRANSFER.class);
+			standardCommandProcessorClasses.add(VTGRAPHICSLINK.class);
+			standardCommandProcessorClasses.add(VTHELP.class);
+			standardCommandProcessorClasses.add(VTLOCK.class);
+			standardCommandProcessorClasses.add(VTMESSAGE.class);
+			standardCommandProcessorClasses.add(VTNETWORKS.class);
+			standardCommandProcessorClasses.add(VTOPTICALDRIVE.class);
+			standardCommandProcessorClasses.add(VTDATAPRINT.class);
+			standardCommandProcessorClasses.add(VTPRINTERS.class);
+			standardCommandProcessorClasses.add(VTPROPERTY.class);
+			standardCommandProcessorClasses.add(VTQUIT.class);
+			standardCommandProcessorClasses.add(VTRATELIMIT.class);
+			standardCommandProcessorClasses.add(VTHOSTRESOLVE.class);
+			standardCommandProcessorClasses.add(VTRUNPRINT.class);
+			standardCommandProcessorClasses.add(VTRUNTIME.class);
+			standardCommandProcessorClasses.add(VTSCREENALERT.class);
+			standardCommandProcessorClasses.add(VTSCREENSHOT.class);
+			standardCommandProcessorClasses.add(VTSESSIONS.class);
+			standardCommandProcessorClasses.add(VTSHELL.class);
+			standardCommandProcessorClasses.add(VTSOCKSTUNNEL.class);
+			standardCommandProcessorClasses.add(VTTCPTUNNEL.class);
+			standardCommandProcessorClasses.add(VTSTOP.class);
+			standardCommandProcessorClasses.add(VTTIME.class);
+			standardCommandProcessorClasses.add(VTVARIABLE.class);
+			standardCommandProcessorClasses.add(VTZIP.class);
+			standardCommandProcessorClasses.add(VTECHO.class);
 		}
 		catch (Throwable t)
 		{
 			
 		}
-		installedCommandProcessorClasses.addAll(knownStandardCommandProcessorClasses);
+		installedCommandProcessorClasses.addAll(standardCommandProcessorClasses);
 	}
 	
 	public static void addCustomCommandProcessorClass(String className)
