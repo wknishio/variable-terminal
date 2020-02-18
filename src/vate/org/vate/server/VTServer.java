@@ -1760,7 +1760,8 @@ public class VTServer implements Runnable
 			VTConsole.setTitle("Variable-Terminal Server " + VT.VT_VERSION + " - Console");
 		}
 		VTConsole.clear();
-		VTConsole.print("VT>Variable-Terminal Server " + VT.VT_VERSION + "\nVT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n"
+		VTConsole.print("VT>Variable-Terminal Server " + VT.VT_VERSION + "\n"
+		+ "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n"
 		+ "VT>This software is under MIT license, see license.txt!\n"
 		+ "VT>This software comes with no warranty, use at your own risk!\n");
 		configure();
