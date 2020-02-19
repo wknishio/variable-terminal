@@ -6,10 +6,32 @@ public abstract class VTConsoleCommandProcessor
 	private String abbreviatedName = "";
 	private String fullSyntax = "";
 	private String abbreviatedSyntax = "";
+	private String resultCode = "";
+	private String resultText = "";
 	
 	public VTConsoleCommandProcessor()
 	{
 		
+	}
+	
+	public String getResultCode()
+	{
+		return resultCode;
+	}
+
+	public void setResultCode(String resultCode)
+	{
+		this.resultCode = resultCode;
+	}
+
+	public String getResultText()
+	{
+		return resultText;
+	}
+
+	public void setResultText(String resultText)
+	{
+		this.resultText = resultText;
 	}
 	
 	public String getFullSyntax()
