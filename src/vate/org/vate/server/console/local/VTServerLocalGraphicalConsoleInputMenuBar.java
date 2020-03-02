@@ -206,9 +206,9 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 			}
 		});
 		
+		textActionsMenu.add(textActionAllMenu);
 		textActionsMenu.add(textActionCopyMenu);
 		textActionsMenu.add(textActionPasteMenu);
-		textActionsMenu.add(textActionAllMenu);
 		textActionsMenu.add(textActionInsertMenu);
 		textActionsMenu.add(textActionBreakMenu);
 		
