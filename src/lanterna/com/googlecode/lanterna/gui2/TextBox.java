@@ -417,6 +417,32 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
         invalidate();
         return this;
     }
+    
+    public synchronized TextBox removeLine(int lineIndex) {
+        if (style == Style.SINGLE_LINE) {
+            if (lineIndex == 0) {
+                setText("");
+                return this;
+            }
+            else {
+                throw new ArrayIndexOutOfBoundsException("Cannot remove line " + lineIndex + " from a single-line TextBox");
+            }
+        }
+
+        if (lineIndex < 0 || lineIndex >= lines.size()) {
+            throw new ArrayIndexOutOfBoundsException("Invalid line index for TextBox with " + lines.size() + " lines: " + lineIndex);
+        }
+        lines.remove(lineIndex);
+        if (caretPosition.getRow() == lineIndex) {
+            // Validate the caret can still stay in this position
+            setCaretPosition(caretPosition.getRow(), caretPosition.getColumn());
+        }
+        else if (caretPosition.getRow() > lineIndex) {
+            // Update caret position
+            setCaretPosition(caretPosition.getRow() - 1, caretPosition.getColumn());
+        }
+        return this;
+    }
 
     /**
      * Sets if the caret should jump to the beginning of the next line if right arrow is pressed while at the end of a
@@ -1093,4 +1119,6 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
             }
         }
     }
+    
+    
 }

@@ -83,8 +83,8 @@ public class AWTTerminalFontConfiguration {
         //fonts.add(new Font("Monospaced", Font.PLAIN, fontSize));
         //return fonts;
         return (Arrays.asList(
-                new Font("Consolas", Font.PLAIN, fontSize), //Monospaced can look pretty bad on Windows, so let's override it
                 new Font("Courier New", Font.PLAIN, fontSize),
+                new Font("Consolas", Font.PLAIN, fontSize), //Monospaced can look pretty bad on Windows, so let's override it
                 new Font("Monospaced", Font.PLAIN, fontSize)));
     }
 

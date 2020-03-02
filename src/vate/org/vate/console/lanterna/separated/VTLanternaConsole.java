@@ -570,6 +570,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		factory.setForceAWTOverSwing(true);
 		//factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
 		factory.setMouseCaptureMode(MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE);
+		factory.setInitialTerminalSize(new TerminalSize(80, 25));
 		//factory.setTerminalEmulatorDeviceConfiguration(deviceConfiguration)
 		factory.setAutoOpenTerminalEmulatorWindow(false);
 		if (graphical)
