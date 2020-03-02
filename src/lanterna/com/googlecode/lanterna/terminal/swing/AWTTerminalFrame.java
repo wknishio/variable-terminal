@@ -54,8 +54,10 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
     private Dimension initialSize;
     private boolean disposed;
 	private TerminalSize defaultTerminalSize;
-	private Panel bottomPanel;
 	private Panel topPanel;
+	private Panel midPanel;
+	private Panel bottomPanel;
+	
 
     /**
      * Creates a new AWTTerminalFrame with an optional list of auto-close triggers
@@ -118,8 +120,8 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         this.autoCloseTriggers = EnumSet.copyOf(Arrays.asList(autoCloseTrigger));
         this.disposed = false;
         BorderLayout layout = new BorderLayout();
-        layout.setHgap(1);
-        layout.setVgap(1);
+        layout.setHgap(0);
+        layout.setVgap(0);
         
         setLayout(layout);
         
@@ -137,21 +139,27 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         //scroll.setPreferredSize(size);
         //add(scroll, BorderLayout.CENTER);
         topPanel = new Panel();
-        topPanel.setSize(0, 0);
-        topPanel.setMinimumSize(new Dimension(0, 0));
-        topPanel.setMaximumSize(new Dimension(0, 0));
-        topPanel.setPreferredSize(new Dimension(0, 0));
+        topPanel.setSize(0, 1);
+        topPanel.setMinimumSize(new Dimension(0, 1));
+        topPanel.setMaximumSize(new Dimension(0, 1));
+        topPanel.setPreferredSize(new Dimension(0, 1));
         
         BorderLayout bottomlayout = new BorderLayout();
-        bottomlayout.setHgap(1);
-        bottomlayout.setVgap(1);
+        bottomlayout.setHgap(0);
+        bottomlayout.setVgap(0);
         bottomPanel = new Panel();
         bottomPanel.setLayout(bottomlayout);
         
         //bottomPanel.add(awtTerminal, BorderLayout.CENTER);
+        BorderLayout midlayout = new BorderLayout();
+        midlayout.setHgap(0);
+        midlayout.setVgap(0);
+        midPanel = new Panel();
+        midPanel.setLayout(midlayout);
+        midPanel.add(awtTerminal, BorderLayout.CENTER);
+        midPanel.add(topPanel, BorderLayout.NORTH);
         
-        add(topPanel, BorderLayout.NORTH);
-        add(awtTerminal, BorderLayout.CENTER);
+        add(midPanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
         
         setBackground(Color.BLACK); //This will reduce white flicker when resizing the window
