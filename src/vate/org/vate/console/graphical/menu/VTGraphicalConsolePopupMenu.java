@@ -80,11 +80,11 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
 		// int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
 		// double factor = dpi / 96;
 		// this.setFont(new Font("Dialog", Font.PLAIN, 12));
-		this.insert(copy, 0);
-		this.insert(paste, 1);
-		this.insert(all, 2);
-		this.insert(insert, 3);
-		this.insert(scroll, 4);
+		this.add(all);
+		this.add(copy);
+		this.add(paste);
+		this.add(insert);
+		this.add(scroll);
 		//this.insert(expand, 4);
 		//this.insert(reduce, 5);
 		// this.insert(scroll, 2);
