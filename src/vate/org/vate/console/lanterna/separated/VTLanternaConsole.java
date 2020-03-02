@@ -74,7 +74,8 @@ import com.sun.jna.Platform;
 public class VTLanternaConsole implements VTConsoleImplementation
 {
 	private volatile AWTTerminalFrame awtframe;
-	private java.awt.Panel spacer;
+	private java.awt.Panel spacer1;
+	//private java.awt.Panel spacer2;
 	private Terminal terminal;
 	private Screen screen;
 	private AWTTerminal awtterminal;
@@ -766,10 +767,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
         	horizontalScrollbar = new Scrollbar(Scrollbar.HORIZONTAL);
         	horizontalScrollbar.setUnitIncrement(1);
         	outputBox.setHorizontalAdjustable(horizontalScrollbar);
-        	spacer = new java.awt.Panel();
-        	spacer.setBackground(SystemColor.scrollbar);
+        	spacer1 = new java.awt.Panel();
+        	spacer1.setBackground(SystemColor.scrollbar);
         	awtframe.getBottomPanel().add(horizontalScrollbar, java.awt.BorderLayout.CENTER);
-        	awtframe.getBottomPanel().add(spacer, java.awt.BorderLayout.EAST);
+        	awtframe.getBottomPanel().add(spacer1, java.awt.BorderLayout.EAST);
         	horizontalScrollbar.addKeyListener(new KeyListener()
         	{
 				public void keyTyped(KeyEvent e)
@@ -1307,8 +1308,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
         {
         	awtframe.setLocationByPlatform(true);
         	awtframe.pack();
-        	spacer.setSize(verticalScrollbar.getPreferredSize().width, spacer.getSize().height);
-        	spacer.setPreferredSize(new Dimension(verticalScrollbar.getPreferredSize().width, spacer.getSize().height));
+        	spacer1.setSize(verticalScrollbar.getPreferredSize().width, spacer1.getSize().height);
+        	spacer1.setPreferredSize(new Dimension(verticalScrollbar.getPreferredSize().width, spacer1.getSize().height));
         	awtframe.setVisible(true);
         	awtframe.setDefaultTerminalSize(awtframe.getTerminalSize());
         }

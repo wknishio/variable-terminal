@@ -82,10 +82,12 @@ public class AWTTerminalFontConfiguration {
         //fonts.add(new Font("Courier New", Font.PLAIN, fontSize));
         //fonts.add(new Font("Monospaced", Font.PLAIN, fontSize));
         //return fonts;
+        //Monospaced can look pretty bad on Windows, so let's override it
         return (Arrays.asList(
                 new Font("Courier New", Font.PLAIN, fontSize),
-                new Font("Consolas", Font.PLAIN, fontSize), //Monospaced can look pretty bad on Windows, so let's override it
-                new Font("Monospaced", Font.PLAIN, fontSize)));
+                new Font("Consolas", Font.PLAIN, fontSize),
+                new Font("Monospaced", Font.PLAIN, fontSize)
+                ));
     }
 
     private static List<Font> getDefaultLinuxFonts() {

@@ -544,7 +544,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         Font font = getFontForCharacter(character);
         g.setFont(font);
         FontMetrics fontMetrics = g.getFontMetrics();
-        g.drawString(Character.toString(character.getCharacter()), x, y + fontHeight - fontMetrics.getMaxDescent());
+        g.drawString(Character.toString(character.getCharacter()), x, y + fontHeight - fontMetrics.getDescent());
 
         if(character.isCrossedOut()) {
             //noinspection UnnecessaryLocalVariable
