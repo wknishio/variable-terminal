@@ -54,10 +54,13 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
     private Dimension initialSize;
     private boolean disposed;
 	private TerminalSize defaultTerminalSize;
-	private Panel topPanel;
 	private Panel midPanel;
 	private Panel bottomPanel;
-	
+	private Panel spacerPanelNorth;
+	private Panel spacerPanelSouth;
+	private Panel spacerPanelWest;
+	private Panel spacerPanelEast;
+
 
     /**
      * Creates a new AWTTerminalFrame with an optional list of auto-close triggers
@@ -138,11 +141,29 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         //size.height += insets.top;
         //scroll.setPreferredSize(size);
         //add(scroll, BorderLayout.CENTER);
-        topPanel = new Panel();
-        topPanel.setSize(0, 1);
-        topPanel.setMinimumSize(new Dimension(0, 1));
-        topPanel.setMaximumSize(new Dimension(0, 1));
-        topPanel.setPreferredSize(new Dimension(0, 1));
+        spacerPanelNorth = new Panel();
+        spacerPanelNorth.setSize(0, 1);
+        spacerPanelNorth.setMinimumSize(new Dimension(0, 1));
+        spacerPanelNorth.setMaximumSize(new Dimension(0, 1));
+        spacerPanelNorth.setPreferredSize(new Dimension(0, 1));
+        
+        spacerPanelSouth = new Panel();
+        spacerPanelSouth.setSize(0, 1);
+        spacerPanelSouth.setMinimumSize(new Dimension(0, 1));
+        spacerPanelSouth.setMaximumSize(new Dimension(0, 1));
+        spacerPanelSouth.setPreferredSize(new Dimension(0, 1));
+        
+        spacerPanelWest = new Panel();
+        spacerPanelWest.setSize(1, 0);
+        spacerPanelWest.setMinimumSize(new Dimension(1, 0));
+        spacerPanelWest.setMaximumSize(new Dimension(1, 0));
+        spacerPanelWest.setPreferredSize(new Dimension(1, 0));
+        
+        spacerPanelEast = new Panel();
+        spacerPanelEast.setSize(1, 0);
+        spacerPanelEast.setMinimumSize(new Dimension(1, 0));
+        spacerPanelEast.setMaximumSize(new Dimension(1, 0));
+        spacerPanelEast.setPreferredSize(new Dimension(1, 0));
         
         BorderLayout bottomlayout = new BorderLayout();
         bottomlayout.setHgap(0);
@@ -157,7 +178,10 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         midPanel = new Panel();
         midPanel.setLayout(midlayout);
         midPanel.add(awtTerminal, BorderLayout.CENTER);
-        midPanel.add(topPanel, BorderLayout.NORTH);
+        midPanel.add(spacerPanelNorth, BorderLayout.NORTH);
+        midPanel.add(spacerPanelSouth, BorderLayout.SOUTH);
+        midPanel.add(spacerPanelWest, BorderLayout.WEST);
+        midPanel.add(spacerPanelEast, BorderLayout.EAST);
         
         add(midPanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
