@@ -275,7 +275,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
 		}
 		else if (e.getKeyChar() == '\u0003')
 		{
-			if (!VTGraphicalConsole.getIgnoreClose())
+			if (!VTGraphicalConsole.ignoreClose)
 			{
 				System.exit(0);
 			}

@@ -672,4 +672,12 @@ public class VTConsole
 			console.copyAllText();
 		}
 	}
+	
+	public static void setIgnoreClose(boolean ignoreClose)
+	{
+		if (checkConsole())
+		{
+			console.setIgnoreClose(ignoreClose);
+		}
+	}
 }

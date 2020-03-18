@@ -283,7 +283,7 @@ public class VTGraphicalConsoleReader
 					{
 						/* out.write('\n'); out.flush(); */
 						currentThread = null;
-						if (!VTGraphicalConsole.getIgnoreClose())
+						if (!VTGraphicalConsole.ignoreClose)
 						{
 							System.exit(0);
 						}
@@ -511,7 +511,7 @@ public class VTGraphicalConsoleReader
 					else if (character == '\u0003')
 					{
 						currentThread = null;
-						if (!VTGraphicalConsole.getIgnoreClose())
+						if (!VTGraphicalConsole.ignoreClose)
 						{
 							System.exit(0);
 						}

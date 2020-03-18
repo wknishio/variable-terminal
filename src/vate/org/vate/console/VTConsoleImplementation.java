@@ -80,4 +80,5 @@ public interface VTConsoleImplementation
 
 	public abstract void copyAllText();
 
+	public abstract void setIgnoreClose(boolean ignoreClose);
 }

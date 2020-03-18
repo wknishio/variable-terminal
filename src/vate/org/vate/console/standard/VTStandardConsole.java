@@ -839,6 +839,11 @@ public class VTStandardConsole implements VTConsoleImplementation
 		
 	}
 
+	public void setIgnoreClose(boolean ignoreClose)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 	
 	// public boolean isReadingLine()
 	// {

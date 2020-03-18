@@ -6,7 +6,9 @@ import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
-
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import org.vate.stream.array.VTByteArrayOutputStream;
 
 public class VTURLInvoker
@@ -15,13 +17,14 @@ public class VTURLInvoker
 	private final byte[] readBuffer = new byte[1024 * 64];
 	private VTByteArrayOutputStream dataBuffer = new VTByteArrayOutputStream();
 	
-	public byte[] getURLData(String URL, byte[] outputData, int outputOffset, int outputLength) throws Exception
+	public VTURLData getURLData(String URL, byte[] outputData, int outputOffset, int outputLength) throws Exception
 	{
-		return getURLData(URL, Proxy.NO_PROXY, outputData, outputOffset, outputLength);
+		return getURLData(URL, Proxy.NO_PROXY, outputData, outputOffset, outputLength, null);
 	}
 	
-	public byte[] getURLData(String urlString, Proxy proxy, byte[] outputData, int outputOffset, int outputLength)
+	public VTURLData getURLData(String urlString, Proxy proxy, byte[] outputData, int outputOffset, int outputLength, Map<String, String> requestHeaders)
 	{
+		VTURLData urldata = null;
 		dataBuffer.reset();
 		readed = 0;
 		URLConnection connection = null;
@@ -31,6 +34,14 @@ public class VTURLInvoker
 		{
 			URL url = new URL(urlString);
 			connection = url.openConnection(proxy);
+			connection.setDefaultUseCaches(false);
+			if (requestHeaders != null)
+			{
+				for (Entry<String, String> header : requestHeaders.entrySet())
+				{
+					connection.setRequestProperty(header.getKey(), header.getValue());
+				}
+			}
 			connection.setDoInput(true);
 			if (outputData != null && outputData.length > 0 && outputLength > 0)
 			{
@@ -44,6 +55,21 @@ public class VTURLInvoker
 			{
 				dataBuffer.write(readBuffer, 0, readed);
 			}
+			
+			int code = -1;
+			String response = null;
+			
+			byte[] data = dataBuffer.toByteArray();
+			Map<String, List<String>> headers = connection.getHeaderFields();
+			
+			if (connection instanceof HttpURLConnection)
+			{
+				HttpURLConnection http = (HttpURLConnection)connection;
+				code = http.getResponseCode();
+				response = http.getResponseMessage();
+			}
+			urldata = new VTURLData(code, data, response, headers);
+			return urldata;
 		}
 		catch (Throwable e)
 		{
@@ -88,6 +114,6 @@ public class VTURLInvoker
 				}
 			}
 		}
-		return dataBuffer.toByteArray();
+		return urldata;
 	}
 }

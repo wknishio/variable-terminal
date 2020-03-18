@@ -38,7 +38,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	private static final int maxCharactersCount = (maxLines * totalCharactersPerLine) - 1;
 	// public static final int maxTerminalCharactersCount = (maxLines *
 	// maxCharactersPerLine);
-	private static volatile boolean ignoreClose;
+	public static volatile boolean ignoreClose;
 	private static volatile boolean split;
 	// private static volatile boolean bright;
 	private static volatile boolean readingInput;
@@ -313,16 +313,11 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		return instance;
 	}
 	
-	public static void setIgnoreClose(boolean ignoreClose)
+	public void setIgnoreClose(boolean ignoreClose)
 	{
 		VTGraphicalConsole.ignoreClose = ignoreClose;
 	}
-	
-	public static boolean getIgnoreClose()
-	{
-		return VTGraphicalConsole.ignoreClose;
-	}
-	
+		
 	public static void setCaretRecoilCount(int caretRecoilCount)
 	{
 		if (caretRecoilCount == 0)
@@ -757,7 +752,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	{
 		if (c == '\u0003')
 		{
-			if (VTGraphicalConsole.getIgnoreClose())
+			if (ignoreClose)
 			{
 				return;
 			}
@@ -792,7 +787,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	{
 		if (c == '\u0003')
 		{
-			if (VTGraphicalConsole.getIgnoreClose())
+			if (ignoreClose)
 			{
 				return;
 			}
