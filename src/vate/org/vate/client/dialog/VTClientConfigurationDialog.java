@@ -895,8 +895,8 @@ public class VTClientConfigurationDialog extends Dialog
 		
 		textMenu.add(increaseTextMenu);
 		textMenu.add(decreaseTextMenu);
-		textMenu.add(defaultTextMenu);
 		textMenu.add(toggleBoldTextMenu);
+		textMenu.add(defaultTextMenu);
 		
 		menubar.add(textMenu);
 		textMenu.setEnabled(true);

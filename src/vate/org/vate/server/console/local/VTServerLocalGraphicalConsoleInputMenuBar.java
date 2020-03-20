@@ -262,8 +262,8 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		
 		textMenu.add(increaseTextMenu);
 		textMenu.add(decreaseTextMenu);
-		textMenu.add(defaultTextMenu);
 		textMenu.add(toggleBoldTextMenu);
+		textMenu.add(defaultTextMenu);
 		
 		this.add(textMenu);
 		textMenu.setEnabled(true);
@@ -279,8 +279,8 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		keyboardShortcutsMenu.add(new MenuItem("Insert : Toggle Insert/Replace"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown : Decrease Font"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp : Increase Font"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home : Normalize Font"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+End : Intensitize Font"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home : Normalize Font"));
 		
 		this.add(keyboardShortcutsMenu);
 		keyboardShortcutsMenu.setEnabled(true);

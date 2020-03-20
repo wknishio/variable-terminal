@@ -21,9 +21,9 @@ import com.sun.jna.Platform;
 
 public class VTGlobalTextStyleManager
 {
+	private static final List<Window> windows = new LinkedList<Window>();
 	private static final List<Component> monospaceds = new LinkedList<Component>();
 	private static final List<Component> texts = new LinkedList<Component>();
-	private static final List<Window> windows = new LinkedList<Window>();
 	private static final List<Component> scaleds = new LinkedList<Component>();
 	private static final List<List<Font>> lists = new LinkedList<List<Font>>();
 	private static final List<List<Font>> defaultlists = new LinkedList<List<Font>>();
@@ -84,11 +84,11 @@ public class VTGlobalTextStyleManager
 		//AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
 	}
 	
-	private static Font windowFont = Font.decode("Serif").deriveFont((float) ((((Font.decode("Serif 12").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
-	private static Font monospacedFont = Font.decode("Monospaced").deriveFont((float) ((((Font.decode("Monospaced 12").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
+	private static volatile Font windowFont = Font.decode("Serif").deriveFont((float) ((((Font.decode("Serif 12").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
+	private static volatile Font monospacedFont = Font.decode("Monospaced").deriveFont((float) ((((Font.decode("Monospaced 12").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
 	private static float defaultWindowFontSize = windowFont.getSize2D();
 	private static float defaultMonospacedFontSize = monospacedFont.getSize2D();
-	
+	private static volatile boolean fontStyleBold = false;
 	//private static List<Font> monospacedFonts;
 	//private static int currentMonospacedFontIndex = 0;
 	
@@ -201,8 +201,9 @@ public class VTGlobalTextStyleManager
 		//System.out.println("FONT_SCALING_FACTOR:" + FONT_SCALING_FACTOR);
 		//System.out.println("defaultMonospacedFontSize:" + defaultMonospacedFontSize);
 		//System.out.println("defaultWindowFontSize:" + defaultWindowFontSize);
-		monospacedFont = monospacedFont.deriveFont(defaultMonospacedFontSize);
-		windowFont = windowFont.deriveFont(defaultWindowFontSize);
+		fontStyleBold = false;
+		monospacedFont = monospacedFont.deriveFont(defaultMonospacedFontSize).deriveFont(Font.PLAIN);
+		windowFont = windowFont.deriveFont(defaultWindowFontSize).deriveFont(Font.PLAIN);
 		//plainScaleds();
 		defaultLists();
 		updateComponents(true);
@@ -211,11 +212,12 @@ public class VTGlobalTextStyleManager
 	public static boolean isFontStyleBold()
 	{
 		//return false;
-		return monospacedFont.isBold();
+		return fontStyleBold;
 	}
 	
 	public static void enableFontStyleBold()
 	{
+		fontStyleBold = true;
 		monospacedFont = monospacedFont.deriveFont(Font.BOLD);
 		windowFont = windowFont.deriveFont(Font.BOLD);
 		boldScaleds();
@@ -225,6 +227,7 @@ public class VTGlobalTextStyleManager
 	
 	public static void disableFontStyleBold()
 	{
+		fontStyleBold = false;
 		monospacedFont = monospacedFont.deriveFont(Font.PLAIN);
 		windowFont = windowFont.deriveFont(Font.PLAIN);
 		plainScaleds();
