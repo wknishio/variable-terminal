@@ -1,5 +1,6 @@
 package org.vate.stream.pipe;
 
+import java.io.Closeable;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -11,9 +12,16 @@ public class VTStreamRedirector implements Runnable
 	private final byte[] redirectorBuffer = new byte[redirectorBufferSize];
 	private InputStream source;
 	private OutputStream destination;
+	private Closeable notify;
 	// private VTTunnelSession session;
 	
 	public VTStreamRedirector(InputStream source, OutputStream destination)
+	{
+		this.source = source;
+		this.destination = destination;
+	}
+	
+	public VTStreamRedirector(InputStream source, OutputStream destination, Closeable notify)
 	{
 		this.source = source;
 		this.destination = destination;
@@ -42,6 +50,18 @@ public class VTStreamRedirector implements Runnable
 				// e.printStackTrace();
 				stopped = true;
 				break;
+			}
+		}
+		
+		if (notify != null)
+		{
+			try
+			{
+				notify.close();
+			}
+			catch (Throwable e)
+			{
+				
 			}
 		}
 	}
