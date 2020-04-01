@@ -17,7 +17,7 @@ public class VTServerDaemonGraphicalStart
 		{
 			VTConsole.setGraphical(true);
 		}
-		VTGraphicalConsole.setRemoteIcon(true);
+		VTConsole.setRemoteIcon(true);
 		VTConsole.setDaemon(true);
 		VTServer server = new VTServer();
 		server.setDaemon(true);

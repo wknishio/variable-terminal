@@ -36,6 +36,7 @@ public class VTConsole
 	private static boolean lanterna = false;
 	private static boolean graphical;
 	private static boolean daemon;
+	private static boolean remoteIcon;
 	// private static boolean split;
 	private static volatile VTConsoleImplementation console;
 	
@@ -63,11 +64,11 @@ public class VTConsole
 					VTNativeUtils.detachConsole();
 					if (lanterna)
 					{
-						console = new VTLanternaConsole(graphical);
+						console = new VTLanternaConsole(graphical, remoteIcon);
 					}
 					else
 					{
-						console = VTGraphicalConsole.getInstance();
+						console = VTGraphicalConsole.getInstance(remoteIcon);
 					}
 					//console = VTGraphicalConsole.getInstance();
 					
@@ -78,6 +79,7 @@ public class VTConsole
 				else
 				{
 					console = VTStandardConsole.getInstance();
+					console.setRemoteIcon(remoteIcon);
 					resetAttributes();
 					setColors(VT_CONSOLE_COLOR_LIGHT_GREEN, VT_CONSOLE_COLOR_NORMAL_BLACK);
 //					if (lanterna)
@@ -679,5 +681,10 @@ public class VTConsole
 		{
 			console.setIgnoreClose(ignoreClose);
 		}
+	}
+	
+	public static void setRemoteIcon(boolean remoteIcon)
+	{
+		VTConsole.remoteIcon = remoteIcon;
 	}
 }

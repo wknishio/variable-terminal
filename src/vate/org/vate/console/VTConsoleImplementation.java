@@ -4,6 +4,7 @@ import java.awt.Frame;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Locale;
+import org.vate.console.graphical.VTGraphicalConsole;
 
 public interface VTConsoleImplementation
 {
@@ -81,4 +82,6 @@ public interface VTConsoleImplementation
 	public abstract void copyAllText();
 
 	public abstract void setIgnoreClose(boolean ignoreClose);
+	
+	public abstract void setRemoteIcon(boolean remoteIcon);
 }

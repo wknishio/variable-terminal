@@ -113,6 +113,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	private Scrollbar horizontalScrollbar;
 	private Scrollbar verticalScrollbar;
 	private volatile int draggedMouseButton;
+	private volatile boolean remoteIcon;
 	//support command history
 	//support echo input
 	//support maximum line width in output
@@ -128,9 +129,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	//support command drag drop for awtframe
 	//support keyboard shortcuts
 	
-	public VTLanternaConsole(boolean graphical)
+	public VTLanternaConsole(boolean graphical, boolean remoteIcon)
 	{
 		this.graphical = graphical;
+		this.remoteIcon = remoteIcon;
 		Thread builderThread = new Thread()
 		{
 			public void run()
@@ -606,14 +608,28 @@ public class VTLanternaConsole implements VTConsoleImplementation
         	}
         	awtframe = (AWTTerminalFrame) terminal;
         	//awtframe.setLocationByPlatform(true);
-        	try
-			{
-				awtframe.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
-			}
-			catch (Throwable t)
-			{
-				
-			}
+        	if (remoteIcon)
+        	{
+        		try
+    			{
+    				awtframe.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
+    			}
+    			catch (Throwable t)
+    			{
+    				
+    			}
+        	}
+        	else
+        	{
+        		try
+    			{
+        			awtframe.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/terminal.png")));
+    			}
+    			catch (Throwable t)
+    			{
+    				
+    			}
+        	}
         	awtframe.addWindowListener(new VTLanternaConsoleWindowListener(this));
         	if (terminal instanceof AWTTerminalFrame)
         	{
@@ -2092,16 +2108,9 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		}
 		//VTConsole.flush();
 	}
-	
-//	private void fullRefresh()
-//	{
-//		try
-//		{
-//			screen.refresh(RefreshType.COMPLETE);
-//		}
-//		catch (Throwable e)
-//		{
-//			
-//		}
-//	}
+
+	public void setRemoteIcon(boolean remoteIcon)
+	{
+		this.remoteIcon = remoteIcon;
+	}
 }

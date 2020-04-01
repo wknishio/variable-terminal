@@ -844,6 +844,12 @@ public class VTStandardConsole implements VTConsoleImplementation
 		// TODO Auto-generated method stub
 		
 	}
+
+	public void setRemoteIcon(boolean remote)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 	
 	// public boolean isReadingLine()
 	// {

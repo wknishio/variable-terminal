@@ -18,7 +18,7 @@ public class VTServerGraphicalStart
 		{
 			VTConsole.setGraphical(true);
 		}
-		VTGraphicalConsole.setRemoteIcon(true);
+		VTConsole.setRemoteIcon(true);
 		
 		if (args.length >= 1)
 		{

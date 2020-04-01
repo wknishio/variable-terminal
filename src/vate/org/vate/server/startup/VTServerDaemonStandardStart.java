@@ -12,7 +12,7 @@ public class VTServerDaemonStandardStart
 	{
 		VTConsole.setLanterna(true);
 		VTConsole.setGraphical(false);
-		VTGraphicalConsole.setRemoteIcon(true);
+		VTConsole.setRemoteIcon(true);
 		VTConsole.setDaemon(true);
 		VTServer server = new VTServer();
 		server.setDaemon(true);

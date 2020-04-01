@@ -87,7 +87,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	private static VTGraphicalConsoleMouseListener mouseListener;
 	private static VTGraphicalConsoleDropTargetListener dropTargetListener;
 	private static VTGraphicalConsoleWindowListener windowListener;
-	private static volatile boolean remote = false;	
+	private static volatile boolean remoteIcon = false;	
 	private static UpdateTask updateTask = new UpdateTask();
 	// private static VTGraphicalConsoleReader reader;
 	// private static VTGraphicalConsoleWriter writer;
@@ -144,7 +144,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		outputBuffer.setLength(0);
 		outputBuffer.trimToSize();
 		windowListener = new VTGraphicalConsoleWindowListener();
-		frame = new VTGraphicalConsoleFrame(remote);
+		frame = new VTGraphicalConsoleFrame(remoteIcon);
 		frame.setLocationByPlatform(true);
 		frame.addWindowListener(windowListener);
 		textArea = new VTGraphicalConsoleTextArea("", areaLines, totalCharactersPerLine + 2, TextArea.SCROLLBARS_BOTH);
@@ -304,8 +304,9 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		
 	}
 	
-	public synchronized static VTGraphicalConsole getInstance()
+	public synchronized static VTGraphicalConsole getInstance(boolean remoteIcon)
 	{
+		VTGraphicalConsole.remoteIcon = remoteIcon;
 		if (instance == null)
 		{
 			instance = new VTGraphicalConsole();
@@ -2127,9 +2128,9 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		return textArea;
 	}
 	
-	public static void setRemoteIcon(boolean remote)
+	public void setRemoteIcon(boolean remoteIcon)
 	{
-		VTGraphicalConsole.remote = remote;
+		VTGraphicalConsole.remoteIcon = remoteIcon;
 	}
 	
 	public void refreshText()

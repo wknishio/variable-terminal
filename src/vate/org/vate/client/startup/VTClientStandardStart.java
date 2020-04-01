@@ -12,7 +12,7 @@ public class VTClientStandardStart
 	{
 		VTConsole.setLanterna(true);
 		VTConsole.setGraphical(false);
-		VTGraphicalConsole.setRemoteIcon(true);
+		VTConsole.setRemoteIcon(true);
 		
 		if (args.length >= 1)
 		{

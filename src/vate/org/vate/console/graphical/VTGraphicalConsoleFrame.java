@@ -8,10 +8,10 @@ public class VTGraphicalConsoleFrame extends Frame
 {
 	private static final long serialVersionUID = 1L;
 	
-	public VTGraphicalConsoleFrame(boolean remote)
+	public VTGraphicalConsoleFrame(boolean remoteIcon)
 	{
 		super();
-		if (remote)
+		if (remoteIcon)
 		{
 			try
 			{
