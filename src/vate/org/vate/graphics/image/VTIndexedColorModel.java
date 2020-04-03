@@ -148,7 +148,7 @@ public class VTIndexedColorModel
 		return 0;
 	}
 	
-	public static IndexColorModel create4Bit16ColorModel()
+	public static IndexColorModel createPacked4Bit16ColorModel()
 	{
 		byte[] r = new byte[16];
 		byte[] g = new byte[16];

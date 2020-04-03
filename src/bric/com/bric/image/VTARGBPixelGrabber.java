@@ -201,6 +201,7 @@ public class VTARGBPixelGrabber {
             r = bi.getRaster();
             row = new int[imageW];
             if(t==BufferedImage.TYPE_BYTE_INDEXED) {
+            //|| t==BufferedImage.TYPE_BYTE_BINARY) {
                 icm = (IndexColorModel)bi.getColorModel();
             } else {
                 icm = null;
@@ -299,6 +300,7 @@ public class VTARGBPixelGrabber {
         t==BufferedImage.TYPE_4BYTE_ABGR_PRE ||
         t==BufferedImage.TYPE_BYTE_GRAY ||
         t==BufferedImage.TYPE_BYTE_INDEXED;
+        //|| t==BufferedImage.TYPE_BYTE_BINARY;
     }
     
     /** Indicates whether all the data has been returned yet.
@@ -485,6 +487,7 @@ public class VTARGBPixelGrabber {
             case BufferedImage.TYPE_INT_RGB:
             case BufferedImage.TYPE_INT_ARGB:
             case BufferedImage.TYPE_INT_ARGB_PRE:
+            {
                 if(destOffset==0) {
                     //yay!  the best case we can hope for:
                     r.getDataElements(x,y,width,1,dest);
@@ -504,7 +507,9 @@ public class VTARGBPixelGrabber {
                     }
                 }
                 break;
+            }
             case BufferedImage.TYPE_INT_BGR:
+            {
                 if(scratchIntArray==null)
                     scratchIntArray = new int[width];
                 r.getDataElements(x,y,width,1,scratchIntArray);
@@ -516,7 +521,9 @@ public class VTARGBPixelGrabber {
                     (0xFF000000); //alpha
                 }
                 break;
+            }
             case BufferedImage.TYPE_3BYTE_BGR:
+            {
                 if(scratchByteArray==null)
                     scratchByteArray = new byte[3*width];
                 r.getDataElements(x,y,width,1,scratchByteArray);
@@ -527,8 +534,10 @@ public class VTARGBPixelGrabber {
                     (0xFF000000); //alpha
                 }
                 break;
+            }
             case BufferedImage.TYPE_4BYTE_ABGR:
             case BufferedImage.TYPE_4BYTE_ABGR_PRE:
+            {
                 if(scratchByteArray==null)
                     scratchByteArray = new byte[4*width];
                 r.getDataElements(x,y,width,1,scratchByteArray);
@@ -539,9 +548,16 @@ public class VTARGBPixelGrabber {
                     (scratchByteArray[4*a+1] & 0xFF); //blue
                 }
                 break;
+            }
             case BufferedImage.TYPE_BYTE_INDEXED:
-                if(scratchByteArray==null)
-                    scratchByteArray = new byte[width];
+            //case BufferedImage.TYPE_BYTE_BINARY:
+            {
+            	//int pixelsPerByte = 8 / icm.getPixelSize();
+            	if(scratchByteArray==null)
+            	{
+            		scratchByteArray = new byte[width];
+            		//scratchByteArray = new byte[width / pixelsPerByte];
+            	}
                 int t2, alpha;
                 int transIndex = icm.getTransparentPixel();
                 r.getDataElements(x,y,width,1,scratchByteArray);
@@ -551,6 +567,7 @@ public class VTARGBPixelGrabber {
                     dest[destOffset+a] = (icm.getRed(t2) << 16)+(icm.getGreen(t2) << 8)+icm.getBlue(t2)+alpha*(0xff000000);
                 }
                 break;
+            }
             default:
                 throw new RuntimeException("Unexpected condition.");
             }
