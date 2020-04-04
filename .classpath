@@ -21,12 +21,13 @@
 	<classpathentry kind="lib" path="lib/commons-lang.jar"/>
 	<classpathentry kind="lib" path="lib/commons-lang3.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
-	<classpathentry kind="lib" path="lib/jna.jar"/>
 	<classpathentry kind="lib" path="lib/jsap.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex.jar"/>
 	<classpathentry kind="lib" path="lib/jzlib.jar"/>
 	<classpathentry kind="lib" path="lib/png-encoder.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-nop.jar"/>
+	<classpathentry kind="lib" path="lib/jna-4.5.2-mod.jar"/>
+	<classpathentry kind="lib" path="lib/jna-platform-3.5.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

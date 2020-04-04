@@ -1,9 +1,15 @@
 package org.vate.runtime;
 
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Field;
 import java.util.concurrent.ExecutorService;
+import com.sun.jna.Platform;
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.Kernel32;
+import com.sun.jna.platform.win32.WinNT;
 
 public class VTRuntimeProcess
 {
@@ -22,7 +28,8 @@ public class VTRuntimeProcess
 	private volatile boolean verbose;
 	private volatile boolean restart;
 	private volatile long timeout;
-	
+	private volatile long pid;
+
 	public VTRuntimeProcess(String command, ProcessBuilder builder, BufferedWriter writer, boolean verbose, ExecutorService threads, boolean restart, long timeout)
 	{
 		this.command = command;
@@ -34,9 +41,15 @@ public class VTRuntimeProcess
 		this.timeout = timeout;
 	}
 	
+	public long getPID()
+	{
+		return pid;
+	}
+	
 	public void start() throws Throwable
 	{
 		this.process = builder.start();
+		this.pid = getProcessID(process);
 		this.in = process.getInputStream();
 		this.err = process.getErrorStream();
 		this.out = process.getOutputStream();
@@ -138,14 +151,7 @@ public class VTRuntimeProcess
 	{
 		if (process != null)
 		{
-			try
-			{
-				process.destroy();
-			}
-			catch (Throwable e)
-			{
-				
-			}
+			killProcess(process, 0, pid);
 		}
 		try
 		{
@@ -199,5 +205,112 @@ public class VTRuntimeProcess
 	public void finalize()
 	{
 		destroy();
+	}
+	
+	private static void forceKillPid(long pid) throws Throwable
+	{
+		Runtime rt = Runtime.getRuntime();
+		if (Platform.isWindows())
+		{
+			rt.exec("taskkill /f /PID " + pid);
+		}
+		else
+		{
+			rt.exec("kill -9 " + pid);
+		}
+	}
+	
+	private static long getProcessID(Process p)
+    {
+        long result = -1;
+        try
+        {
+            //for windows
+            if (p.getClass().getName().equals("java.lang.Win32Process") ||
+                   p.getClass().getName().equals("java.lang.ProcessImpl")) 
+            {
+                Field f = p.getClass().getDeclaredField("handle");
+                f.setAccessible(true);              
+                long handl = f.getLong(p);
+                Kernel32 kernel = Kernel32.INSTANCE;
+                WinNT.HANDLE hand = new WinNT.HANDLE();
+                hand.setPointer(Pointer.createConstant(handl));
+                result = kernel.GetProcessId(hand);
+                f.setAccessible(false);
+            }
+            //for unix based operating systems
+            else if (p.getClass().getName().equals("java.lang.UNIXProcess")) 
+            {
+                Field f = p.getClass().getDeclaredField("pid");
+                f.setAccessible(true);
+                result = f.getLong(p);
+                f.setAccessible(false);
+            }
+        }
+        catch(Throwable ex)
+        {
+            result = -1;
+        }
+        return result;
+    }
+	
+	private static boolean isAlive(Process process)
+	{
+		boolean alive = true;
+		try
+		{
+			process.exitValue();
+			alive = false;
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		return alive;
+	}
+	
+	private static void killProcess(Process process, long delay, long pid)
+	{
+		//int seconds = 0;
+		//int limit = 30;
+		boolean killed = false;
+		//int returncode = 0;
+		if (process != null)
+		{
+			if (isAlive(process))
+			{
+				try
+				{
+					process.destroy();
+				}
+				catch (Throwable t)
+				{
+					
+				}
+				if (delay > 0)
+				{
+					try
+					{
+						Thread.sleep(delay);
+					}
+					catch (Throwable e)
+					{
+						
+					}
+				}
+				killed = isAlive(process);
+			}
+			if (!killed)
+			{
+				try
+				{
+					forceKillPid(pid);
+				}
+				catch (Throwable e)
+				{
+					
+				}
+			}
+		}
 	}
 }
