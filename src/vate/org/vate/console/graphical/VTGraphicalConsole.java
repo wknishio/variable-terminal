@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.TextArea;
 import java.awt.Toolkit;
 import java.awt.dnd.DropTarget;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Locale;
@@ -19,6 +21,7 @@ import org.vate.console.graphical.listener.VTGraphicalConsoleMouseListener;
 import org.vate.console.graphical.listener.VTGraphicalConsoleWindowListener;
 import org.vate.console.graphical.menu.VTGraphicalConsolePopupMenu;
 import org.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vate.stream.filter.VTDoubledOutputStream;
 
 public class VTGraphicalConsole implements VTConsoleImplementation
 {
@@ -2069,12 +2072,14 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	
 	public void setSystemOut()
 	{
-		System.setOut(printStream);
+		//System.setOut(printStream);
+		System.setOut(new PrintStream(new VTDoubledOutputStream(printStream, new PrintStream(new FileOutputStream(FileDescriptor.out)))));
 	}
 	
 	public void setSystemErr()
 	{
-		System.setErr(printStream);
+		//System.setErr(printStream);
+		System.setErr(new PrintStream(new VTDoubledOutputStream(printStream, new PrintStream(new FileOutputStream(FileDescriptor.err)))));
 	}
 	
 	public InputStream getSystemIn()

@@ -20,6 +20,8 @@ import java.awt.event.MouseWheelListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -40,7 +42,7 @@ import org.vate.console.graphical.listener.VTGraphicalConsoleDropTargetListener;
 import org.vate.console.graphical.menu.VTGraphicalConsolePopupMenu;
 import org.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vate.nativeutils.VTNativeUtils;
-
+import org.vate.stream.filter.VTDoubledOutputStream;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
@@ -1873,12 +1875,14 @@ public class VTLanternaConsole implements VTConsoleImplementation
 
 	public void setSystemOut()
 	{
-		System.setOut(printStream);
+		//System.setOut(printStream);
+		System.setOut(new PrintStream(new VTDoubledOutputStream(printStream, new PrintStream(new FileOutputStream(FileDescriptor.out)))));
 	}
 
 	public void setSystemErr()
 	{
-		System.setErr(printStream);
+		//System.setErr(printStream);
+		System.setErr(new PrintStream(new VTDoubledOutputStream(printStream, new PrintStream(new FileOutputStream(FileDescriptor.err)))));
 	}
 
 	public InputStream getSystemIn()
