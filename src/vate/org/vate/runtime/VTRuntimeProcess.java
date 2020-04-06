@@ -1,7 +1,6 @@
 package org.vate.runtime;
 
 import java.io.BufferedWriter;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
@@ -22,13 +21,14 @@ public class VTRuntimeProcess
 	private VTRuntimeProcessOutputConsumer outputConsumer;
 	//private VTRuntimeProcessOutputConsumer errorConsumer;
 	private VTRuntimeProcessExitListener exitListener;
-	private VTRuntimeProcessTimeoutDestroyer timeoutDestroyer;
+	private VTRuntimeProcessTimeoutKill timeoutKill;
 	private ExecutorService threads;
 	private BufferedWriter writer;
 	private volatile boolean verbose;
 	private volatile boolean restart;
+	//private volatile boolean killed;
 	private volatile long timeout;
-	private volatile long pid;
+	//private volatile long pid;
 
 	public VTRuntimeProcess(String command, ProcessBuilder builder, BufferedWriter writer, boolean verbose, ExecutorService threads, boolean restart, long timeout)
 	{
@@ -43,13 +43,12 @@ public class VTRuntimeProcess
 	
 	public long getPID()
 	{
-		return pid;
+		return getProcessID(process);
 	}
 	
 	public void start() throws Throwable
 	{
 		this.process = builder.start();
-		this.pid = getProcessID(process);
 		this.in = process.getInputStream();
 		this.err = process.getErrorStream();
 		this.out = process.getOutputStream();
@@ -62,8 +61,8 @@ public class VTRuntimeProcess
 		threads.execute(exitListener);
 		if (timeout > 0)
 		{
-			this.timeoutDestroyer = new VTRuntimeProcessTimeoutDestroyer(process, timeout);
-			threads.execute(timeoutDestroyer);
+			this.timeoutKill = new VTRuntimeProcessTimeoutKill(this, timeout);
+			threads.execute(timeoutKill);
 		}
 	}
 	
@@ -132,6 +131,11 @@ public class VTRuntimeProcess
 		return this.verbose;
 	}
 	
+	public boolean isAlive()
+	{
+		return isAlive(process);
+	}
+	
 	public boolean restart()
 	{
 		try
@@ -149,9 +153,9 @@ public class VTRuntimeProcess
 	
 	public void stop()
 	{
-		if (process != null)
+		if (process != null && isAlive(process))
 		{
-			killProcess(process, 0, pid);
+			killProcess(process, 0);
 		}
 		try
 		{
@@ -161,11 +165,11 @@ public class VTRuntimeProcess
 		{
 			
 		}
-		if (timeoutDestroyer != null)
+		if (timeoutKill != null)
 		{
 			try
 			{
-				timeoutDestroyer.stop();
+				timeoutKill.stop();
 			}
 			catch (Throwable e)
 			{
@@ -256,6 +260,10 @@ public class VTRuntimeProcess
 	
 	private static boolean isAlive(Process process)
 	{
+		if (process == null)
+		{
+			return false;
+		}
 		boolean alive = true;
 		try
 		{
@@ -269,8 +277,9 @@ public class VTRuntimeProcess
 		return alive;
 	}
 	
-	private static void killProcess(Process process, long delay, long pid)
+	private static void killProcess(Process process, long delay)
 	{
+		long pid = getProcessID(process);
 		//int seconds = 0;
 		//int limit = 30;
 		boolean killed = false;

@@ -473,7 +473,7 @@ public final class VTImageIO
 			{
 				nextSize = nextSize / 2;
 				neededSize = neededSize / 2;
-				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize)
+				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
 				{
 					createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, 4, null);
 					// Arrays.fill(((DataBufferByte)recyclableBuffer).getData(),
@@ -486,7 +486,7 @@ public final class VTImageIO
 			}
 			case BufferedImage.TYPE_BYTE_INDEXED:
 			{
-				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize)
+				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
 				{
 					createdRaster = Raster.createInterleavedRaster(recyclableBuffer, width, height, width, 1, new int[1], null);
 					// Arrays.fill(((DataBufferByte)recyclableBuffer).getData(),
@@ -500,7 +500,7 @@ public final class VTImageIO
 			}
 			case BufferedImage.TYPE_USHORT_555_RGB:
 			{
-				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferUShort && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize)
+				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferUShort && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
 				{
 					createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, ushort15bitRGBColorModel.getMasks(), null);
 					// Arrays.fill(((DataBufferUShort)recyclableBuffer).getData(),
@@ -514,7 +514,7 @@ public final class VTImageIO
 			}
 			case BufferedImage.TYPE_INT_RGB:
 			{
-				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferInt && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize)
+				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferInt && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
 				{
 					createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, int24bitRGBColorModel.getMasks(), null);
 					// Arrays.fill(((DataBufferInt)recyclableBuffer).getData(), 0);
@@ -527,7 +527,7 @@ public final class VTImageIO
 			}
 			case BufferedImage.TYPE_INT_ARGB:
 			{
-				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferInt && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize)
+				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferInt && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
 				{
 					createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, int32bitRGBColorModel.getMasks(), null);
 					// Arrays.fill(((DataBufferInt)recyclableBuffer).getData(), 0);

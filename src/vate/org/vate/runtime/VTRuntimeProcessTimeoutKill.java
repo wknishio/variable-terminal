@@ -1,39 +1,39 @@
 package org.vate.runtime;
 
-public class VTRuntimeProcessTimeoutDestroyer implements Runnable
+public class VTRuntimeProcessTimeoutKill implements Runnable
 {
 	private volatile boolean running;
 	private volatile long last = 0;
 	private volatile long current = 0;
 	private volatile long elapsed = 0;
 	private volatile long timeout;
-	private Process process;
+	//private Thread thread;
+	private VTRuntimeProcess process;
 	
-	public VTRuntimeProcessTimeoutDestroyer(Process process, long timeout)
+	public VTRuntimeProcessTimeoutKill(VTRuntimeProcess process, long timeout)
 	{
 		this.running = true;
 		this.process = process;
 		this.timeout = timeout;
 	}
 	
-	public void close()
-	{
-		stop();
-	}
-	
 	public void stop()
 	{
+		if (!running)
+		{
+			return;
+		}
 		running = false;
-		finalize();
+		
 	}
 	
-	public void finalize()
+	public void kill()
 	{
-		if (process != null)
+		if (process != null && process.isAlive())
 		{
 			try
 			{
-				process.destroy();
+				process.stop();
 			}
 			catch (Throwable t)
 			{
@@ -42,16 +42,22 @@ public class VTRuntimeProcessTimeoutDestroyer implements Runnable
 		}
 	}
 	
+	public void finalize()
+	{
+		stop();
+	}
+	
 	public void run()
 	{
-		Thread.currentThread().setName(getClass().getSimpleName());
+		//thread = Thread.currentThread();
+		//thread.setName(getClass().getSimpleName());
 		current = System.currentTimeMillis();
 		last = current;
-		while (running)
+		while (running && process != null && process.isAlive())
 		{
 			try
 			{
-				Thread.sleep(1000);
+				Thread.sleep(500);
 			}
 			catch (Throwable t)
 			{
@@ -65,8 +71,9 @@ public class VTRuntimeProcessTimeoutDestroyer implements Runnable
 			last = current;
 			if (elapsed >= timeout)
 			{
-				stop();
+				running = false;
 			}
 		}
+		kill();
 	}
 }

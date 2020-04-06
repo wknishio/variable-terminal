@@ -11,9 +11,9 @@ public class VTRuntimeProcessExitListener implements Runnable
 	
 	public void finalize()
 	{
-		if (process != null && process.getProcess() != null)
+		if (process != null && process.isAlive())
 		{
-			process.getProcess().destroy();
+			process.destroy();
 		}
 	}
 	
@@ -34,7 +34,7 @@ public class VTRuntimeProcessExitListener implements Runnable
 			process.stop();
 			try
 			{
-				Thread.sleep(1000);
+				Thread.sleep(500);
 			}
 			catch (Throwable e)
 			{
@@ -44,7 +44,7 @@ public class VTRuntimeProcessExitListener implements Runnable
 			{
 				try
 				{
-					Thread.sleep(1000);
+					Thread.sleep(500);
 				}
 				catch (Throwable e)
 				{
