@@ -1,13 +1,10 @@
 package org.vate.network.nat.mapping;
 
 import java.net.InetAddress;
-import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import com.offbynull.portmapper.PortMapperFactory;
 import com.offbynull.portmapper.gateway.Bus;
 import com.offbynull.portmapper.gateway.Gateway;
@@ -46,7 +43,7 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
 		this.discoveryTime = discoveryTime;
 		// this.leaseTime = leaseTime;
 		this.intervalTime = intervalTime;
-		this.currentMappedPorts = Collections.synchronizedMap(new LinkedHashMap<PortMapper, MappedPort>());
+		this.currentMappedPorts = new LinkedHashMap<PortMapper, MappedPort>();
 		//this.externalNetworkAddresses = Collections.synchronizedSet(new LinkedHashSet<InetAddress>());
 		networkGateway = NetworkGateway.create();
 		processGateway = ProcessGateway.create();
@@ -184,90 +181,103 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
 	public void run()
 	{
 		//System.out.println("VTNATSinglePortMappingManagerMKII.run");
+		boolean clear = false; 
+		Map<PortMapper, MappedPort> nextMappedPorts = new LinkedHashMap<PortMapper, MappedPort>();
+		
 		while (running)
 		{
 			//System.out.println("VTNATSinglePortMappingManagerMKII.running");
-			synchronized (currentMappedPorts)
+			clear = false;
+			if (nextPortMapping != null)
 			{
-				if (nextPortMapping != null)
+				if (nextPortMapping != null && (currentPortMapping == null || !nextPortMapping.equals(currentPortMapping)))
 				{
-					if (nextPortMapping != null && (currentPortMapping == null || !nextPortMapping.equals(currentPortMapping)))
+					//detected change in port mappings
+					//System.out.println("VTNATSinglePortMappingManagerMKII.detect");
+					deletedPortMapping = currentPortMapping;
+				}
+			}
+			
+			if (deletedPortMapping != null)
+			{
+				//delete current mappings
+				//System.out.println("VTNATSinglePortMappingManagerMKII.delete");
+				for (Entry<PortMapper, MappedPort> entry : currentMappedPorts.entrySet())
+				{
+					try
 					{
-						//detected change in port mappings
-						//System.out.println("VTNATSinglePortMappingManagerMKII.detect");
-						deletedPortMapping = currentPortMapping;
+						entry.getKey().unmapPort(entry.getValue());
+					}
+					catch (Throwable t)
+					{
+						//t.printStackTrace();
 					}
 				}
-				
-				if (deletedPortMapping != null)
+				clear = true;
+			}
+			
+			if (nextPortMapping != null && !nextPortMapping.equals(currentPortMapping))
+			{
+				//add new mappings
+				//System.out.println("VTNATSinglePortMappingManagerMKII.add");
+				List<PortMapper> natDevices = discoverNATDevices();
+				//System.out.println("natDevices:" + natDevices.size());
+				clear = true;
+				nextMappedPorts.clear();
+				for (PortMapper natDevice : natDevices)
 				{
-					//delete current mappings
-					//System.out.println("VTNATSinglePortMappingManagerMKII.delete");
+					try
+					{
+						//System.out.println("natDevice:" + natDevice.toString());
+						MappedPort natPortMapping = natDevice.mapPort(PortType.TCP, nextPortMapping.getInternalPort(), nextPortMapping.getExternalPort(), 0);
+						//VTConsole.println("natPortMapping:" + natPortMapping.toString());
+						nextMappedPorts.put(natDevice, natPortMapping);
+					}
+					catch (Throwable t)
+					{
+						//t.printStackTrace();
+					}
+				}
+				currentPortMapping = nextPortMapping;
+				if (resultNotify != null)
+				{
+					resultNotify.result(currentMappedPorts);
+				}
+			}
+			else
+			{
+				if (currentPortMapping != null)
+				{
+					//System.out.println("VTNATSinglePortMappingManagerMKII.refresh");
 					for (Entry<PortMapper, MappedPort> entry : currentMappedPorts.entrySet())
 					{
 						try
 						{
-							entry.getKey().unmapPort(entry.getValue());
+							entry.getKey().refreshPort(entry.getValue(), 0);
 						}
 						catch (Throwable t)
 						{
 							//t.printStackTrace();
 						}
-					}
-					currentMappedPorts.clear();
-				}
-				
-				if (nextPortMapping != null && !nextPortMapping.equals(currentPortMapping))
-				{
-					//add new mappings
-					//System.out.println("VTNATSinglePortMappingManagerMKII.add");
-					List<PortMapper> natDevices = discoverNATDevices();
-					//System.out.println("natDevices:" + natDevices.size());
-					currentMappedPorts.clear();
-					for (PortMapper natDevice : natDevices)
-					{
-						try
-						{
-							//System.out.println("natDevice:" + natDevice.toString());
-							MappedPort natPortMapping = natDevice.mapPort(PortType.TCP, nextPortMapping.getInternalPort(), nextPortMapping.getExternalPort(), 0);
-							//VTConsole.println("natPortMapping:" + natPortMapping.toString());
-							currentMappedPorts.put(natDevice, natPortMapping);
-						}
-						catch (Throwable t)
-						{
-							//t.printStackTrace();
-						}
-					}
-					currentPortMapping = nextPortMapping;
-					if (resultNotify != null)
-					{
-						resultNotify.result(currentMappedPorts);
 					}
 				}
 				else
 				{
-					if (currentPortMapping != null)
-					{
-						//System.out.println("VTNATSinglePortMappingManagerMKII.refresh");
-						for (Entry<PortMapper, MappedPort> entry : currentMappedPorts.entrySet())
-						{
-							try
-							{
-								entry.getKey().refreshPort(entry.getValue(), 0);
-							}
-							catch (Throwable t)
-							{
-								//t.printStackTrace();
-							}
-						}
-					}
-					else
-					{
-						//System.out.println("VTNATSinglePortMappingManagerMKII.nothing");
-					}
+					//System.out.println("VTNATSinglePortMappingManagerMKII.nothing");
 				}
-				
+			}
 				//System.out.println("VTNATSinglePortMappingManagerMKII.wait");
+			synchronized (currentMappedPorts)
+			{
+				if (clear)
+				{
+					currentMappedPorts.clear();
+				}
+				if (nextMappedPorts.size() > 0)
+				{
+					currentMappedPorts.putAll(nextMappedPorts);
+					nextMappedPorts.clear();
+				}
 				try
 				{
 					currentMappedPorts.wait(intervalTime * 1000);

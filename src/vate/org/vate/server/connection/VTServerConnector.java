@@ -1,6 +1,7 @@
 package org.vate.server.connection;
 
 import java.net.Authenticator;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ServerSocket;
@@ -10,6 +11,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+
 import org.vate.VT;
 import org.vate.console.VTConsole;
 import org.vate.network.nat.mapping.VTNATPortMappingResultNotify;
@@ -21,6 +24,7 @@ import com.offbynull.portmapper.mapper.PortMapper;
 public class VTServerConnector implements Runnable
 {
 	private volatile boolean passive;
+	private volatile boolean connecting = false;
 	private String hostAddress;
 	private Integer hostPort;
 	private Integer natPort;
@@ -37,7 +41,7 @@ public class VTServerConnector implements Runnable
 	private List<VTServerConnectionHandler> connectionHandlers;
 	private VTNATSinglePortMappingManagerMKII portMappingManager;
 	private VTServer server;
-	private VTServerConnectorNATPortMappingResultNotify natResultNotify = new VTServerConnectorNATPortMappingResultNotify();
+	private VTServerConnectorNATPortMappingResultNotify natNotify = new VTServerConnectorNATPortMappingResultNotify();
 	
 	public VTServerConnector(VTServer server)
 	{
@@ -51,7 +55,32 @@ public class VTServerConnector implements Runnable
 	{
 		public void result(Map<PortMapper, MappedPort> currentMappedPorts)
 		{
-			
+			if (currentMappedPorts != null && currentMappedPorts.size() > 0)
+			{
+				List<String> externalHosts = new LinkedList<String>();
+				for (Entry<PortMapper, MappedPort> entry : currentMappedPorts.entrySet())
+				{
+					InetAddress address = entry.getValue().getExternalAddress();
+					if (address != null)
+					{
+						externalHosts.add(address.getHostAddress());
+					}
+				}
+				StringBuilder natHosts = new StringBuilder("[");
+				for (String address : externalHosts)
+				{
+					natHosts.append(address + ",");
+				}
+				if (natHosts.length() > 1)
+				{
+					natHosts.deleteCharAt(natHosts.length() - 1);
+				}
+				natHosts.append("]");
+				if (externalHosts.size() > 0 && passive && (connecting || !connecting))
+				{
+					VTConsole.print("\rVT>Configured NAT hosts:" + natHosts + "\nVT>");
+				}
+			}
 		}
 	}
 	
@@ -372,7 +401,6 @@ public class VTServerConnector implements Runnable
 	{
 		VTConsole.print("\rVT>Listening to connections with clients...\nVT>");
 		connection.closeSockets();
-		
 		if (!setServerSocket(hostAddress, hostPort != null && hostPort > 0 ? hostPort : 6060))
 		{
 			return false;
@@ -382,14 +410,16 @@ public class VTServerConnector implements Runnable
 			resetSockets(connection);
 			if (natPort != null && natPort > 0)
 			{
-				portMappingManager.setPortMapping(hostPort != null && hostPort > 0 ? hostPort : 6060, null, natPort, "TCP", "Variable-Terminal-Port-Mapping", natResultNotify);
+				portMappingManager.setPortMapping(hostPort != null && hostPort > 0 ? hostPort : 6060, null, natPort, "TCP", "Variable-Terminal-Port-Mapping", natNotify);
 			}
 			else
 			{
 				portMappingManager.deletePortMapping();
 			}
 			connectionServerSocket.setSoTimeout(0);
+			connecting = true;
 			connection.setConnectionSocket(connectionServerSocket.accept());
+			connecting = false;
 			connection.getConnectionSocket().setTcpNoDelay(true);
 			connection.getConnectionSocket().setKeepAlive(true);
 			connection.getConnectionSocket().setSoLinger(true, 0);
@@ -456,7 +486,9 @@ public class VTServerConnector implements Runnable
 				socketAddress = new InetSocketAddress(address, port);
 			}
 			// connection.getShellSocket().setPerformancePreferences(1, 3, 2);
+			connecting = true;
 			connection.getConnectionSocket().connect(socketAddress);
+			connecting = false;
 			connection.getConnectionSocket().setTcpNoDelay(true);
 			connection.getConnectionSocket().setKeepAlive(true);
 			connection.getConnectionSocket().setSoLinger(true, 0);
@@ -588,6 +620,7 @@ public class VTServerConnector implements Runnable
 			{
 				
 			}
+			connecting = false;
 		}
 	}
 }
