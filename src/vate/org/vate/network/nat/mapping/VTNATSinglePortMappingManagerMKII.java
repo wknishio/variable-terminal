@@ -1,11 +1,13 @@
 package org.vate.network.nat.mapping;
 
 import java.net.InetAddress;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
+import java.util.Set;
 import com.offbynull.portmapper.PortMapperFactory;
 import com.offbynull.portmapper.gateway.Bus;
 import com.offbynull.portmapper.gateway.Gateway;
@@ -26,6 +28,7 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
 	private volatile VTNATPortMapping deletedPortMapping;
 	private volatile VTNATPortMapping currentPortMapping;
 	private volatile VTNATPortMapping nextPortMapping;
+	private volatile VTNATPortMappingResultNotify resultNotify;
 	
 	//private volatile InternetGatewayDevice[] upnpDevices;
 	//private volatile InetAddress[] natpmpGateways;
@@ -36,13 +39,15 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
 	private Bus processBus;
 	
 	private Map<PortMapper, MappedPort> currentMappedPorts;
-	
+	//private Set<InetAddress> externalNetworkAddresses;
+
 	public VTNATSinglePortMappingManagerMKII(int discoveryTime, int intervalTime)
 	{
 		this.discoveryTime = discoveryTime;
 		// this.leaseTime = leaseTime;
 		this.intervalTime = intervalTime;
-		this.currentMappedPorts = new LinkedHashMap<PortMapper, MappedPort>();
+		this.currentMappedPorts = Collections.synchronizedMap(new LinkedHashMap<PortMapper, MappedPort>());
+		//this.externalNetworkAddresses = Collections.synchronizedSet(new LinkedHashSet<InetAddress>());
 		networkGateway = NetworkGateway.create();
 		processGateway = ProcessGateway.create();
 		networkBus = networkGateway.getBus();
@@ -122,8 +127,9 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
 		return intervalTime;
 	}
 	
-	public void setPortMapping(int internalPort, String remoteHost, int externalPort, String protocol, String description)
+	public void setPortMapping(int internalPort, String remoteHost, int externalPort, String protocol, String description, VTNATPortMappingResultNotify resultNotify)
 	{
+		this.resultNotify = resultNotify;
 		VTNATPortMapping mapping = new VTNATPortMapping(internalPort, remoteHost, externalPort, protocol, description);
 		synchronized (currentMappedPorts)
 		{
@@ -216,6 +222,7 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
 					//add new mappings
 					//System.out.println("VTNATSinglePortMappingManagerMKII.add");
 					List<PortMapper> natDevices = discoverNATDevices();
+					//System.out.println("natDevices:" + natDevices.size());
 					currentMappedPorts.clear();
 					for (PortMapper natDevice : natDevices)
 					{
@@ -223,7 +230,7 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
 						{
 							//System.out.println("natDevice:" + natDevice.toString());
 							MappedPort natPortMapping = natDevice.mapPort(PortType.TCP, nextPortMapping.getInternalPort(), nextPortMapping.getExternalPort(), 0);
-							//System.out.println("natPortMapping:" + natPortMapping.toString());
+							//VTConsole.println("natPortMapping:" + natPortMapping.toString());
 							currentMappedPorts.put(natDevice, natPortMapping);
 						}
 						catch (Throwable t)
@@ -232,6 +239,10 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
 						}
 					}
 					currentPortMapping = nextPortMapping;
+					if (resultNotify != null)
+					{
+						resultNotify.result(currentMappedPorts);
+					}
 				}
 				else
 				{

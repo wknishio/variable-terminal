@@ -6,11 +6,14 @@ import java.net.Proxy;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-
+import java.util.Map;
 import org.vate.VT;
 import org.vate.client.VTClient;
 import org.vate.console.VTConsole;
+import org.vate.network.nat.mapping.VTNATPortMappingResultNotify;
 import org.vate.network.nat.mapping.VTNATSinglePortMappingManagerMKII;
+import com.offbynull.portmapper.mapper.MappedPort;
+import com.offbynull.portmapper.mapper.PortMapper;
 
 public class VTClientConnector implements Runnable
 {
@@ -38,6 +41,7 @@ public class VTClientConnector implements Runnable
 	private VTConnectionRetryTimeoutTask connectionRetryTimeoutTask = new VTConnectionRetryTimeoutTask();
 	private volatile boolean retry = false;
 	private volatile boolean dialog = false;
+	private VTClientConnectorNATPortMappingResultNotify natResultNotify = new VTClientConnectorNATPortMappingResultNotify();
 	
 	public VTClientConnector(VTClient client)
 	{
@@ -46,6 +50,14 @@ public class VTClientConnector implements Runnable
 		this.handler = new VTClientConnectionHandler(client, connection);
 		portMappingManager = new VTNATSinglePortMappingManagerMKII(3, 60);
 		portMappingManager.start();
+	}
+	
+	private class VTClientConnectorNATPortMappingResultNotify implements VTNATPortMappingResultNotify
+	{
+		public void result(Map<PortMapper, MappedPort> currentMappedPorts)
+		{
+			
+		}
 	}
 	
 	private class VTConnectionRetryTimeoutTask implements Runnable
@@ -239,7 +251,7 @@ public class VTClientConnector implements Runnable
 		this.natPort = natPort;
 		if (natPort != null && natPort > 0)
 		{
-			portMappingManager.setPortMapping(hostPort != null && hostPort > 0 ? hostPort : 6060, null, natPort, "TCP", "Variable-Terminal-Port-Mapping");
+			//portMappingManager.setPortMapping(hostPort != null && hostPort > 0 ? hostPort : 6060, null, natPort, "TCP", "Variable-Terminal-Port-Mapping");
 		}
 		else
 		{
@@ -530,7 +542,7 @@ public class VTClientConnector implements Runnable
 			resetSockets(connection);
 			if (natPort != null && natPort > 0)
 			{
-				portMappingManager.setPortMapping(hostPort != null && hostPort > 0 ? hostPort : 6060, null, natPort, "TCP", "Variable-Terminal-Port-Mapping");
+				portMappingManager.setPortMapping(hostPort != null && hostPort > 0 ? hostPort : 6060, null, natPort, "TCP", "Variable-Terminal-Port-Mapping", natResultNotify);
 			}
 			else
 			{
