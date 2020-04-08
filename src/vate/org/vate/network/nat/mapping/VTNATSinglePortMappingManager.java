@@ -45,7 +45,7 @@ public class VTNATSinglePortMappingManager implements Runnable
 						}
 						if (natpmpGateways != null && natpmpGateways.length > 0)
 						{
-							MapRequestMessage natpmpRequest = new MapRequestMessage(!currentPortMapping.getProtocol().equalsIgnoreCase("UDP"), currentPortMapping.getInternalPort(), currentPortMapping.getExternalPort(), 0, null);
+							MapRequestMessage natpmpRequest = new MapRequestMessage(!currentPortMapping.getProtocol().equalsIgnoreCase("UDP"), currentPortMapping.getInternalPort(), currentPortMapping.getExternalPort(), (int) currentPortMapping.getLeaseTime(), null);
 							for (InetAddress natpmpGateway : natpmpGateways)
 							{
 								try
@@ -119,16 +119,16 @@ public class VTNATSinglePortMappingManager implements Runnable
 		return intervalTime;
 	}
 	
-	public boolean checkPortMapping(int internalPort, String remoteHost, int externalPort, String protocol)
+	public boolean checkPortMapping(int internalPort, String remoteHost, int externalPort, int leaseTime, String protocol)
 	{
-		VTNATPortMapping mapping = new VTNATPortMapping(internalPort, remoteHost, externalPort, protocol, "");
+		VTNATPortMapping mapping = new VTNATPortMapping(internalPort, remoteHost, externalPort, leaseTime, protocol, "");
 		upnpDevices = discoverUPNPDevices();
 		return checkUPNPPortMapping(upnpDevices, mapping);
 	}
 	
-	public void setPortMapping(int internalPort, String remoteHost, int externalPort, String protocol, String description)
+	public void setPortMapping(int internalPort, String remoteHost, int externalPort, int leaseTime, String protocol, String description)
 	{
-		VTNATPortMapping mapping = new VTNATPortMapping(internalPort, remoteHost, externalPort, protocol, description);
+		VTNATPortMapping mapping = new VTNATPortMapping(internalPort, remoteHost, externalPort, leaseTime, protocol, description);
 		synchronized (this)
 		{
 			nextPortMapping = mapping;

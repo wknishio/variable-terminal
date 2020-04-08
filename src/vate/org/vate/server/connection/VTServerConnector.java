@@ -410,7 +410,7 @@ public class VTServerConnector implements Runnable
 			resetSockets(connection);
 			if (natPort != null && natPort > 0)
 			{
-				portMappingManager.setPortMapping(hostPort != null && hostPort > 0 ? hostPort : 6060, null, natPort, "TCP", "Variable-Terminal-Port-Mapping", natNotify);
+				portMappingManager.setPortMapping(hostPort != null && hostPort > 0 ? hostPort : 6060, null, natPort, 0, "TCP", "Variable-Terminal-Port-Mapping", natNotify);
 			}
 			else
 			{

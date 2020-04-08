@@ -5,14 +5,16 @@ public class VTNATPortMapping
 	private int internalPort;
 	private String remoteHost;
 	private int externalPort;
+	private long leaseTime;
 	private String protocol;
 	private String description;
 	
-	public VTNATPortMapping(int internalPort, String remoteHost, int externalPort, String protocol, String description)
+	public VTNATPortMapping(int internalPort, String remoteHost, int externalPort, long leaseTime, String protocol, String description)
 	{
 		this.internalPort = internalPort;
 		this.remoteHost = remoteHost;
 		this.externalPort = externalPort;
+		this.leaseTime = leaseTime;
 		this.protocol = protocol;
 		this.description = description;
 	}
@@ -42,9 +44,14 @@ public class VTNATPortMapping
 		return description;
 	}
 	
+	public long getLeaseTime()
+	{
+		return leaseTime;
+	}
+	
 	public String toString()
 	{
-		return protocol + ";" + internalPort + ";" + remoteHost + ";" + externalPort + ";" + description;
+		return protocol + ";" + internalPort + ";" + remoteHost + ";" + externalPort + ";" + leaseTime + ";" + description;
 	}
 	
 	public boolean equals(Object other)
@@ -55,4 +62,6 @@ public class VTNATPortMapping
 		}
 		return toString().equals(other.toString());
 	}
+
+	
 }
