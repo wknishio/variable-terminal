@@ -24,6 +24,7 @@ import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.graphics.ThemeDefinition;
 import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 import java.awt.Adjustable;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
@@ -99,6 +100,37 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
             preferredSize = new TerminalSize(Math.max(10, longestRow), lines.size());
         }
         setPreferredSize(preferredSize);
+    }
+    
+    public boolean isMovementKeyStroke(KeyStroke keyStroke)
+    {
+    	if (keyStroke.getKeyType() != KeyType.ArrowDown
+		&& keyStroke.getKeyType() != KeyType.ArrowUp
+		&& keyStroke.getKeyType() != KeyType.ArrowLeft
+		&& keyStroke.getKeyType() != KeyType.ArrowRight
+		&& keyStroke.getKeyType() != KeyType.PageDown
+		&& keyStroke.getKeyType() != KeyType.PageUp
+		&& keyStroke.getKeyType() != KeyType.Home
+		&& keyStroke.getKeyType() != KeyType.End)
+    	{
+    		return false;
+    	}
+    	return true;
+    }
+        
+    public void updateSelection(KeyStroke keyStroke)
+    {
+    	if (keyStroke.isShiftDown() || keyStroke.getKeyType() == KeyType.MouseEvent)
+    	{
+    		if (getSelectionStartPosition() != null)
+    		{
+    			setSelectionEndPosition(getCaretPosition());
+    		}
+    		else
+    		{
+    			setSelectionStartPosition(getCaretPosition());
+    		}
+    	}
     }
     
     public void setVerticalAdjustable(Adjustable adjustable)
@@ -581,9 +613,10 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
     	//renderer.setTerminal(terminal);
         return renderer;
     }
-
+    
     
     public synchronized Result handleKeyStroke(KeyStroke keyStroke) {
+    	//System.out.println("TextBoxModified." + keyStroke);
         if(readOnly) {
             return handleKeyStrokeReadOnly(keyStroke);
         	//handleKeyStrokeReadOnly(keyStroke);
@@ -625,6 +658,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                         lines.set(caretPosition.getRow(), concatenatedLines);
                     }
                 }
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case Delete:
                 if(caretPosition.getColumn() < line.length()) {
@@ -640,6 +674,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                         lines.remove(caretPosition.getRow() + 1);
                     }
                 }
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case ArrowLeft:
                 if(caretPosition.getColumn() > 0) {
@@ -652,6 +687,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                 else if(horizontalFocusSwitching) {
                     return Result.MOVE_FOCUS_LEFT;
                 }
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case ArrowRight:
                 if(caretPosition.getColumn() < lines.get(caretPosition.getRow()).length()) {
@@ -664,6 +700,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                 else if(horizontalFocusSwitching) {
                     return Result.MOVE_FOCUS_RIGHT;
                 }
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case ArrowUp:
                 if(caretPosition.getRow() > 0) {
@@ -680,6 +717,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                 else if(verticalFocusSwitching) {
                     return Result.MOVE_FOCUS_UP;
                 }
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case ArrowDown:
                 if(caretPosition.getRow() < lines.size() - 1) {
@@ -696,9 +734,11 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                 else if(verticalFocusSwitching) {
                     return Result.MOVE_FOCUS_DOWN;
                 }
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case End:
                 caretPosition = caretPosition.withColumn(line.length());
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case Enter:
                 if(style == Style.SINGLE_LINE) {
@@ -711,9 +751,11 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                     lines.add(caretPosition.getRow() + 1, newLine);
                     caretPosition = caretPosition.withColumn(0).withRelativeRow(1);
                 }
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case Home:
                 caretPosition = caretPosition.withColumn(0);
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case PageDown:
                 caretPosition = caretPosition.withRelativeRow(getSize().getRows());
@@ -723,6 +765,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                 if(lines.get(caretPosition.getRow()).length() < caretPosition.getColumn()) {
                     caretPosition = caretPosition.withColumn(lines.get(caretPosition.getRow()).length());
                 }
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case PageUp:
                 caretPosition = caretPosition.withRelativeRow(-getSize().getRows());
@@ -732,9 +775,11 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                 if(lines.get(caretPosition.getRow()).length() < caretPosition.getColumn()) {
                     caretPosition = caretPosition.withColumn(lines.get(caretPosition.getRow()).length());
                 }
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             default:
         }
+        //System.out.println("super");
         return super.handleKeyStroke(keyStroke);
     }
 
@@ -1206,5 +1251,62 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
 	public boolean selectingText()
 	{
 		return (selectionStartPosition != null) && (selectionEndPosition != null);
+	}
+	
+	public String getSelectedText()
+	{
+		StringBuilder data = new StringBuilder("");
+		if (selectingText())
+		{
+			try
+			{
+				int minX = getMinColumn();
+				int maxX = getMaxColumn() + 1;
+				int minY = getMinRow();
+				int maxY = getMaxRow();
+				//System.out.println("minX:[" + minX + "]");
+				//System.out.println("maxX:[" + maxX + "]");
+				int start = 0;
+				int end = 0;
+				for (int row = minY; row <= maxY; row++)
+				{
+					if (row < lines.size())
+					{
+						try
+						{
+							String line = lines.get(row);
+							if (line != null)
+							{
+								start = Math.min(minX, line.length());
+								end = Math.min(maxX, line.length());
+								data.append(line.substring(start, end) + "\n");
+							}
+						}
+						catch (Throwable t)
+						{
+							//t.printStackTrace();
+						}
+					}
+					else
+					{
+						break;
+					}
+				}
+			}
+			catch (Throwable t)
+			{
+				
+			}
+			if (data.length() > 0)
+			{
+				data.deleteCharAt(data.length() - 1);
+			}
+		}
+		else
+		{
+			
+		}
+		//System.out.println("getSelectedText():[" + data.toString() + "]");
+		return data.toString();
 	}
 }

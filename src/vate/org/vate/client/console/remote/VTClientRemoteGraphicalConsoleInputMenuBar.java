@@ -398,11 +398,11 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 			}
 		});
 		
-		textActionsMenu.add(textActionAllMenu);
 		textActionsMenu.add(textActionCopyMenu);
 		textActionsMenu.add(textActionPasteMenu);
 		textActionsMenu.add(textActionInsertMenu);
 		textActionsMenu.add(textActionBreakMenu);
+		textActionsMenu.add(textActionAllMenu);
 		
 		this.add(textActionsMenu);
 		

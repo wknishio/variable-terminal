@@ -35,11 +35,11 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
 	{
 		this.frame = frame;
 		// this.keyListener = keyListener;
-		copy = new MenuItem("Copy");
-		paste = new MenuItem("Paste");
-		all = new MenuItem("All");
-		insert = new MenuItem("Insert");
-		scroll = new MenuItem("Break");
+		copy = new MenuItem("Copy ");
+		paste = new MenuItem("Paste ");
+		all = new MenuItem("All ");
+		insert = new MenuItem("Insert ");
+		scroll = new MenuItem("Break ");
 		//expand = new MenuItem("Expand");
 		//reduce = new MenuItem("Reduce");
 		// scroll = new CheckboxMenuItem("Scroll", false);
@@ -80,11 +80,11 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
 		// int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
 		// double factor = dpi / 96;
 		// this.setFont(new Font("Dialog", Font.PLAIN, 12));
-		this.add(all);
 		this.add(copy);
 		this.add(paste);
 		this.add(insert);
 		this.add(scroll);
+		this.add(all);
 		//this.insert(expand, 4);
 		//this.insert(reduce, 5);
 		// this.insert(scroll, 2);

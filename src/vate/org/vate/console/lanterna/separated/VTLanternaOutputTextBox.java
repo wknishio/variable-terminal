@@ -161,6 +161,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
     }
 	
 	public synchronized Result handleKeyStroke(KeyStroke keyStroke) {
+		//System.out.println("LanternaOutputTextBox." + keyStroke);
         if(readOnly) {
             return handleKeyStrokeReadOnly(keyStroke);
         	//handleKeyStrokeReadOnly(keyStroke);
@@ -202,6 +203,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
                         lines.set(caretPosition.getRow(), concatenatedLines);
                     }
                 }
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case Delete:
                 if(caretPosition.getColumn() < line.length()) {
@@ -229,6 +231,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
                 else if(horizontalFocusSwitching) {
                     return Result.MOVE_FOCUS_LEFT;
                 }
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case ArrowRight:
                 //if(caretPosition.getColumn() < lines.get(caretPosition.getRow()).length()) {
@@ -245,6 +248,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
                 else if(horizontalFocusSwitching) {
                     return Result.MOVE_FOCUS_RIGHT;
                 }
+            	updateSelection(keyStroke);
                 return Result.HANDLED;
             case ArrowUp:
                 if(caretPosition.getRow() > 0) {
@@ -263,6 +267,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
                 else if(verticalFocusSwitching) {
                     return Result.MOVE_FOCUS_UP;
                 }
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case ArrowDown:
                 if(caretPosition.getRow() < lines.size() - 1) {
@@ -282,9 +287,11 @@ public class VTLanternaOutputTextBox extends TextBoxModified
                 else if(verticalFocusSwitching) {
                     return Result.MOVE_FOCUS_DOWN;
                 }
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case End:
                 caretPosition = caretPosition.withColumn(longestRow);
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case Enter:
                 if(style == Style.SINGLE_LINE) {
@@ -297,9 +304,11 @@ public class VTLanternaOutputTextBox extends TextBoxModified
                     lines.add(caretPosition.getRow() + 1, newLine);
                     caretPosition = caretPosition.withColumn(0).withRelativeRow(1);
                 }
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case Home:
                 caretPosition = caretPosition.withColumn(0);
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case PageDown:
                 caretPosition = caretPosition.withRelativeRow(getSize().getRows());
@@ -309,6 +318,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
                 //if(lines.get(caretPosition.getRow()).length() < caretPosition.getColumn()) {
                     //caretPosition = caretPosition.withColumn(lines.get(caretPosition.getRow()).length());
                 //}
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             case PageUp:
                 caretPosition = caretPosition.withRelativeRow(-getSize().getRows());
@@ -318,6 +328,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
                 //if(lines.get(caretPosition.getRow()).length() < caretPosition.getColumn()) {
                     //caretPosition = caretPosition.withColumn(lines.get(caretPosition.getRow()).length());
                 //}
+                updateSelection(keyStroke);
                 return Result.HANDLED;
             default:
         }
@@ -1170,10 +1181,11 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 		return inputBuffer;
 	}
 	
-	public StringBuilder handleDataInput(StringBuilder inputBuffer, KeyType keytype)
+	public StringBuilder handleDataInput(StringBuilder inputBuffer, KeyStroke keyStroke)
 	{
 		int column = hiddenColumn;
-		if (keytype == KeyType.Backspace)
+		KeyType keyType = keyStroke.getKeyType();
+		if (keyType == KeyType.Backspace)
 		{
 			if (inputBuffer.length() > 0 && column > 0)
 			{
@@ -1181,35 +1193,36 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 				hiddenColumn--;
 			}
 		}
-		if (keytype == KeyType.Delete)
+		if (keyType == KeyType.Delete)
 		{
 			if (inputBuffer.length() > 0 && column < inputBuffer.length())
 			{
 				inputBuffer.deleteCharAt(column);
 			}
 		}
-		if (keytype == KeyType.ArrowLeft)
+		if (keyType == KeyType.ArrowLeft)
 		{
 			if (column > 0)
 			{
 				hiddenColumn--;
 			}
 		}
-		if (keytype == KeyType.ArrowRight)
+		if (keyType == KeyType.ArrowRight)
 		{
 			if (column < inputBuffer.length())
 			{
 				hiddenColumn++;
 			}
 		}
-		if (keytype == KeyType.Home)
+		if (keyType == KeyType.Home)
 		{
 			hiddenColumn = 0;
 		}
-		if (keytype == KeyType.Home)
+		if (keyType == KeyType.Home)
 		{
 			hiddenColumn = inputBuffer.length();
 		}
+		updateSelection(keyStroke);
 		return inputBuffer;
 	}
     /**
