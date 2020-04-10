@@ -82,9 +82,9 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
 		// this.setFont(new Font("Dialog", Font.PLAIN, 12));
 		this.add(copy);
 		this.add(paste);
-		this.add(insert);
-		this.add(scroll);
 		this.add(all);
+		this.add(scroll);
+		this.add(insert);
 		//this.insert(expand, 4);
 		//this.insert(reduce, 5);
 		// this.insert(scroll, 2);

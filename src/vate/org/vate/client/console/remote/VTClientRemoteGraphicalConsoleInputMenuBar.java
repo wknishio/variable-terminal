@@ -400,9 +400,9 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		
 		textActionsMenu.add(textActionCopyMenu);
 		textActionsMenu.add(textActionPasteMenu);
-		textActionsMenu.add(textActionInsertMenu);
-		textActionsMenu.add(textActionBreakMenu);
 		textActionsMenu.add(textActionAllMenu);
+		textActionsMenu.add(textActionBreakMenu);
+		textActionsMenu.add(textActionInsertMenu);
 		
 		this.add(textActionsMenu);
 		
