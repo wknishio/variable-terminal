@@ -806,7 +806,6 @@ public class VTFileTransferServerTransaction implements Runnable
 										if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
 										{
 											resumable = true;
-											currentOffset = remoteFileSize;
 										}
 										else
 										{
@@ -817,6 +816,10 @@ public class VTFileTransferServerTransaction implements Runnable
 								else
 								{
 									resumable = true;
+								}
+								//resumable = getContinueTransfer(resumable);
+								if (resumable)
+								{
 									currentOffset = remoteFileSize;
 								}
 							}
@@ -830,7 +833,6 @@ public class VTFileTransferServerTransaction implements Runnable
 										if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
 										{
 											resumable = true;
-											currentOffset = localFileSize;
 										}
 										else
 										{
@@ -841,6 +843,10 @@ public class VTFileTransferServerTransaction implements Runnable
 								else
 								{
 									resumable = true;
+								}
+								resumable = getContinueTransfer(resumable);
+								if (resumable)
+								{
 									currentOffset = localFileSize;
 								}
 							}
@@ -1226,7 +1232,6 @@ public class VTFileTransferServerTransaction implements Runnable
 										if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
 										{
 											resumable = true;
-											currentOffset = localFileSize;
 										}
 										else
 										{
@@ -1237,6 +1242,10 @@ public class VTFileTransferServerTransaction implements Runnable
 								else
 								{
 									resumable = true;
+								}
+								//resumable = getContinueTransfer(resumable);
+								if (resumable)
+								{
 									currentOffset = localFileSize;
 								}
 							}
@@ -1249,9 +1258,15 @@ public class VTFileTransferServerTransaction implements Runnable
 									{
 										if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
 										{
-											resumable = true;
-											currentOffset = remoteFileSize;
-											fileTransferRandomAccessFile.setLength(remoteFileSize);
+											try
+											{
+												fileTransferRandomAccessFile.setLength(remoteFileSize);
+												resumable = true;
+											}
+											catch (Throwable t)
+											{
+												
+											}
 										}
 										else
 										{
@@ -1261,9 +1276,20 @@ public class VTFileTransferServerTransaction implements Runnable
 								}
 								else
 								{
-									resumable = true;
+									try
+									{
+										fileTransferRandomAccessFile.setLength(remoteFileSize);
+										resumable = true;
+									}
+									catch (Throwable t)
+									{
+										
+									}
+								}
+								resumable = getContinueTransfer(resumable);
+								if (resumable)
+								{
 									currentOffset = remoteFileSize;
-									fileTransferRandomAccessFile.setLength(remoteFileSize);
 								}
 							}
 						}
