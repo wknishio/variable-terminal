@@ -791,23 +791,16 @@ public class VTFileTransferClientTransaction implements Runnable
 							{
 								if (check)
 								{
-									// VTConsole.print("\nVT>Checking file
-									// transfer resume possibility...\nVT>");
 									if (getFileChecksums())
 									{
 										if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
 										{
 											resumable = true;
 											currentOffset = remoteFileSize;
-											// VTConsole.print("\nVT>File
-											// transfer resume
-											// possible!\nVT>");
 										}
 										else
 										{
-											// VTConsole.print("\nVT>File
-											// transfer resume not
-											// possible!\nVT>");
+											
 										}
 									}
 								}
@@ -815,14 +808,34 @@ public class VTFileTransferClientTransaction implements Runnable
 								{
 									resumable = true;
 									currentOffset = remoteFileSize;
-									// VTConsole.print("\nVT>Assuming file
-									// transfer resume as possible...\nVT>");
+								}
+							}
+							else if (remoteFileSize > localFileSize && remoteFileSize >= 0)
+							{
+								if (check)
+								{
+									//check if file will be truncated
+									if (getFileChecksums())
+									{
+										if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
+										{
+											resumable = true;
+											currentOffset = localFileSize;
+										}
+										else
+										{
+											
+										}
+									}
+								}
+								else
+								{
+									resumable = true;
+									currentOffset = localFileSize;
 								}
 							}
 						}
 						transferDataSize += localFileSize - currentOffset;
-						// VTConsole.print("\nVT>Local file for transfer size:
-						// [" + localFileSize + "] bytes\nVT>");
 						return true;
 					}
 					else if (verified && directory)
@@ -1185,23 +1198,16 @@ public class VTFileTransferClientTransaction implements Runnable
 							{
 								if (check)
 								{
-									// VTConsole.print("\nVT>Checking file
-									// transfer resume possibility...\nVT>");
 									if (getFileChecksums())
 									{
 										if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
 										{
 											resumable = true;
 											currentOffset = localFileSize;
-											// VTConsole.print("\nVT>File
-											// transfer resume
-											// possible!\nVT>");
 										}
 										else
 										{
-											// VTConsole.print("\nVT>File
-											// transfer resume not
-											// possible!\nVT>");
+											
 										}
 									}
 								}
@@ -1209,14 +1215,36 @@ public class VTFileTransferClientTransaction implements Runnable
 								{
 									resumable = true;
 									currentOffset = localFileSize;
-									// VTConsole.print("\nVT>Assuming file
-									// transfer resume as possible...\nVT>");
+								}
+							}
+							else if (localFileSize > remoteFileSize && localFileSize >= 0)
+							{
+								if (check)
+								{
+									//check if file will be truncated
+									if (getFileChecksums())
+									{
+										if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
+										{
+											resumable = true;
+											currentOffset = remoteFileSize;
+											fileTransferRandomAccessFile.setLength(remoteFileSize);
+										}
+										else
+										{
+											
+										}
+									}
+								}
+								else
+								{
+									resumable = true;
+									currentOffset = remoteFileSize;
+									fileTransferRandomAccessFile.setLength(remoteFileSize);
 								}
 							}
 						}
 						transferDataSize += remoteFileSize - currentOffset;
-						// VTConsole.print("\nVT>Remote file for transfer
-						// size: [" + remoteFileSize + "] bytes\nVT>");
 						return true;
 					}
 					else if (verified && directory)

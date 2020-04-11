@@ -801,24 +801,16 @@ public class VTFileTransferServerTransaction implements Runnable
 							{
 								if (check)
 								{
-									// session.getServer().getConnection().getResultWriter().write("\nVT>Checking
-									// resume possibility...\nVT>");
-									// session.getServer().getConnection().getResultWriter().flush();
 									if (getFileChecksums())
 									{
 										if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
 										{
 											resumable = true;
 											currentOffset = remoteFileSize;
-											// session.getServer().getConnection().getResultWriter().write("\nVT>Resume
-											// possible!\nVT>");
-											// session.getServer().getConnection().getResultWriter().flush();
 										}
 										else
 										{
-											// session.getServer().getConnection().getResultWriter().write("\nVT>Resume
-											// not possible!\nVT>");
-											// session.getServer().getConnection().getResultWriter().flush();
+											
 										}
 									}
 								}
@@ -828,11 +820,32 @@ public class VTFileTransferServerTransaction implements Runnable
 									currentOffset = remoteFileSize;
 								}
 							}
+							else if (remoteFileSize > localFileSize && remoteFileSize >= 0)
+							{
+								if (check)
+								{
+									//check if file will be truncated
+									if (getFileChecksums())
+									{
+										if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
+										{
+											resumable = true;
+											currentOffset = localFileSize;
+										}
+										else
+										{
+											
+										}
+									}
+								}
+								else
+								{
+									resumable = true;
+									currentOffset = localFileSize;
+								}
+							}
 						}
 						transferDataSize += localFileSize - currentOffset;
-						// session.getServer().getConnection().getResultWriter().write("\nVT>Remote
-						// file size: [" + localFileSize + "] bytes\nVT>");
-						// session.getServer().getConnection().getResultWriter().flush();
 						return true;
 					}
 					else if (verified && directory)
@@ -1208,24 +1221,16 @@ public class VTFileTransferServerTransaction implements Runnable
 							{
 								if (check)
 								{
-									// session.getServer().getConnection().getResultWriter().write("\nVT>Checking
-									// resume possibility...\nVT>");
-									// session.getServer().getConnection().getResultWriter().flush();
 									if (getFileChecksums())
 									{
 										if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
 										{
 											resumable = true;
 											currentOffset = localFileSize;
-											// session.getServer().getConnection().getResultWriter().write("\nVT>Resume
-											// possible!\nVT>");
-											// session.getServer().getConnection().getResultWriter().flush();
 										}
 										else
 										{
-											// session.getServer().getConnection().getResultWriter().write("\nVT>Resume
-											// not possible!\nVT>");
-											// session.getServer().getConnection().getResultWriter().flush();
+											
 										}
 									}
 								}
@@ -1235,12 +1240,34 @@ public class VTFileTransferServerTransaction implements Runnable
 									currentOffset = localFileSize;
 								}
 							}
+							else if (localFileSize > remoteFileSize && localFileSize >= 0)
+							{
+								if (check)
+								{
+									//check if file will be truncated
+									if (getFileChecksums())
+									{
+										if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
+										{
+											resumable = true;
+											currentOffset = remoteFileSize;
+											fileTransferRandomAccessFile.setLength(remoteFileSize);
+										}
+										else
+										{
+											
+										}
+									}
+								}
+								else
+								{
+									resumable = true;
+									currentOffset = remoteFileSize;
+									fileTransferRandomAccessFile.setLength(remoteFileSize);
+								}
+							}
 						}
 						transferDataSize += remoteFileSize - currentOffset;
-						// session.getServer().getConnection().getResultWriter().write("\nVT>Local
-						// file
-						// size: [" + remoteFileSize + "] bytes\nVT>");
-						// session.getServer().getConnection().getResultWriter().flush();
 						return true;
 					}
 					else if (verified && directory)
