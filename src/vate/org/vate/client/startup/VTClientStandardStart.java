@@ -3,7 +3,6 @@ package org.vate.client.startup;
 import org.vate.VT;
 import org.vate.client.VTClient;
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.help.VTHelpManager;
 
 public class VTClientStandardStart

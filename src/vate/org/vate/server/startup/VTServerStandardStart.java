@@ -2,7 +2,6 @@ package org.vate.server.startup;
 
 import org.vate.VT;
 import org.vate.console.VTConsole;
-import org.vate.console.graphical.VTGraphicalConsole;
 import org.vate.help.VTHelpManager;
 import org.vate.server.VTServer;
 
