@@ -89,7 +89,7 @@ public class VTACCESS extends VTServerStandardLocalConsoleCommandProcessor
 				message.append("\nVT>Proxy authentication(PA): [Disabled]");
 			}
 			message.append("\nVT>Proxy user(PU): [" + proxyUser + "]");
-			message.append("\nVT>Proxy password(PK): [" + proxyPassword + "]");
+			message.append("\nVT>Proxy password(PS): [" + proxyPassword + "]");
 			if (encryptionType.toUpperCase().startsWith("R"))
 			{
 				message.append("\nVT>Encryption type(ET): RC4");
@@ -102,7 +102,7 @@ public class VTACCESS extends VTServerStandardLocalConsoleCommandProcessor
 			{
 				message.append("\nVT>Encryption type(ET): [None]");
 			}
-			message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
+			message.append("\nVT>Encryption password(ES): [" + encryptionPassword + "]");
 			message.append("\nVT>Sessions limit(SL): [" + sessionsLimit + "]");
 			message.append("\nVT>\nVT>End of connection settings list on server\nVT>");
 			VTConsole.print(message.toString());
@@ -500,12 +500,12 @@ public class VTACCESS extends VTServerStandardLocalConsoleCommandProcessor
 					VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
 				}
 			}
-			else if (parsed[1].equalsIgnoreCase("PK"))
+			else if (parsed[1].equalsIgnoreCase("PS"))
 			{
 				if (parsed.length == 2)
 				{
 					String proxyPassword = server.getServerConnector().getProxyPassword();
-					VTConsole.print("\rVT>Proxy password(PK): [" + proxyPassword + "]\nVT>");
+					VTConsole.print("\rVT>Proxy password(PS): [" + proxyPassword + "]\nVT>");
 				}
 				else if (parsed.length >= 3)
 				{
@@ -517,7 +517,7 @@ public class VTACCESS extends VTServerStandardLocalConsoleCommandProcessor
 						connector.interruptConnector();
 						connector.notify();
 					}
-					VTConsole.print("\rVT>Proxy password(PK) set to: [" + proxyPassword + "]\nVT>");
+					VTConsole.print("\rVT>Proxy password(PS) set to: [" + proxyPassword + "]\nVT>");
 				}
 				else
 				{
@@ -570,7 +570,7 @@ public class VTACCESS extends VTServerStandardLocalConsoleCommandProcessor
 					VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
 				}
 			}
-			else if (parsed[1].equalsIgnoreCase("EK"))
+			else if (parsed[1].equalsIgnoreCase("ES"))
 			{
 				if (parsed.length == 2)
 				{
@@ -579,7 +579,7 @@ public class VTACCESS extends VTServerStandardLocalConsoleCommandProcessor
 					{
 						encryptionPassword = new String(server.getServerConnector().getEncryptionKey(), "UTF-8");
 					}
-					VTConsole.print("\rVT>Encryption password(EK): [" + encryptionPassword + "]\nVT>");
+					VTConsole.print("\rVT>Encryption password(ES): [" + encryptionPassword + "]\nVT>");
 				}
 				else if (parsed.length >= 3)
 				{
@@ -591,7 +591,7 @@ public class VTACCESS extends VTServerStandardLocalConsoleCommandProcessor
 						connector.interruptConnector();
 						connector.notify();
 					}
-					VTConsole.print("\rVT>Encryption password(EK) set to: [" + encryptionPassword + "]\nVT>");
+					VTConsole.print("\rVT>Encryption password(ES) set to: [" + encryptionPassword + "]\nVT>");
 				}
 				else
 				{

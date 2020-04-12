@@ -1638,7 +1638,7 @@ public class VTServer implements Runnable
 				parameterValue = parameters[++i];
 				encryptionType = parameterValue;
 			}
-			if (parameterName.contains("-EK"))
+			if (parameterName.contains("-ES"))
 			{
 				parameterValue = parameters[++i];
 				encryptionKey = parameterValue.getBytes("UTF-8");
@@ -1686,7 +1686,7 @@ public class VTServer implements Runnable
 				parameterValue = parameters[++i];
 				proxyUser = parameterValue;
 			}
-			if (parameterName.contains("-PK"))
+			if (parameterName.contains("-PS"))
 			{
 				parameterValue = parameters[++i];
 				proxyPassword = parameterValue;
@@ -1716,7 +1716,7 @@ public class VTServer implements Runnable
 					setUniqueUserCredential(parameterLogin, parameterPassword);
 				}
 			}
-			if (parameterName.contains("-AK"))
+			if (parameterName.contains("-AS"))
 			{
 				parameterValue = parameters[++i];
 				parameterPassword = parameterValue;

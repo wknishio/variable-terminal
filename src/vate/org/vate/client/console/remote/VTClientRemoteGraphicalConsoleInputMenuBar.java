@@ -195,9 +195,9 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Port", "*VTACCESS PP "));
 		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Authentication", "*VTACCESS PA "));
 		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy User", "*VTACCESS PU "));
-		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Password", "*VTACCESS PK "));
+		serverProxySettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Password", "*VTACCESS PS "));
 		serverEncryptionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Encryption Type", "*VTACCESS ET "));
-		serverEncryptionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Encryption Password", "*VTACCESS EK "));
+		serverEncryptionSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Encryption Password", "*VTACCESS ES "));
 		serverAuthenticationSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Single Login", "*VTLOCK "));
 		serverSessionsSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Sessions Limit", "*VTACCESS SL "));
 		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Save Settings File", "*VTACCESS SF "));

@@ -1904,7 +1904,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 					message.append("\nVT>Proxy authentication(PA): [Disabled]");
 				}
 				message.append("\nVT>Proxy user(PU): [" + proxyUser + "]");
-				message.append("\nVT>Proxy password(PK): [" + proxyPassword + "]");
+				message.append("\nVT>Proxy password(PS): [" + proxyPassword + "]");
 				if (encryptionType.toUpperCase().startsWith("R"))
 				{
 					message.append("\nVT>Encryption type(ET): [RC4]");
@@ -1917,7 +1917,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				{
 					message.append("\nVT>Encryption type(ET): [None]");
 				}
-				message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
+				message.append("\nVT>Encryption password(ES): [" + encryptionPassword + "]");
 				message.append("\nVT>Sessions limit(SL): [" + sessionsLimit + "]");
 				message.append("\nVT>\nVT>End of connection settings list on server\nVT>");
 				connection.getResultWriter().write(message.toString());
@@ -2356,12 +2356,12 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 						connection.getResultWriter().flush();
 					}
 				}
-				else if (parsed[1].equalsIgnoreCase("PK"))
+				else if (parsed[1].equalsIgnoreCase("PS"))
 				{
 					if (parsed.length == 2)
 					{
 						String proxyPassword = session.getServer().getServerConnector().getProxyPassword();
-						connection.getResultWriter().write("\nVT>Proxy password(PK): [" + proxyPassword + "]\nVT>");
+						connection.getResultWriter().write("\nVT>Proxy password(PS): [" + proxyPassword + "]\nVT>");
 						connection.getResultWriter().flush();
 					}
 					else if (parsed.length >= 3)
@@ -2374,7 +2374,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 							connector.interruptConnector();
 							connector.notify();
 						}
-						connection.getResultWriter().write("\nVT>Proxy password(PK) set to: [" + proxyPassword + "]\nVT>");
+						connection.getResultWriter().write("\nVT>Proxy password(PS) set to: [" + proxyPassword + "]\nVT>");
 						connection.getResultWriter().flush();
 					}
 					else
@@ -2436,7 +2436,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 						connection.getResultWriter().flush();
 					}
 				}
-				else if (parsed[1].equalsIgnoreCase("EK"))
+				else if (parsed[1].equalsIgnoreCase("ES"))
 				{
 					if (parsed.length == 2)
 					{
@@ -2445,7 +2445,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 						{
 							encryptionPassword = new String(session.getServer().getServerConnector().getEncryptionKey(), "UTF-8");
 						}
-						connection.getResultWriter().write("\nVT>Encryption password(EK): [" + encryptionPassword + "]\nVT>");
+						connection.getResultWriter().write("\nVT>Encryption password(ES): [" + encryptionPassword + "]\nVT>");
 						connection.getResultWriter().flush();
 					}
 					else if (parsed.length >= 3)
@@ -2458,7 +2458,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 							connector.interruptConnector();
 							connector.notify();
 						}
-						connection.getResultWriter().write("\nVT>Encryption password(EK) set to: [" + encryptionPassword + "]\nVT>");
+						connection.getResultWriter().write("\nVT>Encryption password(ES) set to: [" + encryptionPassword + "]\nVT>");
 						connection.getResultWriter().flush();
 					}
 					else

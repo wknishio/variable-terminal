@@ -91,9 +91,9 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Port", "*VTACCESS PP "));
 		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Authentication", "*VTACCESS PA "));
 		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy User", "*VTACCESS PU "));
-		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Password", "*VTACCESS PK "));
+		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Password", "*VTACCESS PS "));
 		serverEncryptionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Encryption Type", "*VTACCESS ET "));
-		serverEncryptionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Encryption Password", "*VTACCESS EK "));
+		serverEncryptionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Encryption Password", "*VTACCESS ES "));
 		serverAuthenticationSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Single Login", "*VTLOCK "));
 		serverSessionsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Sessions Limit", "*VTACCESS SL "));
 		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Save Settings File", "*VTACCESS SF "));
