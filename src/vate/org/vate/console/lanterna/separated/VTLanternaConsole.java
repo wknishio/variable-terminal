@@ -906,12 +906,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					if (mouse.getActionType() == MouseActionType.DRAG)
 					{
 						outputBox.takeFocus();
-						//if (!outputBox.selectingText())
-						//{
-							//resetSelection();
-							//outputBox.updateSelection(mouse);
-						//}
-						outputBox.updateSelection(mouse);
+						outputBox.updateSelection(mouse, topLeft.getColumn() + mouse.getPosition().getColumn(), topLeft.getRow() + mouse.getPosition().getRow());
 						outputBox.setCaretPosition(topLeft.getRow() + mouse.getPosition().getRow(), topLeft.getColumn() + mouse.getPosition().getColumn());
 						outputBox.setSelectionEndPosition(new TerminalPosition(topLeft.getColumn() + mouse.getPosition().getColumn(), topLeft.getRow() + mouse.getPosition().getRow()));
 						outputBox.invalidate();
@@ -1081,7 +1076,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 						int column = Math.min(location + mouse.getPosition().getColumn(), max);
 						
 						inputBox.takeFocus();
-						inputBox.updateSelection(mouse);
+						inputBox.updateSelection(mouse, topLeft.getColumn() + mouse.getPosition().getColumn(), topLeft.getRow() + mouse.getPosition().getRow());
 						inputBox.setHiddenColumn(column);
 						inputBox.setCaretPosition(column);
 						inputBox.setSelectionEndPosition(new TerminalPosition(column, 0));

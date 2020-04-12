@@ -1218,7 +1218,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 		{
 			hiddenColumn = 0;
 		}
-		if (keyType == KeyType.Home)
+		if (keyType == KeyType.End)
 		{
 			hiddenColumn = inputBuffer.length();
 		}

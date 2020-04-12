@@ -133,6 +133,21 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
     	}
     }
     
+    public void updateSelection(KeyStroke keyStroke, int x, int y)
+    {
+    	if (keyStroke.isShiftDown() || keyStroke.getKeyType() == KeyType.MouseEvent)
+    	{
+    		if (getSelectionStartPosition() != null)
+    		{
+    			setSelectionEndPosition(new TerminalPosition(x, y));
+    		}
+    		else
+    		{
+    			setSelectionStartPosition(new TerminalPosition(x, y));
+    		}
+    	}
+    }
+    
     public void setVerticalAdjustable(Adjustable adjustable)
     {
     	this.getRenderer().setVerticalAdjustable(adjustable);
