@@ -19,6 +19,8 @@ public class VTHelpManager
 	("\n -CM: connection mode, passive(P), active(A)") +
 	("\n -CH: connection host, default null") +
 	("\n -CP: connection port, default 6060") +
+	("\n -CL: connection login, default null") +
+	("\n -CS: connection password, default null") +
 	("\n -NP: NAT port, default null") +
 	("\n -PT: proxy type, SOCKS(S), HTTP(H), disabled(D), default disabled") +
 	("\n -PH: proxy host, default null") +
@@ -28,8 +30,6 @@ public class VTHelpManager
 	("\n -PS: proxy password, default null") +
 	("\n -ET: encryption type, AES(A), RC4(R), disabled(D), default disabled") +
 	("\n -ES: encryption password, default null") +
-	("\n -AL: authentication login, default null") +
-	("\n -AS: authentication password, default null") +
 	("\n -SL: sessions limit, default 0, available in server") +
 	("\n -SC: session commands, separated by \"*;\", default null, available in client");
 	

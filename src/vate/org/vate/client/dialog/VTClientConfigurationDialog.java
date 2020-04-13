@@ -43,8 +43,8 @@ public class VTClientConfigurationDialog extends Dialog
 	private VTClientConfigurationDialogParameter connectionMode;
 	private VTClientConfigurationDialogParameter connectionHost;
 	private VTClientConfigurationDialogParameter connectionPort;
-	private VTClientConfigurationDialogParameter authenticationLogin;
-	private VTClientConfigurationDialogParameter authenticationPassword;
+	private VTClientConfigurationDialogParameter connectionLogin;
+	private VTClientConfigurationDialogParameter connectionPassword;
 	private VTClientConfigurationDialogParameter natPort;
 	private VTClientConfigurationDialogParameter proxyType;
 	private VTClientConfigurationDialogParameter proxyHost;
@@ -370,11 +370,11 @@ public class VTClientConfigurationDialog extends Dialog
 		
 		TextField connectionLoginField = new TextField(20);
 		connectionLoginField.setEchoChar('*');
-		authenticationLogin = new VTClientConfigurationDialogParameter("Authentication Login:", connectionLoginField, true);
+		connectionLogin = new VTClientConfigurationDialogParameter("Connection Login:", connectionLoginField, true);
 		
 		TextField connectionPasswordField = new TextField(20);
 		connectionPasswordField.setEchoChar('*');
-		authenticationPassword = new VTClientConfigurationDialogParameter("Authentication Password:", connectionPasswordField, true);
+		connectionPassword = new VTClientConfigurationDialogParameter("Connection Password:", connectionPasswordField, true);
 		
 		addKeyListener(new KeyListener()
 		{
@@ -769,6 +769,8 @@ public class VTClientConfigurationDialog extends Dialog
 		centerPanel.add(connectionHost);
 		centerPanel.add(connectionPort);
 		centerPanel.add(natPort);
+		centerPanel.add(connectionLogin);
+		centerPanel.add(connectionPassword);
 		
 		centerPanel.add(proxyType);
 		centerPanel.add(proxyHost);
@@ -779,9 +781,6 @@ public class VTClientConfigurationDialog extends Dialog
 		
 		centerPanel.add(encryptionType);
 		centerPanel.add(encryptionPassword);
-		
-		centerPanel.add(authenticationLogin);
-		centerPanel.add(authenticationPassword);
 		
 		centerPanel.add(sessionCommands);
 		
@@ -982,8 +981,8 @@ public class VTClientConfigurationDialog extends Dialog
 				setProxySecurity(connector.isUseProxyAuthentication());
 				proxyUser.setParameter(connector.getProxyUser());
 				proxyPassword.setParameter(connector.getProxyPassword());
-				authenticationLogin.setParameter(client.getLogin());
-				authenticationPassword.setParameter(client.getPassword());
+				connectionLogin.setParameter(client.getLogin());
+				connectionPassword.setParameter(client.getPassword());
 				sessionCommands.setParameter(connector.getSessionCommands());
 			}
 			else
@@ -1008,8 +1007,8 @@ public class VTClientConfigurationDialog extends Dialog
 				setProxySecurity(client.isUseProxyAuthentication());
 				proxyUser.setParameter(client.getProxyUser());
 				proxyPassword.setParameter(client.getProxyPassword());
-				authenticationLogin.setParameter(client.getLogin());
-				authenticationPassword.setParameter(client.getPassword());
+				connectionLogin.setParameter(client.getLogin());
+				connectionPassword.setParameter(client.getPassword());
 				sessionCommands.setParameter(client.getSessionCommands());
 			}
 		}
@@ -1187,10 +1186,10 @@ public class VTClientConfigurationDialog extends Dialog
 				connector.setUseProxyAuthentication(proxySecurity.isEnabled() ? proxySecurity.getParameter().equals("Enabled") : false);
 				connector.setProxyUser(proxyUser.getParameter());
 				connector.setProxyPassword(proxyPassword.getParameter());
-				client.setLogin(authenticationLogin.getParameter());
-				client.setPassword(authenticationPassword.getParameter());
-				authenticationLogin.setParameter("");
-				authenticationPassword.setParameter("");
+				client.setLogin(connectionLogin.getParameter());
+				client.setPassword(connectionPassword.getParameter());
+				connectionLogin.setParameter("");
+				connectionPassword.setParameter("");
 				connector.setSessionCommands(sessionCommands.getParameter());
 				
 				/* if (VTTerminal.isGraphical()) { try {
@@ -1242,10 +1241,10 @@ public class VTClientConfigurationDialog extends Dialog
 				client.setUseProxyAuthentication(proxySecurity.isEnabled() ? proxySecurity.getParameter().equals("Enabled") : false);
 				client.setProxyUser(proxyUser.getParameter());
 				client.setProxyPassword(proxyPassword.getParameter());
-				client.setLogin(authenticationLogin.getParameter());
-				client.setPassword(authenticationPassword.getParameter());
-				authenticationLogin.setParameter("");
-				authenticationPassword.setParameter("");
+				client.setLogin(connectionLogin.getParameter());
+				client.setPassword(connectionPassword.getParameter());
+				connectionLogin.setParameter("");
+				connectionPassword.setParameter("");
 				client.setSessionCommands(sessionCommands.getParameter());
 			}
 		}

@@ -647,6 +647,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				{
 					
 				}
+				
 				public void mousePressed(MouseEvent e)
 				{
 					//boolean popup = false;
@@ -666,6 +667,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					MouseAction mouseAction = new MouseAction(MouseActionType.CLICK_DOWN, e.getButton(), pos);
 					awtterminal.addInput(mouseAction);
 				}
+				
 				public void mouseReleased(MouseEvent e)
 				{
 					//boolean popup = false;

@@ -823,7 +823,7 @@ public class VTClientConnector implements Runnable
 			}
 			if (!line.toUpperCase().startsWith("N"))
 			{
-				VTConsole.print("VT>Repeat current authentication login and password?(Y/N, default:Y):");
+				VTConsole.print("VT>Repeat current connection login and password?(Y/N, default:Y):");
 				line = VTConsole.readLine(true);
 				if (line == null)
 				{
@@ -841,7 +841,7 @@ public class VTClientConnector implements Runnable
 				}
 				else
 				{
-					VTConsole.print("VT>Enter the authentication login:");
+					VTConsole.print("VT>Enter the connection login:");
 					String login = VTConsole.readLine(false);
 					if (login == null)
 					{
@@ -853,7 +853,7 @@ public class VTClientConnector implements Runnable
 						return true;
 					}
 					client.setLogin(login);
-					VTConsole.print("VT>Enter the authentication password:");
+					VTConsole.print("VT>Enter the connection password:");
 					String password = VTConsole.readLine(false);
 					if (password == null)
 					{
@@ -1293,7 +1293,7 @@ public class VTClientConnector implements Runnable
 					proxyType = "None";
 				}
 			}
-			VTConsole.print("VT>Repeat current authentication login and password?(Y/N, default:Y):");
+			VTConsole.print("VT>Repeat current connection login and password?(Y/N, default:Y):");
 			line = VTConsole.readLine(true);
 			if (line == null)
 			{
@@ -1311,7 +1311,7 @@ public class VTClientConnector implements Runnable
 			}
 			else
 			{
-				VTConsole.print("VT>Enter the authentication login:");
+				VTConsole.print("VT>Enter the connection login:");
 				String login = VTConsole.readLine(false);
 				if (login == null)
 				{
@@ -1323,7 +1323,7 @@ public class VTClientConnector implements Runnable
 					return true;
 				}
 				client.setLogin(login);
-				VTConsole.print("VT>Enter the authentication password:");
+				VTConsole.print("VT>Enter the connection password:");
 				String password = VTConsole.readLine(false);
 				if (password == null)
 				{

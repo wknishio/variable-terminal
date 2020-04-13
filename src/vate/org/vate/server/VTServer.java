@@ -1008,7 +1008,7 @@ public class VTServer implements Runnable
 				{
 					try
 					{
-						VTConsole.print("VT>Configure a authentication account on server?(Y/N, default:Y):");
+						VTConsole.print("VT>Configure a login account on server?(Y/N, default:Y):");
 						String line = VTConsole.readLine(true);
 						if (line == null || line.toUpperCase().startsWith("N"))
 						{
@@ -1018,7 +1018,7 @@ public class VTServer implements Runnable
 						{
 							return;
 						}
-						VTConsole.print("VT>Enter the authentication login:");
+						VTConsole.print("VT>Enter the connection login:");
 						String login = VTConsole.readLine(false);
 						if (login == null)
 						{
@@ -1028,7 +1028,7 @@ public class VTServer implements Runnable
 						{
 							return;
 						}
-						VTConsole.print("VT>Enter the authentication password:");
+						VTConsole.print("VT>Enter the connection password:");
 						String password = VTConsole.readLine(false);
 						if (password == null)
 						{

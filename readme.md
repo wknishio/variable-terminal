@@ -74,6 +74,8 @@ instance will listen for connections, as in a TCP connection.
 * Connection host controls which TCP host address will be used for connection.
 * Connection port controls which TCP port will be used for connection, default 6060.
 * Connection NAT port sets a NAT port mapping using UPnP or NAT-PMP protocols.
+* Connection login sets the connection login for connection.
+* Connection password sets the connection password for connection.
 * Proxy type enables support for connections using HTTP or SOCKS proxies.
 * Proxy host controls the TCP host address of the proxy.
 * Proxy port controls the TCP port of the proxy.
@@ -82,8 +84,6 @@ instance will listen for connections, as in a TCP connection.
 * Proxy password controls the password for proxy authentication.
 * Encryption type enables connection encryption using RC4 or AES algorithms.
 * Encryption password sets the password for connection encryption.
-* Authentication login sets the authentication login for connection.
-* Authentication password sets the authentication password for connection.
 * Sessions limit define a limit for simultaneous sessions in server.
 * Session commands define commands to be sent to server when session starts.
 
@@ -102,16 +102,16 @@ these are the available program arguments:
 * -CH: connection host, default null
 * -CP: connection port, default 6060
 * -NP: NAT port, default null
+* -CL: connection login, default null
+* -CS: connection password, default null
 * -PT: proxy type, SOCKS(S), HTTP(H), disabled(D), default disabled
 * -PH: proxy host, default null
 * -PP: proxy port, default 1080 for SOCKS or 8080 for HTTP
 * -PA: proxy authentication, enabled(E), disabled(D), default disabled
 * -PU: proxy user, default null
-* -PK: proxy password, default null
+* -PS: proxy password, default null
 * -ET: encryption type, AES(A), RC4(R), disabled(D), default disabled
-* -EK: encryption password, default null
-* -AL: authentication login, default null
-* -AK: authentication password, default null
+* -ES: encryption password, default null
 * -SL: sessions limit, default 0, available in server
 * -SC: session commands, separated by "*;", default null, available in client
 

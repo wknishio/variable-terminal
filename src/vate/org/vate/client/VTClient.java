@@ -1343,7 +1343,7 @@ public class VTClient implements Runnable
 				}
 				if ((hostAddress != null && hostPort != null) && (authenticationLogin == null || authenticationPassword == null || authenticationLogin.length() == 0 || authenticationPassword.length() == 0))
 				{
-					VTConsole.print("VT>Enter the authentication login:");
+					VTConsole.print("VT>Enter the connection login:");
 					String login = VTConsole.readLine(false);
 					if (login == null)
 					{
@@ -1354,7 +1354,7 @@ public class VTClient implements Runnable
 						return;
 					}
 					setLogin(login);
-					VTConsole.print("VT>Enter the authentication password:");
+					VTConsole.print("VT>Enter the connection password:");
 					String password = VTConsole.readLine(false);
 					if (password == null)
 					{

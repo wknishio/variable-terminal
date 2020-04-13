@@ -35,7 +35,7 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 	//private Menu settingsMenu;
 	private Menu serverSettingsMenu;
 	private Menu serverConnectionMenu;
-	private Menu serverAuthenticationSettingsMenu;
+	//private Menu serverAuthenticationSettingsMenu;
 	private Menu serverProxyMenu;
 	private Menu serverEncryptionMenu;
 	private Menu serverSessionsMenu;
@@ -72,20 +72,21 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		
 		serverSettingsMenu = new Menu("Access ");
 		serverConnectionMenu = new Menu("Connection ");
-		serverAuthenticationSettingsMenu = new Menu("Authentication ");
+		//serverAuthenticationSettingsMenu = new Menu("Authentication ");
 		serverProxyMenu = new Menu("Proxy ");
 		serverEncryptionMenu = new Menu("Encryption ");
 		serverSessionsMenu = new Menu("Sessions ");
 		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("List All Settings", "*VTACCESS\n"));
 		serverSettingsMenu.add(serverConnectionMenu);
+		//serverSettingsMenu.add(serverAuthenticationSettingsMenu);
 		serverSettingsMenu.add(serverProxyMenu);
 		serverSettingsMenu.add(serverEncryptionMenu);
-		serverSettingsMenu.add(serverAuthenticationSettingsMenu);
 		serverSettingsMenu.add(serverSessionsMenu);
 		serverConnectionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Mode", "*VTACCESS CM "));
 		serverConnectionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Host", "*VTACCESS CH "));
 		serverConnectionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Port", "*VTACCESS CP "));
 		serverConnectionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection NAT Port", "*VTACCESS NP "));
+		serverConnectionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Login", "*VTLOCK "));
 		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Type", "*VTACCESS PT "));
 		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Host", "*VTACCESS PH "));
 		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Port", "*VTACCESS PP "));
@@ -94,7 +95,7 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Password", "*VTACCESS PS "));
 		serverEncryptionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Encryption Type", "*VTACCESS ET "));
 		serverEncryptionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Encryption Password", "*VTACCESS ES "));
-		serverAuthenticationSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Single Login", "*VTLOCK "));
+		//serverAuthenticationSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Single Login", "*VTLOCK "));
 		serverSessionsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Sessions Limit", "*VTACCESS SL "));
 		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Save Settings File", "*VTACCESS SF "));
 		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Load Settings File", "*VTACCESS LF "));

@@ -42,8 +42,8 @@ public class VTServerSettingsDialog extends Dialog
 	private VTServerSettingsDialogParameter connectionMode;
 	private VTServerSettingsDialogParameter connectionHost;
 	private VTServerSettingsDialogParameter connectionPort;
-	private VTServerSettingsDialogParameter authenticationLogin;
-	private VTServerSettingsDialogParameter authenticationPassword;
+	private VTServerSettingsDialogParameter connectionLogin;
+	private VTServerSettingsDialogParameter connectionPassword;
 	private VTServerSettingsDialogParameter natPort;
 	private VTServerSettingsDialogParameter proxyType;
 	private VTServerSettingsDialogParameter proxyHost;
@@ -384,11 +384,11 @@ public class VTServerSettingsDialog extends Dialog
 		
 		TextField connectionLoginField = new TextField(20);
 		connectionLoginField.setEchoChar('*');
-		authenticationLogin = new VTServerSettingsDialogParameter("Authentication Login:", connectionLoginField, true);
+		connectionLogin = new VTServerSettingsDialogParameter("Connection Login:", connectionLoginField, true);
 		
 		TextField connectionPasswordField = new TextField(20);
 		connectionPasswordField.setEchoChar('*');
-		authenticationPassword = new VTServerSettingsDialogParameter("Authentication Password:", connectionPasswordField, true);
+		connectionPassword = new VTServerSettingsDialogParameter("Connection Password:", connectionPasswordField, true);
 		
 		addKeyListener(new KeyListener()
 		{
@@ -695,6 +695,8 @@ public class VTServerSettingsDialog extends Dialog
 		centerPanel.add(connectionHost);
 		centerPanel.add(connectionPort);
 		centerPanel.add(natPort);
+		centerPanel.add(connectionLogin);
+		centerPanel.add(connectionPassword);
 		
 		centerPanel.add(proxyType);
 		centerPanel.add(proxyHost);
@@ -705,9 +707,6 @@ public class VTServerSettingsDialog extends Dialog
 		
 		centerPanel.add(encryptionType);
 		centerPanel.add(encryptionPassword);
-		
-		centerPanel.add(authenticationLogin);
-		centerPanel.add(authenticationPassword);
 		
 		centerPanel.add(sessionsLimit);
 		
@@ -1120,13 +1119,13 @@ public class VTServerSettingsDialog extends Dialog
 				{
 					connector.setSessionsLimit(1);
 				}
-				String login = authenticationLogin.getParameter();
+				String login = connectionLogin.getParameter();
 				if (login != null && login.length() > 0)
 				{
-					server.setUniqueUserCredential(authenticationLogin.getParameter(), authenticationPassword.getParameter());
+					server.setUniqueUserCredential(connectionLogin.getParameter(), connectionPassword.getParameter());
 				}
-				authenticationLogin.setParameter("");
-				authenticationPassword.setParameter("");
+				connectionLogin.setParameter("");
+				connectionPassword.setParameter("");
 				// connector.setSkipConfig(true);
 			}
 			else
@@ -1180,13 +1179,13 @@ public class VTServerSettingsDialog extends Dialog
 				{
 					server.setSessionsLimit(1);
 				}
-				String login = authenticationLogin.getParameter();
+				String login = connectionLogin.getParameter();
 				if (login != null && login.length() > 0)
 				{
-					server.setUniqueUserCredential(authenticationLogin.getParameter(), authenticationPassword.getParameter());
+					server.setUniqueUserCredential(connectionLogin.getParameter(), connectionPassword.getParameter());
 				}
-				authenticationLogin.setParameter("");
-				authenticationPassword.setParameter("");
+				connectionLogin.setParameter("");
+				connectionPassword.setParameter("");
 			}
 		}
 	}
