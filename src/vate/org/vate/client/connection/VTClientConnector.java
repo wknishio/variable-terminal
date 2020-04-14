@@ -946,7 +946,7 @@ public class VTClientConnector implements Runnable
 				}
 				else
 				{
-					VTConsole.print("VT>Use nat port mapping in connection?(Y/N, default:N):");
+					VTConsole.print("VT>Use nat port in connection?(Y/N, default:N):");
 					line = VTConsole.readLine(true);
 					if (line == null)
 					{
@@ -958,7 +958,7 @@ public class VTClientConnector implements Runnable
 					}
 					if (line.toUpperCase().startsWith("Y"))
 					{
-						VTConsole.print("VT>Enter the nat port(from 1 to 65535, default:" + hostPort + "):");
+						VTConsole.print("VT>Enter the connection nat port(from 1 to 65535, default:" + hostPort + "):");
 						line = VTConsole.readLine(true);
 						if (line == null)
 						{

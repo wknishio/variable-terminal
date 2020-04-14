@@ -21,7 +21,7 @@ public class VTHelpManager
 	("\n -CP: connection port, default 6060") +
 	("\n -CL: connection login, default null") +
 	("\n -CS: connection password, default null") +
-	("\n -NP: NAT port, default null") +
+	("\n -NP: connection NAT port, default null") +
 	("\n -PT: proxy type, SOCKS(S), HTTP(H), disabled(D), default disabled") +
 	("\n -PH: proxy host, default null") +
 	("\n -PP: proxy port, default 1080 for SOCKS or 8080 for HTTP") +
