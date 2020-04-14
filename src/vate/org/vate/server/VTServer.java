@@ -75,10 +75,10 @@ public class VTServer implements Runnable
 	private static final String VT_SERVER_SETTINGS_COMMENTS = 
 	"Variable-Terminal server settings file, supports UTF-8\r\n" + 
 	"#vate.server.connection.mode      values: P(passive, default) or A(active)\r\n" + 
+	"#vate.server.connection.users     format: login1/password1;login2/password2;..." +
 	"#vate.server.proxy.type           values: N(none, default), S(SOCKS) or H(HTTP)\r\n" + 
 	"#vate.server.proxy.authentication values: D(disabled, default) or E(enabled)\r\n" + 
-	"#vate.server.encryption.type      values: N(none, default), R(RC4) or A(AES)\r\n" + 
-	"#vate.server.authentication.users format: login1/password1;login2/password2;...";
+	"#vate.server.encryption.type      values: N(none, default), R(RC4) or A(AES)\r\n";
 	
 	static
 	{
@@ -448,6 +448,7 @@ public class VTServer implements Runnable
 		fileServerSettings.setProperty("vate.server.connection.port", hostPort != null ? String.valueOf(hostPort) : "");
 		fileServerSettings.setProperty("vate.server.connection.host", hostAddress);
 		fileServerSettings.setProperty("vate.server.connection.nat.port", natPort != null ? String.valueOf(natPort) : "");
+		fileServerSettings.setProperty("vate.server.connection.users", authenticationUsers);
 		fileServerSettings.setProperty("vate.server.encryption.type", encryptionType);
 		fileServerSettings.setProperty("vate.server.encryption.password", new String(encryptionKey, "UTF-8"));
 		fileServerSettings.setProperty("vate.server.proxy.type", proxyType);
@@ -457,7 +458,6 @@ public class VTServer implements Runnable
 		fileServerSettings.setProperty("vate.server.proxy.user", proxyUser);
 		fileServerSettings.setProperty("vate.server.proxy.password", proxyPassword);
 		fileServerSettings.setProperty("vate.server.session.limit", String.valueOf(sessionsLimit));
-		fileServerSettings.setProperty("vate.server.authentication.users", authenticationUsers);
 		
 		FileOutputStream out = new FileOutputStream(settingsFile);
 		VTPropertiesBuilder.saveProperties(out, fileServerSettings, VT_SERVER_SETTINGS_COMMENTS, "UTF-8");
@@ -485,7 +485,7 @@ public class VTServer implements Runnable
 		// rawSecuritySettings.load(securitySettingsReader);
 		serverSettingsReader.close();
 		
-		authenticationUsers = fileServerSettings.getProperty("vate.server.authentication.users", null);
+		authenticationUsers = fileServerSettings.getProperty("vate.server.connection.users", null);
 		
 		if (authenticationUsers != null)
 		{
@@ -722,7 +722,7 @@ public class VTServer implements Runnable
 			// rawSecuritySettings.load(securitySettingsReader);
 			serverSettingsReader.close();
 			
-			String users = fileServerSettings.getProperty("vate.server.authentication.users", null);
+			String users = fileServerSettings.getProperty("vate.server.connection.users", null);
 			
 			if (users != null)
 			{

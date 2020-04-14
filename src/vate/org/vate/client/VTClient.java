@@ -353,6 +353,8 @@ public class VTClient implements Runnable
 		fileClientSettings.setProperty("vate.client.connection.port", hostPort != null ? String.valueOf(hostPort) : "");
 		fileClientSettings.setProperty("vate.client.connection.host", hostAddress);
 		fileClientSettings.setProperty("vate.client.connection.nat.port", natPort != null ? String.valueOf(natPort) : "");
+		fileClientSettings.setProperty("vate.client.connection.login", authenticationLogin);
+		fileClientSettings.setProperty("vate.client.connection.password", authenticationPassword);
 		fileClientSettings.setProperty("vate.client.encryption.type", encryptionType);
 		fileClientSettings.setProperty("vate.client.encryption.password", new String(encryptionKey, "UTF-8"));
 		fileClientSettings.setProperty("vate.client.proxy.type", proxyType);
@@ -362,8 +364,6 @@ public class VTClient implements Runnable
 		fileClientSettings.setProperty("vate.client.proxy.user", proxyUser);
 		fileClientSettings.setProperty("vate.client.proxy.password", proxyPassword);
 		fileClientSettings.setProperty("vate.client.session.commands", sessionCommands);
-		fileClientSettings.setProperty("vate.client.authentication.login", authenticationLogin);
-		fileClientSettings.setProperty("vate.client.authentication.password", authenticationPassword);
 		
 		FileOutputStream out = new FileOutputStream(settingsFile);
 		VTPropertiesBuilder.saveProperties(out, fileClientSettings, VT_CLIENT_SETTINGS_COMMENTS, "UTF-8");
@@ -439,11 +439,11 @@ public class VTClient implements Runnable
 			}
 		}
 		
-		if (fileClientSettings.getProperty("vate.client.authentication.login") != null)
+		if (fileClientSettings.getProperty("vate.client.connection.login") != null)
 		{
 			try
 			{
-				authenticationLogin = fileClientSettings.getProperty("vate.client.authentication.login", authenticationLogin);
+				authenticationLogin = fileClientSettings.getProperty("vate.client.connection.login", authenticationLogin);
 			}
 			catch (Throwable e)
 			{
@@ -451,11 +451,11 @@ public class VTClient implements Runnable
 			}
 		}
 		
-		if (fileClientSettings.getProperty("vate.client.authentication.password") != null)
+		if (fileClientSettings.getProperty("vate.client.connection.password") != null)
 		{
 			try
 			{
-				authenticationPassword = fileClientSettings.getProperty("vate.client.authentication.password", authenticationPassword);
+				authenticationPassword = fileClientSettings.getProperty("vate.client.connection.password", authenticationPassword);
 			}
 			catch (Throwable e)
 			{
@@ -674,11 +674,11 @@ public class VTClient implements Runnable
 				}
 			}
 			
-			if (fileClientSettings.getProperty("vate.client.authentication.login") != null)
+			if (fileClientSettings.getProperty("vate.client.connection.login") != null)
 			{
 				try
 				{
-					authenticationLogin = fileClientSettings.getProperty("vate.client.authentication.login", authenticationLogin);
+					authenticationLogin = fileClientSettings.getProperty("vate.client.connection.login", authenticationLogin);
 				}
 				catch (Throwable e)
 				{
@@ -686,11 +686,11 @@ public class VTClient implements Runnable
 				}
 			}
 			
-			if (fileClientSettings.getProperty("vate.client.authentication.password") != null)
+			if (fileClientSettings.getProperty("vate.client.connection.password") != null)
 			{
 				try
 				{
-					authenticationPassword = fileClientSettings.getProperty("vate.client.authentication.password", authenticationPassword);
+					authenticationPassword = fileClientSettings.getProperty("vate.client.connection.password", authenticationPassword);
 				}
 				catch (Throwable e)
 				{
