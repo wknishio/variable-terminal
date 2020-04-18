@@ -847,7 +847,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		{
 			public boolean onInput(Interactable interactable, KeyStroke keyStroke)
 			{
-				TerminalPosition topLeft = outputBox.getTopLeft();
+				TerminalPosition topleft = outputBox.getTopLeft();
 				
 				if (keyStroke.getKeyType() == KeyType.MouseEvent)
 				{
@@ -859,7 +859,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 						if (mouse.getButton() != 0)
 						{
 							outputBox.takeFocus();
-							outputBox.setCaretPosition(topLeft.getRow() + mouse.getPosition().getRow(), topLeft.getColumn() + mouse.getPosition().getColumn());
+							outputBox.setCaretPosition(topleft.getRow() + mouse.getPosition().getRow(), topleft.getColumn() + mouse.getPosition().getColumn());
 							if (outputBox.selectingText())
 							{
 								if (pressedMouseButton == mouse.getButton())
@@ -873,7 +873,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 							}
 							else
 							{
-								outputBox.setSelectionStartPosition(new TerminalPosition(topLeft.getColumn() + mouse.getPosition().getColumn(), topLeft.getRow() + mouse.getPosition().getRow()));
+								outputBox.setSelectionStartPosition(new TerminalPosition(topleft.getColumn() + mouse.getPosition().getColumn(), topleft.getRow() + mouse.getPosition().getRow()));
 								pressedMouseButton = mouse.getButton();
 							}
 							outputBox.invalidate();
@@ -908,9 +908,9 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					if (mouse.getActionType() == MouseActionType.DRAG)
 					{
 						outputBox.takeFocus();
-						outputBox.updateSelection(mouse, topLeft.getColumn() + mouse.getPosition().getColumn(), topLeft.getRow() + mouse.getPosition().getRow());
-						outputBox.setCaretPosition(topLeft.getRow() + mouse.getPosition().getRow(), topLeft.getColumn() + mouse.getPosition().getColumn());
-						outputBox.setSelectionEndPosition(new TerminalPosition(topLeft.getColumn() + mouse.getPosition().getColumn(), topLeft.getRow() + mouse.getPosition().getRow()));
+						outputBox.updateSelection(mouse, topleft.getColumn() + mouse.getPosition().getColumn(), topleft.getRow() + mouse.getPosition().getRow());
+						outputBox.setCaretPosition(topleft.getRow() + mouse.getPosition().getRow(), topleft.getColumn() + mouse.getPosition().getColumn());
+						outputBox.setSelectionEndPosition(new TerminalPosition(topleft.getColumn() + mouse.getPosition().getColumn(), topleft.getRow() + mouse.getPosition().getRow()));
 						outputBox.invalidate();
 						return false;
 					}
@@ -1011,7 +1011,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         {
 			public boolean onInput(Interactable interactable, KeyStroke keyStroke)
 			{
-				TerminalPosition topLeft = inputBox.getTopLeft();
+				TerminalPosition topleft = inputBox.getTopLeft();
 				
 				if (keyStroke.getKeyType() == KeyType.MouseEvent)
 				{
@@ -1023,7 +1023,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 						if (mouse.getButton() != 0)
 						{
 							int max = inputBox.getLastLine().length();
-							int location = topLeft.getColumn();
+							int location = topleft.getColumn();
 							int position = Math.min(location + mouse.getPosition().getColumn(), max);
 							inputBox.takeFocus();
 							inputBox.setHiddenColumn(position);
@@ -1074,11 +1074,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					if (mouse.getActionType() == MouseActionType.DRAG)
 					{
 						int max = inputBox.getLastLine().length();
-						int location = topLeft.getColumn();
+						int location = topleft.getColumn();
 						int column = Math.min(location + mouse.getPosition().getColumn(), max);
 						
 						inputBox.takeFocus();
-						inputBox.updateSelection(mouse, topLeft.getColumn() + mouse.getPosition().getColumn(), topLeft.getRow() + mouse.getPosition().getRow());
+						inputBox.updateSelection(mouse, topleft.getColumn() + mouse.getPosition().getColumn(), topleft.getRow() + mouse.getPosition().getRow());
 						inputBox.setHiddenColumn(column);
 						inputBox.setCaretPosition(column);
 						inputBox.setSelectionEndPosition(new TerminalPosition(column, 0));
