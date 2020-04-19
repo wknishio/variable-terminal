@@ -8,14 +8,14 @@ public class VTHelpManager
 {
 	private static Properties helpMap = new Properties();
 	
-	private static String ManualParameterHelp = ("\n -C: use client module") +
+	private static String manualParameterHelp = ("\n -C: use client module") +
 	(" | -S: use server module") +
 	(" | -D: use daemon module");
 	
-	private static String ApplicationParametersHelp = ("available parameters usage:") +
+	private static String applicationParametersHelp = ("available parameters usage:") +
 	("\n -H: list available parameters");
 
-	private static String ConnnectionParametersHelp = ("\n -LF: load connection settings file") + 
+	private static String connnectionParametersHelp = ("\n -LF: load connection settings file") + 
 	("\n -CM: connection mode, passive(P), active(A)") +
 	("\n -CH: connection host, default null") +
 	("\n -CP: connection port, default 6060") +
@@ -93,16 +93,16 @@ public class VTHelpManager
 	
 	public static String printManualParameterHelp()
 	{
-		return ManualParameterHelp;
+		return manualParameterHelp;
 	}
 	
 	public static String printApplicationParametersHelp()
 	{
-		return ApplicationParametersHelp;
+		return applicationParametersHelp;
 	}
 	
 	public static String printConnnectionParametersHelp()
 	{
-		return ConnnectionParametersHelp;
+		return connnectionParametersHelp;
 	}
 }

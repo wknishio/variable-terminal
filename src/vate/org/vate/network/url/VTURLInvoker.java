@@ -9,6 +9,7 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.vate.network.ssl.SSLVerificationDisabler;
 import org.vate.stream.array.VTByteArrayOutputStream;
 
 public class VTURLInvoker
@@ -17,12 +18,24 @@ public class VTURLInvoker
 	private final byte[] readBuffer = new byte[1024 * 64];
 	private VTByteArrayOutputStream dataBuffer = new VTByteArrayOutputStream();
 	
-	public VTURLData getURLData(String URL, byte[] outputData, int outputOffset, int outputLength) throws Exception
+	static
 	{
-		return getURLData(URL, Proxy.NO_PROXY, outputData, outputOffset, outputLength, null);
+		try
+		{
+			SSLVerificationDisabler.install();
+		}
+		catch (Throwable t)
+		{
+			
+		}
 	}
 	
-	public VTURLData getURLData(String urlString, Proxy proxy, byte[] outputData, int outputOffset, int outputLength, Map<String, String> requestHeaders)
+	public VTURLData getURLData(String URL, byte[] outputData, int outputOffset, int outputLength) throws Exception
+	{
+		return getURLData(URL, Proxy.NO_PROXY, outputData, outputOffset, outputLength, null, null);
+	}
+	
+	public VTURLData getURLData(String urlString, Proxy proxy, byte[] outputData, int outputOffset, int outputLength, Map<String, String> requestHeaders, String method)
 	{
 		VTURLData urldata = null;
 		dataBuffer.reset();
@@ -30,11 +43,20 @@ public class VTURLInvoker
 		URLConnection connection = null;
 		InputStream inputStream = null;
 		OutputStream outputStream = null;
+		HttpURLConnection http = null;
 		try
 		{
 			URL url = new URL(urlString);
 			connection = url.openConnection(proxy);
 			connection.setDefaultUseCaches(false);
+			if (connection instanceof HttpURLConnection)
+			{
+				http = (HttpURLConnection)connection;
+				if (method != null)
+				{
+					http.setRequestMethod(method);
+				}
+			}
 			if (requestHeaders != null)
 			{
 				for (Entry<String, String> header : requestHeaders.entrySet())
@@ -46,6 +68,10 @@ public class VTURLInvoker
 			if (outputData != null && outputData.length > 0 && outputLength > 0)
 			{
 				connection.setDoOutput(true);
+			}
+			connection.connect();
+			if (outputData != null && outputData.length > 0 && outputLength > 0)
+			{
 				outputStream = connection.getOutputStream();
 				outputStream.write(outputData, outputOffset, outputLength);
 				outputStream.flush();
@@ -62,9 +88,8 @@ public class VTURLInvoker
 			byte[] data = dataBuffer.toByteArray();
 			Map<String, List<String>> headers = connection.getHeaderFields();
 			
-			if (connection instanceof HttpURLConnection)
+			if (http != null)
 			{
-				HttpURLConnection http = (HttpURLConnection)connection;
 				code = http.getResponseCode();
 				response = http.getResponseMessage();
 			}
@@ -83,6 +108,7 @@ public class VTURLInvoker
 				{
 					if (connection instanceof HttpURLConnection)
 					{
+						
 						((HttpURLConnection) connection).disconnect();
 					}
 				}
