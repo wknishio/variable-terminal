@@ -40,8 +40,8 @@ public class VTURLInvoker
 		dataBuffer.reset();
 		int readed = 0;
 		URLConnection urlConnection = null;
-		InputStream input = null;
-		OutputStream output = null;
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
 		HttpURLConnection httpConnection = null;
 		try
 		{
@@ -67,12 +67,12 @@ public class VTURLInvoker
 			if (outputData != null && outputData.length > 0 && outputLength > 0)
 			{
 				urlConnection.setDoOutput(true);
-				output = urlConnection.getOutputStream();
-				output.write(outputData, outputOffset, outputLength);
-				output.flush();
+				outputStream = urlConnection.getOutputStream();
+				outputStream.write(outputData, outputOffset, outputLength);
+				outputStream.flush();
 			}
-			input = urlConnection.getInputStream();
-			while ((readed = input.read(readBuffer)) >= 0)
+			inputStream = urlConnection.getInputStream();
+			while ((readed = inputStream.read(readBuffer)) >= 0)
 			{
 				dataBuffer.write(readBuffer, 0, readed);
 			}
@@ -112,22 +112,22 @@ public class VTURLInvoker
 					
 				}
 			}
-			if (input != null)
+			if (inputStream != null)
 			{
 				try
 				{
-					input.close();
+					inputStream.close();
 				}
 				catch (Throwable e)
 				{
 					
 				}
 			}
-			if (output != null)
+			if (outputStream != null)
 			{
 				try
 				{
-					output.close();
+					outputStream.close();
 				}
 				catch (Throwable e)
 				{

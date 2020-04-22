@@ -179,7 +179,7 @@ public class VTServerScreenshotTask extends VTTask
 			BufferedImage screenCapture = screenshotProvider.createScreenCapture(drawPointer);
 			connection.getResultWriter().write("\nVT>Screen capture data obtained, image will be saved in:\nVT>[" + screenshotFile.getAbsolutePath() + "]\nVT>");
 			connection.getResultWriter().flush();
-			if (screenCapture.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
+			if (screenCapture.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE && screenCapture.getType() == BufferedImage.TYPE_BYTE_INDEXED)
 			{
 				pngEncoder.setColorType(PngEncoder.COLOR_INDEXED);
 				// encoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
@@ -198,6 +198,21 @@ public class VTServerScreenshotTask extends VTTask
 				// convertedGraphics.drawImage(screenCapture, 0, 0, null);
 				pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
 				pngEncoder.encode(convertedImage, photoOutputStream);
+			}
+			else if (screenCapture.getType() == BufferedImage.TYPE_BYTE_BINARY)
+			{
+				convertedImage = VTImageIO.newImage(screenCapture.getWidth(), screenCapture.getHeight(), BufferedImage.TYPE_BYTE_INDEXED, 16, recyclableDataBuffer);
+				recyclableDataBuffer = convertedImage.getRaster().getDataBuffer();
+				convertedGraphics = convertedImage.createGraphics();
+				convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+				while (!convertedGraphics.drawImage(screenCapture, 0, 0, null))
+				{
+					Thread.yield();
+				}
+				// convertedGraphics.drawImage(screenCapture, 0, 0, null);
+				pngEncoder.setColorType(PngEncoder.COLOR_INDEXED);
+				pngEncoder.encode(convertedImage, photoOutputStream);
+
 			}
 			else if (screenCapture.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
 			{
@@ -225,7 +240,7 @@ public class VTServerScreenshotTask extends VTTask
 		 * } */
 		catch (Throwable e)
 		{
-			// e.printStackTrace();
+			//e.printStackTrace();
 			synchronized (this)
 			{
 				try

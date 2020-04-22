@@ -302,7 +302,7 @@ public final class VTImageIO
 				byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
 				for (int i = 0; i < size; i++)
 				{
-					decodePixelByte(littleEndianInputStream, data, i, width);
+					decodeTwoPixelByte(littleEndianInputStream, data, i);
 				}
 				return image;
 			}
@@ -393,7 +393,7 @@ public final class VTImageIO
 				size = size / 2;
 				for (int i = 0; i < size; i++)
 				{
-					encodePixelByte(littleEndianOutputStream, data, i, width);
+					encodeTwoPixelByte(littleEndianOutputStream, data, i);
 				}
 				littleEndianOutputStream.flush();
 				break;
@@ -483,6 +483,7 @@ public final class VTImageIO
 				{
 					createdRaster = Raster.createPackedRaster(new DataBufferByte(nextSize), width, height, 4, null);
 				}
+				break;
 			}
 			case BufferedImage.TYPE_BYTE_INDEXED:
 			{
@@ -651,6 +652,7 @@ public final class VTImageIO
 			case BufferedImage.TYPE_BYTE_BINARY:
 			{
 				Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 0x77);
+				break;
 			}
 			case BufferedImage.TYPE_BYTE_INDEXED:
 			{
@@ -712,6 +714,13 @@ public final class VTImageIO
 		}
 	}
 	
+	private static final void encodeTwoPixelByte(VTLittleEndianOutputStream out, byte[] pixelData, int position) throws IOException
+	{
+		out.write((byte) (pixelData[position]));
+		// out.write((byte) (pixelData[position]));
+	}
+
+	
 	private static final void encodePixelByte(VTLittleEndianOutputStream out, byte[] pixelData, int position, int width) throws IOException
 	{
 		byte left, top, diag;
@@ -762,6 +771,11 @@ public final class VTImageIO
 		diag = position - 1 >= width ? pixelData[position - 1 - width] : 0;
 		out.writeInt((pixelData[position] - Math.max(Math.min(left, top), Math.min(Math.max(left, top), left + top - diag))));
 		// out.writeInt((pixelData[position]));
+	}
+	
+	private static final void decodeTwoPixelByte(VTLittleEndianInputStream in, byte[] pixelData, int position) throws IOException
+	{
+		pixelData[position] = (byte) (in.readByte());
 	}
 	
 	private static final void decodePixelByte(VTLittleEndianInputStream in, byte[] pixelData, int position, int width) throws IOException
