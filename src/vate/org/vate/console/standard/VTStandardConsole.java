@@ -16,6 +16,7 @@ import java.io.PrintStream;
 import java.util.Locale;
 
 import org.vate.console.VTConsole;
+import org.vate.console.VTConsoleBooleanToggleNotify;
 import org.vate.console.VTConsoleImplementation;
 import org.vate.nativeutils.VTNativeUtils;
 
@@ -846,6 +847,18 @@ public class VTStandardConsole implements VTConsoleImplementation
 	}
 
 	public void setRemoteIcon(boolean remote)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addToggleFlushInterruptNotify(VTConsoleBooleanToggleNotify notify)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addToggleReplaceInputNotify(VTConsoleBooleanToggleNotify notify)
 	{
 		// TODO Auto-generated method stub
 		

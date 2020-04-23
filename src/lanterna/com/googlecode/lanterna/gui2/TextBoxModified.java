@@ -117,7 +117,8 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
     	}
     	return true;
     }
-        
+       
+    /*
     public void updateSelection(KeyStroke keyStroke)
     {
     	if (keyStroke.isShiftDown() || keyStroke.getKeyType() == KeyType.MouseEvent)
@@ -132,6 +133,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
     		}
     	}
     }
+    */
     
     public void updateSelection(KeyStroke keyStroke, int x, int y)
     {
@@ -673,7 +675,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                         lines.set(caretPosition.getRow(), concatenatedLines);
                     }
                 }
-                updateSelection(keyStroke);
+                updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
                 return Result.HANDLED;
             case Delete:
                 if(caretPosition.getColumn() < line.length()) {
@@ -689,7 +691,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                         lines.remove(caretPosition.getRow() + 1);
                     }
                 }
-                updateSelection(keyStroke);
+                updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
                 return Result.HANDLED;
             case ArrowLeft:
                 if(caretPosition.getColumn() > 0) {
@@ -702,7 +704,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                 else if(horizontalFocusSwitching) {
                     return Result.MOVE_FOCUS_LEFT;
                 }
-                updateSelection(keyStroke);
+                updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
                 return Result.HANDLED;
             case ArrowRight:
                 if(caretPosition.getColumn() < lines.get(caretPosition.getRow()).length()) {
@@ -715,7 +717,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                 else if(horizontalFocusSwitching) {
                     return Result.MOVE_FOCUS_RIGHT;
                 }
-                updateSelection(keyStroke);
+                updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
                 return Result.HANDLED;
             case ArrowUp:
                 if(caretPosition.getRow() > 0) {
@@ -732,7 +734,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                 else if(verticalFocusSwitching) {
                     return Result.MOVE_FOCUS_UP;
                 }
-                updateSelection(keyStroke);
+                updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
                 return Result.HANDLED;
             case ArrowDown:
                 if(caretPosition.getRow() < lines.size() - 1) {
@@ -749,11 +751,11 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                 else if(verticalFocusSwitching) {
                     return Result.MOVE_FOCUS_DOWN;
                 }
-                updateSelection(keyStroke);
+                updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
                 return Result.HANDLED;
             case End:
                 caretPosition = caretPosition.withColumn(line.length());
-                updateSelection(keyStroke);
+                updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
                 return Result.HANDLED;
             case Enter:
                 if(style == Style.SINGLE_LINE) {
@@ -766,11 +768,11 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                     lines.add(caretPosition.getRow() + 1, newLine);
                     caretPosition = caretPosition.withColumn(0).withRelativeRow(1);
                 }
-                updateSelection(keyStroke);
+                updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
                 return Result.HANDLED;
             case Home:
                 caretPosition = caretPosition.withColumn(0);
-                updateSelection(keyStroke);
+                updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
                 return Result.HANDLED;
             case PageDown:
                 caretPosition = caretPosition.withRelativeRow(getSize().getRows());
@@ -780,7 +782,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                 if(lines.get(caretPosition.getRow()).length() < caretPosition.getColumn()) {
                     caretPosition = caretPosition.withColumn(lines.get(caretPosition.getRow()).length());
                 }
-                updateSelection(keyStroke);
+                updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
                 return Result.HANDLED;
             case PageUp:
                 caretPosition = caretPosition.withRelativeRow(-getSize().getRows());
@@ -790,7 +792,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
                 if(lines.get(caretPosition.getRow()).length() < caretPosition.getColumn()) {
                     caretPosition = caretPosition.withColumn(lines.get(caretPosition.getRow()).length());
                 }
-                updateSelection(keyStroke);
+                updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
                 return Result.HANDLED;
             default:
         }

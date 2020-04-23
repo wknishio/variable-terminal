@@ -687,4 +687,21 @@ public class VTConsole
 	{
 		VTConsole.remoteIcon = remoteIcon;
 	}
+	
+	public static void addToggleReplaceInputNotify(VTConsoleBooleanToggleNotify notifyReplaceInput)
+	{
+		if (checkConsole())
+		{
+			console.addToggleReplaceInputNotify(notifyReplaceInput);
+		}
+	}
+	
+	public static void addToggleFlushInterruptNotify(VTConsoleBooleanToggleNotify notifyFlushInterrupted)
+	{
+		if (checkConsole())
+		{
+			console.addToggleFlushInterruptNotify(notifyFlushInterrupted);
+		}
+	}
+
 }

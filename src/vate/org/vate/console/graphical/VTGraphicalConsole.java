@@ -14,6 +14,7 @@ import java.util.Locale;
 import java.util.TooManyListenersException;
 
 import org.vate.console.VTConsole;
+import org.vate.console.VTConsoleBooleanToggleNotify;
 import org.vate.console.VTConsoleImplementation;
 import org.vate.console.graphical.listener.VTGraphicalConsoleDropTargetListener;
 import org.vate.console.graphical.listener.VTGraphicalConsoleKeyListener;
@@ -92,6 +93,8 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	private static VTGraphicalConsoleWindowListener windowListener;
 	private static volatile boolean remoteIcon = false;	
 	private static UpdateTask updateTask = new UpdateTask();
+	private static VTConsoleBooleanToggleNotify notifyFlushInterrupted;
+	private static VTConsoleBooleanToggleNotify notifyReplaceInput;
 	// private static VTGraphicalConsoleReader reader;
 	// private static VTGraphicalConsoleWriter writer;
 	
@@ -458,6 +461,11 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		{
 			flushInterrupted = true;
 		}
+		
+		if (notifyFlushInterrupted != null)
+		{
+			notifyFlushInterrupted.notify(flushInterrupted);
+		}
 		//flushInterrupted = true;
 	}
 	
@@ -467,6 +475,12 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		{
 			flushInterrupted = false;
 		}
+		
+		if (notifyFlushInterrupted != null)
+		{
+			notifyFlushInterrupted.notify(flushInterrupted);
+		}
+		
 		//flushInterrupted = false;
 		VTGraphicalConsoleReader.resumeOutputFlush();
 		flushBuffered(true);
@@ -514,6 +528,11 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		{
 			replaceActivated = !replaceActivated;
 			updateCaretPosition();
+		}
+		
+		if (notifyReplaceInput != null)
+		{
+			notifyReplaceInput.notify(replaceActivated);
 		}
 	}
 	
@@ -2163,7 +2182,16 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 	{
 		return screenBuffer.substring(0).replace("\b", "").replace("\n", "").replaceAll("\\t{1," + tabSize + "}", "\t").replace('\r', '\n');
 	}
-	
+
+	public void addToggleFlushInterruptNotify(VTConsoleBooleanToggleNotify notifyFlushInterrupted)
+	{
+		VTGraphicalConsole.notifyFlushInterrupted = notifyFlushInterrupted;
+	}
+
+	public void addToggleReplaceInputNotify(VTConsoleBooleanToggleNotify notifyReplaceInput)
+	{
+		VTGraphicalConsole.notifyReplaceInput = notifyReplaceInput;
+	}	
 	
 	// public boolean isReadingLine()
 	// {

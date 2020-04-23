@@ -83,4 +83,8 @@ public interface VTConsoleImplementation
 	public abstract void setIgnoreClose(boolean ignoreClose);
 	
 	public abstract void setRemoteIcon(boolean remoteIcon);
+	
+	public abstract void addToggleFlushInterruptNotify(VTConsoleBooleanToggleNotify notifyFlushInterrupted);
+	
+	public abstract void addToggleReplaceInputNotify(VTConsoleBooleanToggleNotify notifyReplaceInput);
 }

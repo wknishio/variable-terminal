@@ -36,6 +36,7 @@ import java.util.Properties;
 import javax.imageio.ImageIO;
 
 import org.vate.console.VTConsole;
+import org.vate.console.VTConsoleBooleanToggleNotify;
 import org.vate.console.VTConsoleImplementation;
 import org.vate.console.graphical.VTGraphicalConsoleNullOutputStream;
 import org.vate.console.graphical.listener.VTGraphicalConsoleDropTargetListener;
@@ -116,6 +117,9 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	private Scrollbar verticalScrollbar;
 	private volatile int pressedMouseButton;
 	private volatile boolean remoteIcon;
+	private VTConsoleBooleanToggleNotify notifyFlushInterrupted;
+	private VTConsoleBooleanToggleNotify notifyReplaceInput;
+
 	//support command history
 	//support echo input
 	//support maximum line width in output
@@ -936,7 +940,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					{
 						if (outputBox.isMovementKeyStroke(keyStroke))
 						{
-							outputBox.updateSelection(keyStroke);
+							TerminalPosition position = outputBox.getCaretPosition();
+							outputBox.updateSelection(keyStroke, position.getColumn(), position.getRow());
 						}
 					}
 				}
@@ -1097,7 +1102,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				{
 					if (inputBox.isMovementKeyStroke(keyStroke))
 					{
-						inputBox.updateSelection(keyStroke);
+						TerminalPosition position = inputBox.getCaretPosition();
+						inputBox.updateSelection(keyStroke, position.getColumn(), position.getRow());
 					}
 				}
 				else
@@ -1396,6 +1402,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	public void toggleReplace()
 	{
 		replaceActivated = !replaceActivated;
+		if (notifyReplaceInput != null)
+		{
+			notifyReplaceInput.notify(replaceActivated);
+		}
 		//updateCaretPosition();
 	}
 	
@@ -1403,6 +1413,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	{
 		flushInterrupted = !flushInterrupted;
 		flush();
+		if (notifyFlushInterrupted != null)
+		{
+			notifyFlushInterrupted.notify(flushInterrupted);
+		}
 	}
 	
 	public void toggleEcho()
@@ -2143,4 +2157,15 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	{
 		this.remoteIcon = remoteIcon;
 	}
+
+	public void addToggleFlushInterruptNotify(VTConsoleBooleanToggleNotify notifyFlushInterrupted)
+	{
+		this.notifyFlushInterrupted = notifyFlushInterrupted;
+	}
+
+	public void addToggleReplaceInputNotify(VTConsoleBooleanToggleNotify notifyReplaceInput)
+	{
+		this.notifyReplaceInput = notifyReplaceInput;
+	}
+	
 }
