@@ -782,6 +782,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         {
         	verticalScrollbar = new Scrollbar(Scrollbar.VERTICAL);
         	verticalScrollbar.setUnitIncrement(1);
+        	verticalScrollbar.setFocusable(false);
         	outputBox.setVerticalAdjustable(verticalScrollbar);
         	awtframe.add(verticalScrollbar, java.awt.BorderLayout.EAST);
         	verticalScrollbar.addKeyListener(new KeyListener()
@@ -801,6 +802,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         	});
         	horizontalScrollbar = new Scrollbar(Scrollbar.HORIZONTAL);
         	horizontalScrollbar.setUnitIncrement(1);
+        	horizontalScrollbar.setFocusable(false);
         	outputBox.setHorizontalAdjustable(horizontalScrollbar);
         	spacer1 = new java.awt.Panel();
         	spacer1.setBackground(SystemColor.scrollbar);
