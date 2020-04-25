@@ -24,7 +24,6 @@ public class VTRuntimeProcessTimeoutKill implements Runnable
 			return;
 		}
 		running = false;
-		
 	}
 	
 	public void kill()

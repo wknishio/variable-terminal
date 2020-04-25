@@ -33,7 +33,7 @@ public class VTClientGraphicalStart
 			{
 				VTConsole.initialize();
 				VTConsole.setTitle("Variable-Terminal Client " + VT.VT_VERSION + " - Console");
-				VTConsole.print(VTHelpManager.printManualParameterHelp());
+				VTConsole.print(VTHelpManager.printModeParameterHelp());
 				VTConsole.print(VTHelpManager.printConnnectionParametersHelp());
 				if (VTConsole.isGraphical())
 				{

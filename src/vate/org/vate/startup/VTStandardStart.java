@@ -160,8 +160,8 @@ public final class VTStandardStart
 				VTConsole.initialize();
 				VTConsole.clear();
 				VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
-				VTConsole.print(VTHelpManager.printManualParameterHelp());
-				VTConsole.print(VTHelpManager.printApplicationParametersHelp());
+				//VTConsole.print(VTHelpManager.printApplicationParametersHelp());
+				VTConsole.print(VTHelpManager.printModeParameterHelp());
 				VTConsole.print(VTHelpManager.printConnnectionParametersHelp());
 				if (VTConsole.isGraphical())
 				{

@@ -8,14 +8,20 @@ public class VTHelpManager
 {
 	private static Properties helpMap = new Properties();
 	
-	private static String manualParameterHelp = ("\n -C: use client module") +
+	private static String modeParameterHelp = 
+	("\n mode parameters:") +
+	("\n -C: use client module") +
 	(" | -S: use server module") +
-	(" | -D: use daemon module");
+	(" | -D: use daemon module") +
+	("\n -H: list parameters");
 	
-	private static String applicationParametersHelp = ("available parameters usage:") +
-	("\n -H: list available parameters");
+	//private static String applicationParametersHelp = 
+	//("\n available parameters:") +
+	//("\n -H: list available parameters");
 
-	private static String connnectionParametersHelp = ("\n -LF: load connection settings file") + 
+	private static String connnectionParametersHelp = 
+	("\n connection parameters:") + 
+	("\n -LF: load connection settings file") + 
 	("\n -CM: connection mode, passive(P), active(A)") +
 	("\n -CH: connection host, default null") +
 	("\n -CP: connection port, default 6060") +
@@ -30,8 +36,8 @@ public class VTHelpManager
 	("\n -PS: proxy password, default null") +
 	("\n -ET: encryption type, AES(A), RC4(R), disabled(D), default disabled") +
 	("\n -ES: encryption password, default null") +
-	("\n -SL: sessions limit, default 0, available in server") +
-	("\n -SC: session commands, separated by \"*;\", default null, available in client");
+	("\n -SL: sessions limit, default 0, only in server") +
+	("\n -SC: session commands, separated by \"*;\", default null, only in client");
 	
 	public static void initialize()
 	{
@@ -91,15 +97,15 @@ public class VTHelpManager
 		return helpMap.getProperty("server." + command.toLowerCase(), "\nVT>Server console internal command [" + command + "] not found!\nVT>");
 	}
 	
-	public static String printManualParameterHelp()
+	public static String printModeParameterHelp()
 	{
-		return manualParameterHelp;
+		return modeParameterHelp;
 	}
 	
-	public static String printApplicationParametersHelp()
-	{
-		return applicationParametersHelp;
-	}
+	//public static String printApplicationParametersHelp()
+	//{
+		//return applicationParametersHelp;
+	//}
 	
 	public static String printConnnectionParametersHelp()
 	{
