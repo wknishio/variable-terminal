@@ -15,10 +15,10 @@ public class VTHelpManager
 	(" | -D: use daemon module") +
 	("\n -H: list parameters");
 	
-	//private static String applicationParametersHelp = 
-	//("\n available parameters:") +
-	//("\n -H: list available parameters");
-
+	private static String listParametersHelp = 
+	("\n mode parameters:") +
+	("\n -H: list parameters");
+	
 	private static String connnectionParametersHelp = 
 	("\n connection parameters:") + 
 	("\n -LF: load connection settings file") + 
@@ -102,10 +102,10 @@ public class VTHelpManager
 		return modeParameterHelp;
 	}
 	
-	//public static String printApplicationParametersHelp()
-	//{
-		//return applicationParametersHelp;
-	//}
+	public static String printListParametersHelp()
+	{
+		return listParametersHelp;
+	}
 	
 	public static String printConnnectionParametersHelp()
 	{
