@@ -85,6 +85,32 @@ public final class VTImageDataUtils
 		}
 	}
 	
+	public static final void copyArea(long[] source, long[] destination, int offset, int width, int height, Rectangle transferArea)
+	{
+		int index = 0;
+		int length = width * height;
+		int i = 0;
+		// int j = 0;
+		int x = Math.min(transferArea.x, width);
+		int y = Math.min(transferArea.y, height);
+		int m = Math.min(transferArea.width, width - x);
+		int n = Math.min(transferArea.height, height - y);
+		
+		if (x >= 0 && y >= 0 && m != width && n != height)
+		{
+			index = offset + x + (y * width);
+			for (i = 0; i < n; i++)
+			{
+				System.arraycopy(source, index, destination, index, m);
+				index += width;
+			}
+		}
+		else
+		{
+			System.arraycopy(source, offset, destination, offset, length);
+		}
+	}
+	
 	public static final boolean deltaArea(byte[] array1, byte[] array2, int width, int height, Rectangle captureArea, Rectangle resultArea)
 	{
 		int delta = 0;
@@ -542,6 +568,47 @@ public final class VTImageDataUtils
 		return bits == 0;
 	}
 	
+	public static final boolean compareArea(long[] array1, long[] array2, int width, int height, Rectangle captureArea)
+	{
+		int bits = 0;
+		int index = 0;
+		int offset = 0;
+		int i = 0;
+		int j = 0;
+		int x;
+		int y;
+		int m;
+		int n;
+		
+		if (captureArea != null && captureArea.x >= 0 && captureArea.y >= 0)
+		{
+			x = Math.min(captureArea.x, width);
+			y = Math.min(captureArea.y, height);
+			m = Math.min(captureArea.width, width - x);
+			n = Math.min(captureArea.height, height - y);
+		}
+		else
+		{
+			x = 0;
+			y = 0;
+			m = width;
+			n = height;
+		}
+		
+		offset = x + (y * width);
+		for (i = 0; i < n; i++)
+		{
+			index = offset;
+			for (j = 0; j < m; j++)
+			{
+				bits |= array1[index] ^ array2[index];
+				index++;
+			}
+			offset += width;
+		}
+		return bits == 0;
+	}
+	
 	public static final boolean compareArea(int[] array1, int[] array2, int width, int height, Rectangle captureArea)
 	{
 		int bits = 0;
@@ -620,6 +687,24 @@ public final class VTImageDataUtils
 	}
 	
 	public static final void compareBlockArea(int[] array1, int[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
+	{
+		Rectangle blockArea = new Rectangle(0, 0, 1, 1);
+		int i, j, k;
+		k = 0;
+		for (i = 0; i < captureArea.height; i += blockHeight)
+		{
+			for (j = 0; j < captureArea.width; j += blockWidth)
+			{
+				blockArea.x = captureArea.x + j;
+				blockArea.y = captureArea.y + i;
+				blockArea.width = Math.min(blockWidth, captureArea.width - j);
+				blockArea.height = Math.min(blockHeight, captureArea.height - i);
+				blockAreaBits.set(k++, !compareArea(array1, array2, width, height, blockArea));
+			}
+		}
+	}
+	
+	public static final void compareBlockArea(long[] array1, long[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
 	{
 		Rectangle blockArea = new Rectangle(0, 0, 1, 1);
 		int i, j, k;
