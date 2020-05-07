@@ -73,6 +73,10 @@ Changes since 1.4.2:
 * Reduced graphical console CPU usage when its not the active window
 * Fixed *VTMESSAGE command problem
 * Modified the readme file to english language
+* Updated graphical console to lanterna based implementation
+* Added capacity to truncate files when using command *VTFILETRANSFER
+* Added notification of nat devices external addresses
+* Added timeout option to command *VTRUNTIME
 * Changed license from GPLv3 license to MIT license
 
 Changes since 1.4.1:
