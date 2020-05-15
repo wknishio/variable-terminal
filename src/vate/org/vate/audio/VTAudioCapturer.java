@@ -144,7 +144,7 @@ public class VTAudioCapturer
 					opus.setForceMode(OpusMode.MODE_CELT_ONLY);
 					opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
 					opus.setEnableAnalysis(false);
-					opus.setUseVBR(true);
+					opus.setUseVBR(false);
 					opus.setComplexity(5);
 					opus.setBitrate(16000);
 				}
@@ -163,7 +163,7 @@ public class VTAudioCapturer
 					opus.setForceMode(OpusMode.MODE_CELT_ONLY);
 					opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
 					opus.setEnableAnalysis(false);
-					opus.setUseVBR(true);
+					opus.setUseVBR(false);
 					opus.setComplexity(5);
 					opus.setBitrate(32000);
 				}
@@ -187,7 +187,7 @@ public class VTAudioCapturer
 					opus.setForceMode(OpusMode.MODE_CELT_ONLY);
 					opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
 					opus.setEnableAnalysis(false);
-					opus.setUseVBR(true);
+					opus.setUseVBR(false);
 					opus.setComplexity(5);
 					opus.setBitrate(32000);
 				}
@@ -205,7 +205,7 @@ public class VTAudioCapturer
 					opus.setForceMode(OpusMode.MODE_CELT_ONLY);
 					opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
 					opus.setEnableAnalysis(false);
-					opus.setUseVBR(true);
+					opus.setUseVBR(false);
 					opus.setComplexity(5);
 					opus.setBitrate(64000);
 				}
