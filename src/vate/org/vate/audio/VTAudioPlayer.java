@@ -1,5 +1,6 @@
 package org.vate.audio;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -11,6 +12,7 @@ import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
 
 import org.concentus.OpusDecoder;
+import org.concentus.OpusException;
 import org.vate.VT;
 import org.vate.stream.endian.VTLittleEndianInputStream;
 import org.xiph.speex.SpeexDecoder;
@@ -178,6 +180,31 @@ public class VTAudioPlayer
 			}
 		}
 		
+		public final void loopOpus() throws IOException, OpusException
+		{
+			while (running)
+			{
+				encodedFrameSize = in.readUnsignedShort();
+				in.readFully(inputBuffer, 0, encodedFrameSize);
+				opus.decode(inputBuffer, 0, encodedFrameSize, outputBuffer, 0, (frameSize), false);
+				//opus.decode(inputBuffer, 0, encodedFrameSize, outputBuffer, 0, (frameSize >> 1), false);
+				line.write(outputBuffer, 0, (frameSize));
+				//line.write(outputBuffer, 0, (frameSize >> 1));
+			}
+		}
+		
+		public final void loopSpeex() throws IOException
+		{
+			while (running)
+			{
+				encodedFrameSize = in.readUnsignedShort();
+				in.readFully(inputBuffer, 0, encodedFrameSize);
+				speex.processData(inputBuffer, 0, encodedFrameSize);
+				decodedFrameSize = speex.getProcessedData(outputBuffer, 0);
+				line.write(outputBuffer, 0, decodedFrameSize);
+			}
+		}
+		
 		public void run()
 		{
 			// System.out.println("started play");
@@ -190,26 +217,11 @@ public class VTAudioPlayer
 			{
 				if (codec == VT.VT_AUDIO_CODEC_OPUS)
 				{
-					while (running)
-					{
-						encodedFrameSize = in.readUnsignedShort();
-						in.readFully(inputBuffer, 0, encodedFrameSize);
-						opus.decode(inputBuffer, 0, encodedFrameSize, outputBuffer, 0, (frameSize), false);
-						//opus.decode(inputBuffer, 0, encodedFrameSize, outputBuffer, 0, (frameSize >> 1), false);
-						line.write(outputBuffer, 0, (frameSize));
-						//line.write(outputBuffer, 0, (frameSize >> 1));
-					}
+					loopOpus();
 				}
 				else
 				{
-					while (running)
-					{
-						encodedFrameSize = in.readUnsignedShort();
-						in.readFully(inputBuffer, 0, encodedFrameSize);
-						speex.processData(inputBuffer, 0, encodedFrameSize);
-						decodedFrameSize = speex.getProcessedData(outputBuffer, 0);
-						line.write(outputBuffer, 0, decodedFrameSize);
-					}
+					loopSpeex();
 				}
 			}
 			catch (Throwable e)
@@ -258,6 +270,8 @@ public class VTAudioPlayer
 			// System.out.println("stopped play");
 		}
 	}
+	
+	
 	
 	public boolean addInputStream(InputStream in, Mixer.Info info, int lineMilliseconds, int codec, int frameMilliseconds)
 	{
