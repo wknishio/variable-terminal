@@ -129,8 +129,20 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
 		}
 		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_DELETE)
 		{
+			//e.consume();
+			//VTConsole.toggleInputMode();
+			//return;
+		}
+		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_X)
+		{
 			e.consume();
 			VTConsole.toggleInputMode();
+			return;
+		}
+		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_Z)
+		{
+			e.consume();
+			VTConsole.toggleScrollMode();
 			return;
 		}
 		if (e.getKeyCode() == KeyEvent.VK_INSERT)
@@ -282,14 +294,11 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
 		}
 		else if (e.getKeyChar() == '\u001A')
 		{
-			if (VTGraphicalConsole.isFlushInterrupted())
-			{
-				VTGraphicalConsole.resumeOutputFlush();
-			}
-			else
-			{
-				VTGraphicalConsole.interruptOutputFlush();
-			}
+			VTConsole.toggleScrollMode();
+		}
+		else if (e.getKeyChar() == '\u0018')
+		{
+			VTConsole.toggleInputMode();
 		}
 		else
 		{

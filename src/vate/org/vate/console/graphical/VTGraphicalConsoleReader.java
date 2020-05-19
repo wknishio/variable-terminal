@@ -3,6 +3,8 @@ package org.vate.console.graphical;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.vate.console.VTConsole;
+
 public class VTGraphicalConsoleReader
 {
 	// maybe: advanced command line editing capabilities
@@ -293,14 +295,13 @@ public class VTGraphicalConsoleReader
 					else if (character == '\u001A')
 					{
 						/* out.write('\n'); out.flush(); */
-						if (VTGraphicalConsole.isFlushInterrupted())
-						{
-							VTGraphicalConsole.resumeOutputFlush();
-						}
-						else
-						{
-							VTGraphicalConsole.interruptOutputFlush();
-						}
+						VTConsole.toggleScrollMode();
+						// System.exit(0);
+					}
+					else if (character == '\u0018')
+					{
+						/* out.write('\n'); out.flush(); */
+						VTConsole.toggleInputMode();
 						// System.exit(0);
 					}
 					/* else if (character == (char) -1) { return ""; } */
@@ -521,14 +522,13 @@ public class VTGraphicalConsoleReader
 					else if (character == '\u001A')
 					{
 						/* out.write('\n'); out.flush(); */
-						if (VTGraphicalConsole.isFlushInterrupted())
-						{
-							VTGraphicalConsole.resumeOutputFlush();
-						}
-						else
-						{
-							VTGraphicalConsole.interruptOutputFlush();
-						}
+						VTConsole.toggleScrollMode();
+						// System.exit(0);
+					}
+					else if (character == '\u0018')
+					{
+						/* out.write('\n'); out.flush(); */
+						VTConsole.toggleInputMode();
 						// System.exit(0);
 					}
 					else if (character == (char) -1)
@@ -603,14 +603,11 @@ public class VTGraphicalConsoleReader
 		}
 		if (currentLineBuffer.toString().startsWith("\u001A"))
 		{
-			if (VTGraphicalConsole.isFlushInterrupted())
-			{
-				VTGraphicalConsole.resumeOutputFlush();
-			}
-			else
-			{
-				VTGraphicalConsole.interruptOutputFlush();
-			}
+			VTConsole.toggleScrollMode();
+		}
+		if (currentLineBuffer.toString().startsWith("\u0018"))
+		{
+			VTConsole.toggleInputMode();
 		}
 		if (echo)
 		{

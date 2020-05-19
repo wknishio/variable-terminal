@@ -783,14 +783,11 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		}
 		if (c == '\u001A')
 		{
-			if (flushInterrupted)
-			{
-				VTGraphicalConsole.resumeOutputFlush();
-			}
-			else
-			{
-				VTGraphicalConsole.interruptOutputFlush();
-			}
+			VTConsole.toggleScrollMode();
+		}
+		if (c == '\u0018')
+		{
+			VTConsole.toggleInputMode();
 		}
 		if (c != VT_VK_DELETE && c != VT_VK_RIGHT && c != VT_VK_LEFT && c != VT_VK_UP && c != VT_VK_DOWN && c != VT_VK_HOME && c != VT_VK_END)
 		{
@@ -818,14 +815,11 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 		}
 		if (c == '\u001A')
 		{
-			if (flushInterrupted)
-			{
-				VTGraphicalConsole.resumeOutputFlush();
-			}
-			else
-			{
-				VTGraphicalConsole.interruptOutputFlush();
-			}
+			VTConsole.toggleScrollMode();
+		}
+		if (c == '\u0018')
+		{
+			VTConsole.toggleInputMode();
 		}
 		synchronized (inputSynchronizer)
 		{

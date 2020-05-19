@@ -1230,8 +1230,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					if (keyStroke.getKeyType() == KeyType.Delete
 					&& keyStroke.isCtrlDown())
 					{
-						toggleReplace();
-						return false;
+						//toggleReplace();
+						//return false;
 					}
 					if (keyStroke.getKeyType() == KeyType.Home
 					&& keyStroke.isCtrlDown())
@@ -1271,6 +1271,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
 						toggleFlush();
 						return false;
 					}
+					if (keyStroke.getCharacter() == '\u0018')
+					{
+						toggleReplace();
+						return false;
+					}
 					if (keyStroke.getCharacter() == '\u001C')
 					{
 						System.exit(0);
@@ -1299,6 +1304,13 @@ public class VTLanternaConsole implements VTConsoleImplementation
 						{
 							//System.out.println("ctrl+z");
 							toggleFlush();
+							return false;
+						}
+						if (keyStroke.getCharacter() == 'X'
+						|| keyStroke.getCharacter() == 'x')
+						{
+							//System.out.println("ctrl+z");
+							toggleReplace();
 							return false;
 						}
 					}

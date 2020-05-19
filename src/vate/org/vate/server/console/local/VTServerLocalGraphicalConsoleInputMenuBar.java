@@ -299,10 +299,10 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends MenuBar
 		keyboardShortcutsMenu.add(new MenuItem("Insert : Toggle Insert / Replace"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+C : Quit Application"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Z : Toggle Pause / Resume"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+X : Toggle Insert / Replace"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert : Copy Selected Text"));
 		keyboardShortcutsMenu.add(new MenuItem("Shift+Insert : Paste Selected Text"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace : Copy All Text"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Delete : Toggle Insert / Replace"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown : Decrease Font"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp : Increase Font"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+End : Intensitize Font"));
