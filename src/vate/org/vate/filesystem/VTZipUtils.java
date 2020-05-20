@@ -120,17 +120,17 @@ public class VTZipUtils
 			return false;
 		}
 		ZipEntry directoryEntry = new ZipEntry(currentPath + '/');
-		try
-		{
-			if (directory.lastModified() != 0)
-			{
-				directoryEntry.setTime(directory.lastModified());
-			}
-		}
-		catch (Throwable t)
-		{
-			
-		}
+//		try
+//		{
+//			if (directory.lastModified() != 0)
+//			{
+//				directoryEntry.setTime(directory.lastModified());
+//			}
+//		}
+//		catch (Throwable t)
+//		{
+//			
+//		}
 		zipWriter.putNextEntry(directoryEntry);
 		zipWriter.closeEntry();
 		zipWriter.flush();
@@ -177,17 +177,17 @@ public class VTZipUtils
 			}
 			fileInputStream = Channels.newInputStream(new FileInputStream(file).getChannel());
 			ZipEntry fileEntry = new ZipEntry(currentPath + file.getName());
-			try
-			{
-				if (file.lastModified() != 0)
-				{
-					fileEntry.setTime(file.lastModified());
-				}
-			}
-			catch (Throwable t)
-			{
-				
-			}
+//			try
+//			{
+//				if (file.lastModified() != 0)
+//				{
+//					fileEntry.setTime(file.lastModified());
+//				}
+//			}
+//			catch (Throwable t)
+//			{
+//				
+//			}
 			zipWriter.putNextEntry(fileEntry);
 			int readBytes;
 			while ((readBytes = fileInputStream.read(readBuffer)) > 0)
@@ -276,32 +276,32 @@ public class VTZipUtils
 		File directory = new File(destinationPath + File.separatorChar + zipEntry.getName());
 		if (directory.exists() && directory.isDirectory())
 		{
-			try
-			{
-				if (zipEntry.getTime() != -1)
-				{
-					directory.setLastModified(zipEntry.getTime());
-				}
-			}
-			catch (Throwable t)
-			{
-				
-			}
+//			try
+//			{
+//				if (zipEntry.getTime() != -1)
+//				{
+//					directory.setLastModified(zipEntry.getTime());
+//				}
+//			}
+//			catch (Throwable t)
+//			{
+//				
+//			}
 			return true;
 		}
 		if (directory.mkdirs())
 		{
-			try
-			{
-				if (zipEntry.getTime() != -1)
-				{
-					directory.setLastModified(zipEntry.getTime());
-				}
-			}
-			catch (Throwable t)
-			{
-				
-			}
+//			try
+//			{
+//				if (zipEntry.getTime() != -1)
+//				{
+//					directory.setLastModified(zipEntry.getTime());
+//				}
+//			}
+//			catch (Throwable t)
+//			{
+//				
+//			}
 			return true;
 		}
 		return false;
@@ -310,6 +310,14 @@ public class VTZipUtils
 	@SuppressWarnings("all")
 	private static boolean extractFileFromZip(ZipInputStream zipReader, ZipEntry zipEntry, final byte[] readBuffer, String destinationPath) throws IOException
 	{
+		File directory = new File(destinationPath);
+		if (!directory.exists())
+		{
+			if (!directory.mkdirs())
+			{
+				return false;
+			}
+		}
 		File tempFile = new File(destinationPath + File.separatorChar + zipEntry.getName() + ".tmp");
 		File finalFile = new File(destinationPath + File.separatorChar + zipEntry.getName());
 		if (finalFile.exists())
@@ -350,17 +358,17 @@ public class VTZipUtils
 			{
 				if (tempFile.renameTo(finalFile))
 				{
-					try
-					{
-						if (zipEntry.getTime() != -1)
-						{
-							finalFile.setLastModified(zipEntry.getTime());
-						}
-					}
-					catch (Throwable t)
-					{
-						
-					}
+//					try
+//					{
+//						if (zipEntry.getTime() != -1)
+//						{
+//							finalFile.setLastModified(zipEntry.getTime());
+//						}
+//					}
+//					catch (Throwable t)
+//					{
+//						
+//					}
 					return true;
 				}
 			}
@@ -369,17 +377,17 @@ public class VTZipUtils
 				return false;
 			}
 		}
-		try
-		{
-			if (zipEntry.getTime() != -1)
-			{
-				finalFile.setLastModified(zipEntry.getTime());
-			}
-		}
-		catch (Throwable t)
-		{
-			
-		}
+//		try
+//		{
+//			if (zipEntry.getTime() != -1)
+//			{
+//				finalFile.setLastModified(zipEntry.getTime());
+//			}
+//		}
+//		catch (Throwable t)
+//		{
+//			
+//		}
 		return true;
 	}
 	

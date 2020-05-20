@@ -131,7 +131,10 @@ public class VTArchiveUtils
 		}
 		ZipArchiveEntry directoryEntry = new ZipArchiveEntry(currentPath + '/');
 		
-		// zipDirectory.setTime(directory.lastModified());
+//		if (directory.lastModified() != 0)
+//		{
+//			directoryEntry.setTime(directory.lastModified());
+//		}
 		
 		zipWriter.putArchiveEntry(directoryEntry);
 		zipWriter.closeArchiveEntry();
@@ -179,7 +182,11 @@ public class VTArchiveUtils
 			fileInputStream = new FileInputStream(file);
 			ZipArchiveEntry zipEntry = new ZipArchiveEntry(currentPath + file.getName());
 			
-			// fileEntry.setTime(file.lastModified());
+//			if (file.lastModified() != 0)
+//			{
+//				zipEntry.setTime(file.lastModified());
+//			}
+			
 			// fileEntry.setSize(file.length());
 			
 			zipWriter.putArchiveEntry(zipEntry);
@@ -199,6 +206,217 @@ public class VTArchiveUtils
 				fileInputStream.close();
 			}
 		}
+		return true;
+	}
+	
+	
+	
+	// @SuppressWarnings("resource")
+	@SuppressWarnings("all")
+	public static boolean extractZipFile(String zipFilePath, final byte[] readBuffer, String destinationPath) throws IOException
+	{
+		File file = new File(zipFilePath);
+		if (file.exists() && !file.isFile())
+		{
+			return false;
+		}
+		if (destinationPath.equalsIgnoreCase(""))
+		{
+			destinationPath = ".";
+		}
+		File directory = new File(destinationPath);
+		if (!directory.exists())
+		{
+			if (!directory.mkdirs())
+			{
+				return false;
+			}
+		}
+		else if (directory.exists())
+		{
+			if (!directory.isDirectory())
+			{
+				return false;
+			}
+		}
+		InputStream fileInputStream = null;
+		ZipArchiveInputStream zipReader = null;
+		try
+		{
+			// fileStream = Channels.newInputStream(new
+			// FileInputStream(file).getChannel());
+			fileInputStream = new FileInputStream(file);
+			zipReader = new ZipArchiveInputStream(fileInputStream);
+			ZipArchiveEntry zipEntry;
+			while ((zipEntry = zipReader.getNextZipEntry()) != null)
+			{
+				if (zipEntry.isDirectory())
+				{
+					if (!extractDirectoryFromZipFile(zipEntry, destinationPath))
+					{
+						return false;
+					}
+				}
+				else
+				{
+					if (!extractFileFromZipFile(zipReader, zipEntry, readBuffer, destinationPath))
+					{
+						return false;
+					}
+				}
+				// zipReader.closeEntry();
+			}
+		}
+		finally
+		{
+			if (zipReader != null)
+			{
+				zipReader.close();
+			}
+		}
+		return true;
+	}
+	
+	@SuppressWarnings("all")
+	private static boolean extractDirectoryFromZipFile(ZipArchiveEntry zipEntry, String currentPath)
+	{
+		File directory = new File(currentPath + File.separatorChar + zipEntry.getName());
+		if (directory.exists() && directory.isDirectory())
+		{
+			//try
+			//{
+				//if (zipEntry.getTime() != -1)
+				//{
+					//directory.setLastModified(zipEntry.getTime());
+				//}
+			//}
+			//catch (Throwable t)
+			//{
+				
+			//}
+			//return true;
+		}
+		if (directory.mkdirs())
+		{
+			//try
+			//{
+				//if (zipEntry.getTime() != -1)
+				//{
+					//directory.setLastModified(zipEntry.getTime());
+				//}
+			//}
+			//catch (Throwable t)
+			//{
+				
+			//}
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	// @SuppressWarnings("resource")
+	@SuppressWarnings("all")
+	private static boolean extractFileFromZipFile(ZipArchiveInputStream zipReader, ZipArchiveEntry zipEntry, final byte[] readBuffer, String currentPath) throws IOException
+	{
+		File directory = new File(currentPath);
+		if (!directory.exists())
+		{
+			if (!directory.mkdirs())
+			{
+				return false;
+			}
+		}
+		File tempFile = new File(currentPath + File.separatorChar + zipEntry.getName() + ".tmp");
+		File finalFile = new File(currentPath + File.separatorChar + zipEntry.getName());
+		if (tempFile.exists())
+		{
+			if (!tempFile.isFile())
+			{
+				return false;
+			}
+		}
+		else
+		{
+			if (tempFile.getParentFile() != null)
+			{
+				tempFile.getParentFile().mkdirs();
+			}
+			if (!tempFile.createNewFile())
+			{
+				if (!tempFile.delete() || !tempFile.createNewFile())
+				{
+					return false;
+				}
+			}
+		}
+		
+		FileOutputStream fileOutputStream = null;
+		try
+		{
+			// fileStream = Channels.newOutputStream(new
+			// FileOutputStream(file).getChannel());
+			fileOutputStream = new FileOutputStream(tempFile);
+			int readBytes;
+			int writtenBytes = 0;
+			while ((readBytes = zipReader.read(readBuffer, 0, readBuffer.length)) > 0)
+			{
+				fileOutputStream.write(readBuffer, 0, readBytes);
+				writtenBytes += readBytes;
+				if (writtenBytes >= readBuffer.length)
+				{
+					fileOutputStream.flush();
+					writtenBytes = 0;
+				}
+			}
+			fileOutputStream.flush();
+		}
+		finally
+		{
+			if (fileOutputStream != null)
+			{
+				fileOutputStream.close();
+			}
+		}
+		if (!tempFile.renameTo(finalFile))
+		{
+			if (finalFile.delete())
+			{
+//				if (tempFile.renameTo(finalFile))
+//				{
+//					try
+//					{
+//						if (zipEntry.getTime() != -1)
+//						{
+//							//finalFile.setLastModified(zipEntry.getTime());
+//						}
+//					}
+//					catch (Throwable t)
+//					{
+//						
+//					}
+//					return true;
+//				}
+				return tempFile.renameTo(finalFile);
+			}
+			else
+			{
+				return false;
+			}
+		}
+//		try
+//		{
+//			if (zipEntry.getTime() != -1)
+//			{
+//				//finalFile.setLastModified(zipEntry.getTime());
+//			}
+//		}
+//		catch (Throwable t)
+//		{
+//			
+//		}
 		return true;
 	}
 	
@@ -349,162 +567,6 @@ public class VTArchiveUtils
 		return true;
 	}
 	
-	// @SuppressWarnings("resource")
-	@SuppressWarnings("all")
-	public static boolean extractZipFile(String zipFilePath, final byte[] readBuffer, String destinationPath) throws IOException
-	{
-		File file = new File(zipFilePath);
-		if (file.exists() && !file.isFile())
-		{
-			return false;
-		}
-		if (destinationPath.equalsIgnoreCase(""))
-		{
-			destinationPath = ".";
-		}
-		File directory = new File(destinationPath);
-		if (!directory.exists())
-		{
-			if (!directory.mkdirs())
-			{
-				return false;
-			}
-		}
-		else if (directory.exists())
-		{
-			if (!directory.isDirectory())
-			{
-				return false;
-			}
-		}
-		InputStream fileInputStream = null;
-		ZipArchiveInputStream zipReader = null;
-		try
-		{
-			// fileStream = Channels.newInputStream(new
-			// FileInputStream(file).getChannel());
-			fileInputStream = new FileInputStream(file);
-			zipReader = new ZipArchiveInputStream(fileInputStream);
-			ZipArchiveEntry zipEntry;
-			while ((zipEntry = zipReader.getNextZipEntry()) != null)
-			{
-				if (zipEntry.isDirectory())
-				{
-					if (!extractDirectoryFromZipFile(zipEntry, destinationPath))
-					{
-						return false;
-					}
-				}
-				else
-				{
-					if (!extractFileFromZipFile(zipReader, zipEntry, readBuffer, destinationPath))
-					{
-						return false;
-					}
-				}
-				// zipReader.closeEntry();
-			}
-		}
-		finally
-		{
-			if (zipReader != null)
-			{
-				zipReader.close();
-			}
-		}
-		return true;
-	}
-	
-	@SuppressWarnings("all")
-	private static boolean extractDirectoryFromZipFile(ZipArchiveEntry zipEntry, String currentPath)
-	{
-		File directory = new File(currentPath + File.separatorChar + zipEntry.getName());
-		if (directory.exists() && directory.isDirectory())
-		{
-			return true;
-		}
-		if (directory.mkdirs())
-		{
-			// directory.setLastModified(zipEntry.getTime());
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-	
-	// @SuppressWarnings("resource")
-	@SuppressWarnings("all")
-	private static boolean extractFileFromZipFile(ZipArchiveInputStream zipReader, ZipArchiveEntry zipEntry, final byte[] readBuffer, String currentPath) throws IOException
-	{
-		File tempFile = new File(currentPath + File.separatorChar + zipEntry.getName() + ".tmp");
-		File finalFile = new File(currentPath + File.separatorChar + zipEntry.getName());
-		if (tempFile.exists())
-		{
-			if (!tempFile.isFile())
-			{
-				return false;
-			}
-		}
-		else
-		{
-			if (tempFile.getParentFile() != null)
-			{
-				tempFile.getParentFile().mkdirs();
-			}
-			if (!tempFile.createNewFile())
-			{
-				if (!tempFile.delete() || !tempFile.createNewFile())
-				{
-					return false;
-				}
-			}
-		}
-		
-		// file.setLastModified(zipEntry.getTime());
-		
-		FileOutputStream fileOutputStream = null;
-		try
-		{
-			// fileStream = Channels.newOutputStream(new
-			// FileOutputStream(file).getChannel());
-			fileOutputStream = new FileOutputStream(tempFile);
-			int readBytes;
-			int writtenBytes = 0;
-			while ((readBytes = zipReader.read(readBuffer, 0, readBuffer.length)) > 0)
-			{
-				fileOutputStream.write(readBuffer, 0, readBytes);
-				writtenBytes += readBytes;
-				if (writtenBytes >= readBuffer.length)
-				{
-					fileOutputStream.flush();
-					writtenBytes = 0;
-				}
-			}
-			fileOutputStream.flush();
-		}
-		finally
-		{
-			if (fileOutputStream != null)
-			{
-				fileOutputStream.close();
-			}
-		}
-		if (!tempFile.renameTo(finalFile))
-		{
-			if (finalFile.delete())
-			{
-				return tempFile.renameTo(finalFile);
-			}
-			else
-			{
-				return false;
-			}
-		}
-		return true;
-	}
-	
 	@SuppressWarnings("all")
 	public static boolean extractZipStream(InputStream input, final byte[] readBuffer, String destinationPath) throws IOException
 	{
@@ -567,6 +629,14 @@ public class VTArchiveUtils
 	@SuppressWarnings("all")
 	private static boolean extractFileFromZipStream(ZipArchiveInputStream zipReader, ZipArchiveEntry zipEntry, final byte[] readBuffer, String currentPath) throws IOException
 	{
+		File directory = new File(currentPath);
+		if (!directory.exists())
+		{
+			if (!directory.mkdirs())
+			{
+				return false;
+			}
+		}
 		File tempFile = new File(currentPath + File.separatorChar + zipEntry.getName() + ".tmp");
 		File finalFile = new File(currentPath + File.separatorChar + zipEntry.getName());
 		if (tempFile.exists())
@@ -590,9 +660,7 @@ public class VTArchiveUtils
 				}
 			}
 		}
-		
-		// file.setLastModified(zipEntry.getTime());
-		
+				
 		FileOutputStream fileOutputStream = null;
 		try
 		{
@@ -723,7 +791,10 @@ public class VTArchiveUtils
 		}
 		TarArchiveEntry directoryEntry = new TarArchiveEntry(currentPath + '/');
 		
-		directoryEntry.setModTime(directory.lastModified());
+		if (directory.lastModified() != 0)
+		{
+			directoryEntry.setModTime(directory.lastModified());
+		}
 		
 		tarWriter.putArchiveEntry(directoryEntry);
 		tarWriter.closeArchiveEntry();
@@ -868,6 +939,14 @@ public class VTArchiveUtils
 	{
 		// System.out.println("extractFileFromTarInputStream: " +
 		// tarEntry.getName().toString() + " " + currentPath);
+		File directory = new File(currentPath);
+		if (!directory.exists())
+		{
+			if (!directory.mkdirs())
+			{
+				return false;
+			}
+		}
 		File tempFile = new File(currentPath + File.separatorChar + tarEntry.getName() + ".tmp");
 		File finalFile = new File(currentPath + File.separatorChar + tarEntry.getName());
 		if (tempFile.exists())
