@@ -13,7 +13,7 @@ import org.vate.console.lanterna.separated.VTLanternaConsole;
 import org.vate.console.standard.VTStandardConsole;
 import org.vate.nativeutils.VTNativeUtils;
 
-public final class VTConsole
+public final class VTConsoleInstance
 {
 	// private static boolean initialized;
 	public static final int VT_CONSOLE_COLOR_NORMAL_BLACK = 0;
@@ -33,31 +33,32 @@ public final class VTConsole
 	public static final int VT_CONSOLE_COLOR_LIGHT_WHITE = 17;
 	public static final int VT_CONSOLE_COLOR_DEFAULT = 9;
 	
-	private static boolean lanterna = false;
-	private static boolean graphical;
-	private static boolean daemon;
-	private static boolean remoteIcon;
+	private final boolean lanterna = true;
+	private boolean graphical = true;
+	private boolean daemon;
+	private boolean remoteIcon;
 	// private static boolean split;
-	private static volatile VTConsoleImplementation console;
+	private volatile VTConsoleImplementation console;
 	
-	private static Object synchronizationObject = new Object();
+	private Object synchronizationObject = new Object();
 	
 	static
 	{
 		VTNativeUtils.initialize();
 	}
 	
-	public static Object getSynchronizationObject()
+	public Object getSynchronizationObject()
 	{
 		return synchronizationObject;
 	}
 	
-	public synchronized static void initialize()
+	public synchronized void initialize()
 	{
 		if (console == null)
 		{
 			if (!daemon)
 			{
+				setGraphical(true);
 				if (graphical)
 				{
 					// VTGraphicalConsole.setSplit(split);
@@ -110,24 +111,24 @@ public final class VTConsole
 		}
 	}
 	
-	public synchronized static boolean isGraphical()
+	public synchronized boolean isGraphical()
 	{
 		return graphical;
 	}
 	
-	public synchronized static void setLanterna(boolean lanterna)
+	public synchronized void setLanterna(boolean lanterna)
 	{
-		VTConsole.lanterna = lanterna;
+		//this.lanterna = lanterna;
 	}
 	
-	public synchronized static void setGraphical(boolean graphical)
+	public synchronized void setGraphical(boolean graphical)
 	{
 		if (console == null)
 		{
-			VTConsole.graphical = graphical;
+			this.graphical = graphical;
 			if (GraphicsEnvironment.isHeadless())
 			{
-				VTConsole.graphical = false;
+				this.graphical = false;
 			}
 			else
 			{
@@ -148,12 +149,12 @@ public final class VTConsole
 								}
 								else
 								{
-									VTConsole.graphical = true;
+									this.graphical = true;
 								}
 							}
 							catch (Throwable e)
 							{
-								VTConsole.graphical = true;
+								this.graphical = true;
 							}
 						}
 					}
@@ -167,12 +168,12 @@ public final class VTConsole
 							}
 							else
 							{
-								VTConsole.graphical = true;
+								this.graphical = true;
 							}
 						}
 						catch (Throwable e2)
 						{
-							VTConsole.graphical = true;
+							this.graphical = true;
 						}
 					}
 				}
@@ -180,18 +181,18 @@ public final class VTConsole
 		}
 	}
 	
-	public synchronized static boolean isDaemon()
+	public synchronized boolean isDaemon()
 	{
 		return daemon;
 	}
 	
-	private static class HideGraphicalConsole implements Runnable
+	private final class HideGraphicalConsole implements Runnable
 	{
 		public void run()
 		{
 			try
 			{
-				VTConsole.getFrame().setVisible(false);
+				getFrame().setVisible(false);
 			}
 			catch (Throwable t)
 			{
@@ -200,14 +201,14 @@ public final class VTConsole
 		}
 	}
 	
-	private static class ShowGraphicalConsole implements Runnable
+	private final class ShowGraphicalConsole implements Runnable
 	{
 		public void run()
 		{
 			try
 			{
-				VTConsole.getFrame().setVisible(true);
-				Object waiter = VTConsole.getSynchronizationObject();
+				getFrame().setVisible(true);
+				Object waiter = getSynchronizationObject();
 				synchronized (waiter)
 				{
 					waiter.notifyAll();
@@ -220,18 +221,18 @@ public final class VTConsole
 		}
 	}
 	
-	private static HideGraphicalConsole daemonizeThread = new HideGraphicalConsole();
-	private static ShowGraphicalConsole undaemonizeThread = new ShowGraphicalConsole();
+	private final HideGraphicalConsole daemonizeThread = new HideGraphicalConsole();
+	private final ShowGraphicalConsole undaemonizeThread = new ShowGraphicalConsole();
 	
-	public synchronized static void setDaemon(boolean daemon)
+	public synchronized void setDaemon(boolean daemon)
 	{
-		if (VTConsole.daemon == daemon)
+		if (this.daemon == daemon)
 		{
 			return;
 		}
 		if (console == null)
 		{
-			VTConsole.daemon = daemon;
+			this.daemon = daemon;
 		}
 		else
 		{
@@ -239,12 +240,12 @@ public final class VTConsole
 			{
 				if (daemon == true)
 				{
-					VTConsole.daemon = daemon;
+					this.daemon = daemon;
 					EventQueue.invokeLater(daemonizeThread);
 				}
 				else
 				{
-					VTConsole.daemon = daemon;
+					this.daemon = daemon;
 					EventQueue.invokeLater(undaemonizeThread);
 				}
 			}
@@ -252,14 +253,14 @@ public final class VTConsole
 			{
 				if (daemon == true)
 				{
-					VTConsole.daemon = daemon;
+					this.daemon = daemon;
 					VTNativeUtils.hideConsole();
 				}
 				else
 				{
-					VTConsole.daemon = daemon;
+					this.daemon = daemon;
 					VTNativeUtils.attachConsole();
-					Object waiter = VTConsole.getSynchronizationObject();
+					Object waiter = this.getSynchronizationObject();
 					synchronized (waiter)
 					{
 						waiter.notifyAll();
@@ -275,7 +276,7 @@ public final class VTConsole
 	/* public synchronized static void setSplit(boolean split) { if (terminal ==
 	 * null) { VTTerminal.split = split; } } */
 	
-	public static void setTitle(String title)
+	public void setTitle(String title)
 	{
 		if (checkConsole())
 		{
@@ -284,12 +285,12 @@ public final class VTConsole
 		}
 	}
 	
-	public static String readLine() throws InterruptedException
+	public String readLine() throws InterruptedException
 	{
 		return readLine(true);
 	}
 	
-	public static String readLine(boolean echo) throws InterruptedException
+	public String readLine(boolean echo) throws InterruptedException
 	{
 		if (checkConsole())
 		{
@@ -312,7 +313,7 @@ public final class VTConsole
 		return null;
 	}
 	
-	public static void interruptReadLine()
+	public void interruptReadLine()
 	{
 		if (checkConsole())
 		{
@@ -343,7 +344,7 @@ public final class VTConsole
 	// }
 	// }
 	
-	public static void print(String str)
+	public void print(String str)
 	{
 		if (checkConsole())
 		{
@@ -351,7 +352,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void println(String str)
+	public void println(String str)
 	{
 		if (checkConsole())
 		{
@@ -359,7 +360,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void printf(String format, Object... args)
+	public void printf(String format, Object... args)
 	{
 		if (checkConsole())
 		{
@@ -367,7 +368,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void printfln(String format, Object... args)
+	public void printfln(String format, Object... args)
 	{
 		if (checkConsole())
 		{
@@ -375,7 +376,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void printf(Locale l, String format, Object... args)
+	public void printf(Locale l, String format, Object... args)
 	{
 		if (checkConsole())
 		{
@@ -383,7 +384,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void printfln(Locale l, String format, Object... args)
+	public void printfln(Locale l, String format, Object... args)
 	{
 		if (checkConsole())
 		{
@@ -391,7 +392,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void write(String str)
+	public void write(String str)
 	{
 		if (checkConsole())
 		{
@@ -399,7 +400,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void write(char[] cbuf, int off, int len)
+	public void write(char[] cbuf, int off, int len)
 	{
 		if (checkConsole())
 		{
@@ -410,7 +411,7 @@ public final class VTConsole
 	/* public static void write(byte[] buf, int off, int len) {
 	 * terminal.trueWrite(buf, off, len); } */
 	
-	public static void flush()
+	public void flush()
 	{
 		if (checkConsole())
 		{
@@ -418,7 +419,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void clear()
+	public void clear()
 	{
 		if (checkConsole())
 		{
@@ -426,7 +427,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void bell()
+	public void bell()
 	{
 		try
 		{
@@ -455,7 +456,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void setColors(int foregroundColor, int backgroundColor)
+	public void setColors(int foregroundColor, int backgroundColor)
 	{
 		if (checkConsole())
 		{
@@ -464,7 +465,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void setBold(boolean bold)
+	public void setBold(boolean bold)
 	{
 		if (checkConsole())
 		{
@@ -472,7 +473,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void resetAttributes()
+	public void resetAttributes()
 	{
 		if (checkConsole())
 		{
@@ -480,7 +481,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void setSystemIn()
+	public void setSystemIn()
 	{
 		if (checkConsole())
 		{
@@ -488,7 +489,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void setSystemOut()
+	public void setSystemOut()
 	{
 		if (checkConsole())
 		{
@@ -496,7 +497,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void setSystemErr()
+	public void setSystemErr()
 	{
 		if (checkConsole())
 		{
@@ -504,7 +505,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static InputStream getSystemIn()
+	public InputStream getSystemIn()
 	{
 		if (checkConsole())
 		{
@@ -513,7 +514,7 @@ public final class VTConsole
 		return null;
 	}
 	
-	public static PrintStream getSystemOut()
+	public PrintStream getSystemOut()
 	{
 		if (checkConsole())
 		{
@@ -522,7 +523,7 @@ public final class VTConsole
 		return null;
 	}
 	
-	public static PrintStream getSystemErr()
+	public PrintStream getSystemErr()
 	{
 		if (checkConsole())
 		{
@@ -531,7 +532,7 @@ public final class VTConsole
 		return null;
 	}
 	
-	public static void createInterruptibleReadline(final boolean echo, final Runnable interrupt)
+	public void createInterruptibleReadline(final boolean echo, final Runnable interrupt)
 	{
 		Thread thread = new Thread("VTConsole")
 		{
@@ -555,7 +556,7 @@ public final class VTConsole
 		thread.start();
 	}
 	
-	private static boolean checkConsole()
+	private boolean checkConsole()
 	{
 		if (!daemon)
 		{
@@ -567,7 +568,7 @@ public final class VTConsole
 		return console != null;
 	}
 	
-	public static Frame getFrame()
+	public Frame getFrame()
 	{
 		if (checkConsole())
 		{
@@ -576,7 +577,7 @@ public final class VTConsole
 		return null;
 	}
 	
-	public static void toggleScrollMode()
+	public void toggleScrollMode()
 	{
 		if (checkConsole())
 		{
@@ -584,7 +585,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void toggleInputMode()
+	public void toggleInputMode()
 	{
 		if (checkConsole())
 		{
@@ -592,7 +593,7 @@ public final class VTConsole
 		}
 	}
 		
-	public static void input(String text)
+	public void input(String text)
 	{
 		if (checkConsole())
 		{
@@ -600,7 +601,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void copyText()
+	public void copyText()
 	{
 		if (checkConsole())
 		{
@@ -608,7 +609,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void pasteText()
+	public void pasteText()
 	{
 		if (checkConsole())
 		{
@@ -616,7 +617,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void clearInput()
+	public void clearInput()
 	{
 		if (checkConsole())
 		{
@@ -624,7 +625,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static String getSelectedText()
+	public String getSelectedText()
 	{
 		if (checkConsole())
 		{
@@ -633,7 +634,7 @@ public final class VTConsole
 		return "";
 	}
 	
-	public static String getAllText()
+	public String getAllText()
 	{
 		if (checkConsole())
 		{
@@ -642,7 +643,7 @@ public final class VTConsole
 		return "";
 	}
 	
-	public static void refreshText()
+	public void refreshText()
 	{
 		if (checkConsole())
 		{
@@ -650,7 +651,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static boolean isCommandEcho()
+	public boolean isCommandEcho()
 	{
 		if (checkConsole())
 		{
@@ -659,7 +660,7 @@ public final class VTConsole
 		return true;
 	}
 	
-	public static void setCommandEcho(boolean commandEcho)
+	public void setCommandEcho(boolean commandEcho)
 	{
 		if (checkConsole())
 		{
@@ -667,7 +668,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void copyAllText()
+	public void copyAllText()
 	{
 		if (checkConsole())
 		{
@@ -675,7 +676,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void setIgnoreClose(boolean ignoreClose)
+	public void setIgnoreClose(boolean ignoreClose)
 	{
 		if (checkConsole())
 		{
@@ -683,12 +684,12 @@ public final class VTConsole
 		}
 	}
 	
-	public static void setRemoteIcon(boolean remoteIcon)
+	public void setRemoteIcon(boolean remoteIcon)
 	{
-		VTConsole.remoteIcon = remoteIcon;
+		this.remoteIcon = remoteIcon;
 	}
 	
-	public static void addToggleReplaceInputNotify(VTConsoleBooleanToggleNotify notifyReplaceInput)
+	public void addToggleReplaceInputNotify(VTConsoleBooleanToggleNotify notifyReplaceInput)
 	{
 		if (checkConsole())
 		{
@@ -696,7 +697,7 @@ public final class VTConsole
 		}
 	}
 	
-	public static void addToggleFlushInterruptNotify(VTConsoleBooleanToggleNotify notifyFlushInterrupted)
+	public void addToggleFlushInterruptNotify(VTConsoleBooleanToggleNotify notifyFlushInterrupted)
 	{
 		if (checkConsole())
 		{
