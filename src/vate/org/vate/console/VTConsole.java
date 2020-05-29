@@ -33,7 +33,7 @@ public final class VTConsole
 	public static final int VT_CONSOLE_COLOR_LIGHT_WHITE = 17;
 	public static final int VT_CONSOLE_COLOR_DEFAULT = 9;
 	
-	private static boolean lanterna = false;
+	private static boolean lanterna = true;
 	private static boolean graphical;
 	private static boolean daemon;
 	private static boolean remoteIcon;
