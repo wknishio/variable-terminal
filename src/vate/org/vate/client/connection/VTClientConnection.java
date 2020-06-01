@@ -653,8 +653,8 @@ public class VTClientConnection
 		
 		multiplexedConnectionInputStream.startPacketReader();
 		
-		pingInputStream = multiplexedConnectionInputStream.getInputStream((short) (VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_PERFORMANCE_UNLIMITED), 0);
-		pingOutputStream = multiplexedConnectionOutputStream.linkOutputStream((short) (VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_PERFORMANCE_UNLIMITED), 0);
+		pingInputStream = multiplexedConnectionInputStream.getInputStream((short) (VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_UNLIMITED), 0);
+		pingOutputStream = multiplexedConnectionOutputStream.linkOutputStream((short) (VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_UNLIMITED), 0);
 		
 		shellInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 1);
 		shellOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 1);

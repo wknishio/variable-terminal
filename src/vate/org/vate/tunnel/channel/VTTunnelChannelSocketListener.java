@@ -109,7 +109,7 @@ public class VTTunnelChannelSocketListener implements Runnable
 						session.setTunnelOutputStream(stream);
 						session.getTunnelOutputStream().open();
 						session.setTunnelInputStream(channel.getConnection().getInputStream(number));
-						session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream());
+						session.getTunnelInputStream().setDirectOutputStream(session.getSocketOutputStream());
 						if (channel.getConnection().getTunnelType() == VTTunnelConnection.TUNNEL_TYPE_TCP)
 						{
 							String host = channel.getRedirectHost();

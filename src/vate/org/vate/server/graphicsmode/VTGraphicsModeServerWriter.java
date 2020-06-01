@@ -32,6 +32,7 @@ import com.objectplanet.image.PngEncoder;
 
 public class VTGraphicsModeServerWriter implements Runnable
 {
+	private static final int imageOutputBufferSize = 1024 * 64;
 	private volatile boolean stopped;
 	private volatile boolean needRefresh;
 	private volatile boolean clearRequested;
@@ -65,7 +66,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 	private Graphics2D convertedGraphics;
 	private volatile GraphicsDevice nextDevice;
 	private volatile GraphicsDevice currentDevice;
-	private VTByteArrayOutputStream imageOutputBuffer = new VTByteArrayOutputStream(1024 * 64);
+	private VTByteArrayOutputStream imageOutputBuffer = new VTByteArrayOutputStream(imageOutputBufferSize);
 	// private ZOutputStream deflateOutputStream;
 	// private SnappyOutputStream snappyOutputStream;
 	// private VTByteArrayOutputStream compressedOutputBuffer;

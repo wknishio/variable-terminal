@@ -68,7 +68,7 @@ public class VTTunnelConnectionControlThread implements Runnable
 							{
 								session.setTunnelOutputStream(stream);
 								session.getTunnelOutputStream().open();
-								session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream());
+								session.getTunnelInputStream().setDirectOutputStream(session.getSocketOutputStream());
 								//second message sent with ok
 								connection.getControlWriter().write(number + ";:;" + session.getTunnelOutputStream().number() + "\n");
 								connection.getControlWriter().flush();
@@ -114,7 +114,7 @@ public class VTTunnelConnectionControlThread implements Runnable
 							{
 								session.setTunnelOutputStream(stream);
 								session.getTunnelOutputStream().open();
-								session.getTunnelInputStream().setOutputStream(socket.getInputStreamSource());
+								session.getTunnelInputStream().setDirectOutputStream(socket.getInputStreamSource());
 								//second message sent with ok
 								connection.getControlWriter().write(number + ";:;" + session.getTunnelOutputStream().number() + "\n");
 								connection.getControlWriter().flush();

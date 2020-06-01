@@ -13,6 +13,7 @@
 	<classpathentry kind="src" path="src/compat"/>
 	<classpathentry kind="src" path="src/lanterna"/>
 	<classpathentry kind="src" path="src/rawconsoleinput"/>
+	<classpathentry kind="src" path="src/snappy"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.5.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections4.jar"/>

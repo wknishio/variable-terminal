@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.vate.VT;
+import org.vate.stream.compress.VTCompressorSelector;
+import org.vate.stream.compress.VTPipedDecompressor;
 import org.vate.stream.endian.VTLittleEndianInputStream;
 import org.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vate.stream.pipe.VTPipedInputStream;
@@ -61,16 +63,23 @@ public class VTLinkableDynamicMultiplexingInputStream
 		//private VTLinkableDynamicMultiplexingInputStream multiplexingInputStream;
 		private VTPipedInputStream pipedInputStream;
 		private VTPipedOutputStream pipedOutputStream;
-		private OutputStream outputStream;
+		private OutputStream directOutputStream;
+		private InputStream compressedDirectInputStream;
+		//private OutputStream uncompressedDirectOutputStream;
+		private InputStream in;
 		//private short type;
-		private int number;
 		private volatile Object link;
 		private VTLinkableDynamicMultiplexedOutputStream propagated;
+		private VTPipedDecompressor pipedDecompressor;
+		private final short type;
+		private final int number;
 		
 		private VTLinkableDynamicMultiplexedInputStream(short type, int number, int bufferSize)
 		{
 			//this.multiplexingInputStream = multiplexingInputStream;
+			this.type = type;
 			this.number = number;
+			
 			if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == 0)
 			{
 				this.pipedInputStream = new VTPipedInputStream(bufferSize);
@@ -80,6 +89,22 @@ public class VTLinkableDynamicMultiplexingInputStream
 					this.pipedInputStream.connect(this.pipedOutputStream);
 				}
 				catch (IOException e)
+				{
+					
+				}
+				if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
+				{
+					this.in = pipedInputStream;
+				}
+				else
+				{
+					this.compressedDirectInputStream = VTCompressorSelector.createCompatibleLZ4InputStream(pipedInputStream);
+					this.in = compressedDirectInputStream;
+				}
+			}
+			else
+			{
+				if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
 				{
 					
 				}
@@ -107,12 +132,26 @@ public class VTLinkableDynamicMultiplexingInputStream
 			{
 				return pipedOutputStream;
 			}
-			return outputStream;
+			if (pipedDecompressor != null)
+			{
+				return pipedDecompressor;
+			}
+			return directOutputStream;
 		}
-		
-		public void setOutputStream(OutputStream outputStream)
+				
+		public void setDirectOutputStream(OutputStream directOutputStream)
 		{
-			this.outputStream = outputStream;
+			if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
+			{
+				this.directOutputStream = directOutputStream;
+			}
+			else
+			{
+				this.directOutputStream = directOutputStream;
+				pipedDecompressor = new VTPipedDecompressor(directOutputStream);
+				compressedDirectInputStream = VTCompressorSelector.createCompatibleLZ4InputStream(pipedDecompressor.getPipedInputStream());
+				pipedDecompressor.setDecompressor(compressedDirectInputStream);
+			}
 		}
 		
 		public void setPropagated(VTLinkableDynamicMultiplexedOutputStream propagated)
@@ -125,6 +164,17 @@ public class VTLinkableDynamicMultiplexingInputStream
 			if (pipedInputStream != null)
 			{
 				pipedInputStream.open();
+				if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
+				{
+					compressedDirectInputStream = VTCompressorSelector.createCompatibleLZ4InputStream(pipedInputStream);
+					in = compressedDirectInputStream;
+				}
+			}
+			else
+			{
+				pipedDecompressor = new VTPipedDecompressor(directOutputStream);
+				compressedDirectInputStream = VTCompressorSelector.createCompatibleLZ4InputStream(pipedDecompressor.getPipedInputStream());
+				pipedDecompressor.setDecompressor(compressedDirectInputStream);
 			}
 		}
 		
@@ -136,10 +186,10 @@ public class VTLinkableDynamicMultiplexingInputStream
 			}
 			else
 			{
-				if (outputStream != null)
+				if (directOutputStream != null)
 				{
-					outputStream.close();
-					outputStream = null;
+					directOutputStream.close();
+					directOutputStream = null;
 				}
 			}
 			if (propagated != null)
@@ -150,27 +200,27 @@ public class VTLinkableDynamicMultiplexingInputStream
 		
 		public int available() throws IOException
 		{
-			return pipedInputStream.available();
+			return in.available();
 		}
 		
 		public int read() throws IOException
 		{
-			return pipedInputStream.read();
+			return in.read();
 		}
 		
 		public int read(byte[] data) throws IOException
 		{
-			return pipedInputStream.read(data);
+			return in.read(data);
 		}
 		
 		public int read(byte[] data, int offset, int length) throws IOException
 		{
-			return pipedInputStream.read(data, offset, length);
+			return in.read(data, offset, length);
 		}
 		
 		public long skip(long count) throws IOException
 		{
-			return pipedInputStream.skip(count);
+			return in.skip(count);
 		}
 	}
 	
@@ -184,6 +234,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 	private int remaining;
 	private byte[] packetBuffer;
 	private final Thread packetReaderThread;
+	//private byte[] compressedBuffer = new byte[1024 * 32];
 	private final VTLittleEndianInputStream in;
 	private VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
 	private Map<Integer, VTLinkableDynamicMultiplexedInputStream> pipedChannels;
@@ -362,6 +413,9 @@ public class VTLinkableDynamicMultiplexingInputStream
 		type = in.readShort();
 		channel = in.readInt();
 		length = in.readShort();
+		//System.out.println("type:" + type);
+		//System.out.println("channel:" + channel);
+		//System.out.println("length:" + length);
 		//padding = in.readUnsignedShort();
 		if (length > 0)
 		{
@@ -375,11 +429,16 @@ public class VTLinkableDynamicMultiplexingInputStream
 				{
 					try
 					{
+//						if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
+//						{
+//							System.out.println("received compressed data:" + Arrays.toString(Arrays.copyOfRange(packetBuffer, copied, readed)));
+//						}
 						getInputStream(type, channel).getOutputStream().write(packetBuffer, copied, readed);
 						getInputStream(type, channel).getOutputStream().flush();
 					}
 					catch (Throwable e)
 					{
+						//e.printStackTrace();
 						while (remaining > 0 && readed >= 0)
 						{
 							readed = in.read(packetBuffer, 0, remaining);

@@ -8,6 +8,7 @@ import net.sourceforge.jsocks.socks.server.UserPasswordAuthenticator;
 
 public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
 {
+	private static final int socksBufferSize = 1024 * 32;
 	private VTTunnelChannel channel;
 	private VTTunnelSession session;
 	private VTTunnelSocksSingleUserValidation validation;
@@ -39,14 +40,14 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
 			if (validation != null)
 			{
 				ProxyServer socksServer = new ProxyServer(new UserPasswordAuthenticator(validation), session.getSocket());
-				socksServer.setPipeBufferSize(1024 * 64);
+				socksServer.setPipeBufferSize(socksBufferSize);
 				socksServer.run();
 				session.close();
 			}
 			else
 			{
 				ProxyServer socksServer = new ProxyServer(new ServerAuthenticatorNone(), session.getSocket());
-				socksServer.setPipeBufferSize(1024 * 64);
+				socksServer.setPipeBufferSize(socksBufferSize);
 				socksServer.run();
 				session.close();
 			}

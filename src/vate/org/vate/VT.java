@@ -18,9 +18,12 @@ public class VT
 	
 	public static final short VT_MULTIPLEXED_CHANNEL_TYPE_PIPED = 0;
 	public static final short VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT = 1;
-	
-	public static final short VT_MULTIPLEXED_CHANNEL_PERFORMANCE_THROTTLEABLE = 0 << 1;
-	public static final short VT_MULTIPLEXED_CHANNEL_PERFORMANCE_UNLIMITED = 1 << 1;
+	public static final short VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_THROTTLEABLE = 0 << 1;
+	public static final short VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_UNLIMITED = 1 << 1;
+	public static final short VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_DISABLED = 0 << 2;
+	public static final short VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED = 1 << 2;
+	//public static final short VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_LZ4 = 0 << 3;
+	//public static final short VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_DEFLATE = 1 << 3;
 	
 	public static final int VT_CONNECTION_PROXY_NONE = 0;
 	public static final int VT_CONNECTION_PROXY_SOCKS = 1;

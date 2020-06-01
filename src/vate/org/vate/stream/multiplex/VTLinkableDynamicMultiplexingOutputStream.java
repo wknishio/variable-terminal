@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import org.vate.VT;
 import org.vate.stream.array.VTByteArrayOutputStream;
+import org.vate.stream.compress.VTCompressorSelector;
 import org.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vate.stream.limit.VTThrottlingOutputStream;
 
@@ -22,6 +23,9 @@ public class VTLinkableDynamicMultiplexingOutputStream
 		private final int packetSize;
 		//private int blockBits;
 		private final OutputStream out;
+		private OutputStream intermediatePacketStream;
+		private VTByteArrayOutputStream intermediateDataPacketBuffer;
+
 		//private int dataPaddingSize;
 		//private byte[] dataPaddingBuffer;
 		private final VTByteArrayOutputStream dataPacketBuffer;
@@ -47,6 +51,17 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			this.controlPacketStream = new VTLittleEndianOutputStream(controlPacketBuffer);
 			this.closed = false;
 			this.link = null;
+			
+			if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
+			{
+				intermediateDataPacketBuffer = new VTByteArrayOutputStream(1024 * 32);
+				intermediatePacketStream = intermediateDataPacketBuffer;
+			}
+			else
+			{
+				intermediateDataPacketBuffer = new VTByteArrayOutputStream(1024 * 32);
+				intermediatePacketStream = VTCompressorSelector.createCompatibleLZ4OutputStream(intermediateDataPacketBuffer);
+			}
 		}
 		
 		public int number()
@@ -166,18 +181,26 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			{
 				writeOpenPacketFlushing(type, number);
 			}
+			if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
+			{
+				intermediateDataPacketBuffer = new VTByteArrayOutputStream(1024 * 32);
+				intermediatePacketStream = VTCompressorSelector.createCompatibleLZ4OutputStream(intermediateDataPacketBuffer);
+			}
 			closed = false;
 		}
-		
+				
 		private void writePacket(int data, short type, int number) throws IOException
 		{
 			//dataPaddingSize = (~(headerSize + 1) + 1) & (blockBits);
 			dataPacketBuffer.reset();
+			intermediateDataPacketBuffer.reset();
 			dataPacketStream.writeShort(type);
 			dataPacketStream.writeInt(number);
-			dataPacketStream.writeShort((short) 1);
 			//dataPacketStream.writeUnsignedShort(dataPaddingSize);
-			dataPacketStream.write(data);
+			intermediatePacketStream.write(data);
+			intermediatePacketStream.flush();
+			dataPacketStream.writeShort((short) intermediateDataPacketBuffer.count());
+			dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
 			//dataPacketStream.write(dataPaddingBuffer, 0, dataPaddingSize);
 			out.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
 		}
@@ -186,24 +209,35 @@ public class VTLinkableDynamicMultiplexingOutputStream
 		{
 			//dataPaddingSize = (~(headerSize + length) + 1) & (blockBits);
 			dataPacketBuffer.reset();
+			intermediateDataPacketBuffer.reset();
 			dataPacketStream.writeShort(type);
 			dataPacketStream.writeInt(number);
-			dataPacketStream.writeShort((short) length);
 			//dataPacketStream.writeUnsignedShort(dataPaddingSize);
-			dataPacketStream.write(data, offset, length);
+			intermediatePacketStream.write(data, offset, length);
+			intermediatePacketStream.flush();
+			dataPacketStream.writeShort((short) intermediateDataPacketBuffer.count());
+			dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
 			//dataPacketStream.write(dataPaddingBuffer, 0, dataPaddingSize);
 			out.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
+//			if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
+//			{
+//				System.out.println("sent uncompressed data:" + Arrays.toString(Arrays.copyOfRange(data, offset, length)));
+//				System.out.println("sent compressed data:" + Arrays.toString(intermediateDataPacketBuffer.toByteArray()));
+//			}
 		}
 		
 		private void writePacketFlushing(int data, short type, int number) throws IOException
 		{
 			//dataPaddingSize = (~(headerSize + 1) + 1) & (blockBits);
 			dataPacketBuffer.reset();
+			intermediateDataPacketBuffer.reset();
 			dataPacketStream.writeShort(type);
 			dataPacketStream.writeInt(number);
-			dataPacketStream.writeShort((short) 1);
 			//dataPacketStream.writeUnsignedShort(dataPaddingSize);
-			dataPacketStream.write(data);
+			intermediatePacketStream.write(data);
+			intermediatePacketStream.flush();
+			dataPacketStream.writeShort((short) intermediateDataPacketBuffer.count());
+			dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
 			//dataPacketStream.write(dataPaddingBuffer, 0, dataPaddingSize);
 			out.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
 			out.flush();
@@ -213,11 +247,14 @@ public class VTLinkableDynamicMultiplexingOutputStream
 		{
 			//dataPaddingSize = (~(headerSize + length) + 1) & (blockBits);
 			dataPacketBuffer.reset();
+			intermediateDataPacketBuffer.reset();
 			dataPacketStream.writeShort(type);
 			dataPacketStream.writeInt(number);
-			dataPacketStream.writeShort((short) length);
 			//dataPacketStream.writeUnsignedShort(dataPaddingSize);
-			dataPacketStream.write(data, offset, length);
+			intermediatePacketStream.write(data, offset, length);
+			intermediatePacketStream.flush();
+			dataPacketStream.writeShort((short) intermediateDataPacketBuffer.count());
+			dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
 			//dataPacketStream.write(dataPaddingBuffer, 0, dataPaddingSize);
 			out.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
 			out.flush();
@@ -313,7 +350,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			{
 				return stream;
 			}
-			if ((type & VT.VT_MULTIPLEXED_CHANNEL_PERFORMANCE_UNLIMITED) == 0)
+			if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_UNLIMITED) == 0)
 			{
 				stream = new VTLinkableDynamicMultiplexedOutputStream(throttleable, type, number, packetSize, blockSize, autoFlushPackets);
 			}
@@ -330,7 +367,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			{
 				return stream;
 			}
-			if ((type & VT.VT_MULTIPLEXED_CHANNEL_PERFORMANCE_UNLIMITED) == 0)
+			if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_UNLIMITED) == 0)
 			{
 				stream = new VTLinkableDynamicMultiplexedOutputStream(throttleable, type, number, packetSize, blockSize, autoFlushPackets);
 			}

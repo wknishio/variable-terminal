@@ -11,6 +11,7 @@ import org.vate.task.VTTask;
 
 public class VTServerZipFileOperation extends VTTask
 {
+	private static final int fileZipBufferSize = 1024 * 64;
 	private volatile boolean finished;
 	private volatile int operation;
 	private String zipFilePath;
@@ -22,7 +23,7 @@ public class VTServerZipFileOperation extends VTTask
 	{
 		this.session = session;
 		this.finished = true;
-		this.readBuffer = new byte[1024 * 64];
+		this.readBuffer = new byte[fileZipBufferSize];
 	}
 	
 	public void setOperation(int operation)

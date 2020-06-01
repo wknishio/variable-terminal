@@ -94,8 +94,8 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 	
 	public VTGraphicsModeClientOptionsMenuBarViewMenu(VTGraphicsModeClientWriter writer)
 	{
-		// this.writer = writer;
 		super("View");
+		// this.writer = writer;
 		this.colorQualityMenu = new Menu("Color Quality ");
 		this.refreshModeMenu = new Menu("Refresh Mode ");
 		this.drawPointerMenu = new Menu("Remote Pointer ");
@@ -127,7 +127,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		// VTGraphicsModeClientOptionsMenuBarViewMenuAdjustFrameSizeOptionListener(writer));
 		this.clearInterfaceMenu = new MenuItem("Reset Image");
 		this.clearInterfaceMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuClearInterfaceOptionListener(writer));
-		this.closeTerminalMenu = new MenuItem("Close Link");
+		this.closeTerminalMenu = new MenuItem("Close View");
 		this.closeTerminalMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuCloseTerminalOptionListener(writer));
 		this.lowColorOption = new CheckboxMenuItem("Low", false);
 		this.lowColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, lowColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_LOW));
