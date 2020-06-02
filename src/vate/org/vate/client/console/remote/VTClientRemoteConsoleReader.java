@@ -1,5 +1,6 @@
 package org.vate.client.console.remote;
 
+import org.vate.VT;
 import org.vate.client.connection.VTClientConnection;
 import org.vate.client.session.VTClientSession;
 import org.vate.console.VTConsole;
@@ -7,7 +8,7 @@ import org.vate.task.VTTask;
 
 public class VTClientRemoteConsoleReader extends VTTask
 {
-	private static final int resultBufferSize = 1024 * 64;
+	private static final int resultBufferSize = VT.VT_DATA_BUFFFER_SIZE;
 	//private int available;
 	private int readChars;
 	private final char[] resultBuffer = new char[resultBufferSize];

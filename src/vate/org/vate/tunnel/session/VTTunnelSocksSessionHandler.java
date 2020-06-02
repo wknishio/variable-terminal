@@ -1,5 +1,6 @@
 package org.vate.tunnel.session;
 
+import org.vate.VT;
 import org.vate.tunnel.channel.VTTunnelChannel;
 
 import net.sourceforge.jsocks.socks.ProxyServer;
@@ -8,7 +9,7 @@ import net.sourceforge.jsocks.socks.server.UserPasswordAuthenticator;
 
 public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
 {
-	private static final int socksBufferSize = 1024 * 32;
+	private static final int socksBufferSize = VT.VT_DATA_BUFFFER_SIZE;
 	private VTTunnelChannel channel;
 	private VTTunnelSession session;
 	private VTTunnelSocksSingleUserValidation validation;

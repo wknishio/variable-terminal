@@ -1,12 +1,13 @@
 package org.vate.server.console.shell;
 
+import org.vate.VT;
 import org.vate.server.connection.VTServerConnection;
 import org.vate.server.session.VTServerSession;
 import org.vate.task.VTTask;
 
 public class VTServerShellOutputWriter extends VTTask
 {
-	private static final int resultBufferSize = 1024 * 64;
+	private static final int resultBufferSize = VT.VT_DATA_BUFFFER_SIZE;
 	private int readChars;
 	private final char[] resultBuffer = new char[resultBufferSize];
 	private VTServerConnection connection;

@@ -9,12 +9,13 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import org.vate.VT;
 import org.vate.network.ssl.SSLVerificationDisabler;
 import org.vate.stream.array.VTByteArrayOutputStream;
 
 public class VTURLInvoker
 {
-	private final byte[] readBuffer = new byte[1024 * 32];
+	private final byte[] readBuffer = new byte[VT.VT_DATA_BUFFFER_SIZE];
 	private VTByteArrayOutputStream dataBuffer = new VTByteArrayOutputStream();
 	
 	static

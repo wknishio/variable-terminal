@@ -3,11 +3,12 @@ package org.vate.stream.compress;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import org.vate.VT;
 import org.vate.stream.array.VTCircularByteBuffer;
 
 public class VTPipedDecompressor extends OutputStream
 {
-	private static final int bufferSize = 1024 * 32;
+	private static final int bufferSize = VT.VT_DATA_BUFFFER_SIZE;
 	private InputStream in;
 	private OutputStream out;
 	private byte[] buffer = new byte[bufferSize];

@@ -104,10 +104,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 			}
 			else
 			{
-				if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
-				{
-					
-				}
+				
 			}
 		}
 		
@@ -164,7 +161,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 			if (pipedInputStream != null)
 			{
 				pipedInputStream.open();
-				if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
+				if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
 				{
 					compressedDirectInputStream = VTCompressorSelector.createCompatibleLZ4InputStream(pipedInputStream);
 					in = compressedDirectInputStream;
@@ -172,9 +169,12 @@ public class VTLinkableDynamicMultiplexingInputStream
 			}
 			else
 			{
-				pipedDecompressor = new VTPipedDecompressor(directOutputStream);
-				compressedDirectInputStream = VTCompressorSelector.createCompatibleLZ4InputStream(pipedDecompressor.getPipedInputStream());
-				pipedDecompressor.setDecompressor(compressedDirectInputStream);
+				if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
+				{
+					pipedDecompressor = new VTPipedDecompressor(directOutputStream);
+					compressedDirectInputStream = VTCompressorSelector.createCompatibleLZ4InputStream(pipedDecompressor.getPipedInputStream());
+					pipedDecompressor.setDecompressor(compressedDirectInputStream);
+				}
 			}
 		}
 		
@@ -234,7 +234,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 	private int remaining;
 	private byte[] packetBuffer;
 	private final Thread packetReaderThread;
-	//private byte[] compressedBuffer = new byte[1024 * 32];
+	//private byte[] compressedBuffer = new byte[VT.VT_IO_BUFFFER_SIZE];
 	private final VTLittleEndianInputStream in;
 	private VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
 	private Map<Integer, VTLinkableDynamicMultiplexedInputStream> pipedChannels;
