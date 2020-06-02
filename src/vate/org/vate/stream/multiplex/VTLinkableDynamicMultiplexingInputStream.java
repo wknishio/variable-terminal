@@ -43,7 +43,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 				}
 				catch (Throwable e)
 				{
-					// e.printStackTrace();
+					//e.printStackTrace();
 					running = false;
 				}
 			}
@@ -243,7 +243,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 	public VTLinkableDynamicMultiplexingInputStream(InputStream in, int packetSize, int bufferSize, boolean startPacketReader)
 	{
 		this.bufferSize = bufferSize;
-		this.packetBuffer = new byte[packetSize];
+		this.packetBuffer = new byte[packetSize * 2];
 		this.in = new VTLittleEndianInputStream(in);
 		this.pipedChannels = Collections.synchronizedMap(new HashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
 		this.directChannels = Collections.synchronizedMap(new HashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());

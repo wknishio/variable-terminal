@@ -3,23 +3,25 @@ package org.vate.stream.compress;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import org.vate.stream.array.VTByteArrayInputStream;
-import org.vate.stream.array.VTByteArrayOutputStream;
+import org.vate.stream.array.VTCircularByteBuffer;
 
 public class VTPipedDecompressor extends OutputStream
 {
-	private static final int bufferSize = 1024 * 64;
+	private static final int bufferSize = 1024 * 32;
 	private InputStream in;
 	private OutputStream out;
 	private byte[] buffer = new byte[bufferSize];
 	//private VTPipedInputStream pipedInputStream;
 	//private VTPipedOutputStream pipedOutputStream;
-	private VTByteArrayOutputStream outputBuffer = new VTByteArrayOutputStream(bufferSize);
-	private VTByteArrayInputStream inputBuffer = new VTByteArrayInputStream(outputBuffer.buf());
+	
+	//private VTByteArrayOutputStream outputBuffer = new VTByteArrayOutputStream(bufferSize);
+	//private VTByteArrayInputStream inputBuffer = new VTByteArrayInputStream(outputBuffer.buf());
+	private VTCircularByteBuffer circularBuffer;
 	
 	public VTPipedDecompressor(OutputStream out)
 	{
 		this.out = out;
+		this.circularBuffer = new VTCircularByteBuffer(bufferSize);
 		//this.pipedInputStream = new VTPipedInputStream(bufferSize);
 		//this.pipedOutputStream = new VTPipedOutputStream();
 		//try
@@ -34,7 +36,7 @@ public class VTPipedDecompressor extends OutputStream
 	
 	public InputStream getPipedInputStream()
 	{
-		return inputBuffer;
+		return circularBuffer.getInputStream();
 	}
 	
 	public void setDecompressor(InputStream in)
@@ -55,14 +57,15 @@ public class VTPipedDecompressor extends OutputStream
 	public void write(byte[] data, int off, int len) throws IOException
 	{
 		//System.out.println("compressed:["+len+"]");
-		outputBuffer.reset();
-		outputBuffer.write(data, off, len);
-		outputBuffer.flush();
-		inputBuffer.pos(0);
-		inputBuffer.count(len);
-		int readed = in.read(buffer, 0, bufferSize);
-		out.write(buffer, 0, readed);
-		out.flush();
+		circularBuffer.getOutputStream().write(data, off, len);
+		circularBuffer.getOutputStream().flush();
+		//int available = 0;
+		while ((circularBuffer.getInputStream().available()) > 0)
+		{
+			int readed = in.read(buffer, 0, bufferSize);
+			out.write(buffer, 0, readed);
+			out.flush();
+		}
 		//System.out.println("compressed data:" + len);
 		//System.out.println("decompressed data:" + readed);
 		//out.write(data, off, len);
@@ -70,6 +73,6 @@ public class VTPipedDecompressor extends OutputStream
 	
 	public void flush() throws IOException
 	{
-		
+		out.flush();
 	}
 }
