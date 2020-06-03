@@ -15,7 +15,7 @@ import org.vate.stream.array.VTByteArrayOutputStream;
 
 public class VTURLInvoker
 {
-	private final byte[] readBuffer = new byte[VT.VT_DATA_BUFFFER_SIZE];
+	private final byte[] readBuffer = new byte[VT.VT_DATA_BUFFER_SIZE];
 	private VTByteArrayOutputStream dataBuffer = new VTByteArrayOutputStream();
 	
 	static

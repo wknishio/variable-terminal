@@ -21,7 +21,7 @@ import net.jpountz.xxhash.XXHashFactory;
 
 public class VTFileTransferClientTransaction implements Runnable
 {
-	private static final int fileTransferBufferSize = VT.VT_DATA_BUFFFER_SIZE;
+	private static final int fileTransferBufferSize = VT.VT_DATA_BUFFER_SIZE;
 	private volatile boolean stopped;
 	private volatile boolean finished;
 	private volatile boolean interrupted;
@@ -1657,7 +1657,7 @@ public class VTFileTransferClientTransaction implements Runnable
 						// fileTransferRemoteOutputStream = new
 						// SnappyFramedOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream(),
 						// 1024 * 8, 0.85d, false);
-						fileTransferRemoteOutputStream = new LZ4BlockOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream(), VT.VT_DATA_BUFFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true);
+						fileTransferRemoteOutputStream = new LZ4BlockOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream(), VT.VT_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true);
 					}
 					else
 					{

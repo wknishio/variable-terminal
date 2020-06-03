@@ -3,9 +3,11 @@ package org.vate.runtime;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.vate.VT;
+
 public class VTRuntimeProcessInputRedirector implements Runnable
 {
-	private static final int inputBufferSize = 1024 * 8;
+	private static final int inputBufferSize = VT.VT_SMALL_BUFFER_SIZE;
 	private volatile boolean running;
 	private int readBytes;
 	private final byte[] inputBuffer = new byte[inputBufferSize];

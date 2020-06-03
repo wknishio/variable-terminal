@@ -17,8 +17,9 @@ public class VT
 	public static final int VT_REVISION_VERSION = 2;
 	
 	public static final int VT_NETWORK_PACKET_SIZE = 1024;
-	public static final int VT_NETWORK_PACKET_BUFFFER_SIZE = 1024 * 32;
-	public static final int VT_DATA_BUFFFER_SIZE = 1024 * 32;
+	public static final int VT_NETWORK_PACKET_BUFFER_SIZE = 1024 * 32;
+	public static final int VT_DATA_BUFFER_SIZE = 1024 * 32;
+	public static final int VT_SMALL_BUFFER_SIZE = 1024 * 8;
 	
 	public static final short VT_MULTIPLEXED_CHANNEL_TYPE_PIPED = 0;
 	public static final short VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT = 1;

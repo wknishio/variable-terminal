@@ -4,9 +4,11 @@ import java.io.BufferedWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import org.vate.VT;
+
 public class VTRuntimeProcessOutputConsumer implements Runnable
 {
-	private static final int resultBufferSize = 1024 * 8;
+	private static final int resultBufferSize = VT.VT_SMALL_BUFFER_SIZE;
 	private boolean verbose;
 	private volatile boolean running;
 	private int readChars;

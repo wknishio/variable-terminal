@@ -3,9 +3,11 @@ package org.vate.stream.pipe;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.vate.VT;
+
 public class VTInterruptibleStreamRedirector implements Runnable
 {
-	private static final int redirectorBufferSize = 1024 * 8;
+	private static final int redirectorBufferSize = VT.VT_SMALL_BUFFER_SIZE;
 	private volatile boolean stopped;
 	private int available;
 	private int readed;

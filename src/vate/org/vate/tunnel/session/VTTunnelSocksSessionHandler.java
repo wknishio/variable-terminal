@@ -9,7 +9,7 @@ import net.sourceforge.jsocks.socks.server.UserPasswordAuthenticator;
 
 public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
 {
-	private static final int socksBufferSize = VT.VT_DATA_BUFFFER_SIZE;
+	private static final int socksBufferSize = VT.VT_DATA_BUFFER_SIZE;
 	private VTTunnelChannel channel;
 	private VTTunnelSession session;
 	private VTTunnelSocksSingleUserValidation validation;

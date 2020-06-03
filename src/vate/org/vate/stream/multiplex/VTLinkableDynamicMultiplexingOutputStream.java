@@ -56,12 +56,12 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			
 			if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
 			{
-				intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_DATA_BUFFFER_SIZE);
+				intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_DATA_BUFFER_SIZE);
 				intermediatePacketStream = intermediateDataPacketBuffer;
 			}
 			else
 			{
-				intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_DATA_BUFFFER_SIZE);
+				intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_DATA_BUFFER_SIZE);
 				intermediatePacketStream = VTCompressorSelector.createCompatibleLZ4OutputStream(intermediateDataPacketBuffer);
 			}
 		}
@@ -185,7 +185,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			}
 			if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
 			{
-				intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_DATA_BUFFFER_SIZE);
+				intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_DATA_BUFFER_SIZE);
 				intermediatePacketStream = VTCompressorSelector.createCompatibleLZ4OutputStream(intermediateDataPacketBuffer);
 			}
 			closed = false;
