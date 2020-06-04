@@ -71,10 +71,10 @@ public class VTLinkableDynamicMultiplexingInputStream
 		private volatile Object link;
 		private VTLinkableDynamicMultiplexedOutputStream propagated;
 		private VTPipedDecompressor pipedDecompressor;
-		private final short type;
+		private final int type;
 		private final int number;
 		
-		private VTLinkableDynamicMultiplexedInputStream(short type, int number, int bufferSize)
+		private VTLinkableDynamicMultiplexedInputStream(int type, int number, int bufferSize)
 		{
 			//this.multiplexingInputStream = multiplexingInputStream;
 			this.type = type;
@@ -224,7 +224,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 		}
 	}
 	
-	private short type;
+	private int type;
 	private int channel;
 	private final int bufferSize;
 	//private int padding;
@@ -263,7 +263,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 		}
 	}
 	
-	public synchronized VTLinkableDynamicMultiplexedInputStream linkInputStream(short type, Object link)
+	public synchronized VTLinkableDynamicMultiplexedInputStream linkInputStream(int type, Object link)
 	{
 		VTLinkableDynamicMultiplexedInputStream stream = null;
 		if (link instanceof Integer)
@@ -297,7 +297,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 		}
 	}
 	
-	public VTLinkableDynamicMultiplexedInputStream getInputStream(short type, int number)
+	public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number)
 	{
 		VTLinkableDynamicMultiplexedInputStream stream = null;
 		if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == 0)
@@ -351,12 +351,12 @@ public class VTLinkableDynamicMultiplexingInputStream
 		return pipedChannels.size();
 	}
 	
-	public void open(short type, int number)
+	public void open(int type, int number)
 	{
 		getInputStream(type, number).open();
 	}
 	
-	public void close(short type,int number) throws IOException
+	public void close(int type,int number) throws IOException
 	{
 		getInputStream(type, number).close();
 	}
@@ -410,7 +410,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 	{
 		readed = 0;
 		copied = 0;
-		type = in.readShort();
+		type = in.readUnsignedShort();
 		channel = in.readInt();
 		length = in.readShort();
 		//System.out.println("type:" + type);

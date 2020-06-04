@@ -228,14 +228,14 @@ public class VTTunnelConnection
 	{
 		if (link instanceof Integer)
 		{
-			return dataOutputStream.getOutputStream((short) (VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT/*|VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED*/), (Integer) link);
+			return dataOutputStream.getOutputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT/*|VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED*/), (Integer) link);
 		}
-		return dataOutputStream.linkOutputStream((short) (VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT/*|VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED*/), link);
+		return dataOutputStream.linkOutputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT/*|VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED*/), link);
 	}
 	
 	public synchronized VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number, Object link)
 	{
-		VTLinkableDynamicMultiplexedOutputStream stream = dataOutputStream.getOutputStream((short) (VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT/*|VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED*/), number);
+		VTLinkableDynamicMultiplexedOutputStream stream = dataOutputStream.getOutputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT/*|VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED*/), number);
 		stream.setLink(link);
 		return stream;
 	}
@@ -250,7 +250,7 @@ public class VTTunnelConnection
 	
 	public synchronized VTLinkableDynamicMultiplexedInputStream getInputStream(int number)
 	{
-		VTLinkableDynamicMultiplexedInputStream stream = dataInputStream.getInputStream((short) (VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT/*|VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED*/), number);
+		VTLinkableDynamicMultiplexedInputStream stream = dataInputStream.getInputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT/*|VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED*/), number);
 		return stream;
 	}
 	
