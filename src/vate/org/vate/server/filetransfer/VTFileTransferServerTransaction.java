@@ -522,7 +522,7 @@ public class VTFileTransferServerTransaction implements Runnable
 		}
 		catch (Throwable e)
 		{
-				
+			
 		}
 		return false;
 	}

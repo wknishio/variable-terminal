@@ -127,7 +127,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		// VTGraphicsModeClientOptionsMenuBarViewMenuAdjustFrameSizeOptionListener(writer));
 		this.clearInterfaceMenu = new MenuItem("Reset Image");
 		this.clearInterfaceMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuClearInterfaceOptionListener(writer));
-		this.closeTerminalMenu = new MenuItem("Close View");
+		this.closeTerminalMenu = new MenuItem("Close Link");
 		this.closeTerminalMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuCloseTerminalOptionListener(writer));
 		this.lowColorOption = new CheckboxMenuItem("Low", false);
 		this.lowColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, lowColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_LOW));
