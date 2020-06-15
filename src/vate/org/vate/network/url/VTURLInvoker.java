@@ -15,9 +15,6 @@ import org.vate.stream.array.VTByteArrayOutputStream;
 
 public class VTURLInvoker
 {
-	private final byte[] readBuffer = new byte[VT.VT_DATA_BUFFER_SIZE];
-	private VTByteArrayOutputStream dataBuffer = new VTByteArrayOutputStream();
-	
 	static
 	{
 		try
@@ -37,6 +34,9 @@ public class VTURLInvoker
 	
 	public VTURLData getURLData(String urlString, Proxy proxy, byte[] outputData, int outputOffset, int outputLength, Map<String, String> requestHeaders, String requestMethod)
 	{
+		final byte[] readBuffer = new byte[VT.VT_DATA_BUFFER_SIZE];
+		VTByteArrayOutputStream dataBuffer = new VTByteArrayOutputStream();
+		
 		VTURLData urlData = null;
 		dataBuffer.reset();
 		int readed = 0;
@@ -77,13 +77,10 @@ public class VTURLInvoker
 			{
 				dataBuffer.write(readBuffer, 0, readed);
 			}
-			
 			int code = -1;
 			String response = null;
-			
 			byte[] data = dataBuffer.toByteArray();
 			Map<String, List<String>> headers = urlConnection.getHeaderFields();
-			
 			if (httpConnection != null)
 			{
 				code = httpConnection.getResponseCode();
@@ -104,7 +101,6 @@ public class VTURLInvoker
 				{
 					if (urlConnection instanceof HttpURLConnection)
 					{
-						
 						((HttpURLConnection) urlConnection).disconnect();
 					}
 				}

@@ -36,6 +36,5 @@ public class VTURLData
 		this.data = data;
 		this.response = response;
 		this.headers = headers;
-		
 	}
 }

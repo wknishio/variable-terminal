@@ -76,7 +76,7 @@ import com.sun.jna.Platform;
 
 public class VTLanternaConsole implements VTConsoleImplementation
 {
-	private volatile AWTTerminalFrame awtframe;
+	private volatile AWTTerminalFrame frame;
 	private java.awt.Panel spacer1;
 	//private java.awt.Panel spacer2;
 	private Terminal terminal;
@@ -612,13 +612,13 @@ public class VTLanternaConsole implements VTConsoleImplementation
         	{
         		
         	}
-        	awtframe = (AWTTerminalFrame) terminal;
+        	frame = (AWTTerminalFrame) terminal;
         	//awtframe.setLocationByPlatform(true);
         	if (remoteIcon)
         	{
         		try
     			{
-    				awtframe.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
+    				frame.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
     			}
     			catch (Throwable t)
     			{
@@ -629,17 +629,17 @@ public class VTLanternaConsole implements VTConsoleImplementation
         	{
         		try
     			{
-        			awtframe.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/terminal.png")));
+        			frame.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/terminal.png")));
     			}
     			catch (Throwable t)
     			{
     				
     			}
         	}
-        	awtframe.addWindowListener(new VTLanternaConsoleWindowListener(this));
+        	frame.addWindowListener(new VTLanternaConsoleWindowListener(this));
         	if (terminal instanceof AWTTerminalFrame)
         	{
-        		awtterminal = ((AWTTerminalFrame) awtframe).getTerminal();
+        		awtterminal = ((AWTTerminalFrame) frame).getTerminal();
         	}
         	else
         	{
@@ -738,7 +738,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					//outputBox.handleInput(mouseAction);
 				}
         	});
-        	awtframe.addMouseWheelListener(new MouseWheelListener()
+        	frame.addMouseWheelListener(new MouseWheelListener()
         	{
 				public void mouseWheelMoved(MouseWheelEvent e)
 				{
@@ -752,9 +752,9 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					outputBox.handleInput(mouseAction);
 				}
         	});
-        	VTGlobalTextStyleManager.registerWindow(awtframe);
+        	VTGlobalTextStyleManager.registerWindow(frame);
         	VTGlobalTextStyleManager.registerFontList(awtterminal.getTerminalFontConfiguration().getFontPriority());
-        	popupMenu = new VTGraphicalConsolePopupMenu(awtframe);
+        	popupMenu = new VTGraphicalConsolePopupMenu(frame);
         	awtterminal.setDropTarget(new DropTarget());
         	awtterminal.getDropTarget().setActive(true);
         	awtterminal.getDropTarget().addDropTargetListener(new VTGraphicalConsoleDropTargetListener());
@@ -778,13 +778,13 @@ public class VTLanternaConsole implements VTConsoleImplementation
         outputBox.setHorizontalFocusSwitching(false);
         outputBox.setVerticalFocusSwitching(false);
         //outputBox.setCaretWarp(true);
-        if (awtframe != null)
+        if (frame != null)
         {
         	verticalScrollbar = new Scrollbar(Scrollbar.VERTICAL);
         	verticalScrollbar.setUnitIncrement(1);
         	verticalScrollbar.setFocusable(false);
         	outputBox.setVerticalAdjustable(verticalScrollbar);
-        	awtframe.add(verticalScrollbar, java.awt.BorderLayout.EAST);
+        	frame.add(verticalScrollbar, java.awt.BorderLayout.EAST);
         	verticalScrollbar.addKeyListener(new KeyListener()
         	{
 				public void keyTyped(KeyEvent e)
@@ -806,8 +806,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
         	outputBox.setHorizontalAdjustable(horizontalScrollbar);
         	spacer1 = new java.awt.Panel();
         	spacer1.setBackground(SystemColor.scrollbar);
-        	awtframe.getBottomPanel().add(horizontalScrollbar, java.awt.BorderLayout.CENTER);
-        	awtframe.getBottomPanel().add(spacer1, java.awt.BorderLayout.EAST);
+        	frame.getBottomPanel().add(horizontalScrollbar, java.awt.BorderLayout.CENTER);
+        	frame.getBottomPanel().add(spacer1, java.awt.BorderLayout.EAST);
         	horizontalScrollbar.addKeyListener(new KeyListener()
         	{
 				public void keyTyped(KeyEvent e)
@@ -1367,14 +1367,14 @@ public class VTLanternaConsole implements VTConsoleImplementation
         
         setTitle("");
         
-        if (awtframe != null)
+        if (frame != null)
         {
-        	awtframe.setLocationByPlatform(true);
-        	awtframe.pack();
+        	frame.setLocationByPlatform(true);
+        	frame.pack();
         	spacer1.setSize(verticalScrollbar.getPreferredSize().width, spacer1.getSize().height);
         	spacer1.setPreferredSize(new Dimension(verticalScrollbar.getPreferredSize().width, spacer1.getSize().height));
-        	awtframe.setVisible(true);
-        	awtframe.setDefaultTerminalSize(awtframe.getTerminalSize());
+        	frame.setVisible(true);
+        	frame.setDefaultTerminalSize(frame.getTerminalSize());
         }
         
         synchronized (this)
@@ -1626,7 +1626,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		
 	public Frame getFrame()
 	{
-		return awtframe;
+		return frame;
 	}
 	
 	public void input(String string)
@@ -1882,9 +1882,9 @@ public class VTLanternaConsole implements VTConsoleImplementation
 
 	public void setTitle(String title)
 	{
-		if (awtframe != null)
+		if (frame != null)
 		{
-			awtframe.setTitle(title);
+			frame.setTitle(title);
 		}
 		else
 		{
