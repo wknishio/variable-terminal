@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  *
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.gui2.table;
 
@@ -134,17 +134,17 @@ public class TableModel<V> {
     }
 
     /**
-     * Adds a new row to the table model at the end
+     * Adds a new row to the table model at the end. This may update the selection to make sure the same row is selected.
      * @param values Data to associate with the new row, mapped column by column in order
      * @return Itself
      */
-    public synchronized TableModel<V> addRow(V... values) {
+    public final synchronized TableModel<V> addRow(V... values) {
         addRow(Arrays.asList(values));
         return this;
     }
 
     /**
-     * Adds a new row to the table model at the end
+     * Adds a new row to the table model at the end. This may update the selection to make sure the same row is selected.
      * @param values Data to associate with the new row, mapped column by column in order
      * @return Itself
      */
@@ -154,7 +154,7 @@ public class TableModel<V> {
     }
 
     /**
-     * Inserts a new row to the table model at a particular index
+     * Inserts a new row to the table model at a particular index. This may update the selection to make sure the same row is selected.
      * @param index Index the new row should have, 0 means the first row and <i>row count</i> will append the row at the
      *              end
      * @param values Data to associate with the new row, mapped column by column in order
@@ -170,7 +170,7 @@ public class TableModel<V> {
     }
 
     /**
-     * Removes a row at a particular index from the table model
+     * Removes a row at a particular index from the table model. This may update the selection to make sure the same row is selected.
      * @param index Index of the row to remove
      * @return Itself
      */

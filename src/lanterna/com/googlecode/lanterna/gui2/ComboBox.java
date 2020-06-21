@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  *
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.gui2;
 
@@ -31,6 +31,7 @@ import com.googlecode.lanterna.TerminalTextUtils;
 import com.googlecode.lanterna.graphics.Theme;
 import com.googlecode.lanterna.graphics.ThemeDefinition;
 import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
 
 /**
  * This is a simple combo box implementation that allows the user to select one out of multiple items through a
@@ -185,7 +186,7 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
         if(index == -1) {
             return this;
         }
-        return remoteItem(index);
+        return removeItem(index);
     }
 
     /**
@@ -194,7 +195,7 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
      * @return Itself
      * @throws IndexOutOfBoundsException if the index is out of range
      */
-    public synchronized ComboBox<V> remoteItem(int index) {
+    public synchronized ComboBox<V> removeItem(int index) {
         items.remove(index);
         if(index < selectedIndex) {
             setSelectedIndex(selectedIndex - 1);
@@ -451,54 +452,29 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
 
     private Result handleReadOnlyCBKeyStroke(KeyStroke keyStroke) {
         switch(keyStroke.getKeyType()) {
-            case ArrowDown:
-                if(popupWindow != null) {
-                    popupWindow.listBox.handleKeyStroke(keyStroke);
-                    return Result.HANDLED;
-                }
-                return Result.MOVE_FOCUS_DOWN;
-
-            case ArrowUp:
-                if(popupWindow != null) {
-                    popupWindow.listBox.handleKeyStroke(keyStroke);
-                    return Result.HANDLED;
-                }
-                return Result.MOVE_FOCUS_UP;
-
-            case PageUp:
-            case PageDown:
-            case Home:
-            case End:
-                if(popupWindow != null) {
-                    popupWindow.listBox.handleKeyStroke(keyStroke);
-                    return Result.HANDLED;
-                }
-                break;
-
+            case Character:
             case Enter:
-                if(popupWindow != null) {
-                    popupWindow.listBox.handleKeyStroke(keyStroke);
-                    popupWindow.close();
-                    popupWindow = null;
+                if (isKeyboardActivationStroke(keyStroke)) {
+                    showPopup(keyStroke);
                 }
-                else {
-                    popupWindow = new PopupWindow();
-                    popupWindow.setPosition(toGlobal(new TerminalPosition(0, 1)));
-                    ((WindowBasedTextGUI) getTextGUI()).addWindow(popupWindow);
-                }
-                break;
-
-            case Escape:
-                if(popupWindow != null) {
-                    popupWindow.close();
-                    popupWindow = null;
-                    return Result.HANDLED;
+                return super.handleKeyStroke(keyStroke);
+            
+            case MouseEvent:
+                if (isMouseActivationStroke(keyStroke)) {
+                    showPopup(keyStroke);
                 }
                 break;
-
+            
             default:
         }
         return super.handleKeyStroke(keyStroke);
+    }
+    
+    protected void showPopup(KeyStroke keyStroke) {
+        popupWindow = new PopupWindow();
+        popupWindow.setPosition(toGlobal(new TerminalPosition(0, 1)));
+        ((WindowBasedTextGUI) getTextGUI()).addWindow(popupWindow);
+        ((WindowBasedTextGUI) getTextGUI()).setActiveWindow(popupWindow);
     }
 
     private Result handleEditableCBKeyStroke(KeyStroke keyStroke) {
@@ -592,6 +568,7 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
                     public void run() {
                         setSelectedIndex(index);
                         close();
+                        popupWindow = null;
                     }
                 });
             }
@@ -607,6 +584,15 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
         
         public synchronized Theme getTheme() {
             return ComboBox.this.getTheme();
+        }
+        
+        public synchronized boolean handleInput(KeyStroke keyStroke) {
+            if (keyStroke.getKeyType() == KeyType.Escape) {
+                close();
+                popupWindow = null;
+                return true;
+            }
+            return super.handleInput(keyStroke);
         }
     }
 

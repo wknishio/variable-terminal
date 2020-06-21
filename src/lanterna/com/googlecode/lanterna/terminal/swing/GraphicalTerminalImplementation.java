@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  *
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.terminal.swing;
 
@@ -53,8 +53,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
     private final TerminalEmulatorDeviceConfiguration deviceConfiguration;
-    private final TerminalEmulatorColorConfiguration colorConfiguration;
-    private final DefaultVirtualTerminal virtualTerminal;
+	private final TerminalEmulatorColorConfiguration colorConfiguration;
+	private final DefaultVirtualTerminal virtualTerminal;
     private final BlockingQueue<KeyStroke> keyQueue;
     private final TerminalScrollController scrollController;
     private final DirtyCellsLookupTable dirtyCellsLookupTable;
@@ -132,6 +132,16 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
 
         virtualTerminal.setBacklogSize(deviceConfiguration.getLineBufferScrollbackSize());
     }
+    
+    public TerminalEmulatorDeviceConfiguration getDeviceConfiguration()
+	{
+		return deviceConfiguration;
+	}
+    
+    public TerminalEmulatorColorConfiguration getColorConfiguration()
+   	{
+   		return colorConfiguration;
+   	}
 
     ///////////
     // First abstract methods that are implemented in AWTTerminalImplementation and SwingTerminalImplementation

@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  *
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.terminal.swing;
 
@@ -28,7 +28,10 @@ import com.googlecode.lanterna.terminal.IOSafeTerminal;
 import com.googlecode.lanterna.terminal.TerminalResizeListener;
 
 import java.awt.*;
-import java.io.IOException;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.im.InputMethodRequests;
+import java.text.AttributedCharacterIterator;
 import java.util.concurrent.TimeUnit;
 
 
@@ -44,6 +47,7 @@ import java.util.concurrent.TimeUnit;
 public class AWTTerminal extends Panel implements IOSafeTerminal {
 
     private final AWTTerminalImplementation terminalImplementation;
+    private final TerminalInputMethodRequests inputMethodRequests;
 
     /**
      * Creates a new AWTTerminal with all the defaults set and no scroll controller connected.
@@ -158,6 +162,20 @@ public class AWTTerminal extends Panel implements IOSafeTerminal {
         if(colorConfiguration == null) {
             colorConfiguration = TerminalEmulatorColorConfiguration.getDefault();
         }
+        
+        // This will enable CJK and complex input systems
+        enableInputMethods(true);
+
+        // For some reason an InputMethodListener needs to be attached in order to start receiving IME events.
+        addInputMethodListener(new InputMethodListener() {
+            
+            public void inputMethodTextChanged(InputMethodEvent event) {
+            }
+
+            
+            public void caretPositionChanged(InputMethodEvent event) {
+            }
+        });
 
         terminalImplementation = new AWTTerminalImplementation(
                 this,
@@ -166,7 +184,32 @@ public class AWTTerminal extends Panel implements IOSafeTerminal {
                 deviceConfiguration,
                 colorConfiguration,
                 scrollController);
-        //this.setLayout(new BorderLayout());
+        
+        inputMethodRequests = new TerminalInputMethodRequests(this, terminalImplementation);
+    }
+    
+    /**
+     * Returns the current font configuration. Note that it is immutable and cannot be changed.
+     * @return This AWTTerminal's current font configuration
+     */
+    public AWTTerminalFontConfiguration getFontConfiguration() {
+        return terminalImplementation.getFontConfiguration();
+    }
+
+    /**
+     * Returns this terminal emulator's color configuration. Note that it is immutable and cannot be changed.
+     * @return This {@link AWTTerminal}'s color configuration
+     */
+    public TerminalEmulatorColorConfiguration getColorConfiguration() {
+        return terminalImplementation.getColorConfiguration();
+    }
+
+    /**
+     * Returns this terminal emulator's device configuration. Note that it is immutable and cannot be changed.
+     * @return This {@link AWTTerminal}'s device configuration
+     */
+    public TerminalEmulatorDeviceConfiguration getDeviceConfiguration() {
+        return terminalImplementation.getDeviceConfiguration();
     }
 
     /**
@@ -206,6 +249,20 @@ public class AWTTerminal extends Panel implements IOSafeTerminal {
      */
     public void addInput(KeyStroke keyStroke) {
         terminalImplementation.addInput(keyStroke);
+    }
+    
+    
+    public InputMethodRequests getInputMethodRequests() {
+        return inputMethodRequests;
+    }
+
+    
+    protected void processInputMethodEvent(InputMethodEvent e) {
+        AttributedCharacterIterator iterator = e.getText();
+        for(int i = 0; i < e.getCommittedCharacterCount(); i++) {
+            terminalImplementation.addInput(new KeyStroke(iterator.current(), false, false));
+            iterator.next();
+        }
     }
 
     // Terminal methods below here, just forward to the implementation

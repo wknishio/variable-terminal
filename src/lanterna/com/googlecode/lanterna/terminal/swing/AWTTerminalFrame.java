@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  *
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.terminal.swing;
 
@@ -128,19 +128,6 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         
         setLayout(layout);
         
-        //ScrollPane scroll = new ScrollPane(ScrollPane.SCROLLBARS_NEVER);
-        
-        //scroll.setLayout(new BorderLayout());
-        //scroll.add(awtTerminal, BorderLayout.CENTER);
-        //scroll.add(awtTerminal);
-        //Dimension size = awtTerminal.getPreferredSize();
-        //Insets insets = scroll.getInsets();
-        //size.width += insets.left;
-        //size.width += insets.right;
-        //size.height += insets.bottom;
-        //size.height += insets.top;
-        //scroll.setPreferredSize(size);
-        //add(scroll, BorderLayout.CENTER);
         spacerPanelNorth = new Panel();
         spacerPanelNorth.setSize(0, 1);
         spacerPanelNorth.setMinimumSize(new Dimension(0, 1));
@@ -191,6 +178,30 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         initialSize = this.getPreferredSize();
         //Put input focus on the terminal component by default
         awtTerminal.requestFocusInWindow();
+    }
+    
+    /**
+     * Returns the current font configuration. Note that it is immutable and cannot be changed.
+     * @return This {@link AWTTerminalFrame}'s current font configuration
+     */
+    public AWTTerminalFontConfiguration getFontConfiguration() {
+        return awtTerminal.getFontConfiguration();
+    }
+
+    /**
+     * Returns this terminal emulator's color configuration. Note that it is immutable and cannot be changed.
+     * @return This {@link AWTTerminalFrame}'s color configuration
+     */
+    public TerminalEmulatorColorConfiguration getColorConfiguration() {
+        return awtTerminal.getColorConfiguration();
+    }
+
+    /**
+     * Returns this terminal emulator's device configuration. Note that it is immutable and cannot be changed.
+     * @return This {@link AWTTerminalFrame}'s device configuration
+     */
+    public TerminalEmulatorDeviceConfiguration getDeviceConfiguration() {
+        return awtTerminal.getDeviceConfiguration();
     }
     
     public AWTTerminal getTerminal()

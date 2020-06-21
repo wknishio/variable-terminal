@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  *
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.gui2;
 
@@ -40,7 +40,7 @@ import java.util.*;
  * @author Martin
  */
 public class MultiWindowTextGUI extends AbstractTextGUI implements WindowBasedTextGUI {
-    private final VirtualScreen virtualScreen;
+    //private final VirtualScreen virtualScreen;
     private final WindowManager windowManager;
     private final BasePane backgroundPane;
     private final List<Window> windows;
@@ -53,12 +53,12 @@ public class MultiWindowTextGUI extends AbstractTextGUI implements WindowBasedTe
 
     /**
      * Creates a new {@code MultiWindowTextGUI} that uses the specified {@code Screen} as the backend for all drawing
-     * operations. The screen will be automatically wrapped in a {@code VirtualScreen} in order to deal with GUIs
-     * becoming too big to fit the terminal. The background area of the GUI will be solid blue.
+     * operations. The background area of the GUI will be a solid color, depending on theme (default is blue). The
+     * current thread will be used as the GUI thread for all Lanterna library operations.
      * @param screen Screen to use as the backend for drawing operations
      */
     public MultiWindowTextGUI(Screen screen) {
-        this(screen, TextColor.ANSI.BLUE);
+        this(new SameTextGUIThread.Factory(), screen);
     }
 
     /**
@@ -78,18 +78,36 @@ public class MultiWindowTextGUI extends AbstractTextGUI implements WindowBasedTe
 
     /**
      * Creates a new {@code MultiWindowTextGUI} that uses the specified {@code Screen} as the backend for all drawing
-     * operations. The screen will be automatically wrapped in a {@code VirtualScreen} in order to deal with GUIs
-     * becoming too big to fit the terminal. The background area of the GUI is a solid color as decided by the
-     * {@code backgroundColor} parameter.
+     * operations. The background area of the GUI will be a solid color, depending on theme (default is blue). This
+     * constructor allows you control the threading model for the UI and set a custom {@link WindowManager}.
+     * @param guiThreadFactory Factory implementation to use when creating the {@code TextGUIThread}
+     * @param screen Screen to use as the backend for drawing operations
+     * @param windowManager Custom window manager to use
+     */
+    public MultiWindowTextGUI(TextGUIThreadFactory guiThreadFactory, Screen screen, WindowManager windowManager) {
+        this(guiThreadFactory,
+                screen,
+                windowManager,
+                null,
+                new GUIBackdrop());
+    }
+
+    /**
+     * Creates a new {@code MultiWindowTextGUI} that uses the specified {@code Screen} as the backend for all drawing
+     * operations. The background area of the GUI is a solid color as decided by the {@code backgroundColor} parameter.
      * @param screen Screen to use as the backend for drawing operations
      * @param backgroundColor Color to use for the GUI background
+     * @deprecated It's preferred to use a custom background component if you want to customize the background color,
+     * or you should change the theme. Using this constructor won't work well with theming.
      */
+    @Deprecated
     public MultiWindowTextGUI(
             Screen screen,
             TextColor backgroundColor) {
 
         this(screen, new DefaultWindowManager(), new EmptySpace(backgroundColor));
     }
+
 
     /**
      * Creates a new {@code MultiWindowTextGUI} that uses the specified {@code Screen} as the backend for all drawing
@@ -129,9 +147,10 @@ public class MultiWindowTextGUI extends AbstractTextGUI implements WindowBasedTe
 
     /**
      * Creates a new {@code MultiWindowTextGUI} that uses the specified {@code Screen} as the backend for all drawing
-     * operations. The screen will be automatically wrapped in a {@code VirtualScreen} in order to deal with GUIs
-     * becoming too big to fit the terminal. The background area of the GUI is the component passed in as the
-     * {@code background} parameter, forced to full size.
+     * operations. The background area of the GUI will be the component supplied instead of the usual backdrop. This
+     * constructor allows you to set a custom {@link WindowManager} instead of {@link DefaultWindowManager} as well
+     * as a custom {@link WindowPostRenderer} that can be used to tweak the appearance of any window. This constructor
+     * also allows you to control the threading model for the UI.
      * @param guiThreadFactory Factory implementation to use when creating the {@code TextGUIThread}
      * @param screen Screen to use as the backend for drawing operations
      * @param windowManager Window manager implementation to use
@@ -145,25 +164,14 @@ public class MultiWindowTextGUI extends AbstractTextGUI implements WindowBasedTe
             WindowPostRenderer postRenderer,
             Component background) {
 
-        this(guiThreadFactory, new VirtualScreen(screen), windowManager, postRenderer, background);
-    }
-
-    private MultiWindowTextGUI(
-            TextGUIThreadFactory guiThreadFactory,
-            VirtualScreen screen,
-            WindowManager windowManager,
-            WindowPostRenderer postRenderer,
-            Component background) {
-
         super(guiThreadFactory, screen);
         if(windowManager == null) {
             throw new IllegalArgumentException("Creating a window-based TextGUI requires a WindowManager");
         }
         if(background == null) {
             //Use a sensible default instead of throwing
-            background = new EmptySpace(TextColor.ANSI.BLUE);
+            background = new GUIBackdrop();
         }
-        this.virtualScreen = screen;
         this.windowManager = windowManager;
         this.backgroundPane = new AbstractBasePane<BasePane>() {
             
@@ -202,24 +210,29 @@ public class MultiWindowTextGUI extends AbstractTextGUI implements WindowBasedTe
 
     
     public synchronized void updateScreen() throws IOException {
-        TerminalSize minimumTerminalSize = TerminalSize.ZERO;
-        for(Window window: windows) {
-            if(window.isVisible()) {
-                if (window.getHints().contains(Window.Hint.FULL_SCREEN) ||
-                        window.getHints().contains(Window.Hint.FIT_TERMINAL_WINDOW) ||
-                        window.getHints().contains(Window.Hint.EXPANDED)) {
-                    //Don't take full screen windows or auto-sized windows into account
-                    continue;
-                }
-                TerminalPosition lastPosition = window.getPosition();
-                minimumTerminalSize = minimumTerminalSize.max(
-                        //Add position to size to get the bottom-right corner of the window
-                        window.getDecoratedSize().withRelative(
-                                Math.max(lastPosition.getColumn(), 0),
-                                Math.max(lastPosition.getRow(), 0)));
-            }
-        }
-        virtualScreen.setMinimumSize(minimumTerminalSize);
+    	   if (getScreen() instanceof VirtualScreen) {
+           // If the user has passed in a virtual screen, we should calculate the minimum size required and tell it.
+           // Previously the constructor always wrapped the screen in a VirtualScreen, but now we need to check.
+
+	       TerminalSize minimumTerminalSize = TerminalSize.ZERO;
+	       for(Window window: windows) {
+	           if(window.isVisible()) {
+	               if (window.getHints().contains(Window.Hint.FULL_SCREEN) ||
+	                       window.getHints().contains(Window.Hint.FIT_TERMINAL_WINDOW) ||
+	                       window.getHints().contains(Window.Hint.EXPANDED)) {
+	                   //Don't take full screen windows or auto-sized windows into account
+	                   continue;
+	               }
+	               TerminalPosition lastPosition = window.getPosition();
+	               minimumTerminalSize = minimumTerminalSize.max(
+	                       //Add position to size to get the bottom-right corner of the window
+	                       window.getDecoratedSize().withRelative(
+	                               Math.max(lastPosition.getColumn(), 0),
+	                               Math.max(lastPosition.getRow(), 0)));
+	           }
+	       }
+	       ((VirtualScreen) getScreen()).setMinimumSize(minimumTerminalSize);
+    	}
         super.updateScreen();
     }
 
@@ -251,16 +264,21 @@ public class MultiWindowTextGUI extends AbstractTextGUI implements WindowBasedTe
                     windowRenderBufferCache.put(window, textImage);
                 }
                 TextGUIGraphics windowGraphics = new DefaultTextGUIGraphics(this, textImage.newTextGraphics());
+                TextGUIGraphics insideWindowDecorationsGraphics = windowGraphics;
                 TerminalPosition contentOffset = TerminalPosition.TOP_LEFT_CORNER;
                 if (!window.getHints().contains(Window.Hint.NO_DECORATIONS)) {
                     WindowDecorationRenderer decorationRenderer = getWindowManager().getWindowDecorationRenderer(window);
-                    windowGraphics = decorationRenderer.draw(this, windowGraphics, window);
+                    insideWindowDecorationsGraphics = decorationRenderer.draw(this, windowGraphics, window);
+                    //windowGraphics = decorationRenderer.draw(this, windowGraphics, window);
                     contentOffset = decorationRenderer.getOffset(window);
                 }
 
-                window.draw(windowGraphics);
+                //window.draw(windowGraphics);
+                window.draw(insideWindowDecorationsGraphics);
                 window.setContentOffset(contentOffset);
-                Borders.joinLinesWithFrame(windowGraphics);
+                if (windowGraphics != insideWindowDecorationsGraphics) {
+                    Borders.joinLinesWithFrame(windowGraphics);
+                }
 
                 graphics.drawImage(window.getPosition(), textImage);
 
@@ -317,6 +335,15 @@ public class MultiWindowTextGUI extends AbstractTextGUI implements WindowBasedTe
         return eofWhenNoWindows;
     }
 
+    
+    /**
+     * This method used to exist to control if the virtual screen should by bypassed or not. Since 3.1.0 calling this
+     * has no effect since we don't force a VirtualScreen anymore and you control it yourself when you create the GUI.
+     * @param virtualScreenEnabled Not used anymore
+     */
+    public void setVirtualScreenEnabled(boolean virtualScreenEnabled) {
+    }
+    
     
     public synchronized Interactable getFocusedInteractable() {
         Window activeWindow = getActiveWindow();
@@ -433,7 +460,10 @@ public class MultiWindowTextGUI extends AbstractTextGUI implements WindowBasedTe
     
     public synchronized MultiWindowTextGUI setActiveWindow(Window activeWindow) {
         this.activeWindow = activeWindow;
-        if (activeWindow != null) moveToTop(activeWindow);
+        if (activeWindow != null)
+        {
+        	moveToTop(activeWindow);
+        }
         return this;
     }
 
@@ -445,11 +475,6 @@ public class MultiWindowTextGUI extends AbstractTextGUI implements WindowBasedTe
     
     public BasePane getBackgroundPane() {
         return backgroundPane;
-    }
-
-    
-    public Screen getScreen() {
-        return virtualScreen;
     }
 
     

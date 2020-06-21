@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  * 
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,14 +14,14 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.gui2;
 
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.TerminalSize;
-
+import com.googlecode.lanterna.gui2.menu.MenuBar;
 import java.util.Collection;
 import java.util.Set;
 
@@ -71,11 +71,18 @@ public interface Window extends BasePane {
         public static final Hint FIXED_POSITION = new Hint("FixedPos");
 
         /**
-         * Windows with this hint should not be automatically sized by the window manager (using
-         * {@code getPreferredSize()}), rather should rely on the code manually setting the size of the window using
-         * {@code setSize(..)}.
+         * Windows with this hint should (optionally) be rendered differently by the window manager to distiguish them
+         * from ordinary windows. This is intended to be used only by menu popups (See {@link MenuBar},
+         * {@link com.googlecode.lanterna.gui2.menu.Menu} and {@link com.googlecode.lanterna.gui2.menu.MenuItem}).
          */
-        public static final Hint FIXED_SIZE = new Hint("FixedSize");
+        public static final Hint MENU_POPUP = new Hint("MenuPopup");
+        
+        /**
+        * Windows with this hint should not be automatically sized by the window manager (using
+        * {@code getPreferredSize()}), rather should rely on the code manually setting the size of the window using
+        * {@code setFixedSize(..)}.
+        */
+       public static final Hint FIXED_SIZE = new Hint("FixedSize");
 
         /**
          * With this hint, don't let the window grow larger than the terminal screen, rather set components to a smaller
@@ -227,6 +234,14 @@ public interface Window extends BasePane {
      * @param size New size of the window
      */
     void setSize(TerminalSize size);
+    
+    /**
+     * Calling this method will add the FIXED_SIZE window hint (if it wasn't present already) and attempt to force the
+     * window to always have the size specified. Notice that it's up to the {@link WindowManager} if this size and hint
+     * are going to be honored.
+     * @param size New size of your fixed-size window
+     */
+    void setFixedSize(TerminalSize size);
 
     /**
      * Returns the last known size of the window including window decorations put on by the window manager. The value
@@ -362,4 +377,19 @@ public interface Window extends BasePane {
      * @return The global coordinates expressed as local coordinates
      */
     TerminalPosition fromGlobal(TerminalPosition position);
+    
+    /**
+     * Sets the active {@link MenuBar} for this window. The menu will be rendered at the top, inside the window
+     * decorations, if set. If called with {@code null}, any previously set menu bar is removed.
+     * @param menubar The {@link MenuBar} to assign to this window
+     */
+    
+    void setMenuBar(MenuBar menubar);
+
+    /**
+     * Returns the {@link MenuBar} assigned to this window, if any, otherwise returns {code null}.
+     * @return The active menu bar or {@code null}
+     */
+    
+    MenuBar getMenuBar();
 }

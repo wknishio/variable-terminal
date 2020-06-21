@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  * 
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.gui2;
 
@@ -23,7 +23,8 @@ import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.graphics.ThemeDefinition;
 import com.googlecode.lanterna.input.KeyStroke;
-
+import com.googlecode.lanterna.input.MouseAction;
+import com.googlecode.lanterna.input.MouseActionType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public abstract class AbstractListBox<V, T extends AbstractListBox<V, T>> extend
     private final List<V> items;
     private int selectedIndex;
     private ListItemRenderer<V,T> listItemRenderer;
+    protected TerminalPosition scrollOffset = new TerminalPosition(0, 0);
 
     /**
      * This constructor sets up the component so it has no preferred size but will ask to be as big as the list is. If
@@ -149,10 +151,29 @@ public abstract class AbstractListBox<V, T extends AbstractListBox<V, T>> extend
                     return Result.HANDLED;
 
                 case Character:
-                	if(selectByCharacter(keyStroke.getCharacter())) {
+                    if(selectByCharacter(keyStroke.getCharacter())) {
                         return Result.HANDLED;
-                	}
+                    }
+                    return Result.UNHANDLED;
+                case MouseEvent:
+                    MouseAction mouseAction = (MouseAction) keyStroke;
+                    MouseActionType actionType = mouseAction.getActionType();
                     
+                    if (actionType == MouseActionType.CLICK_RELEASE) {
+                        // do nothing, desired actioning has been performed already on CLICK_DOWN and DRAG
+                        return Result.HANDLED;
+                    } else if (actionType == MouseActionType.SCROLL_UP) {
+                        // relying on setSelectedIndex(index) to clip the index to valid values within range
+                        setSelectedIndex(getSelectedIndex() -1);
+                        return Result.HANDLED;
+                    } else if (actionType == MouseActionType.SCROLL_DOWN) {
+                        // relying on setSelectedIndex(index) to clip the index to valid values within range
+                        setSelectedIndex(getSelectedIndex() +1);
+                        return Result.HANDLED;
+                    }
+            
+                    selectedIndex = getIndexByMouseAction(mouseAction);
+                    return super.handleKeyStroke(keyStroke);
                 default:
             }
             return Result.UNHANDLED;
@@ -160,6 +181,18 @@ public abstract class AbstractListBox<V, T extends AbstractListBox<V, T>> extend
         finally {
             invalidate();
         }
+    }
+    
+    /**
+     * By converting {@link TerminalPosition}s to
+     * {@link #toGlobal(TerminalPosition)} gets index clicked on by mouse action.
+     * 
+     * @return index of a item that was clicked on with {@link MouseAction}
+     */
+    protected int getIndexByMouseAction(MouseAction click) {
+        int index = click.getPosition().getRow() - getGlobalPosition().getRow() - scrollOffset.getRow();
+        
+        return Math.min(index, items.size() -1);
     }
 
     private boolean selectByCharacter(Character character) {
@@ -306,13 +339,7 @@ public abstract class AbstractListBox<V, T extends AbstractListBox<V, T>> extend
      * @return Itself
      */
     public synchronized T setSelectedIndex(int index) {
-        selectedIndex = index;
-        if(selectedIndex < 0) {
-            selectedIndex = 0;
-        }
-        if(selectedIndex > items.size() - 1) {
-            selectedIndex = items.size() - 1;
-        }
+    	selectedIndex = Math.max(0, Math.min(index, items.size() -1));
         invalidate();
         return self();
     }
@@ -409,6 +436,8 @@ public abstract class AbstractListBox<V, T extends AbstractListBox<V, T>> extend
                     items.size() - scrollTopIndex < componentHeight) {
                 scrollTopIndex = items.size() - componentHeight;
             }
+            
+            listBox.scrollOffset = new TerminalPosition(0, -scrollTopIndex);
 
             graphics.applyThemeStyle(themeDefinition.getNormal());
             graphics.fill(' ');

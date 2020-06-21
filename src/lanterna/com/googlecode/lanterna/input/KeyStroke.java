@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  *
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.input;
 
@@ -43,14 +43,8 @@ public class KeyStroke {
     private final boolean shiftDown;
     private final long eventTime;
 
-    /**
-     * Constructs a KeyStroke based on a supplied keyType; character will be null and both ctrl and alt will be 
-     * considered not pressed. If you try to construct a KeyStroke with type KeyType.Character with this constructor, it
-     * will always throw an exception; use another overload that allows you to specify the character value instead.
-     * @param keyType Type of the key pressed by this keystroke
-     */
     public KeyStroke(KeyType keyType) {
-        this(keyType, false, false);
+        this(keyType, null, false, false, false);
     }
     
     /**
@@ -128,6 +122,13 @@ public class KeyStroke {
         this.ctrlDown = ctrlDown;
         this.altDown = altDown;
         this.eventTime = System.currentTimeMillis();
+    }
+    
+    /**
+     * an F3-KeyStroke that is distinguishable from a CursorLocation report.
+     */
+    public static class RealF3 extends KeyStroke {
+        public RealF3() { super(KeyType.F3,false,false,false); }
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  *
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.terminal;
 
@@ -132,7 +132,7 @@ public class DefaultTerminalFactory implements TerminalFactory {
 	            }
 	            if(isOperatingSystemWindows()) {
 	            	//System.out.println("createWindowsTerminal()");
-	                return createWindowsTerminal(outputStream, inputStream, charset);
+	                return createWindowsTerminal();
 	            	//return createUnixTerminal(outputStream, inputStream, charset);
 	            }
 	            else {
@@ -158,7 +158,8 @@ public class DefaultTerminalFactory implements TerminalFactory {
 	                return createTelnetTerminal();
 	            }
 	            if(isOperatingSystemWindows()) {
-	                return createWindowsTerminal(outputStream, inputStream, charset);
+	            	return createWindowsTerminal();
+	                //return createWindowsTerminal(outputStream, inputStream, charset);
 	            	//return createUnixTerminal(outputStream, inputStream, charset);
 	            }
 	            else {
@@ -246,6 +247,25 @@ public class DefaultTerminalFactory implements TerminalFactory {
         } catch(IOException ioe) {
             throw new RuntimeException(ioe);
         }
+    }
+    
+    /**
+     * Instantiates a Terminal according to the factory implementation with the exception that
+     * {@link DefaultTerminalFactory#preferTerminalEmulator} is always ignored. You may want to use this method when
+     * using tools that rely on AOT compilation such as Graal native-image to ensure AWT/Swing code paths are not hit.
+     * @return Terminal implementation
+     * @throws IOException If there was an I/O error with the underlying input/output system
+     */
+    public Terminal createHeadlessTerminal() throws Throwable {
+        // if tty but have no tty, but do have a port, then go telnet:
+        if( telnetPort > 0 && System.console() == null) {
+            return createTelnetTerminal();
+        }
+        if(isOperatingSystemWindows()) {
+            return createWindowsTerminal();
+        }
+
+        return createUnixTerminal(outputStream, inputStream, charset);
     }
 
     private boolean isAwtHeadless() {
@@ -477,22 +497,37 @@ public class DefaultTerminalFactory implements TerminalFactory {
     public TerminalScreen createScreen() throws IOException {
         return new TerminalScreen(createTerminal());
     }
-
-    private Terminal createWindowsTerminal(OutputStream outputStream, InputStream inputStream, Charset charset) throws IOException {
+    
+    private Terminal createWindowsTerminal() throws IOException {
         try {
-            Class<?> nativeImplementation = Class.forName("com.googlecode.lanterna.terminal.WindowsTerminal");
+            Class<?> nativeImplementation = Class.forName("com.googlecode.lanterna.terminal.win32.WindowsTerminal");
             Constructor<?> constructor = nativeImplementation.getConstructor(InputStream.class, OutputStream.class, Charset.class, UnixLikeTTYTerminal.CtrlCBehaviour.class);
             return (Terminal)constructor.newInstance(inputStream, outputStream, charset, UnixLikeTTYTerminal.CtrlCBehaviour.CTRL_C_KILLS_APPLICATION);
         }
-        catch(Exception ignore) {
+        catch(Throwable t) {
             try {
                 return createCygwinTerminal(outputStream, inputStream, charset);
             } catch(IOException e) {
-            	throw e;
-                //throw new IOException("To start java on Windows, use javaw! (see https://github.com/mabe02/lanterna/issues/335 )", e);
+                throw new IOException("To use Lanterna on Windows, either add JNA (and jna-platform) to the classpath or use javaw! (see https://github.com/mabe02/lanterna/issues/335)");
             }
         }
     }
+
+//    private Terminal createWindowsTerminal(OutputStream outputStream, InputStream inputStream, Charset charset) throws IOException {
+//        try {
+//            Class<?> nativeImplementation = Class.forName("com.googlecode.lanterna.terminal.WindowsTerminal");
+//            Constructor<?> constructor = nativeImplementation.getConstructor(InputStream.class, OutputStream.class, Charset.class, UnixLikeTTYTerminal.CtrlCBehaviour.class);
+//            return (Terminal)constructor.newInstance(inputStream, outputStream, charset, UnixLikeTTYTerminal.CtrlCBehaviour.CTRL_C_KILLS_APPLICATION);
+//        }
+//        catch(Exception ignore) {
+//            try {
+//                return createCygwinTerminal(outputStream, inputStream, charset);
+//            } catch(IOException e) {
+//            	throw e;
+//                //throw new IOException("To start java on Windows, use javaw! (see https://github.com/mabe02/lanterna/issues/335 )", e);
+//            }
+//        }
+//    }
     
     private Terminal createCygwinTerminal(OutputStream outputStream, InputStream inputStream, Charset charset) throws IOException {
         CygwinTerminal cygTerminal = new CygwinTerminal(inputStream, outputStream, charset);
@@ -504,14 +539,15 @@ public class DefaultTerminalFactory implements TerminalFactory {
 
     private Terminal createUnixTerminal(OutputStream outputStream, InputStream inputStream, Charset charset) throws IOException {
         UnixTerminal unixTerminal;
-        try {
-            Class<?> nativeImplementation = Class.forName("com.googlecode.lanterna.terminal.NativeGNULinuxTerminal");
-            Constructor<?> constructor = nativeImplementation.getConstructor(InputStream.class, OutputStream.class, Charset.class, UnixLikeTTYTerminal.CtrlCBehaviour.class);
-            unixTerminal = (UnixTerminal)constructor.newInstance(inputStream, outputStream, charset, unixTerminalCtrlCBehaviour);
-        }
-        catch(Exception ignore) {
-            unixTerminal = new UnixTerminal(inputStream, outputStream, charset, unixTerminalCtrlCBehaviour);
-        }
+//        try {
+//            Class<?> nativeImplementation = Class.forName("com.googlecode.lanterna.terminal.NativeGNULinuxTerminal");
+//            Constructor<?> constructor = nativeImplementation.getConstructor(InputStream.class, OutputStream.class, Charset.class, UnixLikeTTYTerminal.CtrlCBehaviour.class);
+//            unixTerminal = (UnixTerminal)constructor.newInstance(inputStream, outputStream, charset, unixTerminalCtrlCBehaviour);
+//        }
+//        catch(Exception ignore) {
+//            unixTerminal = new UnixTerminal(inputStream, outputStream, charset, unixTerminalCtrlCBehaviour);
+//        }
+        unixTerminal = new UnixTerminal(inputStream, outputStream, charset, unixTerminalCtrlCBehaviour);
         if(mouseCaptureMode != null) {
             unixTerminal.setMouseCaptureMode(mouseCaptureMode);
         }

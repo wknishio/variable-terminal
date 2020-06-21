@@ -32,6 +32,7 @@ public class VTURLInvoker
 		return getURLData(urlString, Proxy.NO_PROXY, outputData, outputOffset, outputLength, null, null);
 	}
 	
+	@SuppressWarnings("all")
 	public VTURLData getURLData(String urlString, Proxy proxy, byte[] outputData, int outputOffset, int outputLength, Map<String, String> requestHeaders, String requestMethod)
 	{
 		final byte[] readBuffer = new byte[VT.VT_DATA_BUFFER_SIZE];

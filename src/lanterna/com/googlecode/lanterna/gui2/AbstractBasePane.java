@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  * 
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,13 +14,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.gui2;
 
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.graphics.Theme;
+import com.googlecode.lanterna.gui2.Interactable.Result;
+import com.googlecode.lanterna.gui2.menu.MenuBar;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.input.MouseAction;
@@ -70,13 +72,14 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
     public void draw(TextGUIGraphics graphics) {
         graphics.applyThemeStyle(getTheme().getDefinition(Window.class).getNormal());
         graphics.fill(' ');
-        contentHolder.draw(graphics);
-
+        
         if(!interactableLookupMap.getSize().equals(graphics.getSize())) {
             interactableLookupMap = new InteractableLookupMap(graphics.getSize());
         } else {
             interactableLookupMap.reset();
         }
+        
+        contentHolder.draw(graphics);
         contentHolder.updateLookupMap(interactableLookupMap);
         //interactableLookupMap.debug();
         invalid = false;
@@ -110,31 +113,67 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
     abstract T self();
 
     private boolean doHandleInput(KeyStroke key) {
+        boolean result = false;
         if(key.getKeyType() == KeyType.MouseEvent) {
-            MouseAction mouseAction = (MouseAction)key;
-            TerminalPosition localCoordinates = fromGlobal(mouseAction.getPosition());
-            if (localCoordinates != null) {
-                Interactable interactable = interactableLookupMap.getInteractableAt(localCoordinates);
-                if(interactable != null) {
-                    interactable.handleInput(key);
-                }
-            }
+           return handleMouseInput((MouseAction) key);
         }
-        else if(focusedInteractable != null) {
-            Interactable next = null;
-            Interactable.FocusChangeDirection direction = Interactable.FocusChangeDirection.TELEPORT; //Default
-            Interactable.Result result = focusedInteractable.handleInput(key);
+        Interactable.FocusChangeDirection direction = Interactable.FocusChangeDirection.TELEPORT; // Default
+        Interactable nextFocus = null;
+        if(focusedInteractable == null) {
+            // If nothing is focused and the user presses certain navigation keys, try to find if there is an
+            // Interactable component we can move focus to.
+            MenuBar menuBar = getMenuBar();
+            Component baseComponent = getComponent();
+            switch (key.getKeyType()) {
+                case Tab:
+                case ArrowRight:
+                case ArrowDown:
+                    direction = Interactable.FocusChangeDirection.NEXT;
+                    // First try the menu, then the actual component
+                    nextFocus = menuBar.nextFocus(null);
+                    if (nextFocus == null) {
+                        if (baseComponent instanceof Container) {
+                            nextFocus = ((Container) baseComponent).nextFocus(null);
+                        } else if (baseComponent instanceof Interactable) {
+                            nextFocus = (Interactable) baseComponent;
+                        }
+                    }
+                    break;
+
+                case ReverseTab:
+                case ArrowUp:
+                case ArrowLeft:
+                    direction = Interactable.FocusChangeDirection.PREVIOUS;
+                    if (baseComponent instanceof Container) {
+                        nextFocus = ((Container) baseComponent).previousFocus(null);
+                    }
+                    else if (baseComponent instanceof Interactable) {
+                        nextFocus = (Interactable) baseComponent;
+                    }
+                    // If no component can take focus, try the menu
+                    if (nextFocus == null) {
+                        nextFocus = menuBar.previousFocus(null);
+                    }
+                    break;
+            }
+            if (nextFocus != null) {
+                setFocusedInteractable(nextFocus, direction);
+                result = true;
+            }
+        } else {
+            Interactable.Result handleResult = focusedInteractable.handleInput(key);
             if(!enableDirectionBasedMovements) {
-                if(result == Interactable.Result.MOVE_FOCUS_DOWN || result == Interactable.Result.MOVE_FOCUS_RIGHT) {
-                    result = Interactable.Result.MOVE_FOCUS_NEXT;
+                if(handleResult == Interactable.Result.MOVE_FOCUS_DOWN || handleResult == Interactable.Result.MOVE_FOCUS_RIGHT) {
+                    handleResult = Interactable.Result.MOVE_FOCUS_NEXT;
                 }
-                else if(result == Interactable.Result.MOVE_FOCUS_UP || result == Interactable.Result.MOVE_FOCUS_LEFT) {
-                    result = Interactable.Result.MOVE_FOCUS_PREVIOUS;
+                else if(handleResult == Interactable.Result.MOVE_FOCUS_UP || handleResult == Interactable.Result.MOVE_FOCUS_LEFT) {
+                    handleResult = Interactable.Result.MOVE_FOCUS_PREVIOUS;
                 }
             }
-            switch (result) {
+            switch (handleResult) {
                 case HANDLED:
-                    return true;
+                    result = true;
+                    break;
                 case UNHANDLED:
                     //Filter the event recursively through all parent containers until we hit null; give the containers
                     //a chance to absorb the event
@@ -145,54 +184,66 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
                         }
                         parent = parent.getParent();
                     }
-                    return false;
+                    result = false;
+                    break;
                 case MOVE_FOCUS_NEXT:
-                    next = contentHolder.nextFocus(focusedInteractable);
-                    if(next == null) {
-                        next = contentHolder.nextFocus(null);
+                    nextFocus = contentHolder.nextFocus(focusedInteractable);
+                    if(nextFocus == null) {
+                        nextFocus = contentHolder.nextFocus(null);
                     }
                     direction = Interactable.FocusChangeDirection.NEXT;
                     break;
                 case MOVE_FOCUS_PREVIOUS:
-                    next = contentHolder.previousFocus(focusedInteractable);
-                    if(next == null) {
-                        next = contentHolder.previousFocus(null);
+                    nextFocus = contentHolder.previousFocus(focusedInteractable);
+                    if(nextFocus == null) {
+                        nextFocus = contentHolder.previousFocus(null);
                     }
                     direction = Interactable.FocusChangeDirection.PREVIOUS;
                     break;
                 case MOVE_FOCUS_DOWN:
-                    next = interactableLookupMap.findNextDown(focusedInteractable);
+                    nextFocus = interactableLookupMap.findNextDown(focusedInteractable);
                     direction = Interactable.FocusChangeDirection.DOWN;
-                    if(next == null && !strictFocusChange) {
-                        next = contentHolder.nextFocus(focusedInteractable);
+                    if(nextFocus == null && !strictFocusChange) {
+                        nextFocus = contentHolder.nextFocus(focusedInteractable);
                         direction = Interactable.FocusChangeDirection.NEXT;
                     }
                     break;
                 case MOVE_FOCUS_LEFT:
-                    next = interactableLookupMap.findNextLeft(focusedInteractable);
+                    nextFocus = interactableLookupMap.findNextLeft(focusedInteractable);
                     direction = Interactable.FocusChangeDirection.LEFT;
                     break;
                 case MOVE_FOCUS_RIGHT:
-                    next = interactableLookupMap.findNextRight(focusedInteractable);
+                    nextFocus = interactableLookupMap.findNextRight(focusedInteractable);
                     direction = Interactable.FocusChangeDirection.RIGHT;
                     break;
                 case MOVE_FOCUS_UP:
-                    next = interactableLookupMap.findNextUp(focusedInteractable);
+                    nextFocus = interactableLookupMap.findNextUp(focusedInteractable);
                     direction = Interactable.FocusChangeDirection.UP;
-                    if(next == null && !strictFocusChange) {
-                        next = contentHolder.previousFocus(focusedInteractable);
+                    if(nextFocus == null && !strictFocusChange) {
+                        nextFocus = contentHolder.previousFocus(focusedInteractable);
                         direction = Interactable.FocusChangeDirection.PREVIOUS;
                     }
                     break;
             }
-            if(next != null) {
-                setFocusedInteractable(next, direction);
-            }
-            return true;
         }
-        return false;
+        if(nextFocus != null) {
+            setFocusedInteractable(nextFocus, direction);
+            result = true;
+        }
+        return result;
     }
-
+    
+    private boolean handleMouseInput(MouseAction mouseAction) {
+        TerminalPosition localCoordinates = fromGlobal(mouseAction.getPosition());
+        if (localCoordinates == null) {
+           return false;
+        }
+        Interactable interactable = interactableLookupMap.getInteractableAt(localCoordinates);
+        if (interactable == null) {
+           return false;
+        }
+        return interactable.handleInput(mouseAction) == Result.HANDLED;
+     }
     
     public Component getComponent() {
         return contentHolder.getComponent();
@@ -277,6 +328,16 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
     public synchronized void setTheme(Theme theme) {
         this.theme = theme;
     }
+    
+    
+    public MenuBar getMenuBar() {
+        return contentHolder.getMenuBar();
+    }
+
+    
+    public void setMenuBar(MenuBar menuBar) {
+        contentHolder.setMenuBar(menuBar);
+    }
 
     protected void addBasePaneListener(BasePaneListener<T> basePaneListener) {
         listeners.addIfAbsent(basePaneListener);
@@ -291,6 +352,49 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
     }
 
     protected class ContentHolder extends AbstractComposite<Container> {
+    	
+        private MenuBar menuBar;
+
+        ContentHolder() {
+            this.menuBar = new EmptyMenuBar();
+        }
+
+        private void setMenuBar(MenuBar menuBar) {
+            if (menuBar == null) {
+                menuBar = new EmptyMenuBar();
+            }
+
+            if (this.menuBar != menuBar) {
+                menuBar.onAdded(this);
+                this.menuBar.onRemoved(this);
+                this.menuBar = menuBar;
+                if(focusedInteractable == null) {
+                    setFocusedInteractable(menuBar.nextFocus(null));
+                }
+                invalidate();
+            }
+        }
+
+        private MenuBar getMenuBar() {
+            return menuBar;
+        }
+
+        
+        public boolean isInvalid() {
+            return super.isInvalid() || menuBar.isInvalid();
+        }
+
+        
+        public void invalidate() {
+            super.invalidate();
+            menuBar.invalidate();
+        }
+
+        
+        public void updateLookupMap(InteractableLookupMap interactableLookupMap) {
+            super.updateLookupMap(interactableLookupMap);
+            menuBar.updateLookupMap(interactableLookupMap);
+        }
         
         public void setComponent(Component component) {
             if(getComponent() == component) {
@@ -333,6 +437,13 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
 
                 
                 public void drawComponent(TextGUIGraphics graphics, Container component) {
+                	if (!(menuBar instanceof EmptyMenuBar)) {
+                        int menuBarHeight = menuBar.getPreferredSize().getRows();
+                        TextGUIGraphics menuGraphics = graphics.newTextGraphics(TerminalPosition.TOP_LEFT_CORNER, graphics.getSize().withRows(menuBarHeight));
+                        menuBar.draw(menuGraphics);
+                        graphics = graphics.newTextGraphics(TerminalPosition.TOP_LEFT_CORNER.withRelativeRow(menuBarHeight), graphics.getSize().withRelativeRows(-menuBarHeight));
+                    }
+                	
                     Component subComponent = getComponent();
                     if(subComponent == null) {
                         return;
@@ -355,6 +466,26 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
         
         public BasePane getBasePane() {
             return AbstractBasePane.this;
+        }
+    }
+    
+   private static class EmptyMenuBar extends MenuBar {
+        
+        public boolean isInvalid() {
+            return false;
+        }
+
+        
+        public synchronized void onAdded(Container container) {
+        }
+
+        
+        public synchronized void onRemoved(Container container) {
+        }
+        
+        
+        public boolean isEmptyMenuBar() {
+            return true;
         }
     }
 }

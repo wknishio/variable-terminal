@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  *
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.terminal.swing;
 
@@ -29,6 +29,10 @@ import com.googlecode.lanterna.terminal.TerminalResizeListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.InputMethodEvent;
+import java.awt.event.InputMethodListener;
+import java.awt.im.InputMethodRequests;
+import java.text.AttributedCharacterIterator;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -45,6 +49,7 @@ import java.util.concurrent.TimeUnit;
 public class SwingTerminal extends JComponent implements IOSafeTerminal {
 
     private final SwingTerminalImplementation terminalImplementation;
+    private final TerminalInputMethodRequests inputMethodRequests;
 
     /**
      * Creates a new SwingTerminal with all the defaults set and no scroll controller connected.
@@ -138,31 +143,72 @@ public class SwingTerminal extends JComponent implements IOSafeTerminal {
      *                         scrollable area has changed
      */
     public SwingTerminal(
-            TerminalSize initialTerminalSize,
-            TerminalEmulatorDeviceConfiguration deviceConfiguration,
-            SwingTerminalFontConfiguration fontConfiguration,
-            TerminalEmulatorColorConfiguration colorConfiguration,
-            TerminalScrollController scrollController) {
+    TerminalSize initialTerminalSize,
+    TerminalEmulatorDeviceConfiguration deviceConfiguration,
+    SwingTerminalFontConfiguration fontConfiguration,
+    TerminalEmulatorColorConfiguration colorConfiguration,
+    TerminalScrollController scrollController)
+    {
+		//Enforce valid values on the input parameters
+		if(deviceConfiguration == null) {
+		    deviceConfiguration = TerminalEmulatorDeviceConfiguration.getDefault();
+		}
+		if(fontConfiguration == null) {
+		    fontConfiguration = SwingTerminalFontConfiguration.getDefault();
+		}
+		if(colorConfiguration == null) {
+		    colorConfiguration = TerminalEmulatorColorConfiguration.getDefault();
+		}
+		
+		// This will enable CJK and complex input systems
+		enableInputMethods(true);
+		
+		// For some reason an InputMethodListener needs to be attached in order to start receiving IME events.
+		addInputMethodListener(new InputMethodListener()
+		{
+		    
+		    public void inputMethodTextChanged(InputMethodEvent event) {
+		    }
+		
+		    
+		    public void caretPositionChanged(InputMethodEvent event) {
+		    }
+		});
+		
+		terminalImplementation = new SwingTerminalImplementation(
+		        this,
+		        fontConfiguration,
+		        initialTerminalSize,
+		        deviceConfiguration,
+		        colorConfiguration,
+		        scrollController);
+		
+		inputMethodRequests = new TerminalInputMethodRequests(this, terminalImplementation);
+	}
 
-        //Enforce valid values on the input parameters
-        if(deviceConfiguration == null) {
-            deviceConfiguration = TerminalEmulatorDeviceConfiguration.getDefault();
-        }
-        if(fontConfiguration == null) {
-            fontConfiguration = SwingTerminalFontConfiguration.getDefault();
-        }
-        if(colorConfiguration == null) {
-            colorConfiguration = TerminalEmulatorColorConfiguration.getDefault();
-        }
-
-        terminalImplementation = new SwingTerminalImplementation(
-                this,
-                fontConfiguration,
-                initialTerminalSize,
-                deviceConfiguration,
-                colorConfiguration,
-                scrollController);
-    }
+	/**
+	* Returns the current font configuration. Note that it is immutable and cannot be changed.
+	* @return This SwingTerminal's current font configuration
+	*/
+	public SwingTerminalFontConfiguration getFontConfiguration() {
+	return terminalImplementation.getFontConfiguration();
+	}
+	
+	/**
+	* Returns this terminal emulator's color configuration. Note that it is immutable and cannot be changed.
+	* @return This {@link SwingTerminal}'s color configuration
+	*/
+	public TerminalEmulatorColorConfiguration getColorConfiguration() {
+		return terminalImplementation.getColorConfiguration();
+	}
+	
+	/**
+	* Returns this terminal emulator's device configuration. Note that it is immutable and cannot be changed.
+	* @return This {@link SwingTerminal}'s device configuration
+	*/
+	public TerminalEmulatorDeviceConfiguration getDeviceConfiguration() {
+		return terminalImplementation.getDeviceConfiguration();
+	}
 
     /**
      * Overridden method from Swing's {@code JComponent} class that returns the preferred size of the terminal (in
@@ -191,6 +237,19 @@ public class SwingTerminal extends JComponent implements IOSafeTerminal {
      */
     public void addInput(KeyStroke keyStroke) {
         terminalImplementation.addInput(keyStroke);
+    }
+    
+    public InputMethodRequests getInputMethodRequests() {
+        return inputMethodRequests;
+    }
+
+    
+    protected void processInputMethodEvent(InputMethodEvent e) {
+        AttributedCharacterIterator iterator = e.getText();
+        for(int i = 0; i < e.getCommittedCharacterCount(); i++) {
+            terminalImplementation.addInput(new KeyStroke(iterator.current(), false, false));
+            iterator.next();
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////

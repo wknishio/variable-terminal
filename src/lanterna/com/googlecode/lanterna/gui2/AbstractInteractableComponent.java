@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  * 
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,12 +14,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.gui2;
 
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
+import com.googlecode.lanterna.input.MouseAction;
+import com.googlecode.lanterna.input.MouseActionType;
 
 /**
  * Default implementation of Interactable that extends from AbstractComponent. If you want to write your own component
@@ -193,5 +196,28 @@ public abstract class AbstractInteractableComponent<T extends AbstractInteractab
     public synchronized T setInputFilter(InputFilter inputFilter) {
         this.inputFilter = inputFilter;
         return self();
+    }
+    
+    public boolean isKeyboardActivationStroke(KeyStroke keyStroke) {
+        boolean isKeyboardActivation = (keyStroke.getKeyType() == KeyType.Character && keyStroke.getCharacter() == ' ') || keyStroke.getKeyType() == KeyType.Enter;
+        
+        return isFocused() && isKeyboardActivation;
+    }
+    
+    public boolean isMouseActivationStroke(KeyStroke keyStroke) {
+        boolean isMouseActivation = false;
+        if (keyStroke instanceof MouseAction) {
+            MouseAction action = (MouseAction)keyStroke;
+            isMouseActivation = action.getActionType() == MouseActionType.CLICK_DOWN;
+        }
+        
+        return isMouseActivation;
+    }
+    
+    public boolean isActivationStroke(KeyStroke keyStroke) {
+        boolean isKeyboardActivationStroke = isKeyboardActivationStroke(keyStroke);
+        boolean isMouseActivationStroke = isMouseActivationStroke(keyStroke);
+        
+        return isKeyboardActivationStroke || isMouseActivationStroke;
     }
 }

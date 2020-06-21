@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  * 
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.terminal.ansi;
 
@@ -44,6 +44,8 @@ public class CygwinTerminal extends UnixLikeTTYTerminal {
 
     private static final String STTY_LOCATION = findProgram("stty.exe");
     private static final Pattern STTY_SIZE_PATTERN = Pattern.compile(".*rows ([0-9]+);.*columns ([0-9]+);.*");
+    private static final String JAVA_LIBRARY_PATH_PROPERTY = "java.library.path";
+    private static final String CYGWIN_HOME_ENV = "CYGWIN_HOME";
 
     /**
      * Creates a new CygwinTerminal based off input and output streams and a character set to use
@@ -89,6 +91,11 @@ public class CygwinTerminal extends UnixLikeTTYTerminal {
         commandLine.addAll(Arrays.asList(parameters));
         return exec(commandLine.toArray(new String[commandLine.size()]));
     }
+    
+    protected void acquire() throws IOException {
+        super.acquire();
+        // Placeholder in case we want to add extra stty invocations for Cygwin
+    }
 
     private String findSTTY() {
         return STTY_LOCATION;
@@ -101,6 +108,12 @@ public class CygwinTerminal extends UnixLikeTTYTerminal {
     }
 
     private static String findProgram(String programName) {
+    	if (System.getenv(CYGWIN_HOME_ENV) != null) {
+            File cygwinHomeBinFile = new File(System.getenv(CYGWIN_HOME_ENV) + "/bin", programName);
+            if (cygwinHomeBinFile.exists()) {
+                return cygwinHomeBinFile.getAbsolutePath();
+            }
+        }
         String[] paths = System.getProperty("java.library.path").split(";");
         for(String path : paths) {
             File shBin = new File(path, programName);

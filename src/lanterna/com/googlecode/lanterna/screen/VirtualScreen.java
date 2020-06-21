@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  *
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.screen;
 
@@ -90,7 +90,16 @@ public class VirtualScreen extends AbstractScreen {
     public TerminalSize getViewportSize() {
         return viewportSize;
     }
-
+    
+    public void setViewportTopLeft(TerminalPosition position) {
+        viewportTopLeft = position;
+        while(viewportTopLeft.getColumn() > 0 && viewportTopLeft.getColumn() + viewportSize.getColumns() > minimumSize.getColumns()) {
+            viewportTopLeft = viewportTopLeft.withRelativeColumn(-1);
+        }
+        while(viewportTopLeft.getRow() > 0 && viewportTopLeft.getRow() + viewportSize.getRows() > minimumSize.getRows()) {
+            viewportTopLeft = viewportTopLeft.withRelativeRow(-1);
+        }
+    }
     
     public void startScreen() throws IOException {
         realScreen.startScreen();

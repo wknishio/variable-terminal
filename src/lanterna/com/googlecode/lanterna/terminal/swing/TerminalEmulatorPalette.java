@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  *
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 
 package com.googlecode.lanterna.terminal.swing;
@@ -302,37 +302,21 @@ public class TerminalEmulatorPalette {
                     return brightWhite;
                 case YELLOW:
                     return brightYellow;
-                case NORMALBLACK:
-                    return normalBlack;
-                case NORMALBLUE:
-                    return normalBlue;
-                case NORMALCYAN:
-                    return normalCyan;
-                case NORMALGREEN:
-                    return normalGreen;
-                case NORMALMAGENTA:
-                    return normalMagenta;
-                case NORMALRED:
-                    return normalRed;
-                case NORMALWHITE:
-                    return normalWhite;
-                case NORMALYELLOW:
-                    return normalYellow;
-                case BRIGHTBLACK:
+                case BLACK_BRIGHT:
                     return brightBlack;
-                case BRIGHTBLUE:
+                case BLUE_BRIGHT:
                     return brightBlue;
-                case BRIGHTCYAN:
+                case CYAN_BRIGHT:
                     return brightCyan;
-                case BRIGHTGREEN:
+                case GREEN_BRIGHT:
                     return brightGreen;
-                case BRIGHTMAGENTA:
+                case MAGENTA_BRIGHT:
                     return brightMagenta;
-                case BRIGHTRED:
+                case RED_BRIGHT:
                     return brightRed;
-                case BRIGHTWHITE:
+                case WHITE_BRIGHT:
                     return brightWhite;
-                case BRIGHTYELLOW:
+                case YELLOW_BRIGHT:
                     return brightYellow;
             }
         }
@@ -356,37 +340,21 @@ public class TerminalEmulatorPalette {
                     return normalWhite;
                 case YELLOW:
                     return normalYellow;
-                case NORMALBLACK:
-                    return normalBlack;
-                case NORMALBLUE:
-                    return normalBlue;
-                case NORMALCYAN:
-                    return normalCyan;
-                case NORMALGREEN:
-                    return normalGreen;
-                case NORMALMAGENTA:
-                    return normalMagenta;
-                case NORMALRED:
-                    return normalRed;
-                case NORMALWHITE:
-                    return normalWhite;
-                case NORMALYELLOW:
-                    return normalYellow;
-                case BRIGHTBLACK:
+                case BLACK_BRIGHT:
                     return brightBlack;
-                case BRIGHTBLUE:
+                case BLUE_BRIGHT:
                     return brightBlue;
-                case BRIGHTCYAN:
+                case CYAN_BRIGHT:
                     return brightCyan;
-                case BRIGHTGREEN:
+                case GREEN_BRIGHT:
                     return brightGreen;
-                case BRIGHTMAGENTA:
+                case MAGENTA_BRIGHT:
                     return brightMagenta;
-                case BRIGHTRED:
+                case RED_BRIGHT:
                     return brightRed;
-                case BRIGHTWHITE:
+                case WHITE_BRIGHT:
                     return brightWhite;
-                case BRIGHTYELLOW:
+                case YELLOW_BRIGHT:
                     return brightYellow;
             }
         }

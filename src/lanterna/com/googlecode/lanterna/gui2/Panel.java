@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  * 
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.gui2;
 
@@ -191,7 +191,7 @@ public class Panel extends AbstractComponent<Panel> implements Container {
      *                  to go back to the theme definition
      */
     public void setFillColorOverride(TextColor fillColor) {
-        this.fillColorOverride = fillColorOverride;
+        this.fillColorOverride = fillColor;
     }
 
     /**
@@ -211,6 +211,11 @@ public class Panel extends AbstractComponent<Panel> implements Container {
 
     
     public Collection<Component> getChildren() {
+        return getChildrenList();
+    }
+
+    
+    public List<Component> getChildrenList() {
         synchronized(components) {
             return new ArrayList<Component>(components);
         }
@@ -218,39 +223,56 @@ public class Panel extends AbstractComponent<Panel> implements Container {
 
     
     protected ComponentRenderer<Panel> createDefaultRenderer() {
-        return new ComponentRenderer<Panel>() {
+        return new DefaultPanelRenderer();
+    }
 
-            
-            public TerminalSize getPreferredSize(Panel component) {
-                synchronized(components) {
-                    cachedPreferredSize = layoutManager.getPreferredSize(components);
-                }
-                return cachedPreferredSize;
+    public class DefaultPanelRenderer implements ComponentRenderer<Panel> {
+        private boolean fillAreaBeforeDrawingComponents = true;
+
+        /**
+         * If setting this to {@code false} (default is {@code true}), the {@link Panel} will not reset it's drawable
+         * area with the space character ' ' before drawing all the components. Usually you <b>do</b> want to reset this
+         * area before drawing but you might have a custom renderer that has prepared the area already and just want the
+         * panel renderer to layout and draw the components in the panel without touching the existing content. One such
+         * example is the {@code FullScreenTextGUITest}.
+         * @param fillAreaBeforeDrawingComponents Should the panels area be cleared before drawing components?
+         */
+        public void setFillAreaBeforeDrawingComponents(boolean fillAreaBeforeDrawingComponents) {
+            this.fillAreaBeforeDrawingComponents = fillAreaBeforeDrawingComponents;
+        }
+
+        
+        public TerminalSize getPreferredSize(Panel component) {
+            synchronized(components) {
+                cachedPreferredSize = layoutManager.getPreferredSize(components);
+            }
+            return cachedPreferredSize;
+        }
+
+        
+        public void drawComponent(TextGUIGraphics graphics, Panel panel) {
+            if(isInvalid()) {
+                layout(graphics.getSize());
             }
 
-            
-            public void drawComponent(TextGUIGraphics graphics, Panel component) {
-                if(isInvalid()) {
-                    layout(graphics.getSize());
-                }
-
+            if (fillAreaBeforeDrawingComponents) {
                 // Reset the area
                 graphics.applyThemeStyle(getThemeDefinition().getNormal());
                 if (fillColorOverride != null) {
                     graphics.setBackgroundColor(fillColorOverride);
                 }
                 graphics.fill(' ');
+            }
 
-                synchronized(components) {
-                    for(Component child: components) {
-                        TextGUIGraphics componentGraphics = graphics.newTextGraphics(child.getPosition(), child.getSize());
-                        child.draw(componentGraphics);
-                    }
+            synchronized(components) {
+                for(Component child: components) {
+                    TextGUIGraphics componentGraphics = graphics.newTextGraphics(child.getPosition(), child.getSize());
+                    child.draw(componentGraphics);
                 }
             }
-        };
+        }
     }
-
+    
     
     public TerminalSize calculatePreferredSize() {
         if(cachedPreferredSize != null && !isInvalid()) {

@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  *
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.terminal.swing;
 
@@ -118,6 +118,30 @@ public class SwingTerminalFrame extends JFrame implements IOSafeTerminal {
 
         //Put input focus on the terminal component by default
         swingTerminal.requestFocusInWindow();
+    }
+    
+    /**
+     * Returns the current font configuration. Note that it is immutable and cannot be changed.
+     * @return This {@link SwingTerminalFrame}'s current font configuration
+     */
+    public SwingTerminalFontConfiguration getFontConfiguration() {
+        return swingTerminal.getFontConfiguration();
+    }
+
+    /**
+     * Returns this terminal emulator's color configuration. Note that it is immutable and cannot be changed.
+     * @return This {@link SwingTerminalFrame}'s color configuration
+     */
+    public TerminalEmulatorColorConfiguration getColorConfiguration() {
+        return swingTerminal.getColorConfiguration();
+    }
+
+    /**
+     * Returns this terminal emulator's device configuration. Note that it is immutable and cannot be changed.
+     * @return This {@link SwingTerminalFrame}'s device configuration
+     */
+    public TerminalEmulatorDeviceConfiguration getDeviceConfiguration() {
+        return swingTerminal.getDeviceConfiguration();
     }
 
     /**
@@ -324,4 +348,16 @@ public class SwingTerminalFrame extends JFrame implements IOSafeTerminal {
 	{
 		swingTerminal.setSelectionEndPosition(position);
 	}
+	
+    public void setVisible(boolean visible)
+    {
+        if (visible)
+        {
+            pack();
+
+            //Put input focus on the terminal component by default
+            swingTerminal.requestFocusInWindow();
+        }
+        super.setVisible(visible);
+    }
 }

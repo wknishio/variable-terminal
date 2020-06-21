@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  *
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.terminal.ansi;
 
@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import com.sun.jna.Platform;
 
 /**
  * UnixLikeTerminal extends from ANSITerminal and defines functionality that is common to
@@ -114,36 +115,36 @@ public abstract class UnixLikeTTYTerminal extends UnixLikeTerminal {
 
     
     protected void saveTerminalSettings() throws IOException {
-        sttyStatusToRestore = exec(getSTTYCommand(), "-g").trim();
+        sttyStatusToRestore = runSTTYCommand("-g").trim();
     }
 
     
     protected void restoreTerminalSettings() throws IOException {
         if(sttyStatusToRestore != null) {
-            exec(getSTTYCommand(), sttyStatusToRestore);
+        	runSTTYCommand(sttyStatusToRestore);
         }
     }
 
     
     protected void keyEchoEnabled(boolean enabled) throws IOException {
-        exec(getSTTYCommand(), enabled ? "echo" : "-echo");
+    	runSTTYCommand(enabled ? "echo" : "-echo");
     }
 
     
     protected void canonicalMode(boolean enabled) throws IOException {
-        exec(getSTTYCommand(), enabled ? "icanon" : "-icanon");
+    	runSTTYCommand(enabled ? "icanon" : "-icanon");
         if(!enabled) {
-            exec(getSTTYCommand(), "min", "1");
+        	runSTTYCommand("min", "1");
         }
     }
 
     
     protected void keyStrokeSignalsEnabled(boolean enabled) throws IOException {
         if(enabled) {
-            exec(getSTTYCommand(), "intr", "^C");
+        	runSTTYCommand("intr", "^C");
         }
         else {
-            exec(getSTTYCommand(), "intr", "undef");
+        	runSTTYCommand("intr", "undef");
         }
     }
 
@@ -155,15 +156,25 @@ public abstract class UnixLikeTTYTerminal extends UnixLikeTerminal {
     }
 
     protected String exec(String... cmd) throws IOException {
-        if (ttyDev != null) {
+    	
+        if (ttyDev != null)
+        {
             //Here's what we try to do, but that is Java 7+ only:
             // processBuilder.redirectInput(ProcessBuilder.Redirect.from(ttyDev));
             //instead, for Java 6, we join the cmd into a scriptlet with redirection
             //and replace cmd by a call to sh with the scriptlet:
-            StringBuilder sb = new StringBuilder();
-            for (String arg : cmd) { sb.append(arg).append(' '); }
-            sb.append("< ").append(ttyDev);
-            cmd = new String[] { "sh", "-c", sb.toString() };
+           StringBuilder sb = new StringBuilder();
+           for (String arg : cmd) { sb.append(arg).append(' '); }
+           sb.append("< ").append(ttyDev);
+           if (Platform.isWindows())
+           {
+        	   cmd = new String[] { "cmd.exe", "/c", sb.toString() };
+           }
+           else
+           {
+        	   cmd = new String[] { "sh", "-c", sb.toString() };
+           }
+           
         }
         ProcessBuilder pb = new ProcessBuilder(cmd);
         Process process = pb.start();

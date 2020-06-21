@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  * 
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.gui2;
 
@@ -172,6 +172,21 @@ public class GridLayout implements LayoutManager {
                 grabExtraVerticalSpace,
                 horizontalSpan,
                 verticalSpan);
+    }
+
+    /**
+     * This is a shortcut method that will create a grid layout data object that will expand its cell as much as is can
+     * horizontally and make the component occupy the whole area horizontally and center it vertically, spanning 1 cell.
+     * @return Layout data object with the specified span and horizontally expanding as much as it can
+     */
+    public static LayoutData createHorizontallyFilledLayoutData() {
+        return createLayoutData(
+                Alignment.FILL,
+                Alignment.CENTER,
+                true,
+                false,
+                1,
+                1);
     }
 
     /**
@@ -455,7 +470,7 @@ public class GridLayout implements LayoutManager {
 
                     int availableHorizontalSpace = 0;
                     int availableVerticalSpace = 0;
-                    for (int i = 0; i < layoutData.horizontalSpan; i++) {
+                    for (int i = 0; i < layoutData.horizontalSpan && x + i < columnWidths.length; i++) {
                         availableHorizontalSpace += columnWidths[x + i] + (i > 0 ? horizontalSpacing : 0);
                     }
                     for (int i = 0; i < layoutData.verticalSpan; i++) {
@@ -512,7 +527,7 @@ public class GridLayout implements LayoutManager {
     private int[] getPreferredColumnWidths(Component[][] table) {
         //actualNumberOfColumns may be different from this.numberOfColumns since some columns may have been eliminated
         int actualNumberOfColumns = table[0].length;
-        int columnWidths[] = new int[actualNumberOfColumns];
+        int[] columnWidths = new int[actualNumberOfColumns];
 
         //Start by letting all span = 1 columns take what they need
         for(Component[] row: table) {
@@ -537,9 +552,10 @@ public class GridLayout implements LayoutManager {
                     continue;
                 }
                 GridLayoutData layoutData = getLayoutData(component);
-                if(layoutData.horizontalSpan > 1) {
+                int horizontalSpan = Math.min(layoutData.horizontalSpan, actualNumberOfColumns - i);
+                if(horizontalSpan > 1) {
                     int accumWidth = 0;
-                    for(int j = i; j < i + layoutData.horizontalSpan; j++) {
+                    for(int j = i; j < i + horizontalSpan; j++) {
                         accumWidth += columnWidths[j];
                     }
 
@@ -549,14 +565,14 @@ public class GridLayout implements LayoutManager {
                         do {
                             columnWidths[i + columnOffset++]++;
                             accumWidth++;
-                            if(columnOffset == layoutData.horizontalSpan) {
+                            if(columnOffset == horizontalSpan) {
                                 columnOffset = 0;
                             }
                         }
                         while(preferredWidth > accumWidth);
                     }
                 }
-                i += layoutData.horizontalSpan;
+                i += horizontalSpan;
             }
         }
         return columnWidths;
@@ -564,7 +580,7 @@ public class GridLayout implements LayoutManager {
 
     private int[] getPreferredRowHeights(Component[][] table) {
         int numberOfRows = table.length;
-        int rowHeights[] = new int[numberOfRows];
+        int[] rowHeights = new int[numberOfRows];
 
         //Start by letting all span = 1 rows take what they need
         int rowIndex = 0;
@@ -583,7 +599,7 @@ public class GridLayout implements LayoutManager {
 
         //Next, do span > 1 and enlarge if necessary
         for(int x = 0; x < numberOfColumns; x++) {
-            for(int y = 0; y < numberOfRows && y < table.length; ) {
+            for(int y = 0; y < numberOfRows; ) {
                 if(x >= table[y].length) {
                     y++;
                     continue;

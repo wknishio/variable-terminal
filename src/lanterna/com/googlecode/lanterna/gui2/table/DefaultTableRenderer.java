@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  *
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.gui2.table;
 
@@ -56,6 +56,9 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
     private final List<Integer> preferredRowSizes;
     private final Set<Integer> expandableColumns;
     private int headerSizeInRows;
+    private boolean allowPartialColumn;
+
+    private boolean scrollBarsHidden;
 
     /**
      * Default constructor
@@ -72,6 +75,8 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
         viewTopRow = 0;
         viewLeftColumn = 0;
         visibleRowsOnLastDraw = 0;
+        allowPartialColumn = false;
+        scrollBarsHidden = false;
 
         cachedSize = null;
 
@@ -131,6 +136,16 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
         this.expandableColumns.addAll(expandableColumns);
     }
 
+    
+    public boolean isScrollBarsHidden() {
+        return scrollBarsHidden;
+    }
+
+    
+    public void setScrollBarsHidden(boolean scrollBarsHidden) {
+        this.scrollBarsHidden = scrollBarsHidden;
+    }
+
     private boolean isHorizontallySpaced() {
         return headerHorizontalBorderStyle != TableCellBorderStyle.None ||
                 cellHorizontalBorderStyle != TableCellBorderStyle.None;
@@ -162,6 +177,16 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
 
     public void setViewLeftColumn(int viewLeftColumn) {
         this.viewLeftColumn = viewLeftColumn;
+    }
+
+    
+    public void setAllowPartialColumn(boolean allowPartialColumn) {
+        this.allowPartialColumn = allowPartialColumn;
+    }
+
+    
+    public boolean getAllowPartialColumn() {
+        return allowPartialColumn;
     }
 
     
@@ -278,8 +303,8 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
         int preferredRowSize = 0;
         int preferredColumnSize = 0;
         if (table.getVisibleColumns() == 0) {
-            for (int columnIndex = 0; columnIndex < preferredColumnSizes.size(); columnIndex++) {
-                preferredColumnSize += preferredColumnSizes.get(columnIndex);
+            for (Integer columnSize : preferredColumnSizes) {
+                preferredColumnSize += columnSize;
             }
         }
         else {
@@ -322,13 +347,15 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
             }
         }
 
-        //Add one space taken by scrollbars (we always add one for the vertical scrollbar but for the horizontal only if
-        // we think we need one). Unfortunately we don't know the size constraints at this point so we don't know if the
-        // table will need to force scrollbars or not. We might think that we don't need a horizontal scrollbar here but
-        // it might turn out that we need it.
-        preferredColumnSize++;
-        if(visibleColumns < tableModel.getColumnCount()) {
-            preferredRowSize++;
+        if(!scrollBarsHidden) {
+            //Add one space taken by scrollbars (we always add one for the vertical scrollbar but for the horizontal only if
+            // we think we need one). Unfortunately we don't know the size constraints at this point so we don't know if the
+            // table will need to force scrollbars or not. We might think that we don't need a horizontal scrollbar here but
+            // it might turn out that we need it.
+            preferredColumnSize++;
+            if (visibleColumns < tableModel.getColumnCount()) {
+                preferredRowSize++;
+            }
         }
 
         cachedSize = new TerminalSize(preferredColumnSize, preferredRowSize);
@@ -366,6 +393,9 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
         if(viewTopRow > selectedRow) {
             viewTopRow = selectedRow;
         }
+        if (viewTopRow >= table.getTableModel().getRowCount()) {
+            viewTopRow = Math.max(0, table.getTableModel().getRowCount() - 1);
+        }
 
         TerminalSize areaWithoutScrollBars = area.withRelativeRows(-headerSizeIncludingBorder);
         int preferredVisibleRows = table.getVisibleRows();
@@ -378,12 +408,12 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
         }
 
         int visibleRows = calculateVisibleRows(areaWithoutScrollBars, viewTopRow, preferredVisibleRows);
-        boolean needVerticalScrollBar = visibleRows < table.getTableModel().getRowCount();
+        boolean needVerticalScrollBar = !scrollBarsHidden && visibleRows < table.getTableModel().getRowCount();
         if(needVerticalScrollBar) {
             areaWithoutScrollBars = areaWithoutScrollBars.withRelativeColumns(-verticalScrollBar.getPreferredSize().getColumns());
         }
         int visibleColumns = calculateVisibleColumns(areaWithoutScrollBars, viewLeftColumn, preferredVisibleColumns);
-        boolean needHorizontalScrollBar = visibleColumns < table.getTableModel().getColumnCount();
+        boolean needHorizontalScrollBar = !scrollBarsHidden && visibleColumns < table.getTableModel().getColumnCount();
         if(needHorizontalScrollBar) {
             areaWithoutScrollBars = areaWithoutScrollBars.withRelativeRows(-horizontalScrollBar.getPreferredSize().getRows());
 
@@ -409,6 +439,13 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
             visibleRows = calculateVisibleRows(areaWithoutScrollBars, viewTopRow, preferredVisibleRows);
         }
 
+        int renderColumns;
+        if (allowPartialColumn && visibleColumns < preferredVisibleColumns - viewLeftColumn) {
+            renderColumns = visibleColumns + 1;
+        } else {
+            renderColumns =  visibleColumns;
+        }
+
         List<Integer> columnSizes = fitColumnsInAvailableSpace(table, areaWithoutScrollBars, visibleColumns);
         drawHeader(graphics, table, columnSizes);
         drawRows(graphics.newTextGraphics(
@@ -419,6 +456,7 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
                 columnSizes,
                 visibleRows,
                 visibleColumns,
+                renderColumns,
                 needVerticalScrollBar,
                 needHorizontalScrollBar);
 
@@ -464,7 +502,7 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
     private List<Integer> fitColumnsInAvailableSpace(Table<V> table, TerminalSize area, int visibleColumns) {
         List<Integer> columnSizes = new ArrayList<Integer>(preferredColumnSizes);
         int horizontalSpaceRequirement = 0;
-        int viewLeftColumn = table.getViewLeftColumn();
+        int viewLeftColumn = table.getRenderer().getViewLeftColumn();
         List<String> headers = table.getTableModel().getColumnLabels();
         int endColumnIndex = Math.min(headers.size(), viewLeftColumn + visibleColumns);
         List<Integer> visibleExpandableColumns = new ArrayList<Integer>();
@@ -494,7 +532,7 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
         Theme theme = table.getTheme();
         TableHeaderRenderer<V> tableHeaderRenderer = table.getTableHeaderRenderer();
         List<String> headers = table.getTableModel().getColumnLabels();
-        int viewLeftColumn = table.getViewLeftColumn();
+        int viewLeftColumn = table.getRenderer().getViewLeftColumn();
         int visibleColumns = table.getVisibleColumns();
         if(visibleColumns == 0) {
             visibleColumns = table.getTableModel().getColumnCount();
@@ -545,6 +583,7 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
             List<Integer> columnSizes,
             int visibleRows,
             int visibleColumns,
+            int renderColumns,
             boolean needVerticalScrollBar,
             boolean needHorizontalScrollBar) {
         Theme theme = table.getTheme();
@@ -553,8 +592,8 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
         TableCellRenderer<V> tableCellRenderer = table.getTableCellRenderer();
         TableModel<V> tableModel = table.getTableModel();
         List<List<V>> rows = tableModel.getRows();
-        int viewTopRow = table.getViewTopRow();
-        int viewLeftColumn = table.getViewLeftColumn();
+        int viewTopRow = table.getRenderer().getViewTopRow();
+        int viewLeftColumn = table.getRenderer().getViewLeftColumn();
 
         //Draw scrollbars (if needed)
         if(needVerticalScrollBar) {
@@ -615,7 +654,7 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
         for(int rowIndex = viewTopRow; rowIndex < Math.min(viewTopRow + visibleRows, rows.size()); rowIndex++) {
             int leftPosition = 0;
             List<V> row = rows.get(rowIndex);
-            for(int columnIndex = viewLeftColumn; columnIndex < Math.min(viewLeftColumn + visibleColumns, row.size()); columnIndex++) {
+            for(int columnIndex = viewLeftColumn; columnIndex < Math.min(viewLeftColumn + renderColumns, row.size()); columnIndex++) {
                 if(columnIndex > viewLeftColumn) {
                     if(table.getSelectedRow() == rowIndex && !table.isCellSelection()) {
                         if(table.isFocused()) {
@@ -658,7 +697,7 @@ public class DefaultTableRenderer<V> implements TableRenderer<V> {
             if(cellVerticalBorderStyle != TableCellBorderStyle.None) {
                 leftPosition = 0;
                 graphics.applyThemeStyle(themeDefinition.getNormal());
-                for(int i = viewLeftColumn; i < Math.min(viewLeftColumn + visibleColumns + 1, row.size()); i++) {
+                for(int i = viewLeftColumn; i < Math.min(viewLeftColumn + renderColumns + 1, row.size()); i++) {
                     if(i > viewLeftColumn) {
                         graphics.setCharacter(
                                 leftPosition,

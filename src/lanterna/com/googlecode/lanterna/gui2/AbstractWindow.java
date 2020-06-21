@@ -1,5 +1,5 @@
 /*
- * This file is part of lanterna (http://code.google.com/p/lanterna/).
+ * This file is part of lanterna (https://github.com/mabe02/lanterna).
  * 
  * lanterna is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -14,15 +14,15 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (C) 2010-2019 Martin Berglund
+ * Copyright (C) 2010-2020 Martin Berglund
  */
 package com.googlecode.lanterna.gui2;
 
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.gui2.menu.MenuBar;
 import com.googlecode.lanterna.input.KeyType;
-
 import java.util.*;
 
 /**
@@ -158,7 +158,14 @@ public abstract class AbstractWindow extends AbstractBasePane<Window> implements
 
     
     public TerminalSize getPreferredSize() {
-        return contentHolder.getPreferredSize();
+        TerminalSize preferredSize = contentHolder.getPreferredSize();
+        MenuBar menuBar = getMenuBar();
+        if (menuBar.getMenuCount() > 0) {
+            TerminalSize menuPreferredSize = menuBar.getPreferredSize();
+            preferredSize = preferredSize.withRelativeRows(menuPreferredSize.getRows())
+                    .withColumns(Math.max(menuPreferredSize.getColumns(), preferredSize.getColumns()));
+        }
+        return preferredSize;
     }
 
     
@@ -223,6 +230,13 @@ public abstract class AbstractWindow extends AbstractBasePane<Window> implements
     public void setSize(TerminalSize size) {
         setSize(size, true);
     }
+    
+    
+    public void setFixedSize(TerminalSize size) {
+        hints.add(Hint.FIXED_SIZE);
+        setSize(size);
+    }
+    
 
     private void setSize(TerminalSize size, boolean invalidate) {
         TerminalSize oldSize = this.lastKnownSize;
@@ -238,7 +252,7 @@ public abstract class AbstractWindow extends AbstractBasePane<Window> implements
             }
         }
     }
-
+    
     
     public final TerminalSize getDecoratedSize() {
         return lastKnownDecoratedSize;

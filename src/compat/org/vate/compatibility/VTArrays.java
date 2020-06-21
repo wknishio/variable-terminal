@@ -27,6 +27,16 @@ public class VTArrays
 	}
 	
 	@SuppressWarnings("unchecked")
+	public static <T> T[] copyOfRange(T[] original, int from, int to) {
+		int newLength = to - from;
+		if (newLength < 0)
+			throw new IllegalArgumentException(from + " > " + to);
+		T[] copy = (T[])Array.newInstance(original[0].getClass(), newLength);
+		System.arraycopy(original, from, copy, 0, Math.min(original.length - from, newLength));
+		return copy;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public static <T> T[] copyOf(T[] original, int newLength) {
         return (T[]) copyOf(original, newLength, original.getClass());
     }

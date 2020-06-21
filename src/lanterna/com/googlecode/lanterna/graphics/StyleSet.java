@@ -77,8 +77,9 @@ public interface StyleSet<T extends StyleSet<T>> {
     
     
     class Set implements StyleSet<Set> {
-        TextColor foregroundColor, backgroundColor;
-        EnumSet<SGR> style = EnumSet.noneOf(SGR.class);
+        private TextColor foregroundColor;
+        private TextColor backgroundColor;
+        private final EnumSet<SGR> style = EnumSet.noneOf(SGR.class);
         
         public Set() {}
         public Set(StyleSet<?> source) {
