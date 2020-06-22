@@ -1145,9 +1145,39 @@ public class VTLanternaOutputTextBox extends TextBoxModified
         return this;
     }
 	
+	public int replaceSelectedText(StringBuilder inputBuffer, char data)
+	{
+		int start = this.getMinColumn();
+		int end = this.getMaxColumn() + 1;
+		//int replaced = end - start;
+		inputBuffer.replace(start, end, String.valueOf(data));
+		this.setSelectionStartPosition(null);
+		this.setSelectionEndPosition(null);
+		return start;
+	}
+	
+	public int replaceSelectedText(StringBuilder inputBuffer, String data)
+	{
+		int start = this.getMinColumn();
+		int end = this.getMaxColumn() + 1;
+		//int replaced = end - start;
+		inputBuffer.replace(start, end, data);
+		this.setSelectionStartPosition(null);
+		this.setSelectionEndPosition(null);
+		return start + (data.length() > 0  ? data.length() - 1 : 0);
+	}
+	
 	public StringBuilder handleDataInput(StringBuilder inputBuffer, char data, boolean replace)
 	{
 		//String line = lines.get(caretPosition.getRow());
+		if (selectingText())
+		{
+			hiddenColumn = replaceSelectedText(inputBuffer, data);
+			hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
+			this.setCaretPosition(hiddenColumn);
+			return inputBuffer;
+		}
+		hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
 		int column = hiddenColumn;
 		if (replace && column < inputBuffer.length())
 		{
@@ -1163,9 +1193,15 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 	
 	public StringBuilder handleDataInput(StringBuilder inputBuffer, String data, boolean replace)
 	{
-		//String line = lines.get(caretPosition.getRow());
-		int column = hiddenColumn;
 		///int size = inputBuffer.length();
+		if (selectingText())
+		{
+			hiddenColumn = replaceSelectedText(inputBuffer, data);
+			hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
+			this.setCaretPosition(hiddenColumn);
+			return inputBuffer;
+		}
+		int column = hiddenColumn;
 		if (replace && column < inputBuffer.length())
 		{
 			inputBuffer.replace(column, column + data.length(), data);
@@ -1175,10 +1211,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 			inputBuffer.insert(column, data);
 		}
 		hiddenColumn += data.length();
-		if (hiddenColumn > inputBuffer.length())
-		{
-			hiddenColumn = inputBuffer.length();
-		}
+		hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
 		return inputBuffer;
 	}
 	
@@ -1188,17 +1221,37 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 		KeyType keyType = keyStroke.getKeyType();
 		if (keyType == KeyType.Backspace)
 		{
-			if (inputBuffer.length() > 0 && column > 0)
+			if (selectingText())
 			{
-				inputBuffer.deleteCharAt(column - 1);
-				hiddenColumn--;
+				hiddenColumn = replaceSelectedText(inputBuffer, "");
+				hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
+				this.setCaretPosition(hiddenColumn);
+				return inputBuffer;
+			}
+			else
+			{
+				if (inputBuffer.length() > 0 && column > 0)
+				{
+					inputBuffer.deleteCharAt(column - 1);
+					hiddenColumn--;
+				}
 			}
 		}
 		if (keyType == KeyType.Delete)
 		{
-			if (inputBuffer.length() > 0 && column < inputBuffer.length())
+			if (selectingText())
 			{
-				inputBuffer.deleteCharAt(column);
+				hiddenColumn = replaceSelectedText(inputBuffer, "");
+				hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
+				this.setCaretPosition(hiddenColumn);
+				return inputBuffer;
+			}
+			else
+			{
+				if (inputBuffer.length() > 0 && column < inputBuffer.length())
+				{
+					inputBuffer.deleteCharAt(column);
+				}
 			}
 		}
 		if (keyType == KeyType.ArrowLeft)
@@ -1223,7 +1276,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 		{
 			hiddenColumn = inputBuffer.length();
 		}
-		updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
+		updateSelection(keyStroke, hiddenColumn, caretPosition.getRow());
 		return inputBuffer;
 	}
     /**

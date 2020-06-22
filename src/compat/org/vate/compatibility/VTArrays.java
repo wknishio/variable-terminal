@@ -27,14 +27,22 @@ public class VTArrays
 	}
 	
 	@SuppressWarnings("unchecked")
-	public static <T> T[] copyOfRange(T[] original, int from, int to) {
-		int newLength = to - from;
-		if (newLength < 0)
-			throw new IllegalArgumentException(from + " > " + to);
-		T[] copy = (T[])Array.newInstance(original[0].getClass(), newLength);
-		System.arraycopy(original, from, copy, 0, Math.min(original.length - from, newLength));
-		return copy;
-	}
+    public static <T> T[] copyOfRange(T[] original, int from, int to) {
+        return copyOfRange(original, from, to, (Class<? extends T[]>) original.getClass());
+    }
+	
+	@SuppressWarnings("unchecked")
+    public static <T,U> T[] copyOfRange(U[] original, int from, int to, Class<? extends T[]> newType) {
+        int newLength = to - from;
+        if (newLength < 0)
+            throw new IllegalArgumentException(from + " > " + to);
+        T[] copy = ((Object)newType == (Object)Object[].class)
+            ? (T[]) new Object[newLength]
+            : (T[]) Array.newInstance(newType.getComponentType(), newLength);
+        System.arraycopy(original, from, copy, 0,
+                         Math.min(original.length - from, newLength));
+        return copy;
+    }
 	
 	@SuppressWarnings("unchecked")
 	public static <T> T[] copyOf(T[] original, int newLength) {
@@ -74,7 +82,7 @@ public class VTArrays
                          Math.min(original.length, newLength));
         return copy;
     }
-	
+
 	public static boolean deepEquals(Object[] a1, Object[] a2) {
         if (a1 == a2)
             return true;

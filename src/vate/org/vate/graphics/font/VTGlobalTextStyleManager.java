@@ -15,6 +15,8 @@ import java.util.List;
 
 import javax.swing.JLabel;
 import javax.swing.UIManager;
+
+import org.vate.compatibility.VTArrays;
 import org.vate.console.VTConsole;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
 import com.sun.jna.Platform;
@@ -293,7 +295,7 @@ public class VTGlobalTextStyleManager
 	{
 		for (List<Font> list : lists)
 		{
-			Font[] fonts = Arrays.copyOf(list.toArray(new Font[]{}), list.size());
+			Font[] fonts = VTArrays.copyOf(list.toArray(new Font[]{}), list.size());
 			list.clear();
 			for (Font font : fonts)
 			{
@@ -306,7 +308,7 @@ public class VTGlobalTextStyleManager
 	{
 		for (List<Font> list : lists)
 		{
-			Font[] fonts = Arrays.copyOf(list.toArray(new Font[]{}), list.size());
+			Font[] fonts = VTArrays.copyOf(list.toArray(new Font[]{}), list.size());
 			list.clear();
 			for (Font font : fonts)
 			{
@@ -329,7 +331,7 @@ public class VTGlobalTextStyleManager
 	{
 		for (List<Font> list : lists)
 		{
-			Font[] fonts = Arrays.copyOf(list.toArray(new Font[]{}), list.size());
+			Font[] fonts = VTArrays.copyOf(list.toArray(new Font[]{}), list.size());
 			list.clear();
 			for (Font font : fonts)
 			{
@@ -342,7 +344,7 @@ public class VTGlobalTextStyleManager
 	{
 		for (List<Font> list : lists)
 		{
-			Font[] fonts = Arrays.copyOf(list.toArray(new Font[]{}), list.size());
+			Font[] fonts = VTArrays.copyOf(list.toArray(new Font[]{}), list.size());
 			list.clear();
 			for (Font font : fonts)
 			{

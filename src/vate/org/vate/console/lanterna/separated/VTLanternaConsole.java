@@ -1504,6 +1504,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		inputBox.setHiddenColumn(currentLineBuffer.length());
 		if (echo)
 		{
+			inputBox.setSelectionStartPosition(null);
+			inputBox.setSelectionEndPosition(null);
 			inputBox.setText(currentLineBuffer.toString());
 			inputBox.setCaretPosition(inputBox.getHiddenColumn());
 			inputBox.invalidate();
@@ -1516,6 +1518,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		inputBox.setHiddenColumn(0);
 		if (echo)
 		{
+			inputBox.setSelectionStartPosition(null);
+			inputBox.setSelectionEndPosition(null);
 			inputBox.setText("");
 			inputBox.setCaretPosition(0);
 			inputBox.invalidate();
@@ -1843,7 +1847,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
 
 	public void flush()
 	{
-		if (!flushInterrupted && !frameIconified && !outputBox.selectingText())
+		//if (!flushInterrupted && !frameIconified && !outputBox.selectingText())
+		if (!flushInterrupted && !frameIconified)
 		{
 			synchronized (outputSynchronizer)
 			{
@@ -2039,17 +2044,6 @@ public class VTLanternaConsole implements VTConsoleImplementation
 
 	public String getSelectedText()
 	{
-		if (inputBox.isFocused())
-		{
-			try
-			{
-				return inputBox.getSelectedText();
-			}
-			catch (Throwable e)
-			{
-				
-			}
-		}
 		if (outputBox.isFocused())
 		{
 			try
@@ -2057,6 +2051,17 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				//int number = outputBox.getCaretPosition().getRow();
 				//return outputBox.getLine(number);
 				return outputBox.getSelectedText();
+			}
+			catch (Throwable e)
+			{
+				
+			}
+		}
+		if (inputBox.isFocused())
+		{
+			try
+			{
+				return inputBox.getSelectedText();
 			}
 			catch (Throwable e)
 			{
@@ -2109,17 +2114,6 @@ public class VTLanternaConsole implements VTConsoleImplementation
 
 	public String getAllText()
 	{
-		if (inputBox.isFocused())
-		{
-			try
-			{
-				return inputBox.getLine(0);
-			}
-			catch (Throwable e)
-			{
-				
-			}
-		}
 		if (outputBox.isFocused())
 		{
 			try
@@ -2134,6 +2128,17 @@ public class VTLanternaConsole implements VTConsoleImplementation
 					text.deleteCharAt(text.length() - 1);
 				}
 				return text.toString();
+			}
+			catch (Throwable e)
+			{
+				
+			}
+		}
+		if (inputBox.isFocused())
+		{
+			try
+			{
+				return inputBox.getLine(0);
 			}
 			catch (Throwable e)
 			{

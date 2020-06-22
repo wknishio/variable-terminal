@@ -1743,8 +1743,15 @@ public class VTServer implements Runnable
 				inputMenuBar = new VTServerLocalGraphicalConsoleInputMenuBar(connectionDialog);
 				VTConsole.getFrame().setMenuBar(inputMenuBar);
 				VTConsole.getFrame().pack();
-				trayIconInterface = new VTTrayIconInterface();
-				trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal Server");
+				try
+				{
+					trayIconInterface = new VTTrayIconInterface();
+					trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal Server");
+				}
+				catch (Throwable t)
+				{
+					trayIconInterface = null;
+				}
 			}
 		}
 		else
