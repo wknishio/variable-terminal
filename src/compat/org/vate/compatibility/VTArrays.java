@@ -26,6 +26,15 @@ public class VTArrays
 		return copy;
 	}
 	
+	public static char[] copyOfRange(char[] original, int from, int to) {
+		int newLength = to - from;
+		if (newLength < 0)
+			throw new IllegalArgumentException(from + " > " + to);
+		char[] copy = new char[newLength];
+		System.arraycopy(original, from, copy, 0, Math.min(original.length - from, newLength));
+		return copy;
+	}
+	
 	@SuppressWarnings("unchecked")
     public static <T> T[] copyOfRange(T[] original, int from, int to) {
         return copyOfRange(original, from, to, (Class<? extends T[]>) original.getClass());

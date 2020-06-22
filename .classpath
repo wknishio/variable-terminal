@@ -28,7 +28,7 @@
 	<classpathentry kind="lib" path="lib/png-encoder.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-nop.jar"/>
-	<classpathentry kind="lib" path="lib/jna-4.5.2-mod.jar"/>
-	<classpathentry kind="lib" path="lib/jna-platform-3.5.2.jar"/>
+	<classpathentry kind="lib" path="lib/jna-4.5.2-mk2.jar"/>
+	<classpathentry kind="lib" path="lib/jna-platform-4.5.2-mk2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
