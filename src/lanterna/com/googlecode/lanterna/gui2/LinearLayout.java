@@ -27,6 +27,7 @@ import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Simple layout manager the puts all components on a single line, either horizontally or vertically.
@@ -155,25 +156,43 @@ public class LinearLayout implements LayoutManager {
 
     
     public TerminalSize getPreferredSize(List<Component> components) {
+        //components = components.stream().filter(Component::isVisible).collect(Collectors.toList());
+    	List<Component> visibles = new ArrayList<Component>();
+    	for (Component component : components)
+    	{
+    		if (component.isVisible())
+    		{
+    			visibles.add(component);
+    		}
+    	}
         if(direction == Direction.VERTICAL) {
-            return getPreferredSizeVertically(components);
+            return getPreferredSizeVertically(visibles);
         }
         else {
-            return getPreferredSizeHorizontally(components);
+            return getPreferredSizeHorizontally(visibles);
         }
     }
 
     private TerminalSize getPreferredSizeVertically(List<Component> components) {
+    	
         int maxWidth = 0;
         int height = 0;
-        for(Component component: components) {
+        List<Component> visibles = new ArrayList<Component>();
+        for (Component component : components)
+    	{
+    		if (component.isVisible())
+    		{
+    			visibles.add(component);
+    		}
+    	}
+        for(Component component: visibles) {
             TerminalSize preferredSize = component.getPreferredSize();
             if(maxWidth < preferredSize.getColumns()) {
                 maxWidth = preferredSize.getColumns();
             }
             height += preferredSize.getRows();
         }
-        height += spacing * (components.size() - 1);
+        height += spacing * (visibles.size() - 1);
         return new TerminalSize(maxWidth, Math.max(0, height));
     }
 

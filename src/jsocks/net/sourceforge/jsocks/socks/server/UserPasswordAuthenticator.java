@@ -40,7 +40,7 @@ public class UserPasswordAuthenticator extends ServerAuthenticatorNone {
 		this.validator = validator;
 	}
 
-	@Override
+	
 	public ServerAuthenticator startSession(Socket s) throws IOException {
 		InputStream in = s.getInputStream();
 		OutputStream out = s.getOutputStream();

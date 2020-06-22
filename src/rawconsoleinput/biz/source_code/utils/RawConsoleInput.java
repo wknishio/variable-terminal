@@ -278,7 +278,7 @@ protected static class Termios extends Structure {         // termios.h
    public int      c_lflag;
    public byte     c_line;
    public byte[]   filler = new byte[64];                  // actual length is platform dependent
-   @Override protected List<String> getFieldOrder() {
+    protected List<String> getFieldOrder() {
       return Arrays.asList("c_iflag", "c_oflag", "c_cflag", "c_lflag", "c_line", "filler"); }
    Termios() {}
    Termios (Termios t) {

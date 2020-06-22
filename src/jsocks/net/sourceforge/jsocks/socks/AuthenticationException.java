@@ -80,7 +80,7 @@ public class AuthenticationException extends Throwable {
 	 * 
 	 * @return String representation of this exception.
 	 */
-	@Override
+	
 	public String toString() {
 		return errorString;
 	}
@@ -90,7 +90,7 @@ public class AuthenticationException extends Throwable {
 	 * 
 	 * @return String the error string.
 	 */
-	@Override
+	
 	public String getMessage() {
 		return errorString;
 	}

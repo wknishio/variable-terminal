@@ -177,7 +177,7 @@ class Socks5Message extends ProxyMessage {
 	 * @throws IOException
 	 *             If any error happens with I/O.
 	 */
-	@Override
+	
 	public void read(InputStream in, boolean clientMode) throws SocksException, IOException {
 		data = null;
 		ip = null;

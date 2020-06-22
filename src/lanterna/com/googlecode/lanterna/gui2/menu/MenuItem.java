@@ -99,6 +99,9 @@ public class MenuItem extends AbstractInteractableComponent<MenuItem> {
                 }
             }
             return Result.HANDLED;
+        } else if (isMouseMove(keyStroke)) {
+            takeFocus();
+            return Result.HANDLED;
         } else {
             return super.handleKeyStroke(keyStroke);
         }

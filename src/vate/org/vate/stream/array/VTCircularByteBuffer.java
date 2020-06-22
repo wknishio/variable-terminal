@@ -411,7 +411,7 @@ public class VTCircularByteBuffer {
 		 *
 		 * @since ostermillerutils 1.00.00
 		 */
-		@Override public int available() throws IOException {
+		 public int available() throws IOException {
 			synchronized (VTCircularByteBuffer.this){
 				if (inputStreamClosed) throw new IOException("InputStream has been closed, it is not ready.");
 				return (VTCircularByteBuffer.this.available());
@@ -427,7 +427,7 @@ public class VTCircularByteBuffer {
 		 *
 		 * @since ostermillerutils 1.00.00
 		 */
-		@Override public void close() throws IOException {
+		 public void close() throws IOException {
 			synchronized (VTCircularByteBuffer.this){
 				inputStreamClosed = true;
 			}
@@ -446,7 +446,7 @@ public class VTCircularByteBuffer {
 		 *
 		 * @since ostermillerutils 1.00.00
 		 */
-		@Override public void mark(int readAheadLimit) {
+		 public void mark(int readAheadLimit) {
 			synchronized (VTCircularByteBuffer.this){
 				//if (inputStreamClosed) throw new IOException("InputStream has been closed; cannot mark a closed InputStream.");
 				if (buffer.length - 1 > readAheadLimit) {
@@ -463,7 +463,7 @@ public class VTCircularByteBuffer {
 		 *
 		 * @since ostermillerutils 1.00.00
 		 */
-		@Override public boolean markSupported() {
+		 public boolean markSupported() {
 			return true;
 		}
 
@@ -478,7 +478,7 @@ public class VTCircularByteBuffer {
 		 *
 		 * @since ostermillerutils 1.00.00
 		 */
-		@Override public int read() throws IOException {
+		 public int read() throws IOException {
 			while (true){
 				synchronized (VTCircularByteBuffer.this){
 					if (inputStreamClosed) throw new IOException("InputStream has been closed; cannot read from a closed InputStream.");
@@ -515,7 +515,7 @@ public class VTCircularByteBuffer {
 		 *
 		 * @since ostermillerutils 1.00.00
 		 */
-		@Override public int read(byte[] cbuf) throws IOException {
+		 public int read(byte[] cbuf) throws IOException {
 			return read(cbuf, 0, cbuf.length);
 		}
 
@@ -533,7 +533,7 @@ public class VTCircularByteBuffer {
 		 *
 		 * @since ostermillerutils 1.00.00
 		 */
-		@Override public int read(byte[] cbuf, int off, int len) throws IOException {
+		 public int read(byte[] cbuf, int off, int len) throws IOException {
 			while (true){
 				synchronized (VTCircularByteBuffer.this){
 					if (inputStreamClosed) throw new IOException("InputStream has been closed; cannot read from a closed InputStream.");
@@ -576,7 +576,7 @@ public class VTCircularByteBuffer {
 		 *
 		 * @since ostermillerutils 1.00.00
 		 */
-		@Override public void reset() throws IOException {
+		 public void reset() throws IOException {
 			synchronized (VTCircularByteBuffer.this){
 				if (inputStreamClosed) throw new IOException("InputStream has been closed; cannot reset a closed InputStream.");
 				readPosition = markPosition;
@@ -595,7 +595,7 @@ public class VTCircularByteBuffer {
 		 *
 		 * @since ostermillerutils 1.00.00
 		 */
-		@Override public long skip(long n) throws IOException, IllegalArgumentException {
+		 public long skip(long n) throws IOException, IllegalArgumentException {
 			while (true){
 				synchronized (VTCircularByteBuffer.this){
 					if (inputStreamClosed) throw new IOException("InputStream has been closed; cannot skip bytes on a closed InputStream.");
@@ -649,7 +649,7 @@ public class VTCircularByteBuffer {
 		 *
 		 * @since ostermillerutils 1.00.00
 		 */
-		@Override public void close() throws IOException {
+		 public void close() throws IOException {
 			synchronized (VTCircularByteBuffer.this){
 				if (!outputStreamClosed){
 					flush();
@@ -665,7 +665,7 @@ public class VTCircularByteBuffer {
 		 *
 		 * @since ostermillerutils 1.00.00
 		 */
-		@Override public void flush() throws IOException {
+		 public void flush() throws IOException {
 			synchronized (VTCircularByteBuffer.this){
 				if (outputStreamClosed) throw new IOException("OutputStream has been closed; cannot flush a closed OutputStream.");
 				if (inputStreamClosed) throw new IOException("Buffer closed by inputStream; cannot flush.");
@@ -686,7 +686,7 @@ public class VTCircularByteBuffer {
 		 *
 		 * @since ostermillerutils 1.00.00
 		 */
-		@Override public void write(byte[] cbuf) throws IOException {
+		 public void write(byte[] cbuf) throws IOException {
 			write(cbuf, 0, cbuf.length);
 		}
 
@@ -705,7 +705,7 @@ public class VTCircularByteBuffer {
 		 *
 		 * @since ostermillerutils 1.00.00
 		 */
-		@Override public void write(byte[] cbuf, int off, int len) throws IOException {
+		 public void write(byte[] cbuf, int off, int len) throws IOException {
 			while (len > 0){
 				synchronized (VTCircularByteBuffer.this){
 					if (outputStreamClosed) throw new IOException("OutputStream has been closed; cannot write to a closed OutputStream.");
@@ -759,7 +759,7 @@ public class VTCircularByteBuffer {
 		 *
 		 * @since ostermillerutils 1.00.00
 		 */
-		@Override public void write(int c) throws IOException {
+		 public void write(int c) throws IOException {
 			boolean written = false;
 			while (!written){
 				synchronized (VTCircularByteBuffer.this){

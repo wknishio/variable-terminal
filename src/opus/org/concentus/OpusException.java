@@ -48,7 +48,7 @@ public class OpusException extends Exception {
 		_opus_error_code = opus_error_code;
 	}
 
-	@Override
+	
 	public String getMessage() {
 		return _message;
 	}

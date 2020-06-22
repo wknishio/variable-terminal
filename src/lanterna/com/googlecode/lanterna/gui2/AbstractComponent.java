@@ -68,6 +68,7 @@ public abstract class AbstractComponent<T extends Component> implements Componen
     private TerminalSize explicitPreferredSize;   //This is keeping the value set by the user (if setPreferredSize() is used)
     private TerminalPosition position;
     private Theme themeOverride;
+    private boolean visible;
     private LayoutData layoutData;
     private boolean invalid;
 
@@ -79,6 +80,7 @@ public abstract class AbstractComponent<T extends Component> implements Componen
         position = TerminalPosition.TOP_LEFT_CORNER;
         explicitPreferredSize = null;
         layoutData = null;
+        visible = true;
         invalid = true;
         parent = null;
         overrideRenderer = null;
@@ -184,6 +186,19 @@ public abstract class AbstractComponent<T extends Component> implements Componen
         this.explicitPreferredSize = explicitPreferredSize;
         return self();
     }
+    
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public T setVisible(boolean visible) {
+        if (this.visible != visible) {
+            this.visible = visible;
+            invalidate();
+        }
+        return self();
+    }
+
 
     /**
      * Invokes the component renderer's size calculation logic and returns the result. This value represents the

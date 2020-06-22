@@ -297,7 +297,7 @@ public interface Wincon extends StdCallLibrary {
         public short X;
         public short Y;
 
-        @Override
+        
         public String toString() {
             return String.format("COORD(%s,%s)", X, Y);
         }
@@ -321,7 +321,7 @@ public interface Wincon extends StdCallLibrary {
         public short Right;
         public short Bottom;
 
-        @Override
+        
         public String toString() {
             return String.format("SMALL_RECT(%s,%s)(%s,%s)", Left, Top, Right, Bottom);
         }
@@ -346,7 +346,7 @@ public interface Wincon extends StdCallLibrary {
         public SMALL_RECT srWindow;
         public COORD dwMaximumWindowSize;
 
-        @Override
+        
         public String toString() {
             return String.format("CONSOLE_SCREEN_BUFFER_INFO(%s,%s,%s,%s,%s)", dwSize, dwCursorPosition, wAttributes, srWindow, dwMaximumWindowSize);
         }
@@ -378,7 +378,7 @@ public interface Wincon extends StdCallLibrary {
             public WINDOW_BUFFER_SIZE_RECORD WindowBufferSizeEvent;
         }
 
-        @Override
+        
         public void read() {
             super.read();
             switch (EventType) {
@@ -395,7 +395,7 @@ public interface Wincon extends StdCallLibrary {
             Event.read();
         }
 
-        @Override
+        
         public String toString() {
             return String.format("INPUT_RECORD(%s)", EventType);
         }
@@ -421,7 +421,7 @@ public interface Wincon extends StdCallLibrary {
         public char uChar;
         public int dwControlKeyState;
 
-        @Override
+        
         public String toString() {
             return String.format("KEY_EVENT_RECORD(%s,%s,%s,%s,%s,%s)", bKeyDown, wRepeatCount, wVirtualKeyCode, wVirtualKeyCode, wVirtualScanCode, uChar, dwControlKeyState);
         }
@@ -445,7 +445,7 @@ public interface Wincon extends StdCallLibrary {
         public int dwControlKeyState;
         public int dwEventFlags;
 
-        @Override
+        
         public String toString() {
             return String.format("MOUSE_EVENT_RECORD(%s,%s,%s,%s)", dwMousePosition, dwButtonState, dwControlKeyState, dwEventFlags);
         }
@@ -466,7 +466,7 @@ public interface Wincon extends StdCallLibrary {
 
         public COORD dwSize;
 
-        @Override
+        
         public String toString() {
             return String.format("WINDOW_BUFFER_SIZE_RECORD(%s)", dwSize);
         }
