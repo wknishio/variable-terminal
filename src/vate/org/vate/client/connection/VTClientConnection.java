@@ -663,7 +663,7 @@ public class VTClientConnection
 		fileTransferControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 2);
 		fileTransferDataInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 3);
 		fileTransferDataOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 3);
-		fileTransferDataInputStream.setPropagated(fileTransferDataOutputStream);
+		fileTransferDataInputStream.addPropagated(fileTransferDataOutputStream);
 		
 		// graphicsCheckInputStream =
 		// multiplexedConnectionInputStream.getInputStream(4);

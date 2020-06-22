@@ -3,8 +3,10 @@ package org.vate.stream.multiplex;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.vate.VT;
@@ -69,7 +71,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 		private InputStream in;
 		//private short type;
 		private volatile Object link;
-		private VTLinkableDynamicMultiplexedOutputStream propagated;
+		private List<VTLinkableDynamicMultiplexedOutputStream> propagated;
 		private VTPipedDecompressor pipedDecompressor;
 		private final int type;
 		private final int number;
@@ -79,7 +81,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 			//this.multiplexingInputStream = multiplexingInputStream;
 			this.type = type;
 			this.number = number;
-			
+			this.propagated = new ArrayList<VTLinkableDynamicMultiplexedOutputStream>();
 			if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == 0)
 			{
 				this.pipedInputStream = new VTPipedInputStream(bufferSize);
@@ -151,9 +153,10 @@ public class VTLinkableDynamicMultiplexingInputStream
 			}
 		}
 		
-		public void setPropagated(VTLinkableDynamicMultiplexedOutputStream propagated)
+		public void addPropagated(VTLinkableDynamicMultiplexedOutputStream propagated)
 		{
-			this.propagated = propagated;
+			//this.propagated = propagated;
+			this.propagated.add(propagated);
 		}
 		
 		public void open()
@@ -192,9 +195,20 @@ public class VTLinkableDynamicMultiplexingInputStream
 					directOutputStream = null;
 				}
 			}
-			if (propagated != null)
+			if (propagated.size() > 0)
 			{
-				propagated.close();
+				//propagated.close();
+				for (VTLinkableDynamicMultiplexedOutputStream stream : propagated)
+				{
+					try 
+					{
+						stream.close();
+					}
+					catch (Throwable t)
+					{
+						
+					}
+				}
 			}
 		}
 		
