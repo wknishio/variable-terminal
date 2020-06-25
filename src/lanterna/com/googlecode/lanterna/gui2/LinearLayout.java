@@ -177,22 +177,14 @@ public class LinearLayout implements LayoutManager {
     	
         int maxWidth = 0;
         int height = 0;
-        List<Component> visibles = new ArrayList<Component>();
-        for (Component component : components)
-    	{
-    		if (component.isVisible())
-    		{
-    			visibles.add(component);
-    		}
-    	}
-        for(Component component: visibles) {
+        for(Component component: components) {
             TerminalSize preferredSize = component.getPreferredSize();
             if(maxWidth < preferredSize.getColumns()) {
                 maxWidth = preferredSize.getColumns();
             }
             height += preferredSize.getRows();
         }
-        height += spacing * (visibles.size() - 1);
+        height += spacing * (components.size() - 1);
         return new TerminalSize(maxWidth, Math.max(0, height));
     }
 
@@ -217,20 +209,28 @@ public class LinearLayout implements LayoutManager {
 
     
     public void doLayout(TerminalSize area, List<Component> components) {
+        List<Component> visibles = new ArrayList<Component>();
+        for (Component component : components)
+    	{
+    		if (component.isVisible())
+    		{
+    			visibles.add(component);
+    		}
+    	}
         if(direction == Direction.VERTICAL) {
             if (Boolean.getBoolean("com.googlecode.lanterna.gui2.LinearLayout.useOldNonFlexLayout")) {
-                doVerticalLayout(area, components);
+                doVerticalLayout(area, visibles);
             }
             else {
-                doFlexibleVerticalLayout(area, components);
+                doFlexibleVerticalLayout(area, visibles);
             }
         }
         else {
             if (Boolean.getBoolean("com.googlecode.lanterna.gui2.LinearLayout.useOldNonFlexLayout")) {
-                doHorizontalLayout(area, components);
+                doHorizontalLayout(area, visibles);
             }
             else {
-                doFlexibleHorizontalLayout(area, components);
+                doFlexibleHorizontalLayout(area, visibles);
             }
         }
         this.changed = false;
