@@ -85,8 +85,8 @@ public class VTGraphicsModeClientReader implements Runnable
 			// updatingImageGraphics.drawImage(theImage.getSubimage(minX, minY,
 			// width, height), minX + offsetX, minY + offsetY, width, height,
 			// null);
-			// currentImageGraphics.drawImage(theImage.getSubimage(minX, minY,
-			// width, height), minX + offsetX, minY + offsetY, null);
+			//currentImageGraphics.drawImage(theImage.getSubimage(minX, minY, width, height), minX + offsetX, minY + offsetY, null);
+			//currentImageGraphics.drawImage(theImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer)
 		}
 		
 		public void passComplete(ImageReader source, BufferedImage theImage)

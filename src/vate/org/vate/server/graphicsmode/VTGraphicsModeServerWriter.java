@@ -357,6 +357,9 @@ public class VTGraphicsModeServerWriter implements Runnable
 		needRefresh = false;
 		// startTime = System.currentTimeMillis();
 		List<Rectangle> blockAreas = VTImageDataUtils.splitBlockArea(imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
+		//System.out.println("blocks_before:" + blockAreas.size());
+		blockAreas = VTImageDataUtils.mergeNeighbourRectangles(blockAreas);
+		//System.out.println("blocks_after:" + blockAreas.size());
 		connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_NEW_FRAME_IMAGE);
 		//connection.getGraphicsControlDataOutputStream().writeInt(resultArea.x);
 		//connection.getGraphicsControlDataOutputStream().writeInt(resultArea.y);
@@ -377,6 +380,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 				for (Rectangle blockArea : blockAreas)
 				{
 					imageOutputBuffer.reset();
+					//System.out.print("(x:" + blockArea.x + ";y:" + blockArea.y + ";w:" + blockArea.width + ";h:" + blockArea.height + ")");
 					pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
 					connection.getGraphicsControlDataOutputStream().writeInt(imageOutputBuffer.size());
 					connection.getGraphicsControlDataOutputStream().writeInt(blockArea.x);
@@ -385,6 +389,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 					imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
 					// total += imageOutputBuffer.size();
 				}
+				//System.out.println();
 				connection.getGraphicsDirectImageDataOutputStream().flush();
 				// System.out.println("total:" + total);
 			}
@@ -566,6 +571,9 @@ public class VTGraphicsModeServerWriter implements Runnable
 		{
 			blockAreas = VTImageDataUtils.compareBlockArea(lastImageBufferInt, previousImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
 		}
+		//System.out.println("blocks_before:" + blockAreas.size());
+		blockAreas = VTImageDataUtils.mergeNeighbourRectangles(blockAreas);
+		//System.out.println("blocks_after:" + blockAreas.size());
 		connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE);
 		//connection.getGraphicsControlDataOutputStream().writeInt(resultArea.x);
 		//connection.getGraphicsControlDataOutputStream().writeInt(resultArea.y);
@@ -584,6 +592,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 				for (Rectangle blockArea : blockAreas)
 				{
 					imageOutputBuffer.reset();
+					//System.out.print("(x:" + blockArea.x + ";y:" + blockArea.y + ";w:" + blockArea.width + ";h:" + blockArea.height + ")");
 					pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
 					connection.getGraphicsControlDataOutputStream().writeInt(imageOutputBuffer.size());
 					connection.getGraphicsControlDataOutputStream().writeInt(blockArea.x);
@@ -592,6 +601,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 					imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
 					// total += imageOutputBuffer.size();
 				}
+				//System.out.println();
 				connection.getGraphicsDirectImageDataOutputStream().flush();
 				// System.out.println("total:" + total);
 			}

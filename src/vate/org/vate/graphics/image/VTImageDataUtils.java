@@ -2,11 +2,74 @@ package org.vate.graphics.image;
 
 import java.awt.Rectangle;
 import java.util.BitSet;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
 public final class VTImageDataUtils
-{	
+{
+	static class RectangleComparator implements Comparator<Rectangle>
+	{
+		private RectangleComparator()
+		{
+			
+		}
+		
+		public int compare(Rectangle o1, Rectangle o2)
+		{
+			int sum1 = o1.x + o1.y;
+			int sum2 = o2.x + o2.y;
+			if (sum1 < sum2)
+			{
+				return -1;
+			}
+			if (sum1 > sum2)
+			{
+				return +1;
+			}
+			return 0;
+		}
+	}
+	
+	//private static Comparator<Rectangle> rectangleComparator = new RectangleComparator();
+	
+	public static final List<Rectangle> mergeNeighbourRectangles(List<Rectangle> rectangles)
+	{
+		//System.out.println("blocks_before:[" + rectangles.size() + "]");
+		//sort by diagonals
+		//System.out.println("blocks_1:[" + Arrays.toString(rectangles.toArray()) + "]");
+		//Collections.sort(rectangles, rectangleComparator);
+		//System.out.println("blocks_2:[" + Arrays.toString(rectangles.toArray()) + "]");
+		boolean foundMerge = false;
+		do
+		{
+			foundMerge = false;
+			for (int i = 0; i < rectangles.size(); i++)
+			{
+				Rectangle current = rectangles.get(i);
+				for (int j = i + 1; j < rectangles.size(); j++)
+				{
+					Rectangle next = rectangles.get(j);
+					//neighbour test
+					if (
+					((current.height == next.height) && (current.y == next.y) && (current.x + current.width == next.x))
+					||
+					((current.width == next.width) && (current.x == next.x) && (current.y + current.height == next.y))
+					)
+					{
+						foundMerge = true;
+						current = current.union(next);
+						rectangles.remove(j--);
+					}
+				}
+				rectangles.set(i, current);
+			}
+		}
+		while(foundMerge);
+		//System.out.println("blocks_after:[" + rectangles.size() + "]");
+		return rectangles;
+	}
+	
 	public static final void copyArea(byte[] source, byte[] destination, int offset, int width, int height, Rectangle transferArea)
 	{
 		int index = 0;
