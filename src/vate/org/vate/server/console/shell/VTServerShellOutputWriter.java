@@ -7,7 +7,7 @@ import org.vate.task.VTTask;
 
 public class VTServerShellOutputWriter extends VTTask
 {
-	private static final int resultBufferSize = VT.VT_DATA_BUFFER_SIZE;
+	private static final int resultBufferSize = VT.VT_STANDARD_DATA_BUFFER_SIZE;
 	private int readChars;
 	private final char[] resultBuffer = new char[resultBufferSize];
 	private VTServerConnection connection;

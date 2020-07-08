@@ -6,7 +6,7 @@ import org.vate.VT;
 
 public class VTRuntimeLauncherOutputConsumer implements Runnable
 {
-	private final byte[] buffer = new byte[VT.VT_SMALL_BUFFER_SIZE];
+	private final byte[] buffer = new byte[VT.VT_SMALL_DATA_BUFFER_SIZE];
 	private InputStream in;
 	
 	public VTRuntimeLauncherOutputConsumer(InputStream in)

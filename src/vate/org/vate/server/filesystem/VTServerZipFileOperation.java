@@ -11,7 +11,7 @@ import org.vate.task.VTTask;
 
 public class VTServerZipFileOperation extends VTTask
 {
-	private static final int fileZipBufferSize = VT.VT_DATA_BUFFER_SIZE;
+	private static final int fileZipBufferSize = VT.VT_STANDARD_DATA_BUFFER_SIZE;
 	private volatile boolean finished;
 	private volatile int operation;
 	private String zipFilePath;

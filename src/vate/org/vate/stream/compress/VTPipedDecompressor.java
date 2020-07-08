@@ -8,7 +8,7 @@ import org.vate.stream.array.VTCircularByteBuffer;
 
 public class VTPipedDecompressor extends OutputStream
 {
-	private static final int bufferSize = VT.VT_DATA_BUFFER_SIZE;
+	private static final int bufferSize = VT.VT_STANDARD_DATA_BUFFER_SIZE;
 	private InputStream in;
 	private OutputStream out;
 	private byte[] buffer = new byte[bufferSize];

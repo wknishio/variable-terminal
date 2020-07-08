@@ -7,7 +7,7 @@ import org.vate.VT;
 
 public class VTStreamRedirector implements Runnable
 {
-	private static final int redirectorBufferSize = VT.VT_DATA_BUFFER_SIZE;
+	private static final int redirectorBufferSize = VT.VT_STANDARD_DATA_BUFFER_SIZE;
 	private volatile boolean stopped;
 	private int readed = 0;
 	private final byte[] redirectorBuffer = new byte[redirectorBufferSize];

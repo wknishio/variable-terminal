@@ -8,7 +8,7 @@ import org.vate.task.VTTask;
 
 public class VTClientRemoteConsoleReader extends VTTask
 {
-	private static final int resultBufferSize = VT.VT_DATA_BUFFER_SIZE;
+	private static final int resultBufferSize = VT.VT_STANDARD_DATA_BUFFER_SIZE;
 	//private int available;
 	private int readChars;
 	private final char[] resultBuffer = new char[resultBufferSize];

@@ -30,18 +30,18 @@ public class VTCompressorSelector
 			java.util.zip.Deflater javaDeflater = new java.util.zip.Deflater(Deflater.BEST_SPEED, true);
 			javaDeflater.setStrategy(Deflater.FILTERED);
 			javaDeflater.setLevel(Deflater.BEST_SPEED);
-			VTSyncFlushDeflaterOutputStream javaDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(out, javaDeflater, VT.VT_DATA_BUFFER_SIZE);
-			return new VTBufferedOutputStream(javaDeflaterOutputStream, VT.VT_DATA_BUFFER_SIZE);
+			VTSyncFlushDeflaterOutputStream javaDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(out, javaDeflater, VT.VT_STANDARD_DATA_BUFFER_SIZE);
+			return new VTBufferedOutputStream(javaDeflaterOutputStream, VT.VT_STANDARD_DATA_BUFFER_SIZE);
 		}
 		catch (Throwable t)
 		{
 			DeflaterOutputStream jzlibDeflater;
 			try
 			{
-				jzlibDeflater = new com.jcraft.jzlib.DeflaterOutputStream(out, VT.VT_DATA_BUFFER_SIZE, JZlib.Z_BEST_SPEED, true);
+				jzlibDeflater = new com.jcraft.jzlib.DeflaterOutputStream(out, VT.VT_STANDARD_DATA_BUFFER_SIZE, JZlib.Z_BEST_SPEED, true);
 				jzlibDeflater.getDeflater().params(JZlib.Z_BEST_SPEED, JZlib.Z_FILTERED);
 				jzlibDeflater.setSyncFlush(true);
-				return new VTBufferedOutputStream(jzlibDeflater, VT.VT_DATA_BUFFER_SIZE);
+				return new VTBufferedOutputStream(jzlibDeflater, VT.VT_STANDARD_DATA_BUFFER_SIZE);
 			}
 			catch (Throwable e)
 			{
@@ -59,7 +59,7 @@ public class VTCompressorSelector
 	{
 		try
 		{
-			return new InflaterInputStream(in, VT.VT_DATA_BUFFER_SIZE, true);
+			return new InflaterInputStream(in, VT.VT_STANDARD_DATA_BUFFER_SIZE, true);
 		}
 		catch (Throwable e)
 		{
@@ -72,13 +72,13 @@ public class VTCompressorSelector
 	public static OutputStream createCompatibleLZ4OutputStream(OutputStream out)
 	{
 		//return out;
-		return new VTBufferedOutputStream(new LZ4BlockOutputStream(out, VT.VT_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), VT.VT_DATA_BUFFER_SIZE);
+		return new VTBufferedOutputStream(new LZ4BlockOutputStream(out, VT.VT_STANDARD_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), VT.VT_STANDARD_DATA_BUFFER_SIZE);
 	}
 	
 	public static InputStream createCompatibleLZ4InputStream(InputStream in)
 	{
 		//return in;
-		return new BufferedInputStream(new LZ4BlockInputStream(in, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), VT.VT_DATA_BUFFER_SIZE);
+		return new BufferedInputStream(new LZ4BlockInputStream(in, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), VT.VT_STANDARD_DATA_BUFFER_SIZE);
 	}
 	
 	public static OutputStream createCompatibleSnappyOutputStream(OutputStream out)
