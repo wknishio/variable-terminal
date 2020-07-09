@@ -113,6 +113,7 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
 					}
 				}
 			}
+			
 			if (line != null)
 			{
 				// int before = line.length();

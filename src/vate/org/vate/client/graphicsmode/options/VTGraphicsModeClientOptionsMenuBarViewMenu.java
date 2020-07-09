@@ -274,11 +274,11 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		// this.imageFormatMenu.add(imageCodingMenu);
 		// this.imageFormatMenu.add(alterationCodingMenu);
 		// this.imageFormatMenu.add(colorCodingMenu);
-		// this.imageCodingMenu.add(imageCodingGIFOption);
 		this.imageFormatMenu.add(imageCodingZOFOption);
 		this.imageFormatMenu.add(imageCodingSOFOption);
 		this.imageFormatMenu.add(imageCodingPNGOption);
 		this.imageFormatMenu.add(imageCodingJPGOption);
+		// this.imageFormatMenu.add(imageCodingGIFOption);
 		
 		this.add(refreshModeMenu);
 		this.add(refreshIntervalMenu);

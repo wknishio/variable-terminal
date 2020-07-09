@@ -27,7 +27,6 @@ import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Simple layout manager the puts all components on a single line, either horizontally or vertically.

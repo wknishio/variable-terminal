@@ -7,12 +7,10 @@ import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
 import java.awt.image.DataBufferUShort;
-
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.event.IIOReadUpdateListener;
 import javax.imageio.stream.ImageInputStream;
-
 import org.vate.VT;
 import org.vate.client.connection.VTClientConnection;
 import org.vate.console.VTConsole;
@@ -62,6 +60,8 @@ public class VTGraphicsModeClientReader implements Runnable
 	{
 		private int offsetX = 0;
 		private int offsetY = 0;
+		//private int passMinX = 0;
+		//private int passMinY = 0;
 		
 		public void setOffsetX(int offsetX)
 		{
@@ -75,17 +75,21 @@ public class VTGraphicsModeClientReader implements Runnable
 		
 		public void passStarted(ImageReader source, BufferedImage theImage, int pass, int minPass, int maxPass, int minX, int minY, int periodX, int periodY, int[] bands)
 		{
+			//this.passMinX = minX;
+			//this.passMinY = minY;
 			//System.out.println("passStarted:" + pass + "," + minPass + "," + maxPass);
 		}
 		
 		public void imageUpdate(ImageReader source, BufferedImage theImage, int minX, int minY, int width, int height, int periodX, int periodY, int[] bands)
 		{
+			//System.out.println("imageUpdate:" + minX + "," + minY + "," + width + "," + height);
 			currentImageGraphics.drawImage(theImage, offsetX + minX, offsetY + minY, offsetX + minX + width, offsetY + minY + height, minX, minY, minX + width, minY + height, null);
 		}
 		
 		public void passComplete(ImageReader source, BufferedImage theImage)
 		{
-			//currentImageGraphics.drawImage(theImage, offsetX, offsetY, null);
+			//System.out.println("passComplete:");
+			//currentImageGraphics.drawImage(theImage, offsetX + passMinX, offsetY + passMinY, offsetX + passMinX + theImage.getWidth(), offsetY + passMinY + theImage.getHeight(), passMinX, passMinY, passMinX + theImage.getWidth(), passMinY + theImage.getHeight(), null);
 		}
 		
 		public void thumbnailPassStarted(ImageReader source, BufferedImage theThumbnail, int pass, int minPass, int maxPass, int minX, int minY, int periodX, int periodY, int[] bands)
@@ -289,20 +293,7 @@ public class VTGraphicsModeClientReader implements Runnable
 							writer.notifyAsynchronousRepainter();
 						}
 						int count = connection.getGraphicsControlDataInputStream().readInt();
-						// if (imageStream != null)
-						// {
-						// try
-						// {
-						// imageStream.close();
-						// }
-						// catch (Throwable e)
-						// {
-						//
-						// }
-						// imageStream = null;
-						// }
-						// imageStream =
-						// ImageIO.createImageInputStream(limitedInputStream);
+						
 						for (int i = 0; i < count; i++)
 						{
 							int size = connection.getGraphicsControlDataInputStream().readInt();
@@ -323,7 +314,8 @@ public class VTGraphicsModeClientReader implements Runnable
 							}
 							limitedInputStream.setLimit(size);
 							imageStream = ImageIO.createImageInputStream(limitedInputStream);
-							currentImageReader.setInput(imageStream, true);
+							//imageStream = new MemoryCacheImageInputStream(limitedInputStream);
+							currentImageReader.setInput(imageStream, true, false);
 							incrementalImageReader.setOffsetX(x);
 							incrementalImageReader.setOffsetY(y);
 							nextImageDataBuffer = currentImageReader.read(0);
@@ -364,20 +356,7 @@ public class VTGraphicsModeClientReader implements Runnable
 						}
 						// System.out.println("VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_SUBIMAGE");
 						int count = connection.getGraphicsControlDataInputStream().readInt();
-						// if (imageStream != null)
-						// {
-						// try
-						// {
-						// imageStream.close();
-						// }
-						// catch (Throwable e)
-						// {
-						//
-						// }
-						// imageStream = null;
-						// }
-						// imageStream =
-						// ImageIO.createImageInputStream(limitedInputStream);
+						
 						for (int i = 0; i < count; i++)
 						{
 							int size = connection.getGraphicsControlDataInputStream().readInt();
@@ -397,7 +376,8 @@ public class VTGraphicsModeClientReader implements Runnable
 							}
 							limitedInputStream.setLimit(size);
 							imageStream = ImageIO.createImageInputStream(limitedInputStream);
-							currentImageReader.setInput(imageStream, true);
+							//imageStream = new MemoryCacheImageInputStream(limitedInputStream);
+							currentImageReader.setInput(imageStream, true, false);
 							// writer.setRemoteGraphics(displayingImageDataBuffer);
 							incrementalImageReader.setOffsetX(x);
 							incrementalImageReader.setOffsetY(y);
