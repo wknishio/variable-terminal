@@ -75,23 +75,17 @@ public class VTGraphicsModeClientReader implements Runnable
 		
 		public void passStarted(ImageReader source, BufferedImage theImage, int pass, int minPass, int maxPass, int minX, int minY, int periodX, int periodY, int[] bands)
 		{
-			
+			//System.out.println("passStarted:" + pass + "," + minPass + "," + maxPass);
 		}
 		
 		public void imageUpdate(ImageReader source, BufferedImage theImage, int minX, int minY, int width, int height, int periodX, int periodY, int[] bands)
 		{
-			// System.out.printf("imageUpdate minX:%d minY:%d width:%d height:%d
-			// \n", minX, minY, width, height);
-			// updatingImageGraphics.drawImage(theImage.getSubimage(minX, minY,
-			// width, height), minX + offsetX, minY + offsetY, width, height,
-			// null);
-			//currentImageGraphics.drawImage(theImage.getSubimage(minX, minY, width, height), minX + offsetX, minY + offsetY, null);
-			//currentImageGraphics.drawImage(theImage, dx1, dy1, dx2, dy2, sx1, sy1, sx2, sy2, observer)
+			currentImageGraphics.drawImage(theImage, offsetX + minX, offsetY + minY, offsetX + minX + width, offsetY + minY + height, minX, minY, minX + width, minY + height, null);
 		}
 		
 		public void passComplete(ImageReader source, BufferedImage theImage)
 		{
-			currentImageGraphics.drawImage(theImage, offsetX, offsetY, null);
+			//currentImageGraphics.drawImage(theImage, offsetX, offsetY, null);
 		}
 		
 		public void thumbnailPassStarted(ImageReader source, BufferedImage theThumbnail, int pass, int minPass, int maxPass, int minX, int minY, int periodX, int periodY, int[] bands)
