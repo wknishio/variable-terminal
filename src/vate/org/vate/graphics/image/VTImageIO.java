@@ -723,14 +723,14 @@ public final class VTImageIO
 	
 	private static final void encodePixelByte(VTLittleEndianOutputStream out, byte[] pixelData, int position, int width) throws IOException
 	{
-		byte left, top, diag;
+		int left, top, diag;
 //		left = pixelData[position - 1];
 //		top = pixelData[position - width];
 //		diag = pixelData[position - 1 - width];
-		left = position > 0 ? pixelData[position - 1] : 0;
-		top = position >= width ? pixelData[position - width] : 0;
-		diag = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		out.write((byte) (pixelData[position] - Math.max(Math.min(left, top), Math.min(Math.max(left, top), left + top - diag))));
+		left = position > 0 ? pixelData[position - 1] & 0xff : 0;
+		top = position >= width ? pixelData[position - width] & 0xff : 0;
+		diag = position - 1 >= width ? pixelData[position - 1 - width] & 0xff : 0;
+		out.write((pixelData[position] - Math.max(Math.min(left, top), Math.min(Math.max(left, top), left + top - diag))));
 		// out.write((byte) (pixelData[position]));
 	}
 	
@@ -780,13 +780,13 @@ public final class VTImageIO
 	
 	private static final void decodePixelByte(VTLittleEndianInputStream in, byte[] pixelData, int position, int width) throws IOException
 	{
-		byte left, top, diag;
+		int left, top, diag;
 //		left = pixelData[position - 1];
 //		top = pixelData[position - width];
 //		diag = pixelData[position - 1 - width];
-		left = position > 0 ? pixelData[position - 1] : 0;
-		top = position >= width ? pixelData[position - width] : 0;
-		diag = position - 1 >= width ? pixelData[position - 1 - width] : 0;
+		left = position > 0 ? pixelData[position - 1] & 0xff : 0;
+		top = position >= width ? pixelData[position - width] & 0xff : 0;
+		diag = position - 1 >= width ? pixelData[position - 1 - width] & 0xff : 0;
 		pixelData[position] = (byte) (in.readByte() + Math.max(Math.min(left, top), Math.min(Math.max(left, top), left + top - diag)));
 		// pixelData[position] = (byte) (in.readByte());
 	}

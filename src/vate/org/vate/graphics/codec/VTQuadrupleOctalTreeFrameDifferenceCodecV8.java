@@ -114,10 +114,10 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV8
 	
 	private static final void encodePixelDirect(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		byte left, top, diag;
-		left = x > 0 ? newPixelData[position - 1] : 0;
-		top = y > 0 ? newPixelData[position - width] : 0;
-		diag = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
+		int left, top, diag;
+		left = x > 0 ? newPixelData[position - 1] & 0xff : 0;
+		top = y > 0 ? newPixelData[position - width] & 0xff : 0;
+		diag = x > 0 && y > 0 ? newPixelData[position - 1 - width] & 0xff : 0;
 		// int pred = Math.max(Math.min(left, top), Math.min(Math.max(left,
 		// top), left +
 		// top - diag));
@@ -166,10 +166,10 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV8
 	
 	private static final void decodePixelDirect(final VTLittleEndianInputStream in, final byte[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		byte left, top, diag;
-		left = x > 0 ? newPixelData[position - 1] : 0;
-		top = y > 0 ? newPixelData[position - width] : 0;
-		diag = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
+		int left, top, diag;
+		left = x > 0 ? newPixelData[position - 1] & 0xff : 0;
+		top = y > 0 ? newPixelData[position - width] & 0xff : 0;
+		diag = x > 0 && y > 0 ? newPixelData[position - 1 - width] & 0xff : 0;
 		// int pred = Math.max(Math.min(left, top), Math.min(Math.max(left,
 		// top), left +
 		// top - diag));
