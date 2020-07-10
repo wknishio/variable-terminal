@@ -258,6 +258,14 @@ implements Transparency
     {
         return true;
     }
+    
+    protected boolean handleUpdate(BufferedImage image, int minX, int minY,
+            int width, int height,
+            int periodX, int periodY,
+            int[] bands)
+    {
+    	return true;
+    }
 
     /**
      * Callback for customized handling of warnings. Whenever a

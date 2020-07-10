@@ -41,7 +41,7 @@ import java.awt.image.BufferedImage;
 final class ProgressUpdater
 extends PixelProcessor
 {
-    private static final int STEP_PERCENT = 5;
+    private static final int STEP_PERCENT = 1;
     
     final private PngImage png;
     final private BufferedImage image;
@@ -62,6 +62,7 @@ extends PixelProcessor
 
     public boolean process(int[] row, int xOffset, int xStep, int yStep, int y, int width)
     {
+    	
         boolean result = pp.process(row, xOffset, xStep, yStep, y, width);
         mod += width;
         count += width;
@@ -69,6 +70,7 @@ extends PixelProcessor
             mod %= step;
             result = result && png.handleProgress(image, 100f * count / total);
         }
+        result = result && png.handleUpdate(image, xOffset, y, width, 1, xStep, yStep, row);
         return result;
     }
 }

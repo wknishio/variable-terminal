@@ -180,6 +180,7 @@ Those are the third party libraries used in this software:
 * DirectRobot by Killer99@rune-server.ee, for better screen capture
 * PortMapper by Kasra Faghihi(offbynull) for PCP port forwarding support
 * Lanterna by mabe02 for graphical console
+* Sixlegs Java PNG Decoder for PNG decoding
 
 ## Additional utilities
 

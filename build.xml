@@ -46,6 +46,7 @@
 			<src path="src/lanterna"/>
 			<src path="src/rawconsoleinput"/>
 			<src path="src/snappy"/>
+			<src path="src/javapng"/>
 			<classpath>
 				<fileset dir="lib">
 					<include name="**/*.jar"/>

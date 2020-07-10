@@ -281,6 +281,19 @@ extends ImageReader
             }
             return true;
         }
+        
+        protected boolean handleUpdate(BufferedImage image, int minX, int minY,
+                int width, int height,
+                int periodX, int periodY,
+                int[] bands)
+        {
+            processImageUpdate(image, minX, minY, width, height, periodX, periodY, bands);
+            if (abortRequested()) {
+                processReadAborted();
+                return false;
+            }
+            return true;
+        }
 
         protected void readChunk(int type, DataInput in, long offset, int length)
         throws IOException

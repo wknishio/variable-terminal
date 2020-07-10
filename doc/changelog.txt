@@ -77,6 +77,7 @@ Changes since 1.4.2:
 * Added capacity to truncate files when using command *VTFILETRANSFER
 * Added notification of nat devices external addresses
 * Added timeout option to command *VTRUNTIME
+* Added Sixlegs Java PNG Decoder library
 * Changed license from GPLv3 license to MIT license
 
 Changes since 1.4.1:

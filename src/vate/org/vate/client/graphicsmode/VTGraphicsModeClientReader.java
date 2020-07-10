@@ -17,6 +17,7 @@ import org.vate.console.VTConsole;
 import org.vate.graphics.codec.VTQuadrupleOctalTreeFrameDifferenceCodecV7;
 import org.vate.graphics.image.VTImageIO;
 import org.vate.stream.limit.VTLimitedInputStream;
+import com.sixlegs.png.iio.*;
 
 public class VTGraphicsModeClientReader implements Runnable
 {
@@ -234,7 +235,8 @@ public class VTGraphicsModeClientReader implements Runnable
 			{
 				VTConsole.print("\nVT>Remote graphics link started!\nVT>");
 				vtCustomCodec = new VTQuadrupleOctalTreeFrameDifferenceCodecV7();
-				pngImageReader = ImageIO.getImageReadersByFormatName("PNG").next();
+				//pngImageReader = ImageIO.getImageReadersByFormatName("PNG").next();
+				pngImageReader = new PngImageReader(new PngImageReaderSpi());
 				jpegImageReader = ImageIO.getImageReadersByFormatName("JPEG").next();
 				limitedInputStream = new VTLimitedInputStream(connection.getGraphicsDirectImageDataInputStream());
 				pngImageReader.addIIOReadUpdateListener(incrementalImageReader);
@@ -244,6 +246,7 @@ public class VTGraphicsModeClientReader implements Runnable
 		}
 		catch (Throwable e)
 		{
+			//e.printStackTrace();
 			stopped = true;
 		}
 		while (!stopped)
