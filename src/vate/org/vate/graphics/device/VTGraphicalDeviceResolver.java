@@ -27,7 +27,7 @@ public class VTGraphicalDeviceResolver
 					devices.add(device);
 				}
 			}
-			return devices.toArray(new GraphicsDevice[] {});
+			return devices.toArray(new GraphicsDevice[devices.size()]);
 		}
 		catch (Throwable t)
 		{

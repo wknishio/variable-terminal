@@ -326,7 +326,7 @@ public class VTServerPrintDataTask extends VTTask
 				
 				//final Iterator<String> printLineIterator1 = printLines.iterator();
 				//final Iterator<String> printLineIterator2 = printLines.iterator();
-				final String[] printLinesArray = printLines.toArray(new String[] {});
+				final String[] printLinesArray = printLines.toArray(new String[printLines.size()]);
 				
 				Printable printable = new Printable()
 				{
@@ -485,7 +485,7 @@ public class VTServerPrintDataTask extends VTTask
 						}
 					}
 					
-					final String[] printLinesArray = printLines.toArray(new String[] {});
+					final String[] printLinesArray = printLines.toArray(new String[printLines.size()]);
 					
 					Printable printable = new Printable()
 					{

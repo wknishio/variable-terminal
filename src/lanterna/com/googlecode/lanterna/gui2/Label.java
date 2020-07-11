@@ -256,7 +256,8 @@ public class Label extends AbstractComponent<Label> {
                     linesToDraw = component.lines;
                 }
                 else {
-                    linesToDraw = TerminalTextUtils.getWordWrappedText(graphics.getSize().getColumns(), component.lines).toArray(new String[0]);
+                	List<String> wordwrappedlist = TerminalTextUtils.getWordWrappedText(graphics.getSize().getColumns(), component.lines);
+                    linesToDraw = wordwrappedlist.toArray(new String[wordwrappedlist.size()]);
                 }
 
                 for(int row = 0; row < Math.min(graphics.getSize().getRows(), linesToDraw.length); row++) {
