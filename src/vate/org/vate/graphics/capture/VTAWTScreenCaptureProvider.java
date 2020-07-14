@@ -1297,13 +1297,11 @@ public final class VTAWTScreenCaptureProvider
 		}
 		else
 		{
-			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-			{
-				Thread.yield();
-			}
-			// scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0,
-			// scaledCurrentWidth,
-			// scaledCurrentHeight, null);
+//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
+//			{
+//				Thread.yield();
+//			}
+			scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
 			return scaledCurrentImage;
 		}
 	}
@@ -1409,14 +1407,11 @@ public final class VTAWTScreenCaptureProvider
 			scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
 			scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
 			scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null))
-			//while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-			{
-				Thread.yield();
-			}
-			// scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0,
-			// scaledCurrentWidth,
-			// scaledCurrentHeight, null);
+			//while (!scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null))
+			//{
+				//Thread.yield();
+			//}
+			scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
 			return scaledCurrentImage;
 		}
 	}
@@ -1486,13 +1481,11 @@ public final class VTAWTScreenCaptureProvider
 		}
 		else
 		{
-			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-			{
-				Thread.yield();
-			}
-			// scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0,
-			// scaledCurrentWidth,
-			// scaledCurrentHeight, null);
+			//while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
+			//{
+				//Thread.yield();
+			//}
+			scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
 			return scaledCurrentImage;
 		}
 	}
@@ -1596,14 +1589,11 @@ public final class VTAWTScreenCaptureProvider
 			scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
 			scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
 			scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null))
-			//while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-			{
-				Thread.yield();
-			}
-			// scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0,
-			// scaledCurrentWidth,
-			// scaledCurrentHeight, null);
+//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null))
+//			{
+//				Thread.yield();
+//			}
+			scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
 			return scaledCurrentImage;
 		}
 	}
@@ -1670,13 +1660,11 @@ public final class VTAWTScreenCaptureProvider
 		}
 		else
 		{
-			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-			{
-				Thread.yield();
-			}
-			// scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0,
-			// scaledCurrentWidth,
-			// scaledCurrentHeight, null);
+//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
+//			{
+//				Thread.yield();
+//			}
+			scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
 			return scaledCurrentImage;
 		}
 	}
@@ -1781,14 +1769,11 @@ public final class VTAWTScreenCaptureProvider
 			scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
 			scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
 			scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null))
-			//while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-			{
-				Thread.yield();
-			}
-			// scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0,
-			// scaledCurrentWidth,
-			// scaledCurrentHeight, null);
+//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null))
+//			{
+//				Thread.yield();
+//			}
+			scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
 			return scaledCurrentImage;
 		}
 	}
@@ -1854,13 +1839,11 @@ public final class VTAWTScreenCaptureProvider
 		}
 		else
 		{
-			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-			{
-				Thread.yield();
-			}
-			// scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0,
-			// scaledCurrentWidth,
-			// scaledCurrentHeight, null);
+//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
+//			{
+//				Thread.yield();
+//			}
+			scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
 			return scaledCurrentImage;
 		}
 	}
@@ -1969,14 +1952,11 @@ public final class VTAWTScreenCaptureProvider
 			scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
 			scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
 			scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null))
-			//while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-			{
-				Thread.yield();
-			}
-			// scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0,
-			// scaledCurrentWidth,
-			// scaledCurrentHeight, null);
+//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null))
+//			{
+//				Thread.yield();
+//			}
+			scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
 			return scaledCurrentImage;
 		}
 	}
@@ -2046,13 +2026,11 @@ public final class VTAWTScreenCaptureProvider
 		}
 		else
 		{
-			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-			{
-				Thread.yield();
-			}
-			// scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0,
-			// scaledCurrentWidth,
-			// scaledCurrentHeight, null);
+//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
+//			{
+//				Thread.yield();
+//			}
+			scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
 			return scaledCurrentImage;
 		}
 	}
@@ -2158,14 +2136,11 @@ public final class VTAWTScreenCaptureProvider
 			scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
 			scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
 			scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null))
-			//while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-			{
-				Thread.yield();
-			}
-			// scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0,
-			// scaledCurrentWidth,
-			// scaledCurrentHeight, null);
+//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null))
+//			{
+//				Thread.yield();
+//			}
+			scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
 			return scaledCurrentImage;
 		}
 	}

@@ -215,13 +215,11 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
 				{
 					if (synchronousRefresh)
 					{
-						//g.drawImage(displayImageDataBuffer, 0, 0, null);
 						g.drawImage(displayImageDataBuffer, area.x, area.y, area.x + area.width, area.y + area.height, area.x, area.y, area.x + area.width, area.y + area.height, null);
 					}
 					else
 					{
 						refreshImage();
-						//g.drawImage(displayImageDataBuffer, 0, 0, null);
 						g.drawImage(displayImageDataBuffer, area.x, area.y, area.x + area.width, area.y + area.height, area.x, area.y, area.x + area.width, area.y + area.height, null);
 					}
 				}
@@ -229,12 +227,10 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
 				{
 					if (synchronousRefresh)
 					{
-						//g.drawImage(displayImageDataBuffer, 0, 0, null);
 						g.drawImage(sourceImageDataBuffer, area.x, area.y, area.x + area.width, area.y + area.height, area.x, area.y, area.x + area.width, area.y + area.height, null);
 					}
 					else
 					{
-						//g.drawImage(sourceImageDataBuffer, 0, 0, null);
 						g.drawImage(sourceImageDataBuffer, area.x, area.y, area.x + area.width, area.y + area.height, area.x, area.y, area.x + area.width, area.y + area.height, null);
 					}
 				}

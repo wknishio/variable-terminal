@@ -402,10 +402,11 @@ public class VTGraphicsModeServerWriter implements Runnable
 					convertedGraphics = convertedDataBuffer.createGraphics();
 					convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
 				}
-				while (!convertedGraphics.drawImage(imageDataBuffer, 0, 0, null))
-				{
-					Thread.yield();
-				}
+//				while (!convertedGraphics.drawImage(imageDataBuffer, 0, 0, null))
+//				{
+//					Thread.yield();
+//				}
+				convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
 				pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
 				// int total = 0;
 				for (Rectangle blockArea : blockAreas)
@@ -502,10 +503,11 @@ public class VTGraphicsModeServerWriter implements Runnable
 					convertedGraphics = convertedDataBuffer.createGraphics();
 					convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
 				}
-				while (!convertedGraphics.drawImage(imageDataBuffer, 0, 0, null))
-				{
-					Thread.yield();
-				}
+//				while (!convertedGraphics.drawImage(imageDataBuffer, 0, 0, null))
+//				{
+//					Thread.yield();
+//				}
+				convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
 				pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
 				// int total = 0;
 				for (Rectangle blockArea : blockAreas)
@@ -614,10 +616,11 @@ public class VTGraphicsModeServerWriter implements Runnable
 					convertedGraphics = convertedDataBuffer.createGraphics();
 					convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
 				}
-				while (!convertedGraphics.drawImage(imageDataBuffer, 0, 0, null))
-				{
-					Thread.yield();
-				}
+//				while (!convertedGraphics.drawImage(imageDataBuffer, 0, 0, null))
+//				{
+//					Thread.yield();
+//				}
+				convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
 				pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
 				// int total = 0;
 				for (Rectangle blockArea : blockAreas)
@@ -710,10 +713,11 @@ public class VTGraphicsModeServerWriter implements Runnable
 					convertedGraphics = convertedDataBuffer.createGraphics();
 					convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
 				}
-				while (!convertedGraphics.drawImage(imageDataBuffer, 0, 0, null))
-				{
-					Thread.yield();
-				}
+//				while (!convertedGraphics.drawImage(imageDataBuffer, 0, 0, null))
+//				{
+//					Thread.yield();
+//				}
+				convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
 				pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
 				// int total = 0;
 				for (Rectangle blockArea : blockAreas)
