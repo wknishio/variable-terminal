@@ -1046,7 +1046,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 							}
 							catch (Throwable t)
 							{
-								t.printStackTrace();
+								//t.printStackTrace();
 								imageDataBuffer = null;
 							}
 							// imageDataBuffer =
@@ -1064,7 +1064,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 							}
 							catch (Throwable t)
 							{
-								t.printStackTrace();
+								//t.printStackTrace();
 								imageDataBuffer = null;
 							}
 							// imageDataBuffer =

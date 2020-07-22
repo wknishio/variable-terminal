@@ -200,21 +200,16 @@ public class VTServerScreenshotTask extends VTTask
 				pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
 				pngEncoder.encode(convertedImage, photoOutputStream);
 			}
-			else if (screenCapture.getType() == BufferedImage.TYPE_BYTE_BINARY)
-			{
-				convertedImage = VTImageIO.newImage(screenCapture.getWidth(), screenCapture.getHeight(), BufferedImage.TYPE_BYTE_INDEXED, 16, recyclableDataBuffer);
-				recyclableDataBuffer = convertedImage.getRaster().getDataBuffer();
-				convertedGraphics = convertedImage.createGraphics();
-				convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
-//				while (!convertedGraphics.drawImage(screenCapture, 0, 0, null))
-//				{
-//					Thread.yield();
-//				}
-				convertedGraphics.drawImage(screenCapture, 0, 0, null);
-				pngEncoder.setColorType(PngEncoder.COLOR_INDEXED);
-				pngEncoder.encode(convertedImage, photoOutputStream);
-
-			}
+			//else if (screenCapture.getType() == BufferedImage.TYPE_BYTE_BINARY)
+			//{
+				//convertedImage = VTImageIO.newImage(screenCapture.getWidth(), screenCapture.getHeight(), BufferedImage.TYPE_BYTE_INDEXED, 16, recyclableDataBuffer);
+				//recyclableDataBuffer = convertedImage.getRaster().getDataBuffer();
+				//convertedGraphics = convertedImage.createGraphics();
+				//convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+				//convertedGraphics.drawImage(screenCapture, 0, 0, null);
+				//pngEncoder.setColorType(PngEncoder.COLOR_INDEXED);
+				//pngEncoder.encode(convertedImage, photoOutputStream);
+			//}
 			else if (screenCapture.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
 			{
 				pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);

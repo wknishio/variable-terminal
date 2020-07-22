@@ -34,8 +34,9 @@ public final class VTImageIO
 	private static final IndexColorModel byteIndexed64ColorModel = VTIndexedColorModel.create64ColorModel();
 	private static final IndexColorModel byteIndexed27ColorModel = VTIndexedColorModel.create27ColorModel();
 	private static final IndexColorModel byteIndexed16ColorModel = VTIndexedColorModel.create16ColorModel();
+	private static final IndexColorModel byteIndexed32ColorModel = VTIndexedColorModel.create32ColorModel();
 	
-	private static final IndexColorModel bytePacked4Bit16ColorModel = VTIndexedColorModel.createPacked4Bit16ColorModel();
+	//private static final IndexColorModel bytePacked4Bit16ColorModel = VTIndexedColorModel.createPacked4Bit16ColorModel();
 	
 	private static final DirectColorModel int24bitRGBColorModel = new DirectColorModel(24,
 	DCM_RED_MASK, // Red
@@ -71,12 +72,12 @@ public final class VTImageIO
 		// recyclableStorage.getRaster().getDataBuffer().get
 		switch (type)
 		{
-			case BufferedImage.TYPE_BYTE_BINARY:
-			{
-				BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
-				Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 0x77);
-				return image;
-			}
+			//case BufferedImage.TYPE_BYTE_BINARY:
+			//{
+				//BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
+				//Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 0x77);
+				//return image;
+			//}
 			case BufferedImage.TYPE_BYTE_INDEXED:
 			{
 				if (colors == 216)
@@ -107,6 +108,16 @@ public final class VTImageIO
 					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
 					// (byte) 62);
 					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 1);
+					return image;
+				}
+				else if (colors == 32)
+				{
+					BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
+					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
+					// (byte) 129);
+					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
+					// (byte) 62);
+					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 2);
 					return image;
 				}
 				else
@@ -295,17 +306,17 @@ public final class VTImageIO
 		
 		switch (type)
 		{
-			case BufferedImage.TYPE_BYTE_BINARY:
-			{
-				BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
-				size = size / 2;
-				byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-				for (int i = 0; i < size; i++)
-				{
-					decodeTwoPixelByte(littleEndianInputStream, data, i);
-				}
-				return image;
-			}
+			//case BufferedImage.TYPE_BYTE_BINARY:
+			//{
+				//BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
+				//size = size / 2;
+				//byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+				//for (int i = 0; i < size; i++)
+				//{
+					//decodeTwoPixelByte(littleEndianInputStream, data, i);
+				//}
+				//return image;
+			//}
 			case BufferedImage.TYPE_BYTE_INDEXED:
 			{
 				BufferedImage image;
@@ -318,6 +329,10 @@ public final class VTImageIO
 					image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
 				}
 				else if (colors == 16)
+				{
+					image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
+				}
+				else if (colors == 32)
 				{
 					image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
 				}
@@ -387,17 +402,17 @@ public final class VTImageIO
 		// littleEndianOutputStream.flush();
 		switch (type)
 		{
-			case BufferedImage.TYPE_BYTE_BINARY:
-			{
-				byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-				size = size / 2;
-				for (int i = 0; i < size; i++)
-				{
-					encodeTwoPixelByte(littleEndianOutputStream, data, i);
-				}
-				littleEndianOutputStream.flush();
-				break;
-			}
+			//case BufferedImage.TYPE_BYTE_BINARY:
+			//{
+				//byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+				//size = size / 2;
+				//for (int i = 0; i < size; i++)
+				//{
+					//encodeTwoPixelByte(littleEndianOutputStream, data, i);
+				//}
+				//littleEndianOutputStream.flush();
+				//break;
+			//}
 			case BufferedImage.TYPE_BYTE_INDEXED:
 			{
 				byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
@@ -469,22 +484,20 @@ public final class VTImageIO
 		WritableRaster createdRaster = null;
 		switch (type)
 		{
-			case BufferedImage.TYPE_BYTE_BINARY:
-			{
-				nextSize = nextSize / 2;
-				neededSize = neededSize / 2;
-				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
-				{
-					createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, 4, null);
-					// Arrays.fill(((DataBufferByte)recyclableBuffer).getData(),
-					// (byte) 0);
-				}
-				else
-				{
-					createdRaster = Raster.createPackedRaster(new DataBufferByte(nextSize), width, height, 4, null);
-				}
-				break;
-			}
+			//case BufferedImage.TYPE_BYTE_BINARY:
+			//{
+				//nextSize = nextSize / 2;
+				//neededSize = neededSize / 2;
+				//if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
+				//{
+					//createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, 4, null);
+				//}
+				//else
+				//{
+					//createdRaster = Raster.createPackedRaster(new DataBufferByte(nextSize), width, height, 4, null);
+				//}
+				//break;
+			//}
 			case BufferedImage.TYPE_BYTE_INDEXED:
 			{
 				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
@@ -548,11 +561,11 @@ public final class VTImageIO
 		BufferedImage image = null;
 		switch (type)
 		{
-			case BufferedImage.TYPE_BYTE_BINARY:
-			{
-				image = new BufferedImage(bytePacked4Bit16ColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
-				break;
-			}
+			//case BufferedImage.TYPE_BYTE_BINARY:
+			//{
+				//image = new BufferedImage(bytePacked4Bit16ColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
+				//break;
+			//}
 			case BufferedImage.TYPE_BYTE_INDEXED:
 			{
 				if (colors == 216)
@@ -566,6 +579,10 @@ public final class VTImageIO
 				else if (colors == 16)
 				{
 					image = new BufferedImage(byteIndexed16ColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
+				}
+				else if (colors == 32)
+				{
+					image = new BufferedImage(byteIndexed32ColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
 				}
 				else
 				{
@@ -610,6 +627,10 @@ public final class VTImageIO
 		{
 			Arrays.fill(buffer, (byte) 1);
 		}
+		else if (colors == 32)
+		{
+			Arrays.fill(buffer, (byte) 2);
+		}
 		else
 		{
 			Arrays.fill(buffer, (byte) 21);
@@ -649,11 +670,11 @@ public final class VTImageIO
 		
 		switch (type)
 		{
-			case BufferedImage.TYPE_BYTE_BINARY:
-			{
-				Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 0x77);
-				break;
-			}
+			//case BufferedImage.TYPE_BYTE_BINARY:
+			//{
+				//Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 0x77);
+				//break;
+			//}
 			case BufferedImage.TYPE_BYTE_INDEXED:
 			{
 				// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
@@ -671,6 +692,10 @@ public final class VTImageIO
 				else if (colors == 16)
 				{
 					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 1);
+				}
+				else if (colors == 32)
+				{
+					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 2);
 				}
 				else
 				{
@@ -714,12 +739,10 @@ public final class VTImageIO
 		}
 	}
 	
-	private static final void encodeTwoPixelByte(VTLittleEndianOutputStream out, byte[] pixelData, int position) throws IOException
-	{
-		out.write((byte) (pixelData[position]));
-		// out.write((byte) (pixelData[position]));
-	}
-
+	//private static final void encodeTwoPixelByte(VTLittleEndianOutputStream out, byte[] pixelData, int position) throws IOException
+	//{
+		//out.write((byte) (pixelData[position]));
+	//}
 	
 	private static final void encodePixelByte(VTLittleEndianOutputStream out, byte[] pixelData, int position, int width) throws IOException
 	{
@@ -773,10 +796,10 @@ public final class VTImageIO
 		// out.writeInt((pixelData[position]));
 	}
 	
-	private static final void decodeTwoPixelByte(VTLittleEndianInputStream in, byte[] pixelData, int position) throws IOException
-	{
-		pixelData[position] = (byte) (in.readByte());
-	}
+	//private static final void decodeTwoPixelByte(VTLittleEndianInputStream in, byte[] pixelData, int position) throws IOException
+	//{
+		//pixelData[position] = (byte) (in.readByte());
+	//}
 	
 	private static final void decodePixelByte(VTLittleEndianInputStream in, byte[] pixelData, int position, int width) throws IOException
 	{

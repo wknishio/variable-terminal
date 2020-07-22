@@ -65,6 +65,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 	private CheckboxMenuItem highColorOption;
 	private CheckboxMenuItem bestColorOption;
 	private CheckboxMenuItem worstColorOption;
+	private CheckboxMenuItem smallColorOption;
 	private CheckboxMenuItem interruptedRefreshOption;
 	private CheckboxMenuItem asynchronousRefreshOption;
 	private CheckboxMenuItem synchronousRefreshOption;
@@ -139,6 +140,8 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		this.bestColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, bestColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_BEST));
 		this.worstColorOption = new CheckboxMenuItem("Worst", false);
 		this.worstColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, worstColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_WORST));
+		this.smallColorOption = new CheckboxMenuItem("Small", false);
+		this.smallColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, smallColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SMALL));
 		this.interruptedRefreshOption = new CheckboxMenuItem("Interrupted", false);
 		this.interruptedRefreshOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuInterruptRefreshOptionListener(writer, interruptedRefreshOption));
 		this.asynchronousRefreshOption = new CheckboxMenuItem("Immediate", true);
@@ -219,10 +222,12 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		this.drawPointerSizeMenu.add(normalizePointerOption);
 		
 		this.colorQualityMenu.add(worstColorOption);
+		//this.colorQualityMenu.add(smallColorOption);
 		this.colorQualityMenu.add(lowColorOption);
 		this.colorQualityMenu.add(mediumColorOption);
 		this.colorQualityMenu.add(highColorOption);
 		this.colorQualityMenu.add(bestColorOption);
+		
 		this.refreshModeMenu.add(asynchronousRefreshOption);
 		this.refreshModeMenu.add(synchronousRefreshOption);
 		this.refreshModeMenu.add(interruptedRefreshOption);
@@ -302,6 +307,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 			highColorOption.setState(false);
 			mediumColorOption.setState(false);
 			lowColorOption.setState(false);
+			smallColorOption.setState(false);
 			worstColorOption.setState(false);
 		}
 		else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_HIGH)
@@ -310,6 +316,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 			highColorOption.setState(true);
 			mediumColorOption.setState(false);
 			lowColorOption.setState(false);
+			smallColorOption.setState(false);
 			worstColorOption.setState(false);
 		}
 		else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_MEDIUM)
@@ -318,6 +325,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 			highColorOption.setState(false);
 			mediumColorOption.setState(true);
 			lowColorOption.setState(false);
+			smallColorOption.setState(false);
 			worstColorOption.setState(false);
 		}
 		else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_WORST)
@@ -326,7 +334,17 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 			highColorOption.setState(false);
 			mediumColorOption.setState(false);
 			lowColorOption.setState(false);
+			smallColorOption.setState(false);
 			worstColorOption.setState(true);
+		}
+		else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SMALL)
+		{
+			bestColorOption.setState(false);
+			highColorOption.setState(false);
+			mediumColorOption.setState(false);
+			lowColorOption.setState(false);
+			smallColorOption.setState(true);
+			worstColorOption.setState(false);
 		}
 		else
 		{
@@ -334,6 +352,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 			highColorOption.setState(false);
 			mediumColorOption.setState(false);
 			lowColorOption.setState(true);
+			smallColorOption.setState(false);
 			worstColorOption.setState(false);
 		}
 	}
