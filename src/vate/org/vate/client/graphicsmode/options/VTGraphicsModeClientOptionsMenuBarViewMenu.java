@@ -66,6 +66,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 	private CheckboxMenuItem bestColorOption;
 	private CheckboxMenuItem worstColorOption;
 	private CheckboxMenuItem smallColorOption;
+	private CheckboxMenuItem goodColorOption;
 	private CheckboxMenuItem interruptedRefreshOption;
 	private CheckboxMenuItem asynchronousRefreshOption;
 	private CheckboxMenuItem synchronousRefreshOption;
@@ -130,7 +131,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		this.clearInterfaceMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuClearInterfaceOptionListener(writer));
 		this.closeTerminalMenu = new MenuItem("Close Link");
 		this.closeTerminalMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuCloseTerminalOptionListener(writer));
-		this.lowColorOption = new CheckboxMenuItem("Low", false);
+		this.lowColorOption = new CheckboxMenuItem("Normal", false);
 		this.lowColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, lowColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_LOW));
 		this.mediumColorOption = new CheckboxMenuItem("Medium", true);
 		this.mediumColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, mediumColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_MEDIUM));
@@ -140,8 +141,10 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		this.bestColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, bestColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_BEST));
 		this.worstColorOption = new CheckboxMenuItem("Worst", false);
 		this.worstColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, worstColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_WORST));
-		this.smallColorOption = new CheckboxMenuItem("Small", false);
+		this.smallColorOption = new CheckboxMenuItem("Low", false);
 		this.smallColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, smallColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SMALL));
+		this.goodColorOption = new CheckboxMenuItem("Good", false);
+		this.goodColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, goodColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_GOOD));
 		this.interruptedRefreshOption = new CheckboxMenuItem("Interrupted", false);
 		this.interruptedRefreshOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuInterruptRefreshOptionListener(writer, interruptedRefreshOption));
 		this.asynchronousRefreshOption = new CheckboxMenuItem("Immediate", true);
@@ -222,9 +225,10 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		this.drawPointerSizeMenu.add(normalizePointerOption);
 		
 		this.colorQualityMenu.add(worstColorOption);
-		//this.colorQualityMenu.add(smallColorOption);
+		this.colorQualityMenu.add(smallColorOption);
 		this.colorQualityMenu.add(lowColorOption);
 		this.colorQualityMenu.add(mediumColorOption);
+		this.colorQualityMenu.add(goodColorOption);
 		this.colorQualityMenu.add(highColorOption);
 		this.colorQualityMenu.add(bestColorOption);
 		
@@ -305,6 +309,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		{
 			bestColorOption.setState(true);
 			highColorOption.setState(false);
+			goodColorOption.setState(false);
 			mediumColorOption.setState(false);
 			lowColorOption.setState(false);
 			smallColorOption.setState(false);
@@ -314,6 +319,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		{
 			bestColorOption.setState(false);
 			highColorOption.setState(true);
+			goodColorOption.setState(false);
 			mediumColorOption.setState(false);
 			lowColorOption.setState(false);
 			smallColorOption.setState(false);
@@ -323,6 +329,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		{
 			bestColorOption.setState(false);
 			highColorOption.setState(false);
+			goodColorOption.setState(false);
 			mediumColorOption.setState(true);
 			lowColorOption.setState(false);
 			smallColorOption.setState(false);
@@ -332,6 +339,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		{
 			bestColorOption.setState(false);
 			highColorOption.setState(false);
+			goodColorOption.setState(false);
 			mediumColorOption.setState(false);
 			lowColorOption.setState(false);
 			smallColorOption.setState(false);
@@ -341,15 +349,27 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		{
 			bestColorOption.setState(false);
 			highColorOption.setState(false);
+			goodColorOption.setState(false);
 			mediumColorOption.setState(false);
 			lowColorOption.setState(false);
 			smallColorOption.setState(true);
+			worstColorOption.setState(false);
+		}
+		else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_GOOD)
+		{
+			bestColorOption.setState(false);
+			highColorOption.setState(false);
+			goodColorOption.setState(true);
+			mediumColorOption.setState(false);
+			lowColorOption.setState(false);
+			smallColorOption.setState(false);
 			worstColorOption.setState(false);
 		}
 		else
 		{
 			bestColorOption.setState(false);
 			highColorOption.setState(false);
+			goodColorOption.setState(false);
 			mediumColorOption.setState(false);
 			lowColorOption.setState(true);
 			smallColorOption.setState(false);

@@ -234,6 +234,11 @@ public class VTGraphicsModeServerReader implements Runnable
 						writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SMALL);
 						break;
 					}
+					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_GOOD:
+					{
+						writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_GOOD);
+						break;
+					}
 					case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_MODE_ASYNCHRONOUS:
 					{
 						// writer.setSynchronousRefresh(false);

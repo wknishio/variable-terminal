@@ -128,12 +128,16 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		serverGraphicsModeMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTGRAPHICSLINK\n"));
 		serverStandarScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("Worst Color Quality", "*VTSCREENSHOT SW "));
 		serverStandarScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("Low Color Quality", "*VTSCREENSHOT SL "));
+		serverStandarScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("Normal Color Quality", "*VTSCREENSHOT SN "));
 		serverStandarScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("Medium Color Quality", "*VTSCREENSHOT SM "));
+		serverStandarScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("Good Color Quality", "*VTSCREENSHOT SG "));
 		serverStandarScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("High Color Quality", "*VTSCREENSHOT SH "));
 		serverStandarScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("Best Color Quality", "*VTSCREENSHOT SB "));
 		serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("Worst Color Quality", "*VTSCREENSHOT CW "));
 		serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("Low Color Quality", "*VTSCREENSHOT CL "));
+		serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("Normal Color Quality", "*VTSCREENSHOT CN "));
 		serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("Medium Color Quality", "*VTSCREENSHOT CM "));
+		serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("Good Color Quality", "*VTSCREENSHOT CG "));
 		serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("High Color Quality", "*VTSCREENSHOT CH "));
 		serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("Best Color Quality", "*VTSCREENSHOT CB "));
 		serverScreenCaptureMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTSCREENSHOT\n"));

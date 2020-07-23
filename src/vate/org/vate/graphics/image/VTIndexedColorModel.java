@@ -272,15 +272,15 @@ public class VTIndexedColorModel
 					{
 						if (i == 0 && j == 0 && k == 0)
 						{
-							r[p] = (byte) ((((l * 102))) & 0xFF);
-							g[p] = (byte) ((((l * 102))) & 0xFF);
-							b[p] = (byte) ((((l * 102))) & 0xFF);
+							r[p] = (byte) ((l * 153) & 0xFF);
+							g[p] = (byte) ((l * 153) & 0xFF);
+							b[p] = (byte) ((l * 153) & 0xFF);
 						}
 						else
 						{
-							r[p] = (byte) ((((153 * i) + (i * l * 102))) & 0xFF);
-							g[p] = (byte) ((((153 * j) + (j * l * 102))) & 0xFF);
-							b[p] = (byte) ((((153 * k) + (k * l * 102))) & 0xFF);
+							r[p] = (byte) ((i * 102) + (i * l * 153) & 0xFF);
+							g[p] = (byte) ((j * 102) + (j * l * 153) & 0xFF);
+							b[p] = (byte) ((k * 102) + (k * l * 153) & 0xFF);
 						}
 						p++;
 					}
@@ -312,9 +312,18 @@ public class VTIndexedColorModel
 					{
 						for (m = 0; m < 2; m++)
 						{
-							r[p] = (byte) ((((153 * i) + (i * l * 68) + (i * m * 34))) & 0xFF);
-							g[p] = (byte) ((((153 * j) + (j * l * 68) + (j * m * 34))) & 0xFF);
-							b[p] = (byte) ((((153 * k) + (k * l * 68) + (k * m * 34))) & 0xFF);
+							if (i == 0 && j == 0 && k == 0)
+							{
+								r[p] = (byte) ((l * 102) + (m * 51) & 0xFF);
+								g[p] = (byte) ((l * 102) + (m * 51) & 0xFF);
+								b[p] = (byte) ((l * 102) + (m * 51) & 0xFF);
+							}
+							else
+							{
+								r[p] = (byte) ((i * 102) + (i * l * 102) + (i * m * 51) & 0xFF);
+								g[p] = (byte) ((j * 102) + (j * l * 102) + (j * m * 51) & 0xFF);
+								b[p] = (byte) ((k * 102) + (k * l * 102) + (k * m * 51) & 0xFF);
+							}
 							p++;
 						}
 					}
