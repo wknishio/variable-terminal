@@ -61,7 +61,7 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
 						{
 							
 						}
-						if (parsed[i].toUpperCase().contains("S"))
+						if (parsed[i].toUpperCase().contains("P"))
 						{
 							session.getScreenshotTask().setDrawPointer(true);
 						}
@@ -81,6 +81,10 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
 						{
 							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_GOOD);
 						}
+						if (parsed[i].toUpperCase().contains("E"))
+						{
+							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_EXTRA);
+						}
 						if (parsed[i].toUpperCase().contains("M"))
 						{
 							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_MEDIUM);
@@ -89,9 +93,13 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
 						{
 							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_LOW);
 						}
-						if (parsed[i].toUpperCase().contains("L"))
+						if (parsed[i].toUpperCase().contains("S"))
 						{
 							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SMALL);
+						}
+						if (parsed[i].toUpperCase().contains("L"))
+						{
+							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SIMPLE);
 						}
 						if (parsed[i].toUpperCase().contains("W"))
 						{
