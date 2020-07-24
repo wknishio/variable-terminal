@@ -336,11 +336,11 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 							}
 							if (parsed[i].toUpperCase().contains("L"))
 							{
-								session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_LOW);
+								session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_NORMAL);
 							}
 							if (parsed[i].toUpperCase().contains("W"))
 							{
-								session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_WORST);
+								session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_LOW);
 							}
 						}
 						session.getScreenshotTask().startThread();

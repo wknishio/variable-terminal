@@ -30,15 +30,15 @@ import org.vate.graphics.image.VTIndexedColorModel;
 
 public final class VTAWTScreenCaptureProvider
 {
-	public static final int VT_COLOR_QUALITY_LOW = 0; // 64 rgb222, normal
+	public static final int VT_COLOR_QUALITY_NORMAL = 0; // 64 rgb222, normal
 	public static final int VT_COLOR_QUALITY_MEDIUM = 1; // 216 6x6x6, medium
 	public static final int VT_COLOR_QUALITY_HIGH = 2; // 32768 rgb555, high
 	public static final int VT_COLOR_QUALITY_BEST = 3; // 16777216 rgb888, best
-	public static final int VT_COLOR_QUALITY_WORST = 4; // 16 rgbi, worst
-	public static final int VT_COLOR_QUALITY_SMALL = 5; // 32 rgbii, simple
+	public static final int VT_COLOR_QUALITY_LOW = 4; // 16 rgbi, low
+	public static final int VT_COLOR_QUALITY_SIMPLE = 5; // 32 rgbii, simple
 	public static final int VT_COLOR_QUALITY_GOOD = 6; // 512 rgb333, good
 	public static final int VT_COLOR_QUALITY_EXTRA = 7; // 4096 rgb444, extra
-	public static final int VT_COLOR_QUALITY_SIMPLE = 8; // 27 3x3x3, low
+	public static final int VT_COLOR_QUALITY_WORST = 8; // 8 rgb111, worst
 	
 	//best
 	//high
@@ -1066,11 +1066,11 @@ public final class VTAWTScreenCaptureProvider
 		{
 			return initializeWebQualityScreenCapture(graphicsDevice);
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_WORST)
+		else if (colorQuality == VT_COLOR_QUALITY_LOW)
 		{
 			return initializeWorstQualityScreenCapture(graphicsDevice);
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_SMALL)
+		else if (colorQuality == VT_COLOR_QUALITY_SIMPLE)
 		{
 			return initializeSmallQualityScreenCapture(graphicsDevice);
 		}
@@ -1082,7 +1082,7 @@ public final class VTAWTScreenCaptureProvider
 		{
 			return initializeExtraQualityScreenCapture(graphicsDevice);
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_SIMPLE)
+		else if (colorQuality == VT_COLOR_QUALITY_WORST)
 		{
 			return initializeSimpleQualityScreenCapture(graphicsDevice);
 		}
@@ -1106,11 +1106,11 @@ public final class VTAWTScreenCaptureProvider
 		{
 			return initializeWebQualityScreenCapture(device);
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_WORST)
+		else if (colorQuality == VT_COLOR_QUALITY_LOW)
 		{
 			return initializeWorstQualityScreenCapture(device);
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_SMALL)
+		else if (colorQuality == VT_COLOR_QUALITY_SIMPLE)
 		{
 			return initializeSmallQualityScreenCapture(device);
 		}
@@ -1122,7 +1122,7 @@ public final class VTAWTScreenCaptureProvider
 		{
 			return initializeExtraQualityScreenCapture(device);
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_SIMPLE)
+		else if (colorQuality == VT_COLOR_QUALITY_WORST)
 		{
 			return initializeSimpleQualityScreenCapture(device);
 		}
@@ -1191,11 +1191,11 @@ public final class VTAWTScreenCaptureProvider
 		{
 			return isWebQualityScreenCaptureInitialized();
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_WORST)
+		else if (colorQuality == VT_COLOR_QUALITY_LOW)
 		{
 			return isWorstQualityScreenCaptureInitialized();
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_SMALL)
+		else if (colorQuality == VT_COLOR_QUALITY_SIMPLE)
 		{
 			return isSmallQualityScreenCaptureInitialized();
 		}
@@ -1207,7 +1207,7 @@ public final class VTAWTScreenCaptureProvider
 		{
 			return isExtraQualityScreenCaptureInitialized();
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_SIMPLE)
+		else if (colorQuality == VT_COLOR_QUALITY_WORST)
 		{
 			return isSimpleQualityScreenCaptureInitialized();
 		}
@@ -1453,7 +1453,7 @@ public final class VTAWTScreenCaptureProvider
 			screenCurrentImage.flush();
 			screenCurrentImage = null;
 		}
-		screenCurrentImage = VTImageIO.newImage(screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 27, recyclableScreenDataBuffer);
+		screenCurrentImage = VTImageIO.newImage(screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 8, recyclableScreenDataBuffer);
 		//screenCurrentImage = VTImageIO.newImage(screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_BINARY, 16, recyclableScreenDataBuffer);
 		recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
 		refreshScaledSimpleSettings();
@@ -1475,7 +1475,7 @@ public final class VTAWTScreenCaptureProvider
 				scaledCurrentGraphics.dispose();
 				scaledCurrentGraphics = null;
 			}
-			scaledCurrentImage = VTImageIO.newImage(scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 27, recyclableScaledDataBuffer);
+			scaledCurrentImage = VTImageIO.newImage(scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 8, recyclableScaledDataBuffer);
 			//scaledCurrentImage = VTImageIO.newImage(scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_BINARY, 16, recyclableScaledDataBuffer);
 			recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
 			scaledCurrentGraphics = scaledCurrentImage.createGraphics();
@@ -2115,7 +2115,7 @@ public final class VTAWTScreenCaptureProvider
 			//green = (((((sectionPixelBufferInt[i] >> 8) & 0xFF) * 3) >> 8) * 3);
 			//blue = (((((sectionPixelBufferInt[i]) & 0xFF) * 3) >> 8));
 			//pixelBufferByte[i] = (byte) (red + green + blue);
-			rgbiValue = (byte) VTIndexedColorModel.get27Color3LevelRGBValue(sectionPixelBufferInt[i]);
+			rgbiValue = (byte) VTIndexedColorModel.get8ColorRGBValue(sectionPixelBufferInt[i]);
 			
 			pixelBufferByte[i] = rgbiValue;
 		}
@@ -2220,7 +2220,7 @@ public final class VTAWTScreenCaptureProvider
 			//green = (((((sectionPixelBufferInt[i] >> 8) & 0xFF) * 3) >> 8) * 3);
 			//blue = (((((sectionPixelBufferInt[i]) & 0xFF) * 3) >> 8));
 			//pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) (red + green + blue);
-			rgbiValue = (byte) VTIndexedColorModel.get27Color3LevelRGBValue(sectionPixelBufferInt[i]);
+			rgbiValue = (byte) VTIndexedColorModel.get8ColorRGBValue(sectionPixelBufferInt[i]);
 			
 			pixelBufferByte[startOffset + currentWidth + currentHeight] = rgbiValue;
 		}
@@ -4665,11 +4665,11 @@ public final class VTAWTScreenCaptureProvider
 		{
 			return createWebQualityScreenCapture(drawPointer);
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_WORST)
+		else if (colorQuality == VT_COLOR_QUALITY_LOW)
 		{
 			return createWorstQualityScreenCapture(drawPointer);
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_SMALL)
+		else if (colorQuality == VT_COLOR_QUALITY_SIMPLE)
 		{
 			return createSmallQualityScreenCapture(drawPointer);
 		}
@@ -4681,7 +4681,7 @@ public final class VTAWTScreenCaptureProvider
 		{
 			return createExtraQualityScreenCapture(drawPointer);
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_SIMPLE)
+		else if (colorQuality == VT_COLOR_QUALITY_WORST)
 		{
 			return createSimpleQualityScreenCapture(drawPointer);
 		}
@@ -4712,11 +4712,11 @@ public final class VTAWTScreenCaptureProvider
 		{
 			return createWebQualityScreenCapture(drawPointer, area);
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_WORST)
+		else if (colorQuality == VT_COLOR_QUALITY_LOW)
 		{
 			return createWorstQualityScreenCapture(drawPointer, area);
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_SMALL)
+		else if (colorQuality == VT_COLOR_QUALITY_SIMPLE)
 		{
 			return createSmallQualityScreenCapture(drawPointer, area);
 		}
@@ -4728,7 +4728,7 @@ public final class VTAWTScreenCaptureProvider
 		{
 			return createExtraQualityScreenCapture(drawPointer, area);
 		}
-		else if (colorQuality == VT_COLOR_QUALITY_SIMPLE)
+		else if (colorQuality == VT_COLOR_QUALITY_WORST)
 		{
 			return createSimpleQualityScreenCapture(drawPointer, area);
 		}

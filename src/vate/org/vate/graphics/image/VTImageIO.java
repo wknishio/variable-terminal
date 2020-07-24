@@ -35,6 +35,8 @@ public final class VTImageIO
 	private static final IndexColorModel byteIndexed27ColorModel = VTIndexedColorModel.create27ColorModel();
 	private static final IndexColorModel byteIndexed16ColorModel = VTIndexedColorModel.create16ColorModel();
 	private static final IndexColorModel byteIndexed32ColorModel = VTIndexedColorModel.create32ColorModel();
+	private static final IndexColorModel byteIndexed8ColorModel = VTIndexedColorModel.create8ColorModel();
+
 	
 	//private static final IndexColorModel bytePacked4Bit16ColorModel = VTIndexedColorModel.createPacked4Bit16ColorModel();
 	
@@ -108,6 +110,16 @@ public final class VTImageIO
 					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
 					// (byte) 62);
 					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 1);
+					return image;
+				}
+				else if (colors == 8)
+				{
+					BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
+					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
+					// (byte) 129);
+					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
+					// (byte) 62);
+					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 0);
 					return image;
 				}
 				else if (colors == 32)
@@ -580,6 +592,10 @@ public final class VTImageIO
 				{
 					image = new BufferedImage(byteIndexed16ColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
 				}
+				else if (colors == 8)
+				{
+					image = new BufferedImage(byteIndexed8ColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
+				}
 				else if (colors == 32)
 				{
 					image = new BufferedImage(byteIndexed32ColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
@@ -626,6 +642,10 @@ public final class VTImageIO
 		else if (colors == 16)
 		{
 			Arrays.fill(buffer, (byte) 1);
+		}
+		else if (colors == 8)
+		{
+			Arrays.fill(buffer, (byte) 0);
 		}
 		else if (colors == 32)
 		{
@@ -692,6 +712,10 @@ public final class VTImageIO
 				else if (colors == 16)
 				{
 					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 1);
+				}
+				else if (colors == 8)
+				{
+					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 0);
 				}
 				else if (colors == 32)
 				{

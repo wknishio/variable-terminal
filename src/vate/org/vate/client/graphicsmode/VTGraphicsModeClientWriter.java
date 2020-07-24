@@ -838,14 +838,14 @@ public class VTGraphicsModeClientWriter implements Runnable
 				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_MEDIUM);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
-			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_WORST)
+			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_LOW)
 			{
-				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_WORST);
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_LOW);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
-			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SMALL)
+			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SIMPLE)
 			{
-				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_SMALL);
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_SIMPLE);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
 			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_GOOD)
@@ -858,14 +858,14 @@ public class VTGraphicsModeClientWriter implements Runnable
 				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_EXTRA);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
-			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SIMPLE)
+			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_WORST)
 			{
-				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_SIMPLE);
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_WORST);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
 			else
 			{
-				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_LOW);
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_NORMAL);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
 		}

@@ -91,15 +91,15 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
 						}
 						if (parsed[i].toUpperCase().contains("N"))
 						{
-							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_LOW);
+							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_NORMAL);
 						}
 						if (parsed[i].toUpperCase().contains("S"))
 						{
-							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SMALL);
+							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SIMPLE);
 						}
 						if (parsed[i].toUpperCase().contains("L"))
 						{
-							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SIMPLE);
+							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_LOW);
 						}
 						if (parsed[i].toUpperCase().contains("W"))
 						{
