@@ -20,6 +20,7 @@ package com.googlecode.lanterna.gui2;
 
 import com.googlecode.lanterna.Symbols;
 import com.googlecode.lanterna.TerminalPosition;
+import com.googlecode.lanterna.TerminalRectangle;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TerminalTextUtils;
 import com.googlecode.lanterna.graphics.ThemeDefinition;
@@ -134,5 +135,9 @@ public class FatWindowDecorationRenderer implements WindowDecorationRenderer {
 
     private boolean hasTitle(Window window) {
         return !(window.getTitle() == null || window.getTitle().trim().length() == 0);
+    }
+    
+    public TerminalRectangle getTitleBarRectangle(Window window) {
+        return new TerminalRectangle(0, 0, window.getDecoratedSize().getColumns(), getOffset(window).getRow());
     }
 }

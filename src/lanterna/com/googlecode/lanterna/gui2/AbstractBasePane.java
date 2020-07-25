@@ -18,6 +18,10 @@
  */
 package com.googlecode.lanterna.gui2;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.graphics.Theme;
@@ -26,10 +30,7 @@ import com.googlecode.lanterna.gui2.menu.MenuBar;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.input.MouseAction;
-
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
+import com.googlecode.lanterna.input.MouseActionType;
 
 /**
  * This abstract implementation of {@code BasePane} has the common code shared by all different concrete
@@ -44,6 +45,8 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
     private boolean strictFocusChange;
     private boolean enableDirectionBasedMovements;
     private Theme theme;
+    
+    private Interactable mouseDownForDrag = null;
 
     protected AbstractBasePane() {
         this.contentHolder = new ContentHolder();
@@ -55,12 +58,10 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
         this.theme = null;
     }
 
-    
     public boolean isInvalid() {
         return invalid || contentHolder.isInvalid();
     }
 
-    
     public void invalidate() {
         invalid = true;
 
@@ -68,17 +69,16 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
         contentHolder.invalidate();
     }
 
-    
     public void draw(TextGUIGraphics graphics) {
         graphics.applyThemeStyle(getTheme().getDefinition(Window.class).getNormal());
         graphics.fill(' ');
-        
+
         if(!interactableLookupMap.getSize().equals(graphics.getSize())) {
             interactableLookupMap = new InteractableLookupMap(graphics.getSize());
         } else {
             interactableLookupMap.reset();
         }
-        
+
         contentHolder.draw(graphics);
         contentHolder.updateLookupMap(interactableLookupMap);
         //interactableLookupMap.debug();
@@ -239,11 +239,30 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
            return false;
         }
         Interactable interactable = interactableLookupMap.getInteractableAt(localCoordinates);
+        if (mouseAction.isMouseDown()) {
+            mouseDownForDrag = interactable;
+        }
+        Interactable wasMouseDownForDrag = mouseDownForDrag;
+        if (mouseAction.isMouseUp()) {
+            mouseDownForDrag = null;
+        }
+        if (mouseAction.isMouseDrag() && mouseDownForDrag != null) {
+            return mouseDownForDrag.handleInput(mouseAction) == Result.HANDLED;
+        }
         if (interactable == null) {
            return false;
         }
+        if (mouseAction.isMouseUp()) {
+            // MouseUp only handled by same interactable as MouseDown
+            if (wasMouseDownForDrag == interactable) {
+                return interactable.handleInput(mouseAction) == Result.HANDLED;
+            }
+            // did not handleInput because mouse up was not on component mouse down was on
+            return false;
+        }
         return interactable.handleInput(mouseAction) == Result.HANDLED;
      }
+
     
     public Component getComponent() {
         return contentHolder.getComponent();
@@ -327,8 +346,9 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
     
     public synchronized void setTheme(Theme theme) {
         this.theme = theme;
+        invalidate();
     }
-    
+
     
     public MenuBar getMenuBar() {
         return contentHolder.getMenuBar();
@@ -352,7 +372,6 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
     }
 
     protected class ContentHolder extends AbstractComposite<Container> {
-    	
         private MenuBar menuBar;
 
         ContentHolder() {
@@ -379,23 +398,24 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
             return menuBar;
         }
 
-        
+        @Override
         public boolean isInvalid() {
             return super.isInvalid() || menuBar.isInvalid();
         }
 
-        
+        @Override
         public void invalidate() {
             super.invalidate();
             menuBar.invalidate();
         }
 
-        
+        @Override
         public void updateLookupMap(InteractableLookupMap interactableLookupMap) {
             super.updateLookupMap(interactableLookupMap);
             menuBar.updateLookupMap(interactableLookupMap);
         }
-        
+
+        @Override
         public void setComponent(Component component) {
             if(getComponent() == component) {
                 return;
@@ -418,12 +438,12 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
             return removed;
         }
 
-        
+        @Override
         public TextGUI getTextGUI() {
             return AbstractBasePane.this.getTextGUI();
         }
 
-        
+        @Override
         protected ComponentRenderer<Container> createDefaultRenderer() {
             return new ComponentRenderer<Container>() {
                 
@@ -437,13 +457,13 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
 
                 
                 public void drawComponent(TextGUIGraphics graphics, Container component) {
-                	if (!(menuBar instanceof EmptyMenuBar)) {
+                    if (!(menuBar instanceof EmptyMenuBar)) {
                         int menuBarHeight = menuBar.getPreferredSize().getRows();
                         TextGUIGraphics menuGraphics = graphics.newTextGraphics(TerminalPosition.TOP_LEFT_CORNER, graphics.getSize().withRows(menuBarHeight));
                         menuBar.draw(menuGraphics);
                         graphics = graphics.newTextGraphics(TerminalPosition.TOP_LEFT_CORNER.withRelativeRow(menuBarHeight), graphics.getSize().withRelativeRows(-menuBarHeight));
                     }
-                	
+
                     Component subComponent = getComponent();
                     if(subComponent == null) {
                         return;
@@ -453,37 +473,37 @@ public abstract class AbstractBasePane<T extends BasePane> implements BasePane {
             };
         }
 
-        
+        @Override
         public TerminalPosition toGlobal(TerminalPosition position) {
             return AbstractBasePane.this.toGlobal(position);
         }
 
-        
+        @Override
         public TerminalPosition toBasePane(TerminalPosition position) {
             return position;
         }
 
-        
+        @Override
         public BasePane getBasePane() {
             return AbstractBasePane.this;
         }
     }
-    
-   private static class EmptyMenuBar extends MenuBar {
-        
+
+    private static class EmptyMenuBar extends MenuBar {
+        @Override
         public boolean isInvalid() {
             return false;
         }
 
-        
+        @Override
         public synchronized void onAdded(Container container) {
         }
 
-        
+        @Override
         public synchronized void onRemoved(Container container) {
         }
         
-        
+        @Override
         public boolean isEmptyMenuBar() {
             return true;
         }

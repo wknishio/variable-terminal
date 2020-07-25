@@ -139,4 +139,8 @@ public class DefaultWindowDecorationRenderer implements WindowDecorationRenderer
     public TerminalPosition getOffset(Window window) {
         return OFFSET;
     }
+    
+    public TerminalRectangle getTitleBarRectangle(Window window) {
+        return new TerminalRectangle(0, 0, window.getDecoratedSize().getColumns(), getOffset(window).getRow());
+    }
 }

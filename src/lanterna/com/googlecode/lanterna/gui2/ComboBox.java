@@ -32,6 +32,8 @@ import com.googlecode.lanterna.graphics.Theme;
 import com.googlecode.lanterna.graphics.ThemeDefinition;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
+import com.googlecode.lanterna.input.MouseAction;
+import com.googlecode.lanterna.input.MouseActionType;
 
 /**
  * This is a simple combo box implementation that allows the user to select one out of multiple items through a
@@ -336,14 +338,15 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
         else {
             updateText(items.get(selectedIndex).toString());
         }
-        runOnGUIThreadIfExistsOtherwiseRunDirect(new Runnable() {
-            
-            public void run() {
-                for(Listener listener: listeners) {
-                    listener.onSelectionChanged(selectedIndex, oldSelection);
-                }
-            }
-        });
+        runOnGUIThreadIfExistsOtherwiseRunDirect(new Runnable()
+		{
+			public void run()
+			{
+			    for(Listener listener: listeners) {
+			        listener.onSelectionChanged(selectedIndex, oldSelection);
+			    }
+			}
+		});
         invalidate();
     }
 
@@ -419,7 +422,7 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
         return this;
     }
 
-    
+    @Override
     protected void afterEnterFocus(FocusChangeDirection direction, Interactable previouslyInFocus) {
         if(direction == FocusChangeDirection.RIGHT && !isReadOnly()) {
             dropDownFocused = false;
@@ -427,20 +430,19 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
         }
     }
 
-    
+    @Override
     protected synchronized void afterLeaveFocus(FocusChangeDirection direction, Interactable nextInFocus) {
         if(popupWindow != null) {
             popupWindow.close();
-            popupWindow = null;
         }
     }
 
-    
+    @Override
     protected InteractableRenderer<ComboBox<V>> createDefaultRenderer() {
         return new DefaultComboBoxRenderer<V>();
     }
 
-    
+    @Override
     public synchronized Result handleKeyStroke(KeyStroke keyStroke) {
         if(isReadOnly()) {
             return handleReadOnlyCBKeyStroke(keyStroke);
@@ -558,19 +560,20 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
         public PopupWindow() {
             setHints(Arrays.asList(
                     Hint.NO_FOCUS,
-                    Hint.FIXED_POSITION));
+                    Hint.FIXED_POSITION,
+                    Hint.MENU_POPUP));
             listBox = new ActionListBox(ComboBox.this.getSize().withRows(getItemCount()));
             for(int i = 0; i < getItemCount(); i++) {
                 V item = items.get(i);
                 final int index = i;
-                listBox.addItem(item.toString(), new Runnable() {
-                    
-                    public void run() {
-                        setSelectedIndex(index);
-                        close();
-                        popupWindow = null;
-                    }
-                });
+                listBox.addItem(item.toString(), new Runnable()
+				{
+					public void run()
+					{
+					    setSelectedIndex(index);
+					    close();
+					}
+				});
             }
             listBox.setSelectedIndex(getSelectedIndex());
             TerminalSize dropDownListPreferedSize = listBox.getPreferredSize();
@@ -580,16 +583,20 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
             }
             setComponent(listBox);
         }
+        @Override
+        public void close() {
+            super.close();
+            popupWindow = null;
+        }
 
-        
+        @Override
         public synchronized Theme getTheme() {
             return ComboBox.this.getTheme();
         }
-        
+        @Override
         public synchronized boolean handleInput(KeyStroke keyStroke) {
             if (keyStroke.getKeyType() == KeyType.Escape) {
                 close();
-                popupWindow = null;
                 return true;
             }
             return super.handleInput(keyStroke);

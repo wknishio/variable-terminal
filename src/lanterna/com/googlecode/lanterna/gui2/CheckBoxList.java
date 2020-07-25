@@ -25,6 +25,7 @@ import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.input.MouseAction;
 import com.googlecode.lanterna.input.MouseActionType;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -73,23 +74,23 @@ public class CheckBoxList<V> extends AbstractListBox<V, CheckBoxList<V>> {
         this.itemStatus = new ArrayList<Boolean>();
     }
 
-    
+    @Override
     protected ListItemRenderer<V,CheckBoxList<V>> createDefaultListItemRenderer() {
         return new CheckBoxListItemRenderer<V>();
     }
 
-    
+    @Override
     public synchronized CheckBoxList<V> clearItems() {
         itemStatus.clear();
         return super.clearItems();
     }
 
-    
+    @Override
     public CheckBoxList<V> addItem(V object) {
         return addItem(object, false);
     }
 
-    
+    @Override
     public synchronized V removeItem(int index) {
         V item = super.removeItem(index);
         itemStatus.remove(index);
@@ -145,7 +146,7 @@ public class CheckBoxList<V> extends AbstractListBox<V, CheckBoxList<V>> {
         setChecked(index, !isChecked(index));
         return self();
     }
-
+    
     /**
      * Programmatically sets the checked state of an item in the list box
      * @param object Object to set the checked state of
@@ -161,15 +162,19 @@ public class CheckBoxList<V> extends AbstractListBox<V, CheckBoxList<V>> {
     }
 
     private void setChecked(final int index, final boolean checked) {
+        if (!(0 <= index && index < itemStatus.size())) {
+            return;
+        }
         itemStatus.set(index, checked);
-        runOnGUIThreadIfExistsOtherwiseRunDirect(new Runnable() {
-            
-            public void run() {
-                for(Listener listener: listeners) {
-                    listener.onStatusChanged(index, checked);
-                }
-            }
-        });
+        runOnGUIThreadIfExistsOtherwiseRunDirect(new Runnable()
+		{
+			public void run()
+			{
+			    for(Listener listener: listeners) {
+			        listener.onStatusChanged(index, checked);
+			    }
+			}
+		});
     }
 
     /**
@@ -209,7 +214,7 @@ public class CheckBoxList<V> extends AbstractListBox<V, CheckBoxList<V>> {
         return this;
     }
 
-    
+    @Override
     public synchronized Result handleKeyStroke(KeyStroke keyStroke) {
         if (isKeyboardActivationStroke(keyStroke)) {
             toggleChecked(getSelectedIndex());
@@ -247,18 +252,19 @@ public class CheckBoxList<V> extends AbstractListBox<V, CheckBoxList<V>> {
         
         return super.handleKeyStroke(keyStroke);
     }
+
     /**
      * Default renderer for this component which is used unless overridden. The checked state is drawn on the left side
      * of the item label using a "[ ]" block filled with an X if the item has checked state on
      * @param <V> Type of items in the {@link CheckBoxList}
      */
     public static class CheckBoxListItemRenderer<V> extends ListItemRenderer<V,CheckBoxList<V>> {
-        
+        @Override
         public int getHotSpotPositionOnLine(int selectedIndex) {
             return 1;
         }
 
-        
+        @Override
         public String getLabel(CheckBoxList<V> listBox, int index, V item) {
             String check = " ";
             List<Boolean> itemStatus = listBox.itemStatus;
@@ -269,7 +275,7 @@ public class CheckBoxList<V> extends AbstractListBox<V, CheckBoxList<V>> {
             return "[" + check + "] " + text;
         }
 
-        
+        @Override
         public void drawItem(TextGUIGraphics graphics, CheckBoxList<V> listBox, int index, V item, boolean selected, boolean focused) {
             ThemeDefinition themeDefinition = listBox.getTheme().getDefinition(CheckBoxList.class);
             ThemeStyle itemStyle;

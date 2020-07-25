@@ -19,6 +19,7 @@
 package com.googlecode.lanterna.gui2;
 
 import com.googlecode.lanterna.TerminalPosition;
+import com.googlecode.lanterna.TerminalRectangle;
 import com.googlecode.lanterna.TerminalSize;
 
 /**
@@ -39,5 +40,9 @@ public class EmptyWindowDecorationRenderer implements WindowDecorationRenderer {
     
     public TerminalPosition getOffset(Window window) {
         return TerminalPosition.TOP_LEFT_CORNER;
+    }
+    
+    public TerminalRectangle getTitleBarRectangle(Window window) {
+        return new TerminalRectangle(0, 0, window.getDecoratedSize().getColumns(), getOffset(window).getRow());
     }
 }

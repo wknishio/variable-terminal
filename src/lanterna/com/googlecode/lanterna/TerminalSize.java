@@ -37,12 +37,10 @@ public class TerminalSize {
      * @param rows Height, in number of columns
      */
     public TerminalSize(int columns, int rows) {
-        if (columns < 0) {
-            throw new IllegalArgumentException("TerminalSize.columns cannot be less than 0!");
+        if (columns < 0 || rows < 0) {
+            throw new IllegalArgumentException("TerminalSize dimensions cannot be less than 0: [columns: " + columns + ", rows: " + rows + "]");
         }
-        if (rows < 0) {
-            throw new IllegalArgumentException("TerminalSize.rows cannot be less than 0!");
-        }
+        
         this.columns = columns;
         this.rows = rows;
     }
@@ -181,12 +179,12 @@ public class TerminalSize {
         return size;
     }
 
-    
+    @Override
     public String toString() {
         return "{" + columns + "x" + rows + "}";
     }
 
-    
+    @Override
     public boolean equals(Object obj) {
         if(this == obj) {
             return true;
@@ -200,7 +198,7 @@ public class TerminalSize {
                 && rows == other.rows;
     }
 
-    
+    @Override
     public int hashCode() {
         int hash = 5;
         hash = 53 * hash + this.columns;

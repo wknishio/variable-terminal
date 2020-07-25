@@ -19,10 +19,12 @@
 package com.googlecode.lanterna.gui2;
 
 import com.googlecode.lanterna.TerminalPosition;
+import com.googlecode.lanterna.TerminalRectangle;
+import com.googlecode.lanterna.gui2.menu.MenuBar;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.gui2.menu.MenuBar;
 import com.googlecode.lanterna.input.KeyType;
+
 import java.util.*;
 
 /**
@@ -119,7 +121,8 @@ public abstract class AbstractWindow extends AbstractBasePane<Window> implements
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
-    
+
+    @Override
     public void draw(TextGUIGraphics graphics) {
         if(!graphics.getSize().equals(lastKnownSize)) {
             getComponent().invalidate();
@@ -128,7 +131,7 @@ public abstract class AbstractWindow extends AbstractBasePane<Window> implements
         super.draw(graphics);
     }
 
-    
+    @Override
     public boolean handleInput(KeyStroke key) {
         boolean handled = super.handleInput(key);
         if(!handled && closeWindowWithEscape && key.getKeyType() == KeyType.Escape) {
@@ -138,22 +141,59 @@ public abstract class AbstractWindow extends AbstractBasePane<Window> implements
         return handled;
     }
 
+    /**
+     * @see Window#toGlobal()
+     */
     
+    @Deprecated
     public TerminalPosition toGlobal(TerminalPosition localPosition) {
+        return toGlobalFromContentRelative(localPosition);
+    }
+    
+    
+    public TerminalPosition toGlobalFromContentRelative(TerminalPosition contentLocalPosition) {
+        if(contentLocalPosition == null) {
+            return null;
+        }
+        return lastKnownPosition.withRelative(contentOffset.withRelative(contentLocalPosition));
+    }
+    
+    
+    @Deprecated
+    public TerminalPosition toGlobalFromDecoratedRelative(TerminalPosition localPosition) {
         if(localPosition == null) {
             return null;
         }
-        return lastKnownPosition.withRelative(contentOffset.withRelative(localPosition));
+        return lastKnownPosition.withRelative(localPosition);
     }
 
+    /**
+     * @see Window#fromGlobal()
+     */
     
+    @Deprecated
     public TerminalPosition fromGlobal(TerminalPosition globalPosition) {
+        return fromGlobalToContentRelative(globalPosition);
+    }
+    
+    
+    public TerminalPosition fromGlobalToContentRelative(TerminalPosition globalPosition) {
         if(globalPosition == null || lastKnownPosition == null) {
             return null;
         }
         return globalPosition.withRelative(
                 -lastKnownPosition.getColumn() - contentOffset.getColumn(),
                 -lastKnownPosition.getRow() - contentOffset.getRow());
+    }
+    
+    
+    public TerminalPosition fromGlobalToDecoratedRelative(TerminalPosition globalPosition) {
+        if(globalPosition == null || lastKnownPosition == null) {
+            return null;
+        }
+        return globalPosition.withRelative(
+                -lastKnownPosition.getColumn(),
+                -lastKnownPosition.getRow());
     }
 
     
@@ -227,16 +267,16 @@ public abstract class AbstractWindow extends AbstractBasePane<Window> implements
     }
 
     
+    @Deprecated
     public void setSize(TerminalSize size) {
         setSize(size, true);
     }
-    
+
     
     public void setFixedSize(TerminalSize size) {
         hints.add(Hint.FIXED_SIZE);
         setSize(size);
     }
-    
 
     private void setSize(TerminalSize size, boolean invalidate) {
         TerminalSize oldSize = this.lastKnownSize;
@@ -252,7 +292,7 @@ public abstract class AbstractWindow extends AbstractBasePane<Window> implements
             }
         }
     }
-    
+
     
     public final TerminalSize getDecoratedSize() {
         return lastKnownDecoratedSize;
@@ -285,4 +325,14 @@ public abstract class AbstractWindow extends AbstractBasePane<Window> implements
     }
 
     Window self() { return this; }
+    
+    /**
+     * Return the last known size of the window including window decoration and the window position as a TerminalRectangle.
+     * @return the decorated size and position of the window
+     */
+    public TerminalRectangle getBounds() {
+        TerminalPosition position = getPosition();
+        TerminalSize size = getDecoratedSize();
+        return new TerminalRectangle(position.getColumn(), position.getRow(), size.getColumns(), size.getRows());
+    }
 }
