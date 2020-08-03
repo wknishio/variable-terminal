@@ -77,33 +77,33 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
 						{
 							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_HIGH);
 						}
-						if (parsed[i].toUpperCase().contains("G"))
-						{
-							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_GOOD);
-						}
-						if (parsed[i].toUpperCase().contains("E"))
-						{
-							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_EXTRA);
-						}
+						//if (parsed[i].toUpperCase().contains("G"))
+						//{
+							//session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_GOOD);
+						//}
+						//if (parsed[i].toUpperCase().contains("E"))
+						//{
+							//session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_EXTRA);
+						//}
 						if (parsed[i].toUpperCase().contains("M"))
 						{
 							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_MEDIUM);
 						}
-						if (parsed[i].toUpperCase().contains("N"))
+						//if (parsed[i].toUpperCase().contains("N"))
+						//{
+							//session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_NORMAL);
+						//}
+						//if (parsed[i].toUpperCase().contains("S"))
+						//{
+							//session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SIMPLE);
+						//}
+						if (parsed[i].toUpperCase().contains("L"))
 						{
 							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_NORMAL);
 						}
-						if (parsed[i].toUpperCase().contains("S"))
-						{
-							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SIMPLE);
-						}
-						if (parsed[i].toUpperCase().contains("L"))
-						{
-							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_LOW);
-						}
 						if (parsed[i].toUpperCase().contains("W"))
 						{
-							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_WORST);
+							session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_LOW);
 						}
 					}
 					session.getScreenshotTask().startThread();
