@@ -1,5 +1,6 @@
 package org.vate.ping;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Queue;
@@ -65,149 +66,159 @@ public class VTNanoPingService extends VTTask
 		this.out = new VTLittleEndianOutputStream(out);
 	}
 	
+	private void client() throws IOException, InterruptedException
+	{
+		// wait first interval
+		// Thread.sleep(initial);
+		//first 2 cycles has no delays and are just to warmup
+		if (!stopped)
+		{
+			startNanoTime = System.nanoTime();
+			//startNanoTime = System.currentTimeMillis();
+			// send delay
+			out.writeLong(localNanoDelay);
+			out.flush();
+			// wait delay
+			remoteNanoDelay = in.readLong();
+			// end timer
+			endNanoTime = System.nanoTime();
+			//endNanoTime = System.currentTimeMillis();
+			if (endNanoTime >= startNanoTime)
+			{
+				localNanoDelay = endNanoTime - startNanoTime;
+			}					
+			// wait remote interval
+			
+			// wait delay
+			remoteNanoDelay = in.readLong();
+			// send delay
+			out.writeLong(localNanoDelay);
+			out.flush();
+		}
+		
+		if (!stopped)
+		{
+			startNanoTime = System.nanoTime();
+			//startNanoTime = System.currentTimeMillis();
+			// send delay
+			out.writeLong(localNanoDelay);
+			out.flush();
+			// wait delay
+			remoteNanoDelay = in.readLong();
+			// end timer
+			endNanoTime = System.nanoTime();
+			//endNanoTime = System.currentTimeMillis();
+			if (endNanoTime >= startNanoTime)
+			{
+				localNanoDelay = endNanoTime - startNanoTime;
+			}					
+			// wait remote interval
+			
+			// wait delay
+			remoteNanoDelay = in.readLong();
+			// send delay
+			out.writeLong(localNanoDelay);
+			out.flush();
+		}
+		
+		while (!stopped)
+		{
+			// start timer
+			startNanoTime = System.nanoTime();
+			//startNanoTime = System.currentTimeMillis();
+			// send delay
+			out.writeLong(localNanoDelay);
+			out.flush();
+			// wait delay
+			remoteNanoDelay = in.readLong();
+			// end timer
+			endNanoTime = System.nanoTime();
+			//endNanoTime = System.currentTimeMillis();
+			if (endNanoTime >= startNanoTime)
+			{
+				localNanoDelay = endNanoTime - startNanoTime;
+			}
+			for (VTNanoPingListener listener : listeners)
+			{
+				listener.pingObtained(localNanoDelay, remoteNanoDelay);
+			}
+			
+			// wait remote interval
+			
+			// wait delay
+			remoteNanoDelay = in.readLong();
+			// send delay
+			out.writeLong(localNanoDelay);
+			out.flush();
+			for (VTNanoPingListener listener : listeners)
+			{
+				listener.pingObtained(localNanoDelay, remoteNanoDelay);
+			}
+			
+			// wait local interval
+			synchronized (this)
+			{
+				this.wait(interval);
+			}
+		}
+	}
+	
+	private void server() throws IOException
+	{
+		while (!stopped)
+		{
+			// wait remote interval
+			
+			// wait delay
+			remoteNanoDelay = in.readLong();
+			// send delay
+			out.writeLong(localNanoDelay);
+			out.flush();
+			for (VTNanoPingListener listener : listeners)
+			{
+				listener.pingObtained(localNanoDelay, remoteNanoDelay);
+			}
+			
+			// wait local interval
+			//Thread.sleep(interval);
+			//synchronized (this)
+			//{
+				//this.wait(interval);
+			//}
+			
+			// start timer
+			startNanoTime = System.nanoTime();
+			//startNanoTime = System.currentTimeMillis();
+			// send delay
+			out.writeLong(localNanoDelay);
+			out.flush();
+			// wait delay
+			remoteNanoDelay = in.readLong();
+			// end timer
+			endNanoTime = System.nanoTime();
+			//endNanoTime = System.currentTimeMillis();
+			if (endNanoTime >= startNanoTime)
+			{
+				localNanoDelay = endNanoTime - startNanoTime;
+			}
+			for (VTNanoPingListener listener : listeners)
+			{
+				listener.pingObtained(localNanoDelay, remoteNanoDelay);
+			}
+		}
+	}
+	
 	public void run()
 	{
 		try
 		{
 			if (!server)
 			{
-				// wait first interval
-				// Thread.sleep(initial);
-				//first 2 cycles has no delays and are just to warmup
-				if (!stopped)
-				{
-					startNanoTime = System.nanoTime();
-					//startNanoTime = System.currentTimeMillis();
-					// send delay
-					out.writeLong(localNanoDelay);
-					out.flush();
-					// wait delay
-					remoteNanoDelay = in.readLong();
-					// end timer
-					endNanoTime = System.nanoTime();
-					//endNanoTime = System.currentTimeMillis();
-					if (endNanoTime >= startNanoTime)
-					{
-						localNanoDelay = endNanoTime - startNanoTime;
-					}					
-					// wait remote interval
-					
-					// wait delay
-					remoteNanoDelay = in.readLong();
-					// send delay
-					out.writeLong(localNanoDelay);
-					out.flush();
-				}
-				
-				if (!stopped)
-				{
-					startNanoTime = System.nanoTime();
-					//startNanoTime = System.currentTimeMillis();
-					// send delay
-					out.writeLong(localNanoDelay);
-					out.flush();
-					// wait delay
-					remoteNanoDelay = in.readLong();
-					// end timer
-					endNanoTime = System.nanoTime();
-					//endNanoTime = System.currentTimeMillis();
-					if (endNanoTime >= startNanoTime)
-					{
-						localNanoDelay = endNanoTime - startNanoTime;
-					}					
-					// wait remote interval
-					
-					// wait delay
-					remoteNanoDelay = in.readLong();
-					// send delay
-					out.writeLong(localNanoDelay);
-					out.flush();
-				}
-				
-				while (!stopped)
-				{
-					// start timer
-					startNanoTime = System.nanoTime();
-					//startNanoTime = System.currentTimeMillis();
-					// send delay
-					out.writeLong(localNanoDelay);
-					out.flush();
-					// wait delay
-					remoteNanoDelay = in.readLong();
-					// end timer
-					endNanoTime = System.nanoTime();
-					//endNanoTime = System.currentTimeMillis();
-					if (endNanoTime >= startNanoTime)
-					{
-						localNanoDelay = endNanoTime - startNanoTime;
-					}
-					for (VTNanoPingListener listener : listeners)
-					{
-						listener.pingObtained(localNanoDelay, remoteNanoDelay);
-					}
-					
-					// wait remote interval
-					
-					// wait delay
-					remoteNanoDelay = in.readLong();
-					// send delay
-					out.writeLong(localNanoDelay);
-					out.flush();
-					for (VTNanoPingListener listener : listeners)
-					{
-						listener.pingObtained(localNanoDelay, remoteNanoDelay);
-					}
-					
-					// wait local interval
-					synchronized (this)
-					{
-						this.wait(interval);
-					}
-				}
+				client();
 			}
 			else
 			{
-				while (!stopped)
-				{
-					// wait remote interval
-					
-					// wait delay
-					remoteNanoDelay = in.readLong();
-					// send delay
-					out.writeLong(localNanoDelay);
-					out.flush();
-					for (VTNanoPingListener listener : listeners)
-					{
-						listener.pingObtained(localNanoDelay, remoteNanoDelay);
-					}
-					
-					// wait local interval
-					//Thread.sleep(interval);
-					//synchronized (this)
-					//{
-						//this.wait(interval);
-					//}
-					
-					// start timer
-					startNanoTime = System.nanoTime();
-					//startNanoTime = System.currentTimeMillis();
-					// send delay
-					out.writeLong(localNanoDelay);
-					out.flush();
-					// wait delay
-					remoteNanoDelay = in.readLong();
-					// end timer
-					endNanoTime = System.nanoTime();
-					//endNanoTime = System.currentTimeMillis();
-					if (endNanoTime >= startNanoTime)
-					{
-						localNanoDelay = endNanoTime - startNanoTime;
-					}
-					for (VTNanoPingListener listener : listeners)
-					{
-						listener.pingObtained(localNanoDelay, remoteNanoDelay);
-					}
-				}
+				server();
 			}
 		}
 		catch (Throwable e)
