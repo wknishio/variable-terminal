@@ -191,6 +191,11 @@ public class VTServerSession
 		sessionResources.put(key, value);
 	}
 	
+	public Closeable removeSessionResource(String key)
+	{
+		return sessionResources.remove(key);
+	}
+	
 	public boolean setShellEncoding(String shellEncoding)
 	{
 		if (shellEncoding == null)

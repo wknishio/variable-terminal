@@ -102,6 +102,11 @@ public class VTClientSession
 		sessionResources.put(key, value);
 	}
 	
+	public Closeable removeSessionResource(String key)
+	{
+		return sessionResources.remove(key);
+	}
+	
 	public boolean isRunningAudio()
 	{
 		return runningAudio;

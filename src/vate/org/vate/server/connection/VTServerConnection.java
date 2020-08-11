@@ -146,7 +146,7 @@ public class VTServerConnection
 	private InputStream snappedImageDataInputStream;
 	private OutputStream snappedImageDataOutputStream;
 	
-	private boolean zstdAvailable;
+	//private boolean zstdAvailable;
 	
 	// private OutputStream bufferedGraphicsDeflatedImageOutputStream;
 	// private OutputStream bufferedGraphicsSnappedImageOutputStream;
@@ -1047,17 +1047,17 @@ public class VTServerConnection
 		{
 			
 		}
-		if (zstdAvailable)
-		{
-			try
-			{
-				deflatedImageDataOutputStream.close();
-			}
-			catch (Throwable t)
-			{
-				
-			}
-		}
+//		if (zstdAvailable)
+//		{
+//			try
+//			{
+//				deflatedImageDataOutputStream.close();
+//			}
+//			catch (Throwable t)
+//			{
+//				
+//			}
+//		}
 	}
 	
 	// public void resetDirectGraphicsModeStreams() throws IOException

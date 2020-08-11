@@ -140,7 +140,7 @@ public class VTClientConnection
 	private InputStream snappedImageDataInputStream;
 	private OutputStream snappedImageDataOutputStream;
 	
-	private boolean zstdAvailable;
+	//private boolean zstdAvailable;
 	
 	// private ZstdInputStream zstdImageInputStream;
 	
@@ -1034,17 +1034,17 @@ public class VTClientConnection
 		{
 			
 		}
-		if (zstdAvailable)
-		{
-			try
-			{
-				deflatedImageDataInputStream.close();
-			}
-			catch (Throwable t)
-			{
-				
-			}
-		}
+//		if (zstdAvailable)
+//		{
+//			try
+//			{
+//				deflatedImageDataInputStream.close();
+//			}
+//			catch (Throwable t)
+//			{
+//				
+//			}
+//		}
 	}
 	
 	// public void resetDirectGraphicsModeStreams() throws IOException
