@@ -14,6 +14,7 @@ import javax.imageio.stream.ImageInputStream;
 import org.vate.VT;
 import org.vate.client.connection.VTClientConnection;
 import org.vate.console.VTConsole;
+import org.vate.graphics.codec.VTQuadrupleOctalTreeFrameDifferenceCodecV10;
 import org.vate.graphics.codec.VTQuadrupleOctalTreeFrameDifferenceCodecV7;
 import org.vate.graphics.image.VTImageIO;
 import org.vate.stream.limit.VTLimitedInputStream;
@@ -38,7 +39,7 @@ public class VTGraphicsModeClientReader implements Runnable
 	private VTGraphicsModeClientSession session;
 	private VTClientConnection connection;
 	private VTGraphicsModeClientWriter writer;
-	private VTQuadrupleOctalTreeFrameDifferenceCodecV7 vtCustomCodec;
+	private VTQuadrupleOctalTreeFrameDifferenceCodecV10 vtCustomCodec;
 	private ImageReader currentImageReader;
 	private ImageReader pngImageReader;
 	private ImageReader jpegImageReader;
@@ -234,7 +235,7 @@ public class VTGraphicsModeClientReader implements Runnable
 			else
 			{
 				VTConsole.print("\nVT>Remote graphics link started!\nVT>");
-				vtCustomCodec = new VTQuadrupleOctalTreeFrameDifferenceCodecV7();
+				vtCustomCodec = new VTQuadrupleOctalTreeFrameDifferenceCodecV10();
 				//pngImageReader = ImageIO.getImageReadersByFormatName("PNG").next();
 				pngImageReader = new PngImageReader(new PngImageReaderSpi());
 				jpegImageReader = ImageIO.getImageReadersByFormatName("JPEG").next();

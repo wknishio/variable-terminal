@@ -47,6 +47,7 @@
 			<src path="src/rawconsoleinput"/>
 			<src path="src/snappy"/>
 			<src path="src/javapng"/>
+			<src path="src/aircompressor"/>
 			<classpath>
 				<fileset dir="lib">
 					<include name="**/*.jar"/>

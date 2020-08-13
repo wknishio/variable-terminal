@@ -22,7 +22,7 @@ import javax.imageio.stream.ImageOutputStream;
 
 import org.vate.VT;
 import org.vate.graphics.capture.VTAWTScreenCaptureProvider;
-import org.vate.graphics.codec.VTQuadrupleOctalTreeFrameDifferenceCodecV7;
+import org.vate.graphics.codec.VTQuadrupleOctalTreeFrameDifferenceCodecV10;
 import org.vate.graphics.image.VTImageDataUtils;
 import org.vate.graphics.image.VTImageIO;
 import org.vate.server.connection.VTServerConnection;
@@ -39,8 +39,8 @@ public class VTGraphicsModeServerWriter implements Runnable
 	private volatile boolean refreshInterrupted;
 	// private volatile boolean open;
 	private volatile boolean drawPointer;
-	private volatile boolean dynamicCoding;
-	private volatile boolean separatedCoding;
+	//private volatile boolean dynamicCoding;
+	//private volatile boolean separatedCoding;
 	private volatile int screenCaptureInterval;
 	private volatile int imageCoding;
 	private int lastImageCoding;
@@ -73,7 +73,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 	private VTAWTScreenCaptureProvider viewProvider;
 	private VTServerConnection connection;
 	private VTGraphicsModeServerSession session;
-	private VTQuadrupleOctalTreeFrameDifferenceCodecV7 vtCustomCodec;
+	private VTQuadrupleOctalTreeFrameDifferenceCodecV10 vtCustomCodec;
 	// private VTImageIO vtImageIO;
 	private Object screenCaptureIntervalSynchronizer;
 	private ImageWriter jpgWriter;
@@ -101,8 +101,8 @@ public class VTGraphicsModeServerWriter implements Runnable
 		// this.screenCaptureMode =
 		// VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_PARTIAL;
 		this.clearRequested = false;
-		this.dynamicCoding = false;
-		this.separatedCoding = true;
+		//this.dynamicCoding = false;
+		//this.separatedCoding = true;
 		this.screenCaptureIntervalSynchronizer = new Object();
 		// this.vtImageIO = new VTImageIO();
 		if (GraphicsEnvironment.isHeadless())
@@ -131,8 +131,8 @@ public class VTGraphicsModeServerWriter implements Runnable
 		// screenCaptureMode =
 		// VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_PARTIAL;
 		clearRequested = false;
-		dynamicCoding = false;
-		separatedCoding = true;
+		//dynamicCoding = false;
+		//separatedCoding = true;
 		// scaling = false;
 		lastWidth = 0;
 		lastHeight = 0;
@@ -309,15 +309,15 @@ public class VTGraphicsModeServerWriter implements Runnable
 	/* public void setScreenCaptureMode(int mode) { this.screenCaptureMode =
 	 * mode; } */
 	
-	public void setDynamicCoding(boolean dynamicCoding)
-	{
-		this.dynamicCoding = dynamicCoding;
-	}
+	//public void setDynamicCoding(boolean dynamicCoding)
+	//{
+		//this.dynamicCoding = dynamicCoding;
+	//}
 	
-	public void setSeparatedCoding(boolean separatedCoding)
-	{
-		this.separatedCoding = separatedCoding;
-	}
+	//public void setSeparatedCoding(boolean separatedCoding)
+	//{
+		//this.separatedCoding = separatedCoding;
+	//}
 	
 	public void setCaptureArea(Rectangle captureArea, double captureScale)
 	{
@@ -787,15 +787,15 @@ public class VTGraphicsModeServerWriter implements Runnable
 			connection.getGraphicsControlDataOutputStream().flush();
 			if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
 			{
-				vtCustomCodec.encodeFrame(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), dynamicCoding, separatedCoding, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+				vtCustomCodec.encodeFrame(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
 			}
 			else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
 			{
-				vtCustomCodec.encodeFrame(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), dynamicCoding, separatedCoding, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+				vtCustomCodec.encodeFrame(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
 			}
 			else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
 			{
-				vtCustomCodec.encodeFrame(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), dynamicCoding, separatedCoding, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+				vtCustomCodec.encodeFrame(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
 			}
 			// vtDifferenceCodec.encodeBufferedFrame(connection.getGraphicsSnappedImageDataOutputStream());
 			// imageOutputBuffer.writeTo(connection.getGraphicsSnappedImageDataOutputStream());
@@ -807,15 +807,15 @@ public class VTGraphicsModeServerWriter implements Runnable
 			connection.getGraphicsControlDataOutputStream().flush();
 			if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
 			{
-				vtCustomCodec.encodeFrame(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), dynamicCoding, separatedCoding, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+				vtCustomCodec.encodeFrame(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
 			}
 			else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
 			{
-				vtCustomCodec.encodeFrame(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), dynamicCoding, separatedCoding, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+				vtCustomCodec.encodeFrame(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
 			}
 			else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
 			{
-				vtCustomCodec.encodeFrame(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), dynamicCoding, separatedCoding, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+				vtCustomCodec.encodeFrame(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
 			}
 			// vtDifferenceCodec.encodeBufferedFrame(connection.getGraphicsDeflatedImageDataOutputStream());
 			// imageOutputBuffer.writeTo(connection.getGraphicsDeflatedImageDataOutputStream());
@@ -849,15 +849,15 @@ public class VTGraphicsModeServerWriter implements Runnable
 			connection.getGraphicsControlDataOutputStream().flush();
 			if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
 			{
-				vtCustomCodec.encodeFrame(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), dynamicCoding, separatedCoding, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+				vtCustomCodec.encodeFrame(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
 			}
 			else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
 			{
-				vtCustomCodec.encodeFrame(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), dynamicCoding, separatedCoding, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+				vtCustomCodec.encodeFrame(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
 			}
 			else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
 			{
-				vtCustomCodec.encodeFrame(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), dynamicCoding, separatedCoding, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+				vtCustomCodec.encodeFrame(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
 			}
 			connection.getGraphicsSnappedImageDataOutputStream().flush();
 		}
@@ -871,15 +871,15 @@ public class VTGraphicsModeServerWriter implements Runnable
 			connection.getGraphicsControlDataOutputStream().flush();
 			if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
 			{
-				vtCustomCodec.encodeFrame(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), dynamicCoding, separatedCoding, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+				vtCustomCodec.encodeFrame(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
 			}
 			else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
 			{
-				vtCustomCodec.encodeFrame(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), dynamicCoding, separatedCoding, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+				vtCustomCodec.encodeFrame(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
 			}
 			else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
 			{
-				vtCustomCodec.encodeFrame(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), dynamicCoding, separatedCoding, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+				vtCustomCodec.encodeFrame(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
 			}
 			connection.getGraphicsDeflatedImageDataOutputStream().flush();
 		}
@@ -926,7 +926,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 	{
 		pngEncoder = new PngEncoder(PngEncoder.COLOR_INDEXED, PngEncoder.BEST_SPEED);
 		pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
-		vtCustomCodec = new VTQuadrupleOctalTreeFrameDifferenceCodecV7();
+		vtCustomCodec = new VTQuadrupleOctalTreeFrameDifferenceCodecV10();
 		// vtCustomCodec.setPixelDataBuffer(imageOutputBuffer);
 		// vtDifferenceCodec.setPixelDataBuffer(imageOutputBuffer);
 		try

@@ -371,22 +371,22 @@ public class VTGraphicsModeServerReader implements Runnable
 					}
 					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_CODING_DIRECT:
 					{
-						writer.setDynamicCoding(false);
+						//writer.setDynamicCoding(false);
 						break;
 					}
 					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_CODING_DYNAMIC:
 					{
-						writer.setDynamicCoding(true);
+						//writer.setDynamicCoding(true);
 						break;
 					}
 					case VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENCE_MIXED_CODING:
 					{
-						writer.setSeparatedCoding(false);
+						//writer.setSeparatedCoding(false);
 						break;
 					}
 					case VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENCE_SEPARATED_CODING:
 					{
-						writer.setSeparatedCoding(true);
+						//writer.setSeparatedCoding(true);
 						break;
 					}
 					case VT.VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_DEFAULT:
