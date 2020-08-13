@@ -14,6 +14,9 @@ import org.vate.stream.filter.VTBufferedOutputStream;
 import com.jcraft.jzlib.DeflaterOutputStream;
 import com.jcraft.jzlib.InflaterInputStream;
 import com.jcraft.jzlib.JZlib;
+
+import io.airlift.compress.zstd.ZstdCompressor;
+import io.airlift.compress.zstd.ZstdDecompressor;
 import net.jpountz.lz4.LZ4BlockInputStream;
 import net.jpountz.lz4.LZ4BlockOutputStream;
 import net.jpountz.lz4.LZ4Factory;
@@ -22,6 +25,18 @@ import net.jpountz.xxhash.XXHashFactory;
 @SuppressWarnings({ "unused", "deprecation" })
 public class VTCompressorSelector
 {
+	public static OutputStream createCompatibleZstdOutputStream(OutputStream out)
+	{
+		OutputStream stream = new VTBufferedOutputStream(new VTAirliftOutputStream(new VTBufferedOutputStream(out, VT.VT_STANDARD_DATA_BUFFER_SIZE), new ZstdCompressor()), VT.VT_STANDARD_DATA_BUFFER_SIZE);
+		return stream;
+	}
+	
+	public static InputStream createCompatibleZstdInputStream(InputStream in)
+	{
+		InputStream stream = new VTAirliftInputStream(in, new ZstdDecompressor());
+		return stream;
+	}
+	
 	public static OutputStream createCompatibleSyncFlushDeflaterOutputStream(OutputStream out)
 	{
 		//return out;
@@ -30,7 +45,7 @@ public class VTCompressorSelector
 			java.util.zip.Deflater javaDeflater = new java.util.zip.Deflater(Deflater.BEST_SPEED, true);
 			javaDeflater.setStrategy(Deflater.FILTERED);
 			javaDeflater.setLevel(Deflater.BEST_SPEED);
-			VTSyncFlushDeflaterOutputStream javaDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(out, javaDeflater, VT.VT_STANDARD_DATA_BUFFER_SIZE);
+			VTSyncFlushDeflaterOutputStream javaDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(new VTBufferedOutputStream(out, VT.VT_STANDARD_DATA_BUFFER_SIZE), javaDeflater, VT.VT_STANDARD_DATA_BUFFER_SIZE);
 			return new VTBufferedOutputStream(javaDeflaterOutputStream, VT.VT_STANDARD_DATA_BUFFER_SIZE);
 		}
 		catch (Throwable t)
@@ -38,7 +53,7 @@ public class VTCompressorSelector
 			DeflaterOutputStream jzlibDeflater;
 			try
 			{
-				jzlibDeflater = new com.jcraft.jzlib.DeflaterOutputStream(out, VT.VT_STANDARD_DATA_BUFFER_SIZE, JZlib.Z_BEST_SPEED, true);
+				jzlibDeflater = new com.jcraft.jzlib.DeflaterOutputStream(new VTBufferedOutputStream(out, VT.VT_STANDARD_DATA_BUFFER_SIZE), VT.VT_STANDARD_DATA_BUFFER_SIZE, JZlib.Z_BEST_SPEED, true);
 				jzlibDeflater.getDeflater().params(JZlib.Z_BEST_SPEED, JZlib.Z_FILTERED);
 				jzlibDeflater.setSyncFlush(true);
 				return new VTBufferedOutputStream(jzlibDeflater, VT.VT_STANDARD_DATA_BUFFER_SIZE);
@@ -107,4 +122,5 @@ public class VTCompressorSelector
 		return null;
 	}
 
+	
 }

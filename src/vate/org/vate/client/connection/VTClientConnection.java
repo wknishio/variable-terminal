@@ -28,6 +28,7 @@ import org.vate.VT;
 import org.vate.console.VTConsole;
 import org.vate.security.VTArrayComparator;
 import org.vate.security.VTCryptographicEngine;
+import org.vate.stream.compress.VTCompressorSelector;
 import org.vate.stream.endian.VTLittleEndianInputStream;
 import org.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vate.stream.filter.VTBufferedOutputStream;
@@ -35,8 +36,6 @@ import org.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;
 import org.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;
 import org.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
-
-import com.jcraft.jzlib.InflaterInputStream;
 
 public class VTClientConnection
 {
@@ -749,7 +748,10 @@ public class VTClientConnection
 		// InflaterInputStream(graphicsDeflatedImageInputStream, VT.VT_IO_BUFFFER_SIZE,
 		// true));
 		// }
-		deflatedImageDataInputStream = (new InflaterInputStream(graphicsDeflatedImageInputStream, VT.VT_STANDARD_DATA_BUFFER_SIZE, true));
+		//deflatedImageDataInputStream = (new InflaterInputStream(graphicsDeflatedImageInputStream, VT.VT_STANDARD_DATA_BUFFER_SIZE, true));
+		
+		//deflatedImageDataInputStream = VTCompressorSelector.createCompatibleSyncFlushInflaterInputStream(graphicsDeflatedImageInputStream);
+		deflatedImageDataInputStream = VTCompressorSelector.createCompatibleZstdInputStream(graphicsDeflatedImageInputStream);
 		deflatedImageDataOutputStream = graphicsDeflatedImageOutputStream;
 		
 		snappedImageDataInputStream = (new BufferedInputStream(new LZ4BlockInputStream(graphicsSnappedImageInputStream, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), VT.VT_STANDARD_DATA_BUFFER_SIZE));
@@ -1085,7 +1087,10 @@ public class VTClientConnection
 		// InflaterInputStream(graphicsDeflatedImageInputStream, VT.VT_IO_BUFFFER_SIZE,
 		// true));
 		// }
-		deflatedImageDataInputStream = (new InflaterInputStream(graphicsDeflatedImageInputStream, VT.VT_STANDARD_DATA_BUFFER_SIZE, true));
+		//deflatedImageDataInputStream = (new InflaterInputStream(graphicsDeflatedImageInputStream, VT.VT_STANDARD_DATA_BUFFER_SIZE, true));
+		
+		//deflatedImageDataInputStream = VTCompressorSelector.createCompatibleSyncFlushInflaterInputStream(graphicsDeflatedImageInputStream);
+		deflatedImageDataInputStream = VTCompressorSelector.createCompatibleZstdInputStream(graphicsDeflatedImageInputStream);
 		
 		snappedImageDataOutputStream = (graphicsSnappedImageOutputStream);
 		snappedImageDataInputStream = (new BufferedInputStream(new LZ4BlockInputStream(graphicsSnappedImageInputStream, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), VT.VT_STANDARD_DATA_BUFFER_SIZE));

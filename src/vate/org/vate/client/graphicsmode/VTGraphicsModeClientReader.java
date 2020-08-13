@@ -15,7 +15,6 @@ import org.vate.VT;
 import org.vate.client.connection.VTClientConnection;
 import org.vate.console.VTConsole;
 import org.vate.graphics.codec.VTQuadrupleOctalTreeFrameDifferenceCodecV10;
-import org.vate.graphics.codec.VTQuadrupleOctalTreeFrameDifferenceCodecV7;
 import org.vate.graphics.image.VTImageIO;
 import org.vate.stream.limit.VTLimitedInputStream;
 import com.sixlegs.png.iio.*;
