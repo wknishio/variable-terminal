@@ -145,10 +145,11 @@ public class VTClipboardTransferTask extends VTTask
 						else if (transferable.isDataFlavorSupported(DataFlavor.stringFlavor))
 						{
 							out.write(VT.VT_GRAPHICS_MODE_CLIPBOARD_TRANSFER_TYPE_TEXT);
-							byte[] text = ((String) transferable.getTransferData(DataFlavor.stringFlavor)).getBytes("UTF-8");
-							out.writeInt(text.length);
-							out.write(text);
+							byte[] data = ((String) transferable.getTransferData(DataFlavor.stringFlavor)).getBytes("UTF-8");
+							out.writeInt(data.length);
+							out.write(data);
 							out.flush();
+							//System.out.println("sent text:" + new String(data, "UTF-8"));
 							// writer.write(text);
 							// writer.flush();
 						}
@@ -173,10 +174,10 @@ public class VTClipboardTransferTask extends VTTask
 								}
 								fileList.deleteCharAt(fileList.length() - 1);
 							}
-							byte[] text = fileList.toString().getBytes("UTF-8");
+							byte[] data = fileList.toString().getBytes("UTF-8");
 							out.write(VT.VT_GRAPHICS_MODE_CLIPBOARD_TRANSFER_TYPE_TEXT);
-							out.writeInt(text.length);
-							out.write(text);
+							out.writeInt(data.length);
+							out.write(data);
 							out.flush();
 						}
 						else
@@ -213,7 +214,8 @@ public class VTClipboardTransferTask extends VTTask
 							int length = in.readInt();
 							byte[] data = new byte[length];
 							in.readFully(data);
-							systemClipboard.setContents(new StringSelection(new String(data, 0, data.length, "UTF-8")), null);
+							//System.out.println("received text:" + new String(data, "UTF-8"));
+							systemClipboard.setContents(new StringSelection(new String(data, "UTF-8")), null);
 						}
 						else if (type == VT.VT_GRAPHICS_MODE_CLIPBOARD_TRANSFER_TYPE_IMAGE)
 						{

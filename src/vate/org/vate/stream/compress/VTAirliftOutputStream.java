@@ -33,19 +33,15 @@ public class VTAirliftOutputStream extends OutputStream
 	
 	private void writeBlock(byte[] data, int off, int len) throws IOException
 	{
-		//System.out.println("writeBlock()");
-		//System.out.println("decompressed = " + len);
 		int max = compressor.maxCompressedLength(len);
 		if (output.length < max)
 		{
 			output = new byte[max];
 		}
 		int compressed = compressor.compress(data, off, len, output, 0, max);
-		//System.out.println("compressed = " + compressed);
 		out.writeInt(compressed);
 		out.writeInt(len);
 		out.write(output, 0, compressed);
-		//out.flush();
 	}
 	
 	public synchronized void flush() throws IOException

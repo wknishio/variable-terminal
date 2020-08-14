@@ -13,10 +13,7 @@ public class VTAirliftInputStream extends InputStream
 	private Decompressor decompressor;
 	private VTLittleEndianInputStream in;
 	private byte[] input = new byte[1];
-	//private byte[] output = new byte[1];
 	private VTByteArrayInputStream stream = new VTByteArrayInputStream(new byte[]{});
-	//private volatile int index = 0;
-	//private volatile int available = 0;
 	
 	public VTAirliftInputStream(InputStream in, Decompressor decompressor)
 	{
@@ -39,7 +36,6 @@ public class VTAirliftInputStream extends InputStream
 		{
 			return stream.read(data, off, len);
 		}
-		System.out.println("EOF detected");
 		return -1;
 	}
 
@@ -53,17 +49,13 @@ public class VTAirliftInputStream extends InputStream
 		{
 			return stream.read();
 		}
-		System.out.println("EOF detected");
 		return -1;
 	}
 	
 	private void readBlock() throws IOException
 	{
-		//System.out.println("readBlock()");
 		int compressed = in.readInt();
 		int decompressed = in.readInt();
-		//System.out.println("decompressed = " + decompressed);
-		//System.out.println("compressed = " + compressed);
 		if (input.length < compressed)
 		{
 			input = new byte[compressed];
@@ -75,10 +67,6 @@ public class VTAirliftInputStream extends InputStream
 		in.readFully(input, 0, compressed);
 		stream.count(decompressor.decompress(input, 0, compressed, stream.buf(), 0, decompressed));
 		stream.pos(0);
-		//System.out.println("available = " + stream.count());
-		//System.out.println("data = " + Arrays.toString(output));
-		//index = 0;
-		//return available;
 	}
 	
 	public synchronized void close() throws IOException
