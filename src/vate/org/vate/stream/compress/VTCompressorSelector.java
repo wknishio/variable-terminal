@@ -47,7 +47,7 @@ public class VTCompressorSelector
 			java.util.zip.Deflater javaDeflater = new java.util.zip.Deflater(Deflater.BEST_SPEED, true);
 			javaDeflater.setStrategy(Deflater.FILTERED);
 			javaDeflater.setLevel(Deflater.BEST_SPEED);
-			VTSyncFlushDeflaterOutputStream javaDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(out, javaDeflater, VT.VT_STANDARD_DATA_BUFFER_SIZE);
+			VTSyncFlushDeflaterOutputStream javaDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(new VTBufferedOutputStream(out, VT.VT_STANDARD_DATA_BUFFER_SIZE), javaDeflater, VT.VT_STANDARD_DATA_BUFFER_SIZE);
 			return new VTBufferedOutputStream(javaDeflaterOutputStream, VT.VT_STANDARD_DATA_BUFFER_SIZE);
 		}
 		catch (Throwable t)
@@ -55,7 +55,7 @@ public class VTCompressorSelector
 			DeflaterOutputStream jzlibDeflater;
 			try
 			{
-				jzlibDeflater = new com.jcraft.jzlib.DeflaterOutputStream(out, VT.VT_STANDARD_DATA_BUFFER_SIZE, JZlib.Z_BEST_SPEED, true);
+				jzlibDeflater = new com.jcraft.jzlib.DeflaterOutputStream(new VTBufferedOutputStream(out, VT.VT_STANDARD_DATA_BUFFER_SIZE), VT.VT_STANDARD_DATA_BUFFER_SIZE, JZlib.Z_BEST_SPEED, true);
 				jzlibDeflater.getDeflater().params(JZlib.Z_BEST_SPEED, JZlib.Z_FILTERED);
 				jzlibDeflater.setSyncFlush(true);
 				return new VTBufferedOutputStream(jzlibDeflater, VT.VT_STANDARD_DATA_BUFFER_SIZE);

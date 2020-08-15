@@ -754,7 +754,7 @@ public class VTClientConnection
 		//deflatedImageDataInputStream = (new InflaterInputStream(graphicsDeflatedImageInputStream, VT.VT_STANDARD_DATA_BUFFER_SIZE, true));
 		
 		//deflatedImageDataInputStream = VTCompressorSelector.createCompatibleSyncFlushInflaterInputStream(graphicsDeflatedImageInputStream);
-		deflatedImageDataInputStream = VTCompressorSelector.createCompatibleZstdInputStream(graphicsDeflatedImageInputStream);
+		deflatedImageDataInputStream = VTCompressorSelector.createCompatibleSyncFlushInflaterInputStream(graphicsDeflatedImageInputStream);
 		deflatedImageDataOutputStream = graphicsDeflatedImageOutputStream;
 		
 		snappedImageDataInputStream = (new BufferedInputStream(new LZ4BlockInputStream(graphicsSnappedImageInputStream, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), VT.VT_STANDARD_DATA_BUFFER_SIZE));
@@ -776,11 +776,11 @@ public class VTClientConnection
 //			clipboardDataOutputStream = (new VTBufferedOutputStream(jzlibClipDeflater, VT.VT_IO_BUFFFER_SIZE));
 //		}
 		//clipboardDataOutputStream = new VTBufferedOutputStream(new LZ4BlockOutputStream(graphicsClipboardOutputStream, VT.VT_STANDARD_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), VT.VT_STANDARD_DATA_BUFFER_SIZE);
-		clipboardDataOutputStream = VTCompressorSelector.createCompatibleZstdOutputStream(graphicsClipboardOutputStream);
+		clipboardDataOutputStream = VTCompressorSelector.createCompatibleSyncFlushDeflaterOutputStream(graphicsClipboardOutputStream);
 		//clipboardDataInputStream = new BufferedInputStream(new InflaterInputStream(graphicsClipboardInputStream, VT.VT_IO_BUFFFER_SIZE, true));
 		
 		//clipboardDataInputStream = new BufferedInputStream(new LZ4BlockInputStream(graphicsClipboardInputStream, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), VT.VT_STANDARD_DATA_BUFFER_SIZE);		
-		clipboardDataInputStream = VTCompressorSelector.createCompatibleZstdInputStream(graphicsClipboardInputStream);
+		clipboardDataInputStream = VTCompressorSelector.createCompatibleSyncFlushInflaterInputStream(graphicsClipboardInputStream);
 		
 		fileTransferControlDataInputStream = new VTLittleEndianInputStream(new BufferedInputStream(fileTransferControlInputStream));
 		fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(new BufferedOutputStream(fileTransferControlOutputStream));
@@ -1096,7 +1096,7 @@ public class VTClientConnection
 		//deflatedImageDataInputStream = (new InflaterInputStream(graphicsDeflatedImageInputStream, VT.VT_STANDARD_DATA_BUFFER_SIZE, true));
 		
 		//deflatedImageDataInputStream = VTCompressorSelector.createCompatibleSyncFlushInflaterInputStream(graphicsDeflatedImageInputStream);
-		deflatedImageDataInputStream = VTCompressorSelector.createCompatibleZstdInputStream(graphicsDeflatedImageInputStream);
+		deflatedImageDataInputStream = VTCompressorSelector.createCompatibleSyncFlushInflaterInputStream(graphicsDeflatedImageInputStream);
 		
 		snappedImageDataOutputStream = (graphicsSnappedImageOutputStream);
 		snappedImageDataInputStream = (new BufferedInputStream(new LZ4BlockInputStream(graphicsSnappedImageInputStream, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), VT.VT_STANDARD_DATA_BUFFER_SIZE));
@@ -1125,11 +1125,11 @@ public class VTClientConnection
 //			clipboardDataOutputStream = (new VTBufferedOutputStream(jzlibClipDeflater, VT.VT_IO_BUFFFER_SIZE));
 //		}
 		//clipboardDataOutputStream = new VTBufferedOutputStream(new LZ4BlockOutputStream(graphicsClipboardOutputStream, VT.VT_STANDARD_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), VT.VT_STANDARD_DATA_BUFFER_SIZE);
-		clipboardDataOutputStream = VTCompressorSelector.createCompatibleZstdOutputStream(graphicsClipboardOutputStream);
+		clipboardDataOutputStream = VTCompressorSelector.createCompatibleSyncFlushDeflaterOutputStream(graphicsClipboardOutputStream);
 		
 		//clipboardDataInputStream = new BufferedInputStream(new InflaterInputStream(graphicsClipboardInputStream, VT.VT_IO_BUFFFER_SIZE, true));
 		//clipboardDataInputStream = new BufferedInputStream(new LZ4BlockInputStream(graphicsClipboardInputStream, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), VT.VT_STANDARD_DATA_BUFFER_SIZE);
-		clipboardDataInputStream = VTCompressorSelector.createCompatibleZstdInputStream(graphicsClipboardInputStream);
+		clipboardDataInputStream = VTCompressorSelector.createCompatibleSyncFlushInflaterInputStream(graphicsClipboardInputStream);
 	}
 	
 	public void resetFileTransferStreams() throws IOException

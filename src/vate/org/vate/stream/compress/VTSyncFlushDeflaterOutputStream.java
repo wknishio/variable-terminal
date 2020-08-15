@@ -22,4 +22,17 @@ public class VTSyncFlushDeflaterOutputStream extends DeflaterOutputStream
 		//out.write(buf, 0, len);
 		//out.flush();
 	}
+	
+	public void flush() throws IOException {
+        if (!def.finished()) {
+            int len = 0;
+            while ((len = def.deflate(buf, 0, buf.length, Deflater.SYNC_FLUSH)) > 0)
+            {
+                out.write(buf, 0, len);
+                if (len < buf.length)
+                    break;
+            }
+        }
+        out.flush();
+    }
 }

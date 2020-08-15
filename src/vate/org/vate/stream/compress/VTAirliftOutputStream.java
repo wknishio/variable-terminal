@@ -41,6 +41,8 @@ public class VTAirliftOutputStream extends OutputStream
 		int compressed = compressor.compress(data, off, len, output, 0, max);
 		out.writeInt(compressed);
 		out.writeInt(len);
+		//System.out.println("compressed:" + compressed);
+		//System.out.println("unconpressed:" + len);
 		out.write(output, 0, compressed);
 	}
 	
