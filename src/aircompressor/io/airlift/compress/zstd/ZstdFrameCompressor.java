@@ -47,6 +47,7 @@ class ZstdFrameCompressor
 
     // the maximum table log allowed for literal encoding per RFC 8478, section 4.2.1
     private static final int MAX_HUFFMAN_TABLE_LOG = 11;
+    
 
     private ZstdFrameCompressor()
     {
@@ -135,24 +136,23 @@ class ZstdFrameCompressor
         return SIZE_OF_INT;
     }
 
-    public static int compress(Object inputBase, long inputAddress, long inputLimit, Object outputBase, long outputAddress, long outputLimit, int compressionLevel)
+    public static int compress(Object inputBase, long inputAddress, long inputLimit, Object outputBase, long outputAddress, long outputLimit, CompressionParameters parameters, CompressionContext context)
     {
         int inputSize = (int) (inputLimit - inputAddress);
 
-        CompressionParameters parameters = CompressionParameters.compute(compressionLevel, inputSize);
         //CompressionParameters parameters = CompressionParameters.compute(compressionLevel, 1024 * 32);
 
         long output = outputAddress;
 
         output += writeMagic(outputBase, output, outputLimit);
         output += writeFrameHeader(outputBase, output, outputLimit, inputSize, 1 << parameters.getWindowLog());
-        output += compressFrame(inputBase, inputAddress, inputLimit, outputBase, output, outputLimit, parameters);
+        output += compressFrame(inputBase, inputAddress, inputLimit, outputBase, output, outputLimit, parameters, context);
         output += writeChecksum(outputBase, output, outputLimit, inputBase, inputAddress, inputLimit);
 
         return (int) (output - outputAddress);
     }
 
-    private static int compressFrame(Object inputBase, long inputAddress, long inputLimit, Object outputBase, long outputAddress, long outputLimit, CompressionParameters parameters)
+    private static int compressFrame(Object inputBase, long inputAddress, long inputLimit, Object outputBase, long outputAddress, long outputLimit, CompressionParameters parameters, CompressionContext context)
     {
         int windowSize = 1 << parameters.getWindowLog(); // TODO: store window size in parameters directly?
         int blockSize = Math.min(MAX_BLOCK_SIZE, windowSize);
@@ -163,7 +163,7 @@ class ZstdFrameCompressor
         long output = outputAddress;
         long input = inputAddress;
 
-        CompressionContext context = new CompressionContext(parameters, inputAddress, remaining);
+        //CompressionContext context = new CompressionContext(parameters, inputAddress, remaining);
 
         do {
             checkArgument(outputSize >= SIZE_OF_BLOCK_HEADER + MIN_BLOCK_SIZE, "Output buffer too small");

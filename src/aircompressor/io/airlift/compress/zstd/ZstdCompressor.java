@@ -24,6 +24,9 @@ import static io.airlift.compress.CompatConsts.ARRAY_BYTE_BASE_OFFSET;
 public class ZstdCompressor
         implements Compressor
 {
+	
+	//private CompressionParameters parameters = null;
+	//private CompressionContext context = null;
     
     public int maxCompressedLength(int uncompressedSize)
     {
@@ -41,14 +44,19 @@ public class ZstdCompressor
     {
         long inputAddress = ARRAY_BYTE_BASE_OFFSET + inputOffset;
         long outputAddress = ARRAY_BYTE_BASE_OFFSET + outputOffset;
-
-        return ZstdFrameCompressor.compress(input, inputAddress, inputAddress + inputLength, output, outputAddress, outputAddress + maxOutputLength, CompressionParameters.DEFAULT_COMPRESSION_LEVEL);
+        
+        CompressionParameters parameters = CompressionParameters.compute(CompressionParameters.DEFAULT_COMPRESSION_LEVEL, (int) (inputLength - inputAddress));
+        CompressionContext context = new CompressionContext(parameters, 0, (int) (inputLength - inputAddress));
+        
+        return ZstdFrameCompressor.compress(input, inputAddress, inputAddress + inputLength, output, outputAddress, outputAddress + maxOutputLength, parameters, context);
         //return ZstdFrameCompressor.compress(input, inputAddress, inputAddress + inputLength, output, outputAddress, outputAddress + maxOutputLength, 1);
     }
 
     
     public void compress(ByteBuffer input, ByteBuffer output)
     {
+    	
+    	
         Object inputBase;
         long inputAddress;
         long inputLimit;
@@ -85,10 +93,14 @@ public class ZstdCompressor
             throw new IllegalArgumentException("Unsupported output ByteBuffer implementation " + output.getClass().getName());
         }
 
+        CompressionParameters parameters = CompressionParameters.compute(CompressionParameters.DEFAULT_COMPRESSION_LEVEL, (int) (inputLimit - inputAddress));
+        CompressionContext context = new CompressionContext(parameters, 0, (int) (inputLimit - inputAddress));
+        
         // HACK: Assure JVM does not collect Slice wrappers while compressing, since the
         // collection may trigger freeing of the underlying memory resulting in a segfault
         // There is no other known way to signal to the JVM that an object should not be
         // collected in a block, and technically, the JVM is allowed to eliminate these locks.
+                
         synchronized (input) {
             synchronized (output) {
                 int written = ZstdFrameCompressor.compress(
@@ -98,7 +110,9 @@ public class ZstdCompressor
                         outputBase,
                         outputAddress,
                         outputLimit,
-                        CompressionParameters.DEFAULT_COMPRESSION_LEVEL);
+                        parameters,
+                        context
+                        );
                 output.position(output.position() + written);
             }
         }

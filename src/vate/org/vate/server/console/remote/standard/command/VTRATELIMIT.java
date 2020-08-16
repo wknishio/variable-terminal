@@ -38,9 +38,9 @@ public class VTRATELIMIT extends VTServerStandardRemoteConsoleCommandProcessor
 				{
 					rate = 0;
 				}
-				else if (rate < ((1024 + 8) * 8))
+				else if (rate < ((1024 + 8) * 4))
 				{
-					rate = ((1024 + 8) * 8);
+					rate = ((1024 + 8) * 4);
 				}
 				connection.setRateInBytesPerSecond(rate);
 				if (rate > 0)
@@ -69,9 +69,9 @@ public class VTRATELIMIT extends VTServerStandardRemoteConsoleCommandProcessor
 				{
 					rate = 0;
 				}
-				else if (rate < ((1024 + 8) * 8))
+				else if (rate < ((1024 + 8) * 4))
 				{
-					rate = ((1024 + 8) * 8);
+					rate = ((1024 + 8) * 4);
 				}
 				if (!parsed[2].toUpperCase().startsWith("U"))
 				{
