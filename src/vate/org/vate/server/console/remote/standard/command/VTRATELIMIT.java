@@ -1,5 +1,6 @@
 package org.vate.server.console.remote.standard.command;
 
+import org.vate.VT;
 import org.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
 public class VTRATELIMIT extends VTServerStandardRemoteConsoleCommandProcessor
@@ -38,9 +39,9 @@ public class VTRATELIMIT extends VTServerStandardRemoteConsoleCommandProcessor
 				{
 					rate = 0;
 				}
-				else if (rate < ((1024 + 8) * 4))
+				else if (rate < ((VT.VT_NETWORK_PACKET_SIZE) + 8) * 2)
 				{
-					rate = ((1024 + 8) * 4);
+					rate = ((VT.VT_NETWORK_PACKET_SIZE) + 8) * 2;
 				}
 				connection.setRateInBytesPerSecond(rate);
 				if (rate > 0)
@@ -69,9 +70,9 @@ public class VTRATELIMIT extends VTServerStandardRemoteConsoleCommandProcessor
 				{
 					rate = 0;
 				}
-				else if (rate < ((1024 + 8) * 4))
+				else if (rate < ((VT.VT_NETWORK_PACKET_SIZE) + 8) * 2)
 				{
-					rate = ((1024 + 8) * 4);
+					rate = ((VT.VT_NETWORK_PACKET_SIZE) + 8) * 2;
 				}
 				if (!parsed[2].toUpperCase().startsWith("U"))
 				{

@@ -834,7 +834,7 @@ public final class VTImageIO
 		left = position > 0 ? pixelData[position - 1] & 0xff : 0;
 		top = position >= width ? pixelData[position - width] & 0xff : 0;
 		diag = position - 1 >= width ? pixelData[position - 1 - width] & 0xff : 0;
-		pixelData[position] = (byte) (in.readByte() + Math.max(Math.min(left, top), Math.min(Math.max(left, top), left + top - diag)));
+		pixelData[position] = (byte) (in.readUnsignedByte() + Math.max(Math.min(left, top), Math.min(Math.max(left, top), left + top - diag)));
 		// pixelData[position] = (byte) (in.readByte());
 	}
 	

@@ -63,8 +63,7 @@ public class VTPipedDecompressor extends OutputStream
 		//int available = 0;
 		while ((circularBuffer.getInputStream().available()) > 0)
 		{
-			int readed = in.read(buffer, 0, bufferSize);
-			out.write(buffer, 0, readed);
+			out.write(buffer, 0, in.read(buffer, 0, bufferSize));
 			out.flush();
 		}
 		//System.out.println("compressed data:" + len);

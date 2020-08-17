@@ -169,8 +169,8 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 		// int pred = Math.max(Math.min(left, top), Math.min(Math.max(left,
 		// top), left +
 		// top - diag));
-		newPixelData[position] = (byte) (in.readByte() + Math.max(Math.min(left, top), Math.min(Math.max(left, top), left + top - diag)));
-		// newPixelData[position] = (byte) in.readByte();
+		newPixelData[position] = (byte) (in.readUnsignedByte() + Math.max(Math.min(left, top), Math.min(Math.max(left, top), left + top - diag)));
+		// newPixelData[position] = (byte) in.readUnsignedByte();
 	}
 	
 	private static final void decodePixelDirect(final VTLittleEndianInputStream in, final short[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
@@ -770,7 +770,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 	private final void decodeMacroblockDirectSeparated(final VTLittleEndianInputStream in, final byte[] newPixelData, final int size, final int offset, final int areaWidth) throws IOException
 	{
 		// Read macroblock difference map data
-		d1 = in.readByte();
+		d1 = in.readUnsignedByte();
 		c1 = 1;
 		s1 = y1;
 		// If macroblock has changes
@@ -1433,7 +1433,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 	private final void decodeMacroblockDirectSeparated(final VTLittleEndianInputStream in, final short[] newPixelData, final int size, final int offset, final int areaWidth) throws IOException
 	{
 		// Read macroblock difference map data
-		d1 = in.readByte();
+		d1 = in.readUnsignedByte();
 		c1 = 1;
 		s1 = y1;
 		// If macroblock has changes
@@ -2096,7 +2096,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 	private final void decodeMacroblockDirectSeparated(final VTLittleEndianInputStream in, final int[] newPixelData, final int size, final int offset, final int areaWidth) throws IOException
 	{
 		// Read macroblock difference map data
-		d1 = in.readByte();
+		d1 = in.readUnsignedByte();
 		c1 = 1;
 		s1 = y1;
 		// If macroblock has changes
@@ -2759,7 +2759,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 	private final void decodeMacroblockDirectSeparated(final VTLittleEndianInputStream in, final long[] newPixelData, final int size, final int offset, final int areaWidth) throws IOException
 	{
 		// Read macroblock difference map data
-		d1 = in.readByte();
+		d1 = in.readUnsignedByte();
 		c1 = 1;
 		s1 = y1;
 		// If macroblock has changes
@@ -2978,7 +2978,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 		// size = pixelNumber * elementsPerPixel;
 		// int size = pixelNumber;
 		lin.setIntputStream(in);
-		//int type = lin.readByte();
+		//int type = lin.readUnsignedByte();
 		int size = lin.readInt();
 		int offset = lin.readInt();
 		int areaWidth = lin.readInt();
@@ -3124,7 +3124,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 		// size = pixelNumber * elementsPerPixel;
 		// size = pixelNumber;
 		lin.setIntputStream(in);
-		//int type = lin.readByte();
+		//int type = lin.readUnsignedByte();
 		int size = lin.readInt();
 		int offset = lin.readInt();
 		int areaWidth = lin.readInt();
@@ -3270,7 +3270,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 		// size = pixelNumber * elementsPerPixel;
 		// size = pixelNumber;
 		lin.setIntputStream(in);
-		//int type = lin.readByte();
+		//int type = lin.readUnsignedByte();
 		int size = lin.readInt();
 		int offset = lin.readInt();
 		int areaWidth = lin.readInt();
@@ -3416,7 +3416,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 		// size = pixelNumber * elementsPerPixel;
 		// size = pixelNumber;
 		lin.setIntputStream(in);
-		int type = lin.readByte();
+		int type = lin.readUnsignedByte();
 		int size = lin.readInt();
 		int offset = lin.readInt();
 		int areaWidth = lin.readInt();

@@ -158,12 +158,12 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 	 * diag; left = x > 0 ? newPixelData[position - 1] : 0; top = y > 0 ?
 	 * newPixelData[position - width] : 0; diag = x > 0 && y > 0 ?
 	 * newPixelData[position - 1 - width] : 0; newPixelData[position] = (byte)
-	 * (in.readByte() + Math.max(Math.min(left, top), Math.min(Math.max(left,
+	 * (in.readUnsignedByte() + Math.max(Math.min(left, top), Math.min(Math.max(left,
 	 * top), diag))); } private static final void decodePixelDynamic(final
 	 * VTLittleEndianInputStream in, final byte[] newPixelData, final int
 	 * position, final int x, final int y, final int width, int mask, int bits)
 	 * throws IOException { if ((bits & mask) == 0) { return; }
-	 * newPixelData[position] ^= (byte) (in.readByte()); } private static final
+	 * newPixelData[position] ^= (byte) (in.readUnsignedByte()); } private static final
 	 * void decodePixelDirect(final VTLittleEndianInputStream in, final short[]
 	 * newPixelData, final int position, final int x, final int y, final int
 	 * width, int mask, int bits) throws IOException { if ((bits & mask) == 0) {
@@ -4514,7 +4514,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		// pixelNumber = width * height;
 		// pixelDataLength = pixelNumber * elementsPerPixel;
 		// int pixelDataLength = pixelNumber;
-		int type = in.readByte();
+		int type = in.readUnsignedByte();
 		int limit = in.readInt();
 		int offset = in.readInt();
 		int areaWidth = in.readInt();
@@ -4543,7 +4543,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		for (;;)
 		{
 			// Read macroblock difference map data
-			d1 = in.readByte();
+			d1 = in.readUnsignedByte();
 			// If macroblock has changes
 			if (d1 > 0)
 			{
@@ -4554,7 +4554,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 					if ((d1 & (c1)) != 0)
 					{
 						// Read macroblock scanline difference map data
-						d2 = in.readByte();
+						d2 = in.readUnsignedByte();
 						// For each microblock
 						for (c2 = 1;; c2 <<= 1)
 						{
@@ -4562,7 +4562,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 							if ((d2 & (c2)) != 0)
 							{
 								// Read microblock difference map data
-								d3 = in.readByte();
+								d3 = in.readUnsignedByte();
 								c3 = 1;
 								switch (y1 + microblockStepY <= pixelDataLength ? 8 : l3)
 								{
@@ -4570,7 +4570,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -4582,7 +4582,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4595,7 +4595,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4608,7 +4608,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4621,7 +4621,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4634,7 +4634,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4647,7 +4647,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4660,7 +4660,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4673,7 +4673,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -4686,7 +4686,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -4698,7 +4698,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4711,7 +4711,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4724,7 +4724,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4737,7 +4737,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4750,7 +4750,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4763,7 +4763,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4776,7 +4776,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4789,7 +4789,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -4802,7 +4802,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -4814,7 +4814,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4827,7 +4827,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4840,7 +4840,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4853,7 +4853,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4866,7 +4866,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4879,7 +4879,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4892,7 +4892,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4905,7 +4905,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -4918,7 +4918,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -4930,7 +4930,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4943,7 +4943,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4956,7 +4956,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4969,7 +4969,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4982,7 +4982,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -4995,7 +4995,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5008,7 +5008,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5021,7 +5021,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -5034,7 +5034,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -5046,7 +5046,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5059,7 +5059,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5072,7 +5072,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5085,7 +5085,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5098,7 +5098,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5111,7 +5111,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5124,7 +5124,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5137,7 +5137,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -5150,7 +5150,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -5162,7 +5162,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5175,7 +5175,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5188,7 +5188,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5201,7 +5201,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5214,7 +5214,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5227,7 +5227,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5240,7 +5240,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5253,7 +5253,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -5266,7 +5266,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -5278,7 +5278,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5291,7 +5291,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5304,7 +5304,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5317,7 +5317,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5330,7 +5330,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5343,7 +5343,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5356,7 +5356,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5369,7 +5369,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -5382,7 +5382,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -5394,7 +5394,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5407,7 +5407,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5420,7 +5420,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5433,7 +5433,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5446,7 +5446,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5459,7 +5459,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5472,7 +5472,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5485,7 +5485,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -5594,7 +5594,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		for (;;)
 		{
 			// Read macroblock difference map data
-			d1 = in.readByte();
+			d1 = in.readUnsignedByte();
 			// If macroblock has changes
 			if (d1 > 0)
 			{
@@ -5641,7 +5641,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5654,7 +5654,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5667,7 +5667,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5680,7 +5680,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5693,7 +5693,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5706,7 +5706,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5719,7 +5719,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5732,7 +5732,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -5757,7 +5757,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5770,7 +5770,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5783,7 +5783,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5796,7 +5796,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5809,7 +5809,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5822,7 +5822,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5835,7 +5835,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5848,7 +5848,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -5873,7 +5873,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5886,7 +5886,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5899,7 +5899,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5912,7 +5912,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5925,7 +5925,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5938,7 +5938,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5951,7 +5951,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -5964,7 +5964,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -5989,7 +5989,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6002,7 +6002,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6015,7 +6015,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6028,7 +6028,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6041,7 +6041,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6054,7 +6054,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6067,7 +6067,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6080,7 +6080,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -6105,7 +6105,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6118,7 +6118,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6131,7 +6131,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6144,7 +6144,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6157,7 +6157,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6170,7 +6170,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6183,7 +6183,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6196,7 +6196,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -6221,7 +6221,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6234,7 +6234,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6247,7 +6247,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6260,7 +6260,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6273,7 +6273,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6286,7 +6286,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6299,7 +6299,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6312,7 +6312,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -6337,7 +6337,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6350,7 +6350,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6363,7 +6363,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6376,7 +6376,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6389,7 +6389,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6402,7 +6402,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6415,7 +6415,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6428,7 +6428,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -6453,7 +6453,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6466,7 +6466,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6479,7 +6479,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6492,7 +6492,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6505,7 +6505,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6518,7 +6518,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6531,7 +6531,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6544,7 +6544,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 														bleft = x1 > 0 ? newPixelData[p1 - 1] : 0;
 														btop = y1 > 0 ? newPixelData[p1 - pixelStepY] : 0;
 														bdiag = x1 > 0 && y1 > 0 ? newPixelData[p1 - 1 - pixelStepY] : 0;
-														newPixelData[p1] = (byte) (in.readByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
+														newPixelData[p1] = (byte) (in.readUnsignedByte() + Math.max(Math.min(bleft, btop), Math.min(Math.max(bleft, btop), bdiag)));
 													}
 												}
 											}
@@ -6653,7 +6653,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		for (;;)
 		{
 			// Read macroblock difference map data
-			d1 = in.readByte();
+			d1 = in.readUnsignedByte();
 			// If macroblock has changes
 			if (d1 > 0)
 			{
@@ -6664,7 +6664,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 					if ((d1 & (c1)) != 0)
 					{
 						// Read macroblock scanline difference map data
-						d2 = in.readByte();
+						d2 = in.readUnsignedByte();
 						// For each microblock
 						for (c2 = 1;; c2 <<= 1)
 						{
@@ -6672,7 +6672,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 							if ((d2 & (c2)) != 0)
 							{
 								// Read microblock difference map data
-								d3 = in.readByte();
+								d3 = in.readUnsignedByte();
 								c3 = 1;
 								switch (y1 + microblockStepY <= pixelDataLength ? 8 : l3)
 								{
@@ -6680,7 +6680,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -6689,7 +6689,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6699,7 +6699,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6709,7 +6709,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6719,7 +6719,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6729,7 +6729,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6739,7 +6739,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6749,7 +6749,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6759,7 +6759,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -6772,7 +6772,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -6781,7 +6781,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6791,7 +6791,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6801,7 +6801,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6811,7 +6811,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6821,7 +6821,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6831,7 +6831,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6841,7 +6841,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6851,7 +6851,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -6864,7 +6864,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -6873,7 +6873,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6883,7 +6883,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6893,7 +6893,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6903,7 +6903,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6913,7 +6913,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6923,7 +6923,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6933,7 +6933,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6943,7 +6943,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -6956,7 +6956,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -6965,7 +6965,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6975,7 +6975,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6985,7 +6985,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -6995,7 +6995,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7005,7 +7005,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7015,7 +7015,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7025,7 +7025,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7035,7 +7035,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -7048,7 +7048,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -7057,7 +7057,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7067,7 +7067,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7077,7 +7077,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7087,7 +7087,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7097,7 +7097,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7107,7 +7107,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7117,7 +7117,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7127,7 +7127,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -7140,7 +7140,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -7149,7 +7149,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7159,7 +7159,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7169,7 +7169,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7179,7 +7179,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7189,7 +7189,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7199,7 +7199,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7209,7 +7209,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7219,7 +7219,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -7232,7 +7232,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -7241,7 +7241,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7251,7 +7251,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7261,7 +7261,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7271,7 +7271,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7281,7 +7281,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7291,7 +7291,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7301,7 +7301,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7311,7 +7311,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -7324,7 +7324,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -7333,7 +7333,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7343,7 +7343,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7353,7 +7353,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7363,7 +7363,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7373,7 +7373,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7383,7 +7383,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7393,7 +7393,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7403,7 +7403,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -7512,7 +7512,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		for (;;)
 		{
 			// Read macroblock difference map data
-			d1 = in.readByte();
+			d1 = in.readUnsignedByte();
 			// If macroblock has changes
 			if (d1 > 0)
 			{
@@ -7556,7 +7556,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7566,7 +7566,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7576,7 +7576,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7586,7 +7586,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7596,7 +7596,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7606,7 +7606,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7616,7 +7616,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7626,7 +7626,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -7648,7 +7648,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7658,7 +7658,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7668,7 +7668,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7678,7 +7678,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7688,7 +7688,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7698,7 +7698,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7708,7 +7708,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7718,7 +7718,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -7740,7 +7740,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7750,7 +7750,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7760,7 +7760,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7770,7 +7770,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7780,7 +7780,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7790,7 +7790,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7800,7 +7800,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7810,7 +7810,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -7832,7 +7832,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7842,7 +7842,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7852,7 +7852,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7862,7 +7862,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7872,7 +7872,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7882,7 +7882,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7892,7 +7892,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7902,7 +7902,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -7924,7 +7924,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7934,7 +7934,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7944,7 +7944,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7954,7 +7954,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7964,7 +7964,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7974,7 +7974,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7984,7 +7984,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -7994,7 +7994,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -8016,7 +8016,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8026,7 +8026,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8036,7 +8036,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8046,7 +8046,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8056,7 +8056,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8066,7 +8066,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8076,7 +8076,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8086,7 +8086,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -8108,7 +8108,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8118,7 +8118,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8128,7 +8128,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8138,7 +8138,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8148,7 +8148,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8158,7 +8158,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8168,7 +8168,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8178,7 +8178,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -8200,7 +8200,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8210,7 +8210,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8220,7 +8220,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8230,7 +8230,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8240,7 +8240,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8250,7 +8250,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8260,7 +8260,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 													c4 <<= 1;
 													p1 += pixelStepX;
@@ -8270,7 +8270,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 												{
 													if ((d4 & (c4)) != 0)
 													{
-														newPixelData[p1] ^= (byte) (in.readByte());
+														newPixelData[p1] ^= (byte) (in.readUnsignedByte());
 													}
 												}
 											}
@@ -12686,7 +12686,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		// pixelNumber = width * height;
 		// pixelDataLength = pixelNumber * elementsPerPixel;
 		// pixelDataLength = pixelNumber;
-		int type = in.readByte();
+		int type = in.readUnsignedByte();
 		int limit = in.readInt();
 		int offset = in.readInt();
 		int areaWidth = in.readInt();
@@ -12715,7 +12715,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		for (;;)
 		{
 			// Read macroblock difference map data
-			d1 = in.readByte();
+			d1 = in.readUnsignedByte();
 			// If macroblock has changes
 			if (d1 > 0)
 			{
@@ -12726,7 +12726,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 					if ((d1 & (c1)) != 0)
 					{
 						// Read macroblock scanline difference map data
-						d2 = in.readByte();
+						d2 = in.readUnsignedByte();
 						// For each microblock
 						for (c2 = 1;; c2 <<= 1)
 						{
@@ -12734,7 +12734,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 							if ((d2 & (c2)) != 0)
 							{
 								// Read microblock difference map data
-								d3 = in.readByte();
+								d3 = in.readUnsignedByte();
 								c3 = 1;
 								switch (y1 + microblockStepY <= pixelDataLength ? 8 : l3)
 								{
@@ -12742,7 +12742,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -12858,7 +12858,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -12974,7 +12974,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -13090,7 +13090,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -13206,7 +13206,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -13322,7 +13322,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -13438,7 +13438,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -13554,7 +13554,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -13766,7 +13766,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		for (;;)
 		{
 			// Read macroblock difference map data
-			d1 = in.readByte();
+			d1 = in.readUnsignedByte();
 			// If macroblock has changes
 			if (d1 > 0)
 			{
@@ -14825,7 +14825,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		for (;;)
 		{
 			// Read macroblock difference map data
-			d1 = in.readByte();
+			d1 = in.readUnsignedByte();
 			// If macroblock has changes
 			if (d1 > 0)
 			{
@@ -14836,7 +14836,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 					if ((d1 & (c1)) != 0)
 					{
 						// Read macroblock scanline difference map data
-						d2 = in.readByte();
+						d2 = in.readUnsignedByte();
 						// For each microblock
 						for (c2 = 1;; c2 <<= 1)
 						{
@@ -14844,7 +14844,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 							if ((d2 & (c2)) != 0)
 							{
 								// Read microblock difference map data
-								d3 = in.readByte();
+								d3 = in.readUnsignedByte();
 								c3 = 1;
 								switch (y1 + microblockStepY <= pixelDataLength ? 8 : l3)
 								{
@@ -14852,7 +14852,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -14944,7 +14944,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -15036,7 +15036,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -15128,7 +15128,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -15220,7 +15220,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -15312,7 +15312,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -15404,7 +15404,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -15496,7 +15496,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -15684,7 +15684,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		for (;;)
 		{
 			// Read macroblock difference map data
-			d1 = in.readByte();
+			d1 = in.readUnsignedByte();
 			// If macroblock has changes
 			if (d1 > 0)
 			{
@@ -20857,7 +20857,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		// pixelNumber = width * height;
 		// pixelDataLength = pixelNumber * elementsPerPixel;
 		// pixelDataLength = pixelNumber;
-		int type = in.readByte();
+		int type = in.readUnsignedByte();
 		int limit = in.readInt();
 		int offset = in.readInt();
 		int areaWidth = in.readInt();
@@ -20886,7 +20886,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		for (;;)
 		{
 			// Read macroblock difference map data
-			d1 = in.readByte();
+			d1 = in.readUnsignedByte();
 			// If macroblock has changes
 			if (d1 > 0)
 			{
@@ -20897,7 +20897,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 					if ((d1 & (c1)) != 0)
 					{
 						// Read macroblock scanline difference map data
-						d2 = in.readByte();
+						d2 = in.readUnsignedByte();
 						// For each microblock
 						for (c2 = 1;; c2 <<= 1)
 						{
@@ -20905,7 +20905,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 							if ((d2 & (c2)) != 0)
 							{
 								// Read microblock difference map data
-								d3 = in.readByte();
+								d3 = in.readUnsignedByte();
 								c3 = 1;
 								switch (y1 + microblockStepY <= pixelDataLength ? 8 : l3)
 								{
@@ -20913,7 +20913,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -21029,7 +21029,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -21145,7 +21145,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -21261,7 +21261,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -21377,7 +21377,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -21493,7 +21493,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -21609,7 +21609,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -21725,7 +21725,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -21937,7 +21937,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		for (;;)
 		{
 			// Read macroblock difference map data
-			d1 = in.readByte();
+			d1 = in.readUnsignedByte();
 			// If macroblock has changes
 			if (d1 > 0)
 			{
@@ -22995,7 +22995,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		for (;;)
 		{
 			// Read macroblock difference map data
-			d1 = in.readByte();
+			d1 = in.readUnsignedByte();
 			// If macroblock has changes
 			if (d1 > 0)
 			{
@@ -23006,7 +23006,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 					if ((d1 & (c1)) != 0)
 					{
 						// Read macroblock scanline difference map data
-						d2 = in.readByte();
+						d2 = in.readUnsignedByte();
 						// For each microblock
 						for (c2 = 1;; c2 <<= 1)
 						{
@@ -23014,7 +23014,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 							if ((d2 & (c2)) != 0)
 							{
 								// Read microblock difference map data
-								d3 = in.readByte();
+								d3 = in.readUnsignedByte();
 								c3 = 1;
 								switch (y1 + microblockStepY <= pixelDataLength ? 8 : l3)
 								{
@@ -23022,7 +23022,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -23114,7 +23114,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -23206,7 +23206,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -23298,7 +23298,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -23390,7 +23390,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -23482,7 +23482,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -23574,7 +23574,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -23666,7 +23666,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 									{
 										if ((d3 & (c3)) != 0)
 										{
-											d4 = in.readByte();
+											d4 = in.readUnsignedByte();
 											c4 = 1;
 											p1 = offset + x1 + y1;
 											switch ((x1 + microblockStepX) - areaWidth)
@@ -23854,7 +23854,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV5
 		for (;;)
 		{
 			// Read macroblock difference map data
-			d1 = in.readByte();
+			d1 = in.readUnsignedByte();
 			// If macroblock has changes
 			if (d1 > 0)
 			{

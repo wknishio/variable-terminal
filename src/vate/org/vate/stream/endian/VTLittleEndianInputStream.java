@@ -1,10 +1,11 @@
 package org.vate.stream.endian;
 
+import java.io.DataInput;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class VTLittleEndianInputStream extends InputStream
+public class VTLittleEndianInputStream extends InputStream implements DataInput
 {
 	private byte[] shortBuffer;
 	private byte[] ushortBuffer;
@@ -65,14 +66,14 @@ public class VTLittleEndianInputStream extends InputStream
 		return in.read() != 0;
 	}
 	
-	public int readByte() throws IOException
+	public byte readByte() throws IOException
 	{
 		int b = in.read();
 		if (b == -1)
 		{
 			throw new EOFException();
 		}
-		return b;
+		return (byte)(b);
 	}
 	
 	public short readShort() throws IOException
@@ -117,7 +118,7 @@ public class VTLittleEndianInputStream extends InputStream
 		return (((long) (longBuffer[0] & 0xFF)) | ((long) (longBuffer[1] & 0xFF)) << 8 | ((long) (longBuffer[2] & 0xFF)) << 16 | ((long) (longBuffer[3] & 0xFF)) << 24 | ((long) (longBuffer[4] & 0xFF)) << 32 | ((long) (longBuffer[5] & 0xFF)) << 40 | ((long) (longBuffer[6] & 0xFF)) << 48 | ((long) (longBuffer[7] & 0xFF)) << 56);
 	}
 	
-	public float readFloat() throws Exception
+	public float readFloat() throws IOException
 	{
 		return Float.intBitsToFloat(readInt());
 	}
@@ -149,5 +150,30 @@ public class VTLittleEndianInputStream extends InputStream
 			}
 			total += readed;
 		}
+	}
+
+	public int skipBytes(int n) throws IOException
+	{
+		return (int) in.skip(n);
+	}
+
+	public int readUnsignedByte() throws IOException
+	{
+		int b = in.read();
+		if (b == -1)
+		{
+			throw new EOFException();
+		}
+		return b;
+	}
+
+	public String readLine() throws IOException
+	{
+		throw new IOException("not implemented");
+	}
+
+	public String readUTF() throws IOException
+	{
+		throw new IOException("not implemented");
 	}
 }

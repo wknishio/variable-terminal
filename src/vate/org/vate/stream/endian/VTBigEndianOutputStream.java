@@ -1,9 +1,10 @@
 package org.vate.stream.endian;
 
+import java.io.DataOutput;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class VTBigEndianOutputStream extends OutputStream
+public class VTBigEndianOutputStream extends OutputStream implements DataOutput
 {
 	private byte[] ushortBuffer;
 	private byte[] shortBuffer;
@@ -110,7 +111,7 @@ public class VTBigEndianOutputStream extends OutputStream
 		out.write(longBuffer);
 	}
 	
-	public void writeFloat(float f) throws Exception
+	public void writeFloat(float f) throws IOException
 	{
 		writeInt(Float.floatToRawIntBits(f));
 	}
@@ -118,5 +119,35 @@ public class VTBigEndianOutputStream extends OutputStream
 	public void writeDouble(double d) throws IOException
 	{
 		writeLong(Double.doubleToRawLongBits(d));
+	}
+
+	public void writeByte(int v) throws IOException
+	{
+		write(v);
+	}
+
+	public void writeShort(int v) throws IOException
+	{
+		writeUnsignedShort(v);
+	}
+
+	public void writeChar(int v) throws IOException
+	{
+		writeUnsignedShort(v);
+	}
+
+	public void writeBytes(String s) throws IOException
+	{
+		throw new IOException("not implemented");
+	}
+
+	public void writeChars(String s) throws IOException
+	{
+		throw new IOException("not implemented");
+	}
+
+	public void writeUTF(String s) throws IOException
+	{
+		throw new IOException("not implemented");
 	}
 }
