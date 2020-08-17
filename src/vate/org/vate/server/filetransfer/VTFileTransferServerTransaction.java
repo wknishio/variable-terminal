@@ -9,12 +9,10 @@ import java.util.zip.CheckedInputStream;
 import java.util.zip.Checksum;
 
 import org.vate.VT;
+import org.vate.stream.compress.VTCompressorSelector;
 
 import com.martiansoftware.jsap.CommandLineTokenizer;
 
-import net.jpountz.lz4.LZ4BlockInputStream;
-import net.jpountz.lz4.LZ4BlockOutputStream;
-import net.jpountz.lz4.LZ4Factory;
 import net.jpountz.xxhash.XXHashFactory;
 
 public class VTFileTransferServerTransaction implements Runnable
@@ -1676,7 +1674,8 @@ public class VTFileTransferServerTransaction implements Runnable
 						// fileTransferRemoteInputStream = new
 						// SnappyFramedInputStream(session.getServer().getConnection().getFileTransferDataInputStream(),
 						// false);
-						fileTransferRemoteInputStream = new LZ4BlockInputStream(session.getServer().getConnection().getFileTransferDataInputStream(), LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false);
+						fileTransferRemoteInputStream = VTCompressorSelector.createDirectLZ4InputStream(session.getServer().getConnection().getFileTransferDataInputStream());
+						//fileTransferRemoteInputStream = new LZ4BlockInputStream(session.getServer().getConnection().getFileTransferDataInputStream(), LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false);
 					}
 					else
 					{
@@ -1735,7 +1734,8 @@ public class VTFileTransferServerTransaction implements Runnable
 						// fileTransferRemoteOutputStream = new
 						// SnappyFramedOutputStream(session.getServer().getConnection().getFileTransferDataOutputStream(),
 						// 1024 * 8, 0.85d, false);
-						fileTransferRemoteOutputStream = new LZ4BlockOutputStream(session.getServer().getConnection().getFileTransferDataOutputStream(), VT.VT_STANDARD_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true);
+						fileTransferRemoteOutputStream = VTCompressorSelector.createDirectLZ4OutputStream(session.getServer().getConnection().getFileTransferDataOutputStream());
+						// = new LZ4BlockOutputStream(session.getServer().getConnection().getFileTransferDataOutputStream(), VT.VT_STANDARD_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true);
 					}
 					else
 					{
