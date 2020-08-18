@@ -167,7 +167,7 @@ public class Borders {
             return title;
         }
 
-        
+        @Override
         public String toString() {
             return getClass().getSimpleName() + "{" + title + "}";
         }
@@ -192,7 +192,7 @@ public class Borders {
             }
             preferredSize = preferredSize.withRelativeColumns(2).withRelativeRows(2);
             String borderTitle = border.getTitle();
-            return preferredSize.max(new TerminalSize(((borderTitle.length() == 0) ? 2 : TerminalTextUtils.getColumnWidth(borderTitle) + 4), 2));
+            return preferredSize.max(new TerminalSize((borderTitle.isEmpty() ? 2 : TerminalTextUtils.getColumnWidth(borderTitle) + 4), 2));
         }
 
         
@@ -261,7 +261,7 @@ public class Borders {
             }
 
 
-            if(border.getTitle() != null && !(border.getTitle().length() == 0) &&
+            if(border.getTitle() != null && !border.getTitle().isEmpty() &&
                     drawableArea.getColumns() >= TerminalTextUtils.getColumnWidth(border.getTitle()) + 4) {
                 graphics.applyThemeStyle(themeDefinition.getActive());
                 graphics.putString(2, 0, border.getTitle());
@@ -277,8 +277,6 @@ public class Borders {
             }
 
             wrappedComponent.draw(graphics.newTextGraphics(getWrappedComponentTopLeftOffset(), getWrappedComponentSize(drawableArea)));
-
-
             joinLinesWithFrame(graphics);
         }
 
@@ -314,6 +312,7 @@ public class Borders {
         List<Character> junctionFromBelowSingle = Arrays.asList(
                 Symbols.SINGLE_LINE_VERTICAL,
                 Symbols.BOLD_FROM_NORMAL_SINGLE_LINE_VERTICAL,
+                Symbols.BOLD_SINGLE_LINE_VERTICAL,
                 Symbols.SINGLE_LINE_CROSS,
                 Symbols.DOUBLE_LINE_HORIZONTAL_SINGLE_LINE_CROSS,
                 Symbols.SINGLE_LINE_BOTTOM_LEFT_CORNER,
@@ -339,6 +338,7 @@ public class Borders {
         List<Character> junctionFromAboveSingle = Arrays.asList(
                 Symbols.SINGLE_LINE_VERTICAL,
                 Symbols.BOLD_TO_NORMAL_SINGLE_LINE_VERTICAL,
+                Symbols.BOLD_SINGLE_LINE_VERTICAL,
                 Symbols.SINGLE_LINE_CROSS,
                 Symbols.DOUBLE_LINE_HORIZONTAL_SINGLE_LINE_CROSS,
                 Symbols.SINGLE_LINE_TOP_LEFT_CORNER,
@@ -364,6 +364,7 @@ public class Borders {
         List<Character> junctionFromLeftSingle = Arrays.asList(
                 Symbols.SINGLE_LINE_HORIZONTAL,
                 Symbols.BOLD_TO_NORMAL_SINGLE_LINE_HORIZONTAL,
+                Symbols.BOLD_SINGLE_LINE_HORIZONTAL,
                 Symbols.SINGLE_LINE_CROSS,
                 Symbols.DOUBLE_LINE_VERTICAL_SINGLE_LINE_CROSS,
                 Symbols.SINGLE_LINE_BOTTOM_LEFT_CORNER,
@@ -389,6 +390,7 @@ public class Borders {
         List<Character> junctionFromRightSingle = Arrays.asList(
                 Symbols.SINGLE_LINE_HORIZONTAL,
                 Symbols.BOLD_FROM_NORMAL_SINGLE_LINE_HORIZONTAL,
+                Symbols.BOLD_SINGLE_LINE_HORIZONTAL,
                 Symbols.SINGLE_LINE_CROSS,
                 Symbols.DOUBLE_LINE_VERTICAL_SINGLE_LINE_CROSS,
                 Symbols.SINGLE_LINE_BOTTOM_RIGHT_CORNER,
@@ -528,7 +530,7 @@ public class Borders {
             super(title, borderStyle);
         }
 
-        
+        @Override
         protected BorderRenderer createDefaultRenderer() {
             return new SingleLineRenderer(borderStyle);
         }
@@ -539,42 +541,42 @@ public class Borders {
             super(borderStyle);
         }
 
-        
+        @Override
         protected char getTopRightCorner(Theme theme) {
             return theme.getDefinition(SingleLine.class).getCharacter("TOP_RIGHT_CORNER", Symbols.SINGLE_LINE_TOP_RIGHT_CORNER);
         }
 
-        
+        @Override
         protected char getBottomRightCorner(Theme theme) {
             return theme.getDefinition(SingleLine.class).getCharacter("BOTTOM_RIGHT_CORNER", Symbols.SINGLE_LINE_BOTTOM_RIGHT_CORNER);
         }
 
-        
+        @Override
         protected char getTopLeftCorner(Theme theme) {
             return theme.getDefinition(SingleLine.class).getCharacter("TOP_LEFT_CORNER", Symbols.SINGLE_LINE_TOP_LEFT_CORNER);
         }
 
-        
+        @Override
         protected char getBottomLeftCorner(Theme theme) {
             return theme.getDefinition(SingleLine.class).getCharacter("BOTTOM_LEFT_CORNER", Symbols.SINGLE_LINE_BOTTOM_LEFT_CORNER);
         }
 
-        
+        @Override
         protected char getVerticalLine(Theme theme) {
             return theme.getDefinition(SingleLine.class).getCharacter("VERTICAL_LINE", Symbols.SINGLE_LINE_VERTICAL);
         }
 
-        
+        @Override
         protected char getHorizontalLine(Theme theme) {
             return theme.getDefinition(SingleLine.class).getCharacter("HORIZONTAL_LINE", Symbols.SINGLE_LINE_HORIZONTAL);
         }
 
-        
+        @Override
         protected char getTitleLeft(Theme theme) {
             return theme.getDefinition(SingleLine.class).getCharacter("TITLE_LEFT", Symbols.SINGLE_LINE_HORIZONTAL);
         }
 
-        
+        @Override
         protected char getTitleRight(Theme theme) {
             return theme.getDefinition(SingleLine.class).getCharacter("TITLE_RIGHT", Symbols.SINGLE_LINE_HORIZONTAL);
         }
@@ -585,7 +587,7 @@ public class Borders {
             super(title, borderStyle);
         }
 
-        
+        @Override
         protected BorderRenderer createDefaultRenderer() {
             return new DoubleLineRenderer(borderStyle);
         }
@@ -596,42 +598,42 @@ public class Borders {
             super(borderStyle);
         }
 
-        
+        @Override
         protected char getTopRightCorner(Theme theme) {
             return theme.getDefinition(DoubleLine.class).getCharacter("TOP_RIGHT_CORNER", Symbols.DOUBLE_LINE_TOP_RIGHT_CORNER);
         }
 
-        
+        @Override
         protected char getBottomRightCorner(Theme theme) {
             return theme.getDefinition(DoubleLine.class).getCharacter("BOTTOM_RIGHT_CORNER", Symbols.DOUBLE_LINE_BOTTOM_RIGHT_CORNER);
         }
 
-        
+        @Override
         protected char getTopLeftCorner(Theme theme) {
             return theme.getDefinition(DoubleLine.class).getCharacter("TOP_LEFT_CORNER", Symbols.DOUBLE_LINE_TOP_LEFT_CORNER);
         }
 
-        
+        @Override
         protected char getBottomLeftCorner(Theme theme) {
             return theme.getDefinition(DoubleLine.class).getCharacter("BOTTOM_LEFT_CORNER", Symbols.DOUBLE_LINE_BOTTOM_LEFT_CORNER);
         }
 
-        
+        @Override
         protected char getVerticalLine(Theme theme) {
             return theme.getDefinition(DoubleLine.class).getCharacter("VERTICAL_LINE", Symbols.DOUBLE_LINE_VERTICAL);
         }
 
-        
+        @Override
         protected char getHorizontalLine(Theme theme) {
             return theme.getDefinition(DoubleLine.class).getCharacter("HORIZONTAL_LINE", Symbols.DOUBLE_LINE_HORIZONTAL);
         }
 
-        
+        @Override
         protected char getTitleLeft(Theme theme) {
             return theme.getDefinition(DoubleLine.class).getCharacter("TITLE_LEFT", Symbols.DOUBLE_LINE_HORIZONTAL);
         }
 
-        
+        @Override
         protected char getTitleRight(Theme theme) {
             return theme.getDefinition(DoubleLine.class).getCharacter("TITLE_RIGHT", Symbols.DOUBLE_LINE_HORIZONTAL);
         }
