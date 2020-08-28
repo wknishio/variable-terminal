@@ -38,9 +38,9 @@ public class VTServerConnector implements Runnable
 	private byte[] encryptionKey;
 	private int sessionsLimit;
 	private ServerSocket connectionServerSocket;
+	private VTServer server;
 	private List<VTServerConnectionHandler> connectionHandlers;
 	private VTNATSinglePortMappingManagerMKII portMappingManager;
-	private VTServer server;
 	private VTServerConnectorNATPortMappingResultNotify natNotify = new VTServerConnectorNATPortMappingResultNotify();
 	
 	public VTServerConnector(VTServer server)
