@@ -14,6 +14,15 @@ import org.vate.stream.endian.VTLittleEndianOutputStream;
 
 public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 {
+	private static final int DCM_RED_MASK = 0x00ff0000;
+	private static final int DCM_GREEN_MASK = 0x0000ff00;
+	private static final int DCM_BLUE_MASK = 0x000000ff;
+	private static final int DCM_ALPHA_MASK = 0xff000000;
+	
+	private static final int DCM_555_RED_MASK = 0x7C00; // 0111110000000000
+	private static final int DCM_555_GRN_MASK = 0x03E0; // 0000001111100000
+	private static final int DCM_555_BLU_MASK = 0x001F; // 0000000000011111
+	
 	// iterators
 	// macroblock count
 	// private int c0 = 0;
@@ -112,322 +121,124 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 		this.pixelDataBufferStream = new VTLittleEndianOutputStream(pixelDataBuffer);
 	}
 	
-	private static final byte shortToByte(short data, int number)
-	{
-		
-		switch (number)
-		{
-			case 1:
-				return (byte) (data & 0x00FF);
-			default:
-				return (byte) ((data & 0xFF00) >> 8);
-		}
-	}
-	
-	private static final byte intToByte(int data, int number)
-	{
-		switch (number)
-		{
-			case 1:
-				return (byte) (data & 0x000000FF);
-			case 2:
-				return (byte) ((data & 0x0000FF00) >> 8);
-			case 3:
-				return (byte) ((data & 0x00FF0000) >> 16);
-			default:
-				return (byte) ((data & 0xFF000000) >> 24);
-		}
-	}
-	
-	private static final byte shortToByte(short[] data, int position, int number)
-	{
-		if (position < 0 || position >= data.length)
-		{
-			return 0;
-		}
-		switch (number)
-		{
-			case 1:
-				return (byte) (data[position] & 0x00FF);
-			default:
-				return (byte) ((data[position] & 0xFF00) >> 8);
-		}
-	}
-	
-	private static final byte intToByte(int[] data, int position, int number)
-	{
-		if (position < 0 || position >= data.length)
-		{
-			return 0;
-		}
-		switch (number)
-		{
-			case 1:
-				return (byte) (data[position] & 0x000000FF);
-			case 2:
-				return (byte) ((data[position] & 0x0000FF00) >> 8);
-			case 3:
-				return (byte) ((data[position] & 0x00FF0000) >> 16);
-			default:
-				return (byte) ((data[position] & 0xFF000000) >> 24) ;
-		}
-	}
-	
-	private static final byte longToByte(long[] data, int position, int number)
-	{
-		if (position < 0 || position >= data.length)
-		{
-			return 0;
-		}
-		switch (number)
-		{
-			case 1:
-				return (byte) (data[position] & 0x00000000000000FFL);
-			case 2:
-				return (byte) ((data[position] & 0x000000000000FF00L) >> 8);
-			case 3:
-				return (byte) ((data[position] & 0x0000000000FF0000L) >> 16);
-			case 4:
-				return (byte) ((data[position] & 0x00000000FF000000L) >> 24);
-			case 5:
-				return (byte) ((data[position] & 0x000000FF00000000L) >> 32);
-			case 6:
-				return (byte) ((data[position] & 0x0000FF0000000000L) >> 40);
-			case 7:
-				return (byte) ((data[position] & 0x00FF000000000000L) >> 48);
-			default:
-				return (byte) ((data[position] & 0xFF00000000000000L) >> 56);
-		}
-	}
-	
-	private static final short bytesToShort(byte b1, byte b2)
-	{
-		return (short) ((b1 & 0xff) & ((b2 & 0xff) << 8)); 
-	}
-	
-	private static final int bytesToInt(byte b1, byte b2, byte b3)
-	{
-		return (b1 & 0xff) & ((b2 & 0xff) << 8) & ((b3 & 0xff) << 16); 
-	}
-	
-	private static final int bytesToInt(byte b1, byte b2, byte b3, byte b4)
-	{
-		return (b1 & 0xff) & ((b2 & 0xff) << 8) & ((b3 & 0xff) << 16) & ((b4 & 0xff) << 24); 
-	}
-	
-	private static final long bytesToLong(byte b1, byte b2, byte b3, byte b4, byte b5, byte b6, byte b7, byte b8)
-	{
-		return (long)b1
-		& (((long)(b2 & 0xff)) << 8)
-		& (((long)(b3 & 0xff)) << 16)
-		& (((long)(b4 & 0xff)) << 24)
-		& (((long)(b5 & 0xff)) << 32)
-		& (((long)(b6 & 0xff)) << 40)
-		& (((long)(b7 & 0xff)) << 48)
-		& (((long)(b8 & 0xff)) << 56);
-	}
-	
-	
-	
-	private static final byte paethFilterByte(byte[] newPixelData, final int position, final int x, final int y, final int width)
-	{
-		int a1, b1, c1;
-		a1 = x > 0 ? newPixelData[position - 1] & 0xff : 0;
-		b1 = y > 0 ? newPixelData[position - width] & 0xff : 0;
-		c1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] & 0xff : 0;
-		return (byte) (newPixelData[position] - paethPredictorInt(a1, b1, c1));
-	}
-	
-	private static final short paethFilterShort(short[] newPixelData, final int position, final int x, final int y, final int width)
-	{
-		byte a1, b1, c1, d1, a2, b2, c2, d2;
-		
-		d1 = shortToByte(newPixelData, position, 1);
-		d2 = shortToByte(newPixelData, position, 2);
-		
-		a1 = shortToByte(newPixelData, position - 1, 1);
-		a2 = shortToByte(newPixelData, position - 1, 2);
-		
-		b1 = shortToByte(newPixelData, position - width, 1);
-		b2 = shortToByte(newPixelData, position - width, 2);
-		
-		c1 = shortToByte(newPixelData, position - width - 1, 1);
-		c2 = shortToByte(newPixelData, position - width - 1, 2);
-		
-		return bytesToShort((byte)(d1 - paethPredictorInt(a1, b1, c1)), (byte)(d2 - paethPredictorInt(a2, b2, c2)));
-	}
-	
-	private static final int paethFilterInt(int[] newPixelData, final int position, final int x, final int y, final int width)
-	{
-		return 0;
-	}
-	
-	private static final byte paethUnfilterByte(byte[] newPixelData, final int position, final int x, final int y, final int width, byte filtered)
-	{
-		int a1, b1, c1;
-		a1 = x > 0 ? newPixelData[position - 1] & 0xff : 0;
-		b1 = y > 0 ? newPixelData[position - width] & 0xff : 0;
-		c1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] & 0xff : 0;
-		// int pred = Math.max(Math.min(left, top), Math.min(Math.max(left,
-		// top), left +
-		// top - diag));
-		return (byte) (filtered + paethPredictorInt(a1, b1, c1));
-	}
-	
-	private static final short paethUnfilterShort(short[] newPixelData, final int position, final int x, final int y, final int width, short filtered)
-	{
-		int a1, b1, c1, d1, a2, b2, c2, d2;
-		
-		d1 = shortToByte(filtered, 1);
-		d2 = shortToByte(filtered, 2);
-		
-		a1 = shortToByte(newPixelData, position - 1, 1);
-		a2 = shortToByte(newPixelData, position - 1, 2);
-		
-		b1 = shortToByte(newPixelData, position - width, 1);
-		b2 = shortToByte(newPixelData, position - width, 2);
-		
-		c1 = shortToByte(newPixelData, position - width - 1, 1);
-		c2 = shortToByte(newPixelData, position - width - 1, 2);
-		
-		return bytesToShort((byte)(d1 + paethPredictorInt(a1, b1, c1)), (byte)(d2 + paethPredictorInt(a2, b2, c2)));
-	}
-	
-	private static final int paethUnfilterInt(int[] newPixelData, final int position, final int x, final int y, final int width, int filtered)
-	{
-		return 0;
-	}
-	
-	private static final int paethPredictorInt(int a, int b, int c)
-	{
-		int p = a + b - c;
-		int pa = Math.abs(p - a);
-		int pb = Math.abs(p - b);
-		int pc = Math.abs(p - c);
-		int min = Math.min(pa, Math.min(pb, pc));
-		if (min == pa)
-		{
-			return a;
-		}
-		else if (min == pb)
-		{
-			return b;
-		}
-		else
-		{
-			return c;
-		}
-	}
-	
-	private static final long paethPredictorLong(long a, long b, long c)
-	{
-		long p = a + b - c;
-		long pa = Math.abs(p - a);
-		long pb = Math.abs(p - b);
-		long pc = Math.abs(p - c);
-		long min = Math.min(pa, Math.min(pb, pc));
-		if (min == pa)
-		{
-			return a;
-		}
-		else if (min == pb)
-		{
-			return b;
-		}
-		else
-		{
-			return c;
-		}
-	}
+//	private static final int paethPredictorInt(int a, int b, int c)
+//	{
+//		int p = a + b - c;
+//		int pa = Math.abs(p - a);
+//		int pb = Math.abs(p - b);
+//		int pc = Math.abs(p - c);
+//		int min = Math.min(pa, Math.min(pb, pc));
+//		if (min == pa)
+//		{
+//			return a;
+//		}
+//		else if (min == pb)
+//		{
+//			return b;
+//		}
+//		else
+//		{
+//			return c;
+//		}
+//	}
+//	
+//	private static final long paethPredictorLong(long a, long b, long c)
+//	{
+//		long p = a + b - c;
+//		long pa = Math.abs(p - a);
+//		long pb = Math.abs(p - b);
+//		long pc = Math.abs(p - c);
+//		long min = Math.min(pa, Math.min(pb, pc));
+//		if (min == pa)
+//		{
+//			return a;
+//		}
+//		else if (min == pb)
+//		{
+//			return b;
+//		}
+//		else
+//		{
+//			return c;
+//		}
+//	}
 	
 	private static final void encodePixelDirect(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] & 0xff : 0;
 		top1 = y > 0 ? newPixelData[position - width] & 0xff : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] & 0xff : 0;
-		out.write((byte) (newPixelData[position] - paethPredictorInt(left1, top1, diag1)));
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] & 0xff : 0;
+		out.write((byte) (newPixelData[position] - ((left1 + top1) >> 1)));
 	}
 		
 	private static final void encodePixelDirect(final VTLittleEndianOutputStream out, final short[] oldPixelData, final short[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		short left1, top1, diag1;
+		short left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
-		out.writeShort((short) (newPixelData[position] - paethPredictorInt(left1, top1, diag1)));
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
+		out.writeShort((short) (newPixelData[position] - ((left1 + top1) >> 1)));
 		//out.writeShort(paethFilterShort(newPixelData, position, x, y, width));
 	}
 		
 	private static final void encodePixelDirect(final VTLittleEndianOutputStream out, final int[] oldPixelData, final int[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
-		// int pred = Math.max(Math.min(left, top), Math.min(Math.max(left,
-		// top), left +
-		// top - diag));
-		out.writeSubInt(newPixelData[position] - paethPredictorInt(left1, top1, diag1));
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
+		out.writeSubInt(newPixelData[position] - ((left1 + top1) >> 1));
 	}
 		
 	private static final void encodePixelDirect(final VTLittleEndianOutputStream out, final long[] oldPixelData, final long[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		long left1, top1, diag1;
+		long left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
-		// int pred = Math.max(Math.min(left, top), Math.min(Math.max(left,
-		// top), left +
-		// top - diag));
-		out.writeLong(newPixelData[position] - paethPredictorLong(left1, top1, diag1));
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
+		out.writeLong(newPixelData[position] - ((left1 + top1) >> 1));
 	}
 	
 	private static final void decodePixelDirect(final VTLittleEndianInputStream in, final byte[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] & 0xff : 0;
 		top1 = y > 0 ? newPixelData[position - width] & 0xff : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] & 0xff : 0;
-		// int pred = Math.max(Math.min(left, top), Math.min(Math.max(left,
-		// top), left +
-		// top - diag));
-		newPixelData[position] = (byte) (in.readUnsignedByte() + paethPredictorInt(left1, top1, diag1));
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] & 0xff : 0;
+		newPixelData[position] = (byte) (in.readUnsignedByte() + ((left1 + top1) >> 1));
 		// newPixelData[position] = (byte) in.readUnsignedByte();
 	}
 	
 	private static final void decodePixelDirect(final VTLittleEndianInputStream in, final short[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		short left1, top1, diag1;
+		short left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
-		newPixelData[position] = (short) (in.readShort() + paethPredictorInt(left1, top1, diag1));
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
+		newPixelData[position] = (short) (in.readShort() + ((left1 + top1) >> 1));
 		//newPixelData[position] = paethUnfilterShort(newPixelData, position, x, y, width, in.readShort());
 	}
 	
 	private static final void decodePixelDirect(final VTLittleEndianInputStream in, final int[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
-		// int pred = Math.max(Math.min(left, top), Math.min(Math.max(left,
-		// top), left +
-		// top - diag));
-		newPixelData[position] = (in.readSubInt() + paethPredictorInt(left1, top1, diag1)) & 0x00FFFFFF;
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
+		newPixelData[position] = (in.readSubInt() + ((left1 + top1) >> 1)) & 0x00FFFFFF;
 	}
 	
 	private static final void decodePixelDirect(final VTLittleEndianInputStream in, final long[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		long left1, top1, diag1;
+		long left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
 		// int pred = Math.max(Math.min(left, top), Math.min(Math.max(left,
 		// top), left +
 		// top - diag));
-		newPixelData[position] = (in.readLong() + paethPredictorLong(left1, top1, diag1)) & 0x7FFFFFFFFFFFFFFFL;
+		newPixelData[position] = (in.readLong() + ((left1 + top1) >> 1)) & 0x7FFFFFFFFFFFFFFFL;
 	}
 	
 	private final void encodeMicrolineDirectSeparated(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData, final int offset, final int areaWidth) throws IOException

@@ -25,9 +25,9 @@ public final class VTImageIO
 	private static final int DCM_BLUE_MASK = 0x000000ff;
 	private static final int DCM_ALPHA_MASK = 0xff000000;
 	
-	private static final int DCM_555_RED_MASK = 0x7C00;
-	private static final int DCM_555_GRN_MASK = 0x03E0;
-	private static final int DCM_555_BLU_MASK = 0x001F;
+	private static final int DCM_555_RED_MASK = 0x7C00; // 0111110000000000
+	private static final int DCM_555_GRN_MASK = 0x03E0; // 0000001111100000
+	private static final int DCM_555_BLU_MASK = 0x001F; // 0000000000011111
 	
 	private static final IndexColorModel byteIndexed216ColorModel = VTIndexedColorModel.create216ColorModel();
 	// private static final IndexColorModel byteIndexed125ColorModel = VTIndexColorModel.create125ColorModel();
@@ -768,76 +768,76 @@ public final class VTImageIO
 		//out.write((byte) (pixelData[position]));
 	//}
 	
-	private static final int paethPredictorInt(int a, int b, int c)
-	{
-		int p = a + b - c;
-		int pa = Math.abs(p - a);
-		int pb = Math.abs(p - b);
-		int pc = Math.abs(p - c);
-		int min = Math.min(pa, Math.min(pb, pc));
-		if (min == pa)
-		{
-			return a;
-		}
-		else if (min == pb)
-		{
-			return b;
-		}
-		else
-		{
-			return c;
-		}
-	}
+//	private static final int paethPredictorInt(int a, int b, int c)
+//	{
+//		int p = a + b - c;
+//		int pa = Math.abs(p - a);
+//		int pb = Math.abs(p - b);
+//		int pc = Math.abs(p - c);
+//		int min = Math.min(pa, Math.min(pb, pc));
+//		if (min == pa)
+//		{
+//			return a;
+//		}
+//		else if (min == pb)
+//		{
+//			return b;
+//		}
+//		else
+//		{
+//			return c;
+//		}
+//	}
 	
 	private static final void encodePixelByte(VTLittleEndianOutputStream out, byte[] pixelData, int position, int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 //		left = pixelData[position - 1];
 //		top = pixelData[position - width];
 //		diag = pixelData[position - 1 - width];
 		left1 = position > 0 ? pixelData[position - 1] & 0xff : 0;
 		top1 = position >= width ? pixelData[position - width] & 0xff : 0;
-		diag1 = position - 1 >= width ? pixelData[position - 1 - width] & 0xff : 0;
-		out.write(pixelData[position] - paethPredictorInt(left1, top1, diag1));
+		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] & 0xff : 0;
+		out.write(pixelData[position] - ((left1 + top1) >> 1));
 		// out.write((byte) (pixelData[position]));
 	}
 	
 	private static final void encodePixelShort(VTLittleEndianOutputStream out, short[] pixelData, int position, int width) throws IOException
 	{
-		short left1, top1, diag1;
+		short left1, top1;
 //		left = pixelData[position - 1];
 //		top = pixelData[position - width];
 //		diag = pixelData[position - 1 - width];
 		left1 = position > 0 ? pixelData[position - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
-		diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		out.writeShort((short) (pixelData[position] - paethPredictorInt(left1, top1, diag1)));
+		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
+		out.writeShort((short) (pixelData[position] - ((left1 + top1) >> 1)));
 		// out.writeShort((short) (pixelData[position]));
 	}
 	
 	private static final void encodePixelSubInt(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 //		left = pixelData[position - 1];
 //		top = pixelData[position - width];
 //		diag = pixelData[position - 1 - width];
 		left1 = position > 0 ? pixelData[position - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
-		diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
+		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
 		// pixelData[position] &= 0x00FFFFFF;
-		out.writeSubInt(pixelData[position] - paethPredictorInt(left1, top1, diag1));
+		out.writeSubInt(pixelData[position] - ((left1 + top1) >> 1));
 	}
 	
 	private static final void encodePixelInt(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 //		left = pixelData[position - 1];
 //		top = pixelData[position - width];
 //		diag = pixelData[position - 1 - width];
 		left1 = position > 0 ? pixelData[position - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
-		diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		out.writeInt(pixelData[position] - paethPredictorInt(left1, top1, diag1));
+		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
+		out.writeInt(pixelData[position] - ((left1 + top1) >> 1));
 		// out.writeInt((pixelData[position]));
 	}
 	
@@ -848,52 +848,53 @@ public final class VTImageIO
 	
 	private static final void decodePixelByte(VTLittleEndianInputStream in, byte[] pixelData, int position, int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 //		left = pixelData[position - 1];
 //		top = pixelData[position - width];
 //		diag = pixelData[position - 1 - width];
 		left1 = position > 0 ? pixelData[position - 1] & 0xff : 0;
 		top1 = position >= width ? pixelData[position - width] & 0xff : 0;
-		diag1 = position - 1 >= width ? pixelData[position - 1 - width] & 0xff : 0;
-		pixelData[position] = (byte) (in.readUnsignedByte() + paethPredictorInt(left1, top1, diag1));
+		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] & 0xff : 0;
+		//pixelData[position] = (byte) (in.readUnsignedByte() + paethPredictorInt(left1, top1, diag1));
+		pixelData[position] = (byte) (in.readUnsignedByte() + ((left1 + top1) >> 1));
 		// pixelData[position] = (byte) (in.readByte());
 	}
 	
 	private static final void decodePixelShort(VTLittleEndianInputStream in, short[] pixelData, int position, int width) throws IOException
 	{
-		short left1, top1, diag1;
+		short left1, top1;
 //		left = pixelData[position - 1];
 //		top = pixelData[position - width];
 //		diag = pixelData[position - 1 - width];
 		left1 = position > 0 ? pixelData[position - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
-		diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		pixelData[position] = (short) (in.readShort() + paethPredictorInt(left1, top1, diag1));
+		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
+		pixelData[position] = (short) (in.readShort() + ((left1 + top1) >> 1));
 		// pixelData[position] = (short) (in.readShort());
 	}
 	
 	private static final void decodePixelSubInt(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 //		left = pixelData[position - 1];
 //		top = pixelData[position - width];
 //		diag = pixelData[position - 1 - width];
 		left1 = position > 0 ? pixelData[position - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
-		diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		pixelData[position] = (in.readSubInt() + paethPredictorInt(left1, top1, diag1)) & 0x00FFFFFF;
+		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
+		pixelData[position] = (in.readSubInt() + ((left1 + top1) >> 1)) & 0x00FFFFFF;
 	}
 	
 	private static final void decodePixelInt(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 //		left = pixelData[position - 1];
 //		top = pixelData[position - width];
 //		diag = pixelData[position - 1 - width];
 		left1 = position > 0 ? pixelData[position - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
-		diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		pixelData[position] = (in.readInt() + paethPredictorInt(left1, top1, diag1)) & 0x3FFFFFFF;
+		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
+		pixelData[position] = (in.readInt() + ((left1 + top1) >> 1)) & 0x3FFFFFFF;
 		// pixelData[position] = (in.readInt());
 	}
 	/* private static final int to24bitInt(int value) { return -(value &
