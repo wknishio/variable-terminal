@@ -804,14 +804,14 @@ public final class VTImageIO
 	
 	private static final void encodePixelShort(VTLittleEndianOutputStream out, short[] pixelData, int position, int width) throws IOException
 	{
-		short left1, top1;
+		int left1, top1;
 //		left = pixelData[position - 1];
 //		top = pixelData[position - width];
 //		diag = pixelData[position - 1 - width];
 		left1 = position > 0 ? pixelData[position - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
 		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		out.writeShort((short) (pixelData[position] - ((left1 + top1) >> 1)));
+		out.writeUnsignedShort((pixelData[position] - ((left1 + top1) >> 1)));
 		// out.writeShort((short) (pixelData[position]));
 	}
 	
@@ -862,14 +862,14 @@ public final class VTImageIO
 	
 	private static final void decodePixelShort(VTLittleEndianInputStream in, short[] pixelData, int position, int width) throws IOException
 	{
-		short left1, top1;
+		int left1, top1;
 //		left = pixelData[position - 1];
 //		top = pixelData[position - width];
 //		diag = pixelData[position - 1 - width];
 		left1 = position > 0 ? pixelData[position - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
 		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		pixelData[position] = (short) (in.readShort() + ((left1 + top1) >> 1));
+		pixelData[position] = (short) ((in.readUnsignedShort() + ((left1 + top1) >> 1)) & 0x00007FFF);
 		// pixelData[position] = (short) (in.readShort());
 	}
 	
@@ -894,7 +894,7 @@ public final class VTImageIO
 		left1 = position > 0 ? pixelData[position - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
 		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		pixelData[position] = (in.readInt() + ((left1 + top1) >> 1)) & 0x3FFFFFFF;
+		pixelData[position] = (in.readInt() + ((left1 + top1) >> 1));
 		// pixelData[position] = (in.readInt());
 	}
 	/* private static final int to24bitInt(int value) { return -(value &

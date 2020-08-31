@@ -12,6 +12,7 @@ import org.vate.stream.array.VTByteArrayInputStream;
 import org.vate.stream.endian.VTLittleEndianInputStream;
 import org.vate.stream.endian.VTLittleEndianOutputStream;
 
+@SuppressWarnings("unused")
 public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 {
 	private static final int DCM_RED_MASK = 0x00ff0000;
@@ -174,11 +175,11 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 		
 	private static final void encodePixelDirect(final VTLittleEndianOutputStream out, final short[] oldPixelData, final short[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		short left1, top1;
+		int left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
 		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
-		out.writeShort((short) (newPixelData[position] - ((left1 + top1) >> 1)));
+		out.writeUnsignedShort((newPixelData[position] - ((left1 + top1) >> 1)));
 		//out.writeShort(paethFilterShort(newPixelData, position, x, y, width));
 	}
 		
@@ -212,11 +213,11 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 	
 	private static final void decodePixelDirect(final VTLittleEndianInputStream in, final short[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		short left1, top1;
+		int left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
 		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
-		newPixelData[position] = (short) (in.readShort() + ((left1 + top1) >> 1));
+		newPixelData[position] = (short) ((in.readUnsignedShort() + ((left1 + top1) >> 1)) & 0x00007FFF);
 		//newPixelData[position] = paethUnfilterShort(newPixelData, position, x, y, width, in.readShort());
 	}
 	
@@ -235,9 +236,6 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV10
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
 		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
-		// int pred = Math.max(Math.min(left, top), Math.min(Math.max(left,
-		// top), left +
-		// top - diag));
 		newPixelData[position] = (in.readLong() + ((left1 + top1) >> 1)) & 0x7FFFFFFFFFFFFFFFL;
 	}
 	
