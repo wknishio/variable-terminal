@@ -644,6 +644,13 @@ public class VTServerConnection
 		graphicsSnappedImageOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 7);
 		graphicsClipboardInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 8);
 		graphicsClipboardOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 8);
+		
+		//graphicsControlInputStream.addPropagated(graphicsControlOutputStream);
+		graphicsControlInputStream.addPropagated(graphicsDirectImageOutputStream);
+		graphicsControlInputStream.addPropagated(graphicsDeflatedImageOutputStream);
+		graphicsControlInputStream.addPropagated(graphicsSnappedImageOutputStream);
+		//graphicsControlInputStream.addPropagated(graphicsClipboardInputStream);
+		//graphicsControlInputStream.addPropagated(graphicsClipboardOutputStream);
 			
 		audioDataInputStream = multiplexedConnectionInputStream.getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 9);
 		audioDataOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 9);
@@ -990,6 +997,15 @@ public class VTServerConnection
 	
 	public void closeGraphicsModeStreams() throws IOException
 	{
+		try
+		{
+			graphicsControlInputStream.close();
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		
 		try
 		{
 			graphicsControlOutputStream.close();

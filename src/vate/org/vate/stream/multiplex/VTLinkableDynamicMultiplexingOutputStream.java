@@ -1,8 +1,11 @@
 package org.vate.stream.multiplex;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.vate.VT;
 import org.vate.stream.array.VTByteArrayOutputStream;
@@ -35,6 +38,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 		//private byte[] controlPaddingBuffer;
 		private final VTByteArrayOutputStream controlPacketBuffer;
 		private final VTLittleEndianOutputStream controlPacketStream;
+		private List<Closeable> propagated;
 		
 		private VTLinkableDynamicMultiplexedOutputStream(OutputStream out, int type, int number, int packetSize, int blockSize, boolean autoFlushPackets)
 		{
@@ -53,6 +57,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			this.controlPacketStream = new VTLittleEndianOutputStream(controlPacketBuffer);
 			this.closed = false;
 			this.link = null;
+			this.propagated = new ArrayList<Closeable>();
 			
 			if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
 			{
@@ -175,6 +180,21 @@ public class VTLinkableDynamicMultiplexingOutputStream
 				writeClosePacketFlushing(type, number);
 			}
 			closed = true;
+			if (propagated.size() > 0)
+			{
+				//propagated.close();
+				for (Closeable closeable : propagated)
+				{
+					try 
+					{
+						closeable.close();
+					}
+					catch (Throwable t)
+					{
+						
+					}
+				}
+			}
 		}
 		
 		public void open() throws IOException
@@ -189,6 +209,12 @@ public class VTLinkableDynamicMultiplexingOutputStream
 				intermediatePacketStream = VTCompressorSelector.createBufferedLZ4OutputStream(intermediateDataPacketBuffer);
 			}
 			closed = false;
+		}
+		
+		public void addPropagated(Closeable propagated)
+		{
+			//this.propagated = propagated;
+			this.propagated.add(propagated);
 		}
 		
 		private void writePacket(int data, int type, int number) throws IOException

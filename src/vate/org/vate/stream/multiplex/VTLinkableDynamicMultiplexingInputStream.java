@@ -1,5 +1,6 @@
 package org.vate.stream.multiplex;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -13,7 +14,6 @@ import org.vate.VT;
 import org.vate.stream.compress.VTCompressorSelector;
 import org.vate.stream.compress.VTPipedDecompressor;
 import org.vate.stream.endian.VTLittleEndianInputStream;
-import org.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vate.stream.pipe.VTPipedInputStream;
 import org.vate.stream.pipe.VTPipedOutputStream;
 
@@ -71,7 +71,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 		private InputStream in;
 		//private short type;
 		private volatile Object link;
-		private List<VTLinkableDynamicMultiplexedOutputStream> propagated;
+		private List<Closeable> propagated;
 		private VTPipedDecompressor pipedDecompressor;
 		private final int type;
 		private final int number;
@@ -81,7 +81,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 			//this.multiplexingInputStream = multiplexingInputStream;
 			this.type = type;
 			this.number = number;
-			this.propagated = new ArrayList<VTLinkableDynamicMultiplexedOutputStream>();
+			this.propagated = new ArrayList<Closeable>();
 			if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == 0)
 			{
 				this.pipedInputStream = new VTPipedInputStream(bufferSize);
@@ -153,7 +153,7 @@ public class VTLinkableDynamicMultiplexingInputStream
 			}
 		}
 		
-		public void addPropagated(VTLinkableDynamicMultiplexedOutputStream propagated)
+		public void addPropagated(Closeable propagated)
 		{
 			//this.propagated = propagated;
 			this.propagated.add(propagated);
@@ -198,11 +198,11 @@ public class VTLinkableDynamicMultiplexingInputStream
 			if (propagated.size() > 0)
 			{
 				//propagated.close();
-				for (VTLinkableDynamicMultiplexedOutputStream stream : propagated)
+				for (Closeable closeable : propagated)
 				{
 					try 
 					{
-						stream.close();
+						closeable.close();
 					}
 					catch (Throwable t)
 					{
