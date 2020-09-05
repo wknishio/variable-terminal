@@ -20,15 +20,15 @@ import net.jpountz.xxhash.XXHashFactory;
 public class VTFileTransferClientTransaction implements Runnable
 {
 	private static final int fileTransferBufferSize = VT.VT_STANDARD_DATA_BUFFER_SIZE;
+	private volatile boolean interrupted;
 	private volatile boolean stopped;
 	private volatile boolean finished;
-	private volatile boolean interrupted;
-	private volatile boolean compression;
-	private volatile boolean resume;
-	private volatile boolean check;
+	private volatile boolean compressing;
+	private volatile boolean resuming;
+	private volatile boolean verifying;
 	private volatile boolean verified;
-	private volatile boolean directory;
 	private volatile boolean resumable;
+	private volatile boolean directory;
 	// private static final int checksumBufferSize = 64 * 1024;
 	private int readedBytes;
 	private int writtenBytes;
@@ -643,7 +643,7 @@ public class VTFileTransferClientTransaction implements Runnable
 	private boolean tryUpload(String currentPath)
 	{
 		//System.out.println("tryUpload: " + currentPath);
-		if (check)
+		if (verifying)
 		{
 			boolean checked = false;
 			while (!checked)
@@ -783,11 +783,11 @@ public class VTFileTransferClientTransaction implements Runnable
 					if (verified && !directory && getFileSizes())
 					{
 						resumable = false;
-						if (resume)
+						if (resuming)
 						{
 							if (localFileSize >= remoteFileSize && remoteFileSize >= 0)
 							{
-								if (check)
+								if (verifying)
 								{
 									if (getFileChecksums())
 									{
@@ -813,7 +813,7 @@ public class VTFileTransferClientTransaction implements Runnable
 							}
 							else if (remoteFileSize > localFileSize && remoteFileSize >= 0)
 							{
-								if (check)
+								if (verifying)
 								{
 									//check if file will be truncated
 									if (getFileChecksums())
@@ -1043,7 +1043,7 @@ public class VTFileTransferClientTransaction implements Runnable
 	private boolean tryDownload(String currentPath, boolean rootLevel)
 	{
 		//System.out.println("tryDownload: " + currentPath);
-		if (check)
+		if (verifying)
 		{
 			boolean checked = false;
 			while (!checked)
@@ -1196,11 +1196,11 @@ public class VTFileTransferClientTransaction implements Runnable
 					if (verified && !directory && getFileSizes())
 					{
 						resumable = false;
-						if (resume)
+						if (resuming)
 						{
 							if (remoteFileSize >= localFileSize && localFileSize >= 0)
 							{
-								if (check)
+								if (verifying)
 								{
 									if (getFileChecksums())
 									{
@@ -1226,7 +1226,7 @@ public class VTFileTransferClientTransaction implements Runnable
 							}
 							else if (localFileSize > remoteFileSize && localFileSize >= 0)
 							{
-								if (check)
+								if (verifying)
 								{
 									//check if file will be truncated
 									if (getFileChecksums())
@@ -1327,7 +1327,7 @@ public class VTFileTransferClientTransaction implements Runnable
 				ok = downloadFileData();
 				if (!stopped && ok)
 				{
-					if (!check)
+					if (!verifying)
 					{
 						return replaceDownloadFile(currentPath);
 					}
@@ -1627,36 +1627,27 @@ public class VTFileTransferClientTransaction implements Runnable
 				{
 					filePaths = splitCommand[2];
 					//remoteFilePath = splitCommand[3];
-					compression = false;
-					resume = false;
-					check = false;
+					compressing = false;
+					resuming = false;
+					verifying = false;
+					
 					if (transferParameters.toUpperCase().contains("C"))
 					{
-						compression = true;
+						compressing = true;
 					}
 					if (transferParameters.toUpperCase().contains("R"))
 					{
-						resume = true;
+						resuming = true;
 					}
 					if (transferParameters.toUpperCase().contains("V"))
 					{
-						check = true;
+						verifying = true;
 					}
-					String[] localFiles = filePaths.split(";");
 					
-					if (compression)
+					String[] localFiles = filePaths.split(";");
+					if (compressing)
 					{
-						// fileTransferOutputStream = new
-						// ZOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream(),
-						// JZlib.Z_DEFAULT_COMPRESSION, true, 4096);
-						// ((ZOutputStream)fileTransferOutputStream).setFlushMode(JZlib.Z_SYNC_FLUSH);
-						// fileTransferOutputStream = new
-						// GZIPOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream());
-						// fileTransferRemoteOutputStream = new
-						// SnappyFramedOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream(),
-						// 1024 * 8, 0.85d, false);
 						fileTransferRemoteOutputStream = VTCompressorSelector.createDirectLZ4OutputStream(session.getClient().getConnection().getFileTransferDataOutputStream());
-						//fileTransferRemoteOutputStream = new LZ4BlockOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream(), VT.VT_STANDARD_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true);
 					}
 					else
 					{
@@ -1721,35 +1712,26 @@ public class VTFileTransferClientTransaction implements Runnable
 				{
 					filePaths = splitCommand[2];
 					//localFilePath = splitCommand[3];
-					compression = false;
-					resume = false;
-					check = false;
+					compressing = false;
+					resuming = false;
+					verifying = false;
+					
 					if (transferParameters.toUpperCase().contains("C"))
 					{
-						compression = true;
+						compressing = true;
 					}
 					if (transferParameters.toUpperCase().contains("R"))
 					{
-						resume = true;
+						resuming = true;
 					}
 					if (transferParameters.toUpperCase().contains("V"))
 					{
-						check = true;
+						verifying = true;
 					}
 					
-					if (compression)
+					if (compressing)
 					{
-						// fileTransferInputStream = new
-						// ZInputStream(session.getClient().getConnection().getFileTransferDataInputStream(),
-						// true, 4096);
-						// ((ZInputStream)fileTransferInputStream).setFlushMode(JZlib.Z_SYNC_FLUSH);
-						// fileTransferInputStream = new
-						// GZIPInputStream(fileTransferInputStream);
-						// fileTransferRemoteInputStream = new
-						// SnappyFramedInputStream(session.getClient().getConnection().getFileTransferDataInputStream(),
-						// false);
 						fileTransferRemoteInputStream = VTCompressorSelector.createDirectLZ4InputStream(session.getClient().getConnection().getFileTransferDataInputStream());
-						//fileTransferRemoteInputStream = new LZ4BlockInputStream(session.getClient().getConnection().getFileTransferDataInputStream(), LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false);
 					}
 					else
 					{
