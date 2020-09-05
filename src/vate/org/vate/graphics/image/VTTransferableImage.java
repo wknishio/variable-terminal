@@ -33,7 +33,7 @@ public class VTTransferableImage implements Transferable, ClipboardOwner
 		this.recyclableDataBuffer = recyclableDataBuffer;
 		int width = image.getWidth(null);
 		int height = image.getHeight(null);
-		this.bufferedImage = VTImageIO.newImage(width, height, BufferedImage.TYPE_INT_ARGB, 0, recyclableDataBuffer);
+		this.bufferedImage = VTImageIO.newImage(0, 0, width, height, BufferedImage.TYPE_INT_ARGB, 0, recyclableDataBuffer);
 		VTARGBPixelGrabber grabber = new VTARGBPixelGrabber();
 		grabber.setImage(image);
 		grabber.getPixels(((DataBufferInt) this.bufferedImage.getRaster().getDataBuffer()).getData());

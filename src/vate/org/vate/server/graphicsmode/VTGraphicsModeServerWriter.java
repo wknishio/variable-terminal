@@ -397,7 +397,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 			{
 				if (convertedDataBuffer == null)
 				{
-					convertedDataBuffer = VTImageIO.newImage(lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recycledDataBuffer);
+					convertedDataBuffer = VTImageIO.newImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recycledDataBuffer);
 					recycledDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
 					convertedGraphics = convertedDataBuffer.createGraphics();
 					convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -498,7 +498,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 			{
 				if (convertedDataBuffer == null)
 				{
-					convertedDataBuffer = VTImageIO.newImage(lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recycledDataBuffer);
+					convertedDataBuffer = VTImageIO.newImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recycledDataBuffer);
 					recycledDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
 					convertedGraphics = convertedDataBuffer.createGraphics();
 					convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -611,7 +611,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 			{
 				if (convertedDataBuffer == null)
 				{
-					convertedDataBuffer = VTImageIO.newImage(lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recycledDataBuffer);
+					convertedDataBuffer = VTImageIO.newImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recycledDataBuffer);
 					recycledDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
 					convertedGraphics = convertedDataBuffer.createGraphics();
 					convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -708,7 +708,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 			{
 				if (convertedDataBuffer == null)
 				{
-					convertedDataBuffer = VTImageIO.newImage(lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recycledDataBuffer);
+					convertedDataBuffer = VTImageIO.newImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recycledDataBuffer);
 					recycledDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
 					convertedGraphics = convertedDataBuffer.createGraphics();
 					convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1152,7 +1152,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 										previousImageBufferUShort = null;
 										lastImageBufferInt = null;
 										previousImageBufferInt = null;
-										VTImageIO.clearBuffer(previousImageBufferByte, BufferedImage.TYPE_BYTE_INDEXED, lastColors);
+										VTImageIO.clearBuffer(previousImageBufferByte, BufferedImage.TYPE_BYTE_INDEXED, lastColors, 0);
 										if (captureArea.x >= 0 && captureArea.y >= 0)
 										{
 											VTImageDataUtils.deltaArea(lastImageBufferByte, previousImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), null, resultArea);
@@ -1176,7 +1176,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 										}
 										lastImageBufferInt = null;
 										previousImageBufferInt = null;
-										VTImageIO.clearBuffer(previousImageBufferUShort, BufferedImage.TYPE_USHORT_555_RGB, lastColors);
+										VTImageIO.clearBuffer(previousImageBufferUShort, BufferedImage.TYPE_USHORT_555_RGB, lastColors, 0);
 										if (captureArea.x >= 0 && captureArea.y >= 0)
 										{
 											VTImageDataUtils.deltaArea(lastImageBufferUShort, previousImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), null, resultArea);
@@ -1200,7 +1200,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 										{
 											previousImageBufferInt = new int[lastWidth * lastHeight];
 										}
-										VTImageIO.clearBuffer(previousImageBufferInt, BufferedImage.TYPE_INT_RGB, lastColors);
+										VTImageIO.clearBuffer(previousImageBufferInt, BufferedImage.TYPE_INT_RGB, lastColors, 0);
 										if (captureArea.x >= 0 && captureArea.y >= 0)
 										{
 											VTImageDataUtils.deltaArea(lastImageBufferInt, previousImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), null, resultArea);
@@ -1293,7 +1293,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 										previousImageBufferUShort = null;
 										lastImageBufferInt = null;
 										previousImageBufferInt = null;
-										VTImageIO.clearBuffer(previousImageBufferByte, BufferedImage.TYPE_BYTE_INDEXED, lastColors);
+										VTImageIO.clearBuffer(previousImageBufferByte, BufferedImage.TYPE_BYTE_INDEXED, lastColors, 0);
 										if (captureArea.x >= 0 && captureArea.y >= 0)
 										{
 											VTImageDataUtils.deltaArea(lastImageBufferByte, previousImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), null, resultArea);
@@ -1317,7 +1317,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 										}
 										lastImageBufferInt = null;
 										previousImageBufferInt = null;
-										VTImageIO.clearBuffer(previousImageBufferUShort, BufferedImage.TYPE_USHORT_555_RGB, lastColors);
+										VTImageIO.clearBuffer(previousImageBufferUShort, BufferedImage.TYPE_USHORT_555_RGB, lastColors, 0);
 										if (captureArea.x >= 0 && captureArea.y >= 0)
 										{
 											VTImageDataUtils.deltaArea(lastImageBufferUShort, previousImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), null, resultArea);
@@ -1341,7 +1341,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 										{
 											previousImageBufferInt = new int[lastWidth * lastHeight];
 										}
-										VTImageIO.clearBuffer(previousImageBufferInt, BufferedImage.TYPE_INT_RGB, lastColors);
+										VTImageIO.clearBuffer(previousImageBufferInt, BufferedImage.TYPE_INT_RGB, lastColors, 0);
 										if (captureArea.x >= 0 && captureArea.y >= 0)
 										{
 											VTImageDataUtils.deltaArea(lastImageBufferInt, previousImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), null, resultArea);

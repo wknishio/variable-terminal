@@ -1869,6 +1869,7 @@ public class VTGraphicsModeClientWriter implements Runnable
 			
 			frame.setTitle("Variable-Terminal Client " + VT.VT_VERSION + " - Remote Graphics Link");
 			frame.setFocusable(false);
+			//frame.getInsets().set(0, 0, 0, 0);
 			frame.setLayout(new BorderLayout());
 			//frame.getInsets().set(0, 0, 0, 0);
 			menuBar = new VTGraphicsModeClientOptionsMenuBar(this, frame);
@@ -1888,7 +1889,7 @@ public class VTGraphicsModeClientWriter implements Runnable
 			// scrolled.add
 			scrolled.setFocusable(false);
 			//scrolled.getInsets().set(0, 0, 0, 0);
-			// scrolled.setWheelScrollingEnabled(false);
+			//scrolled.setWheelScrollingEnabled(false);
 			remoteInterface = new VTGraphicsModeClientRemoteInterface(scrolled);
 			// remoteInterface.setImage(new BufferedImage(1, 1,
 			// BufferedImage.TYPE_INT_RGB));

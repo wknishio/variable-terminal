@@ -1,5 +1,6 @@
 package org.vate.graphics.image;
 
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
@@ -69,7 +70,7 @@ public final class VTImageIO
 	 * } case BufferedImage.TYPE_INT_ARGB: {
 	 * } } return null; } */
 	
-	public static final BufferedImage newImage(int width, int height, int type, int colors, DataBuffer recyclableBuffer)
+	public static final BufferedImage newImage(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
 	{
 		// recyclableStorage.getRaster().getDataBuffer().get
 		switch (type)
@@ -82,95 +83,30 @@ public final class VTImageIO
 			//}
 			case BufferedImage.TYPE_BYTE_INDEXED:
 			{
-				if (colors == 216)
-				{
-					BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
-					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-					// (byte) 129);
-					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-					// (byte) 62);
-					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 86);
-					return image;
-				}
-				else if (colors == 27)
-				{
-					BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
-					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-					// (byte) 129);
-					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-					// (byte) 62);
-					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 13);
-					return image;
-				}
-				else if (colors == 16)
-				{
-					BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
-					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-					// (byte) 129);
-					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-					// (byte) 62);
-					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 1);
-					return image;
-				}
-				else if (colors == 8)
-				{
-					BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
-					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-					// (byte) 129);
-					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-					// (byte) 62);
-					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 0);
-					return image;
-				}
-				else if (colors == 32)
-				{
-					BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
-					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-					// (byte) 129);
-					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-					// (byte) 62);
-					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 2);
-					return image;
-				}
-				else
-				{
-					BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
-					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-					// (byte) 129);
-					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-					// (byte) 62);
-					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 21);
-					return image;
-				}
+				BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+				//Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 86);
+				clearBuffer(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), type, colors, x + (y * width));
+				return image;
 			}
 			case BufferedImage.TYPE_USHORT_555_RGB:
 			{
-				BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
-				// Arrays.fill(((DataBufferUShort)image.getRaster().getDataBuffer()).getData(),
-				// (short) 0x4E73);
-				// Arrays.fill(((DataBufferUShort)image.getRaster().getDataBuffer()).getData(),
-				// (short) 0x4210);
-				Arrays.fill(((DataBufferUShort) image.getRaster().getDataBuffer()).getData(), (short) 0x294A);
+				BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+				//Arrays.fill(((DataBufferUShort) image.getRaster().getDataBuffer()).getData(), (short) 0x294A);
+				clearBuffer(((DataBufferUShort) image.getRaster().getDataBuffer()).getData(), type, colors, x + (y * width));
 				return image;
 			}
 			case BufferedImage.TYPE_INT_RGB:
 			{
-				BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
-				// Arrays.fill(((DataBufferInt)image.getRaster().getDataBuffer()).getData(),
-				// 0x00999999);
-				// Arrays.fill(((DataBufferInt)image.getRaster().getDataBuffer()).getData(),
-				// 0x00808080);
-				Arrays.fill(((DataBufferInt) image.getRaster().getDataBuffer()).getData(), 0x00555555);
+				BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+				//Arrays.fill(((DataBufferInt) image.getRaster().getDataBuffer()).getData(), 0x00555555);
+				clearBuffer(((DataBufferInt) image.getRaster().getDataBuffer()).getData(), type, colors, x + (y * width));
 				return image;
 			}
 			case BufferedImage.TYPE_INT_ARGB:
 			{
-				BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
-				// Arrays.fill(((DataBufferInt)image.getRaster().getDataBuffer()).getData(),
-				// 0xFF999999);
-				// Arrays.fill(((DataBufferInt)image.getRaster().getDataBuffer()).getData(),
-				// 0xFF808080);
-				Arrays.fill(((DataBufferInt) image.getRaster().getDataBuffer()).getData(), 0xFF555555);
+				BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+				//Arrays.fill(((DataBufferInt) image.getRaster().getDataBuffer()).getData(), 0xFF555555);
+				clearBuffer(((DataBufferInt) image.getRaster().getDataBuffer()).getData(), type, colors, x + (y * width));
 				return image;
 			}
 		}
@@ -308,8 +244,11 @@ public final class VTImageIO
 		littleEndianInputStream.setIntputStream(in);
 		int type = littleEndianInputStream.readInt();
 		int colors = littleEndianInputStream.readInt();
+		int x = littleEndianInputStream.readInt();
+		int y = littleEndianInputStream.readInt();
 		int width = littleEndianInputStream.readInt();
 		int height = littleEndianInputStream.readInt();
+		
 		// int depth = image.getColorModel().getPixelSize();
 		// int readed = 0;
 		// int total = 0;
@@ -334,58 +273,58 @@ public final class VTImageIO
 				BufferedImage image;
 				if (colors == 216)
 				{
-					image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
+					image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
 				}
 				else if (colors == 27)
 				{
-					image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
+					image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
 				}
 				else if (colors == 16)
 				{
-					image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
+					image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
 				}
 				else if (colors == 32)
 				{
-					image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
+					image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
 				}
 				else
 				{
-					image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
+					image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
 				}
 				byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-				for (int i = 0; i < size; i++)
+				for (int position = x + (y * width); position < size; position++)
 				{
-					decodePixelByte(littleEndianInputStream, data, i, width);
+					decodePixelByte(littleEndianInputStream, data, position, width);
 				}
 				return image;
 			}
 			case BufferedImage.TYPE_USHORT_555_RGB:
 			{
-				BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
+				BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
 				short[] data = ((DataBufferUShort) image.getRaster().getDataBuffer()).getData();
-				for (int i = 0; i < size; i++)
+				for (int position = x + (y * width); position < size; position++)
 				{
-					decodePixelShort(littleEndianInputStream, data, i, width);
+					decodePixelShort(littleEndianInputStream, data, position, width);
 				}
 				return image;
 			}
 			case BufferedImage.TYPE_INT_RGB:
 			{
-				BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
+				BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
 				int[] data = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-				for (int i = 0; i < size; i++)
+				for (int position = x + (y * width); position < size; position++)
 				{
-					decodePixelSubInt(littleEndianInputStream, data, i, width);
+					decodePixelSubInt(littleEndianInputStream, data, position, width);
 				}
 				return image;
 			}
 			case BufferedImage.TYPE_INT_ARGB:
 			{
-				BufferedImage image = buildBufferedImage(width, height, type, colors, recyclableBuffer);
+				BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
 				int[] data = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-				for (int i = 0; i < size; i++)
+				for (int position = x + (y * width); position < size; position++)
 				{
-					decodePixelInt(littleEndianInputStream, data, i, width);
+					decodePixelInt(littleEndianInputStream, data, position, width);
 				}
 				return image;
 			}
@@ -403,12 +342,16 @@ public final class VTImageIO
 		{
 			colors = ((IndexColorModel) colorModel).getMapSize();
 		}
+		int x = image.getMinX();
+		int y = image.getMinY();
 		int width = image.getWidth();
 		int height = image.getHeight();
 		int size = width * height;
 		// int total = 0;
 		littleEndianOutputStream.writeInt(type);
 		littleEndianOutputStream.writeInt(colors);
+		littleEndianOutputStream.writeInt(x);
+		littleEndianOutputStream.writeInt(y);
 		littleEndianOutputStream.writeInt(width);
 		littleEndianOutputStream.writeInt(height);
 		// littleEndianOutputStream.flush();
@@ -428,9 +371,9 @@ public final class VTImageIO
 			case BufferedImage.TYPE_BYTE_INDEXED:
 			{
 				byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-				for (int i = 0; i < size; i++)
+				for (int position = x + (y * width); position < size; position++)
 				{
-					encodePixelByte(littleEndianOutputStream, data, i, width);
+					encodePixelByte(littleEndianOutputStream, data, position, width);
 				}
 				littleEndianOutputStream.flush();
 				break;
@@ -438,27 +381,27 @@ public final class VTImageIO
 			case BufferedImage.TYPE_USHORT_555_RGB:
 			{
 				short[] data = ((DataBufferUShort) image.getRaster().getDataBuffer()).getData();
-				for (int i = 0; i < size; i++)
+				for (int position = x + (y * width); position < size; position++)
 				{
-					encodePixelShort(littleEndianOutputStream, data, i, width);
+					encodePixelShort(littleEndianOutputStream, data, position, width);
 				}
 				break;
 			}
 			case BufferedImage.TYPE_INT_RGB:
 			{
 				int[] data = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-				for (int i = 0; i < size; i++)
+				for (int position = x + (y * width); position < size; position++)
 				{
-					encodePixelSubInt(littleEndianOutputStream, data, i, width);
+					encodePixelSubInt(littleEndianOutputStream, data, position, width);
 				}
 				break;
 			}
 			case BufferedImage.TYPE_INT_ARGB:
 			{
 				int[] data = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
-				for (int i = 0; i < size; i++)
+				for (int position = x + (y * width); position < size; position++)
 				{
-					encodePixelInt(littleEndianOutputStream, data, i, width);
+					encodePixelInt(littleEndianOutputStream, data, position, width);
 				}
 				break;
 			}
@@ -489,10 +432,10 @@ public final class VTImageIO
 	 * 0, width), 0, width); if (disposeSource) { source.flush(); source = null;
 	 * } return copy; } } return null; } */
 	
-	private static final WritableRaster buildRaster(int width, int height, int type, DataBuffer recyclableBuffer)
+	private static final WritableRaster buildRaster(int x, int y, int width, int height, int type, DataBuffer recyclableBuffer)
 	{
-		int nextSize = ((width + 1) * (height + 1));
-		int neededSize = ((width + 1) * (height + 1));
+		int nextSize = ((width + x) * (height + y));
+		int neededSize = ((width + x) * (height + y));
 		WritableRaster createdRaster = null;
 		switch (type)
 		{
@@ -514,13 +457,13 @@ public final class VTImageIO
 			{
 				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
 				{
-					createdRaster = Raster.createInterleavedRaster(recyclableBuffer, width, height, width, 1, new int[1], null);
+					createdRaster = Raster.createInterleavedRaster(recyclableBuffer, width, height, width, 1, new int[1], new Point(x, y));
 					// Arrays.fill(((DataBufferByte)recyclableBuffer).getData(),
 					// (byte) 0);
 				}
 				else
 				{
-					createdRaster = Raster.createInterleavedRaster(new DataBufferByte(nextSize), width, height, width, 1, new int[1], null);
+					createdRaster = Raster.createInterleavedRaster(new DataBufferByte(nextSize), width, height, width, 1, new int[1], new Point(x, y));
 				}
 				break;
 			}
@@ -528,13 +471,13 @@ public final class VTImageIO
 			{
 				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferUShort && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
 				{
-					createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, ushort15bitRGBColorModel.getMasks(), null);
+					createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, ushort15bitRGBColorModel.getMasks(), new Point(x, y));
 					// Arrays.fill(((DataBufferUShort)recyclableBuffer).getData(),
 					// (short) 0);
 				}
 				else
 				{
-					createdRaster = Raster.createPackedRaster(new DataBufferUShort(nextSize), width, height, width, ushort15bitRGBColorModel.getMasks(), null);
+					createdRaster = Raster.createPackedRaster(new DataBufferUShort(nextSize), width, height, width, ushort15bitRGBColorModel.getMasks(), new Point(x, y));
 				}
 				break;
 			}
@@ -542,12 +485,12 @@ public final class VTImageIO
 			{
 				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferInt && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
 				{
-					createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, int24bitRGBColorModel.getMasks(), null);
+					createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, int24bitRGBColorModel.getMasks(), new Point(x, y));
 					// Arrays.fill(((DataBufferInt)recyclableBuffer).getData(), 0);
 				}
 				else
 				{
-					createdRaster = Raster.createPackedRaster(new DataBufferInt(nextSize), width, height, width, int24bitRGBColorModel.getMasks(), null);
+					createdRaster = Raster.createPackedRaster(new DataBufferInt(nextSize), width, height, width, int24bitRGBColorModel.getMasks(), new Point(x, y));
 				}
 				break;
 			}
@@ -555,12 +498,12 @@ public final class VTImageIO
 			{
 				if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferInt && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
 				{
-					createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, int32bitRGBColorModel.getMasks(), null);
+					createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, int32bitRGBColorModel.getMasks(), new Point(x, y));
 					// Arrays.fill(((DataBufferInt)recyclableBuffer).getData(), 0);
 				}
 				else
 				{
-					createdRaster = Raster.createPackedRaster(new DataBufferInt(nextSize), width, height, width, int32bitRGBColorModel.getMasks(), null);
+					createdRaster = Raster.createPackedRaster(new DataBufferInt(nextSize), width, height, width, int32bitRGBColorModel.getMasks(), new Point(x, y));
 				}
 				break;
 			}
@@ -568,7 +511,7 @@ public final class VTImageIO
 		return createdRaster;
 	}
 	
-	private static final BufferedImage buildBufferedImage(int width, int height, int type, int colors, DataBuffer recyclableBuffer)
+	private static final BufferedImage buildBufferedImage(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
 	{
 		BufferedImage image = null;
 		switch (type)
@@ -582,46 +525,46 @@ public final class VTImageIO
 			{
 				if (colors == 216)
 				{
-					image = new BufferedImage(byteIndexed216ColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
+					image = new BufferedImage(byteIndexed216ColorModel, buildRaster(x, y, width, height, type, recyclableBuffer), false, null);
 				}
 				else if (colors == 27)
 				{
-					image = new BufferedImage(byteIndexed27ColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
+					image = new BufferedImage(byteIndexed27ColorModel, buildRaster(x, y, width, height, type, recyclableBuffer), false, null);
 				}
 				else if (colors == 16)
 				{
-					image = new BufferedImage(byteIndexed16ColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
+					image = new BufferedImage(byteIndexed16ColorModel, buildRaster(x, y, width, height, type, recyclableBuffer), false, null);
 				}
 				else if (colors == 8)
 				{
-					image = new BufferedImage(byteIndexed8ColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
+					image = new BufferedImage(byteIndexed8ColorModel, buildRaster(x, y, width, height, type, recyclableBuffer), false, null);
 				}
 				else if (colors == 32)
 				{
-					image = new BufferedImage(byteIndexed32ColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
+					image = new BufferedImage(byteIndexed32ColorModel, buildRaster(x, y, width, height, type, recyclableBuffer), false, null);
 				}
 				else
 				{
-					image = new BufferedImage(byteIndexed64ColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
+					image = new BufferedImage(byteIndexed64ColorModel, buildRaster(x, y, width, height, type, recyclableBuffer), false, null);
 				}
 				break;
 				// return image;
 			}
 			case BufferedImage.TYPE_USHORT_555_RGB:
 			{
-				image = new BufferedImage(ushort15bitRGBColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
+				image = new BufferedImage(ushort15bitRGBColorModel, buildRaster(x, y, width, height, type, recyclableBuffer), false, null);
 				break;
 				// return image;
 			}
 			case BufferedImage.TYPE_INT_RGB:
 			{
-				image = new BufferedImage(int24bitRGBColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
+				image = new BufferedImage(int24bitRGBColorModel, buildRaster(x, y, width, height, type, recyclableBuffer), false, null);
 				break;
 				// return image;
 			}
 			case BufferedImage.TYPE_INT_ARGB:
 			{
-				image = new BufferedImage(int32bitRGBColorModel, buildRaster(width, height, type, recyclableBuffer), false, null);
+				image = new BufferedImage(int32bitRGBColorModel, buildRaster(x, y, width, height, type, recyclableBuffer), false, null);
 				break;
 				// return image;
 			}
@@ -629,48 +572,51 @@ public final class VTImageIO
 		return image;
 	}
 	
-	public static final void clearBuffer(byte[] buffer, int type, int colors)
+	public static final void clearBuffer(byte[] buffer, int type, int colors, int start)
 	{
+		//Arrays.fill(buffer, (byte) 0);
 		if (colors == 216)
 		{
-			Arrays.fill(buffer, (byte) 86);
+			Arrays.fill(buffer, start, buffer.length, (byte) 86);
 		}
 		else if (colors == 27)
 		{
-			Arrays.fill(buffer, (byte) 13);
+			Arrays.fill(buffer, start, buffer.length, (byte) 13);
 		}
 		else if (colors == 16)
 		{
-			Arrays.fill(buffer, (byte) 1);
+			Arrays.fill(buffer, start, buffer.length, (byte) 1);
 		}
 		else if (colors == 8)
 		{
-			Arrays.fill(buffer, (byte) 0);
+			Arrays.fill(buffer, start, buffer.length, (byte) 0);
 		}
 		else if (colors == 32)
 		{
-			Arrays.fill(buffer, (byte) 2);
+			Arrays.fill(buffer, start, buffer.length, (byte) 2);
 		}
 		else
 		{
-			Arrays.fill(buffer, (byte) 21);
+			Arrays.fill(buffer, start, buffer.length, (byte) 21);
 		}
 	}
 	
-	public static final void clearBuffer(short[] buffer, int type, int colors)
+	public static final void clearBuffer(short[] buffer, int type, int colors, int start)
 	{
-		Arrays.fill(buffer, (short) 0x294A);
+		//Arrays.fill(buffer, (short) 0);
+		Arrays.fill(buffer, start, buffer.length, (short) 0x294A);
 	}
 	
-	public static final void clearBuffer(int[] buffer, int type, int colors)
+	public static final void clearBuffer(int[] buffer, int type, int colors, int start)
 	{
+		//Arrays.fill(buffer, 0);
 		if (type == BufferedImage.TYPE_INT_ARGB)
 		{
-			Arrays.fill(buffer, 0xFF555555);
+			Arrays.fill(buffer, start, buffer.length, 0xFF555555);
 		}
 		else
 		{
-			Arrays.fill(buffer, 0x00555555);
+			Arrays.fill(buffer, start, buffer.length, 0x00555555);
 		}
 	}
 	
@@ -682,6 +628,8 @@ public final class VTImageIO
 		}
 		int type = image.getType();
 		int colors = 0;
+		int x = image.getMinX();
+		int y = image.getMinY();
 		ColorModel colorModel = image.getColorModel();
 		if (colorModel instanceof IndexColorModel)
 		{
@@ -697,68 +645,23 @@ public final class VTImageIO
 			//}
 			case BufferedImage.TYPE_BYTE_INDEXED:
 			{
-				// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-				// (byte) 129);
-				// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-				// (byte) 62);
-				if (colors == 216)
-				{
-					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 86);
-				}
-				else if (colors == 27)
-				{
-					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 13);
-				}
-				else if (colors == 16)
-				{
-					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 1);
-				}
-				else if (colors == 8)
-				{
-					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 0);
-				}
-				else if (colors == 32)
-				{
-					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 2);
-				}
-				else
-				{
-					Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), (byte) 21);
-					// Arrays.fill(((DataBufferByte)image.getRaster().getDataBuffer()).getData(),
-					// (byte) 13);
-				}
+				clearBuffer(((DataBufferByte) image.getRaster().getDataBuffer()).getData(), type, colors, x + (y * image.getWidth()));
 				break;
-				// return image;
 			}
 			case BufferedImage.TYPE_USHORT_555_RGB:
 			{
-				// Arrays.fill(((DataBufferUShort)image.getRaster().getDataBuffer()).getData(),
-				// (short) 0x4E73);
-				// Arrays.fill(((DataBufferUShort)image.getRaster().getDataBuffer()).getData(),
-				// (short) 0x4210);
-				Arrays.fill(((DataBufferUShort) image.getRaster().getDataBuffer()).getData(), (short) 0x294A);
+				clearBuffer(((DataBufferUShort) image.getRaster().getDataBuffer()).getData(), type, colors, x + (y * image.getWidth()));
 				break;
-				// return image;
 			}
 			case BufferedImage.TYPE_INT_RGB:
 			{
-				// Arrays.fill(((DataBufferInt)image.getRaster().getDataBuffer()).getData(),
-				// 0x00999999);
-				// Arrays.fill(((DataBufferInt)image.getRaster().getDataBuffer()).getData(),
-				// 0x00808080);
-				Arrays.fill(((DataBufferInt) image.getRaster().getDataBuffer()).getData(), 0x00555555);
+				clearBuffer(((DataBufferInt) image.getRaster().getDataBuffer()).getData(), type, colors, x + (y * image.getWidth()));
 				break;
-				// return image;
 			}
 			case BufferedImage.TYPE_INT_ARGB:
 			{
-				// Arrays.fill(((DataBufferInt)image.getRaster().getDataBuffer()).getData(),
-				// 0xFF999999);
-				// Arrays.fill(((DataBufferInt)image.getRaster().getDataBuffer()).getData(),
-				// 0xFF808080);
-				Arrays.fill(((DataBufferInt) image.getRaster().getDataBuffer()).getData(), 0xFF555555);
+				clearBuffer(((DataBufferInt) image.getRaster().getDataBuffer()).getData(), type, colors, x + (y * image.getWidth()));
 				break;
-				// return image;
 			}
 		}
 	}

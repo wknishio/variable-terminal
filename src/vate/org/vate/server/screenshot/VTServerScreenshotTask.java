@@ -188,7 +188,7 @@ public class VTServerScreenshotTask extends VTTask
 			}
 			else if (screenCapture.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
 			{
-				convertedImage = VTImageIO.newImage(screenCapture.getWidth(), screenCapture.getHeight(), BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
+				convertedImage = VTImageIO.newImage(0, 0, screenCapture.getWidth(), screenCapture.getHeight(), BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
 				recyclableDataBuffer = convertedImage.getRaster().getDataBuffer();
 				convertedGraphics = convertedImage.createGraphics();
 				convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);

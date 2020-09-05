@@ -70,7 +70,7 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
 		&& image.getType() != BufferedImage.TYPE_INT_ARGB
 		&& image.getType() != BufferedImage.TYPE_USHORT_555_RGB)
 		{
-			displayImageDataBuffer = VTImageIO.newImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
+			displayImageDataBuffer = VTImageIO.newImage(0, 0, image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
 			recyclableDataBuffer = displayImageDataBuffer.getData().getDataBuffer();
 			displayImageGraphics = displayImageDataBuffer.createGraphics();
 			displayImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
