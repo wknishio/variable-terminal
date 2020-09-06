@@ -22,7 +22,7 @@ import javax.imageio.stream.ImageOutputStream;
 
 import org.vate.VT;
 import org.vate.graphics.capture.VTAWTScreenCaptureProvider;
-import org.vate.graphics.codec.VTQuadrupleOctalTreeFrameDifferenceCodecV10;
+import org.vate.graphics.codec.VTQuadrupleOctalTreeFrameDifferenceCodecV9;
 import org.vate.graphics.image.VTImageDataUtils;
 import org.vate.graphics.image.VTImageIO;
 import org.vate.server.connection.VTServerConnection;
@@ -73,7 +73,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 	private VTAWTScreenCaptureProvider viewProvider;
 	private VTServerConnection connection;
 	private VTGraphicsModeServerSession session;
-	private VTQuadrupleOctalTreeFrameDifferenceCodecV10 vtCustomCodec;
+	private VTQuadrupleOctalTreeFrameDifferenceCodecV9 vtCustomCodec;
 	// private VTImageIO vtImageIO;
 	private Object screenCaptureIntervalSynchronizer;
 	private ImageWriter jpgWriter;
@@ -926,7 +926,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 	{
 		pngEncoder = new PngEncoder(PngEncoder.COLOR_INDEXED, PngEncoder.BEST_SPEED);
 		pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
-		vtCustomCodec = new VTQuadrupleOctalTreeFrameDifferenceCodecV10();
+		vtCustomCodec = new VTQuadrupleOctalTreeFrameDifferenceCodecV9();
 		// vtCustomCodec.setPixelDataBuffer(imageOutputBuffer);
 		// vtDifferenceCodec.setPixelDataBuffer(imageOutputBuffer);
 		try

@@ -62,7 +62,7 @@ public class SSLVerificationDisabler
 			}
 			catch (Throwable ei)
 			{
-				return false;
+				//return false;
 			}
 		}
 		catch (Throwable e)

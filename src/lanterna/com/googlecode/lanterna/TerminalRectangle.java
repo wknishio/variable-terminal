@@ -18,7 +18,7 @@
  */
 package com.googlecode.lanterna;
 
-import java.util.Objects;
+import com.sun.jna.compatibility.VTObjects;
 
 /**
  * This class is immutable and cannot change its internal state after creation.
@@ -111,12 +111,12 @@ public class TerminalRectangle {
     public boolean equals(Object obj) {
         return obj != null
             && obj.getClass() == getClass()
-            && Objects.equals(position, ((TerminalRectangle)obj).position)
-            && Objects.equals(size, ((TerminalRectangle)obj).size);
+            && VTObjects.equals(position, ((TerminalRectangle)obj).position)
+            && VTObjects.equals(size, ((TerminalRectangle)obj).size);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(position, size);
+        return VTObjects.hash(position, size);
     }
 }

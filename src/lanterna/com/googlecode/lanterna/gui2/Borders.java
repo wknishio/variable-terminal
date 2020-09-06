@@ -192,7 +192,7 @@ public class Borders {
             }
             preferredSize = preferredSize.withRelativeColumns(2).withRelativeRows(2);
             String borderTitle = border.getTitle();
-            return preferredSize.max(new TerminalSize((borderTitle.isEmpty() ? 2 : TerminalTextUtils.getColumnWidth(borderTitle) + 4), 2));
+            return preferredSize.max(new TerminalSize((borderTitle.length() == 0 ? 2 : TerminalTextUtils.getColumnWidth(borderTitle) + 4), 2));
         }
 
         
@@ -261,7 +261,7 @@ public class Borders {
             }
 
 
-            if(border.getTitle() != null && !border.getTitle().isEmpty() &&
+            if(border.getTitle() != null && !(border.getTitle().length() == 0) &&
                     drawableArea.getColumns() >= TerminalTextUtils.getColumnWidth(border.getTitle()) + 4) {
                 graphics.applyThemeStyle(themeDefinition.getActive());
                 graphics.putString(2, 0, border.getTitle());
