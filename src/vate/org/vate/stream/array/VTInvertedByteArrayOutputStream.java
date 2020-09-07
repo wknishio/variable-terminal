@@ -4,7 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class VTInvertedByteArrayOutputStream extends ByteArrayOutputStream
+public final class VTInvertedByteArrayOutputStream extends ByteArrayOutputStream
 {
 	// private int end = 0;
 	
@@ -20,27 +20,27 @@ public class VTInvertedByteArrayOutputStream extends ByteArrayOutputStream
 		// end = buf.length - 1;
 	}
 	
-	public synchronized byte[] buf()
+	public final synchronized byte[] buf()
 	{
 		return this.buf;
 	}
 	
-	public synchronized int count()
+	public final synchronized int count()
 	{
 		return this.count;
 	}
 	
-	public synchronized void buf(byte[] buf)
+	public final synchronized void buf(byte[] buf)
 	{
 		this.buf = buf;
 	}
 	
-	public synchronized void count(int count)
+	public final synchronized void count(int count)
 	{
 		this.count = count;
 	}
 	
-	public synchronized void write(int b)
+	public final synchronized void write(int b)
 	{
 		int newcount = count + 1;
 		if (newcount > buf.length)
@@ -53,7 +53,7 @@ public class VTInvertedByteArrayOutputStream extends ByteArrayOutputStream
 		buf[buf.length - count] = (byte) b;
 	}
 	
-	public synchronized void write(byte[] data, int off, int len)
+	public final synchronized void write(byte[] data, int off, int len)
 	{
 		for (int i = 0; i < len; i++)
 		{
@@ -61,7 +61,7 @@ public class VTInvertedByteArrayOutputStream extends ByteArrayOutputStream
 		}
 	}
 	
-	public synchronized byte[] toByteArray()
+	public final synchronized byte[] toByteArray()
 	{
 		byte[] data = new byte[count];
 		System.arraycopy(buf, buf.length - count, data, 0, count);
@@ -69,12 +69,12 @@ public class VTInvertedByteArrayOutputStream extends ByteArrayOutputStream
 		// return Arrays.copyOfRange(buf, buf.length - count, buf.length);
 	}
 	
-	public synchronized void writeTo(OutputStream out) throws IOException
+	public final synchronized void writeTo(OutputStream out) throws IOException
 	{
 		out.write(buf, buf.length - count, count);
 	}
 	
-	public synchronized void reset()
+	public final synchronized void reset()
 	{
 		count = 0;
 	}

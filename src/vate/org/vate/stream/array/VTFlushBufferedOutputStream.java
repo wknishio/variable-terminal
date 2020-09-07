@@ -4,7 +4,7 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class VTFlushBufferedOutputStream extends FilterOutputStream
+public final class VTFlushBufferedOutputStream extends FilterOutputStream
 {
 	private final VTByteArrayOutputStream buf;
 	private final OutputStream out;
@@ -16,7 +16,7 @@ public class VTFlushBufferedOutputStream extends FilterOutputStream
 		this.out = out;
 	}
 	
-	public void flush() throws IOException
+	public final void flush() throws IOException
 	{
 		if (buf.count() > 0)
 		{

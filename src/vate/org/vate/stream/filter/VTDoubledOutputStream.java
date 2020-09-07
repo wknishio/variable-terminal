@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import org.vate.console.graphical.VTGraphicalConsoleNullOutputStream;
 
-public class VTDoubledOutputStream extends FilterOutputStream
+public final class VTDoubledOutputStream extends FilterOutputStream
 {
 	private OutputStream first;
 	private OutputStream second;
@@ -17,31 +17,31 @@ public class VTDoubledOutputStream extends FilterOutputStream
 		this.second = second;
 	}
 	
-	public void write(byte[] b, int off, int len) throws IOException
+	public final void write(byte[] b, int off, int len) throws IOException
 	{
 		first.write(b, off, len);
 		second.write(b, off, len);
 	}
 	
-	public void write(byte[] b) throws IOException
+	public final void write(byte[] b) throws IOException
 	{
 		first.write(b);
 		second.write(b);
 	}
 	
-	public void write(int b) throws IOException
+	public final void write(int b) throws IOException
 	{
 		first.write(b);
 		second.write(b);
 	}
 	
-	public void flush() throws IOException
+	public final void flush() throws IOException
 	{
 		first.flush();
 		second.flush();
 	}
 	
-	public void close() throws IOException
+	public final void close() throws IOException
 	{
 		//nothing
 	}

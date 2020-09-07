@@ -27,6 +27,8 @@ public interface RandomAccessDataOutput extends DataOutput
 	
 	public void setOutputSize(int size);
 	
+	public byte[] getBuffer();
+	
 	public void putByte(int index, byte val) throws IOException;
 	
 	public void putShort(int index, short val) throws IOException;

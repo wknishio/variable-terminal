@@ -4,10 +4,10 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class VTThrottlingOutputStream extends FilterOutputStream
+public final class VTThrottlingOutputStream extends FilterOutputStream
 {
-	private VTThrottledOutputStream throttled;
-	private OutputStream original;
+	private final VTThrottledOutputStream throttled;
+	private final OutputStream original;
 	private OutputStream current;
 	private long bytesPerSecond;
 	
@@ -20,19 +20,19 @@ public class VTThrottlingOutputStream extends FilterOutputStream
 		this.bytesPerSecond = 0;
 	}
 	
-	public void write(int b) throws IOException
+	public final void write(int b) throws IOException
 	{
 		// System.out.println("write:" + current.getClass().getName());
 		current.write(b);
 	}
 	
-	public void write(byte[] b, int off, int len) throws IOException
+	public final void write(byte[] b, int off, int len) throws IOException
 	{
 		// System.out.println("write:" + current.getClass().getName());
 		current.write(b, off, len);
 	}
 	
-	public void setBytesPerSecond(long bytesPerSecond)
+	public final void setBytesPerSecond(long bytesPerSecond)
 	{
 		this.bytesPerSecond = bytesPerSecond;
 		if (bytesPerSecond > 0)
@@ -49,12 +49,12 @@ public class VTThrottlingOutputStream extends FilterOutputStream
 		}
 	}
 	
-	public long getBytesPerSecond()
+	public final long getBytesPerSecond()
 	{
 		return bytesPerSecond;
 	}
 	
-	public void close() throws IOException
+	public final void close() throws IOException
 	{
 		throttled.setBytesPerSecond(Long.MAX_VALUE);
 		throttled.wakeAllWaitingThreads();

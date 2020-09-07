@@ -4,9 +4,9 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class VTBlockSplitOutputStream extends FilterOutputStream
+public final class VTBlockSplitOutputStream extends FilterOutputStream
 {
-	private int blockSize;
+	private final int blockSize;
 	
 	public VTBlockSplitOutputStream(OutputStream out, int blockSize)
 	{
@@ -14,7 +14,7 @@ public class VTBlockSplitOutputStream extends FilterOutputStream
 		this.blockSize = blockSize;
 	}
 	
-	public void write(byte[] b, int off, int len) throws IOException
+	public final void write(byte[] b, int off, int len) throws IOException
 	{
 		if (len <= blockSize)
 		{
@@ -31,12 +31,12 @@ public class VTBlockSplitOutputStream extends FilterOutputStream
 		}
 	}
 	
-	public void write(int b) throws IOException
+	public final void write(int b) throws IOException
 	{
 		out.write(b);
 	}
 	
-	public void flush() throws IOException
+	public final void flush() throws IOException
 	{
 		out.flush();
 	}

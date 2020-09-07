@@ -123,7 +123,7 @@ public final class VTAWTScreenCaptureProvider
 	private int drawnCursorSize = 32;
 	private int initialDrawnCursorSize;
 	
-	private int roundUp(int numToRound, int multiple)
+	private final int roundUp(int numToRound, int multiple)
 	{
 		if (multiple == 0)
 	    {
@@ -138,12 +138,12 @@ public final class VTAWTScreenCaptureProvider
 	}
 
 	
-	public void increaseDrawnCursorSize()
+	public final void increaseDrawnCursorSize()
 	{
 		drawnCursorSize += 8;
 	}
 	
-	public void decreaseDrawnCursorSize()
+	public final void decreaseDrawnCursorSize()
 	{
 		drawnCursorSize -= 8;
 		if (drawnCursorSize < 24)
@@ -152,7 +152,7 @@ public final class VTAWTScreenCaptureProvider
 		}
 	}
 	
-	public void normalizeDrawnCursorSize()
+	public final void normalizeDrawnCursorSize()
 	{
 		drawnCursorSize = initialDrawnCursorSize;
 	}

@@ -5,15 +5,15 @@ import java.io.OutputStream;
 
 import org.vate.VT;
 
-public class VTInterruptibleStreamRedirector implements Runnable
+public final class VTInterruptibleStreamRedirector implements Runnable
 {
 	private static final int redirectorBufferSize = VT.VT_SMALL_DATA_BUFFER_SIZE;
 	private volatile boolean stopped;
 	private int available;
 	private int readed;
 	private final byte[] redirectorBuffer = new byte[redirectorBufferSize];
-	private InputStream source;
-	private OutputStream destination;
+	private final InputStream source;
+	private final OutputStream destination;
 	// private VTTunnelSession session;
 	
 	public VTInterruptibleStreamRedirector(InputStream source, OutputStream destination)
@@ -22,7 +22,7 @@ public class VTInterruptibleStreamRedirector implements Runnable
 		this.destination = destination;
 	}
 	
-	public void run()
+	public final void run()
 	{
 		while (!stopped)
 		{

@@ -636,6 +636,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     				
     			}
         	}
+        	
         	frame.addWindowListener(new VTLanternaConsoleWindowListener(this));
         	if (terminal instanceof AWTTerminalFrame)
         	{

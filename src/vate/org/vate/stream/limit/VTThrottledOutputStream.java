@@ -6,9 +6,9 @@ import java.io.OutputStream;
 
 import engineering.clientside.throttle.NanoThrottle;
 
-public class VTThrottledOutputStream extends FilterOutputStream
+public final class VTThrottledOutputStream extends FilterOutputStream
 {
-	private volatile NanoThrottle throttler;
+	private final NanoThrottle throttler;
 	
 	public VTThrottledOutputStream(OutputStream out, double bytesPerSecond)
 	{
@@ -16,7 +16,7 @@ public class VTThrottledOutputStream extends FilterOutputStream
 		this.throttler = new NanoThrottle(bytesPerSecond, 0.01, true);
 	}
 	
-	public void write(int b) throws IOException
+	public final void write(int b) throws IOException
 	{
 		try
 		{
@@ -29,7 +29,7 @@ public class VTThrottledOutputStream extends FilterOutputStream
 		out.write(b);
 	}
 	
-	public void write(byte[] b, int off, int len) throws IOException
+	public final void write(byte[] b, int off, int len) throws IOException
 	{
 		try
 		{
@@ -42,22 +42,22 @@ public class VTThrottledOutputStream extends FilterOutputStream
 		out.write(b, off, len);
 	}
 	
-	public void setBytesPerSecond(long bytesPerSecond)
+	public final void setBytesPerSecond(long bytesPerSecond)
 	{
 		throttler.setRate(bytesPerSecond);
 	}
 	
-	public double getBytesPerSecond()
+	public final double getBytesPerSecond()
 	{
 		return throttler.getRate();
 	}
 	
-	public void wakeAllWaitingThreads()
+	public final void wakeAllWaitingThreads()
 	{
 		throttler.wakeAllWaitingThreads();
 	}
 	
-	public void close() throws IOException
+	public final void close() throws IOException
 	{
 		throttler.setRate(Long.MAX_VALUE);
 		throttler.wakeAllWaitingThreads();

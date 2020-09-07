@@ -2,7 +2,6 @@ package org.vate.client.console.remote;
 
 import java.awt.FileDialog;
 import java.awt.Menu;
-import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,20 +9,14 @@ import java.awt.event.ActionListener;
 import org.vate.VT;
 import org.vate.client.dialog.VTClientConfigurationDialog;
 import org.vate.console.VTConsole;
-import org.vate.console.VTConsoleBooleanToggleNotify;
 import org.vate.console.graphical.menu.VTGraphicalConsoleInputMenuItem;
 import org.vate.dialog.VTFileDialog;
-import org.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vate.console.graphical.menu.VTGraphicalConsoleBaseMenuBar;
 
-public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
+public class VTClientRemoteGraphicalConsoleInputMenuBar extends VTGraphicalConsoleBaseMenuBar
 {
 	private static final long serialVersionUID = 1L;
 	
-	private Menu textMenu;
-	private MenuItem increaseTextMenu;
-	private MenuItem decreaseTextMenu;
-	private MenuItem defaultTextMenu;
-	private MenuItem toggleBoldTextMenu;
 	private Menu dialogMenu;
 	private MenuItem clientConnectionDialogMenu;
 	private MenuItem loadFileDialogMenu;
@@ -65,40 +58,10 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 	// private VTConnectionDialog dialog;
 	private Menu audioLinkSoundMenu;
 	private Menu helpMenu;
-	private Menu keyboardShortcutsMenu;
-	private Menu textActionsMenu;
-	private Menu flushStatusMenu;
-	private Menu inputStatusMenu;
-	private MenuItem textActionCopyMenu;
-	private MenuItem textActionPasteMenu;
-	private MenuItem textActionAllMenu;
-	private MenuItem textActionInsertMenu;
-	private MenuItem textActionBreakMenu;
-	private volatile boolean flushInterrupted = false;
-	private volatile boolean replaceInput = false;
-	
-	private class VTClientGraphicalConsoleFlushInterruptedNotify implements VTConsoleBooleanToggleNotify
-	{
-		public void notify(boolean state)
-		{
-			flushInterrupted = state;
-			//System.out.println("flushInterrupted:" + flushInterrupted);
-			updateStatusMenu();
-		}
-	}
-	
-	private class VTClientGraphicalConsoleReplaceInputNotify implements VTConsoleBooleanToggleNotify
-	{
-		public void notify(boolean state)
-		{
-			replaceInput = state;
-			//System.out.println("replaceInput:" + replaceInput);
-			updateStatusMenu();
-		}
-	}
 	
 	public VTClientRemoteGraphicalConsoleInputMenuBar(final VTClientConfigurationDialog connectionDialog)
 	{
+		removeAllMenus();
 		// this.dialog = dialog;
 		// this.frame = frame;
 		final VTFileDialog loadFileDialog = new VTFileDialog(VTConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Load File", FileDialog.LOAD);
@@ -381,148 +344,7 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 		this.add(dialogMenu);
 		dialogMenu.setEnabled(true);
 		
-		textActionsMenu = new Menu("Texts");
-		
-		textActionCopyMenu = new MenuItem("Copy ");
-		textActionCopyMenu.addActionListener(new ActionListener()
-		{
-
-			public void actionPerformed(ActionEvent e)
-			{
-				VTConsole.copyText();
-			}
-		});
-		
-		textActionPasteMenu = new MenuItem("Paste ");
-		textActionPasteMenu.addActionListener(new ActionListener()
-		{
-
-			public void actionPerformed(ActionEvent e)
-			{
-				VTConsole.pasteText();
-			}
-		});
-		
-		textActionAllMenu = new MenuItem("All ");
-		textActionAllMenu.addActionListener(new ActionListener()
-		{
-
-			public void actionPerformed(ActionEvent e)
-			{
-				VTConsole.copyAllText();
-			}
-		});
-		
-		textActionInsertMenu = new MenuItem("Insert ");
-		textActionInsertMenu.addActionListener(new ActionListener()
-		{
-
-			public void actionPerformed(ActionEvent e)
-			{
-				VTConsole.toggleInputMode();
-			}
-		});
-		
-		textActionBreakMenu = new MenuItem("Break ");
-		textActionBreakMenu.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				VTConsole.toggleScrollMode();
-			}
-		});
-		
-		textActionsMenu.add(textActionCopyMenu);
-		textActionsMenu.add(textActionPasteMenu);
-		textActionsMenu.add(textActionAllMenu);
-		textActionsMenu.add(textActionBreakMenu);
-		textActionsMenu.add(textActionInsertMenu);
-		
-		this.add(textActionsMenu);
-		
-		textMenu = new Menu("Fonts");
-		//textMenu.setShortcut(new MenuShortcut(KeyEvent.VK_F, true));
-		
-		increaseTextMenu = new MenuItem("Increase ");
-		decreaseTextMenu = new MenuItem("Decrease ");
-		defaultTextMenu = new MenuItem("Normalize ");
-		toggleBoldTextMenu = new MenuItem("Intensitize ");
-		
-		increaseTextMenu.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				VTGlobalTextStyleManager.increaseFontSize();
-			}
-		});
-		
-		decreaseTextMenu.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				VTGlobalTextStyleManager.decreaseFontSize();
-			}
-		});
-		
-		defaultTextMenu.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				VTGlobalTextStyleManager.defaultFontSize();
-			}
-		});
-		
-		toggleBoldTextMenu.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if (VTGlobalTextStyleManager.isFontStyleBold())
-				{
-					VTGlobalTextStyleManager.disableFontStyleBold();
-				}
-				else
-				{
-					VTGlobalTextStyleManager.enableFontStyleBold();
-				}
-//				VTGlobalTextStyleManager.packComponents();
-			}
-		});
-		
-		textMenu.add(increaseTextMenu);
-		textMenu.add(decreaseTextMenu);
-		textMenu.add(toggleBoldTextMenu);
-		textMenu.add(defaultTextMenu);
-		
-		this.add(textMenu);
-		textMenu.setEnabled(true);
-		
-		keyboardShortcutsMenu = new Menu("Shortcuts");
-		keyboardShortcutsMenu.add(new MenuItem("Break/Pause : Toggle Pause / Resume"));
-		keyboardShortcutsMenu.add(new MenuItem("Insert : Toggle Insert / Replace"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+C : Quit Application"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Z : Toggle Pause / Resume"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+X : Toggle Insert / Replace"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert : Copy Selected Text"));
-		keyboardShortcutsMenu.add(new MenuItem("Shift+Insert : Paste Selected Text"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace : Copy All Text"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown : Decrease Font"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp : Increase Font"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+End : Intensitize Font"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home : Normalize Font"));
-		
-		this.add(keyboardShortcutsMenu);
-		keyboardShortcutsMenu.setEnabled(true);
-		
-		flushStatusMenu = new Menu();
-		flushStatusMenu.setEnabled(false);
-		this.add(flushStatusMenu);
-		
-		inputStatusMenu = new Menu();
-		inputStatusMenu.setEnabled(false);
-		this.add(inputStatusMenu);
-		
-		addStatusNotify();
-		updateStatusMenu();
+		super.addBaseMenus();
 
 		//Menu helpMenu = new Menu("Resume/Insert");
 		//helpMenu.setEnabled(false);
@@ -542,31 +364,5 @@ public class VTClientRemoteGraphicalConsoleInputMenuBar extends MenuBar
 	public void setEnabledDialogMenu(boolean enabled)
 	{
 		dialogMenu.setEnabled(enabled);
-	}
-	
-	public void addStatusNotify()
-	{
-		VTConsole.addToggleFlushInterruptNotify(new VTClientGraphicalConsoleFlushInterruptedNotify());
-		VTConsole.addToggleReplaceInputNotify(new VTClientGraphicalConsoleReplaceInputNotify());
-	}
-	
-	public void updateStatusMenu()
-	{
-		if (flushInterrupted)
-		{
-			flushStatusMenu.setLabel("Pause");
-		}
-		else
-		{
-			flushStatusMenu.setLabel("Resume");
-		}
-		if (replaceInput)
-		{
-			inputStatusMenu.setLabel("Replace");
-		}
-		else
-		{
-			inputStatusMenu.setLabel("Insert");
-		}
 	}
 }

@@ -4,8 +4,8 @@ import java.util.concurrent.ExecutorService;
 
 public class VTMultiplexingControlThread implements Runnable
 {
-	private VTMultiplexingConnection connection;
-	private ExecutorService threads;
+	private final VTMultiplexingConnection connection;
+	private final ExecutorService threads;
 	// private int tunnelType = VTTunnelConnection.TUNNEL_TYPE_TCP;
 	
 	public VTMultiplexingControlThread(VTMultiplexingConnection connection, ExecutorService threads)

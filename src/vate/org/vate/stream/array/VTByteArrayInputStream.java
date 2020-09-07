@@ -4,7 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 
-public class VTByteArrayInputStream extends ByteArrayInputStream
+public final class VTByteArrayInputStream extends ByteArrayInputStream
 {
 	public VTByteArrayInputStream(byte[] buf)
 	{
@@ -16,42 +16,42 @@ public class VTByteArrayInputStream extends ByteArrayInputStream
 		super(buf, offset, length);
 	}
 	
-	public byte[] buf()
+	public final byte[] buf()
 	{
 		return this.buf;
 	}
 	
-	public int count()
+	public final int count()
 	{
 		return this.count;
 	}
 	
-	public int mark()
+	public final int mark()
 	{
 		return this.mark;
 	}
 	
-	public int pos()
+	public final int pos()
 	{
 		return this.pos;
 	}
 	
-	public void buf(byte[] buf)
+	public final void buf(byte[] buf)
 	{
 		this.buf = buf;
 	}
 	
-	public void count(int count)
+	public final void count(int count)
 	{
 		this.count = count;
 	}
 	
-	public void pos(int pos)
+	public final void pos(int pos)
 	{
 		this.pos = pos;
 	}
 	
-	public int readByte() throws IOException
+	public final int readByte() throws IOException
 	{
 		int b = read();
 		if (b == -1)

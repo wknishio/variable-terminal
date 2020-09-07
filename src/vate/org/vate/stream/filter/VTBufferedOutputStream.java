@@ -4,7 +4,7 @@ import java.io.FilterOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class VTBufferedOutputStream extends FilterOutputStream
+public final class VTBufferedOutputStream extends FilterOutputStream
 {
 	/** The internal buffer where data is stored. */
 	protected byte buf[];
@@ -44,7 +44,7 @@ public class VTBufferedOutputStream extends FilterOutputStream
 	}
 	
 	/** Flush the internal buffer */
-	private void flushBuffer() throws IOException
+	private final void flushBuffer() throws IOException
 	{
 		if (count > 0)
 		{
@@ -59,7 +59,7 @@ public class VTBufferedOutputStream extends FilterOutputStream
 	 *        the byte to be written.
 	 * @exception IOException
 	 *            if an I/O error occurs. */
-	public synchronized void write(int b) throws IOException
+	public synchronized  final void write(int b) throws IOException
 	{
 		if (count >= buf.length)
 		{
@@ -87,7 +87,7 @@ public class VTBufferedOutputStream extends FilterOutputStream
 	 *        the number of bytes to write.
 	 * @exception IOException
 	 *            if an I/O error occurs. */
-	public synchronized void write(byte b[], int off, int len) throws IOException
+	public synchronized final void write(byte b[], int off, int len) throws IOException
 	{
 		if (len >= buf.length)
 		{
@@ -122,7 +122,7 @@ public class VTBufferedOutputStream extends FilterOutputStream
 	 * @exception IOException
 	 *            if an I/O error occurs.
 	 * @see java.io.FilterOutputStream#out */
-	public synchronized void flush() throws IOException
+	public synchronized final void flush() throws IOException
 	{
 		flushBuffer();
 		out.flush();

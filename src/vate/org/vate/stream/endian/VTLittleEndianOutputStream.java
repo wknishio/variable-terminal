@@ -4,14 +4,14 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class VTLittleEndianOutputStream extends OutputStream implements DataOutput
+public final class VTLittleEndianOutputStream extends OutputStream implements DataOutput
 {
-	private byte[] shortBuffer;
-	private byte[] ushortBuffer;
-	private byte[] charBuffer;
-	private byte[] subintBuffer;
-	private byte[] intBuffer;
-	private byte[] longBuffer;
+	private final byte[] shortBuffer;
+	private final byte[] ushortBuffer;
+	private final byte[] charBuffer;
+	private final byte[] subintBuffer;
+	private final byte[] intBuffer;
+	private final byte[] longBuffer;
 	private OutputStream out;
 	
 	public VTLittleEndianOutputStream(OutputStream out)
@@ -25,63 +25,63 @@ public class VTLittleEndianOutputStream extends OutputStream implements DataOutp
 		this.longBuffer = new byte[8];
 	}
 	
-	public void setOutputStream(OutputStream out)
+	public final void setOutputStream(OutputStream out)
 	{
 		this.out = out;
 	}
 	
-	public void write(int b) throws IOException
+	public final void write(int b) throws IOException
 	{
 		out.write(b);
 	}
 	
-	public void write(byte[] b) throws IOException
+	public final void write(byte[] b) throws IOException
 	{
 		out.write(b);
 	}
 	
-	public void write(byte[] b, int off, int len) throws IOException
+	public final void write(byte[] b, int off, int len) throws IOException
 	{
 		out.write(b, off, len);
 	}
 	
-	public void flush() throws IOException
+	public final void flush() throws IOException
 	{
 		out.flush();
 	}
 	
-	public void close() throws IOException
+	public final void close() throws IOException
 	{
 		out.close();
 	}
 	
-	public void writeBoolean(boolean b) throws IOException
+	public final void writeBoolean(boolean b) throws IOException
 	{
 		out.write(b ? 1 : 0);
 	}
 	
-	public void writeShort(short s) throws IOException
+	public final void writeShort(short s) throws IOException
 	{
 		shortBuffer[0] = (byte) s;
 		shortBuffer[1] = (byte) (s >> 8);
 		out.write(shortBuffer);
 	}
 	
-	public void writeUnsignedShort(int s) throws IOException
+	public final void writeUnsignedShort(int s) throws IOException
 	{
 		ushortBuffer[0] = (byte) s;
 		ushortBuffer[1] = (byte) (s >> 8);
 		out.write(ushortBuffer);
 	}
 	
-	public void writeChar(char c) throws IOException
+	public final void writeChar(char c) throws IOException
 	{
 		charBuffer[0] = (byte) c;
 		charBuffer[1] = (byte) (c >> 8);
 		out.write(charBuffer);
 	}
 	
-	public void writeSubInt(int i) throws IOException
+	public final void writeSubInt(int i) throws IOException
 	{
 		subintBuffer[0] = (byte) (i);
 		subintBuffer[1] = (byte) (i >> 8);
@@ -89,7 +89,7 @@ public class VTLittleEndianOutputStream extends OutputStream implements DataOutp
 		out.write(subintBuffer);
 	}
 	
-	public void writeInt(int i) throws IOException
+	public final void writeInt(int i) throws IOException
 	{
 		intBuffer[0] = (byte) i;
 		intBuffer[1] = (byte) (i >> 8);
@@ -98,7 +98,7 @@ public class VTLittleEndianOutputStream extends OutputStream implements DataOutp
 		out.write(intBuffer);
 	}
 	
-	public void writeUnsignedInt(long l) throws IOException
+	public final void writeUnsignedInt(long l) throws IOException
 	{
 		intBuffer[0] = (byte) l;
 		intBuffer[1] = (byte) (l >> 8);
@@ -107,7 +107,7 @@ public class VTLittleEndianOutputStream extends OutputStream implements DataOutp
 		out.write(intBuffer);
 	}
 	
-	public void writeLong(long l) throws IOException
+	public final void writeLong(long l) throws IOException
 	{
 		longBuffer[0] = (byte) l;
 		longBuffer[1] = (byte) (l >> 8);
@@ -120,42 +120,42 @@ public class VTLittleEndianOutputStream extends OutputStream implements DataOutp
 		out.write(longBuffer);
 	}
 	
-	public void writeFloat(float f) throws IOException
+	public final void writeFloat(float f) throws IOException
 	{
 		writeInt(Float.floatToRawIntBits(f));
 	}
 	
-	public void writeDouble(double d) throws IOException
+	public final void writeDouble(double d) throws IOException
 	{
 		writeLong(Double.doubleToRawLongBits(d));
 	}
 
-	public void writeByte(int v) throws IOException
+	public final void writeByte(int v) throws IOException
 	{
 		write(v);
 	}
 
-	public void writeShort(int v) throws IOException
+	public final void writeShort(int v) throws IOException
 	{
 		writeUnsignedShort(v);
 	}
 
-	public void writeChar(int v) throws IOException
+	public final void writeChar(int v) throws IOException
 	{
 		writeUnsignedShort(v);
 	}
 
-	public void writeBytes(String s) throws IOException
+	public final void writeBytes(String s) throws IOException
 	{
 		throw new IOException("not implemented");
 	}
 
-	public void writeChars(String s) throws IOException
+	public final void writeChars(String s) throws IOException
 	{
 		throw new IOException("not implemented");
 	}
 
-	public void writeUTF(String s) throws IOException
+	public final void writeUTF(String s) throws IOException
 	{
 		throw new IOException("not implemented");
 	}

@@ -13,9 +13,9 @@ import org.vate.stream.compress.VTCompressorSelector;
 import org.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vate.stream.limit.VTThrottlingOutputStream;
 
-public class VTLinkableDynamicMultiplexingOutputStream
+public final class VTLinkableDynamicMultiplexingOutputStream
 {
-	public class VTLinkableDynamicMultiplexedOutputStream extends OutputStream
+	public final class VTLinkableDynamicMultiplexedOutputStream extends OutputStream
 	{
 		private static final int headerSize = 8;
 		private volatile boolean closed;
@@ -71,37 +71,37 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			}
 		}
 		
-		public int number()
+		public final int number()
 		{
 			return number;
 		}
 		
-		public int type()
+		public final int type()
 		{
 			return type;
 		}
 		
-		public Object getLink()
+		public final Object getLink()
 		{
 			return link;
 		}
 		
-		public void setLink(Object link)
+		public final void setLink(Object link)
 		{
 			this.link = link;
 		}
 		
-		public boolean closed()
+		public final boolean closed()
 		{
 			return closed;
 		}
 		
-		public void closed(boolean closed)
+		public final void closed(boolean closed)
 		{
 			this.closed = closed;
 		}
 		
-		public void write(byte[] data, int offset, int length) throws IOException
+		public final void write(byte[] data, int offset, int length) throws IOException
 		{
 			int written = 0;
 			int position = offset;
@@ -136,12 +136,12 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			}
 		}
 		
-		public void write(byte[] data) throws IOException
+		public final void write(byte[] data) throws IOException
 		{
 			write(data, 0, data.length);
 		}
 		
-		public void write(int data) throws IOException
+		public final void write(int data) throws IOException
 		{
 			if (autoFlushPackets)
 			{
@@ -161,7 +161,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			}
 		}
 		
-		public void flush() throws IOException
+		public final void flush() throws IOException
 		{
 			if (!autoFlushPackets)
 			{
@@ -173,7 +173,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			}
 		}
 		
-		public void close() throws IOException
+		public final void close() throws IOException
 		{
 			if (!closed)
 			{
@@ -197,7 +197,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			}
 		}
 		
-		public void open() throws IOException
+		public final void open() throws IOException
 		{
 			if (closed)
 			{
@@ -211,13 +211,13 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			closed = false;
 		}
 		
-		public void addPropagated(Closeable propagated)
+		public final void addPropagated(Closeable propagated)
 		{
 			//this.propagated = propagated;
 			this.propagated.add(propagated);
 		}
 		
-		private void writePacket(int data, int type, int number) throws IOException
+		private final void writePacket(int data, int type, int number) throws IOException
 		{
 			//dataPaddingSize = (~(headerSize + 1) + 1) & (blockBits);
 			dataPacketBuffer.reset();
@@ -234,7 +234,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			//writeBlocks(out, dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
 		}
 		
-		private void writePacket(byte[] data, int offset, int length, int type, int number) throws IOException
+		private final void writePacket(byte[] data, int offset, int length, int type, int number) throws IOException
 		{
 			//dataPaddingSize = (~(headerSize + length) + 1) & (blockBits);
 			dataPacketBuffer.reset();
@@ -256,7 +256,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 //			}
 		}
 		
-		private void writePacketFlushing(int data, int type, int number) throws IOException
+		private final void writePacketFlushing(int data, int type, int number) throws IOException
 		{
 			//dataPaddingSize = (~(headerSize + 1) + 1) & (blockBits);
 			dataPacketBuffer.reset();
@@ -274,7 +274,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			out.flush();
 		}
 		
-		private void writePacketFlushing(byte[] data, int offset, int length, int type, int number) throws IOException
+		private final void writePacketFlushing(byte[] data, int offset, int length, int type, int number) throws IOException
 		{
 			//dataPaddingSize = (~(headerSize + length) + 1) & (blockBits);
 			dataPacketBuffer.reset();
@@ -292,7 +292,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			out.flush();
 		}
 		
-		private void writeClosePacketFlushing(int type, int number) throws IOException
+		private final void writeClosePacketFlushing(int type, int number) throws IOException
 		{
 			//controlPaddingSize = (~(headerSize) + 1) & (blockBits);
 			controlPacketBuffer.reset();
@@ -307,7 +307,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 			out.flush();
 		}
 		
-		private void writeOpenPacketFlushing(int type, int number) throws IOException
+		private final void writeOpenPacketFlushing(int type, int number) throws IOException
 		{
 			//controlPaddingSize = (~(headerSize) + 1) & (blockBits);
 			controlPacketBuffer.reset();
@@ -341,7 +341,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 		this.autoFlushPackets = autoFlushPackets;
 	}
 	
-	public synchronized VTLinkableDynamicMultiplexedOutputStream linkOutputStream(int type, Object link)
+	public final synchronized VTLinkableDynamicMultiplexedOutputStream linkOutputStream(int type, Object link)
 	{
 		VTLinkableDynamicMultiplexedOutputStream stream = null;
 		if (link instanceof Integer)
@@ -367,7 +367,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 		return stream;
 	}
 	
-	public synchronized void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
+	public final synchronized void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
 	{
 		if (stream != null)
 		{
@@ -375,7 +375,7 @@ public class VTLinkableDynamicMultiplexingOutputStream
 		}
 	}
 	
-	public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number)
+	public final VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number)
 	{
 		VTLinkableDynamicMultiplexedOutputStream stream = null;
 		if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == 0)
@@ -415,50 +415,50 @@ public class VTLinkableDynamicMultiplexingOutputStream
 		return stream;
 	}
 	
-	public int getPipedChannelsNumber()
+	public final int getPipedChannelsNumber()
 	{
 		return pipedChannels.size();
 	}
 	
-	public int getPacketSize()
+	public final int getPacketSize()
 	{
 		return packetSize;
 	}
 	
-	public int getBlockSize()
+	public final int getBlockSize()
 	{
 		return blockSize;
 	}
 	
-	public boolean isAutoFlushPackets()
+	public final boolean isAutoFlushPackets()
 	{
 		return autoFlushPackets;
 	}
 	
-	public void setBytesPerSecond(long bytesPerSecond)
+	public final void setBytesPerSecond(long bytesPerSecond)
 	{
 		throttleable.setBytesPerSecond(bytesPerSecond);
 	}
 	
-	public long getBytesPerSecond()
+	public final long getBytesPerSecond()
 	{
 		// return 0;
 		return throttleable.getBytesPerSecond();
 	}
 	
-	public void close() throws IOException
+	public final void close() throws IOException
 	{
 		pipedChannels.clear();
 		directChannels.clear();
 		throttleable.close();
 	}
 	
-	public void open(short type, int number) throws IOException
+	public final void open(short type, int number) throws IOException
 	{
 		getOutputStream(type, number).open();
 	}
 	
-	public void close(short type, int number) throws IOException
+	public final void close(short type, int number) throws IOException
 	{
 		getOutputStream(type, number).close();
 	}

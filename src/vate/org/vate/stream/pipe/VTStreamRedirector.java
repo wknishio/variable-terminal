@@ -5,30 +5,32 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import org.vate.VT;
 
-public class VTStreamRedirector implements Runnable
+public final class VTStreamRedirector implements Runnable
 {
 	private static final int redirectorBufferSize = VT.VT_STANDARD_DATA_BUFFER_SIZE;
 	private volatile boolean stopped;
 	private int readed = 0;
 	private final byte[] redirectorBuffer = new byte[redirectorBufferSize];
-	private InputStream source;
-	private OutputStream destination;
-	private Closeable notify;
+	private final InputStream source;
+	private final OutputStream destination;
+	private final Closeable notify;
 	// private VTTunnelSession session;
 	
 	public VTStreamRedirector(InputStream source, OutputStream destination)
 	{
 		this.source = source;
 		this.destination = destination;
+		this.notify = null;
 	}
 	
 	public VTStreamRedirector(InputStream source, OutputStream destination, Closeable notify)
 	{
 		this.source = source;
 		this.destination = destination;
+		this.notify = notify;
 	}
 	
-	public void run()
+	public final void run()
 	{
 		while (!stopped)
 		{

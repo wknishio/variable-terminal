@@ -18,7 +18,7 @@ public final class VTPipedOutputStream extends OutputStream
 		
 	}
 	
-	public void connect(VTPipedInputStream sink) throws IOException
+	public final void connect(VTPipedInputStream sink) throws IOException
 	{
 		if (this.sink == sink)
 		{
@@ -31,17 +31,17 @@ public final class VTPipedOutputStream extends OutputStream
 		this.sink = sink;
 	}
 	
-	public void write(int b) throws IOException
+	public final void write(int b) throws IOException
 	{
 		sink.put(b);
 	}
 	
-	public void write(byte b[], int off, int len) throws IOException
+	public final void write(byte b[], int off, int len) throws IOException
 	{
 		sink.put(b, off, len);
 	}
 	
-	public void flush()
+	public final void flush()
 	{
 		if (sink != null)
 		{
@@ -49,7 +49,7 @@ public final class VTPipedOutputStream extends OutputStream
 		}
 	}
 	
-	public void close() throws IOException
+	public final void close() throws IOException
 	{
 		sink.eof();
 	}

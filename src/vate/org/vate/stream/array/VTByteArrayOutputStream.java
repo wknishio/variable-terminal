@@ -3,7 +3,7 @@ package org.vate.stream.array;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class VTByteArrayOutputStream extends ByteArrayOutputStream
+public final class VTByteArrayOutputStream extends ByteArrayOutputStream
 {
 	public VTByteArrayOutputStream()
 	{
@@ -15,27 +15,27 @@ public class VTByteArrayOutputStream extends ByteArrayOutputStream
 		super(size);
 	}
 	
-	public byte[] buf()
+	public final byte[] buf()
 	{
 		return this.buf;
 	}
 	
-	public int count()
+	public final int count()
 	{
 		return this.count;
 	}
 	
-	public void buf(byte[] buf)
+	public final void buf(byte[] buf)
 	{
 		this.buf = buf;
 	}
 	
-	public void count(int count)
+	public final void count(int count)
 	{
 		this.count = count;
 	}
 	
-	public void close() throws IOException
+	public final void close() throws IOException
 	{
 		// super.close();
 	}

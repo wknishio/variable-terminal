@@ -37,7 +37,7 @@ public final class VTPipedInputStream extends InputStream
 		connect(source);
 	}
 	
-	public void connect(VTPipedOutputStream source) throws IOException
+	public final void connect(VTPipedOutputStream source) throws IOException
 	{
 		if (this.source == source)
 		{
@@ -51,7 +51,7 @@ public final class VTPipedInputStream extends InputStream
 		source.connect(this);
 	}
 	
-	public synchronized int read() throws IOException
+	public final synchronized int read() throws IOException
 	{
 		while (isEmpty())
 		{
@@ -90,7 +90,7 @@ public final class VTPipedInputStream extends InputStream
 		return b;
 	}
 	
-	public synchronized int read(byte[] buf, int off, int len) throws IOException
+	public final synchronized int read(byte[] buf, int off, int len) throws IOException
 	{
 		while (isEmpty())
 		{
@@ -149,7 +149,7 @@ public final class VTPipedInputStream extends InputStream
 		return n;
 	}
 	
-	public synchronized int available()
+	public final synchronized int available()
 	{
 		if (closed)
 		{
@@ -158,18 +158,18 @@ public final class VTPipedInputStream extends InputStream
 		return circBuf.length - freeSpace() - 1;
 	}
 	
-	public synchronized void close() throws IOException
+	public final synchronized void close() throws IOException
 	{
 		closed = true;
 		this.notifyAll();
 	}
 	
-	public synchronized void flush()
+	public final synchronized void flush()
 	{
 		this.notifyAll();
 	}
 	
-	protected synchronized void put(int b) throws IOException
+	protected final synchronized void put(int b) throws IOException
 	{
 		if (eof)
 		{
@@ -206,7 +206,7 @@ public final class VTPipedInputStream extends InputStream
 			this.notify();
 	}
 	
-	protected synchronized void put(byte[] buf, int off, int len) throws IOException
+	protected final synchronized void put(byte[] buf, int off, int len) throws IOException
 	{
 		while (len > 0)
 		{
@@ -272,13 +272,13 @@ public final class VTPipedInputStream extends InputStream
 		}
 	}
 	
-	protected synchronized void eof()
+	protected final synchronized void eof()
 	{
 		eof = true;
 		this.notify();
 	}
 	
-	private int freeSpace()
+	private final int freeSpace()
 	{
 		int fSpc = rOffset - wOffset;
 		if (fSpc <= 0)
@@ -289,7 +289,7 @@ public final class VTPipedInputStream extends InputStream
 		return fSpc;
 	}
 	
-	private synchronized boolean isEmpty()
+	private final synchronized boolean isEmpty()
 	{
 		return (rOffset == wOffset) || closed;
 	}
@@ -300,7 +300,7 @@ public final class VTPipedInputStream extends InputStream
 	 * isWaitPut = true; try { this.wait(); } catch (InterruptedException e) {
 	 * // ! } } } */
 	
-	public synchronized void open()
+	public final synchronized void open()
 	{
 		eof = false;
 		closed = false;
@@ -311,7 +311,7 @@ public final class VTPipedInputStream extends InputStream
 		notifyAll();
 	}
 	
-	public synchronized boolean isClosed()
+	public final synchronized boolean isClosed()
 	{
 		return closed;
 	}

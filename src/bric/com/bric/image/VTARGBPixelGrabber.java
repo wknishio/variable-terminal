@@ -39,7 +39,7 @@ import java.awt.*;
  * @see http://javagraphics.blogspot.com/
  * @author mickleness@gmail.com
  */
-public class VTARGBPixelGrabber {
+public final class VTARGBPixelGrabber {
     
     /*public static void main(String[] args) {
         BufferedImage bi = new BufferedImage(1000,1000,BufferedImage.TYPE_INT_ARGB);
@@ -118,7 +118,7 @@ public class VTARGBPixelGrabber {
 		
 	}
 	
-	public void dispose()
+	public final void dispose()
 	{
 		this.argbPixels = null;
 		this.icm = null;
@@ -182,7 +182,7 @@ public class VTARGBPixelGrabber {
     private int[] argbPixels;
     
     /** Create an ARGBPixelGrabber to iterate over <code>i</code> */
-    public void setImage(Image i) {
+    public final void setImage(Image i) {
     	setImage(i,null);
     }
     
@@ -191,7 +191,7 @@ public class VTARGBPixelGrabber {
      * this rectangle.  An exception may be thrown if <code>rect</code>
      * is not completely contained within <code>i</code>
      */
-    public void setImage(Image i,Rectangle rect) {
+    public final void setImage(Image i,Rectangle rect) {
         if(i instanceof BufferedImage &&
                 isBufferedImageTypeSupported( ((BufferedImage)i).getType() )) {
             BufferedImage bi = (BufferedImage)i;
@@ -264,7 +264,7 @@ public class VTARGBPixelGrabber {
      * asked this grabber to clip to a subset of the image.
      * 
      */
-    public int getWidth() {
+    public final int getWidth() {
         return width;
     }
     
@@ -272,7 +272,7 @@ public class VTARGBPixelGrabber {
      * Note this <i>may</i> be different from <code>BufferedImage.getWidth()</code> if you
      * asked this grabber to clip to a subset of the image.
      */
-    public int getHeight() {
+    public final int getHeight() {
         return height;
     }
     
@@ -290,7 +290,7 @@ public class VTARGBPixelGrabber {
      * @param t
      * @return
      */
-    protected static boolean isBufferedImageTypeSupported(int t) {
+    protected final static boolean isBufferedImageTypeSupported(int t) {
         return t==BufferedImage.TYPE_INT_RGB || 
         t==BufferedImage.TYPE_INT_ARGB || 
         t==BufferedImage.TYPE_INT_ARGB_PRE ||
@@ -309,7 +309,7 @@ public class VTARGBPixelGrabber {
      * If there is no more data, then all calls to <code>next</code>
      * will return zero.
      */
-    public boolean isDone() {
+    public final boolean isDone() {
         return (currentY==y+height && currentX==x+width);
     }
     
@@ -328,7 +328,7 @@ public class VTARGBPixelGrabber {
      * @return an array that is <code>getWidth()*getHeight()</code>
      * units long, containing all the ARGB data of this image.
      */
-    public int[] getPixels() {
+    public final int[] getPixels() {
         return getPixels(new int[width*height]);
     }
     
@@ -336,7 +336,7 @@ public class VTARGBPixelGrabber {
      * this image data again.
      *
      */
-    public void reset() {
+    public final void reset() {
         currentX = x;
         currentY = y;
     }
@@ -359,7 +359,7 @@ public class VTARGBPixelGrabber {
      * @return an array containing all the pixel data of this image.  If <code>array</code>
      * was non-null, then this returns the argument <code>array</code>
      */
-    public int[] getPixels(int[] array) {
+    public final int[] getPixels(int[] array) {
         if(array==null) {
             array = new int[width*height];
         } else {
@@ -390,7 +390,7 @@ public class VTARGBPixelGrabber {
      * @return the number of pixels read.  This will be the length
      * of <code>data</code> unless the end of the image is reached.
      */
-    public int next(int[] data) {
+    public final int next(int[] data) {
         return next(data,0,data.length);
     }
     
@@ -424,7 +424,7 @@ public class VTARGBPixelGrabber {
      * if <code>isDone()</code> returns
      * <code>true</code>.
      */
-    public int next(int[] data,int arrayOffset,int arrayLength) {
+    public final int next(int[] data,int arrayOffset,int arrayLength) {
         if(arrayLength>0) {
             if(data.length-arrayOffset<arrayLength)
                 throw new IllegalArgumentException("Illegal request for "+arrayLength+" pixels, when the array can only contain "+(data.length-arrayOffset)+" pixels.");
@@ -479,7 +479,7 @@ public class VTARGBPixelGrabber {
      * @param dest the destination to write to
      * @param destOffset the offset in dest to write to
      */
-    private int[] readRow(int y,int[] dest,int destOffset) {
+    private final int[] readRow(int y,int[] dest,int destOffset) {
         if(dest.length-destOffset<width)
             throw new IllegalArgumentException("this array must have at least "+width+" pixels available in it.  ("+(dest.length-destOffset)+")");
         if(r!=null) {

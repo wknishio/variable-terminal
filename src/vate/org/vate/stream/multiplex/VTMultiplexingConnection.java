@@ -17,13 +17,13 @@ public class VTMultiplexingConnection
 	private VTLinkableDynamicMultiplexingOutputStream dataOutputStream;
 	private BufferedReader controlReader;
 	private BufferedWriter controlWriter;
-	private ExecutorService threads;
-	private VTMultiplexingControlThread controlThread;
+	private final ExecutorService threads;
+	private final VTMultiplexingControlThread controlThread;
 	
 	public VTMultiplexingConnection(ExecutorService threads)
 	{
-		this.controlThread = new VTMultiplexingControlThread(this, threads);
 		this.threads = threads;
+		this.controlThread = new VTMultiplexingControlThread(this, threads);
 	}
 	
 	public synchronized void start()

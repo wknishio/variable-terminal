@@ -160,7 +160,7 @@ public final class VTDirectRobot
 		}
 	}
 
-	public static GraphicsDevice getMouseInfo(Point point)
+	public final static GraphicsDevice getMouseInfo(Point point)
 	{
 		if (!hasMouseInfoPeer)
 		{
@@ -212,47 +212,47 @@ public final class VTDirectRobot
 		return getMouseInfo(null);
 	}
 
-	public void mouseMove(int x, int y)
+	public final void mouseMove(int x, int y)
 	{
 		peer.mouseMove(x, y);
 	}
 
-	public void mousePress(int buttons)
+	public final void mousePress(int buttons)
 	{
 		peer.mousePress(buttons);
 	}
 
-	public void mouseRelease(int buttons)
+	public final void mouseRelease(int buttons)
 	{
 		peer.mouseRelease(buttons);
 	}
 
-	public void mouseWheel(int wheelAmt)
+	public final void mouseWheel(int wheelAmt)
 	{
 		peer.mouseWheel(wheelAmt);
 	}
 
-	public void keyPress(int keycode)
+	public final void keyPress(int keycode)
 	{
 		peer.keyPress(keycode);
 	}
 
-	public void keyRelease(int keycode)
+	public final void keyRelease(int keycode)
 	{
 		peer.keyRelease(keycode);
 	}
 
-	public int getRGBPixel(int x, int y)
+	public final int getRGBPixel(int x, int y)
 	{
 		return peer.getRGBPixel(x, y);
 	}
 
-	public int[] getRGBPixels(Rectangle bounds)
+	public final int[] getRGBPixels(Rectangle bounds)
 	{
 		return peer.getRGBPixels(bounds);
 	}
 
-	public boolean getRGBPixels(int x, int y, int width, int height, int[] pixels)
+	public final boolean getRGBPixels(int x, int y, int width, int height, int[] pixels)
 	{
 //		if (Platform.isWindows())
 //		{
@@ -301,7 +301,7 @@ public final class VTDirectRobot
 		return false;
 	}
 
-	public void dispose()
+	public final void dispose()
 	{
 		getRGBPixelsMethodParam = null;
 		Method method = getRGBPixelsMethod;
@@ -322,7 +322,7 @@ public final class VTDirectRobot
 		catch (Throwable t) { }
 	}
 
-	protected void finalize() throws Throwable
+	protected final void finalize() throws Throwable
 	{
 		try
 		{
