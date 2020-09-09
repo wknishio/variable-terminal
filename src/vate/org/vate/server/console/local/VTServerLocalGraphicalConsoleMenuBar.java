@@ -4,11 +4,11 @@ import java.awt.Menu;
 import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.vate.console.graphical.menu.VTGraphicalConsoleBaseMenuBar;
-import org.vate.console.graphical.menu.VTGraphicalConsoleInputMenuItem;
+import org.vate.console.graphical.menu.VTGraphicalConsoleMenuBar;
+import org.vate.console.graphical.menu.VTGraphicalConsoleMenuItem;
 import org.vate.server.dialog.VTServerSettingsDialog;
 
-public class VTServerLocalGraphicalConsoleInputMenuBar extends VTGraphicalConsoleBaseMenuBar
+public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenuBar
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -34,7 +34,7 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends VTGraphicalConsol
 	private Menu serverSessionsMenu;
 	private Menu helpMenu;
 			
-	public VTServerLocalGraphicalConsoleInputMenuBar(final VTServerSettingsDialog connectionDialog)
+	public VTServerLocalGraphicalConsoleMenuBar(final VTServerSettingsDialog connectionDialog)
 	{
 		removeAllMenus();
 		// this.frame = frame;
@@ -43,18 +43,18 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends VTGraphicalConsol
 		// true));
 		
 		sessionMenu = new Menu("Session ");
-		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("List Connected Clients", "*VTSESSIONS\n"));
-		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Send Message To Clients", "*VTMESSAGE "));
-		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Disconnect Client From Server", "*VTDISCONNECT "));
-		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Close Server Application", "*VTSTOP\n"));
-		sessionMenu.add(new VTGraphicalConsoleInputMenuItem("Toggle Server Cover", "*VTCOVER\n"));
+		sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTSESSIONS\n"));
+		sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Message To Clients", "*VTMESSAGE "));
+		sessionMenu.add(new VTGraphicalConsoleMenuItem("Disconnect Client From Server", "*VTDISCONNECT "));
+		sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Server Application", "*VTSTOP\n"));
+		sessionMenu.add(new VTGraphicalConsoleMenuItem("Toggle Server Cover", "*VTCOVER\n"));
 		
 		performanceMenu = new Menu("Rates ");
-		performanceMenu.add(new VTGraphicalConsoleInputMenuItem("Calculate Connection Latencies", "*VTPING\n"));
+		performanceMenu.add(new VTGraphicalConsoleMenuItem("Calculate Connection Latencies", "*VTPING\n"));
 		
 		consoleMenu = new Menu("Console ");
-		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Show Local System Time", "*VTTIME\n"));
-		consoleMenu.add(new VTGraphicalConsoleInputMenuItem("Clear Local Console", "*VTCLEAR\n"));
+		consoleMenu.add(new VTGraphicalConsoleMenuItem("Show Local System Time", "*VTTIME\n"));
+		consoleMenu.add(new VTGraphicalConsoleMenuItem("Clear Local Console", "*VTCLEAR\n"));
 		
 		serverSettingsMenu = new Menu("Access ");
 		serverConnectionMenu = new Menu("Connection ");
@@ -62,58 +62,58 @@ public class VTServerLocalGraphicalConsoleInputMenuBar extends VTGraphicalConsol
 		serverProxyMenu = new Menu("Proxy ");
 		serverEncryptionMenu = new Menu("Encryption ");
 		serverSessionsMenu = new Menu("Sessions ");
-		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("List All Settings", "*VTACCESS\n"));
+		serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("List All Settings", "*VTACCESS\n"));
 		serverSettingsMenu.add(serverConnectionMenu);
 		//serverSettingsMenu.add(serverAuthenticationSettingsMenu);
 		serverSettingsMenu.add(serverProxyMenu);
 		serverSettingsMenu.add(serverEncryptionMenu);
 		serverSettingsMenu.add(serverSessionsMenu);
-		serverConnectionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Mode", "*VTACCESS CM "));
-		serverConnectionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Host", "*VTACCESS CH "));
-		serverConnectionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Port", "*VTACCESS CP "));
-		serverConnectionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection NAT Port", "*VTACCESS NP "));
-		serverConnectionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Connection Login", "*VTLOCK "));
-		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Type", "*VTACCESS PT "));
-		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Host", "*VTACCESS PH "));
-		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Port", "*VTACCESS PP "));
-		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Authentication", "*VTACCESS PA "));
-		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy User", "*VTACCESS PU "));
-		serverProxyMenu.add(new VTGraphicalConsoleInputMenuItem("Set Proxy Password", "*VTACCESS PS "));
-		serverEncryptionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Encryption Type", "*VTACCESS ET "));
-		serverEncryptionMenu.add(new VTGraphicalConsoleInputMenuItem("Set Encryption Password", "*VTACCESS ES "));
+		serverConnectionMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Mode", "*VTACCESS CM "));
+		serverConnectionMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Host", "*VTACCESS CH "));
+		serverConnectionMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Port", "*VTACCESS CP "));
+		serverConnectionMenu.add(new VTGraphicalConsoleMenuItem("Set Connection NAT Port", "*VTACCESS NP "));
+		serverConnectionMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Login", "*VTLOCK "));
+		serverProxyMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Type", "*VTACCESS PT "));
+		serverProxyMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Host", "*VTACCESS PH "));
+		serverProxyMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Port", "*VTACCESS PP "));
+		serverProxyMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Authentication", "*VTACCESS PA "));
+		serverProxyMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy User", "*VTACCESS PU "));
+		serverProxyMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Password", "*VTACCESS PS "));
+		serverEncryptionMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Type", "*VTACCESS ET "));
+		serverEncryptionMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Password", "*VTACCESS ES "));
 		//serverAuthenticationSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Single Login", "*VTLOCK "));
-		serverSessionsMenu.add(new VTGraphicalConsoleInputMenuItem("Set Sessions Limit", "*VTACCESS SL "));
-		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Save Settings File", "*VTACCESS SF "));
-		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Load Settings File", "*VTACCESS LF "));
-		serverSettingsMenu.add(new VTGraphicalConsoleInputMenuItem("Command Usage", "*VTHELP *VTACCESS\n"));
+		serverSessionsMenu.add(new VTGraphicalConsoleMenuItem("Set Sessions Limit", "*VTACCESS SL "));
+		serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Save Settings File", "*VTACCESS SF "));
+		serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Load Settings File", "*VTACCESS LF "));
+		serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTACCESS\n"));
 		//settingsMenu.add(serverSettingsMenu);
 		
 		// serverUtilitiesMenu = new Menu("Local System Utilities ");
 		serverRuntimeMenu = new Menu("Runtime ");
-		serverRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Set Local Environment Variables", "*VTVARIABLE "));
-		serverRuntimeMenu.add(new VTGraphicalConsoleInputMenuItem("Set Local JVM Properties", "*VTPROPERTY "));
+		serverRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Local Environment Variables", "*VTVARIABLE "));
+		serverRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Local JVM Properties", "*VTPROPERTY "));
 		
 		fileSystemMenu = new Menu("Files ");
-		fileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("List Local File System Roots", "*VTFILEROOTS\n"));
+		fileSystemMenu.add(new VTGraphicalConsoleMenuItem("List Local File System Roots", "*VTFILEROOTS\n"));
 		
 		serverNetworkMenu = new Menu("Networks ");
-		serverNetworkMenu.add(new VTGraphicalConsoleInputMenuItem("List Local Network Interfaces", "*VTNETWORKS\n"));
+		serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List Local Network Interfaces", "*VTNETWORKS\n"));
 		
 		serverGraphicalSystemsMenu = new Menu("Graphics ");
-		serverGraphicalSystemsMenu.add(new VTGraphicalConsoleInputMenuItem("List Local Display Devices", "*VTDISPLAYS\n"));
+		serverGraphicalSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Local Display Devices", "*VTDISPLAYS\n"));
 		
 		serverAudioSystemsMenu = new Menu("Audio ");
-		serverAudioSystemsMenu.add(new VTGraphicalConsoleInputMenuItem("List Local Audio Mixers", "*VTAUDIOMIXERS\n"));
+		serverAudioSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Local Audio Mixers", "*VTAUDIOMIXERS\n"));
 		
 		serverPrintMenu = new Menu("Printing ");
-		serverPrintMenu.add(new VTGraphicalConsoleInputMenuItem("List Local Printers", "*VTPRINTERS\n"));
+		serverPrintMenu.add(new VTGraphicalConsoleMenuItem("List Local Printers", "*VTPRINTERS\n"));
 		// serverUtilitiesMenu.add(new VTGraphicalConsoleInputMenuItem("Show
 		// Default
 		// Print Service ", "*VTDEFAULTPRINTSERVICE\n"));
 		helpMenu = new Menu("Help ");
-		helpMenu.add(new VTGraphicalConsoleInputMenuItem("Complete Commands", "*VTHELP\n"));
-		helpMenu.add(new VTGraphicalConsoleInputMenuItem("Abbreviated Commands", "*VTHLP\n"));
-		helpMenu.add(new VTGraphicalConsoleInputMenuItem("Specific Command", "*VTHELP "));
+		helpMenu.add(new VTGraphicalConsoleMenuItem("Complete Commands", "*VTHELP\n"));
+		helpMenu.add(new VTGraphicalConsoleMenuItem("Abbreviated Commands", "*VTHLP\n"));
+		helpMenu.add(new VTGraphicalConsoleMenuItem("Specific Command", "*VTHELP "));
 		
 		serverConsoleCommandsMenu.add(sessionMenu);
 		//serverConsoleCommandsMenu.add(settingsMenu);

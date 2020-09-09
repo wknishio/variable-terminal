@@ -10,7 +10,7 @@ import org.vate.console.VTConsole;
 import org.vate.console.VTConsoleBooleanToggleNotify;
 import org.vate.graphics.font.VTGlobalTextStyleManager;
 
-public class VTGraphicalConsoleBaseMenuBar extends MenuBar
+public class VTGraphicalConsoleMenuBar extends MenuBar
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -21,11 +21,12 @@ public class VTGraphicalConsoleBaseMenuBar extends MenuBar
 	private MenuItem textActionInsertMenu;
 	private MenuItem textActionBreakMenu;
 	
-	private Menu textFontMenu;
-	private MenuItem textFontIncreaseMenu;
-	private MenuItem textFontDecreaseMenu;
-	private MenuItem textFontDefaultMenu;
-	private MenuItem textFontToggleBoldMenu;
+	private Menu sizesMenu;
+	private MenuItem sizesExpandMenu;
+	private MenuItem sizesReduceMenu;
+	private MenuItem sizesRepackMenu;
+	private MenuItem sizesDefaultMenu;
+	private MenuItem sizesBold;
 	
 	private Menu keyboardShortcutsMenu;
 	
@@ -38,7 +39,7 @@ public class VTGraphicalConsoleBaseMenuBar extends MenuBar
 	private volatile boolean flushInterrupted = false;
 	private volatile boolean replaceInput = false;
 	
-	public VTGraphicalConsoleBaseMenuBar()
+	public VTGraphicalConsoleMenuBar()
 	{
 		addStatusNotify();
 		removeAllMenus();
@@ -115,15 +116,16 @@ public class VTGraphicalConsoleBaseMenuBar extends MenuBar
 		
 		this.add(textActionsMenu);
 		
-		textFontMenu = new Menu("Fonts");
+		sizesMenu = new Menu("Sizes");
 		//textMenu.setShortcut(new MenuShortcut(KeyEvent.VK_F, true));
 		
-		textFontIncreaseMenu = new MenuItem("Increase ");
-		textFontDecreaseMenu = new MenuItem("Decrease ");
-		textFontDefaultMenu = new MenuItem("Normalize ");
-		textFontToggleBoldMenu = new MenuItem("Intensitize ");
+		sizesExpandMenu = new MenuItem("Expand ");
+		sizesReduceMenu = new MenuItem("Reduce ");
+		sizesRepackMenu = new MenuItem("Pack ");
+		sizesBold = new MenuItem("Bold ");
+		sizesDefaultMenu = new MenuItem("Reset ");
 		
-		textFontIncreaseMenu.addActionListener(new ActionListener()
+		sizesExpandMenu.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
@@ -131,7 +133,7 @@ public class VTGraphicalConsoleBaseMenuBar extends MenuBar
 			}
 		});
 		
-		textFontDecreaseMenu.addActionListener(new ActionListener()
+		sizesReduceMenu.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
@@ -139,15 +141,7 @@ public class VTGraphicalConsoleBaseMenuBar extends MenuBar
 			}
 		});
 		
-		textFontDefaultMenu.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				VTGlobalTextStyleManager.defaultFontSize();
-			}
-		});
-		
-		textFontToggleBoldMenu.addActionListener(new ActionListener()
+		sizesBold.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{
@@ -163,30 +157,30 @@ public class VTGraphicalConsoleBaseMenuBar extends MenuBar
 			}
 		});
 		
-		textFontMenu.add(textFontIncreaseMenu);
-		textFontMenu.add(textFontDecreaseMenu);
-		textFontMenu.add(textFontToggleBoldMenu);
-		textFontMenu.add(textFontDefaultMenu);
+		sizesRepackMenu.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				VTGlobalTextStyleManager.defaultComponentSize();
+			}
+		});
 		
-		this.add(textFontMenu);
-		textFontMenu.setEnabled(true);
+		sizesDefaultMenu.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				VTGlobalTextStyleManager.defaultFontSize();
+			}
+		});
 		
-		keyboardShortcutsMenu = new Menu("Shortcuts");
-		keyboardShortcutsMenu.add(new MenuItem("Break/Pause : Toggle Resume / Pause"));
-		keyboardShortcutsMenu.add(new MenuItem("Insert : Toggle Insert / Replace"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+C : Quit Application"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Z : Toggle Resume / Pause"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+X : Toggle Insert / Replace"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert : Copy Selected Text"));
-		keyboardShortcutsMenu.add(new MenuItem("Shift+Insert : Paste Selected Text"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace : Copy All Text"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown : Decrease Font"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp : Increase Font"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+End : Intensitize Font"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home : Normalize Font"));
+		sizesMenu.add(sizesExpandMenu);
+		sizesMenu.add(sizesReduceMenu);
+		sizesMenu.add(sizesBold);
+		sizesMenu.add(sizesRepackMenu);
+		sizesMenu.add(sizesDefaultMenu);
 		
-		this.add(keyboardShortcutsMenu);
-		keyboardShortcutsMenu.setEnabled(true);
+		this.add(sizesMenu);
+		sizesMenu.setEnabled(true);
 		
 		flushStatusMenu = new Menu("Resume");
 		flushStatusMenu.setEnabled(true);
@@ -213,6 +207,24 @@ public class VTGraphicalConsoleBaseMenuBar extends MenuBar
 		});
 		inputStatusMenu.add(inputToggleMenu);
 		this.add(inputStatusMenu);
+		
+		keyboardShortcutsMenu = new Menu("Shortcuts");
+		keyboardShortcutsMenu.add(new MenuItem("Break : Toggle Resume/Pause"));
+		keyboardShortcutsMenu.add(new MenuItem("Insert : Toggle Insert/Replace"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+C : Quit Application"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Z : Toggle Resume/Pause"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+X : Toggle Insert/Replace"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert : Copy Selected"));
+		keyboardShortcutsMenu.add(new MenuItem("Shift+Insert : Paste Selected"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace : Copy All"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp : Expand Sizes"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown : Reduce Sizes"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+End : Bold Sizes"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Space : Pack Sizes"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home : Reset Sizes"));
+		
+		this.add(keyboardShortcutsMenu);
+		keyboardShortcutsMenu.setEnabled(true);
 		
 		updateStatusMenu();
 	}

@@ -132,6 +132,12 @@ public class VTGlobalTextStyleManager
 			VTGlobalTextStyleManager.defaultFontSize();
 			return true;
 		}
+		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_SPACE)
+		{
+			e.consume();
+			VTGlobalTextStyleManager.defaultComponentSize();
+			return true;
+		}
 		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_END)
 		{
 			e.consume();
@@ -196,6 +202,14 @@ public class VTGlobalTextStyleManager
 	{
 		lists.add(list);
 		defaultlists.add(Arrays.asList(list.toArray(new Font[]{})));
+	}
+	
+	public static void defaultComponentSize()
+	{
+		//System.out.println("FONT_SCALING_FACTOR:" + FONT_SCALING_FACTOR);
+		//System.out.println("defaultMonospacedFontSize:" + defaultMonospacedFontSize);
+		//System.out.println("defaultWindowFontSize:" + defaultWindowFontSize);
+		updateComponents(true);
 	}
 	
 	public static void defaultFontSize()

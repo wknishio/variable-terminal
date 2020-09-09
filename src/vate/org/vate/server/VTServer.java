@@ -31,7 +31,7 @@ import org.vate.parser.VTConfigurationProperties;
 import org.vate.parser.VTPropertiesBuilder;
 import org.vate.server.connection.VTServerConnector;
 import org.vate.server.console.local.VTServerLocalConsoleReader;
-import org.vate.server.console.local.VTServerLocalGraphicalConsoleInputMenuBar;
+import org.vate.server.console.local.VTServerLocalGraphicalConsoleMenuBar;
 import org.vate.server.dialog.VTServerSettingsDialog;
 
 public class VTServer implements Runnable
@@ -65,7 +65,7 @@ public class VTServer implements Runnable
 	private InputStream serverSettingsReader;
 	private VTServerConnector serverConnector;
 	private VTServerLocalConsoleReader consoleReader;
-	private VTServerLocalGraphicalConsoleInputMenuBar inputMenuBar;
+	private VTServerLocalGraphicalConsoleMenuBar inputMenuBar;
 	private VTAudioSystem audioSystem;
 	private VTServerSettingsDialog connectionDialog;
 	private ExecutorService threads;
@@ -359,7 +359,7 @@ public class VTServer implements Runnable
 		this.serverConnector = serverConnector;
 	}
 	
-	public void setInputMenuBar(VTServerLocalGraphicalConsoleInputMenuBar inputMenuBar)
+	public void setInputMenuBar(VTServerLocalGraphicalConsoleMenuBar inputMenuBar)
 	{
 		this.inputMenuBar = inputMenuBar;
 	}
@@ -369,7 +369,7 @@ public class VTServer implements Runnable
 		this.audioSystem = audioSystem;
 	}
 	
-	public VTServerLocalGraphicalConsoleInputMenuBar getInputMenuBar()
+	public VTServerLocalGraphicalConsoleMenuBar getInputMenuBar()
 	{
 		return inputMenuBar;
 	}
@@ -1740,7 +1740,7 @@ public class VTServer implements Runnable
 			if (!VTConsole.isDaemon() && !daemon)
 			{
 				connectionDialog = new VTServerSettingsDialog(VTConsole.getFrame(), "Variable-Terminal Server " + VT.VT_VERSION + " - Connection", true, this);
-				inputMenuBar = new VTServerLocalGraphicalConsoleInputMenuBar(connectionDialog);
+				inputMenuBar = new VTServerLocalGraphicalConsoleMenuBar(connectionDialog);
 				VTConsole.getFrame().setMenuBar(inputMenuBar);
 				VTConsole.getFrame().pack();
 				try

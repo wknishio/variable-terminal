@@ -9,7 +9,7 @@ import java.io.PrintStream;
 import java.util.Locale;
 
 import org.vate.console.graphical.VTGraphicalConsole;
-import org.vate.console.graphical.menu.VTGraphicalConsoleBaseMenuBar;
+import org.vate.console.graphical.menu.VTGraphicalConsoleMenuBar;
 import org.vate.console.lanterna.separated.VTLanternaConsole;
 import org.vate.console.standard.VTStandardConsole;
 import org.vate.nativeutils.VTNativeUtils;
@@ -71,7 +71,7 @@ public final class VTConsole
 					{
 						console = VTGraphicalConsole.getInstance(remoteIcon);
 					}
-					console.getFrame().setMenuBar(new VTGraphicalConsoleBaseMenuBar());
+					console.getFrame().setMenuBar(new VTGraphicalConsoleMenuBar());
 					console.getFrame().pack();
 					//console = VTGraphicalConsole.getInstance();
 					

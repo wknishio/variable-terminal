@@ -963,6 +963,9 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             else if(e.getKeyCode() == KeyEvent.VK_CONTEXT_MENU) {
                 keyQueue.add(new KeyStroke(KeyType.ContextMenu, ctrlDown, altDown, shiftDown));
             }
+            else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
+                keyQueue.add(new KeyStroke(KeyType.Space, ctrlDown, altDown, shiftDown));
+            }
             else if(e.getKeyCode() == KeyEvent.VK_TAB) {
                 if(e.isShiftDown()) {
                     keyQueue.add(new KeyStroke(KeyType.ReverseTab, ctrlDown, altDown, false));

@@ -1226,13 +1226,20 @@ public class VTLanternaConsole implements VTConsoleImplementation
 				|| keyStroke.getKeyType() == KeyType.Backspace
 				|| keyStroke.getKeyType() == KeyType.Delete
 				|| keyStroke.getKeyType() == KeyType.Home
-				|| keyStroke.getKeyType() == KeyType.End)
+				|| keyStroke.getKeyType() == KeyType.End
+				|| keyStroke.getKeyType() == KeyType.Space)
 				{
 					if (keyStroke.getKeyType() == KeyType.Delete
 					&& keyStroke.isCtrlDown())
 					{
 						//toggleReplace();
 						//return false;
+					}
+					if (keyStroke.getKeyType() == KeyType.Space
+					&& keyStroke.isCtrlDown())
+					{
+						VTGlobalTextStyleManager.defaultComponentSize();
+						return false;
 					}
 					if (keyStroke.getKeyType() == KeyType.Home
 					&& keyStroke.isCtrlDown())

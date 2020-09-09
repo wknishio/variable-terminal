@@ -21,12 +21,12 @@ public class VTAirliftInputStream extends InputStream
 		this.decompressor = decompressor;
 	}
 	
-	public int available() throws IOException
+	public synchronized int available() throws IOException
 	{
 		return stream.available();
 	}
 	
-	public int read(byte[] data, int off, int len) throws IOException
+	public synchronized int read(byte[] data, int off, int len) throws IOException
 	{
 		if (stream.available() == 0)
 		{
@@ -39,7 +39,7 @@ public class VTAirliftInputStream extends InputStream
 		return -1;
 	}
 
-	public int read() throws IOException
+	public synchronized int read() throws IOException
 	{
 		if (stream.available() == 0)
 		{
@@ -52,7 +52,7 @@ public class VTAirliftInputStream extends InputStream
 		return -1;
 	}
 	
-	private void readBlock() throws IOException
+	private synchronized void readBlock() throws IOException
 	{
 		int compressed = in.readInt();
 		int decompressed = in.readInt();

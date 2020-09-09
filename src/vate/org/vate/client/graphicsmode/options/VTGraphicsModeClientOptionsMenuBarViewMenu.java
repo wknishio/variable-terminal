@@ -205,9 +205,9 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		this.mixedCodingOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuDeltaCodingOptionsListener(writer, mixedCodingOption));
 		this.separatedCodingOption = new CheckboxMenuItem("Separated", true);
 		this.separatedCodingOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuDeltaCodingOptionsListener(writer, separatedCodingOption));
-		this.needFocusOption = new CheckboxMenuItem("Focused", true);
+		this.needFocusOption = new CheckboxMenuItem("Focused", false);
 		this.needFocusOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuTerminalRefreshPolicyOptionsListener(writer, needFocusOption, VTGraphicsModeClientWriter.TERMINAL_STATE_FOCUSED));
-		this.needVisibleOption = new CheckboxMenuItem("Visible", false);
+		this.needVisibleOption = new CheckboxMenuItem("Visible", true);
 		this.needVisibleOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuTerminalRefreshPolicyOptionsListener(writer, needVisibleOption, VTGraphicsModeClientWriter.TERMINAL_STATE_VISIBLE));
 		this.ignoreStateOption = new CheckboxMenuItem("Always", false);
 		this.ignoreStateOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuTerminalRefreshPolicyOptionsListener(writer, ignoreStateOption, VTGraphicsModeClientWriter.TERMINAL_STATE_IGNORE));

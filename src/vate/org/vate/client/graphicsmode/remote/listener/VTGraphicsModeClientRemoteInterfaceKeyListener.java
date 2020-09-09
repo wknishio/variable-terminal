@@ -8,7 +8,6 @@ import java.util.Set;
 
 import org.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 import org.vate.graphics.control.VTAWTControlEvent;
-import org.vate.graphics.font.VTGlobalTextStyleManager;
 
 public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListener
 {
@@ -172,47 +171,45 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
 		{
 			writer.resetCaptureScale();
 		}
-		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_HOME))
-		{
-			writer.previousDevice();
-		}
 		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_END))
 		{
 			writer.nextDevice();
 		}
-		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_1))
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_HOME))
 		{
-			writer.increaseCaptureInterval();
+			writer.previousDevice();
 		}
-		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_2))
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_1))
 		{
 			writer.decreaseCaptureInterval();
 		}
-		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_3))
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_2))
 		{
-			writer.decreaseColorQuality();
+			writer.increaseCaptureInterval();
 		}
-		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_4))
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_3))
 		{
 			writer.increaseColorQuality();
 		}
-		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_5))
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_4))
 		{
-			writer.decreaseDrawPointerSize();
+			writer.decreaseColorQuality();
 		}
-		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_6))
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_5))
 		{
 			writer.increaseDrawPointerSize();
 		}
+		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_6))
+		{
+			writer.decreaseDrawPointerSize();
+		}
 		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_7))
 		{
-			//writer.normalizeDrawPointerSize();
-			VTGlobalTextStyleManager.decreaseFontSize();
+			writer.toggleDrawPointer();
 		}
 		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_8))
 		{
-			//writer.toggleDrawPointer();
-			VTGlobalTextStyleManager.increaseFontSize();
+			writer.clearRemoteGraphics();
 		}
 		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_9))
 		{

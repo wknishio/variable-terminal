@@ -484,35 +484,8 @@ public class VTClientConfigurationDialog extends Dialog
 		{
 			public void keyPressed(KeyEvent e)
 			{
-				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_PAGE_DOWN)
+				if (VTGlobalTextStyleManager.processKeyEvent(e))
 				{
-					e.consume();
-					VTGlobalTextStyleManager.decreaseFontSize();
-					return;
-				}
-				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_PAGE_UP)
-				{
-					e.consume();
-					VTGlobalTextStyleManager.increaseFontSize();
-					return;
-				}
-				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_HOME)
-				{
-					e.consume();
-					VTGlobalTextStyleManager.defaultFontSize();
-					return;
-				}
-				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_END)
-				{
-					e.consume();
-					if (VTGlobalTextStyleManager.isFontStyleBold())
-					{
-						VTGlobalTextStyleManager.disableFontStyleBold();
-					}
-					else
-					{
-						VTGlobalTextStyleManager.enableFontStyleBold();
-					}
 					return;
 				}
 			}
@@ -557,35 +530,8 @@ public class VTClientConfigurationDialog extends Dialog
 		{
 			public void keyPressed(KeyEvent e)
 			{
-				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_PAGE_DOWN)
+				if (VTGlobalTextStyleManager.processKeyEvent(e))
 				{
-					e.consume();
-					VTGlobalTextStyleManager.decreaseFontSize();
-					return;
-				}
-				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_PAGE_UP)
-				{
-					e.consume();
-					VTGlobalTextStyleManager.increaseFontSize();
-					return;
-				}
-				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_HOME)
-				{
-					e.consume();
-					VTGlobalTextStyleManager.defaultFontSize();
-					return;
-				}
-				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_END)
-				{
-					e.consume();
-					if (VTGlobalTextStyleManager.isFontStyleBold())
-					{
-						VTGlobalTextStyleManager.disableFontStyleBold();
-					}
-					else
-					{
-						VTGlobalTextStyleManager.enableFontStyleBold();
-					}
 					return;
 				}
 			}
@@ -698,35 +644,8 @@ public class VTClientConfigurationDialog extends Dialog
 		{
 			public void keyPressed(KeyEvent e)
 			{
-				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_PAGE_DOWN)
+				if (VTGlobalTextStyleManager.processKeyEvent(e))
 				{
-					e.consume();
-					VTGlobalTextStyleManager.decreaseFontSize();
-					return;
-				}
-				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_PAGE_UP)
-				{
-					e.consume();
-					VTGlobalTextStyleManager.increaseFontSize();
-					return;
-				}
-				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_HOME)
-				{
-					e.consume();
-					VTGlobalTextStyleManager.defaultFontSize();
-					return;
-				}
-				if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_END)
-				{
-					e.consume();
-					if (VTGlobalTextStyleManager.isFontStyleBold())
-					{
-						VTGlobalTextStyleManager.disableFontStyleBold();
-					}
-					else
-					{
-						VTGlobalTextStyleManager.enableFontStyleBold();
-					}
 					return;
 				}
 			}

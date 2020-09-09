@@ -88,6 +88,7 @@ public enum KeyType {
      */
     EOF,
     Pause,
-    ContextMenu
+    ContextMenu,
+    Space
     ;
 }

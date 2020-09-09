@@ -31,7 +31,7 @@ public class VTAirliftOutputStream extends OutputStream
 		write(single, 0, 1);
 	}
 	
-	private void writeBlock(byte[] data, int off, int len) throws IOException
+	private synchronized void writeBlock(byte[] data, int off, int len) throws IOException
 	{
 		int max = compressor.maxCompressedLength(len);
 		if (output.length < max)

@@ -14,7 +14,7 @@ import javax.imageio.ImageIO;
 import org.vate.VT;
 import org.vate.audio.VTAudioSystem;
 import org.vate.client.connection.VTClientConnector;
-import org.vate.client.console.remote.VTClientRemoteGraphicalConsoleInputMenuBar;
+import org.vate.client.console.remote.VTClientRemoteGraphicalConsoleMenuBar;
 import org.vate.client.dialog.VTClientConfigurationDialog;
 import org.vate.console.VTConsole;
 import org.vate.exception.VTUncaughtExceptionHandler;
@@ -47,7 +47,7 @@ public class VTClient implements Runnable
 	private VTConfigurationProperties fileClientSettings;
 	private InputStream clientSettingsReader;
 	private VTClientConnector clientConnector;
-	private VTClientRemoteGraphicalConsoleInputMenuBar inputMenuBar;
+	private VTClientRemoteGraphicalConsoleMenuBar inputMenuBar;
 	private VTAudioSystem audioSystem;
 	private VTClientConfigurationDialog connectionDialog;
 	private ExecutorService threads;
@@ -302,7 +302,7 @@ public class VTClient implements Runnable
 		this.clientConnector = clientConnector;
 	}
 	
-	public void setInputMenuBar(VTClientRemoteGraphicalConsoleInputMenuBar inputMenuBar)
+	public void setInputMenuBar(VTClientRemoteGraphicalConsoleMenuBar inputMenuBar)
 	{
 		this.inputMenuBar = inputMenuBar;
 	}
@@ -317,7 +317,7 @@ public class VTClient implements Runnable
 		return runtime;
 	}
 	
-	public VTClientRemoteGraphicalConsoleInputMenuBar getInputMenuBar()
+	public VTClientRemoteGraphicalConsoleMenuBar getInputMenuBar()
 	{
 		return inputMenuBar;
 	}
@@ -1561,7 +1561,7 @@ public class VTClient implements Runnable
 			VTConsole.initialize();
 			VTConsole.setTitle("Variable-Terminal Client " + VT.VT_VERSION + " - Console");
 			connectionDialog = new VTClientConfigurationDialog(VTConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Connection", true, this);
-			inputMenuBar = new VTClientRemoteGraphicalConsoleInputMenuBar(connectionDialog);
+			inputMenuBar = new VTClientRemoteGraphicalConsoleMenuBar(connectionDialog);
 			VTConsole.getFrame().setMenuBar(inputMenuBar);
 			VTConsole.getFrame().pack();
 		}

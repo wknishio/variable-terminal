@@ -492,6 +492,46 @@ public class VTServerSettingsDialog extends Dialog
 			}
 		});
 		
+		addKeyListener(new KeyListener()
+		{
+			public void keyPressed(KeyEvent e)
+			{
+				if (VTGlobalTextStyleManager.processKeyEvent(e))
+				{
+					return;
+				}
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				{
+					execute();
+					return;
+				}
+				if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
+				{
+					close();
+					return;
+				}
+			}
+			
+			public void keyReleased(KeyEvent e)
+			{
+				
+			}
+			
+			public void keyTyped(KeyEvent e)
+			{
+				if (e.getKeyChar() == '\n')
+				{
+					execute();
+					return;
+				}
+				if (e.getKeyChar() == '\u001B')
+				{
+					close();
+					return;
+				}
+			}
+		});
+		
 		loadButton.addKeyListener(new KeyListener()
 		{
 			public void keyPressed(KeyEvent e)
