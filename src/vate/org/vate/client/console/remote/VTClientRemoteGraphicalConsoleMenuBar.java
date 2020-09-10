@@ -66,16 +66,16 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		// this.frame = frame;
 		final VTFileDialog loadFileDialog = new VTFileDialog(VTConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Load File", FileDialog.LOAD);
 		final VTFileDialog saveFileDialog = new VTFileDialog(VTConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Save File", FileDialog.SAVE);
-		clientConsoleCommandsMenu = new Menu("Commands");
+		clientConsoleCommandsMenu = new Menu("Command");
 		//clientConsoleCommandsMenu.setShortcut(new MenuShortcut(KeyEvent.VK_C, true));
 		
-		serverGraphicalSystemsMenu = new Menu("Graphics ");
+		serverGraphicalSystemsMenu = new Menu("Graphical ");
 		serverGraphicalSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Remote Display Devices", "*VTDISPLAYS\n"));
 		serverGraphicsModeMenu = new Menu("Remote Graphics Link ");
 		serverScreenCaptureMenu = new Menu("Remote Screen Capture ");
 		serverGraphicsAlertMenu = new Menu("Remote Screen Alert ");
-		serverBrowseMenu = new Menu("Remote Default Browser ");
-		serverPrintApplicationMenu = new Menu("Remote Default Printing ");
+		serverBrowseMenu = new Menu("Remote Browser Application ");
+		serverPrintApplicationMenu = new Menu("Remote Print Application ");
 		serverStandarScreenCaptureMenu = new Menu("Show Pointer ");
 		serverCleanScreenCaptureMenu = new Menu("Hide Pointer ");
 		serverGraphicalSystemsMenu.add(serverScreenCaptureMenu);
@@ -115,10 +115,10 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		serverPrintApplicationMenu.add(new VTGraphicalConsoleMenuItem("Print File", "*VTRUNPRINT "));
 		serverPrintApplicationMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTRUNPRINT\n"));
 		
-		fileSystemMenu = new Menu("Files ");
-		fileTransferMenu = new Menu("File Transfer Function ");
-		clientFileSystemMenu = new Menu("Local File System ");
-		serverFileSystemMenu = new Menu("Remote File System ");
+		fileSystemMenu = new Menu("File ");
+		fileTransferMenu = new Menu("File Transfer ");
+		clientFileSystemMenu = new Menu("Local Files ");
+		serverFileSystemMenu = new Menu("Remote Files ");
 		fileSystemMenu.add(fileTransferMenu);
 		fileSystemMenu.add(clientFileSystemMenu);
 		fileSystemMenu.add(serverFileSystemMenu);
@@ -133,6 +133,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		clientFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Compress Zip File", "*VTZIP L C "));
 		clientFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Uncompress Zip File", "*VTZIP L U "));
 		clientFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Decompress Zip File", "*VTZIP L D "));
+		clientFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Stop Zip Operation", "*VTZIP L S\n"));
 		// serverFileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("Set
 		// Working
 		// Directory", "*VTWORKDIRECTORY R "));
@@ -149,6 +150,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Compress Zip File", "*VTZIP R C "));
 		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Uncompress Zip File", "*VTZIP R U "));
 		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Decompress Zip File", "*VTZIP R D "));
+		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Stop Zip Operation", "*VTZIP R S\n"));
 		
 		sessionMenu = new Menu("Session ");
 		sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTSESSIONS\n"));
@@ -175,7 +177,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		//serverAuthenticationSettingsMenu = new Menu("Authentication ");
 		serverProxySettingsMenu = new Menu("Proxy ");
 		serverEncryptionSettingsMenu = new Menu("Encryption ");
-		serverSessionsSettingsMenu = new Menu("Sessions ");
+		serverSessionsSettingsMenu = new Menu("Session ");
 		serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("List All Settings", "*VTACCESS\n"));
 		serverSettingsMenu.add(serverConnectionSettingsMenu);
 		//serverSettingsMenu.add(serverAuthenticationSettingsMenu);
@@ -215,11 +217,11 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Runtime Path", "*VTRUNTIME P "));
 		serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTRUNTIME\n"));
 		
-		performanceMenu = new Menu("Rates ");
+		performanceMenu = new Menu("Rating ");
 		performanceMenu.add(new VTGraphicalConsoleMenuItem("Calculate Connection Latency", "*VTPING\n"));
 		performanceMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Rate Limits", "*VTRATELIMIT "));
 		
-		serverNetworkMenu = new Menu("Networks ");
+		serverNetworkMenu = new Menu("Network ");
 		serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List Remote Network Interfaces", "*VTNETWORKS\n"));
 		serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("Resolve Remote Network Host", "*VTHOSTRESOLVE "));
 		
@@ -269,7 +271,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		beepSoundMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTBEEP\n"));
 		audioSoundMenu.add(beepSoundMenu);
 		
-		opticalDriveMenu = new Menu("Drives ");
+		opticalDriveMenu = new Menu("Drive ");
 		opticalDriveMenu.add(new VTGraphicalConsoleMenuItem("Open Remote Optical Drive", "*VTOPTICALDRIVE O\n"));
 		opticalDriveMenu.add(new VTGraphicalConsoleMenuItem("Close Remote Optical Drive", "*VTOPTICALDRIVE C\n"));
 		
@@ -296,7 +298,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		this.add(clientConsoleCommandsMenu);
 		clientConsoleCommandsMenu.setEnabled(false);
 		
-		dialogMenu = new Menu("Dialogs");
+		dialogMenu = new Menu("Dialog");
 		//dialogMenu.setShortcut(new MenuShortcut(KeyEvent.VK_D, true));
 		
 		clientConnectionDialogMenu = new MenuItem("Connection");

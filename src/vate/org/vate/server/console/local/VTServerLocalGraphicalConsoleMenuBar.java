@@ -38,7 +38,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
 	{
 		removeAllMenus();
 		// this.frame = frame;
-		serverConsoleCommandsMenu = new Menu("Commands");
+		serverConsoleCommandsMenu = new Menu("Command");
 		// serverConsoleCommandsMenu.setShortcut(new MenuShortcut(KeyEvent.VK_C,
 		// true));
 		
@@ -49,7 +49,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
 		sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Server Application", "*VTSTOP\n"));
 		sessionMenu.add(new VTGraphicalConsoleMenuItem("Toggle Server Cover", "*VTCOVER\n"));
 		
-		performanceMenu = new Menu("Rates ");
+		performanceMenu = new Menu("Rating ");
 		performanceMenu.add(new VTGraphicalConsoleMenuItem("Calculate Connection Latencies", "*VTPING\n"));
 		
 		consoleMenu = new Menu("Console ");
@@ -61,7 +61,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
 		//serverAuthenticationSettingsMenu = new Menu("Authentication ");
 		serverProxyMenu = new Menu("Proxy ");
 		serverEncryptionMenu = new Menu("Encryption ");
-		serverSessionsMenu = new Menu("Sessions ");
+		serverSessionsMenu = new Menu("Session ");
 		serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("List All Settings", "*VTACCESS\n"));
 		serverSettingsMenu.add(serverConnectionMenu);
 		//serverSettingsMenu.add(serverAuthenticationSettingsMenu);
@@ -93,13 +93,13 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
 		serverRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Local Environment Variables", "*VTVARIABLE "));
 		serverRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Local JVM Properties", "*VTPROPERTY "));
 		
-		fileSystemMenu = new Menu("Files ");
+		fileSystemMenu = new Menu("File ");
 		fileSystemMenu.add(new VTGraphicalConsoleMenuItem("List Local File System Roots", "*VTFILEROOTS\n"));
 		
-		serverNetworkMenu = new Menu("Networks ");
+		serverNetworkMenu = new Menu("Network ");
 		serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List Local Network Interfaces", "*VTNETWORKS\n"));
 		
-		serverGraphicalSystemsMenu = new Menu("Graphics ");
+		serverGraphicalSystemsMenu = new Menu("Graphical ");
 		serverGraphicalSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Local Display Devices", "*VTDISPLAYS\n"));
 		
 		serverAudioSystemsMenu = new Menu("Audio ");
@@ -131,7 +131,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
 		this.add(serverConsoleCommandsMenu);
 		serverConsoleCommandsMenu.setEnabled(false);
 		
-		dialogMenu = new Menu("Dialogs");
+		dialogMenu = new Menu("Dialog");
 		serverSettingsDialogMenu = new MenuItem("Connection");
 		// dialogMenu.setShortcut(new MenuShortcut(KeyEvent.VK_D, true));
 		dialogMenu.add(serverSettingsDialogMenu);

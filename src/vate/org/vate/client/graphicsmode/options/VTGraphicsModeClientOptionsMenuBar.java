@@ -30,7 +30,7 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
 		this.add(viewMenu);
 		this.add(controlMenu);
 		
-		keyboardShortcutsMenu = new Menu("Shortcuts");
+		keyboardShortcutsMenu = new Menu("Shortcut");
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Alt : Toggle Remote Control"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Space : Toggle Interface Refresh"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Backspace : Toggle Menu Bar"));

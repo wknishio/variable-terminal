@@ -132,7 +132,7 @@ public class VTGlobalTextStyleManager
 			VTGlobalTextStyleManager.defaultFontSize();
 			return true;
 		}
-		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_SPACE)
+		if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_DELETE)
 		{
 			e.consume();
 			VTGlobalTextStyleManager.defaultComponentSize();
@@ -400,6 +400,8 @@ public class VTGlobalTextStyleManager
 				{
 					Frame frame = (Frame) window;
 					MenuBar menubar = frame.getMenuBar();
+					//int frameState = frame.getExtendedState();
+					//Point frameLocation = frame.getLocationOnScreen();
 					if (menubar != null)
 					{
 						menubar.setFont(windowFont);
@@ -410,14 +412,16 @@ public class VTGlobalTextStyleManager
 					{
 						((AWTTerminalFrame)frame).resetTerminalSize();
 					}
-					window.invalidate();
-					window.pack();
-//					if (window instanceof VTGraphicalConsoleFrame)
-//					{
-//						window.invalidate();
-//						window.pack();
-//					}
-					//window.repaint();
+					//if ((frameState & Frame.MAXIMIZED_BOTH) != 0)
+					//{
+						//frame.setBounds(frame.getBounds());
+						//frame.setExtendedState(Frame.NORMAL);
+						//frame.setBounds(frame.getGraphicsConfiguration().getDevice().getDefaultConfiguration().getBounds());
+						//frame.setLocation(frameLocation);
+					//}
+					frame.invalidate();
+					frame.pack();
+					//frame.validate();
 				}
 				if (window instanceof Dialog)
 				{

@@ -57,7 +57,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
 	
 	public void addBaseMenus()
 	{
-		textActionsMenu = new Menu("Texts");
+		textActionsMenu = new Menu("Text");
 		
 		textActionCopyMenu = new MenuItem("Copy ");
 		textActionCopyMenu.addActionListener(new ActionListener()
@@ -116,7 +116,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
 		
 		this.add(textActionsMenu);
 		
-		sizesMenu = new Menu("Sizes");
+		sizesMenu = new Menu("Size");
 		//textMenu.setShortcut(new MenuShortcut(KeyEvent.VK_F, true));
 		
 		sizesExpandMenu = new MenuItem("Expand ");
@@ -208,7 +208,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
 		inputStatusMenu.add(inputToggleMenu);
 		this.add(inputStatusMenu);
 		
-		keyboardShortcutsMenu = new Menu("Shortcuts");
+		keyboardShortcutsMenu = new Menu("Shortcut");
 		keyboardShortcutsMenu.add(new MenuItem("Break : Toggle Resume/Pause"));
 		keyboardShortcutsMenu.add(new MenuItem("Insert : Toggle Insert/Replace"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+C : Quit Application"));
@@ -217,11 +217,11 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert : Copy Selected"));
 		keyboardShortcutsMenu.add(new MenuItem("Shift+Insert : Paste Selected"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace : Copy All"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp : Expand Sizes"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown : Reduce Sizes"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+End : Bold Sizes"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Space : Pack Sizes"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home : Reset Sizes"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp : Expand Size"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown : Reduce Size"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+End : Bold Size"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Delete : Pack Size"));
+		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home : Reset Size"));
 		
 		this.add(keyboardShortcutsMenu);
 		keyboardShortcutsMenu.setEnabled(true);

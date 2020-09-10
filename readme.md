@@ -131,7 +131,7 @@ Most of the functions of this software are executed by these internal commands.
 After configuring the server, the server console can also receive text command<br>
 inputs, but only internal commands of this software.
 
-When using graphical console, the helper menu "Commands" will be available,<br>
+When using graphical console, the helper menu "Command" will be available,<br>
 assisting the use of all internal commands of this software.
 
 Some of the available internal commands in client console:
