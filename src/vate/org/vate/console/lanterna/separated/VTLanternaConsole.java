@@ -253,18 +253,6 @@ public class VTLanternaConsole implements VTConsoleImplementation
 			return super.checkError();
 		}
 		
-		protected void clearError()
-		{
-			try
-			{
-				//super.clearError();
-			}
-			catch (Throwable t)
-			{
-				
-			}
-		}
-		
 		public void close()
 		{
 			outWriter.close();

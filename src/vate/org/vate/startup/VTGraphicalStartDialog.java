@@ -17,7 +17,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
-
+import java.lang.reflect.Method;
 import javax.imageio.ImageIO;
 
 import org.vate.VT;
@@ -38,7 +38,9 @@ public class VTGraphicalStartDialog extends Dialog
 		try
 		{
 			terminalIcon = ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png"));
-			setIconImage(terminalIcon);
+			Method setIconImage = this.getClass().getMethod("setIconImage", Class.forName("java.awt.Image"));
+			setIconImage.invoke(this, terminalIcon);
+			//setIconImage(terminalIcon);
 		}
 		catch (Throwable t)
 		{
@@ -107,7 +109,9 @@ public class VTGraphicalStartDialog extends Dialog
 		
 		try
 		{
-			setAutoRequestFocus(true);
+			Method setAutoRequestFocus = this.getClass().getMethod("setAutoRequestFocus", Class.forName("java.lang.Boolean"));
+			setAutoRequestFocus.invoke(this, true);
+			//setAutoRequestFocus(true);
 		}
 		catch (Throwable t)
 		{

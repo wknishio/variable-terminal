@@ -25,7 +25,7 @@ import java.awt.event.TextListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
-
+import java.lang.reflect.Method;
 import javax.imageio.ImageIO;
 
 import org.vate.VT;
@@ -81,7 +81,9 @@ public class VTClientConfigurationDialog extends Dialog
 		VTGlobalTextStyleManager.registerWindow(saveFileDialog);
 		try
 		{
-			this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
+			Method setIconImage = this.getClass().getMethod("setIconImage", Class.forName("java.awt.Image"));
+			setIconImage.invoke(this, ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
+			//this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
 		}
 		catch (Throwable e)
 		{

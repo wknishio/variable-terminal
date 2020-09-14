@@ -15,7 +15,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
-
+import java.lang.reflect.Method;
 import javax.imageio.ImageIO;
 
 import org.vate.graphics.device.VTGraphicalDeviceResolver;
@@ -99,7 +99,9 @@ public class VTGraphicsMessager
 			final Dialog dialog = new Dialog(parent, false);
 			try
 			{
-				dialog.setIconImage(warningIcon16);
+				Method setIconImage = dialog.getClass().getMethod("setIconImage", Class.forName("java.awt.Image"));
+				setIconImage.invoke(dialog, warningIcon16);
+				//dialog.setIconImage(warningIcon16);
 			}
 			catch (Throwable t)
 			{
@@ -262,7 +264,9 @@ public class VTGraphicsMessager
 			dialog.setAlwaysOnTop(true);
 			try
 			{
-				dialog.setIconImage(warningIcon16);
+				Method setIconImage = dialog.getClass().getMethod("setIconImage", Class.forName("java.awt.Image"));
+				setIconImage.invoke(dialog, warningIcon16);
+				//dialog.setIconImage(warningIcon16);
 			}
 			catch (Throwable t)
 			{

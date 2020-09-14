@@ -41,7 +41,8 @@ public class VTGraphicalConsolePrintStream extends PrintStream
 	{
 		try
 		{
-			super.clearError();
+			//super.clearError();
+			super.getClass().getMethod("clearError").invoke(this);
 		}
 		catch (Throwable t)
 		{

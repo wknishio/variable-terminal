@@ -1,15 +1,12 @@
 package org.vate.server.console.remote;
 
-import java.awt.Desktop;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -3075,18 +3072,18 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				try
 				{
 					Class.forName("java.awt.Desktop");
-					Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-					if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE))
-					{
-						desktop.browse(new URI(parsed[1]));
-						connection.getResultWriter().write("\nVT>Browse operation executed!\nVT>");
-						connection.getResultWriter().flush();
-					}
-					else
-					{
-						connection.getResultWriter().write("\nVT>Browse operation not supported!\nVT>");
-						connection.getResultWriter().flush();
-					}
+//					Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+//					if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE))
+//					{
+//						desktop.browse(new URI(parsed[1]));
+//						connection.getResultWriter().write("\nVT>Browse operation executed!\nVT>");
+//						connection.getResultWriter().flush();
+//					}
+//					else
+//					{
+//						connection.getResultWriter().write("\nVT>Browse operation not supported!\nVT>");
+//						connection.getResultWriter().flush();
+//					}
 				}
 				catch (SecurityException e)
 				{
@@ -3098,11 +3095,11 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 					connection.getResultWriter().write("\nVT>Browse operation failed!\nVT>");
 					connection.getResultWriter().flush();
 				}
-				catch (IOException e)
-				{
-					connection.getResultWriter().write("\nVT>Browse operation failed!\nVT>");
-					connection.getResultWriter().flush();
-				}
+//				catch (IOException e)
+//				{
+//					connection.getResultWriter().write("\nVT>Browse operation failed!\nVT>");
+//					connection.getResultWriter().flush();
+//				}
 				catch (Throwable e)
 				{
 					connection.getResultWriter().write("\nVT>Browse operation not supported!\nVT>");
@@ -3122,18 +3119,18 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				try
 				{
 					Class.forName("java.awt.Desktop");
-					Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-					if (desktop != null && desktop.isSupported(Desktop.Action.PRINT))
-					{
-						desktop.print(new File(parsed[1]));
-						connection.getResultWriter().write("\nVT>Print operation executed!\nVT>");
-						connection.getResultWriter().flush();
-					}
-					else
-					{
-						connection.getResultWriter().write("\nVT>Print operation not supported!\nVT>");
-						connection.getResultWriter().flush();
-					}
+//					Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+//					if (desktop != null && desktop.isSupported(Desktop.Action.PRINT))
+//					{
+//						desktop.print(new File(parsed[1]));
+//						connection.getResultWriter().write("\nVT>Print operation executed!\nVT>");
+//						connection.getResultWriter().flush();
+//					}
+//					else
+//					{
+//						connection.getResultWriter().write("\nVT>Print operation not supported!\nVT>");
+//						connection.getResultWriter().flush();
+//					}
 				}
 				catch (SecurityException e)
 				{
@@ -3145,11 +3142,11 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 					connection.getResultWriter().write("\nVT>Print operation failed!\nVT>");
 					connection.getResultWriter().flush();
 				}
-				catch (IOException e)
-				{
-					connection.getResultWriter().write("\nVT>Print operation failed!\nVT>");
-					connection.getResultWriter().flush();
-				}
+//				catch (IOException e)
+//				{
+//					connection.getResultWriter().write("\nVT>Print operation failed!\nVT>");
+//					connection.getResultWriter().flush();
+//				}
 				catch (Throwable e)
 				{
 					connection.getResultWriter().write("\nVT>Print operation not supported!\nVT>");

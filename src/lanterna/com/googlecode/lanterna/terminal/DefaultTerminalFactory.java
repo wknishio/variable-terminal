@@ -125,9 +125,9 @@ public class DefaultTerminalFactory implements TerminalFactory {
     	if (ioConsole)
     	{
 	        if (forceTextTerminal || isAwtHeadless() ||
-	                (System.console() != null && !preferTerminalEmulator) ) {
+	                (checkIOConsole() && !preferTerminalEmulator) ) {
 	            // if tty but have no tty, but do have a port, then go telnet:
-	            if( telnetPort > 0 && System.console() == null) {
+	            if( telnetPort > 0 && checkIOConsole()) {
 	                return createTelnetTerminal();
 	            }
 	            if(isOperatingSystemWindows()) {
@@ -258,7 +258,7 @@ public class DefaultTerminalFactory implements TerminalFactory {
      */
     public Terminal createHeadlessTerminal() throws Throwable {
         // if tty but have no tty, but do have a port, then go telnet:
-        if( telnetPort > 0 && System.console() == null) {
+        if( telnetPort > 0 && !checkIOConsole()) {
             return createTelnetTerminal();
         }
         if(isOperatingSystemWindows()) {
@@ -563,5 +563,26 @@ public class DefaultTerminalFactory implements TerminalFactory {
      */
     private static boolean isOperatingSystemWindows() {
         return System.getProperty("os.name", "").toLowerCase().contains("windows");
+    }
+    
+    public static boolean checkIOConsole()
+    {
+    	try
+		{	
+    		Class.forName("java.io.Console");
+			Class<?> systemClass = Class.forName("java.lang.System");
+			Method consoleMethod = systemClass.getDeclaredMethod("console");
+			//consoleMethod.setAccessible(true);
+			Object consoleResult = consoleMethod.invoke(null);
+			if (consoleResult != null)
+			{
+				return true;
+			}
+		}
+		catch (Throwable e)
+		{
+			
+		}
+    	return false;
     }
 }

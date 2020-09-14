@@ -1,16 +1,17 @@
 package org.vate.console.standard;
 
 import java.io.BufferedReader;
-import java.io.Console;
 import java.io.FileDescriptor;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
+import org.vate.console.VTConsole;
 
 public class VTStandardConsoleInterruptibleReader implements Runnable
 {
@@ -19,7 +20,9 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
 	private volatile boolean echo;
 	// private volatile boolean discard;
 	private BufferedReader standardTerminalReader;
-	private volatile Console systemConsole;
+	private volatile Object systemConsoleObject;
+	private volatile Method readLineMethod;
+	private volatile Method readPasswordMethod;
 	private volatile BlockingQueue<String> buffer;
 	// private static final String ANSIDetectionPattern =
 	// "(\\u001B)(\\[)([^R])*([R])";
@@ -43,14 +46,13 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
 		standardTerminalReader = new BufferedReader(new InputStreamReader(new FileInputStream(FileDescriptor.in)));
 		try
 		{
-			Class.forName("java.io.Console");
-			VTStandardConsole.systemconsoleclass = true;
-			// console =
-			// Class.forName("System").getMethod("console").invoke(null);
-			systemConsole = System.console();
-			if (systemConsole != null)
+			systemConsoleObject = VTConsole.getIOConsole();
+			VTStandardConsole.systemconsoleclass = systemConsoleObject != null;
+			VTStandardConsole.systemconsolesupport = systemConsoleObject != null;
+			if (systemConsoleObject != null)
 			{
-				VTStandardConsole.systemconsolesupport = true;
+				readLineMethod = systemConsoleObject.getClass().getMethod("readLine");
+				readPasswordMethod = systemConsoleObject.getClass().getMethod("readPassword");
 			}
 		}
 		catch (Throwable t)
@@ -94,7 +96,8 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
 				{
 					try
 					{
-						line = new String(systemConsole.readPassword());
+						//line = new String(systemConsole.readPassword());
+						line = new String((char[]) readPasswordMethod.invoke(systemConsoleObject));
 					}
 					catch (Throwable e)
 					{
@@ -105,7 +108,8 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
 				{
 					try
 					{
-						line = systemConsole.readLine();
+						//line = systemConsole.readLine();
+						line = (String) readLineMethod.invoke(systemConsoleObject);
 					}
 					catch (Throwable e)
 					{
@@ -161,4 +165,6 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
 		}
 		requested = false;
 	}
+	    
+    
 }

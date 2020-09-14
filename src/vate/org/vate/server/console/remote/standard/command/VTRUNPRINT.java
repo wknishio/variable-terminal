@@ -1,9 +1,8 @@
 package org.vate.server.console.remote.standard.command;
 
-import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-
+import java.lang.reflect.Method;
 import org.vate.help.VTHelpManager;
 import org.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
@@ -23,11 +22,45 @@ public class VTRUNPRINT extends VTServerStandardRemoteConsoleCommandProcessor
 		{
 			try
 			{
-				Class.forName("java.awt.Desktop");
-				Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-				if (desktop != null && desktop.isSupported(Desktop.Action.PRINT))
+				Class<?> desktopClass = Class.forName("java.awt.Desktop");
+				Method isDesktopSupportedMethod = desktopClass.getDeclaredMethod("isDesktopSupported");
+				Method getDesktopMethod = desktopClass.getDeclaredMethod("getDesktop");
+				
+				Class<?> memberClasses[] = desktopClass.getClasses();
+				Class<?> actionClass = null;
+				
+				Object desktopObject = null;
+				Object printObject = null;
+				
+				for (Class<?> memberClass : memberClasses)
 				{
-					desktop.print(new File(parsed[1]));
+					if (memberClass.getSimpleName().contains("Action"))
+					{
+						actionClass = memberClass;
+						printObject = actionClass.getDeclaredMethod("valueOf", String.class).invoke(null, "PRINT");
+					}
+				}
+				
+				Method isSupportedMethod = desktopClass.getMethod("isSupported", actionClass);
+				Method printMethod = desktopClass.getMethod("print", File.class);
+				
+				//getDesktopMethod.setAccessible(true);
+				//isDesktopSupportedMethod.setAccessible(true);
+				//isSupportedMethod.setAccessible(true);
+				//printMethod.setAccessible(true);
+				
+				if ((Boolean) isDesktopSupportedMethod.invoke(null))
+				{
+					desktopObject = getDesktopMethod.invoke(null);
+				}
+				
+				//Class.forName("java.awt.Desktop");
+				//Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+				//if (desktop != null && desktop.isSupported(Desktop.Action.PRINT))
+				if (desktopObject != null && ((Boolean)isSupportedMethod.invoke(desktopObject, printObject)))
+				{
+					//desktop.print(new File(parsed[1]));
+					printMethod.invoke(desktopObject, new File(parsed[1]));
 					connection.getResultWriter().write("\nVT>Print operation executed!\nVT>");
 					connection.getResultWriter().flush();
 				}
@@ -54,7 +87,7 @@ public class VTRUNPRINT extends VTServerStandardRemoteConsoleCommandProcessor
 			}
 			catch (Throwable e)
 			{
-				connection.getResultWriter().write("\nVT>Print operation not supported!\nVT>");
+				connection.getResultWriter().write("\nVT>Print operation failed!\nVT>");
 				connection.getResultWriter().flush();
 			}
 		}

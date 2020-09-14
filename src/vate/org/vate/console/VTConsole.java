@@ -6,6 +6,7 @@ import java.awt.GraphicsEnvironment;
 import java.io.FileDescriptor;
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.lang.reflect.Method;
 import java.util.Locale;
 
 import org.vate.console.graphical.VTGraphicalConsole;
@@ -138,8 +139,7 @@ public final class VTConsole
 				{
 					try
 					{
-						Class.forName("java.io.Console");
-						if (System.console() == null)
+						if (!checkIOConsole())
 						{
 							// VTTerminal.graphical = true;
 							// File in = new File(FileDescriptor.in);
@@ -707,4 +707,45 @@ public final class VTConsole
 		}
 	}
 
+	public static boolean checkIOConsole()
+    {
+    	try
+		{	
+    		Class.forName("java.io.Console");
+			Class<?> systemClass = Class.forName("java.lang.System");
+			Method consoleMethod = systemClass.getDeclaredMethod("console");
+			//consoleMethod.setAccessible(true);
+			Object consoleResult = consoleMethod.invoke(null);
+			if (consoleResult != null)
+			{
+				return true;
+			}
+		}
+		catch (Throwable e)
+		{
+			
+		}
+    	return false;
+    }
+	
+	public static Object getIOConsole()
+    {
+    	try
+		{	
+    		Class.forName("java.io.Console");
+			Class<?> systemClass = Class.forName("java.lang.System");
+			Method consoleMethod = systemClass.getDeclaredMethod("console");
+			//consoleMethod.setAccessible(true);
+			Object consoleResult = consoleMethod.invoke(null);
+			if (consoleResult != null)
+			{
+				return consoleResult;
+			}
+		}
+		catch (Throwable e)
+		{
+			
+		}
+    	return false;
+    }
 }

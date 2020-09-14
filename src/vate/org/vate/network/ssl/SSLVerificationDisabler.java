@@ -1,5 +1,6 @@
 package org.vate.network.ssl;
 
+import java.lang.reflect.Method;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -58,7 +59,9 @@ public class SSLVerificationDisabler
 			HttpsURLConnection.setDefaultHostnameVerifier(new OverlyOptimisticHostnameVerifier());
 			try
 			{
-				SSLContext.setDefault(unverifiedSSL);
+				Method setDefault = SSLContext.class.getDeclaredMethod("setDefault", SSLContext.class);
+				setDefault.invoke(null, unverifiedSSL);
+				//SSLContext.setDefault(unverifiedSSL);
 			}
 			catch (Throwable ei)
 			{

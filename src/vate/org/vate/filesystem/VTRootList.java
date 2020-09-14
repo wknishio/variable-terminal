@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.io.FilenameFilter;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.LinkedList;
 import java.util.List;
@@ -120,9 +121,11 @@ public class VTRootList extends File
 		long freeSpace = 0;
 		try
 		{
+			Method freeSpaceMethod = File.class.getMethod("getFreeSpace");
 			for (File root : getRootFiles())
 			{
-				freeSpace += root.getFreeSpace();
+				freeSpace += (Long) freeSpaceMethod.invoke(root);
+				//freeSpace += root.getFreeSpace();
 			}
 		}
 		catch (Throwable t)
@@ -157,9 +160,11 @@ public class VTRootList extends File
 		long totalSpace = 0;
 		try
 		{
+			Method totalSpaceMethod = File.class.getMethod("getTotalSpace");
 			for (File root : getRootFiles())
 			{
-				totalSpace += root.getTotalSpace();
+				totalSpace += (Long) totalSpaceMethod.invoke(root);
+				//totalSpace += root.getTotalSpace();
 			}
 		}
 		catch (Throwable t)
@@ -174,9 +179,11 @@ public class VTRootList extends File
 		long usableSpace = 0;
 		try
 		{
+			Method usableSpaceMethod = File.class.getMethod("getUsableSpace");
 			for (File root : getRootFiles())
 			{
-				usableSpace += root.getUsableSpace();
+				usableSpace += (Long) usableSpaceMethod.invoke(root);
+				//totalSpace += root.getUsableSpace();
 			}
 		}
 		catch (Throwable t)

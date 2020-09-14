@@ -136,8 +136,7 @@ public final class VTConsoleInstance
 				{
 					try
 					{
-						Class.forName("java.io.Console");
-						if (System.console() == null)
+						if (!VTConsole.checkIOConsole())
 						{
 							// VTTerminal.graphical = true;
 							// File in = new File(FileDescriptor.in);
@@ -704,5 +703,4 @@ public final class VTConsoleInstance
 			console.addToggleFlushInterruptNotify(notifyFlushInterrupted);
 		}
 	}
-
 }

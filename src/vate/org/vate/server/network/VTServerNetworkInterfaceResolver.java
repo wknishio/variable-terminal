@@ -1,6 +1,7 @@
 package org.vate.server.network;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
@@ -53,7 +54,8 @@ public class VTServerNetworkInterfaceResolver extends VTTask
 					
 					try
 					{
-						byte[] hardwareAddress = networkInterface.getHardwareAddress();
+						Method getHardwareAddress = networkInterface.getClass().getMethod("getHardwareAddress");
+						byte[] hardwareAddress = (byte[]) getHardwareAddress.invoke(networkInterface);
 						if (hardwareAddress != null && hardwareAddress.length > 0)
 						{
 							message.append("\nVT>Hardware address: [");
