@@ -26,4 +26,9 @@ public final class VTFlushBufferedOutputStream extends FilterOutputStream
 			out.flush();
 		}
 	}
+	
+	public final void close() throws IOException
+	{
+		out.close();
+	}
 }

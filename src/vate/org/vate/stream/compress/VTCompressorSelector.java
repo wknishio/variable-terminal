@@ -49,8 +49,7 @@ public class VTCompressorSelector
 		//InputStream stream = new VTAirliftInputStream(new BufferedInputStream(in, VT.VT_STANDARD_DATA_BUFFER_SIZE), new ZstdDecompressor());
 		//InputStream stream = new VTAirliftInputStream(in, new ZstdDecompressor());
 		ZstdInputStream zstd = new ZstdInputStream(in).setContinuous(true);
-		BufferedInputStream stream = new BufferedInputStream(zstd, VT.VT_STANDARD_DATA_BUFFER_SIZE);
-		return stream;
+		return zstd;
 	}
 	
 	public static OutputStream createFlushBufferedSyncFlushDeflaterOutputStream(OutputStream out)

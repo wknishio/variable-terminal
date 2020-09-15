@@ -778,6 +778,12 @@ public class VTServerConnection
 		fileTransferControlDataInputStream = new VTLittleEndianInputStream(new BufferedInputStream(fileTransferControlInputStream));
 		fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(new BufferedOutputStream(fileTransferControlOutputStream));
 		
+		//graphicsControlInputStream.addPropagated(deflatedImageDataOutputStream);
+		//graphicsControlInputStream.addPropagated(snappedImageDataOutputStream);
+
+		//graphicsControlInputStream.addPropagated(clipboardDataOutputStream);
+		//graphicsControlInputStream.addPropagated(clipboardDataInputStream);
+		
 		// graphicsCheckDataInputStream = new
 		// VTLittleEndianInputStream(graphicsCheckInputStream);
 		// graphicsCheckDataOutputStream = new
@@ -1005,7 +1011,6 @@ public class VTServerConnection
 		{
 			
 		}
-		
 		try
 		{
 			graphicsControlOutputStream.close();
@@ -1024,7 +1029,7 @@ public class VTServerConnection
 		}
 		try
 		{
-			graphicsDeflatedImageOutputStream.close();
+			deflatedImageDataOutputStream.close();
 		}
 		catch (Throwable t)
 		{
@@ -1032,20 +1037,36 @@ public class VTServerConnection
 		}
 		try
 		{
-			graphicsSnappedImageOutputStream.close();
+			snappedImageDataOutputStream.close();
 		}
 		catch (Throwable t)
 		{
 			
 		}
-		try
-		{
-			graphicsClipboardOutputStream.close();
-		}
-		catch (Throwable t)
-		{
-			
-		}
+//		try
+//		{
+//			graphicsDeflatedImageOutputStream.close();
+//		}
+//		catch (Throwable t)
+//		{
+//			
+//		}
+//		try
+//		{
+//			graphicsSnappedImageOutputStream.close();
+//		}
+//		catch (Throwable t)
+//		{
+//			
+//		}
+//		try
+//		{
+//			graphicsClipboardOutputStream.close();
+//		}
+//		catch (Throwable t)
+//		{
+//			
+//		}
 //		if (zstdAvailable)
 //		{
 //			try
@@ -1067,9 +1088,6 @@ public class VTServerConnection
 	
 	public void resetGraphicsModeStreams() throws IOException
 	{
-		/* if (zstdImageOutputStream != null) { zstdImageOutputStream.close();
-		 * } */
-		
 		graphicsControlInputStream.open();
 		graphicsControlOutputStream.open();
 		
@@ -1083,6 +1101,9 @@ public class VTServerConnection
 		graphicsControlDataInputStream.setIntputStream(new BufferedInputStream(graphicsControlInputStream));
 		graphicsControlDataOutputStream.setOutputStream(new BufferedOutputStream(graphicsControlOutputStream));
 		
+		//graphicsControlInputStream.removePropagated(deflatedImageDataOutputStream);
+		//graphicsControlInputStream.removePropagated(snappedImageDataOutputStream);
+
 		// if (zstdAvailable)
 		// {
 		// deflatedImageDataOutputStream = (new VTBufferedOutputStream(new
@@ -1140,11 +1161,33 @@ public class VTServerConnection
 		snappedImageDataOutputStream = VTCompressorSelector.createFlushBufferedLZ4OutputStream(graphicsSnappedImageOutputStream);
 		snappedImageDataInputStream = (graphicsSnappedImageInputStream);
 		
+		//graphicsControlInputStream.addPropagated(deflatedImageDataOutputStream);
+		//graphicsControlInputStream.addPropagated(snappedImageDataOutputStream);
+		
 		resetClipboardStreams();
 	}
 	
 	public void resetClipboardStreams() throws IOException
 	{
+		try
+		{
+			clipboardDataOutputStream.close();
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		try
+		{
+			clipboardDataInputStream.close();
+		}
+		catch (Throwable t)
+		{
+			
+		}
+		//graphicsControlInputStream.removePropagated(clipboardDataOutputStream);
+		//graphicsControlInputStream.removePropagated(clipboardDataInputStream);
+		
 		graphicsClipboardOutputStream.open();
 		graphicsClipboardInputStream.open();
 		
@@ -1169,6 +1212,9 @@ public class VTServerConnection
 		//clipboardDataInputStream = new BufferedInputStream(new InflaterInputStream(graphicsClipboardInputStream, VT.VT_IO_BUFFFER_SIZE, true));
 		//clipboardDataInputStream = new BufferedInputStream(new LZ4BlockInputStream(graphicsClipboardInputStream, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), VT.VT_STANDARD_DATA_BUFFER_SIZE);
 		clipboardDataInputStream = VTCompressorSelector.createFlushBufferedZstdInputStream(graphicsClipboardInputStream);
+		
+		//graphicsControlInputStream.addPropagated(clipboardDataOutputStream);
+		//graphicsControlInputStream.addPropagated(clipboardDataInputStream);
 	}
 	
 	public void resetFileTransferStreams() throws IOException

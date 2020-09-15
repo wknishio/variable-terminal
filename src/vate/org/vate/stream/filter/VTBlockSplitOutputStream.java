@@ -14,6 +14,27 @@ public final class VTBlockSplitOutputStream extends FilterOutputStream
 		this.blockSize = blockSize;
 	}
 	
+	public final void write(byte[] b) throws IOException
+	{
+		int off = 0;
+		int len = b.length;
+		if (len <= blockSize)
+		{
+			out.write(b, off, len);
+		}
+		else
+		{
+			int amount;
+			while (len > 0)
+			{
+				amount = Math.min(blockSize, len);
+				out.write(b, off, amount);
+				off += amount;
+				len -= amount;
+			}
+		}
+	}
+	
 	public final void write(byte[] b, int off, int len) throws IOException
 	{
 		if (len <= blockSize)
@@ -22,11 +43,13 @@ public final class VTBlockSplitOutputStream extends FilterOutputStream
 		}
 		else
 		{
+			int amount;
 			while (len > 0)
 			{
-				out.write(b, off, Math.min(blockSize, len));
-				off += blockSize;
-				len -= blockSize;
+				amount = Math.min(blockSize, len);
+				out.write(b, off, amount);
+				off += amount;
+				len -= amount;
 			}
 		}
 	}
@@ -39,5 +62,10 @@ public final class VTBlockSplitOutputStream extends FilterOutputStream
 	public final void flush() throws IOException
 	{
 		out.flush();
+	}
+	
+	public final void close() throws IOException
+	{
+		out.close();
 	}
 }

@@ -160,6 +160,11 @@ public final class VTLinkableDynamicMultiplexingInputStream
 			this.propagated.add(propagated);
 		}
 		
+		public final void removePropagated(Closeable propagated)
+		{
+			this.propagated.remove(propagated);
+		}
+		
 		public final void open()
 		{
 			if (pipedInputStream != null)
