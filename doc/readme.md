@@ -150,7 +150,7 @@ specific internal commands.
 
 ## Building from sources
 
-The minimum required java version to build from sources is at least JDK 1.7.
+The minimum required java version to build from sources is at least JDK 1.5.
 
 The included scripts "build.bat" and "build.sh" perform the build process using<br>
 ant and the file "build.xml" is an ant build file for this software.
