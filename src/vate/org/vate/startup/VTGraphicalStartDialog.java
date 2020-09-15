@@ -109,7 +109,7 @@ public class VTGraphicalStartDialog extends Dialog
 		
 		try
 		{
-			Method setAutoRequestFocus = this.getClass().getMethod("setAutoRequestFocus", Class.forName("java.lang.Boolean"));
+			Method setAutoRequestFocus = this.getClass().getMethod("setAutoRequestFocus", boolean.class);
 			setAutoRequestFocus.invoke(this, true);
 			//setAutoRequestFocus(true);
 		}
