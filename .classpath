@@ -16,6 +16,7 @@
 	<classpathentry kind="src" path="src/snappy"/>
 	<classpathentry kind="src" path="src/javapng"/>
 	<classpathentry kind="src" path="src/aircompressor"/>
+	<classpathentry kind="src" path="src/zstd-jni"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.5.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io.jar"/>
@@ -32,5 +33,6 @@
 	<classpathentry kind="lib" path="lib/jna-4.5.2-mk2.jar"/>
 	<classpathentry kind="lib" path="lib/jna-platform-4.5.2-mk2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections4.jar"/>
+	<classpathentry kind="lib" path="lib/zstd-jni-1.4.5-6-native.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

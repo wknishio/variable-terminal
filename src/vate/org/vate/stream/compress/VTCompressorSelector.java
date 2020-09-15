@@ -1,6 +1,7 @@
 package org.vate.stream.compress;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.Deflater;
@@ -12,7 +13,11 @@ import org.iq80.snappy.SnappyOutputStream;
 import org.vate.VT;
 import org.vate.stream.array.VTByteArrayOutputStream;
 import org.vate.stream.array.VTFlushBufferedOutputStream;
+import org.vate.stream.filter.VTBlockSplitOutputStream;
 import org.vate.stream.filter.VTBufferedOutputStream;
+
+import com.github.luben.zstd.ZstdInputStream;
+import com.github.luben.zstd.ZstdOutputStream;
 import com.jcraft.jzlib.DeflaterOutputStream;
 import com.jcraft.jzlib.InflaterInputStream;
 import com.jcraft.jzlib.JZlib;
@@ -27,17 +32,24 @@ import net.jpountz.xxhash.XXHashFactory;
 @SuppressWarnings({ "unused", "deprecation" })
 public class VTCompressorSelector
 {
-	public static OutputStream createFlushBufferedZstdOutputStream(OutputStream out)
+	public static OutputStream createFlushBufferedZstdOutputStream(OutputStream out) throws IOException
 	{
-		OutputStream stream = new VTFlushBufferedOutputStream(new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE), new VTAirliftOutputStream(new VTFlushBufferedOutputStream(new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE), out), new ZstdCompressor()));
+		//OutputStream stream = new VTFlushBufferedOutputStream(new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE), new VTAirliftOutputStream(new VTFlushBufferedOutputStream(new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE), out), new ZstdCompressor()));
 		//OutputStream stream = new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VT.VT_STANDARD_DATA_BUFFER_SIZE);
+		ZstdOutputStream zstd = new ZstdOutputStream(new VTFlushBufferedOutputStream(new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE), out), 1);
+		zstd.setChecksum(false);
+		zstd.setCloseFrameOnFlush(false);
+		OutputStream stream = new VTFlushBufferedOutputStream(new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE), new VTBlockSplitOutputStream(zstd, VT.VT_STANDARD_DATA_BUFFER_SIZE));
 		return stream;
 	}
 	
-	public static InputStream createFlushBufferedZstdInputStream(InputStream in)
+	@SuppressWarnings("all")
+	public static InputStream createFlushBufferedZstdInputStream(InputStream in) throws IOException
 	{
-		InputStream stream = new VTAirliftInputStream(new BufferedInputStream(in, VT.VT_STANDARD_DATA_BUFFER_SIZE), new ZstdDecompressor());
+		//InputStream stream = new VTAirliftInputStream(new BufferedInputStream(in, VT.VT_STANDARD_DATA_BUFFER_SIZE), new ZstdDecompressor());
 		//InputStream stream = new VTAirliftInputStream(in, new ZstdDecompressor());
+		ZstdInputStream zstd = new ZstdInputStream(in).setContinuous(true);
+		BufferedInputStream stream = new BufferedInputStream(zstd, VT.VT_STANDARD_DATA_BUFFER_SIZE);
 		return stream;
 	}
 	

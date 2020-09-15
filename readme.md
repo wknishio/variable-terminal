@@ -176,11 +176,12 @@ Those are the third party libraries used in this software:
 * Concentus Java by Logan Stromberg, for Opus audio communication
 * Commons-compress by Apache Software Foundation, for ZIP64 format support
 * client-side Throttle by James Edwards, for network data rate limiter
-* airlift-aircompressor for zstd compression
 * DirectRobot by Killer99@rune-server.ee, for better screen capture
 * PortMapper by Kasra Faghihi(offbynull) for PCP port forwarding support
 * Lanterna by mabe02 for graphical console
 * Sixlegs Java PNG Decoder for PNG decoding
+* airlift-aircompressor for lzo compression
+* zstd-jni by luben for zstd compression
 
 ## Additional utilities
 
