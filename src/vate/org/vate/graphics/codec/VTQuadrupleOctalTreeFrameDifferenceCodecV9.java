@@ -166,74 +166,74 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 	
 	private static final void encodePixelDirect(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] & 0xff : 0;
 		top1 = y > 0 ? newPixelData[position - width] & 0xff : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] & 0xff : 0;
-		out.write((byte) (newPixelData[position] - left1 - top1 + diag1));
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] & 0xff : 0;
+		out.write((byte) (newPixelData[position] - ((left1 + top1) >> 1)));
 	}
 		
 	private static final void encodePixelDirect(final VTLittleEndianOutputStream out, final short[] oldPixelData, final short[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
-		out.writeUnsignedShort(newPixelData[position] - left1 - top1 + diag1);
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
+		out.writeUnsignedShort(newPixelData[position] - ((left1 + top1) >> 1));
 	}
 		
 	private static final void encodePixelDirect(final VTLittleEndianOutputStream out, final int[] oldPixelData, final int[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
-		out.writeSubInt(newPixelData[position] - left1 - top1 + diag1);
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
+		out.writeSubInt(newPixelData[position] - ((left1 + top1) >> 1));
 	}
 		
 	private static final void encodePixelDirect(final VTLittleEndianOutputStream out, final long[] oldPixelData, final long[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		long left1, top1, diag1;
+		long left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
-		out.writeLong(newPixelData[position] - left1 - top1 + diag1);
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
+		out.writeLong(newPixelData[position] - ((left1 + top1) >> 1));
 	}
 	
 	private static final void decodePixelDirect(final VTLittleEndianInputStream in, final byte[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] & 0xff : 0;
 		top1 = y > 0 ? newPixelData[position - width] & 0xff : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] & 0xff : 0;
-		newPixelData[position] = (byte) (in.readUnsignedByte() + left1 + top1 - diag1);
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] & 0xff : 0;
+		newPixelData[position] = (byte) (in.readUnsignedByte() + ((left1 + top1) >> 1));
 	}
 	
 	private static final void decodePixelDirect(final VTLittleEndianInputStream in, final short[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
-		newPixelData[position] = (short) ((in.readUnsignedShort() + left1 + top1 - diag1) & 0x00007FFF);
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
+		newPixelData[position] = (short) ((in.readUnsignedShort() + ((left1 + top1) >> 1)) & 0x00007FFF);
 	}
 	
 	private static final void decodePixelDirect(final VTLittleEndianInputStream in, final int[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		int left1, top1, diag1;
+		int left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
-		newPixelData[position] = (in.readSubInt() + left1 + top1 - diag1) & 0x00FFFFFF;
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
+		newPixelData[position] = (in.readSubInt() + ((left1 + top1) >> 1)) & 0x00FFFFFF;
 	}
 	
 	private static final void decodePixelDirect(final VTLittleEndianInputStream in, final long[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
 	{
-		long left1, top1, diag1;
+		long left1, top1;
 		left1 = x > 0 ? newPixelData[position - 1] : 0;
 		top1 = y > 0 ? newPixelData[position - width] : 0;
-		diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
-		newPixelData[position] = (in.readLong() + left1 + top1 - diag1) & 0x7FFFFFFFFFFFFFFFL;
+		//diag1 = x > 0 && y > 0 ? newPixelData[position - 1 - width] : 0;
+		newPixelData[position] = (in.readLong() + ((left1 + top1) >> 1)) & 0x7FFFFFFFFFFFFFFFL;
 	}
 	
 	private final void encodeMicrolineDirectSeparated(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData, final int offset, final int areaWidth) throws IOException

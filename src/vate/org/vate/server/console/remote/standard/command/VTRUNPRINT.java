@@ -60,7 +60,7 @@ public class VTRUNPRINT extends VTServerStandardRemoteConsoleCommandProcessor
 				if (desktopObject != null && ((Boolean)isSupportedMethod.invoke(desktopObject, printObject)))
 				{
 					//desktop.print(new File(parsed[1]));
-					printMethod.invoke(desktopObject, new File(parsed[1]));
+					printMethod.invoke(desktopObject, new File(command.substring(parsed[0].length() + 1)));
 					connection.getResultWriter().write("\nVT>Print operation executed!\nVT>");
 					connection.getResultWriter().flush();
 				}

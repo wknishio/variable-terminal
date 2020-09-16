@@ -60,7 +60,7 @@ public class VTBROWSE extends VTServerStandardRemoteConsoleCommandProcessor
 				if (desktopObject != null && ((Boolean)isSupportedMethod.invoke(desktopObject, browseObject)))
 				{
 					//desktop.browse(new URI(parsed[1]));
-					browseMethod.invoke(desktopObject, new URI(parsed[1]));
+					browseMethod.invoke(desktopObject, new URI(command.substring(parsed[0].length() + 1)));
 					connection.getResultWriter().write("\nVT>Browse operation executed!\nVT>");
 					connection.getResultWriter().flush();
 				}
