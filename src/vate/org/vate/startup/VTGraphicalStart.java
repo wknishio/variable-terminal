@@ -26,7 +26,7 @@ public final class VTGraphicalStart
 			+ "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n"
 			+ "VT>This software is under MIT license, see license.txt!\n"
 			+ "VT>This software comes with no warranty, use at your own risk!\n");
-			
+			VTConsole.print("VT>Enter the module(client as C or server as S, default:C):");
 			if (VTConsole.isGraphical())
 			{
 				VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTConsole.getFrame());
@@ -64,7 +64,6 @@ public final class VTGraphicalStart
 				}
 			}
 			
-			VTConsole.print("VT>Enter the module(client as C or server as S, default:C):");
 			try
 			{
 				option = VTConsole.readLine(true);
@@ -185,7 +184,7 @@ public final class VTGraphicalStart
 				+ "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n"
 				+ "VT>This software is under MIT license, see license.txt!\n"
 				+ "VT>This software comes with no warranty, use at your own risk!\n");
-				
+				VTConsole.print("VT>Enter the module(client as C or server as S, default:C):");
 				if (VTConsole.isGraphical())
 				{
 					VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTConsole.getFrame());
@@ -239,7 +238,6 @@ public final class VTGraphicalStart
 					}
 				}
 				
-				VTConsole.print("VT>Enter the module(client as C or server as S, default:C):");
 				try
 				{
 					option = VTConsole.readLine(true);

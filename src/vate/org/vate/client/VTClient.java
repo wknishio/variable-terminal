@@ -870,6 +870,7 @@ public class VTClient implements Runnable
 			}
 			else
 			{
+				VTConsole.print("VT>Press enter to start client:");
 				//VTConsole.print("\nVT>Press enter to try connecting with server");
 				try
 				{
@@ -1589,8 +1590,8 @@ public class VTClient implements Runnable
 		VTConsole.print("VT>Variable-Terminal Client " + VT.VT_VERSION + "\n"
 		+ "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n"
 		+ "VT>This software is under MIT license, see license.txt!\n"
-		+ "VT>This software comes with no warranty, use at your own risk!\n"
-		+ "VT>Press enter start client:");
+		+ "VT>This software comes with no warranty, use at your own risk!\n");
+		//+ "VT>Press enter to start client:");
 		configure();
 		if (skipConfiguration)
 		{
