@@ -87,7 +87,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 	// private int size;
 	// length of difference map data
 	private int macroblockTreeDataLength;
-	private int macroblockPixelDataLength;
+	//private int macroblockPixelDataLength;
 	// data buffers
 	private ByteArrayOutputStream macroblockDataBuffer;
 	private ByteArrayOutputStream macrolineDataBuffer;
@@ -96,10 +96,10 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 	private VTLittleEndianOutputStream pixelDataBufferStream;
 	// preloaded data streams
 	private VTByteArrayInputStream tin = new VTByteArrayInputStream(new byte[1024]);
-	private VTByteArrayInputStream pin = new VTByteArrayInputStream(new byte[4096 * 4]);
+	//private VTByteArrayInputStream pin = new VTByteArrayInputStream(new byte[4096 * 4]);
 	private VTLittleEndianInputStream lin = new VTLittleEndianInputStream(null);
 	//private VTLittleEndianInputStream tlin = new VTLittleEndianInputStream(tin);
-	private VTLittleEndianInputStream plin = new VTLittleEndianInputStream(pin);
+	//private VTLittleEndianInputStream plin = new VTLittleEndianInputStream(null);
 	private VTLittleEndianOutputStream lout = new VTLittleEndianOutputStream(null);
 	private BitSet macroblockBitSet = new BitSet(1024 * 8);
 	private Rectangle transferArea = new Rectangle(0, 0, 1, 1);
@@ -533,7 +533,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 			out.writeUnsignedShort(macroblockDataBuffer.size());
 			macroblockDataBuffer.writeTo(out);
 			macroblockDataBuffer.reset();
-			out.writeUnsignedShort(pixelDataBuffer.size());
+			//out.writeUnsignedShort(pixelDataBuffer.size());
 			pixelDataBuffer.writeTo(out);
 			pixelDataBuffer.reset();
 			//out.flush();
@@ -812,14 +812,14 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 			tin.count(macroblockTreeDataLength);
 			tin.pos(0);
 			
-			macroblockPixelDataLength = in.readUnsignedShort();
-			if (macroblockPixelDataLength > pin.buf().length)
-			{
-				pin.buf(new byte[macroblockPixelDataLength]);
-			}
-			in.readFully(pin.buf(), 0, macroblockPixelDataLength);
-			pin.count(macroblockPixelDataLength);
-			pin.pos(0);
+//			macroblockPixelDataLength = in.readUnsignedShort();
+//			if (macroblockPixelDataLength > pin.buf().length)
+//			{
+//				pin.buf(new byte[macroblockPixelDataLength]);
+//			}
+//			in.readFully(pin.buf(), 0, macroblockPixelDataLength);
+//			pin.count(macroblockPixelDataLength);
+//			pin.pos(0);
 			
 			switch (y1 + macroblockStepY <= size ? 8 : r1)
 			{
@@ -827,7 +827,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -836,7 +836,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -845,7 +845,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -854,7 +854,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -863,7 +863,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -872,7 +872,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -881,7 +881,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -890,7 +890,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					y1 += microblockStepY;
 				}
@@ -1196,7 +1196,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 			out.writeUnsignedShort(macroblockDataBuffer.size());
 			macroblockDataBuffer.writeTo(out);
 			macroblockDataBuffer.reset();
-			out.writeUnsignedShort(pixelDataBuffer.size());
+			//out.writeUnsignedShort(pixelDataBuffer.size());
 			pixelDataBuffer.writeTo(out);
 			pixelDataBuffer.reset();
 			//out.flush();
@@ -1475,14 +1475,14 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 			tin.count(macroblockTreeDataLength);
 			tin.pos(0);
 			
-			macroblockPixelDataLength = in.readUnsignedShort();
-			if (macroblockPixelDataLength > pin.buf().length)
-			{
-				pin.buf(new byte[macroblockPixelDataLength]);
-			}
-			in.readFully(pin.buf(), 0, macroblockPixelDataLength);
-			pin.count(macroblockPixelDataLength);
-			pin.pos(0);
+//			macroblockPixelDataLength = in.readUnsignedShort();
+//			if (macroblockPixelDataLength > pin.buf().length)
+//			{
+//				pin.buf(new byte[macroblockPixelDataLength]);
+//			}
+//			in.readFully(pin.buf(), 0, macroblockPixelDataLength);
+//			pin.count(macroblockPixelDataLength);
+//			pin.pos(0);
 			
 			switch (y1 + macroblockStepY <= size ? 8 : r1)
 			{
@@ -1490,7 +1490,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -1499,7 +1499,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -1508,7 +1508,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -1517,7 +1517,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -1526,7 +1526,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -1535,7 +1535,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -1544,7 +1544,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -1553,7 +1553,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					y1 += microblockStepY;
 				}
@@ -1859,7 +1859,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 			out.writeUnsignedShort(macroblockDataBuffer.size());
 			macroblockDataBuffer.writeTo(out);
 			macroblockDataBuffer.reset();
-			out.writeUnsignedShort(pixelDataBuffer.size());
+			//out.writeUnsignedShort(pixelDataBuffer.size());
 			pixelDataBuffer.writeTo(out);
 			pixelDataBuffer.reset();
 			//out.flush();
@@ -2138,14 +2138,14 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 			tin.count(macroblockTreeDataLength);
 			tin.pos(0);
 			
-			macroblockPixelDataLength = in.readUnsignedShort();
-			if (macroblockPixelDataLength > pin.buf().length)
-			{
-				pin.buf(new byte[macroblockPixelDataLength]);
-			}
-			in.readFully(pin.buf(), 0, macroblockPixelDataLength);
-			pin.count(macroblockPixelDataLength);
-			pin.pos(0);
+//			macroblockPixelDataLength = in.readUnsignedShort();
+//			if (macroblockPixelDataLength > pin.buf().length)
+//			{
+//				pin.buf(new byte[macroblockPixelDataLength]);
+//			}
+//			in.readFully(pin.buf(), 0, macroblockPixelDataLength);
+//			pin.count(macroblockPixelDataLength);
+//			pin.pos(0);
 			
 			switch (y1 + macroblockStepY <= size ? 8 : r1)
 			{
@@ -2153,7 +2153,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -2162,7 +2162,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -2171,7 +2171,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -2180,7 +2180,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -2189,7 +2189,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -2198,7 +2198,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -2207,7 +2207,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -2216,7 +2216,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					y1 += microblockStepY;
 				}
@@ -2522,7 +2522,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 			out.writeUnsignedShort(macroblockDataBuffer.size());
 			macroblockDataBuffer.writeTo(out);
 			macroblockDataBuffer.reset();
-			out.writeUnsignedShort(pixelDataBuffer.size());
+			//out.writeUnsignedShort(pixelDataBuffer.size());
 			pixelDataBuffer.writeTo(out);
 			pixelDataBuffer.reset();
 			//out.flush();
@@ -2801,14 +2801,14 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 			tin.count(macroblockTreeDataLength);
 			tin.pos(0);
 			
-			macroblockPixelDataLength = in.readUnsignedShort();
-			if (macroblockPixelDataLength > pin.buf().length)
-			{
-				pin.buf(new byte[macroblockPixelDataLength]);
-			}
-			in.readFully(pin.buf(), 0, macroblockPixelDataLength);
-			pin.count(macroblockPixelDataLength);
-			pin.pos(0);
+//			macroblockPixelDataLength = in.readUnsignedShort();
+//			if (macroblockPixelDataLength > pin.buf().length)
+//			{
+//				pin.buf(new byte[macroblockPixelDataLength]);
+//			}
+//			in.readFully(pin.buf(), 0, macroblockPixelDataLength);
+//			pin.count(macroblockPixelDataLength);
+//			pin.pos(0);
 			
 			switch (y1 + macroblockStepY <= size ? 8 : r1)
 			{
@@ -2816,7 +2816,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -2825,7 +2825,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -2834,7 +2834,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -2843,7 +2843,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -2852,7 +2852,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -2861,7 +2861,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -2870,7 +2870,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					c1 <<= 1;
 					y1 += microblockStepY;
@@ -2879,7 +2879,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecV9
 				{
 					if ((d1 & c1) != 0)
 					{
-						decodeMacrolineDirectSeparated(plin, newPixelData, size, offset, areaWidth);
+						decodeMacrolineDirectSeparated(lin, newPixelData, size, offset, areaWidth);
 					}
 					y1 += microblockStepY;
 				}
