@@ -1463,7 +1463,7 @@ public class VTServerLegacyLocalConsoleReader extends VTTask
 					VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
 				}
 			}
-			else if (parsed[0].equalsIgnoreCase("*VTAUDIOMIXERS") || parsed[0].equalsIgnoreCase("*VTAM"))
+			else if (parsed[0].equalsIgnoreCase("*VTMIXERS") || parsed[0].equalsIgnoreCase("*VTMX"))
 			{
 				message.setLength(0);
 				message.append("\nVT>List of local audio mixers:\nVT>");

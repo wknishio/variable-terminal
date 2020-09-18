@@ -21,7 +21,7 @@ public class VTClientRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
 		try
 		{
 			standardCommandProcessorClasses.add(VTAUDIOLINK.class);
-			standardCommandProcessorClasses.add(VTAUDIOMIXERS.class);
+			standardCommandProcessorClasses.add(VTMIXERS.class);
 			standardCommandProcessorClasses.add(VTCLEAR.class);
 			standardCommandProcessorClasses.add(VTDISCONNECT.class);
 			standardCommandProcessorClasses.add(VTFILETRANSFER.class);

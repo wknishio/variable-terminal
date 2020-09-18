@@ -254,9 +254,9 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		audioSoundMenu = new Menu("Audio ");
 		
 		audioMixersSoundMenu = new Menu("List Available Audio Mixers ");
-		audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("All Audio Mixers", "*VTAUDIOMIXERS\n"));
-		audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Local Audio Mixers", "*VTAUDIOMIXERS L\n"));
-		audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Remote Audio Mixers", "*VTAUDIOMIXERS R\n"));
+		audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("All Audio Mixers", "*VTMIXERS\n"));
+		audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Local Audio Mixers", "*VTMIXERS L\n"));
+		audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Remote Audio Mixers", "*VTMIXERS R\n"));
 		audioSoundMenu.add(audioMixersSoundMenu);
 		
 		audioLinkSoundMenu = new Menu("Toggle Remote Audio Link ");

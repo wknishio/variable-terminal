@@ -22,7 +22,7 @@ public class VTServerRemoteConsoleCommandSelector <T> extends VTConsoleCommandSe
 		{
 			standardCommandProcessorClasses.add(VTACCESS.class);
 			standardCommandProcessorClasses.add(VTAUDIOLINK.class);
-			standardCommandProcessorClasses.add(VTAUDIOMIXERS.class);
+			standardCommandProcessorClasses.add(VTMIXERS.class);
 			standardCommandProcessorClasses.add(VTBEEP.class);
 			standardCommandProcessorClasses.add(VTBELL.class);
 			standardCommandProcessorClasses.add(VTBROWSE.class);

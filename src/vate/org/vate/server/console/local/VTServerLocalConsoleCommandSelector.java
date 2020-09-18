@@ -20,7 +20,7 @@ public class VTServerLocalConsoleCommandSelector <T> extends VTConsoleCommandSel
 		try
 		{
 			standardCommandProcessorClasses.add(VTACCESS.class);
-			standardCommandProcessorClasses.add(VTAUDIOMIXERS.class);
+			standardCommandProcessorClasses.add(VTMIXERS.class);
 			standardCommandProcessorClasses.add(VTCLEAR.class);
 			standardCommandProcessorClasses.add(VTCOVER.class);
 			standardCommandProcessorClasses.add(VTDISCONNECT.class);

@@ -1525,7 +1525,7 @@ public class VTClientLegacyRemoteConsoleWriter extends VTTask
 				// connection latency: %.2f ms\nVT>", estimated);
 				VTConsole.printf("\nVT>Estimated connection latency: [%d] ms or [%d] ns\nVT>", millisseconds, nanoseconds);
 			}
-			else if (parsed[0].equalsIgnoreCase("*VTAUDIOMIXERS") || parsed[0].equalsIgnoreCase("*VTAM"))
+			else if (parsed[0].equalsIgnoreCase("*VTMIXERS") || parsed[0].equalsIgnoreCase("*VTMX"))
 			{
 				if (parsed.length >= 2)
 				{

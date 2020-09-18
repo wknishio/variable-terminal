@@ -7,14 +7,14 @@ import org.vate.client.console.remote.standard.VTClientStandardRemoteConsoleComm
 import org.vate.console.VTConsole;
 import org.vate.help.VTHelpManager;
 
-public class VTAUDIOMIXERS extends VTClientStandardRemoteConsoleCommandProcessor
+public class VTMIXERS extends VTClientStandardRemoteConsoleCommandProcessor
 {
-	public VTAUDIOMIXERS()
+	public VTMIXERS()
 	{
-		this.setFullName("*VTAUDIOMIXERS");
-		this.setAbbreviatedName("*VTAM");
-		this.setFullSyntax("*VTAUDIOMIXERS [SIDE]");
-		this.setAbbreviatedSyntax("*VTAM [SD]");
+		this.setFullName("*VTMIXERS");
+		this.setAbbreviatedName("*VTMX");
+		this.setFullSyntax("*VTMIXERS [SIDE]");
+		this.setAbbreviatedSyntax("*VTMX [SD]");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

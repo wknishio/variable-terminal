@@ -3406,7 +3406,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 			// latency: [%d]
 			// ms\nVT>", estimated);
 		//}
-		else if (parsed[0].equalsIgnoreCase("*VTAUDIOMIXERS") || parsed[0].equalsIgnoreCase("*VTAM"))
+		else if (parsed[0].equalsIgnoreCase("*VTMIXERS") || parsed[0].equalsIgnoreCase("*VTMX"))
 		{
 			if (parsed.length >= 2)
 			{

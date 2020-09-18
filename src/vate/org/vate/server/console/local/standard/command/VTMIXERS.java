@@ -6,14 +6,14 @@ import javax.sound.sampled.Mixer;
 import org.vate.console.VTConsole;
 import org.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-public class VTAUDIOMIXERS extends VTServerStandardLocalConsoleCommandProcessor
+public class VTMIXERS extends VTServerStandardLocalConsoleCommandProcessor
 {
-	public VTAUDIOMIXERS()
+	public VTMIXERS()
 	{
-		this.setFullName("*VTAUDIOMIXERS");
-		this.setAbbreviatedName("*VTAM");
-		this.setFullSyntax("*VTAUDIOMIXERS");
-		this.setAbbreviatedSyntax("*VTAM");
+		this.setFullName("*VTMIXERS");
+		this.setAbbreviatedName("*VTMX");
+		this.setFullSyntax("*VTMIXERS");
+		this.setAbbreviatedSyntax("*VTMX");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception
