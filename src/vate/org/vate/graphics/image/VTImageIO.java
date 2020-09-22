@@ -498,38 +498,38 @@ public final class VTImageIO
 	
 	private static final void encodePixelByte(VTLittleEndianOutputStream out, byte[] pixelData, int position, int width) throws IOException
 	{
-		int left1, top1;
-		left1 = position > 0 ? pixelData[position - 1] & 0xff : 0;
-		top1 = position >= width ? pixelData[position - width] & 0xff : 0;
-		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] & 0xff : 0;
-		out.write(pixelData[position] - ((left1 + top1) >> 1));
+		byte left1, top1, diag1;
+		diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+		top1 = position >= width ? pixelData[position - width] : 0;
+		left1 = position > 0 ? pixelData[position - 1] : 0;
+		out.write(pixelData[position] - Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
 	}
 	
 	private static final void encodePixelShort(VTLittleEndianOutputStream out, short[] pixelData, int position, int width) throws IOException
 	{
-		int left1, top1;
-		left1 = position > 0 ? pixelData[position - 1] : 0;
+		short left1, top1, diag1;
+		diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
-		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		out.writeUnsignedShort(pixelData[position] - ((left1 + top1) >> 1));
+		left1 = position > 0 ? pixelData[position - 1] : 0;
+		out.writeShort(pixelData[position] - Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
 	}
 	
 	private static final void encodePixelSubInt(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
 	{
-		int left1, top1;
-		left1 = position > 0 ? pixelData[position - 1] : 0;
+		int left1, top1, diag1;
+		diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
-		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		out.writeSubInt(pixelData[position] - ((left1 + top1) >> 1));
+		left1 = position > 0 ? pixelData[position - 1] : 0;
+		out.writeSubInt(pixelData[position] - Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
 	}
 	
 	private static final void encodePixelInt(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
 	{
-		int left1, top1;
-		left1 = position > 0 ? pixelData[position - 1] : 0;
+		int left1, top1, diag1;
+		diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
-		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		out.writeInt(pixelData[position] - ((left1 + top1) >> 1));
+		left1 = position > 0 ? pixelData[position - 1] : 0;
+		out.writeInt(pixelData[position] - Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
 	}
 	
 	//private static final void decodeTwoPixelByte(VTLittleEndianInputStream in, byte[] pixelData, int position) throws IOException
@@ -539,38 +539,38 @@ public final class VTImageIO
 	
 	private static final void decodePixelByte(VTLittleEndianInputStream in, byte[] pixelData, int position, int width) throws IOException
 	{
-		int left1, top1;
-		left1 = position > 0 ? pixelData[position - 1] & 0xff : 0;
-		top1 = position >= width ? pixelData[position - width] & 0xff : 0;
-		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] & 0xff : 0;
-		pixelData[position] = (byte) (in.readUnsignedByte() + ((left1 + top1) >> 1));
+		byte left1, top1, diag1;
+		diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+		top1 = position >= width ? pixelData[position - width] : 0;
+		left1 = position > 0 ? pixelData[position - 1] : 0;
+		pixelData[position] = (byte) (in.readByte() + Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
 	}
 	
 	private static final void decodePixelShort(VTLittleEndianInputStream in, short[] pixelData, int position, int width) throws IOException
 	{
-		int left1, top1;
-		left1 = position > 0 ? pixelData[position - 1] : 0;
+		short left1, top1, diag1;
+		diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
-		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		pixelData[position] = (short) ((in.readUnsignedShort() + ((left1 + top1) >> 1)) & 0x00007FFF);
+		left1 = position > 0 ? pixelData[position - 1] : 0;
+		pixelData[position] = (short) ((in.readShort() + Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1))) & 0x00007FFF);
 	}
 	
 	private static final void decodePixelSubInt(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
 	{
-		int left1, top1;
-		left1 = position > 0 ? pixelData[position - 1] : 0;
+		int left1, top1, diag1;
+		diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
-		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		pixelData[position] = (in.readSubInt() + ((left1 + top1) >> 1)) & 0x00FFFFFF;
+		left1 = position > 0 ? pixelData[position - 1] : 0;
+		pixelData[position] = (in.readSubInt() + Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1))) & 0x00FFFFFF;
 	}
 	
 	private static final void decodePixelInt(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
 	{
-		int left1, top1;
-		left1 = position > 0 ? pixelData[position - 1] : 0;
+		int left1, top1, diag1;
+		diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
 		top1 = position >= width ? pixelData[position - width] : 0;
-		//diag1 = position - 1 >= width ? pixelData[position - 1 - width] : 0;
-		pixelData[position] = (in.readInt() + ((left1 + top1) >> 1));
+		left1 = position > 0 ? pixelData[position - 1] : 0;
+		pixelData[position] = (in.readInt() + Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
 	}
 	/* private static final int to24bitInt(int value) { return -(value &
 	 * 0x00800000) + (value & ~0x00800000); }
