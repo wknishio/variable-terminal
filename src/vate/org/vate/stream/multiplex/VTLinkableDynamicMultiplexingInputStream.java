@@ -19,47 +19,6 @@ import org.vate.stream.pipe.VTPipedOutputStream;
 
 public final class VTLinkableDynamicMultiplexingInputStream
 {
-	private final class VTLinkableDynamicMultiplexingInputStreamPacketReader implements Runnable
-	{
-		private volatile boolean running;
-		private final VTLinkableDynamicMultiplexingInputStream multiplexingInputStream;
-		
-		private VTLinkableDynamicMultiplexingInputStreamPacketReader(VTLinkableDynamicMultiplexingInputStream multiplexingInputStream)
-		{
-			this.multiplexingInputStream = multiplexingInputStream;
-			this.running = true;
-		}
-		
-		private final void setRunning(boolean running)
-		{
-			this.running = running;
-		}
-		
-		public final void run()
-		{
-			while (running)
-			{
-				try
-				{
-					multiplexingInputStream.readPacket();
-				}
-				catch (Throwable e)
-				{
-					//e.printStackTrace();
-					running = false;
-				}
-			}
-			try
-			{
-				multiplexingInputStream.close();
-			}
-			catch (Throwable e1)
-			{
-				// e1.printStackTrace();
-			}
-		}
-	}
-	
 	public final class VTLinkableDynamicMultiplexedInputStream extends InputStream
 	{
 		//private VTLinkableDynamicMultiplexingInputStream multiplexingInputStream;
@@ -241,6 +200,47 @@ public final class VTLinkableDynamicMultiplexingInputStream
 		public final long skip(long count) throws IOException
 		{
 			return in.skip(count);
+		}
+	}
+	
+	private final class VTLinkableDynamicMultiplexingInputStreamPacketReader implements Runnable
+	{
+		private volatile boolean running;
+		private final VTLinkableDynamicMultiplexingInputStream multiplexingInputStream;
+		
+		private VTLinkableDynamicMultiplexingInputStreamPacketReader(VTLinkableDynamicMultiplexingInputStream multiplexingInputStream)
+		{
+			this.multiplexingInputStream = multiplexingInputStream;
+			this.running = true;
+		}
+		
+		private final void setRunning(boolean running)
+		{
+			this.running = running;
+		}
+		
+		public final void run()
+		{
+			while (running)
+			{
+				try
+				{
+					multiplexingInputStream.readPacket();
+				}
+				catch (Throwable e)
+				{
+					//e.printStackTrace();
+					running = false;
+				}
+			}
+			try
+			{
+				multiplexingInputStream.close();
+			}
+			catch (Throwable e1)
+			{
+				// e1.printStackTrace();
+			}
 		}
 	}
 	

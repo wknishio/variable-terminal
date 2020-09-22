@@ -10,7 +10,7 @@ public final class VTStandardStart
 {
 	private static String option;
 	
-	public static final void main(String args[])
+	public static final void main(String[] args)
 	{
 		VTConsole.setLanterna(true);
 		VTConsole.setGraphical(false);

@@ -38,6 +38,9 @@ import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.EnumSet;
 
+import org.vate.console.VTConsole;
+import org.vate.nativeutils.VTNativeUtils;
+
 /**
  * This TerminalFactory implementation uses a simple auto-detection mechanism for figuring out which terminal 
  * implementation to create based on characteristics of the system the program is running on.
@@ -112,22 +115,13 @@ public class DefaultTerminalFactory implements TerminalFactory {
         // 3 different reasons for tty-based terminal:
         //   "explicit preference", "no alternative",
         //       ("because we can" - unless "rather not")
-    	boolean ioConsole = false;
-    	try
-    	{
-    		Class.forName("java.io.Console");
-    		ioConsole = true;
-    	}
-    	catch (Throwable t)
-    	{
-    		
-    	}
-    	if (ioConsole)
+    	
+    	if (checkConsoleIsatty())
     	{
 	        if (forceTextTerminal || isAwtHeadless() ||
-	                (checkIOConsole() && !preferTerminalEmulator) ) {
+	                !preferTerminalEmulator) {
 	            // if tty but have no tty, but do have a port, then go telnet:
-	            if( telnetPort > 0 && checkIOConsole()) {
+	            if( telnetPort > 0) {
 	                return createTelnetTerminal();
 	            }
 	            if(isOperatingSystemWindows()) {
@@ -152,7 +146,7 @@ public class DefaultTerminalFactory implements TerminalFactory {
     	}
     	else
     	{
-    		if (forceTextTerminal || isAwtHeadless() && !preferTerminalEmulator) {
+    		if ((forceTextTerminal || isAwtHeadless()) && !preferTerminalEmulator) {
 	            // if tty but have no tty, but do have a port, then go telnet:
 	            if( telnetPort > 0) {
 	                return createTelnetTerminal();
@@ -258,7 +252,7 @@ public class DefaultTerminalFactory implements TerminalFactory {
      */
     public Terminal createHeadlessTerminal() throws Throwable {
         // if tty but have no tty, but do have a port, then go telnet:
-        if( telnetPort > 0 && !checkIOConsole()) {
+        if( telnetPort > 0 && !checkConsoleIsatty()) {
             return createTelnetTerminal();
         }
         if(isOperatingSystemWindows()) {
@@ -565,24 +559,40 @@ public class DefaultTerminalFactory implements TerminalFactory {
         return System.getProperty("os.name", "").toLowerCase().contains("windows");
     }
     
-    public static boolean checkIOConsole()
-    {
-    	try
+	public static boolean checkConsoleIsatty()
+	{
+		try
 		{	
-    		Class.forName("java.io.Console");
+			Class.forName("java.io.Console");
 			Class<?> systemClass = Class.forName("java.lang.System");
 			Method consoleMethod = systemClass.getDeclaredMethod("console");
 			//consoleMethod.setAccessible(true);
 			Object consoleResult = consoleMethod.invoke(null);
 			if (consoleResult != null)
 			{
-				return true;
+				return VTNativeUtils.isatty(0) != 0 && VTNativeUtils.isatty(1) != 0;
+			}
+			try
+			{
+				if (FileDescriptor.in.valid())
+				{
+					FileDescriptor.in.sync();
+					return VTNativeUtils.isatty(0) != 0 && VTNativeUtils.isatty(1) != 0;
+				}
+				else
+				{
+					
+				}
+			}
+			catch (Throwable e)
+			{
+				
 			}
 		}
 		catch (Throwable e)
 		{
 			
 		}
-    	return false;
-    }
+		return false;
+	}
 }

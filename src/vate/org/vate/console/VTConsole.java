@@ -82,6 +82,14 @@ public final class VTConsole
 				}
 				else
 				{
+//					if (lanterna && checkConsoleIsatty())
+//					{
+//						console = new VTLanternaConsole(graphical, remoteIcon);
+//					}
+//					else
+//					{
+//						console = VTStandardConsole.getInstance();
+//					}
 					console = VTStandardConsole.getInstance();
 					console.setRemoteIcon(remoteIcon);
 					resetAttributes();
@@ -748,4 +756,41 @@ public final class VTConsole
 		}
     	return false;
     }
+	
+	public static boolean checkConsoleIsatty()
+	{
+		try
+		{	
+			Class.forName("java.io.Console");
+			Class<?> systemClass = Class.forName("java.lang.System");
+			Method consoleMethod = systemClass.getDeclaredMethod("console");
+			//consoleMethod.setAccessible(true);
+			Object consoleResult = consoleMethod.invoke(null);
+			if (consoleResult != null)
+			{
+				return VTNativeUtils.isatty(0) != 0 && VTNativeUtils.isatty(1) != 0;
+			}
+			try
+			{
+				if (FileDescriptor.in.valid())
+				{
+					FileDescriptor.in.sync();
+					return VTNativeUtils.isatty(0) != 0 && VTNativeUtils.isatty(1) != 0;
+				}
+				else
+				{
+					
+				}
+			}
+			catch (Throwable e)
+			{
+				
+			}
+		}
+		catch (Throwable e)
+		{
+			
+		}
+		return false;
+	}
 }

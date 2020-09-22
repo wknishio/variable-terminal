@@ -47,7 +47,7 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
 		try
 		{
 			systemConsoleObject = VTConsole.getIOConsole();
-			VTStandardConsole.systemconsoleclass = systemConsoleObject != null;
+			//VTStandardConsole.systemconsoleclass = systemConsoleObject != null;
 			VTStandardConsole.systemconsolesupport = systemConsoleObject != null;
 			if (systemConsoleObject != null)
 			{
@@ -90,7 +90,7 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
 		try
 		{
 			String line = null;
-			if (VTStandardConsole.systemconsoleclass && VTStandardConsole.systemconsolesupport)
+			if (VTStandardConsole.systemconsolesupport)
 			{
 				if (!echo)
 				{

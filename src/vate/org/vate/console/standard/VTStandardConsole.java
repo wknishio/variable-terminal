@@ -44,7 +44,7 @@ public class VTStandardConsole implements VTConsoleImplementation
 	private static StringBuilder colorCode;
 	public static volatile boolean isatty = false;
 	// public static volatile boolean ansidetected = false;
-	public static volatile boolean systemconsoleclass = false;
+	//public static volatile boolean systemconsoleclass = false;
 	public static volatile boolean systemconsolesupport = false;
 	
 	// private static Console systemConsole;

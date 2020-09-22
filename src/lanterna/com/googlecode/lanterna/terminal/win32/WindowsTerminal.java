@@ -14,6 +14,7 @@ import com.googlecode.lanterna.input.KeyDecodingProfile;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.win32.WinDef.CONSOLE_SCREEN_BUFFER_INFO;
+import com.googlecode.lanterna.terminal.win32.WinDef.MOUSE_EVENT_RECORD;
 import com.googlecode.lanterna.terminal.win32.WinDef.WINDOW_BUFFER_SIZE_RECORD;
 import com.googlecode.lanterna.terminal.ansi.UnixLikeTerminal;
 import com.sun.jna.ptr.IntByReference;
@@ -46,6 +47,19 @@ public class WindowsTerminal extends UnixLikeTerminal {
 				}
 			}
 		});
+		
+//		CONSOLE_INPUT.onMouseEvent(new Consumer<MOUSE_EVENT_RECORD>()
+//		{
+//			void accept(MOUSE_EVENT_RECORD evt)
+//			{
+//				onMouseEventRecord(evt);
+//				Consumer<? super MOUSE_EVENT_RECORD> after = getAfter();
+//				if (after != null)
+//				{
+//					after.accept(evt);
+//				}
+//			}
+//		});
 	}
 
 	
@@ -74,6 +88,8 @@ public class WindowsTerminal extends UnixLikeTerminal {
 		Wincon.INSTANCE.SetConsoleMode(CONSOLE_OUTPUT.getHandle(), terminalOutputMode);
 
 		int terminalInputMode = getConsoleInputMode();
+		terminalInputMode &= ~Wincon.ENABLE_QUICK_EDIT_MODE; //disable
+		//terminalInputMode |= Wincon.ENABLE_PROCESSED_INPUT;
 		terminalInputMode |= Wincon.ENABLE_MOUSE_INPUT;
 		terminalInputMode |= Wincon.ENABLE_WINDOW_INPUT;
 		terminalInputMode |= Wincon.ENABLE_VIRTUAL_TERMINAL_INPUT;
@@ -158,5 +174,14 @@ public class WindowsTerminal extends UnixLikeTerminal {
 		IntByReference lpMode = new IntByReference();
 		Wincon.INSTANCE.GetConsoleMode(CONSOLE_OUTPUT.getHandle(), lpMode);
 		return lpMode.getValue();
+	}
+	
+	private void onMouseEventRecord(MOUSE_EVENT_RECORD evt)
+	{
+		//System.out.println(evt.toString());
+		//COORD position = evt.dwMousePosition;
+		//int button = evt.dwButtonState;
+		//Wincon.INSTANCE.SetConsoleTitle("'x:[" + position.X + "]y:[" + position.Y + "]b:[" + button + "]");
+		//this.
 	}
 }
