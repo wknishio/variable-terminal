@@ -583,7 +583,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 		//factory.setForceTextTerminal(true);
         terminal = factory.createTerminal();
         
-    	outputBox = new VTLanternaOutputTextBox(new TerminalSize(80, 24), "", Style.MULTI_LINE, 600);
+    	outputBox = new VTLanternaOutputTextBox(new TerminalSize(80, 24), "", Style.MULTI_LINE, 480);
     	inputBox = new VTLanternaOutputTextBox(new TerminalSize(80, 1), "", Style.SINGLE_LINE, 1);
     	
     	outputBox.setTerminal(terminal);

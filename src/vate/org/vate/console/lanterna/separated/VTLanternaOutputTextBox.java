@@ -149,13 +149,13 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 //            caretPosition = caretPosition.withRelativeColumn(1);
 		if (editable)
         {
-			if(caretPosition.getColumn() < longestRow + 1) {
+			if(caretPosition.getColumn() < longestRow) {
 				caretPosition = caretPosition.withRelativeColumn(1);
 			}
         }
 		else
 		{
-			if(caretPosition.getColumn() < longestRow) {
+			if(caretPosition.getColumn() < longestRow - 1) {
 				caretPosition = caretPosition.withRelativeColumn(1);
 			}
 		}
@@ -238,17 +238,35 @@ public class VTLanternaOutputTextBox extends TextBoxModified
                 //if(caretPosition.getColumn() < lines.get(caretPosition.getRow()).length()) {
                     //caretPosition = caretPosition.withRelativeColumn(1);
                 //}
-            	if(caretPosition.getColumn() < longestRow)
+            	if (editable)
             	{
-            		caretPosition = caretPosition.withRelativeColumn(1);
-                }
-                else if(style == Style.MULTI_LINE && caretWarp && caretPosition.getRow() < lines.size() - 1) {
-                    caretPosition = caretPosition.withRelativeRow(1);
-                    caretPosition = caretPosition.withColumn(0);
-                }
-                else if(horizontalFocusSwitching) {
-                    return Result.MOVE_FOCUS_RIGHT;
-                }
+            		if(caretPosition.getColumn() < longestRow)
+                	{
+                		caretPosition = caretPosition.withRelativeColumn(1);
+                    }
+            		else if(style == Style.MULTI_LINE && caretWarp && caretPosition.getRow() < lines.size() - 1) {
+                        caretPosition = caretPosition.withRelativeRow(1);
+                        caretPosition = caretPosition.withColumn(0);
+                    }
+                    else if(horizontalFocusSwitching) {
+                        return Result.MOVE_FOCUS_RIGHT;
+                    }
+            	}
+            	else
+            	{
+            		if(caretPosition.getColumn() < longestRow - 1)
+                	{
+                		caretPosition = caretPosition.withRelativeColumn(1);
+                    }
+            		else if(style == Style.MULTI_LINE && caretWarp && caretPosition.getRow() < lines.size() - 1) {
+                        caretPosition = caretPosition.withRelativeRow(1);
+                        caretPosition = caretPosition.withColumn(0);
+                    }
+                    else if(horizontalFocusSwitching) {
+                        return Result.MOVE_FOCUS_RIGHT;
+                    }
+            	}
+                
             	updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
                 return Result.HANDLED;
             case ArrowUp:
@@ -291,7 +309,14 @@ public class VTLanternaOutputTextBox extends TextBoxModified
                 updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
                 return Result.HANDLED;
             case End:
-                caretPosition = caretPosition.withColumn(longestRow);
+            	if (editable)
+            	{
+            		caretPosition = caretPosition.withColumn(longestRow);
+            	}
+            	else
+            	{
+            		caretPosition = caretPosition.withColumn(longestRow - 1);
+            	}
                 updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
                 return Result.HANDLED;
             case Enter:
@@ -338,6 +363,46 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 
     protected boolean validated(String line) {
         return validationPattern == null || line.length() == 0 || validationPattern.matcher(line).matches();
+    }
+    
+    /**
+     * Moves the text caret position to a new position in the {@link TextBoxModified}. For single-line {@link TextBoxModified}:es, the
+     * line component is not used. If one of the positions are out of bounds, it is automatically set back into range.
+     * @param line Which line inside the {@link TextBoxModified} to move the caret to (0 being the first line), ignored if the
+     *             {@link TextBoxModified} is single-line
+     * @param column  What column on the specified line to move the text caret to (0 being the first column)
+     * @return Itself
+     */
+    public synchronized TextBoxModified setCaretPosition(int line, int column) {
+        if(line < 0) {
+            line = 0;
+        }
+        else if(line >= lines.size()) {
+            line = lines.size() - 1;
+        }
+        if(column < 0) {
+            column = 0;
+        }
+//        else if(column > lines.get(line).length()) {
+//            column = lines.get(line).length();
+//        }
+        else
+        {
+        	if (editable)
+        	{
+        		if(column > longestRow) {
+                    column = longestRow;
+            	}
+        	}
+        	else
+        	{
+        		if(column > longestRow - 1) {
+                    column = longestRow - 1;
+            	}
+        	}
+        }
+        caretPosition = caretPosition.withRow(line).withColumn(column);
+        return this;
     }
 
     protected Result handleKeyStrokeReadOnly(KeyStroke keyStroke) {
@@ -436,9 +501,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 				}
 				else
 				{
-					if (longestRow < lastLine.length())
+					if (longestRow < lastLine.length() - 1)
 					{
-						longestRow = lastLine.length();
+						longestRow = lastLine.length() - 1;
 					}
 				}
 			}
@@ -456,9 +521,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 				}
 				else
 				{
-					if (longestRow < lastLine.length())
+					if (longestRow < lastLine.length() - 1)
 					{
-						longestRow = lastLine.length();
+						longestRow = lastLine.length() - 1;
 					}
 				}
 			}
@@ -486,9 +551,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 				}
 				else
 				{
-					if (longestRow < lastLine.length())
+					if (longestRow < lastLine.length() - 1)
 					{
-						longestRow = lastLine.length();
+						longestRow = lastLine.length() - 1;
 					}
 				}
 				addLine("");
@@ -510,9 +575,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 				}
 				else
 				{
-					if (longestRow < lastLine.length())
+					if (longestRow < lastLine.length() - 1)
 					{
-						longestRow = lastLine.length();
+						longestRow = lastLine.length() - 1;
 					}
 				}
 				addLine("");
@@ -654,9 +719,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length())
+						if (longestRow < lastLine.length() - 1)
 						{
-							longestRow = lastLine.length();
+							longestRow = lastLine.length() - 1;
 						}
 					}
 				}
@@ -673,9 +738,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length())
+						if (longestRow < lastLine.length() - 1)
 						{
-							longestRow = lastLine.length();
+							longestRow = lastLine.length() - 1;
 						}
 					}
 				}
@@ -703,9 +768,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length())
+						if (longestRow < lastLine.length() - 1)
 						{
-							longestRow = lastLine.length();
+							longestRow = lastLine.length() - 1;
 						}
 					}
 					addLine("");
@@ -727,9 +792,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length())
+						if (longestRow < lastLine.length() - 1)
 						{
-							longestRow = lastLine.length();
+							longestRow = lastLine.length() - 1;
 						}
 					}
 					addLine("");
@@ -772,9 +837,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length())
+						if (longestRow < lastLine.length() - 1)
 						{
-							longestRow = lastLine.length();
+							longestRow = lastLine.length() - 1;
 						}
 					}
 				}
@@ -791,9 +856,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length())
+						if (longestRow < lastLine.length() - 1)
 						{
-							longestRow = lastLine.length();
+							longestRow = lastLine.length() - 1;
 						}
 					}
 				}
@@ -821,9 +886,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length())
+						if (longestRow < lastLine.length() - 1)
 						{
-							longestRow = lastLine.length();
+							longestRow = lastLine.length() - 1;
 						}
 					}
 					addLine("");
@@ -845,9 +910,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length())
+						if (longestRow < lastLine.length() - 1)
 						{
-							longestRow = lastLine.length();
+							longestRow = lastLine.length() - 1;
 						}
 					}
 					addLine("");
@@ -1046,9 +1111,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < line.length())
+						if (longestRow < line.length() - 1)
 						{
-							longestRow = line.length();
+							longestRow = line.length() - 1;
 						}
 					}
 				}
@@ -1104,14 +1169,14 @@ public class VTLanternaOutputTextBox extends TextBoxModified
                 lines.add(string);
                 if (editable)
                 {
-                	if(longestRow < lineWidth + 1) {
-                        longestRow = lineWidth + 1;
+                	if(longestRow < lineWidth) {
+                        longestRow = lineWidth;
                     }
                 }
                 else
                 {
-                	if(longestRow < lineWidth) {
-                        longestRow = lineWidth;
+                	if(longestRow < lineWidth - 1) {
+                        longestRow = lineWidth - 1;
                     }
                 }
                 addLine(line.substring(i + 1));
@@ -1131,14 +1196,14 @@ public class VTLanternaOutputTextBox extends TextBoxModified
         lines.add(string);
         if (editable)
         {
-        	if(longestRow < lineWidth + 1) {
-                longestRow = lineWidth + 1;
+        	if(longestRow < lineWidth) {
+                longestRow = lineWidth;
             }
         }
         else
         {
-        	if(longestRow < lineWidth) {
-                longestRow = lineWidth;
+        	if(longestRow < lineWidth - 1) {
+                longestRow = lineWidth - 1;
             }
         }
         invalidate();
