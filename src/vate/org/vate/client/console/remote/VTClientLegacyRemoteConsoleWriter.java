@@ -466,7 +466,7 @@ public class VTClientLegacyRemoteConsoleWriter extends VTTask
 					VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
 				}
 			}
-			else if (parsed[0].equalsIgnoreCase("*VTDISCONNECT") || parsed[0].equalsIgnoreCase("*VTDCT"))
+			else if (parsed[0].equalsIgnoreCase("*VTEXIT") || parsed[0].equalsIgnoreCase("*VTEX"))
 			{
 				connection.getCommandWriter().write(command + "\n");
 				connection.getCommandWriter().flush();

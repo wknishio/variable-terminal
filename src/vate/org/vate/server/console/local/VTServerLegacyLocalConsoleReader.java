@@ -716,7 +716,7 @@ public class VTServerLegacyLocalConsoleReader extends VTTask
 					VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
 				}
 			}
-			else if (parsed[0].equalsIgnoreCase("*VTDISCONNECT") || parsed[0].equalsIgnoreCase("*VTDCT"))
+			else if (parsed[0].equalsIgnoreCase("*VTKICK") || parsed[0].equalsIgnoreCase("*VTKC"))
 			{
 				if (parsed.length == 1)
 				{

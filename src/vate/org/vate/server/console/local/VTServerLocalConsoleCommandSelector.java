@@ -23,7 +23,7 @@ public class VTServerLocalConsoleCommandSelector <T> extends VTConsoleCommandSel
 			standardCommandProcessorClasses.add(VTMIXERS.class);
 			standardCommandProcessorClasses.add(VTCLEAR.class);
 			standardCommandProcessorClasses.add(VTCOVER.class);
-			standardCommandProcessorClasses.add(VTDISCONNECT.class);
+			standardCommandProcessorClasses.add(VTKICK.class);
 			standardCommandProcessorClasses.add(VTDISPLAYS.class);
 			standardCommandProcessorClasses.add(VTFILEROOTS.class);
 			standardCommandProcessorClasses.add(VTHELP.class);

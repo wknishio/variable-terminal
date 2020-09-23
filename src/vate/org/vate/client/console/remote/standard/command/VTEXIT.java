@@ -3,14 +3,14 @@ package org.vate.client.console.remote.standard.command;
 import org.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
 import org.vate.console.VTConsole;
 
-public class VTDISCONNECT extends VTClientStandardRemoteConsoleCommandProcessor
+public class VTEXIT extends VTClientStandardRemoteConsoleCommandProcessor
 {
-	public VTDISCONNECT()
+	public VTEXIT()
 	{
-		this.setFullName("*VTDISCONNECT");
-		this.setAbbreviatedName("*VTDCT");
-		this.setFullSyntax("*VTDISCONNECT");
-		this.setAbbreviatedSyntax("*VTDCT");
+		this.setFullName("*VTEXIT");
+		this.setAbbreviatedName("*VTEX");
+		this.setFullSyntax("*VTEXIT");
+		this.setAbbreviatedSyntax("*VTEX");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

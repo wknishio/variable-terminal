@@ -7,14 +7,14 @@ import org.vate.help.VTHelpManager;
 import org.vate.server.connection.VTServerConnectionHandler;
 import org.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-public class VTDISCONNECT extends VTServerStandardLocalConsoleCommandProcessor
+public class VTKICK extends VTServerStandardLocalConsoleCommandProcessor
 {	
-	public VTDISCONNECT()
+	public VTKICK()
 	{
-		this.setFullName("*VTDISCONNECT");
-		this.setAbbreviatedName("*VTDCT");
-		this.setFullSyntax("*VTDISCONNECT [CLIENT]");
-		this.setAbbreviatedSyntax("*VTDCT [CT]");
+		this.setFullName("*VTKICK");
+		this.setAbbreviatedName("*VTKC");
+		this.setFullSyntax("*VTKICK [CLIENT]");
+		this.setAbbreviatedSyntax("*VTKC [CT]");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

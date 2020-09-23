@@ -549,7 +549,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				}
 			}
 		}
-		else if (parsed[0].equalsIgnoreCase("*VTDISCONNECT") || parsed[0].equalsIgnoreCase("*VTDCT"))
+		else if (parsed[0].equalsIgnoreCase("*VTEXIT") || parsed[0].equalsIgnoreCase("VTEX"))
 		{
 			VTConsole.print("\rVT>Client disconnecting...\nVT>");
 			connection.closeSockets();
@@ -1382,7 +1382,7 @@ public class VTServerLegacyRemoteConsoleReader extends VTTask
 				connection.getResultWriter().flush();
 			}
 		}
-		else if (parsed[0].equalsIgnoreCase("*VTFILEINSPECT") || parsed[0].equalsIgnoreCase("*VTFI"))
+		else if (parsed[0].equalsIgnoreCase("*VTFILECHECK") || parsed[0].equalsIgnoreCase("*VTFC"))
 		{
 			synchronized (session.getFileScanOperation())
 			{

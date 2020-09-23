@@ -119,9 +119,9 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		fileTransferMenu = new Menu("File Transfer ");
 		clientFileSystemMenu = new Menu("Local Files ");
 		serverFileSystemMenu = new Menu("Remote Files ");
-		fileSystemMenu.add(fileTransferMenu);
-		fileSystemMenu.add(clientFileSystemMenu);
 		fileSystemMenu.add(serverFileSystemMenu);
+		fileSystemMenu.add(clientFileSystemMenu);
+		fileSystemMenu.add(fileTransferMenu);
 		fileTransferMenu.add(new VTGraphicalConsoleMenuItem("Send File To Server", "*VTFILETRANSFER P"));
 		fileTransferMenu.add(new VTGraphicalConsoleMenuItem("Receive File From Server", "*VTFILETRANSFER G"));
 		fileTransferMenu.add(new VTGraphicalConsoleMenuItem("File Transfer Status", "*VTFILETRANSFER\n"));
@@ -137,10 +137,10 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		// serverFileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("Set
 		// Working
 		// Directory", "*VTWORKDIRECTORY R "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("List File System Roots", "*VTFILEINSPECT L\n"));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Show File Information", "*VTFILEINSPECT I "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("List Directory Contents", "*VTFILEINSPECT L "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Stop File Inspection", "*VTFILEINSPECT S\n"));
+		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("List File System Roots", "*VTFILECHECK L\n"));
+		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Show File Information", "*VTFILECHECK I "));
+		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("List Directory Contents", "*VTFILECHECK L "));
+		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Stop File Inspection", "*VTFILECHECK S\n"));
 		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Create Empty Directory", "*VTFILEMODIFY D "));
 		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Create Empty File", "*VTFILEMODIFY F "));
 		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Remove File", "*VTFILEMODIFY R "));
@@ -153,23 +153,23 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Stop Zip Operation", "*VTZIP R S\n"));
 		
 		sessionMenu = new Menu("Session ");
-		sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTSESSIONS\n"));
-		sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Message To Server", "*VTMESSAGE "));
-		sessionMenu.add(new VTGraphicalConsoleMenuItem("Disconnect From Server", "*VTDISCONNECT\n"));
+		sessionMenu.add(new VTGraphicalConsoleMenuItem("Disconnect From Server", "*VTEXIT\n"));
 		sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Client Application", "*VTQUIT\n"));
 		sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Server Application", "*VTSTOP\n"));
 		sessionMenu.add(new VTGraphicalConsoleMenuItem("Toggle Server Cover", "*VTCOVER\n"));
+		sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTSESSIONS\n"));
+		sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Message To Server", "*VTMESSAGE "));
 		sessionMenu.add(new VTGraphicalConsoleMenuItem("Save Client Connection Settings", "*VTSAVE "));
 		
 		consoleMenu = new Menu("Console ");
 		consoleMenu.add(new VTGraphicalConsoleMenuItem("Show Remote System Time", "*VTTIME\n"));
 		consoleMenu.add(new VTGraphicalConsoleMenuItem("Clear Remote Console", "*VTCLEAR\n"));
-		consoleMenu.add(new VTGraphicalConsoleMenuItem("Toggle Remote Console Echo", "*VTECHO\n"));
-		consoleMenu.add(new VTGraphicalConsoleMenuItem("Detect Chained Instances", "*VTCHAINS\n"));
+		//consoleMenu.add(new VTGraphicalConsoleMenuItem("Toggle Remote Console Echo", "*VTECHO\n"));
 		consoleMenu.add(new VTGraphicalConsoleMenuItem("Open Remote Shell", "*VTSHELL O\n"));
 		consoleMenu.add(new VTGraphicalConsoleMenuItem("Close Remote Shell", "*VTSHELL C\n"));
 		consoleMenu.add(new VTGraphicalConsoleMenuItem("Define Remote Shell", "*VTSHELL D "));
 		consoleMenu.add(new VTGraphicalConsoleMenuItem("Change Remote Shell Encoding", "*VTSHELL E "));
+		consoleMenu.add(new VTGraphicalConsoleMenuItem("Detect Chained Instances", "*VTCHAINS\n"));
 		
 		//settingsMenu = new Menu("Settings ");
 		serverSettingsMenu = new Menu("Access ");
@@ -217,7 +217,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Runtime Path", "*VTRUNTIME P "));
 		serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTRUNTIME\n"));
 		
-		performanceMenu = new Menu("Rating ");
+		performanceMenu = new Menu("Rate ");
 		performanceMenu.add(new VTGraphicalConsoleMenuItem("Calculate Connection Latency", "*VTPING\n"));
 		performanceMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Rate Limits", "*VTRATELIMIT "));
 		
@@ -253,6 +253,12 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		
 		audioSoundMenu = new Menu("Audio ");
 		
+		audioSoundMenu.add(new VTGraphicalConsoleMenuItem("Ring Remote Terminal Bell", "*VTBELL\n"));
+		beepSoundMenu = new Menu("Remote Internal Speakers ");
+		beepSoundMenu.add(new VTGraphicalConsoleMenuItem("Make Beep", "*VTBEEP "));
+		beepSoundMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTBEEP\n"));
+		audioSoundMenu.add(beepSoundMenu);
+		
 		audioMixersSoundMenu = new Menu("List Available Audio Mixers ");
 		audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("All Audio Mixers", "*VTMIXERS\n"));
 		audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Local Audio Mixers", "*VTMIXERS L\n"));
@@ -265,12 +271,6 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTAUDIOLINK\n"));
 		audioSoundMenu.add(audioLinkSoundMenu);
 		
-		audioSoundMenu.add(new VTGraphicalConsoleMenuItem("Ring Remote Terminal Bell", "*VTBELL\n"));
-		beepSoundMenu = new Menu("Remote Internal Speakers ");
-		beepSoundMenu.add(new VTGraphicalConsoleMenuItem("Make Beep", "*VTBEEP "));
-		beepSoundMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTBEEP\n"));
-		audioSoundMenu.add(beepSoundMenu);
-		
 		opticalDriveMenu = new Menu("Drive ");
 		opticalDriveMenu.add(new VTGraphicalConsoleMenuItem("Open Remote Optical Drive", "*VTOPTICALDRIVE O\n"));
 		opticalDriveMenu.add(new VTGraphicalConsoleMenuItem("Close Remote Optical Drive", "*VTOPTICALDRIVE C\n"));
@@ -282,8 +282,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		
 		clientConsoleCommandsMenu.add(sessionMenu);
 		//clientConsoleCommandsMenu.add(settingsMenu);
-		clientConsoleCommandsMenu.add(performanceMenu);
 		clientConsoleCommandsMenu.add(consoleMenu);
+		clientConsoleCommandsMenu.add(performanceMenu);
 		clientConsoleCommandsMenu.add(serverRuntimeMenu);
 		clientConsoleCommandsMenu.add(fileSystemMenu);
 		clientConsoleCommandsMenu.add(serverGraphicalSystemsMenu);

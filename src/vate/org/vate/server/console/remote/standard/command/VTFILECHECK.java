@@ -7,14 +7,14 @@ import org.vate.help.VTHelpManager;
 import org.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 import org.vate.server.filesystem.VTServerFileScanOperation;
 
-public class VTFILEINSPECT extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTFILECHECK extends VTServerStandardRemoteConsoleCommandProcessor
 {
-	public VTFILEINSPECT()
+	public VTFILECHECK()
 	{
-		this.setFullName("*VTFILEINSPECT");
-		this.setAbbreviatedName("*VTFI");
-		this.setFullSyntax("*VTFILEINSPECT [MODE] [FILE]");
-		this.setAbbreviatedSyntax("*VTFI [MD] [FL]");
+		this.setFullName("*VTFILECHECK");
+		this.setAbbreviatedName("*VTFC");
+		this.setFullSyntax("*VTFILECHECK [MODE] [FILE]");
+		this.setAbbreviatedSyntax("*VTFC [MD] [FL]");
 	}
 
 	public void execute(String command, String[] parsed) throws Exception

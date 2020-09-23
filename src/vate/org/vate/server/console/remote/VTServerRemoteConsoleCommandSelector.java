@@ -28,9 +28,9 @@ public class VTServerRemoteConsoleCommandSelector <T> extends VTConsoleCommandSe
 			standardCommandProcessorClasses.add(VTBROWSE.class);
 			standardCommandProcessorClasses.add(VTCHAINS.class);
 			standardCommandProcessorClasses.add(VTCOVER.class);
-			standardCommandProcessorClasses.add(VTDISCONNECT.class);
+			standardCommandProcessorClasses.add(VTEXIT.class);
 			standardCommandProcessorClasses.add(VTDISPLAYS.class);
-			standardCommandProcessorClasses.add(VTFILEINSPECT.class);
+			standardCommandProcessorClasses.add(VTFILECHECK.class);
 			standardCommandProcessorClasses.add(VTFILEMODIFY.class);
 			standardCommandProcessorClasses.add(VTFILETRANSFER.class);
 			standardCommandProcessorClasses.add(VTGRAPHICSLINK.class);
@@ -57,7 +57,7 @@ public class VTServerRemoteConsoleCommandSelector <T> extends VTConsoleCommandSe
 			standardCommandProcessorClasses.add(VTTIME.class);
 			standardCommandProcessorClasses.add(VTVARIABLE.class);
 			standardCommandProcessorClasses.add(VTZIP.class);
-			standardCommandProcessorClasses.add(VTECHO.class);
+			//standardCommandProcessorClasses.add(VTECHO.class);
 		}
 		catch (Throwable t)
 		{

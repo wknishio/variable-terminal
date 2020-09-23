@@ -43,13 +43,13 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
 		// true));
 		
 		sessionMenu = new Menu("Session ");
-		sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTSESSIONS\n"));
-		sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Message To Clients", "*VTMESSAGE "));
-		sessionMenu.add(new VTGraphicalConsoleMenuItem("Disconnect Client From Server", "*VTDISCONNECT "));
 		sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Server Application", "*VTSTOP\n"));
 		sessionMenu.add(new VTGraphicalConsoleMenuItem("Toggle Server Cover", "*VTCOVER\n"));
+		sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTSESSIONS\n"));
+		sessionMenu.add(new VTGraphicalConsoleMenuItem("Disconnect Client From Server", "*VTKICK "));
+		sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Message To Clients", "*VTMESSAGE "));
 		
-		performanceMenu = new Menu("Rating ");
+		performanceMenu = new Menu("Rate ");
 		performanceMenu.add(new VTGraphicalConsoleMenuItem("Calculate Connection Latencies", "*VTPING\n"));
 		
 		consoleMenu = new Menu("Console ");
@@ -117,8 +117,8 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
 		
 		serverConsoleCommandsMenu.add(sessionMenu);
 		//serverConsoleCommandsMenu.add(settingsMenu);
-		serverConsoleCommandsMenu.add(performanceMenu);
 		serverConsoleCommandsMenu.add(consoleMenu);
+		serverConsoleCommandsMenu.add(performanceMenu);
 		serverConsoleCommandsMenu.add(serverRuntimeMenu);
 		serverConsoleCommandsMenu.add(fileSystemMenu);
 		serverConsoleCommandsMenu.add(serverGraphicalSystemsMenu);
