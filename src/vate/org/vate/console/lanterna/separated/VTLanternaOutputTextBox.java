@@ -436,9 +436,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 				}
 				else
 				{
-					if (longestRow < lastLine.length() - 1)
+					if (longestRow < lastLine.length())
 					{
-						longestRow = lastLine.length() - 1;
+						longestRow = lastLine.length();
 					}
 				}
 			}
@@ -456,9 +456,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 				}
 				else
 				{
-					if (longestRow < lastLine.length() - 1)
+					if (longestRow < lastLine.length())
 					{
-						longestRow = lastLine.length() - 1;
+						longestRow = lastLine.length();
 					}
 				}
 			}
@@ -486,9 +486,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 				}
 				else
 				{
-					if (longestRow < lastLine.length() - 1)
+					if (longestRow < lastLine.length())
 					{
-						longestRow = lastLine.length() - 1;
+						longestRow = lastLine.length();
 					}
 				}
 				addLine("");
@@ -510,9 +510,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 				}
 				else
 				{
-					if (longestRow < lastLine.length() - 1)
+					if (longestRow < lastLine.length())
 					{
-						longestRow = lastLine.length() - 1;
+						longestRow = lastLine.length();
 					}
 				}
 				addLine("");
@@ -654,9 +654,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length() - 1)
+						if (longestRow < lastLine.length())
 						{
-							longestRow = lastLine.length() - 1;
+							longestRow = lastLine.length();
 						}
 					}
 				}
@@ -673,9 +673,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length() - 1)
+						if (longestRow < lastLine.length())
 						{
-							longestRow = lastLine.length() - 1;
+							longestRow = lastLine.length();
 						}
 					}
 				}
@@ -703,9 +703,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length() - 1)
+						if (longestRow < lastLine.length())
 						{
-							longestRow = lastLine.length() - 1;
+							longestRow = lastLine.length();
 						}
 					}
 					addLine("");
@@ -727,9 +727,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length() - 1)
+						if (longestRow < lastLine.length())
 						{
-							longestRow = lastLine.length() - 1;
+							longestRow = lastLine.length();
 						}
 					}
 					addLine("");
@@ -772,9 +772,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length() - 1)
+						if (longestRow < lastLine.length())
 						{
-							longestRow = lastLine.length() - 1;
+							longestRow = lastLine.length();
 						}
 					}
 				}
@@ -791,9 +791,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length() - 1)
+						if (longestRow < lastLine.length())
 						{
-							longestRow = lastLine.length() - 1;
+							longestRow = lastLine.length();
 						}
 					}
 				}
@@ -821,9 +821,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length() - 1)
+						if (longestRow < lastLine.length())
 						{
-							longestRow = lastLine.length() - 1;
+							longestRow = lastLine.length();
 						}
 					}
 					addLine("");
@@ -845,9 +845,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < lastLine.length() - 1)
+						if (longestRow < lastLine.length())
 						{
-							longestRow = lastLine.length() - 1;
+							longestRow = lastLine.length();
 						}
 					}
 					addLine("");
@@ -1026,7 +1026,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 			String removed = lines.remove(0);
 			if (removed.length() >= longestRow)
 			{
-				longestRow = 79;
+				longestRow = 80;
 //				try
 //				{
 //					longestRow = terminal.getTerminalSize().getColumns();
@@ -1046,9 +1046,9 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 					}
 					else
 					{
-						if (longestRow < line.length() - 1)
+						if (longestRow < line.length())
 						{
-							longestRow = line.length() - 1;
+							longestRow = line.length();
 						}
 					}
 				}
