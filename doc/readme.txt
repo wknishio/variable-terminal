@@ -200,7 +200,7 @@ Some additional utilities are included with server distributions:
 
 This software is under MIT license
 
-Copyright (c) 2020 William Kendi Nishio
+Copyright (c) AD 2020 William Kendi Nishio
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

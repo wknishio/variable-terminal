@@ -1,7 +1,7 @@
 @rem ***************************************************************************
 @rem This software is under MIT License
 @rem
-@rem Copyright (c) 2020 William Kendi Nishio
+@rem Copyright (c) AD 2020 William Kendi Nishio
 @rem
 @rem Permission is hereby granted, free of charge, to any person obtaining a copy
 @rem of this software and associated documentation files (the "Software"), to deal
