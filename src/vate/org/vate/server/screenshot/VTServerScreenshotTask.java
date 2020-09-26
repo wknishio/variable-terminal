@@ -4,9 +4,11 @@ import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.channels.Channels;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -20,7 +22,6 @@ import org.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vate.graphics.image.VTImageIO;
 import org.vate.server.connection.VTServerConnection;
 import org.vate.server.session.VTServerSession;
-import org.vate.stream.filter.VTBufferedOutputStream;
 import org.vate.task.VTTask;
 
 import com.objectplanet.image.PngEncoder;
@@ -35,7 +36,7 @@ public class VTServerScreenshotTask extends VTTask
 	private Integer deviceNumber;
 	private DateFormat firstFormat;
 	private DateFormat secondFormat;
-	private VTBufferedOutputStream photoOutputStream;
+	private OutputStream photoOutputStream;
 	private File screenshotFile;
 	private GregorianCalendar clock;
 	private VTServerConnection connection;
@@ -174,7 +175,7 @@ public class VTServerScreenshotTask extends VTTask
 			// clock.setTimeInMillis(System.currentTimeMillis());
 			clock.setTime(Calendar.getInstance().getTime());
 			screenshotFile = new File(firstFormat.format(clock.getTime()) + "-" + clock.get(GregorianCalendar.YEAR) + "-" + secondFormat.format(clock.getTime()) + ".png");
-			photoOutputStream = new VTBufferedOutputStream(Channels.newOutputStream(new FileOutputStream(screenshotFile).getChannel()), fileScreenshotBufferSize);
+			photoOutputStream = new BufferedOutputStream(Channels.newOutputStream(new FileOutputStream(screenshotFile).getChannel()), fileScreenshotBufferSize);
 			// screenshotProvider.writeHighQualityScreenshot(photoOutputStream,
 			// SWT.IMAGE_BMP);
 			BufferedImage screenCapture = screenshotProvider.createScreenCapture(drawPointer);

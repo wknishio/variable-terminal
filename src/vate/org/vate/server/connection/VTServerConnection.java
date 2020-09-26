@@ -641,10 +641,10 @@ public class VTServerConnection
 		resultWriter = new BufferedWriter(new OutputStreamWriter(shellDataOutputStream, "UTF-8"));
 		
 		graphicsControlDataInputStream = new VTLittleEndianInputStream(new BufferedInputStream(graphicsControlInputStream));
-		graphicsControlDataOutputStream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(graphicsControlOutputStream));
+		graphicsControlDataOutputStream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(graphicsControlOutputStream, false));
 				
 		directImageDataInputStream = (graphicsDirectImageInputStream);
-		directImageDataOutputStream = (new VTBufferedOutputStream(graphicsDirectImageOutputStream, VT.VT_STANDARD_DATA_BUFFER_SIZE));
+		directImageDataOutputStream = (new VTBufferedOutputStream(graphicsDirectImageOutputStream, VT.VT_STANDARD_DATA_BUFFER_SIZE, false));
 		
 		deflatedImageDataInputStream = (graphicsDeflatedImageInputStream);
 		

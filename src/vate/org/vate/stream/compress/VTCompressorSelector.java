@@ -42,7 +42,7 @@ public class VTCompressorSelector
 		zstd.setChecksum(false);
 		zstd.setCloseFrameOnFlush(false);
 		//OutputStream stream = new VTFlushBufferedOutputStream(new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE), new VTBlockSplitOutputStream(zstd, VT.VT_STANDARD_DATA_BUFFER_SIZE));
-		OutputStream stream = new VTBufferedOutputStream(zstd, VT.VT_STANDARD_DATA_BUFFER_SIZE);
+		OutputStream stream = new VTBufferedOutputStream(zstd, VT.VT_STANDARD_DATA_BUFFER_SIZE, true);
 		return stream;
 	}
 	
@@ -51,6 +51,7 @@ public class VTCompressorSelector
 	{
 		//InputStream stream = new VTAirliftInputStream(new BufferedInputStream(in, VT.VT_STANDARD_DATA_BUFFER_SIZE), new ZstdDecompressor());
 		//InputStream stream = new VTAirliftInputStream(in, new ZstdDecompressor());
+		//ZstdInputStream zstd = new ZstdInputStream(new BufferedInputStream(in, VT.VT_STANDARD_DATA_BUFFER_SIZE)).setContinuous(true);
 		ZstdInputStream zstd = new ZstdInputStream(in).setContinuous(true);
 		InputStream stream = new BufferedInputStream(zstd, VT.VT_STANDARD_DATA_BUFFER_SIZE);
 		return stream;
@@ -134,7 +135,7 @@ public class VTCompressorSelector
 	public static OutputStream createBufferedLZ4OutputStream(OutputStream out)
 	{
 		//return out;
-		return new VTBufferedOutputStream(new LZ4BlockOutputStream(out, VT.VT_STANDARD_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), VT.VT_STANDARD_DATA_BUFFER_SIZE);
+		return new VTBufferedOutputStream(new LZ4BlockOutputStream(out, VT.VT_STANDARD_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), VT.VT_STANDARD_DATA_BUFFER_SIZE, true);
 	}
 	
 	public static InputStream createBufferedLZ4InputStream(InputStream in)

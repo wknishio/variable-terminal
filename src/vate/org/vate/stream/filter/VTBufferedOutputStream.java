@@ -14,14 +14,16 @@ public final class VTBufferedOutputStream extends FilterOutputStream
 	 * through <tt>buf[count-1]</tt> contain valid byte data. */
 	protected int count;
 	
+	private boolean flushStreamWhenFull;
+	
 	/** Creates a new buffered output stream to write data to the specified
 	 * underlying output stream.
 	 *
 	 * @param out
 	 *        the underlying output stream. */
-	public VTBufferedOutputStream(OutputStream out)
+	public VTBufferedOutputStream(OutputStream out, boolean flushStreamWhenFull)
 	{
-		this(out, 8192);
+		this(out, 8192, flushStreamWhenFull);
 	}
 	
 	/** Creates a new buffered output stream to write data to the specified
@@ -33,9 +35,10 @@ public final class VTBufferedOutputStream extends FilterOutputStream
 	 *        the buffer size.
 	 * @exception IllegalArgumentException
 	 *            if size &lt;= 0. */
-	public VTBufferedOutputStream(OutputStream out, int size)
+	public VTBufferedOutputStream(OutputStream out, int size, boolean flushStreamWhenFull)
 	{
 		super(out);
+		this.flushStreamWhenFull = flushStreamWhenFull;
 		if (size <= 0)
 		{
 			throw new IllegalArgumentException("Buffer size <= 0");
@@ -64,6 +67,10 @@ public final class VTBufferedOutputStream extends FilterOutputStream
 		if (count >= buf.length)
 		{
 			flushBuffer();
+			if (flushStreamWhenFull)
+			{
+				out.flush();
+			}
 		}
 		buf[count++] = (byte) b;
 	}
@@ -95,6 +102,10 @@ public final class VTBufferedOutputStream extends FilterOutputStream
 			 * flush the output buffer and then write the data directly. In this
 			 * way buffered streams will cascade harmlessly. */
 			flushBuffer();
+			if (flushStreamWhenFull)
+			{
+				out.flush();
+			}
 			out.write(b, off, len);
 			return;
 		}
@@ -105,6 +116,10 @@ public final class VTBufferedOutputStream extends FilterOutputStream
 			System.arraycopy(b, off, buf, count, spaceLeft);
 			count += spaceLeft;
 			flushBuffer();
+			if (flushStreamWhenFull)
+			{
+				out.flush();
+			}
 			int remaining = len - spaceLeft;
 			System.arraycopy(b, off + spaceLeft, buf, count, remaining);
 			count += remaining;
