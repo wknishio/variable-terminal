@@ -823,7 +823,7 @@ public class VTFileTransferServerTransaction implements Runnable
 										
 									}
 								}
-								//resumable = getContinueTransfer(resumable);
+								resumable = getContinueTransfer(resumable);
 								if (resumable)
 								{
 									currentOffset = remoteFileSize;
@@ -1268,7 +1268,7 @@ public class VTFileTransferServerTransaction implements Runnable
 										
 									}
 								}
-								//resumable = getContinueTransfer(resumable);
+								resumable = getContinueTransfer(resumable);
 								if (resumable)
 								{
 									currentOffset = localFileSize;
