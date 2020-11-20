@@ -8,6 +8,8 @@ import java.util.List;
 
 public final class VTImageDataUtils
 {
+	//private static RectangleComparator rectangleComparator = new RectangleComparator();
+	
 	static class RectangleComparator implements Comparator<Rectangle>
 	{
 		private RectangleComparator()
@@ -40,24 +42,26 @@ public final class VTImageDataUtils
 		//System.out.println("blocks_1:[" + Arrays.toString(rectangles.toArray()) + "]");
 		//Collections.sort(rectangles, rectangleComparator);
 		//System.out.println("blocks_2:[" + Arrays.toString(rectangles.toArray()) + "]");
-		boolean foundMerge = false;
+		//Collections.sort();
+		boolean found = false;
+		//boolean union = false;
+		//boolean proceed = false;
 		do
 		{
-			foundMerge = false;
+			found = false;
 			for (int i = 0; i < rectangles.size(); i++)
 			{
 				Rectangle current = rectangles.get(i);
+				//union = false;
 				for (int j = i + 1; j < rectangles.size(); j++)
 				{
 					Rectangle next = rectangles.get(j);
 					//neighbour test
-					if (
-					((current.height == next.height) && (current.y == next.y) && (current.x + current.width == next.x))
-					||
-					((current.width == next.width) && (current.x == next.x) && (current.y + current.height == next.y))
-					)
+					if (((current.y == next.y) && (current.height == next.height) && (current.x + current.width == next.x))
+					|| ((current.x == next.x) && (current.width == next.width) && (current.y + current.height == next.y)))
 					{
-						foundMerge = true;
+						found = true;
+						//union = true;
 						current = current.union(next);
 						rectangles.remove(j--);
 					}
@@ -65,7 +69,7 @@ public final class VTImageDataUtils
 				rectangles.set(i, current);
 			}
 		}
-		while(foundMerge);
+		while(found);
 		//System.out.println("blocks_after:[" + rectangles.size() + "]");
 		return rectangles;
 	}
