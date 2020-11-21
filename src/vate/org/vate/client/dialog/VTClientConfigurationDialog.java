@@ -574,9 +574,8 @@ public class VTClientConfigurationDialog extends Dialog
 			}
 		});
 		
-		Button okButton = new Button("Connect");
+		Button okButton = new Button("Proceed");
 		Button closeButton = new Button("Cancel");
-		
 		Panel buttonPanel2 = new Panel();
 		GridLayout buttonLayout2 = new GridLayout(1, 2);
 		buttonLayout2.setHgap(1);
