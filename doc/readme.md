@@ -52,8 +52,9 @@ in environments without graphical interface but with a text terminal.
 The default and recommended user interface is the graphical console, as most<br>
 computers nowadays have support for graphical environments.
 
-The included scripts in the format variable-terminal-[mode]-[interface].[*] can<br>
-be used to start this software in the desired mode and user interface.
+The included scripts using format variable-terminal-[mode]-[interface].[*] can<br>
+be used to start this software used in a specific combination of mode and user<br>
+interface.
 
 ## Connection settings
 
@@ -119,14 +120,14 @@ these are the available program arguments:
 
 This software is primarily a command-line tool driven by text commands.
 
-After successfully connecting and authenticating to a server, the client console<br>
-can receive text command inputs from the user.
+After successfully connecting and authenticating to a server, the client<br>
+console can receive text command inputs from the user.
 
 When the user types a command in client and press enter, this software checks<br>
 if the command must be redirected to the remote shell running on the server or<br>
 if the command is a internal command of this software.
 
-Most of the functions of this software are executed by these internal commands.
+Most of the functions of this software are executed by internal commands.
 
 After configuring the server, the server console can also receive text command<br>
 inputs, but only internal commands of this software.
@@ -152,8 +153,8 @@ specific internal commands.
 
 The minimum required java version to build from sources is at least JDK 1.5.
 
-The included scripts "build.bat" and "build.sh" perform the build process using<br>
-ant and the file "build.xml" is an ant build file for this software.
+The included scripts "build.bat" and "build.sh" perform the build process<br>
+using ant and the file "build.xml" is an ant build file for this software.
 
 After running the ant build file, the packaged application distributions can be<br>
 found in the "dist" folder.

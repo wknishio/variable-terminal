@@ -1,9 +1,7 @@
-﻿(*) Update to MIT license
-(*) Add option to set server to daemon mode in settings file
+﻿(*) Add option to set server to daemon mode in settings file
 (*) Add option to configure client reconnector thread timeout value
 (*) Add option to configure client ping verification interval
 (*) Experiment with console with current command separated from output
-(*) Use charva and lanterna to create console
 (*) Add audio codec option for command *VTAUDIOLINK
 (*) Add audio line buffer size option for command *VTAUDIOLINK
 (*) Research dynamic multiplexed channel negotiation

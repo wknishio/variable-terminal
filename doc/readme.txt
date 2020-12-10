@@ -33,8 +33,8 @@ This software comes with no warranty, use at your own risk!
 
 ## Installation and initialization
 
-To install this software, just extract the contents of the released zip file in
-any folder.
+To install this software, just extract the contents of the released zip file
+in any folder.
 
 There are 3 main modes of operation for this software:
 
@@ -52,7 +52,7 @@ in environments without graphical interface but with a text terminal.
 The default and recommended user interface is the graphical console, as most
 computers nowadays have support for graphical environments.
 
-The included scripts in the format variable-terminal-[mode]-[interface].[*] can  
+The included scripts using format variable-terminal-[mode]-[interface].[*] can
 be used to start this software used in a specific combination of mode and user
 interface.
 
@@ -121,14 +121,14 @@ these are the available program arguments:
 
 This software is primarily a command-line tool driven by text commands.
 
-After successfully connecting and authenticating to a server, the client console
-can receive text command inputs from the user.
+After successfully connecting and authenticating to a server, the client
+console can receive text command inputs from the user.
 
 When the user types a command in client and press enter, this software checks
 if the command must be redirected to the remote shell running on the server or
 if the command is a internal command of this software.
 
-Most of the functions of this software are executed by these internal commands.
+Most of the functions of this software are executed by internal commands.
 
 After configuring the server, the server console can also receive text command
 inputs, but only internal commands of this software.
@@ -154,11 +154,11 @@ specific internal commands.
 
 The minimum required java version to build from sources is at least JDK 1.5.
 
-The included scripts "build.bat" and "build.sh" perform the build process using
-ant and the file "build.xml" is an ant build file for this software.
+The included scripts "build.bat" and "build.sh" perform the build process
+using ant and the file "build.xml" is an ant build file for this software.
 
-After running the ant build file, the packaged application distributions can be
-found in the "dist" folder.
+After running the ant build file, the packaged application distributions can
+be found in the "dist" folder.
 
 ## Used libraries
 
