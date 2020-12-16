@@ -544,6 +544,10 @@ public final class VTConsole
 	
 	public static void createInterruptibleReadline(final boolean echo, final Runnable interrupt)
 	{
+		if (daemon)
+		{
+			return;
+		}
 		Thread thread = new Thread("VTConsole")
 		{
 			public void run()
