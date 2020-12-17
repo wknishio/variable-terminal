@@ -6,12 +6,12 @@ import java.awt.event.ItemListener;
 
 import org.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 
-public class VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeyCombinationsListener implements ItemListener
+public class VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeyIgnoreListener implements ItemListener
 {
 	private CheckboxMenuItem option;
 	private VTGraphicsModeClientWriter writer;
 	
-	public VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeyCombinationsListener(VTGraphicsModeClientWriter writer, CheckboxMenuItem option)
+	public VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeyIgnoreListener(VTGraphicsModeClientWriter writer, CheckboxMenuItem option)
 	{
 		this.writer = writer;
 		this.option = option;
@@ -21,7 +21,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeyCombinationsLi
 	{
 		if (e.getStateChange() == ItemEvent.SELECTED)
 		{
-			writer.toggleSuppressLocalKeyCombinations();
+			writer.toggleIgnoreLocalKeyCombinations();
 		}
 		else
 		{

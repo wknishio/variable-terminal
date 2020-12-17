@@ -127,6 +127,42 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
 			return;
 		}
 		
+		if (writer.isIgnoreLocalKeyCombinations())
+		{
+			if (!interrupted)
+			{
+				// System.out.println("keyReleased: " + event.getKeyCode());
+				/* if (event.getKeyCode() == KeyEvent.VK_NUM_LOCK) {
+				 * writer.synchronizeRemoteLockingKey(KeyEvent.VK_NUM_LOCK); } else
+				 * if (event.getKeyCode() == KeyEvent.VK_CAPS_LOCK) {
+				 * writer.synchronizeRemoteLockingKey(KeyEvent.VK_CAPS_LOCK); } else
+				 * if (event.getKeyCode() == KeyEvent.VK_SCROLL_LOCK) {
+				 * writer.synchronizeRemoteLockingKey(KeyEvent.VK_SCROLL_LOCK); }
+				 * else if (event.getKeyCode() == KeyEvent.VK_KANA_LOCK) {
+				 * writer.synchronizeRemoteLockingKey(KeyEvent.VK_KANA_LOCK); } */
+				untyped.id = event.getID();
+				untyped.keyCode = event.getKeyCode();
+				untyped.keyModifiers = event.getModifiersEx();
+				untyped.keyLocation = event.getKeyLocation();
+				untyped.keyChar = event.getKeyChar();
+				// System.out.println(event);
+				writer.writeEvent(untyped);
+				/* if (event.getKeyCode() == KeyEvent.VK_NUM_LOCK) {
+				 * writer.tryDelayedUpdateInAllRemoteLockingKeys(); } else if
+				 * (event.getKeyCode() == KeyEvent.VK_CAPS_LOCK) {
+				 * writer.tryDelayedUpdateInAllRemoteLockingKeys(); } else if
+				 * (event.getKeyCode() == KeyEvent.VK_SCROLL_LOCK) {
+				 * writer.tryDelayedUpdateInAllRemoteLockingKeys(); } else if
+				 * (event.getKeyCode() == KeyEvent.VK_KANA_LOCK) {
+				 * writer.tryDelayedUpdateInAllRemoteLockingKeys(); } */
+			}
+			if (!interrupted && writer.isSuppressLocalKeyCombinations())
+			{
+				pressedKeys.remove(event.getKeyCode());
+			}
+			return;
+		}
+		
 		boolean releasedControl = event.getKeyCode() == KeyEvent.VK_CONTROL;
 		boolean releasedShift = event.getKeyCode() == KeyEvent.VK_SHIFT;
 		boolean releasedAlt = event.getKeyCode() == KeyEvent.VK_ALT;
@@ -276,30 +312,12 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
 		}
 		else if (!interrupted)
 		{
-			// System.out.println("keyReleased: " + event.getKeyCode());
-			/* if (event.getKeyCode() == KeyEvent.VK_NUM_LOCK) {
-			 * writer.synchronizeRemoteLockingKey(KeyEvent.VK_NUM_LOCK); } else
-			 * if (event.getKeyCode() == KeyEvent.VK_CAPS_LOCK) {
-			 * writer.synchronizeRemoteLockingKey(KeyEvent.VK_CAPS_LOCK); } else
-			 * if (event.getKeyCode() == KeyEvent.VK_SCROLL_LOCK) {
-			 * writer.synchronizeRemoteLockingKey(KeyEvent.VK_SCROLL_LOCK); }
-			 * else if (event.getKeyCode() == KeyEvent.VK_KANA_LOCK) {
-			 * writer.synchronizeRemoteLockingKey(KeyEvent.VK_KANA_LOCK); } */
 			untyped.id = event.getID();
 			untyped.keyCode = event.getKeyCode();
 			untyped.keyModifiers = event.getModifiersEx();
 			untyped.keyLocation = event.getKeyLocation();
 			untyped.keyChar = event.getKeyChar();
-			// System.out.println(event);
 			writer.writeEvent(untyped);
-			/* if (event.getKeyCode() == KeyEvent.VK_NUM_LOCK) {
-			 * writer.tryDelayedUpdateInAllRemoteLockingKeys(); } else if
-			 * (event.getKeyCode() == KeyEvent.VK_CAPS_LOCK) {
-			 * writer.tryDelayedUpdateInAllRemoteLockingKeys(); } else if
-			 * (event.getKeyCode() == KeyEvent.VK_SCROLL_LOCK) {
-			 * writer.tryDelayedUpdateInAllRemoteLockingKeys(); } else if
-			 * (event.getKeyCode() == KeyEvent.VK_KANA_LOCK) {
-			 * writer.tryDelayedUpdateInAllRemoteLockingKeys(); } */
 		}
 		if (!interrupted && writer.isSuppressLocalKeyCombinations())
 		{

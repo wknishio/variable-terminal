@@ -31,6 +31,8 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
 		this.add(controlMenu);
 		
 		keyboardShortcutsMenu = new Menu("Shortcut");
+		//keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Del : Toggle Ignore Shortcut"));
+		//keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Tab : Toggle Suppress Shortcut"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Alt : Toggle Remote Control"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Space : Toggle Interface Refresh"));
 		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Backspace : Toggle Menu Bar"));
@@ -152,6 +154,11 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
 		controlMenu.setSuppressLocalKeyCombinations(suppressLocalKeyCombinations);
 	}
 	
+	public void setIgnoreLocalKeyCombinations(boolean ignoreLocalKeyCombinations)
+	{
+		controlMenu.setIgnoreLocalKeyCombinations(ignoreLocalKeyCombinations);
+	}
+	
 	public void interruptRefresh()
 	{
 		viewMenu.interruptRefresh();
@@ -204,5 +211,10 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
 	public boolean isClipBoardControlEnabled()
 	{
 		return controlMenu.isClipboardControlEnabled();
+	}
+	
+	public void setKeyboardShortcutsMenuEnabled(boolean enabled)
+	{
+		keyboardShortcutsMenu.setEnabled(enabled);
 	}
 }

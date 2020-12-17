@@ -58,6 +58,7 @@ public class VTGraphicsModeClientWriter implements Runnable
 	private volatile boolean separatedCoding;
 	private volatile boolean drawPointer;
 	private volatile boolean suppressLocalKeyCombinations;
+	private volatile boolean ignoreLocalKeyCombinations;
 	private volatile int screenCaptureInterval;
 	private volatile int colorQuality;
 	private volatile int terminalRefreshPolicy;
@@ -266,6 +267,7 @@ public class VTGraphicsModeClientWriter implements Runnable
 		this.drawPointer = true;
 		// this.screenCaptureModeComplete = false;
 		this.suppressLocalKeyCombinations = false;
+		this.ignoreLocalKeyCombinations = false;
 		this.refreshInterrupted = false;
 		// this.synchronizingLockingKey = false;
 		this.screenCaptureInterval = 250;
@@ -662,6 +664,16 @@ public class VTGraphicsModeClientWriter implements Runnable
 	public boolean isSuppressLocalKeyCombinations()
 	{
 		return suppressLocalKeyCombinations;
+	}
+	
+	public void setIgnoreLocalKeyCombinations(boolean ignoreLocalKeyCombinations)
+	{
+		this.ignoreLocalKeyCombinations = ignoreLocalKeyCombinations;
+	}
+	
+	public boolean isIgnoreLocalKeyCombinations()
+	{
+		return ignoreLocalKeyCombinations;
 	}
 	
 	public boolean isOpen()
@@ -1348,6 +1360,20 @@ public class VTGraphicsModeClientWriter implements Runnable
 				suppressLocalKeyCombinations = true;
 				menuBar.setSuppressLocalKeyCombinations(true);
 			}
+		}
+	}
+	
+	public void toggleIgnoreLocalKeyCombinations()
+	{
+		if (ignoreLocalKeyCombinations)
+		{
+			ignoreLocalKeyCombinations = false;
+			menuBar.setIgnoreLocalKeyCombinations(false);
+		}
+		else
+		{
+			ignoreLocalKeyCombinations = true;
+			menuBar.setIgnoreLocalKeyCombinations(true);
 		}
 	}
 	
@@ -2040,5 +2066,10 @@ public class VTGraphicsModeClientWriter implements Runnable
 		{
 			session.notify();
 		}
+	}
+	
+	public void setKeyboardShortcutsMenuEnabled(boolean enabled)
+	{
+		menuBar.setKeyboardShortcutsMenuEnabled(enabled);
 	}
 }

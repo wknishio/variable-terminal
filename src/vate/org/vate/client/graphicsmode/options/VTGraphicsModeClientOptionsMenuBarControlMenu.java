@@ -12,7 +12,8 @@ import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptions
 import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarControlMenuKeyDownListener;
 import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarControlMenuKeyPressListener;
 import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarControlMenuKeyUpListener;
-import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeyCombinationsListener;
+import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeyIgnoreListener;
+import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeySupressListener;
 import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarControlMenuReceiveRemoteClipboardListener;
 import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarControlMenuRemoteControlListener;
 import org.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarControlMenuSendLocalClipboardListener;
@@ -22,13 +23,14 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
 {
 	private static final long serialVersionUID = 1L;
 	private Menu remoteControlMenu;
-	private Menu controlStateMenu;
+	private Menu controlStateClauseMenu;
 	private Menu lockingKeysControlMenu;
 	private Menu systemKeysControlMenu;
 	private Menu modifierKeyDownControlMenu;
 	private Menu modifierKeyUpControlMenu;
 	private Menu clipboardControlMenu;
 	private Menu localKeySuppressionControlMenu;
+	private Menu localKeyIgnoreControlMenu;
 	private CheckboxMenuItem runningOption;
 	private CheckboxMenuItem interruptedOption;
 	private CheckboxMenuItem needFocusOption;
@@ -60,6 +62,9 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
 	private MenuItem cancelClipboardContentsTransfer;
 	private CheckboxMenuItem disableLocalKeySuppressionOption;
 	private CheckboxMenuItem enableLocalKeySuppressionOption;
+	private CheckboxMenuItem disableLocalKeyIgnoreOption;
+	private CheckboxMenuItem enableLocalKeyIgnoreOption;
+
 	private VTGraphicsModeClientWriter writer;
 	
 	public VTGraphicsModeClientOptionsMenuBarControlMenu(VTGraphicsModeClientWriter writer)
@@ -67,13 +72,15 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
 		super("Control");
 		this.writer = writer;
 		this.remoteControlMenu = new Menu("Remote Control ");
-		this.controlStateMenu = new Menu("Control Clause ");
-		this.lockingKeysControlMenu = new Menu("Enter Lock Key ");
-		this.systemKeysControlMenu = new Menu("Enter System Key ");
+		this.localKeyIgnoreControlMenu = new Menu("Shortcut Support ");
+		this.controlStateClauseMenu = new Menu("Control Clause ");
+		this.localKeySuppressionControlMenu = new Menu("Combination Inhibition ");
 		this.modifierKeyDownControlMenu = new Menu("Press Modifier Key ");
 		this.modifierKeyUpControlMenu = new Menu("Release Modifier Key ");
-		this.localKeySuppressionControlMenu = new Menu("Combination Inhibition ");
+		this.lockingKeysControlMenu = new Menu("Enter Lock Key ");
+		this.systemKeysControlMenu = new Menu("Enter System Key ");
 		this.clipboardControlMenu = new Menu("Clipboard Control ");
+		
 		this.runningOption = new CheckboxMenuItem("Running", true);
 		this.runningOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarControlMenuRemoteControlListener(writer, runningOption));
 		this.interruptedOption = new CheckboxMenuItem("Interrupted", false);
@@ -131,19 +138,26 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
 		this.cancelClipboardContentsTransfer.setEnabled(false);
 		this.cancelClipboardContentsTransfer.addActionListener(new VTGraphicsModeClientOptionsMenuBarControlMenuCancelClipboardTransferListener(writer));
 		this.disableLocalKeySuppressionOption = new CheckboxMenuItem("Disabled", true);
-		this.disableLocalKeySuppressionOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeyCombinationsListener(writer, disableLocalKeySuppressionOption));
+		this.disableLocalKeySuppressionOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeySupressListener(writer, disableLocalKeySuppressionOption));
 		this.enableLocalKeySuppressionOption = new CheckboxMenuItem("Enabled", false);
-		this.enableLocalKeySuppressionOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeyCombinationsListener(writer, enableLocalKeySuppressionOption));
+		this.enableLocalKeySuppressionOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeySupressListener(writer, enableLocalKeySuppressionOption));
+		this.disableLocalKeyIgnoreOption = new CheckboxMenuItem("Enabled", true);
+		this.disableLocalKeyIgnoreOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeyIgnoreListener(writer, disableLocalKeyIgnoreOption));
+		this.enableLocalKeyIgnoreOption = new CheckboxMenuItem("Disabled", false);
+		this.enableLocalKeyIgnoreOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeyIgnoreListener(writer, enableLocalKeyIgnoreOption));
 		this.needFocusOption = new CheckboxMenuItem("Focused", true);
 		this.needFocusOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuTerminalControlPolicyOptionsListener(writer, needFocusOption, VTGraphicsModeClientWriter.TERMINAL_STATE_FOCUSED));
 		this.needVisibleOption = new CheckboxMenuItem("Visible", false);
 		this.needVisibleOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuTerminalControlPolicyOptionsListener(writer, needVisibleOption, VTGraphicsModeClientWriter.TERMINAL_STATE_VISIBLE));
 		this.remoteControlMenu.add(runningOption);
 		this.remoteControlMenu.add(interruptedOption);
-		this.controlStateMenu.add(needFocusOption);
-		this.controlStateMenu.add(needVisibleOption);
+		this.controlStateClauseMenu.add(needFocusOption);
+		this.controlStateClauseMenu.add(needVisibleOption);
 		this.localKeySuppressionControlMenu.add(disableLocalKeySuppressionOption);
 		this.localKeySuppressionControlMenu.add(enableLocalKeySuppressionOption);
+		this.localKeyIgnoreControlMenu.add(disableLocalKeyIgnoreOption);
+		this.localKeyIgnoreControlMenu.add(enableLocalKeyIgnoreOption);
+		
 		this.lockingKeysControlMenu.add(pressNumLock);
 		this.lockingKeysControlMenu.add(pressCapsLock);
 		this.lockingKeysControlMenu.add(pressScrollLock);
@@ -170,7 +184,8 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
 		this.clipboardControlMenu.add(cancelClipboardContentsTransfer);
 		
 		this.add(remoteControlMenu);
-		this.add(controlStateMenu);
+		this.add(localKeyIgnoreControlMenu);
+		this.add(controlStateClauseMenu);
 		this.add(localKeySuppressionControlMenu);
 		this.add(modifierKeyDownControlMenu);
 		this.add(modifierKeyUpControlMenu);
@@ -210,7 +225,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
 	{
 		runningOption.setState(false);
 		interruptedOption.setState(true);
-		controlStateMenu.setEnabled(false);
+		controlStateClauseMenu.setEnabled(false);
 		lockingKeysControlMenu.setEnabled(false);
 		systemKeysControlMenu.setEnabled(false);
 		modifierKeyDownControlMenu.setEnabled(false);
@@ -224,7 +239,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
 	{
 		runningOption.setState(true);
 		interruptedOption.setState(false);
-		controlStateMenu.setEnabled(true);
+		controlStateClauseMenu.setEnabled(true);
 		lockingKeysControlMenu.setEnabled(true);
 		systemKeysControlMenu.setEnabled(true);
 		modifierKeyDownControlMenu.setEnabled(true);
@@ -245,6 +260,24 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
 			disableLocalKeySuppressionOption.setState(true);
 			enableLocalKeySuppressionOption.setState(false);
 			writer.clearAllPressedKeys();
+		}
+	}
+	
+	public void setIgnoreLocalKeyCombinations(boolean ignoreLocalKeyCombinations)
+	{
+		if (ignoreLocalKeyCombinations)
+		{
+			disableLocalKeyIgnoreOption.setState(false);
+			enableLocalKeyIgnoreOption.setState(true);
+			writer.setKeyboardShortcutsMenuEnabled(false);
+			
+		}
+		else
+		{
+			disableLocalKeyIgnoreOption.setState(true);
+			enableLocalKeyIgnoreOption.setState(false);
+			writer.setKeyboardShortcutsMenuEnabled(true);
+			//writer.clearAllPressedKeys();
 		}
 	}
 	
