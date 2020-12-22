@@ -4,7 +4,7 @@ import com.github.luben.zstd.util.Native;
 import com.github.luben.zstd.ZstdDictDecompress;
 
 import java.nio.ByteBuffer;
-
+import java.util.Arrays;
 import org.vate.compatibility.VTArrays;
 
 public class ZstdDecompressCtx extends AutoCloseBase {

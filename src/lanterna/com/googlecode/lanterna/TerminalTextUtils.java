@@ -463,4 +463,14 @@ public class TerminalTextUtils {
             }
         }
     }
+    
+    /**
+     * Given a character, is this character considered to be a Thai character?
+     * @param c Character to test
+     * @return {@code true} if the character is a Thai character
+     */
+    public static boolean isCharThai(char c) {
+        Character.UnicodeBlock unicodeBlock = Character.UnicodeBlock.of(c);
+        return unicodeBlock == Character.UnicodeBlock.THAI;
+    }
 }

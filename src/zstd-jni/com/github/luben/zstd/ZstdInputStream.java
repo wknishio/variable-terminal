@@ -4,6 +4,7 @@ import java.io.InputStream;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.lang.IndexOutOfBoundsException;
+import java.nio.ByteBuffer;
 
 import com.github.luben.zstd.util.Native;
 
@@ -28,8 +29,10 @@ public class ZstdInputStream extends FilterInputStream {
     private long srcSize = 0;
     private boolean needRead = true;
     private boolean finalize = true;
-    private byte[] src;
-    public static final int srcBuffSize = (int) recommendedDInSize();
+    private final BufferPool bufferPool;
+    private final ByteBuffer srcByteBuffer;
+    private final byte[] src;
+    private static final int srcBuffSize = (int) recommendedDInSize();
 
     private boolean isContinuous = false;
     private boolean frameFinished = true;
@@ -43,25 +46,28 @@ public class ZstdInputStream extends FilterInputStream {
     private native int  initDStream(long stream);
     private native int  decompressStream(long stream, byte[] dst, int dst_size, byte[] src, int src_size);
 
-    // The main constuctor / legacy version dispatcher
+    /**
+     * create a new decompressing InputStream
+     * @param inStream the stream to wrap
+     */
     public ZstdInputStream(InputStream inStream) throws IOException {
-        this(inStream,
-            // allocate input buffer with max frame header size
-            // no need to synchronize as these a finals
-            new byte[srcBuffSize]);
+        this(inStream, NoPool.INSTANCE);
     }
 
     /**
-     * construct a ZstdInputStream with specify buffer. This constructor enables you to reuse the byte buffer after
-     * closing this stream
-     * @param inStream base stream
-     * @param src byte buffer
+     * create a new decompressing InputStream
+     * @param inStream the stream to wrap
+     * @param bufferPool the pool to fetch and return buffers
      */
-    public ZstdInputStream(InputStream inStream, byte[] src) {
+    public ZstdInputStream(InputStream inStream, BufferPool bufferPool) throws IOException {
         // FilterInputStream constructor
         super(inStream);
-        if (src == null || src.length <= 0) throw new NullPointerException("the src buffer can't be either null or empty");
-        this.src = src;
+        this.bufferPool = bufferPool;
+        this.srcByteBuffer = bufferPool.get(srcBuffSize);
+        if (this.srcByteBuffer == null) {
+            throw new IOException("Cannot get ByteBuffer of size " + srcBuffSize + " from the BufferPool");
+        }
+        this.src = Zstd.extractArray(srcByteBuffer);
         // memory barrier
         synchronized(this) {
             this.stream = createDStream();
@@ -89,7 +95,7 @@ public class ZstdInputStream extends FilterInputStream {
      *
      * If finalizers are disabled the responsibility fir calling the `close` method is on the consumer.
      *
-     * @param finalize, default `true` - finalizers are enabled
+     * @param finalize default `true` - finalizers are enabled
      */
     public void setFinalize(boolean finalize) {
         this.finalize = finalize;
@@ -250,6 +256,7 @@ public class ZstdInputStream extends FilterInputStream {
             return;
         }
         isClosed = true;
+        bufferPool.release(srcByteBuffer);
         freeDStream(stream);
         in.close();
     }

@@ -570,17 +570,54 @@ public class Zstd {
      * Return the original size of a compressed buffer (if known)
      *
      * @param src the compressed buffer
+     * @param srcPosition offset of the compressed data inside the src buffer
+     * @param srcSize length of the compressed data inside the src buffer
      * @return the number of bytes of the original buffer
-     *         0 if the original size is now known
+     *         0 if the original size is not known
      */
-    public static native long decompressedSize(byte[] src);
+    public static long decompressedSize(byte[] src, int srcPosition, int srcSize) {
+        if (srcPosition >= src.length) {
+            throw new ArrayIndexOutOfBoundsException(srcPosition);
+        }
+        if (srcPosition + srcSize > src.length) {
+            throw new ArrayIndexOutOfBoundsException(srcPosition + srcSize);
+        }
+        return decompressedSize0(src, srcPosition, srcSize);
+    }
+
+    private static native long decompressedSize0(byte[] src, int srcPosition, int srcSize);
+
+    /**
+     * Return the original size of a compressed buffer (if known)
+     *
+     * @param src the compressed buffer
+     * @param srcPosition offset of the compressed data inside the src buffer
+     * @return the number of bytes of the original buffer
+     *         0 if the original size is not known
+     */
+    public static long decompressedSize(byte[] src, int srcPosition) {
+        return decompressedSize(src, srcPosition, src.length - srcPosition);
+    }
 
     /**
      * Return the original size of a compressed buffer (if known)
      *
      * @param src the compressed buffer
      * @return the number of bytes of the original buffer
-     *         0 if the original size is now known
+     *         0 if the original size is not known
+     */
+    public static long decompressedSize(byte[] src) {
+        return decompressedSize(src, 0);
+    };
+
+    /**
+     * Return the original size of a compressed buffer (if known)
+     *
+     * @param src the compressed buffer
+     * @param srcPosition offset of the compressed data inside the src buffer
+     * @param srcSize length of the compressed data inside the src buffe
+     * @return the number of bytes of the original buffer
+     *         0 if the original size is not known
      */
     public static native long decompressedDirectByteBufferSize(ByteBuffer src, int srcPosition, int srcSize);
 
@@ -1257,5 +1294,12 @@ public class Zstd {
         } finally {
             ctx.close();
         }
+    }
+
+    static final byte[] extractArray(ByteBuffer buffer) {
+        if (!buffer.hasArray() || buffer.arrayOffset() != 0) {
+            throw new IllegalArgumentException("provided ByteBuffer lacks array or has non-zero arrayOffset");
+        }
+        return buffer.array();
     }
 }

@@ -50,7 +50,7 @@ public class ZstdDirectBufferDecompressingStream implements Closeable {
      *
      * If finalizers are disabled the responsibility fir calling the `close` method is on the consumer.
      *
-     * @param finalize, default `true` - finalizers are enabled
+     * @param finalize default `true` - finalizers are enabled
      */
     public void setFinalize(boolean finalize) {
         this.finalize = finalize;
@@ -123,6 +123,7 @@ public class ZstdDirectBufferDecompressingStream implements Closeable {
     }
 
 
+    
     public synchronized void close() throws IOException {
         if (!closed) {
             try {
