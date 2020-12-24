@@ -67,6 +67,7 @@ public class VTClient implements Runnable
 		ImageIO.setUseCache(false);
 		VTHelpManager.initialize();
 		SSLVerificationDisabler.install();
+		com.github.luben.zstd.util.Native.load();
 	}
 	
 	public VTClient()

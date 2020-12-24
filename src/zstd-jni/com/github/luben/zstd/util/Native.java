@@ -7,6 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.UnsatisfiedLinkError;
+import java.util.LinkedList;
+import java.util.List;
 
 public enum Native {
     ;
@@ -113,36 +115,10 @@ public enum Native {
             	{
             		return;
             	}
-        		else
-        		{
-        			try
-                	{
-            			File failed = searchMatchingFileInFolder(libname, "." + libExtension(), is.available(), getTempDir());
-            			if (failed != null)
-            			{
-            				failed.delete();
-            			}
-                	}
-            		catch (Throwable d)
-            		{
-            			
-            		}
-        		}
         	}
         	catch (Throwable t)
         	{
-        		try
-            	{
-        			File failed = searchMatchingFileInFolder(libname, "." + libExtension(), is.available(), getTempDir());
-        			if (failed != null)
-        			{
-        				failed.delete();
-        			}
-            	}
-        		catch (Throwable d)
-        		{
-        			
-        		}
+        		
         	}
         }
         File tempLib = null;
@@ -248,9 +224,9 @@ public enum Native {
     	return new ByteArrayInputStream(output.toByteArray());
     }
     
-    public static File searchMatchingFileInFolder(String name, String extension, long size, File folder)
+    public static File[] searchMatchingFileInFolder(String name, String extension, long size, File folder)
     {
-		File matched = null;
+		List<File> matched = new LinkedList<File>();
 		File[] list = folder.listFiles();
 		for (int i = 0; i < list.length; i++)
 		{
@@ -258,26 +234,29 @@ public enum Native {
 			&& list[i].getName().endsWith(extension)
 			&& list[i].length() == size)
 			{
-				matched = list[i];
+				matched.add(list[i]);
 			}
 		}
 		
-		return matched;
+		return matched.toArray(new File[] {} );
     }
     
     public static boolean tryLoadLibraryInFolder(String name, String extension, long size, File folder)
     {
-    	File file = searchMatchingFileInFolder(name, extension, size, folder);
-    	if (file != null)
+    	File[] files = searchMatchingFileInFolder(name, extension, size, folder);
+    	if (files != null)
     	{
-    		try
+    		for (int i = 0; i < files.length; i++)
     		{
-    			System.load(file.getAbsolutePath());
-    			return true;
-    		}
-    		catch (Throwable t)
-    		{
-    			
+    			try
+        		{
+        			System.load(files[i].getAbsolutePath());
+        			return true;
+        		}
+        		catch (Throwable t)
+        		{
+        			
+        		}
     		}
     	}
     	return false;
