@@ -26,7 +26,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.lang.reflect.Method;
-import javax.imageio.ImageIO;
 
 import org.vate.VT;
 import org.vate.client.VTClient;
@@ -82,7 +81,9 @@ public class VTClientConfigurationDialog extends Dialog
 		try
 		{
 			Method setIconImage = this.getClass().getMethod("setIconImage", Class.forName("java.awt.Image"));
-			setIconImage.invoke(this, ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
+			//InputStream stream = this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png");
+			setIconImage.invoke(this, VT.remoteIcon);
+			//stream.close();
 			//this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
 		}
 		catch (Throwable e)

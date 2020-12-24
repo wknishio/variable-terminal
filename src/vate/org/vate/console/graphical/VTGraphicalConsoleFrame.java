@@ -2,7 +2,7 @@ package org.vate.console.graphical;
 
 import java.awt.Frame;
 
-import javax.imageio.ImageIO;
+import org.vate.VT;
 
 public class VTGraphicalConsoleFrame extends Frame
 {
@@ -11,11 +11,14 @@ public class VTGraphicalConsoleFrame extends Frame
 	public VTGraphicalConsoleFrame(boolean remoteIcon)
 	{
 		super();
+		//IIORegistry.getDefaultInstance().registerServiceProvider(new PngImageReaderSpi());
+		//PngImageReader pngReader = new PngImageReader(new PngImageReaderSpi());
+		//InputStream stream = null;
 		if (remoteIcon)
 		{
 			try
 			{
-				this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
+				this.setIconImage(VT.remoteIcon);
 			}
 			catch (Throwable t)
 			{
@@ -26,13 +29,14 @@ public class VTGraphicalConsoleFrame extends Frame
 		{
 			try
 			{
-				this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/terminal.png")));
+				this.setIconImage(VT.terminalIcon);
 			}
 			catch (Throwable t)
 			{
 				
 			}
 		}
+		
 		setIgnoreRepaint(true);
 	}
 	

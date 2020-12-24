@@ -1,6 +1,7 @@
 package org.vate;
 
 import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -8,7 +9,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
+
+import com.sixlegs.png.iio.PngImageReader;
+import com.sixlegs.png.iio.PngImageReaderSpi;
 
 public class VT
 {
@@ -179,4 +184,43 @@ public class VT
 	
 	public static final String VT_VERSION = "v" + VT.VT_MAJOR_VERSION + "." + VT.VT_MINOR_VERSION + "." + VT.VT_REVISION_VERSION;
 	public static final String VT_YEAR = VT_ERA_DATEFORMAT.format(VT_YEAR_CALENDAR.getTime()) + " " + String.valueOf(VT_YEAR_CALENDAR.get(Calendar.YEAR));
+	
+	public static BufferedImage remoteIcon;
+	public static BufferedImage terminalIcon;
+	public static BufferedImage desktopIcon;
+	
+	static
+	{
+		ImageIO.setUseCache(false);
+		PngImageReader reader = new PngImageReader(new PngImageReaderSpi());
+		try
+		{
+			reader.setInput(ImageIO.createImageInputStream(VT.class.getResourceAsStream("/org/vate/console/graphical/resource/remote.png")), true, false);
+			remoteIcon = reader.read(0);
+		}
+		catch (Throwable e)
+		{
+			remoteIcon = null;
+		}
+		
+		try
+		{
+			reader.setInput(ImageIO.createImageInputStream(VT.class.getResourceAsStream("/org/vate/console/graphical/resource/terminal.png")), true, false);
+			terminalIcon = reader.read(0);
+		}
+		catch (Throwable e)
+		{
+			terminalIcon = null;
+		}
+		
+		try
+		{
+			reader.setInput(ImageIO.createImageInputStream(VT.class.getResourceAsStream("/org/vate/console/graphical/resource/desktop.png")), true, false);
+			desktopIcon = reader.read(0);
+		}
+		catch (Throwable e)
+		{
+			desktopIcon = null;
+		}
+	}
 }

@@ -6,7 +6,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-import javax.imageio.ImageIO;
+import org.vate.VT;
 
 public class VTGraphicsModeClientWriterFrame extends Frame
 {
@@ -55,7 +55,9 @@ public class VTGraphicsModeClientWriterFrame extends Frame
 		this.setBackground(new Color(0x00555555));
 		try
 		{
-			this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/client/graphicsmode/resource/desktop.png")));
+			//InputStream stream = this.getClass().getResourceAsStream("/org/vate/client/graphicsmode/resource/desktop.png");
+			this.setIconImage(VT.desktopIcon);
+			//stream.close();
 		}
 		catch (Throwable t)
 		{
@@ -70,7 +72,9 @@ public class VTGraphicsModeClientWriterFrame extends Frame
 		this.setBackground(new Color(0x00555555));
 		try
 		{
-			this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/client/graphicsmode/resource/desktop.png")));
+			//InputStream stream = this.getClass().getResourceAsStream("/org/vate/client/graphicsmode/resource/desktop.png");
+			this.setIconImage(VT.desktopIcon);
+			//stream.close();
 		}
 		catch (Throwable t)
 		{

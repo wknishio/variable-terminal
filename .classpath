@@ -30,9 +30,9 @@
 	<classpathentry kind="lib" path="lib/png-encoder.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-nop.jar"/>
-	<classpathentry kind="lib" path="lib/jna-4.5.2-mk2.jar"/>
 	<classpathentry kind="lib" path="lib/jna-platform-4.5.2-mk2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-collections4.jar"/>
 	<classpathentry kind="lib" path="lib/zstd-jni-1.4.8-1-native.jar"/>
+	<classpathentry kind="lib" path="lib/jna-4.5.2-mk3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

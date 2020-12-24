@@ -16,9 +16,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
+//import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
-import javax.imageio.ImageIO;
 
 import org.vate.VT;
 import org.vate.graphics.font.VTGlobalTextStyleManager;
@@ -27,7 +26,7 @@ import org.vate.graphics.image.VTIconDisplay;
 public class VTGraphicalStartDialog extends Dialog
 {
 	private static final long serialVersionUID = 1L;
-	private volatile BufferedImage terminalIcon;
+	//private volatile BufferedImage terminalIcon;
 	private volatile int mode = 0;
 	
 	public VTGraphicalStartDialog(Frame owner)
@@ -37,9 +36,11 @@ public class VTGraphicalStartDialog extends Dialog
 		setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
 		try
 		{
-			terminalIcon = ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png"));
+			//InputStream stream = this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png");
+			//terminalIcon = VT.remoteIcon;
+			//stream.close();
 			Method setIconImage = this.getClass().getMethod("setIconImage", Class.forName("java.awt.Image"));
-			setIconImage.invoke(this, terminalIcon);
+			setIconImage.invoke(this, VT.remoteIcon);
 			//setIconImage(terminalIcon);
 		}
 		catch (Throwable t)
@@ -66,7 +67,7 @@ public class VTGraphicalStartDialog extends Dialog
 		
 		VTIconDisplay display = new VTIconDisplay();
 		display.setFocusable(false);
-		display.setImage(terminalIcon, 64, 64);
+		display.setImage(VT.remoteIcon, 64, 64);
 		
 		final Button client = new Button(" Client ");
 		final Button server = new Button(" Server ");

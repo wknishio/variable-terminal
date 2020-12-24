@@ -4,7 +4,8 @@ import java.awt.Dialog;
 import java.awt.FileDialog;
 import java.awt.Frame;
 import java.lang.reflect.Method;
-import javax.imageio.ImageIO;
+
+import org.vate.VT;
 
 public class VTFileDialog extends FileDialog
 {
@@ -20,7 +21,9 @@ public class VTFileDialog extends FileDialog
 		try
 		{
 			Method setIconImage = this.getClass().getMethod("setIconImage", Class.forName("java.awt.Image"));
-			setIconImage.invoke(this, ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
+			//InputStream stream = this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png");
+			setIconImage.invoke(this, VT.remoteIcon);
+			//stream.close();
 			//this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
 		}
 		catch (Throwable e)
@@ -37,7 +40,9 @@ public class VTFileDialog extends FileDialog
 		try
 		{
 			Method setIconImage = this.getClass().getMethod("setIconImage", Class.forName("java.awt.Image"));
-			setIconImage.invoke(this, ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
+			//InputStream stream = this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png");
+			setIconImage.invoke(this, VT.remoteIcon);
+			//stream.close();
 			//this.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
 		}
 		catch (Throwable e)

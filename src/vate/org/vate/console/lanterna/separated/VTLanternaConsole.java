@@ -33,8 +33,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 
-import javax.imageio.ImageIO;
-
+import org.vate.VT;
 import org.vate.console.VTConsole;
 import org.vate.console.VTConsoleBooleanToggleNotify;
 import org.vate.console.VTConsoleImplementation;
@@ -604,25 +603,29 @@ public class VTLanternaConsole implements VTConsoleImplementation
         	//awtframe.setLocationByPlatform(true);
         	if (remoteIcon)
         	{
+        		//InputStream stream = this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png");
         		try
     			{
-    				frame.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/remote.png")));
+        			frame.setIconImage(VT.remoteIcon);
     			}
     			catch (Throwable t)
     			{
     				
     			}
+        		//stream.close();
         	}
         	else
         	{
+        		//InputStream stream = this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/terminal.png");
         		try
     			{
-        			frame.setIconImage(ImageIO.read(this.getClass().getResourceAsStream("/org/vate/console/graphical/resource/terminal.png")));
+        			frame.setIconImage(VT.terminalIcon);
     			}
     			catch (Throwable t)
     			{
     				
     			}
+        		//stream.close();
         	}
         	
         	frame.addWindowListener(new VTLanternaConsoleWindowListener(this));
