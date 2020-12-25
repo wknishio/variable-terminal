@@ -12,8 +12,8 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 
-import com.sixlegs.png.iio.PngImageReader;
-import com.sixlegs.png.iio.PngImageReaderSpi;
+//import com.sixlegs.png.iio.PngImageReader;
+//import com.sixlegs.png.iio.PngImageReaderSpi;
 
 public class VT
 {
@@ -192,34 +192,40 @@ public class VT
 	static
 	{
 		ImageIO.setUseCache(false);
-		PngImageReader reader = new PngImageReader(new PngImageReaderSpi());
+		//PngImageReader reader = new PngImageReader(new PngImageReaderSpi());
 		try
 		{
-			reader.setInput(ImageIO.createImageInputStream(VT.class.getResourceAsStream("/org/vate/console/graphical/resource/remote.png")), true, false);
-			remoteIcon = reader.read(0);
+			//reader.setInput(ImageIO.createImageInputStream(VT.class.getResourceAsStream("/org/vate/console/graphical/resource/remote.png")), true, false);
+			//remoteIcon = reader.read(0);
+			remoteIcon = ImageIO.read(VT.class.getResourceAsStream("/org/vate/console/graphical/resource/remote.png"));
 		}
 		catch (Throwable e)
 		{
+			//e.printStackTrace();
 			remoteIcon = null;
 		}
 		
 		try
 		{
-			reader.setInput(ImageIO.createImageInputStream(VT.class.getResourceAsStream("/org/vate/console/graphical/resource/terminal.png")), true, false);
-			terminalIcon = reader.read(0);
+			//reader.setInput(ImageIO.createImageInputStream(VT.class.getResourceAsStream("/org/vate/console/graphical/resource/terminal.png")), true, false);
+			//terminalIcon = reader.read(0);
+			terminalIcon = ImageIO.read(VT.class.getResourceAsStream("/org/vate/console/graphical/resource/terminal.png"));
 		}
 		catch (Throwable e)
 		{
+			//e.printStackTrace();
 			terminalIcon = null;
 		}
 		
 		try
 		{
-			reader.setInput(ImageIO.createImageInputStream(VT.class.getResourceAsStream("/org/vate/console/graphical/resource/desktop.png")), true, false);
-			desktopIcon = reader.read(0);
+			//reader.setInput(ImageIO.createImageInputStream(VT.class.getResourceAsStream("/org/vate/console/graphical/resource/desktop.png")), true, false);
+			//desktopIcon = reader.read(0);
+			desktopIcon = ImageIO.read(VT.class.getResourceAsStream("/org/vate/console/graphical/resource/desktop.png"));
 		}
 		catch (Throwable e)
 		{
+			//e.printStackTrace();
 			desktopIcon = null;
 		}
 	}
