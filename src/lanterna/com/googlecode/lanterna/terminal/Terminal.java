@@ -288,4 +288,6 @@ public interface Terminal extends InputProvider, Closeable {
      * @throws IOException If there was an underlying I/O error
      */
     void close() throws IOException;
+    
+    void putString(String string) throws IOException;
 }

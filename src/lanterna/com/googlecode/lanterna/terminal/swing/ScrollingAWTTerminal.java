@@ -322,4 +322,8 @@ public class ScrollingAWTTerminal extends Container implements IOSafeTerminal {
 	{
 		awtTerminal.setSelectionEndPosition(position);
 	}
+	
+	public void putString(String string) {
+        awtTerminal.putString(string);
+    }
 }

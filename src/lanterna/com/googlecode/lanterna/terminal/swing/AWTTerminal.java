@@ -407,4 +407,7 @@ public class AWTTerminal extends Panel implements IOSafeTerminal {
 		terminalImplementation.setSelectionEndPosition(position);
 	}
 
+	public void putString(String string) {
+        terminalImplementation.putString(string);
+    }
 }

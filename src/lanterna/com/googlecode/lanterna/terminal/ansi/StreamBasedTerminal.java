@@ -330,4 +330,10 @@ public abstract class StreamBasedTerminal extends AbstractTerminal {
     private byte[] convertToCharset(char input) {
         return terminalCharset.encode(Character.toString(input)).array();
     }
+    
+    public void putString(String string) throws IOException {
+        for (int i = 0; i < string.length(); i++) {
+            putCharacter(string.charAt(i));
+        }
+    }
 }

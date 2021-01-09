@@ -347,14 +347,14 @@ public class DefaultVirtualTerminal extends AbstractTerminal implements VirtualT
     }
 
     synchronized void putCharacter(TextCharacter terminalCharacter) {
-        if(terminalCharacter.getCharacter() == '\t') {
+        if(terminalCharacter.is('\t')) {
             int nrOfSpaces = TabBehaviour.ALIGN_TO_COLUMN_4.getTabReplacement(cursorPosition.getColumn()).length();
             for(int i = 0; i < nrOfSpaces && cursorPosition.getColumn() < terminalSize.getColumns() - 1; i++) {
                 putCharacter(terminalCharacter.withCharacter(' '));
             }
         }
         else {
-            boolean doubleWidth = TerminalTextUtils.isCharDoubleWidth(terminalCharacter.getCharacter());
+        	boolean doubleWidth = terminalCharacter.isDoubleWidth();
             // If we're at the last column and the user tries to print a double-width character, reset the cell and move
             // to the next line
             if(cursorPosition.getColumn() == terminalSize.getColumns() - 1 && doubleWidth) {
@@ -468,5 +468,12 @@ public class DefaultVirtualTerminal extends AbstractTerminal implements VirtualT
 	{
 		selectionEndPosition = position;
 	}
+	
+	public synchronized void putString(String string) {
+        //for (TextCharacter textCharacter: TextCharacter.fromString(string)) {
+        for (TextCharacter textCharacter: TextCharacter.fromString(string, activeForegroundColor, activeBackgroundColor, activeModifiers)) {
+            putCharacter(textCharacter);
+        }
+    }
 
 }

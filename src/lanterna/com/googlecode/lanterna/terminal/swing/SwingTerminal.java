@@ -389,4 +389,8 @@ public class SwingTerminal extends JComponent implements IOSafeTerminal {
 	{
 		terminalImplementation.setSelectionEndPosition(position);
 	}
+	
+	public void putString(String string) {
+        terminalImplementation.putString(string);
+    }
 }

@@ -413,4 +413,8 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
 	{
 		awtTerminal.setSelectionEndPosition(position);
 	}
+	
+	public void putString(String string) {
+        awtTerminal.putString(string);
+    }
 }

@@ -313,4 +313,8 @@ public class ScrollingSwingTerminal extends JComponent implements IOSafeTerminal
 	{
 		swingTerminal.setSelectionEndPosition(position);
 	}
+	
+	public void putString(String string) {
+        swingTerminal.putString(string);
+    }
 }

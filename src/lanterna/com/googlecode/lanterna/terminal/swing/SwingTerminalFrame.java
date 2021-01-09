@@ -360,4 +360,8 @@ public class SwingTerminalFrame extends JFrame implements IOSafeTerminal {
         }
         super.setVisible(visible);
     }
+    
+    public void putString(String string) {
+        swingTerminal.putString(string);
+    }
 }

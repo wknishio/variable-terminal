@@ -467,4 +467,12 @@ public class IOSafeTerminalAdapter implements IOSafeTerminal {
 		backend.setSelectionEndPosition(position);
 	}
 
+	public void putString(String string) {
+        try {
+            backend.putString(string);
+        }
+        catch(IOException e) {
+            exceptionHandler.onException(e);
+        }
+    }
 }

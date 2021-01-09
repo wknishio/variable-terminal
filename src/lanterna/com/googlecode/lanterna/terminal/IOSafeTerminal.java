@@ -74,4 +74,6 @@ public interface IOSafeTerminal extends Terminal {
     KeyStroke readInput();
     
     void close();
+    
+    void putString(String string);
 }

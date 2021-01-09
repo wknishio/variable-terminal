@@ -426,7 +426,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
                     if(!atCursorLocation &&
                             cursorPosition.getColumn() == column + 1 &&
                             cursorPosition.getRow() == rowNumber &&
-                            TerminalTextUtils.isCharCJK(textCharacter.getCharacter())) {
+                            textCharacter.isDoubleWidth()) {
                         atCursorLocation = true;
                     }
                     boolean isBlinking = textCharacter.getModifiers().contains(SGR.BLINK);
@@ -434,7 +434,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
                         foundBlinkingCharacters.set(true);
                     }
                     if(dirtyCellsLookupTable.isAllDirty() || dirtyCellsLookupTable.isDirty(rowNumber, column) || isBlinking) {
-                        int characterWidth = fontWidth * (TerminalTextUtils.isCharCJK(textCharacter.getCharacter()) ? 2 : 1);
+                    	int characterWidth = fontWidth * (textCharacter.isDoubleWidth() ? 2 : 1);
                         Color foregroundColor = deriveTrueForegroundColor(textCharacter, atCursorLocation);
                         Color backgroundColor = deriveTrueBackgroundColor(textCharacter, atCursorLocation);
                         boolean drawCursor = atCursorLocation &&
@@ -460,7 +460,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
                                 scrollOffsetFromTopInPixels,
                                 drawCursor);
                     }
-                    if(TerminalTextUtils.isCharCJK(textCharacter.getCharacter())) {
+                    if(textCharacter.isDoubleWidth()) {
                         column++; //Skip the trailing space after a CJK character
                     }
                 }
@@ -554,7 +554,8 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         Font font = getFontForCharacter(character);
         g.setFont(font);
         FontMetrics fontMetrics = g.getFontMetrics();
-        g.drawString(Character.toString(character.getCharacter()), x, y + fontHeight - fontMetrics.getDescent());
+        //g.drawString(Character.toString(character.getCharacter()), x, y + fontHeight - fontMetrics.getDescent());
+        g.drawString(character.getCharacterString(), x, y + fontHeight - fontMetrics.getDescent());
 
         if(character.isCrossedOut()) {
             //noinspection UnnecessaryLocalVariable
@@ -1174,4 +1175,8 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
 		}
 		return false;
 	}
+	
+	public void putString(String string) {
+        virtualTerminal.putString(string);
+    }
 }

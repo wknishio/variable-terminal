@@ -73,7 +73,7 @@ public class TextGraphicsWriter implements StyleSet<TextGraphicsWriter> {
                     flush(wordpart,wordlen); wordlen = 0;
                     backend.setCharacter(cursorPosition, ch);
                     cursorPosition = cursorPosition.withRelativeColumn(1);
-                } else if (TerminalTextUtils.isCharCJK(ch)) {
+                } else if (TerminalTextUtils.isCharDoubleWidth(ch)) {
                     flush(wordpart, wordlen); wordlen = 0;
                     linefeed(2);
                     backend.setCharacter(cursorPosition, ch);

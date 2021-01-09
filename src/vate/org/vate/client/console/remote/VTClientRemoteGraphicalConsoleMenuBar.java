@@ -25,8 +25,12 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 	private Menu sessionMenu;
 	private Menu consoleMenu;
 	private Menu fileSystemMenu;
-	private Menu clientFileSystemMenu;
-	private Menu serverFileSystemMenu;
+	private Menu zipFileMenu;
+	private Menu zipFileLocalMenu;
+	private Menu zipFileRemoteMenu;
+	private Menu remoteFileMenu;
+	private Menu remoteFileCheckMenu;
+	private Menu remoteFileModifyMenu;
 	private Menu fileTransferMenu;
 	private Menu serverGraphicalSystemsMenu;
 	private Menu serverGraphicsModeMenu;
@@ -117,11 +121,24 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		
 		fileSystemMenu = new Menu("File ");
 		fileTransferMenu = new Menu("File Transfer ");
-		clientFileSystemMenu = new Menu("Local Files ");
-		serverFileSystemMenu = new Menu("Remote Files ");
-		fileSystemMenu.add(serverFileSystemMenu);
-		fileSystemMenu.add(clientFileSystemMenu);
+		remoteFileMenu = new Menu("Remote Files ");
+		remoteFileCheckMenu = new Menu("Check Files ");
+		remoteFileModifyMenu = new Menu("Modify Files ");
+		zipFileMenu = new Menu("Zip Files ");
+		zipFileLocalMenu = new Menu("Local Zip Files ");
+		zipFileRemoteMenu = new Menu("Remote Zip Files ");
+		
+		remoteFileMenu.add(remoteFileCheckMenu);
+		remoteFileMenu.add(remoteFileModifyMenu);
+		
+		zipFileMenu.add(zipFileLocalMenu);
+		zipFileMenu.add(zipFileRemoteMenu);
+		zipFileMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTZIP\n"));
+		
+		fileSystemMenu.add(remoteFileMenu);
+		fileSystemMenu.add(zipFileMenu);
 		fileSystemMenu.add(fileTransferMenu);
+		
 		fileTransferMenu.add(new VTGraphicalConsoleMenuItem("Send File To Server", "*VTFILETRANSFER P"));
 		fileTransferMenu.add(new VTGraphicalConsoleMenuItem("Receive File From Server", "*VTFILETRANSFER G"));
 		fileTransferMenu.add(new VTGraphicalConsoleMenuItem("File Transfer Status", "*VTFILETRANSFER\n"));
@@ -130,27 +147,32 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 		// clientFileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("Set
 		// Working
 		// Directory", "*VTWORKDIRECTORY L "));
-		clientFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Compress Zip File", "*VTZIP L C "));
-		clientFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Uncompress Zip File", "*VTZIP L U "));
-		clientFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Decompress Zip File", "*VTZIP L D "));
-		clientFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Stop Zip Operation", "*VTZIP L S\n"));
 		// serverFileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("Set
 		// Working
 		// Directory", "*VTWORKDIRECTORY R "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("List File System Roots", "*VTFILECHECK L\n"));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Show File Information", "*VTFILECHECK I "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("List Directory Contents", "*VTFILECHECK L "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Stop File Inspection", "*VTFILECHECK S\n"));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Create Empty Directory", "*VTFILEMODIFY D "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Create Empty File", "*VTFILEMODIFY F "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Remove File", "*VTFILEMODIFY R "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Move File", "*VTFILEMODIFY M "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Copy File", "*VTFILEMODIFY C "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Stop File Modification", "*VTFILEMODIFY S\n"));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Compress Zip File", "*VTZIP R C "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Uncompress Zip File", "*VTZIP R U "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Decompress Zip File", "*VTZIP R D "));
-		serverFileSystemMenu.add(new VTGraphicalConsoleMenuItem("Stop Zip Operation", "*VTZIP R S\n"));
+		remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("List File System Roots", "*VTFILECHECK L\n"));
+		remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("Show File Information", "*VTFILECHECK I "));
+		remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("List Directory Contents", "*VTFILECHECK L "));
+		remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("Stop File Check", "*VTFILECHECK S\n"));
+		remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTFILECHECK\n"));
+		
+		remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Create Empty Directory", "*VTFILEMODIFY D "));
+		remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Create Empty File", "*VTFILEMODIFY F "));
+		remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Remove File", "*VTFILEMODIFY R "));
+		remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Move File", "*VTFILEMODIFY M "));
+		remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Copy File", "*VTFILEMODIFY C "));
+		remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Stop File Modification", "*VTFILEMODIFY S\n"));
+		remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTFILEMODIFY\n"));
+		
+		zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Compress Zip File", "*VTZIP L C "));
+		zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Uncompress Zip File", "*VTZIP L U "));
+		zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Decompress Zip File", "*VTZIP L D "));
+		zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Stop Zip Operation", "*VTZIP L S\n"));
+		
+		zipFileRemoteMenu.add(new VTGraphicalConsoleMenuItem("Compress Zip File", "*VTZIP R C "));
+		zipFileRemoteMenu.add(new VTGraphicalConsoleMenuItem("Uncompress Zip File", "*VTZIP R U "));
+		zipFileRemoteMenu.add(new VTGraphicalConsoleMenuItem("Decompress Zip File", "*VTZIP R D "));
+		zipFileRemoteMenu.add(new VTGraphicalConsoleMenuItem("Stop Zip Operation", "*VTZIP R S\n"));
 		
 		sessionMenu = new Menu("Session ");
 		sessionMenu.add(new VTGraphicalConsoleMenuItem("Disconnect From Server", "*VTEXIT\n"));
