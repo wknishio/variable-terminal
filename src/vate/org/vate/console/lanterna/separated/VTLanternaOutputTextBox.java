@@ -969,6 +969,36 @@ public class VTLanternaOutputTextBox extends TextBoxModified
 		if (getLineCount() >= 1)
 		{
 			String removed = lines.remove(0);
+			TerminalPosition selectionStart = getSelectionStartPosition();
+			TerminalPosition selectionEnd = getSelectionEndPosition();
+			if (selectionStart != null)
+			{
+				if (selectionStart.getRow() > 0)
+				{
+					setSelectionStartPosition(selectionStart.withRelativeRow(- 1));
+				}
+				else
+				{
+					setSelectionStartPosition(null);
+					setSelectionEndPosition(null);
+					selectionStart = null;
+					selectionEnd = null;
+				}
+			}
+			if (selectionEnd != null)
+			{
+				if (selectionEnd.getRow() > 0)
+				{
+					setSelectionEndPosition(selectionEnd.withRelativeRow(- 1));
+				}
+				else
+				{
+					setSelectionStartPosition(null);
+					setSelectionEndPosition(null);
+					selectionStart = null;
+					selectionEnd = null;
+				}
+			}
 			if (removed.length() >= longestRow)
 			{
 				longestRow = 80;
