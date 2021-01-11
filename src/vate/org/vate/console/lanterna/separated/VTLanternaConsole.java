@@ -88,7 +88,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	private volatile int commandHistoryPosition;
 	private List<String> inputLineBuffer = new LinkedList<String>();
 	private StringBuilder currentLineBuffer = new StringBuilder("");
-	private volatile Thread inputThread;
+	private volatile Thread currentThread;
 	//private volatile boolean readingLine = false;
 	private volatile boolean echoInput = true;
 	private volatile boolean readingInput = false;
@@ -1735,7 +1735,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	public String readLine(boolean echo) throws InterruptedException
 	{
 		//System.out.println("readLine()");
-		inputThread = Thread.currentThread();
+		currentThread = Thread.currentThread();
 		readingInput = true;
 		setEchoInput(echo);
 		String data = null;
@@ -1771,18 +1771,22 @@ public class VTLanternaConsole implements VTConsoleImplementation
 			}
 		}
 		readingInput = false;
+		currentThread = null;
 		return data;
 	}
 
 	public void interruptReadLine()
 	{
-		try
+		if (currentThread != null)
 		{
-			inputThread.interrupt();
-		}
-		catch (Throwable t)
-		{
-			
+			try
+			{
+				currentThread.interrupt();
+			}
+			catch (Throwable t)
+			{
+				
+			}
 		}
 	}
 
