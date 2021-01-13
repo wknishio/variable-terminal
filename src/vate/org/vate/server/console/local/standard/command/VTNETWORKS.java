@@ -61,7 +61,7 @@ public class VTNETWORKS extends VTServerStandardLocalConsoleCommandProcessor
 				{
 					InetAddress address = addresses.nextElement();
 					message.append("\nVT>Host address: [" + address.getHostAddress() + "]");
-					// "]\nVT>Host name: [" + address.getHostName() +
+					//"\nVT>Host name: [" + address.getCanonicalHostName() + "]\nVT>");
 					// "]\nVT>Canonical host name: [" +
 					// address.getCanonicalHostName() + "]");
 				}

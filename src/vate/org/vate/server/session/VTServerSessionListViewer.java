@@ -48,12 +48,13 @@ public class VTServerSessionListViewer extends VTTask
 					InetAddress address = handler.getConnection().getConnectionSocket().getInetAddress();
 					if (address != null)
 					{
-						message.append("\nVT>Host address: [" + address.getHostAddress() +
+						message.append("\nVT>Host address: [" + address.getHostAddress() + "]\nVT>");
+						// "\nVT>Host name: [" + address.getCanonicalHostName() + "]\nVT>");
 						// "]\nVT>Host name: [" + address.getHostName()
 						// +
 						// "]\nVT>Canonical host name: [" +
 						// address.getCanonicalHostName() +
-						"]\nVT>");
+						//"]\nVT>");
 					}
 				}
 			}
