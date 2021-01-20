@@ -47,7 +47,6 @@
 			<src path="src/rawconsoleinput"/>
 			<src path="src/snappy"/>
 			<src path="src/javapng"/>
-			<src path="src/aircompressor"/>
 			<src path="src/zstd-jni"/>
 			<classpath>
 				<fileset dir="lib">

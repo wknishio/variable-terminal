@@ -22,8 +22,8 @@ import com.jcraft.jzlib.DeflaterOutputStream;
 import com.jcraft.jzlib.InflaterInputStream;
 import com.jcraft.jzlib.JZlib;
 
-import io.airlift.compress.zstd.ZstdCompressor;
-import io.airlift.compress.zstd.ZstdDecompressor;
+//import io.airlift.compress.zstd.ZstdCompressor;
+//import io.airlift.compress.zstd.ZstdDecompressor;
 import net.jpountz.lz4.LZ4BlockInputStream;
 import net.jpountz.lz4.LZ4BlockOutputStream;
 import net.jpountz.lz4.LZ4Factory;
