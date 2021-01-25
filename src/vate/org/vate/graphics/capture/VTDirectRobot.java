@@ -7,13 +7,37 @@ import java.lang.reflect.*;
 
 public final class VTDirectRobot
 {
-	public VTDirectRobot() throws AWTException
+	public VTDirectRobot() throws Exception
 	{
 		this(null);
 	}
-
-	public VTDirectRobot(GraphicsDevice device) throws AWTException
+	
+	public static void disableAccessWarnings()
 	{
+        try
+        {
+            Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
+            Field field = unsafeClass.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            Object unsafe = field.get(null);
+
+            Method putObjectVolatile = unsafeClass.getDeclaredMethod("putObjectVolatile", Object.class, long.class, Object.class);
+            Method staticFieldOffset = unsafeClass.getDeclaredMethod("staticFieldOffset", Field.class);
+
+            Class<?> loggerClass = Class.forName("jdk.internal.module.IllegalAccessLogger");
+            Field loggerField = loggerClass.getDeclaredField("logger");
+            Long offset = (Long) staticFieldOffset.invoke(unsafe, loggerField);
+            putObjectVolatile.invoke(unsafe, loggerClass, offset, null);
+        }
+        catch (Exception ignored)
+        {
+        	
+        }
+    }
+
+	public VTDirectRobot(GraphicsDevice device) throws Exception
+	{
+		disableAccessWarnings();
 		if (device == null)
 		{
 			device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -21,7 +45,71 @@ public final class VTDirectRobot
 
 		this.device = device;
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		peer = ((ComponentFactory) toolkit).createRobot(null, device);
+		
+		ComponentFactory cp = ((ComponentFactory) toolkit);
+		Method createRobot = null;
+		try
+		{
+			createRobot = cp.getClass().getDeclaredMethod("createRobot", Robot.class, GraphicsDevice.class);
+			
+		}
+		catch (NoSuchMethodException e)
+		{
+			try
+			{
+				createRobot = cp.getClass().getDeclaredMethod("createRobot", GraphicsDevice.class);
+				
+			}
+			catch (NoSuchMethodException e1)
+			{
+				//e1.printStackTrace();
+			}
+			
+		}
+		
+		if (createRobot.getParameterCount() == 1)
+		{
+			try
+			{
+				createRobot.setAccessible(true);
+				peer = (RobotPeer) createRobot.invoke(toolkit, device);
+			}
+			catch (IllegalAccessException e)
+			{
+				peer = null;
+			}
+			catch (IllegalArgumentException e)
+			{
+				peer = null;
+			}
+			catch (InvocationTargetException e)
+			{
+				peer = null;
+			}
+		}
+		else
+		{
+			try
+			{
+				createRobot.setAccessible(true);
+				peer = (RobotPeer) createRobot.invoke(toolkit, null, device);
+			}
+			catch (IllegalAccessException e)
+			{
+				peer = null;
+			}
+			catch (IllegalArgumentException e)
+			{
+				peer = null;
+			}
+			catch (InvocationTargetException e)
+			{
+				peer = null;
+			}
+		}
+		//peer = ((ComponentFactory) toolkit).createRobot(null, device);
+		
+		
 		Class<?> peerClass = peer.getClass();
 		Method method = null;
 		int methodType = -1;
@@ -335,7 +423,7 @@ public final class VTDirectRobot
 	}
 	
 	public final GraphicsDevice device;
-	private final RobotPeer peer;
+	private RobotPeer peer;
 
 	private Object getRGBPixelsMethodParam;
 	private int getRGBPixelsMethodType;

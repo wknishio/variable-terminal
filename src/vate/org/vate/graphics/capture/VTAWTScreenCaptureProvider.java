@@ -409,7 +409,14 @@ public final class VTAWTScreenCaptureProvider
 				if (device != null)
 				{
 					standardCaptureRobot = new Robot(device);
-					directCaptureRobot = new VTDirectRobot(device);
+					try
+					{
+						directCaptureRobot = new VTDirectRobot(device);
+					}
+					catch (Throwable t)
+					{
+						
+					}
 				}
 				else
 				{
@@ -432,12 +439,26 @@ public final class VTAWTScreenCaptureProvider
 					if (topleft != null)
 					{
 						standardCaptureRobot = new Robot(topleft);
-						directCaptureRobot = new VTDirectRobot(topleft);
+						try
+						{
+							directCaptureRobot = new VTDirectRobot(topleft);
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 					else
 					{
 						standardCaptureRobot = new Robot();
-						directCaptureRobot = new VTDirectRobot();
+						try
+						{
+							directCaptureRobot = new VTDirectRobot();
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 				}
 				standardCaptureRobot.setAutoDelay(0);
@@ -482,7 +503,14 @@ public final class VTAWTScreenCaptureProvider
 				if (device != null)
 				{
 					standardCaptureRobot = new Robot(device);
-					directCaptureRobot = new VTDirectRobot(device);
+					try
+					{
+						directCaptureRobot = new VTDirectRobot(device);
+					}
+					catch (Throwable t)
+					{
+						
+					}
 				}
 				else
 				{
@@ -505,12 +533,26 @@ public final class VTAWTScreenCaptureProvider
 					if (topleft != null)
 					{
 						standardCaptureRobot = new Robot(topleft);
-						directCaptureRobot = new VTDirectRobot(topleft);
+						try
+						{
+							directCaptureRobot = new VTDirectRobot(topleft);
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 					else
 					{
 						standardCaptureRobot = new Robot();
-						directCaptureRobot = new VTDirectRobot();
+						try
+						{
+							directCaptureRobot = new VTDirectRobot();
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 				}
 				standardCaptureRobot.setAutoDelay(0);
@@ -555,7 +597,14 @@ public final class VTAWTScreenCaptureProvider
 				if (device != null)
 				{
 					standardCaptureRobot = new Robot(device);
-					directCaptureRobot = new VTDirectRobot(device);
+					try
+					{
+						directCaptureRobot = new VTDirectRobot(device);
+					}
+					catch (Throwable t)
+					{
+						
+					}
 				}
 				else
 				{
@@ -578,12 +627,26 @@ public final class VTAWTScreenCaptureProvider
 					if (topleft != null)
 					{
 						standardCaptureRobot = new Robot(topleft);
-						directCaptureRobot = new VTDirectRobot(topleft);
+						try
+						{
+							directCaptureRobot = new VTDirectRobot(topleft);
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 					else
 					{
 						standardCaptureRobot = new Robot();
-						directCaptureRobot = new VTDirectRobot();
+						try
+						{
+							directCaptureRobot = new VTDirectRobot();
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 				}
 				standardCaptureRobot.setAutoDelay(0);
@@ -628,7 +691,14 @@ public final class VTAWTScreenCaptureProvider
 				if (device != null)
 				{
 					standardCaptureRobot = new Robot(device);
-					directCaptureRobot = new VTDirectRobot(device);
+					try
+					{
+						directCaptureRobot = new VTDirectRobot(device);
+					}
+					catch (Throwable t)
+					{
+						
+					}
 				}
 				else
 				{
@@ -651,12 +721,26 @@ public final class VTAWTScreenCaptureProvider
 					if (topleft != null)
 					{
 						standardCaptureRobot = new Robot(topleft);
-						directCaptureRobot = new VTDirectRobot(topleft);
+						try
+						{
+							directCaptureRobot = new VTDirectRobot(topleft);
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 					else
 					{
 						standardCaptureRobot = new Robot();
-						directCaptureRobot = new VTDirectRobot();
+						try
+						{
+							directCaptureRobot = new VTDirectRobot();
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 				}
 				standardCaptureRobot.setAutoDelay(0);
@@ -701,7 +785,14 @@ public final class VTAWTScreenCaptureProvider
 				if (device != null)
 				{
 					standardCaptureRobot = new Robot(device);
-					directCaptureRobot = new VTDirectRobot(device);
+					try
+					{
+						directCaptureRobot = new VTDirectRobot(device);
+					}
+					catch (Throwable t)
+					{
+						
+					}
 				}
 				else
 				{
@@ -724,12 +815,26 @@ public final class VTAWTScreenCaptureProvider
 					if (topleft != null)
 					{
 						standardCaptureRobot = new Robot(topleft);
-						directCaptureRobot = new VTDirectRobot(topleft);
+						try
+						{
+							directCaptureRobot = new VTDirectRobot(topleft);
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 					else
 					{
 						standardCaptureRobot = new Robot();
-						directCaptureRobot = new VTDirectRobot();
+						try
+						{
+							directCaptureRobot = new VTDirectRobot();
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 				}
 				standardCaptureRobot.setAutoDelay(0);
@@ -774,7 +879,14 @@ public final class VTAWTScreenCaptureProvider
 				if (device != null)
 				{
 					standardCaptureRobot = new Robot(device);
-					directCaptureRobot = new VTDirectRobot(device);
+					try
+					{
+						directCaptureRobot = new VTDirectRobot(device);
+					}
+					catch (Throwable t)
+					{
+						
+					}
 				}
 				else
 				{
@@ -797,12 +909,26 @@ public final class VTAWTScreenCaptureProvider
 					if (topleft != null)
 					{
 						standardCaptureRobot = new Robot(topleft);
-						directCaptureRobot = new VTDirectRobot(topleft);
+						try
+						{
+							directCaptureRobot = new VTDirectRobot(topleft);
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 					else
 					{
 						standardCaptureRobot = new Robot();
-						directCaptureRobot = new VTDirectRobot();
+						try
+						{
+							directCaptureRobot = new VTDirectRobot();
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 				}
 				standardCaptureRobot.setAutoDelay(0);
@@ -847,7 +973,14 @@ public final class VTAWTScreenCaptureProvider
 				if (device != null)
 				{
 					standardCaptureRobot = new Robot(device);
-					directCaptureRobot = new VTDirectRobot(device);
+					try
+					{
+						directCaptureRobot = new VTDirectRobot(device);
+					}
+					catch (Throwable t)
+					{
+						
+					}
 				}
 				else
 				{
@@ -870,12 +1003,26 @@ public final class VTAWTScreenCaptureProvider
 					if (topleft != null)
 					{
 						standardCaptureRobot = new Robot(topleft);
-						directCaptureRobot = new VTDirectRobot(topleft);
+						try
+						{
+							directCaptureRobot = new VTDirectRobot(topleft);
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 					else
 					{
 						standardCaptureRobot = new Robot();
-						directCaptureRobot = new VTDirectRobot();
+						try
+						{
+							directCaptureRobot = new VTDirectRobot();
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 				}
 				standardCaptureRobot.setAutoDelay(0);
@@ -920,7 +1067,14 @@ public final class VTAWTScreenCaptureProvider
 				if (device != null)
 				{
 					standardCaptureRobot = new Robot(device);
-					directCaptureRobot = new VTDirectRobot(device);
+					try
+					{
+						directCaptureRobot = new VTDirectRobot(device);
+					}
+					catch (Throwable t)
+					{
+						
+					}
 				}
 				else
 				{
@@ -943,12 +1097,26 @@ public final class VTAWTScreenCaptureProvider
 					if (topleft != null)
 					{
 						standardCaptureRobot = new Robot(topleft);
-						directCaptureRobot = new VTDirectRobot(topleft);
+						try
+						{
+							directCaptureRobot = new VTDirectRobot(topleft);
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 					else
 					{
 						standardCaptureRobot = new Robot();
-						directCaptureRobot = new VTDirectRobot();
+						try
+						{
+							directCaptureRobot = new VTDirectRobot();
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 				}
 				standardCaptureRobot.setAutoDelay(0);
@@ -993,7 +1161,14 @@ public final class VTAWTScreenCaptureProvider
 				if (device != null)
 				{
 					standardCaptureRobot = new Robot(device);
-					directCaptureRobot = new VTDirectRobot(device);
+					try
+					{
+						directCaptureRobot = new VTDirectRobot(device);
+					}
+					catch (Throwable t)
+					{
+						
+					}
 				}
 				else
 				{
@@ -1016,12 +1191,26 @@ public final class VTAWTScreenCaptureProvider
 					if (topleft != null)
 					{
 						standardCaptureRobot = new Robot(topleft);
-						directCaptureRobot = new VTDirectRobot(topleft);
+						try
+						{
+							directCaptureRobot = new VTDirectRobot(topleft);
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 					else
 					{
 						standardCaptureRobot = new Robot();
-						directCaptureRobot = new VTDirectRobot();
+						try
+						{
+							directCaptureRobot = new VTDirectRobot();
+						}
+						catch (Throwable t)
+						{
+							
+						}
 					}
 				}
 				standardCaptureRobot.setAutoDelay(0);

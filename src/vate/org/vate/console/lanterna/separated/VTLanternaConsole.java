@@ -561,7 +561,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 	
 	public void build() throws Exception
 	{
-		AWTTerminalFontConfiguration.setFontScalingFactor(VTGlobalTextStyleManager.FONT_SCALING_FACTOR);
+		AWTTerminalFontConfiguration.setFontScalingFactor(VTGlobalTextStyleManager.FONT_SCALING_FACTOR_MONOSPACED);
 		DefaultTerminalFactory factory = new DefaultTerminalFactory();
 		factory.setForceAWTOverSwing(true);
 		//factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);

@@ -30,64 +30,87 @@ public class VTGlobalTextStyleManager
 	private static final List<List<Font>> lists = new LinkedList<List<Font>>();
 	private static final List<List<Font>> defaultlists = new LinkedList<List<Font>>();
 	
-	public static double FONT_SCALING_FACTOR;
+	public static double FONT_SCALING_FACTOR_WINDOW;
+	public static double FONT_SCALING_FACTOR_MONOSPACED;
 	
-	static
+	public static void checkScaling()
 	{
-		FONT_SCALING_FACTOR = 1;
+		System.setProperty("sun.java2d.dpiaware", "false");
+		System.setProperty("sun.java2d.ddscale", "false");
+		System.setProperty("sun.java2d.uiScale.enabled", "false");
+		System.setProperty("sun.java2d.uiScale", "1.0");
+		FONT_SCALING_FACTOR_WINDOW = 1;
+		FONT_SCALING_FACTOR_MONOSPACED = 1;
 		try
 		{
 			Class<?> runtime = Class.forName("java.lang.Runtime");
-			Method version = runtime.getMethod("version", (Class<?>)null);
+			Method version = runtime.getMethod("version");
 			version.toString();
+			//System.out.println("java > 9 detected!");
 			//boolean java9 = version.invoke(Runtime.getRuntime(), null) instanceof Object;
 			//if (java9)
 			//{
 				
 			//}
-			//in java 9 and beyond font size scaling for hidpi displays is done by jvm
+			//in java 9 and beyond font size scaling for hidpi displays is done by jvm, but we override the scaling
 		}
 		catch (Throwable t)
 		{
+			//System.out.println("java < 9 detected!");
 			//java 8 or lesser detected, try to detect font dpi settings and scale accordingly
-			try
+			
+		}
+		
+		try
+		{
+			if (Platform.isWindows())
 			{
-				if (Platform.isWindows())
+				FONT_SCALING_FACTOR_WINDOW = (Math.max(1.0, Toolkit.getDefaultToolkit().getScreenResolution() / 96.0));
+				if (FONT_SCALING_FACTOR_WINDOW > 1.0)
 				{
-					FONT_SCALING_FACTOR = (Math.max(1.0, Toolkit.getDefaultToolkit().getScreenResolution() / 96.0));
-					if (FONT_SCALING_FACTOR > 1.0)
-					{
-						FONT_SCALING_FACTOR = FONT_SCALING_FACTOR * (7d / 6d);
-					}
-					//if (FONT_SCALING_FACTOR > 1.0)
-					//{
-						//FONT_SCALING_FACTOR = FONT_SCALING_FACTOR * (1.0 + (1.0 / 4.0));
-					//}
+					//FONT_SCALING_FACTOR = FONT_SCALING_FACTOR * (7d / 6d);
+					FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW * (7d / 6d);
+					//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW;
+					//FONT_SCALING_FACTOR_MONOSPACED = (Math.max(1.0, Toolkit.getDefaultToolkit().getScreenResolution() / 72.0));
 				}
 				else
 				{
-					try
-					{
-						UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-					}
-					catch (Throwable t1)
-					{
-						
-					}
-					FONT_SCALING_FACTOR = (Math.max(1.0, new JLabel().getFont().getSize2D() / 15.0));
+					FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW;
 				}
+				//if (FONT_SCALING_FACTOR > 1.0)
+				//{
+					//FONT_SCALING_FACTOR = FONT_SCALING_FACTOR * (1.0 + (1.0 / 4.0));
+				//}
 			}
-			catch (Throwable t1)
+			else
 			{
-				
+				try
+				{
+					UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+				}
+				catch (Throwable t1)
+				{
+					
+				}
+				FONT_SCALING_FACTOR_WINDOW = (Math.max(1.0, new JLabel().getFont().getSize2D() / 15.0));
+				FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW;
 			}
 		}
-		
+		catch (Throwable t1)
+		{
+			
+		}
+	}
+	
+	static
+	{
+		checkScaling();
 		//AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
 	}
 	
-	private static volatile Font windowFont = Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog 12").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
-	private static volatile Font monospacedFont = Font.decode("Monospaced").deriveFont((float) ((((Font.decode("Monospaced 12").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
+	private static volatile Font windowFont = Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog").getSize2D()) + (FONT_SCALING_FACTOR_WINDOW > 0 ? 0 : 0)) * FONT_SCALING_FACTOR_WINDOW) + (FONT_SCALING_FACTOR_WINDOW > 0 ? 0 : 0)));
+	//private static volatile Font windowFont = Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog 12").getSize2D())))));
+	private static volatile Font monospacedFont = Font.decode("Monospaced").deriveFont((float) ((((Font.decode("Monospaced").getSize2D()) + (FONT_SCALING_FACTOR_MONOSPACED > 0 ? 0 : 0)) * FONT_SCALING_FACTOR_MONOSPACED) + (FONT_SCALING_FACTOR_MONOSPACED > 0 ? 0 : 0)));
 	private static float defaultWindowFontSize = windowFont.getSize2D();
 	//private static float defaultWindowFontSize = (float) (12.0 * FONT_SCALING_FACTOR);
 	private static float defaultMonospacedFontSize = monospacedFont.getSize2D();

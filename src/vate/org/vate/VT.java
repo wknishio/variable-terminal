@@ -12,6 +12,8 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 
+import org.vate.graphics.font.VTGlobalTextStyleManager;
+
 //import com.sixlegs.png.iio.PngImageReader;
 //import com.sixlegs.png.iio.PngImageReaderSpi;
 
@@ -194,6 +196,7 @@ public class VT
 	
 	static
 	{
+		VTGlobalTextStyleManager.checkScaling();
 		ImageIO.setUseCache(false);
 		//PngImageReader reader = new PngImageReader(new PngImageReaderSpi());
 		try

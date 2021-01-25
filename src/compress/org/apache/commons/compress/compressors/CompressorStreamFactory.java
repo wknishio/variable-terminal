@@ -33,8 +33,8 @@ import org.apache.commons.compress.compressors.lzma.LZMAUtils;
 import org.apache.commons.compress.compressors.xz.XZCompressorInputStream;
 import org.apache.commons.compress.compressors.xz.XZCompressorOutputStream;
 import org.apache.commons.compress.compressors.xz.XZUtils;
-import org.apache.commons.compress.compressors.pack200.Pack200CompressorInputStream;
-import org.apache.commons.compress.compressors.pack200.Pack200CompressorOutputStream;
+//import org.apache.commons.compress.compressors.pack200.Pack200CompressorInputStream;
+//import org.apache.commons.compress.compressors.pack200.Pack200CompressorOutputStream;
 import org.apache.commons.compress.compressors.snappy.FramedSnappyCompressorInputStream;
 import org.apache.commons.compress.compressors.snappy.SnappyCompressorInputStream;
 import org.apache.commons.compress.compressors.z.ZCompressorInputStream;
@@ -225,9 +225,9 @@ public class CompressorStreamFactory {
                 return new GzipCompressorInputStream(in, decompressConcatenated);
             }
 
-            if (Pack200CompressorInputStream.matches(signature, signatureLength)) {
-                return new Pack200CompressorInputStream(in);
-            }
+            //if (Pack200CompressorInputStream.matches(signature, signatureLength)) {
+                //return new Pack200CompressorInputStream(in);
+            //}
 
             if (FramedSnappyCompressorInputStream.matches(signature, signatureLength)) {
                 return new FramedSnappyCompressorInputStream(in);
@@ -295,9 +295,9 @@ public class CompressorStreamFactory {
                 return new LZMACompressorInputStream(in);
             }
 
-            if (PACK200.equalsIgnoreCase(name)) {
-                return new Pack200CompressorInputStream(in);
-            }
+            //if (PACK200.equalsIgnoreCase(name)) {
+                //return new Pack200CompressorInputStream(in);
+            //}
 
             if (SNAPPY_RAW.equalsIgnoreCase(name)) {
                 return new SnappyCompressorInputStream(in);
@@ -355,9 +355,9 @@ public class CompressorStreamFactory {
                 return new XZCompressorOutputStream(out);
             }
 
-            if (PACK200.equalsIgnoreCase(name)) {
-                return new Pack200CompressorOutputStream(out);
-            }
+            //if (PACK200.equalsIgnoreCase(name)) {
+                //return new Pack200CompressorOutputStream(out);
+            //}
 
             if (DEFLATE.equalsIgnoreCase(name)) {
                 return new DeflateCompressorOutputStream(out);

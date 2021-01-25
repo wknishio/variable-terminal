@@ -135,6 +135,7 @@ public class VTReflectionUtils
 		return createClassInstancesFromClasses(findClassesFromNames(findClassNamesFromPackage(pkg)));
 	}
 	
+	@SuppressWarnings("all")
 	public static final Set<Object> createClassInstancesFromClasses(Set<Class<?>> classes)
 	{
 		Set<Object> instances = new LinkedHashSet<Object>();
