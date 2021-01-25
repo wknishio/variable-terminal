@@ -18,6 +18,7 @@ import javax.swing.UIManager;
 
 import org.vate.compatibility.VTArrays;
 import org.vate.console.VTConsole;
+
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
 import com.sun.jna.Platform;
 
@@ -33,12 +34,14 @@ public class VTGlobalTextStyleManager
 	public static double FONT_SCALING_FACTOR_WINDOW;
 	public static double FONT_SCALING_FACTOR_MONOSPACED;
 	
+	private static boolean checked = false;
+	
 	public static void checkScaling()
 	{
-		System.setProperty("sun.java2d.dpiaware", "false");
-		System.setProperty("sun.java2d.ddscale", "false");
-		System.setProperty("sun.java2d.uiScale.enabled", "false");
-		System.setProperty("sun.java2d.uiScale", "1.0");
+		if (checked)
+		{
+			return;
+		}
 		FONT_SCALING_FACTOR_WINDOW = 1;
 		FONT_SCALING_FACTOR_MONOSPACED = 1;
 		try
@@ -66,22 +69,23 @@ public class VTGlobalTextStyleManager
 			if (Platform.isWindows())
 			{
 				FONT_SCALING_FACTOR_WINDOW = (Math.max(1.0, Toolkit.getDefaultToolkit().getScreenResolution() / 96.0));
-				if (FONT_SCALING_FACTOR_WINDOW > 1.0)
-				{
+				//if (FONT_SCALING_FACTOR_WINDOW > 1.0)
+				//{
 					//FONT_SCALING_FACTOR = FONT_SCALING_FACTOR * (7d / 6d);
 					//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW * (7d / 6d);
-					FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW;
+					//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW;
 					//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW;
 					//FONT_SCALING_FACTOR_MONOSPACED = (Math.max(1.0, Toolkit.getDefaultToolkit().getScreenResolution() / 72.0));
-				}
-				else
-				{
-					FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW;
-				}
+				//}
+				//else
+				//{
+					//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW;
+				//}
 				//if (FONT_SCALING_FACTOR > 1.0)
 				//{
 					//FONT_SCALING_FACTOR = FONT_SCALING_FACTOR * (1.0 + (1.0 / 4.0));
 				//}
+				FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW * (7d / 6d);
 			}
 			else
 			{
@@ -101,6 +105,11 @@ public class VTGlobalTextStyleManager
 		{
 			
 		}
+		System.setProperty("sun.java2d.dpiaware", "false");
+		System.setProperty("sun.java2d.ddscale", "false");
+		System.setProperty("sun.java2d.uiScale.enabled", "false");
+		System.setProperty("sun.java2d.uiScale", "1.0");
+		checked = true;
 	}
 	
 	static
