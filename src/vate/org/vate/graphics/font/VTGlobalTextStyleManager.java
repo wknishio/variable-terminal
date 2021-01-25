@@ -86,11 +86,13 @@ public class VTGlobalTextStyleManager
 		//AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
 	}
 	
-	private static volatile Font windowFont = Font.decode("Serif").deriveFont((float) ((((Font.decode("Serif 12").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
+	private static volatile Font windowFont = Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog 12").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
 	private static volatile Font monospacedFont = Font.decode("Monospaced").deriveFont((float) ((((Font.decode("Monospaced 12").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
 	private static float defaultWindowFontSize = windowFont.getSize2D();
+	//private static float defaultWindowFontSize = (float) (12.0 * FONT_SCALING_FACTOR);
 	private static float defaultMonospacedFontSize = monospacedFont.getSize2D();
 	private static volatile boolean fontStyleBold = false;
+	//private static float windowFontSize = defaultWindowFontSize;
 	//private static List<Font> monospacedFonts;
 	//private static int currentMonospacedFontIndex = 0;
 	
@@ -169,6 +171,7 @@ public class VTGlobalTextStyleManager
 	public static void registerTextComponent(Component component)
 	{
 		component.setFont(windowFont);
+		//component.setFont(component.getFont().deriveFont(windowFontSize));
 		texts.add(component);
 	}
 	
@@ -180,6 +183,7 @@ public class VTGlobalTextStyleManager
 	public static void registerWindow(Window window)
 	{
 		window.setFont(windowFont);
+		//window.setFont(window.getFont().deriveFont(windowFontSize));
 		windows.add(window);
 	}
 	
@@ -219,6 +223,7 @@ public class VTGlobalTextStyleManager
 		//System.out.println("defaultWindowFontSize:" + defaultWindowFontSize);
 		fontStyleBold = false;
 		monospacedFont = monospacedFont.deriveFont(defaultMonospacedFontSize).deriveFont(Font.PLAIN);
+		//windowFontSize = defaultWindowFontSize;
 		windowFont = windowFont.deriveFont(defaultWindowFontSize).deriveFont(Font.PLAIN);
 		//plainScaleds();
 		defaultLists();
@@ -255,6 +260,7 @@ public class VTGlobalTextStyleManager
 	{
 		monospacedFont = monospacedFont.deriveFont((float) (monospacedFont.getSize2D() + 1));
 		windowFont = windowFont.deriveFont((float) (windowFont.getSize2D() + 1));
+		//windowFontSize = windowFontSize + 1;
 		increaseScaleds();
 		increaseLists();
 		updateComponents(false);
@@ -264,6 +270,7 @@ public class VTGlobalTextStyleManager
 	{
 		monospacedFont = monospacedFont.deriveFont((float) (monospacedFont.getSize2D() - 1));
 		windowFont = windowFont.deriveFont((float) (windowFont.getSize2D() - 1));
+		//windowFontSize = windowFontSize - 1;
 		decreaseScaleds();
 		decreaseLists();
 		updateComponents(false);
@@ -385,6 +392,7 @@ public class VTGlobalTextStyleManager
 			try
 			{
 				component.setFont(windowFont);
+				//component.setFont(component.getFont().deriveFont(windowFontSize));
 			}
 			catch (Throwable t)
 			{
@@ -396,6 +404,7 @@ public class VTGlobalTextStyleManager
 			try
 			{
 				window.setFont(windowFont);
+				//window.setFont(window.getFont().deriveFont(windowFontSize));
 				if (window instanceof Frame)
 				{
 					Frame frame = (Frame) window;
@@ -405,6 +414,7 @@ public class VTGlobalTextStyleManager
 					if (menubar != null)
 					{
 						menubar.setFont(windowFont);
+						//menubar.setFont(menubar.getFont().deriveFont(windowFontSize));
 					}
 					frame.setMenuBar(null);
 					frame.setMenuBar(menubar);
