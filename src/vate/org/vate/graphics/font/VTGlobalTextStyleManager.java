@@ -69,7 +69,8 @@ public class VTGlobalTextStyleManager
 				if (FONT_SCALING_FACTOR_WINDOW > 1.0)
 				{
 					//FONT_SCALING_FACTOR = FONT_SCALING_FACTOR * (7d / 6d);
-					FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW * (7d / 6d);
+					//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW * (7d / 6d);
+					FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW;
 					//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW;
 					//FONT_SCALING_FACTOR_MONOSPACED = (Math.max(1.0, Toolkit.getDefaultToolkit().getScreenResolution() / 72.0));
 				}
@@ -108,9 +109,9 @@ public class VTGlobalTextStyleManager
 		//AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
 	}
 	
-	private static volatile Font windowFont = Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog").getSize2D()) + (FONT_SCALING_FACTOR_WINDOW > 0 ? 0 : 0)) * FONT_SCALING_FACTOR_WINDOW) + (FONT_SCALING_FACTOR_WINDOW > 0 ? 0 : 0)));
+	private static volatile Font windowFont = Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog 12").getSize2D()) + (FONT_SCALING_FACTOR_WINDOW > 0 ? 0 : 0)) * FONT_SCALING_FACTOR_WINDOW) + (FONT_SCALING_FACTOR_WINDOW > 0 ? 0 : 0)));
 	//private static volatile Font windowFont = Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog 12").getSize2D())))));
-	private static volatile Font monospacedFont = Font.decode("Monospaced").deriveFont((float) ((((Font.decode("Monospaced").getSize2D()) + (FONT_SCALING_FACTOR_MONOSPACED > 0 ? 0 : 0)) * FONT_SCALING_FACTOR_MONOSPACED) + (FONT_SCALING_FACTOR_MONOSPACED > 0 ? 0 : 0)));
+	private static volatile Font monospacedFont = Font.decode("Monospaced").deriveFont((float) ((((Font.decode("Monospaced 12").getSize2D()) + (FONT_SCALING_FACTOR_MONOSPACED > 0 ? 0 : 0)) * FONT_SCALING_FACTOR_MONOSPACED) + (FONT_SCALING_FACTOR_MONOSPACED > 0 ? 0 : 0)));
 	private static float defaultWindowFontSize = windowFont.getSize2D();
 	//private static float defaultWindowFontSize = (float) (12.0 * FONT_SCALING_FACTOR);
 	private static float defaultMonospacedFontSize = monospacedFont.getSize2D();
