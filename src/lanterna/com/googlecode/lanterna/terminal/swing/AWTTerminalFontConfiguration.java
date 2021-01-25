@@ -131,7 +131,7 @@ public class AWTTerminalFontConfiguration {
     // Here we check the screen resolution on the primary monitor and make a guess at if it's high-DPI or not
     private static int getFontSize() {
     	
-        int baseFontSize = 12;
+        int baseFontSize = 14;
         //System.out.println("getFontSize():" + (int)(baseFontSize * FONT_SCALING_FACTOR));
         return (int) (baseFontSize * FONT_SCALING_FACTOR);
 //        String[] javaVersion = System.getProperty("java.version", "1").split("\\.");
