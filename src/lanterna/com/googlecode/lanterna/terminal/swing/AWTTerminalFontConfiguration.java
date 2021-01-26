@@ -84,8 +84,8 @@ public class AWTTerminalFontConfiguration {
         //return fonts;
         //Monospaced can look pretty bad on Windows, so let's override it
         return (Arrays.asList(
-                new Font("Courier New", Font.PLAIN, fontSize),
-                new Font("Consolas", Font.PLAIN, fontSize),
+                //new Font("Courier New", Font.PLAIN, fontSize),
+                //new Font("Consolas", Font.PLAIN, fontSize),
                 new Font("Monospaced", Font.PLAIN, fontSize)
                 ));
     }
@@ -111,7 +111,8 @@ public class AWTTerminalFontConfiguration {
                 new Font("WenQuanYi Zen Hei", Font.PLAIN, fontSize),
                 new Font("AR PL UMing TW", Font.PLAIN, fontSize),
                 new Font("AR PL UMing HK", Font.PLAIN, fontSize),
-                new Font("AR PL UMing CN", Font.PLAIN, fontSize)));
+                new Font("AR PL UMing CN", Font.PLAIN, fontSize)
+        ));
     }
 
     private static List<Font> getDefaultFonts() {
@@ -131,7 +132,7 @@ public class AWTTerminalFontConfiguration {
     // Here we check the screen resolution on the primary monitor and make a guess at if it's high-DPI or not
     private static int getFontSize() {
     	
-        int baseFontSize = 14;
+        int baseFontSize = 12;
         //System.out.println("getFontSize():" + (int)(baseFontSize * FONT_SCALING_FACTOR));
         return (int) (baseFontSize * FONT_SCALING_FACTOR);
 //        String[] javaVersion = System.getProperty("java.version", "1").split("\\.");

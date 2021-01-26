@@ -31,8 +31,8 @@ public class VTGlobalTextStyleManager
 	private static final List<List<Font>> lists = new LinkedList<List<Font>>();
 	private static final List<List<Font>> defaultlists = new LinkedList<List<Font>>();
 	
-	public static double FONT_SCALING_FACTOR;
-	//public static double FONT_SCALING_FACTOR_MONOSPACED;
+	public static double FONT_SCALING_FACTOR_DIALOG;
+	public static double FONT_SCALING_FACTOR_MONOSPACED;
 	
 	private static boolean checked = false;
 	
@@ -42,8 +42,8 @@ public class VTGlobalTextStyleManager
 		{
 			return;
 		}
-		FONT_SCALING_FACTOR = 1;
-		//FONT_SCALING_FACTOR_MONOSPACED = 1;
+		FONT_SCALING_FACTOR_DIALOG = 1;
+		FONT_SCALING_FACTOR_MONOSPACED = 1;
 		try
 		{
 			Class<?> runtime = Class.forName("java.lang.Runtime");
@@ -68,24 +68,13 @@ public class VTGlobalTextStyleManager
 		{
 			if (Platform.isWindows())
 			{
-				FONT_SCALING_FACTOR = (Math.max(1.0, Toolkit.getDefaultToolkit().getScreenResolution() / 96.0));
-				//if (FONT_SCALING_FACTOR_WINDOW > 1.0)
+				FONT_SCALING_FACTOR_DIALOG = (Math.max(1.0, Toolkit.getDefaultToolkit().getScreenResolution() / 96.0));
+				FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
+				//if (FONT_SCALING_FACTOR_DIALOG > 1.0)
 				//{
 					//FONT_SCALING_FACTOR = FONT_SCALING_FACTOR * (7d / 6d);
-					//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW * (7d / 6d);
-					//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW;
-					//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW;
-					//FONT_SCALING_FACTOR_MONOSPACED = (Math.max(1.0, Toolkit.getDefaultToolkit().getScreenResolution() / 72.0));
+					//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG * (7d / 6d);
 				//}
-				//else
-				//{
-					//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW;
-				//}
-				//if (FONT_SCALING_FACTOR > 1.0)
-				//{
-					//FONT_SCALING_FACTOR = FONT_SCALING_FACTOR * (1.0 + (1.0 / 4.0));
-				//}
-				//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW * (7d / 6d);
 			}
 			else
 			{
@@ -97,8 +86,8 @@ public class VTGlobalTextStyleManager
 				{
 					
 				}
-				FONT_SCALING_FACTOR = (Math.max(1.0, new JLabel().getFont().getSize2D() / 15.0));
-				//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_WINDOW;
+				FONT_SCALING_FACTOR_DIALOG = (Math.max(1.0, new JLabel().getFont().getSize2D() / 15.0));
+				FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
 			}
 		}
 		catch (Throwable t1)
@@ -119,9 +108,9 @@ public class VTGlobalTextStyleManager
 		//AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
 	}
 	
-	private static volatile Font windowFont = Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog 12").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
+	private static volatile Font windowFont = Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog 12").getSize2D()) + (FONT_SCALING_FACTOR_DIALOG > 0 ? 0 : 0)) * FONT_SCALING_FACTOR_DIALOG) + (FONT_SCALING_FACTOR_DIALOG > 0 ? 0 : 0)));
 	//private static volatile Font windowFont = Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog 12").getSize2D())))));
-	private static volatile Font monospacedFont = Font.decode("Monospaced").deriveFont((float) ((((Font.decode("Monospaced 14").getSize2D()) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)) * FONT_SCALING_FACTOR) + (FONT_SCALING_FACTOR > 0 ? 0 : 0)));
+	private static volatile Font monospacedFont = Font.decode("Monospaced").deriveFont((float) ((((Font.decode("Monospaced 12").getSize2D()) + (FONT_SCALING_FACTOR_MONOSPACED > 0 ? 0 : 0)) * FONT_SCALING_FACTOR_MONOSPACED) + (FONT_SCALING_FACTOR_MONOSPACED > 0 ? 0 : 0)));
 	private static float defaultWindowFontSize = windowFont.getSize2D();
 	//private static float defaultWindowFontSize = (float) (12.0 * FONT_SCALING_FACTOR);
 	private static float defaultMonospacedFontSize = monospacedFont.getSize2D();
