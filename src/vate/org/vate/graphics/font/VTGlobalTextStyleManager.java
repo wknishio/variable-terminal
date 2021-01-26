@@ -109,6 +109,7 @@ public class VTGlobalTextStyleManager
 		System.setProperty("sun.java2d.ddscale", "false");
 		System.setProperty("sun.java2d.uiScale.enabled", "false");
 		System.setProperty("sun.java2d.uiScale", "1.0");
+		//System.out.println("FONT_SCALING_FACTOR:" + FONT_SCALING_FACTOR);
 		checked = true;
 	}
 	
