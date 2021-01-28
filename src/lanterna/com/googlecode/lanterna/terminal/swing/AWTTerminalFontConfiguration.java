@@ -39,6 +39,7 @@ import java.util.Set;
  */
 public class AWTTerminalFontConfiguration {
 
+	private static int baseFontSize = 12;
     /**
      * Controls how the SGR bold will take effect when enabled on a character. Mainly this is controlling if the 
      * character should be rendered with a bold font or not. The reason for this is that some characters, notably the
@@ -84,8 +85,8 @@ public class AWTTerminalFontConfiguration {
         //return fonts;
         //Monospaced can look pretty bad on Windows, so let's override it
         return (Arrays.asList(
-                //new Font("Courier New", Font.PLAIN, fontSize),
-                //new Font("Consolas", Font.PLAIN, fontSize),
+                new Font("Courier New", Font.PLAIN, fontSize),
+                new Font("Consolas", Font.PLAIN, fontSize),
                 new Font("Monospaced", Font.PLAIN, fontSize)
                 ));
     }
@@ -128,13 +129,18 @@ public class AWTTerminalFontConfiguration {
     {
     	FONT_SCALING_FACTOR = factor;
     }
+    
+    public static void setBaseFontSize(int size)
+    {
+    	baseFontSize = size;
+    }
 
     // Here we check the screen resolution on the primary monitor and make a guess at if it's high-DPI or not
     private static int getFontSize() {
     	
-        int baseFontSize = 12;
+        //int baseFontSize = 12;
         //System.out.println("getFontSize():" + (int)(baseFontSize * FONT_SCALING_FACTOR));
-        return (int) (baseFontSize * FONT_SCALING_FACTOR);
+        return (int) Math.floor(baseFontSize * FONT_SCALING_FACTOR);
 //        String[] javaVersion = System.getProperty("java.version", "1").split("\\.");
 //        if (System.getProperty("os.name", "").startsWith("Windows") && Integer.parseInt(javaVersion[0]) >= 9) {
 //            // Java 9+ reports itself as HiDPI-unaware on Windows and will be scaled by the OS
