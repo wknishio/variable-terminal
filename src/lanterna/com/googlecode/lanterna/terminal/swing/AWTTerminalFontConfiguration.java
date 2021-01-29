@@ -140,7 +140,7 @@ public class AWTTerminalFontConfiguration {
     	
         //int baseFontSize = 12;
         //System.out.println("getFontSize():" + (int)(baseFontSize * FONT_SCALING_FACTOR));
-        return (int) Math.floor(baseFontSize * FONT_SCALING_FACTOR);
+        return (int) Math.ceil(baseFontSize * FONT_SCALING_FACTOR);
 //        String[] javaVersion = System.getProperty("java.version", "1").split("\\.");
 //        if (System.getProperty("os.name", "").startsWith("Windows") && Integer.parseInt(javaVersion[0]) >= 9) {
 //            // Java 9+ reports itself as HiDPI-unaware on Windows and will be scaled by the OS

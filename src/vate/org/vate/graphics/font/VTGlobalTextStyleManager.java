@@ -34,7 +34,7 @@ public class VTGlobalTextStyleManager
 	public static int BASE_FONT_SIZE_MONOSPACED = 12;
 	
 	private static boolean checked = false;
-	private static boolean java9 = false;
+	//private static boolean java9 = false;
 	
 	public static void checkScaling()
 	{
@@ -49,7 +49,7 @@ public class VTGlobalTextStyleManager
 			Class<?> runtime = Class.forName("java.lang.Runtime");
 			Method version = runtime.getMethod("version");
 			version.toString();
-			java9 = true;
+			//java9 = true;
 			//System.out.println("java > 9 detected!");
 			//boolean java9 = version.invoke(Runtime.getRuntime(), null) instanceof Object;
 			//if (java9)
@@ -68,6 +68,8 @@ public class VTGlobalTextStyleManager
 		{
 			if (Platform.isWindows())
 			{
+				//discover dpi with Toolkit.getScreenResolution();
+				
 				System.setProperty("sun.java2d.dpiaware", "true");
 				System.setProperty("sun.java2d.ddscale", "false");
 				System.setProperty("sun.java2d.uiScale.enabled", "false");
@@ -76,15 +78,11 @@ public class VTGlobalTextStyleManager
 				System.setProperty("sun.java2d.win.uiScaleY", "1");
 				FONT_SCALING_FACTOR_DIALOG = (Math.max(1.0, Toolkit.getDefaultToolkit().getScreenResolution() / 96.0));
 				FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
-				//System.out.println(FONT_SCALING_FACTOR_DIALOG);
 				if (FONT_SCALING_FACTOR_DIALOG > 1.0)
 				{
-					BASE_FONT_SIZE_DIALOG = 14;
-					BASE_FONT_SIZE_MONOSPACED = 14;
-					//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG * (7d / 6d);
-					//FONT_SCALING_FACTOR_DIALOG = FONT_SCALING_FACTOR_DIALOG * (13d / 12d);
+					BASE_FONT_SIZE_DIALOG = 13;
+					BASE_FONT_SIZE_MONOSPACED = 13;
 				}
-				
 			}
 			else
 			{
@@ -121,16 +119,14 @@ public class VTGlobalTextStyleManager
 				
 				if (gdkScaleFactor > 0)
 				{
-					//use GDK_SCALE if available
+					//use GTK scaling environment variables if available
 					
 					FONT_SCALING_FACTOR_DIALOG = gdkScaleFactor;
 					FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
 					if (FONT_SCALING_FACTOR_DIALOG > 1.0)
 					{
-						BASE_FONT_SIZE_DIALOG = 14;
-						BASE_FONT_SIZE_MONOSPACED = 14;
-						//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG * (7d / 6d);
-						//FONT_SCALING_FACTOR_DIALOG = FONT_SCALING_FACTOR_DIALOG * (13d / 12d);
+						BASE_FONT_SIZE_DIALOG = 13;
+						BASE_FONT_SIZE_MONOSPACED = 13;
 					}
 					System.setProperty("sun.java2d.dpiaware", "true");
 					System.setProperty("sun.java2d.ddscale", "false");
@@ -159,16 +155,16 @@ public class VTGlobalTextStyleManager
 					
 					if (qtScaleFactor > 0 || qtFontDPI > 0)
 					{
+						//use QT scaling environment variables if available
+						
 						if (qtFontDPI == 0 && qtScaleFactor > 0)
 						{
 							FONT_SCALING_FACTOR_DIALOG = qtScaleFactor;
 							FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
 							if (FONT_SCALING_FACTOR_DIALOG > 1.0)
 							{
-								BASE_FONT_SIZE_DIALOG = 14;
-								BASE_FONT_SIZE_MONOSPACED = 14;
-								//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG * (7d / 6d);
-								//FONT_SCALING_FACTOR_DIALOG = FONT_SCALING_FACTOR_DIALOG * (13d / 12d);
+								BASE_FONT_SIZE_DIALOG = 13;
+								BASE_FONT_SIZE_MONOSPACED = 13;
 							}
 							System.setProperty("sun.java2d.dpiaware", "true");
 							System.setProperty("sun.java2d.ddscale", "false");
@@ -183,10 +179,8 @@ public class VTGlobalTextStyleManager
 							FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
 							if (FONT_SCALING_FACTOR_DIALOG > 1.0)
 							{
-								BASE_FONT_SIZE_DIALOG = 14;
-								BASE_FONT_SIZE_MONOSPACED = 14;
-								//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG * (7d / 6d);
-								//FONT_SCALING_FACTOR_DIALOG = FONT_SCALING_FACTOR_DIALOG * (13d / 12d);
+								BASE_FONT_SIZE_DIALOG = 13;
+								BASE_FONT_SIZE_MONOSPACED = 13;
 							}
 							System.setProperty("sun.java2d.dpiaware", "true");
 							System.setProperty("sun.java2d.ddscale", "false");
@@ -217,10 +211,8 @@ public class VTGlobalTextStyleManager
 							FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
 							if (FONT_SCALING_FACTOR_DIALOG > 1.0)
 							{
-								BASE_FONT_SIZE_DIALOG = 14;
-								BASE_FONT_SIZE_MONOSPACED = 14;
-								//FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG * (7d / 6d);
-								//FONT_SCALING_FACTOR_DIALOG = FONT_SCALING_FACTOR_DIALOG * (13d / 12d);
+								BASE_FONT_SIZE_DIALOG = 13;
+								BASE_FONT_SIZE_MONOSPACED = 13;
 							}
 							System.setProperty("sun.java2d.dpiaware", "true");
 							System.setProperty("sun.java2d.ddscale", "false");
@@ -252,9 +244,9 @@ public class VTGlobalTextStyleManager
 		//AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
 	}
 	
-	private static volatile Font windowFont = Font.decode("Serif").deriveFont(((float) Math.floor((((BASE_FONT_SIZE_DIALOG)) * FONT_SCALING_FACTOR_DIALOG))));
+	private static volatile Font windowFont = Font.decode("Serif").deriveFont(((float) Math.ceil((((BASE_FONT_SIZE_DIALOG)) * FONT_SCALING_FACTOR_DIALOG))));
 	//private static volatile Font windowFont = Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog 12").getSize2D())))));
-	private static volatile Font monospacedFont = Font.decode("Monospaced").deriveFont(((float) Math.floor((((BASE_FONT_SIZE_MONOSPACED)) * FONT_SCALING_FACTOR_MONOSPACED))));
+	private static volatile Font monospacedFont = Font.decode("Monospaced").deriveFont(((float) Math.ceil((((BASE_FONT_SIZE_MONOSPACED)) * FONT_SCALING_FACTOR_MONOSPACED))));
 	private static float defaultWindowFontSize = windowFont.getSize2D();
 	//private static float defaultWindowFontSize = (float) (12.0 * FONT_SCALING_FACTOR);
 	private static float defaultMonospacedFontSize = monospacedFont.getSize2D();
