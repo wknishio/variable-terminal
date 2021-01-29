@@ -228,7 +228,7 @@ public class AWTTerminalFontConfiguration {
      * @param fontsInOrderOfPriority Fonts to use when drawing text, in order of priority
      * @return Font configuration built from the font list
      */
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings("all")
     public static AWTTerminalFontConfiguration newInstance(Font... fontsInOrderOfPriority) {
         return new AWTTerminalFontConfiguration(false, BoldMode.NOTHING, fontsInOrderOfPriority);
     }
@@ -245,7 +245,7 @@ public class AWTTerminalFontConfiguration {
     private final boolean useAntiAliasing;
     private final BoldMode boldMode;
 
-    @SuppressWarnings("WeakerAccess")
+    @SuppressWarnings("all")
     protected AWTTerminalFontConfiguration(boolean useAntiAliasing, BoldMode boldMode, Font... fontsInOrderOfPriority) {
         if(fontsInOrderOfPriority == null || fontsInOrderOfPriority.length == 0) {
             throw new IllegalArgumentException("Must pass in a valid list of fonts to SwingTerminalFontConfiguration");

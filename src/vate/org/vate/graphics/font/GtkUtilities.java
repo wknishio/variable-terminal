@@ -4,8 +4,6 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
-import java.lang.reflect.Method;
-
 public class GtkUtilities
 {
     /**
@@ -29,15 +27,24 @@ public class GtkUtilities
 
     private static GTK getGtkInstance() {
         //System.out.println("Finding preferred Gtk version...");
-        switch(getGtkMajorVersion()) {
-            case 2:
-                return GTK2.INSTANCE;
-            case 3:
-                return GTK3.INSTANCE;
-            default:
-                //System.err.println("Not a compatible Gtk version");
-        }
-        return null;
+    	if (GTK3_INSTANCE != null)
+    	{
+    		return GTK3_INSTANCE;
+    	}
+    	if (GTK2_INSTANCE != null )
+    	{
+    		return GTK2_INSTANCE;
+    	}
+    	return null;
+//        switch(getGtkMajorVersion()) {
+//            case 2:
+//                return GTK2.INSTANCE;
+//            case 3:
+//                return GTK3.INSTANCE;
+//            default:
+//                //System.err.println("Not a compatible Gtk version");
+//        }
+//        return null;
     }
 
     /**
@@ -45,20 +52,20 @@ public class GtkUtilities
     * UNIXToolkit is unavailable on Windows or Mac; reflection is required.
     * @return Major version if found, zero if not.
     */
-    private static int getGtkMajorVersion() {
-        try {
-            Class toolkitClass = Class.forName("sun.awt.UNIXToolkit");
-            Method versionMethod = toolkitClass.getDeclaredMethod("getGtkVersion");
-            Enum versionInfo = (Enum)versionMethod.invoke(toolkitClass);
-            Method numberMethod = versionInfo.getClass().getDeclaredMethod("getNumber");
-            int version = ((Integer)numberMethod.invoke(versionInfo)).intValue();
-            //System.out.println("Found Gtk " + version);
-            return version;
-        } catch(Throwable t) {
-            //System.err.println("Could not obtain GtkVersion information from UNIXToolkit: {}", t.getMessage());
-        }
-        return 0;
-    }
+//    private static int getGtkMajorVersion() {
+//        try {
+//            Class toolkitClass = Class.forName("sun.awt.UNIXToolkit");
+//            Method versionMethod = toolkitClass.getDeclaredMethod("getGtkVersion");
+//            Enum versionInfo = (Enum)versionMethod.invoke(toolkitClass);
+//            Method numberMethod = versionInfo.getClass().getDeclaredMethod("getNumber");
+//            int version = ((Integer)numberMethod.invoke(versionInfo)).intValue();
+//            //System.out.println("Found Gtk " + version);
+//            return version;
+//        } catch(Throwable t) {
+//            //System.err.println("Could not obtain GtkVersion information from UNIXToolkit: {}", t.getMessage());
+//        }
+//        return 0;
+//    }
 
     private static double getGtk2ScaleFactor(GTK2 gtk2) {
         Pointer display = gtk2.gdk_display_get_default();
@@ -99,7 +106,6 @@ public class GtkUtilities
     }
 
     private interface GTK3 extends GTK {
-        GTK3 INSTANCE = Native.loadLibrary("gtk-3", GTK3.class);
         
         double gdk_screen_get_resolution(Pointer screen);
 
@@ -115,9 +121,36 @@ public class GtkUtilities
     }
 
     private interface GTK2 extends GTK {
-        GTK2 INSTANCE = Native.loadLibrary("gtk-x11-2.0", GTK2.class);
 
         // Gtk 2.1-3.0
         double gdk_screen_get_resolution(Pointer screen);
+    }
+    
+    private static GTK3 GTK3_INSTANCE;
+    
+    static 
+    {
+        try
+        {
+        	GTK3_INSTANCE = Native.loadLibrary("gtk-3", GTK3.class);
+        }
+        catch (Throwable t)
+        {
+        	
+        }
+    }
+    
+    private static GTK2 GTK2_INSTANCE;
+    
+    static 
+    {
+        try
+        {
+        	GTK2_INSTANCE = Native.loadLibrary("gtk-x11-2.0", GTK2.class);
+        }
+        catch (Throwable t)
+        {
+        	
+        }
     }
 }
