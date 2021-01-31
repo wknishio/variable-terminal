@@ -1799,7 +1799,7 @@ public class VTGraphicsModeClientWriter implements Runnable
 	
 	private void createCustomCursor()
 	{
-		int dpi = toolkit.getScreenResolution();
+		int dpi = VTGlobalTextStyleManager.BASE_FONT_DPI;
 		int calculatedSize = Math.max(32, dpi / 3);
 		Dimension bestSize = toolkit.getBestCursorSize(calculatedSize, calculatedSize);
 		if (bestSize.width != 0 && bestSize.height != 0)

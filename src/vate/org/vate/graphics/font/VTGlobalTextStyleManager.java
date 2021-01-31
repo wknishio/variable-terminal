@@ -32,6 +32,7 @@ public class VTGlobalTextStyleManager
 	public static double FONT_SCALING_FACTOR_MONOSPACED;
 	public static int BASE_FONT_SIZE_DIALOG = 12;
 	public static int BASE_FONT_SIZE_MONOSPACED = 12;
+	public static int BASE_FONT_DPI = 96;
 	
 	private static boolean checked = false;
 	//private static boolean java9 = false;
@@ -78,6 +79,7 @@ public class VTGlobalTextStyleManager
 				System.setProperty("sun.java2d.win.uiScaleY", "1");
 				FONT_SCALING_FACTOR_DIALOG = (Math.max(1.0, Toolkit.getDefaultToolkit().getScreenResolution() / 96.0));
 				FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
+				BASE_FONT_DPI = (int) (96 * FONT_SCALING_FACTOR_DIALOG);
 				if (FONT_SCALING_FACTOR_DIALOG > 1.0)
 				{
 					BASE_FONT_SIZE_DIALOG = 13;
@@ -123,6 +125,7 @@ public class VTGlobalTextStyleManager
 					
 					FONT_SCALING_FACTOR_DIALOG = gdkScaleFactor;
 					FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
+					BASE_FONT_DPI = (int) (96 * FONT_SCALING_FACTOR_DIALOG);
 					if (FONT_SCALING_FACTOR_DIALOG > 1.0)
 					{
 						BASE_FONT_SIZE_DIALOG = 13;
@@ -161,6 +164,7 @@ public class VTGlobalTextStyleManager
 						{
 							FONT_SCALING_FACTOR_DIALOG = qtScaleFactor;
 							FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
+							BASE_FONT_DPI = (int) (96 * FONT_SCALING_FACTOR_DIALOG);
 							if (FONT_SCALING_FACTOR_DIALOG > 1.0)
 							{
 								BASE_FONT_SIZE_DIALOG = 13;
@@ -177,6 +181,7 @@ public class VTGlobalTextStyleManager
 						{
 							FONT_SCALING_FACTOR_DIALOG = (Math.max(1.0, qtFontDPI / 96.0));
 							FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
+							BASE_FONT_DPI = (int) qtFontDPI;
 							if (FONT_SCALING_FACTOR_DIALOG > 1.0)
 							{
 								BASE_FONT_SIZE_DIALOG = 13;
@@ -209,6 +214,7 @@ public class VTGlobalTextStyleManager
 							
 							FONT_SCALING_FACTOR_DIALOG = gtkScaleFactor;
 							FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
+							BASE_FONT_DPI = (int) (96 * FONT_SCALING_FACTOR_DIALOG);
 							if (FONT_SCALING_FACTOR_DIALOG > 1.0)
 							{
 								BASE_FONT_SIZE_DIALOG = 13;

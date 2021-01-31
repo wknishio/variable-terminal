@@ -25,6 +25,7 @@ import javax.swing.UIManager;
 
 import org.vate.VT;
 import org.vate.graphics.device.VTGraphicalDeviceResolver;
+import org.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vate.graphics.image.VTImageIO;
 import org.vate.graphics.image.VTIndexedColorModel;
 
@@ -271,28 +272,9 @@ public final class VTAWTScreenCaptureProvider
 		{
 			// e.printStackTrace(VTTerminal.getSystemOut());
 		}
-		int dpi = toolkit.getScreenResolution();
+		//int dpi = toolkit.getScreenResolution();
+		int dpi = VTGlobalTextStyleManager.BASE_FONT_DPI;
 		drawnCursorSize = Math.max(32, dpi / 3);
-		if (Platform.isLinux())
-		{
-			try
-			{
-				UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-			}
-			catch (Throwable t1)
-			{
-				
-			}
-			try
-			{
-				double DPI_SCALING_MULTIPLIER = Math.max(1, new JLabel().getFont().getSize() / 15.0);
-				drawnCursorSize = (int) Math.max(32, 32 * DPI_SCALING_MULTIPLIER);
-			}
-			catch (Throwable t)
-			{
-				
-			}
-		}
 		initialDrawnCursorSize = roundUp(drawnCursorSize, 8);
 		/* try { bestCursorSize =
 		 * Toolkit.getDefaultToolkit().getBestCursorSize(32, 32); } catch
