@@ -1,7 +1,7 @@
 package org.vate.graphics.capture;
 
 import com.bric.image.VTARGBPixelGrabber;
-import com.sun.jna.Platform;
+//import com.sun.jna.Platform;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
@@ -12,7 +12,7 @@ import java.awt.Point;
 import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.Robot;
-import java.awt.Toolkit;
+//import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
@@ -20,8 +20,8 @@ import java.awt.image.DataBufferInt;
 import java.awt.image.DataBufferUShort;
 //import java.awt.peer.RobotPeer;
 
-import javax.swing.JLabel;
-import javax.swing.UIManager;
+//import javax.swing.JLabel;
+//import javax.swing.UIManager;
 
 import org.vate.VT;
 import org.vate.graphics.device.VTGraphicalDeviceResolver;
@@ -37,8 +37,8 @@ public final class VTAWTScreenCaptureProvider
 	public static final int VT_COLOR_QUALITY_BEST = 3; // 16777216 rgb888, best
 	public static final int VT_COLOR_QUALITY_LOW = 4; // 16 rgbi, low
 	public static final int VT_COLOR_QUALITY_SIMPLE = 5; // 32 rgbii, simple
-	public static final int VT_COLOR_QUALITY_GOOD = 6; // 512 rgb555333, good
-	public static final int VT_COLOR_QUALITY_EXTRA = 7; // 4096 rgb555444, extra
+	public static final int VT_COLOR_QUALITY_GOOD = 6; // 512 rgb333, good
+	public static final int VT_COLOR_QUALITY_EXTRA = 7; // 4096 rgb444, extra
 	public static final int VT_COLOR_QUALITY_WORST = 8; // 8 rgb111, worst
 	
 	//best
@@ -115,7 +115,7 @@ public final class VTAWTScreenCaptureProvider
 	private volatile GraphicsDevice graphicsDevice;
 	private volatile Robot standardCaptureRobot;
 	private volatile VTDirectRobot directCaptureRobot;
-	private Toolkit toolkit;
+	//private Toolkit toolkit;
 	private VTARGBPixelGrabber grabber;
 	private DataBuffer recyclableSectionDataBuffer;
 	private DataBuffer recyclableScreenDataBuffer;
@@ -263,7 +263,7 @@ public final class VTAWTScreenCaptureProvider
 			return;
 		}
 		this.grabber = new VTARGBPixelGrabber();
-		toolkit = Toolkit.getDefaultToolkit();
+		//toolkit = Toolkit.getDefaultToolkit();
 		try
 		{
 			this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -273,6 +273,7 @@ public final class VTAWTScreenCaptureProvider
 			// e.printStackTrace(VTTerminal.getSystemOut());
 		}
 		//int dpi = toolkit.getScreenResolution();
+		VTGlobalTextStyleManager.checkScaling();
 		int dpi = VTGlobalTextStyleManager.BASE_FONT_DPI;
 		drawnCursorSize = Math.max(32, dpi / 3);
 		initialDrawnCursorSize = roundUp(drawnCursorSize, 8);
