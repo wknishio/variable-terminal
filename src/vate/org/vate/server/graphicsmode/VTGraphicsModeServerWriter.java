@@ -95,7 +95,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 		this.captureScale = 1;
 		this.imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF;
 		// this.deviceNumber = 0;
-		this.viewProvider.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_MEDIUM);
+		this.viewProvider.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216);
 		// this.synchronousRefresh = false;
 		this.refreshInterrupted = false;
 		// this.screenCaptureMode =
@@ -125,7 +125,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 		captureScale = 1;
 		imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF;
 		// deviceNumber = 0;
-		viewProvider.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_MEDIUM);
+		viewProvider.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216);
 		// synchronousRefresh = false;
 		refreshInterrupted = false;
 		// screenCaptureMode =

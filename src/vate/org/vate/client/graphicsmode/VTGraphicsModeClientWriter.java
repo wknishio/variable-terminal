@@ -100,7 +100,7 @@ public class VTGraphicsModeClientWriter implements Runnable
 	private int lastFrameState;
 	private Rectangle lastFrameBounds;
 	private Runnable fullscreenToggler;
-	// private Runnable frameSizeAdjuster;
+	private Runnable frameSizeAdjuster;
 	private Runnable menubarToggler;
 	// private int frameInsetsTop;
 	// private int frameInsetsBottom;
@@ -216,15 +216,37 @@ public class VTGraphicsModeClientWriter implements Runnable
 				{
 					return;
 				}
-				if (frame.getExtendedState() != Frame.NORMAL)
+				if (frame.getExtendedState() == Frame.ICONIFIED)
 				{
 					return;
 				}
+				
 				Insets frameInsets = frame.getInsets();
 				Insets scrolledInsets = scrolled.getInsets();
 				Dimension interfaceSize = remoteInterface.getSize();
-				frame.setSize(interfaceSize.width + frameInsets.left + frameInsets.right + scrolledInsets.left + scrolledInsets.left, interfaceSize.height + frameInsets.top + frameInsets.bottom + scrolledInsets.top + scrolledInsets.top);
-				frame.revalidate();
+				int maxWidth = frame.getGraphicsConfiguration().getDevice().getDisplayMode().getWidth();
+				int maxHeight = frame.getGraphicsConfiguration().getDevice().getDisplayMode().getHeight();
+				if (interfaceSize.width + frameInsets.left + frameInsets.right + scrolledInsets.left + scrolledInsets.left >= maxWidth
+				|| interfaceSize.height + frameInsets.top + frameInsets.bottom + scrolledInsets.top + scrolledInsets.top >= maxHeight)
+				{
+					if (frame.getExtendedState() == Frame.MAXIMIZED_BOTH)
+					{
+						frame.setExtendedState(Frame.NORMAL);
+						frame.revalidate();
+					}
+					else
+					{
+						frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+						frame.revalidate();
+					}
+				}
+				else
+				{
+					frame.setExtendedState(Frame.NORMAL);
+					frame.setSize(interfaceSize.width + frameInsets.left + frameInsets.right + scrolledInsets.left + scrolledInsets.left, interfaceSize.height + frameInsets.top + frameInsets.bottom + scrolledInsets.top + scrolledInsets.top);
+					frame.revalidate();
+				}
+				
 				// scrolled.setPreferredSize(null);
 			}
 			finally
@@ -254,7 +276,7 @@ public class VTGraphicsModeClientWriter implements Runnable
 		// this.captureAreaUpdater = new
 		// VTGraphicsModeClientRemoteInterfaceCaptureAreaUpdater(this);
 		this.graphicsRefresher = new VTGraphicsModeClientRemoteInterfaceRefresher(this);
-		this.colorQuality = VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_MEDIUM;
+		this.colorQuality = VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216;
 		this.screenCaptureMode = VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_PARTIAL;
 		this.imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF;
 		this.terminalRefreshPolicy = TERMINAL_STATE_VISIBLE;
@@ -273,8 +295,7 @@ public class VTGraphicsModeClientWriter implements Runnable
 		this.screenCaptureInterval = 250;
 		this.captureScale = 1;
 		this.fullscreenToggler = new VTGraphicsModeClientFullScreenToggler();
-		// this.frameSizeAdjuster = new
-		// VTGraphicsModeClientFrameSizeAdjuster();
+		this.frameSizeAdjuster = new VTGraphicsModeClientFrameSizeAdjuster();
 		this.menubarToggler = new VTGraphicsModeClientMenubarToggler();
 		try
 		{
@@ -474,7 +495,7 @@ public class VTGraphicsModeClientWriter implements Runnable
 		terminalRefreshPolicy = TERMINAL_STATE_VISIBLE;
 		terminalControlPolicy = TERMINAL_STATE_FOCUSED;
 		open = false;
-		colorQuality = VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_MEDIUM;
+		colorQuality = VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216;
 		synchronousRefresh = false;
 		dynamicCoding = false;
 		separatedCoding = true;
@@ -835,42 +856,42 @@ public class VTGraphicsModeClientWriter implements Runnable
 	{
 		try
 		{
-			if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_BEST)
+			if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216)
 			{
 				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_BEST);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
-			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_HIGH)
+			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32768)
 			{
 				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_HIGH);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
-			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_MEDIUM)
+			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216)
 			{
 				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_MEDIUM);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
-			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_LOW)
+			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16)
 			{
 				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_LOW);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
-			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_SIMPLE)
+			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32)
 			{
 				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_SIMPLE);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
-			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_GOOD)
+			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512)
 			{
 				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_GOOD);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
-			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_EXTRA)
+			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4096)
 			{
 				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_EXTRA);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
-			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_WORST)
+			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8)
 			{
 				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_WORST);
 				// connection.getGraphicsControlDataOutputStream().flush();
@@ -1457,10 +1478,10 @@ public class VTGraphicsModeClientWriter implements Runnable
 		EventQueue.invokeLater(menubarToggler);
 	}
 	
-	// public void adjustFrameSize()
-	// {
-	// EventQueue.invokeLater(frameSizeAdjuster);
-	// }
+	public void adjustFrameSize()
+	{
+		EventQueue.invokeLater(frameSizeAdjuster);
+	}
 	
 	public void updateRefreshMode(boolean synchronousRefresh)
 	{
