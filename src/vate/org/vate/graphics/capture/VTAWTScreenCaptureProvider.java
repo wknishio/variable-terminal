@@ -63,17 +63,17 @@ public final class VTAWTScreenCaptureProvider
 	private static final int RGB555_444_GREEN_MASK = 0x0000f000;
 	private static final int RGB555_444_BLUE_MASK = 0x000000f0;
 	
-	private static final int RGB555_444_RED_ADD = RGB555_RED_MASK - RGB555_444_RED_MASK;
-	private static final int RGB555_444_GREEN_ADD = RGB555_GREEN_MASK - RGB555_444_GREEN_MASK;
-	private static final int RGB555_444_BLUE_ADD = RGB555_BLUE_MASK - RGB555_444_BLUE_MASK;
+	//private static final int RGB555_444_RED_ADD = RGB555_RED_MASK - RGB555_444_RED_MASK;
+	//private static final int RGB555_444_GREEN_ADD = RGB555_GREEN_MASK - RGB555_444_GREEN_MASK;
+	//private static final int RGB555_444_BLUE_ADD = RGB555_BLUE_MASK - RGB555_444_BLUE_MASK;
 	
 	private static final int RGB555_333_RED_MASK = 0x00e00000;
 	private static final int RGB555_333_GREEN_MASK = 0x0000e000;
 	private static final int RGB555_333_BLUE_MASK = 0x000000e0;
 	
-	private static final int RGB555_333_RED_ADD = RGB555_RED_MASK - RGB555_333_RED_MASK;
-	private static final int RGB555_333_GREEN_ADD = RGB555_GREEN_MASK - RGB555_333_GREEN_MASK;
-	private static final int RGB555_333_BLUE_ADD = RGB555_BLUE_MASK - RGB555_333_BLUE_MASK;
+	//private static final int RGB555_333_RED_ADD = RGB555_RED_MASK - RGB555_333_RED_MASK;
+	//private static final int RGB555_333_GREEN_ADD = RGB555_GREEN_MASK - RGB555_333_GREEN_MASK;
+	//private static final int RGB555_333_BLUE_ADD = RGB555_BLUE_MASK - RGB555_333_BLUE_MASK;
 	
 	private static final int RGB222_RED_MASK = 0x00c00000;
 	private static final int RGB222_GREEN_MASK = 0x0000c000;
@@ -123,6 +123,33 @@ public final class VTAWTScreenCaptureProvider
 //	private DataBuffer recyclableSectionDataBuffer;
 	private int drawnCursorSize = 32;
 	private int initialDrawnCursorSize;
+	
+	public int getColorCount()
+	{
+		switch (colorQuality)
+		{
+			case VT_COLOR_QUALITY_8:
+				return 8;
+			case VT_COLOR_QUALITY_16:
+				return 16;
+			case VT_COLOR_QUALITY_32:
+				return 32;
+			case VT_COLOR_QUALITY_64:
+				return 64;
+			case VT_COLOR_QUALITY_216:
+				return 216;
+			case VT_COLOR_QUALITY_512:
+				return 512;
+			case VT_COLOR_QUALITY_4096:
+				return 4096;
+			case VT_COLOR_QUALITY_32768:
+				return 32768;
+			case VT_COLOR_QUALITY_16777216:
+				return 16777216;
+			default:
+				return -1;
+		}
+	}
 	
 	private final int roundUp(int numToRound, int multiple)
 	{
@@ -3016,12 +3043,12 @@ public final class VTAWTScreenCaptureProvider
 		pixelBufferShort = ((DataBufferUShort) screenCurrentImage.getRaster().getDataBuffer()).getData();
 		for (i = 0; i < pixelDataLength; i++)
 		{
-			//red = ((sectionPixelBufferInt[i] & RGB444_RED_MASK) >> 9);
-			//green = ((sectionPixelBufferInt[i] & RGB444_GREEN_MASK) >> 6);
-			//blue = ((sectionPixelBufferInt[i] & RGB444_BLUE_MASK) >> 3);
-			red = (((sectionPixelBufferInt[i] & RGB555_333_RED_MASK) | RGB555_333_RED_ADD) >> 9);
-			green = (((sectionPixelBufferInt[i] & RGB555_333_GREEN_MASK) | RGB555_333_GREEN_ADD) >> 6);
-			blue = (((sectionPixelBufferInt[i] & RGB555_333_BLUE_MASK) | RGB555_333_BLUE_ADD) >> 3);
+			red = ((sectionPixelBufferInt[i] & RGB555_333_RED_MASK) >> 9);
+			green = ((sectionPixelBufferInt[i] & RGB555_333_GREEN_MASK) >> 6);
+			blue = ((sectionPixelBufferInt[i] & RGB555_333_BLUE_MASK) >> 3);
+			//red = (((sectionPixelBufferInt[i] & RGB555_333_RED_MASK) | RGB555_333_RED_ADD) >> 9);
+			//green = (((sectionPixelBufferInt[i] & RGB555_333_GREEN_MASK) | RGB555_333_GREEN_ADD) >> 6);
+			//blue = (((sectionPixelBufferInt[i] & RGB555_333_BLUE_MASK) | RGB555_333_BLUE_ADD) >> 3);
 
 			pixelBufferShort[i] = (short) (red | green | blue);
 		}
@@ -3127,12 +3154,12 @@ public final class VTAWTScreenCaptureProvider
 				currentWidth = 0;
 				currentHeight += screenCurrentImage.getWidth();
 			}
-			//red = ((sectionPixelBufferInt[i] & RGB444_RED_MASK) >> 9);
-			//green = ((sectionPixelBufferInt[i] & RGB444_GREEN_MASK) >> 6);
-			//blue = ((sectionPixelBufferInt[i] & RGB444_BLUE_MASK) >> 3);
-			red = (((sectionPixelBufferInt[i] & RGB555_333_RED_MASK) | RGB555_333_RED_ADD) >> 9);
-			green = (((sectionPixelBufferInt[i] & RGB555_333_GREEN_MASK) | RGB555_333_GREEN_ADD) >> 6);
-			blue = (((sectionPixelBufferInt[i] & RGB555_333_BLUE_MASK) | RGB555_333_BLUE_ADD) >> 3);
+			red = ((sectionPixelBufferInt[i] & RGB555_333_RED_MASK) >> 9);
+			green = ((sectionPixelBufferInt[i] & RGB555_333_GREEN_MASK) >> 6);
+			blue = ((sectionPixelBufferInt[i] & RGB555_333_BLUE_MASK) >> 3);
+			//red = (((sectionPixelBufferInt[i] & RGB555_333_RED_MASK) | RGB555_333_RED_ADD) >> 9);
+			//green = (((sectionPixelBufferInt[i] & RGB555_333_GREEN_MASK) | RGB555_333_GREEN_ADD) >> 6);
+			//blue = (((sectionPixelBufferInt[i] & RGB555_333_BLUE_MASK) | RGB555_333_BLUE_ADD) >> 3);
 			
 			pixelBufferShort[startOffset + currentWidth + currentHeight] = (short) (red | green | blue);
 		}
@@ -3207,9 +3234,12 @@ public final class VTAWTScreenCaptureProvider
 		pixelBufferShort = ((DataBufferUShort) screenCurrentImage.getRaster().getDataBuffer()).getData();
 		for (i = 0; i < pixelDataLength; i++)
 		{
-			red = (((sectionPixelBufferInt[i] & RGB555_444_RED_MASK) | RGB555_444_RED_ADD) >> 9);
-			green = (((sectionPixelBufferInt[i] & RGB555_444_GREEN_MASK) | RGB555_444_GREEN_ADD) >> 6);
-			blue = (((sectionPixelBufferInt[i] & RGB555_444_BLUE_MASK) | RGB555_444_BLUE_ADD) >> 3);
+			//red = (((sectionPixelBufferInt[i] & RGB555_444_RED_MASK) | RGB555_444_RED_ADD) >> 9);
+			//green = (((sectionPixelBufferInt[i] & RGB555_444_GREEN_MASK) | RGB555_444_GREEN_ADD) >> 6);
+			//blue = (((sectionPixelBufferInt[i] & RGB555_444_BLUE_MASK) | RGB555_444_BLUE_ADD) >> 3);
+			red = ((sectionPixelBufferInt[i] & RGB555_444_RED_MASK) >> 9);
+			green = ((sectionPixelBufferInt[i] & RGB555_444_GREEN_MASK) >> 6);
+			blue = ((sectionPixelBufferInt[i] & RGB555_444_BLUE_MASK) >> 3);
 
 			pixelBufferShort[i] = (short) (red | green | blue);
 		}
@@ -3315,9 +3345,13 @@ public final class VTAWTScreenCaptureProvider
 				currentWidth = 0;
 				currentHeight += screenCurrentImage.getWidth();
 			}
-			red = (((sectionPixelBufferInt[i] & RGB555_444_RED_MASK) | RGB555_444_RED_ADD) >> 9);
-			green = (((sectionPixelBufferInt[i] & RGB555_444_GREEN_MASK) | RGB555_444_GREEN_ADD) >> 6);
-			blue = (((sectionPixelBufferInt[i] & RGB555_444_BLUE_MASK) | RGB555_444_BLUE_ADD) >> 3);
+			//red = (((sectionPixelBufferInt[i] & RGB555_444_RED_MASK) | RGB555_444_RED_ADD) >> 9);
+			//green = (((sectionPixelBufferInt[i] & RGB555_444_GREEN_MASK) | RGB555_444_GREEN_ADD) >> 6);
+			//blue = (((sectionPixelBufferInt[i] & RGB555_444_BLUE_MASK) | RGB555_444_BLUE_ADD) >> 3);
+			
+			red = ((sectionPixelBufferInt[i] & RGB555_444_RED_MASK) >> 9);
+			green = ((sectionPixelBufferInt[i] & RGB555_444_GREEN_MASK) >> 6);
+			blue = ((sectionPixelBufferInt[i] & RGB555_444_BLUE_MASK) >> 3);
 			
 			pixelBufferShort[startOffset + currentWidth + currentHeight] = (short) (red | green | blue);
 		}

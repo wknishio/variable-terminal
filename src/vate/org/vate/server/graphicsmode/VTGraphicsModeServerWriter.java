@@ -1082,7 +1082,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 							// : 0));
 							if (imageCoding != VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF && imageCoding != VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF)
 							{
-								if (imageDataBuffer.getWidth() == lastWidth && imageDataBuffer.getHeight() == lastHeight && imageDataBuffer.getColorModel().getPixelSize() == lastDepth && (imageDataBuffer.getColorModel() instanceof IndexColorModel ? ((IndexColorModel) imageDataBuffer.getColorModel()).getMapSize() == lastColors : true) && imageDataBuffer.getRaster().getDataBuffer().getDataType() == lastDataType && imageCoding == lastImageCoding
+								if (imageDataBuffer.getWidth() == lastWidth && imageDataBuffer.getHeight() == lastHeight && imageDataBuffer.getColorModel().getPixelSize() == lastDepth && (imageDataBuffer.getColorModel() instanceof IndexColorModel ? ((IndexColorModel) imageDataBuffer.getColorModel()).getMapSize() == lastColors : viewProvider.getColorCount() == lastColors) && imageDataBuffer.getRaster().getDataBuffer().getDataType() == lastDataType && imageCoding == lastImageCoding
 								/* && captureScale == lastCaptureScale */)
 								{
 									boolean different = false;
@@ -1126,7 +1126,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 									interruptedLastWidth = lastWidth;
 									interruptedLastHeight = lastHeight;
 									lastDepth = imageDataBuffer.getColorModel().getPixelSize();
-									lastColors = (imageDataBuffer.getColorModel() instanceof IndexColorModel ? ((IndexColorModel) imageDataBuffer.getColorModel()).getMapSize() : 0);
+									lastColors = (imageDataBuffer.getColorModel() instanceof IndexColorModel ? ((IndexColorModel) imageDataBuffer.getColorModel()).getMapSize() : viewProvider.getColorCount());
 									lastDataType = imageDataBuffer.getRaster().getDataBuffer().getDataType();
 									lastImageCoding = imageCoding;
 									// lastCaptureScale = captureScale;
@@ -1232,7 +1232,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 							}
 							else
 							{
-								if (imageDataBuffer.getWidth() == lastWidth && imageDataBuffer.getHeight() == lastHeight && imageDataBuffer.getColorModel().getPixelSize() == lastDepth && (imageDataBuffer.getColorModel() instanceof IndexColorModel ? ((IndexColorModel) imageDataBuffer.getColorModel()).getMapSize() == lastColors : true) && imageDataBuffer.getRaster().getDataBuffer().getDataType() == lastDataType && imageCoding == lastImageCoding
+								if (imageDataBuffer.getWidth() == lastWidth && imageDataBuffer.getHeight() == lastHeight && imageDataBuffer.getColorModel().getPixelSize() == lastDepth && (imageDataBuffer.getColorModel() instanceof IndexColorModel ? ((IndexColorModel) imageDataBuffer.getColorModel()).getMapSize() == lastColors : viewProvider.getColorCount() == lastColors) && imageDataBuffer.getRaster().getDataBuffer().getDataType() == lastDataType && imageCoding == lastImageCoding
 								/* && captureScale == lastCaptureScale */)
 								{
 									// startTime = System.currentTimeMillis();
@@ -1278,7 +1278,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 									interruptedLastWidth = lastWidth;
 									interruptedLastHeight = lastHeight;
 									lastDepth = imageDataBuffer.getColorModel().getPixelSize();
-									lastColors = (imageDataBuffer.getColorModel() instanceof IndexColorModel ? ((IndexColorModel) imageDataBuffer.getColorModel()).getMapSize() : 0);
+									lastColors = (imageDataBuffer.getColorModel() instanceof IndexColorModel ? ((IndexColorModel) imageDataBuffer.getColorModel()).getMapSize() : viewProvider.getColorCount());
 									lastDataType = imageDataBuffer.getRaster().getDataBuffer().getDataType();
 									lastImageCoding = imageCoding;
 									// lastCaptureScale = captureScale;
