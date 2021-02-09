@@ -66,6 +66,7 @@ abstract class AutoCloseBase implements Closeable {
 
     abstract void doClose();
 
+    
     public void close() {
         // Note: still should use synchronized in addition to sharedLock, because this class must support racy close(),
         // the second could happen through finalization or cleaning (when Cleaner is used). When updated to Java 9+,

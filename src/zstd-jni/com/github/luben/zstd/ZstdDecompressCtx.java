@@ -5,6 +5,7 @@ import com.github.luben.zstd.ZstdDictDecompress;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+
 import org.vate.compatibility.VTArrays;
 
 public class ZstdDecompressCtx extends AutoCloseBase {
@@ -219,7 +220,7 @@ public class ZstdDecompressCtx extends AutoCloseBase {
         byte[] dst = new byte[originalSize];
         int size = decompress(dst, src);
         if (size != originalSize) {
-            return VTArrays.copyOfRange(dst, 0, size);
+        	return VTArrays.copyOfRange(dst, 0, size);
         } else {
             return dst;
         }

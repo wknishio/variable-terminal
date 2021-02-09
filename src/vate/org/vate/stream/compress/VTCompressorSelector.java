@@ -52,7 +52,8 @@ public class VTCompressorSelector
 		//InputStream stream = new VTAirliftInputStream(new BufferedInputStream(in, VT.VT_STANDARD_DATA_BUFFER_SIZE), new ZstdDecompressor());
 		//InputStream stream = new VTAirliftInputStream(in, new ZstdDecompressor());
 		//ZstdInputStream zstd = new ZstdInputStream(new BufferedInputStream(in, VT.VT_STANDARD_DATA_BUFFER_SIZE)).setContinuous(true);
-		ZstdInputStream zstd = new ZstdInputStream(in).setContinuous(true);
+		ZstdInputStream zstd = new ZstdInputStream(in);
+		zstd.setContinuous(true);
 		InputStream stream = new BufferedInputStream(zstd, VT.VT_STANDARD_DATA_BUFFER_SIZE);
 		return stream;
 	}

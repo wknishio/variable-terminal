@@ -45,20 +45,21 @@ public final class VTDirectRobot
 
 		this.device = device;
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
+		int parameterCount = 2;
 		
 		ComponentFactory cp = ((ComponentFactory) toolkit);
 		Method createRobot = null;
 		try
 		{
 			createRobot = cp.getClass().getDeclaredMethod("createRobot", Robot.class, GraphicsDevice.class);
-			
+			parameterCount = 2;
 		}
 		catch (NoSuchMethodException e)
 		{
 			try
 			{
 				createRobot = cp.getClass().getDeclaredMethod("createRobot", GraphicsDevice.class);
-				
+				parameterCount = 1;
 			}
 			catch (NoSuchMethodException e1)
 			{
@@ -67,7 +68,7 @@ public final class VTDirectRobot
 			
 		}
 		
-		if (createRobot.getParameterCount() == 1)
+		if (parameterCount == 1)
 		{
 			try
 			{
