@@ -144,13 +144,13 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		this.worstColorOption = new CheckboxMenuItem("Worst", false);
 		this.worstColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, worstColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8));
 		this.decreasedColorOption = new CheckboxMenuItem("Reduced", false);
-		this.decreasedColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, decreasedColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_64));
+		this.decreasedColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, decreasedColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125));
 		this.increasedColorOption = new CheckboxMenuItem("Increased", false);
 		this.increasedColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, increasedColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512));
 		this.extraColorOption = new CheckboxMenuItem("Extra", false);
 		this.extraColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, extraColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4096));
 		this.simpleColorOption = new CheckboxMenuItem("Simple", false);
-		this.simpleColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, simpleColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32));
+		this.simpleColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, simpleColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_64));
 		this.interruptedRefreshOption = new CheckboxMenuItem("Interrupted", false);
 		this.interruptedRefreshOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuInterruptRefreshOptionListener(writer, interruptedRefreshOption));
 		this.asynchronousRefreshOption = new CheckboxMenuItem("Immediate", true);
@@ -438,8 +438,8 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 			extraColorOption.setState(false);
 			increasedColorOption.setState(false);
 			mediumColorOption.setState(false);
-			decreasedColorOption.setState(true);
-			simpleColorOption.setState(false);
+			decreasedColorOption.setState(false);
+			simpleColorOption.setState(true);
 			lowColorOption.setState(false);
 			worstColorOption.setState(false);
 		}
