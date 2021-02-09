@@ -395,6 +395,18 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 			lowColorOption.setState(false);
 			worstColorOption.setState(false);
 		}
+		else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125)
+		{
+			bestColorOption.setState(false);
+			highColorOption.setState(false);
+			extraColorOption.setState(false);
+			increasedColorOption.setState(false);
+			mediumColorOption.setState(false);
+			decreasedColorOption.setState(true);
+			simpleColorOption.setState(false);
+			lowColorOption.setState(false);
+			worstColorOption.setState(false);
+		}
 		else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4096)
 		{
 			bestColorOption.setState(false);

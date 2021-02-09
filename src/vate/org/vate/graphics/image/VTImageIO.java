@@ -31,7 +31,7 @@ public final class VTImageIO
 	private static final int DCM_555_BLU_MASK = 0x001F; // 0000000000011111
 	
 	private static final IndexColorModel byteIndexed216ColorModel = VTIndexedColorModel.create216ColorModel();
-	// private static final IndexColorModel byteIndexed125ColorModel = VTIndexColorModel.create125ColorModel();
+	private static final IndexColorModel byteIndexed125ColorModel = VTIndexedColorModel.create125ColorModel();
 	private static final IndexColorModel byteIndexed64ColorModel = VTIndexedColorModel.create64ColorModel();
 	private static final IndexColorModel byteIndexed32ColorModel = VTIndexedColorModel.create32ColorModel();
 	private static final IndexColorModel byteIndexed16ColorModel = VTIndexedColorModel.create16ColorModel();
@@ -357,6 +357,10 @@ public final class VTImageIO
 				{
 					image = new BufferedImage(byteIndexed216ColorModel, buildRaster(x, y, width, height, type, recyclableBuffer), false, null);
 				}
+				else if (colors == 125)
+				{
+					image = new BufferedImage(byteIndexed125ColorModel, buildRaster(x, y, width, height, type, recyclableBuffer), false, null);
+				}
 				else if (colors == 27)
 				{
 					image = new BufferedImage(byteIndexed27ColorModel, buildRaster(x, y, width, height, type, recyclableBuffer), false, null);
@@ -408,6 +412,10 @@ public final class VTImageIO
 		if (colors == 216)
 		{
 			Arrays.fill(buffer, start, buffer.length, (byte) 86);
+		}
+		else if (colors == 125)
+		{
+			Arrays.fill(buffer, start, buffer.length, (byte) 62);
 		}
 		else if (colors == 27)
 		{

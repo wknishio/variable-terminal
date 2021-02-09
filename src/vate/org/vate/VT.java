@@ -137,7 +137,7 @@ public class VT
 	public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_GOOD = 66;
 	public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_EXTRA = 67;
 	public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_SIMPLE = 68;
-
+	public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_REDUCED = 69;
 	
 	// public static final int
 	// VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALE_FACTOR

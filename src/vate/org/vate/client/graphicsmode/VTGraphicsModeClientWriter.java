@@ -896,6 +896,11 @@ public class VTGraphicsModeClientWriter implements Runnable
 				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_WORST);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
+			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125)
+			{
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_REDUCED);
+				// connection.getGraphicsControlDataOutputStream().flush();
+			}
 			else
 			{
 				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_NORMAL);
