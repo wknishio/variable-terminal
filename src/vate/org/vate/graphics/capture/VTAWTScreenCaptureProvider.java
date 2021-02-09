@@ -6380,7 +6380,7 @@ public final class VTAWTScreenCaptureProvider
 	
 	private int filterGray(int rgb)
 	{
-		if (((rgb & 0x00808080) == 0x00808080) || ((rgb & 0x007F7F7F) == 0x007F7F7F))
+		if (((rgb & 0x00FFFFFF) == 0x00808080))
 		{
 			return rgb & 0xFF000000;
 		}
