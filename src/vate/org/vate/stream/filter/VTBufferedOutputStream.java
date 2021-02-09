@@ -148,14 +148,14 @@ public final class VTBufferedOutputStream extends FilterOutputStream
 		//flush();
 		//flushBuffer();
 		//out.flush();
-		try
-		{
-			flush();
-		}
-		catch (Throwable t)
-		{
-			
-		}
+//		try
+//		{
+//			flush();
+//		}
+//		catch (Throwable t)
+//		{
+//			
+//		}
 		out.close();
 	}
 }

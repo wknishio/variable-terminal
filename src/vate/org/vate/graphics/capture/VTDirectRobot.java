@@ -411,6 +411,7 @@ public final class VTDirectRobot
 		catch (Throwable t) { }
 	}
 
+	@SuppressWarnings("all")
 	protected final void finalize() throws Throwable
 	{
 		try

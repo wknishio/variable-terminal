@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import org.vate.VT;
 import org.vate.stream.array.VTCircularByteBuffer;
 
-public class VTPipedDecompressor extends OutputStream
+public final class VTPipedDecompressor extends OutputStream
 {
 	private static final int bufferSize = VT.VT_STANDARD_DATA_BUFFER_SIZE;
 	private InputStream in;
@@ -78,7 +78,7 @@ public class VTPipedDecompressor extends OutputStream
 	
 	public void close() throws IOException
 	{
-		flush();
+		//flush();
 		out.close();
 	}
 }

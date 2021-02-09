@@ -43,14 +43,14 @@ public final class VTDoubledOutputStream extends FilterOutputStream
 	
 	public final void close() throws IOException
 	{
-		try
-		{
-			flush();
-		}
-		catch (Throwable t)
-		{
-			
-		}
+//		try
+//		{
+//			flush();
+//		}
+//		catch (Throwable t)
+//		{
+//			
+//		}
 		//nothing
 	}
 }

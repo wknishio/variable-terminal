@@ -4,7 +4,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public class VTBigEndianOutputStream extends OutputStream implements DataOutput
+public final class VTBigEndianOutputStream extends OutputStream implements DataOutput
 {
 	private byte[] ushortBuffer;
 	private byte[] shortBuffer;
@@ -52,14 +52,14 @@ public class VTBigEndianOutputStream extends OutputStream implements DataOutput
 	
 	public void close() throws IOException
 	{
-		try
-		{
-			flush();
-		}
-		catch (Throwable t)
-		{
-			
-		}
+//		try
+//		{
+//			flush();
+//		}
+//		catch (Throwable t)
+//		{
+//			
+//		}
 		out.close();
 	}
 	

@@ -51,14 +51,14 @@ public final class VTPipedOutputStream extends OutputStream
 	
 	public final void close() throws IOException
 	{
-		try
-		{
-			flush();
-		}
-		catch (Throwable t)
-		{
-			
-		}
+//		try
+//		{
+//			flush();
+//		}
+//		catch (Throwable t)
+//		{
+//			
+//		}
 		sink.eof();
 	}
 }

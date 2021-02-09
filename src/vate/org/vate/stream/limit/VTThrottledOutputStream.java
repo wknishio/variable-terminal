@@ -13,7 +13,7 @@ public final class VTThrottledOutputStream extends FilterOutputStream
 	public VTThrottledOutputStream(OutputStream out, double bytesPerSecond)
 	{
 		super(out);
-		this.throttler = new NanoThrottle(bytesPerSecond, 0.01, true);
+		this.throttler = new NanoThrottle(bytesPerSecond, 0.005, true);
 	}
 	
 	public final void write(int b) throws IOException
@@ -61,14 +61,14 @@ public final class VTThrottledOutputStream extends FilterOutputStream
 	{
 		throttler.setRate(Long.MAX_VALUE);
 		throttler.wakeAllWaitingThreads();
-		try
-		{
-			flush();
-		}
-		catch (Throwable t)
-		{
-			
-		}
+//		try
+//		{
+//			flush();
+//		}
+//		catch (Throwable t)
+//		{
+//			
+//		}
 		//super.close();
 		out.close();
 	}

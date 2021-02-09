@@ -52,14 +52,14 @@ public final class VTLittleEndianOutputStream extends OutputStream implements Da
 	
 	public final void close() throws IOException
 	{
-		try
-		{
-			flush();
-		}
-		catch (Throwable t)
-		{
-			
-		}
+//		try
+//		{
+//			flush();
+//		}
+//		catch (Throwable t)
+//		{
+//			
+//		}
 		out.close();
 	}
 	
