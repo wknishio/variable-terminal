@@ -75,4 +75,10 @@ public class VTPipedDecompressor extends OutputStream
 	{
 		out.flush();
 	}
+	
+	public void close() throws IOException
+	{
+		flush();
+		out.close();
+	}
 }

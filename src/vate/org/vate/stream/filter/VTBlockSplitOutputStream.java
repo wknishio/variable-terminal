@@ -66,6 +66,14 @@ public final class VTBlockSplitOutputStream extends FilterOutputStream
 	
 	public final void close() throws IOException
 	{
+		try
+		{
+			flush();
+		}
+		catch (Throwable t)
+		{
+			
+		}
 		out.close();
 	}
 }

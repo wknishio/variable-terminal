@@ -59,6 +59,14 @@ public final class VTThrottlingOutputStream extends FilterOutputStream
 		throttled.setBytesPerSecond(Long.MAX_VALUE);
 		throttled.wakeAllWaitingThreads();
 		current = original;
+		try
+		{
+			flush();
+		}
+		catch (Throwable t)
+		{
+			
+		}
 		out.close();
 	}
 }

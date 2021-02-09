@@ -41,7 +41,7 @@ public final class VTPipedOutputStream extends OutputStream
 		sink.put(b, off, len);
 	}
 	
-	public final void flush()
+	public final void flush() throws IOException
 	{
 		if (sink != null)
 		{
@@ -51,6 +51,14 @@ public final class VTPipedOutputStream extends OutputStream
 	
 	public final void close() throws IOException
 	{
+		try
+		{
+			flush();
+		}
+		catch (Throwable t)
+		{
+			
+		}
 		sink.eof();
 	}
 }

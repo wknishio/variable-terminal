@@ -177,23 +177,34 @@ public final class VTLinkableDynamicMultiplexingOutputStream
 		{
 			if (!closed)
 			{
-				writeClosePacketFlushing(type, number);
-			}
-			closed = true;
-			if (propagated.size() > 0)
-			{
-				//propagated.close();
-				for (Closeable closeable : propagated)
+				if (propagated.size() > 0)
+				{
+					//propagated.close();
+					for (Closeable closeable : propagated)
+					{
+						try 
+						{
+							closeable.close();
+						}
+						catch (Throwable t)
+						{
+							
+						}
+					}
+				}
+				closed = true;
+				if (!autoFlushPackets)
 				{
 					try 
 					{
-						closeable.close();
+						out.flush();
 					}
 					catch (Throwable t)
 					{
 						
 					}
 				}
+				writeClosePacketFlushing(type, number);
 			}
 		}
 		
