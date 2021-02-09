@@ -13,7 +13,7 @@ public final class VTThrottledOutputStream extends FilterOutputStream
 	public VTThrottledOutputStream(OutputStream out, double bytesPerSecond)
 	{
 		super(out);
-		this.throttler = new NanoThrottle(bytesPerSecond, 0.005, true);
+		this.throttler = new NanoThrottle(bytesPerSecond, (1d / 8d), true);
 	}
 	
 	public final void write(int b) throws IOException
