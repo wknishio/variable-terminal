@@ -29,6 +29,7 @@ public class VTFileTransferClientTransaction implements Runnable
 	private volatile boolean verified;
 	private volatile boolean resumable;
 	private volatile boolean directory;
+	private volatile boolean stronger;
 	// private static final int checksumBufferSize = 64 * 1024;
 	private int readedBytes;
 	private int writtenBytes;
@@ -1677,10 +1678,16 @@ public class VTFileTransferClientTransaction implements Runnable
 					compressing = false;
 					resuming = false;
 					verifying = false;
+					stronger = false;
 					
-					if (transferParameters.toUpperCase().contains("C"))
+					if (transferParameters.toUpperCase().contains("F"))
 					{
 						compressing = true;
+					}
+					if (transferParameters.toUpperCase().contains("H"))
+					{
+						compressing = true;
+						stronger = true;
 					}
 					if (transferParameters.toUpperCase().contains("R"))
 					{
@@ -1692,9 +1699,17 @@ public class VTFileTransferClientTransaction implements Runnable
 					}
 					
 					String[] localFiles = filePaths.split(";");
+					
 					if (compressing)
 					{
-						fileTransferRemoteOutputStream = VTCompressorSelector.createDirectLZ4OutputStream(session.getClient().getConnection().getFileTransferDataOutputStream());
+						if (stronger)
+						{
+							fileTransferRemoteOutputStream = VTCompressorSelector.createDirectZstdOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream());
+						}
+						else
+						{
+							fileTransferRemoteOutputStream = VTCompressorSelector.createDirectLZ4OutputStream(session.getClient().getConnection().getFileTransferDataOutputStream());
+						}
 					}
 					else
 					{
@@ -1762,10 +1777,16 @@ public class VTFileTransferClientTransaction implements Runnable
 					compressing = false;
 					resuming = false;
 					verifying = false;
+					stronger = false;
 					
-					if (transferParameters.toUpperCase().contains("C"))
+					if (transferParameters.toUpperCase().contains("F"))
 					{
 						compressing = true;
+					}
+					if (transferParameters.toUpperCase().contains("H"))
+					{
+						compressing = true;
+						stronger = true;
 					}
 					if (transferParameters.toUpperCase().contains("R"))
 					{
@@ -1778,7 +1799,14 @@ public class VTFileTransferClientTransaction implements Runnable
 					
 					if (compressing)
 					{
-						fileTransferRemoteInputStream = VTCompressorSelector.createDirectLZ4InputStream(session.getClient().getConnection().getFileTransferDataInputStream());
+						if (stronger)
+						{
+							fileTransferRemoteInputStream = VTCompressorSelector.createDirectZstdInputStream(session.getClient().getConnection().getFileTransferDataInputStream());
+						}
+						else
+						{
+							fileTransferRemoteInputStream = VTCompressorSelector.createDirectLZ4InputStream(session.getClient().getConnection().getFileTransferDataInputStream());
+						}
 					}
 					else
 					{
@@ -1886,6 +1914,31 @@ public class VTFileTransferClientTransaction implements Runnable
 			}
 		}
 		fileTransferChecksumInputStream = null;
+		if (compressing)
+		{
+			if (fileTransferRemoteInputStream != null)
+			{
+				try
+				{
+					fileTransferRemoteInputStream.close();
+				}
+				catch (Throwable e)
+				{
+					
+				}
+			}
+			if (fileTransferRemoteOutputStream != null)
+			{
+				try
+				{
+					fileTransferRemoteOutputStream.close();
+				}
+				catch (Throwable e)
+				{
+					
+				}
+			}
+		}
 		finished = true;
 	}
 }

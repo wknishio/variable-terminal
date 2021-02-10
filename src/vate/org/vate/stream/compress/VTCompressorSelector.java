@@ -32,6 +32,20 @@ import net.jpountz.xxhash.XXHashFactory;
 @SuppressWarnings({ "unused", "deprecation" })
 public class VTCompressorSelector
 {
+	public static OutputStream createDirectZstdOutputStream(OutputStream out) throws IOException
+	{
+		@SuppressWarnings("all")
+		OutputStream stream = new ZstdOutputStream(out, 1).setChecksum(false).setCloseFrameOnFlush(false);
+		return stream;
+	}
+	
+	public static InputStream createDirectZstdInputStream(InputStream in) throws IOException
+	{
+		@SuppressWarnings("all")
+		InputStream stream = new ZstdInputStream(in).setContinuous(true);
+		return stream;
+	}
+	
 	public static OutputStream createBufferedZstdOutputStream(OutputStream out) throws IOException
 	{
 		//OutputStream stream = new VTFlushBufferedOutputStream(new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE), new VTAirliftOutputStream(new VTFlushBufferedOutputStream(new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE), out), new ZstdCompressor()));
