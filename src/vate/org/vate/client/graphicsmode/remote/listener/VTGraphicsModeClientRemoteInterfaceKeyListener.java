@@ -241,11 +241,11 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
 		}
 		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_7))
 		{
-			writer.toggleDrawPointer();
+			writer.clearRemoteGraphics();
 		}
 		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_8))
 		{
-			writer.clearRemoteGraphics();
+			writer.adjustFrameSize();
 		}
 		else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_9))
 		{
