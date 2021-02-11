@@ -858,52 +858,57 @@ public class VTGraphicsModeClientWriter implements Runnable
 		{
 			if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216)
 			{
-				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_BEST);
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16777216);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
 			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32768)
 			{
-				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_HIGH);
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_32768);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
 			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216)
 			{
-				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_MEDIUM);
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_216);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
 			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16)
 			{
-				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_LOW);
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
 			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32)
 			{
-				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_SIMPLE);
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_32);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
 			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512)
 			{
-				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_GOOD);
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_512);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
 			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4096)
 			{
-				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_EXTRA);
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_4096);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
 			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8)
 			{
-				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_WORST);
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_8);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
 			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125)
 			{
-				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_REDUCED);
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_125);
+				// connection.getGraphicsControlDataOutputStream().flush();
+			}
+			else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_27)
+			{
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_27);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
 			else
 			{
-				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_NORMAL);
+				connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_64);
 				// connection.getGraphicsControlDataOutputStream().flush();
 			}
 		}

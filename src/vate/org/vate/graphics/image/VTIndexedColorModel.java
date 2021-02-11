@@ -16,6 +16,8 @@ public class VTIndexedColorModel
 	private static final IndexColorModel indexColorModel16 = create16ColorModel();
 	private static final IndexColorModel indexColorModel27 = create27ColorModel();
 	private static final IndexColorModel indexColorModel32 = create32ColorModel();
+	private static final IndexColorModel indexColorModel125 = create125ColorModel();
+	private static final IndexColorModel indexColorModel216 = create216ColorModel();
 	
 //	public static int get16ColorRGBIValue(int rgb)
 //	{
@@ -56,9 +58,19 @@ public class VTIndexedColorModel
 		//byte red_idx = red > ;
 	}
 	
-	public static int get32ColorRGBIIValue(int rgb)
+	public static byte get32ColorRGBIIValue(int rgb)
 	{
 		return ((byte[])indexColorModel32.getDataElements(rgb, null))[0];
+	}
+	
+	public static byte get125Color5LevelRGBValue(int rgb)
+	{
+		return ((byte[])indexColorModel125.getDataElements(rgb, null))[0];
+	}
+	
+	public static byte get216Color6LevelRGBValue(int rgb)
+	{
+		return ((byte[])indexColorModel216.getDataElements(rgb, null))[0];
 	}
 	
 	//private static int euclidianColorDistance(int red_a, int green_a, int blue_a, int red_b, int green_b, int blue_b)

@@ -204,54 +204,59 @@ public class VTGraphicsModeServerReader implements Runnable
 						writer.requestClear();
 						break;
 					}
-					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_LOW:
+					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16:
 					{
 						writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16);
 						break;
 					}
-					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_MEDIUM:
+					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_216:
 					{
 						writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216);
 						break;
 					}
-					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_HIGH:
+					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_32768:
 					{
 						writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32768);
 						break;
 					}
-					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_BEST:
+					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16777216:
 					{
 						writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216);
 						break;
 					}
-					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_WORST:
+					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_8:
 					{
 						writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8);
 						break;
 					}
-					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_NORMAL:
+					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_64:
 					{
 						writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_64);
 						break;
 					}
-					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_GOOD:
+					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_512:
 					{
 						writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512);
 						break;
 					}
-					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_EXTRA:
+					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_4096:
 					{
 						writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4096);
 						break;
 					}
-					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_SIMPLE:
+					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_32:
 					{
 						writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32);
 						break;
 					}
-					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_REDUCED:
+					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_125:
 					{
 						writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125);
+						break;
+					}
+					case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_27:
+					{
+						writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_27);
 						break;
 					}
 					case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_MODE_ASYNCHRONOUS:

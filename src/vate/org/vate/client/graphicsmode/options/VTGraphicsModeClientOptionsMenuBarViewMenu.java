@@ -134,7 +134,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		this.closeTerminalMenu = new MenuItem("Close Link");
 		this.closeTerminalMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuCloseTerminalOptionListener(writer));
 		this.lowColorOption = new CheckboxMenuItem("Low", false);
-		this.lowColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, lowColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16));
+		this.lowColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, lowColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_27));
 		this.mediumColorOption = new CheckboxMenuItem("Medium", true);
 		this.mediumColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, mediumColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216));
 		this.highColorOption = new CheckboxMenuItem("High", false);
@@ -142,7 +142,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		this.bestColorOption = new CheckboxMenuItem("Best", false);
 		this.bestColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, bestColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216));
 		this.worstColorOption = new CheckboxMenuItem("Worst", false);
-		this.worstColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, worstColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8));
+		this.worstColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, worstColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16));
 		this.decreasedColorOption = new CheckboxMenuItem("Reduced", false);
 		this.decreasedColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, decreasedColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125));
 		this.increasedColorOption = new CheckboxMenuItem("Increased", false);
@@ -368,8 +368,8 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 			mediumColorOption.setState(false);
 			decreasedColorOption.setState(false);
 			simpleColorOption.setState(false);
-			lowColorOption.setState(true);
-			worstColorOption.setState(false);
+			lowColorOption.setState(false);
+			worstColorOption.setState(true);
 		}
 		else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32)
 		{
@@ -441,6 +441,18 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 			decreasedColorOption.setState(false);
 			simpleColorOption.setState(true);
 			lowColorOption.setState(false);
+			worstColorOption.setState(false);
+		}
+		else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_27)
+		{
+			bestColorOption.setState(false);
+			highColorOption.setState(false);
+			extraColorOption.setState(false);
+			increasedColorOption.setState(false);
+			mediumColorOption.setState(false);
+			decreasedColorOption.setState(false);
+			simpleColorOption.setState(false);
+			lowColorOption.setState(true);
 			worstColorOption.setState(false);
 		}
 		else
