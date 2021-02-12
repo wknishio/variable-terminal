@@ -79,9 +79,9 @@ public final class VTAWTScreenCaptureProvider
 	private static final int RGB555_333_GREEN_ADD = RGB555_GREEN_MASK - RGB555_333_GREEN_MASK;
 	private static final int RGB555_333_BLUE_ADD = RGB555_BLUE_MASK - RGB555_333_BLUE_MASK;
 	
-	private static final int RGB222_RED_MASK = 0x00c00000;
-	private static final int RGB222_GREEN_MASK = 0x0000c000;
-	private static final int RGB222_BLUE_MASK = 0x000000c0;
+	private static final int RGB888_222_RED_MASK = 0x00c00000;
+	private static final int RGB888_222_GREEN_MASK = 0x0000c000;
+	private static final int RGB888_222_BLUE_MASK = 0x000000c0;
 	
 	private volatile int colorQuality;
 	private volatile boolean c16QualityScreenCaptureInitialized;
@@ -3229,9 +3229,9 @@ public final class VTAWTScreenCaptureProvider
 		pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
 		for (i = 0; i < pixelDataLength; i++)
 		{
-			red = ((sectionPixelBufferInt[i] & RGB222_RED_MASK) >> 18);
-			green = ((sectionPixelBufferInt[i] & RGB222_GREEN_MASK) >> 12);
-			blue = ((sectionPixelBufferInt[i] & RGB222_BLUE_MASK) >> 6);
+			red = ((sectionPixelBufferInt[i] & RGB888_222_RED_MASK) >> 18);
+			green = ((sectionPixelBufferInt[i] & RGB888_222_GREEN_MASK) >> 12);
+			blue = ((sectionPixelBufferInt[i] & RGB888_222_BLUE_MASK) >> 6);
 			
 			pixelBufferByte[i] = (byte) (red + green + blue);
 		}
@@ -3332,9 +3332,9 @@ public final class VTAWTScreenCaptureProvider
 				currentHeight += screenCurrentImage.getWidth();
 			}
 			
-			red = ((sectionPixelBufferInt[i] & RGB222_RED_MASK) >> 18);
-			green = ((sectionPixelBufferInt[i] & RGB222_GREEN_MASK) >> 12);
-			blue = ((sectionPixelBufferInt[i] & RGB222_BLUE_MASK) >> 6);
+			red = ((sectionPixelBufferInt[i] & RGB888_222_RED_MASK) >> 18);
+			green = ((sectionPixelBufferInt[i] & RGB888_222_GREEN_MASK) >> 12);
+			blue = ((sectionPixelBufferInt[i] & RGB888_222_BLUE_MASK) >> 6);
 			
 			pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) (red + green + blue);
 		}
@@ -4473,9 +4473,9 @@ public final class VTAWTScreenCaptureProvider
 			//green = (((((sectionPixelBufferInt[i] & RGB888_GREEN_MASK) >> 8) * 3) >> 8) * 3);
 			//blue = (((((sectionPixelBufferInt[i]) & RGB888_BLUE_MASK) * 3) >> 8));
 			
-			red = (((((sectionPixelBufferInt[i] & RGB888_RED_MASK) >> 16) + 64) / 128) * 9);
-			green = (((((sectionPixelBufferInt[i] & RGB888_GREEN_MASK) >> 8) + 64) / 128) * 3);
-			blue = (((((sectionPixelBufferInt[i] & RGB888_BLUE_MASK)) + 64) / 128));
+			red = (((((sectionPixelBufferInt[i] & RGB888_RED_MASK) >> 16) + 64) >> 7) * 9);
+			green = (((((sectionPixelBufferInt[i] & RGB888_GREEN_MASK) >> 8) + 64) >> 7) * 3);
+			blue = (((((sectionPixelBufferInt[i] & RGB888_BLUE_MASK)) + 64) >> 7));
 			
 			pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) (red + green + blue);
 			
