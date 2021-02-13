@@ -19,6 +19,7 @@ import java.awt.image.DataBufferByte;
 import java.awt.image.DataBufferInt;
 import java.awt.image.DataBufferUShort;
 //import java.awt.peer.RobotPeer;
+import java.awt.image.WritableRaster;
 
 //import javax.swing.JLabel;
 //import javax.swing.UIManager;
@@ -84,8 +85,9 @@ public final class VTAWTScreenCaptureProvider
 	private static final int RGB888_222_BLUE_MASK = 0x000000c0;
 	
 	private static final int RGB888_XOR_MASK = 0x00FFFFFF;
-	private static final int RGB888_333_XOR_MASK = 0x00E0E0E0;
-	private static final int RGB888_444_XOR_MASK = 0x00F0F0F0;
+	private static final short RGB555_333_XOR_MASK = 0x0000739C;
+	private static final short RGB555_444_XOR_MASK = 0x00007BDE;
+	//private static final short RGB888_555_XOR_MASK = 0x00007FFF;
 	
 	private volatile int colorQuality;
 	private volatile boolean c16QualityScreenCaptureInitialized;
@@ -6784,6 +6786,13 @@ public final class VTAWTScreenCaptureProvider
 		return rgb;
 	}
 	
+	private static final void invertPixel512(int x, int y, WritableRaster raster)
+	{
+		short[] pixel = (short[])(raster.getDataElements(x, y, null));
+		pixel[0] ^= RGB555_333_XOR_MASK;
+		raster.setDataElements(x, y, pixel);
+	}
+	
 	private final void drawPointer512(BufferedImage image)
 	{
 		drawPointer512(image, new Rectangle(0, 0, image.getWidth(), image.getHeight()));
@@ -6839,155 +6848,158 @@ public final class VTAWTScreenCaptureProvider
 		o = drawnCursorSize;
 		// o = Math.min(displayMode.getWidth(), displayMode.getHeight()) / 25;
 		// o = Math.min(26, displayMode.getHeight()) / 32;
-		// o = 45;
+		// o = 45
+		WritableRaster raster = image.getRaster();
+		
 		try
 		{
 			// Center area
 			x = pointerLocation.x;
 			y = pointerLocation.y;
+			//short[] pixelData = (short[])(image.getDataElements(x + 2, y, null));
 			if (area.contains(x + 2, y))
 			{
-				image.setRGB(x + 2, y, (image.getRGB(x + 2, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 2, y, raster);
 			}
 			if (area.contains(x + 3, y))
 			{
-				image.setRGB(x + 3, y, (image.getRGB(x + 3, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 3, y, raster);
 			}
 			if (area.contains(x + 4, y))
 			{
-				image.setRGB(x + 4, y, (image.getRGB(x + 4, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 4, y, raster);
 			}
 			if (area.contains(x - 2, y))
 			{
-				image.setRGB(x - 2, y, (image.getRGB(x - 2, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 2, y, raster);
 			}
 			if (area.contains(x - 3, y))
 			{
-				image.setRGB(x - 3, y, (image.getRGB(x - 3, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 3, y, raster);
 			}
 			if (area.contains(x - 4, y))
 			{
-				image.setRGB(x - 4, y, (image.getRGB(x - 4, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 4, y, raster);
 			}
 			if (area.contains(x, y + 2))
 			{
-				image.setRGB(x, y + 2, (image.getRGB(x, y + 2) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y + 2, raster);
 			}
 			if (area.contains(x, y + 3))
 			{
-				image.setRGB(x, y + 3, (image.getRGB(x, y + 3) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y + 3, raster);
 			}
 			if (area.contains(x, y + 4))
 			{
-				image.setRGB(x, y + 4, (image.getRGB(x, y + 4) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y + 4, raster);
 			}
 			if (area.contains(x, y - 2))
 			{
-				image.setRGB(x, y - 2, (image.getRGB(x, y - 2) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y - 2, raster);
 			}
 			if (area.contains(x, y - 3))
 			{
-				image.setRGB(x, y - 3, (image.getRGB(x, y - 3) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y - 3, raster);
 			}
 			if (area.contains(x, y - 4))
 			{
-				image.setRGB(x, y - 4, (image.getRGB(x, y - 4) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y - 4, raster);
 			}
 			if (area.contains(x + 2, y + 1))
 			{
-				image.setRGB(x + 2, y + 1, (image.getRGB(x + 2, y + 1) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 2, y + 1, raster);
 			}
 			if (area.contains(x + 3, y + 1))
 			{
-				image.setRGB(x + 3, y + 1, (image.getRGB(x + 3, y + 1) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 3, y + 1, raster);
 			}
 			if (area.contains(x + 4, y + 1))
 			{
-				image.setRGB(x + 4, y + 1, (image.getRGB(x + 4, y + 1) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 4, y + 1, raster);
 			}
 			if (area.contains(x + 2, y - 1))
 			{
-				image.setRGB(x + 2, y - 1, (image.getRGB(x + 2, y - 1) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 2, y - 1, raster);
 			}
 			if (area.contains(x + 3, y - 1))
 			{
-				image.setRGB(x + 3, y - 1, (image.getRGB(x + 3, y - 1) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 3, y - 1, raster);
 			}
 			if (area.contains(x + 4, y - 1))
 			{
-				image.setRGB(x + 4, y - 1, (image.getRGB(x + 4, y - 1) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 4, y - 1, raster);
 			}
 			if (area.contains(x - 2, y + 1))
 			{
-				image.setRGB(x - 2, y + 1, (image.getRGB(x - 2, y + 1) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 2, y + 1, raster);
 			}
 			if (area.contains(x - 3, y + 1))
 			{
-				image.setRGB(x - 3, y + 1, (image.getRGB(x - 3, y + 1) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 3, y + 1, raster);
 			}
 			if (area.contains(x - 4, y + 1))
 			{
-				image.setRGB(x - 4, y + 1, (image.getRGB(x - 4, y + 1) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 4, y + 1, raster);
 			}
 			if (area.contains(x - 2, y - 1))
 			{
-				image.setRGB(x - 2, y - 1, (image.getRGB(x - 2, y - 1) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 2, y - 1, raster);
 			}
 			if (area.contains(x - 3, y - 1))
 			{
-				image.setRGB(x - 3, y - 1, (image.getRGB(x - 3, y - 1) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 3, y - 1, raster);
 			}
 			if (area.contains(x - 4, y - 1))
 			{
-				image.setRGB(x - 4, y - 1, (image.getRGB(x - 4, y - 1) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 4, y - 1, raster);
 			}
 			if (area.contains(x + 1, y + 2))
 			{
-				image.setRGB(x + 1, y + 2, (image.getRGB(x + 1, y + 2) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 1, y + 2, raster);
 			}
 			if (area.contains(x + 1, y + 3))
 			{
-				image.setRGB(x + 1, y + 3, (image.getRGB(x + 1, y + 3) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 1, y + 3, raster);
 			}
 			if (area.contains(x + 1, y + 4))
 			{
-				image.setRGB(x + 1, y + 4, (image.getRGB(x + 1, y + 4) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 1, y + 4, raster);
 			}
 			if (area.contains(x + 1, y - 2))
 			{
-				image.setRGB(x + 1, y - 2, (image.getRGB(x + 1, y - 2) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 1, y - 2, raster);
 			}
 			if (area.contains(x + 1, y - 3))
 			{
-				image.setRGB(x + 1, y - 3, (image.getRGB(x + 1, y - 3) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 1, y - 3, raster);
 			}
 			if (area.contains(x + 1, y - 4))
 			{
-				image.setRGB(x + 1, y - 4, (image.getRGB(x + 1, y - 4) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x + 1, y - 4, raster);
 			}
 			if (area.contains(x - 1, y + 2))
 			{
-				image.setRGB(x - 1, y + 2, (image.getRGB(x - 1, y + 2) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 1, y + 2, raster);
 			}
 			if (area.contains(x - 1, y + 3))
 			{
-				image.setRGB(x - 1, y + 3, (image.getRGB(x - 1, y + 3) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 1, y + 3, raster);
 			}
 			if (area.contains(x - 1, y + 4))
 			{
-				image.setRGB(x - 1, y + 4, (image.getRGB(x - 1, y + 4) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 1, y + 4, raster);
 			}
 			if (area.contains(x - 1, y - 2))
 			{
-				image.setRGB(x - 1, y - 2, (image.getRGB(x - 1, y - 2) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 1, y - 2, raster);
 			}
 			if (area.contains(x - 1, y - 3))
 			{
-				image.setRGB(x - 1, y - 3, (image.getRGB(x - 1, y - 3) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 1, y - 3, raster);
 			}
 			if (area.contains(x - 1, y - 4))
 			{
-				image.setRGB(x - 1, y - 4, (image.getRGB(x - 1, y - 4) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x - 1, y - 4, raster);
 			}
 			
 			if (o > 24)
@@ -7004,20 +7016,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y + 2;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y + m, raster);
 				}
 			}
 			// Second quadrant
@@ -7025,20 +7037,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y + 2;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y + m, raster);
 				}
 			}
 			// Third quadrant
@@ -7046,20 +7058,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y - 2;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y - m, raster);
 				}
 			}
 			// Fourth quadrant
@@ -7067,20 +7079,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y - 2;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y - m, raster);
 				}
 			}
 			
@@ -7100,20 +7112,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y + 3;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y + m, raster);
 				}
 			}
 			// Second quadrant
@@ -7121,20 +7133,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y + 3;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y + m, raster);
 				}
 			}
 			// Third quadrant
@@ -7142,20 +7154,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y - 3;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y - m, raster);
 				}
 			}
 			// Fourth quadrant
@@ -7163,20 +7175,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y - 3;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y - m, raster);
 				}
 			}
 			
@@ -7188,20 +7200,20 @@ public final class VTAWTScreenCaptureProvider
 			
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y + m, raster);
 				}
 			}
 			
@@ -7212,7 +7224,7 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x + m, y - m))
 				{
-					image.setRGB(x + m, y - m, (image.getRGB(x + m, y - m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + m, y - m, raster);
 				}
 			}
 						
@@ -7220,19 +7232,19 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y -	m, (image.getRGB(x, y - m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y - m, raster);
 				}
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + m, y, raster);
 				}
 				if (area.contains(x + 1, y - m))
 				{
-					image.setRGB(x + 1, y -	m, (image.getRGB(x + 1, y - m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + 1, y - m, raster);
 				}
 				if (area.contains(x + m, y - 1))
 				{
-					image.setRGB(x + m, y - 1, (image.getRGB(x + m, y - 1) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + m, y - 1, raster);
 				}
 			}
 			
@@ -7240,11 +7252,11 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x + 2, y - m))
 				{
-					image.setRGB(x + 2, y -	m, (image.getRGB(x + 2, y - m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + 2, y - m, raster);
 				}
 				if (area.contains(x + m, y - 2))
 				{
-					image.setRGB(x + m, y - 2, (image.getRGB(x + m, y - 2) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + m, y - 2, raster);
 				}
 			}
 			
@@ -7255,29 +7267,29 @@ public final class VTAWTScreenCaptureProvider
 //			{
 //				if (area.contains(x - m, y + m))
 //				{
-//					image.setRGB(x - m, y + m, (image.getRGB(x - m, y + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - m, y + m, raster)(x - m, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 1);m++)
 //			{
 //				if (area.contains(x - 1 - m, y + m))
 //				{
-//					image.setRGB(x - 1 - m, y +	m, (image.getRGB(x - 1 - m, y + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - 1 - m, y +	m, raster)(x - 1 - m, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if	(area.contains(x - m, y + 1 + m))
 //				{
-//					image.setRGB(x - m, y + 1 +	m, (image.getRGB(x - m, y + 1 + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - m, y + 1 +	m, raster)(x - m, y + 1 + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 2);m++)
 //			{
 //				if (area.contains(x - 2 - m, y + m))
 //				{
-//					image.setRGB(x - 2 - m, y + m, (image.getRGB(x - 2 - m, y + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - 2 - m, y + m, raster)(x - 2 - m, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if (area.contains(x - m, y + 2 + m))
 //				{
-//					image.setRGB(x - m, y + 2 + m, (image.getRGB(x - m, y + 2 + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - m, y + 2 + m, raster)(x - m, y + 2 + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 			
@@ -7287,20 +7299,20 @@ public final class VTAWTScreenCaptureProvider
 			
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y + m, raster);
 				}
 			}
 			
@@ -7311,7 +7323,7 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x - m, y - m))
 				{
-					image.setRGB(x - m, y - m, (image.getRGB(x - m, y - m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - m, y - m, raster);
 				}
 			}
 						
@@ -7319,19 +7331,19 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y -	m, (image.getRGB(x, y - m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y - m, raster);
 				}
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - m, y, raster);
 				}
 				if (area.contains(x - 1, y - m))
 				{
-					image.setRGB(x - 1, y -	m, (image.getRGB(x - 1, y - m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - 1, y - m, raster);
 				}
 				if (area.contains(x - m, y - 1))
 				{
-					image.setRGB(x - m, y - 1, (image.getRGB(x - m, y - 1) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - m, y - 1, raster);
 				}
 			}
 			
@@ -7339,11 +7351,11 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x - 2, y - m))
 				{
-					image.setRGB(x - 2, y -	m, (image.getRGB(x - 2, y - m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - 2, y - m, raster);
 				}
 				if (area.contains(x + m, y - 2))
 				{
-					image.setRGB(x - m, y - 2, (image.getRGB(x - m, y - 2) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - m, y - 2, raster);
 				}
 			}
 			
@@ -7354,29 +7366,29 @@ public final class VTAWTScreenCaptureProvider
 //			{
 //				if (area.contains(x + m, y + m))
 //				{
-//					image.setRGB(x + m, y + m, (image.getRGB(x + m, y + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + m, y + m, raster)(x + m, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 1);m++)
 //			{
 //				if (area.contains(x + 1 + m, y + m))
 //				{
-//					image.setRGB(x + 1 + m, y +	m, (image.getRGB(x + 1 + m, y + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + 1 + m, y +	m, raster)(x + 1 + m, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if (area.contains(x + m, y + 1 + m))
 //				{
-//					image.setRGB(x + m, y + 1 +	m, (image.getRGB(x + m, y + 1 + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + m, y + 1 +	m, raster)(x + m, y + 1 + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 2);m++)
 //			{
 //				if (area.contains(x + 2 + m, y + m))
 //				{
-//					image.setRGB(x + 2 + m, y + m, (image.getRGB(x + 2 + m, y + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + 2 + m, y + m, raster)(x + 2 + m, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if (area.contains(x + m, y + 2 + m))
 //				{
-//					image.setRGB(x + m, y + 2 + m, (image.getRGB(x + m, y + 2 + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + m, y + 2 + m, raster)(x + m, y + 2 + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 			
@@ -7386,20 +7398,20 @@ public final class VTAWTScreenCaptureProvider
 			
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y - m, raster);
 				}
 			}
 			
@@ -7410,7 +7422,7 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x - m, y + m))
 				{
-					image.setRGB(x - m, y + m, (image.getRGB(x - m, y + m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - m, y + m, raster);
 				}
 			}
 						
@@ -7418,19 +7430,19 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y +	m, (image.getRGB(x, y + m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y + m, raster);
 				}
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - m, y, raster);
 				}
 				if (area.contains(x - 1, y + m))
 				{
-					image.setRGB(x - 1, y +	m, (image.getRGB(x - 1, y + m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - 1, y + m, raster);
 				}
 				if (area.contains(x - m, y + 1))
 				{
-					image.setRGB(x - m, y + 1, (image.getRGB(x - m, y + 1) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - m, y + 1, raster);
 				}
 			}
 			
@@ -7438,11 +7450,11 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x - 2, y + m))
 				{
-					image.setRGB(x - 2, y +	m, (image.getRGB(x - 2, y + m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - 2, y + m, raster);
 				}
 				if (area.contains(x + m, y + 2))
 				{
-					image.setRGB(x - m, y + 2, (image.getRGB(x - m, y + 2) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - m, y + 2, raster);
 				}
 			}
 						
@@ -7453,29 +7465,29 @@ public final class VTAWTScreenCaptureProvider
 //			{
 //				if (area.contains(x + m, y - m))
 //				{
-//					image.setRGB(x + m, y - m, (image.getRGB(x + m, y - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + m, y - m, raster)(x + m, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 1);m++)
 //			{
 //				if (area.contains(x + 1 + m, y - m))
 //				{
-//					image.setRGB(x + 1 + m, y -	m, (image.getRGB(x + 1 + m, y - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + 1 + m, y -	m, raster)(x + 1 + m, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if (area.contains(x + m, y - 1 - m))
 //				{
-//					image.setRGB(x + m, y - 1 -	m, (image.getRGB(x + m, y - 1 - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + m, y - 1 -	m, raster)(x + m, y - 1 - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 2);m++)
 //			{
 //				if (area.contains(x + 2 + m, y - m))
 //				{
-//					image.setRGB(x + 2 + m, y - m, (image.getRGB(x + 2 + m, y - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + 2 + m, y - m, raster)(x + 2 + m, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if (area.contains(x + m, y - 2 - m))
 //				{
-//					image.setRGB(x + m, y - 2 - m, (image.getRGB(x + m, y - 2 - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + m, y - 2 - m, raster)(x + m, y - 2 - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 			
@@ -7485,20 +7497,20 @@ public final class VTAWTScreenCaptureProvider
 			
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_333_XOR_MASK));
+				invertPixel512(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x - m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y - m, raster);
 				}
 			}
 			
@@ -7509,7 +7521,7 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x + m, y + m))
 				{
-					image.setRGB(x + m, y + m, (image.getRGB(x + m, y + m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + m, y + m, raster);
 				}
 			}
 						
@@ -7517,19 +7529,19 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y +	m, (image.getRGB(x, y + m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x, y + m, raster);
 				}
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + m, y, raster);
 				}
 				if (area.contains(x + 1, y + m))
 				{
-					image.setRGB(x + 1, y +	m, (image.getRGB(x + 1, y + m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + 1, y + m, raster);
 				}
 				if (area.contains(x + m, y + 1))
 				{
-					image.setRGB(x + m, y + 1, (image.getRGB(x + m, y + 1) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + m, y + 1, raster);
 				}
 			}
 			
@@ -7537,11 +7549,11 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x + 2, y + m))
 				{
-					image.setRGB(x + 2, y +	m, (image.getRGB(x + 2, y + m) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + 2, y + m, raster);
 				}
 				if (area.contains(x + m, y + 2))
 				{
-					image.setRGB(x + m, y + 2, (image.getRGB(x + m, y + 2) ^ RGB888_333_XOR_MASK));
+					invertPixel512(x + m, y + 2, raster);
 				}
 			}
 						
@@ -7552,29 +7564,29 @@ public final class VTAWTScreenCaptureProvider
 //			{
 //				if (area.contains(x - m, y - m))
 //				{
-//					image.setRGB(x - m, y - m, (image.getRGB(x - m, y - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - m, y - m, raster)(x - m, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 1);m++)
 //			{
 //				if (area.contains(x - 1 - m, y - m))
 //				{
-//					image.setRGB(x - 1 - m, y -	m, (image.getRGB(x - 1 - m, y - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - 1 - m, y -	m, raster)(x - 1 - m, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if (area.contains(x - m, y - 1 - m))
 //				{
-//					image.setRGB(x - m, y - 1 - m, (image.getRGB(x - m, y - 1 - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - m, y - 1 - m, raster)(x - m, y - 1 - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 2);m++)
 //			{
 //				if (area.contains(x - 2 - m, y - m))
 //				{
-//					image.setRGB(x - 2 - m, y - m, (image.getRGB(x - 2 - m, y - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - 2 - m, y - m, raster)(x - 2 - m, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if (area.contains(x - m, y - 2 - m))
 //				{
-//					image.setRGB(x - m, y - 2 - m, (image.getRGB(x - m, y - 2 - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - m, y - 2 - m, raster)(x - m, y - 2 - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 			
@@ -7584,20 +7596,20 @@ public final class VTAWTScreenCaptureProvider
 //			y =	pointerLocation.y + 5;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x,	y, (image.getRGB(x, y) ^ RGB555_333_XOR_MASK));
+//				invertPixel512(x,	y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x - m, y))
 //				{
-//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - m, y, raster)(x - m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m <	n);m++)
 //			{
 //				if (area.contains(x, y + m))
 //				{
-//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x, y + m, raster)(x, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			x = pointerLocation.x+ 5;
@@ -7605,20 +7617,20 @@ public final class VTAWTScreenCaptureProvider
 //			//Second quadrant
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_333_XOR_MASK));
+//				invertPixel512(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x + m, y))
 //				{
-//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + m, y, raster)(x + m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x, y + m))
 //				{
-//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x, y + m, raster)(x, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			//Third quadrant
@@ -7626,20 +7638,20 @@ public final class VTAWTScreenCaptureProvider
 //			y =	pointerLocation.y - 5;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x,	y, (image.getRGB(x, y) ^ RGB555_333_XOR_MASK));
+//				invertPixel512(x,	y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x + m, y))
 //				{
-//					image.setRGB(x + m, y,(image.getRGB(x + m, y) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + m, y,((Short)(image.getDataElements(x + m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m <	n);m++)
 //			{
 //				if (area.contains(x, y - m))
 //				{
-//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x, y - m, raster)(x, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			//Fourth quadrant
@@ -7647,20 +7659,20 @@ public final class VTAWTScreenCaptureProvider
 //			y = pointerLocation.y - 5;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_333_XOR_MASK));
+//				invertPixel512(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x - m, y))
 //				{
-//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - m, y, raster)(x - m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x, y - m))
 //				{
-//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x, y - m, raster)(x, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			
@@ -7670,20 +7682,20 @@ public final class VTAWTScreenCaptureProvider
 //			y =	pointerLocation.y + 6;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x,	y, (image.getRGB(x, y) ^ RGB555_333_XOR_MASK));
+//				invertPixel512(x,	y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x - m, y))
 //				{
-//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - m, y, raster)(x - m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m <	n);m++)
 //			{
 //				if (area.contains(x, y + m))
 //				{
-//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x, y + m, raster)(x, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			//Second quadrant
@@ -7691,20 +7703,20 @@ public final class VTAWTScreenCaptureProvider
 //			y = pointerLocation.y + 6;
 //			if	(area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_333_XOR_MASK));
+//				invertPixel512(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x + m, y))
 //				{
-//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + m, y, raster)(x + m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x, y + m))
 //				{
-//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x, y + m, raster)(x, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			//Third quadrant
@@ -7712,20 +7724,20 @@ public final class VTAWTScreenCaptureProvider
 //			y = pointerLocation.y - 6;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x,	y, (image.getRGB(x, y) ^ RGB555_333_XOR_MASK));
+//				invertPixel512(x,	y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x + m, y))
 //				{
-//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + m, y, raster)(x + m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m <	n);m++)
 //			{
 //				if (area.contains(x, y - m))
 //				{
-//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x, y - m, raster)(x, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			//Fourth quadrant
@@ -7733,20 +7745,20 @@ public final class VTAWTScreenCaptureProvider
 //			y = pointerLocation.y - 6;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_333_XOR_MASK));
+//				invertPixel512(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x - m, y))
 //				{
-//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - m, y, raster)(x - m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x, y - m))
 //				{
-//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x, y - m, raster)(x, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			
@@ -7755,80 +7767,80 @@ public final class VTAWTScreenCaptureProvider
 //			y = pointerLocation.y + 7;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_333_XOR_MASK));
+//				invertPixel512(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x - m, y))
 //				{
-//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - m, y, raster)(x - m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x, y + m))
 //				{
-//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x, y + m, raster)(x, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			x = pointerLocation.x + 7;
 //			y =	pointerLocation.y + 7;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_333_XOR_MASK));
+//				invertPixel512(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x + m, y))
 //				{
-//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + m, y, raster)(x + m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m <	n);m++)
 //			{
 //				if (area.contains(x, y + m))
 //				{
-//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x, y + m, raster)(x, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			x = pointerLocation.x + 7;
 //			y = pointerLocation.y - 7;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_333_XOR_MASK));
+//				invertPixel512(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x + m, y))
 //				{
-//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x + m, y, raster)(x + m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x, y - m))
 //				{
-//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x, y - m, raster)(x, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			x = pointerLocation.x - 7;
 //			y = pointerLocation.y - 7;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_333_XOR_MASK));
+//				invertPixel512(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x - m, y))
 //				{
-//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x - m, y, raster)(x - m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x, y - m))
 //				{
-//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB555_333_XOR_MASK));
+//					invertPixel512(x, y - m, raster)(x, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 		}
@@ -7837,6 +7849,13 @@ public final class VTAWTScreenCaptureProvider
 			// e.printStackTrace(VTTerminal.getSystemOut());
 			// e.printStackTrace();
 		}
+	}
+	
+	private static final void invertPixel4096(int x, int y, WritableRaster raster)
+	{
+		short[] pixel = (short[])(raster.getDataElements(x, y, null));
+		pixel[0] ^= RGB555_444_XOR_MASK;
+		raster.setDataElements(x, y, pixel);
 	}
 	
 	private final void drawPointer4096(BufferedImage image)
@@ -7894,155 +7913,158 @@ public final class VTAWTScreenCaptureProvider
 		o = drawnCursorSize;
 		// o = Math.min(displayMode.getWidth(), displayMode.getHeight()) / 25;
 		// o = Math.min(26, displayMode.getHeight()) / 32;
-		// o = 45;
+		// o = 45
+		WritableRaster raster = image.getRaster();
+		
 		try
 		{
 			// Center area
 			x = pointerLocation.x;
 			y = pointerLocation.y;
+			//short[] pixelData = (short[])(image.getDataElements(x + 2, y, null));
 			if (area.contains(x + 2, y))
 			{
-				image.setRGB(x + 2, y, (image.getRGB(x + 2, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 2, y, raster);
 			}
 			if (area.contains(x + 3, y))
 			{
-				image.setRGB(x + 3, y, (image.getRGB(x + 3, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 3, y, raster);
 			}
 			if (area.contains(x + 4, y))
 			{
-				image.setRGB(x + 4, y, (image.getRGB(x + 4, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 4, y, raster);
 			}
 			if (area.contains(x - 2, y))
 			{
-				image.setRGB(x - 2, y, (image.getRGB(x - 2, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 2, y, raster);
 			}
 			if (area.contains(x - 3, y))
 			{
-				image.setRGB(x - 3, y, (image.getRGB(x - 3, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 3, y, raster);
 			}
 			if (area.contains(x - 4, y))
 			{
-				image.setRGB(x - 4, y, (image.getRGB(x - 4, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 4, y, raster);
 			}
 			if (area.contains(x, y + 2))
 			{
-				image.setRGB(x, y + 2, (image.getRGB(x, y + 2) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y + 2, raster);
 			}
 			if (area.contains(x, y + 3))
 			{
-				image.setRGB(x, y + 3, (image.getRGB(x, y + 3) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y + 3, raster);
 			}
 			if (area.contains(x, y + 4))
 			{
-				image.setRGB(x, y + 4, (image.getRGB(x, y + 4) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y + 4, raster);
 			}
 			if (area.contains(x, y - 2))
 			{
-				image.setRGB(x, y - 2, (image.getRGB(x, y - 2) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y - 2, raster);
 			}
 			if (area.contains(x, y - 3))
 			{
-				image.setRGB(x, y - 3, (image.getRGB(x, y - 3) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y - 3, raster);
 			}
 			if (area.contains(x, y - 4))
 			{
-				image.setRGB(x, y - 4, (image.getRGB(x, y - 4) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y - 4, raster);
 			}
 			if (area.contains(x + 2, y + 1))
 			{
-				image.setRGB(x + 2, y + 1, (image.getRGB(x + 2, y + 1) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 2, y + 1, raster);
 			}
 			if (area.contains(x + 3, y + 1))
 			{
-				image.setRGB(x + 3, y + 1, (image.getRGB(x + 3, y + 1) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 3, y + 1, raster);
 			}
 			if (area.contains(x + 4, y + 1))
 			{
-				image.setRGB(x + 4, y + 1, (image.getRGB(x + 4, y + 1) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 4, y + 1, raster);
 			}
 			if (area.contains(x + 2, y - 1))
 			{
-				image.setRGB(x + 2, y - 1, (image.getRGB(x + 2, y - 1) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 2, y - 1, raster);
 			}
 			if (area.contains(x + 3, y - 1))
 			{
-				image.setRGB(x + 3, y - 1, (image.getRGB(x + 3, y - 1) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 3, y - 1, raster);
 			}
 			if (area.contains(x + 4, y - 1))
 			{
-				image.setRGB(x + 4, y - 1, (image.getRGB(x + 4, y - 1) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 4, y - 1, raster);
 			}
 			if (area.contains(x - 2, y + 1))
 			{
-				image.setRGB(x - 2, y + 1, (image.getRGB(x - 2, y + 1) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 2, y + 1, raster);
 			}
 			if (area.contains(x - 3, y + 1))
 			{
-				image.setRGB(x - 3, y + 1, (image.getRGB(x - 3, y + 1) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 3, y + 1, raster);
 			}
 			if (area.contains(x - 4, y + 1))
 			{
-				image.setRGB(x - 4, y + 1, (image.getRGB(x - 4, y + 1) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 4, y + 1, raster);
 			}
 			if (area.contains(x - 2, y - 1))
 			{
-				image.setRGB(x - 2, y - 1, (image.getRGB(x - 2, y - 1) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 2, y - 1, raster);
 			}
 			if (area.contains(x - 3, y - 1))
 			{
-				image.setRGB(x - 3, y - 1, (image.getRGB(x - 3, y - 1) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 3, y - 1, raster);
 			}
 			if (area.contains(x - 4, y - 1))
 			{
-				image.setRGB(x - 4, y - 1, (image.getRGB(x - 4, y - 1) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 4, y - 1, raster);
 			}
 			if (area.contains(x + 1, y + 2))
 			{
-				image.setRGB(x + 1, y + 2, (image.getRGB(x + 1, y + 2) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 1, y + 2, raster);
 			}
 			if (area.contains(x + 1, y + 3))
 			{
-				image.setRGB(x + 1, y + 3, (image.getRGB(x + 1, y + 3) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 1, y + 3, raster);
 			}
 			if (area.contains(x + 1, y + 4))
 			{
-				image.setRGB(x + 1, y + 4, (image.getRGB(x + 1, y + 4) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 1, y + 4, raster);
 			}
 			if (area.contains(x + 1, y - 2))
 			{
-				image.setRGB(x + 1, y - 2, (image.getRGB(x + 1, y - 2) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 1, y - 2, raster);
 			}
 			if (area.contains(x + 1, y - 3))
 			{
-				image.setRGB(x + 1, y - 3, (image.getRGB(x + 1, y - 3) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 1, y - 3, raster);
 			}
 			if (area.contains(x + 1, y - 4))
 			{
-				image.setRGB(x + 1, y - 4, (image.getRGB(x + 1, y - 4) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x + 1, y - 4, raster);
 			}
 			if (area.contains(x - 1, y + 2))
 			{
-				image.setRGB(x - 1, y + 2, (image.getRGB(x - 1, y + 2) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 1, y + 2, raster);
 			}
 			if (area.contains(x - 1, y + 3))
 			{
-				image.setRGB(x - 1, y + 3, (image.getRGB(x - 1, y + 3) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 1, y + 3, raster);
 			}
 			if (area.contains(x - 1, y + 4))
 			{
-				image.setRGB(x - 1, y + 4, (image.getRGB(x - 1, y + 4) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 1, y + 4, raster);
 			}
 			if (area.contains(x - 1, y - 2))
 			{
-				image.setRGB(x - 1, y - 2, (image.getRGB(x - 1, y - 2) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 1, y - 2, raster);
 			}
 			if (area.contains(x - 1, y - 3))
 			{
-				image.setRGB(x - 1, y - 3, (image.getRGB(x - 1, y - 3) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 1, y - 3, raster);
 			}
 			if (area.contains(x - 1, y - 4))
 			{
-				image.setRGB(x - 1, y - 4, (image.getRGB(x - 1, y - 4) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x - 1, y - 4, raster);
 			}
 			
 			if (o > 24)
@@ -8059,20 +8081,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y + 2;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y + m, raster);
 				}
 			}
 			// Second quadrant
@@ -8080,20 +8102,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y + 2;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y + m, raster);
 				}
 			}
 			// Third quadrant
@@ -8101,20 +8123,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y - 2;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y - m, raster);
 				}
 			}
 			// Fourth quadrant
@@ -8122,20 +8144,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y - 2;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y - m, raster);
 				}
 			}
 			
@@ -8155,20 +8177,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y + 3;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y + m, raster);
 				}
 			}
 			// Second quadrant
@@ -8176,20 +8198,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y + 3;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y + m, raster);
 				}
 			}
 			// Third quadrant
@@ -8197,20 +8219,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y - 3;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y - m, raster);
 				}
 			}
 			// Fourth quadrant
@@ -8218,20 +8240,20 @@ public final class VTAWTScreenCaptureProvider
 			y = pointerLocation.y - 3;
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y - m, raster);
 				}
 			}
 			
@@ -8243,20 +8265,20 @@ public final class VTAWTScreenCaptureProvider
 			
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y + m, raster);
 				}
 			}
 			
@@ -8267,7 +8289,7 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x + m, y - m))
 				{
-					image.setRGB(x + m, y - m, (image.getRGB(x + m, y - m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + m, y - m, raster);
 				}
 			}
 						
@@ -8275,19 +8297,19 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y -	m, (image.getRGB(x, y - m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y - m, raster);
 				}
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + m, y, raster);
 				}
 				if (area.contains(x + 1, y - m))
 				{
-					image.setRGB(x + 1, y -	m, (image.getRGB(x + 1, y - m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + 1, y - m, raster);
 				}
 				if (area.contains(x + m, y - 1))
 				{
-					image.setRGB(x + m, y - 1, (image.getRGB(x + m, y - 1) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + m, y - 1, raster);
 				}
 			}
 			
@@ -8295,11 +8317,11 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x + 2, y - m))
 				{
-					image.setRGB(x + 2, y -	m, (image.getRGB(x + 2, y - m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + 2, y - m, raster);
 				}
 				if (area.contains(x + m, y - 2))
 				{
-					image.setRGB(x + m, y - 2, (image.getRGB(x + m, y - 2) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + m, y - 2, raster);
 				}
 			}
 			
@@ -8310,29 +8332,29 @@ public final class VTAWTScreenCaptureProvider
 //			{
 //				if (area.contains(x - m, y + m))
 //				{
-//					image.setRGB(x - m, y + m, (image.getRGB(x - m, y + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - m, y + m, raster)(x - m, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 1);m++)
 //			{
 //				if (area.contains(x - 1 - m, y + m))
 //				{
-//					image.setRGB(x - 1 - m, y +	m, (image.getRGB(x - 1 - m, y + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - 1 - m, y +	m, raster)(x - 1 - m, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if	(area.contains(x - m, y + 1 + m))
 //				{
-//					image.setRGB(x - m, y + 1 +	m, (image.getRGB(x - m, y + 1 + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - m, y + 1 +	m, raster)(x - m, y + 1 + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 2);m++)
 //			{
 //				if (area.contains(x - 2 - m, y + m))
 //				{
-//					image.setRGB(x - 2 - m, y + m, (image.getRGB(x - 2 - m, y + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - 2 - m, y + m, raster)(x - 2 - m, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if (area.contains(x - m, y + 2 + m))
 //				{
-//					image.setRGB(x - m, y + 2 + m, (image.getRGB(x - m, y + 2 + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - m, y + 2 + m, raster)(x - m, y + 2 + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 			
@@ -8342,20 +8364,20 @@ public final class VTAWTScreenCaptureProvider
 			
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y + m, raster);
 				}
 			}
 			
@@ -8366,7 +8388,7 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x - m, y - m))
 				{
-					image.setRGB(x - m, y - m, (image.getRGB(x - m, y - m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - m, y - m, raster);
 				}
 			}
 						
@@ -8374,19 +8396,19 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y -	m, (image.getRGB(x, y - m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y - m, raster);
 				}
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - m, y, raster);
 				}
 				if (area.contains(x - 1, y - m))
 				{
-					image.setRGB(x - 1, y -	m, (image.getRGB(x - 1, y - m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - 1, y - m, raster);
 				}
 				if (area.contains(x - m, y - 1))
 				{
-					image.setRGB(x - m, y - 1, (image.getRGB(x - m, y - 1) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - m, y - 1, raster);
 				}
 			}
 			
@@ -8394,11 +8416,11 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x - 2, y - m))
 				{
-					image.setRGB(x - 2, y -	m, (image.getRGB(x - 2, y - m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - 2, y - m, raster);
 				}
 				if (area.contains(x + m, y - 2))
 				{
-					image.setRGB(x - m, y - 2, (image.getRGB(x - m, y - 2) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - m, y - 2, raster);
 				}
 			}
 			
@@ -8409,29 +8431,29 @@ public final class VTAWTScreenCaptureProvider
 //			{
 //				if (area.contains(x + m, y + m))
 //				{
-//					image.setRGB(x + m, y + m, (image.getRGB(x + m, y + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + m, y + m, raster)(x + m, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 1);m++)
 //			{
 //				if (area.contains(x + 1 + m, y + m))
 //				{
-//					image.setRGB(x + 1 + m, y +	m, (image.getRGB(x + 1 + m, y + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + 1 + m, y +	m, raster)(x + 1 + m, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if (area.contains(x + m, y + 1 + m))
 //				{
-//					image.setRGB(x + m, y + 1 +	m, (image.getRGB(x + m, y + 1 + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + m, y + 1 +	m, raster)(x + m, y + 1 + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 2);m++)
 //			{
 //				if (area.contains(x + 2 + m, y + m))
 //				{
-//					image.setRGB(x + 2 + m, y + m, (image.getRGB(x + 2 + m, y + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + 2 + m, y + m, raster)(x + 2 + m, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if (area.contains(x + m, y + 2 + m))
 //				{
-//					image.setRGB(x + m, y + 2 + m, (image.getRGB(x + m, y + 2 + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + m, y + 2 + m, raster)(x + m, y + 2 + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 			
@@ -8441,20 +8463,20 @@ public final class VTAWTScreenCaptureProvider
 			
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y - m, raster);
 				}
 			}
 			
@@ -8465,7 +8487,7 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x - m, y + m))
 				{
-					image.setRGB(x - m, y + m, (image.getRGB(x - m, y + m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - m, y + m, raster);
 				}
 			}
 						
@@ -8473,19 +8495,19 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y +	m, (image.getRGB(x, y + m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y + m, raster);
 				}
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - m, y, raster);
 				}
 				if (area.contains(x - 1, y + m))
 				{
-					image.setRGB(x - 1, y +	m, (image.getRGB(x - 1, y + m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - 1, y + m, raster);
 				}
 				if (area.contains(x - m, y + 1))
 				{
-					image.setRGB(x - m, y + 1, (image.getRGB(x - m, y + 1) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - m, y + 1, raster);
 				}
 			}
 			
@@ -8493,11 +8515,11 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x - 2, y + m))
 				{
-					image.setRGB(x - 2, y +	m, (image.getRGB(x - 2, y + m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - 2, y + m, raster);
 				}
 				if (area.contains(x + m, y + 2))
 				{
-					image.setRGB(x - m, y + 2, (image.getRGB(x - m, y + 2) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - m, y + 2, raster);
 				}
 			}
 						
@@ -8508,29 +8530,29 @@ public final class VTAWTScreenCaptureProvider
 //			{
 //				if (area.contains(x + m, y - m))
 //				{
-//					image.setRGB(x + m, y - m, (image.getRGB(x + m, y - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + m, y - m, raster)(x + m, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 1);m++)
 //			{
 //				if (area.contains(x + 1 + m, y - m))
 //				{
-//					image.setRGB(x + 1 + m, y -	m, (image.getRGB(x + 1 + m, y - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + 1 + m, y -	m, raster)(x + 1 + m, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if (area.contains(x + m, y - 1 - m))
 //				{
-//					image.setRGB(x + m, y - 1 -	m, (image.getRGB(x + m, y - 1 - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + m, y - 1 -	m, raster)(x + m, y - 1 - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 2);m++)
 //			{
 //				if (area.contains(x + 2 + m, y - m))
 //				{
-//					image.setRGB(x + 2 + m, y - m, (image.getRGB(x + 2 + m, y - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + 2 + m, y - m, raster)(x + 2 + m, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if (area.contains(x + m, y - 2 - m))
 //				{
-//					image.setRGB(x + m, y - 2 - m, (image.getRGB(x + m, y - 2 - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + m, y - 2 - m, raster)(x + m, y - 2 - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 			
@@ -8540,20 +8562,20 @@ public final class VTAWTScreenCaptureProvider
 			
 			if (area.contains(x, y))
 			{
-				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_444_XOR_MASK));
+				invertPixel4096(x, y, raster);
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x - m, y))
 				{
-					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x - m, y, raster);
 				}
 			}
 			for (m = 1; (m < n); m++)
 			{
 				if (area.contains(x, y - m))
 				{
-					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y - m, raster);
 				}
 			}
 			
@@ -8564,7 +8586,7 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x + m, y + m))
 				{
-					image.setRGB(x + m, y + m, (image.getRGB(x + m, y + m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + m, y + m, raster);
 				}
 			}
 						
@@ -8572,19 +8594,19 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x, y + m))
 				{
-					image.setRGB(x, y +	m, (image.getRGB(x, y + m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x, y + m, raster);
 				}
 				if (area.contains(x + m, y))
 				{
-					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + m, y, raster);
 				}
 				if (area.contains(x + 1, y + m))
 				{
-					image.setRGB(x + 1, y +	m, (image.getRGB(x + 1, y + m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + 1, y + m, raster);
 				}
 				if (area.contains(x + m, y + 1))
 				{
-					image.setRGB(x + m, y + 1, (image.getRGB(x + m, y + 1) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + m, y + 1, raster);
 				}
 			}
 			
@@ -8592,11 +8614,11 @@ public final class VTAWTScreenCaptureProvider
 			{
 				if (area.contains(x + 2, y + m))
 				{
-					image.setRGB(x + 2, y +	m, (image.getRGB(x + 2, y + m) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + 2, y + m, raster);
 				}
 				if (area.contains(x + m, y + 2))
 				{
-					image.setRGB(x + m, y + 2, (image.getRGB(x + m, y + 2) ^ RGB888_444_XOR_MASK));
+					invertPixel4096(x + m, y + 2, raster);
 				}
 			}
 						
@@ -8607,29 +8629,29 @@ public final class VTAWTScreenCaptureProvider
 //			{
 //				if (area.contains(x - m, y - m))
 //				{
-//					image.setRGB(x - m, y - m, (image.getRGB(x - m, y - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - m, y - m, raster)(x - m, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 1);m++)
 //			{
 //				if (area.contains(x - 1 - m, y - m))
 //				{
-//					image.setRGB(x - 1 - m, y -	m, (image.getRGB(x - 1 - m, y - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - 1 - m, y -	m, raster)(x - 1 - m, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if (area.contains(x - m, y - 1 - m))
 //				{
-//					image.setRGB(x - m, y - 1 - m, (image.getRGB(x - m, y - 1 - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - m, y - 1 - m, raster)(x - m, y - 1 - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < (n / 2) - 2);m++)
 //			{
 //				if (area.contains(x - 2 - m, y - m))
 //				{
-//					image.setRGB(x - 2 - m, y - m, (image.getRGB(x - 2 - m, y - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - 2 - m, y - m, raster)(x - 2 - m, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //				if (area.contains(x - m, y - 2 - m))
 //				{
-//					image.setRGB(x - m, y - 2 - m, (image.getRGB(x - m, y - 2 - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - m, y - 2 - m, raster)(x - m, y - 2 - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 			
@@ -8639,20 +8661,20 @@ public final class VTAWTScreenCaptureProvider
 //			y =	pointerLocation.y + 5;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x,	y, (image.getRGB(x, y) ^ RGB555_444_XOR_MASK));
+//				invertPixel4096(x,	y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x - m, y))
 //				{
-//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - m, y, raster)(x - m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m <	n);m++)
 //			{
 //				if (area.contains(x, y + m))
 //				{
-//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x, y + m, raster)(x, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			x = pointerLocation.x+ 5;
@@ -8660,20 +8682,20 @@ public final class VTAWTScreenCaptureProvider
 //			//Second quadrant
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_444_XOR_MASK));
+//				invertPixel4096(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x + m, y))
 //				{
-//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + m, y, raster)(x + m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x, y + m))
 //				{
-//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x, y + m, raster)(x, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			//Third quadrant
@@ -8681,20 +8703,20 @@ public final class VTAWTScreenCaptureProvider
 //			y =	pointerLocation.y - 5;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x,	y, (image.getRGB(x, y) ^ RGB555_444_XOR_MASK));
+//				invertPixel4096(x,	y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x + m, y))
 //				{
-//					image.setRGB(x + m, y,(image.getRGB(x + m, y) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + m, y,((Short)(image.getDataElements(x + m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m <	n);m++)
 //			{
 //				if (area.contains(x, y - m))
 //				{
-//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x, y - m, raster)(x, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			//Fourth quadrant
@@ -8702,20 +8724,20 @@ public final class VTAWTScreenCaptureProvider
 //			y = pointerLocation.y - 5;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_444_XOR_MASK));
+//				invertPixel4096(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x - m, y))
 //				{
-//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - m, y, raster)(x - m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x, y - m))
 //				{
-//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x, y - m, raster)(x, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			
@@ -8725,20 +8747,20 @@ public final class VTAWTScreenCaptureProvider
 //			y =	pointerLocation.y + 6;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x,	y, (image.getRGB(x, y) ^ RGB555_444_XOR_MASK));
+//				invertPixel4096(x,	y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x - m, y))
 //				{
-//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - m, y, raster)(x - m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m <	n);m++)
 //			{
 //				if (area.contains(x, y + m))
 //				{
-//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x, y + m, raster)(x, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			//Second quadrant
@@ -8746,20 +8768,20 @@ public final class VTAWTScreenCaptureProvider
 //			y = pointerLocation.y + 6;
 //			if	(area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_444_XOR_MASK));
+//				invertPixel4096(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x + m, y))
 //				{
-//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + m, y, raster)(x + m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x, y + m))
 //				{
-//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x, y + m, raster)(x, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			//Third quadrant
@@ -8767,20 +8789,20 @@ public final class VTAWTScreenCaptureProvider
 //			y = pointerLocation.y - 6;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x,	y, (image.getRGB(x, y) ^ RGB555_444_XOR_MASK));
+//				invertPixel4096(x,	y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x + m, y))
 //				{
-//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + m, y, raster)(x + m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m <	n);m++)
 //			{
 //				if (area.contains(x, y - m))
 //				{
-//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x, y - m, raster)(x, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			//Fourth quadrant
@@ -8788,20 +8810,20 @@ public final class VTAWTScreenCaptureProvider
 //			y = pointerLocation.y - 6;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_444_XOR_MASK));
+//				invertPixel4096(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x - m, y))
 //				{
-//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - m, y, raster)(x - m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x, y - m))
 //				{
-//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x, y - m, raster)(x, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			
@@ -8810,80 +8832,80 @@ public final class VTAWTScreenCaptureProvider
 //			y = pointerLocation.y + 7;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_444_XOR_MASK));
+//				invertPixel4096(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x - m, y))
 //				{
-//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - m, y, raster)(x - m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x, y + m))
 //				{
-//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x, y + m, raster)(x, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			x = pointerLocation.x + 7;
 //			y =	pointerLocation.y + 7;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_444_XOR_MASK));
+//				invertPixel4096(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x + m, y))
 //				{
-//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + m, y, raster)(x + m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m <	n);m++)
 //			{
 //				if (area.contains(x, y + m))
 //				{
-//					image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x, y + m, raster)(x, y + m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			x = pointerLocation.x + 7;
 //			y = pointerLocation.y - 7;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_444_XOR_MASK));
+//				invertPixel4096(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x + m, y))
 //				{
-//					image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x + m, y, raster)(x + m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x, y - m))
 //				{
-//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x, y - m, raster)(x, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			x = pointerLocation.x - 7;
 //			y = pointerLocation.y - 7;
 //			if (area.contains(x, y))
 //			{
-//				image.setRGB(x, y, (image.getRGB(x, y) ^ RGB555_444_XOR_MASK));
+//				invertPixel4096(x, y, raster)(x, y) ^ RGB555_333_XOR_MASK));
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x - m, y))
 //				{
-//					image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x - m, y, raster)(x - m, y) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 //			for (m = 1;(m < n);m++)
 //			{
 //				if (area.contains(x, y - m))
 //				{
-//					image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB555_444_XOR_MASK));
+//					invertPixel4096(x, y - m, raster)(x, y - m) ^ RGB555_333_XOR_MASK));
 //				}
 //			}
 		}
@@ -8893,4 +8915,6 @@ public final class VTAWTScreenCaptureProvider
 			// e.printStackTrace();
 		}
 	}
+	
+	
 }
