@@ -43,16 +43,16 @@ public class VTIndexedColorModel
 					{
 						if (i == 0 && j == 0 && k == 0)
 						{
-							rgbiRed[p] = ((l * 85) & 0xFF);
-							rgbiGreen[p] = ((l * 85) & 0xFF);
-							rgbiBlue[p] = ((l * 85) & 0xFF);
+							rgbiRed[p] = ((l * 97) & 0xFF);
+							rgbiGreen[p] = ((l * 97) & 0xFF);
+							rgbiBlue[p] = ((l * 97) & 0xFF);
 							//rgbiValue[p] = (rgbiRed[p] << 16) | (rgbiGreen[p] << 8) | (rgbiBlue[p]);
 						}
 						else
 						{
-							rgbiRed[p] = ((i * 170) + (l * i * 85) & 0xFF);
-							rgbiGreen[p] = ((j * 170) + (l * j * 85) & 0xFF);
-							rgbiBlue[p] = ((k * 170) + (l * k * 85) & 0xFF);
+							rgbiRed[p] = ((i * 158) + (l * i * 97) & 0xFF);
+							rgbiGreen[p] = ((j * 158) + (l * j * 97) & 0xFF);
+							rgbiBlue[p] = ((k * 158) + (l * k * 97) & 0xFF);
 							//rgbiValue[p] = (rgbiRed[p] << 16) | (rgbiGreen[p] << 8) | (rgbiBlue[p]);
 						}
 						p++;
@@ -85,50 +85,50 @@ public class VTIndexedColorModel
 		return (r) | (g) | (b) | i1;
 	}
 	
-	public static synchronized int get16ColorRGBIValueLoop(int rgb)
+	public static synchronized int get16ColorRGBIValueSlow(int rgb)
 	{
 		int red =  (rgb & DCM_RED_MASK) >> 16;
 		int green =  (rgb & DCM_GREEN_MASK) >> 8;
 		int blue =  (rgb & DCM_BLUE_MASK);
-		
-		int index1 = approximateRGBI(red, green, blue, 0);
-		int index2 = approximateRGBI(red, green, blue, 1);
-		
-		int dist1 = euclidianColorDistance(rgbiRed[index1], rgbiGreen[index1], rgbiBlue[index1], red, green, blue);
-		int dist2 = euclidianColorDistance(rgbiRed[index2], rgbiGreen[index2], rgbiBlue[index2], red, green, blue);
-		
-		if (dist1 <= dist2)
-		{
-			return index1;
-		}
-		else
-		{
-			return index2;
-		}
-		
-//		int min_index = 0;
-//		int min_dist = Integer.MAX_VALUE;
-//		int current_dist = 0;
-//		int d_red = 0;
-//		int d_green = 0;
-//		int d_blue = 0;
 //		
-//		for (int i = 0; i < 16; i++)
+//		int index1 = approximateRGBI(red, green, blue, 0);
+//		int index2 = approximateRGBI(red, green, blue, 1);
+//		
+//		int dist1 = euclidianColorDistance(rgbiRed[index1], rgbiGreen[index1], rgbiBlue[index1], red, green, blue);
+//		int dist2 = euclidianColorDistance(rgbiRed[index2], rgbiGreen[index2], rgbiBlue[index2], red, green, blue);
+//		
+//		if (dist1 <= dist2)
 //		{
-//			d_red = red - rgbiRed[i];
-//			d_green = green - rgbiGreen[i];
-//			d_blue = blue - rgbiBlue[i];
-//			
-//			current_dist = (d_red * d_red) + (d_green * d_green) + (d_blue * d_blue);
-//			
-//			if (current_dist < min_dist)
-//			{
-//				min_dist = current_dist;
-//				min_index = i;
-//			}
+//			return index1;
 //		}
-//		
-//		return min_index;
+//		else
+//		{
+//			return index2;
+//		}
+		
+		int min_index = 0;
+		int min_dist = Integer.MAX_VALUE;
+		int current_dist = 0;
+		int d_red = 0;
+		int d_green = 0;
+		int d_blue = 0;
+		
+		for (int i = 0; i < 16; i++)
+		{
+			d_red = red - rgbiRed[i];
+			d_green = green - rgbiGreen[i];
+			d_blue = blue - rgbiBlue[i];
+			
+			current_dist = (d_red * d_red) + (d_green * d_green) + (d_blue * d_blue);
+			
+			if (current_dist < min_dist)
+			{
+				min_dist = current_dist;
+				min_index = i;
+			}
+		}
+		
+		return min_index;
 	}
 	
 	public static byte get8ColorRGBValue(int rgb)
@@ -281,15 +281,15 @@ public class VTIndexedColorModel
 					{
 						if (i == 0 && j == 0 && k == 0)
 						{
-							r[p] = (byte) ((l * 153) & 0xFF);
-							g[p] = (byte) ((l * 153) & 0xFF);
-							b[p] = (byte) ((l * 153) & 0xFF);
+							r[p] = (byte) ((l * 102) & 0xFF);
+							g[p] = (byte) ((l * 102) & 0xFF);
+							b[p] = (byte) ((l * 102) & 0xFF);
 						}
 						else
 						{
-							r[p] = (byte) ((i * 102) + (l * i * 153) & 0xFF);
-							g[p] = (byte) ((j * 102) + (l * j * 153) & 0xFF);
-							b[p] = (byte) ((k * 102) + (l * k * 153) & 0xFF);
+							r[p] = (byte) ((i * 153) + (l * i * 102) & 0xFF);
+							g[p] = (byte) ((j * 153) + (l * j * 102) & 0xFF);
+							b[p] = (byte) ((k * 153) + (l * k * 102) & 0xFF);
 						}
 						p++;
 					}
