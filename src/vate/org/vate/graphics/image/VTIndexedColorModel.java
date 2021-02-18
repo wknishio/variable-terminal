@@ -279,17 +279,17 @@ public class VTIndexedColorModel
 				{
 					for (l = 0; l < 2; l++)
 					{
-						if (i == 0 && j == 0 && k == 0)
+						if (i == j && j == k)
 						{
-							r[p] = (byte) ((l * 102) & 0xFF);
-							g[p] = (byte) ((l * 102) & 0xFF);
-							b[p] = (byte) ((l * 102) & 0xFF);
+							r[p] = (byte) ((i * 158) + (l * 97) & 0xFF);
+							g[p] = (byte) ((j * 158) + (l * 97) & 0xFF);
+							b[p] = (byte) ((k * 158) + (l * 97) & 0xFF);
 						}
 						else
 						{
-							r[p] = (byte) ((i * 153) + (l * i * 102) & 0xFF);
-							g[p] = (byte) ((j * 153) + (l * j * 102) & 0xFF);
-							b[p] = (byte) ((k * 153) + (l * k * 102) & 0xFF);
+							r[p] = (byte) ((i * 128) + (l * i * 127) & 0xFF);
+							g[p] = (byte) ((j * 128) + (l * j * 127) & 0xFF);
+							b[p] = (byte) ((k * 128) + (l * k * 127) & 0xFF);
 						}
 						p++;
 					}
