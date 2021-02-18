@@ -57,7 +57,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
 	
 	public void addBaseMenus()
 	{
-		textActionsMenu = new Menu("Text");
+		textActionsMenu = new Menu("Edit");
 		
 		textActionCopyMenu = new MenuItem("Copy ");
 		textActionCopyMenu.addActionListener(new ActionListener()
@@ -116,7 +116,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
 		
 		this.add(textActionsMenu);
 		
-		sizesMenu = new Menu("Size");
+		sizesMenu = new Menu("View");
 		//textMenu.setShortcut(new MenuShortcut(KeyEvent.VK_F, true));
 		
 		sizesExpandMenu = new MenuItem("Expand ");

@@ -142,7 +142,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 		this.bestColorOption = new CheckboxMenuItem("Best", false);
 		this.bestColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, bestColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216));
 		this.worstColorOption = new CheckboxMenuItem("Worst", false);
-		this.worstColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, worstColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16));
+		this.worstColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, worstColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8));
 		this.decreasedColorOption = new CheckboxMenuItem("Reduced", false);
 		this.decreasedColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, decreasedColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125));
 		this.increasedColorOption = new CheckboxMenuItem("Increased", false);

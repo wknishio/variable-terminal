@@ -7860,7 +7860,7 @@ public final class VTAWTScreenCaptureProvider
 	
 	private final void drawPointer4096(BufferedImage image)
 	{
-		drawPointer512(image, new Rectangle(0, 0, image.getWidth(), image.getHeight()));
+		drawPointer4096(image, new Rectangle(0, 0, image.getWidth(), image.getHeight()));
 	}
 	
 	private final void drawPointer4096(BufferedImage image, Rectangle area)
