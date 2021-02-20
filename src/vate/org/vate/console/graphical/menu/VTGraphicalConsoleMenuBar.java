@@ -217,11 +217,11 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert : Copy Selected"));
     keyboardShortcutsMenu.add(new MenuItem("Shift+Insert : Paste Selected"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace : Copy All"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp : Expand Size"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown : Reduce Size"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+End : Bold Size"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Delete : Pack Size"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home : Reset Size"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp : Expand View"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown : Reduce View"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+End : Bold View"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Delete : Pack View"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home : Reset View"));
 
     this.add(keyboardShortcutsMenu);
     keyboardShortcutsMenu.setEnabled(true);
