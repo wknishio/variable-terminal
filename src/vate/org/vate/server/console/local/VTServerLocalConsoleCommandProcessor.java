@@ -5,21 +5,21 @@ import org.vate.server.VTServer;
 
 public abstract class VTServerLocalConsoleCommandProcessor extends VTConsoleCommandProcessor
 {
-	protected VTServer server;
-	protected StringBuilder message = new StringBuilder();
+  protected VTServer server;
+  protected StringBuilder message = new StringBuilder();
 
-	public VTServerLocalConsoleCommandProcessor()
-	{
-		//VTServerLocalConsoleCommandSelector.addCustomCommandProcessorClass(this.getClass().getName());
-	}
-	
-	public void setServer(VTServer server)
-	{
-		this.server = server;
-	}
-	
-	public void register()
-	{
-		VTServerLocalConsoleCommandSelector.addCustomCommandProcessorClass(this.getClass().getName());
-	}
+  public VTServerLocalConsoleCommandProcessor()
+  {
+    // VTServerLocalConsoleCommandSelector.addCustomCommandProcessorClass(this.getClass().getName());
+  }
+
+  public void setServer(VTServer server)
+  {
+    this.server = server;
+  }
+
+  public void register()
+  {
+    VTServerLocalConsoleCommandSelector.addCustomCommandProcessorClass(this.getClass().getName());
+  }
 }

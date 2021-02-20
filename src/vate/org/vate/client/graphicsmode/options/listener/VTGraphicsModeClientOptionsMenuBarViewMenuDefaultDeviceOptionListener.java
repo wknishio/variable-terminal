@@ -7,15 +7,15 @@ import org.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 
 public class VTGraphicsModeClientOptionsMenuBarViewMenuDefaultDeviceOptionListener implements ActionListener
 {
-	private VTGraphicsModeClientWriter writer;
-	
-	public VTGraphicsModeClientOptionsMenuBarViewMenuDefaultDeviceOptionListener(VTGraphicsModeClientWriter writer)
-	{
-		this.writer = writer;
-	}
-	
-	public void actionPerformed(ActionEvent e)
-	{
-		writer.defaultDevice();
-	}
+  private VTGraphicsModeClientWriter writer;
+
+  public VTGraphicsModeClientOptionsMenuBarViewMenuDefaultDeviceOptionListener(VTGraphicsModeClientWriter writer)
+  {
+    this.writer = writer;
+  }
+
+  public void actionPerformed(ActionEvent e)
+  {
+    writer.defaultDevice();
+  }
 }

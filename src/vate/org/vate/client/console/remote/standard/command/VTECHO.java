@@ -4,16 +4,16 @@ import org.vate.client.console.remote.standard.VTClientStandardRemoteConsoleComm
 
 public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
 {
-	public VTECHO()
-	{
-		this.setFullName("*VTECHO");
-		this.setAbbreviatedName("*VTEC");
-		this.setFullSyntax("*VTECHO");
-		this.setAbbreviatedSyntax("*VTEC");
-	}
+  public VTECHO()
+  {
+    this.setFullName("*VTECHO");
+    this.setAbbreviatedName("*VTEC");
+    this.setFullSyntax("*VTECHO");
+    this.setAbbreviatedSyntax("*VTEC");
+  }
 
-	public void execute(String command, String[] parsed) throws Exception
-	{
+  public void execute(String command, String[] parsed) throws Exception
+  {
 //		if (VTConsole.isCommandEcho())
 //		{
 //			VTConsole.setCommandEcho(false);
@@ -22,12 +22,12 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
 //		{
 //			VTConsole.setCommandEcho(true);
 //		}
-		session.getConnection().getCommandWriter().write(command + "\n");
-		session.getConnection().getCommandWriter().flush();
-	}
-	
-	public void close()
-	{
-		
-	}
+    session.getConnection().getCommandWriter().write(command + "\n");
+    session.getConnection().getCommandWriter().flush();
+  }
+
+  public void close()
+  {
+
+  }
 }

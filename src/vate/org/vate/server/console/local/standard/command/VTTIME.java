@@ -10,26 +10,26 @@ import org.vate.server.console.local.standard.VTServerStandardLocalConsoleComman
 
 public class VTTIME extends VTServerStandardLocalConsoleCommandProcessor
 {
-	private SimpleDateFormat firstDateTimeFormat = new SimpleDateFormat("G", Locale.ENGLISH);
-	private SimpleDateFormat secondDateTimeFormat = new SimpleDateFormat("MM-dd][HH:mm:ss:SSS-z]");
-	private GregorianCalendar clock = new GregorianCalendar();
-	
-	public VTTIME()
-	{
-		this.setFullName("*VTTIME");
-		this.setAbbreviatedName("*VTTM");
-		this.setFullSyntax("*VTTIME");
-		this.setAbbreviatedSyntax("*VTTM");
-	}
+  private SimpleDateFormat firstDateTimeFormat = new SimpleDateFormat("G", Locale.ENGLISH);
+  private SimpleDateFormat secondDateTimeFormat = new SimpleDateFormat("MM-dd][HH:mm:ss:SSS-z]");
+  private GregorianCalendar clock = new GregorianCalendar();
 
-	public void execute(String command, String[] parsed) throws Exception
-	{
-		clock.setTime(Calendar.getInstance().getTime());
-		VTConsole.print("\rVT>Date/time ([ER-Y-MM-DD][HH:MM:SS:MS-TZ]) on server:\nVT>[" + firstDateTimeFormat.format(clock.getTime()) + "-" + clock.get(GregorianCalendar.YEAR) + "-" + secondDateTimeFormat.format(clock.getTime()) + "\nVT>");
-	}
+  public VTTIME()
+  {
+    this.setFullName("*VTTIME");
+    this.setAbbreviatedName("*VTTM");
+    this.setFullSyntax("*VTTIME");
+    this.setAbbreviatedSyntax("*VTTM");
+  }
 
-	public void close()
-	{
-		
-	}
+  public void execute(String command, String[] parsed) throws Exception
+  {
+    clock.setTime(Calendar.getInstance().getTime());
+    VTConsole.print("\rVT>Date/time ([ER-Y-MM-DD][HH:MM:SS:MS-TZ]) on server:\nVT>[" + firstDateTimeFormat.format(clock.getTime()) + "-" + clock.get(GregorianCalendar.YEAR) + "-" + secondDateTimeFormat.format(clock.getTime()) + "\nVT>");
+  }
+
+  public void close()
+  {
+
+  }
 }

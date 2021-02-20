@@ -8,45 +8,45 @@ import org.vate.graphics.control.VTAWTControlEvent;
 
 public class VTGraphicsModeClientRemoteInterfaceMouseListener implements MouseListener
 {
-	private VTGraphicsModeClientWriter writer;
-	private VTAWTControlEvent untyped;
-	
-	public VTGraphicsModeClientRemoteInterfaceMouseListener(VTGraphicsModeClientWriter writer)
-	{
-		this.writer = writer;
-		this.untyped = new VTAWTControlEvent();
-	}
-	
-	public void mouseClicked(MouseEvent event)
-	{
-		
-	}
-	
-	public void mouseEntered(MouseEvent event)
-	{
-		
-	}
-	
-	public void mouseExited(MouseEvent event)
-	{
-		
-	}
-	
-	public void mousePressed(MouseEvent event)
-	{
-		// System.out.println(event.toString());
-		untyped.id = event.getID();
-		untyped.button = event.getModifiersEx();
-		writer.writeEvent(untyped);
-		event.consume();
-	}
-	
-	public void mouseReleased(MouseEvent event)
-	{
-		// System.out.println(event.toString());
-		untyped.id = event.getID();
-		untyped.button = event.getModifiersEx();
-		writer.writeEvent(untyped);
-		event.consume();
-	}
+  private VTGraphicsModeClientWriter writer;
+  private VTAWTControlEvent untyped;
+
+  public VTGraphicsModeClientRemoteInterfaceMouseListener(VTGraphicsModeClientWriter writer)
+  {
+    this.writer = writer;
+    this.untyped = new VTAWTControlEvent();
+  }
+
+  public void mouseClicked(MouseEvent event)
+  {
+
+  }
+
+  public void mouseEntered(MouseEvent event)
+  {
+
+  }
+
+  public void mouseExited(MouseEvent event)
+  {
+
+  }
+
+  public void mousePressed(MouseEvent event)
+  {
+    // System.out.println(event.toString());
+    untyped.id = event.getID();
+    untyped.button = event.getModifiersEx();
+    writer.writeEvent(untyped);
+    event.consume();
+  }
+
+  public void mouseReleased(MouseEvent event)
+  {
+    // System.out.println(event.toString());
+    untyped.id = event.getID();
+    untyped.button = event.getModifiersEx();
+    writer.writeEvent(untyped);
+    event.consume();
+  }
 }

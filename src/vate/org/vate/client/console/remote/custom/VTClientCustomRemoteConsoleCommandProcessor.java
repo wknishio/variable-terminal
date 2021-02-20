@@ -3,14 +3,14 @@ package org.vate.client.console.remote.custom;
 import org.vate.client.console.remote.VTClientRemoteConsoleCommandProcessor;
 
 public abstract class VTClientCustomRemoteConsoleCommandProcessor extends VTClientRemoteConsoleCommandProcessor
-{	
-	public VTClientCustomRemoteConsoleCommandProcessor()
-	{
-		
-	}
-	
-	//public String help(String name)
-	//{
-		//return VTHelpManager.getHelpForClientCommand(name);
-	//}
+{
+  public VTClientCustomRemoteConsoleCommandProcessor()
+  {
+
+  }
+
+  // public String help(String name)
+  // {
+  // return VTHelpManager.getHelpForClientCommand(name);
+  // }
 }

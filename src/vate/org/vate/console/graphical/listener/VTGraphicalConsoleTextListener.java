@@ -7,18 +7,18 @@ import java.awt.event.TextListener;
 
 public class VTGraphicalConsoleTextListener implements TextListener
 {
-	// private volatile boolean listeningTextEvents;
-	// private VTGraphicalConsole terminal;
-	
-	public VTGraphicalConsoleTextListener(/* VTGraphicalConsole terminal */)
-	{
-		// this.listeningTextEvents = false;
-		// this.terminal = terminal;
-	}
-	
-	public void textValueChanged(TextEvent e)
-	{
-		// VTGraphicalConsole.appendExtraInput();
-		System.out.println("textEvent!");
-	}
+  // private volatile boolean listeningTextEvents;
+  // private VTGraphicalConsole terminal;
+
+  public VTGraphicalConsoleTextListener(/* VTGraphicalConsole terminal */)
+  {
+    // this.listeningTextEvents = false;
+    // this.terminal = terminal;
+  }
+
+  public void textValueChanged(TextEvent e)
+  {
+    // VTGraphicalConsole.appendExtraInput();
+    System.out.println("textEvent!");
+  }
 }

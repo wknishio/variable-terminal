@@ -7,15 +7,15 @@ import org.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 
 public class VTGraphicsModeClientOptionsMenuBarControlMenuClearRemoteClipboardListener implements ActionListener
 {
-	private VTGraphicsModeClientWriter writer;
-	
-	public VTGraphicsModeClientOptionsMenuBarControlMenuClearRemoteClipboardListener(VTGraphicsModeClientWriter writer)
-	{
-		this.writer = writer;
-	}
-	
-	public void actionPerformed(ActionEvent e)
-	{
-		writer.clearRemoteClipboardContents();
-	}
+  private VTGraphicsModeClientWriter writer;
+
+  public VTGraphicsModeClientOptionsMenuBarControlMenuClearRemoteClipboardListener(VTGraphicsModeClientWriter writer)
+  {
+    this.writer = writer;
+  }
+
+  public void actionPerformed(ActionEvent e)
+  {
+    writer.clearRemoteClipboardContents();
+  }
 }

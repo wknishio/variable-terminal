@@ -6,5 +6,5 @@ import com.offbynull.portmapper.mapper.PortMapper;
 
 public interface VTNATPortMappingResultNotify
 {
-	public void result(Map<PortMapper, MappedPort> currentMappedPorts);
+  public void result(Map<PortMapper, MappedPort> currentMappedPorts);
 }

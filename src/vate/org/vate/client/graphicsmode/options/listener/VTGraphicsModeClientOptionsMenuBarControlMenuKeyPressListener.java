@@ -7,17 +7,17 @@ import org.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 
 public class VTGraphicsModeClientOptionsMenuBarControlMenuKeyPressListener implements ActionListener
 {
-	private VTGraphicsModeClientWriter writer;
-	private int keycode;
-	
-	public VTGraphicsModeClientOptionsMenuBarControlMenuKeyPressListener(VTGraphicsModeClientWriter writer, int keycode)
-	{
-		this.writer = writer;
-		this.keycode = keycode;
-	}
-	
-	public void actionPerformed(ActionEvent e)
-	{
-		writer.remoteKeyPress(keycode, 0, 0, ' ');
-	}
+  private VTGraphicsModeClientWriter writer;
+  private int keycode;
+
+  public VTGraphicsModeClientOptionsMenuBarControlMenuKeyPressListener(VTGraphicsModeClientWriter writer, int keycode)
+  {
+    this.writer = writer;
+    this.keycode = keycode;
+  }
+
+  public void actionPerformed(ActionEvent e)
+  {
+    writer.remoteKeyPress(keycode, 0, 0, ' ');
+  }
 }

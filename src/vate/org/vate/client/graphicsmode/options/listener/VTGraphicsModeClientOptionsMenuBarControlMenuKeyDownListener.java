@@ -7,17 +7,17 @@ import org.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 
 public class VTGraphicsModeClientOptionsMenuBarControlMenuKeyDownListener implements ActionListener
 {
-	private VTGraphicsModeClientWriter writer;
-	private int keycode;
-	
-	public VTGraphicsModeClientOptionsMenuBarControlMenuKeyDownListener(VTGraphicsModeClientWriter writer, int keycode)
-	{
-		this.writer = writer;
-		this.keycode = keycode;
-	}
-	
-	public void actionPerformed(ActionEvent e)
-	{
-		writer.remoteKeyDown(keycode, 0, 0, ' ');
-	}
+  private VTGraphicsModeClientWriter writer;
+  private int keycode;
+
+  public VTGraphicsModeClientOptionsMenuBarControlMenuKeyDownListener(VTGraphicsModeClientWriter writer, int keycode)
+  {
+    this.writer = writer;
+    this.keycode = keycode;
+  }
+
+  public void actionPerformed(ActionEvent e)
+  {
+    writer.remoteKeyDown(keycode, 0, 0, ' ');
+  }
 }

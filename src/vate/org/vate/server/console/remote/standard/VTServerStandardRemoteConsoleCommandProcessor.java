@@ -5,13 +5,13 @@ import org.vate.server.console.remote.VTServerRemoteConsoleCommandProcessor;
 
 public abstract class VTServerStandardRemoteConsoleCommandProcessor extends VTServerRemoteConsoleCommandProcessor
 {
-	public VTServerStandardRemoteConsoleCommandProcessor()
-	{
-		
-	}
-	
-	public String help(String name)
-	{
-		return VTHelpManager.getHelpForClientCommand(name);
-	}
+  public VTServerStandardRemoteConsoleCommandProcessor()
+  {
+
+  }
+
+  public String help(String name)
+  {
+    return VTHelpManager.getHelpForClientCommand(name);
+  }
 }

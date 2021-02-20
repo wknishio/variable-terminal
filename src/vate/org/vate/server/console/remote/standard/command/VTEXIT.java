@@ -5,22 +5,22 @@ import org.vate.server.console.remote.standard.VTServerStandardRemoteConsoleComm
 
 public class VTEXIT extends VTServerStandardRemoteConsoleCommandProcessor
 {
-	public VTEXIT()
-	{
-		this.setFullName("*VTEXIT");
-		this.setAbbreviatedName("*VTEX");
-		this.setFullSyntax("*VTEXIT");
-		this.setAbbreviatedSyntax("*VTEX");
-	}
+  public VTEXIT()
+  {
+    this.setFullName("*VTEXIT");
+    this.setAbbreviatedName("*VTEX");
+    this.setFullSyntax("*VTEXIT");
+    this.setAbbreviatedSyntax("*VTEX");
+  }
 
-	public void execute(String command, String[] parsed) throws Exception
-	{
-		VTConsole.print("\rVT>Client disconnecting...\nVT>");
-		connection.closeSockets();
-	}
+  public void execute(String command, String[] parsed) throws Exception
+  {
+    VTConsole.print("\rVT>Client disconnecting...\nVT>");
+    connection.closeSockets();
+  }
 
-	public void close()
-	{
-		
-	}
+  public void close()
+  {
+
+  }
 }

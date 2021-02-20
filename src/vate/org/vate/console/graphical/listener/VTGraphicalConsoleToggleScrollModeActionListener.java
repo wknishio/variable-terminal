@@ -6,20 +6,20 @@ import org.vate.console.VTConsole;
 
 public class VTGraphicalConsoleToggleScrollModeActionListener implements ActionListener
 {
-	public VTGraphicalConsoleToggleScrollModeActionListener()
-	{
-		
-	}
-	
-	public void actionPerformed(ActionEvent e)
-	{
-		try
-		{
-			VTConsole.toggleScrollMode();
-		}
-		catch (Throwable ex)
-		{
-			
-		}
-	}
+  public VTGraphicalConsoleToggleScrollModeActionListener()
+  {
+
+  }
+
+  public void actionPerformed(ActionEvent e)
+  {
+    try
+    {
+      VTConsole.toggleScrollMode();
+    }
+    catch (Throwable ex)
+    {
+
+    }
+  }
 }

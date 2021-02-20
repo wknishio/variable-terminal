@@ -10,43 +10,43 @@ import org.vate.server.console.local.standard.VTServerStandardLocalConsoleComman
 
 public class VTDISPLAYS extends VTServerStandardLocalConsoleCommandProcessor
 {
-	public VTDISPLAYS()
-	{
-		this.setFullName("*VTDISPLAYS");
-		this.setAbbreviatedName("*VTDPS");
-		this.setFullSyntax("*VTDISPLAYS");
-		this.setAbbreviatedSyntax("*VTDPS");
-	}
+  public VTDISPLAYS()
+  {
+    this.setFullName("*VTDISPLAYS");
+    this.setAbbreviatedName("*VTDPS");
+    this.setFullSyntax("*VTDISPLAYS");
+    this.setAbbreviatedSyntax("*VTDPS");
+  }
 
-	public void execute(String command, String[] parsed) throws Exception
-	{
-		message.setLength(0);
-		int count = 0;
-		GraphicsDevice[] devices = VTGraphicalDeviceResolver.getRasterDevices();
-		if (devices != null && devices.length > 0)
-		{
-			message.append("\rVT>List of graphical display devices on server:\nVT>");
-			for (GraphicsDevice device : devices)
-			{
-				DisplayMode mode = device.getDisplayMode();
-				message.append("\nVT>Number: [" + (count++) + "]");
-				message.append("\nVT>ID: [" + device.getIDstring() + "]");
-				message.append("\nVT>Mode: [" + mode.getWidth() + "x" + mode.getHeight() + "]");
-				Rectangle bounds = device.getDefaultConfiguration().getBounds();
-				message.append("\nVT>Origin: [X:" + bounds.x + " Y:" + bounds.y + "]");
-				message.append("\nVT>");
-			}
-			message.append("\nVT>End of graphical display devices list\nVT>");
-		}
-		else
-		{
-			message.append("\rVT>No graphical display devices found on server!\nVT>");
-		}
-		VTConsole.print(message.toString());
-	}
+  public void execute(String command, String[] parsed) throws Exception
+  {
+    message.setLength(0);
+    int count = 0;
+    GraphicsDevice[] devices = VTGraphicalDeviceResolver.getRasterDevices();
+    if (devices != null && devices.length > 0)
+    {
+      message.append("\rVT>List of graphical display devices on server:\nVT>");
+      for (GraphicsDevice device : devices)
+      {
+        DisplayMode mode = device.getDisplayMode();
+        message.append("\nVT>Number: [" + (count++) + "]");
+        message.append("\nVT>ID: [" + device.getIDstring() + "]");
+        message.append("\nVT>Mode: [" + mode.getWidth() + "x" + mode.getHeight() + "]");
+        Rectangle bounds = device.getDefaultConfiguration().getBounds();
+        message.append("\nVT>Origin: [X:" + bounds.x + " Y:" + bounds.y + "]");
+        message.append("\nVT>");
+      }
+      message.append("\nVT>End of graphical display devices list\nVT>");
+    }
+    else
+    {
+      message.append("\rVT>No graphical display devices found on server!\nVT>");
+    }
+    VTConsole.print(message.toString());
+  }
 
-	public void close()
-	{
-		
-	}
+  public void close()
+  {
+
+  }
 }

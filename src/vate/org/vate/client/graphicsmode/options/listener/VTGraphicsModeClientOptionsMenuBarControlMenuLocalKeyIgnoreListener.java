@@ -8,24 +8,24 @@ import org.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 
 public class VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeyIgnoreListener implements ItemListener
 {
-	private CheckboxMenuItem option;
-	private VTGraphicsModeClientWriter writer;
-	
-	public VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeyIgnoreListener(VTGraphicsModeClientWriter writer, CheckboxMenuItem option)
-	{
-		this.writer = writer;
-		this.option = option;
-	}
-	
-	public void itemStateChanged(ItemEvent e)
-	{
-		if (e.getStateChange() == ItemEvent.SELECTED)
-		{
-			writer.toggleIgnoreLocalKeyCombinations();
-		}
-		else
-		{
-			option.setState(true);
-		}
-	}
+  private CheckboxMenuItem option;
+  private VTGraphicsModeClientWriter writer;
+
+  public VTGraphicsModeClientOptionsMenuBarControlMenuLocalKeyIgnoreListener(VTGraphicsModeClientWriter writer, CheckboxMenuItem option)
+  {
+    this.writer = writer;
+    this.option = option;
+  }
+
+  public void itemStateChanged(ItemEvent e)
+  {
+    if (e.getStateChange() == ItemEvent.SELECTED)
+    {
+      writer.toggleIgnoreLocalKeyCombinations();
+    }
+    else
+    {
+      option.setState(true);
+    }
+  }
 }

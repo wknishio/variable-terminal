@@ -9,26 +9,26 @@ import org.vate.console.VTConsole;
 
 public class VTGraphicalConsoleCopyActionListener implements ActionListener
 {
-	private Clipboard systemClipboard;
-	
-	public VTGraphicalConsoleCopyActionListener()
-	{
-		systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-	}
-	
-	public void actionPerformed(ActionEvent e)
-	{
-		
-		try
-		{
-			StringSelection text = new StringSelection(VTConsole.getSelectedText());
-			systemClipboard.setContents(text, null);
-			//System.out.println("copy:" + text.toString());
-			//VTConsole.flush();
-		}
-		catch (Throwable ex)
-		{
-			
-		}
-	}
+  private Clipboard systemClipboard;
+
+  public VTGraphicalConsoleCopyActionListener()
+  {
+    systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+  }
+
+  public void actionPerformed(ActionEvent e)
+  {
+
+    try
+    {
+      StringSelection text = new StringSelection(VTConsole.getSelectedText());
+      systemClipboard.setContents(text, null);
+      // System.out.println("copy:" + text.toString());
+      // VTConsole.flush();
+    }
+    catch (Throwable ex)
+    {
+
+    }
+  }
 }

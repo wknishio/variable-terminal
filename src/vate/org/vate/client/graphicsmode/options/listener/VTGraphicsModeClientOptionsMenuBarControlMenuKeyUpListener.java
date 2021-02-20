@@ -7,17 +7,17 @@ import org.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 
 public class VTGraphicsModeClientOptionsMenuBarControlMenuKeyUpListener implements ActionListener
 {
-	private VTGraphicsModeClientWriter writer;
-	private int keycode;
-	
-	public VTGraphicsModeClientOptionsMenuBarControlMenuKeyUpListener(VTGraphicsModeClientWriter writer, int keycode)
-	{
-		this.writer = writer;
-		this.keycode = keycode;
-	}
-	
-	public void actionPerformed(ActionEvent e)
-	{
-		writer.remoteKeyUp(keycode, 0, 0, ' ');
-	}
+  private VTGraphicsModeClientWriter writer;
+  private int keycode;
+
+  public VTGraphicsModeClientOptionsMenuBarControlMenuKeyUpListener(VTGraphicsModeClientWriter writer, int keycode)
+  {
+    this.writer = writer;
+    this.keycode = keycode;
+  }
+
+  public void actionPerformed(ActionEvent e)
+  {
+    writer.remoteKeyUp(keycode, 0, 0, ' ');
+  }
 }

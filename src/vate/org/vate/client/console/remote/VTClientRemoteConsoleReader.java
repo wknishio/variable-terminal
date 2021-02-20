@@ -8,27 +8,27 @@ import org.vate.task.VTTask;
 
 public class VTClientRemoteConsoleReader extends VTTask
 {
-	private static final int resultBufferSize = VT.VT_STANDARD_DATA_BUFFER_SIZE;
-	//private int available;
-	private int readChars;
-	private final char[] resultBuffer = new char[resultBufferSize];
-	// private VTClient client;
-	private VTClientSession session;
-	private VTClientConnection connection;
-	
-	public VTClientRemoteConsoleReader(VTClientSession session)
-	{
-		// this.client = session.getClient();
-		this.session = session;
-		this.connection = session.getConnection();
-	}
-	
-	public void run()
-	{
-		while (!stopped)
-		{
-			try
-			{
+  private static final int resultBufferSize = VT.VT_STANDARD_DATA_BUFFER_SIZE;
+  // private int available;
+  private int readChars;
+  private final char[] resultBuffer = new char[resultBufferSize];
+  // private VTClient client;
+  private VTClientSession session;
+  private VTClientConnection connection;
+
+  public VTClientRemoteConsoleReader(VTClientSession session)
+  {
+    // this.client = session.getClient();
+    this.session = session;
+    this.connection = session.getConnection();
+  }
+
+  public void run()
+  {
+    while (!stopped)
+    {
+      try
+      {
 //				available = connection.getShellInputStream().available();
 //				if (available > 0)
 //				{
@@ -52,21 +52,21 @@ public class VTClientRemoteConsoleReader extends VTTask
 //				{
 //					Thread.sleep(1);
 //				}
-				readChars = connection.getResultReader().read(resultBuffer, 0, resultBufferSize);
-				VTConsole.write(resultBuffer, 0, readChars);
-				VTConsole.flush();
-			}
-			catch (Throwable e)
-			{
-				// e.printStackTrace();
-				stopped = true;
-				break;
-			}
-		}
-		stopped = true;
-		synchronized (session)
-		{
-			session.notify();
-		}
-	}
+        readChars = connection.getResultReader().read(resultBuffer, 0, resultBufferSize);
+        VTConsole.write(resultBuffer, 0, readChars);
+        VTConsole.flush();
+      }
+      catch (Throwable e)
+      {
+        // e.printStackTrace();
+        stopped = true;
+        break;
+      }
+    }
+    stopped = true;
+    synchronized (session)
+    {
+      session.notify();
+    }
+  }
 }

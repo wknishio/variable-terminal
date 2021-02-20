@@ -6,12 +6,12 @@ import org.vate.console.graphical.menu.listener.VTGraphicalConsoleMenuItemListen
 
 public class VTGraphicalConsoleMenuItem extends MenuItem
 {
-	private static final long serialVersionUID = 1L;
-	
-	public VTGraphicalConsoleMenuItem(String label, String command)
-	{
-		this.setLabel(label.trim());
-		this.setActionCommand(command);
-		this.addActionListener(new VTGraphicalConsoleMenuItemListener());
-	}
+  private static final long serialVersionUID = 1L;
+
+  public VTGraphicalConsoleMenuItem(String label, String command)
+  {
+    this.setLabel(label.trim());
+    this.setActionCommand(command);
+    this.addActionListener(new VTGraphicalConsoleMenuItemListener());
+  }
 }

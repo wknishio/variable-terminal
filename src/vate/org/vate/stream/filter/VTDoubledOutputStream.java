@@ -7,42 +7,42 @@ import org.vate.console.graphical.VTGraphicalConsoleNullOutputStream;
 
 public final class VTDoubledOutputStream extends FilterOutputStream
 {
-	private OutputStream first;
-	private OutputStream second;
+  private OutputStream first;
+  private OutputStream second;
 
-	public VTDoubledOutputStream(OutputStream first, OutputStream second)
-	{
-		super(new VTGraphicalConsoleNullOutputStream());
-		this.first = first;
-		this.second = second;
-	}
-	
-	public final void write(byte[] b, int off, int len) throws IOException
-	{
-		first.write(b, off, len);
-		second.write(b, off, len);
-	}
-	
-	public final void write(byte[] b) throws IOException
-	{
-		first.write(b);
-		second.write(b);
-	}
-	
-	public final void write(int b) throws IOException
-	{
-		first.write(b);
-		second.write(b);
-	}
-	
-	public final void flush() throws IOException
-	{
-		first.flush();
-		second.flush();
-	}
-	
-	public final void close() throws IOException
-	{
+  public VTDoubledOutputStream(OutputStream first, OutputStream second)
+  {
+    super(new VTGraphicalConsoleNullOutputStream());
+    this.first = first;
+    this.second = second;
+  }
+
+  public final void write(byte[] b, int off, int len) throws IOException
+  {
+    first.write(b, off, len);
+    second.write(b, off, len);
+  }
+
+  public final void write(byte[] b) throws IOException
+  {
+    first.write(b);
+    second.write(b);
+  }
+
+  public final void write(int b) throws IOException
+  {
+    first.write(b);
+    second.write(b);
+  }
+
+  public final void flush() throws IOException
+  {
+    first.flush();
+    second.flush();
+  }
+
+  public final void close() throws IOException
+  {
 //		try
 //		{
 //			flush();
@@ -51,6 +51,6 @@ public final class VTDoubledOutputStream extends FilterOutputStream
 //		{
 //			
 //		}
-		//nothing
-	}
+    // nothing
+  }
 }

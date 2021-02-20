@@ -2,5 +2,5 @@ package org.vate.nativeutils.win32;
 
 public interface VTWin32Isatty
 {
-	public int _isatty(int fd);
+  public int _isatty(int fd);
 }

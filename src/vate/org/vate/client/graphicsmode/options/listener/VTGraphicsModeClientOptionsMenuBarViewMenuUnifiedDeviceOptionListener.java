@@ -7,15 +7,15 @@ import org.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 
 public class VTGraphicsModeClientOptionsMenuBarViewMenuUnifiedDeviceOptionListener implements ActionListener
 {
-	private VTGraphicsModeClientWriter writer;
-	
-	public VTGraphicsModeClientOptionsMenuBarViewMenuUnifiedDeviceOptionListener(VTGraphicsModeClientWriter writer)
-	{
-		this.writer = writer;
-	}
-	
-	public void actionPerformed(ActionEvent e)
-	{
-		writer.unifiedDevice();
-	}
+  private VTGraphicsModeClientWriter writer;
+
+  public VTGraphicsModeClientOptionsMenuBarViewMenuUnifiedDeviceOptionListener(VTGraphicsModeClientWriter writer)
+  {
+    this.writer = writer;
+  }
+
+  public void actionPerformed(ActionEvent e)
+  {
+    writer.unifiedDevice();
+  }
 }

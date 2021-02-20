@@ -6,9 +6,9 @@ import org.vate.console.VTConsole;
 
 public class VTGraphicalConsoleMenuItemListener implements ActionListener
 {
-	public void actionPerformed(ActionEvent e)
-	{
-		VTConsole.clearInput();
-		VTConsole.input(e.getActionCommand());
-	}
+  public void actionPerformed(ActionEvent e)
+  {
+    VTConsole.clearInput();
+    VTConsole.input(e.getActionCommand());
+  }
 }

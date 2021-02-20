@@ -7,15 +7,15 @@ import org.vate.nativeutils.VTNativeUtils;
 
 public class VTStandardConsoleNativeReader extends Reader
 {
-	public int read(char[] cbuf, int off, int len) throws IOException
-	{
-		char data = (char) VTNativeUtils.getchar();
-		cbuf[off] = data;
-		return 1;
-	}
+  public int read(char[] cbuf, int off, int len) throws IOException
+  {
+    char data = (char) VTNativeUtils.getchar();
+    cbuf[off] = data;
+    return 1;
+  }
 
-	public void close() throws IOException
-	{
-		
-	}
+  public void close() throws IOException
+  {
+
+  }
 }

@@ -7,15 +7,15 @@ import org.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 
 public class VTGraphicsModeClientOptionsMenuBarViewMenuToggleFullScreenOptionListener implements ActionListener
 {
-	private VTGraphicsModeClientWriter writer;
-	
-	public VTGraphicsModeClientOptionsMenuBarViewMenuToggleFullScreenOptionListener(VTGraphicsModeClientWriter writer)
-	{
-		this.writer = writer;
-	}
-	
-	public void actionPerformed(ActionEvent e)
-	{
-		writer.toggleFullScreenMode();
-	}
+  private VTGraphicsModeClientWriter writer;
+
+  public VTGraphicsModeClientOptionsMenuBarViewMenuToggleFullScreenOptionListener(VTGraphicsModeClientWriter writer)
+  {
+    this.writer = writer;
+  }
+
+  public void actionPerformed(ActionEvent e)
+  {
+    writer.toggleFullScreenMode();
+  }
 }

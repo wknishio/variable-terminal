@@ -12,270 +12,270 @@ import org.vate.graphics.font.VTGlobalTextStyleManager;
 
 public class VTGraphicalConsoleMenuBar extends MenuBar
 {
-	private static final long serialVersionUID = 1L;
-	
-	private Menu textActionsMenu;
-	private MenuItem textActionCopyMenu;
-	private MenuItem textActionPasteMenu;
-	private MenuItem textActionAllMenu;
-	private MenuItem textActionInsertMenu;
-	private MenuItem textActionBreakMenu;
-	
-	private Menu sizesMenu;
-	private MenuItem sizesExpandMenu;
-	private MenuItem sizesReduceMenu;
-	private MenuItem sizesRepackMenu;
-	private MenuItem sizesDefaultMenu;
-	private MenuItem sizesBold;
-	
-	private Menu keyboardShortcutsMenu;
-	
-	private Menu flushStatusMenu;
-	private MenuItem flushToggleMenu;
-	
-	private Menu inputStatusMenu;
-	private MenuItem inputToggleMenu;
-	
-	private volatile boolean flushInterrupted = false;
-	private volatile boolean replaceInput = false;
-	
-	public VTGraphicalConsoleMenuBar()
-	{
-		addStatusNotify();
-		removeAllMenus();
-		addBaseMenus();
-	}
-	
-	public void removeAllMenus()
-	{
-		int count = this.getMenuCount();
-		for (int i = 0; i < count; i++)
-		{
-			this.remove(0);
-		}
-	}
-	
-	public void addBaseMenus()
-	{
-		textActionsMenu = new Menu("Edit");
-		
-		textActionCopyMenu = new MenuItem("Copy ");
-		textActionCopyMenu.addActionListener(new ActionListener()
-		{
+  private static final long serialVersionUID = 1L;
 
-			public void actionPerformed(ActionEvent e)
-			{
-				VTConsole.copyText();
-			}
-		});
-		
-		textActionPasteMenu = new MenuItem("Paste ");
-		textActionPasteMenu.addActionListener(new ActionListener()
-		{
+  private Menu textActionsMenu;
+  private MenuItem textActionCopyMenu;
+  private MenuItem textActionPasteMenu;
+  private MenuItem textActionAllMenu;
+  private MenuItem textActionInsertMenu;
+  private MenuItem textActionBreakMenu;
 
-			public void actionPerformed(ActionEvent e)
-			{
-				VTConsole.pasteText();
-			}
-		});
-		
-		textActionAllMenu = new MenuItem("All ");
-		textActionAllMenu.addActionListener(new ActionListener()
-		{
+  private Menu sizesMenu;
+  private MenuItem sizesExpandMenu;
+  private MenuItem sizesReduceMenu;
+  private MenuItem sizesRepackMenu;
+  private MenuItem sizesDefaultMenu;
+  private MenuItem sizesBold;
 
-			public void actionPerformed(ActionEvent e)
-			{
-				VTConsole.copyAllText();
-			}
-		});
-		
-		textActionInsertMenu = new MenuItem("Insert ");
-		textActionInsertMenu.addActionListener(new ActionListener()
-		{
+  private Menu keyboardShortcutsMenu;
 
-			public void actionPerformed(ActionEvent e)
-			{
-				VTConsole.toggleInputMode();
-			}
-		});
-		
-		textActionBreakMenu = new MenuItem("Break ");
-		textActionBreakMenu.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				VTConsole.toggleScrollMode();
-			}
-		});
-		
-		textActionsMenu.add(textActionCopyMenu);
-		textActionsMenu.add(textActionPasteMenu);
-		textActionsMenu.add(textActionAllMenu);
-		textActionsMenu.add(textActionBreakMenu);
-		textActionsMenu.add(textActionInsertMenu);
-		
-		this.add(textActionsMenu);
-		
-		sizesMenu = new Menu("View");
-		//textMenu.setShortcut(new MenuShortcut(KeyEvent.VK_F, true));
-		
-		sizesExpandMenu = new MenuItem("Expand ");
-		sizesReduceMenu = new MenuItem("Reduce ");
-		sizesRepackMenu = new MenuItem("Pack ");
-		sizesBold = new MenuItem("Bold ");
-		sizesDefaultMenu = new MenuItem("Reset ");
-		
-		sizesExpandMenu.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				VTGlobalTextStyleManager.increaseFontSize();
-			}
-		});
-		
-		sizesReduceMenu.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				VTGlobalTextStyleManager.decreaseFontSize();
-			}
-		});
-		
-		sizesBold.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				if (VTGlobalTextStyleManager.isFontStyleBold())
-				{
-					VTGlobalTextStyleManager.disableFontStyleBold();
-				}
-				else
-				{
-					VTGlobalTextStyleManager.enableFontStyleBold();
-				}
+  private Menu flushStatusMenu;
+  private MenuItem flushToggleMenu;
+
+  private Menu inputStatusMenu;
+  private MenuItem inputToggleMenu;
+
+  private volatile boolean flushInterrupted = false;
+  private volatile boolean replaceInput = false;
+
+  public VTGraphicalConsoleMenuBar()
+  {
+    addStatusNotify();
+    removeAllMenus();
+    addBaseMenus();
+  }
+
+  public void removeAllMenus()
+  {
+    int count = this.getMenuCount();
+    for (int i = 0; i < count; i++)
+    {
+      this.remove(0);
+    }
+  }
+
+  public void addBaseMenus()
+  {
+    textActionsMenu = new Menu("Edit");
+
+    textActionCopyMenu = new MenuItem("Copy ");
+    textActionCopyMenu.addActionListener(new ActionListener()
+    {
+
+      public void actionPerformed(ActionEvent e)
+      {
+        VTConsole.copyText();
+      }
+    });
+
+    textActionPasteMenu = new MenuItem("Paste ");
+    textActionPasteMenu.addActionListener(new ActionListener()
+    {
+
+      public void actionPerformed(ActionEvent e)
+      {
+        VTConsole.pasteText();
+      }
+    });
+
+    textActionAllMenu = new MenuItem("All ");
+    textActionAllMenu.addActionListener(new ActionListener()
+    {
+
+      public void actionPerformed(ActionEvent e)
+      {
+        VTConsole.copyAllText();
+      }
+    });
+
+    textActionInsertMenu = new MenuItem("Insert ");
+    textActionInsertMenu.addActionListener(new ActionListener()
+    {
+
+      public void actionPerformed(ActionEvent e)
+      {
+        VTConsole.toggleInputMode();
+      }
+    });
+
+    textActionBreakMenu = new MenuItem("Break ");
+    textActionBreakMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        VTConsole.toggleScrollMode();
+      }
+    });
+
+    textActionsMenu.add(textActionCopyMenu);
+    textActionsMenu.add(textActionPasteMenu);
+    textActionsMenu.add(textActionAllMenu);
+    textActionsMenu.add(textActionBreakMenu);
+    textActionsMenu.add(textActionInsertMenu);
+
+    this.add(textActionsMenu);
+
+    sizesMenu = new Menu("View");
+    // textMenu.setShortcut(new MenuShortcut(KeyEvent.VK_F, true));
+
+    sizesExpandMenu = new MenuItem("Expand ");
+    sizesReduceMenu = new MenuItem("Reduce ");
+    sizesRepackMenu = new MenuItem("Pack ");
+    sizesBold = new MenuItem("Bold ");
+    sizesDefaultMenu = new MenuItem("Reset ");
+
+    sizesExpandMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        VTGlobalTextStyleManager.increaseFontSize();
+      }
+    });
+
+    sizesReduceMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        VTGlobalTextStyleManager.decreaseFontSize();
+      }
+    });
+
+    sizesBold.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        if (VTGlobalTextStyleManager.isFontStyleBold())
+        {
+          VTGlobalTextStyleManager.disableFontStyleBold();
+        }
+        else
+        {
+          VTGlobalTextStyleManager.enableFontStyleBold();
+        }
 //				VTGlobalTextStyleManager.packComponents();
-			}
-		});
-		
-		sizesRepackMenu.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				VTGlobalTextStyleManager.defaultComponentSize();
-			}
-		});
-		
-		sizesDefaultMenu.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				VTGlobalTextStyleManager.defaultFontSize();
-			}
-		});
-		
-		sizesMenu.add(sizesExpandMenu);
-		sizesMenu.add(sizesReduceMenu);
-		sizesMenu.add(sizesBold);
-		sizesMenu.add(sizesRepackMenu);
-		sizesMenu.add(sizesDefaultMenu);
-		
-		this.add(sizesMenu);
-		sizesMenu.setEnabled(true);
-		
-		flushStatusMenu = new Menu("Resume");
-		flushStatusMenu.setEnabled(true);
-		flushToggleMenu = new MenuItem("Pause");
-		flushToggleMenu.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				VTConsole.toggleScrollMode();
-			}
-		});
-		flushStatusMenu.add(flushToggleMenu);
-		this.add(flushStatusMenu);
-		
-		inputStatusMenu = new Menu("Insert");
-		inputStatusMenu.setEnabled(true);
-		inputToggleMenu = new MenuItem("Replace");
-		inputToggleMenu.addActionListener(new ActionListener()
-		{
-			public void actionPerformed(ActionEvent e)
-			{
-				VTConsole.toggleInputMode();
-			}
-		});
-		inputStatusMenu.add(inputToggleMenu);
-		this.add(inputStatusMenu);
-		
-		keyboardShortcutsMenu = new Menu("Shortcut");
-		keyboardShortcutsMenu.add(new MenuItem("Break : Toggle Resume/Pause"));
-		keyboardShortcutsMenu.add(new MenuItem("Insert : Toggle Insert/Replace"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+C : Quit Application"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Z : Toggle Resume/Pause"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+X : Toggle Insert/Replace"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert : Copy Selected"));
-		keyboardShortcutsMenu.add(new MenuItem("Shift+Insert : Paste Selected"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace : Copy All"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp : Expand Size"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown : Reduce Size"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+End : Bold Size"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Delete : Pack Size"));
-		keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home : Reset Size"));
-		
-		this.add(keyboardShortcutsMenu);
-		keyboardShortcutsMenu.setEnabled(true);
-		
-		updateStatusMenu();
-	}
-	
-	private class VTGraphicalConsoleFlushInterruptedNotify implements VTConsoleBooleanToggleNotify
-	{
-		public void notify(boolean state)
-		{
-			flushInterrupted = state;
-			//System.out.println("flushInterrupted:" + flushInterrupted);
-			updateStatusMenu();
-		}
-	}
-	
-	private class VTGraphicalConsoleReplaceInputNotify implements VTConsoleBooleanToggleNotify
-	{
-		public void notify(boolean state)
-		{
-			replaceInput = state;
-			//System.out.println("replaceInput:" + replaceInput);
-			updateStatusMenu();
-		}
-	}
-	
-	public void addStatusNotify()
-	{
-		VTConsole.addToggleFlushInterruptNotify(new VTGraphicalConsoleFlushInterruptedNotify());
-		VTConsole.addToggleReplaceInputNotify(new VTGraphicalConsoleReplaceInputNotify());
-	}
-	
-	public void updateStatusMenu()
-	{
-		if (flushInterrupted)
-		{
-			flushStatusMenu.setLabel("Pause");
-			flushToggleMenu.setLabel("Resume");
-		}
-		else
-		{
-			flushStatusMenu.setLabel("Resume");
-			flushToggleMenu.setLabel("Pause");
-		}
-		if (replaceInput)
-		{
-			inputStatusMenu.setLabel("Replace");
-			inputToggleMenu.setLabel("Insert");
-		}
-		else
-		{
-			inputStatusMenu.setLabel("Insert");
-			inputToggleMenu.setLabel("Replace");
-		}
-	}
+      }
+    });
+
+    sizesRepackMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        VTGlobalTextStyleManager.defaultComponentSize();
+      }
+    });
+
+    sizesDefaultMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        VTGlobalTextStyleManager.defaultFontSize();
+      }
+    });
+
+    sizesMenu.add(sizesExpandMenu);
+    sizesMenu.add(sizesReduceMenu);
+    sizesMenu.add(sizesBold);
+    sizesMenu.add(sizesRepackMenu);
+    sizesMenu.add(sizesDefaultMenu);
+
+    this.add(sizesMenu);
+    sizesMenu.setEnabled(true);
+
+    flushStatusMenu = new Menu("Resume");
+    flushStatusMenu.setEnabled(true);
+    flushToggleMenu = new MenuItem("Pause");
+    flushToggleMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        VTConsole.toggleScrollMode();
+      }
+    });
+    flushStatusMenu.add(flushToggleMenu);
+    this.add(flushStatusMenu);
+
+    inputStatusMenu = new Menu("Insert");
+    inputStatusMenu.setEnabled(true);
+    inputToggleMenu = new MenuItem("Replace");
+    inputToggleMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        VTConsole.toggleInputMode();
+      }
+    });
+    inputStatusMenu.add(inputToggleMenu);
+    this.add(inputStatusMenu);
+
+    keyboardShortcutsMenu = new Menu("Shortcut");
+    keyboardShortcutsMenu.add(new MenuItem("Break : Toggle Resume/Pause"));
+    keyboardShortcutsMenu.add(new MenuItem("Insert : Toggle Insert/Replace"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+C : Quit Application"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Z : Toggle Resume/Pause"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+X : Toggle Insert/Replace"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert : Copy Selected"));
+    keyboardShortcutsMenu.add(new MenuItem("Shift+Insert : Paste Selected"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace : Copy All"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp : Expand Size"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown : Reduce Size"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+End : Bold Size"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Delete : Pack Size"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home : Reset Size"));
+
+    this.add(keyboardShortcutsMenu);
+    keyboardShortcutsMenu.setEnabled(true);
+
+    updateStatusMenu();
+  }
+
+  private class VTGraphicalConsoleFlushInterruptedNotify implements VTConsoleBooleanToggleNotify
+  {
+    public void notify(boolean state)
+    {
+      flushInterrupted = state;
+      // System.out.println("flushInterrupted:" + flushInterrupted);
+      updateStatusMenu();
+    }
+  }
+
+  private class VTGraphicalConsoleReplaceInputNotify implements VTConsoleBooleanToggleNotify
+  {
+    public void notify(boolean state)
+    {
+      replaceInput = state;
+      // System.out.println("replaceInput:" + replaceInput);
+      updateStatusMenu();
+    }
+  }
+
+  public void addStatusNotify()
+  {
+    VTConsole.addToggleFlushInterruptNotify(new VTGraphicalConsoleFlushInterruptedNotify());
+    VTConsole.addToggleReplaceInputNotify(new VTGraphicalConsoleReplaceInputNotify());
+  }
+
+  public void updateStatusMenu()
+  {
+    if (flushInterrupted)
+    {
+      flushStatusMenu.setLabel("Pause");
+      flushToggleMenu.setLabel("Resume");
+    }
+    else
+    {
+      flushStatusMenu.setLabel("Resume");
+      flushToggleMenu.setLabel("Pause");
+    }
+    if (replaceInput)
+    {
+      inputStatusMenu.setLabel("Replace");
+      inputToggleMenu.setLabel("Insert");
+    }
+    else
+    {
+      inputStatusMenu.setLabel("Insert");
+      inputToggleMenu.setLabel("Replace");
+    }
+  }
 }
