@@ -529,6 +529,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
     {
 
     }
+    
     int capacity = maxWidth;
     int used = lastLine.length();
     int remaining = capacity - used + (carriageColumn >= 0 ? used - carriageColumn : 0);
@@ -695,6 +696,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
     {
 
     }
+    
     int capacity = maxWidth;
     int used = lastLine.length();
     int remaining = capacity - used + (carriageColumn >= 0 ? used - carriageColumn : 0);

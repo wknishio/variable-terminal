@@ -1806,11 +1806,24 @@ public class VTLanternaConsole implements VTConsoleImplementation
   {
     synchronized (outputSynchronizer)
     {
-      outputBuffer.append(str);
-      if (outputBuffer.length() > 65536)
+      if (outputBuffer.length() + str.length() <= 65536)
       {
-        int truncate = outputBuffer.length() - 65536;
-        outputBuffer.delete(0, truncate);
+        outputBuffer.append(str);
+      }
+      else
+      {
+        int truncate = Math.max(0, str.length() - 65536);
+        int size = Math.min(65536, str.length());
+        
+        outputBuffer.delete(0, size);
+        if (truncate == 0)
+        {
+          outputBuffer.append(str);
+        }
+        else
+        {
+          outputBuffer.append(str.substring(truncate, truncate + size));
+        }
       }
     }
   }
@@ -1819,11 +1832,18 @@ public class VTLanternaConsole implements VTConsoleImplementation
   {
     synchronized (outputSynchronizer)
     {
-      outputBuffer.append(buf, off, len);
-      if (outputBuffer.length() > 65536)
+      if (outputBuffer.length() + len <= 65536)
       {
-        int truncate = outputBuffer.length() - 65536;
-        outputBuffer.delete(0, truncate);
+        outputBuffer.append(buf, off, len);
+      }
+      else
+      {
+        int truncate = Math.max(0, len - 65536);
+        int size = Math.min(65536, len);
+        //String truncated = String.valueOf(buf, truncate, size);
+        
+        outputBuffer.delete(0, size);
+        outputBuffer.append(buf, truncate, size);
       }
     }
   }
@@ -1835,10 +1855,9 @@ public class VTLanternaConsole implements VTConsoleImplementation
     {
       synchronized (outputSynchronizer)
       {
-        String data = outputBuffer.toString();
-        if (data.length() > 0)
+        if (outputBuffer.length() > 0)
         {
-          outputBox.output(data);
+          outputBox.output(outputBuffer.toString());
           outputBuffer.setLength(0);
         }
       }
