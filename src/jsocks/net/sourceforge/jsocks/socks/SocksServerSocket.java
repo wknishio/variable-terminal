@@ -131,9 +131,9 @@ public class SocksServerSocket extends ServerSocket {
 			// only accept connections from the speciefed host.
 			// while(true){
 			s = super.accept();
-			s.setKeepAlive(true);
 			s.setTcpNoDelay(true);
-			s.setSoTimeout(60000);
+			s.setKeepAlive(true);
+			//s.setSoTimeout(60000);
 			//s.setSoLinger(true, 0);
 			// if(s.getInetAddress().equals(remoteAddr)){
 			// got the connection from the right host

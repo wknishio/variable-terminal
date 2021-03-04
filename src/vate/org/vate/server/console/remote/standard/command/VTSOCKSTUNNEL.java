@@ -62,7 +62,7 @@ public class VTSOCKSTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
           else
           {
             session.getSOCKSTunnelsHandler().getConnection().setSOCKSChannel("", bindPort);
-            connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] removed!\nVT>");
+            connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
             connection.getResultWriter().flush();
           }
         }

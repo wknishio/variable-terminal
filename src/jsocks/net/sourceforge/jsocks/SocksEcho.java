@@ -384,8 +384,8 @@ public class SocksEcho extends Frame implements ActionListener, Runnable, Window
 
 		println("Listenning on: " + server_sock.getInetAddress() + ":" + server_sock.getLocalPort());
 		sock = server_sock.accept();
-		sock.setKeepAlive(true);
 		sock.setTcpNoDelay(true);
+		sock.setKeepAlive(true);
 		//sock.setSoLinger(true, 0);
 		println("Accepted from:" + sock.getInetAddress() + ":" + sock.getPort());
 
