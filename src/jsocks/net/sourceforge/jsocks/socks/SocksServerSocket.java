@@ -15,6 +15,9 @@
 package net.sourceforge.jsocks.socks;
 
 import java.net.*;
+
+import org.vate.VT;
+
 import java.io.*;
 
 /**
@@ -130,7 +133,9 @@ public class SocksServerSocket extends ServerSocket {
 			// Mimic the proxy behaviour,
 			// only accept connections from the speciefed host.
 			// while(true){
+		  //super.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 			s = super.accept();
+			//s.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 			s.setTcpNoDelay(true);
 			s.setKeepAlive(true);
 			//s.setSoTimeout(60000);

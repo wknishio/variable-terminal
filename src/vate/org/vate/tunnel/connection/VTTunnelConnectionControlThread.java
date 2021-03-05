@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
+import org.vate.VT;
 import org.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vate.tunnel.session.VTTunnelSession;
 import org.vate.tunnel.session.VTTunnelSessionHandler;
@@ -50,6 +51,8 @@ public class VTTunnelConnectionControlThread implements Runnable
               Socket socket = new Socket();
               // socket.setReuseAddress(true);
               // System.out.println("host:" + host);
+              //socket.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
+              //socket.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
               if (host.length() == 0 || host.equals("*"))
               {
                 socket.connect(new InetSocketAddress(port));

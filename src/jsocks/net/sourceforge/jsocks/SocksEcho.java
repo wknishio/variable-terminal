@@ -17,6 +17,9 @@ package net.sourceforge.jsocks;
 import java.awt.*;
 import java.awt.event.*;
 import java.net.*;
+
+import org.vate.VT;
+
 import java.io.*;
 import net.sourceforge.jsocks.socks.*;
 import net.sourceforge.jsocks.socks.Proxy;
@@ -383,7 +386,9 @@ public class SocksEcho extends Frame implements ActionListener, Runnable, Window
 		// server_sock.setSoTimeout(30000);
 
 		println("Listenning on: " + server_sock.getInetAddress() + ":" + server_sock.getLocalPort());
+		//server_sock.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 		sock = server_sock.accept();
+		//sock.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 		sock.setTcpNoDelay(true);
 		sock.setKeepAlive(true);
 		//sock.setSoLinger(true, 0);

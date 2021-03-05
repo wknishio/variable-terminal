@@ -15,6 +15,9 @@
 package net.sourceforge.jsocks.socks;
 
 import java.net.*;
+
+import org.vate.VT;
+
 import java.io.*;
 
 /**
@@ -367,16 +370,18 @@ public abstract class Proxy {
 
 	protected void startSession() throws SocksException {
 		try {
-			//proxySocket = new Socket();
+			proxySocket = new Socket();
 			//proxySocket.setReuseAddress(true);
+			//proxySocket.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
+			//proxySocket.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 			if (chainProxy == null) {
 				if (localSocketPort > 0) {
-					proxySocket = new Socket(proxyIP, proxyPort, InetAddress.getLocalHost(), localSocketPort);
-					//proxySocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), localSocketPort));
-					//proxySocket.connect(new InetSocketAddress(proxyIP, proxyPort));
+					//proxySocket = new Socket(proxyIP, proxyPort, InetAddress.getLocalHost(), localSocketPort);
+					proxySocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), localSocketPort));
+					proxySocket.connect(new InetSocketAddress(proxyIP, proxyPort));
 				} else {
-					proxySocket = new Socket(proxyIP, proxyPort);
-					//proxySocket.connect(new InetSocketAddress(proxyIP, proxyPort));
+					//proxySocket = new Socket(proxyIP, proxyPort);
+					proxySocket.connect(new InetSocketAddress(proxyIP, proxyPort));
 				}
 				localSocketPortAssigned = proxySocket.getLocalPort();
 			} else if (proxyIP != null)

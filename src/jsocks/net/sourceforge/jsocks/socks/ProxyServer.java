@@ -21,6 +21,9 @@ import net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 
 import java.net.*;
 import java.util.Random;
+
+import org.vate.VT;
+
 import java.io.*;
 
 /**
@@ -186,8 +189,10 @@ public class ProxyServer implements Runnable {
 			//ss.bind(new InetSocketAddress(port));
 			// LOG.info("Starting SOCKS Proxy on:" +
 			// ss.getInetAddress().getHostAddress() + ":" + ss.getLocalPort());
+			//ss.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 			while (true) {
 				Socket s = ss.accept();
+				//s.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 				s.setTcpNoDelay(true);
 				s.setKeepAlive(true);
 				//s.setSoTimeout(60000);
@@ -364,10 +369,12 @@ public class ProxyServer implements Runnable {
 		ProxyMessage response = null;
 
 		if (proxy == null) {
-			//s = new Socket();
+			s = new Socket();
+			//s.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
+			//s.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 			//s.setReuseAddress(true);
-			//s.connect(new InetSocketAddress(msg.ip, msg.port));
-			s = new Socket(msg.ip, msg.port);
+			s.connect(new InetSocketAddress(msg.ip, msg.port));
+			//s = new Socket(msg.ip, msg.port);
 			s.setTcpNoDelay(true);
 			s.setKeepAlive(true);
 			//s.setSoTimeout(60000);
@@ -492,7 +499,9 @@ public class ProxyServer implements Runnable {
 		// System.out.println("ProxyServer port: " + ss.getLocalPort());
 		while (true) {
 			//ss.setReuseAddress(true);
+		  //ss.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 			s = ss.accept();
+			//s.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 			s.setTcpNoDelay(true);
 			s.setKeepAlive(true);
 			//s.setSoTimeout(60000);

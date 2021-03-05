@@ -15,6 +15,9 @@
 package net.sourceforge.jsocks.socks;
 
 import java.net.*;
+
+import org.vate.VT;
+
 import java.io.*;
 
 /**
@@ -352,10 +355,12 @@ public class SocksSocket extends Socket{
    private void doDirect()throws SocksException{
       try{
          //System.out.println("IP:"+remoteIP+":"+remotePort);
-         //directSock = new Socket();
+         directSock = new Socket();
          //directSock.setReuseAddress(true);
-         //directSock.connect(new InetSocketAddress(remoteIP, remotePort));
-         directSock = new Socket(remoteIP, remotePort);
+         //directSock.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
+         //directSock.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
+         directSock.connect(new InetSocketAddress(remoteIP, remotePort));
+         //directSock = new Socket(remoteIP, remotePort);
          proxy.out = directSock.getOutputStream();
          proxy.in  = directSock.getInputStream();
          directSock.setTcpNoDelay(true);

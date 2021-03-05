@@ -18,6 +18,7 @@ import org.vate.console.VTConsole;
 import org.vate.network.nat.mapping.VTNATPortMappingResultNotify;
 import org.vate.network.nat.mapping.VTNATSinglePortMappingManagerMKII;
 import org.vate.server.VTServer;
+
 import com.offbynull.portmapper.mapper.MappedPort;
 import com.offbynull.portmapper.mapper.PortMapper;
 
@@ -421,14 +422,15 @@ public class VTServerConnector implements Runnable
         portMappingManager.deletePortMapping();
       }
       connectionServerSocket.setSoTimeout(0);
+      //connectionServerSocket.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
       connecting = true;
       connection.setConnectionSocket(connectionServerSocket.accept());
-      connecting = false;
+      //connection.getConnectionSocket().setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
       connection.getConnectionSocket().setTcpNoDelay(true);
       connection.getConnectionSocket().setKeepAlive(true);
       connection.getConnectionSocket().setSoLinger(true, 0);
-      // connection.getConnectionSocket().setSoLinger(false, 5000);
       connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+      connecting = false;
       if (encryptionType == null)
       {
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
@@ -491,13 +493,14 @@ public class VTServerConnector implements Runnable
       }
       // connection.getShellSocket().setPerformancePreferences(1, 3, 2);
       connecting = true;
+      //connection.getConnectionSocket().setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
+      //connection.getConnectionSocket().setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
       connection.getConnectionSocket().connect(socketAddress);
-      connecting = false;
       connection.getConnectionSocket().setTcpNoDelay(true);
       connection.getConnectionSocket().setKeepAlive(true);
       connection.getConnectionSocket().setSoLinger(true, 0);
-      // connection.getConnectionSocket().setSoLinger(false, 5000);
       connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+      connecting = false;
       if (encryptionType == null)
       {
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
