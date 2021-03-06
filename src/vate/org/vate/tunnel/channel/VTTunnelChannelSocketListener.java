@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.vate.VT;
 import org.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vate.tunnel.connection.VTTunnelConnection;
 import org.vate.tunnel.session.VTTunnelSession;

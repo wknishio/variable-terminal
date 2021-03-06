@@ -608,17 +608,17 @@ public class VTClientConnection
     if (encryptionType == VT.VT_CONNECTION_ENCRYPT_NONE)
     {
       multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_NETWORK_PACKET_SIZE, VT.VT_NETWORK_PACKET_BUFFER_SIZE, false);
-      multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_NETWORK_PACKET_SIZE, VT.VT_NETWORK_PACKET_SIZE, false);
+      multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_NETWORK_PACKET_SIZE, VT.VT_NETWORK_PACKET_SIZE, true);
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_RC4)
     {
       multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_NETWORK_PACKET_SIZE, VT.VT_NETWORK_PACKET_BUFFER_SIZE, false);
-      multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_NETWORK_PACKET_SIZE, VT.VT_NETWORK_PACKET_SIZE, false);
+      multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_NETWORK_PACKET_SIZE, VT.VT_NETWORK_PACKET_SIZE, true);
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
     {
       multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_NETWORK_PACKET_SIZE, VT.VT_NETWORK_PACKET_BUFFER_SIZE, false);
-      multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_NETWORK_PACKET_SIZE, VT.VT_NETWORK_PACKET_SIZE, false);
+      multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_NETWORK_PACKET_SIZE, VT.VT_NETWORK_PACKET_SIZE, true);
     }
 
     multiplexedConnectionInputStream.startPacketReader();

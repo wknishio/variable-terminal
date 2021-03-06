@@ -449,10 +449,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
         {
           try
           {
-//						if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
-//						{
-//							System.out.println("received compressed data:" + Arrays.toString(Arrays.copyOfRange(packetBuffer, copied, readed)));
-//						}
             getInputStream(type, channel).getOutputStream().write(packetBuffer, copied, readed);
             getInputStream(type, channel).getOutputStream().flush();
           }

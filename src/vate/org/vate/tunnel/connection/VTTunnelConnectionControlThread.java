@@ -4,7 +4,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
-import org.vate.VT;
 import org.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vate.tunnel.session.VTTunnelSession;
 import org.vate.tunnel.session.VTTunnelSessionHandler;

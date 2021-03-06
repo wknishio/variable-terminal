@@ -96,11 +96,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       return closed;
     }
 
-    public final void closed(boolean closed)
-    {
-      this.closed = closed;
-    }
-
     public final void write(byte[] data, int offset, int length) throws IOException
     {
       int written = 0;
@@ -177,9 +172,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     {
       if (!closed)
       {
+        closed = true;
+        writeClosePacketFlushing(type, number);
         if (propagated.size() > 0)
         {
-          // propagated.close();
           for (Closeable closeable : propagated)
           {
             try
@@ -192,19 +188,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
             }
           }
         }
-        closed = true;
-//				if (!autoFlushPackets)
-//				{
-//					try 
-//					{
-//						out.flush();
-//					}
-//					catch (Throwable t)
-//					{
-//						
-//					}
-//				}
-        writeClosePacketFlushing(type, number);
       }
     }
 
@@ -260,11 +243,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       // dataPacketStream.write(dataPaddingBuffer, 0, dataPaddingSize);
       out.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
       // writeBlocks(out, dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
-//			if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
-//			{
-//				System.out.println("sent uncompressed data:" + Arrays.toString(Arrays.copyOfRange(data, offset, length)));
-//				System.out.println("sent compressed data:" + Arrays.toString(intermediateDataPacketBuffer.toByteArray()));
-//			}
     }
 
     private final void writePacketFlushing(int data, int type, int number) throws IOException
