@@ -168,7 +168,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       }
     }
 
-    public final void close() throws IOException
+    public final synchronized void close() throws IOException
     {
       if (!closed)
       {
@@ -191,7 +191,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       }
     }
 
-    public final void open() throws IOException
+    public final synchronized void open() throws IOException
     {
       if (closed)
       {
