@@ -1,5 +1,6 @@
 package org.vate.server.authentication;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -156,59 +157,31 @@ public class VTServerAuthenticator
     return digestedPassword;
   }
 
-  public boolean tryAuthentication()
+  public boolean tryAuthentication() throws IOException
   {
-    try
+    accepted = false;
+    connection.exchangeNonces(true);
+    localNonce = connection.getLocalNonce();
+    remoteNonce = connection.getRemoteNonce();
+    
+    connection.getSecureRandom().nextBytes(randomData);
+    connection.getAuthenticationWriter().write(randomData);
+    connection.getAuthenticationWriter().flush();
+    connection.getAuthenticationReader().readFully(digestedLogin);
+    
+    connection.getSecureRandom().nextBytes(randomData);
+    connection.getAuthenticationWriter().write(randomData);
+    connection.getAuthenticationWriter().flush();
+    connection.getAuthenticationReader().readFully(digestedPassword);
+    
+    receivedCredential = new byte[64];
+    byte[] digestedCredential = new byte[64];
+    System.arraycopy(digestedLogin, 0, receivedCredential, 0, 32);
+    System.arraycopy(digestedPassword, 0, receivedCredential, 32, 32);
+    if (server.getUserCredentials().size() > 0)
     {
-      // connection.getConnectionSocket().setSoTimeout(10000);
-      // VTConsole.print("\rVT>Starting authentication...\nVT>");
-      connection.exchangeNonces(true);
-      localNonce = connection.getLocalNonce();
-      remoteNonce = connection.getRemoteNonce();
-      connection.getSecureRandom().nextBytes(randomData);
-      connection.getAuthenticationWriter().write(randomData);
-      connection.getAuthenticationWriter().flush();
-      connection.getAuthenticationReader().readFully(digestedLogin);
-      connection.getSecureRandom().nextBytes(randomData);
-      connection.getAuthenticationWriter().write(randomData);
-      connection.getAuthenticationWriter().flush();
-      connection.getAuthenticationReader().readFully(digestedPassword);
-      receivedCredential = new byte[64];
-      byte[] digestedCredential = new byte[64];
-      System.arraycopy(digestedLogin, 0, receivedCredential, 0, 32);
-      System.arraycopy(digestedPassword, 0, receivedCredential, 32, 32);
-      if (server.getUserCredentials().size() > 0)
+      for (byte[] storedCredential : server.getUserCredentials().keySet())
       {
-        for (byte[] storedCredential : server.getUserCredentials().keySet())
-        {
-          System.arraycopy(storedCredential, 0, digestedCredential, 0, storedCredential.length);
-          sha256Digester.update(digestedCredential, 0, 32);
-          sha256Digester.update(localNonce);
-          System.arraycopy(sha256Digester.digest(remoteNonce), 0, digestedCredential, 0, 32);
-          sha256Digester.update(digestedCredential, 32, 32);
-          sha256Digester.update(localNonce);
-          System.arraycopy(sha256Digester.digest(remoteNonce), 0, digestedCredential, 32, 32);
-          if (VTArrayComparator.arrayEquals(digestedCredential, receivedCredential))
-          {
-            sha256Digester.update(remoteNonce);
-            sha256Digester.update(localNonce);
-            // connection.getConnectionSocket().setSoTimeout(0);
-            connection.getAuthenticationWriter().write(sha256Digester.digest(VT_AUTHENTICATION_ACCEPTED_STRING));
-            connection.getAuthenticationWriter().flush();
-            connection.getAuthenticationReader().readFully(randomData);
-            // VTConsole.print("\rVT>Authentication
-            // successful!\nVT>");
-            login = server.getUserCredentials().get(storedCredential).login;
-            password = server.getUserCredentials().get(storedCredential).password;
-            accepted = true;
-            stopTimeoutThread();
-            return true;
-          }
-        }
-      }
-      else
-      {
-        byte[] storedCredential = new byte[64];
         System.arraycopy(storedCredential, 0, digestedCredential, 0, storedCredential.length);
         sha256Digester.update(digestedCredential, 0, 32);
         sha256Digester.update(localNonce);
@@ -233,35 +206,42 @@ public class VTServerAuthenticator
           return true;
         }
       }
-      // VTConsole.print("\rVT>Authentication failed!\nVT>");
-      sha256Digester.update(remoteNonce);
-      sha256Digester.update(localNonce);
-      // connection.getConnectionSocket().setSoTimeout(0);
-      connection.getAuthenticationWriter().write(sha256Digester.digest(VT_AUTHENTICATION_REJECTED_STRING));
-      connection.getAuthenticationWriter().flush();
-      connection.getAuthenticationReader().readFully(randomData);
-      stopTimeoutThread();
-      return false;
     }
-    catch (Throwable e)
+    else
     {
-      // VTConsole.print("\rVT>Authentication failed!\nVT>");
-      try
+      byte[] storedCredential = new byte[64];
+      System.arraycopy(storedCredential, 0, digestedCredential, 0, storedCredential.length);
+      sha256Digester.update(digestedCredential, 0, 32);
+      sha256Digester.update(localNonce);
+      System.arraycopy(sha256Digester.digest(remoteNonce), 0, digestedCredential, 0, 32);
+      sha256Digester.update(digestedCredential, 32, 32);
+      sha256Digester.update(localNonce);
+      System.arraycopy(sha256Digester.digest(remoteNonce), 0, digestedCredential, 32, 32);
+      if (VTArrayComparator.arrayEquals(digestedCredential, receivedCredential))
       {
         sha256Digester.update(remoteNonce);
         sha256Digester.update(localNonce);
         // connection.getConnectionSocket().setSoTimeout(0);
-        connection.getAuthenticationWriter().write(sha256Digester.digest(VT_AUTHENTICATION_REJECTED_STRING));
+        connection.getAuthenticationWriter().write(sha256Digester.digest(VT_AUTHENTICATION_ACCEPTED_STRING));
         connection.getAuthenticationWriter().flush();
         connection.getAuthenticationReader().readFully(randomData);
+        // VTConsole.print("\rVT>Authentication
+        // successful!\nVT>");
+        login = server.getUserCredentials().get(storedCredential).login;
+        password = server.getUserCredentials().get(storedCredential).password;
+        accepted = true;
         stopTimeoutThread();
-        return false;
-      }
-      catch (Throwable e1)
-      {
-        stopTimeoutThread();
-        return false;
+        return true;
       }
     }
+    // VTConsole.print("\rVT>Authentication failed!\nVT>");
+    sha256Digester.update(remoteNonce);
+    sha256Digester.update(localNonce);
+    // connection.getConnectionSocket().setSoTimeout(0);
+    connection.getAuthenticationWriter().write(sha256Digester.digest(VT_AUTHENTICATION_REJECTED_STRING));
+    connection.getAuthenticationWriter().flush();
+    connection.getAuthenticationReader().readFully(randomData);
+    stopTimeoutThread();
+    return false;
   }
 }

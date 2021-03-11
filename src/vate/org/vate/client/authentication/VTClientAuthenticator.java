@@ -26,7 +26,7 @@ public class VTClientAuthenticator
   }
 
   private volatile boolean accepted = false;
-  private int credentialCounter;
+  //private int credentialCounter;
   private byte[] localNonce;
   private byte[] remoteNonce;
   private byte[] digestedLogin = new byte[32];
@@ -114,7 +114,7 @@ public class VTClientAuthenticator
     this.connection = connection;
     // this.localNonce = connection.getLocalNonce();
     // this.remoteNonce = connection.getRemoteNonce();
-    this.credentialCounter = 0;
+    //this.credentialCounter = 0;
     try
     {
       this.sha256Digester = MessageDigest.getInstance("SHA-256");
@@ -157,97 +157,70 @@ public class VTClientAuthenticator
     return password;
   }
 
-  public boolean tryAuthentication() throws InterruptedException, IOException
+  public boolean tryAuthentication() throws IOException
   {
-    credentialCounter = 0;
+    accepted = false;
     connection.exchangeNonces(true);
     localNonce = connection.getLocalNonce();
     remoteNonce = connection.getRemoteNonce();
-    try
+
+    String line = "";
+    byte[] credentialData = null;
+    
+    if (client.getLogin() != null)
     {
-      // connection.getConnectionSocket().setSoTimeout(0);
-      // VTConsole.print("\nVT>Starting authentication...");
-      while (credentialCounter < 2)
-      {
-        if (!writeCredential())
-        {
-          stopTimeoutThread();
-          return false;
-        }
-      }
-      connection.getSecureRandom().nextBytes(randomData);
-      connection.getAuthenticationWriter().write(randomData);
-      connection.getAuthenticationWriter().flush();
-      connection.getAuthenticationReader().readFully(authResult);
-      // connection.getConnectionSocket().setSoTimeout(0);
-      sha256Digester.update(localNonce);
-      sha256Digester.update(remoteNonce);
-      if (VTArrayComparator.arrayEquals(authResult, sha256Digester.digest(VT_AUTHENTICATION_ACCEPTED_STRING)))
-      {
-        // VTConsole.print("\nVT>Authentication successful!");
-        accepted = true;
-        stopTimeoutThread();
-        return true;
-      }
-      else
-      {
-        // VTConsole.print("\nVT>Authentication failed!");
-        stopTimeoutThread();
-        return false;
-      }
+      line = client.getLogin();
+      login = line;
     }
-    catch (Throwable e)
+    else
+    {
+      line = "";
+    }
+    sha256Digester.update(sha256Digester.digest(line.getBytes("UTF-8")));
+    sha256Digester.update(remoteNonce);
+    digestedLogin = sha256Digester.digest(localNonce);
+    credentialData = digestedLogin;
+    connection.getAuthenticationWriter().write(credentialData);
+    connection.getAuthenticationWriter().flush();
+    connection.getAuthenticationReader().readFully(randomData, 0, randomData.length);
+  
+    if (client.getPassword() != null)
+    {
+      line = client.getPassword();
+      password = line;
+    }
+    else
+    {
+      line = "";
+    }
+    sha256Digester.update(sha256Digester.digest(line.getBytes("UTF-8")));
+    sha256Digester.update(remoteNonce);
+    digestedPassword = sha256Digester.digest(localNonce);
+    credentialData = digestedPassword;
+    
+    connection.getAuthenticationWriter().write(credentialData);
+    connection.getAuthenticationWriter().flush();
+    connection.getAuthenticationReader().readFully(randomData, 0, randomData.length);
+    
+    connection.getSecureRandom().nextBytes(randomData);
+    connection.getAuthenticationWriter().write(randomData);
+    connection.getAuthenticationWriter().flush();
+    connection.getAuthenticationReader().readFully(authResult);
+    // connection.getConnectionSocket().setSoTimeout(0);
+    sha256Digester.update(localNonce);
+    sha256Digester.update(remoteNonce);
+    if (VTArrayComparator.arrayEquals(authResult, sha256Digester.digest(VT_AUTHENTICATION_ACCEPTED_STRING)))
+    {
+      // VTConsole.print("\nVT>Authentication successful!");
+      accepted = true;
+      stopTimeoutThread();
+      return true;
+    }
+    else
     {
       // VTConsole.print("\nVT>Authentication failed!");
       stopTimeoutThread();
       return false;
     }
-  }
-
-  public boolean writeCredential() throws IOException, InterruptedException
-  {
-    String line = "";
-    byte[] credentialData = null;
-    if (credentialCounter == 0)
-    {
-      if (client.getLogin() != null)
-      {
-        line = client.getLogin();
-        login = line;
-      }
-      else
-      {
-
-      }
-      sha256Digester.update(sha256Digester.digest(line.getBytes("UTF-8")));
-      sha256Digester.update(remoteNonce);
-      digestedLogin = sha256Digester.digest(localNonce);
-      credentialData = digestedLogin;
-    }
-    else if (credentialCounter == 1)
-    {
-      if (client.getPassword() != null)
-      {
-        line = client.getPassword();
-        password = line;
-      }
-      else
-      {
-
-      }
-      sha256Digester.update(sha256Digester.digest(line.getBytes("UTF-8")));
-      sha256Digester.update(remoteNonce);
-      digestedPassword = sha256Digester.digest(localNonce);
-      credentialData = digestedPassword;
-    }
-    else
-    {
-
-    }
-    connection.getAuthenticationWriter().write(credentialData);
-    connection.getAuthenticationWriter().flush();
-    connection.getAuthenticationReader().readFully(randomData, 0, randomData.length);
-    credentialCounter++;
-    return true;
   }
 }

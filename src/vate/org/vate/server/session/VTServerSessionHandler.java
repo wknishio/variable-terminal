@@ -52,17 +52,9 @@ public class VTServerSessionHandler implements Runnable
       connection.setAuthenticationStreams();
       if (authenticator.tryAuthentication())
       {
+        VTConsole.print("\rVT>Session with client accepted!\nVT>");
         connection.setConnectionStreams(authenticator.getDigestedLogin(), authenticator.getDigestedPassword(), authenticator.getLogin(), authenticator.getPassword());
-        if (connection.verifyConnection())
-        {
-          VTConsole.print("\rVT>Session with client accepted!\nVT>");
-          processSession();
-        }
-        else
-        {
-          VTConsole.print("\rVT>Session with client rejected!\nVT>");
-          connection.closeConnection();
-        }
+        processSession();
       }
       else
       {
@@ -94,9 +86,7 @@ public class VTServerSessionHandler implements Runnable
       session.waitSession();
       session.stopShell();
       session.tryStopSessionThreads();
-      // TODO: try to reestablish session
       connection.closeConnection();
-
       session.waitThreads();
     }
     catch (Throwable e)

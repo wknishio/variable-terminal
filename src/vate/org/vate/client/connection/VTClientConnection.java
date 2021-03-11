@@ -578,6 +578,8 @@ public class VTClientConnection
       authenticationReader = new VTLittleEndianInputStream(connectionSocketInputStream);
       authenticationWriter = new VTLittleEndianOutputStream(connectionSocketOutputStream);
     }
+    //authenticationReader = new VTLittleEndianInputStream(connectionSocketInputStream);
+    //authenticationWriter = new VTLittleEndianOutputStream(connectionSocketOutputStream);
   }
 
   public void setConnectionStreams(byte[] digestedLogin, byte[] digestedPassword, String login, String password) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException
@@ -724,6 +726,7 @@ public class VTClientConnection
     exchangeNonces(true);
     byte[] VT_CLIENT_STRING = VT_CLIENT_CHECK_STRING_NONE;
     byte[] VT_SERVER_STRING = VT_SERVER_CHECK_STRING_NONE;
+    
     if (encryptionType == VT.VT_CONNECTION_ENCRYPT_NONE)
     {
       VT_CLIENT_STRING = VT_CLIENT_CHECK_STRING_NONE;
@@ -814,7 +817,7 @@ public class VTClientConnection
       digestedServer = sha256Digester.digest(VT_SERVER_STRING);
       if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
       {
-        // setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
+        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_RC4);
         return true;
       }
 
@@ -830,7 +833,7 @@ public class VTClientConnection
       digestedServer = sha256Digester.digest(VT_SERVER_STRING);
       if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
       {
-        // setEncryptionType(VT.VT_CONNECTION_ENCRYPT_RC4);
+        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_RC4);
         return true;
       }
 
@@ -846,7 +849,7 @@ public class VTClientConnection
       digestedServer = sha256Digester.digest(VT_SERVER_STRING);
       if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
       {
-        // setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
+        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_RC4);
         return true;
       }
     }
@@ -877,7 +880,7 @@ public class VTClientConnection
       digestedServer = sha256Digester.digest(VT_SERVER_STRING);
       if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
       {
-        // setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
+        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
         return true;
       }
 
@@ -893,7 +896,7 @@ public class VTClientConnection
       digestedServer = sha256Digester.digest(VT_SERVER_STRING);
       if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
       {
-        // setEncryptionType(VT.VT_CONNECTION_ENCRYPT_RC4);
+        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
         return true;
       }
 
@@ -909,7 +912,7 @@ public class VTClientConnection
       digestedServer = sha256Digester.digest(VT_SERVER_STRING);
       if (VTArrayComparator.arrayEquals(digestedServer, digestedClient))
       {
-        // setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
+        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
         return true;
       }
     }
