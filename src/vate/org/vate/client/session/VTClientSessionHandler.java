@@ -44,9 +44,17 @@ public class VTClientSessionHandler implements Runnable
       connection.setAuthenticationStreams();
       if (authenticator.tryAuthentication())
       {
-        VTConsole.print("\nVT>Session with server accepted!");
         connection.setConnectionStreams(authenticator.getDigestedLogin(), authenticator.getDigestedPassword(), authenticator.getLogin(), authenticator.getPassword());
-        processSession();
+        if (connection.exchangePadding() && connection.verifyConnection())
+        {
+          VTConsole.print("\nVT>Session with server accepted!");
+          processSession();
+        }
+        else
+        {
+          VTConsole.print("\nVT>Session with server rejected!");
+          connection.closeConnection();
+        }
       }
       else
       {

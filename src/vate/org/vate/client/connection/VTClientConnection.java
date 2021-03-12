@@ -64,6 +64,7 @@ public class VTClientConnection
   private byte[] localNonce = new byte[512];
   private byte[] remoteNonce = new byte[512];
   private byte[] randomData = new byte[512];
+  private byte[] paddingData = new byte[1024 * 4];
   private MessageDigest sha256Digester;
   private SecureRandom secureRandom;
   private VTCryptographicEngine cryptoEngine;
@@ -601,8 +602,8 @@ public class VTClientConnection
       connectionInputStream = connectionSocketInputStream;
       connectionOutputStream = connectionSocketOutputStream;
     }
-    authenticationReader = new VTLittleEndianInputStream(connectionInputStream);
-    authenticationWriter = new VTLittleEndianOutputStream(connectionOutputStream);
+    verificationReader.setIntputStream(connectionInputStream);
+    verificationWriter.setOutputStream(connectionOutputStream);
   }
 
   private void setMultiplexedStreams() throws IOException
@@ -719,6 +720,15 @@ public class VTClientConnection
 
     // graphicsControlInputStream.addPropagated(clipboardDataOutputStream);
     // graphicsControlInputStream.addPropagated(clipboardDataInputStream);
+  }
+  
+  public boolean exchangePadding() throws IOException
+  {
+    secureRandom.nextBytes(paddingData);
+    verificationWriter.write(paddingData);
+    verificationWriter.flush();
+    verificationReader.readFully(paddingData);
+    return true;
   }
 
   public boolean verifyConnection() throws IOException, NoSuchAlgorithmException
