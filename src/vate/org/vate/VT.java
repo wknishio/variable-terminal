@@ -187,7 +187,7 @@ public class VT
   public static final int VT_AUDIO_CODEC_OPUS = 2;
   public static final int VT_AUDIO_CODEC_DEFAULT = VT_AUDIO_CODEC_OPUS;
 
-  public static final int VT_AUDIO_CODEC_FRAME_MILLISECONDS = 20;
+  public static final int VT_AUDIO_CODEC_FRAME_MILLISECONDS = 10;
   public static final int VT_AUDIO_LINE_BUFFER_MILLISECONDS = 40;
 
   public static final int VT_ZIP_FILE_COMPRESS = 1;
