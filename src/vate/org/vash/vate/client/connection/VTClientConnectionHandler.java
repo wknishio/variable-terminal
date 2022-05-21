@@ -1,0 +1,78 @@
+package org.vash.vate.client.connection;
+
+import java.util.List;
+
+import org.vash.vate.client.VTClient;
+import org.vash.vate.client.session.VTClientSessionHandler;
+import org.vash.vate.client.session.VTClientSessionListener;
+import org.vash.vate.console.VTConsole;
+
+public class VTClientConnectionHandler implements Runnable
+{
+  private VTClient client;
+  private VTClientConnection connection;
+  private VTClientSessionHandler handler;
+  // private VTClientAuthenticator authenticator;
+  // private VTClientSession session;
+
+  public VTClientConnectionHandler(VTClient client, VTClientConnection connection)
+  {
+    this.client = client;
+    this.connection = connection;
+    this.handler = new VTClientSessionHandler(client, connection);
+    // this.session = new VTClientSession(client, connection);
+    // this.authenticator = new VTClientAuthenticator(session);
+  }
+
+  public VTClientConnection getConnection()
+  {
+    return connection;
+  }
+
+  public VTClientSessionHandler getHandler()
+  {
+    return handler;
+  }
+  
+  public void run()
+  {
+    try
+    {
+      handler.getAuthenticator().startTimeoutThread();
+      VTConsole.print("\nVT>Verifying connection with server...");
+      if (connection.verifyConnection())
+      {
+        VTConsole.print("\nVT>Connection with server verified!");
+        // connection.setMultiplexedStreams();
+        // connection.startConnection();
+        handler.run();
+      }
+      else
+      {
+        VTConsole.print("\nVT>Connection with server invalid!");
+        // connection.setSkipLine(true);
+        connection.closeConnection();
+      }
+    }
+    catch (Throwable e)
+    {
+      // VTTerminal.print(e.toString());
+      //e.printStackTrace();
+      VTConsole.print("\nVT>Connection with server failed!");
+      // connection.setSkipLine(true);
+      connection.closeConnection();
+    }
+    handler.getAuthenticator().stopTimeoutThread();
+    System.runFinalization();
+    System.gc();
+    if (client.getInputMenuBar() != null)
+    {
+      client.getInputMenuBar().setEnabled(false);
+    }
+  }
+  
+  public void setSessionListeners(List<VTClientSessionListener> listeners)
+  {
+    handler.setSessionListeners(listeners);
+  }
+}

@@ -1,0 +1,222 @@
+﻿
+Changes since 1.4.2:
+
+* Renamed the entire project from Satan-AnyWhere to Variable-Terminal
+* Modified authentication protocol, backward compatibility broken
+* Changed the default connection port to 6060
+* Console commands now start with *VT instead of *SAW
+* Merged server access settings commands to *VTACCESS
+* Changed snappy compression for LZ4 compression
+* Renamed command *VTREMOTEGRAPHICSMODE to *VTGRAPHICSLINK
+* Renamed command *VTGRAPHICSALERT to *VTSCREENALERT
+* Modified *VTGRAPHICSLINK protocol
+* Modified the video codec used in *VTGRAPHICSLINK
+* Renamed client settings file to vate-client.properties
+* Renamed server settings file to vate-server.properties
+* Removed file user-database.properties
+* Remote cursor on screen captures scales with current server dpi
+* Included email in copyright notice
+* Command *VTCLEAR does not show copyright notice anymore
+* Command *VTGRAPHICSLINK now supports custom image codings ZOF and SOF
+* Command *VTGRAPHICSLINK now supports image codings PNG and JPEG
+* Added ObjectPlanet PngEncoder library, much faster than Java ImageIO
+* Available color qualities: worst, low, medium, high, best
+* Startup now accepts as parameter a file path for settings file to be loaded
+* Added support for NAT-PMP port mapping if UPnP port mapping is not available
+* Command *VTGRAPHICSLINK now supports unified screen device capture
+* Command *VTSCREENSHOT now supports unified screen device capture with -1
+* Added command *VTCALLPRINT to print a file in server using default program
+* Command *VTGRAPHICSLINK now supports scaled or adjusted image sizes
+* Added shortcut control+shift+backspace to toggle menu bar in *VTGRAPHICSLINK
+* Added shortcut control+shift+pageup to decrease scale in *VTGRAPHICSLINK
+* Added shortcut control+shift+pagedown to increase scale in *VTGRAPHICSLINK
+* Added shortcut control+shift+insert to reset scale in *VTGRAPHICSLINK
+* Added shortcut control+shift+home to use previous device in *VTGRAPHICSLINK
+* Added shortcut control+shift+end to use next device in *VTGRAPHICSLINK
+* Added 10 keyboard shorcuts to *VTGRAPHICSLINK
+* Added tips for *VTGRAPHICSLINK interface keyboard shortcuts
+* Modified AES encryption transformation to CTR instead of CBC
+* Added command *VTAUDIOMIXERS to list available audio mixers
+* Renamed command *VTAUDIOCHAT to *VTAUDIOLINK
+* Modified command *VTAUDIOLINK to allow use of specific audio mixers
+* Modified command *VTAUDIOLINK to use 16-bit Opus CELT audio
+* Modified command *VTAUDIOLINK to use sample rates 8khz/16khz/48khz
+* Added font resizing in console menu or ctrl+pageup/ctrl+pagedown/ctrl+home
+* Fonts may be initially scaled according to platform font scaling settings
+* Merged all zip file commands in new command *VTZIP
+* Client now tries to reconnect with server in 60 seconds after disconnection
+* Added command *VTLIMIT to set connection rate limits in bytes per second
+* Modified *VTRUNTIME command, now allows processes to restart automatically
+* Added session commands parameter in client to run after authentication
+* Added option in client to interrupt listening in passive connection mode
+* Changed passive mode in client and server to bind to specific host address
+* Added options in tunnel commands to bind tunnels to specific host address
+* Added *; as optional command delimiter for multiple commands per line
+* Added *VTCOVER command to show/hide server console interface
+* Removed command *VTFILEROOTS from client console, usable in server console
+* Merged all external shell manipulation commands in new command *VTSHELL
+* Added option to *VTSHELL command to change shell encoding and directory
+* Added option to *VTSHELL command to use beanshell or groovysh as shell
+* Added command *VTDATAPRINT to replace commands *VTPRINTTEXT and *VTPRINTFILE
+* Added options in command *VTSETTINGS to save and load server settings files
+* Changed application icon/logo
+* Reduced server processor usage and memory usage for screen capture commands
+* Added support for hidpi displays when using java 1.8 or lesser
+* Added option to change remote cursor size in command *VTGRAPHICSLINK
+* Changed command *VTPRINTSERVICES to *VTPRINTERS
+* Command *VTPRINTERS now allows specifying a print service for more details
+* Added command *VTSAVE to save current client connection settings to file
+* Command *VTNETWORKS now shows hardware address with java 1.6
+* Changed startup parameter format, parameters now have a dash(-) as in unix
+* Modified *VTFILETRANSFER command to transfer directories and multiple files
+* Added capacity of adding custom plugin console commands in client and server
+* Modified *VTRUNTIME command to be able to send Base64 data to input
+* Modified *VTRUNTIME command to be able to send unicode utf8 data to input
+* Modified *VTFILETRANSFER to transfer file again if checksum dont match
+* Reduced graphical console CPU usage when its not the active window
+* Changed *VTMESSAGE command to *VTTEXT
+* Fixed *VTTEXT command problem
+* Modified the readme file to english language
+* Updated graphical console to lanterna based implementation
+* Added capacity to truncate files when using command *VTFILETRANSFER
+* Added notification of nat devices external addresses
+* Added timeout option to command *VTRUNTIME
+* Added Sixlegs Java PNG Decoder library
+* Added optional zstd compression in command *VTFILETRANSFER
+* Changed all encryption functions to use bouncycastle library
+* Added SALSA as encryption algorithm
+* Added HC256 as encryption algorithm
+* Added GRAIN as encryption algorithm
+* Added ISAAC as encryption algorithm
+* Added *VTPAUSE command to pause local console for a interval or until enter
+* Added client parameter session files -SF to run commands from text files
+* Added *VTCONFIGURE command to reconfigure all server connection settings
+* Added *VTREAD command to run text files commands in client console
+* Added *VTLOG command to record client commands to local client file
+* Renamed various commands, check current commands with *VTHELP or *VTHLP
+* Changed license from GPLv3 license to MIT license
+
+Changes since 1.4.1:
+
+* Modified authentication protocol, backward compatibility broken
+* Added snappy compression algorithm for some functions
+* Added UPnP NAT port mapping support, with startup parameter
+[connectionhost:]connectionport[/upnpnatport] and new command *VTUPNPNATPORT
+* Added ping-heartbeat, see connection network delay with command *VTPING
+* Added audio chat with command *VTAUDIOCHAT
+* Added socks proxy tunnels with command *VTSOCKSTUNNELS
+* Modified the video codec used in *VTREMOTEGRAPHICSMODE
+* Renamed command *VTSETTUNNELS to *VTTCPTUNNELS
+* Removed *VTLOCALZIPCREATE, *VTLOCALZIPSTORE and *VTZIPEXTRACT commands
+* Modified *VTZIPCREATE, *VTZIPSTORE and *VTZIPEXTRACT commands
+* Renamed *VTZIPCREATE command to *VTZIPCOMPRESS
+* Modified AES 128 bit encryption transformation to CBC instead of CFB128
+* Added *VTRESET command to temporarily override all credentials on server
+* Added *VTSETSHELL command to change external native shell application
+* Added connection helper form dialog for both server and client
+* Added command *VTHLP to show list of shortened commands
+* Modified *VTRUNTIME command to show the return codes
+* Modified command syntax error message to include command help
+* Added client-settings.properties file to pre-configure client settings
+* Merged server file system commands to *VTFILEINSPECT and *VTFILEMODIFY
+
+Changes since 1.3.12:
+
+* Changed *VTSETTUNNELS command syntax
+* Added command *VTBROWSE
+* Changed command *VTENCRYPTIONPASSPHRASE to *VTNCRYPTIONPASSWORD
+
+Changes since 1.3.11:
+
+* JZlib is used instead of native GZIP streams in compressed file transfers
+
+Changes since 1.3.10:
+
+* Changed some console command helper menu terms
+
+Changes since 1.3.9:
+
+* Corrected problems with command *VTPROXYTYPE and * VTSETTINGSLIST in both
+client and server consoles
+
+Changes since 1.3.8:
+
+* Fixed instability problem when closing remote graphics mode window
+* Changed the text font size in command *VTPRINTTEXT to 16
+
+Changes since 1.3.7:
+
+* Now the server dont ask for encryption and proxy configuration if those are
+defined in file server-settings.properties
+
+Changes since 1.3.6:
+
+* Client/server backward compatibility broken again in this version,
+changed connection protocol
+* Added tunneling (port forwarding) with new command *VTSETTUNNELS
+* Added new printer based commands *VTPRINTTEXT and *VTPRINTFILE
+* Added graphical window alerts with new command *VTGRAPHICSALERT
+* Removed command *VTDEFAULTPRINTSERVICE, *VTPRINTSERVICES command now also
+shows the default print service
+* Renamed some existing commands
+
+Changes since 1.3.5:
+
+* Graphical command console (awt) now supports input by drag and drop
+* Changed file security-settings.properties to server-settings.properties
+and now this file supports much more startup parameters
+* More startup parameters available, and now it explains briefly the startup
+parameters of each startup class, automating and lessening the need for manual
+user input when using the program
+* Added the option to repeat connection settings and user login/password
+when reconnecting in client
+* Solved the bug with the command *VTPROXYPORT changing connection host port
+
+Changes since 1.3.4:
+
+* Better window focus management options in remote graphics mode
+
+Changes since 1.3.3:
+
+* Client/server backward compatibility broken again in this version,
+changed connection protocol
+* Removed commons-codec, commons-collections, commons-configuration,
+commons-lang, commons-logging as dependencies of the project
+* Added ctrl-shift-space as shortcut to interrupt refresh in remote graphics
+mode
+* Added ctrl-shift-enter as shortcut to toggle full screen mode in remote
+graphics mode
+* Added ctrl-shift-alt as shortcut to toggle remote control in remote
+graphics mode
+* Some commands now have a abbreviated alternative form, use *VTHELP to check
+the alternative form of the commands
+* Improved startup parameters syntax for client and server:
+mode parameter (needed if the mode is not decided by the startup class):
+s(server)|d(daemon)|c(client)
+host parameter (the next argument): [connectionhost:]connectionport
+other parameters (autodetect by format):
+[login:password]
+[encryptiontype/encryptionpassword]
+[proxytype[/proxyuser/proxypassword]/proxyhost:proxyport]
+[sessionslimit]
+
+Changes since 1.3.1:
+
+* Client/server backward compatibility broken in this version,
+changed connection protocol, use v1.2.4 for older versions
+* Much faster AES 128 bit connection encryption
+* Changed some commands
+
+Changes since 1.2.4:
+
+* Changelog file available
+* File transfer status command now shows some traffic numbers
+
+Changes since 1.2.2:
+
+* Added support for full screen mode in remote graphical terminal
+
+Changes since 1.1.1:
+
+* Added helper for console commands in command terminal
+* Changed the startup scripts

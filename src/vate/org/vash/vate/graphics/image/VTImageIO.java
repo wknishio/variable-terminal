@@ -1,0 +1,846 @@
+package org.vash.vate.graphics.image;
+
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
+import java.awt.image.DataBuffer;
+import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferInt;
+import java.awt.image.DataBufferUShort;
+import java.awt.image.DirectColorModel;
+import java.awt.image.IndexColorModel;
+import java.awt.image.Raster;
+import java.awt.image.WritableRaster;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
+
+import org.vash.vate.stream.endian.VTLittleEndianInputStream;
+import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
+
+public final class VTImageIO
+{
+  private static final int DCM_RED_MASK = 0x00ff0000;
+  private static final int DCM_GREEN_MASK = 0x0000ff00;
+  private static final int DCM_BLUE_MASK = 0x000000ff;
+  private static final int DCM_ALPHA_MASK = 0xff000000;
+
+  private static final int DCM_555_RED_MASK = 0x7C00; // 0111110000000000
+  private static final int DCM_555_GRN_MASK = 0x03E0; // 0000001111100000
+  private static final int DCM_555_BLU_MASK = 0x001F; // 0000000000011111
+  
+  private static final int DCM_444_RED_MASK = 0x0F00; // 0000111100000000
+  private static final int DCM_444_GRN_MASK = 0x00F0; // 0000000011110000
+  private static final int DCM_444_BLU_MASK = 0x000F; // 0000000000001111
+  
+  private static final int DCM_333_RED_MASK = 0x01C0; // 0000000111000000
+  private static final int DCM_333_GRN_MASK = 0x0038; // 0000000000111000
+  private static final int DCM_333_BLU_MASK = 0x0007; // 0000000000000111
+  
+  private static final int DCM_222_RED_MASK = 0x0030; // 0000000000110000
+  private static final int DCM_222_GRN_MASK = 0x000C; // 0000000000001100
+  private static final int DCM_222_BLU_MASK = 0x0003; // 0000000000000011
+  
+  //public static final int TYPE_USHORT_444_RGB = BufferedImage.TYPE_USHORT_555_RGB << 1;
+
+  private static final IndexColorModel byteIndexed216ColorModel = VTIndexedColorModel.create216ColorModel();
+  private static final IndexColorModel byteIndexed125ColorModel = VTIndexedColorModel.create125ColorModel();
+  private static final IndexColorModel byteIndexed64ColorModel = VTIndexedColorModel.create64ColorModel();
+  private static final IndexColorModel byteIndexed32ColorModel = VTIndexedColorModel.create32ColorModel();
+  private static final IndexColorModel byteIndexed16ColorModel = VTIndexedColorModel.create16ColorModel();
+  private static final IndexColorModel byteIndexed8ColorModel = VTIndexedColorModel.create8ColorModel();
+  private static final IndexColorModel byteIndexed27ColorModel = VTIndexedColorModel.create27ColorModel();
+
+  // private static final IndexColorModel bytePacked4Bit16ColorModel =
+  // VTIndexedColorModel.createPacked4Bit16ColorModel();
+
+  private static final DirectColorModel int24bitRGBColorModel = new DirectColorModel(24, DCM_RED_MASK, // Red
+    DCM_GREEN_MASK, // Green
+    DCM_BLUE_MASK, // Blue
+    0x0 // Alpha
+  );
+
+  private static final DirectColorModel ushort15bitRGBColorModel = new DirectColorModel(15, DCM_555_RED_MASK, 
+    DCM_555_GRN_MASK, 
+    DCM_555_BLU_MASK
+  );
+  
+  private static final DirectColorModel ushort12bitRGBColorModel = new DirectColorModel(12, DCM_444_RED_MASK, 
+    DCM_444_GRN_MASK, 
+    DCM_444_BLU_MASK
+  );
+  
+  private static final DirectColorModel ushort9bitRGBColorModel = new DirectColorModel(9, DCM_333_RED_MASK, 
+    DCM_333_GRN_MASK, 
+    DCM_333_BLU_MASK
+  );
+  
+  private static final DirectColorModel byte6bitRGBColorModel = new DirectColorModel(6, DCM_222_RED_MASK, 
+    DCM_222_GRN_MASK, 
+    DCM_222_BLU_MASK
+  );
+
+  private static final DirectColorModel int32bitRGBColorModel = new DirectColorModel(32, DCM_RED_MASK, // Red
+    DCM_GREEN_MASK, // Green
+    DCM_BLUE_MASK, // Blue
+    DCM_ALPHA_MASK // Alpha
+  );
+
+  //private final VTLittleEndianInputStream littleEndianInputStream = new VTLittleEndianInputStream(null);
+  //private final VTLittleEndianOutputStream littleEndianOutputStream = new VTLittleEndianOutputStream(null);
+
+  /*
+   * public Color getBackgroundColor(int type) { switch (type) { case
+   * BufferedImage.TYPE_BYTE_INDEXED: { } case BufferedImage.TYPE_USHORT_555_RGB:
+   * { } case BufferedImage.TYPE_INT_RGB: { } case BufferedImage.TYPE_INT_ARGB: {
+   * } } return null; }
+   */
+
+  public static final BufferedImage createImage(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
+  {
+    // recyclableStorage.getRaster().getDataBuffer().get
+    switch (type)
+    {
+      // case BufferedImage.TYPE_BYTE_BINARY:
+      // {
+      // BufferedImage image = buildBufferedImage(width, height, type, colors,
+      // recyclableBuffer);
+      // Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(),
+      // (byte) 0x77);
+      // return image;
+      // }
+      case BufferedImage.TYPE_CUSTOM:
+      {
+        if (colors == 4096)
+        {
+          BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+          clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * width));
+          return image;
+        }
+        if (colors == 512)
+        {
+          BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+          clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * width));
+          return image;
+        }
+        if (colors == 64)
+        {
+          BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+          clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * width));
+          return image;
+        }
+      }
+      case BufferedImage.TYPE_BYTE_INDEXED:
+      {
+        BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * width));
+        return image;
+      }
+      case BufferedImage.TYPE_USHORT_555_RGB:
+      {
+        BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * width));
+        return image;
+      }
+      case BufferedImage.TYPE_INT_RGB:
+      {
+        BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * width));
+        return image;
+      }
+      case BufferedImage.TYPE_INT_ARGB:
+      {
+        BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * width));
+        return image;
+      }
+    }
+    return null;
+  }
+
+  @SuppressWarnings("all")
+  public static final BufferedImage readImage(InputStream in, DataBuffer recyclableBuffer) throws IOException
+  {
+    VTLittleEndianInputStream littleEndianInputStream = new VTLittleEndianInputStream(in);
+    //littleEndianInputStream.setIntputStream(in);
+    int type = littleEndianInputStream.readInt();
+    int colors = littleEndianInputStream.readInt();
+    int x = littleEndianInputStream.readInt();
+    int y = littleEndianInputStream.readInt();
+    int width = littleEndianInputStream.readInt();
+    int height = littleEndianInputStream.readInt();
+
+    // int depth = image.getColorModel().getPixelSize();
+    // int readed = 0;
+    // int total = 0;
+    // int remaining = width * height;
+    int size = width * height;
+
+    switch (type)
+    {
+      // case BufferedImage.TYPE_BYTE_BINARY:
+      // {
+      // BufferedImage image = buildBufferedImage(width, height, type, colors,
+      // recyclableBuffer);
+      // size = size / 2;
+      // byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+      // for (int i = 0; i < size; i++)
+      // {
+      // decodeTwoPixelByte(littleEndianInputStream, data, i);
+      // }
+      // return image;
+      // }
+      case BufferedImage.TYPE_CUSTOM:
+      {
+        if (colors == 4096)
+        {
+          BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+          short[] data = ((DataBufferUShort) image.getRaster().getDataBuffer()).getData();
+          for (int position = x + (y * width); position < size; position++)
+          {
+            decodePixel15(littleEndianInputStream, data, position, width);
+          }
+          return image;
+        }
+        if (colors == 512)
+        {
+          BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+          short[] data = ((DataBufferUShort) image.getRaster().getDataBuffer()).getData();
+          for (int position = x + (y * width); position < size; position++)
+          {
+            decodePixel15(littleEndianInputStream, data, position, width);
+          }
+          return image;
+        }
+        if (colors == 64)
+        {
+          BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+          byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+          for (int position = x + (y * width); position < size; position++)
+          {
+            decodePixel8(littleEndianInputStream, data, position, width);
+          }
+          return image;
+        }
+        break;
+      }
+      case BufferedImage.TYPE_BYTE_INDEXED:
+      {
+        BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+        byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        for (int position = x + (y * width); position < size; position++)
+        {
+          decodePixel8(littleEndianInputStream, data, position, width);
+        }
+        return image;
+      }
+      case BufferedImage.TYPE_USHORT_555_RGB:
+      {
+        BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+        short[] data = ((DataBufferUShort) image.getRaster().getDataBuffer()).getData();
+        for (int position = x + (y * width); position < size; position++)
+        {
+          decodePixel15(littleEndianInputStream, data, position, width);
+        }
+        return image;
+      }
+      case BufferedImage.TYPE_INT_RGB:
+      {
+        BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+        int[] data = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        for (int position = x + (y * width); position < size; position++)
+        {
+          decodePixel24(littleEndianInputStream, data, position, width);
+        }
+        return image;
+      }
+      case BufferedImage.TYPE_INT_ARGB:
+      {
+        BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+        int[] data = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        for (int position = x + (y * width); position < size; position++)
+        {
+          decodePixel32(littleEndianInputStream, data, position, width);
+        }
+        return image;
+      }
+    }
+    return null;
+  }
+
+  @SuppressWarnings("all")
+  public static final void writeImage(OutputStream out, BufferedImage image) throws IOException
+  {
+    VTLittleEndianOutputStream littleEndianOutputStream = new VTLittleEndianOutputStream(out);
+    //littleEndianOutputStream.setOutputStream(out);
+    int type = image.getType();
+    int colors = 0;
+    ColorModel colorModel = image.getColorModel();
+    if (colorModel instanceof IndexColorModel)
+    {
+      colors = ((IndexColorModel) colorModel).getMapSize();
+    }
+    if (colorModel instanceof DirectColorModel)
+    {
+      colors = 1 << ((DirectColorModel) colorModel).getPixelSize();
+    }
+    int x = image.getMinX();
+    int y = image.getMinY();
+    int width = image.getWidth();
+    int height = image.getHeight();
+    int size = width * height;
+    // int total = 0;
+    littleEndianOutputStream.writeInt(type);
+    littleEndianOutputStream.writeInt(colors);
+    littleEndianOutputStream.writeInt(x);
+    littleEndianOutputStream.writeInt(y);
+    littleEndianOutputStream.writeInt(width);
+    littleEndianOutputStream.writeInt(height);
+    // littleEndianOutputStream.flush();
+    switch (type)
+    {
+      // case BufferedImage.TYPE_BYTE_BINARY:
+      // {
+      // byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+      // size = size / 2;
+      // for (int i = 0; i < size; i++)
+      // {
+      // encodeTwoPixelByte(littleEndianOutputStream, data, i);
+      // }
+      // littleEndianOutputStream.flush();
+      // break;
+      // }
+      case BufferedImage.TYPE_CUSTOM:
+      {
+        if (colors == 4096)
+        {
+          short[] data = ((DataBufferUShort) image.getRaster().getDataBuffer()).getData();
+          for (int position = x + (y * width); position < size; position++)
+          {
+            encodePixel15(littleEndianOutputStream, data, position, width);
+          }
+        }
+        if (colors == 512)
+        {
+          short[] data = ((DataBufferUShort) image.getRaster().getDataBuffer()).getData();
+          for (int position = x + (y * width); position < size; position++)
+          {
+            encodePixel15(littleEndianOutputStream, data, position, width);
+          }
+        }
+        if (colors == 64)
+        {
+          byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+          for (int position = x + (y * width); position < size; position++)
+          {
+            encodePixel8(littleEndianOutputStream, data, position, width);
+          }
+        }
+        break;
+      }
+      case BufferedImage.TYPE_BYTE_INDEXED:
+      {
+        byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        for (int position = x + (y * width); position < size; position++)
+        {
+          encodePixel8(littleEndianOutputStream, data, position, width);
+        }
+        break;
+      }
+      case BufferedImage.TYPE_USHORT_555_RGB:
+      {
+        short[] data = ((DataBufferUShort) image.getRaster().getDataBuffer()).getData();
+        for (int position = x + (y * width); position < size; position++)
+        {
+          encodePixel15(littleEndianOutputStream, data, position, width);
+        }
+        break;
+      }
+      case BufferedImage.TYPE_INT_RGB:
+      {
+        int[] data = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        for (int position = x + (y * width); position < size; position++)
+        {
+          encodePixel24(littleEndianOutputStream, data, position, width);
+        }
+        break;
+      }
+      case BufferedImage.TYPE_INT_ARGB:
+      {
+        int[] data = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+        for (int position = x + (y * width); position < size; position++)
+        {
+          encodePixel32(littleEndianOutputStream, data, position, width);
+        }
+        break;
+      }
+    }
+  }
+
+  private static final WritableRaster buildRaster(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
+  {
+    int nextSize = ((width + x) * (height + y));
+    int neededSize = ((width + x) * (height + y));
+    WritableRaster createdRaster = null;
+    switch (type)
+    {
+      // case BufferedImage.TYPE_BYTE_BINARY:
+      // {
+      // nextSize = nextSize / 2;
+      // neededSize = neededSize / 2;
+      // if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte &&
+      // recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <=
+      // neededSize * 4)
+      // {
+      // createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, 4,
+      // null);
+      // }
+      // else
+      // {
+      // createdRaster = Raster.createPackedRaster(new DataBufferByte(nextSize),
+      // width, height, 4, null);
+      // }
+      // break;
+      // }
+      case BufferedImage.TYPE_CUSTOM:
+      {
+        if (colors == 4096)
+        {
+          if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferUShort && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
+          {
+            createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, ushort12bitRGBColorModel.getMasks(), new Point(x, y));
+          }
+          else
+          {
+            createdRaster = Raster.createPackedRaster(new DataBufferUShort(nextSize), width, height, width, ushort12bitRGBColorModel.getMasks(), new Point(x, y));
+          }
+        }
+        if (colors == 512)
+        {
+          if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferUShort && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
+          {
+            createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, ushort9bitRGBColorModel.getMasks(), new Point(x, y));
+          }
+          else
+          {
+            createdRaster = Raster.createPackedRaster(new DataBufferUShort(nextSize), width, height, width, ushort9bitRGBColorModel.getMasks(), new Point(x, y));
+          }
+        }
+        if (colors == 64)
+        {
+          if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
+          {
+            createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, byte6bitRGBColorModel.getMasks(), new Point(x, y));
+          }
+          else
+          {
+            createdRaster = Raster.createPackedRaster(new DataBufferByte(nextSize), width, height, width, byte6bitRGBColorModel.getMasks(), new Point(x, y));
+          }
+        }
+        break;
+      }
+      case BufferedImage.TYPE_BYTE_INDEXED:
+      {
+        if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
+        {
+          createdRaster = Raster.createInterleavedRaster(recyclableBuffer, width, height, width, 1, new int[1], new Point(x, y));
+        }
+        else
+        {
+          createdRaster = Raster.createInterleavedRaster(new DataBufferByte(nextSize), width, height, width, 1, new int[1], new Point(x, y));
+        }
+        break;
+      }
+      case BufferedImage.TYPE_USHORT_555_RGB:
+      {
+        if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferUShort && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
+        {
+          createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, ushort15bitRGBColorModel.getMasks(), new Point(x, y));
+        }
+        else
+        {
+          createdRaster = Raster.createPackedRaster(new DataBufferUShort(nextSize), width, height, width, ushort15bitRGBColorModel.getMasks(), new Point(x, y));
+        }
+        break;
+      }
+      case BufferedImage.TYPE_INT_RGB:
+      {
+        if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferInt && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
+        {
+          createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, int24bitRGBColorModel.getMasks(), new Point(x, y));
+        }
+        else
+        {
+          createdRaster = Raster.createPackedRaster(new DataBufferInt(nextSize), width, height, width, int24bitRGBColorModel.getMasks(), new Point(x, y));
+        }
+        break;
+      }
+      case BufferedImage.TYPE_INT_ARGB:
+      {
+        if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferInt && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
+        {
+          createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, int32bitRGBColorModel.getMasks(), new Point(x, y));
+        }
+        else
+        {
+          createdRaster = Raster.createPackedRaster(new DataBufferInt(nextSize), width, height, width, int32bitRGBColorModel.getMasks(), new Point(x, y));
+        }
+        break;
+      }
+    }
+    return createdRaster;
+  }
+
+  private static final BufferedImage buildBufferedImage(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
+  {
+    BufferedImage image = null;
+    switch (type)
+    {
+      // case BufferedImage.TYPE_BYTE_BINARY:
+      // {
+      // image = new BufferedImage(bytePacked4Bit16ColorModel, buildRaster(width,
+      // height, type, recyclableBuffer), false, null);
+      // break;
+      // }
+      case BufferedImage.TYPE_CUSTOM:
+      {
+        if (colors == 4096)
+        {
+          image = new BufferedImage(ushort12bitRGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        }
+        if (colors == 512)
+        {
+          image = new BufferedImage(ushort9bitRGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        }
+        if (colors == 64)
+        {
+          image = new BufferedImage(byte6bitRGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        }
+        break;
+      }
+      case BufferedImage.TYPE_BYTE_INDEXED:
+      {
+        if (colors == 216)
+        {
+          image = new BufferedImage(byteIndexed216ColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        }
+        else if (colors == 125)
+        {
+          image = new BufferedImage(byteIndexed125ColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        }
+        else if (colors == 27)
+        {
+          image = new BufferedImage(byteIndexed27ColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        }
+        else if (colors == 16)
+        {
+          image = new BufferedImage(byteIndexed16ColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        }
+        else if (colors == 8)
+        {
+          image = new BufferedImage(byteIndexed8ColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        }
+        else if (colors == 32)
+        {
+          image = new BufferedImage(byteIndexed32ColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        }
+        else
+        {
+          image = new BufferedImage(byteIndexed64ColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        }
+        break;
+      }
+      case BufferedImage.TYPE_USHORT_555_RGB:
+      {
+        image = new BufferedImage(ushort15bitRGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        break;
+      }
+      case BufferedImage.TYPE_INT_RGB:
+      {
+        image = new BufferedImage(int24bitRGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        break;
+      }
+      case BufferedImage.TYPE_INT_ARGB:
+      {
+        image = new BufferedImage(int32bitRGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        break;
+      }
+    }
+    return image;
+  }
+
+  public static final void clearBuffer(byte[] buffer, int type, int colors, int start)
+  {
+    if (colors == 216)
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 86);
+      //Arrays.fill(buffer, start, buffer.length, (byte) 215);
+    }
+    else if (colors == 125)
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 62);
+      //Arrays.fill(buffer, start, buffer.length, (byte) 124);
+    }
+    else if (colors == 27)
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 13);
+      //Arrays.fill(buffer, start, buffer.length, (byte) 26);
+    }
+    else if (colors == 16)
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 1);
+      //Arrays.fill(buffer, start, buffer.length, (byte) 15);
+    }
+    else if (colors == 8)
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 0);
+      //Arrays.fill(buffer, start, buffer.length, (byte) 7);
+    }
+    else if (colors == 32)
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 2);
+      //Arrays.fill(buffer, start, buffer.length, (byte) 31);
+    }
+    else
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 21);
+      //Arrays.fill(buffer, start, buffer.length, (byte) 63);
+    }
+  }
+
+  public static final void clearBuffer(short[] buffer, int type, int colors, int start)
+  {
+    if (colors == 4096)
+    {
+      Arrays.fill(buffer, start, buffer.length, (short) 0x0555);
+      //Arrays.fill(buffer, start, buffer.length, (short) 4095);
+    }
+    else if (colors == 512)
+    {
+      Arrays.fill(buffer, start, buffer.length, (short) 0xDB);
+      //Arrays.fill(buffer, start, buffer.length, (short) 511);
+    }
+    else
+    {
+      Arrays.fill(buffer, start, buffer.length, (short) 0x294A);
+      //Arrays.fill(buffer, start, buffer.length, (short) 32767);
+    }
+  }
+
+  public static final void clearBuffer(int[] buffer, int type, int colors, int start)
+  {
+    if (type == BufferedImage.TYPE_INT_ARGB)
+    {
+      Arrays.fill(buffer, start, buffer.length, 0xFF555555);
+      //Arrays.fill(buffer, start, buffer.length, 0xFFFFFFFF);
+    }
+    else
+    {
+      Arrays.fill(buffer, start, buffer.length, 0x00555555);
+      //Arrays.fill(buffer, start, buffer.length, 0x00FFFFFF);
+    }
+  }
+  
+  public static final void clearBuffer(DataBuffer buffer, int type, int colors, int start)
+  {
+    if (buffer instanceof DataBufferByte)
+    {
+      clearBuffer(((DataBufferByte)buffer).getData(), type, colors, start);
+    }
+    if (buffer instanceof DataBufferUShort)
+    {
+      clearBuffer(((DataBufferUShort)buffer).getData(), type, colors, start);
+    }
+    if (buffer instanceof DataBufferInt)
+    {
+      clearBuffer(((DataBufferInt)buffer).getData(), type, colors, start);
+    }
+  }
+
+  public static final void clearImage(BufferedImage image)
+  {
+    if (image == null)
+    {
+      return;
+    }
+    int type = image.getType();
+    int colors = 0;
+    int x = image.getMinX();
+    int y = image.getMinY();
+    ColorModel colorModel = image.getColorModel();
+    if (colorModel instanceof IndexColorModel)
+    {
+      colors = ((IndexColorModel) colorModel).getMapSize();
+    }
+    if (colorModel instanceof DirectColorModel)
+    {
+      colors = 1 << ((DirectColorModel) colorModel).getPixelSize();
+    }
+
+    switch (type)
+    {
+      // case BufferedImage.TYPE_BYTE_BINARY:
+      // {
+      // Arrays.fill(((DataBufferByte) image.getRaster().getDataBuffer()).getData(),
+      // (byte) 0x77);
+      // break;
+      // }
+      case BufferedImage.TYPE_CUSTOM:
+      {
+        if (colors == 4096)
+        {
+          clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * image.getWidth()));
+        }
+        if (colors == 512)
+        {
+          clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * image.getWidth()));
+        }
+        if (colors == 64)
+        {
+          clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * image.getWidth()));
+        }
+        break;
+      }
+      case BufferedImage.TYPE_BYTE_INDEXED:
+      {
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * image.getWidth()));
+        break;
+      }
+      case BufferedImage.TYPE_USHORT_555_RGB:
+      {
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * image.getWidth()));
+        break;
+      }
+      case BufferedImage.TYPE_INT_RGB:
+      {
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * image.getWidth()));
+        break;
+      }
+      case BufferedImage.TYPE_INT_ARGB:
+      {
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * image.getWidth()));
+        break;
+      }
+    }
+  }
+
+  private static final void encodePixel8(VTLittleEndianOutputStream out, byte[] pixelData, int position, int width) throws IOException
+  {
+//    out.write(pixelData[position] - Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
+//    out.write(pixelData[position] - ((top1 + left1) >> 1));
+    int left1, top1, diag1, pred1;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : 0;
+    left1 = position > 0 ? pixelData[position - 1] : 0;
+    pred1 = (((diag1 + top1 + left1) * 342) >>> 10);
+    out.write(pixelData[position] ^ (pred1));
+  }
+
+  private static final void encodePixel15(VTLittleEndianOutputStream out, short[] pixelData, int position, int width) throws IOException
+  {
+//    out.writeShort(pixelData[position] - Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
+//    out.writeShort(pixelData[position] - ((top1 + left1) >> 1));
+    int left1, top1, diag1, pred1;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : 0;
+    left1 = position > 0 ? pixelData[position - 1] : 0;
+    pred1 = (((diag1 + top1 + left1) * 43691) >>> 17);
+    out.writeShort(pixelData[position] ^ (pred1));
+  }
+
+  private static final void encodePixel24(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  {
+//    out.writeSubInt(pixelData[position] - Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
+//    out.writeSubInt(pixelData[position] - ((top1 + left1) >> 1));
+    long left1, top1, diag1, pred1;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : 0;
+    left1 = position > 0 ? pixelData[position - 1] : 0;
+    pred1 = (((diag1 + top1 + left1) * 22369622) >>> 26);
+    out.writeSubInt(pixelData[position] ^ (int)((pred1) /* & 0x00FFFFFF */));
+  }
+  
+  private static final void encodePixel32(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  {
+//    out.writeInt(pixelData[position] - Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
+//    out.writeInt(pixelData[position] - ((top1 + left1) >> 1));
+    long left1, top1, diag1, pred1;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : 0;
+    left1 = position > 0 ? pixelData[position - 1] : 0;
+    pred1 = (((diag1 + top1 + left1) * 5726623062L) >>> 34);
+    out.writeInt(pixelData[position] ^ (int)(pred1));
+  }
+  
+  private static final void decodePixel8(VTLittleEndianInputStream in, byte[] pixelData, int position, int width) throws IOException
+  {
+//    pixelData[position] = (byte) (in.readByte() + Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
+//    pixelData[position] = (byte) (in.readByte() + ((top1 + left1) >> 1));
+    int left1, top1, diag1, pred1;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : 0;
+    left1 = position > 0 ? pixelData[position - 1] : 0;
+    pred1 = (((diag1 + top1 + left1) * 342) >>> 10);
+    pixelData[position] = (byte) ((in.read() ^ (pred1)) /* & 0xFF */);
+  }
+
+  private static final void decodePixel15(VTLittleEndianInputStream in, short[] pixelData, int position, int width) throws IOException
+  {
+//    pixelData[position] = (short) ((in.readShort() + Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1))) & 0x00007FFF);
+//    pixelData[position] = (short) ((in.readShort() + ((top1 + left1) >> 1)) & 0x00007FFF);
+    int left1, top1, diag1, pred1;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : 0;
+    left1 = position > 0 ? pixelData[position - 1] : 0;
+    pred1 = (((diag1 + top1 + left1) * 43691) >>> 17);
+    pixelData[position] = (short) ((in.readShort() ^ (pred1)) /* & 0x7FFF */);
+  }
+
+  private static final void decodePixel24(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  {
+//    pixelData[position] = (in.readSubInt() + Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1))) & 0x00FFFFFF;
+//    pixelData[position] = ((in.readSubInt() + ((top1 + left1) >> 1)) & 0x00FFFFFF);
+    long left1, top1, diag1, pred1;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : 0;
+    left1 = position > 0 ? pixelData[position - 1] : 0;
+    pred1 = (((diag1 + top1 + left1) * 22369622) >>> 26);
+    pixelData[position] = ((in.readSubInt() ^ (int)((pred1) /* & 0x00FFFFFF */)) /* & 0x00FFFFFF */);
+  }
+
+  private static final void decodePixel32(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  {
+//    pixelData[position] = (in.readInt() + Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
+//    pixelData[position] = ((in.readInt() + ((top1 + left1) >> 1)) & 0x7FFFFFFF);
+    long left1, top1, diag1, pred1;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : 0;
+    left1 = position > 0 ? pixelData[position - 1] : 0;
+    pred1 = (((diag1 + top1 + left1) * 5726623062L) >>> 34);
+    pixelData[position] = (in.readInt() ^ (int)(pred1));
+  }
+  
+  @SuppressWarnings("unused")
+  private static final void encodePixel30(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  {
+    long left1, top1, diag1, pred1;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : 0;
+    left1 = position > 0 ? pixelData[position - 1] : 0;
+    pred1 = (((diag1 + top1 + left1) * 1431655766) >>> 32);
+    out.writeInt(pixelData[position] ^ (int)(pred1));
+  }
+  
+  @SuppressWarnings("unused")
+  private static final void decodePixel30(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  {
+    long left1, top1, diag1, pred1;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : 0;
+    left1 = position > 0 ? pixelData[position - 1] : 0;
+    pred1 = (((diag1 + top1 + left1) * 1431655766) >>> 32);
+    pixelData[position] = (in.readInt() ^ (int)(pred1));
+  }
+  
+}

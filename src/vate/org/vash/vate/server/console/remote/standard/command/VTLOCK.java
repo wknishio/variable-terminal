@@ -1,0 +1,37 @@
+package org.vash.vate.server.console.remote.standard.command;
+
+import org.vash.vate.help.VTHelpManager;
+import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
+
+public class VTLOCK extends VTServerStandardRemoteConsoleCommandProcessor
+{
+  public VTLOCK()
+  {
+    this.setFullName("*VTLOCK");
+    this.setAbbreviatedName("*VTLK");
+    this.setFullSyntax("*VTLOCK <USER PASSWORD>");
+    this.setAbbreviatedSyntax("*VTLK <US PW>");
+  }
+
+  public void execute(String command, String[] parsed) throws Exception
+  {
+    if (parsed.length >= 3)
+    {
+      String user = parsed[1];
+      String password = parsed[2];
+      session.getServer().setUniqueUserCredential(user, password);
+      connection.getResultWriter().write("\nVT>Single credential set!\nVT>");
+      connection.getResultWriter().flush();
+    }
+    else
+    {
+      connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+      connection.getResultWriter().flush();
+    }
+  }
+
+  public void close()
+  {
+
+  }
+}
