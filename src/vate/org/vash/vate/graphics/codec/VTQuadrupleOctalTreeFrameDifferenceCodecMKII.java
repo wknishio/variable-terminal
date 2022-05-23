@@ -160,37 +160,40 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
 //	}
   private static final void encodePixel8(final VTLittleEndianOutputStream out, final byte[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
   {
-//    out.write(newPixelData[position] - Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
-//    out.write(newPixelData[position] - ((top1 + left1) >> 1));
     int left1, top1, diag1, pred1;
-    diag1 = x > 0 && y > 0 ? newPixelData[position - width - 1] : 0;
     top1 = y > 0 ? newPixelData[position - width] : 0;
-    left1 = x > 0 ? newPixelData[position - 1] : 0;
+    left1 = x > 0 ? newPixelData[position - 1] : top1;
+    top1 = y > 0 ? newPixelData[position - width] : left1;
+    diag1 = x > 0 && y > 0 ? newPixelData[position - width - 1] : top1;
     pred1 = (((diag1 + top1 + left1) * 342) >>> 10);
+    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1));
+    //pred1 = (top1 + left1) >> 1;
     out.write(newPixelData[position] ^ pred1);
   }
 
   private static final void encodePixel15(final VTLittleEndianOutputStream out, final short[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
   {
-//    out.writeShort(newPixelData[position] - Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
-//    out.writeShort(newPixelData[position] - ((top1 + left1) >> 1));
     int left1, top1, diag1, pred1;
-    diag1 = x > 0 && y > 0 ? newPixelData[position - width - 1] : 0;
     top1 = y > 0 ? newPixelData[position - width] : 0;
-    left1 = x > 0 ? newPixelData[position - 1] : 0;
+    left1 = x > 0 ? newPixelData[position - 1] : top1;
+    top1 = y > 0 ? newPixelData[position - width] : left1;
+    diag1 = x > 0 && y > 0 ? newPixelData[position - width - 1] : top1;
     pred1 = (((diag1 + top1 + left1) * 43691) >>> 17);
+    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1));
+    //pred1 = (top1 + left1) >> 1;
     out.writeShort(newPixelData[position] ^ pred1);
   }
 
   private static final void encodePixel24(final VTLittleEndianOutputStream out, final int[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
   {
-//    out.writeSubInt(newPixelData[position] - Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
-//    out.writeSubInt(newPixelData[position] - ((top1 + left1) >> 1));
     long left1, top1, diag1, pred1;
-    diag1 = x > 0 && y > 0 ? newPixelData[position - width - 1] : 0;
     top1 = y > 0 ? newPixelData[position - width] : 0;
-    left1 = x > 0 ? newPixelData[position - 1] : 0;
+    left1 = x > 0 ? newPixelData[position - 1] : top1;
+    top1 = y > 0 ? newPixelData[position - width] : left1;
+    diag1 = x > 0 && y > 0 ? newPixelData[position - width - 1] : top1;
     pred1 = (((diag1 + top1 + left1) * 22369622) >>> 26);
+    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1));
+    //pred1 = (top1 + left1) >> 1;
     out.writeSubInt(newPixelData[position] ^ (int)(pred1 /* & 0x00FFFFFF */));
   }
 
@@ -205,37 +208,40 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
 
   private static final void decodePixel8(final VTLittleEndianInputStream in, final byte[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
   {
-//    newPixelData[position] = (byte) (in.readByte() + Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1)));
-//    newPixelData[position] = (byte) (in.readByte() + ((top1 + left1) >> 1));
     int left1, top1, diag1, pred1;
-    diag1 = x > 0 && y > 0 ? newPixelData[position - width - 1] : 0;
     top1 = y > 0 ? newPixelData[position - width] : 0;
-    left1 = x > 0 ? newPixelData[position - 1] : 0;
+    left1 = x > 0 ? newPixelData[position - 1] : top1;
+    top1 = y > 0 ? newPixelData[position - width] : left1;
+    diag1 = x > 0 && y > 0 ? newPixelData[position - width - 1] : top1;
     pred1 = (((diag1 + top1 + left1) * 342) >>> 10);
+    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1));
+    //pred1 = (top1 + left1) >> 1;
     newPixelData[position] = (byte) ((in.read() ^ pred1) /* & 0xFF */);
   }
 
   private static final void decodePixel15(final VTLittleEndianInputStream in, final short[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
   {
-//    newPixelData[position] = (short) ((in.readShort() + Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1))) & 0x00007FFF);
-//    newPixelData[position] = (short) ((in.readShort() + ((top1 + left1) >> 1)) & 0x00007FFF);
     int left1, top1, diag1, pred1;
-    diag1 = x > 0 && y > 0 ? newPixelData[position - width - 1] : 0;
     top1 = y > 0 ? newPixelData[position - width] : 0;
-    left1 = x > 0 ? newPixelData[position - 1] : 0;
+    left1 = x > 0 ? newPixelData[position - 1] : top1;
+    top1 = y > 0 ? newPixelData[position - width] : left1;
+    diag1 = x > 0 && y > 0 ? newPixelData[position - width - 1] : top1;
     pred1 = (((diag1 + top1 + left1) * 43691) >>> 17);
+    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1));
+    //pred1 = (top1 + left1) >> 1;
     newPixelData[position] = (short) ((in.readShort() ^ pred1) /* & 0x7FFF */);
   }
 
   private static final void decodePixel24(final VTLittleEndianInputStream in, final int[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
   {
-//    newPixelData[position] = (in.readSubInt() + Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1))) & 0x00FFFFFF;
-//    newPixelData[position] = ((in.readSubInt() + ((top1 + left1) >> 1)) & 0x00FFFFFF);
     long left1, top1, diag1, pred1;
-    diag1 = x > 0 && y > 0 ? newPixelData[position - width - 1] : 0;
     top1 = y > 0 ? newPixelData[position - width] : 0;
-    left1 = x > 0 ? newPixelData[position - 1] : 0;
+    left1 = x > 0 ? newPixelData[position - 1] : top1;
+    top1 = y > 0 ? newPixelData[position - width] : left1;
+    diag1 = x > 0 && y > 0 ? newPixelData[position - width - 1] : top1;
     pred1 = (((diag1 + top1 + left1) * 22369622) >>> 26);
+    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1));
+    //pred1 = (top1 + left1) >> 1;
     newPixelData[position] = ((in.readSubInt() ^ (int)(pred1/* & 0x00FFFFFF */)) /* & 0x00FFFFFF */);
   }
 
