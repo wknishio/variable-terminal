@@ -219,7 +219,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.imageCodingSOFOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingSOFOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF));
     this.imageCodingPNGOption = new CheckboxMenuItem("PNG", false);
     this.imageCodingPNGOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingPNGOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG));
-    this.imageCodingJPGOption = new CheckboxMenuItem("JPEG", false);
+    this.imageCodingJPGOption = new CheckboxMenuItem("JPG", false);
     this.imageCodingJPGOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingJPGOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG));
     // this.imageCodingGIFOption = new CheckboxMenuItem("GIF", false);
     // this.imageCodingGIFOption.addItemListener(new
@@ -305,8 +305,8 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     // this.imageFormatMenu.add(colorCodingMenu);
     this.imageFormatMenu.add(imageCodingZOFOption);
     this.imageFormatMenu.add(imageCodingSOFOption);
-    this.imageFormatMenu.add(imageCodingPNGOption);
     this.imageFormatMenu.add(imageCodingJPGOption);
+    this.imageFormatMenu.add(imageCodingPNGOption);
     // this.imageFormatMenu.add(imageCodingGIFOption);
 
     this.add(refreshModeMenu);
