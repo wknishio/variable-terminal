@@ -816,7 +816,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     Panel mainPanel = new Panel();
     mainPanel.setLayoutManager(new BorderLayout());
     
-    // outputBox.setReadOnly(true);
+    //outputBox.setReadOnly(true);
     outputBox.setTerminal(terminal);
     outputBox.setEditable(false);
     outputBox.setHorizontalFocusSwitching(false);
@@ -949,6 +949,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
           {
             outputBox.takeFocus();
             outputBox.scrollup();
+            int row = outputBox.getRenderer().getViewTopLeft().getRow();
+            if (row > 0)
+            {
+              outputBox.getRenderer().setViewTopLeft(outputBox.getRenderer().getViewTopLeft().withRow(row - 1));
+            }
             outputBox.invalidate();
             return false;
           }
@@ -957,6 +962,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
           {
             outputBox.takeFocus();
             outputBox.scrolldown();
+            int row = outputBox.getRenderer().getViewTopLeft().getRow();
+            if (row < outputBox.getLineCount())
+            {
+              outputBox.getRenderer().setViewTopLeft(outputBox.getRenderer().getViewTopLeft().withRow(row + 1));
+            }
             outputBox.invalidate();
             return false;
           }
