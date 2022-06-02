@@ -124,6 +124,9 @@ public class VTLanternaConsole implements VTConsoleImplementation
   private VTConsoleBooleanToggleNotify notifyReplaceInput;
   private PrintStream logOutput = null;
   private BufferedWriter readLineLog = null;
+  
+  private PrintStream doubledOutput;
+  private PrintStream doubledError;
 
   // support command history
   // support echo input
@@ -1869,16 +1872,30 @@ public class VTLanternaConsole implements VTConsoleImplementation
       registerLine(data);
       if (commandEcho)
       {
-        write(data + "\n");
-        flush();
+        if (doubledOutput != null)
+        {
+          doubledOutput.println(data);
+        }
+        else
+        {
+          write(data + "\n");
+          flush();
+        }
       }
     }
     else
     {
       if (commandEcho)
       {
-        write("\n");
-        flush();
+        if (doubledOutput != null)
+        {
+          doubledOutput.println();
+        }
+        else
+        {
+          write("\n");
+          flush();
+        }
       }
     }
     readingInput = false;
@@ -2073,13 +2090,15 @@ public class VTLanternaConsole implements VTConsoleImplementation
   public void setSystemOut()
   {
     // System.setOut(printStream);
-    System.setOut(new PrintStream(new VTDoubledOutputStream(printStream, new PrintStream(new FileOutputStream(FileDescriptor.out)), false), true));
+    doubledOutput = new PrintStream(new VTDoubledOutputStream(printStream, new PrintStream(new FileOutputStream(FileDescriptor.out)), false), true);
+    System.setOut(doubledOutput);
   }
 
   public void setSystemErr()
   {
     // System.setErr(printStream);
-    System.setErr(new PrintStream(new VTDoubledOutputStream(printStream, new PrintStream(new FileOutputStream(FileDescriptor.err)), false), true));
+    doubledError = new PrintStream(new VTDoubledOutputStream(printStream, new PrintStream(new FileOutputStream(FileDescriptor.err)), false), true);
+    System.setErr(doubledError);
   }
 
   public InputStream getSystemIn()
@@ -2089,11 +2108,19 @@ public class VTLanternaConsole implements VTConsoleImplementation
 
   public PrintStream getSystemOut()
   {
+    if (doubledOutput != null)
+    {
+      return doubledOutput;
+    }
     return printStream;
   }
 
   public PrintStream getSystemErr()
   {
+    if (doubledError != null)
+    {
+      return doubledError;
+    }
     return printStream;
   }
 

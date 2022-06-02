@@ -101,6 +101,8 @@ public class VTGraphicalConsole implements VTConsoleImplementation
   private static BufferedWriter readLineLog = null;
   // private static VTGraphicalConsoleReader reader;
   // private static VTGraphicalConsoleWriter writer;
+  private static PrintStream doubledOutput;
+  private static PrintStream doubledError;
 
   private VTGraphicalConsole()
   {
@@ -2149,13 +2151,15 @@ public class VTGraphicalConsole implements VTConsoleImplementation
   public void setSystemOut()
   {
     // System.setOut(printStream);
-    System.setOut(new PrintStream(new VTDoubledOutputStream(printStream, new PrintStream(new FileOutputStream(FileDescriptor.out)), false), true));
+    doubledOutput = new PrintStream(new VTDoubledOutputStream(printStream, new PrintStream(new FileOutputStream(FileDescriptor.out)), false), true);
+    System.setOut(doubledOutput);
   }
 
   public void setSystemErr()
   {
     // System.setErr(printStream);
-    System.setErr(new PrintStream(new VTDoubledOutputStream(printStream, new PrintStream(new FileOutputStream(FileDescriptor.err)), false), true));
+    doubledError = new PrintStream(new VTDoubledOutputStream(printStream, new PrintStream(new FileOutputStream(FileDescriptor.err)), false), true);
+    System.setErr(doubledError);
   }
 
   public InputStream getSystemIn()
@@ -2165,11 +2169,19 @@ public class VTGraphicalConsole implements VTConsoleImplementation
 
   public PrintStream getSystemOut()
   {
+    if (doubledOutput != null)
+    {
+      return doubledOutput;
+    }
     return printStream;
   }
 
   public PrintStream getSystemErr()
   {
+    if (doubledError != null)
+    {
+      return doubledError;
+    }
     return printStream;
   }
 
@@ -2389,6 +2401,17 @@ public class VTGraphicalConsole implements VTConsoleImplementation
       logOutput = null;
     }
   }
+  
+  public static PrintStream getDoubledOutput()
+  {
+    return doubledOutput;
+  }
+  
+  public static PrintStream getDoubledError()
+  {
+    return doubledError;
+  }
+
 
   // public boolean isReadingLine()
   // {

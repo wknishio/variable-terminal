@@ -137,12 +137,27 @@ public class VTGraphicalConsoleReader
               }
               else
               {
-                VTGraphicalConsoleWriter.write(currentLineBuffer.toString());
+                if (VTGraphicalConsole.getDoubledOutput() != null)
+                {
+                  VTGraphicalConsole.getDoubledOutput().print(currentLineBuffer.toString());
+                }
+                else
+                {
+                  VTGraphicalConsoleWriter.write(currentLineBuffer.toString());
+                }
+                
               }
             }
-            VTGraphicalConsole.write('\n');
-            // VTGraphicalConsole.setCaretRecoilCount(0);
-            VTGraphicalConsole.flushBuffered(true);
+            
+            if (VTGraphicalConsole.getDoubledOutput() != null)
+            {
+              VTGraphicalConsole.getDoubledOutput().println();
+            }
+            else
+            {
+              VTGraphicalConsole.write('\n');
+              VTGraphicalConsole.flushBuffered(true);
+            }
             // VTGraphicalConsole.updateCaretPosition();
             break;
           }
@@ -185,10 +200,8 @@ public class VTGraphicalConsoleReader
                 // VTGraphicalConsole.write(currentLineBuffer.toString());
               }
               // VTGraphicalConsole.updateCaretPosition();
-
               // VTGraphicalConsole.increaseCaretRecoilCount();
             }
-
           }
           else if (character == VTGraphicalConsole.VT_VK_LEFT)
           {
@@ -367,7 +380,7 @@ public class VTGraphicalConsoleReader
                 }
                 else
                 {
-
+                  
                 }
               }
               if (VTGraphicalConsole.isReplaceActivated())
@@ -412,7 +425,7 @@ public class VTGraphicalConsoleReader
               }
               // VTGraphicalConsole.reduceCaretRecoilCount();
             }
-
+            
           }
         }
       }
@@ -588,11 +601,25 @@ public class VTGraphicalConsoleReader
       readingLine = false;
       if (echo)
       {
-        VTGraphicalConsoleWriter.write(currentLineBuffer.toString() + "\n");
+        if (VTGraphicalConsole.getDoubledOutput() != null)
+        {
+          VTGraphicalConsole.getDoubledOutput().println(currentLineBuffer.toString());
+        }
+        else
+        {
+          VTGraphicalConsoleWriter.write(currentLineBuffer.toString() + "\n");
+        }
       }
       else
       {
-        VTGraphicalConsoleWriter.write("\n");
+        if (VTGraphicalConsole.getDoubledOutput() != null)
+        {
+          VTGraphicalConsole.getDoubledOutput().println();
+        }
+        else
+        {
+          VTGraphicalConsoleWriter.write("\n");
+        }
       }
     }
     if (currentLineBuffer.toString().startsWith("\u001A"))
