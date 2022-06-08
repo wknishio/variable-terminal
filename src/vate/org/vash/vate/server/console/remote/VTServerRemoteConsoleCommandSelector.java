@@ -60,7 +60,7 @@ public class VTServerRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
       standardCommandProcessorClasses.add(VTVARIABLE.class);
       standardCommandProcessorClasses.add(VTZIP.class);
       //standardCommandProcessorClasses.add(VTURLGET.class);
-      //standardCommandProcessorClasses.add(VTECHO.class);
+      standardCommandProcessorClasses.add(VTECHO.class);
     }
     catch (Throwable t)
     {
@@ -81,7 +81,7 @@ public class VTServerRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
     }
     catch (Throwable t)
     {
-
+      
     }
   }
 

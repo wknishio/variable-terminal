@@ -55,6 +55,11 @@ public class VTShellProcess
     
   }
   
+  public VTRuntimeProcess getRuntimeProcess()
+  {
+    return shellProcess;
+  }
+  
   public void setRuntimeProcess(VTRuntimeProcess shellProcess)
   {
     this.shellProcess = shellProcess;

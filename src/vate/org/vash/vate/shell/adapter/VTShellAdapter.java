@@ -3,6 +3,7 @@ package org.vash.vate.shell.adapter;
 import java.io.File;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import org.vash.vate.nativeutils.VTNativeUtils;
@@ -103,7 +104,9 @@ public class VTShellAdapter
     {
       if (Platform.isWindows())
       {
-        if (System.getProperty("os.name").toUpperCase().startsWith("WINDOWS 95") || System.getProperty("os.name").toUpperCase().startsWith("WINDOWS 98"))
+        if (System.getProperty("os.name").toUpperCase().contains("WINDOWS 95")
+        || System.getProperty("os.name").toUpperCase().contains("WINDOWS 98")
+        || System.getProperty("os.name").toUpperCase().contains("WINDOWS ME"))
         {
           // almost impossible to enter here now
           this.shellBuilder = new ProcessBuilder("command.com", "/A", "/E:1900");
@@ -138,7 +141,7 @@ public class VTShellAdapter
       }
       else
       {
-        this.shellBuilder = new ProcessBuilder("/bin/sh", "-l", "-s");
+        this.shellBuilder = new ProcessBuilder("/bin/sh", "-i", "-l", "-s");
         this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
         this.shellEnvironment = this.shellBuilder.environment();
         if (this.shellEnvironment != null)
@@ -165,6 +168,43 @@ public class VTShellAdapter
       }
     }
     this.shellBuilder.redirectErrorStream(true);
+  }
+  
+  private void revertShellBuilder()
+  {
+    if (Platform.isWindows())
+    {
+//    if (supressEchoShell)
+//    {
+//      this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
+//    }
+//    else
+//    {
+//      this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
+//    }
+      //this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
+      this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
+      this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+      this.shellEnvironment = this.shellBuilder.environment();
+      if (this.shellEnvironment != null)
+      {
+        //this.shellEnvironment.remove("PROMPT");
+        //this.shellEnvironment.put("PROMPT", "# ");
+      }
+    }
+    else
+    {
+      this.shellBuilder = new ProcessBuilder("/bin/sh", "-i", "-l", "-s");
+      this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+      this.shellEnvironment = this.shellBuilder.environment();
+      if (this.shellEnvironment != null)
+      {
+        //this.shellEnvironment.remove("PS1");
+        //this.shellEnvironment.put("PS1", "'# '");
+        //this.shellEnvironment.remove("PROMPT");
+        //this.shellEnvironment.put("PROMPT", "'pwd'>");
+      }
+    }
   }
   
   public void stopShell()
@@ -257,6 +297,21 @@ public class VTShellAdapter
         catch (Throwable t)
         {
           //t.printStackTrace();
+          //try again with cmd.exe if cannot start old DOS command.com shell
+          List<String> failedCommand = commandBuilder.command();
+          boolean DOSCommandShellFailed = false;
+          for (String failedShell : failedCommand)
+          {
+            if (failedShell.toUpperCase().contains("COMMAND.COM"))
+            {
+              DOSCommandShellFailed = true;
+            }
+          }
+          if (DOSCommandShellFailed)
+          {
+            revertShellBuilder();
+            return startShell();
+          }
         }
       }
     }

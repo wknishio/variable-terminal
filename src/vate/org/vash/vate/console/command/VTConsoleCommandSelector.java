@@ -22,6 +22,18 @@ public class VTConsoleCommandSelector<T extends VTConsoleCommandProcessor>
   {
     return processors.add(command);
   }
+  
+  public synchronized boolean matchCommand(String command)
+  {
+    for (VTConsoleCommandProcessor processor : processors)
+    {
+      if (processor.match(command))
+      {
+        return true;
+      }
+    }
+    return false;
+  }
 
   public synchronized boolean selectCommand(String command, String[] parsed) throws Exception
   {

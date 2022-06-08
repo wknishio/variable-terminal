@@ -1882,6 +1882,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
           flush();
         }
       }
+      else
+      {
+        
+      }
     }
     else
     {
@@ -1896,6 +1900,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
           write("\n");
           flush();
         }
+      }
+      else
+      {
+        
       }
     }
     readingInput = false;

@@ -361,6 +361,18 @@ public class VTClientRemoteConsoleWriter extends VTTask
       {
         parsed = new String[] { "" };
       }
+      
+      if (!VTConsole.isCommandEcho())
+      {
+        if (command != null && command.length() > 0)
+        {
+          if (selector.matchCommand(parsed[0]))
+          {
+            VTConsole.println(command);
+          }
+        }
+      }
+      
       if (!selector.selectCommand(command, parsed))
       {
         connection.getCommandWriter().write(command + "\n");

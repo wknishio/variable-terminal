@@ -45,6 +45,11 @@ public class VTRuntimeProcess
     this.timeout = timeout;
   }
   
+  public ProcessBuilder getBuilder()
+  {
+    return builder;
+  }
+  
 //  private class VTRuntimeProcessKill implements Runnable
 //  {
 //    public void run()

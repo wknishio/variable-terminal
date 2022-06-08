@@ -41,7 +41,7 @@ public class VTClientRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
       standardCommandProcessorClasses.add(VTREAD.class);
       standardCommandProcessorClasses.add(VTLOG.class);
       standardCommandProcessorClasses.add(VTOUT.class);
-      // standardCommandProcessorClasses.add(VTECHO.class);
+      standardCommandProcessorClasses.add(VTECHO.class);
     }
     catch (Throwable t)
     {

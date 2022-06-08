@@ -14,17 +14,35 @@ public class VTECHO extends VTServerStandardRemoteConsoleCommandProcessor
 
   public void execute(String command, String[] parsed) throws Exception
   {
-    if (session.isEchoCommands())
+    int echoState = Integer.parseInt(parsed[1]);
+    session.setEchoState(echoState);
+    if (echoState == 1 || echoState == 3)
     {
-      session.setEchoCommands(false);
-      connection.getResultWriter().write("VT>Console command echo disabled\nVT>");
-      connection.getResultWriter().flush();
+      if (session.isEchoCommands())
+      {
+        session.setEchoCommands(false);
+        connection.getResultWriter().write("\nVT>Remote console command echo disabled\nVT>");
+        connection.getResultWriter().flush();
+      }
+      else
+      {
+        session.setEchoCommands(true);
+        connection.getResultWriter().write("\nVT>Remote console command echo enabled\nVT>");
+        connection.getResultWriter().flush();
+      }
     }
     else
     {
-      session.setEchoCommands(true);
-      connection.getResultWriter().write("VT>Console command echo enabled\nVT>");
-      connection.getResultWriter().flush();
+      if (echoState == 2)
+      {
+        connection.getResultWriter().write("\nVT>Local console command echo disabled\nVT>");
+        connection.getResultWriter().flush();
+      }
+      else
+      {
+        connection.getResultWriter().write("\nVT>Local console command echo enabled\nVT>");
+        connection.getResultWriter().flush();
+      }
     }
   }
 

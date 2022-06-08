@@ -55,6 +55,7 @@ public class VTServerSession
   //private volatile boolean runningAudio;
   
   private volatile boolean echoCommands;
+  private volatile int echoState;
   private volatile long sessionLocalNanoDelay;
   private volatile long sessionRemoteNanoDelay;
   
@@ -903,6 +904,16 @@ public class VTServerSession
   public void setEchoCommands(boolean echoCommands)
   {
     this.echoCommands = echoCommands;
+  }
+  
+  public int getEchoState()
+  {
+    return echoState;
+  }
+  
+  public void setEchoState(int echoState)
+  {
+    this.echoState = echoState;
   }
   
   public void setShellType(int shellType)

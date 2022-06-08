@@ -418,6 +418,7 @@ public class VTClientConnection
 
   public void closeSockets()
   {
+    VTConsole.setCommandEcho(true);
 //		StringBuilder message = new StringBuilder();
 //		message.append("\nVT>closeSockets!");
 //		message.append("\nVT>StackTrace: ");
