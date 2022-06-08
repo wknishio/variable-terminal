@@ -298,16 +298,16 @@ public class VTShellAdapter
         {
           //t.printStackTrace();
           //try again with cmd.exe if cannot start old DOS command.com shell
-          List<String> failedCommand = commandBuilder.command();
-          boolean DOSCommandShellFailed = false;
-          for (String failedShell : failedCommand)
+          List<String> commands = commandBuilder.command();
+          boolean dosLegacyShellFound = false;
+          for (String command : commands)
           {
-            if (failedShell.toUpperCase().contains("COMMAND.COM"))
+            if (command.toUpperCase().contains("COMMAND.COM"))
             {
-              DOSCommandShellFailed = true;
+              dosLegacyShellFound = true;
             }
           }
-          if (DOSCommandShellFailed)
+          if (dosLegacyShellFound)
           {
             revertShellBuilder();
             return startShell();
