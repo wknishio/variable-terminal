@@ -65,7 +65,6 @@ public class VTClientConnection
       VT_CLIENT_CHECK_STRING_ISAAC = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/ISAAC").getBytes("UTF-8");
       VT_SERVER_CHECK_STRING_GRAIN = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/GRAIN").getBytes("UTF-8");
       VT_CLIENT_CHECK_STRING_GRAIN = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/GRAIN").getBytes("UTF-8");
-
     }
     catch (UnsupportedEncodingException e)
     {

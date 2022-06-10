@@ -85,6 +85,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
   private AWTTerminal awtterminal;
   private VTLanternaOutputTextBox outputBox;
   private VTLanternaOutputTextBox inputBox;
+  private static final int consoleOutputColumns = 80;
+  private static final int consoleOutputLines = 24;
+  private static final int consoleInputColumns = 80;
+  private static final int consoleInputLines = 1;
+  private static final int consoleOutputLinesMaxSize = consoleOutputLines * 32;
   private static final int commandHistoryMaxSize = 100;
   private List<String> commandHistory = new LinkedList<String>();
   private volatile int commandHistoryPosition;
@@ -595,7 +600,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     factory.setForceAWTOverSwing(true);
     // factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
     factory.setMouseCaptureMode(MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE);
-    factory.setInitialTerminalSize(new TerminalSize(80, 25));
+    factory.setInitialTerminalSize(new TerminalSize(consoleOutputColumns, consoleOutputLines + consoleInputLines));
     // factory.setTerminalEmulatorDeviceConfiguration(deviceConfiguration)
     factory.setAutoOpenTerminalEmulatorWindow(false);
     if (graphical)
@@ -611,8 +616,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
     // factory.setForceTextTerminal(true);
     terminal = factory.createTerminal();
     
-    outputBox = new VTLanternaOutputTextBox(new TerminalSize(80, 24), "", Style.MULTI_LINE, 384);
-    inputBox = new VTLanternaOutputTextBox(new TerminalSize(80, 1), "", Style.SINGLE_LINE, 1);
+    outputBox = new VTLanternaOutputTextBox(new TerminalSize(consoleOutputColumns, consoleOutputLines), "", Style.MULTI_LINE, consoleOutputLinesMaxSize);
+    inputBox = new VTLanternaOutputTextBox(new TerminalSize(consoleInputColumns, consoleInputLines), "", Style.SINGLE_LINE, consoleInputLines);
     
     outputBox.setTerminal(terminal);
     inputBox.setTerminal(terminal);
