@@ -5,12 +5,11 @@ import java.util.regex.Pattern;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TerminalTextUtils;
-import com.googlecode.lanterna.gui2.TextBoxModified;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.Terminal;
 
-public class VTLanternaOutputTextBox extends TextBoxModified
+public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
 {
   private volatile int maximumLines = 0;
   private int hiddenColumn = 0;
@@ -408,18 +407,18 @@ public class VTLanternaOutputTextBox extends TextBoxModified
   
   /**
    * Moves the text caret position to a new position in the
-   * {@link TextBoxModified}. For single-line {@link TextBoxModified}:es, the line
+   * {@link VTLanternaTextBoxModified}. For single-line {@link VTLanternaTextBoxModified}:es, the line
    * component is not used. If one of the positions are out of bounds, it is
    * automatically set back into range.
    * 
-   * @param line   Which line inside the {@link TextBoxModified} to move the caret
+   * @param line   Which line inside the {@link VTLanternaTextBoxModified} to move the caret
    *               to (0 being the first line), ignored if the
-   *               {@link TextBoxModified} is single-line
+   *               {@link VTLanternaTextBoxModified} is single-line
    * @param column What column on the specified line to move the text caret to (0
    *               being the first column)
    * @return Itself
    */
-  public synchronized TextBoxModified setCaretPosition(int line, int column)
+  public synchronized VTLanternaTextBoxModified setCaretPosition(int line, int column)
   {
     if (line < 0)
     {
@@ -1085,11 +1084,12 @@ public class VTLanternaOutputTextBox extends TextBoxModified
     }
   }
   
-  private void removeLastLine()
+  private void removeFirstLine()
   {
     if (getLineCount() >= 1)
     {
-      String removed = lines.remove(0);
+      String first = lines.remove(0);
+      
       TerminalPosition selectionStart = getSelectionStartPosition();
       TerminalPosition selectionEnd = getSelectionEndPosition();
       if (selectionStart != null)
@@ -1120,7 +1120,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
           selectionEnd = null;
         }
       }
-      if (removed.length() >= longestRow)
+      if (first.length() >= longestRow)
       {
         longestRow = 80;
 //				try
@@ -1158,13 +1158,13 @@ public class VTLanternaOutputTextBox extends TextBoxModified
     lines.set(lines.size() - 1, line);
   }
   
-  public synchronized TextBoxModified addLine(String line)
+  public synchronized VTLanternaTextBoxModified addLine(String line)
   {
     //System.out.println("addLine:[" + line + "]");
     //System.out.println("getLastLine:[" + getLastLine() + "]");
     if (getLineCount() > 0 && maximumLines > 0 && getLineCount() == maximumLines)
     {
-      removeLastLine();
+      removeFirstLine();
     }
     carriageColumn = -1;
     if (lines.size() == 1 && lines.get(0).length() == 0)
@@ -1175,7 +1175,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
     
     //line = line.replace('\t', ' ');
     
-    TextBoxModified result = putLine(line);
+    VTLanternaTextBoxModified result = putLine(line);
     if (getLineCount() > 1)
     {
       setCaretPosition(getLineCount(), 0);
@@ -1184,7 +1184,7 @@ public class VTLanternaOutputTextBox extends TextBoxModified
     return result;
   }
   
-  public synchronized TextBoxModified putLine(String line)
+  public synchronized VTLanternaTextBoxModified putLine(String line)
   {
     StringBuilder bob = new StringBuilder();
     for (int i = 0; i < line.length(); i++)

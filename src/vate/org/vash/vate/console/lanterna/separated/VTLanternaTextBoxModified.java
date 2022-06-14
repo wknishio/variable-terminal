@@ -16,13 +16,20 @@
  * 
  * Copyright (C) 2010-2020 Martin Berglund
  */
-package com.googlecode.lanterna.gui2;
+package org.vash.vate.console.lanterna.separated;
 
 import com.googlecode.lanterna.TerminalTextUtils;
 import com.googlecode.lanterna.SGR;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.graphics.ThemeDefinition;
+import com.googlecode.lanterna.gui2.AbstractInteractableComponent;
+import com.googlecode.lanterna.gui2.Direction;
+import com.googlecode.lanterna.gui2.Interactable;
+import com.googlecode.lanterna.gui2.InteractableRenderer;
+import com.googlecode.lanterna.gui2.ScrollBar;
+import com.googlecode.lanterna.gui2.TextGUIGraphics;
+import com.googlecode.lanterna.gui2.Interactable.Result;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import java.awt.Adjustable;
@@ -41,7 +48,7 @@ import java.util.regex.Pattern;
  * Size-wise, a {@code TextBox} should be hard-coded to a particular size, it's not good at guessing how large it should
  * be. You can do this through the constructor.
  */
-public class TextBoxModified extends AbstractInteractableComponent<TextBoxModified> {
+public class VTLanternaTextBoxModified extends AbstractInteractableComponent<VTLanternaTextBoxModified> {
 
     /**
      * Enum value to force a {@code TextBox} to be either single line or multi line. This is usually auto-detected if
@@ -80,7 +87,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
      * @param initialContent Initial content of the {@code TextBox}
      * @param style Style to use for this {@code TextBox}, instead of auto-detecting
      */
-    public TextBoxModified(TerminalSize preferredSize, String initialContent, Style style) {
+    public VTLanternaTextBoxModified(TerminalSize preferredSize, String initialContent, Style style) {
         this.lines = new ArrayList<String>();
         this.style = style;
         this.readOnly = false;
@@ -336,7 +343,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
      * @param validationPattern Pattern to validate the lines in this TextBox against, or {@code null} to disable
      * @return itself
      */
-    public synchronized TextBoxModified setValidationPattern(Pattern validationPattern) {
+    public synchronized VTLanternaTextBoxModified setValidationPattern(Pattern validationPattern) {
         if(validationPattern != null) {
             for(String line: lines) {
                 if(!validated(line)) {
@@ -353,7 +360,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
      * @param text New text to assign to the {@code TextBox}
      * @return Itself
      */
-    public synchronized TextBoxModified setText(String text) {
+    public synchronized VTLanternaTextBoxModified setText(String text) {
         //String[] split = text.split("[\\n\\u000b]", -1);
         //text = text.replace('\u000b', '\n');
         String[] split = text.split("\n");
@@ -385,7 +392,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
      * @param line Line to add at the end of the content in this {@code TextBox}
      * @return Itself
      */
-    public synchronized TextBoxModified addLine(String line) {
+    public synchronized VTLanternaTextBoxModified addLine(String line) {
         StringBuilder bob = new StringBuilder();
         for(int i = 0; i < line.length(); i++) {
             char c = line.charAt(i);
@@ -427,7 +434,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
      * @param caretWarp Whether the caret will warp at the beginning/end of lines
      * @return Itself
      */
-    public TextBoxModified setCaretWarp(boolean caretWarp) {
+    public VTLanternaTextBoxModified setCaretWarp(boolean caretWarp) {
         this.caretWarp = caretWarp;
         return this;
     }
@@ -450,26 +457,26 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
     }
 
     /**
-     * Moves the text caret position horizontally to a new position in the {@link TextBoxModified}. For multi-line
-     * {@link TextBoxModified}:es, this will move the cursor within the current line. If the position is out of bounds, it is
+     * Moves the text caret position horizontally to a new position in the {@link VTLanternaTextBoxModified}. For multi-line
+     * {@link VTLanternaTextBoxModified}:es, this will move the cursor within the current line. If the position is out of bounds, it is
      * automatically set back into range.
-     * @param column Position, in characters, within the {@link TextBoxModified} (on the current line for multi-line
-     * {@link TextBoxModified}:es) to where the text cursor should be moved
+     * @param column Position, in characters, within the {@link VTLanternaTextBoxModified} (on the current line for multi-line
+     * {@link VTLanternaTextBoxModified}:es) to where the text cursor should be moved
      * @return Itself
      */
-    public synchronized TextBoxModified setCaretPosition(int column) {
+    public synchronized VTLanternaTextBoxModified setCaretPosition(int column) {
         return setCaretPosition(getCaretPosition().getRow(), column);
     }
 
     /**
-     * Moves the text caret position to a new position in the {@link TextBoxModified}. For single-line {@link TextBoxModified}:es, the
+     * Moves the text caret position to a new position in the {@link VTLanternaTextBoxModified}. For single-line {@link VTLanternaTextBoxModified}:es, the
      * line component is not used. If one of the positions are out of bounds, it is automatically set back into range.
-     * @param line Which line inside the {@link TextBoxModified} to move the caret to (0 being the first line), ignored if the
-     *             {@link TextBoxModified} is single-line
+     * @param line Which line inside the {@link VTLanternaTextBoxModified} to move the caret to (0 being the first line), ignored if the
+     *             {@link VTLanternaTextBoxModified} is single-line
      * @param column  What column on the specified line to move the text caret to (0 being the first column)
      * @return Itself
      */
-    public synchronized TextBoxModified setCaretPosition(int line, int column) {
+    public synchronized VTLanternaTextBoxModified setCaretPosition(int line, int column) {
         if(line < 0) {
             line = 0;
         }
@@ -531,7 +538,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
      * @param mask New text mask or {@code null} if there is no mask
      * @return Itself
      */
-    public TextBoxModified setMask(Character mask) {
+    public VTLanternaTextBoxModified setMask(Character mask) {
         if(mask != null && TerminalTextUtils.isCharCJK(mask)) {
             throw new IllegalArgumentException("Cannot use a CJK character as a mask");
         }
@@ -555,7 +562,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
      * @param readOnly If {@code true} then the {@code TextBox} will switch to read-only mode
      * @return Itself
      */
-    public TextBoxModified setReadOnly(boolean readOnly) {
+    public VTLanternaTextBoxModified setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
         invalidate();
         return this;
@@ -580,7 +587,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
      * @param verticalFocusSwitching If called with true, vertical focus switching will be enabled
      * @return Itself
      */
-    public TextBoxModified setVerticalFocusSwitching(boolean verticalFocusSwitching) {
+    public VTLanternaTextBoxModified setVerticalFocusSwitching(boolean verticalFocusSwitching) {
         this.verticalFocusSwitching = verticalFocusSwitching;
         return this;
     }
@@ -602,7 +609,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
      * @param horizontalFocusSwitching If called with true, horizontal focus switching will be enabled
      * @return Itself
      */
-    public TextBoxModified setHorizontalFocusSwitching(boolean horizontalFocusSwitching) {
+    public VTLanternaTextBoxModified setHorizontalFocusSwitching(boolean horizontalFocusSwitching) {
         this.horizontalFocusSwitching = horizontalFocusSwitching;
         return this;
     }
@@ -857,7 +864,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
 	/**
      * Helper interface that doesn't add any new methods but makes coding new text box renderers a little bit more clear
      */
-    public interface TextBoxRenderer extends InteractableRenderer<TextBoxModified> {
+    public interface TextBoxRenderer extends InteractableRenderer<VTLanternaTextBoxModified> {
         TerminalPosition getViewTopLeft();
         void setViewTopLeft(TerminalPosition position);
         void setVerticalAdjustable(Adjustable adjustable);
@@ -907,7 +914,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
         /**
          * Sets the character to represent an empty untyped space in the text box. This will be an empty space by
          * default but you can override it to anything that isn't double-width.
-         * @param unusedSpaceCharacter Character to draw in unused space of the {@link TextBoxModified}
+         * @param unusedSpaceCharacter Character to draw in unused space of the {@link VTLanternaTextBoxModified}
          * @throws IllegalArgumentException If unusedSpaceCharacter is a double-width character
          */
         public void setUnusedSpaceCharacter(char unusedSpaceCharacter) {
@@ -934,7 +941,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
         }
 
         
-        public TerminalPosition getCursorLocation(TextBoxModified component) {
+        public TerminalPosition getCursorLocation(VTLanternaTextBoxModified component) {
             if(component.isReadOnly()) {
                 return null;
             }
@@ -961,7 +968,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
             }
         }
         
-        public TerminalPosition getSelectionStartLocation(TextBoxModified component) {
+        public TerminalPosition getSelectionStartLocation(VTLanternaTextBoxModified component) {
             if(!component.selectingText()) {
                 return null;
             }
@@ -972,7 +979,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
             .withRelativeRow(-viewTopLeft.getRow());
         }
         
-        public TerminalPosition getSelectionEndLocation(TextBoxModified component) {
+        public TerminalPosition getSelectionEndLocation(VTLanternaTextBoxModified component) {
             if(!component.selectingText()) {
                 return null;
             }
@@ -983,7 +990,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
             .withRelativeRow(-viewTopLeft.getRow());
         }
         
-        public TerminalSize getPreferredSize(TextBoxModified component) {
+        public TerminalSize getPreferredSize(VTLanternaTextBoxModified component) {
             return new TerminalSize(component.longestRow, component.lines.size());
         }
 
@@ -998,7 +1005,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
         }
 
         
-        public void drawComponent(TextGUIGraphics graphics, TextBoxModified component) {
+        public void drawComponent(TextGUIGraphics graphics, VTLanternaTextBoxModified component) {
             TerminalSize realTextArea = graphics.getSize();
             if(realTextArea.getRows() == 0 || realTextArea.getColumns() == 0) {
                 return;
@@ -1060,7 +1067,7 @@ public class TextBoxModified extends AbstractInteractableComponent<TextBoxModifi
             }
         }
 
-        private void drawTextArea(TextGUIGraphics graphics, TextBoxModified component) {
+        private void drawTextArea(TextGUIGraphics graphics, VTLanternaTextBoxModified component) {
             TerminalSize textAreaSize = graphics.getSize();
             if(viewTopLeft.getColumn() + textAreaSize.getColumns() > component.longestRow) {
                 viewTopLeft = viewTopLeft.withColumn(component.longestRow - textAreaSize.getColumns());
