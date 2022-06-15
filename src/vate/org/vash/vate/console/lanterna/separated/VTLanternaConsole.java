@@ -91,10 +91,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
   private static final int consoleInputLines = 1;
   private static final int consoleOutputLinesMaxSize = consoleOutputLines * 40;
   private static final int commandHistoryMaxSize = 100;
-  private List<String> commandHistory = new LinkedList<String>();
+  private final List<String> commandHistory = new LinkedList<String>();
   private volatile int commandHistoryPosition;
-  private List<String> inputLineBuffer = new LinkedList<String>();
-  private StringBuilder currentLineBuffer = new StringBuilder("");
+  private final List<String> inputLineBuffer = new LinkedList<String>();
+  private final StringBuilder currentLineBuffer = new StringBuilder("");
   private volatile Thread currentThread;
   // private volatile boolean readingLine = false;
   private volatile boolean echoInput = true;
@@ -107,8 +107,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
   //private volatile boolean interruptedReadLine = false;
   // private volatile boolean selectingText = false;
   // private volatile int caretRecoilCount = 0;
-  private StringBuilder inputBuffer = new StringBuilder();
-  private StringBuilder outputBuffer = new StringBuilder();
+  private final StringBuilder inputBuffer = new StringBuilder();
+  private final StringBuilder outputBuffer = new StringBuilder();
   private final Object inputSynchronizer = new Object();
   private final Object outputSynchronizer = new Object();
   // private final Object updateSynchronizer = new Object();
@@ -1417,11 +1417,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
     gui = new MultiWindowTextGUI(screen, new DefaultWindowManager(), new EmptySpace(TextColor.ANSI.BLACK));
 
     Properties inputproperties = new Properties();
-    inputproperties.load(this.getClass().getResourceAsStream("/input-theme.properties"));
+    inputproperties.load(this.getClass().getResourceAsStream("/vtlanternaconsole-input-theme.properties"));
     PropertyTheme inputtheme = new PropertyTheme(inputproperties);
 
     Properties outputproperties = new Properties();
-    outputproperties.load(this.getClass().getResourceAsStream("/output-theme.properties"));
+    outputproperties.load(this.getClass().getResourceAsStream("/vtlanternaconsole-output-theme.properties"));
     PropertyTheme outputtheme = new PropertyTheme(outputproperties);
 
     inputBox.setTheme(inputtheme);
