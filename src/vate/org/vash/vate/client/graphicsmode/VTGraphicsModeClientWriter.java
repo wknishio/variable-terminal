@@ -1983,7 +1983,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       }
       VTGlobalTextStyleManager.registerWindow(frame);
 
-      frame.setTitle("Variable-Terminal Client " + VT.VT_VERSION + " - Remote Graphics Link");
+      frame.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Client - Remote Graphics Link");
       frame.setFocusable(false);
       //frame.getInsets().set(0, 0, 0, 0);
       BorderLayout frameLayout = new BorderLayout();

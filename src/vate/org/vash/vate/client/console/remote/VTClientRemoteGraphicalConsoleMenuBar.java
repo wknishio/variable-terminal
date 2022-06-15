@@ -69,8 +69,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     removeAllMenus();
     // this.dialog = dialog;
     // this.frame = frame;
-    final VTFileDialog loadFileDialog = new VTFileDialog(VTConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Load File", FileDialog.LOAD);
-    final VTFileDialog saveFileDialog = new VTFileDialog(VTConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Save File", FileDialog.SAVE);
+    final VTFileDialog loadFileDialog = new VTFileDialog(VTConsole.getFrame(), "Variable-Terminal " + VT.VT_VERSION + " - Client - Load File", FileDialog.LOAD);
+    final VTFileDialog saveFileDialog = new VTFileDialog(VTConsole.getFrame(), "Variable-Terminal " + VT.VT_VERSION + " - Client - Save File", FileDialog.SAVE);
     clientConsoleCommandsMenu = new Menu("Command");
     // clientConsoleCommandsMenu.setShortcut(new MenuShortcut(KeyEvent.VK_C, true));
 

@@ -51,7 +51,7 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
               }
             }
           }
-          session.getServer().displayTrayIconMessage("Variable-Terminal Server", "[" + parsed[1] + "]");
+          session.getServer().displayTrayIconMessage("Variable-Terminal - Server", "[" + parsed[1] + "]");
           VTConsole.print("\u0007\rVT>Message from client: [" + parsed[1] + "]\nVT>");
           // VTConsole.bell();
           connection.getResultWriter().write("\nVT>Message received by server!\nVT>");
@@ -87,7 +87,7 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
               }
             }
           }
-          session.getServer().displayTrayIconMessage("Variable-Terminal Server", "[]");
+          session.getServer().displayTrayIconMessage("Variable-Terminal - Server", "[]");
           VTConsole.print("\u0007\rVT>Message from client: []\nVT>");
           // VTConsole.bell();
           connection.getResultWriter().write("\nVT>Message received by server!\nVT>");
@@ -132,7 +132,7 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
               }
             }
           }
-          session.getServer().displayTrayIconMessage("Variable-Terminal Server", "[" + command.substring(8) + "]");
+          session.getServer().displayTrayIconMessage("Variable-Terminal - Server", "[" + command.substring(8) + "]");
           VTConsole.print("\u0007\rVT>Message from client: [" + command.substring(8) + "]\nVT>");
           // VTConsole.bell();
           connection.getResultWriter().write("\nVT>Message received by server!\nVT>");
@@ -169,7 +169,7 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
               }
             }
           }
-          session.getServer().displayTrayIconMessage("Variable-Terminal Server", "[" + command.substring(6) + "]");
+          session.getServer().displayTrayIconMessage("Variable-Terminal - Server", "[" + command.substring(6) + "]");
           VTConsole.print("\u0007\rVT>Message from client: [" + command.substring(6) + "]\nVT>");
           // VTConsole.bell();
           connection.getResultWriter().write("\nVT>Message received by server!\nVT>");
@@ -205,7 +205,7 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
               }
             }
           }
-          session.getServer().displayTrayIconMessage("Variable-Terminal Server", "[]");
+          session.getServer().displayTrayIconMessage("Variable-Terminal - Server", "[]");
           VTConsole.print("\u0007\rVT>Message from client: []\nVT>");
           // VTConsole.bell();
           connection.getResultWriter().write("\nVT>Message received by server!\nVT>");

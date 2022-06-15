@@ -1917,15 +1917,15 @@ public class VTClient implements Runnable
     if (!VTConsole.isDaemon() && VTConsole.isGraphical())
     {
       VTConsole.initialize();
-      VTConsole.setTitle("Variable-Terminal Client " + VT.VT_VERSION + " - Console");
-      connectionDialog = new VTClientConfigurationDialog(VTConsole.getFrame(), "Variable-Terminal Client " + VT.VT_VERSION + " - Connection", true, this);
+      VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Client - Console");
+      connectionDialog = new VTClientConfigurationDialog(VTConsole.getFrame(), "Variable-Terminal " + VT.VT_VERSION + " - Client - Connection", true, this);
       inputMenuBar = new VTClientRemoteGraphicalConsoleMenuBar(connectionDialog);
       VTConsole.getFrame().setMenuBar(inputMenuBar);
       VTConsole.getFrame().pack();
 //      try
 //      {
 //        trayIconInterface = new VTTrayIconInterface();
-//        trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal Client");
+//        trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal - Client");
 //      }
 //      catch (Throwable t)
 //      {
@@ -1942,7 +1942,7 @@ public class VTClient implements Runnable
 //				connectionDialog = new VTClientConnectionDialog(invisible, "Variable-Terminal Client " + VT.VT_VERSION + " - Connection", false, this);
 //			}
       VTConsole.initialize();
-      VTConsole.setTitle("Variable-Terminal Client " + VT.VT_VERSION + " - Console");
+      VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Client - Console");
     }
     VTConsole.clear();
     if (vtURL != null)
@@ -1953,7 +1953,7 @@ public class VTClient implements Runnable
     {
       // System.setProperty("java.library.path", "lib/native");
     }
-    VTConsole.print("VT>Variable-Terminal Client " + VT.VT_VERSION + "\n" + 
+    VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Client\n" + 
     "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + 
     "VT>This software is under MIT license, see license.txt!\n" + 
     "VT>This software comes with no warranty, use at your own risk!\n");
@@ -2064,7 +2064,7 @@ public class VTClient implements Runnable
 //  {
 //    if (trayIconInterface != null)
 //    {
-//      trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal Client");
+//      trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal - Client");
 //    }
 //  }
 //

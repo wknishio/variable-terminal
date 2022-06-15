@@ -87,8 +87,8 @@ public class VTClientConfigurationDialog extends Dialog
     // super(title, gc);
     this.owner = owner;
     this.application = application;
-    final VTFileDialog loadFileDialog = new VTFileDialog(this, "Variable-Terminal Client " + VT.VT_VERSION + " - Load File", FileDialog.LOAD);
-    final VTFileDialog saveFileDialog = new VTFileDialog(this, "Variable-Terminal Client " + VT.VT_VERSION + " - Save File", FileDialog.SAVE);
+    final VTFileDialog loadFileDialog = new VTFileDialog(this, "Variable-Terminal " + VT.VT_VERSION + " - Client - Load File", FileDialog.LOAD);
+    final VTFileDialog saveFileDialog = new VTFileDialog(this, "Variable-Terminal " + VT.VT_VERSION + " - Client - Save File", FileDialog.SAVE);
     VTGlobalTextStyleManager.registerWindow(loadFileDialog);
     VTGlobalTextStyleManager.registerWindow(saveFileDialog);
     

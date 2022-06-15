@@ -463,7 +463,7 @@ public class VTServer implements Runnable
   {
     if (trayIconInterface != null)
     {
-      trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal Server");
+      trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal - Server");
     }
   }
 
@@ -2065,17 +2065,17 @@ public class VTServer implements Runnable
     if (!VTConsole.isDaemon() && VTConsole.isGraphical())
     {
       VTConsole.initialize();
-      VTConsole.setTitle("Variable-Terminal Server " + VT.VT_VERSION + " - Console");
+      VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Server - Console");
       if (!VTConsole.isDaemon() && !daemon)
       {
-        connectionDialog = new VTServerSettingsDialog(VTConsole.getFrame(), "Variable-Terminal Server " + VT.VT_VERSION + " - Connection", true, this);
+        connectionDialog = new VTServerSettingsDialog(VTConsole.getFrame(), "Variable-Terminal " + VT.VT_VERSION + " - Server - Connection", true, this);
         inputMenuBar = new VTServerLocalGraphicalConsoleMenuBar(connectionDialog);
         VTConsole.getFrame().setMenuBar(inputMenuBar);
         VTConsole.getFrame().pack();
         try
         {
           trayIconInterface = new VTTrayIconInterface();
-          trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal Server");
+          trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal - Server");
         }
         catch (Throwable t)
         {
@@ -2093,10 +2093,10 @@ public class VTServer implements Runnable
 //				connectionDialog = new VTServerConnectionDialog(invisible, "Variable-Terminal Server " + VT.VT_VERSION + " - Connection", false, this);
 //			}
       VTConsole.initialize();
-      VTConsole.setTitle("Variable-Terminal Server " + VT.VT_VERSION + " - Console");
+      VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Server - Console");
     }
     VTConsole.clear();
-    VTConsole.print("VT>Variable-Terminal Server " + VT.VT_VERSION + "\n" + 
+    VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Server\n" + 
     "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + 
     "VT>This software is under MIT license, see license.txt!\n" + 
     "VT>This software comes with no warranty, use at your own risk!\n");

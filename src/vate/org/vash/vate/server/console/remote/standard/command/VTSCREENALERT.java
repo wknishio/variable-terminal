@@ -29,8 +29,8 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
         // StringEscapeUtils.unescapeJava(splitCommand[1]);
 //				if (parsed[1].indexOf('/') < 0)
 //				{
-//					VTGraphicsMessager.showAlert(VTConsole.getFrame(), "Variable-Terminal Server", parsed[1]);
-//					session.getServer().displayTrayIconMessage("Variable-Terminal Server", "["+ parsed[1] + "]");
+//					VTGraphicsMessager.showAlert(VTConsole.getFrame(), "Variable-Terminal - Server", parsed[1]);
+//					session.getServer().displayTrayIconMessage("Variable-Terminal - Server", "["+ parsed[1] + "]");
 //				}
 //				else
 //				{
@@ -39,8 +39,8 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
 //					VTGraphicsMessager.showAlert(VTConsole.getFrame(), title, message);
 //					session.getServer().displayTrayIconMessage(title, "[" + message + "]");
 //				}
-        VTGraphicsMessager.showAlert(VTConsole.getFrame(), "Variable-Terminal Server", alert);
-        session.getServer().displayTrayIconMessage("Variable-Terminal Server", "[" + alert + "]");
+        VTGraphicsMessager.showAlert(VTConsole.getFrame(), "Variable-Terminal - Server", alert);
+        session.getServer().displayTrayIconMessage("Variable-Terminal - Server", "[" + alert + "]");
         connection.getResultWriter().write("\nVT>Graphical alert sent to server!\nVT>");
         connection.getResultWriter().flush();
       }
@@ -63,8 +63,8 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
             }
 //						if (parsed[1].indexOf('/') < 0)
 //						{
-//							VTGraphicsMessager.showAlert(devices[number], VTConsole.getFrame(), "Variable-Terminal Server", parsed[1]);
-//							session.getServer().displayTrayIconMessage("Variable-Terminal Server", "[" + parsed[1] + "]");
+//							VTGraphicsMessager.showAlert(devices[number], VTConsole.getFrame(), "Variable-Terminal - Server", parsed[1]);
+//							session.getServer().displayTrayIconMessage("Variable-Terminal - Server", "[" + parsed[1] + "]");
 //						}
 //						else
 //						{
@@ -73,8 +73,8 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
 //							VTGraphicsMessager.showAlert(devices[number], VTConsole.getFrame(), title, message);
 //							session.getServer().displayTrayIconMessage(title, "[" + message + "]");
 //						}
-            VTGraphicsMessager.showAlert(devices[number], VTConsole.getFrame(), "Variable-Terminal Server", alert);
-            session.getServer().displayTrayIconMessage("Variable-Terminal Server", "[" + alert + "]");
+            VTGraphicsMessager.showAlert(devices[number], VTConsole.getFrame(), "Variable-Terminal - Server", alert);
+            session.getServer().displayTrayIconMessage("Variable-Terminal - Server", "[" + alert + "]");
             connection.getResultWriter().write("\nVT>Graphical alert sent to server!\nVT>");
             connection.getResultWriter().flush();
           }
@@ -115,8 +115,8 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
             }
   //					if (parsed[1].indexOf('/') < 0)
   //					{
-  //						VTGraphicsMessager.showAlert(devices[number], VTConsole.getFrame(), "Variable-Terminal Server", parsed[1]);
-  //						session.getServer().displayTrayIconMessage("Variable-Terminal Server", "[" + parsed[1] + "]");
+  //						VTGraphicsMessager.showAlert(devices[number], VTConsole.getFrame(), "Variable-Terminal - Server", parsed[1]);
+  //						session.getServer().displayTrayIconMessage("Variable-Terminal - Server", "[" + parsed[1] + "]");
   //					}
   //					else
   //					{
