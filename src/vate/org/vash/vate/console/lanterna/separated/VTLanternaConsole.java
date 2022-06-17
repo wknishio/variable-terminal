@@ -128,7 +128,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
   private VTConsoleBooleanToggleNotify notifyFlushInterrupted;
   private VTConsoleBooleanToggleNotify notifyReplaceInput;
   private PrintStream logOutput = null;
-  private BufferedWriter readLineLog = null;
+  private BufferedWriter logReadLine = null;
   
   private PrintStream doubledOutput;
   private PrintStream doubledError;
@@ -2437,17 +2437,17 @@ public class VTLanternaConsole implements VTConsoleImplementation
     {
       try
       {
-        readLineLog = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path, true), "UTF-8"));
+        logReadLine = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path, true), "UTF-8"));
         return true;
       }
       catch (Throwable t)
       {
-        closeReadLineLog();
+        closeLogReadLine();
       }
     }
     else
     {
-      closeReadLineLog();
+      closeLogReadLine();
       return true;
     }
     return false;
@@ -2459,33 +2459,33 @@ public class VTLanternaConsole implements VTConsoleImplementation
     {
       return;
     }
-    if (readLineLog != null)
+    if (logReadLine != null)
     {
       try
       {
-        readLineLog.write(line + "\r\n");
-        readLineLog.flush();
+        logReadLine.write(line + "\r\n");
+        logReadLine.flush();
       }
       catch (Throwable t)
       {
-        closeReadLineLog();
+        closeLogReadLine();
       }
     }
   }
   
-  private void closeReadLineLog()
+  private void closeLogReadLine()
   {
-    if (readLineLog != null)
+    if (logReadLine != null)
     {
       try
       {
-        readLineLog.close();
+        logReadLine.close();
       }
       catch (Throwable e)
       {
         
       }
-      readLineLog = null;
+      logReadLine = null;
     }
   }
   
