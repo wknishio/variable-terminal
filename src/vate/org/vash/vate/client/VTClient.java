@@ -1822,7 +1822,7 @@ public class VTClient implements Runnable
         parameterValue = parameters[++i];
         encryptionType = parameterValue;
       }
-      if (parameterName.contains("-ES"))
+      if (parameterName.contains("-EK"))
       {
         parameterValue = parameters[++i];
         encryptionKey = parameterValue.getBytes("UTF-8");
@@ -1870,7 +1870,7 @@ public class VTClient implements Runnable
         parameterValue = parameters[++i];
         proxyUser = parameterValue;
       }
-      if (parameterName.contains("-PS"))
+      if (parameterName.contains("-PK"))
       {
         parameterValue = parameters[++i];
         proxyPassword = parameterValue;
@@ -1890,7 +1890,7 @@ public class VTClient implements Runnable
         parameterValue = parameters[++i];
         sessionUser = parameterValue;
       }
-      if (parameterName.contains("-SS"))
+      if (parameterName.contains("-SK"))
       {
         parameterValue = parameters[++i];
         sessionPassword = parameterValue;

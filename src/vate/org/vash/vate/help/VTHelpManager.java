@@ -33,11 +33,11 @@ public class VTHelpManager
     ("\n-PP: proxy port, default 1080 for SOCKS or 8080 for HTTP") + 
     ("\n-PA: proxy authentication, default disabled(D), enabled(E)") + 
     ("\n-PU: proxy user, default null") + 
-    ("\n-PS: proxy password, default null") + 
+    ("\n-PK: proxy password, default null") + 
     ("\n-ET: encryption type, none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)") + 
-    ("\n-ES: encryption password, default null") + 
+    ("\n-EK: encryption password, default null") + 
     ("\n-SU: session user, default null") + 
-    ("\n-SS: session password, default null") +
+    ("\n-SK: session password, default null") +
     ("\n-SL: session limit, default 0, only in server") + 
     ("\n-SC: session commands, separated by \"*;\", default null, only in client") + 
     ("\n-SF: session files, separated by \";\", default null, only in client");
