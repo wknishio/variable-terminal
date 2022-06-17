@@ -109,6 +109,8 @@ public class VTServerSession
 
   public void initialize()
   {
+    this.setEchoState(0);
+    this.setEchoCommands(false);
     this.shellAdapter.setShellEncoding(null);
     this.threads = Executors.newCachedThreadPool(new ThreadFactory()
     {

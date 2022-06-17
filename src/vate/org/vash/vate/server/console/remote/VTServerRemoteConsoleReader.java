@@ -199,7 +199,7 @@ public class VTServerRemoteConsoleReader extends VTTask
     
     if (session.isEchoCommands())
     {
-      if (command != null)
+      if (command != null && !command.toUpperCase().startsWith("*VTECHO"))
       {
         connection.getResultWriter().write(command + "\n");
         connection.getResultWriter().flush();
@@ -207,11 +207,9 @@ public class VTServerRemoteConsoleReader extends VTTask
     }
     else
     {
-      
-      if (command != null)
+      if (command != null && !command.toUpperCase().startsWith("*VTECHO"))
       {
-        if (session.getEchoState() == 2
-        || session.getEchoState() == 3)
+        if (session.getEchoState() == 1)
         {
           if (selector.matchCommand(parsed[0]))
           {
@@ -224,7 +222,6 @@ public class VTServerRemoteConsoleReader extends VTTask
           }
         }
       }
-      
     }
     
     if (!selector.selectCommand(command, parsed))
