@@ -1913,7 +1913,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     }
     readingInput = false;
     currentThread = null;
-    logReadLine(data);
+    writeLogReadLine(data);
     return data;
   }
 
@@ -2022,7 +2022,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
           outputBox.output(data);
           if (logOutput != null)
           {
-            logOutput(data);
+            writeLogOutput(data);
           }
           outputBuffer.setLength(0);
         }
@@ -2453,7 +2453,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     return false;
   }
   
-  private void logReadLine(String line)
+  private void writeLogReadLine(String line)
   {
     if (line == null || line.length() < 0)
     {
@@ -2489,7 +2489,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     }
   }
   
-  private void logOutput(String data)
+  private void writeLogOutput(String data)
   {
     if (data == null || data.length() < 0)
     {

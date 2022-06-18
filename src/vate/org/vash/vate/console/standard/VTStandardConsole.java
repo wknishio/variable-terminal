@@ -154,7 +154,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     try
     {
       String data = standardTerminalReader.readLine();
-      logReadLine(data);
+      writeLogReadLine(data);
       return data;
     }
     catch (Throwable e)
@@ -934,7 +934,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     return false;
   }
   
-  private void logReadLine(String line)
+  private void writeLogReadLine(String line)
   {
     if (line == null || line.length() < 0)
     {

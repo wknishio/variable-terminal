@@ -1457,7 +1457,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
             
             if (logOutput != null)
             {
-              logOutput(flushBufferContents);
+              writeLogOutput(flushBufferContents);
             }
           }
           deleteLaterCharactersCount = 0;
@@ -1493,7 +1493,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
               
               if (logOutput != null)
               {
-                logOutput(flushBufferContents);
+                writeLogOutput(flushBufferContents);
               }
             }
             else
@@ -1521,7 +1521,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
               
               if (logOutput != null)
               {
-                logOutput(flushBufferContents);
+                writeLogOutput(flushBufferContents);
               }
             }
             deletedLastLinesCount = 0;
@@ -1547,7 +1547,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
               
               if (logOutput != null)
               {
-                logOutput(outputBufferContents);
+                writeLogOutput(outputBufferContents);
               }
             }
           }
@@ -1898,7 +1898,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
   public String readLine(boolean echo) throws InterruptedException
   {
     String data = VTGraphicalConsoleReader.readLine(echo);
-    logReadLine(data);
+    writeLogReadLine(data);
     return data;
   }
 
@@ -2330,7 +2330,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
     return false;
   }
   
-  private void logReadLine(String line)
+  private void writeLogReadLine(String line)
   {
     if (line == null || line.length() < 0)
     {
@@ -2366,7 +2366,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
     }
   }
   
-  private static void logOutput(String data)
+  private static void writeLogOutput(String data)
   {
     if (data == null || data.length() < 0)
     {
