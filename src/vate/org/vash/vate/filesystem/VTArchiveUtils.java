@@ -499,7 +499,7 @@ public class VTArchiveUtils
   }
 
   @SuppressWarnings("all")
-  public static boolean extractZipStream(InputStream input, final byte[] readBuffer, String destinationPath) throws IOException
+  public static boolean extractZipInputStream(InputStream input, final byte[] readBuffer, String destinationPath) throws IOException
   {
     ZipArchiveInputStream zipReader = null;
     try
