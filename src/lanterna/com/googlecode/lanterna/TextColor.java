@@ -79,7 +79,7 @@ public interface TextColor {
         BLACK(0, 0, 0, 0),
         RED(1, 170, 0, 0),
         GREEN(2, 0, 170, 0),
-        YELLOW(3, 170, 85, 0),
+        YELLOW(3, 170, 170, 0),
         BLUE(4, 0, 0, 170),
         MAGENTA(5, 170, 0, 170),
         CYAN(6, 0, 170, 170),
