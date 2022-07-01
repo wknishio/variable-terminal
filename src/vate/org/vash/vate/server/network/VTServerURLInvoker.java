@@ -1,6 +1,9 @@
 package org.vash.vate.server.network;
 
+import java.io.ByteArrayInputStream;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.OutputStream;
 import org.vash.vate.network.url.VTURLInvoker;
 import org.vash.vate.network.url.VTURLResult;
@@ -11,7 +14,8 @@ public class VTServerURLInvoker extends VTTask
 {
   private volatile boolean finished;
   private String url;
-  private String file;
+  private String fileResult;
+  private String fileOutput;
   private VTServerSession session;
   //private StringBuilder message;
   private VTURLInvoker invoker;
@@ -39,9 +43,14 @@ public class VTServerURLInvoker extends VTTask
     this.url = url;
   }
   
-  public void setFile(String file)
+  public void setFileResult(String fileResult)
   {
-    this.file = file;
+    this.fileResult = fileResult;
+  }
+  
+  public void setFileOutput(String fileOutput)
+  {
+    this.fileOutput = fileOutput;
   }
   
   public void run()
@@ -49,24 +58,53 @@ public class VTServerURLInvoker extends VTTask
     try
     {
       //message.setLength(0);
-      OutputStream resultStream = null;
+      OutputStream resultOutputStream = null;
+      InputStream outputInputStream = null;
       session.getConnection().getResultWriter().write("VT>Attempting URL Data Transfer URL:[" + url + "]\n");
       session.getConnection().getResultWriter().flush();
       
-      if (file != null)
+      if (fileResult != null)
       {
-        resultStream = new FileOutputStream(file, true);
+        resultOutputStream = new FileOutputStream(fileResult);
       }
       else
       {
-        resultStream = session.getConnection().getShellOutputStream();
+        resultOutputStream = session.getConnection().getShellOutputStream();
       }
       
-      VTURLResult result = invoker.invokeURL(url, null, 0, 0, resultStream);
-      
-      if (file != null)
+      if (fileOutput != null)
       {
-        resultStream.close();
+        try
+        {
+          outputInputStream = new FileInputStream(fileOutput);
+        }
+        catch (Throwable t)
+        {
+          try
+          {
+            outputInputStream = new ByteArrayInputStream(fileOutput.getBytes("UTF-8"));
+          }
+          catch (Throwable t1)
+          {
+            outputInputStream = null;
+          }
+        }
+      }
+      else
+      {
+        outputInputStream = null;
+      }
+      
+      VTURLResult result = invoker.invokeURL(url, outputInputStream, resultOutputStream);
+      
+      if (fileResult != null)
+      {
+        resultOutputStream.close();
+      }
+      
+      if (fileOutput != null)
+      {
+        outputInputStream.close();
       }
       
       synchronized (this)

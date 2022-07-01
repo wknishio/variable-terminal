@@ -9,8 +9,8 @@ public class VTURLGET extends VTServerStandardRemoteConsoleCommandProcessor
   {
     this.setFullName("*VTURLGET");
     this.setAbbreviatedName("*VTUG");
-    this.setFullSyntax("*VTURLGET <URL FILE>");
-    this.setAbbreviatedSyntax("*VTUG <UR FL>");
+    this.setFullSyntax("*VTURLGET <URL> [RESULT] [OUTPUT]");
+    this.setAbbreviatedSyntax("*VTUG <UR> [RT] [OP]");
   }
 
   public void execute(String command, String[] parsed) throws Exception
@@ -31,11 +31,20 @@ public class VTURLGET extends VTServerStandardRemoteConsoleCommandProcessor
           session.getURLInvoker().setURL(parsed[1]);
           if (parsed.length >= 3)
           {
-            session.getURLInvoker().setFile(parsed[2]);
+            session.getURLInvoker().setFileResult(parsed[2]);
+            if (parsed.length >= 4)
+            {
+              session.getURLInvoker().setFileOutput(parsed[3]);
+            }
+            else
+            {
+              session.getURLInvoker().setFileOutput(null);
+            }
           }
           else
           {
-            session.getURLInvoker().setFile(null);
+            session.getURLInvoker().setFileResult(null);
+            session.getURLInvoker().setFileOutput(null);
           }
           session.getURLInvoker().startThread();
         }

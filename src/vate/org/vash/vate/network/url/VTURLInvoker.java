@@ -94,18 +94,18 @@ public class VTURLInvoker
     }
   }
   
-  public VTURLResult invokeURL(String urlString, OutputStream resultData)
+  public VTURLResult invokeURL(String urlString, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, Proxy.NO_PROXY, null, 0, 0, null, null, resultData);
+    return invokeURL(urlString, Proxy.NO_PROXY, null, null, null, resultOutputStream);
   }
   
-  public VTURLResult invokeURL(String urlString, byte[] outputData, int outputOffset, int outputLength, OutputStream resultData)
+  public VTURLResult invokeURL(String urlString, InputStream outputInputStream, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, Proxy.NO_PROXY, outputData, outputOffset, outputLength, null, null, resultData);
+    return invokeURL(urlString, Proxy.NO_PROXY, null, null, outputInputStream, resultOutputStream);
   }
   
   @SuppressWarnings("all")
-  public VTURLResult invokeURL(String urlString, Proxy proxy, byte[] outputData, int outputOffset, int outputLength, Map<String, String> requestHeaders, String requestMethod, OutputStream resultData)
+  public VTURLResult invokeURL(String urlString, Proxy proxy, Map<String, String> requestHeaders, String requestMethod, InputStream outputInputStream, OutputStream resultOutputStream)
   {
     final byte[] readBuffer = new byte[VT.VT_STANDARD_DATA_BUFFER_SIZE];
     //VTByteArrayOutputStream dataBuffer = new VTByteArrayOutputStream();
@@ -146,14 +146,17 @@ public class VTURLInvoker
         }
       }
       connection.setDoInput(true);
-      if (outputData != null && outputData.length > 0 && outputLength > 0)
+      if (outputInputStream != null)
       {
         connection.setDoOutput(true);
         try
         {
-          OutputStream output = connection.getOutputStream();
-          output.write(outputData, outputOffset, outputLength);
-          output.flush();
+          OutputStream outputOutputStream = connection.getOutputStream();
+          while ((readed = outputInputStream.read(readBuffer)) >= 0)
+          {
+            outputOutputStream.write(readBuffer);
+            outputOutputStream.flush();
+          }
         }
         catch (Throwable e)
         {
@@ -169,11 +172,11 @@ public class VTURLInvoker
         response = httpConnection.getResponseMessage();
       }
       Map<String, List<String>> headers = connection.getHeaderFields();
-      InputStream input = connection.getInputStream();
-      while ((readed = input.read(readBuffer)) >= 0)
+      InputStream resultInputStream = connection.getInputStream();
+      while ((readed = resultInputStream.read(readBuffer)) >= 0)
       {
-        resultData.write(readBuffer);
-        resultData.flush();
+        resultOutputStream.write(readBuffer);
+        resultOutputStream.flush();
       }
       urlResult = new VTURLResult(code, response, headers, null);
     }
