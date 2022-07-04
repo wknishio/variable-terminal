@@ -14,6 +14,12 @@ public final class VTByteArrayOutputStream extends ByteArrayOutputStream
   {
     super(size);
   }
+  
+  public VTByteArrayOutputStream(byte[] buf)
+  {
+    super();
+    this.buf = buf;
+  }
 
   public final byte[] buf()
   {

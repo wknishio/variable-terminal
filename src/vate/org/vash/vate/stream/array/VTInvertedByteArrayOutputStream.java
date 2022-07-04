@@ -19,6 +19,13 @@ public final class VTInvertedByteArrayOutputStream extends ByteArrayOutputStream
     super(size);
     // end = buf.length - 1;
   }
+  
+  public VTInvertedByteArrayOutputStream(byte[] buf)
+  {
+    super();
+    this.buf = buf;
+    // end = buf.length - 1;
+  }
 
   public final synchronized byte[] buf()
   {
