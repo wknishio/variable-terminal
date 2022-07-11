@@ -202,9 +202,9 @@ public class VTIndexedColorModel
 
   public static IndexColorModel create8ColorModel()
   {
-    byte[] r = new byte[8];
-    byte[] g = new byte[8];
-    byte[] b = new byte[8];
+    byte[] red = new byte[8];
+    byte[] green = new byte[8];
+    byte[] blue = new byte[8];
     int i = 0;
     int j = 0;
     int k = 0;
@@ -217,14 +217,14 @@ public class VTIndexedColorModel
       {
         for (k = 0; k < 2; k++)
         {
-          r[p] = (byte) ((i * 255) & 0xFF);
-          g[p] = (byte) ((j * 255) & 0xFF);
-          b[p] = (byte) ((k * 255) & 0xFF);
+          red[p] = (byte) ((i * 255) & 0xFF);
+          green[p] = (byte) ((j * 255) & 0xFF);
+          blue[p] = (byte) ((k * 255) & 0xFF);
           p++;
         }
       }
     }
-    return new IndexColorModel(8, r.length, r, g, b);
+    return new IndexColorModel(8, red.length, red, green, blue);
   }
 
 //  public static IndexColorModel createPacked4Bit16ColorModel()
@@ -298,55 +298,52 @@ public class VTIndexedColorModel
 
   public static IndexColorModel create32ColorModel()
   {
-    byte[] r = new byte[32];
-    byte[] g = new byte[32];
-    byte[] b = new byte[32];
+    byte[] red = new byte[32];
+    byte[] green = new byte[32];
+    byte[] blue = new byte[32];
     int i = 0;
     int j = 0;
     int k = 0;
     int l = 0;
     int m = 0;
     int p = 0;
-
-    for (i = 0; i < 2; i++)
+    
+    for (l = 0; l < 2; l++)
     {
-      for (j = 0; j < 2; j++)
+      for (m = 0; m < 2; m++)
       {
-        for (k = 0; k < 2; k++)
+        for (i = 0; i < 2; i++)
         {
-          for (l = 0; l < 2; l++)
+          for (j = 0; j < 2; j++)
           {
-            for (m = 0; m < 2; m++)
+            for (k = 0; k < 2; k++)
             {
-//              if (i == 0 && j == 0 && k == 0)
-//              {
-//                r[p] = (byte) ((l * 102) + (m * 51) & 0xFF);
-//                g[p] = (byte) ((l * 102) + (m * 51) & 0xFF);
-//                b[p] = (byte) ((l * 102) + (m * 51) & 0xFF);
-//              }
-//              else
-//              {
-//                r[p] = (byte) ((i * 102) + (i * l * 102) + (i * m * 51) & 0xFF);
-//                g[p] = (byte) ((j * 102) + (j * l * 102) + (j * m * 51) & 0xFF);
-//                b[p] = (byte) ((k * 102) + (k * l * 102) + (k * m * 51) & 0xFF);
-//              }
-              r[p] = (byte) ((i * 102) + (l * 102) + (m * 51) & 0xFF);
-              g[p] = (byte) ((j * 102) + (l * 102) + (m * 51) & 0xFF);
-              b[p] = (byte) ((k * 102) + (l * 102) + (m * 51) & 0xFF);
+              if (i == j && j == k)
+              {
+                red[p] = (byte) ((i * 102) + (l * 102) + (m * 51) & 0xFF);
+                green[p] = (byte) ((j * 102) + (l * 102) + (m * 51) & 0xFF);
+                blue[p] = (byte) ((k * 102) + (l * 102) + (m * 51) & 0xFF);
+              }
+              else
+              {
+                red[p] = (byte) ((i * 102) + (i * l * 102) + (i * m * 51) & 0xFF);
+                green[p] = (byte) ((j * 102) + (j * l * 102) + (j * m * 51) & 0xFF);
+                blue[p] = (byte) ((k * 102) + (k * l * 102) + (k * m * 51) & 0xFF);
+              }
               p++;
             }
           }
         }
       }
     }
-    return new IndexColorModel(8, r.length, r, g, b);
+    return new IndexColorModel(8, red.length, red, green, blue);
   }
 
   public static IndexColorModel create27ColorModel()
   {
-    byte[] r = new byte[27];
-    byte[] g = new byte[27];
-    byte[] b = new byte[27];
+    byte[] red = new byte[27];
+    byte[] green = new byte[27];
+    byte[] blue = new byte[27];
     int i = 0;
     int j = 0;
     int k = 0;
@@ -357,21 +354,21 @@ public class VTIndexedColorModel
       {
         for (k = 0; k < 3; k++)
         {
-          r[l] = (byte) (get3LevelRGBValue(i) & 0xFF);
-          g[l] = (byte) (get3LevelRGBValue(j) & 0xFF);
-          b[l] = (byte) (get3LevelRGBValue(k) & 0xFF);
+          red[l] = (byte) (get3LevelRGBValue(i) & 0xFF);
+          green[l] = (byte) (get3LevelRGBValue(j) & 0xFF);
+          blue[l] = (byte) (get3LevelRGBValue(k) & 0xFF);
           l++;
         }
       }
     }
-    return new IndexColorModel(8, r.length, r, g, b);
+    return new IndexColorModel(8, red.length, red, green, blue);
   }
 
   public static IndexColorModel create64ColorModel()
   {
-    byte[] r = new byte[64];
-    byte[] g = new byte[64];
-    byte[] b = new byte[64];
+    byte[] red = new byte[64];
+    byte[] green = new byte[64];
+    byte[] blue = new byte[64];
     int i = 0;
     int j = 0;
     int k = 0;
@@ -382,21 +379,21 @@ public class VTIndexedColorModel
       {
         for (k = 0; k < 4; k++)
         {
-          r[l] = (byte) ((85 * i) & 0xFF);
-          g[l] = (byte) ((85 * j) & 0xFF);
-          b[l] = (byte) ((85 * k) & 0xFF);
+          red[l] = (byte) ((85 * i) & 0xFF);
+          green[l] = (byte) ((85 * j) & 0xFF);
+          blue[l] = (byte) ((85 * k) & 0xFF);
           l++;
         }
       }
     }
-    return new IndexColorModel(8, r.length, r, g, b);
+    return new IndexColorModel(8, red.length, red, green, blue);
   }
 
   public static IndexColorModel create125ColorModel()
   {
-    byte[] r = new byte[125];
-    byte[] g = new byte[125];
-    byte[] b = new byte[125];
+    byte[] red = new byte[125];
+    byte[] green = new byte[125];
+    byte[] blue = new byte[125];
     int i = 0;
     int j = 0;
     int k = 0;
@@ -407,21 +404,21 @@ public class VTIndexedColorModel
       {
         for (k = 0; k < 5; k++)
         {
-          r[l] = (byte) (get5LevelRGBValue(i) & 0xFF);
-          g[l] = (byte) (get5LevelRGBValue(j) & 0xFF);
-          b[l] = (byte) (get5LevelRGBValue(k) & 0xFF);
+          red[l] = (byte) (get5LevelRGBValue(i) & 0xFF);
+          green[l] = (byte) (get5LevelRGBValue(j) & 0xFF);
+          blue[l] = (byte) (get5LevelRGBValue(k) & 0xFF);
           l++;
         }
       }
     }
-    return new IndexColorModel(8, r.length, r, g, b);
+    return new IndexColorModel(8, red.length, red, green, blue);
   }
 
   public static IndexColorModel create216ColorModel()
   {
-    byte[] r = new byte[216];
-    byte[] g = new byte[216];
-    byte[] b = new byte[216];
+    byte[] red = new byte[216];
+    byte[] green = new byte[216];
+    byte[] blue = new byte[216];
     int i = 0;
     int j = 0;
     int k = 0;
@@ -432,13 +429,13 @@ public class VTIndexedColorModel
       {
         for (k = 0; k < 6; k++)
         {
-          r[l] = (byte) ((51 * i) & 0xFF);
-          g[l] = (byte) ((51 * j) & 0xFF);
-          b[l] = (byte) ((51 * k) & 0xFF);
+          red[l] = (byte) ((51 * i) & 0xFF);
+          green[l] = (byte) ((51 * j) & 0xFF);
+          blue[l] = (byte) ((51 * k) & 0xFF);
           l++;
         }
       }
     }
-    return new IndexColorModel(8, r.length, r, g, b);
+    return new IndexColorModel(8, red.length, red, green, blue);
   }
 }
