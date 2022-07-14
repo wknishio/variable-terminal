@@ -625,14 +625,6 @@ public class VTLanternaConsole implements VTConsoleImplementation
     // ScrollingAWTTerminal terminal = new ScrollingAWTTerminal();
     if (terminal instanceof AWTTerminalFrame)
     {
-      try
-      {
-        Toolkit.getDefaultToolkit().setDynamicLayout(false);
-      }
-      catch (Throwable t)
-      {
-        
-      }
       frame = (AWTTerminalFrame) terminal;
       // awtframe.setLocationByPlatform(true);
       if (remoteIcon)

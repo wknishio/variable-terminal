@@ -3,6 +3,7 @@ package org.vash.vate.console;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
+import java.awt.Toolkit;
 import java.io.FileDescriptor;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -63,6 +64,14 @@ public final class VTConsole
       {
         if (graphical)
         {
+          try
+          {
+            Toolkit.getDefaultToolkit().setDynamicLayout(false);
+          }
+          catch (Throwable t)
+          {
+            
+          }
           // VTGraphicalConsole.setSplit(split);
           VTNativeUtils.detachConsole();
           if (lanterna)

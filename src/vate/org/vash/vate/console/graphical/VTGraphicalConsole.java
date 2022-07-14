@@ -108,14 +108,6 @@ public class VTGraphicalConsole implements VTConsoleImplementation
   {
     // setShellBuilder();
     // split = true;
-    try
-    {
-      Toolkit.getDefaultToolkit().setDynamicLayout(false);
-    }
-    catch (Throwable t)
-    {
-
-    }
     inputSynchronizer = new Object();
     outputSynchronizer = new Object();
     updateSynchronizer = new Object();
