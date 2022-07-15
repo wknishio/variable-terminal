@@ -75,6 +75,14 @@ public class VTServerLocalConsoleReader extends VTTask
         }
       }
     }
+//    try
+//    {
+//      selector.closeSelector();
+//    }
+//    catch (Throwable e)
+//    {
+//      
+//    }
   }
 
   @SuppressWarnings("unused")

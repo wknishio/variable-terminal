@@ -57,7 +57,7 @@ public class VTConsoleCommandSelector<T extends VTConsoleCommandProcessor>
       }
       catch (Throwable t)
       {
-
+        
       }
     }
   }

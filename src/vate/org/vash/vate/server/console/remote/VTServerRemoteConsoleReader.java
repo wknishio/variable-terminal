@@ -68,6 +68,14 @@ public class VTServerRemoteConsoleReader extends VTTask
     {
       session.notify();
     }
+//    try
+//    {
+//      selector.closeSelector();
+//    }
+//    catch (Throwable e)
+//    {
+//      
+//    }
   }
 
   @SuppressWarnings("unused")

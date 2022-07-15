@@ -51,6 +51,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
           
         }
       }
+      
       //source.close();
     }
   }
@@ -215,6 +216,14 @@ public class VTClientRemoteConsoleWriter extends VTTask
     {
       session.notifyAll();
     }
+//    try
+//    {
+//      selector.closeSelector();
+//    }
+//    catch (Throwable e)
+//    {
+//      
+//    }
   }
 
   @SuppressWarnings("unused")
