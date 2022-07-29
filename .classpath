@@ -13,8 +13,8 @@
 	<classpathentry kind="src" path="src/snappy"/>
 	<classpathentry kind="src" path="src/throttle"/>
 	<classpathentry kind="src" path="src/aircompressor"/>
+	<classpathentry kind="src" path="src/bouncycastle"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/bcprov-jdk13-171-lw.jar"/>
 	<classpathentry kind="lib" path="lib/beanshell-2.1.8-interpreter.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.5.jar"/>
 	<classpathentry kind="lib" path="lib/commons-compress-xz-1.11.jar"/>
