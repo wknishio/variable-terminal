@@ -109,9 +109,9 @@ public class VTSETTINGS extends VTServerStandardRemoteConsoleCommandProcessor
       {
         message.append("\nVT>Encryption type(ET): [HC256]");
       }
-      else if (encryptionType.toUpperCase().startsWith("Z"))
+      else if (encryptionType.toUpperCase().startsWith("G"))
       {
-        message.append("\nVT>Encryption type(ET): [ZUC256]");
+        message.append("\nVT>Encryption type(ET): [GRAIN]");
       }
       else if (encryptionType.toUpperCase().startsWith("I"))
       {
@@ -617,9 +617,9 @@ public class VTSETTINGS extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().write("\nVT>Encryption type(ET): [HC256]\nVT>");
             connection.getResultWriter().flush();
           }
-          else if (encryptionType.toUpperCase().startsWith("Z"))
+          else if (encryptionType.toUpperCase().startsWith("G"))
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET): [ZUC256]\nVT>");
+            connection.getResultWriter().write("\nVT>Encryption type(ET): [GRAIN]\nVT>");
             connection.getResultWriter().flush();
           }
           else if (encryptionType.toUpperCase().startsWith("I"))
@@ -668,9 +668,9 @@ public class VTSETTINGS extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [HC256]\nVT>");
             connection.getResultWriter().flush();
           }
-          else if (encryptionType.toUpperCase().startsWith("Z"))
+          else if (encryptionType.toUpperCase().startsWith("G"))
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [ZUC256]\nVT>");
+            connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [GRAIN]\nVT>");
             connection.getResultWriter().flush();
           }
           else if (encryptionType.toUpperCase().startsWith("I"))

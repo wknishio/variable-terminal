@@ -85,7 +85,7 @@ public class VTServer implements Runnable
   "#vate.server.connection.mode      values: default passive(P), active(A)\r\n" + 
   "#vate.server.proxy.type           values: default none, HTTP(H), SOCKS(S)\r\n" + 
   "#vate.server.proxy.authentication values: default disabled(D), enabled(E)\r\n" + 
-  "#vate.server.encryption.type      values: default none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/ZUC256(Z)\r\n" + 
+  "#vate.server.encryption.type      values: default none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
   "#vate.server.session.users        format: user1/password1;user2/password2;...";
 
   static
@@ -1575,7 +1575,7 @@ public class VTServer implements Runnable
             }
             if (line.toUpperCase().startsWith("Y"))
             {
-              VTConsole.print("VT>Enter encryption type(R(RC4)/A(AES)/I(ISAAC)/S(SALSA)/H(HC256)/Z(ZUC256)):");
+              VTConsole.print("VT>Enter encryption type(R(RC4)/A(AES)/I(ISAAC)/S(SALSA)/H(HC256)/G(GRAIN)):");
               line = VTConsole.readLine(false);
               if (line == null)
               {
@@ -1602,9 +1602,9 @@ public class VTServer implements Runnable
               {
                 encryptionType = "HC256";
               }
-              if (line.toUpperCase().startsWith("Z"))
+              if (line.toUpperCase().startsWith("G"))
               {
-                encryptionType = "ZUC256";
+                encryptionType = "GRAIN";
               }
               if (line.toUpperCase().startsWith("I"))
               {
@@ -1719,7 +1719,7 @@ public class VTServer implements Runnable
             }
             if (line.toUpperCase().startsWith("Y"))
             {
-              VTConsole.print("VT>Enter encryption type(R(RC4)/A(AES)/I(ISAAC)/S(SALSA)/H(HC256)/Z(ZUC256)):");
+              VTConsole.print("VT>Enter encryption type(R(RC4)/A(AES)/I(ISAAC)/S(SALSA)/H(HC256)/G(GRAIN)):");
               line = VTConsole.readLine(false);
               if (line == null)
               {
@@ -1746,9 +1746,9 @@ public class VTServer implements Runnable
               {
                 encryptionType = "HC256";
               }
-              if (line.toUpperCase().startsWith("Z"))
+              if (line.toUpperCase().startsWith("G"))
               {
-                encryptionType = "ZUC256";
+                encryptionType = "GRAIN";
               }
               if (line.toUpperCase().startsWith("I"))
               {

@@ -42,8 +42,8 @@ public class VTClientConnection
   private static byte[] VT_CLIENT_CHECK_STRING_HC256 = new byte[16];
   private static byte[] VT_SERVER_CHECK_STRING_ISAAC = new byte[16];
   private static byte[] VT_CLIENT_CHECK_STRING_ISAAC = new byte[16];
-  private static byte[] VT_SERVER_CHECK_STRING_ZUC256 = new byte[16];
-  private static byte[] VT_CLIENT_CHECK_STRING_ZUC256 = new byte[16];
+  private static byte[] VT_SERVER_CHECK_STRING_GRAIN = new byte[16];
+  private static byte[] VT_CLIENT_CHECK_STRING_GRAIN = new byte[16];
 
   static
   {
@@ -63,8 +63,8 @@ public class VTClientConnection
       VT_CLIENT_CHECK_STRING_HC256 = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/HC256").getBytes("UTF-8");
       VT_SERVER_CHECK_STRING_ISAAC = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/ISAAC").getBytes("UTF-8");
       VT_CLIENT_CHECK_STRING_ISAAC = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/ISAAC").getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_ZUC256 = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/ZUC256").getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_ZUC256 = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/ZUC256").getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_GRAIN = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/GRAIN").getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_GRAIN = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/GRAIN").getBytes("UTF-8");
     }
     catch (UnsupportedEncodingException e)
     {
@@ -781,9 +781,9 @@ public class VTClientConnection
 //    {
 //      localCheckString = VT_CLIENT_CHECK_STRING_ISAAC;
 //    }
-//    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC256)
+//    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
 //    {
-//      localCheckString = VT_CLIENT_CHECK_STRING_ZUC256;
+//      localCheckString = VT_CLIENT_CHECK_STRING_GRAIN;
 //    }
 //    
 //    byte[] digestedServer = exchangeCheckString(localNonce, remoteNonce, encryptionKey, localCheckString, encryptionType);
@@ -820,9 +820,9 @@ public class VTClientConnection
 //    {
 //      return VTArrayComparator.arrayEquals(digestedServer, blake3Digester.digest(VT_SERVER_CHECK_STRING_ISAAC));
 //    }
-//    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC256)
+//    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
 //    {
-//      return VTArrayComparator.arrayEquals(digestedServer, blake3Digester.digest(VT_SERVER_CHECK_STRING_ZUC256));
+//      return VTArrayComparator.arrayEquals(digestedServer, blake3Digester.digest(VT_SERVER_CHECK_STRING_GRAIN));
 //    }
 //    return false;
 //  }
@@ -922,9 +922,9 @@ public class VTClientConnection
     {
       blake3Digester.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedServer, blake3Digester.digest(VT_SERVER_CHECK_STRING_ZUC256)))
+    if (VTArrayComparator.arrayEquals(digestedServer, blake3Digester.digest(VT_SERVER_CHECK_STRING_GRAIN)))
     {
-      return VT.VT_CONNECTION_ENCRYPT_ZUC256;
+      return VT.VT_CONNECTION_ENCRYPT_GRAIN;
     }
     
     return -1;
@@ -983,9 +983,9 @@ public class VTClientConnection
         setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ISAAC);
         return true;
       }
-      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC256)
+      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
       {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC256);
+        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_GRAIN);
         return true;
       }
     }
@@ -1043,12 +1043,12 @@ public class VTClientConnection
         return true;
       }
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC256)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
     {
-      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_ZUC256, encryptionType);
+      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_GRAIN, encryptionType);
       if (remoteEncryptionType != -1)
       {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC256);
+        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_GRAIN);
         return true;
       }
     }

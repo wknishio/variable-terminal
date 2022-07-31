@@ -365,7 +365,7 @@ public class VTClientConfigurationDialog extends Dialog
     encryptionTypeChoice.add("ISAAC");
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC256");
-    encryptionTypeChoice.add("ZUC256");
+    encryptionTypeChoice.add("GRAIN");
     //encryptionTypeChoice.add("BLOWFISH");
     encryptionTypeChoice.select("None");
     encryptionTypeChoice.addItemListener(new ItemListener()
@@ -398,9 +398,9 @@ public class VTClientConfigurationDialog extends Dialog
           {
             setEncryptionType("HC256");
           }
-          else if (e.getItem().equals("ZUC256"))
+          else if (e.getItem().equals("GRAIN"))
           {
-            setEncryptionType("ZUC256");
+            setEncryptionType("GRAIN");
           }
           else if (e.getItem().equals("ISAAC"))
           {
@@ -1046,9 +1046,9 @@ public class VTClientConfigurationDialog extends Dialog
       encryptionType.setParameter("HC256");
       // encryptionPassword.setEnabled(true);
     }
-    else if (encryption.toUpperCase().startsWith("Z"))
+    else if (encryption.toUpperCase().startsWith("GRAIN"))
     {
-      encryptionType.setParameter("ZUC256");
+      encryptionType.setParameter("GRAIN");
       // encryptionPassword.setEnabled(true);
     }
     else if (encryption.toUpperCase().startsWith("I"))
