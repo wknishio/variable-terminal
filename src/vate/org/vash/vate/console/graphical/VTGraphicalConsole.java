@@ -299,11 +299,12 @@ public class VTGraphicalConsole implements VTConsoleImplementation
             updated = false;
           }
           update(caret, start, end);
-          Thread.sleep(50);
+          Thread.yield();
+          Thread.sleep(1);
         }
         catch (Throwable e)
         {
-
+          
         }
       }
     }
