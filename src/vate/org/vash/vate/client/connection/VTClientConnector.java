@@ -625,9 +625,9 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ISAAC);
       }
-      else if (encryptionType.toUpperCase().startsWith("G"))
+      else if (encryptionType.toUpperCase().startsWith("Z"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_GRAIN);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC256);
       }
       else
       {
@@ -722,9 +722,9 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ISAAC);
       }
-      else if (encryptionType.toUpperCase().startsWith("G"))
+      else if (encryptionType.toUpperCase().startsWith("Z"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_GRAIN);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC256);
       }
       else
       {
@@ -1045,7 +1045,7 @@ public class VTClientConnector implements Runnable
           }
           if (line.toUpperCase().startsWith("Y"))
           {
-            VTConsole.print("VT>Enter encryption type(R(RC4)/A(AES)/I(ISAAC)/S(SALSA)/H(HC256)/G(GRAIN)):");
+            VTConsole.print("VT>Enter encryption type(R(RC4)/A(AES)/I(ISAAC)/S(SALSA)/H(HC256)/Z(ZUC256)):");
             line = VTConsole.readLine(false);
             if (line == null)
             {
@@ -1072,9 +1072,9 @@ public class VTClientConnector implements Runnable
             {
               encryptionType = "HC256";
             }
-            if (line.toUpperCase().startsWith("G"))
+            if (line.toUpperCase().startsWith("Z"))
             {
-              encryptionType = "GRAIN";
+              encryptionType = "ZUC256";
             }
             if (line.toUpperCase().startsWith("I"))
             {
@@ -1173,7 +1173,7 @@ public class VTClientConnector implements Runnable
         }
         if (line.toUpperCase().startsWith("Y"))
         {
-          VTConsole.print("VT>Enter encryption type(R(RC4)/A(AES)/I(ISAAC)/S(SALSA)/H(HC256)/G(GRAIN)):");
+          VTConsole.print("VT>Enter encryption type(R(RC4)/A(AES)/I(ISAAC)/S(SALSA)/H(HC256)/Z(ZUC256)):");
           line = VTConsole.readLine(false);
           if (line == null)
           {
@@ -1200,9 +1200,9 @@ public class VTClientConnector implements Runnable
           {
             encryptionType = "HC256";
           }
-          if (line.toUpperCase().startsWith("G"))
+          if (line.toUpperCase().startsWith("Z"))
           {
-            encryptionType = "GRAIN";
+            encryptionType = "ZUC256";
           }
           if (line.toUpperCase().startsWith("I"))
           {

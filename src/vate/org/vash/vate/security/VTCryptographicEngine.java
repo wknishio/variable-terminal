@@ -16,11 +16,12 @@ import java.io.OutputStream;
 import org.bouncycastle.crypto.StreamCipher;
 import org.bouncycastle.crypto.engines.AESFastEngine;
 import org.bouncycastle.crypto.engines.ChaChaEngine;
-import org.bouncycastle.crypto.engines.Grain128Engine;
+//import org.bouncycastle.crypto.engines.Grain128Engine;
 import org.bouncycastle.crypto.engines.HC256Engine;
 import org.bouncycastle.crypto.engines.ISAACEngine;
 //import org.bouncycastle.crypto.engines.VMPCEngine;
 import org.bouncycastle.crypto.engines.VMPCKSA3Engine;
+import org.bouncycastle.crypto.engines.Zuc256Engine;
 import org.bouncycastle.crypto.io.CipherInputStream;
 import org.bouncycastle.crypto.io.CipherOutputStream;
 import org.bouncycastle.crypto.modes.SICBlockCipher;
@@ -144,14 +145,14 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionKeySpec);
       decryptionCipherBC.init(false, decryptionKeySpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC256)
     {
-      encryptionCipherBC = new Grain128Engine();
-      decryptionCipherBC = new Grain128Engine();
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(first, second, encryptionKeys), 0, 16);
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(second, first, encryptionKeys), 0, 16);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3256(first, second, encryptionKeys), 0, 12);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3256(second, first, encryptionKeys), 0, 12);
+      encryptionCipherBC = new Zuc256Engine();
+      decryptionCipherBC = new Zuc256Engine();
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(first, second, encryptionKeys), 0, 32);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(second, first, encryptionKeys), 0, 32);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3256(first, second, encryptionKeys), 0, 25);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3256(second, first, encryptionKeys), 0, 25);
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
@@ -264,14 +265,14 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionKeySpec);
       decryptionCipherBC.init(false, decryptionKeySpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC256)
     {
-      encryptionCipherBC = new Grain128Engine();
-      decryptionCipherBC = new Grain128Engine();
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(first, second, encryptionKeys), 0, 16);
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(second, first, encryptionKeys), 0, 16);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3256(first, second, encryptionKeys), 0, 12);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3256(second, first, encryptionKeys), 0, 12);
+      encryptionCipherBC = new Zuc256Engine();
+      decryptionCipherBC = new Zuc256Engine();
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(first, second, encryptionKeys), 0, 32);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(second, first, encryptionKeys), 0, 32);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3256(first, second, encryptionKeys), 0, 25);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3256(second, first, encryptionKeys), 0, 25);
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }

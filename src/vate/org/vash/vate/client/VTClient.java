@@ -67,7 +67,7 @@ public class VTClient implements Runnable
   "#vate.client.connection.mode      values: default active(A), passive(P)\r\n" + 
   "#vate.client.proxy.type           values: default none, HTTP(H), SOCKS(S)\r\n" + 
   "#vate.client.proxy.authentication values: default disabled(D), enabled(E)\r\n" + 
-  "#vate.client.encryption.type      values: default none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
+  "#vate.client.encryption.type      values: default none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/ZUC256(Z)\r\n" + 
   "#vate.client.session.commands     format: cmd1*;cmd2*;cmd3*;...\r\n" +
   "#vate.client.session.files        format: file1;file2;file3;...";
 
@@ -1344,7 +1344,7 @@ public class VTClient implements Runnable
             }
             if (line.toUpperCase().startsWith("Y"))
             {
-              VTConsole.print("VT>Enter encryption type(R(RC4)/A(AES)/I(ISAAC)/S(SALSA)/H(HC256)/G(GRAIN)):");
+              VTConsole.print("VT>Enter encryption type(R(RC4)/A(AES)/I(ISAAC)/S(SALSA)/H(HC256)/Z(ZUC256)):");
               line = VTConsole.readLine(false);
               if (line == null)
               {
@@ -1371,9 +1371,9 @@ public class VTClient implements Runnable
               {
                 encryptionType = "HC256";
               }
-              if (line.toUpperCase().startsWith("G"))
+              if (line.toUpperCase().startsWith("Z"))
               {
-                encryptionType = "GRAIN";
+                encryptionType = "ZUC256";
               }
               if (line.toUpperCase().startsWith("I"))
               {
@@ -1619,7 +1619,7 @@ public class VTClient implements Runnable
             }
             if (line.toUpperCase().startsWith("Y"))
             {
-              VTConsole.print("VT>Enter encryption type(R(RC4)/A(AES)/I(ISAAC)/S(SALSA)/H(HC256)/G(GRAIN)):");
+              VTConsole.print("VT>Enter encryption type(R(RC4)/A(AES)/I(ISAAC)/S(SALSA)/H(HC256)/Z(ZUC256)):");
               line = VTConsole.readLine(false);
               if (line == null)
               {
@@ -1646,9 +1646,9 @@ public class VTClient implements Runnable
               {
                 encryptionType = "HC256";
               }
-              if (line.toUpperCase().startsWith("G"))
+              if (line.toUpperCase().startsWith("Z"))
               {
-                encryptionType = "GRAIN";
+                encryptionType = "ZUC256";
               }
               if (line.toUpperCase().startsWith("I"))
               {

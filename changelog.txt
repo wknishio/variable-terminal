@@ -86,7 +86,7 @@ Changes since 1.4.2:
 * Changed all encryption functions to use bouncycastle library
 * Added SALSA as encryption algorithm
 * Added HC256 as encryption algorithm
-* Added GRAIN as encryption algorithm
+* Added ZUC256 as encryption algorithm
 * Added ISAAC as encryption algorithm
 * Added *VTPAUSE command to pause local console for a interval or until enter
 * Added client parameter session files -SF to run commands from text files
