@@ -530,7 +530,8 @@ public final class VTCircularByteBuffer
         }
         try
         {
-          Thread.sleep(100);
+          Thread.yield();
+          Thread.sleep(1);
         }
         catch (Exception x)
         {
@@ -606,7 +607,8 @@ public final class VTCircularByteBuffer
         }
         try
         {
-          Thread.sleep(100);
+          Thread.yield();
+          Thread.sleep(1);
         }
         catch (Exception x)
         {
@@ -681,7 +683,8 @@ public final class VTCircularByteBuffer
         }
         try
         {
-          Thread.sleep(100);
+          Thread.yield();
+          Thread.sleep(1);
         }
         catch (Exception x)
         {
@@ -826,7 +829,8 @@ public final class VTCircularByteBuffer
         {
           try
           {
-            Thread.sleep(100);
+            Thread.yield();
+            Thread.sleep(1);
           }
           catch (Exception x)
           {
@@ -884,7 +888,8 @@ public final class VTCircularByteBuffer
         {
           try
           {
-            Thread.sleep(100);
+            Thread.yield();
+            Thread.sleep(1);
           }
           catch (Exception x)
           {
