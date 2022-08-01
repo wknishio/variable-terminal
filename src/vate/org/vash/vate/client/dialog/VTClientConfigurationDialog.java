@@ -1046,7 +1046,7 @@ public class VTClientConfigurationDialog extends Dialog
       encryptionType.setParameter("HC256");
       // encryptionPassword.setEnabled(true);
     }
-    else if (encryption.toUpperCase().startsWith("GRAIN"))
+    else if (encryption.toUpperCase().startsWith("G"))
     {
       encryptionType.setParameter("GRAIN");
       // encryptionPassword.setEnabled(true);
