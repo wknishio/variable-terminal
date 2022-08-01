@@ -350,7 +350,7 @@ public class VTCryptographicEngine
   {
     if (decryptionCipherBC != null)
     {
-      return new CipherInputStream(encrypted, decryptionCipherBC);
+      return new CipherInputStream(encrypted, decryptionCipherBC, VT.VT_STANDARD_DATA_BUFFER_SIZE);
     }
     return encrypted;
     //if (decryptionCipher == null)
