@@ -73,10 +73,34 @@ import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.swing.AWTTerminal;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
+import com.googlecode.lanterna.terminal.swing.TerminalEmulatorColorConfiguration;
+import com.googlecode.lanterna.terminal.swing.TerminalEmulatorPalette;
 import com.sun.jna.Platform;
 
 public class VTLanternaConsole implements VTConsoleImplementation
 {
+//  public static final TerminalEmulatorPalette CUSTOM_VGA =
+//  new TerminalEmulatorPalette(
+//          new java.awt.Color(170, 170, 170),
+//          new java.awt.Color(255, 255, 255),
+//          new java.awt.Color(0, 0, 0),
+//          new java.awt.Color(0, 0, 0),
+//          new java.awt.Color(85, 85, 85),
+//          new java.awt.Color(170, 0, 0),
+//          new java.awt.Color(255, 0, 0),
+//          new java.awt.Color(0, 170, 0),
+//          new java.awt.Color(0, 255, 0),
+//          new java.awt.Color(170, 0, 0),
+//          new java.awt.Color(255, 255, 0),
+//          new java.awt.Color(0, 0, 170),
+//          new java.awt.Color(0, 0, 255),
+//          new java.awt.Color(170, 0, 170),
+//          new java.awt.Color(255, 0, 255),
+//          new java.awt.Color(0, 170, 170),
+//          new java.awt.Color(0, 255, 255),
+//          new java.awt.Color(170, 170, 170),
+//          new java.awt.Color(255, 255, 255));
+  
   private volatile AWTTerminalFrame frame;
   private java.awt.Panel spacer1;
   // private java.awt.Panel spacer2;
@@ -601,6 +625,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     // factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
     factory.setMouseCaptureMode(MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE);
     factory.setInitialTerminalSize(new TerminalSize(consoleOutputColumns, consoleOutputLines + consoleInputLines));
+    factory.setTerminalEmulatorColorConfiguration(TerminalEmulatorColorConfiguration.newInstance(TerminalEmulatorPalette.STANDARD_VGA));
     // factory.setTerminalEmulatorDeviceConfiguration(deviceConfiguration)
     factory.setAutoOpenTerminalEmulatorWindow(false);
     if (graphical)
@@ -889,13 +914,15 @@ public class VTLanternaConsole implements VTConsoleImplementation
       
       //outputBox.setVerticalAdjustable(frame.getScrollPane().getVAdjustable());
       //outputBox.setHorizontalAdjustable(frame.getScrollPane().getHAdjustable());
+      ((DefaultTextBoxRenderer) outputBox.getRenderer()).setHideScrollBars(true);
+      ((DefaultTextBoxRenderer) inputBox.getRenderer()).setHideScrollBars(true);
     }
     else
     {
-      
+      ((DefaultTextBoxRenderer) outputBox.getRenderer()).setHideScrollBars(true);
+      ((DefaultTextBoxRenderer) inputBox.getRenderer()).setHideScrollBars(true);
     }
-    ((DefaultTextBoxRenderer) outputBox.getRenderer()).setHideScrollBars(true);
-    ((DefaultTextBoxRenderer) inputBox.getRenderer()).setHideScrollBars(true);
+    
     // outputBox.setEnabled(false);
     
     

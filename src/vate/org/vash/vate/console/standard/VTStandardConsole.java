@@ -699,7 +699,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     {
       if (Platform.isWindows())
       {
-        
+        //printStream.print("\u001B[1m");
       }
       else
       {
@@ -710,7 +710,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     {
       if (Platform.isWindows())
       {
-        
+        //printStream.print("\u001B[21m");
       }
       else
       {

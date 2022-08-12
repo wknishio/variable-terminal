@@ -98,30 +98,10 @@ public final class VTConsole
           else
           {
             console = VTStandardConsole.getInstance();
+            console.setRemoteIcon(remoteIcon);
+            resetAttributes();
+            setColors(VT_CONSOLE_COLOR_LIGHT_GREEN, VT_CONSOLE_COLOR_DARK_BLACK);
           }
-          //console = VTStandardConsole.getInstance();
-          console.setRemoteIcon(remoteIcon);
-          resetAttributes();
-          setColors(VT_CONSOLE_COLOR_LIGHT_GREEN, VT_CONSOLE_COLOR_DARK_BLACK);
-//					if (lanterna)
-//					{
-//						if (Platform.isWindows())
-//						{
-//							console = VTStandardConsole.getInstance();
-//							resetAttributes();
-//							setColors(VT_CONSOLE_COLOR_LIGHT_GREEN, VT_CONSOLE_COLOR_NORMAL_BLACK);
-//						}
-//						else
-//						{
-//							console = new VTLanternaConsole(graphical);
-//						}
-//					}
-//					else
-//					{
-//						console = VTStandardConsole.getInstance();
-//						resetAttributes();
-//						setColors(VT_CONSOLE_COLOR_LIGHT_GREEN, VT_CONSOLE_COLOR_NORMAL_BLACK);
-//					}
         }
       }
       else
