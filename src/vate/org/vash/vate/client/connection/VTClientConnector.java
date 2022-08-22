@@ -104,7 +104,7 @@ public class VTClientConnector implements Runnable
         {
           synchronized (this)
           {
-            wait(VT.VT_RECONNECTION_TIMEOUT_MILLISECONDS);
+            wait(VT.VT_CLIENT_RECONNECTION_TIMEOUT_MILLISECONDS);
           }
         }
         // VTConsole.print("\nVT>AuthenticationTimeout");
