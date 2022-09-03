@@ -52,11 +52,13 @@ public class VTServerSettingsDialog extends Dialog
   private VTServerSettingsDialogParameter encryptionPassword;
 
   private VTServerSettingsDialogParameter sessionsLimit;
+  private VTServerSettingsDialogParameter sessionShell;
   private VTServerSettingsDialogParameter sessionUser;
   private VTServerSettingsDialogParameter sessionPassword;
 
   private Runnable application;
   private Frame owner;
+
   // private volatile boolean opened;
   // private Button okButton;
   private static Method setIconImage;
@@ -420,6 +422,9 @@ public class VTServerSettingsDialog extends Dialog
       }
     });
     sessionsLimit = new VTServerSettingsDialogParameter("Session Limit:", sessionsLimitField, true);
+    
+    TextField sessionShellField = new TextField(16);
+    sessionShell = new VTServerSettingsDialogParameter("Session Shell:", sessionShellField, true);
 
     TextField connectionUserField = new TextField(16);
     connectionUserField.setEchoChar('*');
@@ -754,7 +759,7 @@ public class VTServerSettingsDialog extends Dialog
     });
 
     Panel centerPanel = new Panel();
-    GridLayout centerLayout = new GridLayout(17, 1);
+    GridLayout centerLayout = new GridLayout(18, 1);
     centerLayout.setHgap(1);
     centerLayout.setVgap(1);
     centerPanel.setLayout(centerLayout);
@@ -783,7 +788,9 @@ public class VTServerSettingsDialog extends Dialog
     centerPanel.add(encryptionType);
     centerPanel.add(encryptionPassword);
 
+    centerPanel.add(sessionShell);
     centerPanel.add(sessionsLimit);
+    
     centerPanel.add(sessionUser);
     centerPanel.add(sessionPassword);
 
@@ -986,6 +993,7 @@ public class VTServerSettingsDialog extends Dialog
         proxyUser.setParameter(connector.getProxyUser());
         proxyPassword.setParameter(connector.getProxyPassword());
         sessionsLimit.setParameter(String.valueOf(connector.getSessionsLimit()));
+        sessionShell.setParameter(connector.getSessionShell());
       }
       else
       {
@@ -1010,6 +1018,7 @@ public class VTServerSettingsDialog extends Dialog
         proxyUser.setParameter(server.getProxyUser());
         proxyPassword.setParameter(server.getProxyPassword());
         sessionsLimit.setParameter(String.valueOf(server.getSessionsLimit()));
+        sessionShell.setParameter(server.getSessionShell());
       }
     }
   }
@@ -1219,8 +1228,9 @@ public class VTServerSettingsDialog extends Dialog
         }
         catch (Throwable e)
         {
-          connector.setSessionsLimit(1);
+          connector.setSessionsLimit(0);
         }
+        connector.setSessionShell(sessionShell.getParameter());
         String user = sessionUser.getParameter();
         if (user != null && user.length() > 0)
         {
@@ -1279,8 +1289,9 @@ public class VTServerSettingsDialog extends Dialog
         }
         catch (Throwable e)
         {
-          server.setSessionsLimit(1);
+          server.setSessionsLimit(0);
         }
+        server.setSessionShell(sessionShell.getParameter());
         String user = sessionUser.getParameter();
         if (user != null && user.length() > 0)
         {

@@ -55,6 +55,7 @@ public class VTServer implements Runnable
   private boolean daemon = false;
   private String sessionUsers = "";
   private int sessionsLimit = 0;
+  private String sessionShell = "";
   private final String vtURL = System.getenv("VT_PATH");
   //private MessageDigest sha256Digester;
   private VTBlake3Digest blake3Digester = new VTBlake3Digest();
@@ -509,6 +510,7 @@ public class VTServer implements Runnable
     fileServerSettings.setProperty("vate.server.proxy.password", proxyPassword);
     fileServerSettings.setProperty("vate.server.encryption.type", encryptionType);
     fileServerSettings.setProperty("vate.server.encryption.password", new String(encryptionKey, "UTF-8"));
+    fileServerSettings.setProperty("vate.server.session.shell", sessionShell);
     fileServerSettings.setProperty("vate.server.session.limit", String.valueOf(sessionsLimit));
     fileServerSettings.setProperty("vate.server.session.users", sessionUsers);
 
@@ -747,6 +749,19 @@ public class VTServer implements Runnable
 
       }
     }
+    
+    if (fileServerSettings.getProperty("vate.server.session.shell") != null)
+    {
+      try
+      {
+        sessionShell = fileServerSettings.getProperty("vate.server.session.shell");
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    
     saveFromServerToConnector();
   }
 
@@ -981,7 +996,19 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-
+          
+        }
+      }
+      
+      if (fileServerSettings.getProperty("vate.server.session.shell") != null)
+      {
+        try
+        {
+          sessionShell = fileServerSettings.getProperty("vate.server.session.shell");
+        }
+        catch (Throwable e)
+        {
+          
         }
       }
     }
@@ -1204,6 +1231,19 @@ public class VTServer implements Runnable
 
       }
     }
+    
+    if (fileServerSettings.getProperty("vate.server.session.shell") != null)
+    {
+      try
+      {
+        sessionShell = fileServerSettings.getProperty("vate.server.session.shell");
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    
     saveFromServerToConnector();
   }
   
@@ -1770,6 +1810,17 @@ public class VTServer implements Runnable
             {
               encryptionType = "None";
             }
+            VTConsole.print("VT>Enter session shell(null for default):");
+            line = VTConsole.readLine(false);
+            if (line == null)
+            {
+              System.exit(0);
+            }
+            else if (skipConfiguration)
+            {
+              return;
+            }
+            sessionShell = line;
             /*
              * if (proxyType == null) { VTTerminal.
              * print("VT>Use SOCKS proxy to connect?(Y/N, default:N):" ); line =
@@ -2043,6 +2094,11 @@ public class VTServer implements Runnable
           setUniqueUserCredential(parameterUser, parameterPassword);
         }
       }
+      if (parameterName.contains("-SS"))
+      {
+        parameterValue = parameters[++i];
+        sessionShell = parameterValue;
+      }
     }
   }
   
@@ -2129,6 +2185,7 @@ public class VTServer implements Runnable
       this.encryptionType = serverConnector.getEncryptionType();
       this.encryptionKey = serverConnector.getEncryptionKey();
       this.sessionsLimit = serverConnector.getSessionsLimit();
+      this.sessionShell = serverConnector.getSessionShell();
     }
   }
 
@@ -2147,6 +2204,7 @@ public class VTServer implements Runnable
       serverConnector.setProxyUser(proxyUser);
       serverConnector.setProxyPassword(proxyPassword);
       serverConnector.setSessionsLimit(sessionsLimit);
+      serverConnector.setSessionShell(sessionShell);
       if (encryptionType != null && encryptionKey != null)
       {
         serverConnector.setEncryptionType(encryptionType);
@@ -2178,6 +2236,7 @@ public class VTServer implements Runnable
     serverConnector.setProxyUser(proxyUser);
     serverConnector.setProxyPassword(proxyPassword);
     serverConnector.setSessionsLimit(sessionsLimit);
+    serverConnector.setSessionShell(sessionShell);
     if (encryptionType != null && encryptionKey != null)
     {
       serverConnector.setEncryptionType(encryptionType);
@@ -2241,5 +2300,15 @@ public class VTServer implements Runnable
     {
       listeners.add(listener);
     }
+  }
+  
+  public String getSessionShell()
+  {
+    return sessionShell;
+  }
+
+  public void setSessionShell(String sessionShell)
+  {
+    this.sessionShell = sessionShell;
   }
 }

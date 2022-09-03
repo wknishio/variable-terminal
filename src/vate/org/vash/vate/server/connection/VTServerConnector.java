@@ -34,6 +34,7 @@ public class VTServerConnector implements Runnable
   private String encryptionType;
   private byte[] encryptionKey;
   private int sessionsLimit;
+  private String sessionShell = "";
   private ServerSocket connectionServerSocket;
   private VTServer server;
   private List<VTServerConnectionHandler> connectionHandlers;
@@ -687,4 +688,15 @@ public class VTServerConnector implements Runnable
   {
     listeners.remove(listener);
   }
+  
+  public String getSessionShell()
+  {
+    return sessionShell;
+  }
+
+  public void setSessionShell(String sessionShell)
+  {
+    this.sessionShell = sessionShell;
+  }
+
 }

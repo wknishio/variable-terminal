@@ -1,6 +1,7 @@
 package org.vash.vate.client.session;
 
 import java.io.Closeable;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
@@ -352,5 +353,15 @@ public class VTClientSession
     {
       // return;
     }
+  }
+
+  public void negotiateShell() throws IOException
+  {
+    String clientShell = client.getClientConnector().getSessionShell();
+    
+    clientShell = clientShell.replace('\n', ' ');
+    
+    connection.getCommandWriter().write(clientShell + "\n");
+    connection.getCommandWriter().flush();
   }
 }

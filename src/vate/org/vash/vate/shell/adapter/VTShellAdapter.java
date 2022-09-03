@@ -17,10 +17,10 @@ public class VTShellAdapter
   private static final String DISABLE_COMMONS_LOGGING = "-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog";
   private static final String DISABLE_UTIL_LOGGING_CLASS = "-Djava.util.logging.config.class=org.vash.vate.shell.adapter.VTSilenceJavaUtilLogging";
 
-  private int shellType = VTShellProcess.SHELL_TYPE_PROCESS;
+  private int shellType = VTShellProcessor.SHELL_TYPE_PROCESS;
   //private boolean supressEchoShell = true;
   
-  private VTShellProcess shellProcess;
+  private VTShellProcessor shellProcessor;
   
   private ProcessBuilder shellBuilder;
   private ProcessBuilder javaBuilder;
@@ -31,17 +31,17 @@ public class VTShellAdapter
   
   public VTShellAdapter()
   {
-    shellProcess = new VTShellProcess();
+    shellProcessor = new VTShellProcessor();
   }
   
   public void setShellType(int shellType)
   {
     this.shellType = shellType;
-    if (shellType == VTShellProcess.SHELL_TYPE_GROOVYSH)
+    if (shellType == VTShellProcessor.SHELL_TYPE_GROOVYSH)
     {
       javaBuilder = new ProcessBuilder(new String[] {"java", "-cp", "\"" + System.getProperty("java.class.path") + "\"", DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, GROOVYSHELL_MAIN_CLASS});
     }
-    if (shellType == VTShellProcess.SHELL_TYPE_BEANSHELL)
+    if (shellType == VTShellProcessor.SHELL_TYPE_BEANSHELL)
     {
       javaBuilder = new ProcessBuilder(new String[] {"java", "-cp", "\"" + System.getProperty("java.class.path") + "\"", DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, BEANSHELL_MAIN_CLASS});
     }
@@ -58,24 +58,24 @@ public class VTShellAdapter
     //shellProcess.setThreads(threads);
   }
   
-  public VTShellProcess getShell()
+  public VTShellProcessor getShell()
   {
-    return shellProcess;
+    return shellProcessor;
   }
   
   public Reader getShellOutputReader()
   {
-    return shellProcess.getShellOutputReader();
+    return shellProcessor.getShellOutputReader();
   }
 
   public Reader getShellErrorReader()
   {
-    return shellProcess.getShellErrorReader();
+    return shellProcessor.getShellErrorReader();
   }
 
   public Writer getShellCommandExecutor()
   {
-    return shellProcess.getShellCommandExecutor();
+    return shellProcessor.getShellCommandExecutor();
   }
 
   public Map<String, String> getShellEnvironment()
@@ -155,10 +155,16 @@ public class VTShellAdapter
     }
     else
     {
+      if (command.length == 0 || command[0].trim().length() == 0)
+      {
+        //System.out.println("null shell");
+        this.shellBuilder = null;
+        return;
+      }
       this.shellBuilder = new ProcessBuilder(command);
       this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
       this.shellEnvironment = this.shellBuilder.environment();
-      if (names != null && values != null && (names.length == values.length))
+      if (names != null && values != null && (names.length <= values.length))
       {
         for (int i = 0; i < names.length; i++)
         {
@@ -167,7 +173,12 @@ public class VTShellAdapter
         }
       }
     }
-    this.shellBuilder.redirectErrorStream(true);
+    
+    if (shellBuilder != null)
+    {
+      this.shellBuilder.redirectErrorStream(true);
+    }
+    
   }
   
   private void revertShellBuilder()
@@ -209,14 +220,14 @@ public class VTShellAdapter
   
   public void stopShell()
   {
-    shellProcess.stopShell();
+    shellProcessor.stopShell();
   }
 
   public void waitShell()
   {
     try
     {
-      shellProcess.waitFor();
+      shellProcessor.waitFor();
     }
     catch (Throwable e)
     {
@@ -228,19 +239,24 @@ public class VTShellAdapter
   {
     try
     {
-      if (shellDirectory != null)
-      {
-        shellBuilder.directory(shellDirectory);
-      }
-      else
-      {
-        shellBuilder.directory(null);
-      }
-      shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
-      shellEnvironment = shellBuilder.environment();
       ProcessBuilder commandBuilder = null;
-      if (shellType == VTShellProcess.SHELL_TYPE_PROCESS)
+      //shellProcessor = new VTShellProcessor();
+      if (shellType == VTShellProcessor.SHELL_TYPE_PROCESS)
       {
+        if (shellBuilder == null)
+        {
+          return false;
+        }
+        if (shellDirectory != null)
+        {
+          shellBuilder.directory(shellDirectory);
+        }
+        else
+        {
+          shellBuilder.directory(null);
+        }
+        shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+        shellEnvironment = shellBuilder.environment();
         commandBuilder = shellBuilder;
       }
       else
@@ -259,15 +275,15 @@ public class VTShellAdapter
         commandBuilder = javaBuilder;
       }
       VTRuntimeProcess runtimeProcess = new VTRuntimeProcess(null, commandBuilder, threads, null, false, false, 0);
-      shellProcess.setRuntimeProcess(runtimeProcess);
-      if (shellType != VTShellProcess.SHELL_TYPE_PROCESS)
+      shellProcessor.setRuntimeProcess(runtimeProcess);
+      if (shellType != VTShellProcessor.SHELL_TYPE_PROCESS)
       {
         //try using shell in separate jvm if that fails use current jvm
-        shellProcess.setShellType(VTShellProcess.SHELL_TYPE_PROCESS);
+        shellProcessor.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
         boolean ok = false;
         try
         {
-          ok = shellProcess.startShell();
+          ok = shellProcessor.startShell();
         }
         catch (Throwable t)
         {
@@ -276,10 +292,10 @@ public class VTShellAdapter
         if (!ok)
         {
           //try using shell in current jvm
-          shellProcess.setShellType(shellType);
+          shellProcessor.setShellType(shellType);
           try
           {
-            ok = shellProcess.startShell();
+            ok = shellProcessor.startShell();
           }
           catch (Throwable t)
           {
@@ -289,10 +305,10 @@ public class VTShellAdapter
       }
       else
       {
-        shellProcess.setShellType(shellType);
+        shellProcessor.setShellType(shellType);
         try
         {
-          shellProcess.startShell();
+          shellProcessor.startShell();
         }
         catch (Throwable t)
         {
@@ -324,11 +340,11 @@ public class VTShellAdapter
 
   public boolean setShellEncoding(String shellEncoding)
   {
-    return shellProcess.setShellEncoding(shellEncoding);
+    return shellProcessor.setShellEncoding(shellEncoding);
   }
   
   public String getShellEncoding()
   {
-    return shellProcess.getShellEncoding();
+    return shellProcessor.getShellEncoding();
   }
 }

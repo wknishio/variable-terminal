@@ -43,9 +43,11 @@ import org.vash.vate.server.print.VTServerPrintServiceResolver;
 import org.vash.vate.server.runtime.VTServerRuntimeExecutor;
 import org.vash.vate.server.screenshot.VTServerScreenshotTask;
 import org.vash.vate.shell.adapter.VTShellAdapter;
-import org.vash.vate.shell.adapter.VTShellProcess;
+import org.vash.vate.shell.adapter.VTShellProcessor;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.connection.VTTunnelConnectionHandler;
+
+import com.martiansoftware.jsap.CommandLineTokenizer;
 
 public class VTServerSession
 {
@@ -182,6 +184,7 @@ public class VTServerSession
         // remoteNanoDelay);
       }
     });
+    setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
     setShellBuilder(null, null, null);
   }
 
@@ -265,7 +268,7 @@ public class VTServerSession
     this.runtimeExecutor.setRuntimeBuilderWorkingDirectory(runtimeDirectory);
   }
 
-  public VTShellProcess getShell()
+  public VTShellProcessor getShell()
   {
     return shellAdapter.getShell();
   }
@@ -494,6 +497,34 @@ public class VTServerSession
     waitShellThreads();
     startShell();
     restartShellThreads();
+  }
+  
+  public void negotiateShell() throws IOException
+  {
+    String clientShell = connection.getCommandReader().readLine();
+    String serverShell = server.getServerConnector().getSessionShell();
+    if (clientShell != null && clientShell.length() > 0)
+    {
+      if (clientShell.trim().equalsIgnoreCase("B"))
+      {
+        setShellType(VTShellProcessor.SHELL_TYPE_BEANSHELL);
+      }
+      else
+      {
+        setShellBuilder(CommandLineTokenizer.tokenize(clientShell), null, null);
+      }
+    }
+    else if (serverShell != null && serverShell.length() > 0)
+    {
+      if (serverShell.trim().equalsIgnoreCase("B"))
+      {
+        setShellType(VTShellProcessor.SHELL_TYPE_BEANSHELL);
+      }
+      else
+      {
+        setShellBuilder(CommandLineTokenizer.tokenize(serverShell), null, null);
+      }
+    }
   }
 
   public void startShell()

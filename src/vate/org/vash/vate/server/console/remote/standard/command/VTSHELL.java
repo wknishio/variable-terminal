@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.shell.adapter.VTShellProcess;
+import org.vash.vate.shell.adapter.VTShellProcessor;
 
 public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
 {
@@ -28,10 +28,21 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
         //session.setRestartingShell(true);
         session.restartShell();
       }
+      else if (parsed[1].toUpperCase().contains("N"))
+      {
+        connection.getResultWriter().write("\nVT>Disabling remote shell...\nVT>");
+        connection.getResultWriter().flush();
+        session.stopShell();
+        session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
+        session.setShellBuilder(new String[] {}, null, null);
+        session.restartShell();
+      }
       else if (parsed[1].toUpperCase().contains("B"))
       {
+        connection.getResultWriter().write("\nVT>Using beanshell as remote shell...\nVT>");
+        connection.getResultWriter().flush();
         session.stopShell();
-        session.setShellType(VTShellProcess.SHELL_TYPE_BEANSHELL);
+        session.setShellType(VTShellProcessor.SHELL_TYPE_BEANSHELL);
         session.restartShell();
       }
 //      else if (parsed[1].toUpperCase().contains("G"))
@@ -64,7 +75,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
       else if (parsed[1].toUpperCase().contains("D"))
       {
         session.stopShell();
-        session.setShellType(VTShellProcess.SHELL_TYPE_PROCESS);
+        session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
         if (parsed.length >= 3 && (parsed[2].length() > 0))
         {
           String[] nextShell = new String[parsed.length - 2];
@@ -92,7 +103,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
           String encoding = parsed[2];
           if (session.setShellEncoding(encoding))
           {
-            connection.getResultWriter().write("\nVT>Defining remote shell encoding to: [" + encoding + "]");
+            connection.getResultWriter().write("\nVT>Set remote shell encoding to: [" + encoding + "]");
             connection.getResultWriter().flush();
             //session.restartShell();
           }
@@ -105,7 +116,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
         else
         {
           session.setShellEncoding(null);
-          connection.getResultWriter().write("\nVT>Defining remote shell encoding to: [Default]");
+          connection.getResultWriter().write("\nVT>Set remote shell encoding to: [Default]");
           connection.getResultWriter().flush();
           //session.restartShell();
         }

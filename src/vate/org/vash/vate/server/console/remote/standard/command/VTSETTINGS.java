@@ -19,6 +19,7 @@ public class VTSETTINGS extends VTServerStandardRemoteConsoleCommandProcessor
     if (parsed.length == 1)
     {
       message.setLength(0);
+      String sessionShell = session.getServer().getServerConnector().getSessionShell();
       int sessionsLimit = session.getServer().getServerConnector().getSessionsLimit();
       String hostAddress = session.getServer().getServerConnector().getAddress();
       Integer port = session.getServer().getServerConnector().getPort();
@@ -122,6 +123,7 @@ public class VTSETTINGS extends VTServerStandardRemoteConsoleCommandProcessor
         message.append("\nVT>Encryption type(ET): [None]");
       }
       message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
+      message.append("\nVT>Session shell(SS): [" + sessionShell + "]");
       message.append("\nVT>Session limit(SL): [" + sessionsLimit + "]");
       message.append("\nVT>\nVT>End of connection settings list on server\nVT>");
       connection.getResultWriter().write(message.toString());
@@ -780,6 +782,34 @@ public class VTSETTINGS extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().write("\nVT>Connection nat port(NP) set to: []\nVT>");
             connection.getResultWriter().flush();
           }
+        }
+        else
+        {
+          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().flush();
+        }
+      }
+      else if (parsed[1].equalsIgnoreCase("SS"))
+      {
+        if (parsed.length == 2)
+        {
+          String sessionShell = session.getServer().getServerConnector().getSessionShell();
+          
+          connection.getResultWriter().write("\nVT>Session shell(SS): [" + sessionShell + "]\nVT>");
+          connection.getResultWriter().flush();
+        }
+        else if (parsed.length >= 3)
+        {
+          String sessionShell = parsed[2];
+          VTServerConnector connector = session.getServer().getServerConnector();
+          synchronized (connector)
+          {
+            connector.setSessionShell(sessionShell);
+            connector.interruptConnector();
+            connector.notify();
+          }
+          connection.getResultWriter().write("\nVT>Session shell(SS) set to: [" + sessionShell + "]\nVT>");
+          connection.getResultWriter().flush();
         }
         else
         {

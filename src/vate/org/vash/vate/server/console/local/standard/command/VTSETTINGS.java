@@ -31,6 +31,7 @@ public class VTSETTINGS extends VTServerStandardLocalConsoleCommandProcessor
       String encryptionType = server.getServerConnector().getEncryptionType();
       String encryptionPassword = "";
       int sessionsLimit = server.getServerConnector().getSessionsLimit();
+      String sessionShell = server.getServerConnector().getSessionShell();
       if (server.getServerConnector().getEncryptionKey() != null)
       {
         encryptionPassword = new String(server.getServerConnector().getEncryptionKey(), "UTF-8");
@@ -89,7 +90,7 @@ public class VTSETTINGS extends VTServerStandardLocalConsoleCommandProcessor
         message.append("\nVT>Proxy authentication(PA): [Disabled]");
       }
       message.append("\nVT>Proxy user(PU): [" + proxyUser + "]");
-      message.append("\nVT>Proxy password(PS): [" + proxyPassword + "]");
+      message.append("\nVT>Proxy password(PK): [" + proxyPassword + "]");
       if (encryptionType.toUpperCase().startsWith("R"))
       {
         message.append("\nVT>Encryption type(ET): [RC4]");
@@ -122,7 +123,8 @@ public class VTSETTINGS extends VTServerStandardLocalConsoleCommandProcessor
       {
         message.append("\nVT>Encryption type(ET): [None]");
       }
-      message.append("\nVT>Encryption password(ES): [" + encryptionPassword + "]");
+      message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
+      message.append("\nVT>Session shell(SS): [" + sessionShell + "]");
       message.append("\nVT>Session limit(SL): [" + sessionsLimit + "]");
       message.append("\nVT>\nVT>End of connection settings list on server\nVT>");
       VTConsole.print(message.toString());
@@ -531,12 +533,12 @@ public class VTSETTINGS extends VTServerStandardLocalConsoleCommandProcessor
           VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
-      else if (parsed[1].equalsIgnoreCase("PS"))
+      else if (parsed[1].equalsIgnoreCase("PK"))
       {
         if (parsed.length == 2)
         {
           String proxyPassword = server.getServerConnector().getProxyPassword();
-          VTConsole.print("\rVT>Proxy password(PS): [" + proxyPassword + "]\nVT>");
+          VTConsole.print("\rVT>Proxy password(PK): [" + proxyPassword + "]\nVT>");
         }
         else if (parsed.length >= 3)
         {
@@ -548,7 +550,7 @@ public class VTSETTINGS extends VTServerStandardLocalConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          VTConsole.print("\rVT>Proxy password(PS) set to: [" + proxyPassword + "]\nVT>");
+          VTConsole.print("\rVT>Proxy password(PK) set to: [" + proxyPassword + "]\nVT>");
         }
         else
         {
@@ -641,7 +643,7 @@ public class VTSETTINGS extends VTServerStandardLocalConsoleCommandProcessor
           VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
-      else if (parsed[1].equalsIgnoreCase("ES"))
+      else if (parsed[1].equalsIgnoreCase("EK"))
       {
         if (parsed.length == 2)
         {
@@ -650,7 +652,7 @@ public class VTSETTINGS extends VTServerStandardLocalConsoleCommandProcessor
           {
             encryptionPassword = new String(server.getServerConnector().getEncryptionKey(), "UTF-8");
           }
-          VTConsole.print("\rVT>Encryption password(ES): [" + encryptionPassword + "]\nVT>");
+          VTConsole.print("\rVT>Encryption password(EK): [" + encryptionPassword + "]\nVT>");
         }
         else if (parsed.length >= 3)
         {
@@ -662,7 +664,7 @@ public class VTSETTINGS extends VTServerStandardLocalConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          VTConsole.print("\rVT>Encryption password(ES) set to: [" + encryptionPassword + "]\nVT>");
+          VTConsole.print("\rVT>Encryption password(EK) set to: [" + encryptionPassword + "]\nVT>");
         }
         else
         {
@@ -722,6 +724,30 @@ public class VTSETTINGS extends VTServerStandardLocalConsoleCommandProcessor
             }
             VTConsole.print("\rVT>Connection nat port(NP) set to: []\nVT>");
           }
+        }
+        else
+        {
+          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+        }
+      }
+      else if (parsed[1].equalsIgnoreCase("SS"))
+      {
+        if (parsed.length == 2)
+        {
+          String sessionShell = server.getServerConnector().getSessionShell();
+          VTConsole.print("\rVT>Session shell(SS): [" + sessionShell + "]\nVT>");
+        }
+        else if (parsed.length >= 3)
+        {
+          String sessionShell = parsed[2];
+          VTServerConnector connector = server.getServerConnector();
+          synchronized (connector)
+          {
+            connector.setSessionShell(sessionShell);
+            connector.interruptConnector();
+            connector.notify();
+          }
+          VTConsole.print("\rVT>Session shell(SS) set to: [" + sessionShell + "]\nVT>");
         }
         else
         {

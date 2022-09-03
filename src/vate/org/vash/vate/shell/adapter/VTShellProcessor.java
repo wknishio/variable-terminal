@@ -21,7 +21,7 @@ import org.vash.vate.stream.pipe.VTPipedOutputStream;
 
 import bsh.Interpreter;
 
-public class VTShellProcess
+public class VTShellProcessor
 {
   public static final int SHELL_TYPE_PROCESS = 0;
   public static final int SHELL_TYPE_BEANSHELL = 1;
@@ -50,7 +50,7 @@ public class VTShellProcess
   
   private List<Closeable> closeables = new LinkedList<Closeable>();
   
-  public VTShellProcess()
+  public VTShellProcessor()
   {
     
   }

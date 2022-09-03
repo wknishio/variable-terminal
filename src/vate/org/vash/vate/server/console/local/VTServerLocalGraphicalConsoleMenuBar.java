@@ -81,6 +81,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     serverEncryptionMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Type", "*VTSETTINGS ET "));
     serverEncryptionMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Password", "*VTSETTINGS ES "));
     serverSessionsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Limit", "*VTSETTINGS SL "));
+    serverSessionsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Shell", "*VTSETTINGS SS "));
     serverSessionsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Credential", "*VTLOCK "));
     serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Save Settings File", "*VTSETTINGS SF "));
     serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Load Settings File", "*VTSETTINGS LF "));

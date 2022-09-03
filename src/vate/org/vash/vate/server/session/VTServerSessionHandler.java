@@ -84,6 +84,7 @@ public class VTServerSessionHandler implements Runnable
       connection.startConnection();
       session.initialize();
       session.setUser(authenticator.getUser());
+      session.negotiateShell();
       session.startShell();
       session.startSession();
       session.startSessionThreads();

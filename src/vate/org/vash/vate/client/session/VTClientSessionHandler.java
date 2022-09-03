@@ -77,6 +77,7 @@ public class VTClientSessionHandler implements Runnable
     {
       connection.startConnection();
       session.initialize();
+      session.negotiateShell();
       session.startSession();
       session.startSessionThreads();
       authenticated = true;

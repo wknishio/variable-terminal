@@ -229,6 +229,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     shellMenu.add(new VTGraphicalConsoleMenuItem("Define Remote Shell Command", "*VTSHELL D "));
     shellMenu.add(new VTGraphicalConsoleMenuItem("Use BeanShell As Remote Shell", "*VTSHELL B\n"));
     //shellMenu.add(new VTGraphicalConsoleMenuItem("Use Groovysh As Remote Shell", "*VTSHELL G\n"));
+    shellMenu.add(new VTGraphicalConsoleMenuItem("Disable Remote Shell", "*VTSHELL N\n"));
     shellMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSHELL\n"));
 
     // settingsMenu = new Menu("Settings ");
@@ -257,6 +258,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverEncryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Type", "*VTSETTINGS ET "));
     serverEncryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Password", "*VTSETTINGS ES "));
     serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Limit", "*VTSETTINGS SL "));
+    serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Shell", "*VTSETTINGS SS "));
     serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Credential", "*VTLOCK "));
     serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Save Settings File", "*VTSETTINGS SF "));
     serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Load Settings File", "*VTSETTINGS LF "));

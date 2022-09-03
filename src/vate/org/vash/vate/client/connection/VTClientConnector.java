@@ -34,6 +34,7 @@ public class VTClientConnector implements Runnable
   private byte[] encryptionKey;
   private String sessionCommands;
   private String sessionFiles;
+  private String sessionShell = "";
   private ServerSocket connectionServerSocket;
   private VTClient client;
   private VTClientConnection connection;
@@ -891,6 +892,17 @@ public class VTClientConnector implements Runnable
         }
         else
         {
+          VTConsole.print("VT>Enter session shell(null for default):");
+          String shell = VTConsole.readLine(true);
+          if (shell == null)
+          {
+            System.exit(0);
+          }
+          else if (skipConfiguration)
+          {
+            return true;
+          }
+          setSessionShell(shell);
           VTConsole.print("VT>Enter session user:");
           String user = VTConsole.readLine(false);
           if (user == null)
@@ -1385,6 +1397,17 @@ public class VTClientConnector implements Runnable
       }
       else
       {
+        VTConsole.print("VT>Enter session shell(null for default):");
+        String shell = VTConsole.readLine(true);
+        if (shell == null)
+        {
+          System.exit(0);
+        }
+        else if (skipConfiguration)
+        {
+          return true;
+        }
+        setSessionShell(shell);
         VTConsole.print("VT>Enter session user:");
         String user = VTConsole.readLine(false);
         if (user == null)
@@ -1529,6 +1552,16 @@ public class VTClientConnector implements Runnable
   public void setSessionFiles(String sessionFiles)
   {
     this.sessionFiles = sessionFiles;
+  }
+
+  public String getSessionShell()
+  {
+    return sessionShell;
+  }
+  
+  public void setSessionShell(String sessionShell)
+  {
+    this.sessionShell = sessionShell;
   }
 
 
