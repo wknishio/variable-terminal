@@ -48,7 +48,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
 //      else if (parsed[1].toUpperCase().contains("G"))
 //      {
 //        session.stopShell();
-//        session.setShellType(VTShellProcess.SHELL_TYPE_GROOVYSH);
+//        session.setShellType(VTShellProcessor.SHELL_TYPE_GROOVYSH);
 //        session.restartShell();
 //      }
       else if (parsed[1].toUpperCase().contains("C"))
