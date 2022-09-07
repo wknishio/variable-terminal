@@ -39,9 +39,9 @@ public class VTHelpManager
     ("\n-SS: session shell, default null") + 
     ("\n-SU: session user, default null") + 
     ("\n-SK: session password, default null") +
-    ("\n-SL: session limit, default 0, only in server") + 
+    ("\n-SM: session maximum, default 0, only in server") + 
     ("\n-SC: session commands, separated by \"*;\", default null, only in client") + 
-    ("\n-SF: session files, separated by \";\", default null, only in client");
+    ("\n-SL: session lines, separated by \";\", default null, only in client");
 ;
 
   public static void initialize()

@@ -89,7 +89,7 @@ Changes since 1.4.2:
 * Added GRAIN as encryption algorithm
 * Added ISAAC as encryption algorithm
 * Added *VTPAUSE command to pause local console for a interval or until enter
-* Added client parameter session files -SF to run commands from text files
+* Added client parameter session lines -SL to run commands from text files
 * Added *VTCONFIGURE command to reconfigure all server connection settings
 * Added *VTREAD command to run text files commands in client console
 * Added *VTLOG command to record client commands to local client file

@@ -30,7 +30,7 @@ public class VTSETTINGS extends VTServerStandardLocalConsoleCommandProcessor
       String proxyPassword = server.getServerConnector().getProxyPassword();
       String encryptionType = server.getServerConnector().getEncryptionType();
       String encryptionPassword = "";
-      int sessionsLimit = server.getServerConnector().getSessionsLimit();
+      int sessionsMaximum = server.getServerConnector().getSessionsMaximum();
       String sessionShell = server.getServerConnector().getSessionShell();
       if (server.getServerConnector().getEncryptionKey() != null)
       {
@@ -125,7 +125,7 @@ public class VTSETTINGS extends VTServerStandardLocalConsoleCommandProcessor
       }
       message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
       message.append("\nVT>Session shell(SS): [" + sessionShell + "]");
-      message.append("\nVT>Session limit(SL): [" + sessionsLimit + "]");
+      message.append("\nVT>Session maximum(SM): [" + sessionsMaximum + "]");
       message.append("\nVT>\nVT>End of connection settings list on server\nVT>");
       VTConsole.print(message.toString());
       message.setLength(0);
@@ -227,28 +227,28 @@ public class VTSETTINGS extends VTServerStandardLocalConsoleCommandProcessor
 //          connector.notify();
 //        }
 //      }
-      else if (parsed[1].equalsIgnoreCase("SL"))
+      else if (parsed[1].equalsIgnoreCase("SM"))
       {
         if (parsed.length == 2)
         {
-          int sessionsLimit = server.getServerConnector().getSessionsLimit();
-          VTConsole.print("\rVT>Session limit(SL): [" + sessionsLimit + "]\nVT>");
+          int sessionsMaximum = server.getServerConnector().getSessionsMaximum();
+          VTConsole.print("\rVT>Session maximum(SM): [" + sessionsMaximum + "]\nVT>");
         }
         else if (parsed.length >= 3)
         {
-          int sessionsLimit = Integer.parseInt(parsed[2]);
-          if (sessionsLimit < 0)
+          int sessionsMaximum = Integer.parseInt(parsed[2]);
+          if (sessionsMaximum < 0)
           {
-            sessionsLimit = 0;
+            sessionsMaximum = 0;
           }
           VTServerConnector connector = server.getServerConnector();
           synchronized (connector)
           {
-            connector.setSessionsLimit(sessionsLimit);
+            connector.setSessionsMaximum(sessionsMaximum);
             connector.interruptConnector();
             connector.notify();
           }
-          VTConsole.print("\rVT>Session limit(SL) set to: [" + sessionsLimit + "]\nVT>");
+          VTConsole.print("\rVT>Session maximum(SM) set to: [" + sessionsMaximum + "]\nVT>");
         }
         else
         {

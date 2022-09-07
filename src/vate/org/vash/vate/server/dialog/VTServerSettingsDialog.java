@@ -51,7 +51,7 @@ public class VTServerSettingsDialog extends Dialog
   private VTServerSettingsDialogParameter encryptionType;
   private VTServerSettingsDialogParameter encryptionPassword;
 
-  private VTServerSettingsDialogParameter sessionsLimit;
+  private VTServerSettingsDialogParameter sessionsMaximum;
   private VTServerSettingsDialogParameter sessionShell;
   private VTServerSettingsDialogParameter sessionUser;
   private VTServerSettingsDialogParameter sessionPassword;
@@ -405,8 +405,8 @@ public class VTServerSettingsDialog extends Dialog
       }
     });
 
-    TextField sessionsLimitField = new TextField(16);
-    sessionsLimitField.addTextListener(new TextListener()
+    TextField sessionsMaximumField = new TextField(16);
+    sessionsMaximumField.addTextListener(new TextListener()
     {
       public void textValueChanged(TextEvent e)
       {
@@ -421,7 +421,7 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-    sessionsLimit = new VTServerSettingsDialogParameter("Session Limit:", sessionsLimitField, true);
+    sessionsMaximum = new VTServerSettingsDialogParameter("Session Maximum:", sessionsMaximumField, true);
     
     TextField sessionShellField = new TextField(16);
     sessionShell = new VTServerSettingsDialogParameter("Session Shell:", sessionShellField, true);
@@ -789,7 +789,7 @@ public class VTServerSettingsDialog extends Dialog
     centerPanel.add(encryptionPassword);
 
     centerPanel.add(sessionShell);
-    centerPanel.add(sessionsLimit);
+    centerPanel.add(sessionsMaximumField);
     
     centerPanel.add(sessionUser);
     centerPanel.add(sessionPassword);
@@ -992,7 +992,7 @@ public class VTServerSettingsDialog extends Dialog
         setProxySecurity(connector.isUseProxyAuthentication());
         proxyUser.setParameter(connector.getProxyUser());
         proxyPassword.setParameter(connector.getProxyPassword());
-        sessionsLimit.setParameter(String.valueOf(connector.getSessionsLimit()));
+        sessionsMaximum.setParameter(String.valueOf(connector.getSessionsMaximum()));
         sessionShell.setParameter(connector.getSessionShell());
       }
       else
@@ -1017,7 +1017,7 @@ public class VTServerSettingsDialog extends Dialog
         setProxySecurity(server.isUseProxyAuthentication());
         proxyUser.setParameter(server.getProxyUser());
         proxyPassword.setParameter(server.getProxyPassword());
-        sessionsLimit.setParameter(String.valueOf(server.getSessionsLimit()));
+        sessionsMaximum.setParameter(String.valueOf(server.getSessionsMaximum()));
         sessionShell.setParameter(server.getSessionShell());
       }
     }
@@ -1224,11 +1224,11 @@ public class VTServerSettingsDialog extends Dialog
         connector.setProxyPassword(proxyPassword.getParameter());
         try
         {
-          connector.setSessionsLimit(Integer.parseInt(sessionsLimit.getParameter()));
+          connector.setSessionsMaximum(Integer.parseInt(sessionsMaximum.getParameter()));
         }
         catch (Throwable e)
         {
-          connector.setSessionsLimit(0);
+          connector.setSessionsMaximum(0);
         }
         connector.setSessionShell(sessionShell.getParameter());
         String user = sessionUser.getParameter();
@@ -1285,11 +1285,12 @@ public class VTServerSettingsDialog extends Dialog
         server.setProxyPassword(proxyPassword.getParameter());
         try
         {
-          server.setSessionsLimit(Integer.parseInt(sessionsLimit.getParameter()));
+          //server.setSessionsLimit(Integer.parseInt(sessionsLimit.getParameter()));
+          server.setSessionsMaximum(Integer.parseInt(sessionsMaximum.getParameter()));
         }
         catch (Throwable e)
         {
-          server.setSessionsLimit(0);
+          server.setSessionsMaximum(0);
         }
         server.setSessionShell(sessionShell.getParameter());
         String user = sessionUser.getParameter();

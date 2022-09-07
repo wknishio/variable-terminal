@@ -87,9 +87,9 @@ instance will listen for connections, as in a TCP connection.
 * Proxy password controls the password for proxy authentication.
 * Encryption type enables connection encryption using encryption algorithms.
 * Encryption password sets the password for connection encryption.
-* Sessions limit define a limit for simultaneous sessions in server.
+* Session maximum define a limit for simultaneous sessions in server.
 * Session commands set commands separated by *; to be run when session starts.
-* Session files set text files separated by ; to be run when session starts.
+* Session lines set text files separated by ; to be run when session starts.
 * Session user sets the session user for session.
 * Session password sets the session password for session.
 
@@ -114,14 +114,14 @@ these are the available program arguments:
 * -PP: proxy port, default 1080 for SOCKS or default 8080 for HTTP
 * -PA: proxy authentication, default disabled(D), enabled(E)
 * -PU: proxy user, default null
-* -PS: proxy password, default null
+* -PK: proxy password, default null
 * -ET: encryption type, none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)
-* -ES: encryption password, default null
-* -SL: sessions limit, default 0, only in server
+* -EK encryption password, default null
+* -SM: session maximum, default 0, only in server
 * -SC: session commands, separated by "*;", default null, only in client
-* -SF: session files, separated by ";", default null, only in client
-* -SL: session login, default null
-* -SS: session password, default null
+* -SL: session lines, separated by ";", default null, only in client
+* -SU: session user, default null
+* -SK: session password, default null
 
 ## Console commands
 

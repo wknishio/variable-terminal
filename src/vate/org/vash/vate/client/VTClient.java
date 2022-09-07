@@ -45,7 +45,7 @@ public class VTClient implements Runnable
   private String sessionUser = "";
   private String sessionPassword = "";
   private String sessionCommands = "";
-  private String sessionFiles = "";
+  private String sessionLines = "";
   private String sessionShell = "";
   private boolean daemon = false;
   private final String vtURL = System.getenv("VT_PATH");
@@ -70,7 +70,7 @@ public class VTClient implements Runnable
   "#vate.client.proxy.authentication values: default disabled(D), enabled(E)\r\n" + 
   "#vate.client.encryption.type      values: default none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
   "#vate.client.session.commands     format: cmd1*;cmd2*;cmd3*;...\r\n" +
-  "#vate.client.session.files        format: file1;file2;file3;...";
+  "#vate.client.session.lines        format: file1;file2;file3;...";
 
   static
   {
@@ -261,14 +261,14 @@ public class VTClient implements Runnable
     this.sessionCommands = sessionCommands;
   }
   
-  public String getSessionFiles()
+  public String getSessionLines()
   {
-    return sessionFiles;
+    return sessionLines;
   }
   
-  public void setSessionFiles(String sessionFiles)
+  public void setSessionLines(String sessionLines)
   {
-    this.sessionFiles = sessionFiles;
+    this.sessionLines = sessionLines;
   }
 
   /* public MessageDigest getSha256Digester() { return sha256Digester; } */
@@ -415,7 +415,7 @@ public class VTClient implements Runnable
     fileClientSettings.setProperty("vate.client.encryption.type", encryptionType);
     fileClientSettings.setProperty("vate.client.encryption.password", new String(encryptionKey, "UTF-8"));
     fileClientSettings.setProperty("vate.client.session.commands", sessionCommands);
-    fileClientSettings.setProperty("vate.client.session.files", sessionFiles);
+    fileClientSettings.setProperty("vate.client.session.lines", sessionLines);
     fileClientSettings.setProperty("vate.client.session.shell", sessionShell);
     fileClientSettings.setProperty("vate.client.session.user", sessionUser);
     fileClientSettings.setProperty("vate.client.session.password", sessionPassword);
@@ -654,11 +654,11 @@ public class VTClient implements Runnable
       }
     }
     
-    if (fileClientSettings.getProperty("vate.client.session.files") != null)
+    if (fileClientSettings.getProperty("vate.client.session.lines") != null)
     {
       try
       {
-        sessionFiles = fileClientSettings.getProperty("vate.client.session.files");
+        sessionLines = fileClientSettings.getProperty("vate.client.session.lines");
       }
       catch (Throwable e)
       {
@@ -913,11 +913,11 @@ public class VTClient implements Runnable
         }
       }
       
-      if (fileClientSettings.getProperty("vate.client.session.files") != null)
+      if (fileClientSettings.getProperty("vate.client.session.lines") != null)
       {
         try
         {
-          sessionFiles = fileClientSettings.getProperty("vate.client.session.files");
+          sessionLines = fileClientSettings.getProperty("vate.client.session.lines");
         }
         catch (Throwable e)
         {
@@ -1154,11 +1154,11 @@ public class VTClient implements Runnable
       }
     }
     
-    if (properties.getProperty("vate.client.session.files") != null)
+    if (properties.getProperty("vate.client.session.lines") != null)
     {
       try
       {
-        sessionFiles = properties.getProperty("vate.client.session.files");
+        sessionLines = properties.getProperty("vate.client.session.lines");
       }
       catch (Throwable e)
       {
@@ -1758,9 +1758,9 @@ public class VTClient implements Runnable
             return;
           }
           setSessionCommands(command);
-          VTConsole.print("VT>Enter session files:");
-          String files = VTConsole.readLine(true);
-          if (files == null)
+          VTConsole.print("VT>Enter session lines:");
+          String lines = VTConsole.readLine(true);
+          if (lines == null)
           {
             System.exit(0);
           }
@@ -1768,7 +1768,7 @@ public class VTClient implements Runnable
           {
             return;
           }
-          setSessionFiles(files);
+          setSessionLines(lines);
         }
       }
       catch (NumberFormatException e)
@@ -1928,10 +1928,10 @@ public class VTClient implements Runnable
         parameterValue = parameters[++i];
         sessionCommands = parameterValue;
       }
-      if (parameterName.contains("-SF"))
+      if (parameterName.contains("-SL"))
       {
         parameterValue = parameters[++i];
-        sessionFiles = parameterValue;
+        sessionLines = parameterValue;
       }
       if (parameterName.contains("-SU"))
       {
@@ -2040,7 +2040,7 @@ public class VTClient implements Runnable
       this.encryptionType = clientConnector.getEncryptionType();
       this.encryptionKey = clientConnector.getEncryptionKey();
       this.sessionCommands = clientConnector.getSessionCommands();
-      this.sessionFiles = clientConnector.getSessionFiles();
+      this.sessionLines = clientConnector.getSessionLines();
       this.sessionShell = clientConnector.getSessionShell();
     }
   }
@@ -2062,7 +2062,7 @@ public class VTClient implements Runnable
       clientConnector.setEncryptionType(encryptionType);
       clientConnector.setEncryptionKey(encryptionKey);
       clientConnector.setSessionCommands(sessionCommands);
-      clientConnector.setSessionFiles(sessionFiles);
+      clientConnector.setSessionLines(sessionLines);
       clientConnector.setSessionShell(sessionShell);
     }
   }
@@ -2083,7 +2083,7 @@ public class VTClient implements Runnable
     clientConnector.setEncryptionType(encryptionType);
     clientConnector.setEncryptionKey(encryptionKey);
     clientConnector.setSessionCommands(sessionCommands);
-    clientConnector.setSessionFiles(sessionFiles);
+    clientConnector.setSessionLines(sessionLines);
     clientConnector.setSessionShell(sessionShell);
     for (VTClientSessionListener listener : listeners)
     {

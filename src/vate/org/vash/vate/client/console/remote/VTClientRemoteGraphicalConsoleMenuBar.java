@@ -254,14 +254,14 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Port", "*VTSETTINGS PP "));
     serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Authentication", "*VTSETTINGS PA "));
     serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy User", "*VTSETTINGS PU "));
-    serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Password", "*VTSETTINGS PS "));
+    serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Password", "*VTSETTINGS PK "));
     serverEncryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Type", "*VTSETTINGS ET "));
-    serverEncryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Password", "*VTSETTINGS ES "));
-    serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Limit", "*VTSETTINGS SL "));
+    serverEncryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Password", "*VTSETTINGS EK "));
+    serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Maximum", "*VTSETTINGS SM "));
     serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Shell", "*VTSETTINGS SS "));
     serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Credential", "*VTLOCK "));
-    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Save Settings File", "*VTSETTINGS SF "));
-    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Load Settings File", "*VTSETTINGS LF "));
+    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Save Settings File", "*VTSETTINGS SP "));
+    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Load Settings File", "*VTSETTINGS LP "));
     serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSETTINGS\n"));
     // settingsMenu.add(serverSettingsMenu);
 

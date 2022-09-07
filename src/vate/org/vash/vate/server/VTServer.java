@@ -54,7 +54,7 @@ public class VTServer implements Runnable
   private byte[] encryptionKey = new byte[] {};
   private boolean daemon = false;
   private String sessionUsers = "";
-  private int sessionsLimit = 0;
+  private int sessionsMaximum = 0;
   private String sessionShell = "";
   private final String vtURL = System.getenv("VT_PATH");
   //private MessageDigest sha256Digester;
@@ -236,9 +236,9 @@ public class VTServer implements Runnable
     VTConsole.setDaemon(daemon);
   }
 
-  public void setSessionsLimit(int sessionsLimit)
+  public void setSessionsMaximum(int sessionsMaximum)
   {
-    this.sessionsLimit = sessionsLimit;
+    this.sessionsMaximum = sessionsMaximum;
   }
 
   public void setAddress(String address)
@@ -353,9 +353,9 @@ public class VTServer implements Runnable
     return daemon;
   }
 
-  public int getSessionsLimit()
+  public int getSessionsMaximum()
   {
-    return sessionsLimit;
+    return sessionsMaximum;
   }
 
   public String getAddress()
@@ -511,7 +511,7 @@ public class VTServer implements Runnable
     fileServerSettings.setProperty("vate.server.encryption.type", encryptionType);
     fileServerSettings.setProperty("vate.server.encryption.password", new String(encryptionKey, "UTF-8"));
     fileServerSettings.setProperty("vate.server.session.shell", sessionShell);
-    fileServerSettings.setProperty("vate.server.session.limit", String.valueOf(sessionsLimit));
+    fileServerSettings.setProperty("vate.server.session.maximum", String.valueOf(sessionsMaximum));
     fileServerSettings.setProperty("vate.server.session.users", sessionUsers);
 
     FileOutputStream out = new FileOutputStream(settingsFile);
@@ -737,12 +737,12 @@ public class VTServer implements Runnable
     {
       try
       {
-        int fileSessionsLimit = Integer.parseInt(fileServerSettings.getProperty("vate.server.session.limit"));
-        if (fileSessionsLimit < 0)
+        int fileSessionsMaximum = Integer.parseInt(fileServerSettings.getProperty("vate.server.session.maximum"));
+        if (fileSessionsMaximum < 0)
         {
-          fileSessionsLimit = 0;
+          fileSessionsMaximum = 0;
         }
-        sessionsLimit = fileSessionsLimit;
+        sessionsMaximum = fileSessionsMaximum;
       }
       catch (Throwable e)
       {
@@ -987,12 +987,12 @@ public class VTServer implements Runnable
       {
         try
         {
-          int fileSessionsLimit = Integer.parseInt(fileServerSettings.getProperty("vate.server.session.limit"));
-          if (fileSessionsLimit < 0)
+          int fileSessionsMaximum = Integer.parseInt(fileServerSettings.getProperty("vate.server.session.maximum"));
+          if (fileSessionsMaximum < 0)
           {
-            fileSessionsLimit = 0;
+            fileSessionsMaximum = 0;
           }
-          sessionsLimit = fileSessionsLimit;
+          sessionsMaximum = fileSessionsMaximum;
         }
         catch (Throwable e)
         {
@@ -1219,12 +1219,12 @@ public class VTServer implements Runnable
     {
       try
       {
-        int fileSessionsLimit = Integer.parseInt(properties.getProperty("vate.server.session.limit"));
-        if (fileSessionsLimit < 0)
+        int fileSessionsMaximum = Integer.parseInt(properties.getProperty("vate.server.session.maximum"));
+        if (fileSessionsMaximum < 0)
         {
-          fileSessionsLimit = 0;
+          fileSessionsMaximum = 0;
         }
-        sessionsLimit = fileSessionsLimit;
+        sessionsMaximum = fileSessionsMaximum;
       }
       catch (Throwable e)
       {
@@ -1260,7 +1260,7 @@ public class VTServer implements Runnable
 
   private void configure()
   {
-    while ((passive && hostPort == null) || (!passive && (hostAddress == null || hostPort == null)) || sessionsLimit < 0)
+    while ((passive && hostPort == null) || (!passive && (hostAddress == null || hostPort == null)) || sessionsMaximum < 0)
     {
       if (skipConfiguration)
       {
@@ -1302,7 +1302,7 @@ public class VTServer implements Runnable
       
       if (connectionDialog != null)
       {
-        if ((passive && hostPort == null) || (!passive && (hostAddress == null || hostPort == null)) || sessionsLimit < 0)
+        if ((passive && hostPort == null) || (!passive && (hostAddress == null || hostPort == null)) || sessionsMaximum < 0)
         {
           connectionDialog.open();
           if (skipConfiguration)
@@ -1671,7 +1671,7 @@ public class VTServer implements Runnable
         else
         {
           passive = true;
-          sessionsLimit = 0;
+          sessionsMaximum = 0;
           // hostAddress = "";
           VTConsole.print("VT>Enter host address(default:any):");
           line = VTConsole.readLine(true);
@@ -1706,7 +1706,7 @@ public class VTServer implements Runnable
           {
             VTConsole.print("VT>Invalid port!\n");
             hostPort = null;
-            sessionsLimit = 0;
+            sessionsMaximum = 0;
           }
           else
           {
@@ -1848,7 +1848,7 @@ public class VTServer implements Runnable
              */
             try
             {
-              VTConsole.print("VT>Enter session limit(from 0 to 65535, default:0):");
+              VTConsole.print("VT>Enter session maximum(from 0 to 65535, default:0):");
               line = VTConsole.readLine(true);
               if (line == null)
               {
@@ -1860,29 +1860,29 @@ public class VTServer implements Runnable
               }
               if (!line.trim().equals(""))
               {
-                sessionsLimit = Integer.parseInt(line);
-                if (sessionsLimit < 0)
+                sessionsMaximum = Integer.parseInt(line);
+                if (sessionsMaximum < 0)
                 {
-                  sessionsLimit = 0;
+                  sessionsMaximum = 0;
                 }
               }
               else
               {
-                sessionsLimit = 0;
+                sessionsMaximum = 0;
               }
             }
             catch (NumberFormatException e)
             {
-              sessionsLimit = 0;
+              sessionsMaximum = 0;
             }
             catch (Throwable e)
             {
-              sessionsLimit = 0;
+              sessionsMaximum = 0;
             }
           }
-          if (sessionsLimit < 0)
+          if (sessionsMaximum < 0)
           {
-            VTConsole.print("VT>Invalid session limit!\n");
+            VTConsole.print("VT>Invalid session maximum!\n");
           }
         }
       }
@@ -1897,7 +1897,7 @@ public class VTServer implements Runnable
       {
 
       }
-      if (hostAddress == null || hostPort == null || sessionsLimit < 0)
+      if (hostAddress == null || hostPort == null || sessionsMaximum < 0)
       {
         VTConsole.print("VT>Try configuring again?(Y/N, default:N):");
         try
@@ -2060,7 +2060,7 @@ public class VTServer implements Runnable
         parameterValue = parameters[++i];
         proxyPassword = parameterValue;
       }
-      if (parameterName.contains("-SL"))
+      if (parameterName.contains("-SM"))
       {
         parameterValue = parameters[++i];
         try
@@ -2068,7 +2068,7 @@ public class VTServer implements Runnable
           int intValue = Integer.parseInt(parameterValue);
           if (intValue > 0)
           {
-            sessionsLimit = intValue;
+            sessionsMaximum = intValue;
           }
         }
         catch (Throwable t)
@@ -2184,7 +2184,7 @@ public class VTServer implements Runnable
       this.proxyPassword = serverConnector.getProxyPassword();
       this.encryptionType = serverConnector.getEncryptionType();
       this.encryptionKey = serverConnector.getEncryptionKey();
-      this.sessionsLimit = serverConnector.getSessionsLimit();
+      this.sessionsMaximum = serverConnector.getSessionsMaximum();
       this.sessionShell = serverConnector.getSessionShell();
     }
   }
@@ -2203,7 +2203,7 @@ public class VTServer implements Runnable
       serverConnector.setUseProxyAuthentication(useProxyAuthentication);
       serverConnector.setProxyUser(proxyUser);
       serverConnector.setProxyPassword(proxyPassword);
-      serverConnector.setSessionsLimit(sessionsLimit);
+      serverConnector.setSessionsMaximum(sessionsMaximum);
       serverConnector.setSessionShell(sessionShell);
       if (encryptionType != null && encryptionKey != null)
       {
@@ -2235,7 +2235,7 @@ public class VTServer implements Runnable
     serverConnector.setUseProxyAuthentication(useProxyAuthentication);
     serverConnector.setProxyUser(proxyUser);
     serverConnector.setProxyPassword(proxyPassword);
-    serverConnector.setSessionsLimit(sessionsLimit);
+    serverConnector.setSessionsMaximum(sessionsMaximum);
     serverConnector.setSessionShell(sessionShell);
     if (encryptionType != null && encryptionKey != null)
     {
