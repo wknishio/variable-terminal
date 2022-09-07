@@ -6,9 +6,9 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import org.vash.vate.VT;
 import org.vash.vate.nativeutils.VTNativeUtils;
 import org.vash.vate.runtime.VTRuntimeProcess;
-import com.sun.jna.Platform;
 
 public class VTShellAdapter
 {
@@ -102,7 +102,7 @@ public class VTShellAdapter
   {
     if (command == null)
     {
-      if (Platform.isWindows())
+      if (VT.detectWindows())
       {
         if (System.getProperty("os.name").toUpperCase().contains("WINDOWS 95")
         || System.getProperty("os.name").toUpperCase().contains("WINDOWS 98")
@@ -183,7 +183,7 @@ public class VTShellAdapter
   
   private void revertShellBuilder()
   {
-    if (Platform.isWindows())
+    if (VT.detectWindows())
     {
 //    if (supressEchoShell)
 //    {

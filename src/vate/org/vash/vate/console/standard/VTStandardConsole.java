@@ -14,7 +14,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 // import java.nio.channels.ClosedByInterruptException;
 import java.util.Locale;
-
+import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
 import org.vash.vate.console.VTConsoleImplementation;
@@ -25,8 +25,6 @@ import org.vash.vate.stream.filter.VTDoubledOutputStream;
 // import java.nio.channels.Channels;
 // import java.nio.channels.ClosedByInterruptException;
 // import java.nio.charset.Charset;
-
-import com.sun.jna.Platform;
 
 public class VTStandardConsole implements VTConsoleImplementation
 {
@@ -279,7 +277,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     {
       return;
     }
-    if (Platform.isWindows())
+    if (VT.detectWindows())
     {
       //System.out.print("\u001B[2J");
       //System.out.print("\u001B[H");
@@ -306,7 +304,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     {
       return;
     }
-    if (Platform.isWindows())
+    if (VT.detectWindows())
     {
       //System.out.print("\u001B]0;" + title + "\u0007");
       VTNativeUtils.system("title " + title);
@@ -329,7 +327,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     {
       return;
     }
-    if (Platform.isWindows())
+    if (VT.detectWindows())
     {
       // Windows 2000 and beyond only
       colorCode.setLength(0);
@@ -697,7 +695,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     }
     if (bold)
     {
-      if (Platform.isWindows())
+      if (VT.detectWindows())
       {
         //printStream.print("\u001B[1m");
       }
@@ -708,7 +706,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     }
     else
     {
-      if (Platform.isWindows())
+      if (VT.detectWindows())
       {
         //printStream.print("\u001B[21m");
       }
@@ -725,7 +723,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     {
       return;
     }
-    if (Platform.isWindows())
+    if (VT.detectWindows())
     {
       // setColors(VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN,
       // VTConsole.VT_CONSOLE_COLOR_NORMAL_BLACK);

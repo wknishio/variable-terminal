@@ -75,7 +75,6 @@ import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
 import com.googlecode.lanterna.terminal.swing.TerminalEmulatorColorConfiguration;
 import com.googlecode.lanterna.terminal.swing.TerminalEmulatorPalette;
-import com.sun.jna.Platform;
 
 public class VTLanternaConsole implements VTConsoleImplementation
 {
@@ -2080,7 +2079,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     }
     else
     {
-      if (Platform.isWindows())
+      if (VT.detectWindows())
       {
         //System.out.print("\u001B]0;" + title + "\u0007");
         VTNativeUtils.system("title " + title);

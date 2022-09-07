@@ -281,4 +281,9 @@ public class VT
       
     }
   }
+  
+  public static boolean detectWindows()
+  {
+    return System.getProperty("os.name").toLowerCase().contains("windows");
+  }
 }

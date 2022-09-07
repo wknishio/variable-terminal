@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import com.sun.jna.Platform;
+import org.vash.vate.VT;
 
 /**
  * UnixLikeTerminal extends from ANSITerminal and defines functionality that is common to
@@ -166,7 +166,7 @@ public abstract class UnixLikeTTYTerminal extends UnixLikeTerminal {
            StringBuilder sb = new StringBuilder();
            for (String arg : cmd) { sb.append(arg).append(' '); }
            sb.append("< ").append(ttyDev);
-           if (Platform.isWindows())
+           if (VT.detectWindows())
            {
         	   cmd = new String[] { "cmd.exe", "/c", sb.toString() };
            }
