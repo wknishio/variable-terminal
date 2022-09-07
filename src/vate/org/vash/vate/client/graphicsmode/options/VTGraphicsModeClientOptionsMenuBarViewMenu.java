@@ -143,9 +143,9 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.trueColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, trueColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216));
     this.worstColorOption = new CheckboxMenuItem("Worst", false);
     this.worstColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, worstColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8));
-    this.decreasedColorOption = new CheckboxMenuItem("Reduced", false);
+    this.decreasedColorOption = new CheckboxMenuItem("Below", false);
     this.decreasedColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, decreasedColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125));
-    this.increasedColorOption = new CheckboxMenuItem("Improved", false);
+    this.increasedColorOption = new CheckboxMenuItem("Above", false);
     this.increasedColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, increasedColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512));
     this.extraColorOption = new CheckboxMenuItem("Extra", false);
     this.extraColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, extraColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4096));
