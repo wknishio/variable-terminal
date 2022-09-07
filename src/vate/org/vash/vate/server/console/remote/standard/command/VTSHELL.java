@@ -35,7 +35,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
         session.stopShell();
         session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
         session.setShellBuilder(new String[] {}, null, null);
-        session.restartShell();
+        //session.restartShell();
       }
       else if (parsed[1].toUpperCase().contains("B"))
       {
