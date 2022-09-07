@@ -789,7 +789,7 @@ public class VTServerSettingsDialog extends Dialog
     centerPanel.add(encryptionPassword);
 
     centerPanel.add(sessionShell);
-    centerPanel.add(sessionsMaximumField);
+    centerPanel.add(sessionsMaximum);
     
     centerPanel.add(sessionUser);
     centerPanel.add(sessionPassword);
