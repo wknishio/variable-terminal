@@ -55,33 +55,39 @@ public final class VTImageIO
   // private static final IndexColorModel bytePacked4Bit16ColorModel =
   // VTIndexedColorModel.createPacked4Bit16ColorModel();
 
-  private static final DirectColorModel int24bitRGBColorModel = new DirectColorModel(24, DCM_RED_MASK, // Red
+  private static final DirectColorModel int24bitRGBColorModel = new DirectColorModel(24,
+    DCM_RED_MASK, // Red
     DCM_GREEN_MASK, // Green
     DCM_BLUE_MASK, // Blue
     0x0 // Alpha
   );
 
-  private static final DirectColorModel ushort15bitRGBColorModel = new DirectColorModel(15, DCM_555_RED_MASK, 
+  private static final DirectColorModel ushort15bitRGBColorModel = new DirectColorModel(15,
+    DCM_555_RED_MASK, 
     DCM_555_GRN_MASK, 
     DCM_555_BLU_MASK
   );
   
-  private static final DirectColorModel ushort12bitRGBColorModel = new DirectColorModel(12, DCM_444_RED_MASK, 
+  private static final DirectColorModel ushort12bitRGBColorModel = new DirectColorModel(12,
+    DCM_444_RED_MASK, 
     DCM_444_GRN_MASK, 
     DCM_444_BLU_MASK
   );
   
-  private static final DirectColorModel ushort9bitRGBColorModel = new DirectColorModel(9, DCM_333_RED_MASK, 
+  private static final DirectColorModel ushort9bitRGBColorModel = new DirectColorModel(9,
+    DCM_333_RED_MASK, 
     DCM_333_GRN_MASK, 
     DCM_333_BLU_MASK
   );
   
-  private static final DirectColorModel byte6bitRGBColorModel = new DirectColorModel(6, DCM_222_RED_MASK, 
+  private static final DirectColorModel byte6bitRGBColorModel = new DirectColorModel(6,
+    DCM_222_RED_MASK, 
     DCM_222_GRN_MASK, 
     DCM_222_BLU_MASK
   );
 
-  private static final DirectColorModel int32bitRGBColorModel = new DirectColorModel(32, DCM_RED_MASK, // Red
+  private static final DirectColorModel int32bitRGBColorModel = new DirectColorModel(32,
+    DCM_RED_MASK, // Red
     DCM_GREEN_MASK, // Green
     DCM_BLUE_MASK, // Blue
     DCM_ALPHA_MASK // Alpha

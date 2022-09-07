@@ -186,15 +186,15 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
 
   private static final void encodePixel24(final VTLittleEndianOutputStream out, final int[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
   {
-    long left1, top1, diag1, pred1;
+    long left1, top1, diag1;
     top1 = y > 0 ? newPixelData[position - width] : 0;
     left1 = x > 0 ? newPixelData[position - 1] : top1;
     top1 = y > 0 ? newPixelData[position - width] : left1;
     diag1 = x > 0 && y > 0 ? newPixelData[position - width - 1] : top1;
-    pred1 = (((diag1 + top1 + left1) * 22369622) >>> 26);
+    int pred1 = (int) (((diag1 + top1 + left1) * 22369622) >>> 26);
     //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1));
     //pred1 = (top1 + left1) >> 1;
-    out.writeSubInt(newPixelData[position] ^ (int)(pred1 /* & 0x00FFFFFF */));
+    out.writeSubInt(newPixelData[position] ^ pred1);
   }
 
 //  private static final void encodePixel(final VTLittleEndianOutputStream out, final long[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
@@ -234,15 +234,15 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
 
   private static final void decodePixel24(final VTLittleEndianInputStream in, final int[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
   {
-    long left1, top1, diag1, pred1;
+    long left1, top1, diag1;
     top1 = y > 0 ? newPixelData[position - width] : 0;
     left1 = x > 0 ? newPixelData[position - 1] : top1;
     top1 = y > 0 ? newPixelData[position - width] : left1;
     diag1 = x > 0 && y > 0 ? newPixelData[position - width - 1] : top1;
-    pred1 = (((diag1 + top1 + left1) * 22369622) >>> 26);
+    int pred1 = (int) (((diag1 + top1 + left1) * 22369622) >>> 26);
     //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1));
     //pred1 = (top1 + left1) >> 1;
-    newPixelData[position] = ((in.readSubInt() ^ (int)(pred1/* & 0x00FFFFFF */)) /* & 0x00FFFFFF */);
+    newPixelData[position] = (in.readSubInt() ^ pred1 /* & 0x00FFFFFF */);
   }
 
 //  private static final void decodePixel(final VTLittleEndianInputStream in, final long[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
