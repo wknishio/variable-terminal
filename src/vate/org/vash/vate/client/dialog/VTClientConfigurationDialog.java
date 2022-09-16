@@ -53,7 +53,7 @@ public class VTClientConfigurationDialog extends Dialog
   private VTClientConfigurationDialogParameter encryptionPassword;
 
   private VTClientConfigurationDialogParameter sessionCommands;
-  private VTClientConfigurationDialogParameter sessionLines;
+  //private VTClientConfigurationDialogParameter sessionLines;
   private VTClientConfigurationDialogParameter sessionShell;
   private VTClientConfigurationDialogParameter sessionUser;
   private VTClientConfigurationDialogParameter sessionPassword;
@@ -275,8 +275,8 @@ public class VTClientConfigurationDialog extends Dialog
     encryptionPassword = new VTClientConfigurationDialogParameter("Encryption Password:", encryptionPasswordField, true);
     TextField sessionCommandField = new TextField(16);
     sessionCommands = new VTClientConfigurationDialogParameter("Session Commands:", sessionCommandField, true);
-    TextField sessionLinesField = new TextField(16);
-    sessionLines = new VTClientConfigurationDialogParameter("Session Lines:", sessionLinesField, true);
+    //TextField sessionLinesField = new TextField(16);
+    //sessionLines = new VTClientConfigurationDialogParameter("Session Lines:", sessionLinesField, true);
     TextField sessionShellField = new TextField(16);
     sessionShell = new VTClientConfigurationDialogParameter("Session Shell:", sessionShellField, true);
 
@@ -714,7 +714,7 @@ public class VTClientConfigurationDialog extends Dialog
     });
 
     Panel centerPanel = new Panel();
-    GridLayout centerLayout = new GridLayout(19, 1);
+    GridLayout centerLayout = new GridLayout(18, 1);
     centerLayout.setHgap(1);
     centerLayout.setVgap(1);
     centerPanel.setLayout(centerLayout);
@@ -746,7 +746,7 @@ public class VTClientConfigurationDialog extends Dialog
 
     centerPanel.add(sessionShell);
     centerPanel.add(sessionCommands);
-    centerPanel.add(sessionLines);
+    //centerPanel.add(sessionLines);
     
     centerPanel.add(sessionUser);
     centerPanel.add(sessionPassword);
@@ -951,7 +951,7 @@ public class VTClientConfigurationDialog extends Dialog
         sessionUser.setParameter(client.getUser());
         sessionPassword.setParameter(client.getPassword());
         sessionCommands.setParameter(connector.getSessionCommands());
-        sessionLines.setParameter(connector.getSessionLines());
+        //sessionLines.setParameter(connector.getSessionLines());
         sessionShell.setParameter(connector.getSessionShell());
       }
       else
@@ -979,7 +979,7 @@ public class VTClientConfigurationDialog extends Dialog
         sessionUser.setParameter(client.getUser());
         sessionPassword.setParameter(client.getPassword());
         sessionCommands.setParameter(client.getSessionCommands());
-        sessionLines.setParameter(client.getSessionLines());
+        //sessionLines.setParameter(client.getSessionLines());
         sessionShell.setParameter(client.getSessionShell());
       }
     }
@@ -1187,7 +1187,7 @@ public class VTClientConfigurationDialog extends Dialog
         sessionUser.setParameter("");
         sessionPassword.setParameter("");
         connector.setSessionCommands(sessionCommands.getParameter());
-        connector.setSessionLines(sessionLines.getParameter());
+        //connector.setSessionLines(sessionLines.getParameter());
         connector.setSessionShell(sessionShell.getParameter());
         /*
          * if (VTTerminal.isGraphical()) { try {
@@ -1244,7 +1244,7 @@ public class VTClientConfigurationDialog extends Dialog
         sessionUser.setParameter("");
         sessionPassword.setParameter("");
         client.setSessionCommands(sessionCommands.getParameter());
-        client.setSessionLines(sessionLines.getParameter());
+        //client.setSessionLines(sessionLines.getParameter());
         client.setSessionShell(sessionShell.getParameter());
       }
     }

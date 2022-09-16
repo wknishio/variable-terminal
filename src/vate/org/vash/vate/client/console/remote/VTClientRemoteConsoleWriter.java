@@ -92,14 +92,14 @@ public class VTClientRemoteConsoleWriter extends VTTask
       
     }
     //second run commands from all files in session lines parameter
-    if (!stopped)
-    {
-      String scripts = session.getClient().getClientConnector().getSessionLines().trim();
-      if (scripts != null && scripts.length() > 0)
-      {
-        executeFileScripts(scripts, Charset.forName("UTF-8"), false);
-      }
-    }
+    //if (!stopped)
+    //{
+      //String scripts = session.getClient().getClientConnector().getSessionLines().trim();
+      //if (scripts != null && scripts.length() > 0)
+      //{
+        //executeFileScripts(scripts, Charset.forName("UTF-8"), false);
+      //}
+    //}
     
     while (!stopped)
     {

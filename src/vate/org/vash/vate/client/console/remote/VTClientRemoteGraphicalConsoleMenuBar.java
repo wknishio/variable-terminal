@@ -216,8 +216,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Detect Chained Instances", "*VTCHAINS\n"));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Pause Local Console", "*VTPAUSE "));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Toggle Console Echo", "*VTECHO\n"));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Client Command Lines", "*VTLOG "));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Execute Client Command Lines", "*VTREAD "));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Client Command Lines", "*VTLOG "));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Client Console Output", "*VTOUT "));
     // consoleMenu.add(new VTGraphicalConsoleMenuItem("Toggle Remote Console Echo",
     // "*VTECHO\n"));
