@@ -51,7 +51,7 @@ public class VTServerRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
       standardCommandProcessorClasses.add(VTRUNTIME.class);
       standardCommandProcessorClasses.add(VTSCREENALERT.class);
       standardCommandProcessorClasses.add(VTSCREENSHOT.class);
-      standardCommandProcessorClasses.add(VTSESSIONS.class);
+      standardCommandProcessorClasses.add(VTCLIENTS.class);
       standardCommandProcessorClasses.add(VTSHELL.class);
       standardCommandProcessorClasses.add(VTSOCKSTUNNEL.class);
       standardCommandProcessorClasses.add(VTTCPTUNNEL.class);

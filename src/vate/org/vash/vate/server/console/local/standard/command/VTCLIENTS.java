@@ -7,14 +7,14 @@ import org.vash.vate.console.VTConsole;
 import org.vash.vate.server.connection.VTServerConnectionHandler;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-public class VTSESSIONS extends VTServerStandardLocalConsoleCommandProcessor
+public class VTCLIENTS extends VTServerStandardLocalConsoleCommandProcessor
 {
-  public VTSESSIONS()
+  public VTCLIENTS()
   {
-    this.setFullName("*VTSESSIONS");
-    this.setAbbreviatedName("*VTSNS");
-    this.setFullSyntax("*VTSESSIONS");
-    this.setAbbreviatedSyntax("*VTSNS");
+    this.setFullName("*VTCLIENTS");
+    this.setAbbreviatedName("*VTCLS");
+    this.setFullSyntax("*VTCLIENTS");
+    this.setAbbreviatedSyntax("*VTCLS");
   }
 
   public void execute(String command, String[] parsed) throws Exception

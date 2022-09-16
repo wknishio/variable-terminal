@@ -2,14 +2,14 @@ package org.vash.vate.server.console.remote.standard.command;
 
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
-public class VTSESSIONS extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTCLIENTS extends VTServerStandardRemoteConsoleCommandProcessor
 {
-  public VTSESSIONS()
+  public VTCLIENTS()
   {
-    this.setFullName("*VTSESSIONS");
-    this.setAbbreviatedName("*VTSNS");
-    this.setFullSyntax("*VTSESSIONS");
-    this.setAbbreviatedSyntax("*VTSNS");
+    this.setFullName("*VTCLIENTS");
+    this.setAbbreviatedName("*VTCLS");
+    this.setFullSyntax("*VTCLIENTS");
+    this.setAbbreviatedSyntax("*VTCLS");
   }
 
   public void execute(String command, String[] parsed) throws Exception
