@@ -21,12 +21,12 @@ public class VTPROPERTY extends VTServerStandardLocalConsoleCommandProcessor
     if (parsed.length == 1)
     {
       message.setLength(0);
-      message.append("\rVT>JVM properties on server:\nVT>");
+      message.append("\rVT>List of java properties on server:\nVT>");
       for (Entry<Object, Object> property : System.getProperties().entrySet())
       {
         message.append("\nVT>[" + property.getKey().toString() + "]=[" + property.getValue().toString() + "]");
       }
-      message.append("\nVT>\nVT>End of JVM properties list\nVT>");
+      message.append("\nVT>\nVT>End of java properties list\nVT>");
       VTConsole.print(message.toString());
     }
     else if (parsed.length == 2)
@@ -38,7 +38,7 @@ public class VTPROPERTY extends VTServerStandardLocalConsoleCommandProcessor
       }
       else
       {
-        VTConsole.print("\rVT>JVM property [" + parsed[1] + "] not found on server!\nVT>");
+        VTConsole.print("\rVT>Java property [" + parsed[1] + "] not found on server!\nVT>");
       }
     }
     else if (parsed.length >= 3)
@@ -50,7 +50,7 @@ public class VTPROPERTY extends VTServerStandardLocalConsoleCommandProcessor
       }
       catch (Throwable e)
       {
-        VTConsole.print("\rVT>JVM property [" + parsed[1] + "] failed to be set to [" + parsed[2] + "] on server!\nVT>");
+        VTConsole.print("\rVT>Java property [" + parsed[1] + "] failed to be set to [" + parsed[2] + "] on server!\nVT>");
       }
     }
     else

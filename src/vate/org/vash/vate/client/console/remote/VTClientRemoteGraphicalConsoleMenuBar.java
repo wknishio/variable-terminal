@@ -268,7 +268,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverRuntimeMenu = new Menu("Runtime ");
     serverManageRuntimeMenu = new Menu("Remote Process Control ");
     serverRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Remote Environment Variables", "*VTVARIABLE "));
-    serverRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Remote JVM Properties", "*VTPROPERTY "));
+    serverRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Remote Java Properties", "*VTPROPERTY "));
     serverRuntimeMenu.add(serverManageRuntimeMenu);
     serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Add Managed Process", "*VTRUNTIME M"));
     serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Add Free Process", "*VTRUNTIME F"));

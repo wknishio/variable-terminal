@@ -91,7 +91,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     // serverUtilitiesMenu = new Menu("Local System Utilities ");
     serverRuntimeMenu = new Menu("Runtime ");
     serverRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Local Environment Variables", "*VTVARIABLE "));
-    serverRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Local JVM Properties", "*VTPROPERTY "));
+    serverRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Local Java Properties", "*VTPROPERTY "));
 
     fileSystemMenu = new Menu("File ");
     fileSystemMenu.add(new VTGraphicalConsoleMenuItem("List Local File System Roots", "*VTFILEROOTS\n"));

@@ -20,12 +20,12 @@ public class VTPROPERTY extends VTServerStandardRemoteConsoleCommandProcessor
     if (parsed.length == 1)
     {
       message.setLength(0);
-      message.append("\nVT>List of JVM properties on server:\nVT>");
+      message.append("\nVT>List of java properties on server:\nVT>");
       for (Entry<Object, Object> property : System.getProperties().entrySet())
       {
         message.append("\nVT>[" + property.getKey().toString() + "]=[" + property.getValue().toString() + "]");
       }
-      message.append("\nVT>\nVT>End of JVM properties list\nVT>");
+      message.append("\nVT>\nVT>End of java properties list\nVT>");
       connection.getResultWriter().write(message.toString());
       connection.getResultWriter().flush();
     }
@@ -39,7 +39,7 @@ public class VTPROPERTY extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else
       {
-        connection.getResultWriter().write("\nVT>JVM property [" + parsed[1] + "] not found on server!\nVT>");
+        connection.getResultWriter().write("\nVT>Java property [" + parsed[1] + "] not found on server!\nVT>");
         connection.getResultWriter().flush();
       }
     }
@@ -53,7 +53,7 @@ public class VTPROPERTY extends VTServerStandardRemoteConsoleCommandProcessor
       }
       catch (Throwable e)
       {
-        connection.getResultWriter().write("\nVT>JVM property [" + parsed[1] + "] failed to be set to [" + parsed[2] + "] on server!\nVT>");
+        connection.getResultWriter().write("\nVT>Java property [" + parsed[1] + "] failed to be set to [" + parsed[2] + "] on server!\nVT>");
         connection.getResultWriter().flush();
       }
     }
