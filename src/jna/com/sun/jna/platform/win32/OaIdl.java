@@ -33,7 +33,7 @@ import com.sun.jna.Structure.FieldOrder;
 import com.sun.jna.Union;
 import com.sun.jna.platform.win32.BaseTSD.ULONG_PTR;
 import com.sun.jna.platform.win32.COM.COMUtils;
-//import com.sun.jna.platform.win32.COM.Dispatch;
+import com.sun.jna.platform.win32.COM.Dispatch;
 import com.sun.jna.platform.win32.Guid.GUID;
 import com.sun.jna.platform.win32.Variant.VARIANT;
 import com.sun.jna.platform.win32.Variant.VariantArg;
@@ -53,8 +53,8 @@ import com.sun.jna.platform.win32.WinDef.ULONG;
 import com.sun.jna.platform.win32.WinDef.ULONGLONG;
 import com.sun.jna.platform.win32.WinDef.USHORT;
 import com.sun.jna.platform.win32.WinDef.WORD;
-//import com.sun.jna.platform.win32.COM.TypeComp;
-//import com.sun.jna.platform.win32.COM.Unknown;
+import com.sun.jna.platform.win32.COM.TypeComp;
+import com.sun.jna.platform.win32.COM.Unknown;
 import static com.sun.jna.platform.win32.Variant.VT_BOOL;
 import static com.sun.jna.platform.win32.Variant.VT_BSTR;
 import static com.sun.jna.platform.win32.Variant.VT_CY;
@@ -720,14 +720,14 @@ public interface OaIdl {
                     hr = OleAuto.INSTANCE.SafeArrayPutElement(this, paramIndices, ((VARIANT) arg).getPointer());
                     COMUtils.checkRC(hr);
                     break;
-                //case VT_UNKNOWN:
-                    //hr = OleAuto.INSTANCE.SafeArrayPutElement(this, paramIndices, ((Unknown) arg).getPointer());
-                    //COMUtils.checkRC(hr);
-                    //break;
-                //case VT_DISPATCH:
-                    //hr = OleAuto.INSTANCE.SafeArrayPutElement(this, paramIndices, ((Dispatch) arg).getPointer());
-                    //COMUtils.checkRC(hr);
-                    //break;
+                case VT_UNKNOWN:
+                    hr = OleAuto.INSTANCE.SafeArrayPutElement(this, paramIndices, ((Unknown) arg).getPointer());
+                    COMUtils.checkRC(hr);
+                    break;
+                case VT_DISPATCH:
+                    hr = OleAuto.INSTANCE.SafeArrayPutElement(this, paramIndices, ((Dispatch) arg).getPointer());
+                    COMUtils.checkRC(hr);
+                    break;
                 case VT_CY:
                     hr = OleAuto.INSTANCE.SafeArrayPutElement(this, paramIndices, ((CURRENCY) arg).getPointer());
                     COMUtils.checkRC(hr);
@@ -829,18 +829,18 @@ public interface OaIdl {
                     COMUtils.checkRC(hr);
                     result = holder;
                     break;
-                //case VT_UNKNOWN:
-                    //pbr = new PointerByReference();
-                    //hr = OleAuto.INSTANCE.SafeArrayGetElement(this, paramIndices, pbr.getPointer());
-                    //COMUtils.checkRC(hr);
-                    //result = new Unknown(pbr.getValue());
-                    //break;
-                //case VT_DISPATCH:
-                    //pbr = new PointerByReference();
-                    //hr = OleAuto.INSTANCE.SafeArrayGetElement(this, paramIndices, pbr.getPointer());
-                    //COMUtils.checkRC(hr);
-                    //result = new Dispatch(pbr.getValue());
-                    //break;
+                case VT_UNKNOWN:
+                    pbr = new PointerByReference();
+                    hr = OleAuto.INSTANCE.SafeArrayGetElement(this, paramIndices, pbr.getPointer());
+                    COMUtils.checkRC(hr);
+                    result = new Unknown(pbr.getValue());
+                    break;
+                case VT_DISPATCH:
+                    pbr = new PointerByReference();
+                    hr = OleAuto.INSTANCE.SafeArrayGetElement(this, paramIndices, pbr.getPointer());
+                    COMUtils.checkRC(hr);
+                    result = new Dispatch(pbr.getValue());
+                    break;
                 case VT_CY:
                     CURRENCY currency = new CURRENCY();
                     hr = OleAuto.INSTANCE.SafeArrayGetElement(this, paramIndices, currency.getPointer());
@@ -1267,7 +1267,7 @@ public interface OaIdl {
         // / C type : VARDESC*
         public VARDESC lpvardesc;
         // / C type : ITypeComp*
-        //public TypeComp lptcomp;
+        public TypeComp lptcomp;
 
         public BINDPTR() {
             super();
@@ -1281,11 +1281,11 @@ public interface OaIdl {
         }
 
         // / @param lptcomp C type : ITypeComp*
-        //public BINDPTR(TypeComp lptcomp) {
-            //super();
-            //this.lptcomp = lptcomp;
-            //setType(TypeComp.class);
-        //}
+        public BINDPTR(TypeComp lptcomp) {
+            super();
+            this.lptcomp = lptcomp;
+            setType(TypeComp.class);
+        }
 
         // / @param lpfuncdesc C type : FUNCDESC*
         public BINDPTR(FUNCDESC lpfuncdesc) {

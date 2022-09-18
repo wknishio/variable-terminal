@@ -57,9 +57,9 @@ import com.sun.jna.platform.win32.WinDef.ULONGLONG;
 import com.sun.jna.platform.win32.WinDef.ULONGLONGByReference;
 import com.sun.jna.platform.win32.WinDef.USHORT;
 import com.sun.jna.platform.win32.WinDef.USHORTByReference;
-//import com.sun.jna.platform.win32.COM.Dispatch;
-//import com.sun.jna.platform.win32.COM.IDispatch;
-//import com.sun.jna.platform.win32.COM.Unknown;
+import com.sun.jna.platform.win32.COM.Dispatch;
+import com.sun.jna.platform.win32.COM.IDispatch;
+import com.sun.jna.platform.win32.COM.Unknown;
 import com.sun.jna.platform.win32.OaIdl.SAFEARRAYByReference;
 import com.sun.jna.platform.win32.WTypes.BSTRByReference;
 import com.sun.jna.ptr.ByteByReference;
@@ -287,16 +287,16 @@ public interface Variant {
         /**
          * @deprecated Use {@link #VARIANT(com.sun.jna.platform.win32.COM.Dispatch)}
          */
-        //@Deprecated
-        //public VARIANT(IDispatch value) {
-            //this();
-            //this.setValue(Variant.VT_DISPATCH, value);
-        //}
+        @Deprecated
+        public VARIANT(IDispatch value) {
+            this();
+            this.setValue(Variant.VT_DISPATCH, value);
+        }
 
-        //public VARIANT(Dispatch value) {
-            //this();
-            //this.setValue(Variant.VT_DISPATCH, value);
-        //}
+        public VARIANT(Dispatch value) {
+            this();
+            this.setValue(Variant.VT_DISPATCH, value);
+        }
 
         public VARIANT(Date value) {
             this();
@@ -668,9 +668,9 @@ public interface Variant {
                 // BSTR VT_BSTR
                 public BSTR bstrVal;
                 // IUnknown * VT_UNKNOWN
-                //public Unknown punkVal;
+                public Unknown punkVal;
                 // IDispatch * VT_DISPATCH
-                //public Dispatch pdispVal;
+                public Dispatch pdispVal;
                 // SAFEARRAY * VT_ARRAY
                 public SAFEARRAY.ByReference parray;
                 // BYTE * VT_BYREF|VT_UI1
@@ -698,9 +698,9 @@ public interface Variant {
                 // BSTR * VT_BYREF|VT_BSTR
                 public BSTRByReference pbstrVal;
                 // IUnknown ** VT_BYREF|VT_UNKNOWN
-                //public Unknown.ByReference ppunkVal;
+                public Unknown.ByReference ppunkVal;
                 // IDispatch ** VT_BYREF|VT_DISPATCH
-                //public Dispatch.ByReference ppdispVal;
+                public Dispatch.ByReference ppdispVal;
                 // SAFEARRAY ** VT_BYREF|VT_ARRAY
                 public SAFEARRAYByReference pparray;
                 // VARIANT * VT_BYREF|VT_VARIANT
