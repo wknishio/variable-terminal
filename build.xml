@@ -47,8 +47,11 @@
 		<copy todir="build">
 			<fileset dir="src/vate" includes="**/*.png,**/*.properties"/>
 			<fileset dir="src/jsocks" includes="**/*.png,**/*.properties"/>
+			<!--
 			<fileset dir="src/nat" includes="**/*.png,**/*.properties"/>
+			-->
 			<fileset dir="src/lanterna" includes="**/*.png,**/*.properties"/>
+			<fileset dir="src/jna" includes="**/*.so,**/*.a,**/*.jnilib,**/*.dll"/>
 		</copy>
 		
 	</target>

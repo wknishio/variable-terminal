@@ -5,7 +5,8 @@ import java.nio.channels.ClosedByInterruptException;
 import java.util.zip.Deflater;
 
 import org.vash.vate.VT;
-import org.vash.vate.filesystem.VTArchiveUtils;
+import org.vash.vate.filesystem.VTZipUtils;
+//import org.vash.vate.filesystem.VTArchiveUtils;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.task.VTTask;
 
@@ -76,7 +77,7 @@ public class VTServerZipFileOperation extends VTTask
       {
         try
         {
-          if (VTArchiveUtils.createZipFile(zipFilePath, Deflater.BEST_SPEED, Deflater.DEFAULT_STRATEGY, readBuffer, sourcePaths))
+          if (VTZipUtils.createZipFile(zipFilePath, Deflater.BEST_SPEED, Deflater.DEFAULT_STRATEGY, readBuffer, sourcePaths))
           {
             synchronized (this)
             {
@@ -118,7 +119,7 @@ public class VTServerZipFileOperation extends VTTask
       {
         try
         {
-          if (VTArchiveUtils.createZipFile(zipFilePath, Deflater.NO_COMPRESSION, Deflater.DEFAULT_STRATEGY, readBuffer, sourcePaths))
+          if (VTZipUtils.createZipFile(zipFilePath, Deflater.NO_COMPRESSION, Deflater.DEFAULT_STRATEGY, readBuffer, sourcePaths))
           {
             synchronized (this)
             {
@@ -160,7 +161,7 @@ public class VTServerZipFileOperation extends VTTask
       {
         try
         {
-          if (VTArchiveUtils.extractZipFile(zipFilePath, readBuffer, sourcePaths[0]))
+          if (VTZipUtils.extractZipFile(zipFilePath, readBuffer, sourcePaths[0]))
           {
             synchronized (this)
             {

@@ -7,7 +7,8 @@ import java.util.zip.Deflater;
 import org.vash.vate.VT;
 import org.vash.vate.client.session.VTClientSession;
 import org.vash.vate.console.VTConsole;
-import org.vash.vate.filesystem.VTArchiveUtils;
+import org.vash.vate.filesystem.VTZipUtils;
+//import org.vash.vate.filesystem.VTArchiveUtils;
 import org.vash.vate.task.VTTask;
 
 public class VTClientZipFileOperation extends VTTask
@@ -77,7 +78,7 @@ public class VTClientZipFileOperation extends VTTask
       {
         try
         {
-          if (VTArchiveUtils.createZipFile(zipFilePath, Deflater.BEST_SPEED, Deflater.DEFAULT_STRATEGY, readBuffer, sourcePaths))
+          if (VTZipUtils.createZipFile(zipFilePath, Deflater.BEST_SPEED, Deflater.DEFAULT_STRATEGY, readBuffer, sourcePaths))
           {
             synchronized (this)
             {
@@ -115,7 +116,7 @@ public class VTClientZipFileOperation extends VTTask
       {
         try
         {
-          if (VTArchiveUtils.createZipFile(zipFilePath, Deflater.NO_COMPRESSION, Deflater.DEFAULT_STRATEGY, readBuffer, sourcePaths))
+          if (VTZipUtils.createZipFile(zipFilePath, Deflater.NO_COMPRESSION, Deflater.DEFAULT_STRATEGY, readBuffer, sourcePaths))
           {
             synchronized (this)
             {
@@ -153,7 +154,7 @@ public class VTClientZipFileOperation extends VTTask
       {
         try
         {
-          if (VTArchiveUtils.extractZipFile(zipFilePath, readBuffer, sourcePaths[0]))
+          if (VTZipUtils.extractZipFile(zipFilePath, readBuffer, sourcePaths[0]))
           {
             synchronized (this)
             {
