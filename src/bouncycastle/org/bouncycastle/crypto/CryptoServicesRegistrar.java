@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bouncycastle.asn1.x9.X9ECParameters;
+//import org.bouncycastle.asn1.x9.X9ECParameters;
 import org.bouncycastle.crypto.params.DHParameters;
 import org.bouncycastle.crypto.params.DHValidationParameters;
 import org.bouncycastle.crypto.params.DSAParameters;
@@ -416,7 +416,7 @@ public final class CryptoServicesRegistrar
         /**
          * The parameters to be used for processing implicitlyCA X9.62 parameters
          */
-        public static final Property EC_IMPLICITLY_CA = new Property("ecImplicitlyCA", X9ECParameters.class);
+        //public static final Property EC_IMPLICITLY_CA = new Property("ecImplicitlyCA", X9ECParameters.class);
         /**
          * The default parameters for a particular size of Diffie-Hellman key.This is a sized property.
          */
