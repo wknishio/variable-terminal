@@ -1,6 +1,8 @@
 package org.vash.vate.client.authentication;
 
 import java.io.IOException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.vash.vate.VT;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
@@ -15,7 +17,8 @@ public class VTClientAuthenticator
   {
     try
     {
-      VT_AUTHENTICATION_ACCEPTED_STRING = ("VT/ACCEPT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION).getBytes("UTF-8");
+      VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/ACCEPT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION).toLowerCase() + 
+      "VT/ACCEPT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION).getBytes("UTF-8");
     }
     catch (Throwable e)
     {

@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.security.SecureRandom;
 
+import org.apache.commons.lang3.StringUtils;
 import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.security.VTArrayComparator;
@@ -50,22 +51,34 @@ public class VTServerConnection
   {
     try
     {
-      VT_SERVER_CHECK_STRING_NONE = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/NONE").getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_NONE = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/NONE").getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_RC4 = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/RC4").getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_RC4 = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/RC4").getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_AES = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/AES").getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_AES = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/AES").getBytes("UTF-8");
-      //VT_SERVER_CHECK_STRING_BLOWFISH = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/BLOWFISH").getBytes("UTF-8");
-      //VT_CLIENT_CHECK_STRING_BLOWFISH = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/BLOWFISH").getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_SALSA = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/SALSA").getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_SALSA = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/SALSA").getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_HC256 = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/HC256").getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_HC256 = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/HC256").getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_ISAAC = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/ISAAC").getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_ISAAC = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/ISAAC").getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_GRAIN = ("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/GRAIN").getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_GRAIN = ("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/GRAIN").getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_NONE = (StringUtils.reverse("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/NONE").toLowerCase() + 
+      "VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/NONE").getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_NONE = (StringUtils.reverse("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/NONE").toLowerCase() + 
+      "VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/NONE").getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_RC4 = (StringUtils.reverse("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/RC4").toLowerCase() + 
+      "VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/RC4").getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_RC4 = (StringUtils.reverse("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/RC4").toLowerCase() + 
+      "VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/RC4").getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_AES = (StringUtils.reverse("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/AES").toLowerCase() + 
+      "VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/AES").getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_AES = (StringUtils.reverse("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/AES").toLowerCase() + 
+      "VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/AES").getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_SALSA = (StringUtils.reverse("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/SALSA").toLowerCase() + 
+      "VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/SALSA").getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_SALSA = (StringUtils.reverse("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/SALSA").toLowerCase() + 
+      "VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/SALSA").getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_HC256 = (StringUtils.reverse("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/HC256").toLowerCase() + 
+      "VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/HC256").getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_HC256 = (StringUtils.reverse("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/HC256").toLowerCase() + 
+      "VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/HC256").getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/ISAAC").toLowerCase() + 
+      "VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/ISAAC").getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/ISAAC").toLowerCase() + 
+      "VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/ISAAC").getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_GRAIN = (StringUtils.reverse("VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/GRAIN").toLowerCase() + 
+      "VT/SERVER/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/GRAIN").getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_GRAIN = (StringUtils.reverse("VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/GRAIN").toLowerCase() + 
+      "VT/CLIENT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION + "/GRAIN").getBytes("UTF-8");
     }
     catch (UnsupportedEncodingException e)
     {
