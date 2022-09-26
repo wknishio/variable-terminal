@@ -11,14 +11,15 @@ import org.vash.vate.security.VTBlake3Digest;
 
 public class VTClientAuthenticator
 {
+  private static final String MAJOR_MINOR_VERSION = VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION;
   private static byte[] VT_AUTHENTICATION_ACCEPTED_STRING = new byte[16];
 
   static
   {
     try
     {
-      VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/ACCEPT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION).toLowerCase() + 
-      "VT/ACCEPT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION).getBytes("UTF-8");
+      VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/ACCEPT/" + MAJOR_MINOR_VERSION).toLowerCase() + 
+      "VT/ACCEPT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
     }
     catch (Throwable e)
     {

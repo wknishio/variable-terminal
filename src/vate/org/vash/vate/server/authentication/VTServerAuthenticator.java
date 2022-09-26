@@ -11,6 +11,7 @@ import org.vash.vate.server.connection.VTServerConnection;
 
 public class VTServerAuthenticator
 {
+  private static final String MAJOR_MINOR_VERSION = VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION;
   private static byte[] VT_AUTHENTICATION_ACCEPTED_STRING = new byte[16];
   private static byte[] VT_AUTHENTICATION_REJECTED_STRING = new byte[16];
 
@@ -18,10 +19,10 @@ public class VTServerAuthenticator
   {
     try
     {
-      VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/ACCEPT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION).toLowerCase() + 
-      "VT/ACCEPT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION).getBytes("UTF-8");
-      VT_AUTHENTICATION_REJECTED_STRING = (StringUtils.reverse("VT/REJECT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION).toLowerCase() + 
-      "VT/REJECT/" + VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION).getBytes("UTF-8");
+      VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/ACCEPT/" + MAJOR_MINOR_VERSION).toLowerCase() + 
+      "VT/ACCEPT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_AUTHENTICATION_REJECTED_STRING = (StringUtils.reverse("VT/REJECT/" + MAJOR_MINOR_VERSION).toLowerCase() + 
+      "VT/REJECT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
     }
     catch (Throwable e)
     {
