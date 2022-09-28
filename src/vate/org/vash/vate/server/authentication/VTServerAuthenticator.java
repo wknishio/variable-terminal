@@ -19,10 +19,10 @@ public class VTServerAuthenticator
   {
     try
     {
-      VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/ACCEPT/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      "VT/ACCEPT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_AUTHENTICATION_REJECTED_STRING = (StringUtils.reverse("VT/REJECT/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      "VT/REJECT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).toLowerCase() + 
+      "VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_AUTHENTICATION_REJECTED_STRING = (StringUtils.reverse("VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).toLowerCase() + 
+      "VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
     }
     catch (Throwable e)
     {
