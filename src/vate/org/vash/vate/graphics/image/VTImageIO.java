@@ -825,7 +825,6 @@ public final class VTImageIO
     long left1, top1, diag1, pred1;
     top1 = position >= width ? pixelData[position - width] : 0;
     left1 = position > 0 ? pixelData[position - 1] : top1;
-    left1 = position > 0 ? pixelData[position - 1] : top1;
     top1 = position >= width ? pixelData[position - width] : left1;
     diag1 = position - 1 >= width ? pixelData[position - width - 1] : top1;
     pred1 = (((diag1 + top1 + left1) * 1431655766) >>> 32);
