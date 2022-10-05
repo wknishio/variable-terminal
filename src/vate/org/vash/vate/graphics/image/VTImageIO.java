@@ -386,6 +386,7 @@ public final class VTImageIO
 
   private static final WritableRaster buildRaster(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
   {
+    int stride = width;
     int nextSize = ((width + x) * (height + y));
     int neededSize = ((width + x) * (height + y));
     WritableRaster createdRaster = null;
@@ -415,33 +416,33 @@ public final class VTImageIO
         {
           if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferUShort && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
           {
-            createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, ushort12bitRGBColorModel.getMasks(), new Point(x, y));
+            createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, stride, ushort12bitRGBColorModel.getMasks(), new Point(x, y));
           }
           else
           {
-            createdRaster = Raster.createPackedRaster(new DataBufferUShort(nextSize), width, height, width, ushort12bitRGBColorModel.getMasks(), new Point(x, y));
+            createdRaster = Raster.createPackedRaster(new DataBufferUShort(nextSize), width, height, stride, ushort12bitRGBColorModel.getMasks(), new Point(x, y));
           }
         }
         if (colors == 512)
         {
           if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferUShort && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
           {
-            createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, ushort9bitRGBColorModel.getMasks(), new Point(x, y));
+            createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, stride, ushort9bitRGBColorModel.getMasks(), new Point(x, y));
           }
           else
           {
-            createdRaster = Raster.createPackedRaster(new DataBufferUShort(nextSize), width, height, width, ushort9bitRGBColorModel.getMasks(), new Point(x, y));
+            createdRaster = Raster.createPackedRaster(new DataBufferUShort(nextSize), width, height, stride, ushort9bitRGBColorModel.getMasks(), new Point(x, y));
           }
         }
         if (colors == 64)
         {
           if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
           {
-            createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, byte6bitRGBColorModel.getMasks(), new Point(x, y));
+            createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, stride, byte6bitRGBColorModel.getMasks(), new Point(x, y));
           }
           else
           {
-            createdRaster = Raster.createPackedRaster(new DataBufferByte(nextSize), width, height, width, byte6bitRGBColorModel.getMasks(), new Point(x, y));
+            createdRaster = Raster.createPackedRaster(new DataBufferByte(nextSize), width, height, stride, byte6bitRGBColorModel.getMasks(), new Point(x, y));
           }
         }
         break;
@@ -450,11 +451,11 @@ public final class VTImageIO
       {
         if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
         {
-          createdRaster = Raster.createInterleavedRaster(recyclableBuffer, width, height, width, 1, new int[1], new Point(x, y));
+          createdRaster = Raster.createInterleavedRaster(recyclableBuffer, width, height, stride, 1, new int[1], new Point(x, y));
         }
         else
         {
-          createdRaster = Raster.createInterleavedRaster(new DataBufferByte(nextSize), width, height, width, 1, new int[1], new Point(x, y));
+          createdRaster = Raster.createInterleavedRaster(new DataBufferByte(nextSize), width, height, stride, 1, new int[1], new Point(x, y));
         }
         break;
       }
@@ -462,11 +463,11 @@ public final class VTImageIO
       {
         if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferUShort && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
         {
-          createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, ushort15bitRGBColorModel.getMasks(), new Point(x, y));
+          createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, stride, ushort15bitRGBColorModel.getMasks(), new Point(x, y));
         }
         else
         {
-          createdRaster = Raster.createPackedRaster(new DataBufferUShort(nextSize), width, height, width, ushort15bitRGBColorModel.getMasks(), new Point(x, y));
+          createdRaster = Raster.createPackedRaster(new DataBufferUShort(nextSize), width, height, stride, ushort15bitRGBColorModel.getMasks(), new Point(x, y));
         }
         break;
       }
@@ -474,11 +475,11 @@ public final class VTImageIO
       {
         if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferInt && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
         {
-          createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, int24bitRGBColorModel.getMasks(), new Point(x, y));
+          createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, stride, int24bitRGBColorModel.getMasks(), new Point(x, y));
         }
         else
         {
-          createdRaster = Raster.createPackedRaster(new DataBufferInt(nextSize), width, height, width, int24bitRGBColorModel.getMasks(), new Point(x, y));
+          createdRaster = Raster.createPackedRaster(new DataBufferInt(nextSize), width, height, stride, int24bitRGBColorModel.getMasks(), new Point(x, y));
         }
         break;
       }
@@ -486,11 +487,11 @@ public final class VTImageIO
       {
         if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferInt && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
         {
-          createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, width, int32bitRGBColorModel.getMasks(), new Point(x, y));
+          createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, stride, int32bitRGBColorModel.getMasks(), new Point(x, y));
         }
         else
         {
-          createdRaster = Raster.createPackedRaster(new DataBufferInt(nextSize), width, height, width, int32bitRGBColorModel.getMasks(), new Point(x, y));
+          createdRaster = Raster.createPackedRaster(new DataBufferInt(nextSize), width, height, stride, int32bitRGBColorModel.getMasks(), new Point(x, y));
         }
         break;
       }
@@ -501,6 +502,17 @@ public final class VTImageIO
   private static final BufferedImage buildBufferedImage(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
   {
     BufferedImage image = null;
+    int subImageX = 0;
+    int subImageY = 0;
+    if (!(x == 0) || !(y == 0))
+    {
+      subImageX = x;
+      subImageY = y;
+      width = width + subImageX;
+      height = height + subImageY;
+      x = 0;
+      y = 0;
+    }
     switch (type)
     {
       // case BufferedImage.TYPE_BYTE_BINARY:
@@ -572,6 +584,12 @@ public final class VTImageIO
         image = new BufferedImage(int32bitRGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
         break;
       }
+    }
+    if (subImageX != 0 || subImageY != 0)
+    {
+      width = width - subImageX;
+      height = height - subImageY;
+      image = image.getSubimage(subImageX, subImageY, width, height);
     }
     return image;
   }
