@@ -20,7 +20,6 @@ import java.awt.image.DataBufferInt;
 import java.awt.image.DataBufferUShort;
 //import java.awt.peer.RobotPeer;
 //import java.awt.image.WritableRaster;
-
 //import javax.swing.JLabel;
 //import javax.swing.UIManager;
 

@@ -386,6 +386,17 @@ public final class VTImageIO
 
   private static final WritableRaster buildRaster(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
   {
+    int subImageX = 0;
+    int subImageY = 0;
+    if (!(x == 0) || !(y == 0))
+    {
+      subImageX = x;
+      subImageY = y;
+      width = width + subImageX;
+      height = height + subImageY;
+      x = 0;
+      y = 0;
+    }
     int stride = width;
     int nextSize = ((width + x) * (height + y));
     int neededSize = ((width + x) * (height + y));
@@ -496,23 +507,20 @@ public final class VTImageIO
         break;
       }
     }
+    if (subImageX != 0 || subImageY != 0)
+    {
+      width = width - subImageX;
+      height = height - subImageY;
+      createdRaster = createdRaster.createWritableChild(subImageX, subImageY, width, height, 0, 0, null);
+      //image = image.getSubimage(subImageX, subImageY, width, height);
+    }
+
     return createdRaster;
   }
 
   private static final BufferedImage buildBufferedImage(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
   {
     BufferedImage image = null;
-    int subImageX = 0;
-    int subImageY = 0;
-    if (!(x == 0) || !(y == 0))
-    {
-      subImageX = x;
-      subImageY = y;
-      width = width + subImageX;
-      height = height + subImageY;
-      x = 0;
-      y = 0;
-    }
     switch (type)
     {
       // case BufferedImage.TYPE_BYTE_BINARY:
@@ -584,12 +592,6 @@ public final class VTImageIO
         image = new BufferedImage(int32bitRGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
         break;
       }
-    }
-    if (subImageX != 0 || subImageY != 0)
-    {
-      width = width - subImageX;
-      height = height - subImageY;
-      image = image.getSubimage(subImageX, subImageY, width, height);
     }
     return image;
   }
