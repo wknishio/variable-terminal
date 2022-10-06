@@ -1124,22 +1124,22 @@ public final class VTImageDataUtils
     }
   }
 
-  // private static final int DCM_RED_MASK = 0x00ff0000;
-  // private static final int DCM_GREEN_MASK = 0x0000ff00;
-  // private static final int DCM_BLUE_MASK = 0x000000ff;
-  // private static final int DCM_ALPHA_MASK = 0xff000000;
-  //private static final int DCM_RGB_MASK = 0x00ffffff;
+  //private static final int DCM_RED_MASK = 0x00ff0000;
+  //private static final int DCM_GREEN_MASK = 0x0000ff00;
+  //private static final int DCM_BLUE_MASK = 0x000000ff;
+  //private static final int DCM_ALPHA_MASK = 0xff000000;
+  private static final int DCM_RGB_MASK = 0x00ffffff;
 
-  //private static final int DCM_555_RED_MASK = 0x7C00;
-  //private static final int DCM_555_GRN_MASK = 0x03E0;
-  //private static final int DCM_555_BLU_MASK = 0x001F;
+  private static final int DCM_555_RED_MASK = 0x7C00;
+  private static final int DCM_555_GRN_MASK = 0x03E0;
+  private static final int DCM_555_BLU_MASK = 0x001F;
 
-  //public static final void convertRGB555ToRGB888(short[] pixelShort, int[] pixelInt, int size)
-  //{
-    //int i = 0;
-    //for (i = 0; i < size; i++)
-    //{
-      //pixelInt[i] = ((pixelShort[i] & DCM_555_RED_MASK >> 10) << 3 | (pixelShort[i] & DCM_555_GRN_MASK >> 5) << 3 | (pixelShort[i] & DCM_555_BLU_MASK) << 3) & DCM_RGB_MASK;
-    //}
-  //}
+  public static final void convertRGB555ToRGB888(short[] pixelShort, int[] pixelInt, int size)
+  {
+    int i = 0;
+    for (i = 0; i < size; i++)
+    {
+      pixelInt[i] = ((pixelShort[i] & DCM_555_RED_MASK >> 10) << 3 | (pixelShort[i] & DCM_555_GRN_MASK >> 5) << 3 | (pixelShort[i] & DCM_555_BLU_MASK) << 3) & DCM_RGB_MASK;
+    }
+  }
 }
