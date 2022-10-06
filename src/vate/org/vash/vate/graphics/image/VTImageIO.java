@@ -121,44 +121,44 @@ public final class VTImageIO
         if (colors == 4096)
         {
           BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
-          clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * width));
+          clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
           return image;
         }
         if (colors == 512)
         {
           BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
-          clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * width));
+          clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
           return image;
         }
         if (colors == 64)
         {
           BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
-          clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * width));
+          clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
           return image;
         }
       }
       case BufferedImage.TYPE_BYTE_INDEXED:
       {
         BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
-        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * width));
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
         return image;
       }
       case BufferedImage.TYPE_USHORT_555_RGB:
       {
         BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
-        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * width));
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
         return image;
       }
       case BufferedImage.TYPE_INT_RGB:
       {
         BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
-        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * width));
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
         return image;
       }
       case BufferedImage.TYPE_INT_ARGB:
       {
         BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
-        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * width));
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
         return image;
       }
     }
@@ -386,18 +386,14 @@ public final class VTImageIO
 
   private static final WritableRaster buildRaster(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
   {
-    int childX = 0;
-    int childY = 0;
-    int childW = 0;
-    int childH = 0;
+    int parentX = 0;
+    int parentY = 0;
     if (x > 0 || y > 0)
     {
-      childX = x;
-      childY = y;
-      childW = width;
-      childH = height;
-      width = width + childX;
-      height = height + childY;
+      parentX = x;
+      parentY = y;
+      width = width + x;
+      height = height + y;
       x = 0;
       y = 0;
     }
@@ -512,9 +508,9 @@ public final class VTImageIO
         break;
       }
     }
-    if (childX > 0 || childY > 0)
+    if (parentX > 0 || parentY > 0)
     {
-      createdRaster = createdRaster.createWritableChild(childX, childY, childW, childH, 0, 0, null);
+      createdRaster = createdRaster.createWritableChild(parentX, parentY, width - parentX, height - parentY, 0, 0, null);
       //image = image.getSubimage(subImageX, subImageY, width, height);
     }
     return createdRaster;
@@ -694,8 +690,8 @@ public final class VTImageIO
     }
     int type = image.getType();
     int colors = 0;
-    int x = image.getMinX();
-    int y = image.getMinY();
+    //int x = image.getMinX();
+    //int y = image.getMinY();
     ColorModel colorModel = image.getColorModel();
     if (colorModel instanceof IndexColorModel)
     {
@@ -718,36 +714,36 @@ public final class VTImageIO
       {
         if (colors == 4096)
         {
-          clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * image.getWidth()));
+          clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
         }
         if (colors == 512)
         {
-          clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * image.getWidth()));
+          clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
         }
         if (colors == 64)
         {
-          clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * image.getWidth()));
+          clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
         }
         break;
       }
       case BufferedImage.TYPE_BYTE_INDEXED:
       {
-        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * image.getWidth()));
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
         break;
       }
       case BufferedImage.TYPE_USHORT_555_RGB:
       {
-        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * image.getWidth()));
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
         break;
       }
       case BufferedImage.TYPE_INT_RGB:
       {
-        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * image.getWidth()));
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
         break;
       }
       case BufferedImage.TYPE_INT_ARGB:
       {
-        clearBuffer(image.getRaster().getDataBuffer(), type, colors, x + (y * image.getWidth()));
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
         break;
       }
     }

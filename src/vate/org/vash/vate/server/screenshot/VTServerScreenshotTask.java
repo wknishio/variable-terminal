@@ -152,7 +152,7 @@ public class VTServerScreenshotTask extends VTTask
       {
         screenshotProvider.setGraphicsDevice(null);
       }
-      if (!screenshotProvider.isScreenCaptureInitialized() && !screenshotProvider.initializeScreenCapture())
+      if (!screenshotProvider.isScreenCaptureInitialized(false) && !screenshotProvider.initializeScreenCapture(false))
       {
         synchronized (this)
         {
@@ -178,7 +178,7 @@ public class VTServerScreenshotTask extends VTTask
       photoOutputStream = new BufferedOutputStream(Channels.newOutputStream(new FileOutputStream(screenshotFile).getChannel()), fileScreenshotBufferSize);
       // screenshotProvider.writeHighQualityScreenshot(photoOutputStream,
       // SWT.IMAGE_BMP);
-      BufferedImage screenCapture = screenshotProvider.createScreenCapture(drawPointer);
+      BufferedImage screenCapture = screenshotProvider.createScreenCapture(false, drawPointer);
       connection.getResultWriter().write("\nVT>Screen capture data obtained, image will be saved in:\nVT>[" + screenshotFile.getAbsolutePath() + "]\nVT>");
       connection.getResultWriter().flush();
       if (screenCapture.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE && screenCapture.getType() == BufferedImage.TYPE_BYTE_INDEXED)

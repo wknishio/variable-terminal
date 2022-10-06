@@ -268,7 +268,7 @@ public class VTGraphicsModeClientReader implements Runnable
         {
           case VT.VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_IMAGE:
           {
-            // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_NEW_FRAME_IMAGE");
+            //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_IMAGE");
             // refreshArea.x = connection.getGraphicsControlDataInputStream().readInt();
             // refreshArea.y = connection.getGraphicsControlDataInputStream().readInt();
             // refreshArea.width = connection.getGraphicsControlDataInputStream().readInt();
@@ -350,7 +350,7 @@ public class VTGraphicsModeClientReader implements Runnable
           }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE:
           {
-            // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_SUBIMAGE");
+            //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE");
             // refreshArea.x = connection.getGraphicsControlDataInputStream().readInt();
             // refreshArea.y = connection.getGraphicsControlDataInputStream().readInt();
             // refreshArea.width = connection.getGraphicsControlDataInputStream().readInt();
@@ -414,7 +414,7 @@ public class VTGraphicsModeClientReader implements Runnable
           }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_CUSTOM:
           {
-            // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_NEW_FRAME_CUSTOM");
+            //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
             // refreshArea.x = connection.getGraphicsControlDataInputStream().readInt();
             // refreshArea.y = connection.getGraphicsControlDataInputStream().readInt();
             // refreshArea.width = connection.getGraphicsControlDataInputStream().readInt();
@@ -439,8 +439,9 @@ public class VTGraphicsModeClientReader implements Runnable
             int height = connection.getGraphicsControlDataInputStream().readInt();
             //System.out.println("type:" + type);
             //System.out.println("colors:" + colors);
-            currentImageDataBuffer = VTImageIO.createImage(0, 0, width, height, type, colors, recyclableDataBuffer);
+            currentImageDataBuffer = VTImageIO.createImage(1, 1, width, height, type, colors, recyclableDataBuffer);
             recyclableDataBuffer = currentImageDataBuffer.getRaster().getDataBuffer();
+            
             // currentImageGraphics = currentImageDataBuffer.createGraphics();
             // currentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
             switch (type)
@@ -579,7 +580,7 @@ public class VTGraphicsModeClientReader implements Runnable
           }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM:
           {
-            // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM");
+            //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM");
             // refreshArea.x = connection.getGraphicsControlDataInputStream().readInt();
             // refreshArea.y = connection.getGraphicsControlDataInputStream().readInt();
             // refreshArea.width = connection.getGraphicsControlDataInputStream().readInt();

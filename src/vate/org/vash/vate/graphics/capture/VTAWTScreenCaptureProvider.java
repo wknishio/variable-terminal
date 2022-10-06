@@ -115,12 +115,14 @@ public final class VTAWTScreenCaptureProvider
   private volatile boolean initialized16777216ScreenCapture;
   private volatile boolean initialized125ScreenCapture;
   private volatile boolean initialized27ScreenCapture;
+  //private volatile boolean initializedPadding;
   private volatile int scaledWidth = 0;
   private volatile int scaledHeight = 0;
   private volatile double scaleFactorX = 1;
   private volatile double scaleFactorY = 1;
   private volatile boolean keepRatio = false;
   private volatile boolean forceScaleFactors = false;
+  private volatile boolean usePadding = false;
   private int i;
   private int red, green, blue;
   private int screenCurrentWidth, screenCurrentHeight;
@@ -374,7 +376,7 @@ public final class VTAWTScreenCaptureProvider
           this.graphicsDevice = graphicsDevice;
           this.standardCaptureRobot = null;
           this.directCaptureRobot = null;
-          initializeScreenCapture();
+          initializeScreenCapture(usePadding);
         }
       }
       else
@@ -382,7 +384,7 @@ public final class VTAWTScreenCaptureProvider
         this.graphicsDevice = graphicsDevice;
         this.standardCaptureRobot = null;
         this.directCaptureRobot = null;
-        initializeScreenCapture();
+        initializeScreenCapture(usePadding);
       }
     }
     else
@@ -392,7 +394,7 @@ public final class VTAWTScreenCaptureProvider
         this.graphicsDevice = graphicsDevice;
         this.standardCaptureRobot = null;
         this.directCaptureRobot = null;
-        initializeScreenCapture();
+        initializeScreenCapture(usePadding);
       }
     }
   }
@@ -548,6 +550,7 @@ public final class VTAWTScreenCaptureProvider
           refresh16ScreenCapture();
         }
         initialized16ScreenCapture = true;
+        //initializedPadding = usePadding;
         return true;
       }
     }
@@ -574,6 +577,7 @@ public final class VTAWTScreenCaptureProvider
           refresh32ScreenCapture();
         }
         initialized32ScreenCapture = true;
+        //initializedPadding = usePadding;
         return true;
       }
     }
@@ -600,6 +604,7 @@ public final class VTAWTScreenCaptureProvider
           refresh8ScreenCapture();
         }
         initialized8ScreenCapture = true;
+        //initializedPadding = usePadding;
         return true;
       }
     }
@@ -626,6 +631,7 @@ public final class VTAWTScreenCaptureProvider
           refresh512ScreenCapture();
         }
         initialized512ScreenCapture = true;
+        //initializedPadding = usePadding;
         return true;
       }
     }
@@ -652,6 +658,7 @@ public final class VTAWTScreenCaptureProvider
           refresh4096ScreenCapture();
         }
         initialized4096ScreenCapture = true;
+        //initializedPadding = usePadding;
         return true;
       }
     }
@@ -678,6 +685,7 @@ public final class VTAWTScreenCaptureProvider
           refresh64ScreenCapture();
         }
         initialized64ScreenCapture = true;
+        //initializedPadding = usePadding;
         return true;
       }
     }
@@ -704,6 +712,7 @@ public final class VTAWTScreenCaptureProvider
           refresh216ScreenCapture();
         }
         initialized216ScreenCapture = true;
+        //initializedPadding = usePadding;
         return true;
       }
     }
@@ -730,6 +739,7 @@ public final class VTAWTScreenCaptureProvider
           refresh32768ScreenCapture();
         }
         initialized32768ScreenCapture = true;
+        //initializedPadding = usePadding;
         return true;
       }
     }
@@ -756,6 +766,7 @@ public final class VTAWTScreenCaptureProvider
           refresh16777216ScreenCapture();
         }
         initialized16777216ScreenCapture = true;
+        //initializedPadding = usePadding;
         return true;
       }
     }
@@ -782,6 +793,7 @@ public final class VTAWTScreenCaptureProvider
           refresh125ScreenCapture();
         }
         initialized125ScreenCapture = true;
+        //initializedPadding = usePadding;
         return true;
       }
     }
@@ -808,6 +820,7 @@ public final class VTAWTScreenCaptureProvider
           refresh27ScreenCapture();
         }
         initialized27ScreenCapture = true;
+        //initializedPadding = usePadding;
         return true;
       }
     }
@@ -818,8 +831,9 @@ public final class VTAWTScreenCaptureProvider
     return false;
   }
 
-  public final synchronized boolean initializeScreenCapture()
+  public final synchronized boolean initializeScreenCapture(boolean usePadding)
   {
+    this.usePadding = usePadding;
     if (colorQuality == VT_COLOR_QUALITY_16777216)
     {
       return initialize16777216ScreenCapture(graphicsDevice);
@@ -971,8 +985,12 @@ public final class VTAWTScreenCaptureProvider
     return initialized16777216ScreenCapture;
   }
 
-  public final synchronized boolean isScreenCaptureInitialized()
+  public final synchronized boolean isScreenCaptureInitialized(boolean usePadding)
   {
+    if (this.usePadding != usePadding)
+    {
+      return false;
+    }
     if (colorQuality == VT_COLOR_QUALITY_16777216)
     {
       return is16777216ScreenCaptureInitialized();
@@ -1127,6 +1145,7 @@ public final class VTAWTScreenCaptureProvider
     initialized16777216ScreenCapture = false;
     initialized125ScreenCapture = false;
     initialized27ScreenCapture = false;
+    //initializedPadding = false;
   }
 
   public final void clearResources()
@@ -1142,6 +1161,7 @@ public final class VTAWTScreenCaptureProvider
     initialized16777216ScreenCapture = false;
     initialized125ScreenCapture = false;
     initialized27ScreenCapture = false;
+    //initializedPadding = false;
   }
 
   private final boolean changedCurrentScreenCapture()
@@ -1176,7 +1196,14 @@ public final class VTAWTScreenCaptureProvider
       screenCurrentImage.flush();
       screenCurrentImage = null;
     }
-    screenCurrentImage = VTImageIO.createImage(0, 0, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 27, recyclableScreenDataBuffer);
+    int x = 0;
+    int y = 0;
+    if (usePadding)
+    {
+      x = 1;
+      y = 1;
+    }
+    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 27, recyclableScreenDataBuffer);
     recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
     refreshScaled27ScreenCapture();
   }
@@ -1197,7 +1224,14 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentGraphics.dispose();
         scaledCurrentGraphics = null;
       }
-      scaledCurrentImage = VTImageIO.createImage(0, 0, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 27, recyclableScaledDataBuffer);
+      int x = 0;
+      int y = 0;
+      if (usePadding)
+      {
+        x = 1;
+        y = 1;
+      }
+      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 27, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1235,7 +1269,14 @@ public final class VTAWTScreenCaptureProvider
       screenCurrentImage.flush();
       screenCurrentImage = null;
     }
-    screenCurrentImage = VTImageIO.createImage(0, 0, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 16, recyclableScreenDataBuffer);
+    int x = 0;
+    int y = 0;
+    if (usePadding)
+    {
+      x = 1;
+      y = 1;
+    }
+    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 16, recyclableScreenDataBuffer);
     // screenCurrentImage = VTImageIO.newImage(screenCurrentWidth,
     // screenCurrentHeight, BufferedImage.TYPE_BYTE_BINARY, 16,
     // recyclableScreenDataBuffer);
@@ -1259,7 +1300,14 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentGraphics.dispose();
         scaledCurrentGraphics = null;
       }
-      scaledCurrentImage = VTImageIO.createImage(0, 0, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 16, recyclableScaledDataBuffer);
+      int x = 0;
+      int y = 0;
+      if (usePadding)
+      {
+        x = 1;
+        y = 1;
+      }
+      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 16, recyclableScaledDataBuffer);
       // scaledCurrentImage = VTImageIO.newImage(scaledCurrentWidth,
       // scaledCurrentHeight, BufferedImage.TYPE_BYTE_BINARY, 16,
       // recyclableScaledDataBuffer);
@@ -1300,7 +1348,14 @@ public final class VTAWTScreenCaptureProvider
       screenCurrentImage.flush();
       screenCurrentImage = null;
     }
-    screenCurrentImage = VTImageIO.createImage(0, 0, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 32, recyclableScreenDataBuffer);
+    int x = 0;
+    int y = 0;
+    if (usePadding)
+    {
+      x = 1;
+      y = 1;
+    }
+    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 32, recyclableScreenDataBuffer);
     // screenCurrentImage = VTImageIO.newImage(screenCurrentWidth,
     // screenCurrentHeight, BufferedImage.TYPE_BYTE_BINARY, 16,
     // recyclableScreenDataBuffer);
@@ -1324,7 +1379,14 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentGraphics.dispose();
         scaledCurrentGraphics = null;
       }
-      scaledCurrentImage = VTImageIO.createImage(0, 0, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 32, recyclableScaledDataBuffer);
+      int x = 0;
+      int y = 0;
+      if (usePadding)
+      {
+        x = 1;
+        y = 1;
+      }
+      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 32, recyclableScaledDataBuffer);
       // scaledCurrentImage = VTImageIO.newImage(scaledCurrentWidth,
       // scaledCurrentHeight, BufferedImage.TYPE_BYTE_BINARY, 16,
       // recyclableScaledDataBuffer);
@@ -1365,7 +1427,14 @@ public final class VTAWTScreenCaptureProvider
       screenCurrentImage.flush();
       screenCurrentImage = null;
     }
-    screenCurrentImage = VTImageIO.createImage(0, 0, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 8, recyclableScreenDataBuffer);
+    int x = 0;
+    int y = 0;
+    if (usePadding)
+    {
+      x = 1;
+      y = 1;
+    }
+    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 8, recyclableScreenDataBuffer);
     // screenCurrentImage = VTImageIO.newImage(screenCurrentWidth,
     // screenCurrentHeight, BufferedImage.TYPE_BYTE_BINARY, 16,
     // recyclableScreenDataBuffer);
@@ -1389,7 +1458,14 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentGraphics.dispose();
         scaledCurrentGraphics = null;
       }
-      scaledCurrentImage = VTImageIO.createImage(0, 0, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 8, recyclableScaledDataBuffer);
+      int x = 0;
+      int y = 0;
+      if (usePadding)
+      {
+        x = 1;
+        y = 1;
+      }
+      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 8, recyclableScaledDataBuffer);
       // scaledCurrentImage = VTImageIO.newImage(scaledCurrentWidth,
       // scaledCurrentHeight, BufferedImage.TYPE_BYTE_BINARY, 16,
       // recyclableScaledDataBuffer);
@@ -1429,7 +1505,14 @@ public final class VTAWTScreenCaptureProvider
       screenCurrentImage.flush();
       screenCurrentImage = null;
     }
-    screenCurrentImage = VTImageIO.createImage(0, 0, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 64, recyclableScreenDataBuffer);
+    int x = 0;
+    int y = 0;
+    if (usePadding)
+    {
+      x = 1;
+      y = 1;
+    }
+    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 64, recyclableScreenDataBuffer);
     //screenCurrentImage = VTImageIO.newImage(0, 0, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_CUSTOM, 64, recyclableScreenDataBuffer);
     recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
     refreshScaled64ScreenCapture();
@@ -1451,7 +1534,14 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentGraphics.dispose();
         scaledCurrentGraphics = null;
       }
-      scaledCurrentImage = VTImageIO.createImage(0, 0, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 64, recyclableScaledDataBuffer);
+      int x = 0;
+      int y = 0;
+      if (usePadding)
+      {
+        x = 1;
+        y = 1;
+      }
+      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 64, recyclableScaledDataBuffer);
       //scaledCurrentImage = VTImageIO.newImage(0, 0, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 64, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
@@ -1489,7 +1579,14 @@ public final class VTAWTScreenCaptureProvider
       screenCurrentImage.flush();
       screenCurrentImage = null;
     }
-    screenCurrentImage = VTImageIO.createImage(0, 0, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 125, recyclableScreenDataBuffer);
+    int x = 0;
+    int y = 0;
+    if (usePadding)
+    {
+      x = 1;
+      y = 1;
+    }
+    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 125, recyclableScreenDataBuffer);
     recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
     refreshScaled125ScreenCapture();
   }
@@ -1510,7 +1607,14 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentGraphics.dispose();
         scaledCurrentGraphics = null;
       }
-      scaledCurrentImage = VTImageIO.createImage(0, 0, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 125, recyclableScaledDataBuffer);
+      int x = 0;
+      int y = 0;
+      if (usePadding)
+      {
+        x = 1;
+        y = 1;
+      }
+      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 125, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1547,7 +1651,14 @@ public final class VTAWTScreenCaptureProvider
       screenCurrentImage.flush();
       screenCurrentImage = null;
     }
-    screenCurrentImage = VTImageIO.createImage(0, 0, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 216, recyclableScreenDataBuffer);
+    int x = 0;
+    int y = 0;
+    if (usePadding)
+    {
+      x = 1;
+      y = 1;
+    }
+    screenCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 216, recyclableScreenDataBuffer);
     recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
     refreshScaled216ScreenCapture();
   }
@@ -1568,7 +1679,14 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentGraphics.dispose();
         scaledCurrentGraphics = null;
       }
-      scaledCurrentImage = VTImageIO.createImage(0, 0, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 216, recyclableScaledDataBuffer);
+      int x = 0;
+      int y = 0;
+      if (usePadding)
+      {
+        x = 1;
+        y = 1;
+      }
+      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 216, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1605,7 +1723,14 @@ public final class VTAWTScreenCaptureProvider
       screenCurrentImage.flush();
       screenCurrentImage = null;
     }
-    screenCurrentImage = VTImageIO.createImage(0, 0, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_CUSTOM, 512, recyclableScreenDataBuffer);
+    int x = 0;
+    int y = 0;
+    if (usePadding)
+    {
+      x = 1;
+      y = 1;
+    }
+    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_CUSTOM, 512, recyclableScreenDataBuffer);
     recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
     refreshScaled512ScreenCapture();
   }
@@ -1626,7 +1751,14 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentGraphics.dispose();
         scaledCurrentGraphics = null;
       }
-      scaledCurrentImage = VTImageIO.createImage(0, 0, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 512, recyclableScaledDataBuffer);
+      int x = 0;
+      int y = 0;
+      if (usePadding)
+      {
+        x = 1;
+        y = 1;
+      }
+      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 512, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1663,7 +1795,14 @@ public final class VTAWTScreenCaptureProvider
       screenCurrentImage.flush();
       screenCurrentImage = null;
     }
-    screenCurrentImage = VTImageIO.createImage(0, 0, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_CUSTOM, 4096, recyclableScreenDataBuffer);
+    int x = 0;
+    int y = 0;
+    if (usePadding)
+    {
+      x = 1;
+      y = 1;
+    }
+    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_CUSTOM, 4096, recyclableScreenDataBuffer);
     recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
     refreshScale4096ScreenCapture();
   }
@@ -1684,7 +1823,14 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentGraphics.dispose();
         scaledCurrentGraphics = null;
       }
-      scaledCurrentImage = VTImageIO.createImage(0, 0, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 4096, recyclableScaledDataBuffer);
+      int x = 0;
+      int y = 0;
+      if (usePadding)
+      {
+        x = 1;
+        y = 1;
+      }
+      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 4096, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1721,7 +1867,14 @@ public final class VTAWTScreenCaptureProvider
       screenCurrentImage.flush();
       screenCurrentImage = null;
     }
-    screenCurrentImage = VTImageIO.createImage(0, 0, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_USHORT_555_RGB, 32768, recyclableScreenDataBuffer);
+    int x = 0;
+    int y = 0;
+    if (usePadding)
+    {
+      x = 1;
+      y = 1;
+    }
+    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_USHORT_555_RGB, 32768, recyclableScreenDataBuffer);
     recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
     refreshScaled32768ScreenCapture();
   }
@@ -1742,7 +1895,14 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentGraphics.dispose();
         scaledCurrentGraphics = null;
       }
-      scaledCurrentImage = VTImageIO.createImage(0, 0, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_USHORT_555_RGB, 32768, recyclableScaledDataBuffer);
+      int x = 0;
+      int y = 0;
+      if (usePadding)
+      {
+        x = 1;
+        y = 1;
+      }
+      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_USHORT_555_RGB, 32768, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1779,7 +1939,14 @@ public final class VTAWTScreenCaptureProvider
       screenCurrentImage.flush();
       screenCurrentImage = null;
     }
-    screenCurrentImage = VTImageIO.createImage(0, 0, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_INT_RGB, 16777216, recyclableScreenDataBuffer);
+    int x = 0;
+    int y = 0;
+    if (usePadding)
+    {
+      x = 1;
+      y = 1;
+    }
+    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_INT_RGB, 16777216, recyclableScreenDataBuffer);
     recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
     refreshScaled16777216ScreenCapture();
   }
@@ -1800,7 +1967,14 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentGraphics.dispose();
         scaledCurrentGraphics = null;
       }
-      scaledCurrentImage = VTImageIO.createImage(0, 0, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_INT_RGB, 16777216, recyclableScaledDataBuffer);
+      int x = 0;
+      int y = 0;
+      if (usePadding)
+      {
+        x = 1;
+        y = 1;
+      }
+      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_INT_RGB, 16777216, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1823,76 +1997,7 @@ public final class VTAWTScreenCaptureProvider
 
   private final BufferedImage create32ScreenCapture(boolean drawPointer)
   {
-    if (changedCurrentScreenCapture())
-    {
-      refresh32ScreenCapture();
-    }
-    Rectangle captureArea = new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight);
-    if (captureArea.width <= 0 || captureArea.height <= 0)
-    {
-      return null;
-    }
-    BufferedImage screenCapture = createRobotCapture(captureArea);
-
-    int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
-    if (screenCapture.getType() == BufferedImage.TYPE_INT_RGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB_PRE)
-    {
-      sectionPixelBufferInt = ((DataBufferInt) screenCapture.getRaster().getDataBuffer()).getData();
-    }
-    else
-    {
-      pixelGrabber.setImage(screenCapture);
-      if (sectionPixelBufferInt != null && sectionPixelBufferInt.length >= pixelDataLength)
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels(sectionPixelBufferInt);
-      }
-      else
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels();
-      }
-      pixelGrabber.dispose();
-    }
-    // System.runFinalization();
-    // System.gc();
-    byte rgbiValue = 0;
-    pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    for (i = 0; i < pixelDataLength; i++)
-    {
-      // red = (((((sectionPixelBufferInt[i] >> 16) & 0xFF) * 3) >> 8) * 9);
-      // green = (((((sectionPixelBufferInt[i] >> 8) & 0xFF) * 3) >> 8) * 3);
-      // blue = (((((sectionPixelBufferInt[i]) & 0xFF) * 3) >> 8));
-      // pixelBufferByte[i] = (byte) (red + green + blue);
-      rgbiValue = (byte) VTIndexedColorModel.get32ColorRGBIIValue(sectionPixelBufferInt[i]);
-
-      pixelBufferByte[i] = rgbiValue;
-    }
-
-    if (sectionCurrentImage != screenCapture)
-    {
-      screenCapture.flush();
-    }
-    screenCapture = null;
-    pixelBufferByte = null;
-    sectionPixelBufferInt = null;
-
-    if (drawPointer)
-    {
-      drawPointer(screenCurrentImage);
-    }
-
-    if (scaledCurrentWidth <= 0 || scaledCurrentHeight <= 0)
-    {
-      return screenCurrentImage;
-    }
-    else
-    {
-//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-//			{
-//				Thread.yield();
-//			}
-      scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
-      return scaledCurrentImage;
-    }
+    return create32ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
   }
 
   private final BufferedImage create32ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -1949,16 +2054,23 @@ public final class VTAWTScreenCaptureProvider
     }
 
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int startOffset = captureArea.x + screenCurrentImage.getWidth() * captureArea.y;
+    byte rgbiValue = 0;
+    int minX = 0;
+    int minY = 0;
+    if (usePadding)
+    {
+      minX = 1;
+      minY = 1;
+    }
+    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
-    byte rgbiValue = 0;
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
     {
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth();
+        currentHeight += screenCurrentImage.getWidth() + minX;
       }
 
       // red = (((((sectionPixelBufferInt[i] >> 16) & 0xFF) * 3) >> 8) * 9);
@@ -2013,78 +2125,7 @@ public final class VTAWTScreenCaptureProvider
 
   private final BufferedImage create8ScreenCapture(boolean drawPointer)
   {
-    if (changedCurrentScreenCapture())
-    {
-      refresh8ScreenCapture();
-    }
-    Rectangle captureArea = new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight);
-    if (captureArea.width <= 0 || captureArea.height <= 0)
-    {
-      return null;
-    }
-    BufferedImage screenCapture = createRobotCapture(captureArea);
-
-    int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
-    if (screenCapture.getType() == BufferedImage.TYPE_INT_RGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB_PRE)
-    {
-      sectionPixelBufferInt = ((DataBufferInt) screenCapture.getRaster().getDataBuffer()).getData();
-    }
-    else
-    {
-      pixelGrabber.setImage(screenCapture);
-      if (sectionPixelBufferInt != null && sectionPixelBufferInt.length >= pixelDataLength)
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels(sectionPixelBufferInt);
-      }
-      else
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels();
-      }
-      pixelGrabber.dispose();
-    }
-    // System.runFinalization();
-    // System.gc();
-    //byte rgbiValue = 0;
-    pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    for (i = 0; i < pixelDataLength; i++)
-    {
-      //rgbiValue = (byte) VTIndexedColorModel.get8ColorRGBValue(sectionPixelBufferInt[i]);
-
-      //pixelBufferByte[i] = rgbiValue;
-      
-      red = ((sectionPixelBufferInt[i] & RGB111_RED_MASK) >> 21);
-      green = ((sectionPixelBufferInt[i] & RGB111_GREEN_MASK) >> 14);
-      blue = ((sectionPixelBufferInt[i] & RGB111_BLUE_MASK) >> 7);
-      
-      pixelBufferByte[i] = (byte) (red + green + blue);
-    }
-
-    if (sectionCurrentImage != screenCapture)
-    {
-      screenCapture.flush();
-    }
-    screenCapture = null;
-    pixelBufferByte = null;
-    sectionPixelBufferInt = null;
-
-    if (drawPointer)
-    {
-      drawPointer(screenCurrentImage);
-    }
-
-    if (scaledCurrentWidth <= 0 || scaledCurrentHeight <= 0)
-    {
-      return screenCurrentImage;
-    }
-    else
-    {
-//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-//			{
-//				Thread.yield();
-//			}
-      scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
-      return scaledCurrentImage;
-    }
+    return create8ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
   }
 
   private final BufferedImage create8ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -2141,16 +2182,22 @@ public final class VTAWTScreenCaptureProvider
     }
 
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int startOffset = captureArea.x + screenCurrentImage.getWidth() * captureArea.y;
+    int minX = 0;
+    int minY = 0;
+    if (usePadding)
+    {
+      minX = 1;
+      minY = 1;
+    }
+    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
-    //byte rgbiValue = 0;
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
     {
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth();
+        currentHeight += screenCurrentImage.getWidth() + minX;
       }
       //rgbiValue = (byte) VTIndexedColorModel.get8ColorRGBValue(sectionPixelBufferInt[i]);
       
@@ -2205,76 +2252,7 @@ public final class VTAWTScreenCaptureProvider
 
   private final BufferedImage create16ScreenCapture(boolean drawPointer)
   {
-    if (changedCurrentScreenCapture())
-    {
-      refresh16ScreenCapture();
-    }
-    Rectangle captureArea = new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight);
-    if (captureArea.width <= 0 || captureArea.height <= 0)
-    {
-      return null;
-    }
-    BufferedImage screenCapture = createRobotCapture(captureArea);
-
-    int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
-    if (screenCapture.getType() == BufferedImage.TYPE_INT_RGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB_PRE)
-    {
-      sectionPixelBufferInt = ((DataBufferInt) screenCapture.getRaster().getDataBuffer()).getData();
-    }
-    else
-    {
-      pixelGrabber.setImage(screenCapture);
-      if (sectionPixelBufferInt != null && sectionPixelBufferInt.length >= pixelDataLength)
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels(sectionPixelBufferInt);
-      }
-      else
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels();
-      }
-      pixelGrabber.dispose();
-    }
-    // System.runFinalization();
-    // System.gc();
-    byte rgbiValue = 0;
-    pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    for (i = 0; i < pixelDataLength; i++)
-    {
-      // red = (((((sectionPixelBufferInt[i] >> 16) & 0xFF) * 3) >> 8) * 9);
-      // green = (((((sectionPixelBufferInt[i] >> 8) & 0xFF) * 3) >> 8) * 3);
-      // blue = (((((sectionPixelBufferInt[i]) & 0xFF) * 3) >> 8));
-      // pixelBufferByte[i] = (byte) (red + green + blue);
-      rgbiValue = (byte) VTIndexedColorModel.get16ColorRGBIValue(sectionPixelBufferInt[i]);
-
-      pixelBufferByte[i] = rgbiValue;
-    }
-
-    if (sectionCurrentImage != screenCapture)
-    {
-      screenCapture.flush();
-    }
-    screenCapture = null;
-    pixelBufferByte = null;
-    sectionPixelBufferInt = null;
-
-    if (drawPointer)
-    {
-      drawPointer(screenCurrentImage);
-    }
-
-    if (scaledCurrentWidth <= 0 || scaledCurrentHeight <= 0)
-    {
-      return screenCurrentImage;
-    }
-    else
-    {
-//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-//			{
-//				Thread.yield();
-//			}
-      scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
-      return scaledCurrentImage;
-    }
+    return create16ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
   }
 
   private final BufferedImage create16ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -2330,17 +2308,24 @@ public final class VTAWTScreenCaptureProvider
       pixelGrabber.dispose();
     }
 
+    byte rgbiValue = 0;
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int startOffset = captureArea.x + screenCurrentImage.getWidth() * captureArea.y;
+    int minX = 0;
+    int minY = 0;
+    if (usePadding)
+    {
+      minX = 1;
+      minY = 1;
+    }
+    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
-    byte rgbiValue = 0;
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
     {
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth();
+        currentHeight += screenCurrentImage.getWidth() + minX;
       }
 
       // red = (((((sectionPixelBufferInt[i] >> 16) & 0xFF) * 3) >> 8) * 9);
@@ -2395,85 +2380,7 @@ public final class VTAWTScreenCaptureProvider
 
   private final BufferedImage create216ScreenCapture(boolean drawPointer)
   {
-    if (changedCurrentScreenCapture())
-    {
-      refresh216ScreenCapture();
-    }
-    Rectangle captureArea = new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight);
-    if (captureArea.width <= 0 || captureArea.height <= 0)
-    {
-      return null;
-    }
-    BufferedImage screenCapture = createRobotCapture(captureArea);
-    // colorConversionPixelBufferInt = new
-    // VTARGBPixelGrabber(screenCapture).getPixels(colorConversionPixelBufferInt);
-    int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
-    if (screenCapture.getType() == BufferedImage.TYPE_INT_RGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB_PRE)
-    {
-      sectionPixelBufferInt = ((DataBufferInt) screenCapture.getRaster().getDataBuffer()).getData();
-    }
-    else
-    {
-      pixelGrabber.setImage(screenCapture);
-      if (sectionPixelBufferInt != null && sectionPixelBufferInt.length >= pixelDataLength)
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels(sectionPixelBufferInt);
-      }
-      else
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels();
-      }
-      pixelGrabber.dispose();
-    }
-
-    pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    for (i = 0; i < pixelDataLength; i++)
-    {
-
-      red = (((((sectionPixelBufferInt[i] & RGB888_RED_MASK) >> 16) * 6) >> 8) * 36);
-      green = (((((sectionPixelBufferInt[i] & RGB888_GREEN_MASK) >> 8) * 6) >> 8) * 6);
-      blue = (((((sectionPixelBufferInt[i]) & RGB888_BLUE_MASK) * 6) >> 8));
-
-      // red = (int)((Math.round((((sectionPixelBufferInt[i] & RGB888_RED_MASK) >> 16)
-      // + 25) / 51d)) * 36);
-      // green = (int)((Math.round((((sectionPixelBufferInt[i] & RGB888_GREEN_MASK) >>
-      // 8) + 25) / 51d)) * 6);
-      // blue = (int)((Math.round((((sectionPixelBufferInt[i] & RGB888_BLUE_MASK)) +
-      // 25) / 51d)));
-//			
-      pixelBufferByte[i] = (byte) (red + green + blue);
-
-      // pixelBufferByte[i] =
-      // VTIndexedColorModel.get216Color6LevelRGBValue(sectionPixelBufferInt[i]);
-    }
-    // colorConversionPixelBufferInt = null;
-    if (sectionCurrentImage != screenCapture)
-    {
-      screenCapture.flush();
-    }
-    screenCapture = null;
-    pixelBufferByte = null;
-    sectionPixelBufferInt = null;
-
-    if (drawPointer)
-    {
-      drawPointer(screenCurrentImage);
-    }
-
-    if (scaledCurrentWidth <= 0 || scaledCurrentHeight <= 0)
-    {
-      return screenCurrentImage;
-    }
-    else
-    {
-      // while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0,
-      // scaledCurrentWidth, scaledCurrentHeight, null))
-      // {
-      // Thread.yield();
-      // }
-      scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
-      return scaledCurrentImage;
-    }
+    return create216ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
   }
 
   private final BufferedImage create216ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -2528,9 +2435,16 @@ public final class VTAWTScreenCaptureProvider
       }
       pixelGrabber.dispose();
     }
-
+    
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int startOffset = captureArea.x + screenCurrentImage.getWidth() * captureArea.y;
+    int minX = 0;
+    int minY = 0;
+    if (usePadding)
+    {
+      minX = 1;
+      minY = 1;
+    }
+    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
@@ -2538,7 +2452,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth();
+        currentHeight += screenCurrentImage.getWidth() + minX;
       }
 
       red = (((((sectionPixelBufferInt[i] & RGB888_RED_MASK) >> 16) * 6) >> 8) * 36);
@@ -2597,71 +2511,7 @@ public final class VTAWTScreenCaptureProvider
 
   private final BufferedImage create64ScreenCapture(boolean drawPointer)
   {
-    if (changedCurrentScreenCapture())
-    {
-      refresh64ScreenCapture();
-    }
-    Rectangle captureArea = new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight);
-    if (captureArea.width <= 0 || captureArea.height <= 0)
-    {
-      return null;
-    }
-    BufferedImage screenCapture = createRobotCapture(captureArea);
-    int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
-    if (screenCapture.getType() == BufferedImage.TYPE_INT_RGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB_PRE)
-    {
-      sectionPixelBufferInt = ((DataBufferInt) screenCapture.getRaster().getDataBuffer()).getData();
-    }
-    else
-    {
-      pixelGrabber.setImage(screenCapture);
-      if (sectionPixelBufferInt != null && sectionPixelBufferInt.length >= pixelDataLength)
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels(sectionPixelBufferInt);
-      }
-      else
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels();
-      }
-      pixelGrabber.dispose();
-    }
-
-    pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    for (i = 0; i < pixelDataLength; i++)
-    {
-      red = ((sectionPixelBufferInt[i] & RGB222_RED_MASK) >> 18);
-      green = ((sectionPixelBufferInt[i] & RGB222_GREEN_MASK) >> 12);
-      blue = ((sectionPixelBufferInt[i] & RGB222_BLUE_MASK) >> 6);
-
-      pixelBufferByte[i] = (byte) (red + green + blue);
-    }
-    // colorConversionPixelBufferInt = null;
-    if (sectionCurrentImage != screenCapture)
-    {
-      screenCapture.flush();
-    }
-    screenCapture = null;
-    pixelBufferByte = null;
-    sectionPixelBufferInt = null;
-
-    if (drawPointer)
-    {
-      drawPointer(screenCurrentImage);
-    }
-
-    if (scaledCurrentWidth <= 0 || scaledCurrentHeight <= 0)
-    {
-      return screenCurrentImage;
-    }
-    else
-    {
-//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-//			{
-//				Thread.yield();
-//			}
-      scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
-      return scaledCurrentImage;
-    }
+    return create64ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
   }
 
   private final BufferedImage create64ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -2720,7 +2570,14 @@ public final class VTAWTScreenCaptureProvider
     // System.runFinalization();
     // System.gc();
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int startOffset = captureArea.x + screenCurrentImage.getWidth() * captureArea.y;
+    int minX = 0;
+    int minY = 0;
+    if (usePadding)
+    {
+      minX = 1;
+      minY = 1;
+    }
+    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
@@ -2728,7 +2585,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth();
+        currentHeight += screenCurrentImage.getWidth() + minX;
       }
 
       red = ((sectionPixelBufferInt[i] & RGB222_RED_MASK) >> 18);
@@ -2777,75 +2634,7 @@ public final class VTAWTScreenCaptureProvider
 
   private final BufferedImage create512ScreenCapture(boolean drawPointer)
   {
-    if (changedCurrentScreenCapture())
-    {
-      refresh512ScreenCapture();
-    }
-    Rectangle captureArea = new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight);
-    if (captureArea.width <= 0 || captureArea.height <= 0)
-    {
-      return null;
-    }
-    BufferedImage screenCapture = createRobotCapture(captureArea);
-    int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
-    if (screenCapture.getType() == BufferedImage.TYPE_INT_RGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB_PRE)
-    {
-      sectionPixelBufferInt = ((DataBufferInt) screenCapture.getRaster().getDataBuffer()).getData();
-    }
-    else
-    {
-      pixelGrabber.setImage(screenCapture);
-      if (sectionPixelBufferInt != null && sectionPixelBufferInt.length >= pixelDataLength)
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels(sectionPixelBufferInt);
-      }
-      else
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels();
-      }
-      pixelGrabber.dispose();
-    }
-
-    pixelBufferShort = ((DataBufferUShort) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    for (i = 0; i < pixelDataLength; i++)
-    {
-      //red = (((sectionPixelBufferInt[i] & RGB555_333_RED_MASK) | RGB555_333_RED_ADD) >> 9);
-      //green = (((sectionPixelBufferInt[i] & RGB555_333_GREEN_MASK) | RGB555_333_GREEN_ADD) >> 6);
-      //blue = (((sectionPixelBufferInt[i] & RGB555_333_BLUE_MASK) | RGB555_333_BLUE_ADD) >> 3);
-      
-      red = ((sectionPixelBufferInt[i] & RGB333_RED_MASK) >> 15);
-      green = ((sectionPixelBufferInt[i] & RGB333_GREEN_MASK) >> 10);
-      blue = ((sectionPixelBufferInt[i] & RGB333_BLUE_MASK) >> 5);
-
-      pixelBufferShort[i] = (short) (red | green | blue);
-    }
-
-    if (sectionCurrentImage != screenCapture)
-    {
-      screenCapture.flush();
-    }
-    screenCapture = null;
-    pixelBufferShort = null;
-    sectionPixelBufferInt = null;
-
-    if (drawPointer)
-    {
-      drawPointer(screenCurrentImage);
-    }
-
-    if (scaledCurrentWidth <= 0 || scaledCurrentHeight <= 0)
-    {
-      return screenCurrentImage;
-    }
-    else
-    {
-//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-//			{
-//				Thread.yield();
-//			}
-      scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
-      return scaledCurrentImage;
-    }
+    return create512ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
   }
 
   private final BufferedImage create512ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -2909,7 +2698,14 @@ public final class VTAWTScreenCaptureProvider
     }
 
     pixelBufferShort = ((DataBufferUShort) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int startOffset = captureArea.x + screenCurrentImage.getWidth() * captureArea.y;
+    int minX = 0;
+    int minY = 0;
+    if (usePadding)
+    {
+      minX = 1;
+      minY = 1;
+    }
+    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
@@ -2917,7 +2713,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth();
+        currentHeight += screenCurrentImage.getWidth() + minX;
       }
 
       //red = (((sectionPixelBufferInt[i] & RGB555_333_RED_MASK) | RGB555_333_RED_ADD) >> 9);
@@ -2970,75 +2766,7 @@ public final class VTAWTScreenCaptureProvider
 
   private final BufferedImage create4096ScreenCapture(boolean drawPointer)
   {
-    if (changedCurrentScreenCapture())
-    {
-      refresh4096ScreenCapture();
-    }
-    Rectangle captureArea = new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight);
-    if (captureArea.width <= 0 || captureArea.height <= 0)
-    {
-      return null;
-    }
-    BufferedImage screenCapture = createRobotCapture(captureArea);
-    int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
-    if (screenCapture.getType() == BufferedImage.TYPE_INT_RGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB_PRE)
-    {
-      sectionPixelBufferInt = ((DataBufferInt) screenCapture.getRaster().getDataBuffer()).getData();
-    }
-    else
-    {
-      pixelGrabber.setImage(screenCapture);
-      if (sectionPixelBufferInt != null && sectionPixelBufferInt.length >= pixelDataLength)
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels(sectionPixelBufferInt);
-      }
-      else
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels();
-      }
-      pixelGrabber.dispose();
-    }
-
-    pixelBufferShort = ((DataBufferUShort) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    for (i = 0; i < pixelDataLength; i++)
-    {
-      //red = (((sectionPixelBufferInt[i] & RGB555_444_RED_MASK) | RGB555_444_RED_ADD) >> 9);
-      //green = (((sectionPixelBufferInt[i] & RGB555_444_GREEN_MASK) | RGB555_444_GREEN_ADD) >> 6);
-      //blue = (((sectionPixelBufferInt[i] & RGB555_444_BLUE_MASK) | RGB555_444_BLUE_ADD) >> 3);
-
-      red = ((sectionPixelBufferInt[i] & RGB444_RED_MASK) >> 12);
-      green = ((sectionPixelBufferInt[i] & RGB444_GREEN_MASK) >> 8);
-      blue = ((sectionPixelBufferInt[i] & RGB444_BLUE_MASK) >> 4);
-
-      pixelBufferShort[i] = (short) (red | green | blue);
-    }
-
-    if (sectionCurrentImage != screenCapture)
-    {
-      screenCapture.flush();
-    }
-    screenCapture = null;
-    pixelBufferShort = null;
-    sectionPixelBufferInt = null;
-
-    if (drawPointer)
-    {
-      drawPointer(screenCurrentImage);
-    }
-
-    if (scaledCurrentWidth <= 0 || scaledCurrentHeight <= 0)
-    {
-      return screenCurrentImage;
-    }
-    else
-    {
-//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-//			{
-//				Thread.yield();
-//			}
-      scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
-      return scaledCurrentImage;
-    }
+    return create4096ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
   }
 
   private final BufferedImage create4096ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -3102,7 +2830,14 @@ public final class VTAWTScreenCaptureProvider
     }
 
     pixelBufferShort = ((DataBufferUShort) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int startOffset = captureArea.x + screenCurrentImage.getWidth() * captureArea.y;
+    int minX = 0;
+    int minY = 0;
+    if (usePadding)
+    {
+      minX = 1;
+      minY = 1;
+    }
+    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
@@ -3110,7 +2845,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth();
+        currentHeight += screenCurrentImage.getWidth() + minX;
       }
       //red = (((sectionPixelBufferInt[i] & RGB555_444_RED_MASK) | RGB555_444_RED_ADD) >> 9);
       //green = (((sectionPixelBufferInt[i] & RGB555_444_GREEN_MASK) | RGB555_444_GREEN_ADD) >> 6);
@@ -3162,71 +2897,7 @@ public final class VTAWTScreenCaptureProvider
 
   private final BufferedImage create32768ScreenCapture(boolean drawPointer)
   {
-    if (changedCurrentScreenCapture())
-    {
-      refresh32768ScreenCapture();
-    }
-    Rectangle captureArea = new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight);
-    if (captureArea.width <= 0 || captureArea.height <= 0)
-    {
-      return null;
-    }
-    BufferedImage screenCapture = createRobotCapture(captureArea);
-    int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
-    if (screenCapture.getType() == BufferedImage.TYPE_INT_RGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB_PRE)
-    {
-      sectionPixelBufferInt = ((DataBufferInt) screenCapture.getRaster().getDataBuffer()).getData();
-    }
-    else
-    {
-      pixelGrabber.setImage(screenCapture);
-      if (sectionPixelBufferInt != null && sectionPixelBufferInt.length >= pixelDataLength)
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels(sectionPixelBufferInt);
-      }
-      else
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels();
-      }
-      pixelGrabber.dispose();
-    }
-
-    pixelBufferShort = ((DataBufferUShort) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    for (i = 0; i < pixelDataLength; i++)
-    {
-      red = ((sectionPixelBufferInt[i] & RGB555_RED_MASK) >> 9);
-      green = ((sectionPixelBufferInt[i] & RGB555_GREEN_MASK) >> 6);
-      blue = ((sectionPixelBufferInt[i] & RGB555_BLUE_MASK) >> 3);
-
-      pixelBufferShort[i] = (short) (red | green | blue);
-    }
-
-    if (sectionCurrentImage != screenCapture)
-    {
-      screenCapture.flush();
-    }
-    screenCapture = null;
-    pixelBufferShort = null;
-    sectionPixelBufferInt = null;
-
-    if (drawPointer)
-    {
-      drawPointer(screenCurrentImage);
-    }
-
-    if (scaledCurrentWidth <= 0 || scaledCurrentHeight <= 0)
-    {
-      return screenCurrentImage;
-    }
-    else
-    {
-//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-//			{
-//				Thread.yield();
-//			}
-      scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
-      return scaledCurrentImage;
-    }
+    return create32768ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
   }
 
   private final BufferedImage create32768ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -3290,7 +2961,14 @@ public final class VTAWTScreenCaptureProvider
     }
 
     pixelBufferShort = ((DataBufferUShort) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int startOffset = captureArea.x + screenCurrentImage.getWidth() * captureArea.y;
+    int minX = 0;
+    int minY = 0;
+    if (usePadding)
+    {
+      minX = 1;
+      minY = 1;
+    }
+    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
@@ -3298,8 +2976,9 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth();
+        currentHeight += screenCurrentImage.getWidth() + minX;
       }
+      
       red = ((sectionPixelBufferInt[i] & RGB555_RED_MASK) >> 9);
       green = ((sectionPixelBufferInt[i] & RGB555_GREEN_MASK) >> 6);
       blue = ((sectionPixelBufferInt[i] & RGB555_BLUE_MASK) >> 3);
@@ -3346,77 +3025,7 @@ public final class VTAWTScreenCaptureProvider
 
   private final BufferedImage create16777216ScreenCapture(boolean drawPointer)
   {
-    if (changedCurrentScreenCapture())
-    {
-      refresh16777216ScreenCapture();
-    }
-    Rectangle captureArea = new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight);
-    if (captureArea.width <= 0 || captureArea.height <= 0)
-    {
-      return null;
-    }
-    BufferedImage screenCapture = createRobotCapture(captureArea);
-    // BufferedImage screenCapture =
-    // standardCaptureRobot.createScreenCapture(captureArea);
-    int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
-    if (screenCapture.getType() == BufferedImage.TYPE_INT_RGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB_PRE)
-    {
-      sectionPixelBufferInt = ((DataBufferInt) screenCapture.getRaster().getDataBuffer()).getData();
-    }
-    else
-    {
-      pixelGrabber.setImage(screenCapture);
-      if (sectionPixelBufferInt != null && sectionPixelBufferInt.length >= pixelDataLength)
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels(sectionPixelBufferInt);
-      }
-      else
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels();
-      }
-      pixelGrabber.dispose();
-    }
-
-    // clear alpha channel
-    int length = screenCapture.getWidth() * screenCapture.getHeight();
-    for (int i = 0; i < length; i++)
-    {
-      sectionPixelBufferInt[i] &= RGB888_XOR_MASK;
-    }
-
-    pixelBufferInt = ((DataBufferInt) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    System.arraycopy(sectionPixelBufferInt, 0, pixelBufferInt, 0, pixelDataLength);
-    // VTImageDataUtils.copyArea(sectionPixelBufferInt, pixelBufferInt, 0,
-    // captureArea.width, captureArea.height, captureArea);
-    // screenCurrentImage.getRaster().setDataElements(captureArea.x, captureArea.y,
-    // captureArea.width, captureArea.height, sectionPixelBufferInt);
-
-    if (sectionCurrentImage != screenCapture)
-    {
-      screenCapture.flush();
-    }
-    screenCapture = null;
-    pixelBufferInt = null;
-    sectionPixelBufferInt = null;
-
-    if (drawPointer)
-    {
-      drawPointer(screenCurrentImage);
-    }
-
-    if (scaledCurrentWidth <= 0 || scaledCurrentHeight <= 0)
-    {
-      return screenCurrentImage;
-    }
-    else
-    {
-//			while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null))
-//			{
-//				Thread.yield();
-//			}
-      scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
-      return scaledCurrentImage;
-    }
+    return create16777216ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
   }
 
   private final BufferedImage create16777216ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -3484,7 +3093,14 @@ public final class VTAWTScreenCaptureProvider
     // screenCurrentImage.getWidth(), screenCurrentImage.getHeight(), captureArea);
     // screenCurrentImage.getRaster().setDataElements(captureArea.x, captureArea.y,
     // captureArea.width, captureArea.height, sectionPixelBufferInt);
-    int destinationOffset = captureArea.x + screenCurrentImage.getWidth() * captureArea.y;
+    int minX = 0;
+    int minY = 0;
+    if (usePadding)
+    {
+      minX = 1;
+      minY = 1;
+    }
+    int destinationOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int destinationIndex = destinationOffset;
     int sourceIndex = 0;
     
@@ -3492,7 +3108,7 @@ public final class VTAWTScreenCaptureProvider
     {
       System.arraycopy(sectionPixelBufferInt, sourceIndex, pixelBufferInt, destinationIndex, captureArea.width);
       sourceIndex += captureArea.width;
-      destinationIndex += screenCurrentImage.getWidth();
+      destinationIndex += screenCurrentImage.getWidth() + minX;
     }
 
     if (sectionCurrentImage != screenCapture)
@@ -3534,83 +3150,7 @@ public final class VTAWTScreenCaptureProvider
 
   private final BufferedImage create125ScreenCapture(boolean drawPointer)
   {
-    if (changedCurrentScreenCapture())
-    {
-      refresh125ScreenCapture();
-    }
-    Rectangle captureArea = new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight);
-    if (captureArea.width <= 0 || captureArea.height <= 0)
-    {
-      return null;
-    }
-    BufferedImage screenCapture = createRobotCapture(captureArea);
-    // colorConversionPixelBufferInt = new
-    // VTARGBPixelGrabber(screenCapture).getPixels(colorConversionPixelBufferInt);
-    int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
-    if (screenCapture.getType() == BufferedImage.TYPE_INT_RGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB_PRE)
-    {
-      sectionPixelBufferInt = ((DataBufferInt) screenCapture.getRaster().getDataBuffer()).getData();
-    }
-    else
-    {
-      pixelGrabber.setImage(screenCapture);
-      if (sectionPixelBufferInt != null && sectionPixelBufferInt.length >= pixelDataLength)
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels(sectionPixelBufferInt);
-      }
-      else
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels();
-      }
-      pixelGrabber.dispose();
-    }
-
-    pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    for (i = 0; i < pixelDataLength; i++)
-    {
-
-      red = (((((sectionPixelBufferInt[i] & RGB888_RED_MASK) >> 16) * 5) >> 8) * 25);
-      green = (((((sectionPixelBufferInt[i] & RGB888_GREEN_MASK) >> 8) * 5) >> 8) * 5);
-      blue = (((((sectionPixelBufferInt[i]) & RGB888_BLUE_MASK) * 5) >> 8));
-
-      // red = (((((sectionPixelBufferInt[i] & RGB888_RED_MASK) >> 16) + 32) >> 6) *
-      // 25);
-      // green = (((((sectionPixelBufferInt[i] & RGB888_GREEN_MASK) >> 8) + 32) >> 6)
-      // * 5);
-      // blue = (((((sectionPixelBufferInt[i] & RGB888_BLUE_MASK)) + 32) >> 6));
-
-      pixelBufferByte[i] = (byte) (red + green + blue);
-
-//			pixelBufferByte[i] = VTIndexedColorModel.get125Color5LevelRGBValue(sectionPixelBufferInt[i]);
-    }
-    // colorConversionPixelBufferInt = null;
-    if (sectionCurrentImage != screenCapture)
-    {
-      screenCapture.flush();
-    }
-    screenCapture = null;
-    pixelBufferByte = null;
-    sectionPixelBufferInt = null;
-
-    if (drawPointer)
-    {
-      drawPointerFilterGray(screenCurrentImage);
-    }
-
-    if (scaledCurrentWidth <= 0 || scaledCurrentHeight <= 0)
-    {
-      return screenCurrentImage;
-    }
-    else
-    {
-      // while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0,
-      // scaledCurrentWidth, scaledCurrentHeight, null))
-      // {
-      // Thread.yield();
-      // }
-      scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
-      return scaledCurrentImage;
-    }
+    return create125ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
   }
 
   private final BufferedImage create125ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -3667,7 +3207,14 @@ public final class VTAWTScreenCaptureProvider
     }
 
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int startOffset = captureArea.x + screenCurrentImage.getWidth() * captureArea.y;
+    int minX = 0;
+    int minY = 0;
+    if (usePadding)
+    {
+      minX = 1;
+      minY = 1;
+    }
+    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
@@ -3675,7 +3222,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth();
+        currentHeight += screenCurrentImage.getWidth() + minX;
       }
 
       red = (((((sectionPixelBufferInt[i] & RGB888_RED_MASK) >> 16) * 5) >> 8) * 25);
@@ -3733,84 +3280,7 @@ public final class VTAWTScreenCaptureProvider
 
   private final BufferedImage create27ScreenCapture(boolean drawPointer)
   {
-    if (changedCurrentScreenCapture())
-    {
-      refresh27ScreenCapture();
-    }
-    Rectangle captureArea = new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight);
-    if (captureArea.width <= 0 || captureArea.height <= 0)
-    {
-      return null;
-    }
-    BufferedImage screenCapture = createRobotCapture(captureArea);
-    // colorConversionPixelBufferInt = new
-    // VTARGBPixelGrabber(screenCapture).getPixels(colorConversionPixelBufferInt);
-    int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
-    if (screenCapture.getType() == BufferedImage.TYPE_INT_RGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB_PRE)
-    {
-      sectionPixelBufferInt = ((DataBufferInt) screenCapture.getRaster().getDataBuffer()).getData();
-    }
-    else
-    {
-      pixelGrabber.setImage(screenCapture);
-      if (sectionPixelBufferInt != null && sectionPixelBufferInt.length >= pixelDataLength)
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels(sectionPixelBufferInt);
-      }
-      else
-      {
-        sectionPixelBufferInt = pixelGrabber.getPixels();
-      }
-      pixelGrabber.dispose();
-    }
-
-    pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    for (i = 0; i < pixelDataLength; i++)
-    {
-
-      red = (((((sectionPixelBufferInt[i] & RGB888_RED_MASK) >> 16) * 3) >> 8) * 9);
-      green = (((((sectionPixelBufferInt[i] & RGB888_GREEN_MASK) >> 8) * 3) >> 8) * 3);
-      blue = (((((sectionPixelBufferInt[i]) & RGB888_BLUE_MASK) * 3) >> 8));
-
-      // red = (((((sectionPixelBufferInt[i] & RGB888_RED_MASK) >> 16) + 64) >> 7) *
-      // 9);
-      // green = (((((sectionPixelBufferInt[i] & RGB888_GREEN_MASK) >> 8) + 64) >> 7)
-      // * 3);
-      // blue = (((((sectionPixelBufferInt[i] & RGB888_BLUE_MASK)) + 64) >> 7));
-
-      pixelBufferByte[i] = (byte) (red + green + blue);
-
-      // pixelBufferByte[i] =
-      // VTIndexedColorModel.get27Color3LevelRGBValue(sectionPixelBufferInt[i]);
-    }
-    // colorConversionPixelBufferInt = null;
-    if (sectionCurrentImage != screenCapture)
-    {
-      screenCapture.flush();
-    }
-    screenCapture = null;
-    pixelBufferByte = null;
-    sectionPixelBufferInt = null;
-
-    if (drawPointer)
-    {
-      drawPointerFilterGray(screenCurrentImage);
-    }
-
-    if (scaledCurrentWidth <= 0 || scaledCurrentHeight <= 0)
-    {
-      return screenCurrentImage;
-    }
-    else
-    {
-      // while (!scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0,
-      // scaledCurrentWidth, scaledCurrentHeight, null))
-      // {
-      // Thread.yield();
-      // }
-      scaledCurrentGraphics.drawImage(screenCurrentImage, 0, 0, scaledCurrentWidth, scaledCurrentHeight, null);
-      return scaledCurrentImage;
-    }
+    return create27ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
   }
 
   private final BufferedImage create27ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -3867,7 +3337,14 @@ public final class VTAWTScreenCaptureProvider
     }
 
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int startOffset = captureArea.x + screenCurrentImage.getWidth() * captureArea.y;
+    int minX = 0;
+    int minY = 0;
+    if (usePadding)
+    {
+      minX = 1;
+      minY = 1;
+    }
+    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
@@ -3875,7 +3352,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth();
+        currentHeight += screenCurrentImage.getWidth() + minX;
       }
 
       red = (((((sectionPixelBufferInt[i] & RGB888_RED_MASK) >> 16) * 3) >> 8) * 9);
@@ -3961,10 +3438,10 @@ public final class VTAWTScreenCaptureProvider
     return screenCapture;
   }
 
-  private final void drawPointer(BufferedImage image)
-  {
-    drawPointer(image, new Rectangle(0, 0, image.getWidth(), image.getHeight()));
-  }
+  //private final void drawPointer(BufferedImage image)
+  //{
+    //drawPointer(image, new Rectangle(0, 0, image.getWidth(), image.getHeight()));
+  //}
 
   private final void drawPointer(BufferedImage image, Rectangle area)
   {
@@ -4898,11 +4375,11 @@ public final class VTAWTScreenCaptureProvider
    * createScreenCapture(false, area, 1.0); }
    */
 
-  public final synchronized BufferedImage createScreenCapture(boolean drawPointer)
+  public final synchronized BufferedImage createScreenCapture(boolean usePadding, boolean drawPointer)
   {
-    if (!isScreenCaptureInitialized())
+    if (!isScreenCaptureInitialized(usePadding))
     {
-      if (!initializeScreenCapture())
+      if (!initializeScreenCapture(usePadding))
       {
         return null;
       }
@@ -4954,11 +4431,11 @@ public final class VTAWTScreenCaptureProvider
     return null;
   }
 
-  public final synchronized BufferedImage createScreenCapture(boolean drawPointer, Rectangle area)
+  public final synchronized BufferedImage createScreenCapture(boolean usePadding, boolean drawPointer, Rectangle area)
   {
-    if (!isScreenCaptureInitialized())
+    if (!isScreenCaptureInitialized(usePadding))
     {
-      if (!initializeScreenCapture())
+      if (!initializeScreenCapture(usePadding))
       {
         return null;
       }
@@ -5010,10 +4487,10 @@ public final class VTAWTScreenCaptureProvider
     return null;
   }
 
-  private final void drawPointerFilterGray(BufferedImage image)
-  {
-    drawPointerFilterGray(image, new Rectangle(0, 0, image.getWidth(), image.getHeight()));
-  }
+  //private final void drawPointerFilterGray(BufferedImage image)
+  //{
+    //drawPointerFilterGray(image, new Rectangle(0, 0, image.getWidth(), image.getHeight()));
+  //}
 
   private final void drawPointerFilterGray(BufferedImage image, Rectangle area)
   {
