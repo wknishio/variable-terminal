@@ -386,20 +386,25 @@ public final class VTImageIO
 
   private static final WritableRaster buildRaster(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
   {
-    int subImageX = 0;
-    int subImageY = 0;
-    if (!(x == 0) || !(y == 0))
+    int childX = 0;
+    int childY = 0;
+    int childW = 0;
+    int childH = 0;
+    if (x > 0 || y > 0)
     {
-      subImageX = x;
-      subImageY = y;
-      width = width + subImageX;
-      height = height + subImageY;
+      childX = x;
+      childY = y;
+      childW = width;
+      childH = height;
+      width = width + childX;
+      height = height + childY;
       x = 0;
       y = 0;
     }
     int stride = width;
     int nextSize = ((width + x) * (height + y));
     int neededSize = ((width + x) * (height + y));
+    
     WritableRaster createdRaster = null;
     switch (type)
     {
@@ -507,14 +512,11 @@ public final class VTImageIO
         break;
       }
     }
-    if (subImageX != 0 || subImageY != 0)
+    if (childX > 0 || childY > 0)
     {
-      width = width - subImageX;
-      height = height - subImageY;
-      createdRaster = createdRaster.createWritableChild(subImageX, subImageY, width, height, 0, 0, null);
+      createdRaster = createdRaster.createWritableChild(childX, childY, childW, childH, 0, 0, null);
       //image = image.getSubimage(subImageX, subImageY, width, height);
     }
-
     return createdRaster;
   }
 
