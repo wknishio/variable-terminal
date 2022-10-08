@@ -817,15 +817,15 @@ public class VTGraphicsModeServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().flush();
       if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
       {
-        vtCustomCodec.encodeFrame8(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame8(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
       {
-        vtCustomCodec.encodeFrame15(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame15(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
-        vtCustomCodec.encodeFrame24(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame24(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       // vtDifferenceCodec.encodeBufferedFrame(connection.getGraphicsSnappedImageDataOutputStream());
       // imageOutputBuffer.writeTo(connection.getGraphicsSnappedImageDataOutputStream());
@@ -837,15 +837,15 @@ public class VTGraphicsModeServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().flush();
       if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
       {
-        vtCustomCodec.encodeFrame8(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame8(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
       {
-        vtCustomCodec.encodeFrame15(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame15(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
-        vtCustomCodec.encodeFrame24(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame24(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       // vtDifferenceCodec.encodeBufferedFrame(connection.getGraphicsDeflatedImageDataOutputStream());
       // imageOutputBuffer.writeTo(connection.getGraphicsDeflatedImageDataOutputStream());
@@ -881,15 +881,15 @@ public class VTGraphicsModeServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().flush();
       if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
       {
-        vtCustomCodec.encodeFrame8(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame8(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
       {
-        vtCustomCodec.encodeFrame15(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame15(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
-        vtCustomCodec.encodeFrame24(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame24(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       connection.getGraphicsSnappedImageDataOutputStream().flush();
     }
@@ -903,15 +903,15 @@ public class VTGraphicsModeServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().flush();
       if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
       {
-        vtCustomCodec.encodeFrame8(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame8(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
       {
-        vtCustomCodec.encodeFrame15(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame15(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
-        vtCustomCodec.encodeFrame24(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame24(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       connection.getGraphicsDeflatedImageDataOutputStream().flush();
     }
@@ -1276,8 +1276,6 @@ public class VTGraphicsModeServerWriter implements Runnable
               }
               else
               {
-                
-                
                 if (imageDataBuffer.getWidth() + 1 == lastWidth && imageDataBuffer.getHeight() + 1 == lastHeight && imageDataBuffer.getColorModel().getPixelSize() == lastDepth && viewProvider.getColorCount() == lastColors && imageDataBuffer.getRaster().getDataBuffer().getDataType() == lastDataType && imageCoding == lastImageCoding
                 /* && captureScale == lastCaptureScale */)
                 {
