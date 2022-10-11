@@ -158,7 +158,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
 //			return c;
 //		}
 //	}
-  private static final void encodePixel8(final VTLittleEndianOutputStream out, final byte[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
+  private static final void encodePixel8(final VTLittleEndianOutputStream out, final byte[] newPixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     //top1 = y > 0 ? newPixelData[position - width] : 0;
@@ -174,7 +174,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     out.write(newPixelData[position] ^ pred1);
   }
 
-  private static final void encodePixel15(final VTLittleEndianOutputStream out, final short[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
+  private static final void encodePixel15(final VTLittleEndianOutputStream out, final short[] newPixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     //top1 = y > 0 ? newPixelData[position - width] : 0;
@@ -190,7 +190,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     out.writeShort(newPixelData[position] ^ pred1);
   }
 
-  private static final void encodePixel24(final VTLittleEndianOutputStream out, final int[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
+  private static final void encodePixel24(final VTLittleEndianOutputStream out, final int[] newPixelData, final int position, final int width) throws IOException
   {
     long left1, top1, diag1;
     //top1 = y > 0 ? newPixelData[position - width] : 0;
@@ -215,7 +215,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
 //    out.writeLong(newPixelData[position] ^ ((diag1 + ((top1 + left1) >> 1)) >> 1));
 //  }
 
-  private static final void decodePixel8(final VTLittleEndianInputStream in, final byte[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
+  private static final void decodePixel8(final VTLittleEndianInputStream in, final byte[] newPixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     //top1 = y > 0 ? newPixelData[position - width] : 0;
@@ -231,7 +231,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     newPixelData[position] = (byte) ((in.read() ^ pred1) /* & 0xFF */);
   }
 
-  private static final void decodePixel15(final VTLittleEndianInputStream in, final short[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
+  private static final void decodePixel15(final VTLittleEndianInputStream in, final short[] newPixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     //top1 = y > 0 ? newPixelData[position - width] : 0;
@@ -247,7 +247,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     newPixelData[position] = (short) ((in.readShort() ^ pred1) /* & 0x7FFF */);
   }
 
-  private static final void decodePixel24(final VTLittleEndianInputStream in, final int[] newPixelData, final int position, final int x, final int y, final int width) throws IOException
+  private static final void decodePixel24(final VTLittleEndianInputStream in, final int[] newPixelData, final int position, final int width) throws IOException
   {
     long left1, top1, diag1;
     //top1 = y > 0 ? newPixelData[position - width] : 0;
@@ -284,7 +284,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel8(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -293,7 +293,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel8(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -302,7 +302,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel8(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -311,7 +311,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel8(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -320,7 +320,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel8(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -329,7 +329,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel8(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -338,7 +338,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel8(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -347,7 +347,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel8(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
     }
     x1 = s4;
@@ -520,7 +520,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       default:
       if ((d4 & c4) != 0)
       {
-        decodePixel8(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel8(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -528,7 +528,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 1:
       if ((d4 & c4) != 0)
       {
-        decodePixel8(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel8(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -536,7 +536,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 2:
       if ((d4 & c4) != 0)
       {
-        decodePixel8(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel8(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -544,7 +544,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 3:
       if ((d4 & c4) != 0)
       {
-        decodePixel8(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel8(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -552,7 +552,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 4:
       if ((d4 & c4) != 0)
       {
-        decodePixel8(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel8(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -560,7 +560,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 5:
       if ((d4 & c4) != 0)
       {
-        decodePixel8(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel8(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -568,7 +568,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 6:
       if ((d4 & c4) != 0)
       {
-        decodePixel8(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel8(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -576,7 +576,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 7:
       if ((d4 & c4) != 0)
       {
-        decodePixel8(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel8(in, newPixelData, p1, pixelStepY);
       }
     }
     x1 = s4;
@@ -811,7 +811,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel15(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -820,7 +820,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel15(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -829,7 +829,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel15(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -838,7 +838,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel15(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -847,7 +847,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel15(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -856,7 +856,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel15(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -865,7 +865,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel15(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -874,7 +874,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel15(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
     }
     x1 = s4;
@@ -1047,7 +1047,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       default:
       if ((d4 & c4) != 0)
       {
-        decodePixel15(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel15(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1055,7 +1055,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 1:
       if ((d4 & c4) != 0)
       {
-        decodePixel15(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel15(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1063,7 +1063,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 2:
       if ((d4 & c4) != 0)
       {
-        decodePixel15(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel15(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1071,7 +1071,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 3:
       if ((d4 & c4) != 0)
       {
-        decodePixel15(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel15(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1079,7 +1079,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 4:
       if ((d4 & c4) != 0)
       {
-        decodePixel15(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel15(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1087,7 +1087,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 5:
       if ((d4 & c4) != 0)
       {
-        decodePixel15(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel15(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1095,7 +1095,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 6:
       if ((d4 & c4) != 0)
       {
-        decodePixel15(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel15(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1103,7 +1103,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 7:
       if ((d4 & c4) != 0)
       {
-        decodePixel15(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel15(in, newPixelData, p1, pixelStepY);
       }
     }
     x1 = s4;
@@ -1338,7 +1338,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel24(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1347,7 +1347,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel24(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1356,7 +1356,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel24(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1365,7 +1365,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel24(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1374,7 +1374,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel24(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1383,7 +1383,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel24(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1392,7 +1392,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel24(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1401,7 +1401,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       if (oldPixelData[p1] != newPixelData[p1])
       {
         d4 |= c4;
-        encodePixel24(pixelDataBufferStream, newPixelData, p1, x1, y1, pixelStepY);
+        encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
       }
     }
     x1 = s4;
@@ -1574,7 +1574,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       default:
       if ((d4 & c4) != 0)
       {
-        decodePixel24(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel24(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1582,7 +1582,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 1:
       if ((d4 & c4) != 0)
       {
-        decodePixel24(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel24(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1590,7 +1590,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 2:
       if ((d4 & c4) != 0)
       {
-        decodePixel24(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel24(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1598,7 +1598,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 3:
       if ((d4 & c4) != 0)
       {
-        decodePixel24(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel24(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1606,7 +1606,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 4:
       if ((d4 & c4) != 0)
       {
-        decodePixel24(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel24(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1614,7 +1614,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 5:
       if ((d4 & c4) != 0)
       {
-        decodePixel24(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel24(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1622,7 +1622,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 6:
       if ((d4 & c4) != 0)
       {
-        decodePixel24(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel24(in, newPixelData, p1, pixelStepY);
       }
       c4 <<= 1;
       x1 += pixelStepX;
@@ -1630,7 +1630,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       case 7:
       if ((d4 & c4) != 0)
       {
-        decodePixel24(in, newPixelData, p1, x1, y1, pixelStepY);
+        decodePixel24(in, newPixelData, p1, pixelStepY);
       }
     }
     x1 = s4;
