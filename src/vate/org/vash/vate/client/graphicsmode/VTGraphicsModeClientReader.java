@@ -341,7 +341,7 @@ public class VTGraphicsModeClientReader implements Runnable
               }
               nextImageDataBuffer = null;
             }
-            writer.newFrameRemoteGraphics(currentImageDataBuffer);
+            writer.refreshRemoteGraphics(currentImageDataBuffer);
             // writer.requestInterfaceRefresh();
             // connection.getGraphicsDirectImageDataInputStream().empty();
             System.runFinalization();
@@ -570,7 +570,7 @@ public class VTGraphicsModeClientReader implements Runnable
                 vtCustomCodec.decodeFrame24(connection.getGraphicsDeflatedImageDataInputStream(), null, lastImageBufferInt, width, height, 1);
               }
             }
-            writer.newFrameRemoteGraphics(currentImageDataBuffer);
+            writer.refreshRemoteGraphics(currentImageDataBuffer);
             // endTime = System.currentTimeMillis();
             // System.out.println("new frame decoding time: " + (endTime
             // - startTime));

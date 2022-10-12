@@ -47,8 +47,8 @@ public class VTGraphicsModeClientWriter implements Runnable
 
   private volatile boolean stopped;
   private volatile boolean needRefresh;
-  private volatile boolean needNewFrame;
-  private volatile boolean needDifference;
+  private volatile boolean hasRefresh;
+  private volatile boolean hasDifference;
   private volatile boolean open;
   private volatile boolean readOnly;
   private volatile boolean controlInterrupted;
@@ -515,8 +515,8 @@ public class VTGraphicsModeClientWriter implements Runnable
     initialHeight = 0;
     stopped = true;
     needRefresh = false;
-    needNewFrame = false;
-    needDifference = false;
+    hasRefresh = false;
+    hasDifference = false;
 
     // ignoreFocus = false;
     // ignoreIconification = false;
@@ -1727,20 +1727,20 @@ public class VTGraphicsModeClientWriter implements Runnable
     // System.out.println("differenceRemoteGraphics");
     imageDataBuffer = newImageData;
     // needRefresh = true;
-    needNewFrame = false;
-    needDifference = true;
+    hasRefresh = false;
+    hasDifference = true;
     updateRemoteGraphics();
     // updateRemoteGraphics();
     // updateRemoteGraphics();
   }
 
-  public void newFrameRemoteGraphics(BufferedImage newImageData)
+  public void refreshRemoteGraphics(BufferedImage newImageData)
   {
     // System.out.println("newFrameRemoteGraphics");
     imageDataBuffer = newImageData;
     // needRefresh = true;
-    needNewFrame = true;
-    needDifference = false;
+    hasRefresh = true;
+    hasDifference = false;
     updateRemoteGraphics();
     // updateRemoteGraphics();
     // updateRemoteGraphics();
@@ -1750,8 +1750,8 @@ public class VTGraphicsModeClientWriter implements Runnable
   {
     // needRefresh = true;
     // System.out.println("notModifiedRemoteGraphics");
-    needNewFrame = false;
-    needDifference = false;
+    hasRefresh = false;
+    hasDifference = false;
     // updateRemoteGraphics();
     // updateRemoteGraphics();
     // updateRemoteGraphics();
@@ -1831,7 +1831,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     {
       // Point local = scrolled.getScrollPosition();
       // Dimension size = scrolled.getViewportSize();
-      if (needDifference)
+      if (hasDifference)
       {
         if (remoteInterface != null && remoteInterface.isAsynchronousRepainterRunning() && !remoteInterface.isAsynchronousRepainterInterrupted())
         {
@@ -1843,7 +1843,7 @@ public class VTGraphicsModeClientWriter implements Runnable
         remoteInterface.repaint();
         // remoteInterface.redraw();
       }
-      else if (needNewFrame)
+      else if (hasRefresh)
       {
         if (remoteInterface != null && remoteInterface.isAsynchronousRepainterRunning() && !remoteInterface.isAsynchronousRepainterInterrupted())
         {
@@ -1870,8 +1870,8 @@ public class VTGraphicsModeClientWriter implements Runnable
     synchronized (this)
     {
       // needRefresh = false;
-      needNewFrame = false;
-      needDifference = false;
+      hasRefresh = false;
+      hasDifference = false;
     }
     // EventQueue.invokeLater(graphicsRefresher);
     // requestRefresh();
