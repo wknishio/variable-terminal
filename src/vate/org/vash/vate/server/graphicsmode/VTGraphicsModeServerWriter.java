@@ -381,7 +381,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     // System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourRectangles(blockAreas);
     // System.out.println("blocks_after:" + blockAreas.size());
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_IMAGE);
+    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_IMAGE);
     // connection.getGraphicsControlDataOutputStream().writeInt(resultArea.x);
     // connection.getGraphicsControlDataOutputStream().writeInt(resultArea.y);
     // connection.getGraphicsControlDataOutputStream().writeInt(resultArea.width);
@@ -865,7 +865,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     // imageOutputBuffer.reset();
     //long startTime = System.currentTimeMillis();
     //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_CUSTOM);
+    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_CUSTOM);
     // connection.getGraphicsControlDataOutputStream().writeInt(resultArea.x);
     // connection.getGraphicsControlDataOutputStream().writeInt(resultArea.y);
     // connection.getGraphicsControlDataOutputStream().writeInt(resultArea.width);

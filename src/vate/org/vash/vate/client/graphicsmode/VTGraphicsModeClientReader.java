@@ -266,7 +266,7 @@ public class VTGraphicsModeClientReader implements Runnable
       {
         switch (connection.getGraphicsControlDataInputStream().read())
         {
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_IMAGE:
+          case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_IMAGE:
           {
             //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_IMAGE");
             // refreshArea.x = connection.getGraphicsControlDataInputStream().readInt();
@@ -412,7 +412,7 @@ public class VTGraphicsModeClientReader implements Runnable
             // System.gc();
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_CUSTOM:
+          case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_CUSTOM:
           {
             //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
             // refreshArea.x = connection.getGraphicsControlDataInputStream().readInt();
