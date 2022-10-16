@@ -95,10 +95,10 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
   private BitSet block1BitSet = new BitSet(1024 * 8);
   //private BitSet pixelBitSet = new BitSet(1024 * 8);
   private Rectangle transferArea = new Rectangle(0, 0, 1, 1);
-  private volatile int m1;
-  private volatile int limitX;
-  private volatile int limitY;
-  private volatile int offset;
+  private int m1;
+  private int limitX;
+  private int limitY;
+  private int offset;
 
   public final void dispose()
   {
