@@ -714,7 +714,6 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       in.readFully(btin.buf(), 0, block1TreeDataLength);
       btin.count(block1TreeDataLength);
       btin.pos(0);
-
       block1PixelDataLength = in.readUnsignedShort();
       if (block1PixelDataLength > bpin.buf().length)
       {
@@ -723,7 +722,6 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       in.readFully(bpin.buf(), 0, block1PixelDataLength);
       bpin.count(block1PixelDataLength);
       bpin.pos(0);
-
       switch (y1 + macroblockStepY <= limitY ? 8 : r1)
       {
         default:
@@ -1227,7 +1225,6 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       in.readFully(btin.buf(), 0, block1TreeDataLength);
       btin.count(block1TreeDataLength);
       btin.pos(0);
-
       block1PixelDataLength = in.readUnsignedShort();
       if (block1PixelDataLength > bpin.buf().length)
       {
@@ -1236,7 +1233,6 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       in.readFully(bpin.buf(), 0, block1PixelDataLength);
       bpin.count(block1PixelDataLength);
       bpin.pos(0);
-
       switch (y1 + macroblockStepY <= limitY ? 8 : r1)
       {
         default:
@@ -1740,7 +1736,6 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       in.readFully(btin.buf(), 0, block1TreeDataLength);
       btin.count(block1TreeDataLength);
       btin.pos(0);
-
       block1PixelDataLength = in.readUnsignedShort();
       if (block1PixelDataLength > bpin.buf().length)
       {
@@ -1749,7 +1744,6 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
       in.readFully(bpin.buf(), 0, block1PixelDataLength);
       bpin.count(block1PixelDataLength);
       bpin.pos(0);
-
       switch (y1 + macroblockStepY <= limitY ? 8 : r1)
       {
         default:
