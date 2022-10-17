@@ -42,6 +42,8 @@ public final class VTAWTScreenCaptureProvider
   public static final int VT_COLOR_QUALITY_8 = 8; // 8 rgb-111
   public static final int VT_COLOR_QUALITY_125 = 9; // 125 rgb-5x5x5
   public static final int VT_COLOR_QUALITY_27 = 10; // 27 rgb-3x3x3
+  public static final int VT_COLOR_QUALITY_262144 = 11; // 262144 rgb-666
+  public static final int VT_COLOR_QUALITY_2097152 = 12; // 2097152 rgb-777
 
   // c16777216 16777216
   // c32768 32768
@@ -54,11 +56,19 @@ public final class VTAWTScreenCaptureProvider
   // c27 27
   // c16 16
   // c8 8
-
+  
   private static final int RGB888_RED_MASK = 0x00FF0000;
   private static final int RGB888_GREEN_MASK = 0x0000FF00;
   private static final int RGB888_BLUE_MASK = 0x000000FF;
-
+  
+  private static final int RGB777_RED_MASK = 0x00FE0000;
+  private static final int RGB777_GREEN_MASK = 0x0000FE00;
+  private static final int RGB777_BLUE_MASK = 0x000000FE;
+  
+  private static final int RGB666_RED_MASK = 0x00FC0000;
+  private static final int RGB666_GREEN_MASK = 0x0000FC00;
+  private static final int RGB666_BLUE_MASK = 0x000000FC;
+  
   private static final int RGB555_RED_MASK = 0x00F80000;
   private static final int RGB555_GREEN_MASK = 0x0000F800;
   private static final int RGB555_BLUE_MASK = 0x000000F8;
@@ -70,7 +80,7 @@ public final class VTAWTScreenCaptureProvider
   private static final int RGB333_RED_MASK = 0x00E00000;
   private static final int RGB333_GREEN_MASK = 0x0000E000;
   private static final int RGB333_BLUE_MASK = 0x000000E0;
-
+  
   //private static final int RGB555_444_RED_MASK = 0x00f00000;
   //private static final int RGB555_444_GREEN_MASK = 0x0000f000;
   //private static final int RGB555_444_BLUE_MASK = 0x000000f0;
@@ -115,6 +125,8 @@ public final class VTAWTScreenCaptureProvider
   private volatile boolean initialized16777216ScreenCapture;
   private volatile boolean initialized125ScreenCapture;
   private volatile boolean initialized27ScreenCapture;
+  private volatile boolean initialized262144ScreenCapture;
+  private volatile boolean initialized2097152ScreenCapture;
   //private volatile boolean initializedPadding;
   private volatile int scaledWidth = 0;
   private volatile int scaledHeight = 0;
@@ -176,6 +188,10 @@ public final class VTAWTScreenCaptureProvider
         return 4096;
       case VT_COLOR_QUALITY_32768:
         return 32768;
+      case VT_COLOR_QUALITY_262144:
+        return 262144;
+      case VT_COLOR_QUALITY_2097152:
+        return 2097152;
       case VT_COLOR_QUALITY_16777216:
         return 16777216;
       default:
@@ -830,7 +846,61 @@ public final class VTAWTScreenCaptureProvider
     }
     return false;
   }
-
+  
+  private final boolean initialize262144ScreenCapture(GraphicsDevice device)
+  {
+    reset();
+    if (GraphicsEnvironment.isHeadless())
+    {
+      return false;
+    }
+    try
+    {
+      if (initializeCaptureRobot(device))
+      {
+        if (changedCurrentScreenCapture())
+        {
+          refresh262144ScreenCapture();
+        }
+        initialized262144ScreenCapture = true;
+        //initializedPadding = usePadding;
+        return true;
+      }
+    }
+    catch (Throwable e)
+    {
+      initialized262144ScreenCapture = false;
+    }
+    return false;
+  }
+  
+  private final boolean initialize2097152ScreenCapture(GraphicsDevice device)
+  {
+    reset();
+    if (GraphicsEnvironment.isHeadless())
+    {
+      return false;
+    }
+    try
+    {
+      if (initializeCaptureRobot(device))
+      {
+        if (changedCurrentScreenCapture())
+        {
+          refresh2097152ScreenCapture();
+        }
+        initialized2097152ScreenCapture = true;
+        //initializedPadding = usePadding;
+        return true;
+      }
+    }
+    catch (Throwable e)
+    {
+      initialized2097152ScreenCapture = false;
+    }
+    return false;
+  }
+  
   public final synchronized boolean initializeScreenCapture(boolean usePadding)
   {
     this.usePadding = usePadding;
@@ -873,6 +943,14 @@ public final class VTAWTScreenCaptureProvider
     else if (colorQuality == VT_COLOR_QUALITY_27)
     {
       return initialize27ScreenCapture(graphicsDevice);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_262144)
+    {
+      return initialize262144ScreenCapture(graphicsDevice);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_2097152)
+    {
+      return initialize2097152ScreenCapture(graphicsDevice);
     }
     else if (colorQuality == VT_COLOR_QUALITY_64)
     {
@@ -922,6 +1000,14 @@ public final class VTAWTScreenCaptureProvider
     else if (colorQuality == VT_COLOR_QUALITY_27)
     {
       return initialize27ScreenCapture(device);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_262144)
+    {
+      return initialize262144ScreenCapture(device);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_2097152)
+    {
+      return initialize2097152ScreenCapture(device);
     }
     else if (colorQuality == VT_COLOR_QUALITY_64)
     {
@@ -979,6 +1065,16 @@ public final class VTAWTScreenCaptureProvider
   {
     return initialized32768ScreenCapture;
   }
+  
+  private final boolean is262144ScreenCaptureInitialized()
+  {
+    return initialized262144ScreenCapture;
+  }
+  
+  private final boolean is2097152ScreenCaptureInitialized()
+  {
+    return initialized2097152ScreenCapture;
+  }
 
   private final boolean is16777216ScreenCaptureInitialized()
   {
@@ -1030,6 +1126,14 @@ public final class VTAWTScreenCaptureProvider
     else if (colorQuality == VT_COLOR_QUALITY_27)
     {
       return is27ScreenCaptureInitialized();
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_262144)
+    {
+      return is262144ScreenCaptureInitialized();
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_2097152)
+    {
+      return is2097152ScreenCaptureInitialized();
     }
     else if (colorQuality == VT_COLOR_QUALITY_64)
     {
@@ -1145,6 +1249,8 @@ public final class VTAWTScreenCaptureProvider
     initialized16777216ScreenCapture = false;
     initialized125ScreenCapture = false;
     initialized27ScreenCapture = false;
+    initialized262144ScreenCapture = false;
+    initialized2097152ScreenCapture = false;
     //initializedPadding = false;
   }
 
@@ -1161,6 +1267,8 @@ public final class VTAWTScreenCaptureProvider
     initialized16777216ScreenCapture = false;
     initialized125ScreenCapture = false;
     initialized27ScreenCapture = false;
+    initialized262144ScreenCapture = false;
+    initialized2097152ScreenCapture = false;
     //initializedPadding = false;
   }
 
@@ -1804,10 +1912,10 @@ public final class VTAWTScreenCaptureProvider
     }
     screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_CUSTOM, 4096, recyclableScreenDataBuffer);
     recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
-    refreshScale4096ScreenCapture();
+    refreshScaled4096ScreenCapture();
   }
 
-  private final void refreshScale4096ScreenCapture()
+  private final void refreshScaled4096ScreenCapture()
   {
     scaledCurrentWidth = scaledWidth;
     scaledCurrentHeight = scaledHeight;
@@ -1920,6 +2028,150 @@ public final class VTAWTScreenCaptureProvider
 //				scaledCurrentGraphics = null;
 //			}
 //			recyclableScaledDataBuffer = null;
+    }
+  }
+  
+  private final void refresh262144ScreenCapture()
+  {
+    currentDeviceBounds = VTGraphicalDeviceResolver.getDeviceBounds(graphicsDevice);
+    if (currentDeviceBounds == null)
+    {
+      return;
+    }
+    screenCurrentWidth = currentDeviceBounds.width;
+    screenCurrentHeight = currentDeviceBounds.height;
+    screenCurrentX = currentDeviceBounds.x;
+    screenCurrentY = currentDeviceBounds.y;
+    if (screenCurrentImage != null)
+    {
+      screenCurrentImage.flush();
+      screenCurrentImage = null;
+    }
+    int x = 0;
+    int y = 0;
+    if (usePadding)
+    {
+      x = 1;
+      y = 1;
+    }
+    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_CUSTOM, 262144, recyclableScreenDataBuffer);
+    recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
+    refreshScaled262144ScreenCapture();
+  }
+
+  private final void refreshScaled262144ScreenCapture()
+  {
+    scaledCurrentWidth = scaledWidth;
+    scaledCurrentHeight = scaledHeight;
+    if (scaledWidth > 0 && scaledHeight > 0)
+    {
+      if (scaledCurrentImage != null)
+      {
+        scaledCurrentImage.flush();
+        scaledCurrentImage = null;
+      }
+      if (scaledCurrentGraphics != null)
+      {
+        scaledCurrentGraphics.dispose();
+        scaledCurrentGraphics = null;
+      }
+      int x = 0;
+      int y = 0;
+      if (usePadding)
+      {
+        x = 1;
+        y = 1;
+      }
+      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 262144, recyclableScaledDataBuffer);
+      recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
+      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+    }
+    else
+    {
+//      if (scaledCurrentImage != null)
+//      {
+//        scaledCurrentImage.flush();
+//        scaledCurrentImage = null;
+//      }
+//      if (scaledCurrentGraphics != null)
+//      {
+//        scaledCurrentGraphics.dispose();
+//        scaledCurrentGraphics = null;
+//      }
+//      recyclableScaledDataBuffer = null;
+    }
+  }
+  
+  private final void refresh2097152ScreenCapture()
+  {
+    currentDeviceBounds = VTGraphicalDeviceResolver.getDeviceBounds(graphicsDevice);
+    if (currentDeviceBounds == null)
+    {
+      return;
+    }
+    screenCurrentWidth = currentDeviceBounds.width;
+    screenCurrentHeight = currentDeviceBounds.height;
+    screenCurrentX = currentDeviceBounds.x;
+    screenCurrentY = currentDeviceBounds.y;
+    if (screenCurrentImage != null)
+    {
+      screenCurrentImage.flush();
+      screenCurrentImage = null;
+    }
+    int x = 0;
+    int y = 0;
+    if (usePadding)
+    {
+      x = 1;
+      y = 1;
+    }
+    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_CUSTOM, 2097152, recyclableScreenDataBuffer);
+    recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
+    refreshScaled2097152ScreenCapture();
+  }
+
+  private final void refreshScaled2097152ScreenCapture()
+  {
+    scaledCurrentWidth = scaledWidth;
+    scaledCurrentHeight = scaledHeight;
+    if (scaledWidth > 0 && scaledHeight > 0)
+    {
+      if (scaledCurrentImage != null)
+      {
+        scaledCurrentImage.flush();
+        scaledCurrentImage = null;
+      }
+      if (scaledCurrentGraphics != null)
+      {
+        scaledCurrentGraphics.dispose();
+        scaledCurrentGraphics = null;
+      }
+      int x = 0;
+      int y = 0;
+      if (usePadding)
+      {
+        x = 1;
+        y = 1;
+      }
+      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 2097152, recyclableScaledDataBuffer);
+      recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
+      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+    }
+    else
+    {
+//      if (scaledCurrentImage != null)
+//      {
+//        scaledCurrentImage.flush();
+//        scaledCurrentImage = null;
+//      }
+//      if (scaledCurrentGraphics != null)
+//      {
+//        scaledCurrentGraphics.dispose();
+//        scaledCurrentGraphics = null;
+//      }
+//      recyclableScaledDataBuffer = null;
     }
   }
 
@@ -3018,6 +3270,262 @@ public final class VTAWTScreenCaptureProvider
 //			{
 //				Thread.yield();
 //			}
+      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      return scaledCurrentImage;
+    }
+  }
+  
+  private final BufferedImage create262144ScreenCapture(boolean drawPointer)
+  {
+    return create262144ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
+  }
+
+  private final BufferedImage create262144ScreenCapture(boolean drawPointer, Rectangle originalArea)
+  {
+    if (changedCurrentScreenCapture())
+    {
+      refresh262144ScreenCapture();
+    }
+    // Rectangle trueArea = new Rectangle(0 + Math.min(area.x,
+    // screenCurrentWidth),
+    // 0 + Math.min(area.y, screenCurrentHeight), Math.min(area.width,
+    // screenCurrentWidth - area.x), Math.min(area.height,
+    // screenCurrentHeight -
+    // area.y));
+    // BufferedImage screenCapture =
+    // standardCaptureRobot.createScreenCapture(trueArea);
+    Rectangle screenArea = new Rectangle();
+    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
+    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
+    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
+    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
+    if (screenArea.width > screenCurrentWidth)
+    {
+      screenArea.width = screenCurrentWidth;
+    }
+    if (screenArea.height > screenCurrentHeight)
+    {
+      screenArea.height = screenCurrentHeight;
+    }
+    if (screenArea.x > screenCurrentWidth - screenArea.width)
+    {
+      screenArea.x = screenCurrentWidth - screenArea.width;
+    }
+    if (screenArea.y > screenCurrentHeight - screenArea.height)
+    {
+      screenArea.y = screenCurrentHeight - screenArea.height;
+    }
+    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    if (captureArea.width <= 0 || captureArea.height <= 0)
+    {
+      return null;
+    }
+    BufferedImage screenCapture = createRobotCapture(captureArea);
+    int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
+    if (screenCapture.getType() == BufferedImage.TYPE_INT_RGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB_PRE)
+    {
+      sectionPixelBufferInt = ((DataBufferInt) screenCapture.getRaster().getDataBuffer()).getData();
+    }
+    else
+    {
+      pixelGrabber.setImage(screenCapture);
+      if (sectionPixelBufferInt != null && sectionPixelBufferInt.length >= pixelDataLength)
+      {
+        sectionPixelBufferInt = pixelGrabber.getPixels(sectionPixelBufferInt);
+      }
+      else
+      {
+        sectionPixelBufferInt = pixelGrabber.getPixels();
+      }
+      pixelGrabber.dispose();
+    }
+
+    pixelBufferInt = ((DataBufferInt) screenCurrentImage.getRaster().getDataBuffer()).getData();
+    int minX = 0;
+    int minY = 0;
+    if (usePadding)
+    {
+      minX = 1;
+      minY = 1;
+    }
+    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+    int currentWidth = 0;
+    int currentHeight = 0;
+    for (i = 0; i < pixelDataLength; i++, currentWidth++)
+    {
+      if (currentWidth == captureArea.getWidth())
+      {
+        currentWidth = 0;
+        currentHeight += screenCurrentImage.getWidth() + minX;
+      }
+      
+      red = ((sectionPixelBufferInt[i] & RGB666_RED_MASK) >> 6);
+      green = ((sectionPixelBufferInt[i] & RGB666_GREEN_MASK) >> 4);
+      blue = ((sectionPixelBufferInt[i] & RGB666_BLUE_MASK) >> 2);
+
+      pixelBufferInt[startOffset + currentWidth + currentHeight] = (red | green | blue);
+    }
+
+    if (sectionCurrentImage != screenCapture)
+    {
+      screenCapture.flush();
+    }
+    screenCapture = null;
+    pixelBufferInt = null;
+    sectionPixelBufferInt = null;
+
+    if (drawPointer)
+    {
+      drawPointer(screenCurrentImage, captureArea);
+    }
+
+    if (scaledCurrentWidth <= 0 || scaledCurrentHeight <= 0)
+    {
+      return screenCurrentImage;
+    }
+    else
+    {
+      // Rectangle scaledArea = new Rectangle(Math.min(originalArea.x,
+      // scaledCurrentWidth), Math.min(originalArea.y, scaledCurrentHeight),
+      // Math.min(originalArea.width, scaledCurrentWidth - originalArea.x),
+      // Math.min(originalArea.height, scaledCurrentHeight - originalArea.y));
+      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
+      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
+      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
+      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
+      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
+//      while (!scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null))
+//      {
+//        Thread.yield();
+//      }
+      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      return scaledCurrentImage;
+    }
+  }
+  
+  private final BufferedImage create2097152ScreenCapture(boolean drawPointer)
+  {
+    return create2097152ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
+  }
+
+  private final BufferedImage create2097152ScreenCapture(boolean drawPointer, Rectangle originalArea)
+  {
+    if (changedCurrentScreenCapture())
+    {
+      refresh2097152ScreenCapture();
+    }
+    // Rectangle trueArea = new Rectangle(0 + Math.min(area.x,
+    // screenCurrentWidth),
+    // 0 + Math.min(area.y, screenCurrentHeight), Math.min(area.width,
+    // screenCurrentWidth - area.x), Math.min(area.height,
+    // screenCurrentHeight -
+    // area.y));
+    // BufferedImage screenCapture =
+    // standardCaptureRobot.createScreenCapture(trueArea);
+    Rectangle screenArea = new Rectangle();
+    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
+    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
+    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
+    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
+    if (screenArea.width > screenCurrentWidth)
+    {
+      screenArea.width = screenCurrentWidth;
+    }
+    if (screenArea.height > screenCurrentHeight)
+    {
+      screenArea.height = screenCurrentHeight;
+    }
+    if (screenArea.x > screenCurrentWidth - screenArea.width)
+    {
+      screenArea.x = screenCurrentWidth - screenArea.width;
+    }
+    if (screenArea.y > screenCurrentHeight - screenArea.height)
+    {
+      screenArea.y = screenCurrentHeight - screenArea.height;
+    }
+    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    if (captureArea.width <= 0 || captureArea.height <= 0)
+    {
+      return null;
+    }
+    BufferedImage screenCapture = createRobotCapture(captureArea);
+    int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
+    if (screenCapture.getType() == BufferedImage.TYPE_INT_RGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB_PRE)
+    {
+      sectionPixelBufferInt = ((DataBufferInt) screenCapture.getRaster().getDataBuffer()).getData();
+    }
+    else
+    {
+      pixelGrabber.setImage(screenCapture);
+      if (sectionPixelBufferInt != null && sectionPixelBufferInt.length >= pixelDataLength)
+      {
+        sectionPixelBufferInt = pixelGrabber.getPixels(sectionPixelBufferInt);
+      }
+      else
+      {
+        sectionPixelBufferInt = pixelGrabber.getPixels();
+      }
+      pixelGrabber.dispose();
+    }
+
+    pixelBufferInt = ((DataBufferInt) screenCurrentImage.getRaster().getDataBuffer()).getData();
+    int minX = 0;
+    int minY = 0;
+    if (usePadding)
+    {
+      minX = 1;
+      minY = 1;
+    }
+    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+    int currentWidth = 0;
+    int currentHeight = 0;
+    for (i = 0; i < pixelDataLength; i++, currentWidth++)
+    {
+      if (currentWidth == captureArea.getWidth())
+      {
+        currentWidth = 0;
+        currentHeight += screenCurrentImage.getWidth() + minX;
+      }
+      
+      red = ((sectionPixelBufferInt[i] & RGB777_RED_MASK) >> 3);
+      green = ((sectionPixelBufferInt[i] & RGB777_GREEN_MASK) >> 2);
+      blue = ((sectionPixelBufferInt[i] & RGB777_BLUE_MASK) >> 1);
+
+      pixelBufferInt[startOffset + currentWidth + currentHeight] = (red | green | blue);
+    }
+
+    if (sectionCurrentImage != screenCapture)
+    {
+      screenCapture.flush();
+    }
+    screenCapture = null;
+    pixelBufferInt = null;
+    sectionPixelBufferInt = null;
+
+    if (drawPointer)
+    {
+      drawPointer(screenCurrentImage, captureArea);
+    }
+
+    if (scaledCurrentWidth <= 0 || scaledCurrentHeight <= 0)
+    {
+      return screenCurrentImage;
+    }
+    else
+    {
+      // Rectangle scaledArea = new Rectangle(Math.min(originalArea.x,
+      // scaledCurrentWidth), Math.min(originalArea.y, scaledCurrentHeight),
+      // Math.min(originalArea.width, scaledCurrentWidth - originalArea.x),
+      // Math.min(originalArea.height, scaledCurrentHeight - originalArea.y));
+      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
+      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
+      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
+      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
+      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
+//      while (!scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null))
+//      {
+//        Thread.yield();
+//      }
       scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
@@ -4424,6 +4932,14 @@ public final class VTAWTScreenCaptureProvider
     {
       return create27ScreenCapture(drawPointer);
     }
+    else if (colorQuality == VT_COLOR_QUALITY_262144)
+    {
+      return create262144ScreenCapture(drawPointer);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_2097152)
+    {
+      return create2097152ScreenCapture(drawPointer);
+    }
     else if (colorQuality == VT_COLOR_QUALITY_64)
     {
       return create64ScreenCapture(drawPointer);
@@ -4479,6 +4995,14 @@ public final class VTAWTScreenCaptureProvider
     else if (colorQuality == VT_COLOR_QUALITY_27)
     {
       return create27ScreenCapture(drawPointer, area);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_262144)
+    {
+      return create262144ScreenCapture(drawPointer, area);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_2097152)
+    {
+      return create2097152ScreenCapture(drawPointer, area);
     }
     else if (colorQuality == VT_COLOR_QUALITY_64)
     {
