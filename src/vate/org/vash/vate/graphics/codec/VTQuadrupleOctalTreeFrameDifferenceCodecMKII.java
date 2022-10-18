@@ -88,9 +88,9 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
   // preloaded data streams
   private VTByteArrayInputStream btin = new VTByteArrayInputStream(new byte[1024]);
   private VTByteArrayInputStream bpin = new VTByteArrayInputStream(new byte[4096 * 4]);
-  private VTLittleEndianInputStream lin = new VTLittleEndianInputStream(null);
   private VTLittleEndianInputStream ltin = new VTLittleEndianInputStream(btin);
   private VTLittleEndianInputStream lpin = new VTLittleEndianInputStream(bpin);
+  private VTLittleEndianInputStream lin = new VTLittleEndianInputStream(null);
   private VTLittleEndianOutputStream lout = new VTLittleEndianOutputStream(null);
   private BitSet block1BitSet = new BitSet(1024 * 8);
   //private BitSet pixelBitSet = new BitSet(1024 * 8);
