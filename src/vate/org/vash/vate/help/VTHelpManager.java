@@ -11,11 +11,11 @@ public class VTHelpManager
   private static String generalModeParameterHelp = ("\n mode parameters:") + 
     ("\n-C: use client module") + 
     (" | -S: use server module | ") + 
-    ("\n-I: use incognito module") + 
+    ("\n-A: use agent module") + 
     (" | -D: use daemon module") + ("\n -H: list parameters");
 
   private static String clientModeParametersHelp = ("\n mode parameters:") + 
-    ("\n-I: use incognito module") + 
+    ("\n-A: use agent module") + 
     ("\n-H: list parameters");
   
   private static String serverModeParametersHelp = ("\n mode parameters:") + 

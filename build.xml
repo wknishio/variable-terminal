@@ -165,24 +165,24 @@
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
 		</jar>
 				
-		<jar destfile="dist/client/vate-incognito-console.jar" filesetmanifest="mergewithoutmain" update="false">
+		<jar destfile="dist/client/vate-agent-console.jar" filesetmanifest="mergewithoutmain" update="false">
 			<manifest>
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
 				<attribute name="Created-By" value="${java.version}"/>
-				<attribute name="Main-Class" value="org.vash.vate.client.startup.VTClientIncognitoGraphicalStart"/>
+				<attribute name="Main-Class" value="org.vash.vate.client.startup.VTClientAgentGraphicalStart"/>
 				<attribute name="Class-Path" value="."/>
 			</manifest>
 			<fileset dir="build" excludes="org/vash/vate/server/**,org/vash/vate/startup/**"/>
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
 		</jar>
 		
-		<jar destfile="dist/client/vate-incognito-shell.jar" filesetmanifest="mergewithoutmain" update="false">
+		<jar destfile="dist/client/vate-agent-shell.jar" filesetmanifest="mergewithoutmain" update="false">
 			<manifest>
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
 				<attribute name="Created-By" value="${java.version}"/>
-				<attribute name="Main-Class" value="org.vash.vate.client.startup.VTClientIncognitoStandardStart"/>
+				<attribute name="Main-Class" value="org.vash.vate.client.startup.VTClientAgentStandardStart"/>
 				<attribute name="Class-Path" value="."/>
 			</manifest>
 			<fileset dir="build" excludes="org/vash/vate/server/**,org/vash/vate/startup/**"/>

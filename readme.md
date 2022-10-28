@@ -42,7 +42,7 @@ There are 4 main modes of operation for this software:
 
 * Client module to control instances of server module.
 * Server module to be controlled by instances of client module.
-* Incognito module is the client module in background without user interface.
+* Agent module is the client module in background without user interface.
 * Daemon module is the server module in background without user interface.
 
 In user interface 2 options are available:
@@ -103,7 +103,7 @@ these are the available program arguments:
 
 * -H: show available program arguments
 * -C: client module | -S: server module |
-* -I: incognito module | -D: daemon module 
+* -A: agent module | -D: daemon module 
 * -LF: load settings file
 * -CM: connection mode, passive(P), active(A)
 * -CH: connection host, default null

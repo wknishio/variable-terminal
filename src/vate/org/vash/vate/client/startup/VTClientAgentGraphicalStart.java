@@ -1,9 +1,10 @@
 package org.vash.vate.client.startup;
 
+// import org.vash.vate.VT;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.console.VTConsole;
 
-public class VTClientIncognitoStandardStart
+public class VTClientAgentGraphicalStart
 {
   public static void main(String[] args)
   {
@@ -12,7 +13,7 @@ public class VTClientIncognitoStandardStart
     VTConsole.setGraphical(false);
     VTConsole.setRemoteIcon(true);
     VTConsole.setDaemon(true);
-    
+
     if (args.length >= 1)
     {
       VTClient client = new VTClient();
@@ -31,9 +32,9 @@ public class VTClientIncognitoStandardStart
     else
     {
       VTClient client = new VTClient();
+      client.setDaemon(true);
       // client.initialize();
       // client.configure();
-      client.setDaemon(true);
       client.start();
     }
   }
