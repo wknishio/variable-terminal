@@ -113,7 +113,7 @@ public final class VTGraphicalStart
         {
           type = 4;
         }
-        if ("-I".equalsIgnoreCase(args[i]))
+        if ("-A".equalsIgnoreCase(args[i]))
         {
           type = 5;
         }

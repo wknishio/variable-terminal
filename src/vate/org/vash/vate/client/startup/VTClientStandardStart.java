@@ -24,7 +24,7 @@ public class VTClientStandardStart
         {
           help = true;
         }
-        if ("-I".equalsIgnoreCase(args[i]))
+        if ("-A".equalsIgnoreCase(args[i]))
         {
           daemon = true;
         }
