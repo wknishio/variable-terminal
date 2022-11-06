@@ -238,7 +238,7 @@ public class VTFileTransferClientTransaction implements Runnable
       {
         if (fileTransferFile.isFile())
         {
-          localFileStatus = VT.VT_FILE_TRANSFER_FILE_TYPE_FILE;
+          localFileStatus = VT.VT_FILE_TRANSFER_FILE_TYPE_NORMAL;
         }
         else if (fileTransferFile.isDirectory())
         {

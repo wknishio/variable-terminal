@@ -71,7 +71,7 @@ public class VT
   public static final int VT_FILE_TRANSFER_SESSION_STARTED = 0;
   public static final int VT_FILE_TRANSFER_SESSION_FINISHED = 1;
   public static final int VT_FILE_TRANSFER_FILE_NOT_FOUND = 2;
-  public static final int VT_FILE_TRANSFER_FILE_TYPE_FILE = 3;
+  public static final int VT_FILE_TRANSFER_FILE_TYPE_NORMAL = 3;
   public static final int VT_FILE_TRANSFER_FILE_TYPE_DIRECTORY = 4;
   public static final int VT_FILE_TRANSFER_FILE_TYPE_UNKNOWN = 5;
   public static final int VT_FILE_TRANSFER_FILE_ERROR = 6;
