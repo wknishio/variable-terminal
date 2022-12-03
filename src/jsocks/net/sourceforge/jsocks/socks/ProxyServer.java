@@ -62,7 +62,7 @@ public class ProxyServer implements Runnable {
 
 	// private static final Logger LOG = Logger.getLogger(ProxyServer.class);
 
-	static Proxy proxy;
+	private Proxy proxy;
 
 	private int BUF_SIZE = DEFAULT_BUF_SIZE;
 	
@@ -121,9 +121,9 @@ public class ProxyServer implements Runnable {
 	 * @param p
 	 *            Proxy which should be used to handle user requests.
 	 */
-	public static void setProxy(Proxy p) {
+	public void setProxy(Proxy p) {
 		proxy = p;
-		UDPRelayServer.proxy = proxy;
+		//UDPRelayServer.proxy = proxy;
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class ProxyServer implements Runnable {
 	 * 
 	 * @return Proxy wich is used to handle user requests.
 	 */
-	public static Proxy getProxy() {
+	public Proxy getProxy() {
 		return proxy;
 	}
 
@@ -486,7 +486,7 @@ public class ProxyServer implements Runnable {
 			msg.ip = sock.getInetAddress();
 		// LOG.info(connectionId + " Creating UDP relay server for " + msg.ip +
 		// ":" + msg.port);
-		relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth);
+		relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy);
 
 		ProxyMessage response;
 

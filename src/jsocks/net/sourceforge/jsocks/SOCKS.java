@@ -222,7 +222,7 @@ public class SOCKS{
       }
 
 
-      ProxyServer.setProxy(proxy);
+      //ProxyServer.setProxy(proxy);
    }
    /**
      Inits range from the string of semicolon separated ranges.

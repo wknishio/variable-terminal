@@ -54,7 +54,7 @@ public class VTTunnelVirtualSocket extends Socket
       }
       catch (Throwable e)
       {
-
+        
       }
     }
   }
@@ -69,7 +69,7 @@ public class VTTunnelVirtualSocket extends Socket
       }
       catch (Throwable e)
       {
-
+        
       }
     }
     if (pipe != null)
@@ -80,7 +80,7 @@ public class VTTunnelVirtualSocket extends Socket
       }
       catch (Throwable e)
       {
-
+        
       }
     }
   }
@@ -95,7 +95,7 @@ public class VTTunnelVirtualSocket extends Socket
       }
       catch (Throwable e)
       {
-
+        
       }
     }
     if (out != null)
@@ -106,7 +106,7 @@ public class VTTunnelVirtualSocket extends Socket
       }
       catch (Throwable e)
       {
-
+        
       }
     }
     if (pipe != null)
@@ -117,7 +117,7 @@ public class VTTunnelVirtualSocket extends Socket
       }
       catch (Throwable e)
       {
-
+        
       }
     }
   }

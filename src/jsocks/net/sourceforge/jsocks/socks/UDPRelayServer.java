@@ -42,7 +42,7 @@ class UDPRelayServer implements Runnable {
 
 	// private static final Logger LOG = Logger.getLogger(UDPRelayServer.class);
 
-	static Proxy proxy = null;
+	private Proxy proxy = null;
 	static int datagramSize = 0xFFFF;// 64K, a bit more than max udp size
 	static int idleTimeout = 180000;// 3 minutes
 
@@ -64,7 +64,8 @@ class UDPRelayServer implements Runnable {
 	 *            operation.
 	 */
 	public UDPRelayServer(InetAddress clientIP, int clientPort, Thread master_thread, Socket controlConnection,
-			ServerAuthenticator auth) throws IOException {
+			ServerAuthenticator auth, Proxy proxy) throws IOException {
+	  this.proxy = proxy;
 		this.master_thread = master_thread;
 		this.controlConnection = controlConnection;
 		this.auth = auth;
@@ -79,10 +80,10 @@ class UDPRelayServer implements Runnable {
 				|| relayIP.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
 			relayIP = InetAddress.getLocalHost();
 
-		if (proxy == null)
+		if (this.proxy == null)
 			remote_sock = new DatagramSocket();
 		else
-			remote_sock = new Socks5DatagramSocket(proxy, 0, null);
+			remote_sock = new Socks5DatagramSocket(this.proxy, 0, null);
 	}
 
 	// Public methods

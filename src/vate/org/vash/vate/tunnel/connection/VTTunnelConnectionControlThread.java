@@ -111,8 +111,8 @@ public class VTTunnelConnectionControlThread implements Runnable
                 VTTunnelSession session = null;
                 try
                 {
-                  VTTunnelVirtualSocket socket = new VTTunnelVirtualSocket();
-                  session = new VTTunnelSession(connection, socket, false);
+                  VTTunnelVirtualSocket virtual = new VTTunnelVirtualSocket();
+                  session = new VTTunnelSession(connection, virtual, false);
                   VTTunnelSocksSessionHandler handler = null;
                   if (parts.length > 3 && socksUsername.equals("*") && socksPassword.equals("*") && parts[3].equals("*"))
                   {
@@ -129,10 +129,10 @@ public class VTTunnelConnectionControlThread implements Runnable
                     int outputNumber = output.number();
                     session.setOutputNumber(outputNumber);
                     session.setInputNumber(inputNumber);
-                    socket.setOutputStream(output);
+                    virtual.setOutputStream(output);
                     session.setTunnelOutputStream(output);
                     session.setTunnelInputStream(connection.getInputStream(inputNumber, handler));
-                    session.getTunnelInputStream().setDirectOutputStream(socket.getInputStreamSource());
+                    session.getTunnelInputStream().setDirectOutputStream(virtual.getInputStreamSource());
                     session.getTunnelInputStream().open();
                     session.getTunnelOutputStream().open();
                     // response message sent with ok
