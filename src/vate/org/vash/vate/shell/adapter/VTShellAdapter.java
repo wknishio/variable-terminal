@@ -313,20 +313,23 @@ public class VTShellAdapter
         catch (Throwable t)
         {
           //t.printStackTrace();
-          //try again with cmd.exe if cannot start old DOS command.com shell
-          List<String> commands = commandBuilder.command();
-          boolean dosLegacyShellFound = false;
-          for (String command : commands)
+          if (VT.detectWindows())
           {
-            if (command.toUpperCase().contains("COMMAND.COM"))
+            //try again with cmd.exe if cannot start old DOS command.com shell
+            List<String> commands = commandBuilder.command();
+            boolean dosLegacyShellFound = false;
+            for (String command : commands)
             {
-              dosLegacyShellFound = true;
+              if (command.toUpperCase().contains("COMMAND.COM"))
+              {
+                dosLegacyShellFound = true;
+              }
             }
-          }
-          if (dosLegacyShellFound)
-          {
-            revertShellBuilder();
-            return startShell();
+            if (dosLegacyShellFound)
+            {
+              revertShellBuilder();
+              return startShell();
+            }
           }
         }
       }
