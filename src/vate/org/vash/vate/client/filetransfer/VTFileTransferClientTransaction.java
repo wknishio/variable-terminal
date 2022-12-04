@@ -70,33 +70,33 @@ public class VTFileTransferClientTransaction implements Runnable
   private InputStream fileTransferFileInputStream;
   private OutputStream fileTransferFileOutputStream;
   private VTFileTransferClientSession session;
-
+  
   public VTFileTransferClientTransaction(VTFileTransferClientSession session)
   {
     this.session = session;
     this.finished = true;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public boolean isStopped()
   {
     return stopped;
   }
-
+  
   public void setInterrupted()
   {
     interrupted = true;
   }
-
+  
   public void setStopped(boolean stopped)
   {
     if (stopped && !this.stopped)
@@ -111,7 +111,7 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (fileTransferRemoteInputStream != null)
@@ -122,7 +122,7 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (fileTransferFileOutputStream != null)
@@ -133,7 +133,7 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (fileTransferFileInputStream != null)
@@ -144,7 +144,7 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (fileTransferRandomAccessFile != null)
@@ -155,7 +155,7 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (fileTransferChecksumInputStream != null)
@@ -166,24 +166,24 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
     }
     this.stopped = stopped;
   }
-
+  
   public String getCommand()
   {
     return command;
   }
-
+  
   public void setCommand(String command)
   {
     this.command = command;
     this.directory = false;
   }
-
+  
 //  public long getTransferDataSize()
 //  {
 //    return transferDataSize;
@@ -203,33 +203,33 @@ public class VTFileTransferClientTransaction implements Runnable
 //  {
 //    return transferDirectoryCount;
 //  }
-
+  
   private boolean getFileStatus()
   {
     return (writeLocalFileStatus() && readRemoteFileStatus());
   }
-
+  
   private boolean getFileAccess(boolean upload)
   {
     return (writeLocalFileAccess(upload) && readRemoteFileAccess());
   }
-
+  
   private boolean getFileSizes()
   {
     return (writeLocalFileSize() && readRemoteFileSize() && localFileSize >= 0);
   }
-
+  
   private boolean getFileChecksums()
   {
     // System.out.println("getFileChecksums:" + fileTransferFile.getAbsolutePath());
     return (writeLocalFileChecksum() && readRemoteFileChecksum());
   }
-
+  
   private boolean getContinueTransfer(boolean ok)
   {
     return (writeContinueTransfer(ok) && readContinueTransfer() && ok);
   }
-
+  
   private boolean writeLocalFileStatus()
   {
     try
@@ -269,7 +269,7 @@ public class VTFileTransferClientTransaction implements Runnable
       return false;
     }
   }
-
+  
   private boolean writeLocalFileAccess(boolean upload)
   {
     try
@@ -383,7 +383,7 @@ public class VTFileTransferClientTransaction implements Runnable
       return false;
     }
   }
-
+  
   private boolean writeLocalFileSize()
   {
     localFileSize = 0;
@@ -410,7 +410,7 @@ public class VTFileTransferClientTransaction implements Runnable
       return false;
     }
   }
-
+  
   private boolean writeLocalFileChecksum()
   {
     checksum.reset();
@@ -477,7 +477,7 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     return false;
   }
-
+  
   private boolean writeContinueTransfer(boolean ok)
   {
     try
@@ -488,11 +488,11 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     catch (Throwable t)
     {
-
+      
     }
     return false;
   }
-
+  
   private boolean writeNextFilePath(String path)
   {
     try
@@ -511,11 +511,11 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
     return false;
   }
-
+  
   private boolean writeNextFileChunkSize(int size)
   {
     try
@@ -526,11 +526,11 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
     return false;
   }
-
+  
   private boolean readRemoteFileStatus()
   {
     try
@@ -543,7 +543,7 @@ public class VTFileTransferClientTransaction implements Runnable
       return false;
     }
   }
-
+  
   private boolean readRemoteFileAccess()
   {
     try
@@ -556,7 +556,7 @@ public class VTFileTransferClientTransaction implements Runnable
       return false;
     }
   }
-
+  
   private boolean readRemoteFileSize()
   {
     try
@@ -573,7 +573,7 @@ public class VTFileTransferClientTransaction implements Runnable
       return false;
     }
   }
-
+  
   private boolean readRemoteFileChecksum()
   {
     try
@@ -587,7 +587,7 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     return false;
   }
-
+  
   private boolean readContinueTransfer()
   {
     try
@@ -597,11 +597,11 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
     return false;
   }
-
+  
   private String readNextFilePath()
   {
     try
@@ -617,11 +617,11 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
     return null;
   }
-
+  
   private int readNextFileChunkSize()
   {
     try
@@ -630,11 +630,11 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
     return -1;
   }
-
+  
   private boolean tryUpload(String currentPath)
   {
     // System.out.println("tryUpload: " + currentPath);
@@ -687,7 +687,7 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     return false;
   }
-
+  
   private boolean verifyUpload(String currentPath)
   {
     verified = true;
@@ -806,7 +806,7 @@ public class VTFileTransferClientTransaction implements Runnable
                   }
                   else
                   {
-
+                    
                   }
                 }
                 resumable = getContinueTransfer(resumable);
@@ -844,7 +844,7 @@ public class VTFileTransferClientTransaction implements Runnable
                   }
                   else
                   {
-
+                    
                   }
                 }
                 resumable = getContinueTransfer(resumable);
@@ -866,11 +866,11 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
     return false;
   }
-
+  
   private boolean setUploadStreams(String currentPath)
   {
     if (currentPath != null && directory)
@@ -898,12 +898,12 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       catch (Throwable e1)
       {
-
+        
       }
       return getContinueTransfer(false);
     }
   }
-
+  
   private boolean uploadFilePath(String currentPath)
   {
     boolean ok = true;
@@ -973,12 +973,12 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       catch (Throwable e1)
       {
-
+        
       }
       return false;
     }
   }
-
+  
   private boolean uploadFileData()
   {
     boolean ok = true;
@@ -1013,7 +1013,7 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     return ok;
   }
-
+  
   private void cleanUpload()
   {
     if (fileTransferFileInputStream != null)
@@ -1024,7 +1024,7 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
       fileTransferFileInputStream = null;
     }
@@ -1036,7 +1036,7 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
       // System.out.println("cleanUpload:" + fileTransferFile.getAbsolutePath());
       fileTransferRandomAccessFile = null;
@@ -1049,12 +1049,12 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
       fileTransferChecksumInputStream = null;
     }
   }
-
+  
   private boolean tryDownload(String currentPath, boolean rootLevel)
   {
     // System.out.println("tryDownload: " + currentPath);
@@ -1107,7 +1107,7 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     return false;
   }
-
+  
   private boolean verifyDownload(String currentPath)
   {
     verified = true;
@@ -1239,7 +1239,7 @@ public class VTFileTransferClientTransaction implements Runnable
                   }
                   else
                   {
-
+                    
                   }
                 }
                 resumable = getContinueTransfer(resumable);
@@ -1296,12 +1296,12 @@ public class VTFileTransferClientTransaction implements Runnable
                     }
                     catch (Throwable t)
                     {
-
+                      
                     }
                   }
                   else
                   {
-
+                    
                   }
                 }
                 resumable = getContinueTransfer(resumable);
@@ -1323,11 +1323,11 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
     return false;
   }
-
+  
   private boolean setDownloadStreams(String currentPath)
   {
     if (currentPath != null && directory)
@@ -1354,12 +1354,12 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       catch (Throwable t)
       {
-
+        
       }
       return getContinueTransfer(false);
     }
   }
-
+  
   private boolean downloadFilePath(String currentPath, boolean rootLevel)
   {
     boolean ok = true;
@@ -1447,12 +1447,12 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       catch (Throwable t)
       {
-
+        
       }
       return false;
     }
   }
-
+  
   private boolean downloadFileData()
   {
     boolean ok = true;
@@ -1501,7 +1501,7 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     return ok;
   }
-
+  
   private void cleanDownload()
   {
     if (fileTransferFileOutputStream != null)
@@ -1512,7 +1512,7 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
       fileTransferFileOutputStream = null;
     }
@@ -1524,7 +1524,7 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
       // System.out.println("cleanDownload:" + fileTransferFile.getAbsolutePath());
       fileTransferRandomAccessFile = null;
@@ -1537,12 +1537,12 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
       fileTransferChecksumInputStream = null;
     }
   }
-
+  
   private boolean replaceDownloadFile(String currentPath)
   {
     try
@@ -1551,7 +1551,7 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     catch (Throwable e1)
     {
-
+      
     }
     try
     {
@@ -1559,7 +1559,7 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
     try
     {
@@ -1593,13 +1593,13 @@ public class VTFileTransferClientTransaction implements Runnable
       return false;
     }
   }
-
+  
   private static String getFileNameFromPath(String path)
   {
     int idx = path.replaceAll("\\\\", "/").lastIndexOf("/");
     return idx >= 0 ? path.substring(idx + 1) : path;
   }
-
+  
   private static String appendToPath(String path, String append)
   {
     if (path == null && append != null)
@@ -1619,12 +1619,12 @@ public class VTFileTransferClientTransaction implements Runnable
       return path + detectPathSeparator(path) + append;
     }
   }
-
+  
   private static String convertFilePath(String path)
   {
     return path.replace('\\', '/').replace('/', File.separatorChar);
   }
-
+  
   private static char detectPathSeparator(String path)
   {
     int idx;
@@ -1640,7 +1640,7 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     return File.separatorChar;
   }
-
+  
   public void run()
   {
     try
@@ -1676,7 +1676,7 @@ public class VTFileTransferClientTransaction implements Runnable
           resuming = false;
           verifying = false;
           stronger = false;
-
+          
           if (transferParameters.toUpperCase().contains("F"))
           {
             compressing = true;
@@ -1694,9 +1694,9 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             verifying = true;
           }
-
+          
           String[] localFiles = filePaths.split(";");
-
+          
           if (compressing)
           {
             if (stronger)
@@ -1712,7 +1712,7 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             fileTransferRemoteOutputStream = session.getClient().getConnection().getFileTransferDataOutputStream();
           }
-
+          
           for (String localFile : localFiles)
           {
             // this.remoteFilePath = destination;
@@ -1775,7 +1775,7 @@ public class VTFileTransferClientTransaction implements Runnable
           resuming = false;
           verifying = false;
           stronger = false;
-
+          
           if (transferParameters.toUpperCase().contains("F"))
           {
             compressing = true;
@@ -1793,7 +1793,7 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             verifying = true;
           }
-
+          
           if (compressing)
           {
             if (stronger)
@@ -1809,7 +1809,7 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             fileTransferRemoteInputStream = session.getClient().getConnection().getFileTransferDataInputStream();
           }
-
+          
           String[] remoteFiles = filePaths.split(";");
           for (String remoteFile : remoteFiles)
           {
@@ -1885,7 +1885,7 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
     if (fileTransferRandomAccessFile != null)
     {
@@ -1895,7 +1895,7 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
     fileTransferRandomAccessFile = null;
@@ -1907,7 +1907,7 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
     fileTransferChecksumInputStream = null;
@@ -1921,7 +1921,7 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
       if (fileTransferRemoteOutputStream != null)
@@ -1932,7 +1932,7 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
     }
