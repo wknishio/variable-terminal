@@ -170,8 +170,9 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.captureIntervalOptions = new TreeMap<Integer, CheckboxMenuItem>();
     this.captureIntervalOptions.put(0, new CheckboxMenuItem());
     this.captureIntervalOptions.put(1, new CheckboxMenuItem());
-    this.captureIntervalOptions.put(3, new CheckboxMenuItem());
-    this.captureIntervalOptions.put(7, new CheckboxMenuItem());
+    this.captureIntervalOptions.put(2, new CheckboxMenuItem());
+    this.captureIntervalOptions.put(4, new CheckboxMenuItem());
+    this.captureIntervalOptions.put(8, new CheckboxMenuItem());
     this.captureIntervalOptions.put(15, new CheckboxMenuItem());
     this.captureIntervalOptions.put(30, new CheckboxMenuItem());
     this.captureIntervalOptions.put(60, new CheckboxMenuItem());
@@ -179,8 +180,9 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.captureIntervalOptions.put(250, new CheckboxMenuItem());
     this.captureIntervalOptions.put(500, new CheckboxMenuItem());
     this.captureIntervalOptions.put(1000, new CheckboxMenuItem());
-    this.captureIntervalOptions.put(3000, new CheckboxMenuItem());
-    this.captureIntervalOptions.put(7500, new CheckboxMenuItem());
+    this.captureIntervalOptions.put(2000, new CheckboxMenuItem());
+    this.captureIntervalOptions.put(4000, new CheckboxMenuItem());
+    this.captureIntervalOptions.put(8000, new CheckboxMenuItem());
     this.captureIntervalOptions.put(15000, new CheckboxMenuItem());
     this.captureIntervalOptions.put(30000, new CheckboxMenuItem());
     this.captureIntervalOptions.put(60000, new CheckboxMenuItem());
