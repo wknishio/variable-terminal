@@ -89,7 +89,6 @@ instance will listen for connections, as in a TCP connection.
 * Encryption password sets the password for connection encryption.
 * Session maximum define a limit for simultaneous sessions in server.
 * Session commands set commands separated by *; to be run when session starts.
-* Session lines set text files separated by ; to be run when session starts.
 * Session user sets the session user for session.
 * Session password sets the session password for session.
 
@@ -119,7 +118,6 @@ these are the available program arguments:
 * -EK encryption password, default null
 * -SM: session maximum, default 0, only in server
 * -SC: session commands, separated by "*;", default null, only in client
-* -SL: session lines, separated by ";", default null, only in client
 * -SU: session user, default null
 * -SK: session password, default null
 
