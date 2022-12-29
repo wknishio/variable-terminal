@@ -1,7 +1,6 @@
 package org.vash.vate.runtime.launcher;
 
 import org.vash.vate.console.standard.VTStandardConsoleInterruptibleInputStreamByte;
-import org.vash.vate.nativeutils.VTNativeUtils;
 import org.vash.vate.runtime.VTRuntimeProcessInputRedirector;
 
 public class VTArgumentsRuntimeRelauncherDaemon
@@ -9,7 +8,7 @@ public class VTArgumentsRuntimeRelauncherDaemon
   public static void main(String[] args) throws Exception
   {
     VTStandardConsoleInterruptibleInputStreamByte stream = new VTStandardConsoleInterruptibleInputStreamByte();
-    VTNativeUtils.detachConsole();
+    //VTNativeUtils.detachConsole();
     try
     {
       while (true)

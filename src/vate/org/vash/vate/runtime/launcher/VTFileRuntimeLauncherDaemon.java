@@ -4,13 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 
-import org.vash.vate.nativeutils.VTNativeUtils;
-
 public class VTFileRuntimeLauncherDaemon
 {
   public static void main(String[] args) throws Exception
   {
-    VTNativeUtils.detachConsole();
+    //VTNativeUtils.detachConsole();
     String[] files = { "launcher.txt" };
     if (args.length > 0)
     {

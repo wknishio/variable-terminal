@@ -73,7 +73,7 @@ public final class VTConsole
             
           }
           // VTGraphicalConsole.setSplit(split);
-          VTNativeUtils.detachConsole();
+          VTNativeUtils.hideConsole();
           if (lanterna)
           {
             console = new VTLanternaConsole(graphical, remoteIcon);
@@ -106,7 +106,7 @@ public final class VTConsole
       }
       else
       {
-        VTNativeUtils.detachConsole();
+        VTNativeUtils.hideConsole();
       }
     }
   }

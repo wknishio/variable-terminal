@@ -314,7 +314,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       return ok;
