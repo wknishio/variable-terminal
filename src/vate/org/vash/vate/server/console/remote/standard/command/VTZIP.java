@@ -10,8 +10,8 @@ public class VTZIP extends VTServerStandardRemoteConsoleCommandProcessor
   {
     this.setFullName("*VTZIP");
     this.setAbbreviatedName("*VTZP");
-    this.setFullSyntax("*VTZIP <SIDE> [MODE] [ZIP FILES]");
-    this.setAbbreviatedSyntax("*VTZP <SD> [MD] [ZP FL]");
+    this.setFullSyntax("*VTZIP <SIDE> [MODE] [ZIP FILE;]");
+    this.setAbbreviatedSyntax("*VTZP <SD> [MD] [ZP FL;]");
   }
 
   public void execute(String command, String[] parsed) throws Exception

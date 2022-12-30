@@ -7,14 +7,14 @@ import org.vash.vate.console.VTConsole;
 import org.vash.vate.server.connection.VTServerConnectionHandler;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-public class VTCLIENTS extends VTServerStandardLocalConsoleCommandProcessor
+public class VTUSERS extends VTServerStandardLocalConsoleCommandProcessor
 {
-  public VTCLIENTS()
+  public VTUSERS()
   {
-    this.setFullName("*VTCLIENTS");
-    this.setAbbreviatedName("*VTCLS");
-    this.setFullSyntax("*VTCLIENTS");
-    this.setAbbreviatedSyntax("*VTCLS");
+    this.setFullName("*VTUSERS");
+    this.setAbbreviatedName("*VTUSR");
+    this.setFullSyntax("*VTUSERS");
+    this.setAbbreviatedSyntax("*VTUSR");
   }
 
   public void execute(String command, String[] parsed) throws Exception
@@ -29,7 +29,7 @@ public class VTCLIENTS extends VTServerStandardLocalConsoleCommandProcessor
         message.append("\rVT>List of current client connections on server:\nVT>");
         for (VTServerConnectionHandler handler : connections)
         {
-          message.append("\nVT>Number: [" + i++ + "]");
+          message.append("\nVT>Session Number: [" + i++ + "]");
           message.append("\nVT>Authenticated: [" + (handler.getSessionHandler().isAuthenticated() ? "Yes" : "No") + "]");
           message.append("\nVT>User: [" + (handler.getSessionHandler().getUser() != null ? handler.getSessionHandler().getUser() : "") + "]");
           InetAddress address = handler.getConnection().getConnectionSocket().getInetAddress();

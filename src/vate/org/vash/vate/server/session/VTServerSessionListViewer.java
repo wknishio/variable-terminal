@@ -42,7 +42,7 @@ public class VTServerSessionListViewer extends VTTask
       {
         for (VTServerConnectionHandler handler : connections)
         {
-          message.append("\nVT>Number: [" + i++ + "]");
+          message.append("\nVT>Session Number: [" + i++ + "]");
           message.append("\nVT>Authenticated: [" + (handler.getSessionHandler().isAuthenticated() ? "Yes" : "No") + "]");
           message.append("\nVT>User: [" + (handler.getSessionHandler().getUser() != null ? handler.getSessionHandler().getUser() : "") + "]");
           InetAddress address = handler.getConnection().getConnectionSocket().getInetAddress();

@@ -10,8 +10,8 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
   {
     this.setFullName("*VTFILETRANSFER");
     this.setAbbreviatedName("*VTFT");
-    this.setFullSyntax("*VTFILETRANSFER [MODE] [SOURCE TARGET]");
-    this.setAbbreviatedSyntax("*VTFT [MD] [SRC TGT]");
+    this.setFullSyntax("*VTFILETRANSFER [MODE] [SOURCE; TARGET]");
+    this.setAbbreviatedSyntax("*VTFT [MD] [SRC; TGT]");
   }
 
   public void execute(String command, String[] parsed) throws Exception

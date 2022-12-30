@@ -11,8 +11,8 @@ public class VTREAD extends VTClientStandardRemoteConsoleCommandProcessor
   {
     this.setFullName("*VTREAD");
     this.setAbbreviatedName("*VTRD");
-    this.setFullSyntax("*VTREAD <FILE>");
-    this.setAbbreviatedSyntax("*VTRD <FL>");
+    this.setFullSyntax("*VTREAD <FILE;>");
+    this.setAbbreviatedSyntax("*VTRD <FL;>");
   }
 
   public void execute(String command, String[] parsed) throws Exception

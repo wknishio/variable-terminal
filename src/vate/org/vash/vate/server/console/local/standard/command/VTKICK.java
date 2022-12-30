@@ -13,8 +13,8 @@ public class VTKICK extends VTServerStandardLocalConsoleCommandProcessor
   {
     this.setFullName("*VTKICK");
     this.setAbbreviatedName("*VTKC");
-    this.setFullSyntax("*VTKICK [CLIENT]");
-    this.setAbbreviatedSyntax("*VTKC [CT]");
+    this.setFullSyntax("*VTKICK [SESSION]");
+    this.setAbbreviatedSyntax("*VTKC [SN]");
   }
 
   public void execute(String command, String[] parsed) throws Exception

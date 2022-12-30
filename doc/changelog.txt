@@ -20,7 +20,7 @@ Changes since 1.4.2:
 * Command *VTGRAPHICSLINK now supports custom image codings ZOF and SOF
 * Command *VTGRAPHICSLINK now supports image codings PNG and JPEG
 * Added ObjectPlanet PngEncoder library, much faster than Java ImageIO
-* Available color qualities: worst, low, medium, high, best
+* Color qualities: worst, low, simple, below, medium, above, extra, high, true
 * Startup now accepts as parameter a file path for settings file to be loaded
 * Added support for NAT-PMP port mapping if UPnP port mapping is not available
 * Command *VTGRAPHICSLINK now supports unified screen device capture
@@ -89,7 +89,6 @@ Changes since 1.4.2:
 * Added GRAIN as encryption algorithm
 * Added ISAAC as encryption algorithm
 * Added *VTPAUSE command to pause local console for a interval or until enter
-* Added client parameter session lines -SL to run commands from text files
 * Added *VTCONFIGURE command to reconfigure all server connection settings
 * Added *VTREAD command to run text files commands in client console
 * Added *VTLOG command to record client commands to local client file

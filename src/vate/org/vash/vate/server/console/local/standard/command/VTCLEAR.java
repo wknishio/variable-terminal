@@ -8,9 +8,9 @@ public class VTCLEAR extends VTServerStandardLocalConsoleCommandProcessor
   public VTCLEAR()
   {
     this.setFullName("*VTCLEAR");
-    this.setAbbreviatedName("*VTCLR");
+    this.setAbbreviatedName("*VTCL");
     this.setFullSyntax("*VTCLEAR");
-    this.setAbbreviatedSyntax("*VTCLR");
+    this.setAbbreviatedSyntax("*VTCL");
   }
 
   public void execute(String command, String[] parsed) throws Exception
