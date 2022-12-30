@@ -8,9 +8,9 @@ public class VTSTOP extends VTClientStandardRemoteConsoleCommandProcessor
   public VTSTOP()
   {
     this.setFullName("*VTSTOP");
-    this.setAbbreviatedName("*VTST");
+    this.setAbbreviatedName("*VTSTP");
     this.setFullSyntax("*VTSTOP");
-    this.setAbbreviatedSyntax("*VTST");
+    this.setAbbreviatedSyntax("*VTSTP");
   }
 
   public void execute(String command, String[] parsed) throws Exception
