@@ -9,7 +9,7 @@ import org.vash.vate.VT;
 public class VTAudioBeeper
 {
   private static final int SAMPLE_SIZE_IN_BITS = 16;
-  private static final int SAMPLE_RATE = 16000;
+  private static final int SAMPLE_RATE = 8000;
   
   private static final byte[] createSinWaveBuffer(int freq, int ms, double vol)
   {
