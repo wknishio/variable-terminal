@@ -29,7 +29,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
       if (state == 1)
       {
         int currentAudioCodec = VT.VT_AUDIO_CODEC_DEFAULT;
-        AudioFormat currentAudioFormat = VT.VT_AUDIO_FORMAT_16000;
+        AudioFormat currentAudioFormat = VT.VT_AUDIO_FORMAT_DEFAULT;
         Mixer.Info inputMixer = null;
         Mixer.Info outputMixer = null;
         if (parsed.length >= 2)

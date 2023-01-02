@@ -156,6 +156,7 @@ public class VT
 
   private static final DateFormat VT_ERA_DATEFORMAT;
   private static final Calendar VT_YEAR_CALENDAR;
+  public static final AudioFormat VT_AUDIO_FORMAT_DEFAULT;
   public static final AudioFormat VT_AUDIO_FORMAT_8000;
   public static final AudioFormat VT_AUDIO_FORMAT_16000;
   public static final AudioFormat VT_AUDIO_FORMAT_24000;
@@ -196,6 +197,7 @@ public class VT
     VT_AUDIO_FORMAT_24000 = new AudioFormat(24000, sampleSizeInBits, channels, signed, bigEndian);
     VT_AUDIO_FORMAT_32000 = new AudioFormat(32000, sampleSizeInBits, channels, signed, bigEndian);
     VT_AUDIO_FORMAT_48000 = new AudioFormat(48000, sampleSizeInBits, channels, signed, bigEndian);
+    VT_AUDIO_FORMAT_DEFAULT = VT_AUDIO_FORMAT_16000;
     
     VT_GRAPHICS_RENDERING_HINTS = new HashMap<RenderingHints.Key, Object>();
     VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
