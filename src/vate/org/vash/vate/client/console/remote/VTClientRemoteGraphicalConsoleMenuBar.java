@@ -26,9 +26,9 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
   private Menu consoleMenu;
   private Menu shellMenu;
   private Menu fileSystemMenu;
-  private Menu zipFileMenu;
-  private Menu zipFileLocalMenu;
-  private Menu zipFileRemoteMenu;
+  //private Menu zipFileMenu;
+  //private Menu zipFileLocalMenu;
+  //private Menu zipFileRemoteMenu;
   private Menu remoteFileMenu;
   private Menu remoteFileCheckMenu;
   private Menu remoteFileModifyMenu;
@@ -147,19 +147,19 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     remoteFileMenu = new Menu("Remote Files ");
     remoteFileCheckMenu = new Menu("Check Files ");
     remoteFileModifyMenu = new Menu("Modify Files ");
-    zipFileMenu = new Menu("Zip Files ");
-    zipFileLocalMenu = new Menu("Local Zip Files ");
-    zipFileRemoteMenu = new Menu("Remote Zip Files ");
+    //zipFileMenu = new Menu("Zip Files ");
+    //zipFileLocalMenu = new Menu("Local Zip Files ");
+    //zipFileRemoteMenu = new Menu("Remote Zip Files ");
 
     remoteFileMenu.add(remoteFileCheckMenu);
     remoteFileMenu.add(remoteFileModifyMenu);
 
-    zipFileMenu.add(zipFileLocalMenu);
-    zipFileMenu.add(zipFileRemoteMenu);
-    zipFileMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTZIP\n"));
+    //zipFileMenu.add(zipFileLocalMenu);
+    //zipFileMenu.add(zipFileRemoteMenu);
+    //zipFileMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTZIP\n"));
 
     fileSystemMenu.add(remoteFileMenu);
-    fileSystemMenu.add(zipFileMenu);
+    //fileSystemMenu.add(zipFileMenu);
     fileSystemMenu.add(fileTransferMenu);
 
     fileTransferMenu.add(new VTGraphicalConsoleMenuItem("Send File To Server", "*VTFILETRANSFER P"));
@@ -189,17 +189,17 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Stop File Modification", "*VTFILEMODIFY S\n"));
     remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTFILEMODIFY\n"));
 
-    zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Compress Zip File", "*VTZIP L C "));
-    zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Uncompress Zip File", "*VTZIP L U "));
-    zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Decompress Zip File", "*VTZIP L D "));
-    zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Report Zip Operation", "*VTZIP L\n"));
-    zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Stop Zip Operation", "*VTZIP L S\n"));
+    //zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Compress Zip File", "*VTZIP L C "));
+    //zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Uncompress Zip File", "*VTZIP L U "));
+    //zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Decompress Zip File", "*VTZIP L D "));
+    //zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Report Zip Operation", "*VTZIP L\n"));
+    //zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Stop Zip Operation", "*VTZIP L S\n"));
 
-    zipFileRemoteMenu.add(new VTGraphicalConsoleMenuItem("Compress Zip File", "*VTZIP R C "));
-    zipFileRemoteMenu.add(new VTGraphicalConsoleMenuItem("Uncompress Zip File", "*VTZIP R U "));
-    zipFileRemoteMenu.add(new VTGraphicalConsoleMenuItem("Decompress Zip File", "*VTZIP R D "));
-    zipFileRemoteMenu.add(new VTGraphicalConsoleMenuItem("Report Zip Operation", "*VTZIP R\n"));
-    zipFileRemoteMenu.add(new VTGraphicalConsoleMenuItem("Stop Zip Operation", "*VTZIP R S\n"));
+    //zipFileRemoteMenu.add(new VTGraphicalConsoleMenuItem("Compress Zip File", "*VTZIP R C "));
+    //zipFileRemoteMenu.add(new VTGraphicalConsoleMenuItem("Uncompress Zip File", "*VTZIP R U "));
+    //zipFileRemoteMenu.add(new VTGraphicalConsoleMenuItem("Decompress Zip File", "*VTZIP R D "));
+    //zipFileRemoteMenu.add(new VTGraphicalConsoleMenuItem("Report Zip Operation", "*VTZIP R\n"));
+    //zipFileRemoteMenu.add(new VTGraphicalConsoleMenuItem("Stop Zip Operation", "*VTZIP R S\n"));
 
     sessionMenu = new Menu("Session ");
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Disconnect From Server", "*VTEXIT\n"));
@@ -215,7 +215,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Toggle Console Echo", "*VTECHO\n"));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Show Remote System Time", "*VTTIME\n"));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Pause Local Console", "*VTPAUSE "));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Detect Chained Instances", "*VTCHAINS\n"));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem("Detect Chained Instances", "*VTCHAIN\n"));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Execute Client Command Lines", "*VTREAD "));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Client Command Lines", "*VTLOG "));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Client Console Output", "*VTOUT "));
@@ -239,30 +239,30 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverProxySettingsMenu = new Menu("Proxy ");
     serverEncryptionSettingsMenu = new Menu("Encryption ");
     serverSessionsSettingsMenu = new Menu("Session ");
-    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("List All Settings", "*VTSETTINGS\n"));
+    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("List All Settings", "*VTSETTING\n"));
     serverSettingsMenu.add(serverConnectionSettingsMenu);
     // serverSettingsMenu.add(serverAuthenticationSettingsMenu);
     serverSettingsMenu.add(serverProxySettingsMenu);
     serverSettingsMenu.add(serverEncryptionSettingsMenu);
     serverSettingsMenu.add(serverSessionsSettingsMenu);
-    serverConnectionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Mode", "*VTSETTINGS CM "));
-    serverConnectionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Host", "*VTSETTINGS CH "));
-    serverConnectionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Port", "*VTSETTINGS CP "));
-    serverConnectionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Connection NAT Port", "*VTSETTINGS NP "));
-    serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Type", "*VTSETTINGS PT "));
-    serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Host", "*VTSETTINGS PH "));
-    serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Port", "*VTSETTINGS PP "));
-    serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Authentication", "*VTSETTINGS PA "));
-    serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy User", "*VTSETTINGS PU "));
-    serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Password", "*VTSETTINGS PK "));
-    serverEncryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Type", "*VTSETTINGS ET "));
-    serverEncryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Password", "*VTSETTINGS EK "));
-    serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Maximum", "*VTSETTINGS SM "));
-    serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Shell", "*VTSETTINGS SS "));
+    serverConnectionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Mode", "*VTSETTING CM "));
+    serverConnectionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Host", "*VTSETTING CH "));
+    serverConnectionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Port", "*VTSETTING CP "));
+    serverConnectionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Connection NAT Port", "*VTSETTING NP "));
+    serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Type", "*VTSETTING PT "));
+    serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Host", "*VTSETTING PH "));
+    serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Port", "*VTSETTING PP "));
+    serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Authentication", "*VTSETTING PA "));
+    serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy User", "*VTSETTING PU "));
+    serverProxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Password", "*VTSETTING PK "));
+    serverEncryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Type", "*VTSETTING ET "));
+    serverEncryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Password", "*VTSETTING EK "));
+    serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Maximum", "*VTSETTING SM "));
+    serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Shell", "*VTSETTING SS "));
     serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Credential", "*VTLOCK "));
-    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Save Settings File", "*VTSETTINGS SP "));
-    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Load Settings File", "*VTSETTINGS LP "));
-    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSETTINGS\n"));
+    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Save Settings File", "*VTSETTING SP "));
+    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Load Settings File", "*VTSETTING LP "));
+    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSETTING\n"));
     // settingsMenu.add(serverSettingsMenu);
 
     serverRuntimeMenu = new Menu("Runtime ");

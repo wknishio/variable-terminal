@@ -20,7 +20,7 @@ public class VTServerLocalConsoleCommandSelector<T> extends VTConsoleCommandSele
   {
     try
     {
-      standardCommandProcessorClasses.add(VTSETTINGS.class);
+      standardCommandProcessorClasses.add(VTSETTING.class);
       standardCommandProcessorClasses.add(VTMIXERS.class);
       standardCommandProcessorClasses.add(VTCLEAR.class);
       standardCommandProcessorClasses.add(VTCOVER.class);

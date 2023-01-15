@@ -4,13 +4,13 @@ import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.connection.VTServerConnector;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
-public class VTSETTINGS extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
 {
-  public VTSETTINGS()
+  public VTSETTING()
   {
-    this.setFullName("*VTSETTINGS");
+    this.setFullName("*VTSETTING");
     this.setAbbreviatedName("*VTSTG");
-    this.setFullSyntax("*VTSETTINGS [NAME] [VALUE]");
+    this.setFullSyntax("*VTSETTING [NAME] [VALUE]");
     this.setAbbreviatedSyntax("*VTSTG [NM] [VL]");
   }
 

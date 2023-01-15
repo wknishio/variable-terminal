@@ -5,13 +5,13 @@ import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.connection.VTServerConnector;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-public class VTSETTINGS extends VTServerStandardLocalConsoleCommandProcessor
+public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
 {
-  public VTSETTINGS()
+  public VTSETTING()
   {
-    this.setFullName("*VTSETTINGS");
+    this.setFullName("*VTSETTING");
     this.setAbbreviatedName("*VTSTG");
-    this.setFullSyntax("*VTSETTINGS [NAME] [VALUE]");
+    this.setFullSyntax("*VTSETTING [NAME] [VALUE]");
     this.setAbbreviatedSyntax("*VTSTG [NM] [VL]");
   }
 

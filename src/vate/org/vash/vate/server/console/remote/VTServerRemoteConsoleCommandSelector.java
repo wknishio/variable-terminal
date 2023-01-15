@@ -22,13 +22,13 @@ public class VTServerRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
   {
     try
     {
-      standardCommandProcessorClasses.add(VTSETTINGS.class);
+      standardCommandProcessorClasses.add(VTSETTING.class);
       standardCommandProcessorClasses.add(VTAUDIOLINK.class);
       standardCommandProcessorClasses.add(VTMIXERS.class);
       standardCommandProcessorClasses.add(VTBEEP.class);
       standardCommandProcessorClasses.add(VTBELL.class);
       standardCommandProcessorClasses.add(VTBROWSE.class);
-      standardCommandProcessorClasses.add(VTCHAINS.class);
+      standardCommandProcessorClasses.add(VTCHAIN.class);
       standardCommandProcessorClasses.add(VTCOVER.class);
       standardCommandProcessorClasses.add(VTEXIT.class);
       standardCommandProcessorClasses.add(VTDISPLAYS.class);
@@ -58,7 +58,7 @@ public class VTServerRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
       standardCommandProcessorClasses.add(VTSTOP.class);
       standardCommandProcessorClasses.add(VTTIME.class);
       standardCommandProcessorClasses.add(VTVARIABLE.class);
-      standardCommandProcessorClasses.add(VTZIP.class);
+      //standardCommandProcessorClasses.add(VTZIP.class);
       //standardCommandProcessorClasses.add(VTURLGET.class);
       standardCommandProcessorClasses.add(VTECHO.class);
     }

@@ -43,7 +43,7 @@ Changes since 1.4.2:
 * Modified command *VTAUDIOLINK to use sample rates 8khz/16khz/48khz
 * Added font resizing in console menu or ctrl+pageup/ctrl+pagedown/ctrl+home
 * Fonts may be initially scaled according to platform font scaling settings
-* Merged all zip file commands in new command *VTZIP
+* Removed all zip file manipulation commands
 * Client now tries to reconnect with server in 60 seconds after disconnection
 * Added command *VTLIMIT to set connection rate limits in bytes per second
 * Modified *VTRUNTIME command, now allows processes to restart automatically
