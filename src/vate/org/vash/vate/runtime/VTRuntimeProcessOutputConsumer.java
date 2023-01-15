@@ -44,7 +44,7 @@ public class VTRuntimeProcessOutputConsumer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
   }
@@ -56,27 +56,6 @@ public class VTRuntimeProcessOutputConsumer implements Runnable
     {
       try
       {
-//				if (in.ready())
-//				{
-//					readChars = in.read(resultBuffer, 0, resultBufferSize);
-//					if (readChars > 0 && running)
-//					{
-//						if (verbose)
-//						{
-//							out.write(resultBuffer, 0, readChars);
-//							out.flush();
-//						}
-//					}
-//					else
-//					{
-//						running = false;
-//						break;
-//					}
-//				}
-//				else
-//				{
-//					Thread.sleep(5);
-//				}
         readChars = in.read(resultBuffer, 0, resultBufferSize);
         if (readChars > 0 && running)
         {

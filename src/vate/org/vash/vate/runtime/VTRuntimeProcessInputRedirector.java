@@ -42,7 +42,7 @@ public class VTRuntimeProcessInputRedirector implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
       in = null;
     }
@@ -70,7 +70,6 @@ public class VTRuntimeProcessInputRedirector implements Runnable
           running = false;
           break;
         }
-
       }
       catch (Throwable e)
       {

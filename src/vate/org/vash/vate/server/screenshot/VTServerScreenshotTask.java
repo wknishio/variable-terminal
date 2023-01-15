@@ -193,10 +193,6 @@ public class VTServerScreenshotTask extends VTTask
         recyclableDataBuffer = convertedImage.getRaster().getDataBuffer();
         convertedGraphics = convertedImage.createGraphics();
         convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
-//				while (!convertedGraphics.drawImage(screenCapture, 0, 0, null))
-//				{
-//					Thread.yield();
-//				}
         convertedGraphics.drawImage(screenCapture, 0, 0, null);
         pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
         pngEncoder.encode(convertedImage, photoOutputStream);
@@ -218,11 +214,6 @@ public class VTServerScreenshotTask extends VTTask
         pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
         pngEncoder.encode(screenCapture, photoOutputStream);
       }
-      /*
-       * while (screenCapture == null) { Thread.sleep(1000 /
-       * this.session.getServer().getRuntime().availableProcessors()); screenCapture =
-       * screenshotProvider.createScreenCapture(drawPointer); }
-       */
       // ImageIO.write(screenCapture, "png", photoOutputStream);
       // provider.writeHighQualityScreenshot(photoOutputStream,
       // SWT.IMAGE_BMP);
@@ -236,9 +227,6 @@ public class VTServerScreenshotTask extends VTTask
         finished = true;
       }
     }
-    /*
-     * catch (InterruptedException e) { }
-     */
     catch (Throwable e)
     {
       // e.printStackTrace();
