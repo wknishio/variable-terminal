@@ -9,6 +9,9 @@ import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 
 public class VTTunnelChannel
 {
+  public static final int TUNNEL_TYPE_TCP = 0;
+  public static final int TUNNEL_TYPE_SOCKS = 1;
+  
   private VTTunnelConnection connection;
   private InetSocketAddress bindAddress;
   // private InetSocketAddress redirectAddress;
@@ -19,10 +22,17 @@ public class VTTunnelChannel
   private int bindPort;
   private String redirectHost;
   private int redirectPort;
+  private int tunnelType;
+  
+  public int getTunnelType()
+  {
+    return tunnelType;
+  }
 
   // SOCKS tunnel without authentication
   public VTTunnelChannel(VTTunnelConnection connection, String bindHost, int bindPort)
   {
+    this.tunnelType = TUNNEL_TYPE_SOCKS;
     this.connection = connection;
     this.bindHost = bindHost;
     this.bindPort = bindPort;
@@ -40,6 +50,7 @@ public class VTTunnelChannel
   // SOCKS tunnel with authentication
   public VTTunnelChannel(VTTunnelConnection connection, String bindHost, int bindPort, String socksUsername, String socksPassword)
   {
+    this.tunnelType = TUNNEL_TYPE_SOCKS;
     this.connection = connection;
     this.bindHost = bindHost;
     this.bindPort = bindPort;
@@ -59,6 +70,7 @@ public class VTTunnelChannel
   // TCP tunnel
   public VTTunnelChannel(VTTunnelConnection connection, String bindHost, int bindPort, String redirectHost, int redirectPort)
   {
+    this.tunnelType = TUNNEL_TYPE_TCP;
     this.connection = connection;
     this.bindHost = bindHost;
     this.bindPort = bindPort;

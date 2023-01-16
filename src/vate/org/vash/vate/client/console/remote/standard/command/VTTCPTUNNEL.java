@@ -395,6 +395,6 @@ public class VTTCPTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
 
   public void close()
   {
-
+    
   }
 }

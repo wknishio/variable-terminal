@@ -5,7 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
-import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.session.VTTunnelSession;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 
@@ -111,15 +110,15 @@ public class VTTunnelChannelSocketListener implements Runnable
             int outputNumber = output.number();
             session.setOutputNumber(outputNumber);
             session.setTunnelOutputStream(output);
-            if (channel.getConnection().getTunnelType() == VTTunnelConnection.TUNNEL_TYPE_TCP)
+            if (channel.getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
             {
               String host = channel.getRedirectHost();
               int port = channel.getRedirectPort();
               // request message sent
-              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port).getBytes("UTF-8"));
+              channel.getConnection().getControlOutputStream().writeData(("UT" + SESSION_MARK + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port).getBytes("UTF-8"));
               channel.getConnection().getControlOutputStream().flush();
             }
-            else if (channel.getConnection().getTunnelType() == VTTunnelConnection.TUNNEL_TYPE_SOCKS)
+            else if (channel.getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
             {
               String socksUsername = channel.getSocksUsername();
               String socksPassword = channel.getSocksPassword();
@@ -129,7 +128,7 @@ public class VTTunnelChannelSocketListener implements Runnable
                 socksPassword = "*" + SESSION_SEPARATOR + "*";
               }
               // request message sent
-              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + outputNumber + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword).getBytes("UTF-8"));
+              channel.getConnection().getControlOutputStream().writeData(("US" + SESSION_MARK + outputNumber + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword).getBytes("UTF-8"));
               channel.getConnection().getControlOutputStream().flush();
             }
           }

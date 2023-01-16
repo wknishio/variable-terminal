@@ -67,12 +67,12 @@ public class VTTCPTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
         }
         catch (Throwable e)
         {
-
+          
         }
       }
       else
       {
-
+        
       }
     }
     else if (parsed.length == 4)
@@ -124,7 +124,7 @@ public class VTTCPTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
         }
         catch (Throwable e)
         {
-
+          
         }
       }
     }
@@ -189,12 +189,12 @@ public class VTTCPTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
         }
         catch (Throwable e)
         {
-
+          
         }
       }
       else
       {
-
+        
       }
     }
     else if (parsed.length >= 6)
@@ -207,7 +207,7 @@ public class VTTCPTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
           int bindPort = Integer.parseInt(parsed[3]);
           String redirectAddress = parsed[4];
           int redirectPort = Integer.parseInt(parsed[5]);
-
+          
           if (session.getTCPTunnelsHandler().getConnection().setTCPChannel(bindAddress, bindPort, redirectAddress, redirectPort))
           {
             connection.getResultWriter().write("\nVT>TCP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
@@ -221,13 +221,13 @@ public class VTTCPTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
         }
         catch (Throwable e)
         {
-
+          
         }
       }
     }
     else
     {
-
+      
     }
   }
   
@@ -247,6 +247,6 @@ public class VTTCPTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
 
   public void close()
   {
-
+    
   }
 }

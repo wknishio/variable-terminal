@@ -169,8 +169,8 @@ public class VTServerSession
     // this.printTextTask = new VTServerPrintTextTask(this);
     // this.printFileTask = new VTServerPrintFileTask(this);
     this.printDataTask = new VTServerPrintDataTask(this);
-    this.tcpTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_TCP, threads), threads);
-    this.socksTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_SOCKS, threads), threads);
+    this.tcpTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(threads), threads);
+    this.socksTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(threads), threads);
     this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, true);
     this.pingService.addListener(new VTNanoPingListener()
     {

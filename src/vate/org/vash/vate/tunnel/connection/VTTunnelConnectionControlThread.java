@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
+import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.session.VTTunnelSession;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 import org.vash.vate.tunnel.session.VTTunnelSocksSessionHandler;
@@ -36,7 +37,8 @@ public class VTTunnelConnectionControlThread implements Runnable
         byte[] packet = connection.getControlInputStream().readData();
         if (packet[0] == 'U')
         {
-          String text = new String(packet, 1, packet.length - 1, "UTF-8");
+          String text = new String(packet, 2, packet.length - 2, "UTF-8");
+          int tunnelType = packet[1] == 'S' ? VTTunnelChannel.TUNNEL_TYPE_SOCKS : VTTunnelChannel.TUNNEL_TYPE_TCP;
           if (text.startsWith(SESSION_MARK))
           {
             text = text.substring(4);
@@ -44,7 +46,8 @@ public class VTTunnelConnectionControlThread implements Runnable
             if (parts.length >= 3)
             {
               // request message received
-              if (connection.getTunnelType() == VTTunnelConnection.TUNNEL_TYPE_TCP)
+              //if (connection.getTunnelType() == VTTunnelConnection.TUNNEL_TYPE_TCP)
+              if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
               {
                 int inputNumber = Integer.parseInt(parts[0]);
                 String host = parts[1];
@@ -77,13 +80,13 @@ public class VTTunnelConnectionControlThread implements Runnable
                     session.getTunnelInputStream().open();
                     session.getTunnelOutputStream().open();
                     // response message sent with ok
-                    connection.getControlOutputStream().writeData(("U" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                    connection.getControlOutputStream().writeData(("UT" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                     connection.getControlOutputStream().flush();
                   }
                   else
                   {
                     // response message sent with error
-                    connection.getControlOutputStream().writeData(("U" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                    connection.getControlOutputStream().writeData(("UT" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                     connection.getControlOutputStream().flush();
                     if (session != null)
                     {
@@ -95,7 +98,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 {
                   //e.printStackTrace();
                   // response message sent with error
-                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                  connection.getControlOutputStream().writeData(("UT" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
                   if (session != null)
                   {
@@ -103,7 +106,8 @@ public class VTTunnelConnectionControlThread implements Runnable
                   }
                 }
               }
-              else if (connection.getTunnelType() == VTTunnelConnection.TUNNEL_TYPE_SOCKS)
+              //else if (connection.getTunnelType() == VTTunnelConnection.TUNNEL_TYPE_SOCKS)
+              else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
               {
                 int inputNumber = Integer.parseInt(parts[0]);
                 String socksUsername = parts[1];
@@ -136,13 +140,13 @@ public class VTTunnelConnectionControlThread implements Runnable
                     session.getTunnelInputStream().open();
                     session.getTunnelOutputStream().open();
                     // response message sent with ok
-                    connection.getControlOutputStream().writeData(("U" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                    connection.getControlOutputStream().writeData(("US" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                     connection.getControlOutputStream().flush();
                   }
                   else
                   {
                     // response message sent with error
-                    connection.getControlOutputStream().writeData(("U" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                    connection.getControlOutputStream().writeData(("US" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                     connection.getControlOutputStream().flush();
                     if (session != null)
                     {
@@ -154,7 +158,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 {
                   //e.printStackTrace();
                   // response message sent with error
-                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                  connection.getControlOutputStream().writeData(("US" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
                   if (session != null)
                   {
@@ -184,9 +188,17 @@ public class VTTunnelConnectionControlThread implements Runnable
                       session.getTunnelInputStream().setDirectOutputStream(session.getSocket().getOutputStream());
                       session.getTunnelInputStream().open();
                       session.getTunnelOutputStream().open();
-                      // ack message sent
-                      connection.getControlOutputStream().writeData(("U" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
-                      connection.getControlOutputStream().flush();
+                      // ack message sent~
+                      if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
+                      {
+                        connection.getControlOutputStream().writeData(("US" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                        connection.getControlOutputStream().flush();
+                      }
+                      else
+                      {
+                        connection.getControlOutputStream().writeData(("UT" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                        connection.getControlOutputStream().flush();
+                      }
                       threads.execute(handler);
                     }
                     else

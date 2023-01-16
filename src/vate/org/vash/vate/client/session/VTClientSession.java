@@ -91,8 +91,8 @@ public class VTClientSession
     this.graphicsClient = new VTGraphicsModeClient(this);
     this.clipboardTransferTask = new VTClipboardTransferTask();
     this.zipFileOperation = new VTClientZipFileOperation(this);
-    this.tcpTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_TCP, threads), threads);
-    this.socksTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(VTTunnelConnection.TUNNEL_TYPE_SOCKS, threads), threads);
+    this.tcpTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(threads), threads);
+    this.socksTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(threads), threads);
     this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, false);
     this.pingService.addListener(new VTNanoPingListener()
     {

@@ -19,8 +19,8 @@ import org.vash.vate.tunnel.channel.VTTunnelChannelSocketListener;
 
 public class VTTunnelConnection
 {
-  public static final int TUNNEL_TYPE_TCP = 0;
-  public static final int TUNNEL_TYPE_SOCKS = 1;
+  //public static final int TUNNEL_TYPE_TCP = 0;
+  //public static final int TUNNEL_TYPE_SOCKS = 1;
   //public static final int TUNNEL_TYPE_STREAM = 2;
 
   private VTLinkableDynamicMultiplexingInputStream dataInputStream;
@@ -30,27 +30,42 @@ public class VTTunnelConnection
   //private VTLittleEndianInputStream relayInputStream;
   //private VTLittleEndianOutputStream relayOutputStream;
   private Set<VTTunnelChannelSocketListener> channels;
-  private int tunnelType;
+  //private int tunnelType;
   private ExecutorService threads;
 
-  public VTTunnelConnection(int tunnelType, ExecutorService threads)
+  public VTTunnelConnection(ExecutorService threads)
   {
     this.channels = new LinkedHashSet<VTTunnelChannelSocketListener>();
-    this.tunnelType = tunnelType;
+    //this.tunnelType = tunnelType;
     this.threads = threads;
   }
 
-  public int getTunnelType()
-  {
-    return tunnelType;
-  }
+  //public int getTunnelType()
+  //{
+    //return tunnelType;
+  //}
 
   public synchronized boolean setSOCKSChannel(String bindHost, int bindPort)
   {
     VTTunnelChannelSocketListener listener = getChannelSocketListener(bindHost, bindPort);
     if (listener != null)
     {
-      return true;
+      if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
+      {
+        return true;
+      }
+      else
+      {
+        try
+        {
+          listener.close();
+        }
+        catch (Throwable t)
+        {
+          
+        }
+        listener.remove();
+      }
     }
     VTTunnelChannel channel = new VTTunnelChannel(this, bindHost, bindPort);
     listener = new VTTunnelChannelSocketListener(channel);
@@ -67,13 +82,28 @@ public class VTTunnelConnection
     VTTunnelChannelSocketListener listener = getChannelSocketListener(bindHost, bindPort);
     if (listener != null)
     {
-      if (socksUsername.equals(listener.getChannel().getSocksUsername()) && socksPassword.equals(listener.getChannel().getSocksPassword()))
+      if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
       {
-        return false;
+        if (socksUsername.equals(listener.getChannel().getSocksUsername()) && socksPassword.equals(listener.getChannel().getSocksPassword()))
+        {
+          return false;
+        }
+        listener.getChannel().setSocksUsername(socksUsername);
+        listener.getChannel().setSocksPassword(socksPassword);
+        return true;
       }
-      listener.getChannel().setSocksUsername(socksUsername);
-      listener.getChannel().setSocksPassword(socksPassword);
-      return true;
+      else
+      {
+        try
+        {
+          listener.close();
+        }
+        catch (Throwable t)
+        {
+          
+        }
+        listener.remove();
+      }
     }
     VTTunnelChannel channel = new VTTunnelChannel(this, bindHost, bindPort, socksUsername, socksPassword);
     listener = new VTTunnelChannelSocketListener(channel);
@@ -90,15 +120,30 @@ public class VTTunnelConnection
     VTTunnelChannelSocketListener listener = getChannelSocketListener(bindHost, bindPort);
     if (listener != null)
     {
-      String currentRedirectHost = listener.getChannel().getRedirectHost();
-      int currentRedirectPort = listener.getChannel().getRedirectPort();
-
-      if (currentRedirectHost.equals(redirectHost) && currentRedirectPort == redirectPort)
+      if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
       {
-        return false;
+        String currentRedirectHost = listener.getChannel().getRedirectHost();
+        int currentRedirectPort = listener.getChannel().getRedirectPort();
+        
+        if (currentRedirectHost.equals(redirectHost) && currentRedirectPort == redirectPort)
+        {
+          return false;
+        }
+        listener.getChannel().setRedirectAddress(redirectHost, redirectPort);
+        return true;
       }
-      listener.getChannel().setRedirectAddress(redirectHost, redirectPort);
-      return true;
+      else
+      {
+        try
+        {
+          listener.close();
+        }
+        catch (Throwable t)
+        {
+          
+        }
+        listener.remove();
+      }
     }
     VTTunnelChannel channel = new VTTunnelChannel(this, bindHost, bindPort, redirectHost, redirectPort);
     listener = new VTTunnelChannelSocketListener(channel);

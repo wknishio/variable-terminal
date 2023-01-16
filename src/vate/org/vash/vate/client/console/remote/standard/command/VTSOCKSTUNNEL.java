@@ -257,7 +257,7 @@ public class VTSOCKSTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
           int bindPort = Integer.parseInt(parsed[3]);
           String socksUsername = parsed[4];
           String socksPassword = parsed[5];
-
+          
           if (bindPort < 1 || bindPort > 65535)
           {
             VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
@@ -321,6 +321,6 @@ public class VTSOCKSTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
 
   public void close()
   {
-
+    
   }
 }

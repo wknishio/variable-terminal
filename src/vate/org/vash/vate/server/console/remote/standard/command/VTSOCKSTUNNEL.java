@@ -68,20 +68,20 @@ public class VTSOCKSTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
         }
         catch (IndexOutOfBoundsException e)
         {
-
+          
         }
         catch (NumberFormatException e)
         {
-
+          
         }
         catch (Throwable e)
         {
-
+          
         }
       }
       else
       {
-
+        
       }
     }
     else if (parsed.length == 4)
@@ -109,15 +109,15 @@ public class VTSOCKSTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
         }
         catch (IndexOutOfBoundsException e)
         {
-
+          
         }
         catch (NumberFormatException e)
         {
-
+          
         }
         catch (Throwable e)
         {
-
+          
         }
       }
     }
@@ -147,20 +147,20 @@ public class VTSOCKSTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
         }
         catch (IndexOutOfBoundsException e)
         {
-
+          
         }
         catch (NumberFormatException e)
         {
-
+          
         }
         catch (Throwable e)
         {
-
+          
         }
       }
       else
       {
-
+        
       }
     }
     else if (parsed.length >= 6)
@@ -173,7 +173,7 @@ public class VTSOCKSTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
           int bindPort = Integer.parseInt(parsed[3]);
           String socksUsername = parsed[4];
           String socksPassword = parsed[5];
-
+          
           VTTunnelChannelSocketListener channel = session.getSOCKSTunnelsHandler().getConnection().getChannelSocketListener(bindAddress, bindPort);
           if (channel != null)
           {
@@ -191,26 +191,26 @@ public class VTSOCKSTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
         }
         catch (IndexOutOfBoundsException e)
         {
-
+          
         }
         catch (NumberFormatException e)
         {
-
+          
         }
         catch (Throwable e)
         {
-
+          
         }
       }
       else
       {
-
+        
       }
     }
   }
 
   public void close()
   {
-
+    
   }
 }
