@@ -56,15 +56,16 @@ public class VTTunnelConnection
       }
       else
       {
-        try
-        {
-          listener.close();
-        }
-        catch (Throwable t)
-        {
-          
-        }
-        listener.remove();
+        return false;
+//        try
+//        {
+//          listener.close();
+//        }
+//        catch (Throwable t)
+//        {
+//          
+//        }
+//        listener.remove();
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(this, bindHost, bindPort);
@@ -86,7 +87,7 @@ public class VTTunnelConnection
       {
         if (socksUsername.equals(listener.getChannel().getSocksUsername()) && socksPassword.equals(listener.getChannel().getSocksPassword()))
         {
-          return false;
+          return true;
         }
         listener.getChannel().setSocksUsername(socksUsername);
         listener.getChannel().setSocksPassword(socksPassword);
@@ -94,15 +95,16 @@ public class VTTunnelConnection
       }
       else
       {
-        try
-        {
-          listener.close();
-        }
-        catch (Throwable t)
-        {
-          
-        }
-        listener.remove();
+        return false;
+//        try
+//        {
+//          listener.close();
+//        }
+//        catch (Throwable t)
+//        {
+//          
+//        }
+//        listener.remove();
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(this, bindHost, bindPort, socksUsername, socksPassword);
@@ -127,22 +129,23 @@ public class VTTunnelConnection
         
         if (currentRedirectHost.equals(redirectHost) && currentRedirectPort == redirectPort)
         {
-          return false;
+          return true;
         }
         listener.getChannel().setRedirectAddress(redirectHost, redirectPort);
         return true;
       }
       else
       {
-        try
-        {
-          listener.close();
-        }
-        catch (Throwable t)
-        {
-          
-        }
-        listener.remove();
+        return false;
+//        try
+//        {
+//          listener.close();
+//        }
+//        catch (Throwable t)
+//        {
+//          
+//        }
+//        listener.remove();
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(this, bindHost, bindPort, redirectHost, redirectPort);
