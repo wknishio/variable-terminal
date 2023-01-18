@@ -70,12 +70,16 @@ public class VTTunnelConnection
     }
     VTTunnelChannel channel = new VTTunnelChannel(this, bindHost, bindPort);
     listener = new VTTunnelChannelSocketListener(channel);
-    channels.add(listener);
-    threads.execute(listener);
-    // Thread listenerThread = new Thread(listener,
-    // listener.getClass().getSimpleName());
-    // listenerThread.start();
-    return true;
+    if (listener.bind())
+    {
+      channels.add(listener);
+      threads.execute(listener);
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
   public synchronized boolean setSOCKSChannel(String bindHost, int bindPort, String socksUsername, String socksPassword)
@@ -109,12 +113,16 @@ public class VTTunnelConnection
     }
     VTTunnelChannel channel = new VTTunnelChannel(this, bindHost, bindPort, socksUsername, socksPassword);
     listener = new VTTunnelChannelSocketListener(channel);
-    channels.add(listener);
-    // Thread listenerThread = new Thread(listener,
-    // listener.getClass().getSimpleName());
-    // listenerThread.start();
-    threads.execute(listener);
-    return true;
+    if (listener.bind())
+    {
+      channels.add(listener);
+      threads.execute(listener);
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
   public synchronized boolean setTCPChannel(String bindHost, int bindPort, String redirectHost, int redirectPort)
@@ -150,12 +158,16 @@ public class VTTunnelConnection
     }
     VTTunnelChannel channel = new VTTunnelChannel(this, bindHost, bindPort, redirectHost, redirectPort);
     listener = new VTTunnelChannelSocketListener(channel);
-    channels.add(listener);
-    // Thread listenerThread = new Thread(listener,
-    // listener.getClass().getSimpleName());
-    // listenerThread.start();
-    threads.execute(listener);
-    return true;
+    if (listener.bind())
+    {
+      channels.add(listener);
+      threads.execute(listener);
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 
   public synchronized Set<VTTunnelChannelSocketListener> getChannels()

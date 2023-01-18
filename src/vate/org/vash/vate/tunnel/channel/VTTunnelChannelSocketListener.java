@@ -14,18 +14,20 @@ public class VTTunnelChannelSocketListener implements Runnable
   private VTTunnelChannel channel;
   private static final String SESSION_SEPARATOR = "\f\b";
   private static final String SESSION_MARK = "SESS";
+  private volatile boolean closed;
 
   public VTTunnelChannelSocketListener(VTTunnelChannel channel)
   {
-    try
-    {
-      this.serverSocket = new ServerSocket();
-    }
-    catch (Throwable e)
-    {
-      // e.printStackTrace();
-    }
+//    try
+//    {
+//      this.serverSocket = new ServerSocket();
+//    }
+//    catch (Throwable e)
+//    {
+//      
+//    }
     this.channel = channel;
+    this.closed = false;
   }
 
   public String toString()
@@ -64,7 +66,28 @@ public class VTTunnelChannelSocketListener implements Runnable
     {
       // e.printStackTrace();
     }
+    closed = true;
     // channel.getConnection().removeChannel(this);
+  }
+  
+  public boolean bind()
+  {
+    try
+    {
+      if (serverSocket == null || serverSocket.isClosed())
+      {
+        serverSocket = new ServerSocket();
+        //serverSocket.setReuseAddress(true);
+      }
+      // serverSocket.setReuseAddress(true);
+      serverSocket.bind(channel.getBindAddress());
+      return true;
+    }
+    catch (Throwable e)
+    {
+      
+    }
+    return false;
   }
 
   public void remove()
@@ -77,25 +100,22 @@ public class VTTunnelChannelSocketListener implements Runnable
     Thread.currentThread().setName(getClass().getSimpleName());
     try
     {
-      while (serverSocket == null || !serverSocket.isBound())
-      {
-        try
-        {
-          if (serverSocket == null || serverSocket.isClosed())
-          {
-            this.serverSocket = new ServerSocket();
-            //serverSocket.setReuseAddress(true);
-          }
-          // serverSocket.setReuseAddress(true);
-          serverSocket.bind(channel.getBindAddress());
-        }
-        catch (Throwable e)
-        {
-          //e.printStackTrace();
-          Thread.sleep(1000);
-        }
-      }
-      while (!serverSocket.isClosed() && serverSocket.isBound())
+//      while (!closed && (serverSocket == null || !serverSocket.isBound()))
+//      {
+//        try
+//        {
+//          if (serverSocket == null || serverSocket.isClosed())
+//          {
+//            this.serverSocket = new ServerSocket();
+//          }
+//          serverSocket.bind(channel.getBindAddress());
+//        }
+//        catch (Throwable e)
+//        {
+//          Thread.sleep(1000);
+//        }
+//      }
+      while (!closed && !serverSocket.isClosed() && serverSocket.isBound())
       {
         Socket socket = null;
         try
