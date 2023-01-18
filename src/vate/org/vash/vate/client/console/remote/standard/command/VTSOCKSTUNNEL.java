@@ -13,8 +13,8 @@ public class VTSOCKSTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
   {
     this.setFullName("*VTSOCKSTUNNEL");
     this.setAbbreviatedName("*VTSTN");
-    this.setFullSyntax("*VTSOCKSTUNNEL [SIDE] [[BIND] PORT] [USERNAME PASSWORD]");
-    this.setAbbreviatedSyntax("*VTSTN [SD] [[BD] PT] [UN PW]");
+    this.setFullSyntax("*VTSOCKSTUNNEL [SIDE] [[BIND] PORT] [USER PASSWORD]");
+    this.setAbbreviatedSyntax("*VTSTN [SD] [[BD] PT] [US PW]");
   }
 
   public void execute(String command, String[] parsed) throws Exception
