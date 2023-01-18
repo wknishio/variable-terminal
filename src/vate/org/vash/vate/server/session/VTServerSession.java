@@ -79,7 +79,7 @@ public class VTServerSession
   private VTGraphicsModeServer graphicsServer;
   private VTServerFileScanOperation fileScanOperation;
   private VTServerFileModifyOperation fileModifyOperation;
-  private VTServerZipFileOperation zipFileOperation;
+  //private VTServerZipFileOperation zipFileOperation;
   private VTServerHostResolver hostResolver;
   private VTServerNetworkInterfaceResolver networkInterfaceResolver;
   private VTServerURLInvoker urlInvoker;
@@ -156,7 +156,7 @@ public class VTServerSession
     this.graphicsServer = new VTGraphicsModeServer(this);
     this.fileScanOperation = new VTServerFileScanOperation(this);
     this.fileModifyOperation = new VTServerFileModifyOperation(this);
-    this.zipFileOperation = new VTServerZipFileOperation(this);
+    //this.zipFileOperation = new VTServerZipFileOperation(this);
     this.opticalDriveOperation = new VTServerOpticalDriveOperation(this);
     this.hostResolver = new VTServerHostResolver(this);
     this.urlInvoker = new VTServerURLInvoker(this);
@@ -378,10 +378,10 @@ public class VTServerSession
     return fileModifyOperation;
   }
 
-  public VTServerZipFileOperation getZipFileOperation()
-  {
-    return zipFileOperation;
-  }
+  //public VTServerZipFileOperation getZipFileOperation()
+  //{
+    //return zipFileOperation;
+  //}
 
   public VTServerNetworkInterfaceResolver getNetworkInterfaceResolver()
   {
@@ -752,11 +752,11 @@ public class VTServerSession
       fileModifyOperation.interruptThread();
       fileModifyOperation.stopThread();
     }
-    if (zipFileOperation.aliveThread())
-    {
-      zipFileOperation.interruptThread();
-      zipFileOperation.stopThread();
-    }
+    //if (zipFileOperation.aliveThread())
+    //{
+      //zipFileOperation.interruptThread();
+      //zipFileOperation.stopThread();
+    //}
     if (clipboardTransferTask.aliveThread())
     {
       clipboardTransferTask.interruptThread();
@@ -876,7 +876,7 @@ public class VTServerSession
       // System.out.println("fileScanOperation.joinThread()");
       fileModifyOperation.joinThread();
       // System.out.println("fileModifyOperation.joinThread()");
-      zipFileOperation.joinThread();
+      //zipFileOperation.joinThread();
       // System.out.println("zipFileCompressOperation.joinThread()");
       hostResolver.joinThread();
       urlInvoker.joinThread();

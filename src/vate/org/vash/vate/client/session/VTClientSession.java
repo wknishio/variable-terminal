@@ -41,7 +41,7 @@ public class VTClientSession
   private VTFileTransferClient fileTransferClient;
   private VTGraphicsModeClient graphicsClient;
   private VTClipboardTransferTask clipboardTransferTask;
-  private VTClientZipFileOperation zipFileOperation;
+  //private VTClientZipFileOperation zipFileOperation;
   private VTTunnelConnectionHandler tunnelsHandler;
   //private VTTunnelConnectionHandler socksTunnelsHandler;
   private VTNanoPingService pingService;
@@ -90,7 +90,7 @@ public class VTClientSession
     this.fileTransferClient = new VTFileTransferClient(this);
     this.graphicsClient = new VTGraphicsModeClient(this);
     this.clipboardTransferTask = new VTClipboardTransferTask();
-    this.zipFileOperation = new VTClientZipFileOperation(this);
+    //this.zipFileOperation = new VTClientZipFileOperation(this);
     this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(threads), threads);
     //this.socksTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(threads), threads);
     this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, false);
@@ -179,15 +179,15 @@ public class VTClientSession
     return clipboardTransferTask;
   }
 
-  public void setZipFileOperation(VTClientZipFileOperation zipFileOperation)
-  {
-    this.zipFileOperation = zipFileOperation;
-  }
+  //public void setZipFileOperation(VTClientZipFileOperation zipFileOperation)
+  //{
+    //.zipFileOperation = zipFileOperation;
+  //}
 
-  public VTClientZipFileOperation getZipFileOperation()
-  {
-    return zipFileOperation;
-  }
+  //public VTClientZipFileOperation getZipFileOperation()
+  //{
+    //return zipFileOperation;
+  //}
 
   public VTNanoPingService getNanoPingService()
   {
@@ -315,11 +315,11 @@ public class VTClientSession
       clipboardTransferTask.interruptThread();
       // clipboardTransferThread.stop();
     }
-    if (zipFileOperation.aliveThread())
-    {
-      zipFileOperation.interruptThread();
-      zipFileOperation.stopThread();
-    }
+    //if (zipFileOperation.aliveThread())
+    //{
+      //zipFileOperation.interruptThread();
+      //zipFileOperation.stopThread();
+    //}
     if (pingService.aliveThread())
     {
       pingService.interruptThread();
@@ -344,7 +344,7 @@ public class VTClientSession
       fileTransferClient.joinThread();
       graphicsClient.joinThread();
       clipboardTransferTask.joinThread();
-      zipFileOperation.joinThread();
+      //zipFileOperation.joinThread();
       tunnelsHandler.joinThread();
       //socksTunnelsHandler.joinThread();
       pingService.joinThread();
