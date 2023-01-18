@@ -3,6 +3,7 @@ package org.vash.vate.server.console.remote.standard.command;
 import java.util.Set;
 
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
+import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.channel.VTTunnelChannelSocketListener;
 
 public class VTSOCKSTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
@@ -20,9 +21,12 @@ public class VTSOCKSTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
     if (parsed.length == 1)
     {
       message.setLength(0);
-      for (VTTunnelChannelSocketListener channel : session.getSOCKSTunnelsHandler().getConnection().getChannels())
+      for (VTTunnelChannelSocketListener channel : session.getTunnelsHandler().getConnection().getChannels())
       {
-        message.append("\nVT>Server SOCKS bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]\nVT>");
+        if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
+        {
+          message.append("\nVT>Server SOCKS bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]\nVT>");
+        }
       }
       message.append("\nVT>End of connection SOCKS tunnels list\nVT>");
       connection.getResultWriter().write(message.toString());
@@ -32,12 +36,15 @@ public class VTSOCKSTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
     {
       if (parsed[1].toUpperCase().startsWith("R"))
       {
-        Set<VTTunnelChannelSocketListener> channels = session.getSOCKSTunnelsHandler().getConnection().getChannels();
+        Set<VTTunnelChannelSocketListener> channels = session.getTunnelsHandler().getConnection().getChannels();
         message.setLength(0);
         message.append("\nVT>List of server connection SOCKS tunnels:\nVT>");
         for (VTTunnelChannelSocketListener channel : channels)
         {
-          message.append("\nVT>Server SOCKS bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]\nVT>");
+          if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
+          {
+            message.append("\nVT>Server SOCKS bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]\nVT>");
+          }
         }
         message.append("\nVT>End of server connection SOCKS tunnels list\nVT>");
         connection.getResultWriter().write(message.toString());
@@ -51,19 +58,26 @@ public class VTSOCKSTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
         try
         {
           int bindPort = Integer.parseInt(parsed[2]);
-          VTTunnelChannelSocketListener channel = session.getSOCKSTunnelsHandler().getConnection().getChannelSocketListener("", bindPort);
-          if (channel != null)
+          VTTunnelChannelSocketListener channel = session.getTunnelsHandler().getConnection().getChannelSocketListener("", bindPort);
+          if (channel != null && channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
           {
             channel.close();
-            session.getSOCKSTunnelsHandler().getConnection().removeChannel(channel);
+            session.getTunnelsHandler().getConnection().removeChannel(channel);
             connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "] removed!\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            session.getSOCKSTunnelsHandler().getConnection().setSOCKSChannel("", bindPort);
-            connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
-            connection.getResultWriter().flush();
+            if (session.getTunnelsHandler().getConnection().setSOCKSChannel("", bindPort))
+            {
+              connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
+              connection.getResultWriter().flush();
+            }
+            else
+            {
+              connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
+              connection.getResultWriter().flush();
+            }
           }
         }
         catch (IndexOutOfBoundsException e)
@@ -92,19 +106,26 @@ public class VTSOCKSTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
         {
           String bindAddress = parsed[2];
           int bindPort = Integer.parseInt(parsed[3]);
-          VTTunnelChannelSocketListener channel = session.getSOCKSTunnelsHandler().getConnection().getChannelSocketListener(bindAddress, bindPort);
-          if (channel != null)
+          VTTunnelChannelSocketListener channel = session.getTunnelsHandler().getConnection().getChannelSocketListener(bindAddress, bindPort);
+          if (channel != null && channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
           {
             channel.close();
-            session.getSOCKSTunnelsHandler().getConnection().removeChannel(channel);
+            session.getTunnelsHandler().getConnection().removeChannel(channel);
             connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "] removed!\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            session.getSOCKSTunnelsHandler().getConnection().setSOCKSChannel(bindAddress, bindPort);
-            connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
-            connection.getResultWriter().flush();
+            if (session.getTunnelsHandler().getConnection().setSOCKSChannel(bindAddress, bindPort))
+            {
+              connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
+              connection.getResultWriter().flush();
+            }
+            else
+            {
+              connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
+              connection.getResultWriter().flush();
+            }
           }
         }
         catch (IndexOutOfBoundsException e)
@@ -130,19 +151,26 @@ public class VTSOCKSTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
           int bindPort = Integer.parseInt(parsed[2]);
           String socksUsername = parsed[3];
           String socksPassword = parsed[4];
-          VTTunnelChannelSocketListener channel = session.getSOCKSTunnelsHandler().getConnection().getChannelSocketListener("", bindPort);
-          if (channel != null)
+          VTTunnelChannelSocketListener channel = session.getTunnelsHandler().getConnection().getChannelSocketListener("", bindPort);
+          if (channel != null && channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
           {
             channel.close();
-            session.getSOCKSTunnelsHandler().getConnection().removeChannel(channel);
+            session.getTunnelsHandler().getConnection().removeChannel(channel);
             connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "] removed!\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            session.getSOCKSTunnelsHandler().getConnection().setSOCKSChannel("", bindPort, socksUsername, socksPassword);
-            connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
-            connection.getResultWriter().flush();
+            if (session.getTunnelsHandler().getConnection().setSOCKSChannel("", bindPort, socksUsername, socksPassword))
+            {
+              connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
+              connection.getResultWriter().flush();
+            }
+            else
+            {
+              connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
+              connection.getResultWriter().flush();
+            }
           }
         }
         catch (IndexOutOfBoundsException e)
@@ -174,19 +202,26 @@ public class VTSOCKSTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
           String socksUsername = parsed[4];
           String socksPassword = parsed[5];
           
-          VTTunnelChannelSocketListener channel = session.getSOCKSTunnelsHandler().getConnection().getChannelSocketListener(bindAddress, bindPort);
-          if (channel != null)
+          VTTunnelChannelSocketListener channel = session.getTunnelsHandler().getConnection().getChannelSocketListener(bindAddress, bindPort);
+          if (channel != null && channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
           {
             channel.close();
-            session.getSOCKSTunnelsHandler().getConnection().removeChannel(channel);
+            session.getTunnelsHandler().getConnection().removeChannel(channel);
             connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "] removed!\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            session.getSOCKSTunnelsHandler().getConnection().setSOCKSChannel(bindAddress, bindPort, socksUsername, socksPassword);
-            connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
-            connection.getResultWriter().flush();
+            if (session.getTunnelsHandler().getConnection().setSOCKSChannel(bindAddress, bindPort, socksUsername, socksPassword))
+            {
+              connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
+              connection.getResultWriter().flush();
+            }
+            else
+            {
+              connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
+              connection.getResultWriter().flush();
+            }
           }
         }
         catch (IndexOutOfBoundsException e)
