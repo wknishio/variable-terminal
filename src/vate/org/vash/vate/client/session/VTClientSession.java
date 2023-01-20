@@ -18,7 +18,6 @@ import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.console.remote.VTClientRemoteConsoleReader;
 import org.vash.vate.client.console.remote.VTClientRemoteConsoleWriter;
-import org.vash.vate.client.filesystem.VTClientZipFileOperation;
 import org.vash.vate.client.filetransfer.VTFileTransferClient;
 import org.vash.vate.client.graphicsmode.VTGraphicsModeClient;
 import org.vash.vate.graphics.clipboard.VTClipboardTransferTask;

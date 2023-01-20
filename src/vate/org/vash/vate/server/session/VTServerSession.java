@@ -30,7 +30,6 @@ import org.vash.vate.server.console.shell.VTServerShellOutputWriter;
 import org.vash.vate.server.filesystem.VTServerFileModifyOperation;
 import org.vash.vate.server.filesystem.VTServerFileScanOperation;
 import org.vash.vate.server.filesystem.VTServerFileSystemRootsResolver;
-import org.vash.vate.server.filesystem.VTServerZipFileOperation;
 import org.vash.vate.server.filetransfer.VTFileTransferServer;
 import org.vash.vate.server.graphicsdevices.VTServerGraphicsDeviceResolver;
 import org.vash.vate.server.graphicsmode.VTGraphicsModeServer;
