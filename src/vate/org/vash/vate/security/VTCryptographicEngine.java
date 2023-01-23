@@ -96,10 +96,10 @@ public class VTCryptographicEngine
     {
       encryptionCipherBC = new SICBlockCipher(new AESFastEngine());
       decryptionCipherBC = new SICBlockCipher(new AESFastEngine());
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(first, second, encryptionKeys), 0, 32);
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(second, first, encryptionKeys), 0, 32);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3256(first, second, encryptionKeys), 0, 16);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3256(second, first, encryptionKeys), 0, 16);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 16);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 16);
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
@@ -118,10 +118,10 @@ public class VTCryptographicEngine
     {
       encryptionCipherBC = new ChaChaEngine(16);
       decryptionCipherBC = new ChaChaEngine(16);
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(first, second, encryptionKeys), 0, 32);
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(second, first, encryptionKeys), 0, 32);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3256(first, second, encryptionKeys), 0, 8);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3256(second, first, encryptionKeys), 0, 8);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 8);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 8);
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
@@ -129,10 +129,10 @@ public class VTCryptographicEngine
     {
       encryptionCipherBC = new HC256Engine();
       decryptionCipherBC = new HC256Engine();
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(first, second, encryptionKeys), 0, 32);
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(second, first, encryptionKeys), 0, 32);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3256(first, second, encryptionKeys), 0, 32);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3256(second, first, encryptionKeys), 0, 32);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 32);
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
@@ -149,10 +149,10 @@ public class VTCryptographicEngine
     {
       encryptionCipherBC = new Grain128Engine();
       decryptionCipherBC = new Grain128Engine();
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(first, second, encryptionKeys), 0, 16);
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(second, first, encryptionKeys), 0, 16);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3256(first, second, encryptionKeys), 0, 12);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3256(second, first, encryptionKeys), 0, 12);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 16);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 16);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 12);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 12);
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
@@ -214,10 +214,10 @@ public class VTCryptographicEngine
     {
       encryptionCipherBC = new SICBlockCipher(new AESFastEngine());
       decryptionCipherBC = new SICBlockCipher(new AESFastEngine());
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(first, second, encryptionKeys), 0, 32);
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(second, first, encryptionKeys), 0, 32);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3256(first, second, encryptionKeys), 0, 16);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3256(second, first, encryptionKeys), 0, 16);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 16);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 16);
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
@@ -238,10 +238,10 @@ public class VTCryptographicEngine
     {
       encryptionCipherBC = new ChaChaEngine(16);
       decryptionCipherBC = new ChaChaEngine(16);
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(first, second, encryptionKeys), 0, 32);
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(second, first, encryptionKeys), 0, 32);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3256(first, second, encryptionKeys), 0, 8);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3256(second, first, encryptionKeys), 0, 8);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 8);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 8);
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
@@ -249,10 +249,10 @@ public class VTCryptographicEngine
     {
       encryptionCipherBC = new HC256Engine();
       decryptionCipherBC = new HC256Engine();
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(first, second, encryptionKeys), 0, 32);
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(second, first, encryptionKeys), 0, 32);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3256(first, second, encryptionKeys), 0, 32);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3256(second, first, encryptionKeys), 0, 32);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 32);
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
@@ -269,10 +269,10 @@ public class VTCryptographicEngine
     {
       encryptionCipherBC = new Grain128Engine();
       decryptionCipherBC = new Grain128Engine();
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(first, second, encryptionKeys), 0, 16);
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3256(second, first, encryptionKeys), 0, 16);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3256(first, second, encryptionKeys), 0, 12);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3256(second, first, encryptionKeys), 0, 12);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 16);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 16);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 12);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 12);
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
@@ -282,37 +282,37 @@ public class VTCryptographicEngine
     }
   }
   
-  private byte[] generateIVBLAKE3256(byte[] first, byte[] second, byte[]... extra)
-  {
-    blake3Digester.reset();
-    blake3Digester.update(first);
-    for (byte[] data : extra)
-    {
-      if (data != null && data.length > 0)
-      {
-        blake3Digester.update(data);
-      }
-    }
-    blake3Digester.update(second);
-    return blake3Digester.digest(32);
-  }
-  
-  private byte[] generateKeyBLAKE3256(byte[] first, byte[] second, byte[]... extra)
-  {
-    blake3Digester.reset();
-    blake3Digester.update(first);
-    blake3Digester.update(second);
-    for (byte[] data : extra)
-    {
-      if (data != null && data.length > 0)
-      {
-        blake3Digester.update(data);
-      }
-    }
-    blake3Digester.update(second);
-    blake3Digester.update(first);
-    return blake3Digester.digest(32);
-  }
+//  private byte[] generateKeyBLAKE3256(byte[] first, byte[] second, byte[]... extra)
+//  {
+//    blake3Digester.reset();
+//    blake3Digester.update(first);
+//    blake3Digester.update(second);
+//    for (byte[] data : extra)
+//    {
+//      if (data != null && data.length > 0)
+//      {
+//        blake3Digester.update(data);
+//      }
+//    }
+//    blake3Digester.update(second);
+//    blake3Digester.update(first);
+//    return blake3Digester.digest(32);
+//  }
+//  
+//  private byte[] generateIVBLAKE3256(byte[] first, byte[] second, byte[]... extra)
+//  {
+//    blake3Digester.reset();
+//    blake3Digester.update(first);
+//    for (byte[] data : extra)
+//    {
+//      if (data != null && data.length > 0)
+//      {
+//        blake3Digester.update(data);
+//      }
+//    }
+//    blake3Digester.update(second);
+//    return blake3Digester.digest(32);
+//  }
   
   private byte[] generateKeyBLAKE3(int size, byte[] first, byte[] second, byte[]... extra)
   {
@@ -334,8 +334,8 @@ public class VTCryptographicEngine
   private byte[] generateIVBLAKE3(int size, byte[] first, byte[] second, byte[]... extra)
   {
     blake3Digester.reset();
-    blake3Digester.update(first);
     blake3Digester.update(second);
+    blake3Digester.update(first);
     for (byte[] data : extra)
     {
       if (data != null && data.length > 0)
@@ -343,6 +343,8 @@ public class VTCryptographicEngine
         blake3Digester.update(data);
       }
     }
+    blake3Digester.update(first);
+    blake3Digester.update(second);
     return blake3Digester.digest(size);
   }
 
