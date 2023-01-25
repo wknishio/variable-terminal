@@ -134,23 +134,23 @@ public class ZstdFrameCompressor
         return SIZE_OF_INT;
     }
 
-    public static int compress(byte[] inputBase, long inputAddress, long inputLimit, byte[] outputBase, long outputAddress, long outputLimit, int compressionLevel)
+    public static int compress(byte[] inputBase, long inputAddress, long inputLimit, byte[] outputBase, long outputAddress, long outputLimit, int compressionLevel, CompressionParameters parameters, CompressionContext context)
     {
         int inputSize = (int) (inputLimit - inputAddress);
 
-        CompressionParameters parameters = CompressionParameters.compute(compressionLevel, inputSize);
+        //CompressionParameters parameters = CompressionParameters.compute(compressionLevel, inputSize);
 
         long output = outputAddress;
 
         output += writeMagic(outputBase, output, outputLimit);
         output += writeFrameHeader(outputBase, output, outputLimit, inputSize, 1 << parameters.getWindowLog());
-        output += compressFrame(inputBase, inputAddress, inputLimit, outputBase, output, outputLimit, parameters);
+        output += compressFrame(inputBase, inputAddress, inputLimit, outputBase, output, outputLimit, parameters, context);
         //output += writeChecksum(outputBase, output, outputLimit, inputBase, inputAddress, inputLimit);
 
         return (int) (output - outputAddress);
     }
 
-    private static int compressFrame(byte[] inputBase, long inputAddress, long inputLimit, byte[] outputBase, long outputAddress, long outputLimit, CompressionParameters parameters)
+    private static int compressFrame(byte[] inputBase, long inputAddress, long inputLimit, byte[] outputBase, long outputAddress, long outputLimit, CompressionParameters parameters, CompressionContext context)
     {
         int windowSize = 1 << parameters.getWindowLog(); // TODO: store window size in parameters directly?
         int blockSize = Math.min(MAX_BLOCK_SIZE, windowSize);
@@ -160,8 +160,11 @@ public class ZstdFrameCompressor
 
         long output = outputAddress;
         long input = inputAddress;
+        
+        context.resetBaseAddress(inputAddress);
+        //context.resetBaseAddress(0);
 
-        CompressionContext context = new CompressionContext(parameters, inputAddress, remaining);
+        //CompressionContext context = new CompressionContext(parameters, inputAddress, remaining);
 
         do {
             checkArgument(outputSize >= SIZE_OF_BLOCK_HEADER + MIN_BLOCK_SIZE, "Output buffer too small");

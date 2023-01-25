@@ -46,12 +46,12 @@ public class VTCompressorSelector
   
   public static OutputStream createDirectZstdOutputStream(OutputStream out)
   {
-    return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VT.VT_FILE_DATA_BUFFER_SIZE, true);
+    return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
   }
 
   public static InputStream createDirectZstdInputStream(InputStream in)
   {
-    return new BufferedInputStream(new VTAirliftInputStream(in, new ZstdDecompressor()), VT.VT_FILE_DATA_BUFFER_SIZE);
+    return new BufferedInputStream(new VTAirliftInputStream(in, new ZstdDecompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
   }
 
   public static OutputStream createBufferedZlibOutputStream(OutputStream out)
@@ -66,12 +66,12 @@ public class VTCompressorSelector
   
   public static OutputStream createBufferedZstdOutputStream(OutputStream out)
   {
-    return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VT.VT_FILE_DATA_BUFFER_SIZE, true);
+    return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
   }
 
   public static InputStream createBufferedZstdInputStream(InputStream in)
   {
-    return new BufferedInputStream(new VTAirliftInputStream(in, new ZstdDecompressor()), VT.VT_FILE_DATA_BUFFER_SIZE);
+    return new BufferedInputStream(new VTAirliftInputStream(in, new ZstdDecompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
   }
 
   public static OutputStream createFlushBufferedSyncFlushDeflaterOutputStream(OutputStream out)
@@ -190,7 +190,7 @@ public class VTCompressorSelector
   public static OutputStream createDirectLz4OutputStream(OutputStream out)
   {
     // return out;
-    return new LZ4BlockOutputStream(out, VT.VT_FILE_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true);
+    return new LZ4BlockOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true);
   }
 
   public static InputStream createDirectLz4InputStream(InputStream in)

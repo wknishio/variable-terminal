@@ -18,6 +18,7 @@ import static io.airlift.compress.zstd.Constants.MAX_BLOCK_SIZE;
 class CompressionContext
 {
     public final RepeatedOffsets offsets = new RepeatedOffsets();
+    
     public final BlockCompressionState blockCompressionState;
     public final SequenceStore sequenceStore;
 
@@ -37,10 +38,16 @@ class CompressionContext
 
         blockCompressionState = new BlockCompressionState(parameters, baseAddress);
     }
-
+    
     public void commit()
     {
         offsets.commit();
         huffmanContext.saveChanges();
+    }
+    
+    public void resetBaseAddress(long baseAddress)
+    {
+      blockCompressionState.setBaseAddress(baseAddress);
+      blockCompressionState.reset();
     }
 }

@@ -15,22 +15,23 @@ package io.airlift.compress.zstd;
 
 import io.airlift.compress.Compressor;
 
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
+//import java.nio.Buffer;
+//import java.nio.ByteBuffer;
 
 import static io.airlift.compress.zstd.Constants.MAX_BLOCK_SIZE;
+import org.vash.vate.VT;
 
 
 public class ZstdCompressor
         implements Compressor
 {
-    //private CompressionParameters parameters;
-    //private CompressionContext context;
+    private CompressionParameters parameters;
+    private CompressionContext context;
   
     public ZstdCompressor()
     {
-      //parameters = CompressionParameters.compute(CompressionParameters.DEFAULT_COMPRESSION_LEVEL, inputSize);
-      //context = new CompressionContext(parameters, 0, inputSize);
+      parameters = CompressionParameters.compute(CompressionParameters.DEFAULT_COMPRESSION_LEVEL, VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
+      context = new CompressionContext(parameters, 0, VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
     }
     
     public int maxCompressedLength(int uncompressedSize)
@@ -50,6 +51,6 @@ public class ZstdCompressor
         long inputAddress = 0 + inputOffset;
         long outputAddress = 0 + outputOffset;
 
-        return ZstdFrameCompressor.compress(input, inputAddress, inputAddress + inputLength, output, outputAddress, outputAddress + maxOutputLength, CompressionParameters.DEFAULT_COMPRESSION_LEVEL);
+        return ZstdFrameCompressor.compress(input, inputAddress, inputAddress + inputLength, output, outputAddress, outputAddress + maxOutputLength, CompressionParameters.DEFAULT_COMPRESSION_LEVEL, parameters, context);
     }
 }
