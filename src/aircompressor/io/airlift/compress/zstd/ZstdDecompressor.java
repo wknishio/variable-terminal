@@ -16,8 +16,8 @@ package io.airlift.compress.zstd;
 import io.airlift.compress.Decompressor;
 import io.airlift.compress.MalformedInputException;
 
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
+//import java.nio.Buffer;
+//import java.nio.ByteBuffer;
 
 
 public class ZstdDecompressor

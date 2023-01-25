@@ -149,6 +149,23 @@ public class ZstdFrameCompressor
 
         return (int) (output - outputAddress);
     }
+    
+    public static int compress(byte[] inputBase, long inputAddress, long inputLimit, byte[] outputBase, long outputAddress, long outputLimit, int compressionLevel)
+    {
+        int inputSize = (int) (inputLimit - inputAddress);
+
+        CompressionParameters parameters = CompressionParameters.compute(compressionLevel, inputSize);
+
+        long output = outputAddress;
+
+        output += writeMagic(outputBase, output, outputLimit);
+        output += writeFrameHeader(outputBase, output, outputLimit, inputSize, 1 << parameters.getWindowLog());
+        output += compressFrame(inputBase, inputAddress, inputLimit, outputBase, output, outputLimit, parameters);
+        //output += writeChecksum(outputBase, output, outputLimit, inputBase, inputAddress, inputLimit);
+
+        return (int) (output - outputAddress);
+    }
+
 
     private static int compressFrame(byte[] inputBase, long inputAddress, long inputLimit, byte[] outputBase, long outputAddress, long outputLimit, CompressionParameters parameters, CompressionContext context)
     {
@@ -165,6 +182,57 @@ public class ZstdFrameCompressor
         //context.resetBaseAddress(0);
 
         //CompressionContext context = new CompressionContext(parameters, inputAddress, remaining);
+
+        do {
+            checkArgument(outputSize >= SIZE_OF_BLOCK_HEADER + MIN_BLOCK_SIZE, "Output buffer too small");
+
+            int lastBlockFlag = blockSize >= remaining ? 1 : 0;
+            blockSize = Math.min(blockSize, remaining);
+
+            int compressedSize = 0;
+            if (remaining > 0) {
+                compressedSize = compressBlock(inputBase, input, blockSize, outputBase, output + SIZE_OF_BLOCK_HEADER, outputSize - SIZE_OF_BLOCK_HEADER, context, parameters);
+            }
+
+            if (compressedSize == 0) { // block is not compressible
+                checkArgument(blockSize + SIZE_OF_BLOCK_HEADER <= outputSize, "Output size too small");
+
+                int blockHeader = lastBlockFlag | (RAW_BLOCK << 1) | (blockSize << 3);
+                put24BitLittleEndian(outputBase, output, blockHeader);
+                UnsafeUtils.copyMemory(inputBase, input, outputBase, output + SIZE_OF_BLOCK_HEADER, blockSize);
+                compressedSize = SIZE_OF_BLOCK_HEADER + blockSize;
+            }
+            else {
+                int blockHeader = lastBlockFlag | (COMPRESSED_BLOCK << 1) | (compressedSize << 3);
+                put24BitLittleEndian(outputBase, output, blockHeader);
+                compressedSize += SIZE_OF_BLOCK_HEADER;
+            }
+
+            input += blockSize;
+            remaining -= blockSize;
+            output += compressedSize;
+            outputSize -= compressedSize;
+        }
+        while (remaining > 0);
+
+        return (int) (output - outputAddress);
+    }
+    
+    private static int compressFrame(byte[] inputBase, long inputAddress, long inputLimit, byte[] outputBase, long outputAddress, long outputLimit, CompressionParameters parameters)
+    {
+        int windowSize = 1 << parameters.getWindowLog(); // TODO: store window size in parameters directly?
+        int blockSize = Math.min(MAX_BLOCK_SIZE, windowSize);
+
+        int outputSize = (int) (outputLimit - outputAddress);
+        int remaining = (int) (inputLimit - inputAddress);
+
+        long output = outputAddress;
+        long input = inputAddress;
+        
+        //context.resetBaseAddress(inputAddress);
+        //context.resetBaseAddress(0);
+
+        CompressionContext context = new CompressionContext(parameters, inputAddress, remaining);
 
         do {
             checkArgument(outputSize >= SIZE_OF_BLOCK_HEADER + MIN_BLOCK_SIZE, "Output buffer too small");
