@@ -19,7 +19,6 @@ import io.airlift.compress.Compressor;
 //import java.nio.ByteBuffer;
 
 import static io.airlift.compress.zstd.Constants.MAX_BLOCK_SIZE;
-import org.vash.vate.VT;
 
 
 public class ZstdCompressor
@@ -30,8 +29,8 @@ public class ZstdCompressor
   
     public ZstdCompressor()
     {
-      parameters = CompressionParameters.compute(CompressionParameters.DEFAULT_COMPRESSION_LEVEL, VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
-      context = new CompressionContext(parameters, 0, VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
+      parameters = CompressionParameters.compute(CompressionParameters.DEFAULT_COMPRESSION_LEVEL, MAX_BLOCK_SIZE);
+      context = new CompressionContext(parameters, 0, MAX_BLOCK_SIZE);
     }
     
     public int maxCompressedLength(int uncompressedSize)
