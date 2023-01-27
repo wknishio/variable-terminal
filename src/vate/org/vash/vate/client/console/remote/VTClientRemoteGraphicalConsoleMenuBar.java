@@ -80,7 +80,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverScreenCaptureMenu = new Menu("Remote Screen Capture ");
     serverGraphicsAlertMenu = new Menu("Remote Screen Alert ");
     serverBrowseMenu = new Menu("Remote Browser Application ");
-    serverPrintApplicationMenu = new Menu("Remote Print Application ");
+    serverPrintApplicationMenu = new Menu("Remote Mail Application ");
     serverPointerScreenCaptureMenu = new Menu("Show Pointer ");
     serverCleanScreenCaptureMenu = new Menu("Hide Pointer ");
     serverGraphicalSystemsMenu.add(serverScreenCaptureMenu);
@@ -139,8 +139,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverGraphicsAlertMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSCREENALERT\n"));
     serverBrowseMenu.add(new VTGraphicalConsoleMenuItem("Browse URI", "*VTBROWSE "));
     serverBrowseMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTBROWSE\n"));
-    serverPrintApplicationMenu.add(new VTGraphicalConsoleMenuItem("Print File", "*VTCALLPRINT "));
-    serverPrintApplicationMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTCALLPRINT\n"));
+    serverPrintApplicationMenu.add(new VTGraphicalConsoleMenuItem("Compose Email", "*VTMAIL "));
+    serverPrintApplicationMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTMAIL\n"));
 
     fileSystemMenu = new Menu("File ");
     fileTransferMenu = new Menu("File Transfer ");
@@ -284,7 +284,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 
     serverNetworkMenu = new Menu("Network ");
     serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List Remote Network Interfaces", "*VTNETWORKS\n"));
-    serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("Resolve Remote Network Host", "*VTHOSTRESOLVE "));
+    serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("Resolve Remote Network Host", "*VTHOSTCHECK "));
 
     // serverNetworkMenu.add(serverNetworkTunnelsMenu);
     // serverNetworkMenu.add(serverSocksProxyTunnelsMenu);

@@ -3,14 +3,14 @@ package org.vash.vate.server.console.remote.standard.command;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
-public class VTHOSTRESOLVE extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTHOSTCHECK extends VTServerStandardRemoteConsoleCommandProcessor
 {
-  public VTHOSTRESOLVE()
+  public VTHOSTCHECK()
   {
-    this.setFullName("*VTHOSTRESOLVE");
-    this.setAbbreviatedName("*VTHTR");
-    this.setFullSyntax("*VTHOSTRESOLVE <HOST>");
-    this.setAbbreviatedSyntax("*VTHTR <HT>");
+    this.setFullName("*VTHOSTCHECK");
+    this.setAbbreviatedName("*VTHTC");
+    this.setFullSyntax("*VTHOSTCHECK <HOST>");
+    this.setAbbreviatedSyntax("*VTHTC <HT>");
   }
 
   public void execute(String command, String[] parsed) throws Exception
