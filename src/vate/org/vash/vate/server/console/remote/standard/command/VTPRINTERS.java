@@ -8,8 +8,8 @@ public class VTPRINTERS extends VTServerStandardRemoteConsoleCommandProcessor
   {
     this.setFullName("*VTPRINTERS");
     this.setAbbreviatedName("*VTPRS");
-    this.setFullSyntax("*VTPRINTERS [ORDER]");
-    this.setAbbreviatedSyntax("*VTPRS [OR]");
+    this.setFullSyntax("*VTPRINTERS [PRINTER]");
+    this.setAbbreviatedSyntax("*VTPRS [PR]");
   }
 
   public void execute(String command, String[] parsed) throws Exception

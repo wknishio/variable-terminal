@@ -45,8 +45,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
   private Menu serverManageRuntimeMenu;
   private Menu serverNetworkMenu;
   private Menu performanceMenu;
-  private Menu serverTCPTunnelsMenu;
-  private Menu serverSOCKSTunnelsMenu;
+  private Menu serverNetworkTunnelsMenu;
+  //private Menu serverSOCKSTunnelsMenu;
   private Menu serverPrintMenu;
   private Menu audioSoundMenu;
   private Menu beepSoundMenu;
@@ -289,21 +289,21 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     // serverNetworkMenu.add(serverNetworkTunnelsMenu);
     // serverNetworkMenu.add(serverSocksProxyTunnelsMenu);
     // serverTunnelsMenu = new Menu("Tunnels ");
-    serverTCPTunnelsMenu = new Menu("Connection TCP Tunnels ");
-    serverSOCKSTunnelsMenu = new Menu("Connection SOCKS Tunnels ");
+    serverNetworkTunnelsMenu = new Menu("Connection Network Tunnels ");
+    //serverSOCKSTunnelsMenu = new Menu("Connection SOCKS Tunnels ");
 
-    serverTCPTunnelsMenu.add(new VTGraphicalConsoleMenuItem("List All TCP Tunnels", "*VTTCPTUNNEL\n"));
-    serverTCPTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Local To Remote", "*VTTCPTUNNEL L "));
-    serverTCPTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Remote To Local", "*VTTCPTUNNEL R "));
-    serverTCPTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTTCPTUNNEL\n"));
+    serverNetworkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("List All Tunnels", "*VTTUNNEL\n"));
+    serverNetworkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Local To Remote", "*VTTUNNEL L "));
+    serverNetworkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Remote To Local", "*VTTUNNEL R "));
+    serverNetworkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTTUNNEL\n"));
 
-    serverSOCKSTunnelsMenu.add(new VTGraphicalConsoleMenuItem("List All SOCKS Tunnels", "*VTSOCKSTUNNEL\n"));
-    serverSOCKSTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Local To Remote", "*VTSOCKSTUNNEL L "));
-    serverSOCKSTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Remote To Local", "*VTSOCKSTUNNEL R "));
-    serverSOCKSTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSOCKSTUNNEL\n"));
+    //serverSOCKSTunnelsMenu.add(new VTGraphicalConsoleMenuItem("List All SOCKS Tunnels", "*VTSOCKSTUNNEL\n"));
+    //serverSOCKSTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Local To Remote", "*VTSOCKSTUNNEL L "));
+    //serverSOCKSTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Remote To Local", "*VTSOCKSTUNNEL R "));
+    //serverSOCKSTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSOCKSTUNNEL\n"));
 
-    serverNetworkMenu.add(serverTCPTunnelsMenu);
-    serverNetworkMenu.add(serverSOCKSTunnelsMenu);
+    serverNetworkMenu.add(serverNetworkTunnelsMenu);
+    //serverNetworkMenu.add(serverSOCKSTunnelsMenu);
 
     serverPrintMenu = new Menu("Printing ");
     serverPrintMenu.add(new VTGraphicalConsoleMenuItem("List Remote Printers", "*VTPRINTERS\n"));

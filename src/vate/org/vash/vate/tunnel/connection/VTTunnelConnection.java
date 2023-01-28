@@ -89,10 +89,6 @@ public class VTTunnelConnection
     {
       if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
       {
-        if (socksUsername.equals(listener.getChannel().getSocksUsername()) && socksPassword.equals(listener.getChannel().getSocksPassword()))
-        {
-          return true;
-        }
         listener.getChannel().setSocksUsername(socksUsername);
         listener.getChannel().setSocksPassword(socksPassword);
         return true;
@@ -132,13 +128,6 @@ public class VTTunnelConnection
     {
       if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
       {
-        String currentRedirectHost = listener.getChannel().getRedirectHost();
-        int currentRedirectPort = listener.getChannel().getRedirectPort();
-        
-        if (currentRedirectHost.equals(redirectHost) && currentRedirectPort == redirectPort)
-        {
-          return true;
-        }
         listener.getChannel().setRedirectAddress(redirectHost, redirectPort);
         return true;
       }
