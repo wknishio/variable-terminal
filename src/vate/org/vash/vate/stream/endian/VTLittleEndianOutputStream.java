@@ -14,7 +14,7 @@ public final class VTLittleEndianOutputStream extends OutputStream implements Da
   private final byte[] longBuffer;
   private OutputStream out;
 
-  public  VTLittleEndianOutputStream(OutputStream out)
+  public VTLittleEndianOutputStream(OutputStream out)
   {
     this.out = out;
     this.shortBuffer = new byte[2];
