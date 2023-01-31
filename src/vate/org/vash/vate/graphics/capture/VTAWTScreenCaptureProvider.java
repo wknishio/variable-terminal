@@ -79,28 +79,28 @@ public final class VTAWTScreenCaptureProvider
 
   private static final int RGB888_XOR_MASK = 0x00FFFFFF;
 
-  private volatile int colorQuality;
-  private volatile boolean initialized16ScreenCapture;
-  private volatile boolean initialized32ScreenCapture;
-  private volatile boolean initialized512ScreenCapture;
-  private volatile boolean initialized4096ScreenCapture;
-  private volatile boolean initialized8ScreenCapture;
-  private volatile boolean initialized64ScreenCapture;
-  private volatile boolean initialized216ScreenCapture;
-  private volatile boolean initialized32768ScreenCapture;
-  private volatile boolean initialized16777216ScreenCapture;
-  private volatile boolean initialized125ScreenCapture;
-  private volatile boolean initialized27ScreenCapture;
-  private volatile boolean initialized262144ScreenCapture;
-  private volatile boolean initialized2097152ScreenCapture;
+  private int colorQuality;
+  private boolean initialized16ScreenCapture;
+  private boolean initialized32ScreenCapture;
+  private boolean initialized512ScreenCapture;
+  private boolean initialized4096ScreenCapture;
+  private boolean initialized8ScreenCapture;
+  private boolean initialized64ScreenCapture;
+  private boolean initialized216ScreenCapture;
+  private boolean initialized32768ScreenCapture;
+  private boolean initialized16777216ScreenCapture;
+  private boolean initialized125ScreenCapture;
+  private boolean initialized27ScreenCapture;
+  private boolean initialized262144ScreenCapture;
+  private boolean initialized2097152ScreenCapture;
   //private volatile boolean initializedPadding;
-  private volatile int scaledWidth = 0;
-  private volatile int scaledHeight = 0;
-  private volatile double scaleFactorX = 1;
-  private volatile double scaleFactorY = 1;
-  private volatile boolean keepRatio = false;
-  private volatile boolean forceScaleFactors = false;
-  private volatile boolean usePadding = false;
+  private int scaledWidth = 0;
+  private int scaledHeight = 0;
+  private double scaleFactorX = 1;
+  private double scaleFactorY = 1;
+  private boolean keepRatio = false;
+  private boolean forceScaleFactors = false;
+  private boolean usePadding = false;
   private int i;
   private int red, green, blue;
   private int screenCurrentWidth, screenCurrentHeight;
@@ -111,16 +111,16 @@ public final class VTAWTScreenCaptureProvider
   private int[] pixelBufferInt;
   private byte[] pixelBufferByte;
   private short[] pixelBufferShort;
-  private volatile Rectangle currentDeviceBounds;
+  private Rectangle currentDeviceBounds;
 //	private volatile BufferedImage sectionImage;
-  private volatile BufferedImage sectionCurrentImage;
-  private volatile BufferedImage screenCurrentImage;
-  private volatile BufferedImage scaledCurrentImage;
-  private volatile Graphics2D scaledCurrentGraphics;
+  private BufferedImage sectionCurrentImage;
+  private BufferedImage screenCurrentImage;
+  private BufferedImage scaledCurrentImage;
+  private Graphics2D scaledCurrentGraphics;
   // private volatile Graphics2D sectionGraphics;
-  private volatile GraphicsDevice graphicsDevice;
-  private volatile Robot standardCaptureRobot;
-  private volatile VTDirectRobot directCaptureRobot;
+  private GraphicsDevice graphicsDevice;
+  private Robot standardCaptureRobot;
+  private VTDirectRobot directCaptureRobot;
   // private Toolkit toolkit;
   private VTARGBPixelGrabber pixelGrabber;
   private DataBuffer recyclableSectionDataBuffer;
@@ -1232,7 +1232,7 @@ public final class VTAWTScreenCaptureProvider
         x = 1;
         y = 1;
       }
-      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 27, recyclableScaledDataBuffer);
+      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 27, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1294,7 +1294,7 @@ public final class VTAWTScreenCaptureProvider
         x = 1;
         y = 1;
       }
-      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 16, recyclableScaledDataBuffer);
+      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 16, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1356,7 +1356,7 @@ public final class VTAWTScreenCaptureProvider
         x = 1;
         y = 1;
       }
-      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 32, recyclableScaledDataBuffer);
+      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 32, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1418,7 +1418,7 @@ public final class VTAWTScreenCaptureProvider
         x = 1;
         y = 1;
       }
-      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 8, recyclableScaledDataBuffer);
+      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 8, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1480,7 +1480,7 @@ public final class VTAWTScreenCaptureProvider
         x = 1;
         y = 1;
       }
-      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 64, recyclableScaledDataBuffer);
+      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 64, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1542,7 +1542,7 @@ public final class VTAWTScreenCaptureProvider
         x = 1;
         y = 1;
       }
-      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 125, recyclableScaledDataBuffer);
+      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 125, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1666,7 +1666,7 @@ public final class VTAWTScreenCaptureProvider
         x = 1;
         y = 1;
       }
-      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 512, recyclableScaledDataBuffer);
+      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 512, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1728,7 +1728,7 @@ public final class VTAWTScreenCaptureProvider
         x = 1;
         y = 1;
       }
-      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 4096, recyclableScaledDataBuffer);
+      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 4096, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1790,7 +1790,7 @@ public final class VTAWTScreenCaptureProvider
         x = 1;
         y = 1;
       }
-      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_USHORT_555_RGB, 32768, recyclableScaledDataBuffer);
+      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_USHORT_555_RGB, 32768, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1852,7 +1852,7 @@ public final class VTAWTScreenCaptureProvider
         x = 1;
         y = 1;
       }
-      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 262144, recyclableScaledDataBuffer);
+      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 262144, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1914,7 +1914,7 @@ public final class VTAWTScreenCaptureProvider
         x = 1;
         y = 1;
       }
-      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 2097152, recyclableScaledDataBuffer);
+      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 2097152, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -1976,7 +1976,7 @@ public final class VTAWTScreenCaptureProvider
         x = 1;
         y = 1;
       }
-      scaledCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_INT_RGB, 16777216, recyclableScaledDataBuffer);
+      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_INT_RGB, 16777216, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
       scaledCurrentGraphics = scaledCurrentImage.createGraphics();
       scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
