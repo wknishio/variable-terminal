@@ -169,7 +169,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     top1 = newPixelData[position - width];
     diag1 = newPixelData[position - width - 1];
     pred1 = (((diag1 + top1 + left1) * 342) >>> 10);
-    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1));
+    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), Math.abs(left1 + top1 - diag1)));
     //pred1 = (top1 + left1) >> 1;
     out.write(newPixelData[position] ^ pred1);
   }
@@ -185,7 +185,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     top1 = newPixelData[position - width];
     diag1 = newPixelData[position - width - 1];
     pred1 = (((diag1 + top1 + left1) * 43691) >>> 17);
-    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1));
+    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), Math.abs(left1 + top1 - diag1)));
     //pred1 = (top1 + left1) >> 1;
     out.writeShort(newPixelData[position] ^ pred1);
   }
@@ -201,7 +201,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     top1 = newPixelData[position - width];
     diag1 = newPixelData[position - width - 1];
     int pred1 = (int) (((diag1 + top1 + left1) * 22369622) >>> 26);
-    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1));
+    //int pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), Math.abs(left1 + top1 - diag1)));
     //pred1 = (top1 + left1) >> 1;
     out.writeSubInt(newPixelData[position] ^ pred1);
   }
@@ -226,7 +226,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     top1 = newPixelData[position - width];
     diag1 = newPixelData[position - width - 1];
     pred1 = (((diag1 + top1 + left1) * 342) >>> 10);
-    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1));
+    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), Math.abs(left1 + top1 - diag1)));
     //pred1 = (top1 + left1) >> 1;
     newPixelData[position] = (byte) ((in.read() ^ pred1) /* & 0xFF */);
   }
@@ -242,7 +242,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     top1 = newPixelData[position - width];
     diag1 = newPixelData[position - width - 1];
     pred1 = (((diag1 + top1 + left1) * 43691) >>> 17);
-    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1));
+    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), Math.abs(left1 + top1 - diag1)));
     //pred1 = (top1 + left1) >> 1;
     newPixelData[position] = (short) ((in.readShort() ^ pred1) /* & 0x7FFF */);
   }
@@ -258,7 +258,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     top1 = newPixelData[position - width];
     diag1 = newPixelData[position - width - 1];
     int pred1 = (int) (((diag1 + top1 + left1) * 22369622) >>> 26);
-    //pred1 = Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), left1 + top1 - diag1));
+    //int pred1 = (int) Math.max(Math.min(left1, top1), Math.min(Math.max(left1, top1), Math.abs(left1 + top1 - diag1)));
     //pred1 = (top1 + left1) >> 1;
     newPixelData[position] = (in.readSubInt() ^ pred1 /* & 0x00FFFFFF */);
   }
