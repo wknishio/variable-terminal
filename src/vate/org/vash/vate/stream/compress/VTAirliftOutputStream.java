@@ -39,30 +39,20 @@ public class VTAirliftOutputStream extends OutputStream
     int compressed = 0;
     int decompressed = 0;
     int max = 0;
-//    try
-//    {
-      decompressed = len;
-      max = compressor.maxCompressedLength(decompressed);
-      if (output.length < max)
-      {
-        output = new byte[max];
-      }
-      compressed = compressor.compress(data, off, decompressed, output, 0, max);
-      //max = Math.max(compressed, max);
-      //compressed = Math.min(compressed, max);
-      out.writeInt(compressed);
-      out.writeInt(decompressed);
-      out.writeInt(max);
-      out.write(output, 0, compressed);
-//    }
-//    catch (Throwable t)
-//    {
-//      t.printStackTrace();
-//      System.err.println("compressed:" + compressed);
-//      System.err.println("decompressed:" + decompressed);
-//      System.err.println("max:" + max);
-//      throw new IOException(t.getMessage());
-//    }
+    
+    decompressed = len;
+    max = compressor.maxCompressedLength(decompressed);
+    if (output.length < max)
+    {
+      output = new byte[max];
+    }
+    compressed = compressor.compress(data, off, decompressed, output, 0, max);
+    //max = Math.max(compressed, max);
+    //compressed = Math.min(compressed, max);
+    out.writeInt(compressed);
+    out.writeInt(decompressed);
+    out.writeInt(max);
+    out.write(output, 0, compressed);
   }
   
   public synchronized void flush() throws IOException

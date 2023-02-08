@@ -66,32 +66,22 @@ public class VTAirliftInputStream extends InputStream
     int compressed = 0;
     int decompressed = 0;
     int max = 0;
-//    try
-//    {
-      compressed = in.readInt();
-      decompressed = in.readInt();
-      max = in.readInt();
-      if (input.length < compressed)
-      {
-        input = new byte[compressed];
-      }
-      if (stream.buf().length < max)
-      {
-        stream.buf(new byte[max]);
-      }
-      in.readFully(input, 0, compressed);
-      decompressor.decompress(input, 0, compressed, stream.buf(), 0, max);
-      stream.count(decompressed);
-      stream.pos(0);
-//    }
-//    catch (Throwable t)
-//    {
-//      t.printStackTrace();
-//      System.err.println("compressed:" + compressed);
-//      System.err.println("decompressed:" + decompressed);
-//      System.err.println("max:" + max);
-//      throw new IOException(t.getMessage());
-//    }
+    
+    compressed = in.readInt();
+    decompressed = in.readInt();
+    max = in.readInt();
+    if (input.length < compressed)
+    {
+      input = new byte[compressed];
+    }
+    if (stream.buf().length < max)
+    {
+      stream.buf(new byte[max]);
+    }
+    in.readFully(input, 0, compressed);
+    decompressor.decompress(input, 0, compressed, stream.buf(), 0, max);
+    stream.count(decompressed);
+    stream.pos(0);
   }
   
   public synchronized void close() throws IOException
