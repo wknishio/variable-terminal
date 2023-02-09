@@ -17,15 +17,15 @@ Some of the available features are:
 * Adjustable text font size.
 * Simple text messaging between client and server.
 * File transfer with compression, resume and verification.
-* ZIP file compression and extraction.
 * Remote screen capture.
 * Remote desktop control.
 * Multiple display support.
-* Audio chat communication.
+* Audio chat communication between client and server.
 * TCP and SOCKS network tunneling.
 * Network usage rate limiter.
 * Remote popup alerts.
 * Remote browser opening.
+* Remote mail client opening.
 * Remote printing of texts and files.
 * Remote audio playback.
 * Remote optical drive control.
