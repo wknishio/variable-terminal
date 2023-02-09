@@ -39,7 +39,7 @@ import java.util.Set;
  */
 public class AWTTerminalFontConfiguration {
 
-	private static int baseFontSize = 12;
+	private static float baseFontSize = 12f;
     /**
      * Controls how the SGR bold will take effect when enabled on a character. Mainly this is controlling if the 
      * character should be rendered with a bold font or not. The reason for this is that some characters, notably the
@@ -76,7 +76,7 @@ public class AWTTerminalFontConfiguration {
 	private static double FONT_SCALING_FACTOR = 1.0;
 
     private static List<Font> getDefaultWindowsFonts() {
-        int fontSize = getFontSize();
+        float fontSize = getFontSize();
         //System.out.println("fontSize:" + fontSize);
         //ArrayList<Font> fonts = new ArrayList<Font>();
         //fonts.add(new Font("Consolas", Font.PLAIN, fontSize));
@@ -85,44 +85,44 @@ public class AWTTerminalFontConfiguration {
         //return fonts;
         //Monospaced can look pretty bad on Windows, so let's override it
         return (Arrays.asList(
-                new Font("Courier New", Font.PLAIN, fontSize),
-                new Font("Consolas", Font.PLAIN, fontSize),
-                new Font("Monospaced", Font.PLAIN, fontSize)
+                new Font("Courier New", Font.PLAIN, 12).deriveFont(fontSize),
+                new Font("Consolas", Font.PLAIN, 12).deriveFont(fontSize),
+                new Font("Monospaced", Font.PLAIN, 12).deriveFont(fontSize)
                 ));
     }
 
     private static List<Font> getDefaultLinuxFonts() {
-        int fontSize = getFontSize();
+        float fontSize = getFontSize();
         //System.out.println("fontSize:" + fontSize);
         //ArrayList<Font> fonts = new ArrayList<Font>();
         //fonts.add(new Font("DejaVu Sans Mono", Font.PLAIN, fontSize));
         //fonts.add(new Font("Monospaced", Font.PLAIN, fontSize));
         //return fonts;
         return (Arrays.asList(
-                new Font("DejaVu Sans Mono", Font.PLAIN, fontSize),
-                new Font("Monospaced", Font.PLAIN, fontSize),
+                new Font("DejaVu Sans Mono", Font.PLAIN, 12).deriveFont(fontSize),
+                new Font("Monospaced", Font.PLAIN, 12).deriveFont(fontSize),
                 //Below, these should be redundant (Monospaced is supposed to catch-all)
                 // but Java 6 seems to have issues with finding monospaced fonts sometimes
-                new Font("Ubuntu Mono", Font.PLAIN, fontSize),
-                new Font("FreeMono", Font.PLAIN, fontSize),
-                new Font("Liberation Mono", Font.PLAIN, fontSize),
-                new Font("VL Gothic Regular", Font.PLAIN, fontSize),
-                new Font("NanumGothic", Font.PLAIN, fontSize),
-                new Font("WenQuanYi Zen Hei Mono", Font.PLAIN, fontSize),
-                new Font("WenQuanYi Zen Hei", Font.PLAIN, fontSize),
-                new Font("AR PL UMing TW", Font.PLAIN, fontSize),
-                new Font("AR PL UMing HK", Font.PLAIN, fontSize),
-                new Font("AR PL UMing CN", Font.PLAIN, fontSize)
+                new Font("Ubuntu Mono", Font.PLAIN, 12).deriveFont(fontSize),
+                new Font("FreeMono", Font.PLAIN, 12).deriveFont(fontSize),
+                new Font("Liberation Mono", Font.PLAIN, 12).deriveFont(fontSize),
+                new Font("VL Gothic Regular", Font.PLAIN, 12).deriveFont(fontSize),
+                new Font("NanumGothic", Font.PLAIN, 12).deriveFont(fontSize),
+                new Font("WenQuanYi Zen Hei Mono", Font.PLAIN, 12).deriveFont(fontSize),
+                new Font("WenQuanYi Zen Hei", Font.PLAIN, 12).deriveFont(fontSize),
+                new Font("AR PL UMing TW", Font.PLAIN, 12).deriveFont(fontSize),
+                new Font("AR PL UMing HK", Font.PLAIN, 12).deriveFont(fontSize),
+                new Font("AR PL UMing CN", Font.PLAIN, 12).deriveFont(fontSize)
         ));
     }
 
     private static List<Font> getDefaultFonts() {
-        int fontSize = getFontSize();
+        float fontSize = getFontSize();
         //System.out.println("fontSize:" + fontSize);
         //ArrayList<Font> fonts = new ArrayList<Font>();
         //fonts.add(new Font("Monospaced", Font.PLAIN, fontSize));
         //return fonts;
-        return (Arrays.asList(new Font("Monospaced", Font.PLAIN, fontSize)));
+        return (Arrays.asList(new Font("Monospaced", Font.PLAIN, 12).deriveFont(fontSize)));
     }
     
     public static void setFontScalingFactor(double factor)
@@ -130,17 +130,18 @@ public class AWTTerminalFontConfiguration {
     	FONT_SCALING_FACTOR = factor;
     }
     
-    public static void setBaseFontSize(int size)
+    public static void setBaseFontSize(float size)
     {
     	baseFontSize = size;
     }
 
     // Here we check the screen resolution on the primary monitor and make a guess at if it's high-DPI or not
-    private static int getFontSize() {
+    private static float getFontSize() {
     	
         //int baseFontSize = 12;
         //System.out.println("getFontSize():" + (int)(baseFontSize * FONT_SCALING_FACTOR));
-        return (int) Math.ceil(baseFontSize * FONT_SCALING_FACTOR);
+        //return (int) Math.ceil(baseFontSize * FONT_SCALING_FACTOR);
+        return (float) (baseFontSize * FONT_SCALING_FACTOR);
 //        String[] javaVersion = System.getProperty("java.version", "1").split("\\.");
 //        if (System.getProperty("os.name", "").startsWith("Windows") && Integer.parseInt(javaVersion[0]) >= 9) {
 //            // Java 9+ reports itself as HiDPI-unaware on Windows and will be scaled by the OS
