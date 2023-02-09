@@ -88,7 +88,7 @@ public class VTServer implements Runnable
   "#vate.server.proxy.authentication values: default disabled(D), enabled(E)\r\n" + 
   "#vate.server.encryption.type      values: default none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
   "#vate.server.session.users        format: user1/password1;user2/password2;...";
-
+  
   static
   {
     ImageIO.setUseCache(false);
@@ -96,19 +96,19 @@ public class VTServer implements Runnable
     SSLVerificationDisabler.install();
     //com.github.luben.zstd.util.Native.load();
   }
-
+  
   public class Credential
   {
     public String user;
     public String password;
-
+    
     public Credential(String user, String password)
     {
       this.user = user;
       this.password = password;
     }
   }
-
+  
   public VTServer()
   {
     // VTServerLocalConsoleCommandSelector.initialize();
@@ -142,7 +142,7 @@ public class VTServer implements Runnable
     }
     catch (Throwable t)
     {
-
+      
     }
     loadServerSettingsFile();
   }
@@ -205,27 +205,27 @@ public class VTServer implements Runnable
     
     return null;
   }
-
+  
   public Runtime getRuntime()
   {
     return runtime;
   }
-
+  
   public Map<byte[], Credential> getUserCredentials()
   {
     return userCredentials;
   }
-
+  
   public VTServerConnector getServerConnector()
   {
     return serverConnector;
   }
-
+  
   public void setPassive(boolean passive)
   {
     this.passive = passive;
   }
-
+  
   public void setDaemon(boolean daemon)
   {
     this.daemon = daemon;
@@ -235,17 +235,17 @@ public class VTServer implements Runnable
     }
     VTConsole.setDaemon(daemon);
   }
-
+  
   public void setSessionsMaximum(int sessionsMaximum)
   {
     this.sessionsMaximum = sessionsMaximum;
   }
-
+  
   public void setAddress(String address)
   {
     this.hostAddress = address;
   }
-
+  
   public void setPort(Integer port)
   {
     if (port != null && (port < 1 || port > 65535))
@@ -254,17 +254,17 @@ public class VTServer implements Runnable
     }
     this.hostPort = port;
   }
-
+  
   public void setProxyType(String proxyType)
   {
     this.proxyType = proxyType;
   }
-
+  
   public void setProxyAddress(String proxyAddress)
   {
     this.proxyAddress = proxyAddress;
   }
-
+  
   public void setProxyPort(Integer proxyPort)
   {
     if (proxyPort != null && (proxyPort < 1 || proxyPort > 65535))
@@ -273,37 +273,37 @@ public class VTServer implements Runnable
     }
     this.proxyPort = proxyPort;
   }
-
+  
   public void setUseProxyAuthentication(boolean useProxyAuthentication)
   {
     this.useProxyAuthentication = useProxyAuthentication;
   }
-
+  
   public void setProxyUser(String proxyUser)
   {
     this.proxyUser = proxyUser;
   }
-
+  
   public void setProxyPassword(String proxyPassword)
   {
     this.proxyPassword = proxyPassword;
   }
-
+  
   public void setEncryptionType(String encryptionType)
   {
     this.encryptionType = encryptionType;
   }
-
+  
   public void setEncryptionKey(byte[] encryptionKey)
   {
     this.encryptionKey = encryptionKey;
   }
-
+  
   public Integer getNatPort()
   {
     return natPort;
   }
-
+  
   public void setNatPort(Integer natPort)
   {
     if (natPort != null && (natPort < 1 || natPort > 65535))
@@ -312,122 +312,122 @@ public class VTServer implements Runnable
     }
     this.natPort = natPort;
   }
-
+  
   public InputStream getUserCredentialsReader()
   {
     return userCredentialsReader;
   }
-
+  
   public void setUserCredentialsReader(InputStream userCredentialsReader)
   {
     this.userCredentialsReader = userCredentialsReader;
   }
-
+  
   public InputStream getServerSettingsReader()
   {
     return serverSettingsReader;
   }
-
+  
   public void setServerSettingsReader(InputStream serverSettingsReader)
   {
     this.serverSettingsReader = serverSettingsReader;
   }
-
+  
   public VTServerLocalConsoleReader getConsoleReader()
   {
     return consoleReader;
   }
-
+  
   public void setConsoleReader(VTServerLocalConsoleReader consoleReader)
   {
     this.consoleReader = consoleReader;
   }
-
+  
   public boolean isPassive()
   {
     return passive;
   }
-
+  
   public boolean isDaemon()
   {
     return daemon;
   }
-
+  
   public int getSessionsMaximum()
   {
     return sessionsMaximum;
   }
-
+  
   public String getAddress()
   {
     return hostAddress;
   }
-
+  
   public Integer getPort()
   {
     return hostPort;
   }
-
+  
   public String getProxyType()
   {
     return proxyType;
   }
-
+  
   public String getProxyAddress()
   {
     return proxyAddress;
   }
-
+  
   public Integer getProxyPort()
   {
     return proxyPort;
   }
-
+  
   public boolean isUseProxyAuthentication()
   {
     return useProxyAuthentication;
   }
-
+  
   public String getProxyUser()
   {
     return proxyUser;
   }
-
+  
   public String getProxyPassword()
   {
     return proxyPassword;
   }
-
+  
   public String getEncryptionType()
   {
     return encryptionType;
   }
-
+  
   public byte[] getEncryptionKey()
   {
     return encryptionKey;
   }
-
+  
   public String getVTURL()
   {
     return vtURL;
   }
-
+  
   public void setServerConnector(VTServerConnector serverConnector)
   {
     this.serverConnector = serverConnector;
   }
-
+  
   public void setInputMenuBar(VTServerLocalGraphicalConsoleMenuBar inputMenuBar)
   {
     this.inputMenuBar = inputMenuBar;
   }
-
+  
   public VTServerLocalGraphicalConsoleMenuBar getInputMenuBar()
   {
     return inputMenuBar;
   }
-
+  
   public void setUniqueUserCredential(String user, String password)
   {
     byte[] credential = new byte[128];
@@ -440,10 +440,10 @@ public class VTServer implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
   }
-
+  
   public void addUserCredential(String user, String password) throws UnsupportedEncodingException
   {
     byte[] credential = new byte[128];
@@ -451,7 +451,7 @@ public class VTServer implements Runnable
     System.arraycopy(blake3Digester.digest(password.getBytes("UTF-8")), 0, credential, 64, 64);
     userCredentials.put(credential, new Credential(user, password));
   }
-
+  
   public void displayTrayIconMessage(String caption, String text)
   {
     if (trayIconInterface != null)
@@ -459,7 +459,7 @@ public class VTServer implements Runnable
       trayIconInterface.displayMessage(caption, text);
     }
   }
-
+  
   public void enableTrayIcon()
   {
     if (trayIconInterface != null)
@@ -467,7 +467,7 @@ public class VTServer implements Runnable
       trayIconInterface.install(VTConsole.getFrame(), "Variable-Terminal - Server");
     }
   }
-
+  
   public void disableTrayIcon()
   {
     if (trayIconInterface != null)
@@ -475,7 +475,7 @@ public class VTServer implements Runnable
       trayIconInterface.removeTrayIcon();
     }
   }
-
+  
   public void saveServerSettingsFile(String settingsFile) throws Exception
   {
     loadFromConnectorToServer();
@@ -491,12 +491,12 @@ public class VTServer implements Runnable
     {
       serverSettingsFile = new File(settingsFile);
     }
-
+    
     if (fileServerSettings == null)
     {
       fileServerSettings = new VTConfigurationProperties();
     }
-
+    
     fileServerSettings.clear();
     fileServerSettings.setProperty("vate.server.connection.mode", passive ? "Passive" : "Active");
     fileServerSettings.setProperty("vate.server.connection.port", hostPort != null ? String.valueOf(hostPort) : "");
@@ -513,13 +513,13 @@ public class VTServer implements Runnable
     fileServerSettings.setProperty("vate.server.session.shell", sessionShell);
     fileServerSettings.setProperty("vate.server.session.maximum", String.valueOf(sessionsMaximum));
     fileServerSettings.setProperty("vate.server.session.users", sessionUsers);
-
+    
     FileOutputStream out = new FileOutputStream(settingsFile);
     VTPropertiesBuilder.saveProperties(out, fileServerSettings, VT_SERVER_SETTINGS_COMMENTS, "UTF-8");
     out.flush();
     out.close();
   }
-
+  
   public void loadServerSettingsFile(String settingsFile) throws Exception
   {
     loadFromConnectorToServer();
@@ -539,9 +539,9 @@ public class VTServer implements Runnable
     fileServerSettings = VTPropertiesBuilder.loadProperties(serverSettingsReader, "UTF-8");
     // rawSecuritySettings.load(securitySettingsReader);
     serverSettingsReader.close();
-
+    
     sessionUsers = fileServerSettings.getProperty("vate.server.session.users", null);
-
+    
     if (sessionUsers != null)
     {
       try
@@ -558,10 +558,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileServerSettings.getProperty("vate.server.connection.mode") != null)
     {
       try
@@ -578,10 +578,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileServerSettings.getProperty("vate.server.connection.port") != null)
     {
       try
@@ -594,10 +594,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileServerSettings.getProperty("vate.server.connection.host") != null)
     {
       try
@@ -606,10 +606,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileServerSettings.getProperty("vate.server.connection.nat.port") != null)
     {
       try
@@ -622,10 +622,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileServerSettings.getProperty("vate.server.encryption.type") != null)
     {
       try
@@ -634,10 +634,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileServerSettings.getProperty("vate.server.encryption.password") != null)
     {
       try
@@ -646,10 +646,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileServerSettings.getProperty("vate.server.proxy.type") != null)
     {
       try
@@ -658,10 +658,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileServerSettings.getProperty("vate.server.proxy.host") != null)
     {
       try
@@ -670,10 +670,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileServerSettings.getProperty("vate.server.proxy.port") != null)
     {
       try
@@ -686,10 +686,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileServerSettings.getProperty("vate.server.proxy.authentication") != null)
     {
       try
@@ -705,10 +705,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileServerSettings.getProperty("vate.server.proxy.user") != null)
     {
       try
@@ -717,10 +717,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileServerSettings.getProperty("vate.server.proxy.password") != null)
     {
       try
@@ -729,10 +729,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileServerSettings.getProperty("vate.server.session.limit") != null)
     {
       try
@@ -746,7 +746,7 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
     
@@ -764,7 +764,7 @@ public class VTServer implements Runnable
     
     saveFromServerToConnector();
   }
-
+  
   private void loadServerSettingsFile()
   {
     if (fileServerSettings != null)
@@ -789,9 +789,9 @@ public class VTServer implements Runnable
       fileServerSettings = VTPropertiesBuilder.loadProperties(serverSettingsReader, "UTF-8");
       // rawSecuritySettings.load(securitySettingsReader);
       serverSettingsReader.close();
-
+      
       sessionUsers = fileServerSettings.getProperty("vate.server.session.users", null);
-
+      
       if (sessionUsers != null)
       {
         try
@@ -808,10 +808,10 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileServerSettings.getProperty("vate.server.connection.mode") != null)
       {
         try
@@ -828,10 +828,10 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileServerSettings.getProperty("vate.server.connection.port") != null)
       {
         try
@@ -844,10 +844,10 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileServerSettings.getProperty("vate.server.connection.host") != null)
       {
         try
@@ -856,10 +856,10 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileServerSettings.getProperty("vate.server.connection.nat.port") != null)
       {
         try
@@ -872,10 +872,10 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileServerSettings.getProperty("vate.server.encryption.type") != null)
       {
         try
@@ -884,10 +884,10 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileServerSettings.getProperty("vate.server.encryption.password") != null)
       {
         try
@@ -896,10 +896,10 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileServerSettings.getProperty("vate.server.proxy.type") != null)
       {
         try
@@ -908,10 +908,10 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileServerSettings.getProperty("vate.server.proxy.host") != null)
       {
         try
@@ -920,10 +920,10 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileServerSettings.getProperty("vate.server.proxy.port") != null)
       {
         try
@@ -936,10 +936,10 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileServerSettings.getProperty("vate.server.proxy.authentication") != null)
       {
         try
@@ -955,10 +955,10 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileServerSettings.getProperty("vate.server.proxy.user") != null)
       {
         try
@@ -967,10 +967,10 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileServerSettings.getProperty("vate.server.proxy.password") != null)
       {
         try
@@ -979,10 +979,10 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileServerSettings.getProperty("vate.server.session.limit") != null)
       {
         try
@@ -1014,16 +1014,16 @@ public class VTServer implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
   }
   
   public void loadServerSettingsProperties(Properties properties) throws Exception
   {
     loadFromConnectorToServer();
-
+    
     sessionUsers = properties.getProperty("vate.server.session.users", null);
-
+    
     if (sessionUsers != null)
     {
       try
@@ -1040,10 +1040,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.server.connection.mode") != null)
     {
       try
@@ -1060,10 +1060,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.server.connection.port") != null)
     {
       try
@@ -1076,10 +1076,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.server.connection.host") != null)
     {
       try
@@ -1088,10 +1088,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.server.connection.nat.port") != null)
     {
       try
@@ -1104,10 +1104,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.server.encryption.type") != null)
     {
       try
@@ -1116,10 +1116,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.server.encryption.password") != null)
     {
       try
@@ -1128,10 +1128,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.server.proxy.type") != null)
     {
       try
@@ -1140,10 +1140,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.server.proxy.host") != null)
     {
       try
@@ -1152,10 +1152,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.server.proxy.port") != null)
     {
       try
@@ -1168,10 +1168,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.server.proxy.authentication") != null)
     {
       try
@@ -1187,10 +1187,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.server.proxy.user") != null)
     {
       try
@@ -1199,10 +1199,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.server.proxy.password") != null)
     {
       try
@@ -1211,10 +1211,10 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.server.session.limit") != null)
     {
       try
@@ -1228,7 +1228,7 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
     
@@ -1257,7 +1257,7 @@ public class VTServer implements Runnable
     saveFromServerToConnector();
     reconfigure = false;
   }
-
+  
   private void configure()
   {
     while ((passive && hostPort == null) || (!passive && (hostAddress == null || hostPort == null)) || sessionsMaximum < 0)
@@ -1342,7 +1342,7 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
       if (!(userCredentials.size() > 0))
       {
@@ -1403,7 +1403,7 @@ public class VTServer implements Runnable
           // }
           // catch (UnsupportedEncodingException e)
           // {
-
+          
           // }
         }
       }
@@ -1895,7 +1895,7 @@ public class VTServer implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
       if (hostAddress == null || hostPort == null || sessionsMaximum < 0)
       {
@@ -1919,7 +1919,7 @@ public class VTServer implements Runnable
       }
     }
   }
-
+  
   public void parseParameters(String[] parameters) throws Exception
   {
     int i;
@@ -1938,7 +1938,7 @@ public class VTServer implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (parameterName.contains("-LF"))
@@ -1950,7 +1950,7 @@ public class VTServer implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (parameterName.contains("-CM"))
@@ -1983,7 +1983,7 @@ public class VTServer implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (parameterName.contains("-NP"))
@@ -1999,7 +1999,7 @@ public class VTServer implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (parameterName.contains("-ET"))
@@ -2035,7 +2035,7 @@ public class VTServer implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (parameterName.contains("-PA"))
@@ -2073,7 +2073,7 @@ public class VTServer implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (parameterName.contains("-SU"))
@@ -2167,7 +2167,7 @@ public class VTServer implements Runnable
     Thread.currentThread().setName(this.getClass().getSimpleName());
     run();
   }
-
+  
   private void loadFromConnectorToServer()
   {
     if (serverConnector != null)
@@ -2188,7 +2188,7 @@ public class VTServer implements Runnable
       this.sessionShell = serverConnector.getSessionShell();
     }
   }
-
+  
   private void saveFromServerToConnector()
   {
     if (serverConnector != null)
@@ -2221,7 +2221,7 @@ public class VTServer implements Runnable
       }
     }
   }
-
+  
   public void run()
   {
     serverConnector = new VTServerConnector(this);
@@ -2262,12 +2262,12 @@ public class VTServer implements Runnable
     }
     serverConnector.run();
   }
-
+  
   public void setEchoCommands(boolean echoCommands)
   {
     this.echoCommands = echoCommands;
   }
-
+  
   public boolean isEchoCommands()
   {
     return echoCommands;

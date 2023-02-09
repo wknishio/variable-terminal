@@ -71,7 +71,7 @@ public class VTClient implements Runnable
   "#vate.client.encryption.type      values: default none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
   "#vate.client.session.commands     format: cmd1*;cmd2*;cmd3*;...\r\n";
   //"#vate.client.session.lines        format: file1;file2;file3;...";
-
+  
   static
   {
     ImageIO.setUseCache(false);
@@ -79,7 +79,7 @@ public class VTClient implements Runnable
     SSLVerificationDisabler.install();
     //com.github.luben.zstd.util.Native.load();
   }
-
+  
   public VTClient()
   {
     // VTClientRemoteConsoleCommandSelector.initialize();
@@ -99,7 +99,7 @@ public class VTClient implements Runnable
     }
     catch (Throwable t)
     {
-
+      
     }
     loadClientSettingsFile();
   }
@@ -128,38 +128,38 @@ public class VTClient implements Runnable
       
     }
   }
-
+  
   public ExecutorService getClientThreads()
   {
     return threads;
   }
-
+  
   public void setSkipConfiguration(boolean skipConfiguration)
   {
     this.skipConfiguration = skipConfiguration;
     // System.out.println("skipConfiguration = " + skipConfiguration);
   }
-
+  
   public void setManual(boolean manual)
   {
     this.manual = manual;
   }
-
+  
   public boolean isManual()
   {
     return manual;
   }
-
+  
   public VTClientConnector getClientConnector()
   {
     return clientConnector;
   }
-
+  
   public VTAudioSystem getAudioSystem()
   {
     return audioSystem;
   }
-
+  
   public void setActive(boolean active)
   {
     this.active = active;
@@ -170,14 +170,14 @@ public class VTClient implements Runnable
     this.daemon = daemon;
     VTConsole.setDaemon(daemon);
   }
-
+  
   /* public String getAddress() { return address; } */
-
+  
   public void setAddress(String address)
   {
     this.hostAddress = address;
   }
-
+  
   public void setPort(Integer port)
   {
     if (port != null && (port < 1 || port > 65535))
@@ -186,17 +186,17 @@ public class VTClient implements Runnable
     }
     this.hostPort = port;
   }
-
+  
   public void setProxyType(String proxyType)
   {
     this.proxyType = proxyType;
   }
-
+  
   public void setProxyAddress(String proxyAddress)
   {
     this.proxyAddress = proxyAddress;
   }
-
+  
   public void setProxyPort(Integer proxyPort)
   {
     if (proxyPort != null && (proxyPort < 1 || proxyPort > 65535))
@@ -205,57 +205,57 @@ public class VTClient implements Runnable
     }
     this.proxyPort = proxyPort;
   }
-
+  
   public void setUseProxyAuthentication(boolean useProxyAuthentication)
   {
     this.useProxyAuthentication = useProxyAuthentication;
   }
-
+  
   public void setProxyUser(String proxyUser)
   {
     this.proxyUser = proxyUser;
   }
-
+  
   public void setProxyPassword(String proxyPassword)
   {
     this.proxyPassword = proxyPassword;
   }
-
+  
   public void setEncryptionType(String encryptionType)
   {
     this.encryptionType = encryptionType;
   }
-
+  
   public void setEncryptionKey(byte[] encryptionKey)
   {
     this.encryptionKey = encryptionKey;
   }
-
+  
   public String getUser()
   {
     return sessionUser;
   }
-
+  
   public void setUser(String user)
   {
     this.sessionUser = user;
   }
-
+  
   public String getPassword()
   {
     return sessionPassword;
   }
-
+  
   public void setPassword(String password)
   {
     this.sessionPassword = password;
   }
-
+  
   public String getSessionCommands()
   {
     return sessionCommands;
   }
-
+  
   public void setSessionCommands(String sessionCommands)
   {
     this.sessionCommands = sessionCommands;
@@ -270,11 +270,11 @@ public class VTClient implements Runnable
   //{
     //this.sessionLines = sessionLines;
   //}
-
+  
   /* public MessageDigest getSha256Digester() { return sha256Digester; } */
-
+  
   /* public SecureRandom getSecureRandom() { return secureRandom; } */
-
+  
   public Integer getNatPort()
   {
     return natPort;
@@ -288,7 +288,7 @@ public class VTClient implements Runnable
     }
     this.natPort = natPort;
   }
-
+  
   public boolean isActive()
   {
     return active;
@@ -298,88 +298,87 @@ public class VTClient implements Runnable
   {
     return daemon;
   }
-
+  
   public String getAddress()
   {
     return hostAddress;
   }
-
+  
   public Integer getPort()
   {
     return hostPort;
   }
-
+  
   public String getProxyType()
   {
     return proxyType;
   }
-
+  
   public String getProxyAddress()
   {
     return proxyAddress;
   }
-
+  
   public Integer getProxyPort()
   {
     return proxyPort;
   }
-
+  
   public boolean isUseProxyAuthentication()
   {
     return useProxyAuthentication;
   }
-
+  
   public String getProxyUser()
   {
     return proxyUser;
   }
-
+  
   public String getProxyPassword()
   {
     return proxyPassword;
   }
-
+  
   public String getEncryptionType()
   {
     return encryptionType;
   }
-
+  
   public byte[] getEncryptionKey()
   {
     return encryptionKey;
   }
-
+  
   public String getVTURL()
   {
     return vtURL;
   }
-
+  
   public void setClientConnector(VTClientConnector clientConnector)
   {
     this.clientConnector = clientConnector;
   }
-
+  
   public void setInputMenuBar(VTClientRemoteGraphicalConsoleMenuBar inputMenuBar)
   {
     this.inputMenuBar = inputMenuBar;
   }
-
-
+  
   public Runtime getRuntime()
   {
     return runtime;
   }
-
+  
   public VTClientRemoteGraphicalConsoleMenuBar getInputMenuBar()
   {
     return inputMenuBar;
   }
-
+  
   public VTClientConfigurationDialog getConnectionDialog()
   {
     return connectionDialog;
   }
-
+  
   public void saveClientSettingsFile(String settingsFile) throws Exception
   {
     loadFromConnectorToClient();
@@ -395,12 +394,12 @@ public class VTClient implements Runnable
     {
       clientSettingsFile = new File(settingsFile);
     }
-
+    
     if (fileClientSettings == null)
     {
       fileClientSettings = new VTConfigurationProperties();
     }
-
+    
     fileClientSettings.clear();
     fileClientSettings.setProperty("vate.client.connection.mode", active ? "Active" : "Passive");
     fileClientSettings.setProperty("vate.client.connection.port", hostPort != null ? String.valueOf(hostPort) : "");
@@ -420,13 +419,12 @@ public class VTClient implements Runnable
     fileClientSettings.setProperty("vate.client.session.user", sessionUser);
     fileClientSettings.setProperty("vate.client.session.password", sessionPassword);
     
-
     FileOutputStream out = new FileOutputStream(settingsFile);
     VTPropertiesBuilder.saveProperties(out, fileClientSettings, VT_CLIENT_SETTINGS_COMMENTS, "UTF-8");
     out.flush();
     out.close();
   }
-
+  
   public void loadClientSettingsFile(String settingsFile) throws Exception
   {
     loadFromConnectorToClient();
@@ -446,7 +444,7 @@ public class VTClient implements Runnable
     fileClientSettings = VTPropertiesBuilder.loadProperties(clientSettingsReader, "UTF-8");
     // rawSecuritySettings.load(securitySettingsReader);
     clientSettingsReader.close();
-
+    
     if (fileClientSettings.getProperty("vate.client.connection.mode") != null)
     {
       try
@@ -463,10 +461,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileClientSettings.getProperty("vate.client.connection.port") != null)
     {
       try
@@ -479,10 +477,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileClientSettings.getProperty("vate.client.connection.host") != null)
     {
       try
@@ -491,10 +489,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileClientSettings.getProperty("vate.client.session.user") != null)
     {
       try
@@ -503,10 +501,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileClientSettings.getProperty("vate.client.session.password") != null)
     {
       try
@@ -515,10 +513,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileClientSettings.getProperty("vate.client.connection.nat.port") != null)
     {
       try
@@ -531,10 +529,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileClientSettings.getProperty("vate.client.encryption.type") != null)
     {
       try
@@ -543,10 +541,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileClientSettings.getProperty("vate.client.encryption.password") != null)
     {
       try
@@ -555,10 +553,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileClientSettings.getProperty("vate.client.proxy.type") != null)
     {
       try
@@ -567,10 +565,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileClientSettings.getProperty("vate.client.proxy.host") != null)
     {
       try
@@ -579,10 +577,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileClientSettings.getProperty("vate.client.proxy.port") != null)
     {
       try
@@ -595,10 +593,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileClientSettings.getProperty("vate.client.proxy.authentication") != null)
     {
       try
@@ -614,10 +612,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileClientSettings.getProperty("vate.client.proxy.user") != null)
     {
       try
@@ -626,10 +624,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileClientSettings.getProperty("vate.client.proxy.password") != null)
     {
       try
@@ -638,10 +636,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (fileClientSettings.getProperty("vate.client.session.commands") != null)
     {
       try
@@ -650,7 +648,7 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
     
@@ -662,7 +660,7 @@ public class VTClient implements Runnable
       //}
       //catch (Throwable e)
       //{
-
+    
       //}
     //}
     
@@ -674,13 +672,13 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     saveFromClientToConnector();
   }
-
+  
   private void loadClientSettingsFile()
   {
     if (fileClientSettings != null)
@@ -705,7 +703,7 @@ public class VTClient implements Runnable
       fileClientSettings = VTPropertiesBuilder.loadProperties(clientSettingsReader, "UTF-8");
       // rawSecuritySettings.load(securitySettingsReader);
       clientSettingsReader.close();
-
+      
       if (fileClientSettings.getProperty("vate.client.connection.mode") != null)
       {
         try
@@ -722,10 +720,10 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileClientSettings.getProperty("vate.client.connection.port") != null)
       {
         try
@@ -738,10 +736,10 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileClientSettings.getProperty("vate.client.connection.host") != null)
       {
         try
@@ -750,10 +748,10 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileClientSettings.getProperty("vate.client.session.user") != null)
       {
         try
@@ -762,10 +760,10 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileClientSettings.getProperty("vate.client.session.password") != null)
       {
         try
@@ -774,10 +772,10 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileClientSettings.getProperty("vate.client.connection.nat.port") != null)
       {
         try
@@ -790,10 +788,10 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileClientSettings.getProperty("vate.client.encryption.type") != null)
       {
         try
@@ -802,10 +800,10 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileClientSettings.getProperty("vate.client.encryption.password") != null)
       {
         try
@@ -814,10 +812,10 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileClientSettings.getProperty("vate.client.proxy.type") != null)
       {
         try
@@ -826,10 +824,10 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileClientSettings.getProperty("vate.client.proxy.host") != null)
       {
         try
@@ -838,10 +836,10 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileClientSettings.getProperty("vate.client.proxy.port") != null)
       {
         try
@@ -854,10 +852,10 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileClientSettings.getProperty("vate.client.proxy.authentication") != null)
       {
         try
@@ -873,10 +871,10 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileClientSettings.getProperty("vate.client.proxy.user") != null)
       {
         try
@@ -885,10 +883,10 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileClientSettings.getProperty("vate.client.proxy.password") != null)
       {
         try
@@ -897,10 +895,10 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
-
+      
       if (fileClientSettings.getProperty("vate.client.session.commands") != null)
       {
         try
@@ -909,7 +907,7 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-
+          
         }
       }
       
@@ -939,7 +937,7 @@ public class VTClient implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
   }
   
@@ -963,10 +961,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.client.connection.port") != null)
     {
       try
@@ -979,10 +977,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.client.connection.host") != null)
     {
       try
@@ -991,10 +989,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.client.session.user") != null)
     {
       try
@@ -1003,10 +1001,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.client.session.password") != null)
     {
       try
@@ -1015,10 +1013,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.client.connection.nat.port") != null)
     {
       try
@@ -1031,10 +1029,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.client.encryption.type") != null)
     {
       try
@@ -1043,10 +1041,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.client.encryption.password") != null)
     {
       try
@@ -1055,10 +1053,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.client.proxy.type") != null)
     {
       try
@@ -1067,10 +1065,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.client.proxy.host") != null)
     {
       try
@@ -1079,10 +1077,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.client.proxy.port") != null)
     {
       try
@@ -1095,10 +1093,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.client.proxy.authentication") != null)
     {
       try
@@ -1114,10 +1112,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.client.proxy.user") != null)
     {
       try
@@ -1126,10 +1124,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.client.proxy.password") != null)
     {
       try
@@ -1138,10 +1136,10 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     if (properties.getProperty("vate.client.session.commands") != null)
     {
       try
@@ -1150,7 +1148,7 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
     
@@ -1162,7 +1160,7 @@ public class VTClient implements Runnable
       //}
       //catch (Throwable e)
       //{
-
+    
       //}
     //}
     
@@ -1174,13 +1172,13 @@ public class VTClient implements Runnable
       }
       catch (Throwable e)
       {
-
+        
       }
     }
-
+    
     saveFromClientToConnector();
   }
-
+  
   private void configure()
   {
     while ((active && (hostAddress == null || hostPort == null)) || (!active && hostPort == null))
@@ -1221,7 +1219,7 @@ public class VTClient implements Runnable
             inputMenuBar.setEnabledDialogMenu(false);
           }
           VTConsole.readLine(true);
-
+          
           if (inputMenuBar != null)
           {
             inputMenuBar.setEnabledDialogMenu(true);
@@ -1432,7 +1430,7 @@ public class VTClient implements Runnable
             {
               encryptionType = "None";
             }
-
+            
           }
           /*
            * if (port != null) { VTTerminal.
@@ -1784,7 +1782,7 @@ public class VTClient implements Runnable
       }
     }
   }
-
+  
   public void parseParameters(String[] parameters) throws Exception
   {
     int i;
@@ -1801,7 +1799,7 @@ public class VTClient implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (parameterName.contains("-LF"))
@@ -1813,7 +1811,7 @@ public class VTClient implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (parameterName.contains("-CM"))
@@ -1846,7 +1844,7 @@ public class VTClient implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (parameterName.contains("-NP"))
@@ -1862,7 +1860,7 @@ public class VTClient implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (parameterName.contains("-ET"))
@@ -1898,7 +1896,7 @@ public class VTClient implements Runnable
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       if (parameterName.contains("-PA"))
@@ -1961,7 +1959,7 @@ public class VTClient implements Runnable
       }
     });
   }
-
+  
   public void start()
   {
     Thread.setDefaultUncaughtExceptionHandler(new VTUncaughtExceptionHandler());
@@ -2022,7 +2020,7 @@ public class VTClient implements Runnable
     Thread.currentThread().setName(this.getClass().getSimpleName());
     run();
   }
-
+  
   private void loadFromConnectorToClient()
   {
     if (clientConnector != null)
@@ -2044,7 +2042,7 @@ public class VTClient implements Runnable
       this.sessionShell = clientConnector.getSessionShell();
     }
   }
-
+  
   private void saveFromClientToConnector()
   {
     if (clientConnector != null)
@@ -2066,7 +2064,7 @@ public class VTClient implements Runnable
       clientConnector.setSessionShell(sessionShell);
     }
   }
-
+  
   public void run()
   {
     clientConnector = new VTClientConnector(this);
@@ -2125,7 +2123,6 @@ public class VTClient implements Runnable
   {
     this.sessionShell = sessionShell;
   }
-  
   
 //  public void enableTrayIcon()
 //  {
