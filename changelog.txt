@@ -20,12 +20,12 @@ Changes since 1.4.2:
 * Command *VTGRAPHICSLINK now supports custom image codings ZOF and SOF
 * Command *VTGRAPHICSLINK now supports image codings PNG and JPEG
 * Added ObjectPlanet PngEncoder library, much faster than Java ImageIO
-* Available color qualities: worst, low, medium, high, best
+* Color qualities: worst, low, simple, below, medium, above, extra, high, true
 * Startup now accepts as parameter a file path for settings file to be loaded
 * Added support for NAT-PMP port mapping if UPnP port mapping is not available
 * Command *VTGRAPHICSLINK now supports unified screen device capture
 * Command *VTSCREENSHOT now supports unified screen device capture with -1
-* Added command *VTCALLPRINT to print a file in server using default program
+* Added command *VTMAIL to open default mail composing program
 * Command *VTGRAPHICSLINK now supports scaled or adjusted image sizes
 * Added shortcut control+shift+backspace to toggle menu bar in *VTGRAPHICSLINK
 * Added shortcut control+shift+pageup to decrease scale in *VTGRAPHICSLINK
@@ -39,7 +39,7 @@ Changes since 1.4.2:
 * Added command *VTAUDIOMIXERS to list available audio mixers
 * Renamed command *VTAUDIOCHAT to *VTAUDIOLINK
 * Modified command *VTAUDIOLINK to allow use of specific audio mixers
-* Modified command *VTAUDIOLINK to use 16-bit Opus CELT audio
+* Modified command *VTAUDIOLINK to use 16-bit Opus CELT or 16-bit Speex audio
 * Modified command *VTAUDIOLINK to use sample rates 8khz/16khz/48khz
 * Added font resizing in console menu or ctrl+pageup/ctrl+pagedown/ctrl+home
 * Fonts may be initially scaled according to platform font scaling settings
@@ -50,6 +50,7 @@ Changes since 1.4.2:
 * Added session commands parameter in client to run after authentication
 * Added option in client to interrupt listening in passive connection mode
 * Changed passive mode in client and server to bind to specific host address
+* Replaced *VTSOCKSTUNNEL and *VTTCPTUNNEL commands by *VTTUNNEL command
 * Added options in tunnel commands to bind tunnels to specific host address
 * Added *; as optional command delimiter for multiple commands per line
 * Added *VTCOVER command to show/hide server console interface
