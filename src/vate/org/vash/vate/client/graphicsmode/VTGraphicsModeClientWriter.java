@@ -137,7 +137,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       }
       finally
       {
-
+        
       }
     }
   }
@@ -145,7 +145,7 @@ public class VTGraphicsModeClientWriter implements Runnable
   private class VTGraphicsModeClientFullScreenToggler implements Runnable
   {
     private GraphicsDevice device;
-
+    
     public void run()
     {
       try
@@ -224,7 +224,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       }
       finally
       {
-
+        
       }
     }
   }
@@ -243,7 +243,7 @@ public class VTGraphicsModeClientWriter implements Runnable
         {
           return;
         }
-
+        
         Insets frameInsets = frame.getInsets();
         Insets scrolledInsets = scrolled.getInsets();
         Dimension interfaceSize = remoteInterface.getSize();
@@ -268,12 +268,11 @@ public class VTGraphicsModeClientWriter implements Runnable
           frame.setSize(interfaceSize.width + frameInsets.left + frameInsets.right + scrolledInsets.left + scrolledInsets.left, interfaceSize.height + frameInsets.top + frameInsets.bottom + scrolledInsets.top + scrolledInsets.top);
           frame.revalidate();
         }
-
         // scrolled.setPreferredSize(null);
       }
       finally
       {
-
+        
       }
     }
   }
@@ -281,7 +280,6 @@ public class VTGraphicsModeClientWriter implements Runnable
   public VTGraphicsModeClientWriter(VTGraphicsModeClientSession session)
   {
     this.stopped = true;
-
     this.toolkit = Toolkit.getDefaultToolkit();
     this.session = session;
     this.connection = session.getSession().getConnection();
@@ -326,9 +324,8 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
-
   }
 
   public void setInitialScreenSize(int width, int height)
@@ -346,7 +343,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
   }
 
@@ -363,7 +360,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
   }
 
@@ -380,7 +377,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
   }
 
@@ -393,7 +390,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
     return false;
   }
@@ -517,10 +514,10 @@ public class VTGraphicsModeClientWriter implements Runnable
     needRefresh = false;
     hasRefresh = false;
     hasDifference = false;
-
+    
     // ignoreFocus = false;
     // ignoreIconification = false;
-
+    
     terminalRefreshPolicy = TERMINAL_STATE_VISIBLE;
     terminalControlPolicy = TERMINAL_STATE_FOCUSED;
     open = false;
@@ -1384,7 +1381,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     catch (Throwable t)
     {
-
+      
     }
   }
 
@@ -1397,7 +1394,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     catch (Throwable t)
     {
-
+      
     }
   }
 
@@ -1410,7 +1407,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     catch (Throwable t)
     {
-
+      
     }
   }
 
@@ -1691,10 +1688,10 @@ public class VTGraphicsModeClientWriter implements Runnable
     // System.out.println("resizeRemoteGraphics oldSize " + oldSize.width +
     // " " + oldSize.height + " newSize " + newSize.width + " " +
     // newSize.height);
-
+    
     // if (!newSize.equals(oldSize))
     // {
-
+    
     // }
     // else
     // {
@@ -1864,9 +1861,9 @@ public class VTGraphicsModeClientWriter implements Runnable
         // scrolled.setPreferredSize(scrolled.getSize());
         remoteInterface.repaint();
         scrolled.validate();
-
+        
         // remoteInterface.redraw();
-
+        
         // frame.getLayout().layoutContainer(scrolled);
         // frame.validate();
       }
@@ -1992,7 +1989,7 @@ public class VTGraphicsModeClientWriter implements Runnable
         frame = new VTGraphicsModeClientWriterFrame();
       }
       VTGlobalTextStyleManager.registerWindow(frame);
-
+      
       frame.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Client - Remote Graphics Link");
       frame.setFocusable(false);
       //frame.getInsets().set(0, 0, 0, 0);
@@ -2005,7 +2002,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       // menuBar.setReadOnly(readOnly);
       // frame.setMenuBar(menuBar);
       scrolled = new VTGraphicsModeClientWriterScrollPane(VTGraphicsModeClientWriterScrollPane.SCROLLBARS_AS_NEEDED);
-
+      
       // scrolledWithBars = new
       // VTGraphicsModeClientWriterScrollPane(VTGraphicsModeClientWriterScrollPane.SCROLLBARS_AS_NEEDED);
       // scrolledWithoutBars = new
@@ -2057,15 +2054,15 @@ public class VTGraphicsModeClientWriter implements Runnable
       // frame.add(scrolledWithoutBars, BorderLayout.NORTH);
       // frame.add(statusBar, BorderLayout.SOUTH);
       scrolled.add(remoteInterface);
-
+      
       Rectangle screenSize = frame.getGraphicsConfiguration().getBounds();
-
+      
       if (initialWidth > 0 && initialHeight > 0 && (initialWidth < screenSize.width) && (initialHeight < screenSize.height))
       {
         frame.pack();
         Insets frameInsets = frame.getInsets();
         Insets scrolledInsets = scrolled.getInsets();
-
+        
         int totalWidth = initialWidth + frameInsets.left + frameInsets.right + scrolledInsets.left + scrolledInsets.right;
         int totalHeight = initialHeight + frameInsets.top + frameInsets.bottom + scrolledInsets.top + scrolledInsets.bottom;
         if ((totalWidth < screenSize.width) && (totalHeight < screenSize.height))
@@ -2097,13 +2094,13 @@ public class VTGraphicsModeClientWriter implements Runnable
       // }
       frame.setLocationByPlatform(true);
       frame.setVisible(true);
-
+      
       scrolled.setVisible(true);
       remoteInterface.setVisible(true);
-
+      
       //frame.toFront();
       //remoteInterface.requestFocus();
-
+      
       frame.getInsets().set(0, 0, 0, 0);
       scrolled.getInsets().set(0, 0, 0, 0);
       //remoteInterface.getin

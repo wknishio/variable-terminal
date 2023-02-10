@@ -162,24 +162,24 @@ public class VTGraphicsModeServerWriter implements Runnable
      * if (deflateOutputStream != null) { try { deflateOutputStream.close(); } catch
      * (Throwable e) { } }
      */
-
+    
     /*
      * if (snappyOutputStream != null) { try { snappyOutputStream.close(); } catch
      * (Throwable e) { } }
      */
-
+    
     // compressedOutputBuffer = null;
-
+    
     if (vtCustomCodec != null)
     {
       vtCustomCodec.dispose();
     }
-
+    
     if (viewProvider != null)
     {
       viewProvider.dispose();
     }
-
+    
     if (jpgImageOutputStream != null)
     {
       try
@@ -188,10 +188,10 @@ public class VTGraphicsModeServerWriter implements Runnable
       }
       catch (IOException e)
       {
-
+        
       }
     }
-
+    
     pngEncoder = null;
     jpgWriter = null;
     jpgWriterParam = null;
@@ -199,13 +199,13 @@ public class VTGraphicsModeServerWriter implements Runnable
      * if (imageDataBuffer != null) { imageDataBuffer.flush(); imageDataBuffer =
      * null; }
      */
-
+    
     if (convertedDataBuffer != null)
     {
       convertedDataBuffer.flush();
       convertedDataBuffer = null;
     }
-
+    
     if (convertedGraphics != null)
     {
       convertedGraphics.dispose();
@@ -966,7 +966,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     }
     catch (Throwable e1)
     {
-
+      
     }
     while (!stopped)
     {
