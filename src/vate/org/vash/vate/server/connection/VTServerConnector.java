@@ -14,6 +14,7 @@ import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.network.nat.mapping.VTNATPortMappingResultNotify;
 import org.vash.vate.network.nat.mapping.VTNATSinglePortMappingManagerMKII;
+import org.vash.vate.security.VTBlake3DigestRandom;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.session.VTServerSessionListener;
 
@@ -41,10 +42,12 @@ public class VTServerConnector implements Runnable
   private VTNATSinglePortMappingManagerMKII portMappingManager;
   private VTServerConnectorNATPortMappingResultNotify natNotify = new VTServerConnectorNATPortMappingResultNotify();
   private List<VTServerSessionListener> listeners = new LinkedList<VTServerSessionListener>();
+  private VTBlake3DigestRandom secureRandom;
 
-  public VTServerConnector(VTServer server)
+  public VTServerConnector(VTServer server, VTBlake3DigestRandom secureRandom)
   {
     this.server = server;
+    this.secureRandom = secureRandom;
     this.connectionHandlers = Collections.synchronizedList(new LinkedList<VTServerConnectionHandler>());
     portMappingManager = new VTNATSinglePortMappingManagerMKII(3, 300);
     portMappingManager.start();
@@ -614,7 +617,7 @@ public class VTServerConnector implements Runnable
       }
       if (sessionsMaximum <= 0 || connectionHandlers.size() < sessionsMaximum)
       {
-        VTServerConnection connection = new VTServerConnection();
+        VTServerConnection connection = new VTServerConnection(secureRandom);
         if (passive)
         {
           if (listenConnection(connection))

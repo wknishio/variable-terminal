@@ -32,6 +32,7 @@ import org.vash.vate.parser.VTArgumentParser;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
 import org.vash.vate.security.VTBlake3Digest;
+import org.vash.vate.security.VTBlake3DigestRandom;
 import org.vash.vate.server.connection.VTServerConnector;
 import org.vash.vate.server.console.local.VTServerLocalConsoleReader;
 import org.vash.vate.server.console.local.VTServerLocalGraphicalConsoleMenuBar;
@@ -2224,7 +2225,7 @@ public class VTServer implements Runnable
   
   public void run()
   {
-    serverConnector = new VTServerConnector(this);
+    serverConnector = new VTServerConnector(this, new VTBlake3DigestRandom());
     serverConnector.setPassive(passive);
     serverConnector.setAddress(hostAddress);
     serverConnector.setPort(hostPort);

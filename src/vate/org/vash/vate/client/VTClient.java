@@ -27,6 +27,7 @@ import org.vash.vate.nativeutils.VTNativeUtils;
 import org.vash.vate.network.ssl.SSLVerificationDisabler;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
+import org.vash.vate.security.VTBlake3DigestRandom;
 
 public class VTClient implements Runnable
 {
@@ -2067,7 +2068,7 @@ public class VTClient implements Runnable
   
   public void run()
   {
-    clientConnector = new VTClientConnector(this);
+    clientConnector = new VTClientConnector(this, new VTBlake3DigestRandom());
     clientConnector.setActive(active);
     clientConnector.setAddress(hostAddress);
     clientConnector.setPort(hostPort);

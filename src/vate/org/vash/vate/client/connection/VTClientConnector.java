@@ -15,6 +15,7 @@ import org.vash.vate.client.session.VTClientSessionListener;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.network.nat.mapping.VTNATPortMappingResultNotify;
 import org.vash.vate.network.nat.mapping.VTNATSinglePortMappingManagerMKII;
+import org.vash.vate.security.VTBlake3DigestRandom;
 
 public class VTClientConnector implements Runnable
 {
@@ -49,11 +50,13 @@ public class VTClientConnector implements Runnable
   //private volatile boolean dialogLine = false;
   private VTClientConnectorNATPortMappingResultNotify natNotify = new VTClientConnectorNATPortMappingResultNotify();
   private List<VTClientSessionListener> listeners = new LinkedList<VTClientSessionListener>();
+  private VTBlake3DigestRandom secureRandom;
 
-  public VTClientConnector(VTClient client)
+  public VTClientConnector(VTClient client, VTBlake3DigestRandom secureRandom)
   {
     this.client = client;
-    this.connection = new VTClientConnection();
+    this.secureRandom = secureRandom;
+    this.connection = new VTClientConnection(this.secureRandom);
     this.handler = new VTClientConnectionHandler(client, connection);
     portMappingManager = new VTNATSinglePortMappingManagerMKII(3, 300);
     portMappingManager.start();

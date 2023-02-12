@@ -11,13 +11,13 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.Socket;
-import java.security.SecureRandom;
 
 import org.apache.commons.lang3.StringUtils;
 import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3Digest;
+import org.vash.vate.security.VTBlake3DigestRandom;
 import org.vash.vate.security.VTCryptographicEngine;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
@@ -99,7 +99,7 @@ public class VTServerConnection
   //private byte[] paddingData = new byte[1024];
   //private MessageDigest sha256Digester;
   private VTBlake3Digest blake3Digester = new VTBlake3Digest();
-  private SecureRandom secureRandom;
+  private VTBlake3DigestRandom secureRandom;
   private VTCryptographicEngine cryptoEngine;
   private Socket connectionSocket;
   private InputStream connectionSocketInputStream;
@@ -179,7 +179,7 @@ public class VTServerConnection
   // private ZstdInputStream zstdClipboardInputStream;
   // private ZstdOutputStream zstdClipboardOutputStream;
 
-  public VTServerConnection()
+  public VTServerConnection(VTBlake3DigestRandom secureRandom)
   {
     //try
     //{
@@ -190,13 +190,13 @@ public class VTServerConnection
       // e.printStackTrace();
     //}
     this.cryptoEngine = new VTCryptographicEngine();
-    this.secureRandom = new SecureRandom();
+    this.secureRandom = secureRandom;
     this.authenticationReader = new VTLittleEndianInputStream(null);
     this.authenticationWriter = new VTLittleEndianOutputStream(null);
 
   }
 
-  public SecureRandom getSecureRandom()
+  public VTBlake3DigestRandom getSecureRandom()
   {
     return secureRandom;
   }
