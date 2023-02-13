@@ -210,13 +210,13 @@ public final class VTImageIO
     int y = littleEndianInputStream.readInt();
     int width = littleEndianInputStream.readInt();
     int height = littleEndianInputStream.readInt();
-
+    
     // int depth = image.getColorModel().getPixelSize();
     // int readed = 0;
     // int total = 0;
     // int remaining = width * height;
     int size = width * height;
-
+    
     switch (type)
     {
       // case BufferedImage.TYPE_BYTE_BINARY:
@@ -813,7 +813,7 @@ public final class VTImageIO
     {
       colors = 1 << ((DirectColorModel) colorModel).getPixelSize();
     }
-
+    
     switch (type)
     {
       // case BufferedImage.TYPE_BYTE_BINARY:

@@ -474,6 +474,17 @@ public class VTGraphicsModeClientReader implements Runnable
 //                previousImageBufferInt = null;
 //                VTImageIO.clearBuffer(previousImageBufferByte, BufferedImage.TYPE_BYTE_INDEXED, colors, 0);
                 }
+                if (colors == 262144 || colors == 2097152)
+                {
+                  lastImageBufferByte = null;
+                  lastImageBufferUShort = null;
+                  lastImageBufferInt = ((DataBufferInt) currentImageDataBuffer.getRaster().getDataBuffer()).getData();
+//                if (previousImageBufferInt == null || previousImageBufferInt.length < lastImageBufferInt.length)
+//                {
+//                  previousImageBufferInt = new int[lastImageBufferInt.length];
+//                }
+//                VTImageIO.clearBuffer(previousImageBufferInt, BufferedImage.TYPE_INT_RGB, colors, 0);
+                }
                 break;
               }
               case BufferedImage.TYPE_BYTE_INDEXED:
