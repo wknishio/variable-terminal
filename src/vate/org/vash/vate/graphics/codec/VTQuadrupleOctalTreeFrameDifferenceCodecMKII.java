@@ -502,7 +502,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     }
   }
   
-  private final void encodeBlock0Trees8(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
+  private final void encodeBlock0Tree8(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
   {
     // For each block1
     for (;;)
@@ -809,7 +809,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     }
   }
   
-  private final void decodeBlock0Trees8(final VTLittleEndianInputStream in, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
+  private final void decodeBlock0Tree8(final VTLittleEndianInputStream in, final byte[] oldPixelData, final byte[] newPixelData) throws IOException
   {
     // For each block1
     for (;;)
@@ -1060,7 +1060,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     }
   }
   
-  private final void encodeBlock0Trees15(final VTLittleEndianOutputStream out, final short[] oldPixelData, final short[] newPixelData) throws IOException
+  private final void encodeBlock0Tree15(final VTLittleEndianOutputStream out, final short[] oldPixelData, final short[] newPixelData) throws IOException
   {
     // For each block1
     for (;;)
@@ -1367,7 +1367,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     }
   }
   
-  private final void decodeBlock0Trees15(final VTLittleEndianInputStream in, final short[] oldPixelData, final short[] newPixelData) throws IOException
+  private final void decodeBlock0Tree15(final VTLittleEndianInputStream in, final short[] oldPixelData, final short[] newPixelData) throws IOException
   {
     // For each block1
     for (;;)
@@ -1618,7 +1618,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     }
   }
   
-  private final void encodeBlock0Trees24(final VTLittleEndianOutputStream out, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void encodeBlock0Tree24(final VTLittleEndianOutputStream out, final int[] oldPixelData, final int[] newPixelData) throws IOException
   {
     // For each block1
     for (;;)
@@ -1925,7 +1925,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     }
   }
   
-  private final void decodeBlock0Trees24(final VTLittleEndianInputStream in, final int[] oldPixelData, final int[] newPixelData) throws IOException
+  private final void decodeBlock0Tree24(final VTLittleEndianInputStream in, final int[] oldPixelData, final int[] newPixelData) throws IOException
   {
     // For each block1
     for (;;)
@@ -1983,7 +1983,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     lout.writeInt(size);
     //lout.writeInt(areaX);
     lout.writeInt(areaWidth);
-    encodeBlock0Trees8(lout, oldPixelData, newPixelData);
+    encodeBlock0Tree8(lout, oldPixelData, newPixelData);
     lout.flush();
     VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width + padding, height + padding, transferArea);
     // System.arraycopy(newPixelData, oldPixelData, size -
@@ -2016,7 +2016,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     limitY = size;
     r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) % 8;
     r2 = 8 - (((size) / width) % 8);
-    decodeBlock0Trees8(lin, oldPixelData, newPixelData);
+    decodeBlock0Tree8(lin, oldPixelData, newPixelData);
 //    int areaHeight = size / width;
 //    int areaY = (offset - areaX) / width;
 //    transferArea.x = areaX;
@@ -2063,7 +2063,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     lout.writeInt(size);
     //lout.writeInt(areaX);
     lout.writeInt(areaWidth);
-    encodeBlock0Trees15(lout, oldPixelData, newPixelData);
+    encodeBlock0Tree15(lout, oldPixelData, newPixelData);
     lout.flush();
     VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width + padding, height + padding, transferArea);
     // System.arraycopy(newPixelData, oldPixelData, size -
@@ -2096,7 +2096,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     limitY = size;
     r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) % 8;
     r2 = 8 - (((size) / width) % 8);
-    decodeBlock0Trees15(lin, oldPixelData, newPixelData);
+    decodeBlock0Tree15(lin, oldPixelData, newPixelData);
 //    int areaHeight = size / width;
 //    int areaY = (offset - areaX) / width;
 //    transferArea.x = areaX;
@@ -2143,7 +2143,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     lout.writeInt(size);
     //lout.writeInt(areaX);
     lout.writeInt(areaWidth);
-    encodeBlock0Trees24(lout, oldPixelData, newPixelData);
+    encodeBlock0Tree24(lout, oldPixelData, newPixelData);
     lout.flush();
     VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width + padding, height + padding, transferArea);
     // System.arraycopy(newPixelData, oldPixelData, size -
@@ -2176,7 +2176,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     limitY = size;
     r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) % 8;
     r2 = 8 - (((size) / width) % 8);
-    decodeBlock0Trees24(lin, oldPixelData, newPixelData);
+    decodeBlock0Tree24(lin, oldPixelData, newPixelData);
 //    int areaHeight = size / width;
 //    int areaY = (offset - areaX) / width;
 //    transferArea.x = areaX;
