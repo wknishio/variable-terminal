@@ -4,7 +4,7 @@ import org.bouncycastle.crypto.digests.Blake3Digest;
 
 public class VTBlake3Digest
 {
-  private static final Blake3Digest BLAKE3 = new Blake3Digest();
+  //private static final Blake3Digest BLAKE3 = new Blake3Digest();
   private Blake3Digest blake3;
   
   public VTBlake3Digest()
@@ -61,18 +61,18 @@ public class VTBlake3Digest
     return digest(64, data);
   }
   
-  public static final synchronized byte[] digestBLAKE3(int digestSizeBytes, byte[]... datas)
-  {
-    BLAKE3.reset();
-    for (byte[] data : datas)
-    {
-      if (data != null && data.length > 0)
-      {
-        BLAKE3.update(data, 0, data.length);
-      }
-    }
-    byte[] key = new byte[digestSizeBytes];
-    BLAKE3.doFinal(key, 0, key.length);
-    return key;
-  }
+//  public static final synchronized byte[] digestBLAKE3(int digestSizeBytes, byte[]... datas)
+//  {
+//    BLAKE3.reset();
+//    for (byte[] data : datas)
+//    {
+//      if (data != null && data.length > 0)
+//      {
+//        BLAKE3.update(data, 0, data.length);
+//      }
+//    }
+//    byte[] key = new byte[digestSizeBytes];
+//    BLAKE3.doFinal(key, 0, key.length);
+//    return key;
+//  }
 }
