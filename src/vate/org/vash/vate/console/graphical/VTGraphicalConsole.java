@@ -2187,7 +2187,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
   {
     if (bold)
     {
-      textArea.setFont(textArea.getFont().deriveFont(Font.BOLD));
+      textArea.setFont(textArea.getFont().deriveFont(Font.BOLD, textArea.getFont().getSize2D()));
       frame.pack();
       // textArea.setSize(textArea.getSize().width + 1,
       // textArea.getSize().height +
@@ -2195,7 +2195,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
     }
     else
     {
-      textArea.setFont(textArea.getFont().deriveFont(Font.PLAIN));
+      textArea.setFont(textArea.getFont().deriveFont(Font.PLAIN, textArea.getFont().getSize2D()));
       frame.pack();
       // textArea.setSize(textArea.getSize().width + 1,
       // textArea.getSize().height +

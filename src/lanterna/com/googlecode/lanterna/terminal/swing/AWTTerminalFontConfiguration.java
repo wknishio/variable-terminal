@@ -73,10 +73,10 @@ public class AWTTerminalFontConfiguration {
             "AR PL UMing CN"
     )));
     
-	private static double FONT_SCALING_FACTOR = 1.0;
+	private static float FONT_SCALING_FACTOR = 1.0F;
 
     private static List<Font> getDefaultWindowsFonts() {
-        float fontSize = getFontSize();
+        float fontSize = getDefaultFontSize();
         //System.out.println("fontSize:" + fontSize);
         //ArrayList<Font> fonts = new ArrayList<Font>();
         //fonts.add(new Font("Consolas", Font.PLAIN, fontSize));
@@ -86,13 +86,13 @@ public class AWTTerminalFontConfiguration {
         //Monospaced can look pretty bad on Windows, so let's override it
         return (Arrays.asList(
                 new Font("Courier New", Font.PLAIN, 12).deriveFont(fontSize),
-                new Font("Consolas", Font.PLAIN, 12).deriveFont(fontSize),
+                //new Font("Consolas", Font.PLAIN, 12).deriveFont(fontSize),
                 new Font("Monospaced", Font.PLAIN, 12).deriveFont(fontSize)
                 ));
     }
 
     private static List<Font> getDefaultLinuxFonts() {
-        float fontSize = getFontSize();
+        float fontSize = getDefaultFontSize();
         //System.out.println("fontSize:" + fontSize);
         //ArrayList<Font> fonts = new ArrayList<Font>();
         //fonts.add(new Font("DejaVu Sans Mono", Font.PLAIN, fontSize));
@@ -117,7 +117,7 @@ public class AWTTerminalFontConfiguration {
     }
 
     private static List<Font> getDefaultFonts() {
-        float fontSize = getFontSize();
+        float fontSize = getDefaultFontSize();
         //System.out.println("fontSize:" + fontSize);
         //ArrayList<Font> fonts = new ArrayList<Font>();
         //fonts.add(new Font("Monospaced", Font.PLAIN, fontSize));
@@ -125,7 +125,7 @@ public class AWTTerminalFontConfiguration {
         return (Arrays.asList(new Font("Monospaced", Font.PLAIN, 12).deriveFont(fontSize)));
     }
     
-    public static void setFontScalingFactor(double factor)
+    public static void setFontScalingFactor(float factor)
     {
     	FONT_SCALING_FACTOR = factor;
     }
@@ -136,12 +136,13 @@ public class AWTTerminalFontConfiguration {
     }
 
     // Here we check the screen resolution on the primary monitor and make a guess at if it's high-DPI or not
-    private static float getFontSize() {
+    private static float getDefaultFontSize() {
     	
         //int baseFontSize = 12;
         //System.out.println("getFontSize():" + (int)(baseFontSize * FONT_SCALING_FACTOR));
         //return (int) Math.ceil(baseFontSize * FONT_SCALING_FACTOR);
-        return (float) (baseFontSize * FONT_SCALING_FACTOR);
+        //return (float) (baseFontSize * FONT_SCALING_FACTOR);
+        return round(baseFontSize * FONT_SCALING_FACTOR, 0.5F);
 //        String[] javaVersion = System.getProperty("java.version", "1").split("\\.");
 //        if (System.getProperty("os.name", "").startsWith("Windows") && Integer.parseInt(javaVersion[0]) >= 9) {
 //            // Java 9+ reports itself as HiDPI-unaware on Windows and will be scaled by the OS
@@ -181,7 +182,7 @@ public class AWTTerminalFontConfiguration {
      * @return Default font to use, system-dependent
      */
     protected static Font[] selectDefaultFont() {
-        String osName = System.getProperty("os.name", "").toLowerCase();
+      String osName = System.getProperty("os.name", "").toLowerCase();
         if(osName.contains("win")) {
             List<Font> windowsFonts = getDefaultWindowsFonts();
             return windowsFonts.toArray(new Font[windowsFonts.size()]);
@@ -194,6 +195,8 @@ public class AWTTerminalFontConfiguration {
             List<Font> defaultFonts = getDefaultFonts();
             return defaultFonts.toArray(new Font[defaultFonts.size()]);
         }
+//        List<Font> defaultFonts = getDefaultFonts();
+//        return defaultFonts.toArray(new Font[defaultFonts.size()]);
     }
 
     /**
@@ -290,11 +293,11 @@ public class AWTTerminalFontConfiguration {
         Font normalFont = getFontForCharacter(character.getCharacterString().charAt(0));
         if(boldMode == BoldMode.EVERYTHING || (boldMode == BoldMode.EVERYTHING_BUT_SYMBOLS && isNotASymbol(character.getCharacterString().charAt(0)))) {
             if(character.isBold()) {
-                normalFont = normalFont.deriveFont(Font.BOLD);
+                normalFont = normalFont.deriveFont(Font.BOLD, normalFont.getSize2D());
             }
         }
         if (character.isItalic() ) {
-            normalFont = normalFont.deriveFont(Font.ITALIC);
+            normalFont = normalFont.deriveFont(Font.ITALIC, normalFont.getSize2D());
         }
         return normalFont;
     }
@@ -383,5 +386,11 @@ public class AWTTerminalFontConfiguration {
     
     private boolean isNotASymbol(char character) {
         return !SYMBOLS_CACHE.contains(character);
+    }
+    
+    private static float round(float num, float step)
+    {
+      float inv = 1 / step;
+      return (float) Math.round(num * inv) / inv;
     }
 }
