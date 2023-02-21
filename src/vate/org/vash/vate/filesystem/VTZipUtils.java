@@ -128,7 +128,7 @@ public class VTZipUtils
     //may treat timestamps here
     return true;
   }
-
+  
   private static boolean addDirectoryToZip(ZipOutputStream zipWriter, File zipArchive, File directory, final byte[] readBuffer, String currentPath) throws IOException
   {
     if (!directory.canRead())
@@ -159,7 +159,7 @@ public class VTZipUtils
     }
     return true;
   }
-
+  
   @SuppressWarnings("all")
   private static boolean addFileToZip(ZipOutputStream zipWriter, File zipArchive, File file, final byte[] readBuffer, String currentPath) throws IOException
   {
@@ -196,7 +196,7 @@ public class VTZipUtils
     }
     return true;
   }
-
+  
   @SuppressWarnings("all")
   public static boolean extractZipFile(String zipFilePath, final byte[] readBuffer, String destinationPath) throws IOException
   {
@@ -259,7 +259,7 @@ public class VTZipUtils
     }
     return true;
   }
-
+  
   private static boolean extractDirectoryFromZip(ZipEntry zipEntry, String destinationPath)
   {
     File directory = new File(destinationPath + File.separatorChar + zipEntry.getName());
@@ -275,7 +275,7 @@ public class VTZipUtils
     }
     return false;
   }
-
+  
   @SuppressWarnings("all")
   private static boolean extractFileFromZip(ZipInputStream zipReader, ZipEntry zipEntry, final byte[] readBuffer, String destinationPath) throws IOException
   {
@@ -343,7 +343,7 @@ public class VTZipUtils
     //may treat timestamps here
     return true;
   }
-
+  
   /*
   * public static void main(String[] args) throws IOException {
   * System.out.println(SAWZipUtils.createZipFile("zip-test.zip", -1, new byte[64
