@@ -35,7 +35,7 @@ public final class VTConsole
   public static final int VT_CONSOLE_COLOR_LIGHT_CYAN = 16;
   public static final int VT_CONSOLE_COLOR_LIGHT_WHITE = 17;
   public static final int VT_CONSOLE_COLOR_DEFAULT = 9;
-
+  
   private static boolean lanterna = true;
   private static boolean graphical;
   private static boolean ansi;
@@ -43,19 +43,19 @@ public final class VTConsole
   private static boolean remoteIcon;
   // private static boolean split;
   private static volatile VTConsoleImplementation console;
-
+  
   private static Object synchronizationObject = new Object();
-
+  
   static
   {
     VTNativeUtils.initialize();
   }
-
+  
   public static Object getSynchronizationObject()
   {
     return synchronizationObject;
   }
-
+  
   public synchronized static void initialize()
   {
     if (console == null)
@@ -110,7 +110,7 @@ public final class VTConsole
       }
     }
   }
-
+  
   public synchronized static boolean isGraphical()
   {
     return graphical;
@@ -125,12 +125,12 @@ public final class VTConsole
   {
     VTConsole.ansi = ansi;
   }
-
+  
   public synchronized static void setLanterna(boolean lanterna)
   {
     VTConsole.lanterna = lanterna;
   }
-
+  
   public synchronized static void setGraphical(boolean graphical)
   {
     if (console == null)
@@ -189,12 +189,12 @@ public final class VTConsole
       }
     }
   }
-
+  
   public synchronized static boolean isDaemon()
   {
     return daemon;
   }
-
+  
   private static class HideGraphicalConsole implements Runnable
   {
     public void run()
@@ -209,7 +209,7 @@ public final class VTConsole
       }
     }
   }
-
+  
   private static class ShowGraphicalConsole implements Runnable
   {
     public void run()
@@ -229,10 +229,10 @@ public final class VTConsole
       }
     }
   }
-
+  
   private static HideGraphicalConsole daemonizeThread = new HideGraphicalConsole();
   private static ShowGraphicalConsole undaemonizeThread = new ShowGraphicalConsole();
-
+  
   public synchronized static void setDaemon(boolean daemon)
   {
     if (VTConsole.daemon == daemon)
@@ -279,14 +279,14 @@ public final class VTConsole
       }
     }
   }
-
+  
   /* public synchronized static boolean isSplit() { return split; } */
-
+  
   /*
    * public synchronized static void setSplit(boolean split) { if (terminal ==
    * null) { VTTerminal.split = split; } }
    */
-
+  
   public static void setTitle(String title)
   {
     if (checkConsole())
@@ -295,13 +295,13 @@ public final class VTConsole
       //console.clear();
     }
   }
-
+  
   public static String readLine() throws InterruptedException
   {
     String line = readLine(true);
     return line;
   }
-
+  
   public static String readLine(boolean echo) throws InterruptedException
   {
     if (checkConsole())
@@ -326,7 +326,7 @@ public final class VTConsole
     }
     return null;
   }
-
+  
   public static void interruptReadLine()
   {
     if (checkConsole())
@@ -346,11 +346,11 @@ public final class VTConsole
       }
       else
       {
-
+        
       }
     }
   }
-
+  
   // public static boolean isReadingLine()
   // {
   // if (!daemon)
@@ -366,7 +366,7 @@ public final class VTConsole
   // return false;
   // }
   // }
-
+  
   public static void print(String str)
   {
     if (checkConsole())
@@ -374,7 +374,7 @@ public final class VTConsole
       console.print(str);
     }
   }
-
+  
   public static void println(String str)
   {
     if (checkConsole())
@@ -382,7 +382,7 @@ public final class VTConsole
       console.println(str);
     }
   }
-
+  
   public static void printf(String format, Object... args)
   {
     if (checkConsole())
@@ -390,7 +390,7 @@ public final class VTConsole
       console.printf(format, args);
     }
   }
-
+  
   public static void printfln(String format, Object... args)
   {
     if (checkConsole())
@@ -398,7 +398,7 @@ public final class VTConsole
       console.printfln(format, args);
     }
   }
-
+  
   public static void printf(Locale l, String format, Object... args)
   {
     if (checkConsole())
@@ -406,7 +406,7 @@ public final class VTConsole
       console.printf(l, format, args);
     }
   }
-
+  
   public static void printfln(Locale l, String format, Object... args)
   {
     if (checkConsole())
@@ -414,7 +414,7 @@ public final class VTConsole
       console.printfln(l, format, args);
     }
   }
-
+  
   public static void write(String str)
   {
     if (checkConsole())
@@ -422,7 +422,7 @@ public final class VTConsole
       console.write(str);
     }
   }
-
+  
   public static void write(char[] cbuf, int off, int len)
   {
     if (checkConsole())
@@ -430,12 +430,12 @@ public final class VTConsole
       console.write(cbuf, off, len);
     }
   }
-
+  
   /*
    * public static void write(byte[] buf, int off, int len) {
    * terminal.trueWrite(buf, off, len); }
    */
-
+  
   public static void flush()
   {
     if (checkConsole())
@@ -443,7 +443,7 @@ public final class VTConsole
       console.flush();
     }
   }
-
+  
   public static void clear()
   {
     if (checkConsole())
@@ -451,7 +451,7 @@ public final class VTConsole
       console.clear();
     }
   }
-
+  
   public static void bell()
   {
     try
@@ -478,10 +478,10 @@ public final class VTConsole
     }
     catch (Throwable e)
     {
-
+      
     }
   }
-
+  
   public static void setColors(int foregroundColor, int backgroundColor)
   {
     if (checkConsole())
@@ -490,7 +490,7 @@ public final class VTConsole
       console.clear();
     }
   }
-
+  
   public static void setBold(boolean bold)
   {
     if (checkConsole())
@@ -498,7 +498,7 @@ public final class VTConsole
       console.setBold(bold);
     }
   }
-
+  
   public static void resetAttributes()
   {
     if (checkConsole())
@@ -506,7 +506,7 @@ public final class VTConsole
       console.resetAttributes();
     }
   }
-
+  
   public static void setSystemIn()
   {
     if (checkConsole())
@@ -514,7 +514,7 @@ public final class VTConsole
       console.setSystemIn();
     }
   }
-
+  
   public static void setSystemOut()
   {
     if (checkConsole())
@@ -522,7 +522,7 @@ public final class VTConsole
       console.setSystemOut();
     }
   }
-
+  
   public static void setSystemErr()
   {
     if (checkConsole())
@@ -530,7 +530,7 @@ public final class VTConsole
       console.setSystemErr();
     }
   }
-
+  
   public static InputStream getSystemIn()
   {
     if (checkConsole())
@@ -539,7 +539,7 @@ public final class VTConsole
     }
     return null;
   }
-
+  
   public static PrintStream getSystemOut()
   {
     if (checkConsole())
@@ -548,7 +548,7 @@ public final class VTConsole
     }
     return null;
   }
-
+  
   public static PrintStream getSystemErr()
   {
     if (checkConsole())
@@ -557,7 +557,7 @@ public final class VTConsole
     }
     return null;
   }
-
+  
   public static void createInterruptibleReadline(final boolean echo, final Runnable interrupt)
   {
     if (daemon)
@@ -585,7 +585,7 @@ public final class VTConsole
     };
     thread.start();
   }
-
+  
   private static boolean checkConsole()
   {
     if (!daemon)
@@ -597,7 +597,7 @@ public final class VTConsole
     }
     return console != null;
   }
-
+  
   public static Frame getFrame()
   {
     if (checkConsole())
@@ -606,7 +606,7 @@ public final class VTConsole
     }
     return null;
   }
-
+  
   public static void toggleScrollMode()
   {
     if (checkConsole())
@@ -614,7 +614,7 @@ public final class VTConsole
       console.toggleScrollMode();
     }
   }
-
+  
   public static void toggleInputMode()
   {
     if (checkConsole())
@@ -622,7 +622,7 @@ public final class VTConsole
       console.toggleInputMode();
     }
   }
-
+  
   public static void input(String text)
   {
     if (checkConsole())
@@ -630,7 +630,7 @@ public final class VTConsole
       console.input(text);
     }
   }
-
+  
   public static void copyText()
   {
     if (checkConsole())
@@ -638,7 +638,7 @@ public final class VTConsole
       console.copyText();
     }
   }
-
+  
   public static void pasteText()
   {
     if (checkConsole())
@@ -646,7 +646,7 @@ public final class VTConsole
       console.pasteText();
     }
   }
-
+  
   public static void clearInput()
   {
     if (checkConsole())
@@ -654,7 +654,7 @@ public final class VTConsole
       console.clearInput();
     }
   }
-
+  
   public static String getSelectedText()
   {
     if (checkConsole())
@@ -663,7 +663,7 @@ public final class VTConsole
     }
     return "";
   }
-
+  
   public static String getAllText()
   {
     if (checkConsole())
@@ -672,7 +672,7 @@ public final class VTConsole
     }
     return "";
   }
-
+  
   public static void refreshText()
   {
     if (checkConsole())
@@ -680,7 +680,7 @@ public final class VTConsole
       console.refreshText();
     }
   }
-
+  
   public static boolean isCommandEcho()
   {
     if (checkConsole())
@@ -689,7 +689,7 @@ public final class VTConsole
     }
     return true;
   }
-
+  
   public static void setCommandEcho(boolean commandEcho)
   {
     if (checkConsole())
@@ -697,7 +697,7 @@ public final class VTConsole
       console.setCommandEcho(commandEcho);
     }
   }
-
+  
   public static void copyAllText()
   {
     if (checkConsole())
@@ -705,7 +705,7 @@ public final class VTConsole
       console.copyAllText();
     }
   }
-
+  
   public static void setIgnoreClose(boolean ignoreClose)
   {
     if (checkConsole())
@@ -713,12 +713,12 @@ public final class VTConsole
       console.setIgnoreClose(ignoreClose);
     }
   }
-
+  
   public static void setRemoteIcon(boolean remoteIcon)
   {
     VTConsole.remoteIcon = remoteIcon;
   }
-
+  
   public static void addToggleReplaceInputNotify(VTConsoleBooleanToggleNotify notifyReplaceInput)
   {
     if (checkConsole())
@@ -726,7 +726,7 @@ public final class VTConsole
       console.addToggleReplaceInputNotify(notifyReplaceInput);
     }
   }
-
+  
   public static void addToggleFlushInterruptNotify(VTConsoleBooleanToggleNotify notifyFlushInterrupted)
   {
     if (checkConsole())
@@ -734,7 +734,7 @@ public final class VTConsole
       console.addToggleFlushInterruptNotify(notifyFlushInterrupted);
     }
   }
-
+  
   public static boolean checkIOConsole()
   {
     try
@@ -751,11 +751,11 @@ public final class VTConsole
     }
     catch (Throwable e)
     {
-
+      
     }
     return false;
   }
-
+  
   public static Object getIOConsole()
   {
     try
@@ -772,11 +772,11 @@ public final class VTConsole
     }
     catch (Throwable e)
     {
-
+      
     }
     return false;
   }
-
+  
   public static boolean checkConsoleIsatty()
   {
     try
@@ -799,7 +799,7 @@ public final class VTConsole
         }
         else
         {
-
+          
         }
       }
       catch (Throwable e)
@@ -818,7 +818,7 @@ public final class VTConsole
         }
         else
         {
-
+          
         }
       }
       catch (Throwable ex)

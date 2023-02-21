@@ -26,16 +26,16 @@ public class VTGlobalTextStyleManager
   private static final List<Component> scaleds = new LinkedList<Component>();
   private static final List<List<Font>> lists = new LinkedList<List<Font>>();
   private static final List<List<Font>> defaultlists = new LinkedList<List<Font>>();
-
+  
   public static float FONT_SCALING_FACTOR_DIALOG;
   public static float FONT_SCALING_FACTOR_MONOSPACED;
   public static float BASE_FONT_SIZE_DIALOG = 12F;
   public static float BASE_FONT_SIZE_MONOSPACED = 12F;
   public static int BASE_FONT_DPI = 96;
-
+  
   private static boolean checked = false;
   public static boolean java9plus = false;
-
+  
   public static void checkScaling()
   {
     if (checked)
@@ -277,13 +277,13 @@ public class VTGlobalTextStyleManager
     //System.out.println("FONT_SCALING_FACTOR_DIALOG:" + FONT_SCALING_FACTOR_DIALOG);
     checked = true;
   }
-
+  
   static
   {
     checkScaling();
     // AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
   }
-
+  
   private static volatile Font windowFont;
   // private static volatile Font windowFont =
   // Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog
@@ -354,63 +354,62 @@ public class VTGlobalTextStyleManager
       {
         VTGlobalTextStyleManager.enableFontStyleBold();
       }
-//			updateComponents();
       return true;
     }
     return false;
   }
-
+  
   public static void registerMonospacedComponent(Component component)
   {
     component.setFont(monospacedFont);
     monospaceds.add(component);
   }
-
+  
   public static void unregisterMonospacedComponent(Component component)
   {
     monospaceds.remove(component);
   }
-
+  
   public static void registerTextComponent(Component component)
   {
     component.setFont(windowFont);
     // component.setFont(component.getFont().deriveFont(windowFontSize));
     texts.add(component);
   }
-
+  
   public static void unregisterTextComponent(Component component)
   {
     texts.remove(component);
   }
-
+  
   public static void registerWindow(Window window)
   {
     window.setFont(windowFont);
     // window.setFont(window.getFont().deriveFont(windowFontSize));
     windows.add(window);
   }
-
+  
   public static void unregisterWindow(Window window)
   {
     windows.remove(window);
   }
-
+  
   public static void registerScaledComponent(Component component)
   {
     scaleds.add(component);
   }
-
+  
   public static void unregisterScaledComponent(Component component)
   {
     scaleds.remove(component);
   }
-
+  
   public static void registerFontList(List<Font> list)
   {
     lists.add(list);
     defaultlists.add(Arrays.asList(list.toArray(new Font[] {})));
   }
-
+  
   public static void defaultComponentSize()
   {
     // System.out.println("FONT_SCALING_FACTOR:" + FONT_SCALING_FACTOR);
@@ -418,7 +417,7 @@ public class VTGlobalTextStyleManager
     // System.out.println("defaultWindowFontSize:" + defaultWindowFontSize);
     updateComponents(true);
   }
-
+  
   public static void defaultFontSize()
   {
     // System.out.println("FONT_SCALING_FACTOR:" + FONT_SCALING_FACTOR);
@@ -432,13 +431,13 @@ public class VTGlobalTextStyleManager
     defaultLists();
     updateComponents(true);
   }
-
+  
   public static boolean isFontStyleBold()
   {
     // return false;
     return fontStyleBold;
   }
-
+  
   public static void enableFontStyleBold()
   {
     fontStyleBold = true;
@@ -450,7 +449,7 @@ public class VTGlobalTextStyleManager
     boldLists();
     updateComponents(false);
   }
-
+  
   public static void disableFontStyleBold()
   {
     fontStyleBold = false;
@@ -462,7 +461,7 @@ public class VTGlobalTextStyleManager
     plainLists();
     updateComponents(false);
   }
-
+  
   public static void increaseFontSize()
   {
     monospacedFont = monospacedFont.deriveFont((monospacedFont.getSize2D() + 0.5f));
@@ -474,7 +473,7 @@ public class VTGlobalTextStyleManager
     increaseLists();
     updateComponents(false);
   }
-
+  
   public static void decreaseFontSize()
   {
     monospacedFont = monospacedFont.deriveFont((monospacedFont.getSize2D() - 0.5f));
@@ -486,7 +485,7 @@ public class VTGlobalTextStyleManager
     decreaseLists();
     updateComponents(false);
   }
-
+  
   private static void boldScaleds()
   {
     for (Component component : scaleds)
@@ -495,7 +494,7 @@ public class VTGlobalTextStyleManager
       component.setFont(font.deriveFont(Font.BOLD, font.getSize2D()));
     }
   }
-
+  
   private static void plainScaleds()
   {
     for (Component component : scaleds)
@@ -504,7 +503,7 @@ public class VTGlobalTextStyleManager
       component.setFont(font.deriveFont(Font.PLAIN, font.getSize2D()));
     }
   }
-
+  
   private static void increaseScaleds()
   {
     for (Component component : scaleds)
@@ -513,7 +512,7 @@ public class VTGlobalTextStyleManager
       component.setFont(font.deriveFont((font.getSize2D() + 0.5f)));
     }
   }
-
+  
   private static void decreaseScaleds()
   {
     for (Component component : scaleds)
@@ -522,7 +521,7 @@ public class VTGlobalTextStyleManager
       component.setFont(font.deriveFont((font.getSize2D() - 0.5f)));
     }
   }
-
+  
   private static void increaseLists()
   {
     for (List<Font> list : lists)
@@ -535,7 +534,7 @@ public class VTGlobalTextStyleManager
       }
     }
   }
-
+  
   private static void decreaseLists()
   {
     for (List<Font> list : lists)
@@ -548,7 +547,7 @@ public class VTGlobalTextStyleManager
       }
     }
   }
-
+  
   private static void defaultLists()
   {
     int i = 0;
@@ -558,7 +557,7 @@ public class VTGlobalTextStyleManager
       list.addAll(defaultlists.get(i++));
     }
   }
-
+  
   private static void boldLists()
   {
     for (List<Font> list : lists)
@@ -571,7 +570,7 @@ public class VTGlobalTextStyleManager
       }
     }
   }
-
+  
   private static void plainLists()
   {
     for (List<Font> list : lists)
@@ -584,7 +583,7 @@ public class VTGlobalTextStyleManager
       }
     }
   }
-
+  
   private static void updateComponents(boolean useDefaults)
   {
     for (Component component : monospaceds)
