@@ -238,34 +238,38 @@ public final class VTDirectRobot
 
   public final static GraphicsDevice getMouseInfo(Point point)
   {
-    if (!searchedMouseInfoPeer)
-    {
-      searchedMouseInfoPeer = true;
-      try
-      {
-        Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Method method = toolkit.getClass().getDeclaredMethod("getMouseInfoPeer", new Class<?>[0]);
-        try
-        {
-          method.setAccessible(true);
-          mouseInfoPeer = (MouseInfoPeer) method.invoke(toolkit, new Object[0]);
-        }
-        finally
-        {
-          //method.setAccessible(false);
-        }
-      }
-      catch (Throwable ex)
-      {
-      }
-    }
-    if (mouseInfoPeer != null)
-    {
-      int device = mouseInfoPeer.fillPointWithCoords(point != null ? point : new Point());
-      GraphicsDevice[] devices = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-      return devices[device];
-    }
+//    if (!searchedMouseInfoPeer)
+//    {
+//      searchedMouseInfoPeer = true;
+//      try
+//      {
+//        Toolkit toolkit = Toolkit.getDefaultToolkit();
+//        Method method = toolkit.getClass().getDeclaredMethod("getMouseInfoPeer", new Class<?>[0]);
+//        try
+//        {
+//          method.setAccessible(true);
+//          mouseInfoPeer = (MouseInfoPeer) method.invoke(toolkit, new Object[0]);
+//        }
+//        finally
+//        {
+//          //method.setAccessible(false);
+//        }
+//      }
+//      catch (Throwable ex)
+//      {
+//      }
+//    }
+//    if (mouseInfoPeer != null)
+//    {
+//      int device = mouseInfoPeer.fillPointWithCoords(point != null ? point : new Point());
+//      GraphicsDevice[] devices = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
+//      return devices[device];
+//    }
     PointerInfo info = MouseInfo.getPointerInfo();
+    if (info == null)
+    {
+      return null;
+    }
     if (point != null)
     {
       Point location = info.getLocation();
@@ -425,8 +429,8 @@ public final class VTDirectRobot
   private Object getRGBPixelsMethodParam;
   private int getRGBPixelsMethodType;
   private Method getRGBPixelsMethod;
-  private static boolean searchedMouseInfoPeer;
-  private static MouseInfoPeer mouseInfoPeer;
+  //private static boolean searchedMouseInfoPeer;
+  //private static MouseInfoPeer mouseInfoPeer;
   
   public boolean getDirectRGBPixelsMethodAvailable()
   {
