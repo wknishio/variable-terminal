@@ -5,17 +5,20 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.nio.channels.Channels;
-import java.util.zip.CheckedInputStream;
-import java.util.zip.Checksum;
-
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+//import java.util.zip.CheckedInputStream;
+//import java.util.zip.Checksum;
 import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.help.VTHelpManager;
+import org.vash.vate.security.VTArrayComparator;
+import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 
 import com.martiansoftware.jsap.CommandLineTokenizer;
 
-import net.jpountz.xxhash.XXHashFactory;
+//import net.jpountz.xxhash.XXHashFactory;
 
 public class VTFileTransferClientTransaction implements Runnable
 {
@@ -37,8 +40,10 @@ public class VTFileTransferClientTransaction implements Runnable
   private int localFileStatus;
   private int remoteFileAccess;
   private int localFileAccess;
-  private long remoteChecksum;
-  private long localChecksum;
+  //private long remoteChecksum;
+  //private long localChecksum;
+  private byte[] localChecksum = new byte[64];
+  private byte[] remoteChecksum = new byte[64];
   private long remoteFileSize;
   private long localFileSize;
   private long maxOffset;
@@ -50,7 +55,8 @@ public class VTFileTransferClientTransaction implements Runnable
   //private volatile long transferDirectoryCount;
   private final byte[] fileTransferBuffer = new byte[fileTransferBufferSize];
   // private final byte[] checksumBuffer = new byte[checksumBufferSize];
-  private Checksum checksum = XXHashFactory.fastestJavaInstance().newStreamingHash64(-1).asChecksum();
+  //private Checksum checksum = XXHashFactory.fastestJavaInstance().newStreamingHash64(-1).asChecksum();
+  private MessageDigest checksum = new VTBlake3MessageDigest();
   private String command;
   private String source;
   private String destination;
@@ -64,7 +70,8 @@ public class VTFileTransferClientTransaction implements Runnable
   private File fileTransferFinalFile;
   private RandomAccessFile fileTransferRandomAccessFile;
   // private FileLock fileLock;
-  private CheckedInputStream fileTransferChecksumInputStream;
+  //private CheckedInputStream fileTransferChecksumInputStream;
+  private DigestInputStream fileTransferChecksumInputStream;
   private InputStream fileTransferRemoteInputStream;
   private OutputStream fileTransferRemoteOutputStream;
   private InputStream fileTransferFileInputStream;
@@ -415,21 +422,23 @@ public class VTFileTransferClientTransaction implements Runnable
   {
     checksum.reset();
     currentOffset = 0;
-    localChecksum = 0;
+    //localChecksum = 0;
+    //Arrays.fill(localChecksum, (byte) 0);
     try
     {
       fileTransferRandomAccessFile.seek(0);
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
+      //e.printStackTrace();
       //localChecksum = -1;
     }
     try
     {
       if (fileTransferChecksumInputStream == null)
       {
-        fileTransferChecksumInputStream = new CheckedInputStream(Channels.newInputStream(fileTransferRandomAccessFile.getChannel()), checksum);
+        //fileTransferChecksumInputStream = new CheckedInputStream(Channels.newInputStream(fileTransferRandomAccessFile.getChannel()), checksum);
+        fileTransferChecksumInputStream = new DigestInputStream(Channels.newInputStream(fileTransferRandomAccessFile.getChannel()), checksum);
       }
       if (remoteFileSize < localFileSize)
       {
@@ -448,11 +457,12 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         currentOffset += readedBytes;
       }
-      localChecksum = fileTransferChecksumInputStream.getChecksum().getValue();
+      //localChecksum = fileTransferChecksumInputStream.getChecksum().getValue();
+      localChecksum = fileTransferChecksumInputStream.getMessageDigest().digest();
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
+      //e.printStackTrace();
       //localChecksum = -1;
     }
     try
@@ -461,14 +471,17 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
+      //e.printStackTrace();
       //localChecksum = -1;
     }
     currentOffset = 0;
     try
     {
-      session.getClient().getConnection().getFileTransferControlDataOutputStream().writeLong(localChecksum);
+      //session.getClient().getConnection().getFileTransferControlDataOutputStream().writeLong(localChecksum);
+      session.getClient().getConnection().getFileTransferControlDataOutputStream().write(localChecksum);
       session.getClient().getConnection().getFileTransferControlDataOutputStream().flush();
+      //System.out.println("localChecksum:" + Arrays.toString(localChecksum));
+      //System.out.println("localChecksum.length:" + localChecksum.length);
       return true;
     }
     catch (Throwable e)
@@ -578,7 +591,10 @@ public class VTFileTransferClientTransaction implements Runnable
   {
     try
     {
-      remoteChecksum = session.getClient().getConnection().getFileTransferControlDataInputStream().readLong();
+      //remoteChecksum = session.getClient().getConnection().getFileTransferControlDataInputStream().readLong();
+      session.getClient().getConnection().getFileTransferControlDataInputStream().readFully(remoteChecksum);
+      //System.out.println("remoteChecksum:" + Arrays.toString(remoteChecksum));
+      //System.out.println("remoteChecksum.length:" + remoteChecksum.length);
       return true;
     }
     catch (Throwable e)
@@ -656,10 +672,11 @@ public class VTFileTransferClientTransaction implements Runnable
           cleanUpload();
           return true;
         }
-        remoteFileSize = localFileSize;
+        //remoteFileSize = localFileSize;
+        localFileSize = remoteFileSize;
         if (getFileChecksums())
         {
-          if (localChecksum == remoteChecksum)
+          if (VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
           {
             // VTConsole.print("\nVT>Sent file integrity
             // verified!\nVT>");
@@ -784,7 +801,7 @@ public class VTFileTransferClientTransaction implements Runnable
 //								{
 //									if (getFileChecksums())
 //									{
-//										if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
+//										if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
 //										{
 //											resumable = true;
 //										}
@@ -800,7 +817,7 @@ public class VTFileTransferClientTransaction implements Runnable
 //								}
                 if (getFileChecksums())
                 {
-                  if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
+                  if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
                   {
                     resumable = true;
                   }
@@ -822,7 +839,7 @@ public class VTFileTransferClientTransaction implements Runnable
 //									//check if file will be truncated
 //									if (getFileChecksums())
 //									{
-//										if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
+//										if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
 //										{
 //											resumable = true;
 //										}
@@ -838,7 +855,7 @@ public class VTFileTransferClientTransaction implements Runnable
 //								}
                 if (getFileChecksums())
                 {
-                  if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
+                  if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
                   {
                     resumable = true;
                   }
@@ -1076,10 +1093,11 @@ public class VTFileTransferClientTransaction implements Runnable
           cleanDownload();
           return true;
         }
-        localFileSize = remoteFileSize;
+        //localFileSize = remoteFileSize;
+        remoteFileSize = localFileSize;
         if (getFileChecksums())
         {
-          if (localChecksum == remoteChecksum)
+          if (VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
           {
             // VTConsole.print("\nVT>Received file integrity
             // verified!\nVT>");
@@ -1217,7 +1235,7 @@ public class VTFileTransferClientTransaction implements Runnable
 //								{
 //									if (getFileChecksums())
 //									{
-//										if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
+//										if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
 //										{
 //											resumable = true;
 //										}
@@ -1233,7 +1251,7 @@ public class VTFileTransferClientTransaction implements Runnable
 //								}
                 if (getFileChecksums())
                 {
-                  if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
+                  if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
                   {
                     resumable = true;
                   }
@@ -1255,7 +1273,7 @@ public class VTFileTransferClientTransaction implements Runnable
 //									//check if file will be truncated
 //									if (getFileChecksums())
 //									{
-//										if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
+//										if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
 //										{
 //											try
 //											{
@@ -1287,7 +1305,7 @@ public class VTFileTransferClientTransaction implements Runnable
 //								}
                 if (getFileChecksums())
                 {
-                  if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && localChecksum == remoteChecksum)
+                  if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
                   {
                     try
                     {
