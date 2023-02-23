@@ -36,6 +36,7 @@ public class VTFileTransferClientTransaction implements Runnable
   // private static final int checksumBufferSize = 64 * 1024;
   private int readedBytes;
   private int writtenBytes;
+  private int bufferedBytes;
   private int remoteFileStatus;
   private int localFileStatus;
   private int remoteFileAccess;
@@ -672,8 +673,14 @@ public class VTFileTransferClientTransaction implements Runnable
           cleanUpload();
           return true;
         }
-        //remoteFileSize = localFileSize;
-        localFileSize = remoteFileSize;
+        if (localFileSize > remoteFileSize)
+        {
+          remoteFileSize = localFileSize;
+        }
+        else if (remoteFileSize > localFileSize)
+        {
+          localFileSize = remoteFileSize;
+        }
         if (getFileChecksums())
         {
           if (VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
@@ -797,24 +804,6 @@ public class VTFileTransferClientTransaction implements Runnable
             {
               if (localFileSize >= remoteFileSize && remoteFileSize >= 0)
               {
-//								if (verifying)
-//								{
-//									if (getFileChecksums())
-//									{
-//										if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
-//										{
-//											resumable = true;
-//										}
-//										else
-//										{
-//											
-//										}
-//									}
-//								}
-//								else
-//								{
-//									resumable = true;
-//								}
                 if (getFileChecksums())
                 {
                   if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
@@ -834,25 +823,6 @@ public class VTFileTransferClientTransaction implements Runnable
               }
               else if (remoteFileSize > localFileSize && remoteFileSize >= 0)
               {
-//								if (verifying)
-//								{
-//									//check if file will be truncated
-//									if (getFileChecksums())
-//									{
-//										if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
-//										{
-//											resumable = true;
-//										}
-//										else
-//										{
-//											
-//										}
-//									}
-//								}
-//								else
-//								{
-//									resumable = true;
-//								}
                 if (getFileChecksums())
                 {
                   if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
@@ -1093,8 +1063,14 @@ public class VTFileTransferClientTransaction implements Runnable
           cleanDownload();
           return true;
         }
-        //localFileSize = remoteFileSize;
-        remoteFileSize = localFileSize;
+        if (localFileSize > remoteFileSize)
+        {
+          remoteFileSize = localFileSize;
+        }
+        else if (remoteFileSize > localFileSize)
+        {
+          localFileSize = remoteFileSize;
+        }
         if (getFileChecksums())
         {
           if (VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
@@ -1231,24 +1207,6 @@ public class VTFileTransferClientTransaction implements Runnable
             {
               if (remoteFileSize >= localFileSize && localFileSize >= 0)
               {
-//								if (verifying)
-//								{
-//									if (getFileChecksums())
-//									{
-//										if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
-//										{
-//											resumable = true;
-//										}
-//										else
-//										{
-//											
-//										}
-//									}
-//								}
-//								else
-//								{
-//									resumable = true;
-//								}
                 if (getFileChecksums())
                 {
                   if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
@@ -1268,41 +1226,6 @@ public class VTFileTransferClientTransaction implements Runnable
               }
               else if (localFileSize > remoteFileSize && localFileSize >= 0)
               {
-//								if (verifying)
-//								{
-//									//check if file will be truncated
-//									if (getFileChecksums())
-//									{
-//										if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
-//										{
-//											try
-//											{
-//												fileTransferRandomAccessFile.setLength(remoteFileSize);
-//												resumable = true;
-//											}
-//											catch (Throwable t)
-//											{
-//												
-//											}
-//										}
-//										else
-//										{
-//											
-//										}
-//									}
-//								}
-//								else
-//								{
-//									try
-//									{
-//										fileTransferRandomAccessFile.setLength(remoteFileSize);
-//										resumable = true;
-//									}
-//									catch (Throwable t)
-//									{
-//										
-//									}
-//								}
                 if (getFileChecksums())
                 {
                   if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(localChecksum, remoteChecksum))
@@ -1491,14 +1414,15 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         else
         {
+          bufferedBytes = 0;
           while (!stopped && ok && writtenBytes > 0)
           {
-            readedBytes = fileTransferRemoteInputStream.read(fileTransferBuffer, 0, writtenBytes);
+            readedBytes = fileTransferRemoteInputStream.read(fileTransferBuffer, bufferedBytes, writtenBytes);
             if (readedBytes >= 0)
             {
-              fileTransferFileOutputStream.write(fileTransferBuffer, 0, readedBytes);
               writtenBytes -= readedBytes;
               currentOffset += readedBytes;
+              bufferedBytes += readedBytes;
               //transferDataCount += readedBytes;
             }
             else
@@ -1507,6 +1431,7 @@ public class VTFileTransferClientTransaction implements Runnable
               break;
             }
           }
+          fileTransferFileOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
           fileTransferFileOutputStream.flush();
         }
       }
