@@ -2046,7 +2046,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     pixelStepY = width + padding;
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
-    offset = areaX + padding + ((areaY  + padding) * (width + padding));
+    offset = areaX + padding + ((areaY + padding) * (width + padding));
     int size = (width * areaHeight);
     limitX = areaWidth;
     limitY = size;
@@ -2126,7 +2126,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     pixelStepY = width + padding;
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
-    offset = areaX + padding + ((areaY  + padding) * (width + padding));
+    offset = areaX + padding + ((areaY + padding) * (width + padding));
     int size = (width * areaHeight);
     limitX = areaWidth;
     limitY = size;
