@@ -45,11 +45,19 @@ public class VTManagedServerSocket
     
     public InputStream getInputStream(int number)
     {
+      if (number < 0)
+      {
+        number = 0;
+      }
       return connection.getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12 + number);
     }
     
     public OutputStream getOutputStream(int number)
     {
+      if (number < 0)
+      {
+        number = 0;
+      }
       return connection.getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12 + number);
     }
   }

@@ -32,7 +32,7 @@ import org.vash.vate.VT;
 @SuppressWarnings("deprecation")
 public class VTCryptographicEngine
 {
-  private VTBlake3Digest blake3Digester;
+  private VTBlake3MessageDigest blake3Digest;
   
   //private volatile Cipher encryptionCipher;
   //private volatile Cipher decryptionCipher;
@@ -41,9 +41,9 @@ public class VTCryptographicEngine
   
   public VTCryptographicEngine()
   {
-    this.blake3Digester = new VTBlake3Digest();
+    this.blake3Digest = new VTBlake3MessageDigest();
   }
-
+  
   public void initializeClientEngine(int encryptionType, byte[]... encryptionKeys)
   {
     //encryptionCipher = null;
@@ -51,25 +51,25 @@ public class VTCryptographicEngine
     encryptionCipherBC = null;
     decryptionCipherBC = null;
     
-    blake3Digester.reset();
+    blake3Digest.reset();
     for (byte[] data : encryptionKeys)
     {
       if (data != null && data.length > 0)
       {
-        blake3Digester.update(data);
+        blake3Digest.update(data);
       }
     }
-    byte[] first = blake3Digester.digest(64);
-    blake3Digester.reset();
-    blake3Digester.update(first);
+    byte[] first = blake3Digest.digest(64);
+    blake3Digest.reset();
+    blake3Digest.update(first);
     for (byte[] data : encryptionKeys)
     {
       if (data != null && data.length > 0)
       {
-        blake3Digester.update(data);
+        blake3Digest.update(data);
       }
     }
-    byte[] second = blake3Digester.digest(64);
+    byte[] second = blake3Digest.digest(64);
     
     if (encryptionType == VT.VT_CONNECTION_ENCRYPT_NONE)
     {
@@ -161,7 +161,7 @@ public class VTCryptographicEngine
       
     }
   }
-
+  
   public void initializeServerEngine(int encryptionType, byte[]... encryptionKeys)
   {
     //encryptionCipher = null;
@@ -169,25 +169,25 @@ public class VTCryptographicEngine
     encryptionCipherBC = null;
     decryptionCipherBC = null;
     
-    blake3Digester.reset();
+    blake3Digest.reset();
     for (byte[] data : encryptionKeys)
     {
       if (data != null && data.length > 0)
       {
-        blake3Digester.update(data);
+        blake3Digest.update(data);
       }
     }
-    byte[] first = blake3Digester.digest(64);
-    blake3Digester.reset();
-    blake3Digester.update(first);
+    byte[] first = blake3Digest.digest(64);
+    blake3Digest.reset();
+    blake3Digest.update(first);
     for (byte[] data : encryptionKeys)
     {
       if (data != null && data.length > 0)
       {
-        blake3Digester.update(data);
+        blake3Digest.update(data);
       }
     }
-    byte[] second = blake3Digester.digest(64);
+    byte[] second = blake3Digest.digest(64);
     
     if (encryptionType == VT.VT_CONNECTION_ENCRYPT_NONE)
     {
@@ -316,38 +316,38 @@ public class VTCryptographicEngine
   
   private byte[] generateKeyBLAKE3(int size, byte[] first, byte[] second, byte[]... extra)
   {
-    blake3Digester.reset();
-    blake3Digester.update(first);
-    blake3Digester.update(second);
+    blake3Digest.reset();
+    blake3Digest.update(first);
+    blake3Digest.update(second);
     for (byte[] data : extra)
     {
       if (data != null && data.length > 0)
       {
-        blake3Digester.update(data);
+        blake3Digest.update(data);
       }
     }
-    blake3Digester.update(second);
-    blake3Digester.update(first);
-    return blake3Digester.digest(size);
+    blake3Digest.update(second);
+    blake3Digest.update(first);
+    return blake3Digest.digest(size);
   }
   
   private byte[] generateIVBLAKE3(int size, byte[] first, byte[] second, byte[]... extra)
   {
-    blake3Digester.reset();
-    blake3Digester.update(second);
-    blake3Digester.update(first);
+    blake3Digest.reset();
+    blake3Digest.update(second);
+    blake3Digest.update(first);
     for (byte[] data : extra)
     {
       if (data != null && data.length > 0)
       {
-        blake3Digester.update(data);
+        blake3Digest.update(data);
       }
     }
-    blake3Digester.update(first);
-    blake3Digester.update(second);
-    return blake3Digester.digest(size);
+    blake3Digest.update(first);
+    blake3Digest.update(second);
+    return blake3Digest.digest(size);
   }
-
+  
   public InputStream getDecryptedInputStream(InputStream encrypted)
   {
     if (decryptionCipherBC != null)
@@ -361,7 +361,7 @@ public class VTCryptographicEngine
     //}
     //return new CipherInputStream(encrypted, decryptionCipher);
   }
-
+  
   public OutputStream getEncryptedOutputStream(OutputStream decrypted)
   {
     if (encryptionCipherBC != null)

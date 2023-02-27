@@ -31,8 +31,8 @@ import org.vash.vate.network.ssl.SSLVerificationDisabler;
 import org.vash.vate.parser.VTArgumentParser;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
-import org.vash.vate.security.VTBlake3Digest;
 import org.vash.vate.security.VTBlake3DigestRandom;
+import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.server.connection.VTServerConnector;
 import org.vash.vate.server.console.local.VTServerLocalConsoleReader;
 import org.vash.vate.server.console.local.VTServerLocalGraphicalConsoleMenuBar;
@@ -59,7 +59,7 @@ public class VTServer implements Runnable
   private String sessionShell = "";
   private final String vtURL = System.getenv("VT_PATH");
   //private MessageDigest sha256Digester;
-  private VTBlake3Digest blake3Digester = new VTBlake3Digest();
+  private VTBlake3MessageDigest blake3Digest = new VTBlake3MessageDigest();
   // private File userDatabaseFile;
   private File serverSettingsFile;
   private final Map<byte[], Credential> userCredentials = new LinkedHashMap<byte[], Credential>();
@@ -434,8 +434,8 @@ public class VTServer implements Runnable
     byte[] credential = new byte[128];
     try
     {
-      System.arraycopy(blake3Digester.digest(user.getBytes("UTF-8")), 0, credential, 0, 64);
-      System.arraycopy(blake3Digester.digest(password.getBytes("UTF-8")), 0, credential, 64, 64);
+      System.arraycopy(blake3Digest.digest(user.getBytes("UTF-8")), 0, credential, 0, 64);
+      System.arraycopy(blake3Digest.digest(password.getBytes("UTF-8")), 0, credential, 64, 64);
       userCredentials.clear();
       userCredentials.put(credential, new Credential(user, password));
     }
@@ -448,8 +448,8 @@ public class VTServer implements Runnable
   public void addUserCredential(String user, String password) throws UnsupportedEncodingException
   {
     byte[] credential = new byte[128];
-    System.arraycopy(blake3Digester.digest(user.getBytes("UTF-8")), 0, credential, 0, 64);
-    System.arraycopy(blake3Digester.digest(password.getBytes("UTF-8")), 0, credential, 64, 64);
+    System.arraycopy(blake3Digest.digest(user.getBytes("UTF-8")), 0, credential, 0, 64);
+    System.arraycopy(blake3Digest.digest(password.getBytes("UTF-8")), 0, credential, 64, 64);
     userCredentials.put(credential, new Credential(user, password));
   }
   

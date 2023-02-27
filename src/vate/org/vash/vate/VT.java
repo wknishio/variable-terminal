@@ -28,7 +28,7 @@ public class VT
   public static final int VT_MAJOR_VERSION = 1;
   public static final int VT_MINOR_VERSION = 4;
   public static final int VT_REVISION_VERSION = 2;
-
+  
   public static final int VT_NETWORK_PACKET_HEADER_SIZE = 8;
   public static final int VT_NETWORK_PACKET_SIZE = 1024 * 4;
   public static final int VT_NETWORK_PACKET_BUFFER_SIZE = 1024 * 64;
@@ -36,7 +36,7 @@ public class VT
   public static final int VT_COMPRESSED_DATA_BUFFER_SIZE = 1024 * 64;
   public static final int VT_FILE_DATA_BUFFER_SIZE = 1024 * 64;
   public static final int VT_SMALL_DATA_BUFFER_SIZE = 1024 * 16;
-
+  
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_PIPED = 0;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT = 1;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_THROTTLEABLE = 0 << 1;
@@ -45,11 +45,11 @@ public class VT
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED = 1 << 2;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_LZ4 = 0 << 3;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZLIB = 1 << 3;
-
+  
   public static final int VT_CONNECTION_PROXY_NONE = 0;
   public static final int VT_CONNECTION_PROXY_SOCKS = 1;
   public static final int VT_CONNECTION_PROXY_HTTP = 2;
-
+  
   public static final int VT_CONNECTION_ENCRYPT_NONE = 0;
   public static final int VT_CONNECTION_ENCRYPT_RC4 = 1;
   public static final int VT_CONNECTION_ENCRYPT_AES = 2;
@@ -58,16 +58,16 @@ public class VT
   public static final int VT_CONNECTION_ENCRYPT_SALSA = 4;
   public static final int VT_CONNECTION_ENCRYPT_HC256 = 5;
   public static final int VT_CONNECTION_ENCRYPT_GRAIN = 6;
-
+  
   public static final int VT_AUTHENTICATION_TIMEOUT_MILLISECONDS = 60000;
   public static final int VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS = 60000;
   // public static final int VT_CONNECTION_TCP_ACCEPT_TIMEOUT_MILLISECONDS = 60000;
   // public static final int VT_CONNECTION_TCP_CONNECT_TIMEOUT_MILLISECONDS = 60000;
   public static final int VT_CLIENT_RECONNECTION_TIMEOUT_MILLISECONDS = 60000;
   public static final int VT_DAEMON_RECONNECTION_TIMEOUT_MILLISECONDS = 3000;
-
+  
   public static final int VT_PING_SERVICE_INTERVAL_MILLISECONDS = 15000;
-
+  
   public static final int VT_FILE_TRANSFER_SESSION_STARTED = 0;
   public static final int VT_FILE_TRANSFER_SESSION_FINISHED = 1;
   public static final int VT_FILE_TRANSFER_FILE_NOT_FOUND = 2;
@@ -80,7 +80,7 @@ public class VT
   public static final int VT_FILE_TRANSFER_FILE_ACCESS_WRITE_ONLY = 9;
   public static final int VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE = 10;
   public static final int VT_FILE_TRANSFER_FILE_ACCESS_ERROR = 11;
-
+  
   public static final int VT_GRAPHICS_MODE_SESSION_STARTED = 0;
   public static final int VT_GRAPHICS_MODE_SESSION_UNSTARTED = 1;
   public static final int VT_GRAPHICS_MODE_SESSION_FINISHED = 2;
@@ -153,7 +153,7 @@ public class VT
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_27 = 69;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_262144 = 70;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_2097152 = 71;
-
+  
   private static final DateFormat VT_ERA_DATEFORMAT;
   private static final Calendar VT_YEAR_CALENDAR;
   public static final AudioFormat VT_AUDIO_FORMAT_DEFAULT;
@@ -162,9 +162,9 @@ public class VT
   public static final AudioFormat VT_AUDIO_FORMAT_24000;
   public static final AudioFormat VT_AUDIO_FORMAT_32000;
   public static final AudioFormat VT_AUDIO_FORMAT_48000;
-
+  
   public static final Map<RenderingHints.Key, Object> VT_GRAPHICS_RENDERING_HINTS;
-
+  
   static
   {
     try
@@ -209,11 +209,11 @@ public class VT
     VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
     VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
   }
-
+  
   public static final int VT_AUDIO_CODEC_SPEEX = 1;
   public static final int VT_AUDIO_CODEC_OPUS = 2;
   public static final int VT_AUDIO_CODEC_DEFAULT = VT_AUDIO_CODEC_OPUS;
-
+  
   public static final int VT_AUDIO_CODEC_FRAME_MILLISECONDS = 20;
   public static final int VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS = 320;
   public static final int VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS = 320;
@@ -221,14 +221,14 @@ public class VT
   public static final int VT_ZIP_FILE_COMPRESS = 1;
   public static final int VT_ZIP_FILE_UNCOMPRESS = 2;
   public static final int VT_ZIP_FILE_DECOMPRESS = 3;
-
+  
   public static final String VT_VERSION = "v" + VT.VT_MAJOR_VERSION + "." + VT.VT_MINOR_VERSION + "." + VT.VT_REVISION_VERSION;
   public static final String VT_YEAR = VT_ERA_DATEFORMAT.format(VT_YEAR_CALENDAR.getTime()) + " " + String.valueOf(VT_YEAR_CALENDAR.get(Calendar.YEAR));
-
+  
   public static BufferedImage remoteIcon;
   public static BufferedImage terminalIcon;
   public static BufferedImage desktopIcon;
-
+  
   static
   {
     disableAccessWarnings();

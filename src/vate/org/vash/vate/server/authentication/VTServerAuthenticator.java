@@ -5,7 +5,7 @@ import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
 import org.vash.vate.VT;
 import org.vash.vate.security.VTArrayComparator;
-import org.vash.vate.security.VTBlake3Digest;
+import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.connection.VTServerConnection;
 
@@ -40,7 +40,7 @@ public class VTServerAuthenticator
   private byte[] receivedCredential;
   private byte[] localNonce;
   private byte[] remoteNonce;
-  private VTBlake3Digest blake3Digester = new VTBlake3Digest();
+  private VTBlake3MessageDigest blake3Digest = new VTBlake3MessageDigest();
   //private MessageDigest sha256Digester;
   private VTServer server;
   private VTServerConnection connection;
@@ -199,18 +199,18 @@ public class VTServerAuthenticator
       for (byte[] storedCredential : server.getUserCredentials().keySet())
       {
         System.arraycopy(storedCredential, 0, digestedCredential, 0, storedCredential.length);
-        blake3Digester.update(digestedCredential, 0, 64);
-        blake3Digester.update(localNonce);
-        System.arraycopy(blake3Digester.digest(remoteNonce), 0, digestedCredential, 0, 64);
-        blake3Digester.update(digestedCredential, 64, 64);
-        blake3Digester.update(localNonce);
-        System.arraycopy(blake3Digester.digest(remoteNonce), 0, digestedCredential, 64, 64);
+        blake3Digest.update(digestedCredential, 0, 64);
+        blake3Digest.update(localNonce);
+        System.arraycopy(blake3Digest.digest(remoteNonce), 0, digestedCredential, 0, 64);
+        blake3Digest.update(digestedCredential, 64, 64);
+        blake3Digest.update(localNonce);
+        System.arraycopy(blake3Digest.digest(remoteNonce), 0, digestedCredential, 64, 64);
         if (VTArrayComparator.arrayEquals(digestedCredential, receivedCredential))
         {
-          blake3Digester.update(remoteNonce);
-          blake3Digester.update(localNonce);
+          blake3Digest.update(remoteNonce);
+          blake3Digest.update(localNonce);
           // connection.getConnectionSocket().setSoTimeout(0);
-          connection.getAuthenticationWriter().write(blake3Digester.digest(VT_AUTHENTICATION_ACCEPTED_STRING));
+          connection.getAuthenticationWriter().write(blake3Digest.digest(VT_AUTHENTICATION_ACCEPTED_STRING));
           connection.getAuthenticationWriter().flush();
           connection.getAuthenticationReader().readFully(randomData);
           // VTConsole.print("\rVT>Authentication
@@ -227,18 +227,18 @@ public class VTServerAuthenticator
     {
       byte[] storedCredential = new byte[128];
       System.arraycopy(storedCredential, 0, digestedCredential, 0, storedCredential.length);
-      blake3Digester.update(digestedCredential, 0, 64);
-      blake3Digester.update(localNonce);
-      System.arraycopy(blake3Digester.digest(remoteNonce), 0, digestedCredential, 0, 64);
-      blake3Digester.update(digestedCredential, 64, 64);
-      blake3Digester.update(localNonce);
-      System.arraycopy(blake3Digester.digest(remoteNonce), 0, digestedCredential, 64, 64);
+      blake3Digest.update(digestedCredential, 0, 64);
+      blake3Digest.update(localNonce);
+      System.arraycopy(blake3Digest.digest(remoteNonce), 0, digestedCredential, 0, 64);
+      blake3Digest.update(digestedCredential, 64, 64);
+      blake3Digest.update(localNonce);
+      System.arraycopy(blake3Digest.digest(remoteNonce), 0, digestedCredential, 64, 64);
       if (VTArrayComparator.arrayEquals(digestedCredential, receivedCredential))
       {
-        blake3Digester.update(remoteNonce);
-        blake3Digester.update(localNonce);
+        blake3Digest.update(remoteNonce);
+        blake3Digest.update(localNonce);
         // connection.getConnectionSocket().setSoTimeout(0);
-        connection.getAuthenticationWriter().write(blake3Digester.digest(VT_AUTHENTICATION_ACCEPTED_STRING));
+        connection.getAuthenticationWriter().write(blake3Digest.digest(VT_AUTHENTICATION_ACCEPTED_STRING));
         connection.getAuthenticationWriter().flush();
         connection.getAuthenticationReader().readFully(randomData);
         // VTConsole.print("\rVT>Authentication
@@ -251,10 +251,10 @@ public class VTServerAuthenticator
       }
     }
     // VTConsole.print("\rVT>Authentication failed!\nVT>");
-    blake3Digester.update(remoteNonce);
-    blake3Digester.update(localNonce);
+    blake3Digest.update(remoteNonce);
+    blake3Digest.update(localNonce);
     // connection.getConnectionSocket().setSoTimeout(0);
-    connection.getAuthenticationWriter().write(blake3Digester.digest(VT_AUTHENTICATION_REJECTED_STRING));
+    connection.getAuthenticationWriter().write(blake3Digest.digest(VT_AUTHENTICATION_REJECTED_STRING));
     connection.getAuthenticationWriter().flush();
     connection.getAuthenticationReader().readFully(randomData);
     stopTimeoutThread();
