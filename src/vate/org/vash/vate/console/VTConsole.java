@@ -27,6 +27,7 @@ public final class VTConsole
   public static final int VT_CONSOLE_COLOR_DARK_MAGENTA = 5;
   public static final int VT_CONSOLE_COLOR_DARK_CYAN = 6;
   public static final int VT_CONSOLE_COLOR_DARK_WHITE = 7;
+  public static final int VT_CONSOLE_COLOR_LIGHT_BLACK = 10;
   public static final int VT_CONSOLE_COLOR_LIGHT_RED = 11;
   public static final int VT_CONSOLE_COLOR_LIGHT_GREEN = 12;
   public static final int VT_CONSOLE_COLOR_LIGHT_YELLOW = 13;

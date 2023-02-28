@@ -559,6 +559,11 @@ public class VTStandardConsole implements VTConsoleImplementation
       {
         return "37";
       }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_BLACK:
+      {
+        // return 101;
+        return "30;90";
+      }
       case VTConsole.VT_CONSOLE_COLOR_LIGHT_RED:
       {
         // return 91;
@@ -640,6 +645,11 @@ public class VTStandardConsole implements VTConsoleImplementation
       case VTConsole.VT_CONSOLE_COLOR_DARK_WHITE:
       {
         return "47";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_BLACK:
+      {
+        // return 101;
+        return "40;100";
       }
       case VTConsole.VT_CONSOLE_COLOR_LIGHT_RED:
       {

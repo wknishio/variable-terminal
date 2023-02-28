@@ -215,8 +215,8 @@ public class VTServerAuthenticator
           connection.getAuthenticationReader().readFully(randomData);
           // VTConsole.print("\rVT>Authentication
           // successful!\nVT>");
-          user = server.getUserCredentials().get(storedCredential).user;
-          password = server.getUserCredentials().get(storedCredential).password;
+          user = server.getUserCredentials().get(storedCredential).getUser();
+          password = server.getUserCredentials().get(storedCredential).getPassword();
           accepted = true;
           stopTimeoutThread();
           return true;
@@ -243,8 +243,8 @@ public class VTServerAuthenticator
         connection.getAuthenticationReader().readFully(randomData);
         // VTConsole.print("\rVT>Authentication
         // successful!\nVT>");
-        user = server.getUserCredentials().get(storedCredential).user;
-        password = server.getUserCredentials().get(storedCredential).password;
+        user = server.getUserCredentials().get(storedCredential).getUser();
+        password = server.getUserCredentials().get(storedCredential).getPassword();
         accepted = true;
         stopTimeoutThread();
         return true;

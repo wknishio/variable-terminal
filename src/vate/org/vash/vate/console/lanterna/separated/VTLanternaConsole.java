@@ -78,27 +78,28 @@ import com.googlecode.lanterna.terminal.swing.TerminalEmulatorPalette;
 
 public class VTLanternaConsole implements VTConsoleImplementation
 {
-//  public static final TerminalEmulatorPalette CUSTOM_VGA =
-//  new TerminalEmulatorPalette(
-//          new java.awt.Color(170, 170, 170),
-//          new java.awt.Color(255, 255, 255),
-//          new java.awt.Color(0, 0, 0),
-//          new java.awt.Color(0, 0, 0),
-//          new java.awt.Color(85, 85, 85),
-//          new java.awt.Color(170, 0, 0),
-//          new java.awt.Color(255, 0, 0),
-//          new java.awt.Color(0, 170, 0),
-//          new java.awt.Color(0, 255, 0),
-//          new java.awt.Color(170, 0, 0),
-//          new java.awt.Color(255, 255, 0),
-//          new java.awt.Color(0, 0, 170),
-//          new java.awt.Color(0, 0, 255),
-//          new java.awt.Color(170, 0, 170),
-//          new java.awt.Color(255, 0, 255),
-//          new java.awt.Color(0, 170, 170),
-//          new java.awt.Color(0, 255, 255),
-//          new java.awt.Color(170, 170, 170),
-//          new java.awt.Color(255, 255, 255));
+  public static final TerminalEmulatorPalette CUSTOM_VGA =
+  new TerminalEmulatorPalette(
+    new java.awt.Color(170, 170, 170),
+    new java.awt.Color(255, 255, 255),
+    new java.awt.Color(0, 0, 0),
+    new java.awt.Color(0, 0, 0),
+    new java.awt.Color(85, 85, 85),
+    new java.awt.Color(170, 0, 0),
+    new java.awt.Color(255, 85, 85),
+    new java.awt.Color(0, 170, 0),
+    new java.awt.Color(85, 255, 85),
+    new java.awt.Color(170, 170, 0),
+    new java.awt.Color(255, 255, 85),
+    new java.awt.Color(0, 0, 170),
+    new java.awt.Color(85, 85, 255),
+    new java.awt.Color(170, 0, 170),
+    new java.awt.Color(255, 85, 255),
+    new java.awt.Color(0, 170, 170),
+    new java.awt.Color(85, 255, 255),
+    new java.awt.Color(170, 170, 170),
+    new java.awt.Color(255, 255, 255)
+  );
   
   private volatile AWTTerminalFrame frame;
   private java.awt.Panel spacer1;
@@ -130,6 +131,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
   //private volatile boolean interruptedReadLine = false;
   // private volatile boolean selectingText = false;
   // private volatile int caretRecoilCount = 0;
+  private Properties defaultInputProperties;
+  private Properties defaultOutputProperties;
   private final StringBuilder inputBuffer = new StringBuilder();
   private final StringBuilder outputBuffer = new StringBuilder();
   private final Object inputSynchronizer = new Object();
@@ -617,14 +620,15 @@ public class VTLanternaConsole implements VTConsoleImplementation
   
   public void build() throws Exception
   {
-    AWTTerminalFontConfiguration.setFontScalingFactor(VTGlobalTextStyleManager.FONT_SCALING_FACTOR_MONOSPACED);
     AWTTerminalFontConfiguration.setBaseFontSize(VTGlobalTextStyleManager.BASE_FONT_SIZE_MONOSPACED);
+    AWTTerminalFontConfiguration.setFontScalingFactor(VTGlobalTextStyleManager.FONT_SCALING_FACTOR_MONOSPACED);
     DefaultTerminalFactory factory = new DefaultTerminalFactory();
     factory.setForceAWTOverSwing(true);
     // factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
     factory.setMouseCaptureMode(MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE);
     factory.setInitialTerminalSize(new TerminalSize(consoleOutputColumns, consoleOutputLines + consoleInputLines));
-    factory.setTerminalEmulatorColorConfiguration(TerminalEmulatorColorConfiguration.newInstance(TerminalEmulatorPalette.STANDARD_VGA));
+    //factory.setTerminalEmulatorColorConfiguration(TerminalEmulatorColorConfiguration.newInstance(TerminalEmulatorPalette.STANDARD_VGA));
+    factory.setTerminalEmulatorColorConfiguration(TerminalEmulatorColorConfiguration.newInstance(VTLanternaConsole.CUSTOM_VGA));
     // factory.setTerminalEmulatorDeviceConfiguration(deviceConfiguration)
     factory.setAutoOpenTerminalEmulatorWindow(false);
     if (graphical)
@@ -1434,16 +1438,16 @@ public class VTLanternaConsole implements VTConsoleImplementation
     // Create gui and start gui
     gui = new MultiWindowTextGUI(screen, new DefaultWindowManager(), new EmptySpace(TextColor.ANSI.BLACK));
     
-    Properties inputproperties = new Properties();
-    inputproperties.load(this.getClass().getResourceAsStream("/vtlanternaconsole-input-theme.properties"));
-    PropertyTheme inputtheme = new PropertyTheme(inputproperties);
+    defaultInputProperties = new Properties();
+    defaultInputProperties.load(this.getClass().getResourceAsStream("/vtlanternaconsole-input-theme.properties"));
+    PropertyTheme inputTheme = new PropertyTheme(defaultInputProperties);
     
-    Properties outputproperties = new Properties();
-    outputproperties.load(this.getClass().getResourceAsStream("/vtlanternaconsole-output-theme.properties"));
-    PropertyTheme outputtheme = new PropertyTheme(outputproperties);
+    defaultOutputProperties = new Properties();
+    defaultOutputProperties.load(this.getClass().getResourceAsStream("/vtlanternaconsole-output-theme.properties"));
+    PropertyTheme outputTheme = new PropertyTheme(defaultOutputProperties);
     
-    inputBox.setTheme(inputtheme);
-    outputBox.setTheme(outputtheme);
+    inputBox.setTheme(inputTheme);
+    outputBox.setTheme(outputTheme);
     
     // gui.setTheme(theme);
     
@@ -2100,7 +2104,215 @@ public class VTLanternaConsole implements VTConsoleImplementation
   
   public void setColors(int backgroundColor, int foregroundColor)
   {
-    // TODO Auto-generated method stub
+    Properties copyInputProperties = new Properties();
+    copyInputProperties.putAll(defaultInputProperties);
+    
+    Properties copyOutputProperties = new Properties();
+    copyOutputProperties.putAll(defaultOutputProperties);
+    
+    String foregroundColorStringBoth = "green_bright";
+    String backgroundColorStringOutput = "black";
+    String backgroundColorStringInput = "black_bright";
+    
+    switch (foregroundColor)
+    {
+      case VTConsole.VT_CONSOLE_COLOR_DARK_BLACK:
+      {
+        foregroundColorStringBoth = "black";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DARK_RED:
+      {
+        foregroundColorStringBoth = "red";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DARK_GREEN:
+      {
+        foregroundColorStringBoth = "green";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DARK_YELLOW:
+      {
+        foregroundColorStringBoth = "yellow";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DARK_BLUE:
+      {
+        foregroundColorStringBoth = "blue";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DARK_MAGENTA:
+      {
+        foregroundColorStringBoth = "magenta";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DARK_CYAN:
+      {
+        foregroundColorStringBoth = "cyan";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DARK_WHITE:
+      {
+        foregroundColorStringBoth = "white";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_BLACK:
+      {
+        foregroundColorStringBoth = "black_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_RED:
+      {
+        foregroundColorStringBoth = "red_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN:
+      {
+        foregroundColorStringBoth = "green_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_YELLOW:
+      {
+        foregroundColorStringBoth = "yellow_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_BLUE:
+      {
+        foregroundColorStringBoth = "blue_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_MAGENTA:
+      {
+        foregroundColorStringBoth = "magenta_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_CYAN:
+      {
+        foregroundColorStringBoth = "cyan_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_WHITE:
+      {
+        foregroundColorStringBoth = "white_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DEFAULT:
+      {
+        foregroundColorStringBoth = "black";
+      }
+      default:
+      {
+        foregroundColorStringBoth = "black";
+      }
+    }
+    
+    switch (backgroundColor)
+    {
+      case VTConsole.VT_CONSOLE_COLOR_DARK_BLACK:
+      {
+        backgroundColorStringOutput = "black";
+        backgroundColorStringInput = "black_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DARK_RED:
+      {
+        backgroundColorStringOutput = "red";
+        backgroundColorStringInput = "red_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DARK_GREEN:
+      {
+        backgroundColorStringOutput = "green";
+        backgroundColorStringInput = "green_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DARK_YELLOW:
+      {
+        backgroundColorStringOutput = "yellow";
+        backgroundColorStringInput = "yellow_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DARK_BLUE:
+      {
+        backgroundColorStringOutput = "blue";
+        backgroundColorStringInput = "blue_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DARK_MAGENTA:
+      {
+        backgroundColorStringOutput = "magenta";
+        backgroundColorStringInput = "magenta_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DARK_CYAN:
+      {
+        backgroundColorStringOutput = "cyan";
+        backgroundColorStringInput = "cyan_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DARK_WHITE:
+      {
+        backgroundColorStringOutput = "white";
+        backgroundColorStringInput = "white_bright";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_BLACK:
+      {
+        backgroundColorStringOutput = "black_bright";
+        backgroundColorStringInput = "black";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_RED:
+      {
+        backgroundColorStringOutput = "red_bright";
+        backgroundColorStringInput = "red";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN:
+      {
+        backgroundColorStringOutput = "green_bright";
+        backgroundColorStringInput = "green";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_YELLOW:
+      {
+        backgroundColorStringOutput = "yellow_bright";
+        backgroundColorStringInput = "yellow";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_BLUE:
+      {
+        backgroundColorStringOutput = "blue_bright";
+        backgroundColorStringInput = "blue";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_MAGENTA:
+      {
+        backgroundColorStringOutput = "magenta_bright";
+        backgroundColorStringInput = "magenta";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_CYAN:
+      {
+        backgroundColorStringOutput = "cyan_bright";
+        backgroundColorStringInput = "cyan";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_LIGHT_WHITE:
+      {
+        backgroundColorStringOutput = "white_bright";
+        backgroundColorStringInput = "white";
+      }
+      case VTConsole.VT_CONSOLE_COLOR_DEFAULT:
+      {
+        backgroundColorStringOutput = "black";
+        backgroundColorStringInput = "black_bright";
+      }
+      default:
+      {
+        backgroundColorStringOutput = "black";
+        backgroundColorStringInput = "black_bright";
+      }
+    }
+    
+    for (Object inputKey : copyInputProperties.keySet())
+    {
+      if (inputKey.toString().toLowerCase().contains("foreground"))
+      {
+        copyInputProperties.setProperty(inputKey.toString(), foregroundColorStringBoth);
+      }
+      if (inputKey.toString().toLowerCase().contains("background"))
+      {
+        copyInputProperties.setProperty(inputKey.toString(), backgroundColorStringInput);
+      }
+    }
+    
+    for (Object outputKey : copyOutputProperties.keySet())
+    {
+      if (outputKey.toString().toLowerCase().contains("foreground"))
+      {
+        copyOutputProperties.setProperty(outputKey.toString(), foregroundColorStringBoth);
+      }
+      if (outputKey.toString().toLowerCase().contains("background"))
+      {
+        copyOutputProperties.setProperty(outputKey.toString(), backgroundColorStringOutput);
+      }
+    }
+    
+    PropertyTheme inputTheme = new PropertyTheme(copyInputProperties);
+    PropertyTheme outputTheme = new PropertyTheme(copyOutputProperties);
+    
+    inputBox.setTheme(inputTheme);
+    outputBox.setTheme(outputTheme);
   }
   
   public void setBold(boolean bold)
@@ -2110,7 +2322,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
   
   public void resetAttributes()
   {
-    // TODO Auto-generated method stub
+    PropertyTheme inputTheme = new PropertyTheme(defaultInputProperties);
+    PropertyTheme outputTheme = new PropertyTheme(defaultOutputProperties);
+    
+    inputBox.setTheme(inputTheme);
+    outputBox.setTheme(outputTheme);
   }
   
   public void setSystemIn()
