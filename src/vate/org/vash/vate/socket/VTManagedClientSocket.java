@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import org.vash.vate.VT;
@@ -90,6 +91,16 @@ public class VTManagedClientSocket
   public VTClient getClient()
   {
     return vtclient;
+  }
+  
+  public void loadClientSettingsFile(String settingsFile) throws Exception
+  {
+    vtclient.loadClientSettingsFile(settingsFile);
+  }
+  
+  public void loadClientSettingsProperties(Properties properties) throws Exception
+  {
+    vtclient.loadClientSettingsProperties(properties);
   }
   
   public void start()

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import org.vash.vate.VT;
@@ -90,6 +91,16 @@ public class VTManagedServerSocket
   public VTServer getServer()
   {
     return vtserver;
+  }
+  
+  public void loadServerSettingsFile(String settingsFile) throws Exception
+  {
+    vtserver.loadServerSettingsFile(settingsFile);
+  }
+  
+  public void loadServerSettings(Properties properties) throws Exception
+  {
+    vtserver.loadServerSettingsProperties(properties);
   }
   
   public void start()
