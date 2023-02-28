@@ -52,12 +52,12 @@ public class VT
   
   public static final int VT_CONNECTION_ENCRYPT_NONE = 0;
   public static final int VT_CONNECTION_ENCRYPT_RC4 = 1;
-  public static final int VT_CONNECTION_ENCRYPT_AES = 2;
-  public static final int VT_CONNECTION_ENCRYPT_ISAAC = 3;
+  //public static final int VT_CONNECTION_ENCRYPT_AES = 2;
+  public static final int VT_CONNECTION_ENCRYPT_ISAAC = 2;
   //public static final int VT_CONNECTION_ENCRYPT_BLOWFISH = 3;
-  public static final int VT_CONNECTION_ENCRYPT_SALSA = 4;
-  public static final int VT_CONNECTION_ENCRYPT_HC256 = 5;
-  public static final int VT_CONNECTION_ENCRYPT_GRAIN = 6;
+  public static final int VT_CONNECTION_ENCRYPT_SALSA = 3;
+  public static final int VT_CONNECTION_ENCRYPT_HC256 = 4;
+  public static final int VT_CONNECTION_ENCRYPT_GRAIN = 5;
   
   public static final int VT_AUTHENTICATION_TIMEOUT_MILLISECONDS = 60000;
   public static final int VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS = 60000;

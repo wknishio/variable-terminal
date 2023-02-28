@@ -2,15 +2,15 @@
 Changes since 1.4.2:
 
 * Renamed the entire project from Satan-AnyWhere to Variable-Terminal
-* Modified authentication protocol, backward compatibility broken
+* Changed authentication protocol, backward compatibility broken
 * Changed the default connection port to 6060
 * Console commands now start with *VT instead of *SAW
 * Merged server access settings commands to *VTACCESS
 * Changed snappy compression for LZ4 compression
 * Renamed command *VTREMOTEGRAPHICSMODE to *VTGRAPHICSLINK
 * Renamed command *VTGRAPHICSALERT to *VTSCREENALERT
-* Modified *VTGRAPHICSLINK protocol
-* Modified the video codec used in *VTGRAPHICSLINK
+* Changed *VTGRAPHICSLINK protocol
+* Changed the video codec used in *VTGRAPHICSLINK
 * Renamed client settings file to vate-client.properties
 * Renamed server settings file to vate-server.properties
 * Removed file user-database.properties
@@ -25,7 +25,7 @@ Changes since 1.4.2:
 * Added support for NAT-PMP port mapping if UPnP port mapping is not available
 * Command *VTGRAPHICSLINK now supports unified screen device capture
 * Command *VTSCREENSHOT now supports unified screen device capture with -1
-* Added command *VTCALLPRINT to print a file in server using default program
+* Added command *VTMAIL to open default mail composing program
 * Command *VTGRAPHICSLINK now supports scaled or adjusted image sizes
 * Added shortcut control+shift+backspace to toggle menu bar in *VTGRAPHICSLINK
 * Added shortcut control+shift+pageup to decrease scale in *VTGRAPHICSLINK
@@ -35,21 +35,22 @@ Changes since 1.4.2:
 * Added shortcut control+shift+end to use next device in *VTGRAPHICSLINK
 * Added 10 keyboard shorcuts to *VTGRAPHICSLINK
 * Added tips for *VTGRAPHICSLINK interface keyboard shortcuts
-* Modified AES encryption transformation to CTR instead of CBC
+* Removed AES encryption support
 * Added command *VTAUDIOMIXERS to list available audio mixers
 * Renamed command *VTAUDIOCHAT to *VTAUDIOLINK
-* Modified command *VTAUDIOLINK to allow use of specific audio mixers
-* Modified command *VTAUDIOLINK to use 16-bit Opus CELT audio
-* Modified command *VTAUDIOLINK to use sample rates 8khz/16khz/48khz
+* Changed command *VTAUDIOLINK to allow use of specific audio mixers
+* Changed command *VTAUDIOLINK to use 16-bit Opus CELT or 16-bit Speex codec
+* Changed command *VTAUDIOLINK to use sample rates 8000/16000/24000/48000
 * Added font resizing in console menu or ctrl+pageup/ctrl+pagedown/ctrl+home
 * Fonts may be initially scaled according to platform font scaling settings
 * Removed all zip file manipulation commands
 * Client now tries to reconnect with server in 60 seconds after disconnection
 * Added command *VTLIMIT to set connection rate limits in bytes per second
-* Modified *VTRUNTIME command, now allows processes to restart automatically
+* Changed *VTRUNTIME command, now allows processes to restart automatically
 * Added session commands parameter in client to run after authentication
 * Added option in client to interrupt listening in passive connection mode
 * Changed passive mode in client and server to bind to specific host address
+* Replaced *VTSOCKSTUNNEL and *VTTCPTUNNEL commands by *VTTUNNEL command
 * Added options in tunnel commands to bind tunnels to specific host address
 * Added *; as optional command delimiter for multiple commands per line
 * Added *VTCOVER command to show/hide server console interface
@@ -68,15 +69,15 @@ Changes since 1.4.2:
 * Added command *VTSAVE to save current client connection settings to file
 * Command *VTNETWORKS now shows hardware address with java 1.6
 * Changed startup parameter format, parameters now have a dash(-) as in unix
-* Modified *VTFILETRANSFER command to transfer directories and multiple files
+* Changed *VTFILETRANSFER command to transfer directories and multiple files
 * Added capacity of adding custom plugin console commands in client and server
-* Modified *VTRUNTIME command to be able to send Base64 data to input
-* Modified *VTRUNTIME command to be able to send unicode utf8 data to input
-* Modified *VTFILETRANSFER to transfer file again if checksum dont match
+* Changed *VTRUNTIME command to be able to send Base64 data to input
+* Changed *VTRUNTIME command to be able to send unicode utf8 data to input
+* Changed *VTFILETRANSFER to transfer file again if checksum dont match
 * Reduced graphical console CPU usage when its not the active window
 * Changed *VTMESSAGE command to *VTTEXT
 * Fixed *VTTEXT command problem
-* Modified the readme file to english language
+* Changed the readme file to english language
 * Updated graphical console to lanterna based implementation
 * Added capacity to truncate files when using command *VTFILETRANSFER
 * Added notification of nat devices external addresses

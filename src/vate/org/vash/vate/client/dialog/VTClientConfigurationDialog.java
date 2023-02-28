@@ -363,8 +363,8 @@ public class VTClientConfigurationDialog extends Dialog
 
     encryptionTypeChoice.add("None");
     encryptionTypeChoice.add("RC4");
-    encryptionTypeChoice.add("AES");
     encryptionTypeChoice.add("ISAAC");
+    //encryptionTypeChoice.add("AES");
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC256");
     encryptionTypeChoice.add("GRAIN");
@@ -384,10 +384,10 @@ public class VTClientConfigurationDialog extends Dialog
           {
             setEncryptionType("RC4");
           }
-          else if (e.getItem().equals("AES"))
-          {
-            setEncryptionType("AES");
-          }
+          //else if (e.getItem().equals("AES"))
+          //{
+            //setEncryptionType("AES");
+          //}
           //else if (e.getItem().equals("BLOWFISH"))
           //{
             //setEncryptionType("BLOWFISH");
@@ -1032,11 +1032,11 @@ public class VTClientConfigurationDialog extends Dialog
       encryptionType.setParameter("RC4");
       // encryptionPassword.setEnabled(true);
     }
-    else if (encryption.toUpperCase().startsWith("A"))
-    {
-      encryptionType.setParameter("AES");
+    //else if (encryption.toUpperCase().startsWith("A"))
+    //{
+      //encryptionType.setParameter("AES");
       // encryptionPassword.setEnabled(true);
-    }
+    //}
     //else if (encryption.toUpperCase().startsWith("B"))
     //{
       //encryptionType.setParameter("BLOWFISH");
