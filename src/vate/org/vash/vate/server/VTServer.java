@@ -82,7 +82,13 @@ public class VTServer implements Runnable
   private volatile boolean running = true;
   private volatile boolean reconfigure = false;
   private List<VTServerSessionListener> listeners = new LinkedList<VTServerSessionListener>();
-  private static final String VT_SERVER_SETTINGS_COMMENTS = "Variable-Terminal server settings file, supports UTF-8\r\n" + "#vate.server.connection.mode      values: default passive(P), active(A)\r\n" + "#vate.server.proxy.type           values: default none, HTTP(H), SOCKS(S)\r\n" + "#vate.server.proxy.authentication values: default disabled(D), enabled(E)\r\n" + "#vate.server.encryption.type      values: default none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + "#vate.server.session.users        format: user1/password1;user2/password2;...";
+  private static final String VT_SERVER_SETTINGS_COMMENTS = 
+  "Variable-Terminal server settings file, supports UTF-8\r\n" + 
+  "#vate.server.connection.mode      values: default passive(P), active(A)\r\n" + 
+  "#vate.server.proxy.type           values: default none, HTTP(H), SOCKS(S)\r\n" + 
+  "#vate.server.proxy.authentication values: default disabled(D), enabled(E)\r\n" + 
+  "#vate.server.encryption.type      values: default none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
+  "#vate.server.session.users        format: user1/password1;user2/password2;...";
   
   static
   {
@@ -2161,7 +2167,10 @@ public class VTServer implements Runnable
       VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Server - Console");
     }
     VTConsole.clear();
-    VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Server\n" + "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + "VT>This software is under MIT license, see license.txt!\n" + "VT>This software comes with no warranty, use at your own risk!\n");
+    VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Server\n" + 
+    "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + 
+    "VT>This software is under MIT license, see license.txt!\n" + 
+    "VT>This software comes with no warranty, use at your own risk!\n");
     if (!VTConsole.isDaemon() && !daemon)
     {
       configure();

@@ -64,7 +64,13 @@ public class VTClient implements Runnable
   private volatile boolean retry = false;
   private volatile boolean manual = false;
   private List<VTClientSessionListener> listeners = new LinkedList<VTClientSessionListener>();
-  private static final String VT_CLIENT_SETTINGS_COMMENTS = "Variable-Terminal client settings file, supports UTF-8\r\n" + "#vate.client.connection.mode      values: default active(A), passive(P)\r\n" + "#vate.client.proxy.type           values: default none, HTTP(H), SOCKS(S)\r\n" + "#vate.client.proxy.authentication values: default disabled(D), enabled(E)\r\n" + "#vate.client.encryption.type      values: default none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + "#vate.client.session.commands     format: cmd1*;cmd2*;cmd3*;...\r\n";
+  private static final String VT_CLIENT_SETTINGS_COMMENTS = 
+  "Variable-Terminal client settings file, supports UTF-8\r\n" + 
+  "#vate.client.connection.mode      values: default active(A), passive(P)\r\n" + 
+  "#vate.client.proxy.type           values: default none, HTTP(H), SOCKS(S)\r\n" + 
+  "#vate.client.proxy.authentication values: default disabled(D), enabled(E)\r\n" + 
+  "#vate.client.encryption.type      values: default none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
+  "#vate.client.session.commands     format: cmd1*;cmd2*;cmd3*;...\r\n";
   // "#vate.client.session.lines format: file1;file2;file3;...";
   
   static
@@ -2005,7 +2011,10 @@ public class VTClient implements Runnable
     {
       // System.setProperty("java.library.path", "lib/native");
     }
-    VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Client\n" + "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + "VT>This software is under MIT license, see license.txt!\n" + "VT>This software comes with no warranty, use at your own risk!\n");
+    VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Client\n" + 
+    "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + 
+    "VT>This software is under MIT license, see license.txt!\n" + 
+    "VT>This software comes with no warranty, use at your own risk!\n");
     // + "VT>Press enter to start client:");
     if (!VTConsole.isDaemon() && !daemon)
     {
