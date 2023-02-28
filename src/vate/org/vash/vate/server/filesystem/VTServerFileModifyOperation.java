@@ -18,34 +18,34 @@ public class VTServerFileModifyOperation extends VTTask
   public static final int REMOVE_FILE = 3;
   public static final int CREATE_FILE = 4;
   public static final int CREATE_DIRECTORY = 5;
-
+  
   private volatile boolean finished;
   private volatile int operation;
   private File sourceFile;
   private File destinationFile;
   private VTServerSession session;
-
+  
   public VTServerFileModifyOperation(VTServerSession session)
   {
     this.session = session;
     this.finished = true;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public void setOperation(int operation)
   {
     this.operation = operation;
   }
-
+  
   public void setSourceFile(File sourceFile)
   {
     this.sourceFile = sourceFile;
@@ -54,7 +54,7 @@ public class VTServerFileModifyOperation extends VTTask
       this.sourceFile = new File(sourceFile.getPath());
     }
   }
-
+  
   public void setDestinationFile(File destinationFile)
   {
     this.destinationFile = destinationFile;
@@ -63,7 +63,7 @@ public class VTServerFileModifyOperation extends VTTask
       this.destinationFile = new File(destinationFile.getPath());
     }
   }
-
+  
   public void run()
   {
     try
@@ -133,7 +133,7 @@ public class VTServerFileModifyOperation extends VTTask
           }
         }
       }
-
+      
       if (operation == COPY_FILE)
       {
         try
@@ -190,7 +190,7 @@ public class VTServerFileModifyOperation extends VTTask
           }
         }
       }
-
+      
       if (operation == REMOVE_FILE)
       {
         try
@@ -254,7 +254,7 @@ public class VTServerFileModifyOperation extends VTTask
           }
         }
       }
-
+      
       if (operation == CREATE_FILE)
       {
         try
@@ -322,7 +322,7 @@ public class VTServerFileModifyOperation extends VTTask
           }
         }
       }
-
+      
       if (operation == CREATE_DIRECTORY)
       {
         try
@@ -389,7 +389,7 @@ public class VTServerFileModifyOperation extends VTTask
     }
     catch (Throwable e)
     {
-
+      
     }
     finished = true;
   }

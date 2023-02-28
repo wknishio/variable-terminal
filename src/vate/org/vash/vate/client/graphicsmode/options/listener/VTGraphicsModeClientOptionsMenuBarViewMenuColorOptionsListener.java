@@ -11,14 +11,14 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener impl
   private int colorQuality;
   private CheckboxMenuItem option;
   private VTGraphicsModeClientWriter writer;
-
+  
   public VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(VTGraphicsModeClientWriter writer, CheckboxMenuItem option, int colorQuality)
   {
     this.writer = writer;
     this.option = option;
     this.colorQuality = colorQuality;
   }
-
+  
   public void itemStateChanged(ItemEvent e)
   {
     if (e.getStateChange() == ItemEvent.SELECTED)

@@ -114,10 +114,10 @@ public class VTZipUtils
       {
         if (!zipArchive.renameTo(trueZipArchive))
         {
-          //zipArchive.delete();
+          // zipArchive.delete();
           return false;
         }
-        //may treat timestamps here
+        // may treat timestamps here
         return true;
       }
       else
@@ -125,7 +125,7 @@ public class VTZipUtils
         return false;
       }
     }
-    //may treat timestamps here
+    // may treat timestamps here
     return true;
   }
   
@@ -136,7 +136,7 @@ public class VTZipUtils
       return false;
     }
     ZipEntry directoryEntry = new ZipEntry(currentPath + '/');
-    //may treat timestamps here
+    // may treat timestamps here
     zipWriter.putNextEntry(directoryEntry);
     zipWriter.closeEntry();
     zipWriter.flush();
@@ -176,7 +176,7 @@ public class VTZipUtils
       }
       fileInputStream = Channels.newInputStream(new FileInputStream(file).getChannel());
       ZipEntry fileEntry = new ZipEntry(currentPath + file.getName());
-      //may treat timestamps here
+      // may treat timestamps here
       zipWriter.putNextEntry(fileEntry);
       int readBytes;
       while ((readBytes = fileInputStream.read(readBuffer)) > 0)
@@ -265,12 +265,12 @@ public class VTZipUtils
     File directory = new File(destinationPath + File.separatorChar + zipEntry.getName());
     if (directory.exists() && directory.isDirectory())
     {
-      //may treat timestamps here
+      // may treat timestamps here
       return true;
     }
     if (directory.mkdirs())
     {
-      //may treat timestamps here
+      // may treat timestamps here
       return true;
     }
     return false;
@@ -331,7 +331,7 @@ public class VTZipUtils
         }
         else
         {
-          //may treat timestamps here
+          // may treat timestamps here
           return true;
         }
       }
@@ -340,15 +340,15 @@ public class VTZipUtils
         return false;
       }
     }
-    //may treat timestamps here
+    // may treat timestamps here
     return true;
   }
   
   /*
-  * public static void main(String[] args) throws IOException {
-  * System.out.println(SAWZipUtils.createZipFile("zip-test.zip", -1, new byte[64
-  * * 1024],"dist"));
-  * System.out.println(SAWZipUtils.extractZipFile("zip-test.zip", new byte[64 *
-  * 1024],"aua")); }
-  */
+   * public static void main(String[] args) throws IOException {
+   * System.out.println(SAWZipUtils.createZipFile("zip-test.zip", -1, new
+   * byte[64 * 1024],"dist"));
+   * System.out.println(SAWZipUtils.extractZipFile("zip-test.zip", new byte[64 *
+   * 1024],"aua")); }
+   */
 }

@@ -10,7 +10,7 @@ import java.util.zip.ZipInputStream;
 
 public class VTReflectionUtils
 {
-
+  
   public static int getJavaVersion()
   {
     try
@@ -36,7 +36,7 @@ public class VTReflectionUtils
     }
     return -1;
   }
-
+  
   public static final Set<String> findClassNamesFromPackage(String pkg)
   {
     Set<String> classNames = new LinkedHashSet<String>();
@@ -120,7 +120,7 @@ public class VTReflectionUtils
     }
     return classNames;
   }
-
+  
   public static final Set<Class<?>> findClassesFromNames(Set<String> names)
   {
     Set<Class<?>> classes = new LinkedHashSet<Class<?>>();
@@ -137,12 +137,12 @@ public class VTReflectionUtils
     }
     return classes;
   }
-
+  
   public static final Set<Object> createClassInstancesFromPackage(String pkg)
   {
     return createClassInstancesFromClasses(findClassesFromNames(findClassNamesFromPackage(pkg)));
   }
-
+  
   @SuppressWarnings("all")
   public static final Set<Object> createClassInstancesFromClasses(Set<Class<?>> classes)
   {

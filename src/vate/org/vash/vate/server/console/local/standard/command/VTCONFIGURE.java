@@ -13,7 +13,7 @@ public class VTCONFIGURE extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTCONFIGURE");
     this.setAbbreviatedSyntax("*VTCNF");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     VTConsole.print("\rVT>Reconfiguring all server settings!\nVT>");
@@ -24,11 +24,11 @@ public class VTCONFIGURE extends VTServerStandardLocalConsoleCommandProcessor
       connector.interruptConnector();
       connector.notify();
     }
-    //VTConsole.print("\nVT>Finished reconfiguring all server settings!\nVT>");
+    // VTConsole.print("\nVT>Finished reconfiguring all server settings!\nVT>");
   }
   
   public void close()
   {
-
+    
   }
 }

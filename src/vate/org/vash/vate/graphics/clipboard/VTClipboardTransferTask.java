@@ -22,7 +22,7 @@ import org.vash.vate.task.VTTask;
 public class VTClipboardTransferTask extends VTTask
 {
   private volatile boolean sending;
-  //private VTImageIO vtImageIO;
+  // private VTImageIO vtImageIO;
   private VTLittleEndianInputStream in;
   private VTLittleEndianOutputStream out;
   // private Reader reader;
@@ -31,39 +31,39 @@ public class VTClipboardTransferTask extends VTTask
   private Clipboard systemClipboard;
   private Transferable transferable;
   private DataBuffer recyclableDataBuffer;
-
+  
   public VTClipboardTransferTask()
   {
     if (GraphicsEnvironment.isHeadless())
     {
       return;
     }
-    //this.vtImageIO = new VTImageIO();
+    // this.vtImageIO = new VTImageIO();
     try
     {
       this.systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
     }
     catch (Throwable e)
     {
-
+      
     }
   }
-
+  
   public boolean isSending()
   {
     return sending;
   }
-
+  
   public void setSending(boolean sending)
   {
     this.sending = sending;
   }
-
+  
   public void setEndingTask(Runnable endingTask)
   {
     this.endingTask = endingTask;
   }
-
+  
   public boolean checkTransfer()
   {
     if (systemClipboard == null)
@@ -83,11 +83,11 @@ public class VTClipboardTransferTask extends VTTask
     }
     return true;
   }
-
+  
   /*
    * public void interrupt() throws IOException { in.close(); out.close(); }
    */
-
+  
   public void setInputStream(InputStream in)
   {
     this.in = new VTLittleEndianInputStream(in);
@@ -96,7 +96,7 @@ public class VTClipboardTransferTask extends VTTask
      * (UnsupportedEncodingException e) { }
      */
   }
-
+  
   public void setOutputStream(OutputStream out)
   {
     this.out = new VTLittleEndianOutputStream(out);
@@ -105,7 +105,7 @@ public class VTClipboardTransferTask extends VTTask
      * (UnsupportedEncodingException e) { }
      */
   }
-
+  
   @SuppressWarnings("unchecked")
   public void run()
   {
@@ -216,7 +216,8 @@ public class VTClipboardTransferTask extends VTTask
               int length = in.readInt();
               byte[] data = new byte[length];
               in.readFully(data);
-              // System.out.println("received text:" + new String(data, "UTF-8"));
+              // System.out.println("received text:" + new String(data,
+              // "UTF-8"));
               systemClipboard.setContents(new StringSelection(new String(data, "UTF-8")), null);
             }
             else if (type == VT.VT_GRAPHICS_MODE_CLIPBOARD_TRANSFER_TYPE_IMAGE)
@@ -228,7 +229,7 @@ public class VTClipboardTransferTask extends VTTask
             }
             else
             {
-
+              
             }
           }
           catch (Throwable e)

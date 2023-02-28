@@ -11,7 +11,7 @@ public class VTDISPLAYS extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTDISPLAYS");
     this.setAbbreviatedSyntax("*VTDPS");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     synchronized (session.getGraphicsDeviceResolver())
@@ -34,9 +34,9 @@ public class VTDISPLAYS extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

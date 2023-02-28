@@ -11,7 +11,7 @@ public class VTNETWORKS extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTNETWORKS");
     this.setAbbreviatedSyntax("*VTNTS");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     synchronized (session.getNetworkInterfaceResolver())
@@ -34,9 +34,9 @@ public class VTNETWORKS extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

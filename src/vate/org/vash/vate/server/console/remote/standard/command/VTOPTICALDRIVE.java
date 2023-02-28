@@ -12,7 +12,7 @@ public class VTOPTICALDRIVE extends VTServerStandardRemoteConsoleCommandProcesso
     this.setFullSyntax("*VTOPTICALDRIVE <MODE>");
     this.setAbbreviatedSyntax("*VTOPD <MD>");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     synchronized (session.getOpticalDriveOperation())
@@ -70,9 +70,9 @@ public class VTOPTICALDRIVE extends VTServerStandardRemoteConsoleCommandProcesso
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

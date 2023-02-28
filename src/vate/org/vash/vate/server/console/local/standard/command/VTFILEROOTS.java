@@ -14,7 +14,7 @@ public class VTFILEROOTS extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTFILEROOTS");
     this.setAbbreviatedSyntax("*VTFRTS");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     message.setLength(0);
@@ -27,9 +27,9 @@ public class VTFILEROOTS extends VTServerStandardLocalConsoleCommandProcessor
     message.append("\nVT>\nVT>End of file system roots list\nVT>");
     VTConsole.print(message.toString());
   }
-
+  
   public void close()
   {
-
+    
   }
 }

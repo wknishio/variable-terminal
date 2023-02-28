@@ -8,12 +8,12 @@ public class VTRuntimeLauncherOutputConsumer implements Runnable
 {
   private final byte[] buffer = new byte[VT.VT_SMALL_DATA_BUFFER_SIZE];
   private InputStream in;
-
+  
   public VTRuntimeLauncherOutputConsumer(InputStream in)
   {
     this.in = in;
   }
-
+  
   public void close()
   {
     try
@@ -22,10 +22,10 @@ public class VTRuntimeLauncherOutputConsumer implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
   }
-
+  
   public void run()
   {
     try
@@ -38,7 +38,7 @@ public class VTRuntimeLauncherOutputConsumer implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
     try
     {
@@ -46,7 +46,7 @@ public class VTRuntimeLauncherOutputConsumer implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
   }
 }

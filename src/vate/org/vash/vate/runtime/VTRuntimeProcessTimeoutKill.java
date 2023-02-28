@@ -9,14 +9,14 @@ public class VTRuntimeProcessTimeoutKill implements Runnable
   private volatile long timeout;
   // private Thread thread;
   private VTRuntimeProcess process;
-
+  
   public VTRuntimeProcessTimeoutKill(VTRuntimeProcess process, long timeout)
   {
     this.running = true;
     this.process = process;
     this.timeout = timeout;
   }
-
+  
   public void stop()
   {
     if (!running)
@@ -25,7 +25,7 @@ public class VTRuntimeProcessTimeoutKill implements Runnable
     }
     running = false;
   }
-
+  
   public void kill()
   {
     if (process != null && process.isAlive())
@@ -40,12 +40,12 @@ public class VTRuntimeProcessTimeoutKill implements Runnable
       }
     }
   }
-
+  
   public void finalize()
   {
     stop();
   }
-
+  
   public void run()
   {
     // thread = Thread.currentThread();

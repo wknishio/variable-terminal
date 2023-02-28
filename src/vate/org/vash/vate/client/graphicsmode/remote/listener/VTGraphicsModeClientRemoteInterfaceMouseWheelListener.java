@@ -10,13 +10,13 @@ public class VTGraphicsModeClientRemoteInterfaceMouseWheelListener implements Mo
 {
   private VTGraphicsModeClientWriter writer;
   private VTAWTControlEvent untyped;
-
+  
   public VTGraphicsModeClientRemoteInterfaceMouseWheelListener(VTGraphicsModeClientWriter writer)
   {
     this.writer = writer;
     this.untyped = new VTAWTControlEvent();
   }
-
+  
   public void mouseWheelMoved(MouseWheelEvent event)
   {
     // System.out.println(event.toString());

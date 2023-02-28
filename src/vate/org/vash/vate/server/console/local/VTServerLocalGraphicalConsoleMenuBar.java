@@ -11,7 +11,7 @@ import org.vash.vate.server.dialog.VTServerSettingsDialog;
 public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenuBar
 {
   private static final long serialVersionUID = 1L;
-
+  
   private Menu dialogMenu;
   private MenuItem serverSettingsDialogMenu;
   private Menu serverConsoleCommandsMenu;
@@ -33,7 +33,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
   private Menu serverEncryptionMenu;
   private Menu serverSessionsMenu;
   private Menu helpMenu;
-
+  
   public VTServerLocalGraphicalConsoleMenuBar(final VTServerSettingsDialog connectionDialog)
   {
     removeAllMenus();
@@ -41,21 +41,21 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     serverConsoleCommandsMenu = new Menu("Command");
     // serverConsoleCommandsMenu.setShortcut(new MenuShortcut(KeyEvent.VK_C,
     // true));
-
+    
     sessionMenu = new Menu("Session ");
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Server Application", "*VTSTOP\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Toggle Server Cover", "*VTCOVER\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTUSERS\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Text Message To Clients", "*VTTEXT "));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Disconnect Client From Server", "*VTKICK "));
-
+    
     performanceMenu = new Menu("Rates ");
     performanceMenu.add(new VTGraphicalConsoleMenuItem("Check Connection Latencies", "*VTPING\n"));
-
+    
     consoleMenu = new Menu("Console ");
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Clear Local Console", "*VTCLEAR\n"));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Show Local System Time", "*VTTIME\n"));
-
+    
     serverSettingsMenu = new Menu("Settings ");
     serverConnectionMenu = new Menu("Connection ");
     // serverAuthenticationSettingsMenu = new Menu("Authentication ");
@@ -92,19 +92,19 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     serverRuntimeMenu = new Menu("Runtime ");
     serverRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Local Environment Variables", "*VTVARIABLE "));
     serverRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Local Java Properties", "*VTPROPERTY "));
-
+    
     fileSystemMenu = new Menu("File ");
     fileSystemMenu.add(new VTGraphicalConsoleMenuItem("List Local File System Roots", "*VTFILEROOTS\n"));
-
+    
     serverNetworkMenu = new Menu("Network ");
     serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List Local Network Interfaces", "*VTNETWORKS\n"));
-
+    
     serverGraphicalSystemsMenu = new Menu("Graphical ");
     serverGraphicalSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Local Display Devices", "*VTDISPLAYS\n"));
-
+    
     serverAudioSystemsMenu = new Menu("Audio ");
     serverAudioSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Local Audio Mixers", "*VTMIXERS\n"));
-
+    
     serverPrintMenu = new Menu("Printing ");
     serverPrintMenu.add(new VTGraphicalConsoleMenuItem("List Local Printers", "*VTPRINTERS\n"));
     // serverUtilitiesMenu.add(new VTGraphicalConsoleInputMenuItem("Show
@@ -114,7 +114,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     helpMenu.add(new VTGraphicalConsoleMenuItem("Complete Commands", "*VTHELP\n"));
     helpMenu.add(new VTGraphicalConsoleMenuItem("Abbreviated Commands", "*VTHLP\n"));
     helpMenu.add(new VTGraphicalConsoleMenuItem("Specific Command", "*VTHELP "));
-
+    
     serverConsoleCommandsMenu.add(sessionMenu);
     // serverConsoleCommandsMenu.add(settingsMenu);
     serverConsoleCommandsMenu.add(consoleMenu);
@@ -127,15 +127,15 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     serverConsoleCommandsMenu.add(serverPrintMenu);
     serverConsoleCommandsMenu.add(serverSettingsMenu);
     serverConsoleCommandsMenu.add(helpMenu);
-
+    
     this.add(serverConsoleCommandsMenu);
     serverConsoleCommandsMenu.setEnabled(false);
-
+    
     dialogMenu = new Menu("Dialog");
     serverSettingsDialogMenu = new MenuItem("Connection");
     // dialogMenu.setShortcut(new MenuShortcut(KeyEvent.VK_D, true));
     dialogMenu.add(serverSettingsDialogMenu);
-
+    
     serverSettingsDialogMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -145,15 +145,15 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     });
     this.add(dialogMenu);
     dialogMenu.setEnabled(true);
-
+    
     super.addBaseMenus();
-
+    
     // Menu helpMenu = new Menu("Resume/Insert");
     // helpMenu.setEnabled(false);
     // this.setHelpMenu(helpMenu);
     // VTGlobalFontManager.registerMenu(this);
   }
-
+  
   public void setEnabled(boolean enabled)
   {
     /*
@@ -162,7 +162,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
      */
     serverConsoleCommandsMenu.setEnabled(enabled);
   }
-
+  
   public void setEnabledDialogMenu(boolean enabled)
   {
     dialogMenu.setEnabled(enabled);

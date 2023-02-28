@@ -8,7 +8,7 @@ public class VTArgumentsRuntimeLauncherDaemon
   public static void main(String[] args) throws Exception
   {
     VTStandardConsoleInterruptibleInputStreamByte stream = new VTStandardConsoleInterruptibleInputStreamByte();
-    //VTNativeUtils.detachConsole();
+    // VTNativeUtils.detachConsole();
     try
     {
       Thread.sleep(2000);
@@ -32,7 +32,7 @@ public class VTArgumentsRuntimeLauncherDaemon
     }
     catch (Throwable e)
     {
-
+      
     }
     System.exit(0);
   }

@@ -15,7 +15,7 @@ public class VTServerStandardStart
     
     boolean help = false;
     boolean daemon = false;
-
+    
     if (args.length >= 1)
     {
       for (int i = 0; i < args.length; i++)
@@ -45,7 +45,7 @@ public class VTServerStandardStart
           }
           catch (Throwable e)
           {
-
+            
           }
         }
         System.exit(0);

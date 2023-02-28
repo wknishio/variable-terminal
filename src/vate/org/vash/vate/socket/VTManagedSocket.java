@@ -58,7 +58,7 @@ public class VTManagedSocket extends Socket implements Closeable
       }
     }
   }
-
+  
   public void shutdownInput() throws IOException
   {
     if (in != null)
@@ -73,7 +73,7 @@ public class VTManagedSocket extends Socket implements Closeable
       }
     }
   }
-
+  
   public void close() throws IOException
   {
     connection.close();

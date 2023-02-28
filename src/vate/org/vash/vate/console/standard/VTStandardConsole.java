@@ -50,12 +50,12 @@ public class VTStandardConsole implements VTConsoleImplementation
   public static volatile boolean systemconsolesupport = false;
   private static BufferedWriter readLineLog = null;
   private static PrintStream logOutput = null;
-
+  
   // private static Console systemConsole;
   // private static ConsoleReader jlineConsole;
   // private static Object console;
   // private static BufferedWriter errorWriter;
-
+  
   private VTStandardConsole()
   {
     VTNativeUtils.initialize();
@@ -63,7 +63,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     // VTStandardTerminalInterruptibleStream(System.in)));
     // standardTerminalReader = new BufferedReader(new
     // InputStreamReader(System.in));
-
+    
     // bright = true;
     isatty = VTNativeUtils.isatty(1) != 0;
     // System.out.println(isatty);
@@ -103,20 +103,21 @@ public class VTStandardConsole implements VTConsoleImplementation
     
     standardTerminalReader = new BufferedReader(new InputStreamReader(inputStream));
     standardTerminalWriter = new BufferedWriter(new OutputStreamWriter(output));
-
+    
     colorCode = new StringBuilder();
     // jlineConsoleSupport = false;
     // systemConsoleSupport = false;
     /*
-     * try { jlineConsole = new ConsoleReader(); jlineConsole.setBellEnabled(false);
-     * jlineConsole.setUseHistory(true); jlineConsole.setUsePagination(true);
-     * jlineConsoleSupport = true; } catch (Throwable e) { }
+     * try { jlineConsole = new ConsoleReader();
+     * jlineConsole.setBellEnabled(false); jlineConsole.setUseHistory(true);
+     * jlineConsole.setUsePagination(true); jlineConsoleSupport = true; } catch
+     * (Throwable e) { }
      */
     /*
      * try { Class.forName("java.io.Console"); //console =
-     * Class.forName("System").getMethod("console").invoke(null); systemConsole =
-     * System.console(); if (systemConsole != null) { systemConsoleSupport = true; }
-     * } catch (Throwable e) { }
+     * Class.forName("System").getMethod("console").invoke(null); systemConsole
+     * = System.console(); if (systemConsole != null) { systemConsoleSupport =
+     * true; } } catch (Throwable e) { }
      */
     // System.out.println("jlineConsoleSupport = " + jlineConsoleSupport);
     // System.out.println("systemConsoleSupport = " + systemConsoleSupport);
@@ -136,7 +137,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     // //t.printStackTrace();
     // }
   }
-
+  
   public synchronized static VTStandardConsole getInstance()
   {
     if (instance == null)
@@ -145,7 +146,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     }
     return instance;
   }
-
+  
   public String readLine(boolean echo) throws InterruptedException
   {
     inputStream.setEcho(echo);
@@ -162,10 +163,10 @@ public class VTStandardConsole implements VTConsoleImplementation
     }
     // String line = null;
     /*
-     * if (jlineConsoleSupport) { if (echo) { try { line = jlineConsole.readLine();
-     * } catch (Throwable e) { //e.printStackTrace(); } } else { try { line =
-     * jlineConsole.readLine('\0'); } catch (Throwable e) { //e.printStackTrace(); }
-     * } }
+     * if (jlineConsoleSupport) { if (echo) { try { line =
+     * jlineConsole.readLine(); } catch (Throwable e) { //e.printStackTrace(); }
+     * } else { try { line = jlineConsole.readLine('\0'); } catch (Throwable e)
+     * { //e.printStackTrace(); } } }
      */
     /*
      * if (systemConsoleSupport) { if (!echo) { try { //return
@@ -178,58 +179,58 @@ public class VTStandardConsole implements VTConsoleImplementation
      */
     /*
      * if (line != null) { return line; } else { try { line =
-     * standardTerminalReader.readLine(); } catch (ClosedByInterruptException e) {
-     * //e.printStackTrace(); Thread.interrupted(); //standardTerminalReader = new
-     * BufferedReader(new InputStreamReader(Channels.newInputStream((new
+     * standardTerminalReader.readLine(); } catch (ClosedByInterruptException e)
+     * { //e.printStackTrace(); Thread.interrupted(); //standardTerminalReader =
+     * new BufferedReader(new InputStreamReader(Channels.newInputStream((new
      * FileInputStream(FileDescriptor.in)).getChannel()))); throw new
      * InterruptedException(e.getMessage()); } catch (IOException e) {
      * //e.printStackTrace(); //throw new InterruptedException(e.getMessage());
      * //standardTerminalReader = new BufferedReader(new
      * InputStreamReader(Channels.newInputStream((new
-     * FileInputStream(FileDescriptor.in)).getChannel()))); //e.printStackTrace();
-     * return ""; } catch (Throwable e) { //e.printStackTrace();
-     * //standardTerminalReader = new BufferedReader(new
+     * FileInputStream(FileDescriptor.in)).getChannel())));
+     * //e.printStackTrace(); return ""; } catch (Throwable e) {
+     * //e.printStackTrace(); //standardTerminalReader = new BufferedReader(new
      * InputStreamReader(Channels.newInputStream((new
-     * FileInputStream(FileDescriptor.in)).getChannel()))); //e.printStackTrace();
-     * return ""; } catch (Throwable e) { //e.printStackTrace();
-     * //standardTerminalReader = new BufferedReader(new
+     * FileInputStream(FileDescriptor.in)).getChannel())));
+     * //e.printStackTrace(); return ""; } catch (Throwable e) {
+     * //e.printStackTrace(); //standardTerminalReader = new BufferedReader(new
      * InputStreamReader(Channels.newInputStream((new
-     * FileInputStream(FileDescriptor.in)).getChannel()))); //e.printStackTrace();
-     * return ""; } return line; }
+     * FileInputStream(FileDescriptor.in)).getChannel())));
+     * //e.printStackTrace(); return ""; } return line; }
      */
   }
-
+  
   public void print(String str)
   {
     printStream.print(str);
     printStream.flush();
   }
-
+  
   public void println(String str)
   {
     printStream.println(str);
   }
-
+  
   public void printf(String format, Object... args)
   {
     printStream.printf(format, args);
   }
-
+  
   public void printfln(String format, Object... args)
   {
     printStream.printf(format + "\n", args);
   }
-
+  
   public void printf(Locale l, String format, Object... args)
   {
     printStream.printf(l, format, args);
   }
-
+  
   public void printfln(Locale l, String format, Object... args)
   {
     printStream.printf(l, format + "\n", args);
   }
-
+  
   public void write(String str)
   {
     try
@@ -241,7 +242,7 @@ public class VTStandardConsole implements VTConsoleImplementation
       
     }
   }
-
+  
   public void write(char[] buf, int off, int len)
   {
     try
@@ -253,12 +254,12 @@ public class VTStandardConsole implements VTConsoleImplementation
       
     }
   }
-
+  
   /*
    * public void trueWrite(byte[] buf, int off, int len) { System.out.write(buf,
    * off, len); }
    */
-
+  
   public void flush()
   {
     try
@@ -270,7 +271,7 @@ public class VTStandardConsole implements VTConsoleImplementation
       
     }
   }
-
+  
   public void clear()
   {
     if (!isatty)
@@ -279,8 +280,8 @@ public class VTStandardConsole implements VTConsoleImplementation
     }
     if (VT.detectWindows())
     {
-      //System.out.print("\u001B[2J");
-      //System.out.print("\u001B[H");
+      // System.out.print("\u001B[2J");
+      // System.out.print("\u001B[H");
       VTNativeUtils.system("cls");
     }
     else
@@ -291,13 +292,13 @@ public class VTStandardConsole implements VTConsoleImplementation
       printStream.print("\u001B[H");
     }
   }
-
+  
   public void bell()
   {
     // VTNativeUtils.printf("\u0007");
     printStream.print("\u0007");
   }
-
+  
   public void setTitle(String title)
   {
     if (!isatty)
@@ -306,7 +307,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     }
     if (VT.detectWindows())
     {
-      //System.out.print("\u001B]0;" + title + "\u0007");
+      // System.out.print("\u001B]0;" + title + "\u0007");
       VTNativeUtils.system("title " + title);
     }
     else
@@ -320,7 +321,7 @@ public class VTStandardConsole implements VTConsoleImplementation
       // System.out.print("\u001B]2;" + title + "\u0007");
     }
   }
-
+  
   public void setColors(int foregroundColor, int backgroundColor)
   {
     if (!isatty)
@@ -498,8 +499,10 @@ public class VTStandardConsole implements VTConsoleImplementation
         }
       }
       VTNativeUtils.system("color " + colorCode.toString());
-      //System.out.print("\u001B[" + getUnixForegroundColor(foregroundColor) + "m");
-      //System.out.print("\u001B[" + getUnixBackgroundColor(backgroundColor) + "m");
+      // System.out.print("\u001B[" + getUnixForegroundColor(foregroundColor) +
+      // "m");
+      // System.out.print("\u001B[" + getUnixBackgroundColor(backgroundColor) +
+      // "m");
     }
     else
     {
@@ -522,7 +525,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     // VTStandardTerminal.foregroundColor = foregroundColor;
     // VTStandardTerminal.backgroundColor = backgroundColor;
   }
-
+  
   private static String getUnixForegroundColor(int foregroundColor)
   {
     switch (foregroundColor)
@@ -609,7 +612,7 @@ public class VTStandardConsole implements VTConsoleImplementation
       }
     }
   }
-
+  
   private static String getUnixBackgroundColor(int backgroundColor)
   {
     switch (backgroundColor)
@@ -696,7 +699,7 @@ public class VTStandardConsole implements VTConsoleImplementation
       }
     }
   }
-
+  
   public void setBold(boolean bold)
   {
     if (!isatty)
@@ -707,7 +710,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     {
       if (VT.detectWindows())
       {
-        //printStream.print("\u001B[1m");
+        // printStream.print("\u001B[1m");
       }
       else
       {
@@ -718,7 +721,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     {
       if (VT.detectWindows())
       {
-        //printStream.print("\u001B[21m");
+        // printStream.print("\u001B[21m");
       }
       else
       {
@@ -726,7 +729,7 @@ public class VTStandardConsole implements VTConsoleImplementation
       }
     }
   }
-
+  
   public void resetAttributes()
   {
     if (!isatty)
@@ -739,14 +742,14 @@ public class VTStandardConsole implements VTConsoleImplementation
       // VTConsole.VT_CONSOLE_COLOR_NORMAL_BLACK);
       // setBold(true);
       VTNativeUtils.system("color");
-      //System.out.print("\u001B[0m");
+      // System.out.print("\u001B[0m");
     }
     else
     {
       printStream.print("\u001B[0m");
     }
   }
-
+  
   public void setSystemIn()
   {
     /*
@@ -755,17 +758,17 @@ public class VTStandardConsole implements VTConsoleImplementation
      */
     System.setIn(inputStream);
   }
-
+  
   public void setSystemOut()
   {
     System.setOut(printStream);
   }
-
+  
   public void setSystemErr()
   {
     System.setErr(errorStream);
   }
-
+  
   public InputStream getSystemIn()
   {
     /*
@@ -774,116 +777,116 @@ public class VTStandardConsole implements VTConsoleImplementation
      */
     return inputStream;
   }
-
+  
   public PrintStream getSystemOut()
   {
     return printStream;
   }
-
+  
   public PrintStream getSystemErr()
   {
     return errorStream;
   }
-
+  
   public void interruptReadLine()
   {
     inputStream.interruptRead();
   }
-
+  
   public Frame getFrame()
   {
     return null;
   }
-
+  
   public void toggleScrollMode()
   {
     // TODO Auto-generated method stub
   }
-
+  
   public void toggleInputMode()
   {
     // TODO Auto-generated method stub
   }
-
+  
   public void input(String text)
   {
     // TODO Auto-generated method stub
   }
-
+  
   public void copyText()
   {
     // TODO Auto-generated method stub
   }
-
+  
   public void pasteText()
   {
     // TODO Auto-generated method stub
   }
-
+  
   public void clearInput()
   {
     // TODO Auto-generated method stub
   }
-
+  
   public String getSelectedText()
   {
     // TODO Auto-generated method stub
     return null;
   }
-
+  
   public void refreshText()
   {
-
+    
   }
-
+  
   public boolean isCommandEcho()
   {
     // TODO Auto-generated method stub
     return false;
   }
-
+  
   public void setCommandEcho(boolean commandEcho)
   {
     // TODO Auto-generated method stub
-
+    
   }
-
+  
   public String getAllText()
   {
     // TODO Auto-generated method stub
     return null;
   }
-
+  
   public void copyAllText()
   {
     // TODO Auto-generated method stub
-
+    
   }
-
+  
   public void setIgnoreClose(boolean ignoreClose)
   {
     // TODO Auto-generated method stub
-
+    
   }
-
+  
   public void setRemoteIcon(boolean remote)
   {
     // TODO Auto-generated method stub
-
+    
   }
-
+  
   public void addToggleFlushInterruptNotify(VTConsoleBooleanToggleNotify notify)
   {
     // TODO Auto-generated method stub
-
+    
   }
-
+  
   public void addToggleReplaceInputNotify(VTConsoleBooleanToggleNotify notify)
   {
     // TODO Auto-generated method stub
-
+    
   }
-
+  
   public void requestFocus()
   {
     // TODO Auto-generated method stub
@@ -895,7 +898,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     // TODO Auto-generated method stub
     
   }
-
+  
   public boolean setLogOutput(String path)
   {
     if (path != null)

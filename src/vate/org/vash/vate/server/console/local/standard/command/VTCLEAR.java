@@ -12,15 +12,15 @@ public class VTCLEAR extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTCLEAR");
     this.setAbbreviatedSyntax("*VTCL");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     VTConsole.clear();
     VTConsole.print("VT>");
   }
-
+  
   public void close()
   {
-
+    
   }
 }

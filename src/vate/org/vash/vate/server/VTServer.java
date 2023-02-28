@@ -58,7 +58,7 @@ public class VTServer implements Runnable
   private int sessionsMaximum = 0;
   private String sessionShell = "";
   private final String vtURL = System.getenv("VT_PATH");
-  //private MessageDigest sha256Digester;
+  // private MessageDigest sha256Digester;
   private VTBlake3MessageDigest blake3Digest = new VTBlake3MessageDigest();
   // private File userDatabaseFile;
   private File serverSettingsFile;
@@ -82,20 +82,14 @@ public class VTServer implements Runnable
   private volatile boolean running = true;
   private volatile boolean reconfigure = false;
   private List<VTServerSessionListener> listeners = new LinkedList<VTServerSessionListener>();
-  private static final String VT_SERVER_SETTINGS_COMMENTS = 
-  "Variable-Terminal server settings file, supports UTF-8\r\n" + 
-  "#vate.server.connection.mode      values: default passive(P), active(A)\r\n" + 
-  "#vate.server.proxy.type           values: default none, HTTP(H), SOCKS(S)\r\n" + 
-  "#vate.server.proxy.authentication values: default disabled(D), enabled(E)\r\n" + 
-  "#vate.server.encryption.type      values: default none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
-  "#vate.server.session.users        format: user1/password1;user2/password2;...";
+  private static final String VT_SERVER_SETTINGS_COMMENTS = "Variable-Terminal server settings file, supports UTF-8\r\n" + "#vate.server.connection.mode      values: default passive(P), active(A)\r\n" + "#vate.server.proxy.type           values: default none, HTTP(H), SOCKS(S)\r\n" + "#vate.server.proxy.authentication values: default disabled(D), enabled(E)\r\n" + "#vate.server.encryption.type      values: default none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + "#vate.server.session.users        format: user1/password1;user2/password2;...";
   
   static
   {
     ImageIO.setUseCache(false);
     VTHelpManager.initialize();
     SSLVerificationDisabler.install();
-    //com.github.luben.zstd.util.Native.load();
+    // com.github.luben.zstd.util.Native.load();
   }
   
   public class Credential
@@ -124,14 +118,14 @@ public class VTServer implements Runnable
   {
     // VTServerLocalConsoleCommandSelector.initialize();
     // VTServerRemoteConsoleCommandSelector.initialize();
-    //try
-    //{
-      //sha256Digester = MessageDigest.getInstance("SHA-256");
-    //}
-    //catch (NoSuchAlgorithmException e)
-    //{
-      // e.printStackTrace();
-    //}
+    // try
+    // {
+    // sha256Digester = MessageDigest.getInstance("SHA-256");
+    // }
+    // catch (NoSuchAlgorithmException e)
+    // {
+    // e.printStackTrace();
+    // }
     this.threads = Executors.newCachedThreadPool(new ThreadFactory()
     {
       public Thread newThread(Runnable r)
@@ -172,7 +166,7 @@ public class VTServer implements Runnable
     }
     catch (Throwable t)
     {
-      //t.printStackTrace();
+      // t.printStackTrace();
     }
   }
   
@@ -180,17 +174,17 @@ public class VTServer implements Runnable
   {
     return running;
   }
-
+  
   public ExecutorService getServerThreads()
   {
     return threads;
   }
-
+  
   public void setSkipConfiguration(boolean skipConfiguration)
   {
     this.skipConfiguration = skipConfiguration;
   }
-
+  
   public VTAudioSystem getAudioSystem(AudioFormat format)
   {
     if (format.getSampleRate() == VT.VT_AUDIO_FORMAT_8000.getSampleRate())
@@ -1305,10 +1299,10 @@ public class VTServer implements Runnable
       }
       else
       {
-        //if (inputMenuBar != null)
-        //{
-          //inputMenuBar.setEnabledDialogMenu(true);
-        //}
+        // if (inputMenuBar != null)
+        // {
+        // inputMenuBar.setEnabledDialogMenu(true);
+        // }
       }
       
       if (connectionDialog != null)
@@ -1637,14 +1631,14 @@ public class VTServer implements Runnable
                 return;
               }
               encryptionType = "RC4";
-              //if (line.toUpperCase().startsWith("A"))
-              //{
-                //encryptionType = "AES";
-              //}
-              //if (line.toUpperCase().startsWith("B"))
-              //{
-                //encryptionType = "BLOWFISH";
-              //}
+              // if (line.toUpperCase().startsWith("A"))
+              // {
+              // encryptionType = "AES";
+              // }
+              // if (line.toUpperCase().startsWith("B"))
+              // {
+              // encryptionType = "BLOWFISH";
+              // }
               if (line.toUpperCase().startsWith("S"))
               {
                 encryptionType = "SALSA";
@@ -1781,14 +1775,14 @@ public class VTServer implements Runnable
                 return;
               }
               encryptionType = "RC4";
-              //if (line.toUpperCase().startsWith("A"))
-              //{
-                //encryptionType = "AES";
-              //}
-              //if (line.toUpperCase().startsWith("B"))
-              //{
-                //encryptionType = "BLOWFISH";
-              //}
+              // if (line.toUpperCase().startsWith("A"))
+              // {
+              // encryptionType = "AES";
+              // }
+              // if (line.toUpperCase().startsWith("B"))
+              // {
+              // encryptionType = "BLOWFISH";
+              // }
               if (line.toUpperCase().startsWith("S"))
               {
                 encryptionType = "SALSA";
@@ -1835,27 +1829,31 @@ public class VTServer implements Runnable
             /*
              * if (proxyType == null) { VTTerminal.
              * print("VT>Use SOCKS proxy to connect?(Y/N, default:N):" ); line =
-             * VTTerminal.readLine(true); if (line == null) { System.exit(0); } if
-             * (line.toUpperCase().startsWith("Y")) { proxyType = "SOCKS"; VTTerminal.
-             * print("VT>Enter proxy host address(default:localhost):" ); line =
-             * VTTerminal.readLine(true); if (line == null) { System.exit(0); } proxyAddress
-             * = line; if (proxyType.equals("SOCKS")) { VTTerminal.
-             * print("VT>Enter proxy port(from 1 to 65535, default:1080):" ); line =
-             * VTTerminal.readLine(true); if (line == null) { System.exit(0); } if
-             * (line.length() > 0) { proxyPort = Integer.parseInt(line); } else { proxyPort
-             * = 1080; } } if (proxyPort > 65535 || proxyPort < 1) {
-             * VTTerminal.print("VT>Invalid port!\n"); proxyPort = null;
-             * UseProxyAuthentication = false; port = null; } if (proxyPort != null && port
-             * != null) { VTTerminal.
-             * print("VT>Use authentication for proxy?(Y/N, default:N):" ); line =
-             * VTTerminal.readLine(true); if (line == null) { System.exit(0); } if
-             * (line.toUpperCase().startsWith("Y")) { UseProxyAuthentication = true;
-             * VTTerminal.print("VT>Enter proxy username:"); line =
-             * VTTerminal.readLine(true); if (line == null) { System.exit(0); } proxyUser =
-             * line; VTTerminal.print("VT>Enter proxy password:"); line =
              * VTTerminal.readLine(true); if (line == null) { System.exit(0); }
-             * proxyPassword = line; } else { UseProxyAuthentication = false; } } else {
-             * UseProxyAuthentication = false; } } else { proxyType = "None"; } }
+             * if (line.toUpperCase().startsWith("Y")) { proxyType = "SOCKS";
+             * VTTerminal.
+             * print("VT>Enter proxy host address(default:localhost):" ); line =
+             * VTTerminal.readLine(true); if (line == null) { System.exit(0); }
+             * proxyAddress = line; if (proxyType.equals("SOCKS")) { VTTerminal.
+             * print("VT>Enter proxy port(from 1 to 65535, default:1080):" );
+             * line = VTTerminal.readLine(true); if (line == null) {
+             * System.exit(0); } if (line.length() > 0) { proxyPort =
+             * Integer.parseInt(line); } else { proxyPort = 1080; } } if
+             * (proxyPort > 65535 || proxyPort < 1) {
+             * VTTerminal.print("VT>Invalid port!\n"); proxyPort = null;
+             * UseProxyAuthentication = false; port = null; } if (proxyPort !=
+             * null && port != null) { VTTerminal.
+             * print("VT>Use authentication for proxy?(Y/N, default:N):" ); line
+             * = VTTerminal.readLine(true); if (line == null) { System.exit(0);
+             * } if (line.toUpperCase().startsWith("Y")) {
+             * UseProxyAuthentication = true;
+             * VTTerminal.print("VT>Enter proxy username:"); line =
+             * VTTerminal.readLine(true); if (line == null) { System.exit(0); }
+             * proxyUser = line; VTTerminal.print("VT>Enter proxy password:");
+             * line = VTTerminal.readLine(true); if (line == null) {
+             * System.exit(0); } proxyPassword = line; } else {
+             * UseProxyAuthentication = false; } } else { UseProxyAuthentication
+             * = false; } } else { proxyType = "None"; } }
              */
             try
             {
@@ -2123,7 +2121,7 @@ public class VTServer implements Runnable
       }
     });
   }
-
+  
   public void start()
   {
     Thread.setDefaultUncaughtExceptionHandler(new VTUncaughtExceptionHandler());
@@ -2163,10 +2161,7 @@ public class VTServer implements Runnable
       VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Server - Console");
     }
     VTConsole.clear();
-    VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Server\n" + 
-    "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + 
-    "VT>This software is under MIT license, see license.txt!\n" + 
-    "VT>This software comes with no warranty, use at your own risk!\n");
+    VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Server\n" + "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + "VT>This software is under MIT license, see license.txt!\n" + "VT>This software comes with no warranty, use at your own risk!\n");
     if (!VTConsole.isDaemon() && !daemon)
     {
       configure();
@@ -2317,7 +2312,7 @@ public class VTServer implements Runnable
   {
     return sessionShell;
   }
-
+  
   public void setSessionShell(String sessionShell)
   {
     this.sessionShell = sessionShell;

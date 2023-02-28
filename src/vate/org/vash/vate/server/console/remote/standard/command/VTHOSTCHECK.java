@@ -12,7 +12,7 @@ public class VTHOSTCHECK extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTHOSTCHECK <HOST>");
     this.setAbbreviatedSyntax("*VTHTC <HT>");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     synchronized (session.getHostResolver())
@@ -44,9 +44,9 @@ public class VTHOSTCHECK extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

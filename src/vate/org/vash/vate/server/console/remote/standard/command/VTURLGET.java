@@ -12,7 +12,7 @@ public class VTURLGET extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTURLGET <URL> [RESULT] [OUTPUT]");
     this.setAbbreviatedSyntax("*VTUG <UR> [RT] [OP]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     synchronized (session.getURLInvoker())
@@ -61,7 +61,7 @@ public class VTURLGET extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
     try

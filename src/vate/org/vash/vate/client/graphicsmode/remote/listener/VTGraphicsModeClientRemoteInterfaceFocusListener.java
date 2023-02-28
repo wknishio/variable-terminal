@@ -8,12 +8,12 @@ import org.vash.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 public class VTGraphicsModeClientRemoteInterfaceFocusListener implements FocusListener
 {
   private VTGraphicsModeClientWriter writer;
-
+  
   public VTGraphicsModeClientRemoteInterfaceFocusListener(VTGraphicsModeClientWriter writer)
   {
     this.writer = writer;
   }
-
+  
   public void focusGained(FocusEvent e)
   {
     synchronized (writer)
@@ -21,9 +21,9 @@ public class VTGraphicsModeClientRemoteInterfaceFocusListener implements FocusLi
       writer.notify();
     }
   }
-
+  
   public void focusLost(FocusEvent e)
   {
-
+    
   }
 }

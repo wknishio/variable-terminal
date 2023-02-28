@@ -11,28 +11,28 @@ public class VTServerPrintServiceCapabilitiesResolver extends VTTask
   private volatile boolean finished;
   private volatile int number;
   private VTServerSession session;
-
+  
   public VTServerPrintServiceCapabilitiesResolver(VTServerSession session)
   {
     this.session = session;
     this.finished = true;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public void setNumber(int number)
   {
     this.number = number;
   }
-
+  
   public void run()
   {
     try
@@ -40,7 +40,7 @@ public class VTServerPrintServiceCapabilitiesResolver extends VTTask
       StringBuilder message = new StringBuilder();
       PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
       PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
-
+      
       if (printServices.length > 0)
       {
         message.append("\nVT>List of print service capabilites on server:\nVT>");
@@ -74,7 +74,7 @@ public class VTServerPrintServiceCapabilitiesResolver extends VTTask
     }
     catch (Throwable e)
     {
-
+      
     }
     finished = true;
   }

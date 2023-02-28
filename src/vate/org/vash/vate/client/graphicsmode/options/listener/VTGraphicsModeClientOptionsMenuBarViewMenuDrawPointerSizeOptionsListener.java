@@ -9,13 +9,13 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenuDrawPointerSizeOptionsLis
 {
   private VTGraphicsModeClientWriter writer;
   private int mode;
-
+  
   public VTGraphicsModeClientOptionsMenuBarViewMenuDrawPointerSizeOptionsListener(VTGraphicsModeClientWriter writer, int mode)
   {
     this.writer = writer;
     this.mode = mode;
   }
-
+  
   public void actionPerformed(ActionEvent e)
   {
     if (mode == 0)

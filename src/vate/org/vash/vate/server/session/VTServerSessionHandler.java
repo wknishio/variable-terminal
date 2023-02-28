@@ -15,7 +15,7 @@ public class VTServerSessionHandler implements Runnable
   private VTServerSession session;
   private VTServerAuthenticator authenticator;
   private List<VTServerSessionListener> listeners;
-
+  
   public VTServerSessionHandler(VTServer server, VTServerConnection connection)
   {
     this.authenticated = false;
@@ -25,27 +25,27 @@ public class VTServerSessionHandler implements Runnable
     this.session = new VTServerSession(server, connection);
     // this.session.initialize();
   }
-
+  
   public VTServerAuthenticator getAuthenticator()
   {
     return authenticator;
   }
-
+  
   public boolean isAuthenticated()
   {
     return authenticated;
   }
-
+  
   public String getUser()
   {
     return session.getUser();
   }
-
+  
   public VTServerSession getSession()
   {
     return session;
   }
-
+  
   public void run()
   {
     authenticated = false;
@@ -53,7 +53,8 @@ public class VTServerSessionHandler implements Runnable
     try
     {
       connection.setAuthenticationStreams();
-      //if (connection.exchangeAuthenticationPadding() && authenticator.tryAuthentication())
+      // if (connection.exchangeAuthenticationPadding() &&
+      // authenticator.tryAuthentication())
       if (authenticator.tryAuthentication())
       {
         connection.setConnectionStreams(authenticator.getDigestedUser(), authenticator.getDigestedPassword(), authenticator.getUser(), authenticator.getPassword());
@@ -68,14 +69,14 @@ public class VTServerSessionHandler implements Runnable
     }
     catch (Throwable e)
     {
-      //e.printStackTrace();
+      // e.printStackTrace();
       VTConsole.print("\rVT>Session with client failed!\nVT>");
       connection.closeConnection();
     }
     System.runFinalization();
     System.gc();
   }
-
+  
   private void processSession()
   {
     boolean started = false;
@@ -99,7 +100,7 @@ public class VTServerSessionHandler implements Runnable
       }
       catch (Throwable t)
       {
-
+        
       }
       session.waitSession();
       session.stopShell();
@@ -123,7 +124,7 @@ public class VTServerSessionHandler implements Runnable
       }
       catch (Throwable t)
       {
-
+        
       }
     }
   }

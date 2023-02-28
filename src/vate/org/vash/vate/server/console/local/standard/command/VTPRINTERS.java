@@ -15,7 +15,7 @@ public class VTPRINTERS extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTPRINTERS");
     this.setAbbreviatedSyntax("*VTPRS");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     message.setLength(0);
@@ -37,7 +37,7 @@ public class VTPRINTERS extends VTServerStandardLocalConsoleCommandProcessor
         message.append("\nVT>");
       }
       message.append("\nVT>End of print services list\nVT>");
-
+      
       VTConsole.print(message.toString());
     }
     else
@@ -45,9 +45,9 @@ public class VTPRINTERS extends VTServerStandardLocalConsoleCommandProcessor
       VTConsole.print("\rVT>No print services found on server!\nVT>");
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

@@ -49,10 +49,10 @@ public class VTWin32JNAScreenShot
         ok = GDI.GetDIBits(blitDC, outputBitmap, 0, height, (byte[]) null, bi, WinGDI.DIB_RGB_COLORS);
         if (ok)
         {
-        	BITMAPINFOHEADER bih = bi.bmiHeader;
-          bih.biHeight = - Math.abs(bih.biHeight);
+          BITMAPINFOHEADER bih = bi.bmiHeader;
+          bih.biHeight = -Math.abs(bih.biHeight);
           bi.bmiHeader.biCompression = 0;
-          //return bufferedImageFromBitmap(blitDC, outputBitmap, bi);
+          // return bufferedImageFromBitmap(blitDC, outputBitmap, bi);
           ok = pixelDataFromBitmap(blitDC, outputBitmap, bi, pixelInt, pixelShort);
         }
         else
@@ -79,14 +79,14 @@ public class VTWin32JNAScreenShot
     BITMAPINFOHEADER bih = bi.bmiHeader;
     int height = Math.abs(bih.biHeight);
     int width = Math.abs(bih.biWidth);
-      
+    
     switch (bih.biBitCount)
     {
       case 16:
       {
-      	ok = GDI.GetDIBits(blitDC, outputBitmap, 0, height, pixelShort, bi, 0);
-      	VTImageDataUtils.convertRGB555ToRGB888(pixelShort, pixelInt, width * height);
-      	break;
+        ok = GDI.GetDIBits(blitDC, outputBitmap, 0, height, pixelShort, bi, 0);
+        VTImageDataUtils.convertRGB555ToRGB888(pixelShort, pixelInt, width * height);
+        break;
       }
       case 32:
       {
@@ -101,9 +101,9 @@ public class VTWin32JNAScreenShot
     return ok;
   }
   
-  public static BufferedImage getScreenshot(Rectangle bounds) 
+  public static BufferedImage getScreenshot(Rectangle bounds)
   {
-  	HWND desktopWindow = USER.GetDesktopWindow();
+    HWND desktopWindow = USER.GetDesktopWindow();
     HDC windowDC = USER.GetDC(desktopWindow);
     HBITMAP outputBitmap = GDI.CreateCompatibleBitmap(windowDC, bounds.width, bounds.height);
     try
@@ -125,8 +125,8 @@ public class VTWin32JNAScreenShot
         boolean ok = GDI.GetDIBits(blitDC, outputBitmap, 0, bounds.height, (byte[]) null, bi, WinGDI.DIB_RGB_COLORS);
         if (ok)
         {
-        	BITMAPINFOHEADER bih = bi.bmiHeader;
-          bih.biHeight = - Math.abs(bih.biHeight);
+          BITMAPINFOHEADER bih = bi.bmiHeader;
+          bih.biHeight = -Math.abs(bih.biHeight);
           bi.bmiHeader.biCompression = 0;
           return bufferedImageFromBitmap(blitDC, outputBitmap, bi);
         }
@@ -154,7 +154,7 @@ public class VTWin32JNAScreenShot
     final ColorModel cm;
     final DataBuffer buffer;
     final WritableRaster raster;
-    int strideBits =  (bih.biWidth * bih.biBitCount);
+    int strideBits = (bih.biWidth * bih.biBitCount);
     int strideBytesAligned = (((strideBits - 1) | 0x1F) + 1) >> 3;
     final int strideElementsAligned;
     switch (bih.biBitCount)
@@ -164,11 +164,7 @@ public class VTWin32JNAScreenShot
         strideElementsAligned = strideBytesAligned / 2;
         cm = new DirectColorModel(16, 0x7C00, 0x3E0, 0x1F);
         buffer = new DataBufferUShort(strideElementsAligned * height);
-        raster = Raster.createPackedRaster(buffer,
-        bih.biWidth, height,
-        strideElementsAligned,
-        ((DirectColorModel) cm).getMasks(),
-        null);
+        raster = Raster.createPackedRaster(buffer, bih.biWidth, height, strideElementsAligned, ((DirectColorModel) cm).getMasks(), null);
         break;
       }
       case 32:
@@ -176,11 +172,7 @@ public class VTWin32JNAScreenShot
         strideElementsAligned = strideBytesAligned / 4;
         cm = new DirectColorModel(32, 0xFF0000, 0xFF00, 0xFF);
         buffer = new DataBufferInt(strideElementsAligned * height);
-        raster = Raster.createPackedRaster(buffer,
-        bih.biWidth, height,
-        strideElementsAligned,
-        ((DirectColorModel) cm).getMasks(),
-        null);
+        raster = Raster.createPackedRaster(buffer, bih.biWidth, height, strideElementsAligned, ((DirectColorModel) cm).getMasks(), null);
         break;
       }
       default:
@@ -217,7 +209,7 @@ public class VTWin32JNAScreenShot
       return null;
     }
   }
-    
+  
   private static final User32 USER = User32.INSTANCE;
   
   private static final GDI32 GDI = GDI32.INSTANCE;
@@ -226,7 +218,7 @@ public class VTWin32JNAScreenShot
 
 final class GDI32
 {
-  //GDI32 INSTANCE = (GDI32) Native.loadLibrary(GDI32.class);
+  // GDI32 INSTANCE = (GDI32) Native.loadLibrary(GDI32.class);
   static
   {
     Native.register("gdi32");
@@ -260,7 +252,8 @@ final class GDI32
 
 final class User32
 {
-  //User32 INSTANCE = (User32) Native.loadLibrary(User32.class, W32APIOptions.UNICODE_OPTIONS);
+  // User32 INSTANCE = (User32) Native.loadLibrary(User32.class,
+  // W32APIOptions.UNICODE_OPTIONS);
   static
   {
     Native.register("user32");

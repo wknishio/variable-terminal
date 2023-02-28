@@ -12,24 +12,24 @@ public class VTServerShellErrorWriter extends VTTask
   private final char[] resultBuffer = new char[resultBufferSize];
   private VTServerConnection connection;
   private VTServerSession session;
-
+  
   public VTServerShellErrorWriter(VTServerSession session)
   {
     this.session = session;
     this.connection = session.getConnection();
     this.stopped = false;
   }
-
+  
   public boolean isStopped()
   {
     return stopped;
   }
-
+  
   public void setStopped(boolean stopped)
   {
     this.stopped = stopped;
   }
-
+  
   public void run()
   {
     while (!stopped)
@@ -54,6 +54,6 @@ public class VTServerShellErrorWriter extends VTTask
         break;
       }
     }
-    //session.getShell().stopShell();
+    // session.getShell().stopShell();
   }
 }

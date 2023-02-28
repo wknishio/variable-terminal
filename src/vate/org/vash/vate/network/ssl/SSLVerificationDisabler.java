@@ -17,42 +17,43 @@ public class SSLVerificationDisabler
       return true;
     }
   }
-
+  
   private static class PublicKeyInfrastructureRejector implements TrustManager, X509TrustManager
   {
     public java.security.cert.X509Certificate[] getAcceptedIssuers()
     {
       return new java.security.cert.X509Certificate[] {};
     }
-
+    
     @SuppressWarnings("all")
     public boolean isServerTrusted(java.security.cert.X509Certificate[] certs)
     {
       return true;
     }
-
+    
     @SuppressWarnings("all")
     public boolean isClientTrusted(java.security.cert.X509Certificate[] certs)
     {
       return true;
     }
-
+    
     public void checkServerTrusted(java.security.cert.X509Certificate[] certs, String authType) throws java.security.cert.CertificateException
     {
       return;
     }
-
+    
     public void checkClientTrusted(java.security.cert.X509Certificate[] certs, String authType) throws java.security.cert.CertificateException
     {
       return;
     }
   }
-
+  
   public static boolean install()
   {
     try
     {
-      TrustManager[] trustAnything = new TrustManager[] { new PublicKeyInfrastructureRejector() };
+      TrustManager[] trustAnything = new TrustManager[]
+      { new PublicKeyInfrastructureRejector() };
       SSLContext unverifiedTLS = SSLContext.getInstance("TLS");
       unverifiedTLS.init(null, trustAnything, new java.security.SecureRandom());
       HttpsURLConnection.setDefaultSSLSocketFactory(unverifiedTLS.getSocketFactory());

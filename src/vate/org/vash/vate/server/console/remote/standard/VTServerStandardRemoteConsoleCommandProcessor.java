@@ -9,7 +9,7 @@ public abstract class VTServerStandardRemoteConsoleCommandProcessor extends VTSe
   {
     
   }
-
+  
   public String help(String name)
   {
     return VTHelpManager.findHelpForClientCommand(name);

@@ -91,12 +91,12 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
   private CheckboxMenuItem imageCodingPNGOption;
   private CheckboxMenuItem imageCodingJPGOption;
   // private CheckboxMenuItem imageCodingGIFOption;
-
+  
   private Map<Integer, CheckboxMenuItem> captureIntervalOptions;
   private MenuItem increasePointerOption;
   private MenuItem decreasePointerOption;
   private MenuItem normalizePointerOption;
-
+  
   public VTGraphicsModeClientOptionsMenuBarViewMenu(VTGraphicsModeClientWriter writer)
   {
     super("View");
@@ -233,7 +233,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.drawPointerSizeMenu.add(increasePointerOption);
     this.drawPointerSizeMenu.add(decreasePointerOption);
     this.drawPointerSizeMenu.add(normalizePointerOption);
-
+    
 //		this.colorQualityMenu.add(worstColorOption);
 //		this.colorQualityMenu.add(lowColorOption);
 //		this.colorQualityMenu.add(simpleColorOption);
@@ -243,7 +243,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
 //		this.colorQualityMenu.add(extraColorOption);
 //		this.colorQualityMenu.add(highColorOption);
 //		this.colorQualityMenu.add(bestColorOption);
-
+    
     this.colorQualityMenu.add(trueColorOption);
     this.colorQualityMenu.add(highColorOption);
     this.colorQualityMenu.add(extraColorOption);
@@ -253,14 +253,14 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.colorQualityMenu.add(simpleColorOption);
     this.colorQualityMenu.add(lowColorOption);
     this.colorQualityMenu.add(worstColorOption);
-
+    
     this.refreshModeMenu.add(asynchronousRefreshOption);
     this.refreshModeMenu.add(synchronousRefreshOption);
     this.refreshModeMenu.add(interruptedRefreshOption);
     this.drawPointerMenu.add(showPointerOption);
     this.drawPointerMenu.add(hidePointerOption);
     this.drawPointerMenu.add(drawPointerSizeMenu);
-
+    
     for (Entry<Integer, CheckboxMenuItem> captureIntervalOption : this.captureIntervalOptions.entrySet())
     {
       Integer screenCaptureInterval = captureIntervalOption.getKey();
@@ -273,15 +273,15 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       option.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuScreenCaptureIntervalOptionsListener(writer, option, screenCaptureInterval));
       this.refreshIntervalMenu.add(option);
     }
-
+    
     this.scaledCaptureFactorMenu.add(increaseCaptureFactorMenu);
     this.scaledCaptureFactorMenu.add(decreaseCaptureFactorMenu);
     this.scaledCaptureFactorMenu.add(resetCaptureFactorMenu);
-
+    
     this.scaledCaptureMenu.add(scaledCaptureFactorMenu);
     this.scaledCaptureMenu.add(scaledPartialCaptureOption);
     this.scaledCaptureMenu.add(scaledCompleteCaptureOption);
-
+    
     this.adjustedCaptureMenu.add(adjustedKeepRatioCaptureOption);
     this.adjustedCaptureMenu.add(adjustedIgnoreRatioCaptureOption);
     // this.captureModeMenu.add(scaledCaptureFactorMenu);
@@ -310,7 +310,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.imageFormatMenu.add(imageCodingJPGOption);
     this.imageFormatMenu.add(imageCodingPNGOption);
     // this.imageFormatMenu.add(imageCodingGIFOption);
-
+    
     this.add(refreshModeMenu);
     this.add(refreshIntervalMenu);
     this.add(refreshClauseMenu);
@@ -324,7 +324,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.add(adjustFrameSizeMenu);
     this.add(closeTerminalMenu);
   }
-
+  
   public void setColorQuality(int colorQuality)
   {
     if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216)
@@ -461,18 +461,18 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     }
     else
     {
-      //trueColorOption.setState(false);
-      //highColorOption.setState(false);
-      //extraColorOption.setState(false);
-      //increasedColorOption.setState(false);
-      //mediumColorOption.setState(false);
-      //decreasedColorOption.setState(false);
-      //simpleColorOption.setState(true);
-      //lowColorOption.setState(false);
-      //worstColorOption.setState(false);
+      // trueColorOption.setState(false);
+      // highColorOption.setState(false);
+      // extraColorOption.setState(false);
+      // increasedColorOption.setState(false);
+      // mediumColorOption.setState(false);
+      // decreasedColorOption.setState(false);
+      // simpleColorOption.setState(true);
+      // lowColorOption.setState(false);
+      // worstColorOption.setState(false);
     }
   }
-
+  
   public void setSynchronousRefresh(boolean synchronousRefresh)
   {
     if (synchronousRefresh)
@@ -486,7 +486,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       synchronousRefreshOption.setState(false);
     }
   }
-
+  
   public void setInterruptRefresh(boolean interruptRefresh)
   {
     if (interruptRefresh)
@@ -495,7 +495,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       synchronousRefreshOption.setState(false);
     }
   }
-
+  
   public void setDrawPointer(boolean drawPointer)
   {
     if (drawPointer)
@@ -509,7 +509,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       hidePointerOption.setState(true);
     }
   }
-
+  
   public void setScreenCaptureInterval(int screenCaptureInterval)
   {
     for (Entry<Integer, CheckboxMenuItem> captureIntervalOption : captureIntervalOptions.entrySet())
@@ -524,7 +524,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       }
     }
   }
-
+  
   public void setScreenCaptureMode(int mode)
   {
     if (mode == VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_VIEWPORT)
@@ -556,13 +556,13 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       adjustedIgnoreRatioCaptureOption.setState(true);
     }
   }
-
+  
   /*
    * public void setIgnoreFocus(boolean ignoreFocus) { if (ignoreFocus) {
    * ignoreFocusOption.setState(true); needFocusOption.setState(false); } else {
    * ignoreFocusOption.setState(false); needFocusOption.setState(true); } }
    */
-
+  
   /*
    * public void setIgnoreIconification(boolean ignoreIconification) { if
    * (ignoreIconification) { ignoreIconificationOption.setState(true);
@@ -570,19 +570,19 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
    * ignoreIconificationOption.setState(false);
    * considerIconificationOption.setState(true); } }
    */
-
+  
   public void interruptRefresh()
   {
     asynchronousRefreshOption.setState(false);
     synchronousRefreshOption.setState(false);
     interruptedRefreshOption.setState(true);
   }
-
+  
   public void resumeRefresh()
   {
     interruptedRefreshOption.setState(false);
   }
-
+  
   public void setDynamicCoding(boolean dynamicCoding)
   {
     if (dynamicCoding)
@@ -596,7 +596,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       dynamicCodingOption.setState(false);
     }
   }
-
+  
   public void setSeparatedCoding(boolean separatedCoding)
   {
     if (separatedCoding)
@@ -610,7 +610,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       separatedCodingOption.setState(false);
     }
   }
-
+  
   public void setTerminalRefreshPolicy(int state)
   {
     if (state == VTGraphicsModeClientWriter.TERMINAL_STATE_FOCUSED)
@@ -632,7 +632,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       ignoreStateOption.setState(true);
     }
   }
-
+  
   public void setImageCoding(int imageCoding)
   {
     if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG)
@@ -667,7 +667,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       // imageCodingGIFOption.setState(false);
     }
   }
-
+  
   public void increaseCaptureInterval()
   {
     CheckboxMenuItem current = null;
@@ -689,7 +689,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       }
     }
   }
-
+  
   public void decreaseCaptureInterval()
   {
     CheckboxMenuItem current = null;
@@ -715,7 +715,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       enable.getItemListeners()[0].itemStateChanged(event);
     }
   }
-
+  
   public void decreaseColorQuality()
   {
     CheckboxMenuItem enable = null;
@@ -730,22 +730,22 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       disable = simpleColorOption;
       enable = lowColorOption;
     }
-    //if (decreasedColorOption.getState())
-    //{
-      //disable = decreasedColorOption;
-      //enable = simpleColorOption;
-    //}
+    // if (decreasedColorOption.getState())
+    // {
+    // disable = decreasedColorOption;
+    // enable = simpleColorOption;
+    // }
     if (mediumColorOption.getState())
     {
       disable = mediumColorOption;
       // enable = lowColorOption;
       enable = lowColorOption;
     }
-    //if (increasedColorOption.getState())
-    //{
-      //disable = increasedColorOption;
-      //enable = mediumColorOption;
-    //}
+    // if (increasedColorOption.getState())
+    // {
+    // disable = increasedColorOption;
+    // enable = mediumColorOption;
+    // }
     if (extraColorOption.getState())
     {
       disable = extraColorOption;
@@ -770,7 +770,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       enable.getItemListeners()[0].itemStateChanged(event);
     }
   }
-
+  
   public void increaseColorQuality()
   {
     CheckboxMenuItem enable = null;
@@ -791,22 +791,22 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       disable = simpleColorOption;
       enable = mediumColorOption;
     }
-    //if (decreasedColorOption.getState())
-    //{
-      //disable = decreasedColorOption;
-      //enable = mediumColorOption;
-    //}
+    // if (decreasedColorOption.getState())
+    // {
+    // disable = decreasedColorOption;
+    // enable = mediumColorOption;
+    // }
     if (mediumColorOption.getState())
     {
       disable = mediumColorOption;
       // enable = lowColorOption;
       enable = extraColorOption;
     }
-    //if (increasedColorOption.getState())
-    //{
-      //disable = increasedColorOption;
-      //enable = extraColorOption;
-    //}
+    // if (increasedColorOption.getState())
+    // {
+    // disable = increasedColorOption;
+    // enable = extraColorOption;
+    // }
     if (extraColorOption.getState())
     {
       disable = extraColorOption;

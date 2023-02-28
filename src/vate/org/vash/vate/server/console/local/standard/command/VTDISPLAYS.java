@@ -17,7 +17,7 @@ public class VTDISPLAYS extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTDISPLAYS");
     this.setAbbreviatedSyntax("*VTDPS");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     message.setLength(0);
@@ -45,9 +45,9 @@ public class VTDISPLAYS extends VTServerStandardLocalConsoleCommandProcessor
     }
     VTConsole.print(message.toString());
   }
-
+  
   public void close()
   {
-
+    
   }
 }

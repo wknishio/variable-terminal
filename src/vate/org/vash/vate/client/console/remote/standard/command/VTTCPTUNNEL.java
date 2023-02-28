@@ -17,7 +17,7 @@ public class VTTCPTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTTCPTUNNEL [SIDE] [[BIND] PORT] [[HOST] PORT]");
     this.setAbbreviatedSyntax("*VTTTN [SD] [[BD] PT] [[HT] PT]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -29,8 +29,7 @@ public class VTTCPTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
       {
         if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
         {
-          message.append("\nVT>Client TCP bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]" + 
-          "\nVT>Server TCP redirect address: [" + channel.getChannel().getRedirectHost() + " " + channel.getChannel().getRedirectPort() + "]" + "\nVT>");
+          message.append("\nVT>Client TCP bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]" + "\nVT>Server TCP redirect address: [" + channel.getChannel().getRedirectHost() + " " + channel.getChannel().getRedirectPort() + "]" + "\nVT>");
         }
       }
       VTConsole.print(message.toString());
@@ -48,8 +47,7 @@ public class VTTCPTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
         {
           if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
           {
-            message.append("\nVT>Client TCP bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]" +
-            "\nVT>Server TCP redirect address: [" + channel.getChannel().getRedirectHost() + " " + channel.getChannel().getRedirectPort() + "]" + "\nVT>");
+            message.append("\nVT>Client TCP bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]" + "\nVT>Server TCP redirect address: [" + channel.getChannel().getRedirectHost() + " " + channel.getChannel().getRedirectPort() + "]" + "\nVT>");
           }
         }
         message.append("\nVT>End of client connection TCP tunnels list\nVT>");
@@ -231,7 +229,7 @@ public class VTTCPTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
           if (isPort(parsed[2]) && isPort(parsed[4]))
           {
             int bindPort = Integer.parseInt(parsed[2]);
-            String redirectAddress = parsed[3]; 
+            String redirectAddress = parsed[3];
             int redirectPort = Integer.parseInt(parsed[4]);
             if (bindPort < 1 || bindPort > 65535 || redirectPort < 1 || redirectPort > 65535)
             {
@@ -252,7 +250,7 @@ public class VTTCPTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
           else if (isPort(parsed[3]) && isPort(parsed[4]))
           {
             String bindAddress = parsed[2];
-            int bindPort = Integer.parseInt(parsed[3]); 
+            int bindPort = Integer.parseInt(parsed[3]);
             int redirectPort = Integer.parseInt(parsed[4]);
             if (bindPort < 1 || bindPort > 65535 || redirectPort < 1 || redirectPort > 65535)
             {
@@ -287,7 +285,7 @@ public class VTTCPTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
           if (isPort(parsed[2]) && isPort(parsed[4]))
           {
             int bindPort = Integer.parseInt(parsed[2]);
-            //String redirectAddress = parsed[3]; 
+            // String redirectAddress = parsed[3];
             int redirectPort = Integer.parseInt(parsed[4]);
             if (bindPort < 1 || bindPort > 65535 || redirectPort < 1 || redirectPort > 65535)
             {
@@ -301,8 +299,8 @@ public class VTTCPTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
           }
           else if (isPort(parsed[3]) && isPort(parsed[4]))
           {
-            //String bindAddress = parsed[2];
-            int bindPort = Integer.parseInt(parsed[3]); 
+            // String bindAddress = parsed[2];
+            int bindPort = Integer.parseInt(parsed[3]);
             int redirectPort = Integer.parseInt(parsed[4]);
             if (bindPort < 1 || bindPort > 65535 || redirectPort < 1 || redirectPort > 65535)
             {
@@ -407,7 +405,7 @@ public class VTTCPTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
     }
     return false;
   }
-
+  
   public void close()
   {
     

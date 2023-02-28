@@ -11,7 +11,7 @@ public class VTCHAIN extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTCHAIN");
     this.setAbbreviatedSyntax("*VTCHN");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -45,9 +45,9 @@ public class VTCHAIN extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

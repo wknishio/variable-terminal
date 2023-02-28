@@ -21,31 +21,31 @@ public class VTServerNetworkInterfaceResolver extends VTTask
     try
     {
       getHardwareAddress = NetworkInterface.class.getMethod("getHardwareAddress");
-      //getHardwareAddress.setAccessible(true);
+      // getHardwareAddress.setAccessible(true);
     }
     catch (Throwable t)
     {
       
     }
   }
-
+  
   public VTServerNetworkInterfaceResolver(VTServerSession session)
   {
     this.session = session;
     this.message = new StringBuilder();
     this.finished = true;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public void run()
   {
     try
@@ -64,10 +64,11 @@ public class VTServerNetworkInterfaceResolver extends VTTask
             continue;
           }
           message.append("\nVT>Name: [" + networkInterface.getName() + "]" + "\nVT>Display name: [" + networkInterface.getDisplayName() + "]");
-
+          
           try
           {
-            //Method getHardwareAddress = networkInterface.getClass().getMethod("getHardwareAddress");
+            // Method getHardwareAddress =
+            // networkInterface.getClass().getMethod("getHardwareAddress");
             if (getHardwareAddress != null)
             {
               byte[] hardwareAddress = (byte[]) getHardwareAddress.invoke(networkInterface);
@@ -86,7 +87,7 @@ public class VTServerNetworkInterfaceResolver extends VTTask
           {
             // Hardware address available in 1.6 and beyond but we support 1.5
           }
-
+          
           while (addresses.hasMoreElements())
           {
             InetAddress address = addresses.nextElement();
@@ -127,14 +128,14 @@ public class VTServerNetworkInterfaceResolver extends VTTask
         }
         catch (IOException e1)
         {
-
+          
         }
         finished = true;
       }
     }
     catch (Throwable e)
     {
-
+      
     }
     finished = true;
   }

@@ -16,7 +16,7 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
   private volatile boolean interrupted;
   private VTGraphicsModeClientWriter writer;
   private VTAWTControlEvent untyped;
-
+  
   public VTGraphicsModeClientRemoteInterfaceKeyListener(VTGraphicsModeClientWriter writer)
   {
     this.writer = writer;
@@ -24,23 +24,23 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
     this.pressedKeys = Collections.synchronizedSet(new LinkedHashSet<Integer>());
     this.suppressedKeys = Collections.synchronizedSet(new LinkedHashSet<Integer>());
   }
-
+  
   public boolean suppressKey(int keycode)
   {
     return writer.localKeyRelease(keycode) && suppressedKeys.add(keycode);
   }
-
+  
   public boolean unsuppressKey(int keycode)
   {
     return suppressedKeys.remove(keycode);
   }
-
+  
   public void clearAllPressedKeys()
   {
     suppressedKeys.clear();
     pressedKeys.clear();
   }
-
+  
   public void keyPressed(KeyEvent event)
   {
     // System.out.println(event.toString());
@@ -50,17 +50,17 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
      */
     event.consume();
     /*
-     * if (event.getKeyCode() == KeyEvent.VK_UNDEFINED && event.getKeyChar() == '?')
-     * { event.setKeyCode(KeyEvent.VK_SLASH); }
+     * if (event.getKeyCode() == KeyEvent.VK_UNDEFINED && event.getKeyChar() ==
+     * '?') { event.setKeyCode(KeyEvent.VK_SLASH); }
      */
     boolean pressedControl = (event.getModifiersEx() & (KeyEvent.CTRL_DOWN_MASK)) != 0 || pressedKeys.contains(KeyEvent.VK_CONTROL) || event.getKeyCode() == KeyEvent.VK_CONTROL;
     boolean pressedShift = (event.getModifiersEx() & (KeyEvent.SHIFT_DOWN_MASK)) != 0 || pressedKeys.contains(KeyEvent.VK_SHIFT) || event.getKeyCode() == KeyEvent.VK_SHIFT;
     boolean pressedAlt = (event.getModifiersEx() & (KeyEvent.ALT_DOWN_MASK)) != 0 || pressedKeys.contains(KeyEvent.VK_ALT) || event.getKeyCode() == KeyEvent.VK_ALT;
     boolean pressedAltGraph = (event.getModifiersEx() & (KeyEvent.ALT_GRAPH_DOWN_MASK)) != 0 || pressedKeys.contains(KeyEvent.VK_ALT_GRAPH) || event.getKeyCode() == KeyEvent.VK_ALT_GRAPH;
-
+    
     if (pressedControl && pressedShift && (pressedAlt || pressedAltGraph))
     {
-
+      
     }
     else if (!interrupted)
     {
@@ -126,7 +126,7 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
       }
     }
   }
-
+  
   public void keyReleased(KeyEvent event)
   {
     // System.out.println(event.toString());
@@ -139,7 +139,7 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
     {
       return;
     }
-
+    
     if (writer.isIgnoreLocalKeyCombinations())
     {
       if (!interrupted)
@@ -151,8 +151,8 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
          * (event.getKeyCode() == KeyEvent.VK_CAPS_LOCK) {
          * writer.synchronizeRemoteLockingKey(KeyEvent.VK_CAPS_LOCK); } else if
          * (event.getKeyCode() == KeyEvent.VK_SCROLL_LOCK) {
-         * writer.synchronizeRemoteLockingKey(KeyEvent.VK_SCROLL_LOCK); } else if
-         * (event.getKeyCode() == KeyEvent.VK_KANA_LOCK) {
+         * writer.synchronizeRemoteLockingKey(KeyEvent.VK_SCROLL_LOCK); } else
+         * if (event.getKeyCode() == KeyEvent.VK_KANA_LOCK) {
          * writer.synchronizeRemoteLockingKey(KeyEvent.VK_KANA_LOCK); }
          */
         untyped.id = event.getID();
@@ -179,7 +179,7 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
       }
       return;
     }
-
+    
     boolean releasedControl = event.getKeyCode() == KeyEvent.VK_CONTROL;
     boolean releasedShift = event.getKeyCode() == KeyEvent.VK_SHIFT;
     boolean releasedAlt = event.getKeyCode() == KeyEvent.VK_ALT;
@@ -188,7 +188,7 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
     boolean pressedShift = (event.getModifiersEx() & (KeyEvent.SHIFT_DOWN_MASK)) != 0 || pressedKeys.contains(KeyEvent.VK_SHIFT) && !(releasedShift);
     boolean pressedAlt = (event.getModifiersEx() & (KeyEvent.ALT_DOWN_MASK)) != 0 || pressedKeys.contains(KeyEvent.VK_ALT) && !(releasedAlt);
     boolean pressedAltGraph = (event.getModifiersEx() & (KeyEvent.ALT_GRAPH_DOWN_MASK)) != 0 || pressedKeys.contains(KeyEvent.VK_ALT_GRAPH) && !(releasedAltGraph);
-
+    
     /*
      * else { }
      */
@@ -345,7 +345,7 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
       pressedKeys.remove(event.getKeyCode());
     }
   }
-
+  
   public void keyTyped(KeyEvent event)
   {
     // System.out.println(event.toString());
@@ -356,12 +356,12 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
     event.consume();
     // System.out.println(event.toString());
   }
-
+  
   public void setInterrupted(boolean interrupted)
   {
     this.interrupted = interrupted;
   }
-
+  
   private void toggleControl(boolean altGraph)
   {
     if (!interrupted)
@@ -369,10 +369,10 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
       untyped.id = KeyEvent.KEY_RELEASED;
       untyped.keyCode = KeyEvent.VK_CONTROL;
       writer.writeEvent(untyped);
-
+      
       untyped.keyCode = KeyEvent.VK_SHIFT;
       writer.writeEvent(untyped);
-
+      
       if (altGraph)
       {
         untyped.keyCode = KeyEvent.VK_ALT_GRAPH;
@@ -383,7 +383,7 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
         untyped.keyCode = KeyEvent.VK_ALT;
         writer.writeEvent(untyped);
       }
-
+      
       writer.releaseAllPressedKeys();
     }
     writer.toggleControl();

@@ -18,14 +18,14 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
   private volatile boolean scrolled;
   private Clipboard systemClipboard;
   private PopupMenu popupMenu;
-
+  
   public VTGraphicalConsoleKeyListener(PopupMenu popupMenu)
   {
     this.popupMenu = popupMenu;
     this.scrolled = false;
     this.systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
   }
-
+  
   public void toggleScrollMode()
   {
     scrolled = !scrolled;
@@ -38,7 +38,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
       VTGraphicalConsole.resumeOutputFlush();
     }
   }
-
+  
   @SuppressWarnings("unchecked")
   public void keyPressed(KeyEvent e)
   {
@@ -81,7 +81,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
       }
       catch (Throwable e1)
       {
-
+        
       }
       return;
     }
@@ -172,7 +172,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
       VTConsole.toggleScrollMode();
       return;
     }
-
+    
     if (!scrolled)
     {
       if (e.getKeyCode() == KeyEvent.VK_LEFT)
@@ -244,11 +244,11 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
       return;
       // VTGraphicalConsole.getTextArea().dispatchEvent(alt);
     }
-
+    
     // e.consume();
     // return;
   }
-
+  
   public void keyReleased(KeyEvent e)
   {
     if (!scrolled)
@@ -270,10 +270,11 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     }
     /*
      * if ((e.getKeyCode() != KeyEvent.VK_LEFT) && (e.getKeyCode() !=
-     * KeyEvent.VK_UP) && (e.getKeyCode() != KeyEvent.VK_DOWN) && (e.getKeyCode() !=
-     * KeyEvent.VK_HOME) && (e.getKeyCode() != KeyEvent.VK_END) && (e.getKeyCode()
-     * != KeyEvent.VK_RIGHT) && (e.getKeyCode() != KeyEvent.VK_PAGE_DOWN) &&
-     * (e.getKeyCode() != KeyEvent.VK_PAGE_UP) && (!e.isActionKey())) { e.consume();
+     * KeyEvent.VK_UP) && (e.getKeyCode() != KeyEvent.VK_DOWN) &&
+     * (e.getKeyCode() != KeyEvent.VK_HOME) && (e.getKeyCode() !=
+     * KeyEvent.VK_END) && (e.getKeyCode() != KeyEvent.VK_RIGHT) &&
+     * (e.getKeyCode() != KeyEvent.VK_PAGE_DOWN) && (e.getKeyCode() !=
+     * KeyEvent.VK_PAGE_UP) && (!e.isActionKey())) { e.consume();
      * System.out.println("consumed!"); }
      */
     // if ((e.getModifiersEx() & KeyEvent.CTRL_DOWN_MASK) > 0)
@@ -284,10 +285,10 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     {
       e.consume();
     }
-
+    
     // System.out.println(e.toString());
   }
-
+  
   public void keyTyped(KeyEvent e)
   {
     // System.out.println(e.toString());
@@ -301,7 +302,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     }
     else if (e.getKeyChar() == '\u007f')
     {
-
+      
     }
     else if (e.getKeyChar() == '\u0003')
     {
@@ -322,6 +323,6 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     {
       VTGraphicalConsole.input(e.getKeyChar());
     }
-
+    
   }
 }

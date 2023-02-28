@@ -34,10 +34,10 @@ public class VTClientConnection
   private static byte[] VT_CLIENT_CHECK_STRING_NONE = new byte[16];
   private static byte[] VT_SERVER_CHECK_STRING_RC4 = new byte[16];
   private static byte[] VT_CLIENT_CHECK_STRING_RC4 = new byte[16];
-  //private static byte[] VT_SERVER_CHECK_STRING_AES = new byte[16];
-  //private static byte[] VT_CLIENT_CHECK_STRING_AES = new byte[16];
-  //private static byte[] VT_SERVER_CHECK_STRING_BLOWFISH = new byte[16];
-  //private static byte[] VT_CLIENT_CHECK_STRING_BLOWFISH = new byte[16];
+  // private static byte[] VT_SERVER_CHECK_STRING_AES = new byte[16];
+  // private static byte[] VT_CLIENT_CHECK_STRING_AES = new byte[16];
+  // private static byte[] VT_SERVER_CHECK_STRING_BLOWFISH = new byte[16];
+  // private static byte[] VT_CLIENT_CHECK_STRING_BLOWFISH = new byte[16];
   private static byte[] VT_SERVER_CHECK_STRING_SALSA = new byte[16];
   private static byte[] VT_CLIENT_CHECK_STRING_SALSA = new byte[16];
   private static byte[] VT_SERVER_CHECK_STRING_HC256 = new byte[16];
@@ -51,34 +51,24 @@ public class VTClientConnection
   {
     try
     {
-      VT_SERVER_CHECK_STRING_NONE = (StringUtils.reverse("VT/SERVER/NONE/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      "VT/SERVER/NONE/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_NONE = (StringUtils.reverse("VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      "VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_RC4 = (StringUtils.reverse("VT/SERVER/RC4/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      "VT/SERVER/RC4/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_RC4 = (StringUtils.reverse("VT/CLIENT/RC4/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      "VT/CLIENT/RC4/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      //VT_SERVER_CHECK_STRING_AES = (StringUtils.reverse("VT/SERVER/AES/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      //"VT/SERVER/AES/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      //VT_CLIENT_CHECK_STRING_AES = (StringUtils.reverse("VT/CLIENT/AES/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      //"VT/CLIENT/AES/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_SALSA = (StringUtils.reverse("VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      "VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_SALSA = (StringUtils.reverse("VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      "VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_HC256 = (StringUtils.reverse("VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      "VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_HC256 = (StringUtils.reverse("VT/CLIENT/HC256/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      "VT/CLIENT/HC256/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      "VT/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      "VT/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_GRAIN = (StringUtils.reverse("VT/SERVER/GRAIN/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      "VT/SERVER/GRAIN/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_GRAIN = (StringUtils.reverse("VT/CLIENT/GRAIN/" + MAJOR_MINOR_VERSION).toLowerCase() + 
-      "VT/CLIENT/GRAIN/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_NONE = (StringUtils.reverse("VT/SERVER/NONE/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/SERVER/NONE/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_NONE = (StringUtils.reverse("VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_RC4 = (StringUtils.reverse("VT/SERVER/RC4/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/SERVER/RC4/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_RC4 = (StringUtils.reverse("VT/CLIENT/RC4/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/CLIENT/RC4/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      // VT_SERVER_CHECK_STRING_AES = (StringUtils.reverse("VT/SERVER/AES/" +
+      // MAJOR_MINOR_VERSION).toLowerCase() +
+      // "VT/SERVER/AES/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      // VT_CLIENT_CHECK_STRING_AES = (StringUtils.reverse("VT/CLIENT/AES/" +
+      // MAJOR_MINOR_VERSION).toLowerCase() +
+      // "VT/CLIENT/AES/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_SALSA = (StringUtils.reverse("VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_SALSA = (StringUtils.reverse("VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_HC256 = (StringUtils.reverse("VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_HC256 = (StringUtils.reverse("VT/CLIENT/HC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/CLIENT/HC256/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_GRAIN = (StringUtils.reverse("VT/SERVER/GRAIN/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/SERVER/GRAIN/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_GRAIN = (StringUtils.reverse("VT/CLIENT/GRAIN/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/CLIENT/GRAIN/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
     }
     catch (UnsupportedEncodingException e)
     {
@@ -90,13 +80,13 @@ public class VTClientConnection
   
   private int encryptionType;
   private byte[] encryptionKey;
-  //private byte[] digestedClient;
-  //private byte[] digestedServer;
+  // private byte[] digestedClient;
+  // private byte[] digestedServer;
   private byte[] localNonce = new byte[64];
   private byte[] remoteNonce = new byte[64];
   private byte[] randomData = new byte[64];
-  //private byte[] paddingData = new byte[1024];
-  //private MessageDigest sha256Digester;
+  // private byte[] paddingData = new byte[1024];
+  // private MessageDigest sha256Digester;
   private VTBlake3MessageDigest blake3Digest = new VTBlake3MessageDigest();
   private VTBlake3DigestRandom secureRandom;
   private VTCryptographicEngine cryptoEngine;
@@ -125,7 +115,7 @@ public class VTClientConnection
   private VTLinkableDynamicMultiplexedInputStream audioControlInputStream;
   private VTLinkableDynamicMultiplexedInputStream pingInputStream;
   private VTLinkableDynamicMultiplexedInputStream tunnelControlInputStream;
-  //private VTLinkableDynamicMultiplexedInputStream socksControlInputStream;
+  // private VTLinkableDynamicMultiplexedInputStream socksControlInputStream;
   
   // private OutputStream authenticationOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream shellOutputStream;
@@ -142,10 +132,10 @@ public class VTClientConnection
   private VTLinkableDynamicMultiplexedOutputStream audioControlOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream pingOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream tunnelControlOutputStream;
-  //private VTLinkableDynamicMultiplexedOutputStream socksControlOutputStream;
+  // private VTLinkableDynamicMultiplexedOutputStream socksControlOutputStream;
   
-  //private VTLittleEndianInputStream verificationReader;
-  //private VTLittleEndianOutputStream verificationWriter;
+  // private VTLittleEndianInputStream verificationReader;
+  // private VTLittleEndianOutputStream verificationWriter;
   private VTLittleEndianInputStream authenticationReader;
   private VTLittleEndianOutputStream authenticationWriter;
   private Reader resultReader;
@@ -175,14 +165,14 @@ public class VTClientConnection
   
   public VTClientConnection(VTBlake3DigestRandom secureRandom)
   {
-    //try
-    //{
-      //this.sha256Digester = MessageDigest.getInstance("SHA-256");
-    //}
-    //catch (NoSuchAlgorithmException e)
-    //{
-      // e.printStackTrace();
-    //}
+    // try
+    // {
+    // this.sha256Digester = MessageDigest.getInstance("SHA-256");
+    // }
+    // catch (NoSuchAlgorithmException e)
+    // {
+    // e.printStackTrace();
+    // }
     this.cryptoEngine = new VTCryptographicEngine();
     this.secureRandom = secureRandom;
     this.authenticationReader = new VTLittleEndianInputStream(null);
@@ -279,10 +269,10 @@ public class VTClientConnection
     return tunnelControlInputStream;
   }
   
-  //public InputStream getSocksControlInputStream()
-  //{
-    //return socksControlInputStream;
-  //}
+  // public InputStream getSocksControlInputStream()
+  // {
+  // return socksControlInputStream;
+  // }
   
   /*
    * public OutputStream getAuthenticationOutputStream() { return
@@ -293,17 +283,17 @@ public class VTClientConnection
   {
     return shellOutputStream;
   }
-
+  
   public OutputStream getFileTransferDataOutputStream()
   {
     return fileTransferDataOutputStream;
   }
-
+  
   /*
    * public OutputStream getGraphicsImageOutputStream() { return
    * graphicsImageOutputStream; }
    */
-
+  
   public OutputStream getAudioDataOutputStream()
   {
     return audioDataOutputStream;
@@ -324,10 +314,10 @@ public class VTClientConnection
     return tunnelControlOutputStream;
   }
   
-  //public OutputStream getSocksControlOutputStream()
-  //{
-    //return socksControlOutputStream;
-  //}
+  // public OutputStream getSocksControlOutputStream()
+  // {
+  // return socksControlOutputStream;
+  // }
   
   public VTLittleEndianInputStream getAuthenticationReader()
   {
@@ -492,19 +482,19 @@ public class VTClientConnection
       }
     }
   }
-
+  
 //	public void closeSocketsFromDialog()
 //	{
 //		dialog = true;
 //		closeSockets();
 //	}
-
+  
   public void closeConnection()
   {
-    //VTConsole.setLogReadLine(null);
-    //VTConsole.setLogOutput(null);
+    // VTConsole.setLogReadLine(null);
+    // VTConsole.setLogOutput(null);
     VTConsole.print("\nVT>Connection with server closed!");
-    //VTConsole.setCommandEcho(true);
+    // VTConsole.setCommandEcho(true);
     closeSockets();
     if (connected)
     {
@@ -538,7 +528,7 @@ public class VTClientConnection
     // Arrays.fill(localNonce, (byte)0);
     // Arrays.fill(remoteNonce, (byte)0);
   }
-
+  
   public void exchangeNonces(boolean update) throws IOException
   {
     secureRandom.nextBytes(randomData);
@@ -657,15 +647,21 @@ public class VTClientConnection
     tunnelControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 11);
     tunnelControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 11);
     
-    //socksControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 12);
-    //socksControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 12);
+    // socksControlInputStream =
+    // multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED,
+    // 12);
+    // socksControlOutputStream =
+    // multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED,
+    // 12);
     
     shellDataOutputStream = VTCompressorSelector.createBufferedZlibOutputStream(shellOutputStream);
-    // shellDataOutputStream = VTCompressorSelector.createFlushBufferedSyncFlushDeflaterOutputStream(shellOutputStream);
+    // shellDataOutputStream =
+    // VTCompressorSelector.createFlushBufferedSyncFlushDeflaterOutputStream(shellOutputStream);
     // shellDataOutputStream = shellOutputStream;
     
     shellDataInputStream = VTCompressorSelector.createBufferedZlibInputStream(shellInputStream);
-    // shellDataInputStream = VTCompressorSelector.createFlushBufferedSyncFlushInflaterInputStream(shellInputStream);
+    // shellDataInputStream =
+    // VTCompressorSelector.createFlushBufferedSyncFlushInflaterInputStream(shellInputStream);
     // shellDataInputStream = shellInputStream;
     
     resultReader = new InputStreamReader(shellDataInputStream, "UTF-8");
@@ -680,7 +676,8 @@ public class VTClientConnection
     // deflatedImageDataInputStream =
     // VTCompressorSelector.createCompatibleSyncFlushInflaterInputStream(graphicsDeflatedImageInputStream);
     deflatedImageDataInputStream = VTCompressorSelector.createBufferedZlibInputStream(graphicsDeflatedImageInputStream);
-    //deflatedImageDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsDeflatedImageInputStream);
+    // deflatedImageDataInputStream =
+    // VTCompressorSelector.createBufferedZstdInputStream(graphicsDeflatedImageInputStream);
     deflatedImageDataOutputStream = graphicsDeflatedImageOutputStream;
     
     snappedImageDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(graphicsSnappedImageInputStream);
@@ -697,8 +694,8 @@ public class VTClientConnection
     
     // graphicsControlInputStream.addPropagated(clipboardDataOutputStream);
     // graphicsControlInputStream.addPropagated(clipboardDataInputStream);
-    //closeAudioStreams();
-    //audioDataInputStream.addPropagated(audioDataOutputStream);
+    // closeAudioStreams();
+    // audioDataInputStream.addPropagated(audioDataOutputStream);
   }
   
 //  public boolean exchangeConnectionPadding() throws IOException
@@ -815,10 +812,10 @@ public class VTClientConnection
     blake3Digest.reset();
     blake3Digest.update(localNonce);
     blake3Digest.update(remoteNonce);
-    //if (encryptionKey != null)
-    //{
-      //blake3Digester.update(encryptionKey);
-    //}
+    // if (encryptionKey != null)
+    // {
+    // blake3Digester.update(encryptionKey);
+    // }
     if (VTArrayComparator.arrayEquals(digestedServer, blake3Digest.digest(VT_SERVER_CHECK_STRING_NONE)))
     {
       return VT.VT_CONNECTION_ENCRYPT_NONE;
@@ -848,17 +845,18 @@ public class VTClientConnection
 //      return VT.VT_CONNECTION_ENCRYPT_AES;
 //    }
     
-    //sha256Digester.reset();
-    //sha256Digester.update(localNonce);
-    //sha256Digester.update(remoteNonce);
-    //if (encryptionKey != null)
-    //{
-      //sha256Digester.update(encryptionKey);
-    //}
-    //if (VTArrayComparator.arrayEquals(digestedServer, sha256Digester.digest(VT_SERVER_CHECK_STRING_BLOWFISH)))
-    //{
-      //return VT.VT_CONNECTION_ENCRYPT_BLOWFISH;
-    //}
+    // sha256Digester.reset();
+    // sha256Digester.update(localNonce);
+    // sha256Digester.update(remoteNonce);
+    // if (encryptionKey != null)
+    // {
+    // sha256Digester.update(encryptionKey);
+    // }
+    // if (VTArrayComparator.arrayEquals(digestedServer,
+    // sha256Digester.digest(VT_SERVER_CHECK_STRING_BLOWFISH)))
+    // {
+    // return VT.VT_CONNECTION_ENCRYPT_BLOWFISH;
+    // }
     
     blake3Digest.reset();
     blake3Digest.update(localNonce);
@@ -917,13 +915,14 @@ public class VTClientConnection
     exchangeNonces(false);
     setVerificationStreams(false);
     exchangeNonces(true);
-    //if (matchRemoteEncryptionSettings(localNonce, remoteNonce, encryptionKey))
-    //{
-      //return true;
-    //}
+    // if (matchRemoteEncryptionSettings(localNonce, remoteNonce,
+    // encryptionKey))
+    // {
+    // return true;
+    // }
     
-    //exchangeNonces(true);
-    //setVerificationStreams(true);
+    // exchangeNonces(true);
+    // setVerificationStreams(true);
     
     int remoteEncryptionType = 0;
     if (encryptionType == VT.VT_CONNECTION_ENCRYPT_NONE)
@@ -944,11 +943,11 @@ public class VTClientConnection
 //        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
 //        return true;
 //      }
-      //if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
-      //{
-        //setEncryptionType(VT.VT_CONNECTION_ENCRYPT_BLOWFISH);
-        //return true;
-      //}
+      // if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
+      // {
+      // setEncryptionType(VT.VT_CONNECTION_ENCRYPT_BLOWFISH);
+      // return true;
+      // }
       if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_SALSA)
       {
         setEncryptionType(VT.VT_CONNECTION_ENCRYPT_SALSA);
@@ -988,15 +987,16 @@ public class VTClientConnection
 //        return true;
 //      }
 //    }
-    //else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
-    //{
-      //remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, null, VT_CLIENT_CHECK_STRING_BLOWFISH);
-      //if (remoteEncryptionType != -1)
-      //{
-        //setEncryptionType(VT.VT_CONNECTION_ENCRYPT_BLOWFISH);
-        //return true;
-      //}
-    //}
+    // else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
+    // {
+    // remoteEncryptionType = discoverRemoteEncryptionType(localNonce,
+    // remoteNonce, null, VT_CLIENT_CHECK_STRING_BLOWFISH);
+    // if (remoteEncryptionType != -1)
+    // {
+    // setEncryptionType(VT.VT_CONNECTION_ENCRYPT_BLOWFISH);
+    // return true;
+    // }
+    // }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_SALSA)
     {
       remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_SALSA, encryptionType);
@@ -1047,8 +1047,9 @@ public class VTClientConnection
   }
   
   /*
-   * public boolean startedConnection() { return multiplexedConnectionInputStream
-   * != null && multiplexedConnectionInputStream.isPacketReaderStarted(); }
+   * public boolean startedConnection() { return
+   * multiplexedConnectionInputStream != null &&
+   * multiplexedConnectionInputStream.isPacketReaderStarted(); }
    */
   
   public void closeGraphicsModeStreams() throws IOException
@@ -1124,7 +1125,8 @@ public class VTClientConnection
     // deflatedImageDataInputStream =
     // VTCompressorSelector.createCompatibleSyncFlushInflaterInputStream(graphicsDeflatedImageInputStream);
     deflatedImageDataInputStream = VTCompressorSelector.createBufferedZlibInputStream(graphicsDeflatedImageInputStream);
-    //deflatedImageDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsDeflatedImageInputStream);
+    // deflatedImageDataInputStream =
+    // VTCompressorSelector.createBufferedZstdInputStream(graphicsDeflatedImageInputStream);
     
     snappedImageDataOutputStream = (graphicsSnappedImageOutputStream);
     snappedImageDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(graphicsSnappedImageInputStream);
@@ -1203,8 +1205,8 @@ public class VTClientConnection
     return multiplexedConnectionOutputStream.getBytesPerSecond();
   }
   
-  //public boolean isRunningAudio()
-  //{
-    //return !audioDataOutputStream.closed();
-  //}
+  // public boolean isRunningAudio()
+  // {
+  // return !audioDataOutputStream.closed();
+  // }
 }

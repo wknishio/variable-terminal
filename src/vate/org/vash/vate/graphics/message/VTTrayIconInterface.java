@@ -13,19 +13,19 @@ public class VTTrayIconInterface
   private Method getSystemTray;
   private Method add;
   private Method remove;
-
+  
   private Method addMouseListener;
   private Method addActionListener;
   private Method setImageAutoSize;
   private Method displayMessage;
-
+  
   private Object systemTrayObject;
   private Object trayIconObject;
   private Object messageTypeObject;
-
+  
   public VTTrayIconInterface()
   {
-
+    
   }
   
   public void reset()
@@ -44,7 +44,7 @@ public class VTTrayIconInterface
     trayIconObject = null;
     messageTypeObject = null;
   }
-
+  
   public void install(final Frame frame, String tooltip)
   {
     reset();
@@ -53,7 +53,7 @@ public class VTTrayIconInterface
     {
       Class<?> systemTrayClass = Class.forName("java.awt.SystemTray");
       Class<?> trayIconClass = Class.forName("java.awt.TrayIcon");
-
+      
       Class<?> messageTypeClass = null;
       Class<?> memberClasses[] = trayIconClass.getClasses();
       for (Class<?> memberClass : memberClasses)
@@ -64,26 +64,25 @@ public class VTTrayIconInterface
           messageTypeObject = messageTypeClass.getDeclaredMethod("valueOf", String.class).invoke(null, "NONE");
         }
       }
-
+      
       isSupported = systemTrayClass.getDeclaredMethod("isSupported");
       getSystemTray = systemTrayClass.getDeclaredMethod("getSystemTray");
       add = systemTrayClass.getMethod("add", trayIconClass);
       remove = systemTrayClass.getMethod("remove", trayIconClass);
-
+      
       addMouseListener = trayIconClass.getMethod("addMouseListener", MouseListener.class);
       addActionListener = trayIconClass.getMethod("addActionListener", ActionListener.class);
       setImageAutoSize = trayIconClass.getMethod("setImageAutoSize", boolean.class);
       displayMessage = trayIconClass.getMethod("displayMessage", String.class, String.class, messageTypeClass);
       
-
       if (!((Boolean) isSupported.invoke(null)))
       {
         return;
       }
-
+      
       systemTrayObject = getSystemTray.invoke(null);
       trayIconObject = trayIconClass.getConstructor(Class.forName("java.awt.Image"), String.class).newInstance(frame.getIconImage(), tooltip);
-
+      
       addMouseListener.invoke(trayIconObject, new MouseListener()
       {
         public void mouseClicked(MouseEvent e)
@@ -98,28 +97,28 @@ public class VTTrayIconInterface
           }
           frame.toFront();
         }
-
+        
         public void mousePressed(MouseEvent e)
         {
-
+          
         }
-
+        
         public void mouseReleased(MouseEvent e)
         {
-
+          
         }
-
+        
         public void mouseEntered(MouseEvent e)
         {
-
+          
         }
-
+        
         public void mouseExited(MouseEvent e)
         {
-
+          
         }
       });
-
+      
       addActionListener.invoke(trayIconObject, new ActionListener()
       {
         public void actionPerformed(ActionEvent e)
@@ -135,11 +134,11 @@ public class VTTrayIconInterface
           frame.toFront();
         }
       });
-
+      
       setImageAutoSize.invoke(trayIconObject, true);
-
+      
       add.invoke(systemTrayObject, trayIconObject);
-
+      
 //			if (!SystemTray.isSupported())
 //			{
 //				return;
@@ -202,15 +201,15 @@ public class VTTrayIconInterface
 //			trayIcon.setImageAutoSize(true);
 //			
 //			systemTray.add(trayIcon);
-      //displayMessage.setAccessible(true);
-      //remove.setAccessible(true);
+      // displayMessage.setAccessible(true);
+      // remove.setAccessible(true);
     }
     catch (Throwable t)
     {
       // t.printStackTrace();
     }
   }
-
+  
   public void displayMessage(String caption, String text)
   {
     try
@@ -226,10 +225,10 @@ public class VTTrayIconInterface
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public void removeTrayIcon()
   {
     try
@@ -246,7 +245,7 @@ public class VTTrayIconInterface
     }
     catch (Throwable t)
     {
-
+      
     }
     
     reset();

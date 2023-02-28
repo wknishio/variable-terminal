@@ -13,7 +13,7 @@ public class VTAudioBeeper
   
   private static final byte[] createSinWaveBuffer(int freq, int ms, double vol)
   {
-    int samples = (int)((ms * SAMPLE_RATE) / 1000d);
+    int samples = (int) ((ms * SAMPLE_RATE) / 1000d);
     int sampleBytes = SAMPLE_SIZE_IN_BITS / 8;
     byte[] output = new byte[samples * sampleBytes];
     double factor = ((Math.PI * 2) * freq) / SAMPLE_RATE;
@@ -21,27 +21,28 @@ public class VTAudioBeeper
     for (int i = 0; i < samples; i++)
     {
       sine = Math.sin(factor * i);
-      short sample = (short)(Short.MAX_VALUE * sine * vol);
-      output[(i * sampleBytes)] = (byte)((sample & 0xFF));
-      output[(i * sampleBytes) + 1] = (byte)((sample & 0xFF00) >> 8);
+      short sample = (short) (Short.MAX_VALUE * sine * vol);
+      output[(i * sampleBytes)] = (byte) ((sample & 0xFF));
+      output[(i * sampleBytes) + 1] = (byte) ((sample & 0xFF00) >> 8);
     }
     return output;
   }
   
-  //private static final DrainSourceDataline drainer = new DrainSourceDataline();
+  // private static final DrainSourceDataline drainer = new
+  // DrainSourceDataline();
   
   private static final class DrainSourceDataline implements Runnable
   {
     private SourceDataLine sdl;
     private byte[] data;
     private int lineBufferSize = 0;
-    //private int chunkSize;
+    // private int chunkSize;
     
     private DrainSourceDataline()
     {
       
     }
-       
+    
     public void configure(SourceDataLine sdl)
     {
       this.sdl = sdl;
@@ -69,7 +70,7 @@ public class VTAudioBeeper
       }
       catch (Throwable t)
       {
-        //t.printStackTrace();
+        // t.printStackTrace();
       }
       
       try
@@ -78,7 +79,7 @@ public class VTAudioBeeper
       }
       catch (Throwable t)
       {
-        //t.printStackTrace();
+        // t.printStackTrace();
       }
       
       sdl = null;
@@ -94,7 +95,7 @@ public class VTAudioBeeper
         
         sdl.start();
         
-        //long start = System.currentTimeMillis();
+        // long start = System.currentTimeMillis();
         
         while (remaining > 0)
         {
@@ -105,18 +106,18 @@ public class VTAudioBeeper
         
         sdl.drain();
         
-        //long end = System.currentTimeMillis();
-        //System.out.println("beep:" + (end - start));
+        // long end = System.currentTimeMillis();
+        // System.out.println("beep:" + (end - start));
       }
       catch (Throwable t)
       {
-        //t.printStackTrace();
+        // t.printStackTrace();
       }
       
       close();
     }
   }
-    
+  
   private static synchronized final boolean toneBlocking(int hz, int msecs, double vol)
   {
     try
@@ -127,7 +128,7 @@ public class VTAudioBeeper
         return false;
       }
       float level = sdl.getLevel();
-      //System.out.println("level:" + level);
+      // System.out.println("level:" + level);
       if (level == -1)
       {
         
@@ -145,7 +146,7 @@ public class VTAudioBeeper
     }
     catch (Throwable t)
     {
-      //t.printStackTrace();
+      // t.printStackTrace();
     }
     return false;
   }
@@ -160,7 +161,7 @@ public class VTAudioBeeper
         return false;
       }
       float level = sdl.getLevel();
-      //System.out.println("level:" + level);
+      // System.out.println("level:" + level);
       if (level == -1)
       {
         
@@ -178,7 +179,7 @@ public class VTAudioBeeper
     }
     catch (Throwable t)
     {
-      //t.printStackTrace();
+      // t.printStackTrace();
     }
     return false;
   }
@@ -190,13 +191,13 @@ public class VTAudioBeeper
     {
       AudioFormat af = new AudioFormat((float) SAMPLE_RATE, SAMPLE_SIZE_IN_BITS, 1, true, false);
       sdl = AudioSystem.getSourceDataLine(af);
-      //sdl.open();
+      // sdl.open();
       sdl.open(af, (int) ((af.getSampleRate() / 1000) * (af.getSampleSizeInBits() / 8)) * af.getChannels() * VT.VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS);
       return sdl;
     }
     catch (Throwable t)
     {
-      //t.printStackTrace();
+      // t.printStackTrace();
     }
     return null;
   }

@@ -11,7 +11,7 @@ public class VTUSERS extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTUSERS");
     this.setAbbreviatedSyntax("*VTUSR");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     synchronized (session.getConnectionListViewer())
@@ -34,9 +34,9 @@ public class VTUSERS extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

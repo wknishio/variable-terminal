@@ -37,7 +37,7 @@ import org.vash.vate.server.connection.VTServerConnector;
 public class VTServerSettingsDialog extends Dialog
 {
   private static final long serialVersionUID = 1L;
-
+  
   private VTServerSettingsDialogParameter connectionMode;
   private VTServerSettingsDialogParameter connectionHost;
   private VTServerSettingsDialogParameter connectionPort;
@@ -50,15 +50,15 @@ public class VTServerSettingsDialog extends Dialog
   private VTServerSettingsDialogParameter proxyPassword;
   private VTServerSettingsDialogParameter encryptionType;
   private VTServerSettingsDialogParameter encryptionPassword;
-
+  
   private VTServerSettingsDialogParameter sessionsMaximum;
   private VTServerSettingsDialogParameter sessionShell;
   private VTServerSettingsDialogParameter sessionUser;
   private VTServerSettingsDialogParameter sessionPassword;
-
+  
   private Runnable application;
   private Frame owner;
-
+  
   // private volatile boolean opened;
   // private Button okButton;
   private static Method setIconImage;
@@ -68,19 +68,19 @@ public class VTServerSettingsDialog extends Dialog
     try
     {
       setIconImage = VTServerSettingsDialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
-      //setIconImage.setAccessible(true);
+      // setIconImage.setAccessible(true);
     }
     catch (Throwable e)
     {
-
+      
     }
   }
-
+  
   public VTServerSettingsDialog(Frame owner, String title, boolean modal, Runnable application)
   {
     this(owner, title, modal, owner.getGraphicsConfiguration(), application);
   }
-
+  
   public VTServerSettingsDialog(Frame owner, String title, boolean modal, GraphicsConfiguration gc, final Runnable application)
   {
     super(owner, title, modal, gc);
@@ -103,50 +103,50 @@ public class VTServerSettingsDialog extends Dialog
     {
       
     }
-
+    
     this.addWindowListener(new WindowListener()
     {
-
+      
       public void windowActivated(WindowEvent e)
       {
-
+        
       }
-
+      
       public void windowClosed(WindowEvent e)
       {
-
+        
       }
-
+      
       public void windowClosing(WindowEvent e)
       {
         close();
       }
-
+      
       public void windowDeactivated(WindowEvent e)
       {
-
+        
       }
-
+      
       public void windowDeiconified(WindowEvent e)
       {
-
+        
       }
-
+      
       public void windowIconified(WindowEvent e)
       {
-
+        
       }
-
+      
       public void windowOpened(WindowEvent e)
       {
-
+        
       }
     });
-
+    
     VTGlobalTextStyleManager.registerWindow(this);
-
+    
     // centerPanel.getInsets().set(4, 4, 4, 4);
-
+    
     Choice connectionModeChoice = new Choice();
     connectionMode = new VTServerSettingsDialogParameter("Connection Mode:", connectionModeChoice, true);
     TextField connectionHostField = new TextField(16);
@@ -158,7 +158,7 @@ public class VTServerSettingsDialog extends Dialog
       {
         TextField field = ((TextField) e.getSource());
         String value = field.getText();
-
+        
         if (!value.matches("(\\d+?)|()"))
         {
           int position = field.getCaretPosition();
@@ -196,7 +196,7 @@ public class VTServerSettingsDialog extends Dialog
       {
         TextField field = ((TextField) e.getSource());
         String value = field.getText();
-
+        
         if (!value.matches("(\\d+?)|()"))
         {
           int position = field.getCaretPosition();
@@ -217,7 +217,7 @@ public class VTServerSettingsDialog extends Dialog
           }
           catch (Throwable ex)
           {
-
+            
           }
         }
       }
@@ -234,7 +234,7 @@ public class VTServerSettingsDialog extends Dialog
       {
         TextField field = ((TextField) e.getSource());
         String value = field.getText();
-
+        
         if (!value.matches("(\\d+?)|()"))
         {
           int position = field.getCaretPosition();
@@ -255,7 +255,7 @@ public class VTServerSettingsDialog extends Dialog
           }
           catch (Throwable ex)
           {
-
+            
           }
         }
       }
@@ -274,7 +274,7 @@ public class VTServerSettingsDialog extends Dialog
     TextField encryptionPasswordField = new TextField(16);
     encryptionPasswordField.setEchoChar('*');
     encryptionPassword = new VTServerSettingsDialogParameter("Encryption Password:", encryptionPasswordField, true);
-
+    
     // try
     // {
     // BorderLayout layout = (BorderLayout) this.getLayout();
@@ -283,9 +283,9 @@ public class VTServerSettingsDialog extends Dialog
     // }
     // catch (Throwable t)
     // {
-
+    
     // }
-
+    
     connectionModeChoice.add("Active");
     connectionModeChoice.add("Passive");
     connectionModeChoice.select("Passive");
@@ -306,7 +306,7 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-
+    
     proxyTypeChoice.add("None");
     proxyTypeChoice.add("SOCKS");
     proxyTypeChoice.add("HTTP");
@@ -332,7 +332,7 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-
+    
     proxySecurityChoice.add("Disabled");
     proxySecurityChoice.add("Enabled");
     proxySecurityChoice.select("Disabled");
@@ -353,15 +353,15 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-
+    
     encryptionTypeChoice.add("None");
     encryptionTypeChoice.add("RC4");
     encryptionTypeChoice.add("ISAAC");
-    //encryptionTypeChoice.add("AES");
+    // encryptionTypeChoice.add("AES");
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC256");
     encryptionTypeChoice.add("GRAIN");
-    //encryptionTypeChoice.add("BLOWFISH");
+    // encryptionTypeChoice.add("BLOWFISH");
     encryptionTypeChoice.select("None");
     encryptionTypeChoice.addItemListener(new ItemListener()
     {
@@ -377,14 +377,14 @@ public class VTServerSettingsDialog extends Dialog
           {
             setEncryptionType("RC4");
           }
-          //else if (e.getItem().equals("AES"))
-          //{
-            //setEncryptionType("AES");
-          //}
-          //else if (e.getItem().equals("BLOWFISH"))
-          //{
-            //setEncryptionType("BLOWFISH");
-          //}
+          // else if (e.getItem().equals("AES"))
+          // {
+          // setEncryptionType("AES");
+          // }
+          // else if (e.getItem().equals("BLOWFISH"))
+          // {
+          // setEncryptionType("BLOWFISH");
+          // }
           else if (e.getItem().equals("SALSA"))
           {
             setEncryptionType("SALSA");
@@ -404,7 +404,7 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-
+    
     TextField sessionsMaximumField = new TextField(16);
     sessionsMaximumField.addTextListener(new TextListener()
     {
@@ -412,7 +412,7 @@ public class VTServerSettingsDialog extends Dialog
       {
         TextField field = ((TextField) e.getSource());
         String value = field.getText();
-
+        
         if (!value.matches("(\\d+?)|()"))
         {
           int position = field.getCaretPosition();
@@ -425,15 +425,15 @@ public class VTServerSettingsDialog extends Dialog
     
     TextField sessionShellField = new TextField(16);
     sessionShell = new VTServerSettingsDialogParameter("Session Shell:", sessionShellField, true);
-
+    
     TextField connectionUserField = new TextField(16);
     connectionUserField.setEchoChar('*');
     sessionUser = new VTServerSettingsDialogParameter("Session User:", connectionUserField, true);
-
+    
     TextField connectionPasswordField = new TextField(16);
     connectionPasswordField.setEchoChar('*');
     sessionPassword = new VTServerSettingsDialogParameter("Session Password:", connectionPasswordField, true);
-
+    
     addKeyListener(new KeyListener()
     {
       public void keyPressed(KeyEvent e)
@@ -449,15 +449,15 @@ public class VTServerSettingsDialog extends Dialog
           return;
         }
       }
-
+      
       public void keyReleased(KeyEvent e)
       {
-
+        
       }
-
+      
       public void keyTyped(KeyEvent e)
       {
-
+        
         if (e.getKeyChar() == '\n')
         {
           execute();
@@ -470,10 +470,10 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-
+    
     Button loadButton = new Button("Load");
     Button saveButton = new Button("Save");
-
+    
     Panel buttonPanel1 = new Panel();
     GridLayout buttonLayout1 = new GridLayout(1, 2);
     buttonLayout1.setHgap(1);
@@ -481,7 +481,7 @@ public class VTServerSettingsDialog extends Dialog
     buttonPanel1.setLayout(buttonLayout1);
     buttonPanel1.add(loadButton);
     buttonPanel1.add(saveButton);
-
+    
     loadButton.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -507,7 +507,7 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-
+    
     saveButton.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -533,7 +533,7 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-
+    
     addKeyListener(new KeyListener()
     {
       public void keyPressed(KeyEvent e)
@@ -553,12 +553,12 @@ public class VTServerSettingsDialog extends Dialog
           return;
         }
       }
-
+      
       public void keyReleased(KeyEvent e)
       {
-
+        
       }
-
+      
       public void keyTyped(KeyEvent e)
       {
         if (e.getKeyChar() == '\n')
@@ -573,7 +573,7 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-
+    
     loadButton.addKeyListener(new KeyListener()
     {
       public void keyPressed(KeyEvent e)
@@ -583,12 +583,12 @@ public class VTServerSettingsDialog extends Dialog
           return;
         }
       }
-
+      
       public void keyReleased(KeyEvent e)
       {
-
+        
       }
-
+      
       public void keyTyped(KeyEvent e)
       {
         if (e.getKeyChar() == '\n')
@@ -616,7 +616,7 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-
+    
     saveButton.addKeyListener(new KeyListener()
     {
       public void keyPressed(KeyEvent e)
@@ -626,12 +626,12 @@ public class VTServerSettingsDialog extends Dialog
           return;
         }
       }
-
+      
       public void keyReleased(KeyEvent e)
       {
-
+        
       }
-
+      
       public void keyTyped(KeyEvent e)
       {
         if (e.getKeyChar() == '\n')
@@ -662,7 +662,7 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-
+    
     Button okButton = new Button("Proceed");
     Button closeButton = new Button("Cancel");
     Panel buttonPanel2 = new Panel();
@@ -672,7 +672,7 @@ public class VTServerSettingsDialog extends Dialog
     buttonPanel2.setLayout(buttonLayout2);
     buttonPanel2.add(okButton);
     buttonPanel2.add(closeButton);
-
+    
     // okButton.setEnabled(false);
     okButton.addActionListener(new ActionListener()
     {
@@ -681,7 +681,7 @@ public class VTServerSettingsDialog extends Dialog
         execute();
       }
     });
-
+    
     closeButton.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -689,7 +689,7 @@ public class VTServerSettingsDialog extends Dialog
         close();
       }
     });
-
+    
     okButton.addKeyListener(new KeyListener()
     {
       public void keyPressed(KeyEvent e)
@@ -709,12 +709,12 @@ public class VTServerSettingsDialog extends Dialog
           return;
         }
       }
-
+      
       public void keyReleased(KeyEvent e)
       {
-
+        
       }
-
+      
       public void keyTyped(KeyEvent e)
       {
         if (e.getKeyChar() == '\n')
@@ -729,7 +729,7 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-
+    
     closeButton.addKeyListener(new KeyListener()
     {
       public void keyPressed(KeyEvent e)
@@ -739,12 +739,12 @@ public class VTServerSettingsDialog extends Dialog
           return;
         }
       }
-
+      
       public void keyReleased(KeyEvent e)
       {
-
+        
       }
-
+      
       public void keyTyped(KeyEvent e)
       {
         if (e.getKeyChar() == '\n')
@@ -757,13 +757,13 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-
+    
     Panel centerPanel = new Panel();
     GridLayout centerLayout = new GridLayout(18, 1);
     centerLayout.setHgap(1);
     centerLayout.setVgap(1);
     centerPanel.setLayout(centerLayout);
-
+    
     Panel mainPanel = new Panel();
     mainPanel.setLayout(new BorderLayout());
     mainPanel.add(new Panel(), BorderLayout.EAST);
@@ -772,7 +772,7 @@ public class VTServerSettingsDialog extends Dialog
     mainPanel.add(new Panel(), BorderLayout.SOUTH);
     mainPanel.add(centerPanel, BorderLayout.CENTER);
     add(mainPanel);
-
+    
     centerPanel.add(connectionMode);
     centerPanel.add(connectionHost);
     centerPanel.add(connectionPort);
@@ -784,20 +784,20 @@ public class VTServerSettingsDialog extends Dialog
     centerPanel.add(proxySecurity);
     centerPanel.add(proxyUser);
     centerPanel.add(proxyPassword);
-
+    
     centerPanel.add(encryptionType);
     centerPanel.add(encryptionPassword);
-
+    
     centerPanel.add(sessionShell);
     centerPanel.add(sessionsMaximum);
     
     centerPanel.add(sessionUser);
     centerPanel.add(sessionPassword);
-
+    
     centerPanel.add(buttonPanel1);
-
+    
     centerPanel.add(buttonPanel2);
-
+    
     for (Component component : centerPanel.getComponents())
     {
       if (component instanceof Panel)
@@ -829,12 +829,12 @@ public class VTServerSettingsDialog extends Dialog
                     return;
                   }
                 }
-
+                
                 public void keyReleased(KeyEvent e)
                 {
-
+                  
                 }
-
+                
                 public void keyTyped(KeyEvent e)
                 {
                   if (e.getKeyChar() == '\n')
@@ -854,14 +854,14 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     }
-
+    
     MenuBar menubar = new MenuBar();
     Menu textMenu = new Menu("Fonts");
     MenuItem increaseTextMenu = new MenuItem("Increase ");
     MenuItem decreaseTextMenu = new MenuItem("Decrease ");
     MenuItem defaultTextMenu = new MenuItem("Normalize ");
     MenuItem toggleBoldTextMenu = new MenuItem("Intensitize ");
-
+    
     increaseTextMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -869,7 +869,7 @@ public class VTServerSettingsDialog extends Dialog
         VTGlobalTextStyleManager.increaseFontSize();
       }
     });
-
+    
     decreaseTextMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -877,7 +877,7 @@ public class VTServerSettingsDialog extends Dialog
         VTGlobalTextStyleManager.decreaseFontSize();
       }
     });
-
+    
     defaultTextMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -885,7 +885,7 @@ public class VTServerSettingsDialog extends Dialog
         VTGlobalTextStyleManager.defaultFontSize();
       }
     });
-
+    
     toggleBoldTextMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -901,21 +901,21 @@ public class VTServerSettingsDialog extends Dialog
 //				VTGlobalTextStyleManager.packComponents();
       }
     });
-
+    
     textMenu.add(increaseTextMenu);
     textMenu.add(decreaseTextMenu);
     textMenu.add(toggleBoldTextMenu);
     textMenu.add(defaultTextMenu);
-
+    
     menubar.add(textMenu);
     textMenu.setEnabled(true);
-
+    
     // this.setMenuBar(menubar);
-
+    
     setResizable(true);
     pack();
   }
-
+  
   public void open()
   {
     if (isVisible())
@@ -940,9 +940,9 @@ public class VTServerSettingsDialog extends Dialog
     }
     catch (Throwable t)
     {
-
+      
     }
-
+    
 //		opened = true;
 //		toFront();
 //		requestFocus();
@@ -961,9 +961,9 @@ public class VTServerSettingsDialog extends Dialog
 //			}
 //		}
   }
-
+  
   /* public void close() { dialog.close(); } */
-
+  
   public void load()
   {
     if (application instanceof VTServer)
@@ -1022,7 +1022,7 @@ public class VTServerSettingsDialog extends Dialog
       }
     }
   }
-
+  
   private void setConnectionMode(boolean active)
   {
     if (active)
@@ -1057,7 +1057,7 @@ public class VTServerSettingsDialog extends Dialog
       proxyPassword.setEnabled(false);
     }
   }
-
+  
   private void setEncryptionType(String encryption)
   {
     if (encryption == null)
@@ -1070,16 +1070,16 @@ public class VTServerSettingsDialog extends Dialog
       encryptionType.setParameter("RC4");
       // encryptionPassword.setEnabled(true);
     }
-    //else if (encryption.toUpperCase().startsWith("A"))
-    //{
-      //encryptionType.setParameter("AES");
-      // encryptionPassword.setEnabled(true);
-    //}
-    //else if (encryption.toUpperCase().startsWith("B"))
-    //{
-      //encryptionType.setParameter("BLOWFISH");
-      // encryptionPassword.setEnabled(true);
-    //}
+    // else if (encryption.toUpperCase().startsWith("A"))
+    // {
+    // encryptionType.setParameter("AES");
+    // encryptionPassword.setEnabled(true);
+    // }
+    // else if (encryption.toUpperCase().startsWith("B"))
+    // {
+    // encryptionType.setParameter("BLOWFISH");
+    // encryptionPassword.setEnabled(true);
+    // }
     else if (encryption.toUpperCase().startsWith("S"))
     {
       encryptionType.setParameter("SALSA");
@@ -1106,7 +1106,7 @@ public class VTServerSettingsDialog extends Dialog
       // encryptionPassword.setEnabled(false);
     }
   }
-
+  
   private void setProxyType(String proxy)
   {
     if (proxy == null)
@@ -1156,7 +1156,7 @@ public class VTServerSettingsDialog extends Dialog
       proxyPassword.setEnabled(false);
     }
   }
-
+  
   public void setProxySecurity(boolean security)
   {
     if (security)
@@ -1172,7 +1172,7 @@ public class VTServerSettingsDialog extends Dialog
       proxyPassword.setEnabled(false);
     }
   }
-
+  
   public void update()
   {
     if (application instanceof VTServer)
@@ -1207,7 +1207,7 @@ public class VTServerSettingsDialog extends Dialog
         }
         catch (Throwable e)
         {
-
+          
         }
         connector.setProxyType(proxyType.isEnabled() ? proxyType.getParameter() : "None");
         connector.setProxyAddress(proxyHost.getParameter());
@@ -1217,7 +1217,7 @@ public class VTServerSettingsDialog extends Dialog
         }
         catch (Throwable e)
         {
-
+          
         }
         connector.setUseProxyAuthentication(proxySecurity.isEnabled() ? proxySecurity.getParameter().equals("Enabled") : false);
         connector.setProxyUser(proxyUser.getParameter());
@@ -1268,7 +1268,7 @@ public class VTServerSettingsDialog extends Dialog
         }
         catch (Throwable e)
         {
-
+          
         }
         server.setProxyType(proxyType.isEnabled() ? proxyType.getParameter() : "None");
         server.setProxyAddress(proxyHost.getParameter());
@@ -1278,14 +1278,14 @@ public class VTServerSettingsDialog extends Dialog
         }
         catch (Throwable e)
         {
-
+          
         }
         server.setUseProxyAuthentication(proxySecurity.isEnabled() ? proxySecurity.getParameter().equals("Enabled") : false);
         server.setProxyUser(proxyUser.getParameter());
         server.setProxyPassword(proxyPassword.getParameter());
         try
         {
-          //server.setSessionsLimit(Integer.parseInt(sessionsLimit.getParameter()));
+          // server.setSessionsLimit(Integer.parseInt(sessionsLimit.getParameter()));
           server.setSessionsMaximum(Integer.parseInt(sessionsMaximum.getParameter()));
         }
         catch (Throwable e)
@@ -1303,7 +1303,7 @@ public class VTServerSettingsDialog extends Dialog
       }
     }
   }
-
+  
   public void execute()
   {
     update();
@@ -1315,7 +1315,7 @@ public class VTServerSettingsDialog extends Dialog
     }
     catch (Throwable t)
     {
-
+      
     }
     if (application instanceof VTServer)
     {
@@ -1325,7 +1325,7 @@ public class VTServerSettingsDialog extends Dialog
       if (connector != null && !server.isReconfigure())
       {
         // connector.setSkipConfiguration(true);
-        //server.setSkipConfiguration(true);
+        // server.setSkipConfiguration(true);
         synchronized (connector)
         {
           connector.interruptConnector();
@@ -1339,7 +1339,7 @@ public class VTServerSettingsDialog extends Dialog
     }
     close();
   }
-
+  
   public void close()
   {
 //		if (!isVisible())
@@ -1364,15 +1364,15 @@ public class VTServerSettingsDialog extends Dialog
     }
     catch (Throwable t)
     {
-
+      
     }
     try
     {
-      //dispose();
+      // dispose();
     }
     catch (Throwable t)
     {
-
+      
     }
 //		try
 //		{
@@ -1411,7 +1411,7 @@ public class VTServerSettingsDialog extends Dialog
 //				}
 //			}
 //		});
-
+    
 //		final Object sync = this;
 //		EventQueue.invokeLater(new Runnable()
 //		{
@@ -1430,7 +1430,7 @@ public class VTServerSettingsDialog extends Dialog
 //				}
 //			}	
 //		});
-
+    
 //		synchronized (this)
 //		{
 //			try
@@ -1443,11 +1443,11 @@ public class VTServerSettingsDialog extends Dialog
 //				
 //			}
 //		}
-
+    
     // notify();
     // VTTerminal.interruptReadLine();
   }
-
+  
   /*
    * public static void main(String[] args) throws Exception { Frame frame = new
    * Frame(); VTConnectionDialog dialog = new VTConnectionDialog(frame, "ABC",

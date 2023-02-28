@@ -16,9 +16,9 @@ public class VTShellAdapter
   private static final String BEANSHELL_MAIN_CLASS = "bsh.Interpreter";
   private static final String DISABLE_COMMONS_LOGGING = "-Dorg.apache.commons.logging.Log=org.apache.commons.logging.impl.NoOpLog";
   private static final String DISABLE_UTIL_LOGGING_CLASS = "-Djava.util.logging.config.class=org.vash.vate.shell.adapter.VTSilenceJavaUtilLogging";
-
+  
   private int shellType = VTShellProcessor.SHELL_TYPE_PROCESS;
-  //private boolean supressEchoShell = true;
+  // private boolean supressEchoShell = true;
   
   private VTShellProcessor shellProcessor;
   
@@ -26,7 +26,7 @@ public class VTShellAdapter
   private ProcessBuilder javaBuilder;
   private Map<String, String> shellEnvironment;
   private File shellDirectory;
-    
+  
   private ExecutorService threads;
   
   public VTShellAdapter()
@@ -39,11 +39,13 @@ public class VTShellAdapter
     this.shellType = shellType;
     if (shellType == VTShellProcessor.SHELL_TYPE_GROOVYSH)
     {
-      javaBuilder = new ProcessBuilder(new String[] {"java", "-cp", "\"" + System.getProperty("java.class.path") + "\"", DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, GROOVYSHELL_MAIN_CLASS});
+      javaBuilder = new ProcessBuilder(new String[]
+      { "java", "-cp", "\"" + System.getProperty("java.class.path") + "\"", DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, GROOVYSHELL_MAIN_CLASS });
     }
     if (shellType == VTShellProcessor.SHELL_TYPE_BEANSHELL)
     {
-      javaBuilder = new ProcessBuilder(new String[] {"java", "-cp", "\"" + System.getProperty("java.class.path") + "\"", DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, BEANSHELL_MAIN_CLASS});
+      javaBuilder = new ProcessBuilder(new String[]
+      { "java", "-cp", "\"" + System.getProperty("java.class.path") + "\"", DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, BEANSHELL_MAIN_CLASS });
     }
   }
   
@@ -55,7 +57,7 @@ public class VTShellAdapter
   public void setThreads(ExecutorService threads)
   {
     this.threads = threads;
-    //shellProcess.setThreads(threads);
+    // shellProcess.setThreads(threads);
   }
   
   public VTShellProcessor getShell()
@@ -67,27 +69,27 @@ public class VTShellAdapter
   {
     return shellProcessor.getShellOutputReader();
   }
-
+  
   public Reader getShellErrorReader()
   {
     return shellProcessor.getShellErrorReader();
   }
-
+  
   public Writer getShellCommandExecutor()
   {
     return shellProcessor.getShellCommandExecutor();
   }
-
+  
   public Map<String, String> getShellEnvironment()
   {
     return shellEnvironment;
   }
-
+  
   public File getShellDirectory()
   {
     return shellDirectory;
   }
-
+  
   public boolean setShellDirectory(File shellDirectory)
   {
     if (shellDirectory.exists() && shellDirectory.isDirectory())
@@ -104,9 +106,7 @@ public class VTShellAdapter
     {
       if (VT.detectWindows())
       {
-        if (System.getProperty("os.name").toUpperCase().contains("WINDOWS 95")
-        || System.getProperty("os.name").toUpperCase().contains("WINDOWS 98")
-        || System.getProperty("os.name").toUpperCase().contains("WINDOWS ME"))
+        if (System.getProperty("os.name").toUpperCase().contains("WINDOWS 95") || System.getProperty("os.name").toUpperCase().contains("WINDOWS 98") || System.getProperty("os.name").toUpperCase().contains("WINDOWS ME"))
         {
           // almost impossible to enter here now
           this.shellBuilder = new ProcessBuilder("command.com", "/A", "/E:1900");
@@ -114,8 +114,8 @@ public class VTShellAdapter
           this.shellEnvironment = this.shellBuilder.environment();
           if (this.shellEnvironment != null)
           {
-            //this.shellEnvironment.remove("PROMPT");
-            //this.shellEnvironment.put("PROMPT", "# ");
+            // this.shellEnvironment.remove("PROMPT");
+            // this.shellEnvironment.put("PROMPT", "# ");
           }
         }
         else
@@ -128,14 +128,15 @@ public class VTShellAdapter
 //          {
 //            this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
 //          }
-          //this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
+          // this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON",
+          // "/A");
           this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
           this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
           this.shellEnvironment = this.shellBuilder.environment();
           if (this.shellEnvironment != null)
           {
-            //this.shellEnvironment.remove("PROMPT");
-            //this.shellEnvironment.put("PROMPT", "# ");
+            // this.shellEnvironment.remove("PROMPT");
+            // this.shellEnvironment.put("PROMPT", "# ");
           }
         }
       }
@@ -146,10 +147,10 @@ public class VTShellAdapter
         this.shellEnvironment = this.shellBuilder.environment();
         if (this.shellEnvironment != null)
         {
-          //this.shellEnvironment.remove("PS1");
-          //this.shellEnvironment.put("PS1", "'# '");
-          //this.shellEnvironment.remove("PROMPT");
-          //this.shellEnvironment.put("PROMPT", "'pwd'>");
+          // this.shellEnvironment.remove("PS1");
+          // this.shellEnvironment.put("PS1", "'# '");
+          // this.shellEnvironment.remove("PROMPT");
+          // this.shellEnvironment.put("PROMPT", "'pwd'>");
         }
       }
     }
@@ -157,7 +158,7 @@ public class VTShellAdapter
     {
       if (command.length == 0 || command[0].trim().length() == 0)
       {
-        //System.out.println("null shell");
+        // System.out.println("null shell");
         this.shellBuilder = null;
         return;
       }
@@ -193,14 +194,14 @@ public class VTShellAdapter
 //    {
 //      this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
 //    }
-      //this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
+      // this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
       this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
       this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
       this.shellEnvironment = this.shellBuilder.environment();
       if (this.shellEnvironment != null)
       {
-        //this.shellEnvironment.remove("PROMPT");
-        //this.shellEnvironment.put("PROMPT", "# ");
+        // this.shellEnvironment.remove("PROMPT");
+        // this.shellEnvironment.put("PROMPT", "# ");
       }
     }
     else
@@ -210,10 +211,10 @@ public class VTShellAdapter
       this.shellEnvironment = this.shellBuilder.environment();
       if (this.shellEnvironment != null)
       {
-        //this.shellEnvironment.remove("PS1");
-        //this.shellEnvironment.put("PS1", "'# '");
-        //this.shellEnvironment.remove("PROMPT");
-        //this.shellEnvironment.put("PROMPT", "'pwd'>");
+        // this.shellEnvironment.remove("PS1");
+        // this.shellEnvironment.put("PS1", "'# '");
+        // this.shellEnvironment.remove("PROMPT");
+        // this.shellEnvironment.put("PROMPT", "'pwd'>");
       }
     }
   }
@@ -222,7 +223,7 @@ public class VTShellAdapter
   {
     shellProcessor.stopShell();
   }
-
+  
   public void waitShell()
   {
     try
@@ -240,7 +241,7 @@ public class VTShellAdapter
     try
     {
       ProcessBuilder commandBuilder = null;
-      //shellProcessor = new VTShellProcessor();
+      // shellProcessor = new VTShellProcessor();
       if (shellType == VTShellProcessor.SHELL_TYPE_PROCESS)
       {
         if (shellBuilder == null)
@@ -278,7 +279,7 @@ public class VTShellAdapter
       shellProcessor.setRuntimeProcess(runtimeProcess);
       if (shellType != VTShellProcessor.SHELL_TYPE_PROCESS)
       {
-        //try using shell in separate jvm if that fails use current jvm
+        // try using shell in separate jvm if that fails use current jvm
         shellProcessor.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
         boolean ok = false;
         try
@@ -287,11 +288,11 @@ public class VTShellAdapter
         }
         catch (Throwable t)
         {
-          //t.printStackTrace();
+          // t.printStackTrace();
         }
         if (!ok)
         {
-          //try using shell in current jvm
+          // try using shell in current jvm
           shellProcessor.setShellType(shellType);
           try
           {
@@ -299,7 +300,7 @@ public class VTShellAdapter
           }
           catch (Throwable t)
           {
-            //t.printStackTrace();
+            // t.printStackTrace();
           }
         }
       }
@@ -312,10 +313,10 @@ public class VTShellAdapter
         }
         catch (Throwable t)
         {
-          //t.printStackTrace();
+          // t.printStackTrace();
           if (VT.detectWindows())
           {
-            //try again with cmd.exe if cannot start old DOS command.com shell
+            // try again with cmd.exe if cannot start old DOS command.com shell
             List<String> commands = commandBuilder.command();
             boolean dosLegacyShellFound = false;
             for (String command : commands)
@@ -340,7 +341,7 @@ public class VTShellAdapter
     }
     return true;
   }
-
+  
   public boolean setShellEncoding(String shellEncoding)
   {
     return shellProcessor.setShellEncoding(shellEncoding);

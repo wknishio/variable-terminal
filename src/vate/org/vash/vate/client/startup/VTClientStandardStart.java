@@ -15,7 +15,7 @@ public class VTClientStandardStart
     
     boolean help = false;
     boolean daemon = false;
-
+    
     if (args.length >= 1)
     {
       for (int i = 0; i < args.length; i++)
@@ -44,7 +44,7 @@ public class VTClientStandardStart
           }
           catch (Throwable e)
           {
-
+            
           }
         }
         System.exit(0);

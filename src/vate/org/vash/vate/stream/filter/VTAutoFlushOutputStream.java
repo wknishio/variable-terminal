@@ -16,24 +16,24 @@ public class VTAutoFlushOutputStream extends FilterOutputStream
     out.write(b, off, len);
     out.flush();
   }
-
+  
   public final void write(byte[] b) throws IOException
   {
     out.write(b);
     out.flush();
   }
-
+  
   public final void write(int b) throws IOException
   {
     out.write(b);
     out.flush();
   }
-
+  
   public final void flush() throws IOException
   {
     out.flush();
   }
-
+  
   public final void close() throws IOException
   {
     out.flush();

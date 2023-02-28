@@ -16,33 +16,33 @@ public class VTSunOSNativeUtils implements VTNativeUtilsImplementation
   // private static int KDMKTONE = KIOCMKTONE ;
   private static int CDROMEJECT = (0x04 << 8) | 159;
   private static int CDROMCLOSETRAY = (0x04 << 8) | 172;
-
+  
   private VTSunOSCLibrary sunosCLibrary;
-
+  
   public VTSunOSNativeUtils()
   {
     sunosCLibrary = (VTSunOSCLibrary) Native.load("c", VTSunOSCLibrary.class);
   }
-
+  
   public int system(String command)
   {
     return sunosCLibrary.system(command);
   }
-
+  
   public int getchar()
   {
     return sunosCLibrary.getchar();
   }
-
+  
   public void printf(String format, Object... args)
   {
     sunosCLibrary.printf(format, args);
   }
-
+  
   /*
    * public boolean beep(int freq, int dur) { return beep(freq, dur, true); }
    */
-
+  
   public boolean beep(int freq, int dur, boolean block)
   {
     boolean returnFlag = false;
@@ -69,7 +69,7 @@ public class VTSunOSNativeUtils implements VTNativeUtilsImplementation
     }
     return returnFlag;
   }
-
+  
   public boolean openCD()
   {
     // int cdrom = sunosCLibrary.open("/dev/rdsk/c0t1d0s0", O_RDONLY |
@@ -90,7 +90,7 @@ public class VTSunOSNativeUtils implements VTNativeUtilsImplementation
       return true;
     }
   }
-
+  
   public boolean closeCD()
   {
     // int cdrom = sunosCLibrary.open("/dev/rdsk/c0t1d0s0", O_RDONLY |
@@ -111,52 +111,52 @@ public class VTSunOSNativeUtils implements VTNativeUtilsImplementation
       return true;
     }
   }
-
+  
   public void exit(int status)
   {
     sunosCLibrary.exit(status);
   }
-
+  
   public void abort()
   {
     sunosCLibrary.abort();
   }
-
+  
   public int raise(int signal)
   {
     return sunosCLibrary.raise(signal);
   }
-
+  
   public int rand()
   {
     return sunosCLibrary.rand();
   }
-
+  
   public void srand(int seed)
   {
     sunosCLibrary.srand(seed);
   }
-
+  
   public String getenv(String env)
   {
     return sunosCLibrary.getenv(env);
   }
-
+  
   public int putenv(String env)
   {
     return sunosCLibrary.putenv(env);
   }
-
+  
   public int getpid()
   {
     return sunosCLibrary.getpid();
   }
-
+  
   public int isatty(int fd)
   {
     return sunosCLibrary.isatty(fd);
   }
-
+  
   public boolean detachConsole()
   {
     try
@@ -168,21 +168,21 @@ public class VTSunOSNativeUtils implements VTNativeUtilsImplementation
       }
       catch (Throwable t)
       {
-
+        
       }
     }
     catch (Throwable t)
     {
-
+      
     }
     return true;
   }
-
+  
   public boolean attachConsole()
   {
     return false;
   }
-
+  
   public boolean hideConsole()
   {
     try
@@ -194,54 +194,57 @@ public class VTSunOSNativeUtils implements VTNativeUtilsImplementation
       }
       catch (Throwable t)
       {
-
+        
       }
     }
     catch (Throwable t)
     {
-
+      
     }
     return true;
   }
-
+  
   public int getch()
   {
     return getchar();
   }
-
+  
   public void unbuffered()
   {
     try
     {
-      Runtime.getRuntime().exec(new String[] { "/bin/sh", "-c", "stty -icanon min 1 < /dev/tty" });
+      Runtime.getRuntime().exec(new String[]
+      { "/bin/sh", "-c", "stty -icanon min 1 < /dev/tty" });
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public void noecho()
   {
     try
     {
-      Runtime.getRuntime().exec(new String[] { "/bin/sh", "-c", "stty -echo < /dev/tty" });
+      Runtime.getRuntime().exec(new String[]
+      { "/bin/sh", "-c", "stty -echo < /dev/tty" });
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public void normal()
   {
     try
     {
-      Runtime.getRuntime().exec(new String[] { "/bin/sh", "-c", "stty icanon echo < /dev/tty" });
+      Runtime.getRuntime().exec(new String[]
+      { "/bin/sh", "-c", "stty icanon echo < /dev/tty" });
     }
     catch (Throwable t)
     {
-
+      
     }
   }
   

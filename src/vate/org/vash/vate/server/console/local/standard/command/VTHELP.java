@@ -13,7 +13,7 @@ public class VTHELP extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTHELP [NAME]");
     this.setAbbreviatedSyntax("*VTHLP [NM]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -32,9 +32,9 @@ public class VTHELP extends VTServerStandardLocalConsoleCommandProcessor
       VTConsole.print(VTHelpManager.getHelpForServerCommand(parsed[1]));
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

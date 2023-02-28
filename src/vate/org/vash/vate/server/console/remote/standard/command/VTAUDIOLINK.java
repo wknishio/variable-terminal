@@ -100,7 +100,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              //detect narrowband or wideband or superwideband or fullband
+              // detect narrowband or wideband or superwideband or fullband
               if (parsed[i].toUpperCase().contains("N"))
               {
                 currentAudioFormat = VT.VT_AUDIO_FORMAT_8000;
@@ -121,8 +121,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
               if (parsed[i].toUpperCase().contains("S"))
               {
                 currentAudioCodec = VT.VT_AUDIO_CODEC_SPEEX;
-                if (currentAudioFormat == VT.VT_AUDIO_FORMAT_48000
-                || currentAudioFormat == VT.VT_AUDIO_FORMAT_24000)
+                if (currentAudioFormat == VT.VT_AUDIO_FORMAT_48000 || currentAudioFormat == VT.VT_AUDIO_FORMAT_24000)
                 {
                   currentAudioFormat = VT.VT_AUDIO_FORMAT_32000;
                 }
@@ -152,10 +151,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
         
         TargetDataLine target = null;
         SourceDataLine source = null;
-        ok = (target = formatAudioSystem.searchTargetDataLine(currentAudioFormat, inputMixer, VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS)) != null
-        && (source = formatAudioSystem.searchSourceDataLine(currentAudioFormat, outputMixer, VT.VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS)) != null
-        && formatAudioSystem.addAudioCapture(connection.getAudioDataOutputStream(), inputMixer, target, currentAudioCodec, VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS)
-        && formatAudioSystem.addAudioPlay(connection.getAudioDataInputStream(), outputMixer, source, currentAudioCodec, VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS);
+        ok = (target = formatAudioSystem.searchTargetDataLine(currentAudioFormat, inputMixer, VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS)) != null && (source = formatAudioSystem.searchSourceDataLine(currentAudioFormat, outputMixer, VT.VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS)) != null && formatAudioSystem.addAudioCapture(connection.getAudioDataOutputStream(), inputMixer, target, currentAudioCodec, VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS) && formatAudioSystem.addAudioPlay(connection.getAudioDataInputStream(), outputMixer, source, currentAudioCodec, VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS);
         
         if (ok)
         {
@@ -191,7 +187,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
     }
     catch (Throwable t)
     {
-      //t.printStackTrace();
+      // t.printStackTrace();
       throw new Exception(t);
     }
   }

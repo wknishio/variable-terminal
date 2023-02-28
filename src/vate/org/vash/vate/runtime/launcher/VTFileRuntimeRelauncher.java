@@ -8,7 +8,8 @@ public class VTFileRuntimeRelauncher
 {
   public static void main(String[] args) throws Exception
   {
-    String[] files = { "relauncher.txt" };
+    String[] files =
+    { "relauncher.txt" };
     if (args.length > 0)
     {
       files = args;
@@ -37,7 +38,7 @@ public class VTFileRuntimeRelauncher
       }
       catch (Throwable t)
       {
-
+        
       }
       finally
       {
@@ -49,7 +50,7 @@ public class VTFileRuntimeRelauncher
           }
           catch (Throwable t)
           {
-
+            
           }
         }
       }
@@ -76,7 +77,7 @@ public class VTFileRuntimeRelauncher
     }
     catch (Throwable t)
     {
-
+      
     }
     finally
     {
@@ -88,12 +89,12 @@ public class VTFileRuntimeRelauncher
         }
         catch (Throwable t)
         {
-
+          
         }
       }
     }
   }
-
+  
   public static void command(String command)
   {
     while (true)
@@ -116,7 +117,7 @@ public class VTFileRuntimeRelauncher
       }
       catch (Throwable e)
       {
-
+        
       }
     }
   }

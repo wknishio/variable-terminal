@@ -8,23 +8,23 @@ import org.vash.vate.task.VTTask;
 public class VTServerShellExitListener extends VTTask
 {
   private VTServerSession session;
-
+  
   public VTServerShellExitListener(VTServerSession session)
   {
     this.session = session;
     this.stopped = false;
   }
-
+  
   public boolean isStopped()
   {
     return stopped;
   }
-
+  
   public void setStopped(boolean stopped)
   {
     this.stopped = stopped;
   }
-
+  
   public void run()
   {
     try

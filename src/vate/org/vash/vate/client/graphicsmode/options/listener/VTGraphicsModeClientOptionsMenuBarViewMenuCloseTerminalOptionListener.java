@@ -8,12 +8,12 @@ import org.vash.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 public class VTGraphicsModeClientOptionsMenuBarViewMenuCloseTerminalOptionListener implements ActionListener
 {
   private VTGraphicsModeClientWriter writer;
-
+  
   public VTGraphicsModeClientOptionsMenuBarViewMenuCloseTerminalOptionListener(VTGraphicsModeClientWriter writer)
   {
     this.writer = writer;
   }
-
+  
   public void actionPerformed(ActionEvent e)
   {
     writer.setStopped(true);

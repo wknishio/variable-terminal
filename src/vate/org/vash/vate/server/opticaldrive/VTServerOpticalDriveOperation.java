@@ -9,28 +9,28 @@ public class VTServerOpticalDriveOperation extends VTTask
   private volatile boolean finished;
   private boolean open;
   private VTServerSession session;
-
+  
   public VTServerOpticalDriveOperation(VTServerSession session)
   {
     this.session = session;
     this.finished = true;
   }
-
+  
   public void setOpen(boolean open)
   {
     this.open = open;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public void run()
   {
     try

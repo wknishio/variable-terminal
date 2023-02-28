@@ -15,19 +15,21 @@ public final class VTSyncFlushDeflaterOutputStream extends DeflaterOutputStream
   {
     try
     {
-      deflateMethod = DeflaterOutputStream.class.getMethod("deflate", new Class[] {byte[].class, Integer.class, Integer.class, Integer.class});
-      //deflateMethod.setAccessible(true);
+      deflateMethod = DeflaterOutputStream.class.getMethod("deflate", new Class[]
+      { byte[].class, Integer.class, Integer.class, Integer.class });
+      // deflateMethod.setAccessible(true);
     }
     catch (Throwable t)
     {
       
     }
   }
-  //public VTSyncFlushDeflaterOutputStream(OutputStream out, Deflater def, int size)
-  //{
-    //super(out, def, size);
-  //}
-
+  // public VTSyncFlushDeflaterOutputStream(OutputStream out, Deflater def, int
+  // size)
+  // {
+  // super(out, def, size);
+  // }
+  
   public VTSyncFlushDeflaterOutputStream(OutputStream out, Deflater def, int size) throws NoSuchMethodException
   {
     super(out, def, size);
@@ -36,13 +38,13 @@ public final class VTSyncFlushDeflaterOutputStream extends DeflaterOutputStream
       throw new NoSuchMethodException("Incompatible java version < 1.7");
     }
   }
-
+  
   protected final void deflate() throws IOException
   {
     int len = 0;
     try
     {
-      //int len = def.deflate(buf, 0, buf.length, SYNC_FLUSH);
+      // int len = def.deflate(buf, 0, buf.length, SYNC_FLUSH);
       len = (Integer) deflateMethod.invoke(def, buf, 0, buf.length, SYNC_FLUSH);
     }
     catch (Throwable e)
@@ -62,7 +64,7 @@ public final class VTSyncFlushDeflaterOutputStream extends DeflaterOutputStream
       int len = 0;
       try
       {
-        //while ((len = def.deflate(buf, 0, buf.length, SYNC_FLUSH)) > 0)
+        // while ((len = def.deflate(buf, 0, buf.length, SYNC_FLUSH)) > 0)
         while ((len = (Integer) deflateMethod.invoke(def, buf, 0, buf.length, SYNC_FLUSH)) > 0)
         {
           out.write(buf, 0, len);

@@ -10,7 +10,7 @@ public final class VTInterruptibleInputStream extends InputStream
   private InputStream source;
   private VTPipedInputStream in;
   private VTPipedOutputStream out;
-
+  
   public VTInterruptibleInputStream(InputStream source, Executor executor)
   {
     this.in = new VTPipedInputStream();
@@ -73,12 +73,12 @@ public final class VTInterruptibleInputStream extends InputStream
   {
     return in.available();
   }
-
+  
   public int read() throws IOException
   {
     return in.read();
   }
-
+  
   public int read(byte[] b) throws IOException
   {
     return in.read(b);

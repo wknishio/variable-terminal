@@ -9,7 +9,7 @@ public abstract class VTConsoleCommandProcessor
   private String resultCode = "";
   private String resultText = "";
   private VTConsoleCommandSelector<?> selector;
-
+  
   public VTConsoleCommandProcessor()
   {
     
@@ -24,67 +24,67 @@ public abstract class VTConsoleCommandProcessor
   {
     return selector;
   }
-
+  
   public String getResultCode()
   {
     return resultCode;
   }
-
+  
   public void setResultCode(String resultCode)
   {
     this.resultCode = resultCode;
   }
-
+  
   public String getResultText()
   {
     return resultText;
   }
-
+  
   public void setResultText(String resultText)
   {
     this.resultText = resultText;
   }
-
+  
   public String getFullSyntax()
   {
     return fullSyntax;
   }
-
+  
   public void setFullSyntax(String fullSyntax)
   {
     this.fullSyntax = fullSyntax;
   }
-
+  
   public String getAbbreviatedSyntax()
   {
     return abbreviatedSyntax;
   }
-
+  
   public void setAbbreviatedSyntax(String abbreviatedSyntax)
   {
     this.abbreviatedSyntax = abbreviatedSyntax;
   }
-
+  
   public String getFullName()
   {
     return fullName;
   }
-
+  
   public String getAbbreviatedName()
   {
     return abbreviatedName;
   }
-
+  
   public void setFullName(String fullName)
   {
     this.fullName = fullName;
   }
-
+  
   public void setAbbreviatedName(String abbreviatedName)
   {
     this.abbreviatedName = abbreviatedName;
   }
-
+  
   public boolean equals(Object other)
   {
     boolean equals = false;
@@ -95,7 +95,7 @@ public abstract class VTConsoleCommandProcessor
     }
     return equals;
   }
-
+  
   public boolean match(String name)
   {
     if (name.toUpperCase().equals(fullName.toUpperCase()))
@@ -108,7 +108,7 @@ public abstract class VTConsoleCommandProcessor
     }
     return false;
   }
-
+  
   public boolean select(String command, String[] parsed) throws Exception
   {
     boolean matched = false;
@@ -126,7 +126,7 @@ public abstract class VTConsoleCommandProcessor
     }
     return matched;
   }
-
+  
   public String syntax(String name)
   {
     if (name.toUpperCase().equals(fullName.toUpperCase()))
@@ -139,12 +139,12 @@ public abstract class VTConsoleCommandProcessor
     }
     return null;
   }
-
+  
   public abstract void execute(String command, String[] parsed) throws Exception;
-
+  
   public abstract void close();
-
+  
   public abstract String help(String name);
-
+  
   public abstract void register();
 }

@@ -12,7 +12,7 @@ public class VTECHO extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTECHO");
     this.setAbbreviatedSyntax("*VTEC");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (server.isEchoCommands())
@@ -26,9 +26,9 @@ public class VTECHO extends VTServerStandardLocalConsoleCommandProcessor
       VTConsole.println("\rVT>Server command echo enabled\nVT>");
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

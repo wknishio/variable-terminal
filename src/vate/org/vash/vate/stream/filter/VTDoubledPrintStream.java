@@ -6,10 +6,10 @@ import java.util.Locale;
 
 public final class VTDoubledPrintStream extends PrintStream
 {
-  //private OutputStream first;
+  // private OutputStream first;
   private PrintStream first;
   private PrintStream another;
-
+  
   public VTDoubledPrintStream(PrintStream first, PrintStream another)
   {
     super(first);
@@ -26,7 +26,7 @@ public final class VTDoubledPrintStream extends PrintStream
   {
     return another;
   }
-
+  
   public final void write(byte[] b, int off, int len)
   {
     first.write(b, off, len);
@@ -35,7 +35,7 @@ public final class VTDoubledPrintStream extends PrintStream
       another.write(b, off, len);
     }
   }
-
+  
   public final void write(byte[] b) throws IOException
   {
     first.write(b);
@@ -44,7 +44,7 @@ public final class VTDoubledPrintStream extends PrintStream
       another.write(b);
     }
   }
-
+  
   public final void write(int b)
   {
     first.write(b);
@@ -53,7 +53,7 @@ public final class VTDoubledPrintStream extends PrintStream
       another.write(b);
     }
   }
-
+  
   public final void flush()
   {
     first.flush();
@@ -62,7 +62,7 @@ public final class VTDoubledPrintStream extends PrintStream
       another.flush();
     }
   }
-
+  
   public final void close()
   {
 //		try

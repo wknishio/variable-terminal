@@ -5,12 +5,12 @@ import org.vash.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 public class VTGraphicsModeClientRemoteInterfaceRefresher implements Runnable
 {
   private VTGraphicsModeClientWriter writer;
-
+  
   public VTGraphicsModeClientRemoteInterfaceRefresher(VTGraphicsModeClientWriter writer)
   {
     this.writer = writer;
   }
-
+  
   public void run()
   {
     /*

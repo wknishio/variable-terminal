@@ -10,15 +10,15 @@ import org.vash.vate.console.VTConsole;
 public class VTGraphicalConsoleCopyAllActionListener implements ActionListener
 {
   private Clipboard systemClipboard;
-
+  
   public VTGraphicalConsoleCopyAllActionListener()
   {
     systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
   }
-
+  
   public void actionPerformed(ActionEvent e)
   {
-
+    
     try
     {
       StringSelection text = new StringSelection(VTConsole.getAllText());
@@ -28,7 +28,7 @@ public class VTGraphicalConsoleCopyAllActionListener implements ActionListener
     }
     catch (Throwable ex)
     {
-
+      
     }
   }
 }

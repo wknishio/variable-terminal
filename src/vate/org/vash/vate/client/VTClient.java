@@ -46,7 +46,7 @@ public class VTClient implements Runnable
   private String sessionUser = "";
   private String sessionPassword = "";
   private String sessionCommands = "";
-  //private String sessionLines = "";
+  // private String sessionLines = "";
   private String sessionShell = "";
   private boolean daemon = false;
   private final String vtURL = System.getenv("VT_PATH");
@@ -59,26 +59,20 @@ public class VTClient implements Runnable
   private VTAudioSystem audioSystem;
   private VTClientConfigurationDialog connectionDialog;
   private ExecutorService threads;
-  //private VTTrayIconInterface trayIconInterface;
+  // private VTTrayIconInterface trayIconInterface;
   private volatile boolean skipConfiguration;
   private volatile boolean retry = false;
   private volatile boolean manual = false;
   private List<VTClientSessionListener> listeners = new LinkedList<VTClientSessionListener>();
-  private static final String VT_CLIENT_SETTINGS_COMMENTS = 
-  "Variable-Terminal client settings file, supports UTF-8\r\n" + 
-  "#vate.client.connection.mode      values: default active(A), passive(P)\r\n" + 
-  "#vate.client.proxy.type           values: default none, HTTP(H), SOCKS(S)\r\n" + 
-  "#vate.client.proxy.authentication values: default disabled(D), enabled(E)\r\n" + 
-  "#vate.client.encryption.type      values: default none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
-  "#vate.client.session.commands     format: cmd1*;cmd2*;cmd3*;...\r\n";
-  //"#vate.client.session.lines        format: file1;file2;file3;...";
+  private static final String VT_CLIENT_SETTINGS_COMMENTS = "Variable-Terminal client settings file, supports UTF-8\r\n" + "#vate.client.connection.mode      values: default active(A), passive(P)\r\n" + "#vate.client.proxy.type           values: default none, HTTP(H), SOCKS(S)\r\n" + "#vate.client.proxy.authentication values: default disabled(D), enabled(E)\r\n" + "#vate.client.encryption.type      values: default none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + "#vate.client.session.commands     format: cmd1*;cmd2*;cmd3*;...\r\n";
+  // "#vate.client.session.lines format: file1;file2;file3;...";
   
   static
   {
     ImageIO.setUseCache(false);
     VTHelpManager.initialize();
     SSLVerificationDisabler.install();
-    //com.github.luben.zstd.util.Native.load();
+    // com.github.luben.zstd.util.Native.load();
   }
   
   public VTClient()
@@ -262,15 +256,15 @@ public class VTClient implements Runnable
     this.sessionCommands = sessionCommands;
   }
   
-  //public String getSessionLines()
-  //{
-    //return sessionLines;
-  //}
+  // public String getSessionLines()
+  // {
+  // return sessionLines;
+  // }
   
-  //public void setSessionLines(String sessionLines)
-  //{
-    //this.sessionLines = sessionLines;
-  //}
+  // public void setSessionLines(String sessionLines)
+  // {
+  // this.sessionLines = sessionLines;
+  // }
   
   /* public MessageDigest getSha256Digester() { return sha256Digester; } */
   
@@ -280,7 +274,7 @@ public class VTClient implements Runnable
   {
     return natPort;
   }
-
+  
   public void setNatPort(Integer natPort)
   {
     if (natPort != null && (natPort < 1 || natPort > 65535))
@@ -415,7 +409,8 @@ public class VTClient implements Runnable
     fileClientSettings.setProperty("vate.client.encryption.type", encryptionType);
     fileClientSettings.setProperty("vate.client.encryption.password", new String(encryptionKey, "UTF-8"));
     fileClientSettings.setProperty("vate.client.session.commands", sessionCommands);
-    //fileClientSettings.setProperty("vate.client.session.lines", sessionLines);
+    // fileClientSettings.setProperty("vate.client.session.lines",
+    // sessionLines);
     fileClientSettings.setProperty("vate.client.session.shell", sessionShell);
     fileClientSettings.setProperty("vate.client.session.user", sessionUser);
     fileClientSettings.setProperty("vate.client.session.password", sessionPassword);
@@ -653,17 +648,18 @@ public class VTClient implements Runnable
       }
     }
     
-    //if (fileClientSettings.getProperty("vate.client.session.lines") != null)
-    //{
-      //try
-      //{
-        //sessionLines = fileClientSettings.getProperty("vate.client.session.lines");
-      //}
-      //catch (Throwable e)
-      //{
+    // if (fileClientSettings.getProperty("vate.client.session.lines") != null)
+    // {
+    // try
+    // {
+    // sessionLines =
+    // fileClientSettings.getProperty("vate.client.session.lines");
+    // }
+    // catch (Throwable e)
+    // {
     
-      //}
-    //}
+    // }
+    // }
     
     if (fileClientSettings.getProperty("vate.client.session.shell") != null)
     {
@@ -912,17 +908,19 @@ public class VTClient implements Runnable
         }
       }
       
-      //if (fileClientSettings.getProperty("vate.client.session.lines") != null)
-      //{
-        //try
-        //{
-          //sessionLines = fileClientSettings.getProperty("vate.client.session.lines");
-        //}
-        //catch (Throwable e)
-        //{
-          
-        //}
-      //}
+      // if (fileClientSettings.getProperty("vate.client.session.lines") !=
+      // null)
+      // {
+      // try
+      // {
+      // sessionLines =
+      // fileClientSettings.getProperty("vate.client.session.lines");
+      // }
+      // catch (Throwable e)
+      // {
+      
+      // }
+      // }
       
       if (fileClientSettings.getProperty("vate.client.session.shell") != null)
       {
@@ -1153,17 +1151,17 @@ public class VTClient implements Runnable
       }
     }
     
-    //if (properties.getProperty("vate.client.session.lines") != null)
-    //{
-      //try
-      //{
-        //sessionLines = properties.getProperty("vate.client.session.lines");
-      //}
-      //catch (Throwable e)
-      //{
+    // if (properties.getProperty("vate.client.session.lines") != null)
+    // {
+    // try
+    // {
+    // sessionLines = properties.getProperty("vate.client.session.lines");
+    // }
+    // catch (Throwable e)
+    // {
     
-      //}
-    //}
+    // }
+    // }
     
     if (properties.getProperty("vate.client.session.shell") != null)
     {
@@ -1391,14 +1389,14 @@ public class VTClient implements Runnable
                 return;
               }
               encryptionType = "RC4";
-              //if (line.toUpperCase().startsWith("A"))
-              //{
-                //encryptionType = "AES";
-              //}
-              //if (line.toUpperCase().startsWith("B"))
-              //{
-                //encryptionType = "BLOWFISH";
-              //}
+              // if (line.toUpperCase().startsWith("A"))
+              // {
+              // encryptionType = "AES";
+              // }
+              // if (line.toUpperCase().startsWith("B"))
+              // {
+              // encryptionType = "BLOWFISH";
+              // }
               if (line.toUpperCase().startsWith("S"))
               {
                 encryptionType = "SALSA";
@@ -1437,26 +1435,28 @@ public class VTClient implements Runnable
            * if (port != null) { VTTerminal.
            * print("VT>Use SOCKS proxy to connect?(Y/N, default:N):" ); line =
            * VTTerminal.readLine(true); if (line == null) { System.exit(0); } if
-           * (line.toUpperCase().startsWith("Y")) { proxyType = "SOCKS"; VTTerminal.
-           * print("VT>Enter proxy host address(default:localhost):" ); line =
-           * VTTerminal.readLine(true); if (line == null) { System.exit(0); } proxyAddress
-           * = line; if (proxyType.equals("SOCKS")) { VTTerminal.
-           * print("VT>Enter proxy port(from 1 to 65535, default:1080):" ); line =
-           * VTTerminal.readLine(true); if (line == null) { System.exit(0); } if
-           * (line.length() > 0) { proxyPort = Integer.parseInt(line); } else { proxyPort
-           * = 1080; } } if (proxyPort > 65535 || proxyPort < 1) {
+           * (line.toUpperCase().startsWith("Y")) { proxyType = "SOCKS";
+           * VTTerminal. print("VT>Enter proxy host address(default:localhost):"
+           * ); line = VTTerminal.readLine(true); if (line == null) {
+           * System.exit(0); } proxyAddress = line; if
+           * (proxyType.equals("SOCKS")) { VTTerminal.
+           * print("VT>Enter proxy port(from 1 to 65535, default:1080):" ); line
+           * = VTTerminal.readLine(true); if (line == null) { System.exit(0); }
+           * if (line.length() > 0) { proxyPort = Integer.parseInt(line); } else
+           * { proxyPort = 1080; } } if (proxyPort > 65535 || proxyPort < 1) {
            * VTTerminal.print("VT>Invalid port!\n"); proxyPort = null;
-           * UseProxyAuthentication = false; port = null; } if (proxyPort != null && port
-           * != null) { VTTerminal.
+           * UseProxyAuthentication = false; port = null; } if (proxyPort !=
+           * null && port != null) { VTTerminal.
            * print("VT>Use authentication for proxy?(Y/N, default:N):" ); line =
            * VTTerminal.readLine(true); if (line == null) { System.exit(0); } if
-           * (line.toUpperCase().startsWith("Y")) { UseProxyAuthentication = true;
-           * VTTerminal.print("VT>Enter proxy username:"); line =
-           * VTTerminal.readLine(true); if (line == null) { System.exit(0); } proxyUser =
-           * line; VTTerminal.print("VT>Enter proxy password:"); line =
+           * (line.toUpperCase().startsWith("Y")) { UseProxyAuthentication =
+           * true; VTTerminal.print("VT>Enter proxy username:"); line =
            * VTTerminal.readLine(true); if (line == null) { System.exit(0); }
-           * proxyPassword = line; } else { UseProxyAuthentication = false; } } else {
-           * UseProxyAuthentication = false; } } else { proxyType = "Disabled"; } }
+           * proxyUser = line; VTTerminal.print("VT>Enter proxy password:");
+           * line = VTTerminal.readLine(true); if (line == null) {
+           * System.exit(0); } proxyPassword = line; } else {
+           * UseProxyAuthentication = false; } } else { UseProxyAuthentication =
+           * false; } } else { proxyType = "Disabled"; } }
            */
         }
         else
@@ -1666,14 +1666,14 @@ public class VTClient implements Runnable
                 return;
               }
               encryptionType = "RC4";
-              //if (line.toUpperCase().startsWith("A"))
-              //{
-                //encryptionType = "AES";
-              //}
-              //if (line.toUpperCase().startsWith("B"))
-              //{
-                //encryptionType = "BLOWFISH";
-              //}
+              // if (line.toUpperCase().startsWith("A"))
+              // {
+              // encryptionType = "AES";
+              // }
+              // if (line.toUpperCase().startsWith("B"))
+              // {
+              // encryptionType = "BLOWFISH";
+              // }
               if (line.toUpperCase().startsWith("S"))
               {
                 encryptionType = "SALSA";
@@ -1757,17 +1757,17 @@ public class VTClient implements Runnable
             return;
           }
           setSessionCommands(command);
-          //VTConsole.print("VT>Enter session lines:");
-          //String lines = VTConsole.readLine(true);
-          //if (lines == null)
-          //{
-            //System.exit(0);
-          //}
-          //else if (skipConfiguration)
-          //{
-            //return;
-          //}
-          //setSessionLines(lines);
+          // VTConsole.print("VT>Enter session lines:");
+          // String lines = VTConsole.readLine(true);
+          // if (lines == null)
+          // {
+          // System.exit(0);
+          // }
+          // else if (skipConfiguration)
+          // {
+          // return;
+          // }
+          // setSessionLines(lines);
         }
       }
       catch (NumberFormatException e)
@@ -1927,11 +1927,11 @@ public class VTClient implements Runnable
         parameterValue = parameters[++i];
         sessionCommands = parameterValue;
       }
-      //if (parameterName.contains("-SL"))
-      //{
-        //parameterValue = parameters[++i];
-        //sessionLines = parameterValue;
-      //}
+      // if (parameterName.contains("-SL"))
+      // {
+      // parameterValue = parameters[++i];
+      // sessionLines = parameterValue;
+      // }
       if (parameterName.contains("-SU"))
       {
         parameterValue = parameters[++i];
@@ -2005,10 +2005,7 @@ public class VTClient implements Runnable
     {
       // System.setProperty("java.library.path", "lib/native");
     }
-    VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Client\n" + 
-    "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + 
-    "VT>This software is under MIT license, see license.txt!\n" + 
-    "VT>This software comes with no warranty, use at your own risk!\n");
+    VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Client\n" + "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + "VT>This software is under MIT license, see license.txt!\n" + "VT>This software comes with no warranty, use at your own risk!\n");
     // + "VT>Press enter to start client:");
     if (!VTConsole.isDaemon() && !daemon)
     {
@@ -2039,7 +2036,7 @@ public class VTClient implements Runnable
       this.encryptionType = clientConnector.getEncryptionType();
       this.encryptionKey = clientConnector.getEncryptionKey();
       this.sessionCommands = clientConnector.getSessionCommands();
-      //this.sessionLines = clientConnector.getSessionLines();
+      // this.sessionLines = clientConnector.getSessionLines();
       this.sessionShell = clientConnector.getSessionShell();
     }
   }
@@ -2061,7 +2058,7 @@ public class VTClient implements Runnable
       clientConnector.setEncryptionType(encryptionType);
       clientConnector.setEncryptionKey(encryptionKey);
       clientConnector.setSessionCommands(sessionCommands);
-      //clientConnector.setSessionLines(sessionLines);
+      // clientConnector.setSessionLines(sessionLines);
       clientConnector.setSessionShell(sessionShell);
     }
   }
@@ -2082,7 +2079,7 @@ public class VTClient implements Runnable
     clientConnector.setEncryptionType(encryptionType);
     clientConnector.setEncryptionKey(encryptionKey);
     clientConnector.setSessionCommands(sessionCommands);
-    //clientConnector.setSessionLines(sessionLines);
+    // clientConnector.setSessionLines(sessionLines);
     clientConnector.setSessionShell(sessionShell);
     for (VTClientSessionListener listener : listeners)
     {

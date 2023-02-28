@@ -8,25 +8,25 @@ public class VTRuntimeProcessTextRedirector implements Runnable
   private volatile boolean running;
   private BufferedReader in;
   private OutputStream out;
-
+  
   public VTRuntimeProcessTextRedirector(BufferedReader in, OutputStream out)
   {
     this.in = in;
     this.out = out;
     this.running = true;
   }
-
+  
   public void close()
   {
     stop();
   }
-
+  
   public void stop()
   {
     running = false;
     finalize();
   }
-
+  
   public void finalize()
   {
     if (in != null)
@@ -46,7 +46,7 @@ public class VTRuntimeProcessTextRedirector implements Runnable
       out = null;
     }
   }
-
+  
   public void run()
   {
     Thread.currentThread().setName(getClass().getSimpleName());

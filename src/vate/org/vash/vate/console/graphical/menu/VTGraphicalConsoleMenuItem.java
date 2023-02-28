@@ -7,7 +7,7 @@ import org.vash.vate.console.graphical.menu.listener.VTGraphicalConsoleMenuItemL
 public class VTGraphicalConsoleMenuItem extends MenuItem
 {
   private static final long serialVersionUID = 1L;
-
+  
   public VTGraphicalConsoleMenuItem(String label, String command)
   {
     this.setLabel(label.trim());

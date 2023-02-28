@@ -16,28 +16,28 @@ public class VTServerPrintServiceResolver extends VTTask
   private int order = -1;
   private VTServerSession session;
   private Set<String> mimeSet = new LinkedHashSet<String>();
-
+  
   public VTServerPrintServiceResolver(VTServerSession session)
   {
     this.session = session;
     this.finished = true;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public void setOrder(int order)
   {
     this.order = order;
   }
-
+  
   public void run()
   {
     try
@@ -45,7 +45,7 @@ public class VTServerPrintServiceResolver extends VTTask
       StringBuilder message = new StringBuilder();
       PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
       PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
-
+      
       if (order < 0)
       {
         if (printServices.length > 0)
@@ -112,7 +112,7 @@ public class VTServerPrintServiceResolver extends VTTask
             finished = true;
           }
         }
-
+        
       }
     }
     catch (ArrayIndexOutOfBoundsException e)
@@ -126,7 +126,7 @@ public class VTServerPrintServiceResolver extends VTTask
         }
         catch (Throwable t)
         {
-
+          
         }
         finished = true;
       }
@@ -142,7 +142,7 @@ public class VTServerPrintServiceResolver extends VTTask
         }
         catch (Throwable t)
         {
-
+          
         }
         finished = true;
       }

@@ -11,7 +11,7 @@ public class VTPRINTERS extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTPRINTERS [PRINTER]");
     this.setAbbreviatedSyntax("*VTPRS [PR]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     synchronized (session.getPrintServiceResolver())
@@ -51,9 +51,9 @@ public class VTPRINTERS extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

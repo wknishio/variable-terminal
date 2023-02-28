@@ -59,7 +59,7 @@ public class VTBlake3DigestRandom extends java.security.SecureRandom
     int result = 0;
     for (int i = 0; i < 4; i++)
     {
-        result = (result << 8) + (intBytes[i] & 0xff);
+      result = (result << 8) + (intBytes[i] & 0xff);
     }
     return result;
   }
@@ -71,7 +71,7 @@ public class VTBlake3DigestRandom extends java.security.SecureRandom
     long result = 0;
     for (int i = 0; i < 4; i++)
     {
-        result = (result << 8) + (intBytes[i] & 0xff);
+      result = (result << 8) + (intBytes[i] & 0xff);
     }
     return result;
   }
@@ -85,7 +85,6 @@ public class VTBlake3DigestRandom extends java.security.SecureRandom
   {
     return Double.longBitsToDouble(nextLong());
   }
-
   
 //  protected int next(int numBits)
 //  {

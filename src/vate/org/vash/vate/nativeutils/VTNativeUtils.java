@@ -22,7 +22,7 @@ public class VTNativeUtils
   private static Properties systemPropertiesBackup;
   private static VTNativeUtilsImplementation nativeUtils;
   // public abstract int true_isatty(int fd);
-
+  
   public synchronized static void initialize()
   {
     if (nativeUtils != null)
@@ -58,11 +58,11 @@ public class VTNativeUtils
     }
     catch (Throwable e)
     {
-      //e.printStackTrace();
+      // e.printStackTrace();
       nativeUtils = new VTNullNativeUtils();
     }
   }
-
+  
   public static int system(String command)
   {
     if (checkNativeUtils())
@@ -71,7 +71,7 @@ public class VTNativeUtils
     }
     return -1;
   }
-
+  
   public static int getchar()
   {
     if (checkNativeUtils())
@@ -80,7 +80,7 @@ public class VTNativeUtils
     }
     return -1;
   }
-
+  
   public static int getch()
   {
     if (checkNativeUtils())
@@ -89,7 +89,7 @@ public class VTNativeUtils
     }
     return -1;
   }
-
+  
   public static void unbuffered()
   {
     if (checkNativeUtils())
@@ -97,7 +97,7 @@ public class VTNativeUtils
       nativeUtils.unbuffered();
     }
   }
-
+  
   public static void noecho()
   {
     if (checkNativeUtils())
@@ -105,7 +105,7 @@ public class VTNativeUtils
       nativeUtils.noecho();
     }
   }
-
+  
   public static void normal()
   {
     if (checkNativeUtils())
@@ -113,7 +113,7 @@ public class VTNativeUtils
       nativeUtils.normal();
     }
   }
-
+  
   public static void printf(String format, Object... args)
   {
     if (checkNativeUtils())
@@ -121,19 +121,19 @@ public class VTNativeUtils
       nativeUtils.printf(format, args);
     }
   }
-
+  
   public static boolean beep(int freq, int dur, boolean block)
   {
-    //block = true;
+    // block = true;
     if (checkNativeUtils())
     {
-      //needs root user on unix
-      //long start = System.currentTimeMillis();
+      // needs root user on unix
+      // long start = System.currentTimeMillis();
       boolean nativeBeep = nativeUtils.beep(freq, dur, block);
-      //nativeBeep = false;
-      //long end = System.currentTimeMillis();
-      //System.out.println("beep1:" + (end - start));
-      //boolean nativeBeep = false;
+      // nativeBeep = false;
+      // long end = System.currentTimeMillis();
+      // System.out.println("beep1:" + (end - start));
+      // boolean nativeBeep = false;
       if (!nativeBeep)
       {
 //        try
@@ -143,46 +143,46 @@ public class VTNativeUtils
 //        catch (InterruptedException e)
 //        {
 //        }
-        //use javax.sound to generate sine wave on default audio device
-        //start = System.currentTimeMillis();
+        // use javax.sound to generate sine wave on default audio device
+        // start = System.currentTimeMillis();
         boolean soundBeep = VTAudioBeeper.beep(freq, dur, block);
-        //end = System.currentTimeMillis();
-        //System.out.println("beep2:" + (end - start));
+        // end = System.currentTimeMillis();
+        // System.out.println("beep2:" + (end - start));
         return soundBeep;
       }
       else
       {
         return true;
-        //start = System.currentTimeMillis();
-        //boolean soundBeep = VTAudioBeeper.beep(freq, dur, block);
-        //end = System.currentTimeMillis();
-        //System.out.println("beep2:" + (end - start));
-        //return soundBeep;
+        // start = System.currentTimeMillis();
+        // boolean soundBeep = VTAudioBeeper.beep(freq, dur, block);
+        // end = System.currentTimeMillis();
+        // System.out.println("beep2:" + (end - start));
+        // return soundBeep;
       }
     }
     else
     {
-      //use javax.sound to generate sine wave on default audio device
-      //long start = System.currentTimeMillis();
+      // use javax.sound to generate sine wave on default audio device
+      // long start = System.currentTimeMillis();
       boolean soundBeep = VTAudioBeeper.beep(freq, dur, block);
-      //long end = System.currentTimeMillis();
-      //System.out.println("beep2:" + (end - start));
+      // long end = System.currentTimeMillis();
+      // System.out.println("beep2:" + (end - start));
       return soundBeep;
     }
-    //return false;
+    // return false;
   }
-
+  
   public static boolean openCD()
   {
     if (checkNativeUtils())
     {
-      //needs root user on linux
+      // needs root user on linux
       boolean nativeCD = nativeUtils.openCD();
       if (!nativeCD)
       {
         if (!VT.detectWindows())
         {
-          //try to call eject on non-windows
+          // try to call eject on non-windows
           try
           {
             int status = Runtime.getRuntime().exec("eject").waitFor();
@@ -203,7 +203,7 @@ public class VTNativeUtils
     {
       if (!VT.detectWindows())
       {
-        //try to call eject on non-windows
+        // try to call eject on non-windows
         try
         {
           int status = Runtime.getRuntime().exec("eject").waitFor();
@@ -217,21 +217,22 @@ public class VTNativeUtils
     }
     return false;
   }
-
+  
   public static boolean closeCD()
   {
     if (checkNativeUtils())
     {
-      //needs root user on linux
+      // needs root user on linux
       boolean nativeCD = nativeUtils.closeCD();
       if (!nativeCD)
       {
         if (!VT.detectWindows())
         {
-          //try to call eject on non-windows
+          // try to call eject on non-windows
           try
           {
-            int status = Runtime.getRuntime().exec(new String[] {"eject", "-t"}).waitFor();
+            int status = Runtime.getRuntime().exec(new String[]
+            { "eject", "-t" }).waitFor();
             return status == 0;
           }
           catch (Throwable e)
@@ -249,10 +250,11 @@ public class VTNativeUtils
     {
       if (!VT.detectWindows())
       {
-        //try to call eject on non-windows
+        // try to call eject on non-windows
         try
         {
-          int status = Runtime.getRuntime().exec(new String[] {"eject", "-t"}).waitFor();
+          int status = Runtime.getRuntime().exec(new String[]
+          { "eject", "-t" }).waitFor();
           return status == 0;
         }
         catch (Throwable e)
@@ -263,7 +265,7 @@ public class VTNativeUtils
     }
     return false;
   }
-
+  
   public static void exit(int status)
   {
     if (checkNativeUtils())
@@ -271,7 +273,7 @@ public class VTNativeUtils
       nativeUtils.exit(status);
     }
   }
-
+  
   public static void abort()
   {
     if (checkNativeUtils())
@@ -279,7 +281,7 @@ public class VTNativeUtils
       nativeUtils.abort();
     }
   }
-
+  
   public static int raise(int signal)
   {
     if (checkNativeUtils())
@@ -288,7 +290,7 @@ public class VTNativeUtils
     }
     return -1;
   }
-
+  
   public static int rand()
   {
     if (checkNativeUtils())
@@ -297,7 +299,7 @@ public class VTNativeUtils
     }
     return -1;
   }
-
+  
   public static void srand(int seed)
   {
     if (checkNativeUtils())
@@ -305,7 +307,7 @@ public class VTNativeUtils
       nativeUtils.srand(seed);
     }
   }
-
+  
   public static String getenv(String env)
   {
     if (checkNativeUtils())
@@ -314,7 +316,7 @@ public class VTNativeUtils
     }
     return null;
   }
-
+  
   public static int putenv(String env)
   {
     if (checkNativeUtils())
@@ -323,36 +325,36 @@ public class VTNativeUtils
     }
     return -1;
   }
-
+  
   /*
    * public static int isatty(int fd) { return nativeUtils.true_isatty(fd); }
    */
-
+  
   public static int putvirtualenv(String name, String newValue)
   {
     initvirtualenvs();
     virtualEnvironmentVariables = changeEnvArray(virtualEnvironmentVariables, name, newValue);
     return 0;
   }
-
+  
   public static String[] getvirtualenvs()
   {
     initvirtualenvs();
     return virtualEnvironmentVariables;
   }
-
+  
   public static Map<String, String> getvirtualenv()
   {
     initvirtualenvs();
     return getEnvMapAsMap(virtualEnvironmentVariables);
   }
-
+  
   public static String getvirtualenv(String name)
   {
     initvirtualenvs();
     return getEnv(virtualEnvironmentVariables, name);
   }
-
+  
   public static boolean backupvirtualenvs()
   {
     try
@@ -366,7 +368,7 @@ public class VTNativeUtils
       return false;
     }
   }
-
+  
   public static boolean restorevirtualenvs()
   {
     try
@@ -387,7 +389,7 @@ public class VTNativeUtils
       return false;
     }
   }
-
+  
   public static boolean backupsystemproperties()
   {
     try
@@ -401,7 +403,7 @@ public class VTNativeUtils
       return false;
     }
   }
-
+  
   public static boolean restoresystemproperties()
   {
     try
@@ -415,7 +417,7 @@ public class VTNativeUtils
       return false;
     }
   }
-
+  
   private static void initvirtualenvs()
   {
     if (virtualEnvironmentVariables == null)
@@ -423,14 +425,14 @@ public class VTNativeUtils
       virtualEnvironmentVariables = getEnvMapAsArray(System.getenv());
     }
   }
-
+  
   private static String[] cloneArray(String[] array)
   {
     String[] clone = new String[array.length];
     System.arraycopy(array, 0, clone, 0, array.length);
     return clone;
   }
-
+  
   private static String[] getEnvMapAsArray(Map<String, String> envMap)
   {
     String[] envs = new String[envMap.size()];
@@ -441,7 +443,7 @@ public class VTNativeUtils
     }
     return envs;
   }
-
+  
   private static Map<String, String> getEnvMapAsMap(String[] envArray)
   {
     Map<String, String> envs = new LinkedHashMap<String, String>();
@@ -454,7 +456,7 @@ public class VTNativeUtils
     }
     return envs;
   }
-
+  
   private static String getEnv(String[] envs, String name)
   {
     int i = 0;
@@ -470,7 +472,7 @@ public class VTNativeUtils
     }
     return null;
   }
-
+  
   private static String[] changeEnvArray(String[] envs, String name, String newValue)
   {
     boolean found = false;
@@ -498,7 +500,7 @@ public class VTNativeUtils
       return envs;
     }
   }
-
+  
   public static int getpid()
   {
     if (checkNativeUtils())
@@ -507,7 +509,7 @@ public class VTNativeUtils
     }
     return -1;
   }
-
+  
   public static int isatty(int fd)
   {
     if (checkNativeUtils())
@@ -516,7 +518,7 @@ public class VTNativeUtils
     }
     return -1;
   }
-
+  
   public static boolean hideConsole()
   {
     if (checkNativeUtils())
@@ -525,7 +527,7 @@ public class VTNativeUtils
     }
     return false;
   }
-
+  
   public static boolean detachConsole()
   {
     if (checkNativeUtils())
@@ -534,7 +536,7 @@ public class VTNativeUtils
     }
     return false;
   }
-
+  
   public static boolean attachConsole()
   {
     if (checkNativeUtils())
@@ -543,7 +545,7 @@ public class VTNativeUtils
     }
     return false;
   }
-
+  
   private static boolean checkNativeUtils()
   {
     if (nativeUtils == null)

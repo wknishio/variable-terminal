@@ -10,35 +10,35 @@ public class VTServerFileScanOperation extends VTTask
 {
   public static final int INFO_FILE = 1;
   public static final int LIST_FILES = 2;
-
+  
   private volatile boolean finished;
   private volatile int operation;
   private File target;
   private StringBuilder message;
   private VTServerSession session;
-
+  
   public VTServerFileScanOperation(VTServerSession session)
   {
     this.session = session;
     this.message = new StringBuilder();
     this.finished = true;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public void setOperation(int operation)
   {
     this.operation = operation;
   }
-
+  
   public void setTarget(File target)
   {
     this.target = target;
@@ -47,7 +47,7 @@ public class VTServerFileScanOperation extends VTTask
       this.target = new File(target.getPath());
     }
   }
-
+  
   public void run()
   {
     try
@@ -115,7 +115,7 @@ public class VTServerFileScanOperation extends VTTask
           }
         }
       }
-
+      
       if (operation == LIST_FILES)
       {
         try
@@ -195,7 +195,7 @@ public class VTServerFileScanOperation extends VTTask
     }
     catch (Throwable e)
     {
-
+      
     }
     finished = true;
   }

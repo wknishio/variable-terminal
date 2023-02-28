@@ -15,7 +15,7 @@ public class VTTCPTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTTCPTUNNEL [SIDE] [[BIND] PORT] [[HOST] PORT]");
     this.setAbbreviatedSyntax("*VTTTN [SD] [[BD] PT] [[HT] PT]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -25,8 +25,7 @@ public class VTTCPTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
       {
         if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
         {
-          message.append("\nVT>Server TCP bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]" + 
-          "\nVT>Client TCP redirect address: [" + channel.getChannel().getRedirectHost() + " " + channel.getChannel().getRedirectPort() + "]" + "\nVT>");
+          message.append("\nVT>Server TCP bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]" + "\nVT>Client TCP redirect address: [" + channel.getChannel().getRedirectHost() + " " + channel.getChannel().getRedirectPort() + "]" + "\nVT>");
         }
       }
       message.append("\nVT>End of connection TCP tunnels list\nVT>");
@@ -44,8 +43,7 @@ public class VTTCPTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
         {
           if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
           {
-            message.append("\nVT>Server TCP bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]" + 
-            "\nVT>Client TCP redirect address: [" + channel.getChannel().getRedirectHost() + " " + channel.getChannel().getRedirectPort() + "]" + "\nVT>");
+            message.append("\nVT>Server TCP bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]" + "\nVT>Client TCP redirect address: [" + channel.getChannel().getRedirectHost() + " " + channel.getChannel().getRedirectPort() + "]" + "\nVT>");
           }
         }
         message.append("\nVT>End of server connection TCP tunnels list\nVT>");
@@ -260,7 +258,7 @@ public class VTTCPTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
     }
     return false;
   }
-
+  
   public void close()
   {
     

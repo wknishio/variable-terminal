@@ -12,16 +12,16 @@ public class VTSTOP extends VTClientStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTSTOP");
     this.setAbbreviatedSyntax("*VTSTP");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     connection.getCommandWriter().write(command + "\n");
     connection.getCommandWriter().flush();
     VTConsole.print("\nVT>Finalizing server...");
   }
-
+  
   public void close()
   {
-
+    
   }
 }

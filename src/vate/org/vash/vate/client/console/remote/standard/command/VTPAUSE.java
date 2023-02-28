@@ -13,7 +13,7 @@ public class VTPAUSE extends VTClientStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTPAUSE [TIME]");
     this.setAbbreviatedSyntax("*VTPS [TM]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     long pause = 0;
@@ -94,7 +94,7 @@ public class VTPAUSE extends VTClientStandardRemoteConsoleCommandProcessor
       
     }
   }
-
+  
   public void close()
   {
     

@@ -8,7 +8,7 @@ public class VTGraphicalConsoleTextAreaScrollPane extends ScrollPane
 {
   private static final long serialVersionUID = 1L;
   private TextArea textArea;
-
+  
   public VTGraphicalConsoleTextAreaScrollPane(TextArea textArea)
   {
     super(ScrollPane.SCROLLBARS_ALWAYS);
@@ -20,7 +20,7 @@ public class VTGraphicalConsoleTextAreaScrollPane extends ScrollPane
     // this.setPreferredSize(textArea.getPreferredSize(83, 200));
     // this.setMinimumSize(textArea.getPreferredSize(25, 80));
   }
-
+  
   // public Dimension getPreferredSize()
   // {
   // Dimension area = textArea.getPreferredSize();
@@ -30,7 +30,7 @@ public class VTGraphicalConsoleTextAreaScrollPane extends ScrollPane
   // this.getVScrollbarWidth();
   // return area;
   // }
-
+  
   public Dimension getViewportSize()
   {
     return textArea.getSize();

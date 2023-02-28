@@ -9,7 +9,6 @@ public abstract class VTServerStandardLocalConsoleCommandProcessor extends VTSer
   {
   }
   
-
   public String help(String name)
   {
     return VTHelpManager.findHelpForServerCommand(name);

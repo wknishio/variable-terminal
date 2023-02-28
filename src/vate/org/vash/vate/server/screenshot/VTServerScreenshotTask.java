@@ -47,7 +47,7 @@ public class VTServerScreenshotTask extends VTTask
   private Graphics2D convertedGraphics = null;
   private DataBuffer recyclableDataBuffer;
   // private VTServerGraphicsResource graphicsResource;
-
+  
   public VTServerScreenshotTask(VTServerSession session)
   {
     // this.session = session;
@@ -65,7 +65,7 @@ public class VTServerScreenshotTask extends VTTask
     // this.provider = new
     // VTSWTScreenshotProvider(session.getServer().getGraphics());
   }
-
+  
   public void dispose()
   {
     pngEncoder = null;
@@ -89,32 +89,32 @@ public class VTServerScreenshotTask extends VTTask
     // }
     // screenshotProvider = null;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public void setColorQuality(int colorQuality)
   {
     this.screenshotProvider.setColorQuality(colorQuality);
   }
-
+  
   public void setDrawPointer(boolean drawPointer)
   {
     this.drawPointer = drawPointer;
   }
-
+  
   public void setDeviceNumber(Integer deviceNumber)
   {
     this.deviceNumber = deviceNumber;
   }
-
+  
   @SuppressWarnings("all")
   public void run()
   {

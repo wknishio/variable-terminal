@@ -15,7 +15,7 @@ public class VTTunnelChannelSocketListener implements Runnable
   private static final String SESSION_SEPARATOR = "\f\b";
   private static final String SESSION_MARK = "SESS";
   private volatile boolean closed;
-
+  
   public VTTunnelChannelSocketListener(VTTunnelChannel channel)
   {
 //    try
@@ -29,22 +29,22 @@ public class VTTunnelChannelSocketListener implements Runnable
     this.channel = channel;
     this.closed = false;
   }
-
+  
   public String toString()
   {
     return channel.toString();
   }
-
+  
   public boolean equals(Object other)
   {
     return this.toString().equals(other.toString());
   }
-
+  
   public VTTunnelChannel getChannel()
   {
     return channel;
   }
-
+  
   public void close() throws IOException
   {
     try
@@ -77,7 +77,7 @@ public class VTTunnelChannelSocketListener implements Runnable
       if (serverSocket == null || serverSocket.isClosed())
       {
         serverSocket = new ServerSocket();
-        //serverSocket.setReuseAddress(true);
+        // serverSocket.setReuseAddress(true);
       }
       // serverSocket.setReuseAddress(true);
       serverSocket.bind(channel.getBindAddress());
@@ -89,12 +89,12 @@ public class VTTunnelChannelSocketListener implements Runnable
     }
     return false;
   }
-
+  
   public void remove()
   {
     channel.getConnection().removeChannel(this);
   }
-
+  
   public void run()
   {
     Thread.currentThread().setName(getClass().getSimpleName());
@@ -167,13 +167,13 @@ public class VTTunnelChannelSocketListener implements Runnable
           {
             socket.close();
           }
-          //e.printStackTrace();
+          // e.printStackTrace();
         }
       }
     }
     catch (Throwable e)
     {
-      //e.printStackTrace();
+      // e.printStackTrace();
     }
   }
 }

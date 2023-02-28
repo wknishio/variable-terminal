@@ -17,7 +17,7 @@ public class VTPING extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTPING");
     this.setAbbreviatedSyntax("*VTPG");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     int i = 0;
@@ -32,7 +32,7 @@ public class VTPING extends VTServerStandardLocalConsoleCommandProcessor
         {
           message.append("\nVT>Number: [" + i++ + "]");
           InetAddress address = handler.getConnection().getConnectionSocket().getInetAddress();
-
+          
           if (address != null)
           {
             long millisseconds = 0;
@@ -49,11 +49,10 @@ public class VTPING extends VTServerStandardLocalConsoleCommandProcessor
             }
             catch (Throwable t)
             {
-
+              
             }
-
-            message.append("\nVT>Host address: [" + hostAddress + "]\nVT>Estimated connection latency: [" + millisseconds + "] ms or [" + nanosseconds +
-              "] ns\nVT>");
+            
+            message.append("\nVT>Host address: [" + hostAddress + "]\nVT>Estimated connection latency: [" + millisseconds + "] ms or [" + nanosseconds + "] ns\nVT>");
           }
         }
         message.append("\nVT>End of current client connection latencies list\nVT>");
@@ -66,9 +65,9 @@ public class VTPING extends VTServerStandardLocalConsoleCommandProcessor
     }
     VTConsole.print("\nVT>");
   }
-
+  
   public void close()
   {
-
+    
   }
 }

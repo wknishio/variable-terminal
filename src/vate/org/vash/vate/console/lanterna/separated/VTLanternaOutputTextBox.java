@@ -29,11 +29,11 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
   {
     this.editable = editable;
   }
-
+  
 //    protected TextBoxRenderer createDefaultRenderer() {
 //        return new DefaultTextBoxRenderer2();
 //    }
-
+  
   public void setTerminal(Terminal terminal)
   {
     this.terminal = terminal;
@@ -64,7 +64,7 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
   {
     return getRenderer().getViewTopLeft();
   }
-
+  
   public void scrollup()
   {
     if (isReadOnly())
@@ -258,7 +258,8 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
         updateSelection(keyStroke, caretPosition.getColumn(), caretPosition.getRow());
         return Result.HANDLED;
       case ArrowRight:
-        // if(caretPosition.getColumn() < lines.get(caretPosition.getRow()).length()) {
+        // if(caretPosition.getColumn() <
+        // lines.get(caretPosition.getRow()).length()) {
         // caretPosition = caretPosition.withRelativeColumn(1);
         // }
         if (editable)
@@ -302,7 +303,8 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
           String caretLine = getLine(caretPosition.getRow());
           
           int trueColumnPosition = caretPosition.getColumn();
-          // int trueColumnPosition = TerminalTextUtils.getColumnIndex(caretLine,
+          // int trueColumnPosition =
+          // TerminalTextUtils.getColumnIndex(caretLine,
           // caretPosition.getColumn());
           // int trueColumnPosition = caretPosition.getColumn();
           if (caretLine.length() > trueColumnPosition)
@@ -325,7 +327,8 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
           String caretLine = getLine(caretPosition.getRow());
           
           int trueColumnPosition = caretPosition.getColumn();
-          // int trueColumnPosition = TerminalTextUtils.getColumnIndex(caretLine,
+          // int trueColumnPosition =
+          // TerminalTextUtils.getColumnIndex(caretLine,
           // caretPosition.getColumn());
           // int trueColumnPosition = caretPosition.getColumn();
           if (caretLine.length() > trueColumnPosition)
@@ -377,7 +380,8 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
         {
           caretPosition = caretPosition.withRow(lines.size() - 1);
         }
-        // if(lines.get(caretPosition.getRow()).length() < caretPosition.getColumn()) {
+        // if(lines.get(caretPosition.getRow()).length() <
+        // caretPosition.getColumn()) {
         // caretPosition =
         // caretPosition.withColumn(lines.get(caretPosition.getRow()).length());
         // }
@@ -389,7 +393,8 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
         {
           caretPosition = caretPosition.withRow(0);
         }
-        // if(lines.get(caretPosition.getRow()).length() < caretPosition.getColumn()) {
+        // if(lines.get(caretPosition.getRow()).length() <
+        // caretPosition.getColumn()) {
         // caretPosition =
         // caretPosition.withColumn(lines.get(caretPosition.getRow()).length());
         // }
@@ -407,15 +412,18 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
   
   /**
    * Moves the text caret position to a new position in the
-   * {@link VTLanternaTextBoxModified}. For single-line {@link VTLanternaTextBoxModified}:es, the line
-   * component is not used. If one of the positions are out of bounds, it is
-   * automatically set back into range.
+   * {@link VTLanternaTextBoxModified}. For single-line
+   * {@link VTLanternaTextBoxModified}:es, the line component is not used. If
+   * one of the positions are out of bounds, it is automatically set back into
+   * range.
    * 
-   * @param line   Which line inside the {@link VTLanternaTextBoxModified} to move the caret
-   *               to (0 being the first line), ignored if the
-   *               {@link VTLanternaTextBoxModified} is single-line
-   * @param column What column on the specified line to move the text caret to (0
-   *               being the first column)
+   * @param line
+   *          Which line inside the {@link VTLanternaTextBoxModified} to move
+   *          the caret to (0 being the first line), ignored if the
+   *          {@link VTLanternaTextBoxModified} is single-line
+   * @param column
+   *          What column on the specified line to move the text caret to (0
+   *          being the first column)
    * @return Itself
    */
   public synchronized VTLanternaTextBoxModified setCaretPosition(int line, int column)
@@ -455,7 +463,7 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     caretPosition = caretPosition.withRow(line).withColumn(column);
     return this;
   }
-
+  
   protected Result handleKeyStrokeReadOnly(KeyStroke keyStroke)
   {
     switch (keyStroke.getKeyType())
@@ -504,7 +512,7 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     }
     return super.handleKeyStroke(keyStroke);
   }
-
+  
   public void setViewportToLastLine()
   {
     getRenderer().setViewTopLeft(TerminalPosition.TOP_LEFT_CORNER.withRow(getLineCount() - getSize().getRows()));
@@ -522,8 +530,8 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
   private String outputToLastLineDirect(String data)
   {
     String lastLine = getLastLine();
-    //System.out.println("lastLine:[" + lastLine + "]");
-    //System.out.println("outputToLastLineDirect:[" + data + "]");
+    // System.out.println("lastLine:[" + lastLine + "]");
+    // System.out.println("outputToLastLineDirect:[" + data + "]");
     StringBuilder builder = new StringBuilder(lastLine);
     int maxWidth = 80;
     
@@ -547,16 +555,16 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
       if (carriageColumn >= 0)
       {
         lastLine = builder.replace(carriageColumn, carriageColumn + data.length(), data).toString();
-        //System.out.println("carriageColumn:[" + carriageColumn + "]");
+        // System.out.println("carriageColumn:[" + carriageColumn + "]");
         carriageColumn += data.length();
-        //System.out.println("carriageColumn:[" + carriageColumn + "]");
+        // System.out.println("carriageColumn:[" + carriageColumn + "]");
         if (carriageColumn >= capacity)
         {
           carriageColumn = -1;
-          //System.out.println("carriageColumn:[" + carriageColumn + "]");
+          // System.out.println("carriageColumn:[" + carriageColumn + "]");
         }
         setLastLine(lastLine);
-        //System.out.println("outputToLastLineDirect:[" + lastLine + "]");
+        // System.out.println("outputToLastLineDirect:[" + lastLine + "]");
         if (longestRow < lastLine.length())
         {
           longestRow = lastLine.length();
@@ -566,7 +574,7 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
       {
         lastLine = builder.append(data).toString();
         setLastLine(lastLine);
-        //System.out.println("outputToLastLineDirect:[" + lastLine + "]");
+        // System.out.println("outputToLastLineDirect:[" + lastLine + "]");
         if (longestRow < lastLine.length())
         {
           longestRow = lastLine.length();
@@ -581,13 +589,13 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
         String remainder = data.substring(remaining);
         
         lastLine = builder.replace(carriageColumn, carriageColumn + appended.length(), appended).toString();
-        //System.out.println("carriageColumn:[" + carriageColumn + "]");
+        // System.out.println("carriageColumn:[" + carriageColumn + "]");
         carriageColumn += appended.length();
-        //System.out.println("carriageColumn:[" + carriageColumn + "]");
+        // System.out.println("carriageColumn:[" + carriageColumn + "]");
         if (carriageColumn >= capacity)
         {
           carriageColumn = -1;
-          //System.out.println("carriageColumn:[" + carriageColumn + "]");
+          // System.out.println("carriageColumn:[" + carriageColumn + "]");
         }
         setLastLine(lastLine);
         if (longestRow < lastLine.length())
@@ -637,12 +645,12 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
       output = '\b';
       current = next;
     }
-    //next = data.indexOf('\t');
-    //if (next >= 0 && next < current)
-    //{
-      //output = '\t';
-      //current = next;
-    //}
+    // next = data.indexOf('\t');
+    // if (next >= 0 && next < current)
+    // {
+    // output = '\t';
+    // current = next;
+    // }
     next = data.indexOf('\n');
     if (next >= 0 && next < current)
     {
@@ -677,14 +685,14 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     if (output != '\0')
     {
       String remainder = data.substring(0, current);
-      //remainder = remainder.replaceAll("\0", " ");
+      // remainder = remainder.replaceAll("\0", " ");
       while (remainder != null)
       {
         remainder = outputToLastLineDirect(remainder);
       }
       data = data.substring(current);
       data = control.matcher(data).replaceFirst("");
-      //data = data.replaceFirst("\\p{Cntrl}", "");
+      // data = data.replaceFirst("\\p{Cntrl}", "");
       output(output);
     }
     else
@@ -709,7 +717,7 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     }
     return last;
   }
-
+  
   private String outputToLastLine(String data)
   {
     // System.out.println("outputToLastLine:[" + data + "]");
@@ -734,7 +742,7 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     if (data.length() <= remaining)
     {
       data = outputMultiControl(data);
-      //data = data.replaceAll("\\p{Cntrl}", " ");
+      // data = data.replaceAll("\\p{Cntrl}", " ");
       
       if (data == null || data.length() <= 0)
       {
@@ -813,7 +821,7 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     else
     {
       data = outputMultiControl(data);
-      //data = data.replaceAll("\\p{Cntrl}", " ");
+      // data = data.replaceAll("\\p{Cntrl}", " ");
       
       if (data == null || data.length() <= 0)
       {
@@ -915,14 +923,8 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     }
     for (char c = 0; c < 32; c++)
     {
-      if (c != '\n'
-      && c != '\t'
-      && c != '\r'
-      && c != '\b'
-      && c != '\f'
-      && c != '\u0007'
-      && c != '\u007f')
-      //&& c != '\u000b')
+      if (c != '\n' && c != '\t' && c != '\r' && c != '\b' && c != '\f' && c != '\u0007' && c != '\u007f')
+      // && c != '\u000b')
       {
         data = data.replace(c, ' ');
       }
@@ -932,14 +934,14 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
   
   public synchronized void output(char data)
   {
-    //System.out.println("control:[" + Integer.valueOf(data) + "]");
+    // System.out.println("control:[" + Integer.valueOf(data) + "]");
     if (data != -'\n' && data != '\u000b')
     {
-      //if (data == '\t')
-      //{
-        //outputToLastLineDirect("\t");
-        //return;
-      //}
+      // if (data == '\t')
+      // {
+      // outputToLastLineDirect("\t");
+      // return;
+      // }
       if (data == '\r')
       {
         carriageColumn = 0;
@@ -958,7 +960,7 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
           }
           else
           {
-            //System.out.println("backspace-lastLine:[" + lastLine + "]");
+            // System.out.println("backspace-lastLine:[" + lastLine + "]");
             setLastLine(builder.deleteCharAt(lastLine.length() - 1).toString());
           }
         }
@@ -1023,14 +1025,14 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
   public synchronized void output(char[] buff, int off, int len)
   {
     String data = new String(buff, off, len);
-    //System.out.println("out:[" + data + "]");
-    //data = data.replace('\t', ' ');
-    //data = data.replace('\0', ' ');
+    // System.out.println("out:[" + data + "]");
+    // data = data.replace('\t', ' ');
+    // data = data.replace('\0', ' ');
     data = data.replace('\u000b', '\n');
     data = replaceUnsupportedControlChars(data);
     
     String[] newlines = data.split("\\n", -1);
-    //String[] newlines = data.split("[\\n\\u000b]", -1);
+    // String[] newlines = data.split("[\\n\\u000b]", -1);
     
     if (newlines.length > 0)
     {
@@ -1051,17 +1053,17 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
       invalidate();
     }
   }
-
+  
   public synchronized void output(String data)
   {
-    //System.out.println("out:[" + data + "]");
-    //data = data.replace('\t', ' ');
-    //data = data.replace('\0', ' ');
+    // System.out.println("out:[" + data + "]");
+    // data = data.replace('\t', ' ');
+    // data = data.replace('\0', ' ');
     data = data.replace('\u000b', '\n');
     data = replaceUnsupportedControlChars(data);
     
     String[] newlines = data.split("\\n", -1);
-    //String[] newlines = data.split("[\\n\\u000b]", -1);
+    // String[] newlines = data.split("[\\n\\u000b]", -1);
     
     // System.out.println("newlines.length:[" + newlines.length + "]");
     if (newlines.length > 0)
@@ -1141,7 +1143,7 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
       }
     }
   }
-
+  
   public synchronized String getLastLine()
   {
     if (getLineCount() > 0)
@@ -1153,15 +1155,15 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
   
   public synchronized void setLastLine(String line)
   {
-    //System.out.println("setLastLine:[" + line + "]");
-    //System.out.println("carriageColumn:[" + carriageColumn + "]");
+    // System.out.println("setLastLine:[" + line + "]");
+    // System.out.println("carriageColumn:[" + carriageColumn + "]");
     lines.set(lines.size() - 1, line);
   }
   
   public synchronized VTLanternaTextBoxModified addLine(String line)
   {
-    //System.out.println("addLine:[" + line + "]");
-    //System.out.println("getLastLine:[" + getLastLine() + "]");
+    // System.out.println("addLine:[" + line + "]");
+    // System.out.println("getLastLine:[" + getLastLine() + "]");
     if (getLineCount() > 0 && maximumLines > 0 && getLineCount() == maximumLines)
     {
       removeFirstLine();
@@ -1173,7 +1175,7 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
       return this;
     }
     
-    //line = line.replace('\t', ' ');
+    // line = line.replace('\t', ' ');
     
     VTLanternaTextBoxModified result = putLine(line);
     if (getLineCount() > 1)
@@ -1202,8 +1204,8 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
         addLine(line.substring(i + 1));
         return this;
       }
-      else if(Character.isISOControl(c) && c != '\t')
-      //else if (!TerminalTextUtils.isPrintableCharacter(c))
+      else if (Character.isISOControl(c) && c != '\t')
+      // else if (!TerminalTextUtils.isPrintableCharacter(c))
       {
         continue;
       }
@@ -1249,15 +1251,16 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
   
   public StringBuilder handleDataInput(StringBuilder inputBuffer, char data, boolean replace)
   {
-    //System.out.println("inputBuffer:[" + inputBuffer.toString() + "]");
-    //System.out.println("data:[" + data + "]");
+    // System.out.println("inputBuffer:[" + inputBuffer.toString() + "]");
+    // System.out.println("data:[" + data + "]");
     // String line = lines.get(caretPosition.getRow());
     if (selectingText())
     {
       hiddenColumn = replaceSelectedText(inputBuffer, data);
       hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
       this.setCaretPosition(hiddenColumn);
-      //System.out.println("inputBufferResult:[" + inputBuffer.toString() + "]");
+      // System.out.println("inputBufferResult:[" + inputBuffer.toString() +
+      // "]");
       return inputBuffer;
     }
     hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
@@ -1271,21 +1274,22 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
       inputBuffer.insert(column, data);
     }
     hiddenColumn++;
-    //System.out.println("inputBufferResult:[" + inputBuffer.toString() + "]");
+    // System.out.println("inputBufferResult:[" + inputBuffer.toString() + "]");
     return inputBuffer;
   }
   
   public StringBuilder handleDataInput(StringBuilder inputBuffer, String data, boolean replace)
   {
     /// int size = inputBuffer.length();
-    //System.out.println("inputBuffer:[" + inputBuffer.toString() + "]");
-    //System.out.println("data:[" + data + "]");
+    // System.out.println("inputBuffer:[" + inputBuffer.toString() + "]");
+    // System.out.println("data:[" + data + "]");
     if (selectingText())
     {
       hiddenColumn = replaceSelectedText(inputBuffer, data);
       hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
       this.setCaretPosition(hiddenColumn);
-      //System.out.println("inputBufferResult:[" + inputBuffer.toString() + "]");
+      // System.out.println("inputBufferResult:[" + inputBuffer.toString() +
+      // "]");
       return inputBuffer;
     }
     int column = hiddenColumn;
@@ -1299,14 +1303,14 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     }
     hiddenColumn += data.length();
     hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
-    //System.out.println("inputBufferResult:[" + inputBuffer.toString() + "]");
+    // System.out.println("inputBufferResult:[" + inputBuffer.toString() + "]");
     return inputBuffer;
   }
   
   public StringBuilder handleDataInput(StringBuilder inputBuffer, KeyStroke keyStroke, boolean replace)
   {
-    //System.out.println("inputBuffer:" + inputBuffer.toString());
-    //System.out.println("keyStroke:" + keyStroke.toString());
+    // System.out.println("inputBuffer:" + inputBuffer.toString());
+    // System.out.println("keyStroke:" + keyStroke.toString());
     KeyType keyType = keyStroke.getKeyType();
     if (keyType == KeyType.Tab)
     {
@@ -1394,9 +1398,9 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
   }
   /**
    * This is the default text box renderer that is used if you don't override
-   * anything. With this renderer, the text box is filled with a solid background
-   * color and the text is drawn on top of it. Scrollbars are added for multi-line
-   * text whenever the text inside the {@code TextBox} does not fit in the
-   * available area.
+   * anything. With this renderer, the text box is filled with a solid
+   * background color and the text is drawn on top of it. Scrollbars are added
+   * for multi-line text whenever the text inside the {@code TextBox} does not
+   * fit in the available area.
    */
 }

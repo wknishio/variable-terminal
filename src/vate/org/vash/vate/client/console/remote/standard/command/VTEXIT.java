@@ -12,7 +12,7 @@ public class VTEXIT extends VTClientStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTEXIT");
     this.setAbbreviatedSyntax("*VTEX");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     connection.getCommandWriter().write(command + "\n");
@@ -22,9 +22,9 @@ public class VTEXIT extends VTClientStandardRemoteConsoleCommandProcessor
     connection.closeSockets();
     return;
   }
-
+  
   public void close()
   {
-
+    
   }
 }

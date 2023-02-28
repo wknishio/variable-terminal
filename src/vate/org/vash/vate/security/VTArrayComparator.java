@@ -6,7 +6,7 @@ public class VTArrayComparator
   {
     return arrayEquals(array1, array2, 0, Math.min(array1.length, array2.length));
   }
-
+  
   public static boolean arrayEquals(byte[] array1, byte[] array2, int offset, int length)
   {
     int bits = 0;

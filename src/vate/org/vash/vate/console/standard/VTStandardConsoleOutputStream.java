@@ -18,7 +18,7 @@ public class VTStandardConsoleOutputStream extends OutputStream
   {
     output = new FileOutputStream(descriptor);
   }
-
+  
   public void write(int b) throws IOException
   {
     output.write(b);
@@ -28,7 +28,7 @@ public class VTStandardConsoleOutputStream extends OutputStream
   {
     output.write(b, off, len);
   }
-
+  
   public final void write(byte[] b) throws IOException
   {
     output.write(b);
@@ -43,5 +43,5 @@ public class VTStandardConsoleOutputStream extends OutputStream
   {
     
   }
-
+  
 }

@@ -15,7 +15,7 @@ public class VTFILEMODIFY extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTFILEMODIFY [MODE] [FILE] [NEXT]");
     this.setAbbreviatedSyntax("*VTFM [MD] [FL] [NX]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     synchronized (session.getFileModifyOperation())
@@ -184,9 +184,9 @@ public class VTFILEMODIFY extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

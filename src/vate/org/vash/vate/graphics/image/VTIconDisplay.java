@@ -8,9 +8,9 @@ import java.awt.image.BufferedImage;
 public final class VTIconDisplay extends Canvas
 {
   private static final long serialVersionUID = 1L;
-
+  
   private BufferedImage image;
-
+  
   public void setImage(BufferedImage image, int width, int height)
   {
     this.image = image;
@@ -18,7 +18,7 @@ public final class VTIconDisplay extends Canvas
     // this.setMaximumSize(getMinimumSize());
     this.setPreferredSize(new Dimension(width, height));
   }
-
+  
   public void update(Graphics g)
   {
     if (image != null)
@@ -30,7 +30,7 @@ public final class VTIconDisplay extends Canvas
       super.update(g);
     }
   }
-
+  
   public void paint(Graphics g)
   {
     if (image != null)

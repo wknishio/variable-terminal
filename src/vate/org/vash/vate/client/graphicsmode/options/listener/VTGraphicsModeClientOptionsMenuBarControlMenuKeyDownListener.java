@@ -9,13 +9,13 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenuKeyDownListener implem
 {
   private VTGraphicsModeClientWriter writer;
   private int keycode;
-
+  
   public VTGraphicsModeClientOptionsMenuBarControlMenuKeyDownListener(VTGraphicsModeClientWriter writer, int keycode)
   {
     this.writer = writer;
     this.keycode = keycode;
   }
-
+  
   public void actionPerformed(ActionEvent e)
   {
     writer.remoteKeyDown(keycode, 0, 0, ' ');

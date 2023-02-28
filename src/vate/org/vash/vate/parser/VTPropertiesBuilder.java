@@ -12,7 +12,7 @@ public class VTPropertiesBuilder
   {
     return loadProperties(is, "UTF-8");
   }
-
+  
   public static VTConfigurationProperties loadProperties(InputStream in, String encoding) throws Exception
   {
     if (!"UTF-8".equalsIgnoreCase(encoding) || !"UTF8".equalsIgnoreCase(encoding))
@@ -38,12 +38,12 @@ public class VTPropertiesBuilder
     properties.load(arrayInputStream);
     return properties;
   }
-
+  
   public static void saveProperties(OutputStream out, VTConfigurationProperties properties, String comments) throws Exception
   {
     saveProperties(out, properties, comments, "UTF-8");
   }
-
+  
   public static void saveProperties(OutputStream out, VTConfigurationProperties properties, String comments, String encoding) throws Exception
   {
     if ("UTF-8".equalsIgnoreCase(encoding) || "UTF8".equalsIgnoreCase(encoding))
@@ -65,18 +65,18 @@ public class VTPropertiesBuilder
       properties.store(out, comments);
       out.flush();
     }
-
+    
   }
-
+  
   private static char hexDigit(char ch, int offset)
   {
     int val = (ch >> offset) & 0xF;
     if (val <= 9)
       return (char) ('0' + val);
-
+    
     return (char) ('A' + val - 10);
   }
-
+  
   private static String escapifyStr(String str)
   {
     StringBuilder result = new StringBuilder();
@@ -89,7 +89,7 @@ public class VTPropertiesBuilder
         result.append(ch);
         continue;
       }
-
+      
       result.append('\\');
       result.append('u');
       result.append(hexDigit(ch, 12));
@@ -99,7 +99,7 @@ public class VTPropertiesBuilder
     }
     return result.toString();
   }
-
+  
   private static String unescapifyStr(String str)
   {
     StringBuilder result = new StringBuilder();

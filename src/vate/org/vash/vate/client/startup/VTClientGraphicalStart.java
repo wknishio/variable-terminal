@@ -14,11 +14,11 @@ public class VTClientGraphicalStart
     VTConsole.setLanterna(true);
     VTConsole.setGraphical(true);
     VTConsole.setRemoteIcon(true);
-    //VTConsole.setCommandEcho(false);
+    // VTConsole.setCommandEcho(false);
     
     boolean help = false;
     boolean daemon = false;
-
+    
     if (args.length >= 1)
     {
       for (int i = 0; i < args.length; i++)
@@ -46,7 +46,7 @@ public class VTClientGraphicalStart
           }
           catch (Throwable e)
           {
-
+            
           }
         }
         System.exit(0);

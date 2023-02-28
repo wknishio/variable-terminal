@@ -7,7 +7,7 @@ public class VTClientAgentStandardStart
 {
   public static void main(String[] args)
   {
-    //System.setProperty("java.awt.headless", "true");
+    // System.setProperty("java.awt.headless", "true");
     VTConsole.setLanterna(true);
     VTConsole.setGraphical(false);
     VTConsole.setRemoteIcon(true);

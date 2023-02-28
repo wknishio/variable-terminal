@@ -12,7 +12,7 @@ public class VTQUIT extends VTClientStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTQUIT");
     this.setAbbreviatedSyntax("*VTQT");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     connection.getCommandWriter().write(command + "\n");
@@ -21,12 +21,12 @@ public class VTQUIT extends VTClientStandardRemoteConsoleCommandProcessor
     // connection.setSkipLine(true);
     VTConsole.closeConsole();
     session.getClient().stop();
-    //connection.closeSockets();
-   //System.exit(0);
+    // connection.closeSockets();
+    // System.exit(0);
   }
-
+  
   public void close()
   {
-
+    
   }
 }

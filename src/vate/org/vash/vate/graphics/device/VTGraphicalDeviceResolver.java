@@ -34,7 +34,7 @@ public class VTGraphicalDeviceResolver
       return null;
     }
   }
-
+  
   public static GraphicsDevice getCurrentDevice(Window window)
   {
     if (GraphicsEnvironment.isHeadless())
@@ -54,7 +54,7 @@ public class VTGraphicalDeviceResolver
     }
     return current;
   }
-
+  
   public static Rectangle getDeviceBounds(GraphicsDevice graphicsDevice)
   {
     if (GraphicsEnvironment.isHeadless())
@@ -90,11 +90,12 @@ public class VTGraphicalDeviceResolver
     // bounds.y = 0;
     return deviceBounds;
   }
-
+  
   /*
    * public static void main(String[] args) { GraphicsDevice[] devices =
    * VTUsableGraphicsDeviceResolver.getRasterDevices();
-   * System.out.println("devices: " + devices.length); for (GraphicsDevice device
-   * : devices) { System.out.println("device: " + device.getIDstring()); } }
+   * System.out.println("devices: " + devices.length); for (GraphicsDevice
+   * device : devices) { System.out.println("device: " + device.getIDstring());
+   * } }
    */
 }

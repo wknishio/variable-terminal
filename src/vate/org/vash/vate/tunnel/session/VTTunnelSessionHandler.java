@@ -7,7 +7,7 @@ public class VTTunnelSessionHandler implements Runnable
 {
   private VTTunnelChannel channel;
   private VTTunnelSession session;
-
+  
   public VTTunnelSessionHandler(VTTunnelSession session, VTTunnelChannel channel)
   {
     this.session = session;
@@ -17,7 +17,7 @@ public class VTTunnelSessionHandler implements Runnable
       channel.addSession(this);
     }
   }
-
+  
   public VTTunnelSession getSession()
   {
     return session;
@@ -33,7 +33,7 @@ public class VTTunnelSessionHandler implements Runnable
     }
     catch (Throwable e)
     {
-      //e.printStackTrace();
+      // e.printStackTrace();
     }
     finally
     {
@@ -43,7 +43,7 @@ public class VTTunnelSessionHandler implements Runnable
       }
       catch (Throwable e)
       {
-        //e.printStackTrace();
+        // e.printStackTrace();
       }
       if (channel != null)
       {

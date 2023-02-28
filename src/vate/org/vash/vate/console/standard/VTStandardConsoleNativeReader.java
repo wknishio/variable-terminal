@@ -13,9 +13,9 @@ public class VTStandardConsoleNativeReader extends Reader
     cbuf[off] = data;
     return 1;
   }
-
+  
   public void close() throws IOException
   {
-
+    
   }
 }

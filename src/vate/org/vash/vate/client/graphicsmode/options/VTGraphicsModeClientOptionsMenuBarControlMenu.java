@@ -54,7 +54,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
   private MenuItem upAltGr;
   private MenuItem upWin;
   private MenuItem upMeta;
-
+  
   private MenuItem clearLocalClipboardContents;
   private MenuItem clearRemoteClipboardContents;
   private MenuItem sendLocalClipboardContents;
@@ -64,9 +64,9 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
   private CheckboxMenuItem enableLocalKeySuppressionOption;
   private CheckboxMenuItem disableLocalKeyIgnoreOption;
   private CheckboxMenuItem enableLocalKeyIgnoreOption;
-
+  
   private VTGraphicsModeClientWriter writer;
-
+  
   public VTGraphicsModeClientOptionsMenuBarControlMenu(VTGraphicsModeClientWriter writer)
   {
     super("Control");
@@ -80,7 +80,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     this.lockingKeysControlMenu = new Menu("Enter Lock Key ");
     this.systemKeysControlMenu = new Menu("Enter System Key ");
     this.clipboardControlMenu = new Menu("Clipboard Control ");
-
+    
     this.runningOption = new CheckboxMenuItem("Running", true);
     this.runningOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarControlMenuRemoteControlListener(writer, runningOption));
     this.interruptedOption = new CheckboxMenuItem("Interrupted", false);
@@ -99,7 +99,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     this.pressPrintScreen.addActionListener(new VTGraphicsModeClientOptionsMenuBarControlMenuKeyPressListener(writer, KeyEvent.VK_PRINTSCREEN));
     this.pressPause = new MenuItem("Pause / Break");
     this.pressPause.addActionListener(new VTGraphicsModeClientOptionsMenuBarControlMenuKeyPressListener(writer, KeyEvent.VK_PAUSE));
-
+    
     this.downControl = new MenuItem("Control");
     this.downControl.addActionListener(new VTGraphicsModeClientOptionsMenuBarControlMenuKeyDownListener(writer, KeyEvent.VK_CONTROL));
     this.downShift = new MenuItem("Shift");
@@ -112,7 +112,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     this.downWin.addActionListener(new VTGraphicsModeClientOptionsMenuBarControlMenuKeyDownListener(writer, KeyEvent.VK_WINDOWS));
     this.downMeta = new MenuItem("Meta");
     this.downMeta.addActionListener(new VTGraphicsModeClientOptionsMenuBarControlMenuKeyDownListener(writer, KeyEvent.VK_META));
-
+    
     this.upControl = new MenuItem("Control");
     this.upControl.addActionListener(new VTGraphicsModeClientOptionsMenuBarControlMenuKeyUpListener(writer, KeyEvent.VK_CONTROL));
     this.upShift = new MenuItem("Shift");
@@ -125,7 +125,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     this.upWin.addActionListener(new VTGraphicsModeClientOptionsMenuBarControlMenuKeyUpListener(writer, KeyEvent.VK_WINDOWS));
     this.upMeta = new MenuItem("Meta");
     this.upMeta.addActionListener(new VTGraphicsModeClientOptionsMenuBarControlMenuKeyUpListener(writer, KeyEvent.VK_META));
-
+    
     this.clearLocalClipboardContents = new MenuItem("Clear Local Clipboard");
     this.clearLocalClipboardContents.addActionListener(new VTGraphicsModeClientOptionsMenuBarControlMenuClearLocalClipboardListener(writer));
     this.clearRemoteClipboardContents = new MenuItem("Clear Remote Clipboard");
@@ -157,7 +157,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     this.localKeySuppressionControlMenu.add(enableLocalKeySuppressionOption);
     this.localKeyIgnoreControlMenu.add(disableLocalKeyIgnoreOption);
     this.localKeyIgnoreControlMenu.add(enableLocalKeyIgnoreOption);
-
+    
     this.lockingKeysControlMenu.add(pressNumLock);
     this.lockingKeysControlMenu.add(pressCapsLock);
     this.lockingKeysControlMenu.add(pressScrollLock);
@@ -182,7 +182,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     this.clipboardControlMenu.add(clearLocalClipboardContents);
     this.clipboardControlMenu.add(clearRemoteClipboardContents);
     this.clipboardControlMenu.add(cancelClipboardContentsTransfer);
-
+    
     this.add(remoteControlMenu);
     this.add(localKeyIgnoreControlMenu);
     this.add(controlStateClauseMenu);
@@ -193,7 +193,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     this.add(systemKeysControlMenu);
     this.add(clipboardControlMenu);
   }
-
+  
   public void sendLocalClipboardContents()
   {
     clearLocalClipboardContents.setEnabled(false);
@@ -202,7 +202,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     receiveRemoteClipboardContents.setEnabled(false);
     cancelClipboardContentsTransfer.setEnabled(true);
   }
-
+  
   public void receiveRemoteClipboardContents()
   {
     clearLocalClipboardContents.setEnabled(false);
@@ -211,7 +211,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     receiveRemoteClipboardContents.setEnabled(false);
     cancelClipboardContentsTransfer.setEnabled(true);
   }
-
+  
   public void finishClipboardContentsTransfer()
   {
     clearLocalClipboardContents.setEnabled(true);
@@ -220,7 +220,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     receiveRemoteClipboardContents.setEnabled(true);
     cancelClipboardContentsTransfer.setEnabled(false);
   }
-
+  
   public void interruptControl()
   {
     runningOption.setState(false);
@@ -234,7 +234,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     localKeySuppressionControlMenu.setEnabled(false);
     writer.clearAllPressedKeys();
   }
-
+  
   public void restabilishControl()
   {
     runningOption.setState(true);
@@ -247,7 +247,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     // clipboardControlMenu.setEnabled(true);
     localKeySuppressionControlMenu.setEnabled(true);
   }
-
+  
   public void setSuppressLocalKeyCombinations(boolean suppressLocalKeyCombinations)
   {
     if (suppressLocalKeyCombinations)
@@ -262,7 +262,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
       writer.clearAllPressedKeys();
     }
   }
-
+  
   public void setIgnoreLocalKeyCombinations(boolean ignoreLocalKeyCombinations)
   {
     if (ignoreLocalKeyCombinations)
@@ -270,7 +270,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
       disableLocalKeyIgnoreOption.setState(false);
       enableLocalKeyIgnoreOption.setState(true);
       writer.setKeyboardShortcutsMenuEnabled(false);
-
+      
     }
     else
     {
@@ -280,7 +280,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
       // writer.clearAllPressedKeys();
     }
   }
-
+  
   public void setTerminalControlPolicy(int state)
   {
     if (state == VTGraphicsModeClientWriter.TERMINAL_STATE_FOCUSED)
@@ -294,7 +294,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
       needVisibleOption.setState(true);
     }
   }
-
+  
   public boolean isClipboardControlEnabled()
   {
     return clearLocalClipboardContents.isEnabled();

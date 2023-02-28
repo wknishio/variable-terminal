@@ -28,7 +28,7 @@ public class VTAudioPlayer
   private AudioFormat audioFormat;
   private VTAudioSystem system;
   private List<Runnable> scheduled = new LinkedList<Runnable>();
-
+  
   public VTAudioPlayer(VTAudioSystem system, ExecutorService threads)
   {
     this.streams = new ConcurrentLinkedQueue<VTLittleEndianInputStream>();
@@ -56,8 +56,8 @@ public class VTAudioPlayer
       try
       {
         line = AudioSystem.getSourceDataLine(audioFormat, info);
-        //line.open();
-        //line.open(audioFormat);
+        // line.open();
+        // line.open(audioFormat);
         if (bufferedMilliseconds > 0)
         {
           line.open(audioFormat, (int) ((audioFormat.getSampleRate() / 1000) * (audioFormat.getSampleSizeInBits() / 8)) * audioFormat.getChannels() * bufferedMilliseconds);
@@ -78,8 +78,8 @@ public class VTAudioPlayer
       try
       {
         line = AudioSystem.getSourceDataLine(audioFormat);
-        //line.open();
-        //line.open(audioFormat);
+        // line.open();
+        // line.open(audioFormat);
         if (bufferedMilliseconds > 0)
         {
           line.open(audioFormat, (int) ((audioFormat.getSampleRate() / 1000) * (audioFormat.getSampleSizeInBits() / 8)) * audioFormat.getChannels() * bufferedMilliseconds);
@@ -100,8 +100,8 @@ public class VTAudioPlayer
         try
         {
           line = AudioSystem.getSourceDataLine(audioFormat, mixer);
-          //line.open();
-          //line.open(audioFormat);
+          // line.open();
+          // line.open(audioFormat);
           if (bufferedMilliseconds > 0)
           {
             line.open(audioFormat, (int) ((audioFormat.getSampleRate() / 1000) * (audioFormat.getSampleSizeInBits() / 8)) * audioFormat.getChannels() * bufferedMilliseconds);
@@ -134,10 +134,10 @@ public class VTAudioPlayer
     private SourceDataLine line;
     private int frameSize;
     private int codec;
-    private int lineBufferSize; 
-    //private int written;
-    //private int remaining;
-    //private int cycle;
+    private int lineBufferSize;
+    // private int written;
+    // private int remaining;
+    // private int cycle;
     
     private VTAudioPlayerThread(VTLittleEndianInputStream in, SourceDataLine line, int codec, int frameMilliseconds)
     {
@@ -145,7 +145,7 @@ public class VTAudioPlayer
       this.in = in;
       this.line = line;
       this.lineBufferSize = line.getBufferSize();
-      //System.out.println("play.line.getBufferSize:" + line.getBufferSize());
+      // System.out.println("play.line.getBufferSize:" + line.getBufferSize());
       int sampleRate = (int) audioFormat.getSampleRate();
       this.frameSize = ((sampleRate / 1000) * (audioFormat.getSampleSizeInBits() / 8)) * audioFormat.getChannels() * frameMilliseconds;
       this.inputBuffer = new byte[frameSize];
@@ -263,7 +263,7 @@ public class VTAudioPlayer
 //        }
       }
     }
-
+    
     public void run()
     {
       // System.out.println("started play");
@@ -368,7 +368,7 @@ public class VTAudioPlayer
       }
     }
   }
-
+  
   public void close()
   {
     this.running = false;

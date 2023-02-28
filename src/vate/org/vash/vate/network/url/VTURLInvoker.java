@@ -30,7 +30,7 @@ public class VTURLInvoker
   }
   
   private Collection<URLConnection> connections = Collections.synchronizedCollection(new LinkedList<URLConnection>());
-    
+  
   public void close()
   {
     try
@@ -108,13 +108,13 @@ public class VTURLInvoker
   public VTURLResult invokeURL(String urlString, Proxy proxy, Map<String, String> requestHeaders, String requestMethod, InputStream outputInputStream, OutputStream resultOutputStream)
   {
     final byte[] readBuffer = new byte[VT.VT_STANDARD_DATA_BUFFER_SIZE];
-    //VTByteArrayOutputStream dataBuffer = new VTByteArrayOutputStream();
+    // VTByteArrayOutputStream dataBuffer = new VTByteArrayOutputStream();
     VTURLResult urlResult = new VTURLResult(-1, null, null, null);
-    //dataBuffer.reset();
+    // dataBuffer.reset();
     int readed = 0;
-    //URLConnection urlConnection = null;
-    //InputStream inputStream = null;
-    //OutputStream outputStream = null;
+    // URLConnection urlConnection = null;
+    // InputStream inputStream = null;
+    // OutputStream outputStream = null;
     URLConnection.setDefaultAllowUserInteraction(false);
     URLConnection connection = null;
     HttpURLConnection httpConnection = null;

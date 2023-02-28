@@ -12,7 +12,7 @@ public class VTHELP extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTHELP [NAME]");
     this.setAbbreviatedSyntax("*VTHLP [NM]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -34,9 +34,9 @@ public class VTHELP extends VTServerStandardRemoteConsoleCommandProcessor
       connection.getResultWriter().flush();
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

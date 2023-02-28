@@ -4,19 +4,19 @@ public class VTGraphicalConsoleWriter
 {
   public VTGraphicalConsoleWriter()
   {
-
+    
   }
-
+  
   public synchronized static void close()
   {
     VTGraphicalConsole.close();
   }
-
+  
   public synchronized static void flush()
   {
     VTGraphicalConsole.flushBuffered(true);
   }
-
+  
   public synchronized static void write(String str)
   {
     // VTGraphicalConsole.write(str);
@@ -25,7 +25,7 @@ public class VTGraphicalConsoleWriter
       VTGraphicalConsole.write(str.charAt(i));
     }
   }
-
+  
   public synchronized static void write(char[] cbuf, int off, int len)
   {
     // VTGraphicalConsole.write(String.valueOf(cbuf, off, len));
@@ -34,8 +34,9 @@ public class VTGraphicalConsoleWriter
       VTGraphicalConsole.write(cbuf[off + i]);
     }
   }
-
+  
   /*
-   * public synchronized static void clear() { VTGraphicalConsole.staticClear(); }
+   * public synchronized static void clear() { VTGraphicalConsole.staticClear();
+   * }
    */
 }

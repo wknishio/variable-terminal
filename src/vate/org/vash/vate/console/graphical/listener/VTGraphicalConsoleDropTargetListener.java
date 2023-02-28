@@ -17,17 +17,17 @@ public class VTGraphicalConsoleDropTargetListener implements DropTargetListener
   {
     // System.out.println("dragEnter!");
   }
-
+  
   public void dragExit(DropTargetEvent dte)
   {
     // System.out.println("dragExit!");
   }
-
+  
   public void dragOver(DropTargetDragEvent dtde)
   {
     // System.out.println("dragOver!");
   }
-
+  
   @SuppressWarnings("unchecked")
   public void drop(DropTargetDropEvent dtde)
   {
@@ -68,7 +68,7 @@ public class VTGraphicalConsoleDropTargetListener implements DropTargetListener
       // dtde.
     }
   }
-
+  
   public void dropActionChanged(DropTargetDragEvent dtde)
   {
     // dtde.

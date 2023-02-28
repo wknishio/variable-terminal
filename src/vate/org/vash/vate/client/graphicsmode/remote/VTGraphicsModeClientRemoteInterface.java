@@ -16,13 +16,13 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
   @SuppressWarnings("unused")
   private volatile boolean synchronousRefresh = false;
   private BufferedImage sourceImageDataBuffer;
-  //private BufferedImage displayImageDataBuffer;
-  //private Graphics2D displayImageGraphics;
-  //private DataBuffer recyclableDataBuffer;
+  // private BufferedImage displayImageDataBuffer;
+  // private Graphics2D displayImageGraphics;
+  // private DataBuffer recyclableDataBuffer;
   private ScrollPane scrolled;
   // private Rectangle refreshArea = new Rectangle(0, 0, 0, 0);
   private VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter repainter;
-
+  
   public VTGraphicsModeClientRemoteInterface(ScrollPane scrolled)
   {
     // this.setBackground(new Color(0x00999999));
@@ -33,7 +33,7 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
     // this.graphics
     // this.resizer = new VTGraphicsModeClientViewPortChangeListener(this);
   }
-
+  
   public void dispose()
   {
 //    if (displayImageDataBuffer != null)
@@ -51,7 +51,7 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
 //      recyclableDataBuffer = null;
 //    }
   }
-
+  
   public void prepareDisplay(BufferedImage image)
   {
 //    if (displayImageDataBuffer != null)
@@ -85,21 +85,21 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
 //      displayImageGraphics = null;
 //    }
   }
-
+  
   /*
    * public void setNotResizing(boolean notResizing) { if (notResizing) {
    * Dimension nextSize = new Dimension(0, 0); this.setSize(nextSize);
    * this.setMaximumSize(nextSize); this.setMinimumSize(nextSize);
    * this.setPreferredSize(nextSize); } this.notResizing = notResizing; }
    */
-
+  
   /*
    * public void resizeToViewPort() { Dimension size =
    * ((ScrollPane)this.getParent()).getViewportSize(); this.setSize(size);
    * this.setMaximumSize(size); this.setMinimumSize(size);
    * this.setPreferredSize(size); }
    */
-
+  
   /*
    * public void clear() { Dimension nextSize = new Dimension(0, 0);
    * this.setSize(nextSize); this.setMaximumSize(nextSize);
@@ -109,7 +109,7 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
   {
     // this.refreshArea = area;
   }
-
+  
   public void refreshImage()
   {
 //    if (displayImageDataBuffer != null)
@@ -137,7 +137,7 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
 //    }
 //    return super.getPreferredSize();
 //  }
-
+  
   public void setImage(BufferedImage image)
   {
     if (image != null)
@@ -156,35 +156,35 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
         }
         catch (Throwable t)
         {
-
+          
         }
       }
     }
     else
     {
-      //displayImageDataBuffer = null;
+      // displayImageDataBuffer = null;
       sourceImageDataBuffer = null;
     }
   }
-
+  
   public void clearImage()
   {
     // VTImageIO.clearImage(image);
     setImage(null);
     // super.update(g);
   }
-
+  
   /*
    * public synchronized Dimension getImageSize() { if (image != null) { return
-   * new Dimension(image.getWidth(), image.getHeight()); } return this.getSize();
-   * }
+   * new Dimension(image.getWidth(), image.getHeight()); } return
+   * this.getSize(); }
    */
-
+  
   /*
-   * public void validate() { } public void invalidate() { } public void repaint()
-   * { }
+   * public void validate() { } public void invalidate() { } public void
+   * repaint() { }
    */
-
+  
   public void update(Graphics g)
   {
     // System.out.println("called update");
@@ -200,7 +200,7 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
     }
     // super.update(g);
   }
-
+  
   public void paint(Graphics g)
   {
     // System.out.println("called paint");
@@ -230,7 +230,7 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
       }
       catch (Throwable t)
       {
-
+        
       }
     }
     else
@@ -238,47 +238,47 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
       super.paint(g);
     }
   }
-
+  
   public boolean isUpdating()
   {
     return updating;
   }
-
+  
   public void setUpdating(boolean updating)
   {
     this.updating = updating;
   }
-
+  
   public void setSynchronousRefresh(boolean synchronousRefresh)
   {
     this.synchronousRefresh = synchronousRefresh;
   }
-
+  
   public void startAsynchronousRepainter()
   {
     repainter.start();
   }
-
+  
   public void stopAsynchronousRepainter()
   {
     repainter.stop();
   }
-
+  
   public void interruptAsynchronousRepainter()
   {
     repainter.interrupt();
   }
-
+  
   public void resumeAsynchronousRepainter()
   {
     repainter.resume();
   }
-
+  
   public boolean isAsynchronousRepainterRunning()
   {
     return repainter.isRunning();
   }
-
+  
   public boolean isAsynchronousRepainterInterrupted()
   {
     return repainter.isInterrupted();

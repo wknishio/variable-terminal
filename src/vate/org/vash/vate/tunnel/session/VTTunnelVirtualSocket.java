@@ -13,8 +13,8 @@ public class VTTunnelVirtualSocket extends Socket
   private InputStream in;
   private OutputStream out;
   private OutputStream pipe;
-
-  public VTTunnelVirtualSocket() 
+  
+  public VTTunnelVirtualSocket()
   {
     
   }
@@ -28,22 +28,22 @@ public class VTTunnelVirtualSocket extends Socket
     this.in = pipeSink;
     this.pipe = pipeSource;
   }
-
+  
   public InputStream getInputStream()
   {
     return in;
   }
-
+  
   public OutputStream getOutputStream()
   {
     return out;
   }
-
+  
   public OutputStream getInputStreamSource()
   {
     return pipe;
   }
-
+  
   public void shutdownOutput() throws IOException
   {
     if (out != null)
@@ -58,7 +58,7 @@ public class VTTunnelVirtualSocket extends Socket
       }
     }
   }
-
+  
   public void shutdownInput() throws IOException
   {
     if (in != null)
@@ -84,7 +84,7 @@ public class VTTunnelVirtualSocket extends Socket
       }
     }
   }
-
+  
   public void close() throws IOException
   {
     if (in != null)

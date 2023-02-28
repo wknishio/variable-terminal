@@ -28,7 +28,7 @@ public class VTGraphicsModeServerReader implements Runnable
   private Clipboard systemClipboard;
   private Set<Integer> pressedKeyboardKeys;
   private Set<Integer> pressedMouseKeys;
-
+  
   public VTGraphicsModeServerReader(VTGraphicsModeServerSession session)
   {
     this.session = session;
@@ -41,17 +41,17 @@ public class VTGraphicsModeServerReader implements Runnable
     this.systemClipboard = controlProvider.getSystemClipboard();
     // this.failed = false;
   }
-
+  
   public void setWriter(VTGraphicsModeServerWriter writer)
   {
     this.writer = writer;
   }
-
+  
   /*
    * public void resetClipboardStreams() throws IOException {
    * connection.resetClipboardStreams(); }
    */
-
+  
   public void dispose()
   {
     stopped = true;
@@ -61,31 +61,31 @@ public class VTGraphicsModeServerReader implements Runnable
       controlProvider.dispose();
     }
   }
-
+  
   public boolean isStopped()
   {
     return stopped;
   }
-
+  
   public void setStopped(boolean stopped)
   {
     this.stopped = stopped;
   }
-
+  
   /* public boolean isFailed() { return failed; } */
-
+  
   /* public void setFailed(boolean failed) { this.failed = failed; } */
-
+  
   public boolean isReadOnly()
   {
     return readOnly;
   }
-
+  
   public void setReadOnly(boolean readOnly)
   {
     this.readOnly = readOnly;
   }
-
+  
   public void releaseAllPressedKeys()
   {
     for (Integer key : pressedKeyboardKeys)
@@ -99,7 +99,7 @@ public class VTGraphicsModeServerReader implements Runnable
     }
     pressedMouseKeys.clear();
   }
-
+  
   public void run()
   {
     lastEvent = new VTAWTControlEvent();
@@ -320,8 +320,8 @@ public class VTGraphicsModeServerReader implements Runnable
           case VT.VT_GRAPHICS_MODE_CLIPBOARD_TRANSFER_CANCEL_REQUEST:
           {
             /*
-             * if (session.getSession().getClipboardTransferTask(). isSending()) {
-             * connection.getGraphicsClipboardOutputStream().close() ; }
+             * if (session.getSession().getClipboardTransferTask(). isSending())
+             * { connection.getGraphicsClipboardOutputStream().close() ; }
              */
             connection.getGraphicsClipboardOutputStream().close();
             session.getSession().getClipboardTransferTask().interruptThread();

@@ -8,14 +8,14 @@ public final class VTFlushBufferedOutputStream extends FilterOutputStream
 {
   private final VTByteArrayOutputStream buf;
   private final OutputStream out;
-
+  
   public VTFlushBufferedOutputStream(VTByteArrayOutputStream buf, OutputStream out)
   {
     super(buf);
     this.buf = buf;
     this.out = out;
   }
-
+  
   public final void flush() throws IOException
   {
     if (buf.count() > 0)
@@ -26,7 +26,7 @@ public final class VTFlushBufferedOutputStream extends FilterOutputStream
       out.flush();
     }
   }
-
+  
   public final void close() throws IOException
   {
 //		try

@@ -21,8 +21,8 @@ public class VTServerGraphicalStart
       VTConsole.setGraphical(true);
     }
     VTConsole.setRemoteIcon(true);
-    //VTConsole.setCommandEcho(false);
-
+    // VTConsole.setCommandEcho(false);
+    
     if (args.length >= 1)
     {
       for (int i = 0; i < args.length; i++)
@@ -50,7 +50,7 @@ public class VTServerGraphicalStart
           }
           catch (Throwable e)
           {
-
+            
           }
         }
         System.exit(0);

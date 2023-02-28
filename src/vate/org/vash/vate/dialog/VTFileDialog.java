@@ -20,14 +20,14 @@ public class VTFileDialog extends FileDialog
     try
     {
       setIconImage = VTServerSettingsDialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
-      //setIconImage.setAccessible(true);
+      // setIconImage.setAccessible(true);
     }
     catch (Throwable e)
     {
       
     }
   }
-
+  
   public VTFileDialog(Dialog owner, String title, int mode)
   {
     super(owner, title, mode);
@@ -45,7 +45,7 @@ public class VTFileDialog extends FileDialog
       
     }
   }
-
+  
   public VTFileDialog(Frame owner, String title, int mode)
   {
     super(owner, title, mode);

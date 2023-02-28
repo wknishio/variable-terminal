@@ -15,7 +15,7 @@ public class VTServerLocalConsoleCommandSelector<T> extends VTConsoleCommandSele
   private static Set<Class<?>> standardCommandProcessorClasses = new LinkedHashSet<Class<?>>();
   // private static Set<String> additionalCustomCommandProcessorPackages = new
   // LinkedHashSet<String>();
-
+  
   static
   {
     try
@@ -43,11 +43,11 @@ public class VTServerLocalConsoleCommandSelector<T> extends VTConsoleCommandSele
     }
     catch (Throwable t)
     {
-
+      
     }
     installedCommandProcessorClasses.addAll(standardCommandProcessorClasses);
   }
-
+  
   public static void addCustomCommandProcessorClass(String className)
   {
     try
@@ -60,10 +60,10 @@ public class VTServerLocalConsoleCommandSelector<T> extends VTConsoleCommandSele
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public static void addCustomCommandProcessorPackage(String pkg)
   {
     Set<Class<?>> customClasses = VTReflectionUtils.findClassesFromNames(VTReflectionUtils.findClassNamesFromPackage(pkg));
@@ -75,7 +75,7 @@ public class VTServerLocalConsoleCommandSelector<T> extends VTConsoleCommandSele
       }
     }
   }
-
+  
   public VTServerLocalConsoleCommandSelector(VTServer server)
   {
     this.server = server;
@@ -94,7 +94,7 @@ public class VTServerLocalConsoleCommandSelector<T> extends VTConsoleCommandSele
       }
       catch (Throwable t)
       {
-
+        
       }
     }
   }

@@ -11,7 +11,7 @@ public class VTFILETRANSFER extends VTServerStandardRemoteConsoleCommandProcesso
     this.setFullSyntax("*VTFILETRANSFER [MODE] [SOURCE; TARGET]");
     this.setAbbreviatedSyntax("*VTFT [MD] [SRC; TGT]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 2)
@@ -22,7 +22,7 @@ public class VTFILETRANSFER extends VTServerStandardRemoteConsoleCommandProcesso
       }
       else
       {
-
+        
       }
     }
     else if (parsed.length >= 4)
@@ -53,17 +53,17 @@ public class VTFILETRANSFER extends VTServerStandardRemoteConsoleCommandProcesso
       }
       else
       {
-
+        
       }
     }
     else
     {
-
+      
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

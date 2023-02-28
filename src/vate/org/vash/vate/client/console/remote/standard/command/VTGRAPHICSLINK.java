@@ -15,7 +15,7 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
     this.setFullSyntax("*VTGRAPHICSLINK [MODE]");
     this.setAbbreviatedSyntax("*VTGL [MD]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (GraphicsEnvironment.isHeadless())
@@ -27,8 +27,9 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
     {
       /*
        * if (splitCommand[1].toUpperCase().startsWith("S")) { synchronized
-       * (session.getGraphicsClient()) { if (session.getGraphicsClient().isFinished())
-       * { session.getGraphicsClient().joinThread(); } } if
+       * (session.getGraphicsClient()) { if
+       * (session.getGraphicsClient().isFinished()) {
+       * session.getGraphicsClient().joinThread(); } } if
        * (session.getGraphicsClient().aliveThread()) { } else { VTTerminal.
        * print("\nVT>Remote graphics link is not running!\nVT>" ); } }
        */
@@ -125,9 +126,9 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
       VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

@@ -7,7 +7,8 @@ import com.sun.jna.Pointer;
 public class GtkUtilities
 {
   /**
-   * Initializes Gtk2/3 and returns the desktop scaling factor, usually 1.0 or 2.0
+   * Initializes Gtk2/3 and returns the desktop scaling factor, usually 1.0 or
+   * 2.0
    */
   public static double getScaleFactor()
   {
@@ -15,7 +16,7 @@ public class GtkUtilities
     if (gtkHandle != null && gtkHandle.gtk_init_check(0, null))
     {
       // System.out.println("Initialized Gtk");
-
+      
       if (gtkHandle instanceof GTK2)
       {
         return getGtk2ScaleFactor((GTK2) gtkHandle);
@@ -31,14 +32,14 @@ public class GtkUtilities
     }
     return 0;
   }
-
+  
   private static GTK getGtkInstance()
   {
     // System.out.println("Finding preferred Gtk version...");//
-    //if (GTK3_INSTANCE != null)
-    //{
-      //return GTK3_INSTANCE;
-    //}
+    // if (GTK3_INSTANCE != null)
+    // {
+    // return GTK3_INSTANCE;
+    // }
     if (GTK2_INSTANCE != null)
     {
       return GTK2_INSTANCE;
@@ -54,7 +55,7 @@ public class GtkUtilities
 //        }
 //        return null;
   }
-
+  
   /**
    * Get the major version of Gtk (e.g. 2, 3) UNIXToolkit is unavailable on
    * Windows or Mac; reflection is required.
@@ -75,7 +76,7 @@ public class GtkUtilities
 //        }
 //        return 0;
 //    }
-
+  
   private static double getGtk2ScaleFactor(GTK2 gtk2)
   {
     Pointer display = gtk2.gdk_display_get_default();
@@ -84,27 +85,34 @@ public class GtkUtilities
     Pointer screen = gtk2.gdk_display_get_default_screen(display);
     return gtk2.gdk_screen_get_resolution(screen) / 96.0d;
   }
-
+  
   private static double getGtk3ScaleFactor(GTK3 gtk3)
   {
     Pointer display = gtk3.gdk_display_get_default();
     int gtkMinorVersion = gtk3.gtk_get_minor_version();
-    if (gtkMinorVersion < 10) {
-      //Pointer display = gtk3.gdk_display_get_default();
+    if (gtkMinorVersion < 10)
+    {
+      // Pointer display = gtk3.gdk_display_get_default();
       Pointer screen = gtk3.gdk_display_get_default_screen(display);
       return gtk3.gdk_screen_get_resolution(screen) / 96.0d;
-    } else if (gtkMinorVersion >= 22) {
-        //System.out.println("Gtk 3.22+ detected, calling \"gdk_monitor_get_scale_factor\"");
-        Pointer monitor = gtk3.gdk_display_get_primary_monitor(display);
-        return gtk3.gdk_monitor_get_scale_factor(monitor);
-    } else if (gtkMinorVersion >= 10) {
-        //System.out.println("Gtk 3.10+ detected, calling \"gdk_screen_get_monitor_scale_factor\"");
-        Pointer screen = gtk3.gdk_display_get_default_screen(display);
-        return gtk3.gdk_screen_get_monitor_scale_factor(screen, 0);
+    }
+    else if (gtkMinorVersion >= 22)
+    {
+      // System.out.println("Gtk 3.22+ detected, calling
+      // \"gdk_monitor_get_scale_factor\"");
+      Pointer monitor = gtk3.gdk_display_get_primary_monitor(display);
+      return gtk3.gdk_monitor_get_scale_factor(monitor);
+    }
+    else if (gtkMinorVersion >= 10)
+    {
+      // System.out.println("Gtk 3.10+ detected, calling
+      // \"gdk_screen_get_monitor_scale_factor\"");
+      Pointer screen = gtk3.gdk_display_get_default_screen(display);
+      return gtk3.gdk_screen_get_monitor_scale_factor(screen, 0);
     }
     return 0;
   }
-
+  
   /**
    * Gtk2/Gtk3 wrapper
    */
@@ -112,52 +120,52 @@ public class GtkUtilities
   {
     // Gtk2.0+
     boolean gtk_init_check(int argc, String[] argv);
-
+    
     Pointer gdk_display_get_default();
-
+    
     Pointer gdk_display_get_default_screen(Pointer display);
   }
-
+  
   private interface GTK3 extends GTK
   {
-
+    
     double gdk_screen_get_resolution(Pointer screen);
-
+    
     // Gtk 3.0+
     int gtk_get_minor_version();
-
+    
     // Gtk 3.10-3.21
     int gdk_screen_get_monitor_scale_factor(Pointer screen, int monitor_num);
-
+    
     // Gtk 3.22+
     Pointer gdk_display_get_primary_monitor(Pointer display);
-
+    
     int gdk_monitor_get_scale_factor(Pointer monitor);
   }
-
+  
   private interface GTK2 extends GTK
   {
-
+    
     // Gtk 2.1-3.0
     double gdk_screen_get_resolution(Pointer screen);
   }
-
-  //private static GTK3 GTK3_INSTANCE;
-
+  
+  // private static GTK3 GTK3_INSTANCE;
+  
   private static GTK2 GTK2_INSTANCE;
   
   static
   {
     try
     {
-      //GTK3_INSTANCE = Native.loadLibrary("gtk-3", GTK3.class);
+      // GTK3_INSTANCE = Native.loadLibrary("gtk-3", GTK3.class);
     }
     catch (Throwable t)
     {
       
     }
     
-    //if (GTK3_INSTANCE == null)
+    // if (GTK3_INSTANCE == null)
     {
       try
       {

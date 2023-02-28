@@ -30,32 +30,32 @@ public class VTClientSession
 {
   private volatile long sessionLocalNanoDelay;
   private volatile long sessionRemoteNanoDelay;
-  //private volatile boolean runningAudio;
+  // private volatile boolean runningAudio;
   // private File workingDirectory;
   private VTClient client;
   private VTClientConnection connection;
-
+  
   private VTClientRemoteConsoleReader serverReader;
   private VTClientRemoteConsoleWriter clientWriter;
   private VTFileTransferClient fileTransferClient;
   private VTGraphicsModeClient graphicsClient;
   private VTClipboardTransferTask clipboardTransferTask;
-  //private VTClientZipFileOperation zipFileOperation;
+  // private VTClientZipFileOperation zipFileOperation;
   private VTTunnelConnectionHandler tunnelsHandler;
-  //private VTTunnelConnectionHandler socksTunnelsHandler;
+  // private VTTunnelConnectionHandler socksTunnelsHandler;
   private VTNanoPingService pingService;
-
+  
   private Map<String, Closeable> sessionResources;
-
+  
   private ExecutorService threads;
-
+  
   public VTClientSession(VTClient client, VTClientConnection connection)
   {
     this.client = client;
     this.connection = connection;
     this.sessionResources = Collections.synchronizedMap(new LinkedHashMap<String, Closeable>());
   }
-
+  
   public void initialize()
   {
     this.threads = Executors.newCachedThreadPool(new ThreadFactory()
@@ -83,15 +83,16 @@ public class VTClientSession
 //      //e.printStackTrace();
 //    }
     
-    //this.runningAudio = false;
+    // this.runningAudio = false;
     this.serverReader = new VTClientRemoteConsoleReader(this);
     this.clientWriter = new VTClientRemoteConsoleWriter(this);
     this.fileTransferClient = new VTFileTransferClient(this);
     this.graphicsClient = new VTGraphicsModeClient(this);
     this.clipboardTransferTask = new VTClipboardTransferTask();
-    //this.zipFileOperation = new VTClientZipFileOperation(this);
+    // this.zipFileOperation = new VTClientZipFileOperation(this);
     this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(threads), threads);
-    //this.socksTunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(threads), threads);
+    // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
+    // VTTunnelConnection(threads), threads);
     this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, false);
     this.pingService.addListener(new VTNanoPingListener()
     {
@@ -106,115 +107,115 @@ public class VTClientSession
       }
     });
   }
-
+  
   public ExecutorService getSessionThreads()
   {
     return threads;
   }
-
+  
   public Closeable getSessionResource(String key)
   {
     return sessionResources.get(key);
   }
-
+  
   public void addSessionResource(String key, Closeable value)
   {
     sessionResources.put(key, value);
   }
-
+  
   public Closeable removeSessionResource(String key)
   {
     return sessionResources.remove(key);
   }
-
+  
   public boolean isRunningAudio()
   {
     return client.getAudioSystem().isRunning();
   }
-
+  
   public long getLocalNanoDelay()
   {
     return sessionLocalNanoDelay;
   }
-
+  
   public long getRemoteNanoDelay()
   {
     return sessionRemoteNanoDelay;
   }
-
+  
   /*
    * public File getWorkingDirectory() { return workingDirectory; } public void
    * setWorkingDirectory(File workingDirectory) { this.workingDirectory =
    * workingDirectory; }
    */
-
+  
   public VTClient getClient()
   {
     return client;
   }
-
+  
   public VTClientRemoteConsoleWriter getClientWriter()
   {
     return clientWriter;
   }
-
+  
   public VTClientConnection getConnection()
   {
     return connection;
   }
-
+  
   public VTFileTransferClient getFileTransferClient()
   {
     return fileTransferClient;
   }
-
+  
   public VTGraphicsModeClient getGraphicsClient()
   {
     return graphicsClient;
   }
-
+  
   public VTClipboardTransferTask getClipboardTransferTask()
   {
     return clipboardTransferTask;
   }
-
-  //public void setZipFileOperation(VTClientZipFileOperation zipFileOperation)
-  //{
-    //.zipFileOperation = zipFileOperation;
-  //}
-
-  //public VTClientZipFileOperation getZipFileOperation()
-  //{
-    //return zipFileOperation;
-  //}
-
+  
+  // public void setZipFileOperation(VTClientZipFileOperation zipFileOperation)
+  // {
+  // .zipFileOperation = zipFileOperation;
+  // }
+  
+  // public VTClientZipFileOperation getZipFileOperation()
+  // {
+  // return zipFileOperation;
+  // }
+  
   public VTNanoPingService getNanoPingService()
   {
     return pingService;
   }
-
+  
   public VTTunnelConnectionHandler getTunnelsHandler()
   {
     return tunnelsHandler;
   }
-
-  //public VTTunnelConnectionHandler getSOCKSTunnelsHandler()
-  //{
-    //return socksTunnelsHandler;
-  //}
+  
+  // public VTTunnelConnectionHandler getSOCKSTunnelsHandler()
+  // {
+  // return socksTunnelsHandler;
+  // }
   
   public void setCommandInputStream(InputStream in, Charset charset)
   {
     clientWriter.setCommandInputStream(in, charset);
   }
-
+  
   public boolean isStopped()
   {
     return serverReader.isStopped() || clientWriter.isStopped() || !connection.isConnected();
     // return serverReader.isStopped() || clientWriter.isStopped() ||
     // !connection.isConnected();
   }
-
+  
   public void stopTasks()
   {
     connection.closeSockets();
@@ -226,25 +227,25 @@ public class VTClientSession
     pingService.setStopped(true);
     pingService.ping();
   }
-
+  
   public void startSession() throws UnsupportedEncodingException
   {
-    //runningAudio = false;
+    // runningAudio = false;
     serverReader.setStopped(false);
     clientWriter.setStopped(false);
     tunnelsHandler.getConnection().setControlInputStream(connection.getTunnelControlInputStream());
     tunnelsHandler.getConnection().setControlOutputStream(connection.getTunnelControlOutputStream());
     tunnelsHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
     tunnelsHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
-    //socksTunnelsHandler.getConnection().setControlInputStream(connection.getSocksControlInputStream());
-    //socksTunnelsHandler.getConnection().setControlOutputStream(connection.getSocksControlOutputStream());
-    //socksTunnelsHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
-    //socksTunnelsHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
+    // socksTunnelsHandler.getConnection().setControlInputStream(connection.getSocksControlInputStream());
+    // socksTunnelsHandler.getConnection().setControlOutputStream(connection.getSocksControlOutputStream());
+    // socksTunnelsHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
+    // socksTunnelsHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
     pingService.setInputStream(connection.getPingInputStream());
     pingService.setOutputStream(connection.getPingOutputStream());
     // tunnelHandler.getConnection().start();
   }
-
+  
   public void startSessionThreads()
   {
     // session.getServerReader().setStopped(false);
@@ -252,18 +253,18 @@ public class VTClientSession
     serverReader.startThread();
     clientWriter.startThread();
     tunnelsHandler.startThread();
-    //socksTunnelsHandler.startThread();
+    // socksTunnelsHandler.startThread();
     if (client.getInputMenuBar() != null)
     {
       client.getInputMenuBar().setEnabled(true);
     }
   }
-
+  
   public void waitSession()
   {
     /*
-     * while (!isStopped()) { try { Thread.sleep(1); } catch (Throwable e) { return;
-     * } }
+     * while (!isStopped()) { try { Thread.sleep(1); } catch (Throwable e) {
+     * return; } }
      */
     synchronized (this)
     {
@@ -280,7 +281,7 @@ public class VTClientSession
       }
     }
   }
-
+  
   public void tryStopSessionThreads()
   {
     // VTTerminal.println("\nSession over!");
@@ -300,34 +301,34 @@ public class VTClientSession
         }
         catch (Throwable t)
         {
-
+          
         }
       }
     }
     catch (Throwable t)
     {
-
+      
     }
-
+    
     if (clipboardTransferTask.aliveThread())
     {
       clipboardTransferTask.interruptThread();
       // clipboardTransferThread.stop();
     }
-    //if (zipFileOperation.aliveThread())
-    //{
-      //zipFileOperation.interruptThread();
-      //zipFileOperation.stopThread();
-    //}
+    // if (zipFileOperation.aliveThread())
+    // {
+    // zipFileOperation.interruptThread();
+    // zipFileOperation.stopThread();
+    // }
     if (pingService.aliveThread())
     {
       pingService.interruptThread();
       pingService.stopThread();
     }
     tunnelsHandler.getConnection().close();
-    //socksTunnelsHandler.getConnection().close();
+    // socksTunnelsHandler.getConnection().close();
   }
-
+  
   public void waitThreads()
   {
     /*
@@ -343,9 +344,9 @@ public class VTClientSession
       fileTransferClient.joinThread();
       graphicsClient.joinThread();
       clipboardTransferTask.joinThread();
-      //zipFileOperation.joinThread();
+      // zipFileOperation.joinThread();
       tunnelsHandler.joinThread();
-      //socksTunnelsHandler.joinThread();
+      // socksTunnelsHandler.joinThread();
       pingService.joinThread();
     }
     catch (Throwable e)
@@ -353,7 +354,7 @@ public class VTClientSession
       // return;
     }
   }
-
+  
   public void negotiateShell() throws IOException
   {
     String clientShell = client.getClientConnector().getSessionShell();

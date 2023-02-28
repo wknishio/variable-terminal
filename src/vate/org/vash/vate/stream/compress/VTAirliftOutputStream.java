@@ -13,7 +13,7 @@ public class VTAirliftOutputStream extends OutputStream
   private VTLittleEndianOutputStream out;
   private byte[] output = new byte[1];
   private byte[] single = new byte[1];
-
+  
   public VTAirliftOutputStream(OutputStream out, Compressor compressor)
   {
     this.out = new VTLittleEndianOutputStream(out);
@@ -47,8 +47,8 @@ public class VTAirliftOutputStream extends OutputStream
       output = new byte[max];
     }
     compressed = compressor.compress(data, off, decompressed, output, 0, max);
-    //max = Math.max(compressed, max);
-    //compressed = Math.min(compressed, max);
+    // max = Math.max(compressed, max);
+    // compressed = Math.min(compressed, max);
     out.writeInt(compressed);
     out.writeInt(decompressed);
     out.writeInt(max);

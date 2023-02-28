@@ -12,7 +12,7 @@ public class VTOUT extends VTClientStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTOUT [FILE]");
     this.setAbbreviatedSyntax("*VTOT [FL]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length >= 2)
@@ -34,9 +34,9 @@ public class VTOUT extends VTClientStandardRemoteConsoleCommandProcessor
       VTConsole.setLogOutput(null);
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

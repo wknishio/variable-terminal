@@ -16,7 +16,7 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTTEXT <TEXT>");
     this.setAbbreviatedSyntax("*VTTX <TX>");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     // System.out.println("command:" + command);
@@ -44,7 +44,7 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
                     }
                     catch (Throwable e)
                     {
-
+                      
                     }
                   }
                 }
@@ -80,7 +80,7 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
                     }
                     catch (Throwable e)
                     {
-
+                      
                     }
                   }
                 }
@@ -125,7 +125,7 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
                     }
                     catch (Throwable e)
                     {
-
+                      
                     }
                   }
                 }
@@ -198,7 +198,7 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
                     }
                     catch (Throwable e)
                     {
-
+                      
                     }
                   }
                 }
@@ -214,9 +214,9 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

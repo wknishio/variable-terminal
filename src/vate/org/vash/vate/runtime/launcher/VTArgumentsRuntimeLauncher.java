@@ -31,7 +31,7 @@ public class VTArgumentsRuntimeLauncher
     }
     catch (Throwable e)
     {
-
+      
     }
     System.exit(0);
   }

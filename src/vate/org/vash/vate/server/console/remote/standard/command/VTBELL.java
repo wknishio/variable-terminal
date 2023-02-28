@@ -12,16 +12,16 @@ public class VTBELL extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTBELL");
     this.setAbbreviatedSyntax("*VTBL");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     connection.getResultWriter().write("\nVT>Invoking server terminal bell...\nVT>");
     connection.getResultWriter().flush();
     VTConsole.bell();
   }
-
+  
   public void close()
   {
-
+    
   }
 }

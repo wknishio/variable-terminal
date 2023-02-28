@@ -6,10 +6,10 @@ import java.io.OutputStream;
 
 public final class VTDoubledOutputStream extends FilterOutputStream
 {
-  //private OutputStream first;
+  // private OutputStream first;
   private OutputStream another;
   private boolean closeOnError;
-
+  
   public VTDoubledOutputStream(OutputStream first, OutputStream second, boolean closeOnError)
   {
     super(first);
@@ -37,7 +37,7 @@ public final class VTDoubledOutputStream extends FilterOutputStream
   {
     return another;
   }
-
+  
   public final void write(byte[] b, int off, int len) throws IOException
   {
     out.write(b, off, len);
@@ -64,7 +64,7 @@ public final class VTDoubledOutputStream extends FilterOutputStream
       }
     }
   }
-
+  
   public final void write(byte[] b) throws IOException
   {
     out.write(b);
@@ -76,7 +76,7 @@ public final class VTDoubledOutputStream extends FilterOutputStream
       }
       catch (Throwable t)
       {
-        //another = null;
+        // another = null;
         if (closeOnError)
         {
           try
@@ -92,7 +92,7 @@ public final class VTDoubledOutputStream extends FilterOutputStream
       }
     }
   }
-
+  
   public final void write(int b) throws IOException
   {
     out.write(b);
@@ -104,7 +104,7 @@ public final class VTDoubledOutputStream extends FilterOutputStream
       }
       catch (Throwable t)
       {
-        //another = null;
+        // another = null;
         if (closeOnError)
         {
           try
@@ -120,7 +120,7 @@ public final class VTDoubledOutputStream extends FilterOutputStream
       }
     }
   }
-
+  
   public final void flush() throws IOException
   {
     out.flush();
@@ -132,7 +132,7 @@ public final class VTDoubledOutputStream extends FilterOutputStream
       }
       catch (Throwable t)
       {
-        //another = null;
+        // another = null;
         if (closeOnError)
         {
           try
@@ -148,7 +148,7 @@ public final class VTDoubledOutputStream extends FilterOutputStream
       }
     }
   }
-
+  
   public final void close() throws IOException
   {
 //		try

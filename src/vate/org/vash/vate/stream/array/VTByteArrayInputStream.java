@@ -10,47 +10,47 @@ public final class VTByteArrayInputStream extends ByteArrayInputStream
   {
     super(buf);
   }
-
+  
   public VTByteArrayInputStream(byte[] buf, int offset, int length)
   {
     super(buf, offset, length);
   }
-
+  
   public final byte[] buf()
   {
     return this.buf;
   }
-
+  
   public final int count()
   {
     return this.count;
   }
-
+  
   public final int mark()
   {
     return this.mark;
   }
-
+  
   public final int pos()
   {
     return this.pos;
   }
-
+  
   public final void buf(byte[] buf)
   {
     this.buf = buf;
   }
-
+  
   public final void count(int count)
   {
     this.count = count;
   }
-
+  
   public final void pos(int pos)
   {
     this.pos = pos;
   }
-
+  
   public final int readByte() throws IOException
   {
     int b = read();
@@ -60,5 +60,5 @@ public final class VTByteArrayInputStream extends ByteArrayInputStream
     }
     return b;
   }
-
+  
 }

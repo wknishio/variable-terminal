@@ -15,7 +15,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTTUNNEL [SIDE] [[BIND] PORT] [[HOST] PORT] [USER/PASSWORD]");
     this.setAbbreviatedSyntax("*VTTN [SD] [[BD] PT] [[HT] PT] [US/PW]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -25,8 +25,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
       {
         if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
         {
-          message.append("\nVT>Server TCP bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]" + 
-          "\nVT>Client TCP redirect address: [" + channel.getChannel().getRedirectHost() + " " + channel.getChannel().getRedirectPort() + "]" + "\nVT>");
+          message.append("\nVT>Server TCP bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]" + "\nVT>Client TCP redirect address: [" + channel.getChannel().getRedirectHost() + " " + channel.getChannel().getRedirectPort() + "]" + "\nVT>");
         }
         if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
         {
@@ -48,8 +47,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
         {
           if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
           {
-            message.append("\nVT>Server TCP bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]" +
-            "\nVT>Client TCP redirect address: [" + channel.getChannel().getRedirectHost() + " " + channel.getChannel().getRedirectPort() + "]" + "\nVT>");
+            message.append("\nVT>Server TCP bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]" + "\nVT>Client TCP redirect address: [" + channel.getChannel().getRedirectHost() + " " + channel.getChannel().getRedirectPort() + "]" + "\nVT>");
           }
           if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
           {
@@ -245,7 +243,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
           if (isPort(parsed[2]) && isPort(parsed[4]))
           {
             int bindPort = Integer.parseInt(parsed[2]);
-            String redirectAddress = parsed[3]; 
+            String redirectAddress = parsed[3];
             int redirectPort = Integer.parseInt(parsed[4]);
             if (bindPort < 1 || bindPort > 65535 || redirectPort < 1 || redirectPort > 65535)
             {
@@ -269,7 +267,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
           else if (isPort(parsed[3]) && isPort(parsed[4]))
           {
             String bindAddress = parsed[2];
-            int bindPort = Integer.parseInt(parsed[3]); 
+            int bindPort = Integer.parseInt(parsed[3]);
             int redirectPort = Integer.parseInt(parsed[4]);
             if (bindPort < 1 || bindPort > 65535 || redirectPort < 1 || redirectPort > 65535)
             {
@@ -356,7 +354,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
     }
     return false;
   }
-
+  
   public void close()
   {
     

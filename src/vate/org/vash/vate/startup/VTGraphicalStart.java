@@ -9,23 +9,20 @@ import org.vash.vate.server.VTServer;
 public final class VTGraphicalStart
 {
   private static String option;
-
+  
   public static final void main(String[] args)
   {
     VTConsole.setLanterna(true);
     VTConsole.setGraphical(true);
     VTConsole.setRemoteIcon(true);
-    //VTConsole.setCommandEcho(false);
-    //VTLanternaConsole
+    // VTConsole.setCommandEcho(false);
+    // VTLanternaConsole
     // VTTerminal.setSplit(true);
     if (args.length == 0)
     {
       VTConsole.initialize();
       VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
-      VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + "\n" + 
-      "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + 
-      "VT>This software is under MIT license, see license.txt!\n" + 
-      "VT>This software comes with no warranty, use at your own risk!\n");
+      VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + "\n" + "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + "VT>This software is under MIT license, see license.txt!\n" + "VT>This software comes with no warranty, use at your own risk!\n");
       VTConsole.print("VT>Enter module(client as C or server as S, default:C):");
       if (VTConsole.isGraphical())
       {
@@ -36,7 +33,7 @@ public final class VTGraphicalStart
           try
           {
             VTClient client = new VTClient();
-            //client.setDaemon(true);
+            // client.setDaemon(true);
             // client.initialize();
             // client.configure();
             client.start();
@@ -202,10 +199,7 @@ public final class VTGraphicalStart
       {
         VTConsole.initialize();
         VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
-        VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + "\n" + 
-        "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + 
-        "VT>This software is under MIT license, see license.txt!\n" + 
-        "VT>This software comes with no warranty, use at your own risk!\n");
+        VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + "\n" + "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + "VT>This software is under MIT license, see license.txt!\n" + "VT>This software comes with no warranty, use at your own risk!\n");
         VTConsole.print("VT>Enter module(client as C or server as S, default:C):");
         if (VTConsole.isGraphical())
         {

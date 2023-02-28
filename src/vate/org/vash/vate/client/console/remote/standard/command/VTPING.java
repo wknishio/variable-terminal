@@ -12,7 +12,7 @@ public class VTPING extends VTClientStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTPING");
     this.setAbbreviatedSyntax("*VTPG");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     session.getNanoPingService().ping();
@@ -27,7 +27,7 @@ public class VTPING extends VTClientStandardRemoteConsoleCommandProcessor
     // connection latency: %.2f ms\nVT>", estimated);
     VTConsole.printf("\nVT>Estimated connection latency: [%d] ms or [%d] ns\nVT>", millisseconds, nanoseconds);
   }
-
+  
   public void close()
   {
     

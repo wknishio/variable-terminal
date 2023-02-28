@@ -12,7 +12,7 @@ public class VTLOCK extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTLOCK <USER PASSWORD>");
     this.setAbbreviatedSyntax("*VTLK <US PW>");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length >= 3)
@@ -29,9 +29,9 @@ public class VTLOCK extends VTServerStandardRemoteConsoleCommandProcessor
       connection.getResultWriter().flush();
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

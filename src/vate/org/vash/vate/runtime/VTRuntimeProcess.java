@@ -20,7 +20,7 @@ public class VTRuntimeProcess
   private InputStream err;
   private OutputStream out;
   
-  //private VTRuntimeProcessKill killer = new VTRuntimeProcessKill();
+  // private VTRuntimeProcessKill killer = new VTRuntimeProcessKill();
   private VTRuntimeProcessOutputConsumer outputConsumer;
   // private VTRuntimeProcessOutputConsumer errorConsumer;
   private VTRuntimeProcessExitListener exitListener;
@@ -33,7 +33,7 @@ public class VTRuntimeProcess
   // private volatile boolean killed;
   private volatile long timeout;
   // private volatile long pid;
-
+  
   public VTRuntimeProcess(String command, ProcessBuilder builder, ExecutorService threads, BufferedWriter writer, boolean verbose, boolean restart, long timeout)
   {
     this.command = command;
@@ -58,12 +58,12 @@ public class VTRuntimeProcess
 //    }
 //    
 //  }
-
+  
   public long getPID()
   {
     return getProcessID(process);
   }
-
+  
   public void start() throws Throwable
   {
     this.process = builder.start();
@@ -77,9 +77,10 @@ public class VTRuntimeProcess
     if (writer != null)
     {
       this.outputConsumer = new VTRuntimeProcessOutputConsumer(in, writer, verbose);
-      // this.errorConsumer = new VTRuntimeProcessOutputConsumer(err, writer, verbose);
+      // this.errorConsumer = new VTRuntimeProcessOutputConsumer(err, writer,
+      // verbose);
       threads.execute(outputConsumer);
-      //threads.execute(errorConsumer);
+      // threads.execute(errorConsumer);
     }
     
     // threads.execute(errorConsumer);
@@ -90,12 +91,12 @@ public class VTRuntimeProcess
       threads.execute(timeoutKill);
     }
   }
-
+  
   /*
-   * public boolean isRunning() { try { process.exitValue(); return false; } catch
-   * (IllegalThreadStateException e) { return true; } }
+   * public boolean isRunning() { try { process.exitValue(); return false; }
+   * catch (IllegalThreadStateException e) { return true; } }
    */
-
+  
   public Integer getExitValue()
   {
     try
@@ -107,7 +108,7 @@ public class VTRuntimeProcess
       return null;
     }
   }
-
+  
   public String getCommand()
   {
     return command;
@@ -117,52 +118,52 @@ public class VTRuntimeProcess
   {
     return process.waitFor();
   }
-
+  
   public InputStream getIn()
   {
     return in;
   }
-
+  
   public InputStream getErr()
   {
     return err;
   }
-
+  
   public OutputStream getOut()
   {
     return out;
   }
-
+  
   public long getTimeout()
   {
     return timeout;
   }
-
+  
   public void setRestart(boolean restart)
   {
     this.restart = restart;
   }
-
+  
   public boolean isRestart()
   {
     return this.restart;
   }
-
+  
   public void setVerbose(boolean verbose)
   {
     this.verbose = verbose;
   }
-
+  
   public boolean isVerbose()
   {
     return this.verbose;
   }
-
+  
   public boolean isAlive()
   {
     return isAlive(process);
   }
-
+  
   public boolean restart()
   {
     try
@@ -173,17 +174,17 @@ public class VTRuntimeProcess
     }
     catch (Throwable t)
     {
-
+      
     }
     return false;
   }
   
   public void stop()
   {
-    //threads.execute(killer);
+    // threads.execute(killer);
     kill();
   }
-
+  
   private void kill()
   {
     if (process != null && isAlive(process))
@@ -239,18 +240,18 @@ public class VTRuntimeProcess
       }
     }
   }
-
+  
   public void destroy()
   {
     this.restart = false;
     stop();
   }
-
+  
   public void finalize()
   {
     destroy();
   }
-
+  
   private static void forceKillProcessID(long pid) throws Throwable
   {
     if (pid < 0)
@@ -267,7 +268,7 @@ public class VTRuntimeProcess
       rt.exec("kill -9 " + pid);
     }
   }
-
+  
   private static long getProcessID(Process p)
   {
     long result = -1;
@@ -283,7 +284,7 @@ public class VTRuntimeProcess
         WinNT.HANDLE hand = new WinNT.HANDLE();
         hand.setPointer(Pointer.createConstant(handl));
         result = kernel.GetProcessId(hand);
-        //f.setAccessible(false);
+        // f.setAccessible(false);
       }
       // for unix based operating systems
       else if (p.getClass().getName().equals("java.lang.UNIXProcess"))
@@ -291,7 +292,7 @@ public class VTRuntimeProcess
         Field f = p.getClass().getDeclaredField("pid");
         f.setAccessible(true);
         result = f.getLong(p);
-        //f.setAccessible(false);
+        // f.setAccessible(false);
       }
     }
     catch (Throwable ex)
@@ -300,7 +301,7 @@ public class VTRuntimeProcess
     }
     return result;
   }
-
+  
   private static boolean isAlive(Process process)
   {
     if (process == null)
@@ -319,7 +320,7 @@ public class VTRuntimeProcess
     }
     return alive;
   }
-
+  
   private static void killProcess(Process process, long delay)
   {
     long pid = getProcessID(process);

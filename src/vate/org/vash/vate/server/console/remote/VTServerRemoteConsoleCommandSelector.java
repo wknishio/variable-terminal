@@ -17,7 +17,7 @@ public class VTServerRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
   // LinkedHashSet<String>();
   // private static Set<String> additionalCustomCommandProcessorPackages = new
   // LinkedHashSet<String>();
-
+  
   static
   {
     try
@@ -47,30 +47,30 @@ public class VTServerRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
       standardCommandProcessorClasses.add(VTQUIT.class);
       standardCommandProcessorClasses.add(VTLIMIT.class);
       standardCommandProcessorClasses.add(VTHOSTCHECK.class);
-      //standardCommandProcessorClasses.add(VTCALLPRINT.class);
+      // standardCommandProcessorClasses.add(VTCALLPRINT.class);
       standardCommandProcessorClasses.add(VTMAIL.class);
       standardCommandProcessorClasses.add(VTRUNTIME.class);
       standardCommandProcessorClasses.add(VTSCREENALERT.class);
       standardCommandProcessorClasses.add(VTSCREENSHOT.class);
       standardCommandProcessorClasses.add(VTUSERS.class);
       standardCommandProcessorClasses.add(VTSHELL.class);
-      //standardCommandProcessorClasses.add(VTSOCKSTUNNEL.class);
-      //standardCommandProcessorClasses.add(VTTCPTUNNEL.class);
+      // standardCommandProcessorClasses.add(VTSOCKSTUNNEL.class);
+      // standardCommandProcessorClasses.add(VTTCPTUNNEL.class);
       standardCommandProcessorClasses.add(VTTUNNEL.class);
       standardCommandProcessorClasses.add(VTSTOP.class);
       standardCommandProcessorClasses.add(VTTIME.class);
       standardCommandProcessorClasses.add(VTVARIABLE.class);
-      //standardCommandProcessorClasses.add(VTZIP.class);
-      //standardCommandProcessorClasses.add(VTURLGET.class);
+      // standardCommandProcessorClasses.add(VTZIP.class);
+      // standardCommandProcessorClasses.add(VTURLGET.class);
       standardCommandProcessorClasses.add(VTECHO.class);
     }
     catch (Throwable t)
     {
-
+      
     }
     installedCommandProcessorClasses.addAll(standardCommandProcessorClasses);
   }
-
+  
   public static void addCustomCommandProcessorClass(String className)
   {
     try
@@ -86,7 +86,7 @@ public class VTServerRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
       
     }
   }
-
+  
   public static void addCustomCommandProcessorPackage(String pkg)
   {
     Set<Class<?>> customClasses = VTReflectionUtils.findClassesFromNames(VTReflectionUtils.findClassNamesFromPackage(pkg));
@@ -98,7 +98,7 @@ public class VTServerRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
       }
     }
   }
-
+  
   public VTServerRemoteConsoleCommandSelector(VTServerSession session)
   {
     this.session = session;
@@ -117,7 +117,7 @@ public class VTServerRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
       }
       catch (Throwable t)
       {
-
+        
       }
     }
   }

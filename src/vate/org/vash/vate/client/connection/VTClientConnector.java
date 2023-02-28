@@ -34,7 +34,7 @@ public class VTClientConnector implements Runnable
   private String encryptionType;
   private byte[] encryptionKey;
   private String sessionCommands;
-  //private String sessionLines;
+  // private String sessionLines;
   private String sessionShell = "";
   private ServerSocket connectionServerSocket;
   private VTClient client;
@@ -47,11 +47,11 @@ public class VTClientConnector implements Runnable
   private VTConnectionRetryTimeoutTask connectionRetryTimeoutTask = new VTConnectionRetryTimeoutTask();
   private volatile boolean retry = false;
   private volatile boolean dialog = false;
-  //private volatile boolean dialogLine = false;
+  // private volatile boolean dialogLine = false;
   private VTClientConnectorNATPortMappingResultNotify natNotify = new VTClientConnectorNATPortMappingResultNotify();
   private List<VTClientSessionListener> listeners = new LinkedList<VTClientSessionListener>();
   private VTBlake3DigestRandom secureRandom;
-
+  
   public VTClientConnector(VTClient client, VTBlake3DigestRandom secureRandom)
   {
     this.client = client;
@@ -61,7 +61,7 @@ public class VTClientConnector implements Runnable
     portMappingManager = new VTNATSinglePortMappingManagerMKII(3, 300);
     portMappingManager.start();
   }
-
+  
   private class VTClientConnectorNATPortMappingResultNotify implements VTNATPortMappingResultNotify
   {
     public void result(List<String> externalHosts)
@@ -82,12 +82,12 @@ public class VTClientConnector implements Runnable
       }
     }
   }
-
+  
   private class VTConnectionRetryTimeoutTask implements Runnable
   {
     // private volatile boolean finished = true;
     // private Thread timeoutThread;
-
+    
     public void start()
     {
       timeoutEnabled = true;
@@ -96,7 +96,7 @@ public class VTClientConnector implements Runnable
       // timeoutThread.start();
       client.getClientThreads().execute(this);
     }
-
+    
     public void run()
     {
       try
@@ -159,7 +159,7 @@ public class VTClientConnector implements Runnable
       }
       // finished = true;
     }
-
+    
     public void trigger()
     {
       // System.out.println("trigger");
@@ -183,7 +183,7 @@ public class VTClientConnector implements Runnable
           }
           catch (Throwable t)
           {
-            //t.printStackTrace();
+            // t.printStackTrace();
           }
 //          if (dialog)
 //          {
@@ -204,10 +204,10 @@ public class VTClientConnector implements Runnable
       }
       catch (Throwable t)
       {
-        //t.printStackTrace();
+        // t.printStackTrace();
       }
     }
-
+    
     public void stop()
     {
       if (timeoutEnabled)
@@ -226,7 +226,7 @@ public class VTClientConnector implements Runnable
         }
       }
     }
-
+    
   }
   
   public void stop()
@@ -236,36 +236,36 @@ public class VTClientConnector implements Runnable
     interruptConnector();
     connection.closeSockets();
   }
-
+  
   public void setSkipConfiguration(boolean skipConfiguration)
   {
     this.skipConfiguration = skipConfiguration;
   }
-
+  
   public boolean isSkipConfiguration()
   {
     return this.skipConfiguration;
   }
-
+  
   /*
    * public void setRetryOnce(boolean retryOnce) { this.retryOnce = retryOnce; }
    */
-
+  
   public VTClient getClient()
   {
     return client;
   }
-
+  
   public void setActive(boolean active)
   {
     this.active = active;
   }
-
+  
   public void setAddress(String address)
   {
     this.hostAddress = address;
   }
-
+  
   public void setPort(Integer port)
   {
     if (port != null && (port < 1 || port > 65535))
@@ -274,7 +274,7 @@ public class VTClientConnector implements Runnable
     }
     this.hostPort = port;
   }
-
+  
   public void setNatPort(Integer natPort)
   {
     if (natPort != null && (natPort < 1 || natPort > 65535))
@@ -284,7 +284,8 @@ public class VTClientConnector implements Runnable
     this.natPort = natPort;
     if (natPort != null && natPort > 0)
     {
-      // portMappingManager.setPortMapping(hostPort != null && hostPort > 0 ? hostPort
+      // portMappingManager.setPortMapping(hostPort != null && hostPort > 0 ?
+      // hostPort
       // : 6060, null, natPort, "TCP", "Variable-Terminal-Port-Mapping");
     }
     else
@@ -292,17 +293,17 @@ public class VTClientConnector implements Runnable
       portMappingManager.deletePortMapping();
     }
   }
-
+  
   public void setProxyType(String proxyType)
   {
     this.proxyType = proxyType;
   }
-
+  
   public void setProxyAddress(String proxyAddress)
   {
     this.proxyAddress = proxyAddress;
   }
-
+  
   public void setProxyPort(Integer proxyPort)
   {
     if (proxyPort != null && (proxyPort < 1 || proxyPort > 65535))
@@ -311,136 +312,136 @@ public class VTClientConnector implements Runnable
     }
     this.proxyPort = proxyPort;
   }
-
+  
   public void setUseProxyAuthentication(boolean useProxyAuthentication)
   {
     this.useProxyAuthentication = useProxyAuthentication;
   }
-
+  
   public void setProxyUser(String proxyUser)
   {
     this.proxyUser = proxyUser;
   }
-
+  
   public void setProxyPassword(String proxyPassword)
   {
     this.proxyPassword = proxyPassword;
   }
-
+  
   public void setEncryptionType(String encryptionType)
   {
     this.encryptionType = encryptionType;
   }
-
+  
   public void setEncryptionKey(byte[] encryptionKey)
   {
     this.encryptionKey = encryptionKey;
   }
-
+  
   public void setSessionCommands(String sessionCommands)
   {
     this.sessionCommands = sessionCommands;
   }
-
+  
   public VTClientConnectionHandler getHandler()
   {
     return handler;
   }
-
+  
   public void setHandler(VTClientConnectionHandler handler)
   {
     this.handler = handler;
   }
-
+  
   public boolean isActive()
   {
     return active;
   }
-
+  
   public String getAddress()
   {
     return hostAddress;
   }
-
+  
   public Integer getPort()
   {
     return hostPort;
   }
-
+  
   public Integer getNatPort()
   {
     return natPort;
   }
-
+  
   public String getProxyType()
   {
     return proxyType;
   }
-
+  
   public String getProxyAddress()
   {
     return proxyAddress;
   }
-
+  
   public Integer getProxyPort()
   {
     return proxyPort;
   }
-
+  
   public boolean isUseProxyAuthentication()
   {
     return useProxyAuthentication;
   }
-
+  
   public String getProxyUser()
   {
     return proxyUser;
   }
-
+  
   public String getProxyPassword()
   {
     return proxyPassword;
   }
-
+  
   public String getEncryptionType()
   {
     return encryptionType;
   }
-
+  
   public byte[] getEncryptionKey()
   {
     return encryptionKey;
   }
-
+  
   public String getSessionCommands()
   {
     return sessionCommands;
   }
-
+  
   public void setClient(VTClient client)
   {
     this.client = client;
   }
-
+  
   public void setConnection(VTClientConnection connection)
   {
     this.connection = connection;
   }
-
+  
   public VTClientConnection getConnection()
   {
     return connection;
   }
-
+  
   /*
    * public net.sourceforge.jsocks.socks.Proxy buildSocksProxy() { String
    * proxy_host = proxyAddress; String proxy_port = String.valueOf(proxyPort);
    * String proxy_user = proxyUser; String proxy_password = proxyPassword; if
    * (!UseProxyAuthentication) { proxy_user = null; proxy_password = null; }
-   * return net.sourceforge.jsocks.socks.Proxy.buildProxy(proxy_host, proxy_port,
-   * proxy_user, proxy_password); }
+   * return net.sourceforge.jsocks.socks.Proxy.buildProxy(proxy_host,
+   * proxy_port, proxy_user, proxy_password); }
    */
-
+  
   public boolean setServerSocket(String address, Integer port)
   {
     try
@@ -501,11 +502,12 @@ public class VTClientConnector implements Runnable
       }
       /*
        * if (proxyType.toUpperCase().startsWith("S")) {
-       * net.sourceforge.jsocks.socks.Proxy proxy = buildSocksProxy(); String nullHost
-       * = null; connectionServerSocket = new SocksServerSocket(proxy, nullHost,
-       * port); return true; } else { connectionServerSocket = new ServerSocket();
-       * //vtServerSocket.setPerformancePreferences(1, 3, 2);
-       * connectionServerSocket.bind(new InetSocketAddress(port)); return true; }
+       * net.sourceforge.jsocks.socks.Proxy proxy = buildSocksProxy(); String
+       * nullHost = null; connectionServerSocket = new SocksServerSocket(proxy,
+       * nullHost, port); return true; } else { connectionServerSocket = new
+       * ServerSocket(); //vtServerSocket.setPerformancePreferences(1, 3, 2);
+       * connectionServerSocket.bind(new InetSocketAddress(port)); return true;
+       * }
        */
       return true;
     }
@@ -519,7 +521,7 @@ public class VTClientConnector implements Runnable
     }
     return false;
   }
-
+  
   public void resetSockets(VTClientConnection connection) throws SocketException
   {
     if (useProxyAuthentication)
@@ -548,7 +550,7 @@ public class VTClientConnector implements Runnable
     }
     // connection.getConnectionSocket().setReuseAddress(true);
   }
-
+  
   public boolean listenConnection(VTClientConnection connection)
   {
     if ((!retry || dialog))
@@ -591,13 +593,15 @@ public class VTClientConnector implements Runnable
         }
       });
       connectionServerSocket.setSoTimeout(0);
-      //connectionServerSocket.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
+      // connectionServerSocket.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE
+      // - 1);
       connecting = true;
       connection.setConnectionSocket(connectionServerSocket.accept());
-      //connection.getConnectionSocket().setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
+      // connection.getConnectionSocket().setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE
+      // - 1);
       connection.getConnectionSocket().setTcpNoDelay(true);
-      //connection.getConnectionSocket().setReuseAddress(true);
-      //connection.getConnectionSocket().setKeepAlive(true);
+      // connection.getConnectionSocket().setReuseAddress(true);
+      // connection.getConnectionSocket().setKeepAlive(true);
       connection.getConnectionSocket().setSoLinger(true, 0);
       connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
       connecting = false;
@@ -613,10 +617,10 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_RC4);
       }
-      //else if (encryptionType.toUpperCase().startsWith("B"))
-      //{
-        //connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_BLOWFISH);
-      //}
+      // else if (encryptionType.toUpperCase().startsWith("B"))
+      // {
+      // connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_BLOWFISH);
+      // }
       else if (encryptionType.toUpperCase().startsWith("S"))
       {
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_SALSA);
@@ -657,7 +661,7 @@ public class VTClientConnector implements Runnable
     }
     return false;
   }
-
+  
   public boolean establishConnection(VTClientConnection connection, String address, Integer port)
   {
     if (port == null)
@@ -689,12 +693,14 @@ public class VTClientConnector implements Runnable
       
       // connection.getShellSocket().setPerformancePreferences(1, 3, 2);
       connecting = true;
-      //connection.getConnectionSocket().setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
-      //connection.getConnectionSocket().setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
+      // connection.getConnectionSocket().setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE
+      // - 1);
+      // connection.getConnectionSocket().setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE
+      // - 1);
       connection.getConnectionSocket().connect(socketAddress);
       connection.getConnectionSocket().setTcpNoDelay(true);
-      //connection.getConnectionSocket().setReuseAddress(true);
-      //connection.getConnectionSocket().setKeepAlive(true);
+      // connection.getConnectionSocket().setReuseAddress(true);
+      // connection.getConnectionSocket().setKeepAlive(true);
       connection.getConnectionSocket().setSoLinger(true, 0);
       connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
       connecting = false;
@@ -710,10 +716,10 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_RC4);
       }
-      //else if (encryptionType.toUpperCase().startsWith("B"))
-      //{
-        //connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_BLOWFISH);
-      //}
+      // else if (encryptionType.toUpperCase().startsWith("B"))
+      // {
+      // connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_BLOWFISH);
+      // }
       else if (encryptionType.toUpperCase().startsWith("S"))
       {
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_SALSA);
@@ -757,7 +763,7 @@ public class VTClientConnector implements Runnable
 //		}
     return false;
   }
-
+  
   public void interruptConnector()
   {
     if (connectionServerSocket != null)
@@ -773,27 +779,27 @@ public class VTClientConnector implements Runnable
       }
     }
   }
-
+  
   private void startConnectionRetryTimeoutThread()
   {
     connectionRetryTimeoutTask.start();
   }
-
+  
   public void triggerConnectionRetryTimeoutThread()
   {
     connectionRetryTimeoutTask.trigger();
   }
-
+  
   public void stopConnectionRetryTimeoutThread()
   {
     connectionRetryTimeoutTask.stop();
   }
-
+  
   public boolean retryConnection()
   {
     retry = true;
     dialog = false;
-    //dialogLine = false;
+    // dialogLine = false;
     if (VTConsole.isDaemon())
     {
       synchronized (this)
@@ -843,9 +849,9 @@ public class VTClientConnector implements Runnable
 //      }
       if (client.getConnectionDialog() != null && !client.getConnectionDialog().isVisible())
       {
-        //dialogLine = true;
+        // dialogLine = true;
         dialog = true;
-        //retry = false;
+        // retry = false;
         client.getConnectionDialog().open();
       }
       if (skipConfiguration)
@@ -863,8 +869,8 @@ public class VTClientConnector implements Runnable
       {
         VTConsole.print("\nVT>Repeat current connection settings?(Y/N, default:Y):");
       }
-      //dialog = false;
-      //dialogLine = false;
+      // dialog = false;
+      // dialogLine = false;
       line = VTConsole.readLine(true);
       if (line == null)
       {
@@ -1071,14 +1077,14 @@ public class VTClientConnector implements Runnable
               return true;
             }
             encryptionType = "RC4";
-            //if (line.toUpperCase().startsWith("A"))
-            //{
-              //encryptionType = "AES";
-            //}
-            //if (line.toUpperCase().startsWith("B"))
-            //{
-              //encryptionType = "BLOWFISH";
-            //}
+            // if (line.toUpperCase().startsWith("A"))
+            // {
+            // encryptionType = "AES";
+            // }
+            // if (line.toUpperCase().startsWith("B"))
+            // {
+            // encryptionType = "BLOWFISH";
+            // }
             if (line.toUpperCase().startsWith("S"))
             {
               encryptionType = "SALSA";
@@ -1112,28 +1118,30 @@ public class VTClientConnector implements Runnable
             encryptionType = "None";
           }
           /*
-           * VTTerminal. print("VT>Use SOCKS proxy to connect?(Y/N, default:N):" ); line =
-           * VTTerminal.readLine(true); if (line == null) { System.exit(0); } if
-           * (line.toUpperCase().startsWith("Y")) { proxyType = "SOCKS"; VTTerminal.
+           * VTTerminal. print("VT>Use SOCKS proxy to connect?(Y/N, default:N):"
+           * ); line = VTTerminal.readLine(true); if (line == null) {
+           * System.exit(0); } if (line.toUpperCase().startsWith("Y")) {
+           * proxyType = "SOCKS"; VTTerminal.
            * print("VT>Enter proxy host address(default:localhost):" ); line =
-           * VTTerminal.readLine(true); if (line == null) { System.exit(0); } proxyAddress
-           * = line; if (proxyType.equals("SOCKS")) { VTTerminal.
-           * print("VT>Enter proxy port(from 1 to 65535, default:1080):" ); line =
-           * VTTerminal.readLine(true); if (line == null) { System.exit(0); } if
-           * (line.length() > 0) { proxyPort = Integer.parseInt(line); } else { proxyPort
-           * = 1080; } } if (proxyPort > 65535 || proxyPort < 1) {
+           * VTTerminal.readLine(true); if (line == null) { System.exit(0); }
+           * proxyAddress = line; if (proxyType.equals("SOCKS")) { VTTerminal.
+           * print("VT>Enter proxy port(from 1 to 65535, default:1080):" ); line
+           * = VTTerminal.readLine(true); if (line == null) { System.exit(0); }
+           * if (line.length() > 0) { proxyPort = Integer.parseInt(line); } else
+           * { proxyPort = 1080; } } if (proxyPort > 65535 || proxyPort < 1) {
            * VTTerminal.print("VT>Invalid port!"); proxyPort = null;
-           * UseProxyAuthentication = false; return false; } if (proxyPort != null && port
-           * != null) { VTTerminal.
+           * UseProxyAuthentication = false; return false; } if (proxyPort !=
+           * null && port != null) { VTTerminal.
            * print("VT>Use authentication for proxy?(Y/N, default:N):" ); line =
            * VTTerminal.readLine(true); if (line == null) { System.exit(0); } if
-           * (line.toUpperCase().startsWith("Y")) { UseProxyAuthentication = true;
-           * VTTerminal.print("VT>Enter proxy username:"); line =
-           * VTTerminal.readLine(true); if (line == null) { System.exit(0); } proxyUser =
-           * line; VTTerminal.print("VT>Enter proxy password:"); line =
+           * (line.toUpperCase().startsWith("Y")) { UseProxyAuthentication =
+           * true; VTTerminal.print("VT>Enter proxy username:"); line =
            * VTTerminal.readLine(true); if (line == null) { System.exit(0); }
-           * proxyPassword = line; } else { UseProxyAuthentication = false; } } else {
-           * UseProxyAuthentication = false; } } else { proxyType = "None"; }
+           * proxyUser = line; VTTerminal.print("VT>Enter proxy password:");
+           * line = VTTerminal.readLine(true); if (line == null) {
+           * System.exit(0); } proxyPassword = line; } else {
+           * UseProxyAuthentication = false; } } else { UseProxyAuthentication =
+           * false; } } else { proxyType = "None"; }
            */
         }
       }
@@ -1199,14 +1207,14 @@ public class VTClientConnector implements Runnable
             return true;
           }
           encryptionType = "RC4";
-          //if (line.toUpperCase().startsWith("A"))
-          //{
-            //encryptionType = "AES";
-          //}
-          //if (line.toUpperCase().startsWith("B"))
-          //{
-            //encryptionType = "BLOWFISH";
-          //}
+          // if (line.toUpperCase().startsWith("A"))
+          // {
+          // encryptionType = "AES";
+          // }
+          // if (line.toUpperCase().startsWith("B"))
+          // {
+          // encryptionType = "BLOWFISH";
+          // }
           if (line.toUpperCase().startsWith("S"))
           {
             encryptionType = "SALSA";
@@ -1448,17 +1456,17 @@ public class VTClientConnector implements Runnable
         return true;
       }
       setSessionCommands(commands);
-      //VTConsole.print("VT>Enter session lines:");
-      //String lines = VTConsole.readLine(true);
-      //if (lines == null)
-      //{
-        //System.exit(0);
-      //}
-      //else if (skipConfiguration)
-      //{
-        //return true;
-      //}
-      //setSessionLines(lines);
+      // VTConsole.print("VT>Enter session lines:");
+      // String lines = VTConsole.readLine(true);
+      // if (lines == null)
+      // {
+      // System.exit(0);
+      // }
+      // else if (skipConfiguration)
+      // {
+      // return true;
+      // }
+      // setSessionLines(lines);
       retry = false;
       return true;
     }
@@ -1475,7 +1483,7 @@ public class VTClientConnector implements Runnable
       return false;
     }
   }
-
+  
   public void run()
   {
     Thread.currentThread().setName(this.getClass().getSimpleName());
@@ -1540,23 +1548,22 @@ public class VTClientConnector implements Runnable
     handler.setSessionListeners(listeners);
   }
   
-  
   public void removeSessionListener(VTClientSessionListener listener)
   {
     listeners.remove(listener);
     handler.setSessionListeners(listeners);
   }
   
-  //public String getSessionLines()
-  //{
-    //return sessionLines;
-  //}
+  // public String getSessionLines()
+  // {
+  // return sessionLines;
+  // }
   
-  //public void setSessionLines(String sessionLines)
-  //{
-    //this.sessionLines = sessionLines;
-  //}
-
+  // public void setSessionLines(String sessionLines)
+  // {
+  // this.sessionLines = sessionLines;
+  // }
+  
   public String getSessionShell()
   {
     return sessionShell;
@@ -1566,8 +1573,7 @@ public class VTClientConnector implements Runnable
   {
     this.sessionShell = sessionShell;
   }
-
-
+  
 //	public void setConnectedOnce(boolean connectedOnce)
 //	{
 //		this.connectedOnce = connectedOnce;

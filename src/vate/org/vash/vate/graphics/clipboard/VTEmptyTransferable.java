@@ -11,12 +11,12 @@ public class VTEmptyTransferable implements Transferable
   {
     throw new UnsupportedFlavorException(flavor);
   }
-
+  
   public DataFlavor[] getTransferDataFlavors()
   {
     return new DataFlavor[0];
   }
-
+  
   public boolean isDataFlavorSupported(DataFlavor flavor)
   {
     return false;

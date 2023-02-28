@@ -293,7 +293,7 @@ public final class VTConsole
     if (checkConsole())
     {
       console.setTitle(title);
-      //console.clear();
+      // console.clear();
     }
   }
   
@@ -316,7 +316,7 @@ public final class VTConsole
         }
         catch (Throwable t)
         {
-          //t.printStackTrace();
+          // t.printStackTrace();
           return "";
         }
       }
@@ -473,7 +473,7 @@ public final class VTConsole
         else
         {
           VTNativeUtils.printf("\u0007");
-          //System.out.print("\u0007");
+          // System.out.print("\u0007");
         }
       }
     }

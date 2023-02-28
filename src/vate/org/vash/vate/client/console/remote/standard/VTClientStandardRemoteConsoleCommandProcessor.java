@@ -9,7 +9,7 @@ public abstract class VTClientStandardRemoteConsoleCommandProcessor extends VTCl
   {
     
   }
-
+  
   public String help(String name)
   {
     return VTHelpManager.findHelpForClientCommand(name);

@@ -6,23 +6,23 @@ public class VTFileTransferClientSessionHandler implements Runnable
 {
   private VTFileTransferClient client;
   private VTFileTransferClientSession session;
-
+  
   public VTFileTransferClientSessionHandler(VTFileTransferClient client, VTFileTransferClientSession session)
   {
     this.client = client;
     this.session = session;
   }
-
+  
   public VTFileTransferClient getClient()
   {
     return client;
   }
-
+  
   public VTFileTransferClientSession getSession()
   {
     return session;
   }
-
+  
   public void run()
   {
     try
@@ -35,7 +35,7 @@ public class VTFileTransferClientSessionHandler implements Runnable
     }
     catch (IOException e)
     {
-
+      
     }
   }
 }

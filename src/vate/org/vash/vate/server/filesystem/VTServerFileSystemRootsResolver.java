@@ -14,24 +14,24 @@ public class VTServerFileSystemRootsResolver extends VTTask
   private volatile boolean finished;
   private StringBuilder message;
   private VTServerSession session;
-
+  
   public VTServerFileSystemRootsResolver(VTServerSession session)
   {
     this.session = session;
     this.message = new StringBuilder();
     this.finished = true;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public void run()
   {
     try
@@ -62,14 +62,14 @@ public class VTServerFileSystemRootsResolver extends VTTask
         }
         catch (IOException e1)
         {
-
+          
         }
         finished = true;
       }
     }
     catch (Throwable e)
     {
-
+      
     }
     finished = true;
   }

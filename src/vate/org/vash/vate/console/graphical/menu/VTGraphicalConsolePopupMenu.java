@@ -24,13 +24,13 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
   private MenuItem insert;
   // private MenuItem expand;
   // private MenuItem reduce;
-
+  
   // private CheckboxMenuItem scroll;
   // private VTGraphicalConsoleKeyListener keyListener;
   private VTGraphicalConsoleCopyActionListener copyActionListener;
   private VTGraphicalConsoleCopyAllActionListener allActionListener;
   private VTGraphicalConsolePasteActionListener pasteActionListener;
-
+  
   public VTGraphicalConsolePopupMenu(Frame frame)
   {
     this.frame = frame;
@@ -90,9 +90,9 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
     // this.insert(scroll, 2);
     frame.add(this);
   }
-
+  
   /* public boolean getScroll() { return scroll.getState(); } */
-
+  
   public void show(Component origin, int x, int y)
   {
     frame.remove(this);

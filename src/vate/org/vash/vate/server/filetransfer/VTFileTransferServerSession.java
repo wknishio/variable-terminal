@@ -6,23 +6,23 @@ public class VTFileTransferServerSession
 {
   private VTFileTransferServer server;
   private VTFileTransferServerTransaction transaction;
-
+  
   public VTFileTransferServerSession(VTFileTransferServer server)
   {
     this.server = server;
     this.transaction = new VTFileTransferServerTransaction(this);
   }
-
+  
   public VTFileTransferServer getServer()
   {
     return server;
   }
-
+  
   public VTFileTransferServerTransaction getTransaction()
   {
     return transaction;
   }
-
+  
   public void startSession()
   {
     try
@@ -36,7 +36,7 @@ public class VTFileTransferServerSession
       // e.printStackTrace();
     }
   }
-
+  
   public void endSession()
   {
     try

@@ -16,7 +16,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTSHELL <OPTIONS> [.]");
     this.setAbbreviatedSyntax("*VTSH <OP> [.]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length >= 2)
@@ -25,7 +25,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
       {
         connection.getResultWriter().write("\nVT>Opening remote shell...\nVT>");
         connection.getResultWriter().flush();
-        //session.setRestartingShell(true);
+        // session.setRestartingShell(true);
         session.restartShell();
       }
       else if (parsed[1].toUpperCase().contains("N"))
@@ -35,7 +35,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
         session.stopShell();
         session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
         session.setShellBuilder(new String[] {}, null, null);
-        //session.restartShell();
+        // session.restartShell();
       }
       else if (parsed[1].toUpperCase().contains("B"))
       {
@@ -105,7 +105,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
           {
             connection.getResultWriter().write("\nVT>Set remote shell encoding to: [" + encoding + "]");
             connection.getResultWriter().flush();
-            //session.restartShell();
+            // session.restartShell();
           }
           else
           {
@@ -118,7 +118,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
           session.setShellEncoding(null);
           connection.getResultWriter().write("\nVT>Set remote shell encoding to: [Default]");
           connection.getResultWriter().flush();
-          //session.restartShell();
+          // session.restartShell();
         }
       }
       else if (parsed[1].toUpperCase().contains("P"))
@@ -158,7 +158,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
       connection.getResultWriter().flush();
     }
   }
-
+  
   public void close()
   {
     

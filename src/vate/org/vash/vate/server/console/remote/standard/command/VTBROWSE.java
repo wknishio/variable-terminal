@@ -41,15 +41,15 @@ public class VTBROWSE extends VTServerStandardRemoteConsoleCommandProcessor
       }
       isSupportedMethod = desktopClass.getMethod("isSupported", actionClass);
       browseMethod = desktopClass.getMethod("browse", URI.class);
-      //getDesktopMethod.setAccessible(true);
-      //isDesktopSupportedMethod.setAccessible(true);
-      //isSupportedMethod.setAccessible(true);
+      // getDesktopMethod.setAccessible(true);
+      // isDesktopSupportedMethod.setAccessible(true);
+      // isSupportedMethod.setAccessible(true);
       if ((Boolean) isDesktopSupportedMethod.invoke(null))
       {
         desktopObject = getDesktopMethod.invoke(null);
         if (desktopObject != null && ((Boolean) isSupportedMethod.invoke(desktopObject, browseObject)))
         {
-          //browseMethod.setAccessible(true);
+          // browseMethod.setAccessible(true);
           isSupported = true;
         }
       }
@@ -67,7 +67,7 @@ public class VTBROWSE extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTBROWSE <URI>");
     this.setAbbreviatedSyntax("*VTBRW <URI>");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length >= 2)
@@ -115,9 +115,9 @@ public class VTBROWSE extends VTServerStandardRemoteConsoleCommandProcessor
       connection.getResultWriter().flush();
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

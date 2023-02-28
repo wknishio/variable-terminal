@@ -14,7 +14,7 @@ public class VTMIXERS extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTMIXERS [SIDE]");
     this.setAbbreviatedSyntax("*VTMX [SD]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length >= 2)
@@ -29,7 +29,7 @@ public class VTMIXERS extends VTServerStandardRemoteConsoleCommandProcessor
         {
           message.append("\nVT>Number: [" + number++ + "]");
           message.append("\nVT>Name: [" + info.getName() + "]");
-          //message.append("\nVT>Vendor: [" + info.getVendor() + "]");
+          // message.append("\nVT>Vendor: [" + info.getVendor() + "]");
           message.append("\nVT>Description: [" + info.getDescription() + "]");
           message.append("\nVT>");
         }
@@ -39,7 +39,7 @@ public class VTMIXERS extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else if (parsed[1].toUpperCase().startsWith("L"))
       {
-
+        
       }
     }
     else
@@ -52,7 +52,7 @@ public class VTMIXERS extends VTServerStandardRemoteConsoleCommandProcessor
       {
         message.append("\nVT>Number: [" + number++ + "]");
         message.append("\nVT>Name: [" + info.getName() + "]");
-        //message.append("\nVT>Vendor: [" + info.getVendor() + "]");
+        // message.append("\nVT>Vendor: [" + info.getVendor() + "]");
         message.append("\nVT>Description: [" + info.getDescription() + "]");
         message.append("\nVT>");
       }
@@ -61,9 +61,9 @@ public class VTMIXERS extends VTServerStandardRemoteConsoleCommandProcessor
       connection.getResultWriter().flush();
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

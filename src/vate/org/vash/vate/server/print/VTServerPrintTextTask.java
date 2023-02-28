@@ -38,23 +38,23 @@ public class VTServerPrintTextTask extends VTTask
   private Integer printServiceNumber;
   private DocPrintJob docPrintJob;
   private VTServerSession session;
-
+  
   public VTServerPrintTextTask(VTServerSession session)
   {
     this.session = session;
     this.finished = true;
   }
-
+  
   public void setText(String text)
   {
     this.text = text;
   }
-
+  
   public void setPrintServiceNumber(Integer printServiceNumber)
   {
     this.printServiceNumber = printServiceNumber;
   }
-
+  
   public void setStopped(boolean stopped)
   {
     if (stopped && !finished)
@@ -70,23 +70,23 @@ public class VTServerPrintTextTask extends VTTask
           }
           catch (PrintException e)
           {
-
+            
           }
         }
       }
     }
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
 //	private static PageFormat getMinimumMarginPageFormat(PrinterJob printJob)
 //	{
 //	    PageFormat pf0 = printJob.defaultPage();
@@ -97,7 +97,7 @@ public class VTServerPrintTextTask extends VTTask
 //	    PageFormat pf2 = printJob.validatePage(pf1);
 //	    return pf2;     
 //	}
-
+  
   public void run()
   {
     try
@@ -105,7 +105,7 @@ public class VTServerPrintTextTask extends VTTask
       try
       {
         PrintService printService = null;
-
+        
         if (printServiceNumber != null)
         {
           PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
@@ -115,7 +115,7 @@ public class VTServerPrintTextTask extends VTTask
         {
           printService = PrintServiceLookup.lookupDefaultPrintService();
         }
-
+        
         if (printService != null)
         {
           /*
@@ -131,9 +131,9 @@ public class VTServerPrintTextTask extends VTTask
           {
             public void printDataTransferCompleted(PrintJobEvent pje)
             {
-
+              
             }
-
+            
             public void printJobCanceled(PrintJobEvent pje)
             {
               try
@@ -151,10 +151,10 @@ public class VTServerPrintTextTask extends VTTask
               }
               catch (IOException e)
               {
-
+                
               }
             }
-
+            
             public void printJobCompleted(PrintJobEvent pje)
             {
               try
@@ -172,10 +172,10 @@ public class VTServerPrintTextTask extends VTTask
               }
               catch (IOException e)
               {
-
+                
               }
             }
-
+            
             public void printJobFailed(PrintJobEvent pje)
             {
               // System.out.println("Print job failed");
@@ -194,10 +194,10 @@ public class VTServerPrintTextTask extends VTTask
               }
               catch (IOException e)
               {
-
+                
               }
             }
-
+            
             public void printJobNoMoreEvents(PrintJobEvent pje)
             {
               try
@@ -215,10 +215,10 @@ public class VTServerPrintTextTask extends VTTask
               }
               catch (IOException e)
               {
-
+                
               }
             }
-
+            
             public void printJobRequiresAttention(PrintJobEvent pje)
             {
               DocPrintJob job = pje.getPrintJob();
@@ -231,7 +231,7 @@ public class VTServerPrintTextTask extends VTTask
                 }
                 catch (PrintException e)
                 {
-
+                  
                 }
               }
             }
@@ -248,14 +248,15 @@ public class VTServerPrintTextTask extends VTTask
           {
             public int print(Graphics graphics, PageFormat pageFormat, int pageIndex) throws PrinterException
             {
-              //System.out.println("pageIndex=" + pageIndex);
+              // System.out.println("pageIndex=" + pageIndex);
               if (pageIndex > 0)
               {
-                //System.out.println("NO_SUCH_PAGE");
+                // System.out.println("NO_SUCH_PAGE");
                 return NO_SUCH_PAGE;
               }
               // Paper paper = pageFormat.getPaper();
-              // paper.setImageableArea(minimum.getImageableX(), minimum.getImageableY(),
+              // paper.setImageableArea(minimum.getImageableX(),
+              // minimum.getImageableY(),
               // minimum.getImageableWidth(), minimum.getImageableHeight());
               // pageFormat.setPaper(paper);
               Graphics2D g2d = (Graphics2D) graphics;
@@ -277,7 +278,7 @@ public class VTServerPrintTextTask extends VTTask
               }
               String full = lineBuilder.toString();
               lineBuilder.setLength(0);
-
+              
               if (fontMetrics.stringWidth(full) >= pageFormat.getImageableWidth())
               {
                 // page cannot handle 80 characters in landscape, will use 40
@@ -289,7 +290,7 @@ public class VTServerPrintTextTask extends VTTask
                 full = lineBuilder.toString();
                 lineBuilder.setLength(0);
               }
-
+              
               for (String word : words)
               {
                 if (lineBuilder.length() + word.length() > limit)
@@ -307,13 +308,13 @@ public class VTServerPrintTextTask extends VTTask
                   lineBuilder.append(word);
                 }
               }
-
+              
               if (lineBuilder.length() > 0)
               {
                 lines.add(lineBuilder.toString());
                 lineBuilder.setLength(0);
               }
-
+              
               for (String line : lines)
               {
                 if (line.length() <= 0)
@@ -330,10 +331,11 @@ public class VTServerPrintTextTask extends VTTask
                   x = (float) ((pageFormat.getImageableWidth() / 2) - (fontMetrics.stringWidth(full) / 2));
                   y = (++z) * fontMetrics.getHeight();
                   g2d.drawString(part, x, y);
-                  //System.out.println("g2d.drawString(part, x, y)" + "part=" + part + ", x=" + x + ", y=" + y);
+                  // System.out.println("g2d.drawString(part, x, y)" + "part=" +
+                  // part + ", x=" + x + ", y=" + y);
                 }
               }
-              //System.out.println("PAGE_EXISTS");
+              // System.out.println("PAGE_EXISTS");
               return PAGE_EXISTS;
             }
           };
@@ -373,9 +375,9 @@ public class VTServerPrintTextTask extends VTTask
     {
       // e.printStackTrace();
     }
-
+    
   }
-
+  
   /*
    * public static void main(String[] args) { VTServerPrintTextTask task = new
    * VTServerPrintTextTask(null); task.setText("BUILD.XML"); task.run(); }

@@ -8,23 +8,23 @@ public final class VTLimitedInputStream extends FilterInputStream
 {
   private int remaining = 0;
   // private long skipped = 0;
-
+  
   public VTLimitedInputStream(InputStream in)
   {
     super(in);
   }
-
+  
   public final void setLimit(int limit)
   {
     this.remaining = limit;
   }
-
+  
   public final int available() throws IOException
   {
     int available = in.available();
     return Math.min(remaining, available);
   }
-
+  
   public final void empty() throws IOException
   {
     long skipped = 0;
@@ -39,7 +39,7 @@ public final class VTLimitedInputStream extends FilterInputStream
       remaining -= skipped;
     }
   }
-
+  
   public final int read() throws IOException
   {
     if (remaining <= 0)
@@ -55,12 +55,12 @@ public final class VTLimitedInputStream extends FilterInputStream
     remaining--;
     return data;
   }
-
+  
   public final int read(byte[] b) throws IOException
   {
     return read(b, 0, b.length);
   }
-
+  
   public final int read(byte[] b, int off, int len) throws IOException
   {
     if (remaining <= 0)
@@ -79,12 +79,12 @@ public final class VTLimitedInputStream extends FilterInputStream
       return readed;
     }
   }
-
+  
   public final void close() throws IOException
   {
     
   }
-
+  
   public final void forceClose() throws IOException
   {
     in.close();

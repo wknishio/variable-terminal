@@ -13,14 +13,14 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
   private VTTunnelChannel channel;
   private VTTunnelSession session;
   private VTTunnelSocksSingleUserValidation validation;
-
+  
   public VTTunnelSocksSessionHandler(VTTunnelSession session, VTTunnelChannel channel)
   {
     super(session, channel);
     this.session = session;
     this.channel = channel;
   }
-
+  
   public VTTunnelSocksSessionHandler(VTTunnelSession session, VTTunnelChannel channel, String socksUsername, String socksPassword)
   {
     super(session, channel);
@@ -28,7 +28,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
     this.channel = channel;
     this.validation = new VTTunnelSocksSingleUserValidation(socksUsername, socksPassword);
   }
-
+  
   public VTTunnelSession getSession()
   {
     return session;
@@ -43,19 +43,19 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
         ProxyServer socksServer = new ProxyServer(new UserPasswordAuthenticator(validation), session.getSocket(), true);
         socksServer.setPipeBufferSize(socksBufferSize);
         socksServer.run();
-        //session.close();
+        // session.close();
       }
       else
       {
         ProxyServer socksServer = new ProxyServer(new ServerAuthenticatorNone(), session.getSocket(), true);
         socksServer.setPipeBufferSize(socksBufferSize);
         socksServer.run();
-        //session.close();
+        // session.close();
       }
     }
     catch (Throwable e)
     {
-      //e.printStackTrace();
+      // e.printStackTrace();
     }
     finally
     {
@@ -65,7 +65,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
       }
       catch (Throwable e)
       {
-        //e.printStackTrace();
+        // e.printStackTrace();
       }
       if (channel != null)
       {

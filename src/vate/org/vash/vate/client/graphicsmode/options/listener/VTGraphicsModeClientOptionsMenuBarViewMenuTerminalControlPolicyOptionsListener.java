@@ -11,14 +11,14 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenuTerminalControlPolicyOpti
   private CheckboxMenuItem option;
   private VTGraphicsModeClientWriter writer;
   private int state;
-
+  
   public VTGraphicsModeClientOptionsMenuBarViewMenuTerminalControlPolicyOptionsListener(VTGraphicsModeClientWriter writer, CheckboxMenuItem option, int state)
   {
     this.writer = writer;
     this.option = option;
     this.state = state;
   }
-
+  
   public void itemStateChanged(ItemEvent e)
   {
     if (e.getStateChange() == ItemEvent.SELECTED)

@@ -11,7 +11,7 @@ public class VTGRAPHICSLINK extends VTServerStandardRemoteConsoleCommandProcesso
     this.setFullSyntax("*VTGRAPHICSLINK [MODE]");
     this.setAbbreviatedSyntax("*VTGL [MD]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length >= 2)
@@ -39,7 +39,7 @@ public class VTGRAPHICSLINK extends VTServerStandardRemoteConsoleCommandProcesso
       }
       else
       {
-
+        
       }
     }
     else if (parsed.length == 1)
@@ -57,9 +57,9 @@ public class VTGRAPHICSLINK extends VTServerStandardRemoteConsoleCommandProcesso
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

@@ -17,13 +17,13 @@ public class VTServerURLInvoker extends VTTask
   private String fileResult;
   private String fileOutput;
   private VTServerSession session;
-  //private StringBuilder message;
+  // private StringBuilder message;
   private VTURLInvoker invoker;
   
   public VTServerURLInvoker(VTServerSession session)
   {
     this.session = session;
-    //this.message = new StringBuilder();
+    // this.message = new StringBuilder();
     this.finished = true;
     this.invoker = new VTURLInvoker();
   }
@@ -32,12 +32,12 @@ public class VTServerURLInvoker extends VTTask
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public void setURL(String url)
   {
     this.url = url;
@@ -57,7 +57,7 @@ public class VTServerURLInvoker extends VTTask
   {
     try
     {
-      //message.setLength(0);
+      // message.setLength(0);
       OutputStream resultOutputStream = null;
       InputStream outputInputStream = null;
       session.getConnection().getResultWriter().write("VT>Attempting URL Data Transfer URL:[" + url + "]\n");

@@ -16,7 +16,7 @@ public class VTUSERS extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTUSERS");
     this.setAbbreviatedSyntax("*VTUSR");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     int i = 0;
@@ -54,9 +54,9 @@ public class VTUSERS extends VTServerStandardLocalConsoleCommandProcessor
     }
     VTConsole.print("\nVT>");
   }
-
+  
   public void close()
   {
-
+    
   }
 }

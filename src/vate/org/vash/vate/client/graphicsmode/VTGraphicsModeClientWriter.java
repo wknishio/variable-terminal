@@ -42,9 +42,9 @@ public class VTGraphicsModeClientWriter implements Runnable
   public static final int TERMINAL_STATE_FOCUSED = 0;
   public static final int TERMINAL_STATE_VISIBLE = 1;
   public static final int TERMINAL_STATE_IGNORE = 2;
-
+  
   private static final double IMAGE_SCALE_MULTIPLIER_FACTOR = Math.pow(2D, (1D / 8D));
-
+  
   private volatile boolean stopped;
   private volatile boolean needRefresh;
   private volatile boolean hasRefresh;
@@ -67,7 +67,7 @@ public class VTGraphicsModeClientWriter implements Runnable
   private volatile int initialHeight;
   private volatile int screenCaptureMode;
   private volatile int imageCoding;
-
+  
   private volatile Rectangle captureArea;
   private volatile double captureScale;
   private Toolkit toolkit;
@@ -102,7 +102,7 @@ public class VTGraphicsModeClientWriter implements Runnable
   private Runnable fullscreenToggler;
   private Runnable frameSizeAdjuster;
   private Runnable menubarToggler;
-  //private Runnable requestFocus;
+  // private Runnable requestFocus;
   // private int frameInsetsTop;
   // private int frameInsetsBottom;
   // private int frameInsetsLeft;
@@ -111,14 +111,14 @@ public class VTGraphicsModeClientWriter implements Runnable
   // private int scrolledInsetsBottom;
   // private int scrolledInsetsLeft;
   // private int scrolledInsetsRight;
-  //private class VTGraphicaModeClientRequestFocus implements Runnable
-  //{
-    //public void run()
-    //{
-      //remoteInterface.requestFocus();
-    //}
-  //}
-
+  // private class VTGraphicaModeClientRequestFocus implements Runnable
+  // {
+  // public void run()
+  // {
+  // remoteInterface.requestFocus();
+  // }
+  // }
+  
   private class VTGraphicsModeClientMenubarToggler implements Runnable
   {
     public void run()
@@ -141,7 +141,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       }
     }
   }
-
+  
   private class VTGraphicsModeClientFullScreenToggler implements Runnable
   {
     private GraphicsDevice device;
@@ -173,9 +173,9 @@ public class VTGraphicsModeClientWriter implements Runnable
           frame.setVisible(true);
           frame.setExtendedState(lastFrameState);
           frame.toFront();
-          //frame.requestFocus();
-          //remoteInterface.requestFocus();
-          //EventQueue.invokeLater(requestFocus);
+          // frame.requestFocus();
+          // remoteInterface.requestFocus();
+          // EventQueue.invokeLater(requestFocus);
         }
         else
         {
@@ -199,15 +199,15 @@ public class VTGraphicsModeClientWriter implements Runnable
           {
             try
             {
-              //remoteInterface.requestFocus();
+              // remoteInterface.requestFocus();
               device.setFullScreenWindow(frame);
-              //frame.toFront();
-              //remoteInterface.requestFocus();
-              //remoteInterface.requestFocus();
-              //frame.setVisible(true);
-              //frame.setExtendedState(Frame.MAXIMIZED_BOTH);
-              //frame.toFront();
-              //remoteInterface.requestFocus();
+              // frame.toFront();
+              // remoteInterface.requestFocus();
+              // remoteInterface.requestFocus();
+              // frame.setVisible(true);
+              // frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+              // frame.toFront();
+              // remoteInterface.requestFocus();
             }
             catch (Throwable t)
             {
@@ -217,7 +217,7 @@ public class VTGraphicsModeClientWriter implements Runnable
           else
           {
             
-            //remoteInterface.requestFocus();
+            // remoteInterface.requestFocus();
           }
           frame.toFront();
         }
@@ -228,7 +228,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       }
     }
   }
-
+  
   class VTGraphicsModeClientFrameSizeAdjuster implements Runnable
   {
     public void run()
@@ -276,7 +276,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       }
     }
   }
-
+  
   public VTGraphicsModeClientWriter(VTGraphicsModeClientSession session)
   {
     this.stopped = true;
@@ -317,7 +317,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     this.fullscreenToggler = new VTGraphicsModeClientFullScreenToggler();
     this.frameSizeAdjuster = new VTGraphicsModeClientFrameSizeAdjuster();
     this.menubarToggler = new VTGraphicsModeClientMenubarToggler();
-    //this.requestFocus = new VTGraphicaModeClientRequestFocus();
+    // this.requestFocus = new VTGraphicaModeClientRequestFocus();
     try
     {
       systemClipboard = toolkit.getSystemClipboard();
@@ -327,13 +327,13 @@ public class VTGraphicsModeClientWriter implements Runnable
       
     }
   }
-
+  
   public void setInitialScreenSize(int width, int height)
   {
     this.initialWidth = width;
     this.initialHeight = height;
   }
-
+  
   public void remoteKeyPress(int keycode, int keymodifiers, int keylocation, char keychar)
   {
     try
@@ -346,7 +346,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       
     }
   }
-
+  
   public void remoteKeyDown(int keycode, int keymodifiers, int keylocation, char keychar)
   {
     try
@@ -363,7 +363,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       
     }
   }
-
+  
   public void remoteKeyUp(int keycode, int keymodifiers, int keylocation, char keychar)
   {
     try
@@ -380,7 +380,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       
     }
   }
-
+  
   public boolean localKeyRelease(int keycode)
   {
     try
@@ -394,7 +394,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     return false;
   }
-
+  
   public void clearLocalClipboardContents()
   {
     if (systemClipboard != null)
@@ -410,7 +410,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       }
     }
   }
-
+  
   public void clearRemoteClipboardContents()
   {
     try
@@ -424,7 +424,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void sendClipboardContents()
   {
     try
@@ -442,7 +442,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void receiveClipboardContents()
   {
     try
@@ -460,7 +460,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void cancelClipboardTransfer()
   {
     try
@@ -491,7 +491,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void finishClipboardContentsTransfer()
   {
     menuBar.finishClipboardContentsTransfer();
@@ -504,7 +504,7 @@ public class VTGraphicsModeClientWriter implements Runnable
      * connection.getGraphicsClipboardDataOutputStream());
      */
   }
-
+  
   public void dispose()
   {
     captureScale = 1;
@@ -557,7 +557,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     keyListener.clearAllPressedKeys();
   }
-
+  
   protected void finalize()
   {
     if (remoteInterface != null && remoteInterface.isAsynchronousRepainterRunning())
@@ -570,7 +570,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       frame.dispose();
     }
   }
-
+  
   public void notifyAsynchronousRepainter()
   {
     if (remoteInterface.isAsynchronousRepainterRunning())
@@ -586,12 +586,12 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     // remoteInterface.startAsynchronousRepainter();
   }
-
+  
   public boolean isStopped()
   {
     return stopped;
   }
-
+  
   public void setStopped(boolean stopped)
   {
     this.stopped = stopped;
@@ -615,12 +615,12 @@ public class VTGraphicsModeClientWriter implements Runnable
        */
     }
   }
-
+  
   public boolean isReadOnly()
   {
     return readOnly;
   }
-
+  
   public void setReadOnly(boolean readOnly)
   {
     this.readOnly = readOnly;
@@ -635,119 +635,119 @@ public class VTGraphicsModeClientWriter implements Runnable
       restablishControl();
     }
   }
-
+  
   public boolean isControlInterrupted()
   {
     return controlInterrupted;
   }
-
+  
   public boolean isRefreshInterrupted()
   {
     return refreshInterrupted;
   }
-
+  
   public int getColorQuality()
   {
     return colorQuality;
   }
-
+  
   public void setColorQuality(int colorQuality)
   {
     this.colorQuality = colorQuality;
   }
-
+  
   public boolean isSynchronousRefresh()
   {
     return synchronousRefresh;
   }
-
+  
   public void setSynchronousRefresh(boolean synchronousRefresh)
   {
     this.synchronousRefresh = synchronousRefresh;
     this.remoteInterface.setSynchronousRefresh(synchronousRefresh);
   }
-
+  
   public void setDynamicCoding(boolean dynamicCoding)
   {
     this.dynamicCoding = dynamicCoding;
   }
-
+  
   public void setSeparatedCoding(boolean separatedCoding)
   {
     this.separatedCoding = separatedCoding;
   }
-
+  
   public boolean isDrawPointer()
   {
     return drawPointer;
   }
-
+  
   public void setDrawPointer(boolean drawPointer)
   {
     this.drawPointer = drawPointer;
   }
-
+  
   public int getScreenCaptureInterval()
   {
     return screenCaptureInterval;
   }
-
+  
   public void setScreenCaptureInterval(int screenCaptureInterval)
   {
     this.screenCaptureInterval = screenCaptureInterval;
   }
-
+  
   /*
    * public boolean isScreenCaptureModeComplete() { return
    * screenCaptureModeComplete; }
    */
-
+  
   /*
-   * public void setScreenCaptureModeComplete(boolean screenCaptureModeComplete) {
-   * this.screenCaptureModeComplete = screenCaptureModeComplete; }
+   * public void setScreenCaptureModeComplete(boolean screenCaptureModeComplete)
+   * { this.screenCaptureModeComplete = screenCaptureModeComplete; }
    */
-
+  
   public void setSuppressLocalKeyCombinations(boolean suppressLocalKeyCombinations)
   {
     this.suppressLocalKeyCombinations = suppressLocalKeyCombinations;
   }
-
+  
   public boolean isSuppressLocalKeyCombinations()
   {
     return suppressLocalKeyCombinations;
   }
-
+  
   public void setIgnoreLocalKeyCombinations(boolean ignoreLocalKeyCombinations)
   {
     this.ignoreLocalKeyCombinations = ignoreLocalKeyCombinations;
   }
-
+  
   public boolean isIgnoreLocalKeyCombinations()
   {
     return ignoreLocalKeyCombinations;
   }
-
+  
   public boolean isOpen()
   {
     return open;
   }
-
+  
   /*
    * public boolean isRemoteInterfaceLoaded() { return remoteInterfaceLoaded; }
    */
-
+  
   /* public boolean isNeedRefresh() { return needRefresh; } */
-
+  
   public void setReader(VTGraphicsModeClientReader reader)
   {
     this.reader = reader;
   }
-
+  
   public void clearAllPressedKeys()
   {
     keyListener.clearAllPressedKeys();
   }
-
+  
   public void releaseAllPressedKeys()
   {
     if (!stopped && !controlInterrupted)
@@ -766,14 +766,15 @@ public class VTGraphicsModeClientWriter implements Runnable
       keyListener.clearAllPressedKeys();
     }
   }
-
+  
   public void writeEvent(VTAWTControlEvent event)
   {
     /* if (event != null) { return; } */
     try
     {
       /*
-       * if (!canvas.isFocusOwner()) { System.out.println("Canvas Focus Alert!"); }
+       * if (!canvas.isFocusOwner()) {
+       * System.out.println("Canvas Focus Alert!"); }
        */
       if (event != null && (!controlInterrupted && (terminalControlPolicy == TERMINAL_STATE_FOCUSED && remoteInterface.isFocusOwner()) || terminalControlPolicy == TERMINAL_STATE_VISIBLE))
       {
@@ -839,19 +840,19 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   /*
    * public void tryDelayedUpdateInAllRemoteLockingKeys() { synchronized
    * (lockingKeySynchronizer) { if (!synchronizingLockingKey) {
    * synchronizingLockingKey = true;
    * EventQueue.invokeLater(lockingKeySynchronizer); } } }
    */
-
+  
   /*
    * public void finishDelayedUpdateInAllRemoteLockingKeys() { synchronized
    * (lockingKeySynchronizer) { synchronizingLockingKey = false; } }
    */
-
+  
   /*
    * public void synchronizeAllRemoteLockingKeys() { if (!readOnly) {
    * synchronizeRemoteLockingKey(KeyEvent.VK_NUM_LOCK);
@@ -859,7 +860,7 @@ public class VTGraphicsModeClientWriter implements Runnable
    * synchronizeRemoteLockingKey(KeyEvent.VK_SCROLL_LOCK);
    * synchronizeRemoteLockingKey(KeyEvent.VK_KANA_LOCK); } }
    */
-
+  
   public void synchronizeRemoteLockingKey(int keyCode)
   {
     if (!controlInterrupted)
@@ -889,7 +890,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       }
     }
   }
-
+  
   public void synchronizeColorQuality()
   {
     try
@@ -971,7 +972,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void synchronizeImageCoding()
   {
     try
@@ -1008,7 +1009,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void sendInterruptRefresh()
   {
     try
@@ -1027,7 +1028,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void synchronizeRefreshMode()
   {
     try
@@ -1054,7 +1055,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void synchronizeDrawPointer()
   {
     try
@@ -1081,7 +1082,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void synchronizeScreenCaptureInterval()
   {
     try
@@ -1101,7 +1102,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   /*
    * public void synchronizeScreenCaptureMode() { try { if (screenCaptureMode ==
    * VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_UNSCALED_PARTIAL) {
@@ -1123,11 +1124,11 @@ public class VTGraphicsModeClientWriter implements Runnable
    * VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_IGNORE_RATIO) {
    * connection.getGraphicsImageDataOutputStream().write(VT.
    * VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_IGNORE_RATIO);
-   * connection.getGraphicsImageDataOutputStream().flush(); } } catch (IOException
-   * e) { //e.printStackTrace(); stopped = true; return; } catch (Throwable e) {
-   * return; } }
+   * connection.getGraphicsImageDataOutputStream().flush(); } } catch
+   * (IOException e) { //e.printStackTrace(); stopped = true; return; } catch
+   * (Throwable e) { return; } }
    */
-
+  
   public void synchronizeScreenCaptureArea()
   {
     try
@@ -1154,7 +1155,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void synchronizeDynamicCoding()
   {
     try
@@ -1181,7 +1182,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void synchronizeSeparatedCoding()
   {
     try
@@ -1208,7 +1209,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void requestNextDevice()
   {
     try
@@ -1223,7 +1224,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void requestPreviousDevice()
   {
     try
@@ -1238,7 +1239,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void requestDefaultDevice()
   {
     try
@@ -1253,7 +1254,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void requestUnifiedDevice()
   {
     try
@@ -1268,7 +1269,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void requestClear()
   {
     try
@@ -1283,7 +1284,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void requestRefresh()
   {
     // System.out.println("requestRefresh");
@@ -1299,7 +1300,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-
+  
   public void interruptControl()
   {
     if (remoteInterface != null)
@@ -1312,7 +1313,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       // statusBar.setControlStatusText("Control: Interrupted");
     }
   }
-
+  
   public void restablishControl()
   {
     if (remoteInterface != null)
@@ -1325,7 +1326,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       // statusBar.setControlStatusText("Control: Active ");
     }
   }
-
+  
   public void toggleControl()
   {
     if (controlInterrupted)
@@ -1341,21 +1342,21 @@ public class VTGraphicsModeClientWriter implements Runnable
       // statusBar.update(statusBar.getGraphics());
     }
   }
-
+  
   public void updateColorQuality(int colorQuality)
   {
     this.colorQuality = colorQuality;
     menuBar.setColorQuality(colorQuality);
     // synchronizeColorQuality();
   }
-
+  
   public void updateImageCoding(int imageCoding)
   {
     this.imageCoding = imageCoding;
     menuBar.setImageCoding(imageCoding);
     // synchronizeImageCoding();
   }
-
+  
   public void toggleDrawPointer()
   {
     if (drawPointer)
@@ -1371,7 +1372,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       synchronizeDrawPointer();
     }
   }
-
+  
   public void increaseDrawPointerSize()
   {
     try
@@ -1384,7 +1385,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       
     }
   }
-
+  
   public void decreaseDrawPointerSize()
   {
     try
@@ -1397,7 +1398,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       
     }
   }
-
+  
   public void normalizeDrawPointerSize()
   {
     try
@@ -1410,7 +1411,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       
     }
   }
-
+  
   public void toggleSuppressLocalKeyCombinations()
   {
     if (suppressLocalKeyCombinations)
@@ -1443,7 +1444,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       }
     }
   }
-
+  
   public void toggleIgnoreLocalKeyCombinations()
   {
     if (ignoreLocalKeyCombinations)
@@ -1457,33 +1458,33 @@ public class VTGraphicsModeClientWriter implements Runnable
       menuBar.setIgnoreLocalKeyCombinations(true);
     }
   }
-
+  
   public void setTerminalRefreshPolicy(int state)
   {
     this.terminalRefreshPolicy = state;
     menuBar.setTerminalRefreshPolicy(state);
   }
-
+  
   public void setTerminalControlPolicy(int state)
   {
     this.terminalControlPolicy = state;
     menuBar.setTerminalControlPolicy(state);
   }
-
+  
   /*
-   * public void alternateIgnoreFocus() { if (ignoreFocus) { ignoreFocus = false;
-   * ignoreIconification = false; menuBar.setIgnoreFocus(false);
+   * public void alternateIgnoreFocus() { if (ignoreFocus) { ignoreFocus =
+   * false; ignoreIconification = false; menuBar.setIgnoreFocus(false);
    * menuBar.setIgnoreIconification(false); } else { ignoreFocus = true;
    * menuBar.setIgnoreFocus(true); } }
    */
-
+  
   /*
    * public void alternateIgnoreIconification() { if (ignoreIconification) {
-   * ignoreIconification = false; menuBar.setIgnoreIconification(false); } else {
-   * ignoreFocus = true; ignoreIconification = true; menuBar.setIgnoreFocus(true);
-   * menuBar.setIgnoreIconification(true); } }
+   * ignoreIconification = false; menuBar.setIgnoreIconification(false); } else
+   * { ignoreFocus = true; ignoreIconification = true;
+   * menuBar.setIgnoreFocus(true); menuBar.setIgnoreIconification(true); } }
    */
-
+  
   public void setScreenCaptureMode(int nextMode)
   {
     menuBar.setScreenCaptureMode(nextMode);
@@ -1496,7 +1497,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     // remoteInterface.setImage(null);
     // synchronizeScreenCaptureMode();
   }
-
+  
   public void toggleDynamicCoding()
   {
     if (dynamicCoding)
@@ -1512,7 +1513,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       synchronizeDynamicCoding();
     }
   }
-
+  
   public void toggleSeparatedCoding()
   {
     if (separatedCoding)
@@ -1528,25 +1529,25 @@ public class VTGraphicsModeClientWriter implements Runnable
       synchronizeSeparatedCoding();
     }
   }
-
+  
   public void toggleFullScreenMode()
   {
     // System.out.println("full screen toggled");
     EventQueue.invokeLater(fullscreenToggler);
-    //fullscreenToggler.run();
+    // fullscreenToggler.run();
   }
-
+  
   public void toggleMenubar()
   {
     // System.out.println("full screen toggled");
     EventQueue.invokeLater(menubarToggler);
   }
-
+  
   public void adjustFrameSize()
   {
     EventQueue.invokeLater(frameSizeAdjuster);
   }
-
+  
   public void updateRefreshMode(boolean synchronousRefresh)
   {
     menuBar.resumeRefresh();
@@ -1555,14 +1556,14 @@ public class VTGraphicsModeClientWriter implements Runnable
     menuBar.setSynchronousRefresh(synchronousRefresh);
     synchronizeRefreshMode();
   }
-
+  
   public void interruptRefresh()
   {
     menuBar.interruptRefresh();
     this.refreshInterrupted = true;
     sendInterruptRefresh();
   }
-
+  
   public void updateCaptureScale(int captureScale)
   {
     if (screenCaptureMode == VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_ADJUSTED_KEEP_RATIO || screenCaptureMode == VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_ADJUSTED_IGNORE_RATIO)
@@ -1582,14 +1583,14 @@ public class VTGraphicsModeClientWriter implements Runnable
       decreaseCaptureScale();
     }
   }
-
+  
   public void updateScreenCaptureInterval(int screenCaptureInterval)
   {
     this.screenCaptureInterval = screenCaptureInterval;
     menuBar.setScreenCaptureInterval(screenCaptureInterval);
     synchronizeScreenCaptureInterval();
   }
-
+  
   public Rectangle calculateScreenCaptureArea()
   {
     Point local = scrolled.getScrollPosition();
@@ -1622,33 +1623,33 @@ public class VTGraphicsModeClientWriter implements Runnable
     // System.out.println("trueArea:" + area);
     return area;
   }
-
+  
   public void setScreenCaptureArea(Rectangle captureArea)
   {
     this.captureArea = captureArea;
     // synchronizeScreenCaptureArea();
   }
-
+  
   public void defaultDevice()
   {
     requestDefaultDevice();
   }
-
+  
   public void nextDevice()
   {
     requestNextDevice();
   }
-
+  
   public void previousDevice()
   {
     requestPreviousDevice();
   }
-
+  
   public void unifiedDevice()
   {
     requestUnifiedDevice();
   }
-
+  
   public void clearRemoteGraphics()
   {
     /*
@@ -1663,24 +1664,24 @@ public class VTGraphicsModeClientWriter implements Runnable
     scrolled.validate();
     requestClear();
   }
-
+  
   /* public void toBack() { if (frame != null) { frame.toBack(); } } */
-
+  
   /*
    * public void releaseFocus() { if (remoteInterface != null) {
    * remoteInterface.transferFocus(); } }
    */
-
+  
   public void requestFocus()
   {
-    //System.out.println("requestFocus()");
-    //System.out.println("writer.requestFocus()");
+    // System.out.println("requestFocus()");
+    // System.out.println("writer.requestFocus()");
     if (remoteInterface != null)
     {
       remoteInterface.requestFocusInWindow();
     }
   }
-
+  
   public void resizeRemoteGraphics(int width, int height)
   {
     // Dimension oldSize = remoteInterface.getSize();
@@ -1710,11 +1711,11 @@ public class VTGraphicsModeClientWriter implements Runnable
      * if (!remoteInterfaceLoaded) { remoteInterfaceLoaded = true;
      * scrolled.setScrollPosition((imageDataBuffer.getWidth() -
      * scrolled.getViewportSize().width) / 2, (imageDataBuffer.getHeight() -
-     * scrolled.getViewportSize().height) / 2); synchronized (graphicsRefresher) {
-     * graphicsRefresher.notify(); } }
+     * scrolled.getViewportSize().height) / 2); synchronized (graphicsRefresher)
+     * { graphicsRefresher.notify(); } }
      */
   }
-
+  
   public void setRemoteGraphics(BufferedImage newImageData)
   {
     imageDataBuffer = newImageData;
@@ -1728,7 +1729,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     // frame.getLayout().layoutContainer(scrolled);
     // frame.validate();
   }
-
+  
   public void differenceRemoteGraphics(BufferedImage newImageData)
   {
     // System.out.println("differenceRemoteGraphics");
@@ -1740,7 +1741,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     // updateRemoteGraphics();
     // updateRemoteGraphics();
   }
-
+  
   public void refreshRemoteGraphics(BufferedImage newImageData)
   {
     // System.out.println("newFrameRemoteGraphics");
@@ -1752,7 +1753,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     // updateRemoteGraphics();
     // updateRemoteGraphics();
   }
-
+  
   public void notModifiedRemoteGraphics()
   {
     // needRefresh = true;
@@ -1763,7 +1764,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     // updateRemoteGraphics();
     // updateRemoteGraphics();
   }
-
+  
   public void increaseCaptureScale()
   {
     if (screenCaptureMode == VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_ADJUSTED_KEEP_RATIO || screenCaptureMode == VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_ADJUSTED_IGNORE_RATIO)
@@ -1773,7 +1774,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     captureScale = captureScale * IMAGE_SCALE_MULTIPLIER_FACTOR;
   }
-
+  
   public void decreaseCaptureScale()
   {
     if (screenCaptureMode == VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_ADJUSTED_KEEP_RATIO || screenCaptureMode == VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_ADJUSTED_IGNORE_RATIO)
@@ -1783,7 +1784,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     captureScale = captureScale / IMAGE_SCALE_MULTIPLIER_FACTOR;
   }
-
+  
   public void resetCaptureScale()
   {
     if (screenCaptureMode == VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_ADJUSTED_KEEP_RATIO || screenCaptureMode == VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_ADJUSTED_IGNORE_RATIO)
@@ -1792,7 +1793,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     captureScale = 1;
   }
-
+  
   public void requestInterfaceRefresh()
   {
     needRefresh = true;
@@ -1801,37 +1802,37 @@ public class VTGraphicsModeClientWriter implements Runnable
       notify();
     }
   }
-
+  
   public void setRefreshArea(Rectangle area)
   {
     remoteInterface.setRefreshArea(area);
   }
-
+  
   public void increaseCaptureInterval()
   {
     menuBar.increaseCaptureInterval();
   }
-
+  
   public void decreaseCaptureInterval()
   {
     menuBar.decreaseCaptureInterval();
   }
-
+  
   public void decreaseColorQuality()
   {
     menuBar.decreaseColorQuality();
   }
-
+  
   public void increaseColorQuality()
   {
     menuBar.increaseColorQuality();
   }
-
+  
   public boolean isClipboardControlEnabled()
   {
     return menuBar.isClipBoardControlEnabled();
   }
-
+  
   private void updateRemoteGraphics()
   {
     try
@@ -1883,7 +1884,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     // EventQueue.invokeLater(graphicsRefresher);
     // requestRefresh();
   }
-
+  
   /*
    * private void sendSessionEnding() { try {
    * connection.getGraphicsControlDataOutputStream().write(VT.
@@ -1891,7 +1892,7 @@ public class VTGraphicsModeClientWriter implements Runnable
    * connection.getGraphicsControlDataOutputStream().flush(); } catch (Throwable
    * e) { stopped = true; } }
    */
-
+  
   private void createCustomCursor()
   {
     int dpi = VTGlobalTextStyleManager.BASE_FONT_DPI;
@@ -1992,7 +1993,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       
       frame.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Client - Remote Graphics Link");
       frame.setFocusable(false);
-      //frame.getInsets().set(0, 0, 0, 0);
+      // frame.getInsets().set(0, 0, 0, 0);
       BorderLayout frameLayout = new BorderLayout();
       frameLayout.setHgap(0);
       frameLayout.setVgap(0);
@@ -2098,13 +2099,13 @@ public class VTGraphicsModeClientWriter implements Runnable
       scrolled.setVisible(true);
       remoteInterface.setVisible(true);
       
-      //frame.toFront();
-      //remoteInterface.requestFocus();
+      // frame.toFront();
+      // remoteInterface.requestFocus();
       
       frame.getInsets().set(0, 0, 0, 0);
       scrolled.getInsets().set(0, 0, 0, 0);
-      //remoteInterface.getin
-            
+      // remoteInterface.getin
+      
       synchronized (reader)
       {
         open = true;
@@ -2169,7 +2170,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       session.notify();
     }
   }
-
+  
   public void setKeyboardShortcutsMenuEnabled(boolean enabled)
   {
     menuBar.setKeyboardShortcutsMenuEnabled(enabled);

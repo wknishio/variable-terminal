@@ -18,13 +18,13 @@ public class VTServerLocalConsoleReader extends VTTask
   // private String[] splitCommand;
   private VTServer server;
   private VTServerLocalConsoleCommandSelector<VTServerLocalConsoleCommandProcessor> selector;
-
+  
   public VTServerLocalConsoleReader(VTServer server)
   {
     this.server = server;
     this.selector = new VTServerLocalConsoleCommandSelector<VTServerLocalConsoleCommandProcessor>(server);
   }
-
+  
   public void run()
   {
     // int p = 0;
@@ -84,7 +84,7 @@ public class VTServerLocalConsoleReader extends VTTask
 //      
 //    }
   }
-
+  
   @SuppressWarnings("unused")
   private void executeStringScript(String script)
   {
@@ -131,7 +131,7 @@ public class VTServerLocalConsoleReader extends VTTask
       }
     }
   }
-
+  
   @SuppressWarnings("unused")
   private void executeFileScript(File script, Charset charset)
   {
@@ -174,7 +174,7 @@ public class VTServerLocalConsoleReader extends VTTask
       }
     }
   }
-
+  
   private void executeCommand(String command) throws Throwable
   {
     String parsed[];
@@ -185,7 +185,8 @@ public class VTServerLocalConsoleReader extends VTTask
         parsed = CommandLineTokenizer.tokenize(command);
         if (parsed.length < 1)
         {
-          parsed = new String[] { command };
+          parsed = new String[]
+          { command };
           // p = 0;
           /*
            * for (String part : splitCommand) { splitCommand[p++] =
@@ -195,7 +196,8 @@ public class VTServerLocalConsoleReader extends VTTask
       }
       else
       {
-        parsed = new String[] { "" };
+        parsed = new String[]
+        { "" };
       }
       if (server.isEchoCommands())
       {

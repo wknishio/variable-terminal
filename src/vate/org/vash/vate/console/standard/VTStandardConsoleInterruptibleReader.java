@@ -27,7 +27,7 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
   // private static final String ANSIDetectionPattern =
   // "(\\u001B)(\\[)([^R])*([R])";
   private Executor executor;
-
+  
   public VTStandardConsoleInterruptibleReader()
   {
     // String testString = "\u001B[1;1eeR";
@@ -62,12 +62,12 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
       
     }
   }
-
+  
   public void setEcho(boolean echo)
   {
     this.echo = echo;
   }
-
+  
   public synchronized String read() throws InterruptedException
   {
     if (buffer.size() == 0)
@@ -86,7 +86,7 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
     }
     return null;
   }
-
+  
   public void run()
   {
     try
@@ -119,7 +119,7 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
           }
         }
       }
-
+      
       if (line != null)
       {
         // int before = line.length();
@@ -163,9 +163,9 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
     }
     catch (Throwable t)
     {
-
+      
     }
     requested = false;
   }
-
+  
 }

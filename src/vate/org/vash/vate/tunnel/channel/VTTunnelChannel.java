@@ -28,7 +28,7 @@ public class VTTunnelChannel
   {
     return tunnelType;
   }
-
+  
   // SOCKS tunnel without authentication
   public VTTunnelChannel(VTTunnelConnection connection, String bindHost, int bindPort)
   {
@@ -46,7 +46,7 @@ public class VTTunnelChannel
     }
     this.sessions = new LinkedList<VTTunnelSessionHandler>();
   }
-
+  
   // SOCKS tunnel with authentication
   public VTTunnelChannel(VTTunnelConnection connection, String bindHost, int bindPort, String socksUsername, String socksPassword)
   {
@@ -66,7 +66,7 @@ public class VTTunnelChannel
     this.socksPassword = socksPassword;
     this.sessions = new LinkedList<VTTunnelSessionHandler>();
   }
-
+  
   // TCP tunnel
   public VTTunnelChannel(VTTunnelConnection connection, String bindHost, int bindPort, String redirectHost, int redirectPort)
   {
@@ -86,17 +86,17 @@ public class VTTunnelChannel
     }
     this.sessions = new LinkedList<VTTunnelSessionHandler>();
   }
-
+  
   public String toString()
   {
     return String.valueOf(this.getBindHost() + " " + bindPort);
   }
-
+  
   public boolean equals(Object other)
   {
     return this.toString().equals(other.toString());
   }
-
+  
   public synchronized void close()
   {
     // closed = true;
@@ -116,47 +116,47 @@ public class VTTunnelChannel
     }
     sessions.clear();
   }
-
+  
   public VTTunnelConnection getConnection()
   {
     return connection;
   }
-
+  
   public InetSocketAddress getBindAddress()
   {
     return bindAddress;
   }
-
+  
   public String getSocksUsername()
   {
     return socksUsername;
   }
-
+  
   public String getSocksPassword()
   {
     return socksPassword;
   }
-
+  
   public void setSocksUsername(String socksUsername)
   {
     this.socksUsername = socksUsername;
   }
-
+  
   public void setSocksPassword(String socksPassword)
   {
     this.socksPassword = socksPassword;
   }
-
+  
   public synchronized void addSession(VTTunnelSessionHandler handler)
   {
     sessions.add(handler);
   }
-
+  
   public synchronized boolean removeSession(VTTunnelSessionHandler handler)
   {
     return sessions.remove(handler);
   }
-
+  
   public String getBindHost()
   {
     if (bindHost == null || bindHost.length() == 0)
@@ -165,12 +165,12 @@ public class VTTunnelChannel
     }
     return bindHost;
   }
-
+  
   public int getBindPort()
   {
     return bindPort;
   }
-
+  
   public String getRedirectHost()
   {
     if (redirectHost == null || redirectHost.length() == 0)
@@ -179,12 +179,12 @@ public class VTTunnelChannel
     }
     return redirectHost;
   }
-
+  
   public int getRedirectPort()
   {
     return redirectPort;
   }
-
+  
   public void setRedirectAddress(String redirectHost, int redirectPort)
   {
     this.redirectHost = redirectHost;

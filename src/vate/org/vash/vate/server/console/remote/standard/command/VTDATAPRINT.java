@@ -13,7 +13,7 @@ public class VTDATAPRINT extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTDATAPRINT [MODE] [DATA] [PRINTER]");
     this.setAbbreviatedSyntax("*VTDPR [MD] [DT] [PR]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     try
@@ -215,9 +215,9 @@ public class VTDATAPRINT extends VTServerStandardRemoteConsoleCommandProcessor
       connection.getResultWriter().flush();
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

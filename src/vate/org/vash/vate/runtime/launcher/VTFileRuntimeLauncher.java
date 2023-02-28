@@ -8,7 +8,8 @@ public class VTFileRuntimeLauncher
 {
   public static void main(String[] args) throws Exception
   {
-    String[] files = { "launcher.txt" };
+    String[] files =
+    { "launcher.txt" };
     if (args.length > 0)
     {
       files = args;
@@ -37,7 +38,7 @@ public class VTFileRuntimeLauncher
       }
       catch (Throwable t)
       {
-
+        
       }
       finally
       {
@@ -49,7 +50,7 @@ public class VTFileRuntimeLauncher
           }
           catch (Throwable t)
           {
-
+            
           }
         }
       }
@@ -76,7 +77,7 @@ public class VTFileRuntimeLauncher
     }
     catch (Throwable t)
     {
-
+      
     }
     finally
     {
@@ -88,12 +89,12 @@ public class VTFileRuntimeLauncher
         }
         catch (Throwable t)
         {
-
+          
         }
       }
     }
   }
-
+  
   public static void command(String command)
   {
     try
@@ -114,7 +115,7 @@ public class VTFileRuntimeLauncher
     }
     catch (Throwable e)
     {
-
+      
     }
   }
 }

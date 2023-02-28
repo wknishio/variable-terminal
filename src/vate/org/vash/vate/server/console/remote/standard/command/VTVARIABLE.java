@@ -15,7 +15,7 @@ public class VTVARIABLE extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTVARIABLE [NAME] [VALUE]");
     this.setAbbreviatedSyntax("*VTVAR [NM] [VL]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -63,9 +63,9 @@ public class VTVARIABLE extends VTServerStandardRemoteConsoleCommandProcessor
       connection.getResultWriter().flush();
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

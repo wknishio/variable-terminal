@@ -13,29 +13,29 @@ public class VTServerHostResolver extends VTTask
   private String host;
   private VTServerSession session;
   private StringBuilder message;
-
+  
   public VTServerHostResolver(VTServerSession session)
   {
     this.session = session;
     this.message = new StringBuilder();
     this.finished = true;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public void setHost(String host)
   {
     this.host = host;
   }
-
+  
   public void run()
   {
     try
@@ -46,7 +46,8 @@ public class VTServerHostResolver extends VTTask
       for (InetAddress address : addresses)
       {
         message.append("\nVT>Host address: [" + address.getHostAddress() + "]" + "\nVT>Host name: [" + address.getCanonicalHostName() + "]\nVT>");
-        // "]\nVT>Canonical host name: [" + address.getCanonicalHostName() + "]\nVT>");
+        // "]\nVT>Canonical host name: [" + address.getCanonicalHostName() +
+        // "]\nVT>");
       }
       message.append("\nVT>\nVT>End of host addresses list\nVT>");
       synchronized (this)

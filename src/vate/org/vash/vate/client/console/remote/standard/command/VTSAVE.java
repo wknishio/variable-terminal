@@ -12,7 +12,7 @@ public class VTSAVE extends VTClientStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTSAVE [FILE]");
     this.setAbbreviatedSyntax("*VTSV [FL]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -40,9 +40,9 @@ public class VTSAVE extends VTClientStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

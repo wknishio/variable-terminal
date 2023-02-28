@@ -10,28 +10,28 @@ public class VTGraphicsModeClientRemoteInterfaceMouseListener implements MouseLi
 {
   private VTGraphicsModeClientWriter writer;
   private VTAWTControlEvent untyped;
-
+  
   public VTGraphicsModeClientRemoteInterfaceMouseListener(VTGraphicsModeClientWriter writer)
   {
     this.writer = writer;
     this.untyped = new VTAWTControlEvent();
   }
-
+  
   public void mouseClicked(MouseEvent event)
   {
-
+    
   }
-
+  
   public void mouseEntered(MouseEvent event)
   {
-
+    
   }
-
+  
   public void mouseExited(MouseEvent event)
   {
-
+    
   }
-
+  
   public void mousePressed(MouseEvent event)
   {
     // System.out.println(event.toString());
@@ -40,7 +40,7 @@ public class VTGraphicsModeClientRemoteInterfaceMouseListener implements MouseLi
     writer.writeEvent(untyped);
     event.consume();
   }
-
+  
   public void mouseReleased(MouseEvent event)
   {
     // System.out.println(event.toString());

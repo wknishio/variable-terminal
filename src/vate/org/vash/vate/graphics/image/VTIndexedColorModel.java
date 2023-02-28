@@ -5,25 +5,25 @@ import java.awt.image.IndexColorModel;
 public class VTIndexedColorModel
 {
   /*
-   * private static int get4LevelValue(int level) { if (level == 0) { return 0; }
-   * else if (level == 1) { return 85; } else if (level == 2) { return 170; } else
-   * if (level == 3) { return 255; } return 0; }
+   * private static int get4LevelValue(int level) { if (level == 0) { return 0;
+   * } else if (level == 1) { return 85; } else if (level == 2) { return 170; }
+   * else if (level == 3) { return 255; } return 0; }
    */
-
+  
   private static final int DCM_RED_MASK = 0x00ff0000;
   private static final int DCM_GREEN_MASK = 0x0000ff00;
   private static final int DCM_BLUE_MASK = 0x000000ff;
-
+  
   private static final IndexColorModel indexColorModel8 = create8ColorModel();
   private static final IndexColorModel indexColorModel16 = create16ColorModel();
   private static final IndexColorModel indexColorModel27 = create27ColorModel();
   private static final IndexColorModel indexColorModel32 = create32ColorModel();
   private static final IndexColorModel indexColorModel125 = create125ColorModel();
   private static final IndexColorModel indexColorModel216 = create216ColorModel();
-
+  
   private static final int[] rgbiRed = new int[16], rgbiGreen = new int[16], rgbiBlue = new int[16];
   // private static final int[] rgbiValue = new int[16];
-
+  
   static
   {
     int i = 0;
@@ -31,7 +31,7 @@ public class VTIndexedColorModel
     int g = 0;
     int b = 0;
     int c = 0;
-
+    
     for (i = 0; i < 2; i++)
     {
       for (r = 0; r < 2; r++)
@@ -58,7 +58,7 @@ public class VTIndexedColorModel
       }
     }
   }
-
+  
   @SuppressWarnings("unused")
   private static int euclidianColorDistance(int red_a, int green_a, int blue_a, int red_b, int green_b, int blue_b)
   {
@@ -71,7 +71,7 @@ public class VTIndexedColorModel
     int d_blue = blue_a - blue_b;
     return (d_red * d_red) + (d_green * d_green) + (d_blue * d_blue);
   }
-
+  
   @SuppressWarnings("unused")
   private static int approximateRGBI(int red, int green, int blue, int i1)
   {
@@ -81,7 +81,7 @@ public class VTIndexedColorModel
     int b = (blue >= threshold ? 2 : 0);
     return (r) | (g) | (b) | i1;
   }
-
+  
   public static synchronized int get16ColorRGBIValueEuclidian(int rgb)
   {
     int red = (rgb & DCM_RED_MASK) >> 16;
@@ -102,62 +102,62 @@ public class VTIndexedColorModel
 //		{
 //			return index2;
 //		}
-
+    
     int min_index = 0;
     int min_dist = Integer.MAX_VALUE;
     int current_dist = 0;
     int d_red = 0;
     int d_green = 0;
     int d_blue = 0;
-
+    
     for (int i = 0; i < 16; i++)
     {
       d_red = red - rgbiRed[i];
       d_green = green - rgbiGreen[i];
       d_blue = blue - rgbiBlue[i];
-
+      
       current_dist = (d_red * d_red) + (d_green * d_green) + (d_blue * d_blue);
-
+      
       if (current_dist < min_dist)
       {
         min_dist = current_dist;
         min_index = i;
       }
     }
-
+    
     return min_index;
   }
-
+  
   public static byte get8ColorRGBValue(int rgb)
   {
     return ((byte[]) indexColorModel8.getDataElements(rgb, null))[0];
   }
-
+  
   public static byte get27Color3LevelRGBValue(int rgb)
   {
     return ((byte[]) indexColorModel27.getDataElements(rgb, null))[0];
   }
-
+  
   public static byte get16ColorRGBIValue(int rgb)
   {
     return ((byte[]) indexColorModel16.getDataElements(rgb, null))[0];
   }
-
+  
   public static byte get32ColorRGBIIValue(int rgb)
   {
     return ((byte[]) indexColorModel32.getDataElements(rgb, null))[0];
   }
-
+  
   public static byte get125Color5LevelRGBValue(int rgb)
   {
     return ((byte[]) indexColorModel125.getDataElements(rgb, null))[0];
   }
-
+  
   public static byte get216Color6LevelRGBValue(int rgb)
   {
     return ((byte[]) indexColorModel216.getDataElements(rgb, null))[0];
   }
-
+  
   private static int get3LevelRGBValue(int level)
   {
     if (level == 0)
@@ -174,7 +174,7 @@ public class VTIndexedColorModel
     }
     return 0;
   }
-
+  
   private static int get5LevelRGBValue(int level)
   {
     if (level == 0)
@@ -199,7 +199,7 @@ public class VTIndexedColorModel
     }
     return 0;
   }
-
+  
   public static IndexColorModel create8ColorModel()
   {
     byte[] red = new byte[8];
@@ -210,7 +210,7 @@ public class VTIndexedColorModel
     int k = 0;
     // int l = 0;
     int p = 0;
-
+    
     for (i = 0; i < 2; i++)
     {
       for (j = 0; j < 2; j++)
@@ -226,7 +226,7 @@ public class VTIndexedColorModel
     }
     return new IndexColorModel(8, red.length, red, green, blue);
   }
-
+  
 //  public static IndexColorModel createPacked4Bit16ColorModel()
 //  {
 //    byte[] r = new byte[16];
@@ -256,7 +256,7 @@ public class VTIndexedColorModel
 //    }
 //    return new IndexColorModel(4, r.length, r, g, b);
 //  }
-
+  
   public static IndexColorModel create16ColorModel()
   {
     byte[] red = new byte[16];
@@ -267,7 +267,7 @@ public class VTIndexedColorModel
     int g = 0;
     int b = 0;
     int c = 0;
-
+    
     for (i = 0; i < 2; i++)
     {
       for (r = 0; r < 2; r++)
@@ -295,7 +295,7 @@ public class VTIndexedColorModel
     }
     return new IndexColorModel(8, red.length, red, green, blue);
   }
-
+  
   public static IndexColorModel create32ColorModel()
   {
     byte[] red = new byte[32];
@@ -338,7 +338,7 @@ public class VTIndexedColorModel
     }
     return new IndexColorModel(8, red.length, red, green, blue);
   }
-
+  
   public static IndexColorModel create27ColorModel()
   {
     byte[] red = new byte[27];
@@ -363,7 +363,7 @@ public class VTIndexedColorModel
     }
     return new IndexColorModel(8, red.length, red, green, blue);
   }
-
+  
   public static IndexColorModel create64ColorModel()
   {
     byte[] red = new byte[64];
@@ -388,7 +388,7 @@ public class VTIndexedColorModel
     }
     return new IndexColorModel(8, red.length, red, green, blue);
   }
-
+  
   public static IndexColorModel create125ColorModel()
   {
     byte[] red = new byte[125];
@@ -413,7 +413,7 @@ public class VTIndexedColorModel
     }
     return new IndexColorModel(8, red.length, red, green, blue);
   }
-
+  
   public static IndexColorModel create216ColorModel()
   {
     byte[] red = new byte[216];

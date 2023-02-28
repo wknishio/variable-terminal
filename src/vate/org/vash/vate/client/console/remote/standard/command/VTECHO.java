@@ -14,7 +14,7 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTECHO");
     this.setAbbreviatedSyntax("*VTEC");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (state == 0)
@@ -64,9 +64,9 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
       session.getConnection().getCommandWriter().flush();
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

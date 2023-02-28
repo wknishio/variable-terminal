@@ -25,11 +25,11 @@ public class VTGraphicsModeClientReader implements Runnable
   private volatile boolean failed;
   private int currentDataType;
   private byte[] lastImageBufferByte;
-  //private byte[] previousImageBufferByte;
+  // private byte[] previousImageBufferByte;
   private short[] lastImageBufferUShort;
-  //private short[] previousImageBufferUShort;
+  // private short[] previousImageBufferUShort;
   private int[] lastImageBufferInt;
-  //private int[] previousImageBufferInt;
+  // private int[] previousImageBufferInt;
   private volatile BufferedImage currentImageDataBuffer;
   private volatile Graphics2D currentImageGraphics;
   private volatile BufferedImage nextImageDataBuffer;
@@ -55,11 +55,11 @@ public class VTGraphicsModeClientReader implements Runnable
   // private DataBuffer secondRecyclableDataBufferUShort;
   // private DataBuffer firstRecyclableDataBufferByte;
   // private DataBuffer secondRecyclableDataBufferByte;
-
+  
   private DataBuffer recyclableDataBuffer;
   // private DataBuffer secondRecyclableDataBuffer;
   // private long startTime, endTime;
-
+  
   private class VTIncrementalIIOReadUpdateListener implements IIOReadUpdateListener
   {
     private int offsetX = 0;
@@ -81,12 +81,14 @@ public class VTGraphicsModeClientReader implements Runnable
     {
       // this.passMinX = minX;
       // this.passMinY = minY;
-      // System.out.println("passStarted:" + pass + "," + minPass + "," + maxPass);
+      // System.out.println("passStarted:" + pass + "," + minPass + "," +
+      // maxPass);
     }
     
     public void imageUpdate(ImageReader source, BufferedImage theImage, int minX, int minY, int width, int height, int periodX, int periodY, int[] bands)
     {
-      // System.out.println("imageUpdate:" + minX + "," + minY + "," + width + "," +
+      // System.out.println("imageUpdate:" + minX + "," + minY + "," + width +
+      // "," +
       // height);
       currentImageGraphics.drawImage(theImage, offsetX + minX, offsetY + minY, offsetX + minX + width, offsetY + minY + height, minX, minY, minX + width, minY + height, null);
     }
@@ -95,8 +97,10 @@ public class VTGraphicsModeClientReader implements Runnable
     {
       // System.out.println("passComplete:");
       // currentImageGraphics.drawImage(theImage, offsetX + passMinX, offsetY +
-      // passMinY, offsetX + passMinX + theImage.getWidth(), offsetY + passMinY +
-      // theImage.getHeight(), passMinX, passMinY, passMinX + theImage.getWidth(),
+      // passMinY, offsetX + passMinX + theImage.getWidth(), offsetY + passMinY
+      // +
+      // theImage.getHeight(), passMinX, passMinY, passMinX +
+      // theImage.getWidth(),
       // passMinY + theImage.getHeight(), null);
     }
     
@@ -125,7 +129,7 @@ public class VTGraphicsModeClientReader implements Runnable
     // this.vtImageIO = new VTImageIO();
     // this.imageInputBuffer = new VTByteArrayInputStream(imageBuffer);
   }
-
+  
   public void dispose()
   {
     stopped = true;
@@ -185,40 +189,40 @@ public class VTGraphicsModeClientReader implements Runnable
     lastImageBufferUShort = null;
     lastImageBufferInt = null;
     
-    //previousImageBufferByte = null;
-    //previousImageBufferUShort = null;
-    //previousImageBufferInt = null;
+    // previousImageBufferByte = null;
+    // previousImageBufferUShort = null;
+    // previousImageBufferInt = null;
     
     recyclableDataBuffer = null;
     
     vtCustomCodec = null;
   }
-
+  
   public boolean isStopped()
   {
     return stopped;
   }
-
+  
   public void setStopped(boolean stopped)
   {
     this.stopped = stopped;
   }
-
+  
   public void setFailed(boolean failed)
   {
     this.failed = failed;
   }
-
+  
   public boolean isFailed()
   {
     return failed;
   }
-
+  
   public void setWriter(VTGraphicsModeClientWriter writer)
   {
     this.writer = writer;
   }
-
+  
   public void run()
   {
     synchronized (this)
@@ -268,10 +272,13 @@ public class VTGraphicsModeClientReader implements Runnable
         {
           case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_IMAGE:
           {
-            //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_IMAGE");
-            // refreshArea.x = connection.getGraphicsControlDataInputStream().readInt();
-            // refreshArea.y = connection.getGraphicsControlDataInputStream().readInt();
-            // refreshArea.width = connection.getGraphicsControlDataInputStream().readInt();
+            // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_IMAGE");
+            // refreshArea.x =
+            // connection.getGraphicsControlDataInputStream().readInt();
+            // refreshArea.y =
+            // connection.getGraphicsControlDataInputStream().readInt();
+            // refreshArea.width =
+            // connection.getGraphicsControlDataInputStream().readInt();
             // refreshArea.height =
             // connection.getGraphicsControlDataInputStream().readInt();
             writer.requestInterfaceRefresh();
@@ -329,7 +336,8 @@ public class VTGraphicsModeClientReader implements Runnable
               }
               limitedInputStream.setLimit(size);
               imageStream = ImageIO.createImageInputStream(limitedInputStream);
-              // imageStream = new MemoryCacheImageInputStream(limitedInputStream);
+              // imageStream = new
+              // MemoryCacheImageInputStream(limitedInputStream);
               currentImageReader.setInput(imageStream, true, false);
               incrementalImageReader.setOffsetX(x);
               incrementalImageReader.setOffsetY(y);
@@ -350,10 +358,13 @@ public class VTGraphicsModeClientReader implements Runnable
           }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE:
           {
-            //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE");
-            // refreshArea.x = connection.getGraphicsControlDataInputStream().readInt();
-            // refreshArea.y = connection.getGraphicsControlDataInputStream().readInt();
-            // refreshArea.width = connection.getGraphicsControlDataInputStream().readInt();
+            // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE");
+            // refreshArea.x =
+            // connection.getGraphicsControlDataInputStream().readInt();
+            // refreshArea.y =
+            // connection.getGraphicsControlDataInputStream().readInt();
+            // refreshArea.width =
+            // connection.getGraphicsControlDataInputStream().readInt();
             // refreshArea.height =
             // connection.getGraphicsControlDataInputStream().readInt();
             writer.requestInterfaceRefresh();
@@ -392,7 +403,8 @@ public class VTGraphicsModeClientReader implements Runnable
               }
               limitedInputStream.setLimit(size);
               imageStream = ImageIO.createImageInputStream(limitedInputStream);
-              // imageStream = new MemoryCacheImageInputStream(limitedInputStream);
+              // imageStream = new
+              // MemoryCacheImageInputStream(limitedInputStream);
               currentImageReader.setInput(imageStream, true, false);
               // writer.setRemoteGraphics(displayingImageDataBuffer);
               incrementalImageReader.setOffsetX(x);
@@ -414,10 +426,13 @@ public class VTGraphicsModeClientReader implements Runnable
           }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_CUSTOM:
           {
-            //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
-            // refreshArea.x = connection.getGraphicsControlDataInputStream().readInt();
-            // refreshArea.y = connection.getGraphicsControlDataInputStream().readInt();
-            // refreshArea.width = connection.getGraphicsControlDataInputStream().readInt();
+            // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
+            // refreshArea.x =
+            // connection.getGraphicsControlDataInputStream().readInt();
+            // refreshArea.y =
+            // connection.getGraphicsControlDataInputStream().readInt();
+            // refreshArea.width =
+            // connection.getGraphicsControlDataInputStream().readInt();
             // refreshArea.height =
             // connection.getGraphicsControlDataInputStream().readInt();
             writer.requestInterfaceRefresh();
@@ -437,8 +452,8 @@ public class VTGraphicsModeClientReader implements Runnable
             int colors = connection.getGraphicsControlDataInputStream().readInt();
             int width = connection.getGraphicsControlDataInputStream().readInt();
             int height = connection.getGraphicsControlDataInputStream().readInt();
-            //System.out.println("type:" + type);
-            //System.out.println("colors:" + colors);
+            // System.out.println("type:" + type);
+            // System.out.println("colors:" + colors);
             currentImageDataBuffer = VTImageIO.createImage(1, 1, width, height, type, colors, recyclableDataBuffer);
             recyclableDataBuffer = currentImageDataBuffer.getRaster().getDataBuffer();
             
@@ -591,10 +606,13 @@ public class VTGraphicsModeClientReader implements Runnable
           }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM:
           {
-            //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM");
-            // refreshArea.x = connection.getGraphicsControlDataInputStream().readInt();
-            // refreshArea.y = connection.getGraphicsControlDataInputStream().readInt();
-            // refreshArea.width = connection.getGraphicsControlDataInputStream().readInt();
+            // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM");
+            // refreshArea.x =
+            // connection.getGraphicsControlDataInputStream().readInt();
+            // refreshArea.y =
+            // connection.getGraphicsControlDataInputStream().readInt();
+            // refreshArea.width =
+            // connection.getGraphicsControlDataInputStream().readInt();
             // refreshArea.height =
             // connection.getGraphicsControlDataInputStream().readInt();
             writer.requestInterfaceRefresh();
@@ -679,7 +697,7 @@ public class VTGraphicsModeClientReader implements Runnable
       }
       catch (Throwable e)
       {
-        //e.printStackTrace();
+        // e.printStackTrace();
         // e.printStackTrace(VTConsole.getSystemOut());
         stopped = true;
         break;

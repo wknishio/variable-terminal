@@ -13,7 +13,7 @@ public class VTAirliftInputStream extends InputStream
   private Decompressor decompressor;
   private VTLittleEndianInputStream in;
   private byte[] input = new byte[1];
-  private VTByteArrayInputStream stream = new VTByteArrayInputStream(new byte[]{});
+  private VTByteArrayInputStream stream = new VTByteArrayInputStream(new byte[] {});
   private volatile boolean closed = false;
   
   public VTAirliftInputStream(InputStream in, Decompressor decompressor)
@@ -43,7 +43,7 @@ public class VTAirliftInputStream extends InputStream
     }
     return -1;
   }
-
+  
   public synchronized int read() throws IOException
   {
     if (closed)

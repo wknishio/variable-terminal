@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class VTServerSocket extends ServerSocket
 {
-
+  
   public VTServerSocket() throws IOException
   {
     super();
@@ -24,5 +24,5 @@ public class VTServerSocket extends ServerSocket
   {
     getSocketImpl().setOption(option, value);
   }
-
+  
 }

@@ -13,21 +13,21 @@ public class VTGraphicsModeClientWriterFrame extends Frame
   private static final long serialVersionUID = 1L;
   private int lastWidth = -1;
   private int lastHeight = -1;
-
+  
   private class VTGraphicsModeClientWriterFrameComponentListener implements ComponentListener
   {
-    //private boolean hidden = false;
+    // private boolean hidden = false;
     
     public void componentHidden(ComponentEvent e)
     {
-      //this.hidden = true;
+      // this.hidden = true;
     }
-
+    
     public void componentMoved(ComponentEvent e)
     {
-
+      
     }
-
+    
     public void componentResized(ComponentEvent e)
     {
       int width = getWidth();
@@ -38,19 +38,19 @@ public class VTGraphicsModeClientWriterFrame extends Frame
       }
       else
       {
-
+        
       }
       lastWidth = width;
       lastHeight = height;
       // System.out.println("componentResized");
     }
-
+    
     public void componentShown(ComponentEvent e)
     {
       revalidate();
     }
   }
-
+  
   public VTGraphicsModeClientWriterFrame(GraphicsConfiguration configuration)
   {
     super(configuration);
@@ -64,11 +64,11 @@ public class VTGraphicsModeClientWriterFrame extends Frame
     }
     catch (Throwable t)
     {
-
+      
     }
     this.addComponentListener(new VTGraphicsModeClientWriterFrameComponentListener());
   }
-
+  
   public VTGraphicsModeClientWriterFrame()
   {
     super();
@@ -82,46 +82,46 @@ public class VTGraphicsModeClientWriterFrame extends Frame
     }
     catch (Throwable t)
     {
-
+      
     }
     this.addComponentListener(new VTGraphicsModeClientWriterFrameComponentListener());
   }
-
+  
   public void pack()
   {
     super.pack();
     super.validate();
   }
-
+  
   public void invalidate()
   {
-
+    
   }
-
+  
   public void validate()
   {
-
+    
   }
-
+  
   /*
    * public void validate() { int width = this.getWidth(); int height =
    * this.getHeight(); if (width != lastWidth || height != lastHeight) {
    * super.validate(); } lastWidth = width; lastHeight = height; }
    */
-
+  
   public void revalidate()
   {
     super.invalidate();
     super.validate();
   }
-
+  
   public void forcedValidate()
   {
     super.validate();
   }
-
+  
   /*
-   * public void update(Graphics g) { paint(g); } public void paint(Graphics g) {
-   * } public void paintAll(Graphics g) { }
+   * public void update(Graphics g) { paint(g); } public void paint(Graphics g)
+   * { } public void paintAll(Graphics g) { }
    */
 }

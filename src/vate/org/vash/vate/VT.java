@@ -52,17 +52,19 @@ public class VT
   
   public static final int VT_CONNECTION_ENCRYPT_NONE = 0;
   public static final int VT_CONNECTION_ENCRYPT_RC4 = 1;
-  //public static final int VT_CONNECTION_ENCRYPT_AES = 2;
+  // public static final int VT_CONNECTION_ENCRYPT_AES = 2;
   public static final int VT_CONNECTION_ENCRYPT_ISAAC = 2;
-  //public static final int VT_CONNECTION_ENCRYPT_BLOWFISH = 3;
+  // public static final int VT_CONNECTION_ENCRYPT_BLOWFISH = 3;
   public static final int VT_CONNECTION_ENCRYPT_SALSA = 3;
   public static final int VT_CONNECTION_ENCRYPT_HC256 = 4;
   public static final int VT_CONNECTION_ENCRYPT_GRAIN = 5;
   
   public static final int VT_AUTHENTICATION_TIMEOUT_MILLISECONDS = 60000;
   public static final int VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS = 60000;
-  // public static final int VT_CONNECTION_TCP_ACCEPT_TIMEOUT_MILLISECONDS = 60000;
-  // public static final int VT_CONNECTION_TCP_CONNECT_TIMEOUT_MILLISECONDS = 60000;
+  // public static final int VT_CONNECTION_TCP_ACCEPT_TIMEOUT_MILLISECONDS =
+  // 60000;
+  // public static final int VT_CONNECTION_TCP_CONNECT_TIMEOUT_MILLISECONDS =
+  // 60000;
   public static final int VT_CLIENT_RECONNECTION_TIMEOUT_MILLISECONDS = 60000;
   public static final int VT_DAEMON_RECONNECTION_TIMEOUT_MILLISECONDS = 3000;
   
@@ -186,7 +188,7 @@ public class VT
     
     VT_ERA_DATEFORMAT = new SimpleDateFormat("G", Locale.ENGLISH);
     VT_YEAR_CALENDAR = Calendar.getInstance();
-    //float sampleRate = 8000;
+    // float sampleRate = 8000;
     int sampleSizeInBits = 16;
     int channels = 1;
     boolean signed = true;

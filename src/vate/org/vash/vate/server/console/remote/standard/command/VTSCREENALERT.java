@@ -17,7 +17,7 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTSCREENALERT <ALERT> [TITLE] [DISPLAY]");
     this.setAbbreviatedSyntax("*VTSCA <AL> [TI] [DP]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (!GraphicsEnvironment.isHeadless())
@@ -107,9 +107,9 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
       connection.getResultWriter().flush();
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

@@ -4,23 +4,23 @@ public class VTFileTransferServerSessionHandler implements Runnable
 {
   private VTFileTransferServer server;
   private VTFileTransferServerSession session;
-
+  
   public VTFileTransferServerSessionHandler(VTFileTransferServer server, VTFileTransferServerSession session)
   {
     this.server = server;
     this.session = session;
   }
-
+  
   public VTFileTransferServer getServer()
   {
     return server;
   }
-
+  
   public VTFileTransferServerSession getSession()
   {
     return session;
   }
-
+  
   public void run()
   {
     try
@@ -33,7 +33,7 @@ public class VTFileTransferServerSessionHandler implements Runnable
     }
     catch (Throwable e)
     {
-
+      
     }
   }
 }

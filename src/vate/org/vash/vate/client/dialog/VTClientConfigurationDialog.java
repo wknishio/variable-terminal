@@ -38,7 +38,7 @@ import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 public class VTClientConfigurationDialog extends Dialog
 {
   private static final long serialVersionUID = 1L;
-
+  
   private VTClientConfigurationDialogParameter connectionMode;
   private VTClientConfigurationDialogParameter connectionHost;
   private VTClientConfigurationDialogParameter connectionPort;
@@ -51,13 +51,13 @@ public class VTClientConfigurationDialog extends Dialog
   private VTClientConfigurationDialogParameter proxyPassword;
   private VTClientConfigurationDialogParameter encryptionType;
   private VTClientConfigurationDialogParameter encryptionPassword;
-
+  
   private VTClientConfigurationDialogParameter sessionCommands;
-  //private VTClientConfigurationDialogParameter sessionLines;
+  // private VTClientConfigurationDialogParameter sessionLines;
   private VTClientConfigurationDialogParameter sessionShell;
   private VTClientConfigurationDialogParameter sessionUser;
   private VTClientConfigurationDialogParameter sessionPassword;
-
+  
   private Runnable application;
   private Frame owner;
   // private volatile boolean opened;
@@ -69,19 +69,19 @@ public class VTClientConfigurationDialog extends Dialog
     try
     {
       setIconImage = VTClientConfigurationDialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
-      //setIconImage.setAccessible(true);
+      // setIconImage.setAccessible(true);
     }
     catch (Throwable e)
     {
       
     }
   }
-
+  
   public VTClientConfigurationDialog(Frame owner, String title, boolean modal, Runnable application)
   {
     this(owner, title, modal, owner.getGraphicsConfiguration(), application);
   }
-
+  
   public VTClientConfigurationDialog(Frame owner, String title, boolean modal, GraphicsConfiguration gc, final Runnable application)
   {
     super(owner, title, modal, gc);
@@ -104,48 +104,48 @@ public class VTClientConfigurationDialog extends Dialog
     {
       
     }
-
+    
     this.addWindowListener(new WindowListener()
     {
-
+      
       public void windowActivated(WindowEvent e)
       {
-
+        
       }
-
+      
       public void windowClosed(WindowEvent e)
       {
-
+        
       }
-
+      
       public void windowClosing(WindowEvent e)
       {
         close();
       }
-
+      
       public void windowDeactivated(WindowEvent e)
       {
-
+        
       }
-
+      
       public void windowDeiconified(WindowEvent e)
       {
-
+        
       }
-
+      
       public void windowIconified(WindowEvent e)
       {
-
+        
       }
-
+      
       public void windowOpened(WindowEvent e)
       {
-
+        
       }
     });
-
+    
     VTGlobalTextStyleManager.registerWindow(this);
-
+    
     Choice connectionModeChoice = new Choice();
     connectionMode = new VTClientConfigurationDialogParameter("Connection Mode:", connectionModeChoice, true);
     TextField connectionHostField = new TextField(16);
@@ -157,7 +157,7 @@ public class VTClientConfigurationDialog extends Dialog
       {
         TextField field = ((TextField) e.getSource());
         String value = field.getText();
-
+        
         if (!value.matches("(\\d+?)|()"))
         {
           int position = field.getCaretPosition();
@@ -195,7 +195,7 @@ public class VTClientConfigurationDialog extends Dialog
       {
         TextField field = ((TextField) e.getSource());
         String value = field.getText();
-
+        
         if (!value.matches("(\\d+?)|()"))
         {
           int position = field.getCaretPosition();
@@ -216,7 +216,7 @@ public class VTClientConfigurationDialog extends Dialog
           }
           catch (Throwable ex)
           {
-
+            
           }
         }
       }
@@ -233,7 +233,7 @@ public class VTClientConfigurationDialog extends Dialog
       {
         TextField field = ((TextField) e.getSource());
         String value = field.getText();
-
+        
         if (!value.matches("(\\d+?)|()"))
         {
           int position = field.getCaretPosition();
@@ -254,7 +254,7 @@ public class VTClientConfigurationDialog extends Dialog
           }
           catch (Throwable ex)
           {
-
+            
           }
         }
       }
@@ -275,13 +275,14 @@ public class VTClientConfigurationDialog extends Dialog
     encryptionPassword = new VTClientConfigurationDialogParameter("Encryption Password:", encryptionPasswordField, true);
     TextField sessionCommandField = new TextField(16);
     sessionCommands = new VTClientConfigurationDialogParameter("Session Commands:", sessionCommandField, true);
-    //TextField sessionLinesField = new TextField(16);
-    //sessionLines = new VTClientConfigurationDialogParameter("Session Lines:", sessionLinesField, true);
+    // TextField sessionLinesField = new TextField(16);
+    // sessionLines = new VTClientConfigurationDialogParameter("Session Lines:",
+    // sessionLinesField, true);
     TextField sessionShellField = new TextField(16);
     sessionShell = new VTClientConfigurationDialogParameter("Session Shell:", sessionShellField, true);
-
+    
     // BorderLayout dialogLayout = (BorderLayout)this.getLayout();
-
+    
     // try
     // {
     // BorderLayout layout = (BorderLayout) this.getLayout();
@@ -290,9 +291,9 @@ public class VTClientConfigurationDialog extends Dialog
     // }
     // catch (Throwable t)
     // {
-
+    
     // }
-
+    
     connectionModeChoice.add("Active");
     connectionModeChoice.add("Passive");
     connectionModeChoice.select("Active");
@@ -313,7 +314,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-
+    
     proxyTypeChoice.add("None");
     proxyTypeChoice.add("SOCKS");
     proxyTypeChoice.add("HTTP");
@@ -339,7 +340,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-
+    
     proxySecurityChoice.add("Disabled");
     proxySecurityChoice.add("Enabled");
     proxySecurityChoice.select("Disabled");
@@ -360,15 +361,15 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-
+    
     encryptionTypeChoice.add("None");
     encryptionTypeChoice.add("RC4");
     encryptionTypeChoice.add("ISAAC");
-    //encryptionTypeChoice.add("AES");
+    // encryptionTypeChoice.add("AES");
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC256");
     encryptionTypeChoice.add("GRAIN");
-    //encryptionTypeChoice.add("BLOWFISH");
+    // encryptionTypeChoice.add("BLOWFISH");
     encryptionTypeChoice.select("None");
     encryptionTypeChoice.addItemListener(new ItemListener()
     {
@@ -384,14 +385,14 @@ public class VTClientConfigurationDialog extends Dialog
           {
             setEncryptionType("RC4");
           }
-          //else if (e.getItem().equals("AES"))
-          //{
-            //setEncryptionType("AES");
-          //}
-          //else if (e.getItem().equals("BLOWFISH"))
-          //{
-            //setEncryptionType("BLOWFISH");
-          //}
+          // else if (e.getItem().equals("AES"))
+          // {
+          // setEncryptionType("AES");
+          // }
+          // else if (e.getItem().equals("BLOWFISH"))
+          // {
+          // setEncryptionType("BLOWFISH");
+          // }
           else if (e.getItem().equals("SALSA"))
           {
             setEncryptionType("SALSA");
@@ -411,17 +412,17 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-
+    
     // okButton.setEnabled(false);
-
+    
     TextField connectionUserField = new TextField(16);
     connectionUserField.setEchoChar('*');
     sessionUser = new VTClientConfigurationDialogParameter("Session User:", connectionUserField, true);
-
+    
     TextField connectionPasswordField = new TextField(16);
     connectionPasswordField.setEchoChar('*');
     sessionPassword = new VTClientConfigurationDialogParameter("Session Password:", connectionPasswordField, true);
-
+    
     addKeyListener(new KeyListener()
     {
       public void keyPressed(KeyEvent e)
@@ -441,12 +442,12 @@ public class VTClientConfigurationDialog extends Dialog
           return;
         }
       }
-
+      
       public void keyReleased(KeyEvent e)
       {
-
+        
       }
-
+      
       public void keyTyped(KeyEvent e)
       {
         if (e.getKeyChar() == '\n')
@@ -461,10 +462,10 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-
+    
     Button loadButton = new Button("Load");
     Button saveButton = new Button("Save");
-
+    
     Panel buttonPanel1 = new Panel();
     GridLayout buttonLayout1 = new GridLayout(1, 2);
     buttonLayout1.setHgap(1);
@@ -472,7 +473,7 @@ public class VTClientConfigurationDialog extends Dialog
     buttonPanel1.setLayout(buttonLayout1);
     buttonPanel1.add(loadButton);
     buttonPanel1.add(saveButton);
-
+    
     loadButton.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -493,13 +494,13 @@ public class VTClientConfigurationDialog extends Dialog
             {
               // t.printStackTrace();
             }
-
+            
             load();
           }
         }
       }
     });
-
+    
     saveButton.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -525,7 +526,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-
+    
     loadButton.addKeyListener(new KeyListener()
     {
       public void keyPressed(KeyEvent e)
@@ -535,12 +536,12 @@ public class VTClientConfigurationDialog extends Dialog
           return;
         }
       }
-
+      
       public void keyReleased(KeyEvent e)
       {
-
+        
       }
-
+      
       public void keyTyped(KeyEvent e)
       {
         if (e.getKeyChar() == '\n')
@@ -571,7 +572,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-
+    
     saveButton.addKeyListener(new KeyListener()
     {
       public void keyPressed(KeyEvent e)
@@ -581,12 +582,12 @@ public class VTClientConfigurationDialog extends Dialog
           return;
         }
       }
-
+      
       public void keyReleased(KeyEvent e)
       {
-
+        
       }
-
+      
       public void keyTyped(KeyEvent e)
       {
         if (e.getKeyChar() == '\n')
@@ -617,7 +618,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-
+    
     Button okButton = new Button("Proceed");
     Button closeButton = new Button("Cancel");
     Panel buttonPanel2 = new Panel();
@@ -627,7 +628,7 @@ public class VTClientConfigurationDialog extends Dialog
     buttonPanel2.setLayout(buttonLayout2);
     buttonPanel2.add(okButton);
     buttonPanel2.add(closeButton);
-
+    
     okButton.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -635,7 +636,7 @@ public class VTClientConfigurationDialog extends Dialog
         execute();
       }
     });
-
+    
     closeButton.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -643,7 +644,7 @@ public class VTClientConfigurationDialog extends Dialog
         close();
       }
     });
-
+    
     okButton.addKeyListener(new KeyListener()
     {
       public void keyPressed(KeyEvent e)
@@ -663,15 +664,15 @@ public class VTClientConfigurationDialog extends Dialog
           return;
         }
       }
-
+      
       public void keyReleased(KeyEvent e)
       {
-
+        
       }
-
+      
       public void keyTyped(KeyEvent e)
       {
-
+        
         if (e.getKeyChar() == '\n')
         {
           execute();
@@ -684,7 +685,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-
+    
     closeButton.addKeyListener(new KeyListener()
     {
       public void keyPressed(KeyEvent e)
@@ -694,12 +695,12 @@ public class VTClientConfigurationDialog extends Dialog
           return;
         }
       }
-
+      
       public void keyReleased(KeyEvent e)
       {
-
+        
       }
-
+      
       public void keyTyped(KeyEvent e)
       {
         if (e.getKeyChar() == '\n')
@@ -712,14 +713,14 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-
+    
     Panel centerPanel = new Panel();
     GridLayout centerLayout = new GridLayout(18, 1);
     centerLayout.setHgap(1);
     centerLayout.setVgap(1);
     centerPanel.setLayout(centerLayout);
     // centerPanel.getInsets().set(4, 4, 4, 4);
-
+    
     Panel mainPanel = new Panel();
     mainPanel.setLayout(new BorderLayout());
     mainPanel.add(new Panel(), BorderLayout.EAST);
@@ -728,33 +729,33 @@ public class VTClientConfigurationDialog extends Dialog
     mainPanel.add(new Panel(), BorderLayout.SOUTH);
     mainPanel.add(centerPanel, BorderLayout.CENTER);
     add(mainPanel);
-
+    
     centerPanel.add(connectionMode);
     centerPanel.add(connectionHost);
     centerPanel.add(connectionPort);
     centerPanel.add(natPort);
-
+    
     centerPanel.add(proxyType);
     centerPanel.add(proxyHost);
     centerPanel.add(proxyPort);
     centerPanel.add(proxySecurity);
     centerPanel.add(proxyUser);
     centerPanel.add(proxyPassword);
-
+    
     centerPanel.add(encryptionType);
     centerPanel.add(encryptionPassword);
-
+    
     centerPanel.add(sessionShell);
     centerPanel.add(sessionCommands);
-    //centerPanel.add(sessionLines);
+    // centerPanel.add(sessionLines);
     
     centerPanel.add(sessionUser);
     centerPanel.add(sessionPassword);
-
+    
     centerPanel.add(buttonPanel1);
-
+    
     centerPanel.add(buttonPanel2);
-
+    
     for (Component component : centerPanel.getComponents())
     {
       if (component instanceof Panel)
@@ -786,12 +787,12 @@ public class VTClientConfigurationDialog extends Dialog
                     return;
                   }
                 }
-
+                
                 public void keyReleased(KeyEvent e)
                 {
-
+                  
                 }
-
+                
                 public void keyTyped(KeyEvent e)
                 {
                   if (e.getKeyChar() == '\n')
@@ -811,14 +812,14 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     }
-
+    
     MenuBar menubar = new MenuBar();
     Menu textMenu = new Menu("Fonts");
     MenuItem increaseTextMenu = new MenuItem("Increase ");
     MenuItem decreaseTextMenu = new MenuItem("Decrease ");
     MenuItem defaultTextMenu = new MenuItem("Normalize ");
     MenuItem toggleBoldTextMenu = new MenuItem("Intensitize ");
-
+    
     increaseTextMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -826,7 +827,7 @@ public class VTClientConfigurationDialog extends Dialog
         VTGlobalTextStyleManager.increaseFontSize();
       }
     });
-
+    
     decreaseTextMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -834,7 +835,7 @@ public class VTClientConfigurationDialog extends Dialog
         VTGlobalTextStyleManager.decreaseFontSize();
       }
     });
-
+    
     defaultTextMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -842,7 +843,7 @@ public class VTClientConfigurationDialog extends Dialog
         VTGlobalTextStyleManager.defaultFontSize();
       }
     });
-
+    
     toggleBoldTextMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -858,22 +859,22 @@ public class VTClientConfigurationDialog extends Dialog
 //				VTGlobalTextStyleManager.packComponents();
       }
     });
-
+    
     textMenu.add(increaseTextMenu);
     textMenu.add(decreaseTextMenu);
     textMenu.add(toggleBoldTextMenu);
     textMenu.add(defaultTextMenu);
-
+    
     menubar.add(textMenu);
     textMenu.setEnabled(true);
-
+    
     // this.setMenuBar(menubar);
-
+    
     setResizable(true);
     pack();
     // setMinimumSize(getSize());
   }
-
+  
   public void open()
   {
     if (isVisible())
@@ -898,9 +899,9 @@ public class VTClientConfigurationDialog extends Dialog
     }
     catch (Throwable t)
     {
-
+      
     }
-
+    
 //		opened = true;
 //		toFront();
 //		requestFocus();
@@ -919,7 +920,7 @@ public class VTClientConfigurationDialog extends Dialog
 //			}
 //		}
   }
-
+  
   public void load()
   {
     if (application instanceof VTClient)
@@ -951,7 +952,7 @@ public class VTClientConfigurationDialog extends Dialog
         sessionUser.setParameter(client.getUser());
         sessionPassword.setParameter(client.getPassword());
         sessionCommands.setParameter(connector.getSessionCommands());
-        //sessionLines.setParameter(connector.getSessionLines());
+        // sessionLines.setParameter(connector.getSessionLines());
         sessionShell.setParameter(connector.getSessionShell());
       }
       else
@@ -979,12 +980,12 @@ public class VTClientConfigurationDialog extends Dialog
         sessionUser.setParameter(client.getUser());
         sessionPassword.setParameter(client.getPassword());
         sessionCommands.setParameter(client.getSessionCommands());
-        //sessionLines.setParameter(client.getSessionLines());
+        // sessionLines.setParameter(client.getSessionLines());
         sessionShell.setParameter(client.getSessionShell());
       }
     }
   }
-
+  
   private void setConnectionMode(boolean active)
   {
     if (active)
@@ -1019,7 +1020,7 @@ public class VTClientConfigurationDialog extends Dialog
       proxyPassword.setEnabled(false);
     }
   }
-
+  
   private void setEncryptionType(String encryption)
   {
     if (encryption == null)
@@ -1032,16 +1033,16 @@ public class VTClientConfigurationDialog extends Dialog
       encryptionType.setParameter("RC4");
       // encryptionPassword.setEnabled(true);
     }
-    //else if (encryption.toUpperCase().startsWith("A"))
-    //{
-      //encryptionType.setParameter("AES");
-      // encryptionPassword.setEnabled(true);
-    //}
-    //else if (encryption.toUpperCase().startsWith("B"))
-    //{
-      //encryptionType.setParameter("BLOWFISH");
-      // encryptionPassword.setEnabled(true);
-    //}
+    // else if (encryption.toUpperCase().startsWith("A"))
+    // {
+    // encryptionType.setParameter("AES");
+    // encryptionPassword.setEnabled(true);
+    // }
+    // else if (encryption.toUpperCase().startsWith("B"))
+    // {
+    // encryptionType.setParameter("BLOWFISH");
+    // encryptionPassword.setEnabled(true);
+    // }
     else if (encryption.toUpperCase().startsWith("S"))
     {
       encryptionType.setParameter("SALSA");
@@ -1068,7 +1069,7 @@ public class VTClientConfigurationDialog extends Dialog
       // encryptionPassword.setEnabled(false);
     }
   }
-
+  
   private void setProxyType(String proxy)
   {
     if (proxy == null)
@@ -1116,7 +1117,7 @@ public class VTClientConfigurationDialog extends Dialog
       proxyPassword.setEnabled(false);
     }
   }
-
+  
   public void setProxySecurity(boolean security)
   {
     if (security)
@@ -1132,7 +1133,7 @@ public class VTClientConfigurationDialog extends Dialog
       proxyPassword.setEnabled(false);
     }
   }
-
+  
   public void update()
   {
     if (application instanceof VTClient)
@@ -1158,7 +1159,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
         catch (Throwable e)
         {
-
+          
         }
         connector.setEncryptionType(encryptionType.getParameter());
         try
@@ -1167,7 +1168,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
         catch (Throwable e)
         {
-
+          
         }
         connector.setProxyType(proxyType.isEnabled() ? proxyType.getParameter() : "None");
         connector.setProxyAddress(proxyHost.getParameter());
@@ -1177,7 +1178,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
         catch (Throwable e)
         {
-
+          
         }
         connector.setUseProxyAuthentication(proxySecurity.isEnabled() ? proxySecurity.getParameter().equals("Enabled") : false);
         connector.setProxyUser(proxyUser.getParameter());
@@ -1187,13 +1188,13 @@ public class VTClientConfigurationDialog extends Dialog
         sessionUser.setParameter("");
         sessionPassword.setParameter("");
         connector.setSessionCommands(sessionCommands.getParameter());
-        //connector.setSessionLines(sessionLines.getParameter());
+        // connector.setSessionLines(sessionLines.getParameter());
         connector.setSessionShell(sessionShell.getParameter());
         /*
          * if (VTTerminal.isGraphical()) { try {
          * //connector.getHandler().getConnection().setSkipLine(true);
-         * VTGraphicalConsoleReader.getCurrentThread().interrupt(); } catch (Throwable
-         * t) { } }
+         * VTGraphicalConsoleReader.getCurrentThread().interrupt(); } catch
+         * (Throwable t) { } }
          */
       }
       else
@@ -1215,7 +1216,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
         catch (Throwable e)
         {
-
+          
         }
         client.setEncryptionType(encryptionType.getParameter());
         try
@@ -1224,7 +1225,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
         catch (Throwable e)
         {
-
+          
         }
         client.setProxyType(proxyType.isEnabled() ? proxyType.getParameter() : "None");
         client.setProxyAddress(proxyHost.getParameter());
@@ -1234,7 +1235,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
         catch (Throwable e)
         {
-
+          
         }
         client.setUseProxyAuthentication(proxySecurity.isEnabled() ? proxySecurity.getParameter().equals("Enabled") : false);
         client.setProxyUser(proxyUser.getParameter());
@@ -1244,12 +1245,12 @@ public class VTClientConfigurationDialog extends Dialog
         sessionUser.setParameter("");
         sessionPassword.setParameter("");
         client.setSessionCommands(sessionCommands.getParameter());
-        //client.setSessionLines(sessionLines.getParameter());
+        // client.setSessionLines(sessionLines.getParameter());
         client.setSessionShell(sessionShell.getParameter());
       }
     }
   }
-
+  
   public void execute()
   {
     update();
@@ -1322,7 +1323,7 @@ public class VTClientConfigurationDialog extends Dialog
     //
     // }
   }
-
+  
   public void close()
   {
     if (!isVisible())
@@ -1347,15 +1348,15 @@ public class VTClientConfigurationDialog extends Dialog
     }
     catch (Throwable t)
     {
-
+      
     }
     try
     {
-      //dispose();
+      // dispose();
     }
     catch (Throwable t)
     {
-
+      
     }
 //		try
 //		{
@@ -1394,7 +1395,7 @@ public class VTClientConfigurationDialog extends Dialog
 //				}
 //			}
 //		});
-
+    
 //		final Object sync = this;
 //		EventQueue.invokeLater(new Runnable()
 //		{
@@ -1413,7 +1414,7 @@ public class VTClientConfigurationDialog extends Dialog
 //				}
 //			}	
 //		});
-
+    
 //		synchronized (this)
 //		{
 //			try
@@ -1428,7 +1429,7 @@ public class VTClientConfigurationDialog extends Dialog
 //		}
     // VTTerminal.interruptReadLine();
   }
-
+  
   /*
    * public static void main(String[] args) throws Exception { Frame frame = new
    * Frame(); VTConnectionDialog dialog = new VTConnectionDialog(frame, "ABC",

@@ -12,15 +12,15 @@ public class VTQUIT extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTQUIT");
     this.setAbbreviatedSyntax("*VTQT");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     VTConsole.print("\rVT>Client finalizing...\nVT>");
     connection.closeSockets();
   }
-
+  
   public void close()
   {
-
+    
   }
 }

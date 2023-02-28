@@ -13,7 +13,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTSETTING [NAME] [VALUE]");
     this.setAbbreviatedSyntax("*VTSTG [NM] [VL]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -44,7 +44,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       {
         message.append("\nVT>Connection mode(CM): [Active]");
       }
-
+      
       message.append("\nVT>Connection host address(CH): [" + hostAddress + "]");
       message.append("\nVT>Connection host port(CP): [" + port + "]");
       if (natPort != null)
@@ -94,14 +94,14 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       {
         message.append("\nVT>Encryption type(ET): [RC4]");
       }
-      //else if (encryptionType.toUpperCase().startsWith("A"))
-      //{
-        //message.append("\nVT>Encryption type(ET): [AES]");
-      //}
-      //else if (encryptionType.toUpperCase().startsWith("B"))
-      //{
-        //message.append("\nVT>Encryption type(ET): [BLOWFISH]");
-      //}
+      // else if (encryptionType.toUpperCase().startsWith("A"))
+      // {
+      // message.append("\nVT>Encryption type(ET): [AES]");
+      // }
+      // else if (encryptionType.toUpperCase().startsWith("B"))
+      // {
+      // message.append("\nVT>Encryption type(ET): [BLOWFISH]");
+      // }
       else if (encryptionType.toUpperCase().startsWith("S"))
       {
         message.append("\nVT>Encryption type(ET): [SALSA]");
@@ -599,16 +599,18 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().write("\nVT>Encryption type(ET): [RC4]\nVT>");
             connection.getResultWriter().flush();
           }
-          //else if (encryptionType.toUpperCase().startsWith("A"))
-          //{
-            //connection.getResultWriter().write("\nVT>Encryption type(ET): [AES]\nVT>");
-            //connection.getResultWriter().flush();
-          //}
-          //else if (encryptionType.toUpperCase().startsWith("B"))
-          //{
-            //connection.getResultWriter().write("\nVT>Encryption type(ET): [BLOWFISH]\nVT>");
-            //connection.getResultWriter().flush();
-          //}
+          // else if (encryptionType.toUpperCase().startsWith("A"))
+          // {
+          // connection.getResultWriter().write("\nVT>Encryption type(ET):
+          // [AES]\nVT>");
+          // connection.getResultWriter().flush();
+          // }
+          // else if (encryptionType.toUpperCase().startsWith("B"))
+          // {
+          // connection.getResultWriter().write("\nVT>Encryption type(ET):
+          // [BLOWFISH]\nVT>");
+          // connection.getResultWriter().flush();
+          // }
           else if (encryptionType.toUpperCase().startsWith("S"))
           {
             connection.getResultWriter().write("\nVT>Encryption type(ET): [SALSA]\nVT>");
@@ -650,16 +652,18 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [RC4]\nVT>");
             connection.getResultWriter().flush();
           }
-          //else if (encryptionType.toUpperCase().startsWith("A"))
-          //{
-            //connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [AES]\nVT>");
-            //connection.getResultWriter().flush();
-          //}
-          //else if (encryptionType.toUpperCase().startsWith("B"))
-          //{
-            //connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [BLOWFISH]\nVT>");
-            //connection.getResultWriter().flush();
-          //}
+          // else if (encryptionType.toUpperCase().startsWith("A"))
+          // {
+          // connection.getResultWriter().write("\nVT>Encryption type(ET) set
+          // to: [AES]\nVT>");
+          // connection.getResultWriter().flush();
+          // }
+          // else if (encryptionType.toUpperCase().startsWith("B"))
+          // {
+          // connection.getResultWriter().write("\nVT>Encryption type(ET) set
+          // to: [BLOWFISH]\nVT>");
+          // connection.getResultWriter().flush();
+          // }
           else if (encryptionType.toUpperCase().startsWith("S"))
           {
             connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [SALSA]\nVT>");
@@ -824,9 +828,9 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

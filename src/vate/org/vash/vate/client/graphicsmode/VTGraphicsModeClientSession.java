@@ -15,7 +15,7 @@ public class VTGraphicsModeClientSession
   private VTClientSession session;
   private VTGraphicsModeClientReader reader;
   private VTGraphicsModeClientWriter writer;
-
+  
   public VTGraphicsModeClientSession(VTClientSession session)
   {
     this.session = session;
@@ -25,22 +25,22 @@ public class VTGraphicsModeClientSession
     this.writer.setReader(reader);
     this.finished = true;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public VTClientSession getSession()
   {
     return session;
   }
-
+  
   public boolean verifySession()
   {
     boolean headless = true;
@@ -50,7 +50,7 @@ public class VTGraphicsModeClientSession
     }
     catch (Throwable e)
     {
-
+      
     }
     try
     {
@@ -80,11 +80,11 @@ public class VTGraphicsModeClientSession
     }
     catch (Throwable e)
     {
-
+      
     }
     return false;
   }
-
+  
   public void receiveInitialScreenSize()
   {
     try
@@ -95,10 +95,10 @@ public class VTGraphicsModeClientSession
     }
     catch (Throwable e)
     {
-
+      
     }
   }
-
+  
   public void startSession()
   {
     writer.setStopped(false);
@@ -118,37 +118,37 @@ public class VTGraphicsModeClientSession
     writerThread.start();
     readerThread.start();
   }
-
+  
   public boolean isStopped()
   {
     return reader.isStopped() || writer.isStopped();
   }
-
+  
   public void setStopped(boolean stopped)
   {
     writer.setStopped(stopped);
   }
-
+  
   public boolean isReadOnly()
   {
     return writer.isReadOnly();
   }
-
+  
   public void setReadOnly(boolean readOnly)
   {
     writer.setReadOnly(readOnly);
   }
-
+  
   /*
    * public void setHighQuality(boolean highQuality) {
    * writer.setHighQuality(highQuality); }
    */
-
+  
   public void waitSession()
   {
     /*
-     * while(!isStopped()) { try { Thread.sleep(1); } catch (InterruptedException e)
-     * { } }
+     * while(!isStopped()) { try { Thread.sleep(1); } catch
+     * (InterruptedException e) { } }
      */
     synchronized (this)
     {
@@ -160,12 +160,12 @@ public class VTGraphicsModeClientSession
         }
         catch (InterruptedException e)
         {
-
+          
         }
       }
     }
   }
-
+  
   public void tryStopThreads()
   {
     setStopped(true);
@@ -175,7 +175,7 @@ public class VTGraphicsModeClientSession
       // session.getClipboardTransferThread().stop();
     }
   }
-
+  
   public void waitThreads()
   {
     session.getClipboardTransferTask().joinThread();
@@ -185,7 +185,7 @@ public class VTGraphicsModeClientSession
     }
     catch (InterruptedException e)
     {
-
+      
     }
     try
     {
@@ -193,12 +193,12 @@ public class VTGraphicsModeClientSession
     }
     catch (InterruptedException e)
     {
-
+      
     }
     reader.dispose();
     writer.dispose();
   }
-
+  
   public void endSession()
   {
     try
@@ -218,7 +218,7 @@ public class VTGraphicsModeClientSession
     }
     catch (Throwable e)
     {
-
+      
     }
     finished = true;
   }

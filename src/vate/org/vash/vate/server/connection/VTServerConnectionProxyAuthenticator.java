@@ -7,12 +7,12 @@ import java.net.PasswordAuthentication;
 public class VTServerConnectionProxyAuthenticator extends Authenticator
 {
   private VTServerConnector connector;
-
+  
   public VTServerConnectionProxyAuthenticator(VTServerConnector connector)
   {
     this.connector = connector;
   }
-
+  
   public PasswordAuthentication getPasswordAuthentication()
   {
     try
@@ -22,7 +22,7 @@ public class VTServerConnectionProxyAuthenticator extends Authenticator
       {
         return null;
       }
-
+      
       String proxyHost = connector.getProxyAddress();
       if (proxyHost != null)
       {
@@ -51,7 +51,7 @@ public class VTServerConnectionProxyAuthenticator extends Authenticator
     }
     catch (Throwable t)
     {
-
+      
     }
     return null;
   }

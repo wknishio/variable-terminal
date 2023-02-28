@@ -33,8 +33,8 @@ public class VTCryptographicEngine
 {
   private VTBlake3MessageDigest blake3Digest;
   
-  //private volatile Cipher encryptionCipher;
-  //private volatile Cipher decryptionCipher;
+  // private volatile Cipher encryptionCipher;
+  // private volatile Cipher decryptionCipher;
   private volatile StreamCipher encryptionCipherBC;
   private volatile StreamCipher decryptionCipherBC;
   
@@ -45,8 +45,8 @@ public class VTCryptographicEngine
   
   public void initializeClientEngine(int encryptionType, byte[]... encryptionKeys)
   {
-    //encryptionCipher = null;
-    //decryptionCipher = null;
+    // encryptionCipher = null;
+    // decryptionCipher = null;
     encryptionCipherBC = null;
     decryptionCipherBC = null;
     
@@ -84,12 +84,16 @@ public class VTCryptographicEngine
       ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(512, second, first, encryptionKeys), 0, 512);
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
-      //encryptionCipherBC = new RC4Engine();
-      //decryptionCipherBC = new RC4Engine();
-      //KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(256, first, second, encryptionKeys), 0, 256);
-      //KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(256, second, first, encryptionKeys), 0, 256);
-      //encryptionCipherBC.init(true, encryptionKeySpec);
-      //decryptionCipherBC.init(false, decryptionKeySpec);
+      // encryptionCipherBC = new RC4Engine();
+      // decryptionCipherBC = new RC4Engine();
+      // KeyParameter decryptionKeySpec = new
+      // KeyParameter(generateKeyBLAKE3(256, first, second, encryptionKeys), 0,
+      // 256);
+      // KeyParameter encryptionKeySpec = new
+      // KeyParameter(generateKeyBLAKE3(256, second, first, encryptionKeys), 0,
+      // 256);
+      // encryptionCipherBC.init(true, encryptionKeySpec);
+      // decryptionCipherBC.init(false, decryptionKeySpec);
     }
 //    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
 //    {
@@ -102,17 +106,23 @@ public class VTCryptographicEngine
 //      encryptionCipherBC.init(true, encryptionIvParameterSpec);
 //      decryptionCipherBC.init(false, decryptionIvParameterSpec);
 //    }
-    //else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
-    //{
-      //encryptionCipher = Cipher.getInstance("Blowfish/CTR/NoPadding");
-      //decryptionCipher = Cipher.getInstance("Blowfish/CTR/NoPadding");
-      //SecretKeySpec decryptionKeySpec = new SecretKeySpec(digestedKey, 0, 16, "Blowfish");
-      //SecretKeySpec encryptionKeySpec = new SecretKeySpec(digestedKey, 16, 16, "Blowfish");
-      //IvParameterSpec decryptionIvParameterSpec = new IvParameterSpec(digestedIv, 0, 8);
-      //IvParameterSpec encryptionIvParameterSpec = new IvParameterSpec(digestedIv, 16, 8);
-      //encryptionCipher.init(Cipher.ENCRYPT_MODE, encryptionKeySpec, encryptionIvParameterSpec);
-      //decryptionCipher.init(Cipher.DECRYPT_MODE, decryptionKeySpec, decryptionIvParameterSpec);
-    //}
+    // else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
+    // {
+    // encryptionCipher = Cipher.getInstance("Blowfish/CTR/NoPadding");
+    // decryptionCipher = Cipher.getInstance("Blowfish/CTR/NoPadding");
+    // SecretKeySpec decryptionKeySpec = new SecretKeySpec(digestedKey, 0, 16,
+    // "Blowfish");
+    // SecretKeySpec encryptionKeySpec = new SecretKeySpec(digestedKey, 16, 16,
+    // "Blowfish");
+    // IvParameterSpec decryptionIvParameterSpec = new
+    // IvParameterSpec(digestedIv, 0, 8);
+    // IvParameterSpec encryptionIvParameterSpec = new
+    // IvParameterSpec(digestedIv, 16, 8);
+    // encryptionCipher.init(Cipher.ENCRYPT_MODE, encryptionKeySpec,
+    // encryptionIvParameterSpec);
+    // decryptionCipher.init(Cipher.DECRYPT_MODE, decryptionKeySpec,
+    // decryptionIvParameterSpec);
+    // }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_SALSA)
     {
       encryptionCipherBC = new ChaChaEngine(16);
@@ -163,8 +173,8 @@ public class VTCryptographicEngine
   
   public void initializeServerEngine(int encryptionType, byte[]... encryptionKeys)
   {
-    //encryptionCipher = null;
-    //decryptionCipher = null;
+    // encryptionCipher = null;
+    // decryptionCipher = null;
     encryptionCipherBC = null;
     decryptionCipherBC = null;
     
@@ -202,12 +212,16 @@ public class VTCryptographicEngine
       ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(512, second, first, encryptionKeys), 0, 512);
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
-      //encryptionCipherBC = new RC4Engine();
-      //decryptionCipherBC = new RC4Engine();
-      //KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(256, first, second, encryptionKeys), 0, 256);
-      //KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(256, second, first, encryptionKeys), 0, 256);
-      //encryptionCipherBC.init(true, encryptionKeySpec);
-      //decryptionCipherBC.init(false, decryptionKeySpec);
+      // encryptionCipherBC = new RC4Engine();
+      // decryptionCipherBC = new RC4Engine();
+      // KeyParameter encryptionKeySpec = new
+      // KeyParameter(generateKeyBLAKE3(256, first, second, encryptionKeys), 0,
+      // 256);
+      // KeyParameter decryptionKeySpec = new
+      // KeyParameter(generateKeyBLAKE3(256, second, first, encryptionKeys), 0,
+      // 256);
+      // encryptionCipherBC.init(true, encryptionKeySpec);
+      // decryptionCipherBC.init(false, decryptionKeySpec);
     }
 //    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
 //    {
@@ -220,19 +234,25 @@ public class VTCryptographicEngine
 //      encryptionCipherBC.init(true, encryptionIvParameterSpec);
 //      decryptionCipherBC.init(false, decryptionIvParameterSpec);
 //    }
-    //else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
-    //{
-      //encryptionCipher = Cipher.getInstance("Blowfish/CTR/NoPadding");
-      //decryptionCipher = Cipher.getInstance("Blowfish/CTR/NoPadding");
-      //byte[] digestedKey = sha256Digester.digest();
-      //SecretKeySpec encryptionKeySpec = new SecretKeySpec(digestedKey, 0, 16, "Blowfish");
-      //SecretKeySpec decryptionKeySpec = new SecretKeySpec(digestedKey, 16, 16, "Blowfish");
-      //byte[] digestedIv = sha256Digester.digest(digestedKey);
-      //IvParameterSpec encryptionIvParameterSpec = new IvParameterSpec(digestedIv, 0, 8);
-      //IvParameterSpec decryptionIvParameterSpec = new IvParameterSpec(digestedIv, 16, 8);
-      //encryptionCipher.init(Cipher.ENCRYPT_MODE, encryptionKeySpec, encryptionIvParameterSpec);
-      //decryptionCipher.init(Cipher.DECRYPT_MODE, decryptionKeySpec, decryptionIvParameterSpec);
-    //}
+    // else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
+    // {
+    // encryptionCipher = Cipher.getInstance("Blowfish/CTR/NoPadding");
+    // decryptionCipher = Cipher.getInstance("Blowfish/CTR/NoPadding");
+    // byte[] digestedKey = sha256Digester.digest();
+    // SecretKeySpec encryptionKeySpec = new SecretKeySpec(digestedKey, 0, 16,
+    // "Blowfish");
+    // SecretKeySpec decryptionKeySpec = new SecretKeySpec(digestedKey, 16, 16,
+    // "Blowfish");
+    // byte[] digestedIv = sha256Digester.digest(digestedKey);
+    // IvParameterSpec encryptionIvParameterSpec = new
+    // IvParameterSpec(digestedIv, 0, 8);
+    // IvParameterSpec decryptionIvParameterSpec = new
+    // IvParameterSpec(digestedIv, 16, 8);
+    // encryptionCipher.init(Cipher.ENCRYPT_MODE, encryptionKeySpec,
+    // encryptionIvParameterSpec);
+    // decryptionCipher.init(Cipher.DECRYPT_MODE, decryptionKeySpec,
+    // decryptionIvParameterSpec);
+    // }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_SALSA)
     {
       encryptionCipherBC = new ChaChaEngine(16);
@@ -354,11 +374,11 @@ public class VTCryptographicEngine
       return new CipherInputStream(encrypted, decryptionCipherBC, VT.VT_STANDARD_DATA_BUFFER_SIZE);
     }
     return encrypted;
-    //if (decryptionCipher == null)
-    //{
-      //return encrypted;
-    //}
-    //return new CipherInputStream(encrypted, decryptionCipher);
+    // if (decryptionCipher == null)
+    // {
+    // return encrypted;
+    // }
+    // return new CipherInputStream(encrypted, decryptionCipher);
   }
   
   public OutputStream getEncryptedOutputStream(OutputStream decrypted)
@@ -368,10 +388,10 @@ public class VTCryptographicEngine
       return new CipherOutputStream(decrypted, encryptionCipherBC);
     }
     return decrypted;
-    //if (encryptionCipher == null)
-    //{
-      //return decrypted;
-    //}
-    //return new CipherOutputStream(decrypted, encryptionCipher);
+    // if (encryptionCipher == null)
+    // {
+    // return decrypted;
+    // }
+    // return new CipherOutputStream(decrypted, encryptionCipher);
   }
 }

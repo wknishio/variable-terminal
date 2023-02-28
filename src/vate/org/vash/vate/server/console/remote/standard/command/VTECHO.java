@@ -11,7 +11,7 @@ public class VTECHO extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTECHO");
     this.setAbbreviatedSyntax("*VTEC");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     int echoState = Integer.parseInt(parsed[1]);
@@ -45,9 +45,9 @@ public class VTECHO extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

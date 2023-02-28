@@ -7,17 +7,17 @@ import java.util.Set;
 public class VTConsoleCommandSelector<T extends VTConsoleCommandProcessor>
 {
   protected Set<T> processors = new LinkedHashSet<T>();
-
+  
   public VTConsoleCommandSelector()
   {
-
+    
   }
-
+  
   public synchronized boolean addAllCommands(Collection<T> commands)
   {
     return processors.addAll(commands);
   }
-
+  
   public synchronized boolean addCommand(T command)
   {
     return processors.add(command);
@@ -34,7 +34,7 @@ public class VTConsoleCommandSelector<T extends VTConsoleCommandProcessor>
     }
     return false;
   }
-
+  
   public synchronized boolean selectCommand(String command, String[] parsed) throws Exception
   {
     for (VTConsoleCommandProcessor processor : processors)
@@ -46,7 +46,7 @@ public class VTConsoleCommandSelector<T extends VTConsoleCommandProcessor>
     }
     return false;
   }
-
+  
   public synchronized void closeSelector()
   {
     for (VTConsoleCommandProcessor processor : processors)
@@ -61,7 +61,7 @@ public class VTConsoleCommandSelector<T extends VTConsoleCommandProcessor>
       }
     }
   }
-
+  
   public synchronized String findHelp(String command)
   {
     for (VTConsoleCommandProcessor processor : processors)

@@ -14,9 +14,9 @@ public class VTServerConnectionHandler implements Runnable
   private VTServerConnection connection;
   // private VTServerAuthenticator authenticator;
   private VTServerSessionHandler handler;
-  //private List<VTServerSessionListener> listeners;
+  // private List<VTServerSessionListener> listeners;
   // private VTServerSession session;
-
+  
   public VTServerConnectionHandler(VTServer server, VTServerConnector connector, VTServerConnection connection)
   {
     // this.server = server;
@@ -27,17 +27,17 @@ public class VTServerConnectionHandler implements Runnable
     // this.session = new VTServerSession(server, connection);
     // this.authenticator = new VTServerAuthenticator(server, connection);
   }
-
+  
   public VTServerConnection getConnection()
   {
     return connection;
   }
-
+  
   public VTServerSessionHandler getSessionHandler()
   {
     return handler;
   }
-
+  
   public void run()
   {
     Thread.currentThread().setName(getClass().getSimpleName());
@@ -61,7 +61,7 @@ public class VTServerConnectionHandler implements Runnable
     catch (Throwable e)
     {
       // VTTerminal.print(e.toString());
-      //e.printStackTrace();
+      // e.printStackTrace();
       VTConsole.print("\rVT>Connection with client failed!\nVT>");
       connection.closeConnection();
     }
@@ -78,7 +78,7 @@ public class VTServerConnectionHandler implements Runnable
     }
     catch (Throwable t)
     {
-
+      
     }
   }
   

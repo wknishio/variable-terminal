@@ -12,18 +12,18 @@ public class VTSTOP extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTSTOP");
     this.setAbbreviatedSyntax("*VTSTP");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
-    //VTConsole.print("\rVT>Client finalizing server...\nVT>");
+    // VTConsole.print("\rVT>Client finalizing server...\nVT>");
     server.stop();
     VTConsole.closeConsole();
-
-    //System.exit(0);
+    
+    // System.exit(0);
   }
-
+  
   public void close()
   {
-
+    
   }
 }

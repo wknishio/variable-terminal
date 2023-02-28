@@ -13,7 +13,7 @@ public class VTGraphicsModeServerSession
   private VTServerSession session;
   private VTGraphicsModeServerReader reader;
   private VTGraphicsModeServerWriter writer;
-
+  
   public VTGraphicsModeServerSession(VTServerSession session)
   {
     this.session = session;
@@ -22,12 +22,12 @@ public class VTGraphicsModeServerSession
     this.reader.setWriter(writer);
     // this.writer.setReader(reader);
   }
-
+  
   public VTServerSession getSession()
   {
     return session;
   }
-
+  
   public boolean verifySession()
   {
     boolean viewProviderInitialized = false;
@@ -68,7 +68,7 @@ public class VTGraphicsModeServerSession
     }
     return false;
   }
-
+  
   public void sendInitialScreenSize()
   {
     try
@@ -79,10 +79,10 @@ public class VTGraphicsModeServerSession
     }
     catch (Throwable e)
     {
-
+      
     }
   }
-
+  
   public void startSession()
   {
     reader.setStopped(false);
@@ -92,48 +92,49 @@ public class VTGraphicsModeServerSession
     writerThread = new Thread(null, writer, writer.getClass().getSimpleName());
     writerThread.setDaemon(true);
     /*
-     * try { if (reader.isReadOnly()) { session.getConnection().getResultWriter().
+     * try { if (reader.isReadOnly()) {
+     * session.getConnection().getResultWriter().
      * write("\nVT>Starting graphics mode in view mode...\nVT>");
      * session.getConnection().getResultWriter().flush(); } else {
      * session.getConnection().getResultWriter().
      * write("\nVT>Starting graphics mode in control mode...\nVT>");
-     * session.getConnection().getResultWriter().flush(); } } catch (IOException e)
-     * { }
+     * session.getConnection().getResultWriter().flush(); } } catch (IOException
+     * e) { }
      */
     writerThread.start();
     readerThread.start();
   }
-
+  
   public boolean isStopped()
   {
     return reader.isStopped() || writer.isStopped();
   }
-
+  
   public void setStopped(boolean stopped)
   {
     writer.setStopped(stopped);
   }
-
+  
   public boolean isReadOnly()
   {
     return reader.isReadOnly();
   }
-
+  
   public void setReadOnly(boolean readOnly)
   {
     reader.setReadOnly(readOnly);
   }
-
+  
   /*
    * public void setHighQuality(boolean highQuality) {
    * writer.setHighQuality(highQuality); }
    */
-
+  
   public void waitSession()
   {
     /*
-     * while(!isStopped()) { try { Thread.sleep(1); } catch (InterruptedException e)
-     * { } }
+     * while(!isStopped()) { try { Thread.sleep(1); } catch
+     * (InterruptedException e) { } }
      */
     synchronized (this)
     {
@@ -145,12 +146,12 @@ public class VTGraphicsModeServerSession
         }
         catch (InterruptedException e)
         {
-
+          
         }
       }
     }
   }
-
+  
   public void tryStopThreads()
   {
     setStopped(true);
@@ -159,7 +160,7 @@ public class VTGraphicsModeServerSession
       session.getClipboardTransferTask().interruptThread();
     }
   }
-
+  
   public void waitThreads()
   {
     /*
@@ -173,7 +174,7 @@ public class VTGraphicsModeServerSession
     }
     catch (InterruptedException e)
     {
-
+      
     }
     try
     {
@@ -181,12 +182,12 @@ public class VTGraphicsModeServerSession
     }
     catch (InterruptedException e)
     {
-
+      
     }
     reader.dispose();
     writer.dispose();
   }
-
+  
   public void endSession()
   {
     try
@@ -209,7 +210,7 @@ public class VTGraphicsModeServerSession
     }
     catch (Throwable e)
     {
-
+      
     }
   }
 }

@@ -16,7 +16,7 @@ public class VTVARIABLE extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTVARIABLE [NAME] [VALUE]");
     this.setAbbreviatedSyntax("*VTVAR [NM] [VL]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -58,9 +58,9 @@ public class VTVARIABLE extends VTServerStandardLocalConsoleCommandProcessor
       VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

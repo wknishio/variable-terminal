@@ -15,7 +15,7 @@ public class VTPROPERTY extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTPROPERTY [NAME] [VALUE]");
     this.setAbbreviatedSyntax("*VTPROP [NM] [VL]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -58,9 +58,9 @@ public class VTPROPERTY extends VTServerStandardLocalConsoleCommandProcessor
       VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

@@ -7,7 +7,7 @@ import org.vash.vate.VT;
 public class VTGraphicalConsoleFrame extends Frame
 {
   private static final long serialVersionUID = 1L;
-
+  
   public VTGraphicalConsoleFrame(boolean remoteIcon)
   {
     super();
@@ -23,7 +23,7 @@ public class VTGraphicalConsoleFrame extends Frame
       }
       catch (Throwable t)
       {
-
+        
       }
     }
     else
@@ -34,13 +34,13 @@ public class VTGraphicalConsoleFrame extends Frame
       }
       catch (Throwable t)
       {
-
+        
       }
     }
-
+    
     setIgnoreRepaint(true);
   }
-
+  
   public void pack()
   {
     super.pack();
@@ -57,6 +57,6 @@ public class VTGraphicalConsoleFrame extends Frame
     // this.setMaximumSize(new Dimension(packed.width, packed.height));
     // this.setPreferredSize(new Dimension(this.getSize().width,
     // this.getSize().height + 2));
-
+    
   }
 }

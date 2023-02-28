@@ -16,7 +16,7 @@ public class VTKICK extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTKICK [SESSION]");
     this.setAbbreviatedSyntax("*VTKC [SN]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -83,9 +83,9 @@ public class VTKICK extends VTServerStandardLocalConsoleCommandProcessor
       VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

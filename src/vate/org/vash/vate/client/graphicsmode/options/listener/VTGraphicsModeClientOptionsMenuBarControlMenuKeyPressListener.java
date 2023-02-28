@@ -9,13 +9,13 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenuKeyPressListener imple
 {
   private VTGraphicsModeClientWriter writer;
   private int keycode;
-
+  
   public VTGraphicsModeClientOptionsMenuBarControlMenuKeyPressListener(VTGraphicsModeClientWriter writer, int keycode)
   {
     this.writer = writer;
     this.keycode = keycode;
   }
-
+  
   public void actionPerformed(ActionEvent e)
   {
     writer.remoteKeyPress(keycode, 0, 0, ' ');

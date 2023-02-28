@@ -7,7 +7,7 @@ import java.io.IOException;
 public final class VTPipedInputStream extends InputStream
 {
   private static final int DEFAULT_BUFFER_SIZE = 8192;
-
+  
   private VTPipedOutputStream source;
   private byte[] circBuf;
   private int rOffset;
@@ -16,7 +16,7 @@ public final class VTPipedInputStream extends InputStream
   private boolean isWaitPut;
   private boolean eof;
   private boolean closed;
-
+  
   public VTPipedInputStream(int bufferSize)
   {
     this.circBuf = new byte[bufferSize];
@@ -25,18 +25,18 @@ public final class VTPipedInputStream extends InputStream
     this.rOffset = 0;
     this.wOffset = 0;
   }
-
+  
   public VTPipedInputStream()
   {
     this(DEFAULT_BUFFER_SIZE);
   }
-
+  
   public VTPipedInputStream(VTPipedOutputStream source) throws IOException
   {
     this();
     connect(source);
   }
-
+  
   public final void connect(VTPipedOutputStream source) throws IOException
   {
     if (this.source == source)
@@ -50,7 +50,7 @@ public final class VTPipedInputStream extends InputStream
     this.source = source;
     source.connect(this);
   }
-
+  
   public final synchronized int read() throws IOException
   {
     while (isEmpty())
@@ -75,21 +75,21 @@ public final class VTPipedInputStream extends InputStream
       }
     }
     isWaitGet = false;
-
+    
     int b = (circBuf[rOffset++] & 0xff);
-
+    
     if (rOffset == circBuf.length)
       rOffset = 0;
-
+    
     if (isWaitPut)
     {
       this.notifyAll();
       isWaitPut = false;
     }
-
+    
     return b;
   }
-
+  
   public final synchronized int read(byte[] buf, int off, int len) throws IOException
   {
     while (isEmpty())
@@ -114,10 +114,10 @@ public final class VTPipedInputStream extends InputStream
       }
     }
     isWaitGet = false;
-
+    
     int n = available();
     n = (n > len ? len : n);
-
+    
     if (rOffset < wOffset)
     {
       System.arraycopy(circBuf, rOffset, buf, off, n);
@@ -135,20 +135,20 @@ public final class VTPipedInputStream extends InputStream
         System.arraycopy(circBuf, rOffset, buf, off, n);
       }
     }
-
+    
     rOffset += n;
     if (rOffset >= circBuf.length)
       rOffset -= circBuf.length;
-
+    
     if (isWaitPut)
     {
       this.notifyAll();
       isWaitPut = false;
     }
-
+    
     return n;
   }
-
+  
   public final synchronized int available()
   {
     if (closed)
@@ -157,18 +157,18 @@ public final class VTPipedInputStream extends InputStream
     }
     return circBuf.length - freeSpace() - 1;
   }
-
+  
   public final synchronized void close() throws IOException
   {
     closed = true;
     this.notifyAll();
   }
-
+  
   public final synchronized void flush()
   {
     this.notifyAll();
   }
-
+  
   protected final synchronized void put(int b) throws IOException
   {
     if (eof)
@@ -205,7 +205,7 @@ public final class VTPipedInputStream extends InputStream
     if (isWaitGet)
       this.notify();
   }
-
+  
   protected final synchronized void put(byte[] buf, int off, int len) throws IOException
   {
     while (len > 0)
@@ -240,7 +240,7 @@ public final class VTPipedInputStream extends InputStream
       }
       int n = freeSpace();
       n = (n > len ? len : n);
-
+      
       if (wOffset < rOffset)
       {
         System.arraycopy(buf, off, circBuf, wOffset, n);
@@ -258,7 +258,7 @@ public final class VTPipedInputStream extends InputStream
           System.arraycopy(buf, off, circBuf, wOffset, n);
         }
       }
-
+      
       wOffset += n;
       if (wOffset >= circBuf.length)
       {
@@ -266,18 +266,18 @@ public final class VTPipedInputStream extends InputStream
       }
       len -= n;
       off += n;
-
+      
       if (isWaitGet)
         this.notify();
     }
   }
-
+  
   protected final synchronized void eof()
   {
     eof = true;
     this.notify();
   }
-
+  
   private final int freeSpace()
   {
     int fSpc = rOffset - wOffset;
@@ -288,19 +288,19 @@ public final class VTPipedInputStream extends InputStream
     fSpc--;
     return fSpc;
   }
-
+  
   private final synchronized boolean isEmpty()
   {
     return (rOffset == wOffset) || closed;
   }
-
+  
   /*
-   * private void putFlowControl() throws IOException { while(freeSpace() == 0) {
-   * if(eof) { throw new IOException("InputStreamPipe already got eof"); }
+   * private void putFlowControl() throws IOException { while(freeSpace() == 0)
+   * { if(eof) { throw new IOException("InputStreamPipe already got eof"); }
    * if(closed) { throw new IOException("InputStreamPipe closed"); } isWaitPut =
    * true; try { this.wait(); } catch (InterruptedException e) { // ! } } }
    */
-
+  
   public final synchronized void open()
   {
     eof = false;
@@ -311,35 +311,35 @@ public final class VTPipedInputStream extends InputStream
     wOffset = 0;
     notifyAll();
   }
-
+  
   public final synchronized boolean isClosed()
   {
     return closed;
   }
-
+  
   /*
    * public synchronized void waitOpen() { while (closed || eof) { try {
    * this.wait(); } catch (InterruptedException e) { } } }
    */
-
+  
   /*
    * DEBUG/Test public static void main(String[] argv) { try { final
-   * InputStreamPipe in = new InputStreamPipe(); final OutputStreamPipe out = new
-   * OutputStreamPipe(in); //final java.io.PipedInputStream in = new
+   * InputStreamPipe in = new InputStreamPipe(); final OutputStreamPipe out =
+   * new OutputStreamPipe(in); //final java.io.PipedInputStream in = new
    * java.io.PipedInputStream(); //final java.io.PipedOutputStream out = new
-   * java.io.PipedOutputStream(in); final byte[] msg = new byte[4711]; for(int i =
-   * 0; i < 4711; i++) { msg[i] = (byte)((i i) ^ (i + i)); } Thread w = new
+   * java.io.PipedOutputStream(in); final byte[] msg = new byte[4711]; for(int i
+   * = 0; i < 4711; i++) { msg[i] = (byte)((i i) ^ (i + i)); } Thread w = new
    * Thread(new Runnable() { public void run() { try { for(int i = 0; i < 1000;
    * i++) { out.write(msg); } } catch (IOException e) {
-   * System.out.println("Error in w: " + e); e.printStackTrace(); } } }); Thread r
-   * = new Thread(new Runnable() { public void run() { try { byte[] imsg = new
-   * byte[4711]; for(int i = 0; i < 1000; i++) { int l = 4711; int o = 0; while(o
-   * < 4711) { int n = in.read(imsg, o, l); o += n; l -= n; } } } catch
+   * System.out.println("Error in w: " + e); e.printStackTrace(); } } }); Thread
+   * r = new Thread(new Runnable() { public void run() { try { byte[] imsg = new
+   * byte[4711]; for(int i = 0; i < 1000; i++) { int l = 4711; int o = 0;
+   * while(o < 4711) { int n = in.read(imsg, o, l); o += n; l -= n; } } } catch
    * (IOException e) { System.out.println("Error in w: " + e);
    * e.printStackTrace(); } } }); long start = System.currentTimeMillis();
    * System.out.println("Start: " + (start / 1000)); w.start(); r.start();
-   * r.join(); long now = System.currentTimeMillis(); System.out.println("End: " +
-   * (now / 1000)); System.out.println("Lapsed: " + (now - start)); } catch
+   * r.join(); long now = System.currentTimeMillis(); System.out.println("End: "
+   * + (now / 1000)); System.out.println("Lapsed: " + (now - start)); } catch
    * (Throwable e) { System.out.println("Error: " + e); e.printStackTrace(); } }
    */
 }

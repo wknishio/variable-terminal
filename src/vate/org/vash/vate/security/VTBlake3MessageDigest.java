@@ -5,7 +5,7 @@ import org.bouncycastle.crypto.digests.Blake3Digest;
 
 public class VTBlake3MessageDigest extends MessageDigest
 {
-  //private static final Blake3Digest BLAKE3 = new Blake3Digest();
+  // private static final Blake3Digest BLAKE3 = new Blake3Digest();
   private Blake3Digest blake3;
   
   public VTBlake3MessageDigest()

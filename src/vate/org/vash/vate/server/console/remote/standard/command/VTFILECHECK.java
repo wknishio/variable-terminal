@@ -16,7 +16,7 @@ public class VTFILECHECK extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTFILECHECK [MODE] [FILE]");
     this.setAbbreviatedSyntax("*VTFC [MD] [FL]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     synchronized (session.getFileScanOperation())
@@ -69,7 +69,7 @@ public class VTFILECHECK extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else if (parsed.length == 2)
       {
-
+        
         if (parsed[1].toUpperCase().startsWith("S"))
         {
           if (session.getFileScanOperation().isFinished())
@@ -138,9 +138,9 @@ public class VTFILECHECK extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

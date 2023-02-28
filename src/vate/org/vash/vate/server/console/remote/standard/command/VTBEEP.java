@@ -13,7 +13,7 @@ public class VTBEEP extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTBEEP <HERTZ TIME>");
     this.setAbbreviatedSyntax("*VTBP <HZ TM>");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length >= 3)
@@ -38,7 +38,7 @@ public class VTBEEP extends VTServerStandardRemoteConsoleCommandProcessor
       }
       catch (Throwable e)
       {
-
+        
       }
     }
     else
@@ -47,9 +47,9 @@ public class VTBEEP extends VTServerStandardRemoteConsoleCommandProcessor
       connection.getResultWriter().flush();
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

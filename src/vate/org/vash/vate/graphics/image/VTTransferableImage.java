@@ -18,18 +18,18 @@ import com.bric.image.VTARGBPixelGrabber;
 public class VTTransferableImage implements Transferable, ClipboardOwner
 {
   private BufferedImage bufferedImage;
-  //private VTImageIO imageIO;
+  // private VTImageIO imageIO;
   private DataBuffer recyclableDataBuffer;
-
+  
   public VTTransferableImage(DataBuffer recyclableDataBuffer)
   {
-    //this.imageIO = imageIO;
+    // this.imageIO = imageIO;
     this.recyclableDataBuffer = recyclableDataBuffer;
   }
-
+  
   public VTTransferableImage(Image image, DataBuffer recyclableDataBuffer)
   {
-    //this.imageIO = imageIO;
+    // this.imageIO = imageIO;
     this.recyclableDataBuffer = recyclableDataBuffer;
     int width = image.getWidth(null);
     int height = image.getHeight(null);
@@ -39,22 +39,22 @@ public class VTTransferableImage implements Transferable, ClipboardOwner
     grabber.getPixels(((DataBufferInt) this.bufferedImage.getRaster().getDataBuffer()).getData());
     grabber.dispose();
   }
-
+  
   public DataBuffer getRecyclableDataBuffer()
   {
     return recyclableDataBuffer;
   }
-
+  
   public void write(OutputStream out) throws IOException
   {
     VTImageIO.writeImage(out, bufferedImage);
   }
-
+  
   public void read(InputStream in) throws IOException
   {
     bufferedImage = VTImageIO.readImage(in, recyclableDataBuffer);
   }
-
+  
   public void lostOwnership(Clipboard clipboard, Transferable contents)
   {
     bufferedImage.flush();
@@ -62,7 +62,7 @@ public class VTTransferableImage implements Transferable, ClipboardOwner
     System.runFinalization();
     System.gc();
   }
-
+  
   public void flush()
   {
     bufferedImage.flush();
@@ -70,7 +70,7 @@ public class VTTransferableImage implements Transferable, ClipboardOwner
     System.runFinalization();
     System.gc();
   }
-
+  
   public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException
   {
     if (flavor.equals(DataFlavor.imageFlavor))
@@ -79,12 +79,13 @@ public class VTTransferableImage implements Transferable, ClipboardOwner
     }
     throw new UnsupportedFlavorException(flavor);
   }
-
+  
   public DataFlavor[] getTransferDataFlavors()
   {
-    return new DataFlavor[] { DataFlavor.imageFlavor };
+    return new DataFlavor[]
+    { DataFlavor.imageFlavor };
   }
-
+  
   public boolean isDataFlavorSupported(DataFlavor flavor)
   {
     return flavor.equals(DataFlavor.imageFlavor);

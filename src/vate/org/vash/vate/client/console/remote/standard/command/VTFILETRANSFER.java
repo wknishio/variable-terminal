@@ -13,7 +13,7 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
     this.setFullSyntax("*VTFILETRANSFER [MODE] [SOURCE; TARGET]");
     this.setAbbreviatedSyntax("*VTFT [MD] [SRC; TGT]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     synchronized (session.getFileTransferClient().getHandler().getSession().getTransaction())
@@ -110,24 +110,27 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
         }
         if (session.getFileTransferClient().aliveThread())
         {
-          //long transferDataSize = session.getFileTransferClient().getHandler().getSession().getTransaction().getTransferDataSize();
-          //long transferDataCount = session.getFileTransferClient().getHandler().getSession().getTransaction().getTransferDataCount();
-          //if (transferDataSize != 0 && transferDataCount != 0)
-          //{
-            // double completeness =
-            // ((double)transferDataCount) * 100 /
-            // ((double)transferDataSize);
-            // VTConsole.printf("\nVT>A file transfer is
-            // running!" +
-            // "\nVT>Transferred [" + transferDataCount +
-            // "] of [" + transferDataSize + "] bytes
-            // (%.2f%%)\nVT>", completeness);
-            //VTConsole.print("\nVT>A file transfer is running!" + "\nVT>Transferred [" + transferDataCount + "] bytes!\nVT>");
-          //}
-          //else
-          //{
-            //VTConsole.print("\nVT>A file transfer is running!\nVT>");
-          //}
+          // long transferDataSize =
+          // session.getFileTransferClient().getHandler().getSession().getTransaction().getTransferDataSize();
+          // long transferDataCount =
+          // session.getFileTransferClient().getHandler().getSession().getTransaction().getTransferDataCount();
+          // if (transferDataSize != 0 && transferDataCount != 0)
+          // {
+          // double completeness =
+          // ((double)transferDataCount) * 100 /
+          // ((double)transferDataSize);
+          // VTConsole.printf("\nVT>A file transfer is
+          // running!" +
+          // "\nVT>Transferred [" + transferDataCount +
+          // "] of [" + transferDataSize + "] bytes
+          // (%.2f%%)\nVT>", completeness);
+          // VTConsole.print("\nVT>A file transfer is running!" +
+          // "\nVT>Transferred [" + transferDataCount + "] bytes!\nVT>");
+          // }
+          // else
+          // {
+          // VTConsole.print("\nVT>A file transfer is running!\nVT>");
+          // }
           VTConsole.print("\nVT>A file transfer is running!\nVT>");
         }
         else
@@ -141,9 +144,9 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

@@ -5,7 +5,7 @@ public class VTArgumentParser
   /*
    * public static int getNextDelimiterPosition(String arg, int start) { }
    */
-
+  
   public static int countDelimiterInParameter(String parameter, char delimiter)
   {
     int delimiterCounter = 0;
@@ -33,7 +33,7 @@ public class VTArgumentParser
     }
     return delimiterCounter;
   }
-
+  
   public static String[] parseParameter(String parameter, char delimiter)
   {
     int delimiterCount = countDelimiterInParameter(parameter, delimiter);
@@ -56,10 +56,10 @@ public class VTArgumentParser
     subParameters[subParameterNumber++] = parameter.substring(lastDelimiterPosition, parameter.length());
     return subParameters;
   }
-
+  
   /*
    * public static void main(String[] args) { String[] parms =
-   * parseParameter("\"A\"/B", '/'); System.out.println("count: " + parms.length);
-   * for (String parm : parms) { System.out.println(parm); } }
+   * parseParameter("\"A\"/B", '/'); System.out.println("count: " +
+   * parms.length); for (String parm : parms) { System.out.println(parm); } }
    */
 }

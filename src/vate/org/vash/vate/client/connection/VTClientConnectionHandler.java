@@ -14,7 +14,7 @@ public class VTClientConnectionHandler implements Runnable
   private VTClientSessionHandler handler;
   // private VTClientAuthenticator authenticator;
   // private VTClientSession session;
-
+  
   public VTClientConnectionHandler(VTClient client, VTClientConnection connection)
   {
     this.client = client;
@@ -23,12 +23,12 @@ public class VTClientConnectionHandler implements Runnable
     // this.session = new VTClientSession(client, connection);
     // this.authenticator = new VTClientAuthenticator(session);
   }
-
+  
   public VTClientConnection getConnection()
   {
     return connection;
   }
-
+  
   public VTClientSessionHandler getHandler()
   {
     return handler;
@@ -57,7 +57,7 @@ public class VTClientConnectionHandler implements Runnable
     catch (Throwable e)
     {
       // VTTerminal.print(e.toString());
-      //e.printStackTrace();
+      // e.printStackTrace();
       VTConsole.print("\nVT>Connection with server failed!");
       // connection.setSkipLine(true);
       connection.closeConnection();

@@ -23,7 +23,7 @@ public class VTServerRemoteConsoleReader extends VTTask
   private VTServerSession session;
   private VTServerConnection connection;
   private VTServerRemoteConsoleCommandSelector<VTServerRemoteConsoleCommandProcessor> selector;
-
+  
   public VTServerRemoteConsoleReader(VTServerSession session)
   {
     this.session = session;
@@ -31,22 +31,23 @@ public class VTServerRemoteConsoleReader extends VTTask
     this.stopped = false;
     // this.clock = new GregorianCalendar();
     // this.firstDateTimeFormat = new SimpleDateFormat("G", Locale.ENGLISH);
-    // this.secondDateTimeFormat = new SimpleDateFormat("MM-dd][HH:mm:ss:SSS-z]");
+    // this.secondDateTimeFormat = new
+    // SimpleDateFormat("MM-dd][HH:mm:ss:SSS-z]");
     // this.command = "";
     // this.message = new StringBuilder();
     this.selector = new VTServerRemoteConsoleCommandSelector<VTServerRemoteConsoleCommandProcessor>(session);
   }
-
+  
   public boolean isStopped()
   {
     return stopped;
   }
-
+  
   public void setStopped(boolean stopped)
   {
     this.stopped = stopped;
   }
-
+  
   public void run()
   {
     // int p = 0;
@@ -77,7 +78,7 @@ public class VTServerRemoteConsoleReader extends VTTask
 //      
 //    }
   }
-
+  
   @SuppressWarnings("unused")
   private void executeStringScript(String script)
   {
@@ -129,7 +130,7 @@ public class VTServerRemoteConsoleReader extends VTTask
       }
     }
   }
-
+  
   @SuppressWarnings("unused")
   private void executeFileScript(File script, Charset charset)
   {
@@ -181,7 +182,7 @@ public class VTServerRemoteConsoleReader extends VTTask
       }
     }
   }
-
+  
   private void executeCommand(String command) throws Throwable
   {
     String parsed[];
@@ -190,7 +191,8 @@ public class VTServerRemoteConsoleReader extends VTTask
       parsed = CommandLineTokenizer.tokenize(command);
       if (parsed.length < 1)
       {
-        parsed = new String[] { command };
+        parsed = new String[]
+        { command };
         // p = 0;
         /*
          * for (String part : splitCommand) { splitCommand[p++] =
@@ -200,10 +202,11 @@ public class VTServerRemoteConsoleReader extends VTTask
     }
     else
     {
-      parsed = new String[] { "" };
+      parsed = new String[]
+      { "" };
     }
     
-    //System.out.println("echoState:" + session.getEchoState());
+    // System.out.println("echoState:" + session.getEchoState());
     
     if (session.isEchoCommands())
     {
@@ -245,7 +248,7 @@ public class VTServerRemoteConsoleReader extends VTTask
           }
           catch (Throwable e)
           {
-            //e.printStackTrace();
+            // e.printStackTrace();
           }
         }
         else
@@ -257,7 +260,7 @@ public class VTServerRemoteConsoleReader extends VTTask
           }
           catch (Throwable e)
           {
-            //e.printStackTrace();
+            // e.printStackTrace();
           }
         }
       }

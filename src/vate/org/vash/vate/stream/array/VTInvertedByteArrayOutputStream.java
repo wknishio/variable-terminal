@@ -7,13 +7,13 @@ import java.io.OutputStream;
 public final class VTInvertedByteArrayOutputStream extends ByteArrayOutputStream
 {
   // private int end = 0;
-
+  
   public VTInvertedByteArrayOutputStream()
   {
     super();
     // end = buf.length;
   }
-
+  
   public VTInvertedByteArrayOutputStream(int size)
   {
     super(size);
@@ -26,27 +26,27 @@ public final class VTInvertedByteArrayOutputStream extends ByteArrayOutputStream
     this.buf = buf;
     // end = buf.length - 1;
   }
-
+  
   public final synchronized byte[] buf()
   {
     return this.buf;
   }
-
+  
   public final synchronized int count()
   {
     return this.count;
   }
-
+  
   public final synchronized void buf(byte[] buf)
   {
     this.buf = buf;
   }
-
+  
   public final synchronized void count(int count)
   {
     this.count = count;
   }
-
+  
   public final synchronized void write(int b)
   {
     int newcount = count + 1;
@@ -59,7 +59,7 @@ public final class VTInvertedByteArrayOutputStream extends ByteArrayOutputStream
     count = newcount;
     buf[buf.length - count] = (byte) b;
   }
-
+  
   public final synchronized void write(byte[] data, int off, int len)
   {
     int newcount = count + len;
@@ -77,7 +77,7 @@ public final class VTInvertedByteArrayOutputStream extends ByteArrayOutputStream
     count = newcount;
     System.arraycopy(inverted, 0, buf, buf.length - count, len);
   }
-
+  
   public final synchronized byte[] toByteArray()
   {
     byte[] data = new byte[count];
@@ -85,17 +85,16 @@ public final class VTInvertedByteArrayOutputStream extends ByteArrayOutputStream
     return data;
     // return Arrays.copyOfRange(buf, buf.length - count, buf.length);
   }
-
+  
   public final synchronized void writeTo(OutputStream out) throws IOException
   {
     out.write(buf, buf.length - count, count);
   }
-
+  
   public final synchronized void reset()
   {
     count = 0;
   }
-
   
 //   public static void main(String[] args) throws IOException
 //   {

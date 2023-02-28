@@ -20,29 +20,29 @@ public class VTClientZipFileOperation extends VTTask
   private String[] sourcePaths;
   private final byte[] readBuffer;
   // private VTClientSession session;
-
+  
   public VTClientZipFileOperation(VTClientSession session)
   {
     // this.session = session;
     this.finished = true;
     this.readBuffer = new byte[fileZipBufferSize];
   }
-
+  
   public void setOperation(int operation)
   {
     this.operation = operation;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public void setZipFilePath(String zipFilePath)
   {
     this.zipFilePath = zipFilePath;
@@ -52,7 +52,7 @@ public class VTClientZipFileOperation extends VTTask
       this.zipFilePath = new File(zipFilePath).getAbsolutePath();
     }
   }
-
+  
   public void setSourcePaths(String[] sourcePaths)
   {
     String[] checkedPaths = new String[sourcePaths.length];
@@ -69,7 +69,7 @@ public class VTClientZipFileOperation extends VTTask
     }
     this.sourcePaths = checkedPaths;
   }
-
+  
   public void run()
   {
     try
@@ -191,7 +191,7 @@ public class VTClientZipFileOperation extends VTTask
     }
     catch (Throwable e)
     {
-
+      
     }
     finished = true;
   }

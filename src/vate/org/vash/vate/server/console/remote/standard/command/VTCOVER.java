@@ -12,7 +12,7 @@ public class VTCOVER extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTCOVER");
     this.setAbbreviatedSyntax("*VTCV");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (session.getServer().isDaemon())
@@ -38,9 +38,9 @@ public class VTCOVER extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

@@ -41,14 +41,14 @@ public class VTCALLPRINT extends VTServerStandardRemoteConsoleCommandProcessor
       }
       isSupportedMethod = desktopClass.getMethod("isSupported", actionClass);
       printMethod = desktopClass.getMethod("print", File.class);
-      //getDesktopMethod.setAccessible(true);
-      //isDesktopSupportedMethod.setAccessible(true);
+      // getDesktopMethod.setAccessible(true);
+      // isDesktopSupportedMethod.setAccessible(true);
       if ((Boolean) isDesktopSupportedMethod.invoke(null))
       {
         desktopObject = getDesktopMethod.invoke(null);
         if (desktopObject != null && ((Boolean) isSupportedMethod.invoke(desktopObject, printObject)))
         {
-          //printMethod.setAccessible(true);
+          // printMethod.setAccessible(true);
           isSupported = true;
         }
       }
@@ -66,7 +66,7 @@ public class VTCALLPRINT extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTCALLPRINT <FILE>");
     this.setAbbreviatedSyntax("*VTCPR <FL>");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length >= 2)
@@ -74,7 +74,8 @@ public class VTCALLPRINT extends VTServerStandardRemoteConsoleCommandProcessor
       try
       {
         // Class.forName("java.awt.Desktop");
-        // Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        // Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop()
+        // : null;
         // if (desktop != null && desktop.isSupported(Desktop.Action.PRINT))
         if (isSupported)
         {
@@ -92,25 +93,25 @@ public class VTCALLPRINT extends VTServerStandardRemoteConsoleCommandProcessor
       }
       catch (SecurityException e)
       {
-        //e.printStackTrace();
+        // e.printStackTrace();
         connection.getResultWriter().write("\nVT>Print operation failed!\nVT>");
         connection.getResultWriter().flush();
       }
       catch (IllegalArgumentException e)
       {
-        //e.printStackTrace();
+        // e.printStackTrace();
         connection.getResultWriter().write("\nVT>Print operation failed!\nVT>");
         connection.getResultWriter().flush();
       }
       catch (IOException e)
       {
-        //e.printStackTrace();
+        // e.printStackTrace();
         connection.getResultWriter().write("\nVT>Print operation failed!\nVT>");
         connection.getResultWriter().flush();
       }
       catch (Throwable e)
       {
-        //e.printStackTrace();
+        // e.printStackTrace();
         connection.getResultWriter().write("\nVT>Print operation failed!\nVT>");
         connection.getResultWriter().flush();
       }
@@ -121,9 +122,9 @@ public class VTCALLPRINT extends VTServerStandardRemoteConsoleCommandProcessor
       connection.getResultWriter().flush();
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

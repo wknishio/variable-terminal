@@ -7,12 +7,12 @@ public class VTGraphicalConsoleInputStream extends InputStream
 {
   private volatile byte[] lineBuffer;
   private volatile int readed;
-
+  
   public VTGraphicalConsoleInputStream()
   {
     lineBuffer = new byte[0];
   }
-
+  
   public int read() throws IOException
   {
     if (lineBuffer == null || readed >= lineBuffer.length)
@@ -29,22 +29,23 @@ public class VTGraphicalConsoleInputStream extends InputStream
     }
     return lineBuffer[readed++];
   }
-
+  
   public int available() throws IOException
   {
     return lineBuffer.length - readed;
   }
-
+  
   /*
-   * public void close() throws IOException { VTGraphicalConsoleReader.close(); }
+   * public void close() throws IOException { VTGraphicalConsoleReader.close();
+   * }
    */
-
+  
   /*
    * public synchronized void mark(int readlimit) { super.mark(readlimit); }
    */
-
+  
   /* public boolean markSupported() { return super.markSupported(); } */
-
+  
   public int read(byte[] b, int off, int len) throws IOException
   {
     int transferred;
@@ -73,14 +74,14 @@ public class VTGraphicalConsoleInputStream extends InputStream
     }
     return transferred;
   }
-
+  
   public int read(byte[] b) throws IOException
   {
     return super.read(b);
   }
-
+  
   /* public synchronized void reset() throws IOException { super.reset(); } */
-
+  
   public long skip(long n) throws IOException
   {
     return super.skip(n);

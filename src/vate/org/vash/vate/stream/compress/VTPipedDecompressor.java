@@ -14,13 +14,13 @@ public final class VTPipedDecompressor extends OutputStream
   private byte[] buffer = new byte[bufferSize];
   // private VTPipedInputStream pipedInputStream;
   // private VTPipedOutputStream pipedOutputStream;
-
+  
   // private VTByteArrayOutputStream outputBuffer = new
   // VTByteArrayOutputStream(bufferSize);
   // private VTByteArrayInputStream inputBuffer = new
   // VTByteArrayInputStream(outputBuffer.buf());
   private VTCircularByteBuffer circularBuffer;
-
+  
   public VTPipedDecompressor(OutputStream out)
   {
     this.out = out;
@@ -33,30 +33,31 @@ public final class VTPipedDecompressor extends OutputStream
     // }
     // catch (IOException e)
     // {
-
+    
     // }
   }
-
+  
   public InputStream getPipedInputStream()
   {
     return circularBuffer.getInputStream();
   }
-
+  
   public void setDecompressor(InputStream in)
   {
     this.in = in;
   }
-
+  
   public void write(int b) throws IOException
   {
-    write(new byte[] { (byte) b });
+    write(new byte[]
+    { (byte) b });
   }
-
+  
   public void write(byte[] data) throws IOException
   {
     write(data, 0, data.length);
   }
-
+  
   public void write(byte[] data, int off, int len) throws IOException
   {
     // System.out.println("compressed:["+len+"]");
@@ -72,12 +73,12 @@ public final class VTPipedDecompressor extends OutputStream
     // System.out.println("decompressed data:" + readed);
     // out.write(data, off, len);
   }
-
+  
   public void flush() throws IOException
   {
     out.flush();
   }
-
+  
   public void close() throws IOException
   {
     // flush();

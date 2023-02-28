@@ -18,7 +18,7 @@ public class VTManagedClientSocket
   private VTClient vtclient;
   private ArrayBlockingQueue<VTManagedSocket> queue = new ArrayBlockingQueue<VTManagedSocket>(1);
   private volatile Thread interruptible;
-  //private int streams;
+  // private int streams;
   
   private class VTCloseableClientConnection implements VTManagedCloseableConnection
   {
@@ -67,7 +67,7 @@ public class VTManagedClientSocket
   {
     public void sessionStarted(VTClientSession session)
     {
-      //System.out.println("client.session.started()");
+      // System.out.println("client.session.started()");
       InputStream input = session.getConnection().getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12);
       OutputStream output = session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12);
       VTManagedSocket socket = new VTManagedSocket(new VTCloseableClientConnection(session.getConnection()), input, output);
@@ -77,7 +77,7 @@ public class VTManagedClientSocket
     
     public void sessionFinished(VTClientSession session)
     {
-      //System.out.println("client.session.finished()");
+      // System.out.println("client.session.finished()");
     }
   }
   

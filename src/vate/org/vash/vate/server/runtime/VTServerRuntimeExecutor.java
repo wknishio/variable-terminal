@@ -29,7 +29,7 @@ public class VTServerRuntimeExecutor extends VTTask
   private List<VTRuntimeProcess> processList;
   private List<VTRuntimeProcess> removedProcessStack;
   private File runtimeDirectory;
-
+  
   private static int PROCESS_COMMAND_UNKNOWN = -1; // ?
   private static int PROCESS_COMMAND_MANAGED = 1; // M
   private static int PROCESS_COMMAND_FREE = 2; // F
@@ -41,18 +41,18 @@ public class VTServerRuntimeExecutor extends VTTask
   private static int PROCESS_COMMAND_PATH = 8; // P
   private static int PROCESS_COMMAND_BASE64 = 9; // B
   private static int PROCESS_COMMAND_UTF8 = 10; // U
-
+  
   private static int PROCESS_SCOPE_NOT_FOUND = -1; // ?
   private static int PROCESS_SCOPE_ALL = 1; // A
   private static int PROCESS_SCOPE_COMMAND = 2; // C
   private static int PROCESS_SCOPE_NUMBER = 3; // O
-
+  
   // private static int PROCESS_VERBOSE_OFF = 1; //?
   // private static int PROCESS_VERBOSE_ON = 2; //V
-
+  
   // private static int PROCESS_RESTART_OFF = 1; //?
   // private static int PROCESS_RESTART_ON = 2; //R
-
+  
   public VTServerRuntimeExecutor(VTServerSession session)
   {
     // this.server = session.getServer();
@@ -68,32 +68,32 @@ public class VTServerRuntimeExecutor extends VTTask
   {
     return runtimeDirectory;
   }
-
+  
   public void setRuntimeBuilderWorkingDirectory(File runtimeDirectory)
   {
     this.runtimeDirectory = runtimeDirectory;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public String getCommand()
   {
     return command;
   }
-
+  
   public void setCommand(String command)
   {
     this.command = command;
   }
-
+  
   public void clear()
   {
     for (VTRuntimeProcess process : processList)
@@ -102,15 +102,15 @@ public class VTServerRuntimeExecutor extends VTTask
     }
     processList.clear();
   }
-
+  
   /*
-   * private void split() { y = 0; z = 0; for (x = 0; x < command.length(); x++) {
-   * if (command.charAt(x) == '|') { y++; } } splitCommand = new String[++y]; y =
-   * 0; for (x = 0; x <= command.length(); x++) { if ((x == command.length()) ||
-   * (command.charAt(x) == '|')) { splitCommand[y++] = command.substring(z, x); z
-   * = ++x; } } return; }
+   * private void split() { y = 0; z = 0; for (x = 0; x < command.length(); x++)
+   * { if (command.charAt(x) == '|') { y++; } } splitCommand = new String[++y];
+   * y = 0; for (x = 0; x <= command.length(); x++) { if ((x ==
+   * command.length()) || (command.charAt(x) == '|')) { splitCommand[y++] =
+   * command.substring(z, x); z = ++x; } } return; }
    */
-
+  
   public void run()
   {
     try
@@ -203,7 +203,7 @@ public class VTServerRuntimeExecutor extends VTTask
             parameter_amount += 1;
           }
         }
-
+        
         if (main_command_string.contains("V"))
         {
           process_verbose = true;
@@ -922,10 +922,10 @@ public class VTServerRuntimeExecutor extends VTTask
             }
             catch (Throwable e)
             {
-
+              
             }
           }
-
+          
           if (process_scope == PROCESS_SCOPE_COMMAND)
           {
             try

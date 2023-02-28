@@ -9,7 +9,7 @@ public final class VTByteArrayOutputStream extends ByteArrayOutputStream
   {
     super();
   }
-
+  
   public VTByteArrayOutputStream(int size)
   {
     super(size);
@@ -20,27 +20,27 @@ public final class VTByteArrayOutputStream extends ByteArrayOutputStream
     super();
     this.buf = buf;
   }
-
+  
   public final byte[] buf()
   {
     return this.buf;
   }
-
+  
   public final int count()
   {
     return this.count;
   }
-
+  
   public final void buf(byte[] buf)
   {
     this.buf = buf;
   }
-
+  
   public final void count(int count)
   {
     this.count = count;
   }
-
+  
   public final void close() throws IOException
   {
     // super.close();

@@ -19,19 +19,19 @@ public class VTGraphicalConsoleReader
   private static List<String> pendingLineBuffer = new LinkedList<String>();
   private static volatile Thread currentThread;
   /* static { commandHistory.add(""); } */
-
+  
   public static boolean readingLine()
   {
     return readingLine;
   }
-
+  
   public VTGraphicalConsoleReader()
   {
-
+    
     // currentLineBuffer = new StringBuffer("");
     // commandHistory = new LinkedList<String>();
   }
-
+  
   public static void interruptRead()
   {
     if (currentThread != null)
@@ -42,28 +42,28 @@ public class VTGraphicalConsoleReader
       }
       catch (Throwable e)
       {
-
+        
       }
     }
   }
-
+  
   /* public static Thread getCurrentThread() { return currenthread; } */
-
+  
   public static void close()
   {
     VTGraphicalConsole.close();
   }
-
+  
   public static boolean ready()
   {
     return VTGraphicalConsole.available() > 0;
   }
-
+  
   public static int read() throws InterruptedException
   {
     return VTGraphicalConsole.read();
   }
-
+  
   public static int read(char[] cbuf, int off, int len) throws InterruptedException
   {
     int readChars = 0;
@@ -83,12 +83,12 @@ public class VTGraphicalConsoleReader
     }
     return readChars;
   }
-
+  
   public static boolean isReadingLine()
   {
     return readingLine;
   }
-
+  
   public static void clearInput()
   {
     synchronized (pendingLineBuffer)
@@ -97,7 +97,7 @@ public class VTGraphicalConsoleReader
     }
     resetCurrentLine(echo);
   }
-
+  
   public synchronized static String readLine(boolean echo) throws InterruptedException
   {
     currentThread = Thread.currentThread();
@@ -208,7 +208,8 @@ public class VTGraphicalConsoleReader
             /*
              * if (currentLineBuffer.length() > 0) {
              * currentLineBuffer.deleteCharAt(currentLineBuffer. length() - 1 -
-             * VTGraphicalConsole.getCaretRecoilCount()); VTGraphicalConsole.write('\b');
+             * VTGraphicalConsole.getCaretRecoilCount());
+             * VTGraphicalConsole.write('\b');
              * VTGraphicalConsole.updateCaretPosition();
              * //VTGraphicalConsole.flushBuffered(); }
              */
@@ -324,7 +325,8 @@ public class VTGraphicalConsoleReader
             if (VTGraphicalConsole.getCaretRecoilCount() == 0)
             {
               /*
-               * VTGraphicalConsole.write(character); VTGraphicalConsole.flushBuffered(true);
+               * VTGraphicalConsole.write(character);
+               * VTGraphicalConsole.flushBuffered(true);
                */
               // int recoil =
               // VTGraphicalConsole.getCaretRecoilCount();
@@ -335,9 +337,9 @@ public class VTGraphicalConsoleReader
                   currentLineBuffer.append(character);
                   /*
                    * if (currentLineBuffer.length() > VTGraphicalConsole.
-                   * maxTerminalCharactersCount) { currentLineBuffer = currentLineBuffer.delete(0,
-                   * currentLineBuffer.length() - VTGraphicalConsole. maxTerminalCharactersCount);
-                   * }
+                   * maxTerminalCharactersCount) { currentLineBuffer =
+                   * currentLineBuffer.delete(0, currentLineBuffer.length() -
+                   * VTGraphicalConsole. maxTerminalCharactersCount); }
                    */
                   VTGraphicalConsole.write(character);
                   // VTGraphicalConsole.backspace(currentLineBuffer.length(),
@@ -348,9 +350,9 @@ public class VTGraphicalConsoleReader
                   currentLineBuffer.append(character);
                   /*
                    * if (currentLineBuffer.length() > VTGraphicalConsole.
-                   * maxTerminalCharactersCount) { currentLineBuffer = currentLineBuffer.delete(0,
-                   * currentLineBuffer.length() - VTGraphicalConsole. maxTerminalCharactersCount);
-                   * }
+                   * maxTerminalCharactersCount) { currentLineBuffer =
+                   * currentLineBuffer.delete(0, currentLineBuffer.length() -
+                   * VTGraphicalConsole. maxTerminalCharactersCount); }
                    */
                   VTGraphicalConsoleWriter.write(currentLineBuffer.toString());
                   // VTGraphicalConsole.setCaretRecoilCount(recoil);
@@ -362,9 +364,9 @@ public class VTGraphicalConsoleReader
                 currentLineBuffer.append(character);
                 /*
                  * if (currentLineBuffer.length() > VTGraphicalConsole.
-                 * maxTerminalCharactersCount) { currentLineBuffer = currentLineBuffer.delete(0,
-                 * currentLineBuffer.length() - VTGraphicalConsole. maxTerminalCharactersCount);
-                 * }
+                 * maxTerminalCharactersCount) { currentLineBuffer =
+                 * currentLineBuffer.delete(0, currentLineBuffer.length() -
+                 * VTGraphicalConsole. maxTerminalCharactersCount); }
                  */
               }
             }
@@ -392,9 +394,9 @@ public class VTGraphicalConsoleReader
                 currentLineBuffer.insert(currentLineBuffer.length() - recoil, character);
                 /*
                  * if (currentLineBuffer.length() > VTGraphicalConsole.
-                 * maxTerminalCharactersCount) { currentLineBuffer = currentLineBuffer.delete(0,
-                 * currentLineBuffer.length() - VTGraphicalConsole. maxTerminalCharactersCount);
-                 * }
+                 * maxTerminalCharactersCount) { currentLineBuffer =
+                 * currentLineBuffer.delete(0, currentLineBuffer.length() -
+                 * VTGraphicalConsole. maxTerminalCharactersCount); }
                  */
               }
               // VTGraphicalConsole.write(character);
@@ -550,8 +552,9 @@ public class VTGraphicalConsoleReader
               currentLineBuffer.append(character);
               /*
                * if (currentLineBuffer.length() >
-               * VTGraphicalConsole.maxTerminalCharactersCount) { currentLineBuffer =
-               * currentLineBuffer.delete(0, currentLineBuffer.length() -
+               * VTGraphicalConsole.maxTerminalCharactersCount) {
+               * currentLineBuffer = currentLineBuffer.delete(0,
+               * currentLineBuffer.length() -
                * VTGraphicalConsole.maxTerminalCharactersCount); }
                */
             }
@@ -566,9 +569,9 @@ public class VTGraphicalConsoleReader
                 currentLineBuffer.insert(currentLineBuffer.length() - VTGraphicalConsole.getCaretRecoilCount(), character);
                 /*
                  * if (currentLineBuffer.length() > VTGraphicalConsole.
-                 * maxTerminalCharactersCount) { currentLineBuffer = currentLineBuffer.delete(0,
-                 * currentLineBuffer.length() - VTGraphicalConsole. maxTerminalCharactersCount);
-                 * }
+                 * maxTerminalCharactersCount) { currentLineBuffer =
+                 * currentLineBuffer.delete(0, currentLineBuffer.length() -
+                 * VTGraphicalConsole. maxTerminalCharactersCount); }
                  */
               }
               // currentLineBuffer.setCharAt(currentLineBuffer.length()
@@ -654,12 +657,12 @@ public class VTGraphicalConsoleReader
     currentThread = null;
     return currentLine;
   }
-
+  
   /*
    * public synchronized static String readLine() throws InterruptedException {
    * return readLine(true); }
    */
-
+  
   private static void scrollCommandHistoryUp(boolean echo)
   {
     // System.out.println("scrollCommandHistoryUp!");
@@ -676,7 +679,7 @@ public class VTGraphicalConsoleReader
       }
     }
   }
-
+  
   private static void scrollCommandHistoryDown(boolean echo)
   {
     // System.out.println("scrollCommandHistoryDown!");
@@ -693,7 +696,7 @@ public class VTGraphicalConsoleReader
       }
     }
   }
-
+  
   private static void resetCurrentLine(boolean echo)
   {
     // System.out.println("currentLineBuffer.length: " +
@@ -713,7 +716,7 @@ public class VTGraphicalConsoleReader
     // currentLineBuffer.trimToSize();
     VTGraphicalConsole.updateCaretPosition();
   }
-
+  
   private static void restoreCurrentLine(boolean echo)
   {
     // System.out.println("currentLineBuffer.length: " +
@@ -733,7 +736,7 @@ public class VTGraphicalConsoleReader
     // VTGraphicalConsole.flush();
     // VTGraphicalConsole.input(commandHistory.get(commandHistoryPosition));
   }
-
+  
   public static void appendToCurrentLine(String string)
   {
     /*
@@ -834,32 +837,33 @@ public class VTGraphicalConsoleReader
     }
     // }
   }
-
+  
   /*
    * private static void completeCurrentLine(boolean echo) { if (echo) { if
    * (commandHistory.size() > 0) { if (commandHistoryPosition >=
-   * commandHistory.size()) { commandHistoryPosition = commandHistory.size() - 1;
-   * } if (currentLineBuffer.length() <
+   * commandHistory.size()) { commandHistoryPosition = commandHistory.size() -
+   * 1; } if (currentLineBuffer.length() <
    * commandHistory.get(commandHistoryPosition).length()) {
    * VTGraphicalConsole.print(commandHistory.get(commandHistoryPosition).
    * substring(currentLineBuffer.length()));
    * currentLineBuffer.append(commandHistory.get(commandHistoryPosition).
    * substring (currentLineBuffer.length())); } } } }
    */
-
+  
   /*
    * private static void continueCurrentLine(boolean echo) {
    * //System.out.println("currentLineBuffer.length: " +
-   * currentLineBuffer.length()); if (echo) { if (commandHistory.size() > 0) { if
-   * (commandHistoryPosition >= commandHistory.size()) { commandHistoryPosition =
-   * commandHistory.size() - 1; } if (currentLineBuffer.length() <
+   * currentLineBuffer.length()); if (echo) { if (commandHistory.size() > 0) {
+   * if (commandHistoryPosition >= commandHistory.size()) {
+   * commandHistoryPosition = commandHistory.size() - 1; } if
+   * (currentLineBuffer.length() <
    * commandHistory.get(commandHistoryPosition).length()) {
-   * VTGraphicalConsole.write(commandHistory.get(commandHistoryPosition). charAt(
-   * currentLineBuffer.length())); VTGraphicalConsole.flush();
-   * currentLineBuffer.append(commandHistory.get(commandHistoryPosition). charAt(
-   * currentLineBuffer.length())); } } } }
+   * VTGraphicalConsole.write(commandHistory.get(commandHistoryPosition).
+   * charAt( currentLineBuffer.length())); VTGraphicalConsole.flush();
+   * currentLineBuffer.append(commandHistory.get(commandHistoryPosition).
+   * charAt( currentLineBuffer.length())); } } } }
    */
-
+  
   public static void appendToPendingLine(String line)
   {
     synchronized (pendingLineBuffer)
@@ -881,7 +885,7 @@ public class VTGraphicalConsoleReader
       }
     }
   }
-
+  
   private static String getFromPendingLine()
   {
     synchronized (pendingLineBuffer)
@@ -896,7 +900,7 @@ public class VTGraphicalConsoleReader
       }
     }
   }
-
+  
   private static String removeFromPendingLine()
   {
     synchronized (pendingLineBuffer)
@@ -911,7 +915,7 @@ public class VTGraphicalConsoleReader
       }
     }
   }
-
+  
   private static int getPendingLineSize()
   {
     synchronized (pendingLineBuffer)
@@ -919,7 +923,7 @@ public class VTGraphicalConsoleReader
       return pendingLineBuffer.size();
     }
   }
-
+  
   public static void resumeOutputFlush()
   {
     if (echo && !VTGraphicalConsole.isFlushInterrupted())
@@ -932,7 +936,7 @@ public class VTGraphicalConsoleReader
       VTGraphicalConsole.flushBuffered(false);
     }
   }
-
+  
   private static boolean checkCurrentLineForCaretPositionChange()
   {
     String currentLine = currentLineBuffer.toString();
@@ -952,7 +956,7 @@ public class VTGraphicalConsoleReader
     }
     return false;
   }
-
+  
   private static boolean checkCurrentLineForReplace()
   {
     String currentLine = currentLineBuffer.toString();
@@ -972,7 +976,7 @@ public class VTGraphicalConsoleReader
     }
     return false;
   }
-
+  
   /*
    * public static void appendToPendingLine(String string) {
    * pendingLineBuffer.append(string); }

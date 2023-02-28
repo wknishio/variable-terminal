@@ -11,5 +11,5 @@ public class VTAWTControlEvent
   public int keyModifiers;
   public int keyLocation;
   public char keyChar;
-  //public boolean refreshed;
+  // public boolean refreshed;
 }

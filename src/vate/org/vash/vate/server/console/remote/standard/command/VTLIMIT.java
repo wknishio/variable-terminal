@@ -12,7 +12,7 @@ public class VTLIMIT extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTLIMIT [RATE] [SIDE]");
     this.setAbbreviatedSyntax("*VTLM [RT] [SI]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -57,7 +57,7 @@ public class VTLIMIT extends VTServerStandardRemoteConsoleCommandProcessor
       }
       catch (NumberFormatException e)
       {
-
+        
       }
     }
     else if (parsed.length >= 3)
@@ -91,13 +91,13 @@ public class VTLIMIT extends VTServerStandardRemoteConsoleCommandProcessor
       }
       catch (NumberFormatException e)
       {
-
+        
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

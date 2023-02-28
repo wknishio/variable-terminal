@@ -28,7 +28,7 @@ public class VTShellProcessor
   public static final int SHELL_TYPE_GROOVYSH = 2;
   
   private int shellType = SHELL_TYPE_PROCESS;
-  //private boolean supressEchoShell = true;
+  // private boolean supressEchoShell = true;
   
   private VTRuntimeProcess shellProcess;
   
@@ -43,10 +43,10 @@ public class VTShellProcessor
   
   private volatile Charset shellCharset;
   
-  //private ExecutorService threads;
+  // private ExecutorService threads;
   
   private Interpreter beanshell;
-  //private Groovysh groovyshell;
+  // private Groovysh groovyshell;
   
   private List<Closeable> closeables = new LinkedList<Closeable>();
   
@@ -75,16 +75,15 @@ public class VTShellProcessor
     return shellType;
   }
   
-  //public void setSuppressEchoShell(boolean supressEchoShell)
-  //{
-    //this.supressEchoShell = supressEchoShell;
-  //}
+  // public void setSuppressEchoShell(boolean supressEchoShell)
+  // {
+  // this.supressEchoShell = supressEchoShell;
+  // }
   
-  //public void setThreads(ExecutorService threads)
-  //{
-    //this.threads = threads;
-  //}
-  
+  // public void setThreads(ExecutorService threads)
+  // {
+  // this.threads = threads;
+  // }
   
   public boolean startShell() throws Throwable
   {
@@ -166,9 +165,9 @@ public class VTShellProcessor
       
       beanshell = new Interpreter(in, out, out, true);
       beanshell.setExitOnEOF(false);
-      //beanshell.set( "bsh.args", new String[] {});
+      // beanshell.set( "bsh.args", new String[] {});
       Interpreter.setShutdownOnExit(false);
-            
+      
       shellThread = new Thread()
       {
         public void run()
@@ -205,7 +204,7 @@ public class VTShellProcessor
   @SuppressWarnings("deprecation")
   public void stopShell()
   {
-    //System.out.println("stopShell(started)");
+    // System.out.println("stopShell(started)");
     if (shellProcess.isAlive())
     {
       try
@@ -274,7 +273,7 @@ public class VTShellProcessor
 //        
 //      }
     }
-    //System.out.println("stopShell(finished)");
+    // System.out.println("stopShell(finished)");
   }
   
   public int waitFor() throws InterruptedException
@@ -304,22 +303,22 @@ public class VTShellProcessor
   {
     return shellErrorStream;
   }
-
+  
   public OutputStream getShellOutputStream()
   {
     return shellOutputStream;
   }
-
+  
   public Reader getShellOutputReader()
   {
     return shellOutputReader;
   }
-
+  
   public Reader getShellErrorReader()
   {
     return shellErrorReader;
   }
-
+  
   public Writer getShellCommandExecutor()
   {
     return shellCommandExecutor;

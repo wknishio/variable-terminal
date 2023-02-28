@@ -14,16 +14,16 @@ import org.vash.vate.console.VTConsole;
 public class VTGraphicalConsolePasteActionListener implements ActionListener
 {
   private Clipboard systemClipboard;
-
+  
   public VTGraphicalConsolePasteActionListener()
   {
     systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
   }
-
+  
   @SuppressWarnings("unchecked")
   public void actionPerformed(ActionEvent e)
   {
-
+    
     try
     {
       if (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor))
@@ -50,15 +50,15 @@ public class VTGraphicalConsolePasteActionListener implements ActionListener
     }
     catch (UnsupportedFlavorException e1)
     {
-
+      
     }
     catch (IOException e1)
     {
-
+      
     }
     catch (Throwable e1)
     {
-
+      
     }
   }
 }

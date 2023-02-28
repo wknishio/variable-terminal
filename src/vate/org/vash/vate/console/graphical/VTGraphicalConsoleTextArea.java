@@ -17,7 +17,7 @@ public class VTGraphicalConsoleTextArea extends TextArea
   // private volatile int trueCaretPosition;
   private static final long serialVersionUID = 1L;
   private Clipboard systemClipboard;
-
+  
   public VTGraphicalConsoleTextArea(String text, int rows, int columns, int scrollbars)
   {
     super(text, rows, columns, scrollbars);
@@ -36,7 +36,7 @@ public class VTGraphicalConsoleTextArea extends TextArea
 //			}
 //		});
   }
-
+  
   public void copyText()
   {
     try
@@ -52,10 +52,10 @@ public class VTGraphicalConsoleTextArea extends TextArea
     }
     catch (Throwable ex)
     {
-
+      
     }
   }
-
+  
   public void copyAllText()
   {
     try
@@ -71,10 +71,10 @@ public class VTGraphicalConsoleTextArea extends TextArea
     }
     catch (Throwable ex)
     {
-
+      
     }
   }
-
+  
   public void pasteText()
   {
     try
@@ -102,18 +102,18 @@ public class VTGraphicalConsoleTextArea extends TextArea
     }
     catch (UnsupportedFlavorException e1)
     {
-
+      
     }
     catch (IOException e1)
     {
-
+      
     }
     catch (Throwable e1)
     {
-
+      
     }
   }
-
+  
 //	public void repaint()
 //	{
 //		

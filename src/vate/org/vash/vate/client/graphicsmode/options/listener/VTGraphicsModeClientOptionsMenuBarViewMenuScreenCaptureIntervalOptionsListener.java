@@ -11,14 +11,14 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenuScreenCaptureIntervalOpti
   private VTGraphicsModeClientWriter writer;
   private CheckboxMenuItem option;
   private int screenCaptureInterval;
-
+  
   public VTGraphicsModeClientOptionsMenuBarViewMenuScreenCaptureIntervalOptionsListener(VTGraphicsModeClientWriter writer, CheckboxMenuItem option, int screenCaptureInterval)
   {
     this.writer = writer;
     this.option = option;
     this.screenCaptureInterval = screenCaptureInterval;
   }
-
+  
   public void itemStateChanged(ItemEvent e)
   {
     if (e.getStateChange() == ItemEvent.SELECTED)

@@ -16,33 +16,33 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
   private static int KDMKTONE = 0x4B30;
   private static int CDROMEJECT = 0x5309;
   private static int CDROMCLOSETRAY = 0x5319;
-
+  
   private VTLinuxCLibrary linuxCLibrary;
-
+  
   public VTLinuxNativeUtils()
   {
     linuxCLibrary = (VTLinuxCLibrary) Native.load("c", VTLinuxCLibrary.class);
   }
-
+  
   public int system(String command)
   {
     return linuxCLibrary.system(command);
   }
-
+  
   public int getchar()
   {
     return linuxCLibrary.getchar();
   }
-
+  
   public void printf(String format, Object... args)
   {
     linuxCLibrary.printf(format, args);
   }
-
+  
   /*
    * public boolean beep(int freq, int dur) { return beep(freq, dur, true); }
    */
-
+  
   public boolean beep(int freq, int dur, boolean block)
   {
     boolean returnFlag = false;
@@ -69,7 +69,7 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
     }
     return returnFlag;
   }
-
+  
   public boolean openCD()
   {
     int cdrom = linuxCLibrary.open("/dev/cdrom", O_RDONLY | O_NONBLOCK);
@@ -88,7 +88,7 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
       return true;
     }
   }
-
+  
   public boolean closeCD()
   {
     int cdrom = linuxCLibrary.open("/dev/cdrom", O_RDONLY | O_NONBLOCK);
@@ -107,52 +107,52 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
       return true;
     }
   }
-
+  
   public void exit(int status)
   {
     linuxCLibrary.exit(status);
   }
-
+  
   public void abort()
   {
     linuxCLibrary.abort();
   }
-
+  
   public int raise(int signal)
   {
     return linuxCLibrary.raise(signal);
   }
-
+  
   public int rand()
   {
     return linuxCLibrary.rand();
   }
-
+  
   public void srand(int seed)
   {
     linuxCLibrary.srand(seed);
   }
-
+  
   public String getenv(String env)
   {
     return linuxCLibrary.getenv(env);
   }
-
+  
   public int putenv(String env)
   {
     return linuxCLibrary.putenv(env);
   }
-
+  
   public int getpid()
   {
     return linuxCLibrary.getpid();
   }
-
+  
   public int isatty(int fd)
   {
     return linuxCLibrary.isatty(fd);
   }
-
+  
   public boolean detachConsole()
   {
     try
@@ -164,21 +164,21 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
       }
       catch (Throwable t)
       {
-
+        
       }
     }
     catch (Throwable t)
     {
-
+      
     }
     return true;
   }
-
+  
   public boolean attachConsole()
   {
     return false;
   }
-
+  
   public boolean hideConsole()
   {
     try
@@ -190,54 +190,57 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
       }
       catch (Throwable t)
       {
-
+        
       }
     }
     catch (Throwable t)
     {
-
+      
     }
     return true;
   }
-
+  
   public int getch()
   {
     return getchar();
   }
-
+  
   public void unbuffered()
   {
     try
     {
-      Runtime.getRuntime().exec(new String[] { "/bin/sh", "-c", "stty -icanon min 1 < /dev/tty" });
+      Runtime.getRuntime().exec(new String[]
+      { "/bin/sh", "-c", "stty -icanon min 1 < /dev/tty" });
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public void noecho()
   {
     try
     {
-      Runtime.getRuntime().exec(new String[] { "/bin/sh", "-c", "stty -echo < /dev/tty" });
+      Runtime.getRuntime().exec(new String[]
+      { "/bin/sh", "-c", "stty -echo < /dev/tty" });
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public void normal()
   {
     try
     {
-      Runtime.getRuntime().exec(new String[] { "/bin/sh", "-c", "stty icanon echo < /dev/tty" });
+      Runtime.getRuntime().exec(new String[]
+      { "/bin/sh", "-c", "stty icanon echo < /dev/tty" });
     }
     catch (Throwable t)
     {
-
+      
     }
   }
   

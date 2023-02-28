@@ -8,14 +8,14 @@ public final class VTInterruptibleStreamRedirector implements Runnable
 {
   private static final int redirectorBufferSize = VT.VT_SMALL_DATA_BUFFER_SIZE;
   private volatile boolean stopped;
-  //private int available;
+  // private int available;
   private int readed;
   private final byte[] redirectorBuffer = new byte[redirectorBufferSize];
   private final InputStream source;
   private final OutputStream destination;
-  //private Thread redirectThread;
+  // private Thread redirectThread;
   // private VTTunnelSession session;
-
+  
   public VTInterruptibleStreamRedirector(InputStream source, OutputStream destination)
   {
     this.source = source;
@@ -26,10 +26,10 @@ public final class VTInterruptibleStreamRedirector implements Runnable
   {
     stopped = true;
   }
-
+  
   public final void run()
   {
-    //redirectThread = Thread.currentThread();
+    // redirectThread = Thread.currentThread();
     while (!stopped)
     {
       try

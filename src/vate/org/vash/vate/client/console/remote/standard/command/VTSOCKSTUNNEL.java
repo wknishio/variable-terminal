@@ -17,7 +17,7 @@ public class VTSOCKSTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTSOCKSTUNNEL [SIDE] [[BIND] PORT] [USER PASSWORD]");
     this.setAbbreviatedSyntax("*VTSTN [SD] [[BD] PT] [US PW]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -349,7 +349,7 @@ public class VTSOCKSTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
       VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
     }
   }
-
+  
   public void close()
   {
     

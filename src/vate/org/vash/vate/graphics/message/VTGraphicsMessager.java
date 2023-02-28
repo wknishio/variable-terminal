@@ -26,7 +26,7 @@ public class VTGraphicsMessager
   private static BufferedImage warningIcon32;
   // private static BufferedImage displayIcon;
   private static Method setIconImage;
-
+  
   static
   {
     try
@@ -43,14 +43,14 @@ public class VTGraphicsMessager
     try
     {
       setIconImage = Dialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
-      //setIconImage.setAccessible(true);
+      // setIconImage.setAccessible(true);
     }
     catch (Throwable e)
     {
       
     }
   }
-
+  
   public static void dispose()
   {
     if (warningIcon16 != null)
@@ -64,7 +64,7 @@ public class VTGraphicsMessager
       warningIcon32 = null;
     }
   }
-
+  
   public static void showAlert(Frame owner, String title, String message)
   {
     if (GraphicsEnvironment.isHeadless())
@@ -73,7 +73,7 @@ public class VTGraphicsMessager
     }
     showAlert(null, owner, title, message);
   }
-
+  
   public static void showAlert(GraphicsDevice device, Frame owner, String title, String message)
   {
     if (GraphicsEnvironment.isHeadless())
@@ -99,12 +99,12 @@ public class VTGraphicsMessager
         parent.setUndecorated(true);
       }
       // invisible.setUndecorated(true);
-
+      
       // JOptionPane pane = new JOptionPane(message,
       // JOptionPane.WARNING_MESSAGE,
       // JOptionPane.DEFAULT_OPTION);
       // pane.createDialog(invisible, title);
-
+      
       final Dialog dialog = new Dialog(parent, false);
       try
       {
@@ -117,28 +117,28 @@ public class VTGraphicsMessager
       {
         
       }
-
+      
       // int dpi = Toolkit.getDefaultToolkit().getScreenResolution();
       dialog.setTitle(title);
-
+      
       // Panel main = new Panel();
       // main.setLayout(new GridLayout(2, 1));
       Panel p1 = new Panel();
       p1.setLayout(new BorderLayout());
-
+      
       VTIconDisplay display = new VTIconDisplay();
       display.setFocusable(false);
       display.setImage(warningIcon32, 32, 32);
-
+      
       Label messageLabel = new Label(message);
       Label titleLabel = new Label(title);
-
+      
       messageLabel.setAlignment(Label.CENTER);
       titleLabel.setAlignment(Label.CENTER);
-
+      
       messageLabel.setFocusable(false);
       titleLabel.setFocusable(false);
-
+      
       p1.add(titleLabel, BorderLayout.NORTH);
       p1.add(display, BorderLayout.CENTER);
       p1.add(messageLabel, BorderLayout.SOUTH);
@@ -147,7 +147,7 @@ public class VTGraphicsMessager
       dialog.addKeyListener(new KeyListener()
       {
         private volatile boolean pressed = false;
-
+        
         public void keyPressed(KeyEvent e)
         {
           if (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_ESCAPE)
@@ -160,7 +160,7 @@ public class VTGraphicsMessager
             // e.getID() == KeyEvent.key_p
           }
         }
-
+        
         public void keyReleased(KeyEvent e)
         {
           if (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_ESCAPE)
@@ -186,20 +186,20 @@ public class VTGraphicsMessager
             // e.getKeyChar(), e.getKeyLocation()));
           }
         }
-
+        
         public void keyTyped(KeyEvent e)
         {
           /*
-           * if (e.getKeyChar() == '\n') { button.dispatchEvent(new KeyEvent(button,
-           * e.getID(), e.getWhen(), e.getModifiersEx(), e.getKeyCode(), ' ',
-           * e.getKeyLocation())); }
+           * if (e.getKeyChar() == '\n') { button.dispatchEvent(new
+           * KeyEvent(button, e.getID(), e.getWhen(), e.getModifiersEx(),
+           * e.getKeyCode(), ' ', e.getKeyLocation())); }
            */
         }
       });
       button.addKeyListener(new KeyListener()
       {
         private volatile boolean pressed = false;
-
+        
         public void keyPressed(KeyEvent e)
         {
           if (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_ESCAPE)
@@ -212,7 +212,7 @@ public class VTGraphicsMessager
             // e.getID() == KeyEvent.key_p
           }
         }
-
+        
         public void keyReleased(KeyEvent e)
         {
           if (e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_ESCAPE)
@@ -238,13 +238,13 @@ public class VTGraphicsMessager
             // e.getKeyChar(), e.getKeyLocation()));
           }
         }
-
+        
         public void keyTyped(KeyEvent e)
         {
           /*
-           * if (e.getKeyChar() == '\n') { button.dispatchEvent(new KeyEvent(button,
-           * e.getID(), e.getWhen(), e.getModifiersEx(), e.getKeyCode(), ' ',
-           * e.getKeyLocation())); }
+           * if (e.getKeyChar() == '\n') { button.dispatchEvent(new
+           * KeyEvent(button, e.getID(), e.getWhen(), e.getModifiersEx(),
+           * e.getKeyCode(), ' ', e.getKeyLocation())); }
            */
         }
       });
@@ -292,24 +292,25 @@ public class VTGraphicsMessager
       // dialog.setMinimumSize(dialog.getSize());
       dialog.setMaximumSize(dialog.getSize());
       dialog.setLocationRelativeTo(parent);
-
+      
       dialog.addWindowListener(new WindowListener()
       {
         public void windowActivated(WindowEvent e)
         {
           button.requestFocusInWindow();
         }
-
+        
         public void windowClosed(WindowEvent e)
         {
-
+          
         }
-
+        
         public void windowClosing(WindowEvent e)
         {
           /*
-           * Container container = e.getComponent().getParent(); if (container instanceof
-           * Frame) { Frame frame = (Frame) container; frame.dispose(); }
+           * Container container = e.getComponent().getParent(); if (container
+           * instanceof Frame) { Frame frame = (Frame) container;
+           * frame.dispose(); }
            */
           dialog.setVisible(false);
           dialog.dispose();
@@ -323,24 +324,24 @@ public class VTGraphicsMessager
             parent.dispose();
           }
         }
-
+        
         public void windowDeactivated(WindowEvent e)
         {
-
+          
         }
-
+        
         public void windowDeiconified(WindowEvent e)
         {
           // dialog.set
           button.requestFocusInWindow();
         }
-
+        
         public void windowIconified(WindowEvent e)
         {
           // dialog.setVisible(true);
           // dialog.toFront();
         }
-
+        
         public void windowOpened(WindowEvent e)
         {
           button.requestFocusInWindow();
@@ -362,7 +363,7 @@ public class VTGraphicsMessager
       // e.printStackTrace();
     }
   }
-
+  
   /*
    * public static void main(String[] args) throws Exception {
    * VTGraphicsMessager.showAlert("ALERTA", "AMARELO");

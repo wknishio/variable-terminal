@@ -21,7 +21,7 @@ public class VTGraphicsModeClientStatusBar extends Panel
   private Label viewStatusLabel;
   private Label viewQualityLabel;
   private Label controlStatusLabel;
-
+  
   public VTGraphicsModeClientStatusBar()
   {
     // this.voidLabel = new Label("", Label.LEFT);
@@ -49,27 +49,28 @@ public class VTGraphicsModeClientStatusBar extends Panel
     this.add(viewQualityLabel);
     this.add(controlStatusLabel);
   }
-
+  
   /*
-   * public void setStatusBarFont(Font font) { this.modeStatusLabel.setFont(font);
-   * this.viewStatusLabel.setFont(font); this.controlStatusLabel.setFont(font); }
+   * public void setStatusBarFont(Font font) {
+   * this.modeStatusLabel.setFont(font); this.viewStatusLabel.setFont(font);
+   * this.controlStatusLabel.setFont(font); }
    */
-
+  
   public void setModeStatusText(String text)
   {
     this.modeStatusLabel.setText(text);
   }
-
+  
   public void setViewStatusText(String text)
   {
     this.viewStatusLabel.setText(text);
   }
-
+  
   public void setViewQualityText(String text)
   {
     this.viewQualityLabel.setText(text);
   }
-
+  
   public void setControlStatusText(String text)
   {
     this.controlStatusLabel.setText(text);

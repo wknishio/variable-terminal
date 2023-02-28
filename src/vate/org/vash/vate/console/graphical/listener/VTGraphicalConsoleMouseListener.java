@@ -14,14 +14,14 @@ public class VTGraphicalConsoleMouseListener implements MouseListener
 {
   // private Clipboard systemClipboard;
   private VTGraphicalConsolePopupMenu popupMenu;
-
+  
   public VTGraphicalConsoleMouseListener(VTGraphicalConsolePopupMenu popupMenu)
   {
     // this.systemClipboard =
     // Toolkit.getDefaultToolkit().getSystemClipboard();
     this.popupMenu = popupMenu;
   }
-
+  
   public void mouseClicked(MouseEvent e)
   {
     /*
@@ -30,34 +30,35 @@ public class VTGraphicalConsoleMouseListener implements MouseListener
     // VTGraphicalConsole.updateCaretPosition();
     e.consume();
   }
-
+  
   public void mouseEntered(MouseEvent e)
   {
     e.consume();
   }
-
+  
   public void mouseExited(MouseEvent e)
   {
     e.consume();
   }
-
+  
   public void mousePressed(MouseEvent e)
   {
     if (e.isPopupTrigger())
     {
       popupMenu.show(e.getComponent(), e.getX(), e.getY());
       /*
-       * String selectedText = VTGraphicalConsole.getSelectedText(); if (selectedText
-       * != null) { StringSelection text = new StringSelection(selectedText);
-       * systemClipboard.setContents(text, null);
+       * String selectedText = VTGraphicalConsole.getSelectedText(); if
+       * (selectedText != null) { StringSelection text = new
+       * StringSelection(selectedText); systemClipboard.setContents(text, null);
        * //VTGraphicalConsole.unselectAllText();
        * VTGraphicalConsole.updateCaretPosition(); if
        * (VTGraphicalConsole.isFlushInterrupted()) {
        * VTGraphicalConsole.clearCaretPosition(); } } else { try { if
-       * (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor)) { String
-       * text = systemClipboard.getData(DataFlavor.stringFlavor).toString();
-       * VTGraphicalConsole.input(text); } } catch (UnsupportedFlavorException e1) { }
-       * catch (IOException e1) { } }
+       * (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor)) {
+       * String text =
+       * systemClipboard.getData(DataFlavor.stringFlavor).toString();
+       * VTGraphicalConsole.input(text); } } catch (UnsupportedFlavorException
+       * e1) { } catch (IOException e1) { } }
        */
       e.consume();
     }
@@ -91,7 +92,7 @@ public class VTGraphicalConsoleMouseListener implements MouseListener
 //			/* if (e.getClickCount() > 1) { e.consume(); } */
 //		}
   }
-
+  
   public void mouseReleased(MouseEvent e)
   {
     if (e.isPopupTrigger())
@@ -99,17 +100,18 @@ public class VTGraphicalConsoleMouseListener implements MouseListener
       popupMenu.show(e.getComponent(), e.getX(), e.getY());
       // System.out.println(e.getComponent().getName());
       /*
-       * String selectedText = VTGraphicalConsole.getSelectedText(); if (selectedText
-       * != null) { StringSelection text = new StringSelection(selectedText);
-       * systemClipboard.setContents(text, null);
+       * String selectedText = VTGraphicalConsole.getSelectedText(); if
+       * (selectedText != null) { StringSelection text = new
+       * StringSelection(selectedText); systemClipboard.setContents(text, null);
        * //VTGraphicalConsole.unselectAllText();
        * VTGraphicalConsole.updateCaretPosition(); if
        * (VTGraphicalConsole.isFlushInterrupted()) {
        * VTGraphicalConsole.clearCaretPosition(); } } else { try { if
-       * (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor)) { String
-       * text = systemClipboard.getData(DataFlavor.stringFlavor).toString();
-       * VTGraphicalConsole.input(text); } } catch (UnsupportedFlavorException e1) { }
-       * catch (IOException e1) { } }
+       * (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor)) {
+       * String text =
+       * systemClipboard.getData(DataFlavor.stringFlavor).toString();
+       * VTGraphicalConsole.input(text); } } catch (UnsupportedFlavorException
+       * e1) { } catch (IOException e1) { } }
        */
       e.consume();
     }

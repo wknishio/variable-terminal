@@ -17,7 +17,7 @@ public class VTNETWORKS extends VTServerStandardLocalConsoleCommandProcessor
     try
     {
       getHardwareAddress = NetworkInterface.class.getMethod("getHardwareAddress");
-      //getHardwareAddress.setAccessible(true);
+      // getHardwareAddress.setAccessible(true);
     }
     catch (Throwable t)
     {
@@ -32,7 +32,7 @@ public class VTNETWORKS extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTNETWORKS");
     this.setAbbreviatedSyntax("*VTNTS");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     message.setLength(0);
@@ -50,7 +50,7 @@ public class VTNETWORKS extends VTServerStandardLocalConsoleCommandProcessor
           continue;
         }
         message.append("\nVT>Name: [" + networkInterface.getName() + "]" + "\nVT>Display name: [" + networkInterface.getDisplayName() + "]");
-
+        
         try
         {
           if (getHardwareAddress != null)
@@ -72,7 +72,7 @@ public class VTNETWORKS extends VTServerStandardLocalConsoleCommandProcessor
         {
           // Hardware address available in 1.6 and beyond but we support 1.5
         }
-
+        
         while (addresses.hasMoreElements())
         {
           InetAddress address = addresses.nextElement();
@@ -91,9 +91,9 @@ public class VTNETWORKS extends VTServerStandardLocalConsoleCommandProcessor
     }
     VTConsole.print(message.toString());
   }
-
+  
   public void close()
   {
-
+    
   }
 }

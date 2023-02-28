@@ -12,24 +12,24 @@ public class VTServerSessionListViewer extends VTTask
   private volatile boolean finished;
   private VTServerSession session;
   private StringBuilder message;
-
+  
   public VTServerSessionListViewer(VTServerSession session)
   {
     this.session = session;
     this.message = new StringBuilder();
     this.finished = true;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public void run()
   {
     try
@@ -77,14 +77,14 @@ public class VTServerSessionListViewer extends VTTask
         }
         catch (IOException e1)
         {
-
+          
         }
         finished = true;
       }
     }
     catch (Throwable e)
     {
-
+      
     }
     finished = true;
   }

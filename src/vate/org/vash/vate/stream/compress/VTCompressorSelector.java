@@ -31,14 +31,15 @@ import net.jpountz.lz4.LZ4BlockOutputStream;
 import net.jpountz.lz4.LZ4Factory;
 import net.jpountz.xxhash.XXHashFactory;
 
-@SuppressWarnings({ "unused", "deprecation" })
+@SuppressWarnings(
+{ "unused", "deprecation" })
 public class VTCompressorSelector
 {
   public static OutputStream createDirectZlibOutputStream(OutputStream out)
   {
     return createFlushBufferedSyncFlushDeflaterOutputStreamDefaultStrategy(out);
   }
-
+  
   public static InputStream createDirectZlibInputStream(InputStream in)
   {
     return createFlushBufferedSyncFlushInflaterInputStream(in);
@@ -48,17 +49,17 @@ public class VTCompressorSelector
   {
     return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
   }
-
+  
   public static InputStream createDirectZstdInputStream(InputStream in)
   {
     return new BufferedInputStream(new VTAirliftInputStream(in, new ZstdDecompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
   }
-
+  
   public static OutputStream createBufferedZlibOutputStream(OutputStream out)
   {
     return createFlushBufferedSyncFlushDeflaterOutputStream(out);
   }
-
+  
   public static InputStream createBufferedZlibInputStream(InputStream in)
   {
     return createFlushBufferedSyncFlushInflaterInputStream(in);
@@ -68,15 +69,16 @@ public class VTCompressorSelector
   {
     return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
   }
-
+  
   public static InputStream createBufferedZstdInputStream(InputStream in)
   {
     return new BufferedInputStream(new VTAirliftInputStream(in, new ZstdDecompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
   }
-
+  
   public static OutputStream createFlushBufferedSyncFlushDeflaterOutputStream(OutputStream out)
   {
-    //out = new VTBufferedOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
+    // out = new VTBufferedOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE,
+    // true);
     try
     {
       Deflater javaDeflater = new Deflater(Deflater.BEST_SPEED, true);
@@ -108,7 +110,8 @@ public class VTCompressorSelector
   
   public static OutputStream createFlushBufferedSyncFlushDeflaterOutputStreamDefaultStrategy(OutputStream out)
   {
-    //out = new VTBufferedOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
+    // out = new VTBufferedOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE,
+    // true);
     try
     {
       Deflater javaDeflater = new Deflater(Deflater.BEST_SPEED, true);
@@ -140,7 +143,8 @@ public class VTCompressorSelector
   
   public static OutputStream createFlushBufferedSyncFlushDeflaterOutputStreamHuffmanOnlyStrategy(OutputStream out)
   {
-    //out = new VTBufferedOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
+    // out = new VTBufferedOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE,
+    // true);
     try
     {
       Deflater javaDeflater = new Deflater(Deflater.BEST_SPEED, true);
@@ -169,12 +173,13 @@ public class VTCompressorSelector
     }
     return null;
   }
-
+  
   public static InputStream createFlushBufferedSyncFlushInflaterInputStream(InputStream in)
   {
     try
     {
-      //return new InflaterInputStream(in, VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
+      // return new InflaterInputStream(in, VT.VT_COMPRESSED_DATA_BUFFER_SIZE,
+      // true);
       ZInputStream jzlibInflater = new ZInputStream(in, true, VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
       jzlibInflater.setFlushMode(JZlib.Z_SYNC_FLUSH);
       return new BufferedInputStream(jzlibInflater, VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
@@ -186,33 +191,33 @@ public class VTCompressorSelector
     return null;
     // return in;
   }
-
+  
   public static OutputStream createDirectLz4OutputStream(OutputStream out)
   {
     // return out;
     return new LZ4BlockOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true);
   }
-
+  
   public static InputStream createDirectLz4InputStream(InputStream in)
   {
     // return in;
     return new LZ4BlockInputStream(in, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false);
   }
-
+  
   public static OutputStream createBufferedLz4OutputStream(OutputStream out)
   {
     // return out;
-    //return createFlushBufferedSyncFlushDeflaterOutputStream(out);
+    // return createFlushBufferedSyncFlushDeflaterOutputStream(out);
     return new VTBufferedOutputStream(new LZ4BlockOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
   }
-
+  
   public static InputStream createBufferedLz4InputStream(InputStream in)
   {
     // return in;
-    //return createFlushBufferedSyncFlushInflaterInputStream(in);
+    // return createFlushBufferedSyncFlushInflaterInputStream(in);
     return new BufferedInputStream(new LZ4BlockInputStream(in, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
   }
-
+  
   public static OutputStream createFlushBufferedSnappyOutputStream(OutputStream out)
   {
     // return out;
@@ -222,11 +227,11 @@ public class VTCompressorSelector
     }
     catch (Throwable t)
     {
-
+      
     }
     return null;
   }
-
+  
   public static InputStream createFlushBufferedSnappyInputStream(InputStream in)
   {
     // return in;
@@ -236,11 +241,11 @@ public class VTCompressorSelector
     }
     catch (Throwable t)
     {
-
+      
     }
     return null;
   }
-
+  
   public static OutputStream createSnappyOutputStream(OutputStream out)
   {
     try
@@ -249,11 +254,11 @@ public class VTCompressorSelector
     }
     catch (Throwable t)
     {
-
+      
     }
     return null;
   }
-
+  
   public static InputStream createSnappyInputStream(InputStream in)
   {
     try
@@ -262,9 +267,9 @@ public class VTCompressorSelector
     }
     catch (Throwable t)
     {
-
+      
     }
     return null;
   }
-
+  
 }

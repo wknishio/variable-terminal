@@ -19,32 +19,32 @@ import org.vash.vate.tunnel.channel.VTTunnelChannelSocketListener;
 
 public class VTTunnelConnection
 {
-  //public static final int TUNNEL_TYPE_TCP = 0;
-  //public static final int TUNNEL_TYPE_SOCKS = 1;
-  //public static final int TUNNEL_TYPE_STREAM = 2;
-
+  // public static final int TUNNEL_TYPE_TCP = 0;
+  // public static final int TUNNEL_TYPE_SOCKS = 1;
+  // public static final int TUNNEL_TYPE_STREAM = 2;
+  
   private VTLinkableDynamicMultiplexingInputStream dataInputStream;
   private VTLinkableDynamicMultiplexingOutputStream dataOutputStream;
   private VTLittleEndianInputStream controlInputStream;
   private VTLittleEndianOutputStream controlOutputStream;
-  //private VTLittleEndianInputStream relayInputStream;
-  //private VTLittleEndianOutputStream relayOutputStream;
+  // private VTLittleEndianInputStream relayInputStream;
+  // private VTLittleEndianOutputStream relayOutputStream;
   private Set<VTTunnelChannelSocketListener> channels;
-  //private int tunnelType;
+  // private int tunnelType;
   private ExecutorService threads;
-
+  
   public VTTunnelConnection(ExecutorService threads)
   {
     this.channels = new LinkedHashSet<VTTunnelChannelSocketListener>();
-    //this.tunnelType = tunnelType;
+    // this.tunnelType = tunnelType;
     this.threads = threads;
   }
-
-  //public int getTunnelType()
-  //{
-    //return tunnelType;
-  //}
-
+  
+  // public int getTunnelType()
+  // {
+  // return tunnelType;
+  // }
+  
   public synchronized boolean setSOCKSChannel(String bindHost, int bindPort)
   {
     VTTunnelChannelSocketListener listener = getChannelSocketListener(bindHost, bindPort);
@@ -81,7 +81,7 @@ public class VTTunnelConnection
       return false;
     }
   }
-
+  
   public synchronized boolean setSOCKSChannel(String bindHost, int bindPort, String socksUsername, String socksPassword)
   {
     VTTunnelChannelSocketListener listener = getChannelSocketListener(bindHost, bindPort);
@@ -120,7 +120,7 @@ public class VTTunnelConnection
       return false;
     }
   }
-
+  
   public synchronized boolean setTCPChannel(String bindHost, int bindPort, String redirectHost, int redirectPort)
   {
     VTTunnelChannelSocketListener listener = getChannelSocketListener(bindHost, bindPort);
@@ -158,12 +158,12 @@ public class VTTunnelConnection
       return false;
     }
   }
-
+  
   public synchronized Set<VTTunnelChannelSocketListener> getChannels()
   {
     return channels;
   }
-
+  
   public VTTunnelChannelSocketListener getChannelSocketListener(String bindHost, int bindPort)
   {
     if (bindHost == null || bindHost.length() == 0)
@@ -199,19 +199,19 @@ public class VTTunnelConnection
     }
     return null;
   }
-
+  
   public synchronized boolean removeChannel(VTTunnelChannelSocketListener listener)
   {
     return channels.remove(listener);
   }
-
+  
   /* public OutputStream getDataOutputStream() { return dataOutputStream; } */
-
+  
   public synchronized void start()
   {
     // dataInputStream.startPacketReader();
   }
-
+  
   public synchronized void stop()
   {
     try
@@ -223,7 +223,7 @@ public class VTTunnelConnection
       // e.printStackTrace();
     }
   }
-
+  
   public synchronized void close()
   {
     // stop();
@@ -256,7 +256,7 @@ public class VTTunnelConnection
       // e.printStackTrace();
     }
   }
-
+  
   public synchronized VTLinkableDynamicMultiplexedOutputStream getOutputStream(Object link)
   {
     if (link instanceof Integer)
@@ -265,14 +265,14 @@ public class VTTunnelConnection
     }
     return dataOutputStream.linkOutputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT), link);
   }
-
+  
   public synchronized VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number, Object link)
   {
     VTLinkableDynamicMultiplexedOutputStream stream = dataOutputStream.linkOutputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT), number);
     stream.setLink(link);
     return stream;
   }
-
+  
   public synchronized void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
   {
     if (stream != null)
@@ -280,7 +280,7 @@ public class VTTunnelConnection
       dataOutputStream.releaseOutputStream(stream);
     }
   }
-
+  
   public synchronized VTLinkableDynamicMultiplexedInputStream getInputStream(Object link)
   {
     if (link instanceof Integer)
@@ -304,32 +304,32 @@ public class VTTunnelConnection
       dataInputStream.releaseInputStream(stream);
     }
   }
-
+  
   public VTLittleEndianInputStream getControlInputStream()
   {
     return controlInputStream;
   }
-
+  
   public VTLittleEndianOutputStream getControlOutputStream()
   {
     return controlOutputStream;
   }
-
+  
   public void setDataInputStream(VTLinkableDynamicMultiplexingInputStream in)
   {
     this.dataInputStream = in;
   }
-
+  
   public void setControlInputStream(InputStream in)
   {
     controlInputStream = new VTLittleEndianInputStream(in);
   }
-
+  
   public void setDataOutputStream(VTLinkableDynamicMultiplexingOutputStream out)
   {
     this.dataOutputStream = out;
   }
-
+  
   public void setControlOutputStream(OutputStream out)
   {
     controlOutputStream = new VTLittleEndianOutputStream(out);

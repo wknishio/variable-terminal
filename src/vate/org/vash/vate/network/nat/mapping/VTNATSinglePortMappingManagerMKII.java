@@ -310,7 +310,7 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
               InetAddress address = entry.getValue().getExternalAddress();
               if (address != null)
               {
-                //int port = entry.getValue().getExternalPort();
+                // int port = entry.getValue().getExternalPort();
                 externalHosts.add(address.getHostAddress());
               }
             }

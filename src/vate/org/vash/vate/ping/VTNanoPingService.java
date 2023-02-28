@@ -22,7 +22,7 @@ public class VTNanoPingService extends VTTask
   private long endNanoTime = 0;
   private long localNanoDelay = 0;
   private long remoteNanoDelay = 0;
-
+  
   public VTNanoPingService(int interval, boolean server)
   {
     this.listeners = new ConcurrentLinkedQueue<VTNanoPingListener>();
@@ -30,7 +30,7 @@ public class VTNanoPingService extends VTTask
     this.interval = interval;
     this.server = server;
   }
-
+  
   public void ping()
   {
     try
@@ -45,27 +45,27 @@ public class VTNanoPingService extends VTTask
       
     }
   }
-
+  
   public boolean addListener(VTNanoPingListener listener)
   {
     return listeners.add(listener);
   }
-
+  
   public boolean removeListener(VTNanoPingListener listener)
   {
     return listeners.remove(listener);
   }
-
+  
   public void setInputStream(InputStream in)
   {
     this.in = new VTLittleEndianInputStream(in);
   }
-
+  
   public void setOutputStream(OutputStream out)
   {
     this.out = new VTLittleEndianOutputStream(out);
   }
-
+  
   private void client() throws IOException, InterruptedException
   {
     // wait first interval
@@ -162,7 +162,7 @@ public class VTNanoPingService extends VTTask
       }
     }
   }
-
+  
   private void server() throws IOException
   {
     while (!stopped)
@@ -207,7 +207,7 @@ public class VTNanoPingService extends VTTask
       }
     }
   }
-
+  
   public void run()
   {
     try

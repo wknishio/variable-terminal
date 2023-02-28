@@ -84,12 +84,12 @@ public class VTGraphicsModeServerWriter implements Runnable
   private Object screenCaptureIntervalSynchronizer;
   private ImageWriter jpgWriter;
   private ImageWriteParam jpgWriterParam;
-  //private IIOMetadata jpegWriterMedatada;
+  // private IIOMetadata jpegWriterMedatada;
   private ImageOutputStream jpgImageOutputStream;
   private PngEncoder pngEncoder;
   private DataBuffer recycledDataBuffer;
   // private long startTime, endTime, total, number;
-
+  
   public VTGraphicsModeServerWriter(VTGraphicsModeServerSession session)
   {
     this.resultArea = new Rectangle(0, 0, 1, 1);
@@ -119,13 +119,13 @@ public class VTGraphicsModeServerWriter implements Runnable
       return;
     }
     this.currentDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-    //this.currentDevice = null;
+    // this.currentDevice = null;
     this.nextDevice = currentDevice;
     this.viewProvider.setGraphicsDevice(currentDevice);
     // this.session.getSession().getClipboardTransferTask().setEndingTask(new
     // VTGraphicsModeServerClipboardTransferEndingTask(this));
   }
-
+  
   public void dispose()
   {
     stopped = true;
@@ -159,13 +159,13 @@ public class VTGraphicsModeServerWriter implements Runnable
     // imageOutputBuffer = null;
     vtCustomCodec = null;
     /*
-     * if (deflateOutputStream != null) { try { deflateOutputStream.close(); } catch
-     * (Throwable e) { } }
+     * if (deflateOutputStream != null) { try { deflateOutputStream.close(); }
+     * catch (Throwable e) { } }
      */
     
     /*
-     * if (snappyOutputStream != null) { try { snappyOutputStream.close(); } catch
-     * (Throwable e) { } }
+     * if (snappyOutputStream != null) { try { snappyOutputStream.close(); }
+     * catch (Throwable e) { } }
      */
     
     // compressedOutputBuffer = null;
@@ -212,27 +212,27 @@ public class VTGraphicsModeServerWriter implements Runnable
       convertedGraphics = null;
     }
   }
-
+  
   public boolean isStopped()
   {
     return stopped;
   }
-
+  
   public boolean isScaling()
   {
     return viewProvider.isScaling();
   }
-
+  
   public double getScaleFactorX()
   {
     return viewProvider.getScaleFactorX();
   }
-
+  
   public double getScaleFactorY()
   {
     return viewProvider.getScaleFactorY();
   }
-
+  
   public void setStopped(boolean stopped)
   {
     this.stopped = stopped;
@@ -260,37 +260,38 @@ public class VTGraphicsModeServerWriter implements Runnable
       }
     }
   }
-
+  
   public void setDrawPointer(boolean drawPointer)
   {
     this.drawPointer = drawPointer;
   }
-
+  
   public void increaseDrawPointer()
   {
     this.viewProvider.increaseDrawnCursorSize();
   }
-
+  
   public void decreaseDrawPointer()
   {
     this.viewProvider.decreaseDrawnCursorSize();
   }
-
+  
   public void normalizeDrawPointer()
   {
     this.viewProvider.normalizeDrawnCursorSize();
   }
-
+  
   public void setColorQuality(int colorQuality)
   {
     this.viewProvider.setColorQuality(colorQuality);
   }
-
+  
   /*
    * public void setSynchronousRefresh(boolean synchronousRefresh) {
-   * this.synchronousRefresh = synchronousRefresh; setRefreshInterrupted(false); }
+   * this.synchronousRefresh = synchronousRefresh; setRefreshInterrupted(false);
+   * }
    */
-
+  
   public void setRefreshInterrupted(boolean refreshInterrupted)
   {
     this.refreshInterrupted = refreshInterrupted;
@@ -303,12 +304,12 @@ public class VTGraphicsModeServerWriter implements Runnable
       notify();
     }
   }
-
+  
   public void setImageCoding(int imageCoding)
   {
     this.imageCoding = imageCoding;
   }
-
+  
   public void setScreenCaptureInterval(int screenCaptureInterval)
   {
     this.screenCaptureInterval = screenCaptureInterval;
@@ -317,44 +318,45 @@ public class VTGraphicsModeServerWriter implements Runnable
       screenCaptureIntervalSynchronizer.notify();
     }
   }
-
+  
   public void setNextDevice(GraphicsDevice nextDevice)
   {
     this.nextDevice = nextDevice;
   }
-
+  
   /*
-   * public void setScreenCaptureMode(int mode) { this.screenCaptureMode = mode; }
+   * public void setScreenCaptureMode(int mode) { this.screenCaptureMode = mode;
+   * }
    */
-
+  
   // public void setDynamicCoding(boolean dynamicCoding)
   // {
   // this.dynamicCoding = dynamicCoding;
   // }
-
+  
   // public void setSeparatedCoding(boolean separatedCoding)
   // {
   // this.separatedCoding = separatedCoding;
   // }
-
+  
   public void setCaptureArea(Rectangle captureArea, double captureScale)
   {
     this.captureArea = captureArea;
     this.captureScale = captureScale;
   }
-
+  
   /*
    * public void setReader(VTGraphicsModeServerReader reader) { this.reader =
    * reader; }
    */
-
+  
   public void requestClear()
   {
     clearRequested = true;
     // viewProvider.forceRefresh();
     // imageDataBuffer = imageIO.newImage(width, height, type)
   }
-
+  
   public void requestRefresh()
   {
     needRefresh = true;
@@ -363,7 +365,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       notify();
     }
   }
-
+  
   public void sendRemoteInterfaceAreaChange(int width, int height) throws IOException
   {
     connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REMOTE_INTERFACE_AREA_CHANGE);
@@ -371,12 +373,13 @@ public class VTGraphicsModeServerWriter implements Runnable
     connection.getGraphicsControlDataOutputStream().writeInt(height);
     connection.getGraphicsControlDataOutputStream().flush();
   }
-
+  
   public void sendImageRefresh() throws IOException
   {
     needRefresh = false;
     // startTime = System.currentTimeMillis();
-    //Rectangle refreshArea = new Rectangle(resultArea.x + 1, resultArea.y + 1, resultArea.width, resultArea.height);
+    // Rectangle refreshArea = new Rectangle(resultArea.x + 1, resultArea.y + 1,
+    // resultArea.width, resultArea.height);
     List<Rectangle> blockAreas = VTImageDataUtils.splitBlockArea(imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
     // System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourRectangles(blockAreas);
@@ -401,7 +404,8 @@ public class VTGraphicsModeServerWriter implements Runnable
         for (Rectangle blockArea : blockAreas)
         {
           imageOutputBuffer.reset();
-          // System.out.print("(x:" + blockArea.x + ";y:" + blockArea.y + ";w:" +
+          // System.out.print("(x:" + blockArea.x + ";y:" + blockArea.y + ";w:"
+          // +
           // blockArea.width + ";h:" + blockArea.height + ")");
           pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
           connection.getGraphicsControlDataOutputStream().writeInt(imageOutputBuffer.size());
@@ -563,7 +567,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     // System.out.println("image encoding time: " + (endTime - startTime));
     // System.out.println("image size:" + imageOutputBuffer.count());
   }
-
+  
   public void sendImageDifference() throws IOException
   {
     // Rectangle trueArea = new Rectangle(Math.min(resultArea.x,
@@ -612,7 +616,8 @@ public class VTGraphicsModeServerWriter implements Runnable
         for (Rectangle blockArea : blockAreas)
         {
           imageOutputBuffer.reset();
-          // System.out.print("(x:" + blockArea.x + ";y:" + blockArea.y + ";w:" +
+          // System.out.print("(x:" + blockArea.x + ";y:" + blockArea.y + ";w:"
+          // +
           // blockArea.width + ";h:" + blockArea.height + ")");
           pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
           connection.getGraphicsControlDataOutputStream().writeInt(imageOutputBuffer.size());
@@ -769,7 +774,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     // connection.getGraphicsDirectImageDataOutputStream().flush();
     // connection.getGraphicsDirectImageDataOutputStream().close();
   }
-
+  
   public void sendCustomDifference() throws IOException
   {
     // System.out.println("sendCustomDifference");
@@ -787,9 +792,9 @@ public class VTGraphicsModeServerWriter implements Runnable
     // captureArea.y));
     // System.out.println("sendCustomDifference");
     needRefresh = false;
-    //long startTime = System.currentTimeMillis();
+    // long startTime = System.currentTimeMillis();
     // imageOutputBuffer.reset();
-    //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM");
+    // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM");
     connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM);
     // connection.getGraphicsControlDataOutputStream().writeInt(resultArea.x);
     // connection.getGraphicsControlDataOutputStream().writeInt(resultArea.y);
@@ -835,20 +840,20 @@ public class VTGraphicsModeServerWriter implements Runnable
       // imageOutputBuffer.writeTo(connection.getGraphicsDeflatedImageDataOutputStream());
       connection.getGraphicsDeflatedImageDataOutputStream().flush();
     }
-    //long endTime = System.currentTimeMillis();
-    //System.out.println("custom encoding time: " + (endTime - startTime));
+    // long endTime = System.currentTimeMillis();
+    // System.out.println("custom encoding time: " + (endTime - startTime));
     // total += endTime - startTime;
     // number++;
     // System.out.println("time:[" + (total / number) + "]");
   }
-
+  
   public void sendCustomRefresh() throws IOException
   {
     // System.out.println("sendCustomRefresh");
     needRefresh = false;
     // imageOutputBuffer.reset();
-    //long startTime = System.currentTimeMillis();
-    //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
+    // long startTime = System.currentTimeMillis();
+    // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
     connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_CUSTOM);
     // connection.getGraphicsControlDataOutputStream().writeInt(resultArea.x);
     // connection.getGraphicsControlDataOutputStream().writeInt(resultArea.y);
@@ -899,10 +904,10 @@ public class VTGraphicsModeServerWriter implements Runnable
       }
       connection.getGraphicsDeflatedImageDataOutputStream().flush();
     }
-    //long endTime = System.currentTimeMillis();
-    //System.out.println("custom encoding time: " + (endTime - startTime));
+    // long endTime = System.currentTimeMillis();
+    // System.out.println("custom encoding time: " + (endTime - startTime));
   }
-
+  
   public void sendRefreshNotNeeded() throws IOException
   {
     // synchronized (this)
@@ -912,7 +917,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_NOT_NEEDED);
     connection.getGraphicsControlDataOutputStream().flush();
   }
-
+  
   public void sendRefreshInterrupted() throws IOException
   {
     // synchronized (this)
@@ -922,7 +927,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_MODE_INTERRUPTED);
     connection.getGraphicsControlDataOutputStream().flush();
   }
-
+  
   /*
    * private void sendSessionEnding() { try {
    * connection.getGraphicsControlDataOutputStream().write(VT.
@@ -930,7 +935,7 @@ public class VTGraphicsModeServerWriter implements Runnable
    * connection.getGraphicsControlDataOutputStream().flush(); } catch (Throwable
    * e) { stopped = true; return; } }
    */
-
+  
   public void finishClipboardContentsTransfer()
   {
     /*
@@ -941,7 +946,7 @@ public class VTGraphicsModeServerWriter implements Runnable
      * connection.getGraphicsClipboardDataOutputStream());
      */
   }
-
+  
   public void run()
   {
     pngEncoder = new PngEncoder(PngEncoder.COLOR_INDEXED, PngEncoder.BEST_SPEED);
@@ -960,8 +965,10 @@ public class VTGraphicsModeServerWriter implements Runnable
       jpgWriterParam.setProgressiveMode(ImageWriteParam.MODE_DISABLED);
       jpgWriterParam.setCompressionQuality(0.75f);
       jpgWriterParam.setTilingMode(ImageWriteParam.MODE_DISABLED);
-      //jpegWriterMedatada = jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.create, jpgWriterParam);
-      //jpgWriter.getDefaultStreamMetadata(jpgWriterParam);
+      // jpegWriterMedatada =
+      // jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.create,
+      // jpgWriterParam);
+      // jpgWriter.getDefaultStreamMetadata(jpgWriterParam);
       // jpgWriter.write(streamMetadata, image, param)
     }
     catch (Throwable e1)
@@ -988,8 +995,8 @@ public class VTGraphicsModeServerWriter implements Runnable
             clearRequested = true;
           }
           /*
-           * if (lastCaptureScale != captureScale) { lastCaptureScale = captureScale;
-           * clearRequested = true; }
+           * if (lastCaptureScale != captureScale) { lastCaptureScale =
+           * captureScale; clearRequested = true; }
            */
           if (captureArea.x >= 0 && captureArea.y >= 0)
           {
@@ -1069,8 +1076,7 @@ public class VTGraphicsModeServerWriter implements Runnable
             {
               try
               {
-                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF
-                || imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF, drawPointer, captureArea);
+                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF || imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF, drawPointer, captureArea);
               }
               catch (Throwable t)
               {
@@ -1088,8 +1094,7 @@ public class VTGraphicsModeServerWriter implements Runnable
             {
               try
               {
-                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF
-                || imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF, drawPointer);
+                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF || imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF, drawPointer);
               }
               catch (Throwable t)
               {
@@ -1277,7 +1282,7 @@ public class VTGraphicsModeServerWriter implements Runnable
                   
                   if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
                   {
-                    //sendCustomDifference();
+                    // sendCustomDifference();
                     if (!VTImageDataUtils.deltaArea(previousImageBufferByte, lastImageBufferByte, lastWidth, lastHeight, paddedCaptureArea, paddedResultArea))
                     {
                       resultArea.x = Math.max(0, paddedResultArea.x - 1);
@@ -1293,7 +1298,7 @@ public class VTGraphicsModeServerWriter implements Runnable
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
                   {
-                    //sendCustomDifference();
+                    // sendCustomDifference();
                     if (!VTImageDataUtils.deltaArea(previousImageBufferUShort, lastImageBufferUShort, lastWidth, lastHeight, paddedCaptureArea, paddedResultArea))
                     {
                       resultArea.x = Math.max(0, paddedResultArea.x - 1);
@@ -1313,7 +1318,7 @@ public class VTGraphicsModeServerWriter implements Runnable
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
                   {
-                    //sendCustomDifference();
+                    // sendCustomDifference();
                     if (!VTImageDataUtils.deltaArea(previousImageBufferInt, lastImageBufferInt, lastWidth, lastHeight, paddedCaptureArea, paddedResultArea))
                     {
                       resultArea.x = Math.max(0, paddedResultArea.x - 1);
@@ -1465,7 +1470,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       }
       catch (Throwable e)
       {
-        //e.printStackTrace();
+        // e.printStackTrace();
         // e.printStackTrace(VTConsole.getSystemOut());
         stopped = true;
         break;
@@ -1485,7 +1490,8 @@ public class VTGraphicsModeServerWriter implements Runnable
     try
     {
       Node rootNode = metadata.getAsTree(metadata.getNativeMetadataFormatName());
-      // The top level root node has two children, out of which the second one will
+      // The top level root node has two children, out of which the second one
+      // will
       // contain all the information related to image markers.
       if (rootNode != null && rootNode.getLastChild() != null)
       {
@@ -1496,22 +1502,23 @@ public class VTGraphicsModeServerWriter implements Runnable
         {
           Node node = markers.item(i);
           // 'SOF' marker can have
-          //   1 child node if the color representation is greyscale,
-          //   3 child nodes if the color representation is YCbCr, and
-          //   4 child nodes if the color representation is YCMK.
+          // 1 child node if the color representation is greyscale,
+          // 3 child nodes if the color representation is YCbCr, and
+          // 4 child nodes if the color representation is YCMK.
           // This subsampling applies only to YCbCr.
-          if (node.getNodeName().equalsIgnoreCase("sof") && node.hasChildNodes() &&
-          node.getChildNodes().getLength() == 3)
+          if (node.getNodeName().equalsIgnoreCase("sof") && node.hasChildNodes() && node.getChildNodes().getLength() == 3)
           {
-            // In 'SOF' marker, first child corresponds to the luminance channel, and setting
-            // the HsamplingFactor and VsamplingFactor to 1, will imply 4:4:4 chroma subsampling.
+            // In 'SOF' marker, first child corresponds to the luminance
+            // channel, and setting
+            // the HsamplingFactor and VsamplingFactor to 1, will imply 4:4:4
+            // chroma subsampling.
             NamedNodeMap attrMap = node.getFirstChild().getAttributes();
             int samplingMode = 17;
-            //int samplingMode = 33;
+            // int samplingMode = 33;
             attrMap.getNamedItem("HsamplingFactor").setNodeValue((samplingMode & 0xf) + "");
             attrMap.getNamedItem("VsamplingFactor").setNodeValue(((samplingMode >> 4) & 0xf) + "");
-            //attrMap.getNamedItem("HsamplingFactor").setNodeValue(1 + "");
-            //attrMap.getNamedItem("VsamplingFactor").setNodeValue(1 + "");
+            // attrMap.getNamedItem("HsamplingFactor").setNodeValue(1 + "");
+            // attrMap.getNamedItem("VsamplingFactor").setNodeValue(1 + "");
             break;
           }
         }
@@ -1527,5 +1534,5 @@ public class VTGraphicsModeServerWriter implements Runnable
     }
     return metadata;
   }
-
+  
 }

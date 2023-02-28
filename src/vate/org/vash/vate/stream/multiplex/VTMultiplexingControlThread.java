@@ -7,13 +7,13 @@ public class VTMultiplexingControlThread implements Runnable
   private final VTMultiplexingConnection connection;
   private final ExecutorService threads;
   // private int tunnelType = VTTunnelConnection.TUNNEL_TYPE_TCP;
-
+  
   public VTMultiplexingControlThread(VTMultiplexingConnection connection, ExecutorService threads)
   {
     this.connection = connection;
     this.threads = threads;
   }
-
+  
   public void run()
   {
     while (true)

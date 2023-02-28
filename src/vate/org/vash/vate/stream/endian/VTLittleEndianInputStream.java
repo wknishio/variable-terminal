@@ -14,7 +14,7 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
   private final byte[] intBuffer;
   private final byte[] longBuffer;
   private InputStream in;
-
+  
   public VTLittleEndianInputStream(InputStream in)
   {
     this.in = in;
@@ -25,7 +25,7 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
     this.intBuffer = new byte[4];
     this.longBuffer = new byte[8];
   }
-
+  
   public final void setIntputStream(InputStream in)
   {
     this.in = in;
@@ -35,42 +35,42 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
   {
     return in;
   }
-
+  
   public final int read() throws IOException
   {
     return in.read();
   }
-
+  
   public final int read(byte[] b) throws IOException
   {
     return in.read(b);
   }
-
+  
   public final int read(byte[] b, int off, int len) throws IOException
   {
     return in.read(b, off, len);
   }
-
+  
   public final int available() throws IOException
   {
     return in.available();
   }
-
+  
   public final long skip(long l) throws IOException
   {
     return in.skip(l);
   }
-
+  
   public final void close() throws IOException
   {
     in.close();
   }
-
+  
   public final boolean readBoolean() throws IOException
   {
     return in.read() != 0;
   }
-
+  
   public final byte readByte() throws IOException
   {
     int b = in.read();
@@ -80,74 +80,64 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
     }
     return (byte) (b);
   }
-
+  
   public final short readShort() throws IOException
   {
     readFully(shortBuffer);
     return (short) ((shortBuffer[0] & 0xFF) | (shortBuffer[1] & 0xFF) << 8);
   }
-
+  
   public final int readUnsignedShort() throws IOException
   {
     readFully(ushortBuffer);
     return ((ushortBuffer[0] & 0xFF) | (ushortBuffer[1] & 0xFF) << 8);
   }
-
+  
   public final char readChar() throws IOException
   {
     readFully(charBuffer);
     return (char) ((charBuffer[0] & 0xFF) | (charBuffer[1] & 0xFF) << 8);
   }
-
+  
   public final int readSubInt() throws IOException
   {
     readFully(subintBuffer);
     return ((subintBuffer[0] & 0xFF) | (subintBuffer[1] & 0xFF) << 8 | (subintBuffer[2] & 0xFF) << 16);
   }
-
+  
   public final int readInt() throws IOException
   {
     readFully(intBuffer);
     return ((intBuffer[0] & 0xFF) | (intBuffer[1] & 0xFF) << 8 | (intBuffer[2] & 0xFF) << 16 | (intBuffer[3] & 0xFF) << 24);
   }
-
+  
   public final long readUnsignedInt() throws IOException
   {
     readFully(intBuffer);
-    return ((intBuffer[0] & 0xFFL) |
-    ((intBuffer[1] & 0xFFL) << 8) |
-    ((intBuffer[2] & 0xFFL) << 16) |
-    ((intBuffer[3] & 0xFFL) << 24));
+    return ((intBuffer[0] & 0xFFL) | ((intBuffer[1] & 0xFFL) << 8) | ((intBuffer[2] & 0xFFL) << 16) | ((intBuffer[3] & 0xFFL) << 24));
   }
-
+  
   public final long readLong() throws IOException
   {
     readFully(longBuffer);
-    return ((longBuffer[0] & 0xFFL) |
-    ((longBuffer[1] & 0xFFL) << 8) |
-    ((longBuffer[2] & 0xFFL) << 16) |
-    ((longBuffer[3] & 0xFFL) << 24) |
-    ((longBuffer[4] & 0xFFL) << 32) |
-    ((longBuffer[5] & 0xFFL) << 40) |
-    ((longBuffer[6] & 0xFFL) << 48) |
-    ((longBuffer[7] & 0xFFL) << 56));
+    return ((longBuffer[0] & 0xFFL) | ((longBuffer[1] & 0xFFL) << 8) | ((longBuffer[2] & 0xFFL) << 16) | ((longBuffer[3] & 0xFFL) << 24) | ((longBuffer[4] & 0xFFL) << 32) | ((longBuffer[5] & 0xFFL) << 40) | ((longBuffer[6] & 0xFFL) << 48) | ((longBuffer[7] & 0xFFL) << 56));
   }
-
+  
   public final float readFloat() throws IOException
   {
     return Float.intBitsToFloat(readInt());
   }
-
+  
   public final double readDouble() throws IOException
   {
     return Double.longBitsToDouble(readLong());
   }
-
+  
   public final void readFully(byte b[]) throws IOException
   {
     readFully(b, 0, b.length);
   }
-
+  
   public final void readFully(byte[] buf, int offset, int len) throws IOException
   {
     if (len < 0)
@@ -165,12 +155,12 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
       offset += numread;
     }
   }
-
+  
   public final int skipBytes(int n) throws IOException
   {
     return (int) in.skip(n);
   }
-
+  
   public final int readUnsignedByte() throws IOException
   {
     int b = in.read();
@@ -180,12 +170,12 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
     }
     return b;
   }
-
+  
   public final String readLine() throws IOException
   {
     return readUTF();
   }
-
+  
   public final String readUTF() throws IOException
   {
     byte[] utf = readData();

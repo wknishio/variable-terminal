@@ -12,7 +12,7 @@ public class VTLOG extends VTClientStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTLOG [FILE]");
     this.setAbbreviatedSyntax("*VTLG [FL]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length >= 2)
@@ -34,9 +34,9 @@ public class VTLOG extends VTClientStandardRemoteConsoleCommandProcessor
       VTConsole.setLogReadLine(null);
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

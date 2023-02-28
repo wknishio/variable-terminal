@@ -4,7 +4,7 @@ import org.vash.vate.client.console.remote.VTClientRemoteConsoleCommandProcessor
 
 public abstract class VTClientCustomRemoteConsoleCommandProcessor extends VTClientRemoteConsoleCommandProcessor
 {
-
+  
   public VTClientCustomRemoteConsoleCommandProcessor()
   {
     

@@ -5,37 +5,37 @@ package org.vash.vate.server.graphicsmode;
 public class VTGraphicsModeServerSessionHandler implements Runnable
 {
   private VTGraphicsModeServerSession session;
-
+  
   public VTGraphicsModeServerSessionHandler(VTGraphicsModeServerSession session)
   {
     this.session = session;
   }
-
+  
   public boolean isStopped()
   {
     return session.isStopped();
   }
-
+  
   public void setStopped(boolean stopped)
   {
     session.setStopped(stopped);
   }
-
+  
   public boolean isReadOnly()
   {
     return session.isReadOnly();
   }
-
+  
   public void setReadOnly(boolean readOnly)
   {
     session.setReadOnly(readOnly);
   }
-
+  
   /*
    * public void setHighQuality(boolean highQuality) {
    * session.setHighQuality(highQuality); }
    */
-
+  
   public void run()
   {
     try

@@ -14,7 +14,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     private volatile boolean started;
     private int freq;
     private int dur;
-
+    
     public VTWin32AsynchronousBeeper(int freq, int dur)
     {
       this.freq = freq;
@@ -22,17 +22,17 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
       this.playing = true;
       this.started = false;
     }
-
+    
     public boolean isPlaying()
     {
       return playing;
     }
-
+    
     public boolean isStarted()
     {
       return started;
     }
-
+    
     public void run()
     {
       synchronized (this)
@@ -43,7 +43,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
       playing = beep(freq, dur, true);
     }
   }
-
+  
   // Win32 constants
   private static int EWX_LOGOFF = 0;
   private static int EWX_POWEROFF = 0x00000008;
@@ -54,14 +54,14 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
   private static int EWX_FORCEIFHUNG = 0x00000010;
   
   /* console modes used by Get/SetConsoleMode */
-  public static int ENABLE_PROCESSED_INPUT=0x0001;
-  public static int ENABLE_LINE_INPUT=0x0002;
-  public static int ENABLE_ECHO_INPUT=0x0004;
-  public static int ENABLE_WINDOW_INPUT=0x0008;
-  public static int ENABLE_MOUSE_INPUT=0x0010;
-  public static int ENABLE_INSERT_MODE=0x0020;
-  public static int ENABLE_QUICK_EDIT_MODE=0x0040;
-  public static int ENABLE_EXTENDED_FLAGS=0x0080;
+  public static int ENABLE_PROCESSED_INPUT = 0x0001;
+  public static int ENABLE_LINE_INPUT = 0x0002;
+  public static int ENABLE_ECHO_INPUT = 0x0004;
+  public static int ENABLE_WINDOW_INPUT = 0x0008;
+  public static int ENABLE_MOUSE_INPUT = 0x0010;
+  public static int ENABLE_INSERT_MODE = 0x0020;
+  public static int ENABLE_QUICK_EDIT_MODE = 0x0040;
+  public static int ENABLE_EXTENDED_FLAGS = 0x0080;
   public static int ENABLE_VIRTUAL_TERMINAL_INPUT = 0x0200;
   
   public static int ENABLE_VIRTUAL_TERMINAL_PROCESSING = 0x0004;
@@ -70,10 +70,10 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
   public static int STD_INPUT_HANDLE = (-10);
   public static int STD_OUTPUT_HANDLE = (-11);
   public static int STD_ERROR_HANDLE = (-12);
-
+  
   // private static int WM_SYSCOMMAND = 0x0112;
   // private static int SC_RESTORE = 0xF120;
-
+  
   private VTUser32 user32Lib;
   private VTKernel32 kernel32Lib;
   private VTWinmm winmmLib;
@@ -81,38 +81,39 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
   private VTWin32CLibrary win32CLibrary;
   // private Kernel32 jnaKernel32Lib;
   // private VTWin32Isatty win32Isatty;
-
+  
   public VTWin32NativeUtils()
   {
     user32Lib = (VTUser32) Native.load("User32", VTUser32.class);
     kernel32Lib = (VTKernel32) Native.load("Kernel32", VTKernel32.class);
     winmmLib = (VTWinmm) Native.load("WinMM", VTWinmm.class);
     win32CLibrary = (VTWin32CLibrary) Native.load("msvcrt", VTWin32CLibrary.class);
-    // jnaKernel32Lib = (Kernel32) Native.loadLibrary("Kernel32", Kernel32.class);
+    // jnaKernel32Lib = (Kernel32) Native.loadLibrary("Kernel32",
+    // Kernel32.class);
     // may not be able to load isatty
     // psapiLib = (VTPsapi) Native.loadLibrary("Psapi", VTPsapi.class);
   }
-
+  
   public int system(String command)
   {
     return win32CLibrary.system(command);
   }
-
+  
   public int getchar()
   {
     return win32CLibrary.getchar();
   }
-
+  
   public void printf(String format, Object... args)
   {
     win32CLibrary.printf(format, args);
   }
-
+  
   /*
-   * public boolean beep(int freq, int dur) { return kernel32Lib.Beep(freq, dur);
-   * }
+   * public boolean beep(int freq, int dur) { return kernel32Lib.Beep(freq,
+   * dur); }
    */
-
+  
   public boolean beep(int freq, int dur, boolean block)
   {
     if (block)
@@ -142,7 +143,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
       return beeper.isPlaying();
     }
   }
-
+  
   public boolean openCD()
   {
     // winmmLib.mciSendStringA("close cdaudio", null, 0, 0);
@@ -155,7 +156,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     // winmmLib.mciExecute("close cdaudio");
     return status == 0;
   }
-
+  
   public boolean closeCD()
   {
     // winmmLib.mciSendStringA("close cdaudio", null, 0, 0);
@@ -168,17 +169,17 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     // winmmLib.mciExecute("close cdaudio");
     return status == 0;
   }
-
+  
   /*
    * public boolean blockInput() { return user32Lib.BlockInput(true) != 0; }
    * public boolean unblockInput() { return user32Lib.BlockInput(false) != 0; }
    */
-
+  
   public void sleep(int delay)
   {
     kernel32Lib.Sleep(delay);
   }
-
+  
   public boolean shutdown(boolean ignoreAllApplications, boolean waitApplicationsTimeout)
   {
     int flag = EWX_SHUTDOWN;
@@ -192,7 +193,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     }
     return user32Lib.ExitWindowsEx(flag, 0x00040000);
   }
-
+  
   public boolean reboot(boolean ignoreAllApplications, boolean waitApplicationsTimeout)
   {
     int flag = EWX_REBOOT;
@@ -206,7 +207,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     }
     return user32Lib.ExitWindowsEx(flag, 0x00040000);
   }
-
+  
   public boolean powerOff(boolean ignoreAllApplications, boolean waitApplicationsTimeout)
   {
     int flag = EWX_POWEROFF;
@@ -220,7 +221,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     }
     return user32Lib.ExitWindowsEx(flag, 0x00040000);
   }
-
+  
   public boolean logoff(boolean ignoreAllApplications, boolean waitApplicationsTimeout)
   {
     int flag = EWX_LOGOFF;
@@ -234,7 +235,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     }
     return user32Lib.ExitWindowsEx(flag, 0x00040000);
   }
-
+  
   public boolean restartApplications(boolean ignoreApplications, boolean waitApplicationsTimeout)
   {
     int flag = EWX_RESTARTAPPS;
@@ -248,57 +249,57 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     }
     return user32Lib.ExitWindowsEx(flag, 0x00040000);
   }
-
+  
   public void exit(int status)
   {
     win32CLibrary.exit(status);
   }
-
+  
   public void abort()
   {
     win32CLibrary.abort();
   }
-
+  
   public int raise(int signal)
   {
     return win32CLibrary.raise(signal);
   }
-
+  
   public int rand()
   {
     return win32CLibrary.rand();
   }
-
+  
   public void srand(int seed)
   {
     win32CLibrary.srand(seed);
   }
-
+  
   public String getenv(String env)
   {
     return win32CLibrary.getenv(env);
   }
-
+  
   public int putenv(String env)
   {
     return win32CLibrary._putenv(env);
   }
-
+  
   public int getpid()
   {
     return kernel32Lib.GetCurrentProcessId();
   }
-
+  
   public int isatty(int fd)
   {
     return win32CLibrary._isatty(fd);
   }
-
+  
   public int getch()
   {
     return win32CLibrary.getch();
   }
-
+  
   public boolean hideConsole()
   {
     int hwnd = kernel32Lib.GetConsoleWindow();
@@ -324,7 +325,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
       return kernel32Lib.FreeConsole();
     }
   }
-
+  
   public boolean detachConsole()
   {
     int hwnd = kernel32Lib.GetConsoleWindow();
@@ -336,7 +337,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     return kernel32Lib.FreeConsole();
     // return kernel32Lib.FreeConsole();
   }
-
+  
   public boolean attachConsole()
   {
     // kernel32Lib.AttachConsole(-1);
@@ -353,7 +354,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
         }
         catch (Throwable t)
         {
-
+          
         }
       }
       return ok;
@@ -384,7 +385,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 //		}
     return false;
   }
-
+  
   private class ShowWindowThread extends Thread
   {
     public void run()
@@ -395,13 +396,13 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
       }
       catch (Throwable t)
       {
-
+        
       }
     }
   }
-
+  
   private ShowWindowThread showHook = new ShowWindowThread();
-
+  
   public void normal()
   {
     // HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(-10);
@@ -410,21 +411,21 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     // kernel32Lib.SetConsoleMode(hConsoleHandle, lpMode.getValue() |
     // (ENABLE_ECHO_INPUT));
   }
-
+  
   public void unbuffered()
   {
     return;
   }
-
+  
   public void noecho()
   {
-    //HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(-10);
-    //IntByReference lpMode = new IntByReference();
+    // HANDLE hConsoleHandle = kernel32Lib.GetStdHandle(-10);
+    // IntByReference lpMode = new IntByReference();
     // kernel32Lib.GetConsoleMode(hConsoleHandle, lpMode);
     // kernel32Lib.SetConsoleMode(hConsoleHandle, lpMode.getValue() &
     // (~ENABLE_ECHO_INPUT));
   }
-
+  
   public boolean checkANSI()
   {
     boolean ansi = false;
@@ -449,8 +450,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
         int newModeInput = oldModeInput |= ENABLE_VIRTUAL_TERMINAL_INPUT;
         int newModeOutput = oldModeOutput |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
         
-        if (kernel32Lib.SetConsoleMode(hConsoleHandleInput, newModeInput)
-        && kernel32Lib.SetConsoleMode(hConsoleHandleOutput, newModeOutput))
+        if (kernel32Lib.SetConsoleMode(hConsoleHandleInput, newModeInput) && kernel32Lib.SetConsoleMode(hConsoleHandleOutput, newModeOutput))
         {
           ansi = true;
         }
@@ -462,24 +462,24 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     }
     return ansi;
   }
-
+  
   /*
    * public void changeFocusToWindow(String windowTitle) { int hWnd =
    * user32Lib.FindWindowA(null, windowTitle); if (hWnd != 0) {
    * user32Lib.SendMessageA(hWnd, WM_SYSCOMMAND, SC_RESTORE, 0);
    * user32Lib.SetForegroundWindow(hWnd); } }
    */
-
+  
   /*
    * public List<Integer> listProcessIds() { List<Integer> processIds = new
    * LinkedList<Integer>(); int[] pProcessIds = new int[1024]; int[]
    * pBytesReturned = new int[1]; psapiLib.EnumProcesses(pProcessIds, 2048,
-   * pBytesReturned); int processCount = pBytesReturned[0] / Native.POINTER_SIZE;
-   * //System.out.println("ProcessCount: " + processCount); for (int i = 0;i <
-   * processCount;i++) { //System.out.println("PID: " + pProcessIds[i]);
-   * processIds.add(pProcessIds[i]); } return processIds; }
+   * pBytesReturned); int processCount = pBytesReturned[0] /
+   * Native.POINTER_SIZE; //System.out.println("ProcessCount: " + processCount);
+   * for (int i = 0;i < processCount;i++) { //System.out.println("PID: " +
+   * pProcessIds[i]); processIds.add(pProcessIds[i]); } return processIds; }
    */
-
+  
   /*
    * public static void main(String[] args) throws InterruptedException { //new
    * VTWin32NativeUtils().changeFocusToWindow("homebrews"); //new

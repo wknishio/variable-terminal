@@ -44,11 +44,11 @@ public class VTServerPrintDataTask extends VTTask
 {
   public static int MODE_TEXT = 1;
   public static int MODE_FILE = 2;
-
+  
   public static int FILE_ENCODING_AUTOSENSE = 1;
   public static int FILE_ENCODING_TEXT_NATIVE = 2;
   public static int FILE_ENCODING_TEXT_UTF8 = 3;
-
+  
   private volatile boolean finished;
   private volatile int mode = MODE_TEXT;
   private volatile int encoding = FILE_ENCODING_AUTOSENSE;
@@ -56,18 +56,18 @@ public class VTServerPrintDataTask extends VTTask
   private volatile Integer printServiceNumber;
   private volatile DocPrintJob docPrintJob;
   private volatile VTServerSession session;
-
+  
   public VTServerPrintDataTask(VTServerSession session)
   {
     this.session = session;
     this.finished = true;
   }
-
+  
   public void setMode(int mode)
   {
     this.mode = mode;
   }
-
+  
   public void setFileEncoding(String encoding)
   {
     if (encoding.toUpperCase().startsWith("U"))
@@ -83,17 +83,17 @@ public class VTServerPrintDataTask extends VTTask
       this.encoding = FILE_ENCODING_AUTOSENSE;
     }
   }
-
+  
   public void setData(String data)
   {
     this.data = data;
   }
-
+  
   public void setPrintServiceNumber(Integer printServiceNumber)
   {
     this.printServiceNumber = printServiceNumber;
   }
-
+  
   public void setStopped(boolean stopped)
   {
     if (stopped && !finished)
@@ -115,17 +115,17 @@ public class VTServerPrintDataTask extends VTTask
       }
     }
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   private static PageFormat getMinimumMarginPageFormat(PrinterJob printJob)
   {
     PageFormat pf0 = printJob.defaultPage();
@@ -135,8 +135,8 @@ public class VTServerPrintDataTask extends VTTask
     pf1.setPaper(p);
     PageFormat pf2 = printJob.validatePage(pf1);
     return pf2;
-	}
-
+  }
+  
   public void run()
   {
     try
@@ -302,7 +302,7 @@ public class VTServerPrintDataTask extends VTTask
          */
         docFlavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
 //      docFlavor = DocFlavor.INPUT_STREAM.TEXT_PLAIN_UTF_8;
-        //printRequestAttributes.add(OrientationRequested.PORTRAIT);
+        // printRequestAttributes.add(OrientationRequested.PORTRAIT);
         
         String[] words = data.split("\\s+");
         LinkedList<String> printLines = new LinkedList<String>();
@@ -356,11 +356,12 @@ public class VTServerPrintDataTask extends VTTask
             {
               printLinesIndex = 0;
             }
-            //minimum margin code
-            //Paper paper = pageFormat.getPaper();
-            //paper.setImageableArea(minimum.getImageableX(), minimum.getImageableY(),
-            //minimum.getImageableWidth(), minimum.getImageableHeight());
-            //pageFormat.setPaper(paper);
+            // minimum margin code
+            // Paper paper = pageFormat.getPaper();
+            // paper.setImageableArea(minimum.getImageableX(),
+            // minimum.getImageableY(),
+            // minimum.getImageableWidth(), minimum.getImageableHeight());
+            // pageFormat.setPaper(paper);
             
             Graphics2D g2d = (Graphics2D) graphics;
             g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
@@ -383,7 +384,7 @@ public class VTServerPrintDataTask extends VTTask
             
             if (fontMetrics.stringWidth(full) >= pageFormat.getImageableWidth())
             {
-              //page cannot handle 80 characters, will use 40
+              // page cannot handle 80 characters, will use 40
               limit = 40;
               for (int i = 0; i < limit; i++)
               {
@@ -435,7 +436,7 @@ public class VTServerPrintDataTask extends VTTask
           final FileInputStream stream = new FileInputStream(source);
           
           docFlavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
-          //printRequestAttributes.add(OrientationRequested.PORTRAIT);
+          // printRequestAttributes.add(OrientationRequested.PORTRAIT);
           
           final LinkedList<String> fileLines = new LinkedList<String>();
           
@@ -523,10 +524,11 @@ public class VTServerPrintDataTask extends VTTask
                 printLinesIndex = 0;
               }
               
-              //Paper paper = pageFormat.getPaper();
-              //paper.setImageableArea(minimum.getImageableX(), minimum.getImageableY(),
-              //minimum.getImageableWidth(), minimum.getImageableHeight());
-              //pageFormat.setPaper(paper);
+              // Paper paper = pageFormat.getPaper();
+              // paper.setImageableArea(minimum.getImageableX(),
+              // minimum.getImageableY(),
+              // minimum.getImageableWidth(), minimum.getImageableHeight());
+              // pageFormat.setPaper(paper);
               
               Graphics2D g2d = (Graphics2D) graphics;
               g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
@@ -548,7 +550,7 @@ public class VTServerPrintDataTask extends VTTask
               
               if (fontMetrics.stringWidth(full) >= pageFormat.getImageableWidth())
               {
-                //page cannot handle 80 characters, will use 40
+                // page cannot handle 80 characters, will use 40
                 limit = 40;
                 for (int i = 0; i < limit; i++)
                 {
@@ -665,7 +667,7 @@ public class VTServerPrintDataTask extends VTTask
       return false;
     }
   }
-
+  
   /*
    * public static void main(String[] args) { VTServerPrintTextTask task = new
    * VTServerPrintTextTask(null); task.setText("BUILD.XML"); task.run(); }

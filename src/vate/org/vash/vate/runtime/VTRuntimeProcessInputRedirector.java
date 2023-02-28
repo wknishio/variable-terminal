@@ -13,25 +13,25 @@ public class VTRuntimeProcessInputRedirector implements Runnable
   private final byte[] inputBuffer = new byte[inputBufferSize];
   private InputStream in;
   private OutputStream out;
-
+  
   public VTRuntimeProcessInputRedirector(InputStream in, OutputStream out)
   {
     this.in = in;
     this.out = out;
     this.running = true;
   }
-
+  
   public void close()
   {
     stop();
   }
-
+  
   public void stop()
   {
     running = false;
     finalize();
   }
-
+  
   public void finalize()
   {
     if (in != null)
@@ -51,7 +51,7 @@ public class VTRuntimeProcessInputRedirector implements Runnable
       out = null;
     }
   }
-
+  
   public void run()
   {
     Thread.currentThread().setName(getClass().getSimpleName());

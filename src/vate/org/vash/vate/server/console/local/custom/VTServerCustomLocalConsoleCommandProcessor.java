@@ -6,6 +6,6 @@ public abstract class VTServerCustomLocalConsoleCommandProcessor extends VTServe
 {
   public VTServerCustomLocalConsoleCommandProcessor()
   {
-
+    
   }
 }

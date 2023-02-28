@@ -7,7 +7,7 @@ import java.io.InputStream;
 public class VTDoubledInputStream extends FilterInputStream
 {
   private InputStream another;
-
+  
   protected VTDoubledInputStream(InputStream first, InputStream second)
   {
     super(first);
@@ -23,7 +23,7 @@ public class VTDoubledInputStream extends FilterInputStream
     }
     return available;
   }
-
+  
   public final void close() throws IOException
   {
 //    try

@@ -12,7 +12,7 @@ public class VTRUNTIME extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTRUNTIME <MODE> [.]");
     this.setAbbreviatedSyntax("*VTRT <MD> [.]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     synchronized (session.getRuntimeExecutor())
@@ -44,9 +44,9 @@ public class VTRUNTIME extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

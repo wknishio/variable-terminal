@@ -78,28 +78,7 @@ import com.googlecode.lanterna.terminal.swing.TerminalEmulatorPalette;
 
 public class VTLanternaConsole implements VTConsoleImplementation
 {
-  public static final TerminalEmulatorPalette CUSTOM_VGA =
-  new TerminalEmulatorPalette(
-    new java.awt.Color(170, 170, 170),
-    new java.awt.Color(255, 255, 255),
-    new java.awt.Color(0, 0, 0),
-    new java.awt.Color(0, 0, 0),
-    new java.awt.Color(85, 85, 85),
-    new java.awt.Color(170, 0, 0),
-    new java.awt.Color(255, 85, 85),
-    new java.awt.Color(0, 170, 0),
-    new java.awt.Color(85, 255, 85),
-    new java.awt.Color(170, 170, 0),
-    new java.awt.Color(255, 255, 85),
-    new java.awt.Color(0, 0, 170),
-    new java.awt.Color(85, 85, 255),
-    new java.awt.Color(170, 0, 170),
-    new java.awt.Color(255, 85, 255),
-    new java.awt.Color(0, 170, 170),
-    new java.awt.Color(85, 255, 255),
-    new java.awt.Color(170, 170, 170),
-    new java.awt.Color(255, 255, 255)
-  );
+  public static final TerminalEmulatorPalette CUSTOM_VGA = new TerminalEmulatorPalette(new java.awt.Color(170, 170, 170), new java.awt.Color(255, 255, 255), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(85, 85, 85), new java.awt.Color(170, 0, 0), new java.awt.Color(255, 85, 85), new java.awt.Color(0, 170, 0), new java.awt.Color(85, 255, 85), new java.awt.Color(170, 170, 0), new java.awt.Color(255, 255, 85), new java.awt.Color(0, 0, 170), new java.awt.Color(85, 85, 255), new java.awt.Color(170, 0, 170), new java.awt.Color(255, 85, 255), new java.awt.Color(0, 170, 170), new java.awt.Color(85, 255, 255), new java.awt.Color(170, 170, 170), new java.awt.Color(255, 255, 255));
   
   private volatile AWTTerminalFrame frame;
   private java.awt.Panel spacer1;
@@ -128,7 +107,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
   private volatile boolean frameIconified = false;
   private volatile boolean replaceActivated = false;
   private volatile boolean commandEcho = true;
-  //private volatile boolean interruptedReadLine = false;
+  // private volatile boolean interruptedReadLine = false;
   // private volatile boolean selectingText = false;
   // private volatile int caretRecoilCount = 0;
   private Properties defaultInputProperties;
@@ -140,7 +119,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
   // private final Object updateSynchronizer = new Object();
   private MultiWindowTextGUI gui;
   private BasicWindow window;
-  //private VTLanternaConsolePrintStream printStream;
+  // private VTLanternaConsolePrintStream printStream;
   private VTLanternaConsolePrintStream printStream;
   private VTLanternaConsoleInputStream inputStream;
   private volatile boolean ignoreClose = false;
@@ -176,8 +155,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
   
   public VTLanternaConsole(boolean graphical, boolean remoteIcon)
   {
-    //this.commandHistory.add("");
-    //this.commandHistory.add(null);
+    // this.commandHistory.add("");
+    // this.commandHistory.add(null);
     this.graphical = graphical;
     this.remoteIcon = remoteIcon;
     Thread builderThread = new Thread()
@@ -190,7 +169,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         }
         catch (Throwable e)
         {
-          //e.printStackTrace();
+          // e.printStackTrace();
         }
       }
     };
@@ -225,8 +204,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
     
     public void windowActivated(WindowEvent e)
     {
-      //System.out.println("lanterna.windowActivated()");
-      //console.getFrame().requestFocus();
+      // System.out.println("lanterna.windowActivated()");
+      // console.getFrame().requestFocus();
       console.deiconifyFrame();
       awtterminal.requestFocusInWindow();
     }
@@ -254,8 +233,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
     public void windowDeiconified(WindowEvent e)
     {
       // VTGraphicalConsole.deiconifyFrame();
-      //console.getFrame().requestFocus();
-      //awtterminal.requestFocus();
+      // console.getFrame().requestFocus();
+      // awtterminal.requestFocus();
     }
     
     public void windowIconified(WindowEvent e)
@@ -505,8 +484,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
     
     public Writer append(char c) throws IOException
     {
-       super.append(c);
-       return this;
+      super.append(c);
+      return this;
     }
     
     public Writer append(CharSequence csq, int start, int end) throws IOException
@@ -627,7 +606,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     // factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
     factory.setMouseCaptureMode(MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE);
     factory.setInitialTerminalSize(new TerminalSize(consoleOutputColumns, consoleOutputLines + consoleInputLines));
-    //factory.setTerminalEmulatorColorConfiguration(TerminalEmulatorColorConfiguration.newInstance(TerminalEmulatorPalette.STANDARD_VGA));
+    // factory.setTerminalEmulatorColorConfiguration(TerminalEmulatorColorConfiguration.newInstance(TerminalEmulatorPalette.STANDARD_VGA));
     factory.setTerminalEmulatorColorConfiguration(TerminalEmulatorColorConfiguration.newInstance(VTLanternaConsole.CUSTOM_VGA));
     // factory.setTerminalEmulatorDeviceConfiguration(deviceConfiguration)
     factory.setAutoOpenTerminalEmulatorWindow(false);
@@ -779,10 +758,14 @@ public class VTLanternaConsole implements VTConsoleImplementation
           }
           // int x = e.getX();
           // int y = e.getY();
-          // int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
-          // int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
-          // TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
-          // MouseAction mouseAction = new MouseAction(MouseActionType.MOVE, 0, pos);
+          // int fontWidth =
+          // awtterminal.getTerminalImplementation().getFontWidth();
+          // int fontHeight =
+          // awtterminal.getTerminalImplementation().getFontHeight();
+          // TerminalPosition pos = new TerminalPosition(x / fontWidth, y /
+          // fontHeight);
+          // MouseAction mouseAction = new MouseAction(MouseActionType.MOVE, 0,
+          // pos);
           // outputBox.handleInput(mouseAction);
         }
       });
@@ -804,21 +787,21 @@ public class VTLanternaConsole implements VTConsoleImplementation
       {
         public void keyTyped(KeyEvent e)
         {
-          //System.out.println("keyTyped:" + e.toString());
+          // System.out.println("keyTyped:" + e.toString());
           awtterminal.requestFocusInWindow();
           awtterminal.dispatchEvent(e);
         }
         
         public void keyReleased(KeyEvent e)
         {
-          //System.out.println("keyReleased:" + e.toString());
+          // System.out.println("keyReleased:" + e.toString());
           awtterminal.requestFocusInWindow();
           awtterminal.dispatchEvent(e);
         }
         
         public void keyPressed(KeyEvent e)
         {
-          //System.out.println("keyPressed:" + e.toString());
+          // System.out.println("keyPressed:" + e.toString());
           awtterminal.requestFocusInWindow();
           awtterminal.dispatchEvent(e);
         }
@@ -844,7 +827,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     Panel mainPanel = new Panel();
     mainPanel.setLayoutManager(new BorderLayout());
     
-    //outputBox.setReadOnly(true);
+    // outputBox.setReadOnly(true);
     outputBox.setTerminal(terminal);
     outputBox.setEditable(false);
     outputBox.setHorizontalFocusSwitching(false);
@@ -860,7 +843,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     {
       verticalScrollbar = new Scrollbar(Scrollbar.VERTICAL);
       verticalScrollbar.setBackground(SystemColor.control);
-      //verticalScrollbar.setForeground(SystemColor.controlText);
+      // verticalScrollbar.setForeground(SystemColor.controlText);
       verticalScrollbar.setUnitIncrement(1);
       verticalScrollbar.setFocusable(false);
       outputBox.setVerticalAdjustable(verticalScrollbar);
@@ -885,7 +868,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
       
       horizontalScrollbar = new Scrollbar(Scrollbar.HORIZONTAL);
       horizontalScrollbar.setBackground(SystemColor.control);
-      //horizontalScrollbar.setForeground(SystemColor.controlText);
+      // horizontalScrollbar.setForeground(SystemColor.controlText);
       horizontalScrollbar.setUnitIncrement(1);
       horizontalScrollbar.setFocusable(false);
       outputBox.setHorizontalAdjustable(horizontalScrollbar);
@@ -915,8 +898,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
       frame.getBottomPanel().add(horizontalScrollbar, java.awt.BorderLayout.CENTER);
       frame.getBottomPanel().add(spacer1, java.awt.BorderLayout.EAST);
       
-      //outputBox.setVerticalAdjustable(frame.getScrollPane().getVAdjustable());
-      //outputBox.setHorizontalAdjustable(frame.getScrollPane().getHAdjustable());
+      // outputBox.setVerticalAdjustable(frame.getScrollPane().getVAdjustable());
+      // outputBox.setHorizontalAdjustable(frame.getScrollPane().getHAdjustable());
       ((DefaultTextBoxRenderer) outputBox.getRenderer()).setHideScrollBars(true);
       ((DefaultTextBoxRenderer) inputBox.getRenderer()).setHideScrollBars(true);
     }
@@ -927,7 +910,6 @@ public class VTLanternaConsole implements VTConsoleImplementation
     }
     
     // outputBox.setEnabled(false);
-    
     
     outputBox.setInputFilter(new InputFilter()
     {
@@ -1021,11 +1003,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
           inputBox.takeFocus();
           return false;
         }
-        //if (keyStroke.getKeyType() == KeyType.Tab)
-        //{
-          //outputBox.output("\t");
-          //return false;
-        //}
+        // if (keyStroke.getKeyType() == KeyType.Tab)
+        // {
+        // outputBox.output("\t");
+        // return false;
+        // }
         if (keyStroke.isShiftDown() && !keyStroke.isCtrlDown())
         {
           if (keyStroke.getKeyType() == KeyType.Insert)
@@ -1264,11 +1246,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
           outputBox.takeFocus();
           return false;
         }
-        //if (keyStroke.getKeyType() == KeyType.Tab)
-        //{
-          //inputBox.output("\t");
-          //return false;
-        //}
+        // if (keyStroke.getKeyType() == KeyType.Tab)
+        // {
+        // inputBox.output("\t");
+        // return false;
+        // }
         if (keyStroke.getKeyType() == KeyType.Backspace)
         {
           if (keyStroke.isCtrlDown())
@@ -1571,7 +1553,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
   private void registerLine(String command)
   {
     if (command == null || command.length() == 0)
-    //if (command == null)
+    // if (command == null)
     {
       return;
     }
@@ -1586,9 +1568,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
     commandHistory.remove(command.toString());
     commandHistory.add(command.toString());
     commandHistoryPosition = commandHistory.size();
-    //System.out.println("registerLine:[" + command + "]");
-    //System.out.println("commandHistory.size():[" + commandHistory.size() + "]");
-    //System.out.println("commandHistoryPosition:[" + commandHistoryPosition + "]");
+    // System.out.println("registerLine:[" + command + "]");
+    // System.out.println("commandHistory.size():[" + commandHistory.size() +
+    // "]");
+    // System.out.println("commandHistoryPosition:[" + commandHistoryPosition +
+    // "]");
     
   }
   
@@ -1664,13 +1648,15 @@ public class VTLanternaConsole implements VTConsoleImplementation
   
   private void appendToPendingInputLine(String line)
   {
-    //line = line.replace('\u000b', '\n');
+    // line = line.replace('\u000b', '\n');
     synchronized (inputLineBuffer)
     {
       if (inputLineBuffer.size() > 0)
       {
-        //if (inputLineBuffer.get(inputLineBuffer.size() - 1).contains("\n") || inputLineBuffer.get(inputLineBuffer.size() - 1).contains("\u000b"))
-        //if (getFromPendingInputLine(inputLineBuffer.size() - 1).contains("\n"))
+        // if (inputLineBuffer.get(inputLineBuffer.size() - 1).contains("\n") ||
+        // inputLineBuffer.get(inputLineBuffer.size() - 1).contains("\u000b"))
+        // if (getFromPendingInputLine(inputLineBuffer.size() -
+        // 1).contains("\n"))
         if (inputLineBuffer.get(inputLineBuffer.size() - 1).contains("\n"))
         {
           inputLineBuffer.add(line);
@@ -1768,7 +1754,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
       if (readingInput)
       {
         if (string.indexOf('\n') == -1)
-        //if (indexOfWhitespace(string) == -1)
+        // if (indexOfWhitespace(string) == -1)
         {
           inputBox.handleDataInput(currentLineBuffer, string, replaceActivated);
           // inputBox.setHiddenColumn(currentLineBuffer.length());
@@ -1783,18 +1769,18 @@ public class VTLanternaConsole implements VTConsoleImplementation
         {
           int i = 0, j = 0;
           i = string.indexOf('\n');
-          //i = indexOfWhitespace(string);
+          // i = indexOfWhitespace(string);
           inputBuffer.append(string.substring(0, i) + "\n");
           // appendToPendingInputLine(string.substring(0, i));
           j = i + 1;
           i = string.indexOf('\n', j);
-          //i = indexOfWhitespace(string, j);
+          // i = indexOfWhitespace(string, j);
           while (i != -1)
           {
             appendToPendingInputLine(string.substring(j, i) + "\n");
             j = i + 1;
             i = string.indexOf('\n', j);
-            //i = indexOfWhitespace(string, j);
+            // i = indexOfWhitespace(string, j);
           }
           if (j < string.length())
           {
@@ -1807,25 +1793,25 @@ public class VTLanternaConsole implements VTConsoleImplementation
       else
       {
         if (string.indexOf('\n') == -1)
-        //if (indexOfWhitespace(string) == -1)
+        // if (indexOfWhitespace(string) == -1)
         {
           appendToPendingInputLine(string);
         }
         else
         {
           int i = 0, j = 0;
-          //i = indexOfWhitespace(string);
+          // i = indexOfWhitespace(string);
           i = string.indexOf('\n');
           appendToPendingInputLine(string.substring(0, i) + "\n");
           j = i + 1;
           i = string.indexOf('\n', j);
-          //i = indexOfWhitespace(string, j);
+          // i = indexOfWhitespace(string, j);
           while (i != -1)
           {
             appendToPendingInputLine(string.substring(j, i) + "\n");
             j = i + 1;
             i = string.indexOf('\n', j);
-            //i = indexOfWhitespace(string, j);
+            // i = indexOfWhitespace(string, j);
           }
           if (j < string.length())
           {
@@ -1859,7 +1845,9 @@ public class VTLanternaConsole implements VTConsoleImplementation
     {
       readingInput = true;
       String data;
-      //while (inputBuffer.length() == 0 || inputBuffer.charAt(inputBuffer.length() - 1) != '\n' || inputBuffer.charAt(inputBuffer.length() - 1) != '\u000b')
+      // while (inputBuffer.length() == 0 ||
+      // inputBuffer.charAt(inputBuffer.length() - 1) != '\n' ||
+      // inputBuffer.charAt(inputBuffer.length() - 1) != '\u000b')
       while (inputBuffer.length() == 0 || inputBuffer.charAt(inputBuffer.length() - 1) != '\n')
       {
         inputSynchronizer.wait();
@@ -1878,12 +1866,16 @@ public class VTLanternaConsole implements VTConsoleImplementation
     readingInput = true;
     setEchoInput(echo);
     String data = null;
-    //if (getPendingInputLineSize() > 0 && (!getFromPendingInputLine().contains("\n") || !getFromPendingInputLine().contains("\u000b")))
+    // if (getPendingInputLineSize() > 0 &&
+    // (!getFromPendingInputLine().contains("\n") ||
+    // !getFromPendingInputLine().contains("\u000b")))
     if (getPendingInputLineSize() > 0 && !getFromPendingInputLine().contains("\n"))
     {
       currentLineBuffer.append(removeFromPendingInputLine());
     }
-    //else if (getPendingInputLineSize() > 0 && (getFromPendingInputLine().contains("\n") || getFromPendingInputLine().contains("\u000b")))
+    // else if (getPendingInputLineSize() > 0 &&
+    // (getFromPendingInputLine().contains("\n") ||
+    // getFromPendingInputLine().contains("\u000b")))
     else if (getPendingInputLineSize() > 0 && getFromPendingInputLine().contains("\n"))
     {
       data = removeFromPendingInputLine();
@@ -2022,7 +2014,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
       {
         int truncate = Math.max(0, len - 65536);
         int size = Math.min(65536, len);
-        //String truncated = String.valueOf(buf, truncate, size);
+        // String truncated = String.valueOf(buf, truncate, size);
         
         outputBuffer.delete(0, size);
         outputBuffer.append(buf, truncate, size);
@@ -2039,7 +2031,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
       {
         if (outputBuffer.length() > 0)
         {
-          //outputBox.output(VTStringBuilderValue.getValue(outputBuffer), 0, outputBuffer.length());
+          // outputBox.output(VTStringBuilderValue.getValue(outputBuffer), 0,
+          // outputBuffer.length());
           String data = outputBuffer.toString();
           outputBox.output(data);
           if (logOutput != null)
@@ -2085,7 +2078,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     {
       if (VT.detectWindows())
       {
-        //System.out.print("\u001B]0;" + title + "\u0007");
+        // System.out.print("\u001B]0;" + title + "\u0007");
         VTNativeUtils.system("title " + title);
       }
       else
@@ -2095,7 +2088,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         // VTNativeUtils.printf("\u001B]1;" + title + "\u0007");
         // VTNativeUtils.printf("\u001B]2;" + title + "\u0007");
         VTNativeUtils.printf("\u001B]0;" + title + "\u0007");
-        //System.out.print("\u001B]0;" + title + "\u0007");
+        // System.out.print("\u001B]0;" + title + "\u0007");
         // System.out.print("\u001B]1;" + title + "\u0007");
         // System.out.print("\u001B]2;" + title + "\u0007");
       }
@@ -2602,7 +2595,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
   
   public void requestFocus()
   {
-    //System.out.println("console.requestFocus()");
+    // System.out.println("console.requestFocus()");
     try
     {
       awtterminal.requestFocusInWindow();

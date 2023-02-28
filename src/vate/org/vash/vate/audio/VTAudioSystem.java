@@ -14,10 +14,10 @@ public class VTAudioSystem
   // private TargetDataLine targetDataLine;
   // private SourceDataLine sourceDataLine;
   // private Thread captureThread;
-
+  
   private VTAudioCapturer capture;
   private VTAudioPlayer play;
-
+  
   public VTAudioSystem(ExecutorService threads)
   {
     capture = new VTAudioCapturer(this, threads);
@@ -33,21 +33,21 @@ public class VTAudioSystem
   {
     return capture.searchTargetDataLine(audioFormat, info, bufferedMilliseconds);
   }
-
+  
   public boolean addAudioPlay(InputStream in, Mixer.Info info, SourceDataLine line, int codec, int frameMilliseconds)
   {
     return play.addInputStream(in, info, line, codec, frameMilliseconds);
   }
-
+  
   public boolean addAudioCapture(OutputStream out, Mixer.Info info, TargetDataLine line, int codec, int frameMilliseconds)
   {
     return capture.addOutputStream(out, info, line, codec, frameMilliseconds);
   }
-
+  
   public boolean initialize(AudioFormat audioFormat)
   {
-    //capture.setRunning(true);
-    //play.setRunning(true);
+    // capture.setRunning(true);
+    // play.setRunning(true);
     return capture.initialize(audioFormat) && play.initialize(audioFormat);
   }
   
@@ -56,7 +56,7 @@ public class VTAudioSystem
     capture.start();
     play.start();
   }
-
+  
   public void stop()
   {
     capture.setRunning(false);
@@ -64,7 +64,7 @@ public class VTAudioSystem
     capture.close();
     play.close();
   }
-
+  
   public boolean isRunning()
   {
     return capture.isRunning() && play.isRunning();

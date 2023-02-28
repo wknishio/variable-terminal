@@ -15,7 +15,7 @@ public class VTRuntimeProcessOutputConsumer implements Runnable
   private final char[] resultBuffer = new char[resultBufferSize];
   private InputStreamReader in;
   private BufferedWriter out;
-
+  
   public VTRuntimeProcessOutputConsumer(InputStream in, BufferedWriter out, boolean verbose)
   {
     this.in = new InputStreamReader(in);
@@ -27,13 +27,13 @@ public class VTRuntimeProcessOutputConsumer implements Runnable
       this.running = false;
     }
   }
-
+  
   public void stop()
   {
     running = false;
     finalize();
   }
-
+  
   public void finalize()
   {
     if (in != null)
@@ -48,7 +48,7 @@ public class VTRuntimeProcessOutputConsumer implements Runnable
       }
     }
   }
-
+  
   public void run()
   {
     Thread.currentThread().setName(getClass().getSimpleName());

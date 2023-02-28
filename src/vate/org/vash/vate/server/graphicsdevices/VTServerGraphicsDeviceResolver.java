@@ -12,23 +12,23 @@ public class VTServerGraphicsDeviceResolver extends VTTask
 {
   private volatile boolean finished;
   private VTServerSession session;
-
+  
   public VTServerGraphicsDeviceResolver(VTServerSession session)
   {
     this.session = session;
     this.finished = true;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public void run()
   {
     try

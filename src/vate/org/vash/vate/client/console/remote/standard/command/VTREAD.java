@@ -14,7 +14,7 @@ public class VTREAD extends VTClientStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTREAD <FILE;>");
     this.setAbbreviatedSyntax("*VTRD <FL;>");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length >= 2)
@@ -31,9 +31,9 @@ public class VTREAD extends VTClientStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

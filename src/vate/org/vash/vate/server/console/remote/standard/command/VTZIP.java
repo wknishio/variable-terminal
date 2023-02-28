@@ -11,7 +11,7 @@ public class VTZIP extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTZIP <SIDE> [MODE] [ZIP FILE;]");
     this.setAbbreviatedSyntax("*VTZP <SD> [MD] [ZP FL;]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
 //    if (parsed.length >= 2 && parsed[1].toUpperCase().startsWith("R"))
@@ -116,9 +116,9 @@ public class VTZIP extends VTServerStandardRemoteConsoleCommandProcessor
 //      }
 //    }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

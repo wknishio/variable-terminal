@@ -12,7 +12,7 @@ public class VTStandardConsoleInterruptibleInputStreamByte extends VTStandardCon
   // private VTByteArrayOutputStream lineBuffer;
   private VTStandardConsoleInterruptibleReaderByte reader;
   private volatile Thread currentThread;
-
+  
   public VTStandardConsoleInterruptibleInputStreamByte()
   {
     try
@@ -23,7 +23,7 @@ public class VTStandardConsoleInterruptibleInputStreamByte extends VTStandardCon
     }
     catch (Throwable e)
     {
-
+      
     }
     // this.lineBuffer = new VTByteArrayOutputStream();
     this.reader = new VTStandardConsoleInterruptibleReaderByte();
@@ -32,17 +32,17 @@ public class VTStandardConsoleInterruptibleInputStreamByte extends VTStandardCon
     // readerThread.setDaemon(true);
     // readerThread.start();
   }
-
+  
   public void setEcho(boolean echo)
   {
     reader.setEcho(echo);
   }
-
+  
   public boolean usingRead()
   {
     return currentThread == null;
   }
-
+  
   public void interruptRead()
   {
     if (currentThread != null)
@@ -53,18 +53,18 @@ public class VTStandardConsoleInterruptibleInputStreamByte extends VTStandardCon
       }
       catch (Throwable e)
       {
-
+        
       }
     }
   }
-
+  
   /*
    * public String readLine() throws IOException, InterruptedException {
-   * lineBuffer.count(0); int data = read(); while (data != -1 && data != '\n') {
-   * lineBuffer.write(data); data = interruptibleRead(); } return new
+   * lineBuffer.count(0); int data = read(); while (data != -1 && data != '\n')
+   * { lineBuffer.write(data); data = interruptibleRead(); } return new
    * String(lineBuffer.toByteArray()); }
    */
-
+  
   /*
    * public int interruptibleRead() throws IOException, InterruptedException {
    * currentThread = Thread.currentThread(); if (inputPipe.available() == 0) {
@@ -72,7 +72,7 @@ public class VTStandardConsoleInterruptibleInputStreamByte extends VTStandardCon
    * reader.read(); } outputPipe.write(line.getBytes()); outputPipe.flush(); }
    * return inputPipe.read(); }
    */
-
+  
   public int read() throws IOException
   {
     currentThread = Thread.currentThread();
@@ -99,18 +99,18 @@ public class VTStandardConsoleInterruptibleInputStreamByte extends VTStandardCon
     }
     return inputPipe.read();
   }
-
+  
   public int read(byte[] buf, int off, int len) throws IOException
   {
     buf[off] = (byte) read();
     return 1;
   }
-
+  
   public int available() throws IOException
   {
     return inputPipe.available();
   }
-
+  
   public void close() throws IOException
   {
     interruptRead();

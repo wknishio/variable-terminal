@@ -16,7 +16,7 @@ public class VTMIXERS extends VTClientStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTMIXERS [SIDE]");
     this.setAbbreviatedSyntax("*VTMX [SD]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length >= 2)
@@ -66,9 +66,9 @@ public class VTMIXERS extends VTClientStandardRemoteConsoleCommandProcessor
       connection.getCommandWriter().flush();
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }

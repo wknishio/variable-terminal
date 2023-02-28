@@ -16,23 +16,23 @@ public class VTMultiplexingConnection
   private VTLittleEndianOutputStream controlOutputStream;
   private final ExecutorService threads;
   private final VTMultiplexingControlThread controlThread;
-
+  
   public VTMultiplexingConnection(ExecutorService threads)
   {
     this.threads = threads;
     this.controlThread = new VTMultiplexingControlThread(this, threads);
   }
-
+  
   public synchronized void start()
   {
     threads.execute(controlThread);
   }
-
+  
   public synchronized void stop()
   {
     // controlThread.stop();
   }
-
+  
   public synchronized void close()
   {
     stop();
@@ -53,7 +53,7 @@ public class VTMultiplexingConnection
       // e.printStackTrace();
     }
   }
-
+  
   public synchronized VTLinkableDynamicMultiplexedOutputStream getOutputStream(short type, Object link)
   {
     if (link instanceof Integer)
@@ -62,14 +62,14 @@ public class VTMultiplexingConnection
     }
     return dataOutputStream.linkOutputStream(type, link);
   }
-
+  
   public synchronized VTLinkableDynamicMultiplexedOutputStream getOutputStream(short type, int number, Object link)
   {
     VTLinkableDynamicMultiplexedOutputStream stream = dataOutputStream.linkOutputStream(type, number);
     stream.setLink(link);
     return stream;
   }
-
+  
   public synchronized void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
   {
     if (stream != null)
@@ -78,12 +78,13 @@ public class VTMultiplexingConnection
     }
   }
   
-  //public synchronized VTLinkableDynamicMultiplexedInputStream getInputStream(short type, int number)
-  //{
-    //VTLinkableDynamicMultiplexedInputStream stream = dataInputStream.getInputStream(type, number);
-    //return stream;
-  //}
-
+  // public synchronized VTLinkableDynamicMultiplexedInputStream
+  // getInputStream(short type, int number)
+  // {
+  // VTLinkableDynamicMultiplexedInputStream stream =
+  // dataInputStream.getInputStream(type, number);
+  // return stream;
+  // }
   
   public synchronized VTLinkableDynamicMultiplexedInputStream getInputStream(short type, Object link)
   {
@@ -108,32 +109,32 @@ public class VTMultiplexingConnection
       dataInputStream.releaseInputStream(stream);
     }
   }
-
+  
   public VTLittleEndianInputStream getControlInputStream()
   {
     return controlInputStream;
   }
-
+  
   public VTLittleEndianOutputStream getControlOutputStream()
   {
     return controlOutputStream;
   }
-
+  
   public void setDataInputStream(VTLinkableDynamicMultiplexingInputStream in)
   {
     this.dataInputStream = in;
   }
-
+  
   public void setControlInputStream(InputStream in)
   {
     controlInputStream = new VTLittleEndianInputStream(in);
   }
-
+  
   public void setDataOutputStream(VTLinkableDynamicMultiplexingOutputStream out)
   {
     this.dataOutputStream = out;
   }
-
+  
   public void setControlOutputStream(OutputStream out)
   {
     controlOutputStream = new VTLittleEndianOutputStream(out);

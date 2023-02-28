@@ -12,15 +12,15 @@ public class VTEXIT extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTEXIT");
     this.setAbbreviatedSyntax("*VTEX");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     VTConsole.print("\rVT>Client disconnecting...\nVT>");
     connection.closeSockets();
   }
-
+  
   public void close()
   {
-
+    
   }
 }

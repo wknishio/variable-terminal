@@ -13,7 +13,7 @@ public class VTServerSettingsDialogParameter extends Panel
   private static final long serialVersionUID = 1L;
   private Label label;
   private Component parameter;
-
+  
   public VTServerSettingsDialogParameter(String label, Component parameter, boolean enabled)
   {
     this.parameter = parameter;
@@ -33,13 +33,13 @@ public class VTServerSettingsDialogParameter extends Panel
     add(parameterPanel, BorderLayout.CENTER);
     setEnabled(enabled);
   }
-
+  
   public void addKeyListener(KeyListener l)
   {
     super.addKeyListener(l);
     parameter.addKeyListener(l);
   }
-
+  
   public String getParameter()
   {
     if (parameter instanceof TextField)
@@ -52,12 +52,12 @@ public class VTServerSettingsDialogParameter extends Panel
     }
     return null;
   }
-
+  
   public void setLabel(Object value)
   {
     label.setText(value.toString());
   }
-
+  
   public void setParameter(Object value)
   {
     if (value == null)
@@ -84,7 +84,7 @@ public class VTServerSettingsDialogParameter extends Panel
       ((Choice) parameter).select(value.toString());
     }
   }
-
+  
   public void addParameter(Object value)
   {
     if (value == null)
@@ -93,19 +93,19 @@ public class VTServerSettingsDialogParameter extends Panel
     }
     if (parameter instanceof TextField)
     {
-
+      
     }
     else if (parameter instanceof Choice)
     {
       ((Choice) parameter).add(value.toString());
     }
   }
-
+  
   public boolean hasParameter(String value)
   {
     if (parameter instanceof TextField)
     {
-
+      
     }
     else if (parameter instanceof Choice)
     {
@@ -121,12 +121,12 @@ public class VTServerSettingsDialogParameter extends Panel
     }
     return false;
   }
-
+  
   public void removeParameter(String value)
   {
     if (parameter instanceof TextField)
     {
-
+      
     }
     else if (parameter instanceof Choice)
     {
@@ -136,11 +136,11 @@ public class VTServerSettingsDialogParameter extends Panel
       }
       catch (Throwable e)
       {
-
+        
       }
     }
   }
-
+  
   public void setEnabled(boolean enabled)
   {
     super.setEnabled(enabled);
@@ -148,7 +148,7 @@ public class VTServerSettingsDialogParameter extends Panel
     parameter.setEnabled(enabled);
     setEditable(enabled);
   }
-
+  
   public void setEditable(boolean editable)
   {
     if (parameter instanceof TextField)

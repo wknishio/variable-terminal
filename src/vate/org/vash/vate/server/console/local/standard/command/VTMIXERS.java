@@ -15,7 +15,7 @@ public class VTMIXERS extends VTServerStandardLocalConsoleCommandProcessor
     this.setFullSyntax("*VTMIXERS");
     this.setAbbreviatedSyntax("*VTMX");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     message.setLength(0);
@@ -27,7 +27,7 @@ public class VTMIXERS extends VTServerStandardLocalConsoleCommandProcessor
       // Mixer mixer = AudioSystem.getMixer(info);
       message.append("\nVT>Number: [" + number++ + "]");
       message.append("\nVT>Name: [" + info.getName() + "]");
-      //message.append("\nVT>Vendor: [" + info.getVendor() + "]");
+      // message.append("\nVT>Vendor: [" + info.getVendor() + "]");
       message.append("\nVT>Description: [" + info.getDescription() + "]");
       // for (Line.Info line : mixer.getSourceLineInfo())
       // {
@@ -42,9 +42,9 @@ public class VTMIXERS extends VTServerStandardLocalConsoleCommandProcessor
     message.append("\nVT>End of local audio mixers list\nVT>");
     VTConsole.print(message.toString());
   }
-
+  
   public void close()
   {
-
+    
   }
 }

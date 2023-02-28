@@ -19,7 +19,7 @@ public final class VTAWTControlProvider
   private volatile Robot interfaceInputRobot;
   private Clipboard systemClipboard;
   private Toolkit toolkit;
-
+  
   public VTAWTControlProvider()
   {
     if (GraphicsEnvironment.isHeadless())
@@ -37,7 +37,7 @@ public final class VTAWTControlProvider
       // e.printStackTrace(VTTerminal.getSystemOut());
     }
   }
-
+  
   public final void resetGraphicsDevice()
   {
     if (GraphicsEnvironment.isHeadless())
@@ -53,7 +53,7 @@ public final class VTAWTControlProvider
       // e.printStackTrace(VTTerminal.getSystemOut());
     }
   }
-
+  
   public final void setGraphicsDevice(GraphicsDevice graphicsDevice)
   {
     if (GraphicsEnvironment.isHeadless())
@@ -84,14 +84,14 @@ public final class VTAWTControlProvider
         initializeInputControl();
       }
     }
-
+    
   }
-
+  
   public final GraphicsDevice getGraphicsDevice()
   {
     return this.graphicsDevice;
   }
-
+  
   public final boolean initializeInputControl()
   {
     if (GraphicsEnvironment.isHeadless())
@@ -100,14 +100,14 @@ public final class VTAWTControlProvider
     }
     return initializeInputControl(graphicsDevice);
     /*
-     * dispose(); try { if (interfaceInputRobot == null) { interfaceInputRobot = new
-     * Robot(); interfaceInputRobot.setAutoDelay(0);
-     * interfaceInputRobot.setAutoWaitForIdle(false); } inputControlInitialized =
-     * true; return true; } catch (Throwable e) { inputControlInitialized = false;
-     * return false; }
+     * dispose(); try { if (interfaceInputRobot == null) { interfaceInputRobot =
+     * new Robot(); interfaceInputRobot.setAutoDelay(0);
+     * interfaceInputRobot.setAutoWaitForIdle(false); } inputControlInitialized
+     * = true; return true; } catch (Throwable e) { inputControlInitialized =
+     * false; return false; }
      */
   }
-
+  
   private final boolean initializeInputControl(GraphicsDevice device)
   {
     reset();
@@ -120,10 +120,11 @@ public final class VTAWTControlProvider
       if (interfaceInputRobot == null)
       {
         /*
-         * if (device != null) { Rectangle deviceBounds = getDeviceBounds(device); if
-         * (deviceBounds.x == 0 && deviceBounds.y == 0) { interfaceInputRobot = new
-         * Robot(device); } else { interfaceInputRobot = new Robot(); } } else {
-         * interfaceInputRobot = new Robot(); }
+         * if (device != null) { Rectangle deviceBounds =
+         * getDeviceBounds(device); if (deviceBounds.x == 0 && deviceBounds.y ==
+         * 0) { interfaceInputRobot = new Robot(device); } else {
+         * interfaceInputRobot = new Robot(); } } else { interfaceInputRobot =
+         * new Robot(); }
          */
         interfaceInputRobot = new Robot();
         // interfaceInputRobot = new Robot();
@@ -151,18 +152,18 @@ public final class VTAWTControlProvider
       return false;
     }
   }
-
+  
   public final boolean isInputControlInitialized()
   {
     return inputControlInitialized;
   }
-
+  
   public final void reset()
   {
     disposeInputControlResources();
     interfaceInputRobot = null;
   }
-
+  
   public final void dispose()
   {
     disposeInputControlResources();
@@ -181,12 +182,12 @@ public final class VTAWTControlProvider
     }
     // toolkit = null;
   }
-
+  
   private final void disposeInputControlResources()
   {
     inputControlInitialized = false;
   }
-
+  
   public final void setAutoWaitForIdle(boolean autoWaitForIdle)
   {
     if (interfaceInputRobot != null)
@@ -194,7 +195,7 @@ public final class VTAWTControlProvider
       interfaceInputRobot.setAutoWaitForIdle(autoWaitForIdle);
     }
   }
-
+  
   public final void waitForIdle()
   {
     if (interfaceInputRobot != null)
@@ -202,7 +203,7 @@ public final class VTAWTControlProvider
       interfaceInputRobot.waitForIdle();
     }
   }
-
+  
   public final void keyPress(int keycode, int keymodifiers, int keylocation, char keychar)
   {
     try
@@ -226,10 +227,10 @@ public final class VTAWTControlProvider
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public final void keyRelease(int keycode, int keymodifiers, int keylocation, char keychar)
   {
     try
@@ -242,10 +243,10 @@ public final class VTAWTControlProvider
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public final void mouseMove(int x, int y)
   {
     try
@@ -257,10 +258,10 @@ public final class VTAWTControlProvider
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public final void mousePress(int buttons)
   {
     try
@@ -269,10 +270,10 @@ public final class VTAWTControlProvider
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public final void mouseRelease(int buttons)
   {
     try
@@ -281,10 +282,10 @@ public final class VTAWTControlProvider
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public final void mouseWheel(int wheelAmt)
   {
     try
@@ -293,10 +294,10 @@ public final class VTAWTControlProvider
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public final boolean getLockingKeyState(int keyCode)
   {
     try
@@ -308,7 +309,7 @@ public final class VTAWTControlProvider
       return false;
     }
   }
-
+  
   public final void setLockingKeyState(int keyCode, boolean on)
   {
     try
@@ -317,15 +318,15 @@ public final class VTAWTControlProvider
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public final Clipboard getSystemClipboard()
   {
     return systemClipboard;
   }
-
+  
   // windows only thing
   public void winAltNumpadASCIIKeyType(char characterKey)
   {
@@ -1079,12 +1080,12 @@ public final class VTAWTControlProvider
         return;
     }
   }
-
+  
   public static String getUnicodeCodePointString(char ch)
   {
     return String.format("%04x", (int) ch);
   }
-
+  
   private void altNumpadASCII(String numpadCodes)
   {
     if (numpadCodes == null || !numpadCodes.matches("^\\d+$"))
@@ -1103,7 +1104,7 @@ public final class VTAWTControlProvider
     }
     interfaceInputRobot.keyRelease(VK_ALT);
   }
-
+  
   private int getNumpadKey(char numberChar)
   {
     switch (numberChar)
@@ -1132,7 +1133,7 @@ public final class VTAWTControlProvider
         return -1;
     }
   }
-
+  
   // public static void main(String[] args)
   // {//123456780
   // VTAWTControlProvider provider = new VTAWTControlProvider();

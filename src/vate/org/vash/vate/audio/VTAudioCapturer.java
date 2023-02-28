@@ -60,7 +60,7 @@ public class VTAudioCapturer
       try
       {
         line = AudioSystem.getTargetDataLine(audioFormat);
-        //line.open();
+        // line.open();
         if (bufferedMilliseconds > 0)
         {
           line.open(audioFormat, (int) ((audioFormat.getSampleRate() / 1000) * (audioFormat.getSampleSizeInBits() / 8)) * audioFormat.getChannels() * bufferedMilliseconds);
@@ -81,8 +81,8 @@ public class VTAudioCapturer
         try
         {
           line = AudioSystem.getTargetDataLine(audioFormat, mixer);
-          //line.open();
-          //line.open(audioFormat);
+          // line.open();
+          // line.open(audioFormat);
           if (bufferedMilliseconds > 0)
           {
             line.open(audioFormat, (int) ((audioFormat.getSampleRate() / 1000) * (audioFormat.getSampleSizeInBits() / 8)) * audioFormat.getChannels() * bufferedMilliseconds);
@@ -104,8 +104,8 @@ public class VTAudioCapturer
       try
       {
         line = AudioSystem.getTargetDataLine(audioFormat, info);
-        //line.open();
-        //line.open(audioFormat);
+        // line.open();
+        // line.open(audioFormat);
         if (bufferedMilliseconds > 0)
         {
           line.open(audioFormat, (int) ((audioFormat.getSampleRate() / 1000) * (audioFormat.getSampleSizeInBits() / 8)) * audioFormat.getChannels() * bufferedMilliseconds);
@@ -152,7 +152,8 @@ public class VTAudioCapturer
       this.line = line;
       this.id = id;
       this.lineBufferSize = line.getBufferSize();
-      //System.out.println("capture.line.getBufferSize:" + line.getBufferSize());
+      // System.out.println("capture.line.getBufferSize:" +
+      // line.getBufferSize());
       int sampleRate = (int) audioFormat.getSampleRate();
       this.frameSize = ((sampleRate / 1000) * (audioFormat.getSampleSizeInBits() / 8)) * audioFormat.getChannels() * frameMilliseconds;
       // this.maxFrameSize = minFrameSize * 3;
@@ -172,10 +173,10 @@ public class VTAudioCapturer
           opus.setEnableAnalysis(false);
           opus.setUseDTX(false);
           opus.setUseVBR(false);
-          //opus.setUseConstrainedVBR(true);
-          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_NARROWBAND);
-          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_NARROWBAND);
-          //opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
+          // opus.setUseConstrainedVBR(true);
+          // opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_NARROWBAND);
+          // opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_NARROWBAND);
+          // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
           opus.setComplexity(5);
           opus.setBitrate(16000);
         }
@@ -195,10 +196,10 @@ public class VTAudioCapturer
           opus.setEnableAnalysis(false);
           opus.setUseDTX(false);
           opus.setUseVBR(false);
-          //opus.setUseConstrainedVBR(true);
-          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_MEDIUMBAND);
-          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_MEDIUMBAND);
-          //opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
+          // opus.setUseConstrainedVBR(true);
+          // opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_MEDIUMBAND);
+          // opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_MEDIUMBAND);
+          // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
           opus.setComplexity(5);
           opus.setBitrate(24000);
         }
@@ -219,10 +220,10 @@ public class VTAudioCapturer
           opus.setEnableAnalysis(false);
           opus.setUseDTX(false);
           opus.setUseVBR(false);
-          //opus.setUseConstrainedVBR(true);
-          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_WIDEBAND);
-          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_WIDEBAND);
-          //opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
+          // opus.setUseConstrainedVBR(true);
+          // opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_WIDEBAND);
+          // opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_WIDEBAND);
+          // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
           opus.setComplexity(5);
           opus.setBitrate(32000);
         }
@@ -242,10 +243,10 @@ public class VTAudioCapturer
           opus.setEnableAnalysis(false);
           opus.setUseDTX(false);
           opus.setUseVBR(false);
-          //opus.setUseConstrainedVBR(true);
-          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_SUPERWIDEBAND);
-          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_SUPERWIDEBAND);
-          //opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
+          // opus.setUseConstrainedVBR(true);
+          // opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_SUPERWIDEBAND);
+          // opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_SUPERWIDEBAND);
+          // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
           opus.setComplexity(5);
           opus.setBitrate(32000);
         }
@@ -271,10 +272,10 @@ public class VTAudioCapturer
           opus.setEnableAnalysis(false);
           opus.setUseDTX(false);
           opus.setUseVBR(false);
-          //opus.setUseConstrainedVBR(true);
-          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_FULLBAND);
-          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_FULLBAND);
-          //opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
+          // opus.setUseConstrainedVBR(true);
+          // opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_FULLBAND);
+          // opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_FULLBAND);
+          // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
           opus.setComplexity(5);
           opus.setBitrate(64000);
         }
@@ -364,7 +365,8 @@ public class VTAudioCapturer
         {
           for (offset = 0; offset < decodedFrameSize; offset += (frameSize))
           {
-            // encodedFrameSize = opus.encode(inputBuffer, offset, (frameSize >> 1),
+            // encodedFrameSize = opus.encode(inputBuffer, offset, (frameSize >>
+            // 1),
             // outputBuffer, 0, (frameSize));
             encodedFrameSize = opus.encode(inputBuffer, offset, (frameSize), outputBuffer, 0, (frameSize));
             for (VTLittleEndianOutputStream out : streams)
@@ -403,7 +405,8 @@ public class VTAudioCapturer
         {
           for (offset = 0; offset < decodedFrameSize; offset += (frameSize))
           {
-            // encodedFrameSize = opus.encode(inputBuffer, offset, (frameSize >> 1),
+            // encodedFrameSize = opus.encode(inputBuffer, offset, (frameSize >>
+            // 1),
             // outputBuffer, 0, (frameSize));
             encodedFrameSize = opus.encode(inputBuffer, offset, (frameSize), outputBuffer, 0, (frameSize));
             for (VTLittleEndianOutputStream out : streams)

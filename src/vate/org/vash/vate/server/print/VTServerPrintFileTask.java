@@ -31,18 +31,18 @@ public class VTServerPrintFileTask extends VTTask
   private Integer printServiceNumber;
   private DocPrintJob docPrintJob;
   private VTServerSession session;
-
+  
   public VTServerPrintFileTask(VTServerSession session)
   {
     this.session = session;
     this.finished = true;
   }
-
+  
   public void setFile(String file)
   {
     this.file = file;
   }
-
+  
   public void setStopped(boolean stopped)
   {
     if (stopped && !finished)
@@ -58,28 +58,28 @@ public class VTServerPrintFileTask extends VTTask
           }
           catch (PrintException e)
           {
-
+            
           }
         }
       }
     }
   }
-
+  
   public void setPrintServiceNumber(Integer printServiceNumber)
   {
     this.printServiceNumber = printServiceNumber;
   }
-
+  
   public boolean isFinished()
   {
     return finished;
   }
-
+  
   public void setFinished(boolean finished)
   {
     this.finished = finished;
   }
-
+  
   public void run()
   {
     try
@@ -89,13 +89,13 @@ public class VTServerPrintFileTask extends VTTask
       {
         source = new File(file);
       }
-
+      
       final FileInputStream stream = new FileInputStream(source);
-
+      
       try
       {
         PrintService printService = null;
-
+        
         if (printServiceNumber != null)
         {
           PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
@@ -105,7 +105,7 @@ public class VTServerPrintFileTask extends VTTask
         {
           printService = PrintServiceLookup.lookupDefaultPrintService();
         }
-
+        
         if (printService != null)
         {
           DocFlavor docFlavor = DocFlavor.INPUT_STREAM.AUTOSENSE;
@@ -123,11 +123,11 @@ public class VTServerPrintFileTask extends VTTask
                 }
                 catch (IOException e)
                 {
-
+                  
                 }
               }
             }
-
+            
             public void printJobCanceled(PrintJobEvent pje)
             {
               if (stream != null)
@@ -138,7 +138,7 @@ public class VTServerPrintFileTask extends VTTask
                 }
                 catch (IOException e)
                 {
-
+                  
                 }
               }
               try
@@ -156,10 +156,10 @@ public class VTServerPrintFileTask extends VTTask
               }
               catch (IOException e)
               {
-
+                
               }
             }
-
+            
             public void printJobCompleted(PrintJobEvent pje)
             {
               if (stream != null)
@@ -170,7 +170,7 @@ public class VTServerPrintFileTask extends VTTask
                 }
                 catch (IOException e)
                 {
-
+                  
                 }
               }
               try
@@ -188,10 +188,10 @@ public class VTServerPrintFileTask extends VTTask
               }
               catch (IOException e)
               {
-
+                
               }
             }
-
+            
             public void printJobFailed(PrintJobEvent pje)
             {
               if (stream != null)
@@ -202,7 +202,7 @@ public class VTServerPrintFileTask extends VTTask
                 }
                 catch (IOException e)
                 {
-
+                  
                 }
               }
               try
@@ -220,10 +220,10 @@ public class VTServerPrintFileTask extends VTTask
               }
               catch (IOException e)
               {
-
+                
               }
             }
-
+            
             public void printJobNoMoreEvents(PrintJobEvent pje)
             {
               // System.out.println("printJobNoMoreEvents");
@@ -235,7 +235,7 @@ public class VTServerPrintFileTask extends VTTask
                 }
                 catch (IOException e)
                 {
-
+                  
                 }
               }
               try
@@ -253,10 +253,10 @@ public class VTServerPrintFileTask extends VTTask
               }
               catch (IOException e)
               {
-
+                
               }
             }
-
+            
             public void printJobRequiresAttention(PrintJobEvent pje)
             {
               DocPrintJob job = pje.getPrintJob();
@@ -269,7 +269,7 @@ public class VTServerPrintFileTask extends VTTask
                 }
                 catch (PrintException e)
                 {
-
+                  
                 }
               }
             }
@@ -278,9 +278,9 @@ public class VTServerPrintFileTask extends VTTask
           PrintRequestAttributeSet printRequestAttributes = new HashPrintRequestAttributeSet();
           printRequestAttributes.add(new Copies(1));
           // printRequestAttributes.add(MediaSize.ISO.A4);
-
+          
           Doc doc = new SimpleDoc(stream, docFlavor, docAttributes);
-
+          
           // Doc doc = new SimpleDoc(printable, docFlavor,
           // docAttributes);
           docPrintJob.print(doc, printRequestAttributes);
@@ -311,9 +311,10 @@ public class VTServerPrintFileTask extends VTTask
       }
       /*
        * catch (PrintException e) { synchronized (this) {
-       * session.getConnection().getResultWriter(). write("\nVT>Print job failed!" +
-       * "\nVT>"); session.getConnection().getResultWriter().flush(); finished = true;
-       * } if (stream != null) { stream.close(); } }
+       * session.getConnection().getResultWriter().
+       * write("\nVT>Print job failed!" + "\nVT>");
+       * session.getConnection().getResultWriter().flush(); finished = true; }
+       * if (stream != null) { stream.close(); } }
        */
     }
     catch (FileNotFoundException e)
@@ -337,7 +338,7 @@ public class VTServerPrintFileTask extends VTTask
       // e.printStackTrace();
     }
   }
-
+  
   /*
    * public static void main(String[] args) { VTServerPrintFileTask task = new
    * VTServerPrintFileTask(null); task.setFile("build.xml"); task.run(); }

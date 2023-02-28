@@ -12,30 +12,30 @@ public class VTTunnelSession implements Closeable
 {
   private VTTunnelConnection connection;
   private Socket socket;
-  //private InputStream socketInputStream;
-  //private OutputStream socketOutputStream;
+  // private InputStream socketInputStream;
+  // private OutputStream socketOutputStream;
   private VTLinkableDynamicMultiplexedInputStream inputStream;
   private VTLinkableDynamicMultiplexedOutputStream outputStream;
   private final boolean originator;
   private int outputNumber;
   private int inputNumber;
-
+  
   public VTTunnelSession(VTTunnelConnection connection, Socket socket, boolean originator) throws IOException
   {
     this.connection = connection;
     this.socket = socket;
-    //this.socketInputStream = socket.getInputStream();
-    //this.socketOutputStream = socket.getOutputStream();
+    // this.socketInputStream = socket.getInputStream();
+    // this.socketOutputStream = socket.getOutputStream();
     this.originator = originator;
   }
-
+  
 //  public VTTunnelSession(VTTunnelConnection connection, VTLinkableDynamicMultiplexedInputStream inputStream)
 //  {
 //    this.connection = connection;
 //    this.inputStream = inputStream;
 //    this.originator = false;
 //  }
-
+  
   public boolean isOriginator()
   {
     return originator;
@@ -60,30 +60,30 @@ public class VTTunnelSession implements Closeable
   {
     return inputNumber;
   }
-
+  
   /* public boolean isReady() { return ready; } */
-
+  
   /* public void setReady(boolean ready) { this.ready = ready; } */
-
+  
   /*
    * public void linger() { if (socket != null) { try { socket.setSoLinger(true,
    * 0); } catch (Throwable e) { } } }
    */
-
+  
   public void close() throws IOException
-  { 
+  {
     if (socket == null)
     {
       return;
     }
-    //if (isOriginator())
-    //{
-      //System.out.println("tunnel.server.close()");
-    //}
-    //else
-    //{
-      //System.out.println("tunnel.client.close()");
-    //}
+    // if (isOriginator())
+    // {
+    // System.out.println("tunnel.server.close()");
+    // }
+    // else
+    // {
+    // System.out.println("tunnel.client.close()");
+    // }
     try
     {
       if (socket != null)
@@ -93,7 +93,7 @@ public class VTTunnelSession implements Closeable
     }
     catch (Throwable e)
     {
-      //e.printStackTrace();
+      // e.printStackTrace();
     }
     socket = null;
     try
@@ -105,7 +105,7 @@ public class VTTunnelSession implements Closeable
     }
     catch (Throwable e)
     {
-      //e.printStackTrace();
+      // e.printStackTrace();
     }
     outputStream = null;
     try
@@ -117,7 +117,7 @@ public class VTTunnelSession implements Closeable
     }
     catch (Throwable e)
     {
-      //e.printStackTrace();
+      // e.printStackTrace();
     }
     inputStream = null;
 //    try
@@ -145,14 +145,14 @@ public class VTTunnelSession implements Closeable
     connection.releaseInputStream(inputStream);
     connection.releaseOutputStream(outputStream);
   }
-
-  //public void setSocket(Socket socket) throws IOException
-  //{
-    //this.socket = socket;
-    //this.socketInputStream = socket.getInputStream();
-    //this.socketOutputStream = socket.getOutputStream();
-  //}
-
+  
+  // public void setSocket(Socket socket) throws IOException
+  // {
+  // this.socket = socket;
+  // this.socketInputStream = socket.getInputStream();
+  // this.socketOutputStream = socket.getOutputStream();
+  // }
+  
   public Socket getSocket()
   {
     return this.socket;
@@ -162,17 +162,17 @@ public class VTTunnelSession implements Closeable
   {
     return inputStream;
   }
-
+  
   public void setTunnelInputStream(VTLinkableDynamicMultiplexedInputStream inputStream)
   {
     this.inputStream = inputStream;
   }
-
+  
   public VTLinkableDynamicMultiplexedOutputStream getTunnelOutputStream()
   {
     return outputStream;
   }
-
+  
   public void setTunnelOutputStream(VTLinkableDynamicMultiplexedOutputStream outputStream)
   {
     this.outputStream = outputStream;

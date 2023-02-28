@@ -15,7 +15,7 @@ public class VTClientSessionHandler implements Runnable
   private VTClientSession session;
   private VTClientAuthenticator authenticator;
   private List<VTClientSessionListener> listeners;
-
+  
   public VTClientSessionHandler(VTClient client, VTClientConnection connection)
   {
     this.authenticated = false;
@@ -27,17 +27,17 @@ public class VTClientSessionHandler implements Runnable
   }
   
   /* public VTClientSession getSession() { return this.session; } */
-
+  
   public VTClientAuthenticator getAuthenticator()
   {
     return authenticator;
   }
-
+  
   public boolean isAuthenticated()
   {
     return authenticated;
   }
-
+  
   public void run()
   {
     authenticated = false;
@@ -45,7 +45,8 @@ public class VTClientSessionHandler implements Runnable
     try
     {
       connection.setAuthenticationStreams();
-      //if (connection.exchangeAuthenticationPadding() && authenticator.tryAuthentication())
+      // if (connection.exchangeAuthenticationPadding() &&
+      // authenticator.tryAuthentication())
       if (authenticator.tryAuthentication())
       {
         connection.setConnectionStreams(authenticator.getDigestedUser(), authenticator.getDigestedPassword(), authenticator.getUser(), authenticator.getPassword());
@@ -61,7 +62,7 @@ public class VTClientSessionHandler implements Runnable
     }
     catch (Throwable e)
     {
-      //e.printStackTrace();
+      // e.printStackTrace();
       // connection.setSkipLine(true);
       VTConsole.print("\nVT>Session with server failed!");
       connection.closeConnection();
@@ -69,7 +70,7 @@ public class VTClientSessionHandler implements Runnable
     System.runFinalization();
     System.gc();
   }
-
+  
   private void processSession()
   {
     boolean started = false;
@@ -100,7 +101,7 @@ public class VTClientSessionHandler implements Runnable
     }
     catch (Throwable e)
     {
-      //e.printStackTrace();
+      // e.printStackTrace();
     }
     if (started)
     {

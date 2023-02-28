@@ -6,14 +6,14 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
   private VTGraphicsModeClientRemoteInterface remoteInterface;
   private Thread repainterThread;
   // private Object interruptSynchronizer;
-
+  
   public VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter(VTGraphicsModeClientRemoteInterface remoteInterface)
   {
     this.remoteInterface = remoteInterface;
     this.interrupted = false;
     // this.interruptSynchronizer = new Object();
   }
-
+  
   public void start()
   {
     if (isRunning())
@@ -29,7 +29,7 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
       repainterThread.start();
     }
   }
-
+  
   public void interrupt()
   {
     synchronized (this)
@@ -38,7 +38,7 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
       notify();
     }
   }
-
+  
   public void resume()
   {
     synchronized (this)
@@ -47,7 +47,7 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
       notify();
     }
   }
-
+  
   public void stop()
   {
     if (isInterrupted())
@@ -67,16 +67,16 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
       }
       catch (InterruptedException e)
       {
-
+        
       }
     }
   }
-
+  
   public boolean isInterrupted()
   {
     return interrupted;
   }
-
+  
   public boolean isRunning()
   {
     if (repainterThread != null && repainterThread.isAlive())
@@ -88,7 +88,7 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
       return false;
     }
   }
-
+  
   public void run()
   {
     try
@@ -116,7 +116,7 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
     }
     catch (Throwable e)
     {
-
+      
     }
   }
 }

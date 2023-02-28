@@ -15,14 +15,14 @@ public class VTClientRemoteConsoleReader extends VTTask
   // private VTClient client;
   private VTClientSession session;
   private VTClientConnection connection;
-
+  
   public VTClientRemoteConsoleReader(VTClientSession session)
   {
     // this.client = session.getClient();
     this.session = session;
     this.connection = session.getConnection();
   }
-
+  
   public void run()
   {
     while (!stopped)
@@ -35,7 +35,7 @@ public class VTClientRemoteConsoleReader extends VTTask
       }
       catch (Throwable e)
       {
-        //e.printStackTrace();
+        // e.printStackTrace();
         stopped = true;
         break;
       }

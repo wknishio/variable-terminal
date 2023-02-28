@@ -17,34 +17,34 @@ public class VTMacNativeUtils implements VTNativeUtilsImplementation
   private static int KDMKTONE = ('K' << 8) | 8;
   private static int CDIOCEJECT = ('c' << 8) | 24;
   private static int CDIOCCLOSE = ('c' << 8) | 28;
-
+  
   private VTMacCLibrary macCLibrary;
   // private VTCLibrary cLibrary;
-
+  
   public VTMacNativeUtils()
   {
     macCLibrary = (VTMacCLibrary) Native.load(("c"), VTMacCLibrary.class);
   }
-
+  
   public int system(String command)
   {
     return macCLibrary.system(command);
   }
-
+  
   public int getchar()
   {
     return macCLibrary.getchar();
   }
-
+  
   public void printf(String format, Object... args)
   {
     macCLibrary.printf(format, args);
   }
-
+  
   /*
    * public boolean beep(int freq, int dur) { return beep(freq, dur, true); }
    */
-
+  
   public boolean beep(int freq, int dur, boolean block)
   {
     boolean returnFlag = false;
@@ -71,7 +71,7 @@ public class VTMacNativeUtils implements VTNativeUtilsImplementation
     }
     return returnFlag;
   }
-
+  
   public boolean openCD()
   {
     int cdrom = macCLibrary.open("/dev/cdrom", O_RDONLY | O_NONBLOCK);
@@ -90,7 +90,7 @@ public class VTMacNativeUtils implements VTNativeUtilsImplementation
       return true;
     }
   }
-
+  
   public boolean closeCD()
   {
     int cdrom = macCLibrary.open("/dev/cdrom", O_RDONLY | O_NONBLOCK);
@@ -109,52 +109,52 @@ public class VTMacNativeUtils implements VTNativeUtilsImplementation
       return true;
     }
   }
-
+  
   public void exit(int status)
   {
     macCLibrary.exit(status);
   }
-
+  
   public void abort()
   {
     macCLibrary.abort();
   }
-
+  
   public int raise(int signal)
   {
     return macCLibrary.raise(signal);
   }
-
+  
   public int rand()
   {
     return macCLibrary.rand();
   }
-
+  
   public void srand(int seed)
   {
     macCLibrary.srand(seed);
   }
-
+  
   public String getenv(String env)
   {
     return macCLibrary.getenv(env);
   }
-
+  
   public int putenv(String env)
   {
     return macCLibrary.putenv(env);
   }
-
+  
   public int getpid()
   {
     return macCLibrary.getpid();
   }
-
+  
   public int isatty(int fd)
   {
     return macCLibrary.isatty(fd);
   }
-
+  
   public boolean detachConsole()
   {
     try
@@ -166,21 +166,21 @@ public class VTMacNativeUtils implements VTNativeUtilsImplementation
       }
       catch (Throwable t)
       {
-
+        
       }
     }
     catch (Throwable t)
     {
-
+      
     }
     return true;
   }
-
+  
   public boolean attachConsole()
   {
     return false;
   }
-
+  
   public boolean hideConsole()
   {
     try
@@ -192,54 +192,57 @@ public class VTMacNativeUtils implements VTNativeUtilsImplementation
       }
       catch (Throwable t)
       {
-
+        
       }
     }
     catch (Throwable t)
     {
-
+      
     }
     return true;
   }
-
+  
   public int getch()
   {
     return getchar();
   }
-
+  
   public void unbuffered()
   {
     try
     {
-      Runtime.getRuntime().exec(new String[] { "/bin/sh", "-c", "stty -icanon min 1 < /dev/tty" });
+      Runtime.getRuntime().exec(new String[]
+      { "/bin/sh", "-c", "stty -icanon min 1 < /dev/tty" });
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public void noecho()
   {
     try
     {
-      Runtime.getRuntime().exec(new String[] { "/bin/sh", "-c", "stty -echo < /dev/tty" });
+      Runtime.getRuntime().exec(new String[]
+      { "/bin/sh", "-c", "stty -echo < /dev/tty" });
     }
     catch (Throwable t)
     {
-
+      
     }
   }
-
+  
   public void normal()
   {
     try
     {
-      Runtime.getRuntime().exec(new String[] { "/bin/sh", "-c", "stty icanon echo < /dev/tty" });
+      Runtime.getRuntime().exec(new String[]
+      { "/bin/sh", "-c", "stty icanon echo < /dev/tty" });
     }
     catch (Throwable t)
     {
-
+      
     }
   }
   

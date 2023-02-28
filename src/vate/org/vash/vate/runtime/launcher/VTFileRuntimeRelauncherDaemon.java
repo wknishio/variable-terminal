@@ -8,8 +8,9 @@ public class VTFileRuntimeRelauncherDaemon
 {
   public static void main(String[] args) throws Exception
   {
-    //VTNativeUtils.detachConsole();
-    String[] files = { "relauncher.txt" };
+    // VTNativeUtils.detachConsole();
+    String[] files =
+    { "relauncher.txt" };
     if (args.length > 0)
     {
       files = args;
@@ -38,7 +39,7 @@ public class VTFileRuntimeRelauncherDaemon
       }
       catch (Throwable t)
       {
-
+        
       }
       finally
       {
@@ -50,7 +51,7 @@ public class VTFileRuntimeRelauncherDaemon
           }
           catch (Throwable t)
           {
-
+            
           }
         }
       }
@@ -77,7 +78,7 @@ public class VTFileRuntimeRelauncherDaemon
     }
     catch (Throwable t)
     {
-
+      
     }
     finally
     {
@@ -89,12 +90,12 @@ public class VTFileRuntimeRelauncherDaemon
         }
         catch (Throwable t)
         {
-
+          
         }
       }
     }
   }
-
+  
   public static void command(String command)
   {
     while (true)
@@ -117,7 +118,7 @@ public class VTFileRuntimeRelauncherDaemon
       }
       catch (Throwable e)
       {
-
+        
       }
     }
   }

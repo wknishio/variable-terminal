@@ -8,9 +8,9 @@ public class VTGraphicalConsoleToggleScrollModeActionListener implements ActionL
 {
   public VTGraphicalConsoleToggleScrollModeActionListener()
   {
-
+    
   }
-
+  
   public void actionPerformed(ActionEvent e)
   {
     try
@@ -19,7 +19,7 @@ public class VTGraphicalConsoleToggleScrollModeActionListener implements ActionL
     }
     catch (Throwable ex)
     {
-
+      
     }
   }
 }

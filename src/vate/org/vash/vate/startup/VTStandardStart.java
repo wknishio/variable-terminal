@@ -9,10 +9,10 @@ import org.vash.vate.server.VTServer;
 public final class VTStandardStart
 {
   private static String option;
-
+  
   public static final void main(String[] args)
   {
-    //System.setProperty("java.awt.headless", "true");
+    // System.setProperty("java.awt.headless", "true");
     VTConsole.setLanterna(true);
     VTConsole.setGraphical(false);
     VTConsole.setRemoteIcon(true);
@@ -21,10 +21,7 @@ public final class VTStandardStart
       VTConsole.initialize();
       VTConsole.clear();
       VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
-      VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + "\n" + 
-      "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + 
-      "VT>This software is under MIT license, see license.txt!\n" + 
-      "VT>This software comes with no warranty, use at your own risk!\n");
+      VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + "\n" + "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + "VT>This software is under MIT license, see license.txt!\n" + "VT>This software comes with no warranty, use at your own risk!\n");
       VTConsole.print("VT>Enter module(client as C or server as S, default:C):");
       if (VTConsole.isGraphical())
       {
@@ -180,11 +177,14 @@ public final class VTStandardStart
             
           }
         }
-        // VTConsole.println("VT>Invalid parameter syntax!" + "\nVT>Mode parameter:" +
+        // VTConsole.println("VT>Invalid parameter syntax!" + "\nVT>Mode
+        // parameter:" +
         // "\nVT>c(client)|s(server)|d(daemon)" + "\nVT>Host parameter:" +
-        // "\nVT>[connectionhost/]connectionport[;natport]" + "\nVT>Settings file
+        // "\nVT>[connectionhost/]connectionport[;natport]" + "\nVT>Settings
+        // file
         // parameter:" + "\nVT>settingsfile" + "\nVT>Optional parameters:" +
-        // "\nVT>[login/password]" + "\nVT>[encryptiontype;encryptionpassword]" +
+        // "\nVT>[login/password]" + "\nVT>[encryptiontype;encryptionpassword]"
+        // +
         // "\nVT>[proxytype/proxyhost/proxyport[/proxyuser/proxypassword]]" +
         // "\nVT>[sessionslimit]");
         System.exit(0);
@@ -209,10 +209,7 @@ public final class VTStandardStart
         VTConsole.initialize();
         VTConsole.clear();
         VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
-        VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + "\n" + 
-        "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + 
-        "VT>This software is under MIT license, see license.txt!\n" + 
-        "VT>This software comes with no warranty, use at your own risk!\n");
+        VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + "\n" + "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + "VT>This software is under MIT license, see license.txt!\n" + "VT>This software comes with no warranty, use at your own risk!\n");
         VTConsole.print("VT>Enter module(client as C or server as S, default:C):");
         if (VTConsole.isGraphical())
         {

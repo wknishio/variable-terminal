@@ -7,17 +7,17 @@ public abstract class VTTask implements Runnable, Closeable
 {
   protected volatile boolean stopped;
   private Thread taskThread;
-
+  
   public boolean isStopped()
   {
     return stopped;
   }
-
+  
   public void setStopped(boolean stopped)
   {
     this.stopped = stopped;
   }
-
+  
   public void interruptThread()
   {
     if (taskThread != null)
@@ -25,7 +25,7 @@ public abstract class VTTask implements Runnable, Closeable
       taskThread.interrupt();
     }
   }
-
+  
   @SuppressWarnings("deprecation")
   public void stopThread()
   {
@@ -33,7 +33,7 @@ public abstract class VTTask implements Runnable, Closeable
     {
       try
       {
-        //taskThread.stop();
+        // taskThread.stop();
       }
       catch (Throwable t)
       {
@@ -41,7 +41,7 @@ public abstract class VTTask implements Runnable, Closeable
       }
     }
   }
-
+  
   public void joinThread()
   {
     if (taskThread != null)
@@ -56,7 +56,7 @@ public abstract class VTTask implements Runnable, Closeable
       }
     }
   }
-
+  
   public boolean aliveThread()
   {
     if (taskThread != null)
@@ -65,7 +65,7 @@ public abstract class VTTask implements Runnable, Closeable
     }
     return false;
   }
-
+  
   public void startThread()
   {
     // setStopped(false);
@@ -74,9 +74,9 @@ public abstract class VTTask implements Runnable, Closeable
     taskThread.setDaemon(true);
     taskThread.start();
   }
-
+  
   public abstract void run();
-
+  
   public void close() throws IOException
   {
     this.setStopped(true);

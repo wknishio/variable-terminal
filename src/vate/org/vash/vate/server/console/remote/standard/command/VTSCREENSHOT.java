@@ -12,7 +12,7 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullSyntax("*VTSCREENSHOT [MODE] [DISPLAY]");
     this.setAbbreviatedSyntax("*VTSCS [MD] [DP]");
   }
-
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     synchronized (session.getScreenshotTask())
@@ -59,7 +59,7 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
             }
             catch (Throwable t)
             {
-
+              
             }
             if (parsed[i].toUpperCase().contains("P"))
             {
@@ -116,9 +116,9 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
       }
     }
   }
-
+  
   public void close()
   {
-
+    
   }
 }
