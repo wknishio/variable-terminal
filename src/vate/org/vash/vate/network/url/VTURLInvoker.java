@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.vash.vate.VT;
-import org.vash.vate.network.ssl.SSLVerificationDisabler;
+import org.vash.vate.network.tls.TLSVerificationDisabler;
 
 public class VTURLInvoker
 {
@@ -21,7 +21,7 @@ public class VTURLInvoker
   {
     try
     {
-      SSLVerificationDisabler.install();
+      TLSVerificationDisabler.install();
     }
     catch (Throwable t)
     {

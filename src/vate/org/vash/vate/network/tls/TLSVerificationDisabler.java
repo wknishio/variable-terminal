@@ -1,4 +1,4 @@
-package org.vash.vate.network.ssl;
+package org.vash.vate.network.tls;
 
 import java.lang.reflect.Method;
 import javax.net.ssl.HostnameVerifier;
@@ -8,7 +8,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-public class SSLVerificationDisabler
+public class TLSVerificationDisabler
 {
   private static class OverlyOptimisticHostnameVerifier implements HostnameVerifier
   {
@@ -52,6 +52,8 @@ public class SSLVerificationDisabler
   {
     try
     {
+      System.setProperty("sun.security.ssl.allowLegacyHelloMessages", "true");
+      System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
       TrustManager[] trustAnything = new TrustManager[]
       { new PublicKeyInfrastructureRejector() };
       SSLContext unverifiedTLS = SSLContext.getInstance("TLS");

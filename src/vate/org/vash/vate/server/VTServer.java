@@ -27,7 +27,7 @@ import org.vash.vate.exception.VTUncaughtExceptionHandler;
 import org.vash.vate.graphics.message.VTTrayIconInterface;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.nativeutils.VTNativeUtils;
-import org.vash.vate.network.ssl.SSLVerificationDisabler;
+import org.vash.vate.network.tls.TLSVerificationDisabler;
 import org.vash.vate.parser.VTArgumentParser;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
@@ -94,7 +94,7 @@ public class VTServer implements Runnable
   {
     ImageIO.setUseCache(false);
     VTHelpManager.initialize();
-    SSLVerificationDisabler.install();
+    TLSVerificationDisabler.install();
     // com.github.luben.zstd.util.Native.load();
   }
   
