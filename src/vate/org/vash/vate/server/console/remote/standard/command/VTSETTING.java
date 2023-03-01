@@ -94,10 +94,10 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       {
         message.append("\nVT>Encryption type(ET): [RC4]");
       }
-      // else if (encryptionType.toUpperCase().startsWith("A"))
-      // {
-      // message.append("\nVT>Encryption type(ET): [AES]");
-      // }
+      else if (encryptionType.toUpperCase().startsWith("A"))
+      {
+        message.append("\nVT>Encryption type(ET): [AES]");
+      }
       // else if (encryptionType.toUpperCase().startsWith("B"))
       // {
       // message.append("\nVT>Encryption type(ET): [BLOWFISH]");
@@ -599,12 +599,11 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().write("\nVT>Encryption type(ET): [RC4]\nVT>");
             connection.getResultWriter().flush();
           }
-          // else if (encryptionType.toUpperCase().startsWith("A"))
-          // {
-          // connection.getResultWriter().write("\nVT>Encryption type(ET):
-          // [AES]\nVT>");
-          // connection.getResultWriter().flush();
-          // }
+          else if (encryptionType.toUpperCase().startsWith("A"))
+          {
+            connection.getResultWriter().write("\nVT>Encryption type(ET): [AES]\nVT>");
+            connection.getResultWriter().flush();
+          }
           // else if (encryptionType.toUpperCase().startsWith("B"))
           // {
           // connection.getResultWriter().write("\nVT>Encryption type(ET):
@@ -652,12 +651,11 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [RC4]\nVT>");
             connection.getResultWriter().flush();
           }
-          // else if (encryptionType.toUpperCase().startsWith("A"))
-          // {
-          // connection.getResultWriter().write("\nVT>Encryption type(ET) set
-          // to: [AES]\nVT>");
-          // connection.getResultWriter().flush();
-          // }
+          else if (encryptionType.toUpperCase().startsWith("A"))
+          {
+            connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [AES]\nVT>");
+            connection.getResultWriter().flush();
+          }
           // else if (encryptionType.toUpperCase().startsWith("B"))
           // {
           // connection.getResultWriter().write("\nVT>Encryption type(ET) set

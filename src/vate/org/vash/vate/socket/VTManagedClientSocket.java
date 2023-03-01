@@ -3,7 +3,6 @@ package org.vash.vate.socket;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Socket;
 import java.util.Properties;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -12,6 +11,7 @@ import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
 import org.vash.vate.client.session.VTClientSessionListener;
+import org.vash.vate.server.session.VTServerSession;
 
 public class VTManagedClientSocket
 {
@@ -20,13 +20,15 @@ public class VTManagedClientSocket
   private volatile Thread interruptible;
   // private int streams;
   
-  private class VTCloseableClientConnection implements VTManagedCloseableConnection
+  private class VTCloseableClientConnection implements VTManagedConnection
   {
+    private VTClientSession session;
     private VTClientConnection connection;
     
-    private VTCloseableClientConnection(VTClientConnection connection)
+    private VTCloseableClientConnection(VTClientSession session)
     {
-      this.connection = connection;
+      this.session = session;
+      this.connection = session.getConnection();
     }
     
     public void close() throws IOException
@@ -39,10 +41,10 @@ public class VTManagedClientSocket
       return connection.isConnected();
     }
     
-    public Socket getConnectionSocket()
-    {
-      return connection.getConnectionSocket();
-    }
+    //public Socket getConnectionSocket()
+    //{
+      //return connection.getConnectionSocket();
+    //}
     
     public InputStream getInputStream(int number)
     {
@@ -61,6 +63,16 @@ public class VTManagedClientSocket
       }
       return connection.getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12 + number);
     }
+    
+    public VTClientSession getClientSession()
+    {
+      return session;
+    }
+    
+    public VTServerSession getServerSession()
+    {
+      return null;
+    }
   }
   
   private class VTManagedClientSocketClientSessionListener implements VTClientSessionListener
@@ -70,7 +82,7 @@ public class VTManagedClientSocket
       // System.out.println("client.session.started()");
       InputStream input = session.getConnection().getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12);
       OutputStream output = session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12);
-      VTManagedSocket socket = new VTManagedSocket(new VTCloseableClientConnection(session.getConnection()), input, output);
+      VTManagedSocket socket = new VTManagedSocket(new VTCloseableClientConnection(session), input, output);
       session.addSessionResource(this.getClass().getSimpleName(), socket);
       queue.offer(socket);
     }

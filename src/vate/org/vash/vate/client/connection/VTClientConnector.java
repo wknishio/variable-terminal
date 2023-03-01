@@ -609,10 +609,10 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
       }
-//      else if (encryptionType.toUpperCase().startsWith("A"))
-//      {
-//        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
-//      }
+      else if (encryptionType.toUpperCase().startsWith("A"))
+      {
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
+      }
       else if (encryptionType.toUpperCase().startsWith("R"))
       {
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_RC4);
@@ -708,10 +708,10 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
       }
-//      else if (encryptionType.toUpperCase().startsWith("A"))
-//      {
-//        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
-//      }
+      else if (encryptionType.toUpperCase().startsWith("A"))
+      {
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
+      }
       else if (encryptionType.toUpperCase().startsWith("R"))
       {
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_RC4);
@@ -1066,7 +1066,7 @@ public class VTClientConnector implements Runnable
           }
           if (line.toUpperCase().startsWith("Y"))
           {
-            VTConsole.print("VT>Enter encryption type(R(RC4)/I(ISAAC)/S(SALSA)/H(HC256)/G(GRAIN)):");
+            VTConsole.print("VT>Enter encryption type(RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)):");
             line = VTConsole.readLine(false);
             if (line == null)
             {
@@ -1077,10 +1077,10 @@ public class VTClientConnector implements Runnable
               return true;
             }
             encryptionType = "RC4";
-            // if (line.toUpperCase().startsWith("A"))
-            // {
-            // encryptionType = "AES";
-            // }
+            if (line.toUpperCase().startsWith("A"))
+            {
+              encryptionType = "AES";
+            }
             // if (line.toUpperCase().startsWith("B"))
             // {
             // encryptionType = "BLOWFISH";
@@ -1196,7 +1196,7 @@ public class VTClientConnector implements Runnable
         }
         if (line.toUpperCase().startsWith("Y"))
         {
-          VTConsole.print("VT>Enter encryption type(R(RC4)/I(ISAAC)/S(SALSA)/H(HC256)/G(GRAIN)):");
+          VTConsole.print("VT>Enter encryption type(RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)):");
           line = VTConsole.readLine(false);
           if (line == null)
           {
@@ -1207,10 +1207,10 @@ public class VTClientConnector implements Runnable
             return true;
           }
           encryptionType = "RC4";
-          // if (line.toUpperCase().startsWith("A"))
-          // {
-          // encryptionType = "AES";
-          // }
+          if (line.toUpperCase().startsWith("A"))
+          {
+            encryptionType = "AES";
+          }
           // if (line.toUpperCase().startsWith("B"))
           // {
           // encryptionType = "BLOWFISH";

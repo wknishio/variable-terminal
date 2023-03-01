@@ -8,20 +8,25 @@ import java.net.Socket;
 
 public class VTManagedSocket extends Socket implements Closeable
 {
-  private VTManagedCloseableConnection connection;
+  private VTManagedConnection managedConnection;
   private InputStream in;
   private OutputStream out;
   
-  public VTManagedSocket(VTManagedCloseableConnection connection, InputStream in, OutputStream out)
+  public VTManagedSocket(VTManagedConnection managedConnection, InputStream in, OutputStream out)
   {
-    this.connection = connection;
+    this.managedConnection = managedConnection;
     this.in = in;
     this.out = out;
   }
   
-  public Socket getConnectionSocket()
+//  public Socket getConnectionSocket()
+//  {
+//    return managedConnection.getConnectionSocket();
+//  }
+  
+  public VTManagedConnection getManagedConnection()
   {
-    return connection.getConnectionSocket();
+    return managedConnection;
   }
   
   public InputStream getInputStream()
@@ -36,12 +41,12 @@ public class VTManagedSocket extends Socket implements Closeable
   
   public InputStream getInputStream(int number)
   {
-    return connection.getInputStream(number);
+    return managedConnection.getInputStream(number);
   }
   
   public OutputStream getOutputStream(int number)
   {
-    return connection.getOutputStream(number);
+    return managedConnection.getOutputStream(number);
   }
   
   public void shutdownOutput() throws IOException
@@ -76,11 +81,11 @@ public class VTManagedSocket extends Socket implements Closeable
   
   public void close() throws IOException
   {
-    connection.close();
+    managedConnection.close();
   }
   
   public boolean isConnected()
   {
-    return connection.isConnected();
+    return managedConnection.isConnected();
   }
 }

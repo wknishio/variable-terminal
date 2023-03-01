@@ -14,7 +14,7 @@ import java.io.OutputStream;
 //import javax.crypto.spec.SecretKeySpec;
 
 import org.bouncycastle.crypto.StreamCipher;
-//import org.bouncycastle.crypto.engines.AESFastEngine;
+import org.bouncycastle.crypto.engines.AESFastEngine;
 import org.bouncycastle.crypto.engines.ChaChaEngine;
 import org.bouncycastle.crypto.engines.Grain128Engine;
 import org.bouncycastle.crypto.engines.HC256Engine;
@@ -24,7 +24,7 @@ import org.bouncycastle.crypto.engines.VMPCKSA3Engine;
 //import org.bouncycastle.crypto.engines.Zuc128Engine;
 import org.bouncycastle.crypto.io.CipherInputStream;
 import org.bouncycastle.crypto.io.CipherOutputStream;
-//import org.bouncycastle.crypto.modes.SICBlockCipher;
+import org.bouncycastle.crypto.modes.SICBlockCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.vash.vate.VT;
@@ -43,6 +43,7 @@ public class VTCryptographicEngine
     this.blake3Digest = new VTBlake3MessageDigest();
   }
   
+  @SuppressWarnings("deprecation")
   public void initializeClientEngine(int encryptionType, byte[]... encryptionKeys)
   {
     // encryptionCipher = null;
@@ -95,17 +96,17 @@ public class VTCryptographicEngine
       // encryptionCipherBC.init(true, encryptionKeySpec);
       // decryptionCipherBC.init(false, decryptionKeySpec);
     }
-//    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
-//    {
-//      encryptionCipherBC = new SICBlockCipher(new AESFastEngine());
-//      decryptionCipherBC = new SICBlockCipher(new AESFastEngine());
-//      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
-//      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
-//      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 16);
-//      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 16);
-//      encryptionCipherBC.init(true, encryptionIvParameterSpec);
-//      decryptionCipherBC.init(false, decryptionIvParameterSpec);
-//    }
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
+    {
+      encryptionCipherBC = new SICBlockCipher(new AESFastEngine());
+      decryptionCipherBC = new SICBlockCipher(new AESFastEngine());
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 16);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 16);
+      encryptionCipherBC.init(true, encryptionIvParameterSpec);
+      decryptionCipherBC.init(false, decryptionIvParameterSpec);
+    }
     // else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
     // {
     // encryptionCipher = Cipher.getInstance("Blowfish/CTR/NoPadding");
@@ -171,6 +172,7 @@ public class VTCryptographicEngine
     }
   }
   
+  @SuppressWarnings("deprecation")
   public void initializeServerEngine(int encryptionType, byte[]... encryptionKeys)
   {
     // encryptionCipher = null;
@@ -223,17 +225,17 @@ public class VTCryptographicEngine
       // encryptionCipherBC.init(true, encryptionKeySpec);
       // decryptionCipherBC.init(false, decryptionKeySpec);
     }
-//    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
-//    {
-//      encryptionCipherBC = new SICBlockCipher(new AESFastEngine());
-//      decryptionCipherBC = new SICBlockCipher(new AESFastEngine());
-//      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
-//      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
-//      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 16);
-//      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 16);
-//      encryptionCipherBC.init(true, encryptionIvParameterSpec);
-//      decryptionCipherBC.init(false, decryptionIvParameterSpec);
-//    }
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
+    {
+      encryptionCipherBC = new SICBlockCipher(new AESFastEngine());
+      decryptionCipherBC = new SICBlockCipher(new AESFastEngine());
+      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
+      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 16);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 16);
+      encryptionCipherBC.init(true, encryptionIvParameterSpec);
+      decryptionCipherBC.init(false, decryptionIvParameterSpec);
+    }
     // else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
     // {
     // encryptionCipher = Cipher.getInstance("Blowfish/CTR/NoPadding");

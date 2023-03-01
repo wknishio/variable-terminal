@@ -35,10 +35,10 @@ public class VTServerConnection
   private static byte[] VT_CLIENT_CHECK_STRING_NONE = new byte[16];
   private static byte[] VT_SERVER_CHECK_STRING_RC4 = new byte[16];
   private static byte[] VT_CLIENT_CHECK_STRING_RC4 = new byte[16];
-  // private static byte[] VT_SERVER_CHECK_STRING_AES = new byte[16];
-  // private static byte[] VT_CLIENT_CHECK_STRING_AES = new byte[16];
-  // private static byte[] VT_SERVER_CHECK_STRING_BLOWFISH = new byte[16];
-  // private static byte[] VT_CLIENT_CHECK_STRING_BLOWFISH = new byte[16];
+  private static byte[] VT_SERVER_CHECK_STRING_AES = new byte[16];
+  private static byte[] VT_CLIENT_CHECK_STRING_AES = new byte[16];
+  private static byte[] VT_SERVER_CHECK_STRING_BLOWFISH = new byte[16];
+  private static byte[] VT_CLIENT_CHECK_STRING_BLOWFISH = new byte[16];
   private static byte[] VT_SERVER_CHECK_STRING_SALSA = new byte[16];
   private static byte[] VT_CLIENT_CHECK_STRING_SALSA = new byte[16];
   private static byte[] VT_SERVER_CHECK_STRING_HC256 = new byte[16];
@@ -56,12 +56,8 @@ public class VTServerConnection
       VT_CLIENT_CHECK_STRING_NONE = (StringUtils.reverse("VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
       VT_SERVER_CHECK_STRING_RC4 = (StringUtils.reverse("VT/SERVER/RC4/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/SERVER/RC4/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
       VT_CLIENT_CHECK_STRING_RC4 = (StringUtils.reverse("VT/CLIENT/RC4/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/CLIENT/RC4/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      // VT_SERVER_CHECK_STRING_AES = (StringUtils.reverse("VT/SERVER/AES/" +
-      // MAJOR_MINOR_VERSION).toLowerCase() +
-      // "VT/SERVER/AES/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      // VT_CLIENT_CHECK_STRING_AES = (StringUtils.reverse("VT/CLIENT/AES/" +
-      // MAJOR_MINOR_VERSION).toLowerCase() +
-      // "VT/CLIENT/AES/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_AES = (StringUtils.reverse("VT/SERVER/AES/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/SERVER/AES/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_AES = (StringUtils.reverse("VT/CLIENT/AES/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/CLIENT/AES/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
       VT_SERVER_CHECK_STRING_SALSA = (StringUtils.reverse("VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
       VT_CLIENT_CHECK_STRING_SALSA = (StringUtils.reverse("VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
       VT_SERVER_CHECK_STRING_HC256 = (StringUtils.reverse("VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
@@ -813,10 +809,10 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-//    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT_CLIENT_CHECK_STRING_AES)))
-//    {
-//      return VT.VT_CONNECTION_ENCRYPT_AES;
-//    }
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT_CLIENT_CHECK_STRING_AES)))
+    {
+      return VT.VT_CONNECTION_ENCRYPT_AES;
+    }
     
     // sha256Digester.reset();
     // sha256Digester.update(localNonce);
@@ -916,15 +912,15 @@ public class VTServerConnection
         return true;
       }
     }
-//    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
-//    {
-//      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_AES, encryptionType);
-//      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_NONE)
-//      {
-//        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
-//        return true;
-//      }
-//    }
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
+    {
+      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_AES, encryptionType);
+      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_NONE)
+      {
+        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
+        return true;
+      }
+    }
     // else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
     // {
     // remoteEncryptionType = discoverRemoteEncryptionType(localNonce,
@@ -977,11 +973,11 @@ public class VTServerConnection
       setEncryptionType(VT.VT_CONNECTION_ENCRYPT_RC4);
       return true;
     }
-//    if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
-//    {
-//      setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
-//      return true;
-//    }
+    if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
+    {
+      setEncryptionType(VT.VT_CONNECTION_ENCRYPT_AES);
+      return true;
+    }
     // if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
     // {
     // setEncryptionType(VT.VT_CONNECTION_ENCRYPT_BLOWFISH);

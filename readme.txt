@@ -6,7 +6,7 @@ This software is a java remote computer administration tool.
 
 Some of the available features are:
 
-* RC4, ISAAC, SALSA, HC256 or GRAIN encryption.
+* RC4, AES, ISAAC, SALSA, HC256 or GRAIN encryption.
 * UPnP, NAT-PMP and PCP NAT port forwarding.
 * SOCKS and HTTP proxy network connections.
 * Multiple simultaneous sessions.
@@ -114,7 +114,7 @@ these are the available program arguments:
 * -PA: proxy authentication, default disabled(D), enabled(E)
 * -PU: proxy user, default null
 * -PK: proxy password, default null
-* -ET: encryption type, none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)
+* -ET: encryption type, none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)
 * -EK: encryption password, default null
 * -SM: session maximum, default 0, only in server
 * -SC: session commands, separated by "*;", default null, only in client

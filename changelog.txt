@@ -35,7 +35,7 @@ Changes since 1.4.2:
 * Added shortcut control+shift+end to use next device in *VTGRAPHICSLINK
 * Added 10 keyboard shorcuts to *VTGRAPHICSLINK
 * Added tips for *VTGRAPHICSLINK interface keyboard shortcuts
-* Removed AES encryption support
+* Changed AES 256 bit encryption transformation to CTR
 * Added command *VTAUDIOMIXERS to list available audio mixers
 * Renamed command *VTAUDIOCHAT to *VTAUDIOLINK
 * Changed command *VTAUDIOLINK to allow use of specific audio mixers
