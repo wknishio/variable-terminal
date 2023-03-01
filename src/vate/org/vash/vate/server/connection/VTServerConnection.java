@@ -37,8 +37,8 @@ public class VTServerConnection
   private static byte[] VT_CLIENT_CHECK_STRING_RC4 = new byte[16];
   private static byte[] VT_SERVER_CHECK_STRING_AES = new byte[16];
   private static byte[] VT_CLIENT_CHECK_STRING_AES = new byte[16];
-  private static byte[] VT_SERVER_CHECK_STRING_BLOWFISH = new byte[16];
-  private static byte[] VT_CLIENT_CHECK_STRING_BLOWFISH = new byte[16];
+  //private static byte[] VT_SERVER_CHECK_STRING_BLOWFISH = new byte[16];
+  //private static byte[] VT_CLIENT_CHECK_STRING_BLOWFISH = new byte[16];
   private static byte[] VT_SERVER_CHECK_STRING_SALSA = new byte[16];
   private static byte[] VT_CLIENT_CHECK_STRING_SALSA = new byte[16];
   private static byte[] VT_SERVER_CHECK_STRING_HC256 = new byte[16];

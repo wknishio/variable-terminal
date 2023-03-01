@@ -29,6 +29,7 @@ import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.vash.vate.VT;
 
+@SuppressWarnings("deprecation")
 public class VTCryptographicEngine
 {
   private VTBlake3MessageDigest blake3Digest;
@@ -43,7 +44,6 @@ public class VTCryptographicEngine
     this.blake3Digest = new VTBlake3MessageDigest();
   }
   
-  @SuppressWarnings("deprecation")
   public void initializeClientEngine(int encryptionType, byte[]... encryptionKeys)
   {
     // encryptionCipher = null;
@@ -172,7 +172,6 @@ public class VTCryptographicEngine
     }
   }
   
-  @SuppressWarnings("deprecation")
   public void initializeServerEngine(int encryptionType, byte[]... encryptionKeys)
   {
     // encryptionCipher = null;
