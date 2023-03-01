@@ -915,10 +915,7 @@ public final class VTImageIO
     top1 = position >= width ? pixelData[position - width] : left1;
     diag1 = position - 1 >= width ? pixelData[position - width - 1] : top1;
     pred1 = (((diag1 + top1 + left1) * 22369622) >>> 26);
-    pixelData[position] = ((in.readSubInt() ^ (int) ((pred1) /* & 0x00FFFFFF */)) /*
-                                                                                   * &
-                                                                                   * 0x00FFFFFF
-                                                                                   */);
+    pixelData[position] = ((in.readSubInt() ^ (int) ((pred1) /* & 0x00FFFFFF */)));
   }
   
   private static final void decodePixel32(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException

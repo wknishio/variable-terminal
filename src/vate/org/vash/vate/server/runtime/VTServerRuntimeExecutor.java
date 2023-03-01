@@ -134,52 +134,142 @@ public class VTServerRuntimeExecutor extends VTTask
       {
         String main_command_string = splitCommand[1].toUpperCase();
         
-        if (main_command_string.contains("M") && !main_command_string.contains("F") && !main_command_string.contains("L") && !main_command_string.contains("S") && !main_command_string.contains("D") && !main_command_string.contains("I") && !main_command_string.contains("N") && !main_command_string.contains("P") && !main_command_string.contains("B") && !main_command_string.contains("U"))
+        if (main_command_string.contains("M")
+        && !main_command_string.contains("F")
+        && !main_command_string.contains("L")
+        && !main_command_string.contains("S")
+        && !main_command_string.contains("D")
+        && !main_command_string.contains("I")
+        && !main_command_string.contains("N")
+        && !main_command_string.contains("P")
+        && !main_command_string.contains("B")
+        && !main_command_string.contains("U"))
         {
           process_command = PROCESS_COMMAND_MANAGED;
         }
-        else if (!main_command_string.contains("M") && main_command_string.contains("F") && !main_command_string.contains("L") && !main_command_string.contains("S") && !main_command_string.contains("D") && !main_command_string.contains("I") && !main_command_string.contains("N") && !main_command_string.contains("P") && !main_command_string.contains("B") && !main_command_string.contains("U"))
+        else if (!main_command_string.contains("M")
+        && main_command_string.contains("F")
+        &&!main_command_string.contains("L")
+        && !main_command_string.contains("S")
+        && !main_command_string.contains("D")
+        && !main_command_string.contains("I")
+        && !main_command_string.contains("N")
+        && !main_command_string.contains("P")
+        && !main_command_string.contains("B")
+        && !main_command_string.contains("U"))
         {
           process_command = PROCESS_COMMAND_FREE;
         }
-        else if (!main_command_string.contains("M") && !main_command_string.contains("F") && main_command_string.contains("L") && !main_command_string.contains("S") && !main_command_string.contains("D") && !main_command_string.contains("I") && !main_command_string.contains("N") && !main_command_string.contains("P") && !main_command_string.contains("B") && !main_command_string.contains("U"))
+        else if (!main_command_string.contains("M")
+        && !main_command_string.contains("F")
+        && main_command_string.contains("L")
+        && !main_command_string.contains("S")
+        && !main_command_string.contains("D")
+        && !main_command_string.contains("I")
+        && !main_command_string.contains("N")
+        && !main_command_string.contains("P")
+        && !main_command_string.contains("B")
+        && !main_command_string.contains("U"))
         {
           process_command = PROCESS_COMMAND_LIST;
           need_managed_scope = true;
         }
-        else if (!main_command_string.contains("M") && !main_command_string.contains("F") && !main_command_string.contains("L") && main_command_string.contains("S") && !main_command_string.contains("D") && !main_command_string.contains("I") && !main_command_string.contains("N") && !main_command_string.contains("P") && !main_command_string.contains("B") && !main_command_string.contains("U"))
+        else if (!main_command_string.contains("M")
+        && !main_command_string.contains("F")
+        && !main_command_string.contains("L")
+        && main_command_string.contains("S")
+        && !main_command_string.contains("D")
+        && !main_command_string.contains("I")
+        && !main_command_string.contains("N")
+        && !main_command_string.contains("P")
+        && !main_command_string.contains("B")
+        && !main_command_string.contains("U"))
         {
           process_command = PROCESS_COMMAND_STOP;
           need_managed_scope = true;
         }
-        else if (!main_command_string.contains("M") && !main_command_string.contains("F") && !main_command_string.contains("L") && !main_command_string.contains("S") && main_command_string.contains("D") && !main_command_string.contains("I") && !main_command_string.contains("N") && !main_command_string.contains("P") && !main_command_string.contains("B") && !main_command_string.contains("U"))
+        else if (!main_command_string.contains("M")
+        && !main_command_string.contains("F")
+        && !main_command_string.contains("L")
+        && !main_command_string.contains("S")
+        && main_command_string.contains("D")
+        && !main_command_string.contains("I")
+        && !main_command_string.contains("N")
+        && !main_command_string.contains("P")
+        && !main_command_string.contains("B")
+        && !main_command_string.contains("U"))
         {
           process_command = PROCESS_COMMAND_REMOVE;
           need_managed_scope = true;
         }
-        else if (!main_command_string.contains("M") && !main_command_string.contains("F") && !main_command_string.contains("L") && !main_command_string.contains("S") && !main_command_string.contains("D") && main_command_string.contains("I") && !main_command_string.contains("N") && !main_command_string.contains("P") && !main_command_string.contains("B") && !main_command_string.contains("U"))
+        else if (!main_command_string.contains("M")
+        && !main_command_string.contains("F")
+        && !main_command_string.contains("L")
+        && !main_command_string.contains("S")
+        && !main_command_string.contains("D")
+        && main_command_string.contains("I")
+        && !main_command_string.contains("N")
+        && !main_command_string.contains("P")
+        && !main_command_string.contains("B")
+        && !main_command_string.contains("U"))
         {
           process_command = PROCESS_COMMAND_INPUT;
           need_managed_scope = true;
           parameter_amount += 1;
         }
-        else if (!main_command_string.contains("M") && !main_command_string.contains("F") && !main_command_string.contains("L") && !main_command_string.contains("S") && !main_command_string.contains("D") && !main_command_string.contains("I") && main_command_string.contains("N") && !main_command_string.contains("P") && !main_command_string.contains("B") && !main_command_string.contains("U"))
+        else if (!main_command_string.contains("M")
+        && !main_command_string.contains("F")
+        && !main_command_string.contains("L")
+        && !main_command_string.contains("S")
+        && !main_command_string.contains("D")
+        && !main_command_string.contains("I")
+        && main_command_string.contains("N")
+        && !main_command_string.contains("P")
+        && !main_command_string.contains("B")
+        && !main_command_string.contains("U"))
         {
           process_command = PROCESS_COMMAND_LINE;
           need_managed_scope = true;
           parameter_amount += 1;
         }
-        else if (!main_command_string.contains("M") && !main_command_string.contains("F") && !main_command_string.contains("L") && !main_command_string.contains("S") && !main_command_string.contains("D") && !main_command_string.contains("I") && !main_command_string.contains("N") && main_command_string.contains("P") && !main_command_string.contains("B") && !main_command_string.contains("U"))
+        else if (!main_command_string.contains("M")
+        && !main_command_string.contains("F")
+        && !main_command_string.contains("L")
+        && !main_command_string.contains("S")
+        && !main_command_string.contains("D")
+        && !main_command_string.contains("I")
+        && !main_command_string.contains("N")
+        && main_command_string.contains("P")
+        && !main_command_string.contains("B")
+        && !main_command_string.contains("U"))
         {
           process_command = PROCESS_COMMAND_PATH;
         }
-        else if (!main_command_string.contains("M") && !main_command_string.contains("F") && !main_command_string.contains("L") && !main_command_string.contains("S") && !main_command_string.contains("D") && !main_command_string.contains("I") && !main_command_string.contains("N") && !main_command_string.contains("P") && main_command_string.contains("B") && !main_command_string.contains("U"))
+        else if (!main_command_string.contains("M")
+        && !main_command_string.contains("F")
+        && !main_command_string.contains("L")
+        && !main_command_string.contains("S")
+        && !main_command_string.contains("D")
+        && !main_command_string.contains("I")
+        && !main_command_string.contains("N")
+        && !main_command_string.contains("P")
+        && main_command_string.contains("B")
+        && !main_command_string.contains("U"))
         {
           process_command = PROCESS_COMMAND_BASE64;
           need_managed_scope = true;
           parameter_amount += 1;
         }
-        else if (!main_command_string.contains("M") && !main_command_string.contains("F") && !main_command_string.contains("L") && !main_command_string.contains("S") && !main_command_string.contains("D") && !main_command_string.contains("I") && !main_command_string.contains("N") && !main_command_string.contains("P") && !main_command_string.contains("B") && main_command_string.contains("U"))
+        else if (!main_command_string.contains("M")
+        && !main_command_string.contains("F")
+        && !main_command_string.contains("L")
+        && !main_command_string.contains("S")
+        && !main_command_string.contains("D")
+        && !main_command_string.contains("I")
+        && !main_command_string.contains("N")
+        && !main_command_string.contains("P")
+        && !main_command_string.contains("B")
+        && main_command_string.contains("U"))
         {
           process_command = PROCESS_COMMAND_UTF8;
           need_managed_scope = true;
@@ -188,16 +278,22 @@ public class VTServerRuntimeExecutor extends VTTask
         
         if (need_managed_scope)
         {
-          if (main_command_string.contains("A") && !main_command_string.contains("C") && !main_command_string.contains("O"))
+          if (main_command_string.contains("A")
+          && !main_command_string.contains("C")
+          && !main_command_string.contains("O"))
           {
             process_scope = PROCESS_SCOPE_ALL;
           }
-          else if (!main_command_string.contains("A") && main_command_string.contains("C") && !main_command_string.contains("O"))
+          else if (!main_command_string.contains("A")
+          && main_command_string.contains("C")
+          && !main_command_string.contains("O"))
           {
             process_scope = PROCESS_SCOPE_COMMAND;
             parameter_amount += 1;
           }
-          else if (!main_command_string.contains("A") && !main_command_string.contains("C") && main_command_string.contains("O"))
+          else if (!main_command_string.contains("A")
+          && !main_command_string.contains("C")
+          && main_command_string.contains("O"))
           {
             process_scope = PROCESS_SCOPE_NUMBER;
             parameter_amount += 1;

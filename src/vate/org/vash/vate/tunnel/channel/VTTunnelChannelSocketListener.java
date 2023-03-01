@@ -13,7 +13,7 @@ public class VTTunnelChannelSocketListener implements Runnable
   private ServerSocket serverSocket;
   private VTTunnelChannel channel;
   private static final String SESSION_SEPARATOR = "\f\b";
-  private static final String SESSION_MARK = "SESS";
+  private static final char SESSION_MARK = 'C';
   private volatile boolean closed;
   
   public VTTunnelChannelSocketListener(VTTunnelChannel channel)
@@ -135,7 +135,7 @@ public class VTTunnelChannelSocketListener implements Runnable
               String host = channel.getRedirectHost();
               int port = channel.getRedirectPort();
               // request message sent
-              channel.getConnection().getControlOutputStream().writeData(("UT" + SESSION_MARK + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port).getBytes("UTF-8"));
+              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port).getBytes("UTF-8"));
               channel.getConnection().getControlOutputStream().flush();
             }
             else if (channel.getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
@@ -148,7 +148,7 @@ public class VTTunnelChannelSocketListener implements Runnable
                 socksPassword = "*" + SESSION_SEPARATOR + "*";
               }
               // request message sent
-              channel.getConnection().getControlOutputStream().writeData(("US" + SESSION_MARK + outputNumber + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword).getBytes("UTF-8"));
+              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + outputNumber + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword).getBytes("UTF-8"));
               channel.getConnection().getControlOutputStream().flush();
             }
           }

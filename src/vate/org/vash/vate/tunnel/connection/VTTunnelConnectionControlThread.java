@@ -16,7 +16,7 @@ public class VTTunnelConnectionControlThread implements Runnable
   private VTTunnelConnection connection;
   private ExecutorService threads;
   private static final String SESSION_SEPARATOR = "\f\b";
-  private static final String SESSION_MARK = "SESS";
+  private static final char SESSION_MARK = 'C';
   
   public VTTunnelConnectionControlThread(VTTunnelConnection connection, ExecutorService threads)
   {
@@ -37,17 +37,14 @@ public class VTTunnelConnectionControlThread implements Runnable
         byte[] packet = connection.getControlInputStream().readData();
         if (packet[0] == 'U')
         {
-          String text = new String(packet, 2, packet.length - 2, "UTF-8");
-          int tunnelType = packet[1] == 'S' ? VTTunnelChannel.TUNNEL_TYPE_SOCKS : VTTunnelChannel.TUNNEL_TYPE_TCP;
-          if (text.startsWith(SESSION_MARK))
+          if (packet[1] == SESSION_MARK)
           {
-            text = text.substring(4);
+            int tunnelType = packet[2] == 'S' ? VTTunnelChannel.TUNNEL_TYPE_SOCKS : VTTunnelChannel.TUNNEL_TYPE_TCP;
+            String text = new String(packet, 3, packet.length - 3, "UTF-8");
             String[] parts = text.split(SESSION_SEPARATOR);
             if (parts.length >= 3)
             {
               // request message received
-              // if (connection.getTunnelType() ==
-              // VTTunnelConnection.TUNNEL_TYPE_TCP)
               if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
               {
                 int inputNumber = Integer.parseInt(parts[0]);
@@ -81,13 +78,13 @@ public class VTTunnelConnectionControlThread implements Runnable
                     session.getTunnelInputStream().open();
                     session.getTunnelOutputStream().open();
                     // response message sent with ok
-                    connection.getControlOutputStream().writeData(("UT" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                    connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                     connection.getControlOutputStream().flush();
                   }
                   else
                   {
                     // response message sent with error
-                    connection.getControlOutputStream().writeData(("UT" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                    connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                     connection.getControlOutputStream().flush();
                     if (session != null)
                     {
@@ -99,7 +96,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 {
                   // e.printStackTrace();
                   // response message sent with error
-                  connection.getControlOutputStream().writeData(("UT" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
                   if (session != null)
                   {
@@ -142,13 +139,13 @@ public class VTTunnelConnectionControlThread implements Runnable
                     session.getTunnelInputStream().open();
                     session.getTunnelOutputStream().open();
                     // response message sent with ok
-                    connection.getControlOutputStream().writeData(("US" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                    connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                     connection.getControlOutputStream().flush();
                   }
                   else
                   {
                     // response message sent with error
-                    connection.getControlOutputStream().writeData(("US" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                    connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                     connection.getControlOutputStream().flush();
                     if (session != null)
                     {
@@ -160,7 +157,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 {
                   // e.printStackTrace();
                   // response message sent with error
-                  connection.getControlOutputStream().writeData(("US" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
                   if (session != null)
                   {
@@ -193,12 +190,12 @@ public class VTTunnelConnectionControlThread implements Runnable
                       // ack message sent~
                       if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
                       {
-                        connection.getControlOutputStream().writeData(("US" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                        connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                         connection.getControlOutputStream().flush();
                       }
                       else
                       {
-                        connection.getControlOutputStream().writeData(("UT" + SESSION_MARK + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                        connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                         connection.getControlOutputStream().flush();
                       }
                       threads.execute(handler);
@@ -236,12 +233,12 @@ public class VTTunnelConnectionControlThread implements Runnable
           }
           else
           {
-            
+            // unable to handle
           }
         }
         else
         {
-          
+          // unable to handle
         }
       }
       catch (Throwable e)
