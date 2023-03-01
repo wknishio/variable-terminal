@@ -1976,8 +1976,8 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     int size = (width * areaHeight);
     limitX = areaWidth;
     limitY = size;
-    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) % 8;
-    r2 = 8 - (((size) / width) % 8);
+    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) & 7;
+    r2 = 8 - (((size) / width) & 7);
     m1 = 0;
     transferArea.x = areaX + padding;
     transferArea.y = areaY + padding;
@@ -2020,8 +2020,8 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     int areaWidth = lin.readInt();
     limitX = areaWidth;
     limitY = size;
-    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) % 8;
-    r2 = 8 - (((size) / width) % 8);
+    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) & 7;
+    r2 = 8 - (((size) / width) & 7);
     decodeBlock0Tree8(lin, oldPixelData, newPixelData);
 //    int areaHeight = size / width;
 //    int areaY = (offset - areaX) / width;
@@ -2056,8 +2056,8 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     int size = (width * areaHeight);
     limitX = areaWidth;
     limitY = size;
-    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) % 8;
-    r2 = 8 - (((size) / width) % 8);
+    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) & 7;
+    r2 = 8 - (((size) / width) & 7);
     m1 = 0;
     transferArea.x = areaX + padding;
     transferArea.y = areaY + padding;
@@ -2100,8 +2100,8 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     int areaWidth = lin.readInt();
     limitX = areaWidth;
     limitY = size;
-    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) % 8;
-    r2 = 8 - (((size) / width) % 8);
+    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) & 7;
+    r2 = 8 - (((size) / width) & 7);
     decodeBlock0Tree15(lin, oldPixelData, newPixelData);
 //    int areaHeight = size / width;
 //    int areaY = (offset - areaX) / width;
@@ -2136,8 +2136,8 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     int size = (width * areaHeight);
     limitX = areaWidth;
     limitY = size;
-    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) % 8;
-    r2 = 8 - (((size) / width) % 8);
+    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) & 7;
+    r2 = 8 - (((size) / width) & 7);
     m1 = 0;
     transferArea.x = areaX + padding;
     transferArea.y = areaY + padding;
@@ -2180,8 +2180,8 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     int areaWidth = lin.readInt();
     limitX = areaWidth;
     limitY = size;
-    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) % 8;
-    r2 = 8 - (((size) / width) % 8);
+    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) & 7;
+    r2 = 8 - (((size) / width) & 7);
     decodeBlock0Tree24(lin, oldPixelData, newPixelData);
 //    int areaHeight = size / width;
 //    int areaY = (offset - areaX) / width;
