@@ -855,7 +855,7 @@ public class VTServerSession
   public void waitThreads()
   {
     // System.out.println("waitThreads");
-    sessionResources.clear();
+    //sessionResources.clear();
     try
     {
       clientReader.joinThread();
@@ -953,5 +953,10 @@ public class VTServerSession
   public void setShellType(int shellType)
   {
     this.shellAdapter.setShellType(shellType);
+  }
+  
+  public void clearSessionResources()
+  {
+    sessionResources.clear();
   }
 }

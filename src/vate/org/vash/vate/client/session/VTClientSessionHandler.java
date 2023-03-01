@@ -117,6 +117,7 @@ public class VTClientSessionHandler implements Runnable
         
       }
     }
+    session.clearSessionResources();
   }
   
   public void setSessionListeners(List<VTClientSessionListener> listeners)

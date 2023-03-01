@@ -107,7 +107,6 @@ public class VTServerSessionHandler implements Runnable
       session.tryStopSessionThreads();
       connection.closeConnection();
       session.waitThreads();
-      
     }
     catch (Throwable e)
     {
@@ -127,6 +126,7 @@ public class VTServerSessionHandler implements Runnable
         
       }
     }
+    session.clearSessionResources();
   }
   
   public void setSessionListeners(List<VTServerSessionListener> listeners)

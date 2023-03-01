@@ -18,7 +18,7 @@ public class VTManagedServerSocket
   private VTServer vtserver;
   private ArrayBlockingQueue<VTManagedSocket> queue = new ArrayBlockingQueue<VTManagedSocket>(1);
   private volatile Thread interruptible;
-  // private int streams;
+  private VTManagedSocketListener socketListener;
   
   private class VTCloseableServerConnection implements VTManagedConnection
   {
@@ -84,12 +84,28 @@ public class VTManagedServerSocket
       OutputStream output = session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12);
       VTManagedSocket socket = new VTManagedSocket(new VTCloseableServerConnection(session), input, output);
       session.addSessionResource(this.getClass().getSimpleName(), socket);
-      queue.offer(socket);
+      if (socketListener != null)
+      {
+        socketListener.connected(socket);
+      }
+      else
+      {
+        queue.offer(socket);
+      }
     }
     
     public void sessionFinished(VTServerSession session)
     {
       // System.out.println("server.session.finished()");
+//      if (socketListener != null)
+//      {
+//        Closeable closeable = session.getSessionResource(this.getClass().getSimpleName());
+//        if (closeable instanceof VTManagedSocket)
+//        {
+//          VTManagedSocket socket = (VTManagedSocket) closeable;
+//          socketListener.sessionFinished(socket);
+//        }
+//      }
     }
   }
   
@@ -152,6 +168,11 @@ public class VTManagedServerSocket
   {
     interrupt();
     stop();
+  }
+  
+  public void setManagedSocketListener(VTManagedSocketListener socketListener)
+  {
+    this.socketListener = socketListener;
   }
   
 //  public static void main(String[] args)

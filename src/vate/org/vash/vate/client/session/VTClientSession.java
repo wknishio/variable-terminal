@@ -336,7 +336,7 @@ public class VTClientSession
      * fileTransferThread.isAlive() || graphicsThread.isAlive()) { try {
      * Thread.sleep(1); } catch (Throwable e) { return; } }
      */
-    sessionResources.clear();
+    //sessionResources.clear();
     try
     {
       serverReader.joinThread();
@@ -363,5 +363,10 @@ public class VTClientSession
     
     connection.getCommandWriter().write(clientShell + "\n");
     connection.getCommandWriter().flush();
+  }
+  
+  public void clearSessionResources()
+  {
+    sessionResources.clear();
   }
 }
