@@ -33,7 +33,7 @@ public class VTServerRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
       standardCommandProcessorClasses.add(VTEXIT.class);
       standardCommandProcessorClasses.add(VTDISPLAYS.class);
       standardCommandProcessorClasses.add(VTFILECHECK.class);
-      standardCommandProcessorClasses.add(VTFILEMODIFY.class);
+      standardCommandProcessorClasses.add(VTFILESHIFT.class);
       standardCommandProcessorClasses.add(VTFILETRANSFER.class);
       standardCommandProcessorClasses.add(VTGRAPHICSLINK.class);
       standardCommandProcessorClasses.add(VTHELP.class);

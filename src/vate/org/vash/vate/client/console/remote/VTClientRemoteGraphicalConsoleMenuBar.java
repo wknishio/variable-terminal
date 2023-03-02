@@ -147,7 +147,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     fileTransferMenu = new Menu("File Transfer ");
     remoteFileMenu = new Menu("Remote Files ");
     remoteFileCheckMenu = new Menu("Check Files ");
-    remoteFileModifyMenu = new Menu("Modify Files ");
+    remoteFileModifyMenu = new Menu("Shift Files ");
     // zipFileMenu = new Menu("Zip Files ");
     // zipFileLocalMenu = new Menu("Local Zip Files ");
     // zipFileRemoteMenu = new Menu("Remote Zip Files ");
@@ -160,9 +160,9 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     // zipFileMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP
     // *VTZIP\n"));
     
+    fileSystemMenu.add(fileTransferMenu);
     fileSystemMenu.add(remoteFileMenu);
     // fileSystemMenu.add(zipFileMenu);
-    fileSystemMenu.add(fileTransferMenu);
     
     fileTransferMenu.add(new VTGraphicalConsoleMenuItem("Send File To Server", "*VTFILETRANSFER P"));
     fileTransferMenu.add(new VTGraphicalConsoleMenuItem("Receive File From Server", "*VTFILETRANSFER G"));
@@ -182,14 +182,14 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("Stop File Check", "*VTFILECHECK S\n"));
     remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTFILECHECK\n"));
     
-    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Create Empty Directory", "*VTFILEMODIFY D "));
-    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Create Empty File", "*VTFILEMODIFY F "));
-    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Remove File", "*VTFILEMODIFY R "));
-    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Move File", "*VTFILEMODIFY M "));
-    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Copy File", "*VTFILEMODIFY C "));
-    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Report File Modification", "*VTFILEMODIFY\n"));
-    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Stop File Modification", "*VTFILEMODIFY S\n"));
-    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTFILEMODIFY\n"));
+    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Create Empty Directory", "*VTFILESHIFT D "));
+    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Create Empty File", "*VTFILESHIFT F "));
+    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Remove File", "*VTFILESHIFT R "));
+    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Move File", "*VTFILESHIFT M "));
+    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Copy File", "*VTFILESHIFT C "));
+    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Report File Shift", "*VTFILESHIFT\n"));
+    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Stop File Shift", "*VTFILESHIFT S\n"));
+    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTFILESHIFT\n"));
     
     // zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Compress Zip File",
     // "*VTZIP L C "));

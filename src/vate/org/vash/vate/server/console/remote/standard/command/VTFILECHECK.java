@@ -38,7 +38,7 @@ public class VTFILECHECK extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file inspection is still running!\nVT>");
+            connection.getResultWriter().write("\nVT>Another remote file check is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -57,7 +57,7 @@ public class VTFILECHECK extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file inspection is still running!\nVT>");
+            connection.getResultWriter().write("\nVT>Another remote file check is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -78,14 +78,14 @@ public class VTFILECHECK extends VTServerStandardRemoteConsoleCommandProcessor
           }
           if (session.getFileScanOperation().aliveThread())
           {
-            connection.getResultWriter().write("\nVT>Trying to interrupt remote file inspection!\nVT>");
+            connection.getResultWriter().write("\nVT>Trying to interrupt remote file check!\nVT>");
             connection.getResultWriter().flush();
             session.getFileScanOperation().interruptThread();
             session.getFileScanOperation().stopThread();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>No remote file inspection is running!\nVT>");
+            connection.getResultWriter().write("\nVT>No remote file check is running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -104,7 +104,7 @@ public class VTFILECHECK extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file inspection is still running!\nVT>");
+            connection.getResultWriter().write("\nVT>Another remote file check is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -122,12 +122,12 @@ public class VTFILECHECK extends VTServerStandardRemoteConsoleCommandProcessor
         }
         if (!session.getFileScanOperation().aliveThread())
         {
-          connection.getResultWriter().write("\nVT>No remote file inspection is running!\nVT>");
+          connection.getResultWriter().write("\nVT>No remote file check is running!\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>A remote file inspection is still running!\nVT>");
+          connection.getResultWriter().write("\nVT>A remote file check is still running!\nVT>");
           connection.getResultWriter().flush();
         }
       }

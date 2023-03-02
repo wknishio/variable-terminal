@@ -6,14 +6,14 @@ import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 import org.vash.vate.server.filesystem.VTServerFileModifyOperation;
 
-public class VTFILEMODIFY extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTFILESHIFT extends VTServerStandardRemoteConsoleCommandProcessor
 {
-  public VTFILEMODIFY()
+  public VTFILESHIFT()
   {
-    this.setFullName("*VTFILEMODIFY");
-    this.setAbbreviatedName("*VTFM");
-    this.setFullSyntax("*VTFILEMODIFY [MODE] [FILE] [NEXT]");
-    this.setAbbreviatedSyntax("*VTFM [MD] [FL] [NX]");
+    this.setFullName("*VTFILESHIFT");
+    this.setAbbreviatedName("*VTFS");
+    this.setFullSyntax("*VTFILESHIFT [MODE] [FILE] [NEXT]");
+    this.setAbbreviatedSyntax("*VTFS [MD] [FL] [NX]");
   }
   
   public void execute(String command, String[] parsed) throws Exception
@@ -38,7 +38,7 @@ public class VTFILEMODIFY extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file modification is still running!\nVT>");
+            connection.getResultWriter().write("\nVT>Another remote file shift is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -58,7 +58,7 @@ public class VTFILEMODIFY extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file modification is still running!\nVT>");
+            connection.getResultWriter().write("\nVT>Another remote file shift is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -85,7 +85,7 @@ public class VTFILEMODIFY extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file modification is still running!\nVT>");
+            connection.getResultWriter().write("\nVT>Another remote file shift is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -104,7 +104,7 @@ public class VTFILEMODIFY extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file modification is still running!\nVT>");
+            connection.getResultWriter().write("\nVT>Another remote file shift is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -123,7 +123,7 @@ public class VTFILEMODIFY extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file modification is still running!\nVT>");
+            connection.getResultWriter().write("\nVT>Another remote file shift is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -143,14 +143,14 @@ public class VTFILEMODIFY extends VTServerStandardRemoteConsoleCommandProcessor
           }
           if (!session.getFileModifyOperation().aliveThread())
           {
-            connection.getResultWriter().write("\nVT>Trying to interrupt remote file modification!\nVT>");
+            connection.getResultWriter().write("\nVT>Trying to interrupt remote file shift!\nVT>");
             connection.getResultWriter().flush();
             session.getFileModifyOperation().interruptThread();
             session.getFileModifyOperation().stopThread();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>No remote file modification is running!\nVT>");
+            connection.getResultWriter().write("\nVT>No remote file shift is running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -168,12 +168,12 @@ public class VTFILEMODIFY extends VTServerStandardRemoteConsoleCommandProcessor
         }
         if (!session.getFileModifyOperation().aliveThread())
         {
-          connection.getResultWriter().write("\nVT>No remote file modification is running!\nVT>");
+          connection.getResultWriter().write("\nVT>No remote file shift is running!\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>A remote file modification is still running!\nVT>");
+          connection.getResultWriter().write("\nVT>A remote file shift is still running!\nVT>");
           connection.getResultWriter().flush();
         }
       }
