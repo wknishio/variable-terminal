@@ -69,7 +69,7 @@ public class VTFileTransferClientTransaction implements Runnable
   private String transferParameters;
   // private String[] splitCommand;
   private File fileTransferFile;
-  private File fileTransferFinalFile;
+  private File fileTransferCompletedFile;
   private RandomAccessFile fileTransferRandomAccessFile;
   // private FileLock fileLock;
   // private CheckedInputStream fileTransferChecksumInputStream;
@@ -1517,20 +1517,20 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     try
     {
-      fileTransferFinalFile = new File(convertFilePath(currentPath));
-      if (!fileTransferFinalFile.isAbsolute())
+      fileTransferCompletedFile = new File(convertFilePath(currentPath));
+      if (!fileTransferCompletedFile.isAbsolute())
       {
-        fileTransferFinalFile = new File(convertFilePath(currentPath));
+        fileTransferCompletedFile = new File(convertFilePath(currentPath));
       }
-      if (fileTransferFinalFile.equals(fileTransferFile))
+      if (fileTransferCompletedFile.equals(fileTransferFile))
       {
         return true;
       }
-      if (!fileTransferFile.renameTo(fileTransferFinalFile))
+      if (!fileTransferFile.renameTo(fileTransferCompletedFile))
       {
-        if (fileTransferFinalFile.delete())
+        if (fileTransferCompletedFile.delete())
         {
-          return fileTransferFile.renameTo(fileTransferFinalFile);
+          return fileTransferFile.renameTo(fileTransferCompletedFile);
         }
         else
         {
