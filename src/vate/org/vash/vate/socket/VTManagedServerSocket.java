@@ -4,7 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Properties;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.vash.vate.VT;
 import org.vash.vate.client.session.VTClientSession;
@@ -16,7 +17,7 @@ import org.vash.vate.server.session.VTServerSessionListener;
 public class VTManagedServerSocket
 {
   private VTServer vtserver;
-  private ArrayBlockingQueue<VTManagedSocket> queue = new ArrayBlockingQueue<VTManagedSocket>(1);
+  private BlockingQueue<VTManagedSocket> queue = new LinkedBlockingQueue<VTManagedSocket>();
   private volatile Thread interruptible;
   private VTManagedSocketListener socketListener;
   
