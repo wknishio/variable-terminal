@@ -26,6 +26,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
   private VTClientRemoteConsoleCommandSelector<VTClientRemoteConsoleCommandProcessor> selector;
   // private VTInterruptibleInputStream source;
   private BufferedReader sourceReader;
+  private volatile boolean reading = false;
   // private BufferedReader
   
   public VTClientRemoteConsoleWriter(VTClientSession session)
@@ -33,6 +34,11 @@ public class VTClientRemoteConsoleWriter extends VTTask
     this.session = session;
     this.connection = session.getConnection();
     this.selector = new VTClientRemoteConsoleCommandSelector<VTClientRemoteConsoleCommandProcessor>(session);
+  }
+  
+  public boolean isReading()
+  {
+    return reading;
   }
   
   public void setStopped(boolean stopped)
@@ -51,8 +57,6 @@ public class VTClientRemoteConsoleWriter extends VTTask
           
         }
       }
-      
-      // source.close();
     }
   }
   
@@ -75,8 +79,6 @@ public class VTClientRemoteConsoleWriter extends VTTask
     {
       return;
     }
-    // sourceReader = new BufferedReader(new InputStreamReader(new
-    // VTInterruptibleInputStream(in, session.getSessionThreads()), charset));
     sourceReader = new BufferedReader(new InputStreamReader(in, charset));
   }
   
@@ -90,19 +92,9 @@ public class VTClientRemoteConsoleWriter extends VTTask
       {
         executeStringScript(commands.replace("*;", "\n"), false);
       }
-      
     }
-    // second run commands from all files in session lines parameter
-    // if (!stopped)
-    // {
-    // String scripts =
-    // session.getClient().getClientConnector().getSessionLines().trim();
-    // if (scripts != null && scripts.length() > 0)
-    // {
-    // executeFileScripts(scripts, Charset.forName("UTF-8"), false);
-    // }
-    // }
     
+    reading = true;
     while (!stopped)
     {
       // String[] lines;
@@ -127,18 +119,6 @@ public class VTClientRemoteConsoleWriter extends VTTask
               continue;
             }
             executeCommand(line.trim(), true);
-//            if (line.contains("*;"))
-//            {
-//              lines = line.split("\\*;");
-//              for (String subLine : lines)
-//              {
-//                executeCommand(subLine);
-//              }
-//            }
-//            else
-//            {
-//              executeCommand(line);
-//            }
           }
           else
           {
@@ -169,35 +149,11 @@ public class VTClientRemoteConsoleWriter extends VTTask
               continue;
             }
             executeCommand(line.trim(), true);
-//            if (line.contains("*;"))
-//            {
-//              lines = line.split("\\*;");
-//              for (String subLine : lines)
-//              {
-//                executeCommand(subLine);
-//              }
-//            }
-//            else
-//            {
-//              executeCommand(line);
-//            }
           }
           else
           {
             String line = VTConsole.readLine(true);
             executeCommand(line.trim(), false);
-//            if (line.contains("*;"))
-//            {
-//              lines = line.split("\\*;");
-//              for (String subLine : lines)
-//              {
-//                executeCommand(subLine);
-//              }
-//            }
-//            else
-//            {
-//              executeCommand(line);
-//            }
           }
         }
       }
@@ -218,23 +174,16 @@ public class VTClientRemoteConsoleWriter extends VTTask
     {
       session.notifyAll();
     }
-//    try
-//    {
-//      selector.closeSelector();
-//    }
-//    catch (Throwable e)
-//    {
-//      
-//    }
   }
   
-  @SuppressWarnings("unused")
+  public void executeStringScripts(String scriptsString, boolean echo)
+  {
+    // System.out.println("scripts:" + scripts);
+    executeStringScript(scriptsString, echo);
+  }
+  
   private void executeStringScript(String script, boolean echo)
   {
-//    if (stack == null)
-//    {
-//      stack = new HashSet<String>();
-//    }
     // if (script == null || script.length() < 1 || !stack.add(script))
     if (script == null || script.length() < 1)
     {
@@ -249,11 +198,6 @@ public class VTClientRemoteConsoleWriter extends VTTask
       while (!stopped && (line = reader.readLine()) != null)
       {
         executeCommand(line.trim(), echo);
-//        String[] commands = line.split("\\*;");
-//        for (String command : commands)
-//        {
-//          executeCommand(command);
-//        }
       }
     }
     catch (Throwable t)
@@ -262,10 +206,6 @@ public class VTClientRemoteConsoleWriter extends VTTask
     }
     finally
     {
-//      if (script != null)
-//      {
-//        stack.remove(script);
-//      }
       if (reader != null)
       {
         try
@@ -280,23 +220,18 @@ public class VTClientRemoteConsoleWriter extends VTTask
     }
   }
   
-  public void executeFileScripts(String scripts, Charset charset, boolean echo)
+  public void executeFileScripts(String scriptFiles, Charset charset, boolean echo)
   {
     // System.out.println("scripts:" + scripts);
-    String[] scriptsArray = scripts.split(";");
-    for (String script : scriptsArray)
+    String[] scriptFilesArray = scriptFiles.split(";");
+    for (String scriptFile : scriptFilesArray)
     {
-      executeFileScript(new File(script.trim()), charset, echo);
+      executeFileScript(new File(scriptFile.trim()), charset, echo);
     }
   }
   
   private void executeFileScript(File script, Charset charset, boolean echo)
   {
-//    if (stack == null)
-//    {
-//      stack = new HashSet<String>();
-//    }
-//    if (script == null || !script.exists() || !stack.add(script.getAbsolutePath()))
     if (script == null || !script.exists())
     {
       // protection for recursion and bad file paths
@@ -310,11 +245,6 @@ public class VTClientRemoteConsoleWriter extends VTTask
       while (!stopped && (line = reader.readLine()) != null)
       {
         executeCommand(line.trim(), echo);
-//        String[] commands = line.split("\\*;");
-//        for (String command : commands)
-//        {
-//          executeCommand(command);
-//        }
       }
     }
     catch (Throwable t)
@@ -323,10 +253,6 @@ public class VTClientRemoteConsoleWriter extends VTTask
     }
     finally
     {
-//      if (script != null)
-//      {
-//        stack.remove(script.getAbsolutePath());
-//      }
       if (reader != null)
       {
         try
@@ -360,19 +286,12 @@ public class VTClientRemoteConsoleWriter extends VTTask
         parsed = CommandLineTokenizer.tokenize(command);
         if (parsed.length < 1)
         {
-          parsed = new String[]
-          { command };
-          // p = 0;
-          /*
-           * for (String part : splitCommand) { splitCommand[p++] =
-           * StringEscapeUtils.unescapeJava(part); }
-           */
+          parsed = new String[] { command };
         }
       }
       else
       {
-        parsed = new String[]
-        { "" };
+        parsed = new String[] { "" };
       }
       
       if (!VTConsole.isCommandEcho())

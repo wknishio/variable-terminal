@@ -14,12 +14,6 @@ import com.martiansoftware.jsap.CommandLineTokenizer;
 
 public class VTServerRemoteConsoleReader extends VTTask
 {
-  // private String command = "";
-  // private String[] splitCommand;
-  // private StringBuilder message;
-  // private GregorianCalendar clock;
-  // private DateFormat firstDateTimeFormat;
-  // private DateFormat secondDateTimeFormat;
   private VTServerSession session;
   private VTServerConnection connection;
   private VTServerRemoteConsoleCommandSelector<VTServerRemoteConsoleCommandProcessor> selector;
@@ -29,12 +23,6 @@ public class VTServerRemoteConsoleReader extends VTTask
     this.session = session;
     this.connection = session.getConnection();
     this.stopped = false;
-    // this.clock = new GregorianCalendar();
-    // this.firstDateTimeFormat = new SimpleDateFormat("G", Locale.ENGLISH);
-    // this.secondDateTimeFormat = new
-    // SimpleDateFormat("MM-dd][HH:mm:ss:SSS-z]");
-    // this.command = "";
-    // this.message = new StringBuilder();
     this.selector = new VTServerRemoteConsoleCommandSelector<VTServerRemoteConsoleCommandProcessor>(session);
   }
   
@@ -69,24 +57,11 @@ public class VTServerRemoteConsoleReader extends VTTask
     {
       session.notify();
     }
-//    try
-//    {
-//      selector.closeSelector();
-//    }
-//    catch (Throwable e)
-//    {
-//      
-//    }
   }
   
   @SuppressWarnings("unused")
   private void executeStringScript(String script)
   {
-//    if (stack == null)
-//    {
-//      stack = new HashSet<String>();
-//    }
-//    if (script == null || script.length() < 1 || !stack.add(script))
     if (script == null || script.length() < 1)
     {
       // protection for recursion and bad script string
@@ -100,11 +75,6 @@ public class VTServerRemoteConsoleReader extends VTTask
       while (!stopped && (line = reader.readLine()) != null)
       {
         executeCommand(line.trim());
-//        String[] commands = line.split("\\*;");
-//        for (String command : commands)
-//        {
-//          executeCommand(command);
-//        }
       }
     }
     catch (Throwable t)
@@ -113,10 +83,6 @@ public class VTServerRemoteConsoleReader extends VTTask
     }
     finally
     {
-//      if (script != null)
-//      {
-//        stack.remove(script);
-//      }
       if (reader != null)
       {
         try
@@ -134,11 +100,6 @@ public class VTServerRemoteConsoleReader extends VTTask
   @SuppressWarnings("unused")
   private void executeFileScript(File script, Charset charset)
   {
-//    if (stack == null)
-//    {
-//      stack = new HashSet<String>();
-//    }
-//    if (script == null || !script.exists() || !stack.add(script.getAbsolutePath()))
     if (script == null || !script.exists())
     {
       // protection for recursion and bad file paths
@@ -152,11 +113,6 @@ public class VTServerRemoteConsoleReader extends VTTask
       while (!stopped && (line = reader.readLine()) != null)
       {
         executeCommand(line.trim());
-//        String[] commands = line.split("\\*;");
-//        for (String command : commands)
-//        {
-//          executeCommand(command);
-//        }
       }
     }
     catch (Throwable t)
@@ -165,10 +121,6 @@ public class VTServerRemoteConsoleReader extends VTTask
     }
     finally
     {
-//      if (script != null)
-//      {
-//        stack.remove(script.getAbsolutePath());
-//      }
       if (reader != null)
       {
         try
@@ -191,19 +143,12 @@ public class VTServerRemoteConsoleReader extends VTTask
       parsed = CommandLineTokenizer.tokenize(command);
       if (parsed.length < 1)
       {
-        parsed = new String[]
-        { command };
-        // p = 0;
-        /*
-         * for (String part : splitCommand) { splitCommand[p++] =
-         * StringEscapeUtils.unescapeJava(part); }
-         */
+        parsed = new String[] { command };
       }
     }
     else
     {
-      parsed = new String[]
-      { "" };
+      parsed = new String[] { "" };
     }
     
     // System.out.println("echoState:" + session.getEchoState());
