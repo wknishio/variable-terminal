@@ -13,6 +13,8 @@ import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
 import org.vash.vate.client.session.VTClientSessionListener;
 import org.vash.vate.server.session.VTServerSession;
+import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
+import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 
 public class VTManagedClientSocket
 {
@@ -47,22 +49,24 @@ public class VTManagedClientSocket
       //return connection.getConnectionSocket();
     //}
     
-    public InputStream getInputStream(int number)
+    public VTLinkableDynamicMultiplexedInputStream getInputStream(int number)
     {
       if (number < 0)
       {
         number = 0;
       }
-      return connection.getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12 + number);
+      VTLinkableDynamicMultiplexedInputStream stream = connection.getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12 + number);
+      return stream;
     }
     
-    public OutputStream getOutputStream(int number)
+    public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number)
     {
       if (number < 0)
       {
         number = 0;
       }
-      return connection.getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12 + number);
+      VTLinkableDynamicMultiplexedOutputStream stream = connection.getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12 + number);
+      return stream;
     }
     
     public VTClientSession getClientSession()

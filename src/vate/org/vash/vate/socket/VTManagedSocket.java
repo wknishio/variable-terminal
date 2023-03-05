@@ -6,6 +6,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
+import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
+
 public class VTManagedSocket extends Socket implements Closeable
 {
   private VTManagedConnection managedConnection;
@@ -39,12 +42,12 @@ public class VTManagedSocket extends Socket implements Closeable
     return out;
   }
   
-  public InputStream getInputStream(int number)
+  public VTLinkableDynamicMultiplexedInputStream getInputStream(int number) throws IOException
   {
     return managedConnection.getInputStream(number);
   }
   
-  public OutputStream getOutputStream(int number)
+  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number) throws IOException
   {
     return managedConnection.getOutputStream(number);
   }
