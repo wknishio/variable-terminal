@@ -21,6 +21,12 @@ public final class VTBigEndianByteArrayInputOutputStream implements RandomAccess
     dataInput = new VTBigEndianInputStream(input);
   }
   
+  public void reset() throws IOException
+  {
+    input.reset();
+    output.reset();
+  }
+  
   public final void readFully(byte[] b) throws IOException
   {
     dataInput.readFully(b);

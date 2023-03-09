@@ -1,6 +1,6 @@
 package org.vash.vate.audio;
 
-import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,7 +23,9 @@ import org.concentus.OpusException;
 import org.concentus.OpusMode;
 import org.concentus.OpusSignal;
 import org.vash.vate.VT;
+import org.vash.vate.stream.endian.VTLittleEndianByteArrayInputOutputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
+import org.vash.vate.stream.filter.VTBufferedOutputStream;
 import org.xiph.speex.SpeexEncoder;
 
 public class VTAudioCapturer
@@ -131,6 +133,7 @@ public class VTAudioCapturer
     private final byte[] inputBuffer;
     // private short[] inputBufferShort;
     private final byte[] outputBuffer;
+    private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE);
     private final Queue<VTLittleEndianOutputStream> streams;
     private final String id;
     private TargetDataLine line;
@@ -355,84 +358,52 @@ public class VTAudioCapturer
       }
     }
     
-    public final void loopOpus() throws OpusException
+    public final void loopOpus() throws OpusException, IOException
     {
       int offset = 0;
-      if (running)
-      {
-        decodedFrameSize = line.read(inputBuffer, 0, Math.max(VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / (frameSize)) * (frameSize));
-        if (decodedFrameSize > 0 && streams.size() > 0)
-        {
-          for (offset = 0; offset < decodedFrameSize; offset += (frameSize))
-          {
-            // encodedFrameSize = opus.encode(inputBuffer, offset, (frameSize >>
-            // 1),
-            // outputBuffer, 0, (frameSize));
-            encodedFrameSize = opus.encode(inputBuffer, offset, (frameSize), outputBuffer, 0, (frameSize));
-            for (VTLittleEndianOutputStream out : streams)
-            {
-              try
-              {
-                out.writeUnsignedShort(encodedFrameSize);
-                out.write(outputBuffer, 0, encodedFrameSize);
-                out.flush();
-              }
-              catch (Throwable e)
-              {
-                // e.printStackTrace();
-                try
-                {
-                  out.close();
-                }
-                catch (Throwable e1)
-                {
-                  // e1.printStackTrace();
-                }
-                streams.remove(out);
-                if (streams.size() == 0)
-                {
-                  close();
-                }
-              }
-            }
-          }
-        }
-      }
+      int readSize = 0;
       while (running)
       {
-        decodedFrameSize = line.read(inputBuffer, 0, Math.max(1, line.available() / (frameSize)) * (frameSize));
+        if (readSize == 0)
+        {
+          readSize = Math.max(VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
+        }
+        else
+        {
+          readSize = Math.max(1, line.available() / frameSize) * frameSize;
+        }
+        decodedFrameSize = line.read(inputBuffer, 0, readSize);
         if (decodedFrameSize > 0 && streams.size() > 0)
         {
+          frameStream.reset();
           for (offset = 0; offset < decodedFrameSize; offset += (frameSize))
           {
-            // encodedFrameSize = opus.encode(inputBuffer, offset, (frameSize >>
-            // 1),
-            // outputBuffer, 0, (frameSize));
             encodedFrameSize = opus.encode(inputBuffer, offset, (frameSize), outputBuffer, 0, (frameSize));
-            for (VTLittleEndianOutputStream out : streams)
+            frameStream.writeUnsignedShort(encodedFrameSize);
+            frameStream.write(outputBuffer, 0, encodedFrameSize);
+          }
+          for (VTLittleEndianOutputStream out : streams)
+          {
+            try
             {
+              out.write(frameStream.getBuffer(), 0, frameStream.getOutputCount());
+              out.flush();
+            }
+            catch (Throwable e)
+            {
+              // e.printStackTrace();
               try
               {
-                out.writeUnsignedShort(encodedFrameSize);
-                out.write(outputBuffer, 0, encodedFrameSize);
-                out.flush();
+                out.close();
               }
-              catch (Throwable e)
+              catch (Throwable e1)
               {
-                // e.printStackTrace();
-                try
-                {
-                  out.close();
-                }
-                catch (Throwable e1)
-                {
-                  // e1.printStackTrace();
-                }
-                streams.remove(out);
-                if (streams.size() == 0)
-                {
-                  close();
-                }
+                // e1.printStackTrace();
+              }
+              streams.remove(out);
+              if (streams.size() == 0)
+              {
+                close();
               }
             }
           }
@@ -440,80 +411,53 @@ public class VTAudioCapturer
       }
     }
     
-    public final void loopSpeex()
+    public final void loopSpeex() throws IOException
     {
       int offset = 0;
-      if (running)
-      {
-        decodedFrameSize = line.read(inputBuffer, 0, Math.max(VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize);
-        if (decodedFrameSize > 0 && streams.size() > 0)
-        {
-          for (offset = 0; offset < decodedFrameSize; offset += frameSize)
-          {
-            speex.processData(inputBuffer, offset, frameSize);
-            encodedFrameSize = speex.getProcessedData(outputBuffer, 0);
-            for (VTLittleEndianOutputStream out : streams)
-            {
-              try
-              {
-                out.writeUnsignedShort(encodedFrameSize);
-                out.write(outputBuffer, 0, encodedFrameSize);
-                out.flush();
-              }
-              catch (Throwable e)
-              {
-                // e.printStackTrace();
-                try
-                {
-                  out.close();
-                }
-                catch (Throwable e1)
-                {
-                  // e1.printStackTrace();
-                }
-                streams.remove(out);
-                if (streams.size() == 0)
-                {
-                  close();
-                }
-              }
-            }
-          }
-        }
-      }
+      int readSize = 0;
       while (running)
       {
-        decodedFrameSize = line.read(inputBuffer, 0, Math.max(1, line.available() / frameSize) * frameSize);
+        if (readSize == 0)
+        {
+          readSize = Math.max(VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
+        }
+        else
+        {
+          readSize = Math.max(1, line.available() / frameSize) * frameSize;
+        }
+        decodedFrameSize = line.read(inputBuffer, 0, readSize);
         if (decodedFrameSize > 0 && streams.size() > 0)
         {
+          frameStream.reset();
           for (offset = 0; offset < decodedFrameSize; offset += frameSize)
           {
             speex.processData(inputBuffer, offset, frameSize);
             encodedFrameSize = speex.getProcessedData(outputBuffer, 0);
-            for (VTLittleEndianOutputStream out : streams)
+            frameStream.writeUnsignedShort(encodedFrameSize);
+            frameStream.write(outputBuffer, 0, encodedFrameSize);
+          }
+          for (VTLittleEndianOutputStream out : streams)
+          {
+            try
             {
+              out.write(frameStream.getBuffer(), 0, frameStream.getOutputCount());
+              out.flush();
+            }
+            catch (Throwable e)
+            {
+              // e.printStackTrace();
               try
               {
-                out.writeUnsignedShort(encodedFrameSize);
-                out.write(outputBuffer, 0, encodedFrameSize);
-                out.flush();
+                out.close();
               }
-              catch (Throwable e)
+              catch (Throwable e1)
               {
-                // e.printStackTrace();
-                try
-                {
-                  out.close();
-                }
-                catch (Throwable e1)
-                {
-                  // e1.printStackTrace();
-                }
-                streams.remove(out);
-                if (streams.size() == 0)
-                {
-                  close();
-                }
+                // e1.printStackTrace();
+              }
+              streams.remove(out);
+              if (streams.size() == 0)
+              {
+                close();
               }
             }
           }
@@ -575,12 +519,12 @@ public class VTAudioCapturer
     }
     if (lines.get(id) == null)
     {
-      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new BufferedOutputStream(out, 512));
+      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(out, VT.VT_SMALL_DATA_BUFFER_SIZE, true));
       lines.put(id, new VTAudioCapturerThread(stream, line, id, codec, frameMilliseconds));
     }
     else
     {
-      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new BufferedOutputStream(out, 512));
+      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(out, VT.VT_SMALL_DATA_BUFFER_SIZE, true));
       lines.get(id).addOutput(stream);
     }
     return true;
@@ -625,7 +569,6 @@ public class VTAudioCapturer
   public void setRunning(boolean running)
   {
     this.running = running;
-    
   }
   
   public boolean isRunning()

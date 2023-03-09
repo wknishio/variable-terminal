@@ -21,6 +21,12 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     dataInput = new VTLittleEndianInputStream(input);
   }
   
+  public void reset() throws IOException
+  {
+    input.reset();
+    output.reset();
+  }
+  
   public final void readFully(byte[] b) throws IOException
   {
     dataInput.readFully(b);
