@@ -168,17 +168,20 @@ public class VTAudioCapturer
       {
         this.speex.init(0, 7, sampleRate, audioFormat.getChannels());
         this.speex.getEncoder().setComplexity(5);
+        this.speex.getEncoder().setVbr(false);
+        this.speex.getEncoder().setVad(false);
+        this.speex.getEncoder().setDtx(false);
         try
         {
           opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
           opus.setForceMode(OpusMode.MODE_CELT_ONLY);
           opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           opus.setEnableAnalysis(false);
-          opus.setUseDTX(false);
           opus.setUseVBR(false);
-          // opus.setUseConstrainedVBR(true);
-          // opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_NARROWBAND);
-          // opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_NARROWBAND);
+          opus.setUseDTX(false);
+          //opus.setUseConstrainedVBR(true);
+          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_NARROWBAND);
+          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_NARROWBAND);
           // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
           opus.setComplexity(5);
           opus.setBitrate(16000);
@@ -197,11 +200,11 @@ public class VTAudioCapturer
           opus.setForceMode(OpusMode.MODE_CELT_ONLY);
           opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           opus.setEnableAnalysis(false);
-          opus.setUseDTX(false);
           opus.setUseVBR(false);
-          // opus.setUseConstrainedVBR(true);
-          // opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_MEDIUMBAND);
-          // opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_MEDIUMBAND);
+          opus.setUseDTX(false);
+          //opus.setUseConstrainedVBR(true);
+          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_MEDIUMBAND);
+          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_MEDIUMBAND);
           // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
           opus.setComplexity(5);
           opus.setBitrate(24000);
@@ -215,17 +218,20 @@ public class VTAudioCapturer
       {
         this.speex.init(1, 7, sampleRate, audioFormat.getChannels());
         this.speex.getEncoder().setComplexity(5);
+        this.speex.getEncoder().setVbr(false);
+        this.speex.getEncoder().setVad(false);
+        this.speex.getEncoder().setDtx(false);
         try
         {
           opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
           opus.setForceMode(OpusMode.MODE_CELT_ONLY);
           opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           opus.setEnableAnalysis(false);
-          opus.setUseDTX(false);
           opus.setUseVBR(false);
-          // opus.setUseConstrainedVBR(true);
-          // opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_WIDEBAND);
-          // opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_WIDEBAND);
+          opus.setUseDTX(false);
+          //opus.setUseConstrainedVBR(true);
+          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_WIDEBAND);
+          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_WIDEBAND);
           // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
           opus.setComplexity(5);
           opus.setBitrate(32000);
@@ -244,11 +250,11 @@ public class VTAudioCapturer
           opus.setForceMode(OpusMode.MODE_CELT_ONLY);
           opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           opus.setEnableAnalysis(false);
-          opus.setUseDTX(false);
           opus.setUseVBR(false);
-          // opus.setUseConstrainedVBR(true);
-          // opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_SUPERWIDEBAND);
-          // opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_SUPERWIDEBAND);
+          opus.setUseDTX(false);
+          //opus.setUseConstrainedVBR(true);
+          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_SUPERWIDEBAND);
+          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_SUPERWIDEBAND);
           // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
           opus.setComplexity(5);
           opus.setBitrate(32000);
@@ -263,6 +269,9 @@ public class VTAudioCapturer
         this.codec = VT.VT_AUDIO_CODEC_SPEEX;
         this.speex.init(2, 7, sampleRate, audioFormat.getChannels());
         this.speex.getEncoder().setComplexity(5);
+        this.speex.getEncoder().setVbr(false);
+        this.speex.getEncoder().setVad(false);
+        this.speex.getEncoder().setDtx(false);
       }
       else if (sampleRate == 48000)
       {
@@ -273,11 +282,11 @@ public class VTAudioCapturer
           opus.setForceMode(OpusMode.MODE_CELT_ONLY);
           opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           opus.setEnableAnalysis(false);
-          opus.setUseDTX(false);
           opus.setUseVBR(false);
-          // opus.setUseConstrainedVBR(true);
-          // opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_FULLBAND);
-          // opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_FULLBAND);
+          opus.setUseDTX(false);
+          //opus.setUseConstrainedVBR(true);
+          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_FULLBAND);
+          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_FULLBAND);
           // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
           opus.setComplexity(5);
           opus.setBitrate(64000);
