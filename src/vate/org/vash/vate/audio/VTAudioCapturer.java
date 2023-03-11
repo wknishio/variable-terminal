@@ -173,18 +173,14 @@ public class VTAudioCapturer
         this.speex.getEncoder().setDtx(false);
         try
         {
-          opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
-          opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
-          opus.setEnableAnalysis(false);
-          opus.setUseVBR(false);
-          opus.setUseDTX(false);
-          //opus.setUseConstrainedVBR(true);
-          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_NARROWBAND);
-          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_NARROWBAND);
-          // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
-          opus.setComplexity(5);
-          opus.setBitrate(16000);
+          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
+          this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
+          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          this.opus.setEnableAnalysis(false);
+          this.opus.setUseVBR(false);
+          this.opus.setUseDTX(false);
+          this.opus.setComplexity(5);
+          this.opus.setBitrate(16000);
         }
         catch (Throwable t)
         {
@@ -196,18 +192,14 @@ public class VTAudioCapturer
         this.codec = VT.VT_AUDIO_CODEC_OPUS;
         try
         {
-          opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
-          opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
-          opus.setEnableAnalysis(false);
-          opus.setUseVBR(false);
-          opus.setUseDTX(false);
-          //opus.setUseConstrainedVBR(true);
-          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_MEDIUMBAND);
-          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_MEDIUMBAND);
-          // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
-          opus.setComplexity(5);
-          opus.setBitrate(24000);
+          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
+          this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
+          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          this.opus.setEnableAnalysis(false);
+          this.opus.setUseVBR(false);
+          this.opus.setUseDTX(false);
+          this.opus.setComplexity(5);
+          this.opus.setBitrate(24000);
         }
         catch (Throwable t)
         {
@@ -223,18 +215,14 @@ public class VTAudioCapturer
         this.speex.getEncoder().setDtx(false);
         try
         {
-          opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
-          opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
-          opus.setEnableAnalysis(false);
-          opus.setUseVBR(false);
-          opus.setUseDTX(false);
-          //opus.setUseConstrainedVBR(true);
-          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_WIDEBAND);
-          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_WIDEBAND);
-          // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
-          opus.setComplexity(5);
-          opus.setBitrate(32000);
+          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
+          this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
+          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          this.opus.setEnableAnalysis(false);
+          this.opus.setUseVBR(false);
+          this.opus.setUseDTX(false);
+          this.opus.setComplexity(5);
+          this.opus.setBitrate(32000);
         }
         catch (Throwable t)
         {
@@ -246,18 +234,14 @@ public class VTAudioCapturer
         this.codec = VT.VT_AUDIO_CODEC_OPUS;
         try
         {
-          opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
-          opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
-          opus.setEnableAnalysis(false);
-          opus.setUseVBR(false);
-          opus.setUseDTX(false);
-          //opus.setUseConstrainedVBR(true);
-          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_SUPERWIDEBAND);
-          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_SUPERWIDEBAND);
-          // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
-          opus.setComplexity(5);
-          opus.setBitrate(32000);
+          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
+          this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
+          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          this.opus.setEnableAnalysis(false);
+          this.opus.setUseVBR(false);
+          this.opus.setUseDTX(false);
+          this.opus.setComplexity(5);
+          this.opus.setBitrate(32000);
         }
         catch (Throwable t)
         {
@@ -278,18 +262,14 @@ public class VTAudioCapturer
         this.codec = VT.VT_AUDIO_CODEC_OPUS;
         try
         {
-          opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
-          opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
-          opus.setEnableAnalysis(false);
-          opus.setUseVBR(false);
-          opus.setUseDTX(false);
-          //opus.setUseConstrainedVBR(true);
-          //opus.setBandwidth(OpusBandwidth.OPUS_BANDWIDTH_FULLBAND);
-          //opus.setMaxBandwidth(OpusBandwidth.OPUS_BANDWIDTH_FULLBAND);
-          // opus.setExpertFrameDuration(OpusFramesize.OPUS_FRAMESIZE_10_MS);
-          opus.setComplexity(5);
-          opus.setBitrate(64000);
+          this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
+          this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
+          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          this.opus.setEnableAnalysis(false);
+          this.opus.setUseVBR(false);
+          this.opus.setUseDTX(false);
+          this.opus.setComplexity(5);
+          this.opus.setBitrate(64000);
         }
         catch (Throwable t)
         {

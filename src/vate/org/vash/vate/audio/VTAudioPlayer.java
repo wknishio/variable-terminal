@@ -231,15 +231,6 @@ public class VTAudioPlayer
         in.readFully(inputBuffer, 0, encodedFrameSize);
         opus.decode(inputBuffer, 0, encodedFrameSize, outputBuffer, 0, (frameSize), false);
         line.write(outputBuffer, 0, frameSize);
-//        written = 0;
-//        remaining = frameSize;
-//        cycle = 0;
-//        while (running && remaining > 0)
-//        {
-//          cycle = line.write(outputBuffer, written, Math.min(line.available(), remaining));
-//          written += cycle;
-//          remaining -= cycle;
-//        }
       }
     }
     
@@ -252,15 +243,6 @@ public class VTAudioPlayer
         speex.processData(inputBuffer, 0, encodedFrameSize);
         decodedFrameSize = speex.getProcessedData(outputBuffer, 0);
         line.write(outputBuffer, 0, decodedFrameSize);
-//        written = 0;
-//        remaining = decodedFrameSize;
-//        cycle = 0;
-//        while (running && remaining > 0)
-//        {
-//          cycle = line.write(outputBuffer, written, Math.min(line.available(), remaining));
-//          written += cycle;
-//          remaining -= cycle;
-//        }
       }
     }
     
