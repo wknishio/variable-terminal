@@ -36,6 +36,12 @@ public final class VTByteArrayOutputStream extends ByteArrayOutputStream
     this.buf = buf;
   }
   
+  public final void buf(byte[] buf, int count)
+  {
+    this.buf = buf;
+    this.count = count;
+  }
+  
   public final void count(int count)
   {
     this.count = count;
