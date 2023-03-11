@@ -19,6 +19,8 @@ public interface RandomAccessDataInput extends DataInput
   
   public long readUnsignedInt() throws IOException;
   
+  public int getInputPos();
+  
   public void setInputPos(int pos);
   
   public byte getByte(int index) throws IOException;

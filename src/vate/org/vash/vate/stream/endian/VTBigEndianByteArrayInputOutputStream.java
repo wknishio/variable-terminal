@@ -251,10 +251,14 @@ public final class VTBigEndianByteArrayInputOutputStream implements RandomAccess
     input.buf(output.buf(), output.count());
   }
   
+  public final int getInputPos()
+  {
+    return input.pos();
+  }
+  
   public final void setInputPos(int pos)
   {
     input.pos(pos);
-    //input.count(input.buf().length - pos);
   }
   
   public final int getOutputCount()
@@ -271,6 +275,18 @@ public final class VTBigEndianByteArrayInputOutputStream implements RandomAccess
   public final byte[] getBuffer()
   {
     return output.buf();
+  }
+  
+  public final void setBuffer(byte[] buffer)
+  {
+    output.buf(buffer);
+    input.buf(buffer);
+  }
+  
+  public final void setBuffer(byte[] buffer, int count)
+  {
+    output.buf(buffer, count);
+    input.buf(buffer, count);
   }
   
   public final void setOutputSize(int size)
