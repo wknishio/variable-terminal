@@ -279,6 +279,7 @@ public class VTGraphicsModeClientWriter implements Runnable
   
   public VTGraphicsModeClientWriter(VTGraphicsModeClientSession session)
   {
+    //this.cursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
     this.stopped = true;
     this.toolkit = Toolkit.getDefaultToolkit();
     this.session = session;
@@ -1936,15 +1937,13 @@ public class VTGraphicsModeClientWriter implements Runnable
             cursorImage.setRGB(center.x + 1, center.y + i, 0xFFFFFFFF);
             cursorImage.setRGB(center.x - 1, center.y + i, 0xFFFFFFFF);
           }
-          // cursor = toolkit.createCustomCursor(cursorImage, center,
-          // "VT_GRAPHICSMODE_CROSSHAIR_CURSOR");
+          //cursor = toolkit.createCustomCursor(cursorImage, center, "VT_GRAPHICSMODE_CROSSHAIR_CURSOR");
           // cursor =
           // Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
         }
         else
         {
-          // cursor =
-          // Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
+          //cursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
           // cursor =
           // Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
         }
@@ -1952,6 +1951,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       }
       catch (Throwable e)
       {
+        //cursor = null;
         // e.printStackTrace();
       }
     }
@@ -1960,6 +1960,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       // cursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
       // cursor = Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
     }
+    //cursor = Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
   }
   
   public void run()

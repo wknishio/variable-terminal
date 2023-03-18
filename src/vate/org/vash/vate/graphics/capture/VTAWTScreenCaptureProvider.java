@@ -3470,6 +3470,7 @@ public final class VTAWTScreenCaptureProvider
     return screenCapture;
   }
   
+  @SuppressWarnings("unused")
   private final void drawPointer(BufferedImage image, Rectangle area)
   {
     PointerInfo info = MouseInfo.getPointerInfo();
@@ -5448,8 +5449,20 @@ public final class VTAWTScreenCaptureProvider
   
   private int filterGray(int rgb)
   {
+//    int red = (rgb & RGB888_RED_MASK >> 16);
+//    int green = (rgb & RGB888_GREEN_MASK >> 8);
+//    int blue = (rgb & RGB888_BLUE_MASK);
+//    
+//    int dredgreen = Math.abs(red - green);
+//    int dgreenblue = Math.abs(green - blue);
+//    int dredblue = Math.abs(red - blue);
+//    
+//    int dred = Math.abs(red - (red ^ 0xFF));
+//    int dgreen = Math.abs(green - (green ^ 0xFF));
+//    int dblue = Math.abs(blue - (blue ^ 0xFF));
+//    
+//    if (dredgreen < 32 && dgreenblue < 32 && dredblue < 32 && dred < 12 && dgreen < 12 && dblue < 12)
     if (((rgb & RGB888_XOR_MASK) == 0x00808080) || ((rgb & RGB888_XOR_MASK) == 0x007F7F7F))
-    // if (mustFilterGray(rgb))
     {
       return rgb & 0xFF000000;
       // return 0;
@@ -5464,6 +5477,7 @@ public final class VTAWTScreenCaptureProvider
 //    int blue = (rgb & RGB888_BLUE_MASK);
 //    if (((red & green & blue) == (red | green | blue)))
 //    {
+//      return Math.abs(red - (red ^ 0xFF)) < 51;
 //      return Math.abs(red - (red ^ 0xFF)) < 38;
 //      //return Math.abs(red - (red ^ 0xFF)) < 19;
 //    }
