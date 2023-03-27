@@ -3,14 +3,14 @@ package org.vash.vate.server.console.remote.standard.command;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
-public class VTOPTICALDRIVE extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTDISCTRAY extends VTServerStandardRemoteConsoleCommandProcessor
 {
-  public VTOPTICALDRIVE()
+  public VTDISCTRAY()
   {
-    this.setFullName("*VTOPTICALDRIVE");
-    this.setAbbreviatedName("*VTOPD");
-    this.setFullSyntax("*VTOPTICALDRIVE <MODE>");
-    this.setAbbreviatedSyntax("*VTOPD <MD>");
+    this.setFullName("*VTDISCTRAY");
+    this.setAbbreviatedName("*VTDT");
+    this.setFullSyntax("*VTDISCTRAY <MODE>");
+    this.setAbbreviatedSyntax("*VTDT <MD>");
   }
   
   public void execute(String command, String[] parsed) throws Exception

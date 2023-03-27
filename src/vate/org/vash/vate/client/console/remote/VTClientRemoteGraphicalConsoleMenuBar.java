@@ -350,9 +350,9 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTAUDIOLINK\n"));
     audioSoundMenu.add(audioLinkSoundMenu);
     
-    opticalDriveMenu = new Menu("Optical ");
-    opticalDriveMenu.add(new VTGraphicalConsoleMenuItem("Open Remote Optical Drive", "*VTOPTICALDRIVE O\n"));
-    opticalDriveMenu.add(new VTGraphicalConsoleMenuItem("Close Remote Optical Drive", "*VTOPTICALDRIVE C\n"));
+    opticalDriveMenu = new Menu("Disc Tray ");
+    opticalDriveMenu.add(new VTGraphicalConsoleMenuItem("Open Remote Disc Tray", "*VTDISCTRAY O\n"));
+    opticalDriveMenu.add(new VTGraphicalConsoleMenuItem("Close Remote Disc Tray", "*VTDISCTRAY C\n"));
     
     helpMenu = new Menu("Help ");
     helpMenu.add(new VTGraphicalConsoleMenuItem("Complete Commands", "*VTHELP\n"));

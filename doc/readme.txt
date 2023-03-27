@@ -28,7 +28,7 @@ Some of the available features are:
 * Remote mail client opening.
 * Remote printing of texts and files.
 * Remote audio playback.
-* Remote optical drive control.
+* Remote disc tray control.
 
 The minimum required java version to execute is at least 1.5.
 This software comes with no warranty, use at your own risk!
