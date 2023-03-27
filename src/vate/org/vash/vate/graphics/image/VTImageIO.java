@@ -931,13 +931,6 @@ public final class VTImageIO
     
     switch (type)
     {
-      // case BufferedImage.TYPE_BYTE_BINARY:
-      // {
-      // Arrays.fill(((DataBufferByte)
-      // image.getRaster().getDataBuffer()).getData(),
-      // (byte) 0x77);
-      // break;
-      // }
       case BufferedImage.TYPE_CUSTOM:
       {
         clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
