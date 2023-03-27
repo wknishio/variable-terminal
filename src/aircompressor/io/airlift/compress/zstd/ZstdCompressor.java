@@ -50,6 +50,6 @@ public class ZstdCompressor
         long inputAddress = 0 + inputOffset;
         long outputAddress = 0 + outputOffset;
 
-        return ZstdFrameCompressor.compress(input, inputAddress, inputAddress + inputLength, output, outputAddress, outputAddress + maxOutputLength, CompressionParameters.DEFAULT_COMPRESSION_LEVEL + 1, parameters, context);
+        return ZstdFrameCompressor.compress(input, inputAddress, inputAddress + inputLength, output, outputAddress, outputAddress + maxOutputLength, CompressionParameters.DEFAULT_COMPRESSION_LEVEL, parameters, context);
     }
 }
