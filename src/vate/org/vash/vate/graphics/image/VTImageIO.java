@@ -684,82 +684,140 @@ public final class VTImageIO
     return image;
   }
   
-  public static final void clearBuffer(byte[] buffer, int type, int colors, int start)
+  public static final void clearBufferWhite(byte[] buffer, int type, int colors, int start)
+  {
+    if (colors == 216)
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 215);
+    }
+    else if (colors == 125)
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 124);
+    }
+    else if (colors == 27)
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 26);
+    }
+    else if (colors == 16)
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 15);
+    }
+    else if (colors == 8)
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 7);
+    }
+    else if (colors == 32)
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 31);
+    }
+    else
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 63);
+    }
+  }
+  
+  public static final void clearBufferWhite(short[] buffer, int type, int colors, int start)
+  {
+    if (colors == 4096)
+    {
+      Arrays.fill(buffer, start, buffer.length, (short) 4095);
+    }
+    else if (colors == 512)
+    {
+      Arrays.fill(buffer, start, buffer.length, (short) 511);
+    }
+    else
+    {
+      Arrays.fill(buffer, start, buffer.length, (short) 32767);
+    }
+  }
+  
+  public static final void clearBufferWhite(int[] buffer, int type, int colors, int start)
+  {
+    if (type == BufferedImage.TYPE_INT_ARGB)
+    {
+      Arrays.fill(buffer, start, buffer.length, 0xFFFFFFFF);
+    }
+    else if (type == BufferedImage.TYPE_INT_RGB)
+    {
+      Arrays.fill(buffer, start, buffer.length, 0x00FFFFFF);
+    }
+    else
+    {
+      if (colors == 2097152)
+      {
+        Arrays.fill(buffer, start, buffer.length, 0x001FFFFF);
+      }
+      if (colors == 262144)
+      {
+        Arrays.fill(buffer, start, buffer.length, 0x0003FFFF);
+      }
+    }
+  }
+  
+  public static final void clearBufferGray(byte[] buffer, int type, int colors, int start)
   {
     if (colors == 216)
     {
       Arrays.fill(buffer, start, buffer.length, (byte) 86);
-      // Arrays.fill(buffer, start, buffer.length, (byte) 215);
     }
     else if (colors == 125)
     {
       Arrays.fill(buffer, start, buffer.length, (byte) 62);
-      // Arrays.fill(buffer, start, buffer.length, (byte) 124);
     }
     else if (colors == 27)
     {
       Arrays.fill(buffer, start, buffer.length, (byte) 13);
-      // Arrays.fill(buffer, start, buffer.length, (byte) 26);
     }
     else if (colors == 16)
     {
       Arrays.fill(buffer, start, buffer.length, (byte) 1);
-      // Arrays.fill(buffer, start, buffer.length, (byte) 15);
     }
     else if (colors == 8)
     {
       Arrays.fill(buffer, start, buffer.length, (byte) 0);
-      // Arrays.fill(buffer, start, buffer.length, (byte) 7);
     }
     else if (colors == 32)
     {
       Arrays.fill(buffer, start, buffer.length, (byte) 2);
-      // Arrays.fill(buffer, start, buffer.length, (byte) 31);
     }
     else
     {
       Arrays.fill(buffer, start, buffer.length, (byte) 21);
-      // Arrays.fill(buffer, start, buffer.length, (byte) 63);
     }
   }
   
-  public static final void clearBuffer(short[] buffer, int type, int colors, int start)
+  public static final void clearBufferGray(short[] buffer, int type, int colors, int start)
   {
     if (colors == 4096)
     {
       Arrays.fill(buffer, start, buffer.length, (short) 0x0555);
-      // Arrays.fill(buffer, start, buffer.length, (short) 4095);
     }
     else if (colors == 512)
     {
       Arrays.fill(buffer, start, buffer.length, (short) 0xDB);
-      // Arrays.fill(buffer, start, buffer.length, (short) 511);
     }
     else
     {
       Arrays.fill(buffer, start, buffer.length, (short) 0x294A);
-      // Arrays.fill(buffer, start, buffer.length, (short) 32767);
     }
   }
   
-  public static final void clearBuffer(int[] buffer, int type, int colors, int start)
+  public static final void clearBufferGray(int[] buffer, int type, int colors, int start)
   {
     if (type == BufferedImage.TYPE_INT_ARGB)
     {
       Arrays.fill(buffer, start, buffer.length, 0xFF555555);
-      // Arrays.fill(buffer, start, buffer.length, 0xFFFFFFFF);
     }
     else if (type == BufferedImage.TYPE_INT_RGB)
     {
       Arrays.fill(buffer, start, buffer.length, 0x00555555);
-      // Arrays.fill(buffer, start, buffer.length, 0x00FFFFFF);
     }
     else
     {
       if (colors == 2097152)
       {
         Arrays.fill(buffer, start, buffer.length, 0x0A952A);
-        
       }
       if (colors == 262144)
       {
@@ -768,20 +826,87 @@ public final class VTImageIO
     }
   }
   
-  public static final void clearBuffer(DataBuffer buffer, int type, int colors, int start)
+  public static final void clearBufferBlack(byte[] buffer, int type, int colors, int start)
+  {
+    Arrays.fill(buffer, start, buffer.length, (byte) 0);
+  }
+  
+  public static final void clearBufferBlack(short[] buffer, int type, int colors, int start)
+  {
+    Arrays.fill(buffer, start, buffer.length, (short) 0);
+  }
+  
+  public static final void clearBufferBlack(int[] buffer, int type, int colors, int start)
+  {
+    Arrays.fill(buffer, start, buffer.length, (int) 0);
+  }
+  
+  public static final void clearBufferWhite(DataBuffer buffer, int type, int colors, int start)
   {
     if (buffer instanceof DataBufferByte)
     {
-      clearBuffer(((DataBufferByte) buffer).getData(), type, colors, start);
+      clearBufferWhite(((DataBufferByte) buffer).getData(), type, colors, start);
     }
     if (buffer instanceof DataBufferUShort)
     {
-      clearBuffer(((DataBufferUShort) buffer).getData(), type, colors, start);
+      clearBufferWhite(((DataBufferUShort) buffer).getData(), type, colors, start);
     }
     if (buffer instanceof DataBufferInt)
     {
-      clearBuffer(((DataBufferInt) buffer).getData(), type, colors, start);
+      clearBufferWhite(((DataBufferInt) buffer).getData(), type, colors, start);
     }
+  }
+  
+  public static final void clearBufferGray(DataBuffer buffer, int type, int colors, int start)
+  {
+    if (buffer instanceof DataBufferByte)
+    {
+      clearBufferGray(((DataBufferByte) buffer).getData(), type, colors, start);
+    }
+    if (buffer instanceof DataBufferUShort)
+    {
+      clearBufferGray(((DataBufferUShort) buffer).getData(), type, colors, start);
+    }
+    if (buffer instanceof DataBufferInt)
+    {
+      clearBufferGray(((DataBufferInt) buffer).getData(), type, colors, start);
+    }
+  }
+  
+  public static final void clearBufferBlack(DataBuffer buffer, int type, int colors, int start)
+  {
+    if (buffer instanceof DataBufferByte)
+    {
+      clearBufferBlack(((DataBufferByte) buffer).getData(), type, colors, start);
+    }
+    if (buffer instanceof DataBufferUShort)
+    {
+      clearBufferBlack(((DataBufferUShort) buffer).getData(), type, colors, start);
+    }
+    if (buffer instanceof DataBufferInt)
+    {
+      clearBufferBlack(((DataBufferInt) buffer).getData(), type, colors, start);
+    }
+  }
+  
+  public static final void clearBuffer(DataBuffer buffer, int type, int colors, int start)
+  {
+    clearBufferGray(buffer, type, colors, start);
+  }
+  
+  public static final void clearBuffer(byte[] buffer, int type, int colors, int start)
+  {
+    clearBufferGray(buffer, type, colors, start);
+  }
+  
+  public static final void clearBuffer(short[] buffer, int type, int colors, int start)
+  {
+    clearBufferGray(buffer, type, colors, start);
+  }
+  
+  public static final void clearBuffer(int[] buffer, int type, int colors, int start)
+  {
+    clearBufferGray(buffer, type, colors, start);
   }
   
   public static final void clearImage(BufferedImage image)
