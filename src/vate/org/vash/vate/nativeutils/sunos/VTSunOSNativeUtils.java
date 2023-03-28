@@ -70,7 +70,7 @@ public class VTSunOSNativeUtils implements VTNativeUtilsImplementation
     return returnFlag;
   }
   
-  public boolean openCD()
+  public boolean openDiscDrive()
   {
     // int cdrom = sunosCLibrary.open("/dev/rdsk/c0t1d0s0", O_RDONLY |
     // O_NONBLOCK);
@@ -91,7 +91,7 @@ public class VTSunOSNativeUtils implements VTNativeUtilsImplementation
     }
   }
   
-  public boolean closeCD()
+  public boolean closeDiscDrive()
   {
     // int cdrom = sunosCLibrary.open("/dev/rdsk/c0t1d0s0", O_RDONLY |
     // O_NONBLOCK);

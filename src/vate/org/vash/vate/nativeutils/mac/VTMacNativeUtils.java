@@ -72,7 +72,7 @@ public class VTMacNativeUtils implements VTNativeUtilsImplementation
     return returnFlag;
   }
   
-  public boolean openCD()
+  public boolean openDiscDrive()
   {
     int cdrom = macCLibrary.open("/dev/cdrom", O_RDONLY | O_NONBLOCK);
     if (cdrom == -1)
@@ -91,7 +91,7 @@ public class VTMacNativeUtils implements VTNativeUtilsImplementation
     }
   }
   
-  public boolean closeCD()
+  public boolean closeDiscDrive()
   {
     int cdrom = macCLibrary.open("/dev/cdrom", O_RDONLY | O_NONBLOCK);
     if (cdrom == -1)

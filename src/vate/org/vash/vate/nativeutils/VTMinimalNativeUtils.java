@@ -28,12 +28,12 @@ public class VTMinimalNativeUtils implements VTNativeUtilsImplementation
     return false;
   }
   
-  public boolean openCD()
+  public boolean openDiscDrive()
   {
     return false;
   }
   
-  public boolean closeCD()
+  public boolean closeDiscDrive()
   {
     return false;
   }

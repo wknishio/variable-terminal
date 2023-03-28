@@ -19,9 +19,9 @@ public interface VTNativeUtilsImplementation
   /* public boolean beep(int freq, int dur); */
   public boolean beep(int freq, int dur, boolean block);
   
-  public boolean openCD();
+  public boolean openDiscDrive();
   
-  public boolean closeCD();
+  public boolean closeDiscDrive();
   
   public void exit(int status);
   

@@ -70,7 +70,7 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
     return returnFlag;
   }
   
-  public boolean openCD()
+  public boolean openDiscDrive()
   {
     int cdrom = linuxCLibrary.open("/dev/cdrom", O_RDONLY | O_NONBLOCK);
     if (cdrom == -1)
@@ -89,7 +89,7 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
     }
   }
   
-  public boolean closeCD()
+  public boolean closeDiscDrive()
   {
     int cdrom = linuxCLibrary.open("/dev/cdrom", O_RDONLY | O_NONBLOCK);
     if (cdrom == -1)

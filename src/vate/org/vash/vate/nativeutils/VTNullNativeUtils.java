@@ -20,7 +20,7 @@ public class VTNullNativeUtils implements VTNativeUtilsImplementation
     return false;
   }
   
-  public boolean closeCD()
+  public boolean closeDiscDrive()
   {
     return false;
   }
@@ -30,7 +30,7 @@ public class VTNullNativeUtils implements VTNativeUtilsImplementation
     return 0;
   }
   
-  public boolean openCD()
+  public boolean openDiscDrive()
   {
     return false;
   }

@@ -172,12 +172,12 @@ public class VTNativeUtils
     // return false;
   }
   
-  public static boolean openCD()
+  public static boolean openDiscDrive()
   {
     if (checkNativeUtils())
     {
       // needs root user on linux
-      boolean nativeCD = nativeUtils.openCD();
+      boolean nativeCD = nativeUtils.openDiscDrive();
       if (!nativeCD)
       {
         if (!VT.detectWindows())
@@ -218,12 +218,12 @@ public class VTNativeUtils
     return false;
   }
   
-  public static boolean closeCD()
+  public static boolean closeDiscDrive()
   {
     if (checkNativeUtils())
     {
       // needs root user on linux
-      boolean nativeCD = nativeUtils.closeCD();
+      boolean nativeCD = nativeUtils.closeDiscDrive();
       if (!nativeCD)
       {
         if (!VT.detectWindows())

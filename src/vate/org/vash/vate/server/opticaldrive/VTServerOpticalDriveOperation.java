@@ -37,7 +37,7 @@ public class VTServerOpticalDriveOperation extends VTTask
     {
       if (open)
       {
-        if (VTNativeUtils.openCD())
+        if (VTNativeUtils.openDiscDrive())
         {
           synchronized (this)
           {
@@ -58,7 +58,7 @@ public class VTServerOpticalDriveOperation extends VTTask
       }
       else
       {
-        if (VTNativeUtils.closeCD())
+        if (VTNativeUtils.closeDiscDrive())
         {
           synchronized (this)
           {

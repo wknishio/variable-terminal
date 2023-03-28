@@ -71,7 +71,7 @@ public class VTBSDNativeUtils implements VTNativeUtilsImplementation
     return returnFlag;
   }
   
-  public boolean openCD()
+  public boolean openDiscDrive()
   {
     int cdrom = bsdCLibrary.open("/dev/cdrom", O_RDONLY | O_NONBLOCK);
     if (cdrom == -1)
@@ -90,7 +90,7 @@ public class VTBSDNativeUtils implements VTNativeUtilsImplementation
     }
   }
   
-  public boolean closeCD()
+  public boolean closeDiscDrive()
   {
     int cdrom = bsdCLibrary.open("/dev/cdrom", O_RDONLY | O_NONBLOCK);
     if (cdrom == -1)

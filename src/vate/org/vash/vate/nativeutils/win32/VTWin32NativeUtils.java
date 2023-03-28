@@ -144,7 +144,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     }
   }
   
-  public boolean openCD()
+  public boolean openDiscDrive()
   {
     // winmmLib.mciSendStringA("close cdaudio", null, 0, 0);
     // winmmLib.mciExecute("close cdaudio");
@@ -157,7 +157,7 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     return status == 0;
   }
   
-  public boolean closeCD()
+  public boolean closeDiscDrive()
   {
     // winmmLib.mciSendStringA("close cdaudio", null, 0, 0);
     // winmmLib.mciExecute("close cdaudio");
