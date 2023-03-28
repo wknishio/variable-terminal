@@ -177,10 +177,10 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     this.modifierKeyUpControlMenu.add(upAltGr);
     this.modifierKeyUpControlMenu.add(upWin);
     this.modifierKeyUpControlMenu.add(upMeta);
-    this.clipboardControlMenu.add(sendLocalClipboardContents);
     this.clipboardControlMenu.add(receiveRemoteClipboardContents);
-    this.clipboardControlMenu.add(clearLocalClipboardContents);
+    this.clipboardControlMenu.add(sendLocalClipboardContents);
     this.clipboardControlMenu.add(clearRemoteClipboardContents);
+    this.clipboardControlMenu.add(clearLocalClipboardContents);
     this.clipboardControlMenu.add(cancelClipboardContentsTransfer);
     
     this.add(remoteControlMenu);

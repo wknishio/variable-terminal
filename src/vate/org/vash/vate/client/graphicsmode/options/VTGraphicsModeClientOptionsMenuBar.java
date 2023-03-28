@@ -43,16 +43,16 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Insert : Reset Image Scale"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+End : Use Next Display Device"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Home : Use Previous Display Device"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+1 : Increase Refresh Rate"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+2 : Decrease Refresh Rate"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+3 : Increase Color Quality"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+4 : Decrease Color Quality"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+5 : Increase Remote Pointer"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+6 : Decrease Remote Pointer"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+1 : Decrease Refresh Rate"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+2 : Increase Refresh Rate"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+3 : Decrease Color Quality"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+4 : Increase Color Quality"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+5 : Decrease Remote Pointer"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+6 : Increase Remote Pointer"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+7 : Reset Image"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+8 : Resize Interface"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+9 : Send Local Clipboard"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+0 : Receive Lemote Clipboard"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+9 : Receive Remote Clipboard"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+0 : Send Local Clipboard"));
     
     this.add(keyboardShortcutsMenu);
     keyboardShortcutsMenu.setEnabled(true);

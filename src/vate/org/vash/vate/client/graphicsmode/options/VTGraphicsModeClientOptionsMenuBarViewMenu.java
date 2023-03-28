@@ -730,31 +730,29 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       disable = simpleColorOption;
       enable = lowColorOption;
     }
-    // if (decreasedColorOption.getState())
-    // {
-    // disable = decreasedColorOption;
-    // enable = simpleColorOption;
-    // }
+    if (decreasedColorOption.getState())
+    {
+      disable = decreasedColorOption;
+      enable = simpleColorOption;
+    }
     if (mediumColorOption.getState())
     {
       disable = mediumColorOption;
-      // enable = lowColorOption;
-      enable = lowColorOption;
+      enable = decreasedColorOption;
     }
-    // if (increasedColorOption.getState())
-    // {
-    // disable = increasedColorOption;
-    // enable = mediumColorOption;
-    // }
+    if (increasedColorOption.getState())
+    {
+      disable = increasedColorOption;
+      enable = mediumColorOption;
+    }
     if (extraColorOption.getState())
     {
       disable = extraColorOption;
-      enable = mediumColorOption;
+      enable = increasedColorOption;
     }
     if (highColorOption.getState())
     {
       disable = highColorOption;
-      // enable = mediumColorOption;
       enable = extraColorOption;
     }
     if (trueColorOption.getState())
@@ -783,30 +781,28 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     if (lowColorOption.getState())
     {
       disable = lowColorOption;
-      // enable = mediumColorOption;
       enable = simpleColorOption;
     }
     if (simpleColorOption.getState())
     {
       disable = simpleColorOption;
-      enable = mediumColorOption;
+      enable = decreasedColorOption;
     }
-    // if (decreasedColorOption.getState())
-    // {
-    // disable = decreasedColorOption;
-    // enable = mediumColorOption;
-    // }
+    if (decreasedColorOption.getState())
+    {
+       disable = decreasedColorOption;
+       enable = mediumColorOption;
+    }
     if (mediumColorOption.getState())
     {
       disable = mediumColorOption;
-      // enable = lowColorOption;
+      enable = increasedColorOption;
+    }
+    if (increasedColorOption.getState())
+    {
+      disable = increasedColorOption;
       enable = extraColorOption;
     }
-    // if (increasedColorOption.getState())
-    // {
-    // disable = increasedColorOption;
-    // enable = extraColorOption;
-    // }
     if (extraColorOption.getState())
     {
       disable = extraColorOption;
