@@ -57,7 +57,7 @@ public class VTCompressorSelector
   
   public static OutputStream createBufferedZlibOutputStream(OutputStream out)
   {
-    return createFlushBufferedSyncFlushDeflaterOutputStream(out);
+    return createFlushBufferedSyncFlushDeflaterOutputStreamFilteredStrategy(out);
   }
   
   public static InputStream createBufferedZlibInputStream(InputStream in)
@@ -75,7 +75,7 @@ public class VTCompressorSelector
     return new BufferedInputStream(new VTAirliftInputStream(in, new ZstdDecompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
   }
   
-  public static OutputStream createFlushBufferedSyncFlushDeflaterOutputStream(OutputStream out)
+  public static OutputStream createFlushBufferedSyncFlushDeflaterOutputStreamFilteredStrategy(OutputStream out)
   {
     // out = new VTBufferedOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE,
     // true);
