@@ -10,10 +10,11 @@ import java.security.MessageDigest;
 
 import org.vash.vate.VT;
 import org.vash.vate.security.VTArrayComparator;
-import org.vash.vate.security.VTBlake3MessageDigest;
+//import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 
 import com.martiansoftware.jsap.CommandLineTokenizer;
+import net.jpountz.xxhash.XXHashFactory;
 
 public class VTFileTransferServerTransaction implements Runnable
 {
@@ -37,8 +38,8 @@ public class VTFileTransferServerTransaction implements Runnable
   private int localFileAccess;
   // private long remoteChecksum;
   // private long localChecksum;
-  private byte[] localChecksum = new byte[64];
-  private byte[] remoteChecksum = new byte[64];
+  private byte[] localChecksum = new byte[8];
+  private byte[] remoteChecksum = new byte[8];
   private long remoteFileSize;
   private long localFileSize;
   private long maxOffset;
@@ -51,7 +52,8 @@ public class VTFileTransferServerTransaction implements Runnable
   // private final byte[] checksumBuffer = new byte[checksumBufferSize];
   // private Checksum checksum =
   // XXHashFactory.fastestJavaInstance().newStreamingHash64(-1).asChecksum();
-  private MessageDigest checksum = new VTBlake3MessageDigest();
+  //private MessageDigest checksum = new VTBlake3MessageDigest();
+  private MessageDigest checksum = XXHashFactory.fastestJavaInstance().newStreamingHash64(-1).asMessageDigest();
   private String command;
   // private String source;
   private String destination;
@@ -676,10 +678,10 @@ public class VTFileTransferServerTransaction implements Runnable
     directory = false;
     resumable = false;
     fileTransferFile = new File(convertFilePath(currentPath));
-    if (!fileTransferFile.isAbsolute())
-    {
-      fileTransferFile = new File(convertFilePath(currentPath));
-    }
+//    if (!fileTransferFile.isAbsolute())
+//    {
+//      fileTransferFile = new File(convertFilePath(currentPath));
+//    }
     // System.out.println("verifyUpload: " +
     // fileTransferFile.getAbsolutePath());
     try
@@ -1060,10 +1062,10 @@ public class VTFileTransferServerTransaction implements Runnable
     directory = false;
     resumable = false;
     fileTransferFile = new File(convertFilePath(currentPath));
-    if (!fileTransferFile.isAbsolute())
-    {
-      fileTransferFile = new File(convertFilePath(currentPath));
-    }
+//    if (!fileTransferFile.isAbsolute())
+//    {
+//      fileTransferFile = new File(convertFilePath(currentPath));
+//    }
     // System.out.println("verifyDownload: " +
     // fileTransferFile.getAbsolutePath());
     try
@@ -1135,10 +1137,10 @@ public class VTFileTransferServerTransaction implements Runnable
             if (!fileTransferFile.exists())
             {
               fileTransferFile = new File(convertFilePath(currentPath + ".tmp"));
-              if (!fileTransferFile.isAbsolute())
-              {
-                fileTransferFile = new File(convertFilePath(currentPath + ".tmp"));
-              }
+//              if (!fileTransferFile.isAbsolute())
+//              {
+//                fileTransferFile = new File(convertFilePath(currentPath + ".tmp"));
+//              }
             }
           }
           else
@@ -1504,10 +1506,10 @@ public class VTFileTransferServerTransaction implements Runnable
     try
     {
       fileTransferCompletedFile = new File(convertFilePath(currentPath));
-      if (!fileTransferCompletedFile.isAbsolute())
-      {
-        fileTransferCompletedFile = new File(convertFilePath(currentPath));
-      }
+//      if (!fileTransferCompletedFile.isAbsolute())
+//      {
+//        fileTransferCompletedFile = new File(convertFilePath(currentPath));
+//      }
       if (fileTransferCompletedFile.equals(fileTransferFile))
       {
         return true;

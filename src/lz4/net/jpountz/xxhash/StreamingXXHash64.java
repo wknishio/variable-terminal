@@ -13,6 +13,7 @@
  *******************************************************************************/
 package net.jpountz.xxhash;
 
+import java.security.MessageDigest;
 import java.util.zip.Checksum;
 
 /*
@@ -129,4 +130,75 @@ public abstract class StreamingXXHash64 {
     };
   }
 
+  public final MessageDigest asMessageDigest()
+  {
+    final byte[] longBuffer = new byte[8];
+    
+    return new MessageDigest("XXHash64")
+    {
+      public void reset()
+      {
+        StreamingXXHash64.this.reset();
+      }
+      
+      @SuppressWarnings("unused")
+      public void update(byte[]... arrays)
+      {
+        for (byte[] data : arrays)
+        {
+          if (data != null && data.length > 0)
+          {
+            StreamingXXHash64.this.update(data, 0, data.length);
+          }
+        }
+      }
+      
+      public void update(byte[] data, int off, int len)
+      {
+        if (data != null && data.length > 0)
+        {
+          StreamingXXHash64.this.update(data, off, len);
+        }
+      }
+      
+      public byte[] digest()
+      {
+        return engineDigest();
+      }
+      
+      protected void engineUpdate(byte input)
+      {
+        
+      }
+      
+      protected void engineUpdate(byte[] input, int offset, int len)
+      {
+        StreamingXXHash64.this.update(input, offset, len);
+      }
+      
+      protected byte[] engineDigest()
+      {
+        long l = StreamingXXHash64.this.getValue();
+        longBuffer[0] = (byte) l;
+        longBuffer[1] = (byte) (l >> 8);
+        longBuffer[2] = (byte) (l >> 16);
+        longBuffer[3] = (byte) (l >> 24);
+        longBuffer[4] = (byte) (l >> 32);
+        longBuffer[5] = (byte) (l >> 40);
+        longBuffer[6] = (byte) (l >> 48);
+        longBuffer[7] = (byte) (l >> 56);
+        return longBuffer;
+      }
+      
+      protected void engineReset()
+      {
+        StreamingXXHash64.this.reset();
+      }
+      
+      protected int engineGetDigestLength()
+      {
+        return 8;
+      }
+    };
+  }
 }
