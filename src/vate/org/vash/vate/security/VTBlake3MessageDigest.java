@@ -2,6 +2,7 @@ package org.vash.vate.security;
 
 import java.security.MessageDigest;
 import org.bouncycastle.crypto.digests.Blake3Digest;
+import org.bouncycastle.crypto.params.Blake3Parameters;
 
 public class VTBlake3MessageDigest extends MessageDigest
 {
@@ -12,6 +13,19 @@ public class VTBlake3MessageDigest extends MessageDigest
   {
     super("BLAKE3");
     this.blake3 = new Blake3Digest(64);
+    //this.blake3.init(null);
+  }
+  
+  public VTBlake3MessageDigest(byte[] seed)
+  {
+    super("BLAKE3");
+    this.blake3 = new Blake3Digest(64);
+    setSeed(seed);
+  }
+  
+  public void setSeed(byte[] seed)
+  {
+    blake3.init(Blake3Parameters.context(seed));
   }
   
   public void reset()

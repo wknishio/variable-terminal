@@ -83,7 +83,7 @@ public class VTClientConnection
   private byte[] randomData = new byte[64];
   // private byte[] paddingData = new byte[1024];
   // private MessageDigest sha256Digester;
-  private VTBlake3MessageDigest blake3Digest = new VTBlake3MessageDigest();
+  private VTBlake3MessageDigest blake3Digest;
   private VTBlake3DigestRandom secureRandom;
   private VTCryptographicEngine cryptoEngine;
   private Socket connectionSocket;
@@ -171,6 +171,7 @@ public class VTClientConnection
     // }
     this.cryptoEngine = new VTCryptographicEngine();
     this.secureRandom = secureRandom;
+    this.blake3Digest = new VTBlake3MessageDigest();
     this.authenticationReader = new VTLittleEndianInputStream(null);
     this.authenticationWriter = new VTLittleEndianOutputStream(null);
   }
@@ -559,6 +560,13 @@ public class VTClientConnection
         remoteNonce[i] = randomData[i];
       }
     }
+    
+    blake3Digest.reset();
+    byte[] seed = new byte[128];
+    System.arraycopy(localNonce, 0, seed, 0, 64);
+    System.arraycopy(remoteNonce, 0, seed, 64, 64);
+    blake3Digest.setSeed(seed);
+    blake3Digest.reset();
   }
   
   private void setVerificationStreams(boolean encrypted) throws IOException

@@ -10,8 +10,7 @@ import java.security.MessageDigest;
 
 import org.vash.vate.VT;
 import org.vash.vate.security.VTArrayComparator;
-import org.vash.vate.security.VTBlake3MessageDigest;
-//import org.vash.vate.security.VTBlake3MessageDigest;
+import org.vash.vate.security.VTBlake3DigestRandom;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 
 import com.martiansoftware.jsap.CommandLineTokenizer;
@@ -82,13 +81,16 @@ public class VTFileTransferServerTransaction implements Runnable
   {
     this.session = session;
     this.finished = true;
+    
     byte[] localNonce = session.getServer().getConnection().getLocalNonce();
     byte[] remoteNonce = session.getServer().getConnection().getRemoteNonce();
-    VTBlake3MessageDigest blake3 = new VTBlake3MessageDigest();
-    blake3.update(remoteNonce);
-    blake3.update(localNonce);
-    long seed = blake3.digestLong();
-    checksum = XXHashFactory.fastestJavaInstance().newStreamingHash64(seed).asMessageDigest();
+    byte[] blake3Seed = new byte[128];
+    System.arraycopy(remoteNonce, 0, blake3Seed, 0, 64);
+    System.arraycopy(localNonce, 0, blake3Seed, 64, 64);
+    
+    long xxhashSeed = new VTBlake3DigestRandom(blake3Seed).nextLong();
+    
+    checksum = XXHashFactory.fastestJavaInstance().newStreamingHash64(xxhashSeed).asMessageDigest();
   }
   
   public boolean isFinished()

@@ -185,7 +185,7 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
   
   public final byte[] readData() throws IOException
   {
-    int size = this.readInt();
+    int size = this.readUnsignedShort();
     byte[] data = new byte[size];
     readFully(data, 0, size);
     return data;

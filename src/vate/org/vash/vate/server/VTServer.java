@@ -6,12 +6,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-// import java.security.Security;
-// import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -32,7 +28,6 @@ import org.vash.vate.parser.VTArgumentParser;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
 import org.vash.vate.security.VTBlake3DigestRandom;
-import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.server.connection.VTServerConnector;
 import org.vash.vate.server.console.local.VTServerLocalConsoleReader;
 import org.vash.vate.server.console.local.VTServerLocalGraphicalConsoleMenuBar;
@@ -59,10 +54,10 @@ public class VTServer implements Runnable
   private String sessionShell = "";
   private final String vtURL = System.getenv("VT_PATH");
   // private MessageDigest sha256Digester;
-  private VTBlake3MessageDigest blake3Digest = new VTBlake3MessageDigest();
+  //private VTBlake3MessageDigest blake3Digest;
   // private File userDatabaseFile;
   private File serverSettingsFile;
-  private final Map<byte[], Credential> userCredentials = new LinkedHashMap<byte[], Credential>();
+  private final List<Credential> userCredentials = new LinkedList<Credential>();
   // private Properties fileUserCredentials;
   // private Properties argumentsServerSettings = new Properties();
   private VTConfigurationProperties fileServerSettings;
@@ -132,6 +127,10 @@ public class VTServer implements Runnable
     // {
     // e.printStackTrace();
     // }
+    //this.blake3Digest = new VTBlake3MessageDigest();
+    //byte[] seed = new byte[64];
+    //new SecureRandom().nextBytes(seed);
+    //this.blake3Digest.setSeed(seed);
     this.threads = Executors.newCachedThreadPool(new ThreadFactory()
     {
       public Thread newThread(Runnable r)
@@ -222,7 +221,7 @@ public class VTServer implements Runnable
     return runtime;
   }
   
-  public Map<byte[], Credential> getUserCredentials()
+  public List<Credential> getUserCredentials()
   {
     return userCredentials;
   }
@@ -441,13 +440,14 @@ public class VTServer implements Runnable
   
   public void setUniqueUserCredential(String user, String password)
   {
-    byte[] credential = new byte[128];
+    //byte[] credential = new byte[128];
     try
     {
-      System.arraycopy(blake3Digest.digest(user.getBytes("UTF-8")), 0, credential, 0, 64);
-      System.arraycopy(blake3Digest.digest(password.getBytes("UTF-8")), 0, credential, 64, 64);
+      //System.arraycopy(blake3Digest.digest(user.getBytes("UTF-8")), 0, credential, 0, 64);
+      //System.arraycopy(blake3Digest.digest(password.getBytes("UTF-8")), 0, credential, 64, 64);
       userCredentials.clear();
-      userCredentials.put(credential, new Credential(user, password));
+      //userCredentials.put(credential, new Credential(user, password));
+      userCredentials.add(new Credential(user, password));
     }
     catch (Throwable e)
     {
@@ -457,10 +457,11 @@ public class VTServer implements Runnable
   
   public void addUserCredential(String user, String password) throws UnsupportedEncodingException
   {
-    byte[] credential = new byte[128];
-    System.arraycopy(blake3Digest.digest(user.getBytes("UTF-8")), 0, credential, 0, 64);
-    System.arraycopy(blake3Digest.digest(password.getBytes("UTF-8")), 0, credential, 64, 64);
-    userCredentials.put(credential, new Credential(user, password));
+    //byte[] credential = new byte[128];
+    //System.arraycopy(blake3Digest.digest(user.getBytes("UTF-8")), 0, credential, 0, 64);
+    //System.arraycopy(blake3Digest.digest(password.getBytes("UTF-8")), 0, credential, 64, 64);
+    //userCredentials.put(credential, new Credential(user, password));
+    userCredentials.add(new Credential(user, password));
   }
   
   public void displayTrayIconMessage(String caption, String text)

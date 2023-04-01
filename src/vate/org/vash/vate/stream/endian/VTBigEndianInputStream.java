@@ -189,7 +189,7 @@ public final class VTBigEndianInputStream extends InputStream implements DataInp
   
   public final byte[] readData() throws IOException
   {
-    int size = this.readInt();
+    int size = this.readUnsignedShort();
     byte[] data = new byte[size];
     readFully(data, 0, size);
     return data;

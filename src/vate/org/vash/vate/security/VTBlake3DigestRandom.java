@@ -4,52 +4,61 @@ import org.bouncycastle.crypto.prng.RandomGenerator;
 import org.bouncycastle.crypto.prng.DigestRandomGenerator;
 import java.security.SecureRandom;
 import org.bouncycastle.crypto.digests.Blake3Digest;
+import org.bouncycastle.crypto.params.Blake3Parameters;
 
 public class VTBlake3DigestRandom extends java.security.SecureRandom
 {
   private static final long serialVersionUID = 1L;
-  
+  private Blake3Digest blake3;
   private RandomGenerator generator;
   
   public VTBlake3DigestRandom()
   {
-    this(new DigestRandomGenerator(new Blake3Digest(64)));
-    byte[] seed = new byte[64];
-    new SecureRandom().nextBytes(seed);
-    setSeed(seed);
+    blake3 = new Blake3Digest(64);
+    generator = new DigestRandomGenerator(blake3);
+    byte[] secureSeed = new byte[64];
+    new SecureRandom().nextBytes(secureSeed);
+    setSeed(secureSeed);
   }
   
   public VTBlake3DigestRandom(byte[] inSeed)
   {
-    this(new DigestRandomGenerator(new Blake3Digest(64)));
+    blake3 = new Blake3Digest(64);
+    generator = new DigestRandomGenerator(blake3);
     setSeed(inSeed);
-  }
-  
-  public VTBlake3DigestRandom(RandomGenerator generator)
-  {
-    this.generator = generator;
   }
   
   public void setSeed(byte[] seed)
   {
-    if (generator != null)
+    if (blake3 == null)
     {
-      generator.addSeedMaterial(seed);
+      return;
     }
+    blake3.init(Blake3Parameters.context(seed));
+  }
+  
+  public void setSeed(long seed)
+  {
+    if (blake3 == null)
+    {
+      return;
+    }
+    byte[] seedBytes = new byte[8];
+    seedBytes[0] = (byte) seed;
+    seedBytes[1] = (byte) (seed >> 8);
+    seedBytes[2] = (byte) (seed >> 16);
+    seedBytes[3] = (byte) (seed >> 24);
+    seedBytes[4] = (byte) (seed >> 32);
+    seedBytes[5] = (byte) (seed >> 40);
+    seedBytes[6] = (byte) (seed >> 48);
+    seedBytes[7] = (byte) (seed >> 56);
+    blake3.init(Blake3Parameters.context(seedBytes));
   }
   
   // public methods overriding random
   public void nextBytes(byte[] bytes)
   {
     generator.nextBytes(bytes);
-  }
-  
-  public void setSeed(long seed)
-  {
-    if (generator != null)
-    {
-      generator.addSeedMaterial(seed);
-    }
   }
   
   public int nextInt()

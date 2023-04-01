@@ -37,7 +37,7 @@ public class VTClientAuthenticator
   // private byte[] paddingData = new byte[1024];
   private String user;
   private String password;
-  private VTBlake3MessageDigest blake3Digest = new VTBlake3MessageDigest();
+  private VTBlake3MessageDigest blake3Digest;
   private VTClient client;
   private VTClientConnection connection;
   private VTClientAuthenticatorTimeoutTask timeoutTask = new VTClientAuthenticatorTimeoutTask();
@@ -114,6 +114,7 @@ public class VTClientAuthenticator
   {
     this.client = client;
     this.connection = connection;
+    this.blake3Digest = new VTBlake3MessageDigest();
     // this.localNonce = connection.getLocalNonce();
     // this.remoteNonce = connection.getRemoteNonce();
     // this.credentialCounter = 0;
@@ -170,6 +171,13 @@ public class VTClientAuthenticator
     connection.exchangeNonces(true);
     localNonce = connection.getLocalNonce();
     remoteNonce = connection.getRemoteNonce();
+    
+    blake3Digest.reset();
+    byte[] seed = new byte[128];
+    System.arraycopy(localNonce, 0, seed, 0, 64);
+    System.arraycopy(remoteNonce, 0, seed, 64, 64);
+    blake3Digest.setSeed(seed);
+    blake3Digest.reset();
     
     // connection.getSecureRandom().nextBytes(randomData);
     // connection.getAuthenticationWriter().write(randomData);

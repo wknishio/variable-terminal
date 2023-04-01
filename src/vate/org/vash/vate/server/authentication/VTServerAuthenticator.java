@@ -7,6 +7,7 @@ import org.vash.vate.VT;
 import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.server.VTServer;
+import org.vash.vate.server.VTServer.Credential;
 import org.vash.vate.server.connection.VTServerConnection;
 
 public class VTServerAuthenticator
@@ -38,7 +39,7 @@ public class VTServerAuthenticator
   private byte[] receivedCredential;
   private byte[] localNonce;
   private byte[] remoteNonce;
-  private VTBlake3MessageDigest blake3Digest = new VTBlake3MessageDigest();
+  private VTBlake3MessageDigest blake3Digest;
   // private MessageDigest sha256Digester;
   private VTServer server;
   private VTServerConnection connection;
@@ -116,6 +117,7 @@ public class VTServerAuthenticator
   {
     this.server = server;
     this.connection = connection;
+    this.blake3Digest = new VTBlake3MessageDigest();
     // this.localNonce = connection.getLocalNonce();
     // this.remoteNonce = connection.getRemoteNonce();
     // try
@@ -173,6 +175,13 @@ public class VTServerAuthenticator
     localNonce = connection.getLocalNonce();
     remoteNonce = connection.getRemoteNonce();
     
+    blake3Digest.reset();
+    byte[] seed = new byte[128];
+    System.arraycopy(remoteNonce, 0, seed, 0, 64);
+    System.arraycopy(localNonce, 0, seed, 64, 64);
+    blake3Digest.setSeed(seed);
+    blake3Digest.reset();
+    
     // connection.getSecureRandom().nextBytes(randomData);
     // connection.getAuthenticationWriter().write(randomData);
     // connection.getAuthenticationWriter().flush();
@@ -190,12 +199,18 @@ public class VTServerAuthenticator
     
     receivedCredential = new byte[128];
     byte[] digestedCredential = new byte[128];
+    byte[] storedCredential = new byte[128];
     System.arraycopy(digestedUser, 0, receivedCredential, 0, 64);
     System.arraycopy(digestedPassword, 0, receivedCredential, 64, 64);
     if (server.getUserCredentials().size() > 0)
     {
-      for (byte[] storedCredential : server.getUserCredentials().keySet())
+      for (Credential credential : server.getUserCredentials())
       {
+        blake3Digest.reset();
+        String credentialUser = credential.getUser();
+        String credentialPassword = credential.getPassword();
+        System.arraycopy(blake3Digest.digest(credentialUser.getBytes("UTF-8")), 0, storedCredential, 0, 64);
+        System.arraycopy(blake3Digest.digest(credentialPassword.getBytes("UTF-8")), 0, storedCredential, 64, 64);
         System.arraycopy(storedCredential, 0, digestedCredential, 0, storedCredential.length);
         blake3Digest.update(digestedCredential, 0, 64);
         blake3Digest.update(localNonce);
@@ -213,8 +228,10 @@ public class VTServerAuthenticator
           connection.getAuthenticationReader().readFully(randomData);
           // VTConsole.print("\rVT>Authentication
           // successful!\nVT>");
-          user = server.getUserCredentials().get(storedCredential).getUser();
-          password = server.getUserCredentials().get(storedCredential).getPassword();
+          user = credential.getUser();
+          password = credential.getPassword();
+          //user = server.getUserCredentials().get(storedCredential).getUser();
+          //password = server.getUserCredentials().get(storedCredential).getPassword();
           accepted = true;
           stopTimeoutThread();
           return true;
@@ -223,7 +240,8 @@ public class VTServerAuthenticator
     }
     else
     {
-      byte[] storedCredential = new byte[128];
+      //byte[] storedCredential = new byte[128];
+      blake3Digest.reset();
       System.arraycopy(storedCredential, 0, digestedCredential, 0, storedCredential.length);
       blake3Digest.update(digestedCredential, 0, 64);
       blake3Digest.update(localNonce);
@@ -241,8 +259,10 @@ public class VTServerAuthenticator
         connection.getAuthenticationReader().readFully(randomData);
         // VTConsole.print("\rVT>Authentication
         // successful!\nVT>");
-        user = server.getUserCredentials().get(storedCredential).getUser();
-        password = server.getUserCredentials().get(storedCredential).getPassword();
+        //user = server.getUserCredentials().get(storedCredential).getUser();
+        //password = server.getUserCredentials().get(storedCredential).getPassword();
+        user = "";
+        password = "";
         accepted = true;
         stopTimeoutThread();
         return true;
