@@ -13,7 +13,7 @@ public class VTBlake3DigestRandom extends java.security.SecureRandom
   
   public VTBlake3DigestRandom()
   {
-    this(new DigestRandomGenerator(new Blake3Digest()));
+    this(new DigestRandomGenerator(new Blake3Digest(64)));
     byte[] seed = new byte[64];
     new SecureRandom().nextBytes(seed);
     setSeed(seed);
@@ -21,7 +21,7 @@ public class VTBlake3DigestRandom extends java.security.SecureRandom
   
   public VTBlake3DigestRandom(byte[] inSeed)
   {
-    this(new DigestRandomGenerator(new Blake3Digest()));
+    this(new DigestRandomGenerator(new Blake3Digest(64)));
     setSeed(inSeed);
   }
   
