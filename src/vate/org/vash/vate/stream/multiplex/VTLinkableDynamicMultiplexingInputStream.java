@@ -303,7 +303,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     this.packetReader = new VTLinkableDynamicMultiplexingInputStreamPacketReader(this);
     this.packetReaderThread = new Thread(null, packetReader, packetReader.getClass().getSimpleName());
     this.packetReaderThread.setDaemon(true);
-    this.packetReaderThread.setPriority((Thread.NORM_PRIORITY));
+    //this.packetReaderThread.setPriority((Thread.NORM_PRIORITY));
     if (startPacketReader)
     {
       this.packetReaderThread.start();
