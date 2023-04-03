@@ -182,7 +182,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     nA = newPixelData[position - 1];
     nB = newPixelData[position - width];
     nC = newPixelData[position - 1 - width];
-    int pred = (nA + nA + nA + nB + nB + nB + nC + nC) >> 3;
+    int pred = (nA + nB + nC + (nA + nB) >> 1) >> 2;
     
     out.write(newPixelData[position] ^ pred);
   }
@@ -205,7 +205,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     nA = newPixelData[position - 1];
     nB = newPixelData[position - width];
     nC = newPixelData[position - 1 - width];
-    int pred = (nA + nA + nA + nB + nB + nB + nC + nC) >> 3;
+    int pred = (nA + nB + nC + (nA + nB) >> 1) >> 2;
     
     out.writeShort(newPixelData[position] ^ pred);
   }
@@ -228,7 +228,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     nA = newPixelData[position - 1];
     nB = newPixelData[position - width];
     nC = newPixelData[position - 1 - width];
-    int pred = (nA + nA + nA + nB + nB + nB + nC + nC) >> 3;
+    int pred = (nA + nB + nC + (nA + nB) >> 1) >> 2;
     
     out.writeSubInt(newPixelData[position] ^ pred);
   }
@@ -260,7 +260,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     nA = newPixelData[position - 1];
     nB = newPixelData[position - width];
     nC = newPixelData[position - 1 - width];
-    int pred = (nA + nA + nA + nB + nB + nB + nC + nC) >> 3;
+    int pred = (nA + nB + nC + (nA + nB) >> 1) >> 2;
     
     newPixelData[position] = (byte) ((in.read() ^ pred) /* & 0xFF */);
   }
@@ -283,7 +283,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     nA = newPixelData[position - 1];
     nB = newPixelData[position - width];
     nC = newPixelData[position - 1 - width];
-    int pred = (nA + nA + nA + nB + nB + nB + nC + nC) >> 3;
+    int pred = (nA + nB + nC + (nA + nB) >> 1) >> 2;
     
     newPixelData[position] = (short) ((in.readShort() ^ pred) /* & 0x7FFF */);
   }
@@ -310,7 +310,7 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     nA = newPixelData[position - 1];
     nB = newPixelData[position - width];
     nC = newPixelData[position - 1 - width];
-    int pred = (nA + nA + nA + nB + nB + nB + nC + nC) >> 3;
+    int pred = (nA + nB + nC + (nA + nB) >> 1) >> 2;
     
     newPixelData[position] = (in.readSubInt() ^ pred /* & 0x00FFFFFF */);
   }
