@@ -6,7 +6,7 @@ This software is a java remote computer administration tool.
 
 Some of the available features are:
 
-* RC4. AES, ISAAC, SALSA, HC256 or GRAIN encryption.
+* RC4, AES, ISAAC, SALSA, HC256 or GRAIN encryption.
 * UPnP, NAT-PMP and PCP NAT port forwarding.
 * SOCKS and HTTP proxy network connections.
 * Multiple simultaneous sessions.

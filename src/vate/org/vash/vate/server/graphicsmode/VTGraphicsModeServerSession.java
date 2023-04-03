@@ -34,7 +34,7 @@ public class VTGraphicsModeServerSession
     boolean controlProviderInitialized = false;
     try
     {
-      viewProviderInitialized = session.getViewProvider().isScreenCaptureInitialized(true) || session.getViewProvider().initializeScreenCapture(true);
+      viewProviderInitialized = session.getViewProvider().isScreenCaptureInitialized(1) || session.getViewProvider().initializeScreenCapture(1);
       controlProviderInitialized = session.getControlProvider().isInputControlInitialized() || session.getControlProvider().initializeInputControl();
     }
     catch (Throwable e)
