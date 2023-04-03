@@ -88,6 +88,7 @@ public class VTGraphicsModeServerWriter implements Runnable
   private ImageOutputStream jpgImageOutputStream;
   private PngEncoder pngEncoder;
   private DataBuffer recycledDataBuffer;
+  private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeFrameDifferenceCodecMKII.PADDING_SIZE;
   // private long startTime, endTime, total, number;
   
   public VTGraphicsModeServerWriter(VTGraphicsModeServerSession session)
@@ -806,15 +807,15 @@ public class VTGraphicsModeServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().flush();
       if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
       {
-        vtCustomCodec.encodeFrame8(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame8(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
       {
-        vtCustomCodec.encodeFrame15(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame15(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
-        vtCustomCodec.encodeFrame24(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame24(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       // vtDifferenceCodec.encodeBufferedFrame(connection.getGraphicsSnappedImageDataOutputStream());
       // imageOutputBuffer.writeTo(connection.getGraphicsSnappedImageDataOutputStream());
@@ -826,15 +827,15 @@ public class VTGraphicsModeServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().flush();
       if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
       {
-        vtCustomCodec.encodeFrame8(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame8(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
       {
-        vtCustomCodec.encodeFrame15(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame15(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
-        vtCustomCodec.encodeFrame24(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame24(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       // vtDifferenceCodec.encodeBufferedFrame(connection.getGraphicsDeflatedImageDataOutputStream());
       // imageOutputBuffer.writeTo(connection.getGraphicsDeflatedImageDataOutputStream());
@@ -870,15 +871,15 @@ public class VTGraphicsModeServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().flush();
       if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
       {
-        vtCustomCodec.encodeFrame8(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame8(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
       {
-        vtCustomCodec.encodeFrame15(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame15(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
-        vtCustomCodec.encodeFrame24(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame24(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       connection.getGraphicsSnappedImageDataOutputStream().flush();
     }
@@ -892,15 +893,15 @@ public class VTGraphicsModeServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().flush();
       if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
       {
-        vtCustomCodec.encodeFrame8(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame8(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
       {
-        vtCustomCodec.encodeFrame15(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame15(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferUShort, lastImageBufferUShort, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
-        vtCustomCodec.encodeFrame24(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), 1, resultArea.x, resultArea.y, resultArea.width, resultArea.height);
+        vtCustomCodec.encodeFrame24(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferInt, lastImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
       }
       connection.getGraphicsDeflatedImageDataOutputStream().flush();
     }
@@ -1076,7 +1077,7 @@ public class VTGraphicsModeServerWriter implements Runnable
             {
               try
               {
-                imageDataBuffer = viewProvider.createScreenCapture(captureArea, imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF || imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF ? 1 : 0, drawPointer);
+                imageDataBuffer = viewProvider.createScreenCapture(captureArea, imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF || imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF ? CODEC_PADDING_SIZE : 0, drawPointer);
               }
               catch (Throwable t)
               {
@@ -1094,7 +1095,7 @@ public class VTGraphicsModeServerWriter implements Runnable
             {
               try
               {
-                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF || imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF ? 1 : 0, drawPointer);
+                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF || imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF ? CODEC_PADDING_SIZE : 0, drawPointer);
               }
               catch (Throwable t)
               {
@@ -1265,18 +1266,18 @@ public class VTGraphicsModeServerWriter implements Runnable
               }
               else
               {
-                if (imageDataBuffer.getWidth() + 1 == lastWidth && imageDataBuffer.getHeight() + 1 == lastHeight && imageDataBuffer.getColorModel().getPixelSize() == lastDepth && viewProvider.getColorCount() == lastColors && imageDataBuffer.getRaster().getDataBuffer().getDataType() == lastDataType && imageCoding == lastImageCoding
+                if (imageDataBuffer.getWidth() + CODEC_PADDING_SIZE == lastWidth && imageDataBuffer.getHeight() + CODEC_PADDING_SIZE == lastHeight && imageDataBuffer.getColorModel().getPixelSize() == lastDepth && viewProvider.getColorCount() == lastColors && imageDataBuffer.getRaster().getDataBuffer().getDataType() == lastDataType && imageCoding == lastImageCoding
                 /* && captureScale == lastCaptureScale */)
                 {
                   // startTime = System.currentTimeMillis();
                   // lastImageCoding = imageCoding;
-                  paddedResultArea.x = resultArea.x + 1;
-                  paddedResultArea.y = resultArea.y + 1;
+                  paddedResultArea.x = resultArea.x + CODEC_PADDING_SIZE;
+                  paddedResultArea.y = resultArea.y + CODEC_PADDING_SIZE;
                   paddedResultArea.width = resultArea.width;
                   paddedResultArea.height = resultArea.height;
                   
-                  paddedCaptureArea.x = captureArea.x + 1;
-                  paddedCaptureArea.y = captureArea.y + 1;
+                  paddedCaptureArea.x = captureArea.x + CODEC_PADDING_SIZE;
+                  paddedCaptureArea.y = captureArea.y + CODEC_PADDING_SIZE;
                   paddedCaptureArea.width = captureArea.width;
                   paddedCaptureArea.height = captureArea.height;
                   
@@ -1285,8 +1286,8 @@ public class VTGraphicsModeServerWriter implements Runnable
                     // sendCustomDifference();
                     if (!VTImageDataUtils.deltaArea(previousImageBufferByte, lastImageBufferByte, lastWidth, lastHeight, paddedCaptureArea, paddedResultArea))
                     {
-                      resultArea.x = Math.max(0, paddedResultArea.x - 1);
-                      resultArea.y = Math.max(0, paddedResultArea.y - 1);
+                      resultArea.x = Math.max(0, paddedResultArea.x - CODEC_PADDING_SIZE);
+                      resultArea.y = Math.max(0, paddedResultArea.y - CODEC_PADDING_SIZE);
                       resultArea.width = paddedResultArea.width;
                       resultArea.height = paddedResultArea.height;
                       sendCustomDifference();
@@ -1301,16 +1302,16 @@ public class VTGraphicsModeServerWriter implements Runnable
                     // sendCustomDifference();
                     if (!VTImageDataUtils.deltaArea(previousImageBufferUShort, lastImageBufferUShort, lastWidth, lastHeight, paddedCaptureArea, paddedResultArea))
                     {
-                      resultArea.x = Math.max(0, paddedResultArea.x - 1);
-                      resultArea.y = Math.max(0, paddedResultArea.y - 1);
+                      resultArea.x = Math.max(0, paddedResultArea.x - CODEC_PADDING_SIZE);
+                      resultArea.y = Math.max(0, paddedResultArea.y - CODEC_PADDING_SIZE);
                       resultArea.width = paddedResultArea.width;
                       resultArea.height = paddedResultArea.height;
                       sendCustomDifference();
                     }
                     else
                     {
-                      resultArea.x = Math.max(0, paddedResultArea.x - 1);
-                      resultArea.y = Math.max(0, paddedResultArea.y - 1);
+                      resultArea.x = Math.max(0, paddedResultArea.x - CODEC_PADDING_SIZE);
+                      resultArea.y = Math.max(0, paddedResultArea.y - CODEC_PADDING_SIZE);
                       resultArea.width = paddedResultArea.width;
                       resultArea.height = paddedResultArea.height;
                       sendRefreshNotNeeded();
@@ -1321,16 +1322,16 @@ public class VTGraphicsModeServerWriter implements Runnable
                     // sendCustomDifference();
                     if (!VTImageDataUtils.deltaArea(previousImageBufferInt, lastImageBufferInt, lastWidth, lastHeight, paddedCaptureArea, paddedResultArea))
                     {
-                      resultArea.x = Math.max(0, paddedResultArea.x - 1);
-                      resultArea.y = Math.max(0, paddedResultArea.y - 1);
+                      resultArea.x = Math.max(0, paddedResultArea.x - CODEC_PADDING_SIZE);
+                      resultArea.y = Math.max(0, paddedResultArea.y - CODEC_PADDING_SIZE);
                       resultArea.width = paddedResultArea.width;
                       resultArea.height = paddedResultArea.height;
                       sendCustomDifference();
                     }
                     else
                     {
-                      resultArea.x = Math.max(0, paddedResultArea.x - 1);
-                      resultArea.y = Math.max(0, paddedResultArea.y - 1);
+                      resultArea.x = Math.max(0, paddedResultArea.x - CODEC_PADDING_SIZE);
+                      resultArea.y = Math.max(0, paddedResultArea.y - CODEC_PADDING_SIZE);
                       resultArea.width = paddedResultArea.width;
                       resultArea.height = paddedResultArea.height;
                       sendRefreshNotNeeded();
@@ -1339,10 +1340,10 @@ public class VTGraphicsModeServerWriter implements Runnable
                 }
                 else
                 {
-                  lastWidth = imageDataBuffer.getWidth() + 1;
-                  lastHeight = imageDataBuffer.getHeight() + 1;
-                  interruptedLastWidth = lastWidth - 1;
-                  interruptedLastHeight = lastHeight - 1;
+                  lastWidth = imageDataBuffer.getWidth() + CODEC_PADDING_SIZE;
+                  lastHeight = imageDataBuffer.getHeight() + CODEC_PADDING_SIZE;
+                  interruptedLastWidth = lastWidth - CODEC_PADDING_SIZE;
+                  interruptedLastHeight = lastHeight - CODEC_PADDING_SIZE;
                   lastDepth = imageDataBuffer.getColorModel().getPixelSize();
                   lastColors = viewProvider.getColorCount();
                   lastDataType = imageDataBuffer.getRaster().getDataBuffer().getDataType();
@@ -1363,8 +1364,8 @@ public class VTGraphicsModeServerWriter implements Runnable
                     if (captureArea.x >= 0 && captureArea.y >= 0)
                     {
                       VTImageDataUtils.deltaArea(lastImageBufferByte, previousImageBufferByte, lastWidth, lastHeight, null, paddedResultArea);
-                      resultArea.x = Math.max(0, paddedResultArea.x - 1);
-                      resultArea.y = Math.max(0, paddedResultArea.y - 1);
+                      resultArea.x = Math.max(0, paddedResultArea.x - CODEC_PADDING_SIZE);
+                      resultArea.y = Math.max(0, paddedResultArea.y - CODEC_PADDING_SIZE);
                       resultArea.width = paddedResultArea.width;
                       resultArea.height = paddedResultArea.height;
                     }
@@ -1372,8 +1373,8 @@ public class VTGraphicsModeServerWriter implements Runnable
                     {
                       resultArea.x = 0;
                       resultArea.y = 0;
-                      resultArea.width = lastWidth - 1;
-                      resultArea.height = lastHeight - 1;
+                      resultArea.width = lastWidth - CODEC_PADDING_SIZE;
+                      resultArea.height = lastHeight - CODEC_PADDING_SIZE;
                     }
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
@@ -1391,8 +1392,8 @@ public class VTGraphicsModeServerWriter implements Runnable
                     if (captureArea.x >= 0 && captureArea.y >= 0)
                     {
                       VTImageDataUtils.deltaArea(lastImageBufferUShort, previousImageBufferUShort, lastWidth, lastHeight, null, paddedResultArea);
-                      resultArea.x = Math.max(0, paddedResultArea.x - 1);
-                      resultArea.y = Math.max(0, paddedResultArea.y - 1);
+                      resultArea.x = Math.max(0, paddedResultArea.x - CODEC_PADDING_SIZE);
+                      resultArea.y = Math.max(0, paddedResultArea.y - CODEC_PADDING_SIZE);
                       resultArea.width = paddedResultArea.width;
                       resultArea.height = paddedResultArea.height;
                     }
@@ -1400,8 +1401,8 @@ public class VTGraphicsModeServerWriter implements Runnable
                     {
                       resultArea.x = 0;
                       resultArea.y = 0;
-                      resultArea.width = lastWidth - 1;
-                      resultArea.height = lastHeight - 1;
+                      resultArea.width = lastWidth - CODEC_PADDING_SIZE;
+                      resultArea.height = lastHeight - CODEC_PADDING_SIZE;
                     }
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
@@ -1419,8 +1420,8 @@ public class VTGraphicsModeServerWriter implements Runnable
                     if (captureArea.x >= 0 && captureArea.y >= 0)
                     {
                       VTImageDataUtils.deltaArea(lastImageBufferInt, previousImageBufferInt, lastWidth, lastHeight, null, paddedResultArea);
-                      resultArea.x = Math.max(0, paddedResultArea.x - 1);
-                      resultArea.y = Math.max(0, paddedResultArea.y - 1);
+                      resultArea.x = Math.max(0, paddedResultArea.x - CODEC_PADDING_SIZE);
+                      resultArea.y = Math.max(0, paddedResultArea.y - CODEC_PADDING_SIZE);
                       resultArea.width = paddedResultArea.width;
                       resultArea.height = paddedResultArea.height;
                     }
@@ -1428,8 +1429,8 @@ public class VTGraphicsModeServerWriter implements Runnable
                     {
                       resultArea.x = 0;
                       resultArea.y = 0;
-                      resultArea.width = lastWidth - 1;
-                      resultArea.height = lastHeight - 1;
+                      resultArea.width = lastWidth - CODEC_PADDING_SIZE;
+                      resultArea.height = lastHeight - CODEC_PADDING_SIZE;
                     }
                   }
                   sendCustomRefresh();

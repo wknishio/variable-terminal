@@ -889,8 +889,9 @@ public final class VTAWTScreenCaptureProvider
     return false;
   }
   
-  public final synchronized boolean initializeScreenCapture(GraphicsDevice device)
+  public final synchronized boolean initializeScreenCapture(int padding, GraphicsDevice device)
   {
+    this.padding = padding;
     if (colorQuality == VT_COLOR_QUALITY_16777216)
     {
       return initialize16777216ScreenCapture(device);
