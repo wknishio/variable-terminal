@@ -963,10 +963,9 @@ public final class VTImageIO
   {
     int left1, top1, diag1, pred1;
     
-    top1 = position >= width ? pixelData[position - width] : 0;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
-    top1 = position >= width ? pixelData[position - width] : left1;
-    diag1 = position - 1 >= width ? pixelData[position - width - 1] : top1;
     
     pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
     
@@ -977,10 +976,9 @@ public final class VTImageIO
   {
     int left1, top1, diag1, pred1;
     
-    top1 = position >= width ? pixelData[position - width] : 0;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
-    top1 = position >= width ? pixelData[position - width] : left1;
-    diag1 = position - 1 >= width ? pixelData[position - width - 1] : top1;
     
     pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
     
@@ -991,10 +989,9 @@ public final class VTImageIO
   {
     int left1, top1, diag1, pred1;
     
-    top1 = position >= width ? pixelData[position - width] : 0;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
-    top1 = position >= width ? pixelData[position - width] : left1;
-    diag1 = position - 1 >= width ? pixelData[position - width - 1] : top1;
     
     pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
     
@@ -1005,10 +1002,9 @@ public final class VTImageIO
   {
     long left1, top1, diag1, pred1;
     
-    top1 = position >= width ? pixelData[position - width] : 0;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
-    top1 = position >= width ? pixelData[position - width] : left1;
-    diag1 = position - 1 >= width ? pixelData[position - width - 1] : top1;
     
     pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
     
@@ -1019,10 +1015,9 @@ public final class VTImageIO
   {
     int left1, top1, diag1, pred1;
     
-    top1 = position >= width ? pixelData[position - width] : 0;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
-    top1 = position >= width ? pixelData[position - width] : left1;
-    diag1 = position - 1 >= width ? pixelData[position - width - 1] : top1;
     
     pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
     
@@ -1033,10 +1028,9 @@ public final class VTImageIO
   {
     int left1, top1, diag1, pred1;
     
-    top1 = position >= width ? pixelData[position - width] : 0;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
-    top1 = position >= width ? pixelData[position - width] : left1;
-    diag1 = position - 1 >= width ? pixelData[position - width - 1] : top1;
     
     pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
     
@@ -1047,10 +1041,9 @@ public final class VTImageIO
   {
     int left1, top1, diag1, pred1;
     
-    top1 = position >= width ? pixelData[position - width] : 0;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
-    top1 = position >= width ? pixelData[position - width] : left1;
-    diag1 = position - 1 >= width ? pixelData[position - width - 1] : top1;
     
     pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
     
@@ -1061,10 +1054,9 @@ public final class VTImageIO
   {
     long left1, top1, diag1, pred1;
     
-    top1 = position >= width ? pixelData[position - width] : 0;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
-    top1 = position >= width ? pixelData[position - width] : left1;
-    diag1 = position - 1 >= width ? pixelData[position - width - 1] : top1;
     
     pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
     
@@ -1076,10 +1068,9 @@ public final class VTImageIO
   {
     int left1, top1, diag1, pred1;
     
-    top1 = position >= width ? pixelData[position - width] : 0;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
-    top1 = position >= width ? pixelData[position - width] : left1;
-    diag1 = position - 1 >= width ? pixelData[position - width - 1] : top1;
     
     pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
     
@@ -1091,10 +1082,9 @@ public final class VTImageIO
   {
     int left1, top1, diag1, pred1;
     
-    top1 = position >= width ? pixelData[position - width] : 0;
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
-    top1 = position >= width ? pixelData[position - width] : left1;
-    diag1 = position - 1 >= width ? pixelData[position - width - 1] : top1;
     
     pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
     

@@ -179,9 +179,9 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     // pred1 = (top1 + left1) >> 1;
     
     int nA, nB, nC;
-    nA = newPixelData[position - 1];
-    nB = newPixelData[position - width];
     nC = newPixelData[position - 1 - width];
+    nB = newPixelData[position - width];
+    nA = newPixelData[position - 1];
     int pred = (nA + nB + nC + (nA >> 1) + (nB >> 1)) >> 2;
     
     out.write(newPixelData[position] ^ pred);
@@ -225,9 +225,9 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     // pred1 = (top1 + left1) >> 1;
     
     int nA, nB, nC;
-    nA = newPixelData[position - 1];
-    nB = newPixelData[position - width];
     nC = newPixelData[position - 1 - width];
+    nB = newPixelData[position - width];
+    nA = newPixelData[position - 1];
     int pred = (nA + nB + nC + (nA >> 1) + (nB >> 1)) >> 2;
     
     out.writeSubInt(newPixelData[position] ^ pred);
@@ -257,9 +257,9 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     // pred1 = (top1 + left1) >> 1;
     
     int nA, nB, nC;
-    nA = newPixelData[position - 1];
-    nB = newPixelData[position - width];
     nC = newPixelData[position - 1 - width];
+    nB = newPixelData[position - width];
+    nA = newPixelData[position - 1];
     int pred = (nA + nB + nC + (nA >> 1) + (nB >> 1)) >> 2;
     
     newPixelData[position] = (byte) ((in.read() ^ pred) /* & 0xFF */);
@@ -280,9 +280,9 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     // pred1 = (top1 + left1) >> 1;
     
     int nA, nB, nC;
-    nA = newPixelData[position - 1];
-    nB = newPixelData[position - width];
     nC = newPixelData[position - 1 - width];
+    nB = newPixelData[position - width];
+    nA = newPixelData[position - 1];
     int pred = (nA + nB + nC + (nA >> 1) + (nB >> 1)) >> 2;
     
     newPixelData[position] = (short) ((in.readShort() ^ pred) /* & 0x7FFF */);
@@ -307,9 +307,9 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     // pred1 = (top1 + left1) >> 1;
     
     int nA, nB, nC;
-    nA = newPixelData[position - 1];
-    nB = newPixelData[position - width];
     nC = newPixelData[position - 1 - width];
+    nB = newPixelData[position - width];
+    nA = newPixelData[position - 1];
     int pred = (nA + nB + nC + (nA >> 1) + (nB >> 1)) >> 2;
     
     newPixelData[position] = (in.readSubInt() ^ pred /* & 0x00FFFFFF */);
