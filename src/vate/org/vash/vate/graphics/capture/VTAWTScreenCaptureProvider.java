@@ -44,6 +44,8 @@ public final class VTAWTScreenCaptureProvider
   public static final int VT_COLOR_QUALITY_27 = 10; // 27 rgb-3x3x3
   public static final int VT_COLOR_QUALITY_262144 = 11; // 262144 rgb-666
   public static final int VT_COLOR_QUALITY_2097152 = 12; // 2097152 rgb-777
+  //public static final int VT_COLOR_QUALITY_134217728 = 13; // 2097152 rgb-999
+  //public static final int VT_COLOR_QUALITY_1073741824 = 14; // 2097152 rgb-AAA
   
   private static final int RGB888_RED_MASK = 0x00FF0000;
   private static final int RGB888_GREEN_MASK = 0x0000FF00;
@@ -160,6 +162,10 @@ public final class VTAWTScreenCaptureProvider
         return 2097152;
       case VT_COLOR_QUALITY_16777216:
         return 16777216;
+      //case VT_COLOR_QUALITY_134217728:
+        //return 134217728;
+      //case VT_COLOR_QUALITY_1073741824:
+        //return 1073741824;
       default:
         return -1;
     }
