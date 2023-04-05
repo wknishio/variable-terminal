@@ -33,14 +33,6 @@ public final class VTStreamRedirector implements Runnable
   
   public final void run()
   {
-//    try
-//    {
-//      Thread.sleep(1);
-//    }
-//    catch (InterruptedException e1)
-//    {
-//      
-//    }
     while (!stopped)
     {
       try
@@ -56,11 +48,6 @@ public final class VTStreamRedirector implements Runnable
           stopped = true;
           break;
         }
-        // }
-        // else
-        // {
-        // Thread.yield();
-        // }
       }
       catch (Throwable e)
       {

@@ -202,9 +202,9 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     // pred1 = (top1 + left1) >> 1;
     
     int nA, nB, nC;
-    nA = newPixelData[position - 1];
-    nB = newPixelData[position - width];
     nC = newPixelData[position - 1 - width];
+    nB = newPixelData[position - width];
+    nA = newPixelData[position - 1];
     int pred = (nA + nB + nC + (nA >> 1) + (nB >> 1)) >> 2;
     
     out.writeShort(newPixelData[position] ^ pred);
