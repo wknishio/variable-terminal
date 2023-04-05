@@ -86,7 +86,7 @@ public final class VTImageIO
   
   private static final DirectColorModel byte6bitRGBColorModel = new DirectColorModel(6, DCM_222_RED_MASK, DCM_222_GRN_MASK, DCM_222_BLU_MASK);
   
-  private static final DirectColorModel int32bitRGBColorModel = new DirectColorModel(32, DCM_888_RED_MASK, DCM_888_GREEN_MASK, DCM_888_BLUE_MASK, DCM_888_ALPHA_MASK);
+  private static final DirectColorModel int32bitARGBColorModel = new DirectColorModel(32, DCM_888_RED_MASK, DCM_888_GREEN_MASK, DCM_888_BLUE_MASK, DCM_888_ALPHA_MASK);
   
   private static final DirectColorModel int27bitRGBColorModel = new DirectColorModel(27, DCM_999_RED_MASK, DCM_999_GREEN_MASK, DCM_999_BLUE_MASK);
   
@@ -634,11 +634,11 @@ public final class VTImageIO
       {
         if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferInt && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
         {
-          createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, stride, int32bitRGBColorModel.getMasks(), new Point(x, y));
+          createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, stride, int32bitARGBColorModel.getMasks(), new Point(x, y));
         }
         else
         {
-          createdRaster = Raster.createPackedRaster(new DataBufferInt(nextSize), width, height, stride, int32bitRGBColorModel.getMasks(), new Point(x, y));
+          createdRaster = Raster.createPackedRaster(new DataBufferInt(nextSize), width, height, stride, int32bitARGBColorModel.getMasks(), new Point(x, y));
         }
         break;
       }
@@ -739,7 +739,7 @@ public final class VTImageIO
       }
       case BufferedImage.TYPE_INT_ARGB:
       {
-        image = new BufferedImage(int32bitRGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        image = new BufferedImage(int32bitARGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
         break;
       }
     }
@@ -1169,7 +1169,7 @@ public final class VTImageIO
   
   private static final void encodePixel30(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
   {
-    long left1, top1, diag1, pred1;
+    int left1, top1, diag1, pred1;
     
     diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
     top1 = position >= width ? pixelData[position - width] : diag1;
@@ -1182,7 +1182,7 @@ public final class VTImageIO
   
   private static final void decodePixel30(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
   {
-    long left1, top1, diag1, pred1;
+    int left1, top1, diag1, pred1;
     
     diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
     top1 = position >= width ? pixelData[position - width] : diag1;
