@@ -1169,7 +1169,7 @@ public final class VTImageIO
   
   private static final void encodePixel30(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
   {
-    int left1, top1, diag1, pred1;
+    long left1, top1, diag1, pred1;
     
     diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
     top1 = position >= width ? pixelData[position - width] : diag1;
@@ -1182,7 +1182,7 @@ public final class VTImageIO
   
   private static final void decodePixel30(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
   {
-    int left1, top1, diag1, pred1;
+    long left1, top1, diag1, pred1;
     
     diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
     top1 = position >= width ? pixelData[position - width] : diag1;
