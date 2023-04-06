@@ -227,20 +227,20 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Toggle Console Echo", "*VTECHO\n"));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Show Remote System Time", "*VTTIME\n"));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Pause Local Console", "*VTPAUSE "));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem("Execute Commands From Files", "*VTREAD "));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Commands To File", "*VTLOG "));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Console To File", "*VTOUT "));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Detect Chained Instances", "*VTCHAIN\n"));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Execute Client Command Lines", "*VTREAD "));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Client Command Lines", "*VTLOG "));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Client Console Output", "*VTOUT "));
     // consoleMenu.add(new VTGraphicalConsoleMenuItem("Toggle Remote Console
     // Echo",
     // "*VTECHO\n"));
     shellMenu = new Menu("Shell ");
     shellMenu.add(new VTGraphicalConsoleMenuItem("Open Remote Shell", "*VTSHELL O\n"));
     shellMenu.add(new VTGraphicalConsoleMenuItem("Close Remote Shell", "*VTSHELL C\n"));
+    shellMenu.add(new VTGraphicalConsoleMenuItem("Set Remote Shell Command", "*VTSHELL D "));
     shellMenu.add(new VTGraphicalConsoleMenuItem("Set Remote Shell Encoding", "*VTSHELL E "));
     shellMenu.add(new VTGraphicalConsoleMenuItem("Set Remote Shell Directory", "*VTSHELL P "));
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Define Remote Shell Command", "*VTSHELL D "));
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Use BeanShell As Remote Shell", "*VTSHELL B\n"));
+    shellMenu.add(new VTGraphicalConsoleMenuItem("Use BeanShell Remote Shell", "*VTSHELL B\n"));
     // shellMenu.add(new VTGraphicalConsoleMenuItem("Use Groovysh As Remote
     // Shell", "*VTSHELL G\n"));
     shellMenu.add(new VTGraphicalConsoleMenuItem("Disable Remote Shell", "*VTSHELL N\n"));
