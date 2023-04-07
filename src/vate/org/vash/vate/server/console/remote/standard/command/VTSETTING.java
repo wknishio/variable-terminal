@@ -20,7 +20,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
     {
       message.setLength(0);
       String sessionShell = session.getServer().getServerConnector().getSessionShell();
-      int sessionsMaximum = session.getServer().getServerConnector().getSessionsMaximum();
+      Integer sessionsMaximum = session.getServer().getServerConnector().getSessionsMaximum();
       String hostAddress = session.getServer().getServerConnector().getAddress();
       Integer port = session.getServer().getServerConnector().getPort();
       String proxyType = session.getServer().getServerConnector().getProxyType();
@@ -124,7 +124,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       }
       message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
       message.append("\nVT>Session shell(SS): [" + sessionShell + "]");
-      message.append("\nVT>Session maximum(SM): [" + sessionsMaximum + "]");
+      message.append("\nVT>Session maximum(SM): [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]");
       message.append("\nVT>\nVT>End of connection settings list on server\nVT>");
       connection.getResultWriter().write(message.toString());
       connection.getResultWriter().flush();
@@ -220,16 +220,16 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       {
         if (parsed.length == 2)
         {
-          int sessionsMaximum = session.getServer().getServerConnector().getSessionsMaximum();
-          connection.getResultWriter().write("\nVT>Session maximum(SM): [" + sessionsMaximum + "]\nVT>");
+          Integer sessionsMaximum = session.getServer().getServerConnector().getSessionsMaximum();
+          connection.getResultWriter().write("\nVT>Session maximum(SM): [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else if (parsed.length >= 3)
         {
-          int sessionsMaximum = Integer.parseInt(parsed[2]);
+          Integer sessionsMaximum = Integer.parseInt(parsed[2]);
           if (sessionsMaximum < 0)
           {
-            sessionsMaximum = 0;
+            sessionsMaximum = null;
           }
           VTServerConnector connector = session.getServer().getServerConnector();
           synchronized (connector)
@@ -238,7 +238,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          connection.getResultWriter().write("\nVT>Session maximum(SM) set to: [" + sessionsMaximum + "]\nVT>");
+          connection.getResultWriter().write("\nVT>Session maximum(SM) set to: [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]\nVT>");
           connection.getResultWriter().flush();
         }
         else

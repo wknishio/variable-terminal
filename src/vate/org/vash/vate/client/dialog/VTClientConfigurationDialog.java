@@ -1,5 +1,6 @@
 package org.vash.vate.client.dialog;
 
+import java.awt.AWTKeyStroke;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Choice;
@@ -9,6 +10,7 @@ import java.awt.FileDialog;
 import java.awt.Frame;
 import java.awt.GraphicsConfiguration;
 import java.awt.GridLayout;
+import java.awt.KeyboardFocusManager;
 import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
@@ -26,6 +28,8 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.vash.vate.VT;
 import org.vash.vate.client.VTClient;
@@ -92,6 +96,35 @@ public class VTClientConfigurationDialog extends Dialog
     final VTFileDialog saveFileDialog = new VTFileDialog(this, "Variable-Terminal " + VT.VT_VERSION + " - Client - Save File", FileDialog.SAVE);
     VTGlobalTextStyleManager.registerWindow(loadFileDialog);
     VTGlobalTextStyleManager.registerWindow(saveFileDialog);
+    
+    Set<AWTKeyStroke> forwardTraversalKeysGeneral = new HashSet<AWTKeyStroke>();
+    Set<AWTKeyStroke> backwardTraversalKeysGeneral = new HashSet<AWTKeyStroke>();
+    Set<AWTKeyStroke> forwardTraversalKeysButton = new HashSet<AWTKeyStroke>();
+    Set<AWTKeyStroke> backwardTraversalKeysButton = new HashSet<AWTKeyStroke>();
+    
+    forwardTraversalKeysGeneral.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_DOWN, 0));
+    forwardTraversalKeysGeneral.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_KP_DOWN, 0));
+    forwardTraversalKeysGeneral.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_PAGE_DOWN, 0));
+    forwardTraversalKeysGeneral.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_TAB, 0));
+    forwardTraversalKeysGeneral.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_TAB, KeyEvent.CTRL_DOWN_MASK));
+    
+    backwardTraversalKeysGeneral.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_UP, 0));
+    backwardTraversalKeysGeneral.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_KP_UP, 0));
+    backwardTraversalKeysGeneral.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_PAGE_UP, 0));
+    backwardTraversalKeysGeneral.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_TAB, KeyEvent.SHIFT_DOWN_MASK));
+    backwardTraversalKeysGeneral.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_TAB, KeyEvent.CTRL_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK));
+    
+    forwardTraversalKeysButton.addAll(forwardTraversalKeysGeneral);
+    backwardTraversalKeysButton.addAll(backwardTraversalKeysGeneral);
+    
+    forwardTraversalKeysButton.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_RIGHT, 0));
+    forwardTraversalKeysButton.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_KP_RIGHT, 0));
+    
+    backwardTraversalKeysButton.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_LEFT, 0));
+    backwardTraversalKeysButton.add(AWTKeyStroke.getAWTKeyStroke(KeyEvent.VK_KP_LEFT, 0));
+    
+    setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardTraversalKeysGeneral);
+    setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardTraversalKeysGeneral);
     
     try
     {
@@ -713,6 +746,18 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
+    
+    loadButton.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardTraversalKeysButton);
+    loadButton.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardTraversalKeysButton);
+    
+    saveButton.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardTraversalKeysButton);
+    saveButton.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardTraversalKeysButton);
+    
+    okButton.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardTraversalKeysButton);
+    okButton.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardTraversalKeysButton);
+    
+    closeButton.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardTraversalKeysButton);
+    closeButton.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardTraversalKeysButton);
     
     Panel centerPanel = new Panel();
     GridLayout centerLayout = new GridLayout(18, 1);

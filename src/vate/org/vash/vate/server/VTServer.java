@@ -50,7 +50,7 @@ public class VTServer implements Runnable
   private byte[] encryptionKey = new byte[] {};
   private boolean daemon = false;
   private String sessionUsers = "";
-  private int sessionsMaximum = 0;
+  private Integer sessionsMaximum;
   private String sessionShell = "";
   private final String vtURL = System.getenv("VT_PATH");
   // private MessageDigest sha256Digester;
@@ -246,7 +246,7 @@ public class VTServer implements Runnable
     VTConsole.setDaemon(daemon);
   }
   
-  public void setSessionsMaximum(int sessionsMaximum)
+  public void setSessionsMaximum(Integer sessionsMaximum)
   {
     this.sessionsMaximum = sessionsMaximum;
   }
@@ -363,7 +363,7 @@ public class VTServer implements Runnable
     return daemon;
   }
   
-  public int getSessionsMaximum()
+  public Integer getSessionsMaximum()
   {
     return sessionsMaximum;
   }
@@ -523,7 +523,7 @@ public class VTServer implements Runnable
     fileServerSettings.setProperty("vate.server.encryption.type", encryptionType);
     fileServerSettings.setProperty("vate.server.encryption.password", new String(encryptionKey, "UTF-8"));
     fileServerSettings.setProperty("vate.server.session.shell", sessionShell);
-    fileServerSettings.setProperty("vate.server.session.maximum", String.valueOf(sessionsMaximum));
+    fileServerSettings.setProperty("vate.server.session.maximum", String.valueOf(sessionsMaximum == null ? "" : sessionsMaximum));
     fileServerSettings.setProperty("vate.server.session.users", sessionUsers);
     
     FileOutputStream out = new FileOutputStream(settingsFile);
@@ -752,13 +752,16 @@ public class VTServer implements Runnable
         int fileSessionsMaximum = Integer.parseInt(fileServerSettings.getProperty("vate.server.session.maximum"));
         if (fileSessionsMaximum < 0)
         {
-          fileSessionsMaximum = 0;
+          sessionsMaximum = null;
         }
-        sessionsMaximum = fileSessionsMaximum;
+        else
+        {
+          sessionsMaximum = fileSessionsMaximum;
+        }
       }
       catch (Throwable e)
       {
-        
+        sessionsMaximum = null;
       }
     }
     
@@ -1002,13 +1005,16 @@ public class VTServer implements Runnable
           int fileSessionsMaximum = Integer.parseInt(fileServerSettings.getProperty("vate.server.session.maximum"));
           if (fileSessionsMaximum < 0)
           {
-            fileSessionsMaximum = 0;
+            sessionsMaximum = null;
           }
-          sessionsMaximum = fileSessionsMaximum;
+          else
+          {
+            sessionsMaximum = fileSessionsMaximum;
+          }
         }
         catch (Throwable e)
         {
-          
+          sessionsMaximum = null;
         }
       }
       
@@ -1234,13 +1240,16 @@ public class VTServer implements Runnable
         int fileSessionsMaximum = Integer.parseInt(properties.getProperty("vate.server.session.maximum"));
         if (fileSessionsMaximum < 0)
         {
-          fileSessionsMaximum = 0;
+          sessionsMaximum = null;
         }
-        sessionsMaximum = fileSessionsMaximum;
+        else
+        {
+          sessionsMaximum = fileSessionsMaximum;
+        }
       }
       catch (Throwable e)
       {
-        
+        sessionsMaximum = null;
       }
     }
     
@@ -1272,7 +1281,7 @@ public class VTServer implements Runnable
   
   private void configure()
   {
-    while ((passive && hostPort == null) || (!passive && (hostAddress == null || hostPort == null)) || sessionsMaximum < 0)
+    while ((passive && hostPort == null) || (!passive && (hostAddress == null || hostPort == null)) || sessionsMaximum == null || sessionsMaximum < 0)
     {
       if (skipConfiguration)
       {
@@ -1314,7 +1323,7 @@ public class VTServer implements Runnable
       
       if (connectionDialog != null)
       {
-        if ((passive && hostPort == null) || (!passive && (hostAddress == null || hostPort == null)) || sessionsMaximum < 0)
+        if ((passive && hostPort == null) || (!passive && (hostAddress == null || hostPort == null)) || sessionsMaximum == null || sessionsMaximum < 0)
         {
           connectionDialog.open();
           if (skipConfiguration)
@@ -1683,7 +1692,7 @@ public class VTServer implements Runnable
         else
         {
           passive = true;
-          sessionsMaximum = 0;
+          sessionsMaximum = null;
           // hostAddress = "";
           VTConsole.print("VT>Enter host address(default:any):");
           line = VTConsole.readLine(true);
@@ -1718,7 +1727,7 @@ public class VTServer implements Runnable
           {
             VTConsole.print("VT>Invalid port!\n");
             hostPort = null;
-            sessionsMaximum = 0;
+            sessionsMaximum = null;
           }
           else
           {
@@ -1879,27 +1888,27 @@ public class VTServer implements Runnable
                 sessionsMaximum = Integer.parseInt(line);
                 if (sessionsMaximum < 0)
                 {
-                  sessionsMaximum = 0;
+                  sessionsMaximum = null;
                 }
               }
               else
               {
-                sessionsMaximum = 0;
+                sessionsMaximum = null;
               }
             }
             catch (NumberFormatException e)
             {
-              sessionsMaximum = 0;
+              sessionsMaximum = null;
             }
             catch (Throwable e)
             {
-              sessionsMaximum = 0;
+              sessionsMaximum = null;
             }
           }
-          if (sessionsMaximum < 0)
-          {
-            VTConsole.print("VT>Invalid session maximum!\n");
-          }
+//          if (sessionsMaximum == null || sessionsMaximum < 0)
+//          {
+//            VTConsole.print("VT>Invalid session maximum!\n");
+//          }
         }
       }
       catch (NumberFormatException e)
@@ -1913,7 +1922,7 @@ public class VTServer implements Runnable
       {
         
       }
-      if (hostAddress == null || hostPort == null || sessionsMaximum < 0)
+      if (hostAddress == null || hostPort == null || sessionsMaximum == null || sessionsMaximum < 0)
       {
         VTConsole.print("VT>Try configuring again?(Y/N, default:N):");
         try

@@ -34,7 +34,7 @@ public class VTServerConnector implements Runnable
   private String proxyPassword;
   private String encryptionType;
   private byte[] encryptionKey;
-  private int sessionsMaximum;
+  private Integer sessionsMaximum;
   private String sessionShell = "";
   private ServerSocket connectionServerSocket;
   private VTServer server;
@@ -240,12 +240,12 @@ public class VTServerConnector implements Runnable
     this.encryptionKey = encryptionKey;
   }
   
-  public int getSessionsMaximum()
+  public Integer getSessionsMaximum()
   {
     return sessionsMaximum;
   }
   
-  public void setSessionsMaximum(int sessionsMaximum)
+  public void setSessionsMaximum(Integer sessionsMaximum)
   {
     this.sessionsMaximum = sessionsMaximum;
   }
@@ -609,7 +609,7 @@ public class VTServerConnector implements Runnable
       // "\nVT>");
       synchronized (this)
       {
-        while (running && sessionsMaximum > 0 && connectionHandlers.size() >= sessionsMaximum)
+        while (running && sessionsMaximum != null && sessionsMaximum > 0 && connectionHandlers.size() >= sessionsMaximum)
         {
           try
           {
@@ -621,7 +621,7 @@ public class VTServerConnector implements Runnable
           }
         }
       }
-      if (sessionsMaximum <= 0 || connectionHandlers.size() < sessionsMaximum)
+      if (sessionsMaximum == null || sessionsMaximum <= 0 || connectionHandlers.size() < sessionsMaximum)
       {
         VTServerConnection connection = new VTServerConnection(secureRandom);
         if (passive)

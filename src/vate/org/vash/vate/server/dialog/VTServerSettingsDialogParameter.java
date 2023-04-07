@@ -62,7 +62,7 @@ public class VTServerSettingsDialogParameter extends Panel
   {
     if (value == null)
     {
-      return;
+      value = "";
     }
     if (value instanceof byte[])
     {
