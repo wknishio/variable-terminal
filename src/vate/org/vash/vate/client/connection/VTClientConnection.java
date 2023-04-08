@@ -169,8 +169,8 @@ public class VTClientConnection
     // {
     // e.printStackTrace();
     // }
-    this.cryptoEngine = new VTCryptographicEngine();
     this.secureRandom = secureRandom;
+    this.cryptoEngine = new VTCryptographicEngine();
     this.blake3Digest = new VTBlake3MessageDigest();
     this.authenticationReader = new VTLittleEndianInputStream(null);
     this.authenticationWriter = new VTLittleEndianOutputStream(null);
