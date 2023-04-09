@@ -467,7 +467,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     }
     else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
     {
-      IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(imageDataBuffer), jpgWriterParam));
+      IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(imageDataBuffer), jpgWriterParam));
       
       connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getWidth());
@@ -679,7 +679,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     }
     else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
     {
-      IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(imageDataBuffer), jpgWriterParam));
+      IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(imageDataBuffer), jpgWriterParam));
       
       connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
       connection.getGraphicsControlDataOutputStream().writeInt(blockAreas.size());
@@ -1484,7 +1484,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     }
   }
   
-  private IIOMetadata setJpegSubsamplingMode(IIOMetadata metadata)
+  private IIOMetadata setJpegSubsamplingMode444(IIOMetadata metadata)
   {
     // Tweaking the image metadata to override default subsampling(4:2:0) with
     // 4:4:4.
