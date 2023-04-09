@@ -29,6 +29,7 @@ import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.graphics.image.VTImageIO;
 import org.vash.vate.graphics.image.VTIndexedColorModel;
 
+@SuppressWarnings("unused")
 public final class VTAWTScreenCaptureProvider
 {
   public static final int VT_COLOR_QUALITY_64 = 0; // 64 rgb-222 or rgb-4x4x4
@@ -46,6 +47,14 @@ public final class VTAWTScreenCaptureProvider
   public static final int VT_COLOR_QUALITY_2097152 = 12; // 2097152 rgb-777
   //public static final int VT_COLOR_QUALITY_134217728 = 13; // 2097152 rgb-999
   //public static final int VT_COLOR_QUALITY_1073741824 = 14; // 2097152 rgb-AAA
+  
+//  private static final int RGBAAA_RED_MASK = 0x00FF0000;
+//  private static final int RGBAAA_GREEN_MASK = 0x0000FF00;
+//  private static final int RGBAAA_BLUE_MASK = 0x000000FF;
+//  
+//  private static final int RGB999_RED_MASK = 0x00FF0000;
+//  private static final int RGB999_GREEN_MASK = 0x0000FF00;
+//  private static final int RGB999_BLUE_MASK = 0x000000FF;
   
   private static final int RGB888_RED_MASK = 0x00FF0000;
   private static final int RGB888_GREEN_MASK = 0x0000FF00;

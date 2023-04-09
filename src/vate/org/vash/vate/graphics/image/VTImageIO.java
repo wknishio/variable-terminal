@@ -58,6 +58,10 @@ public final class VTImageIO
   private static final int DCM_222_GRN_MASK = 0x000C; // 0000000000001100
   private static final int DCM_222_BLU_MASK = 0x0003; // 0000000000000011
   
+  private static final int DCM_111_RED_MASK = 0x0004; // 0000000000000100
+  private static final int DCM_111_GRN_MASK = 0x0002; // 0000000000000010
+  private static final int DCM_111_BLU_MASK = 0x0001; // 0000000000000001
+  
   // public static final int TYPE_USHORT_444_RGB =
   // BufferedImage.TYPE_USHORT_555_RGB << 1;
   
@@ -83,6 +87,8 @@ public final class VTImageIO
   private static final DirectColorModel ushort12bitRGBColorModel = new DirectColorModel(12, DCM_444_RED_MASK, DCM_444_GRN_MASK, DCM_444_BLU_MASK);
   
   private static final DirectColorModel ushort9bitRGBColorModel = new DirectColorModel(9, DCM_333_RED_MASK, DCM_333_GRN_MASK, DCM_333_BLU_MASK);
+  
+  private static final DirectColorModel byte3bitRGBColorModel = new DirectColorModel(3, DCM_111_RED_MASK, DCM_111_GRN_MASK, DCM_111_BLU_MASK);
   
   private static final DirectColorModel byte6bitRGBColorModel = new DirectColorModel(6, DCM_222_RED_MASK, DCM_222_GRN_MASK, DCM_222_BLU_MASK);
   
@@ -145,6 +151,12 @@ public final class VTImageIO
           return image;
         }
         if (colors == 64)
+        {
+          BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+          clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
+          return image;
+        }
+        if (colors == 8)
         {
           BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
           clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
@@ -275,6 +287,16 @@ public final class VTImageIO
           return image;
         }
         if (colors == 64)
+        {
+          BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+          byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+          for (int position = x + (y * width); position < size; position++)
+          {
+            decodePixel8(littleEndianInputStream, data, position, width);
+          }
+          return image;
+        }
+        if (colors == 8)
         {
           BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
           byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
@@ -424,6 +446,14 @@ public final class VTImageIO
           }
         }
         if (colors == 64)
+        {
+          byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+          for (int position = x + (y * width); position < size; position++)
+          {
+            encodePixel8(littleEndianOutputStream, data, position, width);
+          }
+        }
+        if (colors == 8)
         {
           byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
           for (int position = x + (y * width); position < size; position++)
@@ -592,6 +622,17 @@ public final class VTImageIO
             createdRaster = Raster.createPackedRaster(new DataBufferByte(nextSize), width, height, stride, byte6bitRGBColorModel.getMasks(), new Point(x, y));
           }
         }
+        if (colors == 8)
+        {
+          if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
+          {
+            createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, stride, byte3bitRGBColorModel.getMasks(), new Point(x, y));
+          }
+          else
+          {
+            createdRaster = Raster.createPackedRaster(new DataBufferByte(nextSize), width, height, stride, byte3bitRGBColorModel.getMasks(), new Point(x, y));
+          }
+        }
         break;
       }
       case BufferedImage.TYPE_BYTE_INDEXED:
@@ -692,6 +733,10 @@ public final class VTImageIO
         if (colors == 64)
         {
           image = new BufferedImage(byte6bitRGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        }
+        if (colors == 8)
+        {
+          image = new BufferedImage(byte3bitRGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
         }
         break;
       }
