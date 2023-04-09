@@ -16,19 +16,19 @@ public class VTArgumentsRuntimeRelauncher
         {
           Thread.sleep(2000);
           Process process = Runtime.getRuntime().exec(args);
-          VTRuntimeProcessInputRedirector in = new VTRuntimeProcessInputRedirector(process.getInputStream(), System.out);
-          VTRuntimeProcessInputRedirector err = new VTRuntimeProcessInputRedirector(process.getErrorStream(), System.err);
-          VTRuntimeProcessInputRedirector out = new VTRuntimeProcessInputRedirector(stream, process.getOutputStream());
-          Thread tin = new Thread(in);
-          Thread terr = new Thread(err);
-          Thread tout = new Thread(out);
+          VTRuntimeProcessInputRedirector rin = new VTRuntimeProcessInputRedirector(process.getInputStream(), System.out);
+          VTRuntimeProcessInputRedirector rerr = new VTRuntimeProcessInputRedirector(process.getErrorStream(), System.err);
+          VTRuntimeProcessInputRedirector rout = new VTRuntimeProcessInputRedirector(stream, process.getOutputStream());
+          Thread tin = new Thread(rin);
+          Thread terr = new Thread(rerr);
+          Thread tout = new Thread(rout);
           tin.start();
           terr.start();
           tout.start();
           process.waitFor();
-          in.close();
-          err.close();
-          out.close();
+          rin.close();
+          rerr.close();
+          rout.close();
           tin.join();
           terr.join();
           tout.join();

@@ -7,19 +7,17 @@ import org.bouncycastle.crypto.params.Blake3Parameters;
 public class VTBlake3MessageDigest extends MessageDigest
 {
   // private static final Blake3Digest BLAKE3 = new Blake3Digest();
-  private Blake3Digest blake3;
+  private final Blake3Digest blake3 = new Blake3Digest(64);
   
   public VTBlake3MessageDigest()
   {
     super("BLAKE3");
-    this.blake3 = new Blake3Digest(64);
     //this.blake3.init(null);
   }
   
   public VTBlake3MessageDigest(byte[] seed)
   {
     super("BLAKE3");
-    this.blake3 = new Blake3Digest(64);
     setSeed(seed);
   }
   

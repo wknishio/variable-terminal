@@ -9,13 +9,11 @@ import org.bouncycastle.crypto.params.Blake3Parameters;
 public class VTBlake3DigestRandom extends java.security.SecureRandom
 {
   private static final long serialVersionUID = 1L;
-  private Blake3Digest blake3;
-  private RandomGenerator generator;
+  private final Blake3Digest blake3 = new Blake3Digest(64);
+  private final RandomGenerator generator = new DigestRandomGenerator(blake3);
   
   public VTBlake3DigestRandom()
   {
-    blake3 = new Blake3Digest(64);
-    generator = new DigestRandomGenerator(blake3);
     byte[] secureSeed = new byte[64];
     new SecureRandom().nextBytes(secureSeed);
     setSeed(secureSeed);
@@ -23,8 +21,6 @@ public class VTBlake3DigestRandom extends java.security.SecureRandom
   
   public VTBlake3DigestRandom(byte[] inSeed)
   {
-    blake3 = new Blake3Digest(64);
-    generator = new DigestRandomGenerator(blake3);
     setSeed(inSeed);
   }
   
@@ -63,26 +59,16 @@ public class VTBlake3DigestRandom extends java.security.SecureRandom
   
   public int nextInt()
   {
-    byte[] intBytes = new byte[4];
-    nextBytes(intBytes);
-    int result = 0;
-    for (int i = 0; i < 4; i++)
-    {
-      result = (result << 8) + (intBytes[i] & 0xff);
-    }
-    return result;
+    byte[] intBuffer = new byte[4];
+    nextBytes(intBuffer);
+    return ((intBuffer[0] & 0xFF) | (intBuffer[1] & 0xFF) << 8 | (intBuffer[2] & 0xFF) << 16 | (intBuffer[3] & 0xFF) << 24);
   }
   
   public long nextLong()
   {
-    byte[] intBytes = new byte[8];
-    nextBytes(intBytes);
-    long result = 0;
-    for (int i = 0; i < 4; i++)
-    {
-      result = (result << 8) + (intBytes[i] & 0xff);
-    }
-    return result;
+    byte[] longBuffer = new byte[8];
+    nextBytes(longBuffer);
+    return ((longBuffer[0] & 0xFFL) | ((longBuffer[1] & 0xFFL) << 8) | ((longBuffer[2] & 0xFFL) << 16) | ((longBuffer[3] & 0xFFL) << 24) | ((longBuffer[4] & 0xFFL) << 32) | ((longBuffer[5] & 0xFFL) << 40) | ((longBuffer[6] & 0xFFL) << 48) | ((longBuffer[7] & 0xFFL) << 56));
   }
   
   public float nextFloat()

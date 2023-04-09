@@ -103,15 +103,15 @@ public class VTFileRuntimeRelauncher
       {
         Thread.sleep(2000);
         Process process = Runtime.getRuntime().exec(command);
-        VTRuntimeLauncherOutputConsumer in = new VTRuntimeLauncherOutputConsumer(process.getInputStream());
-        VTRuntimeLauncherOutputConsumer err = new VTRuntimeLauncherOutputConsumer(process.getErrorStream());
-        Thread tin = new Thread(in);
-        Thread terr = new Thread(err);
+        VTRuntimeLauncherOutputConsumer cin = new VTRuntimeLauncherOutputConsumer(process.getInputStream());
+        VTRuntimeLauncherOutputConsumer cerr = new VTRuntimeLauncherOutputConsumer(process.getErrorStream());
+        Thread tin = new Thread(cin);
+        Thread terr = new Thread(cerr);
         tin.start();
         terr.start();
         process.waitFor();
-        in.close();
-        err.close();
+        cin.close();
+        cerr.close();
         tin.join();
         terr.join();
       }
