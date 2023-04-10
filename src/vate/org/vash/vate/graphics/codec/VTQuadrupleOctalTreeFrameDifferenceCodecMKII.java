@@ -12,7 +12,6 @@ import org.vash.vate.stream.array.VTByteArrayInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 
-@SuppressWarnings("unused")
 public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
 {
   // iterators

@@ -27,9 +27,7 @@ import org.vash.vate.VT;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.graphics.image.VTImageIO;
-import org.vash.vate.graphics.image.VTIndexedColorModel;
 
-@SuppressWarnings("unused")
 public final class VTAWTScreenCaptureProvider
 {
   public static final int VT_COLOR_QUALITY_64 = 0; // 64 rgb-222 or rgb-4x4x4
@@ -1258,129 +1256,129 @@ public final class VTAWTScreenCaptureProvider
     }
   }
   
-  private final void refresh16ScreenCapture()
-  {
-    currentDeviceBounds = VTGraphicalDeviceResolver.getDeviceBounds(graphicsDevice);
-    if (currentDeviceBounds == null)
-    {
-      return;
-    }
-    screenCurrentWidth = currentDeviceBounds.width;
-    screenCurrentHeight = currentDeviceBounds.height;
-    screenCurrentX = currentDeviceBounds.x;
-    screenCurrentY = currentDeviceBounds.y;
-    if (screenCurrentImage != null)
-    {
-      screenCurrentImage.flush();
-      screenCurrentImage = null;
-    }
-    int x = 0;
-    int y = 0;
-    if (padding > 0)
-    {
-      x = padding;
-      y = padding;
-    }
-    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 16, recyclableScreenDataBuffer);
-    recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
-    refreshScaled16ScreenCapture();
-  }
+//  private final void refresh16ScreenCapture()
+//  {
+//    currentDeviceBounds = VTGraphicalDeviceResolver.getDeviceBounds(graphicsDevice);
+//    if (currentDeviceBounds == null)
+//    {
+//      return;
+//    }
+//    screenCurrentWidth = currentDeviceBounds.width;
+//    screenCurrentHeight = currentDeviceBounds.height;
+//    screenCurrentX = currentDeviceBounds.x;
+//    screenCurrentY = currentDeviceBounds.y;
+//    if (screenCurrentImage != null)
+//    {
+//      screenCurrentImage.flush();
+//      screenCurrentImage = null;
+//    }
+//    int x = 0;
+//    int y = 0;
+//    if (padding > 0)
+//    {
+//      x = padding;
+//      y = padding;
+//    }
+//    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 16, recyclableScreenDataBuffer);
+//    recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
+//    refreshScaled16ScreenCapture();
+//  }
   
-  private final void refreshScaled16ScreenCapture()
-  {
-    scaledCurrentWidth = scaledWidth;
-    scaledCurrentHeight = scaledHeight;
-    if (scaledWidth > 0 && scaledHeight > 0)
-    {
-      if (scaledCurrentImage != null)
-      {
-        scaledCurrentImage.flush();
-        scaledCurrentImage = null;
-      }
-      if (scaledCurrentGraphics != null)
-      {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
-      }
-      int x = 0;
-      int y = 0;
-      if (padding > 0)
-      {
-        x = padding;
-        y = padding;
-      }
-      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 16, recyclableScaledDataBuffer);
-      recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
-    }
-    else
-    {
-      
-    }
-  }
+//  private final void refreshScaled16ScreenCapture()
+//  {
+//    scaledCurrentWidth = scaledWidth;
+//    scaledCurrentHeight = scaledHeight;
+//    if (scaledWidth > 0 && scaledHeight > 0)
+//    {
+//      if (scaledCurrentImage != null)
+//      {
+//        scaledCurrentImage.flush();
+//        scaledCurrentImage = null;
+//      }
+//      if (scaledCurrentGraphics != null)
+//      {
+//        scaledCurrentGraphics.dispose();
+//        scaledCurrentGraphics = null;
+//      }
+//      int x = 0;
+//      int y = 0;
+//      if (padding > 0)
+//      {
+//        x = padding;
+//        y = padding;
+//      }
+//      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 16, recyclableScaledDataBuffer);
+//      recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
+//      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
+//      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+//    }
+//    else
+//    {
+//      
+//    }
+//  }
   
-  private final void refresh32ScreenCapture()
-  {
-    currentDeviceBounds = VTGraphicalDeviceResolver.getDeviceBounds(graphicsDevice);
-    if (currentDeviceBounds == null)
-    {
-      return;
-    }
-    screenCurrentWidth = currentDeviceBounds.width;
-    screenCurrentHeight = currentDeviceBounds.height;
-    screenCurrentX = currentDeviceBounds.x;
-    screenCurrentY = currentDeviceBounds.y;
-    if (screenCurrentImage != null)
-    {
-      screenCurrentImage.flush();
-      screenCurrentImage = null;
-    }
-    int x = 0;
-    int y = 0;
-    if (padding > 0)
-    {
-      x = padding;
-      y = padding;
-    }
-    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 32, recyclableScreenDataBuffer);
-    recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
-    refreshScaled32ScreenCapture();
-  }
+//  private final void refresh32ScreenCapture()
+//  {
+//    currentDeviceBounds = VTGraphicalDeviceResolver.getDeviceBounds(graphicsDevice);
+//    if (currentDeviceBounds == null)
+//    {
+//      return;
+//    }
+//    screenCurrentWidth = currentDeviceBounds.width;
+//    screenCurrentHeight = currentDeviceBounds.height;
+//    screenCurrentX = currentDeviceBounds.x;
+//    screenCurrentY = currentDeviceBounds.y;
+//    if (screenCurrentImage != null)
+//    {
+//      screenCurrentImage.flush();
+//      screenCurrentImage = null;
+//    }
+//    int x = 0;
+//    int y = 0;
+//    if (padding > 0)
+//    {
+//      x = padding;
+//      y = padding;
+//    }
+//    screenCurrentImage = scaledCurrentImage = VTImageIO.createImage(x, y, screenCurrentWidth, screenCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 32, recyclableScreenDataBuffer);
+//    recyclableScreenDataBuffer = screenCurrentImage.getRaster().getDataBuffer();
+//    refreshScaled32ScreenCapture();
+//  }
   
-  private final void refreshScaled32ScreenCapture()
-  {
-    scaledCurrentWidth = scaledWidth;
-    scaledCurrentHeight = scaledHeight;
-    if (scaledWidth > 0 && scaledHeight > 0)
-    {
-      if (scaledCurrentImage != null)
-      {
-        scaledCurrentImage.flush();
-        scaledCurrentImage = null;
-      }
-      if (scaledCurrentGraphics != null)
-      {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
-      }
-      int x = 0;
-      int y = 0;
-      if (padding > 0)
-      {
-        x = padding;
-        y = padding;
-      }
-      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 32, recyclableScaledDataBuffer);
-      recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
-    }
-    else
-    {
-      
-    }
-  }
+//  private final void refreshScaled32ScreenCapture()
+//  {
+//    scaledCurrentWidth = scaledWidth;
+//    scaledCurrentHeight = scaledHeight;
+//    if (scaledWidth > 0 && scaledHeight > 0)
+//    {
+//      if (scaledCurrentImage != null)
+//      {
+//        scaledCurrentImage.flush();
+//        scaledCurrentImage = null;
+//      }
+//      if (scaledCurrentGraphics != null)
+//      {
+//        scaledCurrentGraphics.dispose();
+//        scaledCurrentGraphics = null;
+//      }
+//      int x = 0;
+//      int y = 0;
+//      if (padding > 0)
+//      {
+//        x = padding;
+//        y = padding;
+//      }
+//      scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 32, recyclableScaledDataBuffer);
+//      recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
+//      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
+//      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+//    }
+//    else
+//    {
+//      
+//    }
+//  }
   
   private final void refresh8ScreenCapture()
   {
