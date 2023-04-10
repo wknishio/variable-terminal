@@ -899,68 +899,56 @@ public class VTGraphicsModeClientWriter implements Runnable
       if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16777216);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
       else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32768)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_32768);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
       else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_216);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
-      else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16)
-      {
-        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16);
-        // connection.getGraphicsControlDataOutputStream().flush();
-      }
-      else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32)
-      {
-        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_32);
-        // connection.getGraphicsControlDataOutputStream().flush();
-      }
+//      else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16)
+//      {
+//        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16);
+//      }
+//      else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32)
+//      {
+//        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_32);
+//      }
       else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_512);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
       else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4096)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_4096);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
       else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_8);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
       else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_125);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
       else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_27)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_27);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
       else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_262144)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_262144);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
       else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_2097152)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_2097152);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
       else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_64)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_64);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
+      connection.getGraphicsControlDataOutputStream().flush();
     }
     catch (IOException e)
     {

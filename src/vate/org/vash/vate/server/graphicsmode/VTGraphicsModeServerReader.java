@@ -206,11 +206,11 @@ public class VTGraphicsModeServerReader implements Runnable
             writer.requestClear();
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16:
-          {
-            writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16);
-            break;
-          }
+//          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16:
+//          {
+//            writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16);
+//            break;
+//          }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_216:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216);
@@ -246,11 +246,11 @@ public class VTGraphicsModeServerReader implements Runnable
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4096);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_32:
-          {
-            writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32);
-            break;
-          }
+//          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_32:
+//          {
+//            writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32);
+//            break;
+//          }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_125:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125);

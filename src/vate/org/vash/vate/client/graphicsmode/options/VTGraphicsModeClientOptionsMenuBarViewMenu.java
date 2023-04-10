@@ -363,30 +363,30 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       lowColorOption.setState(false);
       worstColorOption.setState(false);
     }
-    else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16)
-    {
-      trueColorOption.setState(false);
-      highColorOption.setState(false);
-      extraColorOption.setState(false);
-      increasedColorOption.setState(false);
-      mediumColorOption.setState(false);
-      decreasedColorOption.setState(false);
-      simpleColorOption.setState(false);
-      lowColorOption.setState(false);
-      worstColorOption.setState(true);
-    }
-    else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32)
-    {
-      trueColorOption.setState(false);
-      highColorOption.setState(false);
-      extraColorOption.setState(false);
-      increasedColorOption.setState(false);
-      mediumColorOption.setState(false);
-      decreasedColorOption.setState(false);
-      simpleColorOption.setState(true);
-      lowColorOption.setState(false);
-      worstColorOption.setState(false);
-    }
+//    else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16)
+//    {
+//      trueColorOption.setState(false);
+//      highColorOption.setState(false);
+//      extraColorOption.setState(false);
+//      increasedColorOption.setState(false);
+//      mediumColorOption.setState(false);
+//      decreasedColorOption.setState(false);
+//      simpleColorOption.setState(false);
+//      lowColorOption.setState(false);
+//      worstColorOption.setState(true);
+//    }
+//    else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32)
+//    {
+//      trueColorOption.setState(false);
+//      highColorOption.setState(false);
+//      extraColorOption.setState(false);
+//      increasedColorOption.setState(false);
+//      mediumColorOption.setState(false);
+//      decreasedColorOption.setState(false);
+//      simpleColorOption.setState(true);
+//      lowColorOption.setState(false);
+//      worstColorOption.setState(false);
+//    }
     else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512)
     {
       trueColorOption.setState(false);

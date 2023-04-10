@@ -68,8 +68,8 @@ public final class VTImageIO
   private static final IndexColorModel byteIndexed216ColorModel = VTIndexedColorModel.create216ColorModel();
   private static final IndexColorModel byteIndexed125ColorModel = VTIndexedColorModel.create125ColorModel();
   private static final IndexColorModel byteIndexed64ColorModel = VTIndexedColorModel.create64ColorModel();
-  private static final IndexColorModel byteIndexed32ColorModel = VTIndexedColorModel.create32ColorModel();
-  private static final IndexColorModel byteIndexed16ColorModel = VTIndexedColorModel.create16ColorModel();
+  //private static final IndexColorModel byteIndexed32ColorModel = VTIndexedColorModel.create32ColorModel();
+  //private static final IndexColorModel byteIndexed16ColorModel = VTIndexedColorModel.create16ColorModel();
   private static final IndexColorModel byteIndexed8ColorModel = VTIndexedColorModel.create8ColorModel();
   private static final IndexColorModel byteIndexed27ColorModel = VTIndexedColorModel.create27ColorModel();
   
@@ -754,18 +754,18 @@ public final class VTImageIO
         {
           image = new BufferedImage(byteIndexed27ColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
         }
-        else if (colors == 16)
-        {
-          image = new BufferedImage(byteIndexed16ColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
-        }
+//        else if (colors == 16)
+//        {
+//          image = new BufferedImage(byteIndexed16ColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+//        }
         else if (colors == 8)
         {
           image = new BufferedImage(byteIndexed8ColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
         }
-        else if (colors == 32)
-        {
-          image = new BufferedImage(byteIndexed32ColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
-        }
+//        else if (colors == 32)
+//        {
+//          image = new BufferedImage(byteIndexed32ColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+//        }
         else
         {
           image = new BufferedImage(byteIndexed64ColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
