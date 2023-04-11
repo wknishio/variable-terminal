@@ -44,7 +44,7 @@ public final class VTGraphicalStart
           }
           catch (Throwable e)
           {
-            // e.printStackTrace();
+            //e.printStackTrace();
           }
         }
         else if (dialog.getMode() == 2)
@@ -60,7 +60,7 @@ public final class VTGraphicalStart
           }
           catch (Throwable e)
           {
-            // e.printStackTrace();
+            //e.printStackTrace();
           }
         }
       }

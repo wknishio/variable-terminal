@@ -59,7 +59,7 @@ public class VTCryptographicEngine
         blake3Digest.update(data);
       }
     }
-    byte[] first = blake3Digest.digest(64);
+    byte[] first = blake3Digest.digest(512);
     blake3Digest.reset();
     blake3Digest.update(first);
     for (byte[] data : encryptionKeys)
@@ -69,7 +69,7 @@ public class VTCryptographicEngine
         blake3Digest.update(data);
       }
     }
-    byte[] second = blake3Digest.digest(64);
+    byte[] second = blake3Digest.digest(512);
     
     if (encryptionType == VT.VT_CONNECTION_ENCRYPT_NONE)
     {
@@ -187,7 +187,7 @@ public class VTCryptographicEngine
         blake3Digest.update(data);
       }
     }
-    byte[] first = blake3Digest.digest(64);
+    byte[] first = blake3Digest.digest(512);
     blake3Digest.reset();
     blake3Digest.update(first);
     for (byte[] data : encryptionKeys)
@@ -197,7 +197,7 @@ public class VTCryptographicEngine
         blake3Digest.update(data);
       }
     }
-    byte[] second = blake3Digest.digest(64);
+    byte[] second = blake3Digest.digest(512);
     
     if (encryptionType == VT.VT_CONNECTION_ENCRYPT_NONE)
     {

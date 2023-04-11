@@ -84,9 +84,9 @@ public class VTFileTransferServerTransaction implements Runnable
     
     byte[] localNonce = session.getServer().getConnection().getLocalNonce();
     byte[] remoteNonce = session.getServer().getConnection().getRemoteNonce();
-    byte[] blake3Seed = new byte[128];
-    System.arraycopy(remoteNonce, 0, blake3Seed, 0, 64);
-    System.arraycopy(localNonce, 0, blake3Seed, 64, 64);
+    byte[] blake3Seed = new byte[VT.VT_SECURITY_SEED_SIZE];
+    System.arraycopy(remoteNonce, 0, blake3Seed, 0, VT.VT_SECURITY_DIGEST_SIZE);
+    System.arraycopy(localNonce, 0, blake3Seed, VT.VT_SECURITY_DIGEST_SIZE, VT.VT_SECURITY_DIGEST_SIZE);
     
     long xxhash64Seed = new VTBlake3DigestRandom(blake3Seed).nextLong();
     

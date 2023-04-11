@@ -65,15 +65,15 @@ public class VTBlake3MessageDigest extends MessageDigest
     return digest;
   }
   
-  public byte[] digest()
-  {
-    return digest(64);
-  }
+  //public byte[] digest()
+  //{
+    //return digest(64);
+  //}
   
-  public byte[] digest(byte[] data)
-  {
-    return digest(64, data);
-  }
+  //public byte[] digest(byte[] data)
+  //{
+    //return digest(64, data);
+  //}
   
   public long digestLong()
   {

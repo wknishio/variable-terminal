@@ -440,13 +440,9 @@ public class VTServer implements Runnable
   
   public void setUniqueUserCredential(String user, String password)
   {
-    //byte[] credential = new byte[128];
     try
     {
-      //System.arraycopy(blake3Digest.digest(user.getBytes("UTF-8")), 0, credential, 0, 64);
-      //System.arraycopy(blake3Digest.digest(password.getBytes("UTF-8")), 0, credential, 64, 64);
       userCredentials.clear();
-      //userCredentials.put(credential, new Credential(user, password));
       userCredentials.add(new Credential(user, password));
     }
     catch (Throwable e)
@@ -457,10 +453,6 @@ public class VTServer implements Runnable
   
   public void addUserCredential(String user, String password) throws UnsupportedEncodingException
   {
-    //byte[] credential = new byte[128];
-    //System.arraycopy(blake3Digest.digest(user.getBytes("UTF-8")), 0, credential, 0, 64);
-    //System.arraycopy(blake3Digest.digest(password.getBytes("UTF-8")), 0, credential, 64, 64);
-    //userCredentials.put(credential, new Credential(user, password));
     userCredentials.add(new Credential(user, password));
   }
   
