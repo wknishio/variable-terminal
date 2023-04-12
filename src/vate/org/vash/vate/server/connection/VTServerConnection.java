@@ -542,7 +542,7 @@ public class VTServerConnection
     byte[] seed = new byte[VT.VT_SECURITY_SEED_SIZE];
     System.arraycopy(remoteNonce, 0, seed, 0, VT.VT_SECURITY_DIGEST_SIZE);
     System.arraycopy(localNonce, 0, seed, VT.VT_SECURITY_DIGEST_SIZE, VT.VT_SECURITY_DIGEST_SIZE);
-    secureRandom.setSeed(seed);
+    //secureRandom.setSeed(seed);
     blake3Digest.setSeed(seed);
     blake3Digest.reset();
   }
@@ -571,10 +571,10 @@ public class VTServerConnection
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
   }
   
-  public void setConnectionStreams(byte[] digestedUser, byte[] digestedPassword, String user, String password) throws IOException
+  public void setConnectionStreams(byte[] digestedCredentials, String user, String password) throws IOException
   {
     connected = true;
-    cryptoEngine.initializeServerEngine(encryptionType, encryptionKey, remoteNonce, localNonce, digestedUser, digestedPassword, user != null ? user.getBytes("UTF-8") : null, password != null ? password.getBytes("UTF-8") : null);
+    cryptoEngine.initializeServerEngine(encryptionType, encryptionKey, remoteNonce, localNonce, digestedCredentials, user != null ? user.getBytes("UTF-8") : null, password != null ? password.getBytes("UTF-8") : null);
     connectionInputStream = cryptoEngine.getDecryptedInputStream(connectionSocketInputStream);
     connectionOutputStream = cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream);
     authenticationReader.setIntputStream(connectionInputStream);

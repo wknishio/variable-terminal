@@ -30,8 +30,8 @@ public class VTClientAuthenticator
   // private int credentialCounter;
   private byte[] localNonce;
   private byte[] remoteNonce;
-  private byte[] digestedUser = new byte[VT.VT_SECURITY_DIGEST_SIZE];
-  private byte[] digestedPassword = new byte[VT.VT_SECURITY_DIGEST_SIZE];
+  private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE];
+  //private byte[] digestedPassword = new byte[VT.VT_SECURITY_DIGEST_SIZE];
   private byte[] authResult = new byte[VT.VT_SECURITY_DIGEST_SIZE];
   private byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE];
   // private byte[] paddingData = new byte[1024];
@@ -139,15 +139,15 @@ public class VTClientAuthenticator
     timeoutTask.stop();
   }
   
-  public byte[] getDigestedUser()
+  public byte[] getDigestedCredential()
   {
-    return digestedUser;
+    return digestedCredential;
   }
   
-  public byte[] getDigestedPassword()
-  {
-    return digestedPassword;
-  }
+//  public byte[] getDigestedPassword()
+//  {
+//    return digestedPassword;
+//  }
   
   public String getUser()
   {
@@ -183,9 +183,11 @@ public class VTClientAuthenticator
     // connection.getAuthenticationWriter().write(randomData);
     // connection.getAuthenticationWriter().flush();
     // connection.getAuthenticationReader().readFully(randomData);
+    blake3Digest.update(remoteNonce);
+    blake3Digest.update(localNonce);
     
     String line = "";
-    byte[] credentialData = null;
+    //byte[] credentialData = null;
     
     if (client.getUser() != null)
     {
@@ -196,13 +198,8 @@ public class VTClientAuthenticator
     {
       line = "";
     }
-    blake3Digest.update(blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE, line.getBytes("UTF-8")));
-    blake3Digest.update(remoteNonce);
-    digestedUser = blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE, localNonce);
-    credentialData = digestedUser;
-    connection.getAuthenticationWriter().write(credentialData);
-    connection.getAuthenticationWriter().flush();
-    connection.getAuthenticationReader().readFully(randomData, 0, randomData.length);
+    
+    blake3Digest.update(line.getBytes("UTF-8"));
     
     if (client.getPassword() != null)
     {
@@ -213,12 +210,13 @@ public class VTClientAuthenticator
     {
       line = "";
     }
-    blake3Digest.update(blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE, line.getBytes("UTF-8")));
-    blake3Digest.update(remoteNonce);
-    digestedPassword = blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE, localNonce);
-    credentialData = digestedPassword;
     
-    connection.getAuthenticationWriter().write(credentialData);
+    blake3Digest.update(line.getBytes("UTF-8"));
+    
+    digestedCredential = blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE);
+    //credentialData = digestedCredential;
+    
+    connection.getAuthenticationWriter().write(digestedCredential);
     connection.getAuthenticationWriter().flush();
     connection.getAuthenticationReader().readFully(randomData, 0, randomData.length);
     
