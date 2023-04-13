@@ -13,12 +13,15 @@ public class VTClientAuthenticator
 {
   private static final String MAJOR_MINOR_VERSION = VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION;
   private static byte[] VT_AUTHENTICATION_ACCEPTED_STRING = new byte[16];
+  @SuppressWarnings("unused")
+  private static byte[] VT_AUTHENTICATION_REJECTED_STRING = new byte[16];
   
   static
   {
     try
     {
       VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_AUTHENTICATION_REJECTED_STRING = (StringUtils.reverse("VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
     }
     catch (Throwable e)
     {
@@ -27,14 +30,11 @@ public class VTClientAuthenticator
   }
   
   private volatile boolean accepted = false;
-  // private int credentialCounter;
-  private byte[] localNonce;
-  private byte[] remoteNonce;
   private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE];
-  //private byte[] digestedPassword = new byte[VT.VT_SECURITY_DIGEST_SIZE];
   private byte[] authResult = new byte[VT.VT_SECURITY_DIGEST_SIZE];
   private byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE];
-  // private byte[] paddingData = new byte[1024];
+  private byte[] localNonce;
+  private byte[] remoteNonce;
   private String user;
   private String password;
   private VTBlake3MessageDigest blake3Digest;

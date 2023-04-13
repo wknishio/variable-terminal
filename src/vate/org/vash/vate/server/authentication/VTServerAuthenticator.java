@@ -30,15 +30,13 @@ public class VTServerAuthenticator
   }
   
   private volatile boolean accepted = false;
-  private String user;
-  private String password;
   private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE];
-  //private byte[] digestedPassword = new byte[VT.VT_SECURITY_DIGEST_SIZE];
-  private byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE];
-  // private byte[] paddingData = new byte[64];
   private byte[] receivedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE];
+  private byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE];
   private byte[] localNonce;
   private byte[] remoteNonce;
+  private String user;
+  private String password;
   private VTBlake3MessageDigest blake3Digest;
   // private MessageDigest sha256Digester;
   private VTServer server;
