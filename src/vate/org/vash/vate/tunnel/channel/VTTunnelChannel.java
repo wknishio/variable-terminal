@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.vash.vate.VT;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 
@@ -23,16 +24,23 @@ public class VTTunnelChannel
   private String redirectHost;
   private int redirectPort;
   private int tunnelType;
+  private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT;
   
   public int getTunnelType()
   {
     return tunnelType;
   }
   
+  public int getChannelType()
+  {
+    return channelType;
+  }
+  
   // SOCKS tunnel without authentication
-  public VTTunnelChannel(VTTunnelConnection connection, String bindHost, int bindPort)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort)
   {
     this.tunnelType = TUNNEL_TYPE_SOCKS;
+    this.channelType = channelType;
     this.connection = connection;
     this.bindHost = bindHost;
     this.bindPort = bindPort;
@@ -48,9 +56,10 @@ public class VTTunnelChannel
   }
   
   // SOCKS tunnel with authentication
-  public VTTunnelChannel(VTTunnelConnection connection, String bindHost, int bindPort, String socksUsername, String socksPassword)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String socksUsername, String socksPassword)
   {
     this.tunnelType = TUNNEL_TYPE_SOCKS;
+    this.channelType = channelType;
     this.connection = connection;
     this.bindHost = bindHost;
     this.bindPort = bindPort;
@@ -68,9 +77,10 @@ public class VTTunnelChannel
   }
   
   // TCP tunnel
-  public VTTunnelChannel(VTTunnelConnection connection, String bindHost, int bindPort, String redirectHost, int redirectPort)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String redirectHost, int redirectPort)
   {
     this.tunnelType = TUNNEL_TYPE_TCP;
+    this.channelType = channelType;
     this.connection = connection;
     this.bindHost = bindHost;
     this.bindPort = bindPort;

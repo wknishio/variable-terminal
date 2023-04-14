@@ -285,8 +285,6 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     {
       d3 |= c3;
       block3DataBuffer.write(d4);
-      // pixelDataBuffer.writeTo(block3DataBuffer);
-      // pixelDataBuffer.reset();
     }
   }
   
@@ -843,8 +841,6 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     {
       d3 |= c3;
       block3DataBuffer.write(d4);
-      // pixelDataBuffer.writeTo(block3DataBuffer);
-      // pixelDataBuffer.reset();
     }
   }
   
@@ -1401,8 +1397,6 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     {
       d3 |= c3;
       block3DataBuffer.write(d4);
-      // pixelDataBuffer.writeTo(block3DataBuffer);
-      // pixelDataBuffer.reset();
     }
   }
   
@@ -1959,8 +1953,6 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
     {
       d3 |= c3;
       block3DataBuffer.write(d4);
-      // pixelDataBuffer.writeTo(block3DataBuffer);
-      // pixelDataBuffer.reset();
     }
   }
   

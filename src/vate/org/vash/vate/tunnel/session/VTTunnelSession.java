@@ -12,8 +12,6 @@ public class VTTunnelSession implements Closeable
 {
   private VTTunnelConnection connection;
   private Socket socket;
-  // private InputStream socketInputStream;
-  // private OutputStream socketOutputStream;
   private VTLinkableDynamicMultiplexedInputStream inputStream;
   private VTLinkableDynamicMultiplexedOutputStream outputStream;
   private final boolean originator;
@@ -24,8 +22,6 @@ public class VTTunnelSession implements Closeable
   {
     this.connection = connection;
     this.socket = socket;
-    // this.socketInputStream = socket.getInputStream();
-    // this.socketOutputStream = socket.getOutputStream();
     this.originator = originator;
   }
   
@@ -76,14 +72,6 @@ public class VTTunnelSession implements Closeable
     {
       return;
     }
-    // if (isOriginator())
-    // {
-    // System.out.println("tunnel.server.close()");
-    // }
-    // else
-    // {
-    // System.out.println("tunnel.client.close()");
-    // }
     try
     {
       if (socket != null)
@@ -107,7 +95,6 @@ public class VTTunnelSession implements Closeable
     {
       // e.printStackTrace();
     }
-    outputStream = null;
     try
     {
       if (inputStream != null)
@@ -119,39 +106,11 @@ public class VTTunnelSession implements Closeable
     {
       // e.printStackTrace();
     }
-    inputStream = null;
-//    try
-//    {
-//      if (socketOutputStream != null)
-//      {
-//        socketOutputStream.close();
-//      }
-//    }
-//    catch (Throwable e)
-//    {
-//      e.printStackTrace();
-//    }
-//    try
-//    {
-//      if (socketInputStream != null)
-//      {
-//        socketInputStream.close();
-//      }
-//    }
-//    catch (Throwable e)
-//    {
-//      e.printStackTrace();
-//    }
     connection.releaseInputStream(inputStream);
     connection.releaseOutputStream(outputStream);
+    outputStream = null;
+    inputStream = null;
   }
-  
-  // public void setSocket(Socket socket) throws IOException
-  // {
-  // this.socket = socket;
-  // this.socketInputStream = socket.getInputStream();
-  // this.socketOutputStream = socket.getOutputStream();
-  // }
   
   public Socket getSocket()
   {

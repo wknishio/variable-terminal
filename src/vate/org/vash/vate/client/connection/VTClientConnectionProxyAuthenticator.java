@@ -24,7 +24,7 @@ public class VTClientConnectionProxyAuthenticator extends Authenticator
       }
       
       String proxyHost = connector.getProxyAddress();
-      if (proxyHost != null)
+      if (proxyHost != null && proxyHost.length() > 0)
       {
         if (proxyHost.equals(getRequestingHost()))
         {

@@ -122,9 +122,12 @@ public class VTTunnelChannelSocketListener implements Runnable
         {
           socket = serverSocket.accept();
           socket.setTcpNoDelay(true);
+          //socket.setSoLinger(true, 0);
+          int channelType = channel.getChannelType();
           VTTunnelSession session = new VTTunnelSession(channel.getConnection(), socket, true);
           VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, channel);
-          VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(handler);
+          VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
+          
           if (output != null)
           {
             int outputNumber = output.number();
@@ -135,7 +138,7 @@ public class VTTunnelChannelSocketListener implements Runnable
               String host = channel.getRedirectHost();
               int port = channel.getRedirectPort();
               // request message sent
-              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port).getBytes("UTF-8"));
+              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port).getBytes("UTF-8"));
               channel.getConnection().getControlOutputStream().flush();
             }
             else if (channel.getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
@@ -148,7 +151,7 @@ public class VTTunnelChannelSocketListener implements Runnable
                 socksPassword = "*" + SESSION_SEPARATOR + "*";
               }
               // request message sent
-              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + outputNumber + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword).getBytes("UTF-8"));
+              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword).getBytes("UTF-8"));
               channel.getConnection().getControlOutputStream().flush();
             }
           }
@@ -167,13 +170,13 @@ public class VTTunnelChannelSocketListener implements Runnable
           {
             socket.close();
           }
-          // e.printStackTrace();
+          //e.printStackTrace();
         }
       }
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
+      //e.printStackTrace();
     }
   }
 }

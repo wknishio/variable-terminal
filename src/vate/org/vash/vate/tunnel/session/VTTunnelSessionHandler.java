@@ -33,7 +33,7 @@ public class VTTunnelSessionHandler implements Runnable
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
+      //e.printStackTrace();
     }
     finally
     {
@@ -43,7 +43,7 @@ public class VTTunnelSessionHandler implements Runnable
       }
       catch (Throwable e)
       {
-        // e.printStackTrace();
+        //e.printStackTrace();
       }
       if (channel != null)
       {

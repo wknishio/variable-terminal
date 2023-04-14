@@ -55,7 +55,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
+      //e.printStackTrace();
     }
     finally
     {
@@ -65,7 +65,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
       }
       catch (Throwable e)
       {
-        // e.printStackTrace();
+        //e.printStackTrace();
       }
       if (channel != null)
       {

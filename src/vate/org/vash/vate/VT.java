@@ -30,11 +30,11 @@ public class VT
   public static final int VT_REVISION_VERSION = 2;
   
   public static final int VT_NETWORK_PACKET_HEADER_SIZE = 8;
-  public static final int VT_NETWORK_PACKET_SIZE = 1024 * 4;
-  public static final int VT_NETWORK_PACKET_BUFFER_SIZE = 1024 * 32;
-  public static final int VT_STANDARD_DATA_BUFFER_SIZE = 1024 * 32;
-  public static final int VT_COMPRESSED_DATA_BUFFER_SIZE = 1024 * 32;
-  public static final int VT_FILE_DATA_BUFFER_SIZE = 1024 * 32;
+  public static final int VT_NETWORK_PACKET_SIZE = 1024 * 8;
+  public static final int VT_NETWORK_PACKET_BUFFER_SIZE = 1024 * 64;
+  public static final int VT_STANDARD_DATA_BUFFER_SIZE = 1024 * 64;
+  public static final int VT_COMPRESSED_DATA_BUFFER_SIZE = 1024 * 64;
+  public static final int VT_FILE_DATA_BUFFER_SIZE = 1024 * 64;
   public static final int VT_SMALL_DATA_BUFFER_SIZE = 1024 * 16;
   
   public static final int VT_SECURITY_DIGEST_SIZE = 256;
@@ -47,7 +47,7 @@ public class VT
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_DISABLED = 0 << 2;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED = 1 << 2;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_LZ4 = 0 << 3;
-  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZLIB = 1 << 3;
+  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD = 1 << 3;
   
   public static final int VT_CONNECTION_PROXY_NONE = 0;
   public static final int VT_CONNECTION_PROXY_SOCKS = 1;

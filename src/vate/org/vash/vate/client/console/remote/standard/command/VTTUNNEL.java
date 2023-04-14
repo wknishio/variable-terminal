@@ -2,6 +2,7 @@ package org.vash.vate.client.console.remote.standard.command;
 
 import java.util.Set;
 
+import org.vash.vate.VT;
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.help.VTHelpManager;
@@ -14,17 +15,18 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
   {
     this.setFullName("*VTTUNNEL");
     this.setAbbreviatedName("*VTTN");
-    this.setFullSyntax("*VTTUNNEL [SIDE] [[BIND] PORT] [[HOST] PORT] [USER/PASSWORD]");
-    this.setAbbreviatedSyntax("*VTTN [SD] [[BD] PT] [[HT] PT] [US/PW]");
+    this.setFullSyntax("*VTTUNNEL [SIDE] [[BIND] PORT] [[HOST] PORT] [OPTION=VALUE]");
+    this.setAbbreviatedSyntax("*VTTN [SD] [[BD] PT] [[HT] PT] [OP=VL]");
   }
   
   public void execute(String command, String[] parsed) throws Exception
   {
+    int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT;
     if (parsed.length == 1)
     {
-      Set<VTTunnelChannelSocketListener> channels = session.getTunnelsHandler().getConnection().getChannels();
       message.setLength(0);
       message.append("\nVT>List of connection tunnels:\nVT>");
+      Set<VTTunnelChannelSocketListener> channels = session.getTunnelsHandler().getConnection().getChannels();
       for (VTTunnelChannelSocketListener channel : channels)
       {
         if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
@@ -42,7 +44,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
     }
     else if (parsed.length == 2)
     {
-      VTConsole.println("parsed[1]:" + parsed[1]);
+      //VTConsole.println("parsed[1]:" + parsed[1]);
       if (parsed[1].toUpperCase().startsWith("L"))
       {
         Set<VTTunnelChannelSocketListener> channels = session.getTunnelsHandler().getConnection().getChannels();
@@ -94,7 +96,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().setSOCKSChannel("", bindPort))
+              if (session.getTunnelsHandler().getConnection().setSOCKSChannel(channelType, "", bindPort))
               {
                 VTConsole.print("\nVT>SOCKS tunnel bound in client address [*" + " " + bindPort + "] set!\nVT>");
               }
@@ -130,13 +132,39 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
       {
         String socksUser = null;
         String socksPassword = null;
+        
         int remainingLength = parsed.length;
-        if (parsed[parsed.length - 1].contains("/"))
+        while (parsed[remainingLength - 1].contains("="))
         {
-          socksUser = parsed[parsed.length - 1].split("/")[0];
-          socksPassword = parsed[parsed.length - 1].split("/")[1];
+          String option = parsed[remainingLength - 1].split("=")[0];
+          String value = parsed[remainingLength - 1].split("=")[1];
+          if (option.toUpperCase().startsWith("A") && value.contains("/"))
+          {
+            socksUser = value.split("/")[0];
+            socksPassword = value.split("/")[1];
+          }
+//          if (option.toUpperCase().startsWith("R"))
+//          {
+//            if (value.toUpperCase().startsWith("U"))
+//            {
+//              channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_UNLIMITED;
+//            }
+//          }
+          if (option.toUpperCase().startsWith("C"))
+          {
+            if (value.toUpperCase().startsWith("L"))
+            {
+              channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_LZ4;
+            }
+            else if (value.toUpperCase().startsWith("Z"))
+            {
+              channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD;
+            }
+          }
           remainingLength--;
         }
+        //System.out.println("socksUser:" + socksUser);
+        //System.out.println("socksPassword:" + socksPassword);
         
         if (remainingLength == 3)
         {
@@ -158,7 +186,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
               }
               else
               {
-                if (session.getTunnelsHandler().getConnection().setSOCKSChannel("", bindPort, socksUser, socksPassword))
+                if (session.getTunnelsHandler().getConnection().setSOCKSChannel(channelType, "", bindPort, socksUser, socksPassword))
                 {
                   VTConsole.print("\nVT>SOCKS tunnel bound in client address [*" + " " + bindPort + "] set!\nVT>");
                 }
@@ -186,7 +214,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().setTCPChannel("", bindPort, "", redirectPort))
+              if (session.getTunnelsHandler().getConnection().setTCPChannel(channelType, "", bindPort, "", redirectPort))
               {
                 VTConsole.print("\nVT>TCP tunnel bound in client address [*" + " " + bindPort + "] set!\nVT>");
               }
@@ -215,7 +243,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
               }
               else
               {
-                if (session.getTunnelsHandler().getConnection().setSOCKSChannel(bindAddress, bindPort, socksUser, socksPassword))
+                if (session.getTunnelsHandler().getConnection().setSOCKSChannel(channelType, bindAddress, bindPort, socksUser, socksPassword))
                 {
                   VTConsole.print("\nVT>SOCKS tunnel bound in client address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                 }
@@ -244,7 +272,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().setTCPChannel("", bindPort, redirectAddress, redirectPort))
+              if (session.getTunnelsHandler().getConnection().setTCPChannel(channelType, "", bindPort, redirectAddress, redirectPort))
               {
                 VTConsole.print("\nVT>TCP tunnel bound in client address [*" + " " + bindPort + "] set!\nVT>");
               }
@@ -265,7 +293,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().setTCPChannel(bindAddress, bindPort, "", redirectPort))
+              if (session.getTunnelsHandler().getConnection().setTCPChannel(channelType, bindAddress, bindPort, "", redirectPort))
               {
                 VTConsole.print("\nVT>TCP tunnel bound in client address [" + bindAddress + " " + bindPort + "] set!\nVT>");
               }
@@ -294,7 +322,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().setTCPChannel(bindAddress, bindPort, redirectAddress, redirectPort))
+              if (session.getTunnelsHandler().getConnection().setTCPChannel(channelType, bindAddress, bindPort, redirectAddress, redirectPort))
               {
                 VTConsole.print("\nVT>TCP tunnel bound in client address [" + bindAddress + " " + bindPort + "] set!\nVT>");
               }
