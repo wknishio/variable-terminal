@@ -15,13 +15,24 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
   {
     this.setFullName("*VTTUNNEL");
     this.setAbbreviatedName("*VTTN");
-    this.setFullSyntax("*VTTUNNEL [SIDE] [[BIND] PORT] [[HOST] PORT] [OPTION=VALUE]");
-    this.setAbbreviatedSyntax("*VTTN [SD] [[BD] PT] [[HT] PT] [OP=VL]");
+    this.setFullSyntax("*VTTUNNEL [MODE] [[BIND] PORT] [[HOST] PORT] [USERNAME/PASSWORD]");
+    this.setAbbreviatedSyntax("*VTTN [MD] [[BD] PT] [[HT] PT] [US/PW]");
   }
   
   public void execute(String command, String[] parsed) throws Exception
   {
     int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT;
+    if (parsed.length > 1)
+    {
+      if (parsed[1].toUpperCase().contains("F"))
+      {
+        channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_LZ4;
+      }
+      if (parsed[1].toUpperCase().contains("H"))
+      {
+        channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD;
+      }
+    }
     if (parsed.length == 1)
     {
       message.setLength(0);
@@ -45,7 +56,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
     else if (parsed.length == 2)
     {
       //VTConsole.println("parsed[1]:" + parsed[1]);
-      if (parsed[1].toUpperCase().startsWith("L"))
+      if (parsed[1].toUpperCase().contains("L") && !parsed[1].toUpperCase().contains("R"))
       {
         Set<VTTunnelChannelSocketListener> channels = session.getTunnelsHandler().getConnection().getChannels();
         message.setLength(0);
@@ -64,7 +75,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
         message.append("\nVT>End of client connection tunnels list\nVT>");
         VTConsole.print(message.toString());
       }
-      else if (parsed[1].toUpperCase().startsWith("R"))
+      else if (parsed[1].toUpperCase().contains("R"))
       {
         connection.getCommandWriter().write(command + "\n");
         connection.getCommandWriter().flush();
@@ -76,7 +87,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
     }
     else if (parsed.length == 3)
     {
-      if (parsed[1].toUpperCase().startsWith("L"))
+      if (parsed[1].toUpperCase().contains("L") && !parsed[1].toUpperCase().contains("R"))
       {
         try
         {
@@ -116,7 +127,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
           VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
         }
       }
-      else if (parsed[1].toUpperCase().startsWith("R"))
+      else if (parsed[1].toUpperCase().contains("R"))
       {
         connection.getCommandWriter().write(command + "\n");
         connection.getCommandWriter().flush();
@@ -128,39 +139,17 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
     }
     else if (parsed.length >= 4)
     {
-      if (parsed[1].toUpperCase().startsWith("L"))
+      if (parsed[1].toUpperCase().contains("L") && !parsed[1].toUpperCase().contains("R"))
       {
         String socksUser = null;
         String socksPassword = null;
         
         int remainingLength = parsed.length;
-        while (parsed[remainingLength - 1].contains("="))
+        while (parsed[remainingLength - 1].contains("/"))
         {
-          String option = parsed[remainingLength - 1].split("=")[0];
-          String value = parsed[remainingLength - 1].split("=")[1];
-          if (option.toUpperCase().startsWith("A") && value.contains("/"))
-          {
-            socksUser = value.split("/")[0];
-            socksPassword = value.split("/")[1];
-          }
-//          if (option.toUpperCase().startsWith("R"))
-//          {
-//            if (value.toUpperCase().startsWith("U"))
-//            {
-//              channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_UNLIMITED;
-//            }
-//          }
-          if (option.toUpperCase().startsWith("C"))
-          {
-            if (value.toUpperCase().startsWith("L"))
-            {
-              channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_LZ4;
-            }
-            else if (value.toUpperCase().startsWith("Z"))
-            {
-              channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD;
-            }
-          }
+          String value = parsed[remainingLength - 1];
+          socksUser = value.split("/")[0];
+          socksPassword = value.split("/")[1];
           remainingLength--;
         }
         //System.out.println("socksUser:" + socksUser);
@@ -342,7 +331,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
           VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
         }
       }
-      else if (parsed[1].toUpperCase().startsWith("R"))
+      else if (parsed[1].toUpperCase().contains("R"))
       {
         connection.getCommandWriter().write(command + "\n");
         connection.getCommandWriter().flush();

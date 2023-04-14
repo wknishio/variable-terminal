@@ -641,7 +641,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               try
               {
-                if (process.getCommand().equals(splitCommand[2]))
+                if (process.getCommand().contains(splitCommand[2]))
                 {
                   if (!found)
                   {
@@ -779,7 +779,7 @@ public class VTServerRuntimeExecutor extends VTTask
             i = 0;
             for (VTRuntimeProcess process : processList)
             {
-              if (process.getCommand().equals(splitCommand[2]))
+              if (process.getCommand().contains(splitCommand[2]))
               {
                 found = true;
                 process.destroy();
@@ -899,7 +899,7 @@ public class VTServerRuntimeExecutor extends VTTask
             found = false;
             for (VTRuntimeProcess process : processList)
             {
-              if (process.getCommand().equals(splitCommand[2]))
+              if (process.getCommand().contains(splitCommand[2]))
               {
                 found = true;
                 removedProcessStack.add(process);
@@ -1031,7 +1031,7 @@ public class VTServerRuntimeExecutor extends VTTask
               // VTTerminal.println(splitCommand[1]);
               for (VTRuntimeProcess process : processList)
               {
-                if (process.getCommand().equals(splitCommand[2]))
+                if (process.getCommand().contains(splitCommand[2]))
                 {
                   found = true;
                   process.getOut().write((command).getBytes());
@@ -1164,7 +1164,7 @@ public class VTServerRuntimeExecutor extends VTTask
               // VTTerminal.println(splitCommand[1]);
               for (VTRuntimeProcess process : processList)
               {
-                if (process.getCommand().equals(splitCommand[2]))
+                if (process.getCommand().contains(splitCommand[2]))
                 {
                   found = true;
                   process.getOut().write((command + "\n").getBytes());
@@ -1347,7 +1347,7 @@ public class VTServerRuntimeExecutor extends VTTask
                 // VTTerminal.println(splitCommand[1]);
                 for (VTRuntimeProcess process : processList)
                 {
-                  if (process.getCommand().equals(splitCommand[2]))
+                  if (process.getCommand().contains(splitCommand[2]))
                   {
                     found = true;
                     process.getOut().write(data);
@@ -1532,7 +1532,7 @@ public class VTServerRuntimeExecutor extends VTTask
                 // VTTerminal.println(splitCommand[1]);
                 for (VTRuntimeProcess process : processList)
                 {
-                  if (process.getCommand().equals(splitCommand[2]))
+                  if (process.getCommand().contains(splitCommand[2]))
                   {
                     found = true;
                     process.getOut().write(data);
