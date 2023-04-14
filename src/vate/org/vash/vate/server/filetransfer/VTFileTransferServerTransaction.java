@@ -7,8 +7,11 @@ import java.io.RandomAccessFile;
 import java.nio.channels.Channels;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
+import java.util.Arrays;
+import java.util.Comparator;
 
 import org.vash.vate.VT;
+import org.vash.vate.filesystem.VTFileTransferSorter;
 import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3DigestRandom;
 import org.vash.vate.stream.compress.VTCompressorSelector;
@@ -75,7 +78,7 @@ public class VTFileTransferServerTransaction implements Runnable
   private InputStream fileTransferFileInputStream;
   private OutputStream fileTransferFileOutputStream;
   private VTFileTransferServerSession session;
-  //private Comparator<File> comparator = new VTFileTransferSorter();
+  private Comparator<File> comparator = new VTFileTransferSorter();
   
   public VTFileTransferServerTransaction(VTFileTransferServerSession session)
   {
@@ -900,7 +903,7 @@ public class VTFileTransferServerTransaction implements Runnable
       else
       {
         File[] subFiles = fileTransferFile.listFiles();
-        //Arrays.sort(subFiles, comparator);
+        Arrays.sort(subFiles, comparator);
         String[] subPaths = new String[subFiles.length];
         int i = 0;
         for (File file : subFiles)

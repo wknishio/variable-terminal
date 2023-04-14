@@ -11,7 +11,9 @@ public class VTFileTransferSorter implements Comparator<File>
     {
       if (o2.isDirectory())
       {
-        return 0;
+        String name1 = o1.getName().toUpperCase();
+        String name2 = o2.getName().toUpperCase();
+        return name1.compareTo(name2);
       }
       else
       {
