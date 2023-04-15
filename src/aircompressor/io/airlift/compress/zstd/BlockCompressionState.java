@@ -20,7 +20,7 @@ class BlockCompressionState
     public final int[] hashTable;
     public final int[] chainTable;
 
-    private final long baseAddress;
+    private long baseAddress;
 
     // starting point of the window with respect to baseAddress
     private int windowBaseOffset;
@@ -72,5 +72,10 @@ class BlockCompressionState
     public int getWindowBaseOffset()
     {
         return windowBaseOffset;
+    }
+    
+    public void setBaseAddress(long baseAddress)
+    {
+      this.baseAddress = baseAddress;
     }
 }

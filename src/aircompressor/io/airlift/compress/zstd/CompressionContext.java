@@ -53,4 +53,10 @@ class CompressionContext
         offsets.commit();
         huffmanContext.saveChanges();
     }
+    
+    public void resetBaseAddress(long baseAddress)
+    {
+      blockCompressionState.setBaseAddress(baseAddress);
+      blockCompressionState.reset();
+    }
 }

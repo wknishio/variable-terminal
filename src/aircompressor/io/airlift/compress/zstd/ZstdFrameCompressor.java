@@ -38,7 +38,7 @@ class ZstdFrameCompressor
 {
     static final int MAX_FRAME_HEADER_SIZE = 14;
 
-    private static final int CHECKSUM_FLAG = 0x4;
+    //private static final int CHECKSUM_FLAG = 0x4;
     private static final int SINGLE_SEGMENT_FLAG = 0x20;
 
     private static final int MINIMUM_LITERALS_SIZE = 63;
@@ -70,8 +70,8 @@ class ZstdFrameCompressor
         if (inputSize != -1) {
             contentSizeDescriptor = (inputSize >= 256 ? 1 : 0) + (inputSize >= 65536 + 256 ? 1 : 0);
         }
-        int frameHeaderDescriptor = (contentSizeDescriptor << 6) | CHECKSUM_FLAG; // dictionary ID missing
-        //int frameHeaderDescriptor = (contentSizeDescriptor << 6);
+        //int frameHeaderDescriptor = (contentSizeDescriptor << 6) | CHECKSUM_FLAG; // dictionary ID missing
+        int frameHeaderDescriptor = (contentSizeDescriptor << 6);
 
         boolean singleSegment = inputSize != -1 && windowSize >= inputSize;
         if (singleSegment) {
@@ -136,6 +136,23 @@ class ZstdFrameCompressor
 
         return SIZE_OF_INT;
     }
+    
+    public static int compress(Object inputBase, long inputAddress, long inputLimit, Object outputBase, long outputAddress, long outputLimit, int compressionLevel, CompressionParameters parameters, CompressionContext context)
+    {
+        int inputSize = (int) (inputLimit - inputAddress);
+
+        //CompressionParameters parameters = CompressionParameters.compute(compressionLevel, inputSize);
+
+        long output = outputAddress;
+
+        output += writeMagic(outputBase, output, outputLimit);
+        output += writeFrameHeader(outputBase, output, outputLimit, inputSize, 1 << parameters.getWindowLog());
+        output += compressFrame(inputBase, inputAddress, inputLimit, outputBase, output, outputLimit, parameters, context);
+        //output += writeChecksum(outputBase, output, outputLimit, inputBase, inputAddress, inputLimit);
+
+        return (int) (output - outputAddress);
+    }
+
 
     public static int compress(Object inputBase, long inputAddress, long inputLimit, Object outputBase, long outputAddress, long outputLimit, int compressionLevel)
     {
@@ -148,7 +165,7 @@ class ZstdFrameCompressor
         output += writeMagic(outputBase, output, outputLimit);
         output += writeFrameHeader(outputBase, output, outputLimit, inputSize, parameters.getWindowSize());
         output += compressFrame(inputBase, inputAddress, inputLimit, outputBase, output, outputLimit, parameters);
-        output += writeChecksum(outputBase, output, outputLimit, inputBase, inputAddress, inputLimit);
+        //output += writeChecksum(outputBase, output, outputLimit, inputBase, inputAddress, inputLimit);
 
         return (int) (output - outputAddress);
     }
@@ -164,6 +181,36 @@ class ZstdFrameCompressor
         long input = inputAddress;
 
         CompressionContext context = new CompressionContext(parameters, inputAddress, remaining);
+        do {
+            checkArgument(outputSize >= SIZE_OF_BLOCK_HEADER + MIN_BLOCK_SIZE, "Output buffer too small");
+
+            boolean lastBlock = blockSize >= remaining;
+            blockSize = Math.min(blockSize, remaining);
+
+            int compressedSize = writeCompressedBlock(inputBase, input, blockSize, outputBase, output, outputSize, context, lastBlock);
+
+            input += blockSize;
+            remaining -= blockSize;
+            output += compressedSize;
+            outputSize -= compressedSize;
+        }
+        while (remaining > 0);
+
+        return (int) (output - outputAddress);
+    }
+    
+    private static int compressFrame(Object inputBase, long inputAddress, long inputLimit, Object outputBase, long outputAddress, long outputLimit, CompressionParameters parameters, CompressionContext context)
+    {
+        int blockSize = parameters.getBlockSize();
+
+        int outputSize = (int) (outputLimit - outputAddress);
+        int remaining = (int) (inputLimit - inputAddress);
+
+        long output = outputAddress;
+        long input = inputAddress;
+
+        //CompressionContext context = new CompressionContext(parameters, inputAddress, remaining);
+        context.resetBaseAddress(inputAddress);
         do {
             checkArgument(outputSize >= SIZE_OF_BLOCK_HEADER + MIN_BLOCK_SIZE, "Output buffer too small");
 

@@ -15,11 +15,9 @@ package io.airlift.compress.zstd;
 
 import io.airlift.compress.Compressor;
 
-import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
 import static io.airlift.compress.zstd.Constants.MAX_BLOCK_SIZE;
-import static io.airlift.compress.zstd.UnsafeUtil.getAddress;
 import static java.lang.String.format;
 import static org.vash.vate.compatibility.VTObjects.requireNonNull;
 
@@ -27,6 +25,16 @@ import static org.vash.vate.compatibility.VTObjects.requireNonNull;
 public class ZstdCompressor
         implements Compressor
 {
+  
+    private CompressionParameters parameters;
+    private CompressionContext context;
+    
+    public ZstdCompressor()
+    {
+      parameters = CompressionParameters.compute(CompressionParameters.DEFAULT_COMPRESSION_LEVEL + 1, MAX_BLOCK_SIZE);
+      context = new CompressionContext(parameters, 0, MAX_BLOCK_SIZE);
+    }
+
     
     public int maxCompressedLength(int uncompressedSize)
     {
@@ -47,8 +55,10 @@ public class ZstdCompressor
 
         long inputAddress = 0 + inputOffset;
         long outputAddress = 0 + outputOffset;
+        
+        return ZstdFrameCompressor.compress(input, inputAddress, inputAddress + inputLength, output, outputAddress, outputAddress + maxOutputLength, CompressionParameters.DEFAULT_COMPRESSION_LEVEL + 1, parameters, context);
 
-        return ZstdFrameCompressor.compress(input, inputAddress, inputAddress + inputLength, output, outputAddress, outputAddress + maxOutputLength, CompressionParameters.DEFAULT_COMPRESSION_LEVEL);
+        //return ZstdFrameCompressor.compress(input, inputAddress, inputAddress + inputLength, output, outputAddress, outputAddress + maxOutputLength, CompressionParameters.DEFAULT_COMPRESSION_LEVEL);
     }
 
     

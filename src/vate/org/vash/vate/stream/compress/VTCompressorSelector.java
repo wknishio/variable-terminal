@@ -37,7 +37,7 @@ public class VTCompressorSelector
 {
   public static OutputStream createDirectZlibOutputStream(OutputStream out)
   {
-    return createFlushBufferedSyncFlushDeflaterOutputStreamDefaultStrategy(out);
+    return createFlushBufferedSyncFlushDeflaterOutputStreamFilteredStrategy(out);
   }
   
   public static InputStream createDirectZlibInputStream(InputStream in)
