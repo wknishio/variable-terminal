@@ -985,7 +985,6 @@ public class VTFileTransferClientTransaction implements Runnable
           if (ok)
           {
             fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, readedBytes);
-            fileTransferRemoteOutputStream.flush();
           }
         }
         currentOffset += readedBytes;
@@ -995,6 +994,7 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         // transferDataCount += readedBytes;
       }
+      fileTransferRemoteOutputStream.flush();
     }
     catch (Throwable t)
     {

@@ -165,7 +165,7 @@ public class ZstdOutputStream
         else {
             int blockSize = context.parameters.getBlockSize();
             chunkSize = uncompressedPosition - uncompressedOffset - context.parameters.getWindowSize() - blockSize;
-            checkState(chunkSize > blockSize, "Must write at least one full block");
+            checkState(chunkSize >= blockSize, "Must write at least one full block");
             // only write full blocks
             chunkSize = (chunkSize / blockSize) * blockSize;
         }
