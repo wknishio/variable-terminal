@@ -19,11 +19,14 @@ import org.vash.vate.stream.filter.VTBufferedOutputStream;
 import com.jcraft.jzlib.JZlib;
 import com.jcraft.jzlib.ZInputStream;
 import com.jcraft.jzlib.ZOutputStream;
+
 //import io.airlift.compress.zstd.Constants;
 //import io.airlift.compress.lzo.LzoCompressor;
 //import io.airlift.compress.lzo.LzoDecompressor;
 import io.airlift.compress.zstd.ZstdCompressor;
 import io.airlift.compress.zstd.ZstdDecompressor;
+import io.airlift.compress.zstd.ZstdHadoopInputStream;
+import io.airlift.compress.zstd.ZstdHadoopOutputStream;
 //import io.airlift.compress.zstd.ZstdCompressor;
 //import io.airlift.compress.zstd.ZstdDecompressor;
 import net.jpountz.lz4.LZ4BlockInputStream;
@@ -47,13 +50,15 @@ public class VTCompressorSelector
   
   public static OutputStream createDirectZstdOutputStream(OutputStream out)
   {
-    return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
+    return new VTBufferedOutputStream(new VTHadoopOutputStream(new ZstdHadoopOutputStream(out)), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
+    //return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
     //return new VTBufferedOutputStream(new ZstdOutputStream(out), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
   }
   
   public static InputStream createDirectZstdInputStream(InputStream in)
   {
-    return new BufferedInputStream(new VTAirliftInputStream(in, new ZstdDecompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
+    return new BufferedInputStream(new VTHadoopInputStream(new ZstdHadoopInputStream(in)), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
+    //return new BufferedInputStream(new VTAirliftInputStream(in, new ZstdDecompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
     //return new BufferedInputStream(new ZstdInputStream(in), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
   }
   
@@ -69,13 +74,15 @@ public class VTCompressorSelector
   
   public static OutputStream createBufferedZstdOutputStream(OutputStream out)
   {
-    return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
+    return new VTBufferedOutputStream(new VTHadoopOutputStream(new ZstdHadoopOutputStream(out)), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
+    //return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
     //return new VTBufferedOutputStream(new ZstdOutputStream(out), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
   }
   
   public static InputStream createBufferedZstdInputStream(InputStream in)
   {
-    return new BufferedInputStream(new VTAirliftInputStream(in, new ZstdDecompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
+    return new BufferedInputStream(new VTHadoopInputStream(new ZstdHadoopInputStream(in)), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
+    //return new BufferedInputStream(new VTAirliftInputStream(in, new ZstdDecompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
     //return new BufferedInputStream(new ZstdInputStream(in), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
   }
   

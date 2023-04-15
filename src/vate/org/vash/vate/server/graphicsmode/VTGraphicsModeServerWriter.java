@@ -948,6 +948,58 @@ public class VTGraphicsModeServerWriter implements Runnable
      */
   }
   
+  private IIOMetadata setJpegSubsamplingMode444(IIOMetadata metadata)
+  {
+    // Tweaking the image metadata to override default subsampling(4:2:0) with
+    // 4:4:4.
+    try
+    {
+      Node rootNode = metadata.getAsTree(metadata.getNativeMetadataFormatName());
+      // The top level root node has two children, out of which the second one
+      // will
+      // contain all the information related to image markers.
+      if (rootNode != null && rootNode.getLastChild() != null)
+      {
+        Node markerNode = rootNode.getLastChild();
+        NodeList markers = markerNode.getChildNodes();
+        // Search for 'SOF' marker where subsampling information is stored.
+        for (int i = 0; i < markers.getLength(); i++)
+        {
+          Node node = markers.item(i);
+          // 'SOF' marker can have
+          // 1 child node if the color representation is greyscale,
+          // 3 child nodes if the color representation is YCbCr, and
+          // 4 child nodes if the color representation is YCMK.
+          // This subsampling applies only to YCbCr.
+          if (node.getNodeName().equalsIgnoreCase("sof") && node.hasChildNodes() && node.getChildNodes().getLength() == 3)
+          {
+            // In 'SOF' marker, first child corresponds to the luminance
+            // channel, and setting
+            // the HsamplingFactor and VsamplingFactor to 1, will imply 4:4:4
+            // chroma subsampling.
+            NamedNodeMap attrMap = node.getFirstChild().getAttributes();
+            int samplingMode = 17;
+            // int samplingMode = 33;
+            attrMap.getNamedItem("HsamplingFactor").setNodeValue((samplingMode & 0xf) + "");
+            attrMap.getNamedItem("VsamplingFactor").setNodeValue(((samplingMode >> 4) & 0xf) + "");
+            // attrMap.getNamedItem("HsamplingFactor").setNodeValue(1 + "");
+            // attrMap.getNamedItem("VsamplingFactor").setNodeValue(1 + "");
+            break;
+          }
+        }
+      }
+      if (rootNode != null)
+      {
+        metadata.setFromTree(metadata.getNativeMetadataFormatName(), rootNode);
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    return metadata;
+  }
+  
   public void run()
   {
     pngEncoder = new PngEncoder(PngEncoder.COLOR_INDEXED, PngEncoder.BEST_SPEED);
@@ -1483,57 +1535,4 @@ public class VTGraphicsModeServerWriter implements Runnable
       session.notify();
     }
   }
-  
-  private IIOMetadata setJpegSubsamplingMode444(IIOMetadata metadata)
-  {
-    // Tweaking the image metadata to override default subsampling(4:2:0) with
-    // 4:4:4.
-    try
-    {
-      Node rootNode = metadata.getAsTree(metadata.getNativeMetadataFormatName());
-      // The top level root node has two children, out of which the second one
-      // will
-      // contain all the information related to image markers.
-      if (rootNode != null && rootNode.getLastChild() != null)
-      {
-        Node markerNode = rootNode.getLastChild();
-        NodeList markers = markerNode.getChildNodes();
-        // Search for 'SOF' marker where subsampling information is stored.
-        for (int i = 0; i < markers.getLength(); i++)
-        {
-          Node node = markers.item(i);
-          // 'SOF' marker can have
-          // 1 child node if the color representation is greyscale,
-          // 3 child nodes if the color representation is YCbCr, and
-          // 4 child nodes if the color representation is YCMK.
-          // This subsampling applies only to YCbCr.
-          if (node.getNodeName().equalsIgnoreCase("sof") && node.hasChildNodes() && node.getChildNodes().getLength() == 3)
-          {
-            // In 'SOF' marker, first child corresponds to the luminance
-            // channel, and setting
-            // the HsamplingFactor and VsamplingFactor to 1, will imply 4:4:4
-            // chroma subsampling.
-            NamedNodeMap attrMap = node.getFirstChild().getAttributes();
-            int samplingMode = 17;
-            // int samplingMode = 33;
-            attrMap.getNamedItem("HsamplingFactor").setNodeValue((samplingMode & 0xf) + "");
-            attrMap.getNamedItem("VsamplingFactor").setNodeValue(((samplingMode >> 4) & 0xf) + "");
-            // attrMap.getNamedItem("HsamplingFactor").setNodeValue(1 + "");
-            // attrMap.getNamedItem("VsamplingFactor").setNodeValue(1 + "");
-            break;
-          }
-        }
-      }
-      if (rootNode != null)
-      {
-        metadata.setFromTree(metadata.getNativeMetadataFormatName(), rootNode);
-      }
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    return metadata;
-  }
-  
 }

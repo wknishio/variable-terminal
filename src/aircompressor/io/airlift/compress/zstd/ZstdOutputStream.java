@@ -122,10 +122,6 @@ public class ZstdOutputStream
     
     public void flush() throws IOException
     {
-      if (uncompressedPosition > 0)
-      {
-        writeChunk(true);
-      }
       outputStream.flush();
     }
 
@@ -187,7 +183,7 @@ public class ZstdOutputStream
             outputStream.write(compressed, 0, outputAddress - 0);
         }
 
-        partialHash.update(uncompressed, uncompressedOffset, chunkSize);
+        //partialHash.update(uncompressed, uncompressedOffset, chunkSize);
 
         // write one block at a time
         // note this is a do while to ensure that zero length input gets at least one block written
@@ -210,11 +206,11 @@ public class ZstdOutputStream
 
         if (lastChunk) {
             // write checksum
-            int hash = (int) partialHash.hash();
-            outputStream.write(hash);
-            outputStream.write(hash >> 8);
-            outputStream.write(hash >> 16);
-            outputStream.write(hash >> 24);
+            //int hash = (int) partialHash.hash();
+            //outputStream.write(hash);
+            //outputStream.write(hash >> 8);
+            //outputStream.write(hash >> 16);
+            //outputStream.write(hash >> 24);
             partialHash = null;
         }
         else {

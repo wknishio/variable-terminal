@@ -27,7 +27,7 @@ import static org.vash.vate.compatibility.VTObjects.requireNonNull;
 public class ZstdInputStream
         extends InputStream
 {
-    private static final int MIN_BUFFER_SIZE = 4096;
+    private static final int MIN_BUFFER_SIZE = 1024 * 16;
 
     private final InputStream inputStream;
     private final ZstdIncrementalFrameDecompressor decompressor = new ZstdIncrementalFrameDecompressor();
@@ -79,14 +79,15 @@ public class ZstdInputStream
         final int outputLimit = outputOffset + outputLength;
         int outputUsed = 0;
         while (outputUsed < outputLength) {
+          
             boolean enoughInput = fillInputBufferIfNecessary(decompressor.getInputRequired());
             if (!enoughInput) {
-                if (decompressor.isAtStoppingPoint()) {
-                    return outputUsed > 0 ? outputUsed : -1;
-                }
-                throw new IOException("Not enough input bytes");
+              if (decompressor.isAtStoppingPoint()) {
+                //System.out.println("lastBlock detected");
+                return outputUsed > 0 ? outputUsed : -1;
+              }
+              throw new IOException("Not enough input bytes");
             }
-
             decompressor.partialDecompress(
                     inputBuffer,
                     inputBufferOffset + 0,
@@ -97,6 +98,11 @@ public class ZstdInputStream
 
             inputBufferOffset += decompressor.getInputConsumed();
             outputUsed += decompressor.getOutputBufferUsed();
+            
+            if (decompressor.isAtStoppingPoint()) {
+              //System.out.println("lastBlock detected");
+              return outputUsed > 0 ? outputUsed : -1;
+          }
         }
         return outputUsed;
     }
@@ -120,7 +126,7 @@ public class ZstdInputStream
             inputBuffer = Arrays.copyOf(inputBuffer, max(requiredSize, MIN_BUFFER_SIZE));
         }
 
-        while (inputBufferLimit < inputBuffer.length) {
+        while (inputBufferLimit < requiredSize) {
             int readSize = inputStream.read(inputBuffer, inputBufferLimit, inputBuffer.length - inputBufferLimit);
             if (readSize < 0) {
                 break;
