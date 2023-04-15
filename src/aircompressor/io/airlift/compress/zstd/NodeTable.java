@@ -13,19 +13,20 @@
  */
 package io.airlift.compress.zstd;
 
-import java.util.Arrays;
+import org.bouncycastle.util.Arrays;
+
 
 class NodeTable
 {
     int[] count;
-    int[] parents;
+    short[] parents;
     int[] symbols;
     byte[] numberOfBits;
 
     public NodeTable(int size)
     {
         count = new int[size];
-        parents = new int[size];
+        parents = new short[size];
         symbols = new int[size];
         numberOfBits = new byte[size];
     }
@@ -33,7 +34,7 @@ class NodeTable
     public void reset()
     {
         Arrays.fill(count, 0);
-        Arrays.fill(parents, 0);
+        Arrays.fill(parents, (short) 0);
         Arrays.fill(symbols, 0);
         Arrays.fill(numberOfBits, (byte) 0);
     }

@@ -13,11 +13,14 @@
  */
 package io.airlift.compress.zstd;
 
-import java.util.Arrays;
+
+
+//import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
+
+
+import org.bouncycastle.util.Arrays;
+
 import io.airlift.compress.UnsafeUtils;
-
-
-
 
 class Histogram
 {
@@ -26,7 +29,7 @@ class Histogram
     }
 
     // TODO: count parallel heuristic for large inputs
-    private static void count(byte[] inputBase, long inputAddress, int inputSize, int[] counts)
+    private static void count(Object inputBase, long inputAddress, int inputSize, int[] counts)
     {
         long input = inputAddress;
 

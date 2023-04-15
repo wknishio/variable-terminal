@@ -14,8 +14,9 @@
 package io.airlift.compress.zstd;
 
 import static io.airlift.compress.zstd.Constants.SIZE_OF_LONG;
-import io.airlift.compress.UnsafeUtils;
 
+import io.airlift.compress.UnsafeUtils;
+//import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
 
 
 class SequenceStore
@@ -73,19 +74,20 @@ class SequenceStore
         reset();
     }
 
-    public void appendLiterals(byte[] inputBase, long inputAddress, int inputSize)
+    public void appendLiterals(Object inputBase, long inputAddress, int inputSize)
     {
-        UnsafeUtils.copyMemory(inputBase, inputAddress, literalsBuffer, 0 + literalsLength, inputSize);
+      UnsafeUtils.copyMemory(inputBase, inputAddress, literalsBuffer, 0 + literalsLength, inputSize);
+        //UnsafeUtil.copyMemory(inputBase, inputAddress, literalsBuffer, 0 + literalsLength, inputSize);
         literalsLength += inputSize;
     }
 
-    public void storeSequence(byte[] literalBase, long literalAddress, int literalLength, int offsetCode, int matchLengthBase)
+    public void storeSequence(Object literalBase, long literalAddress, int literalLength, int offsetCode, int matchLengthBase)
     {
         long input = literalAddress;
         long output = 0 + literalsLength;
         int copied = 0;
         do {
-            UnsafeUtils.putLong(literalsBuffer, output, UnsafeUtils.getLong(literalBase, input));
+          UnsafeUtils.putLong(literalsBuffer, output, UnsafeUtils.getLong(literalBase, input));
             input += SIZE_OF_LONG;
             output += SIZE_OF_LONG;
             copied += SIZE_OF_LONG;

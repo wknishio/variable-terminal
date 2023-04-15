@@ -14,11 +14,11 @@
 package io.airlift.compress.zstd;
 
 import static io.airlift.compress.zstd.Constants.SIZE_OF_LONG;
-
+//import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
 import static io.airlift.compress.zstd.Util.highestBit;
 import static io.airlift.compress.zstd.Util.verify;
-import io.airlift.compress.UnsafeUtils;
 
+import io.airlift.compress.UnsafeUtils;
 
 /**
  * Bit streams are encoded as a byte-aligned little-endian stream. Thus, bits are laid out
@@ -38,7 +38,7 @@ class BitInputStream
         return startAddress == currentAddress && bitsConsumed == Long.SIZE;
     }
 
-    static long readTail(byte[] inputBase, long inputAddress, int inputSize)
+    static long readTail(Object inputBase, long inputAddress, int inputSize)
     {
         long bits = UnsafeUtils.getByte(inputBase, inputAddress) & 0xFF;
 
@@ -80,19 +80,19 @@ class BitInputStream
      */
     public static long peekBitsFast(int bitsConsumed, long bitContainer, int numberOfBits)
     {
-      return ((bitContainer << bitsConsumed) >>> (64 - numberOfBits));
+        return ((bitContainer << bitsConsumed) >>> (64 - numberOfBits));
     }
 
     static class Initializer
     {
-        private final byte[] inputBase;
+        private final Object inputBase;
         private final long startAddress;
         private final long endAddress;
         private long bits;
         private long currentAddress;
         private int bitsConsumed;
 
-        public Initializer(byte[] inputBase, long startAddress, long endAddress)
+        public Initializer(Object inputBase, long startAddress, long endAddress)
         {
             this.inputBase = inputBase;
             this.startAddress = startAddress;
@@ -139,14 +139,14 @@ class BitInputStream
 
     static final class Loader
     {
-        private final byte[] inputBase;
+        private final Object inputBase;
         private final long startAddress;
         private long bits;
         private long currentAddress;
         private int bitsConsumed;
         private boolean overflow;
 
-        public Loader(byte[] inputBase, long startAddress, long currentAddress, long bits, int bitsConsumed)
+        public Loader(Object inputBase, long startAddress, long currentAddress, long bits, int bitsConsumed)
         {
             this.inputBase = inputBase;
             this.startAddress = startAddress;
@@ -192,7 +192,7 @@ class BitInputStream
                     currentAddress -= bytes;
                     bits = UnsafeUtils.getLong(inputBase, currentAddress);
                 }
-                bitsConsumed &= 0x7;
+                bitsConsumed &= 0x07;
             }
             else if (currentAddress - bytes < startAddress) {
                 bytes = (int) (currentAddress - startAddress);

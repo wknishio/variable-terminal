@@ -15,17 +15,18 @@ package io.airlift.compress.zstd;
 
 import static io.airlift.compress.zstd.FiniteStateEntropy.MAX_SYMBOL;
 import static io.airlift.compress.zstd.FiniteStateEntropy.MIN_TABLE_LOG;
-
+//import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
 import static io.airlift.compress.zstd.Util.highestBit;
 import static io.airlift.compress.zstd.Util.verify;
+
 import io.airlift.compress.UnsafeUtils;
 
 class FseTableReader
 {
-    private final int[] nextSymbol = new int[MAX_SYMBOL + 1];
-    private final int[] normalizedCounters = new int[MAX_SYMBOL + 1];
+    private final short[] nextSymbol = new short[MAX_SYMBOL + 1];
+    private final short[] normalizedCounters = new short[MAX_SYMBOL + 1];
 
-    public int readFseTable(FiniteStateEntropy.Table table, byte[] inputBase, long inputAddress, long inputLimit, int maxSymbol, int maxTableLog)
+    public int readFseTable(FiniteStateEntropy.Table table, Object inputBase, long inputAddress, long inputLimit, int maxSymbol, int maxTableLog)
     {
         // read table headers
         long input = inputAddress;
@@ -86,15 +87,15 @@ class FseTableReader
                 }
             }
 
-            int max = ((2 * threshold - 1) - remaining);
-            int count;
+            short max = (short) ((2 * threshold - 1) - remaining);
+            short count;
 
             if ((bitStream & (threshold - 1)) < max) {
-                count = (bitStream & (threshold - 1));
+                count = (short) (bitStream & (threshold - 1));
                 bitCount += numberOfBits - 1;
             }
             else {
-                count = (bitStream & (2 * threshold - 1));
+                count = (short) (bitStream & (2 * threshold - 1));
                 if (count >= threshold) {
                     count -= max;
                 }
@@ -152,9 +153,9 @@ class FseTableReader
 
         for (int i = 0; i < tableSize; i++) {
             byte symbol = table.symbol[i];
-            int nextState = nextSymbol[symbol]++;
+            short nextState = nextSymbol[symbol]++;
             table.numberOfBits[i] = (byte) (tableLog - highestBit(nextState));
-            table.newState[i] = ((nextState << table.numberOfBits[i]) - tableSize);
+            table.newState[i] = (short) ((nextState << table.numberOfBits[i]) - tableSize);
         }
 
         return (int) (input - inputAddress);

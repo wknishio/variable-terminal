@@ -11,13 +11,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.airlift.compress.lzo;
+package io.airlift.compress;
 
-final class LzoConstants
+public class IncompatibleJvmException
+        extends RuntimeException
 {
-    public static final int SIZE_OF_SHORT = 2;
-    public static final int SIZE_OF_INT = 4;
-    public static final int SIZE_OF_LONG = 8;
-
-    private LzoConstants() {}
+    public IncompatibleJvmException(String message)
+    {
+        super(message);
+    }
 }

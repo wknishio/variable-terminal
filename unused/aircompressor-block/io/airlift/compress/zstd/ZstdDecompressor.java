@@ -11,14 +11,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.airlift.compress.lzo;
+package io.airlift.compress.zstd;
 
 import io.airlift.compress.Decompressor;
 import io.airlift.compress.MalformedInputException;
 
-public class LzoDecompressor
+//import java.nio.Buffer;
+//import java.nio.ByteBuffer;
+
+
+public class ZstdDecompressor
         implements Decompressor
 {
+    private final ZstdFrameDecompressor decompressor = new ZstdFrameDecompressor();
+    
+    public ZstdDecompressor()
+    {
+      //decompressor.reset();
+    }
+
     
     public int decompress(byte[] input, int inputOffset, int inputLength, byte[] output, int outputOffset, int maxOutputLength)
             throws MalformedInputException
@@ -28,7 +39,12 @@ public class LzoDecompressor
         long outputAddress = 0 + outputOffset;
         long outputLimit = outputAddress + maxOutputLength;
 
-        return LzoRawDecompressor.decompress(input, inputAddress, inputLimit, output, outputAddress, outputLimit);
+        return decompressor.decompress(input, inputAddress, inputLimit, output, outputAddress, outputLimit);
     }
 
+    public static long getDecompressedSize(byte[] input, int offset, int length)
+    {
+        int baseAddress = 0 + offset;
+        return ZstdFrameDecompressor.getDecompressedSize(input, baseAddress, baseAddress + length);
+    }
 }

@@ -30,7 +30,7 @@ package io.airlift.compress;
 import static net.jpountz.util.Utils.NATIVE_BYTE_ORDER;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
+//import java.lang.reflect.Field;
 import java.nio.ByteOrder;
 
 import sun.misc.Unsafe;
@@ -185,24 +185,6 @@ public final class UnsafeUtils {
     UNSAFE.putShort(dest, SHORT_ARRAY_OFFSET + SHORT_ARRAY_SCALE * destOff, (short) value);
   }
   
-  public static void copyMemory(byte[] src, int soff, byte[] dst, int doff, int len)
-  {
-    System.arraycopy(src, soff, dst, doff, len);
-    //UNSAFE.copyMemory(src, BYTE_ARRAY_OFFSET + soff, dst, BYTE_ARRAY_OFFSET + doff, len);
-  }
-  
-  public static void copyMemory(byte[] src, long soff, byte[] dst, long doff, int len)
-  {
-    System.arraycopy(src, (int)soff, dst, (int)doff, len);
-    //UNSAFE.copyMemory(src, BYTE_ARRAY_OFFSET + soff, dst, BYTE_ARRAY_OFFSET + doff, len);
-  }
-  
-  public static void copyMemory(byte[] src, long soff, byte[] dst, long doff, long len)
-  {
-    System.arraycopy(src, (int)soff, dst, (int)doff, (int)len);
-    //UNSAFE.copyMemory(src, BYTE_ARRAY_OFFSET + soff, dst, BYTE_ARRAY_OFFSET + doff, len);
-  }
-  
   public static byte getByte(byte[] src, long srcOff)
   {
     return readByte(src, (int)srcOff);
@@ -242,4 +224,290 @@ public final class UnsafeUtils {
   {
     writeLongLE(src, (int)srcOff, value);
   }
+  
+  public static void copyMemory(byte[] src, int soff, byte[] dst, int doff, int len)
+  {
+    System.arraycopy(src, soff, dst, doff, len);
+    //UNSAFE.copyMemory(src, BYTE_ARRAY_OFFSET + soff, dst, BYTE_ARRAY_OFFSET + doff, len);
+  }
+  
+  public static void copyMemory(byte[] src, long soff, byte[] dst, long doff, int len)
+  {
+    System.arraycopy(src, (int)soff, dst, (int)doff, len);
+    //UNSAFE.copyMemory(src, BYTE_ARRAY_OFFSET + soff, dst, BYTE_ARRAY_OFFSET + doff, len);
+  }
+  
+  public static void copyMemory(byte[] src, long soff, byte[] dst, long doff, long len)
+  {
+    System.arraycopy(src, (int)soff, dst, (int)doff, (int)len);
+    //UNSAFE.copyMemory(src, BYTE_ARRAY_OFFSET + soff, dst, BYTE_ARRAY_OFFSET + doff, len);
+  }
+  
+  public static byte readByte(Object src, int srcOff) {
+    if (src instanceof byte[])
+    {
+      return readByte((byte[]) src, srcOff);
+    }
+    return UNSAFE.getByte(src, (long)srcOff);
+  }
+
+  public static void writeByte(Object src, int srcOff, byte value) {
+    if (src instanceof byte[])
+    {
+      writeByte((byte[]) src, srcOff, value);
+      return;
+    }
+    UNSAFE.putByte(src, (long)srcOff, (byte) value);
+  }
+
+  public static void writeByte(Object src, int srcOff, int value) {
+    if (src instanceof byte[])
+    {
+      writeByte((byte[]) src, srcOff, value);
+      return;
+    }
+    writeByte(src, srcOff, (byte) value);
+  }
+
+  public static long readLong(Object src, int srcOff) {
+    if (src instanceof byte[])
+    {
+      return readLong((byte[]) src, srcOff);
+    }
+    return UNSAFE.getLong(src, (long)srcOff);
+  }
+
+  public static long readLongLE(Object src, int srcOff) {
+    if (src instanceof byte[])
+    {
+      return readLongLE((byte[]) src, srcOff);
+    }
+    long i = readLong(src, srcOff);
+    if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN) {
+      i = Long.reverseBytes(i);
+    }
+    return i;
+  }
+
+  public static void writeLong(Object dest, int destOff, long value) {
+    if (dest instanceof byte[])
+    {
+      writeLong((byte[]) dest, destOff, value);
+      return;
+    }
+    UNSAFE.putLong(dest, (long)destOff, value);
+  }
+    
+  public static void writeLongLE(Object dest, int destOff, long value) {
+    if (dest instanceof byte[])
+    {
+      writeLongLE((byte[]) dest, destOff, value);
+      return;
+    }
+    if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN)
+    {
+      writeIntLE(dest, destOff, (int) value);
+      writeIntLE(dest, destOff + 4, (int) (value >>> 32));
+    }
+    else
+    {
+      writeLong(dest, destOff, value);
+    }
+  }
+
+  public static int readInt(Object src, int srcOff) {
+    if (src instanceof byte[])
+    {
+      return readInt((byte[]) src, srcOff);
+    }
+    return UNSAFE.getInt(src, (long)srcOff);
+  }
+
+  public static int readIntLE(Object src, int srcOff) {
+    if (src instanceof byte[])
+    {
+      return readIntLE((byte[]) src, srcOff);
+    }
+    int i = readInt(src, srcOff);
+    if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN) {
+      i = Integer.reverseBytes(i);
+    }
+    return i;
+  }
+
+  public static void writeInt(Object dest, int destOff, int value) {
+    if (dest instanceof byte[])
+    {
+      writeInt((byte[]) dest, destOff, value);
+      return;
+    }
+    UNSAFE.putInt(dest, (long)destOff, value);
+  }
+  
+  public static void writeIntLE(Object dest, int destOff, int value) {
+    if (dest instanceof byte[])
+    {
+      writeIntLE((byte[]) dest, destOff, value);
+      return;
+    }
+    if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN)
+    {
+      writeShortLE(dest, destOff, (short) value);
+      writeShortLE(dest, destOff + 2, (short) (value >>> 16));
+    }
+    else
+    {
+      writeInt(dest, destOff, value);
+    }
+  }
+
+  public static int readShort(Object src, int srcOff) {
+    if (src instanceof byte[])
+    {
+      return readShort((byte[]) src, srcOff);
+    }
+    return UNSAFE.getShort(src, (long)srcOff);
+  }
+
+  public static int readShortLE(Object src, int srcOff) {
+    if (src instanceof byte[])
+    {
+      return readShortLE((byte[]) src, srcOff);
+    }
+    int s = readShort(src, srcOff);
+    if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN) {
+      s = Integer.reverseBytes(s);
+    }
+    return s & 0xFFFF;
+  }
+
+  public static void writeShort(Object dest, int destOff, int value) {
+    if (dest instanceof byte[])
+    {
+      writeShort((byte[]) dest, destOff, value);
+      return;
+    }
+    UNSAFE.putShort(dest, (long)destOff, (short)value);
+  }
+
+  public static void writeShortLE(Object dest, int destOff, int value) {
+    if (dest instanceof byte[])
+    {
+      writeShortLE((byte[]) dest, destOff, value);
+      return;
+    }
+    if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN)
+    {
+      writeByte(dest, destOff, (byte) value);
+      writeByte(dest, destOff + 1, (byte) (value >>> 8));
+    }
+    else
+    {
+      writeShort(dest, destOff, value);
+    }
+  }
+  
+  public static byte getByte(Object src, long srcOff)
+  {
+    if (src instanceof byte[])
+    {
+      return getByte((byte[]) src, srcOff);
+    }
+    return readByte(src, (int)srcOff);
+  }
+  
+  public static void putByte(Object src, long srcOff, int value)
+  {
+    if (src instanceof byte[])
+    {
+      writeByte((byte[]) src, (int)srcOff, value);
+      return;
+    }
+    writeByte(src, (int)srcOff, value);
+  }
+  
+  public static int getShort(Object src, long srcOff)
+  {
+    if (src instanceof byte[])
+    {
+      return getShort((byte[]) src, (int)srcOff); 
+    }
+    return readShortLE(src, (int)srcOff);
+  }
+  
+  public static void putShort(Object src, long srcOff, int value)
+  {
+    if (src instanceof byte[])
+    {
+      putShort((byte[]) src, srcOff, value);
+      return;
+    }
+    writeShortLE(src, (int)srcOff, value);
+  }
+  
+  public static int getInt(Object src, long srcOff)
+  {
+    if (src instanceof byte[])
+    {
+      return getInt((byte[]) src, srcOff);  
+    }
+    return readIntLE(src, (int)srcOff);
+  }
+  
+  public static void putInt(Object src, long srcOff, int value)
+  {
+    if (src instanceof byte[])
+    {
+      putInt((byte[]) src, srcOff, value);
+      return;
+    }
+    writeIntLE(src, (int)srcOff, value);
+  }
+  
+  public static long getLong(Object src, long srcOff)
+  {
+    if (src instanceof byte[])
+    {
+      return getLong((byte[]) src, srcOff);
+    }
+    return readLongLE(src, (int)srcOff);
+  }
+  
+  public static void putLong(Object src, long srcOff, long value)
+  {
+    if (src instanceof byte[])
+    {
+      putLong((byte[]) src, srcOff, value);
+      return;
+    }
+    writeLongLE(src, (int)srcOff, value);
+  }
+  
+  public static void copyMemory(Object src, int soff, Object dst, int doff, int len)
+  {
+    if (src instanceof byte[])
+    {
+      System.arraycopy(src, soff, dst, doff, len);
+    }
+    //UNSAFE.copyMemory(src, BYTE_ARRAY_OFFSET + soff, dst, BYTE_ARRAY_OFFSET + doff, len);
+  }
+  
+  public static void copyMemory(Object src, long soff, Object dst, long doff, int len)
+  {
+    if (src instanceof byte[])
+    {
+      System.arraycopy(src, (int)soff, dst, (int)doff, len);
+    }
+    //UNSAFE.copyMemory(src, BYTE_ARRAY_OFFSET + soff, dst, BYTE_ARRAY_OFFSET + doff, len);
+  }
+  
+  public static void copyMemory(Object src, long soff, Object dst, long doff, long len)
+  {
+    if (src instanceof byte[])
+    {
+      System.arraycopy(src, (int)soff, dst, (int)doff, (int)len);
+    }
+    //UNSAFE.copyMemory(src, BYTE_ARRAY_OFFSET + soff, dst, BYTE_ARRAY_OFFSET + doff, len);
+  }
+  
 }

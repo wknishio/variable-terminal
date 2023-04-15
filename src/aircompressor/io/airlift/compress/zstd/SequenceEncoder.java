@@ -28,21 +28,22 @@ import static io.airlift.compress.zstd.Constants.SEQUENCE_ENCODING_COMPRESSED;
 import static io.airlift.compress.zstd.Constants.SEQUENCE_ENCODING_RLE;
 import static io.airlift.compress.zstd.Constants.SIZE_OF_SHORT;
 import static io.airlift.compress.zstd.FiniteStateEntropy.optimalTableLog;
-
+//import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
 import static io.airlift.compress.zstd.Util.checkArgument;
+
 import io.airlift.compress.UnsafeUtils;
 
 class SequenceEncoder
 {
     private static final int DEFAULT_LITERAL_LENGTH_NORMALIZED_COUNTS_LOG = 6;
-    private static final int[] DEFAULT_LITERAL_LENGTH_NORMALIZED_COUNTS = {4, 3, 2, 2, 2, 2, 2, 2,
+    private static final short[] DEFAULT_LITERAL_LENGTH_NORMALIZED_COUNTS = {4, 3, 2, 2, 2, 2, 2, 2,
                                                                              2, 2, 2, 2, 2, 1, 1, 1,
                                                                              2, 2, 2, 2, 2, 2, 2, 2,
                                                                              2, 3, 2, 1, 1, 1, 1, 1,
                                                                              -1, -1, -1, -1};
 
     private static final int DEFAULT_MATCH_LENGTH_NORMALIZED_COUNTS_LOG = 6;
-    private static final int[] DEFAULT_MATCH_LENGTH_NORMALIZED_COUNTS = {1, 4, 3, 2, 2, 2, 2, 2,
+    private static final short[] DEFAULT_MATCH_LENGTH_NORMALIZED_COUNTS = {1, 4, 3, 2, 2, 2, 2, 2,
                                                                            2, 1, 1, 1, 1, 1, 1, 1,
                                                                            1, 1, 1, 1, 1, 1, 1, 1,
                                                                            1, 1, 1, 1, 1, 1, 1, 1,
@@ -51,7 +52,7 @@ class SequenceEncoder
                                                                            -1, -1, -1, -1, -1};
 
     private static final int DEFAULT_OFFSET_NORMALIZED_COUNTS_LOG = 5;
-    private static final int[] DEFAULT_OFFSET_NORMALIZED_COUNTS = {1, 1, 1, 1, 1, 1, 2, 2,
+    private static final short[] DEFAULT_OFFSET_NORMALIZED_COUNTS = {1, 1, 1, 1, 1, 1, 2, 2,
                                                                      2, 1, 1, 1, 1, 1, 1, 1,
                                                                      1, 1, 1, 1, 1, 1, 1, 1,
                                                                      -1, -1, -1, -1, -1};
@@ -64,7 +65,7 @@ class SequenceEncoder
     {
     }
 
-    public static int compressSequences(byte[] outputBase, final long outputAddress, int outputSize, SequenceStore sequences, CompressionParameters.Strategy strategy, SequenceEncodingContext workspace)
+    public static int compressSequences(Object outputBase, final long outputAddress, int outputSize, SequenceStore sequences, CompressionParameters.Strategy strategy, SequenceEncodingContext workspace)
     {
         long output = outputAddress;
         long outputLimit = outputAddress + outputSize;
@@ -73,18 +74,18 @@ class SequenceEncoder
 
         int sequenceCount = sequences.sequenceCount;
         if (sequenceCount < 0x7F) {
-            UnsafeUtils.putByte(outputBase, output, (byte) sequenceCount);
+          UnsafeUtils.putByte(outputBase, output, (byte) sequenceCount);
             output++;
         }
         else if (sequenceCount < LONG_NUMBER_OF_SEQUENCES) {
-            UnsafeUtils.putByte(outputBase, output, (byte) (sequenceCount >>> 8 | 0x80));
-            UnsafeUtils.putByte(outputBase, output + 1, (byte) sequenceCount);
+          UnsafeUtils.putByte(outputBase, output, (byte) (sequenceCount >>> 8 | 0x80));
+          UnsafeUtils.putByte(outputBase, output + 1, (byte) sequenceCount);
             output += SIZE_OF_SHORT;
         }
         else {
-            UnsafeUtils.putByte(outputBase, output, (byte) 0xFF);
+          UnsafeUtils.putByte(outputBase, output, (byte) 0xFF);
             output++;
-            UnsafeUtils.putShort(outputBase, output, (sequenceCount - LONG_NUMBER_OF_SEQUENCES));
+            UnsafeUtils.putShort(outputBase, output, (short) (sequenceCount - LONG_NUMBER_OF_SEQUENCES));
             output += SIZE_OF_SHORT;
         }
 
@@ -109,7 +110,7 @@ class SequenceEncoder
         FseCompressionTable literalLengthTable;
         switch (literalsLengthEncodingType) {
             case SEQUENCE_ENCODING_RLE:
-                UnsafeUtils.putByte(outputBase, output, sequences.literalLengthCodes[0]);
+              UnsafeUtils.putByte(outputBase, output, sequences.literalLengthCodes[0]);
                 output++;
                 workspace.literalLengthTable.initializeRleTable(maxSymbol);
                 literalLengthTable = workspace.literalLengthTable;
@@ -148,7 +149,7 @@ class SequenceEncoder
         FseCompressionTable offsetCodeTable;
         switch (offsetEncodingType) {
             case SEQUENCE_ENCODING_RLE:
-                UnsafeUtils.putByte(outputBase, output, sequences.offsetCodes[0]);
+              UnsafeUtils.putByte(outputBase, output, sequences.offsetCodes[0]);
                 output++;
                 workspace.offsetCodeTable.initializeRleTable(maxSymbol);
                 offsetCodeTable = workspace.offsetCodeTable;
@@ -184,7 +185,7 @@ class SequenceEncoder
         FseCompressionTable matchLengthTable;
         switch (matchLengthEncodingType) {
             case SEQUENCE_ENCODING_RLE:
-                UnsafeUtils.putByte(outputBase, output, sequences.matchLengthCodes[0]);
+              UnsafeUtils.putByte(outputBase, output, sequences.matchLengthCodes[0]);
                 output++;
                 workspace.matchLengthTable.initializeRleTable(maxSymbol);
                 matchLengthTable = workspace.matchLengthTable;
@@ -218,7 +219,7 @@ class SequenceEncoder
         return (int) (output - outputAddress);
     }
 
-    private static int buildCompressionTable(FseCompressionTable table, byte[] outputBase, long output, long outputLimit, int sequenceCount, int maxTableLog, byte[] codes, int[] counts, int maxSymbol, int[] normalizedCounts)
+    private static int buildCompressionTable(FseCompressionTable table, Object outputBase, long output, long outputLimit, int sequenceCount, int maxTableLog, byte[] codes, int[] counts, int maxSymbol, short[] normalizedCounts)
     {
         int tableLog = optimalTableLog(maxTableLog, sequenceCount, maxSymbol);
 
@@ -236,7 +237,7 @@ class SequenceEncoder
     }
 
     private static int encodeSequences(
-            byte[] outputBase,
+            Object outputBase,
             long output,
             long outputLimit,
             FseCompressionTable matchLengthTable,
@@ -325,7 +326,7 @@ class SequenceEncoder
             return SEQUENCE_ENCODING_RLE;
         }
 
-        if (strategy.ordinal() < CompressionParameters.Strategy.LAZY.ordinal()) { // TODO: more robust check. Maybe encapsulate in strategy byte[]s
+        if (strategy.ordinal() < CompressionParameters.Strategy.LAZY.ordinal()) { // TODO: more robust check. Maybe encapsulate in strategy objects
             if (isDefaultTableAllowed) {
                 int factor = 10 - strategy.ordinal(); // TODO more robust. Move it to strategy
                 int baseLog = 3;

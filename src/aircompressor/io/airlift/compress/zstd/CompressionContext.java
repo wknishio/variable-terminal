@@ -14,11 +14,12 @@
 package io.airlift.compress.zstd;
 
 import static io.airlift.compress.zstd.Constants.MAX_BLOCK_SIZE;
+import static io.airlift.compress.zstd.Util.checkArgument;
 
 class CompressionContext
 {
+    public final CompressionParameters parameters;
     public final RepeatedOffsets offsets = new RepeatedOffsets();
-    
     public final BlockCompressionState blockCompressionState;
     public final SequenceStore sequenceStore;
 
@@ -28,7 +29,9 @@ class CompressionContext
 
     public CompressionContext(CompressionParameters parameters, long baseAddress, int inputSize)
     {
-        int windowSize = Math.max(1, Math.min(1 << parameters.getWindowLog(), inputSize));
+        this.parameters = parameters;
+
+        int windowSize = Math.max(1, Math.min(parameters.getWindowSize(), inputSize));
         int blockSize = Math.min(MAX_BLOCK_SIZE, windowSize);
         int divider = (parameters.getSearchLength() == 3) ? 3 : 4;
 
@@ -38,16 +41,16 @@ class CompressionContext
 
         blockCompressionState = new BlockCompressionState(parameters, baseAddress);
     }
-    
+
+    public void slideWindow(int slideWindowSize)
+    {
+        checkArgument(slideWindowSize > 0, "slideWindowSize must be positive");
+        blockCompressionState.slideWindow(slideWindowSize);
+    }
+
     public void commit()
     {
         offsets.commit();
         huffmanContext.saveChanges();
-    }
-    
-    public void resetBaseAddress(long baseAddress)
-    {
-      blockCompressionState.setBaseAddress(baseAddress);
-      blockCompressionState.reset();
     }
 }

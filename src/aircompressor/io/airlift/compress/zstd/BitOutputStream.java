@@ -14,8 +14,9 @@
 package io.airlift.compress.zstd;
 
 import static io.airlift.compress.zstd.Constants.SIZE_OF_LONG;
-
+//import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
 import static io.airlift.compress.zstd.Util.checkArgument;
+
 import io.airlift.compress.UnsafeUtils;
 
 class BitOutputStream
@@ -28,7 +29,7 @@ class BitOutputStream
             0xFFFFFF, 0x1FFFFFF, 0x3FFFFFF, 0x7FFFFFF, 0xFFFFFFF, 0x1FFFFFFF,
             0x3FFFFFFF, 0x7FFFFFFF}; // up to 31 bits
 
-    private final byte[] outputBase;
+    private final Object outputBase;
     private final long outputAddress;
     private final long outputLimit;
 
@@ -36,7 +37,7 @@ class BitOutputStream
     private int bitCount;
     private long currentAddress;
 
-    public BitOutputStream(byte[] outputBase, long outputAddress, int outputSize)
+    public BitOutputStream(Object outputBase, long outputAddress, int outputSize)
     {
         checkArgument(outputSize >= SIZE_OF_LONG, "Output buffer too small");
 
@@ -58,7 +59,7 @@ class BitOutputStream
      */
     public void addBitsFast(int value, int bits)
     {
-        container |= (value & 0xFFFFFFFFL) << bitCount;
+        container |= ((long) value) << bitCount;
         bitCount += bits;
     }
 

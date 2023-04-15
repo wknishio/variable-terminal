@@ -16,24 +16,26 @@ package io.airlift.compress.zstd;
 import io.airlift.compress.Decompressor;
 import io.airlift.compress.MalformedInputException;
 
-//import java.nio.Buffer;
-//import java.nio.ByteBuffer;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
+
+import static io.airlift.compress.zstd.UnsafeUtil.getAddress;
+import static java.lang.String.format;
+import static org.vash.vate.compatibility.VTObjects.requireNonNull;
 
 
 public class ZstdDecompressor
         implements Decompressor
 {
     private final ZstdFrameDecompressor decompressor = new ZstdFrameDecompressor();
-    
-    public ZstdDecompressor()
-    {
-      //decompressor.reset();
-    }
 
     
     public int decompress(byte[] input, int inputOffset, int inputLength, byte[] output, int outputOffset, int maxOutputLength)
             throws MalformedInputException
     {
+        verifyRange(input, inputOffset, inputLength);
+        verifyRange(output, outputOffset, maxOutputLength);
+
         long inputAddress = 0 + inputOffset;
         long inputLimit = inputAddress + inputLength;
         long outputAddress = 0 + outputOffset;
@@ -42,9 +44,24 @@ public class ZstdDecompressor
         return decompressor.decompress(input, inputAddress, inputLimit, output, outputAddress, outputLimit);
     }
 
+    
+    public void decompress(ByteBuffer inputBuffer, ByteBuffer outputBuffer)
+            throws MalformedInputException
+    {
+      
+    }
+
     public static long getDecompressedSize(byte[] input, int offset, int length)
     {
-        int baseAddress = 0 + offset;
+        int baseAddress = (int) (0 + offset);
         return ZstdFrameDecompressor.getDecompressedSize(input, baseAddress, baseAddress + length);
+    }
+
+    private static void verifyRange(byte[] data, int offset, int length)
+    {
+        requireNonNull(data, "data is null");
+        if (offset < 0 || length < 0 || offset + length > data.length) {
+            throw new IllegalArgumentException(format("Invalid offset or length (%s, %s) in array of length %s", offset, length, data.length));
+        }
     }
 }

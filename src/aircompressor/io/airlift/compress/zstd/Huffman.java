@@ -13,15 +13,19 @@
  */
 package io.airlift.compress.zstd;
 
-import java.util.Arrays;
-import io.airlift.compress.UnsafeUtils;
+
+
 import static io.airlift.compress.zstd.BitInputStream.isEndOfStream;
 import static io.airlift.compress.zstd.BitInputStream.peekBitsFast;
 import static io.airlift.compress.zstd.Constants.SIZE_OF_INT;
 import static io.airlift.compress.zstd.Constants.SIZE_OF_SHORT;
-
+//import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
 import static io.airlift.compress.zstd.Util.isPowerOf2;
 import static io.airlift.compress.zstd.Util.verify;
+
+import org.bouncycastle.util.Arrays;
+
+import io.airlift.compress.UnsafeUtils;
 
 class Huffman
 {
@@ -49,7 +53,7 @@ class Huffman
         return tableLog != -1;
     }
 
-    public int readTable(final byte[] inputBase, final long inputAddress, final int size)
+    public int readTable(final Object inputBase, final long inputAddress, final int size)
     {
         Arrays.fill(ranks, 0);
         long input = inputAddress;
@@ -127,7 +131,7 @@ class Huffman
         return inputSize + 1;
     }
 
-    public void decodeSingleStream(final byte[] inputBase, final long inputAddress, final long inputLimit, final byte[] outputBase, final long outputAddress, final long outputLimit)
+    public void decodeSingleStream(final Object inputBase, final long inputAddress, final long inputLimit, final Object outputBase, final long outputAddress, final long outputLimit)
     {
         BitInputStream.Initializer initializer = new BitInputStream.Initializer(inputBase, inputAddress, inputLimit);
         initializer.initialize();
@@ -163,7 +167,7 @@ class Huffman
         decodeTail(inputBase, inputAddress, currentAddress, bitsConsumed, bits, outputBase, output, outputLimit);
     }
 
-    public void decode4Streams(final byte[] inputBase, final long inputAddress, final long inputLimit, final byte[] outputBase, final long outputAddress, final long outputLimit)
+    public void decode4Streams(final Object inputBase, final long inputAddress, final long inputLimit, final Object outputBase, final long outputAddress, final long outputLimit)
     {
         verify(inputLimit - inputAddress >= 10, inputAddress, "Input is corrupted"); // jump table + 1 byte per stream
 
@@ -286,7 +290,7 @@ class Huffman
         decodeTail(inputBase, start4, stream4currentAddress, stream4bitsConsumed, stream4bits, outputBase, output4, outputLimit);
     }
 
-    private void decodeTail(final byte[] inputBase, final long startAddress, long currentAddress, int bitsConsumed, long bits, final byte[] outputBase, long outputAddress, final long outputLimit)
+    private void decodeTail(final Object inputBase, final long startAddress, long currentAddress, int bitsConsumed, long bits, final Object outputBase, long outputAddress, final long outputLimit)
     {
         int tableLog = this.tableLog;
         byte[] numbersOfBits = this.numbersOfBits;
@@ -314,7 +318,7 @@ class Huffman
         verify(isEndOfStream(startAddress, currentAddress, bitsConsumed), startAddress, "Bit stream is not fully consumed");
     }
 
-    private static int decodeSymbol(byte[] outputBase, long outputAddress, long bitContainer, int bitsConsumed, int tableLog, byte[] numbersOfBits, byte[] symbols)
+    private static int decodeSymbol(Object outputBase, long outputAddress, long bitContainer, int bitsConsumed, int tableLog, byte[] numbersOfBits, byte[] symbols)
     {
         int value = (int) peekBitsFast(bitsConsumed, bitContainer, tableLog);
         UnsafeUtils.putByte(outputBase, outputAddress, symbols[value]);

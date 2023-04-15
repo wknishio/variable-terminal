@@ -1471,7 +1471,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       }
       catch (Throwable e)
       {
-        // e.printStackTrace();
+        //e.printStackTrace();
         // e.printStackTrace(VTConsole.getSystemOut());
         stopped = true;
         break;

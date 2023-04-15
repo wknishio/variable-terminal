@@ -17,9 +17,10 @@ import static io.airlift.compress.zstd.BitInputStream.peekBits;
 import static io.airlift.compress.zstd.Constants.SIZE_OF_INT;
 import static io.airlift.compress.zstd.Constants.SIZE_OF_LONG;
 import static io.airlift.compress.zstd.Constants.SIZE_OF_SHORT;
-
+//import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
 import static io.airlift.compress.zstd.Util.checkArgument;
 import static io.airlift.compress.zstd.Util.verify;
+
 import io.airlift.compress.UnsafeUtils;
 
 
@@ -36,9 +37,9 @@ class FiniteStateEntropy
     {
     }
 
-    public static int decompress(FiniteStateEntropy.Table table, final byte[] inputBase, final long inputAddress, final long inputLimit, byte[] outputBuffer)
+    public static int decompress(FiniteStateEntropy.Table table, final Object inputBase, final long inputAddress, final long inputLimit, byte[] outputBuffer)
     {
-        final byte[] outputBase = outputBuffer;
+        final Object outputBase = outputBuffer;
         final long outputAddress = 0;
         final long outputLimit = outputAddress + outputBuffer.length;
 
@@ -126,7 +127,7 @@ class FiniteStateEntropy
             currentAddress = loader.getCurrentAddress();
 
             if (loader.isOverflow()) {
-                UnsafeUtils.putByte(outputBase, output++, symbols[state2]);
+              UnsafeUtils.putByte(outputBase, output++, symbols[state2]);
                 break;
             }
 
@@ -143,7 +144,7 @@ class FiniteStateEntropy
             currentAddress = loader.getCurrentAddress();
 
             if (loader.isOverflow()) {
-                UnsafeUtils.putByte(outputBase, output++, symbols[state1]);
+              UnsafeUtils.putByte(outputBase, output++, symbols[state1]);
                 break;
             }
         }
@@ -151,12 +152,12 @@ class FiniteStateEntropy
         return (int) (output - outputAddress);
     }
 
-    public static int compress(byte[] outputBase, long outputAddress, int outputSize, byte[] input, int inputSize, FseCompressionTable table)
+    public static int compress(Object outputBase, long outputAddress, int outputSize, byte[] input, int inputSize, FseCompressionTable table)
     {
         return compress(outputBase, outputAddress, outputSize, input, 0, inputSize, table);
     }
 
-    public static int compress(byte[] outputBase, long outputAddress, int outputSize, byte[] inputBase, long inputAddress, int inputSize, FseCompressionTable table)
+    public static int compress(Object outputBase, long outputAddress, int outputSize, Object inputBase, long inputAddress, int inputSize, FseCompressionTable table)
     {
         checkArgument(outputSize >= SIZE_OF_LONG, "Output buffer too small");
 
@@ -255,7 +256,7 @@ class FiniteStateEntropy
         return result;
     }
 
-    public static int normalizeCounts(int[] normalizedCounts, int tableLog, int[] counts, int total, int maxSymbol)
+    public static int normalizeCounts(short[] normalizedCounts, int tableLog, int[] counts, int total, int maxSymbol)
     {
         checkArgument(tableLog >= MIN_TABLE_LOG, "Unsupported FSE table size");
         checkArgument(tableLog <= MAX_TABLE_LOG, "FSE table size too large");
@@ -268,7 +269,7 @@ class FiniteStateEntropy
         int stillToDistribute = 1 << tableLog;
 
         int largest = 0;
-        int largestProbability = 0;
+        short largestProbability = 0;
         int lowThreshold = total >>> tableLog;
 
         for (int symbol = 0; symbol <= maxSymbol; symbol++) {
@@ -284,10 +285,10 @@ class FiniteStateEntropy
                 stillToDistribute--;
             }
             else {
-                int probability = (int) ((counts[symbol] * step) >>> scale);
+                short probability = (short) ((counts[symbol] * step) >>> scale);
                 if (probability < 8) {
                     long restToBeat = vstep * REST_TO_BEAT[probability];
-                    long delta = counts[symbol] * step - ((probability & 0xFFFFL) << scale);
+                    long delta = counts[symbol] * step - (((long) probability) << scale);
                     if (delta > restToBeat) {
                         probability++;
                     }
@@ -307,13 +308,13 @@ class FiniteStateEntropy
             normalizeCounts2(normalizedCounts, tableLog, counts, total, maxSymbol);
         }
         else {
-            normalizedCounts[largest] += stillToDistribute;
+            normalizedCounts[largest] += (short) stillToDistribute;
         }
 
         return tableLog;
     }
 
-    private static int normalizeCounts2(int[] normalizedCounts, int tableLog, int[] counts, int total, int maxSymbol)
+    private static int normalizeCounts2(short[] normalizedCounts, int tableLog, int[] counts, int total, int maxSymbol)
     {
         int distributed = 0;
 
@@ -367,7 +368,7 @@ class FiniteStateEntropy
                     maxCount = counts[i];
                 }
             }
-            normalizedCounts[maxValue] += toDistribute;
+            normalizedCounts[maxValue] += (short) toDistribute;
             return 0;
         }
 
@@ -397,7 +398,7 @@ class FiniteStateEntropy
                 if (weight < 1) {
                     throw new AssertionError();
                 }
-                normalizedCounts[i] = weight;
+                normalizedCounts[i] = (short) weight;
                 tmpTotal = end;
             }
         }
@@ -405,7 +406,7 @@ class FiniteStateEntropy
         return 0;
     }
 
-    public static int writeNormalizedCounts(byte[] outputBase, long outputAddress, int outputSize, int[] normalizedCounts, int maxSymbol, int tableLog)
+    public static int writeNormalizedCounts(Object outputBase, long outputAddress, int outputSize, short[] normalizedCounts, int maxSymbol, int tableLog)
     {
         checkArgument(tableLog <= MAX_TABLE_LOG, "FSE table too large");
         checkArgument(tableLog >= MIN_TABLE_LOG, "FSE table too small");
@@ -448,7 +449,7 @@ class FiniteStateEntropy
                     bitStream |= (0xFFFF << bitCount);
                     checkArgument(output + SIZE_OF_SHORT <= outputLimit, "Output buffer too small");
 
-                    UnsafeUtils.putShort(outputBase, output, bitStream);
+                    UnsafeUtils.putShort(outputBase, output, (short) bitStream);
                     output += SIZE_OF_SHORT;
 
                     // flush now, so no need to increase bitCount by 16
@@ -470,7 +471,7 @@ class FiniteStateEntropy
                 if (bitCount > 16) {
                     checkArgument(output + SIZE_OF_SHORT <= outputLimit, "Output buffer too small");
 
-                    UnsafeUtils.putShort(outputBase, output, bitStream);
+                    UnsafeUtils.putShort(outputBase, output, (short) bitStream);
                     output += SIZE_OF_SHORT;
 
                     bitStream >>>= Short.SIZE;
@@ -503,7 +504,7 @@ class FiniteStateEntropy
             if (bitCount > 16) {
                 checkArgument(output + SIZE_OF_SHORT <= outputLimit, "Output buffer too small");
 
-                UnsafeUtils.putShort(outputBase, output, bitStream);
+                UnsafeUtils.putShort(outputBase, output, (short) bitStream);
                 output += SIZE_OF_SHORT;
 
                 bitStream >>>= Short.SIZE;
@@ -513,7 +514,7 @@ class FiniteStateEntropy
 
         // flush remaining bitstream
         checkArgument(output + SIZE_OF_SHORT <= outputLimit, "Output buffer too small");
-        UnsafeUtils.putShort(outputBase, output, bitStream);
+        UnsafeUtils.putShort(outputBase, output, (short) bitStream);
         output += (bitCount + 7) / 8;
 
         checkArgument(symbol <= maxSymbol + 1, "Error"); // TODO

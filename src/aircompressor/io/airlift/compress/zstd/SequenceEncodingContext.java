@@ -26,5 +26,5 @@ class SequenceEncodingContext
     public final FseCompressionTable matchLengthTable = new FseCompressionTable(Constants.MATCH_LENGTH_TABLE_LOG, MAX_MATCH_LENGTH_SYMBOL);
 
     public final int[] counts = new int[MAX_SEQUENCES + 1];
-    public final int[] normalizedCounts = new int[MAX_SEQUENCES + 1];
+    public final short[] normalizedCounts = new short[MAX_SEQUENCES + 1];
 }

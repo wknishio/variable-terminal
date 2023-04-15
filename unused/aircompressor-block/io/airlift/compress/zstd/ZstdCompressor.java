@@ -11,24 +11,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.airlift.compress.lzo;
+package io.airlift.compress.zstd;
 
 import io.airlift.compress.Compressor;
 
-import static io.airlift.compress.lzo.LzoRawCompressor.MAX_TABLE_SIZE;
+//import java.nio.Buffer;
+//import java.nio.ByteBuffer;
 
-/**
- * This class is not thread-safe
- */
-public class LzoCompressor
+import static io.airlift.compress.zstd.Constants.MAX_BLOCK_SIZE;
+
+
+public class ZstdCompressor
         implements Compressor
 {
-    private final int[] table = new int[MAX_TABLE_SIZE];
-
+    private CompressionParameters parameters;
+    private CompressionContext context;
+  
+    public ZstdCompressor()
+    {
+      parameters = CompressionParameters.compute(CompressionParameters.DEFAULT_COMPRESSION_LEVEL + 1, MAX_BLOCK_SIZE);
+      context = new CompressionContext(parameters, 0, MAX_BLOCK_SIZE);
+    }
     
     public int maxCompressedLength(int uncompressedSize)
     {
-        return LzoRawCompressor.maxCompressedLength(uncompressedSize);
+        int result = uncompressedSize + (uncompressedSize >>> 8);
+
+        if (uncompressedSize < MAX_BLOCK_SIZE) {
+            result += (MAX_BLOCK_SIZE - uncompressedSize) >>> 11;
+        }
+
+        return result;
     }
 
     
@@ -37,6 +50,6 @@ public class LzoCompressor
         long inputAddress = 0 + inputOffset;
         long outputAddress = 0 + outputOffset;
 
-        return LzoRawCompressor.compress(input, inputAddress, inputLength, output, outputAddress, maxOutputLength, table);
+        return ZstdFrameCompressor.compress(input, inputAddress, inputAddress + inputLength, output, outputAddress, outputAddress + maxOutputLength, CompressionParameters.DEFAULT_COMPRESSION_LEVEL + 1, parameters, context);
     }
 }

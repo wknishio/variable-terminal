@@ -17,7 +17,7 @@ import static io.airlift.compress.zstd.FiniteStateEntropy.MAX_SYMBOL;
 
 class FseCompressionTable
 {
-    private final int[] nextState;
+    private final short[] nextState;
     private final int[] deltaNumberOfBits;
     private final int[] deltaFindState;
 
@@ -25,12 +25,12 @@ class FseCompressionTable
 
     public FseCompressionTable(int maxTableLog, int maxSymbol)
     {
-        nextState = new int[1 << maxTableLog];
+        nextState = new short[1 << maxTableLog];
         deltaNumberOfBits = new int[maxSymbol + 1];
         deltaFindState = new int[maxSymbol + 1];
     }
 
-    public static FseCompressionTable newInstance(int[] normalizedCounts, int maxSymbol, int tableLog)
+    public static FseCompressionTable newInstance(short[] normalizedCounts, int maxSymbol, int tableLog)
     {
         FseCompressionTable result = new FseCompressionTable(tableLog, maxSymbol);
         result.initialize(normalizedCounts, maxSymbol, tableLog);
@@ -49,7 +49,7 @@ class FseCompressionTable
         deltaNumberOfBits[symbol] = 0;
     }
 
-    public void initialize(int[] normalizedCounts, int maxSymbol, int tableLog)
+    public void initialize(short[] normalizedCounts, int maxSymbol, int tableLog)
     {
         int tableSize = 1 << tableLog;
 
@@ -86,7 +86,7 @@ class FseCompressionTable
         // Build table
         for (int i = 0; i < tableSize; i++) {
             byte symbol = table[i];
-            nextState[cumulative[symbol]++] = (tableSize + i);  /* TableU16 : sorted by symbol order; gives next state value */
+            nextState[cumulative[symbol]++] = (short) (tableSize + i);  /* TableU16 : sorted by symbol order; gives next state value */
         }
 
         // Build symbol transformation table
@@ -138,7 +138,7 @@ class FseCompressionTable
         return (tableSize >>> 1) + (tableSize >>> 3) + 3;
     }
 
-    public static int spreadSymbols(int[] normalizedCounters, int maxSymbolValue, int tableSize, int highThreshold, byte[] symbols)
+    public static int spreadSymbols(short[] normalizedCounters, int maxSymbolValue, int tableSize, int highThreshold, byte[] symbols)
     {
         int mask = tableSize - 1;
         int step = calculateStep(tableSize);

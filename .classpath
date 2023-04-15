@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/vate"/>
 	<classpathentry kind="src" path="src/aircompressor"/>
 	<classpathentry kind="src" path="src/bouncycastle"/>
 	<classpathentry kind="src" path="src/bric"/>
@@ -14,6 +13,7 @@
 	<classpathentry kind="src" path="src/portmapper"/>
 	<classpathentry kind="src" path="src/snappy"/>
 	<classpathentry kind="src" path="src/throttle"/>
+	<classpathentry kind="src" path="src/vate"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/beanshell-2.1.8-interpreter.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.5.jar"/>

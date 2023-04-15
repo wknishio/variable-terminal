@@ -45,6 +45,7 @@ public enum UnsafeUtils {
   private static final int INT_ARRAY_SCALE;
   private static final long SHORT_ARRAY_OFFSET;
   private static final int SHORT_ARRAY_SCALE;
+  //public static final long ARRAY_BYTE_BASE_OFFSET;
   
   static {
     try {
@@ -57,10 +58,13 @@ public enum UnsafeUtils {
       INT_ARRAY_SCALE = UNSAFE.arrayIndexScale(int[].class);
       SHORT_ARRAY_OFFSET = UNSAFE.arrayBaseOffset(short[].class);
       SHORT_ARRAY_SCALE = UNSAFE.arrayIndexScale(short[].class);
+      //ARRAY_BYTE_BASE_OFFSET = BYTE_ARRAY_OFFSET;
     } catch (Exception e) {
       throw new ExceptionInInitializerError("Cannot access Unsafe");
     }
   }
+  
+  
 
   public static void checkRange(byte[] buf, int off) {
     SafeUtils.checkRange(buf, off);

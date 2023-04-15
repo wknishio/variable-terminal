@@ -13,6 +13,7 @@
  */
 package io.airlift.compress.zstd;
 
+import static io.airlift.compress.zstd.Constants.MAX_BLOCK_SIZE;
 import static io.airlift.compress.zstd.Constants.MAX_WINDOW_LOG;
 import static io.airlift.compress.zstd.Constants.MIN_WINDOW_LOG;
 import static io.airlift.compress.zstd.Util.cycleLog;
@@ -20,12 +21,14 @@ import static io.airlift.compress.zstd.Util.highestBit;
 
 class CompressionParameters
 {
-    public static final int MIN_HASH_LOG = 6;
+    private static final int MIN_HASH_LOG = 6;
 
     public static final int DEFAULT_COMPRESSION_LEVEL = 3;
-    public static final int MAX_COMPRESSION_LEVEL = 22;
+    private static final int MAX_COMPRESSION_LEVEL = 22;
 
     private final int windowLog; // largest match distance : larger == more compression, more memory needed during decompression
+    private final int windowSize; // computed: 1 << windowLog
+    private final int blockSize; // computed: min(MAX_BLOCK_SIZE, windowSize)
     private final int chainLog;  // fully searched segment : larger == more compression, slower, more memory (useless for fast)
     private final int hashLog;   // dispatch table : larger == faster, more memory
     private final int searchLog; // nb of searches : larger == more compression, slower
@@ -194,6 +197,8 @@ class CompressionParameters
     public CompressionParameters(int windowLog, int chainLog, int hashLog, int searchLog, int searchLength, int targetLength, Strategy strategy)
     {
         this.windowLog = windowLog;
+        this.windowSize = 1 << windowLog;
+        this.blockSize = Math.min(MAX_BLOCK_SIZE, windowSize);
         this.chainLog = chainLog;
         this.hashLog = hashLog;
         this.searchLog = searchLog;
@@ -205,6 +210,16 @@ class CompressionParameters
     public int getWindowLog()
     {
         return windowLog;
+    }
+
+    public int getWindowSize()
+    {
+        return windowSize;
+    }
+
+    public int getBlockSize()
+    {
+        return blockSize;
     }
 
     public int getSearchLength()
@@ -237,9 +252,12 @@ class CompressionParameters
         return strategy;
     }
 
-    public static CompressionParameters compute(int compressionLevel, int inputSize)
+    public static CompressionParameters compute(int compressionLevel, int estimatedInputSize)
     {
-        CompressionParameters defaultParameters = getDefaultParameters(compressionLevel, inputSize);
+        CompressionParameters defaultParameters = getDefaultParameters(compressionLevel, estimatedInputSize);
+        if (estimatedInputSize < 0) {
+            return defaultParameters;
+        }
 
         int targetLength = defaultParameters.targetLength;
         int windowLog = defaultParameters.windowLog;
@@ -255,9 +273,9 @@ class CompressionParameters
 
         // resize windowLog if input is small enough, to use less memory
         long maxWindowResize = 1L << (MAX_WINDOW_LOG - 1);
-        if (inputSize < maxWindowResize) {
+        if (estimatedInputSize < maxWindowResize) {
             int hashSizeMin = 1 << MIN_HASH_LOG;
-            int inputSizeLog = (inputSize < hashSizeMin) ? MIN_HASH_LOG : highestBit(inputSize - 1) + 1;
+            int inputSizeLog = (estimatedInputSize < hashSizeMin) ? MIN_HASH_LOG : highestBit(estimatedInputSize - 1) + 1;
             if (windowLog > inputSizeLog) {
                 windowLog = inputSizeLog;
             }
@@ -279,11 +297,11 @@ class CompressionParameters
         return new CompressionParameters(windowLog, chainLog, hashLog, searchLog, searchLength, targetLength, strategy);
     }
 
-    public static CompressionParameters getDefaultParameters(int compressionLevel, long estimatedInputSize)
+    private static CompressionParameters getDefaultParameters(int compressionLevel, long estimatedInputSize)
     {
         int table = 0;
 
-        if (estimatedInputSize != 0) {
+        if (estimatedInputSize >= 0) {
             if (estimatedInputSize <= 16 * 1024) {
                 table = 3;
             }
