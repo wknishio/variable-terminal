@@ -396,13 +396,9 @@ public class VTServerConnector implements Runnable
   
   public void resetSockets(VTServerConnection connection) throws SocketException
   {
-    if (!passive && useProxyAuthentication)
+    if (proxyType != null)
     {
       Authenticator.setDefault(new VTServerConnectionProxyAuthenticator(this));
-    }
-    else
-    {
-      Authenticator.setDefault(null);
     }
     if (proxyType == null)
     {

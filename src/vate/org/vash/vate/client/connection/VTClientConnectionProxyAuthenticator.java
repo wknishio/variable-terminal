@@ -15,12 +15,17 @@ public class VTClientConnectionProxyAuthenticator extends Authenticator
   
   public PasswordAuthentication getPasswordAuthentication()
   {
+    PasswordAuthentication invalid = new PasswordAuthentication(" ", " ".toCharArray());
+    if (!connector.isUseProxyAuthentication())
+    {
+      return invalid;
+    }
     try
     {
       int proxyPort = connector.getProxyPort();
       if (proxyPort != getRequestingPort())
       {
-        return null;
+        return invalid;
       }
       
       String proxyHost = connector.getProxyAddress();
@@ -43,7 +48,7 @@ public class VTClientConnectionProxyAuthenticator extends Authenticator
           else
           {
             // failed
-            return null;
+            return invalid;
           }
         }
       }
@@ -53,6 +58,6 @@ public class VTClientConnectionProxyAuthenticator extends Authenticator
     {
       
     }
-    return null;
+    return invalid;
   }
 }

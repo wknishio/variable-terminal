@@ -524,13 +524,9 @@ public class VTClientConnector implements Runnable
   
   public void resetSockets(VTClientConnection connection) throws SocketException
   {
-    if (useProxyAuthentication)
+    if (proxyType != null)
     {
       Authenticator.setDefault(new VTClientConnectionProxyAuthenticator(this));
-    }
-    else
-    {
-      Authenticator.setDefault(null);
     }
     if (proxyType == null)
     {
