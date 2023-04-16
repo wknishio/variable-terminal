@@ -12,6 +12,7 @@ import java.util.List;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.graphical.VTGraphicalConsole;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.runtime.VTExit;
 
 public class VTGraphicalConsoleKeyListener implements KeyListener
 {
@@ -308,7 +309,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     {
       if (!VTGraphicalConsole.ignoreClose)
       {
-        System.exit(0);
+        VTExit.exit(0);
       }
     }
     else if (e.getKeyChar() == '\u001A')

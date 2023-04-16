@@ -3,6 +3,7 @@ package org.vash.vate.server.startup;
 import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.help.VTHelpManager;
+import org.vash.vate.runtime.VTExit;
 import org.vash.vate.server.VTServer;
 
 public class VTServerStandardStart
@@ -48,7 +49,7 @@ public class VTServerStandardStart
             
           }
         }
-        System.exit(0);
+        VTExit.exit(0);
       }
       VTConsole.setDaemon(daemon);
       VTServer server = new VTServer();
@@ -58,7 +59,7 @@ public class VTServerStandardStart
       }
       catch (Throwable e)
       {
-        System.exit(-1);
+        VTExit.exit(-1);
       }
       // server.initialize();
       server.setDaemon(daemon);

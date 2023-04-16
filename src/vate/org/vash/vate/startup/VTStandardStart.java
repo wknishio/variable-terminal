@@ -4,6 +4,7 @@ import org.vash.vate.VT;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.help.VTHelpManager;
+import org.vash.vate.runtime.VTExit;
 import org.vash.vate.server.VTServer;
 
 public final class VTStandardStart
@@ -82,12 +83,12 @@ public final class VTStandardStart
         }
         else
         {
-          System.exit(0);
+          VTExit.exit(0);
         }
       }
       catch (Throwable e)
       {
-        System.exit(0);
+        VTExit.exit(0);
       }
     }
     else
@@ -125,7 +126,7 @@ public final class VTStandardStart
         }
         catch (Throwable e)
         {
-          System.exit(-1);
+          VTExit.exit(-1);
         }
         // client.initialize();
         client.start();
@@ -139,7 +140,7 @@ public final class VTStandardStart
         }
         catch (Throwable e)
         {
-          System.exit(-1);
+          VTExit.exit(-1);
         }
         // server.initialize();
         server.setDaemon(false);
@@ -155,7 +156,7 @@ public final class VTStandardStart
         }
         catch (Throwable e)
         {
-          System.exit(-1);
+          VTExit.exit(-1);
         }
         // server.initialize();
         server.setDaemon(true);
@@ -190,7 +191,7 @@ public final class VTStandardStart
         // +
         // "\nVT>[proxytype/proxyhost/proxyport[/proxyuser/proxypassword]]" +
         // "\nVT>[sessionslimit]");
-        System.exit(0);
+        VTExit.exit(0);
       }
       else if (type == 5)
       {
@@ -201,7 +202,7 @@ public final class VTStandardStart
         }
         catch (Throwable e)
         {
-          System.exit(-1);
+          VTExit.exit(-1);
         }
         client.setDaemon(true);
         // client.initialize();
@@ -306,7 +307,7 @@ public final class VTStandardStart
         }
         catch (Throwable e)
         {
-          System.exit(0);
+          VTExit.exit(0);
         }
       }
     }

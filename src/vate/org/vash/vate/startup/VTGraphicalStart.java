@@ -4,6 +4,7 @@ import org.vash.vate.VT;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.help.VTHelpManager;
+import org.vash.vate.runtime.VTExit;
 import org.vash.vate.server.VTServer;
 
 public final class VTGraphicalStart
@@ -84,12 +85,12 @@ public final class VTGraphicalStart
         }
         else
         {
-          System.exit(0);
+          VTExit.exit(0);
         }
       }
       catch (Throwable e)
       {
-        System.exit(0);
+        VTExit.exit(0);
       }
     }
     else
@@ -127,7 +128,7 @@ public final class VTGraphicalStart
         }
         catch (Throwable e)
         {
-          System.exit(-1);
+          VTExit.exit(-1);
         }
         // client.initialize();
         client.start();
@@ -141,7 +142,7 @@ public final class VTGraphicalStart
         }
         catch (Throwable e)
         {
-          System.exit(-1);
+          VTExit.exit(-1);
         }
         // server.initialize();
         server.setDaemon(false);
@@ -157,7 +158,7 @@ public final class VTGraphicalStart
         }
         catch (Throwable e)
         {
-          System.exit(-1);
+          VTExit.exit(-1);
         }
         // server.initialize();
         server.setDaemon(true);
@@ -181,7 +182,7 @@ public final class VTGraphicalStart
             
           }
         }
-        System.exit(0);
+        VTExit.exit(0);
       }
       else if (type == 5)
       {
@@ -192,7 +193,7 @@ public final class VTGraphicalStart
         }
         catch (Throwable e)
         {
-          System.exit(-1);
+          VTExit.exit(-1);
         }
         client.setDaemon(true);
         // client.initialize();
@@ -296,7 +297,7 @@ public final class VTGraphicalStart
         }
         catch (Throwable e)
         {
-          System.exit(0);
+          VTExit.exit(0);
         }
       }
     }

@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.vash.vate.console.VTConsole;
+import org.vash.vate.runtime.VTExit;
 
 public class VTGraphicalConsoleReader
 {
@@ -302,22 +303,22 @@ public class VTGraphicalConsoleReader
             currentThread = null;
             if (!VTGraphicalConsole.ignoreClose)
             {
-              System.exit(0);
+              VTExit.exit(0);
             }
             return null;
-            // System.exit(0);
+            // VTExit.exit(0);
           }
           else if (character == '\u001A')
           {
             /* out.write('\n'); out.flush(); */
             VTConsole.toggleScrollMode();
-            // System.exit(0);
+            // VTExit.exit(0);
           }
           else if (character == '\u0018')
           {
             /* out.write('\n'); out.flush(); */
             VTConsole.toggleInputMode();
-            // System.exit(0);
+            // VTExit.exit(0);
           }
           /* else if (character == (char) -1) { return ""; } */
           else
@@ -524,22 +525,22 @@ public class VTGraphicalConsoleReader
             currentThread = null;
             if (!VTGraphicalConsole.ignoreClose)
             {
-              System.exit(0);
+              VTExit.exit(0);
             }
             return null;
-            // System.exit(0);
+            // VTExit.exit(0);
           }
           else if (character == '\u001A')
           {
             /* out.write('\n'); out.flush(); */
             VTConsole.toggleScrollMode();
-            // System.exit(0);
+            // VTExit.exit(0);
           }
           else if (character == '\u0018')
           {
             /* out.write('\n'); out.flush(); */
             VTConsole.toggleInputMode();
-            // System.exit(0);
+            // VTExit.exit(0);
           }
           else if (character == (char) -1)
           {

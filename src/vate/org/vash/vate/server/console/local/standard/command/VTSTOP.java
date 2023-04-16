@@ -16,10 +16,9 @@ public class VTSTOP extends VTServerStandardLocalConsoleCommandProcessor
   public void execute(String command, String[] parsed) throws Exception
   {
     // VTConsole.print("\rVT>Client finalizing server...\nVT>");
-    server.stop();
     VTConsole.closeConsole();
-    
-    // System.exit(0);
+    server.stop();
+    // VTExit.exit(0);
   }
   
   public void close()

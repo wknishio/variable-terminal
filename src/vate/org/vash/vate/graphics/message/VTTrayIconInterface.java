@@ -7,6 +7,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.lang.reflect.Method;
 
+import org.vash.vate.runtime.VTExit;
+
 public class VTTrayIconInterface
 {
   private Method isSupported;
@@ -23,9 +25,17 @@ public class VTTrayIconInterface
   private Object trayIconObject;
   private Object messageTypeObject;
   
+  private Runnable hook;
+  
   public VTTrayIconInterface()
   {
-    
+    hook = new Runnable()
+    {
+      public void run()
+      {
+        
+      }
+    };
   }
   
   public void reset()
@@ -43,6 +53,7 @@ public class VTTrayIconInterface
     systemTrayObject = null;
     trayIconObject = null;
     messageTypeObject = null;
+    
   }
   
   public void install(final Frame frame, String tooltip)
@@ -203,6 +214,7 @@ public class VTTrayIconInterface
 //			systemTray.add(trayIcon);
       // displayMessage.setAccessible(true);
       // remove.setAccessible(true);
+      VTExit.installHook(hook);
     }
     catch (Throwable t)
     {

@@ -13,6 +13,7 @@ import java.nio.charset.Charset;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
 import org.vash.vate.console.VTConsole;
+import org.vash.vate.runtime.VTExit;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
 import org.vash.vate.task.VTTask;
@@ -313,7 +314,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     }
     else
     {
-      System.exit(0);
+      VTExit.exit(0);
     }
   }
 }

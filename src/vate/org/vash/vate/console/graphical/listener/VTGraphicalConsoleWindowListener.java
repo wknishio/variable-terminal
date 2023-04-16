@@ -5,6 +5,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import org.vash.vate.console.graphical.VTGraphicalConsole;
+import org.vash.vate.runtime.VTExit;
 
 public class VTGraphicalConsoleWindowListener implements WindowListener
 {
@@ -26,7 +27,7 @@ public class VTGraphicalConsoleWindowListener implements WindowListener
       VTGraphicalConsole.getStaticFrame().setExtendedState(Frame.ICONIFIED);
       return;
     }
-    System.exit(0);
+    VTExit.exit(0);
   }
   
   public void windowDeactivated(WindowEvent e)

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 import org.vash.vate.console.VTConsole;
+import org.vash.vate.runtime.VTExit;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.task.VTTask;
 
@@ -212,7 +213,7 @@ public class VTServerLocalConsoleReader extends VTTask
     {
       // System.out.println("bug?");
       // return;
-      System.exit(0);
+      VTExit.exit(0);
     }
   }
 }

@@ -3,6 +3,7 @@ package org.vash.vate.client.startup;
 // import org.vash.vate.VT;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.console.VTConsole;
+import org.vash.vate.runtime.VTExit;
 
 public class VTClientAgentGraphicalStart
 {
@@ -24,7 +25,7 @@ public class VTClientAgentGraphicalStart
       }
       catch (Throwable e)
       {
-        System.exit(-1);
+        VTExit.exit(-1);
       }
       // client.initialize();
       client.start();

@@ -27,6 +27,7 @@ import org.vash.vate.nativeutils.VTNativeUtils;
 import org.vash.vate.network.tls.TLSVerificationDisabler;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
+import org.vash.vate.runtime.VTExit;
 import org.vash.vate.security.VTBlake3DigestRandom;
 
 public class VTClient implements Runnable
@@ -1201,7 +1202,7 @@ public class VTClient implements Runnable
           String line = VTConsole.readLine(true);
           if (line == null || !line.toUpperCase().startsWith("Y"))
           {
-            System.exit(0);
+            VTExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1210,7 +1211,7 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-          System.exit(0);
+          VTExit.exit(0);
         }
       }
       else
@@ -1236,7 +1237,7 @@ public class VTClient implements Runnable
         }
         catch (Throwable e)
         {
-          System.exit(0);
+          VTExit.exit(0);
         }
       }
       manual = false;
@@ -1264,7 +1265,7 @@ public class VTClient implements Runnable
         String line = VTConsole.readLine(true);
         if (line == null)
         {
-          System.exit(0);
+          VTExit.exit(0);
         }
         else if (skipConfiguration)
         {
@@ -1286,7 +1287,7 @@ public class VTClient implements Runnable
         String line = VTConsole.readLine(true);
         if (line == null)
         {
-          System.exit(0);
+          VTExit.exit(0);
         }
         else if (skipConfiguration)
         {
@@ -1300,7 +1301,7 @@ public class VTClient implements Runnable
           line = VTConsole.readLine(true);
           if (line == null)
           {
-            System.exit(0);
+            VTExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1311,7 +1312,7 @@ public class VTClient implements Runnable
           line = VTConsole.readLine(true);
           if (line == null)
           {
-            System.exit(0);
+            VTExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1336,7 +1337,7 @@ public class VTClient implements Runnable
             line = VTConsole.readLine(true);
             if (line == null)
             {
-              System.exit(0);
+              VTExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1348,7 +1349,7 @@ public class VTClient implements Runnable
               line = VTConsole.readLine(true);
               if (line == null)
               {
-                System.exit(0);
+                VTExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1376,7 +1377,7 @@ public class VTClient implements Runnable
             line = VTConsole.readLine(true);
             if (line == null)
             {
-              System.exit(0);
+              VTExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1388,7 +1389,7 @@ public class VTClient implements Runnable
               line = VTConsole.readLine(false);
               if (line == null)
               {
-                System.exit(0);
+                VTExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1423,7 +1424,7 @@ public class VTClient implements Runnable
               line = VTConsole.readLine(false);
               if (line == null)
               {
-                System.exit(0);
+                VTExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1440,27 +1441,27 @@ public class VTClient implements Runnable
           /*
            * if (port != null) { VTTerminal.
            * print("VT>Use SOCKS proxy to connect?(Y/N, default:N):" ); line =
-           * VTTerminal.readLine(true); if (line == null) { System.exit(0); } if
+           * VTTerminal.readLine(true); if (line == null) { VTExit.exit(0); } if
            * (line.toUpperCase().startsWith("Y")) { proxyType = "SOCKS";
            * VTTerminal. print("VT>Enter proxy host address(default:localhost):"
            * ); line = VTTerminal.readLine(true); if (line == null) {
-           * System.exit(0); } proxyAddress = line; if
+           * VTExit.exit(0); } proxyAddress = line; if
            * (proxyType.equals("SOCKS")) { VTTerminal.
            * print("VT>Enter proxy port(from 1 to 65535, default:1080):" ); line
-           * = VTTerminal.readLine(true); if (line == null) { System.exit(0); }
+           * = VTTerminal.readLine(true); if (line == null) { VTExit.exit(0); }
            * if (line.length() > 0) { proxyPort = Integer.parseInt(line); } else
            * { proxyPort = 1080; } } if (proxyPort > 65535 || proxyPort < 1) {
            * VTTerminal.print("VT>Invalid port!\n"); proxyPort = null;
            * UseProxyAuthentication = false; port = null; } if (proxyPort !=
            * null && port != null) { VTTerminal.
            * print("VT>Use authentication for proxy?(Y/N, default:N):" ); line =
-           * VTTerminal.readLine(true); if (line == null) { System.exit(0); } if
+           * VTTerminal.readLine(true); if (line == null) { VTExit.exit(0); } if
            * (line.toUpperCase().startsWith("Y")) { UseProxyAuthentication =
            * true; VTTerminal.print("VT>Enter proxy username:"); line =
-           * VTTerminal.readLine(true); if (line == null) { System.exit(0); }
+           * VTTerminal.readLine(true); if (line == null) { VTExit.exit(0); }
            * proxyUser = line; VTTerminal.print("VT>Enter proxy password:");
            * line = VTTerminal.readLine(true); if (line == null) {
-           * System.exit(0); } proxyPassword = line; } else {
+           * VTExit.exit(0); } proxyPassword = line; } else {
            * UseProxyAuthentication = false; } } else { UseProxyAuthentication =
            * false; } } else { proxyType = "Disabled"; } }
            */
@@ -1472,7 +1473,7 @@ public class VTClient implements Runnable
           line = VTConsole.readLine(true);
           if (line == null)
           {
-            System.exit(0);
+            VTExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1483,7 +1484,7 @@ public class VTClient implements Runnable
           line = VTConsole.readLine(true);
           if (line == null)
           {
-            System.exit(0);
+            VTExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1508,7 +1509,7 @@ public class VTClient implements Runnable
             line = VTConsole.readLine(true);
             if (line == null)
             {
-              System.exit(0);
+              VTExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1520,7 +1521,7 @@ public class VTClient implements Runnable
               line = VTConsole.readLine(true);
               if (line == null)
               {
-                System.exit(0);
+                VTExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1538,7 +1539,7 @@ public class VTClient implements Runnable
               line = VTConsole.readLine(true);
               if (line == null)
               {
-                System.exit(0);
+                VTExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1551,7 +1552,7 @@ public class VTClient implements Runnable
                 line = VTConsole.readLine(true);
                 if (line == null)
                 {
-                  System.exit(0);
+                  VTExit.exit(0);
                 }
                 else if (skipConfiguration)
                 {
@@ -1572,7 +1573,7 @@ public class VTClient implements Runnable
                 line = VTConsole.readLine(true);
                 if (line == null)
                 {
-                  System.exit(0);
+                  VTExit.exit(0);
                 }
                 else if (skipConfiguration)
                 {
@@ -1600,7 +1601,7 @@ public class VTClient implements Runnable
                 line = VTConsole.readLine(true);
                 if (line == null)
                 {
-                  System.exit(0);
+                  VTExit.exit(0);
                 }
                 else if (skipConfiguration)
                 {
@@ -1613,7 +1614,7 @@ public class VTClient implements Runnable
                   line = VTConsole.readLine(false);
                   if (line == null)
                   {
-                    System.exit(0);
+                    VTExit.exit(0);
                   }
                   else if (skipConfiguration)
                   {
@@ -1624,7 +1625,7 @@ public class VTClient implements Runnable
                   line = VTConsole.readLine(false);
                   if (line == null)
                   {
-                    System.exit(0);
+                    VTExit.exit(0);
                   }
                   else if (skipConfiguration)
                   {
@@ -1653,7 +1654,7 @@ public class VTClient implements Runnable
             line = VTConsole.readLine(true);
             if (line == null)
             {
-              System.exit(0);
+              VTExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1665,7 +1666,7 @@ public class VTClient implements Runnable
               line = VTConsole.readLine(false);
               if (line == null)
               {
-                System.exit(0);
+                VTExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1700,7 +1701,7 @@ public class VTClient implements Runnable
               line = VTConsole.readLine(false);
               if (line == null)
               {
-                System.exit(0);
+                VTExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1720,7 +1721,7 @@ public class VTClient implements Runnable
           String shell = VTConsole.readLine(true);
           if (shell == null)
           {
-            System.exit(0);
+            VTExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1731,7 +1732,7 @@ public class VTClient implements Runnable
           String user = VTConsole.readLine(false);
           if (user == null)
           {
-            System.exit(0);
+            VTExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1742,7 +1743,7 @@ public class VTClient implements Runnable
           String password = VTConsole.readLine(false);
           if (password == null)
           {
-            System.exit(0);
+            VTExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1756,7 +1757,7 @@ public class VTClient implements Runnable
           String command = VTConsole.readLine(true);
           if (command == null)
           {
-            System.exit(0);
+            VTExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1767,7 +1768,7 @@ public class VTClient implements Runnable
           // String lines = VTConsole.readLine(true);
           // if (lines == null)
           // {
-          // System.exit(0);
+          // VTExit.exit(0);
           // }
           // else if (skipConfiguration)
           // {

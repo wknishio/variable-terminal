@@ -24,6 +24,7 @@ import org.vash.vate.console.graphical.listener.VTGraphicalConsoleMouseListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleWindowListener;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsolePopupMenu;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.runtime.VTExit;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
 
 public class VTGraphicalConsole implements VTConsoleImplementation
@@ -802,7 +803,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
       {
         return;
       }
-      System.exit(0);
+      VTExit.exit(0);
     }
     if (c == '\u001A')
     {
@@ -834,7 +835,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
       {
         return;
       }
-      System.exit(0);
+      VTExit.exit(0);
     }
     if (c == '\u001A')
     {

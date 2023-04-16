@@ -22,7 +22,7 @@ public class VTQUIT extends VTClientStandardRemoteConsoleCommandProcessor
     VTConsole.closeConsole();
     session.getClient().stop();
     // connection.closeSockets();
-    // System.exit(0);
+    // VTExit.exit(0);
   }
   
   public void close()

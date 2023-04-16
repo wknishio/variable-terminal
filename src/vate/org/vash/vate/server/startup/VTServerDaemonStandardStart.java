@@ -1,6 +1,7 @@
 package org.vash.vate.server.startup;
 
 import org.vash.vate.console.VTConsole;
+import org.vash.vate.runtime.VTExit;
 import org.vash.vate.server.VTServer;
 
 public class VTServerDaemonStandardStart
@@ -23,7 +24,7 @@ public class VTServerDaemonStandardStart
       }
       catch (Throwable e)
       {
-        System.exit(-1);
+        VTExit.exit(-1);
       }
       // server.initialize();
       server.start();
