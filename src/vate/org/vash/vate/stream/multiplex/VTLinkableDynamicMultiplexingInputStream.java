@@ -62,11 +62,11 @@ public final class VTLinkableDynamicMultiplexingInputStream
           if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
           {
             //this.compressedDirectInputStream = VTCompressorSelector.createBufferedZlibInputStream(pipedInputStream);
-            this.compressedDirectInputStream = VTCompressorSelector.createBufferedZstdInputStream(pipedInputStream);
+            this.compressedDirectInputStream = VTCompressorSelector.createDirectZstdInputStream(pipedInputStream);
           }
           else
           {
-            this.compressedDirectInputStream = VTCompressorSelector.createBufferedLz4InputStream(pipedInputStream);
+            this.compressedDirectInputStream = VTCompressorSelector.createDirectLz4InputStream(pipedInputStream);
           }
           this.in = compressedDirectInputStream;
         }
@@ -124,11 +124,11 @@ public final class VTLinkableDynamicMultiplexingInputStream
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
         {
           //compressedDirectInputStream = VTCompressorSelector.createBufferedZlibInputStream(pipedDecompressor.getPipedInputStream());
-          compressedDirectInputStream = VTCompressorSelector.createBufferedZstdInputStream(pipedDecompressor.getPipedInputStream());
+          compressedDirectInputStream = VTCompressorSelector.createDirectZstdInputStream(pipedDecompressor.getPipedInputStream());
         }
         else
         {
-          compressedDirectInputStream = VTCompressorSelector.createBufferedLz4InputStream(pipedDecompressor.getPipedInputStream());
+          compressedDirectInputStream = VTCompressorSelector.createDirectLz4InputStream(pipedDecompressor.getPipedInputStream());
         }
         pipedDecompressor.setDecompressor(compressedDirectInputStream);
       }
@@ -155,11 +155,11 @@ public final class VTLinkableDynamicMultiplexingInputStream
           if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
           {
             //compressedDirectInputStream = VTCompressorSelector.createBufferedZlibInputStream(pipedInputStream);
-            compressedDirectInputStream = VTCompressorSelector.createBufferedZstdInputStream(pipedInputStream);
+            compressedDirectInputStream = VTCompressorSelector.createDirectZstdInputStream(pipedInputStream);
           }
           else
           {
-            compressedDirectInputStream = VTCompressorSelector.createBufferedLz4InputStream(pipedInputStream);
+            compressedDirectInputStream = VTCompressorSelector.createDirectLz4InputStream(pipedInputStream);
           }
           in = compressedDirectInputStream;
         }
@@ -172,11 +172,11 @@ public final class VTLinkableDynamicMultiplexingInputStream
           if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
           {
             //compressedDirectInputStream = VTCompressorSelector.createBufferedZlibInputStream(pipedDecompressor.getPipedInputStream());
-            compressedDirectInputStream = VTCompressorSelector.createBufferedZstdInputStream(pipedDecompressor.getPipedInputStream());
+            compressedDirectInputStream = VTCompressorSelector.createDirectZstdInputStream(pipedDecompressor.getPipedInputStream());
           }
           else
           {
-            compressedDirectInputStream = VTCompressorSelector.createBufferedLz4InputStream(pipedDecompressor.getPipedInputStream());
+            compressedDirectInputStream = VTCompressorSelector.createDirectLz4InputStream(pipedDecompressor.getPipedInputStream());
           }
           pipedDecompressor.setDecompressor(compressedDirectInputStream);
         }

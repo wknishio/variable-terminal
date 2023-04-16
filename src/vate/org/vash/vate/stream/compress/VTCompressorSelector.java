@@ -50,7 +50,7 @@ public class VTCompressorSelector
   
   public static OutputStream createDirectZstdOutputStream(OutputStream out)
   {
-    return new VTBufferedOutputStream(new VTHadoopOutputStream(new ZstdHadoopOutputStream(out)), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, false);
+    return new VTBufferedOutputStream(new VTHadoopOutputStream(new ZstdHadoopOutputStream(out, true)), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, false);
     //return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
     //return new VTBufferedOutputStream(new ZstdOutputStream(out), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
   }
@@ -74,7 +74,7 @@ public class VTCompressorSelector
   
   public static OutputStream createBufferedZstdOutputStream(OutputStream out)
   {
-    return new VTBufferedOutputStream(new VTHadoopOutputStream(new ZstdHadoopOutputStream(out)), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, false);
+    return new VTBufferedOutputStream(new VTHadoopOutputStream(new ZstdHadoopOutputStream(out, false)), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, false);
     //return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
     //return new VTBufferedOutputStream(new ZstdOutputStream(out), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
   }

@@ -151,7 +151,7 @@ public class VTClipboardTransferTask extends VTTask
               out.writeInt(data.length);
               out.write(data);
               out.flush();
-              // System.out.println("sent text:" + new String(data, "UTF-8"));
+              //System.out.println("sent text:" + new String(data, "UTF-8"));
               // writer.write(text);
               // writer.flush();
             }
@@ -216,8 +216,7 @@ public class VTClipboardTransferTask extends VTTask
               int length = in.readInt();
               byte[] data = new byte[length];
               in.readFully(data);
-              // System.out.println("received text:" + new String(data,
-              // "UTF-8"));
+              //System.out.println("received text:" + new String(data, "UTF-8"));
               systemClipboard.setContents(new StringSelection(new String(data, "UTF-8")), null);
             }
             else if (type == VT.VT_GRAPHICS_MODE_CLIPBOARD_TRANSFER_TYPE_IMAGE)

@@ -687,8 +687,8 @@ public class VTClientConnection
     snappedImageDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(graphicsSnappedImageInputStream);
     snappedImageDataOutputStream = (graphicsSnappedImageOutputStream);
     
-    clipboardDataOutputStream = VTCompressorSelector.createBufferedZlibOutputStream(graphicsClipboardOutputStream);
-    clipboardDataInputStream = VTCompressorSelector.createBufferedZlibInputStream(graphicsClipboardInputStream);
+    clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
+    clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
     
     fileTransferControlDataInputStream = new VTLittleEndianInputStream(new BufferedInputStream(fileTransferControlInputStream));
     fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(new BufferedOutputStream(fileTransferControlOutputStream));
@@ -1164,9 +1164,8 @@ public class VTClientConnection
     graphicsClipboardOutputStream.open();
     graphicsClipboardInputStream.open();
     
-    clipboardDataOutputStream = VTCompressorSelector.createBufferedZlibOutputStream(graphicsClipboardOutputStream);
-    
-    clipboardDataInputStream = VTCompressorSelector.createBufferedZlibInputStream(graphicsClipboardInputStream);
+    clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
+    clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
     
     // graphicsControlInputStream.addPropagated(clipboardDataOutputStream);
     // graphicsControlInputStream.addPropagated(clipboardDataInputStream);

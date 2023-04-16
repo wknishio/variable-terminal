@@ -26,10 +26,12 @@ public class ZstdHadoopOutputStream
     private final OutputStream out;
     //private boolean initialized;
     private ZstdOutputStream zstdOutputStream;
+    private boolean small;
 
-    public ZstdHadoopOutputStream(OutputStream out)
+    public ZstdHadoopOutputStream(OutputStream out, boolean small)
     {
         this.out = requireNonNull(out, "out is null");
+        this.small = small;
     }
 
     @Override
@@ -77,7 +79,7 @@ public class ZstdHadoopOutputStream
     {
         if (zstdOutputStream == null) {
             //initialized = true;
-            zstdOutputStream = new ZstdOutputStream(out);
+            zstdOutputStream = new ZstdOutputStream(out, small);
         }
     }
 }

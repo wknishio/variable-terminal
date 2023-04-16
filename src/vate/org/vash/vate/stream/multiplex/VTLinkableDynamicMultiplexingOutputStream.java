@@ -79,11 +79,11 @@ public final class VTLinkableDynamicMultiplexingOutputStream
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
         {
           //intermediatePacketStream = VTCompressorSelector.createBufferedZlibOutputStream(intermediateDataPacketBuffer);
-          intermediatePacketStream = VTCompressorSelector.createBufferedZstdOutputStream(intermediateDataPacketBuffer);
+          intermediatePacketStream = VTCompressorSelector.createDirectZstdOutputStream(intermediateDataPacketBuffer);
         }
         else
         {
-          intermediatePacketStream = VTCompressorSelector.createBufferedLz4OutputStream(intermediateDataPacketBuffer);
+          intermediatePacketStream = VTCompressorSelector.createDirectLz4OutputStream(intermediateDataPacketBuffer);
         }
       }
     }
@@ -189,11 +189,11 @@ public final class VTLinkableDynamicMultiplexingOutputStream
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
         {
           //intermediatePacketStream = VTCompressorSelector.createBufferedZlibOutputStream(intermediateDataPacketBuffer);
-          intermediatePacketStream = VTCompressorSelector.createBufferedZstdOutputStream(intermediateDataPacketBuffer);
+          intermediatePacketStream = VTCompressorSelector.createDirectZstdOutputStream(intermediateDataPacketBuffer);
         }
         else
         {
-          intermediatePacketStream = VTCompressorSelector.createBufferedLz4OutputStream(intermediateDataPacketBuffer);
+          intermediatePacketStream = VTCompressorSelector.createDirectLz4OutputStream(intermediateDataPacketBuffer);
         }
       }
       closed = false;

@@ -1631,11 +1631,11 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             if (stronger)
             {
-              fileTransferRemoteOutputStream = VTCompressorSelector.createDirectZstdOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream());
+              fileTransferRemoteOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(session.getClient().getConnection().getFileTransferDataOutputStream());
             }
             else
             {
-              fileTransferRemoteOutputStream = VTCompressorSelector.createDirectLz4OutputStream(session.getClient().getConnection().getFileTransferDataOutputStream());
+              fileTransferRemoteOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(session.getClient().getConnection().getFileTransferDataOutputStream());
             }
           }
           else
@@ -1728,11 +1728,11 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             if (stronger)
             {
-              fileTransferRemoteInputStream = VTCompressorSelector.createDirectZstdInputStream(session.getClient().getConnection().getFileTransferDataInputStream());
+              fileTransferRemoteInputStream = VTCompressorSelector.createBufferedZstdInputStream(session.getClient().getConnection().getFileTransferDataInputStream());
             }
             else
             {
-              fileTransferRemoteInputStream = VTCompressorSelector.createDirectLz4InputStream(session.getClient().getConnection().getFileTransferDataInputStream());
+              fileTransferRemoteInputStream = VTCompressorSelector.createBufferedLz4InputStream(session.getClient().getConnection().getFileTransferDataInputStream());
             }
           }
           else
