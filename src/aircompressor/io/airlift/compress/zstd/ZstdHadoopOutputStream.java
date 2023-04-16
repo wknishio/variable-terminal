@@ -55,8 +55,9 @@ public class ZstdHadoopOutputStream
             throws IOException
     {
         if (zstdOutputStream != null) {
-            zstdOutputStream.finishWithoutClosingSource();
-            zstdOutputStream = null;
+          zstdOutputStream.flush();
+            //zstdOutputStream.finishWithoutClosingSource();
+            //zstdOutputStream = null;
         }
     }
 
@@ -64,7 +65,7 @@ public class ZstdHadoopOutputStream
     public void flush()
             throws IOException
     {
-        out.flush();
+      zstdOutputStream.flush();
     }
 
     @Override
@@ -81,5 +82,13 @@ public class ZstdHadoopOutputStream
             //initialized = true;
             zstdOutputStream = new ZstdOutputStream(out, small);
         }
+    }
+    
+    public void resetState()
+    {
+      if (zstdOutputStream != null)
+      {
+        zstdOutputStream.resetState();
+      }
     }
 }

@@ -13,7 +13,7 @@
  */
 package io.airlift.compress.zstd;
 
-class HuffmanCompressionContext
+public class HuffmanCompressionContext
 {
     private final HuffmanTableWriterWorkspace tableWriterWorkspace = new HuffmanTableWriterWorkspace();
     private final HuffmanCompressionTableWorkspace compressionTableWorkspace = new HuffmanCompressionTableWorkspace();
@@ -23,6 +23,16 @@ class HuffmanCompressionContext
 
     private HuffmanCompressionTable previousCandidate = previousTable;
     private HuffmanCompressionTable temporaryCandidate = temporaryTable;
+    
+    public void reset()
+    {
+      tableWriterWorkspace.reset();
+      compressionTableWorkspace.reset();
+      previousTable.reset();
+      temporaryTable.reset();
+      previousCandidate = previousTable;
+      temporaryCandidate = temporaryTable;
+    }
 
     public HuffmanCompressionTable getPreviousTable()
     {

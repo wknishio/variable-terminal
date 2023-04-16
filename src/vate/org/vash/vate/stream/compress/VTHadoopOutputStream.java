@@ -32,8 +32,8 @@ public class VTHadoopOutputStream extends OutputStream
   public void flush() throws IOException
   {
     out.flush();
-    out.finish();
-    out.flush();
+    //out.finish();
+    //out.flush();
   }
   
   public void close() throws IOException

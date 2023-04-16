@@ -30,4 +30,12 @@ class HuffmanCompressionTableWorkspace
         Arrays.fill(entriesPerRank, (short) 0);
         Arrays.fill(valuesPerRank, (short) 0);
     }
+    
+    public void resetFull()
+    {
+      nodeTable.reset();
+      Arrays.fill(entriesPerRank, (short) 0);
+      Arrays.fill(valuesPerRank, (short) 0);
+      Arrays.fill(rankLast, 0);
+    }
 }

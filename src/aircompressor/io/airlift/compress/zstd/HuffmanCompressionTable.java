@@ -41,6 +41,14 @@ final class HuffmanCompressionTable
         this.values = new short[capacity];
         this.numberOfBits = new byte[capacity];
     }
+    
+    public void reset()
+    {
+      maxSymbol = 0;
+      maxNumberOfBits = 0;
+      Arrays.fill(numberOfBits, (byte)0);
+      Arrays.fill(values, (short)0);
+    }
 
     public static int optimalNumberOfBits(int maxNumberOfBits, int inputSize, int maxSymbol)
     {

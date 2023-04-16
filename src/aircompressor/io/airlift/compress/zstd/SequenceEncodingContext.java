@@ -17,7 +17,9 @@ import static io.airlift.compress.zstd.Constants.MAX_LITERALS_LENGTH_SYMBOL;
 import static io.airlift.compress.zstd.Constants.MAX_MATCH_LENGTH_SYMBOL;
 import static io.airlift.compress.zstd.Constants.MAX_OFFSET_CODE_SYMBOL;
 
-class SequenceEncodingContext
+import java.util.Arrays;
+
+public class SequenceEncodingContext
 {
     private static final int MAX_SEQUENCES = Math.max(MAX_LITERALS_LENGTH_SYMBOL, MAX_MATCH_LENGTH_SYMBOL);
 
@@ -27,4 +29,13 @@ class SequenceEncodingContext
 
     public final int[] counts = new int[MAX_SEQUENCES + 1];
     public final short[] normalizedCounts = new short[MAX_SEQUENCES + 1];
+    
+    public void reset()
+    {
+      literalLengthTable.reset();
+      offsetCodeTable.reset();
+      matchLengthTable.reset();
+      Arrays.fill(counts, 0);
+      Arrays.fill(normalizedCounts, (short)0);
+    }
 }

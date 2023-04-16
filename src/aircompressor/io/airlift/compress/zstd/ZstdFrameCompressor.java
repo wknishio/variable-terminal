@@ -210,7 +210,7 @@ class ZstdFrameCompressor
         long input = inputAddress;
 
         //CompressionContext context = new CompressionContext(parameters, inputAddress, remaining);
-        context.resetBaseAddress(inputAddress);
+        context.reset();
         do {
             checkArgument(outputSize >= SIZE_OF_BLOCK_HEADER + MIN_BLOCK_SIZE, "Output buffer too small");
 

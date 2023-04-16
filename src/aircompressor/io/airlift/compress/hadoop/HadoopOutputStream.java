@@ -21,4 +21,6 @@ public abstract class HadoopOutputStream
 {
     public abstract void finish()
             throws IOException;
+    
+    public abstract void resetState();
 }

@@ -17,7 +17,9 @@ import static io.airlift.compress.zstd.Huffman.MAX_FSE_TABLE_LOG;
 import static io.airlift.compress.zstd.Huffman.MAX_SYMBOL;
 import static io.airlift.compress.zstd.Huffman.MAX_TABLE_LOG;
 
-class HuffmanTableWriterWorkspace
+import java.util.Arrays;
+
+public class HuffmanTableWriterWorkspace
 {
     // for encoding weights
     public final byte[] weights = new byte[MAX_SYMBOL]; // the weight for the last symbol is implicit
@@ -26,4 +28,12 @@ class HuffmanTableWriterWorkspace
     public final int[] counts = new int[MAX_TABLE_LOG + 1];
     public final short[] normalizedCounts = new short[MAX_TABLE_LOG + 1];
     public final FseCompressionTable fseTable = new FseCompressionTable(MAX_FSE_TABLE_LOG, MAX_TABLE_LOG);
+    
+    public void reset()
+    {
+      Arrays.fill(weights, (byte)0);
+      Arrays.fill(counts, 0);
+      Arrays.fill(normalizedCounts, (short)0);
+      fseTable.reset();
+    }
 }

@@ -20,6 +20,14 @@ class RepeatedOffsets
 
     private int tempOffset0;
     private int tempOffset1;
+    
+    public void reset()
+    {
+      offset0 = 1;
+      offset1 = 4;
+      tempOffset0 = 0;
+      tempOffset1 = 0;
+    }
 
     public int getOffset0()
     {

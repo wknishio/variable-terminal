@@ -53,6 +53,14 @@ class BlockCompressionState
        Arrays.fill(hashTable, 0);
        Arrays.fill(chainTable, 0);
     }
+    
+    public void resetFull()
+    {
+      Arrays.fill(hashTable, 0);
+      Arrays.fill(chainTable, 0);
+      baseAddress = 0;
+      windowBaseOffset = 0;
+    }
 
     public void enforceMaxDistance(long inputLimit, int maxDistance)
     {
@@ -77,5 +85,10 @@ class BlockCompressionState
     public void setBaseAddress(long baseAddress)
     {
       this.baseAddress = baseAddress;
+    }
+    
+    public void setWindowBaseOffset(int windowBaseOffset)
+    {
+      this.windowBaseOffset = windowBaseOffset;
     }
 }

@@ -36,7 +36,7 @@ public class ZstdOutputStream
     private final CompressionContext context;
     private final int maxBufferSize;
 
-    private XxHash64 partialHash;
+    //private XxHash64 partialHash;
 
     private byte[] uncompressed = new byte[0];
     private final byte[] compressed;
@@ -47,9 +47,12 @@ public class ZstdOutputStream
     private int uncompressedPosition;
 
     private boolean closed;
+    private boolean framed = false;
+    //private boolean small;
 
     public ZstdOutputStream(OutputStream outputStream, boolean small)
     {
+      //this.small = small;
         this.outputStream = requireNonNull(outputStream, "outputStream is null");
         if (small)
         {
@@ -130,6 +133,21 @@ public class ZstdOutputStream
     public void flush() throws IOException
     {
       outputStream.flush();
+      if (uncompressedPosition > 0)
+      {
+        writeChunk(true);
+        outputStream.flush();
+      }
+    }
+    
+    public void resetState()
+    {
+      uncompressedPosition = 0;
+      uncompressedOffset = 0;
+      context.reset();
+      Arrays.fill(compressed, (byte)0);
+      Arrays.fill(uncompressed, (byte)0);
+      framed = false;
     }
 
     private void compressIfNecessary()
@@ -167,6 +185,7 @@ public class ZstdOutputStream
         int chunkSize;
         if (lastChunk) {
             // write all the data
+            //System.out.println("lastChunk");
             chunkSize = uncompressedPosition - uncompressedOffset;
         }
         else {
@@ -178,8 +197,8 @@ public class ZstdOutputStream
         }
 
         // if first write
-        if (partialHash == null) {
-            partialHash = new XxHash64();
+        if (!framed) {
+            //partialHash = new XxHash64();
 
             // if this is also the last chunk we know the exact size, otherwise, this is traditional streaming
             int inputSize = lastChunk ? chunkSize : -1;
@@ -188,6 +207,7 @@ public class ZstdOutputStream
             outputAddress += ZstdFrameCompressor.writeMagic(compressed, outputAddress, outputAddress + 4);
             outputAddress += ZstdFrameCompressor.writeFrameHeader(compressed, outputAddress, outputAddress + 14, inputSize, context.parameters.getWindowSize());
             outputStream.write(compressed, 0, outputAddress - 0);
+            framed = true;
         }
 
         //partialHash.update(uncompressed, uncompressedOffset, chunkSize);
@@ -218,7 +238,7 @@ public class ZstdOutputStream
             //outputStream.write(hash >> 8);
             //outputStream.write(hash >> 16);
             //outputStream.write(hash >> 24);
-            partialHash = null;
+          resetState();
         }
         else {
             // slide window forward, leaving the entire window and the unprocessed data

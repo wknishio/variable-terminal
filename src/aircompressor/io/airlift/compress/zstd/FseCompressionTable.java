@@ -15,6 +15,8 @@ package io.airlift.compress.zstd;
 
 import static io.airlift.compress.zstd.FiniteStateEntropy.MAX_SYMBOL;
 
+import java.util.Arrays;
+
 class FseCompressionTable
 {
     private final short[] nextState;
@@ -28,6 +30,14 @@ class FseCompressionTable
         nextState = new short[1 << maxTableLog];
         deltaNumberOfBits = new int[maxSymbol + 1];
         deltaFindState = new int[maxSymbol + 1];
+    }
+    
+    public void reset()
+    {
+      log2Size = 0;
+      Arrays.fill(nextState, (short)0);
+      Arrays.fill(deltaNumberOfBits, 0);
+      Arrays.fill(deltaFindState, 0);
     }
 
     public static FseCompressionTable newInstance(short[] normalizedCounts, int maxSymbol, int tableLog)

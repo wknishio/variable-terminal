@@ -15,6 +15,8 @@ package io.airlift.compress.zstd;
 
 import static io.airlift.compress.zstd.Constants.SIZE_OF_LONG;
 
+import java.util.Arrays;
+
 import io.airlift.compress.UnsafeUtils;
 //import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
 
@@ -72,6 +74,18 @@ class SequenceStore
         literalsBuffer = new byte[blockSize];
 
         reset();
+    }
+    
+    public void resetFull()
+    {
+      Arrays.fill(offsets, 0);
+      Arrays.fill(literalLengths, 0);
+      Arrays.fill(matchLengths, 0);
+      Arrays.fill(literalLengthCodes, (byte)0);
+      Arrays.fill(matchLengthCodes, (byte)0);
+      Arrays.fill(offsetCodes, (byte)0);
+      Arrays.fill(literalsBuffer, (byte)0);
+      reset();
     }
 
     public void appendLiterals(Object inputBase, long inputAddress, int inputSize)
