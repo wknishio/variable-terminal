@@ -31,7 +31,7 @@ class Constants
     public static final int MIN_BLOCK_SIZE = 1 // block type tag
             + 1 // min size of raw or rle length header
             + MIN_SEQUENCES_SIZE;
-    public static final int MAX_BLOCK_SIZE = 128 * 1024;
+    public static final int MAX_BLOCK_SIZE = 64 * 1024;
 
     public static final int REPEATED_OFFSET_COUNT = 3;
 
