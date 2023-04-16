@@ -30,7 +30,7 @@ public class VT
   public static final int VT_REVISION_VERSION = 2;
   
   public static final int VT_NETWORK_PACKET_HEADER_SIZE = 8;
-  public static final int VT_NETWORK_PACKET_SIZE = 1024 * 4;
+  public static final int VT_NETWORK_PACKET_SIZE = 1024 * 8;
   public static final int VT_NETWORK_PACKET_BUFFER_SIZE = 1024 * 64;
   public static final int VT_STANDARD_DATA_BUFFER_SIZE = 1024 * 64;
   public static final int VT_COMPRESSED_DATA_BUFFER_SIZE = 1024 * 64;
