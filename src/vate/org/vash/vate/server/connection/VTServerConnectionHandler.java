@@ -44,7 +44,7 @@ public class VTServerConnectionHandler implements Runnable
     try
     {
       handler.getAuthenticator().startTimeoutThread();
-      VTConsole.print("\rVT>Verifying connection with client...\nVT>");
+      //VTConsole.print("\rVT>Verifying connection with client...\nVT>");
       if (connection.verifyConnection())
       {
         VTConsole.print("\rVT>Connection with client verified!\nVT>");

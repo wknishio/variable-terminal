@@ -23,14 +23,14 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
     {
       if (parsed[1].toUpperCase().contains("O"))
       {
-        connection.getResultWriter().write("\nVT>Opening remote shell...\nVT>");
+        connection.getResultWriter().write("\nVT>Opening remote shell!\nVT>");
         connection.getResultWriter().flush();
         // session.setRestartingShell(true);
         session.restartShell();
       }
       else if (parsed[1].toUpperCase().contains("N"))
       {
-        connection.getResultWriter().write("\nVT>Disabling remote shell...\nVT>");
+        connection.getResultWriter().write("\nVT>Disabling remote shell!\nVT>");
         connection.getResultWriter().flush();
         session.stopShell();
         session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
@@ -39,7 +39,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else if (parsed[1].toUpperCase().contains("B"))
       {
-        connection.getResultWriter().write("\nVT>Using beanshell as remote shell...\nVT>");
+        connection.getResultWriter().write("\nVT>Using beanshell as remote shell!\nVT>");
         connection.getResultWriter().flush();
         session.stopShell();
         session.setShellType(VTShellProcessor.SHELL_TYPE_BEANSHELL);
@@ -57,7 +57,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
         {
           if (!session.getShellExitListener().isStopped() && session.getShellExitListener().aliveThread())
           {
-            connection.getResultWriter().write("\nVT>Closing remote shell...\nVT>");
+            connection.getResultWriter().write("\nVT>Closing remote shell!\nVT>");
             connection.getResultWriter().flush();
             session.setStoppingShell(true);
             session.stopShell();

@@ -21,18 +21,18 @@ import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 
 public final class VTImageIO
 {
-  private static final int DCM_AAA_RED_MASK = 0x3FF00000;
-  private static final int DCM_AAA_GREEN_MASK = 0x000FFC00;
-  private static final int DCM_AAA_BLUE_MASK = 0x000003FF;
+  private static final int DCM_AAA_RED_MASK = 0x3FF00000; // 00111111111100000000000000000000
+  private static final int DCM_AAA_GRN_MASK = 0x000FFC00; // 00000000000011111111110000000000
+  private static final int DCM_AAA_BLU_MASK = 0x000003FF; // 00000000000000000000001111111111
   
-  private static final int DCM_999_RED_MASK = 0x07FC0000;
-  private static final int DCM_999_GREEN_MASK = 0x0003FE00;
-  private static final int DCM_999_BLUE_MASK = 0x000001FF;
+  private static final int DCM_999_RED_MASK = 0x07FC0000; // 00000111111111000000000000000000
+  private static final int DCM_999_GRN_MASK = 0x0003FE00; // 00000000000000111111111000000000
+  private static final int DCM_999_BLU_MASK = 0x000001FF; // 00000000000000000000000111111111
   
-  private static final int DCM_888_RED_MASK = 0x00FF0000;
-  private static final int DCM_888_GREEN_MASK = 0x0000FF00;
-  private static final int DCM_888_BLUE_MASK = 0x000000FF;
-  private static final int DCM_888_ALPHA_MASK = 0xFF000000;
+  private static final int DCM_888_ALP_MASK = 0xFF000000; // 11111111000000000000000000000000
+  private static final int DCM_888_RED_MASK = 0x00FF0000; // 00000000111111110000000000000000
+  private static final int DCM_888_GRN_MASK = 0x0000FF00; // 00000000000000001111111100000000
+  private static final int DCM_888_BLU_MASK = 0x000000FF; // 00000000000000000000000011111111
   
   private static final int DCM_777_RED_MASK = 0x1FC000; // 000111111100000000000000
   private static final int DCM_777_GRN_MASK = 0x003F80; // 000000000011111110000000
@@ -76,7 +76,7 @@ public final class VTImageIO
   // private static final IndexColorModel bytePacked4Bit16ColorModel =
   // VTIndexedColorModel.createPacked4Bit16ColorModel();
   
-  private static final DirectColorModel int24bitRGBColorModel = new DirectColorModel(24, DCM_888_RED_MASK, DCM_888_GREEN_MASK, DCM_888_BLUE_MASK);
+  private static final DirectColorModel int24bitRGBColorModel = new DirectColorModel(24, DCM_888_RED_MASK, DCM_888_GRN_MASK, DCM_888_BLU_MASK);
   
   private static final DirectColorModel int21bitRGBColorModel = new DirectColorModel(21, DCM_777_RED_MASK, DCM_777_GRN_MASK, DCM_777_BLU_MASK);
   
@@ -92,11 +92,11 @@ public final class VTImageIO
   
   private static final DirectColorModel byte6bitRGBColorModel = new DirectColorModel(6, DCM_222_RED_MASK, DCM_222_GRN_MASK, DCM_222_BLU_MASK);
   
-  private static final DirectColorModel int32bitARGBColorModel = new DirectColorModel(32, DCM_888_RED_MASK, DCM_888_GREEN_MASK, DCM_888_BLUE_MASK, DCM_888_ALPHA_MASK);
+  private static final DirectColorModel int32bitARGBColorModel = new DirectColorModel(32, DCM_888_RED_MASK, DCM_888_GRN_MASK, DCM_888_BLU_MASK, DCM_888_ALP_MASK);
   
-  private static final DirectColorModel int27bitRGBColorModel = new DirectColorModel(27, DCM_999_RED_MASK, DCM_999_GREEN_MASK, DCM_999_BLUE_MASK);
+  private static final DirectColorModel int27bitRGBColorModel = new DirectColorModel(27, DCM_999_RED_MASK, DCM_999_GRN_MASK, DCM_999_BLU_MASK);
   
-  private static final DirectColorModel int30bitRGBColorModel = new DirectColorModel(30, DCM_AAA_RED_MASK, DCM_AAA_GREEN_MASK, DCM_AAA_BLUE_MASK);
+  private static final DirectColorModel int30bitRGBColorModel = new DirectColorModel(30, DCM_AAA_RED_MASK, DCM_AAA_GRN_MASK, DCM_AAA_BLU_MASK);
   
   public static final BufferedImage createImage(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
   {

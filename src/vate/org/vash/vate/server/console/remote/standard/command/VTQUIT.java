@@ -1,6 +1,5 @@
 package org.vash.vate.server.console.remote.standard.command;
 
-import org.vash.vate.console.VTConsole;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
 public class VTQUIT extends VTServerStandardRemoteConsoleCommandProcessor
@@ -15,7 +14,7 @@ public class VTQUIT extends VTServerStandardRemoteConsoleCommandProcessor
   
   public void execute(String command, String[] parsed) throws Exception
   {
-    VTConsole.print("\rVT>Client finalizing...\nVT>");
+    //VTConsole.print("\rVT>Client finalizing...\nVT>");
     connection.closeSockets();
   }
   

@@ -542,8 +542,8 @@ public class VTServerSession
       }
       else
       {
-        connection.getResultWriter().write("\nVT>Starting remote shell...");
-        connection.getResultWriter().flush();
+        //connection.getResultWriter().write("\nVT>Starting remote shell...");
+        //connection.getResultWriter().flush();
       }
       shellAdapter.startShell();
       

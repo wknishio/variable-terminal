@@ -26,7 +26,7 @@ public class VTKICK extends VTServerStandardLocalConsoleCommandProcessor
       {
         if (connections.size() > 0)
         {
-          VTConsole.print("\rVT>Disconnecting all clients from server...\nVT>");
+          //VTConsole.print("\rVT>Disconnecting all clients from server...\nVT>");
           for (VTServerConnectionHandler connectionHandler : connections)
           {
             connectionHandler.getConnection().closeSockets();
@@ -53,7 +53,7 @@ public class VTKICK extends VTServerStandardLocalConsoleCommandProcessor
             {
               if (connections.size() >= number)
               {
-                VTConsole.print("\rVT>Disconnecting client of number [" + number + "] from server...\nVT>");
+                //VTConsole.print("\rVT>Disconnecting client of number [" + number + "] from server...\nVT>");
                 connections.get(number).getConnection().closeSockets();
                 VTConsole.print("\rVT>Disconnected client of number [" + number + "] from server!\nVT>");
               }

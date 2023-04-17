@@ -49,7 +49,7 @@ public class VTServerSessionHandler implements Runnable
   public void run()
   {
     authenticated = false;
-    VTConsole.print("\rVT>Authenticating session with client...\nVT>");
+    //VTConsole.print("\rVT>Authenticating session with client...\nVT>");
     try
     {
       connection.setAuthenticationStreams();

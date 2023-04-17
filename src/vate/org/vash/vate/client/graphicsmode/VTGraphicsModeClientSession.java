@@ -109,11 +109,11 @@ public class VTGraphicsModeClientSession
     readerThread.setDaemon(true);
     if (writer.isReadOnly())
     {
-      VTConsole.print("\nVT>Starting remote graphics link in view mode...\nVT>");
+      //VTConsole.print("\nVT>Starting remote graphics link in view mode...\nVT>");
     }
     else
     {
-      VTConsole.print("\nVT>Starting remote graphics link in control mode...\nVT>");
+      //VTConsole.print("\nVT>Starting remote graphics link in control mode...\nVT>");
     }
     writerThread.start();
     readerThread.start();
@@ -203,7 +203,7 @@ public class VTGraphicsModeClientSession
   {
     try
     {
-      VTConsole.print("\nVT>Stopping remote graphics link...\nVT>");
+      //VTConsole.print("\nVT>Stopping remote graphics link...\nVT>");
       // session.getConnection().getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_SESSION_ENDED);
       // session.getConnection().getGraphicsControlDataOutputStream().flush();
       // session.getConnection().getGraphicsControlDataInputStream().read();

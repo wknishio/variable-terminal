@@ -50,8 +50,8 @@ public class VTDATAPRINT extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
-            connection.getResultWriter().flush();
+            //connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
+            //connection.getResultWriter().flush();
             session.getPrintDataTask().setStopped(true);
           }
         }
@@ -120,8 +120,8 @@ public class VTDATAPRINT extends VTServerStandardRemoteConsoleCommandProcessor
           {
             if (parsed[1].toUpperCase().startsWith("S"))
             {
-              connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
-              connection.getResultWriter().flush();
+              //connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
+              //connection.getResultWriter().flush();
               session.getPrintDataTask().setStopped(true);
             }
             else
@@ -191,8 +191,8 @@ public class VTDATAPRINT extends VTServerStandardRemoteConsoleCommandProcessor
           {
             if (parsed[1].toUpperCase().startsWith("S"))
             {
-              connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
-              connection.getResultWriter().flush();
+              //connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
+              //connection.getResultWriter().flush();
               session.getPrintDataTask().setStopped(true);
             }
             else

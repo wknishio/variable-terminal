@@ -169,8 +169,8 @@ public class VTServerScreenshotTask extends VTTask
           return;
         }
       }
-      connection.getResultWriter().write("\nVT>Screen capture starting...\nVT>");
-      connection.getResultWriter().flush();
+      //connection.getResultWriter().write("\nVT>Screen capture starting...\nVT>");
+      //connection.getResultWriter().flush();
       // provider.initialize();
       // clock.setTimeInMillis(System.currentTimeMillis());
       clock.setTime(Calendar.getInstance().getTime());

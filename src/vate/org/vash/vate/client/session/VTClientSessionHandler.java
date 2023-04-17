@@ -41,7 +41,7 @@ public class VTClientSessionHandler implements Runnable
   public void run()
   {
     authenticated = false;
-    VTConsole.print("\nVT>Authenticating session with server...");
+    //VTConsole.print("\nVT>Authenticating session with server...");
     try
     {
       connection.setAuthenticationStreams();
