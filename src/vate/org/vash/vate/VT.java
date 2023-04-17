@@ -30,7 +30,7 @@ public class VT
   public static final int VT_REVISION_VERSION = 2;
   
   public static final int VT_NETWORK_PACKET_HEADER_SIZE = 8;
-  public static final int VT_NETWORK_PACKET_SIZE = 1024 * 8;
+  public static final int VT_NETWORK_PACKET_SIZE = 1024 * 4;
   public static final int VT_NETWORK_PACKET_BUFFER_SIZE = 1024 * 64;
   public static final int VT_STANDARD_DATA_BUFFER_SIZE = 1024 * 64;
   public static final int VT_COMPRESSED_DATA_BUFFER_SIZE = 1024 * 64;
@@ -140,7 +140,7 @@ public class VT
   public static final int VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG = 51;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16777216 = 52;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_8 = 53;
-  public static final int VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF = 54;
+  public static final int VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF = 54;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_UNIFIED = 55;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_DEFAULT_SCALE = 56;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_INCREASE_SCALE = 57;

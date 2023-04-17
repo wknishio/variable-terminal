@@ -663,7 +663,8 @@ public class VTServerConnection
     deflatedImageDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsDeflatedImageOutputStream);
     
     snappedImageDataInputStream = (graphicsSnappedImageInputStream);
-    snappedImageDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(graphicsSnappedImageOutputStream);
+    //snappedImageDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(graphicsSnappedImageOutputStream);
+    snappedImageDataOutputStream = VTCompressorSelector.createBufferedZlibOutputStream(graphicsSnappedImageOutputStream);
     
     clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
     clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
@@ -1099,7 +1100,8 @@ public class VTServerConnection
     deflatedImageDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsDeflatedImageOutputStream);
     deflatedImageDataInputStream = (graphicsDeflatedImageInputStream);
     
-    snappedImageDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(graphicsSnappedImageOutputStream);
+    //snappedImageDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(graphicsSnappedImageOutputStream);
+    snappedImageDataOutputStream = VTCompressorSelector.createBufferedZlibOutputStream(graphicsSnappedImageOutputStream);
     snappedImageDataInputStream = (graphicsSnappedImageInputStream);
     
     // graphicsControlInputStream.addPropagated(deflatedImageDataOutputStream);

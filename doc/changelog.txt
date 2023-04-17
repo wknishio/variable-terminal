@@ -19,7 +19,7 @@ Changes since 1.4.2:
 * Remote cursor on screen captures scales with current server dpi
 * Included email in copyright notice
 * Command *VTCLEAR does not show copyright notice anymore
-* Command *VTGRAPHICSLINK now supports custom image codings ZOF and SOF
+* Command *VTGRAPHICSLINK now supports custom image codings ZOF and DOF
 * Command *VTGRAPHICSLINK now supports image codings PNG and JPEG
 * Added ObjectPlanet PngEncoder library, much faster than Java ImageIO
 * Color qualities: worst, low, simple, below, medium, above, extra, high, true

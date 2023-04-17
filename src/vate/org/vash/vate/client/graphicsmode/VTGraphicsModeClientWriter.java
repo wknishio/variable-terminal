@@ -976,9 +976,9 @@ public class VTGraphicsModeClientWriter implements Runnable
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
         // connection.getGraphicsControlDataOutputStream().flush();
       }
-      else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF)
+      else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF)
       {
-        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF);
+        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF);
         // connection.getGraphicsControlDataOutputStream().flush();
       }
       else

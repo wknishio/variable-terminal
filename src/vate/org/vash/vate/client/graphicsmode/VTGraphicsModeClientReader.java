@@ -567,7 +567,7 @@ public class VTGraphicsModeClientReader implements Runnable
             }
             currentDataType = currentImageDataBuffer.getRaster().getDataBuffer().getDataType();
             // startTime = System.currentTimeMillis();
-            if (coding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF)
+            if (coding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF)
             {
               if (currentDataType == DataBuffer.TYPE_BYTE)
               {
@@ -623,7 +623,7 @@ public class VTGraphicsModeClientReader implements Runnable
             {
               writer.notifyAsynchronousRepainter();
             }
-            if (connection.getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF)
+            if (connection.getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF)
             {
               currentDataType = currentImageDataBuffer.getRaster().getDataBuffer().getDataType();
               if (currentDataType == DataBuffer.TYPE_BYTE)

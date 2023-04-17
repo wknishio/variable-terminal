@@ -504,9 +504,9 @@ public class VTGraphicsModeServerReader implements Runnable
             writer.setImageCoding(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF:
+          case VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF:
           {
-            writer.setImageCoding(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF);
+            writer.setImageCoding(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF);
             break;
           }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_DRAW_POINTER_INCREASE:

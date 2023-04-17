@@ -87,7 +87,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
   private CheckboxMenuItem needVisibleOption;
   private CheckboxMenuItem ignoreStateOption;
   private CheckboxMenuItem imageCodingZOFOption;
-  private CheckboxMenuItem imageCodingSOFOption;
+  private CheckboxMenuItem imageCodingDOFOption;
   private CheckboxMenuItem imageCodingPNGOption;
   private CheckboxMenuItem imageCodingJPGOption;
   // private CheckboxMenuItem imageCodingGIFOption;
@@ -217,8 +217,8 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.ignoreStateOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuTerminalRefreshPolicyOptionsListener(writer, ignoreStateOption, VTGraphicsModeClientWriter.TERMINAL_STATE_IGNORE));
     this.imageCodingZOFOption = new CheckboxMenuItem("ZOF", true);
     this.imageCodingZOFOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingZOFOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF));
-    this.imageCodingSOFOption = new CheckboxMenuItem("SOF", false);
-    this.imageCodingSOFOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingSOFOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF));
+    this.imageCodingDOFOption = new CheckboxMenuItem("DOF", false);
+    this.imageCodingDOFOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingDOFOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF));
     this.imageCodingPNGOption = new CheckboxMenuItem("PNG", false);
     this.imageCodingPNGOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingPNGOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG));
     this.imageCodingJPGOption = new CheckboxMenuItem("JPG", false);
@@ -306,7 +306,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     // this.imageFormatMenu.add(alterationCodingMenu);
     // this.imageFormatMenu.add(colorCodingMenu);
     this.imageFormatMenu.add(imageCodingZOFOption);
-    this.imageFormatMenu.add(imageCodingSOFOption);
+    this.imageFormatMenu.add(imageCodingDOFOption);
     this.imageFormatMenu.add(imageCodingJPGOption);
     this.imageFormatMenu.add(imageCodingPNGOption);
     // this.imageFormatMenu.add(imageCodingGIFOption);
@@ -638,7 +638,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG)
     {
       imageCodingZOFOption.setState(false);
-      imageCodingSOFOption.setState(false);
+      imageCodingDOFOption.setState(false);
       imageCodingPNGOption.setState(true);
       imageCodingJPGOption.setState(false);
       // imageFormatGIFOption.setState(false);
@@ -646,22 +646,22 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
     {
       imageCodingZOFOption.setState(false);
-      imageCodingSOFOption.setState(false);
+      imageCodingDOFOption.setState(false);
       imageCodingPNGOption.setState(false);
       imageCodingJPGOption.setState(true);
       // imageFormatGIFOption.setState(false);
     }
-    else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SOF)
+    else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF)
     {
       imageCodingZOFOption.setState(false);
-      imageCodingSOFOption.setState(true);
+      imageCodingDOFOption.setState(true);
       imageCodingPNGOption.setState(false);
       imageCodingJPGOption.setState(false);
     }
     else
     {
       imageCodingZOFOption.setState(true);
-      imageCodingSOFOption.setState(false);
+      imageCodingDOFOption.setState(false);
       imageCodingPNGOption.setState(false);
       imageCodingJPGOption.setState(false);
       // imageCodingGIFOption.setState(false);
