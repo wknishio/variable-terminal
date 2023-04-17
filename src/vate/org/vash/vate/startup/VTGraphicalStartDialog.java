@@ -80,7 +80,12 @@ public class VTGraphicalStartDialog extends Dialog
     
     VTIconDisplay display = new VTIconDisplay();
     display.setFocusable(false);
-    display.setImage(VT.remoteIcon, 64, 64);
+    float fontScaling = VTGlobalTextStyleManager.FONT_SCALING_FACTOR_MONOSPACED;
+    int imageScaling = (int)Math.ceil(4 * fontScaling);
+    //System.out.println("fontScaling:" + fontScaling);
+    //System.out.println("imageScaling:" + imageScaling);
+    //System.out.println("imageSize:" + 16 * imageScaling);
+    display.setImage(VT.remoteIcon, 16 * imageScaling, 16 * imageScaling);
     
     final Button client = new Button(" Client ");
     final Button server = new Button(" Server ");
@@ -441,4 +446,14 @@ public class VTGraphicalStartDialog extends Dialog
     getOwner().toFront();
     super.setVisible(visible);
   }
+  
+//  private int roundUp(int numToRound, int multiple)
+//  {
+//      if (multiple == 0)
+//          return numToRound;
+//      int remainder = numToRound % multiple;
+//      if (remainder == 0)
+//          return numToRound;
+//      return numToRound + multiple - remainder;
+//  }
 }
