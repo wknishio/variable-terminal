@@ -82,13 +82,13 @@ class BlockCompressionState
         return windowBaseOffset;
     }
     
-    public void setBaseAddress(long baseAddress)
-    {
-      this.baseAddress = baseAddress;
-    }
-    
-    public void setWindowBaseOffset(int windowBaseOffset)
-    {
-      this.windowBaseOffset = windowBaseOffset;
-    }
+//    public void setBaseAddress(long baseAddress)
+//    {
+//      this.baseAddress = baseAddress;
+//    }
+//    
+//    public void setWindowBaseOffset(int windowBaseOffset)
+//    {
+//      this.windowBaseOffset = windowBaseOffset;
+//    }
 }

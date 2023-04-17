@@ -22,9 +22,7 @@ class CompressionContext
     public final RepeatedOffsets offsets = new RepeatedOffsets();
     public final BlockCompressionState blockCompressionState;
     public final SequenceStore sequenceStore;
-
     public final SequenceEncodingContext sequenceEncodingContext = new SequenceEncodingContext();
-
     public final HuffmanCompressionContext huffmanContext = new HuffmanCompressionContext();
 
     public CompressionContext(CompressionParameters parameters, long baseAddress, int inputSize)
@@ -58,8 +56,9 @@ class CompressionContext
     {
       offsets.reset();
       blockCompressionState.resetFull();
-      sequenceStore.reset();
-      sequenceEncodingContext.reset();
-      huffmanContext.reset();
+      
+      //sequenceStore.reset();
+      //sequenceEncodingContext.reset();
+      //huffmanContext.reset();
     }
 }
