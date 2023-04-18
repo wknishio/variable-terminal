@@ -65,7 +65,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                     socket.connect(new InetSocketAddress(host, port));
                   }
                   socket.setTcpNoDelay(true);
-                  //socket.setSoLinger(true, 0);
+                  socket.setSoLinger(true, 1);
                   VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, null);
                   VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, handler);
                   

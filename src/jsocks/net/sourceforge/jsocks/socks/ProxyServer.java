@@ -202,6 +202,7 @@ public class ProxyServer implements Runnable {
 				Socket s = ss.accept();
 				//s.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 				s.setTcpNoDelay(true);
+				s.setSoLinger(true, 1);
 				//s.setReuseAddress(true);
 				//s.setKeepAlive(true);
 				//s.setSoTimeout(60000);
@@ -390,6 +391,7 @@ public class ProxyServer implements Runnable {
 			s.connect(new InetSocketAddress(msg.ip, msg.port));
 			//s = new Socket(msg.ip, msg.port);
 			s.setTcpNoDelay(true);
+			s.setSoLinger(true, 1);
 			//s.setReuseAddress(true);
 			//s.setKeepAlive(true);
 			//s.setSoTimeout(60000);
@@ -397,6 +399,7 @@ public class ProxyServer implements Runnable {
 		} else {
 			s = new SocksSocket(proxy, msg.ip, msg.port);
 			s.setTcpNoDelay(true);
+			s.setSoLinger(true, 1);
 			//s.setReuseAddress(true);
 			//s.setKeepAlive(true);
 			//s.setSoTimeout(60000);
@@ -519,6 +522,7 @@ public class ProxyServer implements Runnable {
 			s = ss.accept();
 			//s.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 			s.setTcpNoDelay(true);
+			s.setSoLinger(true, 1);
 			//s.setReuseAddress(true);
 			//s.setKeepAlive(true);
 			//s.setSoTimeout(60000);

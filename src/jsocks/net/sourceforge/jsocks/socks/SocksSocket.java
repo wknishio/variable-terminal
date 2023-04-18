@@ -361,6 +361,7 @@ public class SocksSocket extends Socket{
          proxy.out = directSock.getOutputStream();
          proxy.in  = directSock.getInputStream();
          directSock.setTcpNoDelay(true);
+         directSock.setSoLinger(true, 1);
          //directSock.setReuseAddress(true);
          //directSock.setKeepAlive(true);
          //directSock.setSoTimeout(60000);

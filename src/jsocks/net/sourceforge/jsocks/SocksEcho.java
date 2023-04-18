@@ -388,6 +388,7 @@ public class SocksEcho extends Frame implements ActionListener, Runnable, Window
 		sock = server_sock.accept();
 		//sock.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 		sock.setTcpNoDelay(true);
+		sock.setSoLinger(true, 1);
 		//sock.setReuseAddress(true);
 		//sock.setKeepAlive(true);
 		//sock.setSoLinger(true, 0);

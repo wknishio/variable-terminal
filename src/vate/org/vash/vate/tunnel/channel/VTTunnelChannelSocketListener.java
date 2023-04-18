@@ -122,7 +122,7 @@ public class VTTunnelChannelSocketListener implements Runnable
         {
           socket = serverSocket.accept();
           socket.setTcpNoDelay(true);
-          //socket.setSoLinger(true, 0);
+          socket.setSoLinger(true, 1);
           int channelType = channel.getChannelType();
           VTTunnelSession session = new VTTunnelSession(channel.getConnection(), socket, true);
           VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, channel);

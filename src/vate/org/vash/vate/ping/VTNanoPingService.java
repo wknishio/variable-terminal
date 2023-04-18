@@ -163,7 +163,7 @@ public class VTNanoPingService extends VTTask
     }
   }
   
-  private void server() throws IOException
+  private void server() throws IOException, InterruptedException
   {
     while (!stopped)
     {
@@ -181,10 +181,10 @@ public class VTNanoPingService extends VTTask
       
       // wait local interval
       // Thread.sleep(interval);
-      // synchronized (this)
-      // {
-      // this.wait(interval);
-      // }
+      //synchronized (this)
+      //{
+        //this.wait(interval);
+      //}
       
       // start timer
       startNanoTime = System.nanoTime();

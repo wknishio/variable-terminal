@@ -134,6 +134,7 @@ public class SocksServerSocket extends ServerSocket {
 			s = super.accept();
 			//s.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 			s.setTcpNoDelay(true);
+			s.setSoLinger(true, 1);
 			//s.setReuseAddress(true);
 			//s.setKeepAlive(true);
 			//s.setSoTimeout(60000);

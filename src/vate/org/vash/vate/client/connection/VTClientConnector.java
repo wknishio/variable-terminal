@@ -597,9 +597,9 @@ public class VTClientConnector implements Runnable
       // connection.getConnectionSocket().setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE
       // - 1);
       connection.getConnectionSocket().setTcpNoDelay(true);
+      connection.getConnectionSocket().setSoLinger(true, 1);
       // connection.getConnectionSocket().setReuseAddress(true);
       // connection.getConnectionSocket().setKeepAlive(true);
-      connection.getConnectionSocket().setSoLinger(true, 0);
       connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
       connecting = false;
       if (encryptionType == null)
@@ -696,9 +696,9 @@ public class VTClientConnector implements Runnable
       // - 1);
       connection.getConnectionSocket().connect(socketAddress);
       connection.getConnectionSocket().setTcpNoDelay(true);
+      connection.getConnectionSocket().setSoLinger(true, 1);
       // connection.getConnectionSocket().setReuseAddress(true);
       // connection.getConnectionSocket().setKeepAlive(true);
-      connection.getConnectionSocket().setSoLinger(true, 0);
       connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
       connecting = false;
       if (encryptionType == null)
