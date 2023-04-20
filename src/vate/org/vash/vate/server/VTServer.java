@@ -1274,7 +1274,7 @@ public class VTServer implements Runnable
   
   private void configure()
   {
-    while ((passive && hostPort == null) || (!passive && (hostAddress == null || hostPort == null)) || sessionsMaximum == null || sessionsMaximum < 0)
+    while ((passive && hostPort == null) || (!passive && (hostAddress == null || hostPort == null)))
     {
       if (skipConfiguration)
       {
@@ -1316,7 +1316,7 @@ public class VTServer implements Runnable
       
       if (connectionDialog != null)
       {
-        if ((passive && hostPort == null) || (!passive && (hostAddress == null || hostPort == null)) || sessionsMaximum == null || sessionsMaximum < 0)
+        if ((passive && hostPort == null) || (!passive && (hostAddress == null || hostPort == null)))
         {
           connectionDialog.open();
           if (skipConfiguration)
@@ -1915,7 +1915,7 @@ public class VTServer implements Runnable
       {
         
       }
-      if (hostAddress == null || hostPort == null || sessionsMaximum == null || sessionsMaximum < 0)
+      if (hostAddress == null || hostPort == null)
       {
         VTConsole.print("VT>Try configuring again?(Y/N, default:N):");
         try
