@@ -91,13 +91,14 @@ public class VTAudioBeeper
       {
         int written = 0;
         int remaining = data.length;
-        int cycle = 0;
+        //int available = 0;
+        int cycle = 1;
         
         sdl.start();
         
         // long start = System.currentTimeMillis();
         
-        while (remaining > 0)
+        while (remaining > 0 && cycle > 0)
         {
           cycle = sdl.write(data, written, Math.min(lineBufferSize, remaining));
           written += cycle;

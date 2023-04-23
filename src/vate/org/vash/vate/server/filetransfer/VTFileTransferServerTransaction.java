@@ -30,7 +30,7 @@ public class VTFileTransferServerTransaction implements Runnable
   private volatile boolean checked;
   private volatile boolean resumable;
   private volatile boolean directory;
-  private volatile boolean stronger;
+  private volatile boolean heavier;
   // private static final int checksumBufferSize = 64 * 1024;
   private int readedBytes;
   private int writtenBytes;
@@ -1625,7 +1625,7 @@ public class VTFileTransferServerTransaction implements Runnable
           compressing = false;
           resuming = false;
           verifying = false;
-          stronger = false;
+          heavier = false;
           
           if (transferParameters.toUpperCase().contains("F"))
           {
@@ -1634,7 +1634,7 @@ public class VTFileTransferServerTransaction implements Runnable
           if (transferParameters.toUpperCase().contains("H"))
           {
             compressing = true;
-            stronger = true;
+            heavier = true;
           }
           if (transferParameters.toUpperCase().contains("R"))
           {
@@ -1647,7 +1647,7 @@ public class VTFileTransferServerTransaction implements Runnable
           
           if (compressing)
           {
-            if (stronger)
+            if (heavier)
             {
               fileTransferRemoteInputStream = VTCompressorSelector.createBufferedZstdInputStream(session.getServer().getConnection().getFileTransferDataInputStream());
             }
@@ -1689,7 +1689,7 @@ public class VTFileTransferServerTransaction implements Runnable
           compressing = false;
           resuming = false;
           verifying = false;
-          stronger = false;
+          heavier = false;
           
           if (transferParameters.toUpperCase().contains("F"))
           {
@@ -1698,7 +1698,7 @@ public class VTFileTransferServerTransaction implements Runnable
           if (transferParameters.toUpperCase().contains("H"))
           {
             compressing = true;
-            stronger = true;
+            heavier = true;
           }
           if (transferParameters.toUpperCase().contains("R"))
           {
@@ -1711,7 +1711,7 @@ public class VTFileTransferServerTransaction implements Runnable
           
           if (compressing)
           {
-            if (stronger)
+            if (heavier)
             {
               fileTransferRemoteOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(session.getServer().getConnection().getFileTransferDataOutputStream());
             }
