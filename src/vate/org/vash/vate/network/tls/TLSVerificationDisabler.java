@@ -18,7 +18,7 @@ public class TLSVerificationDisabler
     }
   }
   
-  private static class PublicKeyInfrastructureRejector implements TrustManager, X509TrustManager
+  private static class OverlyOptimisticTrustManager implements TrustManager, X509TrustManager
   {
     public java.security.cert.X509Certificate[] getAcceptedIssuers()
     {
@@ -55,7 +55,7 @@ public class TLSVerificationDisabler
       System.setProperty("sun.security.ssl.allowLegacyHelloMessages", "true");
       System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
       TrustManager[] trustAnything = new TrustManager[]
-      { new PublicKeyInfrastructureRejector() };
+      { new OverlyOptimisticTrustManager() };
       SSLContext unverifiedTLS = SSLContext.getInstance("TLS");
       unverifiedTLS.init(null, trustAnything, new java.security.SecureRandom());
       HttpsURLConnection.setDefaultSSLSocketFactory(unverifiedTLS.getSocketFactory());
