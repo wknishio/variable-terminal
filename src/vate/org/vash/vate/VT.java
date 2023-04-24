@@ -62,16 +62,16 @@ public class VT
   public static final int VT_CONNECTION_ENCRYPT_HC256 = 5;
   public static final int VT_CONNECTION_ENCRYPT_GRAIN = 6;
   
-  public static final int VT_AUTHENTICATION_TIMEOUT_MILLISECONDS = 30000;
-  public static final int VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS = 30000;
+  public static final int VT_AUTHENTICATION_TIMEOUT_MILLISECONDS = 60000;
+  public static final int VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS = 60000;
   // public static final int VT_CONNECTION_TCP_ACCEPT_TIMEOUT_MILLISECONDS =
   // 60000;
   // public static final int VT_CONNECTION_TCP_CONNECT_TIMEOUT_MILLISECONDS =
   // 60000;
-  public static final int VT_CLIENT_RECONNECTION_TIMEOUT_MILLISECONDS = 30000;
+  public static final int VT_CLIENT_RECONNECTION_TIMEOUT_MILLISECONDS = 60000;
   public static final int VT_DAEMON_RECONNECTION_TIMEOUT_MILLISECONDS = 2500;
   
-  public static final int VT_PING_SERVICE_INTERVAL_MILLISECONDS = 7500;
+  public static final int VT_PING_SERVICE_INTERVAL_MILLISECONDS = 15000;
   
   public static final int VT_FILE_TRANSFER_SESSION_STARTED = 0;
   public static final int VT_FILE_TRANSFER_SESSION_FINISHED = 1;
