@@ -3,6 +3,8 @@ package org.vash.vate.socket;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -22,6 +24,7 @@ public class VTManagedServerSocket
   private BlockingQueue<VTManagedSocket> queue = new LinkedBlockingQueue<VTManagedSocket>();
   private volatile Thread interruptible;
   private VTManagedSocketListener socketListener;
+  private Map<VTServerSession, VTManagedSocket> sessions = new LinkedHashMap<VTServerSession, VTManagedSocket>();
   
   private class VTCloseableServerConnection implements VTManagedConnection
   {
@@ -89,6 +92,7 @@ public class VTManagedServerSocket
       OutputStream output = session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12);
       VTManagedSocket socket = new VTManagedSocket(new VTCloseableServerConnection(session), input, output);
       session.addSessionResource(this.getClass().getSimpleName(), socket);
+      sessions.put(session, socket);
       if (socketListener != null)
       {
         socketListener.connected(socket);
@@ -101,7 +105,12 @@ public class VTManagedServerSocket
     
     public void sessionFinished(VTServerSession session)
     {
-      // System.out.println("server.session.finished()");      
+      // System.out.println("server.session.finished()");
+      VTManagedSocket socket = sessions.remove(session);
+      if (socketListener != null && socket != null)
+      {
+        socketListener.disconnected(socket);
+      }
     }
   }
   
