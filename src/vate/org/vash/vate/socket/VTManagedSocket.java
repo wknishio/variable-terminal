@@ -108,8 +108,8 @@ public class VTManagedSocket extends Socket implements Closeable
     //super.setSoLinger(on, linger);
   }
   
-  public void setKeepAlive(boolean on)
+  public void setKeepAlive(boolean on) throws SocketException
   {
-    //super.setKeepAlive();
+    //super.setKeepAlive(false);
   }
 }
