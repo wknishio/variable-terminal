@@ -37,16 +37,26 @@ public class VTShellAdapter
   public void setShellType(int shellType)
   {
     this.shellType = shellType;
-    String cp = System.getProperty("user.dir") + File.separatorChar + System.getProperty("java.class.path");
+    String cp = System.getProperty("java.class.path");
+    
+    String command = "";
     if (shellType == VTShellProcessor.SHELL_TYPE_GROOVYSH)
     {
-      javaBuilder = new ProcessBuilder(new String[]
-      { "java", "-cp", "\"" + cp + "\"", DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, GROOVYSHELL_MAIN_CLASS });
+      command = "java -cp " + '"' + cp + "'" + " " + DISABLE_COMMONS_LOGGING + " " + DISABLE_UTIL_LOGGING_CLASS + " " + GROOVYSHELL_MAIN_CLASS;
+      javaBuilder = new ProcessBuilder(command);
+      //javaBuilder = new ProcessBuilder(new String[]
+      //{
+        //"java", "-cp", cp, DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, GROOVYSHELL_MAIN_CLASS
+      //});
     }
     if (shellType == VTShellProcessor.SHELL_TYPE_BEANSHELL)
     {
-      javaBuilder = new ProcessBuilder(new String[]
-      { "java", "-cp", "\"" + cp + "\"", DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, BEANSHELL_MAIN_CLASS });
+      command = "java -cp " + '"' + cp + "'" + " " + DISABLE_COMMONS_LOGGING + " " + DISABLE_UTIL_LOGGING_CLASS + " " + BEANSHELL_MAIN_CLASS;
+      javaBuilder = new ProcessBuilder(command);
+      //javaBuilder = new ProcessBuilder(new String[]
+      //{
+        //"java", "-cp", cp, DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, BEANSHELL_MAIN_CLASS
+      //});
     }
   }
   
