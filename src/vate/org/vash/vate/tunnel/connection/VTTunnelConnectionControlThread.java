@@ -120,7 +120,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                   VTTunnelVirtualSocket virtual = new VTTunnelVirtualSocket();
                   session = new VTTunnelSession(connection, virtual, false);
                   VTTunnelSocksSessionHandler handler = null;
-                  if (parts.length > 3 && socksUsername.equals("*") && socksPassword.equals("*") && parts[3].equals("*"))
+                  if (parts.length > 4 && socksUsername.equals("*") && socksPassword.equals("*") && parts[4].equals("*"))
                   {
                     handler = new VTTunnelSocksSessionHandler(session, null);
                   }

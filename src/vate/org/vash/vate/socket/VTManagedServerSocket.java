@@ -101,16 +101,7 @@ public class VTManagedServerSocket
     
     public void sessionFinished(VTServerSession session)
     {
-      // System.out.println("server.session.finished()");
-//      if (socketListener != null)
-//      {
-//        Closeable closeable = session.getSessionResource(this.getClass().getSimpleName());
-//        if (closeable instanceof VTManagedSocket)
-//        {
-//          VTManagedSocket socket = (VTManagedSocket) closeable;
-//          socketListener.sessionFinished(socket);
-//        }
-//      }
+      // System.out.println("server.session.finished()");      
     }
   }
   
