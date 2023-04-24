@@ -12,7 +12,7 @@ public class PngCheck
     {
         (new PngImage(new PngConfig.Builder().readLimit(PngConfig.READ_UNTIL_DATA).build()){
             public void handleWarning(PngException e) {
-                System.out.println("Warning: " + e.getMessage());
+                //System.out.println("Warning: " + e.getMessage());
             }
         }).read(new File(args[0]));
     }

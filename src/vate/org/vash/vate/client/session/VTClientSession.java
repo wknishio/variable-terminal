@@ -211,7 +211,8 @@ public class VTClientSession
   
   public boolean isStopped()
   {
-    return serverReader.isStopped() || clientWriter.isStopped() || !connection.isConnected();
+    //return serverReader.isStopped() || clientWriter.isStopped() || !connection.isConnected();
+    return serverReader.isStopped() || !connection.isConnected();
     // return serverReader.isStopped() || clientWriter.isStopped() ||
     // !connection.isConnected();
   }
@@ -286,6 +287,10 @@ public class VTClientSession
   {
     // VTTerminal.println("\nSession over!");
     stopTasks();
+//    synchronized (this)
+//    {
+//      notifyAll();
+//    }
     // if (writerThread != null && writerThread.isAlive())
     // {
     // System.out.println("interrupting writerThread...");
@@ -340,14 +345,21 @@ public class VTClientSession
     try
     {
       serverReader.joinThread();
+      //System.out.println("serverReader.joinThread()");
       clientWriter.joinThread();
+      //System.out.println("clientWriter.joinThread()");
       fileTransferClient.joinThread();
+      //System.out.println("fileTransferClient.joinThread()");
       graphicsClient.joinThread();
+      //System.out.println("graphicsClient.joinThread()");
       clipboardTransferTask.joinThread();
+      //System.out.println("clipboardTransferTask.joinThread()");
       // zipFileOperation.joinThread();
       tunnelsHandler.joinThread();
+      //System.out.println("tunnelsHandler.joinThread()");
       // socksTunnelsHandler.joinThread();
       pingService.joinThread();
+      //System.out.println("pingService.joinThread()");
     }
     catch (Throwable e)
     {

@@ -123,12 +123,12 @@ public class VTClientRemoteConsoleWriter extends VTTask
           }
           else
           {
-            // stopped = true;
+            stopped = true;
             // Thread.sleep(1);
-            synchronized (session)
-            {
-              session.wait();
-            }
+            //synchronized (session)
+            //{
+              //session.wait();
+            //}
           }
         }
         else

@@ -561,7 +561,7 @@ public final class VTConsole
   
   public static void createInterruptibleReadline(final boolean echo, final Runnable interrupt)
   {
-    if (daemon)
+    if (!checkConsole())
     {
       return;
     }
@@ -595,6 +595,10 @@ public final class VTConsole
       {
         initialize();
       }
+    }
+    else
+    {
+      return false;
     }
     return console != null;
   }
