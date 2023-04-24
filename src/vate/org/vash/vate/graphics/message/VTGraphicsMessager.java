@@ -18,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
 import javax.imageio.ImageIO;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
+import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.graphics.image.VTIconDisplay;
 
 public class VTGraphicsMessager
@@ -123,12 +124,15 @@ public class VTGraphicsMessager
       
       // Panel main = new Panel();
       // main.setLayout(new GridLayout(2, 1));
+      float fontScaling = VTGlobalTextStyleManager.FONT_SCALING_FACTOR_MONOSPACED;
+      int imageScaling = (int)Math.ceil(fontScaling);
+
       Panel p1 = new Panel();
       p1.setLayout(new BorderLayout());
       
       VTIconDisplay display = new VTIconDisplay();
       display.setFocusable(false);
-      display.setImage(warningIcon32, 32, 32);
+      display.setImage(warningIcon32, 32 * imageScaling, 32 * imageScaling);
       
       Label messageLabel = new Label(message);
       Label titleLabel = new Label(title);

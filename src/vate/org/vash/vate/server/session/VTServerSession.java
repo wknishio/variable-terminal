@@ -178,10 +178,8 @@ public class VTServerSession
       {
         sessionLocalNanoDelay = localNanoDelay;
         sessionRemoteNanoDelay = remoteNanoDelay;
-        // VTConsole.println("server localNanoDelay:" +
-        // localNanoDelay);
-        // VTConsole.println("server remoteNanoDelay:" +
-        // remoteNanoDelay);
+        //System.out.println("server localNanoDelay:" + localNanoDelay);
+        //System.out.println("server remoteNanoDelay:" + remoteNanoDelay);
       }
     });
     setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);

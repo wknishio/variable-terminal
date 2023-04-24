@@ -100,10 +100,8 @@ public class VTClientSession
       {
         sessionLocalNanoDelay = localNanoDelay;
         sessionRemoteNanoDelay = remoteNanoDelay;
-        // VTConsole.println("client localNanoDelay:" +
-        // localNanoDelay);
-        // VTConsole.println("client remoteNanoDelay:" +
-        // remoteNanoDelay);
+        //System.out.println("client localNanoDelay:" + localNanoDelay);
+        //System.out.println("client remoteNanoDelay:" + remoteNanoDelay);
       }
     });
   }
