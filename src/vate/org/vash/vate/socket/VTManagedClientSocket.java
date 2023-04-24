@@ -177,7 +177,7 @@ public class VTManagedClientSocket
 //    managed.start();
 //    try
 //    {
-//      Socket socket = managed.connect();
+//      VTManagedSocket socket = managed.connect();
 //      System.out.println("client.socket.connected()");
 //      java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.OutputStreamWriter(socket.getOutputStream()));
 //      java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));

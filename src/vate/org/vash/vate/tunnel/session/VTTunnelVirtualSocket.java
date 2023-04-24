@@ -137,4 +137,9 @@ public class VTTunnelVirtualSocket extends Socket
   {
     //super.setSoLinger(on, linger);
   }
+  
+  public void setKeepAlive(boolean on)
+  {
+    //super.setKeepAlive();
+  }
 }

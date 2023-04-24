@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketException;
 
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
@@ -90,5 +91,25 @@ public class VTManagedSocket extends Socket implements Closeable
   public boolean isConnected()
   {
     return managedConnection.isConnected();
+  }
+  
+  public void setSoTimeout(int timeout) throws SocketException
+  {
+    //super.setSoTimeout(timeout);
+  }
+  
+  public void setTcpNoDelay(boolean on) throws SocketException
+  {
+    //super.setTcpNoDelay(true);
+  }
+  
+  public void setSoLinger(boolean on, int linger) throws SocketException
+  {
+    //super.setSoLinger(on, linger);
+  }
+  
+  public void setKeepAlive(boolean on)
+  {
+    //super.setKeepAlive();
   }
 }
