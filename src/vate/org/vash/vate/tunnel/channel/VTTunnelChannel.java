@@ -36,6 +36,11 @@ public class VTTunnelChannel
     return channelType;
   }
   
+  public void setChannelType(int channelType)
+  {
+    this.channelType = channelType;
+  }
+  
   // SOCKS tunnel without authentication
   public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort)
   {

@@ -53,20 +53,12 @@ public class VTTunnelConnection
     {
       if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
       {
+        listener.getChannel().setChannelType(channelType);
         return true;
       }
       else
       {
         return false;
-//        try
-//        {
-//          listener.close();
-//        }
-//        catch (Throwable t)
-//        {
-//          
-//        }
-//        listener.remove();
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(channelType, this, bindHost, bindPort);
@@ -90,6 +82,7 @@ public class VTTunnelConnection
     {
       if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
       {
+        listener.getChannel().setChannelType(channelType);
         listener.getChannel().setSocksUsername(socksUsername);
         listener.getChannel().setSocksPassword(socksPassword);
         return true;
@@ -97,15 +90,6 @@ public class VTTunnelConnection
       else
       {
         return false;
-//        try
-//        {
-//          listener.close();
-//        }
-//        catch (Throwable t)
-//        {
-//          
-//        }
-//        listener.remove();
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(channelType, this, bindHost, bindPort, socksUsername, socksPassword);
@@ -129,21 +113,13 @@ public class VTTunnelConnection
     {
       if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
       {
+        listener.getChannel().setChannelType(channelType);
         listener.getChannel().setRedirectAddress(redirectHost, redirectPort);
         return true;
       }
       else
       {
         return false;
-//        try
-//        {
-//          listener.close();
-//        }
-//        catch (Throwable t)
-//        {
-//          
-//        }
-//        listener.remove();
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(channelType, this, bindHost, bindPort, redirectHost, redirectPort);

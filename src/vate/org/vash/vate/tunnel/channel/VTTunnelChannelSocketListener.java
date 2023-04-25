@@ -14,7 +14,7 @@ public class VTTunnelChannelSocketListener implements Runnable
   private VTTunnelChannel channel;
   private static final String SESSION_SEPARATOR = "\f\b";
   private static final char SESSION_MARK = 'C';
-  private volatile boolean closed;
+  private volatile boolean closed = false;
   
   public VTTunnelChannelSocketListener(VTTunnelChannel channel)
   {
@@ -47,6 +47,10 @@ public class VTTunnelChannelSocketListener implements Runnable
   
   public void close() throws IOException
   {
+    if (closed)
+    {
+      return;
+    }
     try
     {
       if (serverSocket != null)
@@ -66,8 +70,8 @@ public class VTTunnelChannelSocketListener implements Runnable
     {
       // e.printStackTrace();
     }
+    //channel.getConnection().removeChannel(this);
     closed = true;
-    // channel.getConnection().removeChannel(this);
   }
   
   public boolean bind()

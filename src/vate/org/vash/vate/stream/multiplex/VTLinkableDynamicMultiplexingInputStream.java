@@ -300,6 +300,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
   private Map<Integer, VTLinkableDynamicMultiplexedInputStream> pipedChannels;
   private Map<Integer, VTLinkableDynamicMultiplexedInputStream> directChannels;
+  private volatile boolean closed = false;
   
   public VTLinkableDynamicMultiplexingInputStream(InputStream in, int packetSize, int bufferSize, boolean startPacketReader)
   {
@@ -417,7 +418,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   
   public final void close() throws IOException
   {
-    if (!packetReader.running)
+    if (closed)
     {
       return;
     }
@@ -461,6 +462,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     pipedChannels.clear();
     directChannels.clear();
     in.close();
+    closed = true;
   }
   
   // critical method, handle with care

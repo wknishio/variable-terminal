@@ -227,6 +227,7 @@ public class VTServerConnection
   public void setConnectionSocket(Socket connectionSocket)
   {
     this.connectionSocket = connectionSocket;
+    this.closed = false;
   }
   
   /*

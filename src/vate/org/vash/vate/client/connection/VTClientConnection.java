@@ -220,6 +220,7 @@ public class VTClientConnection
   public void setConnectionSocket(Socket connectionSocket)
   {
     this.connectionSocket = connectionSocket;
+    this.closed = false;
   }
   
   /*

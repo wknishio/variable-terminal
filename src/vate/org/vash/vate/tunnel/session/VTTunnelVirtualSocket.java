@@ -14,7 +14,7 @@ public class VTTunnelVirtualSocket extends Socket
   private InputStream in;
   private OutputStream out;
   private OutputStream pipe;
-  private boolean closed = false;
+  private volatile boolean closed = false;
   
   public VTTunnelVirtualSocket()
   {
