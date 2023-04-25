@@ -93,7 +93,7 @@ public class VTFileTransferServerTransaction implements Runnable
     
     long xxhash64Seed = new VTBlake3DigestRandom(blake3Seed).nextLong();
     
-    xxhash64Digest = XXHashFactory.fastestJavaInstance().newStreamingHash64(xxhash64Seed).asMessageDigest();
+    xxhash64Digest = XXHashFactory.safeInstance().newStreamingHash64(xxhash64Seed).asMessageDigest();
   }
   
   public boolean isFinished()
