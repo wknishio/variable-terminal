@@ -53,14 +53,14 @@ public class VTCompressorSelector
   
   public static OutputStream createDirectZstdOutputStream(OutputStream out)
   {
-    return new VTBufferedOutputStream(new VTHadoopOutputStream(new ZstdHadoopOutputStream(out, true)), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, false);
+    return new VTHadoopOutputStream(new ZstdHadoopOutputStream(out, true));
     //return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
     //return new VTBufferedOutputStream(new ZstdOutputStream(out), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, true);
   }
   
   public static InputStream createDirectZstdInputStream(InputStream in)
   {
-    return new BufferedInputStream(new VTHadoopInputStream(new ZstdHadoopInputStream(in)), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
+    return new VTHadoopInputStream(new ZstdHadoopInputStream(in));
     //return new BufferedInputStream(new VTAirliftInputStream(in, new ZstdDecompressor()), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
     //return new BufferedInputStream(new ZstdInputStream(in), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
   }
@@ -210,14 +210,14 @@ public class VTCompressorSelector
   {
     // return out;
     //return new LZ4BlockOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true);
-    return new VTBufferedOutputStream(new LZ4FrameOutputStream(out, BLOCKSIZE.SIZE_64KB, false), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, false);
+    return new LZ4FrameOutputStream(out, BLOCKSIZE.SIZE_64KB, false);
   }
   
   public static InputStream createDirectLz4InputStream(InputStream in)
   {
     // return in;
     //return new LZ4BlockInputStream(in, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false);
-    return new BufferedInputStream(new LZ4FrameInputStream(in, false), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
+    return new LZ4FrameInputStream(in, false);
   }
   
   public static OutputStream createBufferedLz4OutputStream(OutputStream out)
