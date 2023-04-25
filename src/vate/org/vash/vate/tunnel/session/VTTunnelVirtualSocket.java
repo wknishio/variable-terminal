@@ -14,6 +14,7 @@ public class VTTunnelVirtualSocket extends Socket
   private InputStream in;
   private OutputStream out;
   private OutputStream pipe;
+  private boolean closed = false;
   
   public VTTunnelVirtualSocket()
   {
@@ -47,58 +48,62 @@ public class VTTunnelVirtualSocket extends Socket
   
   public void shutdownOutput() throws IOException
   {
-    if (out != null)
-    {
-      try
-      {
-        out.close();
-      }
-      catch (Throwable e)
-      {
-        
-      }
-    }
+//    if (out != null)
+//    {
+//      try
+//      {
+//        out.close();
+//      }
+//      catch (Throwable e)
+//      {
+//        
+//      }
+//    }
   }
   
   public void shutdownInput() throws IOException
   {
-    if (in != null)
-    {
-      try
-      {
-        in.close();
-      }
-      catch (Throwable e)
-      {
-        
-      }
-    }
-    if (pipe != null)
-    {
-      try
-      {
-        pipe.close();
-      }
-      catch (Throwable e)
-      {
-        
-      }
-    }
+//    if (in != null)
+//    {
+//      try
+//      {
+//        in.close();
+//      }
+//      catch (Throwable e)
+//      {
+//        
+//      }
+//    }
+//    if (pipe != null)
+//    {
+//      try
+//      {
+//        pipe.close();
+//      }
+//      catch (Throwable e)
+//      {
+//        
+//      }
+//    }
   }
   
   public void close() throws IOException
   {
-    if (in != null)
+    if (closed)
     {
-      try
-      {
-        in.close();
-      }
-      catch (Throwable e)
-      {
-        
-      }
+      return;
     }
+//    if (in != null)
+//    {
+//      try
+//      {
+//        in.close();
+//      }
+//      catch (Throwable e)
+//      {
+//        
+//      }
+//    }
     if (out != null)
     {
       try
@@ -121,6 +126,7 @@ public class VTTunnelVirtualSocket extends Socket
         
       }
     }
+    closed = true;
   }
   
   public void setSoTimeout(int timeout) throws SocketException

@@ -73,6 +73,7 @@ public class VTClientConnection
   }
   
   private volatile boolean connected = false;
+  private volatile boolean closed = false;
   
   private int encryptionType;
   private byte[] encryptionKey;
@@ -418,6 +419,10 @@ public class VTClientConnection
   
   public void closeSockets()
   {
+    if (closed)
+    {
+      return;
+    }
     VTConsole.setCommandEcho(true);
     if (connectionSocket != null)
     {
@@ -478,6 +483,7 @@ public class VTClientConnection
         
       }
     }
+    closed = true;
   }
   
 //	public void closeSocketsFromDialog()

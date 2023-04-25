@@ -78,7 +78,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
         intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE);
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
         {
-          //intermediatePacketStream = VTCompressorSelector.createBufferedZlibOutputStream(intermediateDataPacketBuffer);
+          //intermediatePacketStream = VTCompressorSelector.createDirectZlibOutputStream(intermediateDataPacketBuffer);
           intermediatePacketStream = VTCompressorSelector.createDirectZstdOutputStream(intermediateDataPacketBuffer);
         }
         else
@@ -188,7 +188,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
         intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE);
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
         {
-          //intermediatePacketStream = VTCompressorSelector.createBufferedZlibOutputStream(intermediateDataPacketBuffer);
+          //intermediatePacketStream = VTCompressorSelector.createDirectZlibOutputStream(intermediateDataPacketBuffer);
           intermediatePacketStream = VTCompressorSelector.createDirectZstdOutputStream(intermediateDataPacketBuffer);
         }
         else

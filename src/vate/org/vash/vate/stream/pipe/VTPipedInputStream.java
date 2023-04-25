@@ -317,6 +317,11 @@ public final class VTPipedInputStream extends InputStream
     return closed;
   }
   
+  public final synchronized boolean isEof()
+  {
+    return eof;
+  }
+  
   /*
    * public synchronized void waitOpen() { while (closed || eof) { try {
    * this.wait(); } catch (InterruptedException e) { } } }

@@ -32,6 +32,7 @@ public class VTTunnelConnection
   private Set<VTTunnelChannelSocketListener> channels;
   // private int tunnelType;
   private ExecutorService threads;
+  private volatile boolean closed = false;
   
   public VTTunnelConnection(ExecutorService threads)
   {
@@ -227,6 +228,10 @@ public class VTTunnelConnection
   public synchronized void close()
   {
     // stop();
+    if (closed)
+    {
+      return;
+    }
     //System.out.println("VTTunnelConnection.close()");
     for (VTTunnelChannelSocketListener listener : channels)
     {
@@ -256,6 +261,7 @@ public class VTTunnelConnection
     {
       // e.printStackTrace();
     }
+    closed = true;
   }
   
   public synchronized VTLinkableDynamicMultiplexedOutputStream getOutputStream(int channelType, Object link)

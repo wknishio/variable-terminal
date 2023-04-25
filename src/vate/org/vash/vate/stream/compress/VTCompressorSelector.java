@@ -43,12 +43,50 @@ public class VTCompressorSelector
 {
   public static OutputStream createDirectZlibOutputStream(OutputStream out)
   {
-    return createFlushBufferedSyncFlushDeflaterOutputStreamFilteredStrategy(out);
+    try
+    {
+      Deflater javaDeflater = new Deflater(Deflater.BEST_SPEED, true);
+      javaDeflater.setStrategy(Deflater.FILTERED);
+      javaDeflater.setLevel(Deflater.BEST_SPEED);
+      VTSyncFlushDeflaterOutputStream javaDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(out, javaDeflater, VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
+      return javaDeflaterOutputStream;
+    }
+    catch (Throwable t)
+    {
+      try
+      {
+        ZOutputStream jzlibDeflater = new ZOutputStream(out, JZlib.Z_BEST_SPEED, true, VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
+        jzlibDeflater.setFlushMode(JZlib.Z_SYNC_FLUSH);
+        jzlibDeflater.getZStream().deflateParams(JZlib.Z_BEST_SPEED, JZlib.Z_FILTERED);
+        return jzlibDeflater;
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    finally
+    {
+      
+    }
+    return null;
   }
   
   public static InputStream createDirectZlibInputStream(InputStream in)
   {
-    return createFlushBufferedSyncFlushInflaterInputStream(in);
+    try
+    {
+      // return new InflaterInputStream(in, VT.VT_COMPRESSED_DATA_BUFFER_SIZE,
+      // true);
+      ZInputStream jzlibInflater = new ZInputStream(in, true, VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
+      jzlibInflater.setFlushMode(JZlib.Z_SYNC_FLUSH);
+      return jzlibInflater;
+    }
+    catch (Throwable e)
+    {
+      
+    }
+    return null;
   }
   
   public static OutputStream createDirectZstdOutputStream(OutputStream out)

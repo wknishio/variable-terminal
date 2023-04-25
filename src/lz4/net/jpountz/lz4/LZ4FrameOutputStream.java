@@ -215,7 +215,7 @@ public class LZ4FrameOutputStream extends FilterOutputStream {
 
 	public LZ4FrameOutputStream(OutputStream out, BLOCKSIZE blocksize, boolean calculateChecksums,
 			Bits[] defaultFeatures) {
-		this(out, blocksize, -1L, calculateChecksums, DEFAULT_FEATURES);
+		this(out, blocksize, -1L, calculateChecksums, defaultFeatures);
 	}
 	
 	private void initialize() throws IOException

@@ -74,6 +74,7 @@ public class VTServerConnection
   }
   
   private volatile boolean connected = false;
+  private volatile boolean closed = false;
   
   private int encryptionType;
   private byte[] encryptionKey;
@@ -420,6 +421,10 @@ public class VTServerConnection
   
   public void closeSockets()
   {
+    if (closed)
+    {
+      return;
+    }
     if (connectionSocket != null)
     {
       try
@@ -479,6 +484,7 @@ public class VTServerConnection
         
       }
     }
+    closed = true;
   }
   
   public void closeConnection()
