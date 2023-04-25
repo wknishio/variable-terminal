@@ -65,11 +65,12 @@ public enum SafeUtils {
 	}
 
 	public static int readInt(byte[] buf, int i) {
-		if (Utils.NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN) {
-			return readIntBE(buf, i);
-		} else {
-			return readIntLE(buf, i);
-		}
+		//if (Utils.NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN) {
+			//return readIntBE(buf, i);
+		//} else {
+			//return readIntLE(buf, i);
+		//}
+		return readIntLE(buf, i);
 	}
 
 	public static long readLongLE(byte[] buf, int i) {
@@ -86,6 +87,13 @@ public enum SafeUtils {
 	public static void writeInt(int[] buf, int off, int v) {
 		buf[off] = v;
 	}
+	
+	public static void writeInt(byte[] buf, int off, int v) {
+	  buf[off++] = (byte) v;
+    buf[off++] = (byte) (v >>> 8);
+    buf[off++] = (byte) (v >>> 16);
+    buf[off++] = (byte) (v >>> 24);
+  }
 
 	public static int readInt(int[] buf, int off) {
 		return buf[off];

@@ -145,7 +145,7 @@ public final class LZ4BlockOutputStream extends FilterOutputStream {
    * @see LZ4Factory#fastCompressor()
    */
   public LZ4BlockOutputStream(OutputStream out, int blockSize) {
-    this(out, blockSize, LZ4Factory.fastestInstance().fastCompressor());
+    this(out, blockSize, LZ4Factory.safeInstance().fastCompressor());
   }
 
   /**

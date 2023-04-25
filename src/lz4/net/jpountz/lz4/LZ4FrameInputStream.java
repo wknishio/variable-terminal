@@ -71,6 +71,7 @@ public class LZ4FrameInputStream extends FilterInputStream {
 	private int maxBlockSize = -1;
 	private long expectedContentSize = -1L;
 	private long totalContentSize = 0L;
+	private boolean initialized = false;
 
 	private LZ4FrameOutputStream.FrameInfo frameInfo = null;
 
@@ -87,8 +88,8 @@ public class LZ4FrameInputStream extends FilterInputStream {
 	 * @see LZ4Factory#fastestInstance()
 	 * @see XXHashFactory#fastestInstance()
 	 */
-	public LZ4FrameInputStream(InputStream in) throws IOException {
-		this(in, LZ4Factory.fastestInstance().safeDecompressor(), XXHashFactory.fastestInstance().hash32());
+	public LZ4FrameInputStream(InputStream in) {
+		this(in, LZ4Factory.safeInstance().safeDecompressor(), XXHashFactory.fastestInstance().hash32());
 	}
 
 	/**
@@ -104,22 +105,31 @@ public class LZ4FrameInputStream extends FilterInputStream {
 	 * @throws IOException
 	 *             if an I/O error occurs
 	 */
-	public LZ4FrameInputStream(InputStream in, LZ4SafeDecompressor decompressor, XXHash32 checksum) throws IOException {
+	public LZ4FrameInputStream(InputStream in, LZ4SafeDecompressor decompressor, XXHash32 checksum) {
 		super(in);
 		this.decompressor = decompressor;
 		this.checksum = checksum;
-		nextFrameInfo();
+		//nextFrameInfo();
 	}
 
-	public LZ4FrameInputStream(InputStream in, boolean calculateChecksum) throws IOException {
+	public LZ4FrameInputStream(InputStream in, boolean calculateChecksum) {
 		super(in);
-		this.decompressor = LZ4Factory.fastestInstance().safeDecompressor();
+		this.decompressor = LZ4Factory.safeInstance().safeDecompressor();
 		if (calculateChecksum) {
 			this.checksum = XXHashFactory.fastestInstance().hash32();
 		} else {
 			this.checksum = XXHashFactory.disabledInstance().hash32();
 		}
-		nextFrameInfo();
+		//nextFrameInfo();
+	}
+	
+	private void initialize() throws IOException
+	{
+	  if (!initialized)
+    {
+	    nextFrameInfo();
+      initialized = true;
+    }
 	}
 
 	/**
@@ -316,6 +326,7 @@ public class LZ4FrameInputStream extends FilterInputStream {
 	}
 
 	public int read() throws IOException {
+	  initialize();
 		while (buffer.remaining() == 0) {
 			if (frameInfo.isFinished()) {
 				if (!nextFrameInfo()) {
@@ -328,6 +339,7 @@ public class LZ4FrameInputStream extends FilterInputStream {
 	}
 
 	public int read(byte[] b, int off, int len) throws IOException {
+	  initialize();
 		if ((off < 0) || (len < 0) || (off + len > b.length)) {
 			throw new IndexOutOfBoundsException();
 		}
@@ -345,6 +357,7 @@ public class LZ4FrameInputStream extends FilterInputStream {
 	}
 
 	public long skip(long n) throws IOException {
+	  initialize();
 		while (buffer.remaining() == 0) {
 			if (frameInfo.isFinished()) {
 				if (!nextFrameInfo()) {
@@ -359,6 +372,7 @@ public class LZ4FrameInputStream extends FilterInputStream {
 	}
 
 	public int available() throws IOException {
+	  initialize();
 		return buffer.remaining();
 	}
 

@@ -2,6 +2,7 @@ package org.vash.vate.stream.data;
 
 import java.io.DataInput;
 import java.io.IOException;
+import java.io.InputStream;
 
 public interface RandomAccessDataInput extends DataInput
 {
@@ -54,4 +55,6 @@ public interface RandomAccessDataInput extends DataInput
   public double getDouble() throws IOException;
   
   public int getBytes(byte[] data, int off, int len) throws IOException;
+  
+  public InputStream getInputStream();
 }

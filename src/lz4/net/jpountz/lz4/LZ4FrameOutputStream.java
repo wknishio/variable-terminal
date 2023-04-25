@@ -72,6 +72,7 @@ public class LZ4FrameOutputStream extends FilterOutputStream {
 			1; // HC
 	static final int LZ4_FRAME_INCOMPRESSIBLE_MASK = 0x80000000;
 	static final FLG.Bits[] DEFAULT_FEATURES = new FLG.Bits[] { FLG.Bits.BLOCK_INDEPENDENCE };
+	//static final FLG.Bits[] DEFAULT_FEATURES = new FLG.Bits[] { };
 
 	static final String CLOSED_STREAM = "The stream is already closed";
 
@@ -111,6 +112,7 @@ public class LZ4FrameOutputStream extends FilterOutputStream {
 	private final int maxBlockSize;
 	private final long knownSize;
 	private final ByteBuffer intLEBuffer = ByteBuffer.allocate(INTEGER_BYTES).order(ByteOrder.LITTLE_ENDIAN);
+	private boolean initialized = false;
 
 	private FrameInfo frameInfo = null;
 
@@ -129,7 +131,7 @@ public class LZ4FrameOutputStream extends FilterOutputStream {
 	 *
 	 * @see #LZ4FrameOutputStream(OutputStream, BLOCKSIZE, long, FLG.Bits...)
 	 */
-	public LZ4FrameOutputStream(OutputStream out, BLOCKSIZE blockSize, FLG.Bits... bits) throws IOException {
+	public LZ4FrameOutputStream(OutputStream out, BLOCKSIZE blockSize, FLG.Bits... bits) {
 		this(out, blockSize, -1L, true, bits);
 	}
 
@@ -150,11 +152,11 @@ public class LZ4FrameOutputStream extends FilterOutputStream {
 	 *             if an I/O error occurs
 	 */
 	public LZ4FrameOutputStream(OutputStream out, BLOCKSIZE blockSize, long knownSize, boolean calculateChecksums,
-			FLG.Bits... bits) throws IOException {
+			FLG.Bits... bits)  {
 		super(out);
-		compressor = LZ4Factory.fastestInstance().fastCompressor();
+		compressor = LZ4Factory.safeInstance().fastCompressor();
 		if (calculateChecksums) {
-			checksum = XXHashFactory.fastestInstance().hash32();
+			checksum = XXHashFactory.safeInstance().hash32();
 		} else {
 			checksum = XXHashFactory.disabledInstance().hash32();
 		}
@@ -167,7 +169,7 @@ public class LZ4FrameOutputStream extends FilterOutputStream {
 					"Known size must be greater than zero in order to use the known size feature");
 		}
 		this.knownSize = knownSize;
-		writeHeader();
+		
 	}
 
 	/**
@@ -184,7 +186,7 @@ public class LZ4FrameOutputStream extends FilterOutputStream {
 	 *
 	 * @see #LZ4FrameOutputStream(OutputStream, BLOCKSIZE, FLG.Bits...)
 	 */
-	public LZ4FrameOutputStream(OutputStream out, BLOCKSIZE blockSize) throws IOException {
+	public LZ4FrameOutputStream(OutputStream out, BLOCKSIZE blockSize)  {
 		this(out, blockSize, DEFAULT_FEATURES);
 	}
 
@@ -199,22 +201,31 @@ public class LZ4FrameOutputStream extends FilterOutputStream {
 	 *
 	 * @see #LZ4FrameOutputStream(OutputStream, BLOCKSIZE)
 	 */
-	public LZ4FrameOutputStream(OutputStream out) throws IOException {
+	public LZ4FrameOutputStream(OutputStream out) {
 		this(out, BLOCKSIZE.SIZE_4MB);
 	}
 
-	public LZ4FrameOutputStream(OutputStream out, boolean calculateChecksums) throws IOException {
+	public LZ4FrameOutputStream(OutputStream out, boolean calculateChecksums) {
 		this(out, BLOCKSIZE.SIZE_4MB, calculateChecksums);
 	}
 
-	public LZ4FrameOutputStream(OutputStream out, BLOCKSIZE blocksize, boolean calculateChecksums) throws IOException {
+	public LZ4FrameOutputStream(OutputStream out, BLOCKSIZE blocksize, boolean calculateChecksums) {
 		this(out, blocksize, calculateChecksums, DEFAULT_FEATURES);
 	}
 
 	public LZ4FrameOutputStream(OutputStream out, BLOCKSIZE blocksize, boolean calculateChecksums,
-			Bits[] defaultFeatures) throws IOException {
+			Bits[] defaultFeatures) {
 		this(out, blocksize, -1L, calculateChecksums, DEFAULT_FEATURES);
 	}
+	
+	private void initialize() throws IOException
+  {
+    if (!initialized)
+    {
+      writeHeader();
+      initialized = true;
+    }
+  }
 
 	/**
 	 * Writes the magic number and frame descriptor to the underlying
@@ -295,6 +306,7 @@ public class LZ4FrameOutputStream extends FilterOutputStream {
 	}
 
 	public void write(int b) throws IOException {
+	  initialize();
 		ensureNotFinished();
 		if (buffer.position() == maxBlockSize) {
 			writeBlock();
@@ -307,6 +319,7 @@ public class LZ4FrameOutputStream extends FilterOutputStream {
 	}
 
 	public void write(byte[] b, int off, int len) throws IOException {
+	  initialize();
 		if ((off < 0) || (len < 0) || (off + len > b.length)) {
 			throw new IndexOutOfBoundsException();
 		}

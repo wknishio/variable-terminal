@@ -27,39 +27,39 @@ package io.airlift.compress;
  * limitations under the License.
  */
 
-import static net.jpountz.util.Utils.NATIVE_BYTE_ORDER;
+//import static net.jpountz.util.Utils.NATIVE_BYTE_ORDER;
 
-import java.lang.reflect.Constructor;
+//import java.lang.reflect.Constructor;
 //import java.lang.reflect.Field;
-import java.nio.ByteOrder;
+//import java.nio.ByteOrder;
 
-import sun.misc.Unsafe;
+//import sun.misc.Unsafe;
 
 public final class UnsafeUtils {
 
-  private static final Unsafe UNSAFE;
-  private static final long BYTE_ARRAY_OFFSET;
-  private static final int BYTE_ARRAY_SCALE;
-  private static final long INT_ARRAY_OFFSET;
-  private static final int INT_ARRAY_SCALE;
-  private static final long SHORT_ARRAY_OFFSET;
-  private static final int SHORT_ARRAY_SCALE;
-  
-  static {
-    try {
-    	Constructor<Unsafe> unsafeConstructor = Unsafe.class.getDeclaredConstructor();
-    	unsafeConstructor.setAccessible(true);
-    	UNSAFE = unsafeConstructor.newInstance();
-      BYTE_ARRAY_OFFSET = UNSAFE.arrayBaseOffset(byte[].class);
-      BYTE_ARRAY_SCALE = UNSAFE.arrayIndexScale(byte[].class);
-      INT_ARRAY_OFFSET = UNSAFE.arrayBaseOffset(int[].class);
-      INT_ARRAY_SCALE = UNSAFE.arrayIndexScale(int[].class);
-      SHORT_ARRAY_OFFSET = UNSAFE.arrayBaseOffset(short[].class);
-      SHORT_ARRAY_SCALE = UNSAFE.arrayIndexScale(short[].class);
-    } catch (Exception e) {
-      throw new ExceptionInInitializerError("Cannot access Unsafe");
-    }
-  }
+//  private static final Unsafe UNSAFE;
+//  private static final long BYTE_ARRAY_OFFSET;
+//  private static final int BYTE_ARRAY_SCALE;
+//  private static final long INT_ARRAY_OFFSET;
+//  private static final int INT_ARRAY_SCALE;
+//  private static final long SHORT_ARRAY_OFFSET;
+//  private static final int SHORT_ARRAY_SCALE;
+//  
+//  static {
+//    try {
+//    	Constructor<Unsafe> unsafeConstructor = Unsafe.class.getDeclaredConstructor();
+//    	unsafeConstructor.setAccessible(true);
+//    	UNSAFE = unsafeConstructor.newInstance();
+//      BYTE_ARRAY_OFFSET = UNSAFE.arrayBaseOffset(byte[].class);
+//      BYTE_ARRAY_SCALE = UNSAFE.arrayIndexScale(byte[].class);
+//      INT_ARRAY_OFFSET = UNSAFE.arrayBaseOffset(int[].class);
+//      INT_ARRAY_SCALE = UNSAFE.arrayIndexScale(int[].class);
+//      SHORT_ARRAY_OFFSET = UNSAFE.arrayBaseOffset(short[].class);
+//      SHORT_ARRAY_SCALE = UNSAFE.arrayIndexScale(short[].class);
+//    } catch (Exception e) {
+//      throw new ExceptionInInitializerError("Cannot access Unsafe");
+//    }
+//  }
 
   public static void checkRange(byte[] buf, int off) {
     SafeUtils.checkRange(buf, off);
@@ -74,11 +74,13 @@ public final class UnsafeUtils {
   }
 
   public static byte readByte(byte[] src, int srcOff) {
-    return UNSAFE.getByte(src, BYTE_ARRAY_OFFSET + BYTE_ARRAY_SCALE * srcOff);
+    //return UNSAFE.getByte(src, BYTE_ARRAY_OFFSET + BYTE_ARRAY_SCALE * srcOff);
+    return SafeUtils.readByte(src, srcOff);
   }
 
   public static void writeByte(byte[] src, int srcOff, byte value) {
-    UNSAFE.putByte(src, BYTE_ARRAY_OFFSET + BYTE_ARRAY_SCALE * srcOff, (byte) value);
+    //UNSAFE.putByte(src, BYTE_ARRAY_OFFSET + BYTE_ARRAY_SCALE * srcOff, (byte) value);
+    SafeUtils.writeByte(src, srcOff, value);
   }
 
   public static void writeByte(byte[] src, int srcOff, int value) {
@@ -86,103 +88,116 @@ public final class UnsafeUtils {
   }
 
   public static long readLong(byte[] src, int srcOff) {
-    return UNSAFE.getLong(src, BYTE_ARRAY_OFFSET + srcOff);
+    //return UNSAFE.getLong(src, BYTE_ARRAY_OFFSET + srcOff);
+    return SafeUtils.readLong(src, srcOff);
   }
 
   public static long readLongLE(byte[] src, int srcOff) {
     long i = readLong(src, srcOff);
-    if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN) {
-      i = Long.reverseBytes(i);
-    }
+    //if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN) {
+      //i = Long.reverseBytes(i);
+    //}
     return i;
   }
 
   public static void writeLong(byte[] dest, int destOff, long value) {
-    UNSAFE.putLong(dest, BYTE_ARRAY_OFFSET + destOff, value);
+    //UNSAFE.putLong(dest, BYTE_ARRAY_OFFSET + destOff, value);
+    SafeUtils.writeLongLE(dest, destOff, value);
   }
     
   public static void writeLongLE(byte[] dest, int destOff, long value) {
-    if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN)
-    {
-      writeIntLE(dest, destOff, (int) value);
-      writeIntLE(dest, destOff + 4, (int) (value >>> 32));
-    }
-    else
-    {
-      writeLong(dest, destOff, value);
-    }
+    //if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN)
+    //{
+      //writeIntLE(dest, destOff, (int) value);
+      //writeIntLE(dest, destOff + 4, (int) (value >>> 32));
+    //}
+    //else
+    //{
+      //writeLong(dest, destOff, value);
+    //}
+    writeLong(dest, destOff, value);
   }
 
   public static int readInt(byte[] src, int srcOff) {
-    return UNSAFE.getInt(src, BYTE_ARRAY_OFFSET + srcOff);
+    //return UNSAFE.getInt(src, BYTE_ARRAY_OFFSET + srcOff);
+    return SafeUtils.readInt(src, srcOff);
   }
 
   public static int readIntLE(byte[] src, int srcOff) {
     int i = readInt(src, srcOff);
-    if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN) {
-      i = Integer.reverseBytes(i);
-    }
+    //if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN) {
+      //i = Integer.reverseBytes(i);
+    //}
     return i;
   }
 
   public static void writeInt(byte[] dest, int destOff, int value) {
-    UNSAFE.putInt(dest, BYTE_ARRAY_OFFSET + destOff, value);
+    //UNSAFE.putInt(dest, BYTE_ARRAY_OFFSET + destOff, value);
+    SafeUtils.writeInt(dest, destOff, value);
   }
   
   public static void writeIntLE(byte[] dest, int destOff, int value) {
-    if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN)
-    {
-      writeShortLE(dest, destOff, (short) value);
-      writeShortLE(dest, destOff + 2, (short) (value >>> 16));
-    }
-    else
-    {
-      writeInt(dest, destOff, value);
-    }
+    //if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN)
+    //{
+      //writeShortLE(dest, destOff, (short) value);
+      //writeShortLE(dest, destOff + 2, (short) (value >>> 16));
+    //}
+    //else
+    //{
+      //writeInt(dest, destOff, value);
+    //}
+    writeInt(dest, destOff, value);
   }
 
   public static int readShort(byte[] src, int srcOff) {
-    return UNSAFE.getShort(src, BYTE_ARRAY_OFFSET + srcOff);
+    return SafeUtils.readShort(src, srcOff);
+    //return UNSAFE.getShort(src, BYTE_ARRAY_OFFSET + srcOff);
   }
 
   public static int readShortLE(byte[] src, int srcOff) {
     int s = readShort(src, srcOff);
-    if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN) {
-      s = Integer.reverseBytes(s);
-    }
+    //if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN) {
+      //s = Integer.reverseBytes(s);
+    //}
     return s & 0xFFFF;
   }
 
   public static void writeShort(byte[] dest, int destOff, int value) {
-    UNSAFE.putShort(dest, BYTE_ARRAY_OFFSET + destOff, (short)value);
+    //UNSAFE.putShort(dest, BYTE_ARRAY_OFFSET + destOff, (short)value);
+    SafeUtils.writeShort(dest, destOff, value);
   }
 
   public static void writeShortLE(byte[] buf, int off, int v) {
-    if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN)
-    {
-      writeByte(buf, off, (byte) v);
-      writeByte(buf, off + 1, (byte) (v >>> 8));
-    }
-    else
-    {
-      writeShort(buf, off, v);
-    }
+    //if (NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN)
+    //{
+      //writeByte(buf, off, (byte) v);
+      //writeByte(buf, off + 1, (byte) (v >>> 8));
+    //}
+    //else
+    //{
+      //writeShort(buf, off, v);
+    //}
+    writeShort(buf, off, v);
   }
 
   public static int readInt(int[] src, int srcOff) {
-    return UNSAFE.getInt(src, INT_ARRAY_OFFSET + INT_ARRAY_SCALE * srcOff);
+    return SafeUtils.readInt(src, srcOff);
+    //return UNSAFE.getInt(src, INT_ARRAY_OFFSET + INT_ARRAY_SCALE * srcOff);
   }
 
   public static void writeInt(int[] dest, int destOff, int value) {
-    UNSAFE.putInt(dest, INT_ARRAY_OFFSET + INT_ARRAY_SCALE * destOff, value);
+    SafeUtils.writeInt(dest, destOff, value);
+    //UNSAFE.putInt(dest, INT_ARRAY_OFFSET + INT_ARRAY_SCALE * destOff, value);
   }
 
   public static int readShort(short[] src, int srcOff) {
-    return UNSAFE.getShort(src, SHORT_ARRAY_OFFSET + SHORT_ARRAY_SCALE * srcOff) & 0xFFFF;
+    return SafeUtils.readShort(src, srcOff);
+    //return UNSAFE.getShort(src, SHORT_ARRAY_OFFSET + SHORT_ARRAY_SCALE * srcOff) & 0xFFFF;
   }
 
   public static void writeShort(short[] dest, int destOff, int value) {
-    UNSAFE.putShort(dest, SHORT_ARRAY_OFFSET + SHORT_ARRAY_SCALE * destOff, (short) value);
+    SafeUtils.writeShort(dest, destOff, value);
+    //UNSAFE.putShort(dest, SHORT_ARRAY_OFFSET + SHORT_ARRAY_SCALE * destOff, (short) value);
   }
   
   public static byte getByte(byte[] src, long srcOff)

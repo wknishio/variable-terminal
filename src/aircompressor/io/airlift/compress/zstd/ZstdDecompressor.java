@@ -19,7 +19,6 @@ import io.airlift.compress.MalformedInputException;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 
-import static io.airlift.compress.zstd.UnsafeUtil.getAddress;
 import static java.lang.String.format;
 import static org.vash.vate.compatibility.VTObjects.requireNonNull;
 

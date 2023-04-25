@@ -1,7 +1,8 @@
 package org.vash.vate.stream.endian;
 
 import java.io.IOException;
-
+import java.io.InputStream;
+import java.io.OutputStream;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.data.RandomAccessDataInputOutput;
@@ -19,6 +20,16 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     input = new VTByteArrayInputStream(output.buf(), 0, size);
     dataOutput = new VTLittleEndianOutputStream(output);
     dataInput = new VTLittleEndianInputStream(input);
+  }
+  
+  public InputStream getInputStream()
+  {
+    return dataInput;
+  }
+  
+  public OutputStream getOutputStream()
+  {
+    return dataOutput;
   }
   
   public void reset() throws IOException

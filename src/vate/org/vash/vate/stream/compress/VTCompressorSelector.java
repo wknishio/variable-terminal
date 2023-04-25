@@ -32,6 +32,9 @@ import io.airlift.compress.zstd.ZstdHadoopOutputStream;
 import net.jpountz.lz4.LZ4BlockInputStream;
 import net.jpountz.lz4.LZ4BlockOutputStream;
 import net.jpountz.lz4.LZ4Factory;
+import net.jpountz.lz4.LZ4FrameInputStream;
+import net.jpountz.lz4.LZ4FrameOutputStream;
+import net.jpountz.lz4.LZ4FrameOutputStream.BLOCKSIZE;
 import net.jpountz.xxhash.XXHashFactory;
 
 @SuppressWarnings(
@@ -206,27 +209,31 @@ public class VTCompressorSelector
   public static OutputStream createDirectLz4OutputStream(OutputStream out)
   {
     // return out;
-    return new LZ4BlockOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true);
+    //return new LZ4BlockOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true);
+    return new VTBufferedOutputStream(new LZ4FrameOutputStream(out, BLOCKSIZE.SIZE_64KB, false), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, false);
   }
   
   public static InputStream createDirectLz4InputStream(InputStream in)
   {
     // return in;
-    return new LZ4BlockInputStream(in, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false);
+    //return new LZ4BlockInputStream(in, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false);
+    return new BufferedInputStream(new LZ4FrameInputStream(in, false), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
   }
   
   public static OutputStream createBufferedLz4OutputStream(OutputStream out)
   {
     // return out;
     // return createFlushBufferedSyncFlushDeflaterOutputStream(out);
-    return new VTBufferedOutputStream(new LZ4BlockOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, false);
+    //return new VTBufferedOutputStream(new LZ4BlockOutputStream(out, VT.VT_COMPRESSED_DATA_BUFFER_SIZE, LZ4Factory.fastestJavaInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, false);
+    return new VTBufferedOutputStream(new LZ4FrameOutputStream(out, BLOCKSIZE.SIZE_64KB, false), VT.VT_COMPRESSED_DATA_BUFFER_SIZE, false);
   }
   
   public static InputStream createBufferedLz4InputStream(InputStream in)
   {
     // return in;
     // return createFlushBufferedSyncFlushInflaterInputStream(in);
-    return new BufferedInputStream(new LZ4BlockInputStream(in, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
+    //return new BufferedInputStream(new LZ4BlockInputStream(in, LZ4Factory.fastestJavaInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
+    return new BufferedInputStream(new LZ4FrameInputStream(in, false), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
   }
   
   public static OutputStream createFlushBufferedSnappyOutputStream(OutputStream out)

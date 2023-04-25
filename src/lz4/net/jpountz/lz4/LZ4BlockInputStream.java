@@ -141,8 +141,8 @@ public final class LZ4BlockInputStream extends FilterInputStream {
 	 * @see StreamingXXHash32#asChecksum()
 	 */
 	public LZ4BlockInputStream(InputStream in, boolean stopOnEmptyBlock) {
-		this(in, LZ4Factory.fastestInstance().fastDecompressor(),
-				XXHashFactory.fastestInstance().newStreamingHash32(DEFAULT_SEED).asChecksum(), stopOnEmptyBlock);
+		this(in, LZ4Factory.safeInstance().fastDecompressor(),
+				XXHashFactory.safeInstance().newStreamingHash32(DEFAULT_SEED).asChecksum(), stopOnEmptyBlock);
 	}
 
 	/**
@@ -156,7 +156,7 @@ public final class LZ4BlockInputStream extends FilterInputStream {
 	 * @see LZ4Factory#fastestInstance()
 	 */
 	public LZ4BlockInputStream(InputStream in) {
-		this(in, LZ4Factory.fastestInstance().fastDecompressor());
+		this(in, LZ4Factory.safeInstance().fastDecompressor());
 	}
 
 	public int available() throws IOException {
