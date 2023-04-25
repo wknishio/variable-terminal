@@ -430,10 +430,10 @@ public final class VTLinkableDynamicMultiplexingInputStream
         try
         {
           stream.close();
-          if (stream.pipedInputStream != null)
-          {
-            stream.pipedOutputStream.close();
-          }
+          //if (stream.pipedInputStream != null)
+          //{
+            //stream.pipedOutputStream.close();
+          //}
         }
         catch (Throwable e)
         {
@@ -448,10 +448,10 @@ public final class VTLinkableDynamicMultiplexingInputStream
         try
         {
           stream.close();
-          if (stream.pipedInputStream != null)
-          {
-            stream.pipedOutputStream.close();
-          }
+          //if (stream.pipedInputStream != null)
+          //{
+            //stream.pipedOutputStream.close();
+          //}
         }
         catch (Throwable e)
         {
