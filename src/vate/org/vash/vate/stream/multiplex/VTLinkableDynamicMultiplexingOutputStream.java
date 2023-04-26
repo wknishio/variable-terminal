@@ -20,25 +20,17 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   {
     private volatile boolean closed;
     private volatile Object link = null;
-    // private final boolean autoFlushPackets;
     private final int number;
     private int type;
     private final int packetSize;
-    // private final int blockSize;
-    // private int blockBits;
+    private final VTByteArrayOutputStream intermediateDataPacketBuffer;
+    private final VTByteArrayOutputStream dataPacketBuffer;
+    private final VTLittleEndianOutputStream dataPacketStream;
+    private final VTByteArrayOutputStream controlPacketBuffer;
+    private final VTLittleEndianOutputStream controlPacketStream;
     private OutputStream out;
     private OutputStream flush;
     private OutputStream intermediatePacketStream;
-    private VTByteArrayOutputStream intermediateDataPacketBuffer;
-    
-    // private int dataPaddingSize;
-    // private byte[] dataPaddingBuffer;
-    private final VTByteArrayOutputStream dataPacketBuffer;
-    private final VTLittleEndianOutputStream dataPacketStream;
-    // private int controlPaddingSize;
-    // private byte[] controlPaddingBuffer;
-    private final VTByteArrayOutputStream controlPacketBuffer;
-    private final VTLittleEndianOutputStream controlPacketStream;
     private List<Closeable> propagated;
     
     private VTLinkableDynamicMultiplexedOutputStream(OutputStream out, int type, int number, int packetSize, int blockSize, boolean autoFlushPackets)
@@ -59,6 +51,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       // this.blockBits = blockSize - 1;
       // this.autoFlushPackets = autoFlushPackets;
       // this.dataPaddingBuffer = new byte[blockSize];
+      this.intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE);
       this.dataPacketBuffer = new VTByteArrayOutputStream(packetSize + VT.VT_NETWORK_PACKET_HEADER_SIZE);
       this.dataPacketStream = new VTLittleEndianOutputStream(dataPacketBuffer);
       // this.controlPaddingBuffer = new byte[blockSize];
@@ -70,22 +63,18 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       
       if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
       {
-        intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE);
         intermediatePacketStream = intermediateDataPacketBuffer;
       }
       else
       {
-        intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE);
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
         {
           //intermediatePacketStream = VTCompressorSelector.createDirectZlibOutputStream(intermediateDataPacketBuffer);
           intermediatePacketStream = VTCompressorSelector.createDirectZstdOutputStream(intermediateDataPacketBuffer);
-          //System.out.println("set-output-zstd-tunnel");
         }
         else
         {
           intermediatePacketStream = VTCompressorSelector.createDirectLz4OutputStream(intermediateDataPacketBuffer);
-          //System.out.println("set-output-lz4-tunnel");
         }
       }
     }
@@ -204,18 +193,19 @@ public final class VTLinkableDynamicMultiplexingOutputStream
         writeOpenPacket(type, number);
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
         {
-          intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE);
           if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
           {
             //intermediatePacketStream = VTCompressorSelector.createDirectZlibOutputStream(intermediateDataPacketBuffer);
             intermediatePacketStream = VTCompressorSelector.createDirectZstdOutputStream(intermediateDataPacketBuffer);
-            //System.out.println("open-output-zstd-tunnel");
           }
           else
           {
             intermediatePacketStream = VTCompressorSelector.createDirectLz4OutputStream(intermediateDataPacketBuffer);
-            //System.out.println("open-output-lz4-tunnel");
           }
+        }
+        else
+        {
+          intermediatePacketStream = intermediateDataPacketBuffer;
         }
       }
       closed = false;
