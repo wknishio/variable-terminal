@@ -21,6 +21,7 @@ public final class VTStreamRedirector implements Runnable
   {
     this.source = source;
     this.destination = destination;
+    //this.destination = new VTBufferedOutputStream(destination, VT.VT_STANDARD_DATA_BUFFER_SIZE, true);
     this.notify = null;
   }
   
@@ -28,6 +29,7 @@ public final class VTStreamRedirector implements Runnable
   {
     this.source = source;
     this.destination = destination;
+    //this.destination = new VTBufferedOutputStream(destination, VT.VT_STANDARD_DATA_BUFFER_SIZE, true);
     this.notify = notify;
   }
   

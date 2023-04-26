@@ -158,17 +158,14 @@ public final class VTBufferedOutputStream extends FilterOutputStream
   
   public synchronized final void close() throws IOException
   {
-    // flush();
-    // flushBuffer();
-    // out.flush();
-//		try
-//		{
-//			flush();
-//		}
-//		catch (Throwable t)
-//		{
-//			
-//		}
+    try
+    {
+      flush();
+    }
+    catch (Throwable t)
+    {
+      
+    }
     out.close();
   }
 }

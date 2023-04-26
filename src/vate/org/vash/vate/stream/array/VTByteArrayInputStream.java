@@ -66,5 +66,4 @@ public final class VTByteArrayInputStream extends ByteArrayInputStream
     }
     return b;
   }
-  
 }

@@ -13,6 +13,8 @@ public final class VTPacketDecompressor extends OutputStream
   private InputStream in;
   private OutputStream out;
   private byte[] buffer = new byte[bufferSize];
+  private byte[] single = new byte[1];
+  private int readed;
   
   private VTByteArrayOutputStream outputBuffer = new VTByteArrayOutputStream(bufferSize);
   private VTByteArrayInputStream inputBuffer = new VTByteArrayInputStream(outputBuffer.buf());
@@ -32,9 +34,11 @@ public final class VTPacketDecompressor extends OutputStream
     this.in = in;
   }
   
+  //this should not be called
   public void write(int b) throws IOException
   {
-    write(new byte[]{ (byte) b });
+    single[0] = (byte) b;
+    write(single);
   }
   
   public void write(byte[] data) throws IOException
@@ -48,7 +52,7 @@ public final class VTPacketDecompressor extends OutputStream
     outputBuffer.write(data, off, len);
     inputBuffer.pos(0);
     inputBuffer.count(outputBuffer.count());
-    int readed = 1;
+    readed = 1;
     while (readed > 0 && inputBuffer.available() > 0)
     {
       readed = in.read(buffer, 0, bufferSize);

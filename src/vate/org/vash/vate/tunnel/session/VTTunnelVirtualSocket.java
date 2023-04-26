@@ -27,6 +27,7 @@ public class VTTunnelVirtualSocket extends Socket
     VTPipedOutputStream pipeSource = new VTPipedOutputStream();
     pipeSink.connect(pipeSource);
     this.out = output;
+    //this.out = new VTBufferedOutputStream(output, VT.VT_STANDARD_DATA_BUFFER_SIZE, true);
     this.in = pipeSink;
     this.pipe = pipeSource;
   }
