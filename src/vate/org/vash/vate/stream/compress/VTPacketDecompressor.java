@@ -7,7 +7,7 @@ import org.vash.vate.VT;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 
-public final class VTPipedDecompressor extends OutputStream
+public final class VTPacketDecompressor extends OutputStream
 {
   private static final int bufferSize = VT.VT_COMPRESSED_DATA_BUFFER_SIZE;
   private InputStream in;
@@ -17,17 +17,17 @@ public final class VTPipedDecompressor extends OutputStream
   private VTByteArrayOutputStream outputBuffer = new VTByteArrayOutputStream(bufferSize);
   private VTByteArrayInputStream inputBuffer = new VTByteArrayInputStream(outputBuffer.buf());
   
-  public VTPipedDecompressor(OutputStream out)
+  public VTPacketDecompressor(OutputStream out)
   {
     this.out = out;
   }
   
-  public InputStream getPipedInputStream()
+  public InputStream getCompressedPacketInputStream()
   {
     return inputBuffer;
   }
   
-  public void setDecompressor(InputStream in)
+  public void setPacketDecompressorInputStream(InputStream in)
   {
     this.in = in;
   }
