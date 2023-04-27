@@ -12,25 +12,25 @@ public class VTStreamCipherInputStream extends FilterInputStream
   private byte[] single1 = new byte[0];
   private byte[] single2 = new byte[0];
   private byte[] input = new byte[VT.VT_STANDARD_DATA_BUFFER_SIZE];
-  private StreamCipher cipher;
+  private StreamCipher streamCipher;
   
-  public VTStreamCipherInputStream(InputStream in, StreamCipher cipher)
+  public VTStreamCipherInputStream(InputStream in, StreamCipher streamCipher)
   {
     super(in);
-    this.cipher = cipher;
+    this.streamCipher = streamCipher;
   }
 
   public int read() throws IOException
   {
     single1[0] = (byte) in.read();
-    cipher.processBytes(single1, 0, 1, single2, 0);
+    streamCipher.processBytes(single1, 0, 1, single2, 0);
     return single2[0];
   }
   
   public int read(byte[] output, int off, int len) throws IOException
   {
     int readed = in.read(input, off, len);
-    cipher.processBytes(input, off, readed, output, off);
+    streamCipher.processBytes(input, off, readed, output, off);
     return readed;
   }
 }
