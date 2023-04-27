@@ -1023,6 +1023,7 @@ public class VTServerConnection
   
   public void startConnection() throws IOException
   {
+    exchangeNonces(true);
     setMultiplexedStreams();
     exchangeNonces(true);
     multiplexedConnectionInputStream.startPacketReader();
