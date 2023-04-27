@@ -169,7 +169,7 @@ public class VTServerAuthenticator
     // connection.getAuthenticationWriter().flush();
     // connection.getAuthenticationReader().readFully(paddingData);
     
-    connection.exchangeNonces(true);
+    //connection.exchangeNonces(true);
     localNonce = connection.getLocalNonce();
     remoteNonce = connection.getRemoteNonce();
     

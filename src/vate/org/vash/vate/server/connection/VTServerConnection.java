@@ -510,7 +510,7 @@ public class VTServerConnection
     // Arrays.fill(remoteNonce, (byte)0);
   }
   
-  public void exchangeNonces(boolean update) throws IOException
+  private void exchangeNonces(boolean update) throws IOException
   {
     secureRandom.nextBytes(randomData);
     nonceWriter.write(randomData);
@@ -571,6 +571,7 @@ public class VTServerConnection
   
   public void setAuthenticationStreams() throws IOException
   {
+    exchangeNonces(true);
     cryptoEngine.initializeServerEngine(encryptionType, encryptionKey, remoteNonce, localNonce);
     authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream));
     authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream));
@@ -581,6 +582,7 @@ public class VTServerConnection
   public void setConnectionStreams(byte[] digestedCredentials, String user, String password) throws IOException
   {
     connected = true;
+    exchangeNonces(true);
     cryptoEngine.initializeServerEngine(encryptionType, encryptionKey, remoteNonce, localNonce, digestedCredentials, user != null ? user.getBytes("UTF-8") : null, password != null ? password.getBytes("UTF-8") : null);
     connectionInputStream = cryptoEngine.getDecryptedInputStream(connectionSocketInputStream);
     connectionOutputStream = cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream);
@@ -1023,7 +1025,6 @@ public class VTServerConnection
   
   public void startConnection() throws IOException
   {
-    exchangeNonces(true);
     setMultiplexedStreams();
     exchangeNonces(true);
     multiplexedConnectionInputStream.startPacketReader();

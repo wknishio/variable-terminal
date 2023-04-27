@@ -167,8 +167,6 @@ public class VTClientAuthenticator
     // connection.getAuthenticationWriter().write(paddingData);
     // connection.getAuthenticationWriter().flush();
     // connection.getAuthenticationReader().readFully(paddingData);
-    
-    connection.exchangeNonces(true);
     localNonce = connection.getLocalNonce();
     remoteNonce = connection.getRemoteNonce();
     
