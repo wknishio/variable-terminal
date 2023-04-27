@@ -205,7 +205,7 @@ public class ProxyServer implements Runnable {
 				s.setSoLinger(true, 1);
 				//s.setReuseAddress(true);
 				//s.setKeepAlive(true);
-				//s.setSoTimeout(60000);
+				s.setSoTimeout(30000);
 				//s.setSoLinger(true, 0);
 				// String connectionId = newConnectionId();
 				// LOG.info(connectionId + " Accepted from:" +
@@ -394,7 +394,7 @@ public class ProxyServer implements Runnable {
 			s.setSoLinger(true, 1);
 			//s.setReuseAddress(true);
 			//s.setKeepAlive(true);
-			//s.setSoTimeout(60000);
+			s.setSoTimeout(30000);
 			//s.setSoLinger(true, 0);
 		} else {
 			s = new SocksSocket(proxy, msg.ip, msg.port);
@@ -402,7 +402,7 @@ public class ProxyServer implements Runnable {
 			s.setSoLinger(true, 1);
 			//s.setReuseAddress(true);
 			//s.setKeepAlive(true);
-			//s.setSoTimeout(60000);
+			s.setSoTimeout(30000);
 			//s.setSoLinger(true, 0);
 		}
 		// LOG.info(connectionId + " Connected to " + s.getInetAddress() + ":" +
@@ -525,7 +525,7 @@ public class ProxyServer implements Runnable {
 			s.setSoLinger(true, 1);
 			//s.setReuseAddress(true);
 			//s.setKeepAlive(true);
-			//s.setSoTimeout(60000);
+			s.setSoTimeout(30000);
 			//s.setSoLinger(true, 0);
 			// if(s.getInetAddress().equals(msg.ip)){
 			if (s != null) {

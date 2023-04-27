@@ -137,7 +137,7 @@ public class SocksServerSocket extends ServerSocket {
 			s.setSoLinger(true, 1);
 			//s.setReuseAddress(true);
 			//s.setKeepAlive(true);
-			//s.setSoTimeout(60000);
+			s.setSoTimeout(30000);
 			//s.setSoLinger(true, 0);
 			// if(s.getInetAddress().equals(remoteAddr)){
 			// got the connection from the right host

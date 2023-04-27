@@ -132,7 +132,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     return throttleable.getBytesPerSecond();
   }
   
-  public final void close() throws IOException
+  public final synchronized void close() throws IOException
   {
     pipedChannels.clear();
     directChannels.clear();
@@ -301,7 +301,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
         writeClosePacket(type, number);
         if (propagated.size() > 0)
         {
-          for (Closeable closeable : propagated)
+          for (Closeable closeable : propagated.toArray(new Closeable[]{ }))
           {
             try
             {
@@ -313,6 +313,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
             }
           }
         }
+        //propagated.clear();
       }
     }
     
@@ -343,8 +344,12 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     public final void addPropagated(Closeable propagated)
     {
-      // this.propagated = propagated;
       this.propagated.add(propagated);
+    }
+    
+    public final void removePropagated(Closeable propagated)
+    {
+      this.propagated.remove(propagated);
     }
     
     private final void writePacket(int data, int type, int number) throws IOException

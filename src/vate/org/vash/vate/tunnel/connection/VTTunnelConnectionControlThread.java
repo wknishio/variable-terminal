@@ -76,6 +76,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                     session.setInputNumber(inputNumber);
                     session.setTunnelOutputStream(output);
                     session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
+                    //session.getTunnelInputStream().addPropagated(session);
                     session.getTunnelInputStream().setDirectOutputStream(session.getSocket().getOutputStream());
                     session.getTunnelInputStream().open();
                     session.getTunnelOutputStream().open();
@@ -138,6 +139,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                     virtual.setOutputStream(output);
                     session.setTunnelOutputStream(output);
                     session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
+                    //session.getTunnelInputStream().addPropagated(session);
                     session.getTunnelInputStream().setDirectOutputStream(virtual.getInputStreamSource());
                     session.getTunnelInputStream().open();
                     session.getTunnelOutputStream().open();
@@ -188,6 +190,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                       // response message received ok
                       session.setInputNumber(inputNumber);
                       session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
+                      //session.getTunnelInputStream().addPropagated(session);
                       session.getTunnelInputStream().setDirectOutputStream(session.getSocket().getOutputStream());
                       session.getTunnelInputStream().open();
                       session.getTunnelOutputStream().open();

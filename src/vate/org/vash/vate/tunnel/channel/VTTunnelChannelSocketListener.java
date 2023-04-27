@@ -3,7 +3,7 @@ package org.vash.vate.tunnel.channel;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-
+import org.vash.vate.VT;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.session.VTTunnelSession;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
@@ -127,6 +127,7 @@ public class VTTunnelChannelSocketListener implements Runnable
           socket = serverSocket.accept();
           socket.setTcpNoDelay(true);
           socket.setSoLinger(true, 1);
+          socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
           int channelType = channel.getChannelType();
           VTTunnelSession session = new VTTunnelSession(channel.getConnection(), socket, true);
           VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, channel);

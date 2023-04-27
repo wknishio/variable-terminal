@@ -94,6 +94,7 @@ public class VTTunnelVirtualSocket extends Socket
     {
       return;
     }
+    closed = true;
 //    if (in != null)
 //    {
 //      try
@@ -127,7 +128,6 @@ public class VTTunnelVirtualSocket extends Socket
         
       }
     }
-    closed = true;
   }
   
   public void setSoTimeout(int timeout) throws SocketException

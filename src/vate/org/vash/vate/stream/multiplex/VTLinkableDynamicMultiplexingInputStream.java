@@ -153,7 +153,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     getInputStream(type, number).close();
   }
   
-  public final void close() throws IOException
+  public final synchronized void close() throws IOException
   {
     if (closed)
     {
@@ -167,10 +167,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
         try
         {
           stream.close();
-          //if (stream.pipedInputStream != null)
-          //{
-            //stream.pipedOutputStream.close();
-          //}
         }
         catch (Throwable e)
         {
@@ -185,10 +181,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
         try
         {
           stream.close();
-          //if (stream.pipedInputStream != null)
-          //{
-            //stream.pipedOutputStream.close();
-          //}
         }
         catch (Throwable e)
         {
@@ -210,7 +202,8 @@ public final class VTLinkableDynamicMultiplexingInputStream
     type = in.readUnsignedShort();
     channel = in.readInt();
     length = in.readShort();
-    OutputStream out = getInputStream(type, channel).getOutputStream();
+    VTLinkableDynamicMultiplexedInputStream stream = getInputStream(type, channel);
+    OutputStream out = stream.getOutputStream();
     //compressed packets must be read whole if channel type is direct without buffered pipe
     //boolean whole = true;
     //boolean whole = (type & (VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED))
@@ -254,7 +247,14 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       catch (Throwable e)
       {
-        
+        try
+        {
+          stream.close();
+        }
+        catch (Throwable t)
+        {
+          
+        }
       }
 //      }
     }
@@ -389,7 +389,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
     
     public final void addPropagated(Closeable propagated)
     {
-      // this.propagated = propagated;
       this.propagated.add(propagated);
     }
     
@@ -398,7 +397,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       this.propagated.remove(propagated);
     }
     
-    public final void open() throws IOException
+    public final synchronized void open() throws IOException
     {
       if (pipedInputStream != null)
       {
@@ -424,12 +423,13 @@ public final class VTLinkableDynamicMultiplexingInputStream
       closed = false;
     }
     
-    public final void close() throws IOException
+    public final synchronized void close() throws IOException
     {
-      if (closed())
+      if (closed)
       {
         return;
       }
+      closed = true;
       if (pipedOutputStream != null)
       {
         pipedOutputStream.close();
@@ -446,7 +446,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       if (propagated.size() > 0)
       {
         // propagated.close();
-        for (Closeable closeable : propagated)
+        for (Closeable closeable : propagated.toArray(new Closeable[]{ }))
         {
           try
           {
@@ -458,7 +458,8 @@ public final class VTLinkableDynamicMultiplexingInputStream
           }
         }
       }
-      closed = true;
+      //propagated.clear();
+      
     }
     
     public final int available() throws IOException
