@@ -19,11 +19,7 @@ import org.bouncycastle.crypto.engines.ChaChaEngine;
 import org.bouncycastle.crypto.engines.Grain128Engine;
 import org.bouncycastle.crypto.engines.HC256Engine;
 import org.bouncycastle.crypto.engines.ISAACEngine;
-//import org.bouncycastle.crypto.engines.VMPCEngine;
 import org.bouncycastle.crypto.engines.VMPCKSA3Engine;
-//import org.bouncycastle.crypto.engines.Zuc128Engine;
-import org.bouncycastle.crypto.io.CipherInputStream;
-import org.bouncycastle.crypto.io.CipherOutputStream;
 import org.bouncycastle.crypto.modes.SICBlockCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
@@ -372,7 +368,8 @@ public class VTCryptographicEngine
   {
     if (decryptionCipherBC != null)
     {
-      return new CipherInputStream(encrypted, decryptionCipherBC, VT.VT_STANDARD_DATA_BUFFER_SIZE);
+      return new VTStreamCipherInputStream(encrypted, decryptionCipherBC);
+      //return new CipherInputStream(encrypted, decryptionCipherBC);
     }
     return encrypted;
     // if (decryptionCipher == null)
@@ -386,7 +383,8 @@ public class VTCryptographicEngine
   {
     if (encryptionCipherBC != null)
     {
-      return new CipherOutputStream(decrypted, encryptionCipherBC);
+      return new VTStreamCipherOutputStream(decrypted, encryptionCipherBC);
+      //return new CipherOutputStream(decrypted, encryptionCipherBC);
     }
     return decrypted;
     // if (encryptionCipher == null)

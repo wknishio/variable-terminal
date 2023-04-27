@@ -26,7 +26,7 @@ public class CipherOutputStream
     private AEADBlockCipher aeadBlockCipher;
 
     private final byte[] oneByte = new byte[1];
-    private byte[] buf;
+    private byte[] buf = new byte[1024 * 8];
 
     /**
      * Constructs a CipherOutputStream from an OutputStream and a

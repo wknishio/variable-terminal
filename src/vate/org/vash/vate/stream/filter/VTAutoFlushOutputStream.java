@@ -11,6 +11,11 @@ public class VTAutoFlushOutputStream extends FilterOutputStream
     super(out);
   }
   
+  public void out(OutputStream out)
+  {
+    this.out = out;
+  }
+  
   public final void write(byte[] b, int off, int len) throws IOException
   {
     out.write(b, off, len);

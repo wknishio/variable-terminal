@@ -19,6 +19,255 @@ import org.vash.vate.stream.pipe.VTPipedOutputStream;
 
 public final class VTLinkableDynamicMultiplexingInputStream
 {
+  private int type;
+  private int channel;
+  private final int bufferSize;
+  // private int padding;
+  private int length;
+  private int copied;
+  private int readed;
+  private int remaining;
+  private byte[] packetBuffer;
+  //private OutputStream out;
+  private final Thread packetReaderThread;
+  // private byte[] compressedBuffer = new byte[VT.VT_IO_BUFFFER_SIZE];
+  private final VTLittleEndianInputStream in;
+  private VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
+  private Map<Integer, VTLinkableDynamicMultiplexedInputStream> pipedChannels;
+  private Map<Integer, VTLinkableDynamicMultiplexedInputStream> directChannels;
+  private volatile boolean closed = false;
+  
+  public VTLinkableDynamicMultiplexingInputStream(InputStream in, int packetSize, int bufferSize, boolean startPacketReader)
+  {
+    this.bufferSize = bufferSize;
+    this.packetBuffer = new byte[packetSize * 2];
+    this.in = new VTLittleEndianInputStream(in);
+    this.pipedChannels = Collections.synchronizedMap(new HashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
+    this.directChannels = Collections.synchronizedMap(new HashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
+    this.packetReader = new VTLinkableDynamicMultiplexingInputStreamPacketReader(this);
+    this.packetReaderThread = new Thread(null, packetReader, packetReader.getClass().getSimpleName());
+    this.packetReaderThread.setDaemon(true);
+    //this.packetReaderThread.setPriority((Thread.NORM_PRIORITY));
+    if (startPacketReader)
+    {
+      this.packetReaderThread.start();
+    }
+  }
+  
+  public final synchronized VTLinkableDynamicMultiplexedInputStream linkInputStream(int type, Object link)
+  {
+    VTLinkableDynamicMultiplexedInputStream stream = null;
+    if (link instanceof Integer)
+    {
+      stream = getInputStream(type, (Integer) link);
+      if (stream.getLink() == null)
+      {
+        stream.setLink(link);
+      }
+      return stream;
+    }
+    // search for a multiplexed outputstream that has no link
+    for (int i = 0; i < Integer.MAX_VALUE && i >= 0; i++)
+    {
+      stream = getInputStream(type, i);
+      if (stream.getLink() == null)
+      {
+        stream.setLink(link);
+        return stream;
+      }
+    }
+    return stream;
+  }
+  
+  public final synchronized void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)
+  {
+    if (stream != null)
+    {
+      stream.setLink(null);
+    }
+  }
+  
+  private final VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number)
+  {
+    VTLinkableDynamicMultiplexedInputStream stream = null;
+    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == 0)
+    {
+      stream = pipedChannels.get(number);
+      if (stream != null)
+      {
+        stream.type(type);
+        return stream;
+      }
+      stream = new VTLinkableDynamicMultiplexedInputStream(type, number, bufferSize);
+      pipedChannels.put(number, stream);
+    }
+    else
+    {
+      stream = directChannels.get(number);
+      if (stream != null)
+      {
+        stream.type(type);
+        return stream;
+      }
+      stream = new VTLinkableDynamicMultiplexedInputStream(type, number, bufferSize);
+      directChannels.put(number, stream);
+    }
+    return stream;
+  }
+  
+  public final void startPacketReader()
+  {
+    if (!packetReaderThread.isAlive())
+    {
+      packetReaderThread.start();
+    }
+  }
+  
+  public final boolean isPacketReaderStarted()
+  {
+    if (packetReaderThread != null)
+    {
+      return packetReaderThread.isAlive();
+    }
+    return false;
+  }
+  
+  public final void stopPacketReader() throws IOException, InterruptedException
+  {
+    close();
+    packetReaderThread.join();
+  }
+  
+  public final int getPipedChannelsNumber()
+  {
+    return pipedChannels.size();
+  }
+  
+  public final void open(int type, int number) throws IOException
+  {
+    getInputStream(type, number).open();
+  }
+  
+  public final void close(int type, int number) throws IOException
+  {
+    getInputStream(type, number).close();
+  }
+  
+  public final void close() throws IOException
+  {
+    if (closed)
+    {
+      return;
+    }
+    packetReader.setRunning(false);
+    synchronized (pipedChannels)
+    {
+      for (VTLinkableDynamicMultiplexedInputStream stream : pipedChannels.values())
+      {
+        try
+        {
+          stream.close();
+          //if (stream.pipedInputStream != null)
+          //{
+            //stream.pipedOutputStream.close();
+          //}
+        }
+        catch (Throwable e)
+        {
+          // e.printStackTrace();
+        }
+      }
+    }
+    synchronized (directChannels)
+    {
+      for (VTLinkableDynamicMultiplexedInputStream stream : directChannels.values())
+      {
+        try
+        {
+          stream.close();
+          //if (stream.pipedInputStream != null)
+          //{
+            //stream.pipedOutputStream.close();
+          //}
+        }
+        catch (Throwable e)
+        {
+          // e.printStackTrace();
+        }
+      }
+    }
+    pipedChannels.clear();
+    directChannels.clear();
+    in.close();
+    closed = true;
+  }
+  
+  // critical method, handle with care
+  private final void readPacket() throws IOException
+  {
+    readed = 0;
+    copied = 0;
+    type = in.readUnsignedShort();
+    channel = in.readInt();
+    length = in.readShort();
+    OutputStream out = getInputStream(type, channel).getOutputStream();
+    //compressed packets must be read whole if channel type is direct without buffered pipe
+    //boolean whole = true;
+    //boolean whole = (type & (VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED))
+    //== (VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED);
+    if (length > 0)
+    {
+      remaining = length;
+      while (remaining > 0)
+      {
+        copied += readed;
+        remaining -= readed;
+        readed = in.read(packetBuffer, copied, remaining);
+        if (readed < 0)
+        {
+          close();
+          return;
+        }
+//        if (length > 0 && !whole)
+//        {
+//          if (readed >= 0)
+//          {
+//            try
+//            {
+//              out.write(packetBuffer, copied, readed);
+//              out.flush();
+//            }
+//            catch (Throwable e)
+//            {
+//              length = 0;
+//              continue;
+//            }
+//          }
+//        }
+      }
+//      if (whole)
+//      {
+      try
+      {
+        out.write(packetBuffer, 0, length);
+        out.flush();
+      }
+      catch (Throwable e)
+      {
+        
+      }
+//      }
+    }
+    else if (length == -2)
+    {
+      close(type, channel);
+    }
+    else if (length == -3)
+    {
+      open(type, channel);
+    }
+  }
+  
   public final class VTLinkableDynamicMultiplexedInputStream extends InputStream
   {
     private volatile boolean closed;
@@ -276,254 +525,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
       {
         // e1.printStackTrace();
       }
-    }
-  }
-  
-  private int type;
-  private int channel;
-  private final int bufferSize;
-  // private int padding;
-  private int length;
-  private int copied;
-  private int readed;
-  private int remaining;
-  private byte[] packetBuffer;
-  //private OutputStream out;
-  private final Thread packetReaderThread;
-  // private byte[] compressedBuffer = new byte[VT.VT_IO_BUFFFER_SIZE];
-  private final VTLittleEndianInputStream in;
-  private VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
-  private Map<Integer, VTLinkableDynamicMultiplexedInputStream> pipedChannels;
-  private Map<Integer, VTLinkableDynamicMultiplexedInputStream> directChannels;
-  private volatile boolean closed = false;
-  
-  public VTLinkableDynamicMultiplexingInputStream(InputStream in, int packetSize, int bufferSize, boolean startPacketReader)
-  {
-    this.bufferSize = bufferSize;
-    this.packetBuffer = new byte[packetSize * 2];
-    this.in = new VTLittleEndianInputStream(in);
-    this.pipedChannels = Collections.synchronizedMap(new HashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
-    this.directChannels = Collections.synchronizedMap(new HashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
-    this.packetReader = new VTLinkableDynamicMultiplexingInputStreamPacketReader(this);
-    this.packetReaderThread = new Thread(null, packetReader, packetReader.getClass().getSimpleName());
-    this.packetReaderThread.setDaemon(true);
-    //this.packetReaderThread.setPriority((Thread.NORM_PRIORITY));
-    if (startPacketReader)
-    {
-      this.packetReaderThread.start();
-    }
-  }
-  
-  public final synchronized VTLinkableDynamicMultiplexedInputStream linkInputStream(int type, Object link)
-  {
-    VTLinkableDynamicMultiplexedInputStream stream = null;
-    if (link instanceof Integer)
-    {
-      stream = getInputStream(type, (Integer) link);
-      if (stream.getLink() == null)
-      {
-        stream.setLink(link);
-      }
-      return stream;
-    }
-    // search for a multiplexed outputstream that has no link
-    for (int i = 0; i < Integer.MAX_VALUE && i >= 0; i++)
-    {
-      stream = getInputStream(type, i);
-      if (stream.getLink() == null)
-      {
-        stream.setLink(link);
-        return stream;
-      }
-    }
-    return stream;
-  }
-  
-  public final synchronized void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)
-  {
-    if (stream != null)
-    {
-      stream.setLink(null);
-    }
-  }
-  
-  private final VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number)
-  {
-    VTLinkableDynamicMultiplexedInputStream stream = null;
-    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == 0)
-    {
-      stream = pipedChannels.get(number);
-      if (stream != null)
-      {
-        stream.type(type);
-        return stream;
-      }
-      stream = new VTLinkableDynamicMultiplexedInputStream(type, number, bufferSize);
-      pipedChannels.put(number, stream);
-    }
-    else
-    {
-      stream = directChannels.get(number);
-      if (stream != null)
-      {
-        stream.type(type);
-        return stream;
-      }
-      stream = new VTLinkableDynamicMultiplexedInputStream(type, number, bufferSize);
-      directChannels.put(number, stream);
-    }
-    return stream;
-  }
-  
-  public final void startPacketReader()
-  {
-    if (!packetReaderThread.isAlive())
-    {
-      packetReaderThread.start();
-    }
-  }
-  
-  public final boolean isPacketReaderStarted()
-  {
-    if (packetReaderThread != null)
-    {
-      return packetReaderThread.isAlive();
-    }
-    return false;
-  }
-  
-  public final void stopPacketReader() throws IOException, InterruptedException
-  {
-    close();
-    packetReaderThread.join();
-  }
-  
-  public final int getPipedChannelsNumber()
-  {
-    return pipedChannels.size();
-  }
-  
-  public final void open(int type, int number) throws IOException
-  {
-    getInputStream(type, number).open();
-  }
-  
-  public final void close(int type, int number) throws IOException
-  {
-    getInputStream(type, number).close();
-  }
-  
-  public final void close() throws IOException
-  {
-    if (closed)
-    {
-      return;
-    }
-    packetReader.setRunning(false);
-    synchronized (pipedChannels)
-    {
-      for (VTLinkableDynamicMultiplexedInputStream stream : pipedChannels.values())
-      {
-        try
-        {
-          stream.close();
-          //if (stream.pipedInputStream != null)
-          //{
-            //stream.pipedOutputStream.close();
-          //}
-        }
-        catch (Throwable e)
-        {
-          // e.printStackTrace();
-        }
-      }
-    }
-    synchronized (directChannels)
-    {
-      for (VTLinkableDynamicMultiplexedInputStream stream : directChannels.values())
-      {
-        try
-        {
-          stream.close();
-          //if (stream.pipedInputStream != null)
-          //{
-            //stream.pipedOutputStream.close();
-          //}
-        }
-        catch (Throwable e)
-        {
-          // e.printStackTrace();
-        }
-      }
-    }
-    pipedChannels.clear();
-    directChannels.clear();
-    in.close();
-    closed = true;
-  }
-  
-  // critical method, handle with care
-  private final void readPacket() throws IOException
-  {
-    readed = 0;
-    copied = 0;
-    type = in.readUnsignedShort();
-    channel = in.readInt();
-    length = in.readShort();
-    OutputStream out = getInputStream(type, channel).getOutputStream();
-    //compressed packets must be read whole if channel type is direct without buffered pipe
-    //boolean whole = (type & (VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED))
-    //== (VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED);
-    if (length > 0)
-    {
-      remaining = length;
-      while (remaining > 0)
-      {
-        copied += readed;
-        remaining -= readed;
-        readed = in.read(packetBuffer, copied, remaining);
-        if (readed < 0)
-        {
-          close();
-          return;
-        }
-//      if (out != null && !whole)
-//      {
-//        if (readed >= 0 && length > 0)
-//        {
-//          try
-//          {
-//            getInputStream(type, channel).getOutputStream().write(packetBuffer, copied, readed);
-//            getInputStream(type, channel).getOutputStream().flush();
-//          }
-//          catch (Throwable e)
-//          {
-//            length = 0;
-//            continue;
-//          }
-//        }
-//      }
-      }
-//    if (whole)
-//    {
-      try
-      {
-        out.write(packetBuffer, 0, length);
-        out.flush();
-      }
-      catch (Throwable e)
-      {
-        
-      }
-//    }
-    }
-    else if (length == -2)
-    {
-      close(type, channel);
-    }
-    else if (length == -3)
-    {
-      open(type, channel);
     }
   }
 }

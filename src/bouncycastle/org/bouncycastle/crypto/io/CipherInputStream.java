@@ -23,7 +23,7 @@ import org.bouncycastle.util.Arrays;
 public class CipherInputStream
     extends FilterInputStream
 {
-    private static final int INPUT_BUF_SIZE = 2048;
+    private static final int INPUT_BUF_SIZE = 1024 * 8;
 
     private SkippingCipher skippingCipher;
     private byte[] inBuf;
@@ -32,7 +32,7 @@ public class CipherInputStream
     private StreamCipher streamCipher;
     private AEADBlockCipher aeadBlockCipher;
 
-    private byte[] buf;
+    private byte[] buf = new byte[1024 * 8];
     private byte[] markBuf;
 
 

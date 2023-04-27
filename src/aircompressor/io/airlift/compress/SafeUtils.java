@@ -56,9 +56,9 @@ public enum SafeUtils {
 		return buf[i];
 	}
 
-	public static int readIntBE(byte[] buf, int i) {
-		return ((buf[i] & 0xFF) << 24) | ((buf[i + 1] & 0xFF) << 16) | ((buf[i + 2] & 0xFF) << 8) | (buf[i + 3] & 0xFF);
-	}
+	//public static int readIntBE(byte[] buf, int i) {
+		//return ((buf[i] & 0xFF) << 24) | ((buf[i + 1] & 0xFF) << 16) | ((buf[i + 2] & 0xFF) << 8) | (buf[i + 3] & 0xFF);
+	//}
 
 	public static int readIntLE(byte[] buf, int i) {
 		return (buf[i] & 0xFF) | ((buf[i + 1] & 0xFF) << 8) | ((buf[i + 2] & 0xFF) << 16) | ((buf[i + 3] & 0xFF) << 24);
