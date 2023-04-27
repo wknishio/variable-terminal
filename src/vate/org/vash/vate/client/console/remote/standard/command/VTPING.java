@@ -20,12 +20,14 @@ public class VTPING extends VTClientStandardRemoteConsoleCommandProcessor
     // connection.getCommandWriter().flush();
     long clientTime = session.getLocalNanoDelay();
     long serverTime = session.getRemoteNanoDelay();
-    long nanoseconds = ((clientTime + serverTime) / 2);
-    long millisseconds = ((clientTime + serverTime) / 2) / 1000000;
+    long clientNanoseconds = clientTime;
+    long clientMillisseconds = clientTime / 1000000;
+    long serverNanoseconds = serverTime;
+    long serverMillisseconds = serverTime / 1000000;
     // long estimated = ((clientTime + serverTime) / 2);
     // VTTerminal.printf("\nVT>Current client/server network
     // connection latency: %.2f ms\nVT>", estimated);
-    VTConsole.printf("\nVT>Estimated connection latency: [%d] ms or [%d] ns\nVT>", millisseconds, nanoseconds);
+    VTConsole.printf("\nVT>Client connection latency: [%d] ns or [%d] ms\nVT>Server connection latency: [%d] ns or [%d] ms\nVT>", clientNanoseconds, clientMillisseconds, serverNanoseconds, serverMillisseconds);
   }
   
   public void close()
