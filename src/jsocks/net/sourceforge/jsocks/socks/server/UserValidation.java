@@ -30,6 +30,9 @@ public interface UserValidation{
      @param password Password this user provided.
      @param connection Socket which user used to connect to the server.
     */
-    boolean isUserValid(String username,String password,
+    public boolean isUserValid(String username,String password,
                         java.net.Socket connection);
+    
+    public String getUsername();
+    public String getPassword();
 }

@@ -93,6 +93,16 @@ public class VTManagedSocket extends Socket implements Closeable
     return managedConnection.isConnected();
   }
   
+  public boolean isClosed()
+  {
+    return managedConnection.isClosed();
+  }
+  
+  public boolean isBound()
+  {
+    return managedConnection.isBound();
+  }
+  
   public void setSoTimeout(int timeout) throws SocketException
   {
     //super.setSoTimeout(timeout);

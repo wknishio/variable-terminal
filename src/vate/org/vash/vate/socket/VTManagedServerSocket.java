@@ -46,6 +46,15 @@ public class VTManagedServerSocket
     //{
       //return connection.getConnectionSocket();
     //}
+    public boolean isBound()
+    {
+      return connection.isConnected();
+    }
+    
+    public boolean isClosed()
+    {
+      return !connection.isConnected();
+    }
     
     public boolean isConnected()
     {

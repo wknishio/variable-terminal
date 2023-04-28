@@ -1,5 +1,6 @@
 package org.vash.vate.tunnel.session;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -9,7 +10,7 @@ import java.net.SocketException;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
 
-public class VTTunnelVirtualSocket extends Socket
+public class VTTunnelVirtualSocket extends Socket implements Closeable
 {
   private InputStream in;
   private OutputStream out;
@@ -55,43 +56,27 @@ public class VTTunnelVirtualSocket extends Socket
   
   public void shutdownOutput() throws IOException
   {
-//    if (out != null)
-//    {
-//      try
-//      {
-//        out.close();
-//      }
-//      catch (Throwable e)
-//      {
-//        
-//      }
-//    }
+    
   }
   
   public void shutdownInput() throws IOException
   {
-//    if (in != null)
-//    {
-//      try
-//      {
-//        in.close();
-//      }
-//      catch (Throwable e)
-//      {
-//        
-//      }
-//    }
-//    if (pipe != null)
-//    {
-//      try
-//      {
-//        pipe.close();
-//      }
-//      catch (Throwable e)
-//      {
-//        
-//      }
-//    }
+    
+  }
+  
+  public boolean isBound()
+  {
+    return !isClosed();
+  }
+  
+  public boolean isConnected()
+  {
+    return !isClosed();
+  }
+  
+  public boolean isClosed()
+  {
+    return closed;
   }
   
   public void close() throws IOException
@@ -101,17 +86,6 @@ public class VTTunnelVirtualSocket extends Socket
       return;
     }
     closed = true;
-//    if (in != null)
-//    {
-//      try
-//      {
-//        in.close();
-//      }
-//      catch (Throwable e)
-//      {
-//        
-//      }
-//    }
     if (out != null)
     {
       try

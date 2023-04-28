@@ -52,4 +52,14 @@ public class UPSOCKS implements UserValidation{
 
         server.start(1080);
     }
+
+    public String getUsername()
+    {
+      return user;
+    }
+
+    public String getPassword()
+    {
+      return password;
+    }
 }

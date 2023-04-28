@@ -195,4 +195,9 @@ public class ServerAuthenticatorNone implements ServerAuthenticator {
 		out.flush();
 		return found;
 	}
+	
+	public UserValidation getUserValidation()
+	{
+	  return null;
+	}
 }

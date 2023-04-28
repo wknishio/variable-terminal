@@ -87,4 +87,9 @@ public class UserPasswordAuthenticator extends ServerAuthenticatorNone {
 
 		return true;
 	}
+	
+	public UserValidation getUserValidation()
+	{
+	  return validator;
+	}
 }

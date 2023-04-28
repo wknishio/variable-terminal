@@ -11,7 +11,7 @@ import org.vash.vate.tunnel.connection.VTTunnelConnection;
 public class VTTunnelSession implements Closeable
 {
   private VTTunnelConnection connection;
-  private Socket socket;
+  private VTTunnelCloseableSocket socket;
   private VTLinkableDynamicMultiplexedInputStream inputStream;
   private VTLinkableDynamicMultiplexedOutputStream outputStream;
   private final boolean originator;
@@ -22,7 +22,7 @@ public class VTTunnelSession implements Closeable
   public VTTunnelSession(VTTunnelConnection connection, Socket socket, boolean originator) throws IOException
   {
     this.connection = connection;
-    this.socket = socket;
+    this.socket = new VTTunnelCloseableSocket(socket);
     this.originator = originator;
   }
   
@@ -115,7 +115,7 @@ public class VTTunnelSession implements Closeable
     socket = null;
   }
   
-  public Socket getSocket()
+  public VTTunnelCloseableSocket getSocket()
   {
     return this.socket;
   }

@@ -131,4 +131,6 @@ public interface ServerAuthenticator{
     function.
    */
    void endSession();
+   
+   public UserValidation getUserValidation(); 
 }
