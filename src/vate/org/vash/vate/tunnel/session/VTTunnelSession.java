@@ -98,7 +98,7 @@ public class VTTunnelSession implements Closeable
     {
       if (inputStream != null)
       {
-        inputStream.removePropagated(this);
+        //inputStream.removePropagated(this);
         inputStream.close();
       }
     }
@@ -126,7 +126,7 @@ public class VTTunnelSession implements Closeable
   public void setTunnelInputStream(VTLinkableDynamicMultiplexedInputStream inputStream)
   {
     this.inputStream = inputStream;
-    this.inputStream.addPropagated(this);
+    //this.inputStream.addPropagated(this);
   }
   
   public VTLinkableDynamicMultiplexedOutputStream getTunnelOutputStream()

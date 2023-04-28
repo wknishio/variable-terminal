@@ -278,6 +278,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     private final VTPipedOutputStream pipedOutputStream;
     private InputStream in;
     private OutputStream directOutputStream;
+    private Closeable directCloseable;
     private InputStream compressedInputStream;
     private List<Closeable> propagated;
     
@@ -364,8 +365,9 @@ public final class VTLinkableDynamicMultiplexingInputStream
       return directOutputStream;
     }
     
-    public final void setDirectOutputStream(OutputStream directOutputStream)
+    public final void setDirectOutputStream(OutputStream directOutputStream, Closeable directCloseable)
     {
+      this.directCloseable = directCloseable;
       if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
       {
         this.directOutputStream = directOutputStream;
@@ -436,9 +438,14 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       else
       {
+        if (directCloseable != null)
+        {
+          directCloseable.close();
+          directCloseable = null;
+        }
         if (directOutputStream != null)
         {
-          directOutputStream.close();
+          //directOutputStream.close();
           directOutputStream = null;
         }
       }

@@ -14,6 +14,7 @@ public class VTTunnelVirtualSocket extends Socket
   private InputStream in;
   private OutputStream out;
   private OutputStream pipe;
+  //private Closeable closeable;
   private volatile boolean closed = false;
   
   public VTTunnelVirtualSocket()
@@ -31,6 +32,11 @@ public class VTTunnelVirtualSocket extends Socket
     this.in = pipeSink;
     this.pipe = pipeSource;
   }
+  
+  //public void setCloseable(Closeable closeable)
+  //{
+    //this.closeable = closeable;
+  //}
   
   public InputStream getInputStream()
   {
@@ -128,6 +134,17 @@ public class VTTunnelVirtualSocket extends Socket
         
       }
     }
+    //if (closeable != null)
+    //{
+      //try
+      //{
+        //closeable.close();
+      //}
+      //catch (Throwable e)
+      //{
+        
+      //}
+    //}
   }
   
   public void setSoTimeout(int timeout) throws SocketException

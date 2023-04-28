@@ -77,7 +77,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                     session.setTunnelOutputStream(output);
                     session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
                     //session.getTunnelInputStream().addPropagated(session);
-                    session.getTunnelInputStream().setDirectOutputStream(session.getSocket().getOutputStream());
+                    session.getTunnelInputStream().setDirectOutputStream(session.getSocket().getOutputStream(), session.getSocket());
                     session.getTunnelInputStream().open();
                     session.getTunnelOutputStream().open();
                     // response message sent with ok
@@ -136,11 +136,10 @@ public class VTTunnelConnectionControlThread implements Runnable
                     int outputNumber = output.number();
                     session.setOutputNumber(outputNumber);
                     session.setInputNumber(inputNumber);
-                    virtual.setOutputStream(output);
                     session.setTunnelOutputStream(output);
                     session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
-                    //session.getTunnelInputStream().addPropagated(session);
-                    session.getTunnelInputStream().setDirectOutputStream(virtual.getInputStreamSource());
+                    virtual.setOutputStream(output);
+                    session.getTunnelInputStream().setDirectOutputStream(virtual.getInputStreamSource(), virtual);
                     session.getTunnelInputStream().open();
                     session.getTunnelOutputStream().open();
                     // response message sent with ok
@@ -191,7 +190,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                       session.setInputNumber(inputNumber);
                       session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
                       //session.getTunnelInputStream().addPropagated(session);
-                      session.getTunnelInputStream().setDirectOutputStream(session.getSocket().getOutputStream());
+                      session.getTunnelInputStream().setDirectOutputStream(session.getSocket().getOutputStream(), session.getSocket());
                       session.getTunnelInputStream().open();
                       session.getTunnelOutputStream().open();
                       // ack message sent~
