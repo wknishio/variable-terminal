@@ -153,7 +153,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     getInputStream(type, number).close();
   }
   
-  public final synchronized void close() throws IOException
+  public final void close() throws IOException
   {
     if (closed)
     {
@@ -399,7 +399,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       this.propagated.remove(propagated);
     }
     
-    public final synchronized void open() throws IOException
+    public final void open() throws IOException
     {
       if (pipedInputStream != null)
       {
@@ -425,7 +425,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       closed = false;
     }
     
-    public final synchronized void close() throws IOException
+    public final void close() throws IOException
     {
       if (closed)
       {

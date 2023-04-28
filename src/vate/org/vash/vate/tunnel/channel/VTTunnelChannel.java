@@ -115,8 +115,8 @@ public class VTTunnelChannel
   public void close()
   {
     // closed = true;
-    synchronized (sessions)
-    {
+    //synchronized (sessions)
+    //{
       for (VTTunnelSessionHandler handler : sessions)
       {
         try
@@ -128,7 +128,7 @@ public class VTTunnelChannel
           // e.printStackTrace();
         }
       }
-    }
+    //}
     sessions.clear();
   }
   
@@ -162,12 +162,12 @@ public class VTTunnelChannel
     this.socksPassword = socksPassword;
   }
   
-  public synchronized void addSession(VTTunnelSessionHandler handler)
+  public void addSession(VTTunnelSessionHandler handler)
   {
     sessions.add(handler);
   }
   
-  public synchronized boolean removeSession(VTTunnelSessionHandler handler)
+  public boolean removeSession(VTTunnelSessionHandler handler)
   {
     return sessions.remove(handler);
   }

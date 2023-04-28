@@ -136,7 +136,7 @@ public class VTTunnelConnection
     }
   }
   
-  public synchronized Set<VTTunnelChannelSocketListener> getChannels()
+  public Set<VTTunnelChannelSocketListener> getChannels()
   {
     return channels;
   }

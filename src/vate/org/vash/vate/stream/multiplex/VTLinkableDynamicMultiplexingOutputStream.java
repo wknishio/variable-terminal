@@ -132,7 +132,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     return throttleable.getBytesPerSecond();
   }
   
-  public final synchronized void close() throws IOException
+  public final void close() throws IOException
   {
     pipedChannels.clear();
     directChannels.clear();
@@ -293,7 +293,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       out.flush();
     }
     
-    public final synchronized void close() throws IOException
+    public final void close() throws IOException
     {
       if (!closed)
       {
@@ -317,7 +317,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       }
     }
     
-    public final synchronized void open() throws IOException
+    public final void open() throws IOException
     {
       if (closed)
       {
