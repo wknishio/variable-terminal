@@ -208,6 +208,7 @@ public class VTTunnelConnection
     {
       return;
     }
+    closed = true;
     //System.out.println("VTTunnelConnection.close()");
     for (VTTunnelChannelSocketListener listener : channels)
     {
@@ -237,7 +238,6 @@ public class VTTunnelConnection
     {
       // e.printStackTrace();
     }
-    closed = true;
   }
   
   public synchronized VTLinkableDynamicMultiplexedOutputStream getOutputStream(int channelType, Object link)

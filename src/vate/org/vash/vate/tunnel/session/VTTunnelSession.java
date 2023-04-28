@@ -17,6 +17,7 @@ public class VTTunnelSession implements Closeable
   private final boolean originator;
   private int outputNumber;
   private int inputNumber;
+  private volatile boolean closed;
   
   public VTTunnelSession(VTTunnelConnection connection, Socket socket, boolean originator) throws IOException
   {
@@ -66,12 +67,13 @@ public class VTTunnelSession implements Closeable
    * 0); } catch (Throwable e) { } } }
    */
   
-  public synchronized void close() throws IOException
+  public void close() throws IOException
   {
-    if (socket == null)
+    if (closed)
     {
       return;
     }
+    closed = true;
     try
     {
       if (socket != null)

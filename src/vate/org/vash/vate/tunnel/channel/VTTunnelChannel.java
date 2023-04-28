@@ -112,7 +112,7 @@ public class VTTunnelChannel
     return this.toString().equals(other.toString());
   }
   
-  public synchronized void close()
+  public void close()
   {
     // closed = true;
     synchronized (sessions)
