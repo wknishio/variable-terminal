@@ -141,7 +141,7 @@ public class VTTunnelConnection
     return channels;
   }
   
-  public VTTunnelChannelSocketListener getChannelSocketListener(String bindHost, int bindPort)
+  public synchronized VTTunnelChannelSocketListener getChannelSocketListener(String bindHost, int bindPort)
   {
     if (bindHost == null || bindHost.length() == 0)
     {

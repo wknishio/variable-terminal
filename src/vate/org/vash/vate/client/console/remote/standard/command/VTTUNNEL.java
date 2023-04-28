@@ -1,7 +1,5 @@
 package org.vash.vate.client.console.remote.standard.command;
 
-import java.util.Set;
-
 import org.vash.vate.VT;
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
 import org.vash.vate.console.VTConsole;
@@ -37,8 +35,8 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
     {
       message.setLength(0);
       message.append("\nVT>List of connection tunnels:\nVT>");
-      Set<VTTunnelChannelSocketListener> channels = session.getTunnelsHandler().getConnection().getChannels();
-      for (VTTunnelChannelSocketListener channel : channels)
+      //Set<VTTunnelChannelSocketListener> channels = session.getTunnelsHandler().getConnection().getChannels();
+      for (VTTunnelChannelSocketListener channel : session.getTunnelsHandler().getConnection().getChannels().toArray(new VTTunnelChannelSocketListener[] { }))
       {
         if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
         {
@@ -58,10 +56,10 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
       //VTConsole.println("parsed[1]:" + parsed[1]);
       if (parsed[1].toUpperCase().contains("L") && !parsed[1].toUpperCase().contains("R"))
       {
-        Set<VTTunnelChannelSocketListener> channels = session.getTunnelsHandler().getConnection().getChannels();
         message.setLength(0);
         message.append("\nVT>List of client connection tunnels:\nVT>");
-        for (VTTunnelChannelSocketListener channel : channels)
+        //Set<VTTunnelChannelSocketListener> channels = session.getTunnelsHandler().getConnection().getChannels();
+        for (VTTunnelChannelSocketListener channel : session.getTunnelsHandler().getConnection().getChannels().toArray(new VTTunnelChannelSocketListener[] { }))
         {
           if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
           {
