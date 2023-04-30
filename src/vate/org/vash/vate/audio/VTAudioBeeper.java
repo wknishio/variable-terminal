@@ -203,7 +203,7 @@ public class VTAudioBeeper
     return null;
   }
   
-  public static synchronized final boolean beep(int freq, int dur, boolean block)
+  public static final boolean beep(int freq, int dur, boolean block)
   {
     if (block)
     {

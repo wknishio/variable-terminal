@@ -361,10 +361,10 @@ public class SocksSocket extends Socket{
          proxy.out = directSock.getOutputStream();
          proxy.in  = directSock.getInputStream();
          directSock.setTcpNoDelay(true);
-         directSock.setSoLinger(true, 1);
+         //directSock.setSoLinger(true, 5);
          //directSock.setReuseAddress(true);
          //directSock.setKeepAlive(true);
-         directSock.setSoTimeout(30000);
+         directSock.setSoTimeout(60000);
          //directSock.setSoLinger(true, 0);
          proxy.proxySocket = directSock;
          localIP = directSock.getLocalAddress();

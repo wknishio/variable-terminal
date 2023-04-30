@@ -31,9 +31,9 @@ public class VTTunnelSessionHandler implements Runnable
       VTStreamRedirector redirector = new VTStreamRedirector(session.getSocket().getInputStream(), session.getTunnelOutputStream());
       redirector.run();
     }
-    catch (Throwable e)
+    catch (Throwable t)
     {
-      //e.printStackTrace();
+      //t.printStackTrace();
     }
     finally
     {

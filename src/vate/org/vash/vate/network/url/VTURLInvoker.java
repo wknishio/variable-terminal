@@ -35,14 +35,11 @@ public class VTURLInvoker
   {
     try
     {
-      synchronized (connections)
+      for (URLConnection connection : connections.toArray(new URLConnection[] { }))
       {
-        for (URLConnection connection : connections)
-        {
-          close(connection);
-        }
-        connections.clear();
+        close(connection);
       }
+      connections.clear();
     }
     catch (Throwable t)
     {
@@ -124,10 +121,7 @@ public class VTURLInvoker
       connection = url.openConnection(proxy);
       if (connection != null)
       {
-        synchronized (connections)
-        {
-          connections.add(connection);
-        }
+        connections.add(connection);
       }
       connection.setDefaultUseCaches(false);
       if (connection instanceof HttpURLConnection)
@@ -172,6 +166,16 @@ public class VTURLInvoker
         response = httpConnection.getResponseMessage();
       }
       Map<String, List<String>> headers = connection.getHeaderFields();
+//      for (Entry<String, List<String>> entry : headers.entrySet())
+//      {
+//        resultOutputStream.write((entry.getKey() + ":").getBytes());
+//        for (String value : entry.getValue())
+//        {
+//          resultOutputStream.write((" " + value).getBytes());
+//        }
+//        resultOutputStream.write("\r\n".getBytes());
+//        resultOutputStream.flush();
+//      }
       InputStream resultInputStream = connection.getInputStream();
       while ((readed = resultInputStream.read(readBuffer)) >= 0)
       {
@@ -189,10 +193,7 @@ public class VTURLInvoker
       if (connection != null)
       {
         close(connection);
-        synchronized (connections)
-        {
-          connections.remove(connection);
-        }
+        connections.remove(connection);
       }
     }
     return urlResult;

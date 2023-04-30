@@ -4,8 +4,6 @@ import org.vash.vate.VT;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 
 import net.sourceforge.jsocks.socks.ProxyServer;
-import net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
-import net.sourceforge.jsocks.socks.server.UserPasswordAuthenticator;
 
 public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
 {
@@ -40,16 +38,31 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
     {
       if (validation != null)
       {
-        ProxyServer socksServer = new ProxyServer(new UserPasswordAuthenticator(validation), session.getSocket(), true);
-        socksServer.setPipeBufferSize(socksBufferSize);
-        socksServer.run();
+        
+        try
+        {
+          ProxyServer socksServer = new ProxyServer(new VTTunnelSocksPlusHttpProxyAuthenticatorUsernamePassword(validation), session.getSocket(), true);
+          socksServer.setPipeBufferSize(socksBufferSize);
+          socksServer.run();
+        }
+        catch (Throwable t)
+        {
+          //t.printStackTrace();
+        }
         // session.close();
       }
       else
       {
-        ProxyServer socksServer = new ProxyServer(new ServerAuthenticatorNone(), session.getSocket(), true);
-        socksServer.setPipeBufferSize(socksBufferSize);
-        socksServer.run();
+        try
+        {
+          ProxyServer socksServer = new ProxyServer(new VTTunnelSocksPlusHttpProxyAuthenticatorNone(), session.getSocket(), true);
+          socksServer.setPipeBufferSize(socksBufferSize);
+          socksServer.run();
+        }
+        catch (Throwable t)
+        {
+          //t.printStackTrace();
+        }
         // session.close();
       }
     }

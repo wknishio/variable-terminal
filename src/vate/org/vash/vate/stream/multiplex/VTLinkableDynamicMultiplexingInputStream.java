@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,8 +42,8 @@ public final class VTLinkableDynamicMultiplexingInputStream
     this.bufferSize = bufferSize;
     this.packetBuffer = new byte[packetSize * 2];
     this.in = new VTLittleEndianInputStream(in);
-    this.pipedChannels = Collections.synchronizedMap(new HashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
-    this.directChannels = Collections.synchronizedMap(new HashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
+    this.pipedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
+    this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
     this.packetReader = new VTLinkableDynamicMultiplexingInputStreamPacketReader(this);
     this.packetReaderThread = new Thread(null, packetReader, packetReader.getClass().getSimpleName());
     this.packetReaderThread.setDaemon(true);
@@ -54,7 +54,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     }
   }
   
-  public final synchronized VTLinkableDynamicMultiplexedInputStream linkInputStream(int type, Object link)
+  public synchronized final VTLinkableDynamicMultiplexedInputStream linkInputStream(int type, Object link)
   {
     VTLinkableDynamicMultiplexedInputStream stream = null;
     if (link instanceof Integer)
@@ -79,7 +79,18 @@ public final class VTLinkableDynamicMultiplexingInputStream
     return stream;
   }
   
-  public final synchronized void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)
+  public synchronized final VTLinkableDynamicMultiplexedInputStream linkInputStream(int type, int number, Object link)
+  {
+    VTLinkableDynamicMultiplexedInputStream stream = null;
+    stream = getInputStream(type, number);
+    if (stream.getLink() == null)
+    {
+      stream.setLink(link);
+    }
+    return stream;
+  }
+  
+  public synchronized final void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)
   {
     if (stream != null)
     {
@@ -160,9 +171,9 @@ public final class VTLinkableDynamicMultiplexingInputStream
       return;
     }
     packetReader.setRunning(false);
-    synchronized (pipedChannels)
-    {
-      for (VTLinkableDynamicMultiplexedInputStream stream : pipedChannels.values())
+    //synchronized (pipedChannels)
+    //{
+      for (VTLinkableDynamicMultiplexedInputStream stream : pipedChannels.values().toArray(new VTLinkableDynamicMultiplexedInputStream []{ }))
       {
         try
         {
@@ -173,10 +184,10 @@ public final class VTLinkableDynamicMultiplexingInputStream
           // e.printStackTrace();
         }
       }
-    }
-    synchronized (directChannels)
-    {
-      for (VTLinkableDynamicMultiplexedInputStream stream : directChannels.values())
+    //}
+    //synchronized (directChannels)
+    //{
+      for (VTLinkableDynamicMultiplexedInputStream stream : directChannels.values().toArray(new VTLinkableDynamicMultiplexedInputStream []{ }))
       {
         try
         {
@@ -187,7 +198,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
           // e.printStackTrace();
         }
       }
-    }
+    //}
     pipedChannels.clear();
     directChannels.clear();
     in.close();
@@ -202,12 +213,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     type = in.readUnsignedShort();
     channel = in.readInt();
     length = in.readShort();
-    VTLinkableDynamicMultiplexedInputStream stream = getInputStream(type, channel);
-    OutputStream out = stream.getOutputStream();
-    //compressed packets must be read whole if channel type is direct without buffered pipe
-    //boolean whole = true;
-    //boolean whole = (type & (VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED))
-    //== (VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED);
+    
     if (length > 0)
     {
       remaining = length;
@@ -221,27 +227,10 @@ public final class VTLinkableDynamicMultiplexingInputStream
           close();
           return;
         }
-//        if (length > 0 && !whole)
-//        {
-//          if (readed >= 0)
-//          {
-//            try
-//            {
-//              out.write(packetBuffer, copied, readed);
-//              out.flush();
-//            }
-//            catch (Throwable e)
-//            {
-//              length = 0;
-//              continue;
-//            }
-//          }
-//        }
       }
-//      if (whole)
-//      {
       try
       {
+        OutputStream out = getInputStream(type, channel).getOutputStream();
         out.write(packetBuffer, 0, length);
         out.flush();
       }
@@ -249,14 +238,14 @@ public final class VTLinkableDynamicMultiplexingInputStream
       {
         try
         {
-          stream.close();
+          getInputStream(type, channel).close();
+          //stream.close();
         }
         catch (Throwable t)
         {
-          
+          //e.printStackTrace();
         }
       }
-//      }
     }
     else if (length == -2)
     {
@@ -340,12 +329,12 @@ public final class VTLinkableDynamicMultiplexingInputStream
       this.type = type;
     }
     
-    public final synchronized Object getLink()
+    public final Object getLink()
     {
       return link;
     }
     
-    public final synchronized void setLink(Object link)
+    public final void setLink(Object link)
     {
       this.link = link;
     }
@@ -401,6 +390,11 @@ public final class VTLinkableDynamicMultiplexingInputStream
     
     public final void open() throws IOException
     {
+      if (!closed)
+      {
+        return;
+      }
+      closed = false;
       if (pipedInputStream != null)
       {
         pipedInputStream.open();
@@ -422,7 +416,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
       {
         //work already done by setDirectOutputStream
       }
-      closed = false;
     }
     
     public final void close() throws IOException
@@ -432,6 +425,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
         return;
       }
       closed = true;
+      compressedInputStream = null;
       if (pipedOutputStream != null)
       {
         pipedOutputStream.close();
@@ -449,7 +443,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
           directOutputStream = null;
         }
       }
-      compressedInputStream = null;
       if (propagated.size() > 0)
       {
         // propagated.close();

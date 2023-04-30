@@ -456,22 +456,22 @@ public class VTClientConnector implements Runnable
         {
           if (address != null && address.length() > 0)
           {
-            connectionServerSocket.bind(new InetSocketAddress(address, port), 1);
+            connectionServerSocket.bind(new InetSocketAddress(address, port), 0);
           }
           else
           {
-            connectionServerSocket.bind(new InetSocketAddress(port), 1);
+            connectionServerSocket.bind(new InetSocketAddress(port), 0);
           }
         }
         else
         {
           if (address != null && address.length() > 0)
           {
-            connectionServerSocket.bind(new InetSocketAddress(address, 6060), 1);
+            connectionServerSocket.bind(new InetSocketAddress(address, 6060), 0);
           }
           else
           {
-            connectionServerSocket.bind(new InetSocketAddress(6060), 1);
+            connectionServerSocket.bind(new InetSocketAddress(6060), 0);
           }
         }
       }
@@ -482,22 +482,22 @@ public class VTClientConnector implements Runnable
         {
           if (address != null && address.length() > 0)
           {
-            connectionServerSocket.bind(new InetSocketAddress(address, port), 1);
+            connectionServerSocket.bind(new InetSocketAddress(address, port), 0);
           }
           else
           {
-            connectionServerSocket.bind(new InetSocketAddress(port), 1);
+            connectionServerSocket.bind(new InetSocketAddress(port), 0);
           }
         }
         else
         {
           if (address != null && address.length() > 0)
           {
-            connectionServerSocket.bind(new InetSocketAddress(address, 6060), 1);
+            connectionServerSocket.bind(new InetSocketAddress(address, 6060), 0);
           }
           else
           {
-            connectionServerSocket.bind(new InetSocketAddress(6060), 1);
+            connectionServerSocket.bind(new InetSocketAddress(6060), 0);
           }
         }
       }
@@ -597,7 +597,7 @@ public class VTClientConnector implements Runnable
       // connection.getConnectionSocket().setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE
       // - 1);
       connection.getConnectionSocket().setTcpNoDelay(true);
-      connection.getConnectionSocket().setSoLinger(true, 1);
+      //connection.getConnectionSocket().setSoLinger(true, 5);
       // connection.getConnectionSocket().setReuseAddress(true);
       // connection.getConnectionSocket().setKeepAlive(true);
       connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
@@ -696,7 +696,7 @@ public class VTClientConnector implements Runnable
       // - 1);
       connection.getConnectionSocket().connect(socketAddress);
       connection.getConnectionSocket().setTcpNoDelay(true);
-      connection.getConnectionSocket().setSoLinger(true, 1);
+      //connection.getConnectionSocket().setSoLinger(true, 5);
       // connection.getConnectionSocket().setReuseAddress(true);
       // connection.getConnectionSocket().setKeepAlive(true);
       connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);

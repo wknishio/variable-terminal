@@ -56,10 +56,6 @@ public class VTManagedClientSocket
     {
       return connection.isConnected();
     }
-    //public Socket getConnectionSocket()
-    //{
-      //return connection.getConnectionSocket();
-    //}
     
     public VTLinkableDynamicMultiplexedInputStream getInputStream(int number)
     {

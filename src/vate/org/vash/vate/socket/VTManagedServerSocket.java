@@ -42,11 +42,7 @@ public class VTManagedServerSocket
       connection.closeSockets();
     }
     
-    //public Socket getConnectionSocket()
-    //{
-      //return connection.getConnectionSocket();
-    //}
-    public boolean isBound()
+    public boolean isConnected()
     {
       return connection.isConnected();
     }
@@ -56,7 +52,7 @@ public class VTManagedServerSocket
       return !connection.isConnected();
     }
     
-    public boolean isConnected()
+    public boolean isBound()
     {
       return connection.isConnected();
     }

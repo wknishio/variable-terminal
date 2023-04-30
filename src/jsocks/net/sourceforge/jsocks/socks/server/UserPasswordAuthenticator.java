@@ -25,9 +25,9 @@ import java.net.Socket;
  */
 public class UserPasswordAuthenticator extends ServerAuthenticatorNone {
 
-	static final int METHOD_ID = 2;
+	protected static final int METHOD_ID = 2;
 
-	UserValidation validator;
+	protected UserValidation validator;
 
 	/**
 	 * Construct a new UserPasswordAuthentication object, with given UserVlaidation
@@ -59,7 +59,7 @@ public class UserPasswordAuthenticator extends ServerAuthenticatorNone {
 	// Private Methods
 	//////////////////
 
-	private boolean doUserPasswordAuthentication(Socket s, InputStream in, OutputStream out) throws IOException {
+	protected boolean doUserPasswordAuthentication(Socket s, InputStream in, OutputStream out) throws IOException {
 		int version = in.read();
 		if (version != 1)
 			return false;

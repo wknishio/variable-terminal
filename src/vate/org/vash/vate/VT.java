@@ -8,7 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.logging.Level;
@@ -62,16 +62,16 @@ public class VT
   public static final int VT_CONNECTION_ENCRYPT_HC256 = 5;
   public static final int VT_CONNECTION_ENCRYPT_GRAIN = 6;
   
-  public static final int VT_AUTHENTICATION_TIMEOUT_MILLISECONDS = 30000;
-  public static final int VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS = 30000;
+  public static final int VT_AUTHENTICATION_TIMEOUT_MILLISECONDS = 60000;
+  public static final int VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS = 60000;
   // public static final int VT_CONNECTION_TCP_ACCEPT_TIMEOUT_MILLISECONDS =
   // 60000;
   // public static final int VT_CONNECTION_TCP_CONNECT_TIMEOUT_MILLISECONDS =
   // 60000;
-  public static final int VT_CLIENT_RECONNECTION_TIMEOUT_MILLISECONDS = 30000;
+  public static final int VT_CLIENT_RECONNECTION_TIMEOUT_MILLISECONDS = 60000;
   public static final int VT_DAEMON_RECONNECTION_TIMEOUT_MILLISECONDS = 2500;
   
-  public static final int VT_PING_SERVICE_INTERVAL_MILLISECONDS = 7500;
+  public static final int VT_PING_SERVICE_INTERVAL_MILLISECONDS = 15000;
   
   public static final int VT_FILE_TRANSFER_SESSION_STARTED = 0;
   public static final int VT_FILE_TRANSFER_SESSION_FINISHED = 1;
@@ -202,7 +202,7 @@ public class VT
     VT_AUDIO_FORMAT_48000 = new AudioFormat(48000, sampleSizeInBits, channels, signed, bigEndian);
     VT_AUDIO_FORMAT_DEFAULT = VT_AUDIO_FORMAT_16000;
     
-    VT_GRAPHICS_RENDERING_HINTS = new HashMap<RenderingHints.Key, Object>();
+    VT_GRAPHICS_RENDERING_HINTS = new LinkedHashMap<RenderingHints.Key, Object>();
     VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
     VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
     VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);

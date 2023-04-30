@@ -134,10 +134,10 @@ public class SocksServerSocket extends ServerSocket {
 			s = super.accept();
 			//s.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 			s.setTcpNoDelay(true);
-			s.setSoLinger(true, 1);
+			//s.setSoLinger(true, 5);
 			//s.setReuseAddress(true);
 			//s.setKeepAlive(true);
-			s.setSoTimeout(30000);
+			s.setSoTimeout(60000);
 			//s.setSoLinger(true, 0);
 			// if(s.getInetAddress().equals(remoteAddr)){
 			// got the connection from the right host

@@ -7,13 +7,14 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
+import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
 
 public class VTTunnelVirtualSocket extends Socket implements Closeable
 {
   private InputStream in;
-  private OutputStream out;
+  private VTLinkableDynamicMultiplexedOutputStream out;
   private OutputStream pipe;
   //private Closeable closeable;
   private volatile boolean closed = false;
@@ -23,7 +24,7 @@ public class VTTunnelVirtualSocket extends Socket implements Closeable
     
   }
   
-  public void setOutputStream(OutputStream output) throws IOException
+  public void setOutputStream(VTLinkableDynamicMultiplexedOutputStream output) throws IOException
   {
     VTPipedInputStream pipeSink = new VTPipedInputStream();
     VTPipedOutputStream pipeSource = new VTPipedOutputStream();
@@ -76,7 +77,7 @@ public class VTTunnelVirtualSocket extends Socket implements Closeable
   
   public boolean isClosed()
   {
-    return closed;
+    return closed && out.closed();
   }
   
   public void close() throws IOException

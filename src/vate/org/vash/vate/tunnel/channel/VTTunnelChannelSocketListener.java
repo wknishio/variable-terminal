@@ -84,7 +84,7 @@ public class VTTunnelChannelSocketListener implements Runnable
         // serverSocket.setReuseAddress(true);
       }
       // serverSocket.setReuseAddress(true);
-      serverSocket.bind(channel.getBindAddress());
+      serverSocket.bind(channel.getBindAddress(), 0);
       return true;
     }
     catch (Throwable e)
@@ -104,35 +104,15 @@ public class VTTunnelChannelSocketListener implements Runnable
     Thread.currentThread().setName(getClass().getSimpleName());
     try
     {
-//      while (!closed && (serverSocket == null || !serverSocket.isBound()))
-//      {
-//        try
-//        {
-//          if (serverSocket == null || serverSocket.isClosed())
-//          {
-//            this.serverSocket = new ServerSocket();
-//          }
-//          serverSocket.bind(channel.getBindAddress());
-//        }
-//        catch (Throwable e)
-//        {
-//          Thread.sleep(1000);
-//        }
-//      }
       while (!closed && !serverSocket.isClosed() && serverSocket.isBound())
       {
-        Socket socket = null;
-        try
+        Socket socket = listen();
+        if (socket != null)
         {
-          socket = serverSocket.accept();
-          socket.setTcpNoDelay(true);
-          socket.setSoLinger(true, 1);
-          socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
           int channelType = channel.getChannelType();
           VTTunnelSession session = new VTTunnelSession(channel.getConnection(), socket, true);
           VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, channel);
           VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
-          
           if (output != null)
           {
             int outputNumber = output.number();
@@ -150,7 +130,7 @@ public class VTTunnelChannelSocketListener implements Runnable
             {
               String socksUsername = channel.getSocksUsername();
               String socksPassword = channel.getSocksPassword();
-              if (socksUsername == null)
+              if (socksUsername == null || socksPassword == null)
               {
                 socksUsername = "*";
                 socksPassword = "*" + SESSION_SEPARATOR + "*";
@@ -169,19 +149,32 @@ public class VTTunnelChannelSocketListener implements Runnable
             }
           }
         }
-        catch (Throwable e)
-        {
-          if (socket != null)
-          {
-            socket.close();
-          }
-          //e.printStackTrace();
-        }
       }
     }
     catch (Throwable e)
     {
       //e.printStackTrace();
     }
+    //closed = true;
+  }
+  
+  private Socket listen()
+  {
+    Socket socket = null;
+    try
+    {
+      socket = serverSocket.accept();
+      socket.setTcpNoDelay(true);
+      //socket.setSoLinger(true, 5);
+      socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+      //socket.getInputStream();
+      //socket.getOutputStream();
+      return socket;
+    }
+    catch (Throwable t)
+    {
+      //t.printStackTrace();
+    }
+    return null;
   }
 }

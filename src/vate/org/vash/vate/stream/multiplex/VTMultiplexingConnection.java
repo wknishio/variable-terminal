@@ -23,17 +23,17 @@ public class VTMultiplexingConnection
     this.controlThread = new VTMultiplexingControlThread(this, threads);
   }
   
-  public synchronized void start()
+  public void start()
   {
     threads.execute(controlThread);
   }
   
-  public synchronized void stop()
+  public void stop()
   {
     // controlThread.stop();
   }
   
-  public synchronized void close()
+  public void close()
   {
     stop();
     try
@@ -54,7 +54,7 @@ public class VTMultiplexingConnection
     }
   }
   
-  public synchronized VTLinkableDynamicMultiplexedOutputStream getOutputStream(short type, Object link)
+  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(short type, Object link)
   {
     if (link instanceof Integer)
     {
@@ -63,14 +63,13 @@ public class VTMultiplexingConnection
     return dataOutputStream.linkOutputStream(type, link);
   }
   
-  public synchronized VTLinkableDynamicMultiplexedOutputStream getOutputStream(short type, int number, Object link)
+  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(short type, int number, Object link)
   {
-    VTLinkableDynamicMultiplexedOutputStream stream = dataOutputStream.linkOutputStream(type, number);
-    stream.setLink(link);
+    VTLinkableDynamicMultiplexedOutputStream stream = dataOutputStream.linkOutputStream(type, number, link);
     return stream;
   }
   
-  public synchronized void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
+  public void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
   {
     if (stream != null)
     {
@@ -86,7 +85,7 @@ public class VTMultiplexingConnection
   // return stream;
   // }
   
-  public synchronized VTLinkableDynamicMultiplexedInputStream getInputStream(short type, Object link)
+  public VTLinkableDynamicMultiplexedInputStream getInputStream(short type, Object link)
   {
     if (link instanceof Integer)
     {
@@ -95,14 +94,13 @@ public class VTMultiplexingConnection
     return dataInputStream.linkInputStream(type, link);
   }
   
-  public synchronized VTLinkableDynamicMultiplexedInputStream getInputStream(short type, int number, Object link)
+  public VTLinkableDynamicMultiplexedInputStream getInputStream(short type, int number, Object link)
   {
-    VTLinkableDynamicMultiplexedInputStream stream = dataInputStream.linkInputStream(type, number);
-    stream.setLink(link);
+    VTLinkableDynamicMultiplexedInputStream stream = dataInputStream.linkInputStream(type, number, link);
     return stream;
   }
   
-  public synchronized void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)
+  public void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)
   {
     if (stream != null)
     {

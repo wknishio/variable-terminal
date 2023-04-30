@@ -10,12 +10,12 @@ public final class VTPipedInputStream extends InputStream
   
   private VTPipedOutputStream source;
   private byte[] circBuf;
-  private int rOffset;
-  private int wOffset;
-  private boolean isWaitGet;
-  private boolean isWaitPut;
-  private boolean eof;
-  private boolean closed;
+  private volatile int rOffset;
+  private volatile int wOffset;
+  private volatile boolean isWaitGet;
+  private volatile boolean isWaitPut;
+  private volatile boolean eof;
+  private volatile boolean closed;
   
   public VTPipedInputStream(int bufferSize)
   {
@@ -37,7 +37,7 @@ public final class VTPipedInputStream extends InputStream
     connect(source);
   }
   
-  public final void connect(VTPipedOutputStream source) throws IOException
+  public synchronized final void connect(VTPipedOutputStream source) throws IOException
   {
     if (this.source == source)
     {

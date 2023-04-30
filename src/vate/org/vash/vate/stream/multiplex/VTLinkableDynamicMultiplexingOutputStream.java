@@ -4,8 +4,10 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.vash.vate.VT;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
@@ -20,21 +22,21 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   private final int blockSize;
   private final OutputStream original;
   private final VTThrottlingOutputStream throttleable;
-  private final HashMap<Integer, VTLinkableDynamicMultiplexedOutputStream> pipedChannels;
-  private final HashMap<Integer, VTLinkableDynamicMultiplexedOutputStream> directChannels;
+  private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> pipedChannels;
+  private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> directChannels;
   
   public VTLinkableDynamicMultiplexingOutputStream(OutputStream out, int packetSize, int blockSize)
   {
     this.original = out;
     this.throttleable = new VTThrottlingOutputStream(out);
-    this.pipedChannels = new HashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
-    this.directChannels = new HashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
+    this.pipedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
+    this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
     this.packetSize = packetSize;
     this.blockSize = blockSize;
     //this.autoFlushPackets = autoFlushPackets;
   }
   
-  public final synchronized VTLinkableDynamicMultiplexedOutputStream linkOutputStream(int type, Object link)
+  public synchronized final VTLinkableDynamicMultiplexedOutputStream linkOutputStream(int type, Object link)
   {
     VTLinkableDynamicMultiplexedOutputStream stream = null;
     if (link instanceof Integer)
@@ -59,7 +61,18 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     return stream;
   }
   
-  public final synchronized void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
+  public synchronized final VTLinkableDynamicMultiplexedOutputStream linkOutputStream(int type, int number, Object link)
+  {
+    VTLinkableDynamicMultiplexedOutputStream stream = null;
+    stream = getOutputStream(type, number);
+    if (stream.getLink() == null)
+    {
+      stream.setLink(link);
+    }
+    return stream;
+  }
+  
+  public synchronized final void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
   {
     if (stream != null)
     {
@@ -237,12 +250,12 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       this.out = out;
     }
     
-    public final synchronized Object getLink()
+    public final Object getLink()
     {
       return link;
     }
     
-    public final synchronized void setLink(Object link)
+    public final void setLink(Object link)
     {
       this.link = link;
     }
@@ -295,51 +308,52 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     public final void close() throws IOException
     {
-      if (!closed)
+      if (closed)
       {
-        closed = true;
-        writeClosePacket(type, number);
-        if (propagated.size() > 0)
+        return;
+      }
+      closed = true;
+      writeClosePacket(type, number);
+      if (propagated.size() > 0)
+      {
+        for (Closeable closeable : propagated.toArray(new Closeable[]{ }))
         {
-          for (Closeable closeable : propagated.toArray(new Closeable[]{ }))
+          try
           {
-            try
-            {
-              closeable.close();
-            }
-            catch (Throwable t)
-            {
-              
-            }
+            closeable.close();
+          }
+          catch (Throwable t)
+          {
+            
           }
         }
-        //propagated.clear();
       }
     }
     
     public final void open() throws IOException
     {
-      if (closed)
+      if (!closed)
       {
-        writeOpenPacket(type, number);
-        if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
+        return;
+      }
+      closed = false;
+      writeOpenPacket(type, number);
+      if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
+      {
+        if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
         {
-          if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
-          {
-            //intermediatePacketStream = VTCompressorSelector.createDirectZlibOutputStream(intermediateDataPacketBuffer);
-            intermediatePacketStream = VTCompressorSelector.createDirectZstdOutputStream(intermediateDataPacketBuffer);
-          }
-          else
-          {
-            intermediatePacketStream = VTCompressorSelector.createDirectLz4OutputStream(intermediateDataPacketBuffer);
-          }
+          //intermediatePacketStream = VTCompressorSelector.createDirectZlibOutputStream(intermediateDataPacketBuffer);
+          intermediatePacketStream = VTCompressorSelector.createDirectZstdOutputStream(intermediateDataPacketBuffer);
         }
         else
         {
-          intermediatePacketStream = intermediateDataPacketBuffer;
+          intermediatePacketStream = VTCompressorSelector.createDirectLz4OutputStream(intermediateDataPacketBuffer);
         }
       }
-      closed = false;
+      else
+      {
+        intermediatePacketStream = intermediateDataPacketBuffer;
+      }
     }
     
     public final void addPropagated(Closeable propagated)

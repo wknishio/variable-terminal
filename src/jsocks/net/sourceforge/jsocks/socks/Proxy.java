@@ -388,10 +388,10 @@ public abstract class Proxy {
 
 			// proxySocket.setKeepAlive(true);
 			proxySocket.setTcpNoDelay(true);
-			proxySocket.setSoLinger(true, 1);
+			//proxySocket.setSoLinger(true, 5);
 			//proxySocket.setReuseAddress(true);
 			//proxySocket.setKeepAlive(true);
-			proxySocket.setSoTimeout(30000);
+			proxySocket.setSoTimeout(60000);
 			//proxySocket.setSoLinger(true, 0);
 
 			in = proxySocket.getInputStream();

@@ -38,9 +38,9 @@ public class VTServerSessionListViewer extends VTTask
       int i = 0;
       List<VTServerConnectionHandler> connections = session.getServer().getServerConnector().getConnectionHandlers();
       message.append("\nVT>List of current client connections on server:\nVT>");
-      synchronized (connections)
-      {
-        for (VTServerConnectionHandler handler : connections)
+      //synchronized (connections)
+      //{
+        for (VTServerConnectionHandler handler : connections.toArray(new VTServerConnectionHandler[] { }))
         {
           message.append("\nVT>Session Number: [" + i++ + "]");
           message.append("\nVT>Authenticated: [" + (handler.getSessionHandler().isAuthenticated() ? "Yes" : "No") + "]");
@@ -57,7 +57,7 @@ public class VTServerSessionListViewer extends VTTask
             // "]\nVT>");
           }
         }
-      }
+      //}
       message.append("\nVT>End of current client connections list\nVT>");
       synchronized (this)
       {

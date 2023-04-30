@@ -3,7 +3,7 @@ package org.vash.vate.audio;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +33,7 @@ public class VTAudioCapturer
   private volatile boolean running = false;
   private ExecutorService threads;
   private AudioFormat audioFormat;
-  private Map<String, VTAudioCapturerThread> lines = Collections.synchronizedMap(new HashMap<String, VTAudioCapturerThread>());
+  private Map<String, VTAudioCapturerThread> lines = Collections.synchronizedMap(new LinkedHashMap<String, VTAudioCapturerThread>());
   private VTAudioSystem system;
   private List<Runnable> scheduled = new LinkedList<Runnable>();
   
@@ -336,15 +336,15 @@ public class VTAudioCapturer
           // e.printStackTrace();
         }
       }
-      synchronized (lines)
-      {
+      //synchronized (lines)
+      //{
         lines.remove(id);
         if (lines.size() == 0)
         {
           running = false;
           system.stop();
         }
-      }
+      //}
     }
     
     public final void loopOpus() throws OpusException, IOException
@@ -522,9 +522,9 @@ public class VTAudioCapturer
   public void close()
   {
     this.running = false;
-    synchronized (lines)
-    {
-      for (Entry<String, VTAudioCapturerThread> entry : lines.entrySet())
+    //synchronized (lines)
+    //{
+      for (Entry<String, VTAudioCapturerThread> entry : lines.entrySet().toArray(new Entry[] { }))
       {
         try
         {
@@ -535,7 +535,7 @@ public class VTAudioCapturer
           
         }
       }
-    }
+    //}
     scheduled.clear();
   }
   

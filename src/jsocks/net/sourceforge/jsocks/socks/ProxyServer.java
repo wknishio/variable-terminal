@@ -202,10 +202,10 @@ public class ProxyServer implements Runnable {
 				Socket s = ss.accept();
 				//s.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 				s.setTcpNoDelay(true);
-				s.setSoLinger(true, 1);
+				//s.setSoLinger(true, 5);
 				//s.setReuseAddress(true);
 				//s.setKeepAlive(true);
-				s.setSoTimeout(30000);
+				s.setSoTimeout(60000);
 				//s.setSoLinger(true, 0);
 				// String connectionId = newConnectionId();
 				// LOG.info(connectionId + " Accepted from:" +
@@ -391,18 +391,18 @@ public class ProxyServer implements Runnable {
 			s.connect(new InetSocketAddress(msg.ip, msg.port));
 			//s = new Socket(msg.ip, msg.port);
 			s.setTcpNoDelay(true);
-			s.setSoLinger(true, 1);
+			//s.setSoLinger(true, 5);
 			//s.setReuseAddress(true);
 			//s.setKeepAlive(true);
-			s.setSoTimeout(30000);
+			s.setSoTimeout(60000);
 			//s.setSoLinger(true, 0);
 		} else {
 			s = new SocksSocket(proxy, msg.ip, msg.port);
 			s.setTcpNoDelay(true);
-			s.setSoLinger(true, 1);
+			//s.setSoLinger(true, 5);
 			//s.setReuseAddress(true);
 			//s.setKeepAlive(true);
-			s.setSoTimeout(30000);
+			s.setSoTimeout(60000);
 			//s.setSoLinger(true, 0);
 		}
 		// LOG.info(connectionId + " Connected to " + s.getInetAddress() + ":" +
@@ -522,10 +522,10 @@ public class ProxyServer implements Runnable {
 			s = ss.accept();
 			//s.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 			s.setTcpNoDelay(true);
-			s.setSoLinger(true, 1);
+			//s.setSoLinger(true, 5);
 			//s.setReuseAddress(true);
 			//s.setKeepAlive(true);
-			s.setSoTimeout(30000);
+			s.setSoTimeout(60000);
 			//s.setSoLinger(true, 0);
 			// if(s.getInetAddress().equals(msg.ip)){
 			if (s != null) {
