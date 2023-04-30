@@ -13,7 +13,7 @@ import net.sourceforge.jsocks.socks.server.UserPasswordAuthenticator;
 import net.sourceforge.jsocks.socks.server.UserValidation;
 
 public class VTTunnelSocksPlusHttpProxyAuthenticatorUsernamePassword extends UserPasswordAuthenticator
-{  
+{
   public VTTunnelSocksPlusHttpProxyAuthenticatorUsernamePassword(UserValidation validator)
   {
     super(validator);
@@ -30,10 +30,11 @@ public class VTTunnelSocksPlusHttpProxyAuthenticatorUsernamePassword extends Use
       if (version != 4)
       {
         in.unread(version);
-        VTNanoHTTPDProxySession session = new VTNanoHTTPDProxySession(s, in, validator.getUsername(), validator.getPassword());
+        //fallback to use http proxy instead
+        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(s, in, validator.getUsername(), validator.getPassword());
         try
         {
-          session.run();
+          httpProxy.run();
         }
         catch (Throwable t)
         {

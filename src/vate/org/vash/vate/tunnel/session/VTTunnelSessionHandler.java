@@ -28,7 +28,7 @@ public class VTTunnelSessionHandler implements Runnable
     Thread.currentThread().setName(getClass().getSimpleName());
     try
     {
-      VTStreamRedirector redirector = new VTStreamRedirector(session.getSocket().getInputStream(), session.getTunnelOutputStream());
+      VTStreamRedirector redirector = new VTStreamRedirector(session.getSocketInputStream(), session.getTunnelOutputStream());
       redirector.run();
     }
     catch (Throwable t)

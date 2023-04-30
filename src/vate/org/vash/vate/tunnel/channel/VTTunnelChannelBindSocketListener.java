@@ -1,32 +1,31 @@
 package org.vash.vate.tunnel.channel;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+
 import org.vash.vate.VT;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.session.VTTunnelSession;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 
-public class VTTunnelChannelSocketListener implements Runnable
+public class VTTunnelChannelBindSocketListener implements Runnable
 {
   private ServerSocket serverSocket;
   private VTTunnelChannel channel;
+  @SuppressWarnings("unused")
+  private ExecutorService threads;
   private static final String SESSION_SEPARATOR = "\f\b";
   private static final char SESSION_MARK = 'C';
   private volatile boolean closed = false;
   
-  public VTTunnelChannelSocketListener(VTTunnelChannel channel)
+  public VTTunnelChannelBindSocketListener(VTTunnelChannel channel, ExecutorService threads)
   {
-//    try
-//    {
-//      this.serverSocket = new ServerSocket();
-//    }
-//    catch (Throwable e)
-//    {
-//      
-//    }
     this.channel = channel;
+    this.threads = threads;
     this.closed = false;
   }
   
@@ -96,7 +95,7 @@ public class VTTunnelChannelSocketListener implements Runnable
   
   public void remove()
   {
-    channel.getConnection().removeChannel(this);
+    channel.getConnection().removeBindListener(this);
   }
   
   public void run()
@@ -106,19 +105,35 @@ public class VTTunnelChannelSocketListener implements Runnable
     {
       while (!closed && !serverSocket.isClosed() && serverSocket.isBound())
       {
-        Socket socket = listen();
-        if (socket != null)
+        VTTunnelSession session = null;
+        VTTunnelSessionHandler handler = null;
+        Socket socket = null;
+        InputStream socketInputStream = null;
+        OutputStream socketOutputStream = null;
+        try
+        {
+          socket = listen();
+          socketInputStream = socket.getInputStream();
+          socketOutputStream = socket.getOutputStream();
+        }
+        catch (Throwable t)
+        {
+          
+        }
+        if (socketInputStream != null && socketOutputStream != null)
         {
           int channelType = channel.getChannelType();
-          VTTunnelSession session = new VTTunnelSession(channel.getConnection(), socket, true);
-          VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, channel);
+          int tunnelType = channel.getTunnelType();
+          //TODO: will start a local socks/http proxy server that connects remotely using new socket factory
+          session = new VTTunnelSession(channel.getConnection(), socket, socketInputStream, socketOutputStream, true);
+          handler = new VTTunnelSessionHandler(session, channel);
           VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
           if (output != null)
           {
             int outputNumber = output.number();
             session.setOutputNumber(outputNumber);
             session.setTunnelOutputStream(output);
-            if (channel.getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
+            if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
             {
               String host = channel.getRedirectHost();
               int port = channel.getRedirectPort();
@@ -126,7 +141,7 @@ public class VTTunnelChannelSocketListener implements Runnable
               channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port).getBytes("UTF-8"));
               channel.getConnection().getControlOutputStream().flush();
             }
-            else if (channel.getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
+            else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
             {
               String socksUsername = channel.getSocksUsername();
               String socksPassword = channel.getSocksPassword();
@@ -148,6 +163,7 @@ public class VTTunnelChannelSocketListener implements Runnable
               session.close();
             }
           }
+          //TODO: will start a local socks/http proxy server that connects remotely using new socket factory
         }
       }
     }

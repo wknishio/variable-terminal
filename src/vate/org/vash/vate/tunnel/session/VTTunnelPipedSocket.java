@@ -11,7 +11,7 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
 
-public class VTTunnelVirtualSocket extends Socket implements Closeable
+public class VTTunnelPipedSocket extends Socket implements Closeable
 {
   private InputStream in;
   private VTLinkableDynamicMultiplexedOutputStream out;
@@ -19,7 +19,7 @@ public class VTTunnelVirtualSocket extends Socket implements Closeable
   //private Closeable closeable;
   private volatile boolean closed = false;
   
-  public VTTunnelVirtualSocket()
+  public VTTunnelPipedSocket()
   {
     
   }

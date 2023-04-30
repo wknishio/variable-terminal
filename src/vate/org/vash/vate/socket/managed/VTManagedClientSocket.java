@@ -1,4 +1,4 @@
-package org.vash.vate.socket;
+package org.vash.vate.socket.managed;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -10,28 +10,28 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.vash.vate.VT;
+import org.vash.vate.client.VTClient;
+import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
-import org.vash.vate.server.VTServer;
-import org.vash.vate.server.connection.VTServerConnection;
+import org.vash.vate.client.session.VTClientSessionListener;
 import org.vash.vate.server.session.VTServerSession;
-import org.vash.vate.server.session.VTServerSessionListener;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 
-public class VTManagedServerSocket
+public class VTManagedClientSocket
 {
-  private VTServer vtserver;
+  private VTClient vtclient;
   private BlockingQueue<VTManagedSocket> queue = new LinkedBlockingQueue<VTManagedSocket>();
   private volatile Thread interruptible;
   private VTManagedSocketListener socketListener;
-  private Map<VTServerSession, VTManagedSocket> sessions = new LinkedHashMap<VTServerSession, VTManagedSocket>();
+  private Map<VTClientSession, VTManagedSocket> sessions = new LinkedHashMap<VTClientSession, VTManagedSocket>();
   
-  private class VTCloseableServerConnection implements VTManagedConnection
+  private class VTCloseableClientConnection implements VTManagedConnection
   {
-    private VTServerSession session;
-    private VTServerConnection connection;
+    private VTClientSession session;
+    private VTClientConnection connection;
     
-    private VTCloseableServerConnection(VTServerSession session)
+    private VTCloseableClientConnection(VTClientSession session)
     {
       this.session = session;
       this.connection = session.getConnection();
@@ -79,23 +79,23 @@ public class VTManagedServerSocket
     
     public VTClientSession getClientSession()
     {
-      return null;
+      return session;
     }
     
     public VTServerSession getServerSession()
     {
-      return session;
+      return null;
     }
   }
   
-  private class VTManagedServerSocketServerSessionListener implements VTServerSessionListener
+  private class VTManagedClientSocketClientSessionListener implements VTClientSessionListener
   {
-    public void sessionStarted(VTServerSession session)
+    public void sessionStarted(VTClientSession session)
     {
-      // System.out.println("server.session.started()");
+      // System.out.println("client.session.started()");
       InputStream input = session.getConnection().getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12);
       OutputStream output = session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12);
-      VTManagedSocket socket = new VTManagedSocket(new VTCloseableServerConnection(session), input, output);
+      VTManagedSocket socket = new VTManagedSocket(new VTCloseableClientConnection(session), input, output);
       session.addSessionResource(this.getClass().getSimpleName(), socket);
       sessions.put(session, socket);
       if (socketListener != null)
@@ -108,47 +108,47 @@ public class VTManagedServerSocket
       }
     }
     
-    public void sessionFinished(VTServerSession session)
+    public void sessionFinished(VTClientSession session)
     {
-      // System.out.println("server.session.finished()");
       VTManagedSocket socket = sessions.remove(session);
       if (socketListener != null && socket != null)
       {
         socketListener.disconnected(socket);
       }
+      // System.out.println("client.session.finished()");
     }
   }
   
-  public VTManagedServerSocket()
+  public VTManagedClientSocket()
   {
-    this.vtserver = new VTServer();
-    vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedServerSocketServerSessionListener());
+    this.vtclient = new VTClient();
+    vtclient.setDaemon(true);
+    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
   }
   
-  public VTServer getServer()
+  public VTClient getClient()
   {
-    return vtserver;
+    return vtclient;
   }
   
-  public void loadServerSettingsFile(String settingsFile) throws Exception
+  public void loadClientSettingsFile(String settingsFile) throws Exception
   {
-    vtserver.loadServerSettingsFile(settingsFile);
+    vtclient.loadClientSettingsFile(settingsFile);
   }
   
-  public void loadServerSettings(Properties properties) throws Exception
+  public void loadClientSettingsProperties(Properties properties) throws Exception
   {
-    vtserver.loadServerSettingsProperties(properties);
+    vtclient.loadClientSettingsProperties(properties);
   }
   
   public void start()
   {
-    vtserver.startThread();
+    vtclient.startThread();
   }
   
   public void stop()
   {
-    vtserver.stop();
+    vtclient.stop();
   }
   
   public VTManagedSocket connect() throws InterruptedException
@@ -187,36 +187,28 @@ public class VTManagedServerSocket
   
 //  public static void main(String[] args)
 //  {
-//    VTManagedServerSocket managed = new VTManagedServerSocket();
+//    VTManagedClientSocket managed = new VTManagedClientSocket();
 //    managed.start();
 //    try
 //    {
 //      VTManagedSocket socket = managed.connect();
-//      System.out.println("server.socket.connected()");
+//      System.out.println("client.socket.connected()");
 //      java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.OutputStreamWriter(socket.getOutputStream()));
 //      java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
-//      int i = 5;
+//      
 //      while (socket.isConnected())
 //      {
 //        long time = System.currentTimeMillis();
-//        writer.write("server.message:" + time + "\r\n");
+//        writer.write("client.message:" + time + "\r\n");
 //        writer.flush();
 //        System.out.println(reader.readLine());
 //        Thread.sleep(1000);
-//        if (i > 0)
-//        {
-//          i--;
-//        }
-//        else
-//        {
-//          socket.close();
-//        }
 //      }
 //    }
 //    catch (Throwable t)
 //    {
 //      t.printStackTrace();
 //    }
-//    System.out.println("server.socket.disconnected()");
+//    System.out.println("client.socket.disconnected()");
 //  }
 }

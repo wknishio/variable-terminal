@@ -4,7 +4,7 @@ import org.vash.vate.VT;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
-import org.vash.vate.tunnel.channel.VTTunnelChannelSocketListener;
+import org.vash.vate.tunnel.channel.VTTunnelChannelBindSocketListener;
 
 public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
 {
@@ -33,15 +33,15 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
     if (parsed.length == 1)
     {
       message.setLength(0);
-      for (VTTunnelChannelSocketListener channel : session.getTunnelsHandler().getConnection().getChannels().toArray(new VTTunnelChannelSocketListener[] { }))
+      for (VTTunnelChannelBindSocketListener listener : session.getTunnelsHandler().getConnection().getBindListeners().toArray(new VTTunnelChannelBindSocketListener[] { }))
       {
-        if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
+        if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
         {
-          message.append("\nVT>Server TCP bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]" + "\nVT>Client TCP redirect address: [" + channel.getChannel().getRedirectHost() + " " + channel.getChannel().getRedirectPort() + "]" + "\nVT>");
+          message.append("\nVT>Server TCP bind address: [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "]" + "\nVT>Client TCP redirect address: [" + listener.getChannel().getRedirectHost() + " " + listener.getChannel().getRedirectPort() + "]" + "\nVT>");
         }
-        if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
+        if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
         {
-          message.append("\nVT>Server SOCKS bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]\nVT>");
+          message.append("\nVT>Server SOCKS bind address: [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "]\nVT>");
         }
       }
       message.append("\nVT>End of connection tunnels list\nVT>");
@@ -55,15 +55,15 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
         message.setLength(0);
         message.append("\nVT>List of server connection tunnels:\nVT>");
         //Set<VTTunnelChannelSocketListener> channels = session.getTunnelsHandler().getConnection().getChannels();
-        for (VTTunnelChannelSocketListener channel : session.getTunnelsHandler().getConnection().getChannels().toArray(new VTTunnelChannelSocketListener[] { }))
+        for (VTTunnelChannelBindSocketListener listener : session.getTunnelsHandler().getConnection().getBindListeners().toArray(new VTTunnelChannelBindSocketListener[] { }))
         {
-          if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
+          if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
           {
-            message.append("\nVT>Server TCP bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]" + "\nVT>Client TCP redirect address: [" + channel.getChannel().getRedirectHost() + " " + channel.getChannel().getRedirectPort() + "]" + "\nVT>");
+            message.append("\nVT>Server TCP bind address: [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "]" + "\nVT>Client TCP redirect address: [" + listener.getChannel().getRedirectHost() + " " + listener.getChannel().getRedirectPort() + "]" + "\nVT>");
           }
-          if (channel.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
+          if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
           {
-            message.append("\nVT>Server SOCKS bind address: [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "]\nVT>");
+            message.append("\nVT>Server SOCKS bind address: [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "]\nVT>");
           }
         }
         message.append("\nVT>End of server connection tunnels list\nVT>");
@@ -90,17 +90,17 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            VTTunnelChannelSocketListener channel = session.getTunnelsHandler().getConnection().getChannelSocketListener("", bindPort);
-            if (channel != null)
+            VTTunnelChannelBindSocketListener listener = session.getTunnelsHandler().getConnection().getBindListener("", bindPort);
+            if (listener != null)
             {
-              channel.close();
-              session.getTunnelsHandler().getConnection().removeChannel(channel);
-              connection.getResultWriter().write("\nVT>Tunnel bound in server address [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "] removed!\nVT>");
+              listener.close();
+              session.getTunnelsHandler().getConnection().removeBindListener(listener);
+              connection.getResultWriter().write("\nVT>Tunnel bound in server address [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "] removed!\nVT>");
               connection.getResultWriter().flush();
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().setSOCKSChannel(channelType, "", bindPort))
+              if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort))
               {
                 connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
@@ -160,17 +160,33 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              VTTunnelChannelSocketListener channel = session.getTunnelsHandler().getConnection().getChannelSocketListener("", bindPort);
-              if (channel != null)
+              VTTunnelChannelBindSocketListener listener = session.getTunnelsHandler().getConnection().getBindListener("", bindPort);
+              if (listener != null)
               {
-                channel.close();
-                session.getTunnelsHandler().getConnection().removeChannel(channel);
-                connection.getResultWriter().write("\nVT>Tunnel bound in server address [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "] removed!\nVT>");
-                connection.getResultWriter().flush();
+                if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS && socksUser != null && socksPassword != null)
+                {
+                  if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort, socksUser, socksPassword))
+                  {
+                    connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
+                    connection.getResultWriter().flush();
+                  }
+                  else
+                  {
+                    connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                    connection.getResultWriter().flush();
+                  }
+                }
+                else
+                {
+                  listener.close();
+                  session.getTunnelsHandler().getConnection().removeBindListener(listener);
+                  connection.getResultWriter().write("\nVT>Tunnel bound in server address [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "] removed!\nVT>");
+                  connection.getResultWriter().flush();
+                }
               }
               else
               {
-                if (session.getTunnelsHandler().getConnection().setSOCKSChannel(channelType, "", bindPort, socksUser, socksPassword))
+                if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort, socksUser, socksPassword))
                 {
                   connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
                   connection.getResultWriter().flush();
@@ -202,7 +218,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().setTCPChannel(channelType, "", bindPort, "", redirectPort))
+              if (session.getTunnelsHandler().getConnection().bindTCPListener(channelType, "", bindPort, "", redirectPort))
               {
                 connection.getResultWriter().write("\nVT>TCP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
@@ -225,17 +241,33 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              VTTunnelChannelSocketListener channel = session.getTunnelsHandler().getConnection().getChannelSocketListener(bindAddress, bindPort);
-              if (channel != null)
+              VTTunnelChannelBindSocketListener listener = session.getTunnelsHandler().getConnection().getBindListener(bindAddress, bindPort);
+              if (listener != null)
               {
-                channel.close();
-                session.getTunnelsHandler().getConnection().removeChannel(channel);
-                connection.getResultWriter().write("\nVT>Tunnel bound in server address [" + channel.getChannel().getBindHost() + " " + channel.getChannel().getBindPort() + "] removed!\nVT>");
-                connection.getResultWriter().flush();
+                if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS && socksUser != null && socksPassword != null)
+                {
+                  if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, bindAddress, bindPort, socksUser, socksPassword))
+                  {
+                    connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
+                    connection.getResultWriter().flush();
+                  }
+                  else
+                  {
+                    connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
+                    connection.getResultWriter().flush();
+                  }
+                }
+                else
+                {
+                  listener.close();
+                  session.getTunnelsHandler().getConnection().removeBindListener(listener);
+                  connection.getResultWriter().write("\nVT>Tunnel bound in server address [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "] removed!\nVT>");
+                  connection.getResultWriter().flush();
+                }
               }
               else
               {
-                if (session.getTunnelsHandler().getConnection().setSOCKSChannel(channelType, bindAddress, bindPort, socksUser, socksPassword))
+                if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, bindAddress, bindPort, socksUser, socksPassword))
                 {
                   connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                   connection.getResultWriter().flush();
@@ -268,7 +300,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().setTCPChannel(channelType, "", bindPort, redirectAddress, redirectPort))
+              if (session.getTunnelsHandler().getConnection().bindTCPListener(channelType, "", bindPort, redirectAddress, redirectPort))
               {
                 connection.getResultWriter().write("\nVT>TCP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
@@ -292,7 +324,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().setTCPChannel(channelType, bindAddress, bindPort, "", redirectPort))
+              if (session.getTunnelsHandler().getConnection().bindTCPListener(channelType, bindAddress, bindPort, "", redirectPort))
               {
                 connection.getResultWriter().write("\nVT>TCP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
@@ -325,7 +357,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().setTCPChannel(channelType, bindAddress, bindPort, redirectAddress, redirectPort))
+              if (session.getTunnelsHandler().getConnection().bindTCPListener(channelType, bindAddress, bindPort, redirectAddress, redirectPort))
               {
                 connection.getResultWriter().write("\nVT>TCP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();

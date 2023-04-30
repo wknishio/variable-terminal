@@ -41,7 +41,7 @@ public class VTTunnelChannel
     this.channelType = channelType;
   }
   
-  // SOCKS tunnel without authentication
+  // SOCKS bind tunnel without authentication
   public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort)
   {
     this.tunnelType = TUNNEL_TYPE_SOCKS;
@@ -60,7 +60,7 @@ public class VTTunnelChannel
     this.sessions = new LinkedList<VTTunnelSessionHandler>();
   }
   
-  // SOCKS tunnel with authentication
+  // SOCKS bind tunnel with authentication
   public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String socksUsername, String socksPassword)
   {
     this.tunnelType = TUNNEL_TYPE_SOCKS;
@@ -81,7 +81,7 @@ public class VTTunnelChannel
     this.sessions = new LinkedList<VTTunnelSessionHandler>();
   }
   
-  // TCP tunnel
+  // TCP bind redirect tunnel
   public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String redirectHost, int redirectPort)
   {
     this.tunnelType = TUNNEL_TYPE_TCP;
@@ -99,6 +99,15 @@ public class VTTunnelChannel
     {
       this.bindAddress = new InetSocketAddress(bindPort);
     }
+    this.sessions = new LinkedList<VTTunnelSessionHandler>();
+  }
+  
+  //TCP remote redirect tunnel
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection)
+  {
+    this.tunnelType = TUNNEL_TYPE_TCP;
+    this.channelType = channelType;
+    this.connection = connection;
     this.sessions = new LinkedList<VTTunnelSessionHandler>();
   }
   

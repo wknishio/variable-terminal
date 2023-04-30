@@ -1,5 +1,6 @@
 package org.vash.vate.tunnel.connection;
 
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -8,10 +9,10 @@ import java.util.concurrent.ExecutorService;
 import org.vash.vate.VT;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
+import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
 import org.vash.vate.tunnel.session.VTTunnelSession;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 import org.vash.vate.tunnel.session.VTTunnelSocksSessionHandler;
-import org.vash.vate.tunnel.session.VTTunnelVirtualSocket;
 
 public class VTTunnelConnectionControlThread implements Runnable
 {
@@ -26,10 +27,6 @@ public class VTTunnelConnectionControlThread implements Runnable
     this.connection = connection;
     this.threads = threads;
   }
-  
-  /*
-   * public void setTunnelType(int tunnelType) { this.tunnelType = tunnelType; }
-   */
   
   public void run()
   {
@@ -55,25 +52,26 @@ public class VTTunnelConnectionControlThread implements Runnable
                 String host = parts[2];
                 int port = Integer.parseInt(parts[3]);
                 VTTunnelSession session = null;
-                Socket socket = connect(host, port);
-                
-                if (socket != null)
+                VTTunnelSessionHandler handler = null;
+                Socket socket = null;
+                InputStream socketInputStream = null;
+                OutputStream socketOutputStream = null;
+                try
                 {
-                  OutputStream socketOutputStream = null;
-                  try
-                  {
-                    socketOutputStream = socket.getOutputStream();
-                  }
-                  catch (Throwable t)
-                  {
-                    
-                  }
+                  socket = connect(host, port);
+                  socketInputStream = socket.getInputStream();
+                  socketOutputStream = socket.getOutputStream();
+                }
+                catch (Throwable t)
+                {
                   
-                  session = new VTTunnelSession(connection, socket, false);
-                  VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, null);
+                }
+                if (socketInputStream != null && socketOutputStream != null)
+                {
+                  session = new VTTunnelSession(connection, socket, socketInputStream, socketOutputStream, false);
+                  handler = new VTTunnelSessionHandler(session, null);
                   VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, handler);
-                  
-                  if (socketOutputStream != null && output != null)
+                  if (output != null)
                   {
                     int outputNumber = output.number();
                     session.setOutputNumber(outputNumber);
@@ -81,7 +79,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                     session.setTunnelOutputStream(output);
                     session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
                     //session.getTunnelInputStream().addPropagated(session);
-                    session.getTunnelInputStream().setDirectOutputStream(socketOutputStream, session.getSocket());
+                    session.getTunnelInputStream().setDirectOutputStream(session.getSocketOutputStream(), session.getSocket());
                     session.getTunnelInputStream().open();
                     session.getTunnelOutputStream().open();
                     // response message sent with ok
@@ -92,6 +90,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                   {
                     if (session != null)
                     {
+                      session.setResult(false);
                       session.close();
                     }
                     // response message sent with error
@@ -101,6 +100,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 }
                 else
                 {
+                  // response message sent with error
                   connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
                 }
@@ -113,8 +113,8 @@ public class VTTunnelConnectionControlThread implements Runnable
                 String socksPassword = parts[3];
                 VTTunnelSession session = null;
                 
-                VTTunnelVirtualSocket virtual = new VTTunnelVirtualSocket();
-                session = new VTTunnelSession(connection, virtual, false);
+                VTTunnelPipedSocket piped = new VTTunnelPipedSocket();
+                session = new VTTunnelSession(connection, piped, piped.getInputStream(), piped.getOutputStream(), false);
                 VTTunnelSocksSessionHandler handler = null;
                 if (parts.length > 4 && socksUsername.equals("*") && socksPassword.equals("*") && parts[4].equals("*"))
                 {
@@ -133,8 +133,8 @@ public class VTTunnelConnectionControlThread implements Runnable
                   session.setInputNumber(inputNumber);
                   session.setTunnelOutputStream(output);
                   session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
-                  virtual.setOutputStream(output);
-                  session.getTunnelInputStream().setDirectOutputStream(virtual.getInputStreamSource(), virtual);
+                  piped.setOutputStream(output);
+                  session.getTunnelInputStream().setDirectOutputStream(piped.getInputStreamSource(), piped);
                   session.getTunnelInputStream().open();
                   session.getTunnelOutputStream().open();
                   // response message sent with ok
@@ -145,6 +145,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 {
                   if (session != null)
                   {
+                    session.setResult(false);
                     session.close();
                   }
                   // response message sent with error
@@ -154,7 +155,7 @@ public class VTTunnelConnectionControlThread implements Runnable
               }
               else
               {
-                closed = true;
+                //closed = true;
               }
             }
             else if (parts.length == 3)
@@ -165,64 +166,52 @@ public class VTTunnelConnectionControlThread implements Runnable
               int inputNumber = Integer.parseInt(parts[2]);
               if (inputNumber > -1)
               {
-                VTTunnelSessionHandler handler = (VTTunnelSessionHandler) (connection.getOutputStream(channelType, outputNumber).getLink());
+                VTTunnelSessionHandler handler = null;
+                Object link = connection.getOutputStream(channelType, outputNumber).getLink();
+                if (link instanceof VTTunnelSessionHandler)
+                {
+                  handler = (VTTunnelSessionHandler) link;
+                }
                 if (handler != null)
                 {
                   VTTunnelSession session = handler.getSession();
                   if (session.isOriginator())
                   {
-                    OutputStream socketOutputStream = null;
-                    try
+                    // response message received ok
+                    session.setInputNumber(inputNumber);
+                    session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
+                    //session.getTunnelInputStream().addPropagated(session);
+                    Socket socket = session.getSocket();
+                    if (socket instanceof VTTunnelPipedSocket)
                     {
-                      socketOutputStream = session.getSocket().getOutputStream();
-                    }
-                    catch (Throwable t)
-                    {
-                      
-                    }
-                    if (socketOutputStream != null)
-                    {
-                      // response message received ok
-                      session.setInputNumber(inputNumber);
-                      session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
-                      //session.getTunnelInputStream().addPropagated(session);
-                      session.getTunnelInputStream().setDirectOutputStream(socketOutputStream, session.getSocket());
-                      session.getTunnelInputStream().open();
-                      session.getTunnelOutputStream().open();
-                      // ack message sent~
-                      if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
-                      {
-                        connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
-                        connection.getControlOutputStream().flush();
-                      }
-                      else
-                      {
-                        connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
-                        connection.getControlOutputStream().flush();
-                      }
-                      //System.out.println("tunnel input:[" + inputNumber + "] output:[" + outputNumber + "]");
-                      threads.execute(handler);
+                      VTTunnelPipedSocket piped = (VTTunnelPipedSocket) socket;
+                      session.getTunnelInputStream().setDirectOutputStream(piped.getInputStreamSource(), piped);
                     }
                     else
                     {
-                      if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
-                      {
-                        connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + -1).getBytes("UTF-8"));
-                        connection.getControlOutputStream().flush();
-                      }
-                      else
-                      {
-                        connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + -1).getBytes("UTF-8"));
-                        connection.getControlOutputStream().flush();
-                      }
-                      session.close();
+                      session.getTunnelInputStream().setDirectOutputStream(session.getSocketOutputStream(), socket);
                     }
+                    session.getTunnelInputStream().open();
+                    session.getTunnelOutputStream().open();
+                    // ack message sent~
+                    if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
+                    {
+                      connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                      connection.getControlOutputStream().flush();
+                    }
+                    else
+                    {
+                      connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                      connection.getControlOutputStream().flush();
+                    }
+                    threads.execute(handler);
+                    session.setResult(true);
                   }
                   else
                   {
                     // ack message received
-                    //System.out.println("tunnel input:[" + inputNumber + "] output:[" + outputNumber + "]");
                     threads.execute(handler);
+                    session.setResult(true);
                   }
                 }
                 else
@@ -233,12 +222,18 @@ public class VTTunnelConnectionControlThread implements Runnable
               else
               {
                 // response message received has error
-                VTTunnelSessionHandler handler = (VTTunnelSessionHandler) (connection.getOutputStream(channelType, outputNumber).getLink());
+                VTTunnelSessionHandler handler = null;
+                Object link = connection.getOutputStream(channelType, outputNumber).getLink();
+                if (link instanceof VTTunnelSessionHandler)
+                {
+                  handler = (VTTunnelSessionHandler) link;
+                }
                 if (handler != null)
                 {
                   VTTunnelSession session = handler.getSession();
                   if (session != null)
                   {
+                    session.setResult(false);
                     session.close();
                   }
                 }

@@ -58,6 +58,8 @@ public class VTMultiplexingConnection
   {
     if (link instanceof Integer)
     {
+      //int number = (Integer) link;
+      //return dataOutputStream.linkOutputStream(type, number);
       return dataOutputStream.linkOutputStream(type, (Integer) link);
     }
     return dataOutputStream.linkOutputStream(type, link);
@@ -89,6 +91,8 @@ public class VTMultiplexingConnection
   {
     if (link instanceof Integer)
     {
+      //int number = (Integer) link;
+      //return dataInputStream.linkInputStream(type, number);
       return dataInputStream.linkInputStream(type, (Integer) link);
     }
     return dataInputStream.linkInputStream(type, link);

@@ -2,6 +2,8 @@ package org.vash.vate.tunnel.session;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
@@ -12,17 +14,23 @@ public class VTTunnelSession implements Closeable
 {
   private VTTunnelConnection connection;
   private VTTunnelCloseableSocket socket;
-  private VTLinkableDynamicMultiplexedInputStream inputStream;
-  private VTLinkableDynamicMultiplexedOutputStream outputStream;
+  private InputStream socketInputStream;
+  private OutputStream socketOutputStream;;
+  private VTLinkableDynamicMultiplexedInputStream tunnelInputStream;
+  private VTLinkableDynamicMultiplexedOutputStream tunnelOutputStream;
   private final boolean originator;
   private int outputNumber;
   private int inputNumber;
+  private Object waiter = new Object();
+  private volatile Boolean result = null;
   private volatile boolean closed;
   
-  public VTTunnelSession(VTTunnelConnection connection, Socket socket, boolean originator) throws IOException
+  public VTTunnelSession(VTTunnelConnection connection, Socket socket, InputStream socketInputStream, OutputStream socketOutputStream, boolean originator)
   {
     this.connection = connection;
     this.socket = new VTTunnelCloseableSocket(socket);
+    this.socketInputStream = socketInputStream;
+    this.socketOutputStream = socketOutputStream;
     this.originator = originator;
   }
   
@@ -87,9 +95,9 @@ public class VTTunnelSession implements Closeable
     }
     try
     {
-      if (outputStream != null)
+      if (tunnelOutputStream != null)
       {
-        outputStream.close();
+        tunnelOutputStream.close();
       }
     }
     catch (Throwable e)
@@ -98,20 +106,20 @@ public class VTTunnelSession implements Closeable
     }
     try
     {
-      if (inputStream != null)
+      if (tunnelInputStream != null)
       {
         //inputStream.removePropagated(this);
-        inputStream.close();
+        tunnelInputStream.close();
       }
     }
     catch (Throwable e)
     {
       // e.printStackTrace();
     }
-    connection.releaseInputStream(inputStream);
-    connection.releaseOutputStream(outputStream);
-    outputStream = null;
-    inputStream = null;
+    connection.releaseInputStream(tunnelInputStream);
+    connection.releaseOutputStream(tunnelOutputStream);
+    tunnelInputStream = null;
+    tunnelOutputStream = null;
     socket = null;
   }
   
@@ -122,22 +130,63 @@ public class VTTunnelSession implements Closeable
   
   public VTLinkableDynamicMultiplexedInputStream getTunnelInputStream()
   {
-    return inputStream;
+    return tunnelInputStream;
   }
   
-  public void setTunnelInputStream(VTLinkableDynamicMultiplexedInputStream inputStream)
+  public void setTunnelInputStream(VTLinkableDynamicMultiplexedInputStream tunnelInputStream)
   {
-    this.inputStream = inputStream;
+    this.tunnelInputStream = tunnelInputStream;
     //this.inputStream.addPropagated(this);
   }
   
   public VTLinkableDynamicMultiplexedOutputStream getTunnelOutputStream()
   {
-    return outputStream;
+    return tunnelOutputStream;
   }
   
   public void setTunnelOutputStream(VTLinkableDynamicMultiplexedOutputStream outputStream)
   {
-    this.outputStream = outputStream;
+    this.tunnelOutputStream = outputStream;
+  }
+  
+  public InputStream getSocketInputStream()
+  {
+    return socketInputStream;
+  }
+  
+  public OutputStream getSocketOutputStream()
+  {
+    return socketOutputStream;
+  }
+  
+  public void setSocketInputStream(InputStream socketInputStream)
+  {
+    this.socketInputStream = socketInputStream;
+  }
+  
+  public void setSocketOutputStream(OutputStream socketOutputStream)
+  {
+    this.socketOutputStream = socketOutputStream;
+  }
+  
+  public boolean waitResult() throws InterruptedException
+  {
+    while (result == null)
+    {
+      synchronized (waiter)
+      {
+        waiter.wait();
+      }
+    }
+    return result;
+  }
+  
+  public void setResult(boolean result)
+  {
+    this.result = result;
+    synchronized (waiter)
+    {
+      waiter.notifyAll();
+    }
   }
 }

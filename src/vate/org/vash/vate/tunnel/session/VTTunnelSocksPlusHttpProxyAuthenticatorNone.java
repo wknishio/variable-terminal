@@ -26,16 +26,16 @@ public class VTTunnelSocksPlusHttpProxyAuthenticatorNone extends ServerAuthentic
       in.unread(version);
     } else {
       in.unread(version);
-      VTNanoHTTPDProxySession session = new VTNanoHTTPDProxySession(s, in, null, null);
+      //fallback to use http proxy instead
+      VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(s, in, null, null);
       try
       {
-        session.run();
+        httpProxy.run();
       }
       catch (Throwable t)
       {
         
       }
-      
       return null;
     }
       

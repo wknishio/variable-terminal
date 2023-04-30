@@ -367,9 +367,9 @@ public class VTNanoHTTPDProxySession implements Runnable
   
   public void serve(String uri, String method, Properties pre, Properties headers, byte[] header, byte[] body, String username, String password, Socket clientSocket, InputStream clientInput) throws IOException, URISyntaxException, InterruptedException
   {
-    if (!isProxyAuthenticatedBasic(headers, username, password))
+    if (!checkProxyAuthenticatedBasic(headers, username, password))
     {
-      requireProxyAuthenticationBasic();
+      requireProxyAuthenticationBasic(uri);
       return;
     }
     if (method.equalsIgnoreCase("CONNECT"))
@@ -382,7 +382,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
   }
   
-  public boolean isProxyAuthenticatedBasic(Properties headers, String username, String password) throws UnsupportedEncodingException
+  public boolean checkProxyAuthenticatedBasic(Properties headers, String username, String password) throws UnsupportedEncodingException
   {
     if (username == null || password == null)
     {
@@ -391,7 +391,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     String proxyAuthorization = null;
     for (Object headerName : headers.keySet())
     {
-      if (headerName.toString().equalsIgnoreCase("Proxy-Authorization"))
+      if (headerName != null && headerName.toString().equalsIgnoreCase("Proxy-Authorization"))
       {
         proxyAuthorization = headers.getProperty(headerName.toString());
       }
@@ -404,10 +404,10 @@ public class VTNanoHTTPDProxySession implements Runnable
     return false;
   }
   
-  public void requireProxyAuthenticationBasic() throws UnsupportedEncodingException, InterruptedException
+  public void requireProxyAuthenticationBasic(String uri) throws UnsupportedEncodingException, InterruptedException
   {
     Response resp = new Response();
-    resp.header.put("Proxy-Authenticate", "Basic realm=\"Variable-Terminal Tunnel Proxy\"");
+    resp.header.put("Proxy-Authenticate", "Basic");
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
     sendError(resp.status, null, resp.header, null);
   }
@@ -438,8 +438,10 @@ public class VTNanoHTTPDProxySession implements Runnable
       
     }
     
+    InetSocketAddress remoteAddress = new InetSocketAddress(host, port);
+    
     Socket remoteSocket = new Socket();
-    remoteSocket.connect(new InetSocketAddress(host, port));
+    remoteSocket.connect(remoteAddress);
     remoteSocket.setTcpNoDelay(true);
     //remoteSocket.setSoLinger(true, 5);
     remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
@@ -525,8 +527,10 @@ public class VTNanoHTTPDProxySession implements Runnable
     data.write("\r\n".getBytes("ISO-8859-1"));
     data.write(body);
     
+    InetSocketAddress remoteAddress = new InetSocketAddress(host, port);
+    
     Socket remoteSocket = new Socket();
-    remoteSocket.connect(new InetSocketAddress(host, port));
+    remoteSocket.connect(remoteAddress);
     remoteSocket.setTcpNoDelay(true);
     //remoteSocket.setSoLinger(true, 5);
     remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);

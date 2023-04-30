@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
+import org.vash.vate.socket.factory.VTTunnelRemoteSocketFactory;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;
@@ -15,7 +16,8 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
-import org.vash.vate.tunnel.channel.VTTunnelChannelSocketListener;
+import org.vash.vate.tunnel.channel.VTTunnelChannelBindSocketListener;
+import org.vash.vate.tunnel.channel.VTTunnelChannelRemoteSocketBuilder;
 
 public class VTTunnelConnection
 {
@@ -29,14 +31,16 @@ public class VTTunnelConnection
   private VTLittleEndianOutputStream controlOutputStream;
   // private VTLittleEndianInputStream relayInputStream;
   // private VTLittleEndianOutputStream relayOutputStream;
-  private Set<VTTunnelChannelSocketListener> channels;
+  private VTTunnelChannel remoteRedirectChannel;
+  private Set<VTTunnelChannelBindSocketListener> bindListeners;
   // private int tunnelType;
   private ExecutorService threads;
   private volatile boolean closed = false;
   
   public VTTunnelConnection(ExecutorService threads)
   {
-    this.channels = new LinkedHashSet<VTTunnelChannelSocketListener>();
+    this.remoteRedirectChannel = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT, this);
+    this.bindListeners = new LinkedHashSet<VTTunnelChannelBindSocketListener>();
     // this.tunnelType = tunnelType;
     this.threads = threads;
   }
@@ -46,9 +50,9 @@ public class VTTunnelConnection
   // return tunnelType;
   // }
   
-  public boolean setSOCKSChannel(int channelType, String bindHost, int bindPort)
+  public boolean bindSOCKSListener(int channelType, String bindHost, int bindPort)
   {
-    VTTunnelChannelSocketListener listener = getChannelSocketListener(bindHost, bindPort);
+    VTTunnelChannelBindSocketListener listener = getBindListener(bindHost, bindPort);
     if (listener != null)
     {
       if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
@@ -64,10 +68,10 @@ public class VTTunnelConnection
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(channelType, this, bindHost, bindPort);
-    listener = new VTTunnelChannelSocketListener(channel);
+    listener = new VTTunnelChannelBindSocketListener(channel, threads);
     if (listener.bind())
     {
-      channels.add(listener);
+      bindListeners.add(listener);
       threads.execute(listener);
       return true;
     }
@@ -77,9 +81,9 @@ public class VTTunnelConnection
     }
   }
   
-  public boolean setSOCKSChannel(int channelType, String bindHost, int bindPort, String socksUsername, String socksPassword)
+  public boolean bindSOCKSListener(int channelType, String bindHost, int bindPort, String socksUsername, String socksPassword)
   {
-    VTTunnelChannelSocketListener listener = getChannelSocketListener(bindHost, bindPort);
+    VTTunnelChannelBindSocketListener listener = getBindListener(bindHost, bindPort);
     if (listener != null)
     {
       if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
@@ -95,10 +99,10 @@ public class VTTunnelConnection
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(channelType, this, bindHost, bindPort, socksUsername, socksPassword);
-    listener = new VTTunnelChannelSocketListener(channel);
+    listener = new VTTunnelChannelBindSocketListener(channel, threads);
     if (listener.bind())
     {
-      channels.add(listener);
+      bindListeners.add(listener);
       threads.execute(listener);
       return true;
     }
@@ -108,9 +112,9 @@ public class VTTunnelConnection
     }
   }
   
-  public boolean setTCPChannel(int channelType, String bindHost, int bindPort, String redirectHost, int redirectPort)
+  public boolean bindTCPListener(int channelType, String bindHost, int bindPort, String redirectHost, int redirectPort)
   {
-    VTTunnelChannelSocketListener listener = getChannelSocketListener(bindHost, bindPort);
+    VTTunnelChannelBindSocketListener listener = getBindListener(bindHost, bindPort);
     if (listener != null)
     {
       if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
@@ -125,10 +129,10 @@ public class VTTunnelConnection
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(channelType, this, bindHost, bindPort, redirectHost, redirectPort);
-    listener = new VTTunnelChannelSocketListener(channel);
+    listener = new VTTunnelChannelBindSocketListener(channel, threads);
     if (listener.bind())
     {
-      channels.add(listener);
+      bindListeners.add(listener);
       threads.execute(listener);
       return true;
     }
@@ -138,16 +142,26 @@ public class VTTunnelConnection
     }
   }
   
-  public Set<VTTunnelChannelSocketListener> getChannels()
+  public VTTunnelRemoteSocketFactory createRemoteSocketFactory()
   {
-    return channels;
+    return new VTTunnelRemoteSocketFactory(createRemoteSocketBuilder());
   }
   
-  public VTTunnelChannelSocketListener getChannelSocketListener(String bindHost, int bindPort)
+  private VTTunnelChannelRemoteSocketBuilder createRemoteSocketBuilder()
+  {
+    return new VTTunnelChannelRemoteSocketBuilder(remoteRedirectChannel); 
+  }
+  
+  public Set<VTTunnelChannelBindSocketListener> getBindListeners()
+  {
+    return bindListeners;
+  }
+  
+  public VTTunnelChannelBindSocketListener getBindListener(String bindHost, int bindPort)
   {
     if (bindHost == null || bindHost.length() == 0)
     {
-      for (VTTunnelChannelSocketListener channel : channels)
+      for (VTTunnelChannelBindSocketListener channel : bindListeners)
       {
         if (channel.getChannel().getBindPort() == bindPort)
         {
@@ -161,7 +175,7 @@ public class VTTunnelConnection
     }
     else
     {
-      for (VTTunnelChannelSocketListener channel : channels)
+      for (VTTunnelChannelBindSocketListener channel : bindListeners)
       {
         if (channel.getChannel().getBindPort() == bindPort)
         {
@@ -179,9 +193,9 @@ public class VTTunnelConnection
     return null;
   }
   
-  public boolean removeChannel(VTTunnelChannelSocketListener listener)
+  public boolean removeBindListener(VTTunnelChannelBindSocketListener listener)
   {
-    return channels.remove(listener);
+    return bindListeners.remove(listener);
   }
   
   /* public OutputStream getDataOutputStream() { return dataOutputStream; } */
@@ -212,7 +226,8 @@ public class VTTunnelConnection
     }
     closed = true;
     //System.out.println("VTTunnelConnection.close()");
-    for (VTTunnelChannelSocketListener listener : channels)
+    remoteRedirectChannel.close();
+    for (VTTunnelChannelBindSocketListener listener : bindListeners)
     {
       try
       {
@@ -223,7 +238,7 @@ public class VTTunnelConnection
         // e.printStackTrace();
       }
     }
-    channels.clear();
+    bindListeners.clear();
     try
     {
       controlInputStream.close();

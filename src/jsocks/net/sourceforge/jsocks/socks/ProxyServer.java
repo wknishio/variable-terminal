@@ -67,7 +67,7 @@ public class ProxyServer implements Runnable {
 	private int BUF_SIZE = DEFAULT_BUF_SIZE;
 	
 	private boolean disabled_udp_relay = false;
-	//private boolean disabled_bind = false;
+	private boolean disabled_bind = false;
 
 	// private String connectionId;
 
@@ -95,10 +95,10 @@ public class ProxyServer implements Runnable {
 		mode = START_MODE;
 	}
 	
-	public ProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_udp_relay) {
+	public ProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay) {
     this.auth = auth;
     this.sock = s;
-    //this.disabled_bind = disabled_bind;
+    this.disabled_bind = disabled_bind;
     this.disabled_udp_relay = disabled_udp_relay;
     // this.connectionId = connectionId;
     mode = START_MODE;
@@ -335,8 +335,11 @@ public class ProxyServer implements Runnable {
         onConnect(msg);
         break;
       case Proxy.SOCKS_CMD_BIND:
-        onBind(msg);
-        break;
+        if (!disabled_bind)
+        {
+          onBind(msg);
+          break;
+        }
       case Proxy.SOCKS_CMD_UDP_ASSOCIATE:
         if (!disabled_udp_relay)
         {

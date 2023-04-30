@@ -54,6 +54,13 @@ public final class VTLinkableDynamicMultiplexingInputStream
     }
   }
   
+//  public synchronized final VTLinkableDynamicMultiplexedInputStream linkInputStream(int type, int number)
+//  {
+//    VTLinkableDynamicMultiplexedInputStream stream = null;
+//    stream = getInputStream(type, number);
+//    return stream;
+//  }
+  
   public synchronized final VTLinkableDynamicMultiplexedInputStream linkInputStream(int type, Object link)
   {
     VTLinkableDynamicMultiplexedInputStream stream = null;
@@ -354,27 +361,27 @@ public final class VTLinkableDynamicMultiplexingInputStream
       return directOutputStream;
     }
     
-    public final void setDirectOutputStream(OutputStream directOutputStream, Closeable directCloseable)
+    public final void setDirectOutputStream(OutputStream outputStream, Closeable closeable)
     {
-      this.directCloseable = directCloseable;
+      this.directCloseable = closeable;
       if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
       {
-        this.directOutputStream = directOutputStream;
+        this.directOutputStream = outputStream;
       }
       else
       {
-        VTPacketDecompressor directPacketDecompressor = new VTPacketDecompressor(directOutputStream);
-        this.directOutputStream = directPacketDecompressor;
+        VTPacketDecompressor packetCompressor = new VTPacketDecompressor(outputStream);
+        this.directOutputStream = packetCompressor;
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
         {
           //compressedDirectInputStream = VTCompressorSelector.createDirectZlibInputStream(pipedDecompressor.getPipedInputStream());
-          compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(directPacketDecompressor.getCompressedPacketInputStream());
+          compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(packetCompressor.getCompressedPacketInputStream());
         }
         else
         {
-          compressedInputStream = VTCompressorSelector.createDirectLz4InputStream(directPacketDecompressor.getCompressedPacketInputStream());
+          compressedInputStream = VTCompressorSelector.createDirectLz4InputStream(packetCompressor.getCompressedPacketInputStream());
         }
-        directPacketDecompressor.setPacketDecompressorInputStream(compressedInputStream);
+        packetCompressor.setPacketDecompressorInputStream(compressedInputStream);
       }
     }
     

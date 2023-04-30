@@ -1,4 +1,4 @@
-package org.vash.vate.socket;
+package org.vash.vate.socket.managed;
 
 import java.io.Closeable;
 import java.io.IOException;

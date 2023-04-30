@@ -36,6 +36,13 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     //this.autoFlushPackets = autoFlushPackets;
   }
   
+//  public synchronized final VTLinkableDynamicMultiplexedOutputStream linkOutputStream(int type, int number)
+//  {
+//    VTLinkableDynamicMultiplexedOutputStream stream = null;
+//    stream = getOutputStream(type, number);
+//    return stream;
+//  }
+  
   public synchronized final VTLinkableDynamicMultiplexedOutputStream linkOutputStream(int type, Object link)
   {
     VTLinkableDynamicMultiplexedOutputStream stream = null;

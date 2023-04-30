@@ -16,11 +16,6 @@ public class VTTunnelCloseableSocket extends Socket implements Closeable
     this.socket = socket;
   }
   
-  //public void setCloseable(Closeable closeable)
-  //{
-    //this.closeable = closeable;
-  //}
-  
   public InputStream getInputStream() throws IOException
   {
     return socket.getInputStream();
@@ -31,45 +26,14 @@ public class VTTunnelCloseableSocket extends Socket implements Closeable
     return socket.getOutputStream();
   }
   
-  public void shutdownOutput() throws IOException
-  {
-//    if (out != null)
-//    {
-//      try
-//      {
-//        out.close();
-//      }
-//      catch (Throwable e)
-//      {
-//        
-//      }
-//    }
-  }
-  
   public void shutdownInput() throws IOException
   {
-//    if (in != null)
-//    {
-//      try
-//      {
-//        in.close();
-//      }
-//      catch (Throwable e)
-//      {
-//        
-//      }
-//    }
-//    if (pipe != null)
-//    {
-//      try
-//      {
-//        pipe.close();
-//      }
-//      catch (Throwable e)
-//      {
-//        
-//      }
-//    }
+    socket.shutdownInput();
+  }
+  
+  public void shutdownOutput() throws IOException
+  {
+    socket.shutdownOutput();
   }
   
   public boolean isBound()
@@ -114,5 +78,15 @@ public class VTTunnelCloseableSocket extends Socket implements Closeable
   {
     socket.setKeepAlive(on);
     //super.setKeepAlive(false);
+  }
+  
+  public boolean isInputShutdown()
+  {
+    return socket.isInputShutdown();
+  }
+  
+  public boolean isOutputShutdown()
+  {
+    return socket.isOutputShutdown();
   }
 }

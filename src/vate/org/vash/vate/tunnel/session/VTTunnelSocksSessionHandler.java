@@ -41,7 +41,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
         
         try
         {
-          ProxyServer socksServer = new ProxyServer(new VTTunnelSocksPlusHttpProxyAuthenticatorUsernamePassword(validation), session.getSocket(), true);
+          ProxyServer socksServer = new ProxyServer(new VTTunnelSocksPlusHttpProxyAuthenticatorUsernamePassword(validation), session.getSocket(), false, true);
           socksServer.setPipeBufferSize(socksBufferSize);
           socksServer.run();
         }
@@ -55,7 +55,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
       {
         try
         {
-          ProxyServer socksServer = new ProxyServer(new VTTunnelSocksPlusHttpProxyAuthenticatorNone(), session.getSocket(), true);
+          ProxyServer socksServer = new ProxyServer(new VTTunnelSocksPlusHttpProxyAuthenticatorNone(), session.getSocket(), false, true);
           socksServer.setPipeBufferSize(socksBufferSize);
           socksServer.run();
         }
