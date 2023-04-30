@@ -14,10 +14,12 @@ Changes since 1.4.2:
 * Renamed client settings file to vate-client.properties
 * Renamed server settings file to vate-server.properties
 * Removed file user-database.properties
+* Changed *VTFILEINSPECT command to *VTFILECHECK
+* Changed *VTFILEMODIFY command to *VTFILESHIFT
 * Remote cursor on screen captures scales with current server dpi
 * Included email in copyright notice
 * Command *VTCLEAR does not show copyright notice anymore
-* Command *VTGRAPHICSLINK now supports custom image codings ZOF and SOF
+* Command *VTGRAPHICSLINK now supports custom image codings ZOF and DOF
 * Command *VTGRAPHICSLINK now supports image codings PNG and JPEG
 * Added ObjectPlanet PngEncoder library, much faster than Java ImageIO
 * Color qualities: worst, low, simple, below, medium, above, extra, high, true
@@ -93,6 +95,7 @@ Changes since 1.4.2:
 * Added *VTCONFIGURE command to reconfigure all server connection settings
 * Added *VTREAD command to run text files commands in client console
 * Added *VTLOG command to record client commands to local client file
+* Added capability of SOCKS tunnels to also act as HTTP tunnels
 * Renamed various commands, check current commands with *VTHELP or *VTHLP
 * Changed license from GPLv3 license to MIT license
 

@@ -95,6 +95,7 @@ Changes since 1.4.2:
 * Added *VTCONFIGURE command to reconfigure all server connection settings
 * Added *VTREAD command to run text files commands in client console
 * Added *VTLOG command to record client commands to local client file
+* Added capability of SOCKS tunnels to also act as HTTP tunnels
 * Renamed various commands, check current commands with *VTHELP or *VTHLP
 * Changed license from GPLv3 license to MIT license
 

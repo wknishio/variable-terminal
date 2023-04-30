@@ -191,6 +191,7 @@ Those are the third party libraries used in this software:
 * beanshell2 by pejobo for alternative shell
 * groovy by codehaus for alternative shell
 * airlift-aircompressor by Martin Traverso for zstd and lzo compression
+* nanohttpd-1.1 by elonen, for HTTP tunneling support
 
 ## Additional utilities
 
