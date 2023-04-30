@@ -1,6 +1,7 @@
 package org.vash.nanohttpd;
 
 import java.io.BufferedReader;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,7 +24,51 @@ import org.apache.commons.codec.binary.Base64;
 import org.vash.vate.VT;
 import org.vash.vate.parser.VTConfigurationProperties;
 
-public class HTTPProxySession implements Runnable
+/**
+ * A simple, tiny, nicely embeddable HTTP 1.0 (partially 1.1) server in Java
+ *
+ * <p> NanoHTTPD version 1.27,
+ * Copyright &copy; 2001,2005-2013 Jarno Elonen (elonen@iki.fi, http://iki.fi/elonen/)
+ * and Copyright &copy; 2010 Konstantinos Togias (info@ktogias.gr, http://ktogias.gr)
+ *
+ * <p><b>Features + limitations: </b><ul>
+ *
+ *    <li> Only one Java file </li>
+ *    <li> Java 1.1 compatible </li>
+ *    <li> Released as open source, Modified BSD licence </li>
+ *    <li> No fixed config files, logging, authorization etc. (Implement yourself if you need them.) </li>
+ *    <li> Supports parameter parsing of GET and POST methods (+ rudimentary PUT support in 1.25) </li>
+ *    <li> Supports both dynamic content and file serving </li>
+ *    <li> Supports file upload (since version 1.2, 2010) </li>
+ *    <li> Supports partial content (streaming)</li>
+ *    <li> Supports ETags</li>
+ *    <li> Never caches anything </li>
+ *    <li> Doesn't limit bandwidth, request time or simultaneous connections </li>
+ *    <li> Default code serves files and shows all HTTP parameters and headers</li>
+ *    <li> File server supports directory listing, index.html and index.htm</li>
+ *    <li> File server supports partial content (streaming)</li>
+ *    <li> File server supports ETags</li>
+ *    <li> File server does the 301 redirection trick for directories without '/'</li>
+ *    <li> File server supports simple skipping for files (continue download) </li>
+ *    <li> File server serves also very long files without memory overhead </li>
+ *    <li> Contains a built-in list of most common mime types </li>
+ *    <li> All header names are converted lowercase so they don't vary between browsers/clients </li>
+ *
+ * </ul>
+ *
+ * <p><b>Ways to use: </b><ul>
+ *
+ *    <li> Run as a standalone app, serves files and shows requests</li>
+ *    <li> Subclass serve() and embed to your own program </li>
+ *    <li> Call serveFile() from serve() with your own base directory </li>
+ *
+ * </ul>
+ *
+ * See the end of the source file for distribution license
+ * (Modified BSD licence)
+ */
+
+public class VTNanoHTTPDProxySession implements Runnable
 {
   public static final String
   HTTP_OK = "200 OK",
@@ -194,7 +239,7 @@ public class HTTPProxySession implements Runnable
     public boolean keepConnection = false;
   }
   
-  public HTTPProxySession( Socket s, InputStream in, String username, String password)
+  public VTNanoHTTPDProxySession( Socket s, InputStream in, String username, String password)
   {
     mySocket = s;
     myIn = in;
@@ -266,7 +311,6 @@ public class HTTPProxySession implements Runnable
       {
         size = 0x7FFFFFFFFFFFFFFFL;
       }
-      
 
       // Write the part of body already read to ByteArrayOutputStream f
       ByteArrayOutputStream h = new ByteArrayOutputStream();
@@ -334,7 +378,7 @@ public class HTTPProxySession implements Runnable
     }
     else
     {
-      serveNonConnectRequest(uri, method, pre, headers, header, body, clientSocket, clientInput);
+      servePipeRequest(uri, method, pre, headers, header, body, clientSocket, clientInput);
     }
   }
   
@@ -354,7 +398,7 @@ public class HTTPProxySession implements Runnable
     }
     if (proxyAuthorization != null)
     {
-      String expected = "Basic " + Base64.encodeBase64URLSafeString((username + ":" + password).getBytes("ISO-8859-1"));
+      String expected = "Basic " + Base64.encodeBase64String((username + ":" + password).getBytes("ISO-8859-1"));
       return proxyAuthorization.equals(expected);
     }
     return false;
@@ -409,7 +453,7 @@ public class HTTPProxySession implements Runnable
     pipeSockets(clientSocket, remoteSocket, clientInput, clientOutput, remoteInput, remoteOutput);
   }
   
-  public void serveNonConnectRequest(String uri, String method, Properties pre, Properties headers, byte[] header, byte[] body, Socket clientSocket, InputStream clientInput) throws IOException, URISyntaxException, InterruptedException
+  public void servePipeRequest(String uri, String method, Properties pre, Properties headers, byte[] header, byte[] body, Socket clientSocket, InputStream clientInput) throws IOException, URISyntaxException, InterruptedException
   {
     ByteArrayOutputStream data = new ByteArrayOutputStream();
     for (Object headerName : headers.keySet().toArray(new Object[] {}))
@@ -814,5 +858,35 @@ public class HTTPProxySession implements Runnable
   private InputStream myIn;
   private String username;
   private String password;
+  
+  /**
+   * The distribution licence
+   */
+  private static final String LICENCE =
+    "Copyright (C) 2001,2005-2013 by Jarno Elonen <elonen@iki.fi>\n"+
+    "and Copyright (C) 2010 by Konstantinos Togias <info@ktogias.gr>\n"+
+    "\n"+
+    "Redistribution and use in source and binary forms, with or without\n"+
+    "modification, are permitted provided that the following conditions\n"+
+    "are met:\n"+
+    "\n"+
+    "Redistributions of source code must retain the above copyright notice,\n"+
+    "this list of conditions and the following disclaimer. Redistributions in\n"+
+    "binary form must reproduce the above copyright notice, this list of\n"+
+    "conditions and the following disclaimer in the documentation and/or other\n"+
+    "materials provided with the distribution. The name of the author may not\n"+
+    "be used to endorse or promote products derived from this software without\n"+
+    "specific prior written permission. \n"+
+    " \n"+
+    "THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR\n"+
+    "IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES\n"+
+    "OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.\n"+
+    "IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,\n"+
+    "INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT\n"+
+    "NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\n"+
+    "DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\n"+
+    "THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n"+
+    "(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\n"+
+    "OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.";
 }
 

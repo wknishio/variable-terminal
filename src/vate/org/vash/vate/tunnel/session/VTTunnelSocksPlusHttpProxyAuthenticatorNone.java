@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.io.PushbackInputStream;
 import java.net.Socket;
 
-import org.vash.nanohttpd.HTTPProxySession;
+import org.vash.nanohttpd.VTNanoHTTPDProxySession;
 
 import net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
@@ -26,7 +26,7 @@ public class VTTunnelSocksPlusHttpProxyAuthenticatorNone extends ServerAuthentic
       in.unread(version);
     } else {
       in.unread(version);
-      HTTPProxySession session = new HTTPProxySession(s, in, null, null);
+      VTNanoHTTPDProxySession session = new VTNanoHTTPDProxySession(s, in, null, null);
       try
       {
         session.run();
