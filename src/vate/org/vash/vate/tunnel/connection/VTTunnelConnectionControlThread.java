@@ -189,7 +189,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                     }
                     else
                     {
-                      session.getTunnelInputStream().setDirectOutputStream(session.getSocketOutputStream(), socket);
+                      session.getTunnelInputStream().setDirectOutputStream(session.getSocketOutputStream(), session.getSocket());
                     }
                     session.getTunnelInputStream().open();
                     session.getTunnelOutputStream().open();
