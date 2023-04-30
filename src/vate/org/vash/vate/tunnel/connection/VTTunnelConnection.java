@@ -112,7 +112,7 @@ public class VTTunnelConnection
     }
   }
   
-  public boolean bindTCPListener(int channelType, String bindHost, int bindPort, String redirectHost, int redirectPort)
+  public boolean bindTCPRedirectListener(int channelType, String bindHost, int bindPort, String redirectHost, int redirectPort)
   {
     VTTunnelChannelBindSocketListener listener = getBindListener(bindHost, bindPort);
     if (listener != null)

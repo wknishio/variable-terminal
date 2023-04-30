@@ -215,7 +215,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().bindTCPListener(channelType, "", bindPort, "", redirectPort))
+              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, "", bindPort, "", redirectPort))
               {
                 VTConsole.print("\nVT>TCP tunnel bound in client address [*" + " " + bindPort + "] set!\nVT>");
               }
@@ -287,7 +287,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().bindTCPListener(channelType, "", bindPort, redirectAddress, redirectPort))
+              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, "", bindPort, redirectAddress, redirectPort))
               {
                 VTConsole.print("\nVT>TCP tunnel bound in client address [*" + " " + bindPort + "] set!\nVT>");
               }
@@ -308,7 +308,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().bindTCPListener(channelType, bindAddress, bindPort, "", redirectPort))
+              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, bindAddress, bindPort, "", redirectPort))
               {
                 VTConsole.print("\nVT>TCP tunnel bound in client address [" + bindAddress + " " + bindPort + "] set!\nVT>");
               }
@@ -337,7 +337,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().bindTCPListener(channelType, bindAddress, bindPort, redirectAddress, redirectPort))
+              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, bindAddress, bindPort, redirectAddress, redirectPort))
               {
                 VTConsole.print("\nVT>TCP tunnel bound in client address [" + bindAddress + " " + bindPort + "] set!\nVT>");
               }

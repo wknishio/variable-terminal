@@ -218,7 +218,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().bindTCPListener(channelType, "", bindPort, "", redirectPort))
+              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, "", bindPort, "", redirectPort))
               {
                 connection.getResultWriter().write("\nVT>TCP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
@@ -300,7 +300,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().bindTCPListener(channelType, "", bindPort, redirectAddress, redirectPort))
+              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, "", bindPort, redirectAddress, redirectPort))
               {
                 connection.getResultWriter().write("\nVT>TCP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
@@ -324,7 +324,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().bindTCPListener(channelType, bindAddress, bindPort, "", redirectPort))
+              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, bindAddress, bindPort, "", redirectPort))
               {
                 connection.getResultWriter().write("\nVT>TCP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
@@ -357,7 +357,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().bindTCPListener(channelType, bindAddress, bindPort, redirectAddress, redirectPort))
+              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, bindAddress, bindPort, redirectAddress, redirectPort))
               {
                 connection.getResultWriter().write("\nVT>TCP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
