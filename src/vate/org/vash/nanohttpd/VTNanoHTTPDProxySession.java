@@ -8,16 +8,19 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.StringTokenizer;
+import java.util.TimeZone;
 import java.util.Map.Entry;
 
 import org.apache.commons.codec.binary.Base64;
@@ -262,7 +265,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       // The full header should fit in here.
       // Apache's default header limit is 8KB.
       // Do NOT assume that a single read will get the entire header at once
-      boolean foundHeaderEnd = false;
+      //boolean foundHeaderEnd = false;
       final int bufsize = 16384;
       byte[] buf = new byte[bufsize];
       int splitbyte = 0;
@@ -276,16 +279,22 @@ public class VTNanoHTTPDProxySession implements Runnable
           splitbyte = findHeaderEnd(buf, rlen);
           if (splitbyte > 0)
           {
-            foundHeaderEnd = true;
+            //foundHeaderEnd = true;
             break;
           }
         }
       }
-      
-      if (!foundHeaderEnd)
+      if (rlen == 0)
       {
-        sendError(HTTP_ENTITY_TOO_LARGE, "ENTITY TOO LARGE: Request Too Large.");
+        //System.out.println("empty request");
+        sendError( HTTP_BADREQUEST, "BAD REQUEST: Empty request." );
+        return;
       }
+      
+      //if (!foundHeaderEnd)
+      //{
+        //sendError(HTTP_ENTITY_TOO_LARGE, "ENTITY TOO LARGE: Request Too Large.");
+      //}
 
       // Create a BufferedReader for parsing the header.
       ByteArrayInputStream hbis = new ByteArrayInputStream(buf, 0, rlen);
@@ -298,13 +307,30 @@ public class VTNanoHTTPDProxySession implements Runnable
       // Decode the header into parms and header java properties
       long size = decodeHeader(hin, pre, parms, headers);
       
-      if (size == -1)
-      {
-        sendError( HTTP_BADREQUEST, "BAD REQUEST: Found Unexpected EOF." );
-      }
+      //if (size == -1)
+      //{
+        //sendError( HTTP_BADREQUEST, "BAD REQUEST: Found Unexpected EOF." );
+      //}
       
       String method = pre.getProperty("method");
       String uri = pre.getProperty("uri");
+      
+      if (method == null)
+      {
+        sendError( HTTP_BADREQUEST, "BAD REQUEST: Method not found in request." );
+        return;
+      }
+      
+      if (uri == null)
+      {
+        sendError( HTTP_BADREQUEST, "BAD REQUEST: URI not found in request." );
+        return;
+      }
+      
+      //System.out.println("foundHeaderEnd=" + foundHeaderEnd);
+      //System.out.println("size=" + size);
+      //System.out.println("method=" + method);
+      //System.out.println("uri=" + uri);
       //String request = pre.getProperty("request");
 
       if (size == 0)
@@ -352,11 +378,28 @@ public class VTNanoHTTPDProxySession implements Runnable
       // Ok, now do the serve()
       serve(uri, method, pre, headers, header, body, username, password, mySocket, in );
     }
-    catch ( Exception e )
+    catch (InterruptedException e)
     {
+      //e.printStackTrace();
+    }
+    catch ( Throwable e )
+    {
+      //e.printStackTrace();
       try
       {
         sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Exception: " + e.getMessage());
+      }
+      catch ( Throwable t ) 
+      {
+        
+      }
+    }
+    finally
+    {
+      try
+      {
+        //mySocket.getOutputStream().close();
+        mySocket.close();
       }
       catch ( Throwable t ) 
       {
@@ -409,7 +452,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     Response resp = new Response();
     resp.header.put("Proxy-Authenticate", "Basic");
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
-    sendError(resp.status, null, resp.header, null);
+    sendError(resp.status, MIME_PLAINTEXT, resp.header, null);
   }
   
   public void serveConnectRequest(String uri, String method, Properties pre, Properties headers, byte[] header, byte[] body, Socket clientSocket, InputStream clientInput) throws URISyntaxException, IOException, InterruptedException
@@ -438,10 +481,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       
     }
     
-    InetSocketAddress remoteAddress = new InetSocketAddress(host, port);
-    
-    Socket remoteSocket = new Socket();
-    remoteSocket.connect(remoteAddress);
+    Socket remoteSocket = new Socket(host, port);
     remoteSocket.setTcpNoDelay(true);
     //remoteSocket.setSoLinger(true, 5);
     remoteSocket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
@@ -470,6 +510,18 @@ public class VTNanoHTTPDProxySession implements Runnable
     int port = 80;
     String path = "/";
     
+    //System.out.println("method=[" + method + "]");
+    //System.out.println("uri=[" + uri + "]");
+    //System.out.println("body=[" + new String(body) + "]");
+    
+//    Pattern pattern = Pattern.compile("[a-zA-Z0-9+.-]+://");
+//    Matcher matcher = pattern.matcher(uri);
+//    
+//    if (!matcher.find())
+//    {
+//      uri = "http://" + uri;
+//    }
+    
     try
     {
       URI url = new URI(uri);
@@ -477,41 +529,26 @@ public class VTNanoHTTPDProxySession implements Runnable
       port = url.getPort();
       if (port == -1)
       {
-        port = 80;
+        if (url.getScheme().toLowerCase().contains("https"))
+        {
+          port = 443;
+        }
+        else if (url.getScheme().toLowerCase().contains("http"))
+        {
+          port = 80;
+        }
       }
       path = url.getPath();
       String line = (method + " " + path + " HTTP/1.1\r\n");
       data.write(line.getBytes("ISO-8859-1"));
+      //System.out.println("host=[" + host + "]");
+      //System.out.println("port=[" + port + "]");
+      //System.out.println("path=[" + path + "]");
+      //System.out.println("line=[" + line + "]");
     }
     catch (URISyntaxException e)
     {
-      int idxPort = uri.indexOf(':');
-      int idxPath = uri.indexOf('/');
-      if (idxPath >= 0)
-      {
-        String hostPort = uri.substring(0, idxPath);
-        path = uri.substring(idxPath + 1);
-        idxPort = hostPort.indexOf(':');
-        if (idxPort >= 0)
-        {
-          host = hostPort.substring(0, idxPort);
-          port = Integer.valueOf(uri.substring(idxPort + 1));
-        }
-        String line = (method + " " + path + " HTTP/1.1\r\n");
-        data.write(line.getBytes("ISO-8859-1"));
-      }
-      else if (idxPort >= 0)
-      {
-        host = uri.substring(0, idxPort);
-        port = Integer.valueOf(uri.substring(idxPort + 1));
-        String line = (method + " " + path + " HTTP/1.1\r\n");
-        data.write(line.getBytes("ISO-8859-1"));
-      }
-      else
-      {
-        String line = (pre.get("request").toString() + "\r\n");
-        data.write(line.getBytes("ISO-8859-1"));
-      }
+      //e.printStackTrace();
     }
     
     for (Entry<Object, Object> entry : headers.entrySet())
@@ -527,10 +564,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     data.write("\r\n".getBytes("ISO-8859-1"));
     data.write(body);
     
-    InetSocketAddress remoteAddress = new InetSocketAddress(host, port);
-    
-    Socket remoteSocket = new Socket();
-    remoteSocket.connect(remoteAddress);
+    Socket remoteSocket = new Socket(host, port);
     remoteSocket.setTcpNoDelay(true);
     //remoteSocket.setSoLinger(true, 5);
     remoteSocket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
@@ -540,54 +574,76 @@ public class VTNanoHTTPDProxySession implements Runnable
     OutputStream clientOutput = clientSocket.getOutputStream();
     
     byte[] request = data.toByteArray();
-    
+    //System.out.println("connected=" + uri);
     remoteOutput.write(request);
     remoteOutput.flush();
-    
+    //System.out.println("pipe=" + uri);
     pipeSockets(clientSocket, remoteSocket, clientInput, clientOutput, remoteInput, remoteOutput);
+    //System.out.println("finished=" + uri);
   }
   
   public void pipeSockets(Socket clientSocket, Socket remoteSocket, InputStream clientInput, OutputStream clientOutput, InputStream remoteInput, OutputStream remoteOutput) throws InterruptedException
   {
-    SocketPipe firstPipe = new SocketPipe(clientSocket, remoteSocket, clientInput, remoteOutput);
-    SocketPipe secondPipe = new SocketPipe(remoteSocket, clientSocket, remoteInput, clientOutput);
+    SocketPipe firstPipe = new SocketPipe(clientSocket, remoteSocket, remoteInput, clientOutput);
+    SocketPipe secondPipe = new SocketPipe(remoteSocket, clientSocket, clientInput, remoteOutput);
     
-    Thread pipeThread = new Thread(firstPipe);
-    pipeThread.setName(firstPipe.getClass().getSimpleName());
-    pipeThread.setDaemon(true);
-    pipeThread.start();
+    Thread firstThread = new Thread(firstPipe);
+    firstThread.setName(firstPipe.getClass().getSimpleName());
+    firstThread.setDaemon(true);
     
-    secondPipe.run();
-    pipeThread.join();
+    Thread secondThread = new Thread(secondPipe);
+    secondThread.setName(secondPipe.getClass().getSimpleName());
+    secondThread.setDaemon(true);
+    
+    firstPipe.setAnother(secondThread);
+    secondPipe.setAnother(firstThread);
+    
+    firstThread.start();
+    secondThread.start();
+    
+    firstThread.join();
+    secondThread.join();
   }
   
   private class SocketPipe implements Runnable
   {
-    private Socket first;
-    private Socket second;
+    private Socket close1;
+    private Socket close2;
+    private Thread another;
+    //private Socket second;
     private InputStream source;
     private OutputStream destination;
     private final byte[] buffer = new byte[16384];
     private int readed;
+    //private boolean inClosed;
+    //private boolean outClosed;
     
-    private SocketPipe(Socket first, Socket second, InputStream source, OutputStream destination)
+    private SocketPipe(Socket close1, Socket close2, InputStream source, OutputStream destination)
     {
-      this.first = first;
-      this.second = second;
+      this.close1 = close1;
+      this.close2 = close2;
       this.source = source;
       this.destination = destination;
     }
-
+    
+    public void setAnother(Thread another)
+    {
+      this.another = another;
+    }
+    
     public void run()
     {
       try
       {
         readed = 1;
-        while (readed > 0 && first.isConnected() && !first.isClosed() && second.isConnected() && !second.isClosed())
+        while (readed > 0)
         {
           readed = source.read(buffer, 0, buffer.length);
-          destination.write(buffer, 0, readed);
-          destination.flush();
+          if (readed > 0)
+          {
+            destination.write(buffer, 0, readed);
+            destination.flush();
+          }
         }
       }
       catch (Throwable t)
@@ -598,15 +654,25 @@ public class VTNanoHTTPDProxySession implements Runnable
       {
         try
         {
-          first.close();
+          close1.close();
         }
         catch (Throwable t)
         {
           
         }
+        
         try
         {
-          second.close();
+          close2.close();
+        }
+        catch (Throwable t)
+        {
+          
+        }
+        
+        try
+        {
+          another.interrupt();
         }
         catch (Throwable t)
         {
@@ -628,7 +694,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     try {
       // Read the request line
       String inLine = in.readLine();
-      if (inLine == null) return -1;
+      if (inLine == null) return 0;
       pre.put("request", inLine);
       StringTokenizer st = new StringTokenizer( inLine );
       if ( !st.hasMoreTokens())
@@ -779,25 +845,25 @@ public class VTNanoHTTPDProxySession implements Runnable
 
   private void sendError( String status, String msg ) throws InterruptedException, UnsupportedEncodingException
   {
-    sendResponse( status, MIME_PLAINTEXT, null, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")), false);
-    throw new InterruptedException();
+    sendResponse( status, MIME_PLAINTEXT, null, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")));
+    throw new InterruptedException(status);
   }
   
   private void sendError( String status, String mime, Properties header, InputStream data ) throws InterruptedException, UnsupportedEncodingException
   {
-    sendResponse( status, mime, header, data, false);
-    throw new InterruptedException();
+    sendResponse( status, mime, header, data);
+    throw new InterruptedException(status);
   }
   
   private void sendResponse( String status, String msg ) throws UnsupportedEncodingException
   {
-    sendResponse( status, null, null, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")), true);
+    sendResponse( status, MIME_PLAINTEXT, new Properties(), new ByteArrayInputStream( msg.getBytes("ISO-8859-1")));
   }
 
   /**
    * Sends given response to the socket.
    */
-  private void sendResponse( String status, String mime, Properties header, InputStream data, boolean keepConnection )
+  private void sendResponse( String status, String mime, Properties header, InputStream data )
   {
     try
     {
@@ -805,14 +871,14 @@ public class VTNanoHTTPDProxySession implements Runnable
         throw new Error( "sendResponse(): Status can't be null." );
 
       OutputStream out = mySocket.getOutputStream();
-      PrintWriter pw = new PrintWriter( out );
+      PrintWriter pw = new PrintWriter( new OutputStreamWriter(out, "ISO-8859-1") );
       pw.print("HTTP/1.1 " + status + " \r\n");
 
       if ( mime != null && mime.length() > 0)
         pw.print("Content-Type: " + mime + "\r\n");
 
-      //if ( header == null || header.getProperty( "Date" ) == null )
-        //pw.print( "Date: " + gmtFrmt.format( new Date()) + "\r\n");
+      if ( header == null || header.getProperty( "Date" ) == null )
+        pw.print( "Date: " + gmtFrmt.format( new Date()) + "\r\n");
 
       if ( header != null )
       {
@@ -842,11 +908,6 @@ public class VTNanoHTTPDProxySession implements Runnable
       }
       out.flush();
       
-      if (!keepConnection)
-      {
-        //out.close();
-        mySocket.close();
-      }
       if ( data != null )
       {
         data.close();
@@ -864,6 +925,12 @@ public class VTNanoHTTPDProxySession implements Runnable
   private String username;
   private String password;
   
+  private static java.text.SimpleDateFormat gmtFrmt;
+  static
+  {
+    gmtFrmt = new java.text.SimpleDateFormat( "E, d MMM yyyy HH:mm:ss 'GMT'", Locale.US);
+    gmtFrmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+  }
   /**
    * The distribution licence
    */

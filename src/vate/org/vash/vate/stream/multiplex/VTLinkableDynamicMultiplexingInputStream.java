@@ -245,7 +245,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       {
         try
         {
-          getInputStream(type, channel).close();
+          //getInputStream(type, channel).close();
           //stream.close();
         }
         catch (Throwable t)

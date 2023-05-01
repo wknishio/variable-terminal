@@ -25,16 +25,20 @@ public class VTTunnelSocksPlusHttpProxyAuthenticatorNone extends ServerAuthentic
       // Else it is the request message allready, version 4
       in.unread(version);
     } else {
-      in.unread(version);
-      //fallback to use http proxy instead
-      VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(s, in, null, null);
-      try
+      //System.out.println("version=" + version);
+      if (version != -1)
       {
-        httpProxy.run();
-      }
-      catch (Throwable t)
-      {
-        
+        in.unread(version);
+        //fallback to use http proxy instead
+        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(s, in, null, null);
+        try
+        {
+          httpProxy.run();
+        }
+        catch (Throwable t)
+        {
+          
+        }
       }
       return null;
     }

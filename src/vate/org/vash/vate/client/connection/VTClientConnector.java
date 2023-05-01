@@ -456,22 +456,22 @@ public class VTClientConnector implements Runnable
         {
           if (address != null && address.length() > 0)
           {
-            connectionServerSocket.bind(new InetSocketAddress(address, port), 0);
+            connectionServerSocket.bind(new InetSocketAddress(address, port), 128);
           }
           else
           {
-            connectionServerSocket.bind(new InetSocketAddress(port), 0);
+            connectionServerSocket.bind(new InetSocketAddress(port), 128);
           }
         }
         else
         {
           if (address != null && address.length() > 0)
           {
-            connectionServerSocket.bind(new InetSocketAddress(address, 6060), 0);
+            connectionServerSocket.bind(new InetSocketAddress(address, 6060), 128);
           }
           else
           {
-            connectionServerSocket.bind(new InetSocketAddress(6060), 0);
+            connectionServerSocket.bind(new InetSocketAddress(6060), 128);
           }
         }
       }
@@ -482,22 +482,22 @@ public class VTClientConnector implements Runnable
         {
           if (address != null && address.length() > 0)
           {
-            connectionServerSocket.bind(new InetSocketAddress(address, port), 0);
+            connectionServerSocket.bind(new InetSocketAddress(address, port), 128);
           }
           else
           {
-            connectionServerSocket.bind(new InetSocketAddress(port), 0);
+            connectionServerSocket.bind(new InetSocketAddress(port), 128);
           }
         }
         else
         {
           if (address != null && address.length() > 0)
           {
-            connectionServerSocket.bind(new InetSocketAddress(address, 6060), 0);
+            connectionServerSocket.bind(new InetSocketAddress(address, 6060), 128);
           }
           else
           {
-            connectionServerSocket.bind(new InetSocketAddress(6060), 0);
+            connectionServerSocket.bind(new InetSocketAddress(6060), 128);
           }
         }
       }

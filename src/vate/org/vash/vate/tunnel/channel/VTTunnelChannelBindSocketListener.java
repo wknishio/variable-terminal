@@ -83,7 +83,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
         // serverSocket.setReuseAddress(true);
       }
       // serverSocket.setReuseAddress(true);
-      serverSocket.bind(channel.getBindAddress(), 0);
+      serverSocket.bind(channel.getBindAddress(), 128);
       return true;
     }
     catch (Throwable e)
