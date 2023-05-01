@@ -445,6 +445,7 @@ public class ProxyServer implements Runnable {
 
 		pipe_thread1 = Thread.currentThread();
 		pipe_thread2 = new Thread(this);
+		pipe_thread2.setDaemon(true);
 		pipe_thread2.start();
 
 		// Make timeout infinit.
@@ -606,6 +607,7 @@ public class ProxyServer implements Runnable {
 			remote_out = s.getOutputStream();
 			pipe_thread1 = Thread.currentThread();
 			pipe_thread2 = new Thread(this);
+			pipe_thread2.setDaemon(true);
 			pipe_thread2.start();
 			pipe(in, remote_out);
 		} catch (IOException ioe) {

@@ -133,7 +133,9 @@ class UDPRelayServer implements Runnable {
 		// remote_sock.getLocalPort());
 
 		pipe_thread1 = new Thread(this, "pipe1");
+		pipe_thread1.setDaemon(true);
 		pipe_thread2 = new Thread(this, "pipe2");
+		pipe_thread2.setDaemon(true);
 
 		lastReadTime = System.currentTimeMillis();
 

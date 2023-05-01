@@ -134,9 +134,9 @@ public class VTServer implements Runnable
     //this.blake3Digest.setSeed(seed);
     this.threads = Executors.newCachedThreadPool(new ThreadFactory()
     {
-      public Thread newThread(Runnable r)
+      public Thread newThread(Runnable runnable)
       {
-        Thread created = new Thread(null, r, r.getClass().getSimpleName());
+        Thread created = new Thread(null, runnable, runnable.getClass().getSimpleName());
         created.setDaemon(true);
         return created;
       }

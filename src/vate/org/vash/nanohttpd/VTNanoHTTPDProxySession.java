@@ -552,12 +552,13 @@ public class VTNanoHTTPDProxySession implements Runnable
     SocketPipe firstPipe = new SocketPipe(clientSocket, remoteSocket, clientInput, remoteOutput);
     SocketPipe secondPipe = new SocketPipe(remoteSocket, clientSocket, remoteInput, clientOutput);
     
-    Thread secondThread = new Thread(secondPipe);
-    secondThread.setDaemon(true);
-    secondThread.start();
+    Thread pipeThread = new Thread(firstPipe);
+    pipeThread.setName(firstPipe.getClass().getSimpleName());
+    pipeThread.setDaemon(true);
+    pipeThread.start();
     
-    firstPipe.run();
-    secondThread.join();
+    secondPipe.run();
+    pipeThread.join();
   }
   
   private class SocketPipe implements Runnable
