@@ -7,7 +7,7 @@ import org.vash.vate.VT;
 
 public class VTRuntimeProcessInputRedirector implements Runnable
 {
-  private static final int inputBufferSize = VT.VT_SMALL_DATA_BUFFER_SIZE;
+  private static final int inputBufferSize = VT.VT_BUFFER_SMALL_SIZE_BYTES;
   private volatile boolean running;
   private int readBytes;
   private final byte[] inputBuffer = new byte[inputBufferSize];

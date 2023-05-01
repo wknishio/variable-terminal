@@ -54,8 +54,8 @@ public class VTGraphicsModeClientWriter implements Runnable
   private volatile boolean controlInterrupted;
   private volatile boolean refreshInterrupted;
   private volatile boolean synchronousRefresh;
-  private volatile boolean dynamicCoding;
-  private volatile boolean separatedCoding;
+  //private volatile boolean dynamicCoding;
+  //private volatile boolean separatedCoding;
   private volatile boolean drawPointer;
   private volatile boolean suppressLocalKeyCombinations;
   private volatile boolean ignoreLocalKeyCombinations;
@@ -303,8 +303,8 @@ public class VTGraphicsModeClientWriter implements Runnable
     this.terminalRefreshPolicy = TERMINAL_STATE_VISIBLE;
     this.terminalControlPolicy = TERMINAL_STATE_FOCUSED;
     this.synchronousRefresh = false;
-    this.dynamicCoding = false;
-    this.separatedCoding = true;
+    //this.dynamicCoding = false;
+    //this.separatedCoding = true;
     // this.remoteInterfaceLoaded = false;
     // this.interruptedRefresh = false;
     this.drawPointer = true;
@@ -524,8 +524,8 @@ public class VTGraphicsModeClientWriter implements Runnable
     open = false;
     colorQuality = VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216;
     synchronousRefresh = false;
-    dynamicCoding = false;
-    separatedCoding = true;
+    //dynamicCoding = false;
+    //separatedCoding = true;
     // remoteInterfaceLoaded = false;
     // interruptedRefresh = false;
     drawPointer = true;
@@ -668,15 +668,15 @@ public class VTGraphicsModeClientWriter implements Runnable
     this.remoteInterface.setSynchronousRefresh(synchronousRefresh);
   }
   
-  public void setDynamicCoding(boolean dynamicCoding)
-  {
-    this.dynamicCoding = dynamicCoding;
-  }
+//  public void setDynamicCoding(boolean dynamicCoding)
+//  {
+//    this.dynamicCoding = dynamicCoding;
+//  }
   
-  public void setSeparatedCoding(boolean separatedCoding)
-  {
-    this.separatedCoding = separatedCoding;
-  }
+//  public void setSeparatedCoding(boolean separatedCoding)
+//  {
+//    this.separatedCoding = separatedCoding;
+//  }
   
   public boolean isDrawPointer()
   {
@@ -1145,59 +1145,57 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
   }
   
-  public void synchronizeDynamicCoding()
-  {
-    try
-    {
-      if (dynamicCoding)
-      {
-        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_CODING_DYNAMIC);
-        connection.getGraphicsControlDataOutputStream().flush();
-      }
-      else
-      {
-        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_CODING_DIRECT);
-        connection.getGraphicsControlDataOutputStream().flush();
-      }
-    }
-    catch (IOException e)
-    {
-      // e.printStackTrace();
-      stopped = true;
-      return;
-    }
-    catch (Throwable e)
-    {
-      return;
-    }
-  }
+//  public void synchronizeDynamicCoding()
+//  {
+//    try
+//    {
+//      if (dynamicCoding)
+//      {
+//        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_CODING_DYNAMIC);
+//        connection.getGraphicsControlDataOutputStream().flush();
+//      }
+//      else
+//      {
+//        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_CODING_DIRECT);
+//        connection.getGraphicsControlDataOutputStream().flush();
+//      }
+//    }
+//    catch (IOException e)
+//    {
+//      stopped = true;
+//      return;
+//    }
+//    catch (Throwable e)
+//    {
+//      return;
+//    }
+//  }
   
-  public void synchronizeSeparatedCoding()
-  {
-    try
-    {
-      if (separatedCoding)
-      {
-        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENCE_SEPARATED_CODING);
-        connection.getGraphicsControlDataOutputStream().flush();
-      }
-      else
-      {
-        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENCE_MIXED_CODING);
-        connection.getGraphicsControlDataOutputStream().flush();
-      }
-    }
-    catch (IOException e)
-    {
-      // e.printStackTrace();
-      stopped = true;
-      return;
-    }
-    catch (Throwable e)
-    {
-      return;
-    }
-  }
+//  public void synchronizeSeparatedCoding()
+//  {
+//    try
+//    {
+//      if (separatedCoding)
+//      {
+//        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENCE_SEPARATED_CODING);
+//        connection.getGraphicsControlDataOutputStream().flush();
+//      }
+//      else
+//      {
+//        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENCE_MIXED_CODING);
+//        connection.getGraphicsControlDataOutputStream().flush();
+//      }
+//    }
+//    catch (IOException e)
+//    {
+//      stopped = true;
+//      return;
+//    }
+//    catch (Throwable e)
+//    {
+//      return;
+//    }
+//  }
   
   public void requestNextDevice()
   {
@@ -1487,37 +1485,37 @@ public class VTGraphicsModeClientWriter implements Runnable
     // synchronizeScreenCaptureMode();
   }
   
-  public void toggleDynamicCoding()
-  {
-    if (dynamicCoding)
-    {
-      dynamicCoding = false;
-      menuBar.setDynamicCoding(false);
-      synchronizeDynamicCoding();
-    }
-    else
-    {
-      dynamicCoding = true;
-      menuBar.setDynamicCoding(true);
-      synchronizeDynamicCoding();
-    }
-  }
-  
-  public void toggleSeparatedCoding()
-  {
-    if (separatedCoding)
-    {
-      separatedCoding = false;
-      menuBar.setInterleavedCoding(false);
-      synchronizeSeparatedCoding();
-    }
-    else
-    {
-      separatedCoding = true;
-      menuBar.setInterleavedCoding(true);
-      synchronizeSeparatedCoding();
-    }
-  }
+//  public void toggleDynamicCoding()
+//  {
+//    if (dynamicCoding)
+//    {
+//      dynamicCoding = false;
+//      menuBar.setDynamicCoding(false);
+//      synchronizeDynamicCoding();
+//    }
+//    else
+//    {
+//      dynamicCoding = true;
+//      menuBar.setDynamicCoding(true);
+//      synchronizeDynamicCoding();
+//    }
+//  }
+//  
+//  public void toggleSeparatedCoding()
+//  {
+//    if (separatedCoding)
+//    {
+//      separatedCoding = false;
+//      menuBar.setInterleavedCoding(false);
+//      synchronizeSeparatedCoding();
+//    }
+//    else
+//    {
+//      separatedCoding = true;
+//      menuBar.setInterleavedCoding(true);
+//      synchronizeSeparatedCoding();
+//    }
+//  }
   
   public void toggleFullScreenMode()
   {
@@ -2108,7 +2106,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
+      e.printStackTrace();
       synchronized (reader)
       {
         reader.setFailed(true);

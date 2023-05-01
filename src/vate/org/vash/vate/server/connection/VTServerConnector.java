@@ -449,7 +449,7 @@ public class VTServerConnector implements Runnable
       //connection.getConnectionSocket().setSoLinger(true, 5);
       // connection.getConnectionSocket().setReuseAddress(true);
       // connection.getConnectionSocket().setKeepAlive(true);
-      connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+      connection.getConnectionSocket().setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
       connecting = false;
       if (encryptionType == null)
       {
@@ -536,7 +536,7 @@ public class VTServerConnector implements Runnable
       //connection.getConnectionSocket().setSoLinger(true, 5);
       // connection.getConnectionSocket().setReuseAddress(true);
       // connection.getConnectionSocket().setKeepAlive(true);
-      connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+      connection.getConnectionSocket().setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
       connecting = false;
       if (encryptionType == null)
       {

@@ -93,7 +93,7 @@ public class VTClientSession
     this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(threads), threads);
     // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
     // VTTunnelConnection(threads), threads);
-    this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, false);
+    this.pingService = new VTNanoPingService(VT.VT_INTERVAL_PING_SERVICE_MILLISECONDS, false);
     this.pingService.addListener(new VTNanoPingListener()
     {
       public void pingObtained(long localNanoDelay, long remoteNanoDelay)

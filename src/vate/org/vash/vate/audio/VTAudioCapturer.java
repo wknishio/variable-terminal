@@ -132,7 +132,7 @@ public class VTAudioCapturer
     private final byte[] inputBuffer;
     // private short[] inputBufferShort;
     private final byte[] outputBuffer;
-    private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VT.VT_STANDARD_DATA_BUFFER_SIZE);
+    private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VT.VT_BUFFER_STANDARD_SIZE_BYTES);
     private final Queue<VTLittleEndianOutputStream> streams;
     private final String id;
     private TargetDataLine line;
@@ -507,12 +507,12 @@ public class VTAudioCapturer
     }
     if (lines.get(id) == null)
     {
-      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(out, VT.VT_SMALL_DATA_BUFFER_SIZE, true));
+      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(out, VT.VT_BUFFER_SMALL_SIZE_BYTES, true));
       lines.put(id, new VTAudioCapturerThread(stream, line, id, codec, frameMilliseconds));
     }
     else
     {
-      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(out, VT.VT_SMALL_DATA_BUFFER_SIZE, true));
+      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(out, VT.VT_BUFFER_SMALL_SIZE_BYTES, true));
       lines.get(id).addOutput(stream);
     }
     return true;

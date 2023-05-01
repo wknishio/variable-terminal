@@ -23,7 +23,7 @@ import net.jpountz.xxhash.XXHashFactory;
 
 public class VTFileTransferClientTransaction implements Runnable
 {
-  private static final int fileTransferBufferSize = VT.VT_FILE_DATA_BUFFER_SIZE;
+  private static final int fileTransferBufferSize = VT.VT_BUFFER_FILE_SIZE_BYTES;
   private volatile boolean interrupted;
   private volatile boolean stopped;
   private volatile boolean finished;
@@ -91,9 +91,9 @@ public class VTFileTransferClientTransaction implements Runnable
     
     byte[] localNonce = session.getClient().getConnection().getLocalNonce();
     byte[] remoteNonce = session.getClient().getConnection().getRemoteNonce();
-    byte[] blake3Seed = new byte[VT.VT_SECURITY_SEED_SIZE];
-    System.arraycopy(localNonce, 0, blake3Seed, 0, VT.VT_SECURITY_DIGEST_SIZE);
-    System.arraycopy(remoteNonce, 0, blake3Seed, VT.VT_SECURITY_DIGEST_SIZE, VT.VT_SECURITY_DIGEST_SIZE);
+    byte[] blake3Seed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
+    System.arraycopy(localNonce, 0, blake3Seed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    System.arraycopy(remoteNonce, 0, blake3Seed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
     
     long xxhash64Seed = new VTBlake3DigestRandom(blake3Seed).nextLong();
     

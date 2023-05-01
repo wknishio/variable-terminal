@@ -104,7 +104,7 @@ public class VTURLInvoker
   @SuppressWarnings("all")
   public VTURLResult invokeURL(String urlString, Proxy proxy, Map<String, String> requestHeaders, String requestMethod, InputStream outputInputStream, OutputStream resultOutputStream)
   {
-    final byte[] readBuffer = new byte[VT.VT_STANDARD_DATA_BUFFER_SIZE];
+    final byte[] readBuffer = new byte[VT.VT_BUFFER_STANDARD_SIZE_BYTES];
     // VTByteArrayOutputStream dataBuffer = new VTByteArrayOutputStream();
     VTURLResult urlResult = new VTURLResult(-1, null, null, null);
     // dataBuffer.reset();

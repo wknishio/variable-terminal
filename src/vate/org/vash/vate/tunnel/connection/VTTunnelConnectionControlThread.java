@@ -90,7 +90,6 @@ public class VTTunnelConnectionControlThread implements Runnable
                   {
                     if (session != null)
                     {
-                      session.setResult(false);
                       session.close();
                     }
                     // response message sent with error
@@ -145,7 +144,6 @@ public class VTTunnelConnectionControlThread implements Runnable
                 {
                   if (session != null)
                   {
-                    session.setResult(false);
                     session.close();
                   }
                   // response message sent with error
@@ -233,7 +231,6 @@ public class VTTunnelConnectionControlThread implements Runnable
                   VTTunnelSession session = handler.getSession();
                   if (session != null)
                   {
-                    session.setResult(false);
                     session.close();
                   }
                 }
@@ -280,7 +277,7 @@ public class VTTunnelConnectionControlThread implements Runnable
       socket.connect(new InetSocketAddress(host, port));
       socket.setTcpNoDelay(true);
       //socket.setSoLinger(true, 5);
-      socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+      socket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
       return socket;
     }
     catch (Throwable t)

@@ -13,7 +13,7 @@ import org.vash.vate.task.VTTask;
 
 public class VTClientZipFileOperation extends VTTask
 {
-  private static final int fileZipBufferSize = VT.VT_FILE_DATA_BUFFER_SIZE;
+  private static final int fileZipBufferSize = VT.VT_BUFFER_FILE_SIZE_BYTES;
   private volatile boolean finished;
   private volatile int operation;
   private String zipFilePath;

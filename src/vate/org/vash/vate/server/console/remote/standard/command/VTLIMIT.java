@@ -39,9 +39,9 @@ public class VTLIMIT extends VTServerStandardRemoteConsoleCommandProcessor
         {
           rate = 0;
         }
-        else if (rate < ((1024 + VT.VT_NETWORK_PACKET_HEADER_SIZE) * 8))
+        else if (rate < ((1024 + VT.VT_DATA_NETWORK_PACKET_HEADER_SIZE_BYTES) * 8))
         {
-          rate = ((1024 + VT.VT_NETWORK_PACKET_HEADER_SIZE) * 8);
+          rate = ((1024 + VT.VT_DATA_NETWORK_PACKET_HEADER_SIZE_BYTES) * 8);
         }
         connection.setRateInBytesPerSecond(rate);
         if (rate > 0)
@@ -70,9 +70,9 @@ public class VTLIMIT extends VTServerStandardRemoteConsoleCommandProcessor
         {
           rate = 0;
         }
-        else if (rate < ((1024 + VT.VT_NETWORK_PACKET_HEADER_SIZE) * 8))
+        else if (rate < ((1024 + VT.VT_DATA_NETWORK_PACKET_HEADER_SIZE_BYTES) * 8))
         {
-          rate = ((1024 + VT.VT_NETWORK_PACKET_HEADER_SIZE) * 8);
+          rate = ((1024 + VT.VT_DATA_NETWORK_PACKET_HEADER_SIZE_BYTES) * 8);
         }
         if (!parsed[2].toUpperCase().startsWith("U"))
         {

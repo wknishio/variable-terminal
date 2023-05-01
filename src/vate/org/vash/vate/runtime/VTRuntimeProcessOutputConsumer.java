@@ -8,7 +8,7 @@ import org.vash.vate.VT;
 
 public class VTRuntimeProcessOutputConsumer implements Runnable
 {
-  private static final int resultBufferSize = VT.VT_SMALL_DATA_BUFFER_SIZE;
+  private static final int resultBufferSize = VT.VT_BUFFER_SMALL_SIZE_BYTES;
   private boolean verbose;
   private volatile boolean running;
   private int readChars;

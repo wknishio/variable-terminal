@@ -36,7 +36,7 @@ import com.objectplanet.image.PngEncoder;
 
 public class VTGraphicsModeServerWriter implements Runnable
 {
-  private static final int imageOutputBufferSize = VT.VT_STANDARD_DATA_BUFFER_SIZE;
+  private static final int imageOutputBufferSize = VT.VT_BUFFER_STANDARD_SIZE_BYTES;
   private volatile boolean stopped;
   private volatile boolean needRefresh;
   private volatile boolean clearRequested;

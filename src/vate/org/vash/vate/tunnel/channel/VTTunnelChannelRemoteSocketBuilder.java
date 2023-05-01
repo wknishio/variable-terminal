@@ -75,6 +75,6 @@ public class VTTunnelChannelRemoteSocketBuilder
         session.close();
       }
     }
-    return null;
+    throw new IOException("Failed to connect remotely to: host " + host + " port " + port + "");
   }
 }

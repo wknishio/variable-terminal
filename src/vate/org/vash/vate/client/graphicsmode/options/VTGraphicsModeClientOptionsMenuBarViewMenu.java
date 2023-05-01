@@ -13,10 +13,8 @@ import org.vash.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuAdjustFrameSizeOptionListener;
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuClearInterfaceOptionListener;
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuCloseTerminalOptionListener;
-import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuColorCodingOptionsListener;
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener;
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuDefaultDeviceOptionListener;
-import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuDeltaCodingOptionsListener;
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuDrawPointerOptionsListener;
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuDrawPointerSizeOptionsListener;
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener;
@@ -48,8 +46,8 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
   private Menu graphicalDeviceMenu;
   private Menu imageFormatMenu;
   // private Menu imageCodingMenu;
-  private Menu colorCodingMenu;
-  private Menu alterationCodingMenu;
+  //private Menu colorCodingMenu;
+  //private Menu alterationCodingMenu;
   private MenuItem nextDeviceMenu;
   private MenuItem previousDeviceMenu;
   private MenuItem defaultDeviceMenu;
@@ -75,10 +73,10 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
   private CheckboxMenuItem synchronousRefreshOption;
   private CheckboxMenuItem showPointerOption;
   private CheckboxMenuItem hidePointerOption;
-  private CheckboxMenuItem directCodingOption;
-  private CheckboxMenuItem dynamicCodingOption;
-  private CheckboxMenuItem mixedCodingOption;
-  private CheckboxMenuItem separatedCodingOption;
+  //private CheckboxMenuItem directCodingOption;
+  //private CheckboxMenuItem dynamicCodingOption;
+  //private CheckboxMenuItem mixedCodingOption;
+  //private CheckboxMenuItem separatedCodingOption;
   private CheckboxMenuItem scaledPartialCaptureOption;
   private CheckboxMenuItem scaledCompleteCaptureOption;
   private CheckboxMenuItem adjustedKeepRatioCaptureOption;
@@ -115,8 +113,8 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.graphicalDeviceMenu = new Menu("Display Device ");
     this.imageFormatMenu = new Menu("Image Format ");
     // this.imageCodingMenu = new Menu("Image Coding ");
-    this.alterationCodingMenu = new Menu("Alteration Coding ");
-    this.colorCodingMenu = new Menu("Color Coding ");
+    //this.alterationCodingMenu = new Menu("Alteration Coding ");
+    //this.colorCodingMenu = new Menu("Color Coding ");
     this.nextDeviceMenu = new MenuItem("Next");
     this.nextDeviceMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuNextDeviceOptionListener(writer));
     this.previousDeviceMenu = new MenuItem("Previous");
@@ -201,14 +199,14 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.adjustedKeepRatioCaptureOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuScreenCaptureModeOptionsListener(writer, adjustedKeepRatioCaptureOption, VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_ADJUSTED_KEEP_RATIO));
     this.adjustedIgnoreRatioCaptureOption = new CheckboxMenuItem("Independent", false);
     this.adjustedIgnoreRatioCaptureOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuScreenCaptureModeOptionsListener(writer, adjustedIgnoreRatioCaptureOption, VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_ADJUSTED_IGNORE_RATIO));
-    this.directCodingOption = new CheckboxMenuItem("Direct", true);
-    this.directCodingOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorCodingOptionsListener(writer, directCodingOption));
-    this.dynamicCodingOption = new CheckboxMenuItem("Dynamic", false);
-    this.dynamicCodingOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorCodingOptionsListener(writer, dynamicCodingOption));
-    this.mixedCodingOption = new CheckboxMenuItem("Mixed", false);
-    this.mixedCodingOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuDeltaCodingOptionsListener(writer, mixedCodingOption));
-    this.separatedCodingOption = new CheckboxMenuItem("Separated", true);
-    this.separatedCodingOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuDeltaCodingOptionsListener(writer, separatedCodingOption));
+    //this.directCodingOption = new CheckboxMenuItem("Direct", true);
+    //this.directCodingOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorCodingOptionsListener(writer, directCodingOption));
+    //this.dynamicCodingOption = new CheckboxMenuItem("Dynamic", false);
+    //this.dynamicCodingOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorCodingOptionsListener(writer, dynamicCodingOption));
+    //this.mixedCodingOption = new CheckboxMenuItem("Mixed", false);
+    //this.mixedCodingOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuDeltaCodingOptionsListener(writer, mixedCodingOption));
+    //this.separatedCodingOption = new CheckboxMenuItem("Separated", true);
+    //this.separatedCodingOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuDeltaCodingOptionsListener(writer, separatedCodingOption));
     this.needFocusOption = new CheckboxMenuItem("Focused", false);
     this.needFocusOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuTerminalRefreshPolicyOptionsListener(writer, needFocusOption, VTGraphicsModeClientWriter.TERMINAL_STATE_FOCUSED));
     this.needVisibleOption = new CheckboxMenuItem("Visible", true);
@@ -298,10 +296,10 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     // this.imageCodingMenu.add(imageCodingSOFOption);
     // this.imageCodingMenu.add(imageCodingPNGOption);
     // this.imageCodingMenu.add(imageCodingJPGOption);
-    this.colorCodingMenu.add(directCodingOption);
-    this.colorCodingMenu.add(dynamicCodingOption);
-    this.alterationCodingMenu.add(separatedCodingOption);
-    this.alterationCodingMenu.add(mixedCodingOption);
+    //this.colorCodingMenu.add(directCodingOption);
+    //this.colorCodingMenu.add(dynamicCodingOption);
+    //this.alterationCodingMenu.add(separatedCodingOption);
+    //this.alterationCodingMenu.add(mixedCodingOption);
     // this.imageFormatMenu.add(imageCodingMenu);
     // this.imageFormatMenu.add(alterationCodingMenu);
     // this.imageFormatMenu.add(colorCodingMenu);
@@ -583,33 +581,33 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     interruptedRefreshOption.setState(false);
   }
   
-  public void setDynamicCoding(boolean dynamicCoding)
-  {
-    if (dynamicCoding)
-    {
-      directCodingOption.setState(false);
-      dynamicCodingOption.setState(true);
-    }
-    else
-    {
-      directCodingOption.setState(true);
-      dynamicCodingOption.setState(false);
-    }
-  }
+//  public void setDynamicCoding(boolean dynamicCoding)
+//  {
+//    if (dynamicCoding)
+//    {
+//      directCodingOption.setState(false);
+//      dynamicCodingOption.setState(true);
+//    }
+//    else
+//    {
+//      directCodingOption.setState(true);
+//      dynamicCodingOption.setState(false);
+//    }
+//  }
   
-  public void setSeparatedCoding(boolean separatedCoding)
-  {
-    if (separatedCoding)
-    {
-      mixedCodingOption.setState(false);
-      separatedCodingOption.setState(true);
-    }
-    else
-    {
-      mixedCodingOption.setState(true);
-      separatedCodingOption.setState(false);
-    }
-  }
+//  public void setSeparatedCoding(boolean separatedCoding)
+//  {
+//    if (separatedCoding)
+//    {
+//      mixedCodingOption.setState(false);
+//      separatedCodingOption.setState(true);
+//    }
+//    else
+//    {
+//      mixedCodingOption.setState(true);
+//      separatedCodingOption.setState(false);
+//    }
+//  }
   
   public void setTerminalRefreshPolicy(int state)
   {

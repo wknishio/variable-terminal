@@ -8,24 +8,24 @@ import org.vash.vate.client.graphicsmode.VTGraphicsModeClientWriter;
 
 public class VTGraphicsModeClientOptionsMenuBarViewMenuDeltaCodingOptionsListener implements ItemListener
 {
-  private CheckboxMenuItem option;
-  private VTGraphicsModeClientWriter writer;
+  //private CheckboxMenuItem option;
+  //private VTGraphicsModeClientWriter writer;
   
   public VTGraphicsModeClientOptionsMenuBarViewMenuDeltaCodingOptionsListener(VTGraphicsModeClientWriter writer, CheckboxMenuItem option)
   {
-    this.writer = writer;
-    this.option = option;
+    //this.writer = writer;
+    //this.option = option;
   }
   
   public void itemStateChanged(ItemEvent e)
   {
     if (e.getStateChange() == ItemEvent.SELECTED)
     {
-      writer.toggleSeparatedCoding();
+      //writer.toggleSeparatedCoding();
     }
     else
     {
-      option.setState(true);
+      //option.setState(true);
     }
   }
 }

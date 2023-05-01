@@ -178,15 +178,15 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
     // refreshStatusMenu.setEnabled(true);
   }
   
-  public void setDynamicCoding(boolean dynamicCoding)
-  {
-    viewMenu.setDynamicCoding(dynamicCoding);
-  }
+//  public void setDynamicCoding(boolean dynamicCoding)
+//  {
+//    viewMenu.setDynamicCoding(dynamicCoding);
+//  }
   
-  public void setInterleavedCoding(boolean interleavedCoding)
-  {
-    viewMenu.setSeparatedCoding(interleavedCoding);
-  }
+//  public void setInterleavedCoding(boolean interleavedCoding)
+//  {
+//    viewMenu.setSeparatedCoding(interleavedCoding);
+//  }
   
   public void setImageCoding(int imageCoding)
   {

@@ -80,9 +80,9 @@ public class VTServerConnection
   private byte[] encryptionKey;
   // private byte[] digestedClient;
   // private byte[] digestedServer;
-  private byte[] localNonce = new byte[VT.VT_SECURITY_DIGEST_SIZE];
-  private byte[] remoteNonce = new byte[VT.VT_SECURITY_DIGEST_SIZE];
-  private byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE];
+  private byte[] localNonce = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private byte[] remoteNonce = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   // private byte[] paddingData = new byte[1024];
   // private MessageDigest sha256Digester;
   private VTBlake3MessageDigest blake3Digest;
@@ -546,9 +546,9 @@ public class VTServerConnection
     }
     
     blake3Digest.reset();
-    byte[] seed = new byte[VT.VT_SECURITY_SEED_SIZE];
-    System.arraycopy(remoteNonce, 0, seed, 0, VT.VT_SECURITY_DIGEST_SIZE);
-    System.arraycopy(localNonce, 0, seed, VT.VT_SECURITY_DIGEST_SIZE, VT.VT_SECURITY_DIGEST_SIZE);
+    byte[] seed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
+    System.arraycopy(remoteNonce, 0, seed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    System.arraycopy(localNonce, 0, seed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
     //secureRandom.setSeed(seed);
     blake3Digest.setSeed(seed);
     blake3Digest.reset();
@@ -594,8 +594,8 @@ public class VTServerConnection
   
   private void setMultiplexedStreams() throws IOException
   {
-    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_NETWORK_PACKET_SIZE, VT.VT_NETWORK_PACKET_BUFFER_SIZE, false);
-    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_NETWORK_PACKET_SIZE, VT.VT_NETWORK_PACKET_SIZE);
+    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_DATA_NETWORK_PACKET_TOTAL_SIZE_BYTES, VT.VT_BUFFER_NETWORK_PACKET_SIZE_BYTES, false);
+    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_DATA_NETWORK_PACKET_TOTAL_SIZE_BYTES, VT.VT_DATA_NETWORK_PACKET_TOTAL_SIZE_BYTES);
     
     pingInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_UNLIMITED, 0);
     pingOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_UNLIMITED, 0);
@@ -661,7 +661,7 @@ public class VTServerConnection
     graphicsControlDataOutputStream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(graphicsControlOutputStream, false));
     
     directImageDataInputStream = (graphicsDirectImageInputStream);
-    directImageDataOutputStream = (new VTBufferedOutputStream(graphicsDirectImageOutputStream, VT.VT_STANDARD_DATA_BUFFER_SIZE, false));
+    directImageDataOutputStream = (new VTBufferedOutputStream(graphicsDirectImageOutputStream, VT.VT_BUFFER_STANDARD_SIZE_BYTES, false));
     
     deflatedImageDataInputStream = (graphicsDeflatedImageInputStream);
     
@@ -711,7 +711,7 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    byte[] data = blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE, localCheckString);
+    byte[] data = blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, localCheckString);
     authenticationWriter.write(data);
     authenticationWriter.flush();
     authenticationReader.readFully(data);
@@ -802,7 +802,7 @@ public class VTServerConnection
     // {
     // blake3Digester.update(encryptionKey);
     // }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE, VT_CLIENT_CHECK_STRING_NONE)))
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_NONE)))
     {
       return VT.VT_CONNECTION_ENCRYPT_NONE;
     }
@@ -814,7 +814,7 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE, VT_CLIENT_CHECK_STRING_RC4)))
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_RC4)))
     {
       return VT.VT_CONNECTION_ENCRYPT_RC4;
     }
@@ -826,7 +826,7 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE, VT_CLIENT_CHECK_STRING_AES)))
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_AES)))
     {
       return VT.VT_CONNECTION_ENCRYPT_AES;
     }
@@ -851,7 +851,7 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE, VT_CLIENT_CHECK_STRING_SALSA)))
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_SALSA)))
     {
       return VT.VT_CONNECTION_ENCRYPT_SALSA;
     }
@@ -863,7 +863,7 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE, VT_CLIENT_CHECK_STRING_HC256)))
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_HC256)))
     {
       return VT.VT_CONNECTION_ENCRYPT_HC256;
     }
@@ -875,7 +875,7 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE, VT_CLIENT_CHECK_STRING_ISAAC)))
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_ISAAC)))
     {
       return VT.VT_CONNECTION_ENCRYPT_ISAAC;
     }
@@ -887,7 +887,7 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE, VT_CLIENT_CHECK_STRING_GRAIN)))
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_GRAIN)))
     {
       return VT.VT_CONNECTION_ENCRYPT_GRAIN;
     }

@@ -30,9 +30,9 @@ public class VTClientAuthenticator
   }
   
   private volatile boolean accepted = false;
-  private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE];
-  private byte[] authResult = new byte[VT.VT_SECURITY_DIGEST_SIZE];
-  private byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE];
+  private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private byte[] authResult = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] localNonce;
   private byte[] remoteNonce;
   private String user;
@@ -67,7 +67,7 @@ public class VTClientAuthenticator
         {
           synchronized (this)
           {
-            wait(VT.VT_AUTHENTICATION_TIMEOUT_MILLISECONDS);
+            wait(VT.VT_TIMEOUT_AUTHENTICATION_MILLISECONDS);
           }
         }
         // VTConsole.print("\nVT>AuthenticationTimeout");
@@ -171,9 +171,9 @@ public class VTClientAuthenticator
     remoteNonce = connection.getRemoteNonce();
     
     blake3Digest.reset();
-    byte[] seed = new byte[VT.VT_SECURITY_SEED_SIZE];
-    System.arraycopy(localNonce, 0, seed, 0, VT.VT_SECURITY_DIGEST_SIZE);
-    System.arraycopy(remoteNonce, 0, seed, VT.VT_SECURITY_DIGEST_SIZE, VT.VT_SECURITY_DIGEST_SIZE);
+    byte[] seed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
+    System.arraycopy(localNonce, 0, seed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    System.arraycopy(remoteNonce, 0, seed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
     blake3Digest.setSeed(seed);
     blake3Digest.reset();
     
@@ -211,7 +211,7 @@ public class VTClientAuthenticator
     
     blake3Digest.update(line.getBytes("UTF-8"));
     
-    digestedCredential = blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE);
+    digestedCredential = blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES);
     //credentialData = digestedCredential;
     
     connection.getAuthenticationWriter().write(digestedCredential);
@@ -225,7 +225,7 @@ public class VTClientAuthenticator
     // connection.getConnectionSocket().setSoTimeout(0);
     blake3Digest.update(localNonce);
     blake3Digest.update(remoteNonce);
-    if (VTArrayComparator.arrayEquals(authResult, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE, VT_AUTHENTICATION_ACCEPTED_STRING)))
+    if (VTArrayComparator.arrayEquals(authResult, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_AUTHENTICATION_ACCEPTED_STRING)))
     {
       // VTConsole.print("\nVT>Authentication successful!");
       accepted = true;

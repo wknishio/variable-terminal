@@ -81,6 +81,10 @@ public class VTTunnelSession implements Closeable
     {
       return;
     }
+    if (result == null)
+    {
+      setResult(false);
+    }
     closed = true;
     try
     {

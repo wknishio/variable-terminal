@@ -7,7 +7,7 @@ import net.sourceforge.jsocks.socks.ProxyServer;
 
 public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
 {
-  private static final int socksBufferSize = VT.VT_STANDARD_DATA_BUFFER_SIZE;
+  private static final int socksBufferSize = VT.VT_BUFFER_STANDARD_SIZE_BYTES;
   private VTTunnelChannel channel;
   private VTTunnelSession session;
   private VTTunnelSocksSingleUserValidation validation;
