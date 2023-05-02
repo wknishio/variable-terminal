@@ -5,7 +5,7 @@ import java.io.OutputStream;
 import java.io.PushbackInputStream;
 import java.net.Socket;
 
-import org.vash.nanohttpd.VTNanoHTTPDProxySession;
+import org.vash.vate.nanohttpd.VTNanoHTTPDProxySession;
 
 import net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;

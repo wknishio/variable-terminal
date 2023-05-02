@@ -223,7 +223,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
     type = in.readUnsignedShort();
     channel = in.readInt();
     length = in.readShort();
-    VTLinkableDynamicMultiplexedInputStream stream = getInputStream(type, channel);
     if (length > 0)
     {
       remaining = length;
@@ -240,7 +239,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       try
       {
-        OutputStream out = stream.getOutputStream();
+        OutputStream out = getInputStream(type, channel).getOutputStream();
         out.write(packetBuffer, 0, length);
         out.flush();
       }

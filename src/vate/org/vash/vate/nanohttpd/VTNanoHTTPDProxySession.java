@@ -1,4 +1,4 @@
-package org.vash.nanohttpd;
+package org.vash.vate.nanohttpd;
 
 import java.io.BufferedReader;
 
@@ -239,7 +239,7 @@ public class VTNanoHTTPDProxySession implements Runnable
      */
     public Properties header = new VTConfigurationProperties();
     
-    public boolean keepConnection = false;
+    //public boolean keepConnection = false;
   }
   
   public VTNanoHTTPDProxySession( Socket s, InputStream in, String username, String password)
@@ -422,7 +422,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
   }
   
-  public boolean checkProxyAuthenticatedBasic(Properties headers, String username, String password) throws UnsupportedEncodingException
+  private boolean checkProxyAuthenticatedBasic(Properties headers, String username, String password) throws UnsupportedEncodingException
   {
     if (username == null || password == null)
     {
@@ -444,7 +444,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     return false;
   }
   
-  public void requireProxyAuthenticationBasic(String uri) throws UnsupportedEncodingException, InterruptedException
+  private void requireProxyAuthenticationBasic(String uri) throws UnsupportedEncodingException, InterruptedException
   {
     Response resp = new Response();
     resp.header.put("Proxy-Authenticate", "Basic");
@@ -452,11 +452,8 @@ public class VTNanoHTTPDProxySession implements Runnable
     sendError(resp.status, MIME_PLAINTEXT, resp.header, null);
   }
   
-  public void serveConnectRequest(String uri, String method, Properties pre, Properties headers, byte[] header, byte[] body, Socket clientSocket, InputStream clientInput) throws URISyntaxException, IOException, InterruptedException
+  private void serveConnectRequest(String uri, String method, Properties pre, Properties headers, byte[] header, byte[] body, Socket clientSocket, InputStream clientInput) throws URISyntaxException, IOException, InterruptedException
   {
-    Response resp = new Response();
-    resp.keepConnection = true;
-    
     String host = "";
     int port = 80;
     
@@ -489,12 +486,12 @@ public class VTNanoHTTPDProxySession implements Runnable
     OutputStream remoteOutput = remoteSocket.getOutputStream();
     OutputStream clientOutput = clientSocket.getOutputStream();
     
-    sendResponse(resp.status, "");
+    sendResponse(new Response().status, "");
     
     pipeSockets(clientSocket, remoteSocket, clientInput, clientOutput, remoteInput, remoteOutput);
   }
   
-  public void servePipeRequest(String uri, String method, Properties pre, Properties headers, byte[] header, byte[] body, Socket clientSocket, InputStream clientInput) throws IOException, URISyntaxException, InterruptedException
+  private void servePipeRequest(String uri, String method, Properties pre, Properties headers, byte[] header, byte[] body, Socket clientSocket, InputStream clientInput) throws IOException, URISyntaxException, InterruptedException
   {
     ByteArrayOutputStream data = new ByteArrayOutputStream();
     for (Object headerName : headers.keySet().toArray(new Object[] {}))
@@ -573,7 +570,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     //System.out.println("finished=" + uri);
   }
   
-  public void pipeSockets(Socket clientSocket, Socket remoteSocket, InputStream clientInput, OutputStream clientOutput, InputStream remoteInput, OutputStream remoteOutput) throws InterruptedException
+  private void pipeSockets(Socket clientSocket, Socket remoteSocket, InputStream clientInput, OutputStream clientOutput, InputStream remoteInput, OutputStream remoteOutput) throws InterruptedException
   {
     SocketPipe firstPipe = new SocketPipe(clientSocket, remoteSocket, remoteInput, clientOutput);
     SocketPipe secondPipe = new SocketPipe(remoteSocket, clientSocket, clientInput, remoteOutput);
@@ -848,7 +845,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   
   private void sendResponse( String status, String msg ) throws UnsupportedEncodingException
   {
-    sendResponse( status, MIME_PLAINTEXT, new Properties(), new ByteArrayInputStream( msg.getBytes("ISO-8859-1")));
+    sendResponse( status, MIME_PLAINTEXT, null, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")));
   }
 
   /**
