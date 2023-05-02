@@ -922,7 +922,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   /**
    * The distribution licence
    */
-  private static final String LICENCE =
+  public static final String LICENCE =
     "Copyright (C) 2001,2005-2013 by Jarno Elonen <elonen@iki.fi>\n"+
     "and Copyright (C) 2010 by Konstantinos Togias <info@ktogias.gr>\n"+
     "\n"+
