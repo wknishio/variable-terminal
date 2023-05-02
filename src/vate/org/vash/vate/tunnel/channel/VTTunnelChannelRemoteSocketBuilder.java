@@ -51,6 +51,7 @@ public class VTTunnelChannelRemoteSocketBuilder
       int outputNumber = output.number();
       session.setOutputNumber(outputNumber);
       session.setTunnelOutputStream(output);
+      //session.getTunnelOutputStream().open();
       channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port).getBytes("UTF-8"));
       channel.getConnection().getControlOutputStream().flush();
       boolean result = false;

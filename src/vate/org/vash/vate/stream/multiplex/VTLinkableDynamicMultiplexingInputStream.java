@@ -71,6 +71,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       {
         stream.setLink(link);
       }
+      //stream.setLink(link);
       return stream;
     }
     // search for a multiplexed outputstream that has no link
@@ -94,6 +95,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     {
       stream.setLink(link);
     }
+    //stream.setLink(link);
     return stream;
   }
   
@@ -103,9 +105,10 @@ public final class VTLinkableDynamicMultiplexingInputStream
     {
       stream.setLink(null);
     }
+    //stream.setLink(null);
   }
   
-  private final VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number)
+  private synchronized final VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number)
   {
     VTLinkableDynamicMultiplexedInputStream stream = null;
     if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == 0)
@@ -220,7 +223,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     type = in.readUnsignedShort();
     channel = in.readInt();
     length = in.readShort();
-    
+    VTLinkableDynamicMultiplexedInputStream stream = getInputStream(type, channel);
     if (length > 0)
     {
       remaining = length;
@@ -237,15 +240,15 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       try
       {
-        OutputStream out = getInputStream(type, channel).getOutputStream();
+        OutputStream out = stream.getOutputStream();
         out.write(packetBuffer, 0, length);
         out.flush();
       }
       catch (Throwable e)
       {
+        //e.printStackTrace();
         try
         {
-          //getInputStream(type, channel).close();
           //stream.close();
         }
         catch (Throwable t)
@@ -397,10 +400,10 @@ public final class VTLinkableDynamicMultiplexingInputStream
     
     public final void open() throws IOException
     {
-      if (!closed)
-      {
-        return;
-      }
+      //if (!closed)
+      //{
+        //return;
+      //}
       closed = false;
       if (pipedInputStream != null)
       {
@@ -427,10 +430,10 @@ public final class VTLinkableDynamicMultiplexingInputStream
     
     public final void close() throws IOException
     {
-      if (closed)
-      {
-        return;
-      }
+      //if (closed)
+      //{
+        //return;
+      //}
       closed = true;
       compressedInputStream = null;
       if (pipedOutputStream != null)

@@ -328,7 +328,7 @@ public class ServicesEventing implements Runnable {
   public void run() {
     // only the deamon thread is allowed to call such method
     if ( !Thread.currentThread().getName().equals( "ServicesEventing daemon" ) ) {
-    	System.out.println("ABORTING THREAD LAUNCH: NAME INCORRECT");
+    	//System.out.println("ABORTING THREAD LAUNCH: NAME INCORRECT");
     	return;
     }
     try {

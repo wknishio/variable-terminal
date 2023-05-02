@@ -83,7 +83,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
         // serverSocket.setReuseAddress(true);
       }
       // serverSocket.setReuseAddress(true);
-      serverSocket.bind(channel.getBindAddress(), 128);
+      serverSocket.bind(channel.getBindAddress());
       return true;
     }
     catch (Throwable e)
@@ -133,6 +133,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
             int outputNumber = output.number();
             session.setOutputNumber(outputNumber);
             session.setTunnelOutputStream(output);
+            //session.getTunnelOutputStream().open();
             if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
             {
               String host = channel.getRedirectHost();
@@ -181,6 +182,8 @@ public class VTTunnelChannelBindSocketListener implements Runnable
     {
       socket = serverSocket.accept();
       socket.setTcpNoDelay(true);
+      //socket.setSendBufferSize(1024 * 64);
+      //socket.setReceiveBufferSize(1024 * 64);
       //socket.setSoLinger(true, 5);
       socket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
       //socket.getInputStream();

@@ -288,7 +288,6 @@ public class VTNanoHTTPDProxySession implements Runnable
       {
         //System.out.println("empty request");
         sendError( HTTP_BADREQUEST, "BAD REQUEST: Empty request." );
-        return;
       }
       
       //if (!foundHeaderEnd)
@@ -318,13 +317,11 @@ public class VTNanoHTTPDProxySession implements Runnable
       if (method == null)
       {
         sendError( HTTP_BADREQUEST, "BAD REQUEST: Method not found in request." );
-        return;
       }
       
       if (uri == null)
       {
         sendError( HTTP_BADREQUEST, "BAD REQUEST: URI not found in request." );
-        return;
       }
       
       //System.out.println("foundHeaderEnd=" + foundHeaderEnd);
@@ -378,9 +375,9 @@ public class VTNanoHTTPDProxySession implements Runnable
       // Ok, now do the serve()
       serve(uri, method, pre, headers, header, body, username, password, mySocket, in );
     }
-    catch (InterruptedException e)
+    catch ( InterruptedException ie )
     {
-      //e.printStackTrace();
+      // Thrown by sendError, ignore and exit the thread.
     }
     catch ( Throwable e )
     {
@@ -399,7 +396,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       try
       {
         //mySocket.getOutputStream().close();
-        mySocket.close();
+        //mySocket.close();
       }
       catch ( Throwable t ) 
       {
@@ -483,6 +480,8 @@ public class VTNanoHTTPDProxySession implements Runnable
     
     Socket remoteSocket = new Socket(host, port);
     remoteSocket.setTcpNoDelay(true);
+    //remoteSocket.setSendBufferSize(1024 * 64);
+    //remoteSocket.setReceiveBufferSize(1024 * 64);
     //remoteSocket.setSoLinger(true, 5);
     remoteSocket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
     
@@ -529,27 +528,17 @@ public class VTNanoHTTPDProxySession implements Runnable
       port = url.getPort();
       if (port == -1)
       {
-        if (url.getScheme().toLowerCase().contains("https"))
-        {
-          port = 443;
-        }
-        else if (url.getScheme().toLowerCase().contains("http"))
-        {
-          port = 80;
-        }
+        port = 80;
       }
       path = url.getPath();
-      String line = (method + " " + path + " HTTP/1.1\r\n");
-      data.write(line.getBytes("ISO-8859-1"));
-      //System.out.println("host=[" + host + "]");
-      //System.out.println("port=[" + port + "]");
-      //System.out.println("path=[" + path + "]");
-      //System.out.println("line=[" + line + "]");
     }
     catch (URISyntaxException e)
     {
       //e.printStackTrace();
     }
+    
+    String line = (method + " " + path + " HTTP/1.1\r\n");
+    data.write(line.getBytes("ISO-8859-1"));
     
     for (Entry<Object, Object> entry : headers.entrySet())
     {
@@ -566,6 +555,8 @@ public class VTNanoHTTPDProxySession implements Runnable
     
     Socket remoteSocket = new Socket(host, port);
     remoteSocket.setTcpNoDelay(true);
+    //remoteSocket.setSendBufferSize(1024 * 64);
+    //remoteSocket.setReceiveBufferSize(1024 * 64);
     //remoteSocket.setSoLinger(true, 5);
     remoteSocket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
     

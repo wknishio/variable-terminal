@@ -2106,7 +2106,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     catch (Throwable e)
     {
-      e.printStackTrace();
+      //e.printStackTrace();
       synchronized (reader)
       {
         reader.setFailed(true);

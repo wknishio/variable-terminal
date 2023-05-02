@@ -78,13 +78,14 @@ public class VTTunnelConnectionControlThread implements Runnable
                     session.setInputNumber(inputNumber);
                     session.setTunnelOutputStream(output);
                     session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
-                    //session.getTunnelInputStream().addPropagated(session);
-                    session.getTunnelInputStream().setDirectOutputStream(session.getSocketOutputStream(), session.getSocket());
-                    session.getTunnelInputStream().open();
                     session.getTunnelOutputStream().open();
+                    session.getTunnelInputStream().open();
+                    session.getTunnelInputStream().setDirectOutputStream(session.getSocketOutputStream(), session.getSocket());
                     // response message sent with ok
                     connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                     connection.getControlOutputStream().flush();
+                    threads.execute(handler);
+                    session.setResult(true);
                   }
                   else
                   {
@@ -127,18 +128,20 @@ public class VTTunnelConnectionControlThread implements Runnable
                 
                 if (output != null)
                 {
+                  piped.setOutputStream(output);
                   int outputNumber = output.number();
                   session.setOutputNumber(outputNumber);
                   session.setInputNumber(inputNumber);
                   session.setTunnelOutputStream(output);
                   session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
-                  piped.setOutputStream(output);
-                  session.getTunnelInputStream().setDirectOutputStream(piped.getInputStreamSource(), piped);
-                  session.getTunnelInputStream().open();
                   session.getTunnelOutputStream().open();
+                  session.getTunnelInputStream().open();
+                  session.getTunnelInputStream().setDirectOutputStream(piped.getInputStreamSource(), piped);
                   // response message sent with ok
                   connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
+                  threads.execute(handler);
+                  session.setResult(true);
                 }
                 else
                 {
@@ -178,7 +181,8 @@ public class VTTunnelConnectionControlThread implements Runnable
                     // response message received ok
                     session.setInputNumber(inputNumber);
                     session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
-                    //session.getTunnelInputStream().addPropagated(session);
+                    session.getTunnelOutputStream().open();
+                    session.getTunnelInputStream().open();
                     Socket socket = session.getSocket();
                     if (socket instanceof VTTunnelPipedSocket)
                     {
@@ -189,27 +193,12 @@ public class VTTunnelConnectionControlThread implements Runnable
                     {
                       session.getTunnelInputStream().setDirectOutputStream(session.getSocketOutputStream(), session.getSocket());
                     }
-                    session.getTunnelInputStream().open();
-                    session.getTunnelOutputStream().open();
-                    // ack message sent~
-                    if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
-                    {
-                      connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
-                      connection.getControlOutputStream().flush();
-                    }
-                    else
-                    {
-                      connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
-                      connection.getControlOutputStream().flush();
-                    }
                     threads.execute(handler);
                     session.setResult(true);
                   }
                   else
                   {
-                    // ack message received
-                    threads.execute(handler);
-                    session.setResult(true);
+                    
                   }
                 }
                 else
@@ -236,9 +225,9 @@ public class VTTunnelConnectionControlThread implements Runnable
                 }
               }
             }
-            else
+            else if (parts.length == 2)
             {
-              // unable to handle
+              
             }
           }
           else
@@ -276,6 +265,8 @@ public class VTTunnelConnectionControlThread implements Runnable
       Socket socket = new Socket();
       socket.connect(new InetSocketAddress(host, port));
       socket.setTcpNoDelay(true);
+      //socket.setSendBufferSize(1024 * 64);
+      //socket.setReceiveBufferSize(1024 * 64);
       //socket.setSoLinger(true, 5);
       socket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
       return socket;

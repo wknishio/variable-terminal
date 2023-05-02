@@ -388,6 +388,8 @@ public abstract class Proxy {
 
 			// proxySocket.setKeepAlive(true);
 			proxySocket.setTcpNoDelay(true);
+			//proxySocket.setSendBufferSize(1024 * 64);
+			//proxySocket.setReceiveBufferSize(1024 * 64);
 			//proxySocket.setSoLinger(true, 5);
 			//proxySocket.setReuseAddress(true);
 			//proxySocket.setKeepAlive(true);

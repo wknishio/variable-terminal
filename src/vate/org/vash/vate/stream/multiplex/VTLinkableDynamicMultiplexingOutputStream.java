@@ -53,6 +53,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       {
         stream.setLink(link);
       }
+      //stream.setLink(link);
       return stream;
     }
     // search for a multiplexed outputstream that has no link
@@ -76,6 +77,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     {
       stream.setLink(link);
     }
+    //stream.setLink(link);
     return stream;
   }
   
@@ -85,9 +87,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     {
       stream.setLink(null);
     }
+    //stream.setLink(null);
   }
   
-  private final VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number)
+  private synchronized final VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number)
   {
     VTLinkableDynamicMultiplexedOutputStream stream = null;
     OutputStream output = null;
@@ -315,10 +318,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     public final void close() throws IOException
     {
-      if (closed)
-      {
-        return;
-      }
+      //if (closed)
+      //{
+        //return;
+      //}
       closed = true;
       writeClosePacket(type, number);
       if (propagated.size() > 0)
@@ -339,10 +342,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     public final void open() throws IOException
     {
-      if (!closed)
-      {
-        return;
-      }
+      //if (!closed)
+      //{
+        //return;
+      //}
       closed = false;
       writeOpenPacket(type, number);
       if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
