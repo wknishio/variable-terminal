@@ -38,7 +38,7 @@ public class VT
   public static final int VT_BUFFER_FILE_SIZE_BYTES = 1024 * 64;
   public static final int VT_BUFFER_SMALL_SIZE_BYTES = 1024 * 16;
   
-  public static final int VT_SECURITY_DIGEST_SIZE_BYTES = 256;
+  public static final int VT_SECURITY_DIGEST_SIZE_BYTES = 64;
   public static final int VT_SECURITY_SEED_SIZE_BYTES = VT_SECURITY_DIGEST_SIZE_BYTES << 1;
   
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_PIPED = 0;

@@ -24,7 +24,6 @@ import net.jpountz.xxhash.XXHashFactory;
 public class VTFileTransferClientTransaction implements Runnable
 {
   private static final int fileTransferBufferSize = VT.VT_BUFFER_FILE_SIZE_BYTES;
-  private volatile boolean interrupted;
   private volatile boolean stopped;
   private volatile boolean finished;
   private volatile boolean compressing;
@@ -34,6 +33,7 @@ public class VTFileTransferClientTransaction implements Runnable
   private volatile boolean resumable;
   private volatile boolean directory;
   private volatile boolean heavier;
+  private volatile boolean interrupted;
   // private static final int checksumBufferSize = 64 * 1024;
   private int readedBytes;
   private int writtenBytes;

@@ -12,16 +12,16 @@ import org.vash.vate.server.connection.VTServerConnection;
 
 public class VTServerAuthenticator
 {
-  private static final String MAJOR_MINOR_VERSION = VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION;
-  private static byte[] VT_AUTHENTICATION_ACCEPTED_STRING = new byte[16];
   private static byte[] VT_AUTHENTICATION_REJECTED_STRING = new byte[16];
-  
+  private static byte[] VT_AUTHENTICATION_ACCEPTED_STRING = new byte[16];
+  private static final String MAJOR_MINOR_VERSION = VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION;
+
   static
   {
     try
     {
-      VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
       VT_AUTHENTICATION_REJECTED_STRING = (StringUtils.reverse("VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
     }
     catch (Throwable e)
     {
