@@ -119,7 +119,7 @@ public class VTAudioBeeper
     }
   }
   
-  private static synchronized final boolean toneBlocking(int hz, int msecs, double vol)
+  private static final boolean toneBlocking(int hz, int msecs, double vol)
   {
     try
     {
@@ -152,7 +152,7 @@ public class VTAudioBeeper
     return false;
   }
   
-  private static synchronized final boolean toneThreaded(int hz, int msecs, double vol)
+  private static final boolean toneThreaded(int hz, int msecs, double vol)
   {
     try
     {
