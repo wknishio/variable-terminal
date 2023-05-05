@@ -209,7 +209,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       }
       catch ( java.io.UnsupportedEncodingException uee )
       {
-        uee.printStackTrace();
+        //uee.printStackTrace();
       }
     }
 
@@ -218,7 +218,7 @@ public class VTNanoHTTPDProxySession implements Runnable
      */
     public void addHeader( String name, String value )
     {
-      header.put( name, value );
+      headers.put( name, value );
     }
 
     /**
@@ -240,7 +240,7 @@ public class VTNanoHTTPDProxySession implements Runnable
      * Headers for the HTTP response. Use addHeader()
      * to add lines.
      */
-    public Properties header = new VTConfigurationProperties();
+    public Properties headers = new VTConfigurationProperties();
     
     //public boolean keepConnection = false;
   }
@@ -451,12 +451,12 @@ public class VTNanoHTTPDProxySession implements Runnable
   private void requireProxyAuthenticationBasic(String uri) throws UnsupportedEncodingException, InterruptedException
   {
     Response resp = new Response();
-    resp.header.put("Proxy-Authenticate", "Basic");
+    resp.headers.put("Proxy-Authenticate", "Basic");
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
-    sendError(resp.status, MIME_PLAINTEXT, resp.header, null);
+    sendError(resp.status, MIME_PLAINTEXT, resp.headers, null);
   }
   
-  private void serveConnectRequest(String uri, String method, Properties pre, Properties headers, byte[] header, byte[] body, Socket clientSocket, InputStream clientInput) throws URISyntaxException, IOException, InterruptedException
+  private void serveConnectRequest(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, Socket clientSocket, InputStream clientInput) throws URISyntaxException, IOException, InterruptedException
   {
     String host = "";
     int port = 80;
@@ -495,9 +495,9 @@ public class VTNanoHTTPDProxySession implements Runnable
     pipeSockets(clientSocket, remoteSocket, clientInput, clientOutput, remoteInput, remoteOutput);
   }
   
-  private void servePipeRequest(String uri, String method, Properties pre, Properties headers, byte[] header, byte[] body, Socket clientSocket, InputStream clientInput) throws IOException, URISyntaxException, InterruptedException
+  private void servePipeRequest(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, Socket clientSocket, InputStream clientInput) throws IOException, URISyntaxException, InterruptedException
   {
-    ByteArrayOutputStream data = new ByteArrayOutputStream();
+    ByteArrayOutputStream requestData = new ByteArrayOutputStream();
     for (Object headerName : headers.keySet().toArray(new Object[] {}))
     {
       if (headerName != null && headerName.toString().equalsIgnoreCase("Proxy-Authorization"))
@@ -540,7 +540,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     
     String line = (method + " " + path + " HTTP/1.1\r\n");
-    data.write(line.getBytes("ISO-8859-1"));
+    requestData.write(line.getBytes("ISO-8859-1"));
     
     for (Entry<Object, Object> entry : headers.entrySet())
     {
@@ -548,12 +548,12 @@ public class VTNanoHTTPDProxySession implements Runnable
       Object value = entry.getValue();
       if (key != null && value != null)
       {
-        data.write((entry.getKey() + ": " + entry.getValue() + "\r\n").getBytes("ISO-8859-1"));
+        requestData.write((entry.getKey() + ": " + entry.getValue() + "\r\n").getBytes("ISO-8859-1"));
       }
     }
     
-    data.write("\r\n".getBytes("ISO-8859-1"));
-    data.write(body);
+    requestData.write("\r\n".getBytes("ISO-8859-1"));
+    requestData.write(bodyData);
     
     Socket remoteSocket = new Socket(host, port);
     remoteSocket.setTcpNoDelay(true);
@@ -566,9 +566,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     OutputStream remoteOutput = remoteSocket.getOutputStream();
     OutputStream clientOutput = clientSocket.getOutputStream();
     
-    byte[] request = data.toByteArray();
-    //System.out.println("connected=" + uri);
-    remoteOutput.write(request);
+    remoteOutput.write(requestData.toByteArray());
     remoteOutput.flush();
     //System.out.println("pipe=" + uri);
     pipeSockets(clientSocket, remoteSocket, clientInput, clientOutput, remoteInput, remoteOutput);
