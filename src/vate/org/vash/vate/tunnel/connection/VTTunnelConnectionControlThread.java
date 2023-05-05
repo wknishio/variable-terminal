@@ -51,6 +51,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 int inputNumber = Integer.parseInt(parts[1]);
                 String host = parts[2];
                 int port = Integer.parseInt(parts[3]);
+                
                 VTTunnelSession session = null;
                 VTTunnelSessionHandler handler = null;
                 Socket socket = null;
@@ -111,8 +112,8 @@ public class VTTunnelConnectionControlThread implements Runnable
                 int inputNumber = Integer.parseInt(parts[1]);
                 String socksUsername = parts[2];
                 String socksPassword = parts[3];
-                VTTunnelSession session = null;
                 
+                VTTunnelSession session = null;
                 VTTunnelPipedSocket piped = new VTTunnelPipedSocket();
                 session = new VTTunnelSession(connection, piped, piped.getInputStream(), piped.getOutputStream(), false);
                 VTTunnelSocksSessionHandler handler = null;
@@ -253,7 +254,6 @@ public class VTTunnelConnectionControlThread implements Runnable
   {
     try
     {
-      
       if (host.length() == 0 || host.equals("*"))
       {
         host = "";

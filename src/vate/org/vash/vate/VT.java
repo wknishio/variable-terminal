@@ -58,17 +58,12 @@ public class VT
   public static final int VT_CONNECTION_ENCRYPT_RC4 = 1;
   public static final int VT_CONNECTION_ENCRYPT_AES = 2;
   public static final int VT_CONNECTION_ENCRYPT_ISAAC = 3;
-  // public static final int VT_CONNECTION_ENCRYPT_BLOWFISH = 3;
   public static final int VT_CONNECTION_ENCRYPT_SALSA = 4;
   public static final int VT_CONNECTION_ENCRYPT_HC256 = 5;
   public static final int VT_CONNECTION_ENCRYPT_GRAIN = 6;
   
   public static final int VT_TIMEOUT_AUTHENTICATION_MILLISECONDS = 60000;
   public static final int VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS = 60000;
-  // public static final int VT_CONNECTION_TCP_ACCEPT_TIMEOUT_MILLISECONDS =
-  // 60000;
-  // public static final int VT_CONNECTION_TCP_CONNECT_TIMEOUT_MILLISECONDS =
-  // 60000;
   public static final int VT_TIMEOUT_CLIENT_RECONNECTION_MILLISECONDS = 60000;
   public static final int VT_TIMEOUT_DAEMON_RECONNECTION_MILLISECONDS = 2500;
   
@@ -128,12 +123,8 @@ public class VT
   public static final int VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_ADJUSTED_IGNORE_RATIO = 38;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_AREA_CHANGE = 39;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_REFRESH_NOT_NEEDED = 40;
-  //public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_CODING_DIRECT = 41;
-  //public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_CODING_DYNAMIC = 42;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_DEFAULT = 41;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_NEXT = 42;
-  //public static final int VT_GRAPHICS_MODE_GRAPHICS_DIFFERENCE_MIXED_CODING = 45;
-  //public static final int VT_GRAPHICS_MODE_GRAPHICS_DIFFERENCE_SEPARATED_CODING = 46;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_IMAGE = 43;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE = 44;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF = 45;

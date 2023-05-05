@@ -87,7 +87,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   HTTP_REQUEST_TIMEOUT = "408 Request Timeout";
 
   public static final String HTTP_PROXY_AUTHENTICATION_REQUIRED = "407 Proxy Authentication Required";
-  public static final String HTTP_ENTITY_TOO_LARGE = "413 Entity Too Large";
+  public static final String HTTP_PAYLOAD_TOO_LARGE = "413 Payload Too Large";
   
   private static Hashtable<String, String> theMimeTypes = new Hashtable<String, String>();
   static
@@ -145,12 +145,15 @@ public class VTNanoHTTPDProxySession implements Runnable
         while (read > 0 && rlen < bufsize)
         {
           read = in.read(header, rlen, bufsize - rlen);
-          rlen += read;
-          splitbyte = findHeaderEndSafe(header, rlen);
-          if (splitbyte > 0)
+          if (read > 0)
           {
-            foundHeaderEnd = true;
-            break;
+            rlen += read;
+            splitbyte = findHeaderEndSafe(header, rlen);
+            if (splitbyte > 0)
+            {
+              foundHeaderEnd = true;
+              break;
+            }
           }
         }
       }
@@ -265,7 +268,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       // The full header should fit in here.
       // Apache's default header limit is 8KB.
       // Do NOT assume that a single read will get the entire header at once
-      //boolean foundHeaderEnd = false;
+      boolean foundHeaderEnd = false;
       final int bufsize = 16384;
       byte[] buf = new byte[bufsize];
       int splitbyte = 0;
@@ -275,26 +278,28 @@ public class VTNanoHTTPDProxySession implements Runnable
         while (read > 0 && rlen < bufsize)
         {
           read = in.read(buf, rlen, bufsize - rlen);
-          rlen += read;
-          splitbyte = findHeaderEnd(buf, rlen);
-          if (splitbyte > 0)
+          if (read > 0)
           {
-            //foundHeaderEnd = true;
-            break;
+            rlen += read;
+            splitbyte = findHeaderEnd(buf, rlen);
+            if (splitbyte > 0)
+            {
+              foundHeaderEnd = true;
+              break;
+            }
           }
         }
       }
       if (rlen == 0)
       {
-        //System.out.println("empty request");
         sendError( HTTP_BADREQUEST, "BAD REQUEST: Empty request." );
       }
       
-      //if (!foundHeaderEnd)
-      //{
-        //sendError(HTTP_ENTITY_TOO_LARGE, "ENTITY TOO LARGE: Request Too Large.");
-      //}
-
+      if (!foundHeaderEnd)
+      {
+        sendError(HTTP_PAYLOAD_TOO_LARGE, "PAYLOAD TOO LARGE: Malformed request or request headers too large.");
+      }
+      
       // Create a BufferedReader for parsing the header.
       ByteArrayInputStream hbis = new ByteArrayInputStream(buf, 0, rlen);
       BufferedReader hin = new BufferedReader( new InputStreamReader( hbis, "ISO-8859-1" ));
@@ -306,74 +311,73 @@ public class VTNanoHTTPDProxySession implements Runnable
       // Decode the header into parms and header java properties
       long size = decodeHeader(hin, pre, parms, headers);
       
-      //if (size == -1)
-      //{
-        //sendError( HTTP_BADREQUEST, "BAD REQUEST: Found Unexpected EOF." );
-      //}
+      if (size == -1)
+      {
+        sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing line terminator in request." );
+      }
       
       String method = pre.getProperty("method");
       String uri = pre.getProperty("uri");
       
       if (method == null)
       {
-        sendError( HTTP_BADREQUEST, "BAD REQUEST: Method not found in request." );
+        sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing method in request." );
       }
       
       if (uri == null)
       {
-        sendError( HTTP_BADREQUEST, "BAD REQUEST: URI not found in request." );
+        sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing URI in request." );
       }
       
-      //System.out.println("foundHeaderEnd=" + foundHeaderEnd);
-      //System.out.println("size=" + size);
-      //System.out.println("method=" + method);
-      //System.out.println("uri=" + uri);
-      //String request = pre.getProperty("request");
 
       if (size == 0)
       {
         size = 0x7FFFFFFFFFFFFFFFL;
       }
 
-      // Write the part of body already read to ByteArrayOutputStream f
+      // Write the part of body already read to ByteArrayOutputStream b
       ByteArrayOutputStream h = new ByteArrayOutputStream();
       ByteArrayOutputStream b = new ByteArrayOutputStream();
+      
       if (splitbyte < rlen)
       {
-        int already = rlen-splitbyte;
-        b.write(buf, splitbyte, already);
+        b.write(buf, splitbyte, rlen-splitbyte);
       }
 
       h.write(buf, 0, splitbyte);
+      
       // While Firefox sends on the first read all the data fitting
       // our buffer, Chrome and Opera send only the headers even if
       // there is data for the body. We do some magic here to find
       // out whether we have already consumed part of body, if we
       // have reached the end of the data to be sent or we should
       // expect the first byte of the body at the next read.
+      
       if (splitbyte < rlen)
         size -= rlen-splitbyte;
       else if (splitbyte==0 || size == 0x7FFFFFFFFFFFFFFFl)
         size = 0;
 
+      // this is a http proxy so maybe theres no need to read all body data
+      
       // Now read all the body and write it to f
       buf = new byte[16384];
       while ( rlen >= 0 && size > 0 )
       {
         rlen = in.read(buf, 0, (int) Math.min(16384, size));
-        size -= rlen;
         if (rlen > 0)
         {
+          size -= rlen;
           b.write(buf, 0, rlen);
         }
       }
-      // Get the raw body as a byte []
-      byte[] body = b.toByteArray();
-      byte[] header = h.toByteArray();
       
+      // Get the raw body as a byte []
+      byte[] bodyData = b.toByteArray();
+      byte[] headerData = h.toByteArray();
       
       // Ok, now do the serve()
-      serve(uri, method, pre, headers, header, body, username, password, mySocket, in );
+      serve(uri, method, pre, headers, headerData, bodyData, username, password, mySocket, in );
     }
     catch ( InterruptedException ie )
     {
@@ -405,7 +409,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
   }
   
-  public void serve(String uri, String method, Properties pre, Properties headers, byte[] header, byte[] body, String username, String password, Socket clientSocket, InputStream clientInput) throws IOException, URISyntaxException, InterruptedException
+  public void serve(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, String username, String password, Socket clientSocket, InputStream clientInput) throws IOException, URISyntaxException, InterruptedException
   {
     if (!checkProxyAuthenticatedBasic(headers, username, password))
     {
@@ -414,11 +418,11 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     if (method.equalsIgnoreCase("CONNECT"))
     {
-      serveConnectRequest(uri, method, pre, headers, header, body, clientSocket, clientInput);
+      serveConnectRequest(uri, method, pre, headers, headerData, bodyData, clientSocket, clientInput);
     }
     else
     {
-      servePipeRequest(uri, method, pre, headers, header, body, clientSocket, clientInput);
+      servePipeRequest(uri, method, pre, headers, headerData, bodyData, clientSocket, clientInput);
     }
   }
   
@@ -531,6 +535,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     catch (URISyntaxException e)
     {
+      sendError( HTTP_BADREQUEST, "BAD REQUEST: Malformed absolute form URI in request." );
       //e.printStackTrace();
     }
     
@@ -682,11 +687,11 @@ public class VTNanoHTTPDProxySession implements Runnable
     try {
       // Read the request line
       String inLine = in.readLine();
-      if (inLine == null) return 0;
+      if (inLine == null) return -1;
       pre.put("request", inLine);
       StringTokenizer st = new StringTokenizer( inLine );
       if ( !st.hasMoreTokens())
-        sendError( HTTP_BADREQUEST, "BAD REQUEST: Syntax error. Usage: GET /example/file.html" );
+        sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing method in request." );
 
       String method = "";
       while (method.length() <= 0)
@@ -696,7 +701,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       pre.put("method", method);
 
       if ( !st.hasMoreTokens())
-        sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing URI. Usage: GET /example/file.html" );
+        sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing URI in request." );
 
       String uri = st.nextToken();
 
