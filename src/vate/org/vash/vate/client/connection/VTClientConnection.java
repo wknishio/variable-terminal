@@ -600,6 +600,7 @@ public class VTClientConnection
     authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream));
     nonceReader.setIntputStream(authenticationReader.getInputStream());
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
+    exchangeNonces(true);
   }
   
   public void setConnectionStreams(byte[] digestedCredentials, String user, String password) throws IOException
