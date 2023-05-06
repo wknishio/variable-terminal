@@ -2,7 +2,6 @@ package org.vash.vate.server.authentication;
 
 import java.io.IOException;
 
-import org.apache.commons.lang3.StringUtils;
 import org.vash.vate.VT;
 import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3MessageDigest;
@@ -12,22 +11,22 @@ import org.vash.vate.server.connection.VTServerConnection;
 
 public class VTServerAuthenticator
 {
-  private static byte[] VT_AUTHENTICATION_REJECTED_STRING = new byte[16];
-  private static byte[] VT_AUTHENTICATION_ACCEPTED_STRING = new byte[16];
-  private static final String MAJOR_MINOR_VERSION = VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION;
+  //private static byte[] VT_AUTHENTICATION_REJECTED_STRING = new byte[16];
+  //private static byte[] VT_AUTHENTICATION_ACCEPTED_STRING = new byte[16];
+  //private static final String MAJOR_MINOR_VERSION = VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION;
 
-  static
-  {
-    try
-    {
-      VT_AUTHENTICATION_REJECTED_STRING = (StringUtils.reverse("VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-    }
-    catch (Throwable e)
-    {
-      
-    }
-  }
+//  static
+//  {
+//    try
+//    {
+//      VT_AUTHENTICATION_REJECTED_STRING = (StringUtils.reverse("VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+//      VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+//    }
+//    catch (Throwable e)
+//    {
+//      
+//    }
+//  }
   
   private volatile boolean accepted = false;
   private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
@@ -218,18 +217,13 @@ public class VTServerAuthenticator
         
         if (VTArrayComparator.arrayEquals(digestedCredential, receivedCredential))
         {
-          blake3Digest.update(remoteNonce);
-          blake3Digest.update(localNonce);
-          // connection.getConnectionSocket().setSoTimeout(0);
-          connection.getAuthenticationWriter().write(blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_AUTHENTICATION_ACCEPTED_STRING));
-          connection.getAuthenticationWriter().flush();
-          connection.getAuthenticationReader().readFully(randomData);
-          // VTConsole.print("\rVT>Authentication
-          // successful!\nVT>");
+//          blake3Digest.update(remoteNonce);
+//          blake3Digest.update(localNonce);
+//          connection.getAuthenticationWriter().write(blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_AUTHENTICATION_ACCEPTED_STRING));
+//          connection.getAuthenticationWriter().flush();
+//          connection.getAuthenticationReader().readFully(randomData);
           user = credential.getUser();
           password = credential.getPassword();
-          //user = server.getUserCredentials().get(storedCredential).getUser();
-          //password = server.getUserCredentials().get(storedCredential).getPassword();
           accepted = true;
           stopTimeoutThread();
           return true;
@@ -245,16 +239,11 @@ public class VTServerAuthenticator
       
       if (VTArrayComparator.arrayEquals(digestedCredential, receivedCredential))
       {
-        blake3Digest.update(remoteNonce);
-        blake3Digest.update(localNonce);
-        // connection.getConnectionSocket().setSoTimeout(0);
-        connection.getAuthenticationWriter().write(blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_AUTHENTICATION_ACCEPTED_STRING));
-        connection.getAuthenticationWriter().flush();
-        connection.getAuthenticationReader().readFully(randomData);
-        // VTConsole.print("\rVT>Authentication
-        // successful!\nVT>");
-        //user = server.getUserCredentials().get(storedCredential).getUser();
-        //password = server.getUserCredentials().get(storedCredential).getPassword();
+//        blake3Digest.update(remoteNonce);
+//        blake3Digest.update(localNonce);
+//        connection.getAuthenticationWriter().write(blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_AUTHENTICATION_ACCEPTED_STRING));
+//        connection.getAuthenticationWriter().flush();
+//        connection.getAuthenticationReader().readFully(randomData);
         user = "";
         password = "";
         accepted = true;
@@ -262,13 +251,11 @@ public class VTServerAuthenticator
         return true;
       }
     }
-    // VTConsole.print("\rVT>Authentication failed!\nVT>");
-    blake3Digest.update(remoteNonce);
-    blake3Digest.update(localNonce);
-    // connection.getConnectionSocket().setSoTimeout(0);
-    connection.getAuthenticationWriter().write(blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_AUTHENTICATION_REJECTED_STRING));
-    connection.getAuthenticationWriter().flush();
-    connection.getAuthenticationReader().readFully(randomData);
+//    blake3Digest.update(remoteNonce);
+//    blake3Digest.update(localNonce);
+//    connection.getAuthenticationWriter().write(blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_AUTHENTICATION_REJECTED_STRING));
+//    connection.getAuthenticationWriter().flush();
+//    connection.getAuthenticationReader().readFully(randomData);
     stopTimeoutThread();
     return false;
   }

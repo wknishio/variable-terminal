@@ -1,6 +1,7 @@
 package org.vash.vate.client.console.remote.standard.command;
 
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
+import org.vash.vate.console.VTConsole;
 
 public class VTEXIT extends VTClientStandardRemoteConsoleCommandProcessor
 {
@@ -14,10 +15,9 @@ public class VTEXIT extends VTClientStandardRemoteConsoleCommandProcessor
   
   public void execute(String command, String[] parsed) throws Exception
   {
+    VTConsole.print("\nVT>Disconnecting from server!");
     connection.getCommandWriter().write(command + "\n");
     connection.getCommandWriter().flush();
-    //VTConsole.print("\nVT>Disconnecting from server...");
-    // connection.setSkipLine(true);
     connection.closeSockets();
     return;
   }

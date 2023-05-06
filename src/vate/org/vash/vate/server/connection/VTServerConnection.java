@@ -490,14 +490,17 @@ public class VTServerConnection
   
   public void closeConnection()
   {
-    VTConsole.print("\rVT>Connection with client closed!\nVT>");
+    if (!closed || connected)
+    {
+      VTConsole.print("\rVT>Connection with client closed!\nVT>");
+    }
     closeSockets();
     connected = false;
   }
   
   public boolean isConnected()
   {
-    return connectionSocket != null && connectionSocket.isConnected() && !connectionSocket.isClosed() && connected;
+    return connectionSocket != null && connectionSocket.isConnected() && !connectionSocket.isClosed() && connected && !closed;
   }
   
   private void setNonceStreams() throws IOException
@@ -571,19 +574,25 @@ public class VTServerConnection
   
   public void setAuthenticationStreams() throws IOException
   {
-    exchangeNonces(true);
+    //exchangeNonces(true);
     cryptoEngine.initializeServerEngine(encryptionType, encryptionKey, remoteNonce, localNonce);
     authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream));
     authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream));
     nonceReader.setIntputStream(authenticationReader.getInputStream());
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
-    exchangeNonces(true);
+    //exchangeNonces(true);
   }
   
-  public void setConnectionStreams(byte[] digestedCredentials, String user, String password) throws IOException
+  public boolean setConnectionStreams(byte[] digestedCredentials, String user, String password) throws IOException
   {
-    connected = true;
-    exchangeNonces(true);
+    try
+    {
+      exchangeNonces(true);
+    }
+    catch (Throwable t)
+    {
+      return false;
+    }
     cryptoEngine.initializeServerEngine(encryptionType, encryptionKey, remoteNonce, localNonce, digestedCredentials, user != null ? user.getBytes("UTF-8") : null, password != null ? password.getBytes("UTF-8") : null);
     connectionInputStream = cryptoEngine.getDecryptedInputStream(connectionSocketInputStream);
     connectionOutputStream = cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream);
@@ -591,6 +600,7 @@ public class VTServerConnection
     authenticationWriter.setOutputStream(connectionOutputStream);
     nonceReader.setIntputStream(authenticationReader.getInputStream());
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
+    return true;
   }
   
   private void setMultiplexedStreams() throws IOException
@@ -898,6 +908,7 @@ public class VTServerConnection
   
   public boolean verifyConnection() throws IOException
   {
+    connected = true;
     setNonceStreams();
     exchangeNonces(false);
     setVerificationStreams(false);
@@ -1027,7 +1038,7 @@ public class VTServerConnection
   public void startConnection() throws IOException
   {
     setMultiplexedStreams();
-    exchangeNonces(true);
+    //exchangeNonces(true);
     multiplexedConnectionInputStream.startPacketReader();
   }
   

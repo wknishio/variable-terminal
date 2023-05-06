@@ -1,37 +1,34 @@
 package org.vash.vate.client.authentication;
 
 import java.io.IOException;
-
-import org.apache.commons.lang3.StringUtils;
 import org.vash.vate.VT;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
-import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3MessageDigest;
 
 public class VTClientAuthenticator
 {
   @SuppressWarnings("unused")
-  private static byte[] VT_AUTHENTICATION_REJECTED_STRING = new byte[16];
-  private static byte[] VT_AUTHENTICATION_ACCEPTED_STRING = new byte[16];
-  private static final String MAJOR_MINOR_VERSION = VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION;
+  //private static byte[] VT_AUTHENTICATION_REJECTED_STRING = new byte[16];
+  //private static byte[] VT_AUTHENTICATION_ACCEPTED_STRING = new byte[16];
+  //private static final String MAJOR_MINOR_VERSION = VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION;
   
-  static
-  {
-    try
-    {
-      VT_AUTHENTICATION_REJECTED_STRING = (StringUtils.reverse("VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-    }
-    catch (Throwable e)
-    {
-      
-    }
-  }
+//  static
+//  {
+//    try
+//    {
+//      VT_AUTHENTICATION_REJECTED_STRING = (StringUtils.reverse("VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+//      VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+//    }
+//    catch (Throwable e)
+//    {
+//      
+//    }
+//  }
   
   private volatile boolean accepted = false;
   private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
-  private byte[] authResult = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
+  //private byte[] authResult = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] localNonce;
   private byte[] remoteNonce;
@@ -218,25 +215,25 @@ public class VTClientAuthenticator
     connection.getAuthenticationWriter().flush();
     connection.getAuthenticationReader().readFully(randomData, 0, randomData.length);
     
-    connection.getSecureRandom().nextBytes(randomData);
-    connection.getAuthenticationWriter().write(randomData);
-    connection.getAuthenticationWriter().flush();
-    connection.getAuthenticationReader().readFully(authResult);
-    // connection.getConnectionSocket().setSoTimeout(0);
-    blake3Digest.update(localNonce);
-    blake3Digest.update(remoteNonce);
-    if (VTArrayComparator.arrayEquals(authResult, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_AUTHENTICATION_ACCEPTED_STRING)))
-    {
-      // VTConsole.print("\nVT>Authentication successful!");
-      accepted = true;
-      stopTimeoutThread();
-      return true;
-    }
-    else
-    {
-      // VTConsole.print("\nVT>Authentication failed!");
-      stopTimeoutThread();
-      return false;
-    }
+    return true;
+//    connection.getSecureRandom().nextBytes(randomData);
+//    connection.getAuthenticationWriter().write(randomData);
+//    connection.getAuthenticationWriter().flush();
+//    connection.getAuthenticationReader().readFully(authResult);
+//    blake3Digest.update(localNonce);
+//    blake3Digest.update(remoteNonce);
+//    if (VTArrayComparator.arrayEquals(authResult, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_AUTHENTICATION_ACCEPTED_STRING)))
+//    {
+//      // VTConsole.print("\nVT>Authentication successful!");
+//      accepted = true;
+//      stopTimeoutThread();
+//      return true;
+//    }
+//    else
+//    {
+//      // VTConsole.print("\nVT>Authentication failed!");
+//      stopTimeoutThread();
+//      return false;
+//    }
   }
 }

@@ -17,12 +17,8 @@ public class VTQUIT extends VTClientStandardRemoteConsoleCommandProcessor
   {
     connection.getCommandWriter().write(command + "\n");
     connection.getCommandWriter().flush();
-    //VTConsole.print("\nVT>Finalizing client...");
-    // connection.setSkipLine(true);
     VTConsole.closeConsole();
     session.getClient().stop();
-    // connection.closeSockets();
-    // VTExit.exit(0);
   }
   
   public void close()
