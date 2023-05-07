@@ -66,7 +66,7 @@ public class VTNanoPingService extends VTTask
     this.out = new VTLittleEndianOutputStream(out);
   }
   
-  private void client() throws IOException, InterruptedException
+  private void interval() throws IOException, InterruptedException
   {
     // wait first interval
     // Thread.sleep(initial);
@@ -163,7 +163,7 @@ public class VTNanoPingService extends VTTask
     }
   }
   
-  private void server() throws IOException, InterruptedException
+  private void continuous() throws IOException, InterruptedException
   {
     while (!stopped)
     {
@@ -214,11 +214,11 @@ public class VTNanoPingService extends VTTask
     {
       if (!server)
       {
-        client();
+        interval();
       }
       else
       {
-        server();
+        continuous();
       }
     }
     catch (Throwable e)
