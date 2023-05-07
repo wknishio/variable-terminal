@@ -91,24 +91,38 @@ public class VTURLInvoker
     }
   }
   
-  public VTURLResult invokeURL(String urlString, OutputStream resultOutputStream)
+  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, Proxy.NO_PROXY, null, null, null, resultOutputStream);
+    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, null, null, null, resultOutputStream);
   }
   
-  public VTURLResult invokeURL(String urlString, InputStream outputInputStream, OutputStream resultOutputStream)
+  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, InputStream outputInputStream, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, Proxy.NO_PROXY, null, null, outputInputStream, resultOutputStream);
+    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, null, null, outputInputStream, resultOutputStream);
   }
   
-  @SuppressWarnings("all")
-  public VTURLResult invokeURL(String urlString, Proxy proxy, Map<String, String> requestHeaders, String requestMethod, InputStream outputInputStream, OutputStream resultOutputStream)
+  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, String requestMethod, InputStream outputInputStream, OutputStream resultOutputStream)
+  {
+    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, null, requestMethod, outputInputStream, resultOutputStream);
+  }
+  
+  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, InputStream outputInputStream, OutputStream resultOutputStream)
+  {
+    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, requestHeaders, null, outputInputStream, resultOutputStream);
+  }
+  
+  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, String requestMethod, InputStream outputInputStream, OutputStream resultOutputStream)
+  {
+    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, requestHeaders, requestMethod, outputInputStream, resultOutputStream);
+  }
+  
+  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Proxy proxy, Map<String, String> requestHeaders, String requestMethod, InputStream outputInputStream, OutputStream resultOutputStream)
   {
     final byte[] readBuffer = new byte[VT.VT_BUFFER_STANDARD_SIZE_BYTES];
     // VTByteArrayOutputStream dataBuffer = new VTByteArrayOutputStream();
     VTURLResult urlResult = new VTURLResult(-1, null, null, null);
     // dataBuffer.reset();
-    int readed = 0;
+    int readed = 1;
     // URLConnection urlConnection = null;
     // InputStream inputStream = null;
     // OutputStream outputStream = null;
@@ -123,6 +137,8 @@ public class VTURLInvoker
       {
         connections.add(connection);
       }
+      connection.setConnectTimeout(connectTimeout);
+      connection.setReadTimeout(dataTimeout);
       connection.setDefaultUseCaches(false);
       if (connection instanceof HttpURLConnection)
       {
@@ -146,9 +162,9 @@ public class VTURLInvoker
         try
         {
           OutputStream outputOutputStream = connection.getOutputStream();
-          while ((readed = outputInputStream.read(readBuffer)) >= 0)
+          while ((readed = outputInputStream.read(readBuffer)) > 0)
           {
-            outputOutputStream.write(readBuffer);
+            outputOutputStream.write(readBuffer, 0, readed);
             outputOutputStream.flush();
           }
         }
@@ -177,9 +193,9 @@ public class VTURLInvoker
 //        resultOutputStream.flush();
 //      }
       InputStream resultInputStream = connection.getInputStream();
-      while ((readed = resultInputStream.read(readBuffer)) >= 0)
+      while ((readed = resultInputStream.read(readBuffer)) > 0)
       {
-        resultOutputStream.write(readBuffer);
+        resultOutputStream.write(readBuffer, 0, readed);
         resultOutputStream.flush();
       }
       urlResult = new VTURLResult(code, response, headers, null);

@@ -95,7 +95,7 @@ public class VTServerURLInvoker extends VTTask
         outputInputStream = null;
       }
       
-      VTURLResult result = invoker.invokeURL(url, outputInputStream, resultOutputStream);
+      VTURLResult result = invoker.invokeURL(url, 15000, 15000, outputInputStream, resultOutputStream);
       
       if (fileResult != null)
       {
