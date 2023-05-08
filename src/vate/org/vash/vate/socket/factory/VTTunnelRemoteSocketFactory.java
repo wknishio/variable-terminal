@@ -36,12 +36,12 @@ public class VTTunnelRemoteSocketFactory extends SocketFactory
     return builder.connect(channelType, host.getHostAddress(), port);
   }
   
-  public Socket createSocket(String host, int port, InetAddress arg2, int arg3) throws IOException, UnknownHostException
+  public Socket createSocket(String host, int port, InetAddress bind, int local) throws IOException, UnknownHostException
   {
     return builder.connect(channelType, host, port);
   }
   
-  public Socket createSocket(InetAddress host, int port, InetAddress arg2, int arg3) throws IOException
+  public Socket createSocket(InetAddress host, int port, InetAddress bind, int local) throws IOException
   {
     return builder.connect(channelType, host.getHostAddress(), port);
   }

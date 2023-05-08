@@ -12,48 +12,40 @@ import org.vash.vate.VT;
 
 public class VTDirectSocketFactory extends SocketFactory
 {
-  public Socket createSocket(String arg0, int arg1) throws IOException, UnknownHostException
+  public Socket createSocket(String host, int port) throws IOException, UnknownHostException
   {
     Socket socket = new Socket();
-    socket.connect(new InetSocketAddress(arg0, arg1));
+    socket.connect(new InetSocketAddress(host, port));
     socket.setTcpNoDelay(true);
-    //socket.setSendBufferSize(1024 * 64);
-    //socket.setReceiveBufferSize(1024 * 64);
     socket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
     return socket;
   }
   
-  public Socket createSocket(InetAddress arg0, int arg1) throws IOException
+  public Socket createSocket(InetAddress host, int port) throws IOException
   {
     Socket socket = new Socket();
-    socket.connect(new InetSocketAddress(arg0, arg1));
+    socket.connect(new InetSocketAddress(host, port));
     socket.setTcpNoDelay(true);
-    //socket.setSendBufferSize(1024 * 64);
-    //socket.setReceiveBufferSize(1024 * 64);
     socket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
     return socket;
   }
   
-  public Socket createSocket(String arg0, int arg1, InetAddress arg2, int arg3) throws IOException, UnknownHostException
+  public Socket createSocket(String host, int port, InetAddress bind, int local) throws IOException, UnknownHostException
   {
     Socket socket = new Socket();
-    socket.bind(new InetSocketAddress(arg2, arg3));
-    socket.connect(new InetSocketAddress(arg0, arg1));
+    socket.bind(new InetSocketAddress(bind, local));
+    socket.connect(new InetSocketAddress(host, port));
     socket.setTcpNoDelay(true);
-    //socket.setSendBufferSize(1024 * 64);
-    //socket.setReceiveBufferSize(1024 * 64);
     socket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
     return socket;
   }
   
-  public Socket createSocket(InetAddress arg0, int arg1, InetAddress arg2, int arg3) throws IOException
+  public Socket createSocket(InetAddress host, int port, InetAddress bind, int local) throws IOException
   {
     Socket socket = new Socket();
-    socket.bind(new InetSocketAddress(arg2, arg3));
-    socket.connect(new InetSocketAddress(arg0, arg1));
+    socket.bind(new InetSocketAddress(bind, local));
+    socket.connect(new InetSocketAddress(host, port));
     socket.setTcpNoDelay(true);
-    //socket.setSendBufferSize(1024 * 64);
-    //socket.setReceiveBufferSize(1024 * 64);
     socket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
     return socket;
   }
