@@ -13,7 +13,14 @@ public class VTExit
   {
     if (hook != null)
     {
-      hook.run();
+      try
+      {
+        hook.run();
+      }
+      catch (Throwable t)
+      {
+        
+      }
     }
     System.exit(status);
   }

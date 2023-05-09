@@ -33,7 +33,7 @@ public class VTTrayIconInterface
     {
       public void run()
       {
-        
+        removeTrayIcon();
       }
     };
   }
@@ -53,7 +53,6 @@ public class VTTrayIconInterface
     systemTrayObject = null;
     trayIconObject = null;
     messageTypeObject = null;
-    
   }
   
   public void install(final Frame frame, String tooltip)
