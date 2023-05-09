@@ -33,7 +33,7 @@ public class VTTrayIconInterface
     {
       public void run()
       {
-        removeTrayIcon();
+        remove();
       }
     };
   }
@@ -240,7 +240,7 @@ public class VTTrayIconInterface
     }
   }
   
-  public void removeTrayIcon()
+  public void remove()
   {
     try
     {

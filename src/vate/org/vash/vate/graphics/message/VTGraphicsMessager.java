@@ -125,14 +125,14 @@ public class VTGraphicsMessager
       // Panel main = new Panel();
       // main.setLayout(new GridLayout(2, 1));
       float fontScaling = VTGlobalTextStyleManager.FONT_SCALING_FACTOR_MONOSPACED;
-      int imageScaling = (int)Math.ceil(fontScaling);
+      int imageScaling = (int)Math.ceil(2 * fontScaling);
 
       Panel p1 = new Panel();
       p1.setLayout(new BorderLayout());
       
       VTIconDisplay display = new VTIconDisplay();
       display.setFocusable(false);
-      display.setImage(warningIcon32, 32 * imageScaling, 32 * imageScaling);
+      display.setImage(warningIcon32, 16 * imageScaling, 16 * imageScaling);
       
       Label messageLabel = new Label(message);
       Label titleLabel = new Label(title);

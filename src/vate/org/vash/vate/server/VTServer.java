@@ -165,7 +165,7 @@ public class VTServer implements Runnable
       running = false;
       if (trayIconInterface != null)
       {
-        trayIconInterface.removeTrayIcon();
+        trayIconInterface.remove();
       }
       serverConnector.stop();
       threads.shutdownNow();
@@ -477,7 +477,7 @@ public class VTServer implements Runnable
   {
     if (trayIconInterface != null)
     {
-      trayIconInterface.removeTrayIcon();
+      trayIconInterface.remove();
     }
   }
   
