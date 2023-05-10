@@ -166,7 +166,7 @@ public class VTAudioCapturer
       if (sampleRate == 8000)
       {
         this.speex.init(0, 7, sampleRate, audioFormat.getChannels());
-        this.speex.getEncoder().setComplexity(5);
+        this.speex.getEncoder().setComplexity(3);
         this.speex.getEncoder().setVbr(false);
         this.speex.getEncoder().setVad(false);
         this.speex.getEncoder().setDtx(false);
@@ -178,7 +178,7 @@ public class VTAudioCapturer
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
-          this.opus.setComplexity(5);
+          this.opus.setComplexity(3);
           this.opus.setBitrate(16000);
         }
         catch (Throwable t)
@@ -197,7 +197,7 @@ public class VTAudioCapturer
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
-          this.opus.setComplexity(5);
+          this.opus.setComplexity(3);
           this.opus.setBitrate(24000);
         }
         catch (Throwable t)
@@ -208,7 +208,7 @@ public class VTAudioCapturer
       else if (sampleRate == 16000)
       {
         this.speex.init(1, 7, sampleRate, audioFormat.getChannels());
-        this.speex.getEncoder().setComplexity(5);
+        this.speex.getEncoder().setComplexity(3);
         this.speex.getEncoder().setVbr(false);
         this.speex.getEncoder().setVad(false);
         this.speex.getEncoder().setDtx(false);
@@ -220,7 +220,7 @@ public class VTAudioCapturer
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
-          this.opus.setComplexity(5);
+          this.opus.setComplexity(3);
           this.opus.setBitrate(32000);
         }
         catch (Throwable t)
@@ -239,7 +239,7 @@ public class VTAudioCapturer
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
-          this.opus.setComplexity(5);
+          this.opus.setComplexity(3);
           this.opus.setBitrate(32000);
         }
         catch (Throwable t)
@@ -251,7 +251,7 @@ public class VTAudioCapturer
       {
         this.codec = VT.VT_AUDIO_CODEC_SPEEX;
         this.speex.init(2, 7, sampleRate, audioFormat.getChannels());
-        this.speex.getEncoder().setComplexity(5);
+        this.speex.getEncoder().setComplexity(3);
         this.speex.getEncoder().setVbr(false);
         this.speex.getEncoder().setVad(false);
         this.speex.getEncoder().setDtx(false);
@@ -267,7 +267,7 @@ public class VTAudioCapturer
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
-          this.opus.setComplexity(5);
+          this.opus.setComplexity(3);
           this.opus.setBitrate(64000);
         }
         catch (Throwable t)
