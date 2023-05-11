@@ -129,7 +129,6 @@ public class VTServerAuthenticator
   
   public void startTimeoutThread()
   {
-    accepted = false;
     timeoutTask.start();
     // server.getServerThreads().execute(timeoutTask);
   }

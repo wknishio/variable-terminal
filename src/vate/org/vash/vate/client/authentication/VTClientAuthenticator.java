@@ -158,8 +158,6 @@ public class VTClientAuthenticator
   
   public boolean tryAuthentication() throws IOException
   {
-    accepted = false;
-    
     // connection.getSecureRandom().nextBytes(paddingData);
     // connection.getAuthenticationWriter().write(paddingData);
     // connection.getAuthenticationWriter().flush();
@@ -215,6 +213,8 @@ public class VTClientAuthenticator
     connection.getAuthenticationWriter().flush();
     connection.getAuthenticationReader().readFully(randomData, 0, randomData.length);
     
+    accepted = true;
+    stopTimeoutThread();
     return true;
 //    connection.getSecureRandom().nextBytes(randomData);
 //    connection.getAuthenticationWriter().write(randomData);

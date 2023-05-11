@@ -30,8 +30,8 @@ public class VTCryptographicEngine
 {
   private VTBlake3MessageDigest blake3Digest;
   
-  private volatile StreamCipher encryptionCipherBC;
-  private volatile StreamCipher decryptionCipherBC;
+  private StreamCipher encryptionCipherBC;
+  private StreamCipher decryptionCipherBC;
   
   public VTCryptographicEngine()
   {

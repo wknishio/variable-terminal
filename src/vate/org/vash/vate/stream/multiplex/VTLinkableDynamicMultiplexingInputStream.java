@@ -240,20 +240,15 @@ public final class VTLinkableDynamicMultiplexingInputStream
       try
       {
         OutputStream out = getInputStream(type, channel).getOutputStream();
-        out.write(packetBuffer, 0, length);
-        out.flush();
+        if (out != null)
+        {
+          out.write(packetBuffer, 0, length);
+          out.flush();
+        }
       }
       catch (Throwable e)
       {
         //e.printStackTrace();
-        try
-        {
-          //stream.close();
-        }
-        catch (Throwable t)
-        {
-          //e.printStackTrace();
-        }
       }
     }
     else if (length == -2)
@@ -523,7 +518,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
         }
         catch (Throwable e)
         {
-          // e.printStackTrace();
+          //e.printStackTrace();
           running = false;
         }
       }
