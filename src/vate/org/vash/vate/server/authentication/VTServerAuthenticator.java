@@ -11,23 +11,6 @@ import org.vash.vate.server.connection.VTServerConnection;
 
 public class VTServerAuthenticator
 {
-  //private static byte[] VT_AUTHENTICATION_REJECTED_STRING = new byte[16];
-  //private static byte[] VT_AUTHENTICATION_ACCEPTED_STRING = new byte[16];
-  //private static final String MAJOR_MINOR_VERSION = VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION;
-
-//  static
-//  {
-//    try
-//    {
-//      VT_AUTHENTICATION_REJECTED_STRING = (StringUtils.reverse("VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/REJECT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-//      VT_AUTHENTICATION_ACCEPTED_STRING = (StringUtils.reverse("VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ACCEPT/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-//    }
-//    catch (Throwable e)
-//    {
-//      
-//    }
-//  }
-  
   private volatile boolean accepted = false;
   private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] receivedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
@@ -44,15 +27,9 @@ public class VTServerAuthenticator
   
   private class VTServerAuthenticatorTimeoutTask implements Runnable
   {
-    // private volatile boolean finished = true;
-    // private Thread timeoutThread;
-    
     public void start()
     {
       accepted = false;
-      // finished = false;
-      // timeoutThread = new Thread(this, getClass().getSimpleName());
-      // timeoutThread.start();
       server.getServerThreads().execute(this);
     }
     
@@ -60,9 +37,6 @@ public class VTServerAuthenticator
     {
       try
       {
-        // Thread.currentThread().setName(getClass().getSimpleName());
-        // timeoutThread = Thread.currentThread();
-        // Thread.sleep(VT.VT_AUTHENTICATION_TIMEOUT_MILLISECONDS);
         if (!accepted)
         {
           synchronized (this)
@@ -70,11 +44,10 @@ public class VTServerAuthenticator
             wait(VT.VT_TIMEOUT_AUTHENTICATION_MILLISECONDS);
           }
         }
-        // VTConsole.print("\nVT>AuthenticationTimeout");
       }
       catch (Throwable e)
       {
-        // VTConsole.print("\nVT>InterruptedTimeout");
+        
       }
       try
       {
@@ -87,17 +60,12 @@ public class VTServerAuthenticator
       {
         
       }
-      // finished = true;
     }
     
     public void stop()
     {
       try
       {
-//				if (timeoutThread != null)
-//				{
-//					timeoutThread.interrupt();
-//				}
         synchronized (this)
         {
           notifyAll();
@@ -115,22 +83,11 @@ public class VTServerAuthenticator
     this.server = server;
     this.connection = connection;
     this.blake3Digest = new VTBlake3MessageDigest();
-    // this.localNonce = connection.getLocalNonce();
-    // this.remoteNonce = connection.getRemoteNonce();
-    // try
-    // {
-    // this.sha256Digester = MessageDigest.getInstance("SHA-256");
-    // }
-    // catch (NoSuchAlgorithmException e)
-    // {
-    
-    // }
   }
   
   public void startTimeoutThread()
   {
     timeoutTask.start();
-    // server.getServerThreads().execute(timeoutTask);
   }
   
   public void stopTimeoutThread()
@@ -160,14 +117,6 @@ public class VTServerAuthenticator
   
   public boolean tryAuthentication() throws IOException
   {
-    accepted = false;
-    
-    // connection.getSecureRandom().nextBytes(paddingData);
-    // connection.getAuthenticationWriter().write(paddingData);
-    // connection.getAuthenticationWriter().flush();
-    // connection.getAuthenticationReader().readFully(paddingData);
-    
-    //connection.exchangeNonces(true);
     localNonce = connection.getLocalNonce();
     remoteNonce = connection.getRemoteNonce();
     
@@ -178,28 +127,10 @@ public class VTServerAuthenticator
     blake3Digest.setSeed(seed);
     blake3Digest.reset();
     
-    // connection.getSecureRandom().nextBytes(randomData);
-    // connection.getAuthenticationWriter().write(randomData);
-    // connection.getAuthenticationWriter().flush();
-    // connection.getAuthenticationReader().readFully(randomData);
-    
     connection.getSecureRandom().nextBytes(randomData);
     connection.getAuthenticationWriter().write(randomData);
     connection.getAuthenticationWriter().flush();
     connection.getAuthenticationReader().readFully(receivedCredential);
-    
-    //connection.getSecureRandom().nextBytes(randomData);
-    //connection.getAuthenticationWriter().write(randomData);
-    //connection.getAuthenticationWriter().flush();
-    //connection.getAuthenticationReader().readFully(digestedPassword);
-    
-    //receivedCredential = new byte[VT.VT_SECURITY_SEED_SIZE];
-    
-    //byte[] digestedCredential = new byte[VT.VT_SECURITY_SEED_SIZE];
-    //byte[] storedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE];
-    
-    //System.arraycopy(digestedUser, 0, receivedCredential, 0, VT.VT_SECURITY_DIGEST_SIZE);
-    //System.arraycopy(digestedPassword, 0, receivedCredential, VT.VT_SECURITY_DIGEST_SIZE, VT.VT_SECURITY_DIGEST_SIZE);
     
     if (server.getUserCredentials().size() > 0)
     {
@@ -216,11 +147,6 @@ public class VTServerAuthenticator
         
         if (VTArrayComparator.arrayEquals(digestedCredential, receivedCredential))
         {
-//          blake3Digest.update(remoteNonce);
-//          blake3Digest.update(localNonce);
-//          connection.getAuthenticationWriter().write(blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_AUTHENTICATION_ACCEPTED_STRING));
-//          connection.getAuthenticationWriter().flush();
-//          connection.getAuthenticationReader().readFully(randomData);
           user = credential.getUser();
           password = credential.getPassword();
           accepted = true;
@@ -238,11 +164,6 @@ public class VTServerAuthenticator
       
       if (VTArrayComparator.arrayEquals(digestedCredential, receivedCredential))
       {
-//        blake3Digest.update(remoteNonce);
-//        blake3Digest.update(localNonce);
-//        connection.getAuthenticationWriter().write(blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_AUTHENTICATION_ACCEPTED_STRING));
-//        connection.getAuthenticationWriter().flush();
-//        connection.getAuthenticationReader().readFully(randomData);
         user = "";
         password = "";
         accepted = true;
@@ -250,11 +171,6 @@ public class VTServerAuthenticator
         return true;
       }
     }
-//    blake3Digest.update(remoteNonce);
-//    blake3Digest.update(localNonce);
-//    connection.getAuthenticationWriter().write(blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_AUTHENTICATION_REJECTED_STRING));
-//    connection.getAuthenticationWriter().flush();
-//    connection.getAuthenticationReader().readFully(randomData);
     stopTimeoutThread();
     return false;
   }
