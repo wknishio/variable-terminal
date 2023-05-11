@@ -53,7 +53,7 @@ public class TLSVerificationDisabler
     try
     {
       System.setProperty("sun.security.ssl.allowLegacyHelloMessages", "true");
-      System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
+      //System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
       TrustManager[] trustAnything = new TrustManager[]
       { new OverlyOptimisticTrustManager() };
       SSLContext unverifiedTLS = SSLContext.getInstance("TLS");
