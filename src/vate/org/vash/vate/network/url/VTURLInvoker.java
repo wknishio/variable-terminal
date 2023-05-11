@@ -53,9 +53,10 @@ public class VTURLInvoker
     {
       try
       {
-        if (connection instanceof HttpURLConnection)
+        OutputStream output = connection.getOutputStream();
+        if (output != null)
         {
-          ((HttpURLConnection) connection).disconnect();
+          output.close();
         }
       }
       catch (Throwable t)
@@ -78,10 +79,9 @@ public class VTURLInvoker
       
       try
       {
-        OutputStream output = connection.getOutputStream();
-        if (output != null)
+        if (connection instanceof HttpURLConnection)
         {
-          output.close();
+          ((HttpURLConnection) connection).disconnect();
         }
       }
       catch (Throwable t)
@@ -118,7 +118,8 @@ public class VTURLInvoker
   
   public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Proxy proxy, Map<String, String> requestHeaders, String requestMethod, InputStream outputInputStream, OutputStream resultOutputStream)
   {
-    final byte[] readBuffer = new byte[VT.VT_BUFFER_STANDARD_SIZE_BYTES];
+    //System.setProperty("http.keepAlive", "false");
+    final byte[] readBuffer = new byte[VT.VT_BUFFER_SMALL_SIZE_BYTES];
     VTURLResult urlResult = new VTURLResult(-1, null, null, null);
     int readed = 1;
     URLConnection connection = null;
@@ -127,10 +128,7 @@ public class VTURLInvoker
     {
       URL url = new URL(urlString);
       connection = url.openConnection(proxy);
-      if (connection != null)
-      {
-        connections.add(connection);
-      }
+      connections.add(connection);
       connection.setConnectTimeout(connectTimeout);
       connection.setReadTimeout(dataTimeout);
       connection.setAllowUserInteraction(false);
