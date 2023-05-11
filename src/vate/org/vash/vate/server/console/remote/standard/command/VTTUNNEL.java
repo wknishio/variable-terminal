@@ -12,7 +12,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
   {
     this.setFullName("*VTTUNNEL");
     this.setAbbreviatedName("*VTTN");
-    this.setFullSyntax("*VTTUNNEL [MODE] [[BIND] PORT] [[HOST] PORT] [USERNAME/PASSWORD]");
+    this.setFullSyntax("*VTTUNNEL [MODE] [[BIND] PORT] [[HOST] PORT] [USER/PASSWORD]");
     this.setAbbreviatedSyntax("*VTTN [MD] [[BD] PT] [[HT] PT] [US/PW]");
   }
   
@@ -41,7 +41,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
         }
         if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
         {
-          message.append("\nVT>Server SOCKS bind address: [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "]\nVT>");
+          message.append("\nVT>Server SOCKS/HTTP bind address: [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "]\nVT>");
         }
       }
       message.append("\nVT>End of connection tunnels list\nVT>");
@@ -63,7 +63,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
           }
           if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
           {
-            message.append("\nVT>Server SOCKS bind address: [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "]\nVT>");
+            message.append("\nVT>Server SOCKS/HTTP bind address: [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "]\nVT>");
           }
         }
         message.append("\nVT>End of server connection tunnels list\nVT>");
@@ -102,12 +102,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             {
               if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort))
               {
-                connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
+                connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
               }
               else
               {
-                connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
                 connection.getResultWriter().flush();
               }
             }
@@ -167,12 +167,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
                 {
                   if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort, socksUser, socksPassword))
                   {
-                    connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
+                    connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
                     connection.getResultWriter().flush();
                   }
                   else
                   {
-                    connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                    connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
                     connection.getResultWriter().flush();
                   }
                 }
@@ -188,12 +188,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
               {
                 if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort, socksUser, socksPassword))
                 {
-                  connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
+                  connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 else
                 {
-                  connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                  connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] cannot be set!\nVT>");
                   connection.getResultWriter().flush();
                 }
               }
@@ -248,12 +248,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
                 {
                   if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, bindAddress, bindPort, socksUser, socksPassword))
                   {
-                    connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
+                    connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                     connection.getResultWriter().flush();
                   }
                   else
                   {
-                    connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
+                    connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
                     connection.getResultWriter().flush();
                   }
                 }
@@ -269,12 +269,12 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
               {
                 if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, bindAddress, bindPort, socksUser, socksPassword))
                 {
-                  connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
+                  connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 else
                 {
-                  connection.getResultWriter().write("\nVT>SOCKS tunnel bound in server address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
+                  connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
                   connection.getResultWriter().flush();
                 }
               }

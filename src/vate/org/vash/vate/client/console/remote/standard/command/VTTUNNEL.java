@@ -13,7 +13,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
   {
     this.setFullName("*VTTUNNEL");
     this.setAbbreviatedName("*VTTN");
-    this.setFullSyntax("*VTTUNNEL [MODE] [[BIND] PORT] [[HOST] PORT] [USERNAME/PASSWORD]");
+    this.setFullSyntax("*VTTUNNEL [MODE] [[BIND] PORT] [[HOST] PORT] [USER/PASSWORD]");
     this.setAbbreviatedSyntax("*VTTN [MD] [[BD] PT] [[HT] PT] [US/PW]");
   }
   
@@ -44,7 +44,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
         }
         if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
         {
-          message.append("\nVT>Client SOCKS bind address: [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "]\nVT>");
+          message.append("\nVT>Client SOCKS/HTTP bind address: [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "]\nVT>");
         }
       }
       VTConsole.print(message.toString());
@@ -67,7 +67,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
           }
           if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
           {
-            message.append("\nVT>Client SOCKS bind address: [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "]\nVT>");
+            message.append("\nVT>Client SOCKS/HTTP bind address: [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "]\nVT>");
           }
         }
         message.append("\nVT>End of client connection tunnels list\nVT>");
@@ -107,11 +107,11 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
             {
               if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort))
               {
-                VTConsole.print("\nVT>SOCKS tunnel bound in client address [*" + " " + bindPort + "] set!\nVT>");
+                VTConsole.print("\nVT>SOCKS/HTTP tunnel bound in client address [*" + " " + bindPort + "] set!\nVT>");
               }
               else
               {
-                VTConsole.print("\nVT>SOCKS tunnel bound in client address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                VTConsole.print("\nVT>SOCKS/HTTP tunnel bound in client address [*" + " " + bindPort + "] cannot be set!\nVT>");
               }
             }
           }
@@ -171,11 +171,11 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
                 {
                   if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort, socksUser, socksPassword))
                   {
-                    VTConsole.print("\nVT>SOCKS tunnel bound in client address [*" + " " + bindPort + "] set!\nVT>");
+                    VTConsole.print("\nVT>SOCKS/HTTP tunnel bound in client address [*" + " " + bindPort + "] set!\nVT>");
                   }
                   else
                   {
-                    VTConsole.print("\nVT>SOCKS tunnel bound in client address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                    VTConsole.print("\nVT>SOCKS/HTTP tunnel bound in client address [*" + " " + bindPort + "] cannot be set!\nVT>");
                   }
                 }
                 else
@@ -189,11 +189,11 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
               {
                 if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort, socksUser, socksPassword))
                 {
-                  VTConsole.print("\nVT>SOCKS tunnel bound in client address [*" + " " + bindPort + "] set!\nVT>");
+                  VTConsole.print("\nVT>SOCKS/HTTP tunnel bound in client address [*" + " " + bindPort + "] set!\nVT>");
                 }
                 else
                 {
-                  VTConsole.print("\nVT>SOCKS tunnel bound in client address [*" + " " + bindPort + "] cannot be set!\nVT>");
+                  VTConsole.print("\nVT>SOCKS/HTTP tunnel bound in client address [*" + " " + bindPort + "] cannot be set!\nVT>");
                 }
               }
             }
@@ -242,11 +242,11 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
                 {
                   if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, bindAddress, bindPort, socksUser, socksPassword))
                   {
-                    VTConsole.print("\nVT>SOCKS tunnel bound in client address [" + bindAddress + " " + bindPort + "] set!\nVT>");
+                    VTConsole.print("\nVT>SOCKS/HTTP tunnel bound in client address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                   }
                   else
                   {
-                    VTConsole.print("\nVT>SOCKS tunnel bound in client address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
+                    VTConsole.print("\nVT>SOCKS/HTTP tunnel bound in client address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
                   }
                 }
                 else
@@ -260,11 +260,11 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
               {
                 if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, bindAddress, bindPort, socksUser, socksPassword))
                 {
-                  VTConsole.print("\nVT>SOCKS tunnel bound in client address [" + bindAddress + " " + bindPort + "] set!\nVT>");
+                  VTConsole.print("\nVT>SOCKS/HTTP tunnel bound in client address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                 }
                 else
                 {
-                  VTConsole.print("\nVT>SOCKS tunnel bound in client address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
+                  VTConsole.print("\nVT>SOCKS/HTTP tunnel bound in client address [" + bindAddress + " " + bindPort + "] cannot be set!\nVT>");
                 }
               }
             }

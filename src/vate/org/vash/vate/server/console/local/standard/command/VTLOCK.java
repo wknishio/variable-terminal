@@ -10,16 +10,17 @@ public class VTLOCK extends VTServerStandardLocalConsoleCommandProcessor
   {
     this.setFullName("*VTLOCK");
     this.setAbbreviatedName("*VTLK");
-    this.setFullSyntax("*VTLOCK <USER PASSWORD>");
-    this.setAbbreviatedSyntax("*VTLK <US PW>");
+    this.setFullSyntax("*VTLOCK <USER/PASSWORD>");
+    this.setAbbreviatedSyntax("*VTLK <US/PW>");
   }
   
   public void execute(String command, String[] parsed) throws Exception
   {
-    if (parsed.length >= 3)
+    if (parsed.length >= 2 && parsed[1].contains("/"))
     {
-      String user = parsed[1];
-      String password = parsed[2];
+      int idx = parsed[1].indexOf('/');
+      String user = parsed[1].substring(0, idx);
+      String password = parsed[1].substring(idx + 1);
       server.setUniqueUserCredential(user, password);
       VTConsole.print("\rVT>Single credential set!\nVT>");
     }
