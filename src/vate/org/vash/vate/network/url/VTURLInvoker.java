@@ -160,6 +160,8 @@ public class VTURLInvoker
             outputOutputStream.write(readBuffer, 0, readed);
             outputOutputStream.flush();
           }
+          outputOutputStream.close();
+          outputInputStream.close();
         }
         catch (Throwable e)
         {
@@ -181,6 +183,8 @@ public class VTURLInvoker
         resultOutputStream.write(readBuffer, 0, readed);
         resultOutputStream.flush();
       }
+      resultInputStream.close();
+      resultOutputStream.close();
       urlResult = new VTURLResult(code, response, headers, null);
     }
     catch (Throwable e)

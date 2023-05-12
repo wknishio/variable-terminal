@@ -1,8 +1,10 @@
 package org.vash.vate.network.tls;
 
 import java.lang.reflect.Method;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManager;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
@@ -48,6 +50,40 @@ public class TLSVerificationDisabler
     }
   }
   
+  @SuppressWarnings("unused")
+  private static class OverlyOptimisticKeyManagerManager implements KeyManager
+  {
+//    public String chooseClientAlias(String[] arg0, Principal[] arg1, Socket arg2)
+//    {
+//      return "";
+//    }
+//    
+//    public String chooseServerAlias(String arg0, Principal[] arg1, Socket arg2)
+//    {
+//      return "";
+//    }
+//    
+//    public X509Certificate[] getCertificateChain(String arg0)
+//    {
+//      return new X509Certificate[] {};
+//    }
+//    
+//    public String[] getClientAliases(String arg0, Principal[] arg1)
+//    {
+//      return new String[] {};
+//    }
+//    
+//    public PrivateKey getPrivateKey(String arg0)
+//    {
+//      return null;
+//    }
+//    
+//    public String[] getServerAliases(String arg0, Principal[] arg1)
+//    {
+//      return new String[] {};
+//    }
+  }
+  
   public static boolean install()
   {
     try
@@ -56,6 +92,8 @@ public class TLSVerificationDisabler
       //System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
       TrustManager[] trustAnything = new TrustManager[]
       { new OverlyOptimisticTrustManager() };
+      //KeyManager[] manageNothing = new KeyManager[]
+      //{ new OverlyOptimisticKeyManagerManager() };
       SSLContext unverifiedTLS = SSLContext.getInstance("TLS");
       unverifiedTLS.init(null, trustAnything, new java.security.SecureRandom());
       HttpsURLConnection.setDefaultSSLSocketFactory(unverifiedTLS.getSocketFactory());
@@ -68,11 +106,13 @@ public class TLSVerificationDisabler
       }
       catch (Throwable ei)
       {
+        //ei.printStackTrace();
         // return false;
       }
     }
     catch (Throwable e)
     {
+      //e.printStackTrace();
       return false;
     }
     return true;
