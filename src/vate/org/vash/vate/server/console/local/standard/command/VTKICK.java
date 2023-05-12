@@ -22,21 +22,18 @@ public class VTKICK extends VTServerStandardLocalConsoleCommandProcessor
     if (parsed.length == 1)
     {
       List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
-      synchronized (connections)
+      if (connections.size() > 0)
       {
-        if (connections.size() > 0)
+        //VTConsole.print("\rVT>Disconnecting all clients from server...\nVT>");
+        for (VTServerConnectionHandler connectionHandler : connections.toArray(new VTServerConnectionHandler[] {}))
         {
-          //VTConsole.print("\rVT>Disconnecting all clients from server...\nVT>");
-          for (VTServerConnectionHandler connectionHandler : connections)
-          {
-            connectionHandler.getConnection().closeSockets();
-          }
-          VTConsole.print("\rVT>Disconnected all clients from server!\nVT>");
+          connectionHandler.getConnection().closeSockets();
         }
-        else
-        {
-          VTConsole.print("\rVT>Not connected with clients!\nVT>");
-        }
+        VTConsole.print("\rVT>Disconnected all clients from server!\nVT>");
+      }
+      else
+      {
+        VTConsole.print("\rVT>Not connected with clients!\nVT>");
       }
     }
     else if (parsed.length >= 2)
@@ -47,25 +44,22 @@ public class VTKICK extends VTServerStandardLocalConsoleCommandProcessor
         if (number >= 0)
         {
           List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
-          synchronized (connections)
+          if (connections.size() > 0)
           {
-            if (connections.size() > 0)
+            if (connections.size() >= number)
             {
-              if (connections.size() >= number)
-              {
-                //VTConsole.print("\rVT>Disconnecting client of number [" + number + "] from server...\nVT>");
-                connections.get(number).getConnection().closeSockets();
-                VTConsole.print("\rVT>Disconnected client of number [" + number + "] from server!\nVT>");
-              }
-              else
-              {
-                VTConsole.print("\rVT>Client number [" + parsed[1] + "] is not valid!\nVT>");
-              }
+              //VTConsole.print("\rVT>Disconnecting client of number [" + number + "] from server...\nVT>");
+              connections.get(number).getConnection().closeSockets();
+              VTConsole.print("\rVT>Disconnected client of number [" + number + "] from server!\nVT>");
             }
             else
             {
-              VTConsole.print("\rVT>Not connected with clients!\nVT>");
+              VTConsole.print("\rVT>Client number [" + parsed[1] + "] is not valid!\nVT>");
             }
+          }
+          else
+          {
+            VTConsole.print("\rVT>Not connected with clients!\nVT>");
           }
         }
         else

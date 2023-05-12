@@ -24,71 +24,65 @@ public class VTTEXT extends VTServerStandardLocalConsoleCommandProcessor
       if (parsed.length >= 2)
       {
         List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
-        synchronized (connections)
+        if (connections.size() > 0)
         {
-          if (connections.size() > 0)
+          for (VTServerConnectionHandler connectionHandler : connections.toArray(new VTServerConnectionHandler[] {}))
           {
-            for (VTServerConnectionHandler connectionHandler : connections)
+            if (connectionHandler.getSessionHandler().isAuthenticated())
             {
-              if (connectionHandler.getSessionHandler().isAuthenticated())
+              if (connectionHandler.getConnection() != null && connectionHandler.getConnection().isConnected())
               {
-                if (connectionHandler.getConnection() != null && connectionHandler.getConnection().isConnected())
+                try
                 {
-                  try
-                  {
-                    connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: [" + parsed[1] + "]\nVT>");
-                    connectionHandler.getConnection().getResultWriter().flush();
-                  }
-                  catch (Throwable e)
-                  {
-                    // VTTerminal.print("\rVT>Error
-                    // detected when sending
-                    // message!\nVT>");
-                  }
+                  connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: [" + parsed[1] + "]\nVT>");
+                  connectionHandler.getConnection().getResultWriter().flush();
+                }
+                catch (Throwable e)
+                {
+                  // VTTerminal.print("\rVT>Error
+                  // detected when sending
+                  // message!\nVT>");
                 }
               }
             }
-            VTConsole.print("\rVT>Message sent to clients!\nVT>");
           }
-          else
-          {
-            VTConsole.print("\rVT>Not connected with clients!\nVT>");
-          }
+          VTConsole.print("\rVT>Message sent to clients!\nVT>");
+        }
+        else
+        {
+          VTConsole.print("\rVT>Not connected with clients!\nVT>");
         }
       }
       else if (parsed.length == 1)
       {
         List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
-        synchronized (connections)
+        if (connections.size() > 0)
         {
-          if (connections.size() > 0)
+          for (VTServerConnectionHandler connectionHandler : connections.toArray(new VTServerConnectionHandler[] {}))
           {
-            for (VTServerConnectionHandler connectionHandler : connections)
+            if (connectionHandler.getSessionHandler().isAuthenticated())
             {
-              if (connectionHandler.getSessionHandler().isAuthenticated())
+              if (connectionHandler.getConnection() != null && connectionHandler.getConnection().isConnected())
               {
-                if (connectionHandler.getConnection() != null && connectionHandler.getConnection().isConnected())
+                try
                 {
-                  try
-                  {
-                    connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: []\nVT>");
-                    connectionHandler.getConnection().getResultWriter().flush();
-                  }
-                  catch (Throwable e)
-                  {
-                    // VTTerminal.print("\rVT>Error
-                    // detected when sending
-                    // message!\nVT>");
-                  }
+                  connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: []\nVT>");
+                  connectionHandler.getConnection().getResultWriter().flush();
+                }
+                catch (Throwable e)
+                {
+                  // VTTerminal.print("\rVT>Error
+                  // detected when sending
+                  // message!\nVT>");
                 }
               }
             }
-            VTConsole.print("\rVT>Message sent to clients!\nVT>");
           }
-          else
-          {
-            VTConsole.print("\rVT>Not connected with clients!\nVT>");
-          }
+          VTConsole.print("\rVT>Message sent to clients!\nVT>");
+        }
+        else
+        {
+          VTConsole.print("\rVT>Not connected with clients!\nVT>");
         }
       }
     }
@@ -98,107 +92,98 @@ public class VTTEXT extends VTServerStandardLocalConsoleCommandProcessor
       {
         // command = StringEscapeUtils.unescapeJava(command);
         List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
-        synchronized (connections)
+        if (connections.size() > 0)
         {
-          if (connections.size() > 0)
+          for (VTServerConnectionHandler connectionHandler : connections.toArray(new VTServerConnectionHandler[] {}))
           {
-            for (VTServerConnectionHandler connectionHandler : connections)
+            if (connectionHandler.getSessionHandler().isAuthenticated())
             {
-              if (connectionHandler.getSessionHandler().isAuthenticated())
+              if (connectionHandler.getConnection() != null && connectionHandler.getConnection().isConnected())
               {
-                if (connectionHandler.getConnection() != null && connectionHandler.getConnection().isConnected())
+                try
                 {
-                  try
-                  {
-                    connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: [" + command.substring(8) + "]\nVT>");
-                    connectionHandler.getConnection().getResultWriter().flush();
-                  }
-                  catch (Throwable e)
-                  {
-                    // VTTerminal.print("\rVT>Error
-                    // detected when sending
-                    // message!\nVT>");
-                  }
+                  connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: [" + command.substring(8) + "]\nVT>");
+                  connectionHandler.getConnection().getResultWriter().flush();
+                }
+                catch (Throwable e)
+                {
+                  // VTTerminal.print("\rVT>Error
+                  // detected when sending
+                  // message!\nVT>");
                 }
               }
             }
-            VTConsole.print("\rVT>Message sent to clients!\nVT>");
           }
-          else
-          {
-            VTConsole.print("\rVT>Not connected with clients!\nVT>");
-          }
+          VTConsole.print("\rVT>Message sent to clients!\nVT>");
+        }
+        else
+        {
+          VTConsole.print("\rVT>Not connected with clients!\nVT>");
         }
       }
       else if (command.toUpperCase().startsWith("*VTTX "))
       {
         // command = StringEscapeUtils.unescapeJava(command);
         List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
-        synchronized (connections)
+        if (connections.size() > 0)
         {
-          if (connections.size() > 0)
+          for (VTServerConnectionHandler connectionHandler : connections.toArray(new VTServerConnectionHandler[] {}))
           {
-            for (VTServerConnectionHandler connectionHandler : connections)
+            if (connectionHandler.getSessionHandler().isAuthenticated())
             {
-              if (connectionHandler.getSessionHandler().isAuthenticated())
+              if (connectionHandler.getConnection() != null && connectionHandler.getConnection().isConnected())
               {
-                if (connectionHandler.getConnection() != null && connectionHandler.getConnection().isConnected())
+                try
                 {
-                  try
-                  {
-                    connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: [" + command.substring(6) + "]\nVT>");
-                    connectionHandler.getConnection().getResultWriter().flush();
-                  }
-                  catch (Throwable e)
-                  {
-                    // VTTerminal.print("\rVT>Error
-                    // detected when sending
-                    // message!\nVT>");
-                  }
+                  connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: [" + command.substring(6) + "]\nVT>");
+                  connectionHandler.getConnection().getResultWriter().flush();
+                }
+                catch (Throwable e)
+                {
+                  // VTTerminal.print("\rVT>Error
+                  // detected when sending
+                  // message!\nVT>");
                 }
               }
             }
-            VTConsole.print("\rVT>Message sent to clients!\nVT>");
           }
-          else
-          {
-            VTConsole.print("\rVT>Not connected with clients!\nVT>");
-          }
+          VTConsole.print("\rVT>Message sent to clients!\nVT>");
+        }
+        else
+        {
+          VTConsole.print("\rVT>Not connected with clients!\nVT>");
         }
       }
       else
       {
         List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
-        synchronized (connections)
+        if (connections.size() > 0)
         {
-          if (connections.size() > 0)
+          for (VTServerConnectionHandler connectionHandler : connections.toArray(new VTServerConnectionHandler[] {}))
           {
-            for (VTServerConnectionHandler connectionHandler : connections)
+            if (connectionHandler.getSessionHandler().isAuthenticated())
             {
-              if (connectionHandler.getSessionHandler().isAuthenticated())
+              if (connectionHandler.getConnection() != null && connectionHandler.getConnection().isConnected())
               {
-                if (connectionHandler.getConnection() != null && connectionHandler.getConnection().isConnected())
+                try
                 {
-                  try
-                  {
-                    connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: []\nVT>");
-                    connectionHandler.getConnection().getResultWriter().flush();
-                  }
-                  catch (Throwable e)
-                  {
-                    // VTTerminal.print("\rVT>Error
-                    // detected when sending
-                    // message!\nVT>");
-                  }
+                  connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: []\nVT>");
+                  connectionHandler.getConnection().getResultWriter().flush();
+                }
+                catch (Throwable e)
+                {
+                  // VTTerminal.print("\rVT>Error
+                  // detected when sending
+                  // message!\nVT>");
                 }
               }
             }
-            VTConsole.print("\rVT>Message sent to clients!\nVT>");
           }
-          else
-          {
-            VTConsole.print("\rVT>Not connected with clients!\nVT>");
-          }
+          VTConsole.print("\rVT>Message sent to clients!\nVT>");
+        }
+        else
+        {
+          VTConsole.print("\rVT>Not connected with clients!\nVT>");
         }
       }
     }

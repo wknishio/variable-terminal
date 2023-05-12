@@ -38,26 +38,23 @@ public class VTServerSessionListViewer extends VTTask
       int i = 0;
       List<VTServerConnectionHandler> connections = session.getServer().getServerConnector().getConnectionHandlers();
       message.append("\nVT>List of current client connections on server:\nVT>");
-      //synchronized (connections)
-      //{
-        for (VTServerConnectionHandler handler : connections.toArray(new VTServerConnectionHandler[] { }))
+      for (VTServerConnectionHandler handler : connections.toArray(new VTServerConnectionHandler[] {}))
+      {
+        message.append("\nVT>Session Number: [" + i++ + "]");
+        message.append("\nVT>Authenticated: [" + (handler.getSessionHandler().isAuthenticated() ? "Yes" : "No") + "]");
+        message.append("\nVT>User: [" + (handler.getSessionHandler().getUser() != null ? handler.getSessionHandler().getUser() : "") + "]");
+        InetAddress address = handler.getConnection().getConnectionSocket().getInetAddress();
+        if (address != null)
         {
-          message.append("\nVT>Session Number: [" + i++ + "]");
-          message.append("\nVT>Authenticated: [" + (handler.getSessionHandler().isAuthenticated() ? "Yes" : "No") + "]");
-          message.append("\nVT>User: [" + (handler.getSessionHandler().getUser() != null ? handler.getSessionHandler().getUser() : "") + "]");
-          InetAddress address = handler.getConnection().getConnectionSocket().getInetAddress();
-          if (address != null)
-          {
-            message.append("\nVT>Host address: [" + address.getHostAddress() + "]\nVT>");
-            // "\nVT>Host name: [" + address.getCanonicalHostName() + "]\nVT>");
-            // "]\nVT>Host name: [" + address.getHostName()
-            // +
-            // "]\nVT>Canonical host name: [" +
-            // address.getCanonicalHostName() +
-            // "]\nVT>");
-          }
+          message.append("\nVT>Host address: [" + address.getHostAddress() + "]\nVT>");
+          // "\nVT>Host name: [" + address.getCanonicalHostName() + "]\nVT>");
+          // "]\nVT>Host name: [" + address.getHostName()
+          // +
+          // "]\nVT>Canonical host name: [" +
+          // address.getCanonicalHostName() +
+          // "]\nVT>");
         }
-      //}
+      }
       message.append("\nVT>End of current client connections list\nVT>");
       synchronized (this)
       {

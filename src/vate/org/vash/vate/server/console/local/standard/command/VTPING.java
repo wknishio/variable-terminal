@@ -23,45 +23,42 @@ public class VTPING extends VTServerStandardLocalConsoleCommandProcessor
     int i = 0;
     message.setLength(0);
     List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
-    synchronized (connections)
+    if (connections.size() > 0)
     {
-      if (connections.size() > 0)
+      message.append("\rVT>List of current client connection latencies on server:\nVT>");
+      for (VTServerConnectionHandler handler : connections.toArray(new VTServerConnectionHandler[] {}))
       {
-        message.append("\rVT>List of current client connection latencies on server:\nVT>");
-        for (VTServerConnectionHandler handler : connections)
+        try
         {
-          message.append("\nVT>Number: [" + i++ + "]");
           InetAddress address = handler.getConnection().getConnectionSocket().getInetAddress();
-          
           if (address != null)
           {
-            long millisseconds = 0;
-            long nanosseconds = 0;
-            String hostAddress = "";
-            try
-            {
-              hostAddress = address.getHostAddress();
-              VTServerSession session = handler.getSessionHandler().getSession();
-              long clientTime = session.getLocalNanoDelay();
-              long serverTime = session.getRemoteNanoDelay();
-              nanosseconds = ((clientTime + serverTime) / 2);
-              millisseconds = ((clientTime + serverTime) / 2) / 1000000;
-            }
-            catch (Throwable t)
-            {
-              
-            }
-            
-            message.append("\nVT>Host address: [" + hostAddress + "]\nVT>Estimated connection latency: [" + millisseconds + "] ms or [" + nanosseconds + "] ns\nVT>");
+            message.append("\nVT>Number: [" + i++ + "]");
+            String hostAddress = address.getHostAddress();
+            VTServerSession session = handler.getSessionHandler().getSession();
+            long clientTime = session.getRemoteNanoDelay();
+            long serverTime = session.getLocalNanoDelay();
+            long clientNanoseconds = clientTime;
+            long clientMillisseconds = clientTime / 1000000;
+            long serverNanoseconds = serverTime;
+            long serverMillisseconds = serverTime / 1000000;
+            message.append("\nVT>Host address: [" + hostAddress + "]" +
+            "\nVT>Client connection latency: [" + clientNanoseconds + "] ns or [" + clientMillisseconds + "] ms" +
+            "\nVT>Server connection latency: [" + serverNanoseconds + "] ns or [" + serverMillisseconds + "] ms" +
+            "\nVT>");
           }
         }
-        message.append("\nVT>End of current client connection latencies list\nVT>");
-        VTConsole.print(message.toString());
+        catch (Throwable t)
+        {
+          
+        }
       }
-      else
-      {
-        VTConsole.print("\rVT>Not connected with clients!\nVT>");
-      }
+      message.append("\nVT>End of current client connection latencies list\nVT>");
+      VTConsole.print(message.toString());
+    }
+    else
+    {
+      VTConsole.print("\rVT>Not connected with clients!\nVT>");
     }
     VTConsole.print("\nVT>");
   }
