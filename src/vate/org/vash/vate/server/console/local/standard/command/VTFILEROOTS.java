@@ -24,7 +24,7 @@ public class VTFILEROOTS extends VTServerStandardLocalConsoleCommandProcessor
     {
       message.append("\nVT>Canonical path: [" + root.getCanonicalPath() + "]");
     }
-    message.append("\nVT>\nVT>End of file system roots list\nVT>");
+    message.append("\nVT>\nVT>End of file system roots list on server\nVT>");
     VTConsole.print(message.toString());
   }
   

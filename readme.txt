@@ -18,17 +18,22 @@ Some of the available features are:
 * Simple text messaging between client and server.
 * File transfer with compression, resume and verification.
 * Remote screen capture.
-* Remote desktop control.
+* Remote desktop view and control.
+* Remote clipboard control.
 * Multiple display support.
 * Audio chat communication between client and server.
-* TCP and SOCKS network tunneling.
+* Network tunneling with TCP redirection and SOCKS/HTTP proxy.
 * Network usage rate limiter.
+* Network latency verification.
 * Remote popup alerts.
 * Remote browser opening.
 * Remote mail client opening.
 * Remote printing of texts and files.
 * Remote audio playback.
 * Remote disc tray control.
+* Record client commands to text file.
+* Execute client commands from text file.
+* Record client console output to text file.
 
 The minimum required java version to execute is at least 1.5.
 This software comes with no warranty, use at your own risk!
@@ -116,10 +121,11 @@ these are the available program arguments:
 * -PK: proxy password, default null
 * -ET: encryption type, none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)
 * -EK: encryption password, default null
-* -SM: session maximum, default 0, only in server
-* -SC: session commands, separated by "*;", default null, only in client
+* -SS: session shell, default null
 * -SU: session user, default null
 * -SK: session password, default null
+* -SM: session maximum, default 0, only in server
+* -SC: session commands, separated by "*;", default null, only in client
 
 ## Console commands
 

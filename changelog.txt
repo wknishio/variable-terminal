@@ -75,14 +75,13 @@ Changes since 1.4.2:
 * Added capacity of adding custom plugin console commands in client and server
 * Changed *VTRUNTIME command to be able to send Base64 data to input
 * Changed *VTRUNTIME command to be able to send unicode utf8 data to input
-* Changed *VTFILETRANSFER to transfer file again if checksum dont match
 * Reduced graphical console CPU usage when its not the active window
 * Changed *VTMESSAGE command to *VTTEXT
 * Fixed *VTTEXT command problem
 * Changed the readme file to english language
 * Updated graphical console to lanterna based implementation
 * Added capacity to truncate files when using command *VTFILETRANSFER
-* Added notification of nat devices external addresses
+* Added notification of nat devices external addresses with UPnP and NAT-PMP
 * Added timeout option to command *VTRUNTIME
 * Added Sixlegs Java PNG Decoder library
 * Added optional zstd compression in command *VTFILETRANSFER
