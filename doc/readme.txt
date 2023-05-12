@@ -4,6 +4,9 @@
 
 This software is a java remote computer administration tool.
 
+It has various functions inspired by TELNET, FTP, SSH, NETBUS, VNC,
+but its incompatible with those tools/protocols/standards.
+
 Some of the available features are:
 
 * RC4, AES, ISAAC, SALSA, HC256 or GRAIN encryption.
@@ -92,10 +95,11 @@ TCP port is 6060.
 * Proxy password controls the password for proxy authentication.
 * Encryption type enables connection encryption using encryption algorithms.
 * Encryption password sets the password for connection encryption.
-* Session maximum define a limit for simultaneous sessions in server.
-* Session commands set commands separated by *; to be run when session starts.
+* Session shell sets the command to be used as remote shell in server.
 * Session user sets the session user for session.
 * Session password sets the session password for session.
+* Session maximum define a limit for simultaneous sessions in server.
+* Session commands set commands separated by *; to be run when session starts.
 
 All connection settings can be set using the files  
 "vate-client.properties" for client instances and  
