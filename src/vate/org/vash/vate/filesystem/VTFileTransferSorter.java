@@ -17,14 +17,14 @@ public class VTFileTransferSorter implements Comparator<File>
       }
       else
       {
-        return 1;
+        return -1;
       }
     }
     else
     {
       if (o2.isDirectory())
       {
-        return -1;
+        return 1;
       }
       else
       {
