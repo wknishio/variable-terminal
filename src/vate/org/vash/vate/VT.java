@@ -41,6 +41,13 @@ public class VT
   public static final int VT_SECURITY_DIGEST_SIZE_BYTES = 64;
   public static final int VT_SECURITY_SEED_SIZE_BYTES = VT_SECURITY_DIGEST_SIZE_BYTES << 1;
   
+  public static final int VT_AUTHENTICATION_TIMEOUT_MILLISECONDS = 60000;
+  public static final int VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS = 60000;
+  public static final int VT_CONNECTION_ATTEMPT_TIMEOUT_MILLISECONDS = 30000;
+  public static final int VT_CLIENT_RECONNECTION_TIMEOUT_MILLISECONDS = 60000;
+  public static final int VT_DAEMON_RECONNECTION_TIMEOUT_MILLISECONDS = 2500;
+  public static final int VT_PING_SERVICE_INTERVAL_MILLISECONDS = 15000;
+  
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_PIPED = 0;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT = 1;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_THROTTLEABLE = 0 << 1;
@@ -61,16 +68,6 @@ public class VT
   public static final int VT_CONNECTION_ENCRYPT_SALSA = 4;
   public static final int VT_CONNECTION_ENCRYPT_HC256 = 5;
   public static final int VT_CONNECTION_ENCRYPT_GRAIN = 6;
-  
-  public static final int VT_AUTHENTICATION_TIMEOUT_MILLISECONDS = 60000;
-  
-  public static final int VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS = 60000;
-  public static final int VT_CONNECTION_ATTEMPT_TIMEOUT_MILLISECONDS = 30000;
-
-  public static final int VT_CLIENT_RECONNECTION_TIMEOUT_MILLISECONDS = 60000;
-  public static final int VT_DAEMON_RECONNECTION_TIMEOUT_MILLISECONDS = 2500;
-  
-  public static final int VT_INTERVAL_PING_SERVICE_MILLISECONDS = 15000;
   
   public static final int VT_FILE_TRANSFER_SESSION_STARTED = 0;
   public static final int VT_FILE_TRANSFER_SESSION_FINISHED = 1;
@@ -208,6 +205,10 @@ public class VT
     VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
   }
   
+  public static final int VT_ZIP_FILE_COMPRESS = 1;
+  public static final int VT_ZIP_FILE_UNCOMPRESS = 2;
+  public static final int VT_ZIP_FILE_DECOMPRESS = 3;
+  
   public static final int VT_AUDIO_CODEC_SPEEX = 1;
   public static final int VT_AUDIO_CODEC_OPUS = 2;
   public static final int VT_AUDIO_CODEC_DEFAULT = VT_AUDIO_CODEC_OPUS;
@@ -215,10 +216,6 @@ public class VT
   public static final int VT_AUDIO_CODEC_FRAME_MILLISECONDS = 20;
   public static final int VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS = 160;
   public static final int VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS = 160;
-  
-  public static final int VT_ZIP_FILE_COMPRESS = 1;
-  public static final int VT_ZIP_FILE_UNCOMPRESS = 2;
-  public static final int VT_ZIP_FILE_DECOMPRESS = 3;
   
   public static final String VT_VERSION = "v" + VT.VT_MAJOR_VERSION + "." + VT.VT_MINOR_VERSION + "." + VT.VT_REVISION_VERSION;
   public static final String VT_YEAR = VT_ERA_DATEFORMAT.format(VT_YEAR_CALENDAR.getTime()) + " " + String.valueOf(VT_YEAR_CALENDAR.get(Calendar.YEAR));
