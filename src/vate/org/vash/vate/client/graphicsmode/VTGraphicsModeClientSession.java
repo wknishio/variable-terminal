@@ -212,7 +212,10 @@ public class VTGraphicsModeClientSession
       // session.getConnection().getGraphicsControlDataInputStream().read();
       synchronized (session.getGraphicsClient())
       {
-        VTConsole.print("\nVT>Remote graphics link stopped!\nVT>");
+        if (session.getConnection().isConnected())
+        {
+          VTConsole.print("\nVT>Remote graphics link stopped!\nVT>");
+        }
         finished = true;
       }
     }

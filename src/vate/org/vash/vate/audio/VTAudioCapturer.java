@@ -335,15 +335,12 @@ public class VTAudioCapturer
           // e.printStackTrace();
         }
       }
-      //synchronized (lines)
-      //{
-        lines.remove(id);
-        if (lines.size() == 0)
-        {
-          running = false;
-          system.stop();
-        }
-      //}
+      lines.remove(id);
+      if (lines.size() == 0)
+      {
+        running = false;
+        system.stop();
+      }
     }
     
     public final void loopOpus() throws OpusException, IOException
@@ -455,24 +452,11 @@ public class VTAudioCapturer
     
     public void run()
     {
-      // System.out.println("started capture");
-      // System.out.println("started running:" + running);
       line.flush();
       line.start();
       
       try
       {
-//        while (line.available() < lineBufferSize / 2)
-//        {
-//          try
-//          {
-//            Thread.sleep(1);
-//          }
-//          catch (InterruptedException e)
-//          {
-//            
-//          }
-//        }
         if (codec == VT.VT_AUDIO_CODEC_OPUS)
         {
           loopOpus();
@@ -484,13 +468,10 @@ public class VTAudioCapturer
       }
       catch (Throwable e)
       {
-        // running = false;
-        close();
-        // e.printStackTrace();
+        //e.printStackTrace();
       }
       close();
     }
-    
   }
   
   public boolean addOutputStream(OutputStream out, Mixer.Info info, TargetDataLine line, int codec, int frameMilliseconds)
@@ -521,20 +502,18 @@ public class VTAudioCapturer
   public void close()
   {
     this.running = false;
-    //synchronized (lines)
-    //{
-      for (VTAudioCapturerThread capturerThread : lines.values().toArray(new VTAudioCapturerThread[] { }))
+    for (VTAudioCapturerThread capturerThread : lines.values().toArray(new VTAudioCapturerThread[] {}))
+    {
+      try
       {
-        try
-        {
-          capturerThread.close();
-        }
-        catch (Throwable e)
-        {
-          
-        }
+        capturerThread.close();
       }
-    //}
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    lines.clear();
     scheduled.clear();
   }
   

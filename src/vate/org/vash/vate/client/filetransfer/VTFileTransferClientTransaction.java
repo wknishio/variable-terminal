@@ -1679,7 +1679,7 @@ public class VTFileTransferClientTransaction implements Runnable
           }
           synchronized (this)
           {
-            if (!stopped)
+            if (!stopped && session.getClient().getConnection().isConnected())
             {
               if (interrupted)
               {
@@ -1762,13 +1762,16 @@ public class VTFileTransferClientTransaction implements Runnable
               }
               synchronized (this)
               {
-                if (interrupted)
+                if (session.getClient().getConnection().isConnected())
                 {
-                  VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
-                }
-                else
-                {
-                  VTConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                  if (interrupted)
+                  {
+                    VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                  }
+                  else
+                  {
+                    VTConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                  }
                 }
                 finished = true;
               }
@@ -1777,20 +1780,23 @@ public class VTFileTransferClientTransaction implements Runnable
           }
           synchronized (this)
           {
-            if (!stopped)
+            if (session.getClient().getConnection().isConnected())
             {
-              if (interrupted)
+              if (!stopped)
               {
-                VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                if (interrupted)
+                {
+                  VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                }
+                else
+                {
+                  VTConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                }
               }
               else
               {
-                VTConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
               }
-            }
-            else
-            {
-              VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
             }
             finished = true;
           }
@@ -1799,7 +1805,10 @@ public class VTFileTransferClientTransaction implements Runnable
         {
           synchronized (this)
           {
-            VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+            if (session.getClient().getConnection().isConnected())
+            {
+              VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+            }
             finished = true;
           }
         }
@@ -1808,7 +1817,10 @@ public class VTFileTransferClientTransaction implements Runnable
       {
         synchronized (this)
         {
-          VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+          if (session.getClient().getConnection().isConnected())
+          {
+            VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+          }
           finished = true;
         }
       }

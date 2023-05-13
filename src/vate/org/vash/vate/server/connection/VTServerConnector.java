@@ -80,7 +80,7 @@ public class VTServerConnector implements Runnable
     interruptConnector();
     try
     {
-      for (VTServerConnectionHandler handler : connectionHandlers)
+      for (VTServerConnectionHandler handler : connectionHandlers.toArray(new VTServerConnectionHandler[] {}))
       {
         try
         {
