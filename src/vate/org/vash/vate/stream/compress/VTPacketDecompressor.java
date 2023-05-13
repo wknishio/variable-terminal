@@ -9,7 +9,7 @@ import org.vash.vate.stream.array.VTByteArrayOutputStream;
 
 public final class VTPacketDecompressor extends OutputStream
 {
-  private static final int bufferSize = VT.VT_BUFFER_COMPRESSION_SIZE_BYTES;
+  private static final int bufferSize = VT.VT_COMPRESSION_BUFFER_SIZE_BYTES;
   private InputStream in;
   private OutputStream out;
   private byte[] buffer = new byte[bufferSize];

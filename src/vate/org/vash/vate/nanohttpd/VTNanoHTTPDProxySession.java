@@ -484,7 +484,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     //remoteSocket.setSendBufferSize(1024 * 64);
     //remoteSocket.setReceiveBufferSize(1024 * 64);
     //remoteSocket.setSoLinger(true, 5);
-    remoteSocket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
+    remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     
     InputStream remoteInput = remoteSocket.getInputStream();
     OutputStream remoteOutput = remoteSocket.getOutputStream();
@@ -560,7 +560,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     //remoteSocket.setSendBufferSize(1024 * 64);
     //remoteSocket.setReceiveBufferSize(1024 * 64);
     //remoteSocket.setSoLinger(true, 5);
-    remoteSocket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
+    remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     
     InputStream remoteInput = remoteSocket.getInputStream();
     OutputStream remoteOutput = remoteSocket.getOutputStream();

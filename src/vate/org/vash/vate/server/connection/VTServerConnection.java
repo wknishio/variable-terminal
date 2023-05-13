@@ -605,8 +605,8 @@ public class VTServerConnection
   
   private void setMultiplexedStreams() throws IOException
   {
-    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_DATA_NETWORK_PACKET_TOTAL_SIZE_BYTES, VT.VT_BUFFER_NETWORK_PACKET_SIZE_BYTES, false);
-    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_DATA_NETWORK_PACKET_TOTAL_SIZE_BYTES, VT.VT_DATA_NETWORK_PACKET_TOTAL_SIZE_BYTES);
+    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_PACKET_TOTAL_SIZE_BYTES, VT.VT_NETWORK_PACKET_BUFFER_SIZE_BYTES, false);
+    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_PACKET_TOTAL_SIZE_BYTES, VT.VT_PACKET_TOTAL_SIZE_BYTES);
     
     pingInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_UNLIMITED, 0);
     pingOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_UNLIMITED, 0);
@@ -672,7 +672,7 @@ public class VTServerConnection
     graphicsControlDataOutputStream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(graphicsControlOutputStream, false));
     
     directImageDataInputStream = (graphicsDirectImageInputStream);
-    directImageDataOutputStream = (new VTBufferedOutputStream(graphicsDirectImageOutputStream, VT.VT_BUFFER_STANDARD_SIZE_BYTES, false));
+    directImageDataOutputStream = (new VTBufferedOutputStream(graphicsDirectImageOutputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES, false));
     
     deflatedImageDataInputStream = (graphicsDeflatedImageInputStream);
     

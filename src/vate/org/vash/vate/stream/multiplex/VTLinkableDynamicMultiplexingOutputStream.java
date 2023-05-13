@@ -212,11 +212,11 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       // this.blockBits = blockSize - 1;
       // this.autoFlushPackets = autoFlushPackets;
       // this.dataPaddingBuffer = new byte[blockSize];
-      this.intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_BUFFER_STANDARD_SIZE_BYTES);
-      this.dataPacketBuffer = new VTByteArrayOutputStream(packetSize + VT.VT_DATA_NETWORK_PACKET_HEADER_SIZE_BYTES);
+      this.intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+      this.dataPacketBuffer = new VTByteArrayOutputStream(packetSize + VT.VT_PACKET_HEADER_SIZE_BYTES);
       this.dataPacketStream = new VTLittleEndianOutputStream(dataPacketBuffer);
       // this.controlPaddingBuffer = new byte[blockSize];
-      this.controlPacketBuffer = new VTByteArrayOutputStream(VT.VT_DATA_NETWORK_PACKET_HEADER_SIZE_BYTES);
+      this.controlPacketBuffer = new VTByteArrayOutputStream(VT.VT_PACKET_HEADER_SIZE_BYTES);
       this.controlPacketStream = new VTLittleEndianOutputStream(controlPacketBuffer);
       this.closed = false;
       // this.link = null;

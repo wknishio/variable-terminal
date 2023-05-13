@@ -17,7 +17,7 @@ public class VTDirectSocketFactory extends SocketFactory
     Socket socket = new Socket();
     socket.connect(new InetSocketAddress(host, port));
     socket.setTcpNoDelay(true);
-    socket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
+    socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
   }
   
@@ -26,7 +26,7 @@ public class VTDirectSocketFactory extends SocketFactory
     Socket socket = new Socket();
     socket.connect(new InetSocketAddress(host, port));
     socket.setTcpNoDelay(true);
-    socket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
+    socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
   }
   
@@ -36,7 +36,7 @@ public class VTDirectSocketFactory extends SocketFactory
     socket.bind(new InetSocketAddress(bind, local));
     socket.connect(new InetSocketAddress(host, port));
     socket.setTcpNoDelay(true);
-    socket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
+    socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
   }
   
@@ -46,7 +46,7 @@ public class VTDirectSocketFactory extends SocketFactory
     socket.bind(new InetSocketAddress(bind, local));
     socket.connect(new InetSocketAddress(host, port));
     socket.setTcpNoDelay(true);
-    socket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
+    socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
   }
 }

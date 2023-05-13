@@ -29,14 +29,14 @@ public class VT
   public static final int VT_MINOR_VERSION = 4;
   public static final int VT_REVISION_VERSION = 2;
   
-  public static final int VT_DATA_NETWORK_PACKET_HEADER_SIZE_BYTES = 8;
-  public static final int VT_DATA_NETWORK_PACKET_TOTAL_SIZE_BYTES = 1024 * 4;
+  public static final int VT_PACKET_HEADER_SIZE_BYTES = 8;
+  public static final int VT_PACKET_TOTAL_SIZE_BYTES = 1024 * 4;
   
-  public static final int VT_BUFFER_NETWORK_PACKET_SIZE_BYTES = 1024 * 64;
-  public static final int VT_BUFFER_STANDARD_SIZE_BYTES = 1024 * 64;
-  public static final int VT_BUFFER_COMPRESSION_SIZE_BYTES = 1024 * 64;
-  public static final int VT_BUFFER_FILE_SIZE_BYTES = 1024 * 64;
-  public static final int VT_BUFFER_SMALL_SIZE_BYTES = 1024 * 16;
+  public static final int VT_NETWORK_PACKET_BUFFER_SIZE_BYTES = 1024 * 64;
+  public static final int VT_STANDARD_BUFFER_SIZE_BYTES = 1024 * 64;
+  public static final int VT_COMPRESSION_BUFFER_SIZE_BYTES = 1024 * 64;
+  public static final int VT_FILE_BUFFER_SIZE_BYTES = 1024 * 64;
+  public static final int VT_SMALL_BUFFER_SIZE_BYTES = 1024 * 16;
   
   public static final int VT_SECURITY_DIGEST_SIZE_BYTES = 64;
   public static final int VT_SECURITY_SEED_SIZE_BYTES = VT_SECURITY_DIGEST_SIZE_BYTES << 1;
@@ -62,10 +62,13 @@ public class VT
   public static final int VT_CONNECTION_ENCRYPT_HC256 = 5;
   public static final int VT_CONNECTION_ENCRYPT_GRAIN = 6;
   
-  public static final int VT_TIMEOUT_AUTHENTICATION_MILLISECONDS = 60000;
-  public static final int VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS = 60000;
-  public static final int VT_TIMEOUT_CLIENT_RECONNECTION_MILLISECONDS = 60000;
-  public static final int VT_TIMEOUT_DAEMON_RECONNECTION_MILLISECONDS = 2500;
+  public static final int VT_AUTHENTICATION_TIMEOUT_MILLISECONDS = 60000;
+  
+  public static final int VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS = 60000;
+  public static final int VT_CONNECTION_ATTEMPT_TIMEOUT_MILLISECONDS = 30000;
+
+  public static final int VT_CLIENT_RECONNECTION_TIMEOUT_MILLISECONDS = 60000;
+  public static final int VT_DAEMON_RECONNECTION_TIMEOUT_MILLISECONDS = 2500;
   
   public static final int VT_INTERVAL_PING_SERVICE_MILLISECONDS = 15000;
   

@@ -185,7 +185,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
       //socket.setSendBufferSize(1024 * 64);
       //socket.setReceiveBufferSize(1024 * 64);
       //socket.setSoLinger(true, 5);
-      socket.setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
+      socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
       //socket.getInputStream();
       //socket.getOutputStream();
       return socket;

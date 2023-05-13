@@ -11,7 +11,7 @@ public class VTStreamCipherInputStream extends FilterInputStream
 {
   private byte[] single1 = new byte[0];
   private byte[] single2 = new byte[0];
-  private byte[] input = new byte[VT.VT_BUFFER_STANDARD_SIZE_BYTES];
+  private byte[] input = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
   private StreamCipher streamCipher;
   
   public VTStreamCipherInputStream(InputStream in, StreamCipher streamCipher)

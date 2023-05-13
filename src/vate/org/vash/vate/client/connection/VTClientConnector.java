@@ -109,7 +109,7 @@ public class VTClientConnector implements Runnable
         {
           synchronized (this)
           {
-            wait(VT.VT_TIMEOUT_CLIENT_RECONNECTION_MILLISECONDS);
+            wait(VT.VT_CLIENT_RECONNECTION_TIMEOUT_MILLISECONDS);
           }
         }
         // VTConsole.print("\nVT>AuthenticationTimeout");
@@ -602,7 +602,7 @@ public class VTClientConnector implements Runnable
       //connection.getConnectionSocket().setSoLinger(true, 5);
       // connection.getConnectionSocket().setReuseAddress(true);
       // connection.getConnectionSocket().setKeepAlive(true);
-      connection.getConnectionSocket().setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
+      connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
       connecting = false;
       if (encryptionType == null)
       {
@@ -703,7 +703,7 @@ public class VTClientConnector implements Runnable
       //connection.getConnectionSocket().setSoLinger(true, 5);
       // connection.getConnectionSocket().setReuseAddress(true);
       // connection.getConnectionSocket().setKeepAlive(true);
-      connection.getConnectionSocket().setSoTimeout(VT.VT_TIMEOUT_NETWORK_CONNECTION_MILLISECONDS);
+      connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
       connecting = false;
       if (encryptionType == null)
       {
@@ -807,7 +807,7 @@ public class VTClientConnector implements Runnable
       {
         try
         {
-          wait(VT.VT_TIMEOUT_DAEMON_RECONNECTION_MILLISECONDS);
+          wait(VT.VT_DAEMON_RECONNECTION_TIMEOUT_MILLISECONDS);
         }
         catch (Throwable e)
         {
