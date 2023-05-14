@@ -103,9 +103,19 @@ public class VTCompressorSelector
     //return new BufferedInputStream(new ZstdInputStream(in), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
   }
   
-  public static OutputStream createBufferedZlibOutputStream(OutputStream out)
+  public static OutputStream createBufferedZlibOutputStreamDefault(OutputStream out)
+  {
+    return createFlushBufferedSyncFlushDeflaterOutputStreamDefaultStrategy(out);
+  }
+  
+  public static OutputStream createBufferedZlibOutputStreamFiltered(OutputStream out)
   {
     return createFlushBufferedSyncFlushDeflaterOutputStreamFilteredStrategy(out);
+  }
+  
+  public static OutputStream createBufferedZlibOutputStreamHuffmanOnly(OutputStream out)
+  {
+    return createFlushBufferedSyncFlushDeflaterOutputStreamHuffmanOnlyStrategy(out);
   }
   
   public static InputStream createBufferedZlibInputStream(InputStream in)

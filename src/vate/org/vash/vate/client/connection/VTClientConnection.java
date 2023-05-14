@@ -680,7 +680,7 @@ public class VTClientConnection
     // multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED,
     // 12);
     
-    shellDataOutputStream = VTCompressorSelector.createBufferedZlibOutputStream(shellOutputStream);
+    shellDataOutputStream = VTCompressorSelector.createBufferedZlibOutputStreamDefault(shellOutputStream);
     // shellDataOutputStream =
     // VTCompressorSelector.createFlushBufferedSyncFlushDeflaterOutputStream(shellOutputStream);
     // shellDataOutputStream = shellOutputStream;
