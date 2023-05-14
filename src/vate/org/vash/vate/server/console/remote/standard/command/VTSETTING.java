@@ -132,7 +132,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
     }
     else if (parsed.length >= 2)
     {
-      if (parsed[1].equalsIgnoreCase("SP"))
+      if (parsed[1].equalsIgnoreCase("SF"))
       {
         if (parsed.length == 2)
         {
@@ -168,7 +168,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           connection.getResultWriter().flush();
         }
       }
-      else if (parsed[1].equalsIgnoreCase("LP"))
+      else if (parsed[1].equalsIgnoreCase("LF"))
       {
         if (parsed.length == 2)
         {

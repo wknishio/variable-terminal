@@ -132,7 +132,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
     }
     else if (parsed.length >= 2)
     {
-      if (parsed[1].equalsIgnoreCase("SP"))
+      if (parsed[1].equalsIgnoreCase("SF"))
       {
         if (parsed.length == 2)
         {
@@ -163,7 +163,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
-      else if (parsed[1].equalsIgnoreCase("LP"))
+      else if (parsed[1].equalsIgnoreCase("LF"))
       {
         if (parsed.length == 2)
         {
