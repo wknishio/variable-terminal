@@ -480,7 +480,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     
     Socket remoteSocket = new Socket(host, port);
-    remoteSocket.setTcpNoDelay(true);
+    //remoteSocket.setTcpNoDelay(true);
     //remoteSocket.setSendBufferSize(1024 * 64);
     //remoteSocket.setReceiveBufferSize(1024 * 64);
     //remoteSocket.setSoLinger(true, 5);
@@ -556,7 +556,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     requestData.write(bodyData);
     
     Socket remoteSocket = new Socket(host, port);
-    remoteSocket.setTcpNoDelay(true);
+    //remoteSocket.setTcpNoDelay(true);
     //remoteSocket.setSendBufferSize(1024 * 64);
     //remoteSocket.setReceiveBufferSize(1024 * 64);
     //remoteSocket.setSoLinger(true, 5);

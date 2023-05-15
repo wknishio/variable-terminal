@@ -201,7 +201,7 @@ public class ProxyServer implements Runnable {
 			while (true) {
 				Socket s = ss.accept();
 				//s.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
-				s.setTcpNoDelay(true);
+				//s.setTcpNoDelay(true);
 	      //s.setSendBufferSize(1024 * 64);
 	      //s.setReceiveBufferSize(1024 * 64);
 				//s.setSoLinger(true, 5);
@@ -395,7 +395,7 @@ public class ProxyServer implements Runnable {
 			//s.setReuseAddress(true);
 			s.connect(new InetSocketAddress(msg.ip, msg.port));
 			//s = new Socket(msg.ip, msg.port);
-			s.setTcpNoDelay(true);
+			//s.setTcpNoDelay(true);
       //s.setSendBufferSize(1024 * 64);
       //s.setReceiveBufferSize(1024 * 64);
 			//s.setSoLinger(true, 5);
@@ -405,7 +405,7 @@ public class ProxyServer implements Runnable {
 			//s.setSoLinger(true, 0);
 		} else {
 			s = new SocksSocket(proxy, msg.ip, msg.port);
-			s.setTcpNoDelay(true);
+			//s.setTcpNoDelay(true);
       //s.setSendBufferSize(1024 * 64);
       //s.setReceiveBufferSize(1024 * 64);
 			//s.setSoLinger(true, 5);
@@ -531,7 +531,7 @@ public class ProxyServer implements Runnable {
 		  //ss.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 			s = ss.accept();
 			//s.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
-			s.setTcpNoDelay(true);
+			//s.setTcpNoDelay(true);
       //s.setSendBufferSize(1024 * 64);
       //s.setReceiveBufferSize(1024 * 64);
 			//s.setSoLinger(true, 5);

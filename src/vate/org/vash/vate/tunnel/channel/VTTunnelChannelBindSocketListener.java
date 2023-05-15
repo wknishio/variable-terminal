@@ -181,7 +181,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
     try
     {
       socket = serverSocket.accept();
-      socket.setTcpNoDelay(true);
+      //socket.setTcpNoDelay(true);
       //socket.setSendBufferSize(1024 * 64);
       //socket.setReceiveBufferSize(1024 * 64);
       //socket.setSoLinger(true, 5);
