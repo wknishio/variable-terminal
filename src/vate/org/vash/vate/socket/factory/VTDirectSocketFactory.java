@@ -12,6 +12,12 @@ import org.vash.vate.VT;
 
 public class VTDirectSocketFactory extends SocketFactory
 {
+  public Socket createSocket()
+  {
+    Socket socket = new Socket();
+    return socket;
+  }
+  
   public Socket createSocket(String host, int port) throws IOException, UnknownHostException
   {
     Socket socket = new Socket();
