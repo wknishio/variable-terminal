@@ -181,7 +181,6 @@ public class VTServerConnection
     this.blake3Digest = new VTBlake3MessageDigest();
     this.authenticationReader = new VTLittleEndianInputStream(null);
     this.authenticationWriter = new VTLittleEndianOutputStream(null);
-    
   }
   
   public VTBlake3DigestRandom getSecureRandom()
