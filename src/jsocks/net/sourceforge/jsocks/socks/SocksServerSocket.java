@@ -133,7 +133,7 @@ public class SocksServerSocket extends ServerSocket {
 		  //super.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
 			s = super.accept();
 			//s.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
-			//s.setTcpNoDelay(true);
+			s.setTcpNoDelay(true);
 			//s.setSoLinger(true, 5);
 			//s.setReuseAddress(true);
 			//s.setKeepAlive(true);

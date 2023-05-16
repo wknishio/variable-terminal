@@ -22,7 +22,7 @@ public class VTDirectSocketFactory extends SocketFactory
   {
     Socket socket = new Socket();
     socket.connect(new InetSocketAddress(host, port));
-    //socket.setTcpNoDelay(true);
+    socket.setTcpNoDelay(true);
     socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
   }
@@ -31,7 +31,7 @@ public class VTDirectSocketFactory extends SocketFactory
   {
     Socket socket = new Socket();
     socket.connect(new InetSocketAddress(host, port));
-    //socket.setTcpNoDelay(true);
+    socket.setTcpNoDelay(true);
     socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
   }
@@ -41,7 +41,7 @@ public class VTDirectSocketFactory extends SocketFactory
     Socket socket = new Socket();
     socket.bind(new InetSocketAddress(bind, local));
     socket.connect(new InetSocketAddress(host, port));
-    //socket.setTcpNoDelay(true);
+    socket.setTcpNoDelay(true);
     socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
   }
@@ -51,7 +51,7 @@ public class VTDirectSocketFactory extends SocketFactory
     Socket socket = new Socket();
     socket.bind(new InetSocketAddress(bind, local));
     socket.connect(new InetSocketAddress(host, port));
-    //socket.setTcpNoDelay(true);
+    socket.setTcpNoDelay(true);
     socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
   }

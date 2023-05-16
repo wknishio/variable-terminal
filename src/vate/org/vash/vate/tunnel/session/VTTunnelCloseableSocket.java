@@ -59,25 +59,21 @@ public class VTTunnelCloseableSocket extends Socket implements Closeable
   public void setSoTimeout(int timeout) throws SocketException
   {
     socket.setSoTimeout(timeout);
-    //super.setSoTimeout(timeout);
   }
   
   public void setTcpNoDelay(boolean on) throws SocketException
   {
     socket.setTcpNoDelay(on);
-    //super.setTcpNoDelay(true);
   }
   
   public void setSoLinger(boolean on, int linger) throws SocketException
   {
     socket.setSoLinger(on, linger);
-    //super.setSoLinger(on, linger);
   }
   
   public void setKeepAlive(boolean on) throws SocketException
   {
     socket.setKeepAlive(on);
-    //super.setKeepAlive(false);
   }
   
   public boolean isInputShutdown()

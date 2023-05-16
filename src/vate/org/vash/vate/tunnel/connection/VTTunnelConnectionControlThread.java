@@ -264,7 +264,7 @@ public class VTTunnelConnectionControlThread implements Runnable
       }
       Socket socket = new Socket();
       socket.connect(new InetSocketAddress(host, port));
-      //socket.setTcpNoDelay(true);
+      socket.setTcpNoDelay(true);
       //socket.setSendBufferSize(1024 * 64);
       //socket.setReceiveBufferSize(1024 * 64);
       //socket.setSoLinger(true, 5);

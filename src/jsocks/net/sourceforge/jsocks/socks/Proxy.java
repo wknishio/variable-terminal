@@ -387,7 +387,7 @@ public abstract class Proxy {
 				proxySocket = new SocksSocket(chainProxy, proxyHost, proxyPort);
 
 			// proxySocket.setKeepAlive(true);
-			//proxySocket.setTcpNoDelay(true);
+			proxySocket.setTcpNoDelay(true);
 			//proxySocket.setSendBufferSize(1024 * 64);
 			//proxySocket.setReceiveBufferSize(1024 * 64);
 			//proxySocket.setSoLinger(true, 5);

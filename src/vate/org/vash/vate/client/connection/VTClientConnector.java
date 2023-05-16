@@ -596,7 +596,7 @@ public class VTClientConnector implements Runnable
       connection.setConnectionSocket(connectionServerSocket.accept());
       // connection.getConnectionSocket().setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE
       // - 1);
-      //connection.getConnectionSocket().setTcpNoDelay(true);
+      connection.getConnectionSocket().setTcpNoDelay(true);
       //connection.getConnectionSocket().setSendBufferSize(1024 * 64);
       //connection.getConnectionSocket().setReceiveBufferSize(1024 * 64);
       //connection.getConnectionSocket().setSoLinger(true, 5);
@@ -697,7 +697,7 @@ public class VTClientConnector implements Runnable
       // connection.getConnectionSocket().setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE
       // - 1);
       connection.getConnectionSocket().connect(socketAddress);
-      //connection.getConnectionSocket().setTcpNoDelay(true);
+      connection.getConnectionSocket().setTcpNoDelay(true);
       //connection.getConnectionSocket().setSendBufferSize(1024 * 64);
       //connection.getConnectionSocket().setReceiveBufferSize(1024 * 64);
       //connection.getConnectionSocket().setSoLinger(true, 5);
