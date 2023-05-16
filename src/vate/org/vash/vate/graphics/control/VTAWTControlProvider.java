@@ -119,13 +119,6 @@ public final class VTAWTControlProvider
     {
       if (interfaceInputRobot == null)
       {
-        /*
-         * if (device != null) { Rectangle deviceBounds =
-         * getDeviceBounds(device); if (deviceBounds.x == 0 && deviceBounds.y ==
-         * 0) { interfaceInputRobot = new Robot(device); } else {
-         * interfaceInputRobot = new Robot(); } } else { interfaceInputRobot =
-         * new Robot(); }
-         */
         interfaceInputRobot = new Robot();
         // interfaceInputRobot = new Robot();
         // interfaceInputRobot = new Robot(device);
