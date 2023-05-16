@@ -629,7 +629,7 @@ public class VTClientConnection
   
   private void setMultiplexedStreams() throws IOException
   {
-    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_PACKET_TOTAL_SIZE_BYTES, VT.VT_NETWORK_PACKET_BUFFER_SIZE_BYTES, false);
+    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(new BufferedInputStream(connectionInputStream, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES), VT.VT_PACKET_TOTAL_SIZE_BYTES, VT.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, false);
     multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_PACKET_TOTAL_SIZE_BYTES, VT.VT_PACKET_TOTAL_SIZE_BYTES);
     
     pingInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_UNLIMITED, 0);
