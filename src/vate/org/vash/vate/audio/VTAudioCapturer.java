@@ -2,9 +2,9 @@ package org.vash.vate.audio;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
@@ -34,7 +34,7 @@ public class VTAudioCapturer
   private AudioFormat audioFormat;
   private Map<String, VTAudioCapturerThread> lines = Collections.synchronizedMap(new LinkedHashMap<String, VTAudioCapturerThread>());
   private VTAudioSystem system;
-  private List<Runnable> scheduled = new LinkedList<Runnable>();
+  private List<Runnable> scheduled = new ArrayList<Runnable>();
   
   public VTAudioCapturer(VTAudioSystem system, ExecutorService threads)
   {
@@ -132,7 +132,7 @@ public class VTAudioCapturer
     private final byte[] inputBuffer;
     // private short[] inputBufferShort;
     private final byte[] outputBuffer;
-    private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+    private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VT.VT_SMALL_BUFFER_SIZE_BYTES);
     private final Queue<VTLittleEndianOutputStream> streams;
     private final String id;
     private TargetDataLine line;

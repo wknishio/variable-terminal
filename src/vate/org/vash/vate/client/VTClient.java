@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
@@ -64,7 +64,7 @@ public class VTClient implements Runnable
   private volatile boolean skipConfiguration;
   private volatile boolean retry = false;
   private volatile boolean manual = false;
-  private List<VTClientSessionListener> listeners = new LinkedList<VTClientSessionListener>();
+  private List<VTClientSessionListener> listeners = new ArrayList<VTClientSessionListener>();
   private static final String VT_CLIENT_SETTINGS_COMMENTS = 
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
   "#vate.client.connection.mode      values: default active(A), passive(P)\r\n" + 

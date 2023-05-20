@@ -382,9 +382,9 @@ public class VTGraphicsModeServerWriter implements Runnable
     // Rectangle refreshArea = new Rectangle(resultArea.x + 1, resultArea.y + 1,
     // resultArea.width, resultArea.height);
     List<Rectangle> blockAreas = VTImageDataUtils.splitBlockArea(imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
-    // System.out.println("blocks_before:" + blockAreas.size());
+    //System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourRectangles(blockAreas);
-    // System.out.println("blocks_after:" + blockAreas.size());
+    //System.out.println("blocks_after:" + blockAreas.size());
     connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_IMAGE);
     // connection.getGraphicsControlDataOutputStream().writeInt(resultArea.x);
     // connection.getGraphicsControlDataOutputStream().writeInt(resultArea.y);
@@ -596,9 +596,9 @@ public class VTGraphicsModeServerWriter implements Runnable
     {
       blockAreas = VTImageDataUtils.compareBlockArea(lastImageBufferInt, previousImageBufferInt, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
     }
-    // System.out.println("blocks_before:" + blockAreas.size());
+    //System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourRectangles(blockAreas);
-    // System.out.println("blocks_after:" + blockAreas.size());
+    //System.out.println("blocks_after:" + blockAreas.size());
     connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE);
     // connection.getGraphicsControlDataOutputStream().writeInt(resultArea.x);
     // connection.getGraphicsControlDataOutputStream().writeInt(resultArea.y);

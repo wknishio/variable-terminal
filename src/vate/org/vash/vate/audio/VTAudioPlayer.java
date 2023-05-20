@@ -2,7 +2,7 @@ package org.vash.vate.audio;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -27,7 +27,7 @@ public class VTAudioPlayer
   private ExecutorService threads;
   private AudioFormat audioFormat;
   private VTAudioSystem system;
-  private List<Runnable> scheduled = new LinkedList<Runnable>();
+  private List<Runnable> scheduled = new ArrayList<Runnable>();
   
   public VTAudioPlayer(VTAudioSystem system, ExecutorService threads)
   {

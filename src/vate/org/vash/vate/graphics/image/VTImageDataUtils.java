@@ -1,9 +1,9 @@
 package org.vash.vate.graphics.image;
 
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 
 public final class VTImageDataUtils
@@ -61,19 +61,25 @@ public final class VTImageDataUtils
         {
           Rectangle next = rectangles.get(j);
           // neighbour test
-          if (((current.y == next.y) && (current.height == next.height) && (current.x + current.width == next.x)) || ((current.x == next.x) && (current.width == next.width) && (current.y + current.height == next.y)))
+          if (((current.y == next.y) && (current.height == next.height) && (current.x + current.width == next.x))
+          || ((current.x == next.x) && (current.width == next.width) && (current.y + current.height == next.y)))
           {
             found = true;
             // union = true;
             current = current.union(next);
             rectangles.remove(j--);
+            rectangles.set(i, current);
           }
         }
-        rectangles.set(i, current);
       }
     }
     while (found);
-    // System.out.println("blocks_after:[" + rectangles.size() + "]");
+//    System.out.println("merged_blocks:[" + rectangles.size() + "]");
+//    for (Rectangle rectangle : rectangles)
+//    {
+//      System.out.print(rectangle + ";");
+//    }
+//    System.out.println();
     return rectangles;
   }
   
@@ -459,7 +465,7 @@ public final class VTImageDataUtils
   
   public static final List<Rectangle> deltaBlockArea(byte[] array1, byte[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
-    List<Rectangle> deltaAreas = new LinkedList<Rectangle>();
+    List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j;
     for (i = 0; i < captureArea.height; i += blockHeight)
@@ -482,7 +488,7 @@ public final class VTImageDataUtils
   
   public static final List<Rectangle> deltaBlockArea(short[] array1, short[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
-    List<Rectangle> deltaAreas = new LinkedList<Rectangle>();
+    List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j;
     for (i = 0; i < captureArea.height; i += blockHeight)
@@ -505,7 +511,7 @@ public final class VTImageDataUtils
   
   public static final List<Rectangle> deltaBlockArea(int[] array1, int[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
-    List<Rectangle> deltaAreas = new LinkedList<Rectangle>();
+    List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j;
     for (i = 0; i < captureArea.height; i += blockHeight)
@@ -528,7 +534,7 @@ public final class VTImageDataUtils
   
   public static final List<Rectangle> compareBlockArea(byte[] array1, byte[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
-    List<Rectangle> blockAreas = new LinkedList<Rectangle>();
+    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
     int i, j;
     for (i = 0; i < captureArea.height; i += blockHeight)
     {
@@ -550,7 +556,7 @@ public final class VTImageDataUtils
   
   public static final List<Rectangle> compareBlockArea(short[] array1, short[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
-    List<Rectangle> blockAreas = new LinkedList<Rectangle>();
+    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
     int i, j;
     for (i = 0; i < captureArea.height; i += blockHeight)
     {
@@ -572,7 +578,7 @@ public final class VTImageDataUtils
   
   public static final List<Rectangle> compareBlockArea(int[] array1, int[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
-    List<Rectangle> blockAreas = new LinkedList<Rectangle>();
+    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
     int i, j;
     for (i = 0; i < captureArea.height; i += blockHeight)
     {
@@ -594,7 +600,7 @@ public final class VTImageDataUtils
   
   public static final List<Rectangle> splitBlockArea(int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
-    List<Rectangle> blockAreas = new LinkedList<Rectangle>();
+    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
     int i, j;
     for (i = 0; i < captureArea.height; i += blockHeight)
     {

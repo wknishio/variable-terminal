@@ -9,7 +9,7 @@ import java.io.PrintStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 //import org.codehaus.groovy.tools.shell.Groovysh;
@@ -48,7 +48,7 @@ public class VTShellProcessor
   private Interpreter beanshell;
   // private Groovysh groovyshell;
   
-  private List<Closeable> closeables = new LinkedList<Closeable>();
+  private List<Closeable> closeables = new ArrayList<Closeable>();
   
   public VTShellProcessor()
   {

@@ -6,7 +6,7 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Window;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class VTGraphicalDeviceResolver
@@ -19,7 +19,7 @@ public class VTGraphicalDeviceResolver
     }
     try
     {
-      List<GraphicsDevice> devices = new LinkedList<GraphicsDevice>();
+      List<GraphicsDevice> devices = new ArrayList<GraphicsDevice>();
       for (GraphicsDevice device : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices())
       {
         if (device.getType() == GraphicsDevice.TYPE_RASTER_SCREEN)

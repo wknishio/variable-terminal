@@ -1,6 +1,6 @@
 package org.vash.vate.console.graphical;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.vash.vate.console.VTConsole;
@@ -16,8 +16,8 @@ public class VTGraphicalConsoleReader
   private static int key;
   private static char character;
   private static StringBuilder currentLineBuffer = new StringBuilder("");
-  private static List<String> commandHistory = new LinkedList<String>();
-  private static List<String> pendingLineBuffer = new LinkedList<String>();
+  private static List<String> commandHistory = new ArrayList<String>();
+  private static List<String> pendingLineBuffer = new ArrayList<String>();
   private static volatile Thread currentThread;
   /* static { commandHistory.add(""); } */
   

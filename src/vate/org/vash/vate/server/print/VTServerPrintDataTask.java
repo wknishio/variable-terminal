@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import javax.print.CancelablePrintJob;
 import javax.print.Doc;
@@ -305,7 +304,7 @@ public class VTServerPrintDataTask extends VTTask
         // printRequestAttributes.add(OrientationRequested.PORTRAIT);
         
         String[] words = data.split("\\s+");
-        LinkedList<String> printLines = new LinkedList<String>();
+        ArrayList<String> printLines = new ArrayList<String>();
         StringBuilder lineBuilder = new StringBuilder();
         int limit = 80;
         
@@ -438,7 +437,7 @@ public class VTServerPrintDataTask extends VTTask
           docFlavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
           // printRequestAttributes.add(OrientationRequested.PORTRAIT);
           
-          final LinkedList<String> fileLines = new LinkedList<String>();
+          final ArrayList<String> fileLines = new ArrayList<String>();
           
           BufferedReader fileReader = null;
           try

@@ -6,7 +6,7 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.URI;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 public class VTRootList extends File
@@ -21,7 +21,7 @@ public class VTRootList extends File
   public File[] getRootFiles()
   {
     File[] list = File.listRoots();
-    List<File> rootList = new LinkedList<File>();
+    List<File> rootList = new ArrayList<File>();
     for (File rootFile : list)
     {
       // if (rootFile.exists())

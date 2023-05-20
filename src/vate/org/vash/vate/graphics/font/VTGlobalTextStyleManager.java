@@ -9,8 +9,8 @@ import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 import org.vash.vate.VT;
 import org.vash.vate.compatibility.VTArrays;
@@ -20,12 +20,12 @@ import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
 
 public class VTGlobalTextStyleManager
 {
-  private static final List<Window> windows = new LinkedList<Window>();
-  private static final List<Component> monospaceds = new LinkedList<Component>();
-  private static final List<Component> texts = new LinkedList<Component>();
-  private static final List<Component> scaleds = new LinkedList<Component>();
-  private static final List<List<Font>> lists = new LinkedList<List<Font>>();
-  private static final List<List<Font>> defaultlists = new LinkedList<List<Font>>();
+  private static final List<Window> windows = new ArrayList<Window>();
+  private static final List<Component> monospaceds = new ArrayList<Component>();
+  private static final List<Component> texts = new ArrayList<Component>();
+  private static final List<Component> scaleds = new ArrayList<Component>();
+  private static final List<List<Font>> lists = new ArrayList<List<Font>>();
+  private static final List<List<Font>> defaultlists = new ArrayList<List<Font>>();
   
   public static float FONT_SCALING_FACTOR_DIALOG;
   public static float FONT_SCALING_FACTOR_MONOSPACED;

@@ -1,7 +1,7 @@
 package org.vash.vate.tunnel.channel;
 
 import java.net.InetSocketAddress;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.vash.vate.VT;
@@ -57,7 +57,7 @@ public class VTTunnelChannel
     {
       this.bindAddress = new InetSocketAddress(bindPort);
     }
-    this.sessions = new LinkedList<VTTunnelSessionHandler>();
+    this.sessions = new ArrayList<VTTunnelSessionHandler>();
   }
   
   // SOCKS bind tunnel with authentication
@@ -78,7 +78,7 @@ public class VTTunnelChannel
     }
     this.socksUsername = socksUsername;
     this.socksPassword = socksPassword;
-    this.sessions = new LinkedList<VTTunnelSessionHandler>();
+    this.sessions = new ArrayList<VTTunnelSessionHandler>();
   }
   
   // TCP bind redirect tunnel
@@ -99,7 +99,7 @@ public class VTTunnelChannel
     {
       this.bindAddress = new InetSocketAddress(bindPort);
     }
-    this.sessions = new LinkedList<VTTunnelSessionHandler>();
+    this.sessions = new ArrayList<VTTunnelSessionHandler>();
   }
   
   //TCP remote redirect tunnel
@@ -108,7 +108,7 @@ public class VTTunnelChannel
     this.tunnelType = TUNNEL_TYPE_TCP;
     this.channelType = channelType;
     this.connection = connection;
-    this.sessions = new LinkedList<VTTunnelSessionHandler>();
+    this.sessions = new ArrayList<VTTunnelSessionHandler>();
   }
   
   public String toString()

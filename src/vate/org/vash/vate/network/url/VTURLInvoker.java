@@ -6,9 +6,9 @@ import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,7 +29,7 @@ public class VTURLInvoker
     }
   }
   
-  private Collection<URLConnection> connections = Collections.synchronizedCollection(new LinkedList<URLConnection>());
+  private Collection<URLConnection> connections = Collections.synchronizedCollection(new ArrayList<URLConnection>());
   
   public void close()
   {

@@ -6,7 +6,7 @@ import java.net.Proxy;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.vash.vate.VT;
@@ -50,7 +50,7 @@ public class VTClientConnector implements Runnable
   private volatile boolean dialog = false;
   // private volatile boolean dialogLine = false;
   private VTClientConnectorNATPortMappingResultNotify natNotify = new VTClientConnectorNATPortMappingResultNotify();
-  private List<VTClientSessionListener> listeners = new LinkedList<VTClientSessionListener>();
+  private List<VTClientSessionListener> listeners = new ArrayList<VTClientSessionListener>();
   private VTBlake3DigestRandom secureRandom;
   
   public VTClientConnector(VTClient client, VTBlake3DigestRandom secureRandom)
@@ -447,7 +447,11 @@ public class VTClientConnector implements Runnable
   {
     try
     {
-      if (connectionServerSocket != null && (connectionServerSocket.isClosed() || !connectionServerSocket.isBound() || connectionServerSocket.getLocalPort() != port))
+      if (connectionServerSocket != null
+      && (connectionServerSocket.isClosed()
+      || !connectionServerSocket.isBound()
+      || connectionServerSocket.getLocalPort() != port
+      || (address != null && address.length() > 0 && !connectionServerSocket.getInetAddress().getHostName().equals(address))))
       {
         connectionServerSocket.close();
         connectionServerSocket = new ServerSocket();
@@ -649,7 +653,7 @@ public class VTClientConnector implements Runnable
       {
         
       }
-      connectionServerSocket.close();
+      //connectionServerSocket.close();
       VTConsole.print("\nVT>Connection with server established!");
       return true;
     }

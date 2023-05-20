@@ -30,8 +30,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
@@ -95,9 +95,9 @@ public class VTLanternaConsole implements VTConsoleImplementation
   private static final int consoleInputLines = 1;
   private static final int consoleOutputLinesMaxSize = consoleOutputLines * 25;
   private static final int commandHistoryMaxSize = 100;
-  private final List<String> commandHistory = new LinkedList<String>();
+  private final List<String> commandHistory = new ArrayList<String>();
   private volatile int commandHistoryPosition;
-  private final List<String> inputLineBuffer = new LinkedList<String>();
+  private final List<String> inputLineBuffer = new ArrayList<String>();
   private final StringBuilder currentLineBuffer = new StringBuilder("");
   private volatile Thread currentThread;
   // private volatile boolean readingLine = false;
@@ -1410,7 +1410,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     
     // Create window to hold the panel
     window = new BasicWindow();
-    Collection<Hint> hints = new LinkedList<Hint>();
+    Collection<Hint> hints = new ArrayList<Hint>();
     hints.add(Hint.FULL_SCREEN);
     hints.add(Hint.NO_DECORATIONS);
     hints.add(Hint.NO_POST_RENDERING);

@@ -7,7 +7,7 @@ import org.vash.vate.VT;
 
 public final class VTStreamRedirector implements Runnable
 {
-  private static final int redirectorBufferSize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
+  private static final int redirectorBufferSize = VT.VT_SMALL_BUFFER_SIZE_BYTES;
   private volatile boolean stopped;
   // private int available = 0;
   private int readed = 0;

@@ -1,8 +1,8 @@
 package org.vash.vate.server.runtime;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.vash.vate.help.VTHelpManager;
@@ -59,8 +59,8 @@ public class VTServerRuntimeExecutor extends VTTask
     this.session = session;
     this.connection = session.getConnection();
     this.finished = true;
-    this.processList = Collections.synchronizedList(new LinkedList<VTRuntimeProcess>());
-    this.removedProcessStack = Collections.synchronizedList(new LinkedList<VTRuntimeProcess>());
+    this.processList = Collections.synchronizedList(new ArrayList<VTRuntimeProcess>());
+    this.removedProcessStack = Collections.synchronizedList(new ArrayList<VTRuntimeProcess>());
     this.message = new StringBuilder();
   }
   

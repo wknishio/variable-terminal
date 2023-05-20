@@ -6,8 +6,8 @@ import java.net.Proxy;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.vash.vate.VT;
@@ -41,14 +41,14 @@ public class VTServerConnector implements Runnable
   private List<VTServerConnectionHandler> connectionHandlers;
   private VTNATSinglePortMappingManagerMKII portMappingManager;
   private VTServerConnectorNATPortMappingResultNotify natNotify = new VTServerConnectorNATPortMappingResultNotify();
-  private List<VTServerSessionListener> listeners = new LinkedList<VTServerSessionListener>();
+  private List<VTServerSessionListener> listeners = new ArrayList<VTServerSessionListener>();
   private VTBlake3DigestRandom secureRandom;
   
   public VTServerConnector(VTServer server, VTBlake3DigestRandom secureRandom)
   {
     this.server = server;
     this.secureRandom = secureRandom;
-    this.connectionHandlers = Collections.synchronizedList(new LinkedList<VTServerConnectionHandler>());
+    this.connectionHandlers = Collections.synchronizedList(new ArrayList<VTServerConnectionHandler>());
     portMappingManager = new VTNATSinglePortMappingManagerMKII(3, 300);
     portMappingManager.start();
   }
@@ -312,7 +312,11 @@ public class VTServerConnector implements Runnable
   {
     try
     {
-      if (connectionServerSocket != null && (connectionServerSocket.isClosed() || !connectionServerSocket.isBound() || connectionServerSocket.getLocalPort() != port))
+      if (connectionServerSocket != null
+      && (connectionServerSocket.isClosed()
+      || !connectionServerSocket.isBound()
+      || connectionServerSocket.getLocalPort() != port
+      || (address != null && address.length() > 0 && !connectionServerSocket.getInetAddress().getHostName().equals(address))))
       {
         connectionServerSocket.close();
         connectionServerSocket = new ServerSocket();
@@ -388,7 +392,7 @@ public class VTServerConnector implements Runnable
       // VTTerminal.print("\rVT>TCP port [" + port + "] is already in
       // use!\nVT>");
       // e.printStackTrace();
-      VTConsole.print("\rVT>Listening to connections in port [" + port + "] failed!\nVT>");
+      VTConsole.print("\rVT>Listening to connection in port [" + port + "] failed!\nVT>");
       // return false;
     }
     return false;
@@ -421,7 +425,7 @@ public class VTServerConnector implements Runnable
   
   public boolean listenConnection(VTServerConnection connection)
   {
-    VTConsole.print("\rVT>Listening to connections with clients...\nVT>");
+    VTConsole.print("\rVT>Listening to connection with client...\nVT>");
     connection.closeSockets();
     if (!setServerSocket(hostAddress, hostPort != null && hostPort > 0 ? hostPort : 6060))
     {
@@ -490,7 +494,7 @@ public class VTServerConnector implements Runnable
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
       }
       connection.setEncryptionKey(encryptionKey);
-      connectionServerSocket.close();
+      //connectionServerSocket.close();
       VTConsole.print("\rVT>Connection with client established!\nVT>");
       return true;
     }
@@ -678,7 +682,7 @@ public class VTServerConnector implements Runnable
       }
       try
       {
-        Thread.sleep(1000);
+        //Thread.sleep(1000);
       }
       catch (Throwable t)
       {

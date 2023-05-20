@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
@@ -58,7 +58,7 @@ public class VTServer implements Runnable
   //private VTBlake3MessageDigest blake3Digest;
   // private File userDatabaseFile;
   private File serverSettingsFile;
-  private final List<Credential> userCredentials = new LinkedList<Credential>();
+  private final List<Credential> userCredentials = new ArrayList<Credential>();
   // private Properties fileUserCredentials;
   // private Properties argumentsServerSettings = new Properties();
   private VTConfigurationProperties fileServerSettings;
@@ -77,7 +77,7 @@ public class VTServer implements Runnable
   private volatile boolean echoCommands = false;
   private volatile boolean running = true;
   private volatile boolean reconfigure = false;
-  private List<VTServerSessionListener> listeners = new LinkedList<VTServerSessionListener>();
+  private List<VTServerSessionListener> listeners = new ArrayList<VTServerSessionListener>();
   private static final String VT_SERVER_SETTINGS_COMMENTS = 
   "Variable-Terminal server settings file, supports UTF-8\r\n" + 
   "#vate.server.connection.mode      values: default passive(P), active(A)\r\n" + 

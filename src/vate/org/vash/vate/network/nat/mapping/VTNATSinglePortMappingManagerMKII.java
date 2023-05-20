@@ -1,8 +1,8 @@
 package org.vash.vate.network.nat.mapping;
 
 import java.net.InetAddress;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -304,7 +304,7 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
           nextMappedPorts.clear();
           if (resultNotify != null)
           {
-            List<String> externalHosts = new LinkedList<String>();
+            List<String> externalHosts = new ArrayList<String>();
             for (Entry<PortMapper, MappedPort> entry : currentMappedPorts.entrySet())
             {
               InetAddress address = entry.getValue().getExternalAddress();

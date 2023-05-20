@@ -9,11 +9,13 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.nio.channels.ServerSocketChannel;
 
-public class VTDirectServerSocket extends ServerSocket implements Closeable
+import org.vash.vate.VT;
+
+public class VTDefaultServerSocket extends ServerSocket implements Closeable
 {
   private final ServerSocket serverSocket;
   
-  public VTDirectServerSocket(ServerSocket serverSocket) throws IOException
+  public VTDefaultServerSocket(ServerSocket serverSocket) throws IOException
   {
     this.serverSocket = serverSocket;
   }
@@ -21,6 +23,8 @@ public class VTDirectServerSocket extends ServerSocket implements Closeable
   public Socket accept() throws IOException
   {
     Socket socket = serverSocket.accept();
+    socket.setTcpNoDelay(true);
+    socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
   }
   
