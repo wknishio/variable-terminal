@@ -8,8 +8,7 @@ import java.util.List;
 
 public final class VTImageDataUtils
 {
-  // private static RectangleComparator rectangleComparator = new
-  // RectangleComparator();
+  //private static final RectangleComparator rectangleComparator = new RectangleComparator();
   
   static class RectangleComparator implements Comparator<Rectangle>
   {
@@ -20,33 +19,23 @@ public final class VTImageDataUtils
     
     public int compare(Rectangle o1, Rectangle o2)
     {
-      int sum1 = o1.x + o1.y;
-      int sum2 = o2.x + o2.y;
+      long sum1 = o1.x + o1.y;
+      long sum2 = o2.x + o2.y;
       if (sum1 < sum2)
       {
         return -1;
       }
       if (sum1 > sum2)
       {
-        return +1;
+        return 1;
       }
       return 0;
     }
   }
   
-  // private static Comparator<Rectangle> rectangleComparator = new
-  // RectangleComparator();
-  
   public static final List<Rectangle> mergeNeighbourRectangles(List<Rectangle> rectangles)
   {
-    // System.out.println("blocks_before:[" + rectangles.size() + "]");
-    // sort by diagonals
-    // System.out.println("blocks_1:[" + Arrays.toString(rectangles.toArray()) +
-    // "]");
-    // Collections.sort(rectangles, rectangleComparator);
-    // System.out.println("blocks_2:[" + Arrays.toString(rectangles.toArray()) +
-    // "]");
-    // Collections.sort();
+    //Collections.sort(rectangles, rectangleComparator);
     boolean found = false;
     // boolean union = false;
     // boolean proceed = false;
