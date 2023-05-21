@@ -125,7 +125,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
         {
           int channelType = channel.getChannelType();
           int tunnelType = channel.getTunnelType();
-          //TODO: will start a local socks/http proxy server that connects remotely using new socket factory
+          
           session = new VTTunnelSession(channel.getConnection(), socket, socketInputStream, socketOutputStream, true);
           handler = new VTTunnelSessionHandler(session, channel);
           VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
@@ -167,6 +167,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
             }
             else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
             {
+              //TODO: will start a local socks/http proxy server that connects remotely using new socket factory
               String socksUsername = channel.getSocksUsername();
               String socksPassword = channel.getSocksPassword();
               if (socksUsername == null || socksPassword == null)
@@ -177,6 +178,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
               // request message sent
               channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword).getBytes("UTF-8"));
               channel.getConnection().getControlOutputStream().flush();
+              //TODO: will start a local socks/http proxy server that connects remotely using new socket factory
             }
           }
           else
@@ -187,7 +189,6 @@ public class VTTunnelChannelBindSocketListener implements Runnable
               session.close();
             }
           }
-          //TODO: will start a local socks/http proxy server that connects remotely using new socket factory
         }
       }
     }
