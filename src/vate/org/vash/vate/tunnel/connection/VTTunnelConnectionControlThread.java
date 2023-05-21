@@ -2,7 +2,9 @@ package org.vash.vate.tunnel.connection;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Authenticator;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
@@ -47,10 +49,33 @@ public class VTTunnelConnectionControlThread implements Runnable
               // request message received
               if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
               {
+                //System.out.println("text=[" + text + "]");
+                //System.out.println("parts.length=" + parts.length);
                 int channelType = Integer.parseInt(parts[0]);
                 int inputNumber = Integer.parseInt(parts[1]);
                 String host = parts[2];
                 int port = Integer.parseInt(parts[3]);
+                String proxyTypeLetter = parts[4];
+                String proxyHost = parts[5];
+                int proxyPort = Integer.parseInt(parts[6]);
+                String proxyUser = parts[7];
+                String proxyPassword = parts[8];
+                
+                if (parts.length > 9 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[9].equals("*"))
+                {
+                  proxyUser = null;
+                  proxyPassword = null;
+                }
+                
+                Proxy.Type proxyType = Proxy.Type.DIRECT;
+                if (proxyTypeLetter.toUpperCase().startsWith("H"))
+                {
+                  proxyType = Proxy.Type.HTTP;
+                }
+                if (proxyTypeLetter.toUpperCase().startsWith("S"))
+                {
+                  proxyType = Proxy.Type.SOCKS;
+                }
                 
                 VTTunnelSession session = null;
                 VTTunnelSessionHandler handler = null;
@@ -59,13 +84,13 @@ public class VTTunnelConnectionControlThread implements Runnable
                 OutputStream socketOutputStream = null;
                 try
                 {
-                  socket = connect(host, port);
+                  socket = connect(host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
                   socketInputStream = socket.getInputStream();
                   socketOutputStream = socket.getOutputStream();
                 }
                 catch (Throwable t)
                 {
-                  
+                  //t.printStackTrace();
                 }
                 if (socketInputStream != null && socketOutputStream != null)
                 {
@@ -250,7 +275,7 @@ public class VTTunnelConnectionControlThread implements Runnable
     closed = true;
   }
   
-  public Socket connect(String host, int port)
+  public Socket connect(String host, int port, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
     try
     {
@@ -260,14 +285,26 @@ public class VTTunnelConnectionControlThread implements Runnable
       }
       else
       {
-        //socket.connect(InetSocketAddress.createUnresolved(host, port));
+        
       }
-      Socket socket = new Socket();
-      socket.connect(new InetSocketAddress(host, port));
+      Proxy proxy = Proxy.NO_PROXY;
+      InetSocketAddress socketAddress = null;
+      if (proxyType != Proxy.Type.DIRECT)
+      {
+        socketAddress = InetSocketAddress.createUnresolved(host, port);
+        proxy = new Proxy(proxyType, new InetSocketAddress(proxyHost, proxyPort));
+      }
+      else
+      {
+        socketAddress = new InetSocketAddress(host, port);
+      }
+      Socket socket = new Socket(proxy);
+      if (proxyType != Proxy.Type.DIRECT && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
+      {
+        Authenticator.setDefault(new VTTunnelConnectionProxyAuthenticator(proxyUser, proxyPassword));
+      }
+      socket.connect(socketAddress);
       socket.setTcpNoDelay(true);
-      //socket.setSendBufferSize(1024 * 64);
-      //socket.setReceiveBufferSize(1024 * 64);
-      //socket.setSoLinger(true, 5);
       socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
       return socket;
     }

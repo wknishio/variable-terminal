@@ -1,6 +1,7 @@
 package org.vash.vate.tunnel.channel;
 
 import java.io.IOException;
+import java.net.Proxy;
 import java.net.Socket;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
@@ -33,10 +34,20 @@ public class VTTunnelChannelRemoteSocketBuilder
     return channel;
   }
   
-  public Socket connect(int channelType, String host, int port) throws IOException
+  public Socket connect(int channelType, String host, int port, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
   {
     VTTunnelSession session = null;
     VTTunnelSessionHandler handler = null;
+    
+    String proxyTypeLetter = "D";
+    if (proxyType == Proxy.Type.HTTP)
+    {
+      proxyTypeLetter = "H";
+    }
+    if (proxyType == Proxy.Type.SOCKS)
+    {
+      proxyTypeLetter = "S";
+    }
     
     VTTunnelPipedSocket piped = new VTTunnelPipedSocket();
     session = new VTTunnelSession(channel.getConnection(), piped, piped.getInputStream(), piped.getOutputStream(), true);
@@ -52,7 +63,13 @@ public class VTTunnelChannelRemoteSocketBuilder
       session.setOutputNumber(outputNumber);
       session.setTunnelOutputStream(output);
       //session.getTunnelOutputStream().open();
-      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port).getBytes("UTF-8"));
+      if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
+      {
+        proxyUser = "*";
+        proxyPassword = "*" + SESSION_SEPARATOR + "*";
+      }
+      // request message sent
+      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
       channel.getConnection().getControlOutputStream().flush();
       boolean result = false;
       try

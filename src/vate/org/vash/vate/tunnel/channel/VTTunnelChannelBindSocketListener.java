@@ -3,6 +3,7 @@ package org.vash.vate.tunnel.channel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Proxy;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
@@ -138,8 +139,30 @@ public class VTTunnelChannelBindSocketListener implements Runnable
             {
               String host = channel.getRedirectHost();
               int port = channel.getRedirectPort();
+              
+              Proxy.Type proxyType = channel.getProxyType();
+              String proxyHost = channel.getProxyHost();
+              int proxyPort = channel.getProxyPort();
+              String proxyUser = channel.getProxyUser();
+              String proxyPassword = channel.getProxyPassword();
+              
+              String proxyTypeLetter = "D";
+              if (proxyType == Proxy.Type.HTTP)
+              {
+                proxyTypeLetter = "H";
+              }
+              if (proxyType == Proxy.Type.SOCKS)
+              {
+                proxyTypeLetter = "S";
+              }
+              
+              if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
+              {
+                proxyUser = "*";
+                proxyPassword = "*" + SESSION_SEPARATOR + "*";
+              }
               // request message sent
-              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port).getBytes("UTF-8"));
+              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
               channel.getConnection().getControlOutputStream().flush();
             }
             else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
@@ -182,12 +205,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
     {
       socket = serverSocket.accept();
       socket.setTcpNoDelay(true);
-      //socket.setSendBufferSize(1024 * 64);
-      //socket.setReceiveBufferSize(1024 * 64);
-      //socket.setSoLinger(true, 5);
       socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
-      //socket.getInputStream();
-      //socket.getOutputStream();
       return socket;
     }
     catch (Throwable t)

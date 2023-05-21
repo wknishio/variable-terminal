@@ -1,6 +1,7 @@
 package org.vash.vate.tunnel.channel;
 
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,11 @@ public class VTTunnelChannel
   private int bindPort;
   private String redirectHost;
   private int redirectPort;
+  private String proxyHost;
+  private int proxyPort;
+  private String proxyUser;
+  private String proxyPassword;
+  private Proxy.Type proxyType = Proxy.Type.DIRECT;
   private int tunnelType;
   private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT;
   
@@ -82,7 +88,7 @@ public class VTTunnelChannel
   }
   
   // TCP bind redirect tunnel
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String redirectHost, int redirectPort)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String redirectHost, int redirectPort, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
     this.tunnelType = TUNNEL_TYPE_TCP;
     this.channelType = channelType;
@@ -91,6 +97,11 @@ public class VTTunnelChannel
     this.bindPort = bindPort;
     this.redirectHost = redirectHost;
     this.redirectPort = redirectPort;
+    this.proxyType = proxyType;
+    this.proxyHost = proxyHost;
+    this.proxyPort = proxyPort;
+    this.proxyUser = proxyUser;
+    this.proxyPassword = proxyPassword;
     if (bindHost != null && bindHost.length() > 0)
     {
       this.bindAddress = new InetSocketAddress(bindHost, bindPort);
@@ -213,5 +224,39 @@ public class VTTunnelChannel
   {
     this.redirectHost = redirectHost;
     this.redirectPort = redirectPort;
+  }
+  
+  public void setProxy(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
+  {
+    this.proxyType = proxyType;
+    this.proxyHost = proxyHost;
+    this.proxyPort = proxyPort;
+    this.proxyUser = proxyUser;
+    this.proxyPassword = proxyPassword;
+  }
+  
+  public Proxy.Type getProxyType()
+  {
+    return proxyType;
+  }
+  
+  public String getProxyHost()
+  {
+    return proxyHost;
+  }
+  
+  public int getProxyPort()
+  {
+    return proxyPort;
+  }
+  
+  public String getProxyUser()
+  {
+    return proxyUser;
+  }
+  
+  public String getProxyPassword()
+  {
+    return proxyPassword;
   }
 }

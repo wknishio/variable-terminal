@@ -3,6 +3,7 @@ package org.vash.vate.tunnel.connection;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
+import java.net.Proxy;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -112,7 +113,7 @@ public class VTTunnelConnection
     }
   }
   
-  public boolean bindTCPRedirectListener(int channelType, String bindHost, int bindPort, String redirectHost, int redirectPort)
+  public boolean bindTCPRedirectListener(int channelType, String bindHost, int bindPort, String redirectHost, int redirectPort, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
     VTTunnelChannelBindSocketListener listener = getBindListener(bindHost, bindPort);
     if (listener != null)
@@ -121,6 +122,7 @@ public class VTTunnelConnection
       {
         listener.getChannel().setChannelType(channelType);
         listener.getChannel().setRedirectAddress(redirectHost, redirectPort);
+        listener.getChannel().setProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
         return true;
       }
       else
@@ -128,7 +130,7 @@ public class VTTunnelConnection
         return false;
       }
     }
-    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, bindHost, bindPort, redirectHost, redirectPort);
+    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, bindHost, bindPort, redirectHost, redirectPort, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
     listener = new VTTunnelChannelBindSocketListener(channel, threads);
     if (listener.bind())
     {
