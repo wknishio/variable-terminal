@@ -76,6 +76,8 @@ public class VTClient implements Runnable
   
   static
   {
+    System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+    System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
     ImageIO.setUseCache(false);
     VTHelpManager.initialize();
     TLSVerificationDisabler.install();

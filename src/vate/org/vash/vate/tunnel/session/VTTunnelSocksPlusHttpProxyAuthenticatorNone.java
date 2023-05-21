@@ -6,12 +6,19 @@ import java.io.PushbackInputStream;
 import java.net.Socket;
 
 import org.vash.vate.nanohttpd.VTNanoHTTPDProxySession;
+import org.vash.vate.socket.factory.VTDefaultProxy;
 
 import net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
 
 public class VTTunnelSocksPlusHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
 {
+  private VTDefaultProxy connect_proxy; 
+  public VTTunnelSocksPlusHttpProxyAuthenticatorNone(VTDefaultProxy proxy)
+  {
+    this.connect_proxy = proxy;
+  }
+  
   public ServerAuthenticator startSession(Socket s) throws IOException {
 
     PushbackInputStream in = new PushbackInputStream(s.getInputStream());
@@ -30,7 +37,7 @@ public class VTTunnelSocksPlusHttpProxyAuthenticatorNone extends ServerAuthentic
       {
         in.unread(version);
         //fallback to use http proxy instead
-        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(s, in, null, null);
+        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(s, in, null, null, connect_proxy);
         try
         {
           httpProxy.run();

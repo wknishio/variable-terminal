@@ -9,6 +9,8 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
+import org.vash.vate.socket.factory.VTDefaultProxy;
+import org.vash.vate.socket.factory.VTDefaultProxyAuthenticator;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
@@ -133,23 +135,44 @@ public class VTTunnelConnectionControlThread implements Runnable
               }
               else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
               {
+                int additional = 0;
                 int channelType = Integer.parseInt(parts[0]);
                 int inputNumber = Integer.parseInt(parts[1]);
                 String socksUsername = parts[2];
                 String socksPassword = parts[3];
+                if (parts.length > 4 && socksUsername.equals("*") && socksPassword.equals("*") && parts[4].equals("*"))
+                {
+                  socksUsername = null;
+                  socksPassword = null;
+                  additional = 1;
+                }
+                String proxyTypeLetter = parts[4 + additional];
+                String proxyHost = parts[5 + additional];
+                int proxyPort = Integer.parseInt(parts[6 + additional]);
+                String proxyUser = parts[7 + additional];
+                String proxyPassword = parts[8 + additional];
+                
+                if (parts.length > (9 + additional) && proxyUser.equals("*") && proxyPassword.equals("*") && parts[9 + additional].equals("*"))
+                {
+                  proxyUser = null;
+                  proxyPassword = null;
+                }
+                
+                Proxy.Type proxyType = Proxy.Type.DIRECT;
+                if (proxyTypeLetter.toUpperCase().startsWith("H"))
+                {
+                  proxyType = Proxy.Type.HTTP;
+                }
+                if (proxyTypeLetter.toUpperCase().startsWith("S"))
+                {
+                  proxyType = Proxy.Type.SOCKS;
+                }
+                VTDefaultProxy proxy = new VTDefaultProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
                 
                 VTTunnelSession session = null;
                 VTTunnelPipedSocket piped = new VTTunnelPipedSocket();
                 session = new VTTunnelSession(connection, piped, piped.getInputStream(), piped.getOutputStream(), false);
-                VTTunnelSocksSessionHandler handler = null;
-                if (parts.length > 4 && socksUsername.equals("*") && socksPassword.equals("*") && parts[4].equals("*"))
-                {
-                  handler = new VTTunnelSocksSessionHandler(session, null);
-                }
-                else
-                {
-                  handler = new VTTunnelSocksSessionHandler(session, null, socksUsername, socksPassword);
-                }
+                VTTunnelSocksSessionHandler handler = new VTTunnelSocksSessionHandler(session, null, socksUsername, socksPassword, proxy);
                 VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, handler);
                 
                 if (output != null)
@@ -289,20 +312,27 @@ public class VTTunnelConnectionControlThread implements Runnable
       }
       Proxy proxy = Proxy.NO_PROXY;
       InetSocketAddress socketAddress = null;
+      
       if (proxyType != Proxy.Type.DIRECT)
       {
         socketAddress = InetSocketAddress.createUnresolved(host, port);
+        if (proxyType != Proxy.Type.DIRECT && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
+        {
+          Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
+          VTDefaultProxyAuthenticator.putProxy(proxyHost, proxyPort, new VTDefaultProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword));
+        }
+        else
+        {
+          VTDefaultProxyAuthenticator.removeProxy(proxyHost, proxyPort);
+        }
         proxy = new Proxy(proxyType, new InetSocketAddress(proxyHost, proxyPort));
       }
       else
       {
         socketAddress = new InetSocketAddress(host, port);
       }
+      
       Socket socket = new Socket(proxy);
-      if (proxyType != Proxy.Type.DIRECT && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
-      {
-        Authenticator.setDefault(new VTTunnelConnectionProxyAuthenticator(proxyUser, proxyPassword));
-      }
       socket.connect(socketAddress);
       socket.setTcpNoDelay(true);
       socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);

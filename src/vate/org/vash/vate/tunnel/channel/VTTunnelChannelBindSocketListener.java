@@ -126,6 +126,28 @@ public class VTTunnelChannelBindSocketListener implements Runnable
           int channelType = channel.getChannelType();
           int tunnelType = channel.getTunnelType();
           
+          Proxy.Type proxyType = channel.getProxy().getProxyType();
+          String proxyHost = channel.getProxy().getProxyHost();
+          int proxyPort = channel.getProxy().getProxyPort();
+          String proxyUser = channel.getProxy().getProxyUser();
+          String proxyPassword = channel.getProxy().getProxyPassword();
+          
+          String proxyTypeLetter = "D";
+          if (proxyType == Proxy.Type.HTTP)
+          {
+            proxyTypeLetter = "H";
+          }
+          if (proxyType == Proxy.Type.SOCKS)
+          {
+            proxyTypeLetter = "S";
+          }
+          
+          if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
+          {
+            proxyUser = "*";
+            proxyPassword = "*" + SESSION_SEPARATOR + "*";
+          }
+          
           session = new VTTunnelSession(channel.getConnection(), socket, socketInputStream, socketOutputStream, true);
           handler = new VTTunnelSessionHandler(session, channel);
           VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
@@ -139,28 +161,6 @@ public class VTTunnelChannelBindSocketListener implements Runnable
             {
               String host = channel.getRedirectHost();
               int port = channel.getRedirectPort();
-              
-              Proxy.Type proxyType = channel.getProxyType();
-              String proxyHost = channel.getProxyHost();
-              int proxyPort = channel.getProxyPort();
-              String proxyUser = channel.getProxyUser();
-              String proxyPassword = channel.getProxyPassword();
-              
-              String proxyTypeLetter = "D";
-              if (proxyType == Proxy.Type.HTTP)
-              {
-                proxyTypeLetter = "H";
-              }
-              if (proxyType == Proxy.Type.SOCKS)
-              {
-                proxyTypeLetter = "S";
-              }
-              
-              if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
-              {
-                proxyUser = "*";
-                proxyPassword = "*" + SESSION_SEPARATOR + "*";
-              }
               // request message sent
               channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
               channel.getConnection().getControlOutputStream().flush();
@@ -170,13 +170,13 @@ public class VTTunnelChannelBindSocketListener implements Runnable
               //TODO: will start a local socks/http proxy server that connects remotely using new socket factory
               String socksUsername = channel.getSocksUsername();
               String socksPassword = channel.getSocksPassword();
-              if (socksUsername == null || socksPassword == null)
+              if (socksUsername == null || socksPassword == null || socksUsername.length() == 0 || socksPassword.length() == 0)
               {
                 socksUsername = "*";
                 socksPassword = "*" + SESSION_SEPARATOR + "*";
               }
               // request message sent
-              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword).getBytes("UTF-8"));
+              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
               channel.getConnection().getControlOutputStream().flush();
               //TODO: will start a local socks/http proxy server that connects remotely using new socket factory
             }

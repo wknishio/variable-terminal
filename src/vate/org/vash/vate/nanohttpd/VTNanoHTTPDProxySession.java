@@ -26,6 +26,7 @@ import java.util.Map.Entry;
 import org.apache.commons.codec.binary.Base64;
 import org.vash.vate.VT;
 import org.vash.vate.parser.VTConfigurationProperties;
+import org.vash.vate.socket.factory.VTDefaultProxy;
 
 /**
  * A simple, tiny, nicely embeddable HTTP 1.0 (partially 1.1) server in Java
@@ -245,12 +246,14 @@ public class VTNanoHTTPDProxySession implements Runnable
     //public boolean keepConnection = false;
   }
   
-  public VTNanoHTTPDProxySession( Socket s, InputStream in, String username, String password)
+  
+  public VTNanoHTTPDProxySession( Socket s, InputStream in, String username, String password, VTDefaultProxy proxy)
   {
     mySocket = s;
     myIn = in;
     this.username = username;
     this.password = password;
+    this.proxy = proxy;
     //Thread t = new Thread( this );
     //t.setDaemon( true );
     //t.start();
@@ -377,7 +380,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       byte[] headerData = h.toByteArray();
       
       // Ok, now do the serve()
-      serve(uri, method, pre, headers, headerData, bodyData, username, password, mySocket, in );
+      serve(uri, method, pre, headers, headerData, bodyData, username, password, mySocket, in, proxy );
     }
     catch ( InterruptedException ie )
     {
@@ -409,7 +412,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
   }
   
-  public void serve(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, String username, String password, Socket clientSocket, InputStream clientInput) throws IOException, URISyntaxException, InterruptedException
+  public void serve(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, String username, String password, Socket clientSocket, InputStream clientInput, VTDefaultProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
   {
     if (!checkProxyAuthenticatedBasic(headers, username, password))
     {
@@ -418,11 +421,11 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     if (method.equalsIgnoreCase("CONNECT"))
     {
-      serveConnectRequest(uri, method, pre, headers, headerData, bodyData, clientSocket, clientInput);
+      serveConnectRequest(uri, method, pre, headers, headerData, bodyData, clientSocket, clientInput, connectProxy);
     }
     else
     {
-      servePipeRequest(uri, method, pre, headers, headerData, bodyData, clientSocket, clientInput);
+      servePipeRequest(uri, method, pre, headers, headerData, bodyData, clientSocket, clientInput, connectProxy);
     }
   }
   
@@ -456,7 +459,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     sendError(resp.status, MIME_PLAINTEXT, resp.headers, null);
   }
   
-  private void serveConnectRequest(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, Socket clientSocket, InputStream clientInput) throws URISyntaxException, IOException, InterruptedException
+  private void serveConnectRequest(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, Socket clientSocket, InputStream clientInput, VTDefaultProxy connectProxy) throws URISyntaxException, IOException, InterruptedException
   {
     String host = "";
     int port = 80;
@@ -479,11 +482,9 @@ public class VTNanoHTTPDProxySession implements Runnable
       
     }
     
-    Socket remoteSocket = new Socket(host, port);
+    //Socket remoteSocket = new Socket(host, port);
+    Socket remoteSocket = VTDefaultProxy.connect(host, port, connectProxy);
     remoteSocket.setTcpNoDelay(true);
-    //remoteSocket.setSendBufferSize(1024 * 64);
-    //remoteSocket.setReceiveBufferSize(1024 * 64);
-    //remoteSocket.setSoLinger(true, 5);
     remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     
     InputStream remoteInput = remoteSocket.getInputStream();
@@ -495,7 +496,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     pipeSockets(clientSocket, remoteSocket, clientInput, clientOutput, remoteInput, remoteOutput);
   }
   
-  private void servePipeRequest(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, Socket clientSocket, InputStream clientInput) throws IOException, URISyntaxException, InterruptedException
+  private void servePipeRequest(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, Socket clientSocket, InputStream clientInput, VTDefaultProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
   {
     ByteArrayOutputStream requestData = new ByteArrayOutputStream();
     for (Object headerName : headers.keySet().toArray(new Object[] {}))
@@ -555,11 +556,9 @@ public class VTNanoHTTPDProxySession implements Runnable
     requestData.write("\r\n".getBytes("ISO-8859-1"));
     requestData.write(bodyData);
     
-    Socket remoteSocket = new Socket(host, port);
+    //Socket remoteSocket = new Socket(host, port);
+    Socket remoteSocket = VTDefaultProxy.connect(host, port, connectProxy);
     remoteSocket.setTcpNoDelay(true);
-    //remoteSocket.setSendBufferSize(1024 * 64);
-    //remoteSocket.setReceiveBufferSize(1024 * 64);
-    //remoteSocket.setSoLinger(true, 5);
     remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     
     InputStream remoteInput = remoteSocket.getInputStream();
@@ -915,6 +914,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   private InputStream myIn;
   private String username;
   private String password;
+  private VTDefaultProxy proxy;
   
   private static java.text.SimpleDateFormat gmtFrmt;
   static

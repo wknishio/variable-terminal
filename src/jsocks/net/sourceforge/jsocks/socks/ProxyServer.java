@@ -22,6 +22,8 @@ import java.io.*;
 //import org.apache.log4j.Logger;
 import java.net.*;
 
+import org.vash.vate.socket.factory.VTDefaultProxy;
+
 /**
  * SOCKS4 and SOCKS5 proxy, handles both protocols simultaniously. Implements
  * all SOCKS commands, including UDP relaying.
@@ -68,6 +70,8 @@ public class ProxyServer implements Runnable {
 	
 	private boolean disabled_udp_relay = false;
 	private boolean disabled_bind = false;
+	
+	private VTDefaultProxy connect_proxy;
 
 	// private String connectionId;
 
@@ -95,11 +99,12 @@ public class ProxyServer implements Runnable {
 		mode = START_MODE;
 	}
 	
-	public ProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay) {
+	public ProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay, VTDefaultProxy connect_proxy) {
     this.auth = auth;
     this.sock = s;
     this.disabled_bind = disabled_bind;
     this.disabled_udp_relay = disabled_udp_relay;
+    this.connect_proxy = connect_proxy;
     // this.connectionId = connectionId;
     mode = START_MODE;
   }
@@ -385,34 +390,28 @@ public class ProxyServer implements Runnable {
 	}
 
 	private void onConnect(ProxyMessage msg) throws IOException {
-		Socket s;
+		Socket s = null;
 		ProxyMessage response = null;
 
 		if (proxy == null) {
-			s = new Socket();
-			//s.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
-			//s.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
-			//s.setReuseAddress(true);
-			s.connect(new InetSocketAddress(msg.ip, msg.port));
-			//s = new Socket(msg.ip, msg.port);
-			s.setTcpNoDelay(true);
-      //s.setSendBufferSize(1024 * 64);
-      //s.setReceiveBufferSize(1024 * 64);
-			//s.setSoLinger(true, 5);
-			//s.setReuseAddress(true);
-			//s.setKeepAlive(true);
-			s.setSoTimeout(60000);
-			//s.setSoLinger(true, 0);
+		  if (connect_proxy == null)
+		  {
+		    s = new Socket();
+	      s.connect(new InetSocketAddress(msg.ip, msg.port));
+	      s.setTcpNoDelay(true);
+	      s.setSoTimeout(60000);
+		  }
+		  else
+		  {
+		    s = VTDefaultProxy.connect(msg.ip.getHostName(), msg.port, connect_proxy);
+		    s.setTcpNoDelay(true);
+        s.setSoTimeout(60000);
+		  }
+			
 		} else {
 			s = new SocksSocket(proxy, msg.ip, msg.port);
 			s.setTcpNoDelay(true);
-      //s.setSendBufferSize(1024 * 64);
-      //s.setReceiveBufferSize(1024 * 64);
-			//s.setSoLinger(true, 5);
-			//s.setReuseAddress(true);
-			//s.setKeepAlive(true);
 			s.setSoTimeout(60000);
-			//s.setSoLinger(true, 0);
 		}
 		// LOG.info(connectionId + " Connected to " + s.getInetAddress() + ":" +
 		// s.getPort());
@@ -688,4 +687,6 @@ public class ProxyServer implements Runnable {
 		else
 			return "Unknown Command " + cmd;
 	}
+	
+	
 }

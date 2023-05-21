@@ -17,6 +17,8 @@ import org.vash.vate.network.nat.mapping.VTNATSinglePortMappingManagerMKII;
 import org.vash.vate.security.VTBlake3DigestRandom;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.session.VTServerSessionListener;
+import org.vash.vate.socket.factory.VTDefaultProxy;
+import org.vash.vate.socket.factory.VTDefaultProxyAuthenticator;
 
 public class VTServerConnector implements Runnable
 {
@@ -400,26 +402,53 @@ public class VTServerConnector implements Runnable
   
   public void resetSockets(VTServerConnection connection) throws SocketException
   {
-    if (proxyType != null)
+    if (proxyType != null && isUseProxyAuthentication())
     {
-      Authenticator.setDefault(new VTServerConnectionProxyAuthenticator(this));
+      Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
     }
     if (proxyType == null)
     {
       connection.setConnectionSocket(new Socket());
+      if (proxyAddress != null && proxyPort != null)
+      {
+        VTDefaultProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
+      }
     }
-    else if (!passive && proxyType.toUpperCase().startsWith("H"))
+    else if (!passive && proxyType.toUpperCase().startsWith("H") && proxyAddress != null && proxyPort != null)
     {
-      connection.setConnectionSocket(new Socket(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 8080))));
+      if (isUseProxyAuthentication() && proxyType != null && proxyAddress != null && proxyPort != null && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
+      {
+        VTDefaultProxyAuthenticator.putProxy(proxyAddress, proxyPort, new VTDefaultProxy(Proxy.Type.HTTP, proxyAddress, proxyPort, proxyUser, proxyPassword));
+      }
+      else
+      {
+        VTDefaultProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
+      }
+      Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 8080));
+      connection.setConnectionSocket(new Socket(proxy));
     }
-    else if (!passive && proxyType.toUpperCase().startsWith("S"))
+    else if (!passive && proxyType.toUpperCase().startsWith("S") && proxyAddress != null && proxyPort != null)
     {
-      connection.setConnectionSocket(new Socket(new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 1080))));
+      if (isUseProxyAuthentication() && proxyType != null && proxyAddress != null && proxyPort != null && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
+      {
+        VTDefaultProxyAuthenticator.putProxy(proxyAddress, proxyPort, new VTDefaultProxy(Proxy.Type.SOCKS, proxyAddress, proxyPort, proxyUser, proxyPassword));
+      }
+      else
+      {
+        VTDefaultProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
+      }
+      Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 1080));
+      connection.setConnectionSocket(new Socket(proxy));
     }
     else
     {
       connection.setConnectionSocket(new Socket());
+      if (proxyAddress != null && proxyPort != null)
+      {
+        VTDefaultProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
+      }
     }
+    
     // connection.getConnectionSocket().setReuseAddress(true);
   }
   
@@ -501,7 +530,7 @@ public class VTServerConnector implements Runnable
     catch (Throwable e)
     {
       // VTTerminal.println(e.toString());
-      // e.printStackTrace();
+      //e.printStackTrace();
       connection.closeSockets();
     }
     /*
@@ -588,7 +617,7 @@ public class VTServerConnector implements Runnable
     }
     catch (Throwable e)
     {
-      
+      //e.printStackTrace();
     }
     return false;
   }

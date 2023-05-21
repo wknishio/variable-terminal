@@ -1,11 +1,11 @@
 package org.vash.vate.tunnel.channel;
 
 import java.net.InetSocketAddress;
-import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.vash.vate.VT;
+import org.vash.vate.socket.factory.VTDefaultProxy;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 
@@ -16,7 +16,6 @@ public class VTTunnelChannel
   
   private VTTunnelConnection connection;
   private InetSocketAddress bindAddress;
-  // private InetSocketAddress redirectAddress;
   private List<VTTunnelSessionHandler> sessions;
   private String socksUsername;
   private String socksPassword;
@@ -24,11 +23,7 @@ public class VTTunnelChannel
   private int bindPort;
   private String redirectHost;
   private int redirectPort;
-  private String proxyHost;
-  private int proxyPort;
-  private String proxyUser;
-  private String proxyPassword;
-  private Proxy.Type proxyType = Proxy.Type.DIRECT;
+  private VTDefaultProxy proxy;
   private int tunnelType;
   private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT;
   
@@ -48,13 +43,14 @@ public class VTTunnelChannel
   }
   
   // SOCKS bind tunnel without authentication
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, VTDefaultProxy proxy)
   {
     this.tunnelType = TUNNEL_TYPE_SOCKS;
     this.channelType = channelType;
     this.connection = connection;
     this.bindHost = bindHost;
     this.bindPort = bindPort;
+    this.proxy = proxy;
     if (bindHost != null && bindHost.length() > 0)
     {
       this.bindAddress = new InetSocketAddress(bindHost, bindPort);
@@ -67,13 +63,14 @@ public class VTTunnelChannel
   }
   
   // SOCKS bind tunnel with authentication
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String socksUsername, String socksPassword)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String socksUsername, String socksPassword, VTDefaultProxy proxy)
   {
     this.tunnelType = TUNNEL_TYPE_SOCKS;
     this.channelType = channelType;
     this.connection = connection;
     this.bindHost = bindHost;
     this.bindPort = bindPort;
+    this.proxy = proxy;
     if (bindHost != null && bindHost.length() > 0)
     {
       this.bindAddress = new InetSocketAddress(bindHost, bindPort);
@@ -88,7 +85,7 @@ public class VTTunnelChannel
   }
   
   // TCP bind redirect tunnel
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String redirectHost, int redirectPort, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String redirectHost, int redirectPort, VTDefaultProxy proxy)
   {
     this.tunnelType = TUNNEL_TYPE_TCP;
     this.channelType = channelType;
@@ -97,11 +94,7 @@ public class VTTunnelChannel
     this.bindPort = bindPort;
     this.redirectHost = redirectHost;
     this.redirectPort = redirectPort;
-    this.proxyType = proxyType;
-    this.proxyHost = proxyHost;
-    this.proxyPort = proxyPort;
-    this.proxyUser = proxyUser;
-    this.proxyPassword = proxyPassword;
+    this.proxy = proxy;
     if (bindHost != null && bindHost.length() > 0)
     {
       this.bindAddress = new InetSocketAddress(bindHost, bindPort);
@@ -226,37 +219,13 @@ public class VTTunnelChannel
     this.redirectPort = redirectPort;
   }
   
-  public void setProxy(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
+  public void setProxy(VTDefaultProxy proxy)
   {
-    this.proxyType = proxyType;
-    this.proxyHost = proxyHost;
-    this.proxyPort = proxyPort;
-    this.proxyUser = proxyUser;
-    this.proxyPassword = proxyPassword;
+    this.proxy = proxy;
   }
   
-  public Proxy.Type getProxyType()
+  public VTDefaultProxy getProxy()
   {
-    return proxyType;
-  }
-  
-  public String getProxyHost()
-  {
-    return proxyHost;
-  }
-  
-  public int getProxyPort()
-  {
-    return proxyPort;
-  }
-  
-  public String getProxyUser()
-  {
-    return proxyUser;
-  }
-  
-  public String getProxyPassword()
-  {
-    return proxyPassword;
-  }
+    return proxy;
+  }  
 }

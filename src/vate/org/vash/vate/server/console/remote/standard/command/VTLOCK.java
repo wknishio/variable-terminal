@@ -10,7 +10,7 @@ public class VTLOCK extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullName("*VTLOCK");
     this.setAbbreviatedName("*VTLK");
     this.setFullSyntax("*VTLOCK <USER/PASS>");
-    this.setAbbreviatedSyntax("*VTLK <US/PS>");
+    this.setAbbreviatedSyntax("*VTLK <US/PW>");
   }
   
   public void execute(String command, String[] parsed) throws Exception

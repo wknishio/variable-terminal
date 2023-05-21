@@ -1,27 +1,89 @@
 package org.vash.vate.socket.factory;
 
 import java.net.Authenticator;
+import java.net.InetAddress;
 import java.net.PasswordAuthentication;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class VTDefaultProxyAuthenticator extends Authenticator
 {
-  private String user;
-  private String password;
+  //private String user;
+  //private String password;
+  private static final PasswordAuthentication INVALID = new PasswordAuthentication(" ", " ".toCharArray());
+  private static final Map<String, VTDefaultProxy> PROXIES = new LinkedHashMap<String, VTDefaultProxy>();
+  private static final VTDefaultProxyAuthenticator INSTANCE = new VTDefaultProxyAuthenticator();
   
-  public VTDefaultProxyAuthenticator(String user, String password)
+  public static VTDefaultProxyAuthenticator getInstance()
   {
-    this.user = user;
-    this.password = password;
+    return INSTANCE;
   }
   
-  public void setUserPassword(String user, String password)
+  private VTDefaultProxyAuthenticator()
   {
-    this.user = user;
-    this.password = password;
+    
+  }
+  
+  public static void putProxy(String proxyHost, int proxyPort, VTDefaultProxy proxy)
+  {
+    //System.out.println("putProxy().proxyHost=[" + proxyHost + "]");
+    //System.out.println("putProxy().proxyPort=[" + proxyPort + "]");
+    //System.out.println("putProxy().proxyUser=[" + proxy.getProxyUser() + "]");
+    //System.out.println("putProxy().proxyPassword=[" + proxy.getProxyPassword() + "]");
+    try
+    {
+      InetAddress site = InetAddress.getByName(proxyHost);
+      if (site != null && (site.isLoopbackAddress() || site.isAnyLocalAddress()))
+      {
+        proxyHost = "";
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    PROXIES.put(proxyHost + "/" + proxyPort, proxy);
+  }
+  
+  public static void removeProxy(String proxyHost, int proxyPort)
+  {
+    //System.out.println("removeProxy().proxyHost=" + proxyHost);
+    //System.out.println("removeProxy().proxyPort=" + proxyPort);
+    try
+    {
+      InetAddress site = InetAddress.getByName(proxyHost);
+      if (site != null && (site.isLoopbackAddress() || site.isAnyLocalAddress()))
+      {
+        proxyHost = "";
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    PROXIES.remove(proxyHost + "/" + proxyPort);
   }
   
   public PasswordAuthentication getPasswordAuthentication()
   {
-    return new PasswordAuthentication(user, password.toCharArray());
+    //System.out.println("getPasswordAuthentication()");
+    String proxyHost = getRequestingHost();
+    int proxyPort = getRequestingPort();
+    InetAddress site = getRequestingSite();
+    //URL url = getRequestingURL();
+    if (site != null && (site.isLoopbackAddress() || site.isAnyLocalAddress()))
+    {
+      proxyHost = "";
+    }
+    //System.out.println("getPasswordAuthentication().proxyHost=[" + proxyHost + "]");
+    //System.out.println("getPasswordAuthentication().proxyPort=[" + proxyPort + "]");
+    VTDefaultProxy proxy = PROXIES.get(proxyHost + "/" + proxyPort);
+    if (proxy != null)
+    {
+      //System.out.println("getPasswordAuthentication().proxyUser=[" + proxy.getProxyUser() + "]");
+      //System.out.println("getPasswordAuthentication().proxyPassword=[" + proxy.getProxyPassword() + "]");
+      return new PasswordAuthentication(proxy.getProxyUser(), proxy.getProxyPassword().toCharArray());
+    }
+    return INVALID;
   }
 }

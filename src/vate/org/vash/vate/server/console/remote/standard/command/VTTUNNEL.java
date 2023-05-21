@@ -5,6 +5,7 @@ import java.net.Proxy;
 import org.vash.vate.VT;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
+import org.vash.vate.socket.factory.VTDefaultProxy;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.channel.VTTunnelChannelBindSocketListener;
 
@@ -15,14 +16,15 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullName("*VTTUNNEL");
     this.setAbbreviatedName("*VTTN");
     this.setFullSyntax("*VTTUNNEL [MODE] [[BIND] PORT] [[HOST] PORT] [TYPE/PROXY/PORT] [USER/PASS]");
-    this.setAbbreviatedSyntax("*VTTN [MD] [[BD] PT] [[HT] PT] [TP/PX/PT] [US/PS]");
+    this.setAbbreviatedSyntax("*VTTN [MD] [[BD] PT] [[HT] PT] [TP/PX/PT] [US/PW]");
   }
   
   public void execute(String command, String[] parsed) throws Exception
   {
-    Proxy.Type proxyType = Proxy.Type.DIRECT;
-    String proxyHost = "";
-    int proxyPort = 0;
+    //Proxy.Type proxyType = Proxy.Type.DIRECT;
+    //String proxyHost = "";
+    //int proxyPort = 0;
+    VTDefaultProxy proxy = new VTDefaultProxy(Proxy.Type.DIRECT, "", 0, null, null);
     int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT;
     
     if (parsed.length > 1)
@@ -106,7 +108,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort))
+              if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort, proxy))
               {
                 connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
@@ -140,37 +142,35 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
     {
       if (parsed[1].toUpperCase().contains("R") && !parsed[1].toUpperCase().contains("L"))
       {
-        String user = null;
-        String password = null;
+        String socksUser = null;
+        String socksPassword = null;
         
         int remainingLength = parsed.length;
         while (parsed[remainingLength - 1].contains("/"))
         {
           int first = parsed[remainingLength - 1].indexOf('/');
           int last = parsed[remainingLength - 1].lastIndexOf('/');
+          
           if (first != last)
           {
             String value = parsed[remainingLength - 1];
             String[] values = value.split("/");
-            if (values.length >= 2)
+            if (values.length >= 3)
             {
               if (values[0].toUpperCase().startsWith("H"))
               {
-                proxyType = Proxy.Type.HTTP;
-                proxyPort = 8080;
+                proxy.setProxyType(Proxy.Type.HTTP);
+                proxy.setProxyPort(8080);
               }
               else if (values[0].toUpperCase().startsWith("S"))
               {
-                proxyType = Proxy.Type.SOCKS;
-                proxyPort = 1080;
+                proxy.setProxyType(Proxy.Type.SOCKS);
+                proxy.setProxyPort(1080);
               }
-              proxyHost = values[1];
-            }
-            if (values.length >= 3)
-            {
+              proxy.setProxyHost(values[1]);
               try
               {
-                proxyPort = Integer.parseInt(values[2]);
+                proxy.setProxyPort(Integer.parseInt(values[2]));
               }
               catch (Throwable t)
               {
@@ -182,13 +182,50 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
           else
           {
             String value = parsed[remainingLength - 1];
-            user = value.split("/")[0];
-            password = value.split("/")[1];
+            if (socksUser == null && socksPassword == null)
+            {
+              if (value.length() > 1)
+              {
+                socksUser = value.split("/")[0];
+                socksPassword = value.split("/")[1];
+              }
+              else
+              {
+                socksUser = "";
+                socksPassword = "";
+              }
+            }
+            else
+            {
+              if (value.length() > 1)
+              {
+                proxy.setProxyUser(value.split("/")[0]);
+                proxy.setProxyPassword(value.split("/")[1]);
+              }
+              else
+              {
+                proxy.setProxyUser("");
+                proxy.setProxyPassword("");
+              }
+            }
             remainingLength--;
           }
         }
-        //System.out.println("socksUser:" + socksUser);
-        //System.out.println("socksPassword:" + socksPassword);
+        
+        if (proxy.getProxyType() != Proxy.Type.DIRECT)
+        {
+          if (proxy.getProxyUser() == null && proxy.getProxyPassword() == null && socksUser != null && socksPassword != null && socksUser.length() > 0 && socksPassword.length() > 0)
+          {
+            proxy.setProxyUser(socksUser);
+            proxy.setProxyPassword(socksPassword);
+            socksUser = null;
+            socksPassword = null;
+          }
+        }
+        //System.out.println("socksUser:[" + socksUser + "]");
+        //System.out.println("socksPassword:[" + socksPassword + "]");
+        //System.out.println("proxyUser:[" + proxy.getProxyUser() + "]");
+        //System.out.println("proxyPassword:[" + proxy.getProxyPassword() + "]");
         
         if (remainingLength == 3)
         {
@@ -205,9 +242,9 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
               VTTunnelChannelBindSocketListener listener = session.getTunnelsHandler().getConnection().getBindListener("", bindPort);
               if (listener != null)
               {
-                if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS && user != null && password != null)
+                if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS && socksUser != null && socksPassword != null)
                 {
-                  if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort, user, password))
+                  if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort, socksUser, socksPassword, proxy))
                   {
                     connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
                     connection.getResultWriter().flush();
@@ -228,7 +265,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
               }
               else
               {
-                if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort, user, password))
+                if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, "", bindPort, socksUser, socksPassword, proxy))
                 {
                   connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
                   connection.getResultWriter().flush();
@@ -260,7 +297,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, "", bindPort, "", redirectPort, proxyType, proxyHost, proxyPort, user, password))
+              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, "", bindPort, "", redirectPort, proxy))
               {
                 connection.getResultWriter().write("\nVT>TCP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
@@ -286,9 +323,9 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
               VTTunnelChannelBindSocketListener listener = session.getTunnelsHandler().getConnection().getBindListener(bindAddress, bindPort);
               if (listener != null)
               {
-                if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS && user != null && password != null)
+                if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS && socksUser != null && socksPassword != null)
                 {
-                  if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, bindAddress, bindPort, user, password))
+                  if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, bindAddress, bindPort, socksUser, socksPassword, proxy))
                   {
                     connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                     connection.getResultWriter().flush();
@@ -309,7 +346,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
               }
               else
               {
-                if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, bindAddress, bindPort, user, password))
+                if (session.getTunnelsHandler().getConnection().bindSOCKSListener(channelType, bindAddress, bindPort, socksUser, socksPassword, proxy))
                 {
                   connection.getResultWriter().write("\nVT>SOCKS/HTTP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                   connection.getResultWriter().flush();
@@ -342,7 +379,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, "", bindPort, redirectAddress, redirectPort, proxyType, proxyHost, proxyPort, user, password))
+              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, "", bindPort, redirectAddress, redirectPort, proxy))
               {
                 connection.getResultWriter().write("\nVT>TCP tunnel bound in server address [*" + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
@@ -366,7 +403,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, bindAddress, bindPort, "", redirectPort, proxyType, proxyHost, proxyPort, user, password))
+              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, bindAddress, bindPort, "", redirectPort, proxy))
               {
                 connection.getResultWriter().write("\nVT>TCP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
@@ -399,7 +436,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, bindAddress, bindPort, redirectAddress, redirectPort, proxyType, proxyHost, proxyPort, user, password))
+              if (session.getTunnelsHandler().getConnection().bindTCPRedirectListener(channelType, bindAddress, bindPort, redirectAddress, redirectPort, proxy))
               {
                 connection.getResultWriter().write("\nVT>TCP tunnel bound in server address [" + bindAddress + " " + bindPort + "] set!\nVT>");
                 connection.getResultWriter().flush();
