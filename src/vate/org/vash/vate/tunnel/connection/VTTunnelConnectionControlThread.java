@@ -143,10 +143,8 @@ public class VTTunnelConnectionControlThread implements Runnable
                     {
                       
                     }
-                    
                   }
                 };
-                
                 threads.execute(attemptTCPConnect);
               }
               else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
