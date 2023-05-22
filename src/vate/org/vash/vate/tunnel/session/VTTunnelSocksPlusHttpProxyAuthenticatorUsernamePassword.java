@@ -37,7 +37,7 @@ public class VTTunnelSocksPlusHttpProxyAuthenticatorUsernamePassword extends Use
         {
           in.unread(version);
           //fallback to use http proxy instead
-          VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(s, in, validator.getUsername(), validator.getPassword(), connect_proxy);
+          VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(s, in, validator.getUsername(), validator.getPassword(), connect_proxy, true);
           try
           {
             httpProxy.run();

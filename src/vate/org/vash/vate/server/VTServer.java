@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.Authenticator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -34,6 +35,7 @@ import org.vash.vate.server.console.local.VTServerLocalConsoleReader;
 import org.vash.vate.server.console.local.VTServerLocalGraphicalConsoleMenuBar;
 import org.vash.vate.server.dialog.VTServerSettingsDialog;
 import org.vash.vate.server.session.VTServerSessionListener;
+import org.vash.vate.socket.factory.VTDefaultProxyAuthenticator;
 
 public class VTServer implements Runnable
 {
@@ -90,6 +92,7 @@ public class VTServer implements Runnable
   {
     System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
     System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
+    Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
     ImageIO.setUseCache(false);
     VTHelpManager.initialize();
     TLSVerificationDisabler.install();

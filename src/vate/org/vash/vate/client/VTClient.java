@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.net.Authenticator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -29,6 +30,7 @@ import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
 import org.vash.vate.runtime.VTExit;
 import org.vash.vate.security.VTBlake3DigestRandom;
+import org.vash.vate.socket.factory.VTDefaultProxyAuthenticator;
 
 public class VTClient implements Runnable
 {
@@ -78,6 +80,7 @@ public class VTClient implements Runnable
   {
     System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
     System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
+    Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
     ImageIO.setUseCache(false);
     VTHelpManager.initialize();
     TLSVerificationDisabler.install();

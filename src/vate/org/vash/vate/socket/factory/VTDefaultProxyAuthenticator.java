@@ -26,41 +26,41 @@ public class VTDefaultProxyAuthenticator extends Authenticator
   
   public static void putProxy(String proxyHost, int proxyPort, VTDefaultProxy proxy)
   {
-    //System.out.println("putProxy().proxyHost=[" + proxyHost + "]");
-    //System.out.println("putProxy().proxyPort=[" + proxyPort + "]");
-    //System.out.println("putProxy().proxyUser=[" + proxy.getProxyUser() + "]");
-    //System.out.println("putProxy().proxyPassword=[" + proxy.getProxyPassword() + "]");
     try
     {
       InetAddress site = InetAddress.getByName(proxyHost);
       if (site != null && (site.isLoopbackAddress() || site.isAnyLocalAddress()))
       {
-        proxyHost = "";
+        proxyHost = site.getHostName();
       }
     }
     catch (Throwable t)
     {
       
     }
+    //System.out.println("putProxy().proxyHost=[" + proxyHost + "]");
+    //System.out.println("putProxy().proxyPort=[" + proxyPort + "]");
+    //System.out.println("putProxy().proxyUser=[" + proxy.getProxyUser() + "]");
+    //System.out.println("putProxy().proxyPassword=[" + proxy.getProxyPassword() + "]");
     PROXIES.put(proxyHost + "/" + proxyPort, proxy);
   }
   
   public static void removeProxy(String proxyHost, int proxyPort)
   {
-    //System.out.println("removeProxy().proxyHost=" + proxyHost);
-    //System.out.println("removeProxy().proxyPort=" + proxyPort);
     try
     {
       InetAddress site = InetAddress.getByName(proxyHost);
       if (site != null && (site.isLoopbackAddress() || site.isAnyLocalAddress()))
       {
-        proxyHost = "";
+        proxyHost = site.getHostName();
       }
     }
     catch (Throwable t)
     {
       
     }
+    //System.out.println("removeProxy().proxyHost=" + proxyHost);
+    //System.out.println("removeProxy().proxyPort=" + proxyPort);
     PROXIES.remove(proxyHost + "/" + proxyPort);
   }
   
@@ -70,13 +70,14 @@ public class VTDefaultProxyAuthenticator extends Authenticator
     String proxyHost = getRequestingHost();
     int proxyPort = getRequestingPort();
     InetAddress site = getRequestingSite();
-    //URL url = getRequestingURL();
-    if (site != null && (site.isLoopbackAddress() || site.isAnyLocalAddress()))
+    
+    if (site != null && (site.isAnyLocalAddress() || site.isLoopbackAddress()))
     {
-      proxyHost = "";
+      proxyHost = site.getHostName();
     }
     //System.out.println("getPasswordAuthentication().proxyHost=[" + proxyHost + "]");
     //System.out.println("getPasswordAuthentication().proxyPort=[" + proxyPort + "]");
+    
     VTDefaultProxy proxy = PROXIES.get(proxyHost + "/" + proxyPort);
     if (proxy != null)
     {

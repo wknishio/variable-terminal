@@ -17,13 +17,16 @@ import java.net.URISyntaxException;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.Map.Entry;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.vash.vate.VT;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.socket.factory.VTDefaultProxy;
@@ -74,6 +77,11 @@ import org.vash.vate.socket.factory.VTDefaultProxy;
 
 public class VTNanoHTTPDProxySession implements Runnable
 {
+//  public static void main(String[] args)
+//  {
+//    System.out.println("md5=" + DigestUtils.md5Hex("coisa"));
+//  }
+  
   public static final String
   HTTP_OK = "200 OK",
   HTTP_PARTIALCONTENT = "206 Partial Content",
@@ -245,15 +253,17 @@ public class VTNanoHTTPDProxySession implements Runnable
     
     //public boolean keepConnection = false;
   }
+ 
   
   
-  public VTNanoHTTPDProxySession( Socket s, InputStream in, String username, String password, VTDefaultProxy proxy)
+  public VTNanoHTTPDProxySession( Socket s, InputStream in, String username, String password, VTDefaultProxy proxy, boolean digestAuthentication)
   {
     mySocket = s;
     myIn = in;
     this.username = username;
     this.password = password;
     this.proxy = proxy;
+    this.digestAuthentication = digestAuthentication;
     //Thread t = new Thread( this );
     //t.setDaemon( true );
     //t.start();
@@ -414,11 +424,23 @@ public class VTNanoHTTPDProxySession implements Runnable
   
   public void serve(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, String username, String password, Socket clientSocket, InputStream clientInput, VTDefaultProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
   {
-    if (!checkProxyAuthenticatedBasic(headers, username, password))
+    if (digestAuthentication)
     {
-      requireProxyAuthenticationBasic(uri);
-      return;
+      int result = checkProxyAuthenticatedDigest(headers, method, username, password, "Proxy");
+      if (result != 0)
+      {
+        requireProxyAuthenticationDigest("Proxy", generateNOnce("Proxy", username, password), result == -2);
+      }
     }
+    else
+    {
+      if (!checkProxyAuthenticatedBasic(headers, username, password))
+      {
+        requireProxyAuthenticationBasic("Proxy");
+        return;
+      }
+    }
+    
     if (method.equalsIgnoreCase("CONNECT"))
     {
       serveConnectRequest(uri, method, pre, headers, headerData, bodyData, clientSocket, clientInput, connectProxy);
@@ -451,10 +473,126 @@ public class VTNanoHTTPDProxySession implements Runnable
     return false;
   }
   
-  private void requireProxyAuthenticationBasic(String uri) throws UnsupportedEncodingException, InterruptedException
+  private void requireProxyAuthenticationBasic(String realm) throws UnsupportedEncodingException, InterruptedException
   {
     Response resp = new Response();
-    resp.headers.put("Proxy-Authenticate", "Basic");
+    if (realm != null && realm.length() > 0)
+    {
+      resp.headers.put("Proxy-Authenticate", "Basic realm=\"" + realm + "\"");
+    }
+    else
+    {
+      resp.headers.put("Proxy-Authenticate", "Basic");
+    }
+    
+    resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
+    sendError(resp.status, MIME_PLAINTEXT, resp.headers, null);
+  }
+  
+  private int checkProxyAuthenticatedDigest(Properties headers, String method, String username, String password, String realm) throws UnsupportedEncodingException
+  {
+    if (username == null || password == null)
+    {
+      return 0;
+    }
+    String proxyAuthorization = null;
+    for (Object headerName : headers.keySet())
+    {
+      if (headerName != null && headerName.toString().equalsIgnoreCase("Proxy-Authorization"))
+      {
+        proxyAuthorization = headers.getProperty(headerName.toString());
+      }
+    }
+    if (proxyAuthorization != null)
+    {
+      return validateProxyAuthorizationDigest(proxyAuthorization, method, username, password, realm);
+    }
+    return -1;
+  }
+  
+  private int validateProxyAuthorizationDigest(String proxyAuthorization, String method, String username, String password, String realm) throws UnsupportedEncodingException
+  {
+    //System.out.println("validateProxyAuthorizationDigest()");
+    //System.out.println("proxyAuthorization=" + proxyAuthorization);
+    if (proxyAuthorization == null)
+    {
+      return -1;
+    }
+    if (!proxyAuthorization.startsWith("Digest "))
+    {
+      return -1;
+    }
+    Map<String, String> values = parseHeader(proxyAuthorization);
+    
+    String userName = values.get("username");
+    String realmName = values.get("realm");
+    String nOnce = values.get("nonce");
+    String nc = values.get("nc");
+    String cnonce = values.get("cnonce");
+    String qop = values.get("qop");
+    String uri = values.get("uri");
+    String response = values.get("response");
+        
+    //System.out.println("method=" + method);
+    //System.out.println("userName=" + userName);
+    //System.out.println("realmName=" + realmName);
+    //System.out.println("nOnce=" + nOnce);
+    //System.out.println("nc=" + nc);
+    //System.out.println("cnonce=" + cnonce);
+    //System.out.println("qop=" + qop);
+    //System.out.println("uri=" + uri);
+    //System.out.println("response=" + response);
+    
+    //if ( (userName == null) || (realmName == null) || (nOnce == null)
+    //    || (uri == null) || (response == null) )
+    //{
+    //  return -1;
+    //}
+    
+    String a2 = method + ":" + uri;
+    String md5a2 = DigestUtils.md5Hex(a2.getBytes("ISO-8859-1"));
+    
+    String a1 = userName + ":" + realmName + ":" + password;
+    String md5a1 = DigestUtils.md5Hex(a1.getBytes("ISO-8859-1"));
+    
+    String serverDigestValue = md5a1 + ":" + nOnce + ":" + nc + ":" + cnonce + ":" + qop + ":" + md5a2;
+    
+    String serverDigest = DigestUtils.md5Hex(serverDigestValue.getBytes("ISO-8859-1"));
+    String clientDigest = response;
+    
+    //System.out.println("serverDigest=" + serverDigest);
+    
+    if (serverDigest.equals(clientDigest))
+    {
+      return 0;
+//      Long timestamp = VALID_DIGEST_NONCES.get(nOnce);
+//      if (timestamp != null)
+//      {
+//        if (timestamp >= System.currentTimeMillis())
+//        {
+//          return 0;
+//        }
+//        else
+//        {
+//          VALID_DIGEST_NONCES.remove(nOnce);
+//          return -2;
+//        }
+//      }
+//      else
+//      {
+//        return -2;
+//      }
+    }
+    
+    return -1;
+  }
+  
+  private void requireProxyAuthenticationDigest(String realm, String nOnce, boolean stale) throws UnsupportedEncodingException, InterruptedException
+  {
+    Response resp = new Response();
+    resp.headers.put("Proxy-Authenticate", "Digest realm=\"" + realm + "\", "
+        +  "qop=\"auth\", nonce=\"" + nOnce + "\", " + "opaque=\""
+        + DigestUtils.md5Hex(nOnce.getBytes("ISO-8859-1")) + "\"" + (stale ? ", stale=\"true\"" : ""));
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
     sendError(resp.status, MIME_PLAINTEXT, resp.headers, null);
   }
@@ -594,6 +732,57 @@ public class VTNanoHTTPDProxySession implements Runnable
     firstThread.join();
     secondThread.join();
   }
+  
+  protected static String removeQuotes(String quotedString, boolean quotesRequired)
+  {
+    //support both quoted and non-quoted
+    if (quotedString.length() > 0 && quotedString.charAt(0) != '"' && !quotesRequired)
+    {
+      return quotedString;
+    }
+    else if (quotedString.length() > 2)
+    {
+      return quotedString.substring(1, quotedString.length() - 1);
+    }
+    else
+    {
+      return new String();
+    }
+  }
+  
+  protected static String removeQuotes(String quotedString)
+  {
+    return removeQuotes(quotedString, false);
+  }
+  
+  protected String generateNOnce(String realm, String username, String password) throws UnsupportedEncodingException
+  {
+    long currentTime = System.currentTimeMillis();
+    
+    String nOnceValue = username + ":" + password + ":" + currentTime + ":" + realm;
+    nOnceValue = DigestUtils.md5Hex(nOnceValue.getBytes("ISO-8859-1"));
+    
+    //VALID_DIGEST_NONCES.put(nOnceValue, currentTime + (1000 * 300));
+    return nOnceValue;
+  }
+  
+  private Map<String, String> parseHeader(String headerString)
+  {
+    // seperte out the part of the string which tells you which Auth scheme is it
+    String headerStringWithoutScheme = headerString.substring(headerString.indexOf(" ") + 1).trim();
+    LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+    String keyValueArray[] = headerStringWithoutScheme.split(",");
+    for (String keyval : keyValueArray)
+    {
+      if (keyval.contains("="))
+      {
+        String key = keyval.substring(0, keyval.indexOf("="));
+        String value = keyval.substring(keyval.indexOf("=") + 1);
+        values.put(key.trim(), value.replaceAll("\"", "").trim());
+      }
+    }
+    return values;
+}
   
   private class SocketPipe implements Runnable
   {
@@ -915,6 +1104,8 @@ public class VTNanoHTTPDProxySession implements Runnable
   private String username;
   private String password;
   private VTDefaultProxy proxy;
+  private boolean digestAuthentication;
+  //private static final Map<String, Long> VALID_DIGEST_NONCES = new LinkedHashMap<String, Long>();
   
   private static java.text.SimpleDateFormat gmtFrmt;
   static

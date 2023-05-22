@@ -37,7 +37,7 @@ public class VTTunnelSocksPlusHttpProxyAuthenticatorNone extends ServerAuthentic
       {
         in.unread(version);
         //fallback to use http proxy instead
-        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(s, in, null, null, connect_proxy);
+        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(s, in, null, null, connect_proxy, true);
         try
         {
           httpProxy.run();
