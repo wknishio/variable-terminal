@@ -131,7 +131,6 @@ public class VTServerSession
 //    }
 //    catch (Throwable e)
 //    {
-//      // TODO Auto-generated catch block
 //      //e.printStackTrace();
 //    }
 //    this.shellAdapter.setSuppressEchoShell(supressEchoShell);
