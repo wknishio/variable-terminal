@@ -8,8 +8,8 @@ public class VTNETWORKS extends VTServerStandardRemoteConsoleCommandProcessor
   {
     this.setFullName("*VTNETWORKS");
     this.setAbbreviatedName("*VTNTS");
-    this.setFullSyntax("*VTNETWORKS");
-    this.setAbbreviatedSyntax("*VTNTS");
+    this.setFullSyntax("*VTNETWORKS [SIDE]");
+    this.setAbbreviatedSyntax("*VTNTS [SD]");
   }
   
   public void execute(String command, String[] parsed) throws Exception

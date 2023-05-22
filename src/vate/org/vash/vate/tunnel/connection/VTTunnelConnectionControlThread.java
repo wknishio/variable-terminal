@@ -45,93 +45,109 @@ public class VTTunnelConnectionControlThread implements Runnable
           {
             int tunnelType = packet[2] == 'S' ? VTTunnelChannel.TUNNEL_TYPE_SOCKS : VTTunnelChannel.TUNNEL_TYPE_TCP;
             String text = new String(packet, 3, packet.length - 3, "UTF-8");
-            String[] parts = text.split(SESSION_SEPARATOR);
+            final String[] parts = text.split(SESSION_SEPARATOR);
             if (parts.length >= 4)
             {
               // request message received
               if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
               {
-                //System.out.println("text=[" + text + "]");
-                //System.out.println("parts.length=" + parts.length);
-                int channelType = Integer.parseInt(parts[0]);
-                int inputNumber = Integer.parseInt(parts[1]);
-                String host = parts[2];
-                int port = Integer.parseInt(parts[3]);
-                String proxyTypeLetter = parts[4];
-                String proxyHost = parts[5];
-                int proxyPort = Integer.parseInt(parts[6]);
-                String proxyUser = parts[7];
-                String proxyPassword = parts[8];
-                
-                if (parts.length > 9 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[9].equals("*"))
+                //attempt tcp connect in another thread
+                Runnable attemptTCPConnect = new Runnable()
                 {
-                  proxyUser = null;
-                  proxyPassword = null;
-                }
-                
-                Proxy.Type proxyType = Proxy.Type.DIRECT;
-                if (proxyTypeLetter.toUpperCase().startsWith("H"))
-                {
-                  proxyType = Proxy.Type.HTTP;
-                }
-                if (proxyTypeLetter.toUpperCase().startsWith("S"))
-                {
-                  proxyType = Proxy.Type.SOCKS;
-                }
-                
-                VTTunnelSession session = null;
-                VTTunnelSessionHandler handler = null;
-                Socket socket = null;
-                InputStream socketInputStream = null;
-                OutputStream socketOutputStream = null;
-                try
-                {
-                  socket = connect(host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
-                  socketInputStream = socket.getInputStream();
-                  socketOutputStream = socket.getOutputStream();
-                }
-                catch (Throwable t)
-                {
-                  //t.printStackTrace();
-                }
-                if (socketInputStream != null && socketOutputStream != null)
-                {
-                  session = new VTTunnelSession(connection, socket, socketInputStream, socketOutputStream, false);
-                  handler = new VTTunnelSessionHandler(session, null);
-                  VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, handler);
-                  if (output != null)
+                  public void run()
                   {
-                    int outputNumber = output.number();
-                    session.setOutputNumber(outputNumber);
-                    session.setInputNumber(inputNumber);
-                    session.setTunnelOutputStream(output);
-                    session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
-                    session.getTunnelOutputStream().open();
-                    session.getTunnelInputStream().open();
-                    session.getTunnelInputStream().setDirectOutputStream(session.getSocketOutputStream(), session.getSocket());
-                    // response message sent with ok
-                    connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
-                    connection.getControlOutputStream().flush();
-                    threads.execute(handler);
-                    session.setResult(true);
-                  }
-                  else
-                  {
-                    if (session != null)
+                    try
                     {
-                      session.close();
+                      int channelType = Integer.parseInt(parts[0]);
+                      int inputNumber = Integer.parseInt(parts[1]);
+                      String host = parts[2];
+                      int port = Integer.parseInt(parts[3]);
+                      String proxyTypeLetter = parts[4];
+                      String proxyHost = parts[5];
+                      int proxyPort = Integer.parseInt(parts[6]);
+                      String proxyUser = parts[7];
+                      String proxyPassword = parts[8];
+                      
+                      if (parts.length > 9 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[9].equals("*"))
+                      {
+                        proxyUser = null;
+                        proxyPassword = null;
+                      }
+                      
+                      Proxy.Type proxyType = Proxy.Type.DIRECT;
+                      if (proxyTypeLetter.toUpperCase().startsWith("H"))
+                      {
+                        proxyType = Proxy.Type.HTTP;
+                      }
+                      if (proxyTypeLetter.toUpperCase().startsWith("S"))
+                      {
+                        proxyType = Proxy.Type.SOCKS;
+                      }
+                      
+                      VTTunnelSession session = null;
+                      VTTunnelSessionHandler handler = null;
+                      Socket socket = null;
+                      InputStream socketInputStream = null;
+                      OutputStream socketOutputStream = null;
+                      
+                      try
+                      {
+                        socket = connect(host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
+                        socketInputStream = socket.getInputStream();
+                        socketOutputStream = socket.getOutputStream();
+                      }
+                      catch (Throwable t)
+                      {
+                        //t.printStackTrace();
+                      }
+                      if (socketInputStream != null && socketOutputStream != null)
+                      {
+                        session = new VTTunnelSession(connection, socket, socketInputStream, socketOutputStream, false);
+                        handler = new VTTunnelSessionHandler(session, null);
+                        VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, handler);
+                        if (output != null)
+                        {
+                          int outputNumber = output.number();
+                          session.setOutputNumber(outputNumber);
+                          session.setInputNumber(inputNumber);
+                          session.setTunnelOutputStream(output);
+                          session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
+                          session.getTunnelOutputStream().open();
+                          session.getTunnelInputStream().open();
+                          session.getTunnelInputStream().setDirectOutputStream(session.getSocketOutputStream(), session.getSocket());
+                          // response message sent with ok
+                          connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                          connection.getControlOutputStream().flush();
+                          threads.execute(handler);
+                          session.setResult(true);
+                        }
+                        else
+                        {
+                          if (session != null)
+                          {
+                            session.close();
+                          }
+                          // response message sent with error
+                          connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                          connection.getControlOutputStream().flush();
+                        }
+                      }
+                      else
+                      {
+                        // response message sent with error
+                        connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                        connection.getControlOutputStream().flush();
+                      }
                     }
-                    // response message sent with error
-                    connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
-                    connection.getControlOutputStream().flush();
+                    catch (Throwable t)
+                    {
+                      
+                    }
+                    
                   }
-                }
-                else
-                {
-                  // response message sent with error
-                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
-                  connection.getControlOutputStream().flush();
-                }
+                };
+                
+                threads.execute(attemptTCPConnect);
               }
               else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
               {

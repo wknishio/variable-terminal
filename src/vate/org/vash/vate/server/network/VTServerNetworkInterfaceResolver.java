@@ -1,6 +1,5 @@
 package org.vash.vate.server.network;
 
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -115,22 +114,6 @@ public class VTServerNetworkInterfaceResolver extends VTTask
           session.getConnection().getResultWriter().flush();
           finished = true;
         }
-      }
-    }
-    catch (SecurityException e)
-    {
-      synchronized (this)
-      {
-        try
-        {
-          session.getConnection().getResultWriter().write("\nVT>Security error detected!\nVT>");
-          session.getConnection().getResultWriter().flush();
-        }
-        catch (IOException e1)
-        {
-          
-        }
-        finished = true;
       }
     }
     catch (Throwable e)
