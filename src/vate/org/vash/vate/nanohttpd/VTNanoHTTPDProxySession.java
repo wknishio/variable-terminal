@@ -484,7 +484,6 @@ public class VTNanoHTTPDProxySession implements Runnable
     {
       resp.headers.put("Proxy-Authenticate", "Basic");
     }
-    
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
     sendError(resp.status, MIME_PLAINTEXT, resp.headers, null);
   }
@@ -512,7 +511,6 @@ public class VTNanoHTTPDProxySession implements Runnable
   
   private int validateProxyAuthorizationDigest(String proxyAuthorization, String method, String username, String password, String realm) throws UnsupportedEncodingException
   {
-    //System.out.println("validateProxyAuthorizationDigest()");
     //System.out.println("proxyAuthorization=" + proxyAuthorization);
     if (proxyAuthorization == null)
     {
@@ -532,22 +530,6 @@ public class VTNanoHTTPDProxySession implements Runnable
     String qop = values.get("qop");
     String uri = values.get("uri");
     String response = values.get("response");
-        
-    //System.out.println("method=" + method);
-    //System.out.println("userName=" + userName);
-    //System.out.println("realmName=" + realmName);
-    //System.out.println("nOnce=" + nOnce);
-    //System.out.println("nc=" + nc);
-    //System.out.println("cnonce=" + cnonce);
-    //System.out.println("qop=" + qop);
-    //System.out.println("uri=" + uri);
-    //System.out.println("response=" + response);
-    
-    //if ( (userName == null) || (realmName == null) || (nOnce == null)
-    //    || (uri == null) || (response == null) )
-    //{
-    //  return -1;
-    //}
     
     String a2 = method + ":" + uri;
     String md5a2 = DigestUtils.md5Hex(a2.getBytes("ISO-8859-1"));
@@ -639,9 +621,20 @@ public class VTNanoHTTPDProxySession implements Runnable
     ByteArrayOutputStream requestData = new ByteArrayOutputStream();
     for (Object headerName : headers.keySet().toArray(new Object[] {}))
     {
-      if (headerName != null && headerName.toString().equalsIgnoreCase("Proxy-Authorization"))
+      if (headerName != null)
       {
-        headers.remove(headerName);
+        if (headerName.toString().equalsIgnoreCase("Proxy-Authorization"))
+        {
+          headers.remove(headerName);
+        }
+        if (headerName.toString().equalsIgnoreCase("Proxy-Connection"))
+        {
+          //if (!headers.contains("Connection"))
+          //{
+            //headers.put("Connection", headers.get(headerName));
+          //}
+          headers.remove(headerName);
+        }
       }
     }
     
