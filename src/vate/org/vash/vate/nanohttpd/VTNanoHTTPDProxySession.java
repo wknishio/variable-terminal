@@ -629,10 +629,10 @@ public class VTNanoHTTPDProxySession implements Runnable
         }
         if (headerName.toString().equalsIgnoreCase("Proxy-Connection"))
         {
-          //if (!headers.contains("Connection"))
-          //{
-            //headers.put("Connection", headers.get(headerName));
-          //}
+          if (!findHeaderIgnoreCase("Connection", headers))
+          {
+            headers.put("Connection", headers.get(headerName));
+          }
           headers.remove(headerName);
         }
       }
@@ -757,6 +757,18 @@ public class VTNanoHTTPDProxySession implements Runnable
     
     //VALID_DIGEST_NONCES.put(nOnceValue, currentTime + (1000 * 300));
     return nOnceValue;
+  }
+  
+  private boolean findHeaderIgnoreCase(String searchedHeader, Properties headers)
+  {
+    for (Object headerName : headers.keySet().toArray(new Object[] {}))
+    {
+      if (headerName.toString().equalsIgnoreCase(searchedHeader))
+      {
+        return true;
+      }
+    }
+    return false;
   }
   
   private Map<String, String> parseHeader(String headerString)
