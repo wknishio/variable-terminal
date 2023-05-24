@@ -1,4 +1,4 @@
-package org.vash.vate.socket.factory;
+package org.vash.vate.socket;
 
 import java.net.Authenticator;
 import java.net.InetAddress;

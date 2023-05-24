@@ -16,9 +16,9 @@ import org.vash.vate.network.nat.mapping.VTNATSinglePortMappingManagerMKII;
 import org.vash.vate.security.VTBlake3DigestRandom;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.session.VTServerSessionListener;
-import org.vash.vate.socket.factory.VTDefaultProxy;
-import org.vash.vate.socket.factory.VTDefaultProxyAuthenticator;
-import org.vash.vate.socket.factory.VTHTTPConnectTunnelSocket;
+import org.vash.vate.socket.VTDefaultProxy;
+import org.vash.vate.socket.VTDefaultProxyAuthenticator;
+import org.vash.vate.socket.VTHTTPConnectTunnelSocket;
 
 public class VTServerConnector implements Runnable
 {

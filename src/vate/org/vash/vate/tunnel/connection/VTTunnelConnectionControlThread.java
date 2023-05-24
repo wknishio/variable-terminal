@@ -8,9 +8,9 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
-import org.vash.vate.socket.factory.VTDefaultProxy;
-import org.vash.vate.socket.factory.VTDefaultProxyAuthenticator;
-import org.vash.vate.socket.factory.VTHTTPConnectTunnelSocket;
+import org.vash.vate.socket.VTDefaultProxy;
+import org.vash.vate.socket.VTDefaultProxyAuthenticator;
+import org.vash.vate.socket.VTHTTPConnectTunnelSocket;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;

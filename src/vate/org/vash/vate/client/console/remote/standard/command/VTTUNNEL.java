@@ -6,7 +6,7 @@ import org.vash.vate.VT;
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.help.VTHelpManager;
-import org.vash.vate.socket.factory.VTDefaultProxy;
+import org.vash.vate.socket.VTDefaultProxy;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.channel.VTTunnelChannelBindSocketListener;
 

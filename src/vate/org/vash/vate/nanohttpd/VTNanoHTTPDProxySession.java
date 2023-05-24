@@ -29,7 +29,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.vash.vate.VT;
 import org.vash.vate.parser.VTConfigurationProperties;
-import org.vash.vate.socket.factory.VTDefaultProxy;
+import org.vash.vate.socket.VTDefaultProxy;
 
 /**
  * A simple, tiny, nicely embeddable HTTP 1.0 (partially 1.1) server in Java

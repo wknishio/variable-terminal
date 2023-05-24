@@ -5,7 +5,7 @@ import java.net.Proxy;
 import org.vash.vate.VT;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.socket.factory.VTDefaultProxy;
+import org.vash.vate.socket.VTDefaultProxy;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.channel.VTTunnelChannelBindSocketListener;
 

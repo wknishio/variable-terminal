@@ -30,7 +30,7 @@ import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
 import org.vash.vate.runtime.VTExit;
 import org.vash.vate.security.VTBlake3DigestRandom;
-import org.vash.vate.socket.factory.VTDefaultProxyAuthenticator;
+import org.vash.vate.socket.VTDefaultProxyAuthenticator;
 
 public class VTClient implements Runnable
 {

@@ -1,7 +1,7 @@
 package org.vash.vate.tunnel.session;
 
 import org.vash.vate.VT;
-import org.vash.vate.socket.factory.VTDefaultProxy;
+import org.vash.vate.socket.VTDefaultProxy;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 
 import net.sourceforge.jsocks.socks.ProxyServer;

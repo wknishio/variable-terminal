@@ -35,7 +35,7 @@ import org.vash.vate.server.console.local.VTServerLocalConsoleReader;
 import org.vash.vate.server.console.local.VTServerLocalGraphicalConsoleMenuBar;
 import org.vash.vate.server.dialog.VTServerSettingsDialog;
 import org.vash.vate.server.session.VTServerSessionListener;
-import org.vash.vate.socket.factory.VTDefaultProxyAuthenticator;
+import org.vash.vate.socket.VTDefaultProxyAuthenticator;
 
 public class VTServer implements Runnable
 {
