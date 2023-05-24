@@ -13,16 +13,21 @@ import java.nio.channels.SocketChannel;
 import org.apache.commons.httpclient.ProxyClient;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
+import org.vash.vate.VT;
 
 public class VTHTTPConnectTunnelSocket extends Socket
 {
-  private ProxyClient proxyClient = new ProxyClient();
+  private ProxyClient proxyClient;
   private Socket socket;
   
   public VTHTTPConnectTunnelSocket(String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
+    proxyClient = new ProxyClient();
     proxyClient.getHostConfiguration().setProxy(proxyHost, proxyPort);
-    proxyClient.getState().setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(proxyUser, proxyPassword));
+    if (proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
+    {
+      proxyClient.getState().setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(proxyUser, proxyPassword));
+    }
   }
   
   public void connect(SocketAddress endpoint) throws IOException
@@ -33,6 +38,8 @@ public class VTHTTPConnectTunnelSocket extends Socket
       {
         InetSocketAddress target = (InetSocketAddress) endpoint;
         proxyClient.getHostConfiguration().setHost(target.getHostName(), target.getPort());
+        proxyClient.getParams().setConnectionManagerTimeout(VT.VT_CONNECTION_ATTEMPT_TIMEOUT_MILLISECONDS);
+        proxyClient.getParams().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
         socket = proxyClient.connect().getSocket();
       }
       catch (Throwable t)
@@ -54,6 +61,8 @@ public class VTHTTPConnectTunnelSocket extends Socket
       {
         InetSocketAddress target = (InetSocketAddress) endpoint;
         proxyClient.getHostConfiguration().setHost(target.getHostName(), target.getPort());
+        proxyClient.getParams().setConnectionManagerTimeout(timeout);
+        proxyClient.getParams().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
         socket = proxyClient.connect().getSocket();
       }
       catch (Throwable t)
