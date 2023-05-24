@@ -80,14 +80,14 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       {
         message.append("\nVT>Proxy host port(PP): []");
       }
-      if (session.getServer().getServerConnector().isUseProxyAuthentication())
-      {
-        message.append("\nVT>Proxy authentication(PA): [Enabled]");
-      }
-      else
-      {
-        message.append("\nVT>Proxy authentication(PA): [Disabled]");
-      }
+//      if (session.getServer().getServerConnector().isUseProxyAuthentication())
+//      {
+//        message.append("\nVT>Proxy authentication(PA): [Enabled]");
+//      }
+//      else
+//      {
+//        message.append("\nVT>Proxy authentication(PA): [Disabled]");
+//      }
       message.append("\nVT>Proxy user(PU): [" + proxyUser + "]");
       message.append("\nVT>Proxy password(PK): [" + proxyPassword + "]");
       if (encryptionType.toUpperCase().startsWith("R"))
@@ -487,54 +487,54 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           connection.getResultWriter().flush();
         }
       }
-      else if (parsed[1].equalsIgnoreCase("PA"))
-      {
-        if (parsed.length == 2)
-        {
-          if (!session.getServer().getServerConnector().isUseProxyAuthentication())
-          {
-            connection.getResultWriter().write("\nVT>Proxy authentication(PA): [Disabled]\nVT>");
-            connection.getResultWriter().flush();
-          }
-          else
-          {
-            connection.getResultWriter().write("\nVT>Proxy authentication(PA): [Enabled]\nVT>");
-            connection.getResultWriter().flush();
-          }
-        }
-        else if (parsed.length >= 3)
-        {
-          if (parsed[2].toUpperCase().startsWith("E"))
-          {
-            VTServerConnector connector = session.getServer().getServerConnector();
-            synchronized (connector)
-            {
-              connector.setUseProxyAuthentication(true);
-              connector.interruptConnector();
-              connector.notify();
-            }
-            connection.getResultWriter().write("\nVT>Proxy authentication(PA) set to: [Enabled]\nVT>");
-            connection.getResultWriter().flush();
-          }
-          else
-          {
-            VTServerConnector connector = session.getServer().getServerConnector();
-            synchronized (connector)
-            {
-              connector.setUseProxyAuthentication(false);
-              connector.interruptConnector();
-              connector.notify();
-            }
-            connection.getResultWriter().write("\nVT>Proxy authentication(PA) set to: [Disabled]\nVT>");
-            connection.getResultWriter().flush();
-          }
-        }
-        else
-        {
-          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
-          connection.getResultWriter().flush();
-        }
-      }
+//      else if (parsed[1].equalsIgnoreCase("PA"))
+//      {
+//        if (parsed.length == 2)
+//        {
+//          if (!session.getServer().getServerConnector().isUseProxyAuthentication())
+//          {
+//            connection.getResultWriter().write("\nVT>Proxy authentication(PA): [Disabled]\nVT>");
+//            connection.getResultWriter().flush();
+//          }
+//          else
+//          {
+//            connection.getResultWriter().write("\nVT>Proxy authentication(PA): [Enabled]\nVT>");
+//            connection.getResultWriter().flush();
+//          }
+//        }
+//        else if (parsed.length >= 3)
+//        {
+//          if (parsed[2].toUpperCase().startsWith("E"))
+//          {
+//            VTServerConnector connector = session.getServer().getServerConnector();
+//            synchronized (connector)
+//            {
+//              connector.setUseProxyAuthentication(true);
+//              connector.interruptConnector();
+//              connector.notify();
+//            }
+//            connection.getResultWriter().write("\nVT>Proxy authentication(PA) set to: [Enabled]\nVT>");
+//            connection.getResultWriter().flush();
+//          }
+//          else
+//          {
+//            VTServerConnector connector = session.getServer().getServerConnector();
+//            synchronized (connector)
+//            {
+//              connector.setUseProxyAuthentication(false);
+//              connector.interruptConnector();
+//              connector.notify();
+//            }
+//            connection.getResultWriter().write("\nVT>Proxy authentication(PA) set to: [Disabled]\nVT>");
+//            connection.getResultWriter().flush();
+//          }
+//        }
+//        else
+//        {
+//          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+//          connection.getResultWriter().flush();
+//        }
+//      }
       else if (parsed[1].equalsIgnoreCase("PU"))
       {
         if (parsed.length == 2)

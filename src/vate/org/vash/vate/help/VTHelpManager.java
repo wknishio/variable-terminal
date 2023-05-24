@@ -36,7 +36,7 @@ public class VTHelpManager
   ("\n-PT: proxy type, default none, SOCKS(S), HTTP(H)") + 
   ("\n-PH: proxy host, default null") + 
   ("\n-PP: proxy port, default 1080 for SOCKS or 8080 for HTTP") + 
-  ("\n-PA: proxy authentication, default disabled(D), enabled(E)") + 
+  //("\n-PA: proxy authentication, default disabled(D), enabled(E)") + 
   ("\n-PU: proxy user, default null") + 
   ("\n-PK: proxy password, default null") + 
   ("\n-ET: encryption type, none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)") + 

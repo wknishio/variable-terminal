@@ -27,9 +27,23 @@ public class VTStreamCipherOutputStream extends FilterOutputStream
     out.write(single2);
   }
   
+  public void write(byte[] input) throws IOException
+  {
+    if (output.length < input.length)
+    {
+      output = new byte[input.length];
+    }
+    streamCipher.processBytes(input, 0, input.length, output, 0);
+    out.write(output, 0, input.length);
+  }
+  
   public void write(byte[] input, int off, int len) throws IOException
   {
-    streamCipher.processBytes(input, off, len, output, off);
-    out.write(output, off, len);
+    if (output.length < len)
+    {
+      output = new byte[len];
+    }
+    streamCipher.processBytes(input, off, len, output, 0);
+    out.write(output, 0, len);
   }
 }

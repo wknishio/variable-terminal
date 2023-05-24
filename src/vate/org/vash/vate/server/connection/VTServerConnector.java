@@ -31,7 +31,7 @@ public class VTServerConnector implements Runnable
   private String proxyType;
   private String proxyAddress;
   private Integer proxyPort;
-  private boolean useProxyAuthentication;
+  //private boolean useProxyAuthentication;
   private String proxyUser;
   private String proxyPassword;
   private String encryptionType;
@@ -192,15 +192,15 @@ public class VTServerConnector implements Runnable
     this.proxyPort = proxyPort;
   }
   
-  public boolean isUseProxyAuthentication()
-  {
-    return useProxyAuthentication;
-  }
+//  public boolean isUseProxyAuthentication()
+//  {
+//    return useProxyAuthentication;
+//  }
   
-  public void setUseProxyAuthentication(boolean useProxyAuthentication)
-  {
-    this.useProxyAuthentication = useProxyAuthentication;
-  }
+//  public void setUseProxyAuthentication(boolean useProxyAuthentication)
+//  {
+//    this.useProxyAuthentication = useProxyAuthentication;
+//  }
   
   public String getProxyUser()
   {
@@ -402,7 +402,7 @@ public class VTServerConnector implements Runnable
   
   public void resetSockets(VTServerConnection connection) throws SocketException
   {
-    if (proxyType != null && isUseProxyAuthentication())
+    if (proxyType != null)
     {
       //Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
     }
@@ -416,7 +416,7 @@ public class VTServerConnector implements Runnable
     }
     else if (!passive && proxyType.toUpperCase().startsWith("H") && proxyAddress != null && proxyPort != null)
     {
-      if (isUseProxyAuthentication() && proxyType != null && proxyAddress != null && proxyPort != null && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
+      if (proxyType != null && proxyAddress != null && proxyPort != null && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
       {
         VTDefaultProxyAuthenticator.putProxy(proxyAddress, proxyPort, new VTDefaultProxy(Proxy.Type.HTTP, proxyAddress, proxyPort, proxyUser, proxyPassword));
       }
@@ -442,7 +442,7 @@ public class VTServerConnector implements Runnable
     }
     else if (!passive && proxyType.toUpperCase().startsWith("S") && proxyAddress != null && proxyPort != null)
     {
-      if (isUseProxyAuthentication() && proxyType != null && proxyAddress != null && proxyPort != null && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
+      if (proxyType != null && proxyAddress != null && proxyPort != null && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
       {
         VTDefaultProxyAuthenticator.putProxy(proxyAddress, proxyPort, new VTDefaultProxy(Proxy.Type.SOCKS, proxyAddress, proxyPort, proxyUser, proxyPassword));
       }

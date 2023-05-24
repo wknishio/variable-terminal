@@ -50,7 +50,7 @@ public class VTClientConfigurationDialog extends Dialog
   private VTClientConfigurationDialogParameter proxyType;
   private VTClientConfigurationDialogParameter proxyHost;
   private VTClientConfigurationDialogParameter proxyPort;
-  private VTClientConfigurationDialogParameter proxySecurity;
+  //private VTClientConfigurationDialogParameter proxySecurity;
   private VTClientConfigurationDialogParameter proxyUser;
   private VTClientConfigurationDialogParameter proxyPassword;
   private VTClientConfigurationDialogParameter encryptionType;
@@ -293,8 +293,8 @@ public class VTClientConfigurationDialog extends Dialog
       }
     });
     proxyPort = new VTClientConfigurationDialogParameter("Proxy Port:", proxyPortField, false);
-    Choice proxySecurityChoice = new Choice();
-    proxySecurity = new VTClientConfigurationDialogParameter("Proxy Authentication:", proxySecurityChoice, false);
+    //Choice proxySecurityChoice = new Choice();
+    //proxySecurity = new VTClientConfigurationDialogParameter("Proxy Authentication:", proxySecurityChoice, false);
     TextField proxyUserField = new TextField(16);
     proxyUserField.setEchoChar('*');
     proxyUser = new VTClientConfigurationDialogParameter("Proxy User:", proxyUserField, false);
@@ -374,26 +374,26 @@ public class VTClientConfigurationDialog extends Dialog
       }
     });
     
-    proxySecurityChoice.add("Disabled");
-    proxySecurityChoice.add("Enabled");
-    proxySecurityChoice.select("Disabled");
-    proxySecurityChoice.addItemListener(new ItemListener()
-    {
-      public void itemStateChanged(ItemEvent e)
-      {
-        if (e.getStateChange() == ItemEvent.SELECTED)
-        {
-          if (e.getItem().equals("Disabled"))
-          {
-            setProxySecurity(false);
-          }
-          else if (e.getItem().equals("Enabled"))
-          {
-            setProxySecurity(true);
-          }
-        }
-      }
-    });
+//    proxySecurityChoice.add("Disabled");
+//    proxySecurityChoice.add("Enabled");
+//    proxySecurityChoice.select("Disabled");
+//    proxySecurityChoice.addItemListener(new ItemListener()
+//    {
+//      public void itemStateChanged(ItemEvent e)
+//      {
+//        if (e.getStateChange() == ItemEvent.SELECTED)
+//        {
+//          if (e.getItem().equals("Disabled"))
+//          {
+//            setProxySecurity(false);
+//          }
+//          else if (e.getItem().equals("Enabled"))
+//          {
+//            setProxySecurity(true);
+//          }
+//        }
+//      }
+//    });
     
     encryptionTypeChoice.add("None");
     encryptionTypeChoice.add("RC4");
@@ -760,7 +760,7 @@ public class VTClientConfigurationDialog extends Dialog
     closeButton.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardTraversalKeysButton);
     
     Panel centerPanel = new Panel();
-    GridLayout centerLayout = new GridLayout(18, 1);
+    GridLayout centerLayout = new GridLayout(17, 1);
     centerLayout.setHgap(1);
     centerLayout.setVgap(1);
     centerPanel.setLayout(centerLayout);
@@ -783,7 +783,7 @@ public class VTClientConfigurationDialog extends Dialog
     centerPanel.add(proxyType);
     centerPanel.add(proxyHost);
     centerPanel.add(proxyPort);
-    centerPanel.add(proxySecurity);
+    //centerPanel.add(proxySecurity);
     centerPanel.add(proxyUser);
     centerPanel.add(proxyPassword);
     
@@ -991,7 +991,7 @@ public class VTClientConfigurationDialog extends Dialog
         setProxyType(connector.getProxyType());
         proxyHost.setParameter(connector.getProxyAddress());
         proxyPort.setParameter(connector.getProxyPort());
-        setProxySecurity(connector.isUseProxyAuthentication());
+        //setProxySecurity(connector.isUseProxyAuthentication());
         proxyUser.setParameter(connector.getProxyUser());
         proxyPassword.setParameter(connector.getProxyPassword());
         sessionUser.setParameter(client.getUser());
@@ -1019,7 +1019,7 @@ public class VTClientConfigurationDialog extends Dialog
         setProxyType(client.getProxyType());
         proxyHost.setParameter(client.getProxyAddress());
         proxyPort.setParameter(client.getProxyPort());
-        setProxySecurity(client.isUseProxyAuthentication());
+        //setProxySecurity(client.isUseProxyAuthentication());
         proxyUser.setParameter(client.getProxyUser());
         proxyPassword.setParameter(client.getProxyPassword());
         sessionUser.setParameter(client.getUser());
@@ -1043,12 +1043,14 @@ public class VTClientConfigurationDialog extends Dialog
       {
         proxyHost.setEnabled(true);
         proxyPort.setEnabled(true);
-        proxySecurity.setEnabled(true);
-        if (!proxySecurity.getParameter().equalsIgnoreCase("Disabled"))
-        {
-          proxyUser.setEnabled(true);
-          proxyPassword.setEnabled(true);
-        }
+        proxyUser.setEnabled(true);
+        proxyPassword.setEnabled(true);
+        //proxySecurity.setEnabled(true);
+//        if (!proxySecurity.getParameter().equalsIgnoreCase("Disabled"))
+//        {
+//          proxyUser.setEnabled(true);
+//          proxyPassword.setEnabled(true);
+//        }
       }
     }
     else
@@ -1060,7 +1062,7 @@ public class VTClientConfigurationDialog extends Dialog
       proxyType.setEnabled(false);
       proxyHost.setEnabled(false);
       proxyPort.setEnabled(false);
-      proxySecurity.setEnabled(false);
+      //proxySecurity.setEnabled(false);
       proxyUser.setEnabled(false);
       proxyPassword.setEnabled(false);
     }
@@ -1122,8 +1124,8 @@ public class VTClientConfigurationDialog extends Dialog
       proxyType.setParameter("None");
       proxyHost.setEnabled(false);
       proxyPort.setEnabled(false);
-      setProxySecurity(false);
-      proxySecurity.setEnabled(false);
+      //setProxySecurity(false);
+      //proxySecurity.setEnabled(false);
       proxyUser.setEnabled(false);
       proxyPassword.setEnabled(false);
     }
@@ -1132,52 +1134,56 @@ public class VTClientConfigurationDialog extends Dialog
       proxyType.setParameter("SOCKS");
       proxyHost.setEnabled(true);
       proxyPort.setEnabled(true);
-      proxySecurity.setEnabled(true);
-      if (!proxySecurity.getParameter().equalsIgnoreCase("Disabled"))
-      {
-        proxyUser.setEnabled(true);
-        proxyPassword.setEnabled(true);
-      }
+      //proxySecurity.setEnabled(true);
+      proxyUser.setEnabled(true);
+      proxyPassword.setEnabled(true);
+      //if (!proxySecurity.getParameter().equalsIgnoreCase("Disabled"))
+      //{
+        //proxyUser.setEnabled(true);
+        //proxyPassword.setEnabled(true);
+      //}
     }
     else if (proxy.toUpperCase().startsWith("H"))
     {
       proxyType.setParameter("HTTP");
       proxyHost.setEnabled(true);
       proxyPort.setEnabled(true);
-      proxySecurity.setEnabled(true);
-      if (!proxySecurity.getParameter().equalsIgnoreCase("Disabled"))
-      {
-        proxyUser.setEnabled(true);
-        proxyPassword.setEnabled(true);
-      }
+      //proxySecurity.setEnabled(true);
+      proxyUser.setEnabled(true);
+      proxyPassword.setEnabled(true);
+      //if (!proxySecurity.getParameter().equalsIgnoreCase("Disabled"))
+      //{
+        //proxyUser.setEnabled(true);
+        //proxyPassword.setEnabled(true);
+      //}
     }
     else
     {
       proxyType.setParameter("None");
       proxyHost.setEnabled(false);
       proxyPort.setEnabled(false);
-      setProxySecurity(false);
-      proxySecurity.setEnabled(false);
+      //setProxySecurity(false);
+      //proxySecurity.setEnabled(false);
       proxyUser.setEnabled(false);
       proxyPassword.setEnabled(false);
     }
   }
   
-  public void setProxySecurity(boolean security)
-  {
-    if (security)
-    {
-      proxySecurity.setParameter("Enabled");
-      proxyUser.setEnabled(true);
-      proxyPassword.setEnabled(true);
-    }
-    else
-    {
-      proxySecurity.setParameter("Disabled");
-      proxyUser.setEnabled(false);
-      proxyPassword.setEnabled(false);
-    }
-  }
+//  public void setProxySecurity(boolean security)
+//  {
+//    if (security)
+//    {
+//      proxySecurity.setParameter("Enabled");
+//      proxyUser.setEnabled(true);
+//      proxyPassword.setEnabled(true);
+//    }
+//    else
+//    {
+//      proxySecurity.setParameter("Disabled");
+//      proxyUser.setEnabled(false);
+//      proxyPassword.setEnabled(false);
+//    }
+//  }
   
   public void update()
   {
@@ -1225,7 +1231,7 @@ public class VTClientConfigurationDialog extends Dialog
         {
           
         }
-        connector.setUseProxyAuthentication(proxySecurity.isEnabled() ? proxySecurity.getParameter().equals("Enabled") : false);
+        //connector.setUseProxyAuthentication(proxySecurity.isEnabled() ? proxySecurity.getParameter().equals("Enabled") : false);
         connector.setProxyUser(proxyUser.getParameter());
         connector.setProxyPassword(proxyPassword.getParameter());
         client.setUser(sessionUser.getParameter());
@@ -1282,7 +1288,7 @@ public class VTClientConfigurationDialog extends Dialog
         {
           
         }
-        client.setUseProxyAuthentication(proxySecurity.isEnabled() ? proxySecurity.getParameter().equals("Enabled") : false);
+        //client.setUseProxyAuthentication(proxySecurity.isEnabled() ? proxySecurity.getParameter().equals("Enabled") : false);
         client.setProxyUser(proxyUser.getParameter());
         client.setProxyPassword(proxyPassword.getParameter());
         client.setUser(sessionUser.getParameter());

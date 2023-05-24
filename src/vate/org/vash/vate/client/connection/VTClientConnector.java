@@ -31,7 +31,7 @@ public class VTClientConnector implements Runnable
   private String proxyType;
   private String proxyAddress;
   private Integer proxyPort;
-  private boolean useProxyAuthentication;
+  //private boolean useProxyAuthentication;
   private String proxyUser;
   private String proxyPassword;
   private String encryptionType;
@@ -316,10 +316,10 @@ public class VTClientConnector implements Runnable
     this.proxyPort = proxyPort;
   }
   
-  public void setUseProxyAuthentication(boolean useProxyAuthentication)
-  {
-    this.useProxyAuthentication = useProxyAuthentication;
-  }
+//  public void setUseProxyAuthentication(boolean useProxyAuthentication)
+//  {
+//    this.useProxyAuthentication = useProxyAuthentication;
+//  }
   
   public void setProxyUser(String proxyUser)
   {
@@ -391,10 +391,10 @@ public class VTClientConnector implements Runnable
     return proxyPort;
   }
   
-  public boolean isUseProxyAuthentication()
-  {
-    return useProxyAuthentication;
-  }
+//  public boolean isUseProxyAuthentication()
+//  {
+//    return useProxyAuthentication;
+//  }
   
   public String getProxyUser()
   {
@@ -531,7 +531,7 @@ public class VTClientConnector implements Runnable
   
   public void resetSockets(VTClientConnection connection) throws SocketException
   {
-    if (proxyType != null && isUseProxyAuthentication())
+    if (proxyType != null)
     {
       //Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
     }
@@ -545,7 +545,7 @@ public class VTClientConnector implements Runnable
     }
     else if (proxyType.toUpperCase().startsWith("H") && proxyAddress != null && proxyPort != null)
     {
-      if (isUseProxyAuthentication() && proxyType != null && proxyAddress != null && proxyPort != null && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
+      if (proxyType != null && proxyAddress != null && proxyPort != null && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
       {
         //Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
         VTDefaultProxyAuthenticator.putProxy(proxyAddress, proxyPort, new VTDefaultProxy(Proxy.Type.HTTP, proxyAddress, proxyPort, proxyUser, proxyPassword));
@@ -571,7 +571,7 @@ public class VTClientConnector implements Runnable
     }
     else if (proxyType.toUpperCase().startsWith("S") && proxyAddress != null && proxyPort != null)
     {
-      if (isUseProxyAuthentication() && proxyType != null && proxyAddress != null && proxyPort != null && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
+      if (proxyType != null && proxyAddress != null && proxyPort != null && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
       {
         //Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
         VTDefaultProxyAuthenticator.putProxy(proxyAddress, proxyPort, new VTDefaultProxy(Proxy.Type.SOCKS, proxyAddress, proxyPort, proxyUser, proxyPassword));
@@ -1387,7 +1387,7 @@ public class VTClientConnector implements Runnable
           {
             VTConsole.print("VT>Invalid port!");
             proxyPort = null;
-            useProxyAuthentication = false;
+            //useProxyAuthentication = false;
             return false;
           }
           if (proxyPort != null && hostPort != null)
@@ -1404,7 +1404,7 @@ public class VTClientConnector implements Runnable
             }
             if (line.toUpperCase().startsWith("Y"))
             {
-              useProxyAuthentication = true;
+              //useProxyAuthentication = true;
               VTConsole.print("VT>Enter proxy username:");
               line = VTConsole.readLine(false);
               if (line == null)
@@ -1430,12 +1430,16 @@ public class VTClientConnector implements Runnable
             }
             else
             {
-              useProxyAuthentication = false;
+              //useProxyAuthentication = false;
+              proxyUser = null;
+              proxyPassword = null;
             }
           }
           else
           {
-            useProxyAuthentication = false;
+            //useProxyAuthentication = false;
+            proxyUser = null;
+            proxyPassword = null;
           }
         }
         else
@@ -1528,7 +1532,7 @@ public class VTClientConnector implements Runnable
       VTConsole.print("VT>Invalid port!");
       hostPort = null;
       proxyPort = null;
-      useProxyAuthentication = false;
+      //useProxyAuthentication = false;
       return false;
     }
     catch (Throwable e)

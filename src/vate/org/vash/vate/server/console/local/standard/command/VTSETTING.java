@@ -81,14 +81,14 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       {
         message.append("\nVT>Proxy host port(PP): []");
       }
-      if (server.getServerConnector().isUseProxyAuthentication())
-      {
-        message.append("\nVT>Proxy authentication(PA): [Enabled]");
-      }
-      else
-      {
-        message.append("\nVT>Proxy authentication(PA): [Disabled]");
-      }
+//      if (server.getServerConnector().isUseProxyAuthentication())
+//      {
+//        message.append("\nVT>Proxy authentication(PA): [Enabled]");
+//      }
+//      else
+//      {
+//        message.append("\nVT>Proxy authentication(PA): [Disabled]");
+//      }
       message.append("\nVT>Proxy user(PU): [" + proxyUser + "]");
       message.append("\nVT>Proxy password(PK): [" + proxyPassword + "]");
       if (encryptionType.toUpperCase().startsWith("R"))
@@ -466,49 +466,49 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
-      else if (parsed[1].equalsIgnoreCase("PA"))
-      {
-        if (parsed.length == 2)
-        {
-          if (!server.getServerConnector().isUseProxyAuthentication())
-          {
-            VTConsole.print("\rVT>Proxy authentication(PA): [Disabled]\nVT>");
-          }
-          else
-          {
-            VTConsole.print("\rVT>Proxy authentication(PA): [Enabled]\nVT>");
-          }
-        }
-        else if (parsed.length >= 3)
-        {
-          if (parsed[2].toUpperCase().startsWith("E"))
-          {
-            VTServerConnector connector = server.getServerConnector();
-            synchronized (connector)
-            {
-              connector.setUseProxyAuthentication(true);
-              connector.interruptConnector();
-              connector.notify();
-            }
-            VTConsole.print("\rVT>Proxy authentication(PA) set to: [Enabled]\nVT>");
-          }
-          else
-          {
-            VTServerConnector connector = server.getServerConnector();
-            synchronized (connector)
-            {
-              connector.setUseProxyAuthentication(false);
-              connector.interruptConnector();
-              connector.notify();
-            }
-            VTConsole.print("\rVT>Proxy authentication(PA) set to: [Disabled]\nVT>");
-          }
-        }
-        else
-        {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
-        }
-      }
+//      else if (parsed[1].equalsIgnoreCase("PA"))
+//      {
+//        if (parsed.length == 2)
+//        {
+//          if (!server.getServerConnector().isUseProxyAuthentication())
+//          {
+//            VTConsole.print("\rVT>Proxy authentication(PA): [Disabled]\nVT>");
+//          }
+//          else
+//          {
+//            VTConsole.print("\rVT>Proxy authentication(PA): [Enabled]\nVT>");
+//          }
+//        }
+//        else if (parsed.length >= 3)
+//        {
+//          if (parsed[2].toUpperCase().startsWith("E"))
+//          {
+//            VTServerConnector connector = server.getServerConnector();
+//            synchronized (connector)
+//            {
+//              connector.setUseProxyAuthentication(true);
+//              connector.interruptConnector();
+//              connector.notify();
+//            }
+//            VTConsole.print("\rVT>Proxy authentication(PA) set to: [Enabled]\nVT>");
+//          }
+//          else
+//          {
+//            VTServerConnector connector = server.getServerConnector();
+//            synchronized (connector)
+//            {
+//              connector.setUseProxyAuthentication(false);
+//              connector.interruptConnector();
+//              connector.notify();
+//            }
+//            VTConsole.print("\rVT>Proxy authentication(PA) set to: [Disabled]\nVT>");
+//          }
+//        }
+//        else
+//        {
+//          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+//        }
+//      }
       else if (parsed[1].equalsIgnoreCase("PU"))
       {
         if (parsed.length == 2)

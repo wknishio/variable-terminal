@@ -65,10 +65,11 @@ public class VTCryptographicEngine
     
     if (encryptionType == VT.VT_CONNECTION_ENCRYPT_NONE)
     {
-      
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_NONE");
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_RC4)
     {
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_RC4");
       encryptionCipherBC = new VMPCKSA3Engine();
       decryptionCipherBC = new VMPCKSA3Engine();
       KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(512, first, second, encryptionKeys), 0, 512);
@@ -80,6 +81,7 @@ public class VTCryptographicEngine
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
     {
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_AES");
       encryptionCipherBC = new SICBlockCipher(new AESFastEngine());
       decryptionCipherBC = new SICBlockCipher(new AESFastEngine());
       KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
@@ -91,6 +93,7 @@ public class VTCryptographicEngine
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_SALSA)
     {
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_SALSA");
       encryptionCipherBC = new ChaChaEngine(16);
       decryptionCipherBC = new ChaChaEngine(16);
       KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
@@ -102,6 +105,7 @@ public class VTCryptographicEngine
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_HC256)
     {
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_HC256");
       encryptionCipherBC = new HC256Engine();
       decryptionCipherBC = new HC256Engine();
       KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
@@ -113,6 +117,7 @@ public class VTCryptographicEngine
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ISAAC)
     {
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_ISAAC");
       encryptionCipherBC = new ISAACEngine();
       decryptionCipherBC = new ISAACEngine();
       KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(1024, first, second, encryptionKeys), 0, 1024);
@@ -122,6 +127,7 @@ public class VTCryptographicEngine
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
     {
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_GRAIN");
       encryptionCipherBC = new Grain128Engine();
       decryptionCipherBC = new Grain128Engine();
       KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 16);
@@ -133,7 +139,7 @@ public class VTCryptographicEngine
     }
     else
     {
-      
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_NONE");
     }
   }
   
@@ -164,10 +170,11 @@ public class VTCryptographicEngine
     
     if (encryptionType == VT.VT_CONNECTION_ENCRYPT_NONE)
     {
-      
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_NONE");
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_RC4)
     {
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_RC4");
       encryptionCipherBC = new VMPCKSA3Engine();
       decryptionCipherBC = new VMPCKSA3Engine();
       KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(512, first, second, encryptionKeys), 0, 512);
@@ -179,6 +186,7 @@ public class VTCryptographicEngine
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
     {
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_AES");
       encryptionCipherBC = new SICBlockCipher(new AESFastEngine());
       decryptionCipherBC = new SICBlockCipher(new AESFastEngine());
       KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
@@ -190,6 +198,7 @@ public class VTCryptographicEngine
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_SALSA)
     {
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_SALSA");
       encryptionCipherBC = new ChaChaEngine(16);
       decryptionCipherBC = new ChaChaEngine(16);
       KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
@@ -201,6 +210,7 @@ public class VTCryptographicEngine
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_HC256)
     {
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_HC256");
       encryptionCipherBC = new HC256Engine();
       decryptionCipherBC = new HC256Engine();
       KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
@@ -212,6 +222,7 @@ public class VTCryptographicEngine
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ISAAC)
     {
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_ISAAC");
       encryptionCipherBC = new ISAACEngine();
       decryptionCipherBC = new ISAACEngine();
       KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(1024, first, second, encryptionKeys), 0, 1024);
@@ -221,6 +232,7 @@ public class VTCryptographicEngine
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
     {
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_GRAIN");
       encryptionCipherBC = new Grain128Engine();
       decryptionCipherBC = new Grain128Engine();
       KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 16);
@@ -232,7 +244,7 @@ public class VTCryptographicEngine
     }
     else
     {
-      
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_NONE");
     }
   }
   
@@ -306,8 +318,11 @@ public class VTCryptographicEngine
   {
     if (decryptionCipherBC != null)
     {
+      //System.out.println("encrypted!");
       return new VTStreamCipherInputStream(encrypted, decryptionCipherBC);
+      //return new CipherInputStream(encrypted, decryptionCipherBC);
     }
+    //System.out.println("unencrypted!");
     return encrypted;
   }
   
@@ -315,8 +330,11 @@ public class VTCryptographicEngine
   {
     if (encryptionCipherBC != null)
     {
+      //System.out.println("encrypted!");
       return new VTStreamCipherOutputStream(decrypted, encryptionCipherBC);
+      //return new CipherOutputStream(decrypted, encryptionCipherBC);
     }
+    //System.out.println("unencrypted!");
     return decrypted;
   }
 }

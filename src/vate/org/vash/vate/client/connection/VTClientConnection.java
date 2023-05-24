@@ -73,7 +73,7 @@ public class VTClientConnection
   }
   
   private volatile boolean connected = false;
-  private volatile boolean closed = false;
+  private volatile boolean closed = true;
   
   private int encryptionType;
   private byte[] encryptionKey;
@@ -424,6 +424,13 @@ public class VTClientConnection
     {
       return;
     }
+//    StringBuilder message = new StringBuilder();
+//    StackTraceElement[] stackStrace = Thread.currentThread().getStackTrace();
+//    for (int i = stackStrace.length - 1; i >= 0; i--)
+//    {
+//      message.append(stackStrace[i].toString() + "\n");
+//    }
+//    System.err.println(message.toString());
     VTConsole.setCommandEcho(true);
     if (connectionSocket != null)
     {
@@ -619,11 +626,10 @@ public class VTClientConnection
     cryptoEngine.initializeClientEngine(encryptionType, encryptionKey, localNonce, remoteNonce, digestedCredentials, user != null ? user.getBytes("UTF-8") : null, password != null ? password.getBytes("UTF-8") : null);
     connectionInputStream = cryptoEngine.getDecryptedInputStream(connectionSocketInputStream);
     connectionOutputStream = cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream);
-    authenticationReader.setIntputStream(connectionInputStream);
-    authenticationWriter.setOutputStream(connectionOutputStream);
-    nonceReader.setIntputStream(authenticationReader.getInputStream());
-    nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
-    
+    //authenticationReader.setIntputStream(connectionInputStream);
+    //authenticationWriter.setOutputStream(connectionOutputStream);
+    //nonceReader.setIntputStream(authenticationReader.getInputStream());
+    //nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
     return true;
   }
   
