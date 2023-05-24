@@ -53,6 +53,19 @@ public class VTURLInvoker
     {
       try
       {
+        if (connection instanceof HttpURLConnection)
+        {
+          ((HttpURLConnection) connection).disconnect();
+          return;
+        }
+      }
+      catch (Throwable t)
+      {
+        
+      }
+      
+      try
+      {
         OutputStream output = connection.getOutputStream();
         if (output != null)
         {
@@ -70,18 +83,6 @@ public class VTURLInvoker
         if (input != null)
         {
           input.close();
-        }
-      }
-      catch (Throwable t)
-      {
-        
-      }
-      
-      try
-      {
-        if (connection instanceof HttpURLConnection)
-        {
-          ((HttpURLConnection) connection).disconnect();
         }
       }
       catch (Throwable t)
@@ -133,6 +134,8 @@ public class VTURLInvoker
       connection.setReadTimeout(dataTimeout);
       connection.setAllowUserInteraction(false);
       connection.setUseCaches(false);
+      connection.setDoInput(true);
+      connection.setDoOutput(true);
       if (connection instanceof HttpURLConnection)
       {
         httpConnection = (HttpURLConnection) connection;
@@ -148,10 +151,9 @@ public class VTURLInvoker
           connection.setRequestProperty(header.getKey(), header.getValue());
         }
       }
-      connection.setDoInput(true);
+      
       if (outputInputStream != null)
       {
-        connection.setDoOutput(true);
         try
         {
           OutputStream outputOutputStream = connection.getOutputStream();
@@ -160,8 +162,6 @@ public class VTURLInvoker
             outputOutputStream.write(readBuffer, 0, readed);
             outputOutputStream.flush();
           }
-          outputOutputStream.close();
-          outputInputStream.close();
         }
         catch (Throwable e)
         {
@@ -183,8 +183,6 @@ public class VTURLInvoker
         resultOutputStream.write(readBuffer, 0, readed);
         resultOutputStream.flush();
       }
-      resultInputStream.close();
-      resultOutputStream.close();
       urlResult = new VTURLResult(code, response, headers, null);
     }
     catch (Throwable e)

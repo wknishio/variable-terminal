@@ -586,7 +586,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     
     try
     {
-      int idxPort = uri.indexOf(':');
+      int idxPort = uri.lastIndexOf(':');
       if (idxPort >= 0)
       {
         host = uri.substring(0, idxPort);
@@ -629,7 +629,7 @@ public class VTNanoHTTPDProxySession implements Runnable
         }
         if (headerName.toString().equalsIgnoreCase("Proxy-Connection"))
         {
-          if (!findHeaderIgnoreCase("Connection", headers))
+          if (!searchHeaderIgnoreCase("Connection", headers))
           {
             headers.put("Connection", headers.get(headerName));
           }
@@ -759,7 +759,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     return nOnceValue;
   }
   
-  private boolean findHeaderIgnoreCase(String searchedHeader, Properties headers)
+  private boolean searchHeaderIgnoreCase(String searchedHeader, Properties headers)
   {
     for (Object headerName : headers.keySet().toArray(new Object[] {}))
     {

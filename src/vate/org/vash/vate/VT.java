@@ -4,6 +4,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.Authenticator;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,6 +19,9 @@ import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.help.VTHelpManager;
+import org.vash.vate.network.tls.TLSVerificationDisabler;
+import org.vash.vate.socket.factory.VTDefaultProxyAuthenticator;
 
 //import com.sixlegs.png.iio.PngImageReader;
 //import com.sixlegs.png.iio.PngImageReaderSpi;
@@ -164,6 +168,13 @@ public class VT
   
   static
   {
+    System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
+    System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
+    Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
+    ImageIO.setUseCache(false);
+    VTHelpManager.initialize();
+    TLSVerificationDisabler.install();
+    
     try
     {
       System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.NoOpLog");

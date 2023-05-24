@@ -190,7 +190,6 @@ Those are the third party libraries used in this software:
 * TomP2P by Thomas Bocek, for NAT-PMP NAT port forwarding support
 * JSpeex by Horizon Wimba, for Speex audio communication
 * Concentus Java by Logan Stromberg, for Opus audio communication
-* Commons-compress by Apache Software Foundation, for ZIP64 format support
 * client-side Throttle by James Edwards, for network data rate limiter
 * DirectRobot by Killer99@rune-server.ee, for better screen capture
 * PortMapper by Kasra Faghihi(offbynull) for PCP port forwarding support
@@ -201,7 +200,8 @@ Those are the third party libraries used in this software:
 * beanshell2 by pejobo for alternative shell
 * groovy by codehaus for alternative shell
 * airlift-aircompressor by Martin Traverso for zstd and lzo compression
-* nanohttpd-1.1 by elonen, for HTTP tunneling support
+* nanohttpd-1.1 by elonen, for server HTTP tunneling
+* commons-httpclient by Apache Software Foundation, for client HTTP tunneling
 
 ## Additional utilities
 

@@ -1,6 +1,5 @@
 package org.vash.vate.client.connection;
 
-import java.net.Authenticator;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.ServerSocket;
@@ -19,6 +18,7 @@ import org.vash.vate.runtime.VTExit;
 import org.vash.vate.security.VTBlake3DigestRandom;
 import org.vash.vate.socket.factory.VTDefaultProxy;
 import org.vash.vate.socket.factory.VTDefaultProxyAuthenticator;
+import org.vash.vate.socket.factory.VTHTTPConnectTunnelSocket;
 
 public class VTClientConnector implements Runnable
 {
@@ -533,7 +533,7 @@ public class VTClientConnector implements Runnable
   {
     if (proxyType != null && isUseProxyAuthentication())
     {
-      Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
+      //Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
     }
     if (proxyType == null)
     {
@@ -555,7 +555,19 @@ public class VTClientConnector implements Runnable
         VTDefaultProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
       }
       Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 8080));
-      connection.setConnectionSocket(new Socket(proxy));
+      
+      Socket socket = null;
+      try
+      {
+        socket = new Socket(proxy);
+      }
+      catch (RuntimeException e)
+      {
+        //java 1.7 and earlier cannot do http connect tunneling natively
+        socket = new VTHTTPConnectTunnelSocket(proxyAddress, proxyPort, proxyUser, proxyPassword);
+      }
+      
+      connection.setConnectionSocket(socket);
     }
     else if (proxyType.toUpperCase().startsWith("S") && proxyAddress != null && proxyPort != null)
     {
@@ -569,7 +581,10 @@ public class VTClientConnector implements Runnable
         VTDefaultProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
       }
       Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 1080));
-      connection.setConnectionSocket(new Socket(proxy));
+      
+      Socket socket = new Socket(proxy);
+      
+      connection.setConnectionSocket(socket);
     }
     else
     {

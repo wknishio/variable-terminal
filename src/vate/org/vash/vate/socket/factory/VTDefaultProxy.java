@@ -1,7 +1,6 @@
 package org.vash.vate.socket.factory;
 
 import java.io.IOException;
-import java.net.Authenticator;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
@@ -107,7 +106,7 @@ public class VTDefaultProxy
       socketAddress = InetSocketAddress.createUnresolved(host, port);
       if (proxyType != Proxy.Type.DIRECT && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
       {
-        Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
+        //Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
         VTDefaultProxyAuthenticator.putProxy(proxyHost, proxyPort, new VTDefaultProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword));
       }
       else
@@ -121,7 +120,18 @@ public class VTDefaultProxy
       socketAddress = new InetSocketAddress(host, port);
     }
     
-    Socket socket = new Socket(proxy);
+    Socket socket = null;
+    
+    try
+    {
+      socket = new Socket(proxy);
+    }
+    catch (RuntimeException e)
+    {
+      //java 1.7 and earlier cannot do http connect tunneling natively
+      socket = new VTHTTPConnectTunnelSocket(proxyHost, proxyPort, proxyUser, proxyPassword);
+    }
+    
     socket.connect(socketAddress);
     socket.setTcpNoDelay(true);
     socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);

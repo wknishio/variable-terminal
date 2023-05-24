@@ -2,7 +2,6 @@ package org.vash.vate.tunnel.connection;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Authenticator;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
@@ -11,6 +10,7 @@ import java.util.concurrent.ExecutorService;
 import org.vash.vate.VT;
 import org.vash.vate.socket.factory.VTDefaultProxy;
 import org.vash.vate.socket.factory.VTDefaultProxyAuthenticator;
+import org.vash.vate.socket.factory.VTHTTPConnectTunnelSocket;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
@@ -332,7 +332,7 @@ public class VTTunnelConnectionControlThread implements Runnable
         socketAddress = InetSocketAddress.createUnresolved(host, port);
         if (proxyType != Proxy.Type.DIRECT && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
         {
-          Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
+          //Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
           VTDefaultProxyAuthenticator.putProxy(proxyHost, proxyPort, new VTDefaultProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword));
         }
         else
@@ -346,7 +346,18 @@ public class VTTunnelConnectionControlThread implements Runnable
         socketAddress = new InetSocketAddress(host, port);
       }
       
-      Socket socket = new Socket(proxy);
+      Socket socket = null;
+      
+      try
+      {
+        socket = new Socket(proxy);
+      }
+      catch (RuntimeException e)
+      {
+        //java 1.7 and earlier cannot do http connect tunneling natively
+        socket = new VTHTTPConnectTunnelSocket(proxyHost, proxyPort, proxyUser, proxyPassword);
+      }
+      
       socket.connect(socketAddress);
       socket.setTcpNoDelay(true);
       socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
