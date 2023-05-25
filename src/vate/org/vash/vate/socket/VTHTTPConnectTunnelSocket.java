@@ -36,9 +36,9 @@ public class VTHTTPConnectTunnelSocket extends Socket
     {
       try
       {
-        InetSocketAddress target = (InetSocketAddress) endpoint;
-        proxyClient.getHostConfiguration().setHost(target.getHostName(), target.getPort());
-        proxyClient.getParams().setConnectionManagerTimeout(VT.VT_CONNECTION_ATTEMPT_TIMEOUT_MILLISECONDS);
+        InetSocketAddress host = (InetSocketAddress) endpoint;
+        proxyClient.getHostConfiguration().setHost(host.getHostName(), host.getPort());
+        //proxyClient.getParams().setConnectionManagerTimeout(VT.VT_CONNECTION_ATTEMPT_TIMEOUT_MILLISECONDS);
         proxyClient.getParams().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
         socket = proxyClient.connect().getSocket();
       }
@@ -59,8 +59,8 @@ public class VTHTTPConnectTunnelSocket extends Socket
     {
       try
       {
-        InetSocketAddress target = (InetSocketAddress) endpoint;
-        proxyClient.getHostConfiguration().setHost(target.getHostName(), target.getPort());
+        InetSocketAddress host = (InetSocketAddress) endpoint;
+        proxyClient.getHostConfiguration().setHost(host.getHostName(), host.getPort());
         proxyClient.getParams().setConnectionManagerTimeout(timeout);
         proxyClient.getParams().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
         socket = proxyClient.connect().getSocket();
