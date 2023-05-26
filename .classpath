@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src/aircompressor"/>
 	<classpathentry kind="src" path="src/bouncycastle"/>
 	<classpathentry kind="src" path="src/bric"/>
+	<classpathentry kind="src" path="src/commons-httpclient"/>
 	<classpathentry kind="src" path="src/compat"/>
 	<classpathentry kind="src" path="src/javapng"/>
 	<classpathentry kind="src" path="src/jna"/>
@@ -17,15 +18,14 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/beanshell-2.1.8-interpreter.jar"/>
 	<classpathentry kind="lib" path="lib/commons-codec-1.5.jar"/>
-	<classpathentry kind="lib" path="lib/commons-httpclient-3.1.jar"/>
-	<classpathentry kind="lib" path="lib/commons-io.jar"/>
-	<classpathentry kind="lib" path="lib/commons-lang3.jar"/>
+	<classpathentry kind="lib" path="lib/commons-io-2.2.jar"/>
+	<classpathentry kind="lib" path="lib/commons-lang3-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/concentus-opus.jar"/>
 	<classpathentry kind="lib" path="lib/jsap.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex.jar"/>
 	<classpathentry kind="lib" path="lib/png-encoder.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-api.jar"/>
-	<classpathentry kind="lib" path="lib/slf4j-nop.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-api-1.7.25.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j-nop-1.7.25.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
