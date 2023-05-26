@@ -45,14 +45,14 @@ import com.sun.jna.ptr.ShortByReference;
  * themselves. Core Foundation also provides abstractions for common data types.
  * <p>
  * Core Foundation functions have names that indicate when you own a returned
- * object: Object-creation functions have “Create” embedded in the name, and
- * Object-duplication functions that have “Copy” embedded in the name. If you
+ * object: Object-creation functions have Create embedded in the name, and
+ * Object-duplication functions that have Copy embedded in the name. If you
  * own an object, it is your responsibility to relinquish ownership (using
  * {@link #CFRelease}) when you have finished with it.
  * <p>
  * If you receive an object from any Core Foundation function other than a
- * creation or copy function—such as a Get function—you do not own it and cannot
- * be certain of the object’s life span. If you want to ensure that such an
+ * creation or copy functions such as a Get functions you do not own it and cannot
+ * be certain of the objects life span. If you want to ensure that such an
  * object is not disposed of while you are using it, you must claim ownership
  * (with the {@link #CFRetain} function).
  */
@@ -301,7 +301,7 @@ public interface CoreFoundation extends Library {
     /**
      * A reference to an immutable {@code CFArray} object.
      * <p>
-     * CFArray is “toll-free bridged” with its Cocoa Foundation counterpart,
+     * CFArray is toll-free bridged with its Cocoa Foundation counterpart,
      * {@code NSArray}. Therefore, in a method where you see an {@code NSArray *}
      * parameter, you can pass in a {@link #CFArrayRef}.
      */
@@ -445,7 +445,7 @@ public interface CoreFoundation extends Library {
     }
 
     /**
-     * A reference to a {@code CFString} object, which “encapsulates” a Unicode
+     * A reference to a {@code CFString} object, which encapsulates a Unicode
      * string along with its length. {@code CFString} is an opaque type that defines
      * the characteristics and behavior of {@code CFString} objects.
      */
