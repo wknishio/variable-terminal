@@ -1443,33 +1443,6 @@ public class VTClient implements Runnable
             }
             
           }
-          /*
-           * if (port != null) { VTTerminal.
-           * print("VT>Use SOCKS proxy to connect?(Y/N, default:N):" ); line =
-           * VTTerminal.readLine(true); if (line == null) { VTExit.exit(0); } if
-           * (line.toUpperCase().startsWith("Y")) { proxyType = "SOCKS";
-           * VTTerminal. print("VT>Enter proxy host address(default:localhost):"
-           * ); line = VTTerminal.readLine(true); if (line == null) {
-           * VTExit.exit(0); } proxyAddress = line; if
-           * (proxyType.equals("SOCKS")) { VTTerminal.
-           * print("VT>Enter proxy port(from 1 to 65535, default:1080):" ); line
-           * = VTTerminal.readLine(true); if (line == null) { VTExit.exit(0); }
-           * if (line.length() > 0) { proxyPort = Integer.parseInt(line); } else
-           * { proxyPort = 1080; } } if (proxyPort > 65535 || proxyPort < 1) {
-           * VTTerminal.print("VT>Invalid port!\n"); proxyPort = null;
-           * UseProxyAuthentication = false; port = null; } if (proxyPort !=
-           * null && port != null) { VTTerminal.
-           * print("VT>Use authentication for proxy?(Y/N, default:N):" ); line =
-           * VTTerminal.readLine(true); if (line == null) { VTExit.exit(0); } if
-           * (line.toUpperCase().startsWith("Y")) { UseProxyAuthentication =
-           * true; VTTerminal.print("VT>Enter proxy username:"); line =
-           * VTTerminal.readLine(true); if (line == null) { VTExit.exit(0); }
-           * proxyUser = line; VTTerminal.print("VT>Enter proxy password:");
-           * line = VTTerminal.readLine(true); if (line == null) {
-           * VTExit.exit(0); } proxyPassword = line; } else {
-           * UseProxyAuthentication = false; } } else { UseProxyAuthentication =
-           * false; } } else { proxyType = "Disabled"; } }
-           */
         }
         else
         {
@@ -2002,13 +1975,6 @@ public class VTClient implements Runnable
     }
     else
     {
-//			if (!GraphicsEnvironment.isHeadless())
-//			{
-//				Frame invisible = new Frame();
-//				invisible.setUndecorated(true);
-//				invisible.pack();
-//				connectionDialog = new VTClientConnectionDialog(invisible, "Variable-Terminal Client " + VT.VT_VERSION + " - Connection", false, this);
-//			}
       VTConsole.initialize();
       VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Client - Console");
     }

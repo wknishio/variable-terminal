@@ -250,10 +250,6 @@ public class VTClientConnector implements Runnable
     return this.skipConfiguration;
   }
   
-  /*
-   * public void setRetryOnce(boolean retryOnce) { this.retryOnce = retryOnce; }
-   */
-  
   public VTClient getClient()
   {
     return client;
@@ -436,15 +432,6 @@ public class VTClientConnector implements Runnable
     return connection;
   }
   
-  /*
-   * public net.sourceforge.jsocks.socks.Proxy buildSocksProxy() { String
-   * proxy_host = proxyAddress; String proxy_port = String.valueOf(proxyPort);
-   * String proxy_user = proxyUser; String proxy_password = proxyPassword; if
-   * (!UseProxyAuthentication) { proxy_user = null; proxy_password = null; }
-   * return net.sourceforge.jsocks.socks.Proxy.buildProxy(proxy_host,
-   * proxy_port, proxy_user, proxy_password); }
-   */
-  
   public boolean setServerSocket(String address, Integer port)
   {
     try
@@ -507,15 +494,6 @@ public class VTClientConnector implements Runnable
           }
         }
       }
-      /*
-       * if (proxyType.toUpperCase().startsWith("S")) {
-       * net.sourceforge.jsocks.socks.Proxy proxy = buildSocksProxy(); String
-       * nullHost = null; connectionServerSocket = new SocksServerSocket(proxy,
-       * nullHost, port); return true; } else { connectionServerSocket = new
-       * ServerSocket(); //vtServerSocket.setPerformancePreferences(1, 3, 2);
-       * connectionServerSocket.bind(new InetSocketAddress(port)); return true;
-       * }
-       */
       return true;
     }
     catch (Throwable e)
@@ -804,14 +782,6 @@ public class VTClientConnector implements Runnable
       //e.printStackTrace();
       VTConsole.print("\nVT>Connection with server failed!");
     }
-//		try
-//		{
-//			Thread.sleep(1000);
-//		}
-//		catch (Throwable e1)
-//		{
-//			
-//		}
     return false;
   }
   
@@ -1168,32 +1138,6 @@ public class VTClientConnector implements Runnable
           {
             encryptionType = "None";
           }
-          /*
-           * VTTerminal. print("VT>Use SOCKS proxy to connect?(Y/N, default:N):"
-           * ); line = VTTerminal.readLine(true); if (line == null) {
-           * VTExit.exit(0); } if (line.toUpperCase().startsWith("Y")) {
-           * proxyType = "SOCKS"; VTTerminal.
-           * print("VT>Enter proxy host address(default:localhost):" ); line =
-           * VTTerminal.readLine(true); if (line == null) { VTExit.exit(0); }
-           * proxyAddress = line; if (proxyType.equals("SOCKS")) { VTTerminal.
-           * print("VT>Enter proxy port(from 1 to 65535, default:1080):" ); line
-           * = VTTerminal.readLine(true); if (line == null) { VTExit.exit(0); }
-           * if (line.length() > 0) { proxyPort = Integer.parseInt(line); } else
-           * { proxyPort = 1080; } } if (proxyPort > 65535 || proxyPort < 1) {
-           * VTTerminal.print("VT>Invalid port!"); proxyPort = null;
-           * UseProxyAuthentication = false; return false; } if (proxyPort !=
-           * null && port != null) { VTTerminal.
-           * print("VT>Use authentication for proxy?(Y/N, default:N):" ); line =
-           * VTTerminal.readLine(true); if (line == null) { VTExit.exit(0); } if
-           * (line.toUpperCase().startsWith("Y")) { UseProxyAuthentication =
-           * true; VTTerminal.print("VT>Enter proxy username:"); line =
-           * VTTerminal.readLine(true); if (line == null) { VTExit.exit(0); }
-           * proxyUser = line; VTTerminal.print("VT>Enter proxy password:");
-           * line = VTTerminal.readLine(true); if (line == null) {
-           * VTExit.exit(0); } proxyPassword = line; } else {
-           * UseProxyAuthentication = false; } } else { UseProxyAuthentication =
-           * false; } } else { proxyType = "None"; }
-           */
         }
       }
       else

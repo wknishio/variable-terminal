@@ -301,15 +301,6 @@ public class VTServerConnector implements Runnable
     }
   }
   
-  /*
-   * public net.sourceforge.jsocks.socks.Proxy buildSocksProxy() { String
-   * proxy_host = proxyAddress; String proxy_port = String.valueOf(proxyPort);
-   * String proxy_user = proxyUser; String proxy_password = proxyPassword; if
-   * (!UseProxyAuthentication) { proxy_user = null; proxy_password = null; }
-   * return net.sourceforge.jsocks.socks.Proxy.buildProxy(proxy_host,
-   * proxy_port, proxy_user, proxy_password); }
-   */
-  
   public boolean setServerSocket(String address, Integer port)
   {
     try
@@ -372,16 +363,6 @@ public class VTServerConnector implements Runnable
           }
         }
       }
-      /*
-       * if (proxyType.toUpperCase().startsWith("S")) {
-       * net.sourceforge.jsocks.socks.Proxy proxy = buildSocksProxy(); String
-       * nullHost = null; connectionServerSocket = new
-       * net.sourceforge.jsocks.socks.SocksServerSocket(proxy, nullHost, port);
-       * return true; } else { connectionServerSocket = new ServerSocket();
-       * //vtServerSocket.setPerformancePreferences(1, 3, 2);
-       * connectionServerSocket.bind(new InetSocketAddress(port)); return true;
-       * }
-       */
       return true;
     }
     catch (SecurityException e)
@@ -685,17 +666,6 @@ public class VTServerConnector implements Runnable
               // handlerThread.start();
               server.getServerThreads().execute(handler);
             }
-//						if (sessionsLimit > 0 || connectionHandlers.size() < sessionsLimit)
-//						{
-//							try
-//							{
-//								connectionServerSocket.close();
-//							}
-//							catch (Throwable t)
-//							{
-//								
-//							}
-//						}
           }
           else
           {
