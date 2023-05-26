@@ -29,7 +29,7 @@ public class VTDefaultSocketFactory extends VTAuthenticatedProxySocketFactory
   public Socket createSocket(InetAddress host, int port) throws IOException
   {
     Socket socket = new Socket();
-    socket.connect(new InetSocketAddress(host, port));
+    socket.connect(new InetSocketAddress(host.getHostName(), port));
     socket.setTcpNoDelay(true);
     socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
@@ -38,7 +38,7 @@ public class VTDefaultSocketFactory extends VTAuthenticatedProxySocketFactory
   public Socket createSocket(String host, int port, InetAddress bind, int local) throws IOException, UnknownHostException
   {
     Socket socket = new Socket();
-    socket.bind(new InetSocketAddress(bind, local));
+    socket.bind(new InetSocketAddress(bind.getHostName(), local));
     socket.connect(new InetSocketAddress(host, port));
     socket.setTcpNoDelay(true);
     socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
@@ -48,8 +48,8 @@ public class VTDefaultSocketFactory extends VTAuthenticatedProxySocketFactory
   public Socket createSocket(InetAddress host, int port, InetAddress bind, int local) throws IOException
   {
     Socket socket = new Socket();
-    socket.bind(new InetSocketAddress(bind, local));
-    socket.connect(new InetSocketAddress(host, port));
+    socket.bind(new InetSocketAddress(bind.getHostName(), local));
+    socket.connect(new InetSocketAddress(host.getHostName(), port));
     socket.setTcpNoDelay(true);
     socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;

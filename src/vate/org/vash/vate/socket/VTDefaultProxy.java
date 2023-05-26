@@ -106,7 +106,6 @@ public class VTDefaultProxy
       socketAddress = InetSocketAddress.createUnresolved(host, port);
       if (proxyType != Proxy.Type.DIRECT && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
       {
-        //Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
         VTDefaultProxyAuthenticator.putProxy(proxyHost, proxyPort, new VTDefaultProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword));
       }
       else

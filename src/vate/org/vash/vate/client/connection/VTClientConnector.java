@@ -547,7 +547,6 @@ public class VTClientConnector implements Runnable
     {
       if (proxyType != null && proxyAddress != null && proxyPort != null && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
       {
-        //Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
         VTDefaultProxyAuthenticator.putProxy(proxyAddress, proxyPort, new VTDefaultProxy(Proxy.Type.HTTP, proxyAddress, proxyPort, proxyUser, proxyPassword));
       }
       else
@@ -573,7 +572,6 @@ public class VTClientConnector implements Runnable
     {
       if (proxyType != null && proxyAddress != null && proxyPort != null && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
       {
-        //Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
         VTDefaultProxyAuthenticator.putProxy(proxyAddress, proxyPort, new VTDefaultProxy(Proxy.Type.SOCKS, proxyAddress, proxyPort, proxyUser, proxyPassword));
       }
       else
