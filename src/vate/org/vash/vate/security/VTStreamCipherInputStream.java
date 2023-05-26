@@ -29,13 +29,13 @@ public class VTStreamCipherInputStream extends FilterInputStream
   
   public int read(byte[] output) throws IOException
   {
-    if (input.length < output.length)
+    int len = output.length;
+    if (input.length < len)
     {
-      input = new byte[output.length];
+      input = new byte[len];
     }
-    int readed = in.read(input, 0, input.length);
-    streamCipher.processBytes(input, 0, readed, output, 0);
-    return readed;
+    int readed = in.read(input, 0, len);
+    return streamCipher.processBytes(input, 0, readed, output, 0);
   }
   
   public int read(byte[] output, int off, int len) throws IOException
@@ -45,7 +45,6 @@ public class VTStreamCipherInputStream extends FilterInputStream
       input = new byte[len];
     }
     int readed = in.read(input, 0, len);
-    streamCipher.processBytes(input, 0, readed, output, off);
-    return readed;
+    return streamCipher.processBytes(input, 0, readed, output, off);
   }
 }

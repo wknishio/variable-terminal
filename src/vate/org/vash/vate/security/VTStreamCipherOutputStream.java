@@ -29,12 +29,13 @@ public class VTStreamCipherOutputStream extends FilterOutputStream
   
   public void write(byte[] input) throws IOException
   {
-    if (output.length < input.length)
+    int len = input.length;
+    if (output.length < len)
     {
-      output = new byte[input.length];
+      output = new byte[len];
     }
-    streamCipher.processBytes(input, 0, input.length, output, 0);
-    out.write(output, 0, input.length);
+    streamCipher.processBytes(input, 0, len, output, 0);
+    out.write(output, 0, len);
   }
   
   public void write(byte[] input, int off, int len) throws IOException
