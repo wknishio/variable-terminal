@@ -21,7 +21,7 @@ import com.offbynull.portmapper.mappers.natpmp.NatPmpPortMapper;
 import com.offbynull.portmapper.mappers.pcp.PcpPortMapper;
 import com.offbynull.portmapper.mappers.upnpigd.UpnpIgdPortMapper;
 import java.net.InetAddress;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
@@ -53,7 +53,7 @@ public final class PortMapperFactory {
         Validate.notNull(additionalIps);
         Validate.noNullElements(additionalIps);
         
-        List<PortMapper> ret = new LinkedList<PortMapper>();
+        List<PortMapper> ret = new ArrayList<PortMapper>();
         
         List<UpnpIgdPortMapper> upnpIgdMappers = UpnpIgdPortMapper.identify(networkBus);
         LOG.debug("Found UPnP-IGD mappers: {}", upnpIgdMappers);

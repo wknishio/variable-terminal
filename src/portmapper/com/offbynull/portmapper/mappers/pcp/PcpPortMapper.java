@@ -40,7 +40,6 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -133,7 +132,7 @@ public final class PcpPortMapper implements PortMapper {
         
         
         // Query -- send each query to every interface
-        List<UdpRequest> udpReqs = new LinkedList<UdpRequest>();
+        List<UdpRequest> udpReqs = new ArrayList<UdpRequest>();
         
         Set<InetAddress> sourceAddresses = getLocalIpAddresses(networkBus);
         for (InetAddress sourceAddress : sourceAddresses) {
@@ -179,7 +178,7 @@ public final class PcpPortMapper implements PortMapper {
         
         
         // Create mappers and returns
-        List<PcpPortMapper> mappers = new LinkedList<PcpPortMapper>();
+        List<PcpPortMapper> mappers = new ArrayList<PcpPortMapper>();
         for (UdpRequest udpReq : udpReqs) {
             if (udpReq.getResponse() == null) {
                 continue;

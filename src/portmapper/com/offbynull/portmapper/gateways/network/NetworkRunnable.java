@@ -55,10 +55,10 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.AbstractSelectableChannel;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -136,7 +136,7 @@ final class NetworkRunnable implements Runnable {
                         entry.getResponseBus().send(new IdentifiableErrorNetworkNotification(id));
                     }
                 }
-                LinkedList<Object> msgs = new LinkedList<Object>();
+                ArrayList<Object> msgs = new ArrayList<Object>();
                 queue.drainTo(msgs);
                 for (Object msg : msgs) {
                     processMessage(msg);
@@ -197,7 +197,7 @@ final class NetworkRunnable implements Runnable {
         }
         if (selectionKey.isWritable()) {
             try {
-                LinkedList<ByteBuffer> outBuffers = entry.getOutgoingBuffers();
+              ArrayList<ByteBuffer> outBuffers = entry.getOutgoingBuffers();
                 // if OP_WRITE was set, WriteTcpBlockNetworkRequest is pending (we should have at least 1 outgoing buffer)
                 int writeCount = 0;
                 if (outBuffers.isEmpty() && !entry.isNotifiedOfWritable()) {
@@ -208,7 +208,7 @@ final class NetworkRunnable implements Runnable {
                     entry.getResponseBus().send(new WriteEmptyTcpNetworkNotification(id));
                 } else {
                     while (!outBuffers.isEmpty()) {
-                        ByteBuffer outBuffer = outBuffers.getFirst();
+                        ByteBuffer outBuffer = outBuffers.get(0);
                         writeCount += channel.write(outBuffer);
 
                         LOG.debug("{} TCP wrote {} bytes", id, writeCount);
@@ -217,7 +217,7 @@ final class NetworkRunnable implements Runnable {
                             // not everything was written, which means we can't send anymore data until we get another OP_WRITE, so leave
                             break;
                         }
-                        outBuffers.removeFirst();
+                        outBuffers.remove(0);
                         responseBus.send(new WriteTcpNetworkResponse(id, writeCount));
                     }
                 }
@@ -255,10 +255,10 @@ final class NetworkRunnable implements Runnable {
         }
         if (selectionKey.isWritable()) {
             try {
-                LinkedList<AddressedByteBuffer> outBuffers = entry.getOutgoingBuffers();
+              ArrayList<AddressedByteBuffer> outBuffers = entry.getOutgoingBuffers();
                 if (!outBuffers.isEmpty()) {
                     // if not empty
-                    AddressedByteBuffer outBuffer = outBuffers.removeFirst();
+                    AddressedByteBuffer outBuffer = outBuffers.remove(0);
 
                     ByteBuffer outgoingBuffer = outBuffer.getBuffer();
                     
@@ -428,7 +428,7 @@ final class NetworkRunnable implements Runnable {
                 TcpNetworkEntry entry = (TcpNetworkEntry) idMap.get(id);
                 if (entry != null) {
                     responseBus = entry.getResponseBus();
-                    LinkedList<ByteBuffer> outBuffers = entry.getOutgoingBuffers();
+                    ArrayList<ByteBuffer> outBuffers = entry.getOutgoingBuffers();
                     ByteBuffer writeBuffer = ByteBuffer.wrap(req.getData());
                     if (writeBuffer.hasRemaining()) {
                         // only add if it has content -- adding empty is worthless because this is a stream
@@ -451,7 +451,7 @@ final class NetworkRunnable implements Runnable {
                 UdpNetworkEntry entry = (UdpNetworkEntry) idMap.get(id);
                 if (entry != null) {
                     responseBus = entry.getResponseBus();
-                    LinkedList<AddressedByteBuffer> outBuffers = entry.getOutgoingBuffers();
+                    ArrayList<AddressedByteBuffer> outBuffers = entry.getOutgoingBuffers();
                     ByteBuffer writeBuffer = ByteBuffer.wrap(req.getData());
                     InetSocketAddress writeAddress = req.getRemoteAddress();
                     outBuffers.add(new AddressedByteBuffer(writeBuffer, writeAddress));

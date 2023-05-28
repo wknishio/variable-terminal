@@ -54,12 +54,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import org.apache.commons.lang3.Validate;
@@ -670,7 +670,7 @@ public final class MapperIoUtils {
 
 
             // Send requests
-            Queue<Long> remainingAttemptDurations = new LinkedList<Long>();
+            Queue<Long> remainingAttemptDurations = new ArrayBlockingQueue<Long>(5);
             for (long attemptDuration : attemptDurations) {
                 remainingAttemptDurations.add(attemptDuration);
             }
@@ -778,7 +778,7 @@ public final class MapperIoUtils {
             this.sourceAddress = sourceAddress;
             this.destinationSocketAddress = destinationSocketAddress;
             this.request = request;
-            this.responses = new LinkedList<Object>();
+            this.responses = new ArrayList<Object>();
             this.requestToBytesTransformer = requestToBytesTransformer;
             this.bytesToResponseTransformer = bytesToResponseTransformer;
         }
@@ -902,10 +902,10 @@ public final class MapperIoUtils {
             ret.get(dst).add(req);
         }
         
-        List<List<TcpRequest>> batches = new LinkedList<List<TcpRequest>>();
+        List<List<TcpRequest>> batches = new ArrayList<List<TcpRequest>>();
         int counter = 0;
         while (true) {
-            List<TcpRequest> batch = new LinkedList<TcpRequest>();
+            List<TcpRequest> batch = new ArrayList<TcpRequest>();
             int start = counter * 3;
             int end = (counter + 1) * 3;
             
@@ -957,7 +957,7 @@ public final class MapperIoUtils {
 
         LOG.debug("Performing tcp requests {} with durations ", reqs, attemptDurations);
         
-        Queue<Long> remainingAttemptDurations = new LinkedList<Long>();
+        Queue<Long> remainingAttemptDurations = new ArrayBlockingQueue<Long>(5);
         for (long attemptDuration : attemptDurations) {
             remainingAttemptDurations.add(attemptDuration);
         }

@@ -21,7 +21,6 @@ package com.googlecode.lanterna.terminal.virtual;
 import com.googlecode.lanterna.TextCharacter;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -32,10 +31,10 @@ import java.util.ListIterator;
 class TextBuffer {
     private static final TextCharacter DOUBLE_WIDTH_CHAR_PADDING = new TextCharacter(' ');
 
-    private final LinkedList<List<TextCharacter>> lines;
+    private final ArrayList<List<TextCharacter>> lines;
 
     TextBuffer() {
-        this.lines = new LinkedList<List<TextCharacter>>();
+        this.lines = new ArrayList<List<TextCharacter>>();
         newLine();
     }
 
@@ -45,7 +44,7 @@ class TextBuffer {
 
     synchronized void removeTopLines(int numberOfLinesToRemove) {
         for(int i = 0; i < numberOfLinesToRemove; i++) {
-            lines.removeFirst();
+            lines.remove(0);
         }
     }
 

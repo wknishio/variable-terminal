@@ -30,8 +30,8 @@ import com.offbynull.portmapper.gateways.process.internalmessages.ReadType;
 import com.offbynull.portmapper.gateways.process.internalmessages.WriteEmptyProcessNotification;
 import com.offbynull.portmapper.gateways.process.internalmessages.WriteProcessRequest;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -98,7 +98,7 @@ final class ProcessRunnable implements Runnable {
             try {
                 String executable = req.getExecutable();
                 List<String> parameters = req.getParameters();
-                List<String> command = new LinkedList<String>();
+                List<String> command = new ArrayList<String>();
                 command.add(executable);
                 command.addAll(parameters);
                 ProcessBuilder pb = new ProcessBuilder(command);

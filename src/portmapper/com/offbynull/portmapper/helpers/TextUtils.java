@@ -16,7 +16,6 @@
 package com.offbynull.portmapper.helpers;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -168,7 +167,7 @@ public final class TextUtils {
         Validate.notNull(begin);
         Validate.notNull(end);
         
-        List<String> ret = new LinkedList<String>();
+        List<String> ret = new ArrayList<String>();
         
         int nextIdx = 0;
         
@@ -207,7 +206,7 @@ public final class TextUtils {
     public static List<String> findAllIpv4Addresses(String text) {
         Validate.notNull(text);
 
-        List<String> ret = new LinkedList<String>();
+        List<String> ret = new ArrayList<String>();
 
         int len = text.length();
         for (int i = 0; i < len;) {
@@ -304,7 +303,7 @@ public final class TextUtils {
     public static List<String> findAllIpv6Addresses(String text) {
         Validate.notNull(text);
 
-        List<String> ret = new LinkedList<String>();
+        List<String> ret = new ArrayList<String>();
 
         int len = text.length();
         for (int i = 0; i < len;) {

@@ -35,8 +35,8 @@ import com.googlecode.lanterna.terminal.AbstractTerminal;
 import com.googlecode.lanterna.TerminalPosition;
 
 import java.io.ByteArrayOutputStream;
-import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -74,7 +74,7 @@ public abstract class StreamBasedTerminal extends AbstractTerminal {
             this.terminalCharset = terminalCharset;
         }
         this.inputDecoder = new InputDecoder(new InputStreamReader(this.terminalInput, this.terminalCharset));
-        this.keyQueue = new LinkedList<KeyStroke>();
+        this.keyQueue = new ArrayBlockingQueue<KeyStroke>(5);
         this.readLock = new ReentrantLock();
         this.lastReportedCursorPosition = null;
         //noinspection ConstantConditions

@@ -20,7 +20,6 @@ package com.googlecode.lanterna;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.googlecode.lanterna.graphics.StyleSet;
@@ -311,9 +310,9 @@ public class TerminalTextUtils {
         }
 
         List<String> result = new ArrayList<String>();
-        LinkedList<String> linesToBeWrapped = new LinkedList<String>(Arrays.asList(lines));
+        ArrayList<String> linesToBeWrapped = new ArrayList<String>(Arrays.asList(lines));
         while(!linesToBeWrapped.isEmpty()) {
-            String row = linesToBeWrapped.removeFirst();
+            String row = linesToBeWrapped.remove(0);
             int rowWidth = getColumnWidth(row);
             if(rowWidth <= maxWidth) {
                 result.add(row);
@@ -337,7 +336,7 @@ public class TerminalTextUtils {
                     //Failed! There was no 'nice' place to cut so just cut it at maxWidth
                     characterIndex = Math.max(characterIndexMax, 1); // at least 1 char
                     result.add(row.substring(0, characterIndex));
-                    linesToBeWrapped.addFirst(row.substring(characterIndex));
+                    linesToBeWrapped.add(0, row.substring(characterIndex));
                 }
                 else {
                     // characterIndex == 0 only happens, if either
@@ -353,7 +352,7 @@ public class TerminalTextUtils {
                         characterIndex++;
                     }
                     if (characterIndex < row.length()) { // only if rest contains non-whitespace
-                        linesToBeWrapped.addFirst(row.substring(characterIndex));
+                        linesToBeWrapped.add(0, row.substring(characterIndex));
                     }
                 }
             }

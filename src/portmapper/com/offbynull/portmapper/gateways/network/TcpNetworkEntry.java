@@ -18,20 +18,20 @@ package com.offbynull.portmapper.gateways.network;
 import com.offbynull.portmapper.gateway.Bus;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channel;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 final class TcpNetworkEntry extends NetworkEntry<ByteBuffer> {
     private boolean connecting = true;
     private boolean readFinished;
-    private LinkedList<ByteBuffer> outgoingBuffers;
+    private ArrayList<ByteBuffer> outgoingBuffers;
 
     TcpNetworkEntry(int id, Channel channel, Bus responseBus) {
         super(id, channel, responseBus);
-        outgoingBuffers = new LinkedList<ByteBuffer>();
+        outgoingBuffers = new ArrayList<ByteBuffer>();
     }
 
     
-    public LinkedList<ByteBuffer> getOutgoingBuffers() {
+    public ArrayList<ByteBuffer> getOutgoingBuffers() {
         return outgoingBuffers;
     }
 

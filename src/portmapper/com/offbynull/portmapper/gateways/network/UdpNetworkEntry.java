@@ -20,18 +20,18 @@ import com.offbynull.portmapper.gateways.network.UdpNetworkEntry.AddressedByteBu
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channel;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 final class UdpNetworkEntry extends NetworkEntry<AddressedByteBuffer> {
-    private LinkedList<AddressedByteBuffer> outgoingBuffers;
+    private ArrayList<AddressedByteBuffer> outgoingBuffers;
 
     UdpNetworkEntry(int id, Channel channel, Bus responseBus) {
         super(id, channel, responseBus);
-        outgoingBuffers = new LinkedList<AddressedByteBuffer>();
+        outgoingBuffers = new ArrayList<AddressedByteBuffer>();
     }
 
     
-    LinkedList<AddressedByteBuffer> getOutgoingBuffers() {
+    ArrayList<AddressedByteBuffer> getOutgoingBuffers() {
         return outgoingBuffers;
     }
     

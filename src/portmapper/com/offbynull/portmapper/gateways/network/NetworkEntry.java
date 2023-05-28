@@ -17,7 +17,8 @@ package com.offbynull.portmapper.gateways.network;
 
 import com.offbynull.portmapper.gateway.Bus;
 import java.nio.channels.Channel;
-import java.util.LinkedList;
+import java.util.ArrayList;
+
 import org.apache.commons.lang3.Validate;
 
 abstract class NetworkEntry<B> {
@@ -66,5 +67,5 @@ abstract class NetworkEntry<B> {
         this.notifiedOfWritable = notifiedOfWritable;
     }
     
-    abstract LinkedList<B> getOutgoingBuffers();
+    abstract ArrayList<B> getOutgoingBuffers();
 }

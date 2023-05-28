@@ -49,7 +49,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import org.apache.commons.lang3.Validate;
@@ -139,7 +138,7 @@ public final class NatPmpPortMapper implements PortMapper {
         
         
         // Query -- send each query to every interface
-        List<UdpRequest> udpReqs = new LinkedList<UdpRequest>();
+        List<UdpRequest> udpReqs = new ArrayList<UdpRequest>();
         
         Set<InetAddress> sourceAddresses = getLocalIpAddresses(networkBus);
         for (InetAddress sourceAddress : sourceAddresses) {
@@ -166,7 +165,7 @@ public final class NatPmpPortMapper implements PortMapper {
         
         
         // Create mappers and returns
-        List<NatPmpPortMapper> mappers = new LinkedList<NatPmpPortMapper>();
+        List<NatPmpPortMapper> mappers = new ArrayList<NatPmpPortMapper>();
         for (UdpRequest udpReq : udpReqs) {
             if (udpReq.getResponse() != null) {
                 NatPmpPortMapper portMapper = new NatPmpPortMapper(

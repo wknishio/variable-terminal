@@ -40,7 +40,6 @@ import java.net.InetAddress;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.Set;
 import org.apache.commons.lang3.Range;
@@ -189,7 +188,7 @@ public abstract class UpnpIgdPortMapper implements PortMapper {
 
         // Probe for devices -- for each device found, query the device
         Set<InetAddress> sourceAddresses = getLocalIpAddresses(networkBus);
-        Collection<UdpRequest> discoveryRequests = new LinkedList<UdpRequest>();
+        Collection<UdpRequest> discoveryRequests = new ArrayList<UdpRequest>();
         for (InetAddress sourceAddress : sourceAddresses) {
             if (sourceAddress instanceof Inet4Address) {
                 UdpRequest req = new UdpRequest(
@@ -306,7 +305,7 @@ public abstract class UpnpIgdPortMapper implements PortMapper {
         performBatchedTcpRequests(networkBus, serviceDescRequests, 3, 5000L, 5000L, 5000L);
 
         // Get service descriptions
-        List<UpnpIgdPortMapper> ret = new LinkedList<UpnpIgdPortMapper>();
+        List<UpnpIgdPortMapper> ret = new ArrayList<UpnpIgdPortMapper>();
         for (TcpRequest serviceDescRequest : serviceDescRequests) {
             LOG.debug("Processing description {}", serviceDescRequest);
             try {
