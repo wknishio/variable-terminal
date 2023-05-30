@@ -1,19 +1,15 @@
 package org.vash.vate.client;
 
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.net.Authenticator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
-
-import javax.imageio.ImageIO;
 
 import org.vash.vate.VT;
 import org.vash.vate.audio.VTAudioSystem;
@@ -23,14 +19,10 @@ import org.vash.vate.client.dialog.VTClientConfigurationDialog;
 import org.vash.vate.client.session.VTClientSessionListener;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.exception.VTUncaughtExceptionHandler;
-import org.vash.vate.help.VTHelpManager;
-import org.vash.vate.nativeutils.VTNativeUtils;
-import org.vash.vate.network.tls.TLSVerificationDisabler;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
 import org.vash.vate.runtime.VTExit;
 import org.vash.vate.security.VTBlake3DigestRandom;
-import org.vash.vate.socket.VTDefaultProxyAuthenticator;
 
 public class VTClient implements Runnable
 {
@@ -71,20 +63,13 @@ public class VTClient implements Runnable
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
   "#vate.client.connection.mode      values: default active(A), passive(P)\r\n" + 
   "#vate.client.proxy.type           values: default none, HTTP(H), SOCKS(S)\r\n" + 
-  "#vate.client.proxy.authentication values: default disabled(D), enabled(E)\r\n" + 
   "#vate.client.encryption.type      values: default none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
   "#vate.client.session.commands     format: cmd1*;cmd2*;cmd3*;...\r\n";
   // "#vate.client.session.lines format: file1;file2;file3;...";
   
   static
   {
-    System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
-    System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
-    Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
-    ImageIO.setUseCache(false);
-    VTHelpManager.initialize();
-    TLSVerificationDisabler.install();
-    // com.github.luben.zstd.util.Native.load();
+    VT.initialize();
   }
   
   public VTClient()
@@ -100,14 +85,6 @@ public class VTClient implements Runnable
       }
     });
     this.audioSystem = new VTAudioSystem(threads);
-    try
-    {
-      Toolkit.getDefaultToolkit().setDynamicLayout(false);
-    }
-    catch (Throwable t)
-    {
-      
-    }
     loadClientSettingsFile();
   }
   
@@ -1954,7 +1931,6 @@ public class VTClient implements Runnable
   {
     Thread.setDefaultUncaughtExceptionHandler(new VTUncaughtExceptionHandler());
     // loadFileClientSettings();
-    VTNativeUtils.initialize();
     if (!VTConsole.isDaemon() && VTConsole.isGraphical())
     {
       VTConsole.initialize();

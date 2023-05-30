@@ -284,7 +284,7 @@ public class VTGlobalTextStyleManager
   
   static
   {
-    checkScaling();
+    //checkScaling();
     // AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
   }
   

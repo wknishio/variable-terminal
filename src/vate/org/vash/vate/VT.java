@@ -1,6 +1,7 @@
 package org.vash.vate;
 
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -155,25 +156,44 @@ public class VT
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_262144 = 64;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_2097152 = 65;
   
-  private static final DateFormat VT_ERA_DATEFORMAT;
-  private static final Calendar VT_YEAR_CALENDAR;
-  public static final AudioFormat VT_AUDIO_FORMAT_DEFAULT;
-  public static final AudioFormat VT_AUDIO_FORMAT_8000;
-  public static final AudioFormat VT_AUDIO_FORMAT_16000;
-  public static final AudioFormat VT_AUDIO_FORMAT_24000;
-  public static final AudioFormat VT_AUDIO_FORMAT_32000;
-  public static final AudioFormat VT_AUDIO_FORMAT_48000;
+  private static DateFormat VT_ERA_DATEFORMAT;
+  private static Calendar VT_YEAR_CALENDAR;
+  public static AudioFormat VT_AUDIO_FORMAT_DEFAULT;
+  public static AudioFormat VT_AUDIO_FORMAT_8000;
+  public static AudioFormat VT_AUDIO_FORMAT_16000;
+  public static AudioFormat VT_AUDIO_FORMAT_24000;
+  public static AudioFormat VT_AUDIO_FORMAT_32000;
+  public static AudioFormat VT_AUDIO_FORMAT_48000;
   
-  public static final Map<RenderingHints.Key, Object> VT_GRAPHICS_RENDERING_HINTS;
+  public static Map<RenderingHints.Key, Object> VT_GRAPHICS_RENDERING_HINTS;
+  private static boolean initialized = false;
   
   static
   {
+    if (!initialized)
+    {
+      initialize();
+    }
+  }
+  
+  public static void initialize()
+  {
+    VTGlobalTextStyleManager.checkScaling();
+    try
+    {
+      Toolkit.getDefaultToolkit().setDynamicLayout(false);
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    ImageIO.setUseCache(false);
+    disableAccessWarnings();
     System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
     System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
     Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
-    ImageIO.setUseCache(false);
-    VTHelpManager.initialize();
     TLSVerificationDisabler.install();
+    VTHelpManager.initialize();
     
     try
     {
@@ -192,30 +212,53 @@ public class VT
       
     }
     
-    VT_ERA_DATEFORMAT = new SimpleDateFormat("G", Locale.ENGLISH);
-    VT_YEAR_CALENDAR = Calendar.getInstance();
-    // float sampleRate = 8000;
-    int sampleSizeInBits = 16;
-    int channels = 1;
-    boolean signed = true;
-    boolean bigEndian = false;
+    try
+    {
+      VT_ERA_DATEFORMAT = new SimpleDateFormat("G", Locale.ENGLISH);
+      VT_YEAR_CALENDAR = Calendar.getInstance();
+    }
+    catch (Throwable t)
+    {
+      
+    }
     
-    VT_AUDIO_FORMAT_8000 = new AudioFormat(8000, sampleSizeInBits, channels, signed, bigEndian);
-    VT_AUDIO_FORMAT_16000 = new AudioFormat(16000, sampleSizeInBits, channels, signed, bigEndian);
-    VT_AUDIO_FORMAT_24000 = new AudioFormat(24000, sampleSizeInBits, channels, signed, bigEndian);
-    VT_AUDIO_FORMAT_32000 = new AudioFormat(32000, sampleSizeInBits, channels, signed, bigEndian);
-    VT_AUDIO_FORMAT_48000 = new AudioFormat(48000, sampleSizeInBits, channels, signed, bigEndian);
-    VT_AUDIO_FORMAT_DEFAULT = VT_AUDIO_FORMAT_16000;
+    try
+    {
+      // float sampleRate = 8000;
+      int sampleSizeInBits = 16;
+      int channels = 1;
+      boolean signed = true;
+      boolean bigEndian = false;
+      VT_AUDIO_FORMAT_8000 = new AudioFormat(8000, sampleSizeInBits, channels, signed, bigEndian);
+      VT_AUDIO_FORMAT_16000 = new AudioFormat(16000, sampleSizeInBits, channels, signed, bigEndian);
+      VT_AUDIO_FORMAT_24000 = new AudioFormat(24000, sampleSizeInBits, channels, signed, bigEndian);
+      VT_AUDIO_FORMAT_32000 = new AudioFormat(32000, sampleSizeInBits, channels, signed, bigEndian);
+      VT_AUDIO_FORMAT_48000 = new AudioFormat(48000, sampleSizeInBits, channels, signed, bigEndian);
+      VT_AUDIO_FORMAT_DEFAULT = VT_AUDIO_FORMAT_16000;
+    }
+    catch (Throwable t)
+    {
+      
+    }
     
-    VT_GRAPHICS_RENDERING_HINTS = new LinkedHashMap<RenderingHints.Key, Object>();
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+    try
+    {
+      VT_GRAPHICS_RENDERING_HINTS = new LinkedHashMap<RenderingHints.Key, Object>();
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    
+    initialized = true;
   }
   
   public static final int VT_ZIP_FILE_COMPRESS = 1;
@@ -239,10 +282,6 @@ public class VT
   
   static
   {
-    disableAccessWarnings();
-    VTGlobalTextStyleManager.checkScaling();
-    ImageIO.setUseCache(false);
-    
     try
     {
       remoteIcon = ImageIO.read(VT.class.getResourceAsStream("/org/vash/vate/console/graphical/resource/remote.png"));

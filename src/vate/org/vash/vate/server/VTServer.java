@@ -1,12 +1,10 @@
 package org.vash.vate.server;
 
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.net.Authenticator;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -14,7 +12,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 
 import org.vash.vate.VT;
@@ -22,9 +19,6 @@ import org.vash.vate.audio.VTAudioSystem;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.exception.VTUncaughtExceptionHandler;
 import org.vash.vate.graphics.message.VTTrayIconInterface;
-import org.vash.vate.help.VTHelpManager;
-import org.vash.vate.nativeutils.VTNativeUtils;
-import org.vash.vate.network.tls.TLSVerificationDisabler;
 import org.vash.vate.parser.VTArgumentParser;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
@@ -35,7 +29,6 @@ import org.vash.vate.server.console.local.VTServerLocalConsoleReader;
 import org.vash.vate.server.console.local.VTServerLocalGraphicalConsoleMenuBar;
 import org.vash.vate.server.dialog.VTServerSettingsDialog;
 import org.vash.vate.server.session.VTServerSessionListener;
-import org.vash.vate.socket.VTDefaultProxyAuthenticator;
 
 public class VTServer implements Runnable
 {
@@ -84,19 +77,12 @@ public class VTServer implements Runnable
   "Variable-Terminal server settings file, supports UTF-8\r\n" + 
   "#vate.server.connection.mode      values: default passive(P), active(A)\r\n" + 
   "#vate.server.proxy.type           values: default none, HTTP(H), SOCKS(S)\r\n" + 
-  "#vate.server.proxy.authentication values: default disabled(D), enabled(E)\r\n" + 
   "#vate.server.encryption.type      values: default none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
   "#vate.server.session.users        format: user1/password1;user2/password2;...";
   
   static
   {
-    System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
-    System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
-    Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
-    ImageIO.setUseCache(false);
-    VTHelpManager.initialize();
-    TLSVerificationDisabler.install();
-    // com.github.luben.zstd.util.Native.load();
+    VT.initialize();
   }
   
   public class Credential
@@ -152,14 +138,7 @@ public class VTServer implements Runnable
     this.audioSystem[2] = new VTAudioSystem(threads);
     this.audioSystem[3] = new VTAudioSystem(threads);
     this.audioSystem[4] = new VTAudioSystem(threads);
-    try
-    {
-      Toolkit.getDefaultToolkit().setDynamicLayout(false);
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    
     loadServerSettingsFile();
   }
   
@@ -2117,7 +2096,6 @@ public class VTServer implements Runnable
   {
     Thread.setDefaultUncaughtExceptionHandler(new VTUncaughtExceptionHandler());
     // loadFileServerSettings();
-    VTNativeUtils.initialize();
     if (!VTConsole.isDaemon() && VTConsole.isGraphical())
     {
       VTConsole.initialize();

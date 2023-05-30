@@ -3,13 +3,12 @@ package org.vash.vate.console;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
-import java.awt.Toolkit;
 import java.io.FileDescriptor;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.util.Locale;
-
+import org.vash.vate.VT;
 import org.vash.vate.console.graphical.VTGraphicalConsole;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuBar;
 import org.vash.vate.console.lanterna.separated.VTLanternaConsole;
@@ -49,6 +48,7 @@ public final class VTConsole
   
   static
   {
+    VT.initialize();
     VTNativeUtils.initialize();
   }
   
@@ -65,14 +65,6 @@ public final class VTConsole
       {
         if (graphical)
         {
-          try
-          {
-            Toolkit.getDefaultToolkit().setDynamicLayout(false);
-          }
-          catch (Throwable t)
-          {
-            
-          }
           // VTGraphicalConsole.setSplit(split);
           VTNativeUtils.hideConsole();
           if (lanterna)

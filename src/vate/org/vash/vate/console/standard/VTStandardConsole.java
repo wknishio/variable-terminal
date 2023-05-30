@@ -58,7 +58,7 @@ public class VTStandardConsole implements VTConsoleImplementation
   
   private VTStandardConsole()
   {
-    VTNativeUtils.initialize();
+    //VTNativeUtils.initialize();
     // standardTerminalReader = new BufferedReader(new InputStreamReader(new
     // VTStandardTerminalInterruptibleStream(System.in)));
     // standardTerminalReader = new BufferedReader(new
