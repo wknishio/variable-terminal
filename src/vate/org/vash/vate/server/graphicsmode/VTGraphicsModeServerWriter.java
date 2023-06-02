@@ -558,6 +558,17 @@ public class VTGraphicsModeServerWriter implements Runnable
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
+        if (lastColors == 262144 || lastColors == 2097152)
+        {
+          if (convertedDataBuffer == null)
+          {
+            convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recycledDataBuffer);
+            recycledDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
+            convertedGraphics = convertedDataBuffer.createGraphics();
+            convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+          }
+          convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
+        }
         pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
         // int total = 0;
         for (Rectangle blockArea : blockAreas)
@@ -671,6 +682,17 @@ public class VTGraphicsModeServerWriter implements Runnable
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
+        if (lastColors == 262144 || lastColors == 2097152)
+        {
+          if (convertedDataBuffer == null)
+          {
+            convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recycledDataBuffer);
+            recycledDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
+            convertedGraphics = convertedDataBuffer.createGraphics();
+            convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+          }
+          convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
+        }
         pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
         // int total = 0;
         for (Rectangle blockArea : blockAreas)

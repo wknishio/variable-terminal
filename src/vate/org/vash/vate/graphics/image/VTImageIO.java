@@ -847,12 +847,12 @@ public final class VTImageIO
     {
       Arrays.fill(buffer, start, buffer.length, 0xFFFFFFFF);
     }
-    else if (type == BufferedImage.TYPE_INT_RGB)
-    {
-      Arrays.fill(buffer, start, buffer.length, 0x00FFFFFF);
-    }
     else
     {
+      if (colors == 16777216)
+      {
+        Arrays.fill(buffer, start, buffer.length, 0x00FFFFFF);
+      }
       if (colors == 1073741824)
       {
         Arrays.fill(buffer, start, buffer.length, 0x3FFFFFFF);
@@ -929,12 +929,12 @@ public final class VTImageIO
     {
       Arrays.fill(buffer, start, buffer.length, 0xFF555555);
     }
-    else if (type == BufferedImage.TYPE_INT_RGB)
-    {
-      Arrays.fill(buffer, start, buffer.length, 0x00555555);
-    }
     else
     {
+      if (colors == 16777216)
+      {
+        Arrays.fill(buffer, start, buffer.length, 0x00555555);
+      }
       if (colors == 1073741824)
       {
         Arrays.fill(buffer, start, buffer.length, 0x15555555);
