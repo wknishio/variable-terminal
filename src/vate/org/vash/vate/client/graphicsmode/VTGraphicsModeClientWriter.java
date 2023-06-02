@@ -908,10 +908,10 @@ public class VTGraphicsModeClientWriter implements Runnable
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_216);
       }
-//      else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16)
-//      {
-//        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16);
-//      }
+      else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16)
+      {
+        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16);
+      }
 //      else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32)
 //      {
 //        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_32);

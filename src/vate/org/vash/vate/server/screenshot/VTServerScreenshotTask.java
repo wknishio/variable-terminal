@@ -184,7 +184,7 @@ public class VTServerScreenshotTask extends VTTask
       if (screenCapture.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE && screenCapture.getType() == BufferedImage.TYPE_BYTE_INDEXED)
       {
         pngEncoder.setColorType(PngEncoder.COLOR_INDEXED);
-        // encoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
+        pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
         pngEncoder.encode(screenCapture, photoOutputStream);
       }
       else if (screenCapture.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
@@ -211,6 +211,14 @@ public class VTServerScreenshotTask extends VTTask
       // }
       else if (screenCapture.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
+        if (screenshotProvider.getColorCount() == 262144 || screenshotProvider.getColorCount() == 2097152)
+        {
+          convertedImage = VTImageIO.createImage(0, 0, screenCapture.getWidth(), screenCapture.getHeight(), BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
+          recyclableDataBuffer = convertedImage.getRaster().getDataBuffer();
+          convertedGraphics = convertedImage.createGraphics();
+          convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+          convertedGraphics.drawImage(screenCapture, 0, 0, null);
+        }
         pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
         pngEncoder.encode(screenCapture, photoOutputStream);
       }

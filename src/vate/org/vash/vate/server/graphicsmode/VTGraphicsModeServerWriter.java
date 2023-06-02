@@ -448,6 +448,17 @@ public class VTGraphicsModeServerWriter implements Runnable
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
+        if (lastColors == 262144 || lastColors == 2097152)
+        {
+          if (convertedDataBuffer == null)
+          {
+            convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recycledDataBuffer);
+            recycledDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
+            convertedGraphics = convertedDataBuffer.createGraphics();
+            convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+          }
+          convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
+        }
         pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
         // int total = 0;
         for (Rectangle blockArea : blockAreas)
@@ -755,6 +766,17 @@ public class VTGraphicsModeServerWriter implements Runnable
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
       {
+        if (lastColors == 262144 || lastColors == 2097152)
+        {
+          if (convertedDataBuffer == null)
+          {
+            convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recycledDataBuffer);
+            recycledDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
+            convertedGraphics = convertedDataBuffer.createGraphics();
+            convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+          }
+          convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
+        }
         pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
         // int total = 0;
         for (Rectangle blockArea : blockAreas)
@@ -850,7 +872,7 @@ public class VTGraphicsModeServerWriter implements Runnable
   
   public void sendCustomRefresh() throws IOException
   {
-    // System.out.println("sendCustomRefresh");
+    //System.out.println("sendCustomRefresh");
     needRefresh = false;
     // imageOutputBuffer.reset();
     // long startTime = System.currentTimeMillis();
@@ -1133,7 +1155,7 @@ public class VTGraphicsModeServerWriter implements Runnable
               }
               catch (Throwable t)
               {
-                // t.printStackTrace();
+                //t.printStackTrace();
                 imageDataBuffer = null;
               }
               // imageDataBuffer =
@@ -1151,7 +1173,7 @@ public class VTGraphicsModeServerWriter implements Runnable
               }
               catch (Throwable t)
               {
-                // t.printStackTrace();
+                //t.printStackTrace();
                 imageDataBuffer = null;
               }
               // imageDataBuffer =

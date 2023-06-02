@@ -14,25 +14,24 @@ public class VTIndexedColorModel
   //private static final int DCM_GREEN_MASK = 0x0000ff00;
   //private static final int DCM_BLUE_MASK = 0x000000ff;
   
-  private static final IndexColorModel indexColorModel8 = create8ColorModel();
+  //private static final IndexColorModel indexColorModel8 = create8ColorModel();
+  //private static final IndexColorModel indexColorModelGray4 = create4ColorModelGray();
+  //private static final IndexColorModel indexColorModelGray8 = create8ColorModelGray();
+  //private static final IndexColorModel indexColorModelGray16 = create16ColorModelGray();
   //private static final IndexColorModel indexColorModel16 = create16ColorModel();
-  private static final IndexColorModel indexColorModel27 = create27ColorModel();
+  //private static final IndexColorModel indexColorModel27 = create27ColorModel();
   //private static final IndexColorModel indexColorModel32 = create32ColorModel();
-  private static final IndexColorModel indexColorModel125 = create125ColorModel();
-  private static final IndexColorModel indexColorModel216 = create216ColorModel();
+  //private static final IndexColorModel indexColorModel125 = create125ColorModel();
+  //private static final IndexColorModel indexColorModel216 = create216ColorModel();
   
   //private static final int[] rgbiRed = new int[16], rgbiGreen = new int[16], rgbiBlue = new int[16];
   // private static final int[] rgbiValue = new int[16];
   
-  public static byte get8ColorRGBValue(int rgb)
-  {
-    return ((byte[]) indexColorModel8.getDataElements(rgb, null))[0];
-  }
   
-  public static byte get27Color3LevelRGBValue(int rgb)
-  {
-    return ((byte[]) indexColorModel27.getDataElements(rgb, null))[0];
-  }
+//  public static byte get27Color3LevelRGBValue(int rgb)
+//  {
+//    return ((byte[]) indexColorModel27.getDataElements(rgb, null))[0];
+//  }
   
 //  public static byte get16ColorRGBIValue(int rgb)
 //  {
@@ -44,15 +43,15 @@ public class VTIndexedColorModel
 //    return ((byte[]) indexColorModel32.getDataElements(rgb, null))[0];
 //  }
   
-  public static byte get125Color5LevelRGBValue(int rgb)
-  {
-    return ((byte[]) indexColorModel125.getDataElements(rgb, null))[0];
-  }
-  
-  public static byte get216Color6LevelRGBValue(int rgb)
-  {
-    return ((byte[]) indexColorModel216.getDataElements(rgb, null))[0];
-  }
+//  public static byte get125Color5LevelRGBValue(int rgb)
+//  {
+//    return ((byte[]) indexColorModel125.getDataElements(rgb, null))[0];
+//  }
+//  
+//  public static byte get216Color6LevelRGBValue(int rgb)
+//  {
+//    return ((byte[]) indexColorModel216.getDataElements(rgb, null))[0];
+//  }
   
   private static int get3LevelRGBValue(int level)
   {
@@ -121,6 +120,120 @@ public class VTIndexedColorModel
       }
     }
     return new IndexColorModel(8, red.length, red, green, blue);
+  }
+  
+  public static IndexColorModel create4ColorModelGrayscale()
+  {
+    byte[] red = new byte[4];
+    byte[] green = new byte[4];
+    byte[] blue = new byte[4];
+    int i = 0;
+    int j = 0;
+    // int l = 0;
+    int p = 0;
+    
+    for (i = 0; i < 2; i++)
+    {
+      for (j = 0; j < 2; j++)
+      {
+        red[p] = (byte) (((i * 170) + (j * 85)) & 0xFF);
+        green[p] = (byte) (((i * 170) + (j * 85)) & 0xFF);
+        blue[p] = (byte) (((i * 170) + (j * 85)) & 0xFF);
+        p++;
+      }
+    }
+    return new IndexColorModel(8, red.length, red, green, blue);
+  }
+  
+  public static IndexColorModel create8ColorModelGrayscale()
+  {
+    byte[] red = new byte[8];
+    byte[] green = new byte[8];
+    byte[] blue = new byte[8];
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    // int l = 0;
+    int p = 0;
+    
+    for (i = 0; i < 2; i++)
+    {
+      for (j = 0; j < 2; j++)
+      {
+        for (k = 0; k < 2; k++)
+        {
+          red[p] = (byte) (((i * 146) + (j * 73) + (k * 36)) & 0xFF);
+          green[p] = (byte) (((i * 146) + (j * 73) + (k * 36)) & 0xFF);
+          blue[p] = (byte) (((i * 146) + (j * 73) + (k * 36)) & 0xFF);
+          p++;
+        }
+      }
+    }
+    return new IndexColorModel(8, red.length, red, green, blue);
+  }
+  
+  public static IndexColorModel create16ColorModelGrayscale()
+  {
+    byte[] red = new byte[16];
+    byte[] green = new byte[16];
+    byte[] blue = new byte[16];
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    int l = 0;
+    int p = 0;
+    
+    for (i = 0; i < 2; i++)
+    {
+      for (j = 0; j < 2; j++)
+      {
+        for (k = 0; k < 2; k++)
+        {
+          for (l = 0; l < 2; l++)
+          {
+            red[p] = (byte) (((i * 136) + (j * 68) + (k * 34) + (l * 17)) & 0xFF);
+            green[p] = (byte) (((i * 136) + (j * 68) + (k * 34) + (l * 17)) & 0xFF);
+            blue[p] = (byte) (((i * 136) + (j * 68) + (k * 34) + (l * 17)) & 0xFF);
+            p++;
+          }
+        }
+      }
+    }
+    return new IndexColorModel(8, red.length, red, green, blue);
+  }
+  
+  public static IndexColorModel create32ColorModelGrayscale()
+  {
+    byte[] red = new byte[32];
+    byte[] green = new byte[32];
+    byte[] blue = new byte[32];
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    int l = 0;
+    int m = 0;
+    int p = 0;
+    
+    for (i = 0; i < 2; i++)
+    {
+      for (j = 0; j < 2; j++)
+      {
+        for (k = 0; k < 2; k++)
+        {
+          for (l = 0; l < 2; l++)
+          {
+            for (m = 0; m < 2; m++)
+            {
+              red[p] = (byte) (((i * 132) + (j * 66) + (k * 33) + (l * 16) + (m * 8)) & 0xFF);
+              green[p] = (byte) (((i * 132) + (j * 66) + (k * 33) + (l * 16) + (m * 8)) & 0xFF);
+              blue[p] = (byte) (((i * 132) + (j * 66) + (k * 33) + (l * 16) + (m * 8)) & 0xFF);
+              p++;
+            }
+          }
+        }
+      }
+    }
+    return new IndexColorModel(5, red.length, red, green, blue);
   }
   
 //  public static IndexColorModel createPacked4Bit16ColorModel()

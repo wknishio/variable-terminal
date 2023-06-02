@@ -155,6 +155,7 @@ public class VT
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_27 = 63;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_262144 = 64;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_2097152 = 65;
+  public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16 = 66;
   
   private static DateFormat VT_ERA_DATEFORMAT;
   private static Calendar VT_YEAR_CALENDAR;

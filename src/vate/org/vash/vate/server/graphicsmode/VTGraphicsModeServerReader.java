@@ -206,11 +206,11 @@ public class VTGraphicsModeServerReader implements Runnable
             writer.requestClear();
             break;
           }
-//          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16:
-//          {
-//            writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16);
-//            break;
-//          }
+          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16:
+          {
+            writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16);
+            break;
+          }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_216:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216);

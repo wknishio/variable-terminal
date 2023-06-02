@@ -453,8 +453,8 @@ public class VTGraphicsModeClientReader implements Runnable
             int colors = connection.getGraphicsControlDataInputStream().readInt();
             int width = connection.getGraphicsControlDataInputStream().readInt();
             int height = connection.getGraphicsControlDataInputStream().readInt();
-            // System.out.println("type:" + type);
-            // System.out.println("colors:" + colors);
+            //System.out.println("type:" + type);
+            //System.out.println("colors:" + colors);
             currentImageDataBuffer = VTImageIO.createImage(CODEC_PADDING_SIZE, CODEC_PADDING_SIZE, width, height, type, colors, recyclableDataBuffer);
             recyclableDataBuffer = currentImageDataBuffer.getRaster().getDataBuffer();
             
