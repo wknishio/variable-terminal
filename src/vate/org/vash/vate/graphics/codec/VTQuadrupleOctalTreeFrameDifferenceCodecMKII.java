@@ -124,9 +124,11 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
   private static final void encodePixel8(final VTLittleEndianOutputStream out, final byte[] newPixelData, final int position, final int width) throws IOException
   {
     int nA, nB, nC;
+    
     nC = newPixelData[position - 1 - width];
     nB = newPixelData[position - width];
     nA = newPixelData[position - 1];
+    
     int pred = (nA + nB + nC + (nA >> 1) + (nB >> 1)) >> 2;
     
     out.write(newPixelData[position] ^ pred);
@@ -135,9 +137,11 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
   private static final void encodePixel15(final VTLittleEndianOutputStream out, final short[] newPixelData, final int position, final int width) throws IOException
   {
     int nA, nB, nC;
+    
     nC = newPixelData[position - 1 - width];
     nB = newPixelData[position - width];
     nA = newPixelData[position - 1];
+    
     int pred = (nA + nB + nC + (nA >> 1) + (nB >> 1)) >> 2;
     
     out.writeShort(newPixelData[position] ^ pred);
@@ -146,9 +150,11 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
   private static final void encodePixel24(final VTLittleEndianOutputStream out, final int[] newPixelData, final int position, final int width) throws IOException
   {
     int nA, nB, nC;
+    
     nC = newPixelData[position - 1 - width];
     nB = newPixelData[position - width];
     nA = newPixelData[position - 1];
+    
     int pred = (nA + nB + nC + (nA >> 1) + (nB >> 1)) >> 2;
     
     out.writeSubInt(newPixelData[position] ^ pred);
@@ -157,9 +163,11 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
   private static final void encodePixel30(final VTLittleEndianOutputStream out, final int[] newPixelData, final int position, final int width) throws IOException
   {
     int nA, nB, nC;
+    
     nC = newPixelData[position - 1 - width];
     nB = newPixelData[position - width];
     nA = newPixelData[position - 1];
+    
     int pred = (nA + nB + nC + (nA >> 1) + (nB >> 1)) >> 2;
     
     out.writeInt(newPixelData[position] ^ pred);
@@ -168,9 +176,11 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
   private static final void decodePixel8(final VTLittleEndianInputStream in, final byte[] newPixelData, final int position, final int width) throws IOException
   {
     int nA, nB, nC;
+    
     nC = newPixelData[position - 1 - width];
     nB = newPixelData[position - width];
     nA = newPixelData[position - 1];
+    
     int pred = (nA + nB + nC + (nA >> 1) + (nB >> 1)) >> 2;
     
     newPixelData[position] = (byte) ((in.read() ^ pred) /* & 0xFF */);
@@ -179,9 +189,11 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
   private static final void decodePixel15(final VTLittleEndianInputStream in, final short[] newPixelData, final int position, final int width) throws IOException
   {
     int nA, nB, nC;
+    
     nC = newPixelData[position - 1 - width];
     nB = newPixelData[position - width];
     nA = newPixelData[position - 1];
+    
     int pred = (nA + nB + nC + (nA >> 1) + (nB >> 1)) >> 2;
     
     newPixelData[position] = (short) ((in.readShort() ^ pred) /* & 0x7FFF */);
@@ -190,9 +202,11 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
   private static final void decodePixel24(final VTLittleEndianInputStream in, final int[] newPixelData, final int position, final int width) throws IOException
   {
     int nA, nB, nC;
+    
     nC = newPixelData[position - 1 - width];
     nB = newPixelData[position - width];
     nA = newPixelData[position - 1];
+    
     int pred = (nA + nB + nC + (nA >> 1) + (nB >> 1)) >> 2;
     
     newPixelData[position] = (in.readSubInt() ^ pred /* & 0x00FFFFFF */);
@@ -201,9 +215,11 @@ public final class VTQuadrupleOctalTreeFrameDifferenceCodecMKII
   private static final void decodePixel30(final VTLittleEndianInputStream in, final int[] newPixelData, final int position, final int width) throws IOException
   {
     int nA, nB, nC;
+    
     nC = newPixelData[position - 1 - width];
     nB = newPixelData[position - width];
     nA = newPixelData[position - 1];
+    
     int pred = (nA + nB + nC + (nA >> 1) + (nB >> 1)) >> 2;
     
     newPixelData[position] = (in.readInt() ^ pred /* & 0x00FFFFFF */);

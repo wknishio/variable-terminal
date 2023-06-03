@@ -116,6 +116,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
 //		serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Best Color Quality", "*VTSCREENSHOT CB "));
     
     serverPointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("True Color Quality", "*VTSCREENSHOT PT "));
+    serverPointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Ultra Color Quality", "*VTSCREENSHOT PU "));
     serverPointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("High Color Quality", "*VTSCREENSHOT PH "));
     serverPointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Extra Color Quality", "*VTSCREENSHOT PE "));
     serverPointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Above Color Quality", "*VTSCREENSHOT PA "));
@@ -123,9 +124,11 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverPointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Below Color Quality", "*VTSCREENSHOT PB "));
     serverPointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Simple Color Quality", "*VTSCREENSHOT PS "));
     serverPointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Low Color Quality", "*VTSCREENSHOT PL "));
+    serverPointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Gray Color Quality", "*VTSCREENSHOT PG "));
     serverPointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Worst Color Quality", "*VTSCREENSHOT PW "));
     
     serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("True Color Quality", "*VTSCREENSHOT CT "));
+    serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Ultra Color Quality", "*VTSCREENSHOT CU "));
     serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("High Color Quality", "*VTSCREENSHOT CH "));
     serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Extra Color Quality", "*VTSCREENSHOT CE "));
     serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Above Color Quality", "*VTSCREENSHOT CA "));
@@ -133,6 +136,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Below Color Quality", "*VTSCREENSHOT CB "));
     serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Simple Color Quality", "*VTSCREENSHOT CS "));
     serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Low Color Quality", "*VTSCREENSHOT CL "));
+    serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Gray Color Quality", "*VTSCREENSHOT CG "));
     serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Worst Color Quality", "*VTSCREENSHOT CW "));
     
     serverScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSCREENSHOT\n"));

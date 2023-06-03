@@ -218,9 +218,14 @@ public class VTServerScreenshotTask extends VTTask
           convertedGraphics = convertedImage.createGraphics();
           convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
           convertedGraphics.drawImage(screenCapture, 0, 0, null);
+          pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
+          pngEncoder.encode(convertedImage, photoOutputStream);
         }
-        pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-        pngEncoder.encode(screenCapture, photoOutputStream);
+        else
+        {
+          pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
+          pngEncoder.encode(screenCapture, photoOutputStream);
+        }
       }
       // ImageIO.write(screenCapture, "png", photoOutputStream);
       // provider.writeHighQualityScreenshot(photoOutputStream,
