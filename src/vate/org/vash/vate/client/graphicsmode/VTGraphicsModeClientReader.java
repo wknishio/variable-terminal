@@ -1,7 +1,6 @@
 package org.vash.vate.client.graphicsmode;
 
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
@@ -37,7 +36,7 @@ public class VTGraphicsModeClientReader implements Runnable
   // private volatile Graphics2D firstImageGraphics;
   // private volatile BufferedImage secondImageDataBuffer;
   // private volatile Graphics2D secondImageGraphics;
-  private Rectangle refreshArea = new Rectangle(0, 0, 0, 0);
+  //private Rectangle refreshArea = new Rectangle(0, 0, 0, 0);
   private VTGraphicsModeClientSession session;
   private VTClientConnection connection;
   private VTGraphicsModeClientWriter writer;
@@ -283,7 +282,7 @@ public class VTGraphicsModeClientReader implements Runnable
             // refreshArea.height =
             // connection.getGraphicsControlDataInputStream().readInt();
             writer.requestInterfaceRefresh();
-            writer.setRefreshArea(refreshArea);
+            //writer.setRefreshArea(refreshArea);
             if (currentImageDataBuffer != null)
             {
               currentImageDataBuffer.flush();
@@ -369,7 +368,7 @@ public class VTGraphicsModeClientReader implements Runnable
             // refreshArea.height =
             // connection.getGraphicsControlDataInputStream().readInt();
             writer.requestInterfaceRefresh();
-            writer.setRefreshArea(refreshArea);
+            //writer.setRefreshArea(refreshArea);
             if (connection.getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
             {
               currentImageReader = jpegImageReader;
@@ -437,7 +436,7 @@ public class VTGraphicsModeClientReader implements Runnable
             // refreshArea.height =
             // connection.getGraphicsControlDataInputStream().readInt();
             writer.requestInterfaceRefresh();
-            writer.setRefreshArea(refreshArea);
+            //writer.setRefreshArea(refreshArea);
             if (currentImageDataBuffer != null)
             {
               currentImageDataBuffer.flush();
@@ -617,7 +616,7 @@ public class VTGraphicsModeClientReader implements Runnable
             // refreshArea.height =
             // connection.getGraphicsControlDataInputStream().readInt();
             writer.requestInterfaceRefresh();
-            writer.setRefreshArea(refreshArea);
+            //writer.setRefreshArea(refreshArea);
             // startTime = System.currentTimeMillis();
             if (!writer.isSynchronousRefresh())
             {

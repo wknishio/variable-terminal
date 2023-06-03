@@ -1796,10 +1796,10 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
   }
   
-  public void setRefreshArea(Rectangle area)
-  {
-    remoteInterface.setRefreshArea(area);
-  }
+  //public void setRefreshArea(Rectangle area)
+  //{
+    //remoteInterface.setRefreshArea(area);
+  //}
   
   public void increaseCaptureInterval()
   {
