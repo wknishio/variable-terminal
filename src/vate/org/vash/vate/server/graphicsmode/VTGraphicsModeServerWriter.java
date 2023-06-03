@@ -1182,12 +1182,6 @@ public class VTGraphicsModeServerWriter implements Runnable
                 //t.printStackTrace();
                 imageDataBuffer = null;
               }
-              // imageDataBuffer =
-              // viewProvider.createScreenCapture(drawPointer,
-              // captureArea);
-              // endTime = System.currentTimeMillis();
-              // System.out.println("image capture time: " +
-              // (endTime - startTime));
             }
             else
             {
@@ -1200,19 +1194,9 @@ public class VTGraphicsModeServerWriter implements Runnable
                 //t.printStackTrace();
                 imageDataBuffer = null;
               }
-              // imageDataBuffer =
-              // viewProvider.createScreenCapture(drawPointer);
-              // endTime = System.currentTimeMillis();
-              // System.out.println("image capture time: " +
-              // (endTime - startTime));
             }
             if (imageDataBuffer != null)
             {
-              // System.out.println("colors:" +
-              // (imageDataBuffer.getColorModel() instanceof
-              // IndexColorModel ?
-              // ((IndexColorModel)imageDataBuffer.getColorModel()).getMapSize()
-              // : 0));
               if (imageCoding != VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF && imageCoding != VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF)
               {
                 if (imageDataBuffer.getWidth() == lastWidth

@@ -273,15 +273,15 @@ public final class VTAWTScreenCaptureProvider
         }
         scaleFactorX = adjustedScaleFactorX;
         scaleFactorY = adjustedScaleFactorY;
-        scaledWidth = (int) Math.round(screenSize.getWidth() * adjustedScaleFactorX);
-        scaledHeight = (int) Math.round(screenSize.getHeight() * adjustedScaleFactorY);
+        scaledWidth = (int) Math.ceil(screenSize.getWidth() * adjustedScaleFactorX);
+        scaledHeight = (int) Math.ceil(screenSize.getHeight() * adjustedScaleFactorY);
       }
       else
       {
         if (forceScaleFactors())
         {
-          scaledWidth = (int) Math.round(screenSize.getWidth() * scaleFactorX);
-          scaledHeight = (int) Math.round(screenSize.getHeight() * scaleFactorY);
+          scaledWidth = (int) Math.ceil(screenSize.getWidth() * scaleFactorX);
+          scaledHeight = (int) Math.ceil(screenSize.getHeight() * scaleFactorY);
         }
         else
         {
@@ -289,6 +289,11 @@ public final class VTAWTScreenCaptureProvider
           scaleFactorY = (scaledHeight / screenSize.getHeight());
         }
       }
+    }
+    else
+    {
+      //scaledCurrentWidth = 0;
+      //scaledCurrentHeight = 0;
     }
   }
   
@@ -2116,7 +2121,7 @@ public final class VTAWTScreenCaptureProvider
   
   private final BufferedImage create8ScreenCapture(boolean drawPointer)
   {
-    return create8ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
+    return create8ScreenCapture(drawPointer, new Rectangle(0, 0, scaledCurrentWidth <= 0 ? screenCurrentWidth : scaledCurrentWidth, scaledCurrentHeight <= 0 ? screenCurrentHeight : scaledCurrentHeight));
   }
   
   private final BufferedImage create8ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -2125,28 +2130,7 @@ public final class VTAWTScreenCaptureProvider
     {
       refresh8ScreenCapture();
     }
-    Rectangle screenArea = new Rectangle();
-    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
-    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
-    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
-    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
-    if (screenArea.width > screenCurrentWidth)
-    {
-      screenArea.width = screenCurrentWidth;
-    }
-    if (screenArea.height > screenCurrentHeight)
-    {
-      screenArea.height = screenCurrentHeight;
-    }
-    if (screenArea.x > screenCurrentWidth - screenArea.width)
-    {
-      screenArea.x = screenCurrentWidth - screenArea.width;
-    }
-    if (screenArea.y > screenCurrentHeight - screenArea.height)
-    {
-      screenArea.y = screenCurrentHeight - screenArea.height;
-    }
-    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    Rectangle captureArea = calculateCaptureArea(originalArea);
     if (captureArea.width <= 0 || captureArea.height <= 0)
     {
       return null;
@@ -2220,19 +2204,20 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
-      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
-      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
-      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
-      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+//    Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
+//    scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
+//    scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
+//    scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
+//    scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
+//    scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
   
   private final BufferedImage create16ScreenCapture(boolean drawPointer)
   {
-    return create16ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
+    return create16ScreenCapture(drawPointer, new Rectangle(0, 0, scaledCurrentWidth <= 0 ? screenCurrentWidth : scaledCurrentWidth, scaledCurrentHeight <= 0 ? screenCurrentHeight : scaledCurrentHeight));
   }
   
   private final BufferedImage create16ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -2241,28 +2226,7 @@ public final class VTAWTScreenCaptureProvider
     {
       refresh16ScreenCapture();
     }
-    Rectangle screenArea = new Rectangle();
-    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
-    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
-    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
-    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
-    if (screenArea.width > screenCurrentWidth)
-    {
-      screenArea.width = screenCurrentWidth;
-    }
-    if (screenArea.height > screenCurrentHeight)
-    {
-      screenArea.height = screenCurrentHeight;
-    }
-    if (screenArea.x > screenCurrentWidth - screenArea.width)
-    {
-      screenArea.x = screenCurrentWidth - screenArea.width;
-    }
-    if (screenArea.y > screenCurrentHeight - screenArea.height)
-    {
-      screenArea.y = screenCurrentHeight - screenArea.height;
-    }
-    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    Rectangle captureArea = calculateCaptureArea(originalArea);
     if (captureArea.width <= 0 || captureArea.height <= 0)
     {
       return null;
@@ -2336,12 +2300,13 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
-      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
-      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
-      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
-      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+//      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
+//      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
+//      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
+//      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
+//      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
+//      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -2460,7 +2425,7 @@ public final class VTAWTScreenCaptureProvider
   
   private final BufferedImage create216ScreenCapture(boolean drawPointer)
   {
-    return create216ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
+    return create216ScreenCapture(drawPointer, new Rectangle(0, 0, scaledCurrentWidth <= 0 ? screenCurrentWidth : scaledCurrentWidth, scaledCurrentHeight <= 0 ? screenCurrentHeight : scaledCurrentHeight));
   }
   
   private final BufferedImage create216ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -2469,28 +2434,7 @@ public final class VTAWTScreenCaptureProvider
     {
       refresh216ScreenCapture();
     }
-    Rectangle screenArea = new Rectangle();
-    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
-    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
-    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
-    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
-    if (screenArea.width > screenCurrentWidth)
-    {
-      screenArea.width = screenCurrentWidth;
-    }
-    if (screenArea.height > screenCurrentHeight)
-    {
-      screenArea.height = screenCurrentHeight;
-    }
-    if (screenArea.x > screenCurrentWidth - screenArea.width)
-    {
-      screenArea.x = screenCurrentWidth - screenArea.width;
-    }
-    if (screenArea.y > screenCurrentHeight - screenArea.height)
-    {
-      screenArea.y = screenCurrentHeight - screenArea.height;
-    }
-    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    Rectangle captureArea = calculateCaptureArea(originalArea);
     if (captureArea.width <= 0 || captureArea.height <= 0)
     {
       return null;
@@ -2560,19 +2504,20 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
-      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
-      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
-      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
-      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+//    Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
+//    scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
+//    scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
+//    scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
+//    scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
+//    scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
   
   private final BufferedImage create64ScreenCapture(boolean drawPointer)
   {
-    return create64ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
+    return create64ScreenCapture(drawPointer, new Rectangle(0, 0, scaledCurrentWidth <= 0 ? screenCurrentWidth : scaledCurrentWidth, scaledCurrentHeight <= 0 ? screenCurrentHeight : scaledCurrentHeight));
   }
   
   private final BufferedImage create64ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -2581,28 +2526,7 @@ public final class VTAWTScreenCaptureProvider
     {
       refresh64ScreenCapture();
     }
-    Rectangle screenArea = new Rectangle();
-    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
-    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
-    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
-    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
-    if (screenArea.width > screenCurrentWidth)
-    {
-      screenArea.width = screenCurrentWidth;
-    }
-    if (screenArea.height > screenCurrentHeight)
-    {
-      screenArea.height = screenCurrentHeight;
-    }
-    if (screenArea.x > screenCurrentWidth - screenArea.width)
-    {
-      screenArea.x = screenCurrentWidth - screenArea.width;
-    }
-    if (screenArea.y > screenCurrentHeight - screenArea.height)
-    {
-      screenArea.y = screenCurrentHeight - screenArea.height;
-    }
-    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    Rectangle captureArea = calculateCaptureArea(originalArea);
     if (captureArea.width <= 0 || captureArea.height <= 0)
     {
       return null;
@@ -2672,19 +2596,20 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
-      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
-      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
-      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
-      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+//    Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
+//    scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
+//    scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
+//    scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
+//    scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
+//    scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
   
   private final BufferedImage create512ScreenCapture(boolean drawPointer)
   {
-    return create512ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
+    return create512ScreenCapture(drawPointer, new Rectangle(0, 0, scaledCurrentWidth <= 0 ? screenCurrentWidth : scaledCurrentWidth, scaledCurrentHeight <= 0 ? screenCurrentHeight : scaledCurrentHeight));
   }
   
   private final BufferedImage create512ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -2693,28 +2618,7 @@ public final class VTAWTScreenCaptureProvider
     {
       refresh512ScreenCapture();
     }
-    Rectangle screenArea = new Rectangle();
-    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
-    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
-    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
-    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
-    if (screenArea.width > screenCurrentWidth)
-    {
-      screenArea.width = screenCurrentWidth;
-    }
-    if (screenArea.height > screenCurrentHeight)
-    {
-      screenArea.height = screenCurrentHeight;
-    }
-    if (screenArea.x > screenCurrentWidth - screenArea.width)
-    {
-      screenArea.x = screenCurrentWidth - screenArea.width;
-    }
-    if (screenArea.y > screenCurrentHeight - screenArea.height)
-    {
-      screenArea.y = screenCurrentHeight - screenArea.height;
-    }
-    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    Rectangle captureArea = calculateCaptureArea(originalArea);
     if (captureArea.width <= 0 || captureArea.height <= 0)
     {
       return null;
@@ -2784,19 +2688,20 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
-      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
-      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
-      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
-      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+//    Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
+//    scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
+//    scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
+//    scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
+//    scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
+//    scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
   
   private final BufferedImage create4096ScreenCapture(boolean drawPointer)
   {
-    return create4096ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
+    return create4096ScreenCapture(drawPointer, new Rectangle(0, 0, scaledCurrentWidth <= 0 ? screenCurrentWidth : scaledCurrentWidth, scaledCurrentHeight <= 0 ? screenCurrentHeight : scaledCurrentHeight));
   }
   
   private final BufferedImage create4096ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -2805,28 +2710,7 @@ public final class VTAWTScreenCaptureProvider
     {
       refresh4096ScreenCapture();
     }
-    Rectangle screenArea = new Rectangle();
-    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
-    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
-    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
-    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
-    if (screenArea.width > screenCurrentWidth)
-    {
-      screenArea.width = screenCurrentWidth;
-    }
-    if (screenArea.height > screenCurrentHeight)
-    {
-      screenArea.height = screenCurrentHeight;
-    }
-    if (screenArea.x > screenCurrentWidth - screenArea.width)
-    {
-      screenArea.x = screenCurrentWidth - screenArea.width;
-    }
-    if (screenArea.y > screenCurrentHeight - screenArea.height)
-    {
-      screenArea.y = screenCurrentHeight - screenArea.height;
-    }
-    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    Rectangle captureArea = calculateCaptureArea(originalArea);
     if (captureArea.width <= 0 || captureArea.height <= 0)
     {
       return null;
@@ -2896,19 +2780,20 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
-      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
-      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
-      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
-      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+//    Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
+//    scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
+//    scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
+//    scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
+//    scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
+//    scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
   
   private final BufferedImage create32768ScreenCapture(boolean drawPointer)
   {
-    return create32768ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
+    return create32768ScreenCapture(drawPointer, new Rectangle(0, 0, scaledCurrentWidth <= 0 ? screenCurrentWidth : scaledCurrentWidth, scaledCurrentHeight <= 0 ? screenCurrentHeight : scaledCurrentHeight));
   }
   
   private final BufferedImage create32768ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -2917,28 +2802,7 @@ public final class VTAWTScreenCaptureProvider
     {
       refresh32768ScreenCapture();
     }
-    Rectangle screenArea = new Rectangle();
-    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
-    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
-    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
-    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
-    if (screenArea.width > screenCurrentWidth)
-    {
-      screenArea.width = screenCurrentWidth;
-    }
-    if (screenArea.height > screenCurrentHeight)
-    {
-      screenArea.height = screenCurrentHeight;
-    }
-    if (screenArea.x > screenCurrentWidth - screenArea.width)
-    {
-      screenArea.x = screenCurrentWidth - screenArea.width;
-    }
-    if (screenArea.y > screenCurrentHeight - screenArea.height)
-    {
-      screenArea.y = screenCurrentHeight - screenArea.height;
-    }
-    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    Rectangle captureArea = calculateCaptureArea(originalArea);
     if (captureArea.width <= 0 || captureArea.height <= 0)
     {
       return null;
@@ -3008,19 +2872,20 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
-      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
-      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
-      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
-      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+//    Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
+//    scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
+//    scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
+//    scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
+//    scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
+//    scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
   
   private final BufferedImage create262144ScreenCapture(boolean drawPointer)
   {
-    return create262144ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
+    return create262144ScreenCapture(drawPointer, new Rectangle(0, 0, scaledCurrentWidth <= 0 ? screenCurrentWidth : scaledCurrentWidth, scaledCurrentHeight <= 0 ? screenCurrentHeight : scaledCurrentHeight));
   }
   
   private final BufferedImage create262144ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -3029,28 +2894,7 @@ public final class VTAWTScreenCaptureProvider
     {
       refresh262144ScreenCapture();
     }
-    Rectangle screenArea = new Rectangle();
-    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
-    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
-    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
-    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
-    if (screenArea.width > screenCurrentWidth)
-    {
-      screenArea.width = screenCurrentWidth;
-    }
-    if (screenArea.height > screenCurrentHeight)
-    {
-      screenArea.height = screenCurrentHeight;
-    }
-    if (screenArea.x > screenCurrentWidth - screenArea.width)
-    {
-      screenArea.x = screenCurrentWidth - screenArea.width;
-    }
-    if (screenArea.y > screenCurrentHeight - screenArea.height)
-    {
-      screenArea.y = screenCurrentHeight - screenArea.height;
-    }
-    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    Rectangle captureArea = calculateCaptureArea(originalArea);
     if (captureArea.width <= 0 || captureArea.height <= 0)
     {
       return null;
@@ -3127,19 +2971,20 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
-      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
-      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
-      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
-      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+//    Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
+//    scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
+//    scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
+//    scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
+//    scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
+//    scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
   
   private final BufferedImage create2097152ScreenCapture(boolean drawPointer)
   {
-    return create2097152ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
+    return create2097152ScreenCapture(drawPointer, new Rectangle(0, 0, scaledCurrentWidth <= 0 ? screenCurrentWidth : scaledCurrentWidth, scaledCurrentHeight <= 0 ? screenCurrentHeight : scaledCurrentHeight));
   }
   
   private final BufferedImage create2097152ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -3148,28 +2993,7 @@ public final class VTAWTScreenCaptureProvider
     {
       refresh2097152ScreenCapture();
     }
-    Rectangle screenArea = new Rectangle();
-    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
-    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
-    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
-    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
-    if (screenArea.width > screenCurrentWidth)
-    {
-      screenArea.width = screenCurrentWidth;
-    }
-    if (screenArea.height > screenCurrentHeight)
-    {
-      screenArea.height = screenCurrentHeight;
-    }
-    if (screenArea.x > screenCurrentWidth - screenArea.width)
-    {
-      screenArea.x = screenCurrentWidth - screenArea.width;
-    }
-    if (screenArea.y > screenCurrentHeight - screenArea.height)
-    {
-      screenArea.y = screenCurrentHeight - screenArea.height;
-    }
-    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    Rectangle captureArea = calculateCaptureArea(originalArea);
     if (captureArea.width <= 0 || captureArea.height <= 0)
     {
       return null;
@@ -3246,19 +3070,20 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
-      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
-      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
-      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
-      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+//    Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
+//    scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
+//    scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
+//    scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
+//    scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
+//    scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
   
   private final BufferedImage create16777216ScreenCapture(boolean drawPointer)
   {
-    return create16777216ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
+    return create16777216ScreenCapture(drawPointer, new Rectangle(0, 0, scaledCurrentWidth <= 0 ? screenCurrentWidth : scaledCurrentWidth, scaledCurrentHeight <= 0 ? screenCurrentHeight : scaledCurrentHeight));
   }
   
   private final BufferedImage create16777216ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -3267,28 +3092,7 @@ public final class VTAWTScreenCaptureProvider
     {
       refresh16777216ScreenCapture();
     }
-    Rectangle screenArea = new Rectangle();
-    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
-    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
-    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
-    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
-    if (screenArea.width > screenCurrentWidth)
-    {
-      screenArea.width = screenCurrentWidth;
-    }
-    if (screenArea.height > screenCurrentHeight)
-    {
-      screenArea.height = screenCurrentHeight;
-    }
-    if (screenArea.x > screenCurrentWidth - screenArea.width)
-    {
-      screenArea.x = screenCurrentWidth - screenArea.width;
-    }
-    if (screenArea.y > screenCurrentHeight - screenArea.height)
-    {
-      screenArea.y = screenCurrentHeight - screenArea.height;
-    }
-    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    Rectangle captureArea = calculateCaptureArea(originalArea);
     if (captureArea.width <= 0 || captureArea.height <= 0)
     {
       return null;
@@ -3358,19 +3162,20 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
-      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
-      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
-      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
-      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+//    Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
+//    scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
+//    scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
+//    scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
+//    scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
+//    scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
   
   private final BufferedImage create125ScreenCapture(boolean drawPointer)
   {
-    return create125ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
+    return create125ScreenCapture(drawPointer, new Rectangle(0, 0, scaledCurrentWidth <= 0 ? screenCurrentWidth : scaledCurrentWidth, scaledCurrentHeight <= 0 ? screenCurrentHeight : scaledCurrentHeight));
   }
   
   private final BufferedImage create125ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -3379,28 +3184,7 @@ public final class VTAWTScreenCaptureProvider
     {
       refresh125ScreenCapture();
     }
-    Rectangle screenArea = new Rectangle();
-    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
-    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
-    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
-    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
-    if (screenArea.width > screenCurrentWidth)
-    {
-      screenArea.width = screenCurrentWidth;
-    }
-    if (screenArea.height > screenCurrentHeight)
-    {
-      screenArea.height = screenCurrentHeight;
-    }
-    if (screenArea.x > screenCurrentWidth - screenArea.width)
-    {
-      screenArea.x = screenCurrentWidth - screenArea.width;
-    }
-    if (screenArea.y > screenCurrentHeight - screenArea.height)
-    {
-      screenArea.y = screenCurrentHeight - screenArea.height;
-    }
-    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    Rectangle captureArea = calculateCaptureArea(originalArea);
     if (captureArea.width <= 0 || captureArea.height <= 0)
     {
       return null;
@@ -3470,19 +3254,20 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
-      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
-      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
-      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
-      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+//    Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
+//    scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
+//    scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
+//    scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
+//    scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
+//    scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
   
   private final BufferedImage create27ScreenCapture(boolean drawPointer)
   {
-    return create27ScreenCapture(drawPointer, new Rectangle(0, 0, screenCurrentWidth, screenCurrentHeight));
+    return create27ScreenCapture(drawPointer, new Rectangle(0, 0, scaledCurrentWidth <= 0 ? screenCurrentWidth : scaledCurrentWidth, scaledCurrentHeight <= 0 ? screenCurrentHeight : scaledCurrentHeight));
   }
   
   private final BufferedImage create27ScreenCapture(boolean drawPointer, Rectangle originalArea)
@@ -3491,28 +3276,7 @@ public final class VTAWTScreenCaptureProvider
     {
       refresh27ScreenCapture();
     }
-    Rectangle screenArea = new Rectangle();
-    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
-    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
-    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
-    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
-    if (screenArea.width > screenCurrentWidth)
-    {
-      screenArea.width = screenCurrentWidth;
-    }
-    if (screenArea.height > screenCurrentHeight)
-    {
-      screenArea.height = screenCurrentHeight;
-    }
-    if (screenArea.x > screenCurrentWidth - screenArea.width)
-    {
-      screenArea.x = screenCurrentWidth - screenArea.width;
-    }
-    if (screenArea.y > screenCurrentHeight - screenArea.height)
-    {
-      screenArea.y = screenCurrentHeight - screenArea.height;
-    }
-    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    Rectangle captureArea = calculateCaptureArea(originalArea);
     if (captureArea.width <= 0 || captureArea.height <= 0)
     {
       return null;
@@ -3582,12 +3346,13 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
-      scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
-      scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
-      scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
-      scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
-      scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+//    Rectangle scaledArea = new Rectangle(0, 0, 0, 0);
+//    scaledArea.x = (int) Math.round(captureArea.x * getScaleFactorX());
+//    scaledArea.y = (int) Math.round(captureArea.y * getScaleFactorY());
+//    scaledArea.width = (int) Math.round(captureArea.width * getScaleFactorX());
+//    scaledArea.height = (int) Math.round(captureArea.height * getScaleFactorY());
+//    scaledCurrentGraphics.drawImage(screenCurrentImage, scaledArea.x, scaledArea.y, scaledArea.x + scaledArea.width, scaledArea.y + scaledArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -5601,25 +5366,39 @@ public final class VTAWTScreenCaptureProvider
   
   private int filterGray(int rgb)
   {
-//    int red = (rgb & RGB888_RED_MASK >> 16);
-//    int green = (rgb & RGB888_GREEN_MASK >> 8);
-//    int blue = (rgb & RGB888_BLUE_MASK);
-//    
-//    int dredgreen = Math.abs(red - green);
-//    int dgreenblue = Math.abs(green - blue);
-//    int dredblue = Math.abs(red - blue);
-//    
-//    int dred = Math.abs(red - (red ^ 0xFF));
-//    int dgreen = Math.abs(green - (green ^ 0xFF));
-//    int dblue = Math.abs(blue - (blue ^ 0xFF));
-//    
-//    if (dredgreen < 32 && dgreenblue < 32 && dredblue < 32 && dred < 12 && dgreen < 12 && dblue < 12)
     if (((rgb & RGB888_XOR_MASK) == 0x00808080) || ((rgb & RGB888_XOR_MASK) == 0x007F7F7F))
     {
       return rgb & 0xFF000000;
       // return 0;
     }
     return rgb;
+  }
+  
+  private Rectangle calculateCaptureArea(Rectangle originalArea)
+  {
+    Rectangle screenArea = new Rectangle();
+    screenArea.x = (int) Math.floor(originalArea.x / getScaleFactorX());
+    screenArea.y = (int) Math.floor(originalArea.y / getScaleFactorY());
+    screenArea.width = (int) Math.ceil(originalArea.width / getScaleFactorX());
+    screenArea.height = (int) Math.ceil(originalArea.height / getScaleFactorY());
+    if (screenArea.width > screenCurrentWidth)
+    {
+      screenArea.width = screenCurrentWidth;
+    }
+    if (screenArea.height > screenCurrentHeight)
+    {
+      screenArea.height = screenCurrentHeight;
+    }
+    if (screenArea.x > screenCurrentWidth - screenArea.width)
+    {
+      screenArea.x = screenCurrentWidth - screenArea.width;
+    }
+    if (screenArea.y > screenCurrentHeight - screenArea.height)
+    {
+      screenArea.y = screenCurrentHeight - screenArea.height;
+    }
+    Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
+    return captureArea;
   }
   
 //  private boolean mustFilterGray(int rgb)

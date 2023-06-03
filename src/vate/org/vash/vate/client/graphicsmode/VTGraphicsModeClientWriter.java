@@ -1589,24 +1589,30 @@ public class VTGraphicsModeClientWriter implements Runnable
     {
       area.x = -1;
       area.y = -1;
+      area.width = imageDataBuffer.getWidth();
+      area.height = imageDataBuffer.getHeight();
     }
     else if (screenCaptureMode == VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_ADJUSTED_KEEP_RATIO)
     {
       area.x = -2;
       area.y = -2;
+      area.width = size.width;
+      area.height = size.height;
     }
     else if (screenCaptureMode == VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_ADJUSTED_IGNORE_RATIO)
     {
       area.x = -3;
       area.y = -3;
+      area.width = size.width;
+      area.height = size.height;
     }
     else
     {
       area.x = local.x;
       area.y = local.y;
+      area.width = size.width;
+      area.height = size.height;
     }
-    area.width = size.width;
-    area.height = size.height;
     // System.out.println("trueArea:" + area);
     return area;
   }
