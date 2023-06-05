@@ -95,11 +95,6 @@ public class VTClientAuthenticator
     return digestedCredential;
   }
   
-//  public byte[] getDigestedPassword()
-//  {
-//    return digestedPassword;
-//  }
-  
   public String getUser()
   {
     return user;

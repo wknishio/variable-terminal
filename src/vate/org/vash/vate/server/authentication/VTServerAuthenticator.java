@@ -14,13 +14,11 @@ public class VTServerAuthenticator
   private volatile boolean accepted = false;
   private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] receivedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
-  //private byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] localNonce;
   private byte[] remoteNonce;
   private String user;
   private String password;
   private VTBlake3MessageDigest blake3Digest;
-  // private MessageDigest sha256Digester;
   private VTServer server;
   private VTServerConnection connection;
   private VTServerAuthenticatorTimeoutTask timeoutTask = new VTServerAuthenticatorTimeoutTask();
@@ -109,11 +107,6 @@ public class VTServerAuthenticator
   {
     return digestedCredential;
   }
-  
-  //public byte[] getDigestedPassword()
-  //{
-    //return digestedPassword;
-  //}
   
   public boolean tryAuthentication() throws IOException
   {
