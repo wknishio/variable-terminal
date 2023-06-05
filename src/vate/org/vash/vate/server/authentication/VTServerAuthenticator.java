@@ -14,7 +14,7 @@ public class VTServerAuthenticator
   private volatile boolean accepted = false;
   private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] receivedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
-  private byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
+  //private byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] localNonce;
   private byte[] remoteNonce;
   private String user;
@@ -127,8 +127,8 @@ public class VTServerAuthenticator
     blake3Digest.setSeed(seed);
     blake3Digest.reset();
     
-    connection.getSecureRandom().nextBytes(randomData);
-    connection.getAuthenticationWriter().write(randomData);
+    connection.getSecureRandom().nextBytes(digestedCredential);
+    connection.getAuthenticationWriter().write(digestedCredential);
     connection.getAuthenticationWriter().flush();
     connection.getAuthenticationReader().readFully(receivedCredential);
     

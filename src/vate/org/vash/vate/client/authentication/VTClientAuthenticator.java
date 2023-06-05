@@ -10,7 +10,7 @@ public class VTClientAuthenticator
 {
   private volatile boolean accepted = false;
   private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
-  private byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private byte[] receivedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] localNonce;
   private byte[] remoteNonce;
   private String user;
@@ -156,7 +156,7 @@ public class VTClientAuthenticator
     
     connection.getAuthenticationWriter().write(digestedCredential);
     connection.getAuthenticationWriter().flush();
-    connection.getAuthenticationReader().readFully(randomData, 0, randomData.length);
+    connection.getAuthenticationReader().readFully(receivedCredential, 0, receivedCredential.length);
     
     accepted = true;
     stopTimeoutThread();
