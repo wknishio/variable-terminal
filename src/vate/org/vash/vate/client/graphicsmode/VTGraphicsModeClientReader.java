@@ -79,29 +79,17 @@ public class VTGraphicsModeClientReader implements Runnable
     
     public void passStarted(ImageReader source, BufferedImage theImage, int pass, int minPass, int maxPass, int minX, int minY, int periodX, int periodY, int[] bands)
     {
-      // this.passMinX = minX;
-      // this.passMinY = minY;
-      // System.out.println("passStarted:" + pass + "," + minPass + "," +
-      // maxPass);
+      
     }
     
     public void imageUpdate(ImageReader source, BufferedImage theImage, int minX, int minY, int width, int height, int periodX, int periodY, int[] bands)
     {
-      // System.out.println("imageUpdate:" + minX + "," + minY + "," + width +
-      // "," +
-      // height);
       currentImageGraphics.drawImage(theImage, offsetX + minX, offsetY + minY, offsetX + minX + width, offsetY + minY + height, minX, minY, minX + width, minY + height, null);
     }
     
     public void passComplete(ImageReader source, BufferedImage theImage)
     {
-      // System.out.println("passComplete:");
-      // currentImageGraphics.drawImage(theImage, offsetX + passMinX, offsetY +
-      // passMinY, offsetX + passMinX + theImage.getWidth(), offsetY + passMinY
-      // +
-      // theImage.getHeight(), passMinX, passMinY, passMinX +
-      // theImage.getWidth(),
-      // passMinY + theImage.getHeight(), null);
+      
     }
     
     public void thumbnailPassStarted(ImageReader source, BufferedImage theThumbnail, int pass, int minPass, int maxPass, int minX, int minY, int periodX, int periodY, int[] bands)
@@ -303,7 +291,7 @@ public class VTGraphicsModeClientReader implements Runnable
             }
             int width = connection.getGraphicsControlDataInputStream().readInt();
             int height = connection.getGraphicsControlDataInputStream().readInt();
-            currentImageDataBuffer = VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
+            currentImageDataBuffer = VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_INT_ARGB, 0, recyclableDataBuffer);
             recyclableDataBuffer = currentImageDataBuffer.getRaster().getDataBuffer();
             currentImageGraphics = currentImageDataBuffer.createGraphics();
             currentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
