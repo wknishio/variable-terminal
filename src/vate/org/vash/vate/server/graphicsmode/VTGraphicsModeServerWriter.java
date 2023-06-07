@@ -896,10 +896,19 @@ public class VTGraphicsModeServerWriter implements Runnable
       jpgImageOutputStream = ImageIO.createImageOutputStream(imageOutputBuffer);
       jpgWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
       jpgWriterParam = jpgWriter.getDefaultWriteParam();
-      jpgWriterParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-      jpgWriterParam.setProgressiveMode(ImageWriteParam.MODE_DISABLED);
-      jpgWriterParam.setCompressionQuality(0.75f);
-      jpgWriterParam.setTilingMode(ImageWriteParam.MODE_DISABLED);
+      if (jpgWriterParam.canWriteCompressed())
+      {
+        jpgWriterParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+        jpgWriterParam.setCompressionQuality(0.75f);
+      }
+      if (jpgWriterParam.canWriteProgressive())
+      {
+        jpgWriterParam.setProgressiveMode(ImageWriteParam.MODE_DISABLED);
+      }
+      if (jpgWriterParam.canWriteTiles())
+      {
+        jpgWriterParam.setTilingMode(ImageWriteParam.MODE_DISABLED);
+      }
       // jpegWriterMedatada =
       // jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.create,
       // jpgWriterParam);

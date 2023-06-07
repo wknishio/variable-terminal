@@ -30,6 +30,7 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
           session.getScreenshotTask().setFinished(false);
           session.getScreenshotTask().setDrawPointer(false);
           session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216);
+          session.getScreenshotTask().setUseJPG(false);
           session.getScreenshotTask().setDeviceNumber(-1);
           session.getScreenshotTask().startThread();
         }
@@ -50,6 +51,7 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
           session.getScreenshotTask().setFinished(false);
           session.getScreenshotTask().setDrawPointer(false);
           session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216);
+          session.getScreenshotTask().setUseJPG(false);
           session.getScreenshotTask().setDeviceNumber(-1);
           for (int i = 1; i < parsed.length; i++)
           {
@@ -69,6 +71,14 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
             {
               session.getScreenshotTask().setDrawPointer(false);
             }
+            if (parsed[i].toUpperCase().contains("P"))
+            {
+              session.getScreenshotTask().setUseJPG(false);
+            }
+            if (parsed[i].toUpperCase().contains("J"))
+            {
+              session.getScreenshotTask().setUseJPG(true);
+            }
             if (parsed[i].toUpperCase().contains("T"))
             {
               session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216);
@@ -85,7 +95,7 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
             {
               session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4096);
             }
-            if (parsed[i].toUpperCase().contains("P"))
+            if (parsed[i].toUpperCase().contains("N"))
             {
               session.getScreenshotTask().setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512);
             }
