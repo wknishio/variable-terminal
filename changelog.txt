@@ -22,7 +22,7 @@ Changes since 1.4.2:
 * Command *VTGRAPHICSLINK now supports custom image codings ZOF and DOF
 * Command *VTGRAPHICSLINK now supports image codings PNG and JPEG
 * Added ObjectPlanet PngEncoder library, much faster than Java ImageIO
-* Colors: worst, gray, low, few, simple, medium, plus, extra, high, ultra, true
+* Colors: worst, gray, low, few, simple, medium, next, extra, high, ultra, true
 * Startup now accepts as parameter a file path for settings file to be loaded
 * Added support for NAT-PMP port mapping if UPnP port mapping is not available
 * Command *VTGRAPHICSLINK now supports unified screen device capture
