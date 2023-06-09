@@ -732,11 +732,11 @@ public class VTGraphicsModeServerWriter implements Runnable
     if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF)
     {
       connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF);
-      connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getType());
-      connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
-      connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getWidth());
-      connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getHeight());
       connection.getGraphicsControlDataOutputStream().flush();
+      connection.getGraphicsSnappedImageDataOutputStream().writeInt(imageDataBuffer.getType());
+      connection.getGraphicsSnappedImageDataOutputStream().writeInt(lastColors);
+      connection.getGraphicsSnappedImageDataOutputStream().writeInt(imageDataBuffer.getWidth());
+      connection.getGraphicsSnappedImageDataOutputStream().writeInt(imageDataBuffer.getHeight());
       if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
       {
         vtCustomCodec.encodeFrame8(connection.getGraphicsSnappedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);
@@ -754,11 +754,12 @@ public class VTGraphicsModeServerWriter implements Runnable
     else
     {
       connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF);
-      connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getType());
-      connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
-      connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getWidth());
-      connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getHeight());
       connection.getGraphicsControlDataOutputStream().flush();
+      connection.getGraphicsDeflatedImageDataOutputStream().writeInt(imageDataBuffer.getType());
+      connection.getGraphicsDeflatedImageDataOutputStream().writeInt(lastColors);
+      connection.getGraphicsDeflatedImageDataOutputStream().writeInt(imageDataBuffer.getWidth());
+      connection.getGraphicsDeflatedImageDataOutputStream().writeInt(imageDataBuffer.getHeight());
+      
       if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
       {
         vtCustomCodec.encodeFrame8(connection.getGraphicsDeflatedImageDataOutputStream(), previousImageBufferByte, lastImageBufferByte, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea.x, resultArea.y, resultArea.width, resultArea.height);

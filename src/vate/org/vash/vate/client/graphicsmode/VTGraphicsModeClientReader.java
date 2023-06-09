@@ -436,10 +436,21 @@ public class VTGraphicsModeClientReader implements Runnable
               currentImageGraphics = null;
             }
             int coding = connection.getGraphicsControlDataInputStream().read();
-            int type = connection.getGraphicsControlDataInputStream().readInt();
-            int colors = connection.getGraphicsControlDataInputStream().readInt();
-            int width = connection.getGraphicsControlDataInputStream().readInt();
-            int height = connection.getGraphicsControlDataInputStream().readInt();
+            int type, colors, width, height;
+            if (coding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF)
+            {
+              type = connection.getGraphicsSnappedImageDataInputStream().readInt();
+              colors = connection.getGraphicsSnappedImageDataInputStream().readInt();
+              width = connection.getGraphicsSnappedImageDataInputStream().readInt();
+              height = connection.getGraphicsSnappedImageDataInputStream().readInt();
+            }
+            else
+            {
+              type = connection.getGraphicsDeflatedImageDataInputStream().readInt();
+              colors = connection.getGraphicsDeflatedImageDataInputStream().readInt();
+              width = connection.getGraphicsDeflatedImageDataInputStream().readInt();
+              height = connection.getGraphicsDeflatedImageDataInputStream().readInt();
+            }
             //System.out.println("type:" + type);
             //System.out.println("colors:" + colors);
             currentImageDataBuffer = VTImageIO.createImage(CODEC_PADDING_SIZE, CODEC_PADDING_SIZE, width, height, type, colors, recyclableDataBuffer);
