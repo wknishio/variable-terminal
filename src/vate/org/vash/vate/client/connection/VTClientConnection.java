@@ -146,12 +146,12 @@ public class VTClientConnection
   private VTLittleEndianInputStream graphicsControlDataInputStream;
   private VTLittleEndianOutputStream graphicsControlDataOutputStream;
   
-  private InputStream directImageDataInputStream;
-  private OutputStream directImageDataOutputStream;
-  private InputStream deflatedImageDataInputStream;
-  private OutputStream deflatedImageDataOutputStream;
-  private InputStream snappedImageDataInputStream;
-  private OutputStream snappedImageDataOutputStream;
+  private VTLittleEndianInputStream directImageDataInputStream;
+  private VTLittleEndianOutputStream directImageDataOutputStream;
+  private VTLittleEndianInputStream deflatedImageDataInputStream;
+  private VTLittleEndianOutputStream deflatedImageDataOutputStream;
+  private VTLittleEndianInputStream snappedImageDataInputStream;
+  private VTLittleEndianOutputStream snappedImageDataOutputStream;
   
   // private boolean zstdAvailable;
   
@@ -368,32 +368,32 @@ public class VTClientConnection
     return graphicsControlDataOutputStream;
   }
   
-  public InputStream getGraphicsDirectImageDataInputStream()
+  public VTLittleEndianInputStream getGraphicsDirectImageDataInputStream()
   {
     return directImageDataInputStream;
   }
   
-  public InputStream getGraphicsDeflatedImageDataInputStream()
+  public VTLittleEndianInputStream getGraphicsDeflatedImageDataInputStream()
   {
     return deflatedImageDataInputStream;
   }
   
-  public InputStream getGraphicsSnappedImageDataInputStream()
+  public VTLittleEndianInputStream getGraphicsSnappedImageDataInputStream()
   {
     return snappedImageDataInputStream;
   }
   
-  public OutputStream getGraphicsDirectImageDataOutputStream()
+  public VTLittleEndianOutputStream getGraphicsDirectImageDataOutputStream()
   {
     return directImageDataOutputStream;
   }
   
-  public OutputStream getGraphicsDeflatedImageDataOutputStream()
+  public VTLittleEndianOutputStream getGraphicsDeflatedImageDataOutputStream()
   {
     return deflatedImageDataOutputStream;
   }
   
-  public OutputStream getGraphicsSnappedImageDataOutputStream()
+  public VTLittleEndianOutputStream getGraphicsSnappedImageDataOutputStream()
   {
     return snappedImageDataOutputStream;
   }
@@ -661,7 +661,7 @@ public class VTClientConnection
     graphicsClipboardInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 8);
     graphicsClipboardOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 8);
     
-    // graphicsControlInputStream.addPropagated(graphicsControlOutputStream);
+    //graphicsControlInputStream.addPropagated(graphicsControlOutputStream);
     graphicsControlInputStream.addPropagated(graphicsDirectImageInputStream);
     graphicsControlInputStream.addPropagated(graphicsDeflatedImageInputStream);
     graphicsControlInputStream.addPropagated(graphicsSnappedImageInputStream);
@@ -702,18 +702,18 @@ public class VTClientConnection
     graphicsControlDataInputStream = new VTLittleEndianInputStream(new BufferedInputStream(graphicsControlInputStream));
     graphicsControlDataOutputStream = new VTLittleEndianOutputStream(new BufferedOutputStream(graphicsControlOutputStream));
     
-    directImageDataInputStream = (new BufferedInputStream(graphicsDirectImageInputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
-    directImageDataOutputStream = (graphicsDirectImageOutputStream);
+    directImageDataInputStream = new VTLittleEndianInputStream(new BufferedInputStream(graphicsDirectImageInputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
+    directImageDataOutputStream = new VTLittleEndianOutputStream(graphicsDirectImageOutputStream);
     
     // deflatedImageDataInputStream =
     // VTCompressorSelector.createCompatibleSyncFlushInflaterInputStream(graphicsDeflatedImageInputStream);
     //deflatedImageDataInputStream = VTCompressorSelector.createBufferedZlibInputStream(graphicsDeflatedImageInputStream);
-    deflatedImageDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsDeflatedImageInputStream);
-    deflatedImageDataOutputStream = graphicsDeflatedImageOutputStream;
+    deflatedImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedZstdInputStream(graphicsDeflatedImageInputStream));
+    deflatedImageDataOutputStream = new VTLittleEndianOutputStream(graphicsDeflatedImageOutputStream);
     
     //snappedImageDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(graphicsSnappedImageInputStream);
-    snappedImageDataInputStream = VTCompressorSelector.createBufferedZlibInputStream(graphicsSnappedImageInputStream);
-    snappedImageDataOutputStream = (graphicsSnappedImageOutputStream);
+    snappedImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedZlibInputStream(graphicsSnappedImageInputStream));
+    snappedImageDataOutputStream = new VTLittleEndianOutputStream((graphicsSnappedImageOutputStream));
     
     clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
     clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
@@ -1152,19 +1152,11 @@ public class VTClientConnection
     graphicsControlDataInputStream.setIntputStream(new BufferedInputStream(graphicsControlInputStream));
     graphicsControlDataOutputStream.setOutputStream(new BufferedOutputStream(graphicsControlOutputStream));
     
-    deflatedImageDataOutputStream = (graphicsDeflatedImageOutputStream);
+    deflatedImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedZstdInputStream(graphicsDeflatedImageInputStream));
+    deflatedImageDataOutputStream = new VTLittleEndianOutputStream(graphicsDeflatedImageOutputStream);
     
-    // graphicsControlInputStream.removePropagated(deflatedImageDataInputStream);
-    // graphicsControlInputStream.removePropagated(snappedImageDataInputStream);
-    
-    // deflatedImageDataInputStream =
-    // VTCompressorSelector.createCompatibleSyncFlushInflaterInputStream(graphicsDeflatedImageInputStream);
-    //deflatedImageDataInputStream = VTCompressorSelector.createBufferedZlibInputStream(graphicsDeflatedImageInputStream);
-    deflatedImageDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsDeflatedImageInputStream);
-    
-    snappedImageDataOutputStream = (graphicsSnappedImageOutputStream);
-    //snappedImageDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(graphicsSnappedImageInputStream);
-    snappedImageDataInputStream = VTCompressorSelector.createBufferedZlibInputStream(graphicsSnappedImageInputStream);
+    snappedImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedZlibInputStream(graphicsSnappedImageInputStream));
+    snappedImageDataOutputStream = new VTLittleEndianOutputStream(graphicsSnappedImageOutputStream);
     
     // graphicsControlInputStream.addPropagated(deflatedImageDataInputStream);
     // graphicsControlInputStream.addPropagated(snappedImageDataInputStream);

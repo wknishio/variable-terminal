@@ -247,10 +247,6 @@ public class VTGraphicsModeServerWriter implements Runnable
       {
         notify();
       }
-      /*
-       * if (connection.startedConnection()) { try {
-       * connection.closeGraphicsModeStreams(); } catch (Throwable e) { } }
-       */
       try
       {
         connection.closeGraphicsModeStreams();
@@ -405,10 +401,9 @@ public class VTGraphicsModeServerWriter implements Runnable
         {
           imageOutputBuffer.reset();
           pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-          connection.getGraphicsControlDataOutputStream().writeInt(imageOutputBuffer.size());
-          connection.getGraphicsControlDataOutputStream().writeInt(blockArea.x);
-          connection.getGraphicsControlDataOutputStream().writeInt(blockArea.y);
-          connection.getGraphicsControlDataOutputStream().flush();
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
           imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
         }
         connection.getGraphicsDirectImageDataOutputStream().flush();
@@ -428,10 +423,9 @@ public class VTGraphicsModeServerWriter implements Runnable
         {
           imageOutputBuffer.reset();
           pngEncoder.encode(convertedDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-          connection.getGraphicsControlDataOutputStream().writeInt(imageOutputBuffer.size());
-          connection.getGraphicsControlDataOutputStream().writeInt(blockArea.x);
-          connection.getGraphicsControlDataOutputStream().writeInt(blockArea.y);
-          connection.getGraphicsControlDataOutputStream().flush();
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
           imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
         }
         connection.getGraphicsDirectImageDataOutputStream().flush();
@@ -453,10 +447,9 @@ public class VTGraphicsModeServerWriter implements Runnable
           {
             imageOutputBuffer.reset();
             pngEncoder.encode(convertedDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-            connection.getGraphicsControlDataOutputStream().writeInt(imageOutputBuffer.size());
-            connection.getGraphicsControlDataOutputStream().writeInt(blockArea.x);
-            connection.getGraphicsControlDataOutputStream().writeInt(blockArea.y);
-            connection.getGraphicsControlDataOutputStream().flush();
+            connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
+            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
+            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
             imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
           }
         }
@@ -467,10 +460,9 @@ public class VTGraphicsModeServerWriter implements Runnable
           {
             imageOutputBuffer.reset();
             pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-            connection.getGraphicsControlDataOutputStream().writeInt(imageOutputBuffer.size());
-            connection.getGraphicsControlDataOutputStream().writeInt(blockArea.x);
-            connection.getGraphicsControlDataOutputStream().writeInt(blockArea.y);
-            connection.getGraphicsControlDataOutputStream().flush();
+            connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
+            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
+            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
             imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
           }
         }
@@ -492,10 +484,9 @@ public class VTGraphicsModeServerWriter implements Runnable
         jpgWriter.setOutput(jpgImageOutputStream);
         BufferedImage subImage = imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height);
         jpgWriter.write(null, new IIOImage(subImage, null, jpgWriterMetadata), jpgWriterParam);
-        connection.getGraphicsControlDataOutputStream().writeInt(imageOutputBuffer.size());
-        connection.getGraphicsControlDataOutputStream().writeInt(blockArea.x);
-        connection.getGraphicsControlDataOutputStream().writeInt(blockArea.y);
-        connection.getGraphicsControlDataOutputStream().flush();
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
         imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
       }
       connection.getGraphicsDirectImageDataOutputStream().flush();
@@ -557,10 +548,9 @@ public class VTGraphicsModeServerWriter implements Runnable
         {
           imageOutputBuffer.reset();
           pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-          connection.getGraphicsControlDataOutputStream().writeInt(imageOutputBuffer.size());
-          connection.getGraphicsControlDataOutputStream().writeInt(blockArea.x);
-          connection.getGraphicsControlDataOutputStream().writeInt(blockArea.y);
-          connection.getGraphicsControlDataOutputStream().flush();
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
           imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
         }
         connection.getGraphicsDirectImageDataOutputStream().flush();
@@ -580,10 +570,9 @@ public class VTGraphicsModeServerWriter implements Runnable
         {
           imageOutputBuffer.reset();
           pngEncoder.encode(convertedDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-          connection.getGraphicsControlDataOutputStream().writeInt(imageOutputBuffer.size());
-          connection.getGraphicsControlDataOutputStream().writeInt(blockArea.x);
-          connection.getGraphicsControlDataOutputStream().writeInt(blockArea.y);
-          connection.getGraphicsControlDataOutputStream().flush();
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
+          connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
           imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
         }
         connection.getGraphicsDirectImageDataOutputStream().flush();
@@ -605,10 +594,9 @@ public class VTGraphicsModeServerWriter implements Runnable
           {
             imageOutputBuffer.reset();
             pngEncoder.encode(convertedDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-            connection.getGraphicsControlDataOutputStream().writeInt(imageOutputBuffer.size());
-            connection.getGraphicsControlDataOutputStream().writeInt(blockArea.x);
-            connection.getGraphicsControlDataOutputStream().writeInt(blockArea.y);
-            connection.getGraphicsControlDataOutputStream().flush();
+            connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
+            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
+            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
             imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
           }
         }
@@ -619,10 +607,9 @@ public class VTGraphicsModeServerWriter implements Runnable
           {
             imageOutputBuffer.reset();
             pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
-            connection.getGraphicsControlDataOutputStream().writeInt(imageOutputBuffer.size());
-            connection.getGraphicsControlDataOutputStream().writeInt(blockArea.x);
-            connection.getGraphicsControlDataOutputStream().writeInt(blockArea.y);
-            connection.getGraphicsControlDataOutputStream().flush();
+            connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
+            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
+            connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
             imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
           }
         }
@@ -642,10 +629,9 @@ public class VTGraphicsModeServerWriter implements Runnable
         jpgWriter.setOutput(jpgImageOutputStream);
         BufferedImage subImage = imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height);
         jpgWriter.write(null, new IIOImage(subImage, null, jpgWriterMetadata), jpgWriterParam);
-        connection.getGraphicsControlDataOutputStream().writeInt(imageOutputBuffer.size());
-        connection.getGraphicsControlDataOutputStream().writeInt(blockArea.x);
-        connection.getGraphicsControlDataOutputStream().writeInt(blockArea.y);
-        connection.getGraphicsControlDataOutputStream().flush();
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
+        connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
         imageOutputBuffer.writeTo(connection.getGraphicsDirectImageDataOutputStream());
       }
       connection.getGraphicsDirectImageDataOutputStream().flush();

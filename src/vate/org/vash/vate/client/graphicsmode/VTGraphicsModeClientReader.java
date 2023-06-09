@@ -306,9 +306,9 @@ public class VTGraphicsModeClientReader implements Runnable
             
             for (int i = 0; i < count; i++)
             {
-              int size = connection.getGraphicsControlDataInputStream().readInt();
-              int x = connection.getGraphicsControlDataInputStream().readInt();
-              int y = connection.getGraphicsControlDataInputStream().readInt();
+              int size = connection.getGraphicsDirectImageDataInputStream().readInt();
+              int x = connection.getGraphicsDirectImageDataInputStream().readInt();
+              int y = connection.getGraphicsDirectImageDataInputStream().readInt();
               // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_NEW_FRAME_IMAGE");
               if (imageStream != null)
               {
@@ -374,9 +374,9 @@ public class VTGraphicsModeClientReader implements Runnable
             
             for (int i = 0; i < count; i++)
             {
-              int size = connection.getGraphicsControlDataInputStream().readInt();
-              int x = connection.getGraphicsControlDataInputStream().readInt();
-              int y = connection.getGraphicsControlDataInputStream().readInt();
+              int size = connection.getGraphicsDirectImageDataInputStream().readInt();
+              int x = connection.getGraphicsDirectImageDataInputStream().readInt();
+              int y = connection.getGraphicsDirectImageDataInputStream().readInt();
               if (imageStream != null)
               {
                 try
@@ -650,7 +650,6 @@ public class VTGraphicsModeClientReader implements Runnable
           }
           case VT.VT_GRAPHICS_MODE_SESSION_FINISHED:
           {
-            // System.out.println("VT_GRAPHICS_MODE_SESSION_ENDING");
             stopped = true;
             break;
           }

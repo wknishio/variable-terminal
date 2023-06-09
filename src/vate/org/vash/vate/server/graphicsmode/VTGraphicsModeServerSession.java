@@ -193,25 +193,14 @@ public class VTGraphicsModeServerSession
   {
     try
     {
-      // session.getConnection().getGraphicsControlDataOutputStream().close();
-      // session.getConnection().getGraphicsControlDataInputStream().close();
-      /*
-       * session.getConnection().getResultWriter().
-       * write("\nVT>Stopping graphics mode...\nVT>");
-       * session.getConnection().getResultWriter().flush();
-       */
-      // session.getConnection().getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_SESSION_ENDED);
-      // session.getConnection().getGraphicsControlDataOutputStream().flush();
-      // session.getConnection().getGraphicsControlDataInputStream().read();
-      /*
-       * session.getConnection().getResultWriter().
-       * write("\nVT>Graphics mode stopped!\nVT>");
-       * session.getConnection().getResultWriter().flush();
-       */
+      //session.getConnection().getGraphicsDirectImageDataOutputStream().close();
+      //session.getConnection().getGraphicsDeflatedImageDataOutputStream().close();
+      //session.getConnection().getGraphicsSnappedImageDataOutputStream().close();
+      //session.getConnection().getGraphicsControlDataOutputStream().close();
     }
     catch (Throwable e)
     {
-      
+      //e.printStackTrace();
     }
   }
 }

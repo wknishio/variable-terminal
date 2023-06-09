@@ -109,9 +109,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       {
         stream.type(type);
         stream.out(output);
+        stream.control(original);
         return stream;
       }
-      stream = new VTLinkableDynamicMultiplexedOutputStream(output, type, number, packetSize, blockSize);
+      stream = new VTLinkableDynamicMultiplexedOutputStream(output, original, type, number, packetSize, blockSize);
       pipedChannels.put(number, stream);
     }
     else
@@ -121,9 +122,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       {
         stream.type(type);
         stream.out(output);
+        stream.control(original);
         return stream;
       }
-      stream = new VTLinkableDynamicMultiplexedOutputStream(output, type, number, packetSize, blockSize);
+      stream = new VTLinkableDynamicMultiplexedOutputStream(output, original, type, number, packetSize, blockSize);
       directChannels.put(number, stream);
     }
     return stream;
@@ -199,12 +201,14 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private final VTByteArrayOutputStream controlPacketBuffer;
     private final VTLittleEndianOutputStream controlPacketStream;
     private OutputStream out;
+    private OutputStream control;
     private OutputStream intermediatePacketStream;
     private List<Closeable> propagated;
     
-    private VTLinkableDynamicMultiplexedOutputStream(OutputStream out, int type, int number, int packetSize, int blockSize)
+    private VTLinkableDynamicMultiplexedOutputStream(OutputStream out, OutputStream control, int type, int number, int packetSize, int blockSize)
     {
       this.out = out;
+      this.control = control;
       this.type = type;
       this.number = number;
       this.packetSize = packetSize;
@@ -258,6 +262,11 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     public final void out(OutputStream out)
     {
       this.out = out;
+    }
+    
+    public final void control(OutputStream control)
+    {
+      this.control = control;
     }
     
     public final Object getLink()
@@ -421,8 +430,8 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       controlPacketStream.writeShort(-2);
       // controlPacketStream.writeUnsignedShort(controlPaddingSize);
       // controlPacketStream.write(controlPaddingBuffer, 0, controlPaddingSize);
-      out.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
-      out.flush();
+      control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
+      control.flush();
       // writeBlocks(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
       // writeBlocks(out, controlPacketBuffer.buf(), 0,
       // controlPacketBuffer.count());
@@ -438,8 +447,8 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       controlPacketStream.writeShort(-3);
       // controlPacketStream.writeUnsignedShort(controlPaddingSize);
       // controlPacketStream.write(controlPaddingBuffer, 0, controlPaddingSize);
-      out.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
-      out.flush();
+      control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
+      control.flush();
       // writeBlocks(out, controlPacketBuffer.buf(), 0,
       // controlPacketBuffer.count());
       // flush.flush();

@@ -203,26 +203,15 @@ public class VTGraphicsModeClientSession
   {
     try
     {
-      //VTConsole.print("\nVT>Stopping remote graphics link...\nVT>");
-      // session.getConnection().getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_SESSION_ENDED);
-      // session.getConnection().getGraphicsControlDataOutputStream().flush();
-      // session.getConnection().getGraphicsControlDataInputStream().read();
-      // session.getConnection().getGraphicsControlDataOutputStream().close();
-      // session.getConnection().getGraphicsControlDataInputStream().close();
-      // session.getConnection().getGraphicsControlDataInputStream().read();
-      synchronized (session.getGraphicsClient())
-      {
-        if (session.getConnection().isConnected())
-        {
-          VTConsole.print("\nVT>Remote graphics link stopped!\nVT>");
-        }
-        finished = true;
-      }
+      //session.getConnection().getGraphicsDirectImageDataInputStream().close();
+      //session.getConnection().getGraphicsSnappedImageDataInputStream().close();
+      //session.getConnection().getGraphicsDeflatedImageDataInputStream().close();
     }
     catch (Throwable e)
     {
-      
+      //e.printStackTrace();
     }
+    VTConsole.print("\nVT>Remote graphics link stopped!\nVT>");
     finished = true;
   }
 }

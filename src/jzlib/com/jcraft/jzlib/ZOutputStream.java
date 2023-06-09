@@ -134,11 +134,14 @@ public class ZOutputStream extends OutputStream {
   public void close() throws IOException {
     try{
       try{finish();}
-      catch (IOException ignored) {}
+      catch (Exception ignored) {}
     }
     finally{
       end();
-      out.close();
+      if (out != null)
+      {
+        out.close();
+      }
       out=null;
     }
   }

@@ -610,10 +610,6 @@ public class VTGraphicsModeClientWriter implements Runnable
       {
         // e.printStackTrace();
       }
-      /*
-       * if (connection.startedConnection()) { try {
-       * connection.closeGraphicsModeStreams(); } catch (Throwable e) { } }
-       */
     }
   }
   
