@@ -36,7 +36,8 @@ import com.objectplanet.image.PngEncoder;
 
 public class VTGraphicsModeServerWriter implements Runnable
 {
-  private static final int imageOutputBufferSize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
+  private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeFrameDifferenceCodecMKII.PADDING_SIZE;
+  private static final int IMAGE_OUTPUT_BUFFER_SIZE = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
   private volatile boolean stopped;
   private volatile boolean needRefresh;
   private volatile boolean clearRequested;
@@ -72,7 +73,7 @@ public class VTGraphicsModeServerWriter implements Runnable
   private Graphics2D convertedGraphics;
   private volatile GraphicsDevice nextDevice;
   private volatile GraphicsDevice currentDevice;
-  private VTByteArrayOutputStream imageOutputBuffer = new VTByteArrayOutputStream(imageOutputBufferSize);
+  private VTByteArrayOutputStream imageOutputBuffer = new VTByteArrayOutputStream(IMAGE_OUTPUT_BUFFER_SIZE);
   // private ZOutputStream deflateOutputStream;
   // private SnappyOutputStream snappyOutputStream;
   // private VTByteArrayOutputStream compressedOutputBuffer;
@@ -88,7 +89,6 @@ public class VTGraphicsModeServerWriter implements Runnable
   private ImageOutputStream jpgImageOutputStream;
   private PngEncoder pngEncoder;
   private DataBuffer recycledDataBuffer;
-  private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeFrameDifferenceCodecMKII.PADDING_SIZE;
   // private long startTime, endTime, total, number;
   
   public VTGraphicsModeServerWriter(VTGraphicsModeServerSession session)

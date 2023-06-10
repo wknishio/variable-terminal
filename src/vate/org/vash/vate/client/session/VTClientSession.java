@@ -34,7 +34,6 @@ public class VTClientSession
   // private File workingDirectory;
   private VTClient client;
   private VTClientConnection connection;
-  
   private VTClientRemoteConsoleReader serverReader;
   private VTClientRemoteConsoleWriter clientWriter;
   private VTFileTransferClient fileTransferClient;
@@ -44,16 +43,14 @@ public class VTClientSession
   private VTTunnelConnectionHandler tunnelsHandler;
   // private VTTunnelConnectionHandler socksTunnelsHandler;
   private VTNanoPingService pingService;
-  
-  private Map<String, Closeable> sessionResources;
-  
+  private Map<String, Closeable> sessionCloseables;
   private ExecutorService threads;
   
   public VTClientSession(VTClient client, VTClientConnection connection)
   {
     this.client = client;
     this.connection = connection;
-    this.sessionResources = Collections.synchronizedMap(new LinkedHashMap<String, Closeable>());
+    this.sessionCloseables = Collections.synchronizedMap(new LinkedHashMap<String, Closeable>());
   }
   
   public void initialize()
@@ -111,19 +108,24 @@ public class VTClientSession
     return threads;
   }
   
-  public Closeable getSessionResource(String key)
+  public Closeable getSessionCloseable(String key)
   {
-    return sessionResources.get(key);
+    return sessionCloseables.get(key);
   }
   
-  public void addSessionResource(String key, Closeable value)
+  public void addSessionCloseable(String key, Closeable value)
   {
-    sessionResources.put(key, value);
+    sessionCloseables.put(key, value);
   }
   
-  public Closeable removeSessionResource(String key)
+  public Closeable removeSessionCloseable(String key)
   {
-    return sessionResources.remove(key);
+    return sessionCloseables.remove(key);
+  }
+  
+  public void clearSessionCloseables()
+  {
+    sessionCloseables.clear();
   }
   
   public boolean isRunningAudio()
@@ -296,11 +298,11 @@ public class VTClientSession
     // }
     try
     {
-      for (Entry<String, Closeable> resource : sessionResources.entrySet())
+      for (Entry<String, Closeable> closeable : sessionCloseables.entrySet())
       {
         try
         {
-          resource.getValue().close();
+          closeable.getValue().close();
         }
         catch (Throwable t)
         {
@@ -368,15 +370,8 @@ public class VTClientSession
   public void negotiateShell() throws IOException
   {
     String clientShell = client.getClientConnector().getSessionShell();
-    
-    clientShell = clientShell.replace('\n', ' ');
-    
+    clientShell = clientShell.replace("\r\n", "").replace("\n", "");
     connection.getCommandWriter().write(clientShell + "\n");
     connection.getCommandWriter().flush();
-  }
-  
-  public void clearSessionResources()
-  {
-    sessionResources.clear();
   }
 }

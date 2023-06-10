@@ -20,6 +20,7 @@ import com.sixlegs.png.iio.*;
 
 public class VTGraphicsModeClientReader implements Runnable
 {
+  private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeFrameDifferenceCodecMKII.PADDING_SIZE;
   private volatile boolean stopped;
   private volatile boolean failed;
   private int currentDataType;
@@ -54,11 +55,9 @@ public class VTGraphicsModeClientReader implements Runnable
   // private DataBuffer secondRecyclableDataBufferUShort;
   // private DataBuffer firstRecyclableDataBufferByte;
   // private DataBuffer secondRecyclableDataBufferByte;
-  
   private DataBuffer recyclableDataBuffer;
   // private DataBuffer secondRecyclableDataBuffer;
   // private long startTime, endTime;
-  private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeFrameDifferenceCodecMKII.PADDING_SIZE;
   
   private class VTIncrementalIIOReadUpdateListener implements IIOReadUpdateListener
   {

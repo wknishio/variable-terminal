@@ -39,12 +39,10 @@ import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 
 public class VTGraphicsModeClientWriter implements Runnable
 {
+  private static final double IMAGE_SCALE_MULTIPLIER_FACTOR = Math.pow(2D, (1D / 8D));
   public static final int TERMINAL_STATE_FOCUSED = 0;
   public static final int TERMINAL_STATE_VISIBLE = 1;
   public static final int TERMINAL_STATE_IGNORE = 2;
-  
-  private static final double IMAGE_SCALE_MULTIPLIER_FACTOR = Math.pow(2D, (1D / 8D));
-  
   private volatile boolean stopped;
   private volatile boolean needRefresh;
   private volatile boolean hasRefresh;
@@ -67,7 +65,6 @@ public class VTGraphicsModeClientWriter implements Runnable
   private volatile int initialHeight;
   private volatile int screenCaptureMode;
   private volatile int imageCoding;
-  
   private volatile Rectangle captureArea;
   private volatile double captureScale;
   private Toolkit toolkit;

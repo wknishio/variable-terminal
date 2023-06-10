@@ -54,14 +54,11 @@ public class VTServerSession
   private volatile boolean stoppingShell;
   private volatile boolean restartingShell;
   // private volatile boolean runningAudio;
-  
   private volatile boolean echoCommands;
   private volatile int echoState;
   private volatile long sessionLocalNanoDelay;
   private volatile long sessionRemoteNanoDelay;
-  
   private VTShellAdapter shellAdapter;
-  
   private String user;
   private VTServer server;
   private VTServerConnection connection;
@@ -95,16 +92,14 @@ public class VTServerSession
   private VTTunnelConnectionHandler tunnelsHandler;
   // private VTTunnelConnectionHandler socksTunnelsHandler;
   private VTNanoPingService pingService;
-  
-  private Map<String, Closeable> sessionResources;
-  
+  private Map<String, Closeable> sessionCloseables;
   private ExecutorService threads;
   
   public VTServerSession(VTServer server, VTServerConnection connection)
   {
     this.server = server;
     this.connection = connection;
-    this.sessionResources = Collections.synchronizedMap(new LinkedHashMap<String, Closeable>());
+    this.sessionCloseables = Collections.synchronizedMap(new LinkedHashMap<String, Closeable>());
     this.shellAdapter = new VTShellAdapter();
   }
   
@@ -190,19 +185,24 @@ public class VTServerSession
     return threads;
   }
   
-  public Closeable getSessionResource(String key)
+  public Closeable getSessionCloseable(String key)
   {
-    return sessionResources.get(key);
+    return sessionCloseables.get(key);
   }
   
-  public void addSessionResource(String key, Closeable value)
+  public void addSessionCloseable(String key, Closeable value)
   {
-    sessionResources.put(key, value);
+    sessionCloseables.put(key, value);
   }
   
-  public Closeable removeSessionResource(String key)
+  public Closeable removeSessionCloseable(String key)
   {
-    return sessionResources.remove(key);
+    return sessionCloseables.remove(key);
+  }
+  
+  public void clearSessionCloseables()
+  {
+    sessionCloseables.clear();
   }
   
   public boolean setShellEncoding(String shellEncoding)
@@ -506,6 +506,10 @@ public class VTServerSession
       {
         setShellType(VTShellProcessor.SHELL_TYPE_BEANSHELL);
       }
+      else if (clientShell.trim().equalsIgnoreCase("N"))
+      {
+        setShellBuilder(new String[] {}, null, null);
+      }
       else
       {
         setShellBuilder(CommandLineTokenizer.tokenize(clientShell), null, null);
@@ -516,6 +520,10 @@ public class VTServerSession
       if (serverShell.trim().equalsIgnoreCase("B"))
       {
         setShellType(VTShellProcessor.SHELL_TYPE_BEANSHELL);
+      }
+      else if (serverShell.trim().equalsIgnoreCase("N"))
+      {
+        setShellBuilder(new String[] {}, null, null);
       }
       else
       {
@@ -723,11 +731,11 @@ public class VTServerSession
     // System.out.println("tryStopSessionThreads middle");
     try
     {
-      for (Entry<String, Closeable> resource : sessionResources.entrySet())
+      for (Entry<String, Closeable> closeable : sessionCloseables.entrySet())
       {
         try
         {
-          resource.getValue().close();
+          closeable.getValue().close();
         }
         catch (Throwable t)
         {
@@ -952,8 +960,4 @@ public class VTServerSession
     this.shellAdapter.setShellType(shellType);
   }
   
-  public void clearSessionResources()
-  {
-    sessionResources.clear();
-  }
 }

@@ -96,7 +96,7 @@ public class VTManagedServerSocket
       InputStream input = session.getConnection().getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12);
       OutputStream output = session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12);
       VTManagedSocket socket = new VTManagedSocket(new VTCloseableServerConnection(session), input, output);
-      session.addSessionResource(this.getClass().getSimpleName(), socket);
+      session.addSessionCloseable(this.getClass().getSimpleName(), socket);
       sessions.put(session, socket);
       if (socketListener != null)
       {
@@ -124,6 +124,7 @@ public class VTManagedServerSocket
     this.vtserver = new VTServer();
     vtserver.setDaemon(true);
     vtserver.addSessionListener(new VTManagedServerSocketServerSessionListener());
+    vtserver.setSessionShell("N");
   }
   
   public VTServer getServer()

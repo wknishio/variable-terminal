@@ -125,7 +125,7 @@ public class VTServerSessionHandler implements Runnable
         
       }
     }
-    session.clearSessionResources();
+    session.clearSessionCloseables();
   }
   
   public void setSessionListeners(List<VTServerSessionListener> listeners)
