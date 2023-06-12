@@ -917,6 +917,10 @@ public class VTGraphicsModeClientWriter implements Runnable
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_4096);
       }
+      else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4)
+      {
+        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_4);
+      }
       else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_8);

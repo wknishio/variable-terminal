@@ -73,7 +73,7 @@ public final class VTImageIO
   
   private static final IndexColorModel byteIndexed16GrayscaleColorModel = VTIndexedColorModel.create16ColorModelGrayscale();
   private static final IndexColorModel byteIndexed8GrayscaleColorModel = VTIndexedColorModel.create8ColorModelGrayscale();
-  //private static final IndexColorModel byteIndexed4ColorModelGrayscale = VTIndexedColorModel.create4ColorModelGrayscale();
+  private static final IndexColorModel byteIndexed4GrayscaleColorModel = VTIndexedColorModel.create4ColorModelGrayscale();
   
   private static final DirectColorModel int32bitARGBColorModel = new DirectColorModel(32, DCM_888_RED_MASK, DCM_888_GRN_MASK, DCM_888_BLU_MASK, DCM_888_ALP_MASK);
   private static final DirectColorModel int30bitRGBColorModel = new DirectColorModel(30, DCM_AAA_RED_MASK, DCM_AAA_GRN_MASK, DCM_AAA_BLU_MASK, 0);
@@ -752,6 +752,10 @@ public final class VTImageIO
         else if (colors == 8)
         {
           image = new BufferedImage(byteIndexed8GrayscaleColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        }
+        else if (colors == 4)
+        {
+          image = new BufferedImage(byteIndexed4GrayscaleColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
         }
 //        else if (colors == 32)
 //        {
