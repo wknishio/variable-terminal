@@ -68,37 +68,26 @@ public final class VTImageIO
   private static final IndexColorModel byteIndexed216ColorModel = VTIndexedColorModel.create216ColorModel();
   private static final IndexColorModel byteIndexed125ColorModel = VTIndexedColorModel.create125ColorModel();
   private static final IndexColorModel byteIndexed64ColorModel = VTIndexedColorModel.create64ColorModel();
-  //private static final IndexColorModel byteIndexed8ColorModel = VTIndexedColorModel.create8ColorModel();
   private static final IndexColorModel byteIndexed27ColorModel = VTIndexedColorModel.create27ColorModel();
+  //private static final IndexColorModel byteIndexed8ColorModel = VTIndexedColorModel.create8ColorModel();
   
-  private static final IndexColorModel byteIndexed8ColorModelGrayscale = VTIndexedColorModel.create8ColorModelGrayscale();
-  private static final IndexColorModel byteIndexed16ColorModelGrayscale = VTIndexedColorModel.create16ColorModelGrayscale();
+  private static final IndexColorModel byteIndexed16GrayscaleColorModel = VTIndexedColorModel.create16ColorModelGrayscale();
+  private static final IndexColorModel byteIndexed8GrayscaleColorModel = VTIndexedColorModel.create8ColorModelGrayscale();
   //private static final IndexColorModel byteIndexed4ColorModelGrayscale = VTIndexedColorModel.create4ColorModelGrayscale();
   
-  // private static final IndexColorModel bytePacked4Bit16ColorModel =
-  // VTIndexedColorModel.createPacked4Bit16ColorModel();
-  
+  private static final DirectColorModel int32bitARGBColorModel = new DirectColorModel(32, DCM_888_RED_MASK, DCM_888_GRN_MASK, DCM_888_BLU_MASK, DCM_888_ALP_MASK);
+  private static final DirectColorModel int30bitRGBColorModel = new DirectColorModel(30, DCM_AAA_RED_MASK, DCM_AAA_GRN_MASK, DCM_AAA_BLU_MASK, 0);
+  private static final DirectColorModel int27bitRGBColorModel = new DirectColorModel(27, DCM_999_RED_MASK, DCM_999_GRN_MASK, DCM_999_BLU_MASK, 0);
   private static final DirectColorModel int24bitRGBColorModel = new DirectColorModel(24, DCM_888_RED_MASK, DCM_888_GRN_MASK, DCM_888_BLU_MASK, 0);
-  
   private static final DirectColorModel int21bitRGBColorModel = new DirectColorModel(21, DCM_777_RED_MASK, DCM_777_GRN_MASK, DCM_777_BLU_MASK, 0);
-  
   private static final DirectColorModel int18bitRGBColorModel = new DirectColorModel(18, DCM_666_RED_MASK, DCM_666_GRN_MASK, DCM_666_BLU_MASK, 0);
-  
   private static final DirectColorModel ushort15bitRGBColorModel = new DirectColorModel(15, DCM_555_RED_MASK, DCM_555_GRN_MASK, DCM_555_BLU_MASK, 0);
-  
   private static final DirectColorModel ushort12bitRGBColorModel = new DirectColorModel(12, DCM_444_RED_MASK, DCM_444_GRN_MASK, DCM_444_BLU_MASK, 0);
-  
   private static final DirectColorModel ushort9bitRGBColorModel = new DirectColorModel(9, DCM_333_RED_MASK, DCM_333_GRN_MASK, DCM_333_BLU_MASK, 0);
-  
+  private static final DirectColorModel byte6bitRGBColorModel = new DirectColorModel(6, DCM_222_RED_MASK, DCM_222_GRN_MASK, DCM_222_BLU_MASK, 0);
   private static final DirectColorModel byte3bitRGBColorModel = new DirectColorModel(3, DCM_111_RED_MASK, DCM_111_GRN_MASK, DCM_111_BLU_MASK, 0);
   
-  private static final DirectColorModel byte6bitRGBColorModel = new DirectColorModel(6, DCM_222_RED_MASK, DCM_222_GRN_MASK, DCM_222_BLU_MASK, 0);
-  
-  private static final DirectColorModel int32bitARGBColorModel = new DirectColorModel(32, DCM_888_RED_MASK, DCM_888_GRN_MASK, DCM_888_BLU_MASK, DCM_888_ALP_MASK);
-  
-  private static final DirectColorModel int27bitRGBColorModel = new DirectColorModel(27, DCM_999_RED_MASK, DCM_999_GRN_MASK, DCM_999_BLU_MASK, 0);
-  
-  private static final DirectColorModel int30bitRGBColorModel = new DirectColorModel(30, DCM_AAA_RED_MASK, DCM_AAA_GRN_MASK, DCM_AAA_BLU_MASK, 0);
+  // private static final IndexColorModel bytePacked4Bit16ColorModel = VTIndexedColorModel.createPacked4Bit16ColorModel();
   
   public static final BufferedImage createImage(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
   {
@@ -758,11 +747,11 @@ public final class VTImageIO
         }
         else if (colors == 16)
         {
-          image = new BufferedImage(byteIndexed16ColorModelGrayscale, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+          image = new BufferedImage(byteIndexed16GrayscaleColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
         }
         else if (colors == 8)
         {
-          image = new BufferedImage(byteIndexed8ColorModelGrayscale, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+          image = new BufferedImage(byteIndexed8GrayscaleColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
         }
 //        else if (colors == 32)
 //        {
