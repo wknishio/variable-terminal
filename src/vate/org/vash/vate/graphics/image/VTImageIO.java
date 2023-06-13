@@ -804,6 +804,10 @@ public final class VTImageIO
     {
       Arrays.fill(buffer, start, buffer.length, (byte) 15);
     }
+    else if (colors == 4)
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 3);
+    }
     else if (colors == 8)
     {
       Arrays.fill(buffer, start, buffer.length, (byte) 7);
@@ -883,6 +887,11 @@ public final class VTImageIO
     {
       //Arrays.fill(buffer, start, buffer.length, (byte) 1);
       Arrays.fill(buffer, start, buffer.length, (byte) 6);
+    }
+    else if (colors == 4)
+    {
+      //Arrays.fill(buffer, start, buffer.length, (byte) 0);
+      Arrays.fill(buffer, start, buffer.length, (byte) 1);
     }
     else if (colors == 8)
     {
