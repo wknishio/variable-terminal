@@ -662,9 +662,9 @@ public class VTClientConnection
     graphicsClipboardOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 8);
     
     //graphicsControlInputStream.addPropagated(graphicsControlOutputStream);
-    graphicsControlInputStream.addPropagated(graphicsDirectImageInputStream);
-    graphicsControlInputStream.addPropagated(graphicsDeflatedImageInputStream);
-    graphicsControlInputStream.addPropagated(graphicsSnappedImageInputStream);
+    //graphicsControlInputStream.addPropagated(graphicsDirectImageInputStream);
+    //graphicsControlInputStream.addPropagated(graphicsDeflatedImageInputStream);
+    //graphicsControlInputStream.addPropagated(graphicsSnappedImageInputStream);
     // graphicsControlInputStream.addPropagated(graphicsClipboardInputStream);
     // graphicsControlInputStream.addPropagated(graphicsClipboardOutputStream);
     
@@ -1091,22 +1091,6 @@ public class VTClientConnection
   {
     try
     {
-      graphicsControlInputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
-      graphicsControlOutputStream.close();
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    try
-    {
       graphicsDirectImageInputStream.close();
     }
     catch (Throwable t)
@@ -1124,6 +1108,22 @@ public class VTClientConnection
     try
     {
       snappedImageDataInputStream.close();
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    try
+    {
+      graphicsControlOutputStream.close();
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    try
+    {
+      graphicsControlInputStream.close();
     }
     catch (Throwable t)
     {

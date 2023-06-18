@@ -595,10 +595,6 @@ public class VTGraphicsModeClientWriter implements Runnable
     this.stopped = stopped;
     if (stopped)
     {
-      synchronized (this)
-      {
-        notify();
-      }
       try
       {
         connection.closeGraphicsModeStreams();
@@ -606,6 +602,10 @@ public class VTGraphicsModeClientWriter implements Runnable
       catch (Throwable e)
       {
         // e.printStackTrace();
+      }
+      synchronized (this)
+      {
+        notify();
       }
     }
   }

@@ -239,14 +239,6 @@ public class VTGraphicsModeServerWriter implements Runnable
     this.stopped = stopped;
     if (stopped)
     {
-      synchronized (screenCaptureIntervalSynchronizer)
-      {
-        screenCaptureIntervalSynchronizer.notify();
-      }
-      synchronized (this)
-      {
-        notify();
-      }
       try
       {
         connection.closeGraphicsModeStreams();
@@ -254,6 +246,14 @@ public class VTGraphicsModeServerWriter implements Runnable
       catch (Throwable e)
       {
         // e.printStackTrace();
+      }
+      synchronized (screenCaptureIntervalSynchronizer)
+      {
+        screenCaptureIntervalSynchronizer.notify();
+      }
+      synchronized (this)
+      {
+        notify();
       }
     }
   }
