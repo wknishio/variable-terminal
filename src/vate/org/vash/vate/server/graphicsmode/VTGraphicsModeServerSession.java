@@ -40,7 +40,7 @@ public class VTGraphicsModeServerSession
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
+      //e.printStackTrace();
     }
     try
     {
@@ -59,13 +59,13 @@ public class VTGraphicsModeServerSession
         session.getConnection().getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_SESSION_UNSTARTED);
         session.getConnection().getGraphicsControlDataOutputStream().flush();
         session.getConnection().getGraphicsControlDataInputStream().read();
-        // System.out.println("return false");
+        //System.out.println("return false");
         return false;
       }
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
+      //e.printStackTrace();
     }
     return false;
   }
