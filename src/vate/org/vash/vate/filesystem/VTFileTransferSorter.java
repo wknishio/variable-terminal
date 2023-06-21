@@ -28,8 +28,24 @@ public class VTFileTransferSorter implements Comparator<File>
       }
       else
       {
-        Long length1 = Long.valueOf(o1.length());
-        Long length2 = Long.valueOf(o2.length());
+        Long length1 = Long.valueOf(0);
+        Long length2 = Long.valueOf(0);
+        try
+        {
+          length1 = Long.valueOf(o1.length());
+        }
+        catch (Throwable t)
+        {
+          
+        }
+        try
+        {
+          length2 = Long.valueOf(o2.length());
+        }
+        catch (Throwable t)
+        {
+          
+        }
         return length1.compareTo(length2);
       }
     }
