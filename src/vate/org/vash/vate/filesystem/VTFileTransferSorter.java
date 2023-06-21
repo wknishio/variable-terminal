@@ -5,14 +5,32 @@ import java.util.Comparator;
 
 public class VTFileTransferSorter implements Comparator<File>
 {
-  public int compare(File o1, File o2)
+  public int compare(File f1, File f2)
   {
-    if (o1.isDirectory())
+    boolean f1IsDirectory = false;
+    boolean f2IsDirectory = false;
+    try
     {
-      if (o2.isDirectory())
+      f1IsDirectory = f1.isDirectory();
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    try
+    {
+      f2IsDirectory = f2.isDirectory();
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    if (f1IsDirectory)
+    {
+      if (f2IsDirectory)
       {
-        String name1 = o1.getName().toUpperCase();
-        String name2 = o2.getName().toUpperCase();
+        String name1 = f1.getName().toUpperCase();
+        String name2 = f2.getName().toUpperCase();
         return name1.compareTo(name2);
       }
       else
@@ -22,7 +40,7 @@ public class VTFileTransferSorter implements Comparator<File>
     }
     else
     {
-      if (o2.isDirectory())
+      if (f2IsDirectory)
       {
         return -1;
       }
@@ -32,7 +50,7 @@ public class VTFileTransferSorter implements Comparator<File>
         Long length2 = Long.valueOf(0);
         try
         {
-          length1 = Long.valueOf(o1.length());
+          length1 = Long.valueOf(f1.length());
         }
         catch (Throwable t)
         {
@@ -40,7 +58,7 @@ public class VTFileTransferSorter implements Comparator<File>
         }
         try
         {
-          length2 = Long.valueOf(o2.length());
+          length2 = Long.valueOf(f2.length());
         }
         catch (Throwable t)
         {
