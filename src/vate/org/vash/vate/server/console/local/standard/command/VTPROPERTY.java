@@ -11,9 +11,9 @@ public class VTPROPERTY extends VTServerStandardLocalConsoleCommandProcessor
   public VTPROPERTY()
   {
     this.setFullName("*VTPROPERTY");
-    this.setAbbreviatedName("*VTPROP");
+    this.setAbbreviatedName("*VTPRO");
     this.setFullSyntax("*VTPROPERTY [NAME] [VALUE]");
-    this.setAbbreviatedSyntax("*VTPROP [NM] [VL]");
+    this.setAbbreviatedSyntax("*VTPRO [NM] [VL]");
   }
   
   public void execute(String command, String[] parsed) throws Exception
