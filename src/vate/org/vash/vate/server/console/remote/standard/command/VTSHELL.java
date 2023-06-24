@@ -37,6 +37,13 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
         session.setShellBuilder(new String[] {}, null, null);
         // session.restartShell();
       }
+      else if (parsed[1].toUpperCase().contains("R"))
+      {
+        connection.getResultWriter().write("\nVT>Resetting remote shell to: [Default]");
+        connection.getResultWriter().flush();
+        session.setShellBuilder(null, null, null);
+        session.restartShell();
+      }
       else if (parsed[1].toUpperCase().contains("B"))
       {
         connection.getResultWriter().write("\nVT>Using beanshell as remote shell!\nVT>");
