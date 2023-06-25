@@ -5,7 +5,6 @@ Changes since 1.4.2:
 * Changed authentication protocol, backward compatibility broken
 * Changed the default connection port to 6060
 * Console commands now start with *VT instead of *SAW
-* Merged server access settings commands to *VTACCESS
 * Changed snappy compression for LZ4 compression
 * Renamed command *VTREMOTEGRAPHICSMODE to *VTGRAPHICSLINK
 * Renamed command *VTGRAPHICSALERT to *VTSCREENALERT
@@ -22,8 +21,8 @@ Changes since 1.4.2:
 * Command *VTGRAPHICSLINK now supports custom image codings ZOF and DOF
 * Command *VTGRAPHICSLINK now supports image codings PNG and JPEG
 * Added ObjectPlanet PngEncoder library, much faster than Java ImageIO
-* Colors quality options: worst, dull, gray, low, few, simple, medium, next,
-extra, high, vast, ultra, true
+* Commands now have 13 color quality options: worst, dull, gray, low, few,
+simple, medium, next, extra, high, vast, ultra, true
 * Startup now accepts as parameter a file path for settings file to be loaded
 * Added support for NAT-PMP port mapping if UPnP port mapping is not available
 * Command *VTGRAPHICSLINK now supports unified screen device capture
@@ -46,7 +45,7 @@ extra, high, vast, ultra, true
 * Changed command *VTAUDIOLINK to use sample rates 8000/16000/24000/48000
 * Added font resizing in console menu or ctrl+pageup/ctrl+pagedown/ctrl+home
 * Fonts may be initially scaled according to platform font scaling settings
-* Removed all zip file manipulation commands
+* Removed all zip file commands since *VTFILETRANSFER now handles directories
 * Client now tries to reconnect with server in 60 seconds after disconnection
 * Added command *VTLIMIT to set connection rate limits in bytes per second
 * Changed *VTRUNTIME command, now allows processes to restart automatically
@@ -85,6 +84,7 @@ extra, high, vast, ultra, true
 * Added notification of nat devices external addresses with UPnP and NAT-PMP
 * Added timeout option to command *VTRUNTIME
 * Added Sixlegs Java PNG Decoder library
+* Added optional lz4 compression in command *VTFILETRANSFER
 * Added optional zstd compression in command *VTFILETRANSFER
 * Changed all encryption functions to use bouncycastle library
 * Added SALSA as encryption algorithm

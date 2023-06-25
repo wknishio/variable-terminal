@@ -155,6 +155,8 @@ Some of the available internal commands in client console:
 * Commands \*VTGRAPHICSLINK or \*VTGL toggle remote desktop control.
 * Commands \*VTAUDIOLINK or \*VTAL toggle audio chat communication.
 * Commands \*VTBELL or \*VTBL play remote system audio alert.
+* Commands \*VTTUNNEL or \*VTTN set network connection tunnels.
+* Commands \*VTLIMIT or \*VTLM limit network connection data rates.
 
 There are more internal commands in client console and server console:
 
@@ -193,7 +195,6 @@ Those are the third party libraries used in this software:
 * PortMapper by Kasra Faghihi(offbynull) for PCP port forwarding support
 * Lanterna by mabe02 for graphical console
 * Sixlegs Java PNG Decoder for PNG decoding
-* zstd-jni by luben for zstd compression
 * bouncycastle by Legion of the Bouncy Castle for encryption
 * beanshell2 by pejobo for alternative shell
 * groovy by codehaus for alternative shell

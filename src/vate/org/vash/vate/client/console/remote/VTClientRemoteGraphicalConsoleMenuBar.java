@@ -302,7 +302,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     performanceMenu = new Menu("Rates ");
     performanceMenu.add(new VTGraphicalConsoleMenuItem("Check Connection Latency", "*VTPING\n"));
     performanceMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Rate Limits", "*VTLIMIT "));
-    performanceMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTLIMIT\n"));
+    performanceMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTPING\n*VTHELP *VTLIMIT\n"));
     
     serverNetworkMenu = new Menu("Network ");
     serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List Valid Network Interfaces", "*VTNETWORKS\n"));

@@ -90,7 +90,6 @@ instance will listen for connections, as in a TCP connection.
 * Proxy type enables support for connections using HTTP or SOCKS proxies.
 * Proxy host controls the TCP host address of the proxy.
 * Proxy port controls the TCP port of the proxy.
-* Proxy authentication enables HTTP or SOCKS proxy authentication.
 * Proxy user controls the user for proxy authentication.
 * Proxy password controls the password for proxy authentication.
 * Encryption type enables connection encryption using encryption algorithms.
@@ -120,7 +119,6 @@ these are the available program arguments:
 * -PT: proxy type, default none, SOCKS(S), HTTP(H)
 * -PH: proxy host, default null
 * -PP: proxy port, default 1080 for SOCKS or default 8080 for HTTP
-* -PA: proxy authentication, default disabled(D), enabled(E)
 * -PU: proxy user, default null
 * -PK: proxy password, default null
 * -ET: encryption type, none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)
@@ -157,6 +155,8 @@ Some of the available internal commands in client console:
 * Commands \*VTGRAPHICSLINK or \*VTGL toggle remote desktop control.
 * Commands \*VTAUDIOLINK or \*VTAL toggle audio chat communication.
 * Commands \*VTBELL or \*VTBL play remote system audio alert.
+* Commands \*VTTUNNEL or \*VTTN set network connection tunnels.
+* Commands \*VTLIMIT or \*VTLM limit network connection data rates.
 
 There are more internal commands in client console and server console:
 
@@ -195,7 +195,6 @@ Those are the third party libraries used in this software:
 * PortMapper by Kasra Faghihi(offbynull) for PCP port forwarding support
 * Lanterna by mabe02 for graphical console
 * Sixlegs Java PNG Decoder for PNG decoding
-* zstd-jni by luben for zstd compression
 * bouncycastle by Legion of the Bouncy Castle for encryption
 * beanshell2 by pejobo for alternative shell
 * groovy by codehaus for alternative shell
