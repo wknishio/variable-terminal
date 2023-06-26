@@ -145,7 +145,7 @@ public class VTNativeUtils
 //        }
         // use javax.sound to generate sine wave on default audio device
         // start = System.currentTimeMillis();
-        boolean soundBeep = VTAudioBeeper.beep(freq, dur, block);
+        boolean soundBeep = VTAudioBeeper.beep(8000, freq, dur, block);
         // end = System.currentTimeMillis();
         // System.out.println("beep2:" + (end - start));
         return soundBeep;
@@ -164,7 +164,7 @@ public class VTNativeUtils
     {
       // use javax.sound to generate sine wave on default audio device
       // long start = System.currentTimeMillis();
-      boolean soundBeep = VTAudioBeeper.beep(freq, dur, block);
+      boolean soundBeep = VTAudioBeeper.beep(8000, freq, dur, block);
       // long end = System.currentTimeMillis();
       // System.out.println("beep2:" + (end - start));
       return soundBeep;
