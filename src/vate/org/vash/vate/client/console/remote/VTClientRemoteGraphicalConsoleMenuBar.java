@@ -305,7 +305,9 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     performanceMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTPING\n*VTHELP *VTLIMIT\n"));
     
     serverNetworkMenu = new Menu("Network ");
-    serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List Valid Network Interfaces", "*VTNETWORKS\n"));
+    serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List All Network Interfaces", "*VTNETWORKS\n"));
+    serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List Local Network Interfaces", "*VTNETWORKS L\n"));
+    serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List Remote Network Interfaces", "*VTNETWORKS R\n"));
     serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("Resolve Remote Network Host", "*VTHOSTS "));
     
     // serverNetworkMenu.add(serverNetworkTunnelsMenu);
