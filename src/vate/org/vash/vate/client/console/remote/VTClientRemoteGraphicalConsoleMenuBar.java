@@ -43,9 +43,10 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
   private Menu serverPrintApplicationMenu;
   private Menu serverRuntimeMenu;
   private Menu serverManageRuntimeMenu;
-  private Menu serverNetworkMenu;
+  private Menu networkMenu;
   private Menu performanceMenu;
-  private Menu serverNetworkTunnelsMenu;
+  private Menu networkTunnelsMenu;
+  private Menu networkInterfacesMenu;
   // private Menu serverSOCKSTunnelsMenu;
   private Menu serverPrintMenu;
   private Menu audioSoundMenu;
@@ -304,34 +305,25 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     performanceMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Rate Limits", "*VTLIMIT "));
     performanceMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTPING\n*VTHELP *VTLIMIT\n"));
     
-    serverNetworkMenu = new Menu("Network ");
-    serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List All Network Interfaces", "*VTNETWORKS\n"));
-    serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List Local Network Interfaces", "*VTNETWORKS L\n"));
-    serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List Remote Network Interfaces", "*VTNETWORKS R\n"));
-    serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("Resolve Remote Network Host", "*VTHOSTS "));
+    networkMenu = new Menu("Network ");
     
-    // serverNetworkMenu.add(serverNetworkTunnelsMenu);
-    // serverNetworkMenu.add(serverSocksProxyTunnelsMenu);
-    // serverTunnelsMenu = new Menu("Tunnels ");
-    serverNetworkTunnelsMenu = new Menu("Connection Network Tunnels ");
+    networkInterfacesMenu = new Menu("List Valid Network Interfaces ");
+    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("All Network Interfaces", "*VTNETWORKS\n"));
+    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Local Network Interfaces", "*VTNETWORKS L\n"));
+    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Remote Network Interfaces", "*VTNETWORKS R\n"));
+    
+    networkMenu.add(new VTGraphicalConsoleMenuItem("Resolve Remote Network Host", "*VTHOSTS "));
+    
+    networkTunnelsMenu = new Menu("Connection Network Tunnels ");
     // serverSOCKSTunnelsMenu = new Menu("Connection SOCKS Tunnels ");
     
-    serverNetworkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("List All Tunnels", "*VTTUNNEL\n"));
-    serverNetworkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Local To Remote", "*VTTUNNEL L "));
-    serverNetworkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Remote To Local", "*VTTUNNEL R "));
-    serverNetworkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTTUNNEL\n"));
+    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("List All Tunnels", "*VTTUNNEL\n"));
+    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Local To Remote", "*VTTUNNEL L "));
+    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Remote To Local", "*VTTUNNEL R "));
+    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTTUNNEL\n"));
     
-    // serverSOCKSTunnelsMenu.add(new VTGraphicalConsoleMenuItem("List All SOCKS
-    // Tunnels", "*VTSOCKSTUNNEL\n"));
-    // serverSOCKSTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Local To
-    // Remote", "*VTSOCKSTUNNEL L "));
-    // serverSOCKSTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Remote To
-    // Local", "*VTSOCKSTUNNEL R "));
-    // serverSOCKSTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Command
-    // Usage", "*VTHELP *VTSOCKSTUNNEL\n"));
-    
-    serverNetworkMenu.add(serverNetworkTunnelsMenu);
-    // serverNetworkMenu.add(serverSOCKSTunnelsMenu);
+    networkMenu.add(networkInterfacesMenu);
+    networkMenu.add(networkTunnelsMenu);
     
     serverPrintMenu = new Menu("Printing ");
     serverPrintMenu.add(new VTGraphicalConsoleMenuItem("List Remote Printers", "*VTPRINTERS\n"));
@@ -348,7 +340,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     beepSoundMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTBEEP\n"));
     audioSoundMenu.add(beepSoundMenu);
     
-    audioMixersSoundMenu = new Menu("List Available Audio Mixers ");
+    audioMixersSoundMenu = new Menu("List Valid Audio Mixers ");
     audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("All Audio Mixers", "*VTMIXERS\n"));
     audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Local Audio Mixers", "*VTMIXERS L\n"));
     audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Remote Audio Mixers", "*VTMIXERS R\n"));
@@ -378,7 +370,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     clientConsoleCommandsMenu.add(fileSystemMenu);
     clientConsoleCommandsMenu.add(serverGraphicalSystemsMenu);
     clientConsoleCommandsMenu.add(audioSoundMenu);
-    clientConsoleCommandsMenu.add(serverNetworkMenu);
+    clientConsoleCommandsMenu.add(networkMenu);
     // clientConsoleCommandsMenu.add(serverTunnelsMenu);
     clientConsoleCommandsMenu.add(serverPrintMenu);
     clientConsoleCommandsMenu.add(opticalDriveMenu);
