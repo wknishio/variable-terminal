@@ -350,6 +350,16 @@ public final class VTImageIO
         }
         return image;
       }
+      case BufferedImage.TYPE_BYTE_GRAY:
+      {
+        BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+        byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        for (int position = x + (y * width); position < size; position++)
+        {
+          decodePixel8(littleEndianInputStream, data, position, width);
+        }
+        return image;
+      }
     }
     return null;
   }
@@ -498,6 +508,15 @@ public final class VTImageIO
         for (int position = x + (y * width); position < size; position++)
         {
           encodePixel32(littleEndianOutputStream, data, position, width);
+        }
+        break;
+      }
+      case BufferedImage.TYPE_BYTE_GRAY:
+      {
+        byte[] data = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+        for (int position = x + (y * width); position < size; position++)
+        {
+          encodePixel8(littleEndianOutputStream, data, position, width);
         }
         break;
       }
@@ -842,6 +861,10 @@ public final class VTImageIO
     else if (colors == 32)
     {
       Arrays.fill(buffer, start, buffer.length, (byte) 31);
+    }
+    else if (colors == 256)
+    {
+      Arrays.fill(buffer, start, buffer.length, (byte) 255);
     }
     else
     {

@@ -5289,7 +5289,8 @@ public final class VTAWTScreenCaptureProvider
   {
     if (((rgb & RGB888_XOR_MASK) == 0x00808080) || ((rgb & RGB888_XOR_MASK) == 0x007F7F7F))
     {
-      return rgb & 0xFF000000;
+      //return rgb & 0xFF000000;
+      return 0x00FFFFFF;
       // return 0;
     }
     return rgb;
