@@ -38,7 +38,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
   private Menu serverScreenCaptureMenu;
   private Menu serverPointerScreenCaptureMenu;
   private Menu serverCleanScreenCaptureMenu;
-  private Menu serverGraphicsAlertMenu;
+  private Menu serverScreenAlertMenu;
   private Menu serverBrowseMenu;
   private Menu serverPrintApplicationMenu;
   private Menu serverRuntimeMenu;
@@ -80,14 +80,14 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverGraphicalSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Remote Display Devices", "*VTDISPLAYS\n"));
     serverGraphicsModeMenu = new Menu("Remote Graphics Link ");
     serverScreenCaptureMenu = new Menu("Remote Screen Capture ");
-    serverGraphicsAlertMenu = new Menu("Remote Screen Alert ");
+    serverScreenAlertMenu = new Menu("Remote Screen Alert ");
     serverBrowseMenu = new Menu("Remote Browser Application ");
     serverPrintApplicationMenu = new Menu("Remote Mail Application ");
     serverPointerScreenCaptureMenu = new Menu("Show Cursor ");
     serverCleanScreenCaptureMenu = new Menu("Hide Cursor ");
     serverGraphicalSystemsMenu.add(serverScreenCaptureMenu);
+    serverGraphicalSystemsMenu.add(serverScreenAlertMenu);
     serverGraphicalSystemsMenu.add(serverGraphicsModeMenu);
-    serverGraphicalSystemsMenu.add(serverGraphicsAlertMenu);
     serverGraphicalSystemsMenu.add(serverBrowseMenu);
     serverGraphicalSystemsMenu.add(serverPrintApplicationMenu);
     serverScreenCaptureMenu.add(serverCleanScreenCaptureMenu);
@@ -145,8 +145,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Worst Color Quality", "*VTSCREENSHOT OW "));
     
     serverScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSCREENSHOT\n"));
-    serverGraphicsAlertMenu.add(new VTGraphicalConsoleMenuItem("Show Alert Message", "*VTSCREENALERT "));
-    serverGraphicsAlertMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSCREENALERT\n"));
+    serverScreenAlertMenu.add(new VTGraphicalConsoleMenuItem("Show Alert Message", "*VTSCREENALERT "));
+    serverScreenAlertMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSCREENALERT\n"));
     serverBrowseMenu.add(new VTGraphicalConsoleMenuItem("Browse URI", "*VTBROWSE "));
     serverBrowseMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTBROWSE\n"));
     serverPrintApplicationMenu.add(new VTGraphicalConsoleMenuItem("Compose Email", "*VTMAIL "));
