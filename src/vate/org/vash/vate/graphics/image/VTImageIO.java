@@ -78,7 +78,7 @@ public final class VTImageIO
   private static final IndexColorModel byteIndexed8GrayscaleColorModel = VTIndexedColorModel.create8ColorModelGrayscale();
   private static final IndexColorModel byteIndexed4GrayscaleColorModel = VTIndexedColorModel.create4ColorModelGrayscale();
   
-  private static final ComponentColorModel byteComponent256GrayscaleColorModel =  new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {8}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
+  private static final ComponentColorModel byteComponent256GrayscaleColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {8}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
   
   private static final DirectColorModel int32bitARGBColorModel = new DirectColorModel(32, DCM_888_RED_MASK, DCM_888_GRN_MASK, DCM_888_BLU_MASK, DCM_888_ALP_MASK);
   private static final DirectColorModel int30bitRGBColorModel = new DirectColorModel(30, DCM_AAA_RED_MASK, DCM_AAA_GRN_MASK, DCM_AAA_BLU_MASK, 0);
