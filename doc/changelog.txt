@@ -14,7 +14,7 @@ Changes since 1.4.2:
 * Renamed server settings file to vate-server.properties
 * Removed file user-database.properties
 * Changed *VTFILEINSPECT command to *VTFILECHECK
-* Changed *VTFILEMODIFY command to *VTFILESHIFT
+* Changed *VTFILEMODIFY command to *VTFILEALTER
 * Remote cursor on screen captures scales with current server dpi
 * Included email in copyright notice
 * Command *VTCLEAR does not show copyright notice anymore

@@ -6,14 +6,14 @@ import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 import org.vash.vate.server.filesystem.VTServerFileModifyOperation;
 
-public class VTFILESHIFT extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
 {
-  public VTFILESHIFT()
+  public VTFILEALTER()
   {
-    this.setFullName("*VTFILESHIFT");
-    this.setAbbreviatedName("*VTFS");
-    this.setFullSyntax("*VTFILESHIFT [MODE] [FILE] [NEXT]");
-    this.setAbbreviatedSyntax("*VTFS [MD] [FL] [NX]");
+    this.setFullName("*VTFILEALTER");
+    this.setAbbreviatedName("*VTFA");
+    this.setFullSyntax("*VTFILEALTER [MODE] [FILE] [NEXT]");
+    this.setAbbreviatedSyntax("*VTFA [MD] [FL] [NX]");
   }
   
   public void execute(String command, String[] parsed) throws Exception
