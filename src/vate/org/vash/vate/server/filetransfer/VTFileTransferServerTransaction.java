@@ -260,7 +260,7 @@ public class VTFileTransferServerTransaction implements Runnable
         }
         else
         {
-          localFileStatus = VT.VT_FILE_TRANSFER_FILE_TYPE_UNKNOWN;
+          localFileStatus = VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER;
         }
       }
       else
@@ -704,7 +704,7 @@ public class VTFileTransferServerTransaction implements Runnable
           // getFileNameFromPath(localFilePath));
           // }
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_UNKNOWN)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
         {
           // session.getServer().getConnection().getResultWriter().write("\nVT>Local
           // file
@@ -734,7 +734,7 @@ public class VTFileTransferServerTransaction implements Runnable
           // verified = false;
           directory = true;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_UNKNOWN)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
         {
           // session.getServer().getConnection().getResultWriter().write("\nVT>Remote
           // file is of unknown type!\nVT>");
@@ -1095,7 +1095,7 @@ public class VTFileTransferServerTransaction implements Runnable
           // verified = false;
           directory = true;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_UNKNOWN)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
         {
           // session.getServer().getConnection().getResultWriter().write("\nVT>Local
           // file
@@ -1122,7 +1122,7 @@ public class VTFileTransferServerTransaction implements Runnable
           // getFileNameFromPath(remoteFilePath));
           // }
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_UNKNOWN)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
         {
           // session.getServer().getConnection().getResultWriter().write("\nVT>Remote
           // file is of unknown type!\nVT>");

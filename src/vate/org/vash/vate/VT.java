@@ -81,7 +81,7 @@ public class VT
   public static final int VT_FILE_TRANSFER_FILE_NOT_FOUND = 2;
   public static final int VT_FILE_TRANSFER_FILE_TYPE_NORMAL = 3;
   public static final int VT_FILE_TRANSFER_FILE_TYPE_DIRECTORY = 4;
-  public static final int VT_FILE_TRANSFER_FILE_TYPE_UNKNOWN = 5;
+  public static final int VT_FILE_TRANSFER_FILE_TYPE_ANOTHER = 5;
   public static final int VT_FILE_TRANSFER_FILE_ERROR = 6;
   public static final int VT_FILE_TRANSFER_FILE_ACCESS_DENIED = 7;
   public static final int VT_FILE_TRANSFER_FILE_ACCESS_READ_ONLY = 8;

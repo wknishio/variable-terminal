@@ -270,7 +270,7 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         else
         {
-          localFileStatus = VT.VT_FILE_TRANSFER_FILE_TYPE_UNKNOWN;
+          localFileStatus = VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER;
         }
       }
       else
@@ -709,7 +709,7 @@ public class VTFileTransferClientTransaction implements Runnable
         {
           directory = true;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_UNKNOWN)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
         {
           // VTConsole.print("\nVT>Local file for transfer is of
           // unknown type!\nVT>");
@@ -729,7 +729,7 @@ public class VTFileTransferClientTransaction implements Runnable
           // getFileNameFromPath(localFilePath));
           // }
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_UNKNOWN)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
         {
           // VTConsole.print("\nVT>Remote file for transfer is of
           // unknown type!\nVT>");
@@ -1081,7 +1081,7 @@ public class VTFileTransferClientTransaction implements Runnable
           // getFileNameFromPath(remoteFilePath));
           // }
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_UNKNOWN)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
         {
           // VTConsole.print("\nVT>Local file for transfer is of
           // unknown type!\nVT>");
@@ -1103,7 +1103,7 @@ public class VTFileTransferClientTransaction implements Runnable
         {
           directory = true;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_UNKNOWN)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
         {
           // VTConsole.print("\nVT>Remote file for transfer is of
           // unknown type!\nVT>");
