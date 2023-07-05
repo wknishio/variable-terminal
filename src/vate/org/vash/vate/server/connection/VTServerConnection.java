@@ -108,7 +108,6 @@ public class VTServerConnection
   private VTLinkableDynamicMultiplexedInputStream graphicsDeflatedImageInputStream;
   private VTLinkableDynamicMultiplexedInputStream graphicsSnappedImageInputStream;
   private VTLinkableDynamicMultiplexedInputStream graphicsClipboardInputStream;
-  private InputStream clipboardDataInputStream;
   // private VTLinkableDynamicMultiplexedInputStream audioInputStream;
   private VTLinkableDynamicMultiplexedInputStream audioDataInputStream;
   private VTLinkableDynamicMultiplexedInputStream audioControlInputStream;
@@ -126,7 +125,6 @@ public class VTServerConnection
   private VTLinkableDynamicMultiplexedOutputStream graphicsDeflatedImageOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream graphicsSnappedImageOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream graphicsClipboardOutputStream;
-  private OutputStream clipboardDataOutputStream;
   // private VTLinkableDynamicMultiplexedOutputStream audioOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream audioDataOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream audioControlOutputStream;
@@ -142,6 +140,9 @@ public class VTServerConnection
   private BufferedWriter resultWriter;
   private InputStream shellDataInputStream;
   private OutputStream shellDataOutputStream;
+  private InputStream clipboardDataInputStream;
+  private OutputStream clipboardDataOutputStream;
+  
   private VTLittleEndianInputStream fileTransferControlDataInputStream;
   private VTLittleEndianOutputStream fileTransferControlDataOutputStream;
   // private VTLittleEndianInputStream graphicsCheckDataInputStream;

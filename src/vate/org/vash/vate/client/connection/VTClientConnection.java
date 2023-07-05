@@ -107,7 +107,6 @@ public class VTClientConnection
   private VTLinkableDynamicMultiplexedInputStream graphicsDeflatedImageInputStream;
   private VTLinkableDynamicMultiplexedInputStream graphicsSnappedImageInputStream;
   private VTLinkableDynamicMultiplexedInputStream graphicsClipboardInputStream;
-  private InputStream clipboardDataInputStream;
   private VTLinkableDynamicMultiplexedInputStream audioDataInputStream;
   private VTLinkableDynamicMultiplexedInputStream audioControlInputStream;
   private VTLinkableDynamicMultiplexedInputStream pingInputStream;
@@ -124,7 +123,6 @@ public class VTClientConnection
   private VTLinkableDynamicMultiplexedOutputStream graphicsDeflatedImageOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream graphicsSnappedImageOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream graphicsClipboardOutputStream;
-  private OutputStream clipboardDataOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream audioDataOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream audioControlOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream pingOutputStream;
@@ -135,10 +133,14 @@ public class VTClientConnection
   // private VTLittleEndianOutputStream verificationWriter;
   private VTLittleEndianInputStream authenticationReader;
   private VTLittleEndianOutputStream authenticationWriter;
+  
   private Reader resultReader;
   private BufferedWriter commandWriter;
   private InputStream shellDataInputStream;
   private OutputStream shellDataOutputStream;
+  private InputStream clipboardDataInputStream;
+  private OutputStream clipboardDataOutputStream;
+  
   private VTLittleEndianInputStream fileTransferControlDataInputStream;
   private VTLittleEndianOutputStream fileTransferControlDataOutputStream;
   // private VTLittleEndianInputStream graphicsCheckDataInputStream;
