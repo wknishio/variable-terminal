@@ -38,7 +38,7 @@ public class VTServerGraphicsDeviceResolver extends VTTask
       if (devices != null && devices.length > 0)
       {
         int count = 0;
-        message.append("\nVT>List of graphical display devices on server:\nVT>");
+        message.append("\nVT>List of server graphical display devices:\nVT>");
         for (GraphicsDevice device : devices)
         {
           DisplayMode mode = device.getDisplayMode();
@@ -50,7 +50,7 @@ public class VTServerGraphicsDeviceResolver extends VTTask
           message.append("\nVT>Origin: [X:" + bounds.x + " Y:" + bounds.y + "]");
           message.append("\nVT>");
         }
-        message.append("\nVT>End of graphical display devices list\nVT>");
+        message.append("\nVT>End of server graphical display devices list\nVT>");
         synchronized (this)
         {
           session.getConnection().getResultWriter().write(message.toString());

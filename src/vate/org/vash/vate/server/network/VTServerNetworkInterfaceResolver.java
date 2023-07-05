@@ -53,7 +53,7 @@ public class VTServerNetworkInterfaceResolver extends VTTask
       Enumeration<NetworkInterface> networkInterfaces = NetworkInterface.getNetworkInterfaces();
       if (networkInterfaces != null && networkInterfaces.hasMoreElements())
       {
-        message.append("\nVT>List of network interfaces on server:\nVT>");
+        message.append("\nVT>List of server network interfaces:\nVT>");
         while (networkInterfaces.hasMoreElements())
         {
           NetworkInterface networkInterface = networkInterfaces.nextElement();
@@ -97,7 +97,7 @@ public class VTServerNetworkInterfaceResolver extends VTTask
           }
           message.append("\nVT>");
         }
-        message.append("\nVT>End of network interfaces list\nVT>");
+        message.append("\nVT>End of server network interfaces list\nVT>");
         synchronized (this)
         {
           session.getConnection().getResultWriter().write(message.toString());

@@ -35,7 +35,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       {
         encryptionPassword = new String(session.getServer().getServerConnector().getEncryptionKey(), "UTF-8");
       }
-      message.append("\nVT>List of connection settings on server:\nVT>");
+      message.append("\nVT>List of server connection settings:\nVT>");
       if (session.getServer().getServerConnector().isPassive())
       {
         message.append("\nVT>Connection mode(CM): [Passive]");
@@ -125,7 +125,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
       message.append("\nVT>Session shell(SS): [" + sessionShell + "]");
       message.append("\nVT>Session maximum(SM): [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]");
-      message.append("\nVT>\nVT>End of connection settings list on server\nVT>");
+      message.append("\nVT>\nVT>End of server connection settings list\nVT>");
       connection.getResultWriter().write(message.toString());
       connection.getResultWriter().flush();
       message.setLength(0);

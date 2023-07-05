@@ -51,13 +51,13 @@ public class VTServerPrintServiceResolver extends VTTask
         if (printServices.length > 0)
         {
           int i = 0;
-          message.append("\nVT>List of print services on server:\nVT>");
+          message.append("\nVT>List of server print services:\nVT>");
           for (PrintService printService : printServices)
           {
             message.append("\nVT>Number: [" + i++ + "]" + (defaultPrintService.getName().equals(printService.getName()) ? " (Default)" : "") + "\nVT>Name: [" + printService.getName() + "]");
             message.append("\nVT>");
           }
-          message.append("\nVT>End of print services list\nVT>");
+          message.append("\nVT>End of server print services list\nVT>");
           synchronized (this)
           {
             session.getConnection().getResultWriter().write(message.toString());
@@ -79,7 +79,7 @@ public class VTServerPrintServiceResolver extends VTTask
       {
         if (printServices.length > 0)
         {
-          message.append("\nVT>Print service details on server:\nVT>");
+          message.append("\nVT>Specific server print service details:\nVT>");
           PrintService printService = printServices[order];
           mimeSet.clear();
           message.append("\nVT>Number: [" + order + "]" + (defaultPrintService.getName().equals(printService.getName()) ? " (Default)" : "") + "\nVT>Name: [" + printService.getName() + "]");

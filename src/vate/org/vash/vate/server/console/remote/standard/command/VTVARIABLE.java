@@ -21,12 +21,12 @@ public class VTVARIABLE extends VTServerStandardRemoteConsoleCommandProcessor
     if (parsed.length == 1)
     {
       message.setLength(0);
-      message.append("\nVT>List of environment variables on server:\nVT>");
+      message.append("\nVT>List of server environment variables:\nVT>");
       for (Entry<String, String> variable : VTNativeUtils.getvirtualenv().entrySet())
       {
         message.append("\nVT>[" + variable.getKey() + "]=[" + variable.getValue() + "]");
       }
-      message.append("\nVT>\nVT>End of environment variables list\nVT>");
+      message.append("\nVT>\nVT>End of server environment variables list\nVT>");
       connection.getResultWriter().write(message.toString());
       connection.getResultWriter().flush();
     }

@@ -43,7 +43,7 @@ public class VTServerPrintServiceCapabilitiesResolver extends VTTask
       
       if (printServices.length > 0)
       {
-        message.append("\nVT>List of print service capabilites on server:\nVT>");
+        message.append("\nVT>List of server print service capabilites:\nVT>");
         PrintService printService = printServices[number];
         message.append("\nVT>Number: [" + number + "]" + (defaultPrintService.getName().equals(printService.getName()) ? " (Default)" : "") + "\nVT>Name: [" + printService.getName() + "]\nVT>");
 //				for (DocFlavor flavor : printService.getSupportedDocFlavors())
@@ -54,7 +54,7 @@ public class VTServerPrintServiceCapabilitiesResolver extends VTTask
 //					message.append("\nVT>Class: [" + flavor.getRepresentationClassName() + "]\nVT>");
 //				}
         message.append("\nVT>");
-        message.append("\nVT>End of print services capabilites list\nVT>");
+        message.append("\nVT>End of server print services capabilites list\nVT>");
         synchronized (this)
         {
           session.getConnection().getResultWriter().write(message.toString());

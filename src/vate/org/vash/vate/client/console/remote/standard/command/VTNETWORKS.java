@@ -48,7 +48,7 @@ public class VTNETWORKS extends VTClientStandardRemoteConsoleCommandProcessor
         message.setLength(0);
         Enumeration<NetworkInterface> networkInterfaces;
         networkInterfaces = NetworkInterface.getNetworkInterfaces();
-        message.append("\nVT>List of network interfaces on client:\nVT>");
+        message.append("\nVT>List of client network interfaces:\nVT>");
         if (networkInterfaces != null && networkInterfaces.hasMoreElements())
         {
           while (networkInterfaces.hasMoreElements())
@@ -93,7 +93,7 @@ public class VTNETWORKS extends VTClientStandardRemoteConsoleCommandProcessor
             }
             message.append("\nVT>");
           }
-          message.append("\nVT>End of network interfaces list\nVT>");
+          message.append("\nVT>End of client network interfaces list\nVT>");
         }
         else
         {
@@ -111,7 +111,7 @@ public class VTNETWORKS extends VTClientStandardRemoteConsoleCommandProcessor
       message.setLength(0);
       Enumeration<NetworkInterface> networkInterfaces;
       networkInterfaces = NetworkInterface.getNetworkInterfaces();
-      message.append("\nVT>List of network interfaces on client:\nVT>");
+      message.append("\nVT>List of client network interfaces:\nVT>");
       if (networkInterfaces != null && networkInterfaces.hasMoreElements())
       {
         while (networkInterfaces.hasMoreElements())
@@ -156,7 +156,7 @@ public class VTNETWORKS extends VTClientStandardRemoteConsoleCommandProcessor
           }
           message.append("\nVT>");
         }
-        message.append("\nVT>End of network interfaces list\nVT>");
+        message.append("\nVT>End of client network interfaces list\nVT>");
       }
       else
       {

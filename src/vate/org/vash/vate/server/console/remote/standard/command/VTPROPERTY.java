@@ -20,12 +20,12 @@ public class VTPROPERTY extends VTServerStandardRemoteConsoleCommandProcessor
     if (parsed.length == 1)
     {
       message.setLength(0);
-      message.append("\nVT>List of java properties on server:\nVT>");
+      message.append("\nVT>List of server java properties:\nVT>");
       for (Entry<Object, Object> property : System.getProperties().entrySet())
       {
         message.append("\nVT>[" + property.getKey().toString() + "]=[" + property.getValue().toString() + "]");
       }
-      message.append("\nVT>\nVT>End of java properties list\nVT>");
+      message.append("\nVT>\nVT>End of server java properties list\nVT>");
       connection.getResultWriter().write(message.toString());
       connection.getResultWriter().flush();
     }

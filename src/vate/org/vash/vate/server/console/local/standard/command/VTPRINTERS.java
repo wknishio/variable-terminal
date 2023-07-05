@@ -24,7 +24,7 @@ public class VTPRINTERS extends VTServerStandardLocalConsoleCommandProcessor
     if (printServices.length > 0)
     {
       int i = 0;
-      message.append("\rVT>List of print services on server:\nVT>");
+      message.append("\rVT>List of server print services:\nVT>");
       for (PrintService printService : printServices)
       {
         // message.append("\nVT>Name: [" +
@@ -36,7 +36,7 @@ public class VTPRINTERS extends VTServerStandardLocalConsoleCommandProcessor
          */
         message.append("\nVT>");
       }
-      message.append("\nVT>End of print services list\nVT>");
+      message.append("\nVT>End of server print services list\nVT>");
       
       VTConsole.print(message.toString());
     }

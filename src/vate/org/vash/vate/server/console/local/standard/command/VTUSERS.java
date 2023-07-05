@@ -24,7 +24,7 @@ public class VTUSERS extends VTServerStandardLocalConsoleCommandProcessor
     List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
     if (connections.size() > 0)
     {
-      message.append("\rVT>List of current client connections on server:\nVT>");
+      message.append("\rVT>List of client connections with server:\nVT>");
       for (VTServerConnectionHandler handler : connections.toArray(new VTServerConnectionHandler[] {}))
       {
         message.append("\nVT>Session Number: [" + i++ + "]");
@@ -36,7 +36,7 @@ public class VTUSERS extends VTServerStandardLocalConsoleCommandProcessor
           message.append("\nVT>Host address: [" + address.getHostAddress() + "]\nVT>");
         }
       }
-      message.append("\nVT>End of current client connections list\nVT>");
+      message.append("\nVT>End of client connections with server list\nVT>");
       VTConsole.print(message.toString());
     }
     else

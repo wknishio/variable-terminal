@@ -25,7 +25,7 @@ public class VTDISPLAYS extends VTServerStandardLocalConsoleCommandProcessor
     GraphicsDevice[] devices = VTGraphicalDeviceResolver.getRasterDevices();
     if (devices != null && devices.length > 0)
     {
-      message.append("\rVT>List of graphical display devices on server:\nVT>");
+      message.append("\rVT>List of server graphical display devices:\nVT>");
       for (GraphicsDevice device : devices)
       {
         DisplayMode mode = device.getDisplayMode();
@@ -37,7 +37,7 @@ public class VTDISPLAYS extends VTServerStandardLocalConsoleCommandProcessor
         message.append("\nVT>Origin: [X:" + bounds.x + " Y:" + bounds.y + "]");
         message.append("\nVT>");
       }
-      message.append("\nVT>End of graphical display devices list\nVT>");
+      message.append("\nVT>End of server graphical display devices list\nVT>");
     }
     else
     {

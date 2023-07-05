@@ -36,7 +36,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       {
         encryptionPassword = new String(server.getServerConnector().getEncryptionKey(), "UTF-8");
       }
-      message.append("\rVT>List of connection settings on server:\nVT>");
+      message.append("\rVT>List of server connection settings:\nVT>");
       
       if (server.getServerConnector().isPassive())
       {
@@ -126,7 +126,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
       message.append("\nVT>Session shell(SS): [" + sessionShell + "]");
       message.append("\nVT>Session maximum(SM): [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]");
-      message.append("\nVT>\nVT>End of connection settings list on server\nVT>");
+      message.append("\nVT>\nVT>End of server connection settings list\nVT>");
       VTConsole.print(message.toString());
       message.setLength(0);
     }

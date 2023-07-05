@@ -29,7 +29,7 @@ public class VTMIXERS extends VTClientStandardRemoteConsoleCommandProcessor
       else if (parsed[1].toUpperCase().startsWith("L"))
       {
         message.setLength(0);
-        message.append("\nVT>List of local audio mixers:\nVT>");
+        message.append("\nVT>List of client audio mixers:\nVT>");
         Mixer.Info[] mixers = AudioSystem.getMixerInfo();
         int number = 0;
         for (Mixer.Info info : mixers)
@@ -39,7 +39,7 @@ public class VTMIXERS extends VTClientStandardRemoteConsoleCommandProcessor
           message.append("\nVT>Description: [" + info.getDescription() + "]");
           message.append("\nVT>");
         }
-        message.append("\nVT>End of local audio mixers list\nVT>");
+        message.append("\nVT>End of client audio mixers list\nVT>");
         VTConsole.print(message.toString());
       }
       else
@@ -50,7 +50,7 @@ public class VTMIXERS extends VTClientStandardRemoteConsoleCommandProcessor
     else
     {
       message.setLength(0);
-      message.append("\nVT>List of local audio mixers:\nVT>");
+      message.append("\nVT>List of client audio mixers:\nVT>");
       Mixer.Info[] mixers = AudioSystem.getMixerInfo();
       int number = 0;
       for (Mixer.Info info : mixers)
@@ -60,7 +60,7 @@ public class VTMIXERS extends VTClientStandardRemoteConsoleCommandProcessor
         message.append("\nVT>Description: [" + info.getDescription() + "]");
         message.append("\nVT>");
       }
-      message.append("\nVT>End of local audio mixers list\nVT>");
+      message.append("\nVT>End of client audio mixers list\nVT>");
       VTConsole.print(message.toString());
       connection.getCommandWriter().write(command + "\n");
       connection.getCommandWriter().flush();

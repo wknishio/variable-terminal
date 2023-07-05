@@ -25,7 +25,7 @@ public class VTPING extends VTServerStandardLocalConsoleCommandProcessor
     List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
     if (connections.size() > 0)
     {
-      message.append("\rVT>List of current client connection latencies on server:\nVT>");
+      message.append("\rVT>List of client connection latencies with server:\nVT>");
       for (VTServerConnectionHandler handler : connections.toArray(new VTServerConnectionHandler[] {}))
       {
         try
@@ -53,7 +53,7 @@ public class VTPING extends VTServerStandardLocalConsoleCommandProcessor
           
         }
       }
-      message.append("\nVT>End of current client connection latencies list\nVT>");
+      message.append("\nVT>End of client connection latencies with server list\nVT>");
       VTConsole.print(message.toString());
     }
     else
