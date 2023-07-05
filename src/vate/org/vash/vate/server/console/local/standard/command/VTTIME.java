@@ -25,7 +25,7 @@ public class VTTIME extends VTServerStandardLocalConsoleCommandProcessor
   public void execute(String command, String[] parsed) throws Exception
   {
     clock.setTime(Calendar.getInstance().getTime());
-    VTConsole.print("\rVT>Date/time ([ER-Y-MM-DD][HH:MM:SS:MS-TZ]) on server:\nVT>[" + firstDateTimeFormat.format(clock.getTime()) + "-" + clock.get(GregorianCalendar.YEAR) + "-" + secondDateTimeFormat.format(clock.getTime()) + "\nVT>");
+    VTConsole.print("\rVT>Current server date/time ([ER-Y-MM-DD][HH:MM:SS:MS-TZ]):\nVT>[" + firstDateTimeFormat.format(clock.getTime()) + "-" + clock.get(GregorianCalendar.YEAR) + "-" + secondDateTimeFormat.format(clock.getTime()) + "\nVT>");
   }
   
   public void close()

@@ -37,7 +37,7 @@ public class VTServerSessionListViewer extends VTTask
       message.setLength(0);
       int i = 0;
       List<VTServerConnectionHandler> connections = session.getServer().getServerConnector().getConnectionHandlers();
-      message.append("\nVT>List of current client connections on server:\nVT>");
+      message.append("\nVT>List of client connections with server:\nVT>");
       for (VTServerConnectionHandler handler : connections.toArray(new VTServerConnectionHandler[] {}))
       {
         message.append("\nVT>Session Number: [" + i++ + "]");
@@ -55,7 +55,7 @@ public class VTServerSessionListViewer extends VTTask
           // "]\nVT>");
         }
       }
-      message.append("\nVT>End of current client connections list\nVT>");
+      message.append("\nVT>End of client connections with server list\nVT>");
       synchronized (this)
       {
         session.getConnection().getResultWriter().write(message.toString());
