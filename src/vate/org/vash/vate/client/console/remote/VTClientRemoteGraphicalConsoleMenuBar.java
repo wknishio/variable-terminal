@@ -156,7 +156,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     fileTransferMenu = new Menu("File Transfer ");
     remoteFileMenu = new Menu("Remote Files ");
     remoteFileCheckMenu = new Menu("Check Files ");
-    remoteFileModifyMenu = new Menu("Shift Files ");
+    remoteFileModifyMenu = new Menu("Alter Files ");
     // zipFileMenu = new Menu("Zip Files ");
     // zipFileLocalMenu = new Menu("Local Zip Files ");
     // zipFileRemoteMenu = new Menu("Remote Zip Files ");
