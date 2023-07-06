@@ -38,12 +38,12 @@ public class VTServerFileSystemRootsResolver extends VTTask
     {
       message.setLength(0);
       File[] roots = File.listRoots();
-      message.append("\nVT>List of file system roots on server:\nVT>");
+      message.append("\nVT>List of server file system roots:\nVT>");
       for (File root : roots)
       {
         message.append("\nVT>Canonical path: [" + root.getCanonicalPath() + "]");
       }
-      message.append("\nVT>\nVT>End of file system roots list\nVT>");
+      message.append("\nVT>\nVT>End of server file system roots list\nVT>");
       synchronized (this)
       {
         session.getConnection().getResultWriter().write(message.toString());

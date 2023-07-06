@@ -19,12 +19,12 @@ public class VTFILEROOTS extends VTServerStandardLocalConsoleCommandProcessor
   {
     message.setLength(0);
     File[] roots = File.listRoots();
-    message.append("\rVT>List of file system roots on server:\nVT>");
+    message.append("\rVT>List of server file system roots:\nVT>");
     for (File root : roots)
     {
       message.append("\nVT>Canonical path: [" + root.getCanonicalPath() + "]");
     }
-    message.append("\nVT>\nVT>End of file system roots list on server\nVT>");
+    message.append("\nVT>\nVT>End of server file system roots list\nVT>");
     VTConsole.print(message.toString());
   }
   
