@@ -94,7 +94,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   HTTP_INTERNALERROR = "500 Internal Server Error",
   HTTP_NOTIMPLEMENTED = "501 Not Implemented",
   HTTP_REQUEST_TIMEOUT = "408 Request Timeout";
-
+  
   public static final String HTTP_PROXY_AUTHENTICATION_REQUIRED = "407 Proxy Authentication Required";
   public static final String HTTP_PAYLOAD_TOO_LARGE = "413 Payload Too Large";
   
@@ -193,7 +193,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     {
       this.status = HTTP_OK;
     }
-
+    
     /**
      * Basic constructor.
      */
@@ -203,7 +203,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       this.mimeType = mimeType;
       this.data = data;
     }
-
+    
     /**
      * Convenience method that makes an InputStream out of
      * given text.
@@ -221,7 +221,7 @@ public class VTNanoHTTPDProxySession implements Runnable
         //uee.printStackTrace();
       }
     }
-
+    
     /**
      * Adds given line to the header.
      */
@@ -229,22 +229,22 @@ public class VTNanoHTTPDProxySession implements Runnable
     {
       headers.put( name, value );
     }
-
+    
     /**
      * HTTP status code after processing, e.g. "200 OK", HTTP_OK
      */
     public String status;
-
+    
     /**
      * MIME type of content, e.g. "text/html"
      */
     public String mimeType;
-
+    
     /**
      * Data of the response, may be null.
      */
     public InputStream data;
-
+    
     /**
      * Headers for the HTTP response. Use addHeader()
      * to add lines.
@@ -253,8 +253,6 @@ public class VTNanoHTTPDProxySession implements Runnable
     
     //public boolean keepConnection = false;
   }
- 
-  
   
   public VTNanoHTTPDProxySession( Socket s, InputStream in, String username, String password, VTDefaultProxy proxy, boolean digestAuthentication)
   {
@@ -276,7 +274,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       //InputStream is = mySocket.getInputStream();
       InputStream in = myIn;
       if ( in == null) return;
-
+      
       // Read the first 16384 bytes.
       // The full header should fit in here.
       // Apache's default header limit is 8KB.
@@ -320,7 +318,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       Properties parms = new VTConfigurationProperties();
       Properties headers = new VTConfigurationProperties();
       //Properties files = new VTConfigurationProperties();
-
+      
       // Decode the header into parms and header java properties
       long size = decodeHeader(hin, pre, parms, headers);
       
@@ -342,12 +340,11 @@ public class VTNanoHTTPDProxySession implements Runnable
         sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing URI in request." );
       }
       
-
       if (size == 0)
       {
         size = 0x7FFFFFFFFFFFFFFFL;
       }
-
+      
       // Write the part of body already read to ByteArrayOutputStream b
       ByteArrayOutputStream h = new ByteArrayOutputStream();
       ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -356,7 +353,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       {
         b.write(buf, splitbyte, rlen-splitbyte);
       }
-
+      
       h.write(buf, 0, splitbyte);
       
       // While Firefox sends on the first read all the data fitting
@@ -370,7 +367,7 @@ public class VTNanoHTTPDProxySession implements Runnable
         size -= rlen-splitbyte;
       else if (splitbyte==0 || size == 0x7FFFFFFFFFFFFFFFl)
         size = 0;
-
+      
       // this is a http proxy so maybe theres no need to read all body data
       
       // Now read all the body and write it to f
@@ -787,7 +784,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       }
     }
     return values;
-}
+  }
   
   private class SocketPipe implements Runnable
   {
@@ -865,7 +862,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       }
     }
   }
-
+  
   /**
    * Decodes the sent headers and loads the data into
    * java Properties' key - value pairs
@@ -883,19 +880,19 @@ public class VTNanoHTTPDProxySession implements Runnable
       StringTokenizer st = new StringTokenizer( inLine );
       if ( !st.hasMoreTokens())
         sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing method in request." );
-
+      
       String method = "";
       while (method.length() <= 0)
       {
         method = st.nextToken();
       }
       pre.put("method", method);
-
+      
       if ( !st.hasMoreTokens())
         sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing URI in request." );
-
+      
       String uri = st.nextToken();
-
+      
       // Decode parameters from the URI
       int qmi = uri.indexOf( '?' );
       if ( qmi >= 0 )
@@ -904,7 +901,7 @@ public class VTNanoHTTPDProxySession implements Runnable
         uri = decodePercent( uri.substring( 0, qmi ));
       }
       else uri = decodePercent(uri);
-
+      
       // If there's another token, it's protocol version,
       // followed by HTTP headers. Ignore version but parse headers.
       // NOTE: this now forces header names lowercase since they are
@@ -937,7 +934,6 @@ public class VTNanoHTTPDProxySession implements Runnable
           line = in.readLine();
         }
       }
-
       pre.put("uri", uri);
     }
     catch ( IOException ioe )
@@ -946,7 +942,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     return contentLength;
   }
-
+  
   /**
    * Find byte index separating header from body.
    * It must be the last byte of the first two sequential new lines.
@@ -962,7 +958,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     return 0;
   }
-
+  
   /**
    * Decodes the percent encoding scheme. <br/>
    * For example: "an+example%20string" -> "an example string"
@@ -990,7 +986,7 @@ public class VTNanoHTTPDProxySession implements Runnable
             break;
         }
       }
-
+      
       return new String( baos.toByteArray(), "UTF-8");
     }
     catch( Exception e )
@@ -999,7 +995,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       return null;
     }
   }
-
+  
   /**
    * Decodes parameters in percent-encoded URI-format
    * ( e.g. "name=Jack%20Daniels&pass=Single%20Malt" ) and
@@ -1013,7 +1009,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   {
     if ( parms == null )
       return;
-
+    
     StringTokenizer st = new StringTokenizer( parms, "&" );
     while ( st.hasMoreTokens())
     {
@@ -1026,7 +1022,7 @@ public class VTNanoHTTPDProxySession implements Runnable
         p.put( decodePercent( e ).trim(), "" );
     }
   }
-
+  
   private void sendError( String status, String msg ) throws InterruptedException, UnsupportedEncodingException
   {
     sendResponse( status, MIME_PLAINTEXT, null, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")));
@@ -1043,7 +1039,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   {
     sendResponse( status, MIME_PLAINTEXT, null, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")));
   }
-
+  
   /**
    * Sends given response to the socket.
    */
@@ -1053,17 +1049,17 @@ public class VTNanoHTTPDProxySession implements Runnable
     {
       if ( status == null )
         throw new Error( "sendResponse(): Status can't be null." );
-
+      
       OutputStream out = mySocket.getOutputStream();
       PrintWriter pw = new PrintWriter( new OutputStreamWriter(out, "ISO-8859-1") );
       pw.print("HTTP/1.1 " + status + " \r\n");
-
+      
       if ( mime != null && mime.length() > 0)
         pw.print("Content-Type: " + mime + "\r\n");
-
+      
       if ( header == null || header.getProperty( "Date" ) == null )
         pw.print( "Date: " + gmtFrmt.format( new Date()) + "\r\n");
-
+      
       if ( header != null )
       {
         Enumeration<?> e = header.keys();
@@ -1074,10 +1070,10 @@ public class VTNanoHTTPDProxySession implements Runnable
           pw.print( key + ": " + value + "\r\n");
         }
       }
-
+      
       pw.print("\r\n");
       pw.flush();
-
+      
       if ( data != null )
       {
         int pending = data.available(); // This is to support partial sends, see serveFile()
@@ -1103,7 +1099,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       try { mySocket.close(); } catch( Throwable t ) {}
     }
   }
-
+  
   private Socket mySocket;
   private InputStream myIn;
   private String username;
@@ -1148,4 +1144,3 @@ public class VTNanoHTTPDProxySession implements Runnable
     "(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\n"+
     "OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.";
 }
-

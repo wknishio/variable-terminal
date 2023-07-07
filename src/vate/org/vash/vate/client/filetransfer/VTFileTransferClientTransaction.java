@@ -82,7 +82,7 @@ public class VTFileTransferClientTransaction implements Runnable
   private InputStream fileTransferFileInputStream;
   private OutputStream fileTransferFileOutputStream;
   private VTFileTransferClientSession session;
-  private Comparator<File> comparator = new VTFileTransferSorter();
+  private Comparator<File> fileSorter = new VTFileTransferSorter();
    
   public VTFileTransferClientTransaction(VTFileTransferClientSession session)
   {
@@ -894,7 +894,7 @@ public class VTFileTransferClientTransaction implements Runnable
       else
       {
         File[] subFiles = fileTransferFile.listFiles();
-        Arrays.sort(subFiles, comparator);
+        Arrays.sort(subFiles, fileSorter);
         String[] subPaths = new String[subFiles.length];
         int i = 0;
         for (File file : subFiles)

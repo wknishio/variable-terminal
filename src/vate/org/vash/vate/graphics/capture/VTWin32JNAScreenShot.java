@@ -10,8 +10,6 @@ import java.awt.image.DirectColorModel;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 
-import org.vash.vate.graphics.image.VTImageDataUtils;
-
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.WinDef.HBITMAP;
@@ -24,6 +22,21 @@ import com.sun.jna.platform.win32.WinNT.HANDLE;
 
 public class VTWin32JNAScreenShot
 {
+  private static final int DCM_RGB_MASK = 0x00ffffff;
+  
+  private static final int DCM_555_RED_MASK = 0x7C00;
+  private static final int DCM_555_GRN_MASK = 0x03E0;
+  private static final int DCM_555_BLU_MASK = 0x001F;
+  
+  public static final void convertRGB555ToRGB888(short[] pixelShort, int[] pixelInt, int size)
+  {
+    int i = 0;
+    for (i = 0; i < size; i++)
+    {
+      pixelInt[i] = ((pixelShort[i] & DCM_555_RED_MASK >> 10) << 3 | (pixelShort[i] & DCM_555_GRN_MASK >> 5) << 3 | (pixelShort[i] & DCM_555_BLU_MASK) << 3) & DCM_RGB_MASK;
+    }
+  }
+  
   public static boolean getPixelData(int x, int y, int width, int height, int[] pixelInt, short[] pixelShort)
   {
     boolean ok = false;
@@ -85,7 +98,7 @@ public class VTWin32JNAScreenShot
       case 16:
       {
         ok = GDI.GetDIBits(blitDC, outputBitmap, 0, height, pixelShort, bi, 0);
-        VTImageDataUtils.convertRGB555ToRGB888(pixelShort, pixelInt, width * height);
+        convertRGB555ToRGB888(pixelShort, pixelInt, width * height);
         break;
       }
       case 32:
