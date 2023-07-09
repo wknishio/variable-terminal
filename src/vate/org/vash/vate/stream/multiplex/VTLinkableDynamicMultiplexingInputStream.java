@@ -75,7 +75,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       return stream;
     }
     // search for a multiplexed outputstream that has no link
-    for (int i = 0; i < Integer.MAX_VALUE && i >= 0; i++)
+    for (int i = 0; i < 16777215 && i >= 0; i++)
     {
       stream = getInputStream(type, i);
       if (stream.getLink() == null)
@@ -220,9 +220,9 @@ public final class VTLinkableDynamicMultiplexingInputStream
   {
     readed = 0;
     copied = 0;
-    type = in.readUnsignedShort();
-    channel = in.readInt();
-    length = in.readShort();
+    type = in.readByte();
+    channel = in.readSubInt();
+    length = in.readInt();
     if (length > 0)
     {
       remaining = length;
