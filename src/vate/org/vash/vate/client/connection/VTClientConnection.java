@@ -522,6 +522,15 @@ public class VTClientConnection
       {
         
       }
+      try
+      {
+        VTConsole.setLogOutput(null);
+        VTConsole.setLogReadLine(null);
+      }
+      catch (Throwable t)
+      {
+        
+      }
     }
     connected = false;
     synchronized (this)
