@@ -426,7 +426,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       int result = checkProxyAuthenticatedDigest(headers, method, username, password, "Proxy");
       if (result != 0)
       {
-        requireProxyAuthenticationDigest("Proxy", generateNOnce("Proxy", username, password), result == -2);
+        requireProxyAuthenticationDigest("Proxy", generateNonce("Proxy", username, password), result == -2);
       }
     }
     else
@@ -521,7 +521,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     
     String userName = values.get("username");
     String realmName = values.get("realm");
-    String nOnce = values.get("nonce");
+    String nonce = values.get("nonce");
     String nc = values.get("nc");
     String cnonce = values.get("cnonce");
     String qop = values.get("qop");
@@ -534,7 +534,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     String a1 = userName + ":" + realmName + ":" + password;
     String md5a1 = DigestUtils.md5Hex(a1.getBytes("ISO-8859-1"));
     
-    String serverDigestValue = md5a1 + ":" + nOnce + ":" + nc + ":" + cnonce + ":" + qop + ":" + md5a2;
+    String serverDigestValue = md5a1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + qop + ":" + md5a2;
     
     String serverDigest = DigestUtils.md5Hex(serverDigestValue.getBytes("ISO-8859-1"));
     String clientDigest = response;
@@ -566,12 +566,12 @@ public class VTNanoHTTPDProxySession implements Runnable
     return -1;
   }
   
-  private void requireProxyAuthenticationDigest(String realm, String nOnce, boolean stale) throws UnsupportedEncodingException, InterruptedException
+  private void requireProxyAuthenticationDigest(String realm, String nonce, boolean stale) throws UnsupportedEncodingException, InterruptedException
   {
     Response resp = new Response();
     resp.headers.put("Proxy-Authenticate", "Digest realm=\"" + realm + "\", "
-        +  "qop=\"auth\", nonce=\"" + nOnce + "\", " + "opaque=\""
-        + DigestUtils.md5Hex(nOnce.getBytes("ISO-8859-1")) + "\"" + (stale ? ", stale=\"true\"" : ""));
+        +  "qop=\"auth\", nonce=\"" + nonce + "\", " + "opaque=\""
+        + DigestUtils.md5Hex(nonce.getBytes("ISO-8859-1")) + "\"" + (stale ? ", stale=\"true\"" : ""));
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
     sendError(resp.status, MIME_PLAINTEXT, resp.headers, null);
   }
@@ -745,15 +745,15 @@ public class VTNanoHTTPDProxySession implements Runnable
     return removeQuotes(quotedString, false);
   }
   
-  protected String generateNOnce(String realm, String username, String password) throws UnsupportedEncodingException
+  protected String generateNonce(String realm, String username, String password) throws UnsupportedEncodingException
   {
     long currentTime = System.currentTimeMillis();
     
-    String nOnceValue = username + ":" + password + ":" + currentTime + ":" + realm;
-    nOnceValue = DigestUtils.md5Hex(nOnceValue.getBytes("ISO-8859-1"));
+    String nonceValue = username + ":" + password + ":" + currentTime + ":" + realm;
+    nonceValue = DigestUtils.md5Hex(nonceValue.getBytes("ISO-8859-1"));
     
     //VALID_DIGEST_NONCES.put(nOnceValue, currentTime + (1000 * 300));
-    return nOnceValue;
+    return nonceValue;
   }
   
   private boolean searchHeaderIgnoreCase(String searchedHeader, Properties headers)
