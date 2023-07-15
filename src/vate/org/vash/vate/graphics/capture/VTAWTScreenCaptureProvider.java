@@ -3281,6 +3281,7 @@ public final class VTAWTScreenCaptureProvider
       else
       {
         sectionCurrentImageGrayscaleGraphics.drawImage(screenCapture, 0, 0, null);
+        screenCapture.flush();
         screenCapture = sectionCurrentImageGrayscale;
       }
     }
