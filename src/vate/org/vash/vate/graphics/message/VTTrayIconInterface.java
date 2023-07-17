@@ -7,7 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.lang.reflect.Method;
 
-import org.vash.vate.runtime.VTExit;
+import org.vash.vate.runtime.VTRuntimeExit;
 
 public class VTTrayIconInterface
 {
@@ -213,7 +213,7 @@ public class VTTrayIconInterface
 //			systemTray.add(trayIcon);
       // displayMessage.setAccessible(true);
       // remove.setAccessible(true);
-      VTExit.installHook(hook);
+      VTRuntimeExit.installHook(hook);
     }
     catch (Throwable t)
     {

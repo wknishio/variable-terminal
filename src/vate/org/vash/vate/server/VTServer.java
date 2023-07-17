@@ -22,7 +22,7 @@ import org.vash.vate.graphics.message.VTTrayIconInterface;
 import org.vash.vate.parser.VTArgumentParser;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
-import org.vash.vate.runtime.VTExit;
+import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.security.VTBlake3DigestRandom;
 import org.vash.vate.server.connection.VTServerConnector;
 import org.vash.vate.server.console.local.VTServerLocalConsoleReader;
@@ -1289,7 +1289,7 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-          VTExit.exit(0);
+          VTRuntimeExit.exit(0);
         }
       }
       else
@@ -1328,7 +1328,7 @@ public class VTServer implements Runnable
         String line = VTConsole.readLine(true);
         if (line == null)
         {
-          VTExit.exit(0);
+          VTRuntimeExit.exit(0);
         }
         else if (skipConfiguration)
         {
@@ -1354,7 +1354,7 @@ public class VTServer implements Runnable
             String line = VTConsole.readLine(true);
             if (line == null || line.toUpperCase().startsWith("N"))
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1364,7 +1364,7 @@ public class VTServer implements Runnable
             String user = VTConsole.readLine(false);
             if (user == null)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1374,7 +1374,7 @@ public class VTServer implements Runnable
             String password = VTConsole.readLine(false);
             if (password == null)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1391,7 +1391,7 @@ public class VTServer implements Runnable
           }
           catch (Throwable e)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
           }
         }
         else
@@ -1413,7 +1413,7 @@ public class VTServer implements Runnable
         String line = VTConsole.readLine(true);
         if (line == null)
         {
-          VTExit.exit(0);
+          VTRuntimeExit.exit(0);
         }
         else if (skipConfiguration)
         {
@@ -1426,7 +1426,7 @@ public class VTServer implements Runnable
           line = VTConsole.readLine(true);
           if (line == null)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1437,7 +1437,7 @@ public class VTServer implements Runnable
           line = VTConsole.readLine(true);
           if (line == null)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1464,7 +1464,7 @@ public class VTServer implements Runnable
               line = VTConsole.readLine(true);
               if (line == null)
               {
-                VTExit.exit(0);
+                VTRuntimeExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1476,7 +1476,7 @@ public class VTServer implements Runnable
                 line = VTConsole.readLine(true);
                 if (line == null)
                 {
-                  VTExit.exit(0);
+                  VTRuntimeExit.exit(0);
                 }
                 else if (skipConfiguration)
                 {
@@ -1494,7 +1494,7 @@ public class VTServer implements Runnable
                 line = VTConsole.readLine(true);
                 if (line == null)
                 {
-                  VTExit.exit(0);
+                  VTRuntimeExit.exit(0);
                 }
                 else if (skipConfiguration)
                 {
@@ -1507,7 +1507,7 @@ public class VTServer implements Runnable
                   line = VTConsole.readLine(true);
                   if (line == null)
                   {
-                    VTExit.exit(0);
+                    VTRuntimeExit.exit(0);
                   }
                   else if (skipConfiguration)
                   {
@@ -1528,7 +1528,7 @@ public class VTServer implements Runnable
                   line = VTConsole.readLine(true);
                   if (line == null)
                   {
-                    VTExit.exit(0);
+                    VTRuntimeExit.exit(0);
                   }
                   else if (skipConfiguration)
                   {
@@ -1556,7 +1556,7 @@ public class VTServer implements Runnable
                   line = VTConsole.readLine(true);
                   if (line == null)
                   {
-                    VTExit.exit(0);
+                    VTRuntimeExit.exit(0);
                   }
                   else if (skipConfiguration)
                   {
@@ -1569,7 +1569,7 @@ public class VTServer implements Runnable
                     line = VTConsole.readLine(false);
                     if (line == null)
                     {
-                      VTExit.exit(0);
+                      VTRuntimeExit.exit(0);
                     }
                     else if (skipConfiguration)
                     {
@@ -1580,7 +1580,7 @@ public class VTServer implements Runnable
                     line = VTConsole.readLine(false);
                     if (line == null)
                     {
-                      VTExit.exit(0);
+                      VTRuntimeExit.exit(0);
                     }
                     else if (skipConfiguration)
                     {
@@ -1611,7 +1611,7 @@ public class VTServer implements Runnable
             line = VTConsole.readLine(true);
             if (line == null)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1623,7 +1623,7 @@ public class VTServer implements Runnable
               line = VTConsole.readLine(false);
               if (line == null)
               {
-                VTExit.exit(0);
+                VTRuntimeExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1658,7 +1658,7 @@ public class VTServer implements Runnable
               line = VTConsole.readLine(false);
               if (line == null)
               {
-                VTExit.exit(0);
+                VTRuntimeExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1681,7 +1681,7 @@ public class VTServer implements Runnable
           line = VTConsole.readLine(true);
           if (line == null)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1692,7 +1692,7 @@ public class VTServer implements Runnable
           line = VTConsole.readLine(true);
           if (line == null)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1718,7 +1718,7 @@ public class VTServer implements Runnable
             line = VTConsole.readLine(true);
             if (line == null)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1730,7 +1730,7 @@ public class VTServer implements Runnable
               line = VTConsole.readLine(true);
               if (line == null)
               {
-                VTExit.exit(0);
+                VTRuntimeExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1755,7 +1755,7 @@ public class VTServer implements Runnable
             line = VTConsole.readLine(true);
             if (line == null)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1767,7 +1767,7 @@ public class VTServer implements Runnable
               line = VTConsole.readLine(false);
               if (line == null)
               {
-                VTExit.exit(0);
+                VTRuntimeExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1802,7 +1802,7 @@ public class VTServer implements Runnable
               line = VTConsole.readLine(false);
               if (line == null)
               {
-                VTExit.exit(0);
+                VTRuntimeExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1818,7 +1818,7 @@ public class VTServer implements Runnable
             line = VTConsole.readLine(false);
             if (line == null)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1831,7 +1831,7 @@ public class VTServer implements Runnable
               line = VTConsole.readLine(true);
               if (line == null)
               {
-                VTExit.exit(0);
+                VTRuntimeExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1884,7 +1884,7 @@ public class VTServer implements Runnable
           String line = VTConsole.readLine(true);
           if (line == null || !line.toUpperCase().startsWith("Y"))
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1893,7 +1893,7 @@ public class VTServer implements Runnable
         }
         catch (Throwable e)
         {
-          VTExit.exit(0);
+          VTRuntimeExit.exit(0);
         }
       }
     }

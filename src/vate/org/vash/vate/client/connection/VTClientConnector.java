@@ -14,7 +14,7 @@ import org.vash.vate.client.session.VTClientSessionListener;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.network.nat.mapping.VTNATPortMappingResultNotify;
 import org.vash.vate.network.nat.mapping.VTNATSinglePortMappingManagerMKII;
-import org.vash.vate.runtime.VTExit;
+import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.security.VTBlake3DigestRandom;
 import org.vash.vate.socket.VTDefaultProxy;
 import org.vash.vate.socket.VTDefaultProxyAuthenticator;
@@ -852,7 +852,7 @@ public class VTClientConnector implements Runnable
       String line = VTConsole.readLine(true);
       if (line == null)
       {
-        VTExit.exit(0);
+        VTRuntimeExit.exit(0);
         return false;
       }
       else if (skipConfiguration)
@@ -861,7 +861,7 @@ public class VTClientConnector implements Runnable
       }
       if (line.toUpperCase().startsWith("N"))
       {
-        VTExit.exit(0);
+        VTRuntimeExit.exit(0);
         return false;
       }
 //      if (client.getInputMenuBar() != null)
@@ -895,7 +895,7 @@ public class VTClientConnector implements Runnable
       line = VTConsole.readLine(true);
       if (line == null)
       {
-        VTExit.exit(0);
+        VTRuntimeExit.exit(0);
         return false;
       }
       else if (skipConfiguration)
@@ -908,7 +908,7 @@ public class VTClientConnector implements Runnable
         line = VTConsole.readLine(true);
         if (line == null)
         {
-          VTExit.exit(0);
+          VTRuntimeExit.exit(0);
           return false;
         }
         else if (skipConfiguration)
@@ -926,7 +926,7 @@ public class VTClientConnector implements Runnable
           String shell = VTConsole.readLine(true);
           if (shell == null)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -937,7 +937,7 @@ public class VTClientConnector implements Runnable
           String user = VTConsole.readLine(false);
           if (user == null)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
             return false;
           }
           else if (skipConfiguration)
@@ -949,7 +949,7 @@ public class VTClientConnector implements Runnable
           String password = VTConsole.readLine(false);
           if (password == null)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
             return false;
           }
           else if (skipConfiguration)
@@ -969,7 +969,7 @@ public class VTClientConnector implements Runnable
           line = VTConsole.readLine(true);
           if (line == null)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -990,7 +990,7 @@ public class VTClientConnector implements Runnable
       line = VTConsole.readLine(true);
       if (line == null)
       {
-        VTExit.exit(0);
+        VTRuntimeExit.exit(0);
         return false;
       }
       else if (skipConfiguration)
@@ -1004,7 +1004,7 @@ public class VTClientConnector implements Runnable
         line = VTConsole.readLine(true);
         if (line == null)
         {
-          VTExit.exit(0);
+          VTRuntimeExit.exit(0);
           return false;
         }
         else if (skipConfiguration)
@@ -1016,7 +1016,7 @@ public class VTClientConnector implements Runnable
         line = VTConsole.readLine(true);
         if (line == null)
         {
-          VTExit.exit(0);
+          VTRuntimeExit.exit(0);
           return false;
         }
         else if (skipConfiguration)
@@ -1042,7 +1042,7 @@ public class VTClientConnector implements Runnable
           line = VTConsole.readLine(true);
           if (line == null)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1054,7 +1054,7 @@ public class VTClientConnector implements Runnable
             line = VTConsole.readLine(true);
             if (line == null)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1079,7 +1079,7 @@ public class VTClientConnector implements Runnable
           line = VTConsole.readLine(true);
           if (line == null)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1091,7 +1091,7 @@ public class VTClientConnector implements Runnable
             line = VTConsole.readLine(false);
             if (line == null)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1126,7 +1126,7 @@ public class VTClientConnector implements Runnable
             line = VTConsole.readLine(false);
             if (line == null)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1147,7 +1147,7 @@ public class VTClientConnector implements Runnable
         line = VTConsole.readLine(true);
         if (line == null)
         {
-          VTExit.exit(0);
+          VTRuntimeExit.exit(0);
           return false;
         }
         else if (skipConfiguration)
@@ -1159,7 +1159,7 @@ public class VTClientConnector implements Runnable
         line = VTConsole.readLine(true);
         if (line == null)
         {
-          VTExit.exit(0);
+          VTRuntimeExit.exit(0);
           return false;
         }
         else if (skipConfiguration)
@@ -1183,7 +1183,7 @@ public class VTClientConnector implements Runnable
         line = VTConsole.readLine(true);
         if (line == null)
         {
-          VTExit.exit(0);
+          VTRuntimeExit.exit(0);
         }
         else if (skipConfiguration)
         {
@@ -1195,7 +1195,7 @@ public class VTClientConnector implements Runnable
           line = VTConsole.readLine(false);
           if (line == null)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1230,7 +1230,7 @@ public class VTClientConnector implements Runnable
           line = VTConsole.readLine(false);
           if (line == null)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1246,7 +1246,7 @@ public class VTClientConnector implements Runnable
         line = VTConsole.readLine(true);
         if (line == null)
         {
-          VTExit.exit(0);
+          VTRuntimeExit.exit(0);
         }
         else if (skipConfiguration)
         {
@@ -1258,7 +1258,7 @@ public class VTClientConnector implements Runnable
           line = VTConsole.readLine(true);
           if (line == null)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1276,7 +1276,7 @@ public class VTClientConnector implements Runnable
           line = VTConsole.readLine(true);
           if (line == null)
           {
-            VTExit.exit(0);
+            VTRuntimeExit.exit(0);
           }
           else if (skipConfiguration)
           {
@@ -1289,7 +1289,7 @@ public class VTClientConnector implements Runnable
             line = VTConsole.readLine(true);
             if (line == null)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1310,7 +1310,7 @@ public class VTClientConnector implements Runnable
             line = VTConsole.readLine(true);
             if (line == null)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1338,7 +1338,7 @@ public class VTClientConnector implements Runnable
             line = VTConsole.readLine(true);
             if (line == null)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             else if (skipConfiguration)
             {
@@ -1351,7 +1351,7 @@ public class VTClientConnector implements Runnable
               line = VTConsole.readLine(false);
               if (line == null)
               {
-                VTExit.exit(0);
+                VTRuntimeExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1362,7 +1362,7 @@ public class VTClientConnector implements Runnable
               line = VTConsole.readLine(false);
               if (line == null)
               {
-                VTExit.exit(0);
+                VTRuntimeExit.exit(0);
               }
               else if (skipConfiguration)
               {
@@ -1393,7 +1393,7 @@ public class VTClientConnector implements Runnable
       line = VTConsole.readLine(true);
       if (line == null)
       {
-        VTExit.exit(0);
+        VTRuntimeExit.exit(0);
         return false;
       }
       else if (skipConfiguration)
@@ -1411,7 +1411,7 @@ public class VTClientConnector implements Runnable
         String shell = VTConsole.readLine(true);
         if (shell == null)
         {
-          VTExit.exit(0);
+          VTRuntimeExit.exit(0);
         }
         else if (skipConfiguration)
         {
@@ -1422,7 +1422,7 @@ public class VTClientConnector implements Runnable
         String user = VTConsole.readLine(false);
         if (user == null)
         {
-          VTExit.exit(0);
+          VTRuntimeExit.exit(0);
           return false;
         }
         else if (skipConfiguration)
@@ -1434,7 +1434,7 @@ public class VTClientConnector implements Runnable
         String password = VTConsole.readLine(false);
         if (password == null)
         {
-          VTExit.exit(0);
+          VTRuntimeExit.exit(0);
           return false;
         }
         else if (skipConfiguration)
@@ -1448,7 +1448,7 @@ public class VTClientConnector implements Runnable
       String commands = VTConsole.readLine(true);
       if (commands == null)
       {
-        VTExit.exit(0);
+        VTRuntimeExit.exit(0);
       }
       else if (skipConfiguration)
       {

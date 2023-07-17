@@ -2,7 +2,7 @@ package org.vash.vate.client.startup;
 
 import org.vash.vate.client.VTClient;
 import org.vash.vate.console.VTConsole;
-import org.vash.vate.runtime.VTExit;
+import org.vash.vate.runtime.VTRuntimeExit;
 
 public class VTClientAgentStandardStart
 {
@@ -24,7 +24,7 @@ public class VTClientAgentStandardStart
       }
       catch (Throwable e)
       {
-        VTExit.exit(-1);
+        VTRuntimeExit.exit(-1);
       }
       // client.initialize();
       client.start();

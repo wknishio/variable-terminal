@@ -1,7 +1,7 @@
 package org.vash.vate.server.startup;
 
 import org.vash.vate.console.VTConsole;
-import org.vash.vate.runtime.VTExit;
+import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.server.VTServer;
 
 public class VTServerDaemonGraphicalStart
@@ -24,7 +24,7 @@ public class VTServerDaemonGraphicalStart
       }
       catch (Throwable e)
       {
-        VTExit.exit(-1);
+        VTRuntimeExit.exit(-1);
       }
       // server.initialize();
       server.start();

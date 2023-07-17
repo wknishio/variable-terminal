@@ -1,7 +1,7 @@
 package org.vash.vate.runtime.launcher;
 
 import org.vash.vate.console.standard.VTStandardConsoleInterruptibleInputStreamByte;
-import org.vash.vate.runtime.VTExit;
+import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.runtime.VTRuntimeProcessInputRedirector;
 
 public class VTArgumentsRuntimeLauncherDaemon
@@ -35,6 +35,6 @@ public class VTArgumentsRuntimeLauncherDaemon
     {
       
     }
-    VTExit.exit(0);
+    VTRuntimeExit.exit(0);
   }
 }

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.vash.vate.console.VTConsole;
-import org.vash.vate.runtime.VTExit;
+import org.vash.vate.runtime.VTRuntimeExit;
 
 public class VTGraphicalConsoleReader
 {
@@ -303,7 +303,7 @@ public class VTGraphicalConsoleReader
             currentThread = null;
             if (!VTGraphicalConsole.ignoreClose)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             return null;
             // VTExit.exit(0);
@@ -525,7 +525,7 @@ public class VTGraphicalConsoleReader
             currentThread = null;
             if (!VTGraphicalConsole.ignoreClose)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
             }
             return null;
             // VTExit.exit(0);

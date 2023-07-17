@@ -4,7 +4,7 @@ import org.vash.vate.VT;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.help.VTHelpManager;
-import org.vash.vate.runtime.VTExit;
+import org.vash.vate.runtime.VTRuntimeExit;
 
 public class VTClientStandardStart
 {
@@ -48,7 +48,7 @@ public class VTClientStandardStart
             
           }
         }
-        VTExit.exit(0);
+        VTRuntimeExit.exit(0);
       }
       VTConsole.setDaemon(daemon);
       VTClient client = new VTClient();
@@ -58,7 +58,7 @@ public class VTClientStandardStart
       }
       catch (Throwable e)
       {
-        VTExit.exit(-1);
+        VTRuntimeExit.exit(-1);
       }
       // client.initialize();
       client.setDaemon(daemon);

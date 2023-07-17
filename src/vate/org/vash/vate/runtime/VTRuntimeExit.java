@@ -1,12 +1,12 @@
 package org.vash.vate.runtime;
 
-public class VTExit
+public class VTRuntimeExit
 {
   private static Runnable hook;
   
   public static void installHook(Runnable hook)
   {
-    VTExit.hook = hook;
+    VTRuntimeExit.hook = hook;
   }
   
   public static void exit(int status)

@@ -45,7 +45,7 @@ import org.vash.vate.console.lanterna.separated.VTLanternaTextBoxModified.Defaul
 import org.vash.vate.console.lanterna.separated.VTLanternaTextBoxModified.Style;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.nativeutils.VTNativeUtils;
-import org.vash.vate.runtime.VTExit;
+import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
@@ -223,7 +223,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         console.getFrame().setExtendedState(Frame.ICONIFIED);
         return;
       }
-      VTExit.exit(0);
+      VTRuntimeExit.exit(0);
     }
     
     public void windowDeactivated(WindowEvent e)
@@ -1343,7 +1343,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
           {
             if (!ignoreClose)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
               return false;
             }
           }
@@ -1351,7 +1351,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
           {
             if (!ignoreClose)
             {
-              VTExit.exit(0);
+              VTRuntimeExit.exit(0);
               return false;
             }
           }
@@ -1361,7 +1361,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
             {
               if (!ignoreClose)
               {
-                VTExit.exit(0);
+                VTRuntimeExit.exit(0);
                 return false;
               }
             }
@@ -1369,7 +1369,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
             {
               if (!ignoreClose)
               {
-                VTExit.exit(0);
+                VTRuntimeExit.exit(0);
                 return false;
               }
             }
