@@ -21,9 +21,9 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
   {
     if (parsed.length >= 2)
     {
-      if (parsed[1].toUpperCase().contains("O"))
+      if (parsed[1].toUpperCase().contains("R"))
       {
-        connection.getResultWriter().write("\nVT>Opening remote shell!\nVT>");
+        connection.getResultWriter().write("\nVT>Starting remote shell!\nVT>");
         connection.getResultWriter().flush();
         // session.setRestartingShell(true);
         session.restartShell();
@@ -37,9 +37,9 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
         session.setShellBuilder(new String[] {}, null, null);
         // session.restartShell();
       }
-      else if (parsed[1].toUpperCase().contains("R"))
+      else if (parsed[1].toUpperCase().contains("D"))
       {
-        connection.getResultWriter().write("\nVT>Resetting remote shell to: [Default]");
+        connection.getResultWriter().write("\nVT>Setting remote shell command to: [Default]");
         connection.getResultWriter().flush();
         session.setShellBuilder(null, null, null);
         session.restartShell();
@@ -58,13 +58,13 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
 //        session.setShellType(VTShellProcessor.SHELL_TYPE_GROOVYSH);
 //        session.restartShell();
 //      }
-      else if (parsed[1].toUpperCase().contains("C"))
+      else if (parsed[1].toUpperCase().contains("S"))
       {
         synchronized (session.getShellExitListener())
         {
           if (!session.getShellExitListener().isStopped() && session.getShellExitListener().aliveThread())
           {
-            connection.getResultWriter().write("\nVT>Closing remote shell!\nVT>");
+            connection.getResultWriter().write("\nVT>Stopping remote shell!\nVT>");
             connection.getResultWriter().flush();
             session.setStoppingShell(true);
             session.stopShell();
@@ -72,14 +72,14 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Remote shell already closed!\nVT>");
+            connection.getResultWriter().write("\nVT>Remote shell already stopped!\nVT>");
             connection.getResultWriter().flush();
           }
         }
         session.waitShell();
         session.waitShellThreads();
       }
-      else if (parsed[1].toUpperCase().contains("D"))
+      else if (parsed[1].toUpperCase().contains("C"))
       {
         session.stopShell();
         session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
@@ -90,14 +90,14 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
           {
             nextShell[i] = parsed[i + 2];
           }
-          connection.getResultWriter().write("\nVT>Defining remote shell to: " + Arrays.toString(nextShell) + "");
+          connection.getResultWriter().write("\nVT>Setting remote shell command to: " + Arrays.toString(nextShell) + "");
           connection.getResultWriter().flush();
           session.setShellBuilder(nextShell, null, null);
           session.restartShell();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Defining remote shell to: [Default]");
+          connection.getResultWriter().write("\nVT>Setting remote shell command to: [Default]");
           connection.getResultWriter().flush();
           session.setShellBuilder(null, null, null);
           session.restartShell();
