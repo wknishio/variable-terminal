@@ -280,7 +280,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       // Apache's default header limit is 8KB.
       // Do NOT assume that a single read will get the entire header at once
       boolean foundHeaderEnd = false;
-      final int bufsize = VT.VT_SMALL_BUFFER_SIZE_BYTES;
+      final int bufsize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
       byte[] buf = new byte[bufsize];
       int splitbyte = 0;
       int rlen = 0;
@@ -371,10 +371,10 @@ public class VTNanoHTTPDProxySession implements Runnable
       // this is a http proxy so maybe theres no need to read all body data
       
       // Now read all the body and write it to f
-      buf = new byte[VT.VT_SMALL_BUFFER_SIZE_BYTES];
+      //buf = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
       while ( rlen >= 0 && size > 0 )
       {
-        rlen = in.read(buf, 0, (int) Math.min(VT.VT_SMALL_BUFFER_SIZE_BYTES, size));
+        rlen = in.read(buf, 0, (int) Math.min(VT.VT_STANDARD_BUFFER_SIZE_BYTES, size));
         if (rlen > 0)
         {
           size -= rlen;
@@ -794,7 +794,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     //private Socket second;
     private InputStream source;
     private OutputStream destination;
-    private final byte[] buffer = new byte[VT.VT_SMALL_BUFFER_SIZE_BYTES];
+    private final byte[] buffer = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
     private int readed;
     //private boolean inClosed;
     //private boolean outClosed;
@@ -1077,10 +1077,10 @@ public class VTNanoHTTPDProxySession implements Runnable
       if ( data != null )
       {
         int pending = data.available(); // This is to support partial sends, see serveFile()
-        byte[] buff = new byte[VT.VT_SMALL_BUFFER_SIZE_BYTES];
+        byte[] buff = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
         while (pending>0)
         {
-          int read = data.read( buff, 0, Math.min(VT.VT_SMALL_BUFFER_SIZE_BYTES, pending));
+          int read = data.read( buff, 0, Math.min(VT.VT_STANDARD_BUFFER_SIZE_BYTES, pending));
           if (read <= 0)  break;
           out.write( buff, 0, read );
           pending -= read;

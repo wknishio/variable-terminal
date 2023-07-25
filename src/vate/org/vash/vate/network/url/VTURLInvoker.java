@@ -120,7 +120,7 @@ public class VTURLInvoker
   public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Proxy proxy, Map<String, String> requestHeaders, String requestMethod, InputStream outputInputStream, OutputStream resultOutputStream)
   {
     //System.setProperty("http.keepAlive", "false");
-    final byte[] readBuffer = new byte[VT.VT_SMALL_BUFFER_SIZE_BYTES];
+    final byte[] readBuffer = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
     VTURLResult urlResult = new VTURLResult(-1, null, null, null);
     int readed = 1;
     URLConnection connection = null;
