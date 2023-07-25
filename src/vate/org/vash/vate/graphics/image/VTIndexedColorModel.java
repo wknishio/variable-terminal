@@ -143,6 +143,21 @@ public class VTIndexedColorModel
       }
     }
     return new IndexColorModel(8, red.length, red, green, blue);
+//    byte[] gray = new byte[4];
+//    int i = 0;
+//    int j = 0;
+//    // int l = 0;
+//    int p = 0;
+//    
+//    for (i = 0; i < 2; i++)
+//    {
+//      for (j = 0; j < 2; j++)
+//      {
+//        gray[p] = (byte) (((i * 170) + (j * 85)) & 0xFF);
+//        p++;
+//      }
+//    }
+//    return new IndexColorModel(8, gray.length, gray, 0, false);
   }
   
   public static IndexColorModel create8ColorModelGrayscale()
@@ -170,6 +185,25 @@ public class VTIndexedColorModel
       }
     }
     return new IndexColorModel(8, red.length, red, green, blue);
+//    byte[] gray = new byte[8];
+//    int i = 0;
+//    int j = 0;
+//    int k = 0;
+//    // int l = 0;
+//    int p = 0;
+//    
+//    for (i = 0; i < 2; i++)
+//    {
+//      for (j = 0; j < 2; j++)
+//      {
+//        for (k = 0; k < 2; k++)
+//        {
+//          gray[p] = (byte) (((i * 146) + (j * 73) + (k * 36)) & 0xFF);
+//          p++;
+//        }
+//      }
+//    }
+//    return new IndexColorModel(8, gray.length, gray, 0, false);
   }
   
   public static IndexColorModel create16ColorModelGrayscale()
@@ -200,6 +234,28 @@ public class VTIndexedColorModel
       }
     }
     return new IndexColorModel(8, red.length, red, green, blue);
+//    byte[] gray = new byte[16];
+//    int i = 0;
+//    int j = 0;
+//    int k = 0;
+//    int l = 0;
+//    int p = 0;
+//    
+//    for (i = 0; i < 2; i++)
+//    {
+//      for (j = 0; j < 2; j++)
+//      {
+//        for (k = 0; k < 2; k++)
+//        {
+//          for (l = 0; l < 2; l++)
+//          {
+//            gray[p] = (byte) (((i * 136) + (j * 68) + (k * 34) + (l * 17)) & 0xFF);
+//            p++;
+//          }
+//        }
+//      }
+//    }
+//    return new IndexColorModel(8, gray.length, gray, 0, false);
   }
   
   public static IndexColorModel create32ColorModelGrayscale()

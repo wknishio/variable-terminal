@@ -230,9 +230,15 @@ public class VTServerScreenshotTask extends VTTask
       connection.getResultWriter().write("\nVT>Screen capture data obtained, image will be saved in:\nVT>[" + screenshotFile.getAbsolutePath() + "]\nVT>");
       connection.getResultWriter().flush();
       
+      //int lastColors = screenshotProvider.getColorCount();
+      
       if (useJPG)
       {
         IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(screenCapture), jpgWriterParam));
+        //if (lastColors == 16 || lastColors == 8 || lastColors == 4)
+        //{
+          //jpgWriterMetadata = null;
+        //}
         jpgImageOutputStream = ImageIO.createImageOutputStream(photoOutputStream);
         jpgWriter.setOutput(jpgImageOutputStream);
         jpgWriter.write(null, new IIOImage(screenCapture, null, jpgWriterMetadata), jpgWriterParam);
@@ -240,7 +246,7 @@ public class VTServerScreenshotTask extends VTTask
       }
       else
       {
-        if (screenCapture.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE && screenCapture.getType() == BufferedImage.TYPE_BYTE_INDEXED)
+        if (screenCapture.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE && (screenCapture.getType() == BufferedImage.TYPE_BYTE_INDEXED || screenCapture.getType() == BufferedImage.TYPE_BYTE_GRAY))
         {
           pngEncoder.setColorType(PngEncoder.COLOR_INDEXED);
           pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);

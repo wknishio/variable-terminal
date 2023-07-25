@@ -472,7 +472,10 @@ public class VTGraphicsModeServerWriter implements Runnable
     else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
     {
       IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(imageDataBuffer), jpgWriterParam));
-      
+      //if (lastColors == 16 || lastColors == 8 || lastColors == 4)
+      //{
+        //jpgWriterMetadata = null;
+      //}
       connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getWidth());
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getHeight());
@@ -619,7 +622,10 @@ public class VTGraphicsModeServerWriter implements Runnable
     else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
     {
       IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(imageDataBuffer), jpgWriterParam));
-      
+      //if (lastColors == 16 || lastColors == 8 || lastColors == 4)
+      //{
+        //jpgWriterMetadata = null;
+      //}
       connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
       connection.getGraphicsControlDataOutputStream().writeInt(blockAreas.size());
       connection.getGraphicsControlDataOutputStream().flush();
