@@ -43,8 +43,8 @@ public final class VTAWTScreenCaptureProvider
   public static final int VT_COLOR_QUALITY_8 = 10; // 8 rgb-111 3bit or grayscale 3bit (r+g+b) * 6 >> 4
   public static final int VT_COLOR_QUALITY_16 = 11; // 16 grayscale 4bit (r+g+b) * 11 >> 5
   public static final int VT_COLOR_QUALITY_4 = 12; // 4 grayscale 2bit (r+g+b) * 3 >> 3
-  //public static final int VT_COLOR_QUALITY_134217728 = 13; // 2097152 rgb-999 27bit
-  //public static final int VT_COLOR_QUALITY_1073741824 = 14; // 2097152 rgb-AAA 30bit
+  //public static final int VT_COLOR_QUALITY_134217728 = 13; // 134217728 rgb-999 27bit
+  //public static final int VT_COLOR_QUALITY_1073741824 = 14; // 1073741824 rgb-AAA 30bit
   //public static final int VT_COLOR_QUALITY_32 = 15; // 32 grayscale 5bit (r+g+b) * 11 >> 5
   
 //  private static final int RGBAAA_RED_MASK = 0x00FF0000;

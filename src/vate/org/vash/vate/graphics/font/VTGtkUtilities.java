@@ -4,7 +4,7 @@ import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 
-public class GtkUtilities
+public class VTGtkUtilities
 {
   /**
    * Initializes Gtk2/3 and returns the desktop scaling factor, usually 1.0 or

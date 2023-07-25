@@ -100,7 +100,7 @@ public class VTGlobalTextStyleManager
         
         try
         {
-          gtkScaleFactor = (float) GtkUtilities.getScaleFactor();
+          gtkScaleFactor = (float) VTGtkUtilities.getScaleFactor();
         }
         catch (Throwable t)
         {
