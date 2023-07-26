@@ -1008,7 +1008,14 @@ public final class VTImageIO
     else if (colors == 8)
     {
       //Arrays.fill(buffer, start, buffer.length, (byte) 0);
-      Arrays.fill(buffer, start, buffer.length, (byte) 3);
+      if (type == BufferedImage.TYPE_CUSTOM)
+      {
+        Arrays.fill(buffer, start, buffer.length, (byte) 0);
+      }
+      else
+      {
+        Arrays.fill(buffer, start, buffer.length, (byte) 3);
+      }
       //Arrays.fill(buffer, start, buffer.length, (byte) 0);
     }
     else if (colors == 32)
