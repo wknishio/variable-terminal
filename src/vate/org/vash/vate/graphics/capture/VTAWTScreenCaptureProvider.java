@@ -118,6 +118,7 @@ public final class VTAWTScreenCaptureProvider
   private int screenCurrentX, screenCurrentY;
   private int scaledCurrentWidth, scaledCurrentHeight;
   //private int sectionCurrentImageGrayscaleColorCount;
+  //private int sectionCurrentImageConvertedColorCount;
   // private int[] pixelBlock = new int[64 * 64];
   private int[] sectionPixelBufferInt;
   private byte[] sectionPixelBufferByte;
@@ -127,19 +128,22 @@ public final class VTAWTScreenCaptureProvider
   private Rectangle currentDeviceBounds;
 //  private volatile BufferedImage sectionImage;
   private BufferedImage sectionCurrentImageGrayscale;
-  private BufferedImage sectionCurrentImage;
+  private BufferedImage sectionCurrentImageTrue;
+  //private BufferedImage sectionCurrentImageConverted;
   private BufferedImage screenCurrentImage;
   private BufferedImage scaledCurrentImage;
   private Graphics2D scaledCurrentGraphics;
   private Graphics2D sectionCurrentImageGrayscaleGraphics;
+  //private Graphics2D sectionCurrentImageConvertedGraphics;
   // private volatile Graphics2D sectionGraphics;
   private GraphicsDevice graphicsDevice;
   private Robot standardCaptureRobot;
   private VTDirectRobot directCaptureRobot;
   // private Toolkit toolkit;
   private VTARGBPixelGrabber pixelGrabber;
-  private DataBuffer recyclableSectionDataBuffer;
+  private DataBuffer recyclableSectionDataBufferTrue;
   private DataBuffer recyclableSectionDataBufferGrayscale;
+  //private DataBuffer recyclableSectionDataBufferConverted;
   private DataBuffer recyclableScreenDataBuffer;
   private DataBuffer recyclableScaledDataBuffer;
 //	private DataBuffer recyclableSectionDataBuffer;
@@ -1169,8 +1173,9 @@ public final class VTAWTScreenCaptureProvider
     directCaptureRobot = null;
     recyclableScreenDataBuffer = null;
     recyclableScaledDataBuffer = null;
-    recyclableSectionDataBuffer = null;
+    recyclableSectionDataBufferTrue = null;
     recyclableSectionDataBufferGrayscale = null;
+    //recyclableSectionDataBufferConverted = null;
     
     System.runFinalization();
     System.gc();
@@ -1193,16 +1198,17 @@ public final class VTAWTScreenCaptureProvider
       scaledCurrentGraphics.dispose();
       scaledCurrentGraphics = null;
     }
-    if (sectionCurrentImage != null)
+    if (sectionCurrentImageTrue != null)
     {
-      sectionCurrentImage.flush();
-      sectionCurrentImage = null;
+      sectionCurrentImageTrue.flush();
+      sectionCurrentImageTrue = null;
     }
     if (sectionCurrentImageGrayscale != null)
     {
       sectionCurrentImageGrayscale.flush();
       sectionCurrentImageGrayscale = null;
       //sectionCurrentImageGrayscaleColorCount = 0;
+      //sectionCurrentImageConvertedColorCount = 0;
     }
     if (sectionCurrentImageGrayscaleGraphics != null)
     {
@@ -2162,9 +2168,21 @@ public final class VTAWTScreenCaptureProvider
       minX = padding;
       minY = padding;
     }
+//    int destinationOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+//    int destinationIndex = destinationOffset;
+//    int sourceIndex = 0;
+//    
+//    for (int currentHeight = 0; currentHeight < captureArea.height; currentHeight++)
+//    {
+//      System.arraycopy(sectionPixelBufferByte, sourceIndex, pixelBufferByte, destinationIndex, captureArea.width);
+//      sourceIndex += captureArea.width;
+//      destinationIndex += screenCurrentImage.getWidth() + minX;
+//    }
+    
     int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
+    
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
     {
       if (currentWidth == captureArea.getWidth())
@@ -2173,21 +2191,11 @@ public final class VTAWTScreenCaptureProvider
         currentHeight += screenCurrentImage.getWidth() + minX;
       }
       
-      //red = ((sectionPixelBufferInt[i] & RGB111_RED_MASK) >> 21);
-      //green = ((sectionPixelBufferInt[i] & RGB111_GREEN_MASK) >> 14);
-      //blue = ((sectionPixelBufferInt[i] & RGB111_BLUE_MASK) >> 7);
-      
-      //red = ((sectionPixelBufferInt[i] & RGB222_RED_MASK) >> 22);
-      //green = ((sectionPixelBufferInt[i] & RGB222_GREEN_MASK) >> 14);
-      //blue = ((sectionPixelBufferInt[i] & RGB222_BLUE_MASK) >> 6);
-      
-      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) (red + green + blue);
-      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) (((red + green + blue) * 3) >> 3);
       //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
       pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i] & 0xC0) >> 6);
     }
     
-    if (sectionCurrentImage != screenCapture && screenCapture != sectionCurrentImageGrayscale)
+    if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
     {
       screenCapture.flush();
     }
@@ -2239,9 +2247,21 @@ public final class VTAWTScreenCaptureProvider
       minX = padding;
       minY = padding;
     }
+//    int destinationOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+//    int destinationIndex = destinationOffset;
+//    int sourceIndex = 0;
+//    
+//    for (int currentHeight = 0; currentHeight < captureArea.height; currentHeight++)
+//    {
+//      System.arraycopy(sectionPixelBufferByte, sourceIndex, pixelBufferByte, destinationIndex, captureArea.width);
+//      sourceIndex += captureArea.width;
+//      destinationIndex += screenCurrentImage.getWidth() + minX;
+//    }
+    
     int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
+    
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
     {
       if (currentWidth == captureArea.getWidth())
@@ -2250,21 +2270,11 @@ public final class VTAWTScreenCaptureProvider
         currentHeight += screenCurrentImage.getWidth() + minX;
       }
       
-      //red = ((sectionPixelBufferInt[i] & RGB111_RED_MASK) >> 21);
-      //green = ((sectionPixelBufferInt[i] & RGB111_GREEN_MASK) >> 14);
-      //blue = ((sectionPixelBufferInt[i] & RGB111_BLUE_MASK) >> 7);
-      
-      //red = ((sectionPixelBufferInt[i] & RGB333_RED_MASK) >> 21);
-      //green = ((sectionPixelBufferInt[i] & RGB333_GREEN_MASK) >> 13);
-      //blue = ((sectionPixelBufferInt[i] & RGB333_BLUE_MASK) >> 5);
-      
-      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) (red + green + blue);
-      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) (((red + green + blue) * 6) >> 4);
       //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
       pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i] & 0xE0) >> 5);
     }
     
-    if (sectionCurrentImage != screenCapture && screenCapture != sectionCurrentImageGrayscale)
+    if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
     {
       screenCapture.flush();
     }
@@ -2316,9 +2326,21 @@ public final class VTAWTScreenCaptureProvider
       minX = padding;
       minY = padding;
     }
+//    int destinationOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+//    int destinationIndex = destinationOffset;
+//    int sourceIndex = 0;
+//    
+//    for (int currentHeight = 0; currentHeight < captureArea.height; currentHeight++)
+//    {
+//      System.arraycopy(sectionPixelBufferByte, sourceIndex, pixelBufferByte, destinationIndex, captureArea.width);
+//      sourceIndex += captureArea.width;
+//      destinationIndex += screenCurrentImage.getWidth() + minX;
+//    }
+    
     int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
+    
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
     {
       if (currentWidth == captureArea.getWidth())
@@ -2327,21 +2349,11 @@ public final class VTAWTScreenCaptureProvider
         currentHeight += screenCurrentImage.getWidth() + minX;
       }
       
-      //red = ((sectionPixelBufferInt[i] & RGB111_RED_MASK) >> 21);
-      //green = ((sectionPixelBufferInt[i] & RGB111_GREEN_MASK) >> 14);
-      //blue = ((sectionPixelBufferInt[i] & RGB111_BLUE_MASK) >> 7);
-      
-      //red = ((sectionPixelBufferInt[i] & RGB444_RED_MASK) >> 20);
-      //green = ((sectionPixelBufferInt[i] & RGB444_GREEN_MASK) >> 12);
-      //blue = ((sectionPixelBufferInt[i] & RGB444_BLUE_MASK) >> 4);
-      
-      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) (red + green + blue);
-      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) (((red + green + blue) * 11) >> 5);
       //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
       pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i] & 0xF0) >> 4);
     }
     
-    if (sectionCurrentImage != screenCapture && screenCapture != sectionCurrentImageGrayscale)
+    if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
     {
       screenCapture.flush();
     }
@@ -2382,6 +2394,7 @@ public final class VTAWTScreenCaptureProvider
       return null;
     }
     BufferedImage screenCapture = createRobotCapture(captureArea, false);
+    //sectionPixelBufferByte = ((DataBufferByte) screenCapture.getRaster().getDataBuffer()).getData();
     int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
     if (screenCapture.getType() == BufferedImage.TYPE_INT_RGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB || screenCapture.getType() == BufferedImage.TYPE_INT_ARGB_PRE)
     {
@@ -2409,9 +2422,21 @@ public final class VTAWTScreenCaptureProvider
       minX = padding;
       minY = padding;
     }
+//    int destinationOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+//    int destinationIndex = destinationOffset;
+//    int sourceIndex = 0;
+//    
+//    for (int currentHeight = 0; currentHeight < captureArea.height; currentHeight++)
+//    {
+//      System.arraycopy(sectionPixelBufferByte, sourceIndex, pixelBufferByte, destinationIndex, captureArea.width);
+//      sourceIndex += captureArea.width;
+//      destinationIndex += screenCurrentImage.getWidth() + minX;
+//    }
+    
     int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
+    
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
     {
       if (currentWidth == captureArea.getWidth())
@@ -2427,12 +2452,13 @@ public final class VTAWTScreenCaptureProvider
       pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) (red + green + blue);
     }
     
-    if (sectionCurrentImage != screenCapture && screenCapture != sectionCurrentImageGrayscale)
+    if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
     {
       screenCapture.flush();
     }
-    screenCapture = null;
+    //screenCapture = null;
     pixelBufferByte = null;
+    //sectionPixelBufferByte = null;
     sectionPixelBufferInt = null;
     
     if (drawPointer)
@@ -2498,6 +2524,7 @@ public final class VTAWTScreenCaptureProvider
     int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
+    
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
     {
       if (currentWidth == captureArea.getWidth())
@@ -2513,7 +2540,7 @@ public final class VTAWTScreenCaptureProvider
       pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) (red + green + blue);
     }
     
-    if (sectionCurrentImage != screenCapture && screenCapture != sectionCurrentImageGrayscale)
+    if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
     {
       screenCapture.flush();
     }
@@ -2584,6 +2611,7 @@ public final class VTAWTScreenCaptureProvider
     int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
+    
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
     {
       if (currentWidth == captureArea.getWidth())
@@ -2599,7 +2627,7 @@ public final class VTAWTScreenCaptureProvider
       pixelBufferShort[startOffset + currentWidth + currentHeight] = (short) (red | green | blue);
     }
     
-    if (sectionCurrentImage != screenCapture && screenCapture != sectionCurrentImageGrayscale)
+    if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
     {
       screenCapture.flush();
     }
@@ -2670,6 +2698,7 @@ public final class VTAWTScreenCaptureProvider
     int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
+    
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
     {
       if (currentWidth == captureArea.getWidth())
@@ -2685,7 +2714,7 @@ public final class VTAWTScreenCaptureProvider
       pixelBufferShort[startOffset + currentWidth + currentHeight] = (short) (red | green | blue);
     }
     
-    if (sectionCurrentImage != screenCapture && screenCapture != sectionCurrentImageGrayscale)
+    if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
     {
       screenCapture.flush();
     }
@@ -2756,6 +2785,7 @@ public final class VTAWTScreenCaptureProvider
     int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
+    
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
     {
       if (currentWidth == captureArea.getWidth())
@@ -2771,7 +2801,7 @@ public final class VTAWTScreenCaptureProvider
       pixelBufferShort[startOffset + currentWidth + currentHeight] = (short) (red | green | blue);
     }
     
-    if (sectionCurrentImage != screenCapture && screenCapture != sectionCurrentImageGrayscale)
+    if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
     {
       screenCapture.flush();
     }
@@ -2849,6 +2879,7 @@ public final class VTAWTScreenCaptureProvider
     int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
+    
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
     {
       if (currentWidth == captureArea.getWidth())
@@ -2864,7 +2895,7 @@ public final class VTAWTScreenCaptureProvider
       pixelBufferInt[startOffset + currentWidth + currentHeight] = (red | green | blue);
     }
     
-    if (sectionCurrentImage != screenCapture && screenCapture != sectionCurrentImageGrayscale)
+    if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
     {
       screenCapture.flush();
     }
@@ -2942,6 +2973,7 @@ public final class VTAWTScreenCaptureProvider
     int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
     int currentWidth = 0;
     int currentHeight = 0;
+    
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
     {
       if (currentWidth == captureArea.getWidth())
@@ -2957,7 +2989,7 @@ public final class VTAWTScreenCaptureProvider
       pixelBufferInt[startOffset + currentWidth + currentHeight] = (red | green | blue);
     }
     
-    if (sectionCurrentImage != screenCapture && screenCapture != sectionCurrentImageGrayscale)
+    if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
     {
       screenCapture.flush();
     }
@@ -3043,7 +3075,7 @@ public final class VTAWTScreenCaptureProvider
       destinationIndex += screenCurrentImage.getWidth() + minX;
     }
     
-    if (sectionCurrentImage != screenCapture && screenCapture != sectionCurrentImageGrayscale)
+    if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
     {
       screenCapture.flush();
     }
@@ -3129,7 +3161,7 @@ public final class VTAWTScreenCaptureProvider
       pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) (red + green + blue);
     }
     
-    if (sectionCurrentImage != screenCapture && screenCapture != sectionCurrentImageGrayscale)
+    if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
     {
       screenCapture.flush();
     }
@@ -3215,7 +3247,7 @@ public final class VTAWTScreenCaptureProvider
       pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) (red + green + blue);
     }
     
-    if (sectionCurrentImage != screenCapture && screenCapture != sectionCurrentImageGrayscale)
+    if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
     {
       screenCapture.flush();
     }
@@ -3244,18 +3276,18 @@ public final class VTAWTScreenCaptureProvider
     BufferedImage screenCapture;
     if (directCaptureRobot != null && directCaptureRobot.getDirectRGBPixelsMethodAvailable())
     {
-      if (sectionCurrentImage == null || sectionCurrentImage.getWidth() != captureArea.width || sectionCurrentImage.getHeight() != captureArea.height)
+      if (sectionCurrentImageTrue == null || sectionCurrentImageTrue.getWidth() != captureArea.width || sectionCurrentImageTrue.getHeight() != captureArea.height)
       {
-        if (sectionCurrentImage != null)
+        if (sectionCurrentImageTrue != null)
         {
-          sectionCurrentImage.flush();
+          sectionCurrentImageTrue.flush();
         }
-        sectionCurrentImage = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_INT_RGB, 0, recyclableSectionDataBuffer);
-        recyclableSectionDataBuffer = sectionCurrentImage.getRaster().getDataBuffer();
+        sectionCurrentImageTrue = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_INT_RGB, 0, recyclableSectionDataBufferTrue);
+        recyclableSectionDataBufferTrue = sectionCurrentImageTrue.getRaster().getDataBuffer();
       }
-      if (directCaptureRobot.getRGBPixels(captureArea.x, captureArea.y, captureArea.width, captureArea.height, ((DataBufferInt) recyclableSectionDataBuffer).getData()))
+      if (directCaptureRobot.getRGBPixels(captureArea.x, captureArea.y, captureArea.width, captureArea.height, ((DataBufferInt) recyclableSectionDataBufferTrue).getData()))
       {
-        screenCapture = sectionCurrentImage;
+        screenCapture = sectionCurrentImageTrue;
       }
       else
       {
@@ -3268,20 +3300,26 @@ public final class VTAWTScreenCaptureProvider
     }
     if (grayscale)
     {
-      if (sectionCurrentImageGrayscale == null || sectionCurrentImageGrayscale.getWidth() != captureArea.width || sectionCurrentImageGrayscale.getHeight() != captureArea.height)
+      if (sectionCurrentImageGrayscale == null
+      || sectionCurrentImageGrayscale.getWidth() != captureArea.width
+      || sectionCurrentImageGrayscale.getHeight() != captureArea.height)
+      //|| (sectionCurrentImageGrayscale != null && sectionCurrentImageGrayscaleColorCount != getColorCount()))
       {
         if (sectionCurrentImageGrayscale != null)
         {
           sectionCurrentImageGrayscale.flush();
         }
         //sectionCurrentImageGrayscaleColorCount = getColorCount();
+        //sectionCurrentImageGrayscale = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_CUSTOM, sectionCurrentImageGrayscaleColorCount, recyclableSectionDataBufferGrayscale);
+        //sectionCurrentImageGrayscale = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_BYTE_INDEXED, sectionCurrentImageGrayscaleColorCount, recyclableSectionDataBufferGrayscale);
         sectionCurrentImageGrayscale = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_BYTE_GRAY, 256, recyclableSectionDataBufferGrayscale);
         recyclableSectionDataBufferGrayscale = sectionCurrentImageGrayscale.getRaster().getDataBuffer();
         sectionCurrentImageGrayscaleGraphics = sectionCurrentImageGrayscale.createGraphics();
+        sectionCurrentImageGrayscaleGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
       }
-      if (screenCapture == sectionCurrentImage)
+      if (screenCapture == sectionCurrentImageTrue)
       {
-        sectionCurrentImageGrayscaleGraphics.drawImage(sectionCurrentImage, 0, 0, null);
+        sectionCurrentImageGrayscaleGraphics.drawImage(sectionCurrentImageTrue, 0, 0, null);
         screenCapture = sectionCurrentImageGrayscale;
       }
       else
@@ -3303,8 +3341,80 @@ public final class VTAWTScreenCaptureProvider
         sectionCurrentImageGrayscaleGraphics.dispose();
         sectionCurrentImageGrayscaleGraphics = null;
       }
+//      if (getColorCount() == 16777216)
+//      {
+//        return screenCapture;
+//      }
+//      if (sectionCurrentImageConverted == null
+//      || sectionCurrentImageConverted.getWidth() != captureArea.width
+//      || sectionCurrentImageConverted.getHeight() != captureArea.height
+//      || (sectionCurrentImageConverted != null && sectionCurrentImageConvertedColorCount != getColorCount()))
+//      {
+//        if (sectionCurrentImageConverted != null)
+//        {
+//          sectionCurrentImageConverted.flush();
+//        }
+//        sectionCurrentImageConvertedColorCount = getColorCount();
+//        sectionCurrentImageConverted = createSectionCurrentImageConverted(sectionCurrentImageConvertedColorCount, captureArea.width, captureArea.height, recyclableSectionDataBufferConverted);
+//        recyclableSectionDataBufferConverted = sectionCurrentImageConverted.getRaster().getDataBuffer();
+//        sectionCurrentImageConvertedGraphics = sectionCurrentImageConverted.createGraphics();
+//        sectionCurrentImageConvertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+//      }
+//      if (screenCapture == sectionCurrentImageTrue)
+//      {
+//        sectionCurrentImageConvertedGraphics.drawImage(sectionCurrentImageTrue, 0, 0, null);
+//        screenCapture = sectionCurrentImageConverted;
+//      }
+//      else
+//      {
+//        sectionCurrentImageConvertedGraphics.drawImage(screenCapture, 0, 0, null);
+//        screenCapture.flush();
+//        screenCapture = sectionCurrentImageConverted;
+//      }
     }
     return screenCapture;
+  }
+  
+  @SuppressWarnings("unused")
+  private BufferedImage createSectionCurrentImageConverted(int colors, int width, int height, DataBuffer recyclableBuffer)
+  {
+    switch (colors)
+    {
+    case 4:
+      return VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_BYTE_INDEXED, colors, recyclableBuffer);
+    case 8:
+      return VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_BYTE_INDEXED, colors, recyclableBuffer);
+    case 16:
+      return VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_BYTE_INDEXED, colors, recyclableBuffer);
+    case 27:
+      return VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_BYTE_INDEXED, colors, recyclableBuffer);
+    //case VT_COLOR_QUALITY_32:
+      //return 32;
+    case 64:
+      return VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_BYTE_INDEXED, colors, recyclableBuffer);
+    case 125:
+      return VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_BYTE_INDEXED, colors, recyclableBuffer);
+    case 216:
+      return VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_BYTE_INDEXED, colors, recyclableBuffer);
+    case 512:
+      return VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_CUSTOM, colors, recyclableBuffer);
+    case 4096:
+      return VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_CUSTOM, colors, recyclableBuffer);
+    case 32768:
+      return VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_USHORT_555_RGB, colors, recyclableBuffer);
+    case 262144:
+      return VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_CUSTOM, colors, recyclableBuffer);
+    case 2097152:
+      return VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_CUSTOM, colors, recyclableBuffer);
+    case 16777216:
+      return VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_INT_RGB, colors, recyclableBuffer);
+    //case VT_COLOR_QUALITY_134217728:
+      //return 134217728;
+    //case VT_COLOR_QUALITY_1073741824:
+      //return 1073741824;
+    default:
+      return null;
+    }
   }
   
   @SuppressWarnings("unused")

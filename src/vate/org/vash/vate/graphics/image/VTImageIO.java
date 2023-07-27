@@ -61,9 +61,9 @@ public final class VTImageIO
   private static final int DCM_222_GRN_MASK = 0x000C; // 0000000000001100
   private static final int DCM_222_BLU_MASK = 0x0003; // 0000000000000011
   
-  private static final int DCM_111_RED_MASK = 0x0004; // 0000000000000100
-  private static final int DCM_111_GRN_MASK = 0x0002; // 0000000000000010
-  private static final int DCM_111_BLU_MASK = 0x0001; // 0000000000000001
+  //private static final int DCM_111_RED_MASK = 0x0004; // 0000000000000100
+  //private static final int DCM_111_GRN_MASK = 0x0002; // 0000000000000010
+  //private static final int DCM_111_BLU_MASK = 0x0001; // 0000000000000001
   
   // public static final int TYPE_USHORT_444_RGB =
   // BufferedImage.TYPE_USHORT_555_RGB << 1;
@@ -81,9 +81,9 @@ public final class VTImageIO
   private static final ComponentColorModel byteComponent256GrayscaleColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {8}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
   //private static final ComponentColorModel ushortComponent65536GrayscaleColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {16}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_USHORT);
   
-  //private static final ComponentColorModel byteComponent16GrayscaleColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {4}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
-  //private static final ComponentColorModel byteComponent8GrayscaleColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {3}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
-  //private static final ComponentColorModel byteComponent4GrayscaleColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {2}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
+  private static final ComponentColorModel byteComponent16GrayscaleColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {4}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
+  private static final ComponentColorModel byteComponent8GrayscaleColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {3}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
+  private static final ComponentColorModel byteComponent4GrayscaleColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {2}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
   
   private static final DirectColorModel int32bitARGBColorModel = new DirectColorModel(32, DCM_888_RED_MASK, DCM_888_GRN_MASK, DCM_888_BLU_MASK, DCM_888_ALP_MASK);
   private static final DirectColorModel int30bitRGBColorModel = new DirectColorModel(30, DCM_AAA_RED_MASK, DCM_AAA_GRN_MASK, DCM_AAA_BLU_MASK, 0);
@@ -95,7 +95,7 @@ public final class VTImageIO
   private static final DirectColorModel ushort12bitRGBColorModel = new DirectColorModel(12, DCM_444_RED_MASK, DCM_444_GRN_MASK, DCM_444_BLU_MASK, 0);
   private static final DirectColorModel ushort9bitRGBColorModel = new DirectColorModel(9, DCM_333_RED_MASK, DCM_333_GRN_MASK, DCM_333_BLU_MASK, 0);
   private static final DirectColorModel byte6bitRGBColorModel = new DirectColorModel(6, DCM_222_RED_MASK, DCM_222_GRN_MASK, DCM_222_BLU_MASK, 0);
-  private static final DirectColorModel byte3bitRGBColorModel = new DirectColorModel(3, DCM_111_RED_MASK, DCM_111_GRN_MASK, DCM_111_BLU_MASK, 0);
+  //private static final DirectColorModel byte3bitRGBColorModel = new DirectColorModel(3, DCM_111_RED_MASK, DCM_111_GRN_MASK, DCM_111_BLU_MASK, 0);
   
   // private static final IndexColorModel bytePacked4Bit16ColorModel = VTIndexedColorModel.createPacked4Bit16ColorModel();
   
@@ -157,18 +157,18 @@ public final class VTImageIO
           clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
           return image;
         }
-//        if (colors == 16 || colors == 8 || colors == 4)
-//        {
-//          BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
-//          clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
-//          return image;
-//        }
-        if (colors == 8)
+        if (colors == 16 || colors == 8 || colors == 4)
         {
           BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
           clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
           return image;
         }
+//        if (colors == 8)
+//        {
+//          BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+//          clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
+//          return image;
+//        }
       }
       case BufferedImage.TYPE_BYTE_INDEXED:
       {
@@ -660,28 +660,28 @@ public final class VTImageIO
             createdRaster = Raster.createPackedRaster(new DataBufferByte(nextSize), width, height, stride, byte6bitRGBColorModel.getMasks(), new Point(x, y));
           }
         }
-//        if (colors == 16 || colors == 8 || colors == 4)
-//        {
-//          if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
-//          {
-//            createdRaster = Raster.createInterleavedRaster(recyclableBuffer, width, height, stride, 1, new int[1], new Point(x, y));
-//          }
-//          else
-//          {
-//            createdRaster = Raster.createInterleavedRaster(new DataBufferByte(nextSize), width, height, stride, 1, new int[1], new Point(x, y));
-//          }
-//        }
-        if (colors == 8)
+        if (colors == 16 || colors == 8 || colors == 4)
         {
           if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
           {
-            createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, stride, byte3bitRGBColorModel.getMasks(), new Point(x, y));
+            createdRaster = Raster.createInterleavedRaster(recyclableBuffer, width, height, stride, 1, new int[1], new Point(x, y));
           }
           else
           {
-            createdRaster = Raster.createPackedRaster(new DataBufferByte(nextSize), width, height, stride, byte3bitRGBColorModel.getMasks(), new Point(x, y));
+            createdRaster = Raster.createInterleavedRaster(new DataBufferByte(nextSize), width, height, stride, 1, new int[1], new Point(x, y));
           }
         }
+//        if (colors == 8)
+//        {
+//          if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferByte && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
+//          {
+//            createdRaster = Raster.createPackedRaster(recyclableBuffer, width, height, stride, byte3bitRGBColorModel.getMasks(), new Point(x, y));
+//          }
+//          else
+//          {
+//            createdRaster = Raster.createPackedRaster(new DataBufferByte(nextSize), width, height, stride, byte3bitRGBColorModel.getMasks(), new Point(x, y));
+//          }
+//        }
         break;
       }
       case BufferedImage.TYPE_BYTE_INDEXED:
@@ -805,22 +805,22 @@ public final class VTImageIO
         {
           image = new BufferedImage(byte6bitRGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
         }
-//        if (colors == 16)
-//        {
-//          image = new BufferedImage(byteComponent16GrayscaleColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
-//        }
-//        if (colors == 8)
-//        {
-//          image = new BufferedImage(byteComponent8GrayscaleColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
-//        }
-//        if (colors == 4)
-//        {
-//          image = new BufferedImage(byteComponent4GrayscaleColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
-//        }
+        if (colors == 16)
+        {
+          image = new BufferedImage(byteComponent16GrayscaleColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        }
         if (colors == 8)
         {
-          image = new BufferedImage(byte3bitRGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+          image = new BufferedImage(byteComponent8GrayscaleColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
         }
+        if (colors == 4)
+        {
+          image = new BufferedImage(byteComponent4GrayscaleColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        }
+//        if (colors == 8)
+//        {
+//          image = new BufferedImage(byte3bitRGBColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+//        }
         break;
       }
       case BufferedImage.TYPE_BYTE_INDEXED:
@@ -1008,14 +1008,7 @@ public final class VTImageIO
     else if (colors == 8)
     {
       //Arrays.fill(buffer, start, buffer.length, (byte) 0);
-      if (type == BufferedImage.TYPE_CUSTOM)
-      {
-        Arrays.fill(buffer, start, buffer.length, (byte) 0);
-      }
-      else
-      {
-        Arrays.fill(buffer, start, buffer.length, (byte) 3);
-      }
+      Arrays.fill(buffer, start, buffer.length, (byte) 3);
       //Arrays.fill(buffer, start, buffer.length, (byte) 0);
     }
     else if (colors == 32)
