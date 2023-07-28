@@ -79,7 +79,7 @@ public final class VTImageIO
   private static final IndexColorModel byteIndexed4GrayscaleColorModel = VTIndexedColorModel.create4ColorModelGrayscale();
   
   private static final ComponentColorModel byteComponent256GrayscaleColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {8}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
-  //private static final ComponentColorModel ushortComponent65536GrayscaleColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {16}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_USHORT);
+  private static final ComponentColorModel ushortComponent65536GrayscaleColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {16}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_USHORT);
   
   private static final ComponentColorModel byteComponent16GrayscaleColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {4}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
   private static final ComponentColorModel byteComponent8GrayscaleColorModel = new ComponentColorModel(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {3}, false, true, Transparency.OPAQUE, DataBuffer.TYPE_BYTE);
@@ -200,12 +200,12 @@ public final class VTImageIO
         clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
         return image;
       }
-      //case BufferedImage.TYPE_USHORT_GRAY:
-      //{
-        //BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
-        //clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
-        //return image;
-      //}
+      case BufferedImage.TYPE_USHORT_GRAY:
+      {
+        BufferedImage image = buildBufferedImage(x, y, width, height, type, colors, recyclableBuffer);
+        clearBuffer(image.getRaster().getDataBuffer(), type, colors, 0);
+        return image;
+      }
     }
     return null;
   }
@@ -742,18 +742,20 @@ public final class VTImageIO
         {
           createdRaster = Raster.createInterleavedRaster(new DataBufferByte(nextSize), width, height, stride, 1, new int[1], new Point(x, y));
         }
+        break;
       }
-      //case BufferedImage.TYPE_USHORT_GRAY:
-      //{
-        //if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferUShort && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
-        //{
-          //createdRaster = Raster.createInterleavedRaster(recyclableBuffer, width, height, stride, 1, new int[1], new Point(x, y));
-        //}
-        //else
-        //{
-          //createdRaster = Raster.createInterleavedRaster(new DataBufferUShort(nextSize), width, height, stride, 1, new int[1], new Point(x, y));
-        //}
-      //}
+      case BufferedImage.TYPE_USHORT_GRAY:
+      {
+        if (recyclableBuffer != null && recyclableBuffer instanceof DataBufferUShort && recyclableBuffer.getSize() >= neededSize && recyclableBuffer.getSize() <= neededSize * 4)
+        {
+          createdRaster = Raster.createInterleavedRaster(recyclableBuffer, width, height, stride, 1, new int[1], new Point(x, y));
+        }
+        else
+        {
+          createdRaster = Raster.createInterleavedRaster(new DataBufferUShort(nextSize), width, height, stride, 1, new int[1], new Point(x, y));
+        }
+        break;
+      }
     }
     if (parentX > 0 || parentY > 0)
     {
@@ -879,11 +881,11 @@ public final class VTImageIO
         image = new BufferedImage(byteComponent256GrayscaleColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
         break;
       }
-      //case BufferedImage.TYPE_USHORT_GRAY:
-      //{
-        //image = new BufferedImage(ushortComponent65536GrayscaleColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
-        //break;
-      //}
+      case BufferedImage.TYPE_USHORT_GRAY:
+      {
+        image = new BufferedImage(ushortComponent65536GrayscaleColorModel, buildRaster(x, y, width, height, type, colors, recyclableBuffer), false, null);
+        break;
+      }
     }
     return image;
   }
