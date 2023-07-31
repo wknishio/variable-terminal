@@ -261,7 +261,7 @@ public final class VTImageIO
           int[] data = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
           for (int position = x + (y * width); position < size; position++)
           {
-            decodePixel27(littleEndianInputStream, data, position, width);
+            decodePixel30(littleEndianInputStream, data, position, width);
           }
           return image;
         }
@@ -439,7 +439,7 @@ public final class VTImageIO
           int[] data = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
           for (int position = x + (y * width); position < size; position++)
           {
-            encodePixel27(littleEndianOutputStream, data, position, width);
+            encodePixel30(littleEndianOutputStream, data, position, width);
           }
         }
         if (colors == 2097152)
@@ -1256,6 +1256,19 @@ public final class VTImageIO
     out.writeSubInt(pixelData[position] ^ (int) ((pred1) /* & 0x00FFFFFF */));
   }
   
+  private static final void encodePixel30(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  {
+    int left1, top1, diag1, pred1;
+    
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : diag1;
+    left1 = position > 0 ? pixelData[position - 1] : top1;
+    
+    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
+    
+    out.writeInt(pixelData[position] ^ (int) (pred1));
+  }
+  
   private static final void encodePixel32(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
   {
     long left1, top1, diag1, pred1;
@@ -1308,61 +1321,22 @@ public final class VTImageIO
     pixelData[position] = ((in.readSubInt() ^ (int) ((pred1) /* & 0x00FFFFFF */)));
   }
   
-  private static final void decodePixel32(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
-  {
-    long left1, top1, diag1, pred1;
-    
-    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
-    top1 = position >= width ? pixelData[position - width] : diag1;
-    left1 = position > 0 ? pixelData[position - 1] : top1;
-    
-    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
-    
-    pixelData[position] = (in.readInt() ^ (int) (pred1));
-  }
-  
-  private static final void encodePixel27(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
-  {
-    int left1, top1, diag1, pred1;
-    
-    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
-    top1 = position >= width ? pixelData[position - width] : diag1;
-    left1 = position > 0 ? pixelData[position - 1] : top1;
-    
-    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
-    
-    out.writeInt(pixelData[position] ^ (int) (pred1));
-  }
-  
-  private static final void decodePixel27(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
-  {
-    int left1, top1, diag1, pred1;
-    
-    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
-    top1 = position >= width ? pixelData[position - width] : diag1;
-    left1 = position > 0 ? pixelData[position - 1] : top1;
-    
-    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
-    
-    pixelData[position] = (in.readInt() ^ (int) (pred1));
-  }
-  
-  private static final void encodePixel30(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
-  {
-    int left1, top1, diag1, pred1;
-    
-    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
-    top1 = position >= width ? pixelData[position - width] : diag1;
-    left1 = position > 0 ? pixelData[position - 1] : top1;
-    
-    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
-    
-    out.writeInt(pixelData[position] ^ (int) (pred1));
-  }
-  
   private static final void decodePixel30(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
   {
     int left1, top1, diag1, pred1;
+    
+    diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
+    top1 = position >= width ? pixelData[position - width] : diag1;
+    left1 = position > 0 ? pixelData[position - 1] : top1;
+    
+    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
+    
+    pixelData[position] = (in.readInt() ^ (int) (pred1));
+  }
+  
+  private static final void decodePixel32(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  {
+    long left1, top1, diag1, pred1;
     
     diag1 = position - 1 >= width ? pixelData[position - width - 1] : 0;
     top1 = position >= width ? pixelData[position - width] : diag1;
