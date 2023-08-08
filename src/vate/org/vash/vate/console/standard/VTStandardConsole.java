@@ -14,11 +14,11 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 // import java.nio.channels.ClosedByInterruptException;
 import java.util.Locale;
-import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
 import org.vash.vate.console.VTConsoleImplementation;
 import org.vash.vate.nativeutils.VTNativeUtils;
+import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
 
 // import jline.ConsoleReader;
@@ -278,7 +278,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     {
       return;
     }
-    if (VT.detectWindows())
+    if (VTReflectionUtils.detectWindows())
     {
       // System.out.print("\u001B[2J");
       // System.out.print("\u001B[H");
@@ -305,7 +305,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     {
       return;
     }
-    if (VT.detectWindows())
+    if (VTReflectionUtils.detectWindows())
     {
       // System.out.print("\u001B]0;" + title + "\u0007");
       VTNativeUtils.system("title " + title);
@@ -328,7 +328,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     {
       return;
     }
-    if (VT.detectWindows())
+    if (VTReflectionUtils.detectWindows())
     {
       // Windows 2000 and beyond only
       colorCode.setLength(0);
@@ -708,7 +708,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     }
     if (bold)
     {
-      if (VT.detectWindows())
+      if (VTReflectionUtils.detectWindows())
       {
         // printStream.print("\u001B[1m");
       }
@@ -719,7 +719,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     }
     else
     {
-      if (VT.detectWindows())
+      if (VTReflectionUtils.detectWindows())
       {
         // printStream.print("\u001B[21m");
       }
@@ -736,7 +736,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     {
       return;
     }
-    if (VT.detectWindows())
+    if (VTReflectionUtils.detectWindows())
     {
       // setColors(VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN,
       // VTConsole.VT_CONSOLE_COLOR_NORMAL_BLACK);

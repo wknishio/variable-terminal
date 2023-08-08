@@ -6,8 +6,8 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import org.vash.vate.VT;
 import org.vash.vate.nativeutils.VTNativeUtils;
+import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.runtime.VTRuntimeProcess;
 
 public class VTShellAdapter
@@ -115,7 +115,7 @@ public class VTShellAdapter
   {
     if (command == null)
     {
-      if (VT.detectWindows())
+      if (VTReflectionUtils.detectWindows())
       {
         if (System.getProperty("os.name").toUpperCase().contains("WINDOWS 95") || System.getProperty("os.name").toUpperCase().contains("WINDOWS 98") || System.getProperty("os.name").toUpperCase().contains("WINDOWS ME"))
         {
@@ -195,7 +195,7 @@ public class VTShellAdapter
   
   private void revertShellBuilder()
   {
-    if (VT.detectWindows())
+    if (VTReflectionUtils.detectWindows())
     {
 //    if (supressEchoShell)
 //    {
@@ -325,7 +325,7 @@ public class VTShellAdapter
         catch (Throwable t)
         {
           // t.printStackTrace();
-          if (VT.detectWindows())
+          if (VTReflectionUtils.detectWindows())
           {
             // try again with cmd.exe if cannot start old DOS command.com shell
             List<String> commands = commandBuilder.command();

@@ -5,7 +5,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.concurrent.ExecutorService;
-import org.vash.vate.VT;
+import org.vash.vate.reflection.VTReflectionUtils;
+
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.WinNT;
@@ -259,7 +260,7 @@ public class VTRuntimeProcess
       return;
     }
     Runtime rt = Runtime.getRuntime();
-    if (VT.detectWindows())
+    if (VTReflectionUtils.detectWindows())
     {
       rt.exec("taskkill /f /PID " + pid);
     }

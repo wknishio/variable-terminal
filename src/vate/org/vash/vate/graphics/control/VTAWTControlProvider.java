@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Robot;
 import java.awt.datatransfer.Clipboard;
-import org.vash.vate.VT;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.reflection.VTReflectionUtils;
 
@@ -203,12 +202,12 @@ public final class VTAWTControlProvider
     try
     {
       // windows hack for slash keycode
-      if ((keychar == '/') && VT.detectWindows())
+      if ((keychar == '/') && VTReflectionUtils.detectWindows())
       {
         winAltNumpadASCIIKeyType('/');
         return;
       }
-      if ((keychar == '?') && VT.detectWindows())
+      if ((keychar == '?') && VTReflectionUtils.detectWindows())
       {
         winAltNumpadASCIIKeyType('?');
         return;

@@ -45,6 +45,7 @@ import org.vash.vate.console.lanterna.separated.VTLanternaTextBoxModified.Defaul
 import org.vash.vate.console.lanterna.separated.VTLanternaTextBoxModified.Style;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.nativeutils.VTNativeUtils;
+import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
 import com.googlecode.lanterna.TerminalPosition;
@@ -2077,7 +2078,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     }
     else
     {
-      if (VT.detectWindows())
+      if (VTReflectionUtils.detectWindows())
       {
         // System.out.print("\u001B]0;" + title + "\u0007");
         VTNativeUtils.system("title " + title);

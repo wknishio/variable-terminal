@@ -180,4 +180,9 @@ public class VTReflectionUtils
     }
     return true;
   }
+  
+  public static boolean detectWindows()
+  {
+    return System.getProperty("os.name").toLowerCase().contains("windows");
+  }
 }

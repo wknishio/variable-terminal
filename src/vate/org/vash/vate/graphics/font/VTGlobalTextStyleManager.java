@@ -12,9 +12,9 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.vash.vate.VT;
 import org.vash.vate.compatibility.VTArrays;
 import org.vash.vate.console.VTConsole;
+import org.vash.vate.reflection.VTReflectionUtils;
 
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
 
@@ -75,7 +75,7 @@ public class VTGlobalTextStyleManager
         // System.setProperty("sun.java2d.dpiaware", "false");
         // return;
       }
-      if (VT.detectWindows())
+      if (VTReflectionUtils.detectWindows())
       {
         // discover dpi with Toolkit.getScreenResolution();
         
