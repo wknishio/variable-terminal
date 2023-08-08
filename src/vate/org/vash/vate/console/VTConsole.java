@@ -2,7 +2,6 @@ package org.vash.vate.console;
 
 import java.awt.EventQueue;
 import java.awt.Frame;
-import java.awt.GraphicsEnvironment;
 import java.io.FileDescriptor;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -14,6 +13,7 @@ import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuBar;
 import org.vash.vate.console.lanterna.separated.VTLanternaConsole;
 import org.vash.vate.console.standard.VTStandardConsole;
 import org.vash.vate.nativeutils.VTNativeUtils;
+import org.vash.vate.reflection.VTReflectionUtils;
 
 public final class VTConsole
 {
@@ -129,7 +129,7 @@ public final class VTConsole
     if (console == null)
     {
       VTConsole.graphical = graphical;
-      if (GraphicsEnvironment.isHeadless())
+      if (VTReflectionUtils.isAWTHeadless())
       {
         VTConsole.graphical = false;
       }

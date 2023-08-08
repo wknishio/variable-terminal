@@ -17,9 +17,11 @@ import java.awt.event.WindowListener;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
 import javax.imageio.ImageIO;
+
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.graphics.image.VTIconDisplay;
+import org.vash.vate.reflection.VTReflectionUtils;
 
 public class VTGraphicsMessager
 {
@@ -68,7 +70,7 @@ public class VTGraphicsMessager
   
   public static void showAlert(Frame owner, String title, String message)
   {
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return;
     }
@@ -77,7 +79,7 @@ public class VTGraphicsMessager
   
   public static void showAlert(GraphicsDevice device, Frame owner, String title, String message)
   {
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return;
     }

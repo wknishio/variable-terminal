@@ -27,6 +27,7 @@ import org.vash.vate.VT;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.graphics.image.VTImageIO;
+import org.vash.vate.reflection.VTReflectionUtils;
 
 public final class VTAWTScreenCaptureProvider
 {
@@ -329,7 +330,7 @@ public final class VTAWTScreenCaptureProvider
   
   public VTAWTScreenCaptureProvider()
   {
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return;
     }
@@ -344,7 +345,7 @@ public final class VTAWTScreenCaptureProvider
   
   public final void resetGraphicsDevice()
   {
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return;
     }
@@ -527,7 +528,7 @@ public final class VTAWTScreenCaptureProvider
   private final boolean initialize16ScreenCapture(GraphicsDevice device)
   {
     reset();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
@@ -553,7 +554,7 @@ public final class VTAWTScreenCaptureProvider
 //  private final boolean initialize32ScreenCapture(GraphicsDevice device)
 //  {
 //    reset();
-//    if (GraphicsEnvironment.isHeadless())
+//    if (VT.isAWTHeadless())
 //    {
 //      return false;
 //    }
@@ -579,7 +580,7 @@ public final class VTAWTScreenCaptureProvider
   private final boolean initialize4ScreenCapture(GraphicsDevice device)
   {
     reset();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
@@ -605,7 +606,7 @@ public final class VTAWTScreenCaptureProvider
   private final boolean initialize8ScreenCapture(GraphicsDevice device)
   {
     reset();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
@@ -631,7 +632,7 @@ public final class VTAWTScreenCaptureProvider
   private final boolean initialize512ScreenCapture(GraphicsDevice device)
   {
     reset();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
@@ -657,7 +658,7 @@ public final class VTAWTScreenCaptureProvider
   private final boolean initialize4096ScreenCapture(GraphicsDevice device)
   {
     reset();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
@@ -683,7 +684,7 @@ public final class VTAWTScreenCaptureProvider
   private final boolean initialize64ScreenCapture(GraphicsDevice device)
   {
     reset();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
@@ -709,7 +710,7 @@ public final class VTAWTScreenCaptureProvider
   private final boolean initialize216ScreenCapture(GraphicsDevice device)
   {
     reset();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
@@ -735,7 +736,7 @@ public final class VTAWTScreenCaptureProvider
   private final boolean initialize32768ScreenCapture(GraphicsDevice device)
   {
     reset();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
@@ -761,7 +762,7 @@ public final class VTAWTScreenCaptureProvider
   private final boolean initialize16777216ScreenCapture(GraphicsDevice device)
   {
     reset();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
@@ -787,7 +788,7 @@ public final class VTAWTScreenCaptureProvider
   private final boolean initialize125ScreenCapture(GraphicsDevice device)
   {
     reset();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
@@ -813,7 +814,7 @@ public final class VTAWTScreenCaptureProvider
   private final boolean initialize27ScreenCapture(GraphicsDevice device)
   {
     reset();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
@@ -839,7 +840,7 @@ public final class VTAWTScreenCaptureProvider
   private final boolean initialize262144ScreenCapture(GraphicsDevice device)
   {
     reset();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
@@ -865,7 +866,7 @@ public final class VTAWTScreenCaptureProvider
   private final boolean initialize2097152ScreenCapture(GraphicsDevice device)
   {
     reset();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }

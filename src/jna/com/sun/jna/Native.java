@@ -24,7 +24,6 @@
 package com.sun.jna;
 
 import java.awt.Component;
-import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.Window;
 import java.io.ByteArrayInputStream;
@@ -67,6 +66,8 @@ import com.sun.jna.Callback.UncaughtExceptionHandler;
 import com.sun.jna.Structure.FFIType;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.vash.vate.reflection.VTReflectionUtils;
 
 /** Provides generation of invocation plumbing for a defined native
  * library interface.  Also provides various utilities for native operations.
@@ -2391,7 +2392,7 @@ public final class Native implements Version {
         // Declaring the argument as Object rather than Component avoids class not
         // found errors on phoneME foundation profile.
         static long getComponentID(Object o) throws HeadlessException {
-            if (GraphicsEnvironment.isHeadless()) {
+            if (VTReflectionUtils.isAWTHeadless()) {
                 throw new HeadlessException("No native windows when headless");
             }
             Component c = (Component)o;

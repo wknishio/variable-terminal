@@ -1,7 +1,6 @@
 package org.vash.vate.server.startup;
 
 // import org.vash.vate.VT;
-import java.awt.GraphicsEnvironment;
 
 import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
@@ -17,10 +16,7 @@ public class VTServerGraphicalStart
     boolean daemon = false;
     
     VTConsole.setLanterna(true);
-    if (!GraphicsEnvironment.isHeadless())
-    {
-      VTConsole.setGraphical(true);
-    }
+    VTConsole.setGraphical(true);
     VTConsole.setRemoteIcon(true);
     // VTConsole.setCommandEcho(false);
     

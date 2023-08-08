@@ -1,6 +1,5 @@
 package org.vash.vate.graphics.clipboard;
 
-import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -15,6 +14,7 @@ import java.util.List;
 
 import org.vash.vate.VT;
 import org.vash.vate.graphics.image.VTTransferableImage;
+import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vash.vate.task.VTTask;
@@ -34,7 +34,7 @@ public class VTClipboardTransferTask extends VTTask
   
   public VTClipboardTransferTask()
   {
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return;
     }

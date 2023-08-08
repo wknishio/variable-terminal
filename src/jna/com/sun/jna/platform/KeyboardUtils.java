@@ -23,9 +23,10 @@
  */
 package com.sun.jna.platform;
 
-import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
+
+import org.vash.vate.reflection.VTReflectionUtils;
 
 import com.sun.jna.Platform;
 import com.sun.jna.platform.unix.X11;
@@ -45,7 +46,7 @@ import com.sun.jna.platform.win32.WinUser;
 public class KeyboardUtils {
     static final NativeKeyboardUtils INSTANCE;
     static {
-        if (GraphicsEnvironment.isHeadless()) {
+        if (VTReflectionUtils.isAWTHeadless()) {
             throw new HeadlessException("KeyboardUtils requires a keyboard");
         }
         if (Platform.isWindows()) {

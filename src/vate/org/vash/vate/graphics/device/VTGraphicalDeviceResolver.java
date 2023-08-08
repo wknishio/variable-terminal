@@ -9,11 +9,13 @@ import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.vash.vate.reflection.VTReflectionUtils;
+
 public class VTGraphicalDeviceResolver
 {
   public static GraphicsDevice[] getRasterDevices()
   {
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return null;
     }
@@ -37,7 +39,7 @@ public class VTGraphicalDeviceResolver
   
   public static GraphicsDevice getCurrentDevice(Window window)
   {
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return null;
     }
@@ -57,7 +59,7 @@ public class VTGraphicalDeviceResolver
   
   public static Rectangle getDeviceBounds(GraphicsDevice graphicsDevice)
   {
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return null;
     }

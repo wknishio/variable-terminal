@@ -8,6 +8,7 @@ import java.awt.Robot;
 import java.awt.datatransfer.Clipboard;
 import org.vash.vate.VT;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
+import org.vash.vate.reflection.VTReflectionUtils;
 
 import static java.awt.event.KeyEvent.*;
 
@@ -22,7 +23,7 @@ public final class VTAWTControlProvider
   
   public VTAWTControlProvider()
   {
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return;
     }
@@ -40,7 +41,7 @@ public final class VTAWTControlProvider
   
   public final void resetGraphicsDevice()
   {
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return;
     }
@@ -56,7 +57,7 @@ public final class VTAWTControlProvider
   
   public final void setGraphicsDevice(GraphicsDevice graphicsDevice)
   {
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return;
     }
@@ -94,7 +95,7 @@ public final class VTAWTControlProvider
   
   public final boolean initializeInputControl()
   {
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
@@ -111,7 +112,7 @@ public final class VTAWTControlProvider
   private final boolean initializeInputControl(GraphicsDevice device)
   {
     reset();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return false;
     }
@@ -161,7 +162,7 @@ public final class VTAWTControlProvider
   {
     disposeInputControlResources();
     interfaceInputRobot = null;
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return;
     }

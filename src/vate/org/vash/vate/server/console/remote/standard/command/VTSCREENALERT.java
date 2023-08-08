@@ -6,6 +6,7 @@ import java.awt.GraphicsEnvironment;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.graphics.message.VTGraphicsMessager;
 import org.vash.vate.help.VTHelpManager;
+import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
 public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
@@ -20,7 +21,7 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
   
   public void execute(String command, String[] parsed) throws Exception
   {
-    if (!GraphicsEnvironment.isHeadless())
+    if (!VTReflectionUtils.isAWTHeadless())
     {
       if (parsed.length == 2)
       {

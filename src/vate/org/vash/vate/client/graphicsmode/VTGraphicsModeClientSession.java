@@ -1,10 +1,9 @@
 package org.vash.vate.client.graphicsmode;
 
-import java.awt.GraphicsEnvironment;
-
 import org.vash.vate.VT;
 import org.vash.vate.client.session.VTClientSession;
 import org.vash.vate.console.VTConsole;
+import org.vash.vate.reflection.VTReflectionUtils;
 
 public class VTGraphicsModeClientSession
 {
@@ -46,7 +45,7 @@ public class VTGraphicsModeClientSession
     boolean headless = true;
     try
     {
-      headless = GraphicsEnvironment.isHeadless();
+      headless = VTReflectionUtils.isAWTHeadless();
     }
     catch (Throwable e)
     {

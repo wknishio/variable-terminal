@@ -26,6 +26,7 @@ import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeFrameDifferenceCodecMKII;
 import org.vash.vate.graphics.image.VTImageDataUtils;
 import org.vash.vate.graphics.image.VTImageIO;
+import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.w3c.dom.NamedNodeMap;
@@ -115,7 +116,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     // this.separatedCoding = true;
     this.screenCaptureIntervalSynchronizer = new Object();
     // this.vtImageIO = new VTImageIO();
-    if (GraphicsEnvironment.isHeadless())
+    if (VTReflectionUtils.isAWTHeadless())
     {
       return;
     }
