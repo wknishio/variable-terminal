@@ -8,12 +8,6 @@ public interface VTNativeUtilsImplementation
   
   public int getch();
   
-  public void unbuffered();
-  
-  public void noecho();
-  
-  public void normal();
-  
   public void printf(String format, Object... args);
   
   /* public boolean beep(int freq, int dur); */
@@ -22,20 +16,6 @@ public interface VTNativeUtilsImplementation
   public boolean openDiscDrive();
   
   public boolean closeDiscDrive();
-  
-  public void exit(int status);
-  
-  public void abort();
-  
-  public int raise(int signal);
-  
-  public int rand();
-  
-  public void srand(int seed);
-  
-  public String getenv(String env);
-  
-  public int putenv(String env);
   
   public int getpid();
   

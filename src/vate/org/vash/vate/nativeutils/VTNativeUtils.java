@@ -90,30 +90,6 @@ public class VTNativeUtils
     return -1;
   }
   
-  public static void unbuffered()
-  {
-    if (checkNativeUtils())
-    {
-      nativeUtils.unbuffered();
-    }
-  }
-  
-  public static void noecho()
-  {
-    if (checkNativeUtils())
-    {
-      nativeUtils.noecho();
-    }
-  }
-  
-  public static void normal()
-  {
-    if (checkNativeUtils())
-    {
-      nativeUtils.normal();
-    }
-  }
-  
   public static void printf(String format, Object... args)
   {
     if (checkNativeUtils())
@@ -265,70 +241,6 @@ public class VTNativeUtils
     }
     return false;
   }
-  
-  public static void exit(int status)
-  {
-    if (checkNativeUtils())
-    {
-      nativeUtils.exit(status);
-    }
-  }
-  
-  public static void abort()
-  {
-    if (checkNativeUtils())
-    {
-      nativeUtils.abort();
-    }
-  }
-  
-  public static int raise(int signal)
-  {
-    if (checkNativeUtils())
-    {
-      return nativeUtils.raise(signal);
-    }
-    return -1;
-  }
-  
-  public static int rand()
-  {
-    if (checkNativeUtils())
-    {
-      return nativeUtils.rand();
-    }
-    return -1;
-  }
-  
-  public static void srand(int seed)
-  {
-    if (checkNativeUtils())
-    {
-      nativeUtils.srand(seed);
-    }
-  }
-  
-  public static String getenv(String env)
-  {
-    if (checkNativeUtils())
-    {
-      return nativeUtils.getenv(env);
-    }
-    return null;
-  }
-  
-  public static int putenv(String env)
-  {
-    if (checkNativeUtils())
-    {
-      return nativeUtils.putenv(env);
-    }
-    return -1;
-  }
-  
-  /*
-   * public static int isatty(int fd) { return nativeUtils.true_isatty(fd); }
-   */
   
   public static int putvirtualenv(String name, String newValue)
   {
