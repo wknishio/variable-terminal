@@ -10,7 +10,5 @@ public interface VTLinuxCLibrary extends VTUnixCLibrary
   
   public int close(int fd);
   
-  public int putenv(String env);
-  
   public int getpid();
 }

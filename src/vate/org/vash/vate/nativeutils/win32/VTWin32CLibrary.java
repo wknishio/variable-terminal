@@ -6,8 +6,6 @@ import com.sun.jna.Pointer;
 
 public interface VTWin32CLibrary extends VTCLibrary
 {
-  public int _putenv(String env);
-  
   public int getch();
   
   public int getche();

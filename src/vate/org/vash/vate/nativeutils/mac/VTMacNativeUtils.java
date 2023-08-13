@@ -135,16 +135,6 @@ public class VTMacNativeUtils implements VTNativeUtilsImplementation
     macCLibrary.srand(seed);
   }
   
-  public String getenv(String env)
-  {
-    return macCLibrary.getenv(env);
-  }
-  
-  public int putenv(String env)
-  {
-    return macCLibrary.putenv(env);
-  }
-  
   public int getpid()
   {
     return macCLibrary.getpid();

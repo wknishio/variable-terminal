@@ -137,16 +137,6 @@ public class VTSunOSNativeUtils implements VTNativeUtilsImplementation
     sunosCLibrary.srand(seed);
   }
   
-  public String getenv(String env)
-  {
-    return sunosCLibrary.getenv(env);
-  }
-  
-  public int putenv(String env)
-  {
-    return sunosCLibrary.putenv(env);
-  }
-  
   public int getpid()
   {
     return sunosCLibrary.getpid();

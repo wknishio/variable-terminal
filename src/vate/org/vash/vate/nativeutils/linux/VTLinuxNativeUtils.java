@@ -133,16 +133,6 @@ public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
     linuxCLibrary.srand(seed);
   }
   
-  public String getenv(String env)
-  {
-    return linuxCLibrary.getenv(env);
-  }
-  
-  public int putenv(String env)
-  {
-    return linuxCLibrary.putenv(env);
-  }
-  
   public int getpid()
   {
     return linuxCLibrary.getpid();

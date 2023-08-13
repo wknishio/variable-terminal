@@ -4,21 +4,21 @@ import com.sun.jna.Native;
 
 public class VTMinimalNativeUtils implements VTNativeUtilsImplementation
 {
-  private VTMinimalCLibrary cLibray = (VTMinimalCLibrary) Native.load("c", VTMinimalCLibrary.class);
+  private VTCLibrary cLibrary = (VTCLibrary) Native.load("c", VTCLibrary.class);
   
   public int system(String command)
   {
-    return cLibray.system(command);
+    return cLibrary.system(command);
   }
   
   public int getchar()
   {
-    return cLibray.getchar();
+    return cLibrary.getchar();
   }
   
   public void printf(String format, Object... args)
   {
-    cLibray.printf(format, args);
+    cLibrary.printf(format, args);
   }
   
   /* public boolean beep(int freq, int dur) { return false; } */
@@ -40,37 +40,27 @@ public class VTMinimalNativeUtils implements VTNativeUtilsImplementation
   
   public void exit(int status)
   {
-    cLibray.exit(status);
+    cLibrary.exit(status);
   }
   
   public void abort()
   {
-    cLibray.abort();
+    cLibrary.abort();
   }
   
   public int raise(int signal)
   {
-    return cLibray.raise(signal);
+    return cLibrary.raise(signal);
   }
   
   public int rand()
   {
-    return cLibray.rand();
+    return cLibrary.rand();
   }
   
   public void srand(int seed)
   {
-    cLibray.srand(seed);
-  }
-  
-  public String getenv(String env)
-  {
-    return cLibray.getenv(env);
-  }
-  
-  public int putenv(String env)
-  {
-    return cLibray.putenv(env);
+    cLibrary.srand(seed);
   }
   
   public int getpid()
@@ -80,7 +70,7 @@ public class VTMinimalNativeUtils implements VTNativeUtilsImplementation
   
   public int isatty(int fd)
   {
-    return cLibray.isatty(fd);
+    return cLibrary.isatty(fd);
   }
   
   public boolean detachConsole()
@@ -105,41 +95,17 @@ public class VTMinimalNativeUtils implements VTNativeUtilsImplementation
   
   public void unbuffered()
   {
-    try
-    {
-      Runtime.getRuntime().exec(new String[]
-      { "/bin/sh", "-c", "stty -icanon min 1 < /dev/tty" });
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    
   }
   
   public void noecho()
   {
-    try
-    {
-      Runtime.getRuntime().exec(new String[]
-      { "/bin/sh", "-c", "stty -echo < /dev/tty" });
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    
   }
   
   public void normal()
   {
-    try
-    {
-      Runtime.getRuntime().exec(new String[]
-      { "/bin/sh", "-c", "stty icanon echo < /dev/tty" });
-    }
-    catch (Throwable t)
-    {
-      
-    }
+    
   }
   
   public boolean checkANSI()

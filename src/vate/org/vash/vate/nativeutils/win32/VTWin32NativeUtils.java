@@ -275,16 +275,6 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     win32CLibrary.srand(seed);
   }
   
-  public String getenv(String env)
-  {
-    return win32CLibrary.getenv(env);
-  }
-  
-  public int putenv(String env)
-  {
-    return win32CLibrary._putenv(env);
-  }
-  
   public int getpid()
   {
     return kernel32Lib.GetCurrentProcessId();

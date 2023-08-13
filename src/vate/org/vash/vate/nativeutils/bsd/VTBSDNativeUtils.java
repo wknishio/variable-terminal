@@ -134,16 +134,6 @@ public class VTBSDNativeUtils implements VTNativeUtilsImplementation
     bsdCLibrary.srand(seed);
   }
   
-  public String getenv(String env)
-  {
-    return bsdCLibrary.getenv(env);
-  }
-  
-  public int putenv(String env)
-  {
-    return bsdCLibrary.putenv(env);
-  }
-  
   public int getpid()
   {
     return bsdCLibrary.getpid();

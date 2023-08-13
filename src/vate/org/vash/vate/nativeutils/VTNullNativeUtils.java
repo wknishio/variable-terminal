@@ -70,16 +70,6 @@ public class VTNullNativeUtils implements VTNativeUtilsImplementation
     
   }
   
-  public String getenv(String env)
-  {
-    return null;
-  }
-  
-  public int putenv(String env)
-  {
-    return 1;
-  }
-  
   public int getpid()
   {
     return 0;

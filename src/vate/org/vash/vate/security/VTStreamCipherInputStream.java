@@ -19,7 +19,7 @@ public class VTStreamCipherInputStream extends FilterInputStream
     super(in);
     this.streamCipher = streamCipher;
   }
-
+  
   public int read() throws IOException
   {
     single1[0] = (byte) in.read();

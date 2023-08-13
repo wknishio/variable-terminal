@@ -23,8 +23,6 @@ public interface VTUnixCLibrary extends Library
   
   public void srand(int seed);
   
-  public String getenv(String env);
-  
   public int isatty(int fd);
   
   public int getpid();

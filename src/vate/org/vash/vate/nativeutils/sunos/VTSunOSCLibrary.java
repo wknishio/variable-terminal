@@ -9,6 +9,4 @@ public interface VTSunOSCLibrary extends VTUnixCLibrary
   public int ioctl(int fd, int type, Object... args);
   
   public int close(int fd);
-  
-  public int putenv(String env);
 }
