@@ -27,8 +27,8 @@ public class VTUSERS extends VTServerStandardLocalConsoleCommandProcessor
       message.append("\rVT>List of client connections with server:\nVT>");
       for (VTServerConnectionHandler handler : connections.toArray(new VTServerConnectionHandler[] {}))
       {
-        message.append("\nVT>Session Number: [" + i++ + "]");
-        message.append("\nVT>Authenticated: [" + (handler.getSessionHandler().isAuthenticated() ? "Yes" : "No") + "]");
+        message.append("\nVT>Number: [" + i++ + "]");
+        //message.append("\nVT>Authenticated: [" + (handler.getSessionHandler().isAuthenticated() ? "Yes" : "No") + "]");
         message.append("\nVT>User: [" + (handler.getSessionHandler().getUser() != null ? handler.getSessionHandler().getUser() : "") + "]");
         InetAddress address = handler.getConnection().getConnectionSocket().getInetAddress();
         if (address != null)
