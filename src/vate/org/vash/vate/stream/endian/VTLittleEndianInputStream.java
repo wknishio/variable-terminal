@@ -171,9 +171,12 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
     return b;
   }
   
-  public final String readLine() throws IOException
+  public final byte[] readData() throws IOException
   {
-    return readUTF();
+    int size = this.readInt();
+    byte[] data = new byte[size];
+    readFully(data, 0, size);
+    return data;
   }
   
   public final String readUTF() throws IOException
@@ -183,11 +186,8 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
     return data;
   }
   
-  public final byte[] readData() throws IOException
+  public final String readLine() throws IOException
   {
-    int size = this.readUnsignedShort();
-    byte[] data = new byte[size];
-    readFully(data, 0, size);
-    return data;
+    return readUTF();
   }
 }
