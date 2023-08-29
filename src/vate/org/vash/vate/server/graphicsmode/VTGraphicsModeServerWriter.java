@@ -23,7 +23,7 @@ import javax.imageio.stream.ImageOutputStream;
 
 import org.vash.vate.VT;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
-import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeFrameDifferenceCodecMKII;
+import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeTileFrameDifferenceCodecMKII;
 import org.vash.vate.graphics.image.VTImageDataUtils;
 import org.vash.vate.graphics.image.VTImageIO;
 import org.vash.vate.reflection.VTReflectionUtils;
@@ -37,7 +37,7 @@ import com.objectplanet.image.PngEncoder;
 
 public class VTGraphicsModeServerWriter implements Runnable
 {
-  private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeFrameDifferenceCodecMKII.PADDING_SIZE;
+  private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeTileFrameDifferenceCodecMKII.PADDING_SIZE;
   private static final int IMAGE_OUTPUT_BUFFER_SIZE = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
   private volatile boolean stopped;
   private volatile boolean needRefresh;
@@ -81,7 +81,7 @@ public class VTGraphicsModeServerWriter implements Runnable
   private VTAWTScreenCaptureProvider viewProvider;
   private VTServerConnection connection;
   private VTGraphicsModeServerSession session;
-  private VTQuadrupleOctalTreeFrameDifferenceCodecMKII vtCustomCodec;
+  private VTQuadrupleOctalTreeTileFrameDifferenceCodecMKII vtCustomCodec;
   // private VTImageIO vtImageIO;
   private Object screenCaptureIntervalSynchronizer;
   private ImageWriter jpgWriter;
@@ -880,7 +880,7 @@ public class VTGraphicsModeServerWriter implements Runnable
   {
     pngEncoder = new PngEncoder(PngEncoder.COLOR_INDEXED, PngEncoder.BEST_SPEED);
     pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
-    vtCustomCodec = new VTQuadrupleOctalTreeFrameDifferenceCodecMKII();
+    vtCustomCodec = new VTQuadrupleOctalTreeTileFrameDifferenceCodecMKII();
     // vtCustomCodec.setPixelDataBuffer(imageOutputBuffer);
     // vtDifferenceCodec.setPixelDataBuffer(imageOutputBuffer);
     try

@@ -13,14 +13,14 @@ import javax.imageio.stream.ImageInputStream;
 import org.vash.vate.VT;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.console.VTConsole;
-import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeFrameDifferenceCodecMKII;
+import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeTileFrameDifferenceCodecMKII;
 import org.vash.vate.graphics.image.VTImageIO;
 import org.vash.vate.stream.limit.VTLimitedInputStream;
 import com.sixlegs.png.iio.*;
 
 public class VTGraphicsModeClientReader implements Runnable
 {
-  private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeFrameDifferenceCodecMKII.PADDING_SIZE;
+  private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeTileFrameDifferenceCodecMKII.PADDING_SIZE;
   private volatile boolean stopped;
   private volatile boolean failed;
   private int currentDataType;
@@ -41,7 +41,7 @@ public class VTGraphicsModeClientReader implements Runnable
   private VTGraphicsModeClientSession session;
   private VTClientConnection connection;
   private VTGraphicsModeClientWriter writer;
-  private VTQuadrupleOctalTreeFrameDifferenceCodecMKII vtCustomCodec;
+  private VTQuadrupleOctalTreeTileFrameDifferenceCodecMKII vtCustomCodec;
   private ImageReader currentImageReader;
   private ImageReader pngImageReader;
   private ImageReader jpegImageReader;
@@ -236,7 +236,7 @@ public class VTGraphicsModeClientReader implements Runnable
       else
       {
         VTConsole.print("\nVT>Remote graphics link started!\nVT>");
-        vtCustomCodec = new VTQuadrupleOctalTreeFrameDifferenceCodecMKII();
+        vtCustomCodec = new VTQuadrupleOctalTreeTileFrameDifferenceCodecMKII();
         // pngImageReader = ImageIO.getImageReadersByFormatName("PNG").next();
         pngImageReader = new PngImageReader(new PngImageReaderSpi());
         jpegImageReader = ImageIO.getImageReadersByFormatName("JPEG").next();
