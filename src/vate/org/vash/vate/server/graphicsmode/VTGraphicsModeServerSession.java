@@ -3,7 +3,7 @@ package org.vash.vate.server.graphicsmode;
 import java.awt.Dimension;
 
 import org.vash.vate.VT;
-import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeTileFrameDifferenceCodecMKII;
+import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII;
 import org.vash.vate.server.session.VTServerSession;
 
 public class VTGraphicsModeServerSession
@@ -35,7 +35,7 @@ public class VTGraphicsModeServerSession
     boolean controlProviderInitialized = false;
     try
     {
-      viewProviderInitialized = session.getViewProvider().isScreenCaptureInitialized(VTQuadrupleOctalTreeTileFrameDifferenceCodecMKII.PADDING_SIZE) || session.getViewProvider().initializeScreenCapture(VTQuadrupleOctalTreeTileFrameDifferenceCodecMKII.PADDING_SIZE);
+      viewProviderInitialized = session.getViewProvider().isScreenCaptureInitialized(VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII.PADDING_SIZE) || session.getViewProvider().initializeScreenCapture(VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII.PADDING_SIZE);
       controlProviderInitialized = session.getControlProvider().isInputControlInitialized() || session.getControlProvider().initializeInputControl();
     }
     catch (Throwable e)

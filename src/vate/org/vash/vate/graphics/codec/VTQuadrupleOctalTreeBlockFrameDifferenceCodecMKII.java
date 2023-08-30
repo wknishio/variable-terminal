@@ -12,7 +12,7 @@ import org.vash.vate.stream.array.VTByteArrayInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 
-public final class VTQuadrupleOctalTreeTileFrameDifferenceCodecMKII
+public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
 {
   // iterators
   // block1 count
@@ -108,7 +108,7 @@ public final class VTQuadrupleOctalTreeTileFrameDifferenceCodecMKII
     pixelDataBuffer = null;
   }
   
-  public VTQuadrupleOctalTreeTileFrameDifferenceCodecMKII()
+  public VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII()
   {
     this.block1DataBuffer = new ByteArrayOutputStream();
     this.block2DataBuffer = new ByteArrayOutputStream();
