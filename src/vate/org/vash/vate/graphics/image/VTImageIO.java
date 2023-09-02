@@ -1144,22 +1144,22 @@ public final class VTImageIO
   
   public static final void clearBuffer(DataBuffer buffer, int type, int colors, int start)
   {
-    clearBufferGray(buffer, type, colors, start);
+    clearBufferBlack(buffer, type, colors, start);
   }
   
   public static final void clearBuffer(byte[] buffer, int type, int colors, int start)
   {
-    clearBufferGray(buffer, type, colors, start);
+    clearBufferBlack(buffer, type, colors, start);
   }
   
   public static final void clearBuffer(short[] buffer, int type, int colors, int start)
   {
-    clearBufferGray(buffer, type, colors, start);
+    clearBufferBlack(buffer, type, colors, start);
   }
   
   public static final void clearBuffer(int[] buffer, int type, int colors, int start)
   {
-    clearBufferGray(buffer, type, colors, start);
+    clearBufferBlack(buffer, type, colors, start);
   }
   
   public static final void clearImage(BufferedImage image)
