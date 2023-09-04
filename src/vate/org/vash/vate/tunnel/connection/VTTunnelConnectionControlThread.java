@@ -52,7 +52,7 @@ public class VTTunnelConnectionControlThread implements Runnable
               if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
               {
                 //attempt tcp connect in another thread
-                Runnable attemptTCPConnect = new Runnable()
+                Runnable tcpConnect = new Runnable()
                 {
                   public void run()
                   {
@@ -145,7 +145,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                     }
                   }
                 };
-                threads.execute(attemptTCPConnect);
+                threads.execute(tcpConnect);
               }
               else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
               {
