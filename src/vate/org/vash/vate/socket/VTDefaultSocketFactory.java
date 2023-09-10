@@ -55,22 +55,22 @@ public class VTDefaultSocketFactory extends VTAuthenticatedProxySocketFactory
     return socket;
   }
   
-  public Socket createSocket(Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, String host, int port) throws IOException, UnknownHostException
+  public Socket createSocket(String host, int port, Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException, UnknownHostException
   {
     return VTDefaultProxy.connect(host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
   }
   
-  public Socket createSocket(Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, InetAddress host, int port) throws IOException
+  public Socket createSocket(InetAddress host, int port, Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
   {
     return VTDefaultProxy.connect(host.getHostName(), port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
   }
   
-  public Socket createSocket(Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, String host, int port, InetAddress bind, int local) throws IOException, UnknownHostException
+  public Socket createSocket(String host, int port, InetAddress bind, int local, Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException, UnknownHostException
   {
     return VTDefaultProxy.connect(host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
   }
   
-  public Socket createSocket(Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, InetAddress host, int port, InetAddress bind, int local) throws IOException
+  public Socket createSocket(InetAddress host, int port, InetAddress bind, int local, Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
   {
     return VTDefaultProxy.connect(host.getHostName(), port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
   }
