@@ -1814,7 +1814,7 @@ public class VTClient implements Runnable
           
         }
       }
-      if (parameterName.contains("-NP"))
+      if (parameterName.contains("-CN"))
       {
         parameterValue = parameters[++i];
         try

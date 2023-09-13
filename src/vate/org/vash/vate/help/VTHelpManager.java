@@ -32,7 +32,7 @@ public class VTHelpManager
   ("\n-CM: connection mode, passive(P), active(A)") + 
   ("\n-CH: connection host, default null") + 
   ("\n-CP: connection port, default 6060") + 
-  ("\n-NP: connection NAT port, default null") + 
+  ("\n-CN: connection NAT port, default null") + 
   ("\n-PT: proxy type, default none, SOCKS(S), HTTP(H)") + 
   ("\n-PH: proxy host, default null") + 
   ("\n-PP: proxy port, default 1080 for SOCKS or 8080 for HTTP") + 

@@ -115,7 +115,7 @@ these are the available program arguments:
 * -CM: connection mode, passive(P), active(A)
 * -CH: connection host, default null
 * -CP: connection port, default 6060
-* -NP: NAT port, default null
+* -CN: connection NAT port, default null
 * -PT: proxy type, default none, SOCKS(S), HTTP(H)
 * -PH: proxy host, default null
 * -PP: proxy port, default 1080 for SOCKS or default 8080 for HTTP

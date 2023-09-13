@@ -1965,7 +1965,7 @@ public class VTServer implements Runnable
           
         }
       }
-      if (parameterName.contains("-NP"))
+      if (parameterName.contains("-CN"))
       {
         parameterValue = parameters[++i];
         try
