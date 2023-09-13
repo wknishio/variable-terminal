@@ -1225,7 +1225,8 @@ public final class VTImageIO
     top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
     
-    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
+    //pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
+    pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
     out.write(pixelData[position] ^ (pred1));
   }
@@ -1238,7 +1239,7 @@ public final class VTImageIO
     top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
     
-    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
+    pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
     out.writeShort(pixelData[position] ^ (pred1));
   }
@@ -1251,9 +1252,9 @@ public final class VTImageIO
     top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
     
-    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
+    pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
-    out.writeSubInt(pixelData[position] ^ (int) ((pred1) /* & 0x00FFFFFF */));
+    out.writeSubInt(pixelData[position] ^ ((pred1) /* & 0x00FFFFFF */));
   }
   
   private static final void encodePixel30(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
@@ -1264,9 +1265,9 @@ public final class VTImageIO
     top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
     
-    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
+    pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
-    out.writeInt(pixelData[position] ^ (int) (pred1));
+    out.writeInt(pixelData[position] ^ (pred1));
   }
   
   private static final void encodePixel32(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
@@ -1277,7 +1278,7 @@ public final class VTImageIO
     top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
     
-    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
+    pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
     out.writeInt(pixelData[position] ^ (int) (pred1));
   }
@@ -1290,7 +1291,7 @@ public final class VTImageIO
     top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
     
-    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
+    pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
     pixelData[position] = (byte) ((in.read() ^ (pred1)) /* & 0xFF */);
   }
@@ -1303,7 +1304,7 @@ public final class VTImageIO
     top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
     
-    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
+    pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
     pixelData[position] = (short) ((in.readShort() ^ (pred1)) /* & 0x7FFF */);
   }
@@ -1316,9 +1317,9 @@ public final class VTImageIO
     top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
     
-    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
+    pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
-    pixelData[position] = ((in.readSubInt() ^ (int) ((pred1) /* & 0x00FFFFFF */)));
+    pixelData[position] = ((in.readSubInt() ^ ((pred1) /* & 0x00FFFFFF */)));
   }
   
   private static final void decodePixel30(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
@@ -1329,9 +1330,9 @@ public final class VTImageIO
     top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
     
-    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
+    pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
-    pixelData[position] = (in.readInt() ^ (int) (pred1));
+    pixelData[position] = (in.readInt() ^ (pred1));
   }
   
   private static final void decodePixel32(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
@@ -1342,7 +1343,7 @@ public final class VTImageIO
     top1 = position >= width ? pixelData[position - width] : diag1;
     left1 = position > 0 ? pixelData[position - 1] : top1;
     
-    pred1 = (left1 + top1 + diag1 + (left1 >> 1) + (top1 >> 1)) >> 2;
+    pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
     pixelData[position] = (in.readInt() ^ (int) (pred1));
   }
