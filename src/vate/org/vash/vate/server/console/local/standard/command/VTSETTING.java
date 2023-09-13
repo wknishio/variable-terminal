@@ -50,11 +50,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       message.append("\nVT>Connection host port(CP): [" + port + "]");
       if (natPort != null)
       {
-        message.append("\nVT>Connection nat port(NP): [" + natPort + "]");
+        message.append("\nVT>Connection nat port(CN): [" + natPort + "]");
       }
       else
       {
-        message.append("\nVT>Connection nat port(NP): []");
+        message.append("\nVT>Connection nat port(CN): []");
       }
       if (proxyType == null)
       {
@@ -672,18 +672,18 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
-      else if (parsed[1].equalsIgnoreCase("NP"))
+      else if (parsed[1].equalsIgnoreCase("CN"))
       {
         if (parsed.length == 2)
         {
           Integer natPort = server.getServerConnector().getNatPort();
           if (natPort != null)
           {
-            VTConsole.print("\rVT>Connection nat port(NP): [" + natPort + "]\nVT>");
+            VTConsole.print("\rVT>Connection nat port(CN): [" + natPort + "]\nVT>");
           }
           else
           {
-            VTConsole.print("\rVT>Connection nat port(NP): []\nVT>");
+            VTConsole.print("\rVT>Connection nat port(CN): []\nVT>");
           }
         }
         else if (parsed.length >= 3)
@@ -704,7 +704,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
                 {
                   connector.setNatPort(null);
                 }
-                VTConsole.print("\rVT>Connection nat port(NP) set to: []\nVT>");
+                VTConsole.print("\rVT>Connection nat port(CN) set to: []\nVT>");
               }
               else
               {
@@ -712,7 +712,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
                 {
                   connector.setNatPort(natPort);
                 }
-                VTConsole.print("\rVT>Connection nat port(NP) set to: [" + natPort + "]\nVT>");
+                VTConsole.print("\rVT>Connection nat port(CN) set to: [" + natPort + "]\nVT>");
               }
             }
           }
@@ -723,7 +723,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             {
               connector.setNatPort(null);
             }
-            VTConsole.print("\rVT>Connection nat port(NP) set to: []\nVT>");
+            VTConsole.print("\rVT>Connection nat port(CN) set to: []\nVT>");
           }
         }
         else

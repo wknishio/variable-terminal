@@ -49,11 +49,11 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       message.append("\nVT>Connection host port(CP): [" + port + "]");
       if (natPort != null)
       {
-        message.append("\nVT>Connection nat port(NP): [" + natPort + "]");
+        message.append("\nVT>Connection nat port(CN): [" + natPort + "]");
       }
       else
       {
-        message.append("\nVT>Connection nat port(NP): []");
+        message.append("\nVT>Connection nat port(CN): []");
       }
       if (proxyType == null)
       {
@@ -725,19 +725,19 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           connection.getResultWriter().flush();
         }
       }
-      else if (parsed[1].equalsIgnoreCase("NP"))
+      else if (parsed[1].equalsIgnoreCase("CN"))
       {
         if (parsed.length == 2)
         {
           Integer natPort = session.getServer().getServerConnector().getNatPort();
           if (natPort != null)
           {
-            connection.getResultWriter().write("\nVT>Connection nat port(NP): [" + natPort + "]\nVT>");
+            connection.getResultWriter().write("\nVT>Connection nat port(CN): [" + natPort + "]\nVT>");
             connection.getResultWriter().flush();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Connection nat port(NP): []\nVT>");
+            connection.getResultWriter().write("\nVT>Connection nat port(CN): []\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -760,7 +760,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
                 {
                   connector.setNatPort(null);
                 }
-                connection.getResultWriter().write("\nVT>Connection nat port(NP) set to: []\nVT>");
+                connection.getResultWriter().write("\nVT>Connection nat port(CN) set to: []\nVT>");
                 connection.getResultWriter().flush();
               }
               else
@@ -769,7 +769,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
                 {
                   connector.setNatPort(natPort);
                 }
-                connection.getResultWriter().write("\nVT>Connection nat port(NP) set to: [" + natPort + "]\nVT>");
+                connection.getResultWriter().write("\nVT>Connection nat port(CN) set to: [" + natPort + "]\nVT>");
                 connection.getResultWriter().flush();
               }
             }
@@ -781,7 +781,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             {
               connector.setNatPort(null);
             }
-            connection.getResultWriter().write("\nVT>Connection nat port(NP) set to: []\nVT>");
+            connection.getResultWriter().write("\nVT>Connection nat port(CN) set to: []\nVT>");
             connection.getResultWriter().flush();
           }
         }
