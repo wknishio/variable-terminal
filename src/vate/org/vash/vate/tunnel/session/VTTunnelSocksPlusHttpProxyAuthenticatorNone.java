@@ -19,19 +19,23 @@ public class VTTunnelSocksPlusHttpProxyAuthenticatorNone extends ServerAuthentic
     this.connect_proxy = proxy;
   }
   
-  public ServerAuthenticator startSession(Socket s) throws IOException {
-
+  public ServerAuthenticator startSession(Socket s) throws IOException
+  {
     PushbackInputStream in = new PushbackInputStream(s.getInputStream());
     OutputStream out = s.getOutputStream();
-
     int version = in.read();
-    if (version == 5) {
+    if (version == 5)
+    {
       if (!selectSocks5Authentication(in, out, 0))
         return null;
-    } else if (version == 4) {
+    }
+    else if (version == 4)
+    {
       // Else it is the request message allready, version 4
       in.unread(version);
-    } else {
+    }
+    else
+    {
       //System.out.println("version=" + version);
       if (version != -1)
       {
@@ -49,8 +53,6 @@ public class VTTunnelSocksPlusHttpProxyAuthenticatorNone extends ServerAuthentic
       }
       return null;
     }
-      
-
     return new ServerAuthenticatorNone(in, out);
   }
 }

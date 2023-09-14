@@ -17,4 +17,8 @@ public abstract class VTAuthenticatedProxySocketFactory extends SocketFactory
   public abstract Socket createSocket(String host, int port, InetAddress bind, int local, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException, UnknownHostException;
   
   public abstract Socket createSocket(InetAddress host, int port, InetAddress bind, int local, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException;
+  
+  public abstract Socket createSocket(String host, int port, VTDefaultProxy proxy) throws IOException, UnknownHostException;
+  
+  public abstract Socket createSocket(InetAddress host, int port, VTDefaultProxy proxy) throws IOException;
 }

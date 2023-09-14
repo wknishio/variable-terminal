@@ -22,11 +22,10 @@ public class VTTunnelSocksPlusHttpProxyAuthenticatorUsernamePassword extends Use
     this.connect_proxy = proxy;
   }
 
-  public ServerAuthenticator startSession(Socket s) throws IOException {
-
+  public ServerAuthenticator startSession(Socket s) throws IOException
+  {
     PushbackInputStream in = new PushbackInputStream(s.getInputStream());
     OutputStream out = s.getOutputStream();
-
     int version = in.read();
     if (version != 5)
     {
@@ -54,7 +53,6 @@ public class VTTunnelSocksPlusHttpProxyAuthenticatorUsernamePassword extends Use
       return null;
     if (!doUserPasswordAuthentication(s, in, out))
       return null;
-    
     return new ServerAuthenticatorNone(in, out);
   }
 }

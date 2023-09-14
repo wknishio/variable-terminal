@@ -74,4 +74,14 @@ public class VTDefaultSocketFactory extends VTAuthenticatedProxySocketFactory
   {
     return VTDefaultProxy.connect(host.getHostName(), port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
   }
+  
+  public Socket createSocket(String host, int port, VTDefaultProxy proxy) throws IOException, UnknownHostException
+  {
+    return VTDefaultProxy.connect(host, port, proxy);
+  }
+  
+  public Socket createSocket(InetAddress host, int port, VTDefaultProxy proxy) throws IOException
+  {
+    return VTDefaultProxy.connect(host.getHostName(), port, proxy);
+  }
 }
