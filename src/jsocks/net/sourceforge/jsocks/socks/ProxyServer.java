@@ -59,8 +59,8 @@ public class ProxyServer implements Runnable {
 	Thread pipe_thread1, pipe_thread2;
 	long lastReadTime;
 
-	static int idleTimeout = 60000; // 60 seconds
-	static int acceptTimeout = 60000; // 60 seconds
+	static int idleTimeout = 90000; // 90 seconds
+	static int acceptTimeout = 90000; // 90 seconds
 
 	// private static final Logger LOG = Logger.getLogger(ProxyServer.class);
 
@@ -212,7 +212,7 @@ public class ProxyServer implements Runnable {
 				//s.setSoLinger(true, 5);
 				//s.setReuseAddress(true);
 				//s.setKeepAlive(true);
-				s.setSoTimeout(60000);
+				s.setSoTimeout(90000);
 				//s.setSoLinger(true, 0);
 				// String connectionId = newConnectionId();
 				// LOG.info(connectionId + " Accepted from:" +
@@ -399,19 +399,19 @@ public class ProxyServer implements Runnable {
 		    s = new Socket();
 	      s.connect(new InetSocketAddress(msg.ip, msg.port));
 	      s.setTcpNoDelay(true);
-	      s.setSoTimeout(60000);
+	      s.setSoTimeout(90000);
 		  }
 		  else
 		  {
-		    s = VTDefaultProxy.connect(msg.ip.getHostName(), msg.port, connect_proxy);
+		    s = VTDefaultProxy.connect(msg.host, msg.port, connect_proxy);
 		    s.setTcpNoDelay(true);
-        s.setSoTimeout(60000);
+        s.setSoTimeout(90000);
 		  }
 			
 		} else {
 			s = new SocksSocket(proxy, msg.ip, msg.port);
 			s.setTcpNoDelay(true);
-			s.setSoTimeout(60000);
+			s.setSoTimeout(90000);
 		}
 		// LOG.info(connectionId + " Connected to " + s.getInetAddress() + ":" +
 		// s.getPort());
@@ -536,7 +536,7 @@ public class ProxyServer implements Runnable {
 			//s.setSoLinger(true, 5);
 			//s.setReuseAddress(true);
 			//s.setKeepAlive(true);
-			s.setSoTimeout(60000);
+			s.setSoTimeout(90000);
 			//s.setSoLinger(true, 0);
 			// if(s.getInetAddress().equals(msg.ip)){
 			if (s != null) {

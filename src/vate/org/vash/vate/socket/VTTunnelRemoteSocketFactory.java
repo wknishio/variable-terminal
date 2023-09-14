@@ -51,28 +51,8 @@ public class VTTunnelRemoteSocketFactory extends VTAuthenticatedProxySocketFacto
     return builder.connect(channelType, host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
   }
   
-  public Socket createSocket(InetAddress host, int port, Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
-  {
-    return builder.connect(channelType, host.getHostName(), port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
-  }
-  
-  public Socket createSocket(String host, int port, InetAddress bind, int local, Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException, UnknownHostException
-  {
-    return builder.connect(channelType, host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
-  }
-  
-  public Socket createSocket(InetAddress host, int port, InetAddress bind, int local, Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
-  {
-    return builder.connect(channelType, host.getHostName(), port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
-  }
-  
   public Socket createSocket(String host, int port, VTDefaultProxy proxy) throws IOException, UnknownHostException
   {
     return builder.connect(channelType, host, port, proxy);
-  }
-  
-  public Socket createSocket(InetAddress host, int port, VTDefaultProxy proxy) throws IOException
-  {
-    return builder.connect(channelType, host.getHostName(), port, proxy);
   }
 }

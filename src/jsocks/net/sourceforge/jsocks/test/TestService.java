@@ -35,7 +35,7 @@ public class TestService implements Runnable {
 	static final int BUF_SIZE = 1024;
 
 	static final int CHARGEN_WAIT = 1000; // 1 second
-	static final int MAX_WAIT = 60000; // 1 minute
+	static final int MAX_WAIT = 90000; // 1.5 minute
 
 	static PrintStream log = null;
 
