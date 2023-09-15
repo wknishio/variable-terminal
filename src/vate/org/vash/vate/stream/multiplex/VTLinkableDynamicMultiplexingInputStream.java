@@ -358,7 +358,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       return directOutputStream;
     }
     
-    public final void setDirectOutputStream(OutputStream outputStream, Closeable closeable)
+    public final void setOutputStream(OutputStream outputStream, Closeable closeable)
     {
       this.directCloseable = closeable;
       if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)

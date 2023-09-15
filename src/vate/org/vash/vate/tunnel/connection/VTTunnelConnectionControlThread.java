@@ -114,7 +114,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                           session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
                           session.getTunnelOutputStream().open();
                           session.getTunnelInputStream().open();
-                          session.getTunnelInputStream().setDirectOutputStream(session.getSocketOutputStream(), session.getSocket());
+                          session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream(), session.getSocket());
                           // response message sent with ok
                           connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                           connection.getControlOutputStream().flush();
@@ -199,7 +199,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                   session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
                   session.getTunnelOutputStream().open();
                   session.getTunnelInputStream().open();
-                  session.getTunnelInputStream().setDirectOutputStream(piped.getInputStreamSource(), piped);
+                  session.getTunnelInputStream().setOutputStream(piped.getInputStreamSource(), piped);
                   // response message sent with ok
                   connection.getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
@@ -250,11 +250,11 @@ public class VTTunnelConnectionControlThread implements Runnable
                     if (socket instanceof VTTunnelPipedSocket)
                     {
                       VTTunnelPipedSocket piped = (VTTunnelPipedSocket) socket;
-                      session.getTunnelInputStream().setDirectOutputStream(piped.getInputStreamSource(), piped);
+                      session.getTunnelInputStream().setOutputStream(piped.getInputStreamSource(), piped);
                     }
                     else
                     {
-                      session.getTunnelInputStream().setDirectOutputStream(session.getSocketOutputStream(), session.getSocket());
+                      session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream(), session.getSocket());
                     }
                     threads.execute(handler);
                     session.setResult(true);
