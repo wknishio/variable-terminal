@@ -47,14 +47,14 @@ public class VTServerConnectionHandler implements Runnable
       //VTConsole.print("\rVT>Verifying connection with client...\nVT>");
       if (connection.verifyConnection())
       {
-        VTConsole.print("\rVT>Connection with client verified!\nVT>");
+        VTConsole.print("\rVT>Connection with client validated!\nVT>");
         // connection.setMultiplexedStreams();
         // connection.startConnection();
         handler.run();
       }
       else
       {
-        VTConsole.print("\rVT>Connection with client invalid!\nVT>");
+        VTConsole.print("\rVT>Connection with client invalidated!\nVT>");
         connection.closeConnection();
       }
     }
