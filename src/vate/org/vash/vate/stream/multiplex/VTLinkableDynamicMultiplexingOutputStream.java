@@ -102,7 +102,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     {
       output = original;
     }
-    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == 0)
+    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED)
     {
       stream = pipedChannels.get(number);
       if (stream != null)

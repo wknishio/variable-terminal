@@ -111,7 +111,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private synchronized final VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number)
   {
     VTLinkableDynamicMultiplexedInputStream stream = null;
-    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == 0)
+    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED)
     {
       stream = pipedChannels.get(number);
       if (stream != null)
@@ -281,7 +281,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       this.type = type;
       this.number = number;
       this.propagated = new ArrayList<Closeable>();
-      if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == 0)
+      if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED)
       {
         this.pipedInputStream = new VTPipedInputStream(bufferSize);
         this.pipedOutputStream = new VTPipedOutputStream();

@@ -15,6 +15,8 @@ public interface VTManagedConnection extends Closeable
   public boolean isConnected();
   public VTLinkableDynamicMultiplexedInputStream getInputStream(int number);
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number);
+  public VTLinkableDynamicMultiplexedInputStream getInputStream(int number, int type);
+  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number, int type);
   public VTClientSession getClientSession();
   public VTServerSession getServerSession();
 }

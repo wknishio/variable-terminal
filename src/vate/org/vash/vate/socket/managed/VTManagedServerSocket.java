@@ -63,7 +63,7 @@ public class VTManagedServerSocket
       {
         number = 0;
       }
-      VTLinkableDynamicMultiplexedInputStream stream = connection.getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12 + number);
+      VTLinkableDynamicMultiplexedInputStream stream = connection.getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 12 + number);
       return stream;
     }
     
@@ -73,7 +73,27 @@ public class VTManagedServerSocket
       {
         number = 0;
       }
-      VTLinkableDynamicMultiplexedOutputStream stream = connection.getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12 + number);
+      VTLinkableDynamicMultiplexedOutputStream stream = connection.getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 12 + number);
+      return stream;
+    }
+    
+    public VTLinkableDynamicMultiplexedInputStream getInputStream(int number, int type)
+    {
+      if (number < 0)
+      {
+        number = 0;
+      }
+      VTLinkableDynamicMultiplexedInputStream stream = connection.getMultiplexedConnectionInputStream().linkInputStream(type, 12 + number);
+      return stream;
+    }
+    
+    public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number, int type)
+    {
+      if (number < 0)
+      {
+        number = 0;
+      }
+      VTLinkableDynamicMultiplexedOutputStream stream = connection.getMultiplexedConnectionOutputStream().linkOutputStream(type, 12 + number);
       return stream;
     }
     
@@ -93,8 +113,8 @@ public class VTManagedServerSocket
     public void sessionStarted(VTServerSession session)
     {
       // System.out.println("server.session.started()");
-      InputStream input = session.getConnection().getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12);
-      OutputStream output = session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED, 12);
+      InputStream input = session.getConnection().getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 12);
+      OutputStream output = session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED, 12);
       VTManagedSocket socket = new VTManagedSocket(new VTCloseableServerConnection(session), input, output);
       session.addSessionCloseable(this.getClass().getSimpleName(), socket);
       sessions.put(session, socket);
