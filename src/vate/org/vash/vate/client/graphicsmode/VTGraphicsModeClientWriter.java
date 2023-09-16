@@ -2000,7 +2000,8 @@ public class VTGraphicsModeClientWriter implements Runnable
       // VTGraphicsModeClientWriterScrollPane(VTGraphicsModeClientWriterScrollPane.SCROLLBARS_NEVER);
       // scrolled.setBackground(new Color(0x00999999));
       // scrolled.setBackground(new Color(0x00BFBFBF));
-      scrolled.setBackground(new Color(0x00AAAAAA));
+      //scrolled.setBackground(new Color(0x00AAAAAA));
+      scrolled.setBackground(Color.BLACK);
       // scrolledWithBars.setBackground(new Color(0x00AAAAAA));
       // scrolledWithoutBars.setBackground(new Color(0x00AAAAAA));
       // scrolled.add

@@ -27,8 +27,8 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
   {
     // this.setBackground(new Color(0x00999999));
     // this.setBackground(new Color(0x00808080));
-    this.setBackground(new Color(0x00555555));
-    //this.setBackground(Color.BLACK);
+    //this.setBackground(new Color(0x00555555));
+    this.setBackground(Color.BLACK);
     this.scrolled = scrolled;
     this.repainter = new VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter(this);
     // this.graphics
