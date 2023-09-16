@@ -220,19 +220,19 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     this.add(inputStatusMenu);
     
     keyboardShortcutsMenu = new Menu("Shortcut");
-    keyboardShortcutsMenu.add(new MenuItem("Break : Toggle Resume/Pause"));
-    keyboardShortcutsMenu.add(new MenuItem("Insert : Toggle Insert/Replace"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+C : Quit Application"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Z : Toggle Resume/Pause"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+X : Toggle Insert/Replace"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert : Copy Selected"));
-    keyboardShortcutsMenu.add(new MenuItem("Shift+Insert : Paste Selected"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace : Copy All"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp : Expand View"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown : Reduce View"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+End : Bold View"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home : Pack View"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Delete : Reset View"));
+    keyboardShortcutsMenu.add(new MenuItem("Break: Toggle Resume/Pause"));
+    keyboardShortcutsMenu.add(new MenuItem("Insert: Toggle Insert/Replace"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+C: Quit Application"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Z: Toggle Resume/Pause"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+X: Toggle Insert/Replace"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert: Copy Selected"));
+    keyboardShortcutsMenu.add(new MenuItem("Shift+Insert: Paste Selected"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace: Copy All"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp: Expand View"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown: Reduce View"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+End: Bold View"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home: Pack View"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Delete: Reset View"));
     
     this.add(keyboardShortcutsMenu);
     keyboardShortcutsMenu.setEnabled(true);

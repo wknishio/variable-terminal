@@ -131,11 +131,11 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.unifiedDeviceMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuUnifiedDeviceOptionListener(writer));
     this.toggleFullScreenMenu = new MenuItem("Toggle Full Screen");
     this.toggleFullScreenMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuToggleFullScreenOptionListener(writer));
-    this.adjustFrameSizeMenu = new MenuItem("Resize Interface");
+    this.adjustFrameSizeMenu = new MenuItem("Toggle Maximize");
     this.adjustFrameSizeMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuAdjustFrameSizeOptionListener(writer));
     this.clearInterfaceMenu = new MenuItem("Reset Image");
     this.clearInterfaceMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuClearInterfaceOptionListener(writer));
-    this.closeTerminalMenu = new MenuItem("Close Link");
+    this.closeTerminalMenu = new MenuItem("Close View");
     this.closeTerminalMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuCloseTerminalOptionListener(writer));
     
     this.trueColorOption = new CheckboxMenuItem("True", false);
@@ -327,8 +327,8 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.add(imageFormatMenu);
     this.add(drawPointerMenu);
     this.add(graphicalDeviceMenu);
-    this.add(toggleFullScreenMenu);
     this.add(clearInterfaceMenu);
+    this.add(toggleFullScreenMenu);
     this.add(adjustFrameSizeMenu);
     this.add(closeTerminalMenu);
   }
