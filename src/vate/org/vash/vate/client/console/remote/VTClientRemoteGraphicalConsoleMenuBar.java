@@ -81,8 +81,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverGraphicsModeMenu = new Menu("Remote Graphics Link ");
     serverScreenCaptureMenu = new Menu("Remote Screen Capture ");
     serverScreenAlertMenu = new Menu("Remote Screen Alert ");
-    serverBrowseMenu = new Menu("Remote Browser Application ");
-    serverPrintApplicationMenu = new Menu("Remote Mail Application ");
+    serverBrowseMenu = new Menu("Remote Browser Program ");
+    serverPrintApplicationMenu = new Menu("Remote Mail Program ");
     serverPointerScreenCaptureMenu = new Menu("Show Cursor ");
     serverCleanScreenCaptureMenu = new Menu("Hide Cursor ");
     serverGraphicalSystemsMenu.add(serverScreenCaptureMenu);
@@ -92,9 +92,9 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverGraphicalSystemsMenu.add(serverPrintApplicationMenu);
     serverScreenCaptureMenu.add(serverCleanScreenCaptureMenu);
     serverScreenCaptureMenu.add(serverPointerScreenCaptureMenu);
-    serverGraphicsModeMenu.add(new VTGraphicalConsoleMenuItem("Toggle Remote Graphics Link", "*VTGRAPHICSLINK\n"));
-    serverGraphicsModeMenu.add(new VTGraphicalConsoleMenuItem("View Remote Graphics Link", "*VTGRAPHICSLINK V\n"));
-    serverGraphicsModeMenu.add(new VTGraphicalConsoleMenuItem("Control Remote Graphics Link", "*VTGRAPHICSLINK C\n"));
+    serverGraphicsModeMenu.add(new VTGraphicalConsoleMenuItem("Toggle Graphics Link", "*VTGRAPHICSLINK\n"));
+    serverGraphicsModeMenu.add(new VTGraphicalConsoleMenuItem("View Graphics Link", "*VTGRAPHICSLINK V\n"));
+    serverGraphicsModeMenu.add(new VTGraphicalConsoleMenuItem("Control Graphics Link", "*VTGRAPHICSLINK C\n"));
     serverGraphicsModeMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTGRAPHICSLINK\n"));
     
 //		serverStandarScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Worst Color Quality", "*VTSCREENSHOT PW "));
