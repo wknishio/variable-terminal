@@ -38,7 +38,7 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file shift is still running!\nVT>");
+            connection.getResultWriter().write("\nVT>Another remote file change is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -58,7 +58,7 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file shift is still running!\nVT>");
+            connection.getResultWriter().write("\nVT>Another remote file change is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -85,7 +85,7 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file shift is still running!\nVT>");
+            connection.getResultWriter().write("\nVT>Another remote file change is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -104,7 +104,7 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file shift is still running!\nVT>");
+            connection.getResultWriter().write("\nVT>Another remote file change is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -123,7 +123,7 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Another remote file shift is still running!\nVT>");
+            connection.getResultWriter().write("\nVT>Another remote file change is still running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -143,14 +143,14 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
           }
           if (!session.getFileModifyOperation().aliveThread())
           {
-            connection.getResultWriter().write("\nVT>Trying to interrupt remote file shift!\nVT>");
+            connection.getResultWriter().write("\nVT>Trying to interrupt remote file change!\nVT>");
             connection.getResultWriter().flush();
             session.getFileModifyOperation().interruptThread();
             session.getFileModifyOperation().stopThread();
           }
           else
           {
-            connection.getResultWriter().write("\nVT>No remote file shift is running!\nVT>");
+            connection.getResultWriter().write("\nVT>No remote file change is running!\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -168,12 +168,12 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
         }
         if (!session.getFileModifyOperation().aliveThread())
         {
-          connection.getResultWriter().write("\nVT>No remote file shift is running!\nVT>");
+          connection.getResultWriter().write("\nVT>No remote file change is running!\nVT>");
           connection.getResultWriter().flush();
         }
         else
         {
-          connection.getResultWriter().write("\nVT>A remote file shift is still running!\nVT>");
+          connection.getResultWriter().write("\nVT>A remote file change is still running!\nVT>");
           connection.getResultWriter().flush();
         }
       }
