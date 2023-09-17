@@ -2470,6 +2470,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
     offset = areaX + PADDING_SIZE + ((areaY + PADDING_SIZE) * (width + PADDING_SIZE));
+    //int paddingOffset = PADDING_SIZE + (width * PADDING_SIZE);
     int size = (width * areaHeight);
     limitX = areaWidth;
     limitY = size;
@@ -2480,7 +2481,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet);
     lout.setOutputStream(out);
     lout.writeInt(offset);
     lout.writeInt(size);
@@ -2541,6 +2542,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
     offset = areaX + PADDING_SIZE + ((areaY + PADDING_SIZE) * (width + PADDING_SIZE));
+    //int paddingOffset = PADDING_SIZE + (width * PADDING_SIZE);
     int size = (width * areaHeight);
     limitX = areaWidth;
     limitY = size;
@@ -2551,7 +2553,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet);
     lout.setOutputStream(out);
     lout.writeInt(offset);
     lout.writeInt(size);
@@ -2612,6 +2614,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
     offset = areaX + PADDING_SIZE + ((areaY + PADDING_SIZE) * (width + PADDING_SIZE));
+    //int paddingOffset = PADDING_SIZE + (width * PADDING_SIZE);
     int size = (width * areaHeight);
     limitX = areaWidth;
     limitY = size;
@@ -2622,7 +2625,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet);
     lout.setOutputStream(out);
     lout.writeInt(offset);
     lout.writeInt(size);
@@ -2683,6 +2686,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
     offset = areaX + PADDING_SIZE + ((areaY + PADDING_SIZE) * (width + PADDING_SIZE));
+    //int paddingOffset = PADDING_SIZE + (width * PADDING_SIZE);
     int size = (width * areaHeight);
     limitX = areaWidth;
     limitY = size;
@@ -2693,7 +2697,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet);
     lout.setOutputStream(out);
     lout.writeInt(offset);
     lout.writeInt(size);

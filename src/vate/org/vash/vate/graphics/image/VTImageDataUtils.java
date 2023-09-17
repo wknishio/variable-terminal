@@ -200,7 +200,7 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final boolean deltaArea(byte[] array1, byte[] array2, int width, int height, Rectangle captureArea, Rectangle resultArea)
+  public static final boolean deltaArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, Rectangle resultArea)
   {
     if (width * height == 0)
     {
@@ -214,7 +214,7 @@ public final class VTImageDataUtils
     int delta = 0;
     int bits = 0;
     int index = 0;
-    int offset = 0;
+    //int offset = 0;
     int i = 0;
     int j = 0;
     int x;
@@ -244,7 +244,7 @@ public final class VTImageDataUtils
     int mxx = -1;
     int mxy = -1;
     
-    offset = x + (y * width);
+    offset += x + (y * width);
     for (i = 0; i < n; i++)
     {
       index = offset;
@@ -284,7 +284,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean deltaArea(short[] array1, short[] array2, int width, int height, Rectangle captureArea, Rectangle resultArea)
+  public static final boolean deltaArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, Rectangle resultArea)
   {
     if (width * height == 0)
     {
@@ -298,7 +298,7 @@ public final class VTImageDataUtils
     int delta = 0;
     int bits = 0;
     int index = 0;
-    int offset = 0;
+    //int offset = 0;
     int i = 0;
     int j = 0;
     int x;
@@ -328,7 +328,7 @@ public final class VTImageDataUtils
     int mxx = -1;
     int mxy = -1;
     
-    offset = x + (y * width);
+    offset += x + (y * width);
     for (i = 0; i < n; i++)
     {
       index = offset;
@@ -368,7 +368,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean deltaArea(int[] array1, int[] array2, int width, int height, Rectangle captureArea, Rectangle resultArea)
+  public static final boolean deltaArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, Rectangle resultArea)
   {
     if (width * height == 0)
     {
@@ -382,7 +382,7 @@ public final class VTImageDataUtils
     int delta = 0;
     int bits = 0;
     int index = 0;
-    int offset = 0;
+    //int offset = 0;
     int i = 0;
     int j = 0;
     int x;
@@ -412,7 +412,7 @@ public final class VTImageDataUtils
     int mxx = -1;
     int mxy = -1;
     
-    offset = x + (y * width);
+    offset += x + (y * width);
     for (i = 0; i < n; i++)
     {
       index = offset;
@@ -452,7 +452,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final List<Rectangle> deltaBlockArea(byte[] array1, byte[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> deltaBlockArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
     List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
@@ -466,7 +466,7 @@ public final class VTImageDataUtils
         blockArea.width = Math.min(blockWidth, captureArea.width - j);
         blockArea.height = Math.min(blockHeight, captureArea.height - i);
         Rectangle deltaArea = new Rectangle(0, 0, 1, 1);
-        if (!deltaArea(array1, array2, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
+        if (!deltaArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
         {
           deltaAreas.add(deltaArea);
         }
@@ -475,7 +475,7 @@ public final class VTImageDataUtils
     return deltaAreas;
   }
   
-  public static final List<Rectangle> deltaBlockArea(short[] array1, short[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> deltaBlockArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
     List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
@@ -489,7 +489,7 @@ public final class VTImageDataUtils
         blockArea.width = Math.min(blockWidth, captureArea.width - j);
         blockArea.height = Math.min(blockHeight, captureArea.height - i);
         Rectangle deltaArea = new Rectangle(0, 0, 1, 1);
-        if (!deltaArea(array1, array2, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
+        if (!deltaArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
         {
           deltaAreas.add(deltaArea);
         }
@@ -498,7 +498,7 @@ public final class VTImageDataUtils
     return deltaAreas;
   }
   
-  public static final List<Rectangle> deltaBlockArea(int[] array1, int[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> deltaBlockArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
     List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
@@ -512,7 +512,7 @@ public final class VTImageDataUtils
         blockArea.width = Math.min(blockWidth, captureArea.width - j);
         blockArea.height = Math.min(blockHeight, captureArea.height - i);
         Rectangle deltaArea = new Rectangle(0, 0, 1, 1);
-        if (!deltaArea(array1, array2, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
+        if (!deltaArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
         {
           deltaAreas.add(deltaArea);
         }
@@ -521,7 +521,7 @@ public final class VTImageDataUtils
     return deltaAreas;
   }
   
-  public static final List<Rectangle> compareBlockArea(byte[] array1, byte[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> compareBlockArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
     List<Rectangle> blockAreas = new ArrayList<Rectangle>();
     int i, j;
@@ -534,7 +534,7 @@ public final class VTImageDataUtils
         blockArea.y = captureArea.y + i;
         blockArea.width = Math.min(blockWidth, captureArea.width - j);
         blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        if (!compareArea(array1, array2, width, height, blockArea))
+        if (!compareArea(array1, array2, offset, width, height, blockArea))
         {
           blockAreas.add(blockArea);
         }
@@ -543,7 +543,7 @@ public final class VTImageDataUtils
     return blockAreas;
   }
   
-  public static final List<Rectangle> compareBlockArea(short[] array1, short[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> compareBlockArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
     List<Rectangle> blockAreas = new ArrayList<Rectangle>();
     int i, j;
@@ -556,7 +556,7 @@ public final class VTImageDataUtils
         blockArea.y = captureArea.y + i;
         blockArea.width = Math.min(blockWidth, captureArea.width - j);
         blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        if (!compareArea(array1, array2, width, height, blockArea))
+        if (!compareArea(array1, array2, offset, width, height, blockArea))
         {
           blockAreas.add(blockArea);
         }
@@ -565,7 +565,7 @@ public final class VTImageDataUtils
     return blockAreas;
   }
   
-  public static final List<Rectangle> compareBlockArea(int[] array1, int[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> compareBlockArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
     List<Rectangle> blockAreas = new ArrayList<Rectangle>();
     int i, j;
@@ -578,7 +578,7 @@ public final class VTImageDataUtils
         blockArea.y = captureArea.y + i;
         blockArea.width = Math.min(blockWidth, captureArea.width - j);
         blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        if (!compareArea(array1, array2, width, height, blockArea))
+        if (!compareArea(array1, array2, offset, width, height, blockArea))
         {
           blockAreas.add(blockArea);
         }
@@ -602,7 +602,7 @@ public final class VTImageDataUtils
     return blockAreas;
   }
   
-  public static final boolean compareArea(byte[] array1, byte[] array2, int width, int height, Rectangle captureArea)
+  public static final boolean compareArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea)
   {
     if (width * height == 0)
     {
@@ -611,7 +611,7 @@ public final class VTImageDataUtils
     
     int bits = 0;
     int index = 0;
-    int offset = 0;
+    //int offset = 0;
     int i = 0;
     int j = 0;
     int x;
@@ -634,7 +634,7 @@ public final class VTImageDataUtils
       n = height;
     }
     
-    offset = x + (y * width);
+    offset += x + (y * width);
     for (i = 0; i < n; i++)
     {
       index = offset;
@@ -648,7 +648,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean compareArea(short[] array1, short[] array2, int width, int height, Rectangle captureArea)
+  public static final boolean compareArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea)
   {
     if (width * height == 0)
     {
@@ -657,7 +657,7 @@ public final class VTImageDataUtils
     
     int bits = 0;
     int index = 0;
-    int offset = 0;
+    //int offset = 0;
     int i = 0;
     int j = 0;
     int x;
@@ -680,7 +680,7 @@ public final class VTImageDataUtils
       n = height;
     }
     
-    offset = x + (y * width);
+    offset += x + (y * width);
     for (i = 0; i < n; i++)
     {
       index = offset;
@@ -694,7 +694,9 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean compareArea(long[] array1, long[] array2, int width, int height, Rectangle captureArea)
+  
+  
+  public static final boolean compareArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea)
   {
     if (width * height == 0)
     {
@@ -703,7 +705,7 @@ public final class VTImageDataUtils
     
     int bits = 0;
     int index = 0;
-    int offset = 0;
+    //int offset = 0;
     int i = 0;
     int j = 0;
     int x;
@@ -726,7 +728,7 @@ public final class VTImageDataUtils
       n = height;
     }
     
-    offset = x + (y * width);
+    offset += x + (y * width);
     for (i = 0; i < n; i++)
     {
       index = offset;
@@ -740,7 +742,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean compareArea(int[] array1, int[] array2, int width, int height, Rectangle captureArea)
+  public static final boolean compareArea(long[] array1, long[] array2, int offset, int width, int height, Rectangle captureArea)
   {
     if (width * height == 0)
     {
@@ -749,7 +751,7 @@ public final class VTImageDataUtils
     
     int bits = 0;
     int index = 0;
-    int offset = 0;
+    //int offset = 0;
     int i = 0;
     int j = 0;
     int x;
@@ -772,7 +774,7 @@ public final class VTImageDataUtils
       n = height;
     }
     
-    offset = x + (y * width);
+    offset += x + (y * width);
     for (i = 0; i < n; i++)
     {
       index = offset;
@@ -786,7 +788,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean compareArea(byte[] array1, byte[] array2, int width, int height, Rectangle captureArea, BitSet pixelBits)
+  public static final boolean compareArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, BitSet pixelBits)
   {
     if (width * height == 0)
     {
@@ -795,7 +797,7 @@ public final class VTImageDataUtils
     
     int bits = 0;
     int index = 0;
-    int offset = 0;
+    //int offset = 0;
     int i = 0;
     int j = 0;
     int x;
@@ -818,54 +820,7 @@ public final class VTImageDataUtils
       n = height;
     }
     
-    offset = x + (y * width);
-    for (i = 0; i < n; i++)
-    {
-      index = offset;
-      for (j = 0; j < m; j++)
-      {
-        bits |= array1[index] ^ array2[index];
-        pixelBits.set(index, array1[index] != array2[index]);
-        index++;
-      }
-      offset += width;
-    }
-    return bits == 0;
-  }
-  
-  public static final boolean compareArea(short[] array1, short[] array2, int width, int height, Rectangle captureArea, BitSet pixelBits)
-  {
-    if (width * height == 0)
-    {
-      return true;
-    }
-    
-    int bits = 0;
-    int index = 0;
-    int offset = 0;
-    int i = 0;
-    int j = 0;
-    int x;
-    int y;
-    int m;
-    int n;
-    
-    if (captureArea != null && captureArea.x >= 0 && captureArea.y >= 0)
-    {
-      x = Math.min(captureArea.x, width - 1);
-      y = Math.min(captureArea.y, height - 1);
-      m = Math.min(captureArea.width, width - x);
-      n = Math.min(captureArea.height, height - y);
-    }
-    else
-    {
-      x = 0;
-      y = 0;
-      m = width;
-      n = height;
-    }
-    
-    offset = x + (y * width);
+    offset += x + (y * width);
     for (i = 0; i < n; i++)
     {
       index = offset;
@@ -880,7 +835,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean compareArea(int[] array1, int[] array2, int width, int height, Rectangle captureArea, BitSet pixelBits)
+  public static final boolean compareArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, BitSet pixelBits)
   {
     if (width * height == 0)
     {
@@ -889,7 +844,7 @@ public final class VTImageDataUtils
     
     int bits = 0;
     int index = 0;
-    int offset = 0;
+    //int offset = 0;
     int i = 0;
     int j = 0;
     int x;
@@ -912,7 +867,7 @@ public final class VTImageDataUtils
       n = height;
     }
     
-    offset = x + (y * width);
+    offset += x + (y * width);
     for (i = 0; i < n; i++)
     {
       index = offset;
@@ -927,7 +882,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean compareArea(long[] array1, long[] array2, int width, int height, Rectangle captureArea, BitSet pixelBits)
+  public static final boolean compareArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, BitSet pixelBits)
   {
     if (width * height == 0)
     {
@@ -936,7 +891,7 @@ public final class VTImageDataUtils
     
     int bits = 0;
     int index = 0;
-    int offset = 0;
+    //int offset = 0;
     int i = 0;
     int j = 0;
     int x;
@@ -959,7 +914,7 @@ public final class VTImageDataUtils
       n = height;
     }
     
-    offset = x + (y * width);
+    offset += x + (y * width);
     for (i = 0; i < n; i++)
     {
       index = offset;
@@ -974,7 +929,54 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final void compareBlockArea(byte[] array1, byte[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
+  public static final boolean compareArea(long[] array1, long[] array2, int offset, int width, int height, Rectangle captureArea, BitSet pixelBits)
+  {
+    if (width * height == 0)
+    {
+      return true;
+    }
+    
+    int bits = 0;
+    int index = 0;
+    //int offset = 0;
+    int i = 0;
+    int j = 0;
+    int x;
+    int y;
+    int m;
+    int n;
+    
+    if (captureArea != null && captureArea.x >= 0 && captureArea.y >= 0)
+    {
+      x = Math.min(captureArea.x, width - 1);
+      y = Math.min(captureArea.y, height - 1);
+      m = Math.min(captureArea.width, width - x);
+      n = Math.min(captureArea.height, height - y);
+    }
+    else
+    {
+      x = 0;
+      y = 0;
+      m = width;
+      n = height;
+    }
+    
+    offset += x + (y * width);
+    for (i = 0; i < n; i++)
+    {
+      index = offset;
+      for (j = 0; j < m; j++)
+      {
+        bits |= array1[index] ^ array2[index];
+        pixelBits.set(index, array1[index] != array2[index]);
+        index++;
+      }
+      offset += width;
+    }
+    return bits == 0;
+  }
+  
+  public static final void compareBlockArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -987,12 +989,12 @@ public final class VTImageDataUtils
         blockArea.y = captureArea.y + i;
         blockArea.width = Math.min(blockWidth, captureArea.width - j);
         blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        blockAreaBits.set(k++, !compareArea(array1, array2, width, height, blockArea));
+        blockAreaBits.set(k++, !compareArea(array1, array2, offset, width, height, blockArea));
       }
     }
   }
   
-  public static final void compareBlockArea(short[] array1, short[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
+  public static final void compareBlockArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -1005,12 +1007,12 @@ public final class VTImageDataUtils
         blockArea.y = captureArea.y + i;
         blockArea.width = Math.min(blockWidth, captureArea.width - j);
         blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        blockAreaBits.set(k++, !compareArea(array1, array2, width, height, blockArea));
+        blockAreaBits.set(k++, !compareArea(array1, array2, offset, width, height, blockArea));
       }
     }
   }
   
-  public static final void compareBlockArea(int[] array1, int[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
+  public static final void compareBlockArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -1023,12 +1025,12 @@ public final class VTImageDataUtils
         blockArea.y = captureArea.y + i;
         blockArea.width = Math.min(blockWidth, captureArea.width - j);
         blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        blockAreaBits.set(k++, !compareArea(array1, array2, width, height, blockArea));
+        blockAreaBits.set(k++, !compareArea(array1, array2, offset, width, height, blockArea));
       }
     }
   }
   
-  public static final void compareBlockArea(long[] array1, long[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
+  public static final void compareBlockArea(long[] array1, long[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -1041,12 +1043,12 @@ public final class VTImageDataUtils
         blockArea.y = captureArea.y + i;
         blockArea.width = Math.min(blockWidth, captureArea.width - j);
         blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        blockAreaBits.set(k++, !compareArea(array1, array2, width, height, blockArea));
+        blockAreaBits.set(k++, !compareArea(array1, array2, offset, width, height, blockArea));
       }
     }
   }
   
-  public static final void compareBlockArea(byte[] array1, byte[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits, BitSet pixelBits)
+  public static final void compareBlockArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits, BitSet pixelBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -1059,12 +1061,12 @@ public final class VTImageDataUtils
         blockArea.y = captureArea.y + i;
         blockArea.width = Math.min(blockWidth, captureArea.width - j);
         blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        blockAreaBits.set(k++, !compareArea(array1, array2, width, height, blockArea, pixelBits));
+        blockAreaBits.set(k++, !compareArea(array1, array2, offset, width, height, blockArea, pixelBits));
       }
     }
   }
   
-  public static final void compareBlockArea(short[] array1, short[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits, BitSet pixelBits)
+  public static final void compareBlockArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits, BitSet pixelBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -1077,12 +1079,12 @@ public final class VTImageDataUtils
         blockArea.y = captureArea.y + i;
         blockArea.width = Math.min(blockWidth, captureArea.width - j);
         blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        blockAreaBits.set(k++, !compareArea(array1, array2, width, height, blockArea, pixelBits));
+        blockAreaBits.set(k++, !compareArea(array1, array2, offset, width, height, blockArea, pixelBits));
       }
     }
   }
   
-  public static final void compareBlockArea(int[] array1, int[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits, BitSet pixelBits)
+  public static final void compareBlockArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits, BitSet pixelBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -1095,12 +1097,12 @@ public final class VTImageDataUtils
         blockArea.y = captureArea.y + i;
         blockArea.width = Math.min(blockWidth, captureArea.width - j);
         blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        blockAreaBits.set(k++, !compareArea(array1, array2, width, height, blockArea, pixelBits));
+        blockAreaBits.set(k++, !compareArea(array1, array2, offset, width, height, blockArea, pixelBits));
       }
     }
   }
   
-  public static final void compareBlockArea(long[] array1, long[] array2, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits, BitSet pixelBits)
+  public static final void compareBlockArea(long[] array1, long[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits, BitSet pixelBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -1113,7 +1115,7 @@ public final class VTImageDataUtils
         blockArea.y = captureArea.y + i;
         blockArea.width = Math.min(blockWidth, captureArea.width - j);
         blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        blockAreaBits.set(k++, !compareArea(array1, array2, width, height, blockArea, pixelBits));
+        blockAreaBits.set(k++, !compareArea(array1, array2, offset, width, height, blockArea, pixelBits));
       }
     }
   }
