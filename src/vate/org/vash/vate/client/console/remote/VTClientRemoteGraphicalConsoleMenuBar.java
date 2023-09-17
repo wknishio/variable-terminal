@@ -196,8 +196,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Remove File", "*VTFILEALTER R "));
     remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Move File", "*VTFILEALTER M "));
     remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Copy File", "*VTFILEALTER C "));
-    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Report File Shift", "*VTFILEALTER\n"));
-    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Stop File Shift", "*VTFILEALTER S\n"));
+    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Report File Change", "*VTFILEALTER\n"));
+    remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Stop File Change", "*VTFILEALTER S\n"));
     remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTFILEALTER\n"));
     
     // zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Compress Zip File",
