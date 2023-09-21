@@ -92,7 +92,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
   private VTLittleEndianInputStream lin = new VTLittleEndianInputStream(null);
   private VTLittleEndianOutputStream lout = new VTLittleEndianOutputStream(null);
   private BitSet block1BitSet = new BitSet(1024 * 8);
-  // private BitSet pixelBitSet = new BitSet(1024 * 8);
+  private BitSet pixelBitSet = new BitSet(1024 * 64);
   private Rectangle transferArea = new Rectangle(0, 0, 1, 1);
   private int m1;
   private int limitX;
@@ -234,7 +234,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     switch (x1 + microblockStepX - limitX)
     {
       default:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -242,7 +242,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 1:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -250,7 +250,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 2:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -258,7 +258,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 3:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -266,7 +266,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 4:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -274,7 +274,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 5:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -282,7 +282,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 6:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -290,7 +290,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 7:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel8(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -790,7 +790,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     switch (x1 + microblockStepX - limitX)
     {
       default:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -798,7 +798,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 1:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -806,7 +806,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 2:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -814,7 +814,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 3:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -822,7 +822,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 4:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -830,7 +830,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 5:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -838,7 +838,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 6:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -846,7 +846,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 7:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel15(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1346,7 +1346,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     switch (x1 + microblockStepX - limitX)
     {
       default:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1354,7 +1354,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 1:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1362,7 +1362,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 2:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1370,7 +1370,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 3:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1378,7 +1378,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 4:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1386,7 +1386,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 5:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1394,7 +1394,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 6:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1402,7 +1402,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 7:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel24(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1902,7 +1902,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     switch (x1 + microblockStepX - limitX)
     {
       default:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel30(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1910,7 +1910,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 1:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel30(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1918,7 +1918,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 2:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel30(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1926,7 +1926,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 3:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel30(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1934,7 +1934,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 4:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel30(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1942,7 +1942,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 5:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel30(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1950,7 +1950,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 6:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel30(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -1958,7 +1958,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
         c4 <<= 1;
         p1 += pixelStepX;
       case 7:
-        if (oldPixelData[p1] != newPixelData[p1])
+        if (pixelBitSet.get(p1))
         {
           d4 |= c4;
           encodePixel30(pixelDataBufferStream, newPixelData, p1, pixelStepY);
@@ -2481,7 +2481,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet, pixelBitSet);
     lout.setOutputStream(out);
     lout.writeInt(offset);
     lout.writeInt(size);
@@ -2490,6 +2490,8 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     encodeBlock0Tree8(lout, oldPixelData, newPixelData);
     lout.flush();
     VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea);
+    //block1BitSet.clear();
+    //pixelBitSet.clear();
   }
   
   public final void decodeFrame8(final InputStream in, final byte[] oldPixelData, final byte[] newPixelData, final int width, final int height) throws IOException
@@ -2553,7 +2555,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet, pixelBitSet);
     lout.setOutputStream(out);
     lout.writeInt(offset);
     lout.writeInt(size);
@@ -2562,6 +2564,8 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     encodeBlock0Tree15(lout, oldPixelData, newPixelData);
     lout.flush();
     VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea);
+    //block1BitSet.clear();
+    //pixelBitSet.clear();
   }
   
   public final void decodeFrame15(final InputStream in, final short[] oldPixelData, final short[] newPixelData, final int width, final int height) throws IOException
@@ -2625,7 +2629,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet, pixelBitSet);
     lout.setOutputStream(out);
     lout.writeInt(offset);
     lout.writeInt(size);
@@ -2634,6 +2638,8 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     encodeBlock0Tree24(lout, oldPixelData, newPixelData);
     lout.flush();
     VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea);
+    //block1BitSet.clear();
+    //pixelBitSet.clear();
   }
   
   public final void decodeFrame24(final InputStream in, final int[] oldPixelData, final int[] newPixelData, final int width, final int height) throws IOException
@@ -2697,7 +2703,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet, pixelBitSet);
     lout.setOutputStream(out);
     lout.writeInt(offset);
     lout.writeInt(size);
@@ -2706,6 +2712,8 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
     encodeBlock0Tree30(lout, oldPixelData, newPixelData);
     lout.flush();
     VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea);
+    //block1BitSet.clear();
+    //pixelBitSet.clear();
   }
   
   public final void decodeFrame30(final InputStream in, final int[] oldPixelData, final int[] newPixelData, final int width, final int height) throws IOException
