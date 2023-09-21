@@ -92,7 +92,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDifferenceCodecMKII
   private VTLittleEndianInputStream lin = new VTLittleEndianInputStream(null);
   private VTLittleEndianOutputStream lout = new VTLittleEndianOutputStream(null);
   private BitSet block1BitSet = new BitSet(1024 * 8);
-  private BitSet pixelBitSet = new BitSet(1024 * 64);
+  private BitSet pixelBitSet = new BitSet(1024 * 512);
   private Rectangle transferArea = new Rectangle(0, 0, 1, 1);
   private int m1;
   private int limitX;
