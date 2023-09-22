@@ -749,7 +749,7 @@ public final class VTImageDataUtils
       return true;
     }
     
-    int bits = 0;
+    long bits = 0;
     int index = 0;
     //int offset = 0;
     int i = 0;
@@ -796,6 +796,7 @@ public final class VTImageDataUtils
     }
     
     int bits = 0;
+    int diff = 0;
     int index = 0;
     //int offset = 0;
     int i = 0;
@@ -826,8 +827,9 @@ public final class VTImageDataUtils
       index = offset;
       for (j = 0; j < m; j++)
       {
-        bits |= array1[index] ^ array2[index];
-        pixelBits.set(index, array1[index] != array2[index]);
+        diff = array1[index] ^ array2[index];
+        bits |= diff;
+        pixelBits.set(index, diff != 0);
         index++;
       }
       offset += width;
@@ -843,6 +845,7 @@ public final class VTImageDataUtils
     }
     
     int bits = 0;
+    int diff = 0;
     int index = 0;
     //int offset = 0;
     int i = 0;
@@ -873,8 +876,9 @@ public final class VTImageDataUtils
       index = offset;
       for (j = 0; j < m; j++)
       {
-        bits |= array1[index] ^ array2[index];
-        pixelBits.set(index, array1[index] != array2[index]);
+        diff = array1[index] ^ array2[index];
+        bits |= diff;
+        pixelBits.set(index, diff != 0);
         index++;
       }
       offset += width;
@@ -890,6 +894,7 @@ public final class VTImageDataUtils
     }
     
     int bits = 0;
+    int diff = 0;
     int index = 0;
     //int offset = 0;
     int i = 0;
@@ -920,8 +925,9 @@ public final class VTImageDataUtils
       index = offset;
       for (j = 0; j < m; j++)
       {
-        bits |= array1[index] ^ array2[index];
-        pixelBits.set(index, array1[index] != array2[index]);
+        diff = array1[index] ^ array2[index];
+        bits |= diff;
+        pixelBits.set(index, diff != 0);
         index++;
       }
       offset += width;
@@ -936,7 +942,8 @@ public final class VTImageDataUtils
       return true;
     }
     
-    int bits = 0;
+    long bits = 0;
+    long diff = 0;
     int index = 0;
     //int offset = 0;
     int i = 0;
@@ -967,8 +974,9 @@ public final class VTImageDataUtils
       index = offset;
       for (j = 0; j < m; j++)
       {
-        bits |= array1[index] ^ array2[index];
-        pixelBits.set(index, array1[index] != array2[index]);
+        diff = array1[index] ^ array2[index];
+        bits |= diff;
+        pixelBits.set(index, diff != 0);
         index++;
       }
       offset += width;
