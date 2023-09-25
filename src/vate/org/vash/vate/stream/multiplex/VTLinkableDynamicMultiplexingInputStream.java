@@ -262,8 +262,8 @@ public final class VTLinkableDynamicMultiplexingInputStream
     private volatile Object link = null;
     private final int number;
     private int type;
-    private final VTPipedInputStream pipedInputStream;
-    private final VTPipedOutputStream pipedOutputStream;
+    private final VTPipedInputStream bufferedInputStream;
+    private final VTPipedOutputStream bufferedOutputStream;
     private InputStream in;
     private OutputStream directOutputStream;
     private Closeable directCloseable;
@@ -278,11 +278,11 @@ public final class VTLinkableDynamicMultiplexingInputStream
       this.propagated = new ArrayList<Closeable>();
       if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
       {
-        this.pipedInputStream = new VTPipedInputStream(bufferSize);
-        this.pipedOutputStream = new VTPipedOutputStream();
+        this.bufferedInputStream = new VTPipedInputStream(bufferSize);
+        this.bufferedOutputStream = new VTPipedOutputStream();
         try
         {
-          this.pipedInputStream.connect(this.pipedOutputStream);
+          this.bufferedInputStream.connect(this.bufferedOutputStream);
         }
         catch (IOException e)
         {
@@ -290,26 +290,26 @@ public final class VTLinkableDynamicMultiplexingInputStream
         }
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
         {
-          this.in = pipedInputStream;
+          this.in = bufferedInputStream;
         }
         else
         {
           if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
           {
             //this.compressedDirectInputStream = VTCompressorSelector.createDirectZlibInputStream(pipedInputStream);
-            this.compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(pipedInputStream);
+            this.compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(bufferedInputStream);
           }
           else
           {
-            this.compressedInputStream = VTCompressorSelector.createDirectLz4InputStream(pipedInputStream);
+            this.compressedInputStream = VTCompressorSelector.createDirectLz4InputStream(bufferedInputStream);
           }
           this.in = compressedInputStream;
         }
       }
       else
       {
-        this.pipedInputStream = null;
-        this.pipedOutputStream = null;
+        this.bufferedInputStream = null;
+        this.bufferedOutputStream = null;
       }
     }
     
@@ -346,9 +346,9 @@ public final class VTLinkableDynamicMultiplexingInputStream
     
     private final OutputStream getOutputStream()
     {
-      if (pipedOutputStream != null)
+      if (bufferedOutputStream != null)
       {
-        return pipedOutputStream;
+        return bufferedOutputStream;
       }
       return directOutputStream;
     }
@@ -394,19 +394,19 @@ public final class VTLinkableDynamicMultiplexingInputStream
         //return;
       //}
       closed = false;
-      if (pipedInputStream != null)
+      if (bufferedInputStream != null)
       {
-        pipedInputStream.open();
+        bufferedInputStream.open();
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
         {
           if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
           {
             //compressedDirectInputStream = VTCompressorSelector.createDirectZlibInputStream(pipedInputStream);
-            compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(pipedInputStream);
+            compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(bufferedInputStream);
           }
           else
           {
-            compressedInputStream = VTCompressorSelector.createDirectLz4InputStream(pipedInputStream);
+            compressedInputStream = VTCompressorSelector.createDirectLz4InputStream(bufferedInputStream);
           }
           in = compressedInputStream;
         }
@@ -425,9 +425,9 @@ public final class VTLinkableDynamicMultiplexingInputStream
       //}
       closed = true;
       compressedInputStream = null;
-      if (pipedOutputStream != null)
+      if (bufferedOutputStream != null)
       {
-        pipedOutputStream.close();
+        bufferedOutputStream.close();
       }
       else
       {
