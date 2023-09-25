@@ -26,7 +26,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
     //String proxyHost = "";
     //int proxyPort = 0;
     VTDefaultProxy proxy = new VTDefaultProxy(Proxy.Type.DIRECT, "", 0, null, null);
-    int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT;
+    int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
     
     if (parsed.length > 1)
     {

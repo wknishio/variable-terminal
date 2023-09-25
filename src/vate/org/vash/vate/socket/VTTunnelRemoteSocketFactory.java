@@ -14,7 +14,7 @@ public class VTTunnelRemoteSocketFactory extends VTAuthenticatedProxySocketFacto
 {
   private VTTunnelChannelRemoteSocketBuilder builder;
   
-  private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT;
+  private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
   
   public VTTunnelRemoteSocketFactory(VTTunnelChannelRemoteSocketBuilder builder)
   {
@@ -23,7 +23,7 @@ public class VTTunnelRemoteSocketFactory extends VTAuthenticatedProxySocketFacto
   
   public void setChannelType(int channelType)
   {
-    this.channelType = channelType | VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT;
+    this.channelType = channelType | VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
   }
   
   public Socket createSocket(String host, int port) throws IOException, UnknownHostException

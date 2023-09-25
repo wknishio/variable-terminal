@@ -40,7 +40,7 @@ public class VTTunnelConnection
   
   public VTTunnelConnection(ExecutorService threads)
   {
-    this.remoteRedirectChannel = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT, this);
+    this.remoteRedirectChannel = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this);
     this.bindListeners = new LinkedHashSet<VTTunnelChannelBindSocketListener>();
     // this.tunnelType = tunnelType;
     this.threads = threads;
@@ -265,14 +265,14 @@ public class VTTunnelConnection
   {
     if (link instanceof Integer)
     {
-      return dataOutputStream.linkOutputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT | channelType), (Integer) link);
+      return dataOutputStream.linkOutputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), (Integer) link);
     }
-    return dataOutputStream.linkOutputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT | channelType), link);
+    return dataOutputStream.linkOutputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), link);
   }
   
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int channelType, int number, Object link)
   {
-    VTLinkableDynamicMultiplexedOutputStream stream = dataOutputStream.linkOutputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT | channelType), number, link);
+    VTLinkableDynamicMultiplexedOutputStream stream = dataOutputStream.linkOutputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), number, link);
     return stream;
   }
   
@@ -288,14 +288,14 @@ public class VTTunnelConnection
   {
     if (link instanceof Integer)
     {
-      return dataInputStream.linkInputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT | channelType), (Integer) link);
+      return dataInputStream.linkInputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), (Integer) link);
     }
-    return dataInputStream.linkInputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT | channelType), link);
+    return dataInputStream.linkInputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), link);
   }
   
   public VTLinkableDynamicMultiplexedInputStream getInputStream(int channelType, int number, Object link)
   {
-    VTLinkableDynamicMultiplexedInputStream stream = dataInputStream.linkInputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT | channelType), number, link);
+    VTLinkableDynamicMultiplexedInputStream stream = dataInputStream.linkInputStream((VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | channelType), number, link);
     return stream;
   }
   

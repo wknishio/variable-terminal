@@ -25,7 +25,7 @@ public class VTTunnelChannel
   private int redirectPort;
   private VTDefaultProxy proxy;
   private int tunnelType;
-  private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT;
+  private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
   
   public int getTunnelType()
   {

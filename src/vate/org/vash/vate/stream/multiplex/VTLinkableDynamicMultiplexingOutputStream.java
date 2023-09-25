@@ -22,14 +22,14 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   //private final int blockSize;
   private final OutputStream original;
   private final VTThrottlingOutputStream throttleable;
-  private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> pipedChannels;
+  private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> bufferedChannels;
   private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> directChannels;
   
   public VTLinkableDynamicMultiplexingOutputStream(OutputStream out, int packetSize)
   {
     this.original = out;
     this.throttleable = new VTThrottlingOutputStream(out);
-    this.pipedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
+    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
     this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
     this.packetSize = packetSize;
     //this.blockSize = blockSize;
@@ -94,7 +94,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   {
     VTLinkableDynamicMultiplexedOutputStream stream = null;
     OutputStream output = null;
-    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_UNLIMITED) == 0)
+    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED) == 0)
     {
       output = throttleable;
     }
@@ -102,9 +102,9 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     {
       output = original;
     }
-    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED)
+    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
     {
-      stream = pipedChannels.get(number);
+      stream = bufferedChannels.get(number);
       if (stream != null)
       {
         stream.type(type);
@@ -113,7 +113,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
         return stream;
       }
       stream = new VTLinkableDynamicMultiplexedOutputStream(output, original, type, number, packetSize);
-      pipedChannels.put(number, stream);
+      bufferedChannels.put(number, stream);
     }
     else
     {
@@ -129,11 +129,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       directChannels.put(number, stream);
     }
     return stream;
-  }
-  
-  public final int getPipedChannelsNumber()
-  {
-    return pipedChannels.size();
   }
   
   public final int getPacketSize()
@@ -154,7 +149,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   
   public final void close() throws IOException
   {
-    pipedChannels.clear();
+    bufferedChannels.clear();
     directChannels.clear();
     throttleable.close();
   }

@@ -55,10 +55,10 @@ public class VT
   public static final int VT_DAEMON_RECONNECTION_TIMEOUT_MILLISECONDS = 3000;
   public static final int VT_PING_SERVICE_INTERVAL_MILLISECONDS = 30000;
   
-  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_PIPED = 0;
-  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT = 1;
-  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_THROTTLEABLE = 0 << 1;
-  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_PERFORMANCE_UNLIMITED = 1 << 1;
+  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED = 0;
+  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT = 1;
+  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_RATE_THROTTLEABLE = 0 << 1;
+  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED = 1 << 1;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_DISABLED = 0 << 2;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED = 1 << 2;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_LZ4 = 0 << 3;

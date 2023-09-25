@@ -33,7 +33,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   // private byte[] compressedBuffer = new byte[VT.VT_IO_BUFFFER_SIZE];
   private final VTLittleEndianInputStream in;
   private VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
-  private Map<Integer, VTLinkableDynamicMultiplexedInputStream> pipedChannels;
+  private Map<Integer, VTLinkableDynamicMultiplexedInputStream> bufferedChannels;
   private Map<Integer, VTLinkableDynamicMultiplexedInputStream> directChannels;
   private volatile boolean closed = false;
   
@@ -42,7 +42,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     this.bufferSize = bufferSize;
     this.packetBuffer = new byte[packetSize * 2];
     this.in = new VTLittleEndianInputStream(in);
-    this.pipedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
+    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
     this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
     this.packetReader = new VTLinkableDynamicMultiplexingInputStreamPacketReader(this);
     this.packetReaderThread = new Thread(null, packetReader, packetReader.getClass().getSimpleName());
@@ -111,16 +111,16 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private synchronized final VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number)
   {
     VTLinkableDynamicMultiplexedInputStream stream = null;
-    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED)
+    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
     {
-      stream = pipedChannels.get(number);
+      stream = bufferedChannels.get(number);
       if (stream != null)
       {
         stream.type(type);
         return stream;
       }
       stream = new VTLinkableDynamicMultiplexedInputStream(type, number, bufferSize);
-      pipedChannels.put(number, stream);
+      bufferedChannels.put(number, stream);
     }
     else
     {
@@ -159,11 +159,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
     packetReaderThread.join();
   }
   
-  public final int getPipedChannelsNumber()
-  {
-    return pipedChannels.size();
-  }
-  
   public final void open(int type, int number) throws IOException
   {
     getInputStream(type, number).open();
@@ -183,7 +178,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     packetReader.setRunning(false);
     //synchronized (pipedChannels)
     //{
-      for (VTLinkableDynamicMultiplexedInputStream stream : pipedChannels.values().toArray(new VTLinkableDynamicMultiplexedInputStream []{ }))
+      for (VTLinkableDynamicMultiplexedInputStream stream : bufferedChannels.values().toArray(new VTLinkableDynamicMultiplexedInputStream []{ }))
       {
         try
         {
@@ -209,7 +204,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
         }
       }
     //}
-    pipedChannels.clear();
+    bufferedChannels.clear();
     directChannels.clear();
     in.close();
     closed = true;
@@ -281,7 +276,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       this.type = type;
       this.number = number;
       this.propagated = new ArrayList<Closeable>();
-      if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED)
+      if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
       {
         this.pipedInputStream = new VTPipedInputStream(bufferSize);
         this.pipedOutputStream = new VTPipedOutputStream();
