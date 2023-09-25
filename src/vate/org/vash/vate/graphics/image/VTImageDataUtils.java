@@ -3,40 +3,61 @@ package org.vash.vate.graphics.image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.Comparator;
 import java.util.List;
 
 public final class VTImageDataUtils
 {
-  //private static final RectangleComparator rectangleComparator = new RectangleComparator();
-  
-  static class RectangleComparator implements Comparator<Rectangle>
-  {
-    private RectangleComparator()
-    {
-      
-    }
-    
-    public int compare(Rectangle o1, Rectangle o2)
-    {
-      long sum1 = o1.x + o1.y;
-      long sum2 = o2.x + o2.y;
-      if (sum1 < sum2)
-      {
-        return -1;
-      }
-      if (sum1 > sum2)
-      {
-        return 1;
-      }
-      return 0;
-    }
-  }
+//  private static final RectangleComparator rectangleComparator = new RectangleComparator();
+//  
+//  private static class RectangleComparator implements Comparator<Rectangle>
+//  {
+//    private RectangleComparator()
+//    {
+//      
+//    }
+//    
+//    public int compare(Rectangle o1, Rectangle o2)
+//    {
+//      long sum1 = o1.x + o1.y;
+//      long sum2 = o2.x + o2.y;
+//      if (sum1 < sum2)
+//      {
+//        return -1;
+//      }
+//      if (sum1 > sum2)
+//      {
+//        return 1;
+//      }
+//      if (o1.y < o2.y)
+//      {
+//        return -1;
+//      }
+//      if (o1.x < o2.x)
+//      {
+//        return -1;
+//      }
+//      if (o1.y > o2.y)
+//      {
+//        return 1;
+//      }
+//      if (o1.x > o2.x)
+//      {
+//        return 1;
+//      }
+//      return 0;
+//    }
+//  }
   
   public static final List<Rectangle> mergeNeighbourRectangles(List<Rectangle> rectangles)
   {
     //Collections.sort(rectangles, rectangleComparator);
     boolean found = false;
+    //for (Rectangle rectangle : rectangles)
+    //{
+      //System.out.print(rectangle + ";");
+      //System.out.print("block:[width:[" + rectangle.width + "],height:[" + rectangle.height + "],area:[" + rectangle.width * rectangle.height + "]];");
+    //}
+    //System.out.println();
     // boolean union = false;
     // boolean proceed = false;
     do
@@ -63,12 +84,13 @@ public final class VTImageDataUtils
       }
     }
     while (found);
-//    System.out.println("merged_blocks:[" + rectangles.size() + "]");
-//    for (Rectangle rectangle : rectangles)
-//    {
-//      System.out.print(rectangle + ";");
-//    }
-//    System.out.println();
+    //System.out.println("merged_blocks:[" + rectangles.size() + "]");
+    //for (Rectangle rectangle : rectangles)
+    //{
+      //System.out.print(rectangle + ";");
+      //System.out.print("block:[width:[" + rectangle.width + "],height:[" + rectangle.height + "],area:[" + rectangle.width * rectangle.height + "]];");
+    //}
+    //System.out.println();
     return rectangles;
   }
   
