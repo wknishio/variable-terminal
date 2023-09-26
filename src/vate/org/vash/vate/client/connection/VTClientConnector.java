@@ -498,11 +498,15 @@ public class VTClientConnector implements Runnable
     }
     catch (Throwable e)
     {
-      // VTTerminal.print("VT>TCP port [" + port + "] is already in
-      // use!\n");
-      // e.printStackTrace();
       VTConsole.print("\nVT>Listening to connection in port [" + port + "] failed!");
-      // return false;
+    }
+    try
+    {
+      Thread.sleep(250);
+    }
+    catch (Throwable t)
+    {
+      
     }
     return false;
   }
@@ -1506,6 +1510,10 @@ public class VTClientConnector implements Runnable
           }
           handler.run();
         }
+        else
+        {
+          
+        }
       }
       else
       {
@@ -1523,6 +1531,10 @@ public class VTClientConnector implements Runnable
             
           }
           handler.run();
+        }
+        else
+        {
+          
         }
       }
       if (running)

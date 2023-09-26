@@ -365,18 +365,17 @@ public class VTServerConnector implements Runnable
       }
       return true;
     }
-    catch (SecurityException e)
-    {
-      VTConsole.print("\rVT>Security error detected!\nVT>");
-      // return false;
-    }
     catch (Throwable e)
     {
-      // VTTerminal.print("\rVT>TCP port [" + port + "] is already in
-      // use!\nVT>");
-      // e.printStackTrace();
       VTConsole.print("\rVT>Listening to connection in port [" + port + "] failed!\nVT>");
-      // return false;
+    }
+    try
+    {
+      Thread.sleep(250);
+    }
+    catch (Throwable t)
+    {
+      
     }
     return false;
   }
