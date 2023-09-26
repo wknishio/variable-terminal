@@ -79,7 +79,7 @@ public class VTServerPrintServiceResolver extends VTTask
       {
         if (printServices.length > 0)
         {
-          message.append("\nVT>Specific server print service details:\nVT>");
+          message.append("\nVT>Server print service details:\nVT>");
           PrintService printService = printServices[order];
           mimeSet.clear();
           message.append("\nVT>Number: [" + order + "]" + (defaultPrintService.getName().equals(printService.getName()) ? " (Default)" : "") + "\nVT>Name: [" + printService.getName() + "]");
