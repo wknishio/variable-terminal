@@ -48,6 +48,21 @@ public final class VTImageDataUtils
 //    }
 //  }
   
+  public static final List<Rectangle> splitBlockArea(int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  {
+    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
+    int i, j;
+    for (i = 0; i < captureArea.height; i += blockHeight)
+    {
+      for (j = 0; j < captureArea.width; j += blockWidth)
+      {
+        Rectangle blockArea = new Rectangle(captureArea.x + j, captureArea.y + i, Math.min(blockWidth, captureArea.width - j), Math.min(blockHeight, captureArea.height - i));
+        blockAreas.add(blockArea);
+      }
+    }
+    return blockAreas;
+  }
+  
   public static final List<Rectangle> mergeNeighbourRectangles(List<Rectangle> rectangles)
   {
     //Collections.sort(rectangles, rectangleComparator);
@@ -222,327 +237,6 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final boolean deltaArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, Rectangle resultArea)
-  {
-    if (width * height == 0)
-    {
-      resultArea.x = 0;
-      resultArea.y = 0;
-      resultArea.width = 0;
-      resultArea.height = 0;
-      return true;
-    }
-    
-    int delta = 0;
-    int bits = 0;
-    int index = 0;
-    //int offset = 0;
-    int i = 0;
-    int j = 0;
-    int x;
-    int y;
-    int m;
-    int n;
-    int cx;
-    int cy;
-    
-    if (captureArea != null && captureArea.x >= 0 && captureArea.y >= 0)
-    {
-      x = Math.min(captureArea.x, width - 1);
-      y = Math.min(captureArea.y, height - 1);
-      m = Math.min(captureArea.width, width - x);
-      n = Math.min(captureArea.height, height - y);
-    }
-    else
-    {
-      x = 0;
-      y = 0;
-      m = width;
-      n = height;
-    }
-    
-    int mnx = x + m;
-    int mny = y + n;
-    int mxx = -1;
-    int mxy = -1;
-    
-    offset += x + (y * width);
-    for (i = 0; i < n; i++)
-    {
-      index = offset;
-      for (j = 0; j < m; j++)
-      {
-        delta = array1[index] ^ array2[index];
-        if (delta != 0)
-        {
-          cx = x + j;
-          cy = y + i;
-          if (mnx > cx)
-          {
-            mnx = cx;
-          }
-          if (mny > cy)
-          {
-            mny = cy;
-          }
-          if (mxx < cx)
-          {
-            mxx = cx;
-          }
-          if (mxy < cy)
-          {
-            mxy = cy;
-          }
-        }
-        bits |= delta;
-        index++;
-      }
-      offset += width;
-    }
-    resultArea.x = mnx;
-    resultArea.y = mny;
-    resultArea.width = Math.max(1 + mxx - mnx, 0);
-    resultArea.height = Math.max(1 + mxy - mny, 0);
-    return bits == 0;
-  }
-  
-  public static final boolean deltaArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, Rectangle resultArea)
-  {
-    if (width * height == 0)
-    {
-      resultArea.x = 0;
-      resultArea.y = 0;
-      resultArea.width = 0;
-      resultArea.height = 0;
-      return true;
-    }
-    
-    int delta = 0;
-    int bits = 0;
-    int index = 0;
-    //int offset = 0;
-    int i = 0;
-    int j = 0;
-    int x;
-    int y;
-    int m;
-    int n;
-    int cx;
-    int cy;
-    
-    if (captureArea != null && captureArea.x >= 0 && captureArea.y >= 0)
-    {
-      x = Math.min(captureArea.x, width - 1);
-      y = Math.min(captureArea.y, height - 1);
-      m = Math.min(captureArea.width, width - x);
-      n = Math.min(captureArea.height, height - y);
-    }
-    else
-    {
-      x = 0;
-      y = 0;
-      m = width;
-      n = height;
-    }
-    
-    int mnx = x + m;
-    int mny = y + n;
-    int mxx = -1;
-    int mxy = -1;
-    
-    offset += x + (y * width);
-    for (i = 0; i < n; i++)
-    {
-      index = offset;
-      for (j = 0; j < m; j++)
-      {
-        delta = array1[index] ^ array2[index];
-        if (delta != 0)
-        {
-          cx = x + j;
-          cy = y + i;
-          if (mnx > cx)
-          {
-            mnx = cx;
-          }
-          if (mny > cy)
-          {
-            mny = cy;
-          }
-          if (mxx < cx)
-          {
-            mxx = cx;
-          }
-          if (mxy < cy)
-          {
-            mxy = cy;
-          }
-        }
-        bits |= delta;
-        index++;
-      }
-      offset += width;
-    }
-    resultArea.x = mnx;
-    resultArea.y = mny;
-    resultArea.width = Math.max(1 + mxx - mnx, 0);
-    resultArea.height = Math.max(1 + mxy - mny, 0);
-    return bits == 0;
-  }
-  
-  public static final boolean deltaArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, Rectangle resultArea)
-  {
-    if (width * height == 0)
-    {
-      resultArea.x = 0;
-      resultArea.y = 0;
-      resultArea.width = 0;
-      resultArea.height = 0;
-      return true;
-    }
-    
-    int delta = 0;
-    int bits = 0;
-    int index = 0;
-    //int offset = 0;
-    int i = 0;
-    int j = 0;
-    int x;
-    int y;
-    int m;
-    int n;
-    int cx;
-    int cy;
-    
-    if (captureArea != null && captureArea.x >= 0 && captureArea.y >= 0)
-    {
-      x = Math.min(captureArea.x, width - 1);
-      y = Math.min(captureArea.y, height - 1);
-      m = Math.min(captureArea.width, width - x);
-      n = Math.min(captureArea.height, height - y);
-    }
-    else
-    {
-      x = 0;
-      y = 0;
-      m = width;
-      n = height;
-    }
-    
-    int mnx = x + m;
-    int mny = y + n;
-    int mxx = -1;
-    int mxy = -1;
-    
-    offset += x + (y * width);
-    for (i = 0; i < n; i++)
-    {
-      index = offset;
-      for (j = 0; j < m; j++)
-      {
-        delta = array1[index] ^ array2[index];
-        if (delta != 0)
-        {
-          cx = x + j;
-          cy = y + i;
-          if (mnx > cx)
-          {
-            mnx = cx;
-          }
-          if (mny > cy)
-          {
-            mny = cy;
-          }
-          if (mxx < cx)
-          {
-            mxx = cx;
-          }
-          if (mxy < cy)
-          {
-            mxy = cy;
-          }
-        }
-        bits |= delta;
-        index++;
-      }
-      offset += width;
-    }
-    resultArea.x = mnx;
-    resultArea.y = mny;
-    resultArea.width = Math.max(1 + mxx - mnx, 0);
-    resultArea.height = Math.max(1 + mxy - mny, 0);
-    return bits == 0;
-  }
-  
-  public static final List<Rectangle> deltaBlockArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
-  {
-    List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
-    Rectangle blockArea = new Rectangle(0, 0, 1, 1);
-    int i, j;
-    for (i = 0; i < captureArea.height; i += blockHeight)
-    {
-      for (j = 0; j < captureArea.width; j += blockWidth)
-      {
-        blockArea.x = captureArea.x + j;
-        blockArea.y = captureArea.y + i;
-        blockArea.width = Math.min(blockWidth, captureArea.width - j);
-        blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        Rectangle deltaArea = new Rectangle(0, 0, 1, 1);
-        if (!deltaArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
-        {
-          deltaAreas.add(deltaArea);
-        }
-      }
-    }
-    return deltaAreas;
-  }
-  
-  public static final List<Rectangle> deltaBlockArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
-  {
-    List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
-    Rectangle blockArea = new Rectangle(0, 0, 1, 1);
-    int i, j;
-    for (i = 0; i < captureArea.height; i += blockHeight)
-    {
-      for (j = 0; j < captureArea.width; j += blockWidth)
-      {
-        blockArea.x = captureArea.x + j;
-        blockArea.y = captureArea.y + i;
-        blockArea.width = Math.min(blockWidth, captureArea.width - j);
-        blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        Rectangle deltaArea = new Rectangle(0, 0, 1, 1);
-        if (!deltaArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
-        {
-          deltaAreas.add(deltaArea);
-        }
-      }
-    }
-    return deltaAreas;
-  }
-  
-  public static final List<Rectangle> deltaBlockArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
-  {
-    List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
-    Rectangle blockArea = new Rectangle(0, 0, 1, 1);
-    int i, j;
-    for (i = 0; i < captureArea.height; i += blockHeight)
-    {
-      for (j = 0; j < captureArea.width; j += blockWidth)
-      {
-        blockArea.x = captureArea.x + j;
-        blockArea.y = captureArea.y + i;
-        blockArea.width = Math.min(blockWidth, captureArea.width - j);
-        blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        Rectangle deltaArea = new Rectangle(0, 0, 1, 1);
-        if (!deltaArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
-        {
-          deltaAreas.add(deltaArea);
-        }
-      }
-    }
-    return deltaAreas;
-  }
-  
   public static final List<Rectangle> compareBlockArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
     List<Rectangle> blockAreas = new ArrayList<Rectangle>();
@@ -609,7 +303,7 @@ public final class VTImageDataUtils
     return blockAreas;
   }
   
-  public static final List<Rectangle> splitBlockArea(int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> compareBlockArea(long[] array1, long[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
   {
     List<Rectangle> blockAreas = new ArrayList<Rectangle>();
     int i, j;
@@ -617,8 +311,15 @@ public final class VTImageDataUtils
     {
       for (j = 0; j < captureArea.width; j += blockWidth)
       {
-        Rectangle blockArea = new Rectangle(captureArea.x + j, captureArea.y + i, Math.min(blockWidth, captureArea.width - j), Math.min(blockHeight, captureArea.height - i));
-        blockAreas.add(blockArea);
+        Rectangle blockArea = new Rectangle(0, 0, 1, 1);
+        blockArea.x = captureArea.x + j;
+        blockArea.y = captureArea.y + i;
+        blockArea.width = Math.min(blockWidth, captureArea.width - j);
+        blockArea.height = Math.min(blockHeight, captureArea.height - i);
+        if (!compareArea(array1, array2, offset, width, height, blockArea))
+        {
+          blockAreas.add(blockArea);
+        }
       }
     }
     return blockAreas;
@@ -1148,6 +849,327 @@ public final class VTImageDataUtils
         blockAreaBits.set(k++, !compareArea(array1, array2, offset, width, height, blockArea, pixelBits));
       }
     }
+  }
+  
+  public static final boolean deltaArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, Rectangle resultArea)
+  {
+    if (width * height == 0)
+    {
+      resultArea.x = 0;
+      resultArea.y = 0;
+      resultArea.width = 0;
+      resultArea.height = 0;
+      return true;
+    }
+    
+    int delta = 0;
+    int bits = 0;
+    int index = 0;
+    //int offset = 0;
+    int i = 0;
+    int j = 0;
+    int x;
+    int y;
+    int m;
+    int n;
+    int cx;
+    int cy;
+    
+    if (captureArea != null && captureArea.x >= 0 && captureArea.y >= 0)
+    {
+      x = Math.min(captureArea.x, width - 1);
+      y = Math.min(captureArea.y, height - 1);
+      m = Math.min(captureArea.width, width - x);
+      n = Math.min(captureArea.height, height - y);
+    }
+    else
+    {
+      x = 0;
+      y = 0;
+      m = width;
+      n = height;
+    }
+    
+    int mnx = x + m;
+    int mny = y + n;
+    int mxx = -1;
+    int mxy = -1;
+    
+    offset += x + (y * width);
+    for (i = 0; i < n; i++)
+    {
+      index = offset;
+      for (j = 0; j < m; j++)
+      {
+        delta = array1[index] ^ array2[index];
+        if (delta != 0)
+        {
+          cx = x + j;
+          cy = y + i;
+          if (mnx > cx)
+          {
+            mnx = cx;
+          }
+          if (mny > cy)
+          {
+            mny = cy;
+          }
+          if (mxx < cx)
+          {
+            mxx = cx;
+          }
+          if (mxy < cy)
+          {
+            mxy = cy;
+          }
+        }
+        bits |= delta;
+        index++;
+      }
+      offset += width;
+    }
+    resultArea.x = mnx;
+    resultArea.y = mny;
+    resultArea.width = Math.max(1 + mxx - mnx, 0);
+    resultArea.height = Math.max(1 + mxy - mny, 0);
+    return bits == 0;
+  }
+  
+  public static final boolean deltaArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, Rectangle resultArea)
+  {
+    if (width * height == 0)
+    {
+      resultArea.x = 0;
+      resultArea.y = 0;
+      resultArea.width = 0;
+      resultArea.height = 0;
+      return true;
+    }
+    
+    int delta = 0;
+    int bits = 0;
+    int index = 0;
+    //int offset = 0;
+    int i = 0;
+    int j = 0;
+    int x;
+    int y;
+    int m;
+    int n;
+    int cx;
+    int cy;
+    
+    if (captureArea != null && captureArea.x >= 0 && captureArea.y >= 0)
+    {
+      x = Math.min(captureArea.x, width - 1);
+      y = Math.min(captureArea.y, height - 1);
+      m = Math.min(captureArea.width, width - x);
+      n = Math.min(captureArea.height, height - y);
+    }
+    else
+    {
+      x = 0;
+      y = 0;
+      m = width;
+      n = height;
+    }
+    
+    int mnx = x + m;
+    int mny = y + n;
+    int mxx = -1;
+    int mxy = -1;
+    
+    offset += x + (y * width);
+    for (i = 0; i < n; i++)
+    {
+      index = offset;
+      for (j = 0; j < m; j++)
+      {
+        delta = array1[index] ^ array2[index];
+        if (delta != 0)
+        {
+          cx = x + j;
+          cy = y + i;
+          if (mnx > cx)
+          {
+            mnx = cx;
+          }
+          if (mny > cy)
+          {
+            mny = cy;
+          }
+          if (mxx < cx)
+          {
+            mxx = cx;
+          }
+          if (mxy < cy)
+          {
+            mxy = cy;
+          }
+        }
+        bits |= delta;
+        index++;
+      }
+      offset += width;
+    }
+    resultArea.x = mnx;
+    resultArea.y = mny;
+    resultArea.width = Math.max(1 + mxx - mnx, 0);
+    resultArea.height = Math.max(1 + mxy - mny, 0);
+    return bits == 0;
+  }
+  
+  public static final boolean deltaArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, Rectangle resultArea)
+  {
+    if (width * height == 0)
+    {
+      resultArea.x = 0;
+      resultArea.y = 0;
+      resultArea.width = 0;
+      resultArea.height = 0;
+      return true;
+    }
+    
+    int delta = 0;
+    int bits = 0;
+    int index = 0;
+    //int offset = 0;
+    int i = 0;
+    int j = 0;
+    int x;
+    int y;
+    int m;
+    int n;
+    int cx;
+    int cy;
+    
+    if (captureArea != null && captureArea.x >= 0 && captureArea.y >= 0)
+    {
+      x = Math.min(captureArea.x, width - 1);
+      y = Math.min(captureArea.y, height - 1);
+      m = Math.min(captureArea.width, width - x);
+      n = Math.min(captureArea.height, height - y);
+    }
+    else
+    {
+      x = 0;
+      y = 0;
+      m = width;
+      n = height;
+    }
+    
+    int mnx = x + m;
+    int mny = y + n;
+    int mxx = -1;
+    int mxy = -1;
+    
+    offset += x + (y * width);
+    for (i = 0; i < n; i++)
+    {
+      index = offset;
+      for (j = 0; j < m; j++)
+      {
+        delta = array1[index] ^ array2[index];
+        if (delta != 0)
+        {
+          cx = x + j;
+          cy = y + i;
+          if (mnx > cx)
+          {
+            mnx = cx;
+          }
+          if (mny > cy)
+          {
+            mny = cy;
+          }
+          if (mxx < cx)
+          {
+            mxx = cx;
+          }
+          if (mxy < cy)
+          {
+            mxy = cy;
+          }
+        }
+        bits |= delta;
+        index++;
+      }
+      offset += width;
+    }
+    resultArea.x = mnx;
+    resultArea.y = mny;
+    resultArea.width = Math.max(1 + mxx - mnx, 0);
+    resultArea.height = Math.max(1 + mxy - mny, 0);
+    return bits == 0;
+  }
+  
+  public static final List<Rectangle> deltaBlockArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  {
+    List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
+    Rectangle blockArea = new Rectangle(0, 0, 1, 1);
+    int i, j;
+    for (i = 0; i < captureArea.height; i += blockHeight)
+    {
+      for (j = 0; j < captureArea.width; j += blockWidth)
+      {
+        blockArea.x = captureArea.x + j;
+        blockArea.y = captureArea.y + i;
+        blockArea.width = Math.min(blockWidth, captureArea.width - j);
+        blockArea.height = Math.min(blockHeight, captureArea.height - i);
+        Rectangle deltaArea = new Rectangle(0, 0, 1, 1);
+        if (!deltaArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
+        {
+          deltaAreas.add(deltaArea);
+        }
+      }
+    }
+    return deltaAreas;
+  }
+  
+  public static final List<Rectangle> deltaBlockArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  {
+    List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
+    Rectangle blockArea = new Rectangle(0, 0, 1, 1);
+    int i, j;
+    for (i = 0; i < captureArea.height; i += blockHeight)
+    {
+      for (j = 0; j < captureArea.width; j += blockWidth)
+      {
+        blockArea.x = captureArea.x + j;
+        blockArea.y = captureArea.y + i;
+        blockArea.width = Math.min(blockWidth, captureArea.width - j);
+        blockArea.height = Math.min(blockHeight, captureArea.height - i);
+        Rectangle deltaArea = new Rectangle(0, 0, 1, 1);
+        if (!deltaArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
+        {
+          deltaAreas.add(deltaArea);
+        }
+      }
+    }
+    return deltaAreas;
+  }
+  
+  public static final List<Rectangle> deltaBlockArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  {
+    List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
+    Rectangle blockArea = new Rectangle(0, 0, 1, 1);
+    int i, j;
+    for (i = 0; i < captureArea.height; i += blockHeight)
+    {
+      for (j = 0; j < captureArea.width; j += blockWidth)
+      {
+        blockArea.x = captureArea.x + j;
+        blockArea.y = captureArea.y + i;
+        blockArea.width = Math.min(blockWidth, captureArea.width - j);
+        blockArea.height = Math.min(blockHeight, captureArea.height - i);
+        Rectangle deltaArea = new Rectangle(0, 0, 1, 1);
+        if (!deltaArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
+        {
+          deltaAreas.add(deltaArea);
+        }
+      }
+    }
+    return deltaAreas;
   }
   
   // private static final int DCM_RED_MASK = 0x00ff0000;
