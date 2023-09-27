@@ -237,94 +237,6 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final List<Rectangle> compareBlockArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
-  {
-    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
-    int i, j;
-    for (i = 0; i < captureArea.height; i += blockHeight)
-    {
-      for (j = 0; j < captureArea.width; j += blockWidth)
-      {
-        Rectangle blockArea = new Rectangle(0, 0, 1, 1);
-        blockArea.x = captureArea.x + j;
-        blockArea.y = captureArea.y + i;
-        blockArea.width = Math.min(blockWidth, captureArea.width - j);
-        blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        if (!compareArea(array1, array2, offset, width, height, blockArea))
-        {
-          blockAreas.add(blockArea);
-        }
-      }
-    }
-    return blockAreas;
-  }
-  
-  public static final List<Rectangle> compareBlockArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
-  {
-    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
-    int i, j;
-    for (i = 0; i < captureArea.height; i += blockHeight)
-    {
-      for (j = 0; j < captureArea.width; j += blockWidth)
-      {
-        Rectangle blockArea = new Rectangle(0, 0, 1, 1);
-        blockArea.x = captureArea.x + j;
-        blockArea.y = captureArea.y + i;
-        blockArea.width = Math.min(blockWidth, captureArea.width - j);
-        blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        if (!compareArea(array1, array2, offset, width, height, blockArea))
-        {
-          blockAreas.add(blockArea);
-        }
-      }
-    }
-    return blockAreas;
-  }
-  
-  public static final List<Rectangle> compareBlockArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
-  {
-    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
-    int i, j;
-    for (i = 0; i < captureArea.height; i += blockHeight)
-    {
-      for (j = 0; j < captureArea.width; j += blockWidth)
-      {
-        Rectangle blockArea = new Rectangle(0, 0, 1, 1);
-        blockArea.x = captureArea.x + j;
-        blockArea.y = captureArea.y + i;
-        blockArea.width = Math.min(blockWidth, captureArea.width - j);
-        blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        if (!compareArea(array1, array2, offset, width, height, blockArea))
-        {
-          blockAreas.add(blockArea);
-        }
-      }
-    }
-    return blockAreas;
-  }
-  
-  public static final List<Rectangle> compareBlockArea(long[] array1, long[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
-  {
-    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
-    int i, j;
-    for (i = 0; i < captureArea.height; i += blockHeight)
-    {
-      for (j = 0; j < captureArea.width; j += blockWidth)
-      {
-        Rectangle blockArea = new Rectangle(0, 0, 1, 1);
-        blockArea.x = captureArea.x + j;
-        blockArea.y = captureArea.y + i;
-        blockArea.width = Math.min(blockWidth, captureArea.width - j);
-        blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        if (!compareArea(array1, array2, offset, width, height, blockArea))
-        {
-          blockAreas.add(blockArea);
-        }
-      }
-    }
-    return blockAreas;
-  }
-  
   public static final boolean compareArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea)
   {
     if (width * height == 0)
@@ -705,6 +617,93 @@ public final class VTImageDataUtils
       offset += width;
     }
     return bits == 0;
+  }
+  public static final List<Rectangle> compareBlockArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  {
+    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
+    int i, j;
+    for (i = 0; i < captureArea.height; i += blockHeight)
+    {
+      for (j = 0; j < captureArea.width; j += blockWidth)
+      {
+        Rectangle blockArea = new Rectangle(0, 0, 1, 1);
+        blockArea.x = captureArea.x + j;
+        blockArea.y = captureArea.y + i;
+        blockArea.width = Math.min(blockWidth, captureArea.width - j);
+        blockArea.height = Math.min(blockHeight, captureArea.height - i);
+        if (!compareArea(array1, array2, offset, width, height, blockArea))
+        {
+          blockAreas.add(blockArea);
+        }
+      }
+    }
+    return blockAreas;
+  }
+  
+  public static final List<Rectangle> compareBlockArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  {
+    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
+    int i, j;
+    for (i = 0; i < captureArea.height; i += blockHeight)
+    {
+      for (j = 0; j < captureArea.width; j += blockWidth)
+      {
+        Rectangle blockArea = new Rectangle(0, 0, 1, 1);
+        blockArea.x = captureArea.x + j;
+        blockArea.y = captureArea.y + i;
+        blockArea.width = Math.min(blockWidth, captureArea.width - j);
+        blockArea.height = Math.min(blockHeight, captureArea.height - i);
+        if (!compareArea(array1, array2, offset, width, height, blockArea))
+        {
+          blockAreas.add(blockArea);
+        }
+      }
+    }
+    return blockAreas;
+  }
+  
+  public static final List<Rectangle> compareBlockArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  {
+    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
+    int i, j;
+    for (i = 0; i < captureArea.height; i += blockHeight)
+    {
+      for (j = 0; j < captureArea.width; j += blockWidth)
+      {
+        Rectangle blockArea = new Rectangle(0, 0, 1, 1);
+        blockArea.x = captureArea.x + j;
+        blockArea.y = captureArea.y + i;
+        blockArea.width = Math.min(blockWidth, captureArea.width - j);
+        blockArea.height = Math.min(blockHeight, captureArea.height - i);
+        if (!compareArea(array1, array2, offset, width, height, blockArea))
+        {
+          blockAreas.add(blockArea);
+        }
+      }
+    }
+    return blockAreas;
+  }
+  
+  public static final List<Rectangle> compareBlockArea(long[] array1, long[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  {
+    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
+    int i, j;
+    for (i = 0; i < captureArea.height; i += blockHeight)
+    {
+      for (j = 0; j < captureArea.width; j += blockWidth)
+      {
+        Rectangle blockArea = new Rectangle(0, 0, 1, 1);
+        blockArea.x = captureArea.x + j;
+        blockArea.y = captureArea.y + i;
+        blockArea.width = Math.min(blockWidth, captureArea.width - j);
+        blockArea.height = Math.min(blockHeight, captureArea.height - i);
+        if (!compareArea(array1, array2, offset, width, height, blockArea))
+        {
+          blockAreas.add(blockArea);
+        }
+      }
+    }
+    return blockAreas;
   }
   
   public static final void compareBlockArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
