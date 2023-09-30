@@ -244,11 +244,11 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     // Echo",
     // "*VTECHO\n"));
     shellMenu = new Menu("Shell ");
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Start/Restart Remote Shell", "*VTSHELL R\n"));
+    shellMenu.add(new VTGraphicalConsoleMenuItem("Run Remote Shell", "*VTSHELL R\n"));
     shellMenu.add(new VTGraphicalConsoleMenuItem("Stop Remote Shell", "*VTSHELL S\n"));
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Set Remote Shell Command", "*VTSHELL C "));
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Reset Remote Shell Command", "*VTSHELL D\n"));
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Use BeanShell Remote Shell", "*VTSHELL B\n"));
+    shellMenu.add(new VTGraphicalConsoleMenuItem("Set Custom Remote Shell", "*VTSHELL C "));
+    shellMenu.add(new VTGraphicalConsoleMenuItem("Set Default Remote Shell", "*VTSHELL D\n"));
+    shellMenu.add(new VTGraphicalConsoleMenuItem("Set BeanShell Remote Shell", "*VTSHELL B\n"));
     shellMenu.add(new VTGraphicalConsoleMenuItem("Disable Remote Shell", "*VTSHELL N\n"));
     shellMenu.add(new VTGraphicalConsoleMenuItem("Set Remote Shell Directory", "*VTSHELL P "));
     shellMenu.add(new VTGraphicalConsoleMenuItem("Set Remote Shell Encoding", "*VTSHELL E "));
