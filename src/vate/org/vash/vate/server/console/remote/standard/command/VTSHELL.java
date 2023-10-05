@@ -1,7 +1,6 @@
 package org.vash.vate.server.console.remote.standard.command;
 
 import java.io.File;
-import java.util.Arrays;
 
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
@@ -41,6 +40,8 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
       {
         connection.getResultWriter().write("\nVT>Setting remote shell command to: [Default]");
         connection.getResultWriter().flush();
+        session.stopShell();
+        session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
         session.setShellBuilder(null, null, null);
         session.restartShell();
       }
@@ -81,17 +82,20 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else if (parsed[1].toUpperCase().contains("C"))
       {
-        session.stopShell();
-        session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
+        
         if (parsed.length >= 3 && (parsed[2].length() > 0))
         {
           String[] nextShell = new String[parsed.length - 2];
+          String nextShellCommand = "";
           for (int i = 0; i < nextShell.length; i++)
           {
             nextShell[i] = parsed[i + 2];
+            nextShellCommand += (" " + nextShell[i]);
           }
-          connection.getResultWriter().write("\nVT>Setting remote shell command to: " + Arrays.toString(nextShell) + "");
+          connection.getResultWriter().write("\nVT>Setting remote shell command to: [" + nextShellCommand.substring(1) + "]");
           connection.getResultWriter().flush();
+          session.stopShell();
+          session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
           session.setShellBuilder(nextShell, null, null);
           session.restartShell();
         }
@@ -99,6 +103,8 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
         {
           connection.getResultWriter().write("\nVT>Setting remote shell command to: [Default]");
           connection.getResultWriter().flush();
+          session.stopShell();
+          session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
           session.setShellBuilder(null, null, null);
           session.restartShell();
         }
