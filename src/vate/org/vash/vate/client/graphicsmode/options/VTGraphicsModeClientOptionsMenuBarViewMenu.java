@@ -90,8 +90,8 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
   private CheckboxMenuItem needFocusOption;
   private CheckboxMenuItem needVisibleOption;
   private CheckboxMenuItem ignoreStateOption;
-  private CheckboxMenuItem imageCodingZOFOption;
-  private CheckboxMenuItem imageCodingDOFOption;
+  private CheckboxMenuItem imageCodingZSTDOption;
+  private CheckboxMenuItem imageCodingDEFLATEOption;
   private CheckboxMenuItem imageCodingPNGOption;
   private CheckboxMenuItem imageCodingJPGOption;
   // private CheckboxMenuItem imageCodingGIFOption;
@@ -229,10 +229,10 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.needVisibleOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuTerminalRefreshPolicyOptionsListener(writer, needVisibleOption, VTGraphicsModeClientWriter.TERMINAL_STATE_VISIBLE));
     this.ignoreStateOption = new CheckboxMenuItem("Always", false);
     this.ignoreStateOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuTerminalRefreshPolicyOptionsListener(writer, ignoreStateOption, VTGraphicsModeClientWriter.TERMINAL_STATE_IGNORE));
-    this.imageCodingZOFOption = new CheckboxMenuItem("ZOF", true);
-    this.imageCodingZOFOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingZOFOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF));
-    this.imageCodingDOFOption = new CheckboxMenuItem("DOF", false);
-    this.imageCodingDOFOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingDOFOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF));
+    this.imageCodingZSTDOption = new CheckboxMenuItem("SFD", true);
+    this.imageCodingZSTDOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingZSTDOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF));
+    this.imageCodingDEFLATEOption = new CheckboxMenuItem("DFD", false);
+    this.imageCodingDEFLATEOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingDEFLATEOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF));
     this.imageCodingPNGOption = new CheckboxMenuItem("PNG", false);
     this.imageCodingPNGOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingPNGOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG));
     this.imageCodingJPGOption = new CheckboxMenuItem("JPG", false);
@@ -313,8 +313,8 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     // this.imageFormatMenu.add(imageCodingMenu);
     // this.imageFormatMenu.add(alterationCodingMenu);
     // this.imageFormatMenu.add(colorCodingMenu);
-    this.imageFormatMenu.add(imageCodingZOFOption);
-    this.imageFormatMenu.add(imageCodingDOFOption);
+    this.imageFormatMenu.add(imageCodingZSTDOption);
+    this.imageFormatMenu.add(imageCodingDEFLATEOption);
     this.imageFormatMenu.add(imageCodingJPGOption);
     this.imageFormatMenu.add(imageCodingPNGOption);
     // this.imageFormatMenu.add(imageCodingGIFOption);
@@ -721,31 +721,31 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
   {
     if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG)
     {
-      imageCodingZOFOption.setState(false);
-      imageCodingDOFOption.setState(false);
+      imageCodingZSTDOption.setState(false);
+      imageCodingDEFLATEOption.setState(false);
       imageCodingPNGOption.setState(true);
       imageCodingJPGOption.setState(false);
       // imageFormatGIFOption.setState(false);
     }
     else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
     {
-      imageCodingZOFOption.setState(false);
-      imageCodingDOFOption.setState(false);
+      imageCodingZSTDOption.setState(false);
+      imageCodingDEFLATEOption.setState(false);
       imageCodingPNGOption.setState(false);
       imageCodingJPGOption.setState(true);
       // imageFormatGIFOption.setState(false);
     }
     else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF)
     {
-      imageCodingZOFOption.setState(false);
-      imageCodingDOFOption.setState(true);
+      imageCodingZSTDOption.setState(false);
+      imageCodingDEFLATEOption.setState(true);
       imageCodingPNGOption.setState(false);
       imageCodingJPGOption.setState(false);
     }
     else
     {
-      imageCodingZOFOption.setState(true);
-      imageCodingDOFOption.setState(false);
+      imageCodingZSTDOption.setState(true);
+      imageCodingDEFLATEOption.setState(false);
       imageCodingPNGOption.setState(false);
       imageCodingJPGOption.setState(false);
       // imageCodingGIFOption.setState(false);
