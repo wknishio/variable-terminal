@@ -120,4 +120,9 @@ public class VTBROWSE extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

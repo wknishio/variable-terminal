@@ -39,4 +39,9 @@ public class VTHELP extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return true;
+  }
 }

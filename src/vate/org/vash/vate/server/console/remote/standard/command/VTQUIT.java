@@ -22,4 +22,9 @@ public class VTQUIT extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return true;
+  }
 }

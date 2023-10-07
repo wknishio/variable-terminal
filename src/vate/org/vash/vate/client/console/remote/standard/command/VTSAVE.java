@@ -45,4 +45,9 @@ public class VTSAVE extends VTClientStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

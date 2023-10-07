@@ -73,4 +73,9 @@ public class VTURLGET extends VTServerStandardRemoteConsoleCommandProcessor
       
     }
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

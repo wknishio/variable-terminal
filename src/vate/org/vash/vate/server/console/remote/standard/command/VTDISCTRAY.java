@@ -75,4 +75,9 @@ public class VTDISCTRAY extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

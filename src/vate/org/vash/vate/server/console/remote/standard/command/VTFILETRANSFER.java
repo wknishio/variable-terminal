@@ -66,4 +66,9 @@ public class VTFILETRANSFER extends VTServerStandardRemoteConsoleCommandProcesso
   {
     
   }
+  
+  public boolean remote()
+  {
+    return true;
+  }
 }

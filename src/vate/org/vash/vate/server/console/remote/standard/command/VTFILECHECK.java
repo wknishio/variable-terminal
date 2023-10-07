@@ -143,4 +143,9 @@ public class VTFILECHECK extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

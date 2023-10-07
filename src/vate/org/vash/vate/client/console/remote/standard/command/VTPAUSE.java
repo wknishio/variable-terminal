@@ -99,4 +99,9 @@ public class VTPAUSE extends VTClientStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

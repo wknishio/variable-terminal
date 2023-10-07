@@ -69,4 +69,9 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return true;
+  }
 }

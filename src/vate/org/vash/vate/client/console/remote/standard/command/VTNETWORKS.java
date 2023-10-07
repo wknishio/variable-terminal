@@ -172,4 +172,9 @@ public class VTNETWORKS extends VTClientStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return true;
+  }
 }

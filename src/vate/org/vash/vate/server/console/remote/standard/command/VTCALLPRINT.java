@@ -127,4 +127,9 @@ public class VTCALLPRINT extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

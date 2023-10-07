@@ -220,4 +220,9 @@ public class VTDATAPRINT extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

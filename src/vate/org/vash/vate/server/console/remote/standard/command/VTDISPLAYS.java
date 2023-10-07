@@ -39,4 +39,9 @@ public class VTDISPLAYS extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

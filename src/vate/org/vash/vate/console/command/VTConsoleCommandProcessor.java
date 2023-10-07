@@ -147,4 +147,6 @@ public abstract class VTConsoleCommandProcessor
   public abstract String help(String name);
   
   public abstract void register();
+  
+  public abstract boolean remote();
 }

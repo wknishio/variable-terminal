@@ -68,4 +68,9 @@ public class VTVARIABLE extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

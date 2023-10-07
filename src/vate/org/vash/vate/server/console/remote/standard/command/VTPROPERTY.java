@@ -68,4 +68,9 @@ public class VTPROPERTY extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

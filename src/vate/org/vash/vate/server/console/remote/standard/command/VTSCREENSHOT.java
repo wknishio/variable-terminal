@@ -147,4 +147,9 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

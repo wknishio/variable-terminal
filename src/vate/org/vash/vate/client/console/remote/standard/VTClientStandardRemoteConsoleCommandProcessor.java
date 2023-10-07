@@ -14,4 +14,9 @@ public abstract class VTClientStandardRemoteConsoleCommandProcessor extends VTCl
   {
     return VTHelpManager.findHelpForClientCommand(name);
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

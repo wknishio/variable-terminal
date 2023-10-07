@@ -13,4 +13,9 @@ public abstract class VTServerStandardLocalConsoleCommandProcessor extends VTSer
   {
     return VTHelpManager.findHelpForServerCommand(name);
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

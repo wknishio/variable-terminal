@@ -35,6 +35,18 @@ public class VTConsoleCommandSelector<T extends VTConsoleCommandProcessor>
     return false;
   }
   
+  public synchronized boolean remoteCommand(String command)
+  {
+    for (VTConsoleCommandProcessor processor : processors)
+    {
+      if (processor.match(command))
+      {
+        return processor.remote();
+      }
+    }
+    return false;
+  }
+  
   public synchronized boolean selectCommand(String command, String[] parsed) throws Exception
   {
     for (VTConsoleCommandProcessor processor : processors)

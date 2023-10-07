@@ -196,4 +196,9 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return true;
+  }
 }

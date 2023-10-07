@@ -189,4 +189,9 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

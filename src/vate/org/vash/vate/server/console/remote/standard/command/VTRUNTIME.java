@@ -49,4 +49,9 @@ public class VTRUNTIME extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

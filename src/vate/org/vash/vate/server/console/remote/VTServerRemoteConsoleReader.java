@@ -155,25 +155,8 @@ public class VTServerRemoteConsoleReader extends VTTask
     
     if (session.isEchoCommands())
     {
-      if (command != null
-      && !command.toUpperCase().startsWith("*VTECHO")
-      && !command.toUpperCase().startsWith("*VTEC")
-      && !command.toUpperCase().startsWith("*VTAUDIOLINK")
-      && !command.toUpperCase().startsWith("*VTAL")
-      && !command.toUpperCase().startsWith("*VTFILETRANSFER")
-      && !command.toUpperCase().startsWith("*VTFT")
-      && !command.toUpperCase().startsWith("*VTGRAPHICSLINK")
-      && !command.toUpperCase().startsWith("*VTGL")
-      && !command.toUpperCase().startsWith("*VTLIMIT")
-      && !command.toUpperCase().startsWith("*VTLM")
-      && !command.toUpperCase().startsWith("*VTMIXERS")
-      && !command.toUpperCase().startsWith("*VTMX")
-      && !command.toUpperCase().startsWith("*VTNETWORKS")
-      && !command.toUpperCase().startsWith("*VTNTS")
-      && !command.toUpperCase().startsWith("*VTSTOP")
-      && !command.toUpperCase().startsWith("*VTSTP")
-      && !command.toUpperCase().startsWith("*VTTUNNEL")
-      && !command.toUpperCase().startsWith("*VTTN"))
+      if (command != null && !selector.remoteCommand(parsed[0]))
+      
       {
         connection.getResultWriter().write(command + "\n");
         connection.getResultWriter().flush();
@@ -181,25 +164,7 @@ public class VTServerRemoteConsoleReader extends VTTask
     }
     else
     {
-      if (command != null
-      && !command.toUpperCase().startsWith("*VTECHO")
-      && !command.toUpperCase().startsWith("*VTEC")
-      && !command.toUpperCase().startsWith("*VTAUDIOLINK")
-      && !command.toUpperCase().startsWith("*VTAL")
-      && !command.toUpperCase().startsWith("*VTFILETRANSFER")
-      && !command.toUpperCase().startsWith("*VTFT")
-      && !command.toUpperCase().startsWith("*VTGRAPHICSLINK")
-      && !command.toUpperCase().startsWith("*VTGL")
-      && !command.toUpperCase().startsWith("*VTLIMIT")
-      && !command.toUpperCase().startsWith("*VTLM")
-      && !command.toUpperCase().startsWith("*VTMIXERS")
-      && !command.toUpperCase().startsWith("*VTMX")
-      && !command.toUpperCase().startsWith("*VTNETWORKS")
-      && !command.toUpperCase().startsWith("*VTNTS")
-      && !command.toUpperCase().startsWith("*VTSTOP")
-      && !command.toUpperCase().startsWith("*VTSTP")
-      && !command.toUpperCase().startsWith("*VTTUNNEL")
-      && !command.toUpperCase().startsWith("*VTTN"))
+      if (command != null && !selector.remoteCommand(parsed[0]))
       {
         if (session.getEchoState() == 1)
         {

@@ -489,4 +489,9 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return true;
+  }
 }

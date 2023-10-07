@@ -56,4 +56,9 @@ public class VTPRINTERS extends VTServerStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return false;
+  }
 }

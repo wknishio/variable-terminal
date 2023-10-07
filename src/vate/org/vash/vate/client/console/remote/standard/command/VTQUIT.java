@@ -25,4 +25,10 @@ public class VTQUIT extends VTClientStandardRemoteConsoleCommandProcessor
   {
     
   }
+  
+  public boolean remote()
+  {
+    return true;
+  }
+
 }
