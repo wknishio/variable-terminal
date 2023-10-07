@@ -100,10 +100,10 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
   private int offset;
   public static final int PADDING_SIZE = 1;
   
-  private static final int MAGIC1 = 0x34384431;
-  private static final int MAGIC2 = 0x34384432;
-  private static final int MAGIC3 = 0x34384433;
-  private static final int MAGIC4 = 0x34384434;
+//  private static final int MAGIC1 = 0x34384431;
+//  private static final int MAGIC2 = 0x34384432;
+//  private static final int MAGIC3 = 0x34384433;
+//  private static final int MAGIC4 = 0x34384434;
   
   public final void dispose()
   {
@@ -2488,7 +2488,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     transferArea.height = areaHeight;
     VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet, pixelBitSet);
     lout.setOutputStream(out);
-    lout.writeInt(MAGIC1);
+//    lout.writeInt(MAGIC1);
     lout.writeInt(offset);
     lout.writeInt(size);
     // lout.writeInt(areaX);
@@ -2517,10 +2517,10 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
     lin.setIntputStream(in);
-    if (lin.readInt() != MAGIC1)
-    {
-      return;
-    }
+//    if (lin.readInt() != MAGIC1)
+//    {
+//      return;
+//    }
     offset = lin.readInt();
     int size = lin.readInt();
     // int areaX = lin.readInt();
@@ -2567,7 +2567,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     transferArea.height = areaHeight;
     VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet, pixelBitSet);
     lout.setOutputStream(out);
-    lout.writeInt(MAGIC2);
+//    lout.writeInt(MAGIC2);
     lout.writeInt(offset);
     lout.writeInt(size);
     // lout.writeInt(areaX);
@@ -2596,10 +2596,10 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
     lin.setIntputStream(in);
-    if (lin.readInt() != MAGIC2)
-    {
-      return;
-    }
+//    if (lin.readInt() != MAGIC2)
+//    {
+//      return;
+//    }
     offset = lin.readInt();
     int size = lin.readInt();
     // int areaX = lin.readInt();
@@ -2646,7 +2646,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     transferArea.height = areaHeight;
     VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet, pixelBitSet);
     lout.setOutputStream(out);
-    lout.writeInt(MAGIC3);
+//    lout.writeInt(MAGIC3);
     lout.writeInt(offset);
     lout.writeInt(size);
     // lout.writeInt(areaX);
@@ -2675,10 +2675,10 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
     lin.setIntputStream(in);
-    if (lin.readInt() != MAGIC3)
-    {
-      return;
-    }
+//    if (lin.readInt() != MAGIC3)
+//    {
+//      return;
+//    }
     offset = lin.readInt();
     int size = lin.readInt();
     // int areaX = lin.readInt();
@@ -2725,7 +2725,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     transferArea.height = areaHeight;
     VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet, pixelBitSet);
     lout.setOutputStream(out);
-    lout.writeInt(MAGIC4);
+//    lout.writeInt(MAGIC4);
     lout.writeInt(offset);
     lout.writeInt(size);
     // lout.writeInt(areaX);
@@ -2754,10 +2754,10 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
     lin.setIntputStream(in);
-    if (lin.readInt() != MAGIC4)
-    {
-      return;
-    }
+//    if (lin.readInt() != MAGIC4)
+//    {
+//      return;
+//    }
     offset = lin.readInt();
     int size = lin.readInt();
     // int areaX = lin.readInt();
