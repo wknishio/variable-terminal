@@ -11,8 +11,8 @@ import java.util.List;
 
 import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
-import org.vash.vate.network.nat.mapping.VTNATPortMappingResultNotify;
-import org.vash.vate.network.nat.mapping.VTNATSinglePortMappingManagerMKII;
+import org.vash.vate.nat.mapping.VTNATPortMappingResultNotify;
+import org.vash.vate.nat.mapping.VTNATSinglePortMappingManagerMKII;
 import org.vash.vate.security.VTBlake3DigestRandom;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.session.VTServerSessionListener;

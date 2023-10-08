@@ -5,10 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import org.vash.vate.network.url.VTURLInvoker;
-import org.vash.vate.network.url.VTURLResult;
+
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.task.VTTask;
+import org.vash.vate.url.VTURLInvoker;
+import org.vash.vate.url.VTURLResult;
 
 public class VTServerURLInvoker extends VTTask
 {

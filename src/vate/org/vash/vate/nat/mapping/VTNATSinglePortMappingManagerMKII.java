@@ -1,4 +1,4 @@
-package org.vash.vate.network.nat.mapping;
+package org.vash.vate.nat.mapping;
 
 import java.net.InetAddress;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package org.vash.vate.network.url;
+package org.vash.vate.url;
 
 import java.util.List;
 import java.util.Map;

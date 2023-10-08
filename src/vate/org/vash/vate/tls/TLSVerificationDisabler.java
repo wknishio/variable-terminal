@@ -1,4 +1,4 @@
-package org.vash.vate.network.tls;
+package org.vash.vate.tls;
 
 import java.lang.reflect.Method;
 
