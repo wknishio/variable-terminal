@@ -494,9 +494,9 @@ public class VTGraphicsModeServerReader implements Runnable
             }
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF:
+          case VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD:
           {
-            writer.setImageCoding(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF);
+            writer.setImageCoding(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD);
             break;
           }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG:
@@ -509,9 +509,9 @@ public class VTGraphicsModeServerReader implements Runnable
             writer.setImageCoding(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF:
+          case VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD:
           {
-            writer.setImageCoding(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF);
+            writer.setImageCoding(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD);
             break;
           }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_DRAW_POINTER_INCREASE:

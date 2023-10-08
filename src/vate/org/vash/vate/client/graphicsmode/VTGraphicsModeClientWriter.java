@@ -296,7 +296,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     this.graphicsRefresher = new VTGraphicsModeClientRemoteInterfaceRefresher(this);
     this.colorQuality = VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216;
     this.screenCaptureMode = VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_VIEWPORT;
-    this.imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF;
+    this.imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD;
     this.terminalRefreshPolicy = TERMINAL_STATE_VISIBLE;
     this.terminalControlPolicy = TERMINAL_STATE_FOCUSED;
     this.synchronousRefresh = false;
@@ -527,7 +527,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     // interruptedRefresh = false;
     drawPointer = true;
     screenCaptureMode = VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_VIEWPORT;
-    imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF;
+    imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD;
     suppressLocalKeyCombinations = false;
     // scaledCapture = false;
     refreshInterrupted = false;
@@ -973,14 +973,14 @@ public class VTGraphicsModeClientWriter implements Runnable
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
         // connection.getGraphicsControlDataOutputStream().flush();
       }
-      else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF)
+      else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD)
       {
-        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DOF);
+        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD);
         // connection.getGraphicsControlDataOutputStream().flush();
       }
       else
       {
-        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZOF);
+        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD);
         // connection.getGraphicsControlDataOutputStream().flush();
       }
     }
