@@ -362,18 +362,18 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       else
       {
-        VTPacketDecompressor packetCompressor = new VTPacketDecompressor(outputStream);
-        this.directOutputStream = packetCompressor;
+        VTPacketDecompressor packetDecompressor = new VTPacketDecompressor(outputStream);
+        this.directOutputStream = packetDecompressor;
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
         {
           //compressedDirectInputStream = VTCompressorSelector.createDirectZlibInputStream(pipedDecompressor.getPipedInputStream());
-          compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(packetCompressor.getCompressedPacketInputStream());
+          compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(packetDecompressor.getCompressedPacketInputStream());
         }
         else
         {
-          compressedInputStream = VTCompressorSelector.createDirectLz4InputStream(packetCompressor.getCompressedPacketInputStream());
+          compressedInputStream = VTCompressorSelector.createDirectLz4InputStream(packetDecompressor.getCompressedPacketInputStream());
         }
-        packetCompressor.setPacketDecompressorInputStream(compressedInputStream);
+        packetDecompressor.setPacketDecompressorInputStream(compressedInputStream);
       }
     }
     
