@@ -11,10 +11,10 @@ import org.vash.vate.socket.VTProxy;
 import net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
 
-public class VTTunnelSocksPlusHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
+public class VTTunnelSocksHttpAdaptiveProxyAuthenticatorNone extends ServerAuthenticatorNone
 {
   private VTProxy connect_proxy; 
-  public VTTunnelSocksPlusHttpProxyAuthenticatorNone(VTProxy proxy)
+  public VTTunnelSocksHttpAdaptiveProxyAuthenticatorNone(VTProxy proxy)
   {
     this.connect_proxy = proxy;
   }
