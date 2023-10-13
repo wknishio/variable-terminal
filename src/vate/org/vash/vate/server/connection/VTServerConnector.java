@@ -16,8 +16,8 @@ import org.vash.vate.nat.mapping.VTNATSinglePortMappingManagerMKII;
 import org.vash.vate.security.VTBlake3DigestRandom;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.session.VTServerSessionListener;
-import org.vash.vate.socket.VTDefaultProxy;
-import org.vash.vate.socket.VTDefaultProxyAuthenticator;
+import org.vash.vate.socket.VTProxy;
+import org.vash.vate.socket.VTProxyAuthenticator;
 import org.vash.vate.socket.VTHTTPConnectTunnelSocket;
 
 public class VTServerConnector implements Runnable
@@ -391,18 +391,18 @@ public class VTServerConnector implements Runnable
       connection.setConnectionSocket(new Socket());
       if (proxyAddress != null && proxyPort != null)
       {
-        VTDefaultProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
+        VTProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
       }
     }
     else if (!passive && proxyType.toUpperCase().startsWith("H") && proxyAddress != null && proxyPort != null)
     {
       if (proxyType != null && proxyAddress != null && proxyPort != null && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
       {
-        VTDefaultProxyAuthenticator.putProxy(proxyAddress, proxyPort, new VTDefaultProxy(Proxy.Type.HTTP, proxyAddress, proxyPort, proxyUser, proxyPassword));
+        VTProxyAuthenticator.putProxy(proxyAddress, proxyPort, new VTProxy(Proxy.Type.HTTP, proxyAddress, proxyPort, proxyUser, proxyPassword));
       }
       else
       {
-        VTDefaultProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
+        VTProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
       }
       Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 8080));
       
@@ -424,11 +424,11 @@ public class VTServerConnector implements Runnable
     {
       if (proxyType != null && proxyAddress != null && proxyPort != null && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
       {
-        VTDefaultProxyAuthenticator.putProxy(proxyAddress, proxyPort, new VTDefaultProxy(Proxy.Type.SOCKS, proxyAddress, proxyPort, proxyUser, proxyPassword));
+        VTProxyAuthenticator.putProxy(proxyAddress, proxyPort, new VTProxy(Proxy.Type.SOCKS, proxyAddress, proxyPort, proxyUser, proxyPassword));
       }
       else
       {
-        VTDefaultProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
+        VTProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
       }
       Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 1080));
       
@@ -441,7 +441,7 @@ public class VTServerConnector implements Runnable
       connection.setConnectionSocket(new Socket());
       if (proxyAddress != null && proxyPort != null)
       {
-        VTDefaultProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
+        VTProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
       }
     }
     

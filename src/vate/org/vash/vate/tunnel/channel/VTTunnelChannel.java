@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.vash.vate.VT;
-import org.vash.vate.socket.VTDefaultProxy;
+import org.vash.vate.socket.VTProxy;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 
@@ -23,7 +23,7 @@ public class VTTunnelChannel
   private int bindPort;
   private String redirectHost;
   private int redirectPort;
-  private VTDefaultProxy proxy;
+  private VTProxy proxy;
   private int tunnelType;
   private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
   
@@ -43,7 +43,7 @@ public class VTTunnelChannel
   }
   
   // SOCKS bind tunnel without authentication
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, VTDefaultProxy proxy)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, VTProxy proxy)
   {
     this.tunnelType = TUNNEL_TYPE_SOCKS;
     this.channelType = channelType;
@@ -63,7 +63,7 @@ public class VTTunnelChannel
   }
   
   // SOCKS bind tunnel with authentication
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String socksUsername, String socksPassword, VTDefaultProxy proxy)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String socksUsername, String socksPassword, VTProxy proxy)
   {
     this.tunnelType = TUNNEL_TYPE_SOCKS;
     this.channelType = channelType;
@@ -85,7 +85,7 @@ public class VTTunnelChannel
   }
   
   // TCP bind redirect tunnel
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String redirectHost, int redirectPort, VTDefaultProxy proxy)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String redirectHost, int redirectPort, VTProxy proxy)
   {
     this.tunnelType = TUNNEL_TYPE_TCP;
     this.channelType = channelType;
@@ -219,12 +219,12 @@ public class VTTunnelChannel
     this.redirectPort = redirectPort;
   }
   
-  public void setProxy(VTDefaultProxy proxy)
+  public void setProxy(VTProxy proxy)
   {
     this.proxy = proxy;
   }
   
-  public VTDefaultProxy getProxy()
+  public VTProxy getProxy()
   {
     return proxy;
   }  

@@ -7,32 +7,32 @@ import java.net.ServerSocket;
 
 import javax.net.ServerSocketFactory;
 
-public class VTDefaultServerSocketFactory extends ServerSocketFactory
+public class VTServerSocketFactory extends ServerSocketFactory
 {
   public ServerSocket createServerSocket() throws IOException
   {
     ServerSocket serverSocket = new ServerSocket();
-    return new VTDefaultServerSocket(serverSocket);
+    return new VTServerSocket(serverSocket);
   }
   
   public ServerSocket createServerSocket(int port) throws IOException
   {
     ServerSocket serverSocket = new ServerSocket();
     serverSocket.bind(new InetSocketAddress(port));
-    return new VTDefaultServerSocket(serverSocket);
+    return new VTServerSocket(serverSocket);
   }
   
   public ServerSocket createServerSocket(int port, int backlog) throws IOException
   {
     ServerSocket serverSocket = new ServerSocket();
     serverSocket.bind(new InetSocketAddress(port), backlog);
-    return new VTDefaultServerSocket(serverSocket);
+    return new VTServerSocket(serverSocket);
   }
   
   public ServerSocket createServerSocket(int port, int backlog, InetAddress bind) throws IOException
   {
     ServerSocket serverSocket = new ServerSocket();
     serverSocket.bind(new InetSocketAddress(bind.getHostName(), port), backlog);
-    return new VTDefaultServerSocket(serverSocket);
+    return new VTServerSocket(serverSocket);
   }
 }

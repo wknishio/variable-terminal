@@ -5,7 +5,7 @@ import java.net.Proxy;
 import org.vash.vate.VT;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.socket.VTDefaultProxy;
+import org.vash.vate.socket.VTProxy;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.channel.VTTunnelChannelBindSocketListener;
 
@@ -24,7 +24,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
     //Proxy.Type proxyType = Proxy.Type.DIRECT;
     //String proxyHost = "";
     //int proxyPort = 0;
-    VTDefaultProxy proxy = new VTDefaultProxy(Proxy.Type.DIRECT, "", 0, null, null);
+    VTProxy proxy = new VTProxy(Proxy.Type.DIRECT, "", 0, null, null);
     int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
     
     if (parsed.length > 1)

@@ -21,7 +21,7 @@ import javax.sound.sampled.AudioFormat;
 
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.help.VTHelpManager;
-import org.vash.vate.socket.VTDefaultProxyAuthenticator;
+import org.vash.vate.socket.VTProxyAuthenticator;
 import org.vash.vate.tls.TLSVerificationDisabler;
 
 //import com.sixlegs.png.iio.PngImageReader;
@@ -193,7 +193,7 @@ public class VT
     disableAccessWarnings();
     System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
     System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
-    Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());
+    Authenticator.setDefault(VTProxyAuthenticator.getInstance());
     TLSVerificationDisabler.install();
     VTHelpManager.initialize();
     

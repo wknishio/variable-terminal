@@ -6,25 +6,25 @@ import java.net.PasswordAuthentication;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class VTDefaultProxyAuthenticator extends Authenticator
+public class VTProxyAuthenticator extends Authenticator
 {
   //private String user;
   //private String password;
   private static final PasswordAuthentication INVALID = new PasswordAuthentication(" ", " ".toCharArray());
-  private static final Map<String, VTDefaultProxy> PROXIES = new LinkedHashMap<String, VTDefaultProxy>();
-  private static final VTDefaultProxyAuthenticator INSTANCE = new VTDefaultProxyAuthenticator();
+  private static final Map<String, VTProxy> PROXIES = new LinkedHashMap<String, VTProxy>();
+  private static final VTProxyAuthenticator INSTANCE = new VTProxyAuthenticator();
   
-  public static VTDefaultProxyAuthenticator getInstance()
+  public static VTProxyAuthenticator getInstance()
   {
     return INSTANCE;
   }
   
-  private VTDefaultProxyAuthenticator()
+  private VTProxyAuthenticator()
   {
     
   }
   
-  public static void putProxy(String proxyHost, int proxyPort, VTDefaultProxy proxy)
+  public static void putProxy(String proxyHost, int proxyPort, VTProxy proxy)
   {
     try
     {
@@ -78,7 +78,7 @@ public class VTDefaultProxyAuthenticator extends Authenticator
     //System.out.println("getPasswordAuthentication().proxyHost=[" + proxyHost + "]");
     //System.out.println("getPasswordAuthentication().proxyPort=[" + proxyPort + "]");
     
-    VTDefaultProxy proxy = PROXIES.get(proxyHost + "/" + proxyPort);
+    VTProxy proxy = PROXIES.get(proxyHost + "/" + proxyPort);
     if (proxy != null)
     {
       //System.out.println("getPasswordAuthentication().proxyUser=[" + proxy.getProxyUser() + "]");

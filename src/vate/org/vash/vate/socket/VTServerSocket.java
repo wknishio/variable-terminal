@@ -11,11 +11,11 @@ import java.nio.channels.ServerSocketChannel;
 
 import org.vash.vate.VT;
 
-public class VTDefaultServerSocket extends ServerSocket implements Closeable
+public class VTServerSocket extends ServerSocket implements Closeable
 {
   private final ServerSocket serverSocket;
   
-  public VTDefaultServerSocket(ServerSocket serverSocket) throws IOException
+  public VTServerSocket(ServerSocket serverSocket) throws IOException
   {
     this.serverSocket = serverSocket;
   }

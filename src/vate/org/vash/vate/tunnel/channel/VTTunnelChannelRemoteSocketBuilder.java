@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.Proxy;
 import java.net.Socket;
 
-import org.vash.vate.socket.VTDefaultProxy;
+import org.vash.vate.socket.VTProxy;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
 import org.vash.vate.tunnel.session.VTTunnelSession;
@@ -36,7 +36,7 @@ public class VTTunnelChannelRemoteSocketBuilder
     return channel;
   }
   
-  public Socket connect(int channelType, String host, int port, VTDefaultProxy proxy) throws IOException
+  public Socket connect(int channelType, String host, int port, VTProxy proxy) throws IOException
   {
     return connect(channelType, host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
   }

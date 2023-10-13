@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
-import org.vash.vate.socket.VTDefaultProxy;
+import org.vash.vate.socket.VTProxy;
 import org.vash.vate.socket.VTTunnelRemoteSocketFactory;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -51,7 +51,7 @@ public class VTTunnelConnection
   // return tunnelType;
   // }
   
-  public boolean bindSOCKSListener(int channelType, String bindHost, int bindPort, VTDefaultProxy proxy)
+  public boolean bindSOCKSListener(int channelType, String bindHost, int bindPort, VTProxy proxy)
   {
     VTTunnelChannelBindSocketListener listener = getBindListener(bindHost, bindPort);
     if (listener != null)
@@ -83,7 +83,7 @@ public class VTTunnelConnection
     }
   }
   
-  public boolean bindSOCKSListener(int channelType, String bindHost, int bindPort, String socksUsername, String socksPassword, VTDefaultProxy proxy)
+  public boolean bindSOCKSListener(int channelType, String bindHost, int bindPort, String socksUsername, String socksPassword, VTProxy proxy)
   {
     VTTunnelChannelBindSocketListener listener = getBindListener(bindHost, bindPort);
     if (listener != null)
@@ -115,7 +115,7 @@ public class VTTunnelConnection
     }
   }
   
-  public boolean bindTCPRedirectListener(int channelType, String bindHost, int bindPort, String redirectHost, int redirectPort, VTDefaultProxy proxy)
+  public boolean bindTCPRedirectListener(int channelType, String bindHost, int bindPort, String redirectHost, int redirectPort, VTProxy proxy)
   {
     VTTunnelChannelBindSocketListener listener = getBindListener(bindHost, bindPort);
     if (listener != null)

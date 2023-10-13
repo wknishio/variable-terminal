@@ -22,7 +22,7 @@ import java.io.*;
 //import org.apache.log4j.Logger;
 import java.net.*;
 
-import org.vash.vate.socket.VTDefaultProxy;
+import org.vash.vate.socket.VTProxy;
 
 /**
  * SOCKS4 and SOCKS5 proxy, handles both protocols simultaniously. Implements
@@ -71,7 +71,7 @@ public class ProxyServer implements Runnable {
 	private boolean disabled_udp_relay = false;
 	private boolean disabled_bind = false;
 	
-	private VTDefaultProxy connect_proxy;
+	private VTProxy connect_proxy;
 
 	// private String connectionId;
 
@@ -99,7 +99,7 @@ public class ProxyServer implements Runnable {
 		mode = START_MODE;
 	}
 	
-	public ProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay, VTDefaultProxy connect_proxy) {
+	public ProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy) {
     this.auth = auth;
     this.sock = s;
     this.disabled_bind = disabled_bind;
@@ -403,7 +403,7 @@ public class ProxyServer implements Runnable {
 		  }
 		  else
 		  {
-		    s = VTDefaultProxy.connect(msg.host, msg.port, connect_proxy);
+		    s = VTProxy.connect(msg.host, msg.port, connect_proxy);
 		    s.setTcpNoDelay(true);
         s.setSoTimeout(90000);
 		  }

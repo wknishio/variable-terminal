@@ -6,15 +6,15 @@ import java.io.PushbackInputStream;
 import java.net.Socket;
 
 import org.vash.vate.nanohttpd.VTNanoHTTPDProxySession;
-import org.vash.vate.socket.VTDefaultProxy;
+import org.vash.vate.socket.VTProxy;
 
 import net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
 
 public class VTTunnelSocksPlusHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
 {
-  private VTDefaultProxy connect_proxy; 
-  public VTTunnelSocksPlusHttpProxyAuthenticatorNone(VTDefaultProxy proxy)
+  private VTProxy connect_proxy; 
+  public VTTunnelSocksPlusHttpProxyAuthenticatorNone(VTProxy proxy)
   {
     this.connect_proxy = proxy;
   }

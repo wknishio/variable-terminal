@@ -8,8 +8,8 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
-import org.vash.vate.socket.VTDefaultProxy;
-import org.vash.vate.socket.VTDefaultProxyAuthenticator;
+import org.vash.vate.socket.VTProxy;
+import org.vash.vate.socket.VTProxyAuthenticator;
 import org.vash.vate.socket.VTHTTPConnectTunnelSocket;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
@@ -181,7 +181,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 {
                   proxyType = Proxy.Type.SOCKS;
                 }
-                VTDefaultProxy proxy = new VTDefaultProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
+                VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
                 
                 VTTunnelSession session = null;
                 VTTunnelPipedSocket piped = new VTTunnelPipedSocket();
@@ -332,11 +332,11 @@ public class VTTunnelConnectionControlThread implements Runnable
         socketAddress = InetSocketAddress.createUnresolved(host, port);
         if (proxyType != Proxy.Type.DIRECT && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
         {
-          VTDefaultProxyAuthenticator.putProxy(proxyHost, proxyPort, new VTDefaultProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword));
+          VTProxyAuthenticator.putProxy(proxyHost, proxyPort, new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword));
         }
         else
         {
-          VTDefaultProxyAuthenticator.removeProxy(proxyHost, proxyPort);
+          VTProxyAuthenticator.removeProxy(proxyHost, proxyPort);
         }
         proxy = new Proxy(proxyType, new InetSocketAddress(proxyHost, proxyPort));
       }

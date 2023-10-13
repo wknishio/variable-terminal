@@ -9,7 +9,7 @@ import java.net.UnknownHostException;
 
 import org.vash.vate.VT;
 
-public class VTDefaultSocketFactory extends VTAuthenticatedProxySocketFactory
+public class VTSocketFactory extends VTAuthenticatedProxySocketFactory
 {
   public Socket createSocket()
   {
@@ -57,11 +57,11 @@ public class VTDefaultSocketFactory extends VTAuthenticatedProxySocketFactory
   
   public Socket createSocket(String host, int port, Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException, UnknownHostException
   {
-    return VTDefaultProxy.connect(host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
+    return VTProxy.connect(host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
   }
   
-  public Socket createSocket(String host, int port, VTDefaultProxy proxy) throws IOException, UnknownHostException
+  public Socket createSocket(String host, int port, VTProxy proxy) throws IOException, UnknownHostException
   {
-    return VTDefaultProxy.connect(host, port, proxy);
+    return VTProxy.connect(host, port, proxy);
   }
 }

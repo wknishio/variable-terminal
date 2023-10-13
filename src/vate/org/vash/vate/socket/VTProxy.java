@@ -7,7 +7,7 @@ import java.net.Socket;
 
 import org.vash.vate.VT;
 
-public class VTDefaultProxy
+public class VTProxy
 {
   private Proxy.Type proxyType = Proxy.Type.DIRECT;
   private String proxyHost;
@@ -15,7 +15,7 @@ public class VTDefaultProxy
   private String proxyUser;
   private String proxyPassword;
   
-  public VTDefaultProxy(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
+  public VTProxy(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
     this.proxyType = proxyType;
     this.proxyHost = proxyHost;
@@ -83,7 +83,7 @@ public class VTDefaultProxy
     this.proxyPassword = proxyPassword;
   }
   
-  public static Socket connect(String host, int port, VTDefaultProxy proxy) throws IOException
+  public static Socket connect(String host, int port, VTProxy proxy) throws IOException
   {
     return connect(host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
   }
@@ -106,11 +106,11 @@ public class VTDefaultProxy
       socketAddress = InetSocketAddress.createUnresolved(host, port);
       if (proxyType != Proxy.Type.DIRECT && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
       {
-        VTDefaultProxyAuthenticator.putProxy(proxyHost, proxyPort, new VTDefaultProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword));
+        VTProxyAuthenticator.putProxy(proxyHost, proxyPort, new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword));
       }
       else
       {
-        VTDefaultProxyAuthenticator.removeProxy(proxyHost, proxyPort);
+        VTProxyAuthenticator.removeProxy(proxyHost, proxyPort);
       }
       proxy = new Proxy(proxyType, new InetSocketAddress(proxyHost, proxyPort));
     }

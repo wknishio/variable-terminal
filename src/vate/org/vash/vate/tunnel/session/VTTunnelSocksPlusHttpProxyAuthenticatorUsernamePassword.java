@@ -6,7 +6,7 @@ import java.io.PushbackInputStream;
 import java.net.Socket;
 
 import org.vash.vate.nanohttpd.VTNanoHTTPDProxySession;
-import org.vash.vate.socket.VTDefaultProxy;
+import org.vash.vate.socket.VTProxy;
 
 import net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
@@ -15,8 +15,8 @@ import net.sourceforge.jsocks.socks.server.UserValidation;
 
 public class VTTunnelSocksPlusHttpProxyAuthenticatorUsernamePassword extends UserPasswordAuthenticator
 {
-  private VTDefaultProxy connect_proxy;
-  public VTTunnelSocksPlusHttpProxyAuthenticatorUsernamePassword(UserValidation validator, VTDefaultProxy proxy)
+  private VTProxy connect_proxy;
+  public VTTunnelSocksPlusHttpProxyAuthenticatorUsernamePassword(UserValidation validator, VTProxy proxy)
   {
     super(validator);
     this.connect_proxy = proxy;
