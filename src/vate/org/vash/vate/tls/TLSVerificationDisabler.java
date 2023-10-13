@@ -1,6 +1,10 @@
 package org.vash.vate.tls;
 
 import java.lang.reflect.Method;
+import java.net.Socket;
+import java.security.Principal;
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -20,6 +24,7 @@ public class TLSVerificationDisabler
     }
   }
   
+  @SuppressWarnings("all")
   private static class OverlyOptimisticTrustManager implements TrustManager, X509TrustManager
   {
     public java.security.cert.X509Certificate[] getAcceptedIssuers()
@@ -27,13 +32,11 @@ public class TLSVerificationDisabler
       return new java.security.cert.X509Certificate[] {};
     }
     
-    @SuppressWarnings("all")
     public boolean isServerTrusted(java.security.cert.X509Certificate[] certs)
     {
       return true;
     }
     
-    @SuppressWarnings("all")
     public boolean isClientTrusted(java.security.cert.X509Certificate[] certs)
     {
       return true;
@@ -50,38 +53,38 @@ public class TLSVerificationDisabler
     }
   }
   
-  @SuppressWarnings("unused")
-  private static class OverlyOptimisticKeyManagerManager implements KeyManager
+  @SuppressWarnings("all")
+  private static class OverlyOptimisticKeyManager implements KeyManager
   {
-//    public String chooseClientAlias(String[] arg0, Principal[] arg1, Socket arg2)
-//    {
-//      return "";
-//    }
-//    
-//    public String chooseServerAlias(String arg0, Principal[] arg1, Socket arg2)
-//    {
-//      return "";
-//    }
-//    
-//    public X509Certificate[] getCertificateChain(String arg0)
-//    {
-//      return new X509Certificate[] {};
-//    }
-//    
-//    public String[] getClientAliases(String arg0, Principal[] arg1)
-//    {
-//      return new String[] {};
-//    }
-//    
-//    public PrivateKey getPrivateKey(String arg0)
-//    {
-//      return null;
-//    }
-//    
-//    public String[] getServerAliases(String arg0, Principal[] arg1)
-//    {
-//      return new String[] {};
-//    }
+    public String chooseClientAlias(String[] arg0, Principal[] arg1, Socket arg2)
+    {
+      return "";
+    }
+    
+    public String chooseServerAlias(String arg0, Principal[] arg1, Socket arg2)
+    {
+      return "";
+    }
+    
+    public X509Certificate[] getCertificateChain(String arg0)
+    {
+      return new X509Certificate[] {};
+    }
+    
+    public String[] getClientAliases(String arg0, Principal[] arg1)
+    {
+      return new String[] {};
+    }
+    
+    public PrivateKey getPrivateKey(String arg0)
+    {
+      return null;
+    }
+    
+    public String[] getServerAliases(String arg0, Principal[] arg1)
+    {
+      return new String[] {};
+    }
   }
   
   public static boolean install()
@@ -92,8 +95,7 @@ public class TLSVerificationDisabler
       //System.setProperty("sun.security.ssl.allowUnsafeRenegotiation", "true");
       TrustManager[] trustAnything = new TrustManager[]
       { new OverlyOptimisticTrustManager() };
-      //KeyManager[] manageNothing = new KeyManager[]
-      //{ new OverlyOptimisticKeyManagerManager() };
+      //KeyManager[] manageNothing = new KeyManager[] { new OverlyOptimisticKeyManager() };
       SSLContext unverifiedTLS = SSLContext.getInstance("TLS");
       unverifiedTLS.init(null, trustAnything, new java.security.SecureRandom());
       HttpsURLConnection.setDefaultSSLSocketFactory(unverifiedTLS.getSocketFactory());
