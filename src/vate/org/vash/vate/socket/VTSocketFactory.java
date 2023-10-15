@@ -57,7 +57,12 @@ public class VTSocketFactory extends VTAuthenticatedProxySocketFactory
   
   public Socket createSocket(String host, int port, Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException, UnknownHostException
   {
-    return VTProxy.connect(host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
+    return VTProxy.connect(host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword, null);
+  }
+  
+  public Socket createSocket(String host, int port, Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection) throws IOException, UnknownHostException
+  {
+    return VTProxy.connect(host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
   }
   
   public Socket createSocket(String host, int port, VTProxy proxy) throws IOException, UnknownHostException

@@ -28,7 +28,7 @@ public abstract class Proxy {
 	// Data members
 	protected InetRange directHosts = new InetRange();
 
-	protected InetAddress proxyIP = null;
+	//protected InetAddress proxyIP = null;
 	protected String proxyHost = null;
 	protected int proxyPort;
 	protected Socket proxySocket = null;
@@ -47,32 +47,63 @@ public abstract class Proxy {
 
 	// Constructors
 	// ====================
-	Proxy(Proxy chainProxy, String proxyHost, int proxyPort) throws UnknownHostException {
+	Proxy(Proxy chainProxy, String proxyHost, int proxyPort) {
 		this.chainProxy = chainProxy;
 		this.proxyHost = proxyHost;
 
 		if (chainProxy == null)
-			this.proxyIP = InetAddress.getByName(proxyHost);
+		{
+		  try
+      {
+        //this.proxyIP = InetAddress.getByName(proxyHost);
+      }
+      catch (Throwable e)
+      {
+        
+      }
+		}
 
 		this.proxyPort = proxyPort;
 	}
 
-	Proxy(String proxyHost, int proxyPort) throws UnknownHostException {
+	Proxy(String proxyHost, int proxyPort) {
 		this(null, proxyHost, proxyPort);
 	}
 
 	Proxy(Proxy chainProxy, InetAddress proxyIP, int proxyPort) {
 		this.chainProxy = chainProxy;
-		this.proxyIP = proxyIP;
+		//this.proxyIP = proxyIP;
 		this.proxyPort = proxyPort;
 	}
 
 	Proxy(InetAddress proxyIP, int proxyPort) {
 		this(null, proxyIP, proxyPort);
 	}
+	
+	Proxy(Proxy chainProxy, String proxyHost, int proxyPort, Socket proxySocket)
+	{
+	  this.chainProxy = chainProxy;
+    this.proxyHost = proxyHost;
+
+    if (proxySocket == null)
+    {
+      try
+      {
+        //this.proxyIP = InetAddress.getByName(proxyHost);
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+
+    this.proxyPort = proxyPort;
+	  this.proxySocket = proxySocket;
+	}
 
 	Proxy(Proxy p) {
-		this.proxyIP = p.proxyIP;
+		//this.proxyIP = p.proxyIP;
+		this.proxyHost = p.proxyHost;
 		this.proxyPort = p.proxyPort;
 		this.version = p.version;
 		this.directHosts = p.directHosts;
@@ -95,9 +126,9 @@ public abstract class Proxy {
 	 * 
 	 * @return Proxy InetAddress.
 	 */
-	public InetAddress getInetAddress() {
-		return proxyIP;
-	}
+	//public InetAddress getInetAddress() {
+		//return proxyIP;
+	//}
 
 	/**
 	 * Adds given ip to the list of direct addresses. This machine will be accessed
@@ -194,7 +225,7 @@ public abstract class Proxy {
 	 * @returns string in the form:proxyHost:proxyPort \t Version versionNumber
 	 */
 	public String toString() {
-		return ("" + proxyIP.getHostName() + ":" + proxyPort + "\tVersion " + version);
+		return ("" + proxyHost + ":" + proxyPort + "\tVersion " + version);
 	}
 
 	// Public Static(Class) Methods
@@ -321,7 +352,7 @@ public abstract class Proxy {
 
 				((Socks5Proxy) proxy).setAuthenticationMethod(upa.METHOD_ID, upa);
 			}
-		} catch (UnknownHostException uhe) {
+		} catch (Throwable uhe) {
 			return null;
 		}
 
@@ -351,7 +382,7 @@ public abstract class Proxy {
 
 				((Socks5Proxy) proxy).setAuthenticationMethod(upa.METHOD_ID, upa);
 			}
-		} catch (UnknownHostException uhe) {
+		} catch (Throwable uhe) {
 			return null;
 		}
 
@@ -367,34 +398,31 @@ public abstract class Proxy {
 
 	protected void startSession() throws SocksException {
 		try {
-			proxySocket = new Socket();
-			//proxySocket.setReuseAddress(true);
-			//proxySocket.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
-			//proxySocket.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
-			if (chainProxy == null) {
-				if (localSocketPort > 0) {
-					//proxySocket = new Socket(proxyIP, proxyPort, InetAddress.getLocalHost(), localSocketPort);
-					proxySocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), localSocketPort));
-					proxySocket.connect(new InetSocketAddress(proxyIP, proxyPort));
-				} else {
-					//proxySocket = new Socket(proxyIP, proxyPort);
-					proxySocket.connect(new InetSocketAddress(proxyIP, proxyPort));
-				}
-				localSocketPortAssigned = proxySocket.getLocalPort();
-			} else if (proxyIP != null)
-				proxySocket = new SocksSocket(chainProxy, proxyIP, proxyPort);
-			else
-				proxySocket = new SocksSocket(chainProxy, proxyHost, proxyPort);
+		  if (proxyHost == null)
+		  {
+		    proxyHost = "";
+		  }
+		  if (proxySocket == null)
+		  {
+		    proxySocket = new Socket();
+		    
+	      if (chainProxy == null) {
+	        if (localSocketPort > 0) {
+	          proxySocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), localSocketPort));
+	          proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort));
+	        } else {
+	          proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort));
+	        }
+	        localSocketPortAssigned = proxySocket.getLocalPort();
+	      //} else if (proxyIP != null)
+	        //proxySocket = new SocksSocket(chainProxy, proxyIP, proxyPort);
+	      } else
+	        proxySocket = new SocksSocket(chainProxy, proxyHost, proxyPort);
 
-			// proxySocket.setKeepAlive(true);
-			proxySocket.setTcpNoDelay(true);
-			//proxySocket.setSendBufferSize(1024 * 64);
-			//proxySocket.setReceiveBufferSize(1024 * 64);
-			//proxySocket.setSoLinger(true, 5);
-			//proxySocket.setReuseAddress(true);
-			//proxySocket.setKeepAlive(true);
-			proxySocket.setSoTimeout(90000);
-			//proxySocket.setSoLinger(true, 0);
+	      proxySocket.setTcpNoDelay(true);
+	      proxySocket.setSoTimeout(90000);
+		  }
+			
 
 			in = proxySocket.getInputStream();
 			out = proxySocket.getOutputStream();

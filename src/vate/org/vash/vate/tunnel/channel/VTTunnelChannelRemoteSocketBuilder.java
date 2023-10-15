@@ -38,10 +38,10 @@ public class VTTunnelChannelRemoteSocketBuilder
   
   public Socket connect(int channelType, String host, int port, VTProxy proxy) throws IOException
   {
-    return connect(channelType, host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+    return connect(channelType, host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword(), proxy.getProxyConnection());
   }
   
-  public Socket connect(int channelType, String host, int port, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
+  public Socket connect(int channelType, String host, int port, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection) throws IOException
   {
     VTTunnelSession session = null;
     VTTunnelSessionHandler handler = null;

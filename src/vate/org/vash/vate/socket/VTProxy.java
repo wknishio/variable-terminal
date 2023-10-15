@@ -14,6 +14,7 @@ public class VTProxy
   private int proxyPort;
   private String proxyUser;
   private String proxyPassword;
+  private Socket proxyConnection;
   
   public VTProxy(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
@@ -24,6 +25,16 @@ public class VTProxy
     this.proxyPassword = proxyPassword;
   }
   
+  public VTProxy(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection)
+  {
+    this.proxyType = proxyType;
+    this.proxyHost = proxyHost;
+    this.proxyPort = proxyPort;
+    this.proxyUser = proxyUser;
+    this.proxyPassword = proxyPassword;
+    this.proxyConnection = proxyConnection;
+  }
+  
   public void setProxy(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
     this.proxyType = proxyType;
@@ -31,6 +42,16 @@ public class VTProxy
     this.proxyPort = proxyPort;
     this.proxyUser = proxyUser;
     this.proxyPassword = proxyPassword;
+  }
+  
+  public void setProxy(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection)
+  {
+    this.proxyType = proxyType;
+    this.proxyHost = proxyHost;
+    this.proxyPort = proxyPort;
+    this.proxyUser = proxyUser;
+    this.proxyPassword = proxyPassword;
+    this.proxyConnection = proxyConnection;
   }
   
   public Proxy.Type getProxyType()
@@ -58,6 +79,11 @@ public class VTProxy
     return proxyPassword;
   }
   
+  public Socket getProxyConnection()
+  {
+    return proxyConnection;
+  }
+  
   public void setProxyType(Proxy.Type proxyType)
   {
     this.proxyType = proxyType;
@@ -83,12 +109,40 @@ public class VTProxy
     this.proxyPassword = proxyPassword;
   }
   
-  public static Socket connect(String host, int port, VTProxy proxy) throws IOException
+  public void setProxyConnection(Socket proxyConnection)
   {
-    return connect(host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+    this.proxyConnection = proxyConnection;
   }
   
-  public static Socket connect(String host, int port, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
+  public static Socket buildSocket(VTProxy proxy)
+  {
+    return buildSocket(proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword(), proxy.getProxyConnection());
+  }
+  
+  public static Socket buildSocket(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection)
+  {
+    Socket socket;
+    if (proxyType == Proxy.Type.SOCKS)
+    {
+      socket = new VTSOCKSTunnelSocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+    }
+    else if (proxyType == Proxy.Type.HTTP)
+    {
+      socket = new VTHTTPTunnelSocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+    }
+    else
+    {
+      socket = new Socket(Proxy.NO_PROXY);
+    }
+    return socket;
+  }
+  
+  public static Socket connect(String host, int port, VTProxy proxy) throws IOException
+  {
+    return connect(host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword(), proxy.getProxyConnection());
+  }
+  
+  public static Socket connect(String host, int port, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection) throws IOException
   {
     if (host == null || host.length() == 0 || host.equals("*"))
     {
@@ -104,15 +158,17 @@ public class VTProxy
     if (proxyType != Proxy.Type.DIRECT)
     {
       socketAddress = InetSocketAddress.createUnresolved(host, port);
-      if (proxyType != Proxy.Type.DIRECT && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
-      {
-        VTProxyAuthenticator.putProxy(proxyHost, proxyPort, new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword));
-      }
-      else
-      {
-        VTProxyAuthenticator.removeProxy(proxyHost, proxyPort);
-      }
-      proxy = new Proxy(proxyType, new InetSocketAddress(proxyHost, proxyPort));
+      
+//      if (proxyType != Proxy.Type.DIRECT && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
+//      {
+//        VTProxyAuthenticator.putProxy(proxyHost, proxyPort, new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword));
+//      }
+//      else
+//      {
+//        VTProxyAuthenticator.removeProxy(proxyHost, proxyPort);
+//      }
+//      proxy = new Proxy(proxyType, new InetSocketAddress(proxyHost, proxyPort));
+      
     }
     else
     {
@@ -121,14 +177,27 @@ public class VTProxy
     
     Socket socket = null;
     
-    try
+//    try
+//    {
+//      socket = new Socket(proxy);
+//    }
+//    catch (RuntimeException e)
+//    {
+//      //java 1.7 and earlier cannot do http connect tunneling natively
+//      socket = new VTHTTPTunnelSocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+//    }
+    
+    if (proxyType == Proxy.Type.SOCKS)
+    {
+      socket = new VTSOCKSTunnelSocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+    }
+    else if (proxyType == Proxy.Type.HTTP)
+    {
+      socket = new VTHTTPTunnelSocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+    }
+    else
     {
       socket = new Socket(proxy);
-    }
-    catch (RuntimeException e)
-    {
-      //java 1.7 and earlier cannot do http connect tunneling natively
-      socket = new VTHTTPConnectTunnelSocket(proxyHost, proxyPort, proxyUser, proxyPassword);
     }
     
     socket.connect(socketAddress);

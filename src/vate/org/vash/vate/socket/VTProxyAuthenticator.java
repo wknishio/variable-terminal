@@ -38,10 +38,6 @@ public class VTProxyAuthenticator extends Authenticator
     {
       
     }
-    //System.out.println("putProxy().proxyHost=[" + proxyHost + "]");
-    //System.out.println("putProxy().proxyPort=[" + proxyPort + "]");
-    //System.out.println("putProxy().proxyUser=[" + proxy.getProxyUser() + "]");
-    //System.out.println("putProxy().proxyPassword=[" + proxy.getProxyPassword() + "]");
     PROXIES.put(proxyHost + "/" + proxyPort, proxy);
   }
   
@@ -59,8 +55,6 @@ public class VTProxyAuthenticator extends Authenticator
     {
       
     }
-    //System.out.println("removeProxy().proxyHost=" + proxyHost);
-    //System.out.println("removeProxy().proxyPort=" + proxyPort);
     PROXIES.remove(proxyHost + "/" + proxyPort);
   }
   
@@ -75,8 +69,6 @@ public class VTProxyAuthenticator extends Authenticator
     {
       proxyHost = site.getHostName();
     }
-    //System.out.println("getPasswordAuthentication().proxyHost=[" + proxyHost + "]");
-    //System.out.println("getPasswordAuthentication().proxyPort=[" + proxyPort + "]");
     
     VTProxy proxy = PROXIES.get(proxyHost + "/" + proxyPort);
     if (proxy != null)

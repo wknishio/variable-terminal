@@ -159,6 +159,21 @@ public class HttpConnection {
              hostConfiguration.getProtocol());
         this.localAddress = hostConfiguration.getLocalAddress();
     }
+    
+    /**
+     * Creates a new HTTP connection for the given host configuration.
+     * 
+     * @param hostConfiguration the host/proxy/protocol to use
+     */
+    public HttpConnection(HostConfiguration hostConfiguration, Socket socket) {
+        this(hostConfiguration.getProxyHost(),
+             hostConfiguration.getProxyPort(),
+             hostConfiguration.getHost(),
+             hostConfiguration.getPort(),
+             hostConfiguration.getProtocol(),
+             socket);
+        this.localAddress = hostConfiguration.getLocalAddress();
+    }
 
     /**
      * Creates a new HTTP connection for the given host with the virtual 
@@ -214,6 +229,29 @@ public class HttpConnection {
         hostName = host;
         portNumber = protocol.resolvePort(port);
         protocolInUse = protocol;
+    }
+    
+    public HttpConnection(
+        String proxyHost,
+        int proxyPort,
+        String host,
+        int port,
+        Protocol protocol,
+        Socket connectionSocket) {
+
+        if (host == null) {
+            throw new IllegalArgumentException("host parameter is null");
+        }
+        if (protocol == null) {
+            throw new IllegalArgumentException("protocol is null");
+        }
+
+        proxyHostName = proxyHost;
+        proxyPortNumber = proxyPort;
+        hostName = host;
+        portNumber = protocol.resolvePort(port);
+        protocolInUse = protocol;
+        socket = connectionSocket;
     }
 
     // ------------------------------------------ Attribute Setters and Getters

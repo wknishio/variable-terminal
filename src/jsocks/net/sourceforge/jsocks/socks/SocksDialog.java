@@ -378,7 +378,7 @@ public class SocksDialog extends Dialog implements WindowListener, ItemListener,
 		for (int i = 0; i < direct_hosts.length; ++i)
 			direct_list.add(direct_hosts[i]);
 
-		host_text.setText(p.proxyIP.getHostName());
+		host_text.setText(p.proxyHost);
 		port_text.setText("" + p.proxyPort);
 
 	}
@@ -393,7 +393,7 @@ public class SocksDialog extends Dialog implements WindowListener, ItemListener,
 					((Socks5Proxy) proxy).setAuthenticationMethod(0, null);
 			} else
 				proxy = new Socks4Proxy(host, port, user);
-		} catch (java.net.UnknownHostException uhe) {
+		} catch (Throwable uhe) {
 			return false;
 		}
 		proxy.directHosts = ir;

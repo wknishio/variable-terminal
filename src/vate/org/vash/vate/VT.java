@@ -5,7 +5,6 @@ import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.net.Authenticator;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,7 +20,6 @@ import javax.sound.sampled.AudioFormat;
 
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.help.VTHelpManager;
-import org.vash.vate.socket.VTProxyAuthenticator;
 import org.vash.vate.tls.TLSVerificationDisabler;
 
 //import com.sixlegs.png.iio.PngImageReader;
@@ -193,7 +191,7 @@ public class VT
     disableAccessWarnings();
     System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
     System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
-    Authenticator.setDefault(VTProxyAuthenticator.getInstance());
+    //Authenticator.setDefault(VTProxyAuthenticator.getInstance());
     TLSVerificationDisabler.install();
     VTHelpManager.initialize();
     

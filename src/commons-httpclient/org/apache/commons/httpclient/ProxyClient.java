@@ -69,6 +69,8 @@ public class ProxyClient {
      */
     private HostConfiguration hostConfiguration = new HostConfiguration();
     
+    private Socket socket;
+    
     /**
      * Creates an instance of ProxyClient using default {@link HttpClientParams parameter set}.
      * 
@@ -76,6 +78,11 @@ public class ProxyClient {
      */
     public ProxyClient() {
         this(new HttpClientParams());
+    }
+    
+    public ProxyClient(Socket socket)
+    {
+      this(new HttpClientParams(), socket);
     }
 
     /**
@@ -93,6 +100,15 @@ public class ProxyClient {
         }
         this.params = params;
     }
+    
+    public ProxyClient(HttpClientParams params, Socket socket) {
+      super();
+      if (params == null) {
+          throw new IllegalArgumentException("Params may not be null");  
+      }
+      this.params = params;
+      this.socket = socket;
+  }
 
     // ------------------------------------------------------------- Properties
 
@@ -265,11 +281,23 @@ public class ProxyClient {
     /**
      * A connection manager that creates a single connection.  Meant to be used only once.
      */
-    static class DummyConnectionManager implements HttpConnectionManager {
+    private static class DummyConnectionManager implements HttpConnectionManager {
 
         private HttpConnection httpConnection;
         
         private HttpParams connectionParams;
+        
+        private Socket socket;
+        
+        private DummyConnectionManager()
+        {
+          
+        }
+        
+        private DummyConnectionManager(Socket socket)
+        {
+          this.socket = socket;
+        }
         
         public void closeIdleConnections(long idleTimeout) {
         }
@@ -285,9 +313,10 @@ public class ProxyClient {
         public HttpConnection getConnectionWithTimeout(
             HostConfiguration hostConfiguration, long timeout) {
 
-            httpConnection = new HttpConnection(hostConfiguration);
+            httpConnection = new HttpConnection(hostConfiguration, socket);
             httpConnection.setHttpConnectionManager(this);
             httpConnection.getParams().setDefaults(connectionParams);
+            //httpConnection.getParams().setConnectionTimeout((int) timeout);
             return httpConnection;
         }        
         

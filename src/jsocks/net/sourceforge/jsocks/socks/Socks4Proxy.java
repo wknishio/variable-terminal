@@ -17,6 +17,8 @@ package net.sourceforge.jsocks.socks;
 import java.io.*;
 import java.net.*;
 
+import net.sourceforge.jsocks.socks.Proxy;
+
 /**
  * Proxy which describes SOCKS4 proxy.
  */
@@ -43,11 +45,17 @@ public class Socks4Proxy extends Proxy implements Cloneable {
 	 * @throws UnknownHostException
 	 *             If proxyHost can't be resolved.
 	 */
-	public Socks4Proxy(Proxy p, String proxyHost, int proxyPort, String user) throws UnknownHostException {
+	public Socks4Proxy(Proxy p, String proxyHost, int proxyPort, String user) {
 		super(p, proxyHost, proxyPort);
 		this.user = new String(user);
 		version = 4;
 	}
+	
+	public Socks4Proxy(Proxy p, String proxyHost, int proxyPort, String user, Socket proxySocket) {
+    super(p, proxyHost, proxyPort, proxySocket);
+    this.user = new String(user);
+    version = 4;
+  }
 
 	/**
 	 * Creates the SOCKS4 proxy
@@ -61,7 +69,7 @@ public class Socks4Proxy extends Proxy implements Cloneable {
 	 * @throws UnknownHostException
 	 *             If proxyHost can't be resolved.
 	 */
-	public Socks4Proxy(String proxyHost, int proxyPort, String user) throws UnknownHostException {
+	public Socks4Proxy(String proxyHost, int proxyPort, String user) {
 		this(null, proxyHost, proxyPort, user);
 	}
 
@@ -96,7 +104,7 @@ public class Socks4Proxy extends Proxy implements Cloneable {
 	public Socks4Proxy(InetAddress proxyIP, int proxyPort, String user) {
 		this(null, proxyIP, proxyPort, user);
 	}
-
+	
 	// Public instance methods
 	// ========================
 
@@ -105,7 +113,7 @@ public class Socks4Proxy extends Proxy implements Cloneable {
 	 * this object.
 	 */
 	public Object clone() {
-		Socks4Proxy newProxy = new Socks4Proxy(proxyIP, proxyPort, user);
+		Socks4Proxy newProxy = new Socks4Proxy(proxyHost, proxyPort, user);
 		newProxy.directHosts = (InetRange) directHosts.clone();
 		newProxy.chainProxy = chainProxy;
 		return newProxy;
@@ -118,7 +126,7 @@ public class Socks4Proxy extends Proxy implements Cloneable {
 	// =================
 
 	protected Proxy copy() {
-		Socks4Proxy copy = new Socks4Proxy(proxyIP, proxyPort, user);
+		Socks4Proxy copy = new Socks4Proxy(proxyHost, proxyPort, user);
 		copy.directHosts = this.directHosts;
 		copy.chainProxy = chainProxy;
 		return copy;

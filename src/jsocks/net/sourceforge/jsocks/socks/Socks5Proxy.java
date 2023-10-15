@@ -43,11 +43,16 @@ public class Socks5Proxy extends Proxy implements Cloneable{
      @param proxyPort Port on which a Proxy server listens for connections.
      @throws UnknownHostException If proxyHost can't be resolved.
    */
-   public Socks5Proxy(Proxy p,String proxyHost,int proxyPort)
-          throws UnknownHostException{ 
+   public Socks5Proxy(Proxy p,String proxyHost,int proxyPort) { 
       super(p,proxyHost,proxyPort);
       version = 5;
       setAuthenticationMethod(0,new AuthenticationNone());
+   }
+   
+   public Socks5Proxy(Proxy p,String proxyHost,int proxyPort,Socket proxySocket) { 
+   super(p,proxyHost,proxyPort,proxySocket);
+   version = 5;
+   setAuthenticationMethod(0,new AuthenticationNone());
    }
 
    /**
@@ -56,8 +61,7 @@ public class Socks5Proxy extends Proxy implements Cloneable{
      @param proxyPort Port on which a Proxy server listens for connections.
      @throws UnknownHostException If proxyHost can't be resolved.
    */
-   public Socks5Proxy(String proxyHost,int proxyPort)
-          throws UnknownHostException{ 
+   public Socks5Proxy(String proxyHost,int proxyPort) { 
       this(null,proxyHost,proxyPort);
    }
 
@@ -151,7 +155,7 @@ public class Socks5Proxy extends Proxy implements Cloneable{
     Creates a clone of this Proxy.
    */
    public Object clone(){
-      Socks5Proxy newProxy = new Socks5Proxy(proxyIP,proxyPort);
+      Socks5Proxy newProxy = new Socks5Proxy(proxyHost,proxyPort);
       newProxy.authMethods = (Hashtable) this.authMethods.clone();
       newProxy.directHosts = (InetRange)directHosts.clone();
       newProxy.resolveAddrLocally = resolveAddrLocally;
@@ -167,7 +171,7 @@ public class Socks5Proxy extends Proxy implements Cloneable{
 //=================
 
    protected Proxy copy(){
-       Socks5Proxy copy = new Socks5Proxy(proxyIP,proxyPort);
+       Socks5Proxy copy = new Socks5Proxy(proxyHost,proxyPort);
        copy.authMethods = this.authMethods; //same Hash, no copy
        copy.directHosts = this.directHosts;
        copy.chainProxy = this.chainProxy;

@@ -116,7 +116,17 @@ public class Socks5DatagramSocket extends DatagramSocket {
 				|| relayIP.getHostAddress().equals("::0") || relayIP.getHostAddress().equals("0:0:0:0:0:0:0:0")
 				|| relayIP.getHostAddress().equals("00:00:00:00:00:00:00:00")
 				|| relayIP.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
-			relayIP = proxy.proxyIP;
+		{
+		  try
+      {
+		    relayIP = InetAddress.getByName(proxy.proxyHost);
+      }
+      catch (UnknownHostException e)
+      {
+         
+      }
+		}
+			//relayIP = proxy.proxyIP;
 		relayPort = msg.port;
 
 		encapsulation = proxy.udp_encapsulation;

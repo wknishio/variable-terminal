@@ -2,15 +2,11 @@ package org.vash.vate.tunnel.connection;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
-import org.vash.vate.VT;
 import org.vash.vate.socket.VTProxy;
-import org.vash.vate.socket.VTProxyAuthenticator;
-import org.vash.vate.socket.VTHTTPConnectTunnelSocket;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
@@ -324,42 +320,44 @@ public class VTTunnelConnectionControlThread implements Runnable
       {
         
       }
-      Proxy proxy = Proxy.NO_PROXY;
-      InetSocketAddress socketAddress = null;
-      
-      if (proxyType != Proxy.Type.DIRECT)
-      {
-        socketAddress = InetSocketAddress.createUnresolved(host, port);
-        if (proxyType != Proxy.Type.DIRECT && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
-        {
-          VTProxyAuthenticator.putProxy(proxyHost, proxyPort, new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword));
-        }
-        else
-        {
-          VTProxyAuthenticator.removeProxy(proxyHost, proxyPort);
-        }
-        proxy = new Proxy(proxyType, new InetSocketAddress(proxyHost, proxyPort));
-      }
-      else
-      {
-        socketAddress = new InetSocketAddress(host, port);
-      }
-      
-      Socket socket = null;
-      
-      try
-      {
-        socket = new Socket(proxy);
-      }
-      catch (RuntimeException e)
-      {
-        //java 1.7 and earlier cannot do http connect tunneling natively
-        socket = new VTHTTPConnectTunnelSocket(proxyHost, proxyPort, proxyUser, proxyPassword);
-      }
-      
-      socket.connect(socketAddress);
-      socket.setTcpNoDelay(true);
-      socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+//      Proxy proxy = Proxy.NO_PROXY;
+//      InetSocketAddress socketAddress = null;
+//      
+//      if (proxyType != Proxy.Type.DIRECT)
+//      {
+//        socketAddress = InetSocketAddress.createUnresolved(host, port);
+//        if (proxyType != Proxy.Type.DIRECT && proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
+//        {
+//          VTProxyAuthenticator.putProxy(proxyHost, proxyPort, new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword));
+//        }
+//        else
+//        {
+//          VTProxyAuthenticator.removeProxy(proxyHost, proxyPort);
+//        }
+//        proxy = new Proxy(proxyType, new InetSocketAddress(proxyHost, proxyPort));
+//      }
+//      else
+//      {
+//        socketAddress = new InetSocketAddress(host, port);
+//      }
+//      
+//      Socket socket = null;
+//      
+//      try
+//      {
+//        socket = new Socket(proxy);
+//      }
+//      catch (RuntimeException e)
+//      {
+//        //java 1.7 and earlier cannot do http connect tunneling natively
+//        socket = new VTHTTPTunnelSocket(proxyHost, proxyPort, proxyUser, proxyPassword, null);
+//      }
+//      
+//      socket.connect(socketAddress);
+//      socket.setTcpNoDelay(true);
+//      socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+//      return socket;
+      Socket socket = VTProxy.connect(host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword, null);
       return socket;
     }
     catch (Throwable t)
