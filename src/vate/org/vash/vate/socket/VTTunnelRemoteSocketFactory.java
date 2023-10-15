@@ -61,4 +61,9 @@ public class VTTunnelRemoteSocketFactory extends VTAuthenticatedProxySocketFacto
     return builder.connect(channelType, host, port, proxy);
   }
 
+  public Socket createSocket(String host, int port, VTProxy proxy, Socket proxyConnection) throws IOException, UnknownHostException
+  {
+    return builder.connect(channelType, host, port, proxy, proxyConnection);
+  }
+
 }

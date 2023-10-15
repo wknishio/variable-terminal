@@ -403,7 +403,7 @@ public class ProxyServer implements Runnable {
 		  }
 		  else
 		  {
-		    s = VTProxy.connect(msg.host, msg.port, connect_proxy);
+		    s = VTProxy.connect(msg.host, msg.port, connect_proxy, null);
 		    s.setTcpNoDelay(true);
         s.setSoTimeout(90000);
 		  }

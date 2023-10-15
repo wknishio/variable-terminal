@@ -416,7 +416,7 @@ public class VTServerConnector implements Runnable
 //        socket = new VTHTTPTunnelSocket(proxyAddress, proxyPort, proxyUser, proxyPassword, null);
 //      }
       
-      Socket socket = VTProxy.buildSocket(proxy.type(), proxyAddress, proxyPort, proxyUser, proxyPassword, null);
+      Socket socket = VTProxy.next(proxy.type(), proxyAddress, proxyPort, proxyUser, proxyPassword, null);
       
       connection.setConnectionSocket(socket);
     }
@@ -434,7 +434,7 @@ public class VTServerConnector implements Runnable
       
 //      Socket socket = new Socket(proxy);
       
-      Socket socket = VTProxy.buildSocket(proxy.type(), proxyAddress, proxyPort, proxyUser, proxyPassword, null);
+      Socket socket = VTProxy.next(proxy.type(), proxyAddress, proxyPort, proxyUser, proxyPassword, null);
       
       connection.setConnectionSocket(socket);
     }
