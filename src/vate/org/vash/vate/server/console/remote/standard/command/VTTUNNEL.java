@@ -16,7 +16,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullName("*VTTUNNEL");
     this.setAbbreviatedName("*VTTN");
     this.setFullSyntax("*VTTUNNEL [MODE] [[BIND] PORT] [[HOST] PORT] [TYPE/PROXY/PORT][/][USER/PASS]");
-    this.setAbbreviatedSyntax("*VTTN [MD] [[BD] PT] [[HT] PT] [TP/PX/PT][/][US/PW]");
+    this.setAbbreviatedSyntax("*VTTN [MD] [[BD] PT] [[HT] PT] [TP/PX/PT][/][US/PS]");
   }
   
   public void execute(String command, String[] parsed) throws Exception
