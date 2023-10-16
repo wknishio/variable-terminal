@@ -4,6 +4,7 @@ import org.vash.vate.VT;
 import org.vash.vate.socket.VTProxy;
 import org.vash.vate.socket.VTSocksHttpAdaptiveProxyAuthenticatorNone;
 import org.vash.vate.socket.VTSocksHttpAdaptiveProxyAuthenticatorUsernamePassword;
+import org.vash.vate.socket.VTSocksSingleUserValidation;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 
 import net.sourceforge.jsocks.socks.ProxyServer;
@@ -13,7 +14,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
   private static final int socksBufferSize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
   private VTTunnelChannel channel;
   private VTTunnelSession session;
-  private VTTunnelSocksSingleUserValidation validation;
+  private VTSocksSingleUserValidation validation;
   private VTProxy proxy;
   
   //public VTTunnelSocksSessionHandler(VTTunnelSession session, VTTunnelChannel channel)
@@ -31,7 +32,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
     this.proxy = proxy;
     if (socksUsername != null && socksPassword != null)
     {
-      this.validation = new VTTunnelSocksSingleUserValidation(socksUsername, socksPassword);
+      this.validation = new VTSocksSingleUserValidation(socksUsername, socksPassword);
     }
   }
   

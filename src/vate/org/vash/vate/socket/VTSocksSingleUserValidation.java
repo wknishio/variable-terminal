@@ -1,15 +1,15 @@
-package org.vash.vate.tunnel.session;
+package org.vash.vate.socket;
 
 import java.net.Socket;
 
 import net.sourceforge.jsocks.socks.server.UserValidation;
 
-public class VTTunnelSocksSingleUserValidation implements UserValidation
+public class VTSocksSingleUserValidation implements UserValidation
 {
   private String username;
   private String password;
   
-  public VTTunnelSocksSingleUserValidation(String username, String password)
+  public VTSocksSingleUserValidation(String username, String password)
   {
     this.username = username;
     this.password = password;
