@@ -209,7 +209,7 @@ public class ProxyClient {
         ConnectMethod method = new ConnectMethod(getHostConfiguration());
         method.getParams().setDefaults(getParams());
         
-        DummyConnectionManager connectionManager = new DummyConnectionManager();
+        DummyConnectionManager connectionManager = new DummyConnectionManager(socket);
         connectionManager.setConnectionParams(getParams());
         
         HttpMethodDirector director = new HttpMethodDirector(

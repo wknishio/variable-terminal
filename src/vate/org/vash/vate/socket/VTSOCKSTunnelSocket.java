@@ -28,7 +28,7 @@ public class VTSOCKSTunnelSocket extends Socket
       proxyHost = "";
     }
     proxyClient5 = new Socks5Proxy(null, proxyHost, proxyPort, proxyConnection);
-    if (proxyUser != null && proxyPassword != null)
+    if (proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
     {
       UserPasswordAuthentication authentication = new UserPasswordAuthentication(proxyUser, proxyPassword);
       proxyClient5.setAuthenticationMethod(UserPasswordAuthentication.METHOD_ID, authentication);

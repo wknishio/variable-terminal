@@ -121,7 +121,7 @@ public class VTProxy
   
   public static Socket next(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection)
   {
-    Socket socket;
+    Socket next;
     if (proxyConnection != null && !proxyConnection.isConnected())
     {
       try
@@ -135,17 +135,17 @@ public class VTProxy
     }
     if (proxyType == Proxy.Type.SOCKS)
     {
-      socket = new VTSOCKSTunnelSocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+      next = new VTSOCKSTunnelSocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
     }
     else if (proxyType == Proxy.Type.HTTP)
     {
-      socket = new VTHTTPTunnelSocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+      next = new VTHTTPTunnelSocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
     }
     else
     {
-      socket = new Socket(Proxy.NO_PROXY);
+      next = new Socket(Proxy.NO_PROXY);
     }
-    return socket;
+    return next;
   }
   
   public static Socket connect(String host, int port, VTProxy proxy, Socket proxyConnection) throws IOException

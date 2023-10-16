@@ -16,8 +16,8 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
   {
     this.setFullName("*VTTUNNEL");
     this.setAbbreviatedName("*VTTN");
-    this.setFullSyntax("*VTTUNNEL [MODE] [[BIND] PORT] [[HOST] PORT] [TYPE/PROXY/PORT] [USER/PASS]");
-    this.setAbbreviatedSyntax("*VTTN [MD] [[BD] PT] [[HT] PT] [TP/PX/PT] [US/PW]");
+    this.setFullSyntax("*VTTUNNEL [MODE] [[BIND] PORT] [[HOST] PORT] [TYPE/PROXY/PORT][/][USER/PASS]");
+    this.setAbbreviatedSyntax("*VTTN [MD] [[BD] PT] [[HT] PT] [TP/PX/PT][/][US/PW]");
   }
   
   public void execute(String command, String[] parsed) throws Exception
@@ -181,6 +181,11 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
               {
                 
               }
+              if (values.length >= 5)
+              {
+                proxy.setProxyUser(values[3]);
+                proxy.setProxyPassword(values[4]);
+              }
             }
             remainingLength--;
           }
@@ -202,31 +207,21 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
             }
             else
             {
-              if (value.length() > 1)
-              {
-                proxy.setProxyUser(value.split("/")[0]);
-                proxy.setProxyPassword(value.split("/")[1]);
-              }
-              else
-              {
-                proxy.setProxyUser("");
-                proxy.setProxyPassword("");
-              }
+//              if (value.length() > 1)
+//              {
+//                proxy.setProxyUser(value.split("/")[0]);
+//                proxy.setProxyPassword(value.split("/")[1]);
+//              }
+//              else
+//              {
+//                proxy.setProxyUser("");
+//                proxy.setProxyPassword("");
+//              }
             }
             remainingLength--;
           }
         }
         
-        if (proxy.getProxyType() != Proxy.Type.DIRECT)
-        {
-          if (proxy.getProxyUser() == null && proxy.getProxyPassword() == null && tunnelUser != null && tunnelPassword != null && tunnelUser.length() > 0 && tunnelPassword.length() > 0)
-          {
-            proxy.setProxyUser(tunnelUser);
-            proxy.setProxyPassword(tunnelPassword);
-            tunnelUser = null;
-            tunnelPassword = null;
-          }
-        }
         //System.out.println("socksUser:[" + socksUser + "]");
         //System.out.println("socksPassword:[" + socksPassword + "]");
         //System.out.println("proxyUser:[" + proxy.getProxyUser() + "]");
