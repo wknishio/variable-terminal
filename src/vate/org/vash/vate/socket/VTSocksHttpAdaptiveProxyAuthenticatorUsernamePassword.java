@@ -1,4 +1,4 @@
-package org.vash.vate.tunnel.session;
+package org.vash.vate.socket;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -6,17 +6,16 @@ import java.io.PushbackInputStream;
 import java.net.Socket;
 
 import org.vash.vate.nanohttpd.VTNanoHTTPDProxySession;
-import org.vash.vate.socket.VTProxy;
 
 import net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
 import net.sourceforge.jsocks.socks.server.UserPasswordAuthenticator;
 import net.sourceforge.jsocks.socks.server.UserValidation;
 
-public class VTTunnelSocksHttpAdaptiveProxyAuthenticatorUsernamePassword extends UserPasswordAuthenticator
+public class VTSocksHttpAdaptiveProxyAuthenticatorUsernamePassword extends UserPasswordAuthenticator
 {
   private VTProxy connect_proxy;
-  public VTTunnelSocksHttpAdaptiveProxyAuthenticatorUsernamePassword(UserValidation validator, VTProxy proxy)
+  public VTSocksHttpAdaptiveProxyAuthenticatorUsernamePassword(UserValidation validator, VTProxy proxy)
   {
     super(validator);
     this.connect_proxy = proxy;
