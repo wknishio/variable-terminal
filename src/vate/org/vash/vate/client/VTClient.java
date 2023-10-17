@@ -62,7 +62,7 @@ public class VTClient implements Runnable
   private static final String VT_CLIENT_SETTINGS_COMMENTS = 
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
   "#vate.client.connection.mode      values: default active(A), passive(P)\r\n" + 
-  "#vate.client.proxy.type           values: default none, HTTP(H), SOCKS(S)\r\n" + 
+  "#vate.client.proxy.type           values: default none, any(A), HTTP(H), SOCKS(S)\r\n" + 
   "#vate.client.encryption.type      values: default none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
   "#vate.client.session.commands     format: cmd1*;cmd2*;cmd3*;...\r\n";
   // "#vate.client.session.lines format: file1;file2;file3;...";
@@ -1472,7 +1472,7 @@ public class VTClient implements Runnable
             }
             if (line.toUpperCase().startsWith("Y"))
             {
-              VTConsole.print("VT>Enter proxy type(SOCKS as S, HTTP as H, default:S):");
+              VTConsole.print("VT>Enter proxy type(Any as A, SOCKS as S, HTTP as H, default:A):");
               line = VTConsole.readLine(true);
               if (line == null)
               {
@@ -1486,9 +1486,13 @@ public class VTClient implements Runnable
               {
                 proxyType = "HTTP";
               }
-              else
+              else if (line.toUpperCase().startsWith("S"))
               {
                 proxyType = "SOCKS";
+              }
+              else
+              {
+                proxyType = "ANY";
               }
               VTConsole.print("VT>Enter proxy host address(default:any):");
               line = VTConsole.readLine(true);
@@ -1522,7 +1526,7 @@ public class VTClient implements Runnable
                   proxyPort = 1080;
                 }
               }
-              else if (proxyType.equals("HTTP"))
+              else if (proxyType.equals("HTTP") || proxyType.equals("ANY"))
               {
                 VTConsole.print("VT>Enter proxy port(from 1 to 65535, default:8080):");
                 line = VTConsole.readLine(true);

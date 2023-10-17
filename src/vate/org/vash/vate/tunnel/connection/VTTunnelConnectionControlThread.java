@@ -75,9 +75,13 @@ public class VTTunnelConnectionControlThread implements Runnable
                       {
                         proxyType = Proxy.Type.HTTP;
                       }
-                      if (proxyTypeLetter.toUpperCase().startsWith("S"))
+                      else if (proxyTypeLetter.toUpperCase().startsWith("S"))
                       {
                         proxyType = Proxy.Type.SOCKS;
+                      }
+                      else if (proxyTypeLetter.toUpperCase().startsWith("A"))
+                      {
+                        proxyType = null;
                       }
                       
                       VTTunnelSession session = null;
@@ -173,9 +177,13 @@ public class VTTunnelConnectionControlThread implements Runnable
                 {
                   proxyType = Proxy.Type.HTTP;
                 }
-                if (proxyTypeLetter.toUpperCase().startsWith("S"))
+                else if (proxyTypeLetter.toUpperCase().startsWith("S"))
                 {
                   proxyType = Proxy.Type.SOCKS;
+                }
+                else if (proxyTypeLetter.toUpperCase().startsWith("A"))
+                {
+                  proxyType = null;
                 }
                 VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
                 

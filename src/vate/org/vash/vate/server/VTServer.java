@@ -76,7 +76,7 @@ public class VTServer implements Runnable
   private static final String VT_SERVER_SETTINGS_COMMENTS = 
   "Variable-Terminal server settings file, supports UTF-8\r\n" + 
   "#vate.server.connection.mode      values: default passive(P), active(A)\r\n" + 
-  "#vate.server.proxy.type           values: default none, HTTP(H), SOCKS(S)\r\n" + 
+  "#vate.server.proxy.type           values: default none, any(A), HTTP(H), SOCKS(S)\r\n" + 
   "#vate.server.encryption.type      values: default none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
   "#vate.server.session.users        format: user1/password1;user2/password2;...";
   
@@ -1472,7 +1472,7 @@ public class VTServer implements Runnable
               }
               if (line.toUpperCase().startsWith("Y"))
               {
-                VTConsole.print("VT>Enter proxy type(SOCKS as S, HTTP as H, default:S):");
+                VTConsole.print("VT>Enter proxy type(Any as A, SOCKS as S, HTTP as H, default:A):");
                 line = VTConsole.readLine(true);
                 if (line == null)
                 {
@@ -1486,9 +1486,13 @@ public class VTServer implements Runnable
                 {
                   proxyType = "HTTP";
                 }
-                else
+                else if (line.toUpperCase().startsWith("S"))
                 {
                   proxyType = "SOCKS";
+                }
+                else
+                {
+                  proxyType = "ANY";
                 }
                 VTConsole.print("VT>Enter proxy host address(default:any):");
                 line = VTConsole.readLine(true);
@@ -1522,7 +1526,7 @@ public class VTServer implements Runnable
                     proxyPort = 1080;
                   }
                 }
-                else if (proxyType.equals("HTTP"))
+                else if (proxyType.equals("HTTP") || proxyType.equals("ANY"))
                 {
                   VTConsole.print("VT>Enter proxy port(from 1 to 65535, default:8080):");
                   line = VTConsole.readLine(true);

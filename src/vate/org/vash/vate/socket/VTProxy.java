@@ -9,6 +9,15 @@ import org.vash.vate.VT;
 
 public class VTProxy
 {
+  public enum Type
+  {
+    DIRECT,
+    HTTP,
+    SOCKS,
+    SOCKS_THEN_HTTP,
+    HTTP_THEN_SOCKS
+  };
+  
   private Proxy.Type proxyType = Proxy.Type.DIRECT;
   private String proxyHost;
   private int proxyPort;
@@ -141,6 +150,10 @@ public class VTProxy
     {
       next = new VTHttpProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
     }
+    else if (proxyType == null)
+    {
+      next = new VTHttpSocksProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+    }
     else
     {
       next = new Socket(Proxy.NO_PROXY);
@@ -163,10 +176,10 @@ public class VTProxy
     {
       
     }
-    Proxy proxy = Proxy.NO_PROXY;
+    //Proxy proxy = Proxy.NO_PROXY;
     InetSocketAddress socketAddress = null;
     
-    if (proxyType != Proxy.Type.DIRECT)
+    if (proxyType == null || proxyType != Proxy.Type.DIRECT)
     {
       socketAddress = InetSocketAddress.createUnresolved(host, port);
       
@@ -206,9 +219,13 @@ public class VTProxy
     {
       socket = new VTHttpProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
     }
+    else if (proxyType == null)
+    {
+      socket = new VTHttpSocksProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+    }
     else
     {
-      socket = new Socket(proxy);
+      socket = new Socket(Proxy.NO_PROXY);
     }
     
     socket.connect(socketAddress);

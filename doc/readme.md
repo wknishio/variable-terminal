@@ -1,4 +1,4 @@
-# Variable-Terminal
+# Variable-Terminal-Lite
 
 ## Overview
 
@@ -6,6 +6,8 @@ This software is a java remote computer administration tool.
 
 It has various functions inspired by TELNET, FTP, SSH, NETBUS, VNC,
 but its incompatible with those tools/protocols/standards.
+
+This is the lite version intended to run in restricted environments as Android
 
 Some of the available features are:
 
@@ -116,7 +118,7 @@ these are the available program arguments:
 * -CH: connection host, default null
 * -CP: connection port, default 6060
 * -CN: connection NAT port, default null
-* -PT: proxy type, default none, SOCKS(S), HTTP(H)
+* -PT: proxy type, default none, any(A), SOCKS(S), HTTP(H)
 * -PH: proxy host, default null
 * -PP: proxy port, default 1080 for SOCKS or default 8080 for HTTP
 * -PU: proxy user, default null

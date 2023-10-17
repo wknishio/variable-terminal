@@ -56,9 +56,13 @@ public class VTTunnelChannelRemoteSocketBuilder
     {
       proxyTypeLetter = "H";
     }
-    if (proxyType == Proxy.Type.SOCKS)
+    else if (proxyType == Proxy.Type.SOCKS)
     {
       proxyTypeLetter = "S";
+    }
+    else if (proxyType == null)
+    {
+      proxyTypeLetter = "A";
     }
     
     VTTunnelPipedSocket piped = new VTTunnelPipedSocket();

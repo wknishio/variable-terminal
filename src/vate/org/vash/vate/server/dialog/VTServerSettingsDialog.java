@@ -341,6 +341,7 @@ public class VTServerSettingsDialog extends Dialog
     });
     
     proxyTypeChoice.add("None");
+    proxyTypeChoice.add("Any");
     proxyTypeChoice.add("SOCKS");
     proxyTypeChoice.add("HTTP");
     proxyTypeChoice.select("None");
@@ -361,6 +362,10 @@ public class VTServerSettingsDialog extends Dialog
           else if (e.getItem().equals("HTTP"))
           {
             setProxyType("HTTP");
+          }
+          else if (e.getItem().equals("Any"))
+          {
+            setProxyType("Any");
           }
         }
       }
@@ -1175,11 +1180,6 @@ public class VTServerSettingsDialog extends Dialog
       //proxySecurity.setEnabled(true);
       proxyUser.setEnabled(true);
       proxyPassword.setEnabled(true);
-//      if (!proxySecurity.getParameter().equalsIgnoreCase("Disabled"))
-//      {
-//        proxyUser.setEnabled(true);
-//        proxyPassword.setEnabled(true);
-//      }
     }
     else if (proxy.toUpperCase().startsWith("H"))
     {
@@ -1189,11 +1189,15 @@ public class VTServerSettingsDialog extends Dialog
       //proxySecurity.setEnabled(true);
       proxyUser.setEnabled(true);
       proxyPassword.setEnabled(true);
-//      if (!proxySecurity.getParameter().equalsIgnoreCase("Disabled"))
-//      {
-//        proxyUser.setEnabled(true);
-//        proxyPassword.setEnabled(true);
-//      }
+    }
+    else if (proxy.toUpperCase().startsWith("A"))
+    {
+      proxyType.setParameter("Any");
+      proxyHost.setEnabled(true);
+      proxyPort.setEnabled(true);
+      //proxySecurity.setEnabled(true);
+      proxyUser.setEnabled(true);
+      proxyPassword.setEnabled(true);
     }
     else
     {

@@ -517,7 +517,7 @@ public class VTClientConnector implements Runnable
     }
     if (proxyType == null)
     {
-      connection.setConnectionSocket(new Socket());
+      connection.setConnectionSocket(new Socket(Proxy.NO_PROXY));
 //      if (proxyAddress != null && proxyPort != null)
 //      {
 //        VTProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
@@ -533,8 +533,8 @@ public class VTClientConnector implements Runnable
 //      {
 //        VTProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
 //      }
-      Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 8080));
-      
+//      Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 8080));
+//      
 //      Socket socket = null;
 //      try
 //      {
@@ -545,8 +545,7 @@ public class VTClientConnector implements Runnable
 //        //java 1.7 and earlier cannot do http connect tunneling natively
 //        socket = new VTHTTPTunnelSocket(proxyAddress, proxyPort, proxyUser, proxyPassword, null);
 //      }
-      
-      Socket socket = VTProxy.next(proxy.type(), proxyAddress, proxyPort, proxyUser, proxyPassword, null);
+      Socket socket = VTProxy.next(Proxy.Type.HTTP, proxyAddress, proxyPort, proxyUser, proxyPassword, null);
       
       connection.setConnectionSocket(socket);
     }
@@ -560,11 +559,16 @@ public class VTClientConnector implements Runnable
 //      {
 //        VTProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
 //      }
-      Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 1080));
-      
+//      Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 1080));
+//      
 //      Socket socket = new Socket(proxy);
+      Socket socket = VTProxy.next(Proxy.Type.SOCKS, proxyAddress, proxyPort, proxyUser, proxyPassword, null);
       
-      Socket socket = VTProxy.next(proxy.type(), proxyAddress, proxyPort, proxyUser, proxyPassword, null);
+      connection.setConnectionSocket(socket);
+    }
+    else if (proxyType.toUpperCase().startsWith("A") && proxyAddress != null && proxyPort != null)
+    {
+      Socket socket = VTProxy.next(null, proxyAddress, proxyPort, proxyUser, proxyPassword, null);
       
       connection.setConnectionSocket(socket);
     }
@@ -714,7 +718,7 @@ public class VTClientConnector implements Runnable
       resetSockets(connection);
       portMappingManager.deletePortMapping();
       InetSocketAddress socketAddress = null;
-      if (proxyType.toUpperCase().startsWith("H") || proxyType.toUpperCase().startsWith("S"))
+      if (proxyType.toUpperCase().startsWith("H") || proxyType.toUpperCase().startsWith("S") || proxyType.toUpperCase().startsWith("A"))
       {
         socketAddress = InetSocketAddress.createUnresolved(address, port);
       }
@@ -1260,7 +1264,7 @@ public class VTClientConnector implements Runnable
         }
         if (line.toUpperCase().startsWith("Y"))
         {
-          VTConsole.print("VT>Enter proxy type(SOCKS as S, HTTP as H, default:S):");
+          VTConsole.print("VT>Enter proxy type(Any as A, SOCKS as S, HTTP as H, default:A):");
           line = VTConsole.readLine(true);
           if (line == null)
           {
@@ -1274,9 +1278,13 @@ public class VTClientConnector implements Runnable
           {
             proxyType = "HTTP";
           }
-          else
+          else if (line.toUpperCase().startsWith("S"))
           {
             proxyType = "SOCKS";
+          }
+          else
+          {
+            proxyType = "ANY";
           }
           VTConsole.print("VT>Enter proxy host address(default:any):");
           line = VTConsole.readLine(true);
@@ -1310,7 +1318,7 @@ public class VTClientConnector implements Runnable
               proxyPort = 1080;
             }
           }
-          else if (proxyType.equals("HTTP"))
+          else if (proxyType.equals("HTTP") || proxyType.equals("ANY"))
           {
             VTConsole.print("VT>Enter proxy port(from 1 to 65535, default:8080):");
             line = VTConsole.readLine(true);

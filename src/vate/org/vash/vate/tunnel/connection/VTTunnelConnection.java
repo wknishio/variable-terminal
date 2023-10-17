@@ -9,7 +9,6 @@ import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
 import org.vash.vate.socket.VTProxy;
-import org.vash.vate.socket.VTTunnelRemoteSocketFactory;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;
@@ -19,6 +18,7 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.channel.VTTunnelChannelBindSocketListener;
 import org.vash.vate.tunnel.channel.VTTunnelChannelRemoteSocketBuilder;
+import org.vash.vate.tunnel.channel.VTTunnelRemoteSocketFactory;
 
 public class VTTunnelConnection
 {

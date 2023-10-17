@@ -1,4 +1,4 @@
-package org.vash.vate.socket;
+package org.vash.vate.tunnel.channel;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -8,7 +8,8 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.vash.vate.VT;
-import org.vash.vate.tunnel.channel.VTTunnelChannelRemoteSocketBuilder;
+import org.vash.vate.socket.VTAuthenticatedProxySocketFactory;
+import org.vash.vate.socket.VTProxy;
 
 public class VTTunnelRemoteSocketFactory extends VTAuthenticatedProxySocketFactory
 {

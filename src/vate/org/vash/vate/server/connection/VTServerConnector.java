@@ -386,7 +386,7 @@ public class VTServerConnector implements Runnable
     }
     if (proxyType == null)
     {
-      connection.setConnectionSocket(new Socket());
+      connection.setConnectionSocket(new Socket(Proxy.NO_PROXY));
 //      if (proxyAddress != null && proxyPort != null)
 //      {
 //        VTProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
@@ -402,10 +402,10 @@ public class VTServerConnector implements Runnable
 //      {
 //        VTProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
 //      }
-      Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 8080));
-      
+//      Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 8080));
+//      
 //      Socket socket = null;
-      
+//      
 //      try
 //      {
 //        socket = new Socket(proxy);
@@ -415,8 +415,7 @@ public class VTServerConnector implements Runnable
 //        //java 1.7 and earlier cannot do http connect tunneling natively
 //        socket = new VTHTTPTunnelSocket(proxyAddress, proxyPort, proxyUser, proxyPassword, null);
 //      }
-      
-      Socket socket = VTProxy.next(proxy.type(), proxyAddress, proxyPort, proxyUser, proxyPassword, null);
+      Socket socket = VTProxy.next(Proxy.Type.HTTP, proxyAddress, proxyPort, proxyUser, proxyPassword, null);
       
       connection.setConnectionSocket(socket);
     }
@@ -430,11 +429,16 @@ public class VTServerConnector implements Runnable
 //      {
 //        VTProxyAuthenticator.removeProxy(proxyAddress, proxyPort);
 //      }
-      Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 1080));
-      
+//      Proxy proxy = new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(proxyAddress, proxyPort != null && proxyPort > 0 ? proxyPort : 1080));
+//      
 //      Socket socket = new Socket(proxy);
+      Socket socket = VTProxy.next(Proxy.Type.SOCKS, proxyAddress, proxyPort, proxyUser, proxyPassword, null);
       
-      Socket socket = VTProxy.next(proxy.type(), proxyAddress, proxyPort, proxyUser, proxyPassword, null);
+      connection.setConnectionSocket(socket);
+    }
+    else if (!passive && proxyType.toUpperCase().startsWith("A") && proxyAddress != null && proxyPort != null)
+    {
+      Socket socket = VTProxy.next(null, proxyAddress, proxyPort, proxyUser, proxyPassword, null);
       
       connection.setConnectionSocket(socket);
     }
@@ -550,7 +554,7 @@ public class VTServerConnector implements Runnable
     {
       resetSockets(connection);
       InetSocketAddress socketAddress = null;
-      if (proxyType.toUpperCase().startsWith("H") || proxyType.toUpperCase().startsWith("S"))
+      if (proxyType.toUpperCase().startsWith("H") || proxyType.toUpperCase().startsWith("S") || proxyType.toUpperCase().startsWith("A"))
       {
         socketAddress = InetSocketAddress.createUnresolved(address, port);
       }

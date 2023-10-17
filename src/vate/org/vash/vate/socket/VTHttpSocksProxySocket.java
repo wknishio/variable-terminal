@@ -4,30 +4,21 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
 import java.nio.channels.SocketChannel;
 
-import org.apache.commons.httpclient.ProxyClient;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.vash.vate.VT;
-
-public class VTHttpProxySocket extends Socket
+public class VTHttpSocksProxySocket extends Socket
 {
-  private ProxyClient proxyClient;
+  private Socket first;
+  private Socket second;
   private Socket socket;
   
-  public VTHttpProxySocket(String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection)
+  public VTHttpSocksProxySocket(String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection)
   {
-    proxyClient = new ProxyClient(proxyConnection);
-    proxyClient.getHostConfiguration().setProxy(proxyHost, proxyPort);
-    if (proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
-    {
-      proxyClient.getState().setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(proxyUser, proxyPassword));
-    }
+    first = new VTHttpProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+    second = new VTSocksProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
   }
   
   public void connect(SocketAddress endpoint) throws IOException
@@ -36,11 +27,21 @@ public class VTHttpProxySocket extends Socket
     {
       try
       {
-        InetSocketAddress host = (InetSocketAddress) endpoint;
-        proxyClient.getHostConfiguration().setHost(host.getHostName(), host.getPort());
-        //proxyClient.getParams().setConnectionManagerTimeout(VT.VT_CONNECTION_ATTEMPT_TIMEOUT_MILLISECONDS);
-        proxyClient.getParams().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
-        socket = proxyClient.connect().getSocket();
+        first.connect(endpoint);
+        socket = first;
+      }
+      catch (Throwable t)
+      {
+        //t.printStackTrace();
+      }
+      if (socket != null)
+      {
+        return;
+      }
+      try
+      {
+        second.connect(endpoint);
+        socket = second;
       }
       catch (Throwable t)
       {
@@ -48,7 +49,7 @@ public class VTHttpProxySocket extends Socket
       }
       if (socket == null)
       {
-        throw new IOException("http tunneling failed");
+        throw new IOException("http/socks tunneling failed");
       }
     }
   }
@@ -59,11 +60,21 @@ public class VTHttpProxySocket extends Socket
     {
       try
       {
-        InetSocketAddress host = (InetSocketAddress) endpoint;
-        proxyClient.getHostConfiguration().setHost(host.getHostName(), host.getPort());
-        proxyClient.getParams().setConnectionManagerTimeout(timeout);
-        proxyClient.getParams().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
-        socket = proxyClient.connect().getSocket();
+        first.connect(endpoint, timeout);
+        socket = first;
+      }
+      catch (Throwable t)
+      {
+        //t.printStackTrace();
+      }
+      if (socket != null)
+      {
+        return;
+      }
+      try
+      {
+        second.connect(endpoint, timeout);
+        socket = second;
       }
       catch (Throwable t)
       {
@@ -71,7 +82,7 @@ public class VTHttpProxySocket extends Socket
       }
       if (socket == null)
       {
-        throw new IOException("http tunneling failed");
+        throw new IOException("http/socks tunneling failed");
       }
     }
   }
