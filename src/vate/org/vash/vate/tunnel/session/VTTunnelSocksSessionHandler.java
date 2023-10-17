@@ -2,8 +2,8 @@ package org.vash.vate.tunnel.session;
 
 import org.vash.vate.VT;
 import org.vash.vate.socket.VTProxy;
-import org.vash.vate.socket.VTAdaptiveSocksHttpProxyAuthenticatorNone;
-import org.vash.vate.socket.VTAdaptiveSocksHttpProxyAuthenticatorUsernamePassword;
+import org.vash.vate.socket.VTSocksHttpProxyAuthenticatorNone;
+import org.vash.vate.socket.VTSocksHttpProxyAuthenticatorUsernamePassword;
 import org.vash.vate.socket.VTSocksSingleUserValidation;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 
@@ -50,7 +50,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
         
         try
         {
-          ProxyServer socksServer = new ProxyServer(new VTAdaptiveSocksHttpProxyAuthenticatorUsernamePassword(validation, proxy), session.getSocket(), false, true, proxy);
+          ProxyServer socksServer = new ProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, proxy), session.getSocket(), false, true, proxy);
           socksServer.setPipeBufferSize(socksBufferSize);
           socksServer.run();
         }
@@ -64,7 +64,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
       {
         try
         {
-          ProxyServer socksServer = new ProxyServer(new VTAdaptiveSocksHttpProxyAuthenticatorNone(proxy), session.getSocket(), false, true, proxy);
+          ProxyServer socksServer = new ProxyServer(new VTSocksHttpProxyAuthenticatorNone(proxy), session.getSocket(), false, true, proxy);
           socksServer.setPipeBufferSize(socksBufferSize);
           socksServer.run();
         }

@@ -10,10 +10,10 @@ import org.vash.vate.nanohttpd.VTNanoHTTPDProxySession;
 import net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
 
-public class VTAdaptiveSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
+public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
 {
   private VTProxy connect_proxy; 
-  public VTAdaptiveSocksHttpProxyAuthenticatorNone(VTProxy proxy)
+  public VTSocksHttpProxyAuthenticatorNone(VTProxy proxy)
   {
     this.connect_proxy = proxy;
   }

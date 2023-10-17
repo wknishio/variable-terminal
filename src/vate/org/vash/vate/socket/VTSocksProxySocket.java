@@ -10,24 +10,30 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.nio.channels.SocketChannel;
 
-import org.apache.commons.httpclient.ProxyClient;
-import org.apache.commons.httpclient.UsernamePasswordCredentials;
-import org.apache.commons.httpclient.auth.AuthScope;
-import org.vash.vate.VT;
+import net.sourceforge.jsocks.socks.Socks4Proxy;
+import net.sourceforge.jsocks.socks.Socks5Proxy;
+import net.sourceforge.jsocks.socks.SocksSocket;
+import net.sourceforge.jsocks.socks.UserPasswordAuthentication;
 
-public class VTProxyHttpSocket extends Socket
+public class VTSocksProxySocket extends Socket
 {
-  private ProxyClient proxyClient;
+  private Socks5Proxy proxyClient5;
+  private Socks4Proxy proxyClient4;
   private Socket socket;
   
-  public VTProxyHttpSocket(String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection)
+  public VTSocksProxySocket(String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection)
   {
-    proxyClient = new ProxyClient(proxyConnection);
-    proxyClient.getHostConfiguration().setProxy(proxyHost, proxyPort);
+    if (proxyHost == null)
+    {
+      proxyHost = "";
+    }
+    proxyClient5 = new Socks5Proxy(null, proxyHost, proxyPort, proxyConnection);
     if (proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
     {
-      proxyClient.getState().setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(proxyUser, proxyPassword));
+      UserPasswordAuthentication authentication = new UserPasswordAuthentication(proxyUser, proxyPassword);
+      proxyClient5.setAuthenticationMethod(UserPasswordAuthentication.METHOD_ID, authentication);
     }
+    proxyClient4 = new Socks4Proxy(null, proxyHost, proxyPort, proxyUser != null ? proxyUser : "", proxyConnection);
   }
   
   public void connect(SocketAddress endpoint) throws IOException
@@ -37,10 +43,22 @@ public class VTProxyHttpSocket extends Socket
       try
       {
         InetSocketAddress host = (InetSocketAddress) endpoint;
-        proxyClient.getHostConfiguration().setHost(host.getHostName(), host.getPort());
-        //proxyClient.getParams().setConnectionManagerTimeout(VT.VT_CONNECTION_ATTEMPT_TIMEOUT_MILLISECONDS);
-        proxyClient.getParams().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
-        socket = proxyClient.connect().getSocket();
+        SocksSocket socksSocket = new SocksSocket(proxyClient5, host.getHostName(), host.getPort());
+        socket = socksSocket;
+      }
+      catch (Throwable t)
+      {
+        //t.printStackTrace();
+      }
+      if (socket != null)
+      {
+        return;
+      }
+      try
+      {
+        InetSocketAddress host = (InetSocketAddress) endpoint;
+        SocksSocket socksSocket = new SocksSocket(proxyClient4, host.getHostName(), host.getPort());
+        socket = socksSocket;
       }
       catch (Throwable t)
       {
@@ -48,7 +66,7 @@ public class VTProxyHttpSocket extends Socket
       }
       if (socket == null)
       {
-        throw new IOException("http connect tunneling failed");
+        throw new IOException("socks tunneling failed");
       }
     }
   }
@@ -60,10 +78,22 @@ public class VTProxyHttpSocket extends Socket
       try
       {
         InetSocketAddress host = (InetSocketAddress) endpoint;
-        proxyClient.getHostConfiguration().setHost(host.getHostName(), host.getPort());
-        proxyClient.getParams().setConnectionManagerTimeout(timeout);
-        proxyClient.getParams().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
-        socket = proxyClient.connect().getSocket();
+        SocksSocket socksSocket = new SocksSocket(proxyClient5, host.getHostName(), host.getPort());
+        socket = socksSocket;
+      }
+      catch (Throwable t)
+      {
+        //t.printStackTrace();
+      }
+      if (socket != null)
+      {
+        return;
+      }
+      try
+      {
+        InetSocketAddress host = (InetSocketAddress) endpoint;
+        SocksSocket socksSocket = new SocksSocket(proxyClient4, host.getHostName(), host.getPort());
+        socket = socksSocket;
       }
       catch (Throwable t)
       {
@@ -71,7 +101,7 @@ public class VTProxyHttpSocket extends Socket
       }
       if (socket == null)
       {
-        throw new IOException("http connect tunneling failed");
+        throw new IOException("socks tunneling failed");
       }
     }
   }

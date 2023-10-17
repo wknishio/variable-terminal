@@ -135,11 +135,11 @@ public class VTProxy
     }
     if (proxyType == Proxy.Type.SOCKS)
     {
-      next = new VTProxySocksSocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+      next = new VTSocksProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
     }
     else if (proxyType == Proxy.Type.HTTP)
     {
-      next = new VTProxyHttpSocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+      next = new VTHttpProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
     }
     else
     {
@@ -200,11 +200,11 @@ public class VTProxy
     
     if (proxyType == Proxy.Type.SOCKS)
     {
-      socket = new VTProxySocksSocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+      socket = new VTSocksProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
     }
     else if (proxyType == Proxy.Type.HTTP)
     {
-      socket = new VTProxyHttpSocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+      socket = new VTHttpProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
     }
     else
     {
