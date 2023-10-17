@@ -12,10 +12,10 @@ import net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
 import net.sourceforge.jsocks.socks.server.UserPasswordAuthenticator;
 import net.sourceforge.jsocks.socks.server.UserValidation;
 
-public class VTSocksHttpAdaptiveProxyAuthenticatorUsernamePassword extends UserPasswordAuthenticator
+public class VTAdaptiveSocksHttpProxyAuthenticatorUsernamePassword extends UserPasswordAuthenticator
 {
   private VTProxy connect_proxy;
-  public VTSocksHttpAdaptiveProxyAuthenticatorUsernamePassword(UserValidation validator, VTProxy proxy)
+  public VTAdaptiveSocksHttpProxyAuthenticatorUsernamePassword(UserValidation validator, VTProxy proxy)
   {
     super(validator);
     this.connect_proxy = proxy;

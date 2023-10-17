@@ -36,10 +36,10 @@ public class VTTunnelChannelRemoteSocketBuilder
     return channel;
   }
   
-  public Socket connect(int channelType, String host, int port, VTProxy proxy) throws IOException
-  {
-    return connect(channelType, host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword(), null);
-  }
+//  public Socket connect(int channelType, String host, int port, VTProxy proxy) throws IOException
+//  {
+//    return connect(channelType, host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword(), null);
+//  }
   
   public Socket connect(int channelType, String host, int port, VTProxy proxy, Socket proxyConnection) throws IOException
   {
