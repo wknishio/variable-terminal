@@ -76,7 +76,7 @@ public class VTServer implements Runnable
   private static final String VT_SERVER_SETTINGS_COMMENTS = 
   "Variable-Terminal server settings file, supports UTF-8\r\n" + 
   "#vate.server.connection.mode      values: default passive(P), active(A)\r\n" + 
-  "#vate.server.proxy.type           values: default none, AUTO(A), HTTP(H), SOCKS(S)\r\n" + 
+  "#vate.server.proxy.type           values: default none, AUTO(A), SOCKS(S), HTTP(H)\r\n" + 
   "#vate.server.encryption.type      values: default none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
   "#vate.server.session.users        format: user1/password1;user2/password2;...";
   

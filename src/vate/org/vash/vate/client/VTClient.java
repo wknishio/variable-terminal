@@ -62,7 +62,7 @@ public class VTClient implements Runnable
   private static final String VT_CLIENT_SETTINGS_COMMENTS = 
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
   "#vate.client.connection.mode      values: default active(A), passive(P)\r\n" + 
-  "#vate.client.proxy.type           values: default none, AUTO(A), HTTP(H), SOCKS(S)\r\n" + 
+  "#vate.client.proxy.type           values: default none, AUTO(A), SOCKS(S), HTTP(H)\r\n" + 
   "#vate.client.encryption.type      values: default none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
   "#vate.client.session.commands     format: cmd1*;cmd2*;cmd3*;...\r\n";
   // "#vate.client.session.lines format: file1;file2;file3;...";
