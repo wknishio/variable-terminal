@@ -67,6 +67,10 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       {
         message.append("\nVT>Proxy type(PT): [SOCKS]");
       }
+      else if (proxyType.toUpperCase().startsWith("A"))
+      {
+        message.append("\nVT>Proxy type(PT): [AUTO]");
+      }
       else
       {
         message.append("\nVT>Proxy type(PT): [None]");
@@ -371,6 +375,11 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().write("\nVT>Proxy type(PT): [SOCKS]\nVT>");
             connection.getResultWriter().flush();
           }
+          else if (proxyType.toUpperCase().startsWith("A"))
+          {
+            connection.getResultWriter().write("\nVT>Proxy type(PT): [AUTO]\nVT>");
+            connection.getResultWriter().flush();
+          }
           else
           {
             connection.getResultWriter().write("\nVT>Proxy type(PT): [None]\nVT>");
@@ -395,6 +404,11 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           else if (proxyType.toUpperCase().startsWith("S"))
           {
             connection.getResultWriter().write("\nVT>Proxy type(PT) set to: [SOCKS]\nVT>");
+            connection.getResultWriter().flush();
+          }
+          else if (proxyType.toUpperCase().startsWith("A"))
+          {
+            connection.getResultWriter().write("\nVT>Proxy type(PT) set to: [AUTO]\nVT>");
             connection.getResultWriter().flush();
           }
           else

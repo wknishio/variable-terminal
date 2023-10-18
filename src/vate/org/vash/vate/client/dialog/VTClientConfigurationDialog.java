@@ -349,7 +349,7 @@ public class VTClientConfigurationDialog extends Dialog
     });
     
     proxyTypeChoice.add("None");
-    proxyTypeChoice.add("Any");
+    proxyTypeChoice.add("AUTO");
     proxyTypeChoice.add("SOCKS");
     proxyTypeChoice.add("HTTP");
     proxyTypeChoice.select("None");
@@ -371,9 +371,9 @@ public class VTClientConfigurationDialog extends Dialog
           {
             setProxyType("HTTP");
           }
-          else if (e.getItem().equals("Any"))
+          else if (e.getItem().equals("AUTO"))
           {
-            setProxyType("Any");
+            setProxyType("AUTO");
           }
         }
       }
@@ -1154,7 +1154,7 @@ public class VTClientConfigurationDialog extends Dialog
     }
     else if (proxy.toUpperCase().startsWith("A"))
     {
-      proxyType.setParameter("Any");
+      proxyType.setParameter("AUTO");
       proxyHost.setEnabled(true);
       proxyPort.setEnabled(true);
       //proxySecurity.setEnabled(true);

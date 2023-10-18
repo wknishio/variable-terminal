@@ -68,6 +68,10 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       {
         message.append("\nVT>Proxy type(PT): [SOCKS]");
       }
+      else if (proxyType.toUpperCase().startsWith("A"))
+      {
+        message.append("\nVT>Proxy type(PT): [AUTO]");
+      }
       else
       {
         message.append("\nVT>Proxy type(PT): [None]");
@@ -364,6 +368,10 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           {
             VTConsole.print("\rVT>Proxy type(PT): [SOCKS]\nVT>");
           }
+          else if (proxyType.toUpperCase().startsWith("A"))
+          {
+            VTConsole.print("\rVT>Proxy type(PT): [AUTO]\nVT>");
+          }
           else
           {
             VTConsole.print("\rVT>Proxy type(PT): [None]\nVT>");
@@ -386,6 +394,10 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           else if (proxyType.toUpperCase().startsWith("S"))
           {
             VTConsole.print("\rVT>Proxy type(PT) set to: [SOCKS]\nVT>");
+          }
+          else if (proxyType.toUpperCase().startsWith("A"))
+          {
+            VTConsole.print("\rVT>Proxy type(PT) set to: [AUTO]\nVT>");
           }
           else
           {
