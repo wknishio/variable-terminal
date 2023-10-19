@@ -3,7 +3,7 @@ package org.vash.vate.socket;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
-import java.net.Proxy.Type;
+import java.net.Proxy;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -55,23 +55,26 @@ public class VTSocketFactory extends VTAuthenticatedProxySocketFactory
     return socket;
   }
   
-  public Socket createSocket(String host, int port, Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException, UnknownHostException
+  public Socket createSocket(String host, int port, Socket proxyConnection, VTProxy... proxies) throws IOException, UnknownHostException
   {
-    return VTProxy.connect(host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword, null);
-  }
-  
-  public Socket createSocket(String host, int port, Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection) throws IOException, UnknownHostException
-  {
-    return VTProxy.connect(host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
-  }
-  
-  public Socket createSocket(String host, int port, VTProxy proxy) throws IOException, UnknownHostException
-  {
-    return VTProxy.connect(host, port, proxy, null);
-  }
-  
-  public Socket createSocket(String host, int port, VTProxy proxy, Socket proxyConnection) throws IOException, UnknownHostException
-  {
-    return VTProxy.connect(host, port, proxy, proxyConnection);
+    VTProxy lastProxy = null;
+    InetSocketAddress socketAddress = null;
+    Proxy.Type proxyType = Proxy.Type.DIRECT;
+    Socket socket = VTProxy.next(proxyConnection, proxies);
+    if (proxies.length >= 1)
+    {
+      lastProxy = proxies[proxies.length - 1];
+      proxyType = lastProxy.getProxyType();
+    }
+    if (proxyType == null || proxyType != Proxy.Type.DIRECT)
+    {
+      socketAddress = InetSocketAddress.createUnresolved(host, port);
+    }
+    else
+    {
+      socketAddress = new InetSocketAddress(host, port);
+    }
+    socket.connect(socketAddress);
+    return socket;
   }
 }

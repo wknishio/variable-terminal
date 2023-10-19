@@ -3,7 +3,6 @@ package org.vash.vate.tunnel.channel;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Proxy;
-import java.net.Proxy.Type;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -29,42 +28,31 @@ public class VTTunnelRemoteSocketFactory extends VTAuthenticatedProxySocketFacto
   
   public Socket createSocket(String host, int port) throws IOException, UnknownHostException
   {
-    return builder.connect(channelType, host, port, Proxy.Type.DIRECT, "", 0, "", "", null);
+    return builder.connect(channelType, host, port, Proxy.Type.DIRECT, "", 0, "", "");
   }
   
   public Socket createSocket(InetAddress host, int port) throws IOException
   {
-    return builder.connect(channelType, host.getHostAddress(), port, Proxy.Type.DIRECT, "", 0, "", "", null);
+    return builder.connect(channelType, host.getHostAddress(), port, Proxy.Type.DIRECT, "", 0, "", "");
   }
   
   public Socket createSocket(String host, int port, InetAddress bind, int local) throws IOException, UnknownHostException
   {
-    return builder.connect(channelType, host, port, Proxy.Type.DIRECT, "", 0, "", "", null);
+    return builder.connect(channelType, host, port, Proxy.Type.DIRECT, "", 0, "", "");
   }
   
   public Socket createSocket(InetAddress host, int port, InetAddress bind, int local) throws IOException
   {
-    return builder.connect(channelType, host.getHostAddress(), port, Proxy.Type.DIRECT, "", 0, "", "", null);
+    return builder.connect(channelType, host.getHostAddress(), port, Proxy.Type.DIRECT, "", 0, "", "");
   }
   
-  public Socket createSocket(String host, int port, Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException, UnknownHostException
+  public Socket createSocket(String host, int port, Socket proxyConnection, VTProxy... proxies) throws IOException, UnknownHostException
   {
-    return builder.connect(channelType, host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword, null);
+    if (proxies.length >= 1)
+    {
+      VTProxy proxy = proxies[0];
+      return builder.connect(channelType, host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+    }
+    return builder.connect(channelType, host, port, Proxy.Type.DIRECT, "", 0, "", "");
   }
-  
-  public Socket createSocket(String host, int port, Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection) throws IOException, UnknownHostException
-  {
-    return builder.connect(channelType, host, port, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
-  }
-  
-  public Socket createSocket(String host, int port, VTProxy proxy) throws IOException, UnknownHostException
-  {
-    return builder.connect(channelType, host, port, proxy, null);
-  }
-
-  public Socket createSocket(String host, int port, VTProxy proxy, Socket proxyConnection) throws IOException, UnknownHostException
-  {
-    return builder.connect(channelType, host, port, proxy, proxyConnection);
-  }
-
 }
