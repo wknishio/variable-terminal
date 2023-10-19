@@ -150,9 +150,20 @@ public class VTProxy
     Socket next;
     if (proxyConnection != null && !proxyConnection.isConnected())
     {
+      InetSocketAddress socketAddress = null;
+      if (proxyConnection instanceof VTSocksProxySocket
+      || proxyConnection instanceof VTHttpProxySocket
+      || proxyConnection instanceof VTHttpSocksProxySocket)
+      {
+        socketAddress = InetSocketAddress.createUnresolved(proxyHost, proxyPort);
+      }
+      else
+      {
+        socketAddress = new InetSocketAddress(proxyHost, proxyPort);
+      }
       try
       {
-        proxyConnection.connect(InetSocketAddress.createUnresolved(proxyHost, proxyPort));
+        proxyConnection.connect(socketAddress);
       }
       catch (Throwable t)
       {

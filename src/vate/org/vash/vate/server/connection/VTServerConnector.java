@@ -522,8 +522,9 @@ public class VTServerConnector implements Runnable
       {
         socketAddress = new InetSocketAddress(address, port);
       }
-      // connection.getShellSocket().setPerformancePreferences(1, 3, 2);
       connecting = true;
+      // connection.getShellSocket().setPerformancePreferences(1, 3, 2);
+      
       // connection.getConnectionSocket().setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE
       // - 1);
       // connection.getConnectionSocket().setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE
