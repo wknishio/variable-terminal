@@ -21,7 +21,7 @@ import java.net.*;
  * SOCKS4 Reply/Request message.
  */
 
-class Socks4Message extends ProxyMessage {
+public class Socks4Message extends ProxyMessage {
 
 	private byte[] msgBytes;
 	private int msgLength;

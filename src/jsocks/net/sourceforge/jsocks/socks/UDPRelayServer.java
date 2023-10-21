@@ -23,15 +23,15 @@ import java.net.*;
 /**
  * UDP Relay server, used by ProxyServer to perform udp forwarding.
  */
-class UDPRelayServer implements Runnable {
+public class UDPRelayServer implements Runnable {
 
 	DatagramSocket client_sock;
 	DatagramSocket remote_sock;
 
 	Socket controlConnection;
 
-	int relayPort;
-	InetAddress relayIP;
+	public int relayPort;
+	public InetAddress relayIP;
 
 	Thread pipe_thread1, pipe_thread2;
 	Thread master_thread;

@@ -135,17 +135,12 @@ public class VTProxy
     }
     for (VTProxy proxy : proxies)
     {
-      next = next(proxy, next);
+      next = next(next, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
     }
     return next;
   }
   
-  private static Socket next(VTProxy nextProxy, Socket proxyConnection)
-  {
-    return next(nextProxy.getProxyType(), nextProxy.getProxyHost(), nextProxy.getProxyPort(), nextProxy.getProxyUser(), nextProxy.getProxyPassword(), proxyConnection);
-  }
-  
-  private static Socket next(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection)
+  private static Socket next(Socket proxyConnection, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
     Socket next;
     if (proxyConnection != null && !proxyConnection.isConnected())
@@ -172,15 +167,15 @@ public class VTProxy
     }
     if (proxyType == Proxy.Type.SOCKS)
     {
-      next = new VTSocksProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+      next = new VTSocksProxySocket(proxyConnection, proxyHost, proxyPort, proxyUser, proxyPassword);
     }
     else if (proxyType == Proxy.Type.HTTP)
     {
-      next = new VTHttpProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+      next = new VTHttpProxySocket(proxyConnection, proxyHost, proxyPort, proxyUser, proxyPassword);
     }
     else if (proxyType == null)
     {
-      next = new VTHttpSocksProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+      next = new VTHttpSocksProxySocket(proxyConnection, proxyHost, proxyPort, proxyUser, proxyPassword);
     }
     else
     {
@@ -189,12 +184,12 @@ public class VTProxy
     return next;
   }
   
-  public static Socket connect(String host, int port, VTProxy proxy, Socket proxyConnection) throws IOException
+  public static Socket connect(String host, int port, Socket proxyConnection, VTProxy proxy) throws IOException
   {
-    return connect(host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword(), proxyConnection);
+    return connect(host, port, proxyConnection, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
   }
   
-  public static Socket connect(String host, int port, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection) throws IOException
+  public static Socket connect(String host, int port, Socket proxyConnection, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
   {
     if (host == null || host.length() == 0 || host.equals("*"))
     {

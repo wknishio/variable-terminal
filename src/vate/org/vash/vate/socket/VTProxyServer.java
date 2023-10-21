@@ -12,15 +12,24 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package net.sourceforge.jsocks.socks;
+package org.vash.vate.socket;
 
+import net.sourceforge.jsocks.socks.ProxyMessage;
+import net.sourceforge.jsocks.socks.Socks4Message;
+import net.sourceforge.jsocks.socks.Socks5Message;
+import net.sourceforge.jsocks.socks.SocksException;
+import net.sourceforge.jsocks.socks.SocksServerSocket;
+import net.sourceforge.jsocks.socks.SocksSocket;
 import net.sourceforge.jsocks.socks.server.ServerAuthenticator;
+import net.sourceforge.jsocks.socks.UDPRelayServer;
+import net.sourceforge.jsocks.socks.Proxy;
 //import java.util.Random;
 
 import java.io.*;
 //import org.apache.commons.lang.RandomStringUtils;
 //import org.apache.log4j.Logger;
 import java.net.*;
+
 /**
  * SOCKS4 and SOCKS5 proxy, handles both protocols simultaniously. Implements
  * all SOCKS commands, including UDP relaying.
@@ -34,7 +43,7 @@ import java.net.*;
  * 
  * @see socks.server.ServerAuthenticator
  */
-public class ProxyServer implements Runnable {
+public class VTProxyServer implements Runnable {
 
 	ServerAuthenticator auth;
 	ProxyMessage msg = null;
@@ -65,6 +74,11 @@ public class ProxyServer implements Runnable {
 
 	private int BUF_SIZE = DEFAULT_BUF_SIZE;
 	
+	private boolean disabled_udp_relay = false;
+	private boolean disabled_bind = false;
+	
+	private VTProxy connect_proxy;
+
 	// private String connectionId;
 
 	// Public Constructors
@@ -76,7 +90,7 @@ public class ProxyServer implements Runnable {
 	 * @param auth
 	 *            Authentication scheme to be used.
 	 */
-	public ProxyServer(ServerAuthenticator auth) {
+	public VTProxyServer(ServerAuthenticator auth) {
 		this.auth = auth;
 		// this.connectionId = newConnectionId();
 	}
@@ -84,12 +98,23 @@ public class ProxyServer implements Runnable {
 	// Other constructors
 	////////////////////
 
-	public ProxyServer(ServerAuthenticator auth, Socket s) {
+	public VTProxyServer(ServerAuthenticator auth, Socket s) {
 		this.auth = auth;
 		this.sock = s;
 		// this.connectionId = connectionId;
 		mode = START_MODE;
 	}
+	
+	public VTProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy) {
+    this.auth = auth;
+    this.sock = s;
+    this.disabled_bind = disabled_bind;
+    this.disabled_udp_relay = disabled_udp_relay;
+    this.connect_proxy = connect_proxy;
+    // this.connectionId = connectionId;
+    mode = START_MODE;
+  }
+
 	// Public methods
 	/////////////////
 
@@ -198,7 +223,7 @@ public class ProxyServer implements Runnable {
 				// String connectionId = newConnectionId();
 				// LOG.info(connectionId + " Accepted from:" +
 				// s.getInetAddress().getHostName() + ":" +s.getPort());
-				ProxyServer ps = new ProxyServer(auth, s);
+				VTProxyServer ps = new VTProxyServer(auth, s);
 				(new Thread(ps)).start();
 			}
 		} catch (IOException ioe) {
@@ -323,11 +348,17 @@ public class ProxyServer implements Runnable {
         onConnect(msg);
         break;
       case Proxy.SOCKS_CMD_BIND:
-        onBind(msg);
-        break;
+        if (!disabled_bind)
+        {
+          onBind(msg);
+          break;
+        }
       case Proxy.SOCKS_CMD_UDP_ASSOCIATE:
-        onUDP(msg);
-        break;
+        if (!disabled_udp_relay)
+        {
+          onUDP(msg);
+          break;
+        }
       default:
         throw new SocksException(Proxy.SOCKS_CMD_NOT_SUPPORTED);
       }
@@ -368,12 +399,20 @@ public class ProxyServer implements Runnable {
 		Socket s = null;
 		ProxyMessage response = null;
 
-		if (proxy == null)
-		{
-		  s = new Socket();
-      s.connect(new InetSocketAddress(msg.ip, msg.port));
-      s.setTcpNoDelay(true);
-      s.setSoTimeout(90000);
+		if (proxy == null) {
+		  if (connect_proxy == null)
+		  {
+		    s = new Socket();
+	      s.connect(new InetSocketAddress(msg.ip, msg.port));
+	      s.setTcpNoDelay(true);
+	      s.setSoTimeout(90000);
+		  }
+		  else
+		  {
+		    s = VTProxy.connect(msg.host, msg.port, null, connect_proxy);
+		    s.setTcpNoDelay(true);
+        s.setSoTimeout(90000);
+		  }
 			
 		} else {
 			s = new SocksSocket(proxy, msg.ip, msg.port);
@@ -487,7 +526,8 @@ public class ProxyServer implements Runnable {
 	// Private methods
 	//////////////////
 
-	private void doAccept() throws IOException {
+	@SuppressWarnings("unused")
+  private void doAccept() throws IOException {
 		Socket s;
 		long startTime = System.currentTimeMillis();
 		// System.out.println("ProxyServer doAccept()");

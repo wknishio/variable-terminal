@@ -15,10 +15,10 @@ public class VTHttpSocksProxySocket extends Socket
   private Socket second;
   private Socket socket;
   
-  public VTHttpSocksProxySocket(String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection)
+  public VTHttpSocksProxySocket(Socket proxyConnection, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
-    first = new VTHttpProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
-    second = new VTSocksProxySocket(proxyHost, proxyPort, proxyUser, proxyPassword, proxyConnection);
+    first = new VTHttpProxySocket(proxyConnection, proxyHost, proxyPort, proxyUser, proxyPassword);
+    second = new VTSocksProxySocket(proxyConnection, proxyHost, proxyPort, proxyUser, proxyPassword);
   }
   
   public void connect(SocketAddress endpoint) throws IOException

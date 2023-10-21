@@ -600,7 +600,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     
     //Socket remoteSocket = new Socket(host, port);
-    Socket remoteSocket = VTProxy.connect(host, port, connectProxy, null);
+    Socket remoteSocket = VTProxy.connect(host, port, null, connectProxy);
     remoteSocket.setTcpNoDelay(true);
     remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     
@@ -685,7 +685,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     requestData.write(bodyData);
     
     //Socket remoteSocket = new Socket(host, port);
-    Socket remoteSocket = VTProxy.connect(host, port, connectProxy, null);
+    Socket remoteSocket = VTProxy.connect(host, port, null, connectProxy);
     remoteSocket.setTcpNoDelay(true);
     remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     

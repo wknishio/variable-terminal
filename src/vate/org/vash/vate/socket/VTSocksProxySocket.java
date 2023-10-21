@@ -21,7 +21,7 @@ public class VTSocksProxySocket extends Socket
   private Socks4Proxy proxyClient4;
   private Socket socket;
   
-  public VTSocksProxySocket(String proxyHost, int proxyPort, String proxyUser, String proxyPassword, Socket proxyConnection)
+  public VTSocksProxySocket(Socket proxyConnection, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
     if (proxyHost == null)
     {
