@@ -43,7 +43,7 @@ import java.net.*;
  * 
  * @see socks.server.ServerAuthenticator
  */
-public class VTProxyServer implements Runnable {
+public class VTSocksProxyServer implements Runnable {
 
 	ServerAuthenticator auth;
 	ProxyMessage msg = null;
@@ -90,7 +90,7 @@ public class VTProxyServer implements Runnable {
 	 * @param auth
 	 *            Authentication scheme to be used.
 	 */
-	public VTProxyServer(ServerAuthenticator auth) {
+	public VTSocksProxyServer(ServerAuthenticator auth) {
 		this.auth = auth;
 		// this.connectionId = newConnectionId();
 	}
@@ -98,14 +98,14 @@ public class VTProxyServer implements Runnable {
 	// Other constructors
 	////////////////////
 
-	public VTProxyServer(ServerAuthenticator auth, Socket s) {
+	public VTSocksProxyServer(ServerAuthenticator auth, Socket s) {
 		this.auth = auth;
 		this.sock = s;
 		// this.connectionId = connectionId;
 		mode = START_MODE;
 	}
 	
-	public VTProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy) {
+	public VTSocksProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy) {
     this.auth = auth;
     this.sock = s;
     this.disabled_bind = disabled_bind;
@@ -223,7 +223,7 @@ public class VTProxyServer implements Runnable {
 				// String connectionId = newConnectionId();
 				// LOG.info(connectionId + " Accepted from:" +
 				// s.getInetAddress().getHostName() + ":" +s.getPort());
-				VTProxyServer ps = new VTProxyServer(auth, s);
+				VTSocksProxyServer ps = new VTSocksProxyServer(auth, s);
 				(new Thread(ps)).start();
 			}
 		} catch (IOException ioe) {
