@@ -804,10 +804,15 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
   {
     CheckboxMenuItem enable = null;
     CheckboxMenuItem disable = null;
+    if (dullColorOption.getState())
+    {
+      disable = dullColorOption;
+      enable = worstColorOption;
+    }
     if (grayColorOption.getState())
     {
       disable = grayColorOption;
-      enable = worstColorOption;
+      enable = dullColorOption;
     }
     if (lowColorOption.getState())
     {
@@ -844,10 +849,15 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       disable = highColorOption;
       enable = extraColorOption;
     }
+    if (vastColorOption.getState())
+    {
+      disable = vastColorOption;
+      enable = highColorOption;
+    }
     if (ultraColorOption.getState())
     {
       disable = ultraColorOption;
-      enable = trueColorOption;
+      enable = vastColorOption;
     }
     if (trueColorOption.getState())
     {
@@ -870,6 +880,11 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     if (worstColorOption.getState())
     {
       disable = worstColorOption;
+      enable = dullColorOption;
+    }
+    if (dullColorOption.getState())
+    {
+      disable = dullColorOption;
       enable = grayColorOption;
     }
     if (grayColorOption.getState())
@@ -910,6 +925,11 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     if (highColorOption.getState())
     {
       disable = highColorOption;
+      enable = vastColorOption;
+    }
+    if (vastColorOption.getState())
+    {
+      disable = vastColorOption;
       enable = ultraColorOption;
     }
     if (ultraColorOption.getState())
