@@ -37,7 +37,7 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Backspace: Toggle Menu Bar"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Alt: Toggle Remote Control"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Space: Toggle Auto Scroll"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Enter: Toggle Full Screen Mode"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Enter: Toggle Full Screen"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+PageDown: Decrease Image Scale"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+PageUp: Increase Image Scale"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Insert: Normalize Image Scale"));
