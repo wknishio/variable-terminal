@@ -848,7 +848,7 @@ public class VTGraphicsModeClientWriter implements Runnable
         }
       }
       
-      if (hideScrollBars && (event.id == MouseEvent.MOUSE_MOVED || event.id == MouseEvent.MOUSE_DRAGGED))
+      if (hideScrollBars && remoteInterface.isFocusOwner() && (event.id == MouseEvent.MOUSE_MOVED || event.id == MouseEvent.MOUSE_DRAGGED))
       {
         Dimension viewport = scrolled.getViewportSize();
         Dimension imagesize = remoteInterface.getSize();
