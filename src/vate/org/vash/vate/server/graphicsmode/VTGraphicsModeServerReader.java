@@ -37,20 +37,13 @@ public class VTGraphicsModeServerReader implements Runnable
     this.pressedKeyboardKeys = new LinkedHashSet<Integer>();
     this.pressedMouseKeys = new LinkedHashSet<Integer>();
     this.stopped = true;
-    // this.deviceNumber = 0;
     this.systemClipboard = controlProvider.getSystemClipboard();
-    // this.failed = false;
   }
   
   public void setWriter(VTGraphicsModeServerWriter writer)
   {
     this.writer = writer;
   }
-  
-  /*
-   * public void resetClipboardStreams() throws IOException {
-   * connection.resetClipboardStreams(); }
-   */
   
   public void dispose()
   {
@@ -71,10 +64,6 @@ public class VTGraphicsModeServerReader implements Runnable
   {
     this.stopped = stopped;
   }
-  
-  /* public boolean isFailed() { return failed; } */
-  
-  /* public void setFailed(boolean failed) { this.failed = failed; } */
   
   public boolean isReadOnly()
   {
@@ -106,7 +95,6 @@ public class VTGraphicsModeServerReader implements Runnable
     /* if (!readOnly) { */
     session.getSession().getClipboardTransferTask().setInputStream(connection.getGraphicsClipboardDataInputStream());
     session.getSession().getClipboardTransferTask().setOutputStream(connection.getGraphicsClipboardDataOutputStream());
-    // session.getSession().getClipboardTransferTask().setEndingTask(endingTask)
     while (!stopped)
     {
       try
@@ -251,11 +239,6 @@ public class VTGraphicsModeServerReader implements Runnable
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4096);
             break;
           }
-//          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_32:
-//          {
-//            writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32);
-//            break;
-//          }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_125:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125);
@@ -278,13 +261,11 @@ public class VTGraphicsModeServerReader implements Runnable
           }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_MODE_ASYNCHRONOUS:
           {
-            // writer.setSynchronousRefresh(false);
             writer.setRefreshInterrupted(false);
             break;
           }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_MODE_SYNCHRONOUS:
           {
-            // writer.setSynchronousRefresh(true);
             writer.setRefreshInterrupted(false);
             break;
           }
@@ -324,22 +305,12 @@ public class VTGraphicsModeServerReader implements Runnable
           }
           case VT.VT_GRAPHICS_MODE_CLIPBOARD_TRANSFER_CANCEL_REQUEST:
           {
-            /*
-             * if (session.getSession().getClipboardTransferTask(). isSending())
-             * { connection.getGraphicsClipboardOutputStream().close() ; }
-             */
             connection.getGraphicsClipboardOutputStream().close();
             session.getSession().getClipboardTransferTask().interruptThread();
-            // session.getSession().getClipboardTransferThread().stop();
             session.getSession().getClipboardTransferTask().joinThread();
             session.getSession().getConnection().resetClipboardStreams();
             session.getSession().getClipboardTransferTask().setInputStream(connection.getGraphicsClipboardDataInputStream());
             session.getSession().getClipboardTransferTask().setOutputStream(connection.getGraphicsClipboardDataOutputStream());
-            /*
-             * connection.getGraphicsClipboardDataOutputStream(). write(0 );
-             * connection.getGraphicsClipboardDataOutputStream(). flush() ;
-             * connection.getGraphicsClipboardDataInputStream().read () ;
-             */
             break;
           }
           case VT.VT_GRAPHICS_MODE_CLIPBOARD_CLEAR_REQUEST:
@@ -358,17 +329,6 @@ public class VTGraphicsModeServerReader implements Runnable
             }
             break;
           }
-          /*
-           * case VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_PARTIAL: {
-           * writer.setScreenCaptureMode(VT.
-           * VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_PARTIAL); break; } case
-           * VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_COMPLETE: {
-           * writer.setScreenCaptureMode(VT.
-           * VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_COMPLETE); break; } case
-           * VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED: {
-           * writer.setScreenCaptureMode(VT.
-           * VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED); break; }
-           */
           case VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_AREA_CHANGE:
           {
             int x = connection.getGraphicsControlDataInputStream().readInt();
@@ -387,29 +347,8 @@ public class VTGraphicsModeServerReader implements Runnable
             // area.height);
             break;
           }
-//          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_CODING_DIRECT:
-//          {
-//            writer.setDynamicCoding(false);
-//            break;
-//          }
-//          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_CODING_DYNAMIC:
-//          {
-//            writer.setDynamicCoding(true);
-//            break;
-//          }
-//          case VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENCE_MIXED_CODING:
-//          {
-//            writer.setSeparatedCoding(false);
-//            break;
-//          }
-//          case VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENCE_SEPARATED_CODING:
-//          {
-//            writer.setSeparatedCoding(true);
-//            break;
-//          }
           case VT.VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_DEFAULT:
           {
-            // deviceNumber = 0;
             GraphicsDevice defaultDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
             controlProvider.setGraphicsDevice(defaultDevice);
             writer.setNextDevice(defaultDevice);

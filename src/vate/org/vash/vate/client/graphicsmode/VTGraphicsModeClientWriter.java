@@ -309,12 +309,6 @@ public class VTGraphicsModeClientWriter implements Runnable
     this.mouseListener = new VTGraphicsModeClientRemoteInterfaceMouseListener(this);
     this.mouseMotionListener = new VTGraphicsModeClientRemoteInterfaceMouseMoveListener(this);
     this.mouseWheelListener = new VTGraphicsModeClientRemoteInterfaceMouseWheelListener(this);
-    // this.lockingKeySynchronizer = new
-    // VTGraphicsModeClientRemoteInterfaceLockingKeySynchronizer(this);
-    // this.scrollPaneListener = new
-    // VTGraphicsModeClientRemoteInterfaceScrollPaneListener(this);
-    // this.captureAreaUpdater = new
-    // VTGraphicsModeClientRemoteInterfaceCaptureAreaUpdater(this);
     this.graphicsRefresher = new VTGraphicsModeClientRemoteInterfaceRefresher(this);
     this.colorQuality = VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216;
     this.screenCaptureMode = VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_VIEWPORT;
@@ -322,16 +316,10 @@ public class VTGraphicsModeClientWriter implements Runnable
     this.terminalRefreshPolicy = TERMINAL_STATE_VISIBLE;
     this.terminalControlPolicy = TERMINAL_STATE_FOCUSED;
     this.synchronousRefresh = false;
-    //this.dynamicCoding = false;
-    //this.separatedCoding = true;
-    // this.remoteInterfaceLoaded = false;
-    // this.interruptedRefresh = false;
     this.drawPointer = true;
-    // this.screenCaptureModeComplete = false;
     this.suppressLocalKeyCombinations = false;
     this.ignoreLocalKeyCombinations = false;
     this.refreshInterrupted = false;
-    // this.synchronizingLockingKey = false;
     this.screenCaptureInterval = 250;
     this.captureScale = 1;
     this.fullscreenToggler = new VTGraphicsModeClientFullScreenToggler();
@@ -487,10 +475,6 @@ public class VTGraphicsModeClientWriter implements Runnable
     {
       connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_CLIPBOARD_TRANSFER_CANCEL_REQUEST);
       connection.getGraphicsControlDataOutputStream().flush();
-      /*
-       * if (session.getSession().getClipboardTransferTask().isSending()) {
-       * connection.getGraphicsClipboardOutputStream().close(); }
-       */
       connection.getGraphicsClipboardOutputStream().close();
       session.getSession().getClipboardTransferTask().interruptThread();
       // session.getSession().getClipboardTransferThread().stop();
@@ -498,12 +482,6 @@ public class VTGraphicsModeClientWriter implements Runnable
       session.getSession().getConnection().resetClipboardStreams();
       session.getSession().getClipboardTransferTask().setInputStream(connection.getGraphicsClipboardDataInputStream());
       session.getSession().getClipboardTransferTask().setOutputStream(connection.getGraphicsClipboardDataOutputStream());
-      /*
-       * connection.getGraphicsClipboardDataOutputStream().write(0);
-       * connection.getGraphicsClipboardDataOutputStream().flush();
-       * connection.getGraphicsClipboardDataInputStream().read();
-       */
-      // finishClipboardContentsTransfer();
     }
     catch (Throwable e)
     {
@@ -515,14 +493,6 @@ public class VTGraphicsModeClientWriter implements Runnable
   public void finishClipboardContentsTransfer()
   {
     menuBar.finishClipboardContentsTransfer();
-    // System.out.println("Clipboard Transfer Finished");
-    /*
-     * try { connection.resetClipboardStreams(); } catch (Throwable e) { }
-     * session.getSession().getClipboardTransferTask().setInputStream(
-     * connection.getGraphicsClipboardDataInputStream());
-     * session.getSession().getClipboardTransferTask().setOutputStream(
-     * connection.getGraphicsClipboardDataOutputStream());
-     */
   }
   
   public void dispose()
@@ -536,25 +506,16 @@ public class VTGraphicsModeClientWriter implements Runnable
     stopped = true;
     needRefresh = false;
     hasRefresh = false;
-    hasDifference = false;
-    
-    // ignoreFocus = false;
-    // ignoreIconification = false;
-    
+    hasDifference = false;    
     terminalRefreshPolicy = TERMINAL_STATE_VISIBLE;
     terminalControlPolicy = TERMINAL_STATE_FOCUSED;
     open = false;
     colorQuality = VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216;
     synchronousRefresh = false;
-    //dynamicCoding = false;
-    //separatedCoding = true;
-    // remoteInterfaceLoaded = false;
-    // interruptedRefresh = false;
     drawPointer = true;
     screenCaptureMode = VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_VIEWPORT;
     imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD;
     suppressLocalKeyCombinations = false;
-    // scaledCapture = false;
     refreshInterrupted = false;
     screenCaptureInterval = 250;
     captureScale = 1;
@@ -686,16 +647,6 @@ public class VTGraphicsModeClientWriter implements Runnable
     this.remoteInterface.setSynchronousRefresh(synchronousRefresh);
   }
   
-//  public void setDynamicCoding(boolean dynamicCoding)
-//  {
-//    this.dynamicCoding = dynamicCoding;
-//  }
-  
-//  public void setSeparatedCoding(boolean separatedCoding)
-//  {
-//    this.separatedCoding = separatedCoding;
-//  }
-  
   public boolean isDrawPointer()
   {
     return drawPointer;
@@ -715,16 +666,6 @@ public class VTGraphicsModeClientWriter implements Runnable
   {
     this.screenCaptureInterval = screenCaptureInterval;
   }
-  
-  /*
-   * public boolean isScreenCaptureModeComplete() { return
-   * screenCaptureModeComplete; }
-   */
-  
-  /*
-   * public void setScreenCaptureModeComplete(boolean screenCaptureModeComplete)
-   * { this.screenCaptureModeComplete = screenCaptureModeComplete; }
-   */
   
   public void setSuppressLocalKeyCombinations(boolean suppressLocalKeyCombinations)
   {
@@ -750,12 +691,6 @@ public class VTGraphicsModeClientWriter implements Runnable
   {
     return open;
   }
-  
-  /*
-   * public boolean isRemoteInterfaceLoaded() { return remoteInterfaceLoaded; }
-   */
-  
-  /* public boolean isNeedRefresh() { return needRefresh; } */
   
   public void setReader(VTGraphicsModeClientReader reader)
   {
@@ -941,26 +876,6 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
   }
   
-  /*
-   * public void tryDelayedUpdateInAllRemoteLockingKeys() { synchronized
-   * (lockingKeySynchronizer) { if (!synchronizingLockingKey) {
-   * synchronizingLockingKey = true;
-   * EventQueue.invokeLater(lockingKeySynchronizer); } } }
-   */
-  
-  /*
-   * public void finishDelayedUpdateInAllRemoteLockingKeys() { synchronized
-   * (lockingKeySynchronizer) { synchronizingLockingKey = false; } }
-   */
-  
-  /*
-   * public void synchronizeAllRemoteLockingKeys() { if (!readOnly) {
-   * synchronizeRemoteLockingKey(KeyEvent.VK_NUM_LOCK);
-   * synchronizeRemoteLockingKey(KeyEvent.VK_CAPS_LOCK);
-   * synchronizeRemoteLockingKey(KeyEvent.VK_SCROLL_LOCK);
-   * synchronizeRemoteLockingKey(KeyEvent.VK_KANA_LOCK); } }
-   */
-  
   public void synchronizeRemoteLockingKey(int keyCode)
   {
     if (!controlInterrupted)
@@ -1011,10 +926,6 @@ public class VTGraphicsModeClientWriter implements Runnable
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16);
       }
-//      else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32)
-//      {
-//        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_32);
-//      }
       else if (colorQuality == VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_512);
@@ -1072,22 +983,18 @@ public class VTGraphicsModeClientWriter implements Runnable
       if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
       else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
       else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD)
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
       else
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD);
-        // connection.getGraphicsControlDataOutputStream().flush();
       }
     }
     catch (IOException e)
@@ -1195,32 +1102,6 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
   }
   
-  /*
-   * public void synchronizeScreenCaptureMode() { try { if (screenCaptureMode ==
-   * VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_UNSCALED_PARTIAL) {
-   * connection.getGraphicsImageDataOutputStream().write(VT.
-   * VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_UNSCALED_PARTIAL);
-   * synchronizeScreenCaptureArea();
-   * connection.getGraphicsImageDataOutputStream().flush(); } else if
-   * (screenCaptureMode ==
-   * VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_UNSCALED_COMPLETE) {
-   * connection.getGraphicsImageDataOutputStream().write(VT.
-   * VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_UNSCALED_COMPLETE);
-   * connection.getGraphicsImageDataOutputStream().flush(); } else if
-   * (screenCaptureMode ==
-   * VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_KEEP_RATIO) {
-   * connection.getGraphicsImageDataOutputStream().write(VT.
-   * VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_KEEP_RATIO);
-   * connection.getGraphicsImageDataOutputStream().flush(); } else if
-   * (screenCaptureMode ==
-   * VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_IGNORE_RATIO) {
-   * connection.getGraphicsImageDataOutputStream().write(VT.
-   * VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_IGNORE_RATIO);
-   * connection.getGraphicsImageDataOutputStream().flush(); } } catch
-   * (IOException e) { //e.printStackTrace(); stopped = true; return; } catch
-   * (Throwable e) { return; } }
-   */
-  
   public void synchronizeScreenCaptureArea()
   {
     try
@@ -1234,7 +1115,6 @@ public class VTGraphicsModeClientWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().writeInt(captureArea.width);
       connection.getGraphicsControlDataOutputStream().writeInt(captureArea.height);
       connection.getGraphicsControlDataOutputStream().writeDouble(captureScale);
-      // connection.getGraphicsControlDataOutputStream().flush();
     }
     catch (IOException e)
     {
@@ -1247,58 +1127,6 @@ public class VTGraphicsModeClientWriter implements Runnable
       return;
     }
   }
-  
-//  public void synchronizeDynamicCoding()
-//  {
-//    try
-//    {
-//      if (dynamicCoding)
-//      {
-//        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_CODING_DYNAMIC);
-//        connection.getGraphicsControlDataOutputStream().flush();
-//      }
-//      else
-//      {
-//        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_CODING_DIRECT);
-//        connection.getGraphicsControlDataOutputStream().flush();
-//      }
-//    }
-//    catch (IOException e)
-//    {
-//      stopped = true;
-//      return;
-//    }
-//    catch (Throwable e)
-//    {
-//      return;
-//    }
-//  }
-  
-//  public void synchronizeSeparatedCoding()
-//  {
-//    try
-//    {
-//      if (separatedCoding)
-//      {
-//        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENCE_SEPARATED_CODING);
-//        connection.getGraphicsControlDataOutputStream().flush();
-//      }
-//      else
-//      {
-//        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENCE_MIXED_CODING);
-//        connection.getGraphicsControlDataOutputStream().flush();
-//      }
-//    }
-//    catch (IOException e)
-//    {
-//      stopped = true;
-//      return;
-//    }
-//    catch (Throwable e)
-//    {
-//      return;
-//    }
-//  }
   
   public void requestNextDevice()
   {
@@ -1437,14 +1265,12 @@ public class VTGraphicsModeClientWriter implements Runnable
   {
     this.colorQuality = colorQuality;
     menuBar.setColorQuality(colorQuality);
-    // synchronizeColorQuality();
   }
   
   public void updateImageCoding(int imageCoding)
   {
     this.imageCoding = imageCoding;
     menuBar.setImageCoding(imageCoding);
-    // synchronizeImageCoding();
   }
   
   public void toggleDrawPointer()
@@ -1591,20 +1417,6 @@ public class VTGraphicsModeClientWriter implements Runnable
     menuBar.setTerminalControlPolicy(state);
   }
   
-  /*
-   * public void alternateIgnoreFocus() { if (ignoreFocus) { ignoreFocus =
-   * false; ignoreIconification = false; menuBar.setIgnoreFocus(false);
-   * menuBar.setIgnoreIconification(false); } else { ignoreFocus = true;
-   * menuBar.setIgnoreFocus(true); } }
-   */
-  
-  /*
-   * public void alternateIgnoreIconification() { if (ignoreIconification) {
-   * ignoreIconification = false; menuBar.setIgnoreIconification(false); } else
-   * { ignoreFocus = true; ignoreIconification = true;
-   * menuBar.setIgnoreFocus(true); menuBar.setIgnoreIconification(true); } }
-   */
-  
   public void setScreenCaptureMode(int nextMode)
   {
     menuBar.setScreenCaptureMode(nextMode);
@@ -1613,53 +1425,15 @@ public class VTGraphicsModeClientWriter implements Runnable
     {
       captureScale = 1;
     }
-    /* if () { remoteInterface.clearSize(); } */
-    // remoteInterface.setImage(null);
-    // synchronizeScreenCaptureMode();
   }
-  
-//  public void toggleDynamicCoding()
-//  {
-//    if (dynamicCoding)
-//    {
-//      dynamicCoding = false;
-//      menuBar.setDynamicCoding(false);
-//      synchronizeDynamicCoding();
-//    }
-//    else
-//    {
-//      dynamicCoding = true;
-//      menuBar.setDynamicCoding(true);
-//      synchronizeDynamicCoding();
-//    }
-//  }
-//  
-//  public void toggleSeparatedCoding()
-//  {
-//    if (separatedCoding)
-//    {
-//      separatedCoding = false;
-//      menuBar.setInterleavedCoding(false);
-//      synchronizeSeparatedCoding();
-//    }
-//    else
-//    {
-//      separatedCoding = true;
-//      menuBar.setInterleavedCoding(true);
-//      synchronizeSeparatedCoding();
-//    }
-//  }
   
   public void toggleFullScreenMode()
   {
-    // System.out.println("full screen toggled");
     EventQueue.invokeLater(fullscreenToggler);
-    // fullscreenToggler.run();
   }
   
   public void toggleMenubar()
   {
-    // System.out.println("full screen toggled");
     EventQueue.invokeLater(menubarToggler);
   }
   
@@ -1715,9 +1489,8 @@ public class VTGraphicsModeClientWriter implements Runnable
   {
     Point local = scrolled.getScrollPosition();
     Dimension size = scrolled.getViewportSize();
-    // Rectangle area = new Rectangle(local.x, local.y, size.width,
-    // size.height);
     Rectangle area = new Rectangle();
+    
     if (screenCaptureMode == VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_ENTIRE)
     {
       area.x = -1;
@@ -1753,7 +1526,6 @@ public class VTGraphicsModeClientWriter implements Runnable
   public void setScreenCaptureArea(Rectangle captureArea)
   {
     this.captureArea = captureArea;
-    // synchronizeScreenCaptureArea();
   }
   
   public void defaultDevice()
@@ -1778,25 +1550,11 @@ public class VTGraphicsModeClientWriter implements Runnable
   
   public void clearRemoteGraphics()
   {
-    /*
-     * BufferedImage image = remoteInterface.getImage(); if (image != null) {
-     * VTImageIO.clearImage(image); }
-     */
-    // frame.getLayout().layoutContainer(scrolled);
-    // frame.validate();
-    // remoteInterface.setImage(null);
     remoteInterface.clearImage();
     remoteInterface.repaint();
     scrolled.validate();
     requestClear();
   }
-  
-  /* public void toBack() { if (frame != null) { frame.toBack(); } } */
-  
-  /*
-   * public void releaseFocus() { if (remoteInterface != null) {
-   * remoteInterface.transferFocus(); } }
-   */
   
   public void requestFocus()
   {
@@ -1810,20 +1568,7 @@ public class VTGraphicsModeClientWriter implements Runnable
   
   public void resizeRemoteGraphics(int width, int height)
   {
-    // Dimension oldSize = remoteInterface.getSize();
     Dimension newSize = new Dimension(width, height);
-    // System.out.println("resizeRemoteGraphics oldSize " + oldSize.width +
-    // " " + oldSize.height + " newSize " + newSize.width + " " +
-    // newSize.height);
-    
-    // if (!newSize.equals(oldSize))
-    // {
-    
-    // }
-    // else
-    // {
-    // System.out.println("resizeRemoteGraphics not changed size");
-    // }
     remoteInterface.setSize(newSize);
     remoteInterface.setMaximumSize(newSize);
     remoteInterface.setMinimumSize(newSize);
@@ -1833,62 +1578,38 @@ public class VTGraphicsModeClientWriter implements Runnable
     scrolled.validate();
     // frame.getLayout().layoutContainer(scrolled);
     // frame.validate();
-    /*
-     * if (!remoteInterfaceLoaded) { remoteInterfaceLoaded = true;
-     * scrolled.setScrollPosition((imageDataBuffer.getWidth() -
-     * scrolled.getViewportSize().width) / 2, (imageDataBuffer.getHeight() -
-     * scrolled.getViewportSize().height) / 2); synchronized (graphicsRefresher)
-     * { graphicsRefresher.notify(); } }
-     */
   }
   
   public void setRemoteGraphics(BufferedImage newImageData)
   {
     imageDataBuffer = newImageData;
     remoteInterface.setImage(imageDataBuffer);
-    // remoteInterface.refreshImage();
-    // scrolled.setPreferredSize(scrolled.getSize());
     remoteInterface.refreshImage();
     remoteInterface.repaint();
     scrolled.validate();
     scrolled.doLayout();
-    // frame.getLayout().layoutContainer(scrolled);
-    // frame.validate();
   }
   
   public void differenceRemoteGraphics(BufferedImage newImageData)
   {
-    // System.out.println("differenceRemoteGraphics");
     imageDataBuffer = newImageData;
-    // needRefresh = true;
     hasRefresh = false;
     hasDifference = true;
     updateRemoteGraphics();
-    // updateRemoteGraphics();
-    // updateRemoteGraphics();
   }
   
   public void refreshRemoteGraphics(BufferedImage newImageData)
   {
-    // System.out.println("newFrameRemoteGraphics");
     imageDataBuffer = newImageData;
-    // needRefresh = true;
     hasRefresh = true;
     hasDifference = false;
     updateRemoteGraphics();
-    // updateRemoteGraphics();
-    // updateRemoteGraphics();
   }
   
   public void notModifiedRemoteGraphics()
   {
-    // needRefresh = true;
-    // System.out.println("notModifiedRemoteGraphics");
     hasRefresh = false;
     hasDifference = false;
-    // updateRemoteGraphics();
-    // updateRemoteGraphics();
-    // updateRemoteGraphics();
   }
   
   public void increaseCaptureScale()
@@ -1929,11 +1650,6 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
   }
   
-  //public void setRefreshArea(Rectangle area)
-  //{
-    //remoteInterface.setRefreshArea(area);
-  //}
-  
   public void increaseCaptureInterval()
   {
     menuBar.increaseCaptureInterval();
@@ -1963,8 +1679,6 @@ public class VTGraphicsModeClientWriter implements Runnable
   {
     try
     {
-      // Point local = scrolled.getScrollPosition();
-      // Dimension size = scrolled.getViewportSize();
       if (hasDifference)
       {
         if (remoteInterface != null && remoteInterface.isAsynchronousRepainterRunning() && !remoteInterface.isAsynchronousRepainterInterrupted())
@@ -1988,11 +1702,6 @@ public class VTGraphicsModeClientWriter implements Runnable
         // scrolled.setPreferredSize(scrolled.getSize());
         remoteInterface.repaint();
         scrolled.validate();
-        
-        // remoteInterface.redraw();
-        
-        // frame.getLayout().layoutContainer(scrolled);
-        // frame.validate();
       }
     }
     catch (Throwable e)
@@ -2003,21 +1712,12 @@ public class VTGraphicsModeClientWriter implements Runnable
     }
     synchronized (this)
     {
-      // needRefresh = false;
       hasRefresh = false;
       hasDifference = false;
     }
     // EventQueue.invokeLater(graphicsRefresher);
     // requestRefresh();
   }
-  
-  /*
-   * private void sendSessionEnding() { try {
-   * connection.getGraphicsControlDataOutputStream().write(VT.
-   * VT_GRAPHICS_MODE_SESSION_ENDING);
-   * connection.getGraphicsControlDataOutputStream().flush(); } catch (Throwable
-   * e) { stopped = true; } }
-   */
   
   private void createCustomCursor()
   {
@@ -2090,15 +1790,9 @@ public class VTGraphicsModeClientWriter implements Runnable
   
   public void run()
   {
-    /*
-     * try { toolkit = Toolkit.getDefaultToolkit(); } catch (Throwable e) {
-     * dispose(); sendSessionEnding(); return; }
-     */
     createCustomCursor();
     try
     {
-      // selfControlProvider = new VTAWTControlProvider();
-      // selfControlProvider.initializeInputControl();
       if (VTConsole.isGraphical())
       {
         GraphicsDevice device = VTGraphicalDeviceResolver.getCurrentDevice(VTConsole.getFrame());
@@ -2118,32 +1812,24 @@ public class VTGraphicsModeClientWriter implements Runnable
       VTGlobalTextStyleManager.registerWindow(frame);
       
       frame.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Client - Remote Graphics Link");
-      //frame.setFocusable(false);
-      // frame.getInsets().set(0, 0, 0, 0);
       BorderLayout frameLayout = new BorderLayout();
       frameLayout.setHgap(0);
       frameLayout.setVgap(0);
       frame.setLayout(frameLayout);
       frame.getInsets().set(0, 0, 0, 0);
       menuBar = new VTGraphicsModeClientOptionsMenuBar(this, frame);
-      // menuBar.setReadOnly(readOnly);
-      // frame.setMenuBar(menuBar);
       scrolledMaybe = new VTGraphicsModeClientWriterScrollPane(VTGraphicsModeClientWriterScrollPane.SCROLLBARS_AS_NEEDED);
       scrolledMaybe.setBackground(Color.BLACK);
       //scrolledMaybe.setFocusable(false);
       scrolledMaybe.getInsets().set(0, 0, 0, 0);
-      
       scrolledNever = new VTGraphicsModeClientWriterScrollPane(VTGraphicsModeClientWriterScrollPane.SCROLLBARS_NEVER);
       scrolledNever.setBackground(Color.BLACK);
       //scrolledNever.setFocusable(false);
       scrolledNever.getInsets().set(0, 0, 0, 0);
-      
       scrolled = scrolledMaybe;
       // scrolled.setWheelScrollingEnabled(false);
       remoteInterface = new VTGraphicsModeClientRemoteInterface();
       remoteInterface.setScrollPane(scrolled);
-      // remoteInterface.setImage(new BufferedImage(1, 1,
-      // BufferedImage.TYPE_INT_RGB));
       remoteInterface.setFocusTraversalKeysEnabled(false);
       // remoteInterface.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
       if (cursor != null)
@@ -2152,19 +1838,15 @@ public class VTGraphicsModeClientWriter implements Runnable
       }
       remoteInterface.addFocusListener(focusListener);
       frame.addWindowListener(windowListener);
-      /* if (!readOnly) { */
-      // synchronizeAllRemoteLockingKeys();
       session.getSession().getClipboardTransferTask().setEndingTask(new VTGraphicsModeClientClipboardTransferEndingTask(this));
       session.getSession().getClipboardTransferTask().setInputStream(connection.getGraphicsClipboardDataInputStream());
       session.getSession().getClipboardTransferTask().setOutputStream(connection.getGraphicsClipboardDataOutputStream());
-      // controlInterrupted = false;
       keyListener.setInterrupted(false);
       keyListener.clearAllPressedKeys();
       remoteInterface.addKeyListener(keyListener);
       // remoteInterface.addMouseListener(mouseListener);
       remoteInterface.addMouseMotionListener(mouseMotionListener);
       // remoteInterface.addMouseWheelListener(mouseWheelListener);
-      // }
       if (readOnly)
       {
         controlInterrupted = true;
@@ -2221,9 +1903,6 @@ public class VTGraphicsModeClientWriter implements Runnable
       scrolled.setVisible(true);
       remoteInterface.setVisible(true);
       
-      // frame.toFront();
-      // remoteInterface.requestFocus();
-      
       frame.getInsets().set(0, 0, 0, 0);
       scrolled.getInsets().set(0, 0, 0, 0);
       // remoteInterface.getin
@@ -2233,11 +1912,7 @@ public class VTGraphicsModeClientWriter implements Runnable
         open = true;
         reader.notify();
       }
-      // updateScreenCaptureArea(area);
-      // EventQueue.invokeAndWait(captureAreaUpdater);
       EventQueue.invokeLater(graphicsRefresher);
-      // synchronizingLockingKey = false;
-      // tryDelayedUpdateInAllRemoteLockingKeys();
     }
     catch (Throwable e)
     {
@@ -2245,7 +1920,6 @@ public class VTGraphicsModeClientWriter implements Runnable
       synchronized (reader)
       {
         reader.setFailed(true);
-        // reader.setStopped(true);
         open = true;
         stopped = true;
         reader.notify();
@@ -2265,7 +1939,6 @@ public class VTGraphicsModeClientWriter implements Runnable
           {
             needRefresh = false;
             EventQueue.invokeLater(graphicsRefresher);
-            // updateRemoteGraphics();
           }
         }
       }
@@ -2286,7 +1959,6 @@ public class VTGraphicsModeClientWriter implements Runnable
       frame.setVisible(false);
       frame.dispose();
     }
-    // sendSessionEnding();
     synchronized (session)
     {
       session.notify();
