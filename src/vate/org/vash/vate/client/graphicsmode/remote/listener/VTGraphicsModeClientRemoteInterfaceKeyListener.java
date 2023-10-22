@@ -238,35 +238,43 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
     }
     else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_1))
     {
-      writer.increaseCaptureInterval();
+      if (!writer.isRefreshInterrupted())
+      {
+        writer.interruptRefresh();
+      }
+      else
+      {
+        writer.updateRefreshMode(writer.isSynchronousRefresh());
+      }
+      
     }
     else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_2))
     {
-      writer.decreaseCaptureInterval();
+      writer.clearRemoteGraphics();
     }
     else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_3))
     {
-      writer.decreaseColorQuality();
+      writer.increaseCaptureInterval();
     }
     else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_4))
     {
-      writer.increaseColorQuality();
+      writer.decreaseCaptureInterval();
     }
     else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_5))
     {
-      writer.decreaseDrawPointerSize();
+      writer.decreaseColorQuality();
     }
     else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_6))
     {
-      writer.increaseDrawPointerSize();
+      writer.increaseColorQuality();
     }
     else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_7))
     {
-      writer.clearRemoteGraphics();
+      writer.decreaseDrawPointerSize();
     }
     else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_8))
     {
-      writer.toggleHideScrollBars();
+      writer.increaseDrawPointerSize();
     }
     else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_9))
     {
@@ -298,14 +306,8 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
     // }
     else if (pressedControl && pressedShift && event.getKeyCode() == KeyEvent.VK_SPACE)
     {
-      if (!writer.isRefreshInterrupted())
-      {
-        writer.interruptRefresh();
-      }
-      else
-      {
-        writer.updateRefreshMode(writer.isSynchronousRefresh());
-      }
+      writer.toggleHideScrollBars();
+      
     }
     else if (pressedControl && pressedShift && releasedAlt)
     {
