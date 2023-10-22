@@ -136,7 +136,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     
     nP = (nA + nB + nC + ((nA + nB) >> 1)) >> 2;
     
-    out.write(newPixelData[position] ^ nP);
+    out.write((newPixelData[position] ^ nP) /* & 0xFF */);
   }
   
   private static final void encodePixel15(final VTLittleEndianOutputStream out, final short[] newPixelData, final int position, final int width) throws IOException
@@ -149,7 +149,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     
     nP = (nA + nB + nC + ((nA + nB) >> 1)) >> 2;
     
-    out.writeShort(newPixelData[position] ^ nP);
+    out.writeShort((newPixelData[position] ^ nP) /* & 0x7FFF */);
   }
   
   private static final void encodePixel24(final VTLittleEndianOutputStream out, final int[] newPixelData, final int position, final int width) throws IOException
@@ -162,7 +162,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     
     nP = (nA + nB + nC + ((nA + nB) >> 1)) >> 2;
     
-    out.writeSubInt(newPixelData[position] ^ nP);
+    out.writeSubInt((newPixelData[position] ^ nP) /* & 0x00FFFFFF */);
   }
   
   private static final void encodePixel30(final VTLittleEndianOutputStream out, final int[] newPixelData, final int position, final int width) throws IOException
@@ -175,7 +175,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     
     nP = (nA + nB + nC + ((nA + nB) >> 1)) >> 2;
     
-    out.writeInt(newPixelData[position] ^ nP);
+    out.writeInt((newPixelData[position] ^ nP) /*  & 0x3FFFFFFF */);
   }
   
   private static final void decodePixel8(final VTLittleEndianInputStream in, final byte[] newPixelData, final int position, final int width) throws IOException
@@ -214,7 +214,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     
     nP = (nA + nB + nC + ((nA + nB) >> 1)) >> 2;
     
-    newPixelData[position] = (in.readSubInt() ^ nP /* & 0x00FFFFFF */);
+    newPixelData[position] = ((in.readSubInt() ^ nP) /* & 0x00FFFFFF */);
   }
   
   private static final void decodePixel30(final VTLittleEndianInputStream in, final int[] newPixelData, final int position, final int width) throws IOException
@@ -227,7 +227,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     
     nP = (nA + nB + nC + ((nA + nB) >> 1)) >> 2;
     
-    newPixelData[position] = (in.readInt() ^ nP /* & 0x00FFFFFF */);
+    newPixelData[position] = ((in.readInt() ^ nP) /* & 0x3FFFFFFF */);
   }
   
   private final void encodeBlock4Tree8(final VTLittleEndianOutputStream out, final byte[] oldPixelData, final byte[] newPixelData) throws IOException

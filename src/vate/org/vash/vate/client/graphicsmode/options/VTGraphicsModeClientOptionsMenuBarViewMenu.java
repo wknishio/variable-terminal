@@ -10,7 +10,6 @@ import java.util.Map.Entry;
 
 import org.vash.vate.VT;
 import org.vash.vate.client.graphicsmode.VTGraphicsModeClientWriter;
-import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuAdjustFrameSizeOptionListener;
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuClearInterfaceOptionListener;
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuCloseTerminalOptionListener;
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener;
@@ -27,6 +26,7 @@ import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOp
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuScreenCaptureScaleOptionsListener;
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuTerminalRefreshPolicyOptionsListener;
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuToggleFullScreenOptionListener;
+import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuToggleScrollbarsOptionListener;
 import org.vash.vate.client.graphicsmode.options.listener.VTGraphicsModeClientOptionsMenuBarViewMenuUnifiedDeviceOptionListener;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 
@@ -53,7 +53,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
   private MenuItem defaultDeviceMenu;
   private MenuItem unifiedDeviceMenu;
   private MenuItem toggleFullScreenMenu;
-  private MenuItem adjustFrameSizeMenu;
+  private MenuItem toggleScrollBarsMenu;
   private MenuItem clearInterfaceMenu;
   private MenuItem closeTerminalMenu;
   private MenuItem resetCaptureFactorMenu;
@@ -131,8 +131,8 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.unifiedDeviceMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuUnifiedDeviceOptionListener(writer));
     this.toggleFullScreenMenu = new MenuItem("Toggle Full Screen");
     this.toggleFullScreenMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuToggleFullScreenOptionListener(writer));
-    this.adjustFrameSizeMenu = new MenuItem("Toggle Maximize");
-    this.adjustFrameSizeMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuAdjustFrameSizeOptionListener(writer));
+    this.toggleScrollBarsMenu = new MenuItem("Toggle Auto Scroll");
+    this.toggleScrollBarsMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuToggleScrollbarsOptionListener(writer));
     this.clearInterfaceMenu = new MenuItem("Reset Image");
     this.clearInterfaceMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuClearInterfaceOptionListener(writer));
     this.closeTerminalMenu = new MenuItem("Close View");
@@ -328,8 +328,8 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.add(drawPointerMenu);
     this.add(graphicalDeviceMenu);
     this.add(clearInterfaceMenu);
+    this.add(toggleScrollBarsMenu);
     this.add(toggleFullScreenMenu);
-    this.add(adjustFrameSizeMenu);
     this.add(closeTerminalMenu);
   }
   

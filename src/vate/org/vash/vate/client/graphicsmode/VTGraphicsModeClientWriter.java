@@ -57,6 +57,7 @@ public class VTGraphicsModeClientWriter implements Runnable
   private volatile boolean drawPointer;
   private volatile boolean suppressLocalKeyCombinations;
   private volatile boolean ignoreLocalKeyCombinations;
+  private volatile boolean hideScrollBars;
   private volatile int screenCaptureInterval;
   private volatile int colorQuality;
   private volatile int terminalRefreshPolicy;
@@ -76,6 +77,8 @@ public class VTGraphicsModeClientWriter implements Runnable
   private VTGraphicsModeClientReader reader;
   private VTGraphicsModeClientWriterFrame frame;
   private VTGraphicsModeClientOptionsMenuBar menuBar;
+  private VTGraphicsModeClientWriterScrollPane scrolledMaybe;
+  private VTGraphicsModeClientWriterScrollPane scrolledNever;
   private VTGraphicsModeClientWriterScrollPane scrolled;
   // private VTGraphicsModeClientWriterScrollPane scrolledWithBars;
   // private VTGraphicsModeClientWriterScrollPane scrolledWithoutBars;
@@ -99,6 +102,9 @@ public class VTGraphicsModeClientWriter implements Runnable
   private Runnable fullscreenToggler;
   private Runnable frameSizeAdjuster;
   private Runnable menubarToggler;
+  //private Point lastPointerPosition = new Point(0, 0);
+  private volatile int lastPointerX = -1;
+  private volatile int lastPointerY = -1;
   // private Runnable requestFocus;
   // private int frameInsetsTop;
   // private int frameInsetsBottom;
@@ -138,6 +144,22 @@ public class VTGraphicsModeClientWriter implements Runnable
       }
     }
   }
+  
+//  private class VTGraphicsModeClientScrollbarsToggler implements Runnable
+//  {
+//    public void run()
+//    {
+//      try
+//      {
+//        toggleHideScrollBars();
+//        frame.revalidate();
+//      }
+//      finally
+//      {
+//        
+//      }
+//    }
+//  }
   
   private class VTGraphicsModeClientFullScreenToggler implements Runnable
   {
@@ -505,6 +527,9 @@ public class VTGraphicsModeClientWriter implements Runnable
   
   public void dispose()
   {
+    hideScrollBars = false;
+    lastPointerX = -1;
+    lastPointerX = -1;
     captureScale = 1;
     initialWidth = 0;
     initialHeight = 0;
@@ -766,10 +791,6 @@ public class VTGraphicsModeClientWriter implements Runnable
     /* if (event != null) { return; } */
     try
     {
-      /*
-       * if (!canvas.isFocusOwner()) {
-       * System.out.println("Canvas Focus Alert!"); }
-       */
       if (event != null && (!controlInterrupted && (terminalControlPolicy == TERMINAL_STATE_FOCUSED && remoteInterface.isFocusOwner()) || terminalControlPolicy == TERMINAL_STATE_VISIBLE))
       {
         switch (event.id)
@@ -825,6 +846,91 @@ public class VTGraphicsModeClientWriter implements Runnable
             break;
           }
         }
+      }
+      
+      if (hideScrollBars && (event.id == MouseEvent.MOUSE_MOVED || event.id == MouseEvent.MOUSE_DRAGGED))
+      {
+        Dimension viewport = scrolled.getViewportSize();
+        Dimension imagesize = remoteInterface.getSize();
+        
+        int deltaX = 0;
+        int deltaY = 0;
+        
+        if (viewport.width < imagesize.width || viewport.height < imagesize.height)
+        {
+          int pointerX = event.x;
+          int pointerY = event.y;
+          
+          if (lastPointerX != pointerX || lastPointerY != pointerY)
+          {
+            Point currentScrollPosition = scrolled.getScrollPosition();
+            
+            Point nextScrollPosition = new Point(currentScrollPosition);
+            
+            int scrollX = currentScrollPosition.x + (viewport.width / 2);
+            int scrollY = currentScrollPosition.y + (viewport.height / 2);
+            int remainingX = (int) (viewport.width * 0.4375);
+            int remainingY = (int) (viewport.height * 0.4375);
+            
+            if (Math.abs(pointerX - scrollX) > remainingX)
+            {
+              if (pointerX - scrollX > 0)
+              {
+                deltaX = pointerX - scrollX - remainingX;
+              }
+              else
+              {
+                deltaX = pointerX - scrollX + remainingX;
+              }
+            }
+            
+            if (Math.abs(pointerY - scrollY) > remainingY)
+            {
+              if (pointerY - scrollY > 0)
+              {
+                deltaY = pointerY - scrollY - remainingY;
+              }
+              else
+              {
+                deltaY = pointerY - scrollY + remainingY;
+              }
+            }
+            
+            if (deltaX != 0 || deltaY != 0)
+            {
+              nextScrollPosition.x += deltaX;
+              nextScrollPosition.y += deltaY;
+            }
+            else
+            {
+              nextScrollPosition = null;
+            }
+            
+            if (nextScrollPosition != null && !currentScrollPosition.equals(nextScrollPosition))
+            {
+              scrolled.setScrollPosition(nextScrollPosition);
+            }
+            else
+            {
+              
+            }
+          }
+          else
+          {
+            
+          }
+        }
+        else
+        {
+          
+        }
+        lastPointerX = event.x + deltaX;
+        lastPointerY = event.y + deltaY;
+      }
+      else
+      {
+        lastPointerX = event.x;
+        lastPointerY = event.y;
       }
     }
     catch (IOException e)
@@ -1291,7 +1397,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     {
       keyListener.setInterrupted(true);
       remoteInterface.removeMouseListener(mouseListener);
-      remoteInterface.removeMouseMotionListener(mouseMotionListener);
+      //remoteInterface.removeMouseMotionListener(mouseMotionListener);
       remoteInterface.removeMouseWheelListener(mouseWheelListener);
       menuBar.interruptControl();
       // statusBar.setControlStatusText("Control: Interrupted");
@@ -1304,7 +1410,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     {
       keyListener.setInterrupted(false);
       remoteInterface.addMouseListener(mouseListener);
-      remoteInterface.addMouseMotionListener(mouseMotionListener);
+      //remoteInterface.addMouseMotionListener(mouseMotionListener);
       remoteInterface.addMouseWheelListener(mouseWheelListener);
       menuBar.restabilishControl();
       // statusBar.setControlStatusText("Control: Active ");
@@ -1355,6 +1461,36 @@ public class VTGraphicsModeClientWriter implements Runnable
       menuBar.setDrawPointer(true);
       synchronizeDrawPointer();
     }
+  }
+  
+  public void toggleHideScrollBars()
+  {
+    Point scrollPosition = scrolled.getScrollPosition();
+    
+    if (hideScrollBars)
+    {
+      scrolled.remove(remoteInterface);
+      frame.remove(scrolled);
+      
+      scrolled = scrolledMaybe;
+    }
+    else
+    {
+      scrolled.remove(remoteInterface);
+      frame.remove(scrolled);
+      
+      scrolled = scrolledNever;
+    }
+    
+    remoteInterface.setScrollPane(scrolled);
+    frame.add(scrolled, BorderLayout.CENTER);
+    scrolled.add(remoteInterface);
+    
+    frame.revalidate();
+    scrolled.setScrollPosition(scrollPosition);
+    remoteInterface.requestFocus();
+    
+    hideScrollBars = !hideScrollBars;
   }
   
   public void increaseDrawPointerSize()
@@ -1982,7 +2118,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       VTGlobalTextStyleManager.registerWindow(frame);
       
       frame.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Client - Remote Graphics Link");
-      frame.setFocusable(false);
+      //frame.setFocusable(false);
       // frame.getInsets().set(0, 0, 0, 0);
       BorderLayout frameLayout = new BorderLayout();
       frameLayout.setHgap(0);
@@ -1992,23 +2128,20 @@ public class VTGraphicsModeClientWriter implements Runnable
       menuBar = new VTGraphicsModeClientOptionsMenuBar(this, frame);
       // menuBar.setReadOnly(readOnly);
       // frame.setMenuBar(menuBar);
-      scrolled = new VTGraphicsModeClientWriterScrollPane(VTGraphicsModeClientWriterScrollPane.SCROLLBARS_AS_NEEDED);
+      scrolledMaybe = new VTGraphicsModeClientWriterScrollPane(VTGraphicsModeClientWriterScrollPane.SCROLLBARS_AS_NEEDED);
+      scrolledMaybe.setBackground(Color.BLACK);
+      //scrolledMaybe.setFocusable(false);
+      scrolledMaybe.getInsets().set(0, 0, 0, 0);
       
-      // scrolledWithBars = new
-      // VTGraphicsModeClientWriterScrollPane(VTGraphicsModeClientWriterScrollPane.SCROLLBARS_AS_NEEDED);
-      // scrolledWithoutBars = new
-      // VTGraphicsModeClientWriterScrollPane(VTGraphicsModeClientWriterScrollPane.SCROLLBARS_NEVER);
-      // scrolled.setBackground(new Color(0x00999999));
-      // scrolled.setBackground(new Color(0x00BFBFBF));
-      //scrolled.setBackground(new Color(0x00AAAAAA));
-      scrolled.setBackground(Color.BLACK);
-      // scrolledWithBars.setBackground(new Color(0x00AAAAAA));
-      // scrolledWithoutBars.setBackground(new Color(0x00AAAAAA));
-      // scrolled.add
-      scrolled.setFocusable(false);
-      scrolled.getInsets().set(0, 0, 0, 0);
+      scrolledNever = new VTGraphicsModeClientWriterScrollPane(VTGraphicsModeClientWriterScrollPane.SCROLLBARS_NEVER);
+      scrolledNever.setBackground(Color.BLACK);
+      //scrolledNever.setFocusable(false);
+      scrolledNever.getInsets().set(0, 0, 0, 0);
+      
+      scrolled = scrolledMaybe;
       // scrolled.setWheelScrollingEnabled(false);
-      remoteInterface = new VTGraphicsModeClientRemoteInterface(scrolled);
+      remoteInterface = new VTGraphicsModeClientRemoteInterface();
+      remoteInterface.setScrollPane(scrolled);
       // remoteInterface.setImage(new BufferedImage(1, 1,
       // BufferedImage.TYPE_INT_RGB));
       remoteInterface.setFocusTraversalKeysEnabled(false);
@@ -2029,7 +2162,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       keyListener.clearAllPressedKeys();
       remoteInterface.addKeyListener(keyListener);
       // remoteInterface.addMouseListener(mouseListener);
-      // remoteInterface.addMouseMotionListener(mouseMotionListener);
+      remoteInterface.addMouseMotionListener(mouseMotionListener);
       // remoteInterface.addMouseWheelListener(mouseWheelListener);
       // }
       if (readOnly)
@@ -2043,8 +2176,6 @@ public class VTGraphicsModeClientWriter implements Runnable
         restablishControl();
       }
       frame.add(scrolled, BorderLayout.CENTER);
-      // frame.add(scrolledWithoutBars, BorderLayout.NORTH);
-      // frame.add(statusBar, BorderLayout.SOUTH);
       scrolled.add(remoteInterface);
       
       Rectangle screenSize = frame.getGraphicsConfiguration().getBounds();

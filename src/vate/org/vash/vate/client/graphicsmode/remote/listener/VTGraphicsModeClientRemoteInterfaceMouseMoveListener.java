@@ -15,14 +15,27 @@ public class VTGraphicsModeClientRemoteInterfaceMouseMoveListener implements Mou
 {
   private VTGraphicsModeClientWriter writer;
   private VTAWTControlEvent untyped;
+  //private volatile boolean ignoreNextEvent;
+  //private volatile boolean ignored = false;
   
   public VTGraphicsModeClientRemoteInterfaceMouseMoveListener(VTGraphicsModeClientWriter writer)
   {
+    //this.ignoreNextEvent = false;
     this.writer = writer;
     this.untyped = new VTAWTControlEvent();
     // Thread refreshThread = new Thread(new MouseRefreshThread());
     // refreshThread.start();
   }
+  
+//  public void setIgnoreNextEvent()
+//  {
+//    this.ignoreNextEvent = true;
+//  }
+//  
+//  public boolean isIgnoreNextEvent()
+//  {
+//    return this.ignoreNextEvent;
+//  }
   
   /*
    * private class MouseRefreshThread implements Runnable { public void run() {
@@ -33,7 +46,7 @@ public class VTGraphicsModeClientRemoteInterfaceMouseMoveListener implements Mou
   
   public void mouseDragged(MouseEvent event)
   {
-    // System.out.println(event.toString());
+    //System.out.println(event.toString());
     untyped.id = event.getID();
     untyped.x = event.getX();
     untyped.y = event.getY();
@@ -44,7 +57,7 @@ public class VTGraphicsModeClientRemoteInterfaceMouseMoveListener implements Mou
   
   public void mouseMoved(MouseEvent event)
   {
-    // System.out.println(event.toString());
+    //System.out.println(event.toString());
     untyped.id = event.getID();
     untyped.x = event.getX();
     untyped.y = event.getY();

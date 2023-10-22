@@ -50,7 +50,7 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+5: Decrease Remote Pointer"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+6: Increase Remote Pointer"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+7: Reset Image"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+8: Toggle Maximize"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+8: Toggle Auto Scroll"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+9: Receive Remote Clipboard"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+0: Send Local Clipboard"));
     

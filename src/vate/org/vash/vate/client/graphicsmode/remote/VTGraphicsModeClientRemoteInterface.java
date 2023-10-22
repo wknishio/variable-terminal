@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.awt.ScrollPane;
 import java.awt.image.BufferedImage;
 
+@SuppressWarnings("unused")
 public class VTGraphicsModeClientRemoteInterface extends Canvas
 {
   private static final long serialVersionUID = 1L;
@@ -23,16 +24,20 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
   // private Rectangle refreshArea = new Rectangle(0, 0, 0, 0);
   private VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter repainter;
   
-  public VTGraphicsModeClientRemoteInterface(ScrollPane scrolled)
+  public VTGraphicsModeClientRemoteInterface()
   {
     // this.setBackground(new Color(0x00999999));
     // this.setBackground(new Color(0x00808080));
     //this.setBackground(new Color(0x00555555));
     this.setBackground(Color.BLACK);
-    this.scrolled = scrolled;
     this.repainter = new VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter(this);
     // this.graphics
     // this.resizer = new VTGraphicsModeClientViewPortChangeListener(this);
+  }
+  
+  public void setScrollPane(ScrollPane scrolled)
+  {
+    this.scrolled = scrolled;
   }
   
   public void dispose()
@@ -216,23 +221,12 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
       try
       {
         g.drawImage(sourceImageDataBuffer, area.x, area.y, area.x + area.width, area.y + area.height, area.x, area.y, area.x + area.width, area.y + area.height, null);
-//        if (displayImageDataBuffer != null)
-//        {
-//          if (!synchronousRefresh)
-//          {
-//            refreshImage();
-//          }
-//          g.drawImage(displayImageDataBuffer, area.x, area.y, area.x + area.width, area.y + area.height, area.x, area.y, area.x + area.width, area.y + area.height, null);
-//        }
-//        else
-//        {
-//          g.drawImage(sourceImageDataBuffer, area.x, area.y, area.x + area.width, area.y + area.height, area.x, area.y, area.x + area.width, area.y + area.height, null);
-//        }
       }
       catch (Throwable t)
       {
         
       }
+      //g.drawImage(sourceImageDataBuffer, 0, 0, null);
     }
     else
     {

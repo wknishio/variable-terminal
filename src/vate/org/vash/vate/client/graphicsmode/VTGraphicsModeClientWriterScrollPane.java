@@ -22,6 +22,7 @@ public class VTGraphicsModeClientWriterScrollPane extends ScrollPane
   public VTGraphicsModeClientWriterScrollPane(int scrollbarsAsNeeded)
   {
     super(scrollbarsAsNeeded);
+    this.setWheelScrollingEnabled(false);
     // this.getInsets().set(0, 0, 0, 0);
     // this.addComponentListener(new
     // VTGraphicsModeClientWriterScrollPaneComponentListener());

@@ -266,7 +266,7 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
     }
     else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_8))
     {
-      writer.adjustFrameSize();
+      writer.toggleHideScrollBars();
     }
     else if (pressedControl && pressedShift && (event.getKeyCode() == KeyEvent.VK_9))
     {
