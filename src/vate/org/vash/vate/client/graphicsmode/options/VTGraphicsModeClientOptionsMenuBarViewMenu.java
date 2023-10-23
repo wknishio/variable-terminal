@@ -133,7 +133,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.toggleFullScreenMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuToggleFullScreenOptionListener(writer));
     this.toggleScrollBarsMenu = new MenuItem("Toggle Auto Scroll");
     this.toggleScrollBarsMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuToggleScrollbarsOptionListener(writer));
-    this.clearInterfaceMenu = new MenuItem("Reset Image");
+    this.clearInterfaceMenu = new MenuItem("Reset Image Data");
     this.clearInterfaceMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuClearInterfaceOptionListener(writer));
     this.closeTerminalMenu = new MenuItem("Close View");
     this.closeTerminalMenu.addActionListener(new VTGraphicsModeClientOptionsMenuBarViewMenuCloseTerminalOptionListener(writer));

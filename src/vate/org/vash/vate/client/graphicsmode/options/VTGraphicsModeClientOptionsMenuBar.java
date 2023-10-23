@@ -44,7 +44,7 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Home: Previous Display Device"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+End: Next Display Device"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+1: Toggle Image Refresh"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+2: Reset Image"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+2: Reset Image Data"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+3: Decrease Refresh Rate"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+4: Increase Refresh Rate"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+5: Decrease Color Quality"));
