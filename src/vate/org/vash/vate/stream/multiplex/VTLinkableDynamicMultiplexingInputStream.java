@@ -175,7 +175,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     {
       return;
     }
-    packetReader.setRunning(false);
+    //packetReader.setRunning(false);
     //synchronized (pipedChannels)
     //{
       for (VTLinkableDynamicMultiplexedInputStream stream : bufferedChannels.values().toArray(new VTLinkableDynamicMultiplexedInputStream []{ }))
@@ -211,48 +211,51 @@ public final class VTLinkableDynamicMultiplexingInputStream
   }
   
   // critical method, handle with care
-  private final void readPacket() throws IOException
+  private final void readPackets() throws IOException
   {
-    readed = 0;
-    copied = 0;
-    type = in.readByte();
-    channel = in.readSubInt();
-    length = in.readInt();
-    if (length > 0)
+    while (!closed)
     {
-      remaining = length;
-      while (remaining > 0)
+      readed = 0;
+      copied = 0;
+      type = in.readByte();
+      channel = in.readSubInt();
+      length = in.readInt();
+      if (length > 0)
       {
-        copied += readed;
-        remaining -= readed;
-        readed = in.read(packetBuffer, copied, remaining);
-        if (readed < 0)
+        remaining = length;
+        while (remaining > 0)
         {
-          close();
-          return;
+          copied += readed;
+          remaining -= readed;
+          readed = in.read(packetBuffer, copied, remaining);
+          if (readed < 0)
+          {
+            close();
+            return;
+          }
+        }
+        try
+        {
+          OutputStream out = getInputStream(type, channel).getOutputStream();
+          if (out != null)
+          {
+            out.write(packetBuffer, 0, length);
+            out.flush();
+          }
+        }
+        catch (Throwable e)
+        {
+          //e.printStackTrace();
         }
       }
-      try
+      else if (length == -2)
       {
-        OutputStream out = getInputStream(type, channel).getOutputStream();
-        if (out != null)
-        {
-          out.write(packetBuffer, 0, length);
-          out.flush();
-        }
+        close(type, channel);
       }
-      catch (Throwable e)
+      else if (length == -3)
       {
-        //e.printStackTrace();
+        open(type, channel);
       }
-    }
-    else if (length == -2)
-    {
-      close(type, channel);
-    }
-    else if (length == -3)
-    {
-      open(type, channel);
     }
   }
   
@@ -489,33 +492,25 @@ public final class VTLinkableDynamicMultiplexingInputStream
   
   private final class VTLinkableDynamicMultiplexingInputStreamPacketReader implements Runnable
   {
-    private volatile boolean running;
+    //private volatile boolean running;
     private final VTLinkableDynamicMultiplexingInputStream multiplexingInputStream;
     
     private VTLinkableDynamicMultiplexingInputStreamPacketReader(VTLinkableDynamicMultiplexingInputStream multiplexingInputStream)
     {
       this.multiplexingInputStream = multiplexingInputStream;
-      this.running = true;
-    }
-    
-    private final void setRunning(boolean running)
-    {
-      this.running = running;
+      //this.running = true;
     }
     
     public final void run()
     {
-      while (running)
+      try
       {
-        try
-        {
-          multiplexingInputStream.readPacket();
-        }
-        catch (Throwable e)
-        {
-          //e.printStackTrace();
-          running = false;
-        }
+        multiplexingInputStream.readPackets();
+      }
+      catch (Throwable e)
+      {
+        //e.printStackTrace();
+        //running = false;
       }
       try
       {
