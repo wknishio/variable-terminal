@@ -791,11 +791,11 @@ public class VTGraphicsModeClientWriter implements Runnable
         int deltaX = 0;
         int deltaY = 0;
         
+        int pointerX = event.x;
+        int pointerY = event.y;
+        
         if (viewport.width < imagesize.width || viewport.height < imagesize.height)
         {
-          int pointerX = event.x;
-          int pointerY = event.y;
-          
           if (lastPointerX != pointerX || lastPointerY != pointerY)
           {
             Point currentScrollPosition = scrolled.getScrollPosition();
@@ -804,8 +804,8 @@ public class VTGraphicsModeClientWriter implements Runnable
             
             int scrollX = currentScrollPosition.x + (viewport.width / 2);
             int scrollY = currentScrollPosition.y + (viewport.height / 2);
-            int remainingX = (int) (viewport.width * 0.4375);
-            int remainingY = (int) (viewport.height * 0.4375);
+            int remainingX = (int) (viewport.width * 0.425);
+            int remainingY = (int) (viewport.height * 0.425);
             
             if (Math.abs(pointerX - scrollX) > remainingX)
             {
@@ -844,6 +844,11 @@ public class VTGraphicsModeClientWriter implements Runnable
             if (nextScrollPosition != null && !currentScrollPosition.equals(nextScrollPosition))
             {
               scrolled.setScrollPosition(nextScrollPosition);
+              
+              Point scrolledPosition = scrolled.getScrollPosition();
+              
+              deltaX = scrolledPosition.x - currentScrollPosition.x;
+              deltaY = scrolledPosition.y - currentScrollPosition.y;
             }
             else
             {
@@ -859,8 +864,8 @@ public class VTGraphicsModeClientWriter implements Runnable
         {
           
         }
-        lastPointerX = event.x + deltaX;
-        lastPointerY = event.y + deltaY;
+        lastPointerX = pointerX + deltaX;
+        lastPointerY = pointerY + deltaY;
       }
       else
       {

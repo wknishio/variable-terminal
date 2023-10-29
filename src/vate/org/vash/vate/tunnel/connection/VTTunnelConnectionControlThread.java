@@ -329,7 +329,8 @@ public class VTTunnelConnectionControlThread implements Runnable
         
       }
       
-      Socket socket = VTProxy.connect(host, port, null, proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
+      VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
+      Socket socket = VTProxy.connect(host, port, null, proxy);
       return socket;
     }
     catch (Throwable t)
