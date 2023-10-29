@@ -122,6 +122,9 @@ public final class VTAWTScreenCaptureProvider
   //private int sectionCurrentImageConvertedColorCount;
   // private int[] pixelBlock = new int[64 * 64];
   private int[] sectionPixelBufferInt;
+  @SuppressWarnings("unused")
+  private short[] sectionPixelBufferShort;
+  @SuppressWarnings("unused")
   private byte[] sectionPixelBufferByte;
   private int[] pixelBufferInt;
   private byte[] pixelBufferByte;
@@ -1165,6 +1168,7 @@ public final class VTAWTScreenCaptureProvider
     scaleFactorY = 1;
     disposeScreenCaptureResources();
     sectionPixelBufferInt = null;
+    sectionPixelBufferShort = null;
     sectionPixelBufferByte = null;
     standardCaptureRobot = null;
     if (directCaptureRobot != null)
@@ -2160,6 +2164,7 @@ public final class VTAWTScreenCaptureProvider
     BufferedImage screenCapture = createRobotCapture(captureArea, true);
     int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
     sectionPixelBufferByte = ((DataBufferByte) screenCapture.getRaster().getDataBuffer()).getData();
+    //sectionPixelBufferShort = ((DataBufferUShort) screenCapture.getRaster().getDataBuffer()).getData();
     
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
     int minX = 0;
@@ -2194,6 +2199,7 @@ public final class VTAWTScreenCaptureProvider
       
       //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
       pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i] & 0xC0) >> 6);
+      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferShort[i] & 0xC000) >> 14);
     }
     
     if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
@@ -2203,6 +2209,7 @@ public final class VTAWTScreenCaptureProvider
     screenCapture = null;
     pixelBufferByte = null;
     sectionPixelBufferByte = null;
+    //sectionPixelBufferShort = null;
     
     if (drawPointer)
     {
@@ -2239,6 +2246,7 @@ public final class VTAWTScreenCaptureProvider
     BufferedImage screenCapture = createRobotCapture(captureArea, true);
     int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
     sectionPixelBufferByte = ((DataBufferByte) screenCapture.getRaster().getDataBuffer()).getData();
+    //sectionPixelBufferShort = ((DataBufferUShort) screenCapture.getRaster().getDataBuffer()).getData();
     
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
     int minX = 0;
@@ -2273,6 +2281,7 @@ public final class VTAWTScreenCaptureProvider
       
       //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
       pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i] & 0xE0) >> 5);
+      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferShort[i] & 0xE000) >> 13);
     }
     
     if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
@@ -2282,6 +2291,7 @@ public final class VTAWTScreenCaptureProvider
     screenCapture = null;
     pixelBufferByte = null;
     sectionPixelBufferByte = null;
+    //sectionPixelBufferShort = null;
     
     if (drawPointer)
     {
@@ -2318,6 +2328,7 @@ public final class VTAWTScreenCaptureProvider
     BufferedImage screenCapture = createRobotCapture(captureArea, true);
     int pixelDataLength = (screenCapture.getWidth() * screenCapture.getHeight());
     sectionPixelBufferByte = ((DataBufferByte) screenCapture.getRaster().getDataBuffer()).getData();
+    //sectionPixelBufferShort = ((DataBufferUShort) screenCapture.getRaster().getDataBuffer()).getData();
     
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
     int minX = 0;
@@ -2352,6 +2363,7 @@ public final class VTAWTScreenCaptureProvider
       
       //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
       pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i] & 0xF0) >> 4);
+      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferShort[i] & 0xF000) >> 12);
     }
     
     if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
@@ -2361,6 +2373,7 @@ public final class VTAWTScreenCaptureProvider
     screenCapture = null;
     pixelBufferByte = null;
     sectionPixelBufferByte = null;
+    //sectionPixelBufferShort = null;
     
     if (drawPointer)
     {
@@ -3314,6 +3327,7 @@ public final class VTAWTScreenCaptureProvider
         //sectionCurrentImageGrayscale = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_CUSTOM, sectionCurrentImageGrayscaleColorCount, recyclableSectionDataBufferGrayscale);
         //sectionCurrentImageGrayscale = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_BYTE_INDEXED, sectionCurrentImageGrayscaleColorCount, recyclableSectionDataBufferGrayscale);
         sectionCurrentImageGrayscale = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_BYTE_GRAY, 256, recyclableSectionDataBufferGrayscale);
+        //sectionCurrentImageGrayscale = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_USHORT_GRAY, 65536, recyclableSectionDataBufferGrayscale);
         recyclableSectionDataBufferGrayscale = sectionCurrentImageGrayscale.getRaster().getDataBuffer();
         sectionCurrentImageGrayscaleGraphics = sectionCurrentImageGrayscale.createGraphics();
         sectionCurrentImageGrayscaleGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
