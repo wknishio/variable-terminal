@@ -2,7 +2,6 @@ package org.vash.vate.server.runtime;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.vash.vate.help.VTHelpManager;
@@ -59,8 +58,10 @@ public class VTServerRuntimeExecutor extends VTTask
     this.session = session;
     this.connection = session.getConnection();
     this.finished = true;
-    this.processList = Collections.synchronizedList(new ArrayList<VTRuntimeProcess>());
-    this.removedProcessStack = Collections.synchronizedList(new ArrayList<VTRuntimeProcess>());
+//    this.processList = Collections.synchronizedList(new ArrayList<VTRuntimeProcess>());
+//    this.removedProcessStack = Collections.synchronizedList(new ArrayList<VTRuntimeProcess>());
+    this.processList = new ArrayList<VTRuntimeProcess>();
+    this.removedProcessStack = new ArrayList<VTRuntimeProcess>();
     this.message = new StringBuilder();
   }
   
@@ -96,9 +97,11 @@ public class VTServerRuntimeExecutor extends VTTask
   
   public void clear()
   {
-    for (VTRuntimeProcess process : processList)
+    for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
     {
-      process.setRestart(false);
+      //process.setRestart(false);
+      //process.stop();
+      process.destroy();
     }
     processList.clear();
   }
@@ -538,7 +541,7 @@ public class VTServerRuntimeExecutor extends VTTask
             message.setLength(0);
             message.append("\nVT>List of managed processes on session list:\nVT>");
             i = 0;
-            for (VTRuntimeProcess process : processList)
+            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
             {
               try
               {
@@ -637,7 +640,7 @@ public class VTServerRuntimeExecutor extends VTTask
           {
             found = false;
             i = 0;
-            for (VTRuntimeProcess process : processList)
+            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
             {
               try
               {
@@ -704,7 +707,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            for (VTRuntimeProcess process : processList)
+            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
             {
               process.destroy();
             }
@@ -777,7 +780,7 @@ public class VTServerRuntimeExecutor extends VTTask
           {
             found = false;
             i = 0;
-            for (VTRuntimeProcess process : processList)
+            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
             {
               if (process.getCommand().contains(splitCommand[2]))
               {
@@ -897,7 +900,7 @@ public class VTServerRuntimeExecutor extends VTTask
           {
             removedProcessStack.clear();
             found = false;
-            for (VTRuntimeProcess process : processList)
+            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
             {
               if (process.getCommand().contains(splitCommand[2]))
               {
@@ -949,7 +952,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            for (VTRuntimeProcess process : processList)
+            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
             {
               try
               {
@@ -1029,7 +1032,7 @@ public class VTServerRuntimeExecutor extends VTTask
               command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               found = false;
               // VTTerminal.println(splitCommand[1]);
-              for (VTRuntimeProcess process : processList)
+              for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
               {
                 if (process.getCommand().contains(splitCommand[2]))
                 {
@@ -1082,7 +1085,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            for (VTRuntimeProcess process : processList)
+            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
             {
               try
               {
@@ -1162,7 +1165,7 @@ public class VTServerRuntimeExecutor extends VTTask
               command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               found = false;
               // VTTerminal.println(splitCommand[1]);
-              for (VTRuntimeProcess process : processList)
+              for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
               {
                 if (process.getCommand().contains(splitCommand[2]))
                 {
@@ -1215,7 +1218,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            for (VTRuntimeProcess process : processList)
+            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
             {
               try
               {
@@ -1345,7 +1348,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 found = false;
                 // VTTerminal.println(splitCommand[1]);
-                for (VTRuntimeProcess process : processList)
+                for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
                 {
                   if (process.getCommand().contains(splitCommand[2]))
                   {
@@ -1400,7 +1403,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            for (VTRuntimeProcess process : processList)
+            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
             {
               try
               {
@@ -1530,7 +1533,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 found = false;
                 // VTTerminal.println(splitCommand[1]);
-                for (VTRuntimeProcess process : processList)
+                for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
                 {
                   if (process.getCommand().contains(splitCommand[2]))
                   {

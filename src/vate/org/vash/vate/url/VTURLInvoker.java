@@ -8,7 +8,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -29,7 +28,7 @@ public class VTURLInvoker
     }
   }
   
-  private Collection<URLConnection> connections = Collections.synchronizedCollection(new ArrayList<URLConnection>());
+  private Collection<URLConnection> connections = new ArrayList<URLConnection>();
   
   public void close()
   {

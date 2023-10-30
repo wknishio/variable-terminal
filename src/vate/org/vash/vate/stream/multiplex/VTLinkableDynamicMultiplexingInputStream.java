@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,9 +31,9 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private final Thread packetReaderThread;
   // private byte[] compressedBuffer = new byte[VT.VT_IO_BUFFFER_SIZE];
   private final VTLittleEndianInputStream in;
-  private VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
-  private Map<Integer, VTLinkableDynamicMultiplexedInputStream> bufferedChannels;
-  private Map<Integer, VTLinkableDynamicMultiplexedInputStream> directChannels;
+  private final VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
+  private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> bufferedChannels;
+  private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> directChannels;
   private volatile boolean closed = false;
   
   public VTLinkableDynamicMultiplexingInputStream(InputStream in, int packetSize, int bufferSize, boolean startPacketReader)
@@ -42,8 +41,10 @@ public final class VTLinkableDynamicMultiplexingInputStream
     this.bufferSize = bufferSize;
     this.packetBuffer = new byte[packetSize * 2];
     this.in = new VTLittleEndianInputStream(in);
-    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
-    this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
+//    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
+//    this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
+    this.bufferedChannels = new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
+    this.directChannels = new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
     this.packetReader = new VTLinkableDynamicMultiplexingInputStreamPacketReader(this);
     this.packetReaderThread = new Thread(null, packetReader, packetReader.getClass().getSimpleName());
     this.packetReaderThread.setDaemon(true);

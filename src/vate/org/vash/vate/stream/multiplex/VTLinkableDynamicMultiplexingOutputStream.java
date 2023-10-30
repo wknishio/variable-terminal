@@ -4,7 +4,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +28,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   {
     this.original = out;
     this.throttleable = new VTThrottlingOutputStream(out);
-    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
-    this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
+//    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
+//    this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
+    this.bufferedChannels = new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
+    this.directChannels = new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
     this.packetSize = packetSize;
     //this.blockSize = blockSize;
     //this.autoFlushPackets = autoFlushPackets;

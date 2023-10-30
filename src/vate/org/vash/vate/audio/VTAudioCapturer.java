@@ -3,7 +3,6 @@ package org.vash.vate.audio;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +31,8 @@ public class VTAudioCapturer
   private volatile boolean running = false;
   private ExecutorService threads;
   private AudioFormat audioFormat;
-  private Map<String, VTAudioCapturerThread> lines = Collections.synchronizedMap(new LinkedHashMap<String, VTAudioCapturerThread>());
+//  private Map<String, VTAudioCapturerThread> lines = Collections.synchronizedMap(new LinkedHashMap<String, VTAudioCapturerThread>());
+  private Map<String, VTAudioCapturerThread> lines = new LinkedHashMap<String, VTAudioCapturerThread>();
   private VTAudioSystem system;
   private List<Runnable> scheduled = new ArrayList<Runnable>();
   
@@ -489,7 +489,8 @@ public class VTAudioCapturer
     {
       id = line.getLineInfo().toString();
     }
-    if (lines.get(id) == null)
+    VTAudioCapturerThread capturer = lines.get(id);
+    if (capturer == null)
     {
       VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES, true));
       lines.put(id, new VTAudioCapturerThread(stream, line, id, codec, frameMilliseconds));
@@ -497,7 +498,7 @@ public class VTAudioCapturer
     else
     {
       VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES, true));
-      lines.get(id).addOutput(stream);
+      capturer.addOutput(stream);
     }
     return true;
   }

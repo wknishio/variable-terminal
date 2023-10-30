@@ -2,7 +2,6 @@ package org.vash.vate.client.graphicsmode.remote.listener;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -21,8 +20,8 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
   {
     this.writer = writer;
     this.untyped = new VTAWTControlEvent();
-    this.pressedKeys = Collections.synchronizedSet(new LinkedHashSet<Integer>());
-    this.suppressedKeys = Collections.synchronizedSet(new LinkedHashSet<Integer>());
+    this.pressedKeys = new LinkedHashSet<Integer>();
+    this.suppressedKeys = new LinkedHashSet<Integer>();
   }
   
   public boolean suppressKey(int keycode)
