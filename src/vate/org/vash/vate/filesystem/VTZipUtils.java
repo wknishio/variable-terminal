@@ -129,6 +129,7 @@ public class VTZipUtils
     return true;
   }
   
+  @SuppressWarnings("all")
   private static boolean addDirectoryToZip(ZipOutputStream zipWriter, File zipArchive, File directory, final byte[] readBuffer, String currentPath) throws IOException
   {
     if (!directory.canRead())
@@ -260,9 +261,13 @@ public class VTZipUtils
     return true;
   }
   
+  @SuppressWarnings("all")
   private static boolean extractDirectoryFromZip(ZipEntry zipEntry, String destinationPath)
   {
-    File directory = new File(destinationPath + File.separatorChar + zipEntry.getName());
+    //System.out.println("regex:[" + "....\\//\\".replaceAll("[..]+([/]|[\\\\])+", "") + "]");
+    String zipEntryName = zipEntry.getName().replaceAll("[..]+([/]|[\\\\])+", "");
+    
+    File directory = new File(destinationPath + File.separatorChar + zipEntryName);
     if (directory.exists() && directory.isDirectory())
     {
       // may treat timestamps here
@@ -279,6 +284,9 @@ public class VTZipUtils
   @SuppressWarnings("all")
   private static boolean extractFileFromZip(ZipInputStream zipReader, ZipEntry zipEntry, final byte[] readBuffer, String destinationPath) throws IOException
   {
+    //System.out.println("regex:[" + "....\\//\\".replaceAll("[..]+([/]|[\\\\])+", "") + "]");
+    String zipEntryName = zipEntry.getName().replaceAll("[..]+([/]|[\\\\])+", "");
+    
     File directory = new File(destinationPath);
     if (!directory.exists())
     {
@@ -287,8 +295,8 @@ public class VTZipUtils
         return false;
       }
     }
-    File tempFile = new File(destinationPath + File.separatorChar + zipEntry.getName() + ".tmp");
-    File finalFile = new File(destinationPath + File.separatorChar + zipEntry.getName());
+    File tempFile = new File(destinationPath + File.separatorChar + zipEntryName + ".tmp");
+    File finalFile = new File(destinationPath + File.separatorChar + zipEntryName);
     if (finalFile.exists())
     {
       if (!finalFile.isFile())
