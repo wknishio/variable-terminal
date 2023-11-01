@@ -963,10 +963,10 @@ public class VTFileTransferClientTransaction implements Runnable
     if (verifying)
     {
       xxhash64Digest.reset();
-      if (resuming)
-      {
-        xxhash64Digest.update(xxhash64LocalDigest);
-      }
+//      if (resuming)
+//      {
+//        xxhash64Digest.update(xxhash64LocalDigest);
+//      }
     }
     try
     {
@@ -985,6 +985,7 @@ public class VTFileTransferClientTransaction implements Runnable
           if (ok)
           {
             fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, readedBytes);
+            fileTransferRemoteOutputStream.flush();
           }
         }
         currentOffset += readedBytes;
@@ -1371,10 +1372,10 @@ public class VTFileTransferClientTransaction implements Runnable
     if (verifying)
     {
       xxhash64Digest.reset();
-      if (resuming)
-      {
-        xxhash64Digest.update(xxhash64RemoteDigest);
-      }
+//      if (resuming)
+//      {
+//        xxhash64Digest.update(xxhash64RemoteDigest);
+//      }
     }
     try
     {

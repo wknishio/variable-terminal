@@ -677,7 +677,7 @@ public class VTServerConnection
     resultWriter = new BufferedWriter(new OutputStreamWriter(shellDataOutputStream, "UTF-8"));
     
     graphicsControlDataInputStream = new VTLittleEndianInputStream(new BufferedInputStream(graphicsControlInputStream));
-    graphicsControlDataOutputStream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(graphicsControlOutputStream, false));
+    graphicsControlDataOutputStream = new VTLittleEndianOutputStream(new BufferedOutputStream(graphicsControlOutputStream));
     
     directImageDataInputStream = new VTLittleEndianInputStream(graphicsDirectImageInputStream);
     directImageDataOutputStream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(graphicsDirectImageOutputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES, false));

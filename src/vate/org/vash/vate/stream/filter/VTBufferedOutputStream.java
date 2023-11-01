@@ -16,7 +16,7 @@ public final class VTBufferedOutputStream extends FilterOutputStream
    */
   protected int count;
   
-  private boolean flushStreamWhenFull;
+  private boolean flushWhenFull;
   
   /**
    * Creates a new buffered output stream to write data to the specified
@@ -25,9 +25,9 @@ public final class VTBufferedOutputStream extends FilterOutputStream
    * @param out
    *          the underlying output stream.
    */
-  public VTBufferedOutputStream(OutputStream out, boolean flushStreamWhenFull)
+  public VTBufferedOutputStream(OutputStream out, boolean flushWhenFull)
   {
-    this(out, 8192, flushStreamWhenFull);
+    this(out, 8192, flushWhenFull);
   }
   
   /**
@@ -41,10 +41,10 @@ public final class VTBufferedOutputStream extends FilterOutputStream
    * @exception IllegalArgumentException
    *              if size &lt;= 0.
    */
-  public VTBufferedOutputStream(OutputStream out, int size, boolean flushStreamWhenFull)
+  public VTBufferedOutputStream(OutputStream out, int size, boolean flushWhenFull)
   {
     super(out);
-    this.flushStreamWhenFull = flushStreamWhenFull;
+    this.flushWhenFull = flushWhenFull;
     if (size <= 0)
     {
       throw new IllegalArgumentException("Buffer size <= 0");
@@ -53,12 +53,16 @@ public final class VTBufferedOutputStream extends FilterOutputStream
   }
   
   /** Flush the internal buffer */
-  private final void flushBuffer() throws IOException
+  private final void flushBuffer(boolean full) throws IOException
   {
     if (count > 0)
     {
       out.write(buf, 0, count);
       count = 0;
+      if (flushWhenFull && full)
+      {
+        out.flush();
+      }
     }
   }
   
@@ -74,11 +78,7 @@ public final class VTBufferedOutputStream extends FilterOutputStream
   {
     if (count >= buf.length)
     {
-      flushBuffer();
-      if (flushStreamWhenFull)
-      {
-        out.flush();
-      }
+      flushBuffer(true);
     }
     buf[count++] = (byte) b;
   }
@@ -112,11 +112,7 @@ public final class VTBufferedOutputStream extends FilterOutputStream
        * output buffer and then write the data directly. In this way buffered
        * streams will cascade harmlessly.
        */
-      flushBuffer();
-      if (flushStreamWhenFull)
-      {
-        out.flush();
-      }
+      flushBuffer(true);
       out.write(b, off, len);
       return;
     }
@@ -126,11 +122,7 @@ public final class VTBufferedOutputStream extends FilterOutputStream
       // Fill the buffer to the max before flushing
       System.arraycopy(b, off, buf, count, spaceLeft);
       count += spaceLeft;
-      flushBuffer();
-      if (flushStreamWhenFull)
-      {
-        out.flush();
-      }
+      flushBuffer(true);
       int remaining = len - spaceLeft;
       System.arraycopy(b, off + spaceLeft, buf, count, remaining);
       count += remaining;
@@ -152,7 +144,7 @@ public final class VTBufferedOutputStream extends FilterOutputStream
    */
   public synchronized final void flush() throws IOException
   {
-    flushBuffer();
+    flushBuffer(false);
     out.flush();
   }
   

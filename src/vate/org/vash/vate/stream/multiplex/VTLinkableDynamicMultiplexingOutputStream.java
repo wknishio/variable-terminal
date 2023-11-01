@@ -309,11 +309,11 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     public final void flush() throws IOException
     {
-      if (closed)
-      {
-        throw new IOException("OutputStream closed");
-      }
-      out.flush();
+      //if (closed)
+      //{
+        //throw new IOException("OutputStream closed");
+      //}
+      //out.flush();
     }
     
     public final void close() throws IOException
