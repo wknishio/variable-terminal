@@ -146,9 +146,7 @@ public class VTProxy
     if (proxyConnection != null && !proxyConnection.isConnected())
     {
       InetSocketAddress socketAddress = null;
-      if (proxyConnection instanceof VTSocksProxySocket
-      || proxyConnection instanceof VTHttpProxySocket
-      || proxyConnection instanceof VTHttpSocksProxySocket)
+      if (proxyConnection instanceof VTProxySocket)
       {
         socketAddress = InetSocketAddress.createUnresolved(proxyHost, proxyPort);
       }
@@ -198,9 +196,7 @@ public class VTProxy
     
     Socket socket = next(proxyConnection, proxies);
     
-    if (socket instanceof VTSocksProxySocket
-    || socket instanceof VTHttpProxySocket
-    || socket instanceof VTHttpSocksProxySocket)
+    if (socket instanceof VTProxySocket)
     {
       socketAddress = InetSocketAddress.createUnresolved(host, port);
     }

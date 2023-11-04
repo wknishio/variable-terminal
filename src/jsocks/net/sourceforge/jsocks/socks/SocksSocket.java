@@ -16,6 +16,7 @@ package net.sourceforge.jsocks.socks;
 
 import java.io.*;
 import java.net.*;
+import java.nio.channels.SocketChannel;
 
 /**
  * SocksSocket tryies to look very similar to normal Socket,
@@ -202,6 +203,15 @@ public class SocksSocket extends Socket{
     */
    public OutputStream getOutputStream(){
       return proxy.out;
+   }
+   
+   public SocketChannel getChannel()
+   {
+     if (proxy.proxySocket != null)
+     {
+       return proxy.proxySocket.getChannel();
+     }
+     return null;
    }
    /**
     * Same as Socket

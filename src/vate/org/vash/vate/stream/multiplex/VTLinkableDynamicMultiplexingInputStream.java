@@ -26,7 +26,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private int copied;
   private int readed;
   private int remaining;
-  private byte[] packetBuffer;
+  private final byte[] packetBuffer;
   //private OutputStream out;
   private final Thread packetReaderThread;
   // private byte[] compressedBuffer = new byte[VT.VT_IO_BUFFFER_SIZE];
