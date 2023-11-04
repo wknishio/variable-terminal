@@ -157,16 +157,23 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
               {
                 currentAudioFormat = VT.VT_AUDIO_FORMAT_48000;
               }
-              
               if (parsed[i].toUpperCase().contains("S"))
               {
                 currentAudioCodec = VT.VT_AUDIO_CODEC_SPEEX;
-                if (currentAudioFormat == VT.VT_AUDIO_FORMAT_48000 || currentAudioFormat == VT.VT_AUDIO_FORMAT_24000)
-                {
-                  currentAudioFormat = VT.VT_AUDIO_FORMAT_32000;
-                }
+              }
+              if (parsed[i].toUpperCase().contains("O"))
+              {
+                currentAudioCodec = VT.VT_AUDIO_CODEC_OPUS;
               }
             }
+          }
+        }
+        
+        if (currentAudioCodec == VT.VT_AUDIO_CODEC_SPEEX)
+        {
+          if (currentAudioFormat == VT.VT_AUDIO_FORMAT_48000 || currentAudioFormat == VT.VT_AUDIO_FORMAT_24000)
+          {
+            currentAudioFormat = VT.VT_AUDIO_FORMAT_32000;
           }
         }
         
