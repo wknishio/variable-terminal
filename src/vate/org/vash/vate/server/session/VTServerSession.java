@@ -35,7 +35,6 @@ import org.vash.vate.server.graphicsdevices.VTServerGraphicsDeviceResolver;
 import org.vash.vate.server.graphicsmode.VTGraphicsModeServer;
 import org.vash.vate.server.network.VTServerHostResolver;
 import org.vash.vate.server.network.VTServerNetworkInterfaceResolver;
-import org.vash.vate.server.network.VTServerURLInvoker;
 import org.vash.vate.server.opticaldrive.VTServerOpticalDriveOperation;
 import org.vash.vate.server.print.VTServerPrintDataTask;
 import org.vash.vate.server.print.VTServerPrintServiceResolver;
@@ -78,7 +77,7 @@ public class VTServerSession
   // private VTServerZipFileOperation zipFileOperation;
   private VTServerHostResolver hostResolver;
   private VTServerNetworkInterfaceResolver networkInterfaceResolver;
-  private VTServerURLInvoker urlInvoker;
+//  private VTServerURLInvoker urlInvoker;
   private VTServerPrintServiceResolver printServiceResolver;
   private VTServerOpticalDriveOperation opticalDriveOperation;
   private VTServerSessionListViewer connectionListViewer;
@@ -152,7 +151,7 @@ public class VTServerSession
     // this.zipFileOperation = new VTServerZipFileOperation(this);
     this.opticalDriveOperation = new VTServerOpticalDriveOperation(this);
     this.hostResolver = new VTServerHostResolver(this);
-    this.urlInvoker = new VTServerURLInvoker(this);
+//    this.urlInvoker = new VTServerURLInvoker(this);
     this.networkInterfaceResolver = new VTServerNetworkInterfaceResolver(this);
     this.printServiceResolver = new VTServerPrintServiceResolver(this);
     this.connectionListViewer = new VTServerSessionListViewer(this);
@@ -330,10 +329,10 @@ public class VTServerSession
     return hostResolver;
   }
   
-  public VTServerURLInvoker getURLInvoker()
-  {
-    return urlInvoker;
-  }
+//  public VTServerURLInvoker getURLInvoker()
+//  {
+//    return urlInvoker;
+//  }
   
   public VTServerShellOutputWriter getOutputWriter()
   {
@@ -474,7 +473,7 @@ public class VTServerSession
     // System.out.println("printFileTask.setStopped");
     printDataTask.setStopped(true);
     pingService.setStopped(true);
-    urlInvoker.close();
+//    urlInvoker.close();
     pingService.ping();
     // System.out.println("pingService.setStopped");
     /*
@@ -802,11 +801,11 @@ public class VTServerSession
       hostResolver.interruptThread();
       hostResolver.stopThread();
     }
-    if (urlInvoker.aliveThread())
-    {
-      urlInvoker.interruptThread();
-      urlInvoker.stopThread();
-    }
+//    if (urlInvoker.aliveThread())
+//    {
+//      urlInvoker.interruptThread();
+//      urlInvoker.stopThread();
+//    }
     if (networkInterfaceResolver.aliveThread())
     {
       networkInterfaceResolver.interruptThread();
@@ -885,7 +884,7 @@ public class VTServerSession
       // zipFileOperation.joinThread();
       // System.out.println("zipFileCompressOperation.joinThread()");
       hostResolver.joinThread();
-      urlInvoker.joinThread();
+//      urlInvoker.joinThread();
       // System.out.println("hostResolver.joinThread()");
       networkInterfaceResolver.joinThread();
       // System.out.println("networkInterfaceResolver.joinThread()");

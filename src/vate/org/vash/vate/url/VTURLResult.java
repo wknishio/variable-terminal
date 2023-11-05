@@ -20,7 +20,7 @@ public class VTURLResult
     return response;
   }
   
-  public Throwable getError()
+  public boolean getError()
   {
     return error;
   }
@@ -28,9 +28,9 @@ public class VTURLResult
   private int code = -1;
   private String response;
   private Map<String, List<String>> headers;
-  private Throwable error;
+  private boolean error = false;
   
-  public VTURLResult(int code, String response, Map<String, List<String>> headers, Throwable error)
+  public VTURLResult(int code, String response, Map<String, List<String>> headers, boolean error)
   {
     this.code = code;
     this.response = response;
