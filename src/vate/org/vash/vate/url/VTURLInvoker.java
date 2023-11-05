@@ -1,6 +1,7 @@
 package org.vash.vate.url;
 
 import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -27,15 +28,15 @@ public class VTURLInvoker
     }
   }
   
-  public void close(URLConnection connection, OutputStream output, InputStream input)
+  public void close(URLConnection connection, OutputStream connectionOutputStream, InputStream connectionInputStream)
   {
     if (connection != null)
     {
       try
       {
-        if (output != null)
+        if (connectionOutputStream != null)
         {
-          output.close();
+          connectionOutputStream.close();
         }
       }
       catch (Throwable t)
@@ -45,9 +46,9 @@ public class VTURLInvoker
       
       try
       {
-        if (input != null)
+        if (connectionInputStream != null)
         {
-          input.close();
+          connectionInputStream.close();
         }
       }
       catch (Throwable t)
@@ -75,38 +76,40 @@ public class VTURLInvoker
     return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, null, null, null, resultOutputStream);
   }
   
-  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, InputStream outputInputStream, OutputStream resultOutputStream)
+  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, InputStream requestInputStream, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, null, null, outputInputStream, resultOutputStream);
+    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, null, null, requestInputStream, resultOutputStream);
   }
   
-  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, String requestMethod, InputStream outputInputStream, OutputStream resultOutputStream)
+  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, null, requestMethod, outputInputStream, resultOutputStream);
+    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, null, requestMethod, requestInputStream, resultOutputStream);
   }
   
-  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, InputStream outputInputStream, OutputStream resultOutputStream)
+  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, InputStream requestInputStream, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, requestHeaders, null, outputInputStream, resultOutputStream);
+    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, requestHeaders, null, requestInputStream, resultOutputStream);
   }
   
-  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, String requestMethod, InputStream outputInputStream, OutputStream resultOutputStream)
+  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, requestHeaders, requestMethod, outputInputStream, resultOutputStream);
+    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, requestHeaders, requestMethod, requestInputStream, resultOutputStream);
   }
   
-  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Proxy proxy, Map<String, String> requestHeaders, String requestMethod, InputStream outputInputStream, OutputStream resultOutputStream)
+  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Proxy proxy, Map<String, String> requestHeaders, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
   {
     //System.setProperty("http.keepAlive", "false");
     final byte[] readBuffer = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
-    VTURLResult urlResult = new VTURLResult(-1, null, null, true);
+    VTURLResult urlResult = new VTURLResult(-1, null, null, true, null);
     int readed = 1;
     URLConnection urlConnection = null;
     HttpURLConnection httpConnection = null;
     //Throwable error = null;
-    OutputStream outputOutputStream = null;
-    InputStream resultInputStream = null;
-    boolean error = false;
+    OutputStream connectionOutputStream = null;
+    InputStream connectionInputStream = null;
+    InputStream connectionErrorStream = null;
+    boolean failed = false;
+    ByteArrayOutputStream errorOutputStream = new ByteArrayOutputStream();
     
     try
     {
@@ -136,7 +139,7 @@ public class VTURLInvoker
         }
       }
       
-      if (outputInputStream != null)
+      if (requestInputStream != null)
       {
         try
         {
@@ -145,11 +148,11 @@ public class VTURLInvoker
           {
             httpConnection.setChunkedStreamingMode(0);
           }
-          outputOutputStream = urlConnection.getOutputStream();
-          while ((readed = outputInputStream.read(readBuffer)) > 0)
+          connectionOutputStream = urlConnection.getOutputStream();
+          while ((readed = requestInputStream.read(readBuffer)) > 0)
           {
-            outputOutputStream.write(readBuffer, 0, readed);
-            outputOutputStream.flush();
+            connectionOutputStream.write(readBuffer, 0, readed);
+            connectionOutputStream.flush();
           }
         }
         catch (Throwable e)
@@ -176,33 +179,18 @@ public class VTURLInvoker
       
       try
       {
-        resultInputStream = new BufferedInputStream(urlConnection.getInputStream(), VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+        connectionInputStream = new BufferedInputStream(urlConnection.getInputStream(), VT.VT_STANDARD_BUFFER_SIZE_BYTES);
       }
       catch (Throwable t)
       {
-        error = true;
-        if (httpConnection != null)
-        {
-          try
-          {
-            InputStream errorStream = httpConnection.getErrorStream();
-            if (errorStream != null)
-            {
-              resultInputStream = new BufferedInputStream(errorStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
-            }
-          }
-          catch (Throwable e)
-          {
-            
-          }
-        }
+        failed = true;
       }
       
-      if (resultInputStream != null)
+      if (connectionInputStream != null)
       {
         try
         {
-          while ((readed = resultInputStream.read(readBuffer)) > 0)
+          while ((readed = connectionInputStream.read(readBuffer)) > 0)
           {
             resultOutputStream.write(readBuffer, 0, readed);
             resultOutputStream.flush();
@@ -211,6 +199,30 @@ public class VTURLInvoker
         catch (Throwable t)
         {
           
+        }
+      }
+      else
+      {
+        if (httpConnection != null)
+        {
+          try
+          {
+            connectionErrorStream = httpConnection.getErrorStream();
+            if (connectionErrorStream != null)
+            {
+              connectionInputStream = new BufferedInputStream(connectionErrorStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+              
+              while ((readed = connectionInputStream.read(readBuffer)) > 0)
+              {
+                errorOutputStream.write(readBuffer, 0, readed);
+                errorOutputStream.flush();
+              }
+            }
+          }
+          catch (Throwable e)
+          {
+            
+          }
         }
       }
       
@@ -224,7 +236,7 @@ public class VTURLInvoker
         }
         catch (Throwable t)
         {
-          error = true;
+          
         }
         
         try
@@ -233,22 +245,21 @@ public class VTURLInvoker
         }
         catch (Throwable t)
         {
-          error = true;
-          response = t.getMessage();
+          
         }
       }
       
-      urlResult = new VTURLResult(code, response, headers, error);
+      urlResult = new VTURLResult(code, response, headers, failed, errorOutputStream.toByteArray());
     }
     catch (Throwable e)
     {
-      urlResult = new VTURLResult(-1, null, null, true);
+      urlResult = new VTURLResult(-1, null, null, true, null);
     }
     finally
     {
       if (urlConnection != null)
       {
-        close(urlConnection, outputOutputStream, resultInputStream);
+        close(urlConnection, connectionOutputStream, connectionInputStream);
       }
     }
     return urlResult;

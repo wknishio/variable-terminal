@@ -110,7 +110,7 @@ public class VTServerURLInvoker extends VTTask
       
       synchronized (this)
       {
-        if (result.getError())
+        if (result.isFailed())
         {
           session.getConnection().getResultWriter().write("VT>Failed URL Data Transfer Error:[" + result.getResponse() + "]\n");
           session.getConnection().getResultWriter().flush();

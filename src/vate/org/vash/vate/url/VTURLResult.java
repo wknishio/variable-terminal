@@ -20,21 +20,28 @@ public class VTURLResult
     return response;
   }
   
-  public boolean getError()
+  public boolean isFailed()
   {
-    return error;
+    return failed;
+  }
+  
+  public byte[] getErrorData()
+  {
+    return errorData;
   }
   
   private int code = -1;
   private String response;
   private Map<String, List<String>> headers;
-  private boolean error = false;
+  private boolean failed = false;
+  private byte[] errorData = null;
   
-  public VTURLResult(int code, String response, Map<String, List<String>> headers, boolean error)
+  public VTURLResult(int code, String response, Map<String, List<String>> headers, boolean failed, byte[] errorData)
   {
     this.code = code;
     this.response = response;
     this.headers = headers;
-    this.error = error;
+    this.failed = failed;
+    this.errorData = errorData;
   }
 }
