@@ -28,7 +28,7 @@ public class VTURLInvoker
     }
   }
   
-  public void close(URLConnection connection, OutputStream connectionOutputStream, InputStream connectionInputStream)
+  public static void close(URLConnection connection, OutputStream connectionOutputStream, InputStream connectionInputStream)
   {
     if (connection != null)
     {
@@ -71,32 +71,32 @@ public class VTURLInvoker
     }
   }
   
-  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, OutputStream resultOutputStream)
+  public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, null, null, null, resultOutputStream);
+    return invokeURL(urlString, connectTimeout, dataTimeout, null, null, null, null, resultOutputStream);
   }
   
-  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, InputStream requestInputStream, OutputStream resultOutputStream)
+  public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, InputStream requestInputStream, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, null, null, requestInputStream, resultOutputStream);
+    return invokeURL(urlString, connectTimeout, dataTimeout, null, null, null, requestInputStream, resultOutputStream);
   }
   
-  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
+  public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, null, requestMethod, requestInputStream, resultOutputStream);
+    return invokeURL(urlString, connectTimeout, dataTimeout, null, null, requestMethod, requestInputStream, resultOutputStream);
   }
   
-  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, InputStream requestInputStream, OutputStream resultOutputStream)
+  public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, InputStream requestInputStream, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, requestHeaders, null, requestInputStream, resultOutputStream);
+    return invokeURL(urlString, connectTimeout, dataTimeout, null, requestHeaders, null, requestInputStream, resultOutputStream);
   }
   
-  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
+  public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, connectTimeout, dataTimeout, Proxy.NO_PROXY, requestHeaders, requestMethod, requestInputStream, resultOutputStream);
+    return invokeURL(urlString, connectTimeout, dataTimeout, null, requestHeaders, requestMethod, requestInputStream, resultOutputStream);
   }
   
-  public VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Proxy proxy, Map<String, String> requestHeaders, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
+  public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Proxy proxy, Map<String, String> requestHeaders, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
   {
     //System.setProperty("http.keepAlive", "false");
     final byte[] readBuffer = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
@@ -114,7 +114,14 @@ public class VTURLInvoker
     try
     {
       URL url = new URL(urlString);
-      urlConnection = url.openConnection(proxy);
+      if (proxy != null)
+      {
+        urlConnection = url.openConnection(proxy);
+      }
+      else
+      {
+        urlConnection = url.openConnection();
+      }
       urlConnection.setConnectTimeout(connectTimeout);
       urlConnection.setReadTimeout(dataTimeout);
       urlConnection.setAllowUserInteraction(false);
@@ -154,6 +161,7 @@ public class VTURLInvoker
             connectionOutputStream.write(readBuffer, 0, readed);
             connectionOutputStream.flush();
           }
+          connectionOutputStream.close();
         }
         catch (Throwable e)
         {
@@ -179,11 +187,15 @@ public class VTURLInvoker
       
       try
       {
-        connectionInputStream = new BufferedInputStream(urlConnection.getInputStream(), VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+        InputStream inputStream = urlConnection.getInputStream();
+        if (inputStream != null)
+        {
+          connectionInputStream = new BufferedInputStream(inputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+        }
       }
       catch (Throwable t)
       {
-        failed = true;
+        
       }
       
       if (connectionInputStream != null)
@@ -195,6 +207,7 @@ public class VTURLInvoker
             resultOutputStream.write(readBuffer, 0, readed);
             resultOutputStream.flush();
           }
+          connectionInputStream.close();
         }
         catch (Throwable t)
         {
@@ -203,6 +216,7 @@ public class VTURLInvoker
       }
       else
       {
+        failed = true;
         if (httpConnection != null)
         {
           try
@@ -211,12 +225,12 @@ public class VTURLInvoker
             if (connectionErrorStream != null)
             {
               connectionInputStream = new BufferedInputStream(connectionErrorStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
-              
               while ((readed = connectionInputStream.read(readBuffer)) > 0)
               {
                 errorOutputStream.write(readBuffer, 0, readed);
                 errorOutputStream.flush();
               }
+              connectionInputStream.close();
             }
           }
           catch (Throwable e)
