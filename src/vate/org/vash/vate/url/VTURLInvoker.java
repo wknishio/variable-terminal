@@ -73,30 +73,30 @@ public class VTURLInvoker
   
   public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, connectTimeout, dataTimeout, null, null, null, null, resultOutputStream);
+    return invokeURL(urlString, null, connectTimeout, dataTimeout, null, null, null, resultOutputStream);
   }
   
   public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, InputStream requestInputStream, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, connectTimeout, dataTimeout, null, null, null, requestInputStream, resultOutputStream);
+    return invokeURL(urlString, null, connectTimeout, dataTimeout, null, null, requestInputStream, resultOutputStream);
   }
   
   public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, connectTimeout, dataTimeout, null, null, requestMethod, requestInputStream, resultOutputStream);
+    return invokeURL(urlString, null, connectTimeout, dataTimeout, null, requestMethod, requestInputStream, resultOutputStream);
   }
   
   public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, InputStream requestInputStream, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, connectTimeout, dataTimeout, null, requestHeaders, null, requestInputStream, resultOutputStream);
+    return invokeURL(urlString, null, connectTimeout, dataTimeout, requestHeaders, null, requestInputStream, resultOutputStream);
   }
   
   public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
   {
-    return invokeURL(urlString, connectTimeout, dataTimeout, null, requestHeaders, requestMethod, requestInputStream, resultOutputStream);
+    return invokeURL(urlString, null, connectTimeout, dataTimeout, requestHeaders, requestMethod, requestInputStream, resultOutputStream);
   }
   
-  public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Proxy proxy, Map<String, String> requestHeaders, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
+  public static VTURLResult invokeURL(String urlString, Proxy proxy, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
   {
     //System.setProperty("http.keepAlive", "false");
     final byte[] readBuffer = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
@@ -198,7 +198,7 @@ public class VTURLInvoker
         
       }
       
-      if (connectionInputStream != null)
+      if (connectionInputStream != null && resultOutputStream != null)
       {
         try
         {
@@ -222,7 +222,7 @@ public class VTURLInvoker
           try
           {
             connectionErrorStream = httpConnection.getErrorStream();
-            if (connectionErrorStream != null)
+            if (connectionErrorStream != null && resultOutputStream != null)
             {
               connectionInputStream = new BufferedInputStream(connectionErrorStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
               while ((readed = connectionInputStream.read(readBuffer)) > 0)
