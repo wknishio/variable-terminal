@@ -198,14 +198,17 @@ public class VTURLInvoker
         
       }
       
-      if (connectionInputStream != null && resultOutputStream != null)
+      if (connectionInputStream != null)
       {
         try
         {
           while ((readed = connectionInputStream.read(readBuffer)) > 0)
           {
-            resultOutputStream.write(readBuffer, 0, readed);
-            resultOutputStream.flush();
+            if (resultOutputStream != null)
+            {
+              resultOutputStream.write(readBuffer, 0, readed);
+              resultOutputStream.flush();
+            }
           }
           connectionInputStream.close();
         }
@@ -222,7 +225,7 @@ public class VTURLInvoker
           try
           {
             connectionErrorStream = httpConnection.getErrorStream();
-            if (connectionErrorStream != null && resultOutputStream != null)
+            if (connectionErrorStream != null)
             {
               connectionInputStream = new BufferedInputStream(connectionErrorStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
               while ((readed = connectionInputStream.read(readBuffer)) > 0)
