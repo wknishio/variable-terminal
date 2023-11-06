@@ -9,23 +9,23 @@ import org.vash.vate.VT;
 
 public class VTProxy
 {
-  public enum Type
+  public enum VTProxyType
   {
+    GLOBAL,
     DIRECT,
     HTTP,
     SOCKS,
-    SOCKS_THEN_HTTP,
-    HTTP_THEN_SOCKS
+    AUTO
   };
   
-  private Proxy.Type proxyType = Proxy.Type.DIRECT;
+  private VTProxyType proxyType = VTProxyType.GLOBAL;
   private String proxyHost;
   private int proxyPort;
   private String proxyUser;
   private String proxyPassword;
   //private Socket proxyConnection;
   
-  public VTProxy(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
+  public VTProxy(VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
     this.proxyType = proxyType;
     this.proxyHost = proxyHost;
@@ -34,7 +34,7 @@ public class VTProxy
     this.proxyPassword = proxyPassword;
   }
   
-  public void setProxy(Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
+  public void setProxy(VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
     this.proxyType = proxyType;
     this.proxyHost = proxyHost;
@@ -63,7 +63,7 @@ public class VTProxy
 //    this.proxyConnection = proxyConnection;
 //  }
   
-  public Proxy.Type getProxyType()
+  public VTProxyType getProxyType()
   {
     return proxyType;
   }
@@ -93,7 +93,7 @@ public class VTProxy
     //return proxyConnection;
   //}
   
-  public void setProxyType(Proxy.Type proxyType)
+  public void setProxyType(VTProxyType proxyType)
   {
     this.proxyType = proxyType;
   }
@@ -129,7 +129,7 @@ public class VTProxy
     {
       if (next == null)
       {
-        next = new Socket(Proxy.NO_PROXY);
+        next = new Socket();
       }
       return next;
     }
@@ -140,9 +140,9 @@ public class VTProxy
     return next;
   }
   
-  private static Socket next(Socket proxyConnection, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
+  private static Socket next(Socket proxyConnection, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
-    Socket next;
+    Socket next = null;
     if (proxyConnection != null && !proxyConnection.isConnected())
     {
       InetSocketAddress socketAddress = null;
@@ -163,21 +163,29 @@ public class VTProxy
         proxyConnection = null;
       }
     }
-    if (proxyType == Proxy.Type.SOCKS)
+    if (proxyType == VTProxyType.GLOBAL)
+    {
+      next = new Socket();
+    }
+    else if (proxyType == VTProxyType.DIRECT)
+    {
+      next = new Socket(Proxy.NO_PROXY);
+    }
+    else if (proxyType == VTProxyType.SOCKS)
     {
       next = new VTSocksProxySocket(proxyConnection, proxyHost, proxyPort, proxyUser, proxyPassword);
     }
-    else if (proxyType == Proxy.Type.HTTP)
+    else if (proxyType == VTProxyType.HTTP)
     {
       next = new VTHttpProxySocket(proxyConnection, proxyHost, proxyPort, proxyUser, proxyPassword);
     }
-    else if (proxyType == null)
+    else if (proxyType == VTProxyType.AUTO)
     {
-      next = new VTHttpSocksProxySocket(proxyConnection, proxyHost, proxyPort, proxyUser, proxyPassword);
+      next = new VTAutoProxySocket(proxyConnection, proxyHost, proxyPort, proxyUser, proxyPassword);
     }
     else
     {
-      next = new Socket(Proxy.NO_PROXY);
+      next = new Socket();
     }
     return next;
   }

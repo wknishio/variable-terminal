@@ -1,11 +1,10 @@
 package org.vash.vate.server.console.remote.standard.command;
 
-import java.net.Proxy;
-
 import org.vash.vate.VT;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 import org.vash.vate.socket.VTProxy;
+import org.vash.vate.socket.VTProxy.VTProxyType;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.channel.VTTunnelChannelBindSocketListener;
 
@@ -24,7 +23,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
     //Proxy.Type proxyType = Proxy.Type.DIRECT;
     //String proxyHost = "";
     //int proxyPort = 0;
-    VTProxy proxy = new VTProxy(Proxy.Type.DIRECT, "", 0, null, null);
+    VTProxy proxy = new VTProxy(VTProxyType.GLOBAL, "", 0, null, null);
     int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
     
     if (parsed.length > 1)
@@ -160,19 +159,34 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
             String[] values = value.split("/");
             if (values.length >= 3)
             {
-              if (values[0].toUpperCase().startsWith("H"))
+              if (values[0].toUpperCase().startsWith("G"))
               {
-                proxy.setProxyType(Proxy.Type.HTTP);
+                proxy.setProxyType(VTProxyType.GLOBAL);
+                proxy.setProxyPort(1080);
+              }
+              else if (values[0].toUpperCase().startsWith("D"))
+              {
+                proxy.setProxyType(VTProxyType.DIRECT);
+                proxy.setProxyPort(1080);
+              }
+              else if (values[0].toUpperCase().startsWith("H"))
+              {
+                proxy.setProxyType(VTProxyType.HTTP);
                 proxy.setProxyPort(8080);
               }
               else if (values[0].toUpperCase().startsWith("S"))
               {
-                proxy.setProxyType(Proxy.Type.SOCKS);
+                proxy.setProxyType(VTProxyType.SOCKS);
                 proxy.setProxyPort(1080);
+              }
+              else if (values[0].toUpperCase().startsWith("A"))
+              {
+                proxy.setProxyType(VTProxyType.AUTO);
+                proxy.setProxyPort(8080);
               }
               else
               {
-                proxy.setProxyType(null);
+                proxy.setProxyType(VTProxyType.AUTO);
                 proxy.setProxyPort(8080);
               }
               proxy.setProxyHost(values[1]);

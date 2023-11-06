@@ -349,6 +349,7 @@ public class VTClientConfigurationDialog extends Dialog
     });
     
     proxyTypeChoice.add("None");
+    proxyTypeChoice.add("DIRECT");
     proxyTypeChoice.add("AUTO");
     proxyTypeChoice.add("SOCKS");
     proxyTypeChoice.add("HTTP");
@@ -362,6 +363,10 @@ public class VTClientConfigurationDialog extends Dialog
           if (e.getItem().equals("None"))
           {
             setProxyType("None");
+          }
+          else if (e.getItem().equals("DIRECT"))
+          {
+            setProxyType("DIRECT");
           }
           else if (e.getItem().equals("SOCKS"))
           {
@@ -1129,8 +1134,14 @@ public class VTClientConfigurationDialog extends Dialog
       proxyType.setParameter("None");
       proxyHost.setEnabled(false);
       proxyPort.setEnabled(false);
-      //setProxySecurity(false);
-      //proxySecurity.setEnabled(false);
+      proxyUser.setEnabled(false);
+      proxyPassword.setEnabled(false);
+    }
+    else if (proxy.toUpperCase().startsWith("D"))
+    {
+      proxyType.setParameter("DIRECT");
+      proxyHost.setEnabled(false);
+      proxyPort.setEnabled(false);
       proxyUser.setEnabled(false);
       proxyPassword.setEnabled(false);
     }
@@ -1139,7 +1150,6 @@ public class VTClientConfigurationDialog extends Dialog
       proxyType.setParameter("SOCKS");
       proxyHost.setEnabled(true);
       proxyPort.setEnabled(true);
-      //proxySecurity.setEnabled(true);
       proxyUser.setEnabled(true);
       proxyPassword.setEnabled(true);
     }
@@ -1148,7 +1158,6 @@ public class VTClientConfigurationDialog extends Dialog
       proxyType.setParameter("HTTP");
       proxyHost.setEnabled(true);
       proxyPort.setEnabled(true);
-      //proxySecurity.setEnabled(true);
       proxyUser.setEnabled(true);
       proxyPassword.setEnabled(true);
     }
@@ -1157,7 +1166,6 @@ public class VTClientConfigurationDialog extends Dialog
       proxyType.setParameter("AUTO");
       proxyHost.setEnabled(true);
       proxyPort.setEnabled(true);
-      //proxySecurity.setEnabled(true);
       proxyUser.setEnabled(true);
       proxyPassword.setEnabled(true);
     }
@@ -1166,8 +1174,6 @@ public class VTClientConfigurationDialog extends Dialog
       proxyType.setParameter("None");
       proxyHost.setEnabled(false);
       proxyPort.setEnabled(false);
-      //setProxySecurity(false);
-      //proxySecurity.setEnabled(false);
       proxyUser.setEnabled(false);
       proxyPassword.setEnabled(false);
     }

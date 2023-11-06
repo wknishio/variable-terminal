@@ -2,13 +2,13 @@ package org.vash.vate.tunnel.channel;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.Proxy;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 import org.vash.vate.VT;
 import org.vash.vate.socket.VTAuthenticatedProxySocketFactory;
 import org.vash.vate.socket.VTProxy;
+import org.vash.vate.socket.VTProxy.VTProxyType;
 
 public class VTTunnelRemoteSocketFactory extends VTAuthenticatedProxySocketFactory
 {
@@ -28,22 +28,22 @@ public class VTTunnelRemoteSocketFactory extends VTAuthenticatedProxySocketFacto
   
   public Socket createSocket(String host, int port) throws IOException, UnknownHostException
   {
-    return builder.connect(channelType, host, port, Proxy.Type.DIRECT, "", 0, "", "");
+    return builder.connect(channelType, host, port, VTProxyType.GLOBAL, "", 0, "", "");
   }
   
   public Socket createSocket(InetAddress host, int port) throws IOException
   {
-    return builder.connect(channelType, host.getHostAddress(), port, Proxy.Type.DIRECT, "", 0, "", "");
+    return builder.connect(channelType, host.getHostAddress(), port, VTProxyType.GLOBAL, "", 0, "", "");
   }
   
   public Socket createSocket(String host, int port, InetAddress bind, int local) throws IOException, UnknownHostException
   {
-    return builder.connect(channelType, host, port, Proxy.Type.DIRECT, "", 0, "", "");
+    return builder.connect(channelType, host, port, VTProxyType.GLOBAL, "", 0, "", "");
   }
   
   public Socket createSocket(InetAddress host, int port, InetAddress bind, int local) throws IOException
   {
-    return builder.connect(channelType, host.getHostAddress(), port, Proxy.Type.DIRECT, "", 0, "", "");
+    return builder.connect(channelType, host.getHostAddress(), port, VTProxyType.GLOBAL, "", 0, "", "");
   }
   
   public Socket createSocket(String host, int port, Socket proxyConnection, VTProxy... proxies) throws IOException, UnknownHostException
@@ -53,6 +53,6 @@ public class VTTunnelRemoteSocketFactory extends VTAuthenticatedProxySocketFacto
       VTProxy proxy = proxies[0];
       return builder.connect(channelType, host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
     }
-    return builder.connect(channelType, host, port, Proxy.Type.DIRECT, "", 0, "", "");
+    return builder.connect(channelType, host, port, VTProxyType.GLOBAL, "", 0, "", "");
   }
 }

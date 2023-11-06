@@ -2,11 +2,11 @@ package org.vash.vate.tunnel.connection;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Proxy;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.socket.VTProxy;
+import org.vash.vate.socket.VTProxy.VTProxyType;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
@@ -70,18 +70,26 @@ public class VTTunnelConnectionControlThread implements Runnable
                         proxyPassword = null;
                       }
                       
-                      Proxy.Type proxyType = Proxy.Type.DIRECT;
-                      if (proxyTypeLetter.toUpperCase().startsWith("H"))
+                      VTProxyType proxyType = VTProxyType.GLOBAL;
+                      if (proxyTypeLetter.toUpperCase().startsWith("G"))
                       {
-                        proxyType = Proxy.Type.HTTP;
+                        proxyType = VTProxyType.GLOBAL;
+                      }
+                      else if (proxyTypeLetter.toUpperCase().startsWith("D"))
+                      {
+                        proxyType = VTProxyType.DIRECT;
+                      }
+                      else if (proxyTypeLetter.toUpperCase().startsWith("H"))
+                      {
+                        proxyType = VTProxyType.HTTP;
                       }
                       else if (proxyTypeLetter.toUpperCase().startsWith("S"))
                       {
-                        proxyType = Proxy.Type.SOCKS;
+                        proxyType = VTProxyType.SOCKS;
                       }
                       else if (proxyTypeLetter.toUpperCase().startsWith("A"))
                       {
-                        proxyType = null;
+                        proxyType = VTProxyType.AUTO;
                       }
                       
                       VTTunnelSession session = null;
@@ -172,19 +180,28 @@ public class VTTunnelConnectionControlThread implements Runnable
                   proxyPassword = null;
                 }
                 
-                Proxy.Type proxyType = Proxy.Type.DIRECT;
-                if (proxyTypeLetter.toUpperCase().startsWith("H"))
+                VTProxyType proxyType = VTProxyType.GLOBAL;
+                if (proxyTypeLetter.toUpperCase().startsWith("G"))
                 {
-                  proxyType = Proxy.Type.HTTP;
+                  proxyType = VTProxyType.GLOBAL;
+                }
+                else if (proxyTypeLetter.toUpperCase().startsWith("D"))
+                {
+                  proxyType = VTProxyType.DIRECT;
+                }
+                else if (proxyTypeLetter.toUpperCase().startsWith("H"))
+                {
+                  proxyType = VTProxyType.HTTP;
                 }
                 else if (proxyTypeLetter.toUpperCase().startsWith("S"))
                 {
-                  proxyType = Proxy.Type.SOCKS;
+                  proxyType = VTProxyType.SOCKS;
                 }
                 else if (proxyTypeLetter.toUpperCase().startsWith("A"))
                 {
-                  proxyType = null;
+                  proxyType = VTProxyType.AUTO;
                 }
+                
                 VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
                 
                 VTTunnelSession session = null;
@@ -316,7 +333,7 @@ public class VTTunnelConnectionControlThread implements Runnable
     closed = true;
   }
   
-  public Socket connect(String host, int port, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
+  public Socket connect(String host, int port, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
     try
     {

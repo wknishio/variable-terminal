@@ -3,12 +3,12 @@ package org.vash.vate.tunnel.channel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Proxy;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
+import org.vash.vate.socket.VTProxy.VTProxyType;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.session.VTTunnelSession;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
@@ -126,22 +126,31 @@ public class VTTunnelChannelBindSocketListener implements Runnable
           int channelType = channel.getChannelType();
           int tunnelType = channel.getTunnelType();
           
-          Proxy.Type proxyType = channel.getProxy().getProxyType();
+          VTProxyType proxyType = channel.getProxy().getProxyType();
           String proxyHost = channel.getProxy().getProxyHost();
           int proxyPort = channel.getProxy().getProxyPort();
           String proxyUser = channel.getProxy().getProxyUser();
           String proxyPassword = channel.getProxy().getProxyPassword();
           
-          String proxyTypeLetter = "D";
-          if (proxyType == Proxy.Type.HTTP)
+          String proxyTypeLetter = "G";
+          
+          if (proxyType == VTProxyType.GLOBAL)
+          {
+            proxyTypeLetter = "G";
+          }
+          else if (proxyType == VTProxyType.DIRECT)
+          {
+            proxyTypeLetter = "D";
+          }
+          else if (proxyType == VTProxyType.HTTP)
           {
             proxyTypeLetter = "H";
           }
-          else if (proxyType == Proxy.Type.SOCKS)
+          else if (proxyType == VTProxyType.SOCKS)
           {
             proxyTypeLetter = "S";
           }
-          else if (proxyType == null)
+          else if (proxyType == VTProxyType.AUTO)
           {
             proxyTypeLetter = "A";
           }

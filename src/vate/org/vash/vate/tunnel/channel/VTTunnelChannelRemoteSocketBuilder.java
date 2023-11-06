@@ -1,10 +1,10 @@
 package org.vash.vate.tunnel.channel;
 
 import java.io.IOException;
-import java.net.Proxy;
 import java.net.Socket;
 
 import org.vash.vate.socket.VTProxy;
+import org.vash.vate.socket.VTProxy.VTProxyType;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
 import org.vash.vate.tunnel.session.VTTunnelSession;
@@ -46,21 +46,29 @@ public class VTTunnelChannelRemoteSocketBuilder
     return connect(channelType, host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
   }
   
-  public Socket connect(int channelType, String host, int port, Proxy.Type proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
+  public Socket connect(int channelType, String host, int port, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
   {
     VTTunnelSession session = null;
     VTTunnelSessionHandler handler = null;
     
-    String proxyTypeLetter = "D";
-    if (proxyType == Proxy.Type.HTTP)
+    String proxyTypeLetter = "G";
+    if (proxyType == VTProxyType.GLOBAL)
+    {
+      proxyTypeLetter = "G";
+    }
+    else if (proxyType == VTProxyType.DIRECT)
+    {
+      proxyTypeLetter = "D";
+    }
+    else if (proxyType == VTProxyType.HTTP)
     {
       proxyTypeLetter = "H";
     }
-    else if (proxyType == Proxy.Type.SOCKS)
+    else if (proxyType == VTProxyType.SOCKS)
     {
       proxyTypeLetter = "S";
     }
-    else if (proxyType == null)
+    else if (proxyType == VTProxyType.AUTO)
     {
       proxyTypeLetter = "A";
     }
