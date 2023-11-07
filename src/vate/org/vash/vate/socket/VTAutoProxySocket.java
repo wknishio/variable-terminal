@@ -13,10 +13,10 @@ public class VTAutoProxySocket extends VTProxySocket
   
   //private Socket socket;
   
-  public VTAutoProxySocket(Socket proxyConnection, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
+  public VTAutoProxySocket(Socket currentSocket, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
-    httpSocket = new VTHttpProxySocket(proxyConnection, proxyHost, proxyPort, proxyUser, proxyPassword);
-    socksSocket = new VTSocksProxySocket(proxyConnection, proxyHost, proxyPort, proxyUser, proxyPassword);
+    httpSocket = new VTHttpProxySocket(currentSocket, proxyHost, proxyPort, proxyUser, proxyPassword);
+    socksSocket = new VTSocksProxySocket(currentSocket, proxyHost, proxyPort, proxyUser, proxyPassword);
     //directSocket = new Socket(Proxy.NO_PROXY);
     //globalSocket = new Socket();
   }

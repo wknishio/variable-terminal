@@ -123,74 +123,65 @@ public class VTProxy
     //this.proxyConnection = proxyConnection;
   //}
   
-  public static Socket next(Socket next, VTProxy... proxies)
+  public static Socket next(Socket currentSocket, VTProxy... proxies)
   {
     if (proxies == null || proxies.length <= 0)
     {
-      if (next == null)
+      if (currentSocket == null)
       {
-        next = new Socket();
+        currentSocket = new Socket();
       }
-      return next;
+      return currentSocket;
     }
     for (VTProxy proxy : proxies)
     {
-      next = next(next, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+      currentSocket = nextSocket(currentSocket, proxy);
     }
-    return next;
+    return currentSocket;
   }
   
-  private static Socket next(Socket proxyConnection, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
+  private static Socket nextSocket(Socket currentSocket, VTProxy proxy)
   {
-    Socket next = null;
-    if (proxyConnection != null && !proxyConnection.isConnected())
+    Socket nextSocket = null;
+    if (currentSocket != null && !currentSocket.isConnected())
     {
-      InetSocketAddress socketAddress = null;
-      if (proxyConnection instanceof VTProxySocket)
-      {
-        socketAddress = InetSocketAddress.createUnresolved(proxyHost, proxyPort);
-      }
-      else
-      {
-        socketAddress = new InetSocketAddress(proxyHost, proxyPort);
-      }
       try
       {
-        proxyConnection.connect(socketAddress);
+        currentSocket = connect(proxy.getProxyHost(), proxy.getProxyPort(), currentSocket);
       }
       catch (Throwable t)
       {
-        proxyConnection = null;
+        currentSocket = null;
       }
     }
-    if (proxyType == VTProxyType.GLOBAL)
+    if (proxy.getProxyType() == VTProxyType.GLOBAL)
     {
-      next = new Socket();
+      nextSocket = new Socket();
     }
-    else if (proxyType == VTProxyType.DIRECT)
+    else if (proxy.getProxyType() == VTProxyType.DIRECT)
     {
-      next = new Socket(Proxy.NO_PROXY);
+      nextSocket = new Socket(Proxy.NO_PROXY);
     }
-    else if (proxyType == VTProxyType.SOCKS)
+    else if (proxy.getProxyType() == VTProxyType.SOCKS)
     {
-      next = new VTSocksProxySocket(proxyConnection, proxyHost, proxyPort, proxyUser, proxyPassword);
+      nextSocket = new VTSocksProxySocket(currentSocket, proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
     }
-    else if (proxyType == VTProxyType.HTTP)
+    else if (proxy.getProxyType() == VTProxyType.HTTP)
     {
-      next = new VTHttpProxySocket(proxyConnection, proxyHost, proxyPort, proxyUser, proxyPassword);
+      nextSocket = new VTHttpProxySocket(currentSocket, proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
     }
-    else if (proxyType == VTProxyType.AUTO)
+    else if (proxy.getProxyType() == VTProxyType.AUTO)
     {
-      next = new VTAutoProxySocket(proxyConnection, proxyHost, proxyPort, proxyUser, proxyPassword);
+      nextSocket = new VTAutoProxySocket(currentSocket, proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
     }
     else
     {
-      next = new Socket();
+      nextSocket = new Socket();
     }
-    return next;
+    return nextSocket;
   }
   
-  public static Socket connect(String host, int port, Socket proxyConnection, VTProxy... proxies) throws IOException
+  public static Socket connect(String host, int port, Socket currentSocket, VTProxy... proxies) throws IOException
   {
     if (host == null || host.length() == 0 || host.equals("*"))
     {
@@ -202,9 +193,9 @@ public class VTProxy
     }
     InetSocketAddress socketAddress = null;
     
-    Socket socket = next(proxyConnection, proxies);
+    Socket connectionSocket = next(currentSocket, proxies);
     
-    if (socket instanceof VTProxySocket)
+    if (connectionSocket instanceof VTProxySocket)
     {
       socketAddress = InetSocketAddress.createUnresolved(host, port);
     }
@@ -213,10 +204,10 @@ public class VTProxy
       socketAddress = new InetSocketAddress(host, port);
     }
     
-    socket.connect(socketAddress);
-    socket.setTcpNoDelay(true);
-    socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
-    return socket;
+    connectionSocket.connect(socketAddress);
+    connectionSocket.setTcpNoDelay(true);
+    connectionSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+    return connectionSocket;
   }
   
 //  public static Socket connect(String host, int port, Socket proxyConnection, VTProxy proxy) throws IOException

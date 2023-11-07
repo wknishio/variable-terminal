@@ -15,9 +15,9 @@ public class VTHttpProxySocket extends VTProxySocket
   private ProxyClient proxyClient;
   //private Socket socket;
   
-  public VTHttpProxySocket(Socket proxyConnection, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
+  public VTHttpProxySocket(Socket currentSocket, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
-    proxyClient = new ProxyClient(proxyConnection);
+    proxyClient = new ProxyClient(currentSocket);
     proxyClient.getHostConfiguration().setProxy(proxyHost, proxyPort);
     if (proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
     {

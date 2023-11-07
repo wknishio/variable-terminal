@@ -16,7 +16,6 @@ import org.vash.vate.security.VTBlake3DigestRandom;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.session.VTServerSessionListener;
 import org.vash.vate.socket.VTProxy;
-import org.vash.vate.socket.VTProxySocket;
 import org.vash.vate.socket.VTProxy.VTProxyType;
 
 public class VTServerConnector implements Runnable
@@ -525,15 +524,15 @@ public class VTServerConnector implements Runnable
     try
     {
       resetSockets(connection);
-      InetSocketAddress socketAddress = null;
-      if (connection.getConnectionSocket() instanceof VTProxySocket)
-      {
-        socketAddress = InetSocketAddress.createUnresolved(address, port);
-      }
-      else
-      {
-        socketAddress = new InetSocketAddress(address, port);
-      }
+//      InetSocketAddress socketAddress = null;
+//      if (connection.getConnectionSocket() instanceof VTProxySocket)
+//      {
+//        socketAddress = InetSocketAddress.createUnresolved(address, port);
+//      }
+//      else
+//      {
+//        socketAddress = new InetSocketAddress(address, port);
+//      }
       connecting = true;
       // connection.getShellSocket().setPerformancePreferences(1, 3, 2);
       
@@ -541,7 +540,8 @@ public class VTServerConnector implements Runnable
       // - 1);
       // connection.getConnectionSocket().setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE
       // - 1);
-      connection.getConnectionSocket().connect(socketAddress);
+      //connection.getConnectionSocket().connect(socketAddress);
+      VTProxy.connect(address, port, connection.getConnectionSocket());
       connection.getConnectionSocket().setTcpNoDelay(true);
       //connection.getConnectionSocket().setSendBufferSize(1024 * 64);
       //connection.getConnectionSocket().setReceiveBufferSize(1024 * 64);

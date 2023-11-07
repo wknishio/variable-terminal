@@ -16,19 +16,19 @@ public class VTSocksProxySocket extends VTProxySocket
   private Socks4Proxy proxyClient4;
   //private Socket socket;
   
-  public VTSocksProxySocket(Socket proxyConnection, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
+  public VTSocksProxySocket(Socket currentSocket, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
     if (proxyHost == null)
     {
       proxyHost = "";
     }
-    proxyClient5 = new Socks5Proxy(null, proxyHost, proxyPort, proxyConnection);
+    proxyClient5 = new Socks5Proxy(null, proxyHost, proxyPort, currentSocket);
     if (proxyUser != null && proxyPassword != null && proxyUser.length() > 0 && proxyPassword.length() > 0)
     {
       UserPasswordAuthentication authentication = new UserPasswordAuthentication(proxyUser, proxyPassword);
       proxyClient5.setAuthenticationMethod(UserPasswordAuthentication.METHOD_ID, authentication);
     }
-    proxyClient4 = new Socks4Proxy(null, proxyHost, proxyPort, proxyUser != null ? proxyUser : "", proxyConnection);
+    proxyClient4 = new Socks4Proxy(null, proxyHost, proxyPort, proxyUser != null ? proxyUser : "", currentSocket);
   }
   
   public void connect(SocketAddress endpoint) throws IOException
