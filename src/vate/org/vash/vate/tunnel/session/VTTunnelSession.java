@@ -34,6 +34,12 @@ public class VTTunnelSession implements Closeable
     this.originator = originator;
   }
   
+  public VTTunnelSession(VTTunnelConnection connection, boolean originator)
+  {
+    this.connection = connection;
+    this.originator = originator;
+  }
+  
 //  public VTTunnelSession(VTTunnelConnection connection, VTLinkableDynamicMultiplexedInputStream inputStream)
 //  {
 //    this.connection = connection;
@@ -130,6 +136,11 @@ public class VTTunnelSession implements Closeable
   public VTTunnelCloseableSocket getSocket()
   {
     return this.socket;
+  }
+  
+  public void setSocket(Socket socket)
+  {
+    this.socket = new VTTunnelCloseableSocket(socket); 
   }
   
   public VTLinkableDynamicMultiplexedInputStream getTunnelInputStream()
