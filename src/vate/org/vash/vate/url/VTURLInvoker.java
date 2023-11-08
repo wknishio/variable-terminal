@@ -71,31 +71,6 @@ public class VTURLInvoker
     }
   }
   
-  public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, OutputStream resultOutputStream)
-  {
-    return invokeURL(urlString, null, connectTimeout, dataTimeout, null, null, null, resultOutputStream);
-  }
-  
-  public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, InputStream requestInputStream, OutputStream resultOutputStream)
-  {
-    return invokeURL(urlString, null, connectTimeout, dataTimeout, null, null, requestInputStream, resultOutputStream);
-  }
-  
-  public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
-  {
-    return invokeURL(urlString, null, connectTimeout, dataTimeout, null, requestMethod, requestInputStream, resultOutputStream);
-  }
-  
-  public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, InputStream requestInputStream, OutputStream resultOutputStream)
-  {
-    return invokeURL(urlString, null, connectTimeout, dataTimeout, requestHeaders, null, requestInputStream, resultOutputStream);
-  }
-  
-  public static VTURLResult invokeURL(String urlString, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
-  {
-    return invokeURL(urlString, null, connectTimeout, dataTimeout, requestHeaders, requestMethod, requestInputStream, resultOutputStream);
-  }
-  
   public static VTURLResult invokeURL(String urlString, Proxy proxy, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
   {
     //System.setProperty("http.keepAlive", "false");
