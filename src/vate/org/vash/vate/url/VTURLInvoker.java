@@ -151,6 +151,27 @@ public class VTURLInvoker
       int code = -1;
       String response = null;
       
+      if (httpConnection != null)
+      {
+        try
+        {
+          code = httpConnection.getResponseCode();
+        }
+        catch (Throwable t)
+        {
+          
+        }
+        
+        try
+        {
+          response = httpConnection.getResponseMessage();
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
+      
 //      try
 //      {
 //        urlConnection.connect();
@@ -219,27 +240,6 @@ public class VTURLInvoker
       }
       
       Map<String, List<String>> headers = urlConnection.getHeaderFields();
-      
-      if (httpConnection != null)
-      {
-        try
-        {
-          code = httpConnection.getResponseCode();
-        }
-        catch (Throwable t)
-        {
-          
-        }
-        
-        try
-        {
-          response = httpConnection.getResponseMessage();
-        }
-        catch (Throwable t)
-        {
-          
-        }
-      }
       
       urlResult = new VTURLResult(code, response, headers, failed, errorOutputStream.toByteArray());
     }
