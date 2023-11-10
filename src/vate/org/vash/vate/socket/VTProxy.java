@@ -156,11 +156,25 @@ public class VTProxy
     }
     if (proxy.getProxyType() == VTProxyType.GLOBAL)
     {
-      nextSocket = new Socket();
+      if (currentSocket == null)
+      {
+        nextSocket = new Socket();
+      }
+      else
+      {
+        nextSocket = currentSocket;
+      }
     }
     else if (proxy.getProxyType() == VTProxyType.DIRECT)
     {
-      nextSocket = new Socket(Proxy.NO_PROXY);
+      if (currentSocket == null)
+      {
+        nextSocket = new Socket(Proxy.NO_PROXY);
+      }
+      else
+      {
+        nextSocket = currentSocket;
+      }
     }
     else if (proxy.getProxyType() == VTProxyType.SOCKS)
     {
@@ -176,7 +190,14 @@ public class VTProxy
     }
     else
     {
-      nextSocket = new Socket();
+      if (currentSocket == null)
+      {
+        nextSocket = new Socket();
+      }
+      else
+      {
+        nextSocket = currentSocket;
+      }
     }
     return nextSocket;
   }
