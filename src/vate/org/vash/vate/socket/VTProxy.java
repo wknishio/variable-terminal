@@ -140,53 +140,90 @@ public class VTProxy
     return currentSocket;
   }
   
+  @SuppressWarnings("all")
   private static Socket nextSocket(Socket currentSocket, VTProxy proxy)
   {
     Socket nextSocket = null;
-    if (currentSocket != null && !currentSocket.isConnected())
+    if (proxy != null)
     {
-      try
+      if (proxy.getProxyType() == VTProxyType.GLOBAL)
       {
-        currentSocket = connect(proxy.getProxyHost(), proxy.getProxyPort(), currentSocket);
+        if (currentSocket == null)
+        {
+          nextSocket = new Socket();
+        }
+        else
+        {
+          nextSocket = currentSocket;
+        }
       }
-      catch (Throwable t)
+      else if (proxy.getProxyType() == VTProxyType.DIRECT)
       {
-        currentSocket = null;
+        if (currentSocket == null)
+        {
+          nextSocket = new Socket(Proxy.NO_PROXY);
+        }
+        else
+        {
+          nextSocket = currentSocket;
+        }
       }
-    }
-    if (proxy.getProxyType() == VTProxyType.GLOBAL)
-    {
-      if (currentSocket == null)
+      else if (proxy.getProxyType() == VTProxyType.SOCKS)
       {
-        nextSocket = new Socket();
+        if (currentSocket != null && !currentSocket.isConnected())
+        {
+          try
+          {
+            currentSocket = connect(proxy.getProxyHost(), proxy.getProxyPort(), currentSocket);
+          }
+          catch (Throwable t)
+          {
+            currentSocket = null;
+          }
+        }
+        nextSocket = new VTSocksProxySocket(currentSocket, proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+      }
+      else if (proxy.getProxyType() == VTProxyType.HTTP)
+      {
+        if (currentSocket != null && !currentSocket.isConnected())
+        {
+          try
+          {
+            currentSocket = connect(proxy.getProxyHost(), proxy.getProxyPort(), currentSocket);
+          }
+          catch (Throwable t)
+          {
+            currentSocket = null;
+          }
+        }
+        nextSocket = new VTHttpProxySocket(currentSocket, proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+      }
+      else if (proxy.getProxyType() == VTProxyType.AUTO)
+      {
+        if (currentSocket != null && !currentSocket.isConnected())
+        {
+          try
+          {
+            currentSocket = connect(proxy.getProxyHost(), proxy.getProxyPort(), currentSocket);
+          }
+          catch (Throwable t)
+          {
+            currentSocket = null;
+          }
+        }
+        nextSocket = new VTAutoProxySocket(currentSocket, proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
       }
       else
       {
-        nextSocket = currentSocket;
+        if (currentSocket == null)
+        {
+          nextSocket = new Socket();
+        }
+        else
+        {
+          nextSocket = currentSocket;
+        }
       }
-    }
-    else if (proxy.getProxyType() == VTProxyType.DIRECT)
-    {
-      if (currentSocket == null)
-      {
-        nextSocket = new Socket(Proxy.NO_PROXY);
-      }
-      else
-      {
-        nextSocket = currentSocket;
-      }
-    }
-    else if (proxy.getProxyType() == VTProxyType.SOCKS)
-    {
-      nextSocket = new VTSocksProxySocket(currentSocket, proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
-    }
-    else if (proxy.getProxyType() == VTProxyType.HTTP)
-    {
-      nextSocket = new VTHttpProxySocket(currentSocket, proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
-    }
-    else if (proxy.getProxyType() == VTProxyType.AUTO)
-    {
-      nextSocket = new VTAutoProxySocket(currentSocket, proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
     }
     else
     {
@@ -199,6 +236,7 @@ public class VTProxy
         nextSocket = currentSocket;
       }
     }
+    
     return nextSocket;
   }
   
