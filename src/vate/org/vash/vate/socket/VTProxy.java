@@ -144,6 +144,7 @@ public class VTProxy
   private static Socket nextSocket(Socket currentSocket, VTProxy proxy)
   {
     Socket nextSocket = null;
+    
     if (proxy != null)
     {
       if (proxy.getProxyType() == VTProxyType.GLOBAL)
@@ -246,10 +247,7 @@ public class VTProxy
     {
       host = "";
     }
-    else
-    {
-      
-    }
+    
     InetSocketAddress socketAddress = null;
     
     Socket connectionSocket = next(currentSocket, proxies);
