@@ -149,24 +149,34 @@ public class VTProxy
     {
       if (proxy.getProxyType() == VTProxyType.GLOBAL)
       {
-        if (currentSocket == null)
+        nextSocket = new Socket();
+        
+        if (currentSocket != null)
         {
-          nextSocket = new Socket();
-        }
-        else
-        {
-          nextSocket = currentSocket;
+          try
+          {
+            currentSocket.close();
+          }
+          catch (Throwable t)
+          {
+            
+          }
         }
       }
       else if (proxy.getProxyType() == VTProxyType.DIRECT)
       {
-        if (currentSocket == null)
+        nextSocket = new Socket(Proxy.NO_PROXY);
+        
+        if (currentSocket != null)
         {
-          nextSocket = new Socket(Proxy.NO_PROXY);
-        }
-        else
-        {
-          nextSocket = currentSocket;
+          try
+          {
+            currentSocket.close();
+          }
+          catch (Throwable t)
+          {
+            
+          }
         }
       }
       else if (proxy.getProxyType() == VTProxyType.SOCKS)
