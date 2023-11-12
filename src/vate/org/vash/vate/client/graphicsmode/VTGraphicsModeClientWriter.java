@@ -802,33 +802,27 @@ public class VTGraphicsModeClientWriter implements Runnable
             
             Point nextScrollPosition = new Point(currentScrollPosition);
             
-            int scrollX = currentScrollPosition.x + (viewport.width / 2);
-            int scrollY = currentScrollPosition.y + (viewport.height / 2);
-            int remainingX = (int) (viewport.width * 0.425);
-            int remainingY = (int) (viewport.height * 0.425);
+            int scrollX = currentScrollPosition.x;
+            int scrollY = currentScrollPosition.y;
             
-            if (Math.abs(pointerX - scrollX) > remainingX)
+            int remainingM = (int) Math.min(viewport.width * 0.125, viewport.height * 0.125);
+            
+            if (pointerX < scrollX + remainingM)
             {
-              if (pointerX - scrollX > 0)
-              {
-                deltaX = pointerX - scrollX - remainingX;
-              }
-              else
-              {
-                deltaX = pointerX - scrollX + remainingX;
-              }
+              deltaX = pointerX - remainingM - scrollX;
+            }
+            else if (pointerX > scrollX + viewport.width - remainingM)
+            {
+              deltaX = pointerX + remainingM - scrollX - viewport.width;
             }
             
-            if (Math.abs(pointerY - scrollY) > remainingY)
+            if (pointerY < scrollY + remainingM)
             {
-              if (pointerY - scrollY > 0)
-              {
-                deltaY = pointerY - scrollY - remainingY;
-              }
-              else
-              {
-                deltaY = pointerY - scrollY + remainingY;
-              }
+              deltaY = pointerY - remainingM - scrollY;
+            }
+            else if (pointerY > scrollY + viewport.height - remainingM)
+            {
+              deltaY = pointerY + remainingM - scrollY - viewport.height;
             }
             
             if (deltaX != 0 || deltaY != 0)

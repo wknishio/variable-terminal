@@ -5444,6 +5444,7 @@ public final class VTAWTScreenCaptureProvider
   {
     int maxWidth = screenCurrentWidth;
     int maxHeight = screenCurrentHeight;
+    
     if (scaledCurrentWidth > 0 || scaledCurrentHeight > 0)
     {
       maxWidth = scaledCurrentWidth;
@@ -5471,6 +5472,7 @@ public final class VTAWTScreenCaptureProvider
     screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
     screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
     screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
+    
     if (screenArea.width > screenCurrentWidth)
     {
       screenArea.width = screenCurrentWidth;
@@ -5489,7 +5491,6 @@ public final class VTAWTScreenCaptureProvider
     }
     
     Rectangle captureArea = new Rectangle(Math.min(screenArea.x, screenCurrentWidth), Math.min(screenArea.y, screenCurrentHeight), Math.min(screenArea.width, screenCurrentWidth - screenArea.x), Math.min(screenArea.height, screenCurrentHeight - screenArea.y));
-    
     return captureArea;
   }
   
