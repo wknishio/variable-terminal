@@ -805,7 +805,7 @@ public class VTGraphicsModeClientWriter implements Runnable
             int scrollX = currentScrollPosition.x;
             int scrollY = currentScrollPosition.y;
             
-            int remainingM = (int) Math.min(viewport.width * 0.1, viewport.height * 0.1);
+            int remainingM = (int) Math.min(viewport.width * 0.125, viewport.height * 0.125);
             
             if (pointerX < scrollX + remainingM)
             {
