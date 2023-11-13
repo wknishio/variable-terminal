@@ -124,7 +124,6 @@ public final class VTAWTScreenCaptureProvider
   private int[] sectionPixelBufferInt;
   @SuppressWarnings("unused")
   private short[] sectionPixelBufferShort;
-  @SuppressWarnings("unused")
   private byte[] sectionPixelBufferByte;
   private int[] pixelBufferInt;
   private byte[] pixelBufferByte;
