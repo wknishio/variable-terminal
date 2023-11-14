@@ -91,8 +91,8 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
   private VTLittleEndianInputStream lpin = new VTLittleEndianInputStream(bpin);
   private VTLittleEndianInputStream lin = new VTLittleEndianInputStream(null);
   private VTLittleEndianOutputStream lout = new VTLittleEndianOutputStream(null);
-  private BitSet block1BitSet = new BitSet(1024 * 8);
-  private BitSet pixelBitSet = new BitSet(1024 * 512);
+  private BitSet blockBitSet = new BitSet(1024 * 8);
+  private BitSet pixelBitSet = new BitSet(1024 * 8192);
   private Rectangle transferArea = new Rectangle(0, 0, 1, 1);
   private int m1;
   private int limitX;
@@ -463,7 +463,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     // For each block1
     for (;;)
     {
-      if (block1BitSet.get(m1++))
+      if (blockBitSet.get(m1++))
       {
         encodeBlock1Tree8(out, oldPixelData, newPixelData);
       }
@@ -1019,7 +1019,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     // For each block1
     for (;;)
     {
-      if (block1BitSet.get(m1++))
+      if (blockBitSet.get(m1++))
       {
         encodeBlock1Tree15(out, oldPixelData, newPixelData);
       }
@@ -1575,7 +1575,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     // For each block1
     for (;;)
     {
-      if (block1BitSet.get(m1++))
+      if (blockBitSet.get(m1++))
       {
         encodeBlock1Tree24(out, oldPixelData, newPixelData);
       }
@@ -2131,7 +2131,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     // For each block1
     for (;;)
     {
-      if (block1BitSet.get(m1++))
+      if (blockBitSet.get(m1++))
       {
         encodeBlock1Tree30(out, oldPixelData, newPixelData);
       }
@@ -2486,7 +2486,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet, pixelBitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, blockBitSet, pixelBitSet);
     lout.setOutputStream(out);
 //    lout.writeInt(MAGIC1);
     lout.writeInt(offset);
@@ -2565,7 +2565,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet, pixelBitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, blockBitSet, pixelBitSet);
     lout.setOutputStream(out);
 //    lout.writeInt(MAGIC2);
     lout.writeInt(offset);
@@ -2644,7 +2644,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet, pixelBitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, blockBitSet, pixelBitSet);
     lout.setOutputStream(out);
 //    lout.writeInt(MAGIC3);
     lout.writeInt(offset);
@@ -2723,7 +2723,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, block1BitSet, pixelBitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, blockBitSet, pixelBitSet);
     lout.setOutputStream(out);
 //    lout.writeInt(MAGIC4);
     lout.writeInt(offset);
