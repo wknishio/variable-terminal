@@ -149,6 +149,7 @@ public class VTServer implements Runnable
       running = false;
       if (trayIconInterface != null)
       {
+        VTRuntimeExit.setHook(null);
         trayIconInterface.remove();
       }
       serverConnector.stop();

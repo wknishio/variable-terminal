@@ -23,12 +23,31 @@ public class VTTrayIconInterface
   
   private Object systemTrayObject;
   private Object trayIconObject;
-  private Object messageTypeObject;
+  private Object messageTypeObject; 
   
   private Runnable hook;
   
+  private boolean supported = false;
+  
   public VTTrayIconInterface()
   {
+    try
+    {
+      Class<?> systemTrayClass = Class.forName("java.awt.SystemTray");
+      isSupported = systemTrayClass.getDeclaredMethod("isSupported");
+      
+      supported = ((Boolean) isSupported.invoke(null));
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    
+    if (!isSupported())
+    {
+      return;
+    }
+    
     hook = new Runnable()
     {
       public void run()
@@ -41,6 +60,7 @@ public class VTTrayIconInterface
   public void reset()
   {
     isSupported = null;
+    
     getSystemTray = null;
     add = null;
     remove = null;
@@ -55,17 +75,27 @@ public class VTTrayIconInterface
     messageTypeObject = null;
   }
   
+  public boolean isSupported()
+  {
+    return supported;
+  }
+  
   public void install(final Frame frame, String tooltip)
   {
+    if (!isSupported())
+    {
+      return;
+    }
+    
     reset();
     
     try
     {
       Class<?> systemTrayClass = Class.forName("java.awt.SystemTray");
       Class<?> trayIconClass = Class.forName("java.awt.TrayIcon");
-      
       Class<?> messageTypeClass = null;
       Class<?> memberClasses[] = trayIconClass.getClasses();
+      
       for (Class<?> memberClass : memberClasses)
       {
         if (memberClass.getSimpleName().contains("MessageType"))
@@ -75,7 +105,6 @@ public class VTTrayIconInterface
         }
       }
       
-      isSupported = systemTrayClass.getDeclaredMethod("isSupported");
       getSystemTray = systemTrayClass.getDeclaredMethod("getSystemTray");
       add = systemTrayClass.getMethod("add", trayIconClass);
       remove = systemTrayClass.getMethod("remove", trayIconClass);
@@ -84,11 +113,6 @@ public class VTTrayIconInterface
       addActionListener = trayIconClass.getMethod("addActionListener", ActionListener.class);
       setImageAutoSize = trayIconClass.getMethod("setImageAutoSize", boolean.class);
       displayMessage = trayIconClass.getMethod("displayMessage", String.class, String.class, messageTypeClass);
-      
-      if (!((Boolean) isSupported.invoke(null)))
-      {
-        return;
-      }
       
       systemTrayObject = getSystemTray.invoke(null);
       trayIconObject = trayIconClass.getConstructor(Class.forName("java.awt.Image"), String.class).newInstance(frame.getIconImage(), tooltip);
@@ -149,71 +173,7 @@ public class VTTrayIconInterface
       
       add.invoke(systemTrayObject, trayIconObject);
       
-//			if (!SystemTray.isSupported())
-//			{
-//				return;
-//			}
-//			systemTray = SystemTray.getSystemTray();
-//			trayIcon = new TrayIcon(frame.getIconImage(), tooltip);
-//			
-//			trayIcon.addMouseListener(new MouseListener()
-//			{
-//				public void mouseClicked(MouseEvent e)
-//				{
-//					if (!frame.isVisible())
-//					{
-//						frame.setVisible(true);
-//					}
-//					if ((frame.getExtendedState() & Frame.ICONIFIED) != 0)
-//					{
-//						frame.setExtendedState(frame.getExtendedState() ^ Frame.ICONIFIED);
-//					}
-//					frame.toFront();
-//				}
-//				
-//				public void mousePressed(MouseEvent e)
-//				{
-//					
-//				}
-//				
-//				public void mouseReleased(MouseEvent e)
-//				{
-//					
-//				}
-//				
-//				public void mouseEntered(MouseEvent e)
-//				{
-//					
-//				}
-//				
-//				public void mouseExited(MouseEvent e)
-//				{
-//					
-//				}
-//			});
-//			
-//			trayIcon.addActionListener(new ActionListener()
-//			{
-//				public void actionPerformed(ActionEvent e)
-//				{
-//					if (!frame.isVisible())
-//					{
-//						frame.setVisible(true);
-//					}
-//					if ((frame.getExtendedState() & Frame.ICONIFIED) != 0)
-//					{
-//						frame.setExtendedState(frame.getExtendedState() ^ Frame.ICONIFIED);
-//					}
-//					frame.toFront();
-//				}
-//			});
-//			
-//			trayIcon.setImageAutoSize(true);
-//			
-//			systemTray.add(trayIcon);
-      // displayMessage.setAccessible(true);
-      // remove.setAccessible(true);
-      VTRuntimeExit.installHook(hook);
+      VTRuntimeExit.setHook(hook);
     }
     catch (Throwable t)
     {
