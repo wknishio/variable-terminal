@@ -249,6 +249,15 @@ public class Zuc128CoreEngine
         buf[off + 2] = (byte)(val >> 8);
         buf[off + 3] = (byte)val;
     }
+    
+    public static void encode32le(int val, byte[] buf, int off)
+    {
+        buf[off] = (byte)(val);
+        buf[off + 1] = (byte)(val >> 8);
+        buf[off + 2] = (byte)(val >> 16);
+        buf[off + 3] = (byte)(val >> 24);
+    }
+
 
     /* ����������������������- */
 
@@ -519,9 +528,9 @@ public class Zuc128CoreEngine
     /**
      * Create the next byte keyStream.
      */
-    private void makeKeyStream()
+    protected void makeKeyStream()
     {
-        encode32be(makeKeyStreamWord(), keyStream, 0);
+        encode32le(makeKeyStreamWord(), keyStream, 0);
     }
 
     /**
@@ -531,15 +540,30 @@ public class Zuc128CoreEngine
      */
     protected int makeKeyStreamWord()
     {
-        if (theIterations++ >= getMaxIterations())
-        {
-            throw new IllegalStateException("Too much data processed by singleKey/IV");
-        }
+//        if (theIterations++ >= getMaxIterations())
+//        {
+//            throw new IllegalStateException("Too much data processed by singleKey/IV");
+//        }
         BitReorganization();
         final int result = F() ^ BRC[3];
         LFSRWithWorkMode();
         return result;
     }
+    
+//    protected int FxorBRC3()
+//    {
+//      int W, W1, W2, u, v;
+//      W = (BRC[0] ^ F[0]) + F[1];
+//      W1 = F[0] + BRC[1];
+//      W2 = F[1] ^ BRC[2];
+//      u = L1((W1 << 16) | (W2 >>> 16));
+//      v = L2((W2 << 16) | (W1 >>> 16));
+//      F[0] = MAKEU32(S0[u >>> 24], S1[(u >>> 16) & 0xFF],
+//          S0[(u >>> 8) & 0xFF], S1[u & 0xFF]);
+//      F[1] = MAKEU32(S0[v >>> 24], S1[(v >>> 16) & 0xFF],
+//          S0[(v >>> 8) & 0xFF], S1[v & 0xFF]);
+//      return W ^ BRC[3];
+//    }
 
     /**
      * Create a copy of the engine.

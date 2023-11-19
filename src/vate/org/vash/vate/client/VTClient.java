@@ -63,7 +63,7 @@ public class VTClient implements Runnable
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
   "#vate.client.connection.mode      values: default active(A), passive(P)\r\n" + 
   "#vate.client.proxy.type           values: default none, DIRECT(D), AUTO(A), SOCKS(S), HTTP(H)\r\n" + 
-  "#vate.client.encryption.type      values: default none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)\r\n" + 
+  "#vate.client.encryption.type      values: default none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)/LEA(L)\r\n" + 
   "#vate.client.session.commands     format: cmd1*;cmd2*;cmd3*;...\r\n";
   // "#vate.client.session.lines format: file1;file2;file3;...";
   
@@ -1367,7 +1367,7 @@ public class VTClient implements Runnable
             }
             if (line.toUpperCase().startsWith("Y"))
             {
-              VTConsole.print("VT>Enter encryption type(RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)):");
+              VTConsole.print("VT>Enter encryption type(RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)/LEA(L)):");
               line = VTConsole.readLine(false);
               if (line == null)
               {
@@ -1378,9 +1378,9 @@ public class VTClient implements Runnable
                 return;
               }
               encryptionType = "RC4";
-              if (line.toUpperCase().startsWith("A"))
+              if (line.toUpperCase().startsWith("L"))
               {
-                encryptionType = "AES";
+                encryptionType = "LEA";
               }
               // if (line.toUpperCase().startsWith("B"))
               // {
@@ -1632,7 +1632,7 @@ public class VTClient implements Runnable
             }
             if (line.toUpperCase().startsWith("Y"))
             {
-              VTConsole.print("VT>Enter encryption type(RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)):");
+              VTConsole.print("VT>Enter encryption type(RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)/LEA(L)):");
               line = VTConsole.readLine(false);
               if (line == null)
               {
@@ -1643,9 +1643,9 @@ public class VTClient implements Runnable
                 return;
               }
               encryptionType = "RC4";
-              if (line.toUpperCase().startsWith("A"))
+              if (line.toUpperCase().startsWith("L"))
               {
-                encryptionType = "AES";
+                encryptionType = "LEA";
               }
               // if (line.toUpperCase().startsWith("B"))
               // {

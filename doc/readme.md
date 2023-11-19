@@ -11,7 +11,7 @@ This is the lite version intended to run in restricted environments as Android
 
 Some of the available features are:
 
-* RC4, AES, ISAAC, SALSA, HC256 or GRAIN encryption.
+* RC4, ISAAC, SALSA, HC256, GRAIN or LEA encryption.
 * UPnP, NAT-PMP and PCP NAT port forwarding.
 * SOCKS and HTTP proxy network connections.
 * Multiple simultaneous sessions.
@@ -123,7 +123,7 @@ these are the available program arguments:
 * -PP: proxy port, default 1080 for SOCKS or default 8080 for HTTP
 * -PU: proxy user, default null
 * -PK: proxy password, default null
-* -ET: encryption type, none/RC4(R)/AES(A)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)
+* -ET: encryption type, none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)/LEA(L)
 * -EK encryption password, default null
 * -SS: session shell, default null
 * -SU: session user, default null

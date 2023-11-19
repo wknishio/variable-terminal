@@ -399,11 +399,11 @@ public class VTServerSettingsDialog extends Dialog
     
     encryptionTypeChoice.add("None");
     encryptionTypeChoice.add("RC4");
-    encryptionTypeChoice.add("AES");
     encryptionTypeChoice.add("ISAAC");
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC256");
     encryptionTypeChoice.add("GRAIN");
+    encryptionTypeChoice.add("LEA");
     // encryptionTypeChoice.add("BLOWFISH");
     encryptionTypeChoice.select("None");
     encryptionTypeChoice.addItemListener(new ItemListener()
@@ -420,9 +420,9 @@ public class VTServerSettingsDialog extends Dialog
           {
             setEncryptionType("RC4");
           }
-          else if (e.getItem().equals("AES"))
+          else if (e.getItem().equals("LEA"))
           {
-            setEncryptionType("AES");
+            setEncryptionType("LEA");
           }
           // else if (e.getItem().equals("BLOWFISH"))
           // {
@@ -1127,9 +1127,9 @@ public class VTServerSettingsDialog extends Dialog
       encryptionType.setParameter("RC4");
       // encryptionPassword.setEnabled(true);
     }
-    else if (encryption.toUpperCase().startsWith("A"))
+    else if (encryption.toUpperCase().startsWith("L"))
     {
-      encryptionType.setParameter("AES");
+      encryptionType.setParameter("LEA");
       // encryptionPassword.setEnabled(true);
     }
     // else if (encryption.toUpperCase().startsWith("B"))

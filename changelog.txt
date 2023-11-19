@@ -37,7 +37,7 @@ simple, medium, next, extra, high, vast, ultra, true
 * Added shortcut control+shift+end to use next device in *VTGRAPHICSLINK
 * Added 10 keyboard shorcuts to *VTGRAPHICSLINK
 * Added tips for *VTGRAPHICSLINK interface keyboard shortcuts
-* Changed AES 256 bit encryption transformation to CTR
+* Replaced AES 256 bit encryption with LEA 256 bit encryption
 * Added command *VTAUDIOMIXERS to list available audio mixers
 * Renamed command *VTAUDIOCHAT to *VTAUDIOLINK
 * Changed command *VTAUDIOLINK to allow use of specific audio mixers

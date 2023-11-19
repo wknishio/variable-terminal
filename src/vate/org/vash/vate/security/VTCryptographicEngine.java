@@ -14,11 +14,11 @@ import java.io.OutputStream;
 //import javax.crypto.spec.SecretKeySpec;
 
 import org.bouncycastle.crypto.StreamCipher;
-import org.bouncycastle.crypto.engines.AESFastEngine;
 import org.bouncycastle.crypto.engines.ChaChaEngine;
 import org.bouncycastle.crypto.engines.Grain128Engine;
 import org.bouncycastle.crypto.engines.HC256Engine;
 import org.bouncycastle.crypto.engines.ISAACEngine;
+import org.bouncycastle.crypto.engines.LEAEngine;
 import org.bouncycastle.crypto.engines.VMPCKSA3Engine;
 import org.bouncycastle.crypto.modes.SICBlockCipher;
 import org.bouncycastle.crypto.params.KeyParameter;
@@ -79,11 +79,13 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_LEA)
     {
       //System.out.println("VT.VT_CONNECTION_ENCRYPT_AES");
-      encryptionCipherBC = new SICBlockCipher(new AESFastEngine());
-      decryptionCipherBC = new SICBlockCipher(new AESFastEngine());
+//      encryptionCipherBC = new SICBlockCipher(new AESFastEngine());
+//      decryptionCipherBC = new SICBlockCipher(new AESFastEngine());
+      encryptionCipherBC = new SICBlockCipher(new LEAEngine());
+      decryptionCipherBC = new SICBlockCipher(new LEAEngine());
       KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
       KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
       ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 16);
@@ -184,11 +186,13 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_AES)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_LEA)
     {
       //System.out.println("VT.VT_CONNECTION_ENCRYPT_AES");
-      encryptionCipherBC = new SICBlockCipher(new AESFastEngine());
-      decryptionCipherBC = new SICBlockCipher(new AESFastEngine());
+//      encryptionCipherBC = new SICBlockCipher(new AESFastEngine());
+//      decryptionCipherBC = new SICBlockCipher(new AESFastEngine());
+      encryptionCipherBC = new SICBlockCipher(new LEAEngine());
+      decryptionCipherBC = new SICBlockCipher(new LEAEngine());
       KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
       KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
       ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 16);

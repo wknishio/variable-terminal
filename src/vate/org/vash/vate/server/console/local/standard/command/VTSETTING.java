@@ -99,9 +99,9 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       {
         message.append("\nVT>Encryption type(ET): [RC4]");
       }
-      else if (encryptionType.toUpperCase().startsWith("A"))
+      else if (encryptionType.toUpperCase().startsWith("L"))
       {
-        message.append("\nVT>Encryption type(ET): [AES]");
+        message.append("\nVT>Encryption type(ET): [LEA]");
       }
       // else if (encryptionType.toUpperCase().startsWith("B"))
       // {
@@ -578,9 +578,9 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           {
             VTConsole.print("\rVT>Encryption type(ET): [RC4]\nVT>");
           }
-          else if (encryptionType.toUpperCase().startsWith("A"))
+          else if (encryptionType.toUpperCase().startsWith("L"))
           {
-            VTConsole.print("\rVT>Encryption type(ET): [AES]\nVT>");
+            VTConsole.print("\rVT>Encryption type(ET): [LEA]\nVT>");
           }
           // else if (encryptionType.toUpperCase().startsWith("B"))
           // {
@@ -621,9 +621,9 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           {
             VTConsole.print("\rVT>Encryption type(ET) set to: [RC4]\nVT>");
           }
-          else if (encryptionType.toUpperCase().startsWith("A"))
+          else if (encryptionType.toUpperCase().startsWith("L"))
           {
-            VTConsole.print("\rVT>Encryption type(ET) set to: [AES]\nVT>");
+            VTConsole.print("\rVT>Encryption type(ET) set to: [LEA]\nVT>");
           }
           // else if (encryptionType.toUpperCase().startsWith("B"))
           // {
