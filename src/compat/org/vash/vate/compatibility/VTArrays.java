@@ -29,6 +29,18 @@ public class VTArrays
 		return copy;
 	}
 	
+  public static int[] copyOf(int[] original, int newLength) {
+    int[] copy = new int[newLength];
+    System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
+    return copy;
+  }
+  
+  public static long[] copyOf(long[] original, int newLength) {
+    long[] copy = new long[newLength];
+    System.arraycopy(original, 0, copy, 0, Math.min(original.length, newLength));
+    return copy;
+  }
+	
 	public static byte[] copyOfRange(byte[] original, int from, int to) {
 		int newLength = to - from;
 		if (newLength < 0)
