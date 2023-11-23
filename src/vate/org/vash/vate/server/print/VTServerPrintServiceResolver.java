@@ -13,7 +13,7 @@ import org.vash.vate.task.VTTask;
 public class VTServerPrintServiceResolver extends VTTask
 {
   private volatile boolean finished;
-  private int order = -1;
+  private int number = -1;
   private VTServerSession session;
   private Set<String> mimeSet = new LinkedHashSet<String>();
   
@@ -33,9 +33,9 @@ public class VTServerPrintServiceResolver extends VTTask
     this.finished = finished;
   }
   
-  public void setOrder(int order)
+  public void setNumber(int number)
   {
-    this.order = order;
+    this.number = number;
   }
   
   public void run()
@@ -46,7 +46,7 @@ public class VTServerPrintServiceResolver extends VTTask
       PrintService[] printServices = PrintServiceLookup.lookupPrintServices(null, null);
       PrintService defaultPrintService = PrintServiceLookup.lookupDefaultPrintService();
       
-      if (order < 0)
+      if (number < 0)
       {
         if (printServices.length > 0)
         {
@@ -80,9 +80,9 @@ public class VTServerPrintServiceResolver extends VTTask
         if (printServices.length > 0)
         {
           message.append("\nVT>Server print service details:\nVT>");
-          PrintService printService = printServices[order];
+          PrintService printService = printServices[number];
           mimeSet.clear();
-          message.append("\nVT>Number: [" + order + "]" + (defaultPrintService.getName().equals(printService.getName()) ? " (Default)" : "") + "\nVT>Name: [" + printService.getName() + "]");
+          message.append("\nVT>Number: [" + number + "]" + (defaultPrintService.getName().equals(printService.getName()) ? " (Default)" : "") + "\nVT>Name: [" + printService.getName() + "]");
           for (DocFlavor flavor : printService.getSupportedDocFlavors())
           {
             mimeSet.add(flavor.getMimeType());
@@ -121,7 +121,7 @@ public class VTServerPrintServiceResolver extends VTTask
       {
         try
         {
-          session.getConnection().getResultWriter().write("\nVT>Print service [" + order + "] not found on server!\nVT>");
+          session.getConnection().getResultWriter().write("\nVT>Print service [" + number + "] not found on server!\nVT>");
           session.getConnection().getResultWriter().flush();
         }
         catch (Throwable t)

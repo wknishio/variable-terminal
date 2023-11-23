@@ -36,7 +36,7 @@ public class VTServerRuntimeExecutor extends VTTask
   private static int PROCESS_COMMAND_STOP = 4; // S
   private static int PROCESS_COMMAND_REMOVE = 5; // D
   private static int PROCESS_COMMAND_INPUT = 6; // I
-  private static int PROCESS_COMMAND_LINE = 7; // N
+  private static int PROCESS_COMMAND_LINE = 7; // E
   private static int PROCESS_COMMAND_PATH = 8; // P
   private static int PROCESS_COMMAND_BASE64 = 9; // B
   private static int PROCESS_COMMAND_UTF8 = 10; // U
@@ -44,7 +44,7 @@ public class VTServerRuntimeExecutor extends VTTask
   private static int PROCESS_SCOPE_NOT_FOUND = -1; // ?
   private static int PROCESS_SCOPE_ALL = 1; // A
   private static int PROCESS_SCOPE_COMMAND = 2; // C
-  private static int PROCESS_SCOPE_NUMBER = 3; // O
+  private static int PROCESS_SCOPE_NUMBER = 3; // N
   
   // private static int PROCESS_VERBOSE_OFF = 1; //?
   // private static int PROCESS_VERBOSE_ON = 2; //V
@@ -143,7 +143,7 @@ public class VTServerRuntimeExecutor extends VTTask
         && !main_command_string.contains("S")
         && !main_command_string.contains("D")
         && !main_command_string.contains("I")
-        && !main_command_string.contains("N")
+        && !main_command_string.contains("E")
         && !main_command_string.contains("P")
         && !main_command_string.contains("B")
         && !main_command_string.contains("U"))
@@ -156,7 +156,7 @@ public class VTServerRuntimeExecutor extends VTTask
         && !main_command_string.contains("S")
         && !main_command_string.contains("D")
         && !main_command_string.contains("I")
-        && !main_command_string.contains("N")
+        && !main_command_string.contains("E")
         && !main_command_string.contains("P")
         && !main_command_string.contains("B")
         && !main_command_string.contains("U"))
@@ -169,7 +169,7 @@ public class VTServerRuntimeExecutor extends VTTask
         && !main_command_string.contains("S")
         && !main_command_string.contains("D")
         && !main_command_string.contains("I")
-        && !main_command_string.contains("N")
+        && !main_command_string.contains("E")
         && !main_command_string.contains("P")
         && !main_command_string.contains("B")
         && !main_command_string.contains("U"))
@@ -183,7 +183,7 @@ public class VTServerRuntimeExecutor extends VTTask
         && main_command_string.contains("S")
         && !main_command_string.contains("D")
         && !main_command_string.contains("I")
-        && !main_command_string.contains("N")
+        && !main_command_string.contains("E")
         && !main_command_string.contains("P")
         && !main_command_string.contains("B")
         && !main_command_string.contains("U"))
@@ -197,7 +197,7 @@ public class VTServerRuntimeExecutor extends VTTask
         && !main_command_string.contains("S")
         && main_command_string.contains("D")
         && !main_command_string.contains("I")
-        && !main_command_string.contains("N")
+        && !main_command_string.contains("E")
         && !main_command_string.contains("P")
         && !main_command_string.contains("B")
         && !main_command_string.contains("U"))
@@ -211,7 +211,7 @@ public class VTServerRuntimeExecutor extends VTTask
         && !main_command_string.contains("S")
         && !main_command_string.contains("D")
         && main_command_string.contains("I")
-        && !main_command_string.contains("N")
+        && !main_command_string.contains("E")
         && !main_command_string.contains("P")
         && !main_command_string.contains("B")
         && !main_command_string.contains("U"))
@@ -226,7 +226,7 @@ public class VTServerRuntimeExecutor extends VTTask
         && !main_command_string.contains("S")
         && !main_command_string.contains("D")
         && !main_command_string.contains("I")
-        && main_command_string.contains("N")
+        && main_command_string.contains("E")
         && !main_command_string.contains("P")
         && !main_command_string.contains("B")
         && !main_command_string.contains("U"))
@@ -241,7 +241,7 @@ public class VTServerRuntimeExecutor extends VTTask
         && !main_command_string.contains("S")
         && !main_command_string.contains("D")
         && !main_command_string.contains("I")
-        && !main_command_string.contains("N")
+        && !main_command_string.contains("E")
         && main_command_string.contains("P")
         && !main_command_string.contains("B")
         && !main_command_string.contains("U"))
@@ -254,7 +254,7 @@ public class VTServerRuntimeExecutor extends VTTask
         && !main_command_string.contains("S")
         && !main_command_string.contains("D")
         && !main_command_string.contains("I")
-        && !main_command_string.contains("N")
+        && !main_command_string.contains("E")
         && !main_command_string.contains("P")
         && main_command_string.contains("B")
         && !main_command_string.contains("U"))
@@ -269,7 +269,7 @@ public class VTServerRuntimeExecutor extends VTTask
         && !main_command_string.contains("S")
         && !main_command_string.contains("D")
         && !main_command_string.contains("I")
-        && !main_command_string.contains("N")
+        && !main_command_string.contains("E")
         && !main_command_string.contains("P")
         && !main_command_string.contains("B")
         && main_command_string.contains("U"))
@@ -296,7 +296,7 @@ public class VTServerRuntimeExecutor extends VTTask
           }
           else if (!main_command_string.contains("A")
           && !main_command_string.contains("C")
-          && main_command_string.contains("O"))
+          && main_command_string.contains("N"))
           {
             process_scope = PROCESS_SCOPE_NUMBER;
             parameter_amount += 1;

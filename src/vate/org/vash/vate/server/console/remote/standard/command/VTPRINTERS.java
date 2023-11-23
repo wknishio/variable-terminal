@@ -29,17 +29,17 @@ public class VTPRINTERS extends VTServerStandardRemoteConsoleCommandProcessor
           try
           {
             int order = Integer.parseInt(parsed[1]);
-            session.getPrintServiceResolver().setOrder(order);
+            session.getPrintServiceResolver().setNumber(order);
           }
           catch (Throwable t)
           {
-            connection.getResultWriter().write("\nVT>Print service order number [" + parsed[1] + "] is invalid!\nVT>");
+            connection.getResultWriter().write("\nVT>Print service number [" + parsed[1] + "] is invalid!\nVT>");
             connection.getResultWriter().flush();
           }
         }
         else
         {
-          session.getPrintServiceResolver().setOrder(-1);
+          session.getPrintServiceResolver().setNumber(-1);
         }
         session.getPrintServiceResolver().setFinished(false);
         session.getPrintServiceResolver().startThread();
