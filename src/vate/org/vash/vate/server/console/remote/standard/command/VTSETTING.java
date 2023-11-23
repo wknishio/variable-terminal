@@ -114,10 +114,10 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       {
         message.append("\nVT>Encryption type(ET): [HC256]");
       }
-      else if (encryptionType.toUpperCase().startsWith("G"))
-      {
-        message.append("\nVT>Encryption type(ET): [GRAIN]");
-      }
+//      else if (encryptionType.toUpperCase().startsWith("G"))
+//      {
+//        message.append("\nVT>Encryption type(ET): [GRAIN]");
+//      }
       else if (encryptionType.toUpperCase().startsWith("I"))
       {
         message.append("\nVT>Encryption type(ET): [ISAAC]");
@@ -634,11 +634,11 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().write("\nVT>Encryption type(ET): [HC256]\nVT>");
             connection.getResultWriter().flush();
           }
-          else if (encryptionType.toUpperCase().startsWith("G"))
-          {
-            connection.getResultWriter().write("\nVT>Encryption type(ET): [GRAIN]\nVT>");
-            connection.getResultWriter().flush();
-          }
+//          else if (encryptionType.toUpperCase().startsWith("G"))
+//          {
+//            connection.getResultWriter().write("\nVT>Encryption type(ET): [GRAIN]\nVT>");
+//            connection.getResultWriter().flush();
+//          }
           else if (encryptionType.toUpperCase().startsWith("I"))
           {
             connection.getResultWriter().write("\nVT>Encryption type(ET): [ISAAC]\nVT>");
@@ -686,11 +686,11 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [HC256]\nVT>");
             connection.getResultWriter().flush();
           }
-          else if (encryptionType.toUpperCase().startsWith("G"))
-          {
-            connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [GRAIN]\nVT>");
-            connection.getResultWriter().flush();
-          }
+//          else if (encryptionType.toUpperCase().startsWith("G"))
+//          {
+//            connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [GRAIN]\nVT>");
+//            connection.getResultWriter().flush();
+//          }
           else if (encryptionType.toUpperCase().startsWith("I"))
           {
             connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [ISAAC]\nVT>");

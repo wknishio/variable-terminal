@@ -115,10 +115,10 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       {
         message.append("\nVT>Encryption type(ET): [HC256]");
       }
-      else if (encryptionType.toUpperCase().startsWith("G"))
-      {
-        message.append("\nVT>Encryption type(ET): [GRAIN]");
-      }
+//      else if (encryptionType.toUpperCase().startsWith("G"))
+//      {
+//        message.append("\nVT>Encryption type(ET): [GRAIN]");
+//      }
       else if (encryptionType.toUpperCase().startsWith("I"))
       {
         message.append("\nVT>Encryption type(ET): [ISAAC]");
@@ -594,10 +594,10 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           {
             VTConsole.print("\rVT>Encryption type(ET): [HC256]\nVT>");
           }
-          else if (encryptionType.toUpperCase().startsWith("G"))
-          {
-            VTConsole.print("\rVT>Encryption type(ET): [GRAIN]\nVT>");
-          }
+//          else if (encryptionType.toUpperCase().startsWith("G"))
+//          {
+//            VTConsole.print("\rVT>Encryption type(ET): [GRAIN]\nVT>");
+//          }
           else if (encryptionType.toUpperCase().startsWith("I"))
           {
             VTConsole.print("\rVT>Encryption type(ET): [ISAAC]\nVT>");
@@ -638,10 +638,10 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           {
             VTConsole.print("\rVT>Encryption type(ET) set to: [HC256]\nVT>");
           }
-          else if (encryptionType.toUpperCase().startsWith("G"))
-          {
-            VTConsole.print("\rVT>Encryption type(ET) set to: [GRAIN]\nVT>");
-          }
+//          else if (encryptionType.toUpperCase().startsWith("G"))
+//          {
+//            VTConsole.print("\rVT>Encryption type(ET) set to: [GRAIN]\nVT>");
+//          }
           else if (encryptionType.toUpperCase().startsWith("I"))
           {
             VTConsole.print("\rVT>Encryption type(ET) set to: [ISAAC]\nVT>");

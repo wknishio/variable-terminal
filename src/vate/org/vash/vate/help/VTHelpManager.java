@@ -39,7 +39,7 @@ public class VTHelpManager
   //("\n-PA: proxy authentication, default disabled(D), enabled(E)") + 
   ("\n-PU: proxy user, default null") + 
   ("\n-PK: proxy password, default null") + 
-  ("\n-ET: encryption type, none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/GRAIN(G)/LEA(L)") + 
+  ("\n-ET: encryption type, none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/LEA(L)") + 
   ("\n-EK: encryption password, default null") + 
   ("\n-SS: session shell, default null") + 
   ("\n-SU: session user, default null") + 

@@ -44,8 +44,8 @@ public class VTClientConnection
   private static byte[] VT_CLIENT_CHECK_STRING_HC256 = new byte[16];
   private static byte[] VT_SERVER_CHECK_STRING_ISAAC = new byte[16];
   private static byte[] VT_CLIENT_CHECK_STRING_ISAAC = new byte[16];
-  private static byte[] VT_SERVER_CHECK_STRING_GRAIN = new byte[16];
-  private static byte[] VT_CLIENT_CHECK_STRING_GRAIN = new byte[16];
+  //private static byte[] VT_SERVER_CHECK_STRING_GRAIN = new byte[16];
+  //private static byte[] VT_CLIENT_CHECK_STRING_GRAIN = new byte[16];
   
   static
   {
@@ -63,8 +63,8 @@ public class VTClientConnection
       VT_CLIENT_CHECK_STRING_HC256 = (StringUtils.reverse("VT/CLIENT/HC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/HC256/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
       VT_SERVER_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
       VT_CLIENT_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_GRAIN = (StringUtils.reverse("VT/SERVER/GRAIN/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/GRAIN/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_GRAIN = (StringUtils.reverse("VT/CLIENT/GRAIN/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/GRAIN/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      //VT_SERVER_CHECK_STRING_GRAIN = (StringUtils.reverse("VT/SERVER/GRAIN/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/GRAIN/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      //VT_CLIENT_CHECK_STRING_GRAIN = (StringUtils.reverse("VT/CLIENT/GRAIN/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/GRAIN/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
     }
     catch (UnsupportedEncodingException e)
     {
@@ -937,17 +937,17 @@ public class VTClientConnection
       return VT.VT_CONNECTION_ENCRYPT_ISAAC;
     }
     
-    blake3Digest.reset();
-    blake3Digest.update(localNonce);
-    blake3Digest.update(remoteNonce);
-    if (encryptionKey != null)
-    {
-      blake3Digest.update(encryptionKey);
-    }
-    if (VTArrayComparator.arrayEquals(digestedServer, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_SERVER_CHECK_STRING_GRAIN)))
-    {
-      return VT.VT_CONNECTION_ENCRYPT_GRAIN;
-    }
+//    blake3Digest.reset();
+//    blake3Digest.update(localNonce);
+//    blake3Digest.update(remoteNonce);
+//    if (encryptionKey != null)
+//    {
+//      blake3Digest.update(encryptionKey);
+//    }
+//    if (VTArrayComparator.arrayEquals(digestedServer, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_SERVER_CHECK_STRING_GRAIN)))
+//    {
+//      return VT.VT_CONNECTION_ENCRYPT_GRAIN;
+//    }
     
     return -1;
   }
@@ -1007,11 +1007,11 @@ public class VTClientConnection
         setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ISAAC);
         return true;
       }
-      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
-      {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_GRAIN);
-        return true;
-      }
+//      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
+//      {
+//        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_GRAIN);
+//        return true;
+//      }
     }
     else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_RC4)
     {
@@ -1068,15 +1068,15 @@ public class VTClientConnection
         return true;
       }
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
-    {
-      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_GRAIN, encryptionType);
-      if (remoteEncryptionType != -1)
-      {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_GRAIN);
-        return true;
-      }
-    }
+//    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
+//    {
+//      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_GRAIN, encryptionType);
+//      if (remoteEncryptionType != -1)
+//      {
+//        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_GRAIN);
+//        return true;
+//      }
+//    }
     return false;
   }
   

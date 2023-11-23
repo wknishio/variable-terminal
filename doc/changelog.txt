@@ -89,8 +89,8 @@ simple, medium, next, extra, high, vast, ultra, true
 * Changed all encryption functions to use bouncycastle library
 * Added SALSA as encryption algorithm
 * Added HC256 as encryption algorithm
-* Added GRAIN as encryption algorithm
 * Added ISAAC as encryption algorithm
+* Added LEA as encryption algorithm
 * Added *VTPAUSE command to pause local console for a interval or until enter
 * Added *VTCONFIGURE command to reconfigure all server connection settings
 * Added *VTREAD command to run text files commands in client console

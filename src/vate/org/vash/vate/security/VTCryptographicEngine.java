@@ -15,7 +15,6 @@ import java.io.OutputStream;
 
 import org.bouncycastle.crypto.StreamCipher;
 import org.bouncycastle.crypto.engines.ChaChaEngine;
-import org.bouncycastle.crypto.engines.Grain128Engine;
 import org.bouncycastle.crypto.engines.HC256Engine;
 import org.bouncycastle.crypto.engines.ISAACEngine;
 import org.bouncycastle.crypto.engines.LEAEngine;
@@ -127,18 +126,18 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionKeySpec);
       decryptionCipherBC.init(false, decryptionKeySpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
-    {
-      //System.out.println("VT.VT_CONNECTION_ENCRYPT_GRAIN");
-      encryptionCipherBC = new Grain128Engine();
-      decryptionCipherBC = new Grain128Engine();
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 16);
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 16);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 12);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 12);
-      encryptionCipherBC.init(true, encryptionIvParameterSpec);
-      decryptionCipherBC.init(false, decryptionIvParameterSpec);
-    }
+//    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
+//    {
+//      //System.out.println("VT.VT_CONNECTION_ENCRYPT_GRAIN");
+//      encryptionCipherBC = new Grain128Engine();
+//      decryptionCipherBC = new Grain128Engine();
+//      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 16);
+//      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 16);
+//      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 12);
+//      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 12);
+//      encryptionCipherBC.init(true, encryptionIvParameterSpec);
+//      decryptionCipherBC.init(false, decryptionIvParameterSpec);
+//    }
     else
     {
       //System.out.println("VT.VT_CONNECTION_ENCRYPT_NONE");
@@ -234,18 +233,18 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionKeySpec);
       decryptionCipherBC.init(false, decryptionKeySpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
-    {
-      //System.out.println("VT.VT_CONNECTION_ENCRYPT_GRAIN");
-      encryptionCipherBC = new Grain128Engine();
-      decryptionCipherBC = new Grain128Engine();
-      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 16);
-      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 16);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 12);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 12);
-      encryptionCipherBC.init(true, encryptionIvParameterSpec);
-      decryptionCipherBC.init(false, decryptionIvParameterSpec);
-    }
+//    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
+//    {
+//      //System.out.println("VT.VT_CONNECTION_ENCRYPT_GRAIN");
+//      encryptionCipherBC = new Grain128Engine();
+//      decryptionCipherBC = new Grain128Engine();
+//      KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 16);
+//      KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 16);
+//      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 12);
+//      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 12);
+//      encryptionCipherBC.init(true, encryptionIvParameterSpec);
+//      decryptionCipherBC.init(false, decryptionIvParameterSpec);
+//    }
     else
     {
       //System.out.println("VT.VT_CONNECTION_ENCRYPT_NONE");
