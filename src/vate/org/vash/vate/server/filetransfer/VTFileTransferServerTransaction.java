@@ -527,13 +527,11 @@ public class VTFileTransferServerTransaction implements Runnable
     {
       if (path == null)
       {
-        session.getServer().getConnection().getFileTransferControlDataOutputStream().writeInt(-1);
+        session.getServer().getConnection().getFileTransferControlDataOutputStream().writeUTF("");
         session.getServer().getConnection().getFileTransferControlDataOutputStream().flush();
         return true;
       }
-      byte[] data = path.getBytes("UTF-8");
-      session.getServer().getConnection().getFileTransferControlDataOutputStream().writeInt(data.length);
-      session.getServer().getConnection().getFileTransferControlDataOutputStream().write(data);
+      session.getServer().getConnection().getFileTransferControlDataOutputStream().writeUTF(path);
       session.getServer().getConnection().getFileTransferControlDataOutputStream().flush();
       return true;
     }
@@ -639,14 +637,7 @@ public class VTFileTransferServerTransaction implements Runnable
   {
     try
     {
-      int length = session.getServer().getConnection().getFileTransferControlDataInputStream().readInt();
-      if (length < 0)
-      {
-        return null;
-      }
-      byte[] data = new byte[length];
-      session.getServer().getConnection().getFileTransferControlDataInputStream().readFully(data);
-      return new String(data, "UTF-8");
+      return session.getServer().getConnection().getFileTransferControlDataInputStream().readUTF();
     }
     catch (Throwable e)
     {
