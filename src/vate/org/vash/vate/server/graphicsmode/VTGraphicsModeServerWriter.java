@@ -1042,8 +1042,8 @@ public class VTGraphicsModeServerWriter implements Runnable
                 {
                   lastWidth = imageDataBuffer.getWidth() + CODEC_PADDING_SIZE;
                   lastHeight = imageDataBuffer.getHeight() + CODEC_PADDING_SIZE;
-                  interruptedLastWidth = lastWidth - CODEC_PADDING_SIZE;
-                  interruptedLastHeight = lastHeight - CODEC_PADDING_SIZE;
+                  interruptedLastWidth = imageDataBuffer.getWidth();
+                  interruptedLastHeight = imageDataBuffer.getHeight();
                   //lastWidth = imageDataBuffer.getWidth();
                   //lastHeight = imageDataBuffer.getHeight();
                   //interruptedLastWidth = lastWidth;
