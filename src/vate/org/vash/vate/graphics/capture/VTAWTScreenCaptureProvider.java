@@ -3431,36 +3431,38 @@ public final class VTAWTScreenCaptureProvider
     }
   }
   
-  @SuppressWarnings("unused")
   private final void drawPointer(BufferedImage image, Rectangle area)
   {
-    PointerInfo info = MouseInfo.getPointerInfo();
-    if (info == null)
+    PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+    if (pointerInfo == null)
     {
-      // VTTerminal.println("info = null");
       return;
     }
-    GraphicsDevice infoDevice = info.getDevice();
+    GraphicsDevice pointerDevice = pointerInfo.getDevice();
     // DisplayMode displayMode = infoDevice.getDisplayMode();
-    Point pointerLocation = info.getLocation();
+    Point pointerLocation = pointerInfo.getLocation();
     Rectangle deviceBounds = new Rectangle();
-    if (infoDevice == null)
+    if (pointerDevice == null)
     {
       // VTTerminal.println("infoDevice = null");
       return;
     }
     else
     {
+      if (pointerLocation == null)
+      {
+        return;
+      }
       try
       {
         if (graphicsDevice != null)
         {
-          if (!infoDevice.getIDstring().equals(graphicsDevice.getIDstring()))
+          if (!pointerDevice.getIDstring().equals(graphicsDevice.getIDstring()))
           {
             // out of current screen
             return;
           }
-          deviceBounds = VTGraphicalDeviceResolver.getDeviceBounds(infoDevice);
+          deviceBounds = VTGraphicalDeviceResolver.getDeviceBounds(pointerDevice);
           pointerLocation.translate(deviceBounds.x * -1, deviceBounds.y * -1);
         }
         else
@@ -4505,33 +4507,35 @@ public final class VTAWTScreenCaptureProvider
   
   private final void drawPointerFilterGray(BufferedImage image, Rectangle area)
   {
-    PointerInfo info = MouseInfo.getPointerInfo();
-    if (info == null)
+    PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+    if (pointerInfo == null)
     {
-      // VTTerminal.println("info = null");
       return;
     }
-    GraphicsDevice infoDevice = info.getDevice();
+    GraphicsDevice pointerDevice = pointerInfo.getDevice();
     // DisplayMode displayMode = infoDevice.getDisplayMode();
-    Point pointerLocation = info.getLocation();
+    Point pointerLocation = pointerInfo.getLocation();
     Rectangle deviceBounds = new Rectangle();
-    if (infoDevice == null)
+    if (pointerDevice == null)
     {
-      // VTTerminal.println("infoDevice = null");
       return;
     }
     else
     {
+      if (pointerLocation == null)
+      {
+        return;
+      }
       try
       {
         if (graphicsDevice != null)
         {
-          if (!infoDevice.getIDstring().equals(graphicsDevice.getIDstring()))
+          if (!pointerDevice.getIDstring().equals(graphicsDevice.getIDstring()))
           {
             // out of current screen
             return;
           }
-          deviceBounds = VTGraphicalDeviceResolver.getDeviceBounds(infoDevice);
+          deviceBounds = VTGraphicalDeviceResolver.getDeviceBounds(pointerDevice);
           pointerLocation.translate(deviceBounds.x * -1, deviceBounds.y * -1);
         }
         else
