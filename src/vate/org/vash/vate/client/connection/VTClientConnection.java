@@ -1,7 +1,6 @@
 package org.vash.vate.client.connection;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -697,7 +696,7 @@ public class VTClientConnection
     // multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED,
     // 12);
     
-    shellDataOutputStream = VTCompressorSelector.createBufferedZlibOutputStreamDefault(shellOutputStream);
+    shellDataOutputStream = VTCompressorSelector.createBufferedZlibOutputStreamFiltered(shellOutputStream);
     // shellDataOutputStream =
     // VTCompressorSelector.createFlushBufferedSyncFlushDeflaterOutputStream(shellOutputStream);
     // shellDataOutputStream = shellOutputStream;
@@ -710,8 +709,8 @@ public class VTClientConnection
     resultReader = new InputStreamReader(shellDataInputStream, "UTF-8");
     commandWriter = new BufferedWriter(new OutputStreamWriter(shellDataOutputStream, "UTF-8"));
     
-    graphicsControlDataInputStream = new VTLittleEndianInputStream(new BufferedInputStream(graphicsControlInputStream));
-    graphicsControlDataOutputStream = new VTLittleEndianOutputStream(new BufferedOutputStream(graphicsControlOutputStream));
+    graphicsControlDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsControlInputStream));
+    graphicsControlDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsControlOutputStream));
     
     directImageDataInputStream = new VTLittleEndianInputStream(new BufferedInputStream(graphicsDirectImageInputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
     directImageDataOutputStream = new VTLittleEndianOutputStream(graphicsDirectImageOutputStream);
@@ -729,8 +728,8 @@ public class VTClientConnection
     clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
     clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
     
-    fileTransferControlDataInputStream = new VTLittleEndianInputStream(new BufferedInputStream(fileTransferControlInputStream));
-    fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(new BufferedOutputStream(fileTransferControlOutputStream));
+    fileTransferControlDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedLz4InputStream(fileTransferControlInputStream));
+    fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(fileTransferControlOutputStream));
     
     // graphicsControlInputStream.addPropagated(deflatedImageDataInputStream);
     // graphicsControlInputStream.addPropagated(fastImageDataInputStream);
@@ -1160,8 +1159,8 @@ public class VTClientConnection
     graphicsFastImageOutputStream.open();
     graphicsFastImageInputStream.open();
     
-    graphicsControlDataInputStream.setIntputStream(new BufferedInputStream(graphicsControlInputStream));
-    graphicsControlDataOutputStream.setOutputStream(new BufferedOutputStream(graphicsControlOutputStream));
+    graphicsControlDataInputStream.setIntputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsControlInputStream));
+    graphicsControlDataOutputStream.setOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsControlOutputStream));
     
     heavyImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedZstdInputStream(graphicsHeavyImageInputStream));
     heavyImageDataOutputStream = new VTLittleEndianOutputStream(graphicsHeavyImageOutputStream);

@@ -227,7 +227,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Client Application", "*VTQUIT\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Server Application", "*VTSTOP\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Toggle Server Cover", "*VTCOVER\n"));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("Save Client Connection Settings", "*VTSAVE "));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem("Save Client Settings To File", "*VTSAVE "));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem("Detect Chained Connections", "*VTCHAIN\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTUSERS\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Text Message To Server", "*VTTEXT "));
     
@@ -239,7 +240,6 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Execute Commands From Files", "*VTREAD "));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Commands To File", "*VTLOG "));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Console To File", "*VTOUT "));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Detect Chained Instances", "*VTCHAIN\n"));
     // consoleMenu.add(new VTGraphicalConsoleMenuItem("Toggle Remote Console
     // Echo",
     // "*VTECHO\n"));
