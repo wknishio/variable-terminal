@@ -297,6 +297,7 @@ public class VTGraphicsModeServerWriter implements Runnable
   
   public void sendImageRefresh() throws IOException
   {
+    //System.out.println("sendImageRefresh");
     needRefresh = false;
     // startTime = System.currentTimeMillis();
     List<Rectangle> blockAreas = VTImageDataUtils.splitBlockArea(imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
@@ -590,7 +591,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     //System.out.println("sendCustomRefresh");
     needRefresh = false;
     // long startTime = System.currentTimeMillis();
-    // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
+    //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
     connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_CUSTOM);
     if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD)
     {
@@ -816,17 +817,17 @@ public class VTGraphicsModeServerWriter implements Runnable
             lastDataType = -1;
             clearRequested = false;
           }
-          if (lastImageCoding != imageCoding)
-          {
-            viewProvider.clearResources();
-            lastWidth = -1;
-            lastHeight = -1;
-            interruptedLastWidth = -1;
-            interruptedLastHeight = -1;
-            lastDepth = -1;
-            lastColors = -1;
-            lastDataType = -1;
-          }
+//          if (lastImageCoding != imageCoding)
+//          {
+//            viewProvider.clearResources();
+//            lastWidth = -1;
+//            lastHeight = -1;
+//            interruptedLastWidth = -1;
+//            interruptedLastHeight = -1;
+//            lastDepth = -1;
+//            lastColors = -1;
+//            lastDataType = -1;
+//          }
           if (!refreshInterrupted)
           {
             if (captureArea.width <= 0 || captureArea.height <= 0)
@@ -989,53 +990,34 @@ public class VTGraphicsModeServerWriter implements Runnable
                 && imageDataBuffer.getColorModel().getPixelSize() == lastDepth
                 && viewProvider.getColorCount() == lastColors
                 && imageDataBuffer.getRaster().getDataBuffer().getDataType() == lastDataType
-                && imageCoding == lastImageCoding)
+                && (lastImageCoding != VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD || lastImageCoding != VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD))
+                //&& imageCoding == lastImageCoding)
                 {
                   // startTime = System.currentTimeMillis();
+                  boolean different = false;
                   if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
                   {
-                    if (!VTImageDataUtils.deltaArea(previousImageBufferByte, lastImageBufferByte, 0, lastWidth, lastHeight, null, resultArea))
-                    {
-                      resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
-                      resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
-                      sendCustomDifference();
-                    }
-                    else
-                    {
-                      resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
-                      resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
-                      sendRefreshNotNeeded();
-                    }
+                    different = !VTImageDataUtils.deltaArea(previousImageBufferByte, lastImageBufferByte, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
                   {
-                    if (!VTImageDataUtils.deltaArea(previousImageBufferUShort, lastImageBufferUShort, 0, lastWidth, lastHeight, null, resultArea))
-                    {
-                      resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
-                      resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
-                      sendCustomDifference();
-                    }
-                    else
-                    {
-                      resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
-                      resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
-                      sendRefreshNotNeeded();
-                    }
+                    different = !VTImageDataUtils.deltaArea(previousImageBufferUShort, lastImageBufferUShort, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
                   {
-                    if (!VTImageDataUtils.deltaArea(previousImageBufferInt, lastImageBufferInt, 0, lastWidth, lastHeight, null, resultArea))
-                    {
-                      resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
-                      resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
-                      sendCustomDifference();
-                    }
-                    else
-                    {
-                      resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
-                      resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
-                      sendRefreshNotNeeded();
-                    }
+                    different = !VTImageDataUtils.deltaArea(previousImageBufferInt, lastImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
+                  }
+                  if (different)
+                  {
+                    resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
+                    resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
+                    sendCustomDifference();
+                  }
+                  else
+                  {
+                    resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
+                    resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
+                    sendRefreshNotNeeded();
                   }
                 }
                 else
@@ -1065,8 +1047,6 @@ public class VTGraphicsModeServerWriter implements Runnable
                     previousImageBufferInt = null;
                     VTImageIO.clearBuffer(previousImageBufferByte, BufferedImage.TYPE_BYTE_INDEXED, lastColors, 0);
                     VTImageDataUtils.deltaArea(lastImageBufferByte, previousImageBufferByte, 0, lastWidth, lastHeight, null, resultArea);
-                    resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
-                    resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
                   {
@@ -1081,8 +1061,6 @@ public class VTGraphicsModeServerWriter implements Runnable
                     previousImageBufferInt = null;
                     VTImageIO.clearBuffer(previousImageBufferUShort, BufferedImage.TYPE_USHORT_555_RGB, lastColors, 0);
                     VTImageDataUtils.deltaArea(lastImageBufferUShort, previousImageBufferUShort, 0, lastWidth, lastHeight, null, resultArea);
-                    resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
-                    resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
                   {
@@ -1097,9 +1075,9 @@ public class VTGraphicsModeServerWriter implements Runnable
                     }
                     VTImageIO.clearBuffer(previousImageBufferInt, BufferedImage.TYPE_INT_RGB, lastColors, 0);
                     VTImageDataUtils.deltaArea(lastImageBufferInt, previousImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
-                    resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
-                    resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
                   }
+                  resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
+                  resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
                   sendCustomRefresh();
                   System.runFinalization();
                   System.gc();

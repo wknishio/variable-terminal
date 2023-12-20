@@ -66,7 +66,7 @@ public class VTFileTransferClientTransaction implements Runnable
   private String source;
   private String destination;
   private String filePaths;
-  private String currentFilePath;
+  private String currentRootFilePath;
   // private volatile String localFilePath;
   // private volatile String remoteFilePath;
   private String transferParameters;
@@ -1280,9 +1280,9 @@ public class VTFileTransferClientTransaction implements Runnable
       else
       {
         String rootFolder = null;
-        if (rootLevel)
+        if (rootLevel && !currentPath.equals(currentRootFilePath))
         {
-          rootFolder = getFileNameFromPath(this.currentFilePath);
+          rootFolder = getFileNameFromPath(currentRootFilePath);
           File rootFile = new File(appendToPath(currentPath, rootFolder));
           if (!rootFile.exists())
           {
@@ -1592,7 +1592,7 @@ public class VTFileTransferClientTransaction implements Runnable
         transferParameters = splitCommand[1];
         if (transferParameters.toUpperCase().contains("P"))
         {
-          filePaths = splitCommand[2];
+          filePaths = source;
           // remoteFilePath = splitCommand[3];
           compressing = false;
           resuming = false;
@@ -1639,7 +1639,7 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             // this.remoteFilePath = destination;
             // this.localFilePath = localFile;
-            this.currentFilePath = localFile;
+            currentRootFilePath = localFile;
             if (tryUpload(localFile))
             {
               if (!session.getClient().getConnection().isConnected())
@@ -1691,7 +1691,7 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         else if (transferParameters.toUpperCase().contains("G"))
         {
-          filePaths = splitCommand[2];
+          filePaths = source;
           // localFilePath = splitCommand[3];
           compressing = false;
           resuming = false;
@@ -1737,7 +1737,7 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             // this.localFilePath = destination;
             // this.remoteFilePath = remoteFile;
-            this.currentFilePath = remoteFile;
+            currentRootFilePath = remoteFile;
             if (tryDownload(destination, true))
             {
               if (!session.getClient().getConnection().isConnected())

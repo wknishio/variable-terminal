@@ -59,10 +59,10 @@ public class VTFileTransferServerTransaction implements Runnable
   //private MessageDigest checksum = XXHashFactory.fastestJavaInstance().newStreamingHash64(-1L).asMessageDigest();
   private MessageDigest xxhash64Digest;
   private String command;
-  // private String source;
+  private String source;
   private String destination;
   private String filePaths;
-  private String currentFilePath;
+  private String currentRootFilePath;
   // private volatile String localFilePath;
   // private volatile String remoteFilePath;
   private String transferParameters;
@@ -1305,9 +1305,9 @@ public class VTFileTransferServerTransaction implements Runnable
       else
       {
         String rootFolder = null;
-        if (rootLevel)
+        if (rootLevel && !currentPath.equals(currentRootFilePath))
         {
-          rootFolder = getFileNameFromPath(this.currentFilePath);
+          rootFolder = getFileNameFromPath(currentRootFilePath);
           File rootFile = new File(appendToPath(currentPath, rootFolder));
           if (!rootFile.exists())
           {
@@ -1606,12 +1606,12 @@ public class VTFileTransferServerTransaction implements Runnable
       }
       if (splitCommand[0].equalsIgnoreCase("*VTFILETRANSFER") || splitCommand[0].equalsIgnoreCase("*VTFT"))
       {
-        // source = splitCommand[2];
+        source = splitCommand[2];
         destination = splitCommand[3];
         transferParameters = splitCommand[1];
         if (transferParameters.toUpperCase().contains("P"))
         {
-          filePaths = splitCommand[2];
+          filePaths = source;
           // localFilePath = splitCommand[3];
           // remoteFilePath = splitCommand[2];
           compressing = false;
@@ -1658,7 +1658,7 @@ public class VTFileTransferServerTransaction implements Runnable
           {
             // this.localFilePath = destination;
             // this.remoteFilePath = remoteFile;
-            this.currentFilePath = remoteFile;
+            currentRootFilePath = remoteFile;
             if (tryDownload(destination, true))
             {
               // session.getServer().getConnection().getResultWriter().write("\nVT>File
@@ -1675,7 +1675,7 @@ public class VTFileTransferServerTransaction implements Runnable
         }
         else if (splitCommand[1].toUpperCase().contains("G"))
         {
-          filePaths = splitCommand[2];
+          filePaths = source;
           // localFilePath = splitCommand[2];
           // remoteFilePath = splitCommand[3];
           compressing = false;
@@ -1722,7 +1722,7 @@ public class VTFileTransferServerTransaction implements Runnable
           {
             // this.remoteFilePath = destination;
             // this.localFilePath = localFile;
-            this.currentFilePath = localFile;
+            currentRootFilePath = localFile;
             if (tryUpload(localFile))
             {
               // session.getServer().getConnection().getResultWriter().write("\nVT>File
