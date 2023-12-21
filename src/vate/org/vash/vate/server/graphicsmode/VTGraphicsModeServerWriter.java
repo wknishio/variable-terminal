@@ -840,6 +840,7 @@ public class VTGraphicsModeServerWriter implements Runnable
               try
               {
                 imageDataBuffer = viewProvider.createScreenCapture(captureArea, imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD || imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD ? CODEC_PADDING_SIZE : 0, drawPointer);
+                //imageDataBuffer = viewProvider.createScreenCapture(captureArea, CODEC_PADDING_SIZE, drawPointer);
               }
               catch (Throwable t)
               {
@@ -852,6 +853,7 @@ public class VTGraphicsModeServerWriter implements Runnable
               try
               {
                 imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD || imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD ? CODEC_PADDING_SIZE : 0, drawPointer);
+                //imageDataBuffer = viewProvider.createScreenCapture(CODEC_PADDING_SIZE, drawPointer);
               }
               catch (Throwable t)
               {
@@ -868,20 +870,21 @@ public class VTGraphicsModeServerWriter implements Runnable
                 && imageDataBuffer.getColorModel().getPixelSize() == lastDepth
                 && viewProvider.getColorCount() == lastColors
                 && imageDataBuffer.getRaster().getDataBuffer().getDataType() == lastDataType
-                && imageCoding == lastImageCoding)
+                && (lastImageCoding != VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG || lastImageCoding != VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG))
+                //&& imageCoding == lastImageCoding)
                 {
                   boolean different = false;
                   if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
                   {
-                    different = !VTImageDataUtils.deltaArea(lastImageBufferByte, previousImageBufferByte, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), null, resultArea);
+                    different = !VTImageDataUtils.deltaArea(lastImageBufferByte, previousImageBufferByte, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
                   {
-                    different = !VTImageDataUtils.deltaArea(lastImageBufferUShort, previousImageBufferUShort, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), null, resultArea);
+                    different = !VTImageDataUtils.deltaArea(lastImageBufferUShort, previousImageBufferUShort, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
                   {
-                    different = !VTImageDataUtils.deltaArea(lastImageBufferInt, previousImageBufferInt, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), null, resultArea);
+                    different = !VTImageDataUtils.deltaArea(lastImageBufferInt, previousImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   if (different)
                   {
@@ -936,7 +939,7 @@ public class VTGraphicsModeServerWriter implements Runnable
                     lastImageBufferInt = null;
                     previousImageBufferInt = null;
                     VTImageIO.clearBuffer(previousImageBufferByte, BufferedImage.TYPE_BYTE_INDEXED, lastColors, 0);
-                    VTImageDataUtils.deltaArea(lastImageBufferByte, previousImageBufferByte, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), null, resultArea);
+                    VTImageDataUtils.deltaArea(lastImageBufferByte, previousImageBufferByte, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
                   {
@@ -950,7 +953,7 @@ public class VTGraphicsModeServerWriter implements Runnable
                     lastImageBufferInt = null;
                     previousImageBufferInt = null;
                     VTImageIO.clearBuffer(previousImageBufferUShort, BufferedImage.TYPE_USHORT_555_RGB, lastColors, 0);
-                    VTImageDataUtils.deltaArea(lastImageBufferUShort, previousImageBufferUShort, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), null, resultArea);
+                    VTImageDataUtils.deltaArea(lastImageBufferUShort, previousImageBufferUShort, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
                   {
@@ -964,7 +967,7 @@ public class VTGraphicsModeServerWriter implements Runnable
                       previousImageBufferInt = new int[lastWidth * lastHeight];
                     }
                     VTImageIO.clearBuffer(previousImageBufferInt, BufferedImage.TYPE_INT_RGB, lastColors, 0);
-                    VTImageDataUtils.deltaArea(lastImageBufferInt, previousImageBufferInt, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), null, resultArea);
+                    VTImageDataUtils.deltaArea(lastImageBufferInt, previousImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   sendImageRefresh();
                   if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)

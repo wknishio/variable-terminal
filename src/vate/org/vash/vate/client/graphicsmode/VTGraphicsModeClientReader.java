@@ -261,7 +261,7 @@ public class VTGraphicsModeClientReader implements Runnable
             }
             int width = connection.getGraphicsControlDataInputStream().readInt();
             int height = connection.getGraphicsControlDataInputStream().readInt();
-            currentImageDataBuffer = VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_INT_ARGB, 0, recyclableDataBuffer);
+            currentImageDataBuffer = VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
             recyclableDataBuffer = currentImageDataBuffer.getRaster().getDataBuffer();
             currentImageGraphics = currentImageDataBuffer.createGraphics();
             currentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
