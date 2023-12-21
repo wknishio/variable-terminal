@@ -85,8 +85,7 @@ public class VTTransferableImage implements Transferable, ClipboardOwner
   
   public DataFlavor[] getTransferDataFlavors()
   {
-    return new DataFlavor[]
-    { DataFlavor.imageFlavor };
+    return new DataFlavor[] { DataFlavor.imageFlavor };
   }
   
   public boolean isDataFlavorSupported(DataFlavor flavor)
