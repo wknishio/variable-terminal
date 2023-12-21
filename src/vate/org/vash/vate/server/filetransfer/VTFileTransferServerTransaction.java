@@ -31,7 +31,6 @@ public class VTFileTransferServerTransaction implements Runnable
   private volatile boolean resumable;
   private volatile boolean directory;
   private volatile boolean heavier;
-  // private static final int checksumBufferSize = 64 * 1024;
   private int readedBytes;
   private int writtenBytes;
   private int bufferedBytes;
@@ -39,39 +38,23 @@ public class VTFileTransferServerTransaction implements Runnable
   private int localFileStatus;
   private int remoteFileAccess;
   private int localFileAccess;
-  // private long remoteChecksum;
-  // private long localChecksum;
   private byte[] xxhash64LocalDigest = new byte[8];
   private byte[] xxhash64RemoteDigest = new byte[8];
   private long remoteFileSize;
   private long localFileSize;
   private long maxOffset;
   private long currentOffset;
-  // private volatile long transferDataSize;
-  // private volatile long transferDataCount;
-  // private volatile long transferFileCount;
-  // private volatile long transferDirectoryCount;
   private final byte[] fileTransferBuffer = new byte[fileTransferBufferSize];
-  // private final byte[] checksumBuffer = new byte[checksumBufferSize];
-  // private Checksum checksum =
-  // XXHashFactory.fastestJavaInstance().newStreamingHash64(-1).asChecksum();
-  //private MessageDigest checksum = new VTBlake3MessageDigest();
-  //private MessageDigest checksum = XXHashFactory.fastestJavaInstance().newStreamingHash64(-1L).asMessageDigest();
   private MessageDigest xxhash64Digest;
   private String command;
   private String source;
   private String destination;
   private String filePaths;
-  private String currentRootFilePath;
-  // private volatile String localFilePath;
-  // private volatile String remoteFilePath;
+  private String currentRootPath;
   private String transferParameters;
-  // private String[] splitCommand;
   private File fileTransferFile;
   private File fileTransferCompletedFile;
   private RandomAccessFile fileTransferRandomAccessFile;
-  // private FileLock fileLock;
-  // private CheckedInputStream fileTransferChecksumInputStream;
   private DigestInputStream fileTransferChecksumInputStream;
   private InputStream fileTransferRemoteInputStream;
   private OutputStream fileTransferRemoteOutputStream;
@@ -197,26 +180,6 @@ public class VTFileTransferServerTransaction implements Runnable
     this.directory = false;
   }
   
-//  public long getTransferDataSize()
-//  {
-//    return transferDataSize;
-//  }
-//
-//  public long getTransferDataCount()
-//  {
-//    return transferDataCount;
-//  }
-//
-//  public long getTransferFileCount()
-//  {
-//    return transferFileCount;
-//  }
-//
-//  public long getTransferDirectoryCount()
-//  {
-//    return transferDirectoryCount;
-//  }
-  
   private boolean getFileStatus()
   {
     return (writeLocalFileStatus() && readRemoteFileStatus());
@@ -234,8 +197,6 @@ public class VTFileTransferServerTransaction implements Runnable
   
   private boolean getFileChecksums(boolean calculate)
   {
-    // System.out.println("getFileChecksums:" +
-    // fileTransferFile.getAbsolutePath());
     return (writeLocalFileChecksum(calculate) && readRemoteFileChecksum());
   }
   
@@ -370,8 +331,6 @@ public class VTFileTransferServerTransaction implements Runnable
       }
       if (!directory)
       {
-        // System.out.println("fileTransferRandomAccessFile:" +
-        // fileTransferFile.getAbsolutePath());
         if (upload)
         {
           fileTransferRandomAccessFile = new RandomAccessFile(fileTransferFile, "r");
@@ -411,13 +370,11 @@ public class VTFileTransferServerTransaction implements Runnable
     }
     try
     {
-      // codec.writeLong(localFileSize,
-      // session.getServer().getConnection().getFileTransferControlOutputStream());
       session.getServer().getConnection().getFileTransferControlDataOutputStream().writeLong(localFileSize);
       session.getServer().getConnection().getFileTransferControlDataOutputStream().flush();
       if (localFileSize < 0)
       {
-        // return false;
+        
       }
       return true;
     }
@@ -450,8 +407,7 @@ public class VTFileTransferServerTransaction implements Runnable
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
-      // localChecksum = -1;
+      
     }
     try
     {
@@ -479,8 +435,7 @@ public class VTFileTransferServerTransaction implements Runnable
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
-      // localChecksum = -1;
+      
     }
     xxhash64LocalDigest = fileTransferChecksumInputStream.getMessageDigest().digest();
     try
@@ -489,8 +444,7 @@ public class VTFileTransferServerTransaction implements Runnable
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
-      // localChecksum = -1;
+      
     }
     currentOffset = 0;
     try
@@ -501,7 +455,7 @@ public class VTFileTransferServerTransaction implements Runnable
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
+      
     }
     return false;
   }
@@ -604,12 +558,7 @@ public class VTFileTransferServerTransaction implements Runnable
   {
     try
     {
-      // remoteChecksum =
-      // session.getServer().getConnection().getFileTransferControlDataInputStream().readLong();
       session.getServer().getConnection().getFileTransferControlDataInputStream().readFully(xxhash64RemoteDigest);
-      // System.out.println("remoteChecksum:" +
-      // Arrays.toString(remoteChecksum));
-      // System.out.println("remoteChecksum.length:" + remoteChecksum.length);
       return true;
     }
     catch (Throwable e)
@@ -672,99 +621,57 @@ public class VTFileTransferServerTransaction implements Runnable
     directory = false;
     resumable = false;
     fileTransferFile = new File(convertFilePath(currentPath));
-//    if (!fileTransferFile.isAbsolute())
-//    {
-//      fileTransferFile = new File(convertFilePath(currentPath));
-//    }
-    // System.out.println("verifyUpload: " +
-    // fileTransferFile.getAbsolutePath());
     try
     {
       if (getFileStatus())
       {
         if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_DIRECTORY)
         {
-          // session.getServer().getConnection().getResultWriter().write("\nVT>Local
-          // file
-          // is a directoy!\nVT>");
-          // session.getServer().getConnection().getResultWriter().flush();
-          // verified = false;
-          // if (currentPath == null)
-          // {
-          // remoteFilePath = appendToPath(remoteFilePath,
-          // getFileNameFromPath(localFilePath));
-          // }
+          
         }
         if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
         {
-          // session.getServer().getConnection().getResultWriter().write("\nVT>Local
-          // file
-          // is of unknown type!\nVT>");
-          // session.getServer().getConnection().getResultWriter().flush();
           checked = false;
         }
         if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_ERROR)
         {
-          // session.getServer().getConnection().getResultWriter().write("\nVT>Error
-          // found while analyzing local file!\nVT>");
-          // session.getServer().getConnection().getResultWriter().flush();
           checked = false;
         }
         if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_NOT_FOUND)
         {
-          // session.getServer().getConnection().getResultWriter().write("\nVT>Remote
-          // file not found!\nVT>");
-          // session.getServer().getConnection().getResultWriter().flush();
           checked = false;
         }
         if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_DIRECTORY)
         {
-          // session.getServer().getConnection().getResultWriter().write("\nVT>Remote
-          // file is a directory!\nVT>");
-          // session.getServer().getConnection().getResultWriter().flush();
-          // verified = false;
           directory = true;
         }
         if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
         {
-          // session.getServer().getConnection().getResultWriter().write("\nVT>Remote
-          // file is of unknown type!\nVT>");
-          // session.getServer().getConnection().getResultWriter().flush();
           checked = false;
         }
         if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_ERROR)
         {
-          // session.getServer().getConnection().getResultWriter().write("\nVT>Error
-          // found while analyzing remote file!\nVT>");
-          // session.getServer().getConnection().getResultWriter().flush();
           checked = false;
         }
         if (checked)
         {
           if (!directory)
           {
-            // transferFileCount++;
+            
           }
           else
           {
-            // transferDirectoryCount++;
+            
           }
         }
         if (checked && getFileAccess(true))
         {
           if (!(remoteFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE || remoteFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_WRITE_ONLY))
           {
-            // session.getServer().getConnection().getResultWriter().write("\nVT>Local
-            // file
-            // is not writable!\nVT>");
-            // session.getServer().getConnection().getResultWriter().flush();
             checked = false;
           }
           if (!(localFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE || localFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_ONLY))
           {
-            // session.getServer().getConnection().getResultWriter().write("\nVT>Remote
-            // file is not readable!\nVT>");
-            // session.getServer().getConnection().getResultWriter().flush();
             checked = false;
           }
           localFileSize = 0;
@@ -814,7 +721,6 @@ public class VTFileTransferServerTransaction implements Runnable
                 }
               }
             }
-            // transferDataSize += localFileSize - currentOffset;
             return true;
           }
           else if (checked && directory)
@@ -960,10 +866,6 @@ public class VTFileTransferServerTransaction implements Runnable
     if (verifying)
     {
       xxhash64Digest.reset();
-//      if (resuming)
-//      {
-//        xxhash64Digest.update(xxhash64LocalDigest);
-//      }
     }
     try
     {
@@ -990,13 +892,11 @@ public class VTFileTransferServerTransaction implements Runnable
         {
           xxhash64Digest.update(fileTransferBuffer, 0, readedBytes);
         }
-        // transferDataCount += readedBytes;
       }
       fileTransferRemoteOutputStream.flush();
     }
     catch (Throwable t)
     {
-      // t.printStackTrace();
       ok = false;
     }
     if (verifying)
@@ -1030,8 +930,6 @@ public class VTFileTransferServerTransaction implements Runnable
       {
         
       }
-      // System.out.println("cleanUpload:" +
-      // fileTransferFile.getAbsolutePath());
       fileTransferRandomAccessFile = null;
     }
     if (fileTransferChecksumInputStream != null)
@@ -1061,90 +959,49 @@ public class VTFileTransferServerTransaction implements Runnable
     directory = false;
     resumable = false;
     fileTransferFile = new File(convertFilePath(currentPath));
-//    if (!fileTransferFile.isAbsolute())
-//    {
-//      fileTransferFile = new File(convertFilePath(currentPath));
-//    }
-    // System.out.println("verifyDownload: " +
-    // fileTransferFile.getAbsolutePath());
     try
     {
       if (getFileStatus())
       {
         if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_NOT_FOUND)
         {
-          // session.getServer().getConnection().getResultWriter().write("\nVT>Local
-          // file
-          // not found!\nVT>");
-          // session.getServer().getConnection().getResultWriter().flush();
           checked = false;
         }
         if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_DIRECTORY)
         {
-          // session.getServer().getConnection()V.getResultWriter().write("\nVT>Local
-          // file is a directory!\nVT>");
-          // session.getServer().getConnection().getResultWriter().flush();
-          // verified = false;
           directory = true;
         }
         if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
         {
-          // session.getServer().getConnection().getResultWriter().write("\nVT>Local
-          // file
-          // is of unknown type!\nVT>");
-          // session.getServer().getConnection().getResultWriter().flush();
           checked = false;
         }
         if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_ERROR)
         {
-          // session.getServer().getConnection().getResultWriter().write("\nVT>Error
-          // found while analyzing local file!\nVT>");
-          // session.getServer().getConnection().getResultWriter().flush();
           checked = false;
         }
         if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_DIRECTORY)
         {
-          // session.getServer().getConnection().getResultWriter().write("\nVT>Remote
-          // file is a directory!\nVT>");
-          // session.getServer().getConnection().getResultWriter().flush();
-          // verified = false;
-          // if (currentPath == null)
-          // {
-          // localFilePath = appendToPath(localFilePath,
-          // getFileNameFromPath(remoteFilePath));
-          // }
+          
         }
         if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
         {
-          // session.getServer().getConnection().getResultWriter().write("\nVT>Remote
-          // file is of unknown type!\nVT>");
-          // session.getServer().getConnection().getResultWriter().flush();
           checked = false;
         }
         if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_ERROR)
         {
-          // session.getServer().getConnection().getResultWriter().write("\nVT>Error
-          // found while analyzing remote file!\nVT>");
-          // session.getServer().getConnection().getResultWriter().flush();
           checked = false;
         }
         if (checked)
         {
           if (!directory)
           {
-            // transferFileCount++;
             if (!fileTransferFile.exists())
             {
               fileTransferFile = new File(convertFilePath(currentPath + ".tmp"));
-//              if (!fileTransferFile.isAbsolute())
-//              {
-//                fileTransferFile = new File(convertFilePath(currentPath + ".tmp"));
-//              }
             }
           }
           else
           {
-            // transferDirectoryCount++;
             fileTransferFile = new File(convertFilePath(currentPath));
             if (fileTransferFile.exists() && !fileTransferFile.isDirectory())
             {
@@ -1156,17 +1013,10 @@ public class VTFileTransferServerTransaction implements Runnable
         {
           if (!(remoteFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE || remoteFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_ONLY))
           {
-            // session.getServer().getConnection().getResultWriter().write("\nVT>Local
-            // file
-            // is not readable!\nVT>");
-            // session.getServer().getConnection().getResultWriter().flush();
             checked = false;
           }
           if (!(localFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE || localFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_WRITE_ONLY))
           {
-            // session.getServer().getConnection().getResultWriter().write("\nVT>Remote
-            // file is not writable!\nVT>");
-            // session.getServer().getConnection().getResultWriter().flush();
             checked = false;
           }
           localFileSize = 0;
@@ -1224,7 +1074,6 @@ public class VTFileTransferServerTransaction implements Runnable
                 }
               }
             }
-            // transferDataSize += remoteFileSize - currentOffset;
             return true;
           }
           else if (checked && directory)
@@ -1261,7 +1110,6 @@ public class VTFileTransferServerTransaction implements Runnable
     }
     catch (Throwable e)
     {
-      // e.printStackTrace();
       try
       {
         fileTransferRemoteInputStream.close();
@@ -1305,9 +1153,9 @@ public class VTFileTransferServerTransaction implements Runnable
       else
       {
         String rootFolder = null;
-        if (rootLevel && !currentPath.equals(currentRootFilePath))
+        if (rootLevel && !currentPath.equals(currentRootPath))
         {
-          rootFolder = getFileNameFromPath(currentRootFilePath);
+          rootFolder = getFileNameFromPath(currentRootPath);
           File rootFile = new File(appendToPath(currentPath, rootFolder));
           if (!rootFile.exists())
           {
@@ -1322,14 +1170,12 @@ public class VTFileTransferServerTransaction implements Runnable
           }
         }
         String nextPath = " ";
-        // String subPath = appendToPath(localFilePath, currentPath);
         while (true)
         {
           ok = getContinueTransfer(ok);
           if (ok)
           {
             nextPath = readNextFilePath();
-            // System.out.println("nextPath:" + nextPath);
             if (nextPath != null)
             {
               if (!("".equals(nextPath)))
@@ -1386,10 +1232,6 @@ public class VTFileTransferServerTransaction implements Runnable
     if (verifying)
     {
       xxhash64Digest.reset();
-//      if (resuming)
-//      {
-//        xxhash64Digest.update(xxhash64RemoteDigest);
-//      }
     }
     try
     {
@@ -1416,7 +1258,6 @@ public class VTFileTransferServerTransaction implements Runnable
               writtenBytes -= readedBytes;
               currentOffset += readedBytes;
               bufferedBytes += readedBytes;
-              // transferDataCount += readedBytes;
             }
             else
             {
@@ -1436,7 +1277,6 @@ public class VTFileTransferServerTransaction implements Runnable
     }
     catch (Throwable t)
     {
-      // t.printStackTrace();
       ok = false;
     }
     if (verifying)
@@ -1470,8 +1310,6 @@ public class VTFileTransferServerTransaction implements Runnable
       {
         
       }
-      // System.out.println("cleanDownload:" +
-      // fileTransferFile.getAbsolutePath());
       fileTransferRandomAccessFile = null;
     }
     if (fileTransferChecksumInputStream != null)
@@ -1509,10 +1347,6 @@ public class VTFileTransferServerTransaction implements Runnable
     try
     {
       fileTransferCompletedFile = new File(convertFilePath(currentPath));
-//      if (!fileTransferCompletedFile.isAbsolute())
-//      {
-//        fileTransferCompletedFile = new File(convertFilePath(currentPath));
-//      }
       if (fileTransferCompletedFile.equals(fileTransferFile))
       {
         return true;
@@ -1545,8 +1379,18 @@ public class VTFileTransferServerTransaction implements Runnable
     return idx >= 0 ? path.substring(idx + 1) : path;
   }
   
+  private static String normalizePath(String path)
+  {
+    if (path != null && path.trim().length() > 1 && (path.endsWith("/") || path.endsWith("\\")))
+    {
+      path = path.substring(0, path.length() - 1);
+    }
+    return path;
+  }
+  
   private static String appendToPath(String path, String append)
   {
+    append = normalizePath(append);
     if (path == null && append != null)
     {
       return append;
@@ -1590,17 +1434,9 @@ public class VTFileTransferServerTransaction implements Runnable
   {
     try
     {
-      // stopped = false;
-      // finished = false;
-      // transferDataSize = 0;
-      // transferDataCount = 0;
-      // transferFileCount = 0;
-      // transferDirectoryCount = 0;
       String[] splitCommand = CommandLineTokenizer.tokenize(command);
       if (splitCommand.length < 4)
       {
-        // stopped = true;
-        
         finished = true;
         return;
       }
@@ -1609,11 +1445,10 @@ public class VTFileTransferServerTransaction implements Runnable
         source = splitCommand[2];
         destination = splitCommand[3];
         transferParameters = splitCommand[1];
+        destination = normalizePath(destination);
         if (transferParameters.toUpperCase().contains("P"))
         {
           filePaths = source;
-          // localFilePath = splitCommand[3];
-          // remoteFilePath = splitCommand[2];
           compressing = false;
           resuming = false;
           verifying = false;
@@ -1656,28 +1491,21 @@ public class VTFileTransferServerTransaction implements Runnable
           String[] remoteFiles = filePaths.split(";");
           for (String remoteFile : remoteFiles)
           {
-            // this.localFilePath = destination;
-            // this.remoteFilePath = remoteFile;
-            currentRootFilePath = remoteFile;
+            remoteFile = normalizePath(remoteFile);
+            currentRootPath = remoteFile;
             if (tryDownload(destination, true))
             {
-              // session.getServer().getConnection().getResultWriter().write("\nVT>File
-              // transfer completed!\nVT>");
-              // session.getServer().getConnection().getResultWriter().flush();
+              
             }
             else
             {
-              // session.getServer().getConnection().getResultWriter().write("\nVT>File
-              // transfer failed!\nVT>");
-              // session.getServer().getConnection().getResultWriter().flush();
+              
             }
           }
         }
         else if (splitCommand[1].toUpperCase().contains("G"))
         {
           filePaths = source;
-          // localFilePath = splitCommand[2];
-          // remoteFilePath = splitCommand[3];
           compressing = false;
           resuming = false;
           verifying = false;
@@ -1720,20 +1548,15 @@ public class VTFileTransferServerTransaction implements Runnable
           String[] localFiles = filePaths.split(";");
           for (String localFile : localFiles)
           {
-            // this.remoteFilePath = destination;
-            // this.localFilePath = localFile;
-            currentRootFilePath = localFile;
+            localFile = normalizePath(localFile);
+            currentRootPath = localFile;
             if (tryUpload(localFile))
             {
-              // session.getServer().getConnection().getResultWriter().write("\nVT>File
-              // transfer completed!\nVT>");
-              // session.getServer().getConnection().getResultWriter().flush();
+              
             }
             else
             {
-              // session.getServer().getConnection().getResultWriter().write("\nVT>File
-              // transfer failed!\nVT>");
-              // session.getServer().getConnection().getResultWriter().flush();
+              
             }
           }
         }
