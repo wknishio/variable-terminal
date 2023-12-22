@@ -241,7 +241,7 @@ public class VTServerScreenshotTask extends VTTask
         //}
         jpgImageOutputStream = ImageIO.createImageOutputStream(photoOutputStream);
         jpgWriter.setOutput(jpgImageOutputStream);
-        jpgWriter.write(null, new IIOImage(screenCapture, null, jpgWriterMetadata), jpgWriterParam);
+        jpgWriter.write(jpgWriterMetadata, new IIOImage(screenCapture, null, jpgWriterMetadata), jpgWriterParam);
         jpgImageOutputStream.flush();
       }
       else

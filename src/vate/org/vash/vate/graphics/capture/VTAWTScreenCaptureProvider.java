@@ -3316,7 +3316,7 @@ public final class VTAWTScreenCaptureProvider
       if (sectionCurrentImageGrayscale == null
       || sectionCurrentImageGrayscale.getWidth() != captureArea.width
       || sectionCurrentImageGrayscale.getHeight() != captureArea.height)
-      //|| (sectionCurrentImageGrayscale != null && sectionCurrentImageGrayscaleColorCount != getColorCount()))
+      //|| sectionCurrentImageGrayscaleColorCount != getColorCount())
       {
         if (sectionCurrentImageGrayscale != null)
         {

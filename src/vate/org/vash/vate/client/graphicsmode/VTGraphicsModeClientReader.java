@@ -38,8 +38,10 @@ public class VTGraphicsModeClientReader implements Runnable
   private VTGraphicsModeClientWriter writer;
   private VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII vtCustomCodec;
   private ImageReader currentImageReader;
+  //private ImageReadParam currentImageReaderParam;
   private ImageReader pngImageReader;
   private ImageReader jpegImageReader;
+  //private ImageReadParam jpgReaderParam;
   private ImageInputStream imageStream;
   private VTIncrementalIIOReadUpdateListener incrementalImageReader = new VTIncrementalIIOReadUpdateListener();
   private VTLimitedInputStream limitedInputStream;
@@ -73,7 +75,7 @@ public class VTGraphicsModeClientReader implements Runnable
     
     public void passComplete(ImageReader source, BufferedImage theImage)
     {
-      
+      //currentImageGraphics.drawImage(theImage, offsetX, offsetY, null);
     }
     
     public void thumbnailPassStarted(ImageReader source, BufferedImage theThumbnail, int pass, int minPass, int maxPass, int minX, int minY, int periodX, int periodY, int[] bands)
@@ -224,6 +226,7 @@ public class VTGraphicsModeClientReader implements Runnable
         limitedInputStream = new VTLimitedInputStream(connection.getGraphicsDirectImageDataInputStream());
         pngImageReader.addIIOReadUpdateListener(incrementalImageReader);
         jpegImageReader.addIIOReadUpdateListener(incrementalImageReader);
+        //jpgReaderParam = jpegImageReader.getDefaultReadParam();
       }
     }
     catch (Throwable e)
@@ -254,14 +257,19 @@ public class VTGraphicsModeClientReader implements Runnable
             if (connection.getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
             {
               currentImageReader = jpegImageReader;
+              //currentImageReaderParam = jpgReaderParam;
             }
             else
             {
               currentImageReader = pngImageReader;
+              //currentImageReaderParam = null;
             }
+            int type = connection.getGraphicsControlDataInputStream().readInt();
+            int colors = connection.getGraphicsControlDataInputStream().readInt();
             int width = connection.getGraphicsControlDataInputStream().readInt();
             int height = connection.getGraphicsControlDataInputStream().readInt();
-            currentImageDataBuffer = VTImageIO.createImage(0, 0, width, height, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
+            
+            currentImageDataBuffer = VTImageIO.createImage(0, 0, width, height, type, colors, recyclableDataBuffer);
             recyclableDataBuffer = currentImageDataBuffer.getRaster().getDataBuffer();
             currentImageGraphics = currentImageDataBuffer.createGraphics();
             currentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
@@ -297,7 +305,7 @@ public class VTGraphicsModeClientReader implements Runnable
               currentImageReader.setInput(imageStream, true, false);
               incrementalImageReader.setOffsetX(x);
               incrementalImageReader.setOffsetY(y);
-              nextImageDataBuffer = currentImageReader.read(0);
+              nextImageDataBuffer = currentImageReader.read(0, null);
               limitedInputStream.empty();
               if (nextImageDataBuffer != null)
               {
@@ -317,15 +325,21 @@ public class VTGraphicsModeClientReader implements Runnable
             if (connection.getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
             {
               currentImageReader = jpegImageReader;
+              //currentImageReaderParam = jpgReaderParam;
             }
             else
             {
               currentImageReader = pngImageReader;
+              //currentImageReaderParam = null;
             }
             if (!writer.isSynchronousRefresh())
             {
               writer.notifyAsynchronousRepainter();
             }
+            @SuppressWarnings("unused")
+            int type = connection.getGraphicsControlDataInputStream().readInt();
+            @SuppressWarnings("unused")
+            int colors = connection.getGraphicsControlDataInputStream().readInt();
             int count = connection.getGraphicsControlDataInputStream().readInt();
             
             for (int i = 0; i < count; i++)
@@ -350,7 +364,7 @@ public class VTGraphicsModeClientReader implements Runnable
               currentImageReader.setInput(imageStream, true, false);
               incrementalImageReader.setOffsetX(x);
               incrementalImageReader.setOffsetY(y);
-              nextImageDataBuffer = currentImageReader.read(0);
+              nextImageDataBuffer = currentImageReader.read(0, null);
               limitedInputStream.empty();
               if (nextImageDataBuffer != null)
               {
@@ -377,20 +391,10 @@ public class VTGraphicsModeClientReader implements Runnable
             }
             int coding = connection.getGraphicsControlDataInputStream().read();
             int type, colors, width, height;
-            if (coding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD)
-            {
-              type = connection.getGraphicsFastImageDataInputStream().readInt();
-              colors = connection.getGraphicsFastImageDataInputStream().readInt();
-              width = connection.getGraphicsFastImageDataInputStream().readInt();
-              height = connection.getGraphicsFastImageDataInputStream().readInt();
-            }
-            else
-            {
-              type = connection.getGraphicsHeavyImageDataInputStream().readInt();
-              colors = connection.getGraphicsHeavyImageDataInputStream().readInt();
-              width = connection.getGraphicsHeavyImageDataInputStream().readInt();
-              height = connection.getGraphicsHeavyImageDataInputStream().readInt();
-            }
+            type = connection.getGraphicsControlDataInputStream().readInt();
+            colors = connection.getGraphicsControlDataInputStream().readInt();
+            width = connection.getGraphicsControlDataInputStream().readInt();
+            height = connection.getGraphicsControlDataInputStream().readInt();
             //System.out.println("type:" + type);
             //System.out.println("colors:" + colors);
             currentImageDataBuffer = VTImageIO.createImage(CODEC_PADDING_SIZE, CODEC_PADDING_SIZE, width, height, type, colors, recyclableDataBuffer);
@@ -413,7 +417,7 @@ public class VTGraphicsModeClientReader implements Runnable
 //                previousImageBufferInt = null;
 //                VTImageIO.clearBuffer(previousImageBufferUShort, BufferedImage.TYPE_USHORT_555_RGB, colors, 0);
                 }
-                if (colors == 64)
+                if (colors == 64 || colors == 16 || colors == 8 || colors == 4)
                 {
                   lastImageBufferByte = ((DataBufferByte) currentImageDataBuffer.getRaster().getDataBuffer()).getData();
                   lastImageBufferUShort = null;
