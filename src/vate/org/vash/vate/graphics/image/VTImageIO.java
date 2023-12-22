@@ -1436,7 +1436,7 @@ public final class VTImageIO
     
     x = 0;
     y = 1;
-    decodePixel32X(in, data, x + (y * width), width);
+    decodePixel32X(in, data, width, width);
     
     x = 1;
     y = 1;
