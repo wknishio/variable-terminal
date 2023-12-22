@@ -1211,10 +1211,7 @@ public final class VTImageIO
     
     x = 0;
     y = 1;
-    for (int position = x + (y * width); position < size; position += width)
-    {
-      encodePixel8X(out, data, position, width);
-    }
+    encodePixel8X(out, data, width, width);
     
     x = 1;
     y = 1;
@@ -1239,10 +1236,7 @@ public final class VTImageIO
     
     x = 0;
     y = 1;
-    for (int position = x + (y * width); position < size; position += width)
-    {
-      encodePixel15X(out, data, position, width);
-    }
+    encodePixel15X(out, data, width, width);
     
     x = 1;
     y = 1;
@@ -1267,10 +1261,7 @@ public final class VTImageIO
     
     x = 0;
     y = 1;
-    for (int position = x + (y * width); position < size; position += width)
-    {
-      encodePixel24X(out, data, position, width);
-    }
+    encodePixel24X(out, data, width, width);
     
     x = 1;
     y = 1;
@@ -1295,10 +1286,7 @@ public final class VTImageIO
     
     x = 0;
     y = 1;
-    for (int position = x + (y * width); position < size; position += width)
-    {
-      encodePixel30X(out, data, position, width);
-    }
+    encodePixel30X(out, data, width, width);
     
     x = 1;
     y = 1;
@@ -1323,10 +1311,7 @@ public final class VTImageIO
     
     x = 0;
     y = 1;
-    for (int position = x + (y * width); position < size; position += width)
-    {
-      encodePixel32X(out, data, position, width);
-    }
+    encodePixel32X(out, data, width, width);
     
     x = 1;
     y = 1;
@@ -1351,10 +1336,7 @@ public final class VTImageIO
     
     x = 0;
     y = 1;
-    for (int position = x + (y * width); position < size; position += width)
-    {
-      decodePixel8X(in, data, position, width);
-    }
+    decodePixel8X(in, data, width, width);
     
     x = 1;
     y = 1;
@@ -1379,10 +1361,7 @@ public final class VTImageIO
     
     x = 0;
     y = 1;
-    for (int position = x + (y * width); position < size; position += width)
-    {
-      decodePixel15X(in, data, position, width);
-    }
+    decodePixel15X(in, data, width, width);
     
     x = 1;
     y = 1;
@@ -1407,10 +1386,7 @@ public final class VTImageIO
     
     x = 0;
     y = 1;
-    for (int position = x + (y * width); position < size; position += width)
-    {
-      decodePixel24X(in, data, position, width);
-    }
+    decodePixel24X(in, data, width, width);
     
     x = 1;
     y = 1;
@@ -1435,10 +1411,7 @@ public final class VTImageIO
     
     x = 0;
     y = 1;
-    for (int position = x + (y * width); position < size; position += width)
-    {
-      decodePixel30X(in, data, position, width);
-    }
+    decodePixel30X(in, data, width, width);
     
     x = 1;
     y = 1;
@@ -1463,10 +1436,7 @@ public final class VTImageIO
     
     x = 0;
     y = 1;
-    for (int position = x + (y * width); position < size; position += width)
-    {
-      decodePixel32X(in, data, position, width);
-    }
+    decodePixel32X(in, data, x + (y * width), width);
     
     x = 1;
     y = 1;
@@ -1508,7 +1478,7 @@ public final class VTImageIO
     
     diag1 = 0;
     top1 = pixelData[position - width];
-    left1 = 0;
+    left1 = pixelData[position - 1];
     
     pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
@@ -1560,7 +1530,7 @@ public final class VTImageIO
     
     diag1 = 0;
     top1 = pixelData[position - width];
-    left1 = 0;
+    left1 = pixelData[position - 1];
     
     pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
@@ -1612,7 +1582,7 @@ public final class VTImageIO
     
     diag1 = 0;
     top1 = pixelData[position - width];
-    left1 = 0;
+    left1 = pixelData[position - 1];
     
     pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
@@ -1664,7 +1634,7 @@ public final class VTImageIO
     
     diag1 = 0;
     top1 = pixelData[position - width];
-    left1 = 0;
+    left1 = pixelData[position - 1];
     
     pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
@@ -1719,7 +1689,7 @@ public final class VTImageIO
     
     diag1 = 0;
     top1 = pixelData[position - width];
-    left1 = 0;
+    left1 = pixelData[position - 1];
     
     pred1 = (int) ((left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2);
     
@@ -1772,7 +1742,7 @@ public final class VTImageIO
     
     diag1 = 0;
     top1 = pixelData[position - width];
-    left1 = 0;
+    left1 = pixelData[position - 1];
     
     pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
@@ -1824,7 +1794,7 @@ public final class VTImageIO
     
     diag1 = 0;
     top1 = pixelData[position - width];
-    left1 = 0;
+    left1 = pixelData[position - 1];
     
     pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
@@ -1876,7 +1846,7 @@ public final class VTImageIO
     
     diag1 = 0;
     top1 = pixelData[position - width];
-    left1 = 0;
+    left1 = pixelData[position - 1];
     
     pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
@@ -1928,7 +1898,7 @@ public final class VTImageIO
     
     diag1 = 0;
     top1 = pixelData[position - width];
-    left1 = 0;
+    left1 = pixelData[position - 1];
     
     pred1 = (left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2;
     
@@ -1983,7 +1953,7 @@ public final class VTImageIO
     
     diag1 = 0;
     top1 = pixelData[position - width];
-    left1 = 0;
+    left1 = pixelData[position - 1];
     
     pred1 = (int) ((left1 + top1 + diag1 + ((left1 + top1) >> 1)) >> 2);
     
