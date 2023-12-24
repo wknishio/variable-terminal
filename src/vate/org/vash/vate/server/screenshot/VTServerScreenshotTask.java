@@ -234,15 +234,32 @@ public class VTServerScreenshotTask extends VTTask
       
       if (useJPG)
       {
-        IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(screenCapture), jpgWriterParam));
-        //if (lastColors == 16 || lastColors == 8 || lastColors == 4)
-        //{
-          //jpgWriterMetadata = null;
-        //}
-        jpgImageOutputStream = ImageIO.createImageOutputStream(photoOutputStream);
-        jpgWriter.setOutput(jpgImageOutputStream);
-        jpgWriter.write(jpgWriterMetadata, new IIOImage(screenCapture, null, jpgWriterMetadata), jpgWriterParam);
-        jpgImageOutputStream.flush();
+        if (screenshotProvider.getColorCount() == 16 || screenshotProvider.getColorCount() == 8 || screenshotProvider.getColorCount() == 4)
+        {
+          jpgWriterParam.setDestinationType(ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_BYTE_GRAY));
+          IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(screenCapture), jpgWriterParam));
+          if (convertedImage == null)
+          {
+            convertedImage = VTImageIO.createImage(0, 0, screenCapture.getWidth(), screenCapture.getHeight(), BufferedImage.TYPE_BYTE_GRAY, 0, recyclableDataBuffer);
+            recyclableDataBuffer = convertedImage.getRaster().getDataBuffer();
+            convertedGraphics = convertedImage.createGraphics();
+            convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+          }
+          convertedGraphics.drawImage(screenCapture, 0, 0, null);
+          jpgImageOutputStream = ImageIO.createImageOutputStream(photoOutputStream);
+          jpgWriter.setOutput(jpgImageOutputStream);
+          jpgWriter.write(jpgWriterMetadata, new IIOImage(convertedImage, null, jpgWriterMetadata), jpgWriterParam);
+          jpgImageOutputStream.flush();
+        }
+        else
+        {
+          jpgWriterParam.setDestinationType(jpgWriter.getDefaultWriteParam().getDestinationType());
+          IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(screenCapture), jpgWriterParam));
+          jpgImageOutputStream = ImageIO.createImageOutputStream(photoOutputStream);
+          jpgWriter.setOutput(jpgImageOutputStream);
+          jpgWriter.write(jpgWriterMetadata, new IIOImage(screenCapture, null, jpgWriterMetadata), jpgWriterParam);
+          jpgImageOutputStream.flush();
+        }
       }
       else
       {

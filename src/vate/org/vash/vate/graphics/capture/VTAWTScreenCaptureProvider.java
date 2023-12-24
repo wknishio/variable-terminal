@@ -118,7 +118,7 @@ public final class VTAWTScreenCaptureProvider
   private int screenCurrentWidth, screenCurrentHeight;
   private int screenCurrentX, screenCurrentY;
   private int scaledCurrentWidth, scaledCurrentHeight;
-  //private int sectionCurrentImageGrayscaleColorCount;
+  private int sectionCurrentImageGrayscaleColorCount;
   //private int sectionCurrentImageConvertedColorCount;
   // private int[] pixelBlock = new int[64 * 64];
   private int[] sectionPixelBufferInt;
@@ -135,7 +135,7 @@ public final class VTAWTScreenCaptureProvider
   //private BufferedImage sectionCurrentImageConverted;
   private BufferedImage screenCurrentImage;
   private BufferedImage scaledCurrentImage;
-  private Graphics2D scaledCurrentGraphics;
+  private Graphics2D scaledCurrentImageGraphics;
   private Graphics2D sectionCurrentImageGrayscaleGraphics;
   //private Graphics2D sectionCurrentImageConvertedGraphics;
   // private volatile Graphics2D sectionGraphics;
@@ -1197,10 +1197,10 @@ public final class VTAWTScreenCaptureProvider
       scaledCurrentImage.flush();
       scaledCurrentImage = null;
     }
-    if (scaledCurrentGraphics != null)
+    if (scaledCurrentImageGraphics != null)
     {
-      scaledCurrentGraphics.dispose();
-      scaledCurrentGraphics = null;
+      scaledCurrentImageGraphics.dispose();
+      scaledCurrentImageGraphics = null;
     }
     if (sectionCurrentImageTrue != null)
     {
@@ -1211,7 +1211,7 @@ public final class VTAWTScreenCaptureProvider
     {
       sectionCurrentImageGrayscale.flush();
       sectionCurrentImageGrayscale = null;
-      //sectionCurrentImageGrayscaleColorCount = 0;
+      sectionCurrentImageGrayscaleColorCount = 0;
       //sectionCurrentImageConvertedColorCount = 0;
     }
     if (sectionCurrentImageGrayscaleGraphics != null)
@@ -1315,10 +1315,10 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentImage.flush();
         scaledCurrentImage = null;
       }
-      if (scaledCurrentGraphics != null)
+      if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
+        scaledCurrentImageGraphics.dispose();
+        scaledCurrentImageGraphics = null;
       }
       int x = 0;
       int y = 0;
@@ -1329,8 +1329,8 @@ public final class VTAWTScreenCaptureProvider
       }
       scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 27, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+      scaledCurrentImageGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
     }
     else
     {
@@ -1377,10 +1377,10 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentImage.flush();
         scaledCurrentImage = null;
       }
-      if (scaledCurrentGraphics != null)
+      if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
+        scaledCurrentImageGraphics.dispose();
+        scaledCurrentImageGraphics = null;
       }
       int x = 0;
       int y = 0;
@@ -1391,8 +1391,8 @@ public final class VTAWTScreenCaptureProvider
       }
       scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 4, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+      scaledCurrentImageGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
     }
     else
     {
@@ -1439,10 +1439,10 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentImage.flush();
         scaledCurrentImage = null;
       }
-      if (scaledCurrentGraphics != null)
+      if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
+        scaledCurrentImageGraphics.dispose();
+        scaledCurrentImageGraphics = null;
       }
       int x = 0;
       int y = 0;
@@ -1453,8 +1453,8 @@ public final class VTAWTScreenCaptureProvider
       }
       scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 16, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+      scaledCurrentImageGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
     }
     else
     {
@@ -1563,10 +1563,10 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentImage.flush();
         scaledCurrentImage = null;
       }
-      if (scaledCurrentGraphics != null)
+      if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
+        scaledCurrentImageGraphics.dispose();
+        scaledCurrentImageGraphics = null;
       }
       int x = 0;
       int y = 0;
@@ -1577,8 +1577,8 @@ public final class VTAWTScreenCaptureProvider
       }
       scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 8, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+      scaledCurrentImageGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
     }
     else
     {
@@ -1625,10 +1625,10 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentImage.flush();
         scaledCurrentImage = null;
       }
-      if (scaledCurrentGraphics != null)
+      if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
+        scaledCurrentImageGraphics.dispose();
+        scaledCurrentImageGraphics = null;
       }
       int x = 0;
       int y = 0;
@@ -1639,8 +1639,8 @@ public final class VTAWTScreenCaptureProvider
       }
       scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 64, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+      scaledCurrentImageGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
     }
     else
     {
@@ -1687,10 +1687,10 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentImage.flush();
         scaledCurrentImage = null;
       }
-      if (scaledCurrentGraphics != null)
+      if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
+        scaledCurrentImageGraphics.dispose();
+        scaledCurrentImageGraphics = null;
       }
       int x = 0;
       int y = 0;
@@ -1701,8 +1701,8 @@ public final class VTAWTScreenCaptureProvider
       }
       scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 125, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+      scaledCurrentImageGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
     }
     else
     {
@@ -1749,10 +1749,10 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentImage.flush();
         scaledCurrentImage = null;
       }
-      if (scaledCurrentGraphics != null)
+      if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
+        scaledCurrentImageGraphics.dispose();
+        scaledCurrentImageGraphics = null;
       }
       int x = 0;
       int y = 0;
@@ -1763,8 +1763,8 @@ public final class VTAWTScreenCaptureProvider
       }
       scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_BYTE_INDEXED, 216, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+      scaledCurrentImageGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
     }
     else
     {
@@ -1811,10 +1811,10 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentImage.flush();
         scaledCurrentImage = null;
       }
-      if (scaledCurrentGraphics != null)
+      if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
+        scaledCurrentImageGraphics.dispose();
+        scaledCurrentImageGraphics = null;
       }
       int x = 0;
       int y = 0;
@@ -1825,8 +1825,8 @@ public final class VTAWTScreenCaptureProvider
       }
       scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 512, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+      scaledCurrentImageGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
     }
     else
     {
@@ -1873,10 +1873,10 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentImage.flush();
         scaledCurrentImage = null;
       }
-      if (scaledCurrentGraphics != null)
+      if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
+        scaledCurrentImageGraphics.dispose();
+        scaledCurrentImageGraphics = null;
       }
       int x = 0;
       int y = 0;
@@ -1887,8 +1887,8 @@ public final class VTAWTScreenCaptureProvider
       }
       scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 4096, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+      scaledCurrentImageGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
     }
     else
     {
@@ -1935,10 +1935,10 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentImage.flush();
         scaledCurrentImage = null;
       }
-      if (scaledCurrentGraphics != null)
+      if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
+        scaledCurrentImageGraphics.dispose();
+        scaledCurrentImageGraphics = null;
       }
       int x = 0;
       int y = 0;
@@ -1949,8 +1949,8 @@ public final class VTAWTScreenCaptureProvider
       }
       scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_USHORT_555_RGB, 32768, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+      scaledCurrentImageGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
     }
     else
     {
@@ -1997,10 +1997,10 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentImage.flush();
         scaledCurrentImage = null;
       }
-      if (scaledCurrentGraphics != null)
+      if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
+        scaledCurrentImageGraphics.dispose();
+        scaledCurrentImageGraphics = null;
       }
       int x = 0;
       int y = 0;
@@ -2011,8 +2011,8 @@ public final class VTAWTScreenCaptureProvider
       }
       scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 262144, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+      scaledCurrentImageGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
     }
     else
     {
@@ -2059,10 +2059,10 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentImage.flush();
         scaledCurrentImage = null;
       }
-      if (scaledCurrentGraphics != null)
+      if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
+        scaledCurrentImageGraphics.dispose();
+        scaledCurrentImageGraphics = null;
       }
       int x = 0;
       int y = 0;
@@ -2073,8 +2073,8 @@ public final class VTAWTScreenCaptureProvider
       }
       scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_CUSTOM, 2097152, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+      scaledCurrentImageGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
     }
     else
     {
@@ -2121,10 +2121,10 @@ public final class VTAWTScreenCaptureProvider
         scaledCurrentImage.flush();
         scaledCurrentImage = null;
       }
-      if (scaledCurrentGraphics != null)
+      if (scaledCurrentImageGraphics != null)
       {
-        scaledCurrentGraphics.dispose();
-        scaledCurrentGraphics = null;
+        scaledCurrentImageGraphics.dispose();
+        scaledCurrentImageGraphics = null;
       }
       int x = 0;
       int y = 0;
@@ -2135,8 +2135,8 @@ public final class VTAWTScreenCaptureProvider
       }
       scaledCurrentImage = VTImageIO.createImage(x, y, scaledCurrentWidth, scaledCurrentHeight, BufferedImage.TYPE_INT_RGB, 16777216, recyclableScaledDataBuffer);
       recyclableScaledDataBuffer = scaledCurrentImage.getRaster().getDataBuffer();
-      scaledCurrentGraphics = scaledCurrentImage.createGraphics();
-      scaledCurrentGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+      scaledCurrentImageGraphics = scaledCurrentImage.createGraphics();
+      scaledCurrentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
     }
     else
     {
@@ -2196,8 +2196,8 @@ public final class VTAWTScreenCaptureProvider
         currentHeight += screenCurrentImage.getWidth() + minX;
       }
       
-      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
-      pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i] & 0xC0) >> 6);
+      pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
+      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i] & 0xC0) >> 6);
       //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferShort[i] & 0xC000) >> 14);
     }
     
@@ -2221,7 +2221,7 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentImageGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -2278,8 +2278,8 @@ public final class VTAWTScreenCaptureProvider
         currentHeight += screenCurrentImage.getWidth() + minX;
       }
       
-      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
-      pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i] & 0xE0) >> 5);
+      pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
+      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i] & 0xE0) >> 5);
       //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferShort[i] & 0xE000) >> 13);
     }
     
@@ -2303,7 +2303,7 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentImageGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -2360,8 +2360,8 @@ public final class VTAWTScreenCaptureProvider
         currentHeight += screenCurrentImage.getWidth() + minX;
       }
       
-      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
-      pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i] & 0xF0) >> 4);
+      pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
+      //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i] & 0xF0) >> 4);
       //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferShort[i] & 0xF000) >> 12);
     }
     
@@ -2385,7 +2385,7 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentImageGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -2485,7 +2485,7 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentImageGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -2572,7 +2572,7 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentImageGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -2659,7 +2659,7 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentImageGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -2746,7 +2746,7 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentImageGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -2833,7 +2833,7 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentImageGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -2927,7 +2927,7 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentImageGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -3021,7 +3021,7 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentImageGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -3107,7 +3107,7 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentImageGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -3193,7 +3193,7 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentImageGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -3279,7 +3279,7 @@ public final class VTAWTScreenCaptureProvider
     }
     else
     {
-      scaledCurrentGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
+      scaledCurrentImageGraphics.drawImage(screenCurrentImage, originalArea.x, originalArea.y, originalArea.x + originalArea.width, originalArea.y + originalArea.height, captureArea.x, captureArea.y, captureArea.x + captureArea.width, captureArea.y + captureArea.height, null);
       return scaledCurrentImage;
     }
   }
@@ -3315,17 +3315,17 @@ public final class VTAWTScreenCaptureProvider
     {
       if (sectionCurrentImageGrayscale == null
       || sectionCurrentImageGrayscale.getWidth() != captureArea.width
-      || sectionCurrentImageGrayscale.getHeight() != captureArea.height)
-      //|| sectionCurrentImageGrayscaleColorCount != getColorCount())
+      || sectionCurrentImageGrayscale.getHeight() != captureArea.height
+      || sectionCurrentImageGrayscaleColorCount != getColorCount())
       {
         if (sectionCurrentImageGrayscale != null)
         {
           sectionCurrentImageGrayscale.flush();
         }
-        //sectionCurrentImageGrayscaleColorCount = getColorCount();
+        sectionCurrentImageGrayscaleColorCount = getColorCount();
         //sectionCurrentImageGrayscale = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_CUSTOM, sectionCurrentImageGrayscaleColorCount, recyclableSectionDataBufferGrayscale);
-        //sectionCurrentImageGrayscale = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_BYTE_INDEXED, sectionCurrentImageGrayscaleColorCount, recyclableSectionDataBufferGrayscale);
-        sectionCurrentImageGrayscale = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_BYTE_GRAY, 256, recyclableSectionDataBufferGrayscale);
+        sectionCurrentImageGrayscale = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_BYTE_INDEXED, sectionCurrentImageGrayscaleColorCount, recyclableSectionDataBufferGrayscale);
+        //sectionCurrentImageGrayscale = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_BYTE_GRAY, 256, recyclableSectionDataBufferGrayscale);
         //sectionCurrentImageGrayscale = VTImageIO.createImage(0, 0, captureArea.width, captureArea.height, BufferedImage.TYPE_USHORT_GRAY, 65536, recyclableSectionDataBufferGrayscale);
         recyclableSectionDataBufferGrayscale = sectionCurrentImageGrayscale.getRaster().getDataBuffer();
         sectionCurrentImageGrayscaleGraphics = sectionCurrentImageGrayscale.createGraphics();

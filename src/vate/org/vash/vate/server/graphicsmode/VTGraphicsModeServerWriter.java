@@ -307,7 +307,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_IMAGE);
     if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
     {
-      if (imageDataBuffer.getType() == BufferedImage.TYPE_CUSTOM && (lastColors == 16 || lastColors == 8 || lastColors == 4))
+      if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
         jpgWriterParam.setDestinationType(ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_BYTE_GRAY));
         if (convertedDataBuffer == null)
@@ -328,7 +328,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(imageDataBuffer), jpgWriterParam));
       
       connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
-      if (imageDataBuffer.getType() == BufferedImage.TYPE_CUSTOM && (lastColors == 16 || lastColors == 8 || lastColors == 4))
+      if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
         connection.getGraphicsControlDataOutputStream().writeInt(BufferedImage.TYPE_BYTE_GRAY);
       }
@@ -466,7 +466,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE);
     if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
     {
-      if (imageDataBuffer.getType() == BufferedImage.TYPE_CUSTOM && (lastColors == 16 || lastColors == 8 || lastColors == 4))
+      if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
         jpgWriterParam.setDestinationType(ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_BYTE_GRAY));
         if (convertedDataBuffer == null)
@@ -487,7 +487,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(imageDataBuffer), jpgWriterParam));
       
       connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
-      if (imageDataBuffer.getType() == BufferedImage.TYPE_CUSTOM && (lastColors == 16 || lastColors == 8 || lastColors == 4))
+      if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
         connection.getGraphicsControlDataOutputStream().writeInt(BufferedImage.TYPE_BYTE_GRAY);
       }
