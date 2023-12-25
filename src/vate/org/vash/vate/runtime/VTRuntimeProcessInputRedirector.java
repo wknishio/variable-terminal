@@ -9,16 +9,18 @@ public class VTRuntimeProcessInputRedirector implements Runnable
 {
   private static final int inputBufferSize = VT.VT_REDUCED_BUFFER_SIZE_BYTES;
   private volatile boolean running;
+  private boolean verbose;
   private int readBytes;
   private final byte[] inputBuffer = new byte[inputBufferSize];
   private InputStream in;
   private OutputStream out;
   
-  public VTRuntimeProcessInputRedirector(InputStream in, OutputStream out)
+  public VTRuntimeProcessInputRedirector(InputStream in, OutputStream out, boolean verbose)
   {
     this.in = in;
     this.out = out;
     this.running = true;
+    this.verbose = true;
   }
   
   public void close()
@@ -60,7 +62,7 @@ public class VTRuntimeProcessInputRedirector implements Runnable
       try
       {
         readBytes = in.read(inputBuffer, 0, inputBufferSize);
-        if (readBytes > 0 && running)
+        if (readBytes > 0 && running && verbose && out != null)
         {
           out.write(inputBuffer, 0, readBytes);
           out.flush();

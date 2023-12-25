@@ -102,7 +102,7 @@ public class VTFileRuntimeRelauncherDaemon
     {
       try
       {
-        Thread.sleep(2000);
+        Thread.sleep(1000);
         Process process = Runtime.getRuntime().exec(command);
         VTRuntimeLauncherOutputConsumer cin = new VTRuntimeLauncherOutputConsumer(process.getInputStream());
         VTRuntimeLauncherOutputConsumer cerr = new VTRuntimeLauncherOutputConsumer(process.getErrorStream());

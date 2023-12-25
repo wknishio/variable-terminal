@@ -1,7 +1,6 @@
 package org.vash.vate.runtime;
 
 import java.io.BufferedWriter;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import org.vash.vate.VT;
@@ -16,9 +15,9 @@ public class VTRuntimeProcessOutputConsumer implements Runnable
   private InputStreamReader in;
   private BufferedWriter out;
   
-  public VTRuntimeProcessOutputConsumer(InputStream in, BufferedWriter out, boolean verbose)
+  public VTRuntimeProcessOutputConsumer(InputStreamReader in, BufferedWriter out, boolean verbose)
   {
-    this.in = new InputStreamReader(in);
+    this.in = in;
     this.out = out;
     this.verbose = verbose;
     this.running = true;

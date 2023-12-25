@@ -12,11 +12,11 @@ public class VTArgumentsRuntimeLauncherDaemon
     // VTNativeUtils.detachConsole();
     try
     {
-      Thread.sleep(2000);
+      Thread.sleep(1000);
       Process process = Runtime.getRuntime().exec(args);
-      VTRuntimeProcessInputRedirector rin = new VTRuntimeProcessInputRedirector(process.getInputStream(), System.out);
-      VTRuntimeProcessInputRedirector rerr = new VTRuntimeProcessInputRedirector(process.getErrorStream(), System.err);
-      VTRuntimeProcessInputRedirector rout = new VTRuntimeProcessInputRedirector(stream, process.getOutputStream());
+      VTRuntimeProcessInputRedirector rin = new VTRuntimeProcessInputRedirector(process.getInputStream(), System.out, true);
+      VTRuntimeProcessInputRedirector rerr = new VTRuntimeProcessInputRedirector(process.getErrorStream(), System.err, true);
+      VTRuntimeProcessInputRedirector rout = new VTRuntimeProcessInputRedirector(stream, process.getOutputStream(), true);
       Thread tin = new Thread(rin);
       Thread terr = new Thread(rerr);
       Thread tout = new Thread(rout);

@@ -128,6 +128,10 @@ public class VTShellAdapter
             // this.shellEnvironment.remove("PROMPT");
             // this.shellEnvironment.put("PROMPT", "# ");
           }
+          if (shellProcessor.getShellEncoding() == null)
+          {
+            //shellProcessor.setShellEncoding("CP850");
+          }
         }
         else
         {
@@ -148,6 +152,10 @@ public class VTShellAdapter
           {
             // this.shellEnvironment.remove("PROMPT");
             // this.shellEnvironment.put("PROMPT", "# ");
+          }
+          if (shellProcessor.getShellEncoding() == null)
+          {
+            //shellProcessor.setShellEncoding("CP850");
           }
         }
       }
@@ -197,22 +205,45 @@ public class VTShellAdapter
   {
     if (VTReflectionUtils.detectWindows())
     {
-//    if (supressEchoShell)
-//    {
-//      this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
-//    }
-//    else
-//    {
-//      this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
-//    }
-      // this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
-      this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
-      this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
-      this.shellEnvironment = this.shellBuilder.environment();
-      if (this.shellEnvironment != null)
+      if (System.getProperty("os.name").toUpperCase().contains("WINDOWS 95") || System.getProperty("os.name").toUpperCase().contains("WINDOWS 98") || System.getProperty("os.name").toUpperCase().contains("WINDOWS ME"))
       {
-        // this.shellEnvironment.remove("PROMPT");
-        // this.shellEnvironment.put("PROMPT", "# ");
+        // almost impossible to enter here now
+        this.shellBuilder = new ProcessBuilder("command.com", "/A", "/E:1900");
+        this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+        this.shellEnvironment = this.shellBuilder.environment();
+        if (this.shellEnvironment != null)
+        {
+          // this.shellEnvironment.remove("PROMPT");
+          // this.shellEnvironment.put("PROMPT", "# ");
+        }
+        if (shellProcessor.getShellEncoding() == null)
+        {
+          //shellProcessor.setShellEncoding("CP850");
+        }
+      }
+      else
+      {
+//      if (supressEchoShell)
+//      {
+//        this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
+//      }
+//      else
+//      {
+//        this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
+//      }
+        // this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
+        this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
+        this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+        this.shellEnvironment = this.shellBuilder.environment();
+        if (this.shellEnvironment != null)
+        {
+          // this.shellEnvironment.remove("PROMPT");
+          // this.shellEnvironment.put("PROMPT", "# ");
+        }
+        if (shellProcessor.getShellEncoding() == null)
+        {
+          //shellProcessor.setShellEncoding("CP850");
+        }
       }
     }
     else
