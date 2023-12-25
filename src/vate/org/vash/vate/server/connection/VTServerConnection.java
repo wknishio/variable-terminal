@@ -263,7 +263,6 @@ public class VTServerConnection
   {
     return shellDataOutputStream;
   }
-
   
   public OutputStream getFileTransferDataOutputStream()
   {
