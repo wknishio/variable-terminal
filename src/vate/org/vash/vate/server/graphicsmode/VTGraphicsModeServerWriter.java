@@ -309,16 +309,13 @@ public class VTGraphicsModeServerWriter implements Runnable
     {
       if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
-        jpgWriterParam.setDestinationType(ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_BYTE_GRAY));
-        if (convertedDataBuffer == null)
-        {
-          convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_BYTE_GRAY, 0, recyclableDataBuffer);
-          recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
-          convertedGraphics = convertedDataBuffer.createGraphics();
-          convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
-        }
+        convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_BYTE_GRAY, 0, recyclableDataBuffer);
+        recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
+        convertedGraphics = convertedDataBuffer.createGraphics();
+        convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
         convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
         imageDataBuffer = convertedDataBuffer;
+        jpgWriterParam.setDestinationType(ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_BYTE_GRAY));
       }
       else
       {
@@ -380,13 +377,10 @@ public class VTGraphicsModeServerWriter implements Runnable
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
       {
-        if (convertedDataBuffer == null)
-        {
-          convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
-          recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
-          convertedGraphics = convertedDataBuffer.createGraphics();
-          convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
-        }
+        convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
+        recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
+        convertedGraphics = convertedDataBuffer.createGraphics();
+        convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
         convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
         pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
         for (Rectangle blockArea : blockAreas)
@@ -404,13 +398,10 @@ public class VTGraphicsModeServerWriter implements Runnable
       {
         if (lastColors == 262144 || lastColors == 2097152)
         {
-          if (convertedDataBuffer == null)
-          {
-            convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
-            recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
-            convertedGraphics = convertedDataBuffer.createGraphics();
-            convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
-          }
+          convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
+          recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
+          convertedGraphics = convertedDataBuffer.createGraphics();
+          convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
           convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
           pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
           for (Rectangle blockArea : blockAreas)
@@ -468,8 +459,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     {
       if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
-        jpgWriterParam.setDestinationType(ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_BYTE_GRAY));
-        if (convertedDataBuffer == null)
+        if (convertedDataBuffer == null || convertedDataBuffer.getType() != BufferedImage.TYPE_BYTE_GRAY)
         {
           convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_BYTE_GRAY, 0, recyclableDataBuffer);
           recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
@@ -478,6 +468,7 @@ public class VTGraphicsModeServerWriter implements Runnable
         }
         convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
         imageDataBuffer = convertedDataBuffer;
+        jpgWriterParam.setDestinationType(ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_BYTE_GRAY));
       }
       else
       {
@@ -535,7 +526,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       }
       else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
       {
-        if (convertedDataBuffer == null)
+        if (convertedDataBuffer == null || convertedDataBuffer.getType() != BufferedImage.TYPE_INT_RGB)
         {
           convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
           recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
@@ -559,7 +550,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       {
         if (lastColors == 262144 || lastColors == 2097152)
         {
-          if (convertedDataBuffer == null)
+          if (convertedDataBuffer == null || convertedDataBuffer.getType() != BufferedImage.TYPE_INT_RGB)
           {
             convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
             recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();

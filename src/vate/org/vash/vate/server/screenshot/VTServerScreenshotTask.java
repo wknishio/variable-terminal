@@ -238,13 +238,10 @@ public class VTServerScreenshotTask extends VTTask
         {
           jpgWriterParam.setDestinationType(ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_BYTE_GRAY));
           IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(screenCapture), jpgWriterParam));
-          if (convertedImage == null)
-          {
-            convertedImage = VTImageIO.createImage(0, 0, screenCapture.getWidth(), screenCapture.getHeight(), BufferedImage.TYPE_BYTE_GRAY, 0, recyclableDataBuffer);
-            recyclableDataBuffer = convertedImage.getRaster().getDataBuffer();
-            convertedGraphics = convertedImage.createGraphics();
-            convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
-          }
+          convertedImage = VTImageIO.createImage(0, 0, screenCapture.getWidth(), screenCapture.getHeight(), BufferedImage.TYPE_BYTE_GRAY, 0, recyclableDataBuffer);
+          recyclableDataBuffer = convertedImage.getRaster().getDataBuffer();
+          convertedGraphics = convertedImage.createGraphics();
+          convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
           convertedGraphics.drawImage(screenCapture, 0, 0, null);
           jpgImageOutputStream = ImageIO.createImageOutputStream(photoOutputStream);
           jpgWriter.setOutput(jpgImageOutputStream);
