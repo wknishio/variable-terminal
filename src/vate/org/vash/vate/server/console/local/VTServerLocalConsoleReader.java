@@ -29,7 +29,7 @@ public class VTServerLocalConsoleReader extends VTTask
   public void run()
   {
     // int p = 0;
-    VTConsole.print("\rVT>Enter *VTHELP or *VTHLP to list available commands in server console\nVT>");
+    VTConsole.print("\rVT>Enter *VTHELP or *VTHP to list available commands in server console\nVT>");
     while (server.isRunning())
     {
       try
