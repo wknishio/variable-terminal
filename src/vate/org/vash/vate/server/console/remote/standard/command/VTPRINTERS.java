@@ -7,9 +7,9 @@ public class VTPRINTERS extends VTServerStandardRemoteConsoleCommandProcessor
   public VTPRINTERS()
   {
     this.setFullName("*VTPRINTERS");
-    this.setAbbreviatedName("*VTPRS");
+    this.setAbbreviatedName("*VTPR");
     this.setFullSyntax("*VTPRINTERS [NUMBER]");
-    this.setAbbreviatedSyntax("*VTPRS [NU]");
+    this.setAbbreviatedSyntax("*VTPR [NU]");
   }
   
   public void execute(String command, String[] parsed) throws Exception

@@ -14,9 +14,9 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
   public VTSCREENALERT()
   {
     this.setFullName("*VTSCREENALERT");
-    this.setAbbreviatedName("*VTSCA");
+    this.setAbbreviatedName("*VTSA");
     this.setFullSyntax("*VTSCREENALERT <ALERT> [TITLE] [DISPLAY]");
-    this.setAbbreviatedSyntax("*VTSCA <AL> [TI] [DP]");
+    this.setAbbreviatedSyntax("*VTSA <AL> [TI] [DP]");
   }
   
   public void execute(String command, String[] parsed) throws Exception

@@ -4,14 +4,14 @@ import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 import org.vash.vate.server.print.VTServerPrintDataTask;
 
-public class VTDATAPRINT extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
 {
-  public VTDATAPRINT()
+  public VTPRINTDATA()
   {
-    this.setFullName("*VTDATAPRINT");
-    this.setAbbreviatedName("*VTDPR");
-    this.setFullSyntax("*VTDATAPRINT [MODE] [DATA] [PRINTER]");
-    this.setAbbreviatedSyntax("*VTDPR [MD] [DT] [PR]");
+    this.setFullName("*VTPRINTDATA");
+    this.setAbbreviatedName("*VTPD");
+    this.setFullSyntax("*VTPRINTDATA [MODE] [DATA] [PRINTER]");
+    this.setAbbreviatedSyntax("*VTPD [MD] [DT] [PR]");
   }
   
   public void execute(String command, String[] parsed) throws Exception

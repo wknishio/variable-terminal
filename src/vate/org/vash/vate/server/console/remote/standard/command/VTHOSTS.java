@@ -8,8 +8,8 @@ public class VTHOSTS extends VTServerStandardRemoteConsoleCommandProcessor
   public VTHOSTS()
   {
     this.setFullName("*VTHOSTS");
-    this.setAbbreviatedName("*VTHTS");
-    this.setFullSyntax("*VTHOSTS <HOST>");
+    this.setAbbreviatedName("*VTHT");
+    this.setFullSyntax("*VTHT <HOST>");
     this.setAbbreviatedSyntax("*VTHTS <HT>");
   }
   

@@ -12,9 +12,9 @@ public class VTUSERS extends VTServerStandardLocalConsoleCommandProcessor
   public VTUSERS()
   {
     this.setFullName("*VTUSERS");
-    this.setAbbreviatedName("*VTUSR");
+    this.setAbbreviatedName("*VTUS");
     this.setFullSyntax("*VTUSERS");
-    this.setAbbreviatedSyntax("*VTUSR");
+    this.setAbbreviatedSyntax("*VTUS");
   }
   
   public void execute(String command, String[] parsed) throws Exception

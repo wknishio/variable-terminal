@@ -9,9 +9,9 @@ public class VTCONFIGURE extends VTServerStandardLocalConsoleCommandProcessor
   public VTCONFIGURE()
   {
     this.setFullName("*VTCONFIGURE");
-    this.setAbbreviatedName("*VTCNF");
+    this.setAbbreviatedName("*VTCF");
     this.setFullSyntax("*VTCONFIGURE");
-    this.setAbbreviatedSyntax("*VTCNF");
+    this.setAbbreviatedSyntax("*VTCF");
   }
   
   public void execute(String command, String[] parsed) throws Exception

@@ -10,9 +10,9 @@ public class VTFILEROOTS extends VTServerStandardLocalConsoleCommandProcessor
   public VTFILEROOTS()
   {
     this.setFullName("*VTFILEROOTS");
-    this.setAbbreviatedName("*VTFRTS");
+    this.setAbbreviatedName("*VTFR");
     this.setFullSyntax("*VTFILEROOTS");
-    this.setAbbreviatedSyntax("*VTFRTS");
+    this.setAbbreviatedSyntax("*VTFR");
   }
   
   public void execute(String command, String[] parsed) throws Exception

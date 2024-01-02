@@ -11,9 +11,9 @@ public class VTVARIABLE extends VTServerStandardRemoteConsoleCommandProcessor
   public VTVARIABLE()
   {
     this.setFullName("*VTVARIABLE");
-    this.setAbbreviatedName("*VTVAR");
+    this.setAbbreviatedName("*VTVB");
     this.setFullSyntax("*VTVARIABLE [NAME] [VALUE]");
-    this.setAbbreviatedSyntax("*VTVAR [NM] [VL]");
+    this.setAbbreviatedSyntax("*VTVB [NM] [VL]");
   }
   
   public void execute(String command, String[] parsed) throws Exception

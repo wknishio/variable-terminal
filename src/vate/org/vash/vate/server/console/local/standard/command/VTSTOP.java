@@ -8,9 +8,9 @@ public class VTSTOP extends VTServerStandardLocalConsoleCommandProcessor
   public VTSTOP()
   {
     this.setFullName("*VTSTOP");
-    this.setAbbreviatedName("*VTSTP");
+    this.setAbbreviatedName("*VTST");
     this.setFullSyntax("*VTSTOP");
-    this.setAbbreviatedSyntax("*VTSTP");
+    this.setAbbreviatedSyntax("*VTST");
   }
   
   public void execute(String command, String[] parsed) throws Exception

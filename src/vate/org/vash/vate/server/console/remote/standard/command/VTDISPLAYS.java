@@ -7,9 +7,9 @@ public class VTDISPLAYS extends VTServerStandardRemoteConsoleCommandProcessor
   public VTDISPLAYS()
   {
     this.setFullName("*VTDISPLAYS");
-    this.setAbbreviatedName("*VTDPS");
+    this.setAbbreviatedName("*VTDP");
     this.setFullSyntax("*VTDISPLAYS");
-    this.setAbbreviatedSyntax("*VTDPS");
+    this.setAbbreviatedSyntax("*VTDP");
   }
   
   public void execute(String command, String[] parsed) throws Exception

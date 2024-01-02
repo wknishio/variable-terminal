@@ -28,9 +28,9 @@ public class VTNETWORKS extends VTServerStandardLocalConsoleCommandProcessor
   public VTNETWORKS()
   {
     this.setFullName("*VTNETWORKS");
-    this.setAbbreviatedName("*VTNTS");
+    this.setAbbreviatedName("*VTNT");
     this.setFullSyntax("*VTNETWORKS");
-    this.setAbbreviatedSyntax("*VTNTS");
+    this.setAbbreviatedSyntax("*VTNT");
   }
   
   public void execute(String command, String[] parsed) throws Exception

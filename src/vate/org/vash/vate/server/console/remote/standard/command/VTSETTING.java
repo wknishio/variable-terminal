@@ -9,9 +9,9 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
   public VTSETTING()
   {
     this.setFullName("*VTSETTING");
-    this.setAbbreviatedName("*VTSTG");
+    this.setAbbreviatedName("*VTSG");
     this.setFullSyntax("*VTSETTING [NAME] [VALUE]");
-    this.setAbbreviatedSyntax("*VTSTG [NM] [VL]");
+    this.setAbbreviatedSyntax("*VTSG [NM] [VL]");
   }
   
   public void execute(String command, String[] parsed) throws Exception
