@@ -569,7 +569,7 @@ public class VTServerSession
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Remote shell not available!" + "\nVT>Enter *VTHELP or *VTHP to list available commands in client console\nVT>\n");
+          connection.getResultWriter().write("\nVT>Remote shell not available!" + "\nVT>Enter *VTHELP or *VTHL to list available commands in client console\nVT>\n");
           connection.getResultWriter().flush();
         }
       }
@@ -592,7 +592,7 @@ public class VTServerSession
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Security error detected!" + "\nVT>Enter *VTHELP or *VTHP to list available commands in client console\nVT>\n");
+          connection.getResultWriter().write("\nVT>Security error detected!" + "\nVT>Enter *VTHELP or *VTHL to list available commands in client console\nVT>\n");
           connection.getResultWriter().flush();
         }
       }
@@ -617,7 +617,7 @@ public class VTServerSession
         }
         else
         {
-          connection.getResultWriter().write("\nVT>Remote shell started!" + "\nVT>Enter *VTHELP or *VTHP to list available commands in client console\nVT>\n");
+          connection.getResultWriter().write("\nVT>Remote shell started!" + "\nVT>Enter *VTHELP or *VTHL to list available commands in client console\nVT>\n");
           connection.getResultWriter().flush();
         }
       }

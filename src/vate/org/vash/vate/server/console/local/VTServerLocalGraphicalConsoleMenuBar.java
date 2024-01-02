@@ -112,7 +112,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     // Print Service ", "*VTDEFAULTPRINTSERVICE\n"));
     helpMenu = new Menu("Help ");
     helpMenu.add(new VTGraphicalConsoleMenuItem("Complete Commands", "*VTHELP\n"));
-    helpMenu.add(new VTGraphicalConsoleMenuItem("Abbreviated Commands", "*VTHP\n"));
+    helpMenu.add(new VTGraphicalConsoleMenuItem("Abbreviated Commands", "*VTHL\n"));
     helpMenu.add(new VTGraphicalConsoleMenuItem("Specific Command", "*VTHELP "));
     
     serverConsoleCommandsMenu.add(sessionMenu);

@@ -358,7 +358,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     
     helpMenu = new Menu("Help ");
     helpMenu.add(new VTGraphicalConsoleMenuItem("Complete Commands", "*VTHELP\n"));
-    helpMenu.add(new VTGraphicalConsoleMenuItem("Abbreviated Commands", "*VTHP\n"));
+    helpMenu.add(new VTGraphicalConsoleMenuItem("Abbreviated Commands", "*VTHL\n"));
     helpMenu.add(new VTGraphicalConsoleMenuItem("Specific Command", "*VTHELP "));
     
     clientConsoleCommandsMenu.add(sessionMenu);

@@ -162,8 +162,8 @@ Some of the available internal commands in client console:
 
 There are more internal commands in client console and server console:
 
-* Commands *VTHELP or *VTHLP show a list of available internal commands.
-* Commands *VTHELP [COMMAND] or *VTHLP [CMD] show more details about
+* Commands *VTHELP or *VTHL show a list of available internal commands.
+* Commands *VTHELP [COMMAND] or *VTHL [CMD] show more details about
 specific internal commands.
 
 ## Building from sources

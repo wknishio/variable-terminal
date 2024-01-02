@@ -96,7 +96,7 @@ simple, medium, next, extra, high, vast, ultra, true
 * Added *VTREAD command to run text files commands in client console
 * Added *VTLOG command to record client commands to local client file
 * Added capability of SOCKS tunnels to also act as HTTP tunnels
-* Renamed various commands, check current commands with *VTHELP or *VTHLP
+* Renamed various commands, check current commands with *VTHELP or *VTHL
 * Changed license from GPLv3 license to MIT license
 
 Changes since 1.4.1:
@@ -117,7 +117,7 @@ Changes since 1.4.1:
 * Added *VTRESET command to temporarily override all credentials on server
 * Added *VTSETSHELL command to change external native shell application
 * Added connection helper form dialog for both server and client
-* Added command *VTHLP to show list of shortened commands
+* Added command *VTHL to show list of shortened commands
 * Modified *VTRUNTIME command to show the return codes
 * Modified command syntax error message to include command help
 * Added client-settings.properties file to pre-configure client settings

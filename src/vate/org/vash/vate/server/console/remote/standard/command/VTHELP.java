@@ -8,9 +8,9 @@ public class VTHELP extends VTServerStandardRemoteConsoleCommandProcessor
   public VTHELP()
   {
     this.setFullName("*VTHELP");
-    this.setAbbreviatedName("*VTHP");
+    this.setAbbreviatedName("*VTHL");
     this.setFullSyntax("*VTHELP [NAME]");
-    this.setAbbreviatedSyntax("*VTHP [NM]");
+    this.setAbbreviatedSyntax("*VTHL [NM]");
   }
   
   public void execute(String command, String[] parsed) throws Exception
