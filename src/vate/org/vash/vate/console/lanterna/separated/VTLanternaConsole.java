@@ -2312,7 +2312,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
   
   public void setBold(boolean bold)
   {
-    // TODO Auto-generated method stub
+    
   }
   
   public void resetAttributes()
