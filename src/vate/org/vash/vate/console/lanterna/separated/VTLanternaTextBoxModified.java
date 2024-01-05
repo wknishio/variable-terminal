@@ -1048,14 +1048,14 @@ public class VTLanternaTextBoxModified extends AbstractInteractableComponent<VTL
     public void setVerticalAdjustable(Adjustable adjustable)
     {
       this.verticalAdjustable = adjustable;
-      adjustable.setMinimum(0);
+      //adjustable.setMinimum(0);
       
     }
     
     public void setHorizontalAdjustable(Adjustable adjustable)
     {
       this.horizontalAdjustable = adjustable;
-      adjustable.setMinimum(0);
+      //adjustable.setMinimum(0);
       
     }
     
@@ -1199,19 +1199,43 @@ public class VTLanternaTextBoxModified extends AbstractInteractableComponent<VTL
       {
         int vmax = Math.max(realTextArea.getRows(), textBoxLineCount);
         // int vmin = Math.min(realTextArea.getRows(), textBoxLineCount);
-        verticalAdjustable.setVisibleAmount(realTextArea.getRows());
-        verticalAdjustable.setMaximum(vmax);
-        verticalAdjustable.setValue(viewTopLeft.getRow());
-        verticalAdjustable.setBlockIncrement(graphics.getSize().getRows());
+        if (verticalAdjustable.getVisibleAmount() != realTextArea.getRows())
+        {
+          verticalAdjustable.setVisibleAmount(realTextArea.getRows());
+        }
+        if (verticalAdjustable.getMaximum() != vmax)
+        {
+          verticalAdjustable.setMaximum(vmax);
+        }
+        if (verticalAdjustable.getBlockIncrement() != graphics.getSize().getRows())
+        {
+          verticalAdjustable.setBlockIncrement(graphics.getSize().getRows());
+        }
+        if (verticalAdjustable.getValue() != viewTopLeft.getRow())
+        {
+          verticalAdjustable.setValue(viewTopLeft.getRow());
+        }
       }
       if (horizontalAdjustable != null)
       {
         int hmax = Math.max(realTextArea.getColumns(), component.longestRow);
         // int hmin = Math.min(realTextArea.getColumns(), component.longestRow);
-        horizontalAdjustable.setVisibleAmount(realTextArea.getColumns());
-        horizontalAdjustable.setMaximum(hmax);
-        horizontalAdjustable.setValue(viewTopLeft.getColumn());
-        horizontalAdjustable.setBlockIncrement(graphics.getSize().getColumns());
+        if (horizontalAdjustable.getVisibleAmount() != realTextArea.getColumns())
+        {
+          horizontalAdjustable.setVisibleAmount(realTextArea.getColumns());
+        }
+        if (horizontalAdjustable.getMaximum() != hmax)
+        {
+          horizontalAdjustable.setMaximum(hmax);
+        }
+        if (horizontalAdjustable.getBlockIncrement() != graphics.getSize().getColumns())
+        {
+          horizontalAdjustable.setBlockIncrement(graphics.getSize().getColumns());
+        }
+        if (horizontalAdjustable.getValue() != viewTopLeft.getColumn())
+        {
+          horizontalAdjustable.setValue(viewTopLeft.getColumn());
+        }
       }
       if (drawVerticalScrollBar)
       {

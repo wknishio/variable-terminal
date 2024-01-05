@@ -904,14 +904,14 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
         public void setVerticalAdjustable(Adjustable adjustable)
         {
         	this.verticalAdjustable = adjustable;
-        	adjustable.setMinimum(0);
+        	//adjustable.setMinimum(0);
         	
         }
         
         public void setHorizontalAdjustable(Adjustable adjustable)
         {
         	this.horizontalAdjustable = adjustable;
-        	adjustable.setMinimum(0);
+        	//adjustable.setMinimum(0);
         	
         }
 
@@ -1004,17 +1004,41 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
             //Draw scrollbars, if any
             if (verticalAdjustable != null)
             {
-            	verticalAdjustable.setVisibleAmount(realTextArea.getRows());
-            	verticalAdjustable.setMaximum(textBoxLineCount);
-            	verticalAdjustable.setValue(viewTopLeft.getRow());
-            	verticalAdjustable.setBlockIncrement(graphics.getSize().getRows());
+              if (verticalAdjustable.getVisibleAmount() != realTextArea.getRows())
+              {
+                verticalAdjustable.setVisibleAmount(realTextArea.getRows());
+              }
+            	if (verticalAdjustable.getMaximum() != textBoxLineCount)
+            	{
+            	  verticalAdjustable.setMaximum(textBoxLineCount);
+            	}
+            	if (verticalAdjustable.getBlockIncrement() != graphics.getSize().getRows())
+            	{
+            	  verticalAdjustable.setBlockIncrement(graphics.getSize().getRows());
+            	}
+            	if (verticalAdjustable.getValue() != viewTopLeft.getRow())
+            	{
+            	  verticalAdjustable.setValue(viewTopLeft.getRow());
+            	}
             }
             if (horizontalAdjustable != null)
             {
-            	horizontalAdjustable.setVisibleAmount(realTextArea.getColumns());
-            	horizontalAdjustable.setMaximum(component.longestRow + 1);
-            	horizontalAdjustable.setValue(viewTopLeft.getColumn());
-            	horizontalAdjustable.setBlockIncrement(graphics.getSize().getColumns());
+              if (horizontalAdjustable.getVisibleAmount() != realTextArea.getColumns())
+              {
+                horizontalAdjustable.setVisibleAmount(realTextArea.getColumns());
+              }
+              if (horizontalAdjustable.getMaximum() != component.longestRow + 1)
+              {
+                horizontalAdjustable.setMaximum(component.longestRow + 1);
+              }
+              if (horizontalAdjustable.getBlockIncrement() != graphics.getSize().getColumns())
+              {
+                horizontalAdjustable.setBlockIncrement(graphics.getSize().getColumns());
+              }
+              if (horizontalAdjustable.getValue() != viewTopLeft.getColumn())
+              {
+                horizontalAdjustable.setValue(viewTopLeft.getColumn());
+              }
             }
             if(drawVerticalScrollBar) {
                 verticalScrollBar.onAdded(component.getParent());

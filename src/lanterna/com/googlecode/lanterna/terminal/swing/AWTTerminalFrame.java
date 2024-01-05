@@ -130,9 +130,11 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         layout.setVgap(0);
         setLayout(layout);
         
-//        scrollpane = new ScrollPane(ScrollPane.SCROLLBARS_ALWAYS);
-//        scrollpane.add(awtTerminal, BorderLayout.CENTER);
+//        scrollpane = new AWTLanternaScrollPane(ScrollPane.SCROLLBARS_ALWAYS);
+//        scrollpane.add(new AWTLanternaStretchPane(this, awtTerminal));
 //        scrollpane.setBackground(Color.BLACK);
+//        scrollpane.setWheelScrollingEnabled(false);
+//        scrollpane.setSize(awtTerminal.getPreferredSize());
 //        
 //        add(scrollpane, BorderLayout.CENTER);
         
