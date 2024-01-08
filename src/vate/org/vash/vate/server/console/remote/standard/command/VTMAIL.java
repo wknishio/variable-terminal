@@ -26,7 +26,7 @@ public class VTMAIL extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullName("*VTMAIL");
     this.setAbbreviatedName("*VTML");
     this.setFullSyntax("*VTMAIL [URI]");
-    this.setAbbreviatedSyntax("*VTML [URI]");
+    this.setAbbreviatedSyntax("*VTML [UR]");
   }
   
   static

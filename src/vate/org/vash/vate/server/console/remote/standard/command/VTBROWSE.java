@@ -65,7 +65,7 @@ public class VTBROWSE extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullName("*VTBROWSE");
     this.setAbbreviatedName("*VTBR");
     this.setFullSyntax("*VTBROWSE <URI>");
-    this.setAbbreviatedSyntax("*VTBR <URI>");
+    this.setAbbreviatedSyntax("*VTBR <UR>");
   }
   
   public void execute(String command, String[] parsed) throws Exception
