@@ -230,7 +230,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     systemKeysControlMenu.setEnabled(false);
     modifierKeyDownControlMenu.setEnabled(false);
     modifierKeyUpControlMenu.setEnabled(false);
-    // clipboardControlMenu.setEnabled(false);
+    clipboardControlMenu.setEnabled(false);
     localKeySuppressionControlMenu.setEnabled(false);
     writer.clearAllPressedKeys();
   }
@@ -244,7 +244,7 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     systemKeysControlMenu.setEnabled(true);
     modifierKeyDownControlMenu.setEnabled(true);
     modifierKeyUpControlMenu.setEnabled(true);
-    // clipboardControlMenu.setEnabled(true);
+    clipboardControlMenu.setEnabled(true);
     localKeySuppressionControlMenu.setEnabled(true);
   }
   
