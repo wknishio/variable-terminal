@@ -365,8 +365,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     // clientConsoleCommandsMenu.add(settingsMenu);
     clientConsoleCommandsMenu.add(consoleMenu);
     clientConsoleCommandsMenu.add(performanceMenu);
-    clientConsoleCommandsMenu.add(serverRuntimeMenu);
     clientConsoleCommandsMenu.add(shellMenu);
+    clientConsoleCommandsMenu.add(serverRuntimeMenu);
     clientConsoleCommandsMenu.add(fileSystemMenu);
     clientConsoleCommandsMenu.add(serverGraphicalSystemsMenu);
     clientConsoleCommandsMenu.add(audioSoundMenu);
