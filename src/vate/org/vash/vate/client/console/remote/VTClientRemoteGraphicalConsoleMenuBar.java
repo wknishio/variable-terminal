@@ -184,12 +184,12 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     // serverFileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("Set
     // Working
     // Directory", "*VTWORKDIRECTORY R "));
-    remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("List File System Roots", "*VTFILECHECK L\n"));
-    remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("Show File Information", "*VTFILECHECK I "));
-    remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("List Directory Contents", "*VTFILECHECK L "));
-    remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("Report File Check", "*VTFILECHECK\n"));
-    remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("Stop File Check", "*VTFILECHECK S\n"));
-    remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTFILECHECK\n"));
+    remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("List File System Roots", "*VTFILESEEK L\n"));
+    remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("Show File Information", "*VTFILESEEK I "));
+    remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("List Directory Contents", "*VTFILESEEK L "));
+    remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("Report File Seek", "*VTFILESEEK\n"));
+    remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("Stop File Seek", "*VTFILESEEK S\n"));
+    remoteFileCheckMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTFILESEEK\n"));
     
     remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Create Empty Directory", "*VTFILEALTER D "));
     remoteFileModifyMenu.add(new VTGraphicalConsoleMenuItem("Create Empty File", "*VTFILEALTER F "));
