@@ -171,7 +171,7 @@ specific internal commands.
 The minimum required java version to build from sources is at least JDK 1.5.
 
 The included scripts "build.bat" and "build.sh" perform the build process
-using ant and the file "build.xml" is an ant build file for this software.
+using ant and the file "ant/build.xml" is an ant build file for this software.
 
 After running the ant build file, the packaged application distributions can
 be found in the "dist" folder.

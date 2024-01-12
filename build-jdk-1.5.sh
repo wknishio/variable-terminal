@@ -1,0 +1,1 @@
+java -jar ant/ant.jar -buildfile ant/build-jdk-1.5.xml build
