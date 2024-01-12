@@ -1,1 +1,1 @@
-java -jar ant/ant.jar -buildfile ant/build.xml build
+java -jar ant/ant.jar -buildfile build.xml build

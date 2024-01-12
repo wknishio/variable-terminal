@@ -10,6 +10,15 @@
 		<format property="build.time.date" pattern="yyyy-MM-dd HH:mm:ss:sss zzz"/>
 	</tstamp>
 	
+	<condition property="javac-spec" value="1.5" else="${java.specification.version}">
+		<or>
+			<contains string="${java.specification.version}" substring="1.5"/>
+			<contains string="${java.specification.version}" substring="1.6"/>
+			<contains string="${java.specification.version}" substring="1.7"/>
+			<contains string="${java.specification.version}" substring="1.8"/>
+		</or>
+	</condition>
+	
 	<target name="clean">
 		
 		<delete dir="build"/>
@@ -32,7 +41,7 @@
 	
 	<target name="compile_sources">
 		
-		<javac fork="yes" executable="javac" srcdir="src" destdir="build" includes="**/*.java" source="1.5" target="1.5">
+		<javac fork="yes" executable="javac" srcdir="src" destdir="build" includes="**/*.java" source="${javac-spec}" target="${javac-spec}">
 			<classpath>
 				<fileset dir="lib">
 					<include name="**/*.jar"/>

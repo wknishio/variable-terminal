@@ -1,1 +1,1 @@
-java -jar ant/ant.jar -buildfile ant/build.xml clean
+java -jar ant/ant.jar -buildfile build.xml clean
