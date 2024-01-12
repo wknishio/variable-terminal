@@ -30,8 +30,8 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
         int idx = parsed[1].indexOf(';');
         if (idx >= 0)
         {
-          alert = parsed[1].substring(0, idx);
-          title = parsed[1].substring(idx + 1);
+          title = parsed[1].substring(0, idx);
+          alert = parsed[1].substring(idx + 1);
         }
         VTGraphicsMessager.showAlert(VTConsole.getFrame(), title, alert);
         session.getServer().displayTrayIconMessage(title, "[" + alert + "]");
@@ -47,8 +47,8 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
           int idx = parsed[1].indexOf(';');
           if (idx >= 0)
           {
-            alert = parsed[1].substring(0, idx);
-            title = parsed[1].substring(idx + 1);
+            title = parsed[1].substring(0, idx);
+            alert = parsed[1].substring(idx + 1);
           }
           int number = Integer.parseInt(parsed[2]);
           final GraphicsDevice[] devices = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
