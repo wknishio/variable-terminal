@@ -2,6 +2,7 @@ package org.vash.vate.audio;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Mixer.Info;
 import javax.sound.sampled.SourceDataLine;
 
 import org.vash.vate.VT;
@@ -185,6 +186,70 @@ public class VTAudioBeeper
     return false;
   }
   
+  private static final boolean toneBlocking(int sampleRate, int freq, int msecs, double vol, SourceDataLine sdl)
+  {
+    try
+    {
+      if (sdl == null)
+      {
+        return false;
+      }
+      float level = sdl.getLevel();
+      // System.out.println("level:" + level);
+      if (level == -1)
+      {
+        
+      }
+      else
+      {
+        
+      }
+      byte[] buf = createSinWaveBuffer(sampleRate, freq, msecs, vol);
+      DrainSourceDataline drainer = new DrainSourceDataline();
+      drainer.configure(sdl);
+      drainer.setData(buf);
+      drainer.run();
+      return true;
+    }
+    catch (Throwable t)
+    {
+      // t.printStackTrace();
+    }
+    return false;
+  }
+  
+  private static final boolean toneThreaded(int sampleRate, int freq, int msecs, double vol, SourceDataLine sdl)
+  {
+    try
+    {
+      if (sdl == null)
+      {
+        return false;
+      }
+      float level = sdl.getLevel();
+      // System.out.println("level:" + level);
+      if (level == -1)
+      {
+        
+      }
+      else
+      {
+        
+      }
+      byte[] buf = createSinWaveBuffer(sampleRate, freq, msecs, vol);
+      DrainSourceDataline drainer = new DrainSourceDataline();
+      drainer.configure(sdl);
+      drainer.setData(buf);
+      drainer.start();
+      return true;
+    }
+    catch (Throwable t)
+    {
+      // t.printStackTrace();
+    }
+    return false;
+  }
+  
   private static final SourceDataLine openSourceDataLine(int sampleRate)
   {
     SourceDataLine sdl = null;
@@ -192,6 +257,24 @@ public class VTAudioBeeper
     {
       AudioFormat af = new AudioFormat((float) sampleRate, SAMPLE_SIZE_IN_BITS, 1, true, false);
       sdl = AudioSystem.getSourceDataLine(af);
+      // sdl.open();
+      sdl.open(af, (int) ((af.getSampleRate() / 1000) * (af.getSampleSizeInBits() / 8)) * af.getChannels() * VT.VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS);
+      return sdl;
+    }
+    catch (Throwable t)
+    {
+      // t.printStackTrace();
+    }
+    return null;
+  }
+  
+  public static final SourceDataLine openSourceDataLine(int sampleRate, Info mixerInfo)
+  {
+    SourceDataLine sdl = null;
+    try
+    {
+      AudioFormat af = new AudioFormat((float) sampleRate, SAMPLE_SIZE_IN_BITS, 1, true, false);
+      sdl = AudioSystem.getSourceDataLine(af, mixerInfo);
       // sdl.open();
       sdl.open(af, (int) ((af.getSampleRate() / 1000) * (af.getSampleSizeInBits() / 8)) * af.getChannels() * VT.VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS);
       return sdl;
@@ -212,6 +295,18 @@ public class VTAudioBeeper
     else
     {
       return toneThreaded(sampleRate, freq, msecs, 0.5);
+    }
+  }
+  
+  public static final boolean beep(int sampleRate, int freq, int msecs, boolean block, SourceDataLine sdl)
+  {
+    if (block)
+    {
+      return toneBlocking(sampleRate, freq, msecs, 0.5, sdl);
+    }
+    else
+    {
+      return toneThreaded(sampleRate, freq, msecs, 0.5, sdl);
     }
   }
 }

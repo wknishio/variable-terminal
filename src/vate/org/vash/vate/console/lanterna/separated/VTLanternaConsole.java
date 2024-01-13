@@ -2062,11 +2062,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
   {
     try
     {
-      terminal.bell();
+      Toolkit.getDefaultToolkit().beep();
     }
     catch (Throwable e)
     {
-      
+      System.out.print("\u0007");
     }
   }
   

@@ -308,11 +308,9 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     networkMenu = new Menu("Network ");
     
     networkInterfacesMenu = new Menu("List Valid Network Interfaces ");
-    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("All Network Interfaces", "*VTNETWORKS\n"));
-    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Local Network Interfaces", "*VTNETWORKS L\n"));
     networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Remote Network Interfaces", "*VTNETWORKS R\n"));
-    
-    networkMenu.add(new VTGraphicalConsoleMenuItem("Resolve Remote Network Host", "*VTHOSTS "));
+    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Local Network Interfaces", "*VTNETWORKS L\n"));
+    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("All Network Interfaces", "*VTNETWORKS\n"));
     
     networkTunnelsMenu = new Menu("Connection Network Tunnels ");
     // serverSOCKSTunnelsMenu = new Menu("Connection SOCKS Tunnels ");
@@ -323,6 +321,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTTUNNEL\n"));
     
     networkMenu.add(networkInterfacesMenu);
+    networkMenu.add(new VTGraphicalConsoleMenuItem("Resolve Remote Network Host", "*VTHOSTS "));
     networkMenu.add(networkTunnelsMenu);
     
     serverPrintMenu = new Menu("Printing ");
@@ -334,21 +333,22 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     
     audioSoundMenu = new Menu("Audio ");
     
-    audioSoundMenu.add(new VTGraphicalConsoleMenuItem("Ring Remote Terminal Bell", "*VTBELL\n"));
-    beepSoundMenu = new Menu("Remote Internal Speakers ");
-    beepSoundMenu.add(new VTGraphicalConsoleMenuItem("Make Beep", "*VTBEEP "));
+    audioMixersSoundMenu = new Menu("List Valid Audio Mixers ");
+    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Remote Audio Mixers", "*VTMIXERS R\n"));
+    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Local Audio Mixers", "*VTMIXERS L\n"));
+    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("All Audio Mixers", "*VTMIXERS\n"));
+    audioSoundMenu.add(audioMixersSoundMenu);
+    
+    //audioSoundMenu.add(new VTGraphicalConsoleMenuItem("Ring Remote Terminal Bell", "*VTBELL\n"));
+    beepSoundMenu = new Menu("Remote Audio Beep ");
+    beepSoundMenu.add(new VTGraphicalConsoleMenuItem("Play Default Beep", "*VTBEEP\n"));
+    beepSoundMenu.add(new VTGraphicalConsoleMenuItem("Play Custom Beep", "*VTBEEP "));
     beepSoundMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTBEEP\n"));
     audioSoundMenu.add(beepSoundMenu);
     
-    audioMixersSoundMenu = new Menu("List Valid Audio Mixers ");
-    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("All Audio Mixers", "*VTMIXERS\n"));
-    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Local Audio Mixers", "*VTMIXERS L\n"));
-    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Remote Audio Mixers", "*VTMIXERS R\n"));
-    audioSoundMenu.add(audioMixersSoundMenu);
-    
-    audioLinkSoundMenu = new Menu("Toggle Remote Audio Link ");
-    audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Use Default Parameters", "*VTAUDIOLINK\n"));
-    audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Use Custom Parameters", "*VTAUDIOLINK "));
+    audioLinkSoundMenu = new Menu("Remote Audio Link ");
+    audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Toggle Default Link", "*VTAUDIOLINK\n"));
+    audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Toggle Custom Link", "*VTAUDIOLINK "));
     audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTAUDIOLINK\n"));
     audioSoundMenu.add(audioLinkSoundMenu);
     
