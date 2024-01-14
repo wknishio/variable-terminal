@@ -91,12 +91,13 @@ public class VTGraphicalConsoleTextArea extends TextArea
         if (files.size() > 0)
         {
           StringBuilder fileList = new StringBuilder();
+          String fileListString = "";
           for (File file : files)
           {
-            fileList.append(file.getAbsolutePath() + ";");
+            fileList.append(" " + file.getAbsolutePath());
           }
-          fileList.deleteCharAt(fileList.length() - 1);
-          VTConsole.input(fileList.toString());
+          fileListString = fileList.substring(1);
+          VTConsole.input(fileListString);
         }
       }
     }

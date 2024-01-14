@@ -148,15 +148,16 @@ public class VTClipboardTransferTask extends VTTask
             {
               List<File> files = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
               StringBuilder fileList = new StringBuilder();
+              String fileListString = "";
               if (files.size() > 0)
               {
                 for (File file : files)
                 {
-                  fileList.append(file.getAbsolutePath() + ";");
+                  fileList.append(" " + file.getAbsolutePath());
                 }
-                fileList.deleteCharAt(fileList.length() - 1);
+                fileListString = fileList.substring(1);
               }
-              byte[] data = fileList.toString().getBytes("UTF-8");
+              byte[] data = fileListString.getBytes("UTF-8");
               out.write(VT.VT_GRAPHICS_MODE_CLIPBOARD_TRANSFER_TYPE_TEXT);
               out.writeInt(data.length);
               out.write(data);
