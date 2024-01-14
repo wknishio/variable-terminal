@@ -347,8 +347,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     audioSoundMenu.add(beepSoundMenu);
     
     audioLinkSoundMenu = new Menu("Remote Audio Link ");
-    audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Toggle Default Link", "*VTAUDIOLINK\n"));
-    audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Toggle Custom Link", "*VTAUDIOLINK "));
+    audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Toggle Audio Link", "*VTAUDIOLINK\n"));
+    audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Configure Audio Link", "*VTAUDIOLINK "));
     audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTAUDIOLINK\n"));
     audioSoundMenu.add(audioLinkSoundMenu);
     

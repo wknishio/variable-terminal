@@ -221,7 +221,17 @@ public class VTClientRemoteConsoleWriter extends VTTask
     }
   }
   
-  public void executeFileScripts(String scriptFiles, Charset charset, boolean echo)
+  public void executeFileScriptsSpaces(String scriptFiles, Charset charset, boolean echo)
+  {
+    // System.out.println("scripts:" + scripts);
+    String[] scriptFilesArray = scriptFiles.split(" ");
+    for (String scriptFile : scriptFilesArray)
+    {
+      executeFileScriptsCommas(scriptFile, charset, echo);
+    }
+  }
+  
+  public void executeFileScriptsCommas(String scriptFiles, Charset charset, boolean echo)
   {
     // System.out.println("scripts:" + scripts);
     String[] scriptFilesArray = scriptFiles.split(";");

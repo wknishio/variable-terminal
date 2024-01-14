@@ -23,7 +23,7 @@ public class VTREAD extends VTClientStandardRemoteConsoleCommandProcessor
       try
       {
         VTConsole.print("\nVT>Running client text files commands: [" + parameter + "]\nVT>");
-        session.getClientWriter().executeFileScripts(parameter, Charset.forName("UTF-8"), true);
+        session.getClientWriter().executeFileScriptsSpaces(parameter, Charset.forName("UTF-8"), true);
       }
       catch (Throwable t)
       {

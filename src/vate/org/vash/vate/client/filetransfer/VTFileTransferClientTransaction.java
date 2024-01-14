@@ -53,7 +53,7 @@ public class VTFileTransferClientTransaction implements Runnable
   private String destination;
   private String filePaths;
   private String currentRootPath;
-  private String transferParameters;
+  private String parameters;
   private File fileTransferFile;
   private File fileTransferCompletedFile;
   private RandomAccessFile fileTransferRandomAccessFile;
@@ -1454,11 +1454,16 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       if (splitCommand[0].equalsIgnoreCase("*VTFILETRANSFER") || splitCommand[0].equalsIgnoreCase("*VTFT"))
       {
-        source = splitCommand[2];
-        destination = splitCommand[3];
-        transferParameters = splitCommand[1];
+        parameters = splitCommand[1];
+        destination = splitCommand[splitCommand.length - 1];
         destination = normalizePath(destination);
-        if (transferParameters.toUpperCase().contains("P"))
+        source = "";
+        for (int i = 2; i < splitCommand.length - 1; i++)
+        {
+          source += ";" + splitCommand[i].trim();
+        }
+        source = source.substring(1);
+        if (parameters.toUpperCase().contains("P"))
         {
           filePaths = source;
           compressing = false;
@@ -1466,20 +1471,20 @@ public class VTFileTransferClientTransaction implements Runnable
           verifying = false;
           heavier = false;
           
-          if (transferParameters.toUpperCase().contains("F"))
+          if (parameters.toUpperCase().contains("F"))
           {
             compressing = true;
           }
-          if (transferParameters.toUpperCase().contains("H"))
+          if (parameters.toUpperCase().contains("H"))
           {
             compressing = true;
             heavier = true;
           }
-          if (transferParameters.toUpperCase().contains("R"))
+          if (parameters.toUpperCase().contains("R"))
           {
             resuming = true;
           }
-          if (transferParameters.toUpperCase().contains("V"))
+          if (parameters.toUpperCase().contains("V"))
           {
             verifying = true;
           }
@@ -1555,7 +1560,7 @@ public class VTFileTransferClientTransaction implements Runnable
             finished = true;
           }
         }
-        else if (transferParameters.toUpperCase().contains("G"))
+        else if (parameters.toUpperCase().contains("G"))
         {
           filePaths = source;
           compressing = false;
@@ -1563,20 +1568,20 @@ public class VTFileTransferClientTransaction implements Runnable
           verifying = false;
           heavier = false;
           
-          if (transferParameters.toUpperCase().contains("F"))
+          if (parameters.toUpperCase().contains("F"))
           {
             compressing = true;
           }
-          if (transferParameters.toUpperCase().contains("H"))
+          if (parameters.toUpperCase().contains("H"))
           {
             compressing = true;
             heavier = true;
           }
-          if (transferParameters.toUpperCase().contains("R"))
+          if (parameters.toUpperCase().contains("R"))
           {
             resuming = true;
           }
-          if (transferParameters.toUpperCase().contains("V"))
+          if (parameters.toUpperCase().contains("V"))
           {
             verifying = true;
           }
