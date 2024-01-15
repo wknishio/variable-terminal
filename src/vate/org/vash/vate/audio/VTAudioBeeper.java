@@ -18,13 +18,13 @@ public class VTAudioBeeper
     double factor = ((Math.PI * 2) * freq) / sampleRate;
     //final double period = (double) sampleRate / freq;
     //final double twice_pi = 2.0 * Math.PI;
-    double sine;
+    //double sine;
     if (sampleBytes == 2)
     {
       for (int i = 0; i < samples; i++)
       {
-        sine = Math.sin(factor * i);
-        short sample = (short) ((Short.MAX_VALUE * sine) * vol);
+        //sine = Math.sin(factor * i);
+        short sample = (short) ((Short.MAX_VALUE * Math.sin(factor * i)) * vol);
         output[(i * sampleBytes)] = (byte) ((sample & 0xFF));
         output[(i * sampleBytes) + 1] = (byte) ((sample & 0xFF00) >> 8);
       }
@@ -33,8 +33,8 @@ public class VTAudioBeeper
     {
       for (int i = 0; i < samples; i++)
       {
-        sine = Math.sin(factor * i);
-        output[i] = (byte) ((Byte.MAX_VALUE * sine) * vol);
+        //sine = Math.sin(factor * i);
+        output[i] = (byte) ((Byte.MAX_VALUE * Math.sin(factor * i)) * vol);
       }
     }
     return output;

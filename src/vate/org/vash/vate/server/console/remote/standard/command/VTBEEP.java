@@ -19,7 +19,7 @@ public class VTBEEP extends VTServerStandardRemoteConsoleCommandProcessor
   }
   
   private static final int SAMPLE_RATE_HERTZ = 16000;
-  private static final int SAMPLE_SIZE_BITS = 16;
+  private static final int SAMPLE_SIZE_BITS = 8;
   
   public void execute(String command, String[] parsed) throws Exception
   {
