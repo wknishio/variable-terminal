@@ -18,6 +18,9 @@ public class VTBEEP extends VTServerStandardRemoteConsoleCommandProcessor
     this.setAbbreviatedSyntax("*VTBP [HZ TM] [MX]");
   }
   
+  private static final int SAMPLE_RATE_HERTZ = 16000;
+  private static final int SAMPLE_SIZE_BITS = 16;
+  
   public void execute(String command, String[] parsed) throws Exception
   {
     if (parsed.length == 1)
@@ -34,7 +37,7 @@ public class VTBEEP extends VTServerStandardRemoteConsoleCommandProcessor
         try
         {
           int mixerIndex = Integer.parseInt(parsed[3]);
-          sdl = VTAudioBeeper.openSourceDataLine(16000, AudioSystem.getMixerInfo()[mixerIndex]);
+          sdl = VTAudioBeeper.openSourceDataLine(SAMPLE_RATE_HERTZ, SAMPLE_SIZE_BITS, AudioSystem.getMixerInfo()[mixerIndex]);
         }
         catch (Throwable t)
         {
@@ -59,7 +62,7 @@ public class VTBEEP extends VTServerStandardRemoteConsoleCommandProcessor
         }
         else
         {
-          if (VTAudioBeeper.beep(16000, Integer.parseInt(parsed[1]), Integer.parseInt(parsed[2]), false, sdl))
+          if (VTAudioBeeper.beep(SAMPLE_RATE_HERTZ, SAMPLE_SIZE_BITS, Integer.parseInt(parsed[1]), Integer.parseInt(parsed[2]), false, sdl))
           {
             connection.getResultWriter().write("\nVT>Beep is playing on server!\nVT>");
             connection.getResultWriter().flush();

@@ -5,26 +5,37 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Mixer.Info;
 import javax.sound.sampled.SourceDataLine;
 
-import org.vash.vate.VT;
-
 public class VTAudioBeeper
 {
-  private static final int SAMPLE_SIZE_IN_BITS = 16;
+  //private static final int SAMPLE_SIZE_IN_BITS = 8;
   //private static final int SAMPLE_RATE = 8000;
   
-  private static final byte[] createSinWaveBuffer(int sampleRate, int freq, int msecs, double vol)
+  private static final byte[] createSinWaveBuffer(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol)
   {
     int samples = (int) ((msecs * sampleRate) / 1000d);
-    int sampleBytes = SAMPLE_SIZE_IN_BITS / 8;
+    int sampleBytes = sampleSizeBits / 8;
     byte[] output = new byte[samples * sampleBytes];
     double factor = ((Math.PI * 2) * freq) / sampleRate;
+    //final double period = (double) sampleRate / freq;
+    //final double twice_pi = 2.0 * Math.PI;
     double sine;
-    for (int i = 0; i < samples; i++)
+    if (sampleBytes == 2)
     {
-      sine = Math.sin(factor * i);
-      short sample = (short) (Short.MAX_VALUE * sine * vol);
-      output[(i * sampleBytes)] = (byte) ((sample & 0xFF));
-      output[(i * sampleBytes) + 1] = (byte) ((sample & 0xFF00) >> 8);
+      for (int i = 0; i < samples; i++)
+      {
+        sine = Math.sin(factor * i);
+        short sample = (short) ((Short.MAX_VALUE * sine) * vol);
+        output[(i * sampleBytes)] = (byte) ((sample & 0xFF));
+        output[(i * sampleBytes) + 1] = (byte) ((sample & 0xFF00) >> 8);
+      }
+    }
+    if (sampleBytes == 1)
+    {
+      for (int i = 0; i < samples; i++)
+      {
+        sine = Math.sin(factor * i);
+        output[i] = (byte) ((Byte.MAX_VALUE * sine) * vol);
+      }
     }
     return output;
   }
@@ -120,11 +131,11 @@ public class VTAudioBeeper
     }
   }
   
-  private static final boolean toneBlocking(int sampleRate, int freq, int msecs, double vol)
+  private static final boolean toneBlocking(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol)
   {
     try
     {
-      SourceDataLine sdl = openSourceDataLine(sampleRate);
+      SourceDataLine sdl = openSourceDataLine(sampleRate, sampleSizeBits);
       if (sdl == null)
       {
         return false;
@@ -139,7 +150,7 @@ public class VTAudioBeeper
       {
         
       }
-      byte[] buf = createSinWaveBuffer(sampleRate, freq, msecs, vol);
+      byte[] buf = createSinWaveBuffer(sampleRate, sampleSizeBits, freq, msecs, vol);
       DrainSourceDataline drainer = new DrainSourceDataline();
       drainer.configure(sdl);
       drainer.setData(buf);
@@ -153,11 +164,11 @@ public class VTAudioBeeper
     return false;
   }
   
-  private static final boolean toneThreaded(int sampleRate, int freq, int msecs, double vol)
+  private static final boolean toneThreaded(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol)
   {
     try
     {
-      SourceDataLine sdl = openSourceDataLine(sampleRate);
+      SourceDataLine sdl = openSourceDataLine(sampleRate, sampleSizeBits);
       if (sdl == null)
       {
         return false;
@@ -172,7 +183,7 @@ public class VTAudioBeeper
       {
         
       }
-      byte[] buf = createSinWaveBuffer(sampleRate, freq, msecs, vol);
+      byte[] buf = createSinWaveBuffer(sampleRate, sampleSizeBits, freq, msecs, vol);
       DrainSourceDataline drainer = new DrainSourceDataline();
       drainer.configure(sdl);
       drainer.setData(buf);
@@ -186,7 +197,7 @@ public class VTAudioBeeper
     return false;
   }
   
-  private static final boolean toneBlocking(int sampleRate, int freq, int msecs, double vol, SourceDataLine sdl)
+  private static final boolean toneBlocking(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol, SourceDataLine sdl)
   {
     try
     {
@@ -204,7 +215,7 @@ public class VTAudioBeeper
       {
         
       }
-      byte[] buf = createSinWaveBuffer(sampleRate, freq, msecs, vol);
+      byte[] buf = createSinWaveBuffer(sampleRate, sampleSizeBits, freq, msecs, vol);
       DrainSourceDataline drainer = new DrainSourceDataline();
       drainer.configure(sdl);
       drainer.setData(buf);
@@ -218,7 +229,7 @@ public class VTAudioBeeper
     return false;
   }
   
-  private static final boolean toneThreaded(int sampleRate, int freq, int msecs, double vol, SourceDataLine sdl)
+  private static final boolean toneThreaded(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol, SourceDataLine sdl)
   {
     try
     {
@@ -236,7 +247,7 @@ public class VTAudioBeeper
       {
         
       }
-      byte[] buf = createSinWaveBuffer(sampleRate, freq, msecs, vol);
+      byte[] buf = createSinWaveBuffer(sampleRate, sampleSizeBits, freq, msecs, vol);
       DrainSourceDataline drainer = new DrainSourceDataline();
       drainer.configure(sdl);
       drainer.setData(buf);
@@ -250,15 +261,15 @@ public class VTAudioBeeper
     return false;
   }
   
-  private static final SourceDataLine openSourceDataLine(int sampleRate)
+  private static final SourceDataLine openSourceDataLine(int sampleRate, int sampleSizeBits)
   {
     SourceDataLine sdl = null;
     try
     {
-      AudioFormat af = new AudioFormat((float) sampleRate, SAMPLE_SIZE_IN_BITS, 1, true, false);
+      AudioFormat af = new AudioFormat((float) sampleRate, sampleSizeBits, 1, true, false);
       sdl = AudioSystem.getSourceDataLine(af);
-      // sdl.open();
-      sdl.open(af, (int) ((af.getSampleRate() / 1000) * (af.getSampleSizeInBits() / 8)) * af.getChannels() * VT.VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS);
+      //sdl.open(af, (int) ((af.getSampleRate() / 1000) * (af.getSampleSizeInBits() / 8)) * af.getChannels() * VT.VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS);
+      sdl.open(af);
       return sdl;
     }
     catch (Throwable t)
@@ -268,15 +279,15 @@ public class VTAudioBeeper
     return null;
   }
   
-  public static final SourceDataLine openSourceDataLine(int sampleRate, Info mixerInfo)
+  public static final SourceDataLine openSourceDataLine(int sampleRate, int sampleSizeBits, Info mixerInfo)
   {
     SourceDataLine sdl = null;
     try
     {
-      AudioFormat af = new AudioFormat((float) sampleRate, SAMPLE_SIZE_IN_BITS, 1, true, false);
+      AudioFormat af = new AudioFormat((float) sampleRate, sampleSizeBits, 1, true, false);
       sdl = AudioSystem.getSourceDataLine(af, mixerInfo);
-      // sdl.open();
-      sdl.open(af, (int) ((af.getSampleRate() / 1000) * (af.getSampleSizeInBits() / 8)) * af.getChannels() * VT.VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS);
+      //sdl.open(af, (int) ((af.getSampleRate() / 1000) * (af.getSampleSizeInBits() / 8)) * af.getChannels() * VT.VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS);
+      sdl.open(af);
       return sdl;
     }
     catch (Throwable t)
@@ -286,27 +297,27 @@ public class VTAudioBeeper
     return null;
   }
   
-  public static final boolean beep(int sampleRate, int freq, int msecs, boolean block)
+  public static final boolean beep(int sampleRate, int sampleSizeBits, int freq, int msecs, boolean block)
   {
     if (block)
     {
-      return toneBlocking(sampleRate, freq, msecs, 0.5);
+      return toneBlocking(sampleRate, sampleSizeBits, freq, msecs, 0.5);
     }
     else
     {
-      return toneThreaded(sampleRate, freq, msecs, 0.5);
+      return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, 0.5);
     }
   }
   
-  public static final boolean beep(int sampleRate, int freq, int msecs, boolean block, SourceDataLine sdl)
+  public static final boolean beep(int sampleRate, int sampleSizeBits, int freq, int msecs, boolean block, SourceDataLine sdl)
   {
     if (block)
     {
-      return toneBlocking(sampleRate, freq, msecs, 0.5, sdl);
+      return toneBlocking(sampleRate, sampleSizeBits, freq, msecs, 0.5, sdl);
     }
     else
     {
-      return toneThreaded(sampleRate, freq, msecs, 0.5, sdl);
+      return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, 0.5, sdl);
     }
   }
 }
