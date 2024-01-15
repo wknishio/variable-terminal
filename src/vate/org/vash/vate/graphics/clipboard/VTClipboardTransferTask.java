@@ -22,6 +22,7 @@ import org.vash.vate.task.VTTask;
 public class VTClipboardTransferTask extends VTTask
 {
   private volatile boolean sending;
+  private volatile boolean clearing;
   private VTLittleEndianInputStream in;
   private VTLittleEndianOutputStream out;
   private Runnable endingTask;
@@ -54,6 +55,16 @@ public class VTClipboardTransferTask extends VTTask
   public void setSending(boolean sending)
   {
     this.sending = sending;
+  }
+  
+  public boolean isClearing()
+  {
+    return clearing;
+  }
+  
+  public void setClearing(boolean clearing)
+  {
+    this.clearing = clearing;
   }
   
   public void setEndingTask(Runnable endingTask)
@@ -122,7 +133,21 @@ public class VTClipboardTransferTask extends VTTask
         {
           try
           {
-            if (transferable == null)
+            if (isClearing())
+            {
+              setClearing(false);
+              try
+              {
+                systemClipboard.setContents(new VTEmptyTransferable(), null);
+              }
+              catch (Throwable t)
+              {
+                
+              }
+              out.write(VT.VT_GRAPHICS_MODE_CLIPBOARD_TRANSFER_TYPE_EMPTY);
+              out.flush();
+            }
+            else if (transferable == null)
             {
               out.write(VT.VT_GRAPHICS_MODE_CLIPBOARD_TRANSFER_TYPE_EMPTY);
               out.flush();
