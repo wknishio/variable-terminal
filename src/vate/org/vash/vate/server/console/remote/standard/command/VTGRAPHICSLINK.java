@@ -18,43 +18,19 @@ public class VTGRAPHICSLINK extends VTServerStandardRemoteConsoleCommandProcesso
     {
       if (parsed[1].toUpperCase().startsWith("V"))
       {
-        if (session.getGraphicsServer().aliveThread())
-        {
-          session.getGraphicsServer().setReadOnly(true);
-        }
-        else
-        {
-          session.getGraphicsServer().joinThread();
-          session.getGraphicsServer().setReadOnly(true);
-          session.getGraphicsServer().startThread();
-        }
+        session.getGraphicsServer().joinThread();
+        session.getGraphicsServer().setReadOnly(true);
+        session.getGraphicsServer().startThread();
       }
       else if (parsed[1].toUpperCase().startsWith("C"))
       {
-        if (session.getGraphicsServer().aliveThread())
-        {
-          session.getGraphicsServer().setReadOnly(false);
-        }
-        else
-        {
-          session.getGraphicsServer().joinThread();
-          session.getGraphicsServer().setReadOnly(false);
-          session.getGraphicsServer().startThread();
-        }
+        session.getGraphicsServer().joinThread();
+        session.getGraphicsServer().setReadOnly(false);
+        session.getGraphicsServer().startThread();
       }
       else
       {
-        if (session.getGraphicsServer().aliveThread())
-        {
-          session.getGraphicsServer().setStopped(true);
-          session.getGraphicsServer().joinThread();
-        }
-        else
-        {
-          session.getGraphicsServer().joinThread();
-          session.getGraphicsServer().setReadOnly(false);
-          session.getGraphicsServer().startThread();
-        }
+        
       }
     }
     else if (parsed.length == 1)
