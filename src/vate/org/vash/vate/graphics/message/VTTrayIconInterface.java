@@ -124,12 +124,18 @@ public class VTTrayIconInterface
           if (!frame.isVisible())
           {
             frame.setVisible(true);
+            frame.toFront();
+            return;
           }
           if ((frame.getExtendedState() & Frame.ICONIFIED) != 0)
           {
             frame.setExtendedState(frame.getExtendedState() ^ Frame.ICONIFIED);
+            frame.toFront();
           }
-          frame.toFront();
+          else
+          {
+            frame.setExtendedState(frame.getExtendedState() ^ Frame.ICONIFIED);
+          }
         }
         
         public void mousePressed(MouseEvent e)

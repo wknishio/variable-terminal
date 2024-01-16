@@ -16,30 +16,45 @@ public class VTGRAPHICSLINK extends VTServerStandardRemoteConsoleCommandProcesso
   {
     if (parsed.length >= 2)
     {
-      /*
-       * if (splitCommand[1].toUpperCase().startsWith("S")) {
-       * session.getGraphicsServer().setStopped(true);
-       * session.getGraphicsThread().join(); } else
-       */
       if (parsed[1].toUpperCase().startsWith("V"))
       {
-        // connection.getResultWriter().write(command);
-        // connection.getResultWriter().flush();
-        session.getGraphicsServer().joinThread();
-        session.getGraphicsServer().setReadOnly(true);
-        session.getGraphicsServer().startThread();
+        if (session.getGraphicsServer().aliveThread())
+        {
+          session.getGraphicsServer().setReadOnly(true);
+        }
+        else
+        {
+          session.getGraphicsServer().joinThread();
+          session.getGraphicsServer().setReadOnly(true);
+          session.getGraphicsServer().startThread();
+        }
       }
       else if (parsed[1].toUpperCase().startsWith("C"))
       {
-        // connection.getResultWriter().write(command);
-        // connection.getResultWriter().flush();
-        session.getGraphicsServer().joinThread();
-        session.getGraphicsServer().setReadOnly(false);
-        session.getGraphicsServer().startThread();
+        if (session.getGraphicsServer().aliveThread())
+        {
+          session.getGraphicsServer().setReadOnly(false);
+        }
+        else
+        {
+          session.getGraphicsServer().joinThread();
+          session.getGraphicsServer().setReadOnly(false);
+          session.getGraphicsServer().startThread();
+        }
       }
       else
       {
-        
+        if (session.getGraphicsServer().aliveThread())
+        {
+          session.getGraphicsServer().setStopped(true);
+          session.getGraphicsServer().joinThread();
+        }
+        else
+        {
+          session.getGraphicsServer().joinThread();
+          session.getGraphicsServer().setReadOnly(false);
+          session.getGraphicsServer().startThread();
+        }
       }
     }
     else if (parsed.length == 1)

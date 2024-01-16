@@ -106,7 +106,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
   private volatile boolean readingInput = false;
   // private volatile boolean updatingTerminal = false;
   private volatile boolean flushInterrupted = false;
-  private volatile boolean frameIconified = false;
+  private volatile boolean frameDeactivated = false;
   private volatile boolean replaceActivated = false;
   private volatile boolean commandEcho = true;
   // private volatile boolean interruptedReadLine = false;
@@ -206,9 +206,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     
     public void windowActivated(WindowEvent e)
     {
-      // System.out.println("lanterna.windowActivated()");
-      // console.getFrame().requestFocus();
-      console.deiconifyFrame();
+      console.activatedFrame();
       awtterminal.requestFocusInWindow();
     }
     
@@ -229,19 +227,18 @@ public class VTLanternaConsole implements VTConsoleImplementation
     
     public void windowDeactivated(WindowEvent e)
     {
-      console.iconifyFrame();
+      console.deactivatedFrame();
     }
     
     public void windowDeiconified(WindowEvent e)
     {
-      // VTGraphicalConsole.deiconifyFrame();
-      // console.getFrame().requestFocus();
-      // awtterminal.requestFocus();
+      //console.activatedFrame();
+      //awtterminal.requestFocusInWindow();
     }
     
     public void windowIconified(WindowEvent e)
     {
-      // VTGraphicalConsole.iconifyFrame();
+      //console.deactivatedFrame();
     }
     
     public void windowOpened(WindowEvent e)
@@ -1471,19 +1468,19 @@ public class VTLanternaConsole implements VTConsoleImplementation
     return ignoreClose;
   }
   
-  public void iconifyFrame()
+  public void deactivatedFrame()
   {
     synchronized (outputSynchronizer)
     {
-      frameIconified = true;
+      frameDeactivated = true;
     }
   }
   
-  public void deiconifyFrame()
+  public void activatedFrame()
   {
     synchronized (outputSynchronizer)
     {
-      frameIconified = false;
+      frameDeactivated = false;
     }
     flush();
   }
@@ -2027,7 +2024,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
   public void flush()
   {
     // if (!flushInterrupted && !frameIconified && !outputBox.selectingText())
-    if (!flushInterrupted && !frameIconified)
+    if (!flushInterrupted && !frameDeactivated)
     {
       synchronized (outputSynchronizer)
       {
