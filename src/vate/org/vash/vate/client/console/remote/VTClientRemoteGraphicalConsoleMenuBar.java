@@ -235,7 +235,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     consoleMenu = new Menu("Console ");
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Clear Remote Console", "*VTCLEAR\n"));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Toggle Console Echo", "*VTECHO\n"));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Show Remote System Time", "*VTTIME\n"));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem("Show Remote System Time", "*VTDATE\n"));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Pause Local Console", "*VTPAUSE "));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Execute Commands From Files", "*VTREAD "));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Commands To File", "*VTLOG "));

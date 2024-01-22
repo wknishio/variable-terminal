@@ -54,7 +54,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     
     consoleMenu = new Menu("Console ");
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Clear Local Console", "*VTCLEAR\n"));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Show Local System Time", "*VTTIME\n"));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem("Show Local System Time", "*VTDATE\n"));
     
     serverSettingsMenu = new Menu("Settings ");
     serverConnectionMenu = new Menu("Connection ");

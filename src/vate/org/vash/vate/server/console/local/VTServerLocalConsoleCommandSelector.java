@@ -36,7 +36,7 @@ public class VTServerLocalConsoleCommandSelector<T> extends VTConsoleCommandSele
       standardCommandProcessorClasses.add(VTPROPERTY.class);
       standardCommandProcessorClasses.add(VTUSER.class);
       standardCommandProcessorClasses.add(VTSTOP.class);
-      standardCommandProcessorClasses.add(VTTIME.class);
+      standardCommandProcessorClasses.add(VTDATE.class);
       standardCommandProcessorClasses.add(VTVARIABLE.class);
       standardCommandProcessorClasses.add(VTCONFIGURE.class);
       // knownStandardCommandProcessorClasses.add(VTECHO.class);
