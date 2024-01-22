@@ -6,13 +6,13 @@ import javax.print.PrintServiceLookup;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-public class VTPRINTERS extends VTServerStandardLocalConsoleCommandProcessor
+public class VTPRINTER extends VTServerStandardLocalConsoleCommandProcessor
 {
-  public VTPRINTERS()
+  public VTPRINTER()
   {
-    this.setFullName("*VTPRINTERS");
+    this.setFullName("*VTPRINTER");
     this.setAbbreviatedName("*VTPR");
-    this.setFullSyntax("*VTPRINTERS");
+    this.setFullSyntax("*VTPRINTER");
     this.setAbbreviatedSyntax("*VTPR");
   }
   

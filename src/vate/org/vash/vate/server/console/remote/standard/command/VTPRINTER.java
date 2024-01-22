@@ -2,14 +2,14 @@ package org.vash.vate.server.console.remote.standard.command;
 
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
-public class VTPRINTERS extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTPRINTER extends VTServerStandardRemoteConsoleCommandProcessor
 {
-  public VTPRINTERS()
+  public VTPRINTER()
   {
-    this.setFullName("*VTPRINTERS");
+    this.setFullName("*VTPRINTER");
     this.setAbbreviatedName("*VTPR");
-    this.setFullSyntax("*VTPRINTERS [NUMBER]");
-    this.setAbbreviatedSyntax("*VTPR [NU]");
+    this.setFullSyntax("*VTPRINTER [PRINTER]");
+    this.setAbbreviatedSyntax("*VTPR [PR]");
   }
   
   public void execute(String command, String[] parsed) throws Exception

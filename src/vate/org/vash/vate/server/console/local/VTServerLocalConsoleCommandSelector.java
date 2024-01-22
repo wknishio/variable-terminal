@@ -21,20 +21,20 @@ public class VTServerLocalConsoleCommandSelector<T> extends VTConsoleCommandSele
     try
     {
       standardCommandProcessorClasses.add(VTSETTING.class);
-      standardCommandProcessorClasses.add(VTMIXERS.class);
+      standardCommandProcessorClasses.add(VTMIXER.class);
       standardCommandProcessorClasses.add(VTCLEAR.class);
       standardCommandProcessorClasses.add(VTCOVER.class);
       standardCommandProcessorClasses.add(VTKICK.class);
-      standardCommandProcessorClasses.add(VTDISPLAYS.class);
-      standardCommandProcessorClasses.add(VTFILEROOTS.class);
+      standardCommandProcessorClasses.add(VTDISPLAY.class);
+      standardCommandProcessorClasses.add(VTFILEROOT.class);
       standardCommandProcessorClasses.add(VTHELP.class);
-      standardCommandProcessorClasses.add(VTLOCK.class);
+      //standardCommandProcessorClasses.add(VTLOCK.class);
       standardCommandProcessorClasses.add(VTTEXT.class);
-      standardCommandProcessorClasses.add(VTNETWORKS.class);
+      standardCommandProcessorClasses.add(VTNETWORK.class);
       standardCommandProcessorClasses.add(VTPING.class);
-      standardCommandProcessorClasses.add(VTPRINTERS.class);
+      standardCommandProcessorClasses.add(VTPRINTER.class);
       standardCommandProcessorClasses.add(VTPROPERTY.class);
-      standardCommandProcessorClasses.add(VTUSERS.class);
+      standardCommandProcessorClasses.add(VTUSER.class);
       standardCommandProcessorClasses.add(VTSTOP.class);
       standardCommandProcessorClasses.add(VTTIME.class);
       standardCommandProcessorClasses.add(VTVARIABLE.class);

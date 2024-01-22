@@ -2,13 +2,13 @@ package org.vash.vate.server.console.remote.standard.command;
 
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
-public class VTUSERS extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTUSER extends VTServerStandardRemoteConsoleCommandProcessor
 {
-  public VTUSERS()
+  public VTUSER()
   {
-    this.setFullName("*VTUSERS");
+    this.setFullName("*VTUSER");
     this.setAbbreviatedName("*VTUS");
-    this.setFullSyntax("*VTUSERS");
+    this.setFullSyntax("*VTUSER");
     this.setAbbreviatedSyntax("*VTUS");
   }
   

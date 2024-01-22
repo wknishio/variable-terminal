@@ -23,7 +23,7 @@ public class VTClientRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
     try
     {
       standardCommandProcessorClasses.add(VTAUDIOLINK.class);
-      standardCommandProcessorClasses.add(VTMIXERS.class);
+      standardCommandProcessorClasses.add(VTMIXER.class);
       standardCommandProcessorClasses.add(VTCLEAR.class);
       standardCommandProcessorClasses.add(VTEXIT.class);
       standardCommandProcessorClasses.add(VTFILETRANSFER.class);
@@ -43,7 +43,7 @@ public class VTClientRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
       standardCommandProcessorClasses.add(VTLOG.class);
       standardCommandProcessorClasses.add(VTOUT.class);
       standardCommandProcessorClasses.add(VTECHO.class);
-      standardCommandProcessorClasses.add(VTNETWORKS.class);
+      standardCommandProcessorClasses.add(VTNETWORK.class);
     }
     catch (Throwable t)
     {

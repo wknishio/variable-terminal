@@ -3,13 +3,13 @@ package org.vash.vate.server.console.remote.standard.command;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
-public class VTHOSTS extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTHOST extends VTServerStandardRemoteConsoleCommandProcessor
 {
-  public VTHOSTS()
+  public VTHOST()
   {
-    this.setFullName("*VTHOSTS");
+    this.setFullName("*VTHOST");
     this.setAbbreviatedName("*VTHT");
-    this.setFullSyntax("*VTHOSTS <HOST>");
+    this.setFullSyntax("*VTHOST <HOST>");
     this.setAbbreviatedSyntax("*VTHT <HT>");
   }
   

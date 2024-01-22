@@ -56,7 +56,7 @@ simple, medium, next, extra, high, vast, ultra, true
 * Added options in tunnel commands to bind tunnels to specific host address
 * Added *; as optional command delimiter for multiple commands per line
 * Added *VTCOVER command to show/hide server console interface
-* Removed command *VTFILEROOTS from client console, usable in server console
+* Removed command *VTFILEROOT from client console, usable in server console
 * Merged all external shell manipulation commands in new command *VTSHELL
 * Added option to *VTSHELL command to change shell encoding and directory
 * Added option to *VTSHELL command to use beanshell or groovysh as shell
@@ -66,10 +66,10 @@ simple, medium, next, extra, high, vast, ultra, true
 * Reduced server processor usage and memory usage for screen capture commands
 * Added support for hidpi displays when using java 1.8 or lesser
 * Added option to change remote cursor size in command *VTGRAPHICSLINK
-* Changed command *VTPRINTSERVICES to *VTPRINTERS
-* Command *VTPRINTERS now allows specifying a print service for more details
+* Changed command *VTPRINTSERVICES to *VTPRINTER
+* Command *VTPRINTER now allows specifying a print service for more details
 * Added command *VTSAVE to save current client connection settings to file
-* Command *VTNETWORKS now shows hardware address with java 1.6
+* Command *VTNETWORK now shows hardware address with java 1.6
 * Changed startup parameter format, parameters now have a dash(-) as in unix
 * Changed *VTFILETRANSFER command to transfer directories and multiple files
 * Added capacity of adding custom plugin console commands in client and server

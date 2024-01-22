@@ -8,13 +8,13 @@ import org.vash.vate.console.VTConsole;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-public class VTDISPLAYS extends VTServerStandardLocalConsoleCommandProcessor
+public class VTDISPLAY extends VTServerStandardLocalConsoleCommandProcessor
 {
-  public VTDISPLAYS()
+  public VTDISPLAY()
   {
-    this.setFullName("*VTDISPLAYS");
+    this.setFullName("*VTDISPLAY");
     this.setAbbreviatedName("*VTDP");
-    this.setFullSyntax("*VTDISPLAYS");
+    this.setFullSyntax("*VTDISPLAY");
     this.setAbbreviatedSyntax("*VTDP");
   }
   

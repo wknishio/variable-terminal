@@ -8,7 +8,7 @@ import java.util.Enumeration;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-public class VTNETWORKS extends VTServerStandardLocalConsoleCommandProcessor
+public class VTNETWORK extends VTServerStandardLocalConsoleCommandProcessor
 {
   private static Method getHardwareAddress;
   
@@ -25,11 +25,11 @@ public class VTNETWORKS extends VTServerStandardLocalConsoleCommandProcessor
     }
   }
   
-  public VTNETWORKS()
+  public VTNETWORK()
   {
-    this.setFullName("*VTNETWORKS");
+    this.setFullName("*VTNETWORK");
     this.setAbbreviatedName("*VTNT");
-    this.setFullSyntax("*VTNETWORKS");
+    this.setFullSyntax("*VTNETWORK");
     this.setAbbreviatedSyntax("*VTNT");
   }
   

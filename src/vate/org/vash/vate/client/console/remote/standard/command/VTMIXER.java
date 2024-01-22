@@ -7,13 +7,13 @@ import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsol
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.help.VTHelpManager;
 
-public class VTMIXERS extends VTClientStandardRemoteConsoleCommandProcessor
+public class VTMIXER extends VTClientStandardRemoteConsoleCommandProcessor
 {
-  public VTMIXERS()
+  public VTMIXER()
   {
-    this.setFullName("*VTMIXERS");
+    this.setFullName("*VTMIXER");
     this.setAbbreviatedName("*VTMX");
-    this.setFullSyntax("*VTMIXERS [SIDE]");
+    this.setFullSyntax("*VTMIXER [SIDE]");
     this.setAbbreviatedSyntax("*VTMX [SD]");
   }
   

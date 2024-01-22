@@ -5,13 +5,13 @@ import java.io.File;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-public class VTFILEROOTS extends VTServerStandardLocalConsoleCommandProcessor
+public class VTFILEROOT extends VTServerStandardLocalConsoleCommandProcessor
 {
-  public VTFILEROOTS()
+  public VTFILEROOT()
   {
-    this.setFullName("*VTFILEROOTS");
+    this.setFullName("*VTFILEROOT");
     this.setAbbreviatedName("*VTFR");
-    this.setFullSyntax("*VTFILEROOTS");
+    this.setFullSyntax("*VTFILEROOT");
     this.setAbbreviatedSyntax("*VTFR");
   }
   

@@ -6,13 +6,13 @@ import javax.sound.sampled.Mixer;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-public class VTMIXERS extends VTServerStandardLocalConsoleCommandProcessor
+public class VTMIXER extends VTServerStandardLocalConsoleCommandProcessor
 {
-  public VTMIXERS()
+  public VTMIXER()
   {
-    this.setFullName("*VTMIXERS");
+    this.setFullName("*VTMIXER");
     this.setAbbreviatedName("*VTMX");
-    this.setFullSyntax("*VTMIXERS");
+    this.setFullSyntax("*VTMIXER");
     this.setAbbreviatedSyntax("*VTMX");
   }
   

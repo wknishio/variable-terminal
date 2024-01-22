@@ -45,7 +45,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     sessionMenu = new Menu("Session ");
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Server Application", "*VTSTOP\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Toggle Server Cover", "*VTCOVER\n"));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTUSERS\n"));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTUSER\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Text Message To Clients", "*VTTEXT "));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Disconnect Client From Server", "*VTKICK "));
     
@@ -82,7 +82,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     serverEncryptionMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Password", "*VTSETTING EK "));
     serverSessionsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Maximum", "*VTSETTING SM "));
     serverSessionsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Shell", "*VTSETTING SS "));
-    serverSessionsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Credential", "*VTLOCK "));
+    serverSessionsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Users", "*VTSETTING SU "));
     serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Save Settings File", "*VTSETTING SP "));
     serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Load Settings File", "*VTSETTING LP "));
     serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Reconfigure Settings", "*VTCONFIGURE\n"));
@@ -94,19 +94,19 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     serverRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Local Java Properties", "*VTPROPERTY "));
     
     fileSystemMenu = new Menu("File ");
-    fileSystemMenu.add(new VTGraphicalConsoleMenuItem("List Local File System Roots", "*VTFILEROOTS\n"));
+    fileSystemMenu.add(new VTGraphicalConsoleMenuItem("List Local File System Roots", "*VTFILEROOT\n"));
     
     serverNetworkMenu = new Menu("Network ");
-    serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List Local Network Interfaces", "*VTNETWORKS\n"));
+    serverNetworkMenu.add(new VTGraphicalConsoleMenuItem("List Local Network Interfaces", "*VTNETWORK\n"));
     
     serverGraphicalSystemsMenu = new Menu("Graphical ");
-    serverGraphicalSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Local Display Devices", "*VTDISPLAYS\n"));
+    serverGraphicalSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Local Display Devices", "*VTDISPLAY\n"));
     
     serverAudioSystemsMenu = new Menu("Audio ");
-    serverAudioSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Local Audio Mixers", "*VTMIXERS\n"));
+    serverAudioSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Local Audio Mixers", "*VTMIXER\n"));
     
     serverPrintMenu = new Menu("Printing ");
-    serverPrintMenu.add(new VTGraphicalConsoleMenuItem("List Local Printers", "*VTPRINTERS\n"));
+    serverPrintMenu.add(new VTGraphicalConsoleMenuItem("List Local Printers", "*VTPRINTER\n"));
     // serverUtilitiesMenu.add(new VTGraphicalConsoleInputMenuItem("Show
     // Default
     // Print Service ", "*VTDEFAULTPRINTSERVICE\n"));

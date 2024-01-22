@@ -77,7 +77,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     // true));
     
     serverGraphicalSystemsMenu = new Menu("Graphical ");
-    serverGraphicalSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Remote Display Devices", "*VTDISPLAYS\n"));
+    serverGraphicalSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Remote Display Devices", "*VTDISPLAY\n"));
     serverGraphicsModeMenu = new Menu("Remote Graphics Link ");
     serverScreenCaptureMenu = new Menu("Remote Screen Capture ");
     serverScreenAlertMenu = new Menu("Remote Screen Alert ");
@@ -229,7 +229,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Toggle Server Cover", "*VTCOVER\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Save Client Settings To File", "*VTSAVE "));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Detect Chained Connections", "*VTCHAIN\n"));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTUSERS\n"));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTUSER\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Text Message To Server", "*VTTEXT "));
     
     consoleMenu = new Menu("Console ");
@@ -281,7 +281,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverEncryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Password", "*VTSETTING EK "));
     serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Maximum", "*VTSETTING SM "));
     serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Shell", "*VTSETTING SS "));
-    serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Credential", "*VTLOCK "));
+    serverSessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Users", "*VTSETTING SU "));
     serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Save Settings File", "*VTSETTING SP "));
     serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Load Settings File", "*VTSETTING LP "));
     serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSETTING\n"));
@@ -308,9 +308,9 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     networkMenu = new Menu("Network ");
     
     networkInterfacesMenu = new Menu("List Valid Network Interfaces ");
-    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Remote Network Interfaces", "*VTNETWORKS R\n"));
-    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Local Network Interfaces", "*VTNETWORKS L\n"));
-    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("All Network Interfaces", "*VTNETWORKS\n"));
+    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Remote Network Interfaces", "*VTNETWORK R\n"));
+    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Local Network Interfaces", "*VTNETWORK L\n"));
+    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("All Network Interfaces", "*VTNETWORK\n"));
     
     networkTunnelsMenu = new Menu("Connection Network Tunnels ");
     // serverSOCKSTunnelsMenu = new Menu("Connection SOCKS Tunnels ");
@@ -321,22 +321,22 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTTUNNEL\n"));
     
     networkMenu.add(networkInterfacesMenu);
-    networkMenu.add(new VTGraphicalConsoleMenuItem("Resolve Remote Network Host", "*VTHOSTS "));
+    networkMenu.add(new VTGraphicalConsoleMenuItem("Resolve Remote Network Host", "*VTHOST "));
     networkMenu.add(networkTunnelsMenu);
     
     serverPrintMenu = new Menu("Printing ");
-    serverPrintMenu.add(new VTGraphicalConsoleMenuItem("List Remote Printers", "*VTPRINTERS\n"));
-    serverPrintMenu.add(new VTGraphicalConsoleMenuItem("Detail Remote Printer", "*VTPRINTERS "));
+    serverPrintMenu.add(new VTGraphicalConsoleMenuItem("List Remote Printers", "*VTPRINTER\n"));
+    serverPrintMenu.add(new VTGraphicalConsoleMenuItem("Detail Remote Printer", "*VTPRINTER "));
     serverPrintMenu.add(new VTGraphicalConsoleMenuItem("Print Text In Remote Printer", "*VTPRINTDATA T "));
     serverPrintMenu.add(new VTGraphicalConsoleMenuItem("Print File In Remote Printer", "*VTPRINTDATA F "));
-    serverPrintMenu.add(new VTGraphicalConsoleMenuItem("Commands Usage", "*VTHELP *VTPRINTERS\n*VTHELP *VTPRINTDATA\n"));
+    serverPrintMenu.add(new VTGraphicalConsoleMenuItem("Commands Usage", "*VTHELP *VTPRINTER\n*VTHELP *VTPRINTDATA\n"));
     
     audioSoundMenu = new Menu("Audio ");
     
     audioMixersSoundMenu = new Menu("List Valid Audio Mixers ");
-    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Remote Audio Mixers", "*VTMIXERS R\n"));
-    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Local Audio Mixers", "*VTMIXERS L\n"));
-    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("All Audio Mixers", "*VTMIXERS\n"));
+    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Remote Audio Mixers", "*VTMIXER R\n"));
+    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Local Audio Mixers", "*VTMIXER L\n"));
+    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("All Audio Mixers", "*VTMIXER\n"));
     audioSoundMenu.add(audioMixersSoundMenu);
     
     //audioSoundMenu.add(new VTGraphicalConsoleMenuItem("Ring Remote Terminal Bell", "*VTBELL\n"));

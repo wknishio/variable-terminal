@@ -7,13 +7,13 @@ import org.vash.vate.console.VTConsole;
 import org.vash.vate.server.connection.VTServerConnectionHandler;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-public class VTUSERS extends VTServerStandardLocalConsoleCommandProcessor
+public class VTUSER extends VTServerStandardLocalConsoleCommandProcessor
 {
-  public VTUSERS()
+  public VTUSER()
   {
-    this.setFullName("*VTUSERS");
+    this.setFullName("*VTUSER");
     this.setAbbreviatedName("*VTUS");
-    this.setFullSyntax("*VTUSERS");
+    this.setFullSyntax("*VTUSER");
     this.setAbbreviatedSyntax("*VTUS");
   }
   

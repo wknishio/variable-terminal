@@ -2,13 +2,13 @@ package org.vash.vate.server.console.remote.standard.command;
 
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
-public class VTDISPLAYS extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTDISPLAY extends VTServerStandardRemoteConsoleCommandProcessor
 {
-  public VTDISPLAYS()
+  public VTDISPLAY()
   {
-    this.setFullName("*VTDISPLAYS");
+    this.setFullName("*VTDISPLAY");
     this.setAbbreviatedName("*VTDP");
-    this.setFullSyntax("*VTDISPLAYS");
+    this.setFullSyntax("*VTDISPLAY");
     this.setAbbreviatedSyntax("*VTDP");
   }
   

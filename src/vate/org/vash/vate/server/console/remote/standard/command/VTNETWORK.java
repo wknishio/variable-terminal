@@ -2,13 +2,13 @@ package org.vash.vate.server.console.remote.standard.command;
 
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
-public class VTNETWORKS extends VTServerStandardRemoteConsoleCommandProcessor
+public class VTNETWORK extends VTServerStandardRemoteConsoleCommandProcessor
 {
-  public VTNETWORKS()
+  public VTNETWORK()
   {
-    this.setFullName("*VTNETWORKS");
+    this.setFullName("*VTNETWORK");
     this.setAbbreviatedName("*VTNT");
-    this.setFullSyntax("*VTNETWORKS [SIDE]");
+    this.setFullSyntax("*VTNETWORK [SIDE]");
     this.setAbbreviatedSyntax("*VTNT [SD]");
   }
   

@@ -9,9 +9,9 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
   public VTSETTING()
   {
     this.setFullName("*VTSETTING");
-    this.setAbbreviatedName("*VTSG");
+    this.setAbbreviatedName("*VTSE");
     this.setFullSyntax("*VTSETTING [NAME] [VALUE]");
-    this.setAbbreviatedSyntax("*VTSG [NM] [VL]");
+    this.setAbbreviatedSyntax("*VTSE [NM] [VL]");
   }
   
   public void execute(String command, String[] parsed) throws Exception
@@ -19,10 +19,9 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
     if (parsed.length == 1)
     {
       message.setLength(0);
-      String sessionShell = session.getServer().getServerConnector().getSessionShell();
-      Integer sessionsMaximum = session.getServer().getServerConnector().getSessionsMaximum();
       String hostAddress = session.getServer().getServerConnector().getAddress();
       Integer port = session.getServer().getServerConnector().getPort();
+      Integer natPort = session.getServer().getServerConnector().getNatPort();
       String proxyType = session.getServer().getServerConnector().getProxyType();
       String proxyAddress = session.getServer().getServerConnector().getProxyAddress();
       Integer proxyPort = session.getServer().getServerConnector().getProxyPort();
@@ -30,7 +29,8 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       String proxyPassword = session.getServer().getServerConnector().getProxyPassword();
       String encryptionType = session.getServer().getServerConnector().getEncryptionType();
       String encryptionPassword = "";
-      Integer natPort = session.getServer().getServerConnector().getNatPort();
+      Integer sessionsMaximum = session.getServer().getServerConnector().getSessionsMaximum();
+      String sessionShell = session.getServer().getServerConnector().getSessionShell();
       if (session.getServer().getServerConnector().getEncryptionKey() != null)
       {
         encryptionPassword = new String(session.getServer().getServerConnector().getEncryptionKey(), "UTF-8");
@@ -826,6 +826,28 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           }
           connection.getResultWriter().write("\nVT>Session shell(SS) set to: [" + sessionShell + "]\nVT>");
           connection.getResultWriter().flush();
+        }
+        else
+        {
+          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().flush();
+        }
+      }
+      else if (parsed[1].equalsIgnoreCase("SA"))
+      {
+        if (parsed.length >= 3)
+        {
+          String sessionUsers = parsed[2];
+          if (session.getServer().setMultipleUserCredentials(sessionUsers))
+          {
+            connection.getResultWriter().write("\nVT>Session accounts(SA) set to: [" + sessionUsers + "]\nVT>");
+            connection.getResultWriter().flush();
+          }
+          else
+          {
+            connection.getResultWriter().write("\nVT>Session accounts(SA) set to: []\nVT>");
+            connection.getResultWriter().flush();
+          }
         }
         else
         {

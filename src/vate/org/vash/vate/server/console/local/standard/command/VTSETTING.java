@@ -10,9 +10,9 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
   public VTSETTING()
   {
     this.setFullName("*VTSETTING");
-    this.setAbbreviatedName("*VTSG");
+    this.setAbbreviatedName("*VTSE");
     this.setFullSyntax("*VTSETTING [NAME] [VALUE]");
-    this.setAbbreviatedSyntax("*VTSG [NM] [VL]");
+    this.setAbbreviatedSyntax("*VTSE [NM] [VL]");
   }
   
   public void execute(String command, String[] parsed) throws Exception
@@ -761,6 +761,25 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             connector.notify();
           }
           VTConsole.print("\rVT>Session shell(SS) set to: [" + sessionShell + "]\nVT>");
+        }
+        else
+        {
+          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+        }
+      }
+      else if (parsed[1].equalsIgnoreCase("SA"))
+      {
+        if (parsed.length >= 3)
+        {
+          String sessionUsers = parsed[2];
+          if (server.setMultipleUserCredentials(sessionUsers))
+          {
+            VTConsole.print("\rVT>Session accounts(SA) set to: [" + sessionUsers + "]\nVT>");
+          }
+          else
+          {
+            VTConsole.print("\rVT>Session accounts(SA) set to: []\nVT>");
+          }
         }
         else
         {

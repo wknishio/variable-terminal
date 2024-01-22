@@ -9,7 +9,7 @@ import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsol
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.help.VTHelpManager;
 
-public class VTNETWORKS extends VTClientStandardRemoteConsoleCommandProcessor
+public class VTNETWORK extends VTClientStandardRemoteConsoleCommandProcessor
 {
   private static Method getHardwareAddress;
   
@@ -26,11 +26,11 @@ public class VTNETWORKS extends VTClientStandardRemoteConsoleCommandProcessor
     }
   }
   
-  public VTNETWORKS()
+  public VTNETWORK()
   {
-    this.setFullName("*VTNETWORKS");
+    this.setFullName("*VTNETWORK");
     this.setAbbreviatedName("*VTNT");
-    this.setFullSyntax("*VTNETWORKS [SIDE]");
+    this.setFullSyntax("*VTNETWORK [SIDE]");
     this.setAbbreviatedSyntax("*VTNT [SD]");
   }
   
