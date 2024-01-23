@@ -44,7 +44,7 @@ public class VTServer implements Runnable
   private String encryptionType = "None";
   private byte[] encryptionKey = new byte[] {};
   private boolean daemon = false;
-  private String sessionUsers = "";
+  private String sessionAccounts = "";
   private Integer sessionsMaximum;
   private String sessionShell = "";
   private final String vtURL = System.getenv("VT_PATH");
@@ -77,7 +77,7 @@ public class VTServer implements Runnable
   "#vate.server.connection.mode      values: default passive(P), active(A)\r\n" + 
   "#vate.server.proxy.type           values: default none, DIRECT(D), AUTO(A), SOCKS(S), HTTP(H)\r\n" + 
   "#vate.server.encryption.type      values: default none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/LEA(L)\r\n" + 
-  "#vate.server.session.users        format: user1/password1;user2/password2;...";
+  "#vate.server.session.accounts     format: user1/password1;user2/password2;...";
   
   static
   {
@@ -538,7 +538,7 @@ public class VTServer implements Runnable
     fileServerSettings.setProperty("vate.server.encryption.password", new String(encryptionKey, "UTF-8"));
     fileServerSettings.setProperty("vate.server.session.shell", sessionShell);
     fileServerSettings.setProperty("vate.server.session.maximum", String.valueOf(sessionsMaximum == null ? "" : sessionsMaximum));
-    fileServerSettings.setProperty("vate.server.session.users", sessionUsers);
+    fileServerSettings.setProperty("vate.server.session.accounts", sessionAccounts);
     
     FileOutputStream out = new FileOutputStream(settingsFile);
     VTPropertiesBuilder.saveProperties(out, fileServerSettings, VT_SERVER_SETTINGS_COMMENTS, "UTF-8");
@@ -566,9 +566,9 @@ public class VTServer implements Runnable
     // rawSecuritySettings.load(securitySettingsReader);
     serverSettingsReader.close();
     
-    sessionUsers = fileServerSettings.getProperty("vate.server.session.users", null);
+    sessionAccounts = fileServerSettings.getProperty("vate.server.session.accounts", null);
     
-    setMultipleUserCredentials(sessionUsers);
+    setMultipleUserCredentials(sessionAccounts);
     
     if (fileServerSettings.getProperty("vate.server.connection.mode") != null)
     {
@@ -801,9 +801,9 @@ public class VTServer implements Runnable
       // rawSecuritySettings.load(securitySettingsReader);
       serverSettingsReader.close();
       
-      sessionUsers = fileServerSettings.getProperty("vate.server.session.users", null);
+      sessionAccounts = fileServerSettings.getProperty("vate.server.session.accounts", null);
       
-      setMultipleUserCredentials(sessionUsers);
+      setMultipleUserCredentials(sessionAccounts);
       
       if (fileServerSettings.getProperty("vate.server.connection.mode") != null)
       {
@@ -1018,9 +1018,9 @@ public class VTServer implements Runnable
   {
     loadFromConnectorToServer();
     
-    sessionUsers = properties.getProperty("vate.server.session.users", null);
+    sessionAccounts = properties.getProperty("vate.server.session.accounts", null);
     
-    setMultipleUserCredentials(sessionUsers);
+    setMultipleUserCredentials(sessionAccounts);
     
     if (properties.getProperty("vate.server.connection.mode") != null)
     {
