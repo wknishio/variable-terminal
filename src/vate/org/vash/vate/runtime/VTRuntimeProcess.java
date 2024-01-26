@@ -187,7 +187,7 @@ public class VTRuntimeProcess
   {
     if (process != null && isAlive(process))
     {
-      killProcess(process, 0);
+      killProcess(process, 1);
     }
     
     if (inputRedirector != null)
@@ -338,6 +338,7 @@ public class VTRuntimeProcess
         {
           
         }
+        Thread.yield();
         if (delay > 0)
         {
           try
@@ -349,6 +350,7 @@ public class VTRuntimeProcess
             
           }
         }
+        Thread.yield();
         killed = isAlive(process);
       }
       if (!killed)
