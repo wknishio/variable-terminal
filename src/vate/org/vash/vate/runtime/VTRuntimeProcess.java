@@ -27,19 +27,19 @@ public class VTRuntimeProcess
   private VTRuntimeProcessTimeoutKill timeoutKill;
   
   private ExecutorService threads;
-  private OutputStream writer;
+  private OutputStream redirect;
   private volatile boolean verbose;
   private volatile boolean restart;
   // private volatile boolean killed;
   private volatile long timeout;
   // private volatile long pid;
   
-  public VTRuntimeProcess(String command, ProcessBuilder builder, ExecutorService threads, OutputStream writer, boolean verbose, boolean restart, long timeout)
+  public VTRuntimeProcess(String command, ProcessBuilder builder, ExecutorService threads, OutputStream redirect, boolean verbose, boolean restart, long timeout)
   {
     this.command = command;
     this.builder = builder;
     this.threads = threads;
-    this.writer = writer;
+    this.redirect = redirect;
     this.verbose = verbose;
     this.restart = restart;
     this.timeout = timeout;
@@ -74,9 +74,9 @@ public class VTRuntimeProcess
     this.exitListener = new VTRuntimeProcessExitListener(this);
     threads.execute(exitListener);
     
-    if (writer != null)
+    if (redirect != null)
     {
-      this.inputRedirector = new VTRuntimeProcessInputRedirector(in, writer, verbose);
+      this.inputRedirector = new VTRuntimeProcessInputRedirector(in, redirect, verbose);
       threads.execute(inputRedirector);
       // threads.execute(errorConsumer);
     }

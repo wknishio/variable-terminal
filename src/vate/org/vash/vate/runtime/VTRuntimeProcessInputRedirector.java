@@ -62,10 +62,13 @@ public class VTRuntimeProcessInputRedirector implements Runnable
       try
       {
         readBytes = in.read(inputBuffer, 0, inputBufferSize);
-        if (readBytes > 0 && running && verbose && out != null)
+        if (readBytes > 0 && running)
         {
-          out.write(inputBuffer, 0, readBytes);
-          out.flush();
+          if (verbose && out != null)
+          {
+            out.write(inputBuffer, 0, readBytes);
+            out.flush();
+          }
         }
         else
         {
