@@ -153,7 +153,7 @@ assisting the use of all internal commands of this software.
 Some of the available internal commands in client console:
 
 * Commands \*VTFILETRANSFER or \*VTFT do file transfers.
-* Commands \*VTSCREENSHOT or \*VTSCS do remote screen captures.
+* Commands \*VTSCREENSHOT or \*VTSS do remote screen captures.
 * Commands \*VTGRAPHICSLINK or \*VTGL toggle remote desktop control.
 * Commands \*VTAUDIOLINK or \*VTAL toggle audio chat communication.
 * Commands \*VTBELL or \*VTBL play remote system audio alert.
