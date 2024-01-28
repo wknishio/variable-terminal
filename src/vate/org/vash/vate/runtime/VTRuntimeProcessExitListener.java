@@ -31,10 +31,9 @@ public class VTRuntimeProcessExitListener implements Runnable
     
     if (process.isRestart())
     {
-      process.stop();
       try
       {
-        Thread.sleep(500);
+        Thread.sleep(125);
       }
       catch (Throwable e)
       {
@@ -44,7 +43,7 @@ public class VTRuntimeProcessExitListener implements Runnable
       {
         try
         {
-          Thread.sleep(500);
+          Thread.sleep(125);
         }
         catch (Throwable e)
         {
