@@ -7,9 +7,9 @@ public class VTCHAIN extends VTServerStandardRemoteConsoleCommandProcessor
   public VTCHAIN()
   {
     this.setFullName("*VTCHAIN");
-    this.setAbbreviatedName("VTCN");
+    this.setAbbreviatedName("VTCH");
     this.setFullSyntax("*VTCHAIN");
-    this.setAbbreviatedSyntax("*VTCN");
+    this.setAbbreviatedSyntax("*VTCH");
   }
   
   public void execute(String command, String[] parsed) throws Exception
