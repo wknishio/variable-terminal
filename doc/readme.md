@@ -156,7 +156,6 @@ Some of the available internal commands in client console:
 * Commands \*VTSCREENSHOT or \*VTSS do remote screen captures.
 * Commands \*VTGRAPHICSLINK or \*VTGL toggle remote desktop control.
 * Commands \*VTAUDIOLINK or \*VTAL toggle audio chat communication.
-* Commands \*VTBELL or \*VTBL play remote system audio alert.
 * Commands \*VTTUNNEL or \*VTTN set network connection tunnels.
 * Commands \*VTLIMIT or \*VTLM limit network connection data rates.
 
