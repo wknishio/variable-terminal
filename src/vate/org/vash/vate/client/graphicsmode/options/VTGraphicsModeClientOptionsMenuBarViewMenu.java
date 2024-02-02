@@ -165,7 +165,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.worstColorOption = new CheckboxMenuItem("Worst", false);
     this.worstColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, worstColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4));
     
-    this.interruptedRefreshOption = new CheckboxMenuItem("Interrupted", false);
+    this.interruptedRefreshOption = new CheckboxMenuItem("Stopped", false);
     this.interruptedRefreshOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuInterruptRefreshOptionListener(writer, interruptedRefreshOption));
     this.asynchronousRefreshOption = new CheckboxMenuItem("Immediate", true);
     this.asynchronousRefreshOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuRefreshOptionsListener(writer, asynchronousRefreshOption));

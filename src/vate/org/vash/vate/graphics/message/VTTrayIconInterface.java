@@ -179,7 +179,7 @@ public class VTTrayIconInterface
       
       add.invoke(systemTrayObject, trayIconObject);
       
-      VTRuntimeExit.setHook(hook);
+      VTRuntimeExit.addHook(hook);
     }
     catch (Throwable t)
     {
@@ -210,6 +210,7 @@ public class VTTrayIconInterface
   {
     try
     {
+      VTRuntimeExit.removeHook(hook);
       if (remove != null)
       {
         remove.invoke(systemTrayObject, trayIconObject);

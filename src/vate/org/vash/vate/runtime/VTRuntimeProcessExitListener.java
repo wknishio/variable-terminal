@@ -11,10 +11,10 @@ public class VTRuntimeProcessExitListener implements Runnable
   
   public void finalize()
   {
-    if (process != null && process.isAlive())
-    {
-      process.destroy();
-    }
+    //if (process != null && process.isAlive())
+    //{
+      //process.destroy();
+    //}
   }
   
   public void run()

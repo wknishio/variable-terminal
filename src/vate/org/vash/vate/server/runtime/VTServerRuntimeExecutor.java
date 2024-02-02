@@ -25,8 +25,9 @@ public class VTServerRuntimeExecutor extends VTTask
   // private VTServer server;
   private VTServerSession session;
   private VTServerConnection connection;
-  private List<VTRuntimeProcess> processList;
+  private List<VTRuntimeProcess> managedProcessList;
   private List<VTRuntimeProcess> removedProcessStack;
+  private static List<VTRuntimeProcess> freeProcessList = new ArrayList<VTRuntimeProcess>();
   private File runtimeDirectory;
   
   private static int PROCESS_COMMAND_UNKNOWN = -1; // ?
@@ -60,7 +61,7 @@ public class VTServerRuntimeExecutor extends VTTask
     this.finished = true;
 //    this.processList = Collections.synchronizedList(new ArrayList<VTRuntimeProcess>());
 //    this.removedProcessStack = Collections.synchronizedList(new ArrayList<VTRuntimeProcess>());
-    this.processList = new ArrayList<VTRuntimeProcess>();
+    this.managedProcessList = new ArrayList<VTRuntimeProcess>();
     this.removedProcessStack = new ArrayList<VTRuntimeProcess>();
     this.message = new StringBuilder();
   }
@@ -95,15 +96,22 @@ public class VTServerRuntimeExecutor extends VTTask
     this.command = command;
   }
   
-  public void clear()
+  public static void free()
   {
-    for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
+    for (VTRuntimeProcess process : freeProcessList.toArray(new VTRuntimeProcess[] {}))
     {
-      //process.setRestart(false);
-      //process.stop();
       process.destroy();
     }
-    processList.clear();
+    freeProcessList.clear();
+  }
+  
+  public void clear()
+  {
+    for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
+    {
+      process.destroy();
+    }
+    managedProcessList.clear();
   }
   
   /*
@@ -366,7 +374,7 @@ public class VTServerRuntimeExecutor extends VTTask
             }
           }
           
-          if (processList.size() <= 0)
+          if (managedProcessList.size() <= 0)
           {
             synchronized (this)
             {
@@ -462,7 +470,7 @@ public class VTServerRuntimeExecutor extends VTTask
             processBuilder.redirectErrorStream(true);
             VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, session.getSessionThreads(), connection.getShellDataOutputStream(), process_verbose, process_restart, timeout_value);
             process.start();
-            processList.add(process);
+            managedProcessList.add(process);
             synchronized (this)
             {
               connection.getResultWriter().write("\nVT>Managed process with command [" + command + "] created!\nVT>");
@@ -505,6 +513,7 @@ public class VTServerRuntimeExecutor extends VTTask
             processBuilder.redirectErrorStream(true);
             VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, session.getSessionThreads(), connection.getShellDataOutputStream(), process_verbose, process_restart, timeout_value);
             process.start();
+            freeProcessList.add(process);
             synchronized (this)
             {
               connection.getResultWriter().write("\nVT>Free process with command [" + command + "] executed!\nVT>");
@@ -541,7 +550,7 @@ public class VTServerRuntimeExecutor extends VTTask
             message.setLength(0);
             message.append("\nVT>List of managed processes on session list:\nVT>");
             i = 0;
-            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
+            for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               try
               {
@@ -574,7 +583,7 @@ public class VTServerRuntimeExecutor extends VTTask
             found = false;
             try
             {
-              VTRuntimeProcess process = processList.get(Integer.parseInt(splitCommand[2]));
+              VTRuntimeProcess process = managedProcessList.get(Integer.parseInt(splitCommand[2]));
               if (!found)
               {
                 message.setLength(0);
@@ -640,7 +649,7 @@ public class VTServerRuntimeExecutor extends VTTask
           {
             found = false;
             i = 0;
-            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
+            for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               try
               {
@@ -707,7 +716,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
+            for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               process.destroy();
             }
@@ -730,7 +739,7 @@ public class VTServerRuntimeExecutor extends VTTask
           {
             try
             {
-              processList.get(Integer.parseInt(splitCommand[2])).destroy();
+              managedProcessList.get(Integer.parseInt(splitCommand[2])).destroy();
               synchronized (this)
               {
                 connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] stopped!\nVT>");
@@ -780,7 +789,7 @@ public class VTServerRuntimeExecutor extends VTTask
           {
             found = false;
             i = 0;
-            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
+            for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               if (process.getCommand().contains(splitCommand[2]))
               {
@@ -850,7 +859,7 @@ public class VTServerRuntimeExecutor extends VTTask
           {
             try
             {
-              processList.remove(Integer.parseInt(splitCommand[2])).setRestart(false);
+              managedProcessList.remove(Integer.parseInt(splitCommand[2])).setRestart(false);
               synchronized (this)
               {
                 connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] destroyed from list!\nVT>");
@@ -900,7 +909,7 @@ public class VTServerRuntimeExecutor extends VTTask
           {
             removedProcessStack.clear();
             found = false;
-            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
+            for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               if (process.getCommand().contains(splitCommand[2]))
               {
@@ -927,7 +936,7 @@ public class VTServerRuntimeExecutor extends VTTask
             }
             else
             {
-              processList.removeAll(removedProcessStack);
+              managedProcessList.removeAll(removedProcessStack);
               removedProcessStack.clear();
               synchronized (this)
               {
@@ -952,7 +961,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
+            for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               try
               {
@@ -980,8 +989,8 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               command += "\n";
-              processList.get(Integer.parseInt(splitCommand[2])).getOut().write((command).getBytes());
-              processList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
+              managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().write((command).getBytes());
+              managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
               synchronized (this)
               {
                 connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] received line!\nVT>");
@@ -1035,7 +1044,7 @@ public class VTServerRuntimeExecutor extends VTTask
               command += "\n";
               found = false;
               // VTTerminal.println(splitCommand[1]);
-              for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
+              for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
               {
                 if (process.getCommand().contains(splitCommand[2]))
                 {
@@ -1221,7 +1230,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
+            for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               try
               {
@@ -1280,8 +1289,8 @@ public class VTServerRuntimeExecutor extends VTTask
               }
               if (data != null)
               {
-                processList.get(Integer.parseInt(splitCommand[2])).getOut().write(data);
-                processList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
+                managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().write(data);
+                managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
                 synchronized (this)
                 {
                   connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] received base64!\nVT>");
@@ -1351,7 +1360,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 found = false;
                 // VTTerminal.println(splitCommand[1]);
-                for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
+                for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
                 {
                   if (process.getCommand().contains(splitCommand[2]))
                   {
@@ -1406,7 +1415,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
+            for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               try
               {
@@ -1465,8 +1474,8 @@ public class VTServerRuntimeExecutor extends VTTask
               }
               if (data != null)
               {
-                processList.get(Integer.parseInt(splitCommand[2])).getOut().write(data);
-                processList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
+                managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().write(data);
+                managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
                 synchronized (this)
                 {
                   connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] received unicode!\nVT>");
@@ -1536,7 +1545,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 found = false;
                 // VTTerminal.println(splitCommand[1]);
-                for (VTRuntimeProcess process : processList.toArray(new VTRuntimeProcess[] {}))
+                for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
                 {
                   if (process.getCommand().contains(splitCommand[2]))
                   {

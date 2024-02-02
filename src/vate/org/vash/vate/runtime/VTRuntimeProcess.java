@@ -45,6 +45,11 @@ public class VTRuntimeProcess
     this.timeout = timeout;
   }
   
+  public void finalize()
+  {
+    //destroy();
+  }
+  
   public ProcessBuilder getBuilder()
   {
     return builder;
@@ -243,11 +248,6 @@ public class VTRuntimeProcess
   {
     this.restart = false;
     stop();
-  }
-  
-  public void finalize()
-  {
-    destroy();
   }
   
   private static void forceKillProcessID(long pid) throws Throwable

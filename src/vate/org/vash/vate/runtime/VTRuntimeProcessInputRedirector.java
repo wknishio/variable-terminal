@@ -23,6 +23,11 @@ public class VTRuntimeProcessInputRedirector implements Runnable
     this.verbose = true;
   }
   
+  public void finalize()
+  {
+    //stop();
+  }
+  
   public void close()
   {
     stop();
@@ -31,10 +36,10 @@ public class VTRuntimeProcessInputRedirector implements Runnable
   public void stop()
   {
     running = false;
-    finalize();
+    destroy();
   }
   
-  public void finalize()
+  public void destroy()
   {
     if (in != null)
     {
@@ -66,8 +71,15 @@ public class VTRuntimeProcessInputRedirector implements Runnable
         {
           if (verbose && out != null)
           {
-            out.write(inputBuffer, 0, readBytes);
-            out.flush();
+            try
+            {
+              out.write(inputBuffer, 0, readBytes);
+              out.flush();
+            }
+            catch (Throwable e)
+            {
+              out = null;
+            }
           }
         }
         else

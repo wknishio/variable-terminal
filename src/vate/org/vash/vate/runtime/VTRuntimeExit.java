@@ -1,25 +1,46 @@
 package org.vash.vate.runtime;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class VTRuntimeExit
 {
-  private static Runnable hook;
+  private static List<Runnable> hooks = new ArrayList<Runnable>();
   
-  public static void setHook(Runnable hook)
+  public static int addHook(Runnable hook)
   {
-    VTRuntimeExit.hook = hook;
+    hooks.remove(hook);
+    hooks.add(hook);
+    return hooks.size() - 1;
+  }
+  
+  public static boolean removeHook(int index)
+  {
+    return hooks.remove(index) != null;
+  }
+  
+  public static boolean removeHook(Runnable hook)
+  {
+    return hooks.remove(hook);
   }
   
   public static void exit(int status)
   {
-    if (hook != null)
+    if (hooks.size() > 0)
     {
-      try
+      for (Runnable hook : hooks.toArray(new Runnable[] {}))
       {
-        hook.run();
-      }
-      catch (Throwable t)
-      {
-        
+        if (hook != null)
+        {
+          try
+          {
+            hook.run();
+          }
+          catch (Throwable t)
+          {
+            
+          }
+        }
       }
     }
     System.exit(status);

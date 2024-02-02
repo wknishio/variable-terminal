@@ -27,13 +27,18 @@ public class VTRuntimeProcessOutputConsumer implements Runnable
     }
   }
   
+  public void finalize()
+  {
+    //stop();
+  }
+  
   public void stop()
   {
     running = false;
-    finalize();
+    destroy();
   }
   
-  public void finalize()
+  public void destroy()
   {
     if (in != null)
     {

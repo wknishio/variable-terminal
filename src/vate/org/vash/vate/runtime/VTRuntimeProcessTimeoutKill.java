@@ -17,6 +17,11 @@ public class VTRuntimeProcessTimeoutKill implements Runnable
     this.timeout = timeout;
   }
   
+  public void finalize()
+  {
+    //stop();
+  }
+  
   public void stop()
   {
     running = false;
@@ -39,11 +44,6 @@ public class VTRuntimeProcessTimeoutKill implements Runnable
         
       }
     }
-  }
-  
-  public void finalize()
-  {
-    stop();
   }
   
   public void run()
