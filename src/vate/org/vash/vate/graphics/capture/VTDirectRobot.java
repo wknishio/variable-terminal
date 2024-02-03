@@ -12,6 +12,7 @@ public final class VTDirectRobot
     this(null);
   }
   
+  @SuppressWarnings("all")
   public VTDirectRobot(GraphicsDevice device) throws Exception
   {
     if (device == null)
@@ -23,7 +24,6 @@ public final class VTDirectRobot
     Toolkit toolkit = Toolkit.getDefaultToolkit();
     int parameterCount = 2;
     
-    @SuppressWarnings("restriction")
     ComponentFactory cp = ((ComponentFactory) toolkit);
     Method createRobot = null;
     try
