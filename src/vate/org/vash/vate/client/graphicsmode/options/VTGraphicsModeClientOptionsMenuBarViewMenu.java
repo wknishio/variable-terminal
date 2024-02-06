@@ -165,7 +165,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.worstColorOption = new CheckboxMenuItem("Worst", false);
     this.worstColorOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuColorOptionsListener(writer, worstColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4));
     
-    this.interruptedRefreshOption = new CheckboxMenuItem("Stopped", false);
+    this.interruptedRefreshOption = new CheckboxMenuItem("Suspend", false);
     this.interruptedRefreshOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuInterruptRefreshOptionListener(writer, interruptedRefreshOption));
     this.asynchronousRefreshOption = new CheckboxMenuItem("Immediate", true);
     this.asynchronousRefreshOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuRefreshOptionsListener(writer, asynchronousRefreshOption));
@@ -229,9 +229,9 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.needVisibleOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuTerminalRefreshPolicyOptionsListener(writer, needVisibleOption, VTGraphicsModeClientWriter.TERMINAL_STATE_VISIBLE));
     this.ignoreStateOption = new CheckboxMenuItem("Always", false);
     this.ignoreStateOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuTerminalRefreshPolicyOptionsListener(writer, ignoreStateOption, VTGraphicsModeClientWriter.TERMINAL_STATE_IGNORE));
-    this.imageCodingZSTDOption = new CheckboxMenuItem("SFD", true);
+    this.imageCodingZSTDOption = new CheckboxMenuItem("ZSD", true);
     this.imageCodingZSTDOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingZSTDOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD));
-    this.imageCodingDEFLATEOption = new CheckboxMenuItem("DFD", false);
+    this.imageCodingDEFLATEOption = new CheckboxMenuItem("GZD", false);
     this.imageCodingDEFLATEOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingDEFLATEOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD));
     this.imageCodingPNGOption = new CheckboxMenuItem("PNG", false);
     this.imageCodingPNGOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingPNGOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG));

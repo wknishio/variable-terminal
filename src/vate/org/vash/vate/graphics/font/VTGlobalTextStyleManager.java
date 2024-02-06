@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Dialog;
 import java.awt.Font;
 import java.awt.Frame;
+import java.awt.GraphicsEnvironment;
 import java.awt.MenuBar;
 import java.awt.Toolkit;
 import java.awt.Window;
@@ -138,12 +139,26 @@ public class VTGlobalTextStyleManager
             gdkScaleEnv = System.getenv("GDK_SCALE");
             if (gdkScaleEnv != null)
             {
-              gdkScaleFactor = Float.parseFloat(gdkScaleEnv);
+              try
+              {
+                gdkScaleFactor = Float.parseFloat(gdkScaleEnv);
+              }
+              catch (Throwable t)
+              {
+                
+              }
             }
             gdkDPIScaleEnv = System.getenv("GDK_DPI_SCALE");
             if (gdkDPIScaleEnv != null)
             {
-              gdkDPIScaleFactor = Float.parseFloat(gdkDPIScaleEnv);
+              try
+              {
+                gdkDPIScaleFactor = Float.parseFloat(gdkDPIScaleEnv);
+              }
+              catch (Throwable t)
+              {
+                
+              }
             }
             if (gdkScaleFactor > 0 && gdkDPIScaleFactor > 0)
             {
@@ -188,12 +203,26 @@ public class VTGlobalTextStyleManager
             qtScaleEnv = System.getenv("QT_SCALE_FACTOR");
             if (qtScaleEnv != null)
             {
-              qtScaleFactor = Float.parseFloat(qtScaleEnv);
+              try
+              {
+                qtScaleFactor = Float.parseFloat(qtScaleEnv);
+              }
+              catch (Throwable t)
+              {
+                
+              }
             }
             qtFontDPIEnv = System.getenv("QT_FONT_DPI");
             if (qtFontDPIEnv != null)
             {
-              qtFontDPI = Float.parseFloat(qtFontDPIEnv);
+              try
+              {
+                qtFontDPI = Float.parseFloat(qtFontDPIEnv);
+              }
+              catch (Throwable t)
+              {
+                
+              }
             }
             
             if (qtScaleFactor > 0 || qtFontDPI > 0)
@@ -256,6 +285,21 @@ public class VTGlobalTextStyleManager
                 System.setProperty("sun.java2d.uiScale", "1");
                 System.setProperty("sun.java2d.win.uiScaleX", "1");
                 System.setProperty("sun.java2d.win.uiScaleY", "1");
+              }
+              try
+              {
+                FONT_SCALING_FACTOR_DIALOG = Math.max(1.0F, ((((float)GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getNormalizingTransform().getScaleX()) * 72F) / 96F));
+                FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
+                BASE_FONT_DPI = (int) (96 * FONT_SCALING_FACTOR_DIALOG);
+                if (FONT_SCALING_FACTOR_DIALOG > 1.0)
+                {
+                  BASE_FONT_SIZE_DIALOG = 13F;
+                  BASE_FONT_SIZE_MONOSPACED = 13F;
+                }
+              }
+              catch (Throwable t)
+              {
+                
               }
             }
           }
