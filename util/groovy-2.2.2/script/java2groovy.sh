@@ -7,11 +7,11 @@
 ##############################################################################
 
 ##
-## $Revision$
-## $Date$
+## $Revision: 4241 $
+## $Date: 2006-11-16 17:30:40 +0000 (Thu, 16 Nov 2006) $
 ##
 
-GROOVY_APP_NAME=GroovyC
+GROOVY_APP_NAME=Java2Groovy
 
 # resolve links - $0 may be a soft-link
 PRG="$0"
@@ -28,6 +28,6 @@ done
 
 DIRNAME=`dirname "$PRG"`
 
-. "$DIRNAME/startGroovy"
+. "$DIRNAME/startgroovy.sh"
 
-startGroovy org.codehaus.groovy.tools.FileSystemCompiler "$@"
+startgroovy org.codehaus.groovy.antlr.java.Java2GroovyMain "$@"

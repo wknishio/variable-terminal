@@ -14,7 +14,7 @@ if "%DIRNAME%" == "" set DIRNAME=.\
 
 set CLASSNAME=org.codehaus.groovy.tools.shell.Main
 
-"%DIRNAME%\startGroovy.bat" "%DIRNAME%" %CLASSNAME% %*
+"%DIRNAME%\startgroovy.bat" "%DIRNAME%" %CLASSNAME% %*
 
 @rem End local scope for the variables with windows NT shell
 if "%OS%"=="Windows_NT" endlocal

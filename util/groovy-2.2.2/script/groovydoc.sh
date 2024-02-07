@@ -2,16 +2,16 @@
 
 ##############################################################################
 ##                                                                          ##
-##  Groovy Shell script for UN*X                                            ##
+##  Groovy JVM Bootstrap for UN*X                                           ##
 ##                                                                          ##
 ##############################################################################
 
 ##
 ## $Revision$
-## $Id$
+## $Date$
 ##
 
-GROOVY_APP_NAME=GroovyShell
+GROOVY_APP_NAME=GroovyDoc
 
 # resolve links - $0 may be a soft-link
 PRG="$0"
@@ -28,6 +28,6 @@ done
 
 DIRNAME=`dirname "$PRG"`
 
-. "$DIRNAME/startGroovy"
+. "$DIRNAME/startgroovy.sh"
 
-startGroovy org.codehaus.groovy.tools.shell.Main "$@"
+startgroovy org.codehaus.groovy.tools.groovydoc.Main "$@"

@@ -254,7 +254,7 @@ if $cygwin ; then
     fi
 fi
 
-startGroovy ( ) {
+startgroovy ( ) {
     CLASS=$1
     shift
     # Start the Profiler or the JVM

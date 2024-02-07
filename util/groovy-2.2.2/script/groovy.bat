@@ -12,7 +12,7 @@ if "%OS%"=="Windows_NT" setlocal
 set DIRNAME=%~dp0
 if "%DIRNAME%" == "" set DIRNAME=.\
 
-"%DIRNAME%\startGroovy.bat" "%DIRNAME%" groovy.ui.GroovyMain %*
+"%DIRNAME%\startgroovy.bat" "%DIRNAME%" groovy.ui.GroovyMain %*
 
 @rem End local scope for the variables with windows NT shell
 if "%OS%"=="Windows_NT" endlocal

@@ -28,6 +28,6 @@ done
 
 DIRNAME=`dirname "$PRG"`
 
-. "$DIRNAME/startGroovy"
+. "$DIRNAME/startgroovy.sh"
 
-startGroovy groovy.ui.Console "$@"
+startgroovy groovy.ui.Console "$@"

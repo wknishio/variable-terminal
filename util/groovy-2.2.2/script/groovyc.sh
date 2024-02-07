@@ -11,7 +11,7 @@
 ## $Date$
 ##
 
-GROOVY_APP_NAME=GroovyDoc
+GROOVY_APP_NAME=GroovyC
 
 # resolve links - $0 may be a soft-link
 PRG="$0"
@@ -28,6 +28,6 @@ done
 
 DIRNAME=`dirname "$PRG"`
 
-. "$DIRNAME/startGroovy"
+. "$DIRNAME/startgroovy.sh"
 
-startGroovy org.codehaus.groovy.tools.groovydoc.Main "$@"
+startgroovy org.codehaus.groovy.tools.FileSystemCompiler "$@"
