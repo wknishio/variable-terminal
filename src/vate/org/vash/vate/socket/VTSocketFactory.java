@@ -6,8 +6,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import org.vash.vate.VT;
-
 public class VTSocketFactory extends VTAuthenticatedProxySocketFactory
 {
   public Socket createSocket()
@@ -21,7 +19,8 @@ public class VTSocketFactory extends VTAuthenticatedProxySocketFactory
     Socket socket = new Socket();
     socket.connect(new InetSocketAddress(host, port));
     socket.setTcpNoDelay(true);
-    socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+    socket.setKeepAlive(true);
+    //socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
   }
   
@@ -30,7 +29,8 @@ public class VTSocketFactory extends VTAuthenticatedProxySocketFactory
     Socket socket = new Socket();
     socket.connect(new InetSocketAddress(host.getHostName(), port));
     socket.setTcpNoDelay(true);
-    socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+    socket.setKeepAlive(true);
+    //socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
   }
   
@@ -40,7 +40,8 @@ public class VTSocketFactory extends VTAuthenticatedProxySocketFactory
     socket.bind(new InetSocketAddress(bind.getHostName(), local));
     socket.connect(new InetSocketAddress(host, port));
     socket.setTcpNoDelay(true);
-    socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+    socket.setKeepAlive(true);
+    //socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
   }
   
@@ -50,7 +51,8 @@ public class VTSocketFactory extends VTAuthenticatedProxySocketFactory
     socket.bind(new InetSocketAddress(bind.getHostName(), local));
     socket.connect(new InetSocketAddress(host.getHostName(), port));
     socket.setTcpNoDelay(true);
-    socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+    socket.setKeepAlive(true);
+    //socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
   }
   

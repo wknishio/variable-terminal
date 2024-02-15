@@ -9,8 +9,6 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.nio.channels.ServerSocketChannel;
 
-import org.vash.vate.VT;
-
 public class VTServerSocket extends ServerSocket implements Closeable
 {
   private final ServerSocket serverSocket;
@@ -24,7 +22,8 @@ public class VTServerSocket extends ServerSocket implements Closeable
   {
     Socket socket = serverSocket.accept();
     socket.setTcpNoDelay(true);
-    socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+    socket.setKeepAlive(true);
+    //socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return socket;
   }
   

@@ -5,8 +5,6 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
 
-import org.vash.vate.VT;
-
 public class VTProxy
 {
   public enum VTProxyType
@@ -273,7 +271,8 @@ public class VTProxy
     
     connectionSocket.connect(socketAddress);
     connectionSocket.setTcpNoDelay(true);
-    connectionSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+    connectionSocket.setKeepAlive(true);
+    //connectionSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     return connectionSocket;
   }
   

@@ -7,7 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
-import org.vash.vate.VT;
 import org.vash.vate.socket.VTProxy.VTProxyType;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.session.VTTunnelSession;
@@ -219,7 +218,8 @@ public class VTTunnelChannelBindSocketListener implements Runnable
     {
       socket = serverSocket.accept();
       socket.setTcpNoDelay(true);
-      socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+      socket.setKeepAlive(true);
+      //socket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
       return socket;
     }
     catch (Throwable t)

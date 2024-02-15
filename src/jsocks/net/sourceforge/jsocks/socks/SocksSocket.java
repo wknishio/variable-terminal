@@ -381,8 +381,8 @@ public class SocksSocket extends Socket{
          directSock.setTcpNoDelay(true);
          //directSock.setSoLinger(true, 5);
          //directSock.setReuseAddress(true);
-         //directSock.setKeepAlive(true);
-         directSock.setSoTimeout(90000);
+         directSock.setKeepAlive(true);
+         //directSock.setSoTimeout(90000);
          //directSock.setSoLinger(true, 0);
          proxy.proxySocket = directSock;
          localIP = directSock.getLocalAddress();

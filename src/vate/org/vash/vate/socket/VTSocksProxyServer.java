@@ -217,8 +217,8 @@ public class VTSocksProxyServer implements Runnable {
 	      //s.setReceiveBufferSize(1024 * 64);
 				//s.setSoLinger(true, 5);
 				//s.setReuseAddress(true);
-				//s.setKeepAlive(true);
-				s.setSoTimeout(90000);
+				s.setKeepAlive(true);
+				//s.setSoTimeout(90000);
 				//s.setSoLinger(true, 0);
 				// String connectionId = newConnectionId();
 				// LOG.info(connectionId + " Accepted from:" +
@@ -303,7 +303,8 @@ public class VTSocksProxyServer implements Runnable {
 	// Private methods
 	/////////////////
 	private void startSession() throws IOException {
-		sock.setSoTimeout(idleTimeout);
+		//sock.setSoTimeout(idleTimeout);
+	  sock.setKeepAlive(true);
 
 		try {
 			auth = auth.startSession(sock);
@@ -405,19 +406,22 @@ public class VTSocksProxyServer implements Runnable {
 		    s = new Socket();
 	      s.connect(new InetSocketAddress(msg.ip, msg.port));
 	      s.setTcpNoDelay(true);
-	      s.setSoTimeout(90000);
+	      s.setKeepAlive(true);
+	      //s.setSoTimeout(90000);
 		  }
 		  else
 		  {
 		    s = VTProxy.connect(msg.host, msg.port, null, connect_proxy);
 		    s.setTcpNoDelay(true);
-        s.setSoTimeout(90000);
+		    s.setKeepAlive(true);
+        //s.setSoTimeout(90000);
 		  }
 			
 		} else {
 			s = new SocksSocket(proxy, msg.ip, msg.port);
 			s.setTcpNoDelay(true);
-			s.setSoTimeout(90000);
+			s.setKeepAlive(true);
+			//s.setSoTimeout(90000);
 		}
 		// LOG.info(connectionId + " Connected to " + s.getInetAddress() + ":" +
 		// s.getPort());
@@ -542,8 +546,8 @@ public class VTSocksProxyServer implements Runnable {
       //s.setReceiveBufferSize(1024 * 64);
 			//s.setSoLinger(true, 5);
 			//s.setReuseAddress(true);
-			//s.setKeepAlive(true);
-			s.setSoTimeout(90000);
+			s.setKeepAlive(true);
+			//s.setSoTimeout(90000);
 			//s.setSoLinger(true, 0);
 			// if(s.getInetAddress().equals(msg.ip)){
 			if (s != null) {
@@ -577,7 +581,8 @@ public class VTSocksProxyServer implements Runnable {
 		remote_out = s.getOutputStream();
 
 		// Set timeout
-		remote_sock.setSoTimeout(idleTimeout);
+		remote_sock.setKeepAlive(true);
+		//remote_sock.setSoTimeout(idleTimeout);
 
 		// LOG.info(connectionId + " Accepted from "+ s.getInetAddress() + ":" +
 		// s.getPort());

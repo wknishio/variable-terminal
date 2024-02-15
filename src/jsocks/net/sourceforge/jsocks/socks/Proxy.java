@@ -420,7 +420,8 @@ public abstract class Proxy {
 	        proxySocket = new SocksSocket(chainProxy, proxyHost, proxyPort);
 
 	      proxySocket.setTcpNoDelay(true);
-	      proxySocket.setSoTimeout(90000);
+	      proxySocket.setKeepAlive(true);
+	      //proxySocket.setSoTimeout(90000);
 		  }
 			
 

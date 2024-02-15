@@ -8,7 +8,6 @@ import java.net.SocketAddress;
 import org.apache.commons.httpclient.ProxyClient;
 import org.apache.commons.httpclient.UsernamePasswordCredentials;
 import org.apache.commons.httpclient.auth.AuthScope;
-import org.vash.vate.VT;
 
 public class VTHttpProxySocket extends VTProxySocket
 {
@@ -34,8 +33,10 @@ public class VTHttpProxySocket extends VTProxySocket
         InetSocketAddress host = (InetSocketAddress) endpoint;
         proxyClient.getHostConfiguration().setHost(host.getHostName(), host.getPort());
         //proxyClient.getParams().setConnectionManagerTimeout(VT.VT_CONNECTION_ATTEMPT_TIMEOUT_MILLISECONDS);
-        proxyClient.getParams().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+        //proxyClient.getParams().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
         proxySocket = proxyClient.connect().getSocket();
+        proxySocket.setTcpNoDelay(true);
+        proxySocket.setKeepAlive(true);
       }
       catch (Throwable t)
       {
@@ -57,8 +58,10 @@ public class VTHttpProxySocket extends VTProxySocket
         InetSocketAddress host = (InetSocketAddress) endpoint;
         proxyClient.getHostConfiguration().setHost(host.getHostName(), host.getPort());
         proxyClient.getParams().setConnectionManagerTimeout(timeout);
-        proxyClient.getParams().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
+        //proxyClient.getParams().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
         proxySocket = proxyClient.connect().getSocket();
+        proxySocket.setTcpNoDelay(true);
+        proxySocket.setKeepAlive(true);
       }
       catch (Throwable t)
       {
