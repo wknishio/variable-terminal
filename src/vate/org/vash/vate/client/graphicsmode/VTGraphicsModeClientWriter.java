@@ -312,7 +312,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     this.graphicsRefresher = new VTGraphicsModeClientRemoteInterfaceRefresher(this);
     this.colorQuality = VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216;
     this.screenCaptureMode = VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_VIEWPORT;
-    this.imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD;
+    this.imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD;
     this.terminalRefreshPolicy = TERMINAL_STATE_VISIBLE;
     this.terminalControlPolicy = TERMINAL_STATE_FOCUSED;
     this.synchronousRefresh = false;
@@ -514,7 +514,7 @@ public class VTGraphicsModeClientWriter implements Runnable
     synchronousRefresh = false;
     drawPointer = true;
     screenCaptureMode = VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_SCALED_VIEWPORT;
-    imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD;
+    imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD;
     suppressLocalKeyCombinations = false;
     refreshInterrupted = false;
     screenCaptureInterval = 250;
@@ -987,13 +987,13 @@ public class VTGraphicsModeClientWriter implements Runnable
       {
         connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
       }
-      else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD)
+      else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD)
       {
-        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD);
+        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD);
       }
       else
       {
-        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD);
+        connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD);
       }
     }
     catch (IOException e)

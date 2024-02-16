@@ -230,9 +230,9 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
     this.ignoreStateOption = new CheckboxMenuItem("Always", false);
     this.ignoreStateOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuTerminalRefreshPolicyOptionsListener(writer, ignoreStateOption, VTGraphicsModeClientWriter.TERMINAL_STATE_IGNORE));
     this.imageCodingZSTDOption = new CheckboxMenuItem("ZSD", true);
-    this.imageCodingZSTDOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingZSTDOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_SFD));
+    this.imageCodingZSTDOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingZSTDOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD));
     this.imageCodingDEFLATEOption = new CheckboxMenuItem("GZD", false);
-    this.imageCodingDEFLATEOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingDEFLATEOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD));
+    this.imageCodingDEFLATEOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingDEFLATEOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD));
     this.imageCodingPNGOption = new CheckboxMenuItem("PNG", false);
     this.imageCodingPNGOption.addItemListener(new VTGraphicsModeClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingPNGOption, VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG));
     this.imageCodingJPGOption = new CheckboxMenuItem("JPG", false);
@@ -735,7 +735,7 @@ public class VTGraphicsModeClientOptionsMenuBarViewMenu extends Menu
       imageCodingJPGOption.setState(true);
       // imageFormatGIFOption.setState(false);
     }
-    else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_DFD)
+    else if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD)
     {
       imageCodingZSTDOption.setState(false);
       imageCodingDEFLATEOption.setState(true);
