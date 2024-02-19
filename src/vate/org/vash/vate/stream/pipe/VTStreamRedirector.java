@@ -11,7 +11,7 @@ public final class VTStreamRedirector implements Runnable
   private volatile boolean stopped;
   // private int available = 0;
   private int readed = 0;
-  private final byte[] redirectorBuffer = new byte[redirectorBufferSize];
+  private final byte[] redirectorBuffer;
   private final InputStream source;
   private final OutputStream destination;
   private final Closeable notify;
@@ -19,6 +19,7 @@ public final class VTStreamRedirector implements Runnable
   
   public VTStreamRedirector(InputStream source, OutputStream destination)
   {
+    this.redirectorBuffer = new byte[redirectorBufferSize];
     this.source = source;
     this.destination = destination;
     //this.destination = new VTBufferedOutputStream(destination, VT.VT_STANDARD_DATA_BUFFER_SIZE, true);
@@ -27,6 +28,16 @@ public final class VTStreamRedirector implements Runnable
   
   public VTStreamRedirector(InputStream source, OutputStream destination, Closeable notify)
   {
+    this.redirectorBuffer = new byte[redirectorBufferSize];
+    this.source = source;
+    this.destination = destination;
+    //this.destination = new VTBufferedOutputStream(destination, VT.VT_STANDARD_DATA_BUFFER_SIZE, true);
+    this.notify = notify;
+  }
+  
+  public VTStreamRedirector(InputStream source, OutputStream destination, Closeable notify, int bufferSize)
+  {
+    this.redirectorBuffer = new byte[bufferSize];
     this.source = source;
     this.destination = destination;
     //this.destination = new VTBufferedOutputStream(destination, VT.VT_STANDARD_DATA_BUFFER_SIZE, true);
@@ -39,7 +50,7 @@ public final class VTStreamRedirector implements Runnable
     {
       try
       {
-        readed = source.read(redirectorBuffer, 0, redirectorBufferSize);
+        readed = source.read(redirectorBuffer, 0, redirectorBuffer.length);
         if (readed > 0)
         {
           destination.write(redirectorBuffer, 0, readed);
@@ -53,7 +64,7 @@ public final class VTStreamRedirector implements Runnable
       }
       catch (Throwable e)
       {
-        // e.printStackTrace();
+        //e.printStackTrace();
         stopped = true;
         break;
       }
@@ -67,7 +78,7 @@ public final class VTStreamRedirector implements Runnable
       }
       catch (Throwable e)
       {
-        // e.printStackTrace();
+        //e.printStackTrace();
       }
     }
   }

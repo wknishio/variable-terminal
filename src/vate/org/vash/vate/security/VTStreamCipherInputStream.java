@@ -9,8 +9,8 @@ import org.vash.vate.VT;
 
 public class VTStreamCipherInputStream extends FilterInputStream
 {
-  private byte[] single1 = new byte[0];
-  private byte[] single2 = new byte[0];
+  private byte[] single1 = new byte[1];
+  private byte[] single2 = new byte[1];
   private byte[] input = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
   private StreamCipher streamCipher;
   
@@ -22,9 +22,14 @@ public class VTStreamCipherInputStream extends FilterInputStream
   
   public int read() throws IOException
   {
-    single1[0] = (byte) in.read();
-    streamCipher.processBytes(single1, 0, 1, single2, 0);
-    return single2[0];
+    int data = in.read();
+    if (data >= 0)
+    {
+      single1[0] = (byte) data;
+      streamCipher.processBytes(single1, 0, 1, single2, 0);
+      return single2[0];
+    }
+    return data;
   }
   
   public int read(byte[] output) throws IOException
@@ -35,7 +40,11 @@ public class VTStreamCipherInputStream extends FilterInputStream
       input = new byte[len];
     }
     int readed = in.read(input, 0, len);
-    return streamCipher.processBytes(input, 0, readed, output, 0);
+    if (readed > 0)
+    {
+      return streamCipher.processBytes(input, 0, readed, output, 0);
+    }
+    return readed;
   }
   
   public int read(byte[] output, int off, int len) throws IOException
@@ -45,6 +54,10 @@ public class VTStreamCipherInputStream extends FilterInputStream
       input = new byte[len];
     }
     int readed = in.read(input, 0, len);
-    return streamCipher.processBytes(input, 0, readed, output, off);
+    if (readed > 0)
+    {
+      return streamCipher.processBytes(input, 0, readed, output, off);
+    }
+    return readed;
   }
 }

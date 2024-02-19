@@ -9,8 +9,8 @@ import org.vash.vate.VT;
 
 public class VTStreamCipherOutputStream extends FilterOutputStream
 {
-  private byte[] single1 = new byte[0];
-  private byte[] single2 = new byte[0];
+  private byte[] single1 = new byte[1];
+  private byte[] single2 = new byte[1];
   private byte[] output = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
   private StreamCipher streamCipher;
   

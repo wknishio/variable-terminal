@@ -7,29 +7,30 @@ import java.io.OutputStream;
 public final class VTThrottlingOutputStream extends FilterOutputStream
 {
   private final VTThrottledOutputStream throttled;
-  private final OutputStream unthrottled;
-  private OutputStream current;
+  //private final OutputStream unthrottled;
+  //private volatile OutputStream current;
   private long bytesPerSecond;
   
   public VTThrottlingOutputStream(OutputStream out)
   {
     super(out);
     this.throttled = new VTThrottledOutputStream(out, 1);
-    this.unthrottled = out;
-    this.current = out;
+    //this.unthrottled = out;
+    //this.current = out;
     this.bytesPerSecond = 0;
+    this.setBytesPerSecond(0);
   }
   
   public final void write(int b) throws IOException
   {
     // System.out.println("write:" + current.getClass().getName());
-    current.write(b);
+    throttled.write(b);
   }
   
   public final void write(byte[] b, int off, int len) throws IOException
   {
     // System.out.println("write:" + current.getClass().getName());
-    current.write(b, off, len);
+    throttled.write(b, off, len);
   }
   
   public final void setBytesPerSecond(long bytesPerSecond)
@@ -39,13 +40,13 @@ public final class VTThrottlingOutputStream extends FilterOutputStream
     {
       throttled.setBytesPerSecond(bytesPerSecond);
       throttled.wakeAllWaitingThreads();
-      current = throttled;
+      //current = throttled;
     }
     else
     {
       throttled.setBytesPerSecond(Long.MAX_VALUE);
       throttled.wakeAllWaitingThreads();
-      current = unthrottled;
+      //current = unthrottled;
     }
   }
   
@@ -58,7 +59,7 @@ public final class VTThrottlingOutputStream extends FilterOutputStream
   {
     throttled.setBytesPerSecond(Long.MAX_VALUE);
     throttled.wakeAllWaitingThreads();
-    current = unthrottled;
+    //current = unthrottled;
     out.close();
   }
 }

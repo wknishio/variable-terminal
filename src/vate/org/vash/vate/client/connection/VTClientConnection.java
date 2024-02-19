@@ -161,7 +161,7 @@ public class VTClientConnection
   // private ZstdInputStream zstdClipboardInputStream;
   // private ZstdOutputStream zstdClipboardOutputStream;
   
-  public VTClientConnection(VTBlake3DigestRandom secureRandom)
+  public VTClientConnection()
   {
     // try
     // {
@@ -171,7 +171,6 @@ public class VTClientConnection
     // {
     // e.printStackTrace();
     // }
-    this.secureRandom = secureRandom;
     this.cryptoEngine = new VTCryptographicEngine();
     this.blake3Digest = new VTBlake3MessageDigest();
     this.authenticationReader = new VTLittleEndianInputStream(null);
@@ -181,6 +180,11 @@ public class VTClientConnection
   public VTBlake3DigestRandom getSecureRandom()
   {
     return secureRandom;
+  }
+  
+  public void setSecureRandomSeed(byte[] seed)
+  {
+    secureRandom = new VTBlake3DigestRandom(seed);
   }
   
   public VTLinkableDynamicMultiplexingInputStream getMultiplexedConnectionInputStream()
@@ -545,6 +549,8 @@ public class VTClientConnection
   
   private void setNonceStreams() throws IOException
   {
+    //connectionSocketInputStream = new BufferedInputStream(connectionSocket.getInputStream(), VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
+    //connectionSocketOutputStream = new VTBufferedOutputStream(connectionSocket.getOutputStream(), VT.VT_PACKET_DATA_SIZE_BYTES * 2, true);
     connectionSocketInputStream = connectionSocket.getInputStream();
     connectionSocketOutputStream = connectionSocket.getOutputStream();
     nonceReader = new VTLittleEndianInputStream(connectionSocketInputStream);
@@ -623,7 +629,7 @@ public class VTClientConnection
     //exchangeNonces(true);
   }
   
-  public boolean setConnectionStreams(byte[] digestedCredentials, String user, String password) throws IOException
+  public boolean setConnectionStreams(byte[] digestedCredentials) throws IOException
   {
     try
     {
@@ -633,7 +639,8 @@ public class VTClientConnection
     {
       return false;
     }
-    cryptoEngine.initializeClientEngine(encryptionType, encryptionKey, localNonce, remoteNonce, digestedCredentials, user != null ? user.getBytes("UTF-8") : null, password != null ? password.getBytes("UTF-8") : null);
+    //cryptoEngine.initializeClientEngine(encryptionType, encryptionKey, localNonce, remoteNonce, digestedCredentials, user != null ? user.getBytes("UTF-8") : null, password != null ? password.getBytes("UTF-8") : null);
+    cryptoEngine.initializeClientEngine(encryptionType, encryptionKey, localNonce, remoteNonce, digestedCredentials);
     connectionInputStream = cryptoEngine.getDecryptedInputStream(connectionSocketInputStream);
     connectionOutputStream = cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream);
     //authenticationReader.setIntputStream(connectionInputStream);
@@ -645,8 +652,19 @@ public class VTClientConnection
   
   private void setMultiplexedStreams() throws IOException
   {
-    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(new BufferedInputStream(connectionInputStream, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES), VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, false);
-    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_PACKET_DATA_SIZE_BYTES);
+    byte[] blake3InputSeed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
+    System.arraycopy(remoteNonce, 0, blake3InputSeed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    System.arraycopy(localNonce, 0, blake3InputSeed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    
+    byte[] blake3OutputSeed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
+    System.arraycopy(localNonce, 0, blake3OutputSeed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    System.arraycopy(remoteNonce, 0, blake3OutputSeed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    
+    VTBlake3DigestRandom packetInputSeed = new VTBlake3DigestRandom(blake3InputSeed);
+    VTBlake3DigestRandom packetOutputSeed = new VTBlake3DigestRandom(blake3OutputSeed);
+    
+    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, false, packetInputSeed);
+    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_PACKET_DATA_SIZE_BYTES, packetOutputSeed);
     
     pingInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, 0);
     pingOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, 0);

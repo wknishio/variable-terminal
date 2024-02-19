@@ -3,12 +3,14 @@ package org.vash.vate.stream.multiplex;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.vash.vate.VT;
+import org.vash.vate.security.VTMiddleSquareWeylSequenceDigestRandom;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -23,9 +25,12 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   private final VTThrottlingOutputStream throttleable;
   private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> bufferedChannels;
   private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> directChannels;
+  private final SecureRandom packetSeed;
   
-  public VTLinkableDynamicMultiplexingOutputStream(OutputStream out, int packetSize)
+  public VTLinkableDynamicMultiplexingOutputStream(OutputStream out, int packetSize, SecureRandom packetSeed)
   {
+    this.packetSeed = packetSeed;
+    //this.packetSequencer = new VTMiddleSquareWeylSequenceDigestRandom(packetSeed);
     this.original = out;
     this.throttleable = new VTThrottlingOutputStream(out);
 //    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
@@ -33,6 +38,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     this.bufferedChannels = new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
     this.directChannels = new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
     this.packetSize = packetSize;
+    
     //this.blockSize = blockSize;
     //this.autoFlushPackets = autoFlushPackets;
   }
@@ -113,7 +119,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
         stream.control(original);
         return stream;
       }
-      stream = new VTLinkableDynamicMultiplexedOutputStream(output, original, type, number, packetSize);
+      stream = new VTLinkableDynamicMultiplexedOutputStream(output, original, type, number, packetSize, packetSeed);
       bufferedChannels.put(number, stream);
     }
     else
@@ -126,7 +132,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
         stream.control(original);
         return stream;
       }
-      stream = new VTLinkableDynamicMultiplexedOutputStream(output, original, type, number, packetSize);
+      stream = new VTLinkableDynamicMultiplexedOutputStream(output, original, type, number, packetSize, packetSeed);
       directChannels.put(number, stream);
     }
     return stream;
@@ -191,13 +197,16 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private final VTLittleEndianOutputStream dataPacketStream;
     private final VTByteArrayOutputStream controlPacketBuffer;
     private final VTLittleEndianOutputStream controlPacketStream;
+    //private final byte[] single = new byte[1];
     private OutputStream out;
     private OutputStream control;
     private OutputStream intermediatePacketStream;
     private List<Closeable> propagated;
+    private SecureRandom packetSequencer;
     
-    private VTLinkableDynamicMultiplexedOutputStream(OutputStream out, OutputStream control, int type, int number, int packetSize)
+    private VTLinkableDynamicMultiplexedOutputStream(OutputStream out, OutputStream control, int type, int number, int packetSize, SecureRandom packetSeed)
     {
+      this.packetSequencer = new VTMiddleSquareWeylSequenceDigestRandom(packetSeed);
       this.out = out;
       this.control = control;
       this.type = type;
@@ -304,16 +313,19 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       {
         throw new IOException("OutputStream closed");
       }
+      //byte[] single = new byte[1];
+      //single[0] = (byte) data;
+      //write(single, 0, 1);
       writePacket(data, type, number);
     }
     
     public final void flush() throws IOException
     {
-      //if (closed)
-      //{
-        //throw new IOException("OutputStream closed");
-      //}
-      //out.flush();
+//      if (closed)
+//      {
+//        throw new IOException("OutputStream closed");
+//      }
+//      out.flush();
     }
     
     public final void close() throws IOException
@@ -376,73 +388,56 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       this.propagated.remove(propagated);
     }
     
-    private final void writePacket(int data, int type, int number) throws IOException
+    private synchronized final void writePacket(int data, int type, int number) throws IOException
     {
-      // dataPaddingSize = (~(headerSize + 1) + 1) & (blockBits);
       dataPacketBuffer.reset();
       intermediateDataPacketBuffer.reset();
+      dataPacketStream.writeLong(packetSequencer.nextLong());
       dataPacketStream.writeByte(type);
       dataPacketStream.writeSubInt(number);
-      // dataPacketStream.writeUnsignedShort(dataPaddingSize);
       intermediatePacketStream.write(data);
       intermediatePacketStream.flush();
       dataPacketStream.writeInt(intermediateDataPacketBuffer.count());
       dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
-      // dataPacketStream.write(dataPaddingBuffer, 0, dataPaddingSize);
       out.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
       out.flush();
-      // writeBlocks(out, dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
     }
     
-    private final void writePacket(byte[] data, int offset, int length, int type, int number) throws IOException
+    private synchronized final void writePacket(byte[] data, int offset, int length, int type, int number) throws IOException
     {
-      // dataPaddingSize = (~(headerSize + length) + 1) & (blockBits);
       dataPacketBuffer.reset();
       intermediateDataPacketBuffer.reset();
+      dataPacketStream.writeLong(packetSequencer.nextLong());
       dataPacketStream.writeByte(type);
       dataPacketStream.writeSubInt(number);
-      // dataPacketStream.writeUnsignedShort(dataPaddingSize);
       intermediatePacketStream.write(data, offset, length);
       intermediatePacketStream.flush();
       dataPacketStream.writeInt(intermediateDataPacketBuffer.count());
       dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
-      // dataPacketStream.write(dataPaddingBuffer, 0, dataPaddingSize);
       out.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
       out.flush();
-      // writeBlocks(out, dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
     }
     
-    private final void writeClosePacket(int type, int number) throws IOException
+    private synchronized final void writeClosePacket(int type, int number) throws IOException
     {
-      // controlPaddingSize = (~(headerSize) + 1) & (blockBits);
       controlPacketBuffer.reset();
+      controlPacketStream.writeLong(packetSequencer.nextLong());
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
       controlPacketStream.writeInt(-2);
-      // controlPacketStream.writeUnsignedShort(controlPaddingSize);
-      // controlPacketStream.write(controlPaddingBuffer, 0, controlPaddingSize);
       control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
       control.flush();
-      // writeBlocks(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
-      // writeBlocks(out, controlPacketBuffer.buf(), 0,
-      // controlPacketBuffer.count());
-      // flush.flush();
     }
     
-    private final void writeOpenPacket(int type, int number) throws IOException
+    private synchronized final void writeOpenPacket(int type, int number) throws IOException
     {
-      // controlPaddingSize = (~(headerSize) + 1) & (blockBits);
       controlPacketBuffer.reset();
+      controlPacketStream.writeLong(packetSequencer.nextLong());
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
       controlPacketStream.writeInt(-3);
-      // controlPacketStream.writeUnsignedShort(controlPaddingSize);
-      // controlPacketStream.write(controlPaddingBuffer, 0, controlPaddingSize);
       control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
       control.flush();
-      // writeBlocks(out, controlPacketBuffer.buf(), 0,
-      // controlPacketBuffer.count());
-      // flush.flush();
     }
   }
 }
