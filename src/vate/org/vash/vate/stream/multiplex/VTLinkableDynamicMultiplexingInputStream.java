@@ -22,14 +22,12 @@ public final class VTLinkableDynamicMultiplexingInputStream
 {
   private int type;
   private int channel;
-  private final int bufferSize;
-  // private int padding;
   private int length;
   private int copied;
   private int readed;
   private int remaining;
   private long sequence;
-  //private long nextSequence;
+  private final int bufferSize;
   private final byte[] packetBuffer;
   //private OutputStream out;
   private final Thread packetReaderThread;
@@ -254,6 +252,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   // critical method, handle with care
   private final void readPackets() throws IOException
   {
+    VTLinkableDynamicMultiplexedInputStream stream;
     while (!closed)
     {
       sequence = in.readLong();
@@ -269,17 +268,11 @@ public final class VTLinkableDynamicMultiplexingInputStream
         close();
         return;
       }
-      try
+      stream = getInputStream(type, channel);
+      if (stream != null && stream.getPacketSequencer().nextLong() != sequence)
       {
-        if (getInputStream(type, channel).getPacketSequencer().nextLong() != sequence)
-        {
-          close();
-          return;
-        }
-      }
-      catch (Throwable e)
-      {
-        
+        close();
+        return;
       }
       length = in.readInt();
       if (length > 0)
@@ -303,18 +296,21 @@ public final class VTLinkableDynamicMultiplexingInputStream
           copied += readed;
           remaining -= readed;
         }
-        try
+        if (stream != null)
         {
-          OutputStream out = getInputStream(type, channel).getOutputStream();
+          OutputStream out = stream.getOutputStream();
           if (out != null)
           {
-            out.write(packetBuffer, 0, length);
-            out.flush();
+            try
+            {
+              out.write(packetBuffer, 0, length);
+              out.flush();
+            }
+            catch (Throwable e)
+            {
+              //e.printStackTrace();
+            }
           }
-        }
-        catch (Throwable e)
-        {
-          //e.printStackTrace();
         }
       }
       else if (length == -2)
