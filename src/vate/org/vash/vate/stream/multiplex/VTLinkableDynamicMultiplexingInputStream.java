@@ -17,7 +17,6 @@ import org.vash.vate.stream.compress.VTPacketDecompressor;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
-import org.vash.vate.stream.pipe.VTStreamRedirector;
 
 public final class VTLinkableDynamicMultiplexingInputStream
 {
@@ -29,23 +28,23 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private int copied;
   private int readed;
   private int remaining;
-  //private long sequence;
+  private long sequence;
   //private long nextSequence;
   private final byte[] packetBuffer;
   //private OutputStream out;
   private final Thread packetReaderThread;
   // private byte[] compressedBuffer = new byte[VT.VT_IO_BUFFFER_SIZE];
-  private final InputStream in;
+  private final VTLittleEndianInputStream in;
   private final VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
   private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> bufferedChannels;
   private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> directChannels;
   private volatile boolean closed = false;
   private final SecureRandom packetSeed;
-  private final VTPipedOutputStream pout;
-  private final VTPipedInputStream pin;
-  private final VTLittleEndianInputStream lpin;
-  private final VTStreamRedirector dataReader;
-  private final Thread dataReaderThread;
+//  private final VTPipedOutputStream pout;
+//  private final VTPipedInputStream pin;
+//  private final VTLittleEndianInputStream lpin;
+//  private final VTStreamRedirector dataReader;
+//  private final Thread dataReaderThread;
 
   //private final SecureRandom packetSequencer;
   
@@ -55,7 +54,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     //this.packetSequencer = new VTMiddleSquareWeylSequenceDigestRandom(packetSeed);
     this.bufferSize = bufferSize;
     this.packetBuffer = new byte[packetSize];
-    this.in = in;
+    this.in = new VTLittleEndianInputStream(in);
 //    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
 //    this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
     this.bufferedChannels = new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
@@ -64,24 +63,24 @@ public final class VTLinkableDynamicMultiplexingInputStream
     this.packetReaderThread = new Thread(null, packetReader, packetReader.getClass().getSimpleName());
     this.packetReaderThread.setDaemon(true);
     //this.packetReaderThread.setPriority((Thread.MAX_PRIORITY));
-    this.pin = new VTPipedInputStream(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
-    this.pout = new VTPipedOutputStream();
-    this.lpin = new VTLittleEndianInputStream(pin);
-    this.dataReader = new VTStreamRedirector(in, pout, pout, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
-    this.dataReaderThread = new Thread(null, dataReader, dataReader.getClass().getSimpleName());
-    this.dataReaderThread.setDaemon(true);
+//    this.pin = new VTPipedInputStream(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
+//    this.pout = new VTPipedOutputStream();
+//    this.lpin = new VTLittleEndianInputStream(pin);
+//    this.dataReader = new VTStreamRedirector(in, pout, pout, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
+//    this.dataReaderThread = new Thread(null, dataReader, dataReader.getClass().getSimpleName());
+//    this.dataReaderThread.setDaemon(true);
     //this.dataReaderThread.setPriority((Thread.MAX_PRIORITY));
     if (startPacketReader)
     {
-      try
-      {
-        pout.connect(pin);
-      }
-      catch (Throwable e)
-      {
-        
-      }
-      this.dataReaderThread.start();
+//      try
+//      {
+//        pout.connect(pin);
+//      }
+//      catch (Throwable e)
+//      {
+//        
+//      }
+//      this.dataReaderThread.start();
       this.packetReaderThread.start();
     }
   }
@@ -172,16 +171,15 @@ public final class VTLinkableDynamicMultiplexingInputStream
   {
     if (!packetReaderThread.isAlive())
     {
-      try
-      {
-        pout.connect(pin);
-      }
-      catch (Throwable e)
-      {
-        
-      }
-      //packetReaderThread.setPriority(Thread.MAX_PRIORITY);
-      dataReaderThread.start();
+//      try
+//      {
+//        pout.connect(pin);
+//      }
+//      catch (Throwable e)
+//      {
+//        
+//      }
+//      dataReaderThread.start();
       packetReaderThread.start();
     }
   }
@@ -198,7 +196,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   public final void stopPacketReader() throws IOException, InterruptedException
   {
     close();
-    dataReaderThread.join();
+//    dataReaderThread.join();
     packetReaderThread.join();
   }
   
@@ -258,32 +256,32 @@ public final class VTLinkableDynamicMultiplexingInputStream
   {
     while (!closed)
     {
-      lpin.readLong();
-      type = lpin.readByte();
+      sequence = in.readLong();
+      type = in.readByte();
       if (type < 0)
       {
         close();
         return;
       }
-      channel = lpin.readSubInt();
+      channel = in.readSubInt();
       if (channel < 0)
       {
         close();
         return;
       }
-//      try
-//      {
-//        if (getInputStream(type, channel).getPacketSequencer().nextLong() != sequence)
-//        {
-//          close();
-//          return;
-//        }
-//      }
-//      catch (Throwable e)
-//      {
-//        
-//      }
-      length = lpin.readInt();
+      try
+      {
+        if (getInputStream(type, channel).getPacketSequencer().nextLong() != sequence)
+        {
+          close();
+          return;
+        }
+      }
+      catch (Throwable e)
+      {
+        
+      }
+      length = in.readInt();
       if (length > 0)
       {
         if (length > packetBuffer.length)
@@ -296,7 +294,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
         copied = 0;
         while (remaining > 0)
         {
-          readed = lpin.read(packetBuffer, copied, remaining);
+          readed = in.read(packetBuffer, copied, remaining);
           if (readed < 0)
           {
             close();

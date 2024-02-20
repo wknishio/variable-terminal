@@ -442,7 +442,7 @@ public class VTClientConnector implements Runnable
       {
         connectionServerSocket.close();
         connectionServerSocket = new ServerSocket();
-        connectionServerSocket.setReceiveBufferSize(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
+        //connectionServerSocket.setReceiveBufferSize(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
         // connectionServerSocket.setReuseAddress(true);
         if (port != null)
         {
@@ -602,7 +602,7 @@ public class VTClientConnector implements Runnable
       connecting = true;
       connection.setConnectionSocket(connectionServerSocket.accept());
       connection.getConnectionSocket().setTcpNoDelay(true);
-      connection.getConnectionSocket().setSendBufferSize(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
+      //connection.getConnectionSocket().setSendBufferSize(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
       //connection.getConnectionSocket().setReceiveBufferSize(1024 * 64);
       //connection.getConnectionSocket().setSoLinger(true, 5);
       // connection.getConnectionSocket().setReuseAddress(true);
@@ -697,8 +697,8 @@ public class VTClientConnector implements Runnable
 //      }
       connecting = true;
       // connection.getShellSocket().setPerformancePreferences(1, 3, 2);
-      connection.getConnectionSocket().setReceiveBufferSize(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
-      connection.getConnectionSocket().setSendBufferSize(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
+      //connection.getConnectionSocket().setReceiveBufferSize(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
+      //connection.getConnectionSocket().setSendBufferSize(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
       //connection.getConnectionSocket().connect(socketAddress);
       VTProxy.connect(address, port, connection.getConnectionSocket());
       connection.getConnectionSocket().setTcpNoDelay(true);
