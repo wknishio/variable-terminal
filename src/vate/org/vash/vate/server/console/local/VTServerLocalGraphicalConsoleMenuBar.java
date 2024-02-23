@@ -49,14 +49,14 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Text Message To Clients", "*VTTEXT "));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Disconnect Client From Server", "*VTKICK "));
     
-    performanceMenu = new Menu("Rates ");
+    performanceMenu = new Menu("Rate ");
     performanceMenu.add(new VTGraphicalConsoleMenuItem("Check Connection Latencies", "*VTPING\n"));
     
     consoleMenu = new Menu("Console ");
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Clear Local Console", "*VTCLEAR\n"));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Show Local System Time", "*VTDATE\n"));
     
-    serverSettingsMenu = new Menu("Settings ");
+    serverSettingsMenu = new Menu("Setting ");
     serverConnectionMenu = new Menu("Connection ");
     // serverAuthenticationSettingsMenu = new Menu("Authentication ");
     serverProxyMenu = new Menu("Proxy ");
@@ -105,7 +105,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     serverAudioSystemsMenu = new Menu("Audio ");
     serverAudioSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Local Audio Mixers", "*VTMIXER\n"));
     
-    serverPrintMenu = new Menu("Printing ");
+    serverPrintMenu = new Menu("Print ");
     serverPrintMenu.add(new VTGraphicalConsoleMenuItem("List Local Printers", "*VTPRINTER\n"));
     // serverUtilitiesMenu.add(new VTGraphicalConsoleInputMenuItem("Show
     // Default

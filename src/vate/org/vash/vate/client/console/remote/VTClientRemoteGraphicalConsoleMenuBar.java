@@ -255,7 +255,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     shellMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSHELL\n"));
     
     // settingsMenu = new Menu("Settings ");
-    serverSettingsMenu = new Menu("Settings ");
+    serverSettingsMenu = new Menu("Setting ");
     serverConnectionSettingsMenu = new Menu("Connection ");
     // serverAuthenticationSettingsMenu = new Menu("Authentication ");
     serverProxySettingsMenu = new Menu("Proxy ");
@@ -300,7 +300,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Runtime Path", "*VTRUNTIME P "));
     serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTRUNTIME\n"));
     
-    performanceMenu = new Menu("Rates ");
+    performanceMenu = new Menu("Rate ");
     performanceMenu.add(new VTGraphicalConsoleMenuItem("Check Connection Latency", "*VTPING\n"));
     performanceMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Rate Limits", "*VTLIMIT "));
     performanceMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTPING\n*VTHELP *VTLIMIT\n"));
@@ -324,7 +324,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     networkMenu.add(new VTGraphicalConsoleMenuItem("Resolve Remote Network Host", "*VTHOST "));
     networkMenu.add(networkTunnelsMenu);
     
-    serverPrintMenu = new Menu("Printing ");
+    serverPrintMenu = new Menu("Print ");
     serverPrintMenu.add(new VTGraphicalConsoleMenuItem("List Remote Printers", "*VTPRINTER\n"));
     serverPrintMenu.add(new VTGraphicalConsoleMenuItem("Detail Remote Printer", "*VTPRINTER "));
     serverPrintMenu.add(new VTGraphicalConsoleMenuItem("Print Text In Remote Printer", "*VTPRINTDATA T "));
