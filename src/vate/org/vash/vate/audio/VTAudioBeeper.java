@@ -320,4 +320,28 @@ public class VTAudioBeeper
       return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, 0.5, sdl);
     }
   }
+  
+  public static final boolean beep(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol, boolean block)
+  {
+    if (block)
+    {
+      return toneBlocking(sampleRate, sampleSizeBits, freq, msecs, 0.5);
+    }
+    else
+    {
+      return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, 0.5);
+    }
+  }
+  
+  public static final boolean beep(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol, boolean block, SourceDataLine sdl)
+  {
+    if (block)
+    {
+      return toneBlocking(sampleRate, sampleSizeBits, freq, msecs, vol, sdl);
+    }
+    else
+    {
+      return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, vol, sdl);
+    }
+  }
 }
