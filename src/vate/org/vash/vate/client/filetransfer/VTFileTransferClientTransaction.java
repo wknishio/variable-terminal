@@ -14,7 +14,7 @@ import org.vash.vate.console.VTConsole;
 import org.vash.vate.filesystem.VTFileTransferSorter;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.security.VTArrayComparator;
-import org.vash.vate.security.VTBlake3DigestRandom;
+import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 
 import com.martiansoftware.jsap.CommandLineTokenizer;
@@ -76,7 +76,7 @@ public class VTFileTransferClientTransaction implements Runnable
     System.arraycopy(localNonce, 0, blake3Seed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
     System.arraycopy(remoteNonce, 0, blake3Seed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
     
-    long xxhash64Seed = new VTBlake3DigestRandom(blake3Seed).nextLong();
+    long xxhash64Seed = new VTBlake3SecureRandom(blake3Seed).nextLong();
     
     xxhash64Digest = XXHashFactory.safeInstance().newStreamingHash64(xxhash64Seed).asMessageDigest();
   }

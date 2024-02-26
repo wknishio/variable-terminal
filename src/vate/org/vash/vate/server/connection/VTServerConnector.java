@@ -12,7 +12,7 @@ import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.nat.mapping.VTNATPortMappingResultNotify;
 import org.vash.vate.nat.mapping.VTNATSinglePortMappingManagerMKII;
-import org.vash.vate.security.VTBlake3DigestRandom;
+import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.session.VTServerSessionListener;
 import org.vash.vate.socket.VTProxy;
@@ -42,9 +42,9 @@ public class VTServerConnector implements Runnable
   private VTNATSinglePortMappingManagerMKII portMappingManager;
   private VTServerConnectorNATPortMappingResultNotify natNotify = new VTServerConnectorNATPortMappingResultNotify();
   private List<VTServerSessionListener> listeners = new ArrayList<VTServerSessionListener>();
-  private VTBlake3DigestRandom secureRandom;
+  private VTBlake3SecureRandom secureRandom;
   
-  public VTServerConnector(VTServer server, VTBlake3DigestRandom secureRandom)
+  public VTServerConnector(VTServer server, VTBlake3SecureRandom secureRandom)
   {
     this.server = server;
     this.secureRandom = secureRandom;

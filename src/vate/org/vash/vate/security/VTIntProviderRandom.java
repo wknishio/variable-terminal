@@ -1,16 +1,16 @@
 package org.vash.vate.security;
 
-import java.security.SecureRandom;
+import java.util.Random;
 
 import org.apache.commons.rng.core.source32.IntProvider;
 
-public abstract class VTIntProviderDigestRandom extends SecureRandom
+public abstract class VTIntProviderRandom extends Random
 {
   private static final long serialVersionUID = 1L;
   
   private IntProvider intProvider;
   
-  public VTIntProviderDigestRandom()
+  public VTIntProviderRandom()
   {
     
   }

@@ -22,7 +22,7 @@ import org.vash.vate.exception.VTUncaughtExceptionHandler;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
 import org.vash.vate.runtime.VTRuntimeExit;
-import org.vash.vate.security.VTBlake3DigestRandom;
+import org.vash.vate.security.VTBlake3SecureRandom;
 
 public class VTClient implements Runnable
 {
@@ -2037,7 +2037,7 @@ public class VTClient implements Runnable
   
   public void run()
   {
-    clientConnector = new VTClientConnector(this, new VTBlake3DigestRandom());
+    clientConnector = new VTClientConnector(this, new VTBlake3SecureRandom());
     clientConnector.setActive(active);
     clientConnector.setAddress(hostAddress);
     clientConnector.setPort(hostPort);

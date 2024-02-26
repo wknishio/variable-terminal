@@ -9,9 +9,10 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.vash.vate.VT;
-import org.vash.vate.security.VTMiddleSquareWeylSequenceDigestRandom;
+import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.compress.VTPacketDecompressor;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
@@ -342,11 +343,11 @@ public final class VTLinkableDynamicMultiplexingInputStream
     private Closeable directCloseable;
     private InputStream compressedInputStream;
     private List<Closeable> propagated;
-    private SecureRandom packetSequencer;
+    private Random packetSequencer;
     
     private VTLinkableDynamicMultiplexedInputStream(int type, int number, int bufferSize, SecureRandom packetSeed)
     {
-      this.packetSequencer = new VTMiddleSquareWeylSequenceDigestRandom(packetSeed);
+      this.packetSequencer = new VTSplitMix64Random(packetSeed);
       this.type = type;
       this.number = number;
       this.propagated = new ArrayList<Closeable>();
@@ -560,7 +561,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       return in.skip(count);
     }
     
-    public final SecureRandom getPacketSequencer()
+    public final Random getPacketSequencer()
     {
       return packetSequencer;
     }

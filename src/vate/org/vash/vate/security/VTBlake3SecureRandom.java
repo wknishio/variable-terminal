@@ -6,20 +6,20 @@ import java.security.SecureRandom;
 import org.bouncycastle.crypto.digests.Blake3Digest;
 import org.bouncycastle.crypto.params.Blake3Parameters;
 
-public class VTBlake3DigestRandom extends SecureRandom
+public class VTBlake3SecureRandom extends SecureRandom
 {
   private static final long serialVersionUID = 1L;
   private final Blake3Digest blake3 = new Blake3Digest(64);
   private final RandomGenerator generator = new DigestRandomGenerator(blake3);
   
-  public VTBlake3DigestRandom()
+  public VTBlake3SecureRandom()
   {
     byte[] secureSeed = new byte[64];
     new SecureRandom().nextBytes(secureSeed);
     setSeed(secureSeed);
   }
   
-  public VTBlake3DigestRandom(byte[] inSeed)
+  public VTBlake3SecureRandom(byte[] inSeed)
   {
     setSeed(inSeed);
   }

@@ -15,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.security.VTArrayComparator;
-import org.vash.vate.security.VTBlake3DigestRandom;
+import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTCryptographicEngine;
 import org.vash.vate.stream.compress.VTCompressorSelector;
@@ -84,7 +84,7 @@ public class VTClientConnection
   // private byte[] paddingData = new byte[1024];
   // private MessageDigest sha256Digester;
   private VTBlake3MessageDigest blake3Digest;
-  private VTBlake3DigestRandom secureRandom;
+  private VTBlake3SecureRandom secureRandom;
   private VTCryptographicEngine cryptoEngine;
   private Socket connectionSocket;
   private InputStream connectionSocketInputStream;
@@ -177,14 +177,14 @@ public class VTClientConnection
     this.authenticationWriter = new VTLittleEndianOutputStream(null);
   }
   
-  public VTBlake3DigestRandom getSecureRandom()
+  public VTBlake3SecureRandom getSecureRandom()
   {
     return secureRandom;
   }
   
   public void setSecureRandomSeed(byte[] seed)
   {
-    secureRandom = new VTBlake3DigestRandom(seed);
+    secureRandom = new VTBlake3SecureRandom(seed);
   }
   
   public VTLinkableDynamicMultiplexingInputStream getMultiplexedConnectionInputStream()
@@ -660,8 +660,8 @@ public class VTClientConnection
     System.arraycopy(localNonce, 0, blake3OutputSeed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
     System.arraycopy(remoteNonce, 0, blake3OutputSeed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
     
-    VTBlake3DigestRandom packetInputSeed = new VTBlake3DigestRandom(blake3InputSeed);
-    VTBlake3DigestRandom packetOutputSeed = new VTBlake3DigestRandom(blake3OutputSeed);
+    VTBlake3SecureRandom packetInputSeed = new VTBlake3SecureRandom(blake3InputSeed);
+    VTBlake3SecureRandom packetOutputSeed = new VTBlake3SecureRandom(blake3OutputSeed);
     
     multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, false, packetInputSeed);
     multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_PACKET_DATA_SIZE_BYTES, packetOutputSeed);
