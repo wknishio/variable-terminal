@@ -39,7 +39,7 @@ import com.objectplanet.image.PngEncoder;
 public class VTServerScreenshotTask extends VTTask
 {
   private static final int fileScreenshotBufferSize = VT.VT_FILE_BUFFER_SIZE_BYTES;
-  private volatile boolean finished;
+  private boolean finished;
   private boolean drawPointer;
   private boolean useJPG;
   private Integer deviceNumber;

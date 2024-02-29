@@ -8,7 +8,7 @@ import org.vash.vate.security.VTBlake3MessageDigest;
 
 public class VTClientAuthenticator
 {
-  private volatile boolean accepted = false;
+  private boolean accepted = false;
   private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] receivedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] localNonce;

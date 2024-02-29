@@ -2,7 +2,7 @@ package org.vash.vate.client.graphicsmode.remote;
 
 public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements Runnable
 {
-  private volatile boolean interrupted;
+  private boolean interrupted;
   private VTGraphicsModeClientRemoteInterface remoteInterface;
   private Thread repainterThread;
   // private Object interruptSynchronizer;

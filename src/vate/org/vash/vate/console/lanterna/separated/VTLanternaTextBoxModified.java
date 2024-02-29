@@ -1452,9 +1452,9 @@ public class VTLanternaTextBoxModified extends AbstractInteractableComponent<VTL
     }
   }
   
-  private volatile TerminalPosition selectionStartPosition;
+  private TerminalPosition selectionStartPosition;
   
-  private volatile TerminalPosition selectionEndPosition;
+  private TerminalPosition selectionEndPosition;
   
   public void setSelectionStartPosition(TerminalPosition position)
   {

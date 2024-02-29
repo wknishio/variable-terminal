@@ -22,8 +22,8 @@ public class VTTunnelSession implements Closeable
   private int outputNumber;
   private int inputNumber;
   private Object waiter = new Object();
-  private volatile Boolean result = null;
-  private volatile boolean closed;
+  private Boolean result = null;
+  private boolean closed;
   
   public VTTunnelSession(VTTunnelConnection connection, Socket socket, InputStream socketInputStream, OutputStream socketOutputStream, boolean originator)
   {

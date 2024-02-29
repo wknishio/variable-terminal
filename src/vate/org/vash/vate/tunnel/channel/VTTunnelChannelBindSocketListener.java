@@ -20,7 +20,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
   private ExecutorService threads;
   private static final String SESSION_SEPARATOR = "\f\b";
   private static final char SESSION_MARK = 'C';
-  private volatile boolean closed = false;
+  private boolean closed = false;
   
   public VTTunnelChannelBindSocketListener(VTTunnelChannel channel, ExecutorService threads)
   {

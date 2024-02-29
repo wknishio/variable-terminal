@@ -21,8 +21,8 @@ import com.sixlegs.png.iio.*;
 public class VTGraphicsModeClientReader implements Runnable
 {
   private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.PADDING_SIZE;
-  private volatile boolean stopped;
-  private volatile boolean failed;
+  private boolean stopped;
+  private boolean failed;
   private int currentDataType;
   private byte[] lastImageBufferByte;
   // private byte[] previousImageBufferByte;
@@ -30,9 +30,9 @@ public class VTGraphicsModeClientReader implements Runnable
   // private short[] previousImageBufferUShort;
   private int[] lastImageBufferInt;
   // private int[] previousImageBufferInt;
-  private volatile BufferedImage currentImageDataBuffer;
-  private volatile Graphics2D currentImageGraphics;
-  private volatile BufferedImage nextImageDataBuffer;
+  private BufferedImage currentImageDataBuffer;
+  private Graphics2D currentImageGraphics;
+  private BufferedImage nextImageDataBuffer;
   private VTGraphicsModeClientSession session;
   private VTClientConnection connection;
   private VTGraphicsModeClientWriter writer;

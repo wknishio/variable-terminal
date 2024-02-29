@@ -13,8 +13,6 @@ import org.vash.vate.console.VTConsole;
 
 public class VTGraphicalConsoleTextArea extends TextArea
 {
-  // private static volatile Object synchronizer;
-  // private volatile int trueCaretPosition;
   private static final long serialVersionUID = 1L;
   private Clipboard systemClipboard;
   

@@ -9,7 +9,7 @@ import org.vash.vate.console.VTConsole;
 
 public class VTClientSessionHandler implements Runnable
 {
-  private volatile boolean authenticated;
+  private boolean authenticated;
   // private VTClient client;
   private VTClientConnection connection;
   private VTClientSession session;

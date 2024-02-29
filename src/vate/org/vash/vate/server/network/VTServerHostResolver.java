@@ -9,7 +9,7 @@ import org.vash.vate.task.VTTask;
 
 public class VTServerHostResolver extends VTTask
 {
-  private volatile boolean finished;
+  private boolean finished;
   private String host;
   private VTServerSession session;
   private StringBuilder message;

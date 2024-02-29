@@ -22,15 +22,15 @@ import net.jpountz.xxhash.XXHashFactory;
 public class VTFileTransferServerTransaction implements Runnable
 {
   private static final int fileTransferBufferSize = VT.VT_FILE_BUFFER_SIZE_BYTES;
-  private volatile boolean stopped;
-  private volatile boolean finished;
-  private volatile boolean compressing;
-  private volatile boolean resuming;
-  private volatile boolean verifying;
-  private volatile boolean checked;
-  private volatile boolean resumable;
-  private volatile boolean directory;
-  private volatile boolean heavier;
+  private boolean stopped;
+  private boolean finished;
+  private boolean compressing;
+  private boolean resuming;
+  private boolean verifying;
+  private boolean checked;
+  private boolean resumable;
+  private boolean directory;
+  private boolean heavier;
   private int readedBytes;
   private int writtenBytes;
   private int bufferedBytes;

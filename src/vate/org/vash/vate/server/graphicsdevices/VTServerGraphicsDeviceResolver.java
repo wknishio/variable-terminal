@@ -10,7 +10,7 @@ import org.vash.vate.task.VTTask;
 
 public class VTServerGraphicsDeviceResolver extends VTTask
 {
-  private volatile boolean finished;
+  private boolean finished;
   private VTServerSession session;
   
   public VTServerGraphicsDeviceResolver(VTServerSession session)

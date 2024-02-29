@@ -191,6 +191,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private volatile boolean closed;
     private volatile Object link = null;
     private final int number;
+    private final long seed;
     private int type;
     private final int packetSize;
     private final VTByteArrayOutputStream intermediateDataPacketBuffer;
@@ -207,7 +208,8 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     private VTLinkableDynamicMultiplexedOutputStream(OutputStream out, OutputStream control, int type, int number, int packetSize, SecureRandom packetSeed)
     {
-      this.packetSequencer = new VTSplitMix64Random(packetSeed);
+      this.seed = packetSeed.nextLong();
+      this.packetSequencer = new VTSplitMix64Random(this.seed);
       this.out = out;
       this.control = control;
       this.type = type;
@@ -292,11 +294,11 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       int remaining = length;
       while (remaining > 0)
       {
-        written = Math.min(remaining, packetSize);
         if (closed)
         {
           throw new IOException("OutputStream closed");
         }
+        written = Math.min(remaining, packetSize);
         writePacket(data, position, written, type, number);
         position += written;
         remaining -= written;
@@ -377,6 +379,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       {
         intermediatePacketStream = intermediateDataPacketBuffer;
       }
+      packetSequencer = new VTSplitMix64Random(seed);
     }
     
     public final void addPropagated(Closeable propagated)

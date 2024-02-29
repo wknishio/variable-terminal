@@ -26,7 +26,7 @@ import org.vash.vate.task.VTTask;
 
 public class VTServerPrintFileTask extends VTTask
 {
-  private volatile boolean finished;
+  private boolean finished;
   private String file;
   private Integer printServiceNumber;
   private DocPrintJob docPrintJob;

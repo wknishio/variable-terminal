@@ -11,7 +11,7 @@ public class VTStandardConsoleInterruptibleInputStreamNative extends VTStandardC
   private VTPipedOutputStream outputPipe;
   // private VTByteArrayOutputStream lineBuffer;
   private VTStandardConsoleInterruptibleReaderNative reader;
-  private volatile Thread currentThread;
+  private Thread currentThread;
   
   public VTStandardConsoleInterruptibleInputStreamNative()
   {

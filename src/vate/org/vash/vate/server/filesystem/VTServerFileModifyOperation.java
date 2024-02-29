@@ -19,8 +19,8 @@ public class VTServerFileModifyOperation extends VTTask
   public static final int CREATE_FILE = 4;
   public static final int CREATE_DIRECTORY = 5;
   
-  private volatile boolean finished;
-  private volatile int operation;
+  private boolean finished;
+  private int operation;
   private File sourceFile;
   private File destinationFile;
   private VTServerSession session;

@@ -28,7 +28,7 @@ import org.xiph.speex.SpeexEncoder;
 
 public class VTAudioCapturer
 {
-  private volatile boolean running = false;
+  private boolean running = false;
   private ExecutorService threads;
   private AudioFormat audioFormat;
 //  private Map<String, VTAudioCapturerThread> lines = Collections.synchronizedMap(new LinkedHashMap<String, VTAudioCapturerThread>());

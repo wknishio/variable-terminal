@@ -12,7 +12,7 @@ public class VTGraphicsModeClientRemoteInterfaceKeyListener implements KeyListen
 {
   private Set<Integer> pressedKeys;
   private Set<Integer> suppressedKeys;
-  private volatile boolean interrupted;
+  private boolean interrupted;
   private VTGraphicsModeClientWriter writer;
   private VTAWTControlEvent untyped;
   

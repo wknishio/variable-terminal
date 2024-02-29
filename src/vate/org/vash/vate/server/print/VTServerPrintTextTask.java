@@ -33,7 +33,7 @@ import org.vash.vate.task.VTTask;
 
 public class VTServerPrintTextTask extends VTTask
 {
-  private volatile boolean finished;
+  private boolean finished;
   private String text;
   private Integer printServiceNumber;
   private DocPrintJob docPrintJob;

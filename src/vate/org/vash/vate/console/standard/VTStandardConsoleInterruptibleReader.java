@@ -15,15 +15,13 @@ import org.vash.vate.console.VTConsole;
 
 public class VTStandardConsoleInterruptibleReader implements Runnable
 {
-  // private volatile boolean stopped;
-  private volatile boolean requested;
-  private volatile boolean echo;
-  // private volatile boolean discard;
+  private boolean requested;
+  private boolean echo;
   private BufferedReader standardTerminalReader;
-  private volatile Object systemConsoleObject;
-  private volatile Method readLineMethod;
-  private volatile Method readPasswordMethod;
-  private volatile BlockingQueue<String> buffer;
+  private Object systemConsoleObject;
+  private Method readLineMethod;
+  private Method readPasswordMethod;
+  private BlockingQueue<String> buffer;
   // private static final String ANSIDetectionPattern =
   // "(\\u001B)(\\[)([^R])*([R])";
   private Executor executor;

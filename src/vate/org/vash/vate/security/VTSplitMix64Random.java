@@ -1,18 +1,16 @@
 package org.vash.vate.security;
 
-import java.security.SecureRandom;
-
 import org.apache.commons.rng.core.source64.SplitMix64;
 
 public class VTSplitMix64Random extends VTLongProviderRandom
 {
   private static final long serialVersionUID = 1L;
-    
-  public VTSplitMix64Random(SecureRandom secureRandom)
+  private final SplitMix64 splitMix64;
+  
+  public VTSplitMix64Random(long seed)
   {
     super();
-    long seed = secureRandom.nextLong();
-    SplitMix64 splitMix64 = new SplitMix64(seed);
+    splitMix64 = new SplitMix64(seed);
     this.setLongProvider(splitMix64);
   }
   

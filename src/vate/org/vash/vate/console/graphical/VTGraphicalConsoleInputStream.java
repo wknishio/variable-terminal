@@ -5,8 +5,8 @@ import java.io.InputStream;
 
 public class VTGraphicalConsoleInputStream extends InputStream
 {
-  private volatile byte[] lineBuffer;
-  private volatile int readed;
+  private byte[] lineBuffer;
+  private int readed;
   
   public VTGraphicalConsoleInputStream()
   {

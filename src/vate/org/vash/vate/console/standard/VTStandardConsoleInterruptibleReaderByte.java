@@ -10,14 +10,10 @@ import org.vash.vate.compatibility.VTArrays;
 
 public class VTStandardConsoleInterruptibleReaderByte implements Runnable
 {
-  // private volatile boolean stopped;
-  private volatile boolean requested;
-  // private volatile boolean echo;
-  // private volatile boolean discard;
+  private boolean requested;
   // private BufferedReader standardTerminalReader;
-  // private volatile Console systemConsole;
   private final byte[] readBuffer = new byte[8192];
-  private volatile BlockingQueue<byte[]> buffer;
+  private BlockingQueue<byte[]> buffer;
   // private static final String ANSIDetectionPattern =
   // "(\\u001B)(\\[)([^R])*([R])";
   private Executor executor;

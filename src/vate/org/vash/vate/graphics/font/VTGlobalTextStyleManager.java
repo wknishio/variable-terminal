@@ -332,20 +332,18 @@ public class VTGlobalTextStyleManager
     // AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
   }
   
-  private static volatile Font windowFont;
-  // private static volatile Font windowFont =
+  private static Font windowFont;
   // Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog
   // 12").getSize2D())))));
-  // private static volatile Font monospacedFont =
   // Font.decode("Monospaced").deriveFont(((float)
   // Math.ceil((((BASE_FONT_SIZE_MONOSPACED)) *
   // FONT_SCALING_FACTOR_MONOSPACED))));
-  private static volatile Font monospacedFont;
+  private static Font monospacedFont;
   private static float defaultWindowFontSize;
   // private static float defaultWindowFontSize = (float) (12.0 *
   // FONT_SCALING_FACTOR);
   private static float defaultMonospacedFontSize;
-  private static volatile boolean fontStyleBold = false;
+  private static boolean fontStyleBold = false;
   // private static float windowFontSize = defaultWindowFontSize;
   // private static List<Font> monospacedFonts;
   // private static int currentMonospacedFontIndex = 0;

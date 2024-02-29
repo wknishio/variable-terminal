@@ -20,9 +20,9 @@ import org.vash.vate.socket.VTProxy.VTProxyType;
 
 public class VTClientConnector implements Runnable
 {
-  private volatile boolean active;
-  private volatile boolean connecting = false;
-  private volatile boolean running = true;
+  private boolean active;
+  private boolean connecting = false;
+  private boolean running = true;
   private String hostAddress;
   private Integer hostPort;
   private Integer natPort;
@@ -41,14 +41,12 @@ public class VTClientConnector implements Runnable
   private VTClient client;
   private VTClientConnection connection;
   private VTClientConnectionHandler handler;
-  private volatile boolean skipConfiguration;
-  // private volatile boolean connectedOnce;
-  private volatile boolean timeoutEnabled;
+  private boolean skipConfiguration;
+  private boolean timeoutEnabled;
   private VTNATSinglePortMappingManagerMKII portMappingManager;
   private VTConnectionRetryTimeoutTask connectionRetryTimeoutTask = new VTConnectionRetryTimeoutTask();
-  private volatile boolean retry = false;
-  private volatile boolean dialog = false;
-  // private volatile boolean dialogLine = false;
+  private boolean retry = false;
+  private boolean dialog = false;
   private VTClientConnectorNATPortMappingResultNotify natNotify = new VTClientConnectorNATPortMappingResultNotify();
   private List<VTClientSessionListener> listeners = new ArrayList<VTClientSessionListener>();
   private VTBlake3SecureRandom secureRandom;
@@ -86,7 +84,6 @@ public class VTClientConnector implements Runnable
   
   private class VTConnectionRetryTimeoutTask implements Runnable
   {
-    // private volatile boolean finished = true;
     // private Thread timeoutThread;
     
     public void start()

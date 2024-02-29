@@ -13,9 +13,9 @@ import java.awt.image.BufferedImage;
 public class VTGraphicsModeClientRemoteInterface extends Canvas
 {
   private static final long serialVersionUID = 1L;
-  private volatile boolean updating;
+  private boolean updating;
   @SuppressWarnings("unused")
-  private volatile boolean synchronousRefresh = false;
+  private boolean synchronousRefresh = false;
   private BufferedImage sourceImageDataBuffer;
   // private BufferedImage displayImageDataBuffer;
   // private Graphics2D displayImageGraphics;

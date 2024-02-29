@@ -9,7 +9,7 @@ import org.vash.vate.server.connection.VTServerConnection;
 
 public class VTServerSessionHandler implements Runnable
 {
-  private volatile boolean authenticated;
+  private boolean authenticated;
   // private VTServer server;
   private VTServerConnection connection;
   private VTServerSession session;

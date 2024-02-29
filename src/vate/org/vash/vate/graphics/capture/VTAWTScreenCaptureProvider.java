@@ -105,7 +105,6 @@ public final class VTAWTScreenCaptureProvider
   private boolean initialized27ScreenCapture;
   private boolean initialized262144ScreenCapture;
   private boolean initialized2097152ScreenCapture;
-  // private volatile boolean initializedPadding;
   private int scaledWidth = 0;
   private int scaledHeight = 0;
   private double scaleFactorX = 1;
@@ -129,7 +128,6 @@ public final class VTAWTScreenCaptureProvider
   private byte[] pixelBufferByte;
   private short[] pixelBufferShort;
   private Rectangle currentDeviceBounds;
-//  private volatile BufferedImage sectionImage;
   private BufferedImage sectionCurrentImageGrayscale;
   private BufferedImage sectionCurrentImageTrue;
   //private BufferedImage sectionCurrentImageConverted;
@@ -138,7 +136,6 @@ public final class VTAWTScreenCaptureProvider
   private Graphics2D scaledCurrentImageGraphics;
   private Graphics2D sectionCurrentImageGrayscaleGraphics;
   //private Graphics2D sectionCurrentImageConvertedGraphics;
-  // private volatile Graphics2D sectionGraphics;
   private GraphicsDevice graphicsDevice;
   private Robot standardCaptureRobot;
   private VTDirectRobot directCaptureRobot;

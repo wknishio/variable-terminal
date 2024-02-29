@@ -14,7 +14,7 @@ public class VTAirliftInputStream extends InputStream
   private VTLittleEndianInputStream in;
   private byte[] input = new byte[1];
   private VTByteArrayInputStream stream = new VTByteArrayInputStream(new byte[] {});
-  private volatile boolean closed = false;
+  private boolean closed = false;
   
   public VTAirliftInputStream(InputStream in, Decompressor decompressor)
   {

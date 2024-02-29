@@ -18,19 +18,16 @@ import com.offbynull.portmapper.mapper.PortType;
 
 public class VTNATSinglePortMappingManagerMKII implements Runnable
 {
-  private volatile boolean running;
-  private volatile boolean hooked;
+  private boolean running;
+  private boolean hooked;
   private int discoveryTime;
   private int intervalTime;
   private Thread manager;
   // private String[] externalIPAddresses;
-  private volatile VTNATPortMapping deletedPortMapping;
-  private volatile VTNATPortMapping currentPortMapping;
-  private volatile VTNATPortMapping nextPortMapping;
-  private volatile VTNATPortMappingResultNotify resultNotify;
-  
-  // private volatile InternetGatewayDevice[] upnpDevices;
-  // private volatile InetAddress[] natpmpGateways;
+  private VTNATPortMapping deletedPortMapping;
+  private VTNATPortMapping currentPortMapping;
+  private VTNATPortMapping nextPortMapping;
+  private VTNATPortMappingResultNotify resultNotify;
   
   private Gateway networkGateway;
   private Gateway processGateway;

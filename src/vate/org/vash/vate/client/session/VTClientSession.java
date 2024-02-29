@@ -28,9 +28,8 @@ import org.vash.vate.tunnel.connection.VTTunnelConnectionHandler;
 
 public class VTClientSession
 {
-  private volatile long sessionLocalNanoDelay;
-  private volatile long sessionRemoteNanoDelay;
-  // private volatile boolean runningAudio;
+  private long sessionLocalNanoDelay;
+  private long sessionRemoteNanoDelay;
   // private File workingDirectory;
   private VTClient client;
   private VTClientConnection connection;

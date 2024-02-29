@@ -12,7 +12,7 @@ public class VTStandardConsoleInterruptibleInputStream extends InputStream
   private VTPipedOutputStream outputPipe;
   // private VTByteArrayOutputStream lineBuffer;
   private VTStandardConsoleInterruptibleReader reader;
-  private volatile Thread currentThread;
+  private Thread currentThread;
   
   public VTStandardConsoleInterruptibleInputStream()
   {

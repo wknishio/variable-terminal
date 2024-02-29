@@ -41,7 +41,7 @@ public class VTShellProcessor
   private Reader shellErrorReader;
   private Writer shellCommandExecutor;
   
-  private volatile Charset shellCharset;
+  private Charset shellCharset;
   
   // private ExecutorService threads;
   

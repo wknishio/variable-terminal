@@ -7,7 +7,6 @@ import java.awt.event.TextListener;
 
 public class VTGraphicalConsoleTextListener implements TextListener
 {
-  // private volatile boolean listeningTextEvents;
   // private VTGraphicalConsole terminal;
   
   public VTGraphicalConsoleTextListener(/* VTGraphicalConsole terminal */)

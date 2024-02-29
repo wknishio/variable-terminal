@@ -37,7 +37,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private final VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
   private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> bufferedChannels;
   private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> directChannels;
-  private volatile boolean closed = false;
+  private boolean closed = false;
   private final SecureRandom packetSeed;
 //  private final VTPipedOutputStream pout;
 //  private final VTPipedInputStream pin;
@@ -269,12 +269,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
         close();
         return;
       }
-      stream = getInputStream(type, channel);
-      if (stream != null && stream.getPacketSequencer().nextLong() != sequence)
-      {
-        close();
-        return;
-      }
       length = in.readInt();
       if (length > 0)
       {
@@ -297,21 +291,21 @@ public final class VTLinkableDynamicMultiplexingInputStream
           copied += readed;
           remaining -= readed;
         }
-        if (stream != null)
+        stream = getInputStream(type, channel);
+        if (stream == null || stream.getPacketSequencer().nextLong() != sequence)
         {
-          OutputStream out = stream.getOutputStream();
-          if (out != null)
-          {
-            try
-            {
-              out.write(packetBuffer, 0, length);
-              out.flush();
-            }
-            catch (Throwable e)
-            {
-              //e.printStackTrace();
-            }
-          }
+          close();
+          return;
+        }
+        OutputStream out = stream.getOutputStream();
+        try
+        {
+          out.write(packetBuffer, 0, length);
+          out.flush();
+        }
+        catch (Throwable e)
+        {
+          //e.printStackTrace();
         }
       }
       else if (length == -2)
@@ -335,6 +329,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     private volatile boolean closed;
     private volatile Object link = null;
     private final int number;
+    private final long seed;
     private int type;
     private final VTPipedInputStream bufferedInputStream;
     private final VTPipedOutputStream bufferedOutputStream;
@@ -347,7 +342,8 @@ public final class VTLinkableDynamicMultiplexingInputStream
     
     private VTLinkableDynamicMultiplexedInputStream(int type, int number, int bufferSize, SecureRandom packetSeed)
     {
-      this.packetSequencer = new VTSplitMix64Random(packetSeed);
+      this.seed = packetSeed.nextLong();
+      this.packetSequencer = new VTSplitMix64Random(this.seed);
       this.type = type;
       this.number = number;
       this.propagated = new ArrayList<Closeable>();
@@ -490,6 +486,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       {
         //work already done by setDirectOutputStream
       }
+      packetSequencer = new VTSplitMix64Random(seed);
     }
     
     public final void close() throws IOException
@@ -533,7 +530,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
         }
       }
       //propagated.clear();
-      
     }
     
     public final int available() throws IOException
@@ -569,7 +565,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
   
   private final class VTLinkableDynamicMultiplexingInputStreamPacketReader implements Runnable
   {
-    //private volatile boolean running;
     private final VTLinkableDynamicMultiplexingInputStream multiplexingInputStream;
     
     private VTLinkableDynamicMultiplexingInputStreamPacketReader(VTLinkableDynamicMultiplexingInputStream multiplexingInputStream)

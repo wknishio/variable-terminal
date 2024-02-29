@@ -49,14 +49,12 @@ import com.martiansoftware.jsap.CommandLineTokenizer;
 
 public class VTServerSession
 {
-  // private volatile boolean supressEchoShell;
-  private volatile boolean stoppingShell;
-  private volatile boolean restartingShell;
-  // private volatile boolean runningAudio;
-  private volatile boolean echoCommands;
-  private volatile int echoState;
-  private volatile long sessionLocalNanoDelay;
-  private volatile long sessionRemoteNanoDelay;
+  private boolean stoppingShell;
+  private boolean restartingShell;
+  private boolean echoCommands;
+  private int echoState;
+  private long sessionLocalNanoDelay;
+  private long sessionRemoteNanoDelay;
   private VTShellAdapter shellAdapter;
   private String user;
   private VTServer server;

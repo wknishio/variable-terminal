@@ -36,8 +36,8 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
   private Menu inputStatusMenu;
   private MenuItem inputToggleMenu;
   
-  private volatile boolean flushInterrupted = false;
-  private volatile boolean replaceInput = false;
+  private boolean flushInterrupted = false;
+  private boolean replaceInput = false;
   
   public VTGraphicalConsoleMenuBar()
   {

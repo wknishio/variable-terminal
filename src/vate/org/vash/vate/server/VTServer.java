@@ -67,10 +67,10 @@ public class VTServer implements Runnable
   private VTServerSettingsDialog connectionDialog;
   private ExecutorService threads;
   private VTTrayIconInterface trayIconInterface;
-  private volatile boolean skipConfiguration;
-  private volatile boolean echoCommands = false;
-  private volatile boolean running = true;
-  private volatile boolean reconfigure = false;
+  private boolean skipConfiguration;
+  private boolean echoCommands = false;
+  private boolean running = true;
+  private boolean reconfigure = false;
   private List<VTServerSessionListener> listeners = new ArrayList<VTServerSessionListener>();
   private static final String VT_SERVER_SETTINGS_COMMENTS = 
   "Variable-Terminal server settings file, supports UTF-8\r\n" + 

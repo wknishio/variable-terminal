@@ -42,7 +42,7 @@ public final class VTConsole
   private static boolean daemon;
   private static boolean remoteIcon;
   // private static boolean split;
-  private static volatile VTConsoleImplementation console;
+  private static VTConsoleImplementation console;
   
   private static Object synchronizationObject = new Object();
   

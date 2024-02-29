@@ -8,7 +8,6 @@ public final class VTThrottlingOutputStream extends FilterOutputStream
 {
   private final VTThrottledOutputStream throttled;
   //private final OutputStream unthrottled;
-  //private volatile OutputStream current;
   private long bytesPerSecond;
   
   public VTThrottlingOutputStream(OutputStream out)

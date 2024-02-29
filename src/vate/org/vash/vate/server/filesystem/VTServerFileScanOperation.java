@@ -11,8 +11,8 @@ public class VTServerFileScanOperation extends VTTask
   public static final int INFO_FILE = 1;
   public static final int LIST_FILES = 2;
   
-  private volatile boolean finished;
-  private volatile int operation;
+  private boolean finished;
+  private int operation;
   private File target;
   private StringBuilder message;
   private VTServerSession session;

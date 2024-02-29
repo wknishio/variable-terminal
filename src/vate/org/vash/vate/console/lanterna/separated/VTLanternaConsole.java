@@ -82,7 +82,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 {
   public static final TerminalEmulatorPalette CUSTOM_VGA = new TerminalEmulatorPalette(new java.awt.Color(170, 170, 170), new java.awt.Color(255, 255, 255), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(85, 85, 85), new java.awt.Color(170, 0, 0), new java.awt.Color(255, 85, 85), new java.awt.Color(0, 170, 0), new java.awt.Color(85, 255, 85), new java.awt.Color(170, 170, 0), new java.awt.Color(255, 255, 85), new java.awt.Color(0, 0, 170), new java.awt.Color(85, 85, 255), new java.awt.Color(170, 0, 170), new java.awt.Color(255, 85, 255), new java.awt.Color(0, 170, 170), new java.awt.Color(85, 255, 255), new java.awt.Color(170, 170, 170), new java.awt.Color(255, 255, 255));
   
-  private volatile AWTTerminalFrame frame;
+  private AWTTerminalFrame frame;
   private java.awt.Panel spacer1;
   // private java.awt.Panel spacer2;
   private Terminal terminal;
@@ -97,21 +97,16 @@ public class VTLanternaConsole implements VTConsoleImplementation
   private static final int consoleOutputLinesMaxSize = consoleOutputLines * 25;
   private static final int commandHistoryMaxSize = 100;
   private final List<String> commandHistory = new ArrayList<String>();
-  private volatile int commandHistoryPosition;
+  private int commandHistoryPosition;
   private final List<String> inputLineBuffer = new ArrayList<String>();
   private final StringBuilder currentLineBuffer = new StringBuilder("");
-  private volatile Thread currentThread;
-  // private volatile boolean readingLine = false;
-  private volatile boolean echoInput = true;
-  private volatile boolean readingInput = false;
-  // private volatile boolean updatingTerminal = false;
-  private volatile boolean flushInterrupted = false;
-  private volatile boolean frameDeactivated = false;
-  private volatile boolean replaceActivated = false;
-  private volatile boolean commandEcho = true;
-  // private volatile boolean interruptedReadLine = false;
-  // private volatile boolean selectingText = false;
-  // private volatile int caretRecoilCount = 0;
+  private Thread currentThread;
+  private boolean echoInput = true;
+  private boolean readingInput = false;
+  private boolean flushInterrupted = false;
+  private boolean frameDeactivated = false;
+  private boolean replaceActivated = false;
+  private boolean commandEcho = true;
   private Properties defaultInputProperties;
   private Properties defaultOutputProperties;
   private final StringBuilder inputBuffer = new StringBuilder();
@@ -124,14 +119,14 @@ public class VTLanternaConsole implements VTConsoleImplementation
   // private VTLanternaConsolePrintStream printStream;
   private VTLanternaConsolePrintStream printStream;
   private VTLanternaConsoleInputStream inputStream;
-  private volatile boolean ignoreClose = false;
-  private volatile boolean started = false;
+  private boolean ignoreClose = false;
+  private boolean started = false;
   private VTGraphicalConsolePopupMenu popupMenu;
-  private volatile boolean graphical;
+  private boolean graphical;
   private Scrollbar horizontalScrollbar;
   private Scrollbar verticalScrollbar;
-  private volatile int pressedMouseButton;
-  private volatile boolean remoteIcon;
+  private int pressedMouseButton;
+  private boolean remoteIcon;
   private VTConsoleBooleanToggleNotify notifyFlushInterrupted;
   private VTConsoleBooleanToggleNotify notifyReplaceInput;
   private PrintStream logOutput = null;
@@ -522,8 +517,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
   
   public class VTLanternaConsoleInputStream extends InputStream
   {
-    private volatile byte[] lineBuffer;
-    private volatile int readed;
+    private byte[] lineBuffer;
+    private int readed;
     private VTLanternaConsole console;
     
     public VTLanternaConsoleInputStream(VTLanternaConsole console)

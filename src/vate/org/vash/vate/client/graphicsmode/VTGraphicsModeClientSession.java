@@ -7,7 +7,7 @@ import org.vash.vate.reflection.VTReflectionUtils;
 
 public class VTGraphicsModeClientSession
 {
-  private volatile boolean finished;
+  private boolean finished;
   private Thread readerThread;
   private Thread writerThread;
   // private VTGraphicsLinkRemoteGraphics remote;

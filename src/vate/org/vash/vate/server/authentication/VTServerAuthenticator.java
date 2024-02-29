@@ -11,7 +11,7 @@ import org.vash.vate.server.connection.VTServerConnection;
 
 public class VTServerAuthenticator
 {
-  private volatile boolean accepted = false;
+  private boolean accepted = false;
   private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] receivedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] localNonce;

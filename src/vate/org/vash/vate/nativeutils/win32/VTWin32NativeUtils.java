@@ -10,8 +10,8 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 {
   private class VTWin32AsynchronousBeeper implements Runnable
   {
-    private volatile boolean playing;
-    private volatile boolean started;
+    private boolean playing;
+    private boolean started;
     private int freq;
     private int dur;
     

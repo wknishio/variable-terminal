@@ -22,7 +22,7 @@ public class VTManagedClientSocket
 {
   private VTClient vtclient;
   private BlockingQueue<VTManagedSocket> queue = new LinkedBlockingQueue<VTManagedSocket>();
-  private volatile Thread interruptible;
+  private Thread interruptible;
   private VTManagedSocketListener socketListener;
   private Map<VTClientSession, VTManagedSocket> sessions = new LinkedHashMap<VTClientSession, VTManagedSocket>();
   

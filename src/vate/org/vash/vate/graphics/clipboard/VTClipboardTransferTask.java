@@ -21,8 +21,8 @@ import org.vash.vate.task.VTTask;
 
 public class VTClipboardTransferTask extends VTTask
 {
-  private volatile boolean sending;
-  private volatile boolean clearing;
+  private boolean sending;
+  private boolean clearing;
   private VTLittleEndianInputStream in;
   private VTLittleEndianOutputStream out;
   private Runnable endingTask;

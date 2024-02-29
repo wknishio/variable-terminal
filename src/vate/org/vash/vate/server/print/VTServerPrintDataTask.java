@@ -48,13 +48,13 @@ public class VTServerPrintDataTask extends VTTask
   public static int FILE_ENCODING_TEXT_NATIVE = 2;
   public static int FILE_ENCODING_TEXT_UTF8 = 3;
   
-  private volatile boolean finished;
-  private volatile int mode = MODE_TEXT;
-  private volatile int encoding = FILE_ENCODING_AUTOSENSE;
-  private volatile String data;
-  private volatile Integer printServiceNumber;
-  private volatile DocPrintJob docPrintJob;
-  private volatile VTServerSession session;
+  private boolean finished;
+  private int mode = MODE_TEXT;
+  private int encoding = FILE_ENCODING_AUTOSENSE;
+  private String data;
+  private Integer printServiceNumber;
+  private DocPrintJob docPrintJob;
+  private VTServerSession session;
   
   public VTServerPrintDataTask(VTServerSession session)
   {

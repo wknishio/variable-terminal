@@ -26,8 +26,7 @@ import org.vash.vate.server.dialog.VTServerSettingsDialog;
 public class VTGraphicalStartDialog extends Dialog
 {
   private static final long serialVersionUID = 1L;
-  // private volatile BufferedImage terminalIcon;
-  private volatile int mode = 0;
+  private int mode = 0;
   
   private static Method setIconImage;
   

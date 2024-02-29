@@ -13,7 +13,7 @@ import org.vash.vate.url.VTURLResult;
 
 public class VTServerURLInvoker extends VTTask
 {
-  private volatile boolean finished;
+  private boolean finished;
   private String url;
   private String fileResult;
   private String fileOutput;

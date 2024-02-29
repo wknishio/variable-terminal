@@ -11,7 +11,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 
 public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
 {
-  private volatile int maximumLines = 0;
+  private int maximumLines = 0;
   private int hiddenColumn = 0;
   private int carriageColumn = -1;
   private Terminal terminal;

@@ -12,7 +12,7 @@ import org.vash.vate.task.VTTask;
 
 public class VTServerPrintServiceResolver extends VTTask
 {
-  private volatile boolean finished;
+  private boolean finished;
   private int number = -1;
   private VTServerSession session;
   private Set<String> mimeSet = new LinkedHashSet<String>();

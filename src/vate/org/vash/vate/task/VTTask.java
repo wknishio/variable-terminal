@@ -5,7 +5,7 @@ import java.io.IOException;
 
 public abstract class VTTask implements Runnable, Closeable
 {
-  protected volatile boolean stopped;
+  protected boolean stopped;
   private Thread taskThread;
   
   public boolean isStopped()

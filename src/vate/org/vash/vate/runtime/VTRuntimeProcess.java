@@ -28,11 +28,9 @@ public class VTRuntimeProcess
   
   private ExecutorService threads;
   private OutputStream redirect;
-  private volatile boolean verbose;
-  private volatile boolean restart;
-  // private volatile boolean killed;
-  private volatile long timeout;
-  // private volatile long pid;
+  private boolean verbose;
+  private boolean restart;
+  private long timeout;
   
   public VTRuntimeProcess(String command, ProcessBuilder builder, ExecutorService threads, OutputStream redirect, boolean verbose, boolean restart, long timeout)
   {

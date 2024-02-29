@@ -28,11 +28,6 @@ import org.vash.vate.stream.filter.VTDoubledOutputStream;
 
 public class VTStandardConsole implements VTConsoleImplementation
 {
-  // private static volatile boolean jlineConsoleSupport;
-  // private static volatile boolean systemConsoleSupport;
-  // private static volatile boolean bright;
-  // private static volatile int foregroundColor;
-  // private static volatile int backgroundColor;
   private static VTStandardConsole instance;
   private static VTDoubledOutputStream output;
   private static VTDoubledOutputStream error;
@@ -44,10 +39,8 @@ public class VTStandardConsole implements VTConsoleImplementation
   private static BufferedReader standardTerminalReader;
   private static BufferedWriter standardTerminalWriter;
   private static StringBuilder colorCode;
-  public static volatile boolean isatty = false;
-  // public static volatile boolean ansidetected = false;
-  // public static volatile boolean systemconsoleclass = false;
-  public static volatile boolean systemconsolesupport = false;
+  public static boolean isatty = false;
+  public static boolean systemconsolesupport = false;
   private static BufferedWriter readLineLog = null;
   private static PrintStream logOutput = null;
   

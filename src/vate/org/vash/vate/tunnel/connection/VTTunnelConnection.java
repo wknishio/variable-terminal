@@ -36,7 +36,7 @@ public class VTTunnelConnection
   private Set<VTTunnelChannelBindSocketListener> bindListeners;
   // private int tunnelType;
   private ExecutorService threads;
-  private volatile boolean closed = false;
+  private boolean closed = false;
   
   public VTTunnelConnection(ExecutorService threads)
   {

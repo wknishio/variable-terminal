@@ -11,7 +11,7 @@ import org.vash.vate.task.VTTask;
 
 public class VTServerFileSystemRootsResolver extends VTTask
 {
-  private volatile boolean finished;
+  private boolean finished;
   private StringBuilder message;
   private VTServerSession session;
   

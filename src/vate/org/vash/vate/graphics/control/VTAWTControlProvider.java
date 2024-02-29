@@ -13,10 +13,10 @@ import static java.awt.event.KeyEvent.*;
 
 public final class VTAWTControlProvider
 {
-  private volatile boolean inputControlInitialized;
+  private boolean inputControlInitialized;
   // private GraphicsDevice graphicsDevice;
-  private volatile GraphicsDevice graphicsDevice;
-  private volatile Robot interfaceInputRobot;
+  private GraphicsDevice graphicsDevice;
+  private Robot interfaceInputRobot;
   private Clipboard systemClipboard;
   private Toolkit toolkit;
   

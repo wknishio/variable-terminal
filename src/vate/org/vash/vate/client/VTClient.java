@@ -55,9 +55,9 @@ public class VTClient implements Runnable
   private VTClientConfigurationDialog connectionDialog;
   private ExecutorService threads;
   // private VTTrayIconInterface trayIconInterface;
-  private volatile boolean skipConfiguration;
-  private volatile boolean retry = false;
-  private volatile boolean manual = false;
+  private boolean skipConfiguration;
+  private boolean retry = false;
+  private boolean manual = false;
   private List<VTClientSessionListener> listeners = new ArrayList<VTClientSessionListener>();
   private static final String VT_CLIENT_SETTINGS_COMMENTS = 
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 

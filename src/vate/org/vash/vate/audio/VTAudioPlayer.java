@@ -23,7 +23,7 @@ public class VTAudioPlayer
 {
   private final Queue<VTLittleEndianInputStream> streams;
   // private final int maximumJitterLevel = 10;
-  private volatile boolean running = false;
+  private boolean running = false;
   private ExecutorService threads;
   private AudioFormat audioFormat;
   private VTAudioSystem system;

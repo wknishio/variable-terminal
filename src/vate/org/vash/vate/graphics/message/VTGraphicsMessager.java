@@ -152,7 +152,7 @@ public class VTGraphicsMessager
       final Button button = new Button(" OK ");
       dialog.addKeyListener(new KeyListener()
       {
-        private volatile boolean pressed = false;
+        private boolean pressed = false;
         
         public void keyPressed(KeyEvent e)
         {
@@ -204,7 +204,7 @@ public class VTGraphicsMessager
       });
       button.addKeyListener(new KeyListener()
       {
-        private volatile boolean pressed = false;
+        private boolean pressed = false;
         
         public void keyPressed(KeyEvent e)
         {

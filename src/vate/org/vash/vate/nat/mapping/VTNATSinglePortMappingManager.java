@@ -10,15 +10,9 @@ package org.vash.vate.nat.mapping;
 //
 public class VTNATSinglePortMappingManager implements Runnable
 {
-//  private volatile boolean running;
 //  private int discoveryTime;
 //  private int intervalTime;
 //  private Thread manager;
-//  private volatile VTNATPortMapping deletedPortMapping;
-//  private volatile VTNATPortMapping currentPortMapping;
-//  private volatile VTNATPortMapping nextPortMapping;
-//  private volatile InternetGatewayDevice[] upnpDevices;
-//  private volatile InetAddress[] natpmpGateways;
 //
 //  public VTNATSinglePortMappingManager(int discoveryTime, int intervalTime)
 //  {

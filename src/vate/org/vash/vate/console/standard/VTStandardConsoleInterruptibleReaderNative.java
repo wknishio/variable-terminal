@@ -10,13 +10,9 @@ import java.util.concurrent.ThreadFactory;
 
 public class VTStandardConsoleInterruptibleReaderNative implements Runnable
 {
-  // private volatile boolean stopped;
-  private volatile boolean requested;
-  // private volatile boolean echo;
-  // private volatile boolean discard;
+  private boolean requested;
   private BufferedReader standardTerminalReader;
-  // private volatile Console systemConsole;
-  private volatile BlockingQueue<String> buffer;
+  private BlockingQueue<String> buffer;
   // private static final String ANSIDetectionPattern =
   // "(\\u001B)(\\[)([^R])*([R])";
   private Executor executor;

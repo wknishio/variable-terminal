@@ -10,7 +10,7 @@ import org.vash.vate.task.VTTask;
 
 public class VTServerNetworkInterfaceResolver extends VTTask
 {
-  private volatile boolean finished;
+  private boolean finished;
   private StringBuilder message;
   private VTServerSession session;
   private static Method getHardwareAddress;

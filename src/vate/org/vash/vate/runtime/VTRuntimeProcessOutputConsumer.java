@@ -9,7 +9,7 @@ public class VTRuntimeProcessOutputConsumer implements Runnable
 {
   private static final int resultBufferSize = VT.VT_REDUCED_BUFFER_SIZE_BYTES;
   private boolean verbose;
-  private volatile boolean running;
+  private boolean running;
   private int readChars;
   private final char[] resultBuffer = new char[resultBufferSize];
   private InputStreamReader in;

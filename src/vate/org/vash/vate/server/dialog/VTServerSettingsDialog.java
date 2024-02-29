@@ -63,7 +63,6 @@ public class VTServerSettingsDialog extends Dialog
   private Runnable application;
   private Frame owner;
   
-  // private volatile boolean opened;
   // private Button okButton;
   private static Method setIconImage;
   

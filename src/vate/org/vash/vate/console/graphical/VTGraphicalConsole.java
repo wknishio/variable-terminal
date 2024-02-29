@@ -29,7 +29,6 @@ import org.vash.vate.stream.filter.VTDoubledOutputStream;
 
 public class VTGraphicalConsole implements VTConsoleImplementation
 {
-  // private static volatile boolean showing;
   public static final char VT_VK_LEFT = '\uFFFF';
   public static final char VT_VK_UP = '\uFFFE';
   public static final char VT_VK_DOWN = '\uFFFD';
@@ -45,29 +44,23 @@ public class VTGraphicalConsole implements VTConsoleImplementation
   private static final int maxCharactersCount = (maxLines * totalCharactersPerLine) - 1;
   // public static final int maxTerminalCharactersCount = (maxLines *
   // maxCharactersPerLine);
-  public static volatile boolean ignoreClose;
-  private static volatile boolean split;
-  // private static volatile boolean bright;
-  private static volatile boolean readingInput;
-  private static volatile boolean updatingTerminal;
-  private static volatile boolean flushInterrupted;
-  // private static volatile boolean frameIconified;
-  private static volatile boolean replaceActivated;
-  private static volatile boolean changedTerminal;
-  // private static volatile int foregroundColor;
-  // private static volatile int backgroundColor;
+  public static boolean ignoreClose;
+  private static boolean split;
+  private static boolean readingInput;
+  private static boolean updatingTerminal;
+  private static boolean flushInterrupted;
+  private static boolean replaceActivated;
+  private static boolean changedTerminal;
   // private static final int replaceCharacterCountLimit = maxCharacterCount -
   // totalCharactersPerLine;
-  // private static volatile int totalTextSize;
-  private static volatile int totalCharactersCount;
-  private static volatile int caretRecoilCount;
-  private static volatile int lineCount;
-  // private static volatile int overwriteLineCount;
-  private static volatile int overwriteCharactersCount;
-  private static volatile int returnCharactersCount;
-  private static volatile int charactersInLineCount;
-  private static volatile int deletedLastLinesCount;
-  private static volatile int deleteLaterCharactersCount;
+  private static int totalCharactersCount;
+  private static int caretRecoilCount;
+  private static int lineCount;
+  private static int overwriteCharactersCount;
+  private static int returnCharactersCount;
+  private static int charactersInLineCount;
+  private static int deletedLastLinesCount;
+  private static int deleteLaterCharactersCount;
   private static Object inputSynchronizer;
   private static Object outputSynchronizer;
   private static Object updateSynchronizer;
@@ -94,7 +87,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
   private static VTGraphicalConsoleMouseListener mouseListener;
   private static VTGraphicalConsoleDropTargetListener dropTargetListener;
   private static VTGraphicalConsoleWindowListener windowListener;
-  private static volatile boolean remoteIcon = false;
+  private static boolean remoteIcon = false;
   private static UpdateTask updateTask = new UpdateTask();
   private static VTConsoleBooleanToggleNotify notifyFlushInterrupted;
   private static VTConsoleBooleanToggleNotify notifyReplaceInput;
@@ -238,11 +231,11 @@ public class VTGraphicalConsole implements VTConsoleImplementation
   
   private static class UpdateTask implements Runnable
   {
-    private volatile boolean running = true;
-    private volatile boolean updated = false;
-    private volatile boolean caret = false;
-    private volatile int start = 0;
-    private volatile int end = 0;
+    private boolean running = true;
+    private boolean updated = false;
+    private boolean caret = false;
+    private int start = 0;
+    private int end = 0;
     
     public void start()
     {

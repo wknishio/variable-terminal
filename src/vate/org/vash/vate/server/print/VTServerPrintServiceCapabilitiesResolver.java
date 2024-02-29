@@ -8,8 +8,8 @@ import org.vash.vate.task.VTTask;
 
 public class VTServerPrintServiceCapabilitiesResolver extends VTTask
 {
-  private volatile boolean finished;
-  private volatile int number;
+  private boolean finished;
+  private int number;
   private VTServerSession session;
   
   public VTServerPrintServiceCapabilitiesResolver(VTServerSession session)

@@ -15,8 +15,6 @@ public class VTGraphicsModeClientRemoteInterfaceMouseMoveListener implements Mou
 {
   private VTGraphicsModeClientWriter writer;
   private VTAWTControlEvent untyped;
-  //private volatile boolean ignoreNextEvent;
-  //private volatile boolean ignored = false;
   
   public VTGraphicsModeClientRemoteInterfaceMouseMoveListener(VTGraphicsModeClientWriter writer)
   {

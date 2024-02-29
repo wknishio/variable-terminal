@@ -9,7 +9,7 @@ import org.vash.vate.task.VTTask;
 
 public class VTServerSessionListViewer extends VTTask
 {
-  private volatile boolean finished;
+  private boolean finished;
   private VTServerSession session;
   private StringBuilder message;
   

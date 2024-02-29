@@ -18,8 +18,8 @@ import org.vash.vate.server.connection.VTServerConnection;
 
 public class VTGraphicsModeServerReader implements Runnable
 {
-  private volatile boolean stopped;
-  private volatile boolean readOnly;
+  private boolean stopped;
+  private boolean readOnly;
   private VTServerConnection connection;
   private VTGraphicsModeServerSession session;
   private VTAWTControlEvent lastEvent;

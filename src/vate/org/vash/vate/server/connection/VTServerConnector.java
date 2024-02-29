@@ -20,9 +20,9 @@ import org.vash.vate.socket.VTProxy.VTProxyType;
 
 public class VTServerConnector implements Runnable
 {
-  private volatile boolean passive;
-  private volatile boolean connecting = false;
-  private volatile boolean running = true;
+  private boolean passive;
+  private boolean connecting = false;
+  private boolean running = true;
   private String hostAddress;
   private Integer hostPort;
   private Integer natPort;

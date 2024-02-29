@@ -71,8 +71,8 @@ public class VTClientConnection
     }
   }
   
-  private volatile boolean connected = false;
-  private volatile boolean closed = true;
+  private boolean connected = false;
+  private boolean closed = true;
   
   private int encryptionType;
   private byte[] encryptionKey;

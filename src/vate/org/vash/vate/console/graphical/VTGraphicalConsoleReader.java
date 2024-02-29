@@ -9,8 +9,8 @@ import org.vash.vate.runtime.VTRuntimeExit;
 public class VTGraphicalConsoleReader
 {
   // maybe: advanced command line editing capabilities
-  private static volatile boolean echo = false;
-  private static volatile boolean readingLine = false;
+  private static boolean echo = false;
+  private static boolean readingLine = false;
   private static final int commandHistoryMaxSize = 100;
   private static int commandHistoryPosition;
   private static int key;
@@ -18,7 +18,7 @@ public class VTGraphicalConsoleReader
   private static StringBuilder currentLineBuffer = new StringBuilder("");
   private static List<String> commandHistory = new ArrayList<String>();
   private static List<String> pendingLineBuffer = new ArrayList<String>();
-  private static volatile Thread currentThread;
+  private static Thread currentThread;
   /* static { commandHistory.add(""); } */
   
   public static boolean readingLine()

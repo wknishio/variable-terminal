@@ -2,11 +2,8 @@ package org.vash.vate.runtime;
 
 public class VTRuntimeProcessTimeoutKill implements Runnable
 {
-  private volatile boolean running;
-  //private volatile long last = 0;
-  //private volatile long current = 0;
-  //private volatile long elapsed = 0;
-  private volatile long timeout;
+  private boolean running;
+  private long timeout;
   // private Thread thread;
   private VTRuntimeProcess process;
   

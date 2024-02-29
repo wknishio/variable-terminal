@@ -16,7 +16,7 @@ import org.vash.vate.runtime.VTRuntimeExit;
 
 public class VTGraphicalConsoleKeyListener implements KeyListener
 {
-  private volatile boolean scrolled;
+  private boolean scrolled;
   private Clipboard systemClipboard;
   private PopupMenu popupMenu;
   

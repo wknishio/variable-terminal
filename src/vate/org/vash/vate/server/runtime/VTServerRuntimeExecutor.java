@@ -15,7 +15,7 @@ import com.martiansoftware.jsap.CommandLineTokenizer;
 
 public class VTServerRuntimeExecutor extends VTTask
 {
-  private volatile boolean finished;
+  private boolean finished;
   private boolean found;
   private int i;
   /* private int x; private int y; private int z; */
