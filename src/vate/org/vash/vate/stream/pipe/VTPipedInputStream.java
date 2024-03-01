@@ -6,7 +6,7 @@ import java.io.IOException;
 
 public final class VTPipedInputStream extends InputStream
 {
-  private static final int DEFAULT_BUFFER_SIZE = 8192;
+  //private static final int DEFAULT_BUFFER_SIZE = 8192;
   
   private VTPipedOutputStream source;
   private byte[] circBuf;
@@ -26,14 +26,14 @@ public final class VTPipedInputStream extends InputStream
     this.wOffset = 0;
   }
   
-  public VTPipedInputStream()
-  {
-    this(DEFAULT_BUFFER_SIZE);
-  }
+//  public VTPipedInputStream()
+//  {
+//    this(DEFAULT_BUFFER_SIZE);
+//  }
   
-  public VTPipedInputStream(VTPipedOutputStream source) throws IOException
+  public VTPipedInputStream(VTPipedOutputStream source, int bufferSize) throws IOException
   {
-    this();
+    this(bufferSize);
     connect(source);
   }
   

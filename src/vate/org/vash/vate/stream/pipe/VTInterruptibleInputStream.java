@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.Executor;
 
+import org.vash.vate.VT;
+
 public final class VTInterruptibleInputStream extends InputStream
 {
   private VTInterruptibleStreamRedirector redirector;
@@ -13,7 +15,7 @@ public final class VTInterruptibleInputStream extends InputStream
   
   public VTInterruptibleInputStream(InputStream source, Executor executor)
   {
-    this.in = new VTPipedInputStream();
+    this.in = new VTPipedInputStream(VT.VT_REDUCED_BUFFER_SIZE_BYTES);
     this.out = new VTPipedOutputStream();
     try
     {
@@ -30,7 +32,7 @@ public final class VTInterruptibleInputStream extends InputStream
   
   public VTInterruptibleInputStream(InputStream source)
   {
-    this.in = new VTPipedInputStream();
+    this.in = new VTPipedInputStream(VT.VT_REDUCED_BUFFER_SIZE_BYTES);
     this.out = new VTPipedOutputStream();
     try
     {

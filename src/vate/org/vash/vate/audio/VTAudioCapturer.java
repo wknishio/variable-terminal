@@ -370,7 +370,7 @@ public class VTAudioCapturer
             frameStream.writeUnsignedShort(encodedFrameSize);
             frameStream.write(outputBuffer, 0, encodedFrameSize);
           }
-          for (VTLittleEndianOutputStream out : streams)
+          for (VTLittleEndianOutputStream out : streams.toArray(new VTLittleEndianOutputStream[] {}))
           {
             try
             {
@@ -424,7 +424,7 @@ public class VTAudioCapturer
             frameStream.writeUnsignedShort(encodedFrameSize);
             frameStream.write(outputBuffer, 0, encodedFrameSize);
           }
-          for (VTLittleEndianOutputStream out : streams)
+          for (VTLittleEndianOutputStream out : streams.toArray(new VTLittleEndianOutputStream[] {}))
           {
             try
             {

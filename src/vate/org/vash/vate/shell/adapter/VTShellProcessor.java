@@ -12,6 +12,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.vash.vate.VT;
 //import org.codehaus.groovy.tools.shell.Groovysh;
 //import org.codehaus.groovy.tools.shell.IO;
 import org.vash.vate.runtime.VTRuntimeProcess;
@@ -149,9 +150,9 @@ public class VTShellProcessor
     if (shellType == SHELL_TYPE_BEANSHELL)
     {
       VTPipedOutputStream pipeOut1 = new VTPipedOutputStream();
-      VTPipedInputStream pipeIn1 = new VTPipedInputStream(pipeOut1);
+      VTPipedInputStream pipeIn1 = new VTPipedInputStream(pipeOut1, VT.VT_REDUCED_BUFFER_SIZE_BYTES);
       VTPipedOutputStream pipeOut2 = new VTPipedOutputStream();
-      VTPipedInputStream pipeIn2 = new VTPipedInputStream(pipeOut2);
+      VTPipedInputStream pipeIn2 = new VTPipedInputStream(pipeOut2, VT.VT_REDUCED_BUFFER_SIZE_BYTES);
       
       shellInputStream = pipeIn1;
       shellErrorStream = pipeIn1;

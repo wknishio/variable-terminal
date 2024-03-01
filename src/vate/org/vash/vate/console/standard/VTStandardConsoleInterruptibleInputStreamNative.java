@@ -2,6 +2,7 @@ package org.vash.vate.console.standard;
 
 import java.io.IOException;
 
+import org.vash.vate.VT;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
 
@@ -17,7 +18,7 @@ public class VTStandardConsoleInterruptibleInputStreamNative extends VTStandardC
   {
     try
     {
-      this.inputPipe = new VTPipedInputStream();
+      this.inputPipe = new VTPipedInputStream(VT.VT_REDUCED_BUFFER_SIZE_BYTES);
       this.outputPipe = new VTPipedOutputStream();
       this.outputPipe.connect(inputPipe);
     }

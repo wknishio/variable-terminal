@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
+import org.vash.vate.VT;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
@@ -26,7 +27,7 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
   
   public void setOutputStream(VTLinkableDynamicMultiplexedOutputStream output) throws IOException
   {
-    VTPipedInputStream pipeSink = new VTPipedInputStream();
+    VTPipedInputStream pipeSink = new VTPipedInputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
     VTPipedOutputStream pipeSource = new VTPipedOutputStream();
     pipeSink.connect(pipeSource);
     this.out = output;

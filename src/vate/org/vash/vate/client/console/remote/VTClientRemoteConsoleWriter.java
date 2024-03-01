@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 
+import org.vash.vate.VT;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
 import org.vash.vate.console.VTConsole;
@@ -67,7 +68,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     {
       return null;
     }
-    VTPipedInputStream in = new VTPipedInputStream();
+    VTPipedInputStream in = new VTPipedInputStream(VT.VT_REDUCED_BUFFER_SIZE_BYTES);
     VTPipedOutputStream out = new VTPipedOutputStream(in);
     // source = new VTInterruptibleInputStream(in, session.getSessionThreads());
     sourceReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
