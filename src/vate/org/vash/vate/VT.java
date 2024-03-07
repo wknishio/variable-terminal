@@ -36,7 +36,7 @@ public class VT
   public static final int VT_PACKET_DATA_SIZE_BYTES = 1024 * 8;
   public static final int VT_PACKET_TOTAL_SIZE_BYTES = VT_PACKET_HEADER_SIZE_BYTES + VT_PACKET_DATA_SIZE_BYTES;
   
-  public static final int VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES = 1024 * 1024 * 4;
+  public static final int VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES = 1024 * 1024;
   public static final int VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES = 1024 * 64;
   public static final int VT_STANDARD_BUFFER_SIZE_BYTES = 1024 * 64;
   public static final int VT_COMPRESSION_BUFFER_SIZE_BYTES = 1024 * 64;
@@ -59,8 +59,8 @@ public class VT
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED = 1 << 1;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_DISABLED = 0 << 2;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED = 1 << 2;
-  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_LZ4 = 0 << 3;
-  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD = 1 << 3;
+  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_FAST = 0 << 3;
+  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY = 1 << 3;
   
   public static final int VT_CONNECTION_PROXY_NONE = 0;
   public static final int VT_CONNECTION_PROXY_SOCKS = 1;
@@ -157,20 +157,44 @@ public class VT
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16 = 66;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_4 = 67;
   
-  private static DateFormat VT_ERA_DATEFORMAT;
-  private static Calendar VT_YEAR_CALENDAR;
-  public static AudioFormat VT_AUDIO_FORMAT_DEFAULT;
-  public static AudioFormat VT_AUDIO_FORMAT_8000;
-  public static AudioFormat VT_AUDIO_FORMAT_16000;
-  public static AudioFormat VT_AUDIO_FORMAT_24000;
-  public static AudioFormat VT_AUDIO_FORMAT_32000;
-  public static AudioFormat VT_AUDIO_FORMAT_48000;
+  private static final DateFormat VT_ERA_DATEFORMAT;
+  private static final Calendar VT_YEAR_CALENDAR;
+  public static final AudioFormat VT_AUDIO_FORMAT_DEFAULT;
+  public static final AudioFormat VT_AUDIO_FORMAT_8000;
+  public static final AudioFormat VT_AUDIO_FORMAT_16000;
+  public static final AudioFormat VT_AUDIO_FORMAT_24000;
+  public static final AudioFormat VT_AUDIO_FORMAT_32000;
+  public static final AudioFormat VT_AUDIO_FORMAT_48000;
   
-  public static Map<RenderingHints.Key, Object> VT_GRAPHICS_RENDERING_HINTS;
+  public static final Map<RenderingHints.Key, Object> VT_GRAPHICS_RENDERING_HINTS;
   private static boolean initialized = false;
   
   static
   {
+    int sampleSizeInBits = 16;
+    int channels = 1;
+    boolean signed = true;
+    boolean bigEndian = false;
+    VT_AUDIO_FORMAT_8000 = new AudioFormat(8000, sampleSizeInBits, channels, signed, bigEndian);
+    VT_AUDIO_FORMAT_16000 = new AudioFormat(16000, sampleSizeInBits, channels, signed, bigEndian);
+    VT_AUDIO_FORMAT_24000 = new AudioFormat(24000, sampleSizeInBits, channels, signed, bigEndian);
+    VT_AUDIO_FORMAT_32000 = new AudioFormat(32000, sampleSizeInBits, channels, signed, bigEndian);
+    VT_AUDIO_FORMAT_48000 = new AudioFormat(48000, sampleSizeInBits, channels, signed, bigEndian);
+    VT_AUDIO_FORMAT_DEFAULT = VT_AUDIO_FORMAT_16000;
+    
+    VT_GRAPHICS_RENDERING_HINTS = new LinkedHashMap<RenderingHints.Key, Object>();
+    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
+    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
+    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
+    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
+    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+    VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
+    
+    VT_ERA_DATEFORMAT = new SimpleDateFormat("G", Locale.ENGLISH);
+    VT_YEAR_CALENDAR = Calendar.getInstance();
+    
     if (!initialized)
     {
       initialize();
@@ -180,6 +204,7 @@ public class VT
   public static void initialize()
   {
     VTGlobalTextStyleManager.checkScaling();
+    
     try
     {
       Toolkit.getDefaultToolkit().setDynamicLayout(false);
@@ -188,6 +213,7 @@ public class VT
     {
       
     }
+    
     ImageIO.setUseCache(false);
     disableAccessWarnings();
     System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
@@ -207,52 +233,6 @@ public class VT
         String loggerName = loggerNames.nextElement();
         logManager.getLogger(loggerName).setLevel(Level.OFF);
       }
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    
-    try
-    {
-      VT_ERA_DATEFORMAT = new SimpleDateFormat("G", Locale.ENGLISH);
-      VT_YEAR_CALENDAR = Calendar.getInstance();
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    
-    try
-    {
-      // float sampleRate = 8000;
-      int sampleSizeInBits = 16;
-      int channels = 1;
-      boolean signed = true;
-      boolean bigEndian = false;
-      VT_AUDIO_FORMAT_8000 = new AudioFormat(8000, sampleSizeInBits, channels, signed, bigEndian);
-      VT_AUDIO_FORMAT_16000 = new AudioFormat(16000, sampleSizeInBits, channels, signed, bigEndian);
-      VT_AUDIO_FORMAT_24000 = new AudioFormat(24000, sampleSizeInBits, channels, signed, bigEndian);
-      VT_AUDIO_FORMAT_32000 = new AudioFormat(32000, sampleSizeInBits, channels, signed, bigEndian);
-      VT_AUDIO_FORMAT_48000 = new AudioFormat(48000, sampleSizeInBits, channels, signed, bigEndian);
-      VT_AUDIO_FORMAT_DEFAULT = VT_AUDIO_FORMAT_16000;
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    
-    try
-    {
-      VT_GRAPHICS_RENDERING_HINTS = new LinkedHashMap<RenderingHints.Key, Object>();
-      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
-      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
-      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
-      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
-      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-      VT_GRAPHICS_RENDERING_HINTS.put(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_OFF);
     }
     catch (Throwable t)
     {

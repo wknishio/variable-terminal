@@ -35,7 +35,7 @@ public final class NanoThrottle {
   private double maxPermits;
   private double stableIntervalNanos;
   private long nextFreeTicketNanos;
-  private Object sleepObject = new Object();
+  //private Object sleepObject = new Object();
 
   public NanoThrottle(final double permitsPerSecond, final double maxBurstSeconds, final boolean fair) {
     if (permitsPerSecond <= 0.0 || !isFinite(permitsPerSecond)) {
@@ -106,7 +106,7 @@ public final class NanoThrottle {
    * {@inheritDoc}
    */
   
-  public final double acquire(final int permits) throws InterruptedException {
+  public final double acquire(final int permits, final Object sleepObject) throws InterruptedException {
     final long waitDuration = acquireDelayDuration(permits);
     if (waitDuration > 0)
     {
@@ -147,7 +147,7 @@ public final class NanoThrottle {
    * {@inheritDoc}
    */
   
-  public final boolean tryAcquire(final int permits, final long timeout, final TimeUnit unit)
+  public final boolean tryAcquire(final int permits, final long timeout, final TimeUnit unit, final Object sleepObject)
       throws InterruptedException {
     final long waitDuration = tryAcquireDelayDuration(permits, timeout, unit);
     if (waitDuration < 0) {
@@ -281,7 +281,7 @@ public final class NanoThrottle {
     return stableIntervalNanos;
   }
   
-  public void wakeAllWaitingThreads()
+  public void wakeAllWaitingThreads(final Object sleepObject)
   {
   	synchronized (sleepObject)
   	{

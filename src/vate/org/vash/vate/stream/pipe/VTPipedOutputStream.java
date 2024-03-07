@@ -31,34 +31,23 @@ public final class VTPipedOutputStream extends OutputStream
     this.sink = sink;
   }
   
-  public synchronized final void write(int b) throws IOException
+  public final void write(int b) throws IOException
   {
     sink.put(b);
   }
   
-  public synchronized final void write(byte b[], int off, int len) throws IOException
+  public final void write(byte b[], int off, int len) throws IOException
   {
     sink.put(b, off, len);
   }
   
-  public synchronized final void flush() throws IOException
+  public final void flush() throws IOException
   {
-    if (sink != null)
-    {
-      sink.flush();
-    }
+//    sink.flush();
   }
   
-  public synchronized final void close() throws IOException
+  public final void close() throws IOException
   {
-//		try
-//		{
-//			flush();
-//		}
-//		catch (Throwable t)
-//		{
-//			
-//		}
     sink.eof();
   }
 }

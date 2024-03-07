@@ -1314,16 +1314,7 @@ public class VTClientConfigurationDialog extends Dialog
   public void execute()
   {
     update();
-    // close();
-//		VTConsole.println("");
-//		try
-//		{
-//			VTConsole.interruptReadLine();
-//		}
-//		catch (Throwable t)
-//		{
-//			
-//		}
+    close();
     if (application instanceof VTClient)
     {
       VTClient client = (VTClient) application;
@@ -1361,47 +1352,10 @@ public class VTClientConfigurationDialog extends Dialog
         // VTConsole.println("");
       }
     }
-    close();
-//		VTConsole.println("");
-//		try
-//		{
-//			VTConsole.interruptReadLine();
-//		}
-//		catch (Throwable t)
-//		{
-//			
-//		}
-    // try
-    // {
-    // if (VTConsole.isReadingLine())
-    // {
-    // VTConsole.println("");
-    // }
-    // }
-    // catch (Throwable t)
-    // {
-    //
-    // }
   }
   
   public void close()
   {
-    if (!isVisible())
-    {
-//			synchronized (this)
-//			{
-//				try
-//				{
-//					opened = false;
-//					notifyAll();
-//				}
-//				catch (Throwable t)
-//				{
-//					
-//				}
-//			}
-      return;
-    }
     try
     {
       setVisible(false);
@@ -1412,82 +1366,12 @@ public class VTClientConfigurationDialog extends Dialog
     }
     try
     {
-      // dispose();
+      //dispose();
     }
     catch (Throwable t)
     {
       
     }
-//		try
-//		{
-//			if (this.getOwner() instanceof VTGraphicalConsoleFrame)
-//			{
-//				VTGraphicalConsole.deiconifyFrame();
-//			}
-//		}
-//		catch (Throwable t)
-//		{
-//			
-//		}
-//		EventQueue.invokeLater(new Runnable()
-//		{
-//			public void run()
-//			{
-//				if (!isVisible())
-//				{
-//					return;
-//				}
-//				try
-//				{
-//					setVisible(false);
-//				}
-//				catch (Throwable t)
-//				{
-//					
-//				}
-//				try
-//				{
-//					dispose();
-//				}
-//				catch (Throwable t)
-//				{
-//					
-//				}
-//			}
-//		});
-    
-//		final Object sync = this;
-//		EventQueue.invokeLater(new Runnable()
-//		{
-//			public void run()
-//			{
-//				synchronized (sync)
-//				{
-//					try
-//					{
-//						notifyAll();
-//					}
-//					catch (Throwable t)
-//					{
-//						
-//					}
-//				}
-//			}	
-//		});
-    
-//		synchronized (this)
-//		{
-//			try
-//			{
-//				opened = false;
-//				notifyAll();
-//			}
-//			catch (Throwable t)
-//			{
-//				
-//			}
-//		}
-    // VTTerminal.interruptReadLine();
   }
   
   /*

@@ -1,7 +1,5 @@
 package org.vash.vate.client.filetransfer;
 
-import java.io.IOException;
-
 public class VTFileTransferClientSessionHandler implements Runnable
 {
   private VTFileTransferClient client;
@@ -27,13 +25,12 @@ public class VTFileTransferClientSessionHandler implements Runnable
   {
     try
     {
-      // session.getClient().getConnection().resetFileTransferStreams();
+      session.getClient().getConnection().resetFileTransferStreams();
       session.startSession();
       session.getTransaction().run();
       session.endSession();
-      session.getClient().getConnection().resetFileTransferStreams();
     }
-    catch (IOException e)
+    catch (Throwable e)
     {
       
     }

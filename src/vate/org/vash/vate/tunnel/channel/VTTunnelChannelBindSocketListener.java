@@ -184,8 +184,8 @@ public class VTTunnelChannelBindSocketListener implements Runnable
               String socksPassword = channel.getSocksPassword();
               if (socksUsername == null || socksPassword == null || socksUsername.length() == 0 || socksPassword.length() == 0)
               {
-                socksUsername = "*";
-                socksPassword = "*" + SESSION_SEPARATOR + "*";
+                socksUsername = "";
+                socksPassword = "";
               }
               // request message sent
               channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));

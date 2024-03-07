@@ -48,6 +48,7 @@ public class VTGraphicsModeClientSessionHandler implements Runnable
   {
     try
     {
+      session.getSession().getConnection().resetGraphicsModeStreams();
       if (session.verifySession())
       {
         session.receiveInitialScreenSize();
@@ -60,22 +61,9 @@ public class VTGraphicsModeClientSessionHandler implements Runnable
     }
     catch (Throwable e)
     {
-      // VTTerminal.setSystemOut();
-      // VTTerminal.setSystemErr();
-      // e.printStackTrace();
-    }
-    try
-    {
-      session.getSession().getConnection().resetGraphicsModeStreams();
-    }
-    catch (Throwable e)
-    {
-      // VTTerminal.setSystemOut();
-      // VTTerminal.setSystemErr();
       // e.printStackTrace();
     }
     System.runFinalization();
     System.gc();
-    // VTTerminal.print("\nVT>Remote graphics link stopped!\nVT>");
   }
 }

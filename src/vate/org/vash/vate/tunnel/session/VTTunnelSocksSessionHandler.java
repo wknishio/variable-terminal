@@ -29,7 +29,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
     this.session = session;
     this.channel = channel;
     this.proxy = proxy;
-    if (socksUsername != null && socksPassword != null)
+    if (socksUsername != null && socksPassword != null && socksUsername.length() > 0 && socksPassword.length() > 0)
     {
       this.validation = new VTSocksSingleUserValidation(socksUsername, socksPassword);
     }

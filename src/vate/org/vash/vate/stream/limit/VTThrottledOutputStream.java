@@ -10,19 +10,19 @@ public final class VTThrottledOutputStream extends FilterOutputStream
 {
   private final NanoThrottle throttler;
   
-  public VTThrottledOutputStream(OutputStream out, double bytesPerSecond)
+  public VTThrottledOutputStream(OutputStream out, NanoThrottle throttler)
   {
     super(out);
-    this.throttler = new NanoThrottle(bytesPerSecond, (1d / 8d), true);
+    this.throttler = throttler;
   }
   
   public final void write(int b) throws IOException
   {
     try
     {
-      throttler.acquire(1);
+      throttler.acquire(1, this);
     }
-    catch (InterruptedException e)
+    catch (Throwable t)
     {
       
     }
@@ -33,9 +33,9 @@ public final class VTThrottledOutputStream extends FilterOutputStream
   {
     try
     {
-      throttler.acquire(len);
+      throttler.acquire(len, this);
     }
-    catch (InterruptedException e)
+    catch (Throwable t)
     {
       
     }
@@ -52,15 +52,17 @@ public final class VTThrottledOutputStream extends FilterOutputStream
     return throttler.getRate();
   }
   
-  public final void wakeAllWaitingThreads()
+  public final void close()
   {
-    throttler.wakeAllWaitingThreads();
-  }
-  
-  public final void close() throws IOException
-  {
+    try
+    {
+      out.close();
+    }
+    catch (Throwable t)
+    {
+      
+    }
     throttler.setRate(Long.MAX_VALUE);
-    throttler.wakeAllWaitingThreads();
-    out.close();
+    throttler.wakeAllWaitingThreads(this);
   }
 }

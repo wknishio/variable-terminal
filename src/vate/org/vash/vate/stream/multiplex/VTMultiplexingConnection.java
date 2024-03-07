@@ -54,7 +54,7 @@ public class VTMultiplexingConnection
     }
   }
   
-  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(short type, Object link)
+  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, Object link)
   {
     if (link instanceof Integer)
     {
@@ -65,7 +65,7 @@ public class VTMultiplexingConnection
     return dataOutputStream.linkOutputStream(type, link);
   }
   
-  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(short type, int number, Object link)
+  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number, Object link)
   {
     VTLinkableDynamicMultiplexedOutputStream stream = dataOutputStream.linkOutputStream(type, number, link);
     return stream;
@@ -87,7 +87,7 @@ public class VTMultiplexingConnection
   // return stream;
   // }
   
-  public VTLinkableDynamicMultiplexedInputStream getInputStream(short type, Object link)
+  public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, Object link)
   {
     if (link instanceof Integer)
     {
@@ -98,7 +98,7 @@ public class VTMultiplexingConnection
     return dataInputStream.linkInputStream(type, link);
   }
   
-  public VTLinkableDynamicMultiplexedInputStream getInputStream(short type, int number, Object link)
+  public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number, Object link)
   {
     VTLinkableDynamicMultiplexedInputStream stream = dataInputStream.linkInputStream(type, number, link);
     return stream;

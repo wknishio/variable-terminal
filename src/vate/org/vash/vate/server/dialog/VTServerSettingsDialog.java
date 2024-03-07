@@ -1365,7 +1365,7 @@ public class VTServerSettingsDialog extends Dialog
   public void execute()
   {
     update();
-    // close();
+    close();
     // VTConsole.println("");
     try
     {
@@ -1395,27 +1395,11 @@ public class VTServerSettingsDialog extends Dialog
         server.setSkipConfiguration(true);
       }
     }
-    close();
+    
   }
   
   public void close()
   {
-//		if (!isVisible())
-//		{
-//			synchronized (this)
-//			{
-//				try
-//				{
-//					opened = false;
-//					notifyAll();
-//				}
-//				catch (Throwable t)
-//				{
-//					
-//				}
-//			}
-//			return;
-//		}
     try
     {
       setVisible(false);
@@ -1426,84 +1410,12 @@ public class VTServerSettingsDialog extends Dialog
     }
     try
     {
-      // dispose();
+      //dispose();
     }
     catch (Throwable t)
     {
       
     }
-//		try
-//		{
-//			if (this.getOwner() != null)
-//			{
-//				this.getOwner().requestFocus();
-//			}
-//		}
-//		catch (Throwable t)
-//		{
-//			
-//		}
-//		EventQueue.invokeLater(new Runnable()
-//		{
-//			public void run()
-//			{
-//				if (!isVisible())
-//				{
-//					return;
-//				}
-//				try
-//				{
-//					setVisible(false);
-//				}
-//				catch (Throwable t)
-//				{
-//					
-//				}
-//				try
-//				{
-//					dispose();
-//				}
-//				catch (Throwable t)
-//				{
-//					
-//				}
-//			}
-//		});
-    
-//		final Object sync = this;
-//		EventQueue.invokeLater(new Runnable()
-//		{
-//			public void run()
-//			{
-//				synchronized (sync)
-//				{
-//					try
-//					{
-//						notifyAll();
-//					}
-//					catch (Throwable t)
-//					{
-//						
-//					}
-//				}
-//			}	
-//		});
-    
-//		synchronized (this)
-//		{
-//			try
-//			{
-//				opened = false;
-//				notifyAll();
-//			}
-//			catch (Throwable t)
-//			{
-//				
-//			}
-//		}
-    
-    // notify();
-    // VTTerminal.interruptReadLine();
   }
   
   /*

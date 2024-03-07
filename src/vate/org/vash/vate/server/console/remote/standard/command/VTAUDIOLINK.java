@@ -137,8 +137,6 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
           }
         }
         
-        connection.resetAudioStreams();
-        
         boolean ok = true;
         VTAudioSystem formatAudioSystem = session.getServer().getAudioSystem(currentAudioFormat);
         if (!formatAudioSystem.isRunning())
@@ -166,6 +164,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
           connection.getResultWriter().flush();
           connection.getAudioControlOutputStream().write(1);
           connection.getAudioControlOutputStream().flush();
+          connection.resetAudioStreams();
           formatAudioSystem.start();
         }
         else

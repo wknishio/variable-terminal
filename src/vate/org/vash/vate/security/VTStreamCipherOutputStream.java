@@ -11,7 +11,7 @@ public class VTStreamCipherOutputStream extends FilterOutputStream
 {
   private byte[] single1 = new byte[1];
   private byte[] single2 = new byte[1];
-  private byte[] output = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
+  private byte[] buffer = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
   private StreamCipher streamCipher;
   
   public VTStreamCipherOutputStream(OutputStream out, StreamCipher streamCipher)
@@ -29,22 +29,21 @@ public class VTStreamCipherOutputStream extends FilterOutputStream
   
   public void write(byte[] input) throws IOException
   {
-    int len = input.length;
-    if (output.length < len)
+    if (buffer.length < input.length)
     {
-      output = new byte[len];
+      buffer = new byte[input.length];
     }
-    streamCipher.processBytes(input, 0, len, output, 0);
-    out.write(output, 0, len);
+    streamCipher.processBytes(input, 0, input.length, buffer, 0);
+    out.write(buffer, 0, input.length);
   }
   
   public void write(byte[] input, int off, int len) throws IOException
   {
-    if (output.length < len)
+    if (buffer.length < len)
     {
-      output = new byte[len];
+      buffer = new byte[len];
     }
-    streamCipher.processBytes(input, off, len, output, 0);
-    out.write(output, 0, len);
+    streamCipher.processBytes(input, off, len, buffer, 0);
+    out.write(buffer, 0, len);
   }
 }

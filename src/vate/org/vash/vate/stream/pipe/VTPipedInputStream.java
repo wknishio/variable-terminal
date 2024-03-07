@@ -83,8 +83,9 @@ public final class VTPipedInputStream extends InputStream
     
     if (isWaitPut)
     {
-      this.notifyAll();
       isWaitPut = false;
+      this.notifyAll();
+      //this.notifyAll();
     }
     
     return b;
@@ -116,7 +117,7 @@ public final class VTPipedInputStream extends InputStream
     isWaitGet = false;
     
     int n = available();
-    n = (n > len ? len : n);
+    n = Math.min(n, len);
     
     if (rOffset < wOffset)
     {
@@ -142,8 +143,9 @@ public final class VTPipedInputStream extends InputStream
     
     if (isWaitPut)
     {
-      this.notifyAll();
       isWaitPut = false;
+      this.notifyAll();
+      //this.notifyAll();
     }
     
     return n;
@@ -164,10 +166,10 @@ public final class VTPipedInputStream extends InputStream
     this.notifyAll();
   }
   
-  public final synchronized void flush()
-  {
-    this.notifyAll();
-  }
+//  public final synchronized void flush()
+//  {
+//    this.notifyAll();
+//  }
   
   protected final synchronized void put(int b) throws IOException
   {

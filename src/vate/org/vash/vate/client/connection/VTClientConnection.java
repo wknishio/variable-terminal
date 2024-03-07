@@ -1167,15 +1167,15 @@ public class VTClientConnection
   
   public void resetGraphicsModeStreams() throws IOException
   {
-    graphicsControlInputStream.open();
     graphicsControlOutputStream.open();
+    //graphicsControlInputStream.open();
     
     graphicsDirectImageOutputStream.open();
-    graphicsDirectImageInputStream.open();
+    //graphicsDirectImageInputStream.open();
     graphicsHeavyImageOutputStream.open();
-    graphicsHeavyImageInputStream.open();
+    //graphicsHeavyImageInputStream.open();
     graphicsFastImageOutputStream.open();
-    graphicsFastImageInputStream.open();
+    //graphicsFastImageInputStream.open();
     
     graphicsControlDataInputStream.setIntputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsControlInputStream));
     graphicsControlDataOutputStream.setOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsControlOutputStream));
@@ -1214,7 +1214,7 @@ public class VTClientConnection
     // graphicsControlInputStream.removePropagated(clipboardDataInputStream);
     
     graphicsClipboardOutputStream.open();
-    graphicsClipboardInputStream.open();
+    //graphicsClipboardInputStream.open();
     
     clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
     clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
@@ -1226,7 +1226,7 @@ public class VTClientConnection
   public void resetFileTransferStreams() throws IOException
   {
     fileTransferDataOutputStream.open();
-    fileTransferDataInputStream.open();
+    //fileTransferDataInputStream.open();
   }
   
   public void closeFileTransferStreams() throws IOException
@@ -1244,7 +1244,7 @@ public class VTClientConnection
   public void resetAudioStreams() throws IOException
   {
     audioDataOutputStream.open();
-    audioDataInputStream.open();
+    //audioDataInputStream.open();
     // audioDataOutputStream = audioOutputStream;
     // audioDataInputStream = audioInputStream;
   }

@@ -15,7 +15,10 @@ import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
-import org.vash.vate.stream.limit.VTThrottlingOutputStream;
+import org.vash.vate.stream.filter.VTBufferedOutputStream;
+import org.vash.vate.stream.limit.VTThrottledOutputStream;
+
+import engineering.clientside.throttle.NanoThrottle;
 
 public final class VTLinkableDynamicMultiplexingOutputStream
 {
@@ -23,7 +26,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   private final int packetSize;
   //private final int blockSize;
   private final OutputStream original;
-  private final VTThrottlingOutputStream throttleable;
+  private final OutputStream throttled;
+  private final NanoThrottle throttler;
+  //private final OutputStream throttled;
+  //private final VTThrottlingOutputStream throttling;
   private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> bufferedChannels;
   private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> directChannels;
   private final SecureRandom packetSeed;
@@ -31,9 +37,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   public VTLinkableDynamicMultiplexingOutputStream(OutputStream out, int packetSize, SecureRandom packetSeed)
   {
     this.packetSeed = packetSeed;
+    this.throttler = new NanoThrottle(Long.MAX_VALUE, (1d / 8d), true);
     //this.packetSequencer = new VTMiddleSquareWeylSequenceDigestRandom(packetSeed);
-    this.original = out;
-    this.throttleable = new VTThrottlingOutputStream(out);
+    this.original = new VTBufferedOutputStream(out, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES, false);
+    this.throttled = new VTThrottledOutputStream(original, throttler);
 //    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
 //    this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
     this.bufferedChannels = new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
@@ -94,6 +101,14 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     if (stream != null)
     {
       stream.setLink(null);
+      if ((stream.type() & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
+      {
+        bufferedChannels.remove(stream.number());
+      }
+      else
+      {
+        directChannels.remove(stream.number());
+      }
     }
     //stream.setLink(null);
   }
@@ -102,21 +117,22 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   {
     VTLinkableDynamicMultiplexedOutputStream stream = null;
     OutputStream output = null;
-    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED) == 0)
+    boolean unlimited = ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED) != 0);
+    if (unlimited)
     {
-      output = throttleable;
+      output = original;
     }
     else
     {
-      output = original;
+      output = throttled;
     }
     if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
     {
       stream = bufferedChannels.get(number);
       if (stream != null)
       {
-        stream.type(type);
-        stream.out(output);
+        //stream.type(type);
+        stream.output(output);
         stream.control(original);
         return stream;
       }
@@ -128,8 +144,8 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       stream = directChannels.get(number);
       if (stream != null)
       {
-        stream.type(type);
-        stream.out(output);
+        //stream.type(type);
+        stream.output(output);
         stream.control(original);
         return stream;
       }
@@ -146,28 +162,61 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   
   public final void setBytesPerSecond(long bytesPerSecond)
   {
-    throttleable.setBytesPerSecond(bytesPerSecond);
+    if (bytesPerSecond > 0)
+    {
+      throttler.setRate(bytesPerSecond);
+    }
+    else
+    {
+      throttler.setRate(Long.MAX_VALUE);
+    }
   }
   
   public final long getBytesPerSecond()
   {
-    // return 0;
-    return throttleable.getBytesPerSecond();
+    long rate = (long) throttler.getRate();
+    if (rate == Long.MAX_VALUE)
+    {
+      return 0;
+    };
+    return rate;
   }
   
   public final void close() throws IOException
   {
+    throttled.close();
+    for (VTLinkableDynamicMultiplexedOutputStream stream : bufferedChannels.values().toArray(new VTLinkableDynamicMultiplexedOutputStream []{ }))
+    {
+      try
+      {
+        stream.close();
+      }
+      catch (Throwable e)
+      {
+        // e.printStackTrace();
+      }
+    }
+    for (VTLinkableDynamicMultiplexedOutputStream stream : directChannels.values().toArray(new VTLinkableDynamicMultiplexedOutputStream []{ }))
+    {
+      try
+      {
+        stream.close();
+      }
+      catch (Throwable e)
+      {
+        // e.printStackTrace();
+      }
+    }
     bufferedChannels.clear();
     directChannels.clear();
-    throttleable.close();
   }
   
-  public final void open(short type, int number) throws IOException
+  public final void open(int type, int number) throws IOException
   {
     getOutputStream(type, number).open();
   }
   
-  public final void close(short type, int number) throws IOException
+  public final void close(int type, int number) throws IOException
   {
     getOutputStream(type, number).close();
   }
@@ -192,25 +241,26 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private volatile Object link = null;
     private final int number;
     private final long seed;
-    private int type;
+    private final int type;
     private final int packetSize;
+    private final byte[] single = new byte[1];
     private final VTByteArrayOutputStream intermediateDataPacketBuffer;
     private final VTByteArrayOutputStream dataPacketBuffer;
     private final VTLittleEndianOutputStream dataPacketStream;
     private final VTByteArrayOutputStream controlPacketBuffer;
     private final VTLittleEndianOutputStream controlPacketStream;
     //private final byte[] single = new byte[1];
-    private OutputStream out;
+    private OutputStream output;
     private OutputStream control;
     private OutputStream intermediatePacketStream;
     private List<Closeable> propagated;
     private Random packetSequencer;
     
-    private VTLinkableDynamicMultiplexedOutputStream(OutputStream out, OutputStream control, int type, int number, int packetSize, SecureRandom packetSeed)
+    private VTLinkableDynamicMultiplexedOutputStream(OutputStream output, OutputStream control, int type, int number, int packetSize, SecureRandom packetSeed)
     {
       this.seed = packetSeed.nextLong();
       this.packetSequencer = new VTSplitMix64Random(this.seed);
-      this.out = out;
+      this.output = output;
       this.control = control;
       this.type = type;
       this.number = number;
@@ -235,7 +285,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       }
       else
       {
-        if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
+        if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY) != 0)
         {
           //intermediatePacketStream = VTCompressorSelector.createDirectZlibOutputStream(intermediateDataPacketBuffer);
           intermediatePacketStream = VTCompressorSelector.createDirectZstdOutputStream(intermediateDataPacketBuffer);
@@ -257,14 +307,14 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       return type;
     }
     
-    public final void type(int type)
-    {
-      this.type = type;
-    }
+//    public final void type(int type)
+//    {
+//      this.type = type;
+//    }
     
-    public final void out(OutputStream out)
+    public final void output(OutputStream out)
     {
-      this.out = out;
+      this.output = out;
     }
     
     public final void control(OutputStream control)
@@ -312,23 +362,13 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     public final void write(int data) throws IOException
     {
-      if (closed)
-      {
-        throw new IOException("OutputStream closed");
-      }
-      //byte[] single = new byte[1];
-      //single[0] = (byte) data;
-      //write(single, 0, 1);
-      writePacket(data, type, number);
+      single[0] = (byte) data;
+      write(single);
     }
     
     public final void flush() throws IOException
     {
-//      if (closed)
-//      {
-//        throw new IOException("OutputStream closed");
-//      }
-//      out.flush();
+//      output.flush();
     }
     
     public final void close() throws IOException
@@ -353,6 +393,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
           }
         }
       }
+//      if (output instanceof VTThrottledOutputStream)
+//      {
+//        output.close();
+//      }
     }
     
     public final void open() throws IOException
@@ -365,7 +409,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       writeOpenPacket(type, number);
       if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
       {
-        if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_ZSTD) != 0)
+        if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY) != 0)
         {
           //intermediatePacketStream = VTCompressorSelector.createDirectZlibOutputStream(intermediateDataPacketBuffer);
           intermediatePacketStream = VTCompressorSelector.createDirectZstdOutputStream(intermediateDataPacketBuffer);
@@ -380,6 +424,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
         intermediatePacketStream = intermediateDataPacketBuffer;
       }
       packetSequencer = new VTSplitMix64Random(seed);
+//      if (output instanceof VTThrottledOutputStream)
+//      {
+//        ((VTThrottledOutputStream) output).open();
+//      }
     }
     
     public final void addPropagated(Closeable propagated)
@@ -392,21 +440,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       this.propagated.remove(propagated);
     }
     
-    private synchronized final void writePacket(int data, int type, int number) throws IOException
-    {
-      dataPacketBuffer.reset();
-      intermediateDataPacketBuffer.reset();
-      dataPacketStream.writeLong(packetSequencer.nextLong());
-      dataPacketStream.writeByte(type);
-      dataPacketStream.writeSubInt(number);
-      intermediatePacketStream.write(data);
-      intermediatePacketStream.flush();
-      dataPacketStream.writeInt(intermediateDataPacketBuffer.count());
-      dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
-      out.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
-      out.flush();
-    }
-    
     private synchronized final void writePacket(byte[] data, int offset, int length, int type, int number) throws IOException
     {
       dataPacketBuffer.reset();
@@ -414,12 +447,13 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       dataPacketStream.writeLong(packetSequencer.nextLong());
       dataPacketStream.writeByte(type);
       dataPacketStream.writeSubInt(number);
+      //dataPacketStream.writeInt(length);
       intermediatePacketStream.write(data, offset, length);
       intermediatePacketStream.flush();
       dataPacketStream.writeInt(intermediateDataPacketBuffer.count());
       dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
-      out.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
-      out.flush();
+      output.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
+      output.flush();
     }
     
     private synchronized final void writeClosePacket(int type, int number) throws IOException

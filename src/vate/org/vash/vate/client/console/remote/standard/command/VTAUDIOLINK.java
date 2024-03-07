@@ -177,8 +177,6 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
           }
         }
         
-        connection.resetAudioStreams();
-        
         boolean ok = formatAudioSystem.initialize(currentAudioFormat);
         if (!ok)
         {
@@ -214,6 +212,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
         connection.getAudioControlOutputStream().flush();
         if (connection.getAudioControlInputStream().read() == 1)
         {
+          connection.resetAudioStreams();
           formatAudioSystem.start();
         }
         else

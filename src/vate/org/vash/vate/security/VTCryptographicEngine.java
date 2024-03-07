@@ -1,6 +1,4 @@
 package org.vash.vate.security;
-
-import java.io.BufferedInputStream;
 //import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -324,13 +322,13 @@ public class VTCryptographicEngine
     if (decryptionCipherBC != null)
     {
       //System.out.println("encrypted!");
-      return new BufferedInputStream(new VTStreamCipherInputStream(encrypted, decryptionCipherBC), VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
-      //return new VTStreamCipherInputStream(encrypted, decryptionCipherBC);
+      //return new BufferedInputStream(new VTStreamCipherInputStream(encrypted, decryptionCipherBC), VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
+      return new VTStreamCipherInputStream(encrypted, decryptionCipherBC);
       //return new CipherInputStream(new BufferedInputStream(encrypted, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES), decryptionCipherBC, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
     }
     //System.out.println("unencrypted!");
-    return new BufferedInputStream(encrypted, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
-    //return encrypted;
+    //return new BufferedInputStream(encrypted, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
+    return encrypted;
   }
   
   public OutputStream getEncryptedOutputStream(OutputStream decrypted)

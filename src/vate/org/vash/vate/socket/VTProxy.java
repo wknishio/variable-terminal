@@ -149,33 +149,33 @@ public class VTProxy
       {
         nextSocket = new Socket();
         
-        if (currentSocket != null)
-        {
-          try
-          {
-            currentSocket.close();
-          }
-          catch (Throwable t)
-          {
-            
-          }
-        }
+//        if (currentSocket != null)
+//        {
+//          try
+//          {
+//            currentSocket.close();
+//          }
+//          catch (Throwable t)
+//          {
+//            
+//          }
+//        }
       }
       else if (proxy.getProxyType() == VTProxyType.DIRECT)
       {
         nextSocket = new Socket(Proxy.NO_PROXY);
         
-        if (currentSocket != null)
-        {
-          try
-          {
-            currentSocket.close();
-          }
-          catch (Throwable t)
-          {
-            
-          }
-        }
+//        if (currentSocket != null)
+//        {
+//          try
+//          {
+//            currentSocket.close();
+//          }
+//          catch (Throwable t)
+//          {
+//            
+//          }
+//        }
       }
       else if (proxy.getProxyType() == VTProxyType.SOCKS)
       {

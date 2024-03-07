@@ -126,7 +126,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                           session.setSocketInputStream(socketInputStream);
                           session.setSocketOutputStream(socketOutputStream);
                           session.getTunnelOutputStream().open();
-                          session.getTunnelInputStream().open();
+                          //session.getTunnelInputStream().open();
                           session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream(), session.getSocket());
                           // response message sent with ok
                           connection.getControlOutputStream().writeData(("U" + SESSION_MARK + packet[2] + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
@@ -164,24 +164,18 @@ public class VTTunnelConnectionControlThread implements Runnable
               }
               else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
               {
-                int additional = 0;
+                //int additional = 0;
                 int channelType = Integer.parseInt(parts[0]);
                 int inputNumber = Integer.parseInt(parts[1]);
                 String socksUsername = parts[2];
                 String socksPassword = parts[3];
-                if (parts.length > 4 && socksUsername.equals("*") && socksPassword.equals("*") && parts[4].equals("*"))
-                {
-                  socksUsername = null;
-                  socksPassword = null;
-                  additional = 1;
-                }
-                String proxyTypeLetter = parts[4 + additional];
-                String proxyHost = parts[5 + additional];
-                int proxyPort = Integer.parseInt(parts[6 + additional]);
-                String proxyUser = parts[7 + additional];
-                String proxyPassword = parts[8 + additional];
+                String proxyTypeLetter = parts[4];
+                String proxyHost = parts[5];
+                int proxyPort = Integer.parseInt(parts[6]);
+                String proxyUser = parts[7];
+                String proxyPassword = parts[8];
                 
-                if (parts.length > (9 + additional) && proxyUser.equals("*") && proxyPassword.equals("*") && parts[9 + additional].equals("*"))
+                if (parts.length > 9 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[9].equals("*"))
                 {
                   proxyUser = null;
                   proxyPassword = null;
@@ -225,7 +219,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                   session.setTunnelOutputStream(output);
                   session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
                   session.getTunnelOutputStream().open();
-                  session.getTunnelInputStream().open();
+                  //session.getTunnelInputStream().open();
                   session.getTunnelInputStream().setOutputStream(piped.getInputStreamSource(), piped);
                   // response message sent with ok
                   connection.getControlOutputStream().writeData(("U" + SESSION_MARK + packet[2] + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
@@ -270,7 +264,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                     session.setInputNumber(inputNumber);
                     session.setTunnelInputStream(connection.getInputStream(channelType, inputNumber, handler));
                     session.getTunnelOutputStream().open();
-                    session.getTunnelInputStream().open();
+                    //session.getTunnelInputStream().open();
                     Socket socket = session.getSocket();
                     if (socket instanceof VTTunnelPipedSocket)
                     {
@@ -285,7 +279,6 @@ public class VTTunnelConnectionControlThread implements Runnable
                     connection.getControlOutputStream().flush();
                     session.setResult(true);
                     threads.execute(handler);
-                    
                   }
                   else
                   {
