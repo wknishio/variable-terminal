@@ -404,7 +404,7 @@ public abstract class Proxy {
 		  }
 		  if (proxySocket == null)
 		  {
-		    proxySocket = new Socket();
+		    proxySocket = new Socket(java.net.Proxy.NO_PROXY);
 		    
 	      if (chainProxy == null) {
 	        if (localSocketPort > 0) {
@@ -422,6 +422,20 @@ public abstract class Proxy {
 	      proxySocket.setTcpNoDelay(true);
 	      proxySocket.setKeepAlive(true);
 	      //proxySocket.setSoTimeout(90000);
+		  }
+		  else
+		  {
+		    if (!proxySocket.isClosed() && !proxySocket.isConnected())
+		    {
+		      if (localSocketPort > 0) {
+            proxySocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), localSocketPort));
+            proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort));
+          } else {
+            proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort));
+          }
+		      proxySocket.setTcpNoDelay(true);
+	        proxySocket.setKeepAlive(true);
+		    }
 		  }
 			
 

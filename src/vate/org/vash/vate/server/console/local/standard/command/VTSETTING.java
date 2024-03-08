@@ -70,7 +70,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       }
       else if (proxyType.toUpperCase().startsWith("A"))
       {
-        message.append("\nVT>Proxy type(PT): [AUTO]");
+        message.append("\nVT>Proxy type(PT): [ANY]");
       }
       else
       {
@@ -370,7 +370,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           }
           else if (proxyType.toUpperCase().startsWith("A"))
           {
-            VTConsole.print("\rVT>Proxy type(PT): [AUTO]\nVT>");
+            VTConsole.print("\rVT>Proxy type(PT): [ANY]\nVT>");
           }
           else
           {
@@ -397,7 +397,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           }
           else if (proxyType.toUpperCase().startsWith("A"))
           {
-            VTConsole.print("\rVT>Proxy type(PT) set to: [AUTO]\nVT>");
+            VTConsole.print("\rVT>Proxy type(PT) set to: [ANY]\nVT>");
           }
           else
           {

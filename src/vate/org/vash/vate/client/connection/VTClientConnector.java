@@ -543,7 +543,7 @@ public class VTClientConnector implements Runnable
     }
     else if (proxyType.toUpperCase().startsWith("A") && proxyAddress != null && proxyPort != null)
     {
-      Socket socket = VTProxy.next(null, new VTProxy(VTProxyType.AUTO, proxyAddress, proxyPort, proxyUser, proxyPassword));
+      Socket socket = VTProxy.next(null, new VTProxy(VTProxyType.ANY, proxyAddress, proxyPort, proxyUser, proxyPassword));
       
       connection.setConnectionSocket(socket);
     }
@@ -1228,7 +1228,7 @@ public class VTClientConnector implements Runnable
         }
         if (line.toUpperCase().startsWith("Y"))
         {
-          VTConsole.print("VT>Enter proxy type(DIRECT as D, AUTO as A, SOCKS as S, HTTP as H, default:A):");
+          VTConsole.print("VT>Enter proxy type(DIRECT as D, SOCKS as S, HTTP as H, ANY as A, default:A):");
           line = VTConsole.readLine(true);
           if (line == null)
           {
@@ -1252,9 +1252,9 @@ public class VTClientConnector implements Runnable
           }
           else
           {
-            proxyType = "AUTO";
+            proxyType = "ANY";
           }
-          if ("AUTO".equals(proxyType) || "HTTP".equals(proxyType) || "SOCKS".equals(proxyType))
+          if ("ANY".equals(proxyType) || "HTTP".equals(proxyType) || "SOCKS".equals(proxyType))
           {
             VTConsole.print("VT>Enter proxy host address(default:any):");
             line = VTConsole.readLine(true);
@@ -1289,7 +1289,7 @@ public class VTClientConnector implements Runnable
               proxyPort = 1080;
             }
           }
-          else if (proxyType.equals("HTTP") || proxyType.equals("AUTO"))
+          else if (proxyType.equals("HTTP") || proxyType.equals("ANY"))
           {
             VTConsole.print("VT>Enter proxy port(from 1 to 65535, default:8080):");
             line = VTConsole.readLine(true);
@@ -1317,7 +1317,7 @@ public class VTClientConnector implements Runnable
             //useProxyAuthentication = false;
             return false;
           }
-          if (("AUTO".equals(proxyType) || "HTTP".equals(proxyType) || "SOCKS".equals(proxyType)) && proxyPort != null && hostPort != null)
+          if (("ANY".equals(proxyType) || "HTTP".equals(proxyType) || "SOCKS".equals(proxyType)) && proxyPort != null && hostPort != null)
           {
             VTConsole.print("VT>Use authentication for proxy?(Y/N, default:N):");
             line = VTConsole.readLine(true);

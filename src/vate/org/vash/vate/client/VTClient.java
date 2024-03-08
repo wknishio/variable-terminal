@@ -62,7 +62,7 @@ public class VTClient implements Runnable
   private static final String VT_CLIENT_SETTINGS_COMMENTS = 
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
   "#vate.client.connection.mode      values: default active(A), passive(P)\r\n" + 
-  "#vate.client.proxy.type           values: default none, DIRECT(D), AUTO(A), SOCKS(S), HTTP(H)\r\n" + 
+  "#vate.client.proxy.type           values: default none, DIRECT(D), SOCKS(S), HTTP(H), ANY(A)\r\n" + 
   "#vate.client.encryption.type      values: default none/RC4(R)/ISAAC(I)/SALSA(S)/HC256(H)/LEA(L)\r\n" + 
   "#vate.client.session.commands     format: cmd1*;cmd2*;cmd3*;...\r\n";
   // "#vate.client.session.lines format: file1;file2;file3;...";
@@ -1472,7 +1472,7 @@ public class VTClient implements Runnable
             }
             if (line.toUpperCase().startsWith("Y"))
             {
-              VTConsole.print("VT>Enter proxy type(DIRECT as D, AUTO as A, SOCKS as S, HTTP as H, default:A):");
+              VTConsole.print("VT>Enter proxy type(DIRECT as D, SOCKS as S, HTTP as H, ANY as A, default:A):");
               line = VTConsole.readLine(true);
               if (line == null)
               {
@@ -1496,9 +1496,9 @@ public class VTClient implements Runnable
               }
               else
               {
-                proxyType = "AUTO";
+                proxyType = "ANY";
               }
-              if ("AUTO".equals(proxyType) || "HTTP".equals(proxyType) || "SOCKS".equals(proxyType))
+              if ("ANY".equals(proxyType) || "HTTP".equals(proxyType) || "SOCKS".equals(proxyType))
               {
                 VTConsole.print("VT>Enter proxy host address(default:any):");
                 line = VTConsole.readLine(true);
@@ -1533,7 +1533,7 @@ public class VTClient implements Runnable
                   proxyPort = 1080;
                 }
               }
-              else if (proxyType.equals("HTTP") || proxyType.equals("AUTO"))
+              else if (proxyType.equals("HTTP") || proxyType.equals("ANY"))
               {
                 VTConsole.print("VT>Enter proxy port(from 1 to 65535, default:8080):");
                 line = VTConsole.readLine(true);
@@ -1561,7 +1561,7 @@ public class VTClient implements Runnable
                 //useProxyAuthentication = false;
                 hostPort = null;
               }
-              if (("AUTO".equals(proxyType) || "HTTP".equals(proxyType) || "SOCKS".equals(proxyType)) && proxyPort != null && hostPort != null)
+              if (("ANY".equals(proxyType) || "HTTP".equals(proxyType) || "SOCKS".equals(proxyType)) && proxyPort != null && hostPort != null)
               {
                 VTConsole.print("VT>Use authentication for proxy?(Y/N, default:N):");
                 line = VTConsole.readLine(true);

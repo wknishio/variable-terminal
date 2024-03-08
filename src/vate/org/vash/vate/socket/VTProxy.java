@@ -13,7 +13,7 @@ public class VTProxy
     DIRECT,
     HTTP,
     SOCKS,
-    AUTO
+    ANY
   };
   
   private VTProxyType proxyType = VTProxyType.GLOBAL;
@@ -149,33 +149,33 @@ public class VTProxy
       {
         nextSocket = new Socket();
         
-//        if (currentSocket != null)
-//        {
-//          try
-//          {
-//            currentSocket.close();
-//          }
-//          catch (Throwable t)
-//          {
-//            
-//          }
-//        }
+        if (currentSocket != null)
+        {
+          try
+          {
+            currentSocket.close();
+          }
+          catch (Throwable t)
+          {
+            
+          }
+        }
       }
       else if (proxy.getProxyType() == VTProxyType.DIRECT)
       {
         nextSocket = new Socket(Proxy.NO_PROXY);
         
-//        if (currentSocket != null)
-//        {
-//          try
-//          {
-//            currentSocket.close();
-//          }
-//          catch (Throwable t)
-//          {
-//            
-//          }
-//        }
+        if (currentSocket != null)
+        {
+          try
+          {
+            currentSocket.close();
+          }
+          catch (Throwable t)
+          {
+            
+          }
+        }
       }
       else if (proxy.getProxyType() == VTProxyType.SOCKS)
       {
@@ -207,7 +207,7 @@ public class VTProxy
         }
         nextSocket = new VTHttpProxySocket(currentSocket, proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
       }
-      else if (proxy.getProxyType() == VTProxyType.AUTO)
+      else if (proxy.getProxyType() == VTProxyType.ANY)
       {
         if (currentSocket != null && !currentSocket.isConnected())
         {

@@ -82,7 +82,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 }
                 else if (proxyTypeLetter.toUpperCase().startsWith("A"))
                 {
-                  proxyType = VTProxyType.AUTO;
+                  proxyType = VTProxyType.ANY;
                 }
                 
                 final VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
@@ -200,7 +200,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 }
                 else if (proxyTypeLetter.toUpperCase().startsWith("A"))
                 {
-                  proxyType = VTProxyType.AUTO;
+                  proxyType = VTProxyType.ANY;
                 }
                 
                 VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);

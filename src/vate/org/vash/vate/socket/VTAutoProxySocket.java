@@ -16,21 +16,13 @@ public class VTAutoProxySocket extends VTProxySocket
   public VTAutoProxySocket(Socket currentSocket, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
   {
     httpSocket = new VTHttpProxySocket(currentSocket, proxyHost, proxyPort, proxyUser, proxyPassword);
-    socksSocket = new VTSocksProxySocket(currentSocket, proxyHost, proxyPort, proxyUser, proxyPassword);
+    socksSocket = new VTSocksProxySocket(null, proxyHost, proxyPort, proxyUser, proxyPassword);
     //directSocket = new Socket(Proxy.NO_PROXY);
     //globalSocket = new Socket();
   }
   
   public void connect(SocketAddress endpoint) throws IOException
   {
-//    InetSocketAddress unresolved = null;
-//    InetSocketAddress resolved = null;
-//    
-//    if (endpoint instanceof InetSocketAddress)
-//    {
-//      unresolved = (InetSocketAddress) endpoint;
-//    }
-    
     if (proxySocket == null)
     {
       try
@@ -42,7 +34,7 @@ public class VTAutoProxySocket extends VTProxySocket
       {
         
       }
-      if (proxySocket != null)
+      if (proxySocket != null && proxySocket.isConnected() && !proxySocket.isClosed())
       {
         return;
       }
@@ -56,57 +48,10 @@ public class VTAutoProxySocket extends VTProxySocket
       {
         
       }
-      if (proxySocket != null)
+      if (proxySocket != null && proxySocket.isConnected() && !proxySocket.isClosed())
       {
         return;
       }
-      
-//      if (unresolved != null)
-//      {
-//        try
-//        {
-//          if (unresolved.isUnresolved())
-//          {
-//            resolved = new InetSocketAddress(unresolved.getHostName(), unresolved.getPort());
-//          }
-//          else
-//          {
-//            resolved = unresolved;
-//          }
-//        }
-//        catch (Throwable t)
-//        {
-//          
-//        }
-//      }
-//      
-//      try
-//      {
-//        directSocket.connect(resolved != null ? resolved : endpoint);
-//        proxySocket = socksSocket;
-//      }
-//      catch (Throwable t)
-//      {
-//        
-//      }
-//      if (proxySocket != null)
-//      {
-//        return;
-//      }
-//      
-//      try
-//      {
-//        globalSocket.connect(resolved != null ? resolved : endpoint);
-//        proxySocket = socksSocket;
-//      }
-//      catch (Throwable t)
-//      {
-//        
-//      }
-//      if (proxySocket != null)
-//      {
-//        return;
-//      }
       
       if (proxySocket == null)
       {
@@ -117,14 +62,6 @@ public class VTAutoProxySocket extends VTProxySocket
   
   public void connect(SocketAddress endpoint, int timeout) throws IOException
   {
-//    InetSocketAddress unresolved = null;
-//    InetSocketAddress resolved = null;
-//    
-//    if (endpoint instanceof InetSocketAddress)
-//    {
-//      unresolved = (InetSocketAddress) endpoint;
-//    }
-    
     if (proxySocket == null)
     {
       try
@@ -154,53 +91,6 @@ public class VTAutoProxySocket extends VTProxySocket
       {
         return;
       }
-      
-//      if (unresolved != null)
-//      {
-//        try
-//        {
-//          if (unresolved.isUnresolved())
-//          {
-//            resolved = new InetSocketAddress(unresolved.getHostName(), unresolved.getPort());
-//          }
-//          else
-//          {
-//            resolved = unresolved;
-//          }
-//        }
-//        catch (Throwable t)
-//        {
-//          
-//        }
-//      }
-//      
-//      try
-//      {
-//        directSocket.connect(resolved != null ? resolved : endpoint, timeout);
-//        proxySocket = socksSocket;
-//      }
-//      catch (Throwable t)
-//      {
-//        
-//      }
-//      if (proxySocket != null)
-//      {
-//        return;
-//      }
-//      
-//      try
-//      {
-//        globalSocket.connect(resolved != null ? resolved : endpoint, timeout);
-//        proxySocket = socksSocket;
-//      }
-//      catch (Throwable t)
-//      {
-//        
-//      }
-//      if (proxySocket != null)
-//      {
-//        return;
-//      }
       
       if (proxySocket == null)
       {

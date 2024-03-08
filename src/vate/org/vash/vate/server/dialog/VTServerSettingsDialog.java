@@ -341,9 +341,9 @@ public class VTServerSettingsDialog extends Dialog
     
     proxyTypeChoice.add("None");
     proxyTypeChoice.add("DIRECT");
-    proxyTypeChoice.add("AUTO");
     proxyTypeChoice.add("SOCKS");
     proxyTypeChoice.add("HTTP");
+    proxyTypeChoice.add("ANY");
     proxyTypeChoice.select("None");
     proxyTypeChoice.addItemListener(new ItemListener()
     {
@@ -367,9 +367,9 @@ public class VTServerSettingsDialog extends Dialog
           {
             setProxyType("HTTP");
           }
-          else if (e.getItem().equals("AUTO"))
+          else if (e.getItem().equals("ANY"))
           {
-            setProxyType("AUTO");
+            setProxyType("ANY");
           }
         }
       }
@@ -1199,7 +1199,7 @@ public class VTServerSettingsDialog extends Dialog
     }
     else if (proxy.toUpperCase().startsWith("A"))
     {
-      proxyType.setParameter("AUTO");
+      proxyType.setParameter("ANY");
       proxyHost.setEnabled(true);
       proxyPort.setEnabled(true);
       proxyUser.setEnabled(true);
