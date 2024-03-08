@@ -33,8 +33,8 @@ public class VTClientConnection
   private static byte[] VT_CLIENT_CHECK_STRING_NONE = new byte[16];
   private static byte[] VT_SERVER_CHECK_STRING_RC4 = new byte[16];
   private static byte[] VT_CLIENT_CHECK_STRING_RC4 = new byte[16];
-  private static byte[] VT_SERVER_CHECK_STRING_LEA = new byte[16];
-  private static byte[] VT_CLIENT_CHECK_STRING_LEA = new byte[16];
+  private static byte[] VT_SERVER_CHECK_STRING_ZUC256 = new byte[16];
+  private static byte[] VT_CLIENT_CHECK_STRING_ZUC256 = new byte[16];
   //private static byte[] VT_SERVER_CHECK_STRING_BLOWFISH = new byte[16];
   //private static byte[] VT_CLIENT_CHECK_STRING_BLOWFISH = new byte[16];
   private static byte[] VT_SERVER_CHECK_STRING_SALSA = new byte[16];
@@ -54,8 +54,8 @@ public class VTClientConnection
       VT_CLIENT_CHECK_STRING_NONE = (StringUtils.reverse("VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
       VT_SERVER_CHECK_STRING_RC4 = (StringUtils.reverse("VT/SERVER/RC4/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/RC4/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
       VT_CLIENT_CHECK_STRING_RC4 = (StringUtils.reverse("VT/CLIENT/RC4/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/RC4/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_LEA = (StringUtils.reverse("VT/SERVER/LEA/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/LEA/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_LEA = (StringUtils.reverse("VT/CLIENT/LEA/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/LEA/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_SERVER_CHECK_STRING_ZUC256 = (StringUtils.reverse("VT/SERVER/ZUC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ZUC256/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
+      VT_CLIENT_CHECK_STRING_ZUC256 = (StringUtils.reverse("VT/CLIENT/ZUC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/ZUC256/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
       VT_SERVER_CHECK_STRING_SALSA = (StringUtils.reverse("VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
       VT_CLIENT_CHECK_STRING_SALSA = (StringUtils.reverse("VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
       VT_SERVER_CHECK_STRING_HC256 = (StringUtils.reverse("VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
@@ -900,9 +900,9 @@ public class VTClientConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedServer, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_SERVER_CHECK_STRING_LEA)))
+    if (VTArrayComparator.arrayEquals(digestedServer, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_SERVER_CHECK_STRING_ZUC256)))
     {
-      return VT.VT_CONNECTION_ENCRYPT_LEA;
+      return VT.VT_CONNECTION_ENCRYPT_ZUC256;
     }
     
     // sha256Digester.reset();
@@ -999,9 +999,9 @@ public class VTClientConnection
         setEncryptionType(VT.VT_CONNECTION_ENCRYPT_RC4);
         return true;
       }
-      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_LEA)
+      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC256)
       {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_LEA);
+        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC256);
         return true;
       }
       // if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
@@ -1039,12 +1039,12 @@ public class VTClientConnection
         return true;
       }
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_LEA)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC256)
     {
-      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_LEA, encryptionType);
+      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_ZUC256, encryptionType);
       if (remoteEncryptionType != -1)
       {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_LEA);
+        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC256);
         return true;
       }
     }

@@ -410,7 +410,7 @@ public class VTClientConfigurationDialog extends Dialog
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC256");
     //encryptionTypeChoice.add("GRAIN");
-    encryptionTypeChoice.add("LEA");
+    encryptionTypeChoice.add("ZUC256");
     // encryptionTypeChoice.add("BLOWFISH");
     encryptionTypeChoice.select("None");
     encryptionTypeChoice.addItemListener(new ItemListener()
@@ -427,9 +427,9 @@ public class VTClientConfigurationDialog extends Dialog
           {
             setEncryptionType("RC4");
           }
-          else if (e.getItem().equals("LEA"))
+          else if (e.getItem().equals("ZUC256"))
           {
-            setEncryptionType("LEA");
+            setEncryptionType("ZUC256");
           }
           // else if (e.getItem().equals("BLOWFISH"))
           // {
@@ -1089,9 +1089,9 @@ public class VTClientConfigurationDialog extends Dialog
       encryptionType.setParameter("RC4");
       // encryptionPassword.setEnabled(true);
     }
-    else if (encryption.toUpperCase().startsWith("L"))
+    else if (encryption.toUpperCase().startsWith("Z"))
     {
-      encryptionType.setParameter("LEA");
+      encryptionType.setParameter("ZUC256");
       // encryptionPassword.setEnabled(true);
     }
     // else if (encryption.toUpperCase().startsWith("B"))

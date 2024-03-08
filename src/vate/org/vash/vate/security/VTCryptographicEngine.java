@@ -17,9 +17,8 @@ import org.bouncycastle.crypto.StreamCipher;
 import org.bouncycastle.crypto.engines.ChaChaEngine;
 import org.bouncycastle.crypto.engines.HC256Engine;
 import org.bouncycastle.crypto.engines.ISAACEngine;
-import org.bouncycastle.crypto.engines.LEAEngine;
 import org.bouncycastle.crypto.engines.VMPCKSA3Engine;
-import org.bouncycastle.crypto.modes.SICBlockCipher;
+import org.bouncycastle.crypto.engines.Zuc256Engine;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.vash.vate.VT;
@@ -78,17 +77,22 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_LEA)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC256)
     {
-      //System.out.println("VT.VT_CONNECTION_ENCRYPT_AES");
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_ZUC256");
 //      encryptionCipherBC = new SICBlockCipher(new AESFastEngine());
 //      decryptionCipherBC = new SICBlockCipher(new AESFastEngine());
-      encryptionCipherBC = new SICBlockCipher(new LEAEngine());
-      decryptionCipherBC = new SICBlockCipher(new LEAEngine());
+//      encryptionCipherBC = new SICBlockCipher(new LEAEngine());
+//      decryptionCipherBC = new SICBlockCipher(new LEAEngine());
+      encryptionCipherBC = new Zuc256Engine();
+      decryptionCipherBC = new Zuc256Engine();
       KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
       KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 16);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 16);
+//      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 16);
+//      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 16);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 25);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 25);
+
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
@@ -185,17 +189,21 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_LEA)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC256)
     {
-      //System.out.println("VT.VT_CONNECTION_ENCRYPT_AES");
+      //System.out.println("VT.VT_CONNECTION_ENCRYPT_ZUC256");
 //      encryptionCipherBC = new SICBlockCipher(new AESFastEngine());
 //      decryptionCipherBC = new SICBlockCipher(new AESFastEngine());
-      encryptionCipherBC = new SICBlockCipher(new LEAEngine());
-      decryptionCipherBC = new SICBlockCipher(new LEAEngine());
+//      encryptionCipherBC = new SICBlockCipher(new LEAEngine());
+//      decryptionCipherBC = new SICBlockCipher(new LEAEngine());
+      encryptionCipherBC = new Zuc256Engine();
+      decryptionCipherBC = new Zuc256Engine();
       KeyParameter encryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, first, second, encryptionKeys), 0, 32);
       KeyParameter decryptionKeySpec = new KeyParameter(generateKeyBLAKE3(32, second, first, encryptionKeys), 0, 32);
-      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 16);
-      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 16);
+//      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 16);
+//      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 16);
+      ParametersWithIV encryptionIvParameterSpec = new ParametersWithIV(encryptionKeySpec, generateIVBLAKE3(32, first, second, encryptionKeys), 0, 25);
+      ParametersWithIV decryptionIvParameterSpec = new ParametersWithIV(decryptionKeySpec, generateIVBLAKE3(32, second, first, encryptionKeys), 0, 25);
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }

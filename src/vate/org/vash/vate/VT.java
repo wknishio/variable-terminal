@@ -73,7 +73,7 @@ public class VT
   public static final int VT_CONNECTION_ENCRYPT_SALSA = 3;
   public static final int VT_CONNECTION_ENCRYPT_HC256 = 4;
 //  public static final int VT_CONNECTION_ENCRYPT_GRAIN = 5;
-  public static final int VT_CONNECTION_ENCRYPT_LEA = 5;
+  public static final int VT_CONNECTION_ENCRYPT_ZUC256 = 5;
   
   public static final int VT_FILE_TRANSFER_SESSION_STARTED = 0;
   public static final int VT_FILE_TRANSFER_SESSION_FINISHED = 1;
