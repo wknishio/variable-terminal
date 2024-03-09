@@ -6,12 +6,12 @@ import java.io.OutputStream;
 
 public final class VTBigEndianOutputStream extends OutputStream implements DataOutput
 {
-  private byte[] ushortBuffer;
-  private byte[] shortBuffer;
-  private byte[] charBuffer;
-  private byte[] subintBuffer;
-  private byte[] intBuffer;
-  private byte[] longBuffer;
+  private final byte[] ushortBuffer;
+  private final byte[] shortBuffer;
+  private final byte[] charBuffer;
+  private final byte[] subintBuffer;
+  private final byte[] intBuffer;
+  private final byte[] longBuffer;
   private OutputStream out;
   
   public VTBigEndianOutputStream(OutputStream out)

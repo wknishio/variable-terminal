@@ -61,6 +61,11 @@ public class SplitMix64 extends LongProvider {
     private void setSeedInternal(Long seed) {
         state = seed.longValue();
     }
+    
+    public void setSeed(long seed)
+    {
+      state = seed;
+    }
 
     /** {@inheritDoc} */
     

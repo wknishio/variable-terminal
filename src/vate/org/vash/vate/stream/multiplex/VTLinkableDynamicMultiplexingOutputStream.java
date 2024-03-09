@@ -253,13 +253,13 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private OutputStream output;
     private OutputStream control;
     private OutputStream intermediatePacketStream;
-    private List<Closeable> propagated;
-    private Random packetSequencer;
+    private final List<Closeable> propagated;
+    private final Random packetSequencer;
     
     private VTLinkableDynamicMultiplexedOutputStream(OutputStream output, OutputStream control, int type, int number, int packetSize, SecureRandom packetSeed)
     {
       this.seed = packetSeed.nextLong();
-      this.packetSequencer = new VTSplitMix64Random(this.seed);
+      this.packetSequencer = new VTSplitMix64Random(seed);
       this.output = output;
       this.control = control;
       this.type = type;
@@ -423,7 +423,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       {
         intermediatePacketStream = intermediateDataPacketBuffer;
       }
-      packetSequencer = new VTSplitMix64Random(seed);
+      packetSequencer.setSeed(seed);
 //      if (output instanceof VTThrottledOutputStream)
 //      {
 //        ((VTThrottledOutputStream) output).open();

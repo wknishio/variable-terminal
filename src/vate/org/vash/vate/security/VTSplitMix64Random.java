@@ -21,7 +21,7 @@ public class VTSplitMix64Random extends VTLongProviderRandom
   
   public void setSeed(long seed)
   {
-    
+    splitMix64.setSeed(seed);
   }
   
 }

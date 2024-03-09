@@ -281,7 +281,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       // Do NOT assume that a single read will get the entire header at once
       boolean foundHeaderEnd = false;
       final int bufsize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
-      byte[] buf = new byte[bufsize];
+      final byte[] buf = new byte[bufsize];
       int splitbyte = 0;
       int rlen = 0;
       {

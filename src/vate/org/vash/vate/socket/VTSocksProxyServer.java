@@ -60,7 +60,7 @@ public class VTSocksProxyServer implements Runnable {
 	static final int PIPE_MODE = 2;
 	static final int ABORT_MODE = 3;
 
-	static final int DEFAULT_BUF_SIZE = 8192;
+	static final int DEFAULT_BUF_SIZE = 1024 * 64;
 
 	Thread pipe_thread1, pipe_thread2;
 	long lastReadTime;
@@ -669,7 +669,7 @@ public class VTSocksProxyServer implements Runnable {
 
 	private void pipe(InputStream in, OutputStream out) throws IOException {
 		lastReadTime = System.currentTimeMillis();
-		byte[] buf = new byte[BUF_SIZE];
+		final byte[] buf = new byte[BUF_SIZE];
 		int len = 0;
 		while (len >= 0) {
 			try {

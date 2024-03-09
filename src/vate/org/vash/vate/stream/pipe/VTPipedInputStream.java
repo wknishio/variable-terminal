@@ -9,7 +9,7 @@ public final class VTPipedInputStream extends InputStream
   //private static final int DEFAULT_BUFFER_SIZE = 8192;
   
   private VTPipedOutputStream source;
-  private byte[] circBuf;
+  private final byte[] circBuf;
   private int rOffset;
   private int wOffset;
   private boolean isWaitGet;

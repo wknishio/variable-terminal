@@ -79,21 +79,21 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
   private int block1TreeDataLength;
   private int block1PixelDataLength;
   // data buffers
-  private ByteArrayOutputStream block1DataBuffer;
-  private ByteArrayOutputStream block2DataBuffer;
-  private ByteArrayOutputStream block3DataBuffer;
-  private ByteArrayOutputStream pixelDataBuffer;
-  private VTLittleEndianOutputStream pixelDataBufferStream;
+  private final ByteArrayOutputStream block1DataBuffer;
+  private final ByteArrayOutputStream block2DataBuffer;
+  private final ByteArrayOutputStream block3DataBuffer;
+  private final ByteArrayOutputStream pixelDataBuffer;
+  private final VTLittleEndianOutputStream pixelDataBufferStream;
   // preloaded data streams
-  private VTByteArrayInputStream btin = new VTByteArrayInputStream(new byte[1024]);
-  private VTByteArrayInputStream bpin = new VTByteArrayInputStream(new byte[4096 * 4]);
-  private VTLittleEndianInputStream ltin = new VTLittleEndianInputStream(btin);
-  private VTLittleEndianInputStream lpin = new VTLittleEndianInputStream(bpin);
-  private VTLittleEndianInputStream lin = new VTLittleEndianInputStream(null);
-  private VTLittleEndianOutputStream lout = new VTLittleEndianOutputStream(null);
-  private BitSet blockBitSet = new BitSet(1024 * 8);
-  private BitSet pixelBitSet = new BitSet(1024 * 8192);
-  private Rectangle transferArea = new Rectangle(0, 0, 1, 1);
+  private final VTByteArrayInputStream btin = new VTByteArrayInputStream(new byte[1024]);
+  private final VTByteArrayInputStream bpin = new VTByteArrayInputStream(new byte[4096 * 4]);
+  private final VTLittleEndianInputStream ltin = new VTLittleEndianInputStream(btin);
+  private final VTLittleEndianInputStream lpin = new VTLittleEndianInputStream(bpin);
+  private final VTLittleEndianInputStream lin = new VTLittleEndianInputStream(null);
+  private final VTLittleEndianOutputStream lout = new VTLittleEndianOutputStream(null);
+  private final BitSet blockBitSet = new BitSet(1024 * 8);
+  private final BitSet pixelBitSet = new BitSet(1024 * 8192);
+  private final Rectangle transferArea = new Rectangle(0, 0, 1, 1);
   private int m1;
   private int limitX;
   private int limitY;
@@ -107,10 +107,10 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
   
   public final void dispose()
   {
-    block1DataBuffer = null;
-    block2DataBuffer = null;
-    block3DataBuffer = null;
-    pixelDataBuffer = null;
+//    block1DataBuffer = null;
+//    block2DataBuffer = null;
+//    block3DataBuffer = null;
+//    pixelDataBuffer = null;
   }
   
   public VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII()

@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,47 +28,19 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.
 public class VTServerConnection
 {
   private static final String MAJOR_MINOR_VERSION = VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION;
-  private static byte[] VT_SERVER_CHECK_STRING_NONE = new byte[16];
-  private static byte[] VT_CLIENT_CHECK_STRING_NONE = new byte[16];
-  private static byte[] VT_SERVER_CHECK_STRING_RC4 = new byte[16];
-  private static byte[] VT_CLIENT_CHECK_STRING_RC4 = new byte[16];
-  private static byte[] VT_SERVER_CHECK_STRING_ZUC256 = new byte[16];
-  private static byte[] VT_CLIENT_CHECK_STRING_ZUC256 = new byte[16];
-  //private static byte[] VT_SERVER_CHECK_STRING_BLOWFISH = new byte[16];
-  //private static byte[] VT_CLIENT_CHECK_STRING_BLOWFISH = new byte[16];
-  private static byte[] VT_SERVER_CHECK_STRING_SALSA = new byte[16];
-  private static byte[] VT_CLIENT_CHECK_STRING_SALSA = new byte[16];
-  private static byte[] VT_SERVER_CHECK_STRING_HC256 = new byte[16];
-  private static byte[] VT_CLIENT_CHECK_STRING_HC256 = new byte[16];
-  private static byte[] VT_SERVER_CHECK_STRING_ISAAC = new byte[16];
-  private static byte[] VT_CLIENT_CHECK_STRING_ISAAC = new byte[16];
-  //private static byte[] VT_SERVER_CHECK_STRING_GRAIN = new byte[16];
-  //private static byte[] VT_CLIENT_CHECK_STRING_GRAIN = new byte[16];
   
-  static
-  {
-    try
-    {
-      VT_SERVER_CHECK_STRING_NONE = (StringUtils.reverse("VT/SERVER/NONE/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/NONE/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_NONE = (StringUtils.reverse("VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_RC4 = (StringUtils.reverse("VT/SERVER/RC4/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/RC4/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_RC4 = (StringUtils.reverse("VT/CLIENT/RC4/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/RC4/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_ZUC256 = (StringUtils.reverse("VT/SERVER/ZUC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ZUC256/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_ZUC256 = (StringUtils.reverse("VT/CLIENT/ZUC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/ZUC256/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_SALSA = (StringUtils.reverse("VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_SALSA = (StringUtils.reverse("VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_HC256 = (StringUtils.reverse("VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_HC256 = (StringUtils.reverse("VT/CLIENT/HC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/HC256/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_SERVER_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      VT_CLIENT_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      //VT_SERVER_CHECK_STRING_GRAIN = (StringUtils.reverse("VT/SERVER/GRAIN/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/GRAIN/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-      //VT_CLIENT_CHECK_STRING_GRAIN = (StringUtils.reverse("VT/CLIENT/GRAIN/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/GRAIN/" + MAJOR_MINOR_VERSION).getBytes("UTF-8");
-    }
-    catch (UnsupportedEncodingException e)
-    {
-      
-    }
-  }
+  private static final byte[] VT_SERVER_CHECK_STRING_NONE = (StringUtils.reverse("VT/SERVER/NONE/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/NONE/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_NONE = (StringUtils.reverse("VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_RC4 = (StringUtils.reverse("VT/SERVER/RC4/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/RC4/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_RC4 = (StringUtils.reverse("VT/CLIENT/RC4/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/RC4/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_ZUC256 = (StringUtils.reverse("VT/SERVER/ZUC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ZUC256/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_ZUC256 = (StringUtils.reverse("VT/CLIENT/ZUC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/ZUC256/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_SALSA = (StringUtils.reverse("VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_SALSA = (StringUtils.reverse("VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_HC256 = (StringUtils.reverse("VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_HC256 = (StringUtils.reverse("VT/CLIENT/HC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/HC256/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
   
   private boolean connected = false;
   private boolean closed = true;
@@ -78,9 +49,9 @@ public class VTServerConnection
   private byte[] encryptionKey;
   // private byte[] digestedClient;
   // private byte[] digestedServer;
-  private byte[] localNonce = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
-  private byte[] remoteNonce = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
-  private byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private final byte[] localNonce = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private final byte[] remoteNonce = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private final byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   // private byte[] paddingData = new byte[1024];
   // private MessageDigest sha256Digester;
   private VTBlake3MessageDigest blake3Digest;

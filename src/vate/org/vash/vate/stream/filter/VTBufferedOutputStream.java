@@ -7,7 +7,7 @@ import java.io.OutputStream;
 public final class VTBufferedOutputStream extends FilterOutputStream
 {
   /** The internal buffer where data is stored. */
-  protected byte buf[];
+  protected final byte[] buf;
   
   /**
    * The number of valid bytes in the buffer. This value is always in the range

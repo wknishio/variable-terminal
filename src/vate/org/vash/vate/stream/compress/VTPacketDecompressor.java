@@ -12,8 +12,8 @@ public final class VTPacketDecompressor extends OutputStream
   private static final int bufferSize = VT.VT_COMPRESSION_BUFFER_SIZE_BYTES;
   private InputStream in;
   private OutputStream out;
-  private byte[] buffer = new byte[bufferSize];
-  private byte[] single = new byte[1];
+  private final byte[] buffer = new byte[bufferSize];
+  private final byte[] single = new byte[1];
   private int readed;
   
   private VTByteArrayOutputStream outputBuffer = new VTByteArrayOutputStream(bufferSize);

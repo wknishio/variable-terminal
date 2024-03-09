@@ -322,13 +322,13 @@ public final class VTLinkableDynamicMultiplexingInputStream
     private OutputStream directOutputStream;
     private Closeable directCloseable;
     private InputStream compressedInputStream;
-    private List<Closeable> propagated;
-    private Random packetSequencer;
+    private final List<Closeable> propagated;
+    private final Random packetSequencer;
     
     private VTLinkableDynamicMultiplexedInputStream(int type, int number, int bufferSize, SecureRandom packetSeed)
     {
       this.seed = packetSeed.nextLong();
-      this.packetSequencer = new VTSplitMix64Random(this.seed);
+      this.packetSequencer = new VTSplitMix64Random(seed);
       this.type = type;
       this.number = number;
       this.propagated = new ArrayList<Closeable>();
@@ -471,7 +471,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       {
         //work already done by setDirectOutputStream
       }
-      packetSequencer = new VTSplitMix64Random(seed);
+      packetSequencer.setSeed(seed);
     }
     
     public final void close() throws IOException

@@ -10,12 +10,12 @@ public final class VTBigEndianInputStream extends InputStream implements DataInp
   // private int readed;
   // private int total;
   // private int remaining;
-  private byte[] shortBuffer;
-  private byte[] ushortBuffer;
-  private byte[] charBuffer;
-  private byte[] subintBuffer;
-  private byte[] intBuffer;
-  private byte[] longBuffer;
+  private final byte[] shortBuffer;
+  private final byte[] ushortBuffer;
+  private final byte[] charBuffer;
+  private final byte[] subintBuffer;
+  private final byte[] intBuffer;
+  private final byte[] longBuffer;
   private InputStream in;
   
   public VTBigEndianInputStream(InputStream in)

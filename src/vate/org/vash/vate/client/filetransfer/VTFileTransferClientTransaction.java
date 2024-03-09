@@ -63,7 +63,7 @@ public class VTFileTransferClientTransaction implements Runnable
   private InputStream fileTransferFileInputStream;
   private OutputStream fileTransferFileOutputStream;
   private VTFileTransferClientSession session;
-  private Comparator<File> fileSorter = new VTFileTransferSorter();
+  private final Comparator<File> fileSorter = new VTFileTransferSorter();
    
   public VTFileTransferClientTransaction(VTFileTransferClientSession session)
   {

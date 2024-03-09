@@ -140,7 +140,7 @@ public final class VTAWTScreenCaptureProvider
   private Robot standardCaptureRobot;
   private VTDirectRobot directCaptureRobot;
   // private Toolkit toolkit;
-  private VTARGBPixelGrabber pixelGrabber;
+  private final VTARGBPixelGrabber pixelGrabber;
   private DataBuffer recyclableSectionDataBufferTrue;
   private DataBuffer recyclableSectionDataBufferGrayscale;
   //private DataBuffer recyclableSectionDataBufferConverted;
@@ -329,11 +329,11 @@ public final class VTAWTScreenCaptureProvider
   
   public VTAWTScreenCaptureProvider()
   {
+    pixelGrabber = new VTARGBPixelGrabber();
     if (VTReflectionUtils.isAWTHeadless())
     {
       return;
     }
-    this.pixelGrabber = new VTARGBPixelGrabber();
     
     VTGlobalTextStyleManager.checkScaling();
     int dpi = VTGlobalTextStyleManager.BASE_FONT_DPI;

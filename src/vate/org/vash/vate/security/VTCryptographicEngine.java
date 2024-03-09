@@ -26,7 +26,7 @@ import org.vash.vate.VT;
 @SuppressWarnings("deprecation")
 public class VTCryptographicEngine
 {
-  private VTBlake3MessageDigest blake3Digest;
+  private final VTBlake3MessageDigest blake3Digest;
   
   private StreamCipher encryptionCipherBC;
   private StreamCipher decryptionCipherBC;
