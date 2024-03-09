@@ -22,11 +22,10 @@ import org.vash.vate.stream.pipe.VTPipedOutputStream;
 
 public final class VTLinkableDynamicMultiplexingInputStream
 {
-  private int type;
-  private int channel;
-  private int length;
-  //private int size;
-  private long sequence;
+//  private int type;
+//  private int channel;
+//  private int length;
+//  private long sequence;
   private final int bufferSize;
   //private final byte[] packetHeader;
   private final byte[] packetDataBuffer;
@@ -49,7 +48,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
 
   //private final SecureRandom packetSequencer;
   
-  public VTLinkableDynamicMultiplexingInputStream(InputStream in, int packetSize, int bufferSize, boolean startPacketReader, SecureRandom packetSeed)
+  public VTLinkableDynamicMultiplexingInputStream(final InputStream in, final int packetSize, final int bufferSize, final boolean startPacketReader, final SecureRandom packetSeed)
   {
     this.packetSeed = packetSeed;
     //this.packetSequencer = new VTMiddleSquareWeylSequenceDigestRandom(packetSeed);
@@ -268,13 +267,12 @@ public final class VTLinkableDynamicMultiplexingInputStream
     VTLinkableDynamicMultiplexedInputStream stream;
     while (!closed)
     {
-      sequence = lin.readLong();
-      type = lin.readByte();
-      channel = lin.readSubInt();
-      length = lin.readInt();
+      final long sequence = lin.readLong();
+      final int type = lin.readByte();
+      final int channel = lin.readSubInt();
+      final int length = lin.readInt();
       if (length > 0)
       {
-        length = Math.min(length, packetDataBuffer.length);
         lin.readFully(packetDataBuffer, 0, length);
         stream = getInputStream(type, channel);
         if (stream == null || stream.getPacketSequencer().nextLong() != sequence)
@@ -527,17 +525,17 @@ public final class VTLinkableDynamicMultiplexingInputStream
       return in.read();
     }
     
-    public final int read(byte[] data) throws IOException
+    public final int read(final byte[] data) throws IOException
     {
       return in.read(data);
     }
     
-    public final int read(byte[] data, int offset, int length) throws IOException
+    public final int read(final byte[] data, final int offset, final int length) throws IOException
     {
       return in.read(data, offset, length);
     }
     
-    public final long skip(long count) throws IOException
+    public final long skip(final long count) throws IOException
     {
       return in.skip(count);
     }

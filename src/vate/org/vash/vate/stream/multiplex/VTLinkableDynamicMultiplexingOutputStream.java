@@ -34,7 +34,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> directChannels;
   private final SecureRandom packetSeed;
   
-  public VTLinkableDynamicMultiplexingOutputStream(OutputStream out, int packetSize, SecureRandom packetSeed)
+  public VTLinkableDynamicMultiplexingOutputStream(final OutputStream out, final int packetSize, final SecureRandom packetSeed)
   {
     this.packetSeed = packetSeed;
     this.throttler = new NanoThrottle(Long.MAX_VALUE, (1d / 8d), true);
@@ -337,7 +337,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       return closed;
     }
     
-    public final void write(byte[] data, int offset, int length) throws IOException
+    public final void write(final byte[] data, final int offset, final int length) throws IOException
     {
       int written = 0;
       int position = offset;
@@ -355,12 +355,12 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       }
     }
     
-    public final void write(byte[] data) throws IOException
+    public final void write(final byte[] data) throws IOException
     {
       write(data, 0, data.length);
     }
     
-    public final void write(int data) throws IOException
+    public final void write(final int data) throws IOException
     {
       single[0] = (byte) data;
       write(single);
@@ -440,7 +440,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       this.propagated.remove(propagated);
     }
     
-    private synchronized final void writePacket(byte[] data, int offset, int length, int type, int number) throws IOException
+    private synchronized final void writePacket(final byte[] data, final int offset, final int length, final int type, final int number) throws IOException
     {
       dataPacketBuffer.reset();
       intermediateDataPacketBuffer.reset();
@@ -456,7 +456,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       output.flush();
     }
     
-    private synchronized final void writeClosePacket(int type, int number) throws IOException
+    private synchronized final void writeClosePacket(final int type, final int number) throws IOException
     {
       controlPacketBuffer.reset();
       controlPacketStream.writeLong(packetSequencer.nextLong());
@@ -467,7 +467,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       control.flush();
     }
     
-    private synchronized final void writeOpenPacket(int type, int number) throws IOException
+    private synchronized final void writeOpenPacket(final int type, final int number) throws IOException
     {
       controlPacketBuffer.reset();
       controlPacketStream.writeLong(packetSequencer.nextLong());
