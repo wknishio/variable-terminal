@@ -21,7 +21,7 @@ import org.vash.vate.socket.VTProxy.VTProxyType;
 public class VTClientConnector implements Runnable
 {
   private boolean active;
-  private boolean connecting = false;
+  //private boolean connecting = false;
   private boolean running = true;
   private String hostAddress;
   private Integer hostPort;
@@ -65,20 +65,20 @@ public class VTClientConnector implements Runnable
   {
     public void result(List<String> externalHosts)
     {
-      StringBuilder natHosts = new StringBuilder("[");
-      for (String address : externalHosts)
-      {
-        natHosts.append(address + ",");
-      }
-      if (natHosts.length() > 1)
-      {
-        natHosts.deleteCharAt(natHosts.length() - 1);
-      }
-      natHosts.append("]");
-      if (externalHosts.size() > 0 && !active && connecting)
-      {
-        VTConsole.print("\nVT>Configured NAT hosts:" + natHosts);
-      }
+//      StringBuilder natHosts = new StringBuilder("[");
+//      for (String address : externalHosts)
+//      {
+//        natHosts.append(address + ",");
+//      }
+//      if (natHosts.length() > 1)
+//      {
+//        natHosts.deleteCharAt(natHosts.length() - 1);
+//      }
+//      natHosts.append("]");
+//      if (externalHosts.size() > 0 && !active && connecting)
+//      {
+//        VTConsole.print("\nVT>Configured NAT hosts:" + natHosts);
+//      }
     }
   }
   
@@ -596,7 +596,7 @@ public class VTClientConnector implements Runnable
         }
       });
       connectionServerSocket.setSoTimeout(0);
-      connecting = true;
+//      connecting = true;
       connection.setConnectionSocket(connectionServerSocket.accept());
       connection.getConnectionSocket().setTcpNoDelay(true);
       //connection.getConnectionSocket().setSendBufferSize(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
@@ -605,7 +605,7 @@ public class VTClientConnector implements Runnable
       // connection.getConnectionSocket().setReuseAddress(true);
       // connection.getConnectionSocket().setKeepAlive(true);
       connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
-      connecting = false;
+//      connecting = false;
       if (encryptionType == null)
       {
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
@@ -692,7 +692,7 @@ public class VTClientConnector implements Runnable
 //      {
 //        socketAddress = new InetSocketAddress(address, port);
 //      }
-      connecting = true;
+//      connecting = true;
       // connection.getShellSocket().setPerformancePreferences(1, 3, 2);
       //connection.getConnectionSocket().setReceiveBufferSize(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
       //connection.getConnectionSocket().setSendBufferSize(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
@@ -705,7 +705,7 @@ public class VTClientConnector implements Runnable
       // connection.getConnectionSocket().setReuseAddress(true);
       // connection.getConnectionSocket().setKeepAlive(true);
       connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
-      connecting = false;
+//      connecting = false;
       if (encryptionType == null)
       {
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
@@ -1532,7 +1532,7 @@ public class VTClientConnector implements Runnable
           skipConfiguration = false;
         }
       }
-      connecting = false;
+//      connecting = false;
     }
     
   }
