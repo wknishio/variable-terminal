@@ -265,12 +265,17 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private final void readPackets() throws IOException
   {
     VTLinkableDynamicMultiplexedInputStream stream;
+    long sequence;
+    int type; 
+    int channel;
+    int length;
+    
     while (!closed)
     {
-      final long sequence = lin.readLong();
-      final int type = lin.readByte();
-      final int channel = lin.readSubInt();
-      final int length = lin.readInt();
+      sequence = lin.readLong();
+      type = lin.readByte();
+      channel = lin.readSubInt();
+      length = lin.readInt();
       if (length > 0)
       {
         lin.readFully(packetDataBuffer, 0, length);
