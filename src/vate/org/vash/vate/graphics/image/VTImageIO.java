@@ -1443,7 +1443,7 @@ public final class VTImageIO
     }
   }
   
-  private static final void encodePixel8XY(VTLittleEndianOutputStream out, byte[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel8XY(final VTLittleEndianOutputStream out, final byte[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1456,7 +1456,7 @@ public final class VTImageIO
     out.write(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel8Y(VTLittleEndianOutputStream out, byte[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel8Y(final VTLittleEndianOutputStream out, final byte[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1469,7 +1469,7 @@ public final class VTImageIO
     out.write(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel8X(VTLittleEndianOutputStream out, byte[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel8X(final VTLittleEndianOutputStream out, final byte[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1482,7 +1482,7 @@ public final class VTImageIO
     out.write(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel8(VTLittleEndianOutputStream out, byte[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel8(final VTLittleEndianOutputStream out, final byte[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1495,7 +1495,7 @@ public final class VTImageIO
     out.write(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel15XY(VTLittleEndianOutputStream out, short[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel15XY(final VTLittleEndianOutputStream out, final short[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1508,7 +1508,7 @@ public final class VTImageIO
     out.writeShort(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel15Y(VTLittleEndianOutputStream out, short[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel15Y(final VTLittleEndianOutputStream out, final short[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1521,7 +1521,7 @@ public final class VTImageIO
     out.writeShort(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel15X(VTLittleEndianOutputStream out, short[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel15X(final VTLittleEndianOutputStream out, final short[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1534,7 +1534,7 @@ public final class VTImageIO
     out.writeShort(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel15(VTLittleEndianOutputStream out, short[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel15(final VTLittleEndianOutputStream out, final short[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1547,7 +1547,7 @@ public final class VTImageIO
     out.writeShort(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel24XY(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel24XY(final VTLittleEndianOutputStream out, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1560,7 +1560,7 @@ public final class VTImageIO
     out.writeSubInt(pixelData[position] ^ ((pred1) /* & 0x00FFFFFF */));
   }
   
-  private static final void encodePixel24Y(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel24Y(final VTLittleEndianOutputStream out, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1573,7 +1573,7 @@ public final class VTImageIO
     out.writeSubInt(pixelData[position] ^ ((pred1) /* & 0x00FFFFFF */));
   }
   
-  private static final void encodePixel24X(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel24X(final VTLittleEndianOutputStream out, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1586,7 +1586,7 @@ public final class VTImageIO
     out.writeSubInt(pixelData[position] ^ ((pred1) /* & 0x00FFFFFF */));
   }
   
-  private static final void encodePixel24(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel24(final VTLittleEndianOutputStream out, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1599,7 +1599,7 @@ public final class VTImageIO
     out.writeSubInt(pixelData[position] ^ ((pred1) /* & 0x00FFFFFF */));
   }
   
-  private static final void encodePixel30XY(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel30XY(final VTLittleEndianOutputStream out, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1612,7 +1612,7 @@ public final class VTImageIO
     out.writeInt(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel30Y(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel30Y(final VTLittleEndianOutputStream out, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1625,7 +1625,7 @@ public final class VTImageIO
     out.writeInt(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel30X(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel30X(final VTLittleEndianOutputStream out, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1638,7 +1638,7 @@ public final class VTImageIO
     out.writeInt(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel30(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel30(final VTLittleEndianOutputStream out, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1651,7 +1651,7 @@ public final class VTImageIO
     out.writeInt(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel32XY(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel32XY(final VTLittleEndianOutputStream out, final int[] pixelData, final int position, final int width) throws IOException
   {
     long left1, top1, diag1;
     int pred1;
@@ -1665,7 +1665,7 @@ public final class VTImageIO
     out.writeInt(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel32Y(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel32Y(final VTLittleEndianOutputStream out, final int[] pixelData, final int position, final int width) throws IOException
   {
     long left1, top1, diag1;
     int pred1;
@@ -1679,7 +1679,7 @@ public final class VTImageIO
     out.writeInt(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel32X(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel32X(final VTLittleEndianOutputStream out, final int[] pixelData, final int position, final int width) throws IOException
   {
     long left1, top1, diag1;
     int pred1;
@@ -1693,7 +1693,7 @@ public final class VTImageIO
     out.writeInt(pixelData[position] ^ (pred1));
   }
   
-  private static final void encodePixel32(VTLittleEndianOutputStream out, int[] pixelData, int position, int width) throws IOException
+  private static final void encodePixel32(final VTLittleEndianOutputStream out, final int[] pixelData, final int position, final int width) throws IOException
   {
     long left1, top1, diag1;
     int pred1;
@@ -1707,7 +1707,7 @@ public final class VTImageIO
     out.writeInt(pixelData[position] ^ (pred1));
   }
   
-  private static final void decodePixel8XY(VTLittleEndianInputStream in, byte[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel8XY(final VTLittleEndianInputStream in, final byte[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1720,7 +1720,7 @@ public final class VTImageIO
     pixelData[position] = (byte) ((in.read() ^ (pred1)) /* & 0xFF */);
   }
   
-  private static final void decodePixel8Y(VTLittleEndianInputStream in, byte[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel8Y(final VTLittleEndianInputStream in, final byte[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1733,7 +1733,7 @@ public final class VTImageIO
     pixelData[position] = (byte) ((in.read() ^ (pred1)) /* & 0xFF */);
   }
   
-  private static final void decodePixel8X(VTLittleEndianInputStream in, byte[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel8X(final VTLittleEndianInputStream in, final byte[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1746,7 +1746,7 @@ public final class VTImageIO
     pixelData[position] = (byte) ((in.read() ^ (pred1)) /* & 0xFF */);
   }
   
-  private static final void decodePixel8(VTLittleEndianInputStream in, byte[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel8(final VTLittleEndianInputStream in, final byte[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1759,7 +1759,7 @@ public final class VTImageIO
     pixelData[position] = (byte) ((in.read() ^ (pred1)) /* & 0xFF */);
   }
   
-  private static final void decodePixel15XY(VTLittleEndianInputStream in, short[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel15XY(final VTLittleEndianInputStream in, final short[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1772,7 +1772,7 @@ public final class VTImageIO
     pixelData[position] = (short) ((in.readShort() ^ (pred1)) /* & 0x7FFF */);
   }
   
-  private static final void decodePixel15Y(VTLittleEndianInputStream in, short[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel15Y(final VTLittleEndianInputStream in, final short[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1785,7 +1785,7 @@ public final class VTImageIO
     pixelData[position] = (short) ((in.readShort() ^ (pred1)) /* & 0x7FFF */);
   }
   
-  private static final void decodePixel15X(VTLittleEndianInputStream in, short[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel15X(final VTLittleEndianInputStream in, final short[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1798,7 +1798,7 @@ public final class VTImageIO
     pixelData[position] = (short) ((in.readShort() ^ (pred1)) /* & 0x7FFF */);
   }
   
-  private static final void decodePixel15(VTLittleEndianInputStream in, short[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel15(final VTLittleEndianInputStream in, final short[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1811,7 +1811,7 @@ public final class VTImageIO
     pixelData[position] = (short) ((in.readShort() ^ (pred1)) /* & 0x7FFF */);
   }
   
-  private static final void decodePixel24XY(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel24XY(final VTLittleEndianInputStream in, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1824,7 +1824,7 @@ public final class VTImageIO
     pixelData[position] = ((in.readSubInt() ^ ((pred1) /* & 0x00FFFFFF */)));
   }
   
-  private static final void decodePixel24Y(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel24Y(final VTLittleEndianInputStream in, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1837,7 +1837,7 @@ public final class VTImageIO
     pixelData[position] = ((in.readSubInt() ^ ((pred1) /* & 0x00FFFFFF */)));
   }
   
-  private static final void decodePixel24X(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel24X(final VTLittleEndianInputStream in, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1850,7 +1850,7 @@ public final class VTImageIO
     pixelData[position] = ((in.readSubInt() ^ ((pred1) /* & 0x00FFFFFF */)));
   }
   
-  private static final void decodePixel24(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel24(final VTLittleEndianInputStream in, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1863,7 +1863,7 @@ public final class VTImageIO
     pixelData[position] = ((in.readSubInt() ^ ((pred1) /* & 0x00FFFFFF */)));
   }
   
-  private static final void decodePixel30XY(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel30XY(final VTLittleEndianInputStream in, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1876,7 +1876,7 @@ public final class VTImageIO
     pixelData[position] = (in.readInt() ^ (pred1));
   }
   
-  private static final void decodePixel30Y(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel30Y(final VTLittleEndianInputStream in, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1889,7 +1889,7 @@ public final class VTImageIO
     pixelData[position] = (in.readInt() ^ (pred1));
   }
   
-  private static final void decodePixel30X(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel30X(final VTLittleEndianInputStream in, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1902,7 +1902,7 @@ public final class VTImageIO
     pixelData[position] = (in.readInt() ^ (pred1));
   }
   
-  private static final void decodePixel30(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel30(final VTLittleEndianInputStream in, final int[] pixelData, final int position, final int width) throws IOException
   {
     int left1, top1, diag1, pred1;
     
@@ -1915,7 +1915,7 @@ public final class VTImageIO
     pixelData[position] = (in.readInt() ^ (pred1));
   }
   
-  private static final void decodePixel32XY(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel32XY(final VTLittleEndianInputStream in, final int[] pixelData, final int position, final int width) throws IOException
   {
     long left1, top1, diag1;
     int pred1;
@@ -1929,7 +1929,7 @@ public final class VTImageIO
     pixelData[position] = (in.readInt() ^ (pred1));
   }
   
-  private static final void decodePixel32Y(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel32Y(final VTLittleEndianInputStream in, final int[] pixelData, final int position, final int width) throws IOException
   {
     long left1, top1, diag1;
     int pred1;
@@ -1943,7 +1943,7 @@ public final class VTImageIO
     pixelData[position] = (in.readInt() ^ (pred1));
   }
   
-  private static final void decodePixel32X(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel32X(final VTLittleEndianInputStream in, final int[] pixelData, final int position, final int width) throws IOException
   {
     long left1, top1, diag1;
     int pred1;
@@ -1957,7 +1957,7 @@ public final class VTImageIO
     pixelData[position] = (in.readInt() ^ (pred1));
   }
   
-  private static final void decodePixel32(VTLittleEndianInputStream in, int[] pixelData, int position, int width) throws IOException
+  private static final void decodePixel32(final VTLittleEndianInputStream in, final int[] pixelData, final int position, final int width) throws IOException
   {
     long left1, top1, diag1;
     int pred1;
