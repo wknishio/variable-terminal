@@ -19,12 +19,12 @@ public class VTBlake3SecureRandom extends SecureRandom
     setSeed(secureSeed);
   }
   
-  public VTBlake3SecureRandom(byte[] inSeed)
+  public VTBlake3SecureRandom(final byte[] inSeed)
   {
     setSeed(inSeed);
   }
   
-  public void setSeed(byte[] seed)
+  public void setSeed(final byte[] seed)
   {
     if (blake3 == null)
     {
@@ -33,7 +33,7 @@ public class VTBlake3SecureRandom extends SecureRandom
     blake3.init(Blake3Parameters.context(seed));
   }
   
-  public void setSeed(long seed)
+  public void setSeed(final long seed)
   {
     if (blake3 == null)
     {
@@ -52,7 +52,7 @@ public class VTBlake3SecureRandom extends SecureRandom
   }
   
   // public methods overriding random
-  public void nextBytes(byte[] bytes)
+  public void nextBytes(final byte[] bytes)
   {
     generator.nextBytes(bytes);
   }

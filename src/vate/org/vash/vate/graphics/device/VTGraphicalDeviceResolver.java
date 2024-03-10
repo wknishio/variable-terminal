@@ -39,7 +39,7 @@ public class VTGraphicalDeviceResolver
   
   public static GraphicsDevice getCurrentDevice(Window window)
   {
-    if (VTReflectionUtils.isAWTHeadless())
+    if (VTReflectionUtils.isAWTHeadless() || window == null)
     {
       return null;
     }

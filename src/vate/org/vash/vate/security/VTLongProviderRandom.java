@@ -20,18 +20,18 @@ public abstract class VTLongProviderRandom extends Random
     this.longProvider = longProvider;
   }
   
-  public void setSeed(byte[] seed)
+  public void setSeed(final byte[] seed)
   {
     
   }
   
-  public void setSeed(long seed)
+  public void setSeed(final long seed)
   {
     
   }
   
   // public methods overriding random
-  public void nextBytes(byte[] bytes)
+  public void nextBytes(final byte[] bytes)
   {
     longProvider.nextBytes(bytes);
   }

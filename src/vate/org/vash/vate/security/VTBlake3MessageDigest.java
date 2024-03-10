@@ -15,13 +15,13 @@ public class VTBlake3MessageDigest extends MessageDigest
     //this.blake3.init(null);
   }
   
-  public VTBlake3MessageDigest(byte[] seed)
+  public VTBlake3MessageDigest(final byte[] seed)
   {
     super("BLAKE3");
     setSeed(seed);
   }
   
-  public void setSeed(byte[] seed)
+  public void setSeed(final byte[] seed)
   {
     blake3.init(Blake3Parameters.context(seed));
   }
@@ -31,7 +31,7 @@ public class VTBlake3MessageDigest extends MessageDigest
     blake3.reset();
   }
   
-  public void update(byte[]... arrays)
+  public void update(final byte[]... arrays)
   {
     for (byte[] data : arrays)
     {
@@ -42,7 +42,7 @@ public class VTBlake3MessageDigest extends MessageDigest
     }
   }
   
-  public void update(byte[] data, int off, int len)
+  public void update(final byte[] data, final int off, final int len)
   {
     if (data != null && data.length > 0)
     {
@@ -50,7 +50,7 @@ public class VTBlake3MessageDigest extends MessageDigest
     }
   }
   
-  public byte[] digest(int digestSizeBytes, byte[] data)
+  public byte[] digest(final int digestSizeBytes, final byte[] data)
   {
     update(data);
     byte[] digest = new byte[digestSizeBytes];
@@ -58,7 +58,7 @@ public class VTBlake3MessageDigest extends MessageDigest
     return digest;
   }
   
-  public byte[] digest(int digestSizeBytes)
+  public byte[] digest(final int digestSizeBytes)
   {
     byte[] digest = new byte[digestSizeBytes];
     blake3.doFinal(digest, 0, digest.length);
@@ -81,12 +81,12 @@ public class VTBlake3MessageDigest extends MessageDigest
     return ((longBuffer[0] & 0xFFL) | ((longBuffer[1] & 0xFFL) << 8) | ((longBuffer[2] & 0xFFL) << 16) | ((longBuffer[3] & 0xFFL) << 24) | ((longBuffer[4] & 0xFFL) << 32) | ((longBuffer[5] & 0xFFL) << 40) | ((longBuffer[6] & 0xFFL) << 48) | ((longBuffer[7] & 0xFFL) << 56));
   }
   
-  protected void engineUpdate(byte input)
+  protected void engineUpdate(final byte input)
   {
     blake3.update(input);
   }
   
-  protected void engineUpdate(byte[] input, int offset, int len)
+  protected void engineUpdate(final byte[] input, final int offset, final int len)
   {
     blake3.update(input, offset, len);
   }

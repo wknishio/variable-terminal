@@ -6,19 +6,19 @@ public class VTMiddleSquareWeylSequenceRandom extends VTIntProviderRandom
 {
   private static final long serialVersionUID = 1L;
     
-  public VTMiddleSquareWeylSequenceRandom(long[] seed)
+  public VTMiddleSquareWeylSequenceRandom(final long[] seed)
   {
     super();
     MiddleSquareWeylSequence middleSquareWeylSequence = new MiddleSquareWeylSequence(seed);
     this.setIntProvider(middleSquareWeylSequence);
   }
   
-  public void setSeed(byte[] seed)
+  public void setSeed(final byte[] seed)
   {
     
   }
   
-  public void setSeed(long seed)
+  public void setSeed(final long seed)
   {
     
   }

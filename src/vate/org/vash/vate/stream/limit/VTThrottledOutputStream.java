@@ -10,13 +10,13 @@ public final class VTThrottledOutputStream extends FilterOutputStream
 {
   private final NanoThrottle throttler;
   
-  public VTThrottledOutputStream(OutputStream out, NanoThrottle throttler)
+  public VTThrottledOutputStream(final OutputStream out, final NanoThrottle throttler)
   {
     super(out);
     this.throttler = throttler;
   }
   
-  public final void write(int b) throws IOException
+  public final void write(final int b) throws IOException
   {
     try
     {
@@ -29,7 +29,7 @@ public final class VTThrottledOutputStream extends FilterOutputStream
     out.write(b);
   }
   
-  public final void write(byte[] b, int off, int len) throws IOException
+  public final void write(final byte[] b, final int off, final int len) throws IOException
   {
     try
     {
@@ -42,7 +42,7 @@ public final class VTThrottledOutputStream extends FilterOutputStream
     out.write(b, off, len);
   }
   
-  public final void setBytesPerSecond(long bytesPerSecond)
+  public final void setBytesPerSecond(final long bytesPerSecond)
   {
     throttler.setRate(bytesPerSecond);
   }

@@ -17,7 +17,7 @@ public final class VTPipedInputStream extends InputStream
   private boolean eof;
   private boolean closed;
   
-  public VTPipedInputStream(int bufferSize)
+  public VTPipedInputStream(final int bufferSize)
   {
     this.circBuf = new byte[bufferSize];
     this.isWaitGet = false;
@@ -31,13 +31,13 @@ public final class VTPipedInputStream extends InputStream
 //    this(DEFAULT_BUFFER_SIZE);
 //  }
   
-  public VTPipedInputStream(VTPipedOutputStream source, int bufferSize) throws IOException
+  public VTPipedInputStream(final VTPipedOutputStream source, final int bufferSize) throws IOException
   {
     this(bufferSize);
     connect(source);
   }
   
-  public synchronized final void connect(VTPipedOutputStream source) throws IOException
+  public synchronized final void connect(final VTPipedOutputStream source) throws IOException
   {
     if (this.source == source)
     {
@@ -91,7 +91,7 @@ public final class VTPipedInputStream extends InputStream
     return b;
   }
   
-  public final synchronized int read(byte[] buf, int off, int len) throws IOException
+  public final synchronized int read(final byte[] buf, final int off, final int len) throws IOException
   {
     while (isEmpty())
     {
@@ -171,7 +171,7 @@ public final class VTPipedInputStream extends InputStream
 //    this.notifyAll();
 //  }
   
-  protected final synchronized void put(int b) throws IOException
+  protected final synchronized void put(final int b) throws IOException
   {
     if (eof)
     {
@@ -208,7 +208,7 @@ public final class VTPipedInputStream extends InputStream
       this.notify();
   }
   
-  protected final synchronized void put(byte[] buf, int off, int len) throws IOException
+  protected final synchronized void put(final byte[] buf, int off, int len) throws IOException
   {
     while (len > 0)
     {

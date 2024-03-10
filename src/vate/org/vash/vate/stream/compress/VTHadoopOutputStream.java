@@ -7,24 +7,24 @@ import io.airlift.compress.hadoop.HadoopOutputStream;
 
 public class VTHadoopOutputStream extends OutputStream
 {
-  private HadoopOutputStream out;
+  private final HadoopOutputStream out;
   
-  public VTHadoopOutputStream(HadoopOutputStream out)
+  public VTHadoopOutputStream(final HadoopOutputStream out)
   {
     this.out = out;
   }
   
-  public void write(byte[] b, int off, int len) throws IOException
+  public void write(final byte[] b, final int off, final int len) throws IOException
   {
     out.write(b, off, len);
   }
   
-  public void write(byte[] b) throws IOException
+  public void write(final byte[] b) throws IOException
   {
     out.write(b);
   }
   
-  public void write(int b) throws IOException
+  public void write(final int b) throws IOException
   {
     out.write(b);
   }

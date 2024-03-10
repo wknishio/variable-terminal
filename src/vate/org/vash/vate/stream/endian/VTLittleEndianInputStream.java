@@ -15,7 +15,7 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
   private final byte[] longBuffer;
   private InputStream in;
   
-  public VTLittleEndianInputStream(InputStream in)
+  public VTLittleEndianInputStream(final InputStream in)
   {
     this.in = in;
     this.shortBuffer = new byte[2];
@@ -26,7 +26,7 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
     this.longBuffer = new byte[8];
   }
   
-  public final void setIntputStream(InputStream in)
+  public final void setIntputStream(final InputStream in)
   {
     this.in = in;
   }
@@ -41,12 +41,12 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
     return in.read();
   }
   
-  public final int read(byte[] b) throws IOException
+  public final int read(final byte[] b) throws IOException
   {
     return in.read(b);
   }
   
-  public final int read(byte[] b, int off, int len) throws IOException
+  public final int read(final byte[] b, final int off, final int len) throws IOException
   {
     return in.read(b, off, len);
   }
@@ -133,12 +133,12 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
     return Double.longBitsToDouble(readLong());
   }
   
-  public final void readFully(byte b[]) throws IOException
+  public final void readFully(final byte b[]) throws IOException
   {
     readFully(b, 0, b.length);
   }
   
-  public final void readFully(byte[] buf, int offset, int len) throws IOException
+  public final void readFully(final byte[] buf, int offset, int len) throws IOException
   {
     if (len < 0)
     {
@@ -156,7 +156,7 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
     }
   }
   
-  public final int skipBytes(int n) throws IOException
+  public final int skipBytes(final int n) throws IOException
   {
     return (int) in.skip(n);
   }

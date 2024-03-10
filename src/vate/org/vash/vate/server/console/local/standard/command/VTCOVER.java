@@ -23,23 +23,15 @@ public class VTCOVER extends VTServerStandardLocalConsoleCommandProcessor
     {
       if (VTConsole.isDaemon())
       {
+        VTConsole.setDaemon(false);
         server.enableTrayIcon();
         VTConsole.print("\rVT>Server console interface enabled\nVT>");
-        VTConsole.setDaemon(false);
       }
       else
       {
+        VTConsole.setDaemon(true);
         server.disableTrayIcon();
         VTConsole.print("\rVT>Server console interface disabled\nVT>");
-        VTConsole.setDaemon(true);
-        Object waiter = VTConsole.getSynchronizationObject();
-        synchronized (waiter)
-        {
-          while (VTConsole.isDaemon())
-          {
-            waiter.wait();
-          }
-        }
       }
     }
   }

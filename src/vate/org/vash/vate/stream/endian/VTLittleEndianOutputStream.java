@@ -35,17 +35,17 @@ public final class VTLittleEndianOutputStream extends OutputStream implements Da
     return out;
   }
   
-  public final void write(int b) throws IOException
+  public final void write(final int b) throws IOException
   {
     out.write(b);
   }
   
-  public final void write(byte[] b) throws IOException
+  public final void write(final byte[] b) throws IOException
   {
     out.write(b);
   }
   
-  public final void write(byte[] b, int off, int len) throws IOException
+  public final void write(final byte[] b, final int off, final int len) throws IOException
   {
     out.write(b, off, len);
   }
@@ -68,33 +68,33 @@ public final class VTLittleEndianOutputStream extends OutputStream implements Da
     out.close();
   }
   
-  public final void writeBoolean(boolean b) throws IOException
+  public final void writeBoolean(final boolean b) throws IOException
   {
     out.write(b ? 1 : 0);
   }
   
-  public final void writeShort(short s) throws IOException
+  public final void writeShort(final short s) throws IOException
   {
     shortBuffer[0] = (byte) s;
     shortBuffer[1] = (byte) (s >> 8);
     out.write(shortBuffer);
   }
   
-  public final void writeUnsignedShort(int s) throws IOException
+  public final void writeUnsignedShort(final int s) throws IOException
   {
     ushortBuffer[0] = (byte) s;
     ushortBuffer[1] = (byte) (s >> 8);
     out.write(ushortBuffer);
   }
   
-  public final void writeChar(char c) throws IOException
+  public final void writeChar(final char c) throws IOException
   {
     charBuffer[0] = (byte) c;
     charBuffer[1] = (byte) (c >> 8);
     out.write(charBuffer);
   }
   
-  public final void writeSubInt(int i) throws IOException
+  public final void writeSubInt(final int i) throws IOException
   {
     subintBuffer[0] = (byte) (i);
     subintBuffer[1] = (byte) (i >> 8);
@@ -102,7 +102,7 @@ public final class VTLittleEndianOutputStream extends OutputStream implements Da
     out.write(subintBuffer);
   }
   
-  public final void writeInt(int i) throws IOException
+  public final void writeInt(final int i) throws IOException
   {
     intBuffer[0] = (byte) i;
     intBuffer[1] = (byte) (i >> 8);
@@ -111,7 +111,7 @@ public final class VTLittleEndianOutputStream extends OutputStream implements Da
     out.write(intBuffer);
   }
   
-  public final void writeUnsignedInt(long l) throws IOException
+  public final void writeUnsignedInt(final long l) throws IOException
   {
     intBuffer[0] = (byte) l;
     intBuffer[1] = (byte) (l >> 8);
@@ -120,7 +120,7 @@ public final class VTLittleEndianOutputStream extends OutputStream implements Da
     out.write(intBuffer);
   }
   
-  public final void writeLong(long l) throws IOException
+  public final void writeLong(final long l) throws IOException
   {
     longBuffer[0] = (byte) l;
     longBuffer[1] = (byte) (l >> 8);
@@ -133,42 +133,42 @@ public final class VTLittleEndianOutputStream extends OutputStream implements Da
     out.write(longBuffer);
   }
   
-  public final void writeFloat(float f) throws IOException
+  public final void writeFloat(final float f) throws IOException
   {
     writeInt(Float.floatToRawIntBits(f));
   }
   
-  public final void writeDouble(double d) throws IOException
+  public final void writeDouble(final double d) throws IOException
   {
     writeLong(Double.doubleToRawLongBits(d));
   }
   
-  public final void writeByte(int v) throws IOException
+  public final void writeByte(final int v) throws IOException
   {
     write(v);
   }
   
-  public final void writeShort(int v) throws IOException
+  public final void writeShort(final int v) throws IOException
   {
     writeShort((short) v);
   }
   
-  public final void writeChar(int v) throws IOException
+  public final void writeChar(final int v) throws IOException
   {
     writeUnsignedShort(v);
   }
   
-  public final void writeBytes(String s) throws IOException
+  public final void writeBytes(final String s) throws IOException
   {
     writeUTF(s);
   }
   
-  public final void writeChars(String s) throws IOException
+  public final void writeChars(final String s) throws IOException
   {
     writeUTF(s);
   }
   
-  public final void writeData(byte[] b) throws IOException
+  public final void writeData(final byte[] b) throws IOException
   {
     int size = b.length;
     byte[] data = new byte[4 + size];
@@ -180,13 +180,13 @@ public final class VTLittleEndianOutputStream extends OutputStream implements Da
     write(data, 0, data.length);
   }
   
-  public final void writeUTF(String s) throws IOException
+  public final void writeUTF(final String s) throws IOException
   {
     byte[] utf = s.getBytes("UTF-8");
     writeData(utf);
   }
   
-  public final void writeLine(String s) throws IOException
+  public final void writeLine(final String s) throws IOException
   {
     byte[] utf = s.getBytes("UTF-8");
     writeData(utf);

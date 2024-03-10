@@ -48,7 +48,7 @@ public final class NanoThrottle {
     this.lock = new ReentrantLock(fair);
   }
 
-  private static void checkPermits(final int permits) {
+  private static final void checkPermits(final int permits) {
     if (permits <= 0) {
       throw new IllegalArgumentException(String
           .format("Requested permits (%s) must be positive", permits));
@@ -67,7 +67,7 @@ public final class NanoThrottle {
     return Long.MAX_VALUE + ((naiveSum >>> (Long.SIZE - 1)) ^ 1);
   }
 
-  private void doSetRate(final double permitsPerSecond) {
+  private final void doSetRate(final double permitsPerSecond) {
     reSync(System.nanoTime() - nanoStart);
     this.stableIntervalNanos = ONE_SECOND_NANOS / permitsPerSecond;
     doSetRate(permitsPerSecond, stableIntervalNanos);
@@ -215,7 +215,7 @@ public final class NanoThrottle {
     return false;
   }
 
-  private boolean canAcquire(final long elapsedNanos, final long timeoutNanos) {
+  private final boolean canAcquire(final long elapsedNanos, final long timeoutNanos) {
     return nextFreeTicketNanos - timeoutNanos <= elapsedNanos;
   }
 
@@ -226,7 +226,7 @@ public final class NanoThrottle {
    * @return the time that the permits may be used, or, if the permits may be used immediately, an
    * arbitrary past or present time
    */
-  private long reserveEarliestAvailable(final int requiredPermits, final long elapsedNanos) {
+  private final long reserveEarliestAvailable(final int requiredPermits, final long elapsedNanos) {
     reSync(elapsedNanos);
     final long returnValue = nextFreeTicketNanos;
     final double storedPermitsToSpend = min(requiredPermits, this.storedPermits);
@@ -241,7 +241,7 @@ public final class NanoThrottle {
   /**
    * Updates {@code storedPermits} and {@code nextFreeTicketNanos} based on the current time.
    */
-  private void reSync(final long elapsedNanos) {
+  private final void reSync(final long elapsedNanos) {
     if (elapsedNanos > nextFreeTicketNanos) {
       final double newPermits = (elapsedNanos - nextFreeTicketNanos) / coolDownIntervalNanos();
       storedPermits = min(maxPermits, storedPermits + newPermits);
@@ -254,12 +254,12 @@ public final class NanoThrottle {
     return "Throttle{rate=" + getRate() + '}';
   }
   
-  public static boolean isFinite(double d) {
+  public static final boolean isFinite(final double d) {
       return Math.abs(d) <= Double.MAX_VALUE;
   }
   
   
-  private void doSetRate(double permitsPerSecond, double stableIntervalNanos) {
+  private final void doSetRate(final double permitsPerSecond, final double stableIntervalNanos) {
     final double oldMaxPermits = this.maxPermits;
     maxPermits = maxBurstSeconds * permitsPerSecond;
     storedPermits = oldMaxPermits == 0.0 ? 0.0 : storedPermits * maxPermits / oldMaxPermits;
@@ -269,7 +269,7 @@ public final class NanoThrottle {
    * {@inheritDoc}
    */
   
-  private long storedPermitsToWaitTime(final double storedPermits, final double permitsToTake) {
+  private final long storedPermitsToWaitTime(final double storedPermits, final double permitsToTake) {
     return 0L;
   }
 
@@ -277,11 +277,11 @@ public final class NanoThrottle {
    * {@inheritDoc}
    */
   
-  private double coolDownIntervalNanos() {
+  private final double coolDownIntervalNanos() {
     return stableIntervalNanos;
   }
   
-  public void wakeAllWaitingThreads(final Object sleepObject)
+  public final void wakeAllWaitingThreads(final Object sleepObject)
   {
   	synchronized (sleepObject)
   	{

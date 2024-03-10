@@ -20,14 +20,14 @@ public class VTStreamCipherOutputStream extends FilterOutputStream
     this.streamCipher = streamCipher;
   }
   
-  public void write(int input) throws IOException
+  public void write(final int input) throws IOException
   {
     single1[0] = (byte) input;
     streamCipher.processBytes(single1, 0, 1, single2, 0);
     out.write(single2);
   }
   
-  public void write(byte[] input) throws IOException
+  public void write(final byte[] input) throws IOException
   {
     if (buffer.length < input.length)
     {
@@ -37,7 +37,7 @@ public class VTStreamCipherOutputStream extends FilterOutputStream
     out.write(buffer, 0, input.length);
   }
   
-  public void write(byte[] input, int off, int len) throws IOException
+  public void write(final byte[] input, final int off, final int len) throws IOException
   {
     if (buffer.length < len)
     {

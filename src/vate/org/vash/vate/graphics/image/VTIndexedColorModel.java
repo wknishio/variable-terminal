@@ -53,7 +53,7 @@ public class VTIndexedColorModel
 //    return ((byte[]) indexColorModel216.getDataElements(rgb, null))[0];
 //  }
   
-  private static int get3LevelRGBValue(int level)
+  private static int get3LevelRGBValue(final int level)
   {
     if (level == 0)
     {
@@ -70,7 +70,7 @@ public class VTIndexedColorModel
     return 0;
   }
   
-  private static int get5LevelRGBValue(int level)
+  private static int get5LevelRGBValue(final int level)
   {
     if (level == 0)
     {

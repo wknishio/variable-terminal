@@ -29,7 +29,7 @@ public class VTStreamCipherInputStream extends FilterInputStream
     return single1[0];
   }
   
-  public int read(byte[] output) throws IOException
+  public int read(final byte[] output) throws IOException
   {
     if (buffer.length < output.length)
     {
@@ -38,7 +38,7 @@ public class VTStreamCipherInputStream extends FilterInputStream
     return streamCipher.processBytes(buffer, 0, in.read(buffer, 0, output.length), output, 0);
   }
   
-  public int read(byte[] output, int off, int len) throws IOException
+  public int read(final byte[] output, final int off, final int len) throws IOException
   {
     if (buffer.length < len)
     {

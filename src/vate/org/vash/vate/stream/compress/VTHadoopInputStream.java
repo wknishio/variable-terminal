@@ -7,9 +7,9 @@ import io.airlift.compress.hadoop.HadoopInputStream;
 
 public class VTHadoopInputStream extends InputStream
 {
-  private HadoopInputStream in;
+  private final HadoopInputStream in;
   
-  public VTHadoopInputStream(HadoopInputStream in)
+  public VTHadoopInputStream(final HadoopInputStream in)
   {
     this.in = in;
   }
@@ -19,7 +19,7 @@ public class VTHadoopInputStream extends InputStream
     return in.available();
   }
   
-  public int read(byte[] data, int off, int len) throws IOException
+  public int read(final byte[] data, final int off, final int len) throws IOException
   {
     return in.read(data, off, len);
   }

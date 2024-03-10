@@ -2,9 +2,6 @@ package org.vash.vate.graphics.capture;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.PointerInfo;
 import java.awt.Rectangle;
 import java.awt.Robot;
 import java.awt.Toolkit;
@@ -13,14 +10,33 @@ import java.lang.reflect.Method;
 
 public final class VTDirectRobot
 {
-  public VTDirectRobot() throws Exception
+  public final GraphicsDevice device;
+  private final Object robotPeer;
+  
+  private final int getRGBPixelsMethodType;
+  private final Method getRGBPixelsMethod;
+  private Object getRGBPixelsMethodParam;
+  
+  private final boolean methodAvailable;
+  private boolean disposed = false;
+  
+  // private static boolean searchedMouseInfoPeer;
+  // private static MouseInfoPeer mouseInfoPeer;
+  
+  public VTDirectRobot() throws Throwable
   {
     this(null);
   }
   
-  @SuppressWarnings("all")
-  public VTDirectRobot(GraphicsDevice device) throws Exception
+  public boolean getDirectRGBPixelsMethodAvailable()
   {
+    return !disposed && methodAvailable;
+  }
+  
+  @SuppressWarnings("all")
+  public VTDirectRobot(GraphicsDevice device) throws Throwable
+  {
+    boolean available = false;
     if (device == null)
     {
       device = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
@@ -54,27 +70,13 @@ public final class VTDirectRobot
     
     if (parameterCount == 1)
     {
-      try
-      {
-        createRobot.setAccessible(true);
-        robotPeer = createRobot.invoke(toolkit, device);
-      }
-      catch (Throwable t)
-      {
-        robotPeer = null;
-      }
+      createRobot.setAccessible(true);
+      robotPeer = createRobot.invoke(toolkit, device);
     }
     else
     {
-      try
-      {
-        createRobot.setAccessible(true);
-        robotPeer = createRobot.invoke(toolkit, null, device);
-      }
-      catch (Throwable t)
-      {
-        robotPeer = null;
-      }
+      createRobot.setAccessible(true);
+      robotPeer = createRobot.invoke(toolkit, null, device);
     }
     // peer = ((ComponentFactory) toolkit).createRobot(null, device);
     
@@ -206,81 +208,28 @@ public final class VTDirectRobot
           getRGBPixelsMethod.invoke(robotPeer, new Object[]
           { getRGBPixelsMethodParam, Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(width), Integer.valueOf(height), pixels });
         }
+        available = true;
       }
       catch (Throwable ex)
       {
-        getRGBPixelsMethod = null;
-        getRGBPixelsMethodType = -1;
-        getRGBPixelsMethodParam = null;
+        
       }
+      methodAvailable = available;
     }
     else
     {
-      // System.out.println("WARNING: Failed to acquire direct method for
-      // grabbing
-      // pixels, please post this on the main thread!");
-      // System.out.println();
-      // System.out.println(peer.getClass().getName());
-      // System.out.println();
-      try
-      {
-        // Method[] methods = peer.getClass().getDeclaredMethods();
-        // for (Method method1 : methods)
-        // {
-        // System.out.println(method1);
-        // }
-      }
-      catch (Throwable ex)
-      {
-      }
+      getRGBPixelsMethodType = -1;
+      getRGBPixelsMethod = null;
+      methodAvailable = false;
     }
   }
   
-  public final static GraphicsDevice getMouseInfo(Point point)
+  public final boolean getRGBPixels(final int x, final int y, final int width, final int height, final int[] pixels)
   {
-//    if (!searchedMouseInfoPeer)
-//    {
-//      searchedMouseInfoPeer = true;
-//      try
-//      {
-//        Toolkit toolkit = Toolkit.getDefaultToolkit();
-//        Method method = toolkit.getClass().getDeclaredMethod("getMouseInfoPeer", new Class<?>[0]);
-//        try
-//        {
-//          method.setAccessible(true);
-//          mouseInfoPeer = (MouseInfoPeer) method.invoke(toolkit, new Object[0]);
-//        }
-//        finally
-//        {
-//          //method.setAccessible(false);
-//        }
-//      }
-//      catch (Throwable ex)
-//      {
-//      }
-//    }
-//    if (mouseInfoPeer != null)
-//    {
-//      int device = mouseInfoPeer.fillPointWithCoords(point != null ? point : new Point());
-//      GraphicsDevice[] devices = GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices();
-//      return devices[device];
-//    }
-    PointerInfo info = MouseInfo.getPointerInfo();
-    if (info == null)
+    if (!getDirectRGBPixelsMethodAvailable())
     {
-      return null;
+      return false;
     }
-    if (point != null)
-    {
-      Point location = info.getLocation();
-      point.x = location.x;
-      point.y = location.y;
-    }
-    return info.getDevice();
-  }
-  
-  public final boolean getRGBPixels(int x, int y, int width, int height, int[] pixels)
-  {
 //		if (Platform.isWindows())
 //		{
 //			return VTWin32JNAScreenShot.getPixelData(x, y, width, height, pixels, null);
@@ -339,13 +288,13 @@ public final class VTDirectRobot
     Method method = getRGBPixelsMethod;
     if (method != null)
     {
-      getRGBPixelsMethod = null;
       try
       {
         // method.setAccessible(false);
       }
       catch (Throwable ex)
       {
+        
       }
     }
     // Using reflection now because of some peers not having ANY support at all
@@ -356,7 +305,9 @@ public final class VTDirectRobot
     }
     catch (Throwable t)
     {
+      
     }
+    disposed = true;
   }
   
   @SuppressWarnings("all")
@@ -370,19 +321,5 @@ public final class VTDirectRobot
     {
       super.finalize();
     }
-  }
-  
-  public final GraphicsDevice device;
-  private Object robotPeer;
-  
-  private Object getRGBPixelsMethodParam;
-  private int getRGBPixelsMethodType;
-  private Method getRGBPixelsMethod;
-  // private static boolean searchedMouseInfoPeer;
-  // private static MouseInfoPeer mouseInfoPeer;
-  
-  public boolean getDirectRGBPixelsMethodAvailable()
-  {
-    return getRGBPixelsMethod != null;
   }
 }

@@ -48,7 +48,7 @@ public final class VTImageDataUtils
 //    }
 //  }
   
-  public static final List<Rectangle> splitBlockArea(int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> splitBlockArea(final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
     List<Rectangle> blockAreas = new ArrayList<Rectangle>();
     int i, j;
@@ -63,7 +63,7 @@ public final class VTImageDataUtils
     return blockAreas;
   }
   
-  public static final List<Rectangle> mergeNeighbourRectangles(List<Rectangle> rectangles)
+  public static final List<Rectangle> mergeNeighbourRectangles(final List<Rectangle> rectangles)
   {
     //Collections.sort(rectangles, rectangleComparator);
     boolean found = false;
@@ -109,7 +109,7 @@ public final class VTImageDataUtils
     return rectangles;
   }
   
-  public static final void copyArea(byte[] source, byte[] destination, int offset, int width, int height, Rectangle transferArea)
+  public static final void copyArea(final byte[] source, final byte[] destination, final int offset, final int width, final int height, final Rectangle transferArea)
   {
     int length = width * height;
     if (length == 0)
@@ -141,7 +141,7 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final void copyArea(short[] source, short[] destination, int offset, int width, int height, Rectangle transferArea)
+  public static final void copyArea(final short[] source, final short[] destination, final int offset, final int width, final int height, final Rectangle transferArea)
   {
     int length = width * height;
     if (length == 0)
@@ -173,7 +173,7 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final void copyArea(int[] source, int[] destination, int offset, int width, int height, Rectangle transferArea)
+  public static final void copyArea(final int[] source, final int[] destination, final int offset, final int width, final int height, final Rectangle transferArea)
   {
     int length = width * height;
     if (length == 0)
@@ -205,7 +205,7 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final void copyArea(long[] source, long[] destination, int offset, int width, int height, Rectangle transferArea)
+  public static final void copyArea(final long[] source, final long[] destination, final int offset, final int width, final int height, final Rectangle transferArea)
   {
     int length = width * height;
     if (length == 0)
@@ -237,7 +237,7 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final boolean compareArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea)
+  public static final boolean compareArea(final byte[] array1, final byte[] array2, int offset, final int width, final int height, final Rectangle captureArea)
   {
     if (width * height == 0)
     {
@@ -283,7 +283,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean compareArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea)
+  public static final boolean compareArea(final short[] array1, final short[] array2, int offset, final int width, final int height, final Rectangle captureArea)
   {
     if (width * height == 0)
     {
@@ -331,7 +331,7 @@ public final class VTImageDataUtils
   
   
   
-  public static final boolean compareArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea)
+  public static final boolean compareArea(final int[] array1, final int[] array2, int offset, final int width, final int height, final Rectangle captureArea)
   {
     if (width * height == 0)
     {
@@ -377,7 +377,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean compareArea(long[] array1, long[] array2, int offset, int width, int height, Rectangle captureArea)
+  public static final boolean compareArea(final long[] array1, final long[] array2, int offset, final int width, final int height, final Rectangle captureArea)
   {
     if (width * height == 0)
     {
@@ -423,7 +423,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean compareArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, BitSet pixelBits)
+  public static final boolean compareArea(final byte[] array1, final byte[] array2, int offset, final int width, final int height, final Rectangle captureArea, final BitSet pixelBits)
   {
     if (width * height == 0)
     {
@@ -472,7 +472,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean compareArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, BitSet pixelBits)
+  public static final boolean compareArea(final short[] array1, final short[] array2, int offset, final int width, final int height, final Rectangle captureArea, final BitSet pixelBits)
   {
     if (width * height == 0)
     {
@@ -521,7 +521,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean compareArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, BitSet pixelBits)
+  public static final boolean compareArea(final int[] array1, final int[] array2, int offset, final int width, final int height, final Rectangle captureArea, final BitSet pixelBits)
   {
     if (width * height == 0)
     {
@@ -570,7 +570,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean compareArea(long[] array1, long[] array2, int offset, int width, int height, Rectangle captureArea, BitSet pixelBits)
+  public static final boolean compareArea(final long[] array1, final long[] array2, int offset, final int width, final int height, final Rectangle captureArea, final BitSet pixelBits)
   {
     if (width * height == 0)
     {
@@ -618,7 +618,7 @@ public final class VTImageDataUtils
     }
     return bits == 0;
   }
-  public static final List<Rectangle> compareBlockArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> compareBlockArea(final byte[] array1, final byte[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
     List<Rectangle> blockAreas = new ArrayList<Rectangle>();
     int i, j;
@@ -640,7 +640,7 @@ public final class VTImageDataUtils
     return blockAreas;
   }
   
-  public static final List<Rectangle> compareBlockArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> compareBlockArea(final short[] array1, final short[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
     List<Rectangle> blockAreas = new ArrayList<Rectangle>();
     int i, j;
@@ -662,7 +662,7 @@ public final class VTImageDataUtils
     return blockAreas;
   }
   
-  public static final List<Rectangle> compareBlockArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> compareBlockArea(final int[] array1, final int[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
     List<Rectangle> blockAreas = new ArrayList<Rectangle>();
     int i, j;
@@ -684,7 +684,7 @@ public final class VTImageDataUtils
     return blockAreas;
   }
   
-  public static final List<Rectangle> compareBlockArea(long[] array1, long[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> compareBlockArea(final long[] array1, final long[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
     List<Rectangle> blockAreas = new ArrayList<Rectangle>();
     int i, j;
@@ -706,7 +706,7 @@ public final class VTImageDataUtils
     return blockAreas;
   }
   
-  public static final void compareBlockArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
+  public static final void compareBlockArea(final byte[] array1, final byte[] array2, int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight, final BitSet blockAreaBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -724,7 +724,7 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final void compareBlockArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
+  public static final void compareBlockArea(final short[] array1, final short[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight, final BitSet blockAreaBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -742,7 +742,7 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final void compareBlockArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
+  public static final void compareBlockArea(final int[] array1, final int[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight, final BitSet blockAreaBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -760,7 +760,7 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final void compareBlockArea(long[] array1, long[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits)
+  public static final void compareBlockArea(final long[] array1, final long[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight, final BitSet blockAreaBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -778,7 +778,7 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final void compareBlockArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits, BitSet pixelBits)
+  public static final void compareBlockArea(final byte[] array1, final byte[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight, final BitSet blockAreaBits, final BitSet pixelBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -796,7 +796,7 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final void compareBlockArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits, BitSet pixelBits)
+  public static final void compareBlockArea(final short[] array1, final short[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight, final BitSet blockAreaBits, final BitSet pixelBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -814,7 +814,7 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final void compareBlockArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits, BitSet pixelBits)
+  public static final void compareBlockArea(final int[] array1, final int[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight, final BitSet blockAreaBits, final BitSet pixelBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -832,7 +832,7 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final void compareBlockArea(long[] array1, long[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight, BitSet blockAreaBits, BitSet pixelBits)
+  public static final void compareBlockArea(final long[] array1, final long[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight, final BitSet blockAreaBits, final BitSet pixelBits)
   {
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
     int i, j, k;
@@ -850,7 +850,7 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final boolean deltaArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, Rectangle resultArea)
+  public static final boolean deltaArea(final byte[] array1, final byte[] array2, int offset, final int width, final int height, final Rectangle captureArea, final Rectangle resultArea)
   {
     if (width * height == 0)
     {
@@ -934,7 +934,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean deltaArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, Rectangle resultArea)
+  public static final boolean deltaArea(final short[] array1, final short[] array2, int offset, final int width, final int height, final Rectangle captureArea, final Rectangle resultArea)
   {
     if (width * height == 0)
     {
@@ -1018,7 +1018,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean deltaArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, Rectangle resultArea)
+  public static final boolean deltaArea(final int[] array1, final int[] array2, int offset, final int width, final int height, final Rectangle captureArea, final Rectangle resultArea)
   {
     if (width * height == 0)
     {
@@ -1102,7 +1102,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final List<Rectangle> deltaBlockArea(byte[] array1, byte[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> deltaBlockArea(final byte[] array1, final byte[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
     List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
@@ -1125,7 +1125,7 @@ public final class VTImageDataUtils
     return deltaAreas;
   }
   
-  public static final List<Rectangle> deltaBlockArea(short[] array1, short[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> deltaBlockArea(final short[] array1, final short[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
     List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
@@ -1148,7 +1148,7 @@ public final class VTImageDataUtils
     return deltaAreas;
   }
   
-  public static final List<Rectangle> deltaBlockArea(int[] array1, int[] array2, int offset, int width, int height, Rectangle captureArea, int blockWidth, int blockHeight)
+  public static final List<Rectangle> deltaBlockArea(final int[] array1, final int[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
     List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);

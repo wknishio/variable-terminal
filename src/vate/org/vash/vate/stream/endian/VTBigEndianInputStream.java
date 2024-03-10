@@ -44,12 +44,12 @@ public final class VTBigEndianInputStream extends InputStream implements DataInp
     return in.read();
   }
   
-  public final int read(byte[] b) throws IOException
+  public final int read(final byte[] b) throws IOException
   {
     return in.read(b);
   }
   
-  public final int read(byte[] b, int off, int len) throws IOException
+  public final int read(final byte[] b, final int off, final int len) throws IOException
   {
     return in.read(b, off, len);
   }
@@ -59,7 +59,7 @@ public final class VTBigEndianInputStream extends InputStream implements DataInp
     return in.available();
   }
   
-  public final long skip(long l) throws IOException
+  public final long skip(final long l) throws IOException
   {
     return in.skip(l);
   }
@@ -137,12 +137,12 @@ public final class VTBigEndianInputStream extends InputStream implements DataInp
     return Double.longBitsToDouble(readLong());
   }
   
-  public final void readFully(byte b[]) throws IOException
+  public final void readFully(final byte b[]) throws IOException
   {
     readFully(b, 0, b.length);
   }
   
-  public final void readFully(byte[] buf, int offset, int len) throws IOException
+  public final void readFully(final byte[] buf, int offset, int len) throws IOException
   {
     if (len < 0)
     {
@@ -160,7 +160,7 @@ public final class VTBigEndianInputStream extends InputStream implements DataInp
     }
   }
   
-  public final int skipBytes(int n) throws IOException
+  public final int skipBytes(final int n) throws IOException
   {
     return (int) in.skip(n);
   }

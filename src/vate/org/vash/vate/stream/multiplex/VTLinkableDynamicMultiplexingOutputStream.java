@@ -58,7 +58,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
 //    return stream;
 //  }
   
-  public synchronized final VTLinkableDynamicMultiplexedOutputStream linkOutputStream(int type, Object link)
+  public synchronized final VTLinkableDynamicMultiplexedOutputStream linkOutputStream(final int type, final Object link)
   {
     VTLinkableDynamicMultiplexedOutputStream stream = null;
     if (link instanceof Integer)
@@ -84,7 +84,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     return stream;
   }
   
-  public synchronized final VTLinkableDynamicMultiplexedOutputStream linkOutputStream(int type, int number, Object link)
+  public synchronized final VTLinkableDynamicMultiplexedOutputStream linkOutputStream(final int type, final int number, final Object link)
   {
     VTLinkableDynamicMultiplexedOutputStream stream = null;
     stream = getOutputStream(type, number);
@@ -96,7 +96,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     return stream;
   }
   
-  public synchronized final void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
+  public synchronized final void releaseOutputStream(final VTLinkableDynamicMultiplexedOutputStream stream)
   {
     if (stream != null)
     {
@@ -113,7 +113,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     //stream.setLink(null);
   }
   
-  private synchronized final VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number)
+  private synchronized final VTLinkableDynamicMultiplexedOutputStream getOutputStream(final int type, final int number)
   {
     VTLinkableDynamicMultiplexedOutputStream stream = null;
     OutputStream output = null;
@@ -160,7 +160,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     return packetSize;
   }
   
-  public final void setBytesPerSecond(long bytesPerSecond)
+  public final void setBytesPerSecond(final long bytesPerSecond)
   {
     if (bytesPerSecond > 0)
     {
@@ -211,12 +211,12 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     directChannels.clear();
   }
   
-  public final void open(int type, int number) throws IOException
+  public final void open(final int type, final int number) throws IOException
   {
     getOutputStream(type, number).open();
   }
   
-  public final void close(int type, int number) throws IOException
+  public final void close(final int type, final int number) throws IOException
   {
     getOutputStream(type, number).close();
   }
@@ -256,7 +256,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private final List<Closeable> propagated;
     private final Random packetSequencer;
     
-    private VTLinkableDynamicMultiplexedOutputStream(OutputStream output, OutputStream control, int type, int number, int packetSize, SecureRandom packetSeed)
+    private VTLinkableDynamicMultiplexedOutputStream(final OutputStream output, final OutputStream control, final int type, final int number, final int packetSize, final SecureRandom packetSeed)
     {
       this.seed = packetSeed.nextLong();
       this.packetSequencer = new VTSplitMix64Random(seed);
@@ -312,12 +312,12 @@ public final class VTLinkableDynamicMultiplexingOutputStream
 //      this.type = type;
 //    }
     
-    public final void output(OutputStream out)
+    public final void output(final OutputStream out)
     {
       this.output = out;
     }
     
-    public final void control(OutputStream control)
+    public final void control(final OutputStream control)
     {
       this.control = control;
     }
@@ -327,7 +327,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       return link;
     }
     
-    public final void setLink(Object link)
+    public final void setLink(final Object link)
     {
       this.link = link;
     }
@@ -430,12 +430,12 @@ public final class VTLinkableDynamicMultiplexingOutputStream
 //      }
     }
     
-    public final void addPropagated(Closeable propagated)
+    public final void addPropagated(final Closeable propagated)
     {
       this.propagated.add(propagated);
     }
     
-    public final void removePropagated(Closeable propagated)
+    public final void removePropagated(final Closeable propagated)
     {
       this.propagated.remove(propagated);
     }

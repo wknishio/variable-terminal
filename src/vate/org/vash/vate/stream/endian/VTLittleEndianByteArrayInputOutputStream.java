@@ -14,7 +14,7 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
   private final VTLittleEndianInputStream dataInput;
   private final VTLittleEndianOutputStream dataOutput;
   
-  public VTLittleEndianByteArrayInputOutputStream(int size)
+  public VTLittleEndianByteArrayInputOutputStream(final int size)
   {
     output = new VTByteArrayOutputStream(size);
     input = new VTByteArrayInputStream(output.buf(), 0, size);
@@ -38,17 +38,17 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     output.reset();
   }
   
-  public final void readFully(byte[] b) throws IOException
+  public final void readFully(final byte[] b) throws IOException
   {
     dataInput.readFully(b);
   }
   
-  public final void readFully(byte[] b, int off, int len) throws IOException
+  public final void readFully(final byte[] b, final int off, final int len) throws IOException
   {
     dataInput.readFully(b, off, len);
   }
   
-  public final int skipBytes(int n) throws IOException
+  public final int skipBytes(final int n) throws IOException
   {
     return dataInput.skipBytes(n);
   }
@@ -113,12 +113,12 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     return dataInput.readUTF();
   }
   
-  public final int read(byte[] b) throws IOException
+  public final int read(final byte[] b) throws IOException
   {
     return input.read(b);
   }
   
-  public final int read(byte[] b, int off, int len) throws IOException
+  public final int read(final byte[] b, final int off, final int len) throws IOException
   {
     return input.read(b, off, len);
   }
@@ -128,7 +128,7 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     return input.available();
   }
   
-  public final long skip(long l) throws IOException
+  public final long skip(final long l) throws IOException
   {
     return input.skip(l);
   }
@@ -148,85 +148,85 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     return dataInput.readUnsignedInt();
   }
   
-  public final void write(int b) throws IOException
+  public final void write(final int b) throws IOException
   {
     output.write(b);
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeBoolean(boolean v) throws IOException
+  public final void writeBoolean(final boolean v) throws IOException
   {
     dataOutput.writeBoolean(v);
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeByte(int v) throws IOException
+  public final void writeByte(final int v) throws IOException
   {
     dataOutput.writeByte(v);
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeShort(int v) throws IOException
+  public final void writeShort(final int v) throws IOException
   {
     dataOutput.writeShort(v);
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeChar(int v) throws IOException
+  public final void writeChar(final int v) throws IOException
   {
     dataOutput.writeChar(v);
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeInt(int v) throws IOException
+  public final void writeInt(final int v) throws IOException
   {
     dataOutput.writeInt(v);
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeLong(long v) throws IOException
+  public final void writeLong(final long v) throws IOException
   {
     dataOutput.writeLong(v);
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeFloat(float v) throws IOException
+  public final void writeFloat(final float v) throws IOException
   {
     dataOutput.writeFloat(v);
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeDouble(double v) throws IOException
+  public final void writeDouble(final double v) throws IOException
   {
     dataOutput.writeDouble(v);
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeBytes(String s) throws IOException
+  public final void writeBytes(final String s) throws IOException
   {
     dataOutput.writeBytes(s);
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeChars(String s) throws IOException
+  public final void writeChars(final String s) throws IOException
   {
     dataOutput.writeChars(s);
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeUTF(String s) throws IOException
+  public final void writeUTF(final String s) throws IOException
   {
     dataOutput.writeUTF(s);
     input.buf(output.buf(), output.count());
   }
   
-  public final void write(byte[] b) throws IOException
+  public final void write(final byte[] b) throws IOException
   {
     output.write(b);
     input.buf(output.buf(), output.count());
   }
   
-  public final void write(byte[] b, int off, int len) throws IOException
+  public final void write(final byte[] b, final int off, final int len) throws IOException
   {
     output.write(b, off, len);
     input.buf(output.buf(), output.count());
@@ -238,25 +238,25 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeShort(short s) throws IOException
+  public final void writeShort(final short s) throws IOException
   {
     dataOutput.writeShort(s);
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeUnsignedShort(int s) throws IOException
+  public final void writeUnsignedShort(final int s) throws IOException
   {
     dataOutput.writeUnsignedShort(s);
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeChar(char c) throws IOException
+  public final void writeChar(final char c) throws IOException
   {
     dataOutput.writeChar(c);
     input.buf(output.buf(), output.count());
   }
   
-  public final void writeSubInt(int i) throws IOException
+  public final void writeSubInt(final int i) throws IOException
   {
     dataOutput.writeSubInt(i);
     input.buf(output.buf(), output.count());
@@ -267,7 +267,7 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     return input.pos();
   }
   
-  public final void setInputPos(int pos)
+  public final void setInputPos(final int pos)
   {
     input.pos(pos);
   }
@@ -277,7 +277,7 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     return output.count();
   }
   
-  public final void setOutputCount(int count)
+  public final void setOutputCount(final int count)
   {
     output.count(count);
     input.count(output.count());
@@ -288,20 +288,20 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     return output.buf();
   }
   
-  public final void setBuffer(byte[] buffer)
+  public final void setBuffer(final byte[] buffer)
   {
     output.buf(buffer);
     input.buf(buffer);
   }
   
-  public final void setBuffer(byte[] buffer, int count)
+  public final void setBuffer(final byte[] buffer, final int count)
   {
     output.buf(buffer, count);
     input.buf(buffer, count);
   }
   
   
-  public final void setOutputSize(int size)
+  public final void setOutputSize(final int size)
   {
     if (output.buf().length < size)
     {
@@ -312,49 +312,49 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     }
   }
   
-  public final byte getByte(int index) throws IOException
+  public final byte getByte(final int index) throws IOException
   {
     setInputPos(index);
     return dataInput.readByte();
   }
   
-  public final short getShort(int index) throws IOException
+  public final short getShort(final int index) throws IOException
   {
     setInputPos(index);
     return dataInput.readShort();
   }
   
-  public final int getInt(int index) throws IOException
+  public final int getInt(final int index) throws IOException
   {
     setInputPos(index);
     return dataInput.readInt();
   }
   
-  public final int getSubInt(int index) throws IOException
+  public final int getSubInt(final int index) throws IOException
   {
     setInputPos(index);
     return dataInput.readSubInt();
   }
   
-  public final float getFloat(int index) throws IOException
+  public final float getFloat(final int index) throws IOException
   {
     setInputPos(index);
     return dataInput.readFloat();
   }
   
-  public final long getLong(int index) throws IOException
+  public final long getLong(final int index) throws IOException
   {
     setInputPos(index);
     return dataInput.readLong();
   }
   
-  public final double getDouble(int index) throws IOException
+  public final double getDouble(final int index) throws IOException
   {
     setInputPos(index);
     return dataInput.readDouble();
   }
   
-  public final int getBytes(int index, byte[] data, int off, int len) throws IOException
+  public final int getBytes(final int index, final byte[] data, final int off, final int len) throws IOException
   {
     setInputPos(index);
     return input.read(data, off, len);
@@ -395,12 +395,12 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     return dataInput.readDouble();
   }
   
-  public final int getBytes(byte[] data, int off, int len) throws IOException
+  public final int getBytes(final byte[] data, final int off, final int len) throws IOException
   {
     return input.read(data, off, len);
   }
   
-  public final void putByte(int index, byte val) throws IOException
+  public final void putByte(final int index, final byte val) throws IOException
   {
     setOutputCount(index);
     dataOutput.writeByte(val);
@@ -408,7 +408,7 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     // return output.count();
   }
   
-  public final void putShort(int index, short val) throws IOException
+  public final void putShort(final int index, final short val) throws IOException
   {
     setOutputCount(index);
     dataOutput.writeShort(val);
@@ -416,7 +416,7 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     // return output.count();
   }
   
-  public final void putInt(int index, int val) throws IOException
+  public final void putInt(final int index, final int val) throws IOException
   {
     setOutputCount(index);
     dataOutput.writeInt(val);
@@ -424,7 +424,7 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     // return output.count();
   }
   
-  public final void putSubInt(int index, int val) throws IOException
+  public final void putSubInt(final int index, final int val) throws IOException
   {
     setOutputCount(index);
     dataOutput.writeSubInt(val);
@@ -432,7 +432,7 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     // return output.count();
   }
   
-  public final void putFloat(int index, float val) throws IOException
+  public final void putFloat(final int index, final float val) throws IOException
   {
     setOutputCount(index);
     dataOutput.writeFloat(val);
@@ -440,7 +440,7 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     // return output.count();
   }
   
-  public final void putLong(int index, long val) throws IOException
+  public final void putLong(final int index, final long val) throws IOException
   {
     setOutputCount(index);
     dataOutput.writeLong(val);
@@ -448,7 +448,7 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     // return output.count();
   }
   
-  public final void putDouble(int index, double val) throws IOException
+  public final void putDouble(final int index, final double val) throws IOException
   {
     setOutputCount(index);
     dataOutput.writeDouble(val);
@@ -456,7 +456,7 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     // return output.count();
   }
   
-  public final void putBytes(int index, byte[] data, int off, int len) throws IOException
+  public final void putBytes(final int index, final byte[] data, final int off, final int len) throws IOException
   {
     setOutputCount(index);
     output.write(data, off, len);
@@ -464,7 +464,7 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     // return output.count();
   }
   
-  public final void putByte(byte val) throws IOException
+  public final void putByte(final byte val) throws IOException
   {
     dataOutput.writeByte(val);
     input.buf(output.buf());
@@ -472,49 +472,49 @@ public final class VTLittleEndianByteArrayInputOutputStream implements RandomAcc
     // return output.count();
   }
   
-  public final void putShort(short val) throws IOException
+  public final void putShort(final short val) throws IOException
   {
     dataOutput.writeShort(val);
     input.buf(output.buf(), output.count());
     // return output.count();
   }
   
-  public final void putInt(int val) throws IOException
+  public final void putInt(final int val) throws IOException
   {
     dataOutput.writeInt(val);
     input.buf(output.buf(), output.count());
     // return output.count();
   }
   
-  public final void putSubInt(int val) throws IOException
+  public final void putSubInt(final int val) throws IOException
   {
     dataOutput.writeSubInt(val);
     input.buf(output.buf(), output.count());
     // return output.count();
   }
   
-  public final void putFloat(float val) throws IOException
+  public final void putFloat(final float val) throws IOException
   {
     dataOutput.writeFloat(val);
     input.buf(output.buf(), output.count());
     // return output.count();
   }
   
-  public final void putLong(long val) throws IOException
+  public final void putLong(final long val) throws IOException
   {
     dataOutput.writeLong(val);
     input.buf(output.buf(), output.count());
     // return output.count();
   }
   
-  public final void putDouble(double val) throws IOException
+  public final void putDouble(final double val) throws IOException
   {
     dataOutput.writeDouble(val);
     input.buf(output.buf(), output.count());
     // return output.count();
   }
   
-  public final void putBytes(byte[] data, int off, int len) throws IOException
+  public final void putBytes(final byte[] data, final int off, final int len) throws IOException
   {
     output.write(data, off, len);
     input.buf(output.buf(), output.count());

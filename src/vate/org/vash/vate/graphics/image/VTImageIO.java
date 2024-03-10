@@ -99,7 +99,7 @@ public final class VTImageIO
   
   // private static final IndexColorModel bytePacked4Bit16ColorModel = VTIndexedColorModel.createPacked4Bit16ColorModel();
   
-  public static final BufferedImage createImage(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
+  public static final BufferedImage createImage(final int x, final int y, final int width, final int height, final int type, final int colors, final DataBuffer recyclableBuffer)
   {
     // recyclableStorage.getRaster().getDataBuffer().get
     switch (type)
@@ -211,7 +211,7 @@ public final class VTImageIO
   }
   
   @SuppressWarnings("all")
-  public static final BufferedImage readImage(InputStream in, DataBuffer recyclableBuffer) throws IOException
+  public static final BufferedImage readImage(final InputStream in, final DataBuffer recyclableBuffer) throws IOException
   {
     VTLittleEndianInputStream littleEndianInputStream = new VTLittleEndianInputStream(in);
     // littleEndianInputStream.setIntputStream(in);
@@ -382,7 +382,7 @@ public final class VTImageIO
   }
   
   @SuppressWarnings("all")
-  public static final void writeImage(OutputStream out, BufferedImage image) throws IOException
+  public static final void writeImage(final OutputStream out, final BufferedImage image) throws IOException
   {
     VTLittleEndianOutputStream littleEndianOutputStream = new VTLittleEndianOutputStream(out);
     // littleEndianOutputStream.setOutputStream(out);
@@ -519,7 +519,7 @@ public final class VTImageIO
     }
   }
   
-  private static final WritableRaster buildRaster(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
+  private static final WritableRaster buildRaster(int x, int y, int width, int height, final int type, final int colors, final DataBuffer recyclableBuffer)
   {
     int parentX = 0;
     int parentY = 0;
@@ -741,7 +741,7 @@ public final class VTImageIO
     return createdRaster;
   }
   
-  private static final BufferedImage buildBufferedImage(int x, int y, int width, int height, int type, int colors, DataBuffer recyclableBuffer)
+  private static final BufferedImage buildBufferedImage(final int x, final int y, final int width, final int height, final int type, final int colors, final DataBuffer recyclableBuffer)
   {
     BufferedImage image = null;
     switch (type)
@@ -866,7 +866,7 @@ public final class VTImageIO
     return image;
   }
   
-  public static final void clearBufferWhite(byte[] buffer, int type, int colors, int start)
+  public static final void clearBufferWhite(final byte[] buffer, final int type, final int colors, final int start)
   {
     if (colors == 216)
     {
@@ -906,7 +906,7 @@ public final class VTImageIO
     }
   }
   
-  public static final void clearBufferWhite(short[] buffer, int type, int colors, int start)
+  public static final void clearBufferWhite(final short[] buffer, final int type, final int colors, final int start)
   {
     if (colors == 65536)
     {
@@ -926,7 +926,7 @@ public final class VTImageIO
     }
   }
   
-  public static final void clearBufferWhite(int[] buffer, int type, int colors, int start)
+  public static final void clearBufferWhite(final int[] buffer, final int type, final int colors, final int start)
   {
     if (type == BufferedImage.TYPE_INT_ARGB)
     {
@@ -957,7 +957,7 @@ public final class VTImageIO
     }
   }
   
-  public static final void clearBufferGray(byte[] buffer, int type, int colors, int start)
+  public static final void clearBufferGray(final byte[] buffer, final int type, final int colors, final int start)
   {
     if (colors == 216)
     {
@@ -1004,7 +1004,7 @@ public final class VTImageIO
     }
   }
   
-  public static final void clearBufferGray(short[] buffer, int type, int colors, int start)
+  public static final void clearBufferGray(final short[] buffer, final int type, final int colors, final int start)
   {
     if (colors == 65536)
     {
@@ -1024,7 +1024,7 @@ public final class VTImageIO
     }
   }
   
-  public static final void clearBufferGray(int[] buffer, int type, int colors, int start)
+  public static final void clearBufferGray(final int[] buffer, final int type, final int colors, final int start)
   {
     if (type == BufferedImage.TYPE_INT_ARGB)
     {
@@ -1055,22 +1055,22 @@ public final class VTImageIO
     }
   }
   
-  public static final void clearBufferBlack(byte[] buffer, int type, int colors, int start)
+  public static final void clearBufferBlack(final byte[] buffer, final int type, final int colors, final int start)
   {
     Arrays.fill(buffer, start, buffer.length, (byte) 0);
   }
   
-  public static final void clearBufferBlack(short[] buffer, int type, int colors, int start)
+  public static final void clearBufferBlack(final short[] buffer, final int type, final int colors, final int start)
   {
     Arrays.fill(buffer, start, buffer.length, (short) 0);
   }
   
-  public static final void clearBufferBlack(int[] buffer, int type, int colors, int start)
+  public static final void clearBufferBlack(final int[] buffer, final int type, final int colors, final int start)
   {
     Arrays.fill(buffer, start, buffer.length, (int) 0);
   }
   
-  public static final void clearBufferWhite(DataBuffer buffer, int type, int colors, int start)
+  public static final void clearBufferWhite(final DataBuffer buffer, final int type, final int colors, final int start)
   {
     if (buffer instanceof DataBufferByte)
     {
@@ -1086,7 +1086,7 @@ public final class VTImageIO
     }
   }
   
-  public static final void clearBufferGray(DataBuffer buffer, int type, int colors, int start)
+  public static final void clearBufferGray(final DataBuffer buffer, final int type, final int colors, final int start)
   {
     if (buffer instanceof DataBufferByte)
     {
@@ -1102,7 +1102,7 @@ public final class VTImageIO
     }
   }
   
-  public static final void clearBufferBlack(DataBuffer buffer, int type, int colors, int start)
+  public static final void clearBufferBlack(final DataBuffer buffer, final int type, final int colors, final int start)
   {
     if (buffer instanceof DataBufferByte)
     {
@@ -1118,22 +1118,22 @@ public final class VTImageIO
     }
   }
   
-  public static final void clearBuffer(DataBuffer buffer, int type, int colors, int start)
+  public static final void clearBuffer(final DataBuffer buffer, final int type, final int colors, final int start)
   {
     clearBufferBlack(buffer, type, colors, start);
   }
   
-  public static final void clearBuffer(byte[] buffer, int type, int colors, int start)
+  public static final void clearBuffer(final byte[] buffer, final int type, final int colors, final int start)
   {
     clearBufferBlack(buffer, type, colors, start);
   }
   
-  public static final void clearBuffer(short[] buffer, int type, int colors, int start)
+  public static final void clearBuffer(final short[] buffer, final int type, final int colors, final int start)
   {
     clearBufferBlack(buffer, type, colors, start);
   }
   
-  public static final void clearBuffer(int[] buffer, int type, int colors, int start)
+  public static final void clearBuffer(final int[] buffer, final int type, final int colors, final int start)
   {
     clearBufferBlack(buffer, type, colors, start);
   }
@@ -1193,7 +1193,7 @@ public final class VTImageIO
     }
   }
   
-  private static final void encodeImage8(VTLittleEndianOutputStream out, byte[] data, int width, int size) throws IOException
+  private static final void encodeImage8(final VTLittleEndianOutputStream out, final byte[] data, final int width, final int size) throws IOException
   {
     int x = 0;
     int y = 0;
@@ -1218,7 +1218,7 @@ public final class VTImageIO
     }
   }
   
-  private static final void encodeImage15(VTLittleEndianOutputStream out, short[] data, int width, int size) throws IOException
+  private static final void encodeImage15(final VTLittleEndianOutputStream out, final short[] data, final int width, final int size) throws IOException
   {
     int x = 0;
     int y = 0;
@@ -1243,7 +1243,7 @@ public final class VTImageIO
     }
   }
   
-  private static final void encodeImage24(VTLittleEndianOutputStream out, int[] data, int width, int size) throws IOException
+  private static final void encodeImage24(final VTLittleEndianOutputStream out, final int[] data, final int width, final int size) throws IOException
   {
     int x = 0;
     int y = 0;
@@ -1268,7 +1268,7 @@ public final class VTImageIO
     }
   }
   
-  private static final void encodeImage30(VTLittleEndianOutputStream out, int[] data, int width, int size) throws IOException
+  private static final void encodeImage30(final VTLittleEndianOutputStream out, final int[] data, final int width, final int size) throws IOException
   {
     int x = 0;
     int y = 0;
@@ -1293,7 +1293,7 @@ public final class VTImageIO
     }
   }
   
-  private static final void encodeImage32(VTLittleEndianOutputStream out, int[] data, int width, int size) throws IOException
+  private static final void encodeImage32(final VTLittleEndianOutputStream out, final int[] data, final int width, final int size) throws IOException
   {
     int x = 0;
     int y = 0;
@@ -1318,7 +1318,7 @@ public final class VTImageIO
     }
   }
   
-  private static final void decodeImage8(VTLittleEndianInputStream in, byte[] data, int width, int size) throws IOException
+  private static final void decodeImage8(final VTLittleEndianInputStream in, final byte[] data, final int width, final int size) throws IOException
   {
     int x = 0;
     int y = 0;
@@ -1343,7 +1343,7 @@ public final class VTImageIO
     }
   }
   
-  private static final void decodeImage15(VTLittleEndianInputStream in, short[] data, int width, int size) throws IOException
+  private static final void decodeImage15(final VTLittleEndianInputStream in, final short[] data, final int width, final int size) throws IOException
   {
     int x = 0;
     int y = 0;
@@ -1368,7 +1368,7 @@ public final class VTImageIO
     }
   }
   
-  private static final void decodeImage24(VTLittleEndianInputStream in, int[] data, int width, int size) throws IOException
+  private static final void decodeImage24(final VTLittleEndianInputStream in, final int[] data, final int width, final int size) throws IOException
   {
     int x = 0;
     int y = 0;
@@ -1393,7 +1393,7 @@ public final class VTImageIO
     }
   }
   
-  private static final void decodeImage30(VTLittleEndianInputStream in, int[] data, int width, int size) throws IOException
+  private static final void decodeImage30(final VTLittleEndianInputStream in, final int[] data, final int width, final int size) throws IOException
   {
     int x = 0;
     int y = 0;
@@ -1418,7 +1418,7 @@ public final class VTImageIO
     }
   }
   
-  private static final void decodeImage32(VTLittleEndianInputStream in, int[] data, int width, int size) throws IOException
+  private static final void decodeImage32(final VTLittleEndianInputStream in, final int[] data, final int width, final int size) throws IOException
   {
     int x = 0;
     int y = 0;

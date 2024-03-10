@@ -16,7 +16,7 @@ public final class VTInterruptibleStreamRedirector implements Runnable
   // private Thread redirectThread;
   // private VTTunnelSession session;
   
-  public VTInterruptibleStreamRedirector(InputStream source, OutputStream destination)
+  public VTInterruptibleStreamRedirector(final InputStream source, final OutputStream destination)
   {
     this.source = source;
     this.destination = destination;

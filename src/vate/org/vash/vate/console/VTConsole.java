@@ -597,7 +597,7 @@ public final class VTConsole
   
   public static Frame getFrame()
   {
-    if (checkConsole())
+    if (console != null)
     {
       return console.getFrame();
     }

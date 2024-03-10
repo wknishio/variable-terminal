@@ -36,7 +36,7 @@ public class VTCryptographicEngine
     this.blake3Digest = new VTBlake3MessageDigest();
   }
   
-  public void initializeClientEngine(int encryptionType, byte[]... encryptionKeys)
+  public void initializeClientEngine(final int encryptionType, final byte[]... encryptionKeys)
   {
     encryptionCipherBC = null;
     decryptionCipherBC = null;
@@ -147,7 +147,7 @@ public class VTCryptographicEngine
     }
   }
   
-  public void initializeServerEngine(int encryptionType, byte[]... encryptionKeys)
+  public void initializeServerEngine(final int encryptionType, final byte[]... encryptionKeys)
   {
     encryptionCipherBC = null;
     decryptionCipherBC = null;
@@ -290,7 +290,7 @@ public class VTCryptographicEngine
 //    return blake3Digester.digest(32);
 //  }
   
-  private byte[] generateKeyBLAKE3(int size, byte[] first, byte[] second, byte[]... extra)
+  private byte[] generateKeyBLAKE3(final int size, final byte[] first, final byte[] second, final byte[]... extra)
   {
     blake3Digest.reset();
     blake3Digest.update(first);
@@ -307,7 +307,7 @@ public class VTCryptographicEngine
     return blake3Digest.digest(size);
   }
   
-  private byte[] generateIVBLAKE3(int size, byte[] first, byte[] second, byte[]... extra)
+  private byte[] generateIVBLAKE3(final int size, final byte[] first, final byte[] second, final byte[]... extra)
   {
     blake3Digest.reset();
     blake3Digest.update(second);
@@ -324,7 +324,7 @@ public class VTCryptographicEngine
     return blake3Digest.digest(size);
   }
   
-  public InputStream getDecryptedInputStream(InputStream encrypted)
+  public InputStream getDecryptedInputStream(final InputStream encrypted)
   {
     if (decryptionCipherBC != null)
     {
@@ -338,7 +338,7 @@ public class VTCryptographicEngine
     return encrypted;
   }
   
-  public OutputStream getEncryptedOutputStream(OutputStream decrypted)
+  public OutputStream getEncryptedOutputStream(final OutputStream decrypted)
   {
     if (encryptionCipherBC != null)
     {

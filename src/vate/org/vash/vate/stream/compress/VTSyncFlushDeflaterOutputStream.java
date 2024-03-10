@@ -30,7 +30,7 @@ public final class VTSyncFlushDeflaterOutputStream extends DeflaterOutputStream
   // super(out, def, size);
   // }
   
-  public VTSyncFlushDeflaterOutputStream(OutputStream out, Deflater def, int size) throws NoSuchMethodException
+  public VTSyncFlushDeflaterOutputStream(final OutputStream out, final Deflater def, final int size) throws NoSuchMethodException
   {
     super(out, def, size);
     if (deflateMethod == null)

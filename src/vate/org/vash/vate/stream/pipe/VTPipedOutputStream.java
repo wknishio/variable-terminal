@@ -8,7 +8,7 @@ public final class VTPipedOutputStream extends OutputStream
 {
   private VTPipedInputStream sink;
   
-  public VTPipedOutputStream(VTPipedInputStream sink) throws IOException
+  public VTPipedOutputStream(final VTPipedInputStream sink) throws IOException
   {
     connect(sink);
   }
@@ -18,7 +18,7 @@ public final class VTPipedOutputStream extends OutputStream
     
   }
   
-  public synchronized final void connect(VTPipedInputStream sink) throws IOException
+  public synchronized final void connect(final VTPipedInputStream sink) throws IOException
   {
     if (this.sink == sink)
     {
@@ -31,12 +31,12 @@ public final class VTPipedOutputStream extends OutputStream
     this.sink = sink;
   }
   
-  public final void write(int b) throws IOException
+  public final void write(final int b) throws IOException
   {
     sink.put(b);
   }
   
-  public final void write(byte b[], int off, int len) throws IOException
+  public final void write(final byte b[], int off, int len) throws IOException
   {
     sink.put(b, off, len);
   }

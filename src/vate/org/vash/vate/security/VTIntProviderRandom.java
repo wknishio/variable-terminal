@@ -20,18 +20,18 @@ public abstract class VTIntProviderRandom extends Random
     this.intProvider = intProvider;
   }
   
-  public void setSeed(byte[] seed)
+  public void setSeed(final byte[] seed)
   {
     
   }
   
-  public void setSeed(long seed)
+  public void setSeed(final long seed)
   {
     
   }
   
   // public methods overriding random
-  public void nextBytes(byte[] bytes)
+  public void nextBytes(final byte[] bytes)
   {
     intProvider.nextBytes(bytes);
   }

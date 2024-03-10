@@ -8,12 +8,12 @@ import org.vash.vate.VT;
 
 public final class VTInterruptibleInputStream extends InputStream
 {
-  private VTInterruptibleStreamRedirector redirector;
-  private InputStream source;
-  private VTPipedInputStream in;
-  private VTPipedOutputStream out;
+  private final VTInterruptibleStreamRedirector redirector;
+  private final InputStream source;
+  private final VTPipedInputStream in;
+  private final VTPipedOutputStream out;
   
-  public VTInterruptibleInputStream(InputStream source, Executor executor)
+  public VTInterruptibleInputStream(final InputStream source, final Executor executor)
   {
     this.in = new VTPipedInputStream(VT.VT_REDUCED_BUFFER_SIZE_BYTES);
     this.out = new VTPipedOutputStream();
@@ -30,7 +30,7 @@ public final class VTInterruptibleInputStream extends InputStream
     executor.execute(redirector);
   }
   
-  public VTInterruptibleInputStream(InputStream source)
+  public VTInterruptibleInputStream(final InputStream source)
   {
     this.in = new VTPipedInputStream(VT.VT_REDUCED_BUFFER_SIZE_BYTES);
     this.out = new VTPipedOutputStream();
@@ -81,12 +81,12 @@ public final class VTInterruptibleInputStream extends InputStream
     return in.read();
   }
   
-  public int read(byte[] b) throws IOException
+  public int read(final byte[] b) throws IOException
   {
     return in.read(b);
   }
   
-  public int read(byte[] b, int off, int len) throws IOException
+  public int read(final byte[] b, final int off, final int len) throws IOException
   {
     return in.read(b, off, len);
   }

@@ -17,7 +17,7 @@ public final class VTStreamRedirector implements Runnable
   private final Closeable notify;
   // private VTTunnelSession session;
   
-  public VTStreamRedirector(InputStream source, OutputStream destination)
+  public VTStreamRedirector(final InputStream source, final OutputStream destination)
   {
     this.redirectorBuffer = new byte[redirectorBufferSize];
     this.source = source;
@@ -26,7 +26,7 @@ public final class VTStreamRedirector implements Runnable
     this.notify = null;
   }
   
-  public VTStreamRedirector(InputStream source, OutputStream destination, Closeable notify)
+  public VTStreamRedirector(final InputStream source, final OutputStream destination, final Closeable notify)
   {
     this.redirectorBuffer = new byte[redirectorBufferSize];
     this.source = source;
@@ -35,7 +35,7 @@ public final class VTStreamRedirector implements Runnable
     this.notify = notify;
   }
   
-  public VTStreamRedirector(InputStream source, OutputStream destination, Closeable notify, int bufferSize)
+  public VTStreamRedirector(final InputStream source, final OutputStream destination, final Closeable notify, final int bufferSize)
   {
     this.redirectorBuffer = new byte[bufferSize];
     this.source = source;
