@@ -374,7 +374,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       //buf = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
       while ( rlen >= 0 && size > 0 )
       {
-        rlen = in.read(buf, 0, (int) Math.min(VT.VT_STANDARD_BUFFER_SIZE_BYTES, size));
+        rlen = in.read(buf, 0, (int) Math.min(buf.length, size));
         if (rlen > 0)
         {
           size -= rlen;
@@ -1079,12 +1079,12 @@ public class VTNanoHTTPDProxySession implements Runnable
       if ( data != null )
       {
         int pending = data.available(); // This is to support partial sends, see serveFile()
-        byte[] buff = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
+        byte[] buf = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
         while (pending>0)
         {
-          int read = data.read( buff, 0, Math.min(VT.VT_STANDARD_BUFFER_SIZE_BYTES, pending));
+          int read = data.read( buf, 0, Math.min(buf.length, pending));
           if (read <= 0)  break;
-          out.write( buff, 0, read );
+          out.write( buf, 0, read );
           pending -= read;
         }
       }

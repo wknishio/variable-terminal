@@ -492,12 +492,12 @@ public class VTAudioCapturer
     VTAudioCapturerThread capturer = lines.get(id);
     if (capturer == null)
     {
-      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES, true));
+      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(out, VT.VT_REDUCED_BUFFER_SIZE_BYTES, true));
       lines.put(id, new VTAudioCapturerThread(stream, line, id, codec, frameMilliseconds));
     }
     else
     {
-      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES, true));
+      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(out, VT.VT_REDUCED_BUFFER_SIZE_BYTES, true));
       capturer.addOutput(stream);
     }
     return true;

@@ -42,7 +42,7 @@ public class VTServerConnector implements Runnable
   private VTNATSinglePortMappingManagerMKII portMappingManager;
   private VTServerConnectorNATPortMappingResultNotify natNotify = new VTServerConnectorNATPortMappingResultNotify();
   private List<VTServerSessionListener> listeners = new ArrayList<VTServerSessionListener>();
-  private VTBlake3SecureRandom secureRandom;
+  private final VTBlake3SecureRandom secureRandom;
   
   public VTServerConnector(VTServer server, VTBlake3SecureRandom secureRandom)
   {

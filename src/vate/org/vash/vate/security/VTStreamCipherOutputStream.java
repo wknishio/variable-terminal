@@ -9,9 +9,9 @@ import org.vash.vate.VT;
 
 public class VTStreamCipherOutputStream extends FilterOutputStream
 {
-  private final byte[] single1 = new byte[1];
-  private final byte[] single2 = new byte[1];
-  private byte[] buffer = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
+  private final byte[] input = new byte[1];
+  private final byte[] output = new byte[1];
+  private byte[] encrypted = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
   private StreamCipher streamCipher;
   
   public VTStreamCipherOutputStream(OutputStream out, StreamCipher streamCipher)
@@ -20,30 +20,28 @@ public class VTStreamCipherOutputStream extends FilterOutputStream
     this.streamCipher = streamCipher;
   }
   
-  public void write(final int input) throws IOException
+  public void write(final int decrypted) throws IOException
   {
-    single1[0] = (byte) input;
-    streamCipher.processBytes(single1, 0, 1, single2, 0);
-    out.write(single2);
+    input[0] = (byte) decrypted;
+    streamCipher.processBytes(input, 0, 1, output, 0);
+    out.write(output);
   }
   
-  public void write(final byte[] input) throws IOException
+  public void write(final byte[] decrypted) throws IOException
   {
-    if (buffer.length < input.length)
+    if (encrypted.length < decrypted.length)
     {
-      buffer = new byte[input.length];
+      encrypted = new byte[decrypted.length];
     }
-    streamCipher.processBytes(input, 0, input.length, buffer, 0);
-    out.write(buffer, 0, input.length);
+    out.write(encrypted, 0, streamCipher.processBytes(decrypted, 0, decrypted.length, encrypted, 0));
   }
   
-  public void write(final byte[] input, final int off, final int len) throws IOException
+  public void write(final byte[] decrypted, final int off, final int len) throws IOException
   {
-    if (buffer.length < len)
+    if (encrypted.length < len)
     {
-      buffer = new byte[len];
+      encrypted = new byte[len];
     }
-    streamCipher.processBytes(input, off, len, buffer, 0);
-    out.write(buffer, 0, len);
+    out.write(encrypted, 0, streamCipher.processBytes(decrypted, off, len, encrypted, 0));
   }
 }

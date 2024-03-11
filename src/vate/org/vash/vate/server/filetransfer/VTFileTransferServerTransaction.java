@@ -45,7 +45,7 @@ public class VTFileTransferServerTransaction implements Runnable
   private long maxOffset;
   private long currentOffset;
   private final byte[] fileTransferBuffer = new byte[fileTransferBufferSize];
-  private MessageDigest xxhash64Digest;
+  private final MessageDigest xxhash64Digest;
   private String command;
   private String source;
   private String destination;

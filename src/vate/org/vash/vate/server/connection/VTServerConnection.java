@@ -54,9 +54,9 @@ public class VTServerConnection
   private final byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   // private byte[] paddingData = new byte[1024];
   // private MessageDigest sha256Digester;
-  private VTBlake3MessageDigest blake3Digest;
+  private final VTCryptographicEngine cryptoEngine;
+  private final VTBlake3MessageDigest blake3Digest;
   private VTBlake3SecureRandom secureRandom;
-  private VTCryptographicEngine cryptoEngine;
   private Socket connectionSocket;
   private InputStream connectionSocketInputStream;
   private OutputStream connectionSocketOutputStream;

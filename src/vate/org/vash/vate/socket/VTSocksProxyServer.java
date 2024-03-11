@@ -30,6 +30,8 @@ import java.io.*;
 //import org.apache.log4j.Logger;
 import java.net.*;
 
+import org.vash.vate.VT;
+
 /**
  * SOCKS4 and SOCKS5 proxy, handles both protocols simultaniously. Implements
  * all SOCKS commands, including UDP relaying.
@@ -60,7 +62,7 @@ public class VTSocksProxyServer implements Runnable {
 	static final int PIPE_MODE = 2;
 	static final int ABORT_MODE = 3;
 
-	static final int DEFAULT_BUF_SIZE = 1024 * 64;
+	static final int DEFAULT_BUF_SIZE = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
 
 	Thread pipe_thread1, pipe_thread2;
 	long lastReadTime;

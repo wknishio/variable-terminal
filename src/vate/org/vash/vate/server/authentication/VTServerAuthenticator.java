@@ -18,7 +18,7 @@ public class VTServerAuthenticator
   private byte[] remoteNonce;
   private String user;
   private String password;
-  private VTBlake3MessageDigest blake3Digest;
+  private final VTBlake3MessageDigest blake3Digest;
   private VTServer server;
   private VTServerConnection connection;
   private VTServerAuthenticatorTimeoutTask timeoutTask = new VTServerAuthenticatorTimeoutTask();

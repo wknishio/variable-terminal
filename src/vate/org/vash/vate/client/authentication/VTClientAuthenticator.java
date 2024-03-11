@@ -15,7 +15,7 @@ public class VTClientAuthenticator
   private byte[] remoteNonce;
   private String user;
   private String password;
-  private VTBlake3MessageDigest blake3Digest;
+  private final VTBlake3MessageDigest blake3Digest;
   private VTClient client;
   private VTClientConnection connection;
   private VTClientAuthenticatorTimeoutTask timeoutTask = new VTClientAuthenticatorTimeoutTask();

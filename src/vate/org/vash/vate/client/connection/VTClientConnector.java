@@ -23,6 +23,10 @@ public class VTClientConnector implements Runnable
   private boolean active;
   //private boolean connecting = false;
   private boolean running = true;
+  private boolean retry = false;
+  private boolean dialog = false;
+  private boolean skipConfiguration;
+  private boolean timeoutEnabled;
   private String hostAddress;
   private Integer hostPort;
   private Integer natPort;
@@ -41,15 +45,11 @@ public class VTClientConnector implements Runnable
   private VTClient client;
   private VTClientConnection connection;
   private VTClientConnectionHandler handler;
-  private boolean skipConfiguration;
-  private boolean timeoutEnabled;
   private VTNATSinglePortMappingManagerMKII portMappingManager;
   private VTConnectionRetryTimeoutTask connectionRetryTimeoutTask = new VTConnectionRetryTimeoutTask();
-  private boolean retry = false;
-  private boolean dialog = false;
   private VTClientConnectorNATPortMappingResultNotify natNotify = new VTClientConnectorNATPortMappingResultNotify();
   private List<VTClientSessionListener> listeners = new ArrayList<VTClientSessionListener>();
-  private VTBlake3SecureRandom secureRandom;
+  private final VTBlake3SecureRandom secureRandom;
   
   public VTClientConnector(VTClient client, VTBlake3SecureRandom secureRandom)
   {
@@ -342,11 +342,6 @@ public class VTClientConnector implements Runnable
     return handler;
   }
   
-  public void setHandler(VTClientConnectionHandler handler)
-  {
-    this.handler = handler;
-  }
-  
   public boolean isActive()
   {
     return active;
@@ -410,16 +405,6 @@ public class VTClientConnector implements Runnable
   public String getSessionCommands()
   {
     return sessionCommands;
-  }
-  
-  public void setClient(VTClient client)
-  {
-    this.client = client;
-  }
-  
-  public void setConnection(VTClientConnection connection)
-  {
-    this.connection = connection;
   }
   
   public VTClientConnection getConnection()

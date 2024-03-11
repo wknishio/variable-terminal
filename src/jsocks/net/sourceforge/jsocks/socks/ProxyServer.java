@@ -51,7 +51,7 @@ public class ProxyServer implements Runnable {
 	static final int PIPE_MODE = 2;
 	static final int ABORT_MODE = 3;
 
-	static final int DEFAULT_BUF_SIZE = 1024 * 64;
+	static final int DEFAULT_BUF_SIZE = 1024 * 16;
 
 	Thread pipe_thread1, pipe_thread2;
 	long lastReadTime;
