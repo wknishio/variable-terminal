@@ -13,7 +13,7 @@ import org.vash.vate.tunnel.connection.VTTunnelConnection;
 public class VTTunnelSession implements Closeable
 {
   private VTTunnelConnection connection;
-  private VTTunnelCloseableSocket socket;
+  private Socket socket;
   private InputStream socketInputStream;
   private OutputStream socketOutputStream;;
   private VTLinkableDynamicMultiplexedInputStream tunnelInputStream;
@@ -25,14 +25,14 @@ public class VTTunnelSession implements Closeable
   private Boolean result = null;
   private boolean closed;
   
-  public VTTunnelSession(VTTunnelConnection connection, Socket socket, InputStream socketInputStream, OutputStream socketOutputStream, boolean originator)
-  {
-    this.connection = connection;
-    this.socket = new VTTunnelCloseableSocket(socket);
-    this.socketInputStream = socketInputStream;
-    this.socketOutputStream = socketOutputStream;
-    this.originator = originator;
-  }
+//  public VTTunnelSession(VTTunnelConnection connection, Socket socket, InputStream socketInputStream, OutputStream socketOutputStream, boolean originator)
+//  {
+//    this.connection = connection;
+//    this.socket = new VTTunnelCloseableSocket(socket);
+//    this.socketInputStream = socketInputStream;
+//    this.socketOutputStream = socketOutputStream;
+//    this.originator = originator;
+//  }
   
   public VTTunnelSession(VTTunnelConnection connection, boolean originator)
   {
@@ -133,14 +133,14 @@ public class VTTunnelSession implements Closeable
     socket = null;
   }
   
-  public VTTunnelCloseableSocket getSocket()
+  public Socket getSocket()
   {
     return this.socket;
   }
   
   public void setSocket(Socket socket)
   {
-    this.socket = new VTTunnelCloseableSocket(socket); 
+    this.socket = socket; 
   }
   
   public VTLinkableDynamicMultiplexedInputStream getTunnelInputStream()

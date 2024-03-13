@@ -17,23 +17,29 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
   private InputStream in;
   private VTLinkableDynamicMultiplexedOutputStream out;
   private OutputStream pipe;
-  //private Closeable closeable;
+  private Closeable closeable;
   private boolean closed = false;
   
-  public VTTunnelPipedSocket()
+  public VTTunnelPipedSocket(Closeable closeable)
   {
-    
+    this.closeable = closeable;
+    VTPipedInputStream pipeSink = new VTPipedInputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+    VTPipedOutputStream pipeSource = new VTPipedOutputStream();
+    try
+    {
+      pipeSink.connect(pipeSource);
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    this.in = pipeSink;
+    this.pipe = pipeSource;
   }
   
   public void setOutputStream(VTLinkableDynamicMultiplexedOutputStream output) throws IOException
   {
-    VTPipedInputStream pipeSink = new VTPipedInputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
-    VTPipedOutputStream pipeSource = new VTPipedOutputStream();
-    pipeSink.connect(pipeSource);
     this.out = output;
-    //this.out = new VTBufferedOutputStream(output, VT.VT_STANDARD_DATA_BUFFER_SIZE, true);
-    this.in = pipeSink;
-    this.pipe = pipeSource;
   }
   
   //public void setCloseable(Closeable closeable)
@@ -88,6 +94,17 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
       return;
     }
     closed = true;
+    if (closeable != null)
+    {
+      try
+      {
+        closeable.close();
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
     if (out != null)
     {
       try

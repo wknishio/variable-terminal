@@ -80,6 +80,7 @@ public class VTSocksProxyServer implements Runnable {
 	private boolean disabled_bind = false;
 	
 	private VTProxy connect_proxy;
+	private VTAuthenticatedProxySocketFactory socket_factory;
 
 	// private String connectionId;
 
@@ -107,12 +108,13 @@ public class VTSocksProxyServer implements Runnable {
 		mode = START_MODE;
 	}
 	
-	public VTSocksProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy) {
+	public VTSocksProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy, VTAuthenticatedProxySocketFactory socket_factory) {
     this.auth = auth;
     this.sock = s;
     this.disabled_bind = disabled_bind;
     this.disabled_udp_relay = disabled_udp_relay;
     this.connect_proxy = connect_proxy;
+    this.socket_factory = socket_factory;
     // this.connectionId = connectionId;
     mode = START_MODE;
   }
@@ -413,7 +415,7 @@ public class VTSocksProxyServer implements Runnable {
 		  }
 		  else
 		  {
-		    s = VTProxy.connect(msg.host, msg.port, null, connect_proxy);
+		    s = VTProxy.connect(msg.host, msg.port, socket_factory == null ? null : new VTAuthenticatedProxySocket(socket_factory), connect_proxy);
 		    s.setTcpNoDelay(true);
 		    s.setKeepAlive(true);
         //s.setSoTimeout(90000);
@@ -620,12 +622,12 @@ public class VTSocksProxyServer implements Runnable {
 		return msg;
 	}
 
-	private void startPipe(Socket s) {
+	private void startPipe(Socket remoteSocket) {
 		mode = PIPE_MODE;
-		remote_sock = s;
+		remote_sock = remoteSocket;
 		try {
-			remote_in = s.getInputStream();
-			remote_out = s.getOutputStream();
+			remote_in = remoteSocket.getInputStream();
+			remote_out = remoteSocket.getOutputStream();
 			pipe_thread1 = Thread.currentThread();
 			pipe_thread2 = new Thread(this);
 			pipe_thread2.setDaemon(true);

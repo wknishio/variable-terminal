@@ -19,7 +19,6 @@ import org.concentus.OpusApplication;
 import org.concentus.OpusEncoder;
 import org.concentus.OpusException;
 import org.concentus.OpusMode;
-import org.concentus.OpusSignal;
 import org.vash.vate.VT;
 import org.vash.vate.stream.endian.VTLittleEndianByteArrayInputOutputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -132,7 +131,7 @@ public class VTAudioCapturer
     private final byte[] inputBuffer;
     // private short[] inputBufferShort;
     private final byte[] outputBuffer;
-    private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+    private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VT.VT_REDUCED_BUFFER_SIZE_BYTES);
     private final Queue<VTLittleEndianOutputStream> streams;
     private final String id;
     private TargetDataLine line;
@@ -175,11 +174,11 @@ public class VTAudioCapturer
         {
           this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
           this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          //this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
-          this.opus.setComplexity(9);
+          this.opus.setComplexity(5);
           this.opus.setBitrate(16000);
         }
         catch (Throwable t)
@@ -194,11 +193,11 @@ public class VTAudioCapturer
         {
           this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
           this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          //this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
-          this.opus.setComplexity(9);
+          this.opus.setComplexity(5);
           this.opus.setBitrate(24000);
         }
         catch (Throwable t)
@@ -218,11 +217,11 @@ public class VTAudioCapturer
         {
           this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
           this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          //this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
-          this.opus.setComplexity(9);
+          this.opus.setComplexity(5);
           this.opus.setBitrate(32000);
         }
         catch (Throwable t)
@@ -237,11 +236,11 @@ public class VTAudioCapturer
         {
           this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
           this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          //this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
-          this.opus.setComplexity(9);
+          this.opus.setComplexity(5);
           this.opus.setBitrate(32000);
         }
         catch (Throwable t)
@@ -266,11 +265,11 @@ public class VTAudioCapturer
         {
           this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
           this.opus.setForceMode(OpusMode.MODE_CELT_ONLY);
-          this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
+          //this.opus.setSignalType(OpusSignal.OPUS_SIGNAL_MUSIC);
           this.opus.setEnableAnalysis(false);
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
-          this.opus.setComplexity(9);
+          this.opus.setComplexity(5);
           this.opus.setBitrate(64000);
         }
         catch (Throwable t)

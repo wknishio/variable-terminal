@@ -256,6 +256,12 @@ public class VTProxy
       host = "";
     }
     
+    if (currentSocket instanceof VTAuthenticatedProxySocket)
+    {
+      VTAuthenticatedProxySocket proxySocket = (VTAuthenticatedProxySocket)currentSocket;
+      return proxySocket.connect(host, port, proxies);
+    }
+    
     InetSocketAddress socketAddress = null;
     
     Socket connectionSocket = next(currentSocket, proxies);

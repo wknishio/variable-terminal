@@ -130,7 +130,7 @@ public class VTTunnelChannel
     // closed = true;
     //synchronized (sessions)
     //{
-      for (VTTunnelSessionHandler handler : sessions)
+      for (VTTunnelSessionHandler handler : sessions.toArray(new VTTunnelSessionHandler[] {}))
       {
         try
         {

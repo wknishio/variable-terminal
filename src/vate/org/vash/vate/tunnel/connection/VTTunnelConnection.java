@@ -33,6 +33,8 @@ public class VTTunnelConnection
   // private VTLittleEndianInputStream relayInputStream;
   // private VTLittleEndianOutputStream relayOutputStream;
   private VTTunnelChannel remoteRedirectChannel;
+  private VTTunnelChannelRemoteSocketBuilder remoteSocketBuilder;
+  private VTTunnelRemoteSocketFactory remoteSocketFactory;
   private Set<VTTunnelChannelBindSocketListener> bindListeners;
   // private int tunnelType;
   private ExecutorService threads;
@@ -44,6 +46,8 @@ public class VTTunnelConnection
     this.bindListeners = new LinkedHashSet<VTTunnelChannelBindSocketListener>();
     // this.tunnelType = tunnelType;
     this.threads = threads;
+    this.remoteSocketBuilder = createRemoteSocketBuilder();
+    this.remoteSocketFactory = createRemoteSocketFactory();
   }
   
   // public int getTunnelType()
@@ -146,14 +150,24 @@ public class VTTunnelConnection
     }
   }
   
-  public VTTunnelRemoteSocketFactory createRemoteSocketFactory()
+  public VTTunnelChannelRemoteSocketBuilder getRemoteSocketBuilder()
   {
-    return new VTTunnelRemoteSocketFactory(createRemoteSocketBuilder());
+    return remoteSocketBuilder;
+  }
+  
+  public VTTunnelRemoteSocketFactory getRemoteSocketFactory()
+  {
+    return remoteSocketFactory;
   }
   
   private VTTunnelChannelRemoteSocketBuilder createRemoteSocketBuilder()
   {
     return new VTTunnelChannelRemoteSocketBuilder(remoteRedirectChannel); 
+  }
+  
+  private VTTunnelRemoteSocketFactory createRemoteSocketFactory()
+  {
+    return new VTTunnelRemoteSocketFactory(createRemoteSocketBuilder());
   }
   
   public Set<VTTunnelChannelBindSocketListener> getBindListeners()

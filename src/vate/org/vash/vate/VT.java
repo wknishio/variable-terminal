@@ -37,10 +37,10 @@ public class VT
   public static final int VT_PACKET_TOTAL_SIZE_BYTES = VT_PACKET_HEADER_SIZE_BYTES + VT_PACKET_DATA_SIZE_BYTES;
   
   public static final int VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES = 1024 * 1024;
-  public static final int VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES = 1024 * 64;
-  public static final int VT_STANDARD_BUFFER_SIZE_BYTES = 1024 * 64;
-  public static final int VT_COMPRESSION_BUFFER_SIZE_BYTES = 1024 * 64;
-  public static final int VT_FILE_BUFFER_SIZE_BYTES = 1024 * 64;
+  public static final int VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES = 1024 * 32;
+  public static final int VT_STANDARD_BUFFER_SIZE_BYTES = 1024 * 32;
+  public static final int VT_COMPRESSION_BUFFER_SIZE_BYTES = 1024 * 32;
+  public static final int VT_FILE_BUFFER_SIZE_BYTES = 1024 * 32;
   public static final int VT_REDUCED_BUFFER_SIZE_BYTES = 1024 * 16;
   
   public static final int VT_SECURITY_DIGEST_SIZE_BYTES = 64;

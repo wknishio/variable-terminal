@@ -11,6 +11,7 @@ import org.vash.vate.socket.VTProxy.VTProxyType;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.session.VTTunnelSession;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
+import org.vash.vate.tunnel.session.VTTunnelSocksSessionHandler;
 
 public class VTTunnelChannelBindSocketListener implements Runnable
 {
@@ -107,19 +108,21 @@ public class VTTunnelChannelBindSocketListener implements Runnable
       {
         VTTunnelSession session = null;
         VTTunnelSessionHandler handler = null;
-        Socket socket = null;
+        Socket acceptedSocket = null;
         InputStream socketInputStream = null;
         OutputStream socketOutputStream = null;
+        
         try
         {
-          socket = listen();
-          socketInputStream = socket.getInputStream();
-          socketOutputStream = socket.getOutputStream();
+          acceptedSocket = accept();
+          socketInputStream = acceptedSocket.getInputStream();
+          socketOutputStream = acceptedSocket.getOutputStream();
         }
         catch (Throwable t)
         {
           
         }
+        
         if (socketInputStream != null && socketOutputStream != null)
         {
           int channelType = channel.getChannelType();
@@ -160,45 +163,56 @@ public class VTTunnelChannelBindSocketListener implements Runnable
             proxyPassword = "*" + SESSION_SEPARATOR + "*";
           }
           
-          session = new VTTunnelSession(channel.getConnection(), socket, socketInputStream, socketOutputStream, true);
-          handler = new VTTunnelSessionHandler(session, channel);
-          VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
-          if (output != null)
+          session = new VTTunnelSession(channel.getConnection(), true);
+          session.setSocket(acceptedSocket);
+          session.setSocketInputStream(socketInputStream);
+          session.setSocketOutputStream(socketOutputStream);
+          
+          if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
           {
-            int outputNumber = output.number();
-            session.setOutputNumber(outputNumber);
-            session.setTunnelOutputStream(output);
-            //session.getTunnelOutputStream().open();
-            if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
-            {
-              String host = channel.getRedirectHost();
-              int port = channel.getRedirectPort();
-              // request message sent
-              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
-              channel.getConnection().getControlOutputStream().flush();
-            }
-            else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
-            {
-              //TODO: will start a local socks/http proxy server that connects remotely using new socket factory
-              String socksUsername = channel.getSocksUsername();
-              String socksPassword = channel.getSocksPassword();
-              if (socksUsername == null || socksPassword == null || socksUsername.length() == 0 || socksPassword.length() == 0)
-              {
-                socksUsername = "";
-                socksPassword = "";
-              }
-              // request message sent
-              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
-              channel.getConnection().getControlOutputStream().flush();
-              //TODO: will start a local socks/http proxy server that connects remotely using new socket factory
-            }
+            handler = new VTTunnelSocksSessionHandler(session, channel, channel.getSocksUsername(), channel.getSocksPassword(), channel.getProxy(), channel.getConnection().getRemoteSocketFactory());
+            threads.execute(handler);
           }
           else
           {
-            // cannot handle more sessions
-            if (session != null)
+            handler = new VTTunnelSessionHandler(session, channel);
+            
+            VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
+            if (output != null)
             {
-              session.close();
+              int outputNumber = output.number();
+              session.setOutputNumber(outputNumber);
+              session.setTunnelOutputStream(output);
+              //session.getTunnelOutputStream().open();
+              if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
+              {
+                String host = channel.getRedirectHost();
+                int port = channel.getRedirectPort();
+                // request message sent
+                channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+                channel.getConnection().getControlOutputStream().flush();
+              }
+              else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
+              {
+                String socksUsername = channel.getSocksUsername();
+                String socksPassword = channel.getSocksPassword();
+                if (socksUsername == null || socksPassword == null || socksUsername.length() == 0 || socksPassword.length() == 0)
+                {
+                  socksUsername = "";
+                  socksPassword = "";
+                }
+                // request message sent
+                channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+                channel.getConnection().getControlOutputStream().flush();
+              }
+            }
+            else
+            {
+              // cannot handle more sessions
+              if (session != null)
+              {
+                session.close();
+              }
             }
           }
         }
@@ -211,7 +225,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
     //closed = true;
   }
   
-  private Socket listen()
+  private Socket accept()
   {
     Socket socket = null;
     try
