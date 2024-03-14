@@ -13,7 +13,6 @@
 	<classpathentry kind="src" path="src/lanterna"/>
 	<classpathentry kind="src" path="src/lz4"/>
 	<classpathentry kind="src" path="src/portmapper"/>
-	<classpathentry kind="src" path="src/snappy"/>
 	<classpathentry kind="src" path="src/throttle"/>
 	<classpathentry kind="src" path="src/vate"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

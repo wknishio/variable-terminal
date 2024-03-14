@@ -6,10 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.Deflater;
 
-import org.iq80.snappy.SnappyFramedInputStream;
-import org.iq80.snappy.SnappyFramedOutputStream;
-import org.iq80.snappy.SnappyInputStream;
-import org.iq80.snappy.SnappyOutputStream;
 import org.vash.vate.VT;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.array.VTFlushBufferedOutputStream;
@@ -282,60 +278,5 @@ public class VTCompressorSelector
     // return createFlushBufferedSyncFlushInflaterInputStream(in);
     return new BufferedInputStream(new LZ4BlockInputStream(in, LZ4Factory.safeInstance().fastDecompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), false), VT.VT_COMPRESSION_BUFFER_SIZE_BYTES);
     //return new BufferedInputStream(new LZ4FrameInputStream(in, false), VT.VT_COMPRESSED_DATA_BUFFER_SIZE);
-  }
-  
-  public static OutputStream createFlushBufferedSnappyOutputStream(OutputStream out)
-  {
-    // return out;
-    try
-    {
-      return new VTBufferedOutputStream(new SnappyOutputStream(out, false), VT.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    return null;
-  }
-  
-  public static InputStream createFlushBufferedSnappyInputStream(InputStream in)
-  {
-    // return in;
-    try
-    {
-      return new BufferedInputStream(new SnappyInputStream(in, false), VT.VT_COMPRESSION_BUFFER_SIZE_BYTES);
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    return null;
-  }
-  
-  public static OutputStream createSnappyOutputStream(OutputStream out)
-  {
-    try
-    {
-      return new SnappyOutputStream(out, false);
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    return null;
-  }
-  
-  public static InputStream createSnappyInputStream(InputStream in)
-  {
-    try
-    {
-      return new SnappyInputStream(in, false);
-    }
-    catch (Throwable t)
-    {
-      
-    }
-    return null;
-  }
-  
+  }  
 }
