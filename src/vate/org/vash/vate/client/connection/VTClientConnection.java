@@ -425,7 +425,7 @@ public class VTClientConnection
       {
         multiplexedConnectionOutputStream.close();
       }
-      catch (IOException e)
+      catch (Throwable e)
       {
         
       }
@@ -434,13 +434,9 @@ public class VTClientConnection
     {
       try
       {
-        multiplexedConnectionInputStream.stopPacketReader();
+        multiplexedConnectionInputStream.close();
       }
-      catch (IOException e)
-      {
-        
-      }
-      catch (InterruptedException e)
+      catch (Throwable t)
       {
         
       }

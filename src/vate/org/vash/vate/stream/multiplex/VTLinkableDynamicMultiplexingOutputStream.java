@@ -68,7 +68,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       {
         stream.setLink(link);
       }
-      //stream.setLink(link);
       return stream;
     }
     // search for a multiplexed outputstream that has no link
@@ -88,11 +87,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   {
     VTLinkableDynamicMultiplexedOutputStream stream = null;
     stream = getOutputStream(type, number);
-    if (stream.getLink() == null)
-    {
-      stream.setLink(link);
-    }
-    //stream.setLink(link);
+    stream.setLink(link);
     return stream;
   }
   
@@ -101,7 +96,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     if (stream != null)
     {
       stream.setLink(null);
-      if ((stream.type() & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
+      if ((stream.type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
       {
         bufferedChannels.remove(stream.number());
       }
@@ -110,7 +105,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
         directChannels.remove(stream.number());
       }
     }
-    //stream.setLink(null);
   }
   
   private synchronized final VTLinkableDynamicMultiplexedOutputStream getOutputStream(final int type, final int number)
@@ -131,7 +125,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       stream = bufferedChannels.get(number);
       if (stream != null)
       {
-        //stream.type(type);
+        stream.type(type);
         stream.output(output);
         stream.control(original);
         return stream;
@@ -144,7 +138,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       stream = directChannels.get(number);
       if (stream != null)
       {
-        //stream.type(type);
+        stream.type(type);
         stream.output(output);
         stream.control(original);
         return stream;
@@ -241,7 +235,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private volatile Object link = null;
     private final int number;
     private final long seed;
-    private final int type;
+    private volatile int type;
     private final int packetSize;
     private final byte[] single = new byte[1];
     private final VTByteArrayOutputStream intermediateDataPacketBuffer;
@@ -287,7 +281,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       {
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY) != 0)
         {
-          //intermediatePacketStream = VTCompressorSelector.createDirectZlibOutputStream(intermediateDataPacketBuffer);
           intermediatePacketStream = VTCompressorSelector.createDirectZstdOutputStream(intermediateDataPacketBuffer);
         }
         else
@@ -307,10 +300,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       return type;
     }
     
-//    public final void type(int type)
-//    {
-//      this.type = type;
-//    }
+    public final void type(final int type)
+    {
+      this.type = type;
+    }
     
     public final void output(final OutputStream out)
     {
@@ -411,7 +404,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       {
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY) != 0)
         {
-          //intermediatePacketStream = VTCompressorSelector.createDirectZlibOutputStream(intermediateDataPacketBuffer);
           intermediatePacketStream = VTCompressorSelector.createDirectZstdOutputStream(intermediateDataPacketBuffer);
         }
         else

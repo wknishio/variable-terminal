@@ -94,17 +94,6 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
       return;
     }
     closed = true;
-    if (closeable != null)
-    {
-      try
-      {
-        closeable.close();
-      }
-      catch (Throwable e)
-      {
-        
-      }
-    }
     if (out != null)
     {
       try
@@ -121,6 +110,17 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
       try
       {
         pipe.close();
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    if (closeable != null)
+    {
+      try
+      {
+        closeable.close();
       }
       catch (Throwable e)
       {

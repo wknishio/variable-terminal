@@ -32,9 +32,8 @@ public class VTTunnelConnection
   private VTLittleEndianOutputStream controlOutputStream;
   // private VTLittleEndianInputStream relayInputStream;
   // private VTLittleEndianOutputStream relayOutputStream;
-  private VTTunnelChannel remoteRedirectChannel;
-  private VTTunnelChannelRemoteSocketBuilder remoteSocketBuilder;
-  private VTTunnelRemoteSocketFactory remoteSocketFactory;
+//  private VTTunnelChannel remoteRedirectChannel;
+//  private VTTunnelChannelRemoteSocketBuilder remoteSocketBuilder;
   private Set<VTTunnelChannelBindSocketListener> bindListeners;
   // private int tunnelType;
   private ExecutorService threads;
@@ -42,12 +41,11 @@ public class VTTunnelConnection
   
   public VTTunnelConnection(ExecutorService threads)
   {
-    this.remoteRedirectChannel = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this);
+    //this.remoteRedirectChannel = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this);
     this.bindListeners = new LinkedHashSet<VTTunnelChannelBindSocketListener>();
     // this.tunnelType = tunnelType;
     this.threads = threads;
-    this.remoteSocketBuilder = createRemoteSocketBuilder();
-    this.remoteSocketFactory = createRemoteSocketFactory();
+    //this.remoteSocketBuilder = createRemoteSocketBuilder();
   }
   
   // public int getTunnelType()
@@ -150,24 +148,14 @@ public class VTTunnelConnection
     }
   }
   
-  public VTTunnelChannelRemoteSocketBuilder getRemoteSocketBuilder()
+  private VTTunnelChannelRemoteSocketBuilder createRemoteSocketBuilder(VTTunnelChannel channel)
   {
-    return remoteSocketBuilder;
+    return new VTTunnelChannelRemoteSocketBuilder(channel); 
   }
   
-  public VTTunnelRemoteSocketFactory getRemoteSocketFactory()
+  public VTTunnelRemoteSocketFactory createRemoteSocketFactory(VTTunnelChannel channel)
   {
-    return remoteSocketFactory;
-  }
-  
-  private VTTunnelChannelRemoteSocketBuilder createRemoteSocketBuilder()
-  {
-    return new VTTunnelChannelRemoteSocketBuilder(remoteRedirectChannel); 
-  }
-  
-  private VTTunnelRemoteSocketFactory createRemoteSocketFactory()
-  {
-    return new VTTunnelRemoteSocketFactory(createRemoteSocketBuilder());
+    return new VTTunnelRemoteSocketFactory(createRemoteSocketBuilder(channel));
   }
   
   public Set<VTTunnelChannelBindSocketListener> getBindListeners()
@@ -244,8 +232,8 @@ public class VTTunnelConnection
     }
     closed = true;
     //System.out.println("VTTunnelConnection.close()");
-    remoteRedirectChannel.close();
-    for (VTTunnelChannelBindSocketListener listener : bindListeners)
+    //remoteRedirectChannel.close();
+    for (VTTunnelChannelBindSocketListener listener : bindListeners.toArray(new VTTunnelChannelBindSocketListener[] {}))
     {
       try
       {

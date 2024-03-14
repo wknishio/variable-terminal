@@ -5,8 +5,8 @@ import org.vash.vate.tunnel.channel.VTTunnelChannel;
 
 public class VTTunnelSessionHandler implements Runnable
 {
-  private VTTunnelChannel channel;
-  private VTTunnelSession session;
+  private final VTTunnelChannel channel;
+  private final VTTunnelSession session;
   
   public VTTunnelSessionHandler(VTTunnelSession session, VTTunnelChannel channel)
   {

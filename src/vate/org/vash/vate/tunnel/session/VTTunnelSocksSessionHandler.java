@@ -12,11 +12,11 @@ import org.vash.vate.tunnel.channel.VTTunnelChannel;
 public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
 {
   private static final int socksBufferSize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
-  private VTTunnelChannel channel;
-  private VTTunnelSession session;
-  private VTSocksSingleUserValidation validation;
-  private VTProxy proxy;
-  private VTAuthenticatedProxySocketFactory socketFactory; 
+  private final VTTunnelChannel channel;
+  private final VTTunnelSession session;
+  private final VTSocksSingleUserValidation validation;
+  private final VTProxy proxy;
+  private final VTAuthenticatedProxySocketFactory socketFactory; 
   
   //public VTTunnelSocksSessionHandler(VTTunnelSession session, VTTunnelChannel channel)
   //{
@@ -35,6 +35,10 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
     if (socksUsername != null && socksPassword != null && socksUsername.length() > 0 && socksPassword.length() > 0)
     {
       this.validation = new VTSocksSingleUserValidation(socksUsername, socksPassword);
+    }
+    else
+    {
+      this.validation = null;
     }
   }
   

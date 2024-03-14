@@ -15,12 +15,10 @@ public class VTTunnelSession implements Closeable
   private VTTunnelConnection connection;
   private Socket socket;
   private InputStream socketInputStream;
-  private OutputStream socketOutputStream;;
+  private OutputStream socketOutputStream;
   private VTLinkableDynamicMultiplexedInputStream tunnelInputStream;
   private VTLinkableDynamicMultiplexedOutputStream tunnelOutputStream;
   private final boolean originator;
-  private int outputNumber;
-  private int inputNumber;
   private Object waiter = new Object();
   private Boolean result = null;
   private boolean closed;
@@ -52,25 +50,6 @@ public class VTTunnelSession implements Closeable
     return originator;
   }
   
-  public void setOutputNumber(int outputNumber)
-  {
-    this.outputNumber = outputNumber;
-  }
-  
-  public void setInputNumber(int inputNumber)
-  {
-    this.inputNumber = inputNumber;
-  }
-  
-  public int getOutputNumber()
-  {
-    return outputNumber;
-  }
-  
-  public int getInputNumber()
-  {
-    return inputNumber;
-  }
   
   /* public boolean isReady() { return ready; } */
   

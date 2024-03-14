@@ -1395,7 +1395,6 @@ public class VTServerSettingsDialog extends Dialog
         server.setSkipConfiguration(true);
       }
     }
-    
   }
   
   public void close()

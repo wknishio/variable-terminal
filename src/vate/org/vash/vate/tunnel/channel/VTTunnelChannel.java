@@ -14,9 +14,12 @@ public class VTTunnelChannel
   public static final int TUNNEL_TYPE_TCP = 0;
   public static final int TUNNEL_TYPE_SOCKS = 1;
   
-  private VTTunnelConnection connection;
+  private final int tunnelType;
+  private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
+  private final VTTunnelConnection connection;
+  private final List<VTTunnelSessionHandler> sessions;
+  
   private InetSocketAddress bindAddress;
-  private List<VTTunnelSessionHandler> sessions;
   private String socksUsername;
   private String socksPassword;
   private String bindHost;
@@ -24,8 +27,6 @@ public class VTTunnelChannel
   private String redirectHost;
   private int redirectPort;
   private VTProxy proxy;
-  private int tunnelType;
-  private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
   
   public int getTunnelType()
   {

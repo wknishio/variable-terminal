@@ -3,9 +3,9 @@ package org.vash.vate.tunnel.channel;
 import java.io.IOException;
 import java.net.Socket;
 
-import org.vash.vate.VT;
 import org.vash.vate.socket.VTProxy;
 import org.vash.vate.socket.VTProxy.VTProxyType;
+import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
 import org.vash.vate.tunnel.session.VTTunnelSession;
@@ -13,10 +13,10 @@ import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 
 public class VTTunnelChannelRemoteSocketBuilder
 {
-  private VTTunnelChannel channel;
-  private static VTProxy proxyNone = new VTProxy(VTProxy.VTProxyType.GLOBAL, "", VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, "", "");
-  private static final String SESSION_SEPARATOR = "\f\b";
-  private static final char SESSION_MARK = 'C';
+  private final VTTunnelChannel channel;
+  private static final String SESSION_SEPARATOR = "\f";
+  private static final char SESSION_MARK = '\b';
+  private static final VTProxy PROXY_NONE = new VTProxy(VTProxy.VTProxyType.GLOBAL, "", 0, "", "");
   
   public VTTunnelChannelRemoteSocketBuilder(VTTunnelChannel channel)
   {
@@ -43,19 +43,20 @@ public class VTTunnelChannelRemoteSocketBuilder
 //    return connect(channelType, host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword(), null);
 //  }
   
-  public Socket connect(int channelType, String host, int port, VTProxy proxy) throws IOException
+  public Socket connect(String host, int port, VTProxy proxy) throws IOException
   {
     if (proxy == null)
     {
-      return connect(channelType, host, port, proxyNone.getProxyType(), proxyNone.getProxyHost(), proxyNone.getProxyPort(), proxyNone.getProxyUser(), proxyNone.getProxyPassword());
+      return connect(host, port, PROXY_NONE.getProxyType(), PROXY_NONE.getProxyHost(), PROXY_NONE.getProxyPort(), PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
     }
-    return connect(channelType, host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+    return connect(host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
   }
   
-  public Socket connect(int channelType, String host, int port, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
+  public Socket connect(String host, int port, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
   {
     VTTunnelSession session = null;
     VTTunnelSessionHandler handler = null;
+    int channelType = channel.getChannelType();
     
     String proxyTypeLetter = "G";
     if (proxyType == VTProxyType.GLOBAL)
@@ -82,24 +83,32 @@ public class VTTunnelChannelRemoteSocketBuilder
     session = new VTTunnelSession(channel.getConnection(), true);
     VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
     session.setSocket(pipedSocket);
-    
     handler = new VTTunnelSessionHandler(session, channel);
     
     VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
-    if (output != null)
+    VTLinkableDynamicMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
+    
+    if (output != null && input != null)
     {
+      final int outputNumber = output.number();
+      final int inputNumber = input.number();
+      
       pipedSocket.setOutputStream(output);
-      int outputNumber = output.number();
-      session.setOutputNumber(outputNumber);
+      session.setSocketInputStream(pipedSocket.getInputStream());
+      session.setSocketOutputStream(pipedSocket.getOutputStream());
+      
       session.setTunnelOutputStream(output);
-      //session.getTunnelOutputStream().open();
+      session.setTunnelInputStream(input);
+      session.getTunnelOutputStream().open();
+      session.getTunnelInputStream().setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
+      
       if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
       {
         proxyUser = "*";
         proxyPassword = "*" + SESSION_SEPARATOR + "*";
       }
       // request message sent
-      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
       channel.getConnection().getControlOutputStream().flush();
       //System.out.println("sent.request:output=" + outputNumber);
       boolean result = false;
