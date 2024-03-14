@@ -5,7 +5,7 @@ import java.util.List;
 
 public class VTRuntimeExit
 {
-  private static List<Runnable> hooks = new ArrayList<Runnable>();
+  private static final List<Runnable> hooks = new ArrayList<Runnable>();
   
   public static int addHook(Runnable hook)
   {
