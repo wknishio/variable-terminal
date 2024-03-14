@@ -200,6 +200,7 @@ Those are the third party libraries used in this software:
 * airlift-aircompressor by Martin Traverso for zstd and lzo compression
 * nanohttpd-1.1 by elonen, for server HTTP tunneling
 * commons-httpclient by Apache Software Foundation, for client HTTP tunneling
+* commons-rng by Apache Software Foundation, for splitmix64 prng
 
 ## Additional utilities
 
