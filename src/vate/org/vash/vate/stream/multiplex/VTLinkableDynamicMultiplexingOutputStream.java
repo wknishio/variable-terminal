@@ -61,24 +61,24 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   public synchronized final VTLinkableDynamicMultiplexedOutputStream linkOutputStream(final int type, final Object link)
   {
     VTLinkableDynamicMultiplexedOutputStream stream = null;
+    if (link == null)
+    {
+      return stream;
+    }
     if (link instanceof Integer)
     {
       stream = getOutputStream(type, (Integer) link);
-      if (stream.getLink() == null)
+      if (stream != null && stream.getLink() == null)
       {
         stream.setLink(link);
       }
       return stream;
     }
     // search for a multiplexed outputstream that has no link
-    for (int i = 0; i < 16777215 && i >= 0; i++)
+    stream = getOutputStream(type);
+    if (stream != null && stream.getLink() == null)
     {
-      stream = getOutputStream(type, i);
-      if (stream.getLink() == null)
-      {
-        stream.setLink(link);
-        return stream;
-      }
+      stream.setLink(link);
     }
     return stream;
   }
@@ -86,8 +86,15 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   public synchronized final VTLinkableDynamicMultiplexedOutputStream linkOutputStream(final int type, final int number, final Object link)
   {
     VTLinkableDynamicMultiplexedOutputStream stream = null;
+    if (link == null)
+    {
+      return stream;
+    }
     stream = getOutputStream(type, number);
-    stream.setLink(link);
+    if (stream != null)
+    {
+      stream.setLink(link);
+    }
     return stream;
   }
   
@@ -96,20 +103,21 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     if (stream != null)
     {
       stream.setLink(null);
-      if ((stream.type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
-      {
-        bufferedChannels.remove(stream.number());
-      }
-      else
-      {
-        directChannels.remove(stream.number());
-      }
+//      if ((stream.type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
+//      {
+//        bufferedChannels.remove(stream.number());
+//      }
+//      else
+//      {
+//        directChannels.remove(stream.number());
+//      }
     }
   }
   
   private synchronized final VTLinkableDynamicMultiplexedOutputStream getOutputStream(final int type, final int number)
   {
     VTLinkableDynamicMultiplexedOutputStream stream = null;
+    Map<Integer, VTLinkableDynamicMultiplexedOutputStream> channelMap;
     OutputStream output = null;
     boolean unlimited = ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED) != 0);
     if (unlimited)
@@ -122,29 +130,63 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     }
     if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
     {
-      stream = bufferedChannels.get(number);
-      if (stream != null)
-      {
-        stream.type(type);
-        stream.output(output);
-        stream.control(original);
-        return stream;
-      }
-      stream = new VTLinkableDynamicMultiplexedOutputStream(output, original, type, number, packetSize, packetSeed);
-      bufferedChannels.put(number, stream);
+      channelMap = bufferedChannels;
     }
     else
     {
-      stream = directChannels.get(number);
-      if (stream != null)
+      channelMap = directChannels;
+    }
+    stream = channelMap.get(number);
+    if (stream != null)
+    {
+      stream.type(type);
+      stream.output(output);
+      stream.control(original);
+      return stream;
+    }
+    stream = new VTLinkableDynamicMultiplexedOutputStream(output, original, type, number, packetSize, packetSeed);
+    channelMap.put(number, stream);
+    return stream;
+  }
+  
+  private synchronized final VTLinkableDynamicMultiplexedOutputStream getOutputStream(final int type)
+  {
+    VTLinkableDynamicMultiplexedOutputStream stream = null;
+    Map<Integer, VTLinkableDynamicMultiplexedOutputStream> channelMap;
+    OutputStream output = null;
+    boolean unlimited = ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED) != 0);
+    if (unlimited)
+    {
+      output = original;
+    }
+    else
+    {
+      output = throttled;
+    }
+    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
+    {
+      channelMap = bufferedChannels;
+    }
+    else
+    {
+      channelMap = directChannels;
+    }
+    for (int number = 0; number < 16777216; number++)
+    {
+      stream = channelMap.get(number);
+      if (stream != null && stream.getLink() == null)
       {
         stream.type(type);
         stream.output(output);
         stream.control(original);
         return stream;
       }
-      stream = new VTLinkableDynamicMultiplexedOutputStream(output, original, type, number, packetSize, packetSeed);
-      directChannels.put(number, stream);
+      else if (stream == null)
+      {
+        stream = new VTLinkableDynamicMultiplexedOutputStream(output, original, type, number, packetSize, packetSeed);
+        channelMap.put(number, stream);
+        return stream;
+      }
     }
     return stream;
   }

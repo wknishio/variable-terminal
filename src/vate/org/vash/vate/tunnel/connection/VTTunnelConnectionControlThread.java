@@ -92,7 +92,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 final VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
                 
                 final VTTunnelSession session = new VTTunnelSession(connection, false);
-                final VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, null);
+                final VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, connection.getResponseChannel());
                 
                 VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
                 VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
@@ -210,7 +210,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 VTTunnelSession session = new VTTunnelSession(connection, false);
                 VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(null);
                 session.setSocket(pipedSocket);
-                VTTunnelSocksSessionHandler handler = new VTTunnelSocksSessionHandler(session, null, socksUsername, socksPassword, proxy, null);
+                VTTunnelSocksSessionHandler handler = new VTTunnelSocksSessionHandler(session, connection.getResponseChannel(), socksUsername, socksPassword, proxy, null);
                 
                 VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
                 VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);

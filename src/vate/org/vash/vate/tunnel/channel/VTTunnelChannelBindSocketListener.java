@@ -126,43 +126,8 @@ public class VTTunnelChannelBindSocketListener implements Runnable
         
         if (socketInputStream != null && socketOutputStream != null)
         {
-          int channelType = channel.getChannelType();
           int tunnelType = channel.getTunnelType();
-          
-          VTProxyType proxyType = channel.getProxy().getProxyType();
-          String proxyHost = channel.getProxy().getProxyHost();
-          int proxyPort = channel.getProxy().getProxyPort();
-          String proxyUser = channel.getProxy().getProxyUser();
-          String proxyPassword = channel.getProxy().getProxyPassword();
-          
-          String proxyTypeLetter = "G";
-          
-          if (proxyType == VTProxyType.GLOBAL)
-          {
-            proxyTypeLetter = "G";
-          }
-          else if (proxyType == VTProxyType.DIRECT)
-          {
-            proxyTypeLetter = "D";
-          }
-          else if (proxyType == VTProxyType.HTTP)
-          {
-            proxyTypeLetter = "H";
-          }
-          else if (proxyType == VTProxyType.SOCKS)
-          {
-            proxyTypeLetter = "S";
-          }
-          else if (proxyType == VTProxyType.ANY)
-          {
-            proxyTypeLetter = "A";
-          }
-          
-          if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
-          {
-            proxyUser = "*";
-            proxyPassword = "*" + SESSION_SEPARATOR + "*";
-          }
+          int channelType = channel.getChannelType();
           
           session = new VTTunnelSession(channel.getConnection(), true);
           session.setSocket(acceptedSocket);
@@ -176,6 +141,41 @@ public class VTTunnelChannelBindSocketListener implements Runnable
           }
           else
           {
+            VTProxyType proxyType = channel.getProxy().getProxyType();
+            String proxyHost = channel.getProxy().getProxyHost();
+            int proxyPort = channel.getProxy().getProxyPort();
+            String proxyUser = channel.getProxy().getProxyUser();
+            String proxyPassword = channel.getProxy().getProxyPassword();
+            
+            String proxyTypeLetter = "G";
+            
+            if (proxyType == VTProxyType.GLOBAL)
+            {
+              proxyTypeLetter = "G";
+            }
+            else if (proxyType == VTProxyType.DIRECT)
+            {
+              proxyTypeLetter = "D";
+            }
+            else if (proxyType == VTProxyType.HTTP)
+            {
+              proxyTypeLetter = "H";
+            }
+            else if (proxyType == VTProxyType.SOCKS)
+            {
+              proxyTypeLetter = "S";
+            }
+            else if (proxyType == VTProxyType.ANY)
+            {
+              proxyTypeLetter = "A";
+            }
+            
+            if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
+            {
+              proxyUser = "*";
+              proxyPassword = "*" + SESSION_SEPARATOR + "*";
+            }
+            
             handler = new VTTunnelSessionHandler(session, channel);
             
             VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);

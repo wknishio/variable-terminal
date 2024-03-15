@@ -32,7 +32,7 @@ public class VTTunnelConnection
   private VTLittleEndianOutputStream controlOutputStream;
   // private VTLittleEndianInputStream relayInputStream;
   // private VTLittleEndianOutputStream relayOutputStream;
-//  private VTTunnelChannel remoteRedirectChannel;
+  private VTTunnelChannel responseChannel;
 //  private VTTunnelChannelRemoteSocketBuilder remoteSocketBuilder;
   private Set<VTTunnelChannelBindSocketListener> bindListeners;
   // private int tunnelType;
@@ -41,7 +41,7 @@ public class VTTunnelConnection
   
   public VTTunnelConnection(ExecutorService threads)
   {
-    //this.remoteRedirectChannel = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this);
+    this.responseChannel = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this);
     this.bindListeners = new LinkedHashSet<VTTunnelChannelBindSocketListener>();
     // this.tunnelType = tunnelType;
     this.threads = threads;
@@ -204,6 +204,11 @@ public class VTTunnelConnection
     return bindListeners.remove(listener);
   }
   
+  public VTTunnelChannel getResponseChannel()
+  {
+    return responseChannel;
+  }
+  
   /* public OutputStream getDataOutputStream() { return dataOutputStream; } */
   
   public void start()
@@ -232,7 +237,7 @@ public class VTTunnelConnection
     }
     closed = true;
     //System.out.println("VTTunnelConnection.close()");
-    //remoteRedirectChannel.close();
+    responseChannel.close();
     for (VTTunnelChannelBindSocketListener listener : bindListeners.toArray(new VTTunnelChannelBindSocketListener[] {}))
     {
       try

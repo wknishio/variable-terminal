@@ -13,6 +13,7 @@ public class VTTunnelChannel
 {
   public static final int TUNNEL_TYPE_TCP = 0;
   public static final int TUNNEL_TYPE_SOCKS = 1;
+  public static final int TUNNEL_TYPE_ANY = 2;
   
   private final int tunnelType;
   private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
@@ -107,10 +108,10 @@ public class VTTunnelChannel
     this.sessions = new ArrayList<VTTunnelSessionHandler>();
   }
   
-  //TCP remote redirect tunnel
+  //Generic response channel
   public VTTunnelChannel(int channelType, VTTunnelConnection connection)
   {
-    this.tunnelType = TUNNEL_TYPE_TCP;
+    this.tunnelType = TUNNEL_TYPE_ANY;
     this.channelType = channelType;
     this.connection = connection;
     this.sessions = new ArrayList<VTTunnelSessionHandler>();

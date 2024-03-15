@@ -261,7 +261,7 @@ public class VTAudioBeeper
     return false;
   }
   
-  private static final SourceDataLine openSourceDataLine(int sampleRate, int sampleSizeBits)
+  public static final SourceDataLine openSourceDataLine(int sampleRate, int sampleSizeBits)
   {
     SourceDataLine sdl = null;
     try
@@ -325,11 +325,11 @@ public class VTAudioBeeper
   {
     if (block)
     {
-      return toneBlocking(sampleRate, sampleSizeBits, freq, msecs, 0.5);
+      return toneBlocking(sampleRate, sampleSizeBits, freq, msecs, vol);
     }
     else
     {
-      return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, 0.5);
+      return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, vol);
     }
   }
   
