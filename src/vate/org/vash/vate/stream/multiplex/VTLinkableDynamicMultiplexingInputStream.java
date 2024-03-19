@@ -28,6 +28,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
 //  private int channel;
 //  private int length;
 //  private long sequence;
+  private volatile boolean closed = false;
   private final int bufferSize;
   //private final byte[] packetHeader;
   private final byte[] packetDataBuffer;
@@ -40,8 +41,8 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private final VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
   private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> bufferedChannels;
   private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> directChannels;
-  private volatile boolean closed = false;
   private final SecureRandom packetSeed;
+  //private final Random packetSequencer;
 //  private final VTPipedOutputStream pout;
 //  private final VTPipedInputStream pin;
 //  private final VTLittleEndianInputStream lpin;
@@ -53,6 +54,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   public VTLinkableDynamicMultiplexingInputStream(final InputStream in, final int packetSize, final int bufferSize, final boolean startPacketReader, final SecureRandom packetSeed)
   {
     this.packetSeed = packetSeed;
+    //this.packetSequencer = new VTSplitMix64Random(packetSequence.nextLong());
     //this.packetSequencer = new VTMiddleSquareWeylSequenceDigestRandom(packetSeed);
     this.bufferSize = bufferSize;
     this.packetDataBuffer = new byte[packetSize * 2];
@@ -288,10 +290,16 @@ public final class VTLinkableDynamicMultiplexingInputStream
     directChannels.clear();
   }
   
+//  public final long nextPacketSequencerLong()
+//  {
+//    return packetSequencer.nextLong();
+//  }
+  
   // critical method, handle with care
   private final void readPackets() throws IOException
   {
     VTLinkableDynamicMultiplexedInputStream stream;
+    //long next;
     long sequence;
     int type; 
     int channel;
@@ -299,19 +307,20 @@ public final class VTLinkableDynamicMultiplexingInputStream
     
     while (!closed)
     {
+      //next = nextPacketSequencerLong();
       sequence = lin.readLong();
       type = lin.readByte();
       channel = lin.readSubInt();
       length = lin.readInt();
+      stream = getInputStream(type, channel);
+      if (stream == null || stream.getPacketSequencer().nextLong() != sequence)
+      {
+        close();
+        return;
+      }
       if (length > 0)
       {
         lin.readFully(packetDataBuffer, 0, length);
-        stream = getInputStream(type, channel);
-        if (stream == null || stream.getPacketSequencer().nextLong() != sequence)
-        {
-          close();
-          return;
-        }
         OutputStream out = stream.getOutputStream();
         try
         {
@@ -479,10 +488,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
     
     private final void open() throws IOException
     {
-      //if (!closed)
-      //{
-        //return;
-      //}
       closed = false;
       if (bufferedInputStream != null)
       {
@@ -504,15 +509,10 @@ public final class VTLinkableDynamicMultiplexingInputStream
       {
         //work already done by setDirectOutputStream
       }
-      packetSequencer.setSeed(seed);
     }
     
     public final void close() throws IOException
     {
-      //if (closed)
-      //{
-        //return;
-      //}
       closed = true;
       compressedInputStream = null;
       compressedPacketInputPipe = null;
@@ -577,7 +577,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       return input.skip(count);
     }
     
-    public final Random getPacketSequencer()
+    private final Random getPacketSequencer()
     {
       return packetSequencer;
     }

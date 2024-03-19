@@ -2249,7 +2249,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
       case 3:
         if ((d3 & c3) != 0)
         {
-          decodeBlock4Tree24(in, oldPixelData, newPixelData);
+          decodeBlock4Tree30(in, oldPixelData, newPixelData);
         }
         c3 <<= 1;
         x1 += microblockStepX;

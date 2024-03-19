@@ -619,19 +619,19 @@ public class VTClientConnection
   
   private void setMultiplexedStreams() throws IOException
   {
-    byte[] blake3InputSeed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
-    System.arraycopy(remoteNonce, 0, blake3InputSeed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
-    System.arraycopy(localNonce, 0, blake3InputSeed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    byte[] inputSeed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
+    System.arraycopy(remoteNonce, 0, inputSeed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    System.arraycopy(localNonce, 0, inputSeed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
     
-    byte[] blake3OutputSeed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
-    System.arraycopy(localNonce, 0, blake3OutputSeed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
-    System.arraycopy(remoteNonce, 0, blake3OutputSeed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    byte[] outputSeed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
+    System.arraycopy(localNonce, 0, outputSeed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    System.arraycopy(remoteNonce, 0, outputSeed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
     
-    VTBlake3SecureRandom packetInputSeed = new VTBlake3SecureRandom(blake3InputSeed);
-    VTBlake3SecureRandom packetOutputSeed = new VTBlake3SecureRandom(blake3OutputSeed);
+    VTBlake3SecureRandom secureInputSeed = new VTBlake3SecureRandom(inputSeed);
+    VTBlake3SecureRandom secureOutputSeed = new VTBlake3SecureRandom(outputSeed);
     
-    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, false, packetInputSeed);
-    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_PACKET_DATA_SIZE_BYTES, packetOutputSeed);
+    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, false, secureInputSeed);
+    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_PACKET_DATA_SIZE_BYTES, secureOutputSeed);
     
     pingInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, 0);
     pingOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, 0);

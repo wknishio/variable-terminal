@@ -33,10 +33,12 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> bufferedChannels;
   private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> directChannels;
   private final SecureRandom packetSeed;
+  //private final Random packetSequencer;
   
   public VTLinkableDynamicMultiplexingOutputStream(final OutputStream out, final int packetSize, final SecureRandom packetSeed)
   {
     this.packetSeed = packetSeed;
+    //this.packetSequencer = new VTSplitMix64Random(packetSequence.nextLong());
     this.throttler = new NanoThrottle(Long.MAX_VALUE, (1d / 8d), true);
     //this.packetSequencer = new VTMiddleSquareWeylSequenceDigestRandom(packetSeed);
     this.original = new VTBufferedOutputStream(out, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES, false);
@@ -257,6 +259,14 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     getOutputStream(type, number).close();
   }
   
+//  public final long nextPacketSequencerLong()
+//  {
+//    synchronized (packetSequencer)
+//    {
+//      return packetSequencer.nextLong();
+//    }
+//  }
+  
 //	private synchronized void writeBlocks(OutputStream out, byte[] data, int off, int length) throws IOException
 //	{
 //		int current = 0;
@@ -372,6 +382,11 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       return closed;
     }
     
+//    private final Random getPacketSequencer()
+//    {
+//      return packetSequencer;
+//    }
+    
     public final void write(final byte[] data, final int offset, final int length) throws IOException
     {
       int written = 0;
@@ -408,10 +423,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     public final void close() throws IOException
     {
-      //if (closed)
-      //{
-        //return;
-      //}
       closed = true;
       writeClosePacket(type, number);
       if (propagated.size() > 0)
@@ -428,18 +439,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
           }
         }
       }
-//      if (output instanceof VTThrottledOutputStream)
-//      {
-//        output.close();
-//      }
     }
     
     public final void open() throws IOException
     {
-      //if (!closed)
-      //{
-        //return;
-      //}
       closed = false;
       writeOpenPacket(type, number);
       if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
@@ -457,11 +460,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       {
         intermediatePacketStream = intermediateDataPacketBuffer;
       }
-      packetSequencer.setSeed(seed);
-//      if (output instanceof VTThrottledOutputStream)
-//      {
-//        ((VTThrottledOutputStream) output).open();
-//      }
     }
     
     public final void addPropagated(final Closeable propagated)
