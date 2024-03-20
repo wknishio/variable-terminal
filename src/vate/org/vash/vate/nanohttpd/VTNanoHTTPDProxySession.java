@@ -689,7 +689,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     requestData.write(bodyData);
     
     //Socket remoteSocket = new Socket(host, port);
-    Socket remoteSocket = VTProxy.connect(host, port, null, connectProxy);
+    Socket remoteSocket = VTProxy.connect(host, port, socketFactory == null ? null : new VTAuthenticatedProxySocket(socketFactory), connectProxy);
     remoteSocket.setTcpNoDelay(true);
     remoteSocket.setKeepAlive(true);
     //remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
@@ -718,8 +718,8 @@ public class VTNanoHTTPDProxySession implements Runnable
     secondThread.setName(secondPipe.getClass().getSimpleName());
     secondThread.setDaemon(true);
     
-    firstPipe.setAnother(secondThread);
-    secondPipe.setAnother(firstThread);
+//    firstPipe.setAnother(secondThread);
+//    secondPipe.setAnother(firstThread);
     
     firstThread.start();
     secondThread.start();
@@ -795,7 +795,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   {
     private Socket close1;
     private Socket close2;
-    private Thread another;
+    //private Thread another;
     //private Socket second;
     private InputStream source;
     private OutputStream destination;
@@ -812,10 +812,10 @@ public class VTNanoHTTPDProxySession implements Runnable
       this.destination = destination;
     }
     
-    public void setAnother(Thread another)
-    {
-      this.another = another;
-    }
+//    public void setAnother(Thread another)
+//    {
+//      this.another = another;
+//    }
     
     public void run()
     {
@@ -856,14 +856,14 @@ public class VTNanoHTTPDProxySession implements Runnable
           
         }
         
-        try
-        {
-          another.interrupt();
-        }
-        catch (Throwable t)
-        {
-          
-        }
+//        try
+//        {
+//          another.interrupt();
+//        }
+//        catch (Throwable t)
+//        {
+//          
+//        }
       }
     }
   }
