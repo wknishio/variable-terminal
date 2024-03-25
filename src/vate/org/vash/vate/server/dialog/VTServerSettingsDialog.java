@@ -397,8 +397,8 @@ public class VTServerSettingsDialog extends Dialog
 //    });
     
     encryptionTypeChoice.add("None");
-    encryptionTypeChoice.add("RC4");
     encryptionTypeChoice.add("ISAAC");
+    encryptionTypeChoice.add("VMPC");
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC256");
     //encryptionTypeChoice.add("GRAIN");
@@ -415,18 +415,14 @@ public class VTServerSettingsDialog extends Dialog
           {
             setEncryptionType("None");
           }
-          else if (e.getItem().equals("RC4"))
+          else if (e.getItem().equals("VMPC"))
           {
-            setEncryptionType("RC4");
+            setEncryptionType("VMPC");
           }
           else if (e.getItem().equals("ZUC256"))
           {
             setEncryptionType("ZUC256");
           }
-          // else if (e.getItem().equals("BLOWFISH"))
-          // {
-          // setEncryptionType("BLOWFISH");
-          // }
           else if (e.getItem().equals("SALSA"))
           {
             setEncryptionType("SALSA");
@@ -435,10 +431,6 @@ public class VTServerSettingsDialog extends Dialog
           {
             setEncryptionType("HC256");
           }
-//          else if (e.getItem().equals("GRAIN"))
-//          {
-//            setEncryptionType("GRAIN");
-//          }
           else if (e.getItem().equals("ISAAC"))
           {
             setEncryptionType("ISAAC");
@@ -1121,9 +1113,9 @@ public class VTServerSettingsDialog extends Dialog
       encryptionType.setParameter("None");
       // encryptionPassword.setEnabled(false);
     }
-    else if (encryption.toUpperCase().startsWith("R"))
+    else if (encryption.toUpperCase().startsWith("V"))
     {
-      encryptionType.setParameter("RC4");
+      encryptionType.setParameter("VMPC");
       // encryptionPassword.setEnabled(true);
     }
     else if (encryption.toUpperCase().startsWith("Z"))
@@ -1131,11 +1123,6 @@ public class VTServerSettingsDialog extends Dialog
       encryptionType.setParameter("ZUC256");
       // encryptionPassword.setEnabled(true);
     }
-    // else if (encryption.toUpperCase().startsWith("B"))
-    // {
-    // encryptionType.setParameter("BLOWFISH");
-    // encryptionPassword.setEnabled(true);
-    // }
     else if (encryption.toUpperCase().startsWith("S"))
     {
       encryptionType.setParameter("SALSA");
@@ -1146,11 +1133,6 @@ public class VTServerSettingsDialog extends Dialog
       encryptionType.setParameter("HC256");
       // encryptionPassword.setEnabled(true);
     }
-//    else if (encryption.toUpperCase().startsWith("G"))
-//    {
-//      encryptionType.setParameter("GRAIN");
-//      // encryptionPassword.setEnabled(true);
-//    }
     else if (encryption.toUpperCase().startsWith("I"))
     {
       encryptionType.setParameter("ISAAC");
