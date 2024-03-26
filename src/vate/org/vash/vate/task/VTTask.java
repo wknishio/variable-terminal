@@ -103,21 +103,6 @@ public abstract class VTTask implements Runnable, Closeable
     return task;
   }
   
-  private final void next()
-  {
-    if (next != null)
-    {
-      try
-      {
-        next.run();
-      }
-      catch (Throwable t)
-      {
-        
-      }
-    }
-  }
-  
   public final void run()
   {
     try
@@ -130,7 +115,17 @@ public abstract class VTTask implements Runnable, Closeable
     }
     finally
     {
-      next();
+      if (next != null)
+      {
+        try
+        {
+          next.run();
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
     }
   }
   
