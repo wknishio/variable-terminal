@@ -1,5 +1,7 @@
 package org.vash.vate.nativeutils;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -24,6 +26,17 @@ public class VTNativeUtils
   
   private static final int SAMPLE_RATE_HERTZ = 16000;
   private static final int SAMPLE_SIZE_BITS = 8;
+  
+  private static final String WIN32_EJECT_DISC_TRAY_VBS = "On Error Resume Next\r\n" + 
+  "For Each d in CreateObject(\"Scripting.FileSystemObject\").Drives\r\n" + 
+  "    If d.DriveType = 4 Then\r\n" + 
+  "        CreateObject(\"Shell.Application\").Namespace(17).ParseName(d.DriveLetter & \":\\\").InvokeVerb(\"Eject\")\r\n" + 
+  "        Exit For\r\n" + 
+  "    End If\r\n" + 
+  "Next\r\n" + 
+//  "WScript.Sleep(5000)\r\n" + 
+//  "WScript.Echo(\"5 seconds have passed.\")\r\n" + 
+  "WScript.Quit";
   
   public synchronized static void initialize()
   {
@@ -133,7 +146,7 @@ public class VTNativeUtils
           // try to call eject on non-windows
           try
           {
-            int status = Runtime.getRuntime().exec("eject").waitFor();
+            int status = Runtime.getRuntime().exec(new String[]{"eject", "-r"}).waitFor();
             return status == 0;
           }
           catch (Throwable e)
@@ -143,7 +156,26 @@ public class VTNativeUtils
         }
         else
         {
-          // do nothing
+          // try to use cscript windows script host vbs file
+          File tmpdtvbsFile = null;
+          try
+          {
+            tmpdtvbsFile = File.createTempFile("vate_win32_tmp_eject_disc_tray_vbs", ".vbs");
+            FileOutputStream output = new FileOutputStream(tmpdtvbsFile);
+            output.write(WIN32_EJECT_DISC_TRAY_VBS.getBytes());
+            output.flush();
+            output.close();
+            int status = Runtime.getRuntime().exec("cscript " + tmpdtvbsFile.getAbsolutePath()).waitFor();
+            return status == 0;
+          }
+          catch (Throwable e)
+          {
+            
+          }
+          if (tmpdtvbsFile != null)
+          {
+            tmpdtvbsFile.delete();
+          }
         }
       }
       else
@@ -158,7 +190,7 @@ public class VTNativeUtils
         // try to call eject on non-windows
         try
         {
-          int status = Runtime.getRuntime().exec("eject").waitFor();
+          int status = Runtime.getRuntime().exec(new String[]{"eject", "-r"}).waitFor();
           return status == 0;
         }
         catch (Throwable e)
@@ -168,7 +200,26 @@ public class VTNativeUtils
       }
       else
       {
-        // do nothing
+        // try to use cscript windows script host vbs file
+        File tmpdtvbsFile = null;
+        try
+        {
+          tmpdtvbsFile = File.createTempFile("vate_win32_tmp_eject_disc_tray_vbs", ".vbs");
+          FileOutputStream output = new FileOutputStream(tmpdtvbsFile);
+          output.write(WIN32_EJECT_DISC_TRAY_VBS.getBytes());
+          output.flush();
+          output.close();
+          int status = Runtime.getRuntime().exec("cscript " + tmpdtvbsFile.getAbsolutePath()).waitFor();
+          return status == 0;
+        }
+        catch (Throwable e)
+        {
+          
+        }
+        if (tmpdtvbsFile != null)
+        {
+          tmpdtvbsFile.delete();
+        }
       }
     }
     return false;
@@ -187,8 +238,7 @@ public class VTNativeUtils
           // try to call eject on non-windows
           try
           {
-            int status = Runtime.getRuntime().exec(new String[]
-            { "eject", "-t" }).waitFor();
+            int status = Runtime.getRuntime().exec(new String[]{"eject", "-t"}).waitFor();
             return status == 0;
           }
           catch (Throwable e)
@@ -198,7 +248,26 @@ public class VTNativeUtils
         }
         else
         {
-          // do nothing
+          // try to use cscript windows script host vbs file
+          File tmpdtvbsFile = null;
+          try
+          {
+            tmpdtvbsFile = File.createTempFile("vate_win32_tmp_eject_disc_tray_vbs", ".vbs");
+            FileOutputStream output = new FileOutputStream(tmpdtvbsFile);
+            output.write(WIN32_EJECT_DISC_TRAY_VBS.getBytes());
+            output.flush();
+            output.close();
+            int status = Runtime.getRuntime().exec("cscript " + tmpdtvbsFile.getAbsolutePath()).waitFor();
+            return status == 0;
+          }
+          catch (Throwable e)
+          {
+            
+          }
+          if (tmpdtvbsFile != null)
+          {
+            tmpdtvbsFile.delete();
+          }
         }
       }
       else
@@ -213,8 +282,7 @@ public class VTNativeUtils
         // try to call eject on non-windows
         try
         {
-          int status = Runtime.getRuntime().exec(new String[]
-          { "eject", "-t" }).waitFor();
+          int status = Runtime.getRuntime().exec(new String[]{"eject", "-t"}).waitFor();
           return status == 0;
         }
         catch (Throwable e)
@@ -224,7 +292,26 @@ public class VTNativeUtils
       }
       else
       {
-        // do nothing
+        // try to use cscript windows script host vbs file
+        File tmpdtvbsFile = null;
+        try
+        {
+          tmpdtvbsFile = File.createTempFile("vate_win32_tmp_eject_disc_tray_vbs", ".vbs");
+          FileOutputStream output = new FileOutputStream(tmpdtvbsFile);
+          output.write(WIN32_EJECT_DISC_TRAY_VBS.getBytes());
+          output.flush();
+          output.close();
+          int status = Runtime.getRuntime().exec("cscript " + tmpdtvbsFile.getAbsolutePath()).waitFor();
+          return status == 0;
+        }
+        catch (Throwable e)
+        {
+          
+        }
+        if (tmpdtvbsFile != null)
+        {
+          tmpdtvbsFile.delete();
+        }
       }
     }
     return false;
