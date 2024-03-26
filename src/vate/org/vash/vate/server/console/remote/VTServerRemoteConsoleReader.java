@@ -36,7 +36,7 @@ public class VTServerRemoteConsoleReader extends VTTask
     this.stopped = stopped;
   }
   
-  public void run()
+  public void task()
   {
     // int p = 0;
     while (!stopped)
@@ -156,7 +156,6 @@ public class VTServerRemoteConsoleReader extends VTTask
     if (session.isEchoCommands())
     {
       if (command != null && !selector.remoteCommand(parsed[0]))
-      
       {
         connection.getResultWriter().write(command + "\n");
         connection.getResultWriter().flush();

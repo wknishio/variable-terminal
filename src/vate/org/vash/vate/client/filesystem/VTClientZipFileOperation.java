@@ -70,7 +70,7 @@ public class VTClientZipFileOperation extends VTTask
     this.sourcePaths = checkedPaths;
   }
   
-  public void run()
+  public void task()
   {
     try
     {

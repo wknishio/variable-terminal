@@ -48,7 +48,7 @@ public class VTServerFileScanOperation extends VTTask
     }
   }
   
-  public void run()
+  public void task()
   {
     try
     {

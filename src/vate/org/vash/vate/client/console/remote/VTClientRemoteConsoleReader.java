@@ -23,7 +23,7 @@ public class VTClientRemoteConsoleReader extends VTTask
     this.connection = session.getConnection();
   }
   
-  public void run()
+  public void task()
   {
     while (!stopped)
     {

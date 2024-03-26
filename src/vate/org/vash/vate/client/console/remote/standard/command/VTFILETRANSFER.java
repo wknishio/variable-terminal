@@ -36,20 +36,9 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
           }
           else
           {
-            // VTTerminal.print(command + "\nVT>No file
-            // transfer is running!\nVT>");
             VTConsole.print("\nVT>No file transfer is running!\nVT>");
           }
         }
-        /*
-         * else if (splitCommand[1].toUpperCase().startsWith("A")) { if
-         * (session.getFileTransferClient().getHandler().
-         * getSession().getTransfer().isFinished()) {
-         * session.getFileTransferClient().joinThread(); } if
-         * (session.getFileTransferClient().aliveThread()) { VTTerminal.
-         * print("\nVT>A file transfer is running!\nVT>"); } else { VTTerminal.
-         * print("\nVT>No file transfer is running!\nVT>"); } }
-         */
         else
         {
           VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
@@ -110,27 +99,6 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
         }
         if (session.getFileTransferClient().aliveThread())
         {
-          // long transferDataSize =
-          // session.getFileTransferClient().getHandler().getSession().getTransaction().getTransferDataSize();
-          // long transferDataCount =
-          // session.getFileTransferClient().getHandler().getSession().getTransaction().getTransferDataCount();
-          // if (transferDataSize != 0 && transferDataCount != 0)
-          // {
-          // double completeness =
-          // ((double)transferDataCount) * 100 /
-          // ((double)transferDataSize);
-          // VTConsole.printf("\nVT>A file transfer is
-          // running!" +
-          // "\nVT>Transferred [" + transferDataCount +
-          // "] of [" + transferDataSize + "] bytes
-          // (%.2f%%)\nVT>", completeness);
-          // VTConsole.print("\nVT>A file transfer is running!" +
-          // "\nVT>Transferred [" + transferDataCount + "] bytes!\nVT>");
-          // }
-          // else
-          // {
-          // VTConsole.print("\nVT>A file transfer is running!\nVT>");
-          // }
           VTConsole.print("\nVT>A file transfer is running!\nVT>");
         }
         else

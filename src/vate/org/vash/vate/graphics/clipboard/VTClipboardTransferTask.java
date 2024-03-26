@@ -103,7 +103,7 @@ public class VTClipboardTransferTask extends VTTask
   }
   
   @SuppressWarnings("unchecked")
-  public void run()
+  public void task()
   {
     try
     {

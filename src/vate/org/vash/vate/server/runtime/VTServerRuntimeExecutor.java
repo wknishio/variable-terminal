@@ -122,7 +122,7 @@ public class VTServerRuntimeExecutor extends VTTask
    * command.substring(z, x); z = ++x; } } return; }
    */
   
-  public void run()
+  public void task()
   {
     try
     {

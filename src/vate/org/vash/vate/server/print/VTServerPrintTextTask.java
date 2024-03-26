@@ -98,7 +98,7 @@ public class VTServerPrintTextTask extends VTTask
 //	    return pf2;     
 //	}
   
-  public void run()
+  public void task()
   {
     try
     {

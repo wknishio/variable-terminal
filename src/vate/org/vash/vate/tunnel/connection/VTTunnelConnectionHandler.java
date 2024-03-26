@@ -25,7 +25,7 @@ public class VTTunnelConnectionHandler extends VTTask
     return connection;
   }
   
-  public void run()
+  public void task()
   {
     try
     {

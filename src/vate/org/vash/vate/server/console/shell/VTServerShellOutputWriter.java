@@ -30,7 +30,7 @@ public class VTServerShellOutputWriter extends VTTask
     this.stopped = stopped;
   }
   
-  public void run()
+  public void task()
   {
     // detectCharset();
     // shellInputStream = session.getShellInputStream();

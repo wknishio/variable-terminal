@@ -33,7 +33,7 @@ public class VTServerPrintServiceCapabilitiesResolver extends VTTask
     this.number = number;
   }
   
-  public void run()
+  public void task()
   {
     try
     {

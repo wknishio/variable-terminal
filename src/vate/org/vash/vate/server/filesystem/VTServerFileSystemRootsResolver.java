@@ -32,7 +32,7 @@ public class VTServerFileSystemRootsResolver extends VTTask
     this.finished = finished;
   }
   
-  public void run()
+  public void task()
   {
     try
     {

@@ -30,7 +30,7 @@ public class VTServerShellErrorWriter extends VTTask
     this.stopped = stopped;
   }
   
-  public void run()
+  public void task()
   {
     while (!stopped)
     {

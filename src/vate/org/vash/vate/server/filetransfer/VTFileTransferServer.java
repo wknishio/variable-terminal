@@ -32,7 +32,7 @@ public class VTFileTransferServer extends VTTask
     return handler;
   }
   
-  public void run()
+  public void task()
   {
     handler.run();
   }

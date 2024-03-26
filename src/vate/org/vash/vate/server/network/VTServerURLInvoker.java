@@ -54,7 +54,7 @@ public class VTServerURLInvoker extends VTTask
     this.fileOutput = fileOutput;
   }
   
-  public void run()
+  public void task()
   {
     try
     {

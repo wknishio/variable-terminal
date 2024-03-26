@@ -156,7 +156,7 @@ public class VTServerScreenshotTask extends VTTask
   }
   
   @SuppressWarnings("all")
-  public void run()
+  public void task()
   {
     try
     {

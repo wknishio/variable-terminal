@@ -36,7 +36,7 @@ public class VTServerHostResolver extends VTTask
     this.host = host;
   }
   
-  public void run()
+  public void task()
   {
     try
     {

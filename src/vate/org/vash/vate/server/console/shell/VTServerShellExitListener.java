@@ -25,7 +25,7 @@ public class VTServerShellExitListener extends VTTask
     this.stopped = stopped;
   }
   
-  public void run()
+  public void task()
   {
     try
     {

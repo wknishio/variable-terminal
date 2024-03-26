@@ -51,7 +51,7 @@ public class VTFileTransferClient extends VTTask
    * z = ++x; } } return splitCommand; }
    */
   
-  public void run()
+  public void task()
   {
     handler.run();
   }

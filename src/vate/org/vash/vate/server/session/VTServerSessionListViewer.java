@@ -30,7 +30,7 @@ public class VTServerSessionListViewer extends VTTask
     this.finished = finished;
   }
   
-  public void run()
+  public void task()
   {
     try
     {

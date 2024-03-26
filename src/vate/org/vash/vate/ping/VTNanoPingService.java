@@ -208,7 +208,7 @@ public class VTNanoPingService extends VTTask
     }
   }
   
-  public void run()
+  public void task()
   {
     try
     {

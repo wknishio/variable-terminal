@@ -26,7 +26,7 @@ public class VTServerLocalConsoleReader extends VTTask
     this.selector = new VTServerLocalConsoleCommandSelector<VTServerLocalConsoleCommandProcessor>(server);
   }
   
-  public void run()
+  public void task()
   {
     // int p = 0;
     VTConsole.print("\rVT>Enter *VTHELP or *VTHL to list available commands in server console\nVT>");

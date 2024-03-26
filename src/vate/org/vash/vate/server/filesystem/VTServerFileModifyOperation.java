@@ -64,7 +64,7 @@ public class VTServerFileModifyOperation extends VTTask
     }
   }
   
-  public void run()
+  public void task()
   {
     try
     {

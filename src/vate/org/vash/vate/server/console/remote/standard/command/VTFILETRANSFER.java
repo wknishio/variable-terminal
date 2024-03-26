@@ -27,8 +27,6 @@ public class VTFILETRANSFER extends VTServerStandardRemoteConsoleCommandProcesso
     }
     else if (parsed.length >= 4)
     {
-      // connection.getResultWriter().write(command);
-      // connection.getResultWriter().flush();
       if (parsed[1].toUpperCase().contains("G"))
       {
         if (session.getFileTransferServer().aliveThread())

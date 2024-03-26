@@ -48,7 +48,7 @@ public class VTGraphicsModeClient extends VTTask
    * sessionHandler.setHighQuality(highQuality); }
    */
   
-  public void run()
+  public void task()
   {
     sessionHandler.run();
   }

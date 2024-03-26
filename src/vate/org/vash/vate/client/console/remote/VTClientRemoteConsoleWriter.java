@@ -84,7 +84,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     sourceReader = new BufferedReader(new InputStreamReader(in, charset));
   }
   
-  public void run()
+  public void task()
   {
     // first run all commands in session commands parameter
     if (!stopped)
