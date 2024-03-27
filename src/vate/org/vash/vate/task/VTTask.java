@@ -7,6 +7,7 @@ public abstract class VTTask implements Runnable, Closeable
 {
   protected boolean stopped;
   private Thread taskThread;
+  private Thread nextThread;
   private Runnable next;
   
   public boolean isStopped()
@@ -117,13 +118,29 @@ public abstract class VTTask implements Runnable, Closeable
     {
       if (next != null)
       {
-        try
+        if (next instanceof VTTask)
         {
-          next.run();
+          ((VTTask)next).startThread();
         }
-        catch (Throwable t)
+        else
         {
-          
+          nextThread = new Thread()
+          {
+            public void run()
+            {
+              try
+              {
+                next.run();
+              }
+              catch (Throwable t)
+              {
+                
+              }
+            }
+          };
+          nextThread.setDaemon(true);
+          nextThread.setName(next.getClass().getSimpleName());
+          nextThread.start();
         }
       }
     }

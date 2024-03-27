@@ -18,10 +18,10 @@ public class VTAudioSystem
   private VTAudioCapturer capture;
   private VTAudioPlayer play;
   
-  public VTAudioSystem(ExecutorService threads)
+  public VTAudioSystem(ExecutorService executor)
   {
-    capture = new VTAudioCapturer(this, threads);
-    play = new VTAudioPlayer(this, threads);
+    capture = new VTAudioCapturer(this, executor);
+    play = new VTAudioPlayer(this, executor);
   }
   
   public SourceDataLine searchSourceDataLine(AudioFormat audioFormat, Mixer.Info info, int bufferedMilliseconds)

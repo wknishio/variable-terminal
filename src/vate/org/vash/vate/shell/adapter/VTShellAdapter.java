@@ -27,7 +27,7 @@ public class VTShellAdapter
   private Map<String, String> shellEnvironment;
   private File shellDirectory;
   
-  private ExecutorService threads;
+  private ExecutorService executor;
   
   public VTShellAdapter()
   {
@@ -65,10 +65,10 @@ public class VTShellAdapter
 //    this.supressEchoShell = supressEchoShell;
 //  }
   
-  public void setThreads(ExecutorService threads)
+  public void setThreads(ExecutorService executor)
   {
-    this.threads = threads;
-    // shellProcess.setThreads(threads);
+    this.executor = executor;
+    // shellProcess.setThreads(executor);
   }
   
   public VTShellProcessor getShell()
@@ -317,7 +317,7 @@ public class VTShellAdapter
         javaBuilder.environment().putAll(shellBuilder.environment());
         commandBuilder = javaBuilder;
       }
-      VTRuntimeProcess runtimeProcess = new VTRuntimeProcess(null, commandBuilder, threads, null, false, false, 0);
+      VTRuntimeProcess runtimeProcess = new VTRuntimeProcess(null, commandBuilder, executor, null, false, false, 0);
       shellProcessor.setRuntimeProcess(runtimeProcess);
       if (shellType != VTShellProcessor.SHELL_TYPE_PROCESS)
       {

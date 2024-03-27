@@ -43,7 +43,7 @@ public class VTClientSession
   // private VTTunnelConnectionHandler socksTunnelsHandler;
   private VTNanoPingService pingService;
   private Map<String, Closeable> sessionCloseables;
-  private ExecutorService threads;
+  private ExecutorService executor;
   
   public VTClientSession(VTClient client, VTClientConnection connection)
   {
@@ -54,7 +54,7 @@ public class VTClientSession
   
   public void initialize()
   {
-    this.threads = Executors.newCachedThreadPool(new ThreadFactory()
+    this.executor = Executors.newCachedThreadPool(new ThreadFactory()
     {
       public Thread newThread(Runnable runnable)
       {
@@ -86,9 +86,9 @@ public class VTClientSession
     this.graphicsClient = new VTGraphicsModeClient(this);
     this.clipboardTransferTask = new VTClipboardTransferTask();
     // this.zipFileOperation = new VTClientZipFileOperation(this);
-    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(threads), threads);
+    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executor), executor);
     // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
-    // VTTunnelConnection(threads), threads);
+    // VTTunnelConnection(executor), executor);
     this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, false);
     this.pingService.addListener(new VTNanoPingListener()
     {
@@ -104,7 +104,7 @@ public class VTClientSession
   
   public ExecutorService getSessionThreads()
   {
-    return threads;
+    return executor;
   }
   
   public Closeable getSessionCloseable(String key)

@@ -18,16 +18,16 @@ import org.vash.vate.tunnel.session.VTTunnelSocksSessionHandler;
 public class VTTunnelChannelBindSocketListener implements Runnable
 {
   private final VTTunnelChannel channel;
-  private final ExecutorService threads;
+  private final ExecutorService executor;
   private ServerSocket serverSocket;
   private boolean closed = false;
   private static final String SESSION_SEPARATOR = "\f";
   private static final char SESSION_MARK = '\b';
   
-  public VTTunnelChannelBindSocketListener(VTTunnelChannel channel, ExecutorService threads)
+  public VTTunnelChannelBindSocketListener(VTTunnelChannel channel, ExecutorService executor)
   {
     this.channel = channel;
-    this.threads = threads;
+    this.executor = executor;
     this.closed = false;
   }
   
@@ -137,7 +137,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
           if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
           {
             handler = new VTTunnelSocksSessionHandler(session, channel, channel.getSocksUsername(), channel.getSocksPassword(), channel.getProxy(), channel.getConnection().createRemoteSocketFactory(channel));
-            threads.execute(handler);
+            executor.execute(handler);
           }
           else
           {

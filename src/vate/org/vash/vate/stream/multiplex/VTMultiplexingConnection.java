@@ -14,18 +14,18 @@ public class VTMultiplexingConnection
   private VTLinkableDynamicMultiplexingOutputStream dataOutputStream;
   private VTLittleEndianInputStream controlInputStream;
   private VTLittleEndianOutputStream controlOutputStream;
-  private final ExecutorService threads;
+  private final ExecutorService executor;
   private final VTMultiplexingControlThread controlThread;
   
-  public VTMultiplexingConnection(ExecutorService threads)
+  public VTMultiplexingConnection(ExecutorService executor)
   {
-    this.threads = threads;
-    this.controlThread = new VTMultiplexingControlThread(this, threads);
+    this.executor = executor;
+    this.controlThread = new VTMultiplexingControlThread(this, executor);
   }
   
   public void start()
   {
-    threads.execute(controlThread);
+    executor.execute(controlThread);
   }
   
   public void stop()

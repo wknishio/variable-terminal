@@ -36,15 +36,15 @@ public class VTTunnelConnection
 //  private VTTunnelChannelRemoteSocketBuilder remoteSocketBuilder;
   private Set<VTTunnelChannelBindSocketListener> bindListeners;
   // private int tunnelType;
-  private ExecutorService threads;
+  private ExecutorService executor;
   private boolean closed = false;
   
-  public VTTunnelConnection(ExecutorService threads)
+  public VTTunnelConnection(ExecutorService executor)
   {
     this.responseChannel = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this);
     this.bindListeners = new LinkedHashSet<VTTunnelChannelBindSocketListener>();
     // this.tunnelType = tunnelType;
-    this.threads = threads;
+    this.executor = executor;
     //this.remoteSocketBuilder = createRemoteSocketBuilder();
   }
   
@@ -72,11 +72,11 @@ public class VTTunnelConnection
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(channelType, this, bindHost, bindPort, proxy);
-    listener = new VTTunnelChannelBindSocketListener(channel, threads);
+    listener = new VTTunnelChannelBindSocketListener(channel, executor);
     if (listener.bind())
     {
       bindListeners.add(listener);
-      threads.execute(listener);
+      executor.execute(listener);
       return true;
     }
     else
@@ -104,11 +104,11 @@ public class VTTunnelConnection
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(channelType, this, bindHost, bindPort, socksUsername, socksPassword, proxy);
-    listener = new VTTunnelChannelBindSocketListener(channel, threads);
+    listener = new VTTunnelChannelBindSocketListener(channel, executor);
     if (listener.bind())
     {
       bindListeners.add(listener);
-      threads.execute(listener);
+      executor.execute(listener);
       return true;
     }
     else
@@ -135,11 +135,11 @@ public class VTTunnelConnection
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(channelType, this, bindHost, bindPort, redirectHost, redirectPort, proxy);
-    listener = new VTTunnelChannelBindSocketListener(channel, threads);
+    listener = new VTTunnelChannelBindSocketListener(channel, executor);
     if (listener.bind())
     {
       bindListeners.add(listener);
-      threads.execute(listener);
+      executor.execute(listener);
       return true;
     }
     else

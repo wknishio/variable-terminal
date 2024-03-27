@@ -26,17 +26,17 @@ public class VTRuntimeProcess
   private VTRuntimeProcessExitListener exitListener;
   private VTRuntimeProcessTimeoutKill timeoutKill;
   
-  private ExecutorService threads;
+  private ExecutorService executor;
   private OutputStream redirect;
   private boolean verbose;
   private boolean restart;
   private long timeout;
   
-  public VTRuntimeProcess(String command, ProcessBuilder builder, ExecutorService threads, OutputStream redirect, boolean verbose, boolean restart, long timeout)
+  public VTRuntimeProcess(String command, ProcessBuilder builder, ExecutorService executor, OutputStream redirect, boolean verbose, boolean restart, long timeout)
   {
     this.command = command;
     this.builder = builder;
-    this.threads = threads;
+    this.executor = executor;
     this.redirect = redirect;
     this.verbose = verbose;
     this.restart = restart;
@@ -75,21 +75,21 @@ public class VTRuntimeProcess
     this.out = process.getOutputStream();
     
     this.exitListener = new VTRuntimeProcessExitListener(this);
-    threads.execute(exitListener);
+    executor.execute(exitListener);
     
     if (redirect != null)
     {
       this.inputRedirector = new VTRuntimeProcessInputRedirector(in, redirect, verbose);
-      threads.execute(inputRedirector);
-      // threads.execute(errorConsumer);
+      executor.execute(inputRedirector);
+      // executor.execute(errorConsumer);
     }
     
-    // threads.execute(errorConsumer);
+    // executor.execute(errorConsumer);
     
     if (timeout > 0)
     {
       this.timeoutKill = new VTRuntimeProcessTimeoutKill(this, timeout);
-      threads.execute(timeoutKill);
+      executor.execute(timeoutKill);
     }
   }
   
@@ -182,7 +182,7 @@ public class VTRuntimeProcess
   
   public void stop()
   {
-    // threads.execute(killer);
+    // executor.execute(killer);
     kill();
   }
   

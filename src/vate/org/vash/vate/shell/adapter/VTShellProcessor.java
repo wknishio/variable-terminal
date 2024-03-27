@@ -44,7 +44,7 @@ public class VTShellProcessor
   
   private Charset shellCharset;
   
-  // private ExecutorService threads;
+  // private ExecutorService executor;
   
   private Interpreter beanshell;
   // private Groovysh groovyshell;
@@ -81,9 +81,9 @@ public class VTShellProcessor
   // this.supressEchoShell = supressEchoShell;
   // }
   
-  // public void setThreads(ExecutorService threads)
+  // public void setThreads(ExecutorService executor)
   // {
-  // this.threads = threads;
+  // this.executor = executor;
   // }
   
   public boolean startShell() throws Throwable

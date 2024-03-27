@@ -9,10 +9,10 @@ public class VTTunnelConnectionHandler extends VTTask
   private VTTunnelConnection connection;
   private VTTunnelConnectionControlThread control;
   
-  public VTTunnelConnectionHandler(VTTunnelConnection connection, ExecutorService threads)
+  public VTTunnelConnectionHandler(VTTunnelConnection connection, ExecutorService executor)
   {
     this.connection = connection;
-    this.control = new VTTunnelConnectionControlThread(connection, threads);
+    this.control = new VTTunnelConnectionControlThread(connection, executor);
   }
   
   /*

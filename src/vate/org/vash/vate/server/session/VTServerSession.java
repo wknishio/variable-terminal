@@ -90,7 +90,7 @@ public class VTServerSession
   // private VTTunnelConnectionHandler socksTunnelsHandler;
   private VTNanoPingService pingService;
   private Map<String, Closeable> sessionCloseables;
-  private ExecutorService threads;
+  private ExecutorService executor;
   
   public VTServerSession(VTServer server, VTServerConnection connection)
   {
@@ -105,7 +105,7 @@ public class VTServerSession
     this.setEchoState(0);
     this.setEchoCommands(false);
     this.shellAdapter.setShellEncoding(null);
-    this.threads = Executors.newCachedThreadPool(new ThreadFactory()
+    this.executor = Executors.newCachedThreadPool(new ThreadFactory()
     {
       public Thread newThread(Runnable runnable)
       {
@@ -114,7 +114,7 @@ public class VTServerSession
         return created;
       }
     });
-    this.shellAdapter.setThreads(threads);
+    this.shellAdapter.setThreads(executor);
     
 //    try
 //    {
@@ -159,9 +159,9 @@ public class VTServerSession
     // this.printTextTask = new VTServerPrintTextTask(this);
     // this.printFileTask = new VTServerPrintFileTask(this);
     this.printDataTask = new VTServerPrintDataTask(this);
-    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(threads), threads);
+    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executor), executor);
     // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
-    // VTTunnelConnection(threads), threads);
+    // VTTunnelConnection(executor), executor);
     this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, true);
     this.pingService.addListener(new VTNanoPingListener()
     {
@@ -179,7 +179,7 @@ public class VTServerSession
   
   public ExecutorService getSessionThreads()
   {
-    return threads;
+    return executor;
   }
   
   public Closeable getSessionCloseable(String key)
