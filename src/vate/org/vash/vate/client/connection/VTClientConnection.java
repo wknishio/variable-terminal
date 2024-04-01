@@ -742,7 +742,7 @@ public class VTClientConnection
     blake3Digest.reset();
     blake3Digest.update(remoteNonce);
     blake3Digest.update(localNonce);
-    if (encryptionKey != null && encryptionType != VT.VT_CONNECTION_ENCRYPT_NONE)
+    if (encryptionKey != null)
     {
       blake3Digest.update(encryptionKey);
     }
@@ -760,10 +760,10 @@ public class VTClientConnection
     blake3Digest.reset();
     blake3Digest.update(localNonce);
     blake3Digest.update(remoteNonce);
-//    if (encryptionKey != null)
-//    {
-//      blake3Digest.update(encryptionKey);
-//    }
+    if (encryptionKey != null)
+    {
+      blake3Digest.update(encryptionKey);
+    }
     if (VTArrayComparator.arrayEquals(digestedServer, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_SERVER_CHECK_STRING_NONE)))
     {
       return VT.VT_CONNECTION_ENCRYPT_NONE;
