@@ -15,7 +15,19 @@ import java.awt.Menu;
 import java.awt.MenuBar;
 import java.awt.MenuItem;
 import java.awt.Panel;
+import java.awt.TextComponent;
 import java.awt.TextField;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetDropEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -29,6 +41,7 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.vash.vate.VT;
@@ -854,7 +867,7 @@ public class VTServerSettingsDialog extends Dialog
           if (element1 instanceof Panel)
           {
             Panel panel2 = (Panel) element1;
-            for (Component element2 : panel2.getComponents())
+            for (final Component element2 : panel2.getComponents())
             {
               element2.addKeyListener(new KeyListener()
               {
@@ -862,6 +875,104 @@ public class VTServerSettingsDialog extends Dialog
                 {
                   if (VTGlobalTextStyleManager.processKeyEvent(e))
                   {
+                    return;
+                  }
+                  if (e.isShiftDown() && !e.isControlDown() && !e.isAltDown() && e.getKeyCode() == KeyEvent.VK_INSERT)
+                  {
+                    e.consume();
+                    if (element2 instanceof TextComponent)
+                    {
+                      try
+                      {
+                        String clipboardText = "";
+                        Clipboard systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                        if (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor))
+                        {
+                          clipboardText = systemClipboard.getData(DataFlavor.stringFlavor).toString();
+                        }
+                        else if (systemClipboard.isDataFlavorAvailable(DataFlavor.javaFileListFlavor))
+                        {
+                          @SuppressWarnings("unchecked")
+                          List<File> files = (List<File>) systemClipboard.getData(DataFlavor.javaFileListFlavor);
+                          if (files.size() > 0)
+                          {
+                            StringBuilder fileList = new StringBuilder();
+                            String fileListString = "";
+                            for (File file : files)
+                            {
+                              fileList.append(" " + file.getAbsolutePath());
+                            }
+                            fileListString = fileList.substring(1);
+                            clipboardText = fileListString;
+                          }
+                        }
+                        TextComponent textComponent = (TextComponent)element2;
+                        int start = textComponent.getSelectionStart();
+                        int end = textComponent.getSelectionEnd();
+                        String componentText = textComponent.getText();
+                        String modifiedText = componentText.substring(0, start) + clipboardText + componentText.substring(end, componentText.length());
+                        textComponent.setText(modifiedText);
+                        textComponent.setCaretPosition(start + clipboardText.length());
+                      }
+                      catch (Throwable t)
+                      {
+                        
+                      }
+                      return;
+                    }
+                  }
+                  if (e.isControlDown() && !e.isShiftDown() && !e.isAltDown() && e.getKeyCode() == KeyEvent.VK_INSERT)
+                  {
+                    e.consume();
+                    if (element2 instanceof TextComponent)
+                    {
+                      try
+                      {
+                        TextComponent textComponent = (TextComponent)element2;
+                        String selectedText = textComponent.getSelectedText();
+                        StringSelection text = null;
+                        if (selectedText != null)
+                        {
+                          text = new StringSelection(selectedText);
+                        }
+                        else
+                        {
+                          text = new StringSelection("");
+                        }
+                        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(text, null);
+                      }
+                      catch (Throwable t)
+                      {
+                        
+                      }
+                    }
+                    return;
+                  }
+                  if (e.isControlDown() && !e.isShiftDown() && !e.isAltDown() && e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+                  {
+                    e.consume();
+                    if (element2 instanceof TextComponent)
+                    {
+                      try
+                      {
+                        TextComponent textComponent = (TextComponent)element2;
+                        String selectedText = textComponent.getText();
+                        StringSelection text = null;
+                        if (selectedText != null)
+                        {
+                          text = new StringSelection(selectedText);
+                        }
+                        else
+                        {
+                          text = new StringSelection("");
+                        }
+                        Toolkit.getDefaultToolkit().getSystemClipboard().setContents(text, null);
+                      }
+                      catch (Throwable t)
+                      {
+                        
+                      }
+                    }
                     return;
                   }
                   if (e.getKeyCode() == KeyEvent.VK_ENTER)
@@ -895,6 +1006,96 @@ public class VTServerSettingsDialog extends Dialog
                   }
                 }
               });
+              
+              try
+              {
+                element2.setDropTarget(new DropTarget());
+                element2.getDropTarget().setActive(true);
+                element2.getDropTarget().addDropTargetListener(new DropTargetListener()
+                {
+                  public void dragEnter(DropTargetDragEvent dtde)
+                  {
+                    
+                  }
+                  public void dragOver(DropTargetDragEvent dtde)
+                  {
+                    
+                  }
+                  public void dropActionChanged(DropTargetDragEvent dtde)
+                  {
+                    
+                  }
+                  public void dragExit(DropTargetEvent dte)
+                  {
+                    
+                  }
+                  @SuppressWarnings("unchecked")
+                  public void drop(DropTargetDropEvent dtde)
+                  {
+                    try
+                    {
+                      Transferable transferable = dtde.getTransferable();
+                      String clipboardText = null;
+                      if (transferable.isDataFlavorSupported(DataFlavor.javaFileListFlavor))
+                      {
+                        dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+                        List<File> files = (List<File>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
+                        if (files.size() > 0)
+                        {
+                          StringBuilder fileList = new StringBuilder();
+                          String fileListString = "";
+                          for (File file : files)
+                          {
+                            fileList.append(" " + file.getAbsolutePath());
+                          }
+                          fileListString = fileList.substring(1);
+                          clipboardText = fileListString;
+                        }
+                        if (element2 instanceof TextComponent && clipboardText != null)
+                        {
+                          TextComponent textComponent = (TextComponent)element2;
+                          int start = textComponent.getSelectionStart();
+                          int end = textComponent.getSelectionEnd();
+                          String componentText = textComponent.getText();
+                          String modifiedText = componentText.substring(0, start) + clipboardText + componentText.substring(end, componentText.length());
+                          textComponent.setText(modifiedText);
+                          textComponent.setCaretPosition(start + clipboardText.length());
+                        }
+                        dtde.dropComplete(true);
+                      }
+                      else if (transferable.isDataFlavorSupported(DataFlavor.stringFlavor))
+                      {
+                        dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
+                        String data = (String) transferable.getTransferData(DataFlavor.stringFlavor);
+                        clipboardText = data;
+                        if (element2 instanceof TextComponent && clipboardText != null)
+                        {
+                          TextComponent textComponent = (TextComponent)element2;
+                          int start = textComponent.getSelectionStart();
+                          int end = textComponent.getSelectionEnd();
+                          String componentText = textComponent.getText();
+                          String modifiedText = componentText.substring(0, start) + clipboardText + componentText.substring(end, componentText.length());
+                          textComponent.setText(modifiedText);
+                          textComponent.setCaretPosition(start + clipboardText.length());
+                        }
+                        dtde.dropComplete(true);
+                      }
+                      else
+                      {
+                        dtde.rejectDrop();
+                      }
+                    }
+                    catch (Throwable e)
+                    {
+                      // e.printStackTrace();
+                    }
+                  }
+                });
+              }
+              catch (Throwable t)
+              {
+                
+              }
             }
           }
         }

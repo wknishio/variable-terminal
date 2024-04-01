@@ -540,25 +540,19 @@ public class VTServerConnection
     blake3Digest.reset();
   }
   
-  private void setVerificationStreams(boolean encrypted) throws IOException
+  private void setVerificationStreams() throws IOException
   {
-    if (encrypted)
-    {
-      cryptoEngine.initializeServerEngine(encryptionType, encryptionKey, remoteNonce, localNonce);
-      authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream));
-      authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream));
-    }
-    else
-    {
-      authenticationReader.setIntputStream(connectionSocketInputStream);
-      authenticationWriter.setOutputStream(connectionSocketOutputStream);
-    }
+    cryptoEngine.initializeServerEngine(VT.VT_CONNECTION_ENCRYPT_ISAAC, remoteNonce, localNonce, encryptionKey);
+    authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream));
+    authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream));
+    nonceReader.setIntputStream(authenticationReader.getInputStream());
+    nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
   }
   
   public void setAuthenticationStreams() throws IOException
   {
     //exchangeNonces(true);
-    cryptoEngine.initializeServerEngine(encryptionType, encryptionKey, remoteNonce, localNonce);
+    cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey);
     authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream));
     authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream));
     nonceReader.setIntputStream(authenticationReader.getInputStream());
@@ -577,7 +571,7 @@ public class VTServerConnection
       return false;
     }
     //cryptoEngine.initializeServerEngine(encryptionType, encryptionKey, remoteNonce, localNonce, digestedCredentials, user != null ? user.getBytes("UTF-8") : null, password != null ? password.getBytes("UTF-8") : null);
-    cryptoEngine.initializeServerEngine(encryptionType, encryptionKey, remoteNonce, localNonce, digestedCredentials);
+    cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey, digestedCredentials);
     connectionInputStream = cryptoEngine.getDecryptedInputStream(connectionSocketInputStream);
     connectionOutputStream = cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream);
     //authenticationReader.setIntputStream(connectionInputStream);
@@ -727,10 +721,10 @@ public class VTServerConnection
     blake3Digest.reset();
     blake3Digest.update(localNonce);
     blake3Digest.update(remoteNonce);
-    // if (encryptionKey != null)
-    // {
-    // blake3Digester.update(encryptionKey);
-    // }
+//    if (encryptionKey != null)
+//    {
+//      blake3Digest.update(encryptionKey);
+//    }
     if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_NONE)))
     {
       return VT.VT_CONNECTION_ENCRYPT_NONE;
@@ -829,7 +823,7 @@ public class VTServerConnection
     connected = true;
     setNonceStreams();
     exchangeNonces(false);
-    setVerificationStreams(false);
+    setVerificationStreams();
     //exchangeNonces(true);
     // if (matchRemoteEncryptionSettings(localNonce, remoteNonce,
     // encryptionKey))

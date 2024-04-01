@@ -804,9 +804,6 @@ public class VTLanternaConsole implements VTConsoleImplementation
       VTGlobalTextStyleManager.registerWindow(frame);
       VTGlobalTextStyleManager.registerFontList(awtterminal.getTerminalFontConfiguration().getFontPriority());
       popupMenu = new VTGraphicalConsolePopupMenu(frame);
-      awtterminal.setDropTarget(new DropTarget());
-      awtterminal.getDropTarget().setActive(true);
-      awtterminal.getDropTarget().addDropTargetListener(new VTGraphicalConsoleDropTargetListener());
     }
     else
     {
@@ -891,6 +888,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
       frame.add(verticalScrollbar, java.awt.BorderLayout.EAST);
       frame.getBottomPanel().add(horizontalScrollbar, java.awt.BorderLayout.CENTER);
       frame.getBottomPanel().add(spacer1, java.awt.BorderLayout.EAST);
+      
+      frame.setDropTarget(new DropTarget());
+      frame.getDropTarget().setActive(true);
+      frame.getDropTarget().addDropTargetListener(new VTGraphicalConsoleDropTargetListener());
       
       // outputBox.setVerticalAdjustable(frame.getScrollPane().getVAdjustable());
       // outputBox.setHorizontalAdjustable(frame.getScrollPane().getHAdjustable());

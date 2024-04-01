@@ -404,6 +404,11 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
     	return bottomPanel;
     }
     
+    public Panel getMidPanel()
+    {
+      return midPanel;
+    }
+    
 //    public ScrollPane getScrollPane()
 //    {
 //      return scrollpane;

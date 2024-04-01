@@ -55,7 +55,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     {
       return;
     }
-    if (e.isShiftDown() && !e.isControlDown() && e.getKeyCode() == KeyEvent.VK_INSERT)
+    if (e.isShiftDown() && !e.isControlDown() && !e.isAltDown() && e.getKeyCode() == KeyEvent.VK_INSERT)
     {
       e.consume();
       try
@@ -87,7 +87,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
       }
       return;
     }
-    if (e.isControlDown() && !e.isShiftDown() && e.getKeyCode() == KeyEvent.VK_INSERT)
+    if (e.isControlDown() && !e.isShiftDown() && !e.isAltDown() && e.getKeyCode() == KeyEvent.VK_INSERT)
     {
       e.consume();
       String selectedText = VTConsole.getSelectedText();
@@ -101,15 +101,9 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
         text = new StringSelection("");
       }
       systemClipboard.setContents(text, null);
-      // VTConsole.flush();
-//			VTGraphicalConsole.updateCaretPosition();
-//			if (VTGraphicalConsole.isFlushInterrupted())
-//			{
-//				VTGraphicalConsole.clearCaretPosition();
-//			}
       return;
     }
-    if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+    if (e.isControlDown() && !e.isShiftDown() && !e.isAltDown() && e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
     {
       e.consume();
       String selectedText = VTConsole.getAllText();
