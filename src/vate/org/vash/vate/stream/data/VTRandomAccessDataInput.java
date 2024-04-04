@@ -4,7 +4,7 @@ import java.io.DataInput;
 import java.io.IOException;
 import java.io.InputStream;
 
-public interface RandomAccessDataInput extends DataInput
+public interface VTRandomAccessDataInput extends DataInput
 {
   public int read(byte[] b) throws IOException;
   

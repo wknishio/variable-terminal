@@ -5,9 +5,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
-import org.vash.vate.stream.data.RandomAccessDataInputOutput;
+import org.vash.vate.stream.data.VTRandomAccessDataInputOutput;
 
-public final class VTLittleEndianByteArrayInputOutputStream implements RandomAccessDataInputOutput
+public final class VTLittleEndianByteArrayInputOutputStream implements VTRandomAccessDataInputOutput
 {
   private final VTByteArrayOutputStream output;
   private final VTByteArrayInputStream input;

@@ -14,7 +14,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-public class TLSVerificationDisabler
+public class VTTLSVerificationDisabler
 {
   private static class OverlyOptimisticHostnameVerifier implements HostnameVerifier
   {

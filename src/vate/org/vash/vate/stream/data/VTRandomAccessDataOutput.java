@@ -4,7 +4,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.io.OutputStream;
 
-public interface RandomAccessDataOutput extends DataOutput
+public interface VTRandomAccessDataOutput extends DataOutput
 {
   public void write(byte[] b) throws IOException;
   

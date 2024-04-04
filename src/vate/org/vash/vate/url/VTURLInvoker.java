@@ -1,7 +1,6 @@
 package org.vash.vate.url;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.vash.vate.VT;
-import org.vash.vate.tls.TLSVerificationDisabler;
+import org.vash.vate.tls.VTTLSVerificationDisabler;
 
 public class VTURLInvoker
 {
@@ -20,7 +19,7 @@ public class VTURLInvoker
   {
     try
     {
-      TLSVerificationDisabler.install();
+      VTTLSVerificationDisabler.install();
     }
     catch (Throwable t)
     {
@@ -75,7 +74,7 @@ public class VTURLInvoker
   {
     //System.setProperty("http.keepAlive", "false");
     final byte[] readBuffer = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
-    VTURLResult urlResult = new VTURLResult(-1, null, null, true, null);
+    VTURLResult urlResult = new VTURLResult(-1, null, null, true);
     int readed = 1;
     URLConnection urlConnection = null;
     HttpURLConnection httpConnection = null;
@@ -84,7 +83,6 @@ public class VTURLInvoker
     InputStream connectionInputStream = null;
     InputStream connectionErrorStream = null;
     boolean failed = false;
-    ByteArrayOutputStream errorOutputStream = new ByteArrayOutputStream();
     
     try
     {
@@ -226,8 +224,8 @@ public class VTURLInvoker
               connectionInputStream = new BufferedInputStream(connectionErrorStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
               while ((readed = connectionInputStream.read(readBuffer)) > 0)
               {
-                errorOutputStream.write(readBuffer, 0, readed);
-                errorOutputStream.flush();
+                resultOutputStream.write(readBuffer, 0, readed);
+                resultOutputStream.flush();
               }
               connectionInputStream.close();
             }
@@ -241,11 +239,11 @@ public class VTURLInvoker
       
       Map<String, List<String>> headers = urlConnection.getHeaderFields();
       
-      urlResult = new VTURLResult(code, response, headers, failed, errorOutputStream.toByteArray());
+      urlResult = new VTURLResult(code, response, headers, failed);
     }
     catch (Throwable e)
     {
-      urlResult = new VTURLResult(-1, null, null, true, null);
+      urlResult = new VTURLResult(-1, null, null, true);
     }
     finally
     {
