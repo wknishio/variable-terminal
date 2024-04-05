@@ -63,7 +63,7 @@ public class VTClient implements Runnable
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
   "#vate.client.connection.mode     values: default active(A), passive(P)\r\n" + 
   "#vate.client.proxy.type          values: default none, DIRECT(D), SOCKS(S), HTTP(H), ANY(A)\r\n" + 
-  "#vate.client.encryption.type     values: default none/ISAAC(I)/VMPC(V)/SALSA(S)/HC256(H)/ZUC256(Z)\r\n" + 
+  "#vate.client.encryption.type     values: default none/ISAAC(I)/VMPC(V)/SALSA(S)/HC256(H)/ZUC(Z)\r\n" + 
   "#vate.client.session.commands    format: cmd1*;cmd2*;cmd3*;...\r\n";
   // "#vate.client.session.lines format: file1;file2;file3;...";
   
@@ -1367,7 +1367,7 @@ public class VTClient implements Runnable
             }
             if (line.toUpperCase().startsWith("Y"))
             {
-              VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC256(H)/ZUC256(Z)):");
+              VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC256(H)/ZUC(Z)):");
               line = VTConsole.readLine(false);
               if (line == null)
               {
@@ -1380,7 +1380,7 @@ public class VTClient implements Runnable
               encryptionType = "ISAAC";
               if (line.toUpperCase().startsWith("Z"))
               {
-                encryptionType = "ZUC256";
+                encryptionType = "ZUC";
               }
               if (line.toUpperCase().startsWith("S"))
               {
@@ -1624,7 +1624,7 @@ public class VTClient implements Runnable
             }
             if (line.toUpperCase().startsWith("Y"))
             {
-              VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC256(H)/ZUC256(Z)):");
+              VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC256(H)/ZUC(Z)):");
               line = VTConsole.readLine(false);
               if (line == null)
               {
@@ -1637,7 +1637,7 @@ public class VTClient implements Runnable
               encryptionType = "ISAAC";
               if (line.toUpperCase().startsWith("Z"))
               {
-                encryptionType = "ZUC256";
+                encryptionType = "ZUC";
               }
               if (line.toUpperCase().startsWith("S"))
               {

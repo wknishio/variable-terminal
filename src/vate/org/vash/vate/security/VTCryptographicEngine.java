@@ -96,7 +96,7 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC256)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC)
     {
       encryptionCipherBC = new Zuc256Engine();
       decryptionCipherBC = new Zuc256Engine();
@@ -184,7 +184,7 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC256)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC)
     {
       encryptionCipherBC = new Zuc256Engine();
       decryptionCipherBC = new Zuc256Engine();

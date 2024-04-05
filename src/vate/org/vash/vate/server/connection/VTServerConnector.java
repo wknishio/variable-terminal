@@ -463,7 +463,7 @@ public class VTServerConnector implements Runnable
       }
       else if (encryptionType.toUpperCase().startsWith("Z"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC256);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC);
       }
       else if (encryptionType.toUpperCase().startsWith("V"))
       {
@@ -542,7 +542,7 @@ public class VTServerConnector implements Runnable
       }
       else if (encryptionType.toUpperCase().startsWith("Z"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC256);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC);
       }
       else if (encryptionType.toUpperCase().startsWith("V"))
       {

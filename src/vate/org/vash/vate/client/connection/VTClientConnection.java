@@ -33,8 +33,8 @@ public class VTClientConnection
   private static final byte[] VT_CLIENT_CHECK_STRING_NONE = (StringUtils.reverse("VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_VMPC = (StringUtils.reverse("VT/SERVER/VMPC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/VMPC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_VMPC = (StringUtils.reverse("VT/CLIENT/VMPC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/VMPC/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_SERVER_CHECK_STRING_ZUC256 = (StringUtils.reverse("VT/SERVER/ZUC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ZUC256/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_CLIENT_CHECK_STRING_ZUC256 = (StringUtils.reverse("VT/CLIENT/ZUC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/ZUC256/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_ZUC = (StringUtils.reverse("VT/SERVER/ZUC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_ZUC = (StringUtils.reverse("VT/CLIENT/ZUC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_SALSA = (StringUtils.reverse("VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_SALSA = (StringUtils.reverse("VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_HC256 = (StringUtils.reverse("VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).getBytes();
@@ -788,9 +788,9 @@ public class VTClientConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedServer, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_SERVER_CHECK_STRING_ZUC256)))
+    if (VTArrayComparator.arrayEquals(digestedServer, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_SERVER_CHECK_STRING_ZUC)))
     {
-      return VT.VT_CONNECTION_ENCRYPT_ZUC256;
+      return VT.VT_CONNECTION_ENCRYPT_ZUC;
     }
     
     // sha256Digester.reset();
@@ -887,9 +887,9 @@ public class VTClientConnection
         setEncryptionType(VT.VT_CONNECTION_ENCRYPT_VMPC);
         return true;
       }
-      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC256)
+      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC)
       {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC256);
+        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC);
         return true;
       }
       // if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
@@ -927,12 +927,12 @@ public class VTClientConnection
         return true;
       }
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC256)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC)
     {
-      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_ZUC256, encryptionType);
+      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_ZUC, encryptionType);
       if (remoteEncryptionType != -1)
       {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC256);
+        setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC);
         return true;
       }
     }

@@ -101,7 +101,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       }
       else if (encryptionType.toUpperCase().startsWith("Z"))
       {
-        message.append("\nVT>Encryption type(ET): [ZUC256]");
+        message.append("\nVT>Encryption type(ET): [ZUC]");
       }
       // else if (encryptionType.toUpperCase().startsWith("B"))
       // {
@@ -580,7 +580,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           }
           else if (encryptionType.toUpperCase().startsWith("Z"))
           {
-            VTConsole.print("\rVT>Encryption type(ET): [ZUC256]\nVT>");
+            VTConsole.print("\rVT>Encryption type(ET): [ZUC]\nVT>");
           }
           // else if (encryptionType.toUpperCase().startsWith("B"))
           // {
@@ -623,7 +623,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           }
           else if (encryptionType.toUpperCase().startsWith("Z"))
           {
-            VTConsole.print("\rVT>Encryption type(ET) set to: [ZUC256]\nVT>");
+            VTConsole.print("\rVT>Encryption type(ET) set to: [ZUC]\nVT>");
           }
           // else if (encryptionType.toUpperCase().startsWith("B"))
           // {
