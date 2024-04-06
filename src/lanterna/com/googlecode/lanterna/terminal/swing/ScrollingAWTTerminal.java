@@ -81,7 +81,8 @@ public class ScrollingAWTTerminal extends Container implements IOSafeTerminal {
                 deviceConfiguration,
                 fontConfiguration,
                 colorConfiguration,
-                new ScrollController());
+                new ScrollController(),
+                false);
 
         setLayout(new BorderLayout());
         add(awtTerminal, BorderLayout.CENTER);

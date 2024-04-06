@@ -49,9 +49,10 @@ public class AWTTerminalImplementation extends GraphicalTerminalImplementation {
             TerminalSize initialTerminalSize,
             TerminalEmulatorDeviceConfiguration deviceConfiguration,
             TerminalEmulatorColorConfiguration colorConfiguration,
-            TerminalScrollController scrollController) {
+            TerminalScrollController scrollController,
+            boolean customizeLastLine) {
 
-        super(initialTerminalSize, deviceConfiguration, colorConfiguration, scrollController);
+        super(initialTerminalSize, deviceConfiguration, colorConfiguration, scrollController, customizeLastLine);
         this.component = component;
         this.fontConfiguration = fontConfiguration;
 

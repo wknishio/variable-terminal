@@ -59,6 +59,7 @@ public class DefaultTerminalFactory implements TerminalFactory {
     private boolean forceTextTerminal;
     private boolean preferTerminalEmulator;
     private boolean forceAWTOverSwing;
+    private boolean customizeLastLine;
     private int telnetPort;
     private int inputTimeout;
     private String title;
@@ -137,7 +138,7 @@ public class DefaultTerminalFactory implements TerminalFactory {
 	            if (!preferTerminalEmulator && mouseCaptureMode != null && telnetPort > 0) {
 	                return createTelnetTerminal();
 	            } else {
-	                return createTerminalEmulator();
+	                return createTerminalEmulator(customizeLastLine);
 	            }
 	        }
     	}
@@ -164,7 +165,7 @@ public class DefaultTerminalFactory implements TerminalFactory {
 	            if (!preferTerminalEmulator && mouseCaptureMode != null && telnetPort > 0) {
 	                return createTelnetTerminal();
 	            } else {
-	                return createTerminalEmulator();
+	                return createTerminalEmulator(customizeLastLine);
 	            }
 	        }
     	}
@@ -175,12 +176,12 @@ public class DefaultTerminalFactory implements TerminalFactory {
      * available on the system
      * @return New terminal emulator exposed as a {@link Terminal} interface
      */
-    public Terminal createTerminalEmulator() {
+    public Terminal createTerminalEmulator(boolean customizeLastLine) {
         Terminal terminal;
         if (!forceAWTOverSwing && hasSwing()) {
             terminal = createSwingTerminal();
         } else {
-            terminal = createAWTTerminal();
+            terminal = createAWTTerminal(customizeLastLine);
         }
 
         if (autoOpenTerminalFrame) {
@@ -189,13 +190,14 @@ public class DefaultTerminalFactory implements TerminalFactory {
         return terminal;
     }
 
-    public AWTTerminalFrame createAWTTerminal() {
+    public AWTTerminalFrame createAWTTerminal(boolean customizeLastLine) {
         return new AWTTerminalFrame(
                 title,
                 initialTerminalSize,
                 deviceConfiguration,
                 fontConfiguration,
                 colorConfiguration,
+                customizeLastLine,
                 autoCloseTriggers.toArray(new TerminalEmulatorAutoCloseTrigger[autoCloseTriggers.size()]));
     }
 
@@ -384,6 +386,11 @@ public class DefaultTerminalFactory implements TerminalFactory {
         this.forceAWTOverSwing = forceAWTOverSwing;
         return this;
     }
+    
+    public DefaultTerminalFactory setCustomizeLastLine(boolean customizeLastLine) {
+      this.customizeLastLine = customizeLastLine;
+      return this;
+  }
 
     /**
      * Controls whether a SwingTerminalFrame shall be automatically shown (.setVisible(true)) immediately after 

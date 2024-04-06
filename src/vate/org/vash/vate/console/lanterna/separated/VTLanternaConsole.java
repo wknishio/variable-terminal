@@ -55,7 +55,6 @@ import com.googlecode.lanterna.graphics.PropertyTheme;
 import com.googlecode.lanterna.gui2.BasicWindow;
 import com.googlecode.lanterna.gui2.BorderLayout;
 import com.googlecode.lanterna.gui2.DefaultWindowManager;
-import com.googlecode.lanterna.gui2.EmptySpace;
 import com.googlecode.lanterna.gui2.InputFilter;
 import com.googlecode.lanterna.gui2.Interactable;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
@@ -596,6 +595,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     AWTTerminalFontConfiguration.setBaseFontSize(VTGlobalTextStyleManager.BASE_FONT_SIZE_MONOSPACED);
     AWTTerminalFontConfiguration.setFontScalingFactor(VTGlobalTextStyleManager.FONT_SCALING_FACTOR_MONOSPACED);
     DefaultTerminalFactory factory = new DefaultTerminalFactory();
+    factory.setCustomizeLastLine(true);
     factory.setForceAWTOverSwing(true);
     // factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
     factory.setMouseCaptureMode(MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE);
@@ -1413,7 +1413,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     window.setHints(hints);
     
     // Create gui and start gui
-    gui = new MultiWindowTextGUI(screen, new DefaultWindowManager(), new EmptySpace(TextColor.ANSI.BLACK));
+    gui = new MultiWindowTextGUI(screen, new DefaultWindowManager(), null);
     
     defaultInputProperties = new Properties();
     defaultInputProperties.load(this.getClass().getResourceAsStream("/vtlanternaconsole-input-theme.properties"));
@@ -1426,7 +1426,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
     inputBox.setTheme(inputTheme);
     outputBox.setTheme(outputTheme);
     
-    // gui.setTheme(theme);
+    gui.setTheme(outputTheme);
+    mainPanel.setTheme(outputTheme);
+    bottonPanel.setTheme(inputTheme);
+    //mainPanel.setFillColorOverride(TextColor.ANSI.BLACK_BRIGHT);
+    //bottonPanel.setFillColorOverride(TextColor.ANSI.BLACK_BRIGHT);
     
     inputStream = new VTLanternaConsoleInputStream(this);
     printStream = new VTLanternaConsolePrintStream(this);

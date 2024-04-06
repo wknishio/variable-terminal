@@ -68,6 +68,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
     private boolean blinkOn;
     private boolean bellOn;
     private boolean needFullRedraw;
+    private boolean customizeLastLine;
 
     private TerminalPosition lastDrawnCursorPosition;
     private int lastBufferUpdateScrollPosition;
@@ -101,7 +102,8 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             TerminalSize initialTerminalSize,
             TerminalEmulatorDeviceConfiguration deviceConfiguration,
             TerminalEmulatorColorConfiguration colorConfiguration,
-            TerminalScrollController scrollController) {
+            TerminalScrollController scrollController,
+            boolean customizeLastLine) {
 
         //This is kind of meaningless since we don't know how large the
         //component is at this point, but we should set it to something
@@ -128,7 +130,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         this.hasBlinkingText = false;   // Assume initial content doesn't have any blinking text
         this.blinkOn = true;
         this.needFullRedraw = false;
-
+        this.customizeLastLine = customizeLastLine;
 
         virtualTerminal.setBacklogSize(deviceConfiguration.getLineBufferScrollbackSize());
     }
@@ -310,13 +312,30 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
                 null);
 
         // Take care of the left-over area at the bottom and right of the component where no character can fit
-        //int leftoverHeight = getHeight() % getFontHeight();
+        int leftoverHeight = getHeight() % getFontHeight();
+        
         int leftoverWidth = getWidth() % getFontWidth();
         componentGraphics.setColor(Color.BLACK);
-        if(leftoverWidth > 0) {
-            componentGraphics.fillRect(getWidth() - leftoverWidth, 0, leftoverWidth, getHeight());
+        if(leftoverWidth > 0)
+        {
+            componentGraphics.fillRect(getWidth() - leftoverWidth, 0, leftoverWidth, getHeight() - getFontHeight() - leftoverHeight);
+            
+            if (customizeLastLine)
+            {
+              componentGraphics.setColor(new java.awt.Color(85, 85, 85));
+            }
+            componentGraphics.fillRect(getWidth() - leftoverWidth, getHeight() - getFontHeight() - leftoverHeight, leftoverWidth, getFontHeight());
         }
-
+        
+        if (leftoverHeight > 0)
+        {
+          if (customizeLastLine)
+          {
+            componentGraphics.setColor(new java.awt.Color(85, 85, 85));
+          }
+          componentGraphics.fillRect(0, getHeight() - leftoverHeight, getWidth(), leftoverHeight);
+        }
+        
         //0, 0, getWidth(), getHeight(), 0, 0, getWidth(), getHeight(), null);
         this.lastComponentWidth = width;
         this.lastComponentHeight = height;

@@ -51,7 +51,7 @@ class SwingTerminalImplementation extends GraphicalTerminalImplementation {
             TerminalEmulatorColorConfiguration colorConfiguration,
             TerminalScrollController scrollController) {
 
-        super(initialTerminalSize, deviceConfiguration, colorConfiguration, scrollController);
+        super(initialTerminalSize, deviceConfiguration, colorConfiguration, scrollController, false);
         this.component = component;
         this.fontConfiguration = fontConfiguration;
 
