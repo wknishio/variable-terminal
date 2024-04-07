@@ -179,11 +179,7 @@ public class WindowsTerminal extends UnixLikeTerminal {
 	
 //	private void onMouseEventRecord(MOUSE_EVENT_RECORD evt)
 //	{
-//	  
-//		System.out.println(evt.toString());
 //		COORD position = evt.dwMousePosition;
 //		int button = evt.dwButtonState;
-//		Wincon.INSTANCE.SetConsoleTitle("x:[" + position.X + "]y:[" + position.Y + "]b:[" + button + "]");
-//		//this.
 //	}
 }

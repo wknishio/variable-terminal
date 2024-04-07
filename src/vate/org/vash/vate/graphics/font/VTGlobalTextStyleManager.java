@@ -468,6 +468,15 @@ public class VTGlobalTextStyleManager
     updateComponents(true);
   }
   
+  public static void packComponentSize()
+  {
+    // System.out.println("FONT_SCALING_FACTOR:" + FONT_SCALING_FACTOR);
+    // System.out.println("defaultMonospacedFontSize:" +
+    // defaultMonospacedFontSize);
+    // System.out.println("defaultWindowFontSize:" + defaultWindowFontSize);
+    updateComponents(false);
+  }
+  
   public static void defaultFontSize()
   {
     // System.out.println("FONT_SCALING_FACTOR:" + FONT_SCALING_FACTOR);

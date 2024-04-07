@@ -68,7 +68,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
     private boolean blinkOn;
     private boolean bellOn;
     private boolean needFullRedraw;
-    private boolean customizeLastLine;
+    private java.awt.Color lastLineBackground;
 
     private TerminalPosition lastDrawnCursorPosition;
     private int lastBufferUpdateScrollPosition;
@@ -103,7 +103,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             TerminalEmulatorDeviceConfiguration deviceConfiguration,
             TerminalEmulatorColorConfiguration colorConfiguration,
             TerminalScrollController scrollController,
-            boolean customizeLastLine) {
+            java.awt.Color lastLineBackground) {
 
         //This is kind of meaningless since we don't know how large the
         //component is at this point, but we should set it to something
@@ -130,7 +130,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         this.hasBlinkingText = false;   // Assume initial content doesn't have any blinking text
         this.blinkOn = true;
         this.needFullRedraw = false;
-        this.customizeLastLine = customizeLastLine;
+        this.lastLineBackground = lastLineBackground;
 
         virtualTerminal.setBacklogSize(deviceConfiguration.getLineBufferScrollbackSize());
     }
@@ -320,18 +320,18 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         {
             componentGraphics.fillRect(getWidth() - leftoverWidth, 0, leftoverWidth, getHeight() - getFontHeight() - leftoverHeight);
             
-            if (customizeLastLine)
+            if (lastLineBackground != null)
             {
-              componentGraphics.setColor(new java.awt.Color(85, 85, 85));
+              componentGraphics.setColor(lastLineBackground);
             }
             componentGraphics.fillRect(getWidth() - leftoverWidth, getHeight() - getFontHeight() - leftoverHeight, leftoverWidth, getFontHeight());
         }
         
         if (leftoverHeight > 0)
         {
-          if (customizeLastLine)
+          if (lastLineBackground != null)
           {
-            componentGraphics.setColor(new java.awt.Color(85, 85, 85));
+            componentGraphics.setColor(lastLineBackground);
           }
           componentGraphics.fillRect(0, getHeight() - leftoverHeight, getWidth(), leftoverHeight);
         }

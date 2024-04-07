@@ -595,7 +595,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     AWTTerminalFontConfiguration.setBaseFontSize(VTGlobalTextStyleManager.BASE_FONT_SIZE_MONOSPACED);
     AWTTerminalFontConfiguration.setFontScalingFactor(VTGlobalTextStyleManager.FONT_SCALING_FACTOR_MONOSPACED);
     DefaultTerminalFactory factory = new DefaultTerminalFactory();
-    factory.setCustomizeLastLine(true);
+    factory.setLastLineBackground(new java.awt.Color(85, 85, 85));
     factory.setForceAWTOverSwing(true);
     // factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
     factory.setMouseCaptureMode(MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE);
@@ -658,6 +658,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
       }
       
       frame.addWindowListener(new VTLanternaConsoleWindowListener(this));
+      
       if (terminal instanceof AWTTerminalFrame)
       {
         awtterminal = ((AWTTerminalFrame) frame).getTerminal();

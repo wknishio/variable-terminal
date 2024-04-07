@@ -3,8 +3,6 @@ package org.vash.vate.nativeutils.win32;
 import org.vash.vate.nativeutils.VTNativeUtilsImplementation;
 
 import com.sun.jna.Native;
-import com.sun.jna.platform.win32.WinNT.HANDLE;
-import com.sun.jna.ptr.IntByReference;
 
 public class VTWin32NativeUtils implements VTNativeUtilsImplementation
 {
@@ -421,33 +419,34 @@ public class VTWin32NativeUtils implements VTNativeUtilsImplementation
     boolean ansi = false;
     if (isatty(0) != 0 && isatty(1) != 0)
     {
-      HANDLE hConsoleHandleInput = kernel32Lib.GetStdHandle(STD_INPUT_HANDLE);
-      HANDLE hConsoleHandleOutput = kernel32Lib.GetStdHandle(STD_OUTPUT_HANDLE);
-      IntByReference lpMode = new IntByReference();
-      int oldModeInput = 0;
-      int oldModeOutput = 0;
-      if (kernel32Lib.GetConsoleMode(hConsoleHandleInput, lpMode))
-      {
-        oldModeInput = lpMode.getValue();
-      }
-      if (kernel32Lib.GetConsoleMode(hConsoleHandleOutput, lpMode))
-      {
-        oldModeOutput = lpMode.getValue();
-      }
-      
-      if (oldModeInput != 0 && oldModeOutput != 0)
-      {
-        int newModeInput = oldModeInput |= ENABLE_VIRTUAL_TERMINAL_INPUT;
-        int newModeOutput = oldModeOutput |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
-        
-        if (kernel32Lib.SetConsoleMode(hConsoleHandleInput, newModeInput) && kernel32Lib.SetConsoleMode(hConsoleHandleOutput, newModeOutput))
-        {
-          ansi = true;
-        }
-        
-        kernel32Lib.SetConsoleMode(hConsoleHandleInput, oldModeInput);
-        kernel32Lib.SetConsoleMode(hConsoleHandleOutput, oldModeOutput);
-      }
+      return true;
+//      HANDLE hConsoleHandleInput = kernel32Lib.GetStdHandle(STD_INPUT_HANDLE);
+//      HANDLE hConsoleHandleOutput = kernel32Lib.GetStdHandle(STD_OUTPUT_HANDLE);
+//      IntByReference lpMode = new IntByReference();
+//      int oldModeInput = 0;
+//      int oldModeOutput = 0;
+//      if (kernel32Lib.GetConsoleMode(hConsoleHandleInput, lpMode))
+//      {
+//        oldModeInput = lpMode.getValue();
+//      }
+//      if (kernel32Lib.GetConsoleMode(hConsoleHandleOutput, lpMode))
+//      {
+//        oldModeOutput = lpMode.getValue();
+//      }
+//      
+//      if (oldModeInput != 0 && oldModeOutput != 0)
+//      {
+//        int newModeInput = oldModeInput |= ENABLE_VIRTUAL_TERMINAL_INPUT;
+//        int newModeOutput = oldModeOutput |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+//        
+//        if (kernel32Lib.SetConsoleMode(hConsoleHandleInput, newModeInput) && kernel32Lib.SetConsoleMode(hConsoleHandleOutput, newModeOutput))
+//        {
+//          ansi = true;
+//        }
+//        
+//        kernel32Lib.SetConsoleMode(hConsoleHandleInput, oldModeInput);
+//        kernel32Lib.SetConsoleMode(hConsoleHandleOutput, oldModeOutput);
+//      }
       
     }
     return ansi;
