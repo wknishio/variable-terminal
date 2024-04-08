@@ -13,6 +13,7 @@ public class VTClientAuthenticator
   private byte[] receivedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] localNonce;
   private byte[] remoteNonce;
+  private byte[] encryptionKey;
   private String user;
   private String password;
   private final VTBlake3MessageDigest blake3Digest;
@@ -109,6 +110,7 @@ public class VTClientAuthenticator
   {
     localNonce = connection.getLocalNonce();
     remoteNonce = connection.getRemoteNonce();
+    encryptionKey = connection.getEncryptionKey();
     
     blake3Digest.reset();
     byte[] seed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
@@ -119,6 +121,7 @@ public class VTClientAuthenticator
     
     blake3Digest.update(remoteNonce);
     blake3Digest.update(localNonce);
+    blake3Digest.update(encryptionKey);
     
     String line = "";
     //byte[] credentialData = null;

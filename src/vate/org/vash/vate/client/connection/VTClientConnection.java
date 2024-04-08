@@ -183,6 +183,11 @@ public class VTClientConnection
     this.encryptionType = encryptionType;
   }
   
+  public byte[] getEncryptionKey()
+  {
+    return encryptionKey;
+  }
+  
   public void setEncryptionKey(byte[] encryptionKey)
   {
     this.encryptionKey = encryptionKey;
@@ -572,7 +577,7 @@ public class VTClientConnection
   
   private void setVerificationStreams() throws IOException
   {
-    cryptoEngine.initializeClientEngine(VT.VT_CONNECTION_ENCRYPT_ISAAC, localNonce, remoteNonce, encryptionKey);
+    cryptoEngine.initializeClientEngine(VT.VT_CONNECTION_ENCRYPT_NONE, localNonce, remoteNonce, encryptionKey);
     authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream));
     authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream));
     nonceReader.setIntputStream(authenticationReader.getInputStream());

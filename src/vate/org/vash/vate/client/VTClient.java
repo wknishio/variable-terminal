@@ -1410,7 +1410,6 @@ public class VTClient implements Runnable
             {
               encryptionType = "None";
             }
-            
           }
         }
         else
