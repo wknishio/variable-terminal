@@ -22,9 +22,6 @@ import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.tls.VTTLSVerificationDisabler;
 
-//import com.sixlegs.png.iio.PngImageReader;
-//import com.sixlegs.png.iio.PngImageReaderSpi;
-
 @SuppressWarnings("deprecation")
 public class VT
 {
@@ -127,8 +124,8 @@ public class VT
   public static final int VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_ADJUSTED_IGNORE_RATIO = 38;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_AREA_CHANGE = 39;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_REFRESH_NOT_NEEDED = 40;
-  public static final int VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_DEFAULT = 41;
-  public static final int VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_NEXT = 42;
+  public static final int VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_DEFAULT = 41;
+  public static final int VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_NEXT = 42;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_IMAGE = 43;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE = 44;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD = 45;
@@ -137,11 +134,11 @@ public class VT
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16777216 = 48;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_8 = 49;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD = 50;
-  public static final int VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_UNIFIED = 51;
+  public static final int VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_UNIFIED = 51;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_DEFAULT_SCALE = 52;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_INCREASE_SCALE = 53;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_MODE_DECREASE_SCALE = 54;
-  public static final int VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_PREVIOUS = 55;
+  public static final int VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_PREVIOUS = 55;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_DRAW_POINTER_INCREASE = 56;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_DRAW_POINTER_DECREASE = 57;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_DRAW_POINTER_NORMALIZE = 58;

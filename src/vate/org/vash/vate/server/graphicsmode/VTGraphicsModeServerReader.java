@@ -347,20 +347,20 @@ public class VTGraphicsModeServerReader implements Runnable
             // area.height);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_DEFAULT:
+          case VT.VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_DEFAULT:
           {
             GraphicsDevice defaultDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
             controlProvider.setGraphicsDevice(defaultDevice);
             writer.setNextDevice(defaultDevice);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_UNIFIED:
+          case VT.VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_UNIFIED:
           {
             controlProvider.setGraphicsDevice(null);
             writer.setNextDevice(null);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_NEXT:
+          case VT.VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_NEXT:
           {
             GraphicsDevice currentDevice = controlProvider.getGraphicsDevice();
             if (currentDevice != null)
@@ -395,7 +395,7 @@ public class VTGraphicsModeServerReader implements Runnable
             }
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_PREVIOUS:
+          case VT.VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_PREVIOUS:
           {
             GraphicsDevice currentDevice = controlProvider.getGraphicsDevice();
             if (currentDevice != null)

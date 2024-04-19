@@ -44,6 +44,8 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.vash.vate.VT;
+
 /**
  * This is the class that does the heavy lifting for both {@link AWTTerminal} and {@link SwingTerminal}. It maintains
  * most of the external terminal state and also the main back buffer that is copied to the components area on draw
@@ -358,6 +360,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         //Setup the graphics object
         ensureGraphicBufferHasRightSize();
         final Graphics2D backbufferGraphics = backbuffer.createGraphics();
+        backbufferGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
 
         if(isTextAntiAliased()) {
             backbufferGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -372,6 +375,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             int gap = scrollOffsetFromTopInPixels - lastBufferUpdateScrollPosition;
             if(gap / fontHeight < viewportSize.getRows()) {
                 Graphics2D graphics = copybuffer.createGraphics();
+                graphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
                 graphics.setClip(0, 0, getWidth(), getHeight() - gap);
                 graphics.drawImage(backbuffer, 0, -gap, null);
                 graphics.dispose();
@@ -392,6 +396,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             int gap = lastBufferUpdateScrollPosition - scrollOffsetFromTopInPixels;
             if(gap / fontHeight < viewportSize.getRows()) {
                 Graphics2D graphics = copybuffer.createGraphics();
+                graphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
                 graphics.setClip(0, 0, getWidth(), getHeight() - gap);
                 graphics.drawImage(backbuffer, 0, 0, null);
                 graphics.dispose();
@@ -531,6 +536,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
 
             // We only need to set the content of the backbuffer during initialization time
             Graphics2D graphics = backbuffer.createGraphics();
+            
             graphics.setColor(colorConfiguration.toAWTColor(TextColor.ANSI.DEFAULT, false, false));
             graphics.fillRect(0, 0, getWidth() * 2, getHeight() * 2);
             graphics.dispose();
@@ -540,6 +546,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
 
             BufferedImage newBackbuffer = new BufferedImage(Math.max(getWidth(), 1) * 2, Math.max(getHeight(), 1) * 2, BufferedImage.TYPE_INT_RGB);
             Graphics2D graphics = newBackbuffer.createGraphics();
+            graphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
             graphics.fillRect(0, 0, newBackbuffer.getWidth(), newBackbuffer.getHeight());
             graphics.drawImage(backbuffer, 0, 0, null);
             graphics.dispose();
@@ -717,6 +724,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         // Manually clear the backbuffer
         if(backbuffer != null) {
             Graphics2D graphics = backbuffer.createGraphics();
+            
             Color backgroundColor = colorConfiguration.toAWTColor(TextColor.ANSI.DEFAULT, false, false);
             graphics.setColor(backgroundColor);
             graphics.fillRect(0, 0, getWidth(), getHeight());

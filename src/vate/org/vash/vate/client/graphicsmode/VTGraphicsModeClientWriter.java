@@ -1129,7 +1129,7 @@ public class VTGraphicsModeClientWriter implements Runnable
   {
     try
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_NEXT);
+      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_NEXT);
       connection.getGraphicsControlDataOutputStream().flush();
     }
     catch (Throwable e)
@@ -1144,7 +1144,7 @@ public class VTGraphicsModeClientWriter implements Runnable
   {
     try
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_PREVIOUS);
+      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_PREVIOUS);
       connection.getGraphicsControlDataOutputStream().flush();
     }
     catch (Throwable e)
@@ -1159,7 +1159,7 @@ public class VTGraphicsModeClientWriter implements Runnable
   {
     try
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_DEFAULT);
+      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_DEFAULT);
       connection.getGraphicsControlDataOutputStream().flush();
     }
     catch (Throwable e)
@@ -1174,7 +1174,7 @@ public class VTGraphicsModeClientWriter implements Runnable
   {
     try
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_CHANGE_DEVICE_UNIFIED);
+      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_UNIFIED);
       connection.getGraphicsControlDataOutputStream().flush();
     }
     catch (Throwable e)
