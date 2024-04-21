@@ -16,7 +16,7 @@ public class VTEXIT extends VTClientStandardRemoteConsoleCommandProcessor
   public void execute(String command, String[] parsed) throws Exception
   {
     VTConsole.print("\nVT>Disconnecting from server!");
-    connection.getCommandWriter().write(command + "\n");
+    connection.getCommandWriter().writeLine(command);
     connection.getCommandWriter().flush();
     connection.closeSockets();
     return;

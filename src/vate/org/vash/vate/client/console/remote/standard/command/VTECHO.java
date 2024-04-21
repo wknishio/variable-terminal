@@ -21,7 +21,7 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
     {
       state = 1;
       
-      session.getConnection().getCommandWriter().write(command + " " + state + "\n");
+      session.getConnection().getCommandWriter().writeLine(command + " " + state);
       session.getConnection().getCommandWriter().flush();
       
       if (VTConsole.isCommandEcho())
@@ -37,14 +37,14 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
     {
       state = 2;
       
-      session.getConnection().getCommandWriter().write(command + " " + state + "\n");
+      session.getConnection().getCommandWriter().writeLine(command + " " + state);
       session.getConnection().getCommandWriter().flush();
     }
     else if (state == 2)
     {
       state = 3;
       
-      session.getConnection().getCommandWriter().write(command + " " + state + "\n");
+      session.getConnection().getCommandWriter().writeLine(command + " " + state);
       session.getConnection().getCommandWriter().flush();
       
       if (VTConsole.isCommandEcho())
@@ -60,7 +60,7 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
     {
       state = 0;
       
-      session.getConnection().getCommandWriter().write(command + " " + state + "\n");
+      session.getConnection().getCommandWriter().writeLine(command + " " + state);
       session.getConnection().getCommandWriter().flush();
     }
   }

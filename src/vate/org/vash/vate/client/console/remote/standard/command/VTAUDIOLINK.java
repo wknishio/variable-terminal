@@ -31,7 +31,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
       {
         connection.closeAudioStreams();
         formatAudioSystem.stop();
-        connection.getCommandWriter().write(command + "\n");
+        connection.getCommandWriter().writeLine(command);
         connection.getCommandWriter().flush();
         connection.getAudioControlOutputStream().write(0);
         connection.getAudioControlOutputStream().flush();
@@ -206,7 +206,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
           return;
         }
         
-        connection.getCommandWriter().write(command + "\n");
+        connection.getCommandWriter().writeLine(command);
         connection.getCommandWriter().flush();
         connection.getAudioControlOutputStream().write(1);
         connection.getAudioControlOutputStream().flush();

@@ -319,7 +319,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
       
       if (!selector.selectCommand(command, parsed))
       {
-        connection.getCommandWriter().write(command + "\n");
+        connection.getCommandWriter().writeLine(command);
         connection.getCommandWriter().flush();
       }
     }

@@ -30,7 +30,7 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
           {
             // VTTerminal.print(command);
             session.getFileTransferClient().getHandler().getSession().getTransaction().setInterrupted();
-            connection.getCommandWriter().write(command + "\n");
+            connection.getCommandWriter().writeLine(command);
             connection.getCommandWriter().flush();
             session.getFileTransferClient().getHandler().getSession().getTransaction().setStopped(true);
           }
@@ -57,7 +57,7 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
             session.getFileTransferClient().getHandler().getSession().getTransaction().setFinished(false);
             session.getFileTransferClient().getHandler().getSession().getTransaction().setStopped(false);
             session.getFileTransferClient().getHandler().getSession().getTransaction().setCommand(command);
-            connection.getCommandWriter().write(command + "\n");
+            connection.getCommandWriter().writeLine(command);
             connection.getCommandWriter().flush();
             session.getFileTransferClient().startThread();
           }
@@ -77,7 +77,7 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
             session.getFileTransferClient().getHandler().getSession().getTransaction().setFinished(false);
             session.getFileTransferClient().getHandler().getSession().getTransaction().setStopped(false);
             session.getFileTransferClient().getHandler().getSession().getTransaction().setCommand(command);
-            connection.getCommandWriter().write(command + "\n");
+            connection.getCommandWriter().writeLine(command);
             connection.getCommandWriter().flush();
             session.getFileTransferClient().startThread();
           }

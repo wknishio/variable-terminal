@@ -15,7 +15,7 @@ public class VTQUIT extends VTClientStandardRemoteConsoleCommandProcessor
   
   public void execute(String command, String[] parsed) throws Exception
   {
-    connection.getCommandWriter().write(command + "\n");
+    connection.getCommandWriter().writeLine(command);
     connection.getCommandWriter().flush();
     VTConsole.closeConsole();
     session.getClient().stop();

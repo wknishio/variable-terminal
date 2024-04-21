@@ -370,7 +370,7 @@ public class VTClientSession
   {
     String clientShell = client.getClientConnector().getSessionShell();
     clientShell = clientShell.replace("\r\n", "").replace("\n", "");
-    connection.getCommandWriter().write(clientShell + "\n");
+    connection.getCommandWriter().writeLine(clientShell);
     connection.getCommandWriter().flush();
   }
 }

@@ -47,7 +47,7 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
         {
           session.getGraphicsClient().setFinished(false);
           session.getGraphicsClient().setReadOnly(true);
-          connection.getCommandWriter().write(command + "\n");
+          connection.getCommandWriter().writeLine(command);
           connection.getCommandWriter().flush();
           session.getGraphicsClient().startThread();
           // System.out.println("session.getGraphicsClient().startThread()");
@@ -73,7 +73,7 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
         {
           session.getGraphicsClient().setFinished(false);
           session.getGraphicsClient().setReadOnly(false);
-          connection.getCommandWriter().write(command + "\n");
+          connection.getCommandWriter().writeLine(command);
           connection.getCommandWriter().flush();
           session.getGraphicsClient().startThread();
           // System.out.println("session.getGraphicsClient().startThread()");
@@ -104,7 +104,7 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
       {
         // VTTerminal.print("\nVT>Remote graphics link is
         // running!\nVT>");
-        connection.getCommandWriter().write(command + "\n");
+        connection.getCommandWriter().writeLine(command);
         connection.getCommandWriter().flush();
         session.getGraphicsClient().setStopped(true);
         session.getGraphicsClient().joinThread();
@@ -114,7 +114,7 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
       {
         session.getGraphicsClient().setFinished(false);
         session.getGraphicsClient().setReadOnly(false);
-        connection.getCommandWriter().write(command + "\n");
+        connection.getCommandWriter().writeLine(command);
         connection.getCommandWriter().flush();
         session.getGraphicsClient().startThread();
         // System.out.println("session.getGraphicsClient().startThread()");

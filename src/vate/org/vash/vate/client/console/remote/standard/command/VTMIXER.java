@@ -23,7 +23,7 @@ public class VTMIXER extends VTClientStandardRemoteConsoleCommandProcessor
     {
       if (parsed[1].toUpperCase().startsWith("R"))
       {
-        connection.getCommandWriter().write(command + "\n");
+        connection.getCommandWriter().writeLine(command);
         connection.getCommandWriter().flush();
       }
       else if (parsed[1].toUpperCase().startsWith("L"))
@@ -62,7 +62,7 @@ public class VTMIXER extends VTClientStandardRemoteConsoleCommandProcessor
       }
       message.append("\nVT>End of client audio mixers list\nVT>");
       VTConsole.print(message.toString());
-      connection.getCommandWriter().write(command + "\n");
+      connection.getCommandWriter().writeLine(command);
       connection.getCommandWriter().flush();
     }
   }

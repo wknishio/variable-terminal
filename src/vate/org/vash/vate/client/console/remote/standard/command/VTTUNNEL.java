@@ -55,7 +55,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
         }
       }
       VTConsole.print(message.toString());
-      connection.getCommandWriter().write(command + "\n");
+      connection.getCommandWriter().writeLine(command);
       connection.getCommandWriter().flush();
     }
     else if (parsed.length == 2)
@@ -82,7 +82,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
       }
       else if (parsed[1].toUpperCase().contains("R"))
       {
-        connection.getCommandWriter().write(command + "\n");
+        connection.getCommandWriter().writeLine(command);
         connection.getCommandWriter().flush();
       }
       else
@@ -134,7 +134,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
       }
       else if (parsed[1].toUpperCase().contains("R"))
       {
-        connection.getCommandWriter().write(command + "\n");
+        connection.getCommandWriter().writeLine(command);
         connection.getCommandWriter().flush();
       }
       else
@@ -452,7 +452,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
       }
       else if (parsed[1].toUpperCase().contains("R"))
       {
-        connection.getCommandWriter().write(command + "\n");
+        connection.getCommandWriter().writeLine(command);
         connection.getCommandWriter().flush();
       }
       else

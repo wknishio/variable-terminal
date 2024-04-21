@@ -1,16 +1,15 @@
 package org.vash.vate.client.console.remote;
 
-import java.io.BufferedWriter;
-
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
 import org.vash.vate.console.command.VTConsoleCommandProcessor;
+import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 
 public abstract class VTClientRemoteConsoleCommandProcessor extends VTConsoleCommandProcessor
 {
   protected VTClientSession session;
   protected VTClientConnection connection;
-  protected BufferedWriter commandWriter;
+  protected VTLittleEndianOutputStream commandWriter;
   protected StringBuilder message = new StringBuilder();
   
   public VTClientRemoteConsoleCommandProcessor()
