@@ -6,14 +6,15 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.nio.channels.Channels;
 import java.security.DigestInputStream;
-import java.security.MessageDigest;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.vash.vate.VT;
 import org.vash.vate.filesystem.VTFileTransferSorter;
-import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3SecureRandom;
+import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 
 import com.martiansoftware.jsap.CommandLineTokenizer;
@@ -26,7 +27,7 @@ public class VTFileTransferServerTransaction implements Runnable
   private boolean finished;
   private boolean compressing;
   private boolean resuming;
-  private boolean verifying;
+  //private boolean verifying;
   private boolean checked;
   private boolean resumable;
   private boolean directory;
@@ -38,14 +39,16 @@ public class VTFileTransferServerTransaction implements Runnable
   private int localFileStatus;
   private int remoteFileAccess;
   private int localFileAccess;
-  private byte[] xxhash64LocalDigest = new byte[8];
-  private byte[] xxhash64RemoteDigest = new byte[8];
+  //private byte[] xxhash64LocalDigest = new byte[8];
+  //private byte[] xxhash64RemoteDigest = new byte[8];
+  private long xxhash64LocalDigest = -1;
+  private long xxhash64RemoteDigest = -1;
   private long remoteFileSize;
   private long localFileSize;
   private long maxOffset;
   private long currentOffset;
   private final byte[] fileTransferBuffer = new byte[fileTransferBufferSize];
-  private final MessageDigest xxhash64Digest;
+  private final VTXXHash64MessageDigest xxhash64Digest;
   private String command;
   private String source;
   private String destination;
@@ -76,7 +79,7 @@ public class VTFileTransferServerTransaction implements Runnable
     
     long xxhash64Seed = new VTBlake3SecureRandom(blake3Seed).nextLong();
     
-    xxhash64Digest = XXHashFactory.safeInstance().newStreamingHash64(xxhash64Seed).asMessageDigest();
+    xxhash64Digest = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(xxhash64Seed));
   }
   
   public boolean isFinished()
@@ -143,22 +146,22 @@ public class VTFileTransferServerTransaction implements Runnable
           
         }
       }
-      if (fileTransferRandomAccessFile != null)
+      if (fileTransferChecksumInputStream != null)
       {
         try
         {
-          fileTransferRandomAccessFile.close();
+          fileTransferChecksumInputStream.close();
         }
         catch (Throwable t)
         {
           
         }
       }
-      if (fileTransferChecksumInputStream != null)
+      if (fileTransferRandomAccessFile != null)
       {
         try
         {
-          fileTransferChecksumInputStream.close();
+          fileTransferRandomAccessFile.close();
         }
         catch (Throwable t)
         {
@@ -195,9 +198,23 @@ public class VTFileTransferServerTransaction implements Runnable
     return (writeLocalFileSize() && readRemoteFileSize() && localFileSize >= 0);
   }
   
-  private boolean getFileChecksums(boolean calculate)
+//  private boolean getFileChecksums(boolean calculate)
+//  {
+//    return (writeLocalFileChecksum(calculate) && readRemoteFileChecksum());
+//  }
+  
+  private boolean getNextFileChunkChecksum(long checksum)
   {
-    return (writeLocalFileChecksum(calculate) && readRemoteFileChecksum());
+    xxhash64LocalDigest = checksum;
+    return (writeNextFileChunkChecksum(checksum) && readNextFileChunkChecksum());
+  }
+  
+  private boolean getNextFileChunkChecksum(byte[] data, int offset, int len)
+  {
+    xxhash64Digest.reset();
+    xxhash64Digest.update(data, offset, len);
+    xxhash64LocalDigest = xxhash64Digest.digestLong();
+    return (writeNextFileChunkChecksum(xxhash64LocalDigest) && readNextFileChunkChecksum());
   }
   
   private boolean getContinueTransfer(boolean ok)
@@ -384,81 +401,81 @@ public class VTFileTransferServerTransaction implements Runnable
     }
   }
   
-  private boolean writeLocalFileChecksum(boolean calculate)
-  {
-    if (!calculate)
-    {
-      try
-      {
-        session.getServer().getConnection().getFileTransferControlDataOutputStream().write(xxhash64LocalDigest);
-        session.getServer().getConnection().getFileTransferControlDataOutputStream().flush();
-        return true;
-      }
-      catch (Throwable e)
-      {
-        return false;
-      }
-    }
-    xxhash64Digest.reset();
-    currentOffset = 0;
-    try
-    {
-      fileTransferRandomAccessFile.seek(0);
-    }
-    catch (Throwable e)
-    {
-      
-    }
-    try
-    {
-      if (fileTransferChecksumInputStream == null)
-      {
-        fileTransferChecksumInputStream = new DigestInputStream(Channels.newInputStream(fileTransferRandomAccessFile.getChannel()), xxhash64Digest);
-      }
-      if (remoteFileSize < localFileSize)
-      {
-        maxOffset = remoteFileSize;
-      }
-      else
-      {
-        maxOffset = localFileSize;
-      }
-      while (!stopped && maxOffset > currentOffset)
-      {
-        readedBytes = fileTransferChecksumInputStream.read(fileTransferBuffer, 0, (int) Math.min(fileTransferBufferSize, maxOffset - currentOffset));
-        if (readedBytes < 0)
-        {
-          break;
-        }
-        currentOffset += readedBytes;
-      }
-    }
-    catch (Throwable e)
-    {
-      
-    }
-    xxhash64LocalDigest = fileTransferChecksumInputStream.getMessageDigest().digest();
-    try
-    {
-      fileTransferRandomAccessFile.seek(0);
-    }
-    catch (Throwable e)
-    {
-      
-    }
-    currentOffset = 0;
-    try
-    {
-      session.getServer().getConnection().getFileTransferControlDataOutputStream().write(xxhash64LocalDigest);
-      session.getServer().getConnection().getFileTransferControlDataOutputStream().flush();
-      return true;
-    }
-    catch (Throwable e)
-    {
-      
-    }
-    return false;
-  }
+//  private boolean writeLocalFileChecksum(boolean calculate)
+//  {
+//    if (!calculate)
+//    {
+//      try
+//      {
+//        session.getServer().getConnection().getFileTransferControlDataOutputStream().write(xxhash64LocalDigest);
+//        session.getServer().getConnection().getFileTransferControlDataOutputStream().flush();
+//        return true;
+//      }
+//      catch (Throwable e)
+//      {
+//        return false;
+//      }
+//    }
+//    xxhash64Digest.reset();
+//    currentOffset = 0;
+//    try
+//    {
+//      fileTransferRandomAccessFile.seek(0);
+//    }
+//    catch (Throwable e)
+//    {
+//      
+//    }
+//    try
+//    {
+//      if (fileTransferChecksumInputStream == null)
+//      {
+//        fileTransferChecksumInputStream = new DigestInputStream(Channels.newInputStream(fileTransferRandomAccessFile.getChannel()), xxhash64Digest);
+//      }
+//      if (remoteFileSize < localFileSize)
+//      {
+//        maxOffset = remoteFileSize;
+//      }
+//      else
+//      {
+//        maxOffset = localFileSize;
+//      }
+//      while (!stopped && maxOffset > currentOffset)
+//      {
+//        readedBytes = fileTransferChecksumInputStream.read(fileTransferBuffer, 0, (int) Math.min(fileTransferBufferSize, maxOffset - currentOffset));
+//        if (readedBytes < 0)
+//        {
+//          break;
+//        }
+//        currentOffset += readedBytes;
+//      }
+//    }
+//    catch (Throwable e)
+//    {
+//      
+//    }
+//    xxhash64LocalDigest = fileTransferChecksumInputStream.getMessageDigest().digest();
+//    try
+//    {
+//      fileTransferRandomAccessFile.seek(0);
+//    }
+//    catch (Throwable e)
+//    {
+//      
+//    }
+//    currentOffset = 0;
+//    try
+//    {
+//      session.getServer().getConnection().getFileTransferControlDataOutputStream().write(xxhash64LocalDigest);
+//      session.getServer().getConnection().getFileTransferControlDataOutputStream().flush();
+//      return true;
+//    }
+//    catch (Throwable e)
+//    {
+//      
+//    }
+//    return false;
+//  }
   
   private boolean writeContinueTransfer(boolean ok)
   {
@@ -501,6 +518,21 @@ public class VTFileTransferServerTransaction implements Runnable
     try
     {
       session.getServer().getConnection().getFileTransferControlDataOutputStream().writeInt(size);
+      session.getServer().getConnection().getFileTransferControlDataOutputStream().flush();
+      return true;
+    }
+    catch (Throwable e)
+    {
+      
+    }
+    return false;
+  }
+  
+  private boolean writeNextFileChunkChecksum(long checksum)
+  {
+    try
+    {
+      session.getServer().getConnection().getFileTransferControlDataOutputStream().writeLong(checksum);
       session.getServer().getConnection().getFileTransferControlDataOutputStream().flush();
       return true;
     }
@@ -554,11 +586,25 @@ public class VTFileTransferServerTransaction implements Runnable
     }
   }
   
-  private boolean readRemoteFileChecksum()
+//  private boolean readRemoteFileChecksum()
+//  {
+//    try
+//    {
+//      session.getServer().getConnection().getFileTransferControlDataInputStream().readFully(xxhash64RemoteDigest);
+//      return true;
+//    }
+//    catch (Throwable e)
+//    {
+//      
+//    }
+//    return false;
+//  }
+  
+  private boolean readNextFileChunkChecksum()
   {
     try
     {
-      session.getServer().getConnection().getFileTransferControlDataInputStream().readFully(xxhash64RemoteDigest);
+      xxhash64RemoteDigest = session.getServer().getConnection().getFileTransferControlDataInputStream().readLong();
       return true;
     }
     catch (Throwable e)
@@ -567,6 +613,7 @@ public class VTFileTransferServerTransaction implements Runnable
     }
     return false;
   }
+
   
   private boolean readContinueTransfer()
   {
@@ -679,47 +726,11 @@ public class VTFileTransferServerTransaction implements Runnable
           currentOffset = 0;
           if (checked && !directory && getFileSizes())
           {
-            resumable = false;
             if (resuming)
             {
-              if (localFileSize >= remoteFileSize && remoteFileSize >= 0)
-              {
-                if (getFileChecksums(true))
-                {
-                  if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(xxhash64LocalDigest, xxhash64RemoteDigest))
-                  {
-                    resumable = true;
-                  }
-                  else
-                  {
-                    
-                  }
-                }
-                resumable = getContinueTransfer(resumable);
-                if (resumable)
-                {
-                  currentOffset = remoteFileSize;
-                }
-              }
-              else if (remoteFileSize > localFileSize && remoteFileSize >= 0)
-              {
-                if (getFileChecksums(true))
-                {
-                  if (remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(xxhash64LocalDigest, xxhash64RemoteDigest))
-                  {
-                    resumable = true;
-                  }
-                  else
-                  {
-                    
-                  }
-                }
-                resumable = getContinueTransfer(resumable);
-                if (resumable)
-                {
-                  currentOffset = localFileSize;
-                }
-              }
+              resumable = remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND &&
+              ((localFileSize >= remoteFileSize && remoteFileSize > 0)
+              || (remoteFileSize > localFileSize && remoteFileSize > 0));
             }
             return true;
           }
@@ -747,10 +758,10 @@ public class VTFileTransferServerTransaction implements Runnable
     {
       if (!directory)
       {
-        if (resumable)
-        {
-          fileTransferRandomAccessFile.seek(remoteFileSize);
-        }
+//        if (resumable)
+//        {
+//          fileTransferRandomAccessFile.seek(remoteFileSize);
+//        }
         fileTransferFileInputStream = Channels.newInputStream(fileTransferRandomAccessFile.getChannel());
       }
       return getContinueTransfer(true);
@@ -777,24 +788,6 @@ public class VTFileTransferServerTransaction implements Runnable
       if (!directory)
       {
         ok = uploadFileData();
-        if (ok && verifying)
-        {
-          if (getFileChecksums(false))
-          {
-            if (VTArrayComparator.arrayEquals(xxhash64LocalDigest, xxhash64RemoteDigest))
-            {
-              return true;
-            }
-            else
-            {
-              return false;
-            }
-          }
-          else
-          {
-            return false;
-          }
-        }
         return ok;
       }
       else
@@ -863,10 +856,6 @@ public class VTFileTransferServerTransaction implements Runnable
   private boolean uploadFileData()
   {
     boolean ok = true;
-    if (verifying)
-    {
-      xxhash64Digest.reset();
-    }
     try
     {
       while (!stopped && ok && currentOffset < localFileSize)
@@ -883,25 +872,32 @@ public class VTFileTransferServerTransaction implements Runnable
           ok = writeNextFileChunkSize(readedBytes);
           if (ok)
           {
-            fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, readedBytes);
-            fileTransferRemoteOutputStream.flush();
+            if (resumable && currentOffset < remoteFileSize)
+            {
+              ok = getNextFileChunkChecksum(fileTransferBuffer, 0, readedBytes);
+              if (ok)
+              {
+                if (xxhash64LocalDigest != xxhash64RemoteDigest)
+                {
+                  fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, readedBytes);
+                  fileTransferRemoteOutputStream.flush();
+                }
+              }
+            }
+            else
+            {
+              fileTransferRemoteOutputStream.write(fileTransferBuffer, 0, readedBytes);
+              fileTransferRemoteOutputStream.flush();
+            }
           }
         }
         currentOffset += readedBytes;
-        if (verifying)
-        {
-          xxhash64Digest.update(fileTransferBuffer, 0, readedBytes);
-        }
       }
       fileTransferRemoteOutputStream.flush();
     }
     catch (Throwable t)
     {
       ok = false;
-    }
-    if (verifying)
-    {
-      xxhash64LocalDigest = xxhash64Digest.digest();
     }
     return ok;
   }
@@ -920,18 +916,6 @@ public class VTFileTransferServerTransaction implements Runnable
       }
       fileTransferFileInputStream = null;
     }
-    if (fileTransferRandomAccessFile != null)
-    {
-      try
-      {
-        fileTransferRandomAccessFile.close();
-      }
-      catch (Throwable e)
-      {
-        
-      }
-      fileTransferRandomAccessFile = null;
-    }
     if (fileTransferChecksumInputStream != null)
     {
       try
@@ -943,6 +927,18 @@ public class VTFileTransferServerTransaction implements Runnable
         
       }
       fileTransferChecksumInputStream = null;
+    }
+    if (fileTransferRandomAccessFile != null)
+    {
+      try
+      {
+        fileTransferRandomAccessFile.close();
+      }
+      catch (Throwable e)
+      {
+        
+      }
+      fileTransferRandomAccessFile = null;
     }
   }
   
@@ -1024,55 +1020,11 @@ public class VTFileTransferServerTransaction implements Runnable
           currentOffset = 0;
           if (checked && !directory && getFileSizes())
           {
-            resumable = false;
             if (resuming)
             {
-              if (remoteFileSize >= localFileSize && localFileSize >= 0)
-              {
-                if (getFileChecksums(true))
-                {
-                  if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(xxhash64LocalDigest, xxhash64RemoteDigest))
-                  {
-                    resumable = true;
-                  }
-                  else
-                  {
-                    
-                  }
-                }
-                resumable = getContinueTransfer(resumable);
-                if (resumable)
-                {
-                  currentOffset = localFileSize;
-                }
-              }
-              else if (localFileSize > remoteFileSize && localFileSize >= 0)
-              {
-                if (getFileChecksums(true))
-                {
-                  if (localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND && VTArrayComparator.arrayEquals(xxhash64LocalDigest, xxhash64RemoteDigest))
-                  {
-                    try
-                    {
-                      fileTransferRandomAccessFile.setLength(remoteFileSize);
-                      resumable = true;
-                    }
-                    catch (Throwable t)
-                    {
-                      
-                    }
-                  }
-                  else
-                  {
-                    
-                  }
-                }
-                resumable = getContinueTransfer(resumable);
-                if (resumable)
-                {
-                  currentOffset = remoteFileSize;
-                }
-              }
+              resumable = localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND &&
+              ((remoteFileSize >= localFileSize && localFileSize > 0)
+              || (localFileSize > remoteFileSize && localFileSize > 0));
             }
             return true;
           }
@@ -1100,10 +1052,10 @@ public class VTFileTransferServerTransaction implements Runnable
     {
       if (!directory)
       {
-        if (resumable)
-        {
-          fileTransferRandomAccessFile.seek(localFileSize);
-        }
+//        if (resumable)
+//        {
+//          fileTransferRandomAccessFile.seek(localFileSize);
+//        }
         fileTransferFileOutputStream = Channels.newOutputStream(fileTransferRandomAccessFile.getChannel());
       }
       return getContinueTransfer(true);
@@ -1130,24 +1082,6 @@ public class VTFileTransferServerTransaction implements Runnable
       if (!directory)
       {
         ok = downloadFileData();
-        if (ok && verifying)
-        {
-          if (getFileChecksums(false))
-          {
-            if (VTArrayComparator.arrayEquals(xxhash64LocalDigest, xxhash64RemoteDigest))
-            {
-              return replaceDownloadFile(currentPath);
-            }
-            else
-            {
-              return false;
-            }
-          }
-          else
-          {
-            return false;
-          }
-        }
         return ok && replaceDownloadFile(currentPath);
       }
       else
@@ -1155,7 +1089,7 @@ public class VTFileTransferServerTransaction implements Runnable
         String rootFolder = null;
         if (rootLevel && !currentPath.equals(currentRootPath))
         {
-          rootFolder = getFileNameFromPath(currentRootPath);
+          rootFolder = fileNameFromPath(currentRootPath);
           File rootFile = new File(appendToPath(currentPath, rootFolder));
           if (!rootFile.exists())
           {
@@ -1229,9 +1163,10 @@ public class VTFileTransferServerTransaction implements Runnable
   {
     boolean ok = true;
     writtenBytes = 0;
-    if (verifying)
+    List<Long> localFileChunkChecksums = new LinkedList<Long>();
+    if (resumable)
     {
-      xxhash64Digest.reset();
+      localFileChunkChecksums = readLocalFileChunkChecksums();
     }
     try
     {
@@ -1249,6 +1184,19 @@ public class VTFileTransferServerTransaction implements Runnable
         }
         else
         {
+          if (localFileChunkChecksums.size() > 0)
+          {
+            ok = getNextFileChunkChecksum(localFileChunkChecksums.remove(0));
+            if (ok)
+            {
+              if (xxhash64LocalDigest == xxhash64RemoteDigest)
+              {
+                currentOffset += writtenBytes;
+                fileTransferRandomAccessFile.seek(currentOffset);
+                continue;
+              }
+            }
+          }
           bufferedBytes = 0;
           while (!stopped && ok && writtenBytes > 0)
           {
@@ -1267,10 +1215,6 @@ public class VTFileTransferServerTransaction implements Runnable
           }
           fileTransferFileOutputStream.write(fileTransferBuffer, 0, bufferedBytes);
           fileTransferFileOutputStream.flush();
-          if (verifying)
-          {
-            xxhash64Digest.update(fileTransferBuffer, 0, bufferedBytes);
-          }
         }
       }
       fileTransferFileOutputStream.flush();
@@ -1278,10 +1222,6 @@ public class VTFileTransferServerTransaction implements Runnable
     catch (Throwable t)
     {
       ok = false;
-    }
-    if (verifying)
-    {
-      xxhash64LocalDigest = xxhash64Digest.digest();
     }
     return ok;
   }
@@ -1300,18 +1240,6 @@ public class VTFileTransferServerTransaction implements Runnable
       }
       fileTransferFileOutputStream = null;
     }
-    if (fileTransferRandomAccessFile != null)
-    {
-      try
-      {
-        fileTransferRandomAccessFile.close();
-      }
-      catch (Throwable e)
-      {
-        
-      }
-      fileTransferRandomAccessFile = null;
-    }
     if (fileTransferChecksumInputStream != null)
     {
       try
@@ -1324,6 +1252,18 @@ public class VTFileTransferServerTransaction implements Runnable
       }
       fileTransferChecksumInputStream = null;
     }
+    if (fileTransferRandomAccessFile != null)
+    {
+      try
+      {
+        fileTransferRandomAccessFile.close();
+      }
+      catch (Throwable e)
+      {
+        
+      }
+      fileTransferRandomAccessFile = null;
+    }
   }
   
   private boolean replaceDownloadFile(String currentPath)
@@ -1335,6 +1275,17 @@ public class VTFileTransferServerTransaction implements Runnable
     catch (Throwable e1)
     {
       
+    }
+    if (localFileSize > remoteFileSize)
+    {
+      try
+      {
+        fileTransferRandomAccessFile.setLength(remoteFileSize);
+      }
+      catch (Throwable e)
+      {
+        
+      }
     }
     try
     {
@@ -1373,7 +1324,61 @@ public class VTFileTransferServerTransaction implements Runnable
     }
   }
   
-  private static String getFileNameFromPath(String path)
+  private List<Long> readLocalFileChunkChecksums()
+  {
+    List<Long> checksums = new LinkedList<Long>();
+    xxhash64Digest.reset();
+    currentOffset = 0;
+    try
+    {
+      fileTransferRandomAccessFile.seek(0);
+    }
+    catch (Throwable e)
+    {
+      
+    }
+    try
+    {
+      if (fileTransferChecksumInputStream == null)
+      {
+        fileTransferChecksumInputStream = new DigestInputStream(Channels.newInputStream(fileTransferRandomAccessFile.getChannel()), xxhash64Digest);
+      }
+      if (remoteFileSize < localFileSize)
+      {
+        maxOffset = remoteFileSize;
+      }
+      else
+      {
+        maxOffset = localFileSize;
+      }
+      while (!stopped && maxOffset > currentOffset)
+      {
+        readedBytes = fileTransferChecksumInputStream.read(fileTransferBuffer, 0, (int) Math.min(fileTransferBufferSize, maxOffset - currentOffset));
+        if (readedBytes < 0)
+        {
+          break;
+        }
+        currentOffset += readedBytes;
+        checksums.add(xxhash64Digest.digestLong());
+      }
+    }
+    catch (Throwable e)
+    {
+      
+    }
+    try
+    {
+      fileTransferRandomAccessFile.seek(0);
+    }
+    catch (Throwable e)
+    {
+      
+    }
+    currentOffset = 0;
+    return checksums;
+  }
+  
+  private static String fileNameFromPath(String path)
   {
     int idx = path.replaceAll("\\\\", "/").lastIndexOf("/");
     return idx >= 0 ? path.substring(idx + 1) : path;
@@ -1456,7 +1461,7 @@ public class VTFileTransferServerTransaction implements Runnable
           filePaths = source;
           compressing = false;
           resuming = false;
-          verifying = false;
+//          verifying = false;
           heavier = false;
           
           if (parameters.toUpperCase().contains("F"))
@@ -1472,10 +1477,10 @@ public class VTFileTransferServerTransaction implements Runnable
           {
             resuming = true;
           }
-          if (parameters.toUpperCase().contains("V"))
-          {
-            verifying = true;
-          }
+//          if (parameters.toUpperCase().contains("V"))
+//          {
+//            verifying = true;
+//          }
           
           if (compressing)
           {
@@ -1513,7 +1518,7 @@ public class VTFileTransferServerTransaction implements Runnable
           filePaths = source;
           compressing = false;
           resuming = false;
-          verifying = false;
+//          verifying = false;
           heavier = false;
           
           if (parameters.toUpperCase().contains("F"))
@@ -1529,10 +1534,10 @@ public class VTFileTransferServerTransaction implements Runnable
           {
             resuming = true;
           }
-          if (parameters.toUpperCase().contains("V"))
-          {
-            verifying = true;
-          }
+//          if (parameters.toUpperCase().contains("V"))
+//          {
+//            verifying = true;
+//          }
           
           if (compressing)
           {
