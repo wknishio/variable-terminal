@@ -13,11 +13,11 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.
 import org.vash.vate.tunnel.session.VTTunnelCloseableSocket;
 import org.vash.vate.tunnel.session.VTTunnelSession;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
-import org.vash.vate.tunnel.session.VTTunnelSocksSessionHandler;
 
 public class VTTunnelChannelBindSocketListener implements Runnable
 {
   private final VTTunnelChannel channel;
+  @SuppressWarnings("unused")
   private final ExecutorService executor;
   private ServerSocket serverSocket;
   private boolean closed = false;
@@ -134,94 +134,95 @@ public class VTTunnelChannelBindSocketListener implements Runnable
           session.setSocketInputStream(socketInputStream);
           session.setSocketOutputStream(socketOutputStream);
           
-          if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
+          VTProxyType proxyType = channel.getProxy().getProxyType();
+          String proxyHost = channel.getProxy().getProxyHost();
+          int proxyPort = channel.getProxy().getProxyPort();
+          String proxyUser = channel.getProxy().getProxyUser();
+          String proxyPassword = channel.getProxy().getProxyPassword();
+          
+          String proxyTypeLetter = "G";
+          
+          if (proxyType == VTProxyType.GLOBAL)
           {
-            handler = new VTTunnelSocksSessionHandler(session, channel, channel.getSocksUsername(), channel.getSocksPassword(), channel.getProxy(), channel.getConnection().createRemoteSocketFactory(channel));
-            executor.execute(handler);
+            proxyTypeLetter = "G";
+          }
+          else if (proxyType == VTProxyType.DIRECT)
+          {
+            proxyTypeLetter = "D";
+          }
+          else if (proxyType == VTProxyType.HTTP)
+          {
+            proxyTypeLetter = "H";
+          }
+          else if (proxyType == VTProxyType.SOCKS)
+          {
+            proxyTypeLetter = "S";
+          }
+          else if (proxyType == VTProxyType.ANY)
+          {
+            proxyTypeLetter = "A";
+          }
+          
+          if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
+          {
+            proxyUser = "*";
+            proxyPassword = "*" + SESSION_SEPARATOR + "*";
+          }
+          
+          handler = new VTTunnelSessionHandler(session, channel);
+          
+          VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
+          VTLinkableDynamicMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
+          
+          if (output != null && input != null)
+          {
+            final int outputNumber = output.number();
+            final int inputNumber = input.number();
+            
+            session.setTunnelOutputStream(output);
+            session.setTunnelInputStream(input);
+            session.getTunnelOutputStream().open();
+            session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream(), new VTTunnelCloseableSocket(acceptedSocket));
+            
+            if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
+            {
+              String host = channel.getRedirectHost();
+              int port = channel.getRedirectPort();
+              // request message sent
+              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+              channel.getConnection().getControlOutputStream().flush();
+            }
+            else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
+            {
+              String socksUsername = channel.getSocksUsername();
+              String socksPassword = channel.getSocksPassword();
+              if (socksUsername == null || socksPassword == null || socksUsername.length() == 0 || socksPassword.length() == 0)
+              {
+                socksUsername = "";
+                socksPassword = "";
+              }
+              // request message sent
+              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+              channel.getConnection().getControlOutputStream().flush();
+            }
           }
           else
           {
-            VTProxyType proxyType = channel.getProxy().getProxyType();
-            String proxyHost = channel.getProxy().getProxyHost();
-            int proxyPort = channel.getProxy().getProxyPort();
-            String proxyUser = channel.getProxy().getProxyUser();
-            String proxyPassword = channel.getProxy().getProxyPassword();
-            
-            String proxyTypeLetter = "G";
-            
-            if (proxyType == VTProxyType.GLOBAL)
+            // cannot handle more sessions
+            if (session != null)
             {
-              proxyTypeLetter = "G";
-            }
-            else if (proxyType == VTProxyType.DIRECT)
-            {
-              proxyTypeLetter = "D";
-            }
-            else if (proxyType == VTProxyType.HTTP)
-            {
-              proxyTypeLetter = "H";
-            }
-            else if (proxyType == VTProxyType.SOCKS)
-            {
-              proxyTypeLetter = "S";
-            }
-            else if (proxyType == VTProxyType.ANY)
-            {
-              proxyTypeLetter = "A";
-            }
-            
-            if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
-            {
-              proxyUser = "*";
-              proxyPassword = "*" + SESSION_SEPARATOR + "*";
-            }
-            
-            handler = new VTTunnelSessionHandler(session, channel);
-            
-            VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
-            VTLinkableDynamicMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
-            
-            if (output != null && input != null)
-            {
-              final int outputNumber = output.number();
-              final int inputNumber = input.number();
-              
-              session.setTunnelOutputStream(output);
-              session.setTunnelInputStream(input);
-              session.getTunnelOutputStream().open();
-              session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream(), new VTTunnelCloseableSocket(acceptedSocket));
-              
-              if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
-              {
-                String host = channel.getRedirectHost();
-                int port = channel.getRedirectPort();
-                // request message sent
-                channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
-                channel.getConnection().getControlOutputStream().flush();
-              }
-              else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
-              {
-                String socksUsername = channel.getSocksUsername();
-                String socksPassword = channel.getSocksPassword();
-                if (socksUsername == null || socksPassword == null || socksUsername.length() == 0 || socksPassword.length() == 0)
-                {
-                  socksUsername = "";
-                  socksPassword = "";
-                }
-                // request message sent
-                channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
-                channel.getConnection().getControlOutputStream().flush();
-              }
-            }
-            else
-            {
-              // cannot handle more sessions
-              if (session != null)
-              {
-                session.close();
-              }
+              session.close();
             }
           }
+//          if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
+//          {
+//            handler = new VTTunnelSocksSessionHandler(session, channel, channel.getSocksUsername(), channel.getSocksPassword(), channel.getProxy(), channel.getConnection().createRemoteSocketFactory(channel));
+//            executor.execute(handler);
+//          }
+//          else
+//          {
+//            
+//          }
         }
       }
     }

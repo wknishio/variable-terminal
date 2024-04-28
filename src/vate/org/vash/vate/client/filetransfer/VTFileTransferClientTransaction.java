@@ -1393,7 +1393,11 @@ public class VTFileTransferClientTransaction implements Runnable
   
   private static String normalizePath(String path)
   {
-    if (path != null && path.trim().length() > 1 && (path.endsWith("/") || path.endsWith("\\")))
+    if (path != null)
+    {
+      path = path.trim();
+    }
+    if (path != null && path.length() > 1 && (path.endsWith("/") || path.endsWith("\\")))
     {
       path = path.substring(0, path.length() - 1);
     }
@@ -1479,15 +1483,24 @@ public class VTFileTransferClientTransaction implements Runnable
           if (parameters.toUpperCase().contains("F"))
           {
             compressing = true;
+            heavier = false;
           }
           if (parameters.toUpperCase().contains("H"))
           {
             compressing = true;
             heavier = true;
           }
+          if (parameters.toUpperCase().contains("D"))
+          {
+            compressing = false;
+          }
           if (parameters.toUpperCase().contains("R"))
           {
             resuming = true;
+          }
+          if (parameters.toUpperCase().contains("O"))
+          {
+            resuming = false;
           }
 //          if (parameters.toUpperCase().contains("V"))
 //          {
@@ -1576,15 +1589,24 @@ public class VTFileTransferClientTransaction implements Runnable
           if (parameters.toUpperCase().contains("F"))
           {
             compressing = true;
+            heavier = false;
           }
           if (parameters.toUpperCase().contains("H"))
           {
             compressing = true;
             heavier = true;
           }
+          if (parameters.toUpperCase().contains("D"))
+          {
+            compressing = false;
+          }
           if (parameters.toUpperCase().contains("R"))
           {
             resuming = true;
+          }
+          if (parameters.toUpperCase().contains("O"))
+          {
+            resuming = false;
           }
 //          if (parameters.toUpperCase().contains("V"))
 //          {
