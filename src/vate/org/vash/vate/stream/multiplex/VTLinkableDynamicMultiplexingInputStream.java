@@ -320,8 +320,8 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       if (length > 0)
       {
-        lin.readFully(packetDataBuffer, 0, length);
         OutputStream out = stream.getOutputStream();
+        lin.readFully(packetDataBuffer, 0, length);
         try
         {
           out.write(packetDataBuffer, 0, length);
