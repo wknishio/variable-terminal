@@ -3,7 +3,9 @@ package org.vash.vate.graphics.image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 
 public final class VTImageDataUtils
 {
@@ -50,7 +52,7 @@ public final class VTImageDataUtils
   
   public static final List<Rectangle> splitBlockArea(final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
-    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
+    List<Rectangle> blockAreas = new LinkedList<Rectangle>();
     int i, j;
     for (i = 0; i < captureArea.height; i += blockHeight)
     {
@@ -67,45 +69,40 @@ public final class VTImageDataUtils
   {
     //Collections.sort(rectangles, rectangleComparator);
     boolean found = false;
-    //for (Rectangle rectangle : rectangles)
-    //{
-      //System.out.print(rectangle + ";");
-      //System.out.print("block:[width:[" + rectangle.width + "],height:[" + rectangle.height + "],area:[" + rectangle.width * rectangle.height + "]];");
-    //}
-    //System.out.println();
-    // boolean union = false;
-    // boolean proceed = false;
+    ListIterator<Rectangle> iterator;
+    Rectangle current = null;
+    Rectangle next = null;
     do
     {
       found = false;
-      for (int i = 0; i < rectangles.size(); i++)
+      iterator = rectangles.listIterator();
+      current = null;
+      next = null;
+      if (iterator.hasNext())
       {
-        Rectangle current = rectangles.get(i);
-        // union = false;
-        for (int j = i + 1; j < rectangles.size(); j++)
+        current = iterator.next();
+      }
+      while (iterator.hasNext())
+      {
+        next = iterator.next();
+        // neighbour test
+        if (((current.y == next.y) && (current.height == next.height) && (current.x + current.width == next.x))
+        || ((current.x == next.x) && (current.width == next.width) && (current.y + current.height == next.y)))
         {
-          Rectangle next = rectangles.get(j);
-          // neighbour test
-          if (((current.y == next.y) && (current.height == next.height) && (current.x + current.width == next.x))
-          || ((current.x == next.x) && (current.width == next.width) && (current.y + current.height == next.y)))
-          {
-            found = true;
-            // union = true;
-            current = current.union(next);
-            rectangles.remove(j--);
-            rectangles.set(i, current);
-          }
+          found = true;
+          // union = true;
+          current = current.union(next);
+          iterator.remove();
+          iterator.previous();
+          iterator.set(current);
+        }
+        else
+        {
+          current = next;
         }
       }
     }
     while (found);
-    //System.out.println("merged_blocks:[" + rectangles.size() + "]");
-    //for (Rectangle rectangle : rectangles)
-    //{
-      //System.out.print(rectangle + ";");
-      //System.out.print("block:[width:[" + rectangle.width + "],height:[" + rectangle.height + "],area:[" + rectangle.width * rectangle.height + "]];");
-    //}
-    //System.out.println();
     return rectangles;
   }
   
@@ -620,7 +617,7 @@ public final class VTImageDataUtils
   }
   public static final List<Rectangle> compareBlockArea(final byte[] array1, final byte[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
-    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
+    List<Rectangle> blockAreas = new LinkedList<Rectangle>();
     int i, j;
     for (i = 0; i < captureArea.height; i += blockHeight)
     {
@@ -642,7 +639,7 @@ public final class VTImageDataUtils
   
   public static final List<Rectangle> compareBlockArea(final short[] array1, final short[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
-    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
+    List<Rectangle> blockAreas = new LinkedList<Rectangle>();
     int i, j;
     for (i = 0; i < captureArea.height; i += blockHeight)
     {
@@ -664,7 +661,7 @@ public final class VTImageDataUtils
   
   public static final List<Rectangle> compareBlockArea(final int[] array1, final int[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
-    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
+    List<Rectangle> blockAreas = new LinkedList<Rectangle>();
     int i, j;
     for (i = 0; i < captureArea.height; i += blockHeight)
     {
@@ -686,7 +683,7 @@ public final class VTImageDataUtils
   
   public static final List<Rectangle> compareBlockArea(final long[] array1, final long[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
-    List<Rectangle> blockAreas = new ArrayList<Rectangle>();
+    List<Rectangle> blockAreas = new LinkedList<Rectangle>();
     int i, j;
     for (i = 0; i < captureArea.height; i += blockHeight)
     {
@@ -1102,6 +1099,90 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
+  public static final boolean deltaArea(final long[] array1, final long[] array2, int offset, final int width, final int height, final Rectangle captureArea, final Rectangle resultArea)
+  {
+    if (width * height == 0)
+    {
+      resultArea.x = 0;
+      resultArea.y = 0;
+      resultArea.width = 0;
+      resultArea.height = 0;
+      return true;
+    }
+    
+    long delta = 0;
+    long bits = 0;
+    int index = 0;
+    //int offset = 0;
+    int i = 0;
+    int j = 0;
+    int x;
+    int y;
+    int m;
+    int n;
+    int cx;
+    int cy;
+    
+    if (captureArea != null && captureArea.x >= 0 && captureArea.y >= 0)
+    {
+      x = Math.min(captureArea.x, width - 1);
+      y = Math.min(captureArea.y, height - 1);
+      m = Math.min(captureArea.width, width - x);
+      n = Math.min(captureArea.height, height - y);
+    }
+    else
+    {
+      x = 0;
+      y = 0;
+      m = width;
+      n = height;
+    }
+    
+    int mnx = x + m;
+    int mny = y + n;
+    int mxx = -1;
+    int mxy = -1;
+    
+    offset += x + (y * width);
+    for (i = 0; i < n; i++)
+    {
+      index = offset;
+      for (j = 0; j < m; j++)
+      {
+        delta = array1[index] ^ array2[index];
+        if (delta != 0)
+        {
+          cx = x + j;
+          cy = y + i;
+          if (mnx > cx)
+          {
+            mnx = cx;
+          }
+          if (mny > cy)
+          {
+            mny = cy;
+          }
+          if (mxx < cx)
+          {
+            mxx = cx;
+          }
+          if (mxy < cy)
+          {
+            mxy = cy;
+          }
+        }
+        bits |= delta;
+        index++;
+      }
+      offset += width;
+    }
+    resultArea.x = mnx;
+    resultArea.y = mny;
+    resultArea.width = Math.max(1 + mxx - mnx, 0);
+    resultArea.height = Math.max(1 + mxy - mny, 0);
+    return bits == 0;
+  }
+  
   public static final List<Rectangle> deltaBlockArea(final byte[] array1, final byte[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
     List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
@@ -1149,6 +1230,29 @@ public final class VTImageDataUtils
   }
   
   public static final List<Rectangle> deltaBlockArea(final int[] array1, final int[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
+  {
+    List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
+    Rectangle blockArea = new Rectangle(0, 0, 1, 1);
+    int i, j;
+    for (i = 0; i < captureArea.height; i += blockHeight)
+    {
+      for (j = 0; j < captureArea.width; j += blockWidth)
+      {
+        blockArea.x = captureArea.x + j;
+        blockArea.y = captureArea.y + i;
+        blockArea.width = Math.min(blockWidth, captureArea.width - j);
+        blockArea.height = Math.min(blockHeight, captureArea.height - i);
+        Rectangle deltaArea = new Rectangle(0, 0, 1, 1);
+        if (!deltaArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
+        {
+          deltaAreas.add(deltaArea);
+        }
+      }
+    }
+    return deltaAreas;
+  }
+  
+  public static final List<Rectangle> deltaBlockArea(final long[] array1, final long[] array2, final int offset, final int width, final int height, final Rectangle captureArea, final int blockWidth, final int blockHeight)
   {
     List<Rectangle> deltaAreas = new ArrayList<Rectangle>();
     Rectangle blockArea = new Rectangle(0, 0, 1, 1);
