@@ -579,10 +579,11 @@ public class VTServerConnector implements Runnable
   {
     /* if (passive) { if (!setServerSocket(socketAddress)) { return; } } */
     Thread.currentThread().setName(this.getClass().getSimpleName());
-    if (server.getInputMenuBar() != null)
-    {
-      server.getInputMenuBar().setEnabled(true);
-    }
+//    if (server.getInputMenuBar() != null)
+//    {
+//      server.getInputMenuBar().setEnabled(true);
+//    }
+    server.enableInputMenuBar();
     while (running)
     {
       // if (interrupted)

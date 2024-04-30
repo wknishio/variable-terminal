@@ -142,13 +142,7 @@ public class VTClientConnector implements Runnable
             VTConsole.print("\nVT>Retrying connection with server...");
             // retry = true;
           }
-          if (client.getConnectionDialog() != null)
-          {
-            if (client.getConnectionDialog().isVisible())
-            {
-              client.getConnectionDialog().close();
-            }
-          }
+          client.closeConnectionDialog();
         }
       }
       catch (Throwable e)
@@ -811,12 +805,12 @@ public class VTClientConnector implements Runnable
 //      {
 //        client.getInputMenuBar().setEnabledDialogMenu(true);
 //      }
-      if (client.getConnectionDialog() != null && !client.getConnectionDialog().isVisible())
+      if (client.hasConnectionDialog())
       {
         // dialogLine = true;
         dialog = true;
         // retry = false;
-        client.getConnectionDialog().open();
+        client.openConnectionDialog();
       }
       if (skipConfiguration)
       {
@@ -1434,17 +1428,7 @@ public class VTClientConnector implements Runnable
       {
         if (establishConnection(connection, hostAddress, hostPort != null && hostPort > 0 ? hostPort : 6060))
         {
-          try
-          {
-            if (client.getConnectionDialog() != null && client.getConnectionDialog().isVisible())
-            {
-              client.getConnectionDialog().close();
-            }
-          }
-          catch (Throwable t)
-          {
-            
-          }
+          client.closeConnectionDialog();
           handler.run();
         }
         else
@@ -1456,17 +1440,7 @@ public class VTClientConnector implements Runnable
       {
         if (listenConnection(connection))
         {
-          try
-          {
-            if (client.getConnectionDialog() != null && client.getConnectionDialog().isVisible())
-            {
-              client.getConnectionDialog().close();
-            }
-          }
-          catch (Throwable t)
-          {
-            
-          }
+          client.closeConnectionDialog();
           handler.run();
         }
         else

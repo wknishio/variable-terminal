@@ -343,24 +343,66 @@ public class VTClient implements Runnable
     this.clientConnector = clientConnector;
   }
   
-  public void setInputMenuBar(VTClientRemoteGraphicalConsoleMenuBar inputMenuBar)
-  {
-    this.inputMenuBar = inputMenuBar;
-  }
-  
   public Runtime getRuntime()
   {
     return runtime;
   }
   
-  public VTClientRemoteGraphicalConsoleMenuBar getInputMenuBar()
+  public void enableInputMenuBar()
   {
-    return inputMenuBar;
+    if (inputMenuBar != null)
+    {
+      inputMenuBar.setEnabled(true);
+    }
   }
   
-  public VTClientConfigurationDialog getConnectionDialog()
+  public void disableInputMenuBar()
   {
-    return connectionDialog;
+    if (inputMenuBar != null)
+    {
+      inputMenuBar.setEnabled(false);
+    }
+  }
+  
+  public boolean hasConnectionDialog()
+  {
+    return connectionDialog != null && !connectionDialog.isVisible();
+  }
+  
+  public void openConnectionDialog()
+  {
+    try
+    {
+      if (connectionDialog != null)
+      {
+        if (!connectionDialog.isVisible())
+        {
+          connectionDialog.open();
+        }
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public void closeConnectionDialog()
+  {
+    try
+    {
+      if (connectionDialog != null)
+      {
+        if (connectionDialog.isVisible())
+        {
+          connectionDialog.close();
+        }
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
   }
   
   public void saveClientSettingsFile(String settingsFile) throws Exception

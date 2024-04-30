@@ -65,10 +65,7 @@ public class VTClientConnectionHandler implements Runnable
     handler.getAuthenticator().stopTimeoutThread();
     System.runFinalization();
     System.gc();
-    if (client.getInputMenuBar() != null)
-    {
-      client.getInputMenuBar().setEnabled(false);
-    }
+    client.disableInputMenuBar();
   }
   
   public void setSessionListeners(List<VTClientSessionListener> listeners)

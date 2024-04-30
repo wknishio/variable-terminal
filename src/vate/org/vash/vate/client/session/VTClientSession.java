@@ -254,10 +254,7 @@ public class VTClientSession
     clientWriter.startThread();
     tunnelsHandler.startThread();
     // socksTunnelsHandler.startThread();
-    if (client.getInputMenuBar() != null)
-    {
-      client.getInputMenuBar().setEnabled(true);
-    }
+    client.enableInputMenuBar();
   }
   
   public void waitSession()
