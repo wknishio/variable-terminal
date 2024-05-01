@@ -121,12 +121,11 @@ public final class VTAWTScreenCaptureProvider
   //private int sectionCurrentImageConvertedColorCount;
   // private int[] pixelBlock = new int[64 * 64];
   private int[] sectionPixelBufferInt;
-  @SuppressWarnings("unused")
-  private short[] sectionPixelBufferShort;
+  //private short[] sectionPixelBufferShort;
   private byte[] sectionPixelBufferByte;
   private int[] pixelBufferInt;
-  private byte[] pixelBufferByte;
   private short[] pixelBufferShort;
+  private byte[] pixelBufferByte;
   private Rectangle currentDeviceBounds;
   private BufferedImage sectionCurrentImageGrayscale;
   private BufferedImage sectionCurrentImageTrue;
@@ -1164,7 +1163,7 @@ public final class VTAWTScreenCaptureProvider
     scaleFactorY = 1;
     disposeScreenCaptureResources();
     sectionPixelBufferInt = null;
-    sectionPixelBufferShort = null;
+//    sectionPixelBufferShort = null;
     sectionPixelBufferByte = null;
     standardCaptureRobot = null;
     if (directCaptureRobot != null)
