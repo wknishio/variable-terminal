@@ -4,9 +4,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import javax.net.SocketFactory;
-
-public abstract class VTAuthenticatedProxySocketFactory extends SocketFactory
+public abstract class VTRemoteProxySocketFactory
 {  
   public abstract Socket createSocket(String host, int port, Socket proxyConnection, VTProxy... proxies) throws IOException, UnknownHostException;
+  public abstract Socket acceptSocket(String host, int port, Socket proxyConnection, VTProxy... proxies) throws IOException, UnknownHostException;
 }

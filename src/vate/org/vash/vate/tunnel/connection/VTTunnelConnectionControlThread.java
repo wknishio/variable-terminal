@@ -2,6 +2,8 @@ package org.vash.vate.tunnel.connection;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
@@ -91,6 +93,8 @@ public class VTTunnelConnectionControlThread implements Runnable
                 }
                 final VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
                 
+                final boolean connect = proxyTypeLetter.toUpperCase().startsWith("W") ? false : true;
+                
                 final VTTunnelSession session = new VTTunnelSession(connection, false);
                 final VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, connection.getResponseChannel());
                 
@@ -112,7 +116,14 @@ public class VTTunnelConnectionControlThread implements Runnable
                       
                       try
                       {
-                        remoteSocket = connect(host, port, proxy);
+                        if (connect)
+                        {
+                          remoteSocket = connect(host, port, proxy);
+                        }
+                        else
+                        {
+                          remoteSocket = accept(host, port);
+                        }
                         socketInputStream = remoteSocket.getInputStream();
                         socketOutputStream = remoteSocket.getOutputStream();
                       }
@@ -332,7 +343,7 @@ public class VTTunnelConnectionControlThread implements Runnable
   {
     try
     {
-      if (host.length() == 0 || host.equals("*"))
+      if (host == null || host.length() == 0 || host.equals("*"))
       {
         host = "";
       }
@@ -347,6 +358,47 @@ public class VTTunnelConnectionControlThread implements Runnable
     catch (Throwable t)
     {
       //t.printStackTrace();
+    }
+    return null;
+  }
+  
+  public Socket accept(String host, int port)
+  {
+    ServerSocket serverSocket = null;
+    try
+    {
+      if (host == null || host.length() == 0 || host.equals("*"))
+      {
+        host = "";
+      }
+      else
+      {
+        
+      }
+      
+      serverSocket = new ServerSocket();
+      serverSocket.bind(new InetSocketAddress(host, port));
+      
+      Socket socket = serverSocket.accept();
+      return socket;
+    }
+    catch (Throwable t)
+    {
+      //t.printStackTrace();
+    }
+    finally
+    {
+      if (serverSocket != null)
+      {
+        try
+        {
+          serverSocket.close();
+        }
+        catch (Throwable t)
+        {
+          //t.printStackTrace();
+        }
+      }
     }
     return null;
   }

@@ -366,7 +366,7 @@ public class VTServerConnector implements Runnable
     }
     catch (Throwable e)
     {
-      VTConsole.print("\rVT>Listening to connection in port [" + port + "] failed!\nVT>");
+      VTConsole.print("\rVT>Awaiting connection in port [" + port + "] failed!\nVT>");
     }
     try
     {
@@ -428,7 +428,7 @@ public class VTServerConnector implements Runnable
   
   public boolean listenConnection(VTServerConnection connection)
   {
-    VTConsole.print("\rVT>Listening to connection with client...\nVT>");
+    VTConsole.print("\rVT>Awaiting connection with client...\nVT>");
     connection.closeSockets();
     if (!setServerSocket(hostAddress, hostPort != null && hostPort > 0 ? hostPort : 6060))
     {

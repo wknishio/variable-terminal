@@ -473,7 +473,7 @@ public class VTClientConnector implements Runnable
     }
     catch (Throwable e)
     {
-      VTConsole.print("\nVT>Listening to connection in port [" + port + "] failed!");
+      VTConsole.print("\nVT>Awaiting connection in port [" + port + "] failed!");
     }
     try
     {
@@ -537,12 +537,12 @@ public class VTClientConnector implements Runnable
   {
     if ((!retry || dialog))
     {
-      VTConsole.print("VT>Listening to connection with server, interrupt with enter...");
+      VTConsole.print("VT>Awaiting connection with server, interrupt with enter...");
       retry = true;
     }
     else
     {
-      VTConsole.print("\nVT>Listening to connection with server, interrupt with enter...");
+      VTConsole.print("\nVT>Awaiting connection with server, interrupt with enter...");
     }
     connection.closeSockets();
     if (!setServerSocket(hostAddress, hostPort != null && hostPort > 0 ? hostPort : 6060))
@@ -949,7 +949,7 @@ public class VTClientConnector implements Runnable
           return true;
         }
         hostAddress = line;
-        VTConsole.print("VT>Enter listening port(from 1 to 65535, default:6060):");
+        VTConsole.print("VT>Enter host port(from 1 to 65535, default:6060):");
         line = VTConsole.readLine(true);
         if (line == null)
         {

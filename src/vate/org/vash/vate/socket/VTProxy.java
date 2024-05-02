@@ -256,9 +256,9 @@ public class VTProxy
       host = "";
     }
     
-    if (currentSocket instanceof VTAuthenticatedProxySocket)
+    if (currentSocket instanceof VTRemoteProxySocket)
     {
-      VTAuthenticatedProxySocket proxySocket = (VTAuthenticatedProxySocket)currentSocket;
+      VTRemoteProxySocket proxySocket = (VTRemoteProxySocket)currentSocket;
       return proxySocket.connect(host, port, proxies);
     }
     

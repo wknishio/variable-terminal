@@ -50,7 +50,7 @@ simple, medium, next, extra, high, vast, ultra, true
 * Added command *VTLIMIT to set connection rate limits in bytes per second
 * Changed *VTRUNTIME command, now allows processes to restart automatically
 * Added session commands parameter in client to run after authentication
-* Added option in client to interrupt listening in passive connection mode
+* Added option in client to interrupt awaiting in passive connection mode
 * Changed passive mode in client and server to bind to specific host address
 * Replaced *VTSOCKSTUNNEL and *VTTCPTUNNEL commands by *VTTUNNEL command
 * Added options in tunnel commands to bind tunnels to specific host address

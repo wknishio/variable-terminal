@@ -80,7 +80,7 @@ public class VTSocksProxyServer implements Runnable {
 	private boolean disabled_bind = false;
 	
 	private VTProxy connect_proxy;
-	private VTAuthenticatedProxySocketFactory socket_factory;
+	private VTRemoteProxySocketFactory socket_factory;
 
 	// private String connectionId;
 
@@ -108,7 +108,7 @@ public class VTSocksProxyServer implements Runnable {
 		mode = START_MODE;
 	}
 	
-	public VTSocksProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy, VTAuthenticatedProxySocketFactory socket_factory) {
+	public VTSocksProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy, VTRemoteProxySocketFactory socket_factory) {
     this.auth = auth;
     this.sock = s;
     this.disabled_bind = disabled_bind;
@@ -415,7 +415,7 @@ public class VTSocksProxyServer implements Runnable {
 		  }
 		  else
 		  {
-		    s = VTProxy.connect(msg.host, msg.port, socket_factory == null ? null : new VTAuthenticatedProxySocket(socket_factory), connect_proxy);
+		    s = VTProxy.connect(msg.host, msg.port, socket_factory == null ? null : new VTRemoteProxySocket(socket_factory), connect_proxy);
 		    s.setTcpNoDelay(true);
 		    s.setKeepAlive(true);
         //s.setSoTimeout(90000);

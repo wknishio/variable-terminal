@@ -15,9 +15,9 @@ import net.sourceforge.jsocks.socks.server.UserValidation;
 public class VTSocksHttpProxyAuthenticatorUsernamePassword extends UserPasswordAuthenticator
 {
   private VTProxy connect_proxy;
-  private VTAuthenticatedProxySocketFactory socket_factory;
+  private VTRemoteProxySocketFactory socket_factory;
   
-  public VTSocksHttpProxyAuthenticatorUsernamePassword(UserValidation validator, VTProxy proxy, VTAuthenticatedProxySocketFactory socket_factory)
+  public VTSocksHttpProxyAuthenticatorUsernamePassword(UserValidation validator, VTProxy proxy, VTRemoteProxySocketFactory socket_factory)
   {
     super(validator);
     this.connect_proxy = proxy;

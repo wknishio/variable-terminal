@@ -13,9 +13,9 @@ import net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
 public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
 {
   private VTProxy connect_proxy;
-  private VTAuthenticatedProxySocketFactory socket_factory;
+  private VTRemoteProxySocketFactory socket_factory;
   
-  public VTSocksHttpProxyAuthenticatorNone(VTProxy proxy, VTAuthenticatedProxySocketFactory socket_factory)
+  public VTSocksHttpProxyAuthenticatorNone(VTProxy proxy, VTRemoteProxySocketFactory socket_factory)
   {
     this.connect_proxy = proxy;
     this.socket_factory = socket_factory;

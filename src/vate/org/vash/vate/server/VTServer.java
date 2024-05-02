@@ -1669,7 +1669,7 @@ public class VTServer implements Runnable
             return;
           }
           hostAddress = line;
-          VTConsole.print("VT>Enter listening port(from 1 to 65535, default:6060):");
+          VTConsole.print("VT>Enter host port(from 1 to 65535, default:6060):");
           line = VTConsole.readLine(true);
           if (line == null)
           {

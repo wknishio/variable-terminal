@@ -135,4 +135,77 @@ public class VTTunnelChannelRemoteSocketBuilder
     }
     throw new IOException("Failed to connect remotely to: host " + host + " port " + port + "");
   }
+  
+  public Socket accept(String host, int port, VTProxy proxy) throws IOException
+  {
+    if (proxy == null)
+    {
+      return accept(host, port, PROXY_NONE.getProxyType(), PROXY_NONE.getProxyHost(), PROXY_NONE.getProxyPort(), PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
+    }
+    return accept(host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+  }
+  
+  public Socket accept(String host, int port, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
+  {
+    VTTunnelSession session = null;
+    VTTunnelSessionHandler handler = null;
+    int channelType = channel.getChannelType();
+    
+    String proxyTypeLetter = "W";
+    
+    session = new VTTunnelSession(channel.getConnection(), true);
+    VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
+    session.setSocket(pipedSocket);
+    handler = new VTTunnelSessionHandler(session, channel);
+    
+    VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
+    VTLinkableDynamicMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
+    
+    if (output != null && input != null)
+    {
+      final int outputNumber = output.number();
+      final int inputNumber = input.number();
+      
+      pipedSocket.setOutputStream(output);
+      session.setSocketInputStream(pipedSocket.getInputStream());
+      session.setSocketOutputStream(pipedSocket.getOutputStream());
+      
+      session.setTunnelOutputStream(output);
+      session.setTunnelInputStream(input);
+      session.getTunnelOutputStream().open();
+      session.getTunnelInputStream().setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
+      
+      if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
+      {
+        proxyUser = "*";
+        proxyPassword = "*" + SESSION_SEPARATOR + "*";
+      }
+      // request message sent
+      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+      channel.getConnection().getControlOutputStream().flush();
+      //System.out.println("sent.request:output=" + outputNumber);
+      boolean result = false;
+      try
+      {
+        result = session.waitResult();
+      }
+      catch (Throwable t)
+      {
+        //t.printStackTrace();
+      }
+      if (result)
+      {
+        return pipedSocket;
+      }
+    }
+    else
+    {
+      // cannot handle more sessions
+    }
+    if (session != null)
+    {
+      pipedSocket.close();
+    }
+    throw new IOException("Failed to accept remotely from: host " + host + " port " + port + "");
+  }
 }
