@@ -268,24 +268,19 @@ public class VTGlobalTextStyleManager
             {
               if (java9plus)
               {
-                // set everything unscaled and pixel based
-                System.setProperty("sun.java2d.dpiaware", "true");
-                System.setProperty("sun.java2d.ddscale", "false");
-                System.setProperty("sun.java2d.uiScale.enabled", "false");
-                System.setProperty("sun.java2d.uiScale", "1");
-                System.setProperty("sun.java2d.win.uiScaleX", "1");
-                System.setProperty("sun.java2d.win.uiScaleY", "1");
+                
               }
               else
               {
-                // set everything unscaled and pixel based
-                System.setProperty("sun.java2d.dpiaware", "true");
-                System.setProperty("sun.java2d.ddscale", "false");
-                System.setProperty("sun.java2d.uiScale.enabled", "false");
-                System.setProperty("sun.java2d.uiScale", "1");
-                System.setProperty("sun.java2d.win.uiScaleX", "1");
-                System.setProperty("sun.java2d.win.uiScaleY", "1");
+                
               }
+              // set everything unscaled and pixel based
+              System.setProperty("sun.java2d.dpiaware", "true");
+              System.setProperty("sun.java2d.ddscale", "false");
+              System.setProperty("sun.java2d.uiScale.enabled", "false");
+              System.setProperty("sun.java2d.uiScale", "1");
+              System.setProperty("sun.java2d.win.uiScaleX", "1");
+              System.setProperty("sun.java2d.win.uiScaleY", "1");
               try
               {
                 FONT_SCALING_FACTOR_DIALOG = Math.max(1.0F, ((((float)GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getNormalizingTransform().getScaleX()) * 72F) / 96F));

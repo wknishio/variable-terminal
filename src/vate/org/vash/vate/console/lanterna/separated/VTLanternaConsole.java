@@ -86,7 +86,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
   // private java.awt.Panel spacer2;
   private Terminal terminal;
   private Screen screen;
-  private AWTTerminal awtterminal;
+  private AWTTerminal awtTerminal;
   private VTLanternaOutputTextBox outputBox;
   private VTLanternaOutputTextBox inputBox;
   private static final int consoleOutputColumns = 80;
@@ -201,7 +201,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     public void windowActivated(WindowEvent e)
     {
       console.activatedFrame();
-      awtterminal.requestFocusInWindow();
+      awtTerminal.requestFocusInWindow();
     }
     
     public void windowClosed(WindowEvent e)
@@ -237,7 +237,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     
     public void windowOpened(WindowEvent e)
     {
-      awtterminal.requestFocusInWindow();
+      awtTerminal.requestFocusInWindow();
     }
   }
   
@@ -661,13 +661,13 @@ public class VTLanternaConsole implements VTConsoleImplementation
       
       if (terminal instanceof AWTTerminalFrame)
       {
-        awtterminal = ((AWTTerminalFrame) frame).getTerminal();
+        awtTerminal = ((AWTTerminalFrame) frame).getTerminal();
       }
       else
       {
-        awtterminal = null;
+        awtTerminal = null;
       }
-      awtterminal.addMouseListener(new MouseListener()
+      awtTerminal.addMouseListener(new MouseListener()
       {
         public void mouseClicked(MouseEvent e)
         {
@@ -680,18 +680,18 @@ public class VTLanternaConsole implements VTConsoleImplementation
           if (e.isPopupTrigger())
           {
             e.consume();
-            popupMenu.show(awtterminal, e.getX(), e.getY());
+            popupMenu.show(awtTerminal, e.getX(), e.getY());
             // popup = true;
             return;
           }
           e.consume();
           int x = e.getX();
           int y = e.getY();
-          int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
-          int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
+          int fontWidth = awtTerminal.getTerminalImplementation().getFontWidth();
+          int fontHeight = awtTerminal.getTerminalImplementation().getFontHeight();
           TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
           MouseAction mouseAction = new MouseAction(MouseActionType.CLICK_DOWN, e.getButton(), pos);
-          awtterminal.addInput(mouseAction);
+          awtTerminal.addInput(mouseAction);
         }
         
         public void mouseReleased(MouseEvent e)
@@ -700,18 +700,18 @@ public class VTLanternaConsole implements VTConsoleImplementation
           if (e.isPopupTrigger())
           {
             e.consume();
-            popupMenu.show(awtterminal, e.getX(), e.getY());
+            popupMenu.show(awtTerminal, e.getX(), e.getY());
             // popup = true;
             return;
           }
           e.consume();
           int x = e.getX();
           int y = e.getY();
-          int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
-          int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
+          int fontWidth = awtTerminal.getTerminalImplementation().getFontWidth();
+          int fontHeight = awtTerminal.getTerminalImplementation().getFontHeight();
           TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
           MouseAction mouseAction = new MouseAction(MouseActionType.CLICK_RELEASE, e.getButton(), pos);
-          awtterminal.addInput(mouseAction);
+          awtTerminal.addInput(mouseAction);
         }
         
         public void mouseEntered(MouseEvent e)
@@ -724,18 +724,18 @@ public class VTLanternaConsole implements VTConsoleImplementation
           
         }
       });
-      awtterminal.addMouseMotionListener(new MouseMotionListener()
+      awtTerminal.addMouseMotionListener(new MouseMotionListener()
       {
         public void mouseDragged(MouseEvent e)
         {
           e.consume();
           int x = e.getX();
           int y = e.getY();
-          int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
-          int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
+          int fontWidth = awtTerminal.getTerminalImplementation().getFontWidth();
+          int fontHeight = awtTerminal.getTerminalImplementation().getFontHeight();
           TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
           MouseAction mouseAction = new MouseAction(MouseActionType.DRAG, e.getButton(), pos);
-          awtterminal.addInput(mouseAction);
+          awtTerminal.addInput(mouseAction);
         }
         
         public void mouseMoved(MouseEvent e)
@@ -745,11 +745,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
             e.consume();
             int x = e.getX();
             int y = e.getY();
-            int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
-            int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
+            int fontWidth = awtTerminal.getTerminalImplementation().getFontWidth();
+            int fontHeight = awtTerminal.getTerminalImplementation().getFontHeight();
             TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
             MouseAction mouseAction = new MouseAction(MouseActionType.DRAG, e.getButton(), pos);
-            awtterminal.addInput(mouseAction);
+            awtTerminal.addInput(mouseAction);
           }
           // int x = e.getX();
           // int y = e.getY();
@@ -770,8 +770,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
         {
           int x = e.getX();
           int y = e.getY();
-          int fontWidth = awtterminal.getTerminalImplementation().getFontWidth();
-          int fontHeight = awtterminal.getTerminalImplementation().getFontHeight();
+          int fontWidth = awtTerminal.getTerminalImplementation().getFontWidth();
+          int fontHeight = awtTerminal.getTerminalImplementation().getFontHeight();
           TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
           int rotation = e.getWheelRotation();
           MouseAction mouseAction = new MouseAction(rotation > 0 ? MouseActionType.SCROLL_DOWN : MouseActionType.SCROLL_UP, e.getButton(), pos);
@@ -783,32 +783,32 @@ public class VTLanternaConsole implements VTConsoleImplementation
         public void keyTyped(KeyEvent e)
         {
           // System.out.println("keyTyped:" + e.toString());
-          awtterminal.requestFocusInWindow();
-          awtterminal.dispatchEvent(e);
+          awtTerminal.requestFocusInWindow();
+          awtTerminal.dispatchEvent(e);
         }
         
         public void keyReleased(KeyEvent e)
         {
           // System.out.println("keyReleased:" + e.toString());
-          awtterminal.requestFocusInWindow();
-          awtterminal.dispatchEvent(e);
+          awtTerminal.requestFocusInWindow();
+          awtTerminal.dispatchEvent(e);
         }
         
         public void keyPressed(KeyEvent e)
         {
           // System.out.println("keyPressed:" + e.toString());
-          awtterminal.requestFocusInWindow();
-          awtterminal.dispatchEvent(e);
+          awtTerminal.requestFocusInWindow();
+          awtTerminal.dispatchEvent(e);
         }
       });
       //
       VTGlobalTextStyleManager.registerWindow(frame);
-      VTGlobalTextStyleManager.registerFontList(awtterminal.getTerminalFontConfiguration().getFontPriority());
+      VTGlobalTextStyleManager.registerFontList(awtTerminal.getTerminalFontConfiguration().getFontPriority());
       popupMenu = new VTGraphicalConsolePopupMenu(frame);
     }
     else
     {
-      awtterminal = null;
+      awtTerminal = null;
     }
     terminal.setBackgroundColor(TextColor.ANSI.BLACK);
     terminal.setForegroundColor(TextColor.ANSI.GREEN);
@@ -844,17 +844,17 @@ public class VTLanternaConsole implements VTConsoleImplementation
       {
         public void keyTyped(KeyEvent e)
         {
-          awtterminal.dispatchEvent(e);
+          awtTerminal.dispatchEvent(e);
         }
         
         public void keyPressed(KeyEvent e)
         {
-          awtterminal.dispatchEvent(e);
+          awtTerminal.dispatchEvent(e);
         }
         
         public void keyReleased(KeyEvent e)
         {
-          awtterminal.dispatchEvent(e);
+          awtTerminal.dispatchEvent(e);
         }
       });
       
@@ -869,17 +869,17 @@ public class VTLanternaConsole implements VTConsoleImplementation
       {
         public void keyTyped(KeyEvent e)
         {
-          awtterminal.dispatchEvent(e);
+          awtTerminal.dispatchEvent(e);
         }
         
         public void keyPressed(KeyEvent e)
         {
-          awtterminal.dispatchEvent(e);
+          awtTerminal.dispatchEvent(e);
         }
         
         public void keyReleased(KeyEvent e)
         {
-          awtterminal.dispatchEvent(e);
+          awtTerminal.dispatchEvent(e);
         }
       });
       
@@ -1282,7 +1282,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         {
           if (popupMenu != null)
           {
-            popupMenu.show(awtterminal, 0, 0);
+            popupMenu.show(awtTerminal, 0, 0);
           }
           return false;
         }
@@ -2599,7 +2599,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     // System.out.println("console.requestFocus()");
     try
     {
-      awtterminal.requestFocusInWindow();
+      awtTerminal.requestFocusInWindow();
     }
     catch (Throwable t)
     {
