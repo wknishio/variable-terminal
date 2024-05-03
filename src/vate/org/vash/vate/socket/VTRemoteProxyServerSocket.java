@@ -9,15 +9,16 @@ public class VTRemoteProxyServerSocket extends ServerSocket
   private final VTRemoteProxySocketFactory socketFactory;
   private final String host;
   private final int port;
-  private final VTProxy[] proxies = new VTProxy[] {};
+  private final int timeout;
   private volatile boolean closed = false;
   
-  public VTRemoteProxyServerSocket(VTRemoteProxySocketFactory socketFactory, String host, int port) throws IOException
+  public VTRemoteProxyServerSocket(VTRemoteProxySocketFactory socketFactory, String host, int port, int timeout) throws IOException
   {
     super();
     this.socketFactory = socketFactory;
     this.host = host;
     this.port = port;
+    this.timeout = timeout;
   }
   
   public Socket accept() throws IOException
@@ -26,7 +27,7 @@ public class VTRemoteProxyServerSocket extends ServerSocket
     {
       throw new IOException("VTRemoteProxyServerSocket is closed");
     }
-    return socketFactory.acceptSocket(host, port, null, proxies);
+    return socketFactory.acceptSocket(host, port, timeout);
   }
   
   public boolean isBound()

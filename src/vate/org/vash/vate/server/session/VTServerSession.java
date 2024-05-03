@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -89,14 +89,14 @@ public class VTServerSession
   private VTTunnelConnectionHandler tunnelsHandler;
   // private VTTunnelConnectionHandler socksTunnelsHandler;
   private VTNanoPingService pingService;
-  private Map<String, Closeable> sessionCloseables;
+  private Collection<Closeable> sessionCloseables;
   private ExecutorService executor;
   
   public VTServerSession(VTServer server, VTServerConnection connection)
   {
     this.server = server;
     this.connection = connection;
-    this.sessionCloseables = Collections.synchronizedMap(new LinkedHashMap<String, Closeable>());
+    this.sessionCloseables = Collections.synchronizedCollection(new LinkedList<Closeable>());
     this.shellAdapter = new VTShellAdapter();
   }
   
@@ -159,7 +159,7 @@ public class VTServerSession
     // this.printTextTask = new VTServerPrintTextTask(this);
     // this.printFileTask = new VTServerPrintFileTask(this);
     this.printDataTask = new VTServerPrintDataTask(this);
-    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executor), executor);
+    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executor, sessionCloseables), executor);
     // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
     // VTTunnelConnection(executor), executor);
     this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, true);
@@ -182,19 +182,14 @@ public class VTServerSession
     return executor;
   }
   
-  public Closeable getSessionCloseable(String key)
+  public void addSessionCloseable(Closeable value)
   {
-    return sessionCloseables.get(key);
+    sessionCloseables.add(value);
   }
   
-  public void addSessionCloseable(String key, Closeable value)
+  public boolean removeSessionCloseable(Closeable value)
   {
-    sessionCloseables.put(key, value);
-  }
-  
-  public Closeable removeSessionCloseable(String key)
-  {
-    return sessionCloseables.remove(key);
+    return sessionCloseables.remove(value);
   }
   
   public void clearSessionCloseables()
@@ -721,6 +716,7 @@ public class VTServerSession
     shellExitListener.setStopped(true);
   }
   
+  @SuppressWarnings("unchecked")
   public void tryStopSessionThreads()
   {
     // System.out.println("tryStopSessionThreads start");
@@ -728,11 +724,11 @@ public class VTServerSession
     // System.out.println("tryStopSessionThreads middle");
     try
     {
-      for (Entry<String, Closeable> closeable : sessionCloseables.entrySet())
+      for (Closeable closeable : sessionCloseables.toArray(new Closeable[] {}))
       {
         try
         {
-          closeable.getValue().close();
+          closeable.close();
         }
         catch (Throwable t)
         {

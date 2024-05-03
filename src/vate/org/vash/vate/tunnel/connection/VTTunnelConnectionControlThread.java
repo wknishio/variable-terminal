@@ -12,6 +12,7 @@ import org.vash.vate.socket.VTProxy.VTProxyType;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
+import org.vash.vate.tunnel.session.VTTunnelCloseableServerSocket;
 import org.vash.vate.tunnel.session.VTTunnelCloseableSocket;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
 import org.vash.vate.tunnel.session.VTTunnelSession;
@@ -122,7 +123,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                         }
                         else
                         {
-                          remoteSocket = accept(host, port);
+                          remoteSocket = accept(host, port, proxy.getProxyPort());
                         }
                         socketInputStream = remoteSocket.getInputStream();
                         socketOutputStream = remoteSocket.getOutputStream();
@@ -362,9 +363,9 @@ public class VTTunnelConnectionControlThread implements Runnable
     return null;
   }
   
-  public Socket accept(String host, int port)
+  public Socket accept(String host, int port, int timeout)
   {
-    ServerSocket serverSocket = null;
+    VTTunnelCloseableServerSocket serverSocket = null;
     try
     {
       if (host == null || host.length() == 0 || host.equals("*"))
@@ -376,9 +377,10 @@ public class VTTunnelConnectionControlThread implements Runnable
         
       }
       
-      serverSocket = new ServerSocket();
+      serverSocket = new VTTunnelCloseableServerSocket(new ServerSocket());
       serverSocket.bind(new InetSocketAddress(host, port));
-      
+      serverSocket.setSoTimeout(timeout);
+      connection.getCloseables().add(serverSocket);
       Socket socket = serverSocket.accept();
       return socket;
     }
@@ -398,6 +400,7 @@ public class VTTunnelConnectionControlThread implements Runnable
         {
           //t.printStackTrace();
         }
+        connection.getCloseables().remove(serverSocket);
       }
     }
     return null;

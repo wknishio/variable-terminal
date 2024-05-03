@@ -246,7 +246,7 @@ public class VTShellProcessor
     
     if (closeables != null && closeables.size() > 0)
     {
-      for (Closeable closeable : closeables.toArray(new Closeable[]{ }))
+      for (Closeable closeable : closeables.toArray(new Closeable[] {}))
       {
         try
         {

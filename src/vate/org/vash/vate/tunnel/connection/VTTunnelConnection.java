@@ -1,8 +1,10 @@
 package org.vash.vate.tunnel.connection;
 
+import java.io.Closeable;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -37,14 +39,16 @@ public class VTTunnelConnection
   private Set<VTTunnelChannelBindSocketListener> bindListeners;
   // private int tunnelType;
   private ExecutorService executor;
+  private Collection<Closeable> closeables;
   private boolean closed = false;
   
-  public VTTunnelConnection(ExecutorService executor)
+  public VTTunnelConnection(ExecutorService executor, Collection<Closeable> closeables)
   {
     this.responseChannel = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this);
     this.bindListeners = new LinkedHashSet<VTTunnelChannelBindSocketListener>();
     // this.tunnelType = tunnelType;
     this.executor = executor;
+    this.closeables = closeables;
     //this.remoteSocketBuilder = createRemoteSocketBuilder();
   }
   
@@ -52,6 +56,11 @@ public class VTTunnelConnection
   // {
   // return tunnelType;
   // }
+  
+  public Collection<Closeable> getCloseables()
+  {
+    return closeables;
+  }
   
   public boolean bindSOCKSListener(int channelType, String bindHost, int bindPort, VTProxy proxy)
   {

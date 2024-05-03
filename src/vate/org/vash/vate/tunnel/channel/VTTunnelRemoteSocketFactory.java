@@ -27,13 +27,8 @@ public class VTTunnelRemoteSocketFactory extends VTRemoteProxySocketFactory
     return socketBuilder.connect(host, port, PROXY_NONE);
   }
   
-  public Socket acceptSocket(String host, int port, Socket proxyConnection, VTProxy... proxies) throws IOException, UnknownHostException
+  public Socket acceptSocket(String host, int port, int timeout) throws IOException, UnknownHostException
   {
-    if (proxies != null && proxies.length >= 1)
-    {
-      VTProxy proxy = proxies[0];
-      return socketBuilder.accept(host, port, proxy);
-    }
-    return socketBuilder.accept(host, port, PROXY_NONE);
+    return socketBuilder.accept(host, port, timeout);
   }
 }

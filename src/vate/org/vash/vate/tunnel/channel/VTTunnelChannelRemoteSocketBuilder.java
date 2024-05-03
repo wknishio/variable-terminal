@@ -136,16 +136,12 @@ public class VTTunnelChannelRemoteSocketBuilder
     throw new IOException("Failed to connect remotely to: host " + host + " port " + port + "");
   }
   
-  public Socket accept(String host, int port, VTProxy proxy) throws IOException
+  public Socket accept(String host, int port, int timeout) throws IOException
   {
-    if (proxy == null)
-    {
-      return accept(host, port, PROXY_NONE.getProxyType(), PROXY_NONE.getProxyHost(), PROXY_NONE.getProxyPort(), PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
-    }
-    return accept(host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+    return accept(host, port, PROXY_NONE.getProxyHost(), timeout, PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
   }
   
-  public Socket accept(String host, int port, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
+  private Socket accept(String host, int port, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
   {
     VTTunnelSession session = null;
     VTTunnelSessionHandler handler = null;

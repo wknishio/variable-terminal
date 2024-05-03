@@ -223,7 +223,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   public final void close() throws IOException
   {
     throttled.close();
-    for (VTLinkableDynamicMultiplexedOutputStream stream : bufferedChannels.values().toArray(new VTLinkableDynamicMultiplexedOutputStream []{ }))
+    for (VTLinkableDynamicMultiplexedOutputStream stream : bufferedChannels.values().toArray(new VTLinkableDynamicMultiplexedOutputStream[] {}))
     {
       try
       {
@@ -234,7 +234,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
         // e.printStackTrace();
       }
     }
-    for (VTLinkableDynamicMultiplexedOutputStream stream : directChannels.values().toArray(new VTLinkableDynamicMultiplexedOutputStream []{ }))
+    for (VTLinkableDynamicMultiplexedOutputStream stream : directChannels.values().toArray(new VTLinkableDynamicMultiplexedOutputStream[] {}))
     {
       try
       {
@@ -427,7 +427,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       writeClosePacket(type, number);
       if (propagated.size() > 0)
       {
-        for (Closeable closeable : propagated.toArray(new Closeable[]{ }))
+        for (Closeable closeable : propagated.toArray(new Closeable[] {}))
         {
           try
           {

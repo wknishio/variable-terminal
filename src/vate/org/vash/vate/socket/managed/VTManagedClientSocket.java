@@ -116,7 +116,7 @@ public class VTManagedClientSocket
       InputStream input = session.getConnection().getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 12);
       OutputStream output = session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 12);
       VTManagedSocket socket = new VTManagedSocket(new VTCloseableClientConnection(session), input, output);
-      session.addSessionCloseable(this.getClass().getSimpleName(), socket);
+      session.addSessionCloseable(socket);
       sessions.put(session, socket);
       if (socketListener != null)
       {

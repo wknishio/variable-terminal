@@ -260,7 +260,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     //packetReader.setRunning(false);
     //synchronized (pipedChannels)
     //{
-      for (VTLinkableDynamicMultiplexedInputStream stream : bufferedChannels.values().toArray(new VTLinkableDynamicMultiplexedInputStream []{ }))
+      for (VTLinkableDynamicMultiplexedInputStream stream : bufferedChannels.values().toArray(new VTLinkableDynamicMultiplexedInputStream[ ]{}))
       {
         try
         {
@@ -274,7 +274,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     //}
     //synchronized (directChannels)
     //{
-      for (VTLinkableDynamicMultiplexedInputStream stream : directChannels.values().toArray(new VTLinkableDynamicMultiplexedInputStream []{ }))
+      for (VTLinkableDynamicMultiplexedInputStream stream : directChannels.values().toArray(new VTLinkableDynamicMultiplexedInputStream[] {}))
       {
         try
         {
@@ -537,7 +537,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       if (propagated.size() > 0)
       {
         // propagated.close();
-        for (Closeable closeable : propagated.toArray(new Closeable[]{ }))
+        for (Closeable closeable : propagated.toArray(new Closeable[] {}))
         {
           try
           {

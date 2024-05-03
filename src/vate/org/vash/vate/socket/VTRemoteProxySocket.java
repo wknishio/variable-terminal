@@ -17,8 +17,8 @@ public class VTRemoteProxySocket extends Socket
     return socketFactory.createSocket(host, port, null, proxies);
   }
   
-  public Socket accept(String host, int port, VTProxy... proxies) throws IOException
+  public Socket accept(String host, int port, int timeout) throws IOException
   {
-    return socketFactory.acceptSocket(host, port, null, proxies);
+    return socketFactory.acceptSocket(host, port, timeout);
   }
 }
