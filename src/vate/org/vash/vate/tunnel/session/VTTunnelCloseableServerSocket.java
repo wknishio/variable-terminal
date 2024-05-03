@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.SocketException;
 
 public class VTTunnelCloseableServerSocket extends ServerSocket implements Closeable
@@ -18,6 +19,16 @@ public class VTTunnelCloseableServerSocket extends ServerSocket implements Close
   public Socket accept() throws IOException
   {
     return serverSocket.accept();
+  }
+  
+  public void bind(SocketAddress endpoint) throws IOException
+  {
+    serverSocket.bind(endpoint);
+  }
+  
+  public void bind(SocketAddress endpoint, int backlog) throws IOException
+  {
+    serverSocket.bind(endpoint, backlog);
   }
   
   public boolean isBound()
