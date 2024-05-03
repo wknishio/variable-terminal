@@ -3,18 +3,18 @@ package org.vash.vate.socket;
 import java.io.IOException;
 import java.net.Socket;
 
-public class VTRemoteProxySocket extends Socket
+public class VTRemoteSocket extends Socket
 {
-  private final VTRemoteProxySocketFactory socketFactory;
+  private final VTRemoteSocketFactory socketFactory;
   
-  public VTRemoteProxySocket(VTRemoteProxySocketFactory socketFactory)
+  public VTRemoteSocket(VTRemoteSocketFactory socketFactory)
   {
     this.socketFactory = socketFactory;
   }
   
   public Socket connect(String host, int port, VTProxy... proxies) throws IOException
   {
-    return socketFactory.createSocket(host, port, null, proxies);
+    return socketFactory.createSocket(host, port, proxies);
   }
   
   public Socket accept(String host, int port, int timeout) throws IOException

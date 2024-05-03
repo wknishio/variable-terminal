@@ -1,7 +1,7 @@
 package org.vash.vate.tunnel.session;
 
 import org.vash.vate.VT;
-import org.vash.vate.socket.VTRemoteProxySocketFactory;
+import org.vash.vate.socket.VTRemoteSocketFactory;
 import org.vash.vate.socket.VTProxy;
 import org.vash.vate.socket.VTSocksProxyServer;
 import org.vash.vate.socket.VTSocksHttpProxyAuthenticatorNone;
@@ -16,7 +16,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
   private final VTTunnelSession session;
   private final VTSocksSingleUserValidation validation;
   private final VTProxy proxy;
-  private final VTRemoteProxySocketFactory socketFactory; 
+  private final VTRemoteSocketFactory socketFactory; 
   
   //public VTTunnelSocksSessionHandler(VTTunnelSession session, VTTunnelChannel channel)
   //{
@@ -25,7 +25,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
     //this.channel = channel;
   //}
   
-  public VTTunnelSocksSessionHandler(VTTunnelSession session, VTTunnelChannel channel, String socksUsername, String socksPassword, VTProxy proxy, VTRemoteProxySocketFactory socketFactory)
+  public VTTunnelSocksSessionHandler(VTTunnelSession session, VTTunnelChannel channel, String socksUsername, String socksPassword, VTProxy proxy, VTRemoteSocketFactory socketFactory)
   {
     super(session, channel);
     this.session = session;
