@@ -43,17 +43,26 @@ public class VTTunnelChannelRemoteSocketBuilder
 //    return connect(channelType, host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword(), null);
 //  }
   
-  public Socket connect(String host, int port, VTProxy proxy) throws IOException
+  public Socket connect(String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy) throws IOException
   {
+    if (host == null)
+    {
+      host = "";
+    }
     if (proxy == null)
     {
-      return connect(host, port, PROXY_NONE.getProxyType(), PROXY_NONE.getProxyHost(), PROXY_NONE.getProxyPort(), PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
+      return connect(host, port, connectTimeout, dataTimeout, PROXY_NONE.getProxyType(), PROXY_NONE.getProxyHost(), PROXY_NONE.getProxyPort(), PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
     }
-    return connect(host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+    return connect(host, port, connectTimeout, dataTimeout, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
   }
   
-  public Socket connect(String host, int port, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
+  public Socket connect(String host, int port, int connectTimeout, int dataTimeout, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
   {
+    if (host == null)
+    {
+      host = "";
+    }
+    
     VTTunnelSession session = null;
     VTTunnelSessionHandler handler = null;
     int channelType = channel.getChannelType();
@@ -108,7 +117,7 @@ public class VTTunnelChannelRemoteSocketBuilder
         proxyPassword = "*" + SESSION_SEPARATOR + "*";
       }
       // request message sent
-      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + connectTimeout + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
       channel.getConnection().getControlOutputStream().flush();
       //System.out.println("sent.request:output=" + outputNumber);
       boolean result = false;
@@ -136,13 +145,22 @@ public class VTTunnelChannelRemoteSocketBuilder
     throw new IOException("Failed to connect remotely to: host " + host + " port " + port + "");
   }
   
-  public Socket accept(String host, int port, int timeout) throws IOException
+  public Socket accept(String host, int port, int connectTimeout, int dataTimeout) throws IOException
   {
-    return accept(host, port, PROXY_NONE.getProxyHost(), timeout, PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
+    if (host == null)
+    {
+      host = "";
+    }
+    return accept(host, port, connectTimeout, dataTimeout, PROXY_NONE.getProxyHost(), PROXY_NONE.getProxyPort(), PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
   }
   
-  private Socket accept(String host, int port, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
+  private Socket accept(String host, int port, int connectTimeout, int dataTimeout, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
   {
+    if (host == null)
+    {
+      host = "";
+    }
+    
     VTTunnelSession session = null;
     VTTunnelSessionHandler handler = null;
     int channelType = channel.getChannelType();
@@ -177,7 +195,7 @@ public class VTTunnelChannelRemoteSocketBuilder
         proxyPassword = "*" + SESSION_SEPARATOR + "*";
       }
       // request message sent
-      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + connectTimeout + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
       channel.getConnection().getControlOutputStream().flush();
       //System.out.println("sent.request:output=" + outputNumber);
       boolean result = false;

@@ -149,7 +149,7 @@ public class TestClient extends TestService{
       ServerSocket ss;
 
       if(useString)
-        ss = new SocksServerSocket(proxy,testHost,servicePorts[service]);
+        ss = new SocksServerSocket(proxy,testHost,servicePorts[service], 0);
       else
         ss = new SocksServerSocket(proxy,InetAddress.getByName(testHost),
                                    servicePorts[service]);
@@ -183,7 +183,7 @@ public class TestClient extends TestService{
          s = new SocksSocket(proxy,InetAddress.getByName(testHost),
                                    servicePorts[service]);
       }else{
-         s = new SocksSocket(proxy,testHost,servicePorts[service]);
+         s = new SocksSocket(proxy,testHost,servicePorts[service], 0);
       }
 
       s.setSoTimeout(timeout);

@@ -60,7 +60,7 @@ public class Socks5DatagramSocket extends DatagramSocket {
 	 * 
 	 */
 	public Socks5DatagramSocket() throws SocksException, IOException {
-		this(Proxy.defaultProxy, 0, null);
+		this(Proxy.defaultProxy, 0, null, 0);
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class Socks5DatagramSocket extends DatagramSocket {
 	 * throws SocksException.
 	 */
 	public Socks5DatagramSocket(int port) throws SocksException, IOException {
-		this(Proxy.defaultProxy, port, null);
+		this(Proxy.defaultProxy, port, null, 0);
 	}
 
 	/**
@@ -82,7 +82,7 @@ public class Socks5DatagramSocket extends DatagramSocket {
 	 * datagram forwarding, throws SocksException.
 	 */
 	public Socks5DatagramSocket(int port, InetAddress ip) throws SocksException, IOException {
-		this(Proxy.defaultProxy, port, ip);
+		this(Proxy.defaultProxy, port, ip, 0);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class Socks5DatagramSocket extends DatagramSocket {
 	 * Might throw IOException if binding dtagram socket to given address/port
 	 * fails. See java.net.DatagramSocket for more details.
 	 */
-	public Socks5DatagramSocket(Proxy p, int port, InetAddress ip) throws SocksException, IOException {
+	public Socks5DatagramSocket(Proxy p, int port, InetAddress ip, int connectTimeout) throws SocksException, IOException {
 		super(port, ip);
 		if (p == null)
 			throw new SocksException(Proxy.SOCKS_NO_PROXY);
@@ -110,7 +110,7 @@ public class Socks5DatagramSocket extends DatagramSocket {
 
 		proxy = (Socks5Proxy) p.copy();
 
-		ProxyMessage msg = proxy.udpAssociate(super.getLocalAddress(), super.getLocalPort());
+		ProxyMessage msg = proxy.udpAssociate(super.getLocalAddress(), super.getLocalPort(), connectTimeout);
 		relayIP = msg.ip;
 		if (relayIP.getHostAddress().equals("0.0.0.0") || relayIP.getHostAddress().equals("::")
 				|| relayIP.getHostAddress().equals("::0") || relayIP.getHostAddress().equals("0:0:0:0:0:0:0:0")

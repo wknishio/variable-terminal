@@ -41,7 +41,7 @@ public class SocksServerSocket extends ServerSocket {
 	 *            Port number of the primary connection.
 	 */
 	public SocksServerSocket(String host, int port) throws SocksException, UnknownHostException, IOException {
-		this(Proxy.defaultProxy, host, port);
+		this(Proxy.defaultProxy, host, port, 0);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class SocksServerSocket extends ServerSocket {
 	 * @param port
 	 *            Port number of the primary connection.
 	 */
-	public SocksServerSocket(Proxy p, String host, int port) throws SocksException, UnknownHostException, IOException {
+	public SocksServerSocket(Proxy p, String host, int port, int connectTimeout) throws SocksException, UnknownHostException, IOException {
 
 		super(0);
 		if (p == null)
@@ -67,7 +67,7 @@ public class SocksServerSocket extends ServerSocket {
 			proxy = null;
 			doDirect();
 		} else {
-			processReply(proxy.bind(host, port));
+			processReply(proxy.bind(host, port, connectTimeout));
 		}
 	}
 
@@ -106,7 +106,7 @@ public class SocksServerSocket extends ServerSocket {
 			remoteAddr = ip;
 			doDirect();
 		} else {
-			processReply(proxy.bind(ip, port));
+			processReply(proxy.bind(ip, port, 0));
 		}
 	}
 

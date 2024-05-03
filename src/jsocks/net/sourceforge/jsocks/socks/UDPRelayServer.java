@@ -64,7 +64,7 @@ public class UDPRelayServer implements Runnable {
 	 *            operation.
 	 */
 	public UDPRelayServer(InetAddress clientIP, int clientPort, Thread master_thread, Socket controlConnection,
-			ServerAuthenticator auth, Proxy proxy) throws IOException {
+			ServerAuthenticator auth, Proxy proxy, int connectTimeout) throws IOException {
 	  this.proxy = proxy;
 		this.master_thread = master_thread;
 		this.controlConnection = controlConnection;
@@ -83,7 +83,7 @@ public class UDPRelayServer implements Runnable {
 		if (this.proxy == null)
 			remote_sock = new DatagramSocket();
 		else
-			remote_sock = new Socks5DatagramSocket(this.proxy, 0, null);
+			remote_sock = new Socks5DatagramSocket(this.proxy, 0, null, connectTimeout);
 	}
 
 	// Public methods

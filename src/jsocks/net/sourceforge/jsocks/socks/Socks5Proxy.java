@@ -183,8 +183,8 @@ public class Socks5Proxy extends Proxy implements Cloneable{
     *
     *
     */
-   protected void startSession()throws SocksException{
-      super.startSession();
+   protected void startSession(int connectTimeout)throws SocksException{
+      super.startSession(connectTimeout);
       Authentication auth;
       Socket ps = proxySocket; //The name is too long
 

@@ -62,7 +62,7 @@ public class VTTunnelConnection
     return closeables;
   }
   
-  public boolean bindSOCKSListener(int channelType, String bindHost, int bindPort, VTProxy proxy)
+  public boolean bindSOCKSListener(int channelType, int connectTimeout, int dataTimeout, String bindHost, int bindPort, VTProxy proxy)
   {
     VTTunnelChannelBindSocketListener listener = getBindListener(bindHost, bindPort);
     if (listener != null)
@@ -70,6 +70,8 @@ public class VTTunnelConnection
       if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
       {
         listener.getChannel().setChannelType(channelType);
+        listener.getChannel().setConnectTimeout(connectTimeout);
+        listener.getChannel().setDataTimeout(dataTimeout);
         listener.getChannel().setSocksUsername(null);
         listener.getChannel().setSocksPassword(null);
         listener.getChannel().setProxy(proxy);
@@ -80,7 +82,7 @@ public class VTTunnelConnection
         return false;
       }
     }
-    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, bindHost, bindPort, proxy);
+    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, proxy);
     listener = new VTTunnelChannelBindSocketListener(channel, executor);
     if (listener.bind())
     {
@@ -94,7 +96,7 @@ public class VTTunnelConnection
     }
   }
   
-  public boolean bindSOCKSListener(int channelType, String bindHost, int bindPort, String socksUsername, String socksPassword, VTProxy proxy)
+  public boolean bindSOCKSListener(int channelType, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String socksUsername, String socksPassword, VTProxy proxy)
   {
     VTTunnelChannelBindSocketListener listener = getBindListener(bindHost, bindPort);
     if (listener != null)
@@ -102,6 +104,8 @@ public class VTTunnelConnection
       if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
       {
         listener.getChannel().setChannelType(channelType);
+        listener.getChannel().setConnectTimeout(connectTimeout);
+        listener.getChannel().setDataTimeout(dataTimeout);
         listener.getChannel().setSocksUsername(socksUsername);
         listener.getChannel().setSocksPassword(socksPassword);
         listener.getChannel().setProxy(proxy);
@@ -112,7 +116,7 @@ public class VTTunnelConnection
         return false;
       }
     }
-    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, bindHost, bindPort, socksUsername, socksPassword, proxy);
+    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, socksUsername, socksPassword, proxy);
     listener = new VTTunnelChannelBindSocketListener(channel, executor);
     if (listener.bind())
     {
@@ -126,7 +130,7 @@ public class VTTunnelConnection
     }
   }
   
-  public boolean bindTCPRedirectListener(int channelType, String bindHost, int bindPort, String redirectHost, int redirectPort, VTProxy proxy)
+  public boolean bindTCPRedirectListener(int channelType, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String redirectHost, int redirectPort, VTProxy proxy)
   {
     VTTunnelChannelBindSocketListener listener = getBindListener(bindHost, bindPort);
     if (listener != null)
@@ -134,6 +138,8 @@ public class VTTunnelConnection
       if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
       {
         listener.getChannel().setChannelType(channelType);
+        listener.getChannel().setConnectTimeout(connectTimeout);
+        listener.getChannel().setDataTimeout(dataTimeout);
         listener.getChannel().setRedirectAddress(redirectHost, redirectPort);
         listener.getChannel().setProxy(proxy);
         return true;
@@ -143,7 +149,7 @@ public class VTTunnelConnection
         return false;
       }
     }
-    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, bindHost, bindPort, redirectHost, redirectPort, proxy);
+    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, redirectHost, redirectPort, proxy);
     listener = new VTTunnelChannelBindSocketListener(channel, executor);
     if (listener.bind())
     {

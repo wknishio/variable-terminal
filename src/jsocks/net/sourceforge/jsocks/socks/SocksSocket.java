@@ -61,6 +61,7 @@ public class SocksSocket extends Socket{
    protected String localHost, remoteHost;
    protected InetAddress localIP, remoteIP;
    protected int localPort,remotePort;
+   protected int connectTimeout;
 
    private Socket directSock = null;
 
@@ -75,7 +76,7 @@ public class SocksSocket extends Socket{
     */
    public SocksSocket(String host,int port)
 	  throws SocksException,UnknownHostException{
-      this(Proxy.defaultProxy,host,port);
+      this(Proxy.defaultProxy,host,port, 0);
    }
    /**
     * Connects to host port using given proxy server.
@@ -107,7 +108,7 @@ public class SocksSocket extends Socket{
       @throws IOexception if anything is wrong with I/O.
       @see Socks5Proxy#resolveAddrLocally
     */
-   public SocksSocket(Proxy p,String host,int port)
+   public SocksSocket(Proxy p,String host,int port, int timeout)
 	  throws SocksException,UnknownHostException{
 
 
@@ -116,12 +117,13 @@ public class SocksSocket extends Socket{
       proxy = p.copy();
       remoteHost = host;
       remotePort = port;
+      connectTimeout = timeout;
       if(proxy.isDirect(host)){
          remoteIP = InetAddress.getByName(host);
          doDirect();
       }
       else
-         processReply(proxy.connect(host,port));
+         processReply(proxy.connect(host,port,timeout));
    }
 
 
@@ -153,7 +155,7 @@ public class SocksSocket extends Socket{
       if(proxy.isDirect(remoteIP))
         doDirect();
       else
-        processReply(proxy.connect(ip,port));
+        processReply(proxy.connect(ip,port,0));
    }
 
 
@@ -374,7 +376,14 @@ public class SocksSocket extends Socket{
          //directSock.setReuseAddress(true);
          //directSock.setReceiveBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
          //directSock.setSendBufferSize(VT.VT_NETWORK_PACKET_BUFFER_SIZE - 1);
-         directSock.connect(new InetSocketAddress(remoteIP, remotePort));
+         if (connectTimeout > 0)
+         {
+           directSock.connect(new InetSocketAddress(remoteIP, remotePort), connectTimeout);
+         }
+         else
+         {
+           directSock.connect(new InetSocketAddress(remoteIP, remotePort));
+         }
          //directSock = new Socket(remoteIP, remotePort);
          proxy.out = directSock.getOutputStream();
          proxy.in  = directSock.getInputStream();

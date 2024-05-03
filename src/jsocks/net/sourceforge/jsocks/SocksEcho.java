@@ -379,7 +379,7 @@ public class SocksEcho extends Frame implements ActionListener, Runnable, Window
 		println("Trying to accept from " + host);
 		status("Trying to accept from " + host);
 		println("Using proxy:" + proxy);
-		server_sock = new SocksServerSocket(proxy, host, port);
+		server_sock = new SocksServerSocket(proxy, host, port, 0);
 
 		// server_sock.setSoTimeout(30000);
 
@@ -402,7 +402,7 @@ public class SocksEcho extends Frame implements ActionListener, Runnable, Window
 	private void doConnect() throws IOException {
 		println("Trying to connect to:" + host + ":" + port);
 		println("Using proxy:" + proxy);
-		sock = new SocksSocket(proxy, host, port);
+		sock = new SocksSocket(proxy, host, port, 0);
 		println("Connected to:" + sock.getInetAddress() + ":" + port);
 		status("Connected to: " + sock.getInetAddress().getHostAddress() + ":" + port);
 		println("Via-Proxy:" + sock.getLocalAddress() + ":" + sock.getLocalPort());
@@ -422,7 +422,7 @@ public class SocksEcho extends Frame implements ActionListener, Runnable, Window
 	}
 
 	private void startUDP() throws IOException {
-		udp_sock = new Socks5DatagramSocket(proxy, 0, null);
+		udp_sock = new Socks5DatagramSocket(proxy, 0, null, 0);
 		println("UDP started on " + udp_sock.getLocalAddress() + ":" + udp_sock.getLocalPort());
 		status("UDP:" + udp_sock.getLocalAddress().getHostAddress() + ":" + udp_sock.getLocalPort());
 	}

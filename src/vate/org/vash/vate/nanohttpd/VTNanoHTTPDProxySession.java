@@ -31,7 +31,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.bouncycastle.util.encoders.Hex;
 import org.vash.vate.VT;
 import org.vash.vate.parser.VTConfigurationProperties;
-import org.vash.vate.socket.VTRemoteSocket;
+import org.vash.vate.socket.VTRemoteSocketAdapter;
 import org.vash.vate.socket.VTRemoteSocketFactory;
 import org.vash.vate.socket.VTProxy;
 
@@ -605,7 +605,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     
     //Socket remoteSocket = new Socket(host, port);
-    Socket remoteSocket = VTProxy.connect(host, port, socketFactory == null ? null : new VTRemoteSocket(socketFactory), connectProxy);
+    Socket remoteSocket = VTProxy.connect(host, port, 0, socketFactory == null ? null : new VTRemoteSocketAdapter(socketFactory), connectProxy);
     remoteSocket.setTcpNoDelay(true);
     remoteSocket.setKeepAlive(true);
     //remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
@@ -691,7 +691,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     requestData.write(bodyData);
     
     //Socket remoteSocket = new Socket(host, port);
-    Socket remoteSocket = VTProxy.connect(host, port, socketFactory == null ? null : new VTRemoteSocket(socketFactory), connectProxy);
+    Socket remoteSocket = VTProxy.connect(host, port, 0, socketFactory == null ? null : new VTRemoteSocketAdapter(socketFactory), connectProxy);
     remoteSocket.setTcpNoDelay(true);
     remoteSocket.setKeepAlive(true);
     //remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);

@@ -81,6 +81,7 @@ public class VTSocksProxyServer implements Runnable {
 	
 	private VTProxy connect_proxy;
 	private VTRemoteSocketFactory socket_factory;
+	private int connectTimeout;
 
 	// private String connectionId;
 
@@ -108,13 +109,14 @@ public class VTSocksProxyServer implements Runnable {
 		mode = START_MODE;
 	}
 	
-	public VTSocksProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy, VTRemoteSocketFactory socket_factory) {
+	public VTSocksProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy, VTRemoteSocketFactory socket_factory, int connectTimeout) {
     this.auth = auth;
     this.sock = s;
     this.disabled_bind = disabled_bind;
     this.disabled_udp_relay = disabled_udp_relay;
     this.connect_proxy = connect_proxy;
     this.socket_factory = socket_factory;
+    this.connectTimeout = connectTimeout;
     // this.connectionId = connectionId;
     mode = START_MODE;
   }
@@ -415,7 +417,7 @@ public class VTSocksProxyServer implements Runnable {
 		  }
 		  else
 		  {
-		    s = VTProxy.connect(msg.host, msg.port, socket_factory == null ? null : new VTRemoteSocket(socket_factory), connect_proxy);
+		    s = VTProxy.connect(msg.host, msg.port, connectTimeout, socket_factory == null ? null : new VTRemoteSocketAdapter(socket_factory), connect_proxy);
 		    s.setTcpNoDelay(true);
 		    s.setKeepAlive(true);
         //s.setSoTimeout(90000);
@@ -512,7 +514,7 @@ public class VTSocksProxyServer implements Runnable {
 			msg.ip = sock.getInetAddress();
 		// LOG.info(connectionId + " Creating UDP relay server for " + msg.ip +
 		// ":" + msg.port);
-		relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy);
+		relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout);
 
 		ProxyMessage response;
 

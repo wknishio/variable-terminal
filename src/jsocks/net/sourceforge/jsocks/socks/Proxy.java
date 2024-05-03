@@ -396,7 +396,7 @@ public abstract class Proxy {
 	// Protected Methods
 	// =================
 
-	protected void startSession() throws SocksException {
+	protected void startSession(int connectTimeout) throws SocksException {
 		try {
 		  if (proxyHost == null)
 		  {
@@ -409,15 +409,29 @@ public abstract class Proxy {
 	      if (chainProxy == null) {
 	        if (localSocketPort > 0) {
 	          proxySocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), localSocketPort));
-	          proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort));
+	          if (connectTimeout > 0)
+	          {
+	            proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort), connectTimeout);
+	          }
+	          else
+	          {
+	            proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort));
+	          }
 	        } else {
-	          proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort));
+	          if (connectTimeout > 0)
+            {
+              proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort), connectTimeout);
+            }
+            else
+            {
+              proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort));
+            }
 	        }
 	        localSocketPortAssigned = proxySocket.getLocalPort();
 	      //} else if (proxyIP != null)
 	        //proxySocket = new SocksSocket(chainProxy, proxyIP, proxyPort);
 	      } else
-	        proxySocket = new SocksSocket(chainProxy, proxyHost, proxyPort);
+	        proxySocket = new SocksSocket(chainProxy, proxyHost, proxyPort, connectTimeout);
 
 	      proxySocket.setTcpNoDelay(true);
 	      proxySocket.setKeepAlive(true);
@@ -429,9 +443,24 @@ public abstract class Proxy {
 		    {
 		      if (localSocketPort > 0) {
             proxySocket.bind(new InetSocketAddress(InetAddress.getLocalHost(), localSocketPort));
-            proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort));
+            if (connectTimeout > 0)
+            {
+              proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort), connectTimeout);
+            }
+            else
+            {
+              proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort));
+            }
           } else {
-            proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort));
+            
+            if (connectTimeout > 0)
+            {
+              proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort), connectTimeout);
+            }
+            else
+            {
+              proxySocket.connect(new InetSocketAddress(proxyHost, proxyPort));
+            }
           }
 		      proxySocket.setTcpNoDelay(true);
 	        proxySocket.setKeepAlive(true);
@@ -456,9 +485,9 @@ public abstract class Proxy {
 
 	protected abstract ProxyMessage formMessage(InputStream in) throws SocksException, IOException;
 
-	protected ProxyMessage connect(InetAddress ip, int port) throws SocksException {
+	protected ProxyMessage connect(InetAddress ip, int port, int connectTimeout) throws SocksException {
 		try {
-			startSession();
+			startSession(connectTimeout);
 			ProxyMessage request = formMessage(SOCKS_CMD_CONNECT, ip, port);
 			return exchange(request);
 		} catch (SocksException se) {
@@ -467,9 +496,9 @@ public abstract class Proxy {
 		}
 	}
 
-	protected ProxyMessage connect(String host, int port) throws UnknownHostException, SocksException {
+	protected ProxyMessage connect(String host, int port, int connectTimeout) throws UnknownHostException, SocksException {
 		try {
-			startSession();
+			startSession(connectTimeout);
 			ProxyMessage request = formMessage(SOCKS_CMD_CONNECT, host, port);
 			return exchange(request);
 		} catch (SocksException se) {
@@ -478,9 +507,9 @@ public abstract class Proxy {
 		}
 	}
 
-	protected ProxyMessage bind(InetAddress ip, int port) throws SocksException {
+	protected ProxyMessage bind(InetAddress ip, int port, int connectTimeout) throws SocksException {
 		try {
-			startSession();
+			startSession(connectTimeout);
 			ProxyMessage request = formMessage(SOCKS_CMD_BIND, ip, port);
 			return exchange(request);
 		} catch (SocksException se) {
@@ -489,9 +518,9 @@ public abstract class Proxy {
 		}
 	}
 
-	protected ProxyMessage bind(String host, int port) throws UnknownHostException, SocksException {
+	protected ProxyMessage bind(String host, int port, int connectTimeout) throws UnknownHostException, SocksException {
 		try {
-			startSession();
+			startSession(connectTimeout);
 			ProxyMessage request = formMessage(SOCKS_CMD_BIND, host, port);
 			return exchange(request);
 		} catch (SocksException se) {
@@ -514,9 +543,9 @@ public abstract class Proxy {
 		return msg;
 	}
 
-	protected ProxyMessage udpAssociate(InetAddress ip, int port) throws SocksException {
+	protected ProxyMessage udpAssociate(InetAddress ip, int port, int connectTimeout) throws SocksException {
 		try {
-			startSession();
+			startSession(connectTimeout);
 			ProxyMessage request = formMessage(SOCKS_CMD_UDP_ASSOCIATE, ip, port);
 			if (request != null)
 				return exchange(request);
@@ -530,9 +559,9 @@ public abstract class Proxy {
 				"This version of proxy does not support UDP associate, use version 5");
 	}
 
-	protected ProxyMessage udpAssociate(String host, int port) throws UnknownHostException, SocksException {
+	protected ProxyMessage udpAssociate(String host, int port, int connectTimeout) throws UnknownHostException, SocksException {
 		try {
-			startSession();
+			startSession(connectTimeout);
 			ProxyMessage request = formMessage(SOCKS_CMD_UDP_ASSOCIATE, host, port);
 			if (request != null)
 				return exchange(request);

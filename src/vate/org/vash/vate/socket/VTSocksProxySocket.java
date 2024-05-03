@@ -38,7 +38,7 @@ public class VTSocksProxySocket extends VTProxySocket
       try
       {
         InetSocketAddress host = (InetSocketAddress) endpoint;
-        SocksSocket socksSocket = new SocksSocket(proxyClient5, host.getHostName(), host.getPort());
+        SocksSocket socksSocket = new SocksSocket(proxyClient5, host.getHostName(), host.getPort(), 0);
         proxySocket = socksSocket;
       }
       catch (Throwable t)
@@ -52,7 +52,7 @@ public class VTSocksProxySocket extends VTProxySocket
       try
       {
         InetSocketAddress host = (InetSocketAddress) endpoint;
-        SocksSocket socksSocket = new SocksSocket(proxyClient4, host.getHostName(), host.getPort());
+        SocksSocket socksSocket = new SocksSocket(proxyClient4, host.getHostName(), host.getPort(), 0);
         proxySocket = socksSocket;
       }
       catch (Throwable t)
@@ -73,7 +73,7 @@ public class VTSocksProxySocket extends VTProxySocket
       try
       {
         InetSocketAddress host = (InetSocketAddress) endpoint;
-        SocksSocket socksSocket = new SocksSocket(proxyClient5, host.getHostName(), host.getPort());
+        SocksSocket socksSocket = new SocksSocket(proxyClient5, host.getHostName(), host.getPort(), 0);
         proxySocket = socksSocket;
       }
       catch (Throwable t)
@@ -87,7 +87,7 @@ public class VTSocksProxySocket extends VTProxySocket
       try
       {
         InetSocketAddress host = (InetSocketAddress) endpoint;
-        SocksSocket socksSocket = new SocksSocket(proxyClient4, host.getHostName(), host.getPort());
+        SocksSocket socksSocket = new SocksSocket(proxyClient4, host.getHostName(), host.getPort(), 0);
         proxySocket = socksSocket;
       }
       catch (Throwable t)

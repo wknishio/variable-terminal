@@ -54,18 +54,20 @@ public class VTTunnelConnectionControlThread implements Runnable
               final int channelType = Integer.parseInt(parts[0]);
               final int outputNumber = Integer.parseInt(parts[1]);
               final int inputNumber = Integer.parseInt(parts[2]);
+              final int connectTimeout = Integer.parseInt(parts[3]);
+              final int dataTimeout = Integer.parseInt(parts[4]);
               
               if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
               {
-                final String host = parts[3];
-                final int port = Integer.parseInt(parts[4]);
-                String proxyTypeLetter = parts[5];
-                String proxyHost = parts[6];
-                int proxyPort = Integer.parseInt(parts[7]);
-                String proxyUser = parts[8];
-                String proxyPassword = parts[9];
+                final String host = parts[5];
+                final int port = Integer.parseInt(parts[6]);
+                String proxyTypeLetter = parts[7];
+                String proxyHost = parts[8];
+                int proxyPort = Integer.parseInt(parts[9]);
+                String proxyUser = parts[10];
+                String proxyPassword = parts[11];
                 
-                if (parts.length > 10 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[10].equals("*"))
+                if (parts.length > 12 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[12].equals("*"))
                 {
                   proxyUser = null;
                   proxyPassword = null;
@@ -119,11 +121,11 @@ public class VTTunnelConnectionControlThread implements Runnable
                       {
                         if (connect)
                         {
-                          remoteSocket = connect(host, port, proxy);
+                          remoteSocket = connect(host, port, connectTimeout, dataTimeout, proxy);
                         }
                         else
                         {
-                          remoteSocket = accept(host, port, proxy.getProxyPort());
+                          remoteSocket = accept(host, port, connectTimeout, dataTimeout);
                         }
                         socketInputStream = remoteSocket.getInputStream();
                         socketOutputStream = remoteSocket.getOutputStream();
@@ -182,15 +184,15 @@ public class VTTunnelConnectionControlThread implements Runnable
               }
               else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
               {
-                String socksUsername = parts[3];
-                String socksPassword = parts[4];
-                String proxyTypeLetter = parts[5];
-                String proxyHost = parts[6];
-                int proxyPort = Integer.parseInt(parts[7]);
-                String proxyUser = parts[8];
-                String proxyPassword = parts[9];
+                String socksUsername = parts[5];
+                String socksPassword = parts[6];
+                String proxyTypeLetter = parts[7];
+                String proxyHost = parts[8];
+                int proxyPort = Integer.parseInt(parts[9]);
+                String proxyUser = parts[10];
+                String proxyPassword = parts[11];
                 
-                if (parts.length > 10 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[10].equals("*"))
+                if (parts.length > 12 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[12].equals("*"))
                 {
                   proxyUser = null;
                   proxyPassword = null;
@@ -222,7 +224,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 VTTunnelSession session = new VTTunnelSession(connection, false);
                 VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(null);
                 session.setSocket(pipedSocket);
-                VTTunnelSocksSessionHandler handler = new VTTunnelSocksSessionHandler(session, connection.getResponseChannel(), socksUsername, socksPassword, proxy, null);
+                VTTunnelSocksSessionHandler handler = new VTTunnelSocksSessionHandler(session, connection.getResponseChannel(), socksUsername, socksPassword, proxy, null, connectTimeout);
                 
                 VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
                 VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
@@ -340,7 +342,7 @@ public class VTTunnelConnectionControlThread implements Runnable
     closed = true;
   }
   
-  public Socket connect(String host, int port, VTProxy proxy)
+  public Socket connect(String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy)
   {
     try
     {
@@ -352,8 +354,11 @@ public class VTTunnelConnectionControlThread implements Runnable
       {
         
       }
-      
-      Socket socket = VTProxy.connect(host, port, null, proxy);
+      Socket socket = VTProxy.connect(host, port, connectTimeout, null, proxy);
+      if (dataTimeout > 0)
+      {
+        socket.setSoTimeout(dataTimeout);
+      }
       return socket;
     }
     catch (Throwable t)
@@ -363,7 +368,7 @@ public class VTTunnelConnectionControlThread implements Runnable
     return null;
   }
   
-  public Socket accept(String host, int port, int timeout)
+  public Socket accept(String host, int port, int connectTimeout, int dataTimeout)
   {
     VTTunnelCloseableServerSocket serverSocket = null;
     try
@@ -376,12 +381,22 @@ public class VTTunnelConnectionControlThread implements Runnable
       {
         
       }
-      
       serverSocket = new VTTunnelCloseableServerSocket(new ServerSocket());
       serverSocket.bind(new InetSocketAddress(host, port));
-      serverSocket.setSoTimeout(timeout);
+      if (connectTimeout > 0)
+      {
+        serverSocket.setSoTimeout(connectTimeout);
+      }
+      else
+      {
+        serverSocket.setSoTimeout(0);
+      }
       connection.getCloseables().add(serverSocket);
       Socket socket = serverSocket.accept();
+      if (dataTimeout > 0)
+      {
+        socket.setSoTimeout(dataTimeout);
+      }
       return socket;
     }
     catch (Throwable t)

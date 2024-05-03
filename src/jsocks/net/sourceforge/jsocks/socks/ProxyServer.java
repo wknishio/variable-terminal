@@ -468,7 +468,7 @@ public class ProxyServer implements Runnable {
 			msg.ip = sock.getInetAddress();
 		// LOG.info(connectionId + " Creating UDP relay server for " + msg.ip +
 		// ":" + msg.port);
-		relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy);
+		relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, 0);
 
 		ProxyMessage response;
 

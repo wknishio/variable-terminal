@@ -20,6 +20,8 @@ public class VTTunnelChannel
   private final VTTunnelConnection connection;
   private final List<VTTunnelSessionHandler> sessions;
   
+  private int connectTimeout;
+  private int dataTimeout;
   private InetSocketAddress bindAddress;
   private String socksUsername;
   private String socksPassword;
@@ -45,11 +47,13 @@ public class VTTunnelChannel
   }
   
   // SOCKS bind tunnel without authentication
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, VTProxy proxy)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, VTProxy proxy)
   {
     this.tunnelType = TUNNEL_TYPE_SOCKS;
     this.channelType = channelType;
     this.connection = connection;
+    this.connectTimeout = connectTimeout;
+    this.dataTimeout = dataTimeout;
     this.bindHost = bindHost;
     this.bindPort = bindPort;
     this.proxy = proxy;
@@ -65,11 +69,13 @@ public class VTTunnelChannel
   }
   
   // SOCKS bind tunnel with authentication
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String socksUsername, String socksPassword, VTProxy proxy)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String socksUsername, String socksPassword, VTProxy proxy)
   {
     this.tunnelType = TUNNEL_TYPE_SOCKS;
     this.channelType = channelType;
     this.connection = connection;
+    this.connectTimeout = connectTimeout;
+    this.dataTimeout = dataTimeout;
     this.bindHost = bindHost;
     this.bindPort = bindPort;
     this.proxy = proxy;
@@ -87,11 +93,13 @@ public class VTTunnelChannel
   }
   
   // TCP bind redirect tunnel
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, String bindHost, int bindPort, String redirectHost, int redirectPort, VTProxy proxy)
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String redirectHost, int redirectPort, VTProxy proxy)
   {
     this.tunnelType = TUNNEL_TYPE_TCP;
     this.channelType = channelType;
     this.connection = connection;
+    this.connectTimeout = connectTimeout;
+    this.dataTimeout = dataTimeout;
     this.bindHost = bindHost;
     this.bindPort = bindPort;
     this.redirectHost = redirectHost;
@@ -187,6 +195,16 @@ public class VTTunnelChannel
     return sessions.remove(handler);
   }
   
+  public int getConnectTimeout()
+  {
+    return connectTimeout;
+  }
+  
+  public int getDataTimeout()
+  {
+    return dataTimeout;
+  }
+  
   public String getBindHost()
   {
     if (bindHost == null || bindHost.length() == 0)
@@ -219,6 +237,16 @@ public class VTTunnelChannel
   {
     this.redirectHost = redirectHost;
     this.redirectPort = redirectPort;
+  }
+  
+  public void setConnectTimeout(int connectTimeout)
+  {
+    this.connectTimeout = connectTimeout;
+  }
+  
+  public void setDataTimeout(int dataTimeout)
+  {
+    this.dataTimeout = dataTimeout;
   }
   
   public void setProxy(VTProxy proxy)
