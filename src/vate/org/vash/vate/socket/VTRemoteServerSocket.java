@@ -62,7 +62,7 @@ public class VTRemoteServerSocket extends ServerSocket
   {
     if (isClosed())
     {
-      throw new IOException("VTRemoteProxyServerSocket is closed");
+      throw new IOException("VTRemoteServerSocket is closed");
     }
     return remoteSocketFactory.acceptSocket(host, port, connectTimeout, dataTimeout);
   }

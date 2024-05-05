@@ -20,7 +20,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
   @SuppressWarnings("unused")
   private final ExecutorService executor;
   private ServerSocket serverSocket;
-  private boolean closed = false;
+  private volatile boolean closed = false;
   private static final String SESSION_SEPARATOR = "\f";
   private static final char SESSION_MARK = '\b';
   

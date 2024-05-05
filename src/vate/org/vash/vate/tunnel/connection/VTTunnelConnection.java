@@ -40,7 +40,7 @@ public class VTTunnelConnection
   // private int tunnelType;
   private ExecutorService executor;
   private Collection<Closeable> closeables;
-  private boolean closed = false;
+  private volatile boolean closed = false;
   
   public VTTunnelConnection(ExecutorService executor, Collection<Closeable> closeables)
   {

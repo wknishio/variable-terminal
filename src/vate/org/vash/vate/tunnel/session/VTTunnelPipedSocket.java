@@ -18,7 +18,7 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
   private VTLinkableDynamicMultiplexedOutputStream out;
   private OutputStream pipe;
   private Closeable closeable;
-  private boolean closed = false;
+  private volatile boolean closed = false;
   
   public VTTunnelPipedSocket(Closeable closeable)
   {

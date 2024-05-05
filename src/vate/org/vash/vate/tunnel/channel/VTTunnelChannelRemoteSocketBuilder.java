@@ -165,7 +165,7 @@ public class VTTunnelChannelRemoteSocketBuilder
     VTTunnelSessionHandler handler = null;
     int channelType = channel.getChannelType();
     
-    String proxyTypeLetter = "W";
+    String proxyTypeLetter = "B";
     
     session = new VTTunnelSession(channel.getConnection(), true);
     VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);

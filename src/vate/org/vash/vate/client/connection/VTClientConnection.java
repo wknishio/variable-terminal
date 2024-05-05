@@ -40,8 +40,8 @@ public class VTClientConnection
   private static final byte[] VT_SERVER_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
   
-  private boolean connected = false;
-  private boolean closed = true;
+  private volatile boolean connected = false;
+  private volatile boolean closed = true;
   
   private int encryptionType;
   private byte[] encryptionKey;

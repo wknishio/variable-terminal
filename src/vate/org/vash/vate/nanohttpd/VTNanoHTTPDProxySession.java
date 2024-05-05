@@ -258,7 +258,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     //public boolean keepConnection = false;
   }
   
-  public VTNanoHTTPDProxySession( Socket s, InputStream in, boolean digestAuthentication, String username, String password, VTProxy proxy, VTRemoteSocketFactory socketFactory)
+  public VTNanoHTTPDProxySession( Socket s, InputStream in, boolean digestAuthentication, String username, String password, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout)
   {
     mySocket = s;
     myIn = in;
@@ -267,6 +267,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     this.password = password;
     this.proxy = proxy;
     this.socketFactory = socketFactory;
+    this.connectTimeout = connectTimeout;
     //Thread t = new Thread( this );
     //t.setDaemon( true );
     //t.start();
@@ -605,7 +606,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     
     //Socket remoteSocket = new Socket(host, port);
-    Socket remoteSocket = VTProxy.connect(host, port, 0, socketFactory == null ? null : new VTRemoteSocketAdapter(socketFactory), connectProxy);
+    Socket remoteSocket = VTProxy.connect(host, port, connectTimeout, socketFactory == null ? null : new VTRemoteSocketAdapter(socketFactory), connectProxy);
     remoteSocket.setTcpNoDelay(true);
     remoteSocket.setKeepAlive(true);
     //remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
@@ -1115,6 +1116,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   private String password;
   private VTProxy proxy;
   private VTRemoteSocketFactory socketFactory;
+  private int connectTimeout;
   //private static final Map<String, Long> VALID_DIGEST_NONCES = new LinkedHashMap<String, Long>();
   
   private static java.text.SimpleDateFormat gmtFrmt;

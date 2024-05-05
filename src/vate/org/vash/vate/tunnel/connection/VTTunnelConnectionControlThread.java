@@ -23,7 +23,7 @@ public class VTTunnelConnectionControlThread implements Runnable
 {
   private final VTTunnelConnection connection;
   private final ExecutorService executor;
-  private boolean closed = false;
+  private volatile boolean closed = false;
   private static final String SESSION_SEPARATOR = "\f";
   private static final char SESSION_MARK = '\b';
   
@@ -96,7 +96,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 }
                 final VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
                 
-                final boolean connect = proxyTypeLetter.toUpperCase().startsWith("W") ? false : true;
+                final boolean connect = proxyTypeLetter.toUpperCase().startsWith("B") ? false : true;
                 
                 final VTTunnelSession session = new VTTunnelSession(connection, false);
                 final VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, connection.getResponseChannel());
@@ -109,7 +109,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                   session.setTunnelOutputStream(output);
                   session.setTunnelInputStream(input);
                   
-                  Runnable tcpConnectThread = new Runnable()
+                  Runnable tcpTunnelThread = new Runnable()
                   {
                     public void run()
                     {
@@ -169,7 +169,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                       }
                     }
                   };
-                  executor.execute(tcpConnectThread);
+                  executor.execute(tcpTunnelThread);
                 }
                 else
                 {
