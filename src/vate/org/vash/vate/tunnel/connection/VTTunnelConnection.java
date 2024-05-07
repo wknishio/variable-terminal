@@ -24,10 +24,6 @@ import org.vash.vate.tunnel.channel.VTTunnelRemoteSocketFactory;
 
 public class VTTunnelConnection
 {
-  // public static final int TUNNEL_TYPE_TCP = 0;
-  // public static final int TUNNEL_TYPE_SOCKS = 1;
-  // public static final int TUNNEL_TYPE_STREAM = 2;
-  
   private VTLinkableDynamicMultiplexingInputStream dataInputStream;
   private VTLinkableDynamicMultiplexingOutputStream dataOutputStream;
   private VTLittleEndianInputStream controlInputStream;

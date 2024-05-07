@@ -344,6 +344,7 @@ public class VTTunnelConnectionControlThread implements Runnable
   
   public Socket connect(String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy)
   {
+    Socket socket = null;
     try
     {
       if (host == null || host.length() == 0 || host.equals("*"))
@@ -354,23 +355,23 @@ public class VTTunnelConnectionControlThread implements Runnable
       {
         
       }
-      Socket socket = VTProxy.connect(host, port, connectTimeout, null, proxy);
+      socket = VTProxy.connect(host, port, connectTimeout, null, proxy);
       if (dataTimeout > 0)
       {
         socket.setSoTimeout(dataTimeout);
       }
-      return socket;
     }
     catch (Throwable t)
     {
       //t.printStackTrace();
     }
-    return null;
+    return socket;
   }
   
   public Socket accept(String host, int port, int connectTimeout, int dataTimeout)
   {
     VTTunnelCloseableServerSocket serverSocket = null;
+    Socket socket = null;
     try
     {
       if (host == null || host.length() == 0 || host.equals("*"))
@@ -392,12 +393,12 @@ public class VTTunnelConnectionControlThread implements Runnable
         serverSocket.setSoTimeout(0);
       }
       connection.getCloseables().add(serverSocket);
-      Socket socket = serverSocket.accept();
+      
+      socket = serverSocket.accept();
       if (dataTimeout > 0)
       {
         socket.setSoTimeout(dataTimeout);
       }
-      return socket;
     }
     catch (Throwable t)
     {
@@ -418,6 +419,6 @@ public class VTTunnelConnectionControlThread implements Runnable
         connection.getCloseables().remove(serverSocket);
       }
     }
-    return null;
+    return socket;
   }
 }

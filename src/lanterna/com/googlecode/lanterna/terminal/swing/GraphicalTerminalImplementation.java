@@ -317,16 +317,17 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         int leftoverHeight = getHeight() % getFontHeight();
         
         int leftoverWidth = getWidth() % getFontWidth();
-        componentGraphics.setColor(Color.BLACK);
+        //componentGraphics.setColor(Color.BLACK);
         if(leftoverWidth > 0)
         {
-            componentGraphics.fillRect(getWidth() - leftoverWidth, 0, leftoverWidth, getHeight() - getFontHeight() - leftoverHeight);
-            
-            if (lastLineBackground != null)
-            {
-              componentGraphics.setColor(lastLineBackground);
-            }
+          //componentGraphics.setColor(Color.BLACK);
+          //componentGraphics.fillRect(getWidth() - leftoverWidth, 0, leftoverWidth, getHeight() - getFontHeight() - leftoverHeight);
+          
+          if (lastLineBackground != null)
+          {
+            componentGraphics.setColor(lastLineBackground);
             componentGraphics.fillRect(getWidth() - leftoverWidth, getHeight() - getFontHeight() - leftoverHeight, leftoverWidth, getFontHeight());
+          }
         }
         
         if (leftoverHeight > 0)
@@ -334,8 +335,8 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
           if (lastLineBackground != null)
           {
             componentGraphics.setColor(lastLineBackground);
+            componentGraphics.fillRect(0, getHeight() - leftoverHeight, getWidth(), leftoverHeight);
           }
-          componentGraphics.fillRect(0, getHeight() - leftoverHeight, getWidth(), leftoverHeight);
         }
         
         //0, 0, getWidth(), getHeight(), 0, 0, getWidth(), getHeight(), null);
