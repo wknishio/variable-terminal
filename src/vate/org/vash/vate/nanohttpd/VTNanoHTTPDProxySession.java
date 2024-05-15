@@ -471,7 +471,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     if (proxyAuthorization != null)
     {
       String expected = "Basic " + Base64.encodeBase64String((username + ":" + password).getBytes("ISO-8859-1"));
-      return proxyAuthorization.equals(expected);
+      return proxyAuthorization.toLowerCase().startsWith(expected.toLowerCase());
     }
     return false;
   }
@@ -519,7 +519,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     {
       return -1;
     }
-    if (!proxyAuthorization.startsWith("Digest "))
+    if (!proxyAuthorization.toLowerCase().startsWith("Digest ".toLowerCase()))
     {
       return -1;
     }
@@ -787,7 +787,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     {
       if (keyval.contains("="))
       {
-        String key = keyval.substring(0, keyval.indexOf("="));
+        String key = keyval.substring(0, keyval.indexOf("=")).toLowerCase();
         String value = keyval.substring(keyval.indexOf("=") + 1);
         values.put(key.trim(), value.replaceAll("\"", "").trim());
       }
