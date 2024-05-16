@@ -547,7 +547,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     
     //System.out.println("serverDigest=" + serverDigest);
     
-    if (serverDigest.equals(clientDigest))
+    if (serverDigest.equalsIgnoreCase(clientDigest))
     {
       return 0;
 //      Long timestamp = VALID_DIGEST_NONCES.get(nOnce);
