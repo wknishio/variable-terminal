@@ -1,7 +1,5 @@
 package org.vash.vate.tunnel.connection;
 
-import java.util.concurrent.ExecutorService;
-
 import org.vash.vate.task.VTTask;
 
 public class VTTunnelConnectionHandler extends VTTask
@@ -9,10 +7,10 @@ public class VTTunnelConnectionHandler extends VTTask
   private VTTunnelConnection connection;
   private VTTunnelConnectionControlThread control;
   
-  public VTTunnelConnectionHandler(VTTunnelConnection connection, ExecutorService executor)
+  public VTTunnelConnectionHandler(VTTunnelConnection connection)
   {
     this.connection = connection;
-    this.control = new VTTunnelConnectionControlThread(connection, executor);
+    this.control = new VTTunnelConnectionControlThread(connection);
   }
   
   /*

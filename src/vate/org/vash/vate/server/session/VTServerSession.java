@@ -159,7 +159,7 @@ public class VTServerSession
     // this.printTextTask = new VTServerPrintTextTask(this);
     // this.printFileTask = new VTServerPrintFileTask(this);
     this.printDataTask = new VTServerPrintDataTask(this);
-    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executor, sessionCloseables), executor);
+    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executor, sessionCloseables));
     // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
     // VTTunnelConnection(executor), executor);
     this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, true);

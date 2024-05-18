@@ -85,7 +85,7 @@ public class VTClientSession
     this.graphicsClient = new VTGraphicsModeClient(this);
     this.clipboardTransferTask = new VTClipboardTransferTask();
     // this.zipFileOperation = new VTClientZipFileOperation(this);
-    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executor, sessionCloseables), executor);
+    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executor, sessionCloseables));
     // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
     // VTTunnelConnection(executor), executor);
     this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, false);

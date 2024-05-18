@@ -5,7 +5,6 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.socket.VTProxy;
 import org.vash.vate.socket.VTProxy.VTProxyType;
@@ -22,15 +21,13 @@ import org.vash.vate.tunnel.session.VTTunnelSocksSessionHandler;
 public class VTTunnelConnectionControlThread implements Runnable
 {
   private final VTTunnelConnection connection;
-  private final ExecutorService executor;
   private volatile boolean closed = false;
   private static final String SESSION_SEPARATOR = "\f";
   private static final char SESSION_MARK = '\b';
   
-  public VTTunnelConnectionControlThread(VTTunnelConnection connection, ExecutorService executor)
+  public VTTunnelConnectionControlThread(VTTunnelConnection connection)
   {
     this.connection = connection;
-    this.executor = executor;
   }
   
   public void run()
@@ -149,7 +146,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                           // response message sent with ok
                           connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelChar + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                           connection.getControlOutputStream().flush();
-                          executor.execute(handler);
+                          connection.getExecutor().execute(handler);
                           session.setResult(true);
                         }
                         else
@@ -169,7 +166,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                       }
                     }
                   };
-                  executor.execute(tcpTunnelThread);
+                  connection.getExecutor().execute(tcpTunnelThread);
                 }
                 else
                 {
@@ -242,7 +239,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                   // response message sent with ok
                   connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelChar + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
-                  executor.execute(handler);
+                  connection.getExecutor().execute(handler);
                   session.setResult(true);
                 }
                 else
@@ -285,7 +282,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                     Socket sessionSocket = session.getSocket();
                     if (!(sessionSocket instanceof VTTunnelPipedSocket))
                     {
-                      executor.execute(handler);
+                      connection.getExecutor().execute(handler);
                     }
                     session.setResult(true);
                   }

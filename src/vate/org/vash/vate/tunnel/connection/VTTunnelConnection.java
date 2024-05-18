@@ -53,6 +53,11 @@ public class VTTunnelConnection
   // return tunnelType;
   // }
   
+  public ExecutorService getExecutor()
+  {
+    return executor;
+  }
+  
   public Collection<Closeable> getCloseables()
   {
     return closeables;
@@ -79,7 +84,7 @@ public class VTTunnelConnection
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, proxy);
-    listener = new VTTunnelChannelBindSocketListener(channel, executor);
+    listener = new VTTunnelChannelBindSocketListener(channel);
     if (listener.bind())
     {
       bindListeners.add(listener);
@@ -113,7 +118,7 @@ public class VTTunnelConnection
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, socksUsername, socksPassword, proxy);
-    listener = new VTTunnelChannelBindSocketListener(channel, executor);
+    listener = new VTTunnelChannelBindSocketListener(channel);
     if (listener.bind())
     {
       bindListeners.add(listener);
@@ -146,7 +151,7 @@ public class VTTunnelConnection
       }
     }
     VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, redirectHost, redirectPort, proxy);
-    listener = new VTTunnelChannelBindSocketListener(channel, executor);
+    listener = new VTTunnelChannelBindSocketListener(channel);
     if (listener.bind())
     {
       bindListeners.add(listener);

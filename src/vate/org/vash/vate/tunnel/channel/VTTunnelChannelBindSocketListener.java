@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.socket.VTProxy.VTProxyType;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
@@ -17,17 +16,14 @@ import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 public class VTTunnelChannelBindSocketListener implements Runnable
 {
   private final VTTunnelChannel channel;
-  @SuppressWarnings("unused")
-  private final ExecutorService executor;
   private ServerSocket serverSocket;
   private volatile boolean closed = false;
   private static final String SESSION_SEPARATOR = "\f";
   private static final char SESSION_MARK = '\b';
   
-  public VTTunnelChannelBindSocketListener(VTTunnelChannel channel, ExecutorService executor)
+  public VTTunnelChannelBindSocketListener(VTTunnelChannel channel)
   {
     this.channel = channel;
-    this.executor = executor;
     this.closed = false;
   }
   
