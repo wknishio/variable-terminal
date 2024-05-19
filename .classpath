@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/aircompressor"/>
+	<classpathentry kind="src" path="src/base85"/>
 	<classpathentry kind="src" path="src/bouncycastle"/>
 	<classpathentry kind="src" path="src/bric"/>
 	<classpathentry kind="src" path="src/commons-codec"/>

@@ -201,6 +201,7 @@ Those are the third party libraries used in this software:
 * nanohttpd-1.1 by elonen, for server HTTP tunneling
 * commons-httpclient by Apache Software Foundation, for client HTTP tunneling
 * commons-rng by Apache Software Foundation, for splitmix64 prng
+* Base85 by Sheep-y, for backported Base85 encoder/decoder
 
 ## Additional utilities
 
