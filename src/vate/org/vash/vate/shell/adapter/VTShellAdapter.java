@@ -362,7 +362,7 @@ public class VTShellAdapter
         }
         catch (Throwable t)
         {
-          t.printStackTrace();
+          //t.printStackTrace();
           if (VTReflectionUtils.detectWindows())
           {
             // try again with cmd.exe if cannot start old DOS command.com shell
