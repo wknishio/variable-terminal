@@ -96,9 +96,9 @@ public class VTShellProcessor
       shellOutputStream = shellProcess.getOut();
       
       closeables.clear();
+      closeables.add(shellOutputStream);
       closeables.add(shellInputStream);
       closeables.add(shellErrorStream);
-      closeables.add(shellOutputStream);
     }
     if (shellType == SHELL_TYPE_GROOVYSH)
     {
@@ -205,6 +205,22 @@ public class VTShellProcessor
   @SuppressWarnings("deprecation")
   public void stopShell()
   {
+    if (closeables != null && closeables.size() > 0)
+    {
+      for (Closeable closeable : closeables.toArray(new Closeable[] {}))
+      {
+        try
+        {
+          closeable.close();
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
+      closeables.clear();
+    }
+    
     // System.out.println("stopShell(started)");
     if (shellProcess.isAlive())
     {
@@ -217,14 +233,14 @@ public class VTShellProcessor
         
       }
       
-      try
-      {
-        shellProcess.waitFor();
-      }
-      catch (Throwable e)
-      {
-        
-      }
+//      try
+//      {
+//        shellProcess.waitFor();
+//      }
+//      catch (Throwable e)
+//      {
+//        
+//      }
     }
     
 //    if (groovyshell != null)
@@ -244,22 +260,6 @@ public class VTShellProcessor
       
     }
     
-    if (closeables != null && closeables.size() > 0)
-    {
-      for (Closeable closeable : closeables.toArray(new Closeable[] {}))
-      {
-        try
-        {
-          closeable.close();
-        }
-        catch (Throwable t)
-        {
-          
-        }
-      }
-      closeables.clear();
-    }
-    
     if (shellType != SHELL_TYPE_PROCESS)
     {
 //      try
@@ -274,6 +274,7 @@ public class VTShellProcessor
 //        
 //      }
     }
+    
     // System.out.println("stopShell(finished)");
   }
   

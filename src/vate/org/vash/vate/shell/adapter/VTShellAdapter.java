@@ -39,24 +39,31 @@ public class VTShellAdapter
     this.shellType = shellType;
     String cp = System.getProperty("java.class.path");
     
-    String command = "";
+    //String command = "";
+    String[] command;
     if (shellType == VTShellProcessor.SHELL_TYPE_GROOVYSH)
     {
-      command = "java -cp " + '"' + cp + "'" + " " + DISABLE_COMMONS_LOGGING + " " + DISABLE_UTIL_LOGGING_CLASS + " " + GROOVYSHELL_MAIN_CLASS;
+      //command = "java -cp " + '"' + cp + '"' + " " + DISABLE_COMMONS_LOGGING + " " + DISABLE_UTIL_LOGGING_CLASS + " " + GROOVYSHELL_MAIN_CLASS;
+      command = new String[] {"java", "-cp", cp, DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, GROOVYSHELL_MAIN_CLASS};
       javaBuilder = new ProcessBuilder(command);
       //javaBuilder = new ProcessBuilder(new String[]
       //{
         //"java", "-cp", cp, DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, GROOVYSHELL_MAIN_CLASS
       //});
     }
-    if (shellType == VTShellProcessor.SHELL_TYPE_BEANSHELL)
+    else if (shellType == VTShellProcessor.SHELL_TYPE_BEANSHELL)
     {
-      command = "java -cp " + '"' + cp + "'" + " " + DISABLE_COMMONS_LOGGING + " " + DISABLE_UTIL_LOGGING_CLASS + " " + BEANSHELL_MAIN_CLASS;
+      //command = "java -cp " + '"' + cp + '"' + " " + DISABLE_COMMONS_LOGGING + " " + DISABLE_UTIL_LOGGING_CLASS + " " + BEANSHELL_MAIN_CLASS;
+      command = new String[] {"java", "-cp", cp, DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, BEANSHELL_MAIN_CLASS};
       javaBuilder = new ProcessBuilder(command);
       //javaBuilder = new ProcessBuilder(new String[]
       //{
         //"java", "-cp", cp, DISABLE_COMMONS_LOGGING, DISABLE_UTIL_LOGGING_CLASS, BEANSHELL_MAIN_CLASS
       //});
+    }
+    else
+    {
+      //javaBuilder = null;
     }
   }
   
@@ -330,7 +337,7 @@ public class VTShellAdapter
         }
         catch (Throwable t)
         {
-          // t.printStackTrace();
+          //t.printStackTrace();
         }
         if (!ok)
         {
@@ -342,7 +349,7 @@ public class VTShellAdapter
           }
           catch (Throwable t)
           {
-            // t.printStackTrace();
+            //t.printStackTrace();
           }
         }
       }
@@ -355,7 +362,7 @@ public class VTShellAdapter
         }
         catch (Throwable t)
         {
-          // t.printStackTrace();
+          t.printStackTrace();
           if (VTReflectionUtils.detectWindows())
           {
             // try again with cmd.exe if cannot start old DOS command.com shell

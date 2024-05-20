@@ -482,7 +482,6 @@ public class VTServerSession
     setRestartingShell(true);
     stopShell();
     waitShell();
-    tryStopShellThreads();
     waitShellThreads();
     startShell();
     restartShellThreads();
@@ -847,6 +846,7 @@ public class VTServerSession
   
   public void stopShell()
   {
+    tryStopShellThreads();
     shellAdapter.stopShell();
   }
   

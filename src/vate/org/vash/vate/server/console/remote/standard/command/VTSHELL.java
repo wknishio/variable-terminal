@@ -32,8 +32,9 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
         connection.getResultWriter().write("\nVT>Disabling remote shell!\nVT>");
         connection.getResultWriter().flush();
         session.stopShell();
-        session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
         session.setShellBuilder(new String[] {}, null, null);
+        session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
+        
         // session.restartShell();
       }
       else if (parsed[1].toUpperCase().contains("D"))
@@ -41,8 +42,8 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
         connection.getResultWriter().write("\nVT>Setting remote shell command to: [Default]");
         connection.getResultWriter().flush();
         session.stopShell();
-        session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
         session.setShellBuilder(null, null, null);
+        session.setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
         session.restartShell();
       }
       else if (parsed[1].toUpperCase().contains("B"))
@@ -50,6 +51,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
         connection.getResultWriter().write("\nVT>Using beanshell as remote shell!\nVT>");
         connection.getResultWriter().flush();
         session.stopShell();
+        session.setShellBuilder(null, null, null);
         session.setShellType(VTShellProcessor.SHELL_TYPE_BEANSHELL);
         session.restartShell();
       }
@@ -69,7 +71,6 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().flush();
             session.setStoppingShell(true);
             session.stopShell();
-            session.tryStopShellThreads();
           }
           else
           {
