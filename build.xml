@@ -173,20 +173,8 @@
 			<fileset dir="build" excludes="org/vash/vate/server/**,org/vash/vate/startup/**"/>
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
 		</jar>
-				
-		<jar destfile="dist/client/vate-agent-console.jar" filesetmanifest="mergewithoutmain" update="false">
-			<manifest>
-				<attribute name="Built-By" value="William Kendi Nishio"/>
-				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
-				<attribute name="Created-By" value="${java.version}"/>
-				<attribute name="Main-Class" value="org.vash.vate.client.startup.VTClientAgentGraphicalStart"/>
-				<attribute name="Class-Path" value="."/>
-			</manifest>
-			<fileset dir="build" excludes="org/vash/vate/server/**,org/vash/vate/startup/**"/>
-			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
-		</jar>
 		
-		<jar destfile="dist/client/vate-agent-shell.jar" filesetmanifest="mergewithoutmain" update="false">
+		<jar destfile="dist/client/vate-client-agent.jar" filesetmanifest="mergewithoutmain" update="false">
 			<manifest>
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
@@ -237,22 +225,7 @@
 			-->
 		</jar>
 		
-		<jar destfile="dist/server/vate-daemon-console.jar" filesetmanifest="mergewithoutmain" update="false">
-			<manifest>
-				<attribute name="Built-By" value="William Kendi Nishio"/>
-				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
-				<attribute name="Created-By" value="${java.version}"/>
-				<attribute name="Main-Class" value="org.vash.vate.server.startup.VTServerDaemonGraphicalStart"/>
-				<attribute name="Class-Path" value="."/>
-			</manifest>
-			<fileset dir="build" excludes="org/vash/vate/client/**,org/vash/vate/startup/**"/>
-			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
-			<!--
-			<zipgroupfileset dir="groovy" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
-			-->
-		</jar>
-		
-		<jar destfile="dist/server/vate-daemon-shell.jar" filesetmanifest="mergewithoutmain" update="false">
+		<jar destfile="dist/server/vate-server-daemon.jar" filesetmanifest="mergewithoutmain" update="false">
 			<manifest>
 				<attribute name="Built-By" value="William Kendi Nishio"/>
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>

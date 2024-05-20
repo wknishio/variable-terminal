@@ -1,2 +1,2 @@
 #/bin/sh
-nohup java -cp vate-agent-console.jar org.vash.vate.client.startup.VTClientAgentGraphicalStart $* &
+nohup java -cp vate-client-agent.jar org.vash.vate.client.startup.VTClientAgentGraphicalStart $* &
