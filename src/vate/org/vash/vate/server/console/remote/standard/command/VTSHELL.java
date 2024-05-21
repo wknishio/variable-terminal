@@ -83,7 +83,6 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else if (parsed[1].toUpperCase().contains("C"))
       {
-        
         if (parsed.length >= 3 && (parsed[2].length() > 0))
         {
           String[] nextShell = new String[parsed.length - 2];
