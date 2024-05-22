@@ -257,11 +257,11 @@ public class VTRuntimeProcess
     Runtime rt = Runtime.getRuntime();
     if (VTReflectionUtils.detectWindows())
     {
-      rt.exec("taskkill /f /PID " + pid);
+      rt.exec(new String[] {"taskkill", "/f", "/PID", String.valueOf(pid)});
     }
     else
     {
-      rt.exec("kill -9 " + pid);
+      rt.exec(new String[] {"kill", "-9", String.valueOf(pid)});
     }
   }
   
