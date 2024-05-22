@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 
+import com.martiansoftware.jsap.CommandLineTokenizer;
+
 public class VTFileRuntimeRelauncher
 {
   public static void main(String[] args) throws Exception
@@ -29,7 +31,7 @@ public class VTFileRuntimeRelauncher
           {
             public void run()
             {
-              command(currentCommand);
+              command(CommandLineTokenizer.tokenize(currentCommand));
             }
           };
           commandThread.start();
@@ -55,6 +57,7 @@ public class VTFileRuntimeRelauncher
         }
       }
     }
+    
     BufferedReader input = null;
     try
     {
@@ -68,7 +71,7 @@ public class VTFileRuntimeRelauncher
         {
           public void run()
           {
-            command(currentCommand);
+            command(CommandLineTokenizer.tokenize(currentCommand));
           }
         };
         commandThread.start();
@@ -93,9 +96,10 @@ public class VTFileRuntimeRelauncher
         }
       }
     }
+    
   }
   
-  public static void command(String command)
+  public static void command(String[] command)
   {
     while (true)
     {
