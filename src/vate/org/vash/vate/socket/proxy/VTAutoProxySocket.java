@@ -1,4 +1,4 @@
-package org.vash.vate.socket;
+package org.vash.vate.socket.proxy;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -6,17 +6,18 @@ import java.net.SocketAddress;
 
 public class VTAutoProxySocket extends VTProxySocket
 {
-  private Socket httpSocket;
-  private Socket socksSocket;
+  private Socket httpProxySocket;
+  private Socket socksProxySocket;
   //private Socket directSocket;
   //private Socket globalSocket;
   
   //private Socket socket;
   
-  public VTAutoProxySocket(Socket currentSocket, String proxyHost, int proxyPort, String proxyUser, String proxyPassword)
+  public VTAutoProxySocket(VTProxy currentProxy, Socket currentSocket)
   {
-    httpSocket = new VTHttpProxySocket(currentSocket, proxyHost, proxyPort, proxyUser, proxyPassword);
-    socksSocket = new VTSocksProxySocket(null, proxyHost, proxyPort, proxyUser, proxyPassword);
+    super(currentProxy, currentSocket);
+    httpProxySocket = new VTHttpProxySocket(currentProxy, currentSocket);
+    socksProxySocket = new VTSocksProxySocket(currentProxy, currentSocket);
     //directSocket = new Socket(Proxy.NO_PROXY);
     //globalSocket = new Socket();
   }
@@ -27,12 +28,12 @@ public class VTAutoProxySocket extends VTProxySocket
     {
       try
       {
-        httpSocket.connect(endpoint);
-        proxySocket = httpSocket;
+        httpProxySocket.connect(endpoint);
+        proxySocket = httpProxySocket;
       }
       catch (Throwable t)
       {
-        
+        proxySocket = null;
       }
       if (proxySocket != null && proxySocket.isConnected() && !proxySocket.isClosed())
       {
@@ -41,14 +42,14 @@ public class VTAutoProxySocket extends VTProxySocket
       
       try
       {
-        socksSocket.connect(endpoint);
-        proxySocket = socksSocket;
+        socksProxySocket.connect(endpoint);
+        proxySocket = socksProxySocket;
       }
       catch (Throwable t)
       {
-        
+        proxySocket = null;
       }
-      if (proxySocket != null && proxySocket.isConnected() && !proxySocket.isClosed())
+      if (proxySocket != null)
       {
         return;
       }
@@ -66,12 +67,12 @@ public class VTAutoProxySocket extends VTProxySocket
     {
       try
       {
-        httpSocket.connect(endpoint, timeout);
-        proxySocket = httpSocket;
+        httpProxySocket.connect(endpoint, timeout);
+        proxySocket = httpProxySocket;
       }
       catch (Throwable t)
       {
-        
+        proxySocket = null;
       }
       if (proxySocket != null)
       {
@@ -80,12 +81,12 @@ public class VTAutoProxySocket extends VTProxySocket
       
       try
       {
-        socksSocket.connect(endpoint, timeout);
-        proxySocket = socksSocket;
+        socksProxySocket.connect(endpoint, timeout);
+        proxySocket = socksProxySocket;
       }
       catch (Throwable t)
       {
-        
+        proxySocket = null;
       }
       if (proxySocket != null)
       {

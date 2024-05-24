@@ -31,9 +31,9 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.bouncycastle.util.encoders.Hex;
 import org.vash.vate.VT;
 import org.vash.vate.parser.VTConfigurationProperties;
-import org.vash.vate.socket.VTRemoteSocketAdapter;
-import org.vash.vate.socket.VTRemoteSocketFactory;
-import org.vash.vate.socket.VTProxy;
+import org.vash.vate.socket.proxy.VTProxy;
+import org.vash.vate.socket.remote.VTRemoteSocketAdapter;
+import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 
 /**
  * A simple, tiny, nicely embeddable HTTP 1.0 (partially 1.1) server in Java

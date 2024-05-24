@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import org.vash.vate.socket.VTRemoteSocketFactory;
-import org.vash.vate.socket.VTProxy;
+import org.vash.vate.socket.proxy.VTProxy;
+import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 
 public class VTTunnelRemoteSocketFactory extends VTRemoteSocketFactory
 {

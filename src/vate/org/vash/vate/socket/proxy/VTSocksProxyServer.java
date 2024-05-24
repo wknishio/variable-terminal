@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package org.vash.vate.socket;
+package org.vash.vate.socket.proxy;
 
 import net.sourceforge.jsocks.socks.ProxyMessage;
 import net.sourceforge.jsocks.socks.Socks4Message;
@@ -31,6 +31,8 @@ import java.io.*;
 import java.net.*;
 
 import org.vash.vate.VT;
+import org.vash.vate.socket.remote.VTRemoteSocketAdapter;
+import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 
 /**
  * SOCKS4 and SOCKS5 proxy, handles both protocols simultaniously. Implements

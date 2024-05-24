@@ -1,4 +1,4 @@
-package org.vash.vate.socket;
+package org.vash.vate.socket.proxy;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -6,6 +6,7 @@ import java.io.PushbackInputStream;
 import java.net.Socket;
 
 import org.vash.vate.nanohttpd.VTNanoHTTPDProxySession;
+import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 
 import net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;

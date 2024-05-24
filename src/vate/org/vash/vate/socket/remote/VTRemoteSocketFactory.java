@@ -1,8 +1,10 @@
-package org.vash.vate.socket;
+package org.vash.vate.socket.remote;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import org.vash.vate.socket.proxy.VTProxy;
 
 public abstract class VTRemoteSocketFactory
 {  

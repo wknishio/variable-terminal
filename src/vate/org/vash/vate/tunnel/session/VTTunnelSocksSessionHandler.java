@@ -1,12 +1,12 @@
 package org.vash.vate.tunnel.session;
 
 import org.vash.vate.VT;
-import org.vash.vate.socket.VTRemoteSocketFactory;
-import org.vash.vate.socket.VTProxy;
-import org.vash.vate.socket.VTSocksProxyServer;
-import org.vash.vate.socket.VTSocksHttpProxyAuthenticatorNone;
-import org.vash.vate.socket.VTSocksHttpProxyAuthenticatorUsernamePassword;
-import org.vash.vate.socket.VTSocksSingleUserValidation;
+import org.vash.vate.socket.proxy.VTProxy;
+import org.vash.vate.socket.proxy.VTSocksHttpProxyAuthenticatorNone;
+import org.vash.vate.socket.proxy.VTSocksHttpProxyAuthenticatorUsernamePassword;
+import org.vash.vate.socket.proxy.VTSocksProxyServer;
+import org.vash.vate.socket.proxy.VTSocksSingleUserValidation;
+import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 
 public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler

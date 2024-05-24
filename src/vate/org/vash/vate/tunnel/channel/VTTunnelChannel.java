@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.vash.vate.VT;
-import org.vash.vate.socket.VTProxy;
+import org.vash.vate.socket.proxy.VTProxy;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 

@@ -1,9 +1,11 @@
-package org.vash.vate.socket;
+package org.vash.vate.socket.proxy;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.Socket;
+
+import org.vash.vate.socket.remote.VTRemoteSocketAdapter;
 
 public class VTProxy
 {
@@ -131,96 +133,41 @@ public class VTProxy
       }
       return currentSocket;
     }
-    for (VTProxy proxy : proxies)
+    //VTProxy parentProxy = null;
+    for (VTProxy currentProxy : proxies)
     {
-      currentSocket = nextSocket(currentSocket, timeout, proxy);
+      currentSocket = nextSocket(currentSocket, timeout, currentProxy);
+      //parentProxy = currentProxy;
     }
     return currentSocket;
   }
   
   @SuppressWarnings("all")
-  private static Socket nextSocket(Socket currentSocket, int timeout, VTProxy proxy)
+  private static Socket nextSocket(Socket currentSocket, int timeout, VTProxy currentProxy)
   {
     Socket nextSocket = null;
     
-    if (proxy != null)
+    if (currentProxy != null)
     {
-      if (proxy.getProxyType() == VTProxyType.GLOBAL)
+      if (currentProxy.getProxyType() == VTProxyType.GLOBAL)
       {
         nextSocket = new Socket();
-        
-        if (currentSocket != null)
-        {
-          try
-          {
-            currentSocket.close();
-          }
-          catch (Throwable t)
-          {
-            
-          }
-        }
       }
-      else if (proxy.getProxyType() == VTProxyType.DIRECT)
+      else if (currentProxy.getProxyType() == VTProxyType.DIRECT)
       {
         nextSocket = new Socket(Proxy.NO_PROXY);
-        
-        if (currentSocket != null)
-        {
-          try
-          {
-            currentSocket.close();
-          }
-          catch (Throwable t)
-          {
-            
-          }
-        }
       }
-      else if (proxy.getProxyType() == VTProxyType.SOCKS)
+      else if (currentProxy.getProxyType() == VTProxyType.SOCKS)
       {
-        if (currentSocket != null && !currentSocket.isConnected())
-        {
-          try
-          {
-            currentSocket = connect(proxy.getProxyHost(), proxy.getProxyPort(), timeout, currentSocket);
-          }
-          catch (Throwable t)
-          {
-            currentSocket = null;
-          }
-        }
-        nextSocket = new VTSocksProxySocket(currentSocket, proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+        nextSocket = new VTSocksProxySocket(currentProxy, currentSocket);
       }
-      else if (proxy.getProxyType() == VTProxyType.HTTP)
+      else if (currentProxy.getProxyType() == VTProxyType.HTTP)
       {
-        if (currentSocket != null && !currentSocket.isConnected())
-        {
-          try
-          {
-            currentSocket = connect(proxy.getProxyHost(), proxy.getProxyPort(), timeout, currentSocket);
-          }
-          catch (Throwable t)
-          {
-            currentSocket = null;
-          }
-        }
-        nextSocket = new VTHttpProxySocket(currentSocket, proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+        nextSocket = new VTHttpProxySocket(currentProxy, currentSocket);
       }
-      else if (proxy.getProxyType() == VTProxyType.ANY)
+      else if (currentProxy.getProxyType() == VTProxyType.ANY)
       {
-        if (currentSocket != null && !currentSocket.isConnected())
-        {
-          try
-          {
-            currentSocket = connect(proxy.getProxyHost(), proxy.getProxyPort(), timeout, currentSocket);
-          }
-          catch (Throwable t)
-          {
-            currentSocket = null;
-          }
-        }
-        nextSocket = new VTAutoProxySocket(currentSocket, proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+        nextSocket = new VTAutoProxySocket(currentProxy, currentSocket);
       }
       else
       {

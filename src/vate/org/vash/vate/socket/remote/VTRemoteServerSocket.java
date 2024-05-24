@@ -1,8 +1,10 @@
-package org.vash.vate.socket;
+package org.vash.vate.socket.remote;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 public class VTRemoteServerSocket extends ServerSocket
 {
@@ -15,13 +17,11 @@ public class VTRemoteServerSocket extends ServerSocket
   
   public VTRemoteServerSocket(VTRemoteSocketFactory remoteSocketFactory) throws IOException
   {
-    super();
     this.remoteSocketFactory = remoteSocketFactory;
   }
   
   public VTRemoteServerSocket(VTRemoteSocketFactory remoteSocketFactory, String host, int port) throws IOException
   {
-    super();
     this.remoteSocketFactory = remoteSocketFactory;
     this.host = host;
     this.port = port;
@@ -29,12 +29,29 @@ public class VTRemoteServerSocket extends ServerSocket
   
   public VTRemoteServerSocket(VTRemoteSocketFactory remoteSocketFactory, String host, int port, int connectTimeout, int dataTimeout) throws IOException
   {
-    super();
     this.remoteSocketFactory = remoteSocketFactory;
     this.host = host;
     this.port = port;
     this.connectTimeout = connectTimeout;
     this.dataTimeout = dataTimeout;
+  }
+  
+  public void bind(SocketAddress endpoint) throws IOException
+  {
+    if (endpoint instanceof InetSocketAddress)
+    {
+      InetSocketAddress address = (InetSocketAddress) endpoint;
+      bind(address.getHostName(), address.getPort());
+    }
+  }
+  
+  public void bind(SocketAddress endpoint, int backlog) throws IOException
+  {
+    if (endpoint instanceof InetSocketAddress)
+    {
+      InetSocketAddress address = (InetSocketAddress) endpoint;
+      bind(address.getHostName(), address.getPort());
+    }
   }
   
   public void bind(String host, int port)

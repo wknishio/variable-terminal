@@ -1,9 +1,10 @@
-package org.vash.vate.socket;
+package org.vash.vate.socket.proxy;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
@@ -11,7 +12,37 @@ import java.nio.channels.SocketChannel;
 
 public abstract class VTProxySocket extends Socket
 {
+  protected VTProxy currentProxy;
+  protected Socket currentSocket;
   protected Socket proxySocket;
+  
+  public VTProxySocket(VTProxy currentProxy, Socket currentSocket)
+  {
+    this.currentProxy = currentProxy;
+    this.currentSocket = currentSocket;
+  }
+  
+  public void connectProxy(int timeout) throws IOException
+  {
+    if (currentProxy != null && currentSocket != null && currentSocket instanceof VTProxySocket)
+    {
+      InetSocketAddress proxyAddress = InetSocketAddress.createUnresolved(currentProxy.getProxyHost(), currentProxy.getProxyPort());
+      if (timeout > 0)
+      {
+        currentSocket.connect(proxyAddress, timeout);
+      }
+      else
+      {
+        currentSocket.connect(proxyAddress);
+      }
+      currentSocket.setTcpNoDelay(true);
+      currentSocket.setKeepAlive(true);
+    }
+    else
+    {
+      //currentSocket = null;
+    }
+  }
   
   public InetAddress getInetAddress()
   {

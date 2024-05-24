@@ -1,7 +1,9 @@
-package org.vash.vate.socket;
+package org.vash.vate.socket.remote;
 
 import java.io.IOException;
 import java.net.Socket;
+
+import org.vash.vate.socket.proxy.VTProxy;
 
 public class VTRemoteSocketAdapter extends Socket
 {
