@@ -298,11 +298,28 @@ public abstract class VTProxySocket extends Socket
   
   public synchronized void close() throws IOException
   {
-    if (proxySocket == null)
+    if (proxySocket != null)
     {
-      return;
+      try
+      {
+        proxySocket.close();
+      }
+      catch (Throwable t)
+      {
+        
+      }
     }
-    proxySocket.close();
+    if (currentSocket != null)
+    {
+      try
+      {
+        currentSocket.close();
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
   }
   
   public void shutdownInput() throws IOException
