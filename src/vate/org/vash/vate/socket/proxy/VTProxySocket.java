@@ -38,9 +38,9 @@ public abstract class VTProxySocket extends Socket
       currentSocket.setTcpNoDelay(true);
       currentSocket.setKeepAlive(true);
     }
-    else
+    else if (currentSocket != null && (currentSocket.isClosed() || !currentSocket.isConnected()))
     {
-      //currentSocket = null;
+      currentSocket = null;
     }
   }
   

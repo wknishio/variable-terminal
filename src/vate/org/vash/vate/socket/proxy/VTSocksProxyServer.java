@@ -345,9 +345,11 @@ public class VTSocksProxyServer implements Runnable {
 		}
 
 		if (msg.ip == null) {
-			if (msg instanceof Socks5Message) {
-				msg.ip = InetAddress.getByName(msg.host);
-			} else
+			if (msg instanceof Socks5Message)
+			{
+				//msg.ip = InetAddress.getByName(msg.host);
+			}
+			else
 				throw new SocksException(Proxy.SOCKS_FAILURE);
 		}
 		// LOG.debug(connectionId + " " + msg);
@@ -411,22 +413,44 @@ public class VTSocksProxyServer implements Runnable {
 		if (proxy == null) {
 		  if (connect_proxy == null)
 		  {
-		    s = new Socket();
-	      s.connect(new InetSocketAddress(msg.ip, msg.port));
+		    s = new Socket(java.net.Proxy.NO_PROXY);
+		    if (msg.ip != null)
+		    {
+		      s.connect(new InetSocketAddress(msg.ip, msg.port), connectTimeout);
+		    }
+		    else
+		    {
+		      s.connect(new InetSocketAddress(msg.host, msg.port), connectTimeout);
+		    }
 	      s.setTcpNoDelay(true);
 	      s.setKeepAlive(true);
 	      //s.setSoTimeout(90000);
 		  }
 		  else
 		  {
-		    s = VTProxy.connect(msg.host, msg.port, connectTimeout, socket_factory == null ? null : new VTRemoteSocketAdapter(socket_factory), connect_proxy);
+		    if (msg.ip != null)
+        {
+		      s = VTProxy.connect(msg.ip.getHostAddress(), msg.port, connectTimeout, socket_factory == null ? null : new VTRemoteSocketAdapter(socket_factory), connect_proxy);
+        }
+		    else
+		    {
+		      s = VTProxy.connect(msg.host, msg.port, connectTimeout, socket_factory == null ? null : new VTRemoteSocketAdapter(socket_factory), connect_proxy);
+		    }
 		    s.setTcpNoDelay(true);
 		    s.setKeepAlive(true);
         //s.setSoTimeout(90000);
 		  }
 			
 		} else {
-			s = new SocksSocket(proxy, msg.ip, msg.port);
+		  if (msg.ip != null)
+		  {
+		    s = new SocksSocket(proxy, msg.ip, msg.port, connectTimeout);
+		  }
+		  else
+		  {
+		    s = new SocksSocket(proxy, msg.host, msg.port, connectTimeout);
+		  }
+			
 			s.setTcpNoDelay(true);
 			s.setKeepAlive(true);
 			//s.setSoTimeout(90000);
@@ -451,7 +475,14 @@ public class VTSocksProxyServer implements Runnable {
 			ss = new ServerSocket(0);
 			// ss = new ServerSocket(msg.port);
 		} else {
-			ss = new SocksServerSocket(proxy, msg.ip, msg.port);
+		  if (msg.ip != null)
+		  {
+		    ss = new SocksServerSocket(proxy, msg.ip, msg.port, connectTimeout);
+		  }
+		  else
+		  {
+		    ss = new SocksServerSocket(proxy, msg.host, msg.port, connectTimeout);
+		  }
 		}
 		ss.setSoTimeout(acceptTimeout);
 

@@ -21,6 +21,9 @@ import java.io.*;
 //import org.apache.commons.lang.RandomStringUtils;
 //import org.apache.log4j.Logger;
 import java.net.*;
+
+import org.vash.vate.socket.proxy.VTProxy;
+import org.vash.vate.socket.remote.VTRemoteSocketAdapter;
 /**
  * SOCKS4 and SOCKS5 proxy, handles both protocols simultaniously. Implements
  * all SOCKS commands, including UDP relaying.
@@ -313,7 +316,9 @@ public class ProxyServer implements Runnable {
 
 		if (msg.ip == null) {
 			if (msg instanceof Socks5Message) {
-				msg.ip = InetAddress.getByName(msg.host);
+			  
+				//msg.ip = InetAddress.getByName(msg.host);
+				
 			} else
 				throw new SocksException(Proxy.SOCKS_FAILURE);
 		}
@@ -371,14 +376,28 @@ public class ProxyServer implements Runnable {
 
 		if (proxy == null)
 		{
-		  s = new Socket();
-      s.connect(new InetSocketAddress(msg.ip, msg.port));
+		  s = new Socket(java.net.Proxy.NO_PROXY);
+		  if (msg.ip != null)
+      {
+        s.connect(new InetSocketAddress(msg.ip, msg.port), 0);
+      }
+      else
+      {
+        s.connect(new InetSocketAddress(msg.host, msg.port), 0);
+      }
       s.setTcpNoDelay(true);
       s.setKeepAlive(true);
       //s.setSoTimeout(90000);
 			
 		} else {
-			s = new SocksSocket(proxy, msg.ip, msg.port);
+		  if (msg.ip != null)
+      {
+		    s = new SocksSocket(proxy, msg.ip, msg.port, 0);
+      }
+      else
+      {
+        s = new SocksSocket(proxy, msg.host, msg.port, 0);
+      }
 			s.setTcpNoDelay(true);
 			s.setKeepAlive(true);
 			//s.setSoTimeout(90000);
@@ -403,7 +422,14 @@ public class ProxyServer implements Runnable {
 			ss = new ServerSocket(0);
 			// ss = new ServerSocket(msg.port);
 		} else {
-			ss = new SocksServerSocket(proxy, msg.ip, msg.port);
+		  if (msg.ip != null)
+      {
+        ss = new SocksServerSocket(proxy, msg.ip, msg.port, 0);
+      }
+      else
+      {
+        ss = new SocksServerSocket(proxy, msg.host, msg.port, 0);
+      }
 		}
 		ss.setSoTimeout(acceptTimeout);
 

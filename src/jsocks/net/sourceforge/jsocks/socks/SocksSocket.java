@@ -136,7 +136,7 @@ public class SocksSocket extends Socket{
     * @see SocksSocket#SocksSocket(Proxy,String,int)
     */
    public SocksSocket(InetAddress ip, int port) throws SocksException{
-      this(Proxy.defaultProxy,ip,port);
+      this(Proxy.defaultProxy,ip,port,0);
    }
 
    /**
@@ -146,12 +146,12 @@ public class SocksSocket extends Socket{
       @param port Port to which to connect.
 
     */
-   public SocksSocket(Proxy p,InetAddress ip, int port) throws SocksException{
+   public SocksSocket(Proxy p,InetAddress ip, int port, int connectTimeout) throws SocksException{
       if(p == null) throw new SocksException(Proxy.SOCKS_NO_PROXY);
       this.proxy = p.copy();
       this.remoteIP = ip;
       this.remotePort = port;
-      this.remoteHost = ip.getHostName();
+      this.remoteHost = ip.getHostAddress();
       if(proxy.isDirect(remoteIP))
         doDirect();
       else
@@ -176,7 +176,7 @@ public class SocksSocket extends Socket{
       this.proxy = proxy;
       this.localIP = proxy.proxySocket.getLocalAddress();
       this.localPort = proxy.proxySocket.getLocalPort();
-      remoteHost = remoteIP.getHostName();
+      remoteHost = remoteIP.getHostAddress();
    }
 
    /**
@@ -358,7 +358,7 @@ public class SocksSocket extends Socket{
        try
        {
         localIP = InetAddress.getByName(proxy.proxyHost);
-        localHost = localIP.getHostName();
+        localHost = localIP.getHostAddress();
        }
        catch (UnknownHostException e)
        {

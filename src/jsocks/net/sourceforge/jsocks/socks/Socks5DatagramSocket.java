@@ -111,7 +111,14 @@ public class Socks5DatagramSocket extends DatagramSocket {
 		proxy = (Socks5Proxy) p.copy();
 
 		ProxyMessage msg = proxy.udpAssociate(super.getLocalAddress(), super.getLocalPort(), connectTimeout);
+		
+		if (msg.ip == null)
+		{
+		  msg.ip = InetAddress.getByName(msg.host);
+		}
+		
 		relayIP = msg.ip;
+		
 		if (relayIP.getHostAddress().equals("0.0.0.0") || relayIP.getHostAddress().equals("::")
 				|| relayIP.getHostAddress().equals("::0") || relayIP.getHostAddress().equals("0:0:0:0:0:0:0:0")
 				|| relayIP.getHostAddress().equals("00:00:00:00:00:00:00:00")

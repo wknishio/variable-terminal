@@ -29,7 +29,7 @@ public class Socks5Proxy extends Proxy implements Cloneable{
    private Hashtable authMethods = new Hashtable();
    private int selectedMethod;
 
-   boolean resolveAddrLocally = true;
+   boolean resolveAddrLocally = false;
    UDPEncapsulation udp_encapsulation=null;
 
 

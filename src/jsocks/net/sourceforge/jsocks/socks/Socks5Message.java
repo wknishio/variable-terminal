@@ -56,7 +56,7 @@ public class Socks5Message extends ProxyMessage {
 	 */
 	public Socks5Message(int cmd, InetAddress ip, int port) {
 		super(cmd, ip, port);
-		this.host = ip == null ? "0.0.0.0" : ip.getHostName();
+		this.host = ip == null ? "0.0.0.0" : ip.getHostAddress();
 		this.version = SOCKS_VERSION;
 
 		byte[] addr;
@@ -312,6 +312,6 @@ public class Socks5Message extends ProxyMessage {
 
 	public static final int SOCKS_IPV6_LENGTH = 16;
 
-	static boolean doResolveIP = true;
+	static boolean doResolveIP = false;
 
 }

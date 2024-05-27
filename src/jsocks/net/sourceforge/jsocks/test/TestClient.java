@@ -152,7 +152,7 @@ public class TestClient extends TestService{
         ss = new SocksServerSocket(proxy,testHost,servicePorts[service], 0);
       else
         ss = new SocksServerSocket(proxy,InetAddress.getByName(testHost),
-                                   servicePorts[service]);
+                                   servicePorts[service], 0);
       log("Listenning on "+ss.getInetAddress()+":"+ss.getLocalPort());
       ss.setSoTimeout(acceptTimeout);
  
@@ -181,7 +181,7 @@ public class TestClient extends TestService{
 
       if(!useString){
          s = new SocksSocket(proxy,InetAddress.getByName(testHost),
-                                   servicePorts[service]);
+                                   servicePorts[service], 0);
       }else{
          s = new SocksSocket(proxy,testHost,servicePorts[service], 0);
       }

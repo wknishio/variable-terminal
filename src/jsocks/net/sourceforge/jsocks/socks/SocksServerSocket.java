@@ -81,7 +81,7 @@ public class SocksServerSocket extends ServerSocket {
 	 *            Port number of the primary connection.
 	 */
 	public SocksServerSocket(InetAddress ip, int port) throws SocksException, IOException {
-		this(Proxy.defaultProxy, ip, port);
+		this(Proxy.defaultProxy, ip, port, 0);
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class SocksServerSocket extends ServerSocket {
 	 * @param port
 	 *            Port number of the primary connection.
 	 */
-	public SocksServerSocket(Proxy p, InetAddress ip, int port) throws SocksException, IOException {
+	public SocksServerSocket(Proxy p, InetAddress ip, int port, int connectTimeout) throws SocksException, IOException {
 		super(0);
 
 		if (p == null)
@@ -106,7 +106,7 @@ public class SocksServerSocket extends ServerSocket {
 			remoteAddr = ip;
 			doDirect();
 		} else {
-			processReply(proxy.bind(ip, port, 0));
+			processReply(proxy.bind(ip, port, connectTimeout));
 		}
 	}
 
@@ -232,7 +232,7 @@ public class SocksServerSocket extends ServerSocket {
 		  try
       {
        localIP = InetAddress.getByName(proxy.proxyHost);
-       localHost = localIP.getHostName();
+       localHost = localIP.getHostAddress();
       }
       catch (UnknownHostException e)
       {
@@ -248,7 +248,7 @@ public class SocksServerSocket extends ServerSocket {
 		doing_direct = true;
 		localPort = super.getLocalPort();
 		localIP = super.getInetAddress();
-		localHost = localIP.getHostName();
+		localHost = localIP.getHostAddress();
 	}
 
 }

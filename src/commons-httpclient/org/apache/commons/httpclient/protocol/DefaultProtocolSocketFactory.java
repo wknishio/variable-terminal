@@ -32,6 +32,8 @@ package org.apache.commons.httpclient.protocol;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -77,7 +79,14 @@ public class DefaultProtocolSocketFactory implements ProtocolSocketFactory {
         InetAddress localAddress,
         int localPort
     ) throws IOException, UnknownHostException {
-        return new Socket(host, port, localAddress, localPort);
+        Socket socket = new Socket(Proxy.NO_PROXY);
+        if (localAddress != null)
+        {
+          socket.bind(new InetSocketAddress(localAddress, localPort));
+        }
+        socket.connect(host != null ? new InetSocketAddress(host, port) :
+               new InetSocketAddress(InetAddress.getByName(null), port));
+        return socket;
     }
     
     /**
@@ -118,16 +127,16 @@ public class DefaultProtocolSocketFactory implements ProtocolSocketFactory {
             throw new IllegalArgumentException("Parameters may not be null");
         }
         int timeout = params.getConnectionTimeout();
-        if (timeout == 0) {
+        if (timeout <= 0) {
             return createSocket(host, port, localAddress, localPort);
         } else {
-            // To be eventually deprecated when migrated to Java 1.4 or above
-            Socket socket = ReflectionSocketFactory.createSocket(
-                "javax.net.SocketFactory", host, port, localAddress, localPort, timeout);
-            if (socket == null) {
-                socket = ControllerThreadSocketFactory.createSocket(
-                    this, host, port, localAddress, localPort, timeout);
-            }
+          Socket socket = new Socket(Proxy.NO_PROXY);
+          if (localAddress != null)
+          {
+            socket.bind(new InetSocketAddress(localAddress, localPort));
+          }
+          socket.connect(host != null ? new InetSocketAddress(host, port) :
+                 new InetSocketAddress(InetAddress.getByName(null), port), timeout);
             return socket;
         }
     }
@@ -137,7 +146,10 @@ public class DefaultProtocolSocketFactory implements ProtocolSocketFactory {
      */
     public Socket createSocket(String host, int port)
         throws IOException, UnknownHostException {
-        return new Socket(host, port);
+        Socket socket = new Socket(Proxy.NO_PROXY);
+        socket.connect(host != null ? new InetSocketAddress(host, port) :
+               new InetSocketAddress(InetAddress.getByName(null), port));
+        return socket;
     }
 
     /**
