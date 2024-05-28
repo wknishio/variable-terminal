@@ -8,7 +8,6 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.net.Socket;
 
-import org.apache.commons.lang3.StringUtils;
 import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.security.VTArrayComparator;
@@ -27,18 +26,18 @@ public class VTClientConnection
 {
   private static final String MAJOR_MINOR_VERSION = VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION;
   
-  private static final byte[] VT_SERVER_CHECK_STRING_NONE = (StringUtils.reverse("VT/SERVER/NONE/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/NONE/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_CLIENT_CHECK_STRING_NONE = (StringUtils.reverse("VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/NONE/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_SERVER_CHECK_STRING_VMPC = (StringUtils.reverse("VT/SERVER/VMPC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/VMPC/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_CLIENT_CHECK_STRING_VMPC = (StringUtils.reverse("VT/CLIENT/VMPC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/VMPC/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_SERVER_CHECK_STRING_ZUC = (StringUtils.reverse("VT/SERVER/ZUC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_CLIENT_CHECK_STRING_ZUC = (StringUtils.reverse("VT/CLIENT/ZUC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_SERVER_CHECK_STRING_SALSA = (StringUtils.reverse("VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_CLIENT_CHECK_STRING_SALSA = (StringUtils.reverse("VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_SERVER_CHECK_STRING_HC256 = (StringUtils.reverse("VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/HC256/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_CLIENT_CHECK_STRING_HC256 = (StringUtils.reverse("VT/CLIENT/HC256/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/HC256/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_SERVER_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_CLIENT_CHECK_STRING_ISAAC = (StringUtils.reverse("VT/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).toLowerCase() + "/VT/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_NONE = ("/VARIABLE-TERMINAL/SERVER/NONE/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_NONE = ("/VARIABLE-TERMINAL/CLIENT/NONE/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_VMPC = ("/VARIABLE-TERMINAL/SERVER/VMPC/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_VMPC = ("/VARIABLE-TERMINAL/CLIENT/VMPC/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_ISAAC = ("/VARIABLE-TERMINAL/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_ISAAC = ("/VARIABLE-TERMINAL/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_SALSA = ("/VARIABLE-TERMINAL/SERVER/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_SALSA = ("/VARIABLE-TERMINAL/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_HC256 = ("/VARIABLE-TERMINAL/SERVER/HC256/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_HC256 = ("/VARIABLE-TERMINAL/CLIENT/HC256/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/SERVER/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/CLIENT/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
   
   private volatile boolean connected = false;
   private volatile boolean closed = true;
