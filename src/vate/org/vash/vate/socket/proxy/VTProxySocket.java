@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
@@ -38,9 +39,20 @@ public abstract class VTProxySocket extends Socket
       currentSocket.setTcpNoDelay(true);
       currentSocket.setKeepAlive(true);
     }
-    else if (currentSocket != null && (currentSocket.isClosed() || !currentSocket.isConnected()))
+    else if (currentSocket == null || currentSocket.isClosed() || !currentSocket.isConnected())
     {
-      currentSocket = null;
+      InetSocketAddress proxyAddress = new InetSocketAddress(currentProxy.getProxyHost(), currentProxy.getProxyPort());
+      currentSocket = new Socket(Proxy.NO_PROXY);
+      if (timeout > 0)
+      {
+        currentSocket.connect(proxyAddress, timeout);
+      }
+      else
+      {
+        currentSocket.connect(proxyAddress);
+      }
+      currentSocket.setTcpNoDelay(true);
+      currentSocket.setKeepAlive(true);
     }
   }
   
