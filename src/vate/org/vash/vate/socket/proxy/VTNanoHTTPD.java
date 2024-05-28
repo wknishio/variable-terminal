@@ -1,4 +1,4 @@
-package org.vash.vate.nanohttpd;
+package org.vash.vate.socket.proxy;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
