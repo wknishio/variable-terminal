@@ -15,7 +15,6 @@ import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
-import org.vash.vate.stream.filter.VTBufferedOutputStream;
 import org.vash.vate.stream.limit.VTThrottledOutputStream;
 
 import engineering.clientside.throttle.NanoThrottle;
@@ -41,7 +40,8 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     //this.packetSequencer = new VTSplitMix64Random(packetSequence.nextLong());
     this.throttler = new NanoThrottle(Long.MAX_VALUE, (1d / 8d), true);
     //this.packetSequencer = new VTMiddleSquareWeylSequenceDigestRandom(packetSeed);
-    this.original = new VTBufferedOutputStream(out, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES, false);
+    //this.original = new VTBufferedOutputStream(out, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES, false);
+    this.original = out;
     this.throttled = new VTThrottledOutputStream(original, throttler);
 //    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
 //    this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());

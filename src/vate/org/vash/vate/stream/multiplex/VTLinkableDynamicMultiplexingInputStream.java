@@ -1,6 +1,5 @@
 package org.vash.vate.stream.multiplex;
 
-import java.io.BufferedInputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,7 +58,8 @@ public final class VTLinkableDynamicMultiplexingInputStream
     this.bufferSize = bufferSize;
     this.packetDataBuffer = new byte[packetSize * 2];
     //this.packetHeaderBuffer = new VTByteArrayInputStream(new byte[VT.VT_PACKET_HEADER_SIZE_BYTES]);
-    this.lin = new VTLittleEndianInputStream(new BufferedInputStream(in, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES));
+    //this.lin = new VTLittleEndianInputStream(new BufferedInputStream(in, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES));
+    this.lin = new VTLittleEndianInputStream(in);
     //this.hin = new VTLittleEndianInputStream(packetHeaderBuffer);
 //    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
 //    this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());

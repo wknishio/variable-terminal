@@ -1,6 +1,7 @@
 package org.vash.vate.client.connection;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -14,6 +15,8 @@ import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTCryptographicEngine;
+import org.vash.vate.security.VTStreamCipherInputStream;
+import org.vash.vate.security.VTStreamCipherOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -604,8 +607,26 @@ public class VTClientConnection
     }
     //cryptoEngine.initializeClientEngine(encryptionType, encryptionKey, localNonce, remoteNonce, digestedCredentials, user != null ? user.getBytes("UTF-8") : null, password != null ? password.getBytes("UTF-8") : null);
     cryptoEngine.initializeClientEngine(encryptionType, localNonce, remoteNonce, encryptionKey, digestedCredentials);
-    connectionInputStream = cryptoEngine.getDecryptedInputStream(connectionSocketInputStream);
-    connectionOutputStream = cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream);
+    //connectionInputStream = cryptoEngine.getDecryptedInputStream(connectionSocketInputStream);
+    //connectionOutputStream = cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream);
+    InputStream decrypted = cryptoEngine.getDecryptedInputStream(new BufferedInputStream(connectionSocketInputStream, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES));
+    OutputStream encrypted = cryptoEngine.getEncryptedOutputStream(new BufferedOutputStream(connectionSocketOutputStream, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES));
+    if (decrypted instanceof VTStreamCipherInputStream)
+    {
+      connectionInputStream = new BufferedInputStream(decrypted, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
+    }
+    else
+    {
+      connectionInputStream = decrypted;
+    }
+    if (encrypted instanceof VTStreamCipherOutputStream)
+    {
+      connectionOutputStream = new BufferedOutputStream(encrypted, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
+    }
+    else
+    {
+      connectionOutputStream = encrypted;
+    }
     //authenticationReader.setIntputStream(connectionInputStream);
     //authenticationWriter.setOutputStream(connectionOutputStream);
     //nonceReader.setIntputStream(authenticationReader.getInputStream());
