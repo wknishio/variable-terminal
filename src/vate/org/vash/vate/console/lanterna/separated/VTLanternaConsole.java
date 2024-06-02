@@ -1417,11 +1417,11 @@ public class VTLanternaConsole implements VTConsoleImplementation
     gui = new MultiWindowTextGUI(screen, new DefaultWindowManager(), null);
     
     defaultInputProperties = new Properties();
-    defaultInputProperties.load(this.getClass().getResourceAsStream("/vtlanternaconsole-input-theme.properties"));
+    defaultInputProperties.load(this.getClass().getResourceAsStream("/org/vash/vate/console/lanterna/separated/vtlanternaconsole-input-theme.properties"));
     PropertyTheme inputTheme = new PropertyTheme(defaultInputProperties);
     
     defaultOutputProperties = new Properties();
-    defaultOutputProperties.load(this.getClass().getResourceAsStream("/vtlanternaconsole-output-theme.properties"));
+    defaultOutputProperties.load(this.getClass().getResourceAsStream("/org/vash/vate/console/lanterna/separated/vtlanternaconsole-output-theme.properties"));
     PropertyTheme outputTheme = new PropertyTheme(defaultOutputProperties);
     
     inputBox.setTheme(inputTheme);
