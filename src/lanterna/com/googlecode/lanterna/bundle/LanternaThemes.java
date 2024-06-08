@@ -43,11 +43,11 @@ public class LanternaThemes {
 
     static {
         registerTheme("default", new DefaultTheme());
-        registerPropTheme("bigsnake", loadPropTheme("bigsnake-theme.properties"));
-        registerPropTheme("businessmachine", loadPropTheme("businessmachine-theme.properties"));
-        registerPropTheme("conqueror", loadPropTheme("conqueror-theme.properties"));
-        registerPropTheme("defrost", loadPropTheme("defrost-theme.properties"));
-        registerPropTheme("blaster", loadPropTheme("blaster-theme.properties"));
+        registerPropTheme("bigsnake", loadPropTheme("com/googlecode/lanterna/bigsnake-theme.properties"));
+        registerPropTheme("businessmachine", loadPropTheme("com/googlecode/lanterna/businessmachine-theme.properties"));
+        registerPropTheme("conqueror", loadPropTheme("com/googlecode/lanterna/conqueror-theme.properties"));
+        registerPropTheme("defrost", loadPropTheme("com/googlecode/lanterna/defrost-theme.properties"));
+        registerPropTheme("blaster", loadPropTheme("com/googlecode/lanterna/blaster-theme.properties"));
     }
 
     /**
