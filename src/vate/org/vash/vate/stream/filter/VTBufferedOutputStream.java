@@ -52,6 +52,33 @@ public final class VTBufferedOutputStream extends FilterOutputStream
     buf = new byte[size];
   }
   
+  public VTBufferedOutputStream(OutputStream out)
+  {
+    this(out, 8192, false);
+  }
+  
+  /**
+   * Creates a new buffered output stream to write data to the specified
+   * underlying output stream with the specified buffer size.
+   *
+   * @param out
+   *          the underlying output stream.
+   * @param size
+   *          the buffer size.
+   * @exception IllegalArgumentException
+   *              if size &lt;= 0.
+   */
+  public VTBufferedOutputStream(OutputStream out, int size)
+  {
+    super(out);
+    this.flushWhenFull = false;
+    if (size <= 0)
+    {
+      throw new IllegalArgumentException("Buffer size <= 0");
+    }
+    buf = new byte[size];
+  }
+  
   /** Flush the internal buffer */
   private final void flushBuffer(boolean full) throws IOException
   {
