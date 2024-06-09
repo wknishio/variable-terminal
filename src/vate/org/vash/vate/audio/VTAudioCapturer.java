@@ -1,5 +1,6 @@
 package org.vash.vate.audio;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -22,7 +23,6 @@ import org.concentus.OpusMode;
 import org.vash.vate.VT;
 import org.vash.vate.stream.endian.VTLittleEndianByteArrayInputOutputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
-import org.vash.vate.stream.filter.VTBufferedOutputStream;
 import org.xiph.speex.SpeexEncoder;
 
 public class VTAudioCapturer
@@ -131,7 +131,7 @@ public class VTAudioCapturer
     private final byte[] inputBuffer;
     // private short[] inputBufferShort;
     private final byte[] outputBuffer;
-    private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VT.VT_REDUCED_BUFFER_SIZE_BYTES);
+    private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
     private final Queue<VTLittleEndianOutputStream> streams;
     private final String id;
     private TargetDataLine line;
@@ -491,12 +491,12 @@ public class VTAudioCapturer
     VTAudioCapturerThread capturer = lines.get(id);
     if (capturer == null)
     {
-      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(out, VT.VT_REDUCED_BUFFER_SIZE_BYTES, true));
+      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new BufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
       lines.put(id, new VTAudioCapturerThread(stream, line, id, codec, frameMilliseconds));
     }
     else
     {
-      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(out, VT.VT_REDUCED_BUFFER_SIZE_BYTES, true));
+      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new BufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
       capturer.addOutput(stream);
     }
     return true;
