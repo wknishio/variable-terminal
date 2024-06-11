@@ -11,6 +11,7 @@ import org.vash.vate.runtime.VTRuntimeExit;
 
 public class VTTrayIconInterface
 {
+  @SuppressWarnings("unused")
   private Method isSupported;
   private Method getSystemTray;
   private Method add;
@@ -36,7 +37,8 @@ public class VTTrayIconInterface
       Class<?> systemTrayClass = Class.forName("java.awt.SystemTray");
       isSupported = systemTrayClass.getDeclaredMethod("isSupported");
       
-      supported = ((Boolean) isSupported.invoke(null));
+      supported = false;
+      //supported = ((Boolean) isSupported.invoke(null));
     }
     catch (Throwable t)
     {
