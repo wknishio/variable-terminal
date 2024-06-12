@@ -3,8 +3,6 @@ package org.vash.vate;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -210,7 +208,7 @@ public class VT
     }
     
     ImageIO.setUseCache(false);
-    disableAccessWarnings();
+    //disableAccessWarnings();
     System.setProperty("jdk.http.auth.tunneling.disabledSchemes", "");
     System.setProperty("jdk.http.auth.proxying.disabledSchemes", "");
     //Authenticator.setDefault(VTProxyAuthenticator.getInstance());
@@ -286,26 +284,26 @@ public class VT
     }
   }
   
-  public static void disableAccessWarnings()
-  {
-    try
-    {
-      Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
-      Field field = unsafeClass.getDeclaredField("theUnsafe");
-      field.setAccessible(true);
-      Object unsafe = field.get(null);
-      
-      Method putObjectVolatile = unsafeClass.getDeclaredMethod("putObjectVolatile", Object.class, long.class, Object.class);
-      Method staticFieldOffset = unsafeClass.getDeclaredMethod("staticFieldOffset", Field.class);
-      
-      Class<?> loggerClass = Class.forName("jdk.internal.module.IllegalAccessLogger");
-      Field loggerField = loggerClass.getDeclaredField("logger");
-      Long offset = (Long) staticFieldOffset.invoke(unsafe, loggerField);
-      putObjectVolatile.invoke(unsafe, loggerClass, offset, null);
-    }
-    catch (Throwable ignored)
-    {
-      
-    }
-  }
+//  public static void disableAccessWarnings()
+//  {
+//    try
+//    {
+//      Class<?> unsafeClass = Class.forName("sun.misc.Unsafe");
+//      Field field = unsafeClass.getDeclaredField("theUnsafe");
+//      field.setAccessible(true);
+//      Object unsafe = field.get(null);
+//      
+//      Method putObjectVolatile = unsafeClass.getDeclaredMethod("putObjectVolatile", Object.class, long.class, Object.class);
+//      Method staticFieldOffset = unsafeClass.getDeclaredMethod("staticFieldOffset", Field.class);
+//      
+//      Class<?> loggerClass = Class.forName("jdk.internal.module.IllegalAccessLogger");
+//      Field loggerField = loggerClass.getDeclaredField("logger");
+//      Long offset = (Long) staticFieldOffset.invoke(unsafe, loggerField);
+//      putObjectVolatile.invoke(unsafe, loggerClass, offset, null);
+//    }
+//    catch (Throwable ignored)
+//    {
+//      
+//    }
+//  }
 }
