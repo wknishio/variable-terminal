@@ -305,6 +305,10 @@ public class TextCharacter {
     public boolean isItalic() {
         return modifiers.contains(SGR.ITALIC);
     }
+    
+    public boolean isFixedBackground() {
+      return modifiers.contains(SGR.FIXED_BACKGROUND);
+  }
 
     /**
      * Returns a new TextCharacter with the same colors and modifiers but a different underlying character

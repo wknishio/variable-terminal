@@ -621,12 +621,26 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         TextColor backgroundColor = character.getBackgroundColor();
         boolean reverse = character.isReversed();
         boolean blink = character.isBlinking();
-
+        boolean fixedbg = character.isFixedBackground();
+        
         if(cursorIsVisible && atCursorLocation) {
             if(deviceConfiguration.getCursorStyle() == TerminalEmulatorDeviceConfiguration.CursorStyle.REVERSED &&
                     (!deviceConfiguration.isCursorBlinking() || !blinkOn)) {
                 reverse = true;
             }
+            else if(deviceConfiguration.getCursorStyle() == TerminalEmulatorDeviceConfiguration.CursorStyle.FIXED_BACKGROUND) {
+                fixedbg = true;
+            }
+        }
+        
+        if (reverse)
+        {
+          fixedbg = false;
+        }
+        
+        if (fixedbg)
+        {
+          reverse = true;
         }
 
         if(reverse && (!blink || !blinkOn)) {
@@ -644,17 +658,29 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         TextColor foregroundColor = character.getForegroundColor();
         TextColor backgroundColor = character.getBackgroundColor();
         boolean reverse = character.isReversed();
-
+        boolean fixedbg = character.isFixedBackground();
+        
         if(cursorIsVisible && atCursorLocation) {
             if(deviceConfiguration.getCursorStyle() == TerminalEmulatorDeviceConfiguration.CursorStyle.REVERSED &&
                     (!deviceConfiguration.isCursorBlinking() || !blinkOn)) {
                 reverse = true;
             }
             else if(deviceConfiguration.getCursorStyle() == TerminalEmulatorDeviceConfiguration.CursorStyle.FIXED_BACKGROUND) {
-                backgroundColor = deviceConfiguration.getCursorColor();
+                fixedbg = true;
             }
         }
-
+        
+        if (reverse)
+        {
+          fixedbg = false;
+        }
+        
+        if (fixedbg)
+        {
+          reverse = false;
+          backgroundColor = deviceConfiguration.getCursorColor();
+        }
+        
         if(reverse) {
             return colorConfiguration.toAWTColor(foregroundColor, backgroundColor == TextColor.ANSI.DEFAULT, character.isBold());
         }
@@ -865,15 +891,21 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
      */
     protected class TerminalInputListener extends KeyAdapter {
     	
+      private boolean shiftPressed = false;
+      
     	public void keyReleased(KeyEvent e)
     	{
     	  //System.out.println("keyReleased:" + e.toString());
     	  if (e.getKeyCode() == KeyEvent.VK_CONTROL
-        || e.getKeyCode() == KeyEvent.VK_SHIFT
+//        || e.getKeyCode() == KeyEvent.VK_SHIFT
         || e.getKeyCode() == KeyEvent.VK_ALT)
         {
           return;
         }
+    	  if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+    	  {
+    	    shiftPressed = false;
+    	  }
     		e.consume();
     	}
         
@@ -910,7 +942,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         public void keyPressed(KeyEvent e) {
         	//System.out.println("keyPressed:" + e.toString());
           if (e.getKeyCode() == KeyEvent.VK_CONTROL
-          || e.getKeyCode() == KeyEvent.VK_SHIFT
+//          || e.getKeyCode() == KeyEvent.VK_SHIFT
           || e.getKeyCode() == KeyEvent.VK_ALT)
           {
             return;
@@ -1017,6 +1049,26 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
                     keyQueue.add(new KeyStroke(KeyType.Tab, ctrlDown, altDown, shiftDown));
                 }
             }
+//            else if (e.getKeyCode() == KeyEvent.VK_CONTROL)
+//            {
+//              keyQueue.add(new KeyStroke(KeyType.Control, ctrlDown, altDown, shiftDown));
+//            }
+            else if (e.getKeyCode() == KeyEvent.VK_SHIFT)
+            {
+              if (!shiftPressed)
+              {
+                shiftPressed = true;
+                keyQueue.add(new KeyStroke(KeyType.Shift, false, false, true));
+              }
+            }
+//            else if (e.getKeyCode() == KeyEvent.VK_ALT)
+//            {
+//              keyQueue.add(new KeyStroke(KeyType.Alt, ctrlDown, altDown, shiftDown));
+//            }
+//            else if (e.getKeyCode() == KeyEvent.VK_ALT_GRAPH)
+//            {
+//              keyQueue.add(new KeyStroke(KeyType.AltGr, ctrlDown, altDown, shiftDown));
+//            }
             else {
                 //keyTyped doesn't catch this scenario (for whatever reason...) so we have to do it here
                 if(altDown && ctrlDown && e.getKeyCode() >= 'A' && e.getKeyCode() <= 'Z') {

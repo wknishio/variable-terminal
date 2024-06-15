@@ -32,6 +32,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+
 /**
  * This class encapsulates the font information used by an {@link AWTTerminal}. By customizing this class, you can
  * choose which fonts are going to be used by an {@link AWTTerminal} component and some other related settings.
@@ -85,8 +87,10 @@ public class AWTTerminalFontConfiguration {
         //return fonts;
         //Monospaced can look pretty bad on Windows, so let's override it
         return (Arrays.asList(
-                new Font("Courier New", Font.PLAIN, 12).deriveFont(fontSize),
+                //new Font(VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_NAME, Font.PLAIN, 12).deriveFont(fontSize),
+                VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(fontSize),
                 //new Font("Consolas", Font.PLAIN, 12).deriveFont(fontSize),
+                new Font("Courier New", Font.PLAIN, 12).deriveFont(fontSize),
                 new Font("Monospaced", Font.PLAIN, 12).deriveFont(fontSize)
                 ));
     }
@@ -99,6 +103,8 @@ public class AWTTerminalFontConfiguration {
         //fonts.add(new Font("Monospaced", Font.PLAIN, fontSize));
         //return fonts;
         return (Arrays.asList(
+                //new Font(VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_NAME, Font.PLAIN, 12).deriveFont(fontSize),
+                VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(fontSize),
                 new Font("DejaVu Sans Mono", Font.PLAIN, 12).deriveFont(fontSize),
                 new Font("Monospaced", Font.PLAIN, 12).deriveFont(fontSize),
                 //Below, these should be redundant (Monospaced is supposed to catch-all)
@@ -122,7 +128,11 @@ public class AWTTerminalFontConfiguration {
         //ArrayList<Font> fonts = new ArrayList<Font>();
         //fonts.add(new Font("Monospaced", Font.PLAIN, fontSize));
         //return fonts;
-        return (Arrays.asList(new Font("Monospaced", Font.PLAIN, 12).deriveFont(fontSize)));
+        
+        return (Arrays.asList(
+            //new Font(VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_NAME, Font.PLAIN, 12).deriveFont(fontSize),
+            VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(fontSize),
+            new Font("Monospaced", Font.PLAIN, 12).deriveFont(fontSize)));
     }
     
     public static void setFontScalingFactor(float factor)

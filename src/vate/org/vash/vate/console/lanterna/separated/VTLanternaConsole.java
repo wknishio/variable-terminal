@@ -740,15 +740,20 @@ public class VTLanternaConsole implements VTConsoleImplementation
         
         public void mouseMoved(MouseEvent e)
         {
+          e.consume();
+          int x = e.getX();
+          int y = e.getY();
+          int fontWidth = awtTerminal.getTerminalImplementation().getFontWidth();
+          int fontHeight = awtTerminal.getTerminalImplementation().getFontHeight();
+          TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
           if (e.isShiftDown())
           {
-            e.consume();
-            int x = e.getX();
-            int y = e.getY();
-            int fontWidth = awtTerminal.getTerminalImplementation().getFontWidth();
-            int fontHeight = awtTerminal.getTerminalImplementation().getFontHeight();
-            TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
             MouseAction mouseAction = new MouseAction(MouseActionType.DRAG, e.getButton(), pos);
+            awtTerminal.addInput(mouseAction);
+          }
+          else
+          {
+            MouseAction mouseAction = new MouseAction(MouseActionType.MOVE, e.getButton(), pos);
             awtTerminal.addInput(mouseAction);
           }
           // int x = e.getX();
@@ -803,6 +808,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
       });
       //
       VTGlobalTextStyleManager.registerWindow(frame);
+      //VTGlobalTextStyleManager.registerMonospacedComponent(awtTerminal);
       VTGlobalTextStyleManager.registerFontList(awtTerminal.getTerminalFontConfiguration().getFontPriority());
       popupMenu = new VTGraphicalConsolePopupMenu(frame);
     }
@@ -1018,17 +1024,28 @@ public class VTLanternaConsole implements VTConsoleImplementation
               TerminalPosition position = outputBox.getCaretPosition();
               outputBox.updateSelection(keyStroke, position.getColumn(), position.getRow());
             }
+            else
+            {
+              if (keyStroke.getKeyType() == KeyType.Shift)
+              {
+                if (outputBox.getSelectionStartPosition() != null)
+                {
+                  resetSelection();
+                }
+                return false;
+              }
+            }
           }
         }
         else
         {
-          if (outputBox.isMovementKeyStroke(keyStroke))
-          {
-            if (outputBox.getSelectionStartPosition() != null)
-            {
-              resetSelection();
-            }
-          }
+//          if (outputBox.isMovementKeyStroke(keyStroke))
+//          {
+//            if (outputBox.getSelectionStartPosition() != null)
+//            {
+//              resetSelection();
+//            }
+//          }
         }
         if (keyStroke.isCtrlDown() && !keyStroke.isShiftDown())
         {
@@ -1178,16 +1195,27 @@ public class VTLanternaConsole implements VTConsoleImplementation
             TerminalPosition position = inputBox.getCaretPosition();
             inputBox.updateSelection(keyStroke, position.getColumn(), position.getRow());
           }
+          else
+          {
+            if (keyStroke.getKeyType() == KeyType.Shift)
+            {
+              if (inputBox.getSelectionStartPosition() != null)
+              {
+                resetSelection();
+              }
+              return false;
+            }
+          }
         }
         else
         {
-          if (inputBox.isMovementKeyStroke(keyStroke))
-          {
-            if (inputBox.getSelectionStartPosition() != null)
-            {
-              resetSelection();
-            }
-          }
+//          if (inputBox.isMovementKeyStroke(keyStroke))
+//          {
+//            if (inputBox.getSelectionStartPosition() != null)
+//            {
+//              resetSelection();
+//            }
+//          }
         }
         
         if (keyStroke.getKeyType() == KeyType.Enter)
@@ -1257,17 +1285,17 @@ public class VTLanternaConsole implements VTConsoleImplementation
         }
         if (keyStroke.getKeyType() == KeyType.Insert)
         {
-          if (!keyStroke.isAltDown() && !keyStroke.isCtrlDown() && !keyStroke.isShiftDown())
+          if (!keyStroke.isCtrlDown() && !keyStroke.isShiftDown())
           {
             toggleReplace();
             return false;
           }
-          if (!keyStroke.isAltDown() && !keyStroke.isCtrlDown() && keyStroke.isShiftDown())
+          if (!keyStroke.isCtrlDown() && keyStroke.isShiftDown())
           {
             VTConsole.pasteText();
             return false;
           }
-          if (!keyStroke.isAltDown() && keyStroke.isCtrlDown() && !keyStroke.isShiftDown())
+          if (keyStroke.isCtrlDown() && !keyStroke.isShiftDown())
           {
             VTConsole.copyText();
             return false;
@@ -2455,8 +2483,6 @@ public class VTLanternaConsole implements VTConsoleImplementation
     {
       try
       {
-        // int number = outputBox.getCaretPosition().getRow();
-        // return outputBox.getLine(number);
         return outputBox.getSelectedText();
       }
       catch (Throwable e)

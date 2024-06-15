@@ -36,6 +36,25 @@ public class VTGlobalTextStyleManager
   
   private static boolean checked = false;
   public static boolean java9plus = false;
+  private static boolean loadedCustomMonospacedFont = false;
+  public static String CUSTOM_MONOSPACED_FONT_NAME = "DejaVu Sans Mono";
+  public static Font CUSTOM_MONOSPACED_FONT_PLAIN;
+  public static Font CUSTOM_MONOSPACED_FONT_BOLD;
+  
+  private static void loadCustomMonospacedFont()
+  {
+    try
+    {
+      CUSTOM_MONOSPACED_FONT_PLAIN = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono.ttf"));
+      CUSTOM_MONOSPACED_FONT_BOLD = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono-Bold.ttf"));
+      
+      loadedCustomMonospacedFont = true;
+    }
+    catch (Throwable t)
+    {
+      //t.printStackTrace();
+    }
+  }
   
   public static void checkScaling()
   {
@@ -306,8 +325,29 @@ public class VTGlobalTextStyleManager
       
     }
     
+    if (!loadedCustomMonospacedFont)
+    {
+      loadCustomMonospacedFont();
+      if (loadedCustomMonospacedFont)
+      {
+        monospacedFontPlain = CUSTOM_MONOSPACED_FONT_PLAIN;
+        monospacedFontBold = CUSTOM_MONOSPACED_FONT_BOLD;
+        monospacedFont = monospacedFontPlain;
+      }
+    }
+    
     windowFont = Font.decode("Serif").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 0.5F));
-    monospacedFont = Font.decode("Monospaced").deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 0.5F));
+    windowFontPlain = windowFont;
+    windowFontBold = windowFont.deriveFont(Font.BOLD);
+    
+    if (monospacedFont == null)
+    {
+      monospacedFont = Font.decode("Monospaced").deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 0.5F));
+      monospacedFontPlain = monospacedFont;
+      monospacedFontBold = monospacedFont.deriveFont(Font.BOLD);
+      CUSTOM_MONOSPACED_FONT_PLAIN = monospacedFontPlain;
+      CUSTOM_MONOSPACED_FONT_BOLD = monospacedFontBold;
+    }
     
     defaultWindowFontSize = windowFont.getSize2D();
     defaultMonospacedFontSize = monospacedFont.getSize2D();
@@ -328,12 +368,16 @@ public class VTGlobalTextStyleManager
   }
   
   private static Font windowFont;
+  private static Font windowFontPlain;
+  private static Font windowFontBold;
   // Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog
   // 12").getSize2D())))));
   // Font.decode("Monospaced").deriveFont(((float)
   // Math.ceil((((BASE_FONT_SIZE_MONOSPACED)) *
   // FONT_SCALING_FACTOR_MONOSPACED))));
   private static Font monospacedFont;
+  private static Font monospacedFontPlain;
+  private static Font monospacedFontBold;
   private static float defaultWindowFontSize;
   // private static float defaultWindowFontSize = (float) (12.0 *
   // FONT_SCALING_FACTOR);
@@ -495,8 +539,8 @@ public class VTGlobalTextStyleManager
   public static void enableFontStyleBold()
   {
     fontStyleBold = true;
-    monospacedFont = monospacedFont.deriveFont(Font.BOLD, monospacedFont.getSize2D());
-    windowFont = windowFont.deriveFont(Font.BOLD, windowFont.getSize2D());
+    monospacedFont = monospacedFontBold;
+    windowFont = windowFontBold;
     // System.out.println("monospacedFont:" + monospacedFont.getSize2D());
     // System.out.println("windowFont:" + windowFont.getSize2D());
     boldScaleds();
@@ -507,8 +551,8 @@ public class VTGlobalTextStyleManager
   public static void disableFontStyleBold()
   {
     fontStyleBold = false;
-    monospacedFont = monospacedFont.deriveFont(Font.PLAIN, monospacedFont.getSize2D());
-    windowFont = windowFont.deriveFont(Font.PLAIN, windowFont.getSize2D());
+    monospacedFont = monospacedFontPlain;
+    windowFont = windowFontPlain;
     // System.out.println("monospacedFont:" + monospacedFont.getSize2D());
     // System.out.println("windowFont:" + windowFont.getSize2D());
     plainScaleds();
@@ -620,7 +664,14 @@ public class VTGlobalTextStyleManager
       list.clear();
       for (Font font : fonts)
       {
-        list.add(font.deriveFont(Font.BOLD, font.getSize2D()));
+        if (font.getFontName().equals(CUSTOM_MONOSPACED_FONT_PLAIN.getFontName()))
+        {
+          list.add(CUSTOM_MONOSPACED_FONT_BOLD.deriveFont(font.getSize2D()));
+        }
+        else
+        {
+          list.add(font.deriveFont(Font.BOLD, font.getSize2D()));
+        }
       }
     }
   }
@@ -633,7 +684,14 @@ public class VTGlobalTextStyleManager
       list.clear();
       for (Font font : fonts)
       {
-        list.add(font.deriveFont(Font.PLAIN, font.getSize2D()));
+        if (font.getFontName().equals(CUSTOM_MONOSPACED_FONT_BOLD.getFontName()))
+        {
+          list.add(CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(font.getSize2D()));
+        }
+        else
+        {
+          list.add(font.deriveFont(Font.PLAIN, font.getSize2D()));
+        }
       }
     }
   }

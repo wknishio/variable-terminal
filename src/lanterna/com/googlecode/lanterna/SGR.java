@@ -71,5 +71,10 @@ public enum SGR {
      * Italic (cursive) text mode. Some Terminal seem to support it.
      */
     ITALIC,
+    
+    /**
+     * Fixed background text mode. Customized
+     */
+    FIXED_BACKGROUND
     ;
 }

@@ -89,6 +89,10 @@ public enum KeyType {
     EOF,
     Pause,
     ContextMenu,
-    Space
+    Space,
+    Control,
+    Shift,
+    Alt,
+    AltGr
     ;
 }
