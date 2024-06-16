@@ -1016,8 +1016,8 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     }
     if (getLineCount() > 0)
     {
-      setCaretPosition(getLineCount(), 0);
-      setViewportToLastLine();
+      setCaretPosition(getLineCount(), getLastLine().length());
+      //setViewportToLastLine();
     }
     invalidate();
   }
@@ -1047,8 +1047,8 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
       }
       if (getLineCount() > 0)
       {
-        setCaretPosition(getLineCount(), 0);
-        setViewportToLastLine();
+        setCaretPosition(getLineCount(), getLastLine().length());
+        //setViewportToLastLine();
       }
       invalidate();
     }
@@ -1079,8 +1079,8 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
       }
       if (getLineCount() > 0)
       {
-        setCaretPosition(getLineCount(), 0);
-        setViewportToLastLine();
+        setCaretPosition(getLineCount(), getLastLine().length());
+        //setViewportToLastLine();
       }
       invalidate();
     }
@@ -1180,8 +1180,8 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     VTLanternaTextBoxModified result = putLine(line);
     if (getLineCount() > 1)
     {
-      setCaretPosition(getLineCount(), 0);
-      setViewportToLastLine();
+      setCaretPosition(getLineCount(), getLastLine().length());
+      //setViewportToLastLine();
     }
     return result;
   }

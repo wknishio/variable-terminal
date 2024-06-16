@@ -679,17 +679,27 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         if (flipbg)
         {
           reverse = false;
-          if (backgroundColor.equals(ANSI.WHITE))
+          if (backgroundColor.equals(ANSI.WHITE) || backgroundColor.equals(ANSI.WHITE_BRIGHT))
           {
-            backgroundColor = ANSI.BLACK;
-          }
-          else if (backgroundColor.equals(ANSI.WHITE_BRIGHT))
-          {
-            backgroundColor = ANSI.BLACK;
+            if (foregroundColor.equals(ANSI.BLACK))
+            {
+              backgroundColor = ANSI.BLACK_BRIGHT;
+            }
+            else
+            {
+              backgroundColor = ANSI.BLACK;
+            }
           }
           else
           {
-            backgroundColor = ANSI.WHITE_BRIGHT;
+            if (foregroundColor.equals(ANSI.WHITE_BRIGHT))
+            {
+              backgroundColor = ANSI.WHITE;
+            }
+            else
+            {
+              backgroundColor = ANSI.WHITE_BRIGHT;
+            }
           }
         }
         
