@@ -1235,7 +1235,7 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     inputBuffer.replace(start, end, String.valueOf(data));
     this.setSelectionStartPosition(null);
     this.setSelectionEndPosition(null);
-    return start;
+    return start + 1;
   }
   
   public int replaceSelectedText(StringBuilder inputBuffer, String data)
@@ -1246,21 +1246,16 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     inputBuffer.replace(start, end, data);
     this.setSelectionStartPosition(null);
     this.setSelectionEndPosition(null);
-    return start + (data.length() > 0 ? data.length() - 1 : 0);
+    return start + data.length();
   }
   
   public StringBuilder handleDataInput(StringBuilder inputBuffer, char data, boolean replace)
   {
-    // System.out.println("inputBuffer:[" + inputBuffer.toString() + "]");
-    // System.out.println("data:[" + data + "]");
-    // String line = lines.get(caretPosition.getRow());
     if (selectingText())
     {
       hiddenColumn = replaceSelectedText(inputBuffer, data);
       hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
       this.setCaretPosition(hiddenColumn);
-      // System.out.println("inputBufferResult:[" + inputBuffer.toString() +
-      // "]");
       return inputBuffer;
     }
     hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
@@ -1274,22 +1269,16 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
       inputBuffer.insert(column, data);
     }
     hiddenColumn++;
-    // System.out.println("inputBufferResult:[" + inputBuffer.toString() + "]");
     return inputBuffer;
   }
   
   public StringBuilder handleDataInput(StringBuilder inputBuffer, String data, boolean replace)
   {
-    /// int size = inputBuffer.length();
-    // System.out.println("inputBuffer:[" + inputBuffer.toString() + "]");
-    // System.out.println("data:[" + data + "]");
     if (selectingText())
     {
       hiddenColumn = replaceSelectedText(inputBuffer, data);
       hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
       this.setCaretPosition(hiddenColumn);
-      // System.out.println("inputBufferResult:[" + inputBuffer.toString() +
-      // "]");
       return inputBuffer;
     }
     int column = hiddenColumn;
@@ -1303,7 +1292,6 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     }
     hiddenColumn += data.length();
     hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
-    // System.out.println("inputBufferResult:[" + inputBuffer.toString() + "]");
     return inputBuffer;
   }
   

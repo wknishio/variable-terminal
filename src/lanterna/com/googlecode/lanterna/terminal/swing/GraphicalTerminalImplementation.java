@@ -19,6 +19,7 @@
 package com.googlecode.lanterna.terminal.swing;
 
 import com.googlecode.lanterna.*;
+import com.googlecode.lanterna.TextColor.ANSI;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.DefaultKeyDecodingProfile;
 import com.googlecode.lanterna.input.InputDecoder;
@@ -621,24 +622,24 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         TextColor backgroundColor = character.getBackgroundColor();
         boolean reverse = character.isReversed();
         boolean blink = character.isBlinking();
-        boolean fixedbg = character.isFixedBackground();
+        boolean flipbg = character.isFlipBackground();
         
         if(cursorIsVisible && atCursorLocation) {
             if(deviceConfiguration.getCursorStyle() == TerminalEmulatorDeviceConfiguration.CursorStyle.REVERSED &&
                     (!deviceConfiguration.isCursorBlinking() || !blinkOn)) {
-                reverse = true;
+              reverse = true;
             }
-            else if(deviceConfiguration.getCursorStyle() == TerminalEmulatorDeviceConfiguration.CursorStyle.FIXED_BACKGROUND) {
-                fixedbg = true;
+            else if(deviceConfiguration.getCursorStyle() == TerminalEmulatorDeviceConfiguration.CursorStyle.FLIP_BACKGROUND) {
+              flipbg = true;
             }
         }
         
-        if (reverse)
-        {
-          fixedbg = false;
-        }
+//        if (reverse)
+//        {
+//          fixedbg = false;
+//        }
         
-        if (fixedbg)
+        if (flipbg)
         {
           reverse = true;
         }
@@ -658,27 +659,38 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         TextColor foregroundColor = character.getForegroundColor();
         TextColor backgroundColor = character.getBackgroundColor();
         boolean reverse = character.isReversed();
-        boolean fixedbg = character.isFixedBackground();
+        boolean flipbg = character.isFlipBackground();
         
         if(cursorIsVisible && atCursorLocation) {
             if(deviceConfiguration.getCursorStyle() == TerminalEmulatorDeviceConfiguration.CursorStyle.REVERSED &&
                     (!deviceConfiguration.isCursorBlinking() || !blinkOn)) {
-                reverse = true;
+              reverse = true;
             }
-            else if(deviceConfiguration.getCursorStyle() == TerminalEmulatorDeviceConfiguration.CursorStyle.FIXED_BACKGROUND) {
-                fixedbg = true;
+            else if(deviceConfiguration.getCursorStyle() == TerminalEmulatorDeviceConfiguration.CursorStyle.FLIP_BACKGROUND) {
+              flipbg = true;
             }
         }
         
-        if (reverse)
-        {
-          fixedbg = false;
-        }
+//        if (reverse)
+//        {
+//          fixedbg = false;
+//        }
         
-        if (fixedbg)
+        if (flipbg)
         {
           reverse = false;
-          backgroundColor = deviceConfiguration.getCursorColor();
+          if (backgroundColor.equals(ANSI.WHITE))
+          {
+            backgroundColor = ANSI.BLACK;
+          }
+          else if (backgroundColor.equals(ANSI.WHITE_BRIGHT))
+          {
+            backgroundColor = ANSI.BLACK;
+          }
+          else
+          {
+            backgroundColor = ANSI.WHITE_BRIGHT;
+          }
         }
         
         if(reverse) {
@@ -1273,4 +1285,9 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
 	public void putString(String string) {
         virtualTerminal.putString(string);
     }
+	
+	public void setLastLineBackground(Color lastLineBackground)
+	{
+	  this.lastLineBackground = lastLineBackground;
+	}
 }

@@ -1380,7 +1380,7 @@ public class VTLanternaTextBoxModified extends AbstractInteractableComponent<VTL
             if (row >= selectionStartLocation.getRow() && row <= selectionEndLocation.getRow())
             {
               EnumSet<SGR> modifiers = graphics.getActiveModifiers();
-              modifiers.remove(SGR.FIXED_BACKGROUND);
+              modifiers.remove(SGR.REVERSE);
               int i = selectionStartLocation.getColumn();
               if (i > fitString.length())
               {
@@ -1398,12 +1398,12 @@ public class VTLanternaTextBoxModified extends AbstractInteractableComponent<VTL
               {
                 graphics.putString(0, row, start, modifiers);
               }
-              modifiers.add(SGR.FIXED_BACKGROUND);
+              modifiers.add(SGR.REVERSE);
               if (selected.length() > 0)
               {
                 graphics.putString(i, row, selected, modifiers);
               }
-              modifiers.remove(SGR.FIXED_BACKGROUND);
+              modifiers.remove(SGR.REVERSE);
               if (end.length() > 0)
               {
                 graphics.putString(j, row, end, modifiers);
@@ -1412,7 +1412,7 @@ public class VTLanternaTextBoxModified extends AbstractInteractableComponent<VTL
             else
             {
               EnumSet<SGR> modifiers = graphics.getActiveModifiers();
-              modifiers.remove(SGR.FIXED_BACKGROUND);
+              modifiers.remove(SGR.REVERSE);
               graphics.putString(0, row, fitString, modifiers);
             }
           }
@@ -1420,7 +1420,7 @@ public class VTLanternaTextBoxModified extends AbstractInteractableComponent<VTL
           {
             // t.printStackTrace();
             EnumSet<SGR> modifiers = graphics.getActiveModifiers();
-            modifiers.remove(SGR.FIXED_BACKGROUND);
+            modifiers.remove(SGR.REVERSE);
             graphics.putString(0, row, fitString, modifiers);
           }
         }
@@ -1445,7 +1445,7 @@ public class VTLanternaTextBoxModified extends AbstractInteractableComponent<VTL
             line = builder.toString();
           }
           EnumSet<SGR> modifiers = graphics.getActiveModifiers();
-          modifiers.remove(SGR.FIXED_BACKGROUND);
+          modifiers.remove(SGR.REVERSE);
           graphics.putString(0, row, TerminalTextUtils.fitString(line, viewTopLeft.getColumn(), textAreaSize.getColumns()), modifiers);
         }
       }

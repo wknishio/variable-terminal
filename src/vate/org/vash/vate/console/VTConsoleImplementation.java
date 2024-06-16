@@ -36,7 +36,7 @@ public interface VTConsoleImplementation
   
   public abstract void setTitle(String title);
   
-  public abstract void setColors(int backgroundColor, int foregroundColor);
+  public abstract void setColors(int foregroundColor, int backgroundColor);
   
   public abstract void setBold(boolean bold);
   

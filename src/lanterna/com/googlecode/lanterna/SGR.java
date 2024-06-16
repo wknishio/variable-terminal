@@ -75,6 +75,6 @@ public enum SGR {
     /**
      * Fixed background text mode. Customized
      */
-    FIXED_BACKGROUND
+    FLIP_BACKGROUND
     ;
 }

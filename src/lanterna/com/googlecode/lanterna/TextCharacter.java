@@ -306,8 +306,8 @@ public class TextCharacter {
         return modifiers.contains(SGR.ITALIC);
     }
     
-    public boolean isFixedBackground() {
-      return modifiers.contains(SGR.FIXED_BACKGROUND);
+    public boolean isFlipBackground() {
+      return modifiers.contains(SGR.FLIP_BACKGROUND);
   }
 
     /**

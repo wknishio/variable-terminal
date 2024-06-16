@@ -480,7 +480,7 @@ public final class VTConsole
     if (checkConsole())
     {
       console.setColors(foregroundColor, backgroundColor);
-      console.clear();
+      console.refreshText();
     }
   }
   
@@ -497,6 +497,7 @@ public final class VTConsole
     if (checkConsole())
     {
       console.resetAttributes();
+      console.refreshText();
     }
   }
   
