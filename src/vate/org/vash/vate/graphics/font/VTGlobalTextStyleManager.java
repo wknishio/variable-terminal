@@ -45,8 +45,8 @@ public class VTGlobalTextStyleManager
   {
     try
     {
-      CUSTOM_MONOSPACED_FONT_PLAIN = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono.ttf"));
-      CUSTOM_MONOSPACED_FONT_BOLD = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono-Bold.ttf"));
+      CUSTOM_MONOSPACED_FONT_PLAIN = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 0.5F));
+      CUSTOM_MONOSPACED_FONT_BOLD = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono-Bold.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 0.5F));
       
       loadedCustomMonospacedFont = true;
     }
@@ -110,8 +110,8 @@ public class VTGlobalTextStyleManager
         BASE_FONT_DPI = (int) (96 * FONT_SCALING_FACTOR_DIALOG);
         if (FONT_SCALING_FACTOR_DIALOG > 1.0)
         {
-          BASE_FONT_SIZE_DIALOG = 13F;
-          BASE_FONT_SIZE_MONOSPACED = 13F;
+          BASE_FONT_SIZE_DIALOG = 12F;
+          BASE_FONT_SIZE_MONOSPACED = 12F;
         }
       }
       else
@@ -136,8 +136,8 @@ public class VTGlobalTextStyleManager
           BASE_FONT_DPI = (int) (96 * FONT_SCALING_FACTOR_DIALOG);
           if (FONT_SCALING_FACTOR_DIALOG > 1.0)
           {
-            BASE_FONT_SIZE_DIALOG = 13F;
-            BASE_FONT_SIZE_MONOSPACED = 13F;
+            BASE_FONT_SIZE_DIALOG = 12F;
+            BASE_FONT_SIZE_MONOSPACED = 12F;
           }
           System.setProperty("sun.java2d.dpiaware", "true");
           System.setProperty("sun.java2d.ddscale", "false");
@@ -202,8 +202,8 @@ public class VTGlobalTextStyleManager
             BASE_FONT_DPI = (int) (96 * FONT_SCALING_FACTOR_DIALOG);
             if (FONT_SCALING_FACTOR_DIALOG > 1.0)
             {
-              BASE_FONT_SIZE_DIALOG = 13F;
-              BASE_FONT_SIZE_MONOSPACED = 13F;
+              BASE_FONT_SIZE_DIALOG = 12F;
+              BASE_FONT_SIZE_MONOSPACED = 12F;
             }
             System.setProperty("sun.java2d.dpiaware", "true");
             System.setProperty("sun.java2d.ddscale", "false");
@@ -255,8 +255,8 @@ public class VTGlobalTextStyleManager
                 BASE_FONT_DPI = (int) (96 * FONT_SCALING_FACTOR_DIALOG);
                 if (FONT_SCALING_FACTOR_DIALOG > 1.0)
                 {
-                  BASE_FONT_SIZE_DIALOG = 13F;
-                  BASE_FONT_SIZE_MONOSPACED = 13F;
+                  BASE_FONT_SIZE_DIALOG = 12F;
+                  BASE_FONT_SIZE_MONOSPACED = 12F;
                 }
                 System.setProperty("sun.java2d.dpiaware", "true");
                 System.setProperty("sun.java2d.ddscale", "false");
@@ -272,8 +272,8 @@ public class VTGlobalTextStyleManager
                 BASE_FONT_DPI = (int) qtFontDPI;
                 if (FONT_SCALING_FACTOR_DIALOG > 1.0)
                 {
-                  BASE_FONT_SIZE_DIALOG = 13F;
-                  BASE_FONT_SIZE_MONOSPACED = 13F;
+                  BASE_FONT_SIZE_DIALOG = 12F;
+                  BASE_FONT_SIZE_MONOSPACED = 12F;
                 }
                 System.setProperty("sun.java2d.dpiaware", "true");
                 System.setProperty("sun.java2d.ddscale", "false");
@@ -307,8 +307,8 @@ public class VTGlobalTextStyleManager
                 BASE_FONT_DPI = (int) (96 * FONT_SCALING_FACTOR_DIALOG);
                 if (FONT_SCALING_FACTOR_DIALOG > 1.0)
                 {
-                  BASE_FONT_SIZE_DIALOG = 13F;
-                  BASE_FONT_SIZE_MONOSPACED = 13F;
+                  BASE_FONT_SIZE_DIALOG = 12F;
+                  BASE_FONT_SIZE_MONOSPACED = 12F;
                 }
               }
               catch (Throwable t)
@@ -336,7 +336,7 @@ public class VTGlobalTextStyleManager
       }
     }
     
-    windowFont = Font.decode("Serif").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 0.5F));
+    windowFont = Font.decode("Dialog").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 0.5F));
     windowFontPlain = windowFont;
     windowFontBold = windowFont.deriveFont(Font.BOLD);
     

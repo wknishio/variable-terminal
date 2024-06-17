@@ -842,8 +842,18 @@ public class VTLanternaConsole implements VTConsoleImplementation
     
     if (frame != null)
     {
+      String java_specification_version = System.getProperty("java.specification.version");
+      
       verticalScrollbar = new Scrollbar(Scrollbar.VERTICAL);
-      verticalScrollbar.setBackground(SystemColor.control);
+      if (java_specification_version != null && java_specification_version.toLowerCase().startsWith("1.5"))
+      {
+        //Do nothing
+      }
+      else
+      {
+        verticalScrollbar.setBackground(SystemColor.control);
+      }
+      
       // verticalScrollbar.setForeground(SystemColor.controlText);
       verticalScrollbar.setUnitIncrement(1);
       verticalScrollbar.setFocusable(false);
@@ -868,7 +878,15 @@ public class VTLanternaConsole implements VTConsoleImplementation
       });
       
       horizontalScrollbar = new Scrollbar(Scrollbar.HORIZONTAL);
-      horizontalScrollbar.setBackground(SystemColor.control);
+      if (java_specification_version != null && java_specification_version.toLowerCase().startsWith("1.5"))
+      {
+        //Do nothing
+      }
+      else
+      {
+        horizontalScrollbar.setBackground(SystemColor.control);
+      }
+      
       // horizontalScrollbar.setForeground(SystemColor.controlText);
       horizontalScrollbar.setUnitIncrement(1);
       horizontalScrollbar.setFocusable(false);
