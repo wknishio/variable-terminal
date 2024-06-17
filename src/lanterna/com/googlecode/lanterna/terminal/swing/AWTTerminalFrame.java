@@ -59,10 +59,10 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
 	
 	private Panel midPanel;
 	private Panel bottomPanel;
-//	private Panel spacerPanelNorth;
-//	private Panel spacerPanelSouth;
-//	private Panel spacerPanelWest;
-//	private Panel spacerPanelEast;
+	private Panel spacerPanelNorth;
+	private Panel spacerPanelSouth;
+	private Panel spacerPanelWest;
+	private Panel spacerPanelEast;
 
 
     /**
@@ -141,33 +141,33 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
 //        
 //        add(scrollpane, BorderLayout.CENTER);
         
-//        spacerPanelNorth = new Panel();
-//        spacerPanelNorth.setSize(0, 1);
-//        spacerPanelNorth.setMinimumSize(new Dimension(0, 1));
-//        spacerPanelNorth.setMaximumSize(new Dimension(0, 1));
-//        spacerPanelNorth.setPreferredSize(new Dimension(0, 1));
-//        spacerPanelNorth.setBackground(Color.BLACK);
-//        
-//        spacerPanelSouth = new Panel();
-//        spacerPanelSouth.setSize(0, 1);
-//        spacerPanelSouth.setMinimumSize(new Dimension(0, 1));
-//        spacerPanelSouth.setMaximumSize(new Dimension(0, 1));
-//        spacerPanelSouth.setPreferredSize(new Dimension(0, 1));
-//        spacerPanelSouth.setBackground(Color.BLACK);
-//        
-//        spacerPanelWest = new Panel();
-//        spacerPanelWest.setSize(1, 0);
-//        spacerPanelWest.setMinimumSize(new Dimension(1, 0));
-//        spacerPanelWest.setMaximumSize(new Dimension(1, 0));
-//        spacerPanelWest.setPreferredSize(new Dimension(1, 0));
-//        spacerPanelWest.setBackground(Color.BLACK);
-//        
-//        spacerPanelEast = new Panel();
-//        spacerPanelEast.setSize(1, 0);
-//        spacerPanelEast.setMinimumSize(new Dimension(1, 0));
-//        spacerPanelEast.setMaximumSize(new Dimension(1, 0));
-//        spacerPanelEast.setPreferredSize(new Dimension(1, 0));
-//        spacerPanelEast.setBackground(Color.BLACK);
+        spacerPanelNorth = new Panel();
+        spacerPanelNorth.setSize(0, 1);
+        spacerPanelNorth.setMinimumSize(new Dimension(0, 1));
+        spacerPanelNorth.setMaximumSize(new Dimension(0, 1));
+        spacerPanelNorth.setPreferredSize(new Dimension(0, 1));
+        spacerPanelNorth.setBackground(Color.BLACK);
+        
+        spacerPanelSouth = new Panel();
+        spacerPanelSouth.setSize(0, 1);
+        spacerPanelSouth.setMinimumSize(new Dimension(0, 1));
+        spacerPanelSouth.setMaximumSize(new Dimension(0, 1));
+        spacerPanelSouth.setPreferredSize(new Dimension(0, 1));
+        spacerPanelSouth.setBackground(Color.BLACK);
+        
+        spacerPanelWest = new Panel();
+        spacerPanelWest.setSize(1, 0);
+        spacerPanelWest.setMinimumSize(new Dimension(1, 0));
+        spacerPanelWest.setMaximumSize(new Dimension(1, 0));
+        spacerPanelWest.setPreferredSize(new Dimension(1, 0));
+        spacerPanelWest.setBackground(Color.BLACK);
+        
+        spacerPanelEast = new Panel();
+        spacerPanelEast.setSize(1, 0);
+        spacerPanelEast.setMinimumSize(new Dimension(1, 0));
+        spacerPanelEast.setMaximumSize(new Dimension(1, 0));
+        spacerPanelEast.setPreferredSize(new Dimension(1, 0));
+        spacerPanelEast.setBackground(Color.BLACK);
         
         BorderLayout bottomlayout = new BorderLayout();
         bottomlayout.setHgap(0);
@@ -182,10 +182,10 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         midPanel = new Panel();
         midPanel.setLayout(midlayout);
         midPanel.add(awtTerminal, BorderLayout.CENTER);
-//        midPanel.add(spacerPanelNorth, BorderLayout.NORTH);
-//        midPanel.add(spacerPanelSouth, BorderLayout.SOUTH);
-//        midPanel.add(spacerPanelWest, BorderLayout.WEST);
-//        midPanel.add(spacerPanelEast, BorderLayout.EAST);
+        midPanel.add(spacerPanelNorth, BorderLayout.NORTH);
+        midPanel.add(spacerPanelSouth, BorderLayout.SOUTH);
+        midPanel.add(spacerPanelWest, BorderLayout.WEST);
+        midPanel.add(spacerPanelEast, BorderLayout.EAST);
         midPanel.setBackground(Color.BLACK);
         
         add(midPanel, BorderLayout.CENTER);
@@ -360,7 +360,15 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
     public void setBackgroundColor(TextColor color) {
         awtTerminal.setBackgroundColor(color);
     }
-
+    
+    public void setSpacerBackgroundColor(java.awt.Color color) {
+      spacerPanelNorth.setBackground(color);
+      spacerPanelSouth.setBackground(color);
+      spacerPanelWest.setBackground(color);
+      spacerPanelEast.setBackground(color);
+      midPanel.setBackground(color);
+      awtTerminal.setBackground(color);
+    }
     
     public TerminalSize getTerminalSize() {
         return awtTerminal.getTerminalSize();

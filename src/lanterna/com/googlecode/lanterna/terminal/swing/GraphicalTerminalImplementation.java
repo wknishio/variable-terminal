@@ -72,6 +72,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
     private boolean bellOn;
     private boolean needFullRedraw;
     private java.awt.Color lastLineBackground;
+    private java.awt.Color defaultBackground;
 
     private TerminalPosition lastDrawnCursorPosition;
     private int lastBufferUpdateScrollPosition;
@@ -539,7 +540,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             // We only need to set the content of the backbuffer during initialization time
             Graphics2D graphics = backbuffer.createGraphics();
             
-            graphics.setColor(colorConfiguration.toAWTColor(TextColor.ANSI.DEFAULT, false, false));
+            graphics.setColor(defaultBackground != null ? defaultBackground : colorConfiguration.toAWTColor(TextColor.ANSI.DEFAULT, false, false));
             graphics.fillRect(0, 0, getWidth() * 2, getHeight() * 2);
             graphics.dispose();
         }
@@ -774,7 +775,12 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         if(backbuffer != null) {
             Graphics2D graphics = backbuffer.createGraphics();
             
-            Color backgroundColor = colorConfiguration.toAWTColor(TextColor.ANSI.DEFAULT, false, false);
+            Color backgroundColor = defaultBackground;
+            if (backgroundColor == null)
+            {
+              colorConfiguration.toAWTColor(TextColor.ANSI.DEFAULT, false, false);
+            }
+            
             graphics.setColor(backgroundColor);
             graphics.fillRect(0, 0, getWidth(), getHeight());
             graphics.dispose();
@@ -1300,4 +1306,9 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
 	{
 	  this.lastLineBackground = lastLineBackground;
 	}
+	
+	public void setDefaultBackground(Color defaultBackground)
+  {
+    this.defaultBackground = defaultBackground;
+  }
 }
