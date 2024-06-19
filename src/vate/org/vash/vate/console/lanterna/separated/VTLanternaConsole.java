@@ -51,7 +51,6 @@ import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.TextColor.ANSI;
 import com.googlecode.lanterna.graphics.PropertyTheme;
 import com.googlecode.lanterna.gui2.BasicWindow;

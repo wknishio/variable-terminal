@@ -1473,7 +1473,7 @@ public class VTFileTransferServerTransaction implements Runnable
             compressing = true;
             heavier = false;
           }
-          if (parameters.toUpperCase().contains("H"))
+          if (parameters.toUpperCase().contains("M"))
           {
             compressing = true;
             heavier = true;
@@ -1539,7 +1539,7 @@ public class VTFileTransferServerTransaction implements Runnable
             compressing = true;
             heavier = false;
           }
-          if (parameters.toUpperCase().contains("H"))
+          if (parameters.toUpperCase().contains("M"))
           {
             compressing = true;
             heavier = true;

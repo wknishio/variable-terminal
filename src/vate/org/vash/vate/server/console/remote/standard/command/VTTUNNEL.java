@@ -32,7 +32,7 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
       {
         channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_FAST;
       }
-      if (parsed[1].toUpperCase().contains("H"))
+      if (parsed[1].toUpperCase().contains("M"))
       {
         channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY;
       }

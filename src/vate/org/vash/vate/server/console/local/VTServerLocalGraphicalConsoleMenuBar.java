@@ -46,8 +46,8 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Server Application", "*VTSTOP\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Toggle Server Cover", "*VTCOVER\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTUSER\n"));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Text Message To Clients", "*VTTEXT "));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("Disconnect Client From Server", "*VTKICK "));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Message To Clients", "*VTTEXT "));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem("Disconnect Client", "*VTKICK "));
     
     performanceMenu = new Menu("Rate ");
     performanceMenu.add(new VTGraphicalConsoleMenuItem("Check Connection Latencies", "*VTPING\n"));

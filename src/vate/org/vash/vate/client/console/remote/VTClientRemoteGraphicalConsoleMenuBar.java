@@ -145,7 +145,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverCleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Worst Color Quality", "*VTSCREENSHOT OW "));
     
     serverScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSCREENSHOT\n"));
-    serverScreenAlertMenu.add(new VTGraphicalConsoleMenuItem("Show Alert Message", "*VTSCREENALERT "));
+    serverScreenAlertMenu.add(new VTGraphicalConsoleMenuItem("Show Alert", "*VTSCREENALERT "));
     serverScreenAlertMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSCREENALERT\n"));
     serverBrowseMenu.add(new VTGraphicalConsoleMenuItem("Browse URI", "*VTBROWSE "));
     serverBrowseMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTBROWSE\n"));
@@ -230,7 +230,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Save Client Settings To File", "*VTSAVE "));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Detect Chained Connections", "*VTCHAIN\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTUSER\n"));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Text Message To Server", "*VTTEXT "));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Message To Server", "*VTTEXT "));
     
     consoleMenu = new Menu("Console ");
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Clear Remote Console", "*VTCLEAR\n"));
