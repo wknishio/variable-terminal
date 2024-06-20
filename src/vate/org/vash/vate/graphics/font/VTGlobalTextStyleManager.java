@@ -11,7 +11,6 @@ import java.awt.Window;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.vash.vate.compatibility.VTArrays;
 import org.vash.vate.console.VTConsole;
@@ -495,7 +494,12 @@ public class VTGlobalTextStyleManager
   public static void registerFontList(List<Font> list)
   {
     lists.add(list);
-    defaultlists.add(Arrays.asList(list.toArray(new Font[] {})));
+    List<Font> defaultList = new ArrayList<Font>();
+    for (Font font : list)
+    {
+      defaultList.add(font.deriveFont(defaultMonospacedFontSize));
+    }
+    defaultlists.add(defaultList);
   }
   
   public static void defaultComponentSize()
@@ -586,7 +590,7 @@ public class VTGlobalTextStyleManager
   
   private static void boldScaleds()
   {
-    for (Component component : scaleds)
+    for (Component component : scaleds.toArray(new Component[] {}))
     {
       Font font = component.getFont();
       component.setFont(font.deriveFont(Font.BOLD, font.getSize2D()));
@@ -595,7 +599,7 @@ public class VTGlobalTextStyleManager
   
   private static void plainScaleds()
   {
-    for (Component component : scaleds)
+    for (Component component : scaleds.toArray(new Component[] {}))
     {
       Font font = component.getFont();
       component.setFont(font.deriveFont(Font.PLAIN, font.getSize2D()));
@@ -604,7 +608,7 @@ public class VTGlobalTextStyleManager
   
   private static void increaseScaleds()
   {
-    for (Component component : scaleds)
+    for (Component component : scaleds.toArray(new Component[] {}))
     {
       Font font = component.getFont();
       component.setFont(font.deriveFont((font.getSize2D() + 0.5f)));
@@ -613,7 +617,7 @@ public class VTGlobalTextStyleManager
   
   private static void decreaseScaleds()
   {
-    for (Component component : scaleds)
+    for (Component component : scaleds.toArray(new Component[] {}))
     {
       Font font = component.getFont();
       component.setFont(font.deriveFont((font.getSize2D() - 0.5f)));
@@ -652,7 +656,11 @@ public class VTGlobalTextStyleManager
     for (List<Font> list : lists)
     {
       list.clear();
-      list.addAll(defaultlists.get(i++));
+      List<Font> defaultList = defaultlists.get(i++);
+      for (Font font : defaultList)
+      {
+        list.add(font.deriveFont(defaultMonospacedFontSize));
+      }
     }
   }
   
@@ -698,7 +706,7 @@ public class VTGlobalTextStyleManager
   
   private static void updateComponents(boolean useDefaults)
   {
-    for (Component component : monospaceds)
+    for (Component component : monospaceds.toArray(new Component[] {}))
     {
       try
       {
@@ -709,7 +717,7 @@ public class VTGlobalTextStyleManager
         
       }
     }
-    for (Component component : texts)
+    for (Component component : texts.toArray(new Component[] {}))
     {
       try
       {
@@ -721,7 +729,7 @@ public class VTGlobalTextStyleManager
         
       }
     }
-    for (Window window : windows)
+    for (Window window : windows.toArray(new Window[] {}))
     {
       try
       {

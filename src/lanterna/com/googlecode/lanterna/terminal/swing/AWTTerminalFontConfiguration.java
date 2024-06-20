@@ -41,7 +41,7 @@ import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
  */
 public class AWTTerminalFontConfiguration {
 
-	private static float baseFontSize = 12f;
+	private static float baseFontSize = VTGlobalTextStyleManager.BASE_FONT_SIZE_MONOSPACED;
     /**
      * Controls how the SGR bold will take effect when enabled on a character. Mainly this is controlling if the 
      * character should be rendered with a bold font or not. The reason for this is that some characters, notably the
