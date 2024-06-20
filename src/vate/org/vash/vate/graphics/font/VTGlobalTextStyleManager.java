@@ -338,13 +338,13 @@ public class VTGlobalTextStyleManager
     
     windowFont = Font.decode("Dialog").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 0.5F));
     windowFontPlain = windowFont;
-    windowFontBold = windowFont.deriveFont(Font.BOLD);
+    windowFontBold = windowFont.deriveFont(Font.BOLD, windowFontPlain.getSize2D());
     
     if (monospacedFont == null)
     {
       monospacedFont = Font.decode("Monospaced").deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 0.5F));
       monospacedFontPlain = monospacedFont;
-      monospacedFontBold = monospacedFont.deriveFont(Font.BOLD);
+      monospacedFontBold = monospacedFont.deriveFont(Font.BOLD, monospacedFontPlain.getSize2D());
       CUSTOM_MONOSPACED_FONT_PLAIN = monospacedFontPlain;
       CUSTOM_MONOSPACED_FONT_BOLD = monospacedFontBold;
     }
@@ -539,8 +539,8 @@ public class VTGlobalTextStyleManager
   public static void enableFontStyleBold()
   {
     fontStyleBold = true;
-    monospacedFont = monospacedFontBold;
-    windowFont = windowFontBold;
+    monospacedFont = monospacedFontBold.deriveFont(monospacedFont.getSize2D());
+    windowFont = windowFontBold.deriveFont(windowFont.getSize2D());
     // System.out.println("monospacedFont:" + monospacedFont.getSize2D());
     // System.out.println("windowFont:" + windowFont.getSize2D());
     boldScaleds();
@@ -551,8 +551,8 @@ public class VTGlobalTextStyleManager
   public static void disableFontStyleBold()
   {
     fontStyleBold = false;
-    monospacedFont = monospacedFontPlain;
-    windowFont = windowFontPlain;
+    monospacedFont = monospacedFontPlain.deriveFont(monospacedFont.getSize2D());
+    windowFont = windowFontPlain.deriveFont(windowFont.getSize2D());
     // System.out.println("monospacedFont:" + monospacedFont.getSize2D());
     // System.out.println("windowFont:" + windowFont.getSize2D());
     plainScaleds();
