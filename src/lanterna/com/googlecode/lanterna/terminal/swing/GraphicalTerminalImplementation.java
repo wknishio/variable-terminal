@@ -367,6 +367,11 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
 
         if(isTextAntiAliased()) {
             backbufferGraphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+            backbufferGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            backbufferGraphics.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
+            backbufferGraphics.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_DISABLE);
+            backbufferGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
+            backbufferGraphics.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
             backbufferGraphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         }
 
@@ -584,7 +589,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
         g.setFont(font);
         FontMetrics fontMetrics = g.getFontMetrics();
         //g.drawString(Character.toString(character.getCharacter()), x, y + fontHeight - fontMetrics.getDescent());
-        g.drawString(character.getCharacterString(), x, y + 1 + fontHeight - fontMetrics.getMaxDescent());
+        g.drawString(character.getCharacterString(), x, y + fontHeight - fontMetrics.getMaxDescent());
 
         if(character.isCrossedOut()) {
             //noinspection UnnecessaryLocalVariable

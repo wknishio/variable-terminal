@@ -36,7 +36,6 @@ public class VTGlobalTextStyleManager
   private static boolean checked = false;
   public static boolean java9plus = false;
   private static boolean loadedCustomMonospacedFont = false;
-  public static String CUSTOM_MONOSPACED_FONT_NAME = "DejaVu Sans Mono";
   public static Font CUSTOM_MONOSPACED_FONT_PLAIN;
   public static Font CUSTOM_MONOSPACED_FONT_BOLD;
   
@@ -46,7 +45,7 @@ public class VTGlobalTextStyleManager
     {
       CUSTOM_MONOSPACED_FONT_PLAIN = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 0.5F));
       CUSTOM_MONOSPACED_FONT_BOLD = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono-Bold.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 0.5F));
-      
+      //CUSTOM_MONOSPACED_FONT_BOLD = CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(Font.BOLD, CUSTOM_MONOSPACED_FONT_PLAIN.getSize2D());
       loadedCustomMonospacedFont = true;
     }
     catch (Throwable t)

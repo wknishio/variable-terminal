@@ -60,7 +60,7 @@ public class VTGraphicsModeClientSession
         VTConsole.print("\nVT>Remote graphics link start on client failed!\nVT>");
         if (session.getConnection().getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_MODE_SESSION_UNSTARTED)
         {
-          VTConsole.print("\nVT>Remote graphics link start on server failed!\nVT>");
+          //VTConsole.print("\nVT>Remote graphics link start on server failed!\nVT>");
         }
       }
       else

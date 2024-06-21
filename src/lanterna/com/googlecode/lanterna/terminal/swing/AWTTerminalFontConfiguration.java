@@ -105,7 +105,6 @@ public class AWTTerminalFontConfiguration {
         return (Arrays.asList(
                 //new Font(VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_NAME, Font.PLAIN, 12).deriveFont(fontSize),
                 VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(fontSize),
-                new Font("DejaVu Sans Mono", Font.PLAIN, 12).deriveFont(fontSize),
                 new Font("Monospaced", Font.PLAIN, 12).deriveFont(fontSize),
                 //Below, these should be redundant (Monospaced is supposed to catch-all)
                 // but Java 6 seems to have issues with finding monospaced fonts sometimes
