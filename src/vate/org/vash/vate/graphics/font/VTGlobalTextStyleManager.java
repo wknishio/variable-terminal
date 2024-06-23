@@ -43,8 +43,8 @@ public class VTGlobalTextStyleManager
   {
     try
     {
-      CUSTOM_MONOSPACED_FONT_PLAIN = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 0.5F));
-      CUSTOM_MONOSPACED_FONT_BOLD = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono-Bold.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 0.5F));
+      CUSTOM_MONOSPACED_FONT_PLAIN = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
+      CUSTOM_MONOSPACED_FONT_BOLD = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono-Bold.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
       //CUSTOM_MONOSPACED_FONT_BOLD = CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(Font.BOLD, CUSTOM_MONOSPACED_FONT_PLAIN.getSize2D());
       loadedCustomMonospacedFont = true;
     }
@@ -96,7 +96,6 @@ public class VTGlobalTextStyleManager
       if (VTReflectionUtils.detectWindows())
       {
         // discover dpi with Toolkit.getScreenResolution();
-        
         System.setProperty("sun.java2d.dpiaware", "true");
         System.setProperty("sun.java2d.ddscale", "false");
         System.setProperty("sun.java2d.uiScale.enabled", "false");
@@ -128,7 +127,6 @@ public class VTGlobalTextStyleManager
         if (gtkScaleFactor > 0)
         {
           // use GtkUtilities if available
-          
           FONT_SCALING_FACTOR_DIALOG = gtkScaleFactor;
           FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
           BASE_FONT_DPI = (int) (96 * FONT_SCALING_FACTOR_DIALOG);
@@ -146,56 +144,24 @@ public class VTGlobalTextStyleManager
         }
         else
         {
-          String gdkScaleEnv = null;
-          String gdkDPIScaleEnv = null;
-          float gdkScaleFactor = 0;
-          float gdkDPIScaleFactor = 0;
-          
+          if (java9plus)
+          {
+            
+          }
+          else
+          {
+            
+          }
+          // set everything unscaled and pixel based
+          System.setProperty("sun.java2d.dpiaware", "true");
+          System.setProperty("sun.java2d.ddscale", "false");
+          System.setProperty("sun.java2d.uiScale.enabled", "false");
+          System.setProperty("sun.java2d.uiScale", "1");
+          System.setProperty("sun.java2d.win.uiScaleX", "1");
+          System.setProperty("sun.java2d.win.uiScaleY", "1");
           try
           {
-            gdkScaleEnv = System.getenv("GDK_SCALE");
-            if (gdkScaleEnv != null)
-            {
-              try
-              {
-                gdkScaleFactor = Float.parseFloat(gdkScaleEnv);
-              }
-              catch (Throwable t)
-              {
-                
-              }
-            }
-            gdkDPIScaleEnv = System.getenv("GDK_DPI_SCALE");
-            if (gdkDPIScaleEnv != null)
-            {
-              try
-              {
-                gdkDPIScaleFactor = Float.parseFloat(gdkDPIScaleEnv);
-              }
-              catch (Throwable t)
-              {
-                
-              }
-            }
-            if (gdkScaleFactor > 0 && gdkDPIScaleFactor > 0)
-            {
-              gdkScaleFactor = gdkScaleFactor * gdkDPIScaleFactor;
-            }
-            if (gdkDPIScaleFactor > 0 && gdkScaleFactor == 0)
-            {
-              gdkScaleFactor = gdkDPIScaleFactor;
-            }
-          }
-          catch (Throwable t)
-          {
-            
-          }
-          
-          if (gdkScaleFactor > 0)
-          {
-            // use GTK scaling environment variables if available
-            
-            FONT_SCALING_FACTOR_DIALOG = gdkScaleFactor;
+            FONT_SCALING_FACTOR_DIALOG = Math.max(1.0F, ((((float)GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getNormalizingTransform().getScaleX()) * 72F) / 96F));
             FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
             BASE_FONT_DPI = (int) (96 * FONT_SCALING_FACTOR_DIALOG);
             if (FONT_SCALING_FACTOR_DIALOG > 1.0)
@@ -203,117 +169,10 @@ public class VTGlobalTextStyleManager
               BASE_FONT_SIZE_DIALOG = 12F;
               BASE_FONT_SIZE_MONOSPACED = 12F;
             }
-            System.setProperty("sun.java2d.dpiaware", "true");
-            System.setProperty("sun.java2d.ddscale", "false");
-            System.setProperty("sun.java2d.uiScale.enabled", "false");
-            System.setProperty("sun.java2d.uiScale", "1");
-            System.setProperty("sun.java2d.win.uiScaleX", "1");
-            System.setProperty("sun.java2d.win.uiScaleY", "1");
           }
-          else
+          catch (Throwable t)
           {
-            String qtScaleEnv = null;
-            String qtFontDPIEnv = null;
-            float qtScaleFactor = 0;
-            float qtFontDPI = 0;
             
-            qtScaleEnv = System.getenv("QT_SCALE_FACTOR");
-            if (qtScaleEnv != null)
-            {
-              try
-              {
-                qtScaleFactor = Float.parseFloat(qtScaleEnv);
-              }
-              catch (Throwable t)
-              {
-                
-              }
-            }
-            qtFontDPIEnv = System.getenv("QT_FONT_DPI");
-            if (qtFontDPIEnv != null)
-            {
-              try
-              {
-                qtFontDPI = Float.parseFloat(qtFontDPIEnv);
-              }
-              catch (Throwable t)
-              {
-                
-              }
-            }
-            
-            if (qtScaleFactor > 0 || qtFontDPI > 0)
-            {
-              // use QT scaling environment variables if available
-              
-              if (qtFontDPI == 0 && qtScaleFactor > 0)
-              {
-                FONT_SCALING_FACTOR_DIALOG = qtScaleFactor;
-                FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
-                BASE_FONT_DPI = (int) (96 * FONT_SCALING_FACTOR_DIALOG);
-                if (FONT_SCALING_FACTOR_DIALOG > 1.0)
-                {
-                  BASE_FONT_SIZE_DIALOG = 12F;
-                  BASE_FONT_SIZE_MONOSPACED = 12F;
-                }
-                System.setProperty("sun.java2d.dpiaware", "true");
-                System.setProperty("sun.java2d.ddscale", "false");
-                System.setProperty("sun.java2d.uiScale.enabled", "false");
-                System.setProperty("sun.java2d.uiScale", "1");
-                System.setProperty("sun.java2d.win.uiScaleX", "1");
-                System.setProperty("sun.java2d.win.uiScaleY", "1");
-              }
-              if (qtFontDPI > 0)
-              {
-                FONT_SCALING_FACTOR_DIALOG = (Math.max(1.0F, qtFontDPI / 96.0F));
-                FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
-                BASE_FONT_DPI = (int) qtFontDPI;
-                if (FONT_SCALING_FACTOR_DIALOG > 1.0)
-                {
-                  BASE_FONT_SIZE_DIALOG = 12F;
-                  BASE_FONT_SIZE_MONOSPACED = 12F;
-                }
-                System.setProperty("sun.java2d.dpiaware", "true");
-                System.setProperty("sun.java2d.ddscale", "false");
-                System.setProperty("sun.java2d.uiScale.enabled", "false");
-                System.setProperty("sun.java2d.uiScale", "1");
-                System.setProperty("sun.java2d.win.uiScaleX", "1");
-                System.setProperty("sun.java2d.win.uiScaleY", "1");
-              }
-            }
-            else
-            {
-              if (java9plus)
-              {
-                
-              }
-              else
-              {
-                
-              }
-              // set everything unscaled and pixel based
-              System.setProperty("sun.java2d.dpiaware", "true");
-              System.setProperty("sun.java2d.ddscale", "false");
-              System.setProperty("sun.java2d.uiScale.enabled", "false");
-              System.setProperty("sun.java2d.uiScale", "1");
-              System.setProperty("sun.java2d.win.uiScaleX", "1");
-              System.setProperty("sun.java2d.win.uiScaleY", "1");
-              try
-              {
-                FONT_SCALING_FACTOR_DIALOG = Math.max(1.0F, ((((float)GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration().getNormalizingTransform().getScaleX()) * 72F) / 96F));
-                FONT_SCALING_FACTOR_MONOSPACED = FONT_SCALING_FACTOR_DIALOG;
-                BASE_FONT_DPI = (int) (96 * FONT_SCALING_FACTOR_DIALOG);
-                if (FONT_SCALING_FACTOR_DIALOG > 1.0)
-                {
-                  BASE_FONT_SIZE_DIALOG = 12F;
-                  BASE_FONT_SIZE_MONOSPACED = 12F;
-                }
-              }
-              catch (Throwable t)
-              {
-                
-              }
-            }
           }
         }
       }
@@ -334,24 +193,24 @@ public class VTGlobalTextStyleManager
       }
     }
     
-    windowFont = Font.decode("Dialog").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 0.5F));
-    windowFontPlain = windowFont;
-    windowFontBold = windowFont.deriveFont(Font.BOLD, windowFontPlain.getSize2D());
-    
     if (monospacedFont == null)
     {
-      monospacedFont = Font.decode("Monospaced").deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 0.5F));
+      monospacedFont = Font.decode("Monospaced").deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
       monospacedFontPlain = monospacedFont;
       monospacedFontBold = monospacedFont.deriveFont(Font.BOLD, monospacedFontPlain.getSize2D());
       CUSTOM_MONOSPACED_FONT_PLAIN = monospacedFontPlain;
       CUSTOM_MONOSPACED_FONT_BOLD = monospacedFontBold;
     }
     
+    windowFont = Font.decode("Dialog").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 1F, FONT_SCALING_FACTOR_DIALOG));
+    windowFontPlain = windowFont;
+    windowFontBold = windowFont.deriveFont(Font.BOLD, windowFontPlain.getSize2D());
+    
     defaultWindowFontSize = windowFont.getSize2D();
     defaultMonospacedFontSize = monospacedFont.getSize2D();
     
-    // System.out.println("monospacedFont:" + defaultMonospacedFontSize);
-    // System.out.println("windowFont:" + defaultWindowFontSize);
+//    System.out.println("monospacedFont:" + defaultMonospacedFontSize);
+//    System.out.println("windowFont:" + defaultWindowFontSize);
     // System.out.println("FONT_SCALING_FACTOR_MONOSPACED:" +
     // FONT_SCALING_FACTOR_MONOSPACED);
     // System.out.println("FONT_SCALING_FACTOR_DIALOG:" +
@@ -565,11 +424,11 @@ public class VTGlobalTextStyleManager
   
   public static void increaseFontSize()
   {
-    monospacedFont = monospacedFont.deriveFont((monospacedFont.getSize2D() + 0.5f));
-    windowFont = windowFont.deriveFont((windowFont.getSize2D() + 0.5f));
-    // windowFontSize = windowFontSize + 0.5f;
-    // System.out.println("monospacedFont:" + monospacedFont.getSize2D());
-    // System.out.println("windowFont:" + windowFont.getSize2D());
+    monospacedFont = monospacedFont.deriveFont((monospacedFont.getSize2D() + 1.0F));
+    windowFont = windowFont.deriveFont((windowFont.getSize2D() + 1.0F));
+    // windowFontSize = windowFontSize + 1.0F;
+//    System.out.println("monospacedFont:" + monospacedFont.getSize2D());
+//    System.out.println("windowFont:" + windowFont.getSize2D());
     increaseScaleds();
     increaseLists();
     updateComponents(false);
@@ -577,11 +436,11 @@ public class VTGlobalTextStyleManager
   
   public static void decreaseFontSize()
   {
-    monospacedFont = monospacedFont.deriveFont((monospacedFont.getSize2D() - 0.5f));
-    windowFont = windowFont.deriveFont((windowFont.getSize2D() - 0.5f));
-    // windowFontSize = windowFontSize - 0.5f;
-    // System.out.println("monospacedFont:" + monospacedFont.getSize2D());
-    // System.out.println("windowFont:" + windowFont.getSize2D());
+    monospacedFont = monospacedFont.deriveFont((monospacedFont.getSize2D() - 1.0F));
+    windowFont = windowFont.deriveFont((windowFont.getSize2D() - 1.0F));
+    // windowFontSize = windowFontSize - 1.0F;
+//    System.out.println("monospacedFont:" + monospacedFont.getSize2D());
+//    System.out.println("windowFont:" + windowFont.getSize2D());
     decreaseScaleds();
     decreaseLists();
     updateComponents(false);
@@ -610,7 +469,7 @@ public class VTGlobalTextStyleManager
     for (Component component : scaleds.toArray(new Component[] {}))
     {
       Font font = component.getFont();
-      component.setFont(font.deriveFont((font.getSize2D() + 0.5f)));
+      component.setFont(font.deriveFont((font.getSize2D() + 1.0F)));
     }
   }
   
@@ -619,7 +478,7 @@ public class VTGlobalTextStyleManager
     for (Component component : scaleds.toArray(new Component[] {}))
     {
       Font font = component.getFont();
-      component.setFont(font.deriveFont((font.getSize2D() - 0.5f)));
+      component.setFont(font.deriveFont((font.getSize2D() - 1.0F)));
     }
   }
   
@@ -631,7 +490,7 @@ public class VTGlobalTextStyleManager
       list.clear();
       for (Font font : fonts)
       {
-        list.add(font.deriveFont((font.getSize2D() + 0.5f)));
+        list.add(font.deriveFont((font.getSize2D() + 1.0F)));
       }
     }
   }
@@ -644,7 +503,7 @@ public class VTGlobalTextStyleManager
       list.clear();
       for (Font font : fonts)
       {
-        list.add(font.deriveFont((font.getSize2D() - 0.5f)));
+        list.add(font.deriveFont((font.getSize2D() - 1.0F)));
       }
     }
   }
@@ -789,7 +648,7 @@ public class VTGlobalTextStyleManager
     VTConsole.refreshText();
   }
   
-  private static float round(float num, float step)
+  private static float round(float num, float step, float factor)
   {
     float inv = 1 / step;
     return (float) Math.round(num * inv) / inv;

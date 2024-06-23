@@ -75,7 +75,7 @@ public class AWTTerminalFontConfiguration {
             "AR PL UMing CN"
     )));
     
-	private static float FONT_SCALING_FACTOR = 1.0F;
+	private static float FONT_SCALING_FACTOR = VTGlobalTextStyleManager.FONT_SCALING_FACTOR_MONOSPACED;
 
     private static List<Font> getDefaultWindowsFonts() {
         float fontSize = getDefaultFontSize();
@@ -151,7 +151,7 @@ public class AWTTerminalFontConfiguration {
         //System.out.println("getFontSize():" + (int)(baseFontSize * FONT_SCALING_FACTOR));
         //return (int) Math.ceil(baseFontSize * FONT_SCALING_FACTOR);
         //return (float) (baseFontSize * FONT_SCALING_FACTOR);
-        return round(baseFontSize * FONT_SCALING_FACTOR, 0.5F);
+        return VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_PLAIN.getSize2D();
 //        String[] javaVersion = System.getProperty("java.version", "1").split("\\.");
 //        if (System.getProperty("os.name", "").startsWith("Windows") && Integer.parseInt(javaVersion[0]) >= 9) {
 //            // Java 9+ reports itself as HiDPI-unaware on Windows and will be scaled by the OS
@@ -395,11 +395,5 @@ public class AWTTerminalFontConfiguration {
     
     private boolean isNotASymbol(char character) {
         return !SYMBOLS_CACHE.contains(character);
-    }
-    
-    private static float round(float num, float step)
-    {
-      float inv = 1 / step;
-      return (float) Math.round(num * inv) / inv;
-    }
+    }    
 }
