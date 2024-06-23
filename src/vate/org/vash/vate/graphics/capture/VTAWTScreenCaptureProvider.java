@@ -5439,10 +5439,10 @@ public final class VTAWTScreenCaptureProvider
     }
     
     Rectangle screenArea = new Rectangle();
-    screenArea.x = (int) Math.round(originalArea.x / getScaleFactorX());
-    screenArea.y = (int) Math.round(originalArea.y / getScaleFactorY());
-    screenArea.width = (int) Math.round(originalArea.width / getScaleFactorX());
-    screenArea.height = (int) Math.round(originalArea.height / getScaleFactorY());
+    screenArea.x = (int) Math.floor(originalArea.x / getScaleFactorX());
+    screenArea.y = (int) Math.floor(originalArea.y / getScaleFactorY());
+    screenArea.width = (int) Math.ceil(originalArea.width / getScaleFactorX());
+    screenArea.height = (int) Math.ceil(originalArea.height / getScaleFactorY());
     
     if (screenArea.width > screenCurrentWidth)
     {

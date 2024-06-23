@@ -227,7 +227,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Client Application", "*VTQUIT\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Server Application", "*VTSTOP\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Toggle Server Cover", "*VTCOVER\n"));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("Save Client Settings To File", "*VTSAVE "));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem("Save Client Settings File", "*VTSAVE "));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Detect Chained Connections", "*VTCHAIN\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTUSER\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Message To Server", "*VTTEXT "));
@@ -237,7 +237,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Toggle Console Echo", "*VTECHO\n"));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Show Remote System Time", "*VTDATE\n"));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Pause Local Console", "*VTPAUSE "));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Execute Commands From Files", "*VTREAD "));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem("Execute Commands In Files", "*VTREAD "));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Commands To File", "*VTLOG "));
     consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Console To File", "*VTOUT "));
     // consoleMenu.add(new VTGraphicalConsoleMenuItem("Toggle Remote Console
@@ -261,7 +261,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverProxySettingsMenu = new Menu("Proxy ");
     serverEncryptionSettingsMenu = new Menu("Encryption ");
     serverSessionsSettingsMenu = new Menu("Session ");
-    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("List All Settings", "*VTSETTING\n"));
+    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("List Server Settings", "*VTSETTING\n"));
     serverSettingsMenu.add(serverConnectionSettingsMenu);
     // serverSettingsMenu.add(serverAuthenticationSettingsMenu);
     serverSettingsMenu.add(serverProxySettingsMenu);
@@ -294,9 +294,9 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     serverRuntimeMenu.add(serverManageRuntimeMenu);
     serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Add Managed Process", "*VTRUNTIME M"));
     serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Add Free Process", "*VTRUNTIME F"));
-    serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("List All Managed Processes", "*VTRUNTIME LA\n"));
-    serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Stop All Managed Processes", "*VTRUNTIME SA\n"));
-    serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Delete All Managed Processes", "*VTRUNTIME DA\n"));
+    serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("List Managed Processes", "*VTRUNTIME LA\n"));
+    serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Stop Managed Processes", "*VTRUNTIME SA\n"));
+    serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Delete Managed Processes", "*VTRUNTIME DA\n"));
     serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Runtime Path", "*VTRUNTIME P "));
     serverManageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTRUNTIME\n"));
     
@@ -310,12 +310,12 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     networkInterfacesMenu = new Menu("List Valid Network Interfaces ");
     networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Remote Network Interfaces", "*VTNETWORK R\n"));
     networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Local Network Interfaces", "*VTNETWORK L\n"));
-    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("All Network Interfaces", "*VTNETWORK\n"));
+    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Any Network Interfaces", "*VTNETWORK\n"));
     
     networkTunnelsMenu = new Menu("Connection Network Tunnels ");
     // serverSOCKSTunnelsMenu = new Menu("Connection SOCKS Tunnels ");
     
-    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("List All Tunnels", "*VTTUNNEL\n"));
+    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("List Any Tunnels", "*VTTUNNEL\n"));
     networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Local To Remote", "*VTTUNNEL L "));
     networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Remote To Local", "*VTTUNNEL R "));
     networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTTUNNEL\n"));
@@ -336,7 +336,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     audioMixersSoundMenu = new Menu("List Valid Audio Mixers ");
     audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Remote Audio Mixers", "*VTMIXER R\n"));
     audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Local Audio Mixers", "*VTMIXER L\n"));
-    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("All Audio Mixers", "*VTMIXER\n"));
+    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Any Audio Mixers", "*VTMIXER\n"));
     audioSoundMenu.add(audioMixersSoundMenu);
     
     //audioSoundMenu.add(new VTGraphicalConsoleMenuItem("Ring Remote Terminal Bell", "*VTBELL\n"));

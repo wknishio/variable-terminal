@@ -62,7 +62,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     serverProxyMenu = new Menu("Proxy ");
     serverEncryptionMenu = new Menu("Encryption ");
     serverSessionsMenu = new Menu("Session ");
-    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("List All Settings", "*VTSETTING\n"));
+    serverSettingsMenu.add(new VTGraphicalConsoleMenuItem("List Server Settings", "*VTSETTING\n"));
     serverSettingsMenu.add(serverConnectionMenu);
     // serverSettingsMenu.add(serverAuthenticationSettingsMenu);
     serverSettingsMenu.add(serverProxyMenu);
