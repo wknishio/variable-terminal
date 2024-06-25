@@ -528,18 +528,29 @@ public class VTLanternaConsole implements VTConsoleImplementation
       this.console = console;
     }
     
+    private int readLine() throws IOException
+    {
+      try
+      {
+        lineBuffer = (console.readLine(true) + "\n").getBytes("UTF-8");
+        readed = 0;
+        return lineBuffer.length;
+      }
+      catch (InterruptedException e)
+      {
+        
+      }
+      return -1;
+    }
+    
     public int read() throws IOException
     {
       if (lineBuffer == null || readed >= lineBuffer.length)
       {
-        try
+        int lineSize = readLine();
+        if (lineSize <= 0)
         {
-          lineBuffer = (console.readLine(true) + "\n").getBytes("UTF-8");
-          readed = 0;
-        }
-        catch (InterruptedException e)
-        {
-          return -1;
+          return lineSize;
         }
       }
       return lineBuffer[readed++];
@@ -552,31 +563,19 @@ public class VTLanternaConsole implements VTConsoleImplementation
     
     public int read(byte[] b, int off, int len) throws IOException
     {
-      int transferred;
-      for (transferred = 0; transferred < len; transferred++)
+      int usable = 0;
+      if (lineBuffer == null || readed >= lineBuffer.length)
       {
-        if (lineBuffer == null || readed >= lineBuffer.length)
+        int lineSize = readLine();
+        if (lineSize <= 0)
         {
-          if (transferred == 0)
-          {
-            try
-            {
-              lineBuffer = (console.readLine(true) + "\n").getBytes("UTF-8");
-              readed = 0;
-            }
-            catch (InterruptedException e)
-            {
-              return transferred;
-            }
-          }
-          else
-          {
-            return transferred;
-          }
+          return lineSize;
         }
-        b[off + transferred] = lineBuffer[readed++];
       }
-      return transferred;
+      usable = Math.min(lineBuffer.length - readed, len);
+      System.arraycopy(lineBuffer, readed, b, off, usable);
+      readed += usable;
+      return usable;
     }
     
     public int read(byte[] b) throws IOException
