@@ -12,7 +12,7 @@ public class VTStandardConsoleInterruptibleReaderByte implements Runnable
 {
   private boolean requested;
   // private BufferedReader standardTerminalReader;
-  private final byte[] readBuffer = new byte[8192];
+  private final byte[] readBuffer = new byte[1024 * 16];
   private BlockingQueue<byte[]> buffer;
   // private static final String ANSIDetectionPattern =
   // "(\\u001B)(\\[)([^R])*([R])";

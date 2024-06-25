@@ -3,30 +3,18 @@ package org.vash.vate.console.standard;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.vash.vate.VT;
-import org.vash.vate.stream.pipe.VTPipedInputStream;
-import org.vash.vate.stream.pipe.VTPipedOutputStream;
-
 public class VTStandardConsoleInterruptibleInputStream extends InputStream
 {
-  private VTPipedInputStream inputPipe;
-  private VTPipedOutputStream outputPipe;
+  //private VTPipedInputStream inputPipe;
+  //private VTPipedOutputStream outputPipe;
   // private VTByteArrayOutputStream lineBuffer;
+  private byte[] inputBuffer;
+  private int readed;
   private VTStandardConsoleInterruptibleReader reader;
   private Thread currentThread;
   
   public VTStandardConsoleInterruptibleInputStream()
   {
-    try
-    {
-      this.inputPipe = new VTPipedInputStream(VT.VT_REDUCED_BUFFER_SIZE_BYTES);
-      this.outputPipe = new VTPipedOutputStream();
-      this.outputPipe.connect(inputPipe);
-    }
-    catch (Throwable e)
-    {
-      
-    }
     // this.lineBuffer = new VTByteArrayOutputStream();
     this.reader = new VTStandardConsoleInterruptibleReader();
     // Thread readerThread = new Thread(reader,
@@ -60,57 +48,65 @@ public class VTStandardConsoleInterruptibleInputStream extends InputStream
     }
   }
   
-  /*
-   * public String readLine() throws IOException, InterruptedException {
-   * lineBuffer.count(0); int data = read(); while (data != -1 && data != '\n')
-   * { lineBuffer.write(data); data = interruptibleRead(); } return new
-   * String(lineBuffer.toByteArray()); }
-   */
-  
-  /*
-   * public int interruptibleRead() throws IOException, InterruptedException {
-   * currentThread = Thread.currentThread(); if (inputPipe.available() == 0) {
-   * String line = null; while (line == null || line.length() == 0) { line =
-   * reader.read(); } outputPipe.write(line.getBytes()); outputPipe.flush(); }
-   * return inputPipe.read(); }
-   */
+  private int readInputBuffer() throws IOException
+  {
+    currentThread = Thread.currentThread();
+    int available = -1;
+    try
+    {
+      inputBuffer = reader.read().getBytes();
+      readed = 0;
+      available = inputBuffer.length;
+    }
+    catch (InterruptedException e)
+    {
+      
+    }
+    finally
+    {
+      currentThread = null;
+    }
+    return available;
+  }
   
   public int read() throws IOException
   {
-    currentThread = Thread.currentThread();
-    if (inputPipe.available() == 0)
+    if (inputBuffer == null || readed >= inputBuffer.length)
     {
-      try
+      int lineSize = readInputBuffer();
+      if (lineSize <= 0)
       {
-        String line = null;
-        while (line == null || line.length() == 0)
-        {
-          line = reader.read();
-        }
-        outputPipe.write(line.getBytes("UTF-8"));
-        outputPipe.flush();
-      }
-      catch (InterruptedException e)
-      {
-        throw new IOException(e.getMessage());
-      }
-      finally
-      {
-        currentThread = null;
+        return lineSize;
       }
     }
-    return inputPipe.read();
+    return inputBuffer[readed++];
   }
   
-  public int read(byte[] buf, int off, int len) throws IOException
+  public int read(byte[] b, int off, int len) throws IOException
   {
-    buf[off] = (byte) read();
-    return 1;
+    int usable = 0;
+    if (inputBuffer == null || readed >= inputBuffer.length)
+    {
+      int lineSize = readInputBuffer();
+      if (lineSize <= 0)
+      {
+        return lineSize;
+      }
+    }
+    usable = Math.min(inputBuffer.length - readed, len);
+    System.arraycopy(inputBuffer, readed, b, off, usable);
+    readed += usable;
+    return usable;
+  }
+  
+  public int read(byte[] b) throws IOException
+  {
+    return read(b, 0, b.length);
   }
   
   public int available() throws IOException
   {
-    return inputPipe.available();
+    return inputBuffer.length - readed;
   }
   
   public void close() throws IOException

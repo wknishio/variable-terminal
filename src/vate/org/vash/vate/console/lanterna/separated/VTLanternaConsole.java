@@ -518,23 +518,23 @@ public class VTLanternaConsole implements VTConsoleImplementation
   
   public class VTLanternaConsoleInputStream extends InputStream
   {
-    private byte[] lineBuffer;
+    private byte[] inputBuffer;
     private int readed;
     private VTLanternaConsole console;
     
     public VTLanternaConsoleInputStream(VTLanternaConsole console)
     {
-      lineBuffer = new byte[0];
+      inputBuffer = new byte[0];
       this.console = console;
     }
     
-    private int readLine() throws IOException
+    private int readInputBuffer() throws IOException
     {
       try
       {
-        lineBuffer = (console.readLine(true) + "\n").getBytes("UTF-8");
+        inputBuffer = (console.readLine(true) + "\n").getBytes("UTF-8");
         readed = 0;
-        return lineBuffer.length;
+        return inputBuffer.length;
       }
       catch (InterruptedException e)
       {
@@ -545,42 +545,42 @@ public class VTLanternaConsole implements VTConsoleImplementation
     
     public int read() throws IOException
     {
-      if (lineBuffer == null || readed >= lineBuffer.length)
+      if (inputBuffer == null || readed >= inputBuffer.length)
       {
-        int lineSize = readLine();
+        int lineSize = readInputBuffer();
         if (lineSize <= 0)
         {
           return lineSize;
         }
       }
-      return lineBuffer[readed++];
-    }
-    
-    public int available() throws IOException
-    {
-      return lineBuffer.length - readed;
+      return inputBuffer[readed++];
     }
     
     public int read(byte[] b, int off, int len) throws IOException
     {
       int usable = 0;
-      if (lineBuffer == null || readed >= lineBuffer.length)
+      if (inputBuffer == null || readed >= inputBuffer.length)
       {
-        int lineSize = readLine();
+        int lineSize = readInputBuffer();
         if (lineSize <= 0)
         {
           return lineSize;
         }
       }
-      usable = Math.min(lineBuffer.length - readed, len);
-      System.arraycopy(lineBuffer, readed, b, off, usable);
+      usable = Math.min(inputBuffer.length - readed, len);
+      System.arraycopy(inputBuffer, readed, b, off, usable);
       readed += usable;
       return usable;
     }
     
     public int read(byte[] b) throws IOException
     {
-      return super.read(b);
+      return read(b, 0, b.length);
+    }
+    
+    public int available() throws IOException
+    {
+      return inputBuffer.length - readed;
     }
     
     /* public synchronized void reset() throws IOException { super.reset(); } */
