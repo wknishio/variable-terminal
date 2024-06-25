@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -23,8 +24,9 @@ public class VTNanoPingService extends VTTask
   private long localNanoDelay = 0;
   private long remoteNanoDelay = 0;
   
-  public VTNanoPingService(int interval, boolean server)
+  public VTNanoPingService(int interval, boolean server, ExecutorService executorService)
   {
+    super(executorService);
     this.listeners = new ConcurrentLinkedQueue<VTNanoPingListener>();
     // this.initial = initial;
     this.interval = interval;

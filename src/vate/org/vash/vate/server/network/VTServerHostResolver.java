@@ -16,6 +16,7 @@ public class VTServerHostResolver extends VTTask
   
   public VTServerHostResolver(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.message = new StringBuilder();
     this.finished = true;

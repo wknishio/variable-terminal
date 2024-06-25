@@ -11,6 +11,7 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
 //import org.codehaus.groovy.tools.shell.Groovysh;
@@ -44,16 +45,16 @@ public class VTShellProcessor
   
   private Charset shellCharset;
   
-  // private ExecutorService executor;
+  private ExecutorService executorService;
   
   private Interpreter beanshell;
   // private Groovysh groovyshell;
   
   private List<Closeable> closeables = new ArrayList<Closeable>();
   
-  public VTShellProcessor()
+  public VTShellProcessor(ExecutorService executorService)
   {
-    
+    this.executorService = executorService;
   }
   
   public VTRuntimeProcess getRuntimeProcess()
@@ -79,11 +80,6 @@ public class VTShellProcessor
   // public void setSuppressEchoShell(boolean supressEchoShell)
   // {
   // this.supressEchoShell = supressEchoShell;
-  // }
-  
-  // public void setThreads(ExecutorService executor)
-  // {
-  // this.executor = executor;
   // }
   
   public boolean startShell() throws Throwable
@@ -183,7 +179,8 @@ public class VTShellProcessor
           }
         }
       };
-      shellThread.start();
+      //shellThread.start();
+      executorService.execute(shellThread);
     }
     
     if (shellCharset != null)

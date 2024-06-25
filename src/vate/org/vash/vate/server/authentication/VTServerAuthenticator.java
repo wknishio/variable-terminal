@@ -29,7 +29,7 @@ public class VTServerAuthenticator
     public void start()
     {
       accepted = false;
-      server.getServerThreads().execute(this);
+      server.getExecutorService().execute(this);
     }
     
     public void run()

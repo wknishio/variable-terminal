@@ -146,7 +146,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                           // response message sent with ok
                           connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelChar + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                           connection.getControlOutputStream().flush();
-                          connection.getExecutor().execute(handler);
+                          connection.getExecutorService().execute(handler);
                           session.setResult(true);
                         }
                         else
@@ -166,7 +166,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                       }
                     }
                   };
-                  connection.getExecutor().execute(tcpTunnelThread);
+                  connection.getExecutorService().execute(tcpTunnelThread);
                 }
                 else
                 {
@@ -239,7 +239,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                   // response message sent with ok
                   connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelChar + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
-                  connection.getExecutor().execute(handler);
+                  connection.getExecutorService().execute(handler);
                   session.setResult(true);
                 }
                 else
@@ -282,7 +282,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                     Socket sessionSocket = session.getSocket();
                     if (!(sessionSocket instanceof VTTunnelPipedSocket))
                     {
-                      connection.getExecutor().execute(handler);
+                      connection.getExecutorService().execute(handler);
                     }
                     session.setResult(true);
                   }

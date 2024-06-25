@@ -23,7 +23,7 @@ public class VTClientZipFileOperation extends VTTask
   
   public VTClientZipFileOperation(VTClientSession session)
   {
-    // this.session = session;
+    super(session.getExecutorService());
     this.finished = true;
     this.readBuffer = new byte[fileZipBufferSize];
   }

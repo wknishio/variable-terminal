@@ -57,7 +57,7 @@ public class VTClientConnector implements Runnable
     this.secureRandom = secureRandom;
     this.connection = new VTClientConnection();
     this.handler = new VTClientConnectionHandler(client, connection);
-    portMappingManager = new VTNATSinglePortMappingManagerMKII(3, 300);
+    portMappingManager = new VTNATSinglePortMappingManagerMKII(3, 300, client.getExecutorService());
     portMappingManager.start();
   }
   
@@ -92,7 +92,7 @@ public class VTClientConnector implements Runnable
       // finished = false;
       // timeoutThread = new Thread(this, getClass().getSimpleName());
       // timeoutThread.start();
-      client.getClientThreads().execute(this);
+      client.getExecutorService().execute(this);
     }
     
     public void run()
@@ -560,7 +560,7 @@ public class VTClientConnector implements Runnable
       {
         portMappingManager.deletePortMapping();
       }
-      VTConsole.createInterruptibleReadline(false, new Runnable()
+      VTConsole.createInterruptibleReadline(false, client.getExecutorService(), new Runnable()
       {
         public void run()
         {

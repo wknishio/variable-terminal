@@ -16,6 +16,9 @@ import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import org.vash.vate.console.VTConsole;
 
@@ -199,6 +202,15 @@ public class VTNanoHTTPD
    */
   public VTNanoHTTPD( int port, File wwwroot ) throws IOException
   {
+    final ExecutorService executorService = Executors.newCachedThreadPool(new ThreadFactory()
+    {
+      public Thread newThread(Runnable r)
+      {
+        Thread thread = new Thread(r);
+        thread.setDaemon(true);
+        return thread;
+      }
+    });
     myTcpPort = port;
     this.myRootDir = wwwroot;
     myServerSocket = new ServerSocket( myTcpPort );
@@ -209,7 +221,7 @@ public class VTNanoHTTPD
           try
           {
             while( true )
-              new HTTPSession( myServerSocket.accept());
+              new HTTPSession( myServerSocket.accept(), executorService);
           }
           catch ( IOException ioe )
           {}
@@ -285,12 +297,13 @@ public class VTNanoHTTPD
    */
   private class HTTPSession implements Runnable
   {
-    public HTTPSession( Socket s )
+    public HTTPSession( Socket s, ExecutorService executorService)
     {
       mySocket = s;
       Thread t = new Thread( this );
       t.setDaemon( true );
-      t.start();
+      //t.start();
+      executorService.execute(t);
     }
 
     public void run()

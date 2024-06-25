@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
 import org.vash.vate.graphics.image.VTTransferableImage;
@@ -30,8 +31,9 @@ public class VTClipboardTransferTask extends VTTask
   private Transferable transferable;
   private DataBuffer recyclableDataBuffer;
   
-  public VTClipboardTransferTask()
+  public VTClipboardTransferTask(ExecutorService executorService)
   {
+    super(executorService);
     if (VTReflectionUtils.isAWTHeadless())
     {
       return;

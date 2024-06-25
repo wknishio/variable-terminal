@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.concurrent.ExecutorService;
 
 import com.offbynull.portmapper.PortMapperFactory;
 import com.offbynull.portmapper.gateway.Bus;
@@ -36,12 +37,14 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
   
   private Map<PortMapper, MappedPort> currentMappedPorts;
   private Thread shutdownHook;
+  private ExecutorService executorService;
   // private Set<InetAddress> externalNetworkAddresses;
   
-  public VTNATSinglePortMappingManagerMKII(int discoveryTime, int intervalTime)
+  public VTNATSinglePortMappingManagerMKII(int discoveryTime, int intervalTime, ExecutorService executorService)
   {
     this.discoveryTime = discoveryTime;
     this.intervalTime = intervalTime;
+    this.executorService = executorService;
     this.currentMappedPorts = new LinkedHashMap<PortMapper, MappedPort>();
     // this.externalNetworkAddresses = Collections.synchronizedSet(new
     // LinkedHashSet<InetAddress>());
@@ -90,7 +93,8 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
       this.running = true;
       currentMappedPorts.notify();
     }
-    manager.start();
+    //manager.start();
+    executorService.execute(manager);
   }
   
   public void stop()

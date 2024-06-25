@@ -9,8 +9,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 
 import org.vash.vate.VT;
 import org.vash.vate.client.VTClient;
@@ -42,53 +40,29 @@ public class VTClientSession
   // private VTTunnelConnectionHandler socksTunnelsHandler;
   private VTNanoPingService pingService;
   private Collection<Closeable> sessionCloseables;
-  private ExecutorService executor;
+  private ExecutorService executorService;
   
   public VTClientSession(VTClient client, VTClientConnection connection)
   {
     this.client = client;
     this.connection = connection;
+    this.executorService = client.getExecutorService();
     this.sessionCloseables = Collections.synchronizedCollection(new LinkedList<Closeable>());
   }
   
   public void initialize()
   {
-    this.executor = Executors.newCachedThreadPool(new ThreadFactory()
-    {
-      public Thread newThread(Runnable runnable)
-      {
-        Thread created = new Thread(null, runnable, runnable.getClass().getSimpleName());
-        created.setDaemon(true);
-        return created;
-      }
-    });
-    
-//    try
-//    {
-//      int supressEchoShell = 1;
-//      if (VTConsole.isGraphical() && !VTConsole.isDaemon())
-//      {
-//        supressEchoShell = 0;
-//      }
-//      getConnection().getShellOutputStream().write(supressEchoShell);
-//      getConnection().getShellOutputStream().flush();
-//    }
-//    catch (Throwable e)
-//    {
-//      //e.printStackTrace();
-//    }
-    
     // this.runningAudio = false;
     this.serverReader = new VTClientRemoteConsoleReader(this);
     this.clientWriter = new VTClientRemoteConsoleWriter(this);
     this.fileTransferClient = new VTFileTransferClient(this);
     this.graphicsClient = new VTGraphicsModeClient(this);
-    this.clipboardTransferTask = new VTClipboardTransferTask();
+    this.clipboardTransferTask = new VTClipboardTransferTask(executorService);
     // this.zipFileOperation = new VTClientZipFileOperation(this);
-    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executor, sessionCloseables));
+    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executorService, sessionCloseables));
     // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
     // VTTunnelConnection(executor), executor);
-    this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, false);
+    this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, false, executorService);
     this.pingService.addListener(new VTNanoPingListener()
     {
       public void pingObtained(long localNanoDelay, long remoteNanoDelay)
@@ -101,9 +75,9 @@ public class VTClientSession
     });
   }
   
-  public ExecutorService getSessionThreads()
+  public ExecutorService getExecutorService()
   {
-    return executor;
+    return executorService;
   }
   
   public void addSessionCloseable(Closeable value)

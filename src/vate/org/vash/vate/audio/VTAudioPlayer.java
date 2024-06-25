@@ -24,16 +24,16 @@ public class VTAudioPlayer
   private final Queue<VTLittleEndianInputStream> streams;
   // private final int maximumJitterLevel = 10;
   private boolean running = false;
-  private ExecutorService executor;
+  private ExecutorService executorService;
   private AudioFormat audioFormat;
   private VTAudioSystem system;
   private List<Runnable> scheduled = new ArrayList<Runnable>();
   
-  public VTAudioPlayer(VTAudioSystem system, ExecutorService executor)
+  public VTAudioPlayer(VTAudioSystem system, ExecutorService executorService)
   {
     this.streams = new ConcurrentLinkedQueue<VTLittleEndianInputStream>();
     this.system = system;
-    this.executor = executor;
+    this.executorService = executorService;
   }
   
   public boolean initialize(AudioFormat audioFormat)
@@ -326,7 +326,7 @@ public class VTAudioPlayer
     streams.add(stream);
     if (running)
     {
-      executor.execute(new VTAudioPlayerThread(stream, line, codec, frameMilliseconds));
+      executorService.execute(new VTAudioPlayerThread(stream, line, codec, frameMilliseconds));
     }
     else
     {
@@ -344,7 +344,7 @@ public class VTAudioPlayer
       {
         for (Runnable runnable : scheduled)
         {
-          executor.execute(runnable);
+          executorService.execute(runnable);
         }
         scheduled.clear();
       }

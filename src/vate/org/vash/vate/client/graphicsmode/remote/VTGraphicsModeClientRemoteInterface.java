@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.ScrollPane;
 import java.awt.image.BufferedImage;
+import java.util.concurrent.ExecutorService;
 
 @SuppressWarnings("unused")
 public class VTGraphicsModeClientRemoteInterface extends Canvas
@@ -24,13 +25,13 @@ public class VTGraphicsModeClientRemoteInterface extends Canvas
   // private Rectangle refreshArea = new Rectangle(0, 0, 0, 0);
   private VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter repainter;
   
-  public VTGraphicsModeClientRemoteInterface()
+  public VTGraphicsModeClientRemoteInterface(ExecutorService executorService)
   {
     // this.setBackground(new Color(0x00999999));
     // this.setBackground(new Color(0x00808080));
     //this.setBackground(new Color(0x00555555));
     this.setBackground(Color.BLACK);
-    this.repainter = new VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter(this);
+    this.repainter = new VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter(this, executorService);
     // this.graphics
     // this.resizer = new VTGraphicsModeClientViewPortChangeListener(this);
   }

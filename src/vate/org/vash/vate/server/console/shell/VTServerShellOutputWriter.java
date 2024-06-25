@@ -15,6 +15,7 @@ public class VTServerShellOutputWriter extends VTTask
   
   public VTServerShellOutputWriter(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.connection = session.getConnection();
     this.stopped = false;

@@ -12,6 +12,7 @@ public class VTFileTransferClient extends VTTask
   
   public VTFileTransferClient(VTClientSession session)
   {
+    super(session.getExecutorService());
     this.connection = session.getConnection();
     this.session = session;
     this.handler = new VTFileTransferClientSessionHandler(this, new VTFileTransferClientSession(this));

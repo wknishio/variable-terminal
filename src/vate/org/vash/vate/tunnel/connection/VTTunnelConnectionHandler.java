@@ -9,6 +9,7 @@ public class VTTunnelConnectionHandler extends VTTask
   
   public VTTunnelConnectionHandler(VTTunnelConnection connection)
   {
+    super(connection.getExecutorService());
     this.connection = connection;
     this.control = new VTTunnelConnectionControlThread(connection);
   }

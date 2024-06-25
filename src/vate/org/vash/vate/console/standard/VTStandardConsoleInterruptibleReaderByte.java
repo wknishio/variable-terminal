@@ -1,7 +1,7 @@
 package org.vash.vate.console.standard;
 
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
@@ -16,7 +16,7 @@ public class VTStandardConsoleInterruptibleReaderByte implements Runnable
   private BlockingQueue<byte[]> buffer;
   // private static final String ANSIDetectionPattern =
   // "(\\u001B)(\\[)([^R])*([R])";
-  private Executor executor;
+  private ExecutorService executorService;
   
   public VTStandardConsoleInterruptibleReaderByte()
   {
@@ -24,7 +24,7 @@ public class VTStandardConsoleInterruptibleReaderByte implements Runnable
     // System.out.println("matches:" +
     // testString.matches(ANSIDetectionPattern));
     this.buffer = new LinkedBlockingQueue<byte[]>();
-    this.executor = Executors.newFixedThreadPool(1, new ThreadFactory()
+    this.executorService = Executors.newFixedThreadPool(1, new ThreadFactory()
     {
       public Thread newThread(Runnable r)
       {
@@ -49,7 +49,7 @@ public class VTStandardConsoleInterruptibleReaderByte implements Runnable
       if (requested == false)
       {
         requested = true;
-        executor.execute(this);
+        executorService.execute(this);
       }
     }
     byte[] data = buffer.take();

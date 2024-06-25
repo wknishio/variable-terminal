@@ -41,6 +41,7 @@ public class VTServerPrintTextTask extends VTTask
   
   public VTServerPrintTextTask(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.finished = true;
   }

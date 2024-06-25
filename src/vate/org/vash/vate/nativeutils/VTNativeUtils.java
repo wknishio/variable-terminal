@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
 import java.util.Map.Entry;
 import org.vash.vate.audio.VTAudioBeeper;
 import org.vash.vate.nativeutils.bsd.VTBSDNativeUtils;
@@ -113,14 +114,14 @@ public class VTNativeUtils
     }
   }
   
-  public static boolean beep(int freq, int dur, boolean block)
+  public static boolean beep(int freq, int dur, boolean block, ExecutorService executorService)
   {
     if (checkNativeUtils())
     {
       boolean nativeBeep = nativeUtils.beep(freq, dur, block);
       if (!nativeBeep)
       {
-        return VTAudioBeeper.beep(SAMPLE_RATE_HERTZ, SAMPLE_SIZE_BITS, freq, dur, block);
+        return VTAudioBeeper.beep(SAMPLE_RATE_HERTZ, SAMPLE_SIZE_BITS, freq, dur, block, executorService);
       }
       else
       {
@@ -129,7 +130,7 @@ public class VTNativeUtils
     }
     else
     {
-      return VTAudioBeeper.beep(SAMPLE_RATE_HERTZ, SAMPLE_SIZE_BITS, freq, dur, block);
+      return VTAudioBeeper.beep(SAMPLE_RATE_HERTZ, SAMPLE_SIZE_BITS, freq, dur, block, executorService);
     }
   }
   

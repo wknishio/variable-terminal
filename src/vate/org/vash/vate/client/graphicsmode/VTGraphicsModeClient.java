@@ -9,6 +9,7 @@ public class VTGraphicsModeClient extends VTTask
   
   public VTGraphicsModeClient(VTClientSession session)
   {
+    super(session.getExecutorService());
     this.sessionHandler = new VTGraphicsModeClientSessionHandler(new VTGraphicsModeClientSession(session));
     // this.setStopped(true);
   }

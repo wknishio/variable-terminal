@@ -2,6 +2,7 @@ package org.vash.vate.task;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
 
 public abstract class VTTask implements Runnable, Closeable
 {
@@ -9,6 +10,12 @@ public abstract class VTTask implements Runnable, Closeable
   private Thread taskThread;
   private Thread nextThread;
   private Runnable next;
+  private ExecutorService executorService;
+  
+  public VTTask(ExecutorService executorService)
+  {
+    this.executorService = executorService;
+  }
   
   public boolean isStopped()
   {
@@ -74,7 +81,8 @@ public abstract class VTTask implements Runnable, Closeable
     stopped = false;
     taskThread = new Thread(null, this, this.getClass().getSimpleName());
     taskThread.setDaemon(true);
-    taskThread.start();
+    executorService.execute(taskThread);
+    //taskThread.start();
   }
   
   public void close() throws IOException
@@ -140,7 +148,8 @@ public abstract class VTTask implements Runnable, Closeable
           };
           nextThread.setDaemon(true);
           nextThread.setName(next.getClass().getSimpleName());
-          nextThread.start();
+          executorService.execute(nextThread);
+          //nextThread.start();
         }
       }
     }

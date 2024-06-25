@@ -55,6 +55,7 @@ public class VTServerRuntimeExecutor extends VTTask
   
   public VTServerRuntimeExecutor(VTServerSession session)
   {
+    super(session.getExecutorService());
     // this.server = session.getServer();
     this.session = session;
     this.connection = session.getConnection();
@@ -468,7 +469,7 @@ public class VTServerRuntimeExecutor extends VTTask
             processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
             // processBuilder.environment().putAll(System.getenv());
             processBuilder.redirectErrorStream(true);
-            VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, session.getSessionThreads(), connection.getShellDataOutputStream(), process_verbose, process_restart, timeout_value);
+            VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, session.getExecutorService(), connection.getShellDataOutputStream(), process_verbose, process_restart, timeout_value);
             process.start();
             managedProcessList.add(process);
             synchronized (this)
@@ -511,7 +512,7 @@ public class VTServerRuntimeExecutor extends VTTask
             processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
             // processBuilder.environment().putAll(System.getenv());
             processBuilder.redirectErrorStream(true);
-            VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, session.getSessionThreads(), connection.getShellDataOutputStream(), process_verbose, process_restart, timeout_value);
+            VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, session.getExecutorService(), connection.getShellDataOutputStream(), process_verbose, process_restart, timeout_value);
             process.start();
             freeProcessList.add(process);
             synchronized (this)

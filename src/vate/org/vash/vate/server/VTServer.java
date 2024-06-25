@@ -65,7 +65,7 @@ public class VTServer implements Runnable
   private VTServerLocalGraphicalConsoleMenuBar inputMenuBar;
   private VTAudioSystem[] audioSystem;
   private VTServerSettingsDialog connectionDialog;
-  private ExecutorService executor;
+  private ExecutorService executorService;
   private VTTrayIconInterface trayIconInterface;
   private boolean skipConfiguration;
   private boolean echoCommands = false;
@@ -122,7 +122,7 @@ public class VTServer implements Runnable
     //byte[] seed = new byte[64];
     //new SecureRandom().nextBytes(seed);
     //this.blake3Digest.setSeed(seed);
-    this.executor = Executors.newCachedThreadPool(new ThreadFactory()
+    this.executorService = Executors.newCachedThreadPool(new ThreadFactory()
     {
       public Thread newThread(Runnable runnable)
       {
@@ -132,30 +132,47 @@ public class VTServer implements Runnable
       }
     });
     this.audioSystem = new VTAudioSystem[5];
-    this.audioSystem[0] = new VTAudioSystem(executor);
-    this.audioSystem[1] = new VTAudioSystem(executor);
-    this.audioSystem[2] = new VTAudioSystem(executor);
-    this.audioSystem[3] = new VTAudioSystem(executor);
-    this.audioSystem[4] = new VTAudioSystem(executor);
+    this.audioSystem[0] = new VTAudioSystem(executorService);
+    this.audioSystem[1] = new VTAudioSystem(executorService);
+    this.audioSystem[2] = new VTAudioSystem(executorService);
+    this.audioSystem[3] = new VTAudioSystem(executorService);
+    this.audioSystem[4] = new VTAudioSystem(executorService);
     
     loadServerSettingsFile();
   }
   
   public void stop()
   {
+    running = false;
+    
     try
     {
-      running = false;
       if (trayIconInterface != null)
       {
         trayIconInterface.remove();
       }
-      serverConnector.stop();
-      executor.shutdownNow();
     }
     catch (Throwable t)
     {
       // t.printStackTrace();
+    }
+    
+    try
+    {
+      serverConnector.stop();
+    }
+    catch (Throwable t)
+    {
+      // t.printStackTrace();
+    }
+    
+    try
+    {
+      executorService.shutdownNow();
+    }
+    catch (Throwable t)
+    {
+      
     }
   }
   
@@ -164,9 +181,9 @@ public class VTServer implements Runnable
     return running;
   }
   
-  public ExecutorService getServerThreads()
+  public ExecutorService getExecutorService()
   {
-    return executor;
+    return executorService;
   }
   
   public void setSkipConfiguration(boolean skipConfiguration)
@@ -2056,7 +2073,7 @@ public class VTServer implements Runnable
   
   public void startThread()
   {
-    executor.execute(new Runnable()
+    executorService.execute(new Runnable()
     {
       public void run()
       {

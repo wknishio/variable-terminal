@@ -30,6 +30,7 @@ public class VTServerNetworkInterfaceResolver extends VTTask
   
   public VTServerNetworkInterfaceResolver(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.message = new StringBuilder();
     this.finished = true;

@@ -15,6 +15,7 @@ public class VTServerShellErrorWriter extends VTTask
   
   public VTServerShellErrorWriter(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.connection = session.getConnection();
     this.stopped = false;

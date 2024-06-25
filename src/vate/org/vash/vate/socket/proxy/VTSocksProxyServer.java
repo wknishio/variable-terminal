@@ -29,6 +29,7 @@ import java.io.*;
 //import org.apache.commons.lang.RandomStringUtils;
 //import org.apache.log4j.Logger;
 import java.net.*;
+import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
 import org.vash.vate.socket.remote.VTRemoteSocketAdapter;
@@ -84,6 +85,8 @@ public class VTSocksProxyServer implements Runnable {
 	private VTProxy connect_proxy;
 	private VTRemoteSocketFactory socket_factory;
 	private int connectTimeout;
+	
+	private ExecutorService executorService;
 
 	// private String connectionId;
 
@@ -104,14 +107,16 @@ public class VTSocksProxyServer implements Runnable {
 	// Other constructors
 	////////////////////
 
-	public VTSocksProxyServer(ServerAuthenticator auth, Socket s) {
+	public VTSocksProxyServer(ServerAuthenticator auth, Socket s, ExecutorService executorService) {
+	  this.executorService = executorService;
 		this.auth = auth;
 		this.sock = s;
 		// this.connectionId = connectionId;
 		mode = START_MODE;
 	}
 	
-	public VTSocksProxyServer(ServerAuthenticator auth, Socket s, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy, VTRemoteSocketFactory socket_factory, int connectTimeout) {
+	public VTSocksProxyServer(ServerAuthenticator auth, Socket s, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy, VTRemoteSocketFactory socket_factory, int connectTimeout) {
+    this.executorService = executorService;
     this.auth = auth;
     this.sock = s;
     this.disabled_bind = disabled_bind;
@@ -231,8 +236,9 @@ public class VTSocksProxyServer implements Runnable {
 				// String connectionId = newConnectionId();
 				// LOG.info(connectionId + " Accepted from:" +
 				// s.getInetAddress().getHostName() + ":" +s.getPort());
-				VTSocksProxyServer ps = new VTSocksProxyServer(auth, s);
-				(new Thread(ps)).start();
+				VTSocksProxyServer ps = new VTSocksProxyServer(auth, s, executorService);
+				//(new Thread(ps)).start();
+				executorService.execute(ps);
 			}
 		} catch (IOException ioe) {
 			// ioe.printStackTrace();
@@ -500,7 +506,8 @@ public class VTSocksProxyServer implements Runnable {
 		pipe_thread1 = Thread.currentThread();
 		pipe_thread2 = new Thread(this);
 		pipe_thread2.setDaemon(true);
-		pipe_thread2.start();
+		//pipe_thread2.start();
+		executorService.execute(pipe_thread2);
 
 		// Make timeout infinit.
 		sock.setSoTimeout(0);
@@ -666,7 +673,8 @@ public class VTSocksProxyServer implements Runnable {
 			pipe_thread1 = Thread.currentThread();
 			pipe_thread2 = new Thread(this);
 			pipe_thread2.setDaemon(true);
-			pipe_thread2.start();
+			//pipe_thread2.start();
+			executorService.execute(pipe_thread2);
 			pipe(in, remote_out);
 		} catch (IOException ioe) {
 		}

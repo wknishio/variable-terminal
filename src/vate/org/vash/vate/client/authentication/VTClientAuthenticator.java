@@ -26,7 +26,7 @@ public class VTClientAuthenticator
     public void start()
     {
       accepted = false;
-      client.getClientThreads().execute(this);
+      client.getExecutorService().execute(this);
     }
     
     public void run()

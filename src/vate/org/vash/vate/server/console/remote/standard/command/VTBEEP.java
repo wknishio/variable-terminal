@@ -49,7 +49,7 @@ public class VTBEEP extends VTServerStandardRemoteConsoleCommandProcessor
       {
         if (sdl == null)
         {
-          if (VTNativeUtils.beep(Integer.parseInt(parsed[1]), Integer.parseInt(parsed[2]), false))
+          if (VTNativeUtils.beep(Integer.parseInt(parsed[1]), Integer.parseInt(parsed[2]), false, session.getExecutorService()))
           {
             connection.getResultWriter().write("\nVT>Beep is playing on server!\nVT>");
             connection.getResultWriter().flush();
@@ -62,7 +62,7 @@ public class VTBEEP extends VTServerStandardRemoteConsoleCommandProcessor
         }
         else
         {
-          if (VTAudioBeeper.beep(SAMPLE_RATE_HERTZ, SAMPLE_SIZE_BITS, Integer.parseInt(parsed[1]), Integer.parseInt(parsed[2]), false, sdl))
+          if (VTAudioBeeper.beep(SAMPLE_RATE_HERTZ, SAMPLE_SIZE_BITS, Integer.parseInt(parsed[1]), Integer.parseInt(parsed[2]), false, sdl, session.getExecutorService()))
           {
             connection.getResultWriter().write("\nVT>Beep is playing on server!\nVT>");
             connection.getResultWriter().flush();

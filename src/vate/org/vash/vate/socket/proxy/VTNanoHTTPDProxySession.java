@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutorService;
 import java.util.Map.Entry;
 
 import org.apache.commons.codec.binary.Base64;
@@ -257,8 +258,9 @@ public class VTNanoHTTPDProxySession implements Runnable
     //public boolean keepConnection = false;
   }
   
-  public VTNanoHTTPDProxySession( Socket s, InputStream in, boolean digestAuthentication, String username, String password, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout)
+  public VTNanoHTTPDProxySession(Socket s, InputStream in, ExecutorService executorService, boolean digestAuthentication, String username, String password, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout)
   {
+    this.executorService = executorService;
     mySocket = s;
     myIn = in;
     this.digestAuthentication = digestAuthentication;
@@ -723,8 +725,10 @@ public class VTNanoHTTPDProxySession implements Runnable
 //    firstPipe.setAnother(secondThread);
 //    secondPipe.setAnother(firstThread);
     
-    firstThread.start();
-    secondThread.start();
+    //firstThread.start();
+    //secondThread.start();
+    executorService.execute(firstThread);
+    executorService.execute(secondThread);
     
     firstThread.join();
     secondThread.join();
@@ -1116,6 +1120,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   private VTProxy proxy;
   private VTRemoteSocketFactory socketFactory;
   private int connectTimeout;
+  private ExecutorService executorService;
   //private static final Map<String, Long> VALID_DIGEST_NONCES = new LinkedHashMap<String, Long>();
   
   private static java.text.SimpleDateFormat gmtFrmt;

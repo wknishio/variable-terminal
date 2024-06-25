@@ -58,6 +58,7 @@ public class VTServerPrintDataTask extends VTTask
   
   public VTServerPrintDataTask(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.finished = true;
   }

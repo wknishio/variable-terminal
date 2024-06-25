@@ -22,6 +22,7 @@ public class VTServerLocalConsoleReader extends VTTask
   
   public VTServerLocalConsoleReader(VTServer server)
   {
+    super(server.getExecutorService());
     this.server = server;
     this.selector = new VTServerLocalConsoleCommandSelector<VTServerLocalConsoleCommandProcessor>(server);
   }

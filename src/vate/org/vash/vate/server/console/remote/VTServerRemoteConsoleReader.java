@@ -20,6 +20,7 @@ public class VTServerRemoteConsoleReader extends VTTask
   
   public VTServerRemoteConsoleReader(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.connection = session.getConnection();
     this.stopped = false;

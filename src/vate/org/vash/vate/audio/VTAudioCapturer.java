@@ -28,17 +28,17 @@ import org.xiph.speex.SpeexEncoder;
 public class VTAudioCapturer
 {
   private boolean running = false;
-  private ExecutorService executor;
+  private ExecutorService executorService;
   private AudioFormat audioFormat;
 //  private Map<String, VTAudioCapturerThread> lines = Collections.synchronizedMap(new LinkedHashMap<String, VTAudioCapturerThread>());
   private Map<String, VTAudioCapturerThread> lines = new LinkedHashMap<String, VTAudioCapturerThread>();
   private VTAudioSystem system;
   private List<Runnable> scheduled = new ArrayList<Runnable>();
   
-  public VTAudioCapturer(VTAudioSystem system, ExecutorService executor)
+  public VTAudioCapturer(VTAudioSystem system, ExecutorService executorService)
   {
     this.system = system;
-    this.executor = executor;
+    this.executorService = executorService;
   }
   
   public boolean initialize(AudioFormat audioFormat)
@@ -282,7 +282,7 @@ public class VTAudioCapturer
       // System.out.println("VTAudioCapturerThread started");
       if (running)
       {
-        executor.execute(this);
+        executorService.execute(this);
       }
       else
       {
@@ -529,7 +529,7 @@ public class VTAudioCapturer
       {
         for (Runnable runnable : scheduled)
         {
-          executor.execute(runnable);
+          executorService.execute(runnable);
         }
         scheduled.clear();
       }

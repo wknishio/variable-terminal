@@ -56,7 +56,7 @@ public class VTPAUSE extends VTClientStandardRemoteConsoleCommandProcessor
         VTConsole.print("\nVT>Pausing local console for: [" + pause + "] ms\nVT>");
       }
       long start = System.nanoTime();
-      VTConsole.createInterruptibleReadline(false, new Runnable()
+      VTConsole.createInterruptibleReadline(false, session.getExecutorService(), new Runnable()
       {
         public void run()
         {

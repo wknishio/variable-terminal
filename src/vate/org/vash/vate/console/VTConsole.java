@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.lang.reflect.Method;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+
 import org.vash.vate.VT;
 import org.vash.vate.console.graphical.VTGraphicalConsole;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuBar;
@@ -552,7 +554,7 @@ public final class VTConsole
     return null;
   }
   
-  public static void createInterruptibleReadline(final boolean echo, final Runnable interrupt)
+  public static void createInterruptibleReadline(final boolean echo, final ExecutorService executorService, final Runnable interrupt)
   {
     if (!checkConsole())
     {
@@ -577,7 +579,8 @@ public final class VTConsole
         }
       }
     };
-    thread.start();
+    //thread.start();
+    executorService.execute(thread);
   }
   
   private static boolean checkConsole()

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PushbackInputStream;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 
@@ -15,12 +16,14 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
   private VTProxy connect_proxy;
   private VTRemoteSocketFactory socket_factory;
   private int connectTimeout;
+  private ExecutorService executorService;
   
-  public VTSocksHttpProxyAuthenticatorNone(VTProxy proxy, VTRemoteSocketFactory socket_factory, int connectTimeout)
+  public VTSocksHttpProxyAuthenticatorNone(VTProxy proxy, VTRemoteSocketFactory socket_factory, int connectTimeout, ExecutorService executorService)
   {
     this.connect_proxy = proxy;
     this.socket_factory = socket_factory;
     this.connectTimeout = connectTimeout;
+    this.executorService = executorService;
   }
   
   public ServerAuthenticator startSession(Socket s) throws IOException
@@ -46,7 +49,7 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
       {
         in.unread(version);
         //fallback to use http proxy instead
-        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(s, in, true, null, null, connect_proxy, socket_factory, connectTimeout);
+        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(s, in, executorService, true, null, null, connect_proxy, socket_factory, connectTimeout);
         try
         {
           httpProxy.run();

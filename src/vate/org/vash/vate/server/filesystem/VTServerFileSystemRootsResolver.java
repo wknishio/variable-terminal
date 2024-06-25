@@ -17,6 +17,7 @@ public class VTServerFileSystemRootsResolver extends VTTask
   
   public VTServerFileSystemRootsResolver(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.message = new StringBuilder();
     this.finished = true;

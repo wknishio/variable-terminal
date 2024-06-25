@@ -1,6 +1,7 @@
 package org.vash.vate.server.graphicsmode;
 
 import java.awt.Dimension;
+import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
 import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII;
@@ -14,10 +15,12 @@ public class VTGraphicsModeServerSession
   private VTServerSession session;
   private VTGraphicsModeServerReader reader;
   private VTGraphicsModeServerWriter writer;
+  private ExecutorService executorService;
   
   public VTGraphicsModeServerSession(VTServerSession session)
   {
     this.session = session;
+    this.executorService = session.getExecutorService();
     this.reader = new VTGraphicsModeServerReader(this);
     this.writer = new VTGraphicsModeServerWriter(this);
     this.reader.setWriter(writer);
@@ -102,8 +105,10 @@ public class VTGraphicsModeServerSession
      * session.getConnection().getResultWriter().flush(); } } catch (IOException
      * e) { }
      */
-    writerThread.start();
-    readerThread.start();
+    //writerThread.start();
+    //readerThread.start();
+    executorService.execute(writerThread);
+    executorService.execute(readerThread);
   }
   
   public boolean isStopped()

@@ -33,6 +33,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
   
   public VTClientRemoteConsoleWriter(VTClientSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.connection = session.getConnection();
     this.selector = new VTClientRemoteConsoleCommandSelector<VTClientRemoteConsoleCommandProcessor>(session);

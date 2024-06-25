@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
@@ -24,7 +24,7 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
   private BlockingQueue<String> buffer;
   // private static final String ANSIDetectionPattern =
   // "(\\u001B)(\\[)([^R])*([R])";
-  private Executor executor;
+  private ExecutorService executorService;
   
   public VTStandardConsoleInterruptibleReader()
   {
@@ -32,7 +32,7 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
     // System.out.println("matches:" +
     // testString.matches(ANSIDetectionPattern));
     this.buffer = new LinkedBlockingQueue<String>();
-    this.executor = Executors.newFixedThreadPool(1, new ThreadFactory()
+    this.executorService = Executors.newFixedThreadPool(1, new ThreadFactory()
     {
       public Thread newThread(Runnable r)
       {
@@ -73,7 +73,7 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
       if (requested == false)
       {
         requested = true;
-        executor.execute(this);
+        executorService.execute(this);
       }
     }
     String data = buffer.take();

@@ -22,6 +22,7 @@ public class VTServerZipFileOperation extends VTTask
   
   public VTServerZipFileOperation(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.finished = true;
     this.readBuffer = new byte[fileZipBufferSize];

@@ -1,5 +1,7 @@
 package org.vash.vate.audio;
 
+import java.util.concurrent.ExecutorService;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Mixer.Info;
@@ -48,11 +50,12 @@ public class VTAudioBeeper
     private SourceDataLine sdl;
     private byte[] data;
     private int lineBufferSize = 0;
+    private ExecutorService executorService;
     // private int chunkSize;
     
-    private DrainSourceDataline()
+    private DrainSourceDataline(ExecutorService executorService)
     {
-      
+      this.executorService = executorService;
     }
     
     public void configure(SourceDataLine sdl)
@@ -71,7 +74,8 @@ public class VTAudioBeeper
       Thread drain = new Thread(this);
       drain.setName(this.getClass().getSimpleName());
       drain.setDaemon(true);
-      drain.start();
+      //drain.start();
+      executorService.execute(drain);
     }
     
     public void close()
@@ -131,7 +135,7 @@ public class VTAudioBeeper
     }
   }
   
-  private static final boolean toneBlocking(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol)
+  private static final boolean toneBlocking(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol, ExecutorService executorService)
   {
     try
     {
@@ -151,7 +155,7 @@ public class VTAudioBeeper
         
       }
       byte[] buf = createSinWaveBuffer(sampleRate, sampleSizeBits, freq, msecs, vol);
-      DrainSourceDataline drainer = new DrainSourceDataline();
+      DrainSourceDataline drainer = new DrainSourceDataline(executorService);
       drainer.configure(sdl);
       drainer.setData(buf);
       drainer.run();
@@ -164,7 +168,7 @@ public class VTAudioBeeper
     return false;
   }
   
-  private static final boolean toneThreaded(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol)
+  private static final boolean toneThreaded(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol, ExecutorService executorService)
   {
     try
     {
@@ -184,7 +188,7 @@ public class VTAudioBeeper
         
       }
       byte[] buf = createSinWaveBuffer(sampleRate, sampleSizeBits, freq, msecs, vol);
-      DrainSourceDataline drainer = new DrainSourceDataline();
+      DrainSourceDataline drainer = new DrainSourceDataline(executorService);
       drainer.configure(sdl);
       drainer.setData(buf);
       drainer.start();
@@ -197,7 +201,7 @@ public class VTAudioBeeper
     return false;
   }
   
-  private static final boolean toneBlocking(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol, SourceDataLine sdl)
+  private static final boolean toneBlocking(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol, SourceDataLine sdl, ExecutorService executorService)
   {
     try
     {
@@ -216,7 +220,7 @@ public class VTAudioBeeper
         
       }
       byte[] buf = createSinWaveBuffer(sampleRate, sampleSizeBits, freq, msecs, vol);
-      DrainSourceDataline drainer = new DrainSourceDataline();
+      DrainSourceDataline drainer = new DrainSourceDataline(executorService);
       drainer.configure(sdl);
       drainer.setData(buf);
       drainer.run();
@@ -229,7 +233,7 @@ public class VTAudioBeeper
     return false;
   }
   
-  private static final boolean toneThreaded(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol, SourceDataLine sdl)
+  private static final boolean toneThreaded(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol, SourceDataLine sdl, ExecutorService executorService)
   {
     try
     {
@@ -248,7 +252,7 @@ public class VTAudioBeeper
         
       }
       byte[] buf = createSinWaveBuffer(sampleRate, sampleSizeBits, freq, msecs, vol);
-      DrainSourceDataline drainer = new DrainSourceDataline();
+      DrainSourceDataline drainer = new DrainSourceDataline(executorService);
       drainer.configure(sdl);
       drainer.setData(buf);
       drainer.start();
@@ -297,51 +301,51 @@ public class VTAudioBeeper
     return null;
   }
   
-  public static final boolean beep(int sampleRate, int sampleSizeBits, int freq, int msecs, boolean block)
+  public static final boolean beep(int sampleRate, int sampleSizeBits, int freq, int msecs, boolean block, ExecutorService executorService)
   {
     if (block)
     {
-      return toneBlocking(sampleRate, sampleSizeBits, freq, msecs, 0.5);
+      return toneBlocking(sampleRate, sampleSizeBits, freq, msecs, 0.5, executorService);
     }
     else
     {
-      return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, 0.5);
+      return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, 0.5, executorService);
     }
   }
   
-  public static final boolean beep(int sampleRate, int sampleSizeBits, int freq, int msecs, boolean block, SourceDataLine sdl)
+  public static final boolean beep(int sampleRate, int sampleSizeBits, int freq, int msecs, boolean block, SourceDataLine sdl, ExecutorService executorService)
   {
     if (block)
     {
-      return toneBlocking(sampleRate, sampleSizeBits, freq, msecs, 0.5, sdl);
+      return toneBlocking(sampleRate, sampleSizeBits, freq, msecs, 0.5, sdl, executorService);
     }
     else
     {
-      return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, 0.5, sdl);
+      return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, 0.5, sdl, executorService);
     }
   }
   
-  public static final boolean beep(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol, boolean block)
+  public static final boolean beep(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol, boolean block, ExecutorService executorService)
   {
     if (block)
     {
-      return toneBlocking(sampleRate, sampleSizeBits, freq, msecs, vol);
+      return toneBlocking(sampleRate, sampleSizeBits, freq, msecs, vol, executorService);
     }
     else
     {
-      return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, vol);
+      return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, vol, executorService);
     }
   }
   
-  public static final boolean beep(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol, boolean block, SourceDataLine sdl)
+  public static final boolean beep(int sampleRate, int sampleSizeBits, int freq, int msecs, double vol, boolean block, SourceDataLine sdl, ExecutorService executorService)
   {
     if (block)
     {
-      return toneBlocking(sampleRate, sampleSizeBits, freq, msecs, vol, sdl);
+      return toneBlocking(sampleRate, sampleSizeBits, freq, msecs, vol, sdl, executorService);
     }
     else
     {
-      return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, vol, sdl);
+      return toneThreaded(sampleRate, sampleSizeBits, freq, msecs, vol, sdl, executorService);
     }
   }
 }

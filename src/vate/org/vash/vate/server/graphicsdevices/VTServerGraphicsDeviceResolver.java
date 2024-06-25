@@ -15,6 +15,7 @@ public class VTServerGraphicsDeviceResolver extends VTTask
   
   public VTServerGraphicsDeviceResolver(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.finished = true;
   }

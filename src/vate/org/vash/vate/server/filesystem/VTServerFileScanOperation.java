@@ -19,6 +19,7 @@ public class VTServerFileScanOperation extends VTTask
   
   public VTServerFileScanOperation(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.message = new StringBuilder();
     this.finished = true;

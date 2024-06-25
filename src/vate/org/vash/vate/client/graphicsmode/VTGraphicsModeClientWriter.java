@@ -1825,7 +1825,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       scrolledNever.getInsets().set(0, 0, 0, 0);
       scrolled = scrolledMaybe;
       // scrolled.setWheelScrollingEnabled(false);
-      remoteInterface = new VTGraphicsModeClientRemoteInterface();
+      remoteInterface = new VTGraphicsModeClientRemoteInterface(session.getSession().getExecutorService());
       remoteInterface.setScrollPane(scrolled);
       remoteInterface.setFocusTraversalKeysEnabled(false);
       // remoteInterface.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));

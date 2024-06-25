@@ -5,13 +5,13 @@ import java.util.concurrent.ExecutorService;
 public class VTMultiplexingControlThread implements Runnable
 {
   private final VTMultiplexingConnection connection;
-  private final ExecutorService executor;
+  private final ExecutorService executorService;
   // private int tunnelType = VTTunnelConnection.TUNNEL_TYPE_TCP;
   
-  public VTMultiplexingControlThread(VTMultiplexingConnection connection, ExecutorService executor)
+  public VTMultiplexingControlThread(VTMultiplexingConnection connection, ExecutorService executorService)
   {
     this.connection = connection;
-    this.executor = executor;
+    this.executorService = executorService;
   }
   
   public void run()
@@ -24,7 +24,7 @@ public class VTMultiplexingControlThread implements Runnable
         if (message != null && message.length() > 0)
         {
           // TODO: implement multiplexer
-          executor.hashCode();
+          executorService.hashCode();
         }
       }
       catch (Throwable e)

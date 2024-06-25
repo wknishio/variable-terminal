@@ -11,6 +11,7 @@ public class VTServerShellExitListener extends VTTask
   
   public VTServerShellExitListener(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.stopped = false;
   }

@@ -18,7 +18,7 @@ public class VTClientRemoteConsoleReader extends VTTask
   
   public VTClientRemoteConsoleReader(VTClientSession session)
   {
-    // this.client = session.getClient();
+    super(session.getExecutorService());
     this.session = session;
     this.connection = session.getConnection();
   }

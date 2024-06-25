@@ -14,6 +14,7 @@ public class VTServerPrintServiceCapabilitiesResolver extends VTTask
   
   public VTServerPrintServiceCapabilitiesResolver(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.finished = true;
   }

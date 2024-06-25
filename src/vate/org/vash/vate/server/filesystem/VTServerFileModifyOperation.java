@@ -27,6 +27,7 @@ public class VTServerFileModifyOperation extends VTTask
   
   public VTServerFileModifyOperation(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     this.finished = true;
   }

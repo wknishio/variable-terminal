@@ -2,7 +2,7 @@ package org.vash.vate.stream.pipe;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
 
@@ -13,7 +13,7 @@ public final class VTInterruptibleInputStream extends InputStream
   private final VTPipedInputStream in;
   private final VTPipedOutputStream out;
   
-  public VTInterruptibleInputStream(final InputStream source, final Executor executor)
+  public VTInterruptibleInputStream(final InputStream source, final ExecutorService executorService)
   {
     this.in = new VTPipedInputStream(VT.VT_REDUCED_BUFFER_SIZE_BYTES);
     this.out = new VTPipedOutputStream();
@@ -27,7 +27,7 @@ public final class VTInterruptibleInputStream extends InputStream
     }
     this.source = source;
     this.redirector = new VTInterruptibleStreamRedirector(source, out);
-    executor.execute(redirector);
+    executorService.execute(redirector);
   }
   
   public VTInterruptibleInputStream(final InputStream source)

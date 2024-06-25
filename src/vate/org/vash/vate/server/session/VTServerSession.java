@@ -11,8 +11,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadFactory;
 
 import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
@@ -90,14 +88,15 @@ public class VTServerSession
   // private VTTunnelConnectionHandler socksTunnelsHandler;
   private VTNanoPingService pingService;
   private Collection<Closeable> sessionCloseables;
-  private ExecutorService executor;
+  private ExecutorService executorService;
   
   public VTServerSession(VTServer server, VTServerConnection connection)
   {
     this.server = server;
     this.connection = connection;
+    this.executorService = server.getExecutorService();
     this.sessionCloseables = Collections.synchronizedCollection(new LinkedList<Closeable>());
-    this.shellAdapter = new VTShellAdapter();
+    this.shellAdapter = new VTShellAdapter(executorService);
   }
   
   public void initialize()
@@ -105,27 +104,6 @@ public class VTServerSession
     this.setEchoState(0);
     this.setEchoCommands(false);
     this.shellAdapter.setShellEncoding(null);
-    this.executor = Executors.newCachedThreadPool(new ThreadFactory()
-    {
-      public Thread newThread(Runnable runnable)
-      {
-        Thread created = new Thread(null, runnable, runnable.getClass().getSimpleName());
-        created.setDaemon(true);
-        return created;
-      }
-    });
-    this.shellAdapter.setThreads(executor);
-    
-//    try
-//    {
-//      int supressEchoShell = getConnection().getShellInputStream().read();
-//      this.supressEchoShell = (supressEchoShell == 1);
-//    }
-//    catch (Throwable e)
-//    {
-//      //e.printStackTrace();
-//    }
-//    this.shellAdapter.setSuppressEchoShell(supressEchoShell);
     
     this.stoppingShell = false;
     this.restartingShell = false;
@@ -154,15 +132,15 @@ public class VTServerSession
     this.printServiceResolver = new VTServerPrintServiceResolver(this);
     this.connectionListViewer = new VTServerSessionListViewer(this);
     this.fileSystemRootsResolver = new VTServerFileSystemRootsResolver(this);
-    this.clipboardTransferTask = new VTClipboardTransferTask();
+    this.clipboardTransferTask = new VTClipboardTransferTask(executorService);
     this.graphicsDeviceResolver = new VTServerGraphicsDeviceResolver(this);
     // this.printTextTask = new VTServerPrintTextTask(this);
     // this.printFileTask = new VTServerPrintFileTask(this);
     this.printDataTask = new VTServerPrintDataTask(this);
-    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executor, sessionCloseables));
+    this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executorService, sessionCloseables));
     // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
     // VTTunnelConnection(executor), executor);
-    this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, true);
+    this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, true, executorService);
     this.pingService.addListener(new VTNanoPingListener()
     {
       public void pingObtained(long localNanoDelay, long remoteNanoDelay)
@@ -177,9 +155,9 @@ public class VTServerSession
     setShellBuilder(null, null, null);
   }
   
-  public ExecutorService getSessionThreads()
+  public ExecutorService getExecutorService()
   {
-    return executor;
+    return executorService;
   }
   
   public void addSessionCloseable(Closeable value)

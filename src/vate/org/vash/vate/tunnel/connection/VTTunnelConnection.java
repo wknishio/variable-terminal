@@ -34,16 +34,16 @@ public class VTTunnelConnection
 //  private VTTunnelChannelRemoteSocketBuilder remoteSocketBuilder;
   private Set<VTTunnelChannelBindSocketListener> bindListeners;
   // private int tunnelType;
-  private ExecutorService executor;
+  private ExecutorService executorService;
   private Collection<Closeable> closeables;
   private volatile boolean closed = false;
   
-  public VTTunnelConnection(ExecutorService executor, Collection<Closeable> closeables)
+  public VTTunnelConnection(ExecutorService executorService, Collection<Closeable> closeables)
   {
     this.responseChannel = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this);
     this.bindListeners = new LinkedHashSet<VTTunnelChannelBindSocketListener>();
     // this.tunnelType = tunnelType;
-    this.executor = executor;
+    this.executorService = executorService;
     this.closeables = closeables;
     //this.remoteSocketBuilder = createRemoteSocketBuilder();
   }
@@ -53,9 +53,9 @@ public class VTTunnelConnection
   // return tunnelType;
   // }
   
-  public ExecutorService getExecutor()
+  public ExecutorService getExecutorService()
   {
-    return executor;
+    return executorService;
   }
   
   public Collection<Closeable> getCloseables()
@@ -88,7 +88,7 @@ public class VTTunnelConnection
     if (listener.bind())
     {
       bindListeners.add(listener);
-      executor.execute(listener);
+      executorService.execute(listener);
       return true;
     }
     else
@@ -122,7 +122,7 @@ public class VTTunnelConnection
     if (listener.bind())
     {
       bindListeners.add(listener);
-      executor.execute(listener);
+      executorService.execute(listener);
       return true;
     }
     else
@@ -155,7 +155,7 @@ public class VTTunnelConnection
     if (listener.bind())
     {
       bindListeners.add(listener);
-      executor.execute(listener);
+      executorService.execute(listener);
       return true;
     }
     else

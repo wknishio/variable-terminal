@@ -62,6 +62,7 @@ public class VTServerScreenshotTask extends VTTask
   
   public VTServerScreenshotTask(VTServerSession session)
   {
+    super(session.getExecutorService());
     // this.session = session;
     this.connection = session.getConnection();
     this.screenshotProvider = session.getScreenshotProvider();

@@ -23,6 +23,7 @@ public class VTServerURLInvoker extends VTTask
   
   public VTServerURLInvoker(VTServerSession session)
   {
+    super(session.getExecutorService());
     this.session = session;
     // this.message = new StringBuilder();
     this.finished = true;

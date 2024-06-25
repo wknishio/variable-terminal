@@ -1,5 +1,7 @@
 package org.vash.vate.client.graphicsmode;
 
+import java.util.concurrent.ExecutorService;
+
 import org.vash.vate.VT;
 import org.vash.vate.client.session.VTClientSession;
 import org.vash.vate.console.VTConsole;
@@ -14,10 +16,12 @@ public class VTGraphicsModeClientSession
   private VTClientSession session;
   private VTGraphicsModeClientReader reader;
   private VTGraphicsModeClientWriter writer;
+  private ExecutorService executorService;
   
   public VTGraphicsModeClientSession(VTClientSession session)
   {
     this.session = session;
+    this.executorService = session.getExecutorService();
     this.reader = new VTGraphicsModeClientReader(this);
     this.writer = new VTGraphicsModeClientWriter(this);
     this.reader.setWriter(writer);
@@ -114,8 +118,10 @@ public class VTGraphicsModeClientSession
     {
       //VTConsole.print("\nVT>Starting remote graphics link in control mode...\nVT>");
     }
-    writerThread.start();
-    readerThread.start();
+    //writerThread.start();
+    //readerThread.start();
+    executorService.execute(writerThread);
+    executorService.execute(readerThread);
   }
   
   public boolean isStopped()
