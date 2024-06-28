@@ -26,7 +26,7 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
       if (parsed.length == 2)
       {
         String alert = parsed[1];
-        String title = "";
+        String title = "Alert";
         int idx = parsed[1].indexOf(';');
         if (idx >= 0)
         {
@@ -43,7 +43,7 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
         try
         {
           String alert = parsed[1];
-          String title = "";
+          String title = "Alert";
           int idx = parsed[1].indexOf(';');
           if (idx >= 0)
           {
