@@ -228,7 +228,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Server Application", "*VTSTOP\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Toggle Server Cover", "*VTCOVER\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Save Client Settings File", "*VTSAVE "));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("Detect Chained Connections", "*VTCHAIN\n"));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem("Detect Chained Sessions", "*VTCHAIN\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTUSER\n"));
     sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Message To Server", "*VTTEXT "));
     
