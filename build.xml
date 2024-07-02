@@ -81,17 +81,6 @@
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
 		</jar>
 		
-		<jar destfile="dist/lib/vate-util.jar" update="false">
-			<manifest>
-				<attribute name="Built-By" value="William Kendi Nishio"/>
-				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
-				<attribute name="Created-By" value="${java.version}"/>
-				<attribute name="Class-Path" value="."/>
-			</manifest>
-			<fileset dir="build" excludes="org/vash/vate/client/startup/**,org/vash/vate/startup/**,org/vash/vate/server/startup/**"/>
-			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
-		</jar>
-		
 	</target>
 	
 	<target name="create_executables">
