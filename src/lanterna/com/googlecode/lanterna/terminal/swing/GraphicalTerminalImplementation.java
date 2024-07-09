@@ -640,10 +640,10 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             }
         }
         
-//        if (reverse)
-//        {
-//          fixedbg = false;
-//        }
+        if (reverse)
+        {
+          flipbg = false;
+        }
         
         if (flipbg)
         {
@@ -677,10 +677,10 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             }
         }
         
-//        if (reverse)
-//        {
-//          fixedbg = false;
-//        }
+        if (reverse)
+        {
+          flipbg = false;
+        }
         
         if (flipbg)
         {

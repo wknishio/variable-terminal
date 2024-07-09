@@ -48,7 +48,7 @@ public class TerminalEmulatorDeviceConfiguration {
      */
     @SuppressWarnings("WeakerAccess")
     public TerminalEmulatorDeviceConfiguration() {
-        this(2000, 500, CursorStyle.FLIP_BACKGROUND, new TextColor.RGB(255, 255, 255), false, false);
+        this(2000, 500, CursorStyle.REVERSED, new TextColor.RGB(255, 255, 255), false, false);
     }
 
     /**
