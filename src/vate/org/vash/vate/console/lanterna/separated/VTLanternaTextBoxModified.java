@@ -1449,6 +1449,38 @@ public class VTLanternaTextBoxModified extends AbstractInteractableComponent<VTL
           graphics.putString(0, row, TerminalTextUtils.fitString(line, viewTopLeft.getColumn(), textAreaSize.getColumns()), modifiers);
         }
       }
+      
+      TerminalPosition caretPosition;
+      String caretLine;
+      
+      caretPosition = component.getCaretPosition();
+      caretLine = component.getLine(caretPosition.getRow());
+      caretPosition = this.getCursorLocation(component);
+      
+      int i = caretPosition.getColumn();
+      int j = caretPosition.getColumn() + 1;
+      
+      if (i > caretLine.length())
+      {
+        i = caretLine.length();
+      }
+      if (j > caretLine.length())
+      {
+        j = caretLine.length();
+      }
+      
+      String caretChar = caretLine.substring(i, j);
+      
+      if (caretChar.length() == 0)
+      {
+        i = caretPosition.getColumn();
+        caretChar = " ";
+      }
+      
+      EnumSet<SGR> modifiers = graphics.getActiveModifiers();
+      modifiers.add(SGR.REVERSE);
+      graphics.putString(i, caretPosition.getRow(), caretChar, modifiers);
+      modifiers.remove(SGR.REVERSE);
     }
   }
   
