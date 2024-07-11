@@ -73,7 +73,7 @@ public class VTShellAdapter
 //    this.supressEchoShell = supressEchoShell;
 //  }
   
-  public VTShellProcessor getShell()
+  public VTShellProcessor getShellProcessor()
   {
     return shellProcessor;
   }

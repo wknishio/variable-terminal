@@ -28,54 +28,42 @@ public class VTServerShellExitListener extends VTTask
   
   public void task()
   {
-    try
-    {
-      session.getShell().waitFor();
-    }
-    catch (Throwable e)
-    {
-      
-    }
-    stopped = true;
     synchronized (this)
     {
-      if (session.getShell() != null)
+      try
       {
-        try
+        if (session.isRestartingShell())
         {
-          if (session.isStoppingShell())
-          {
-            session.setStoppingShell(false);
-            session.getConnection().getResultWriter().write("\nVT>Remote shell stopped!\nVT>");
-            session.getConnection().getResultWriter().flush();
-          }
-          else if (session.isRestartingShell())
-          {
-            session.getConnection().getResultWriter().write("\nVT>Remote shell stopped!\nVT>");
-            session.getConnection().getResultWriter().flush();
-          }
-          else
-          {
-            session.getConnection().getResultWriter().write("\nVT>Remote shell stopped!\nVT>");
-            session.getConnection().getResultWriter().flush();
-          }
+          session.setRestartingShell(false);
+          session.getConnection().getResultWriter().write("\nVT>Remote shell started!\nVT>\n");
+          session.getConnection().getResultWriter().flush();
         }
-        catch (IOException e)
+        else
         {
-          
+          session.getConnection().getResultWriter().write("\nVT>Remote shell started!" + "\nVT>Enter *VTHELP or *VTHL to list available commands in client console\nVT>\n");
+          session.getConnection().getResultWriter().flush();
         }
+        session.getShellProcessor().waitFor();
+      }
+      catch (Throwable e)
+      {
+        
+      }
+      stopped = true;
+      
+      try
+      {
+        if (session.isStoppingShell())
+        {
+          session.setStoppingShell(false);
+        }
+        session.getConnection().getResultWriter().write("\nVT>Remote shell stopped!\nVT>");
+        session.getConnection().getResultWriter().flush();
+      }
+      catch (IOException e)
+      {
+        
       }
     }
-//    try
-//    {
-//      synchronized (session.getShell())
-//      {
-//        session.getShell().notify();
-//      }
-//    }
-//    catch (Throwable e)
-//    {
-//      
-//    }
   }
 }

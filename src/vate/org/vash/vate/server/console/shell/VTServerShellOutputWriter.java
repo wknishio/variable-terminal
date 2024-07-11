@@ -58,6 +58,6 @@ public class VTServerShellOutputWriter extends VTTask
         break;
       }
     }
-    session.getShell().stopShell();
+    session.getShellProcessor().stopShell();
   }
 }

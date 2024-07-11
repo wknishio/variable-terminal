@@ -235,9 +235,9 @@ public class VTServerSession
     this.runtimeExecutor.setRuntimeBuilderWorkingDirectory(runtimeDirectory);
   }
   
-  public VTShellProcessor getShell()
+  public VTShellProcessor getShellProcessor()
   {
-    return shellAdapter.getShell();
+    return shellAdapter.getShellProcessor();
   }
   
   public Map<String, String> getShellEnvironment()
@@ -454,9 +454,6 @@ public class VTServerSession
   
   public void restartShell()
   {
-    /*
-     * try { } catch (Throwable e) { }
-     */
     setRestartingShell(true);
     stopShell();
     waitShell();
@@ -580,16 +577,16 @@ public class VTServerSession
     {
       if (started)
       {
-        if (restartingShell)
-        {
-          connection.getResultWriter().write("\nVT>Remote shell started!" + "\nVT>\n\n");
-          connection.getResultWriter().flush();
-        }
-        else
-        {
-          connection.getResultWriter().write("\nVT>Remote shell started!" + "\nVT>Enter *VTHELP or *VTHL to list available commands in client console\nVT>\n");
-          connection.getResultWriter().flush();
-        }
+//        if (restartingShell)
+//        {
+//          connection.getResultWriter().write("\nVT>Remote shell started!" + "\nVT>\n\n");
+//          connection.getResultWriter().flush();
+//        }
+//        else
+//        {
+//          connection.getResultWriter().write("\nVT>Remote shell started!" + "\nVT>Enter *VTHELP or *VTHL to list available commands in client console\nVT>\n");
+//          connection.getResultWriter().flush();
+//        }
       }
       else
       {
@@ -600,7 +597,6 @@ public class VTServerSession
     {
       
     }
-    restartingShell = false;
   }
   
   public void startSession() throws UnsupportedEncodingException
