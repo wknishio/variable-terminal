@@ -349,16 +349,9 @@ public class VTAudioCapturer
     {
       int offset = 0;
       int readSize = 0;
+      readSize = Math.max(VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
       while (running)
       {
-        if (readSize == 0)
-        {
-          readSize = Math.max(VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
-        }
-        else
-        {
-          readSize = Math.max(1, line.available() / frameSize) * frameSize;
-        }
         decodedFrameSize = line.read(inputBuffer, 0, readSize);
         if (decodedFrameSize > 0 && streams.size() > 0)
         {
@@ -395,6 +388,7 @@ public class VTAudioCapturer
             }
           }
         }
+        readSize = Math.max(1, line.available() / frameSize) * frameSize;
       }
     }
     
@@ -402,16 +396,9 @@ public class VTAudioCapturer
     {
       int offset = 0;
       int readSize = 0;
+      readSize = Math.max(VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
       while (running)
       {
-        if (readSize == 0)
-        {
-          readSize = Math.max(VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
-        }
-        else
-        {
-          readSize = Math.max(1, line.available() / frameSize) * frameSize;
-        }
         decodedFrameSize = line.read(inputBuffer, 0, readSize);
         if (decodedFrameSize > 0 && streams.size() > 0)
         {
@@ -449,6 +436,7 @@ public class VTAudioCapturer
             }
           }
         }
+        readSize = Math.max(1, line.available() / frameSize) * frameSize;
       }
     }
     
