@@ -829,7 +829,7 @@ public class VTStandardConsole implements VTConsoleImplementation
   
   public boolean isCommandEcho()
   {
-    return false;
+    return true;
   }
   
   public void setCommandEcho(boolean commandEcho)
