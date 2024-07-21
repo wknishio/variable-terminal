@@ -728,10 +728,10 @@ public class VTNanoHTTPDProxySession implements Runnable
     //firstThread.start();
     //secondThread.start();
     executorService.execute(firstThread);
-    executorService.execute(secondThread);
+    secondThread.run();
     
     firstThread.join();
-    secondThread.join();
+    //secondThread.join();
   }
   
   protected static String removeQuotes(String quotedString, boolean quotesRequired)

@@ -8,16 +8,16 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.zip.Checksum;
 
 import org.vash.vate.VT;
-import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vash.vate.stream.limit.VTThrottledOutputStream;
 
 import engineering.clientside.throttle.NanoThrottle;
+import net.jpountz.xxhash.XXHashFactory;
 
 public final class VTLinkableDynamicMultiplexingOutputStream
 {
@@ -290,6 +290,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private volatile int type;
     private final int packetSize;
     private final byte[] single = new byte[1];
+    private final byte[] update = new byte[8];
     private final VTByteArrayOutputStream intermediateDataPacketBuffer;
     private final VTByteArrayOutputStream dataPacketBuffer;
     private final VTLittleEndianOutputStream dataPacketStream;
@@ -300,12 +301,14 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private OutputStream control;
     private OutputStream intermediatePacketStream;
     private final List<Closeable> propagated;
-    private final Random packetSequencer;
+    //private final Random packetSequencer;
+    private final Checksum packetHasher;
     
     private VTLinkableDynamicMultiplexedOutputStream(final OutputStream output, final OutputStream control, final int type, final int number, final int packetSize, final SecureRandom packetSeed)
     {
       this.seed = packetSeed.nextLong();
-      this.packetSequencer = new VTSplitMix64Random(seed);
+      //this.packetSequencer = new VTSplitMix64Random(seed);
+      this.packetHasher = XXHashFactory.safeInstance().newStreamingHash64(seed).asChecksum();
       this.output = output;
       this.control = control;
       this.type = type;
@@ -474,14 +477,14 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     private synchronized final void writePacket(final byte[] data, final int offset, final int length, final int type, final int number) throws IOException
     {
-      dataPacketBuffer.reset();
       intermediateDataPacketBuffer.reset();
-      dataPacketStream.writeLong(packetSequencer.nextLong());
-      dataPacketStream.writeByte(type);
-      dataPacketStream.writeSubInt(number);
-      //dataPacketStream.writeInt(length);
       intermediatePacketStream.write(data, offset, length);
       intermediatePacketStream.flush();
+      packetHasher.update(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
+      dataPacketBuffer.reset();
+      dataPacketStream.writeLong(packetHasher.getValue());
+      dataPacketStream.writeByte(type);
+      dataPacketStream.writeSubInt(number);
       dataPacketStream.writeInt(intermediateDataPacketBuffer.count());
       dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
       output.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
@@ -490,8 +493,17 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     private synchronized final void writeClosePacket(final int type, final int number) throws IOException
     {
+      update[0] = (byte) type;
+      update[1] = (byte) number;
+      update[2] = (byte) (number >> 8);
+      update[3] = (byte) (number >> 16);
+      update[4] = (byte) -2;
+      update[5] = (byte) (-2 >> 8);
+      update[6] = (byte) (-2 >> 16);
+      update[7] = (byte) (-2 >> 24);
+      packetHasher.update(update, 0, 8);
       controlPacketBuffer.reset();
-      controlPacketStream.writeLong(packetSequencer.nextLong());
+      controlPacketStream.writeLong(packetHasher.getValue());
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
       controlPacketStream.writeInt(-2);
@@ -501,8 +513,17 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     private synchronized final void writeOpenPacket(final int type, final int number) throws IOException
     {
+      update[0] = (byte) type;
+      update[1] = (byte) number;
+      update[2] = (byte) (number >> 8);
+      update[3] = (byte) (number >> 16);
+      update[4] = (byte) -3;
+      update[5] = (byte) (-3 >> 8);
+      update[6] = (byte) (-3 >> 16);
+      update[7] = (byte) (-3 >> 24);
+      packetHasher.update(update, 0, 8);
       controlPacketBuffer.reset();
-      controlPacketStream.writeLong(packetSequencer.nextLong());
+      controlPacketStream.writeLong(packetHasher.getValue());
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
       controlPacketStream.writeInt(-3);

@@ -9,10 +9,9 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.zip.Checksum;
 
 import org.vash.vate.VT;
-import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
@@ -20,6 +19,8 @@ import org.vash.vate.stream.compress.VTPacketDecompressor;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
+
+import net.jpountz.xxhash.XXHashFactory;
 
 public final class VTLinkableDynamicMultiplexingInputStream
 {
@@ -299,8 +300,10 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private final void readPackets() throws IOException
   {
     VTLinkableDynamicMultiplexedInputStream stream;
-    //long next;
-    long sequence;
+    final byte[] update = new byte[8];
+    //long check;
+    long hash;
+    //long sequence;
     int type; 
     int channel;
     int length;
@@ -308,20 +311,27 @@ public final class VTLinkableDynamicMultiplexingInputStream
     while (!closed)
     {
       //next = nextPacketSequencerLong();
-      sequence = lin.readLong();
+      hash = lin.readLong();
       type = lin.readByte();
       channel = lin.readSubInt();
       length = lin.readInt();
       stream = getInputStream(type, channel);
-      if (stream == null || stream.getPacketSequencer().nextLong() != sequence)
+      if (stream == null)
       {
         close();
         return;
       }
+      //sequence = stream.getPacketSequencer().nextLong();
       if (length > 0)
       {
         OutputStream out = stream.getOutputStream();
         lin.readFully(packetDataBuffer, 0, length);
+        stream.getPacketHasher().update(packetDataBuffer, 0, length);
+        if (stream.getPacketHasher().getValue() != hash)
+        {
+          close();
+          return;
+        }
         try
         {
           out.write(packetDataBuffer, 0, length);
@@ -334,10 +344,38 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       else if (length == -2)
       {
+        update[0] = (byte) type;
+        update[1] = (byte) channel;
+        update[2] = (byte) (channel >> 8);
+        update[3] = (byte) (channel >> 16);
+        update[4] = (byte) -2;
+        update[5] = (byte) (-2 >> 8);
+        update[6] = (byte) (-2 >> 16);
+        update[7] = (byte) (-2 >> 24);
+        stream.getPacketHasher().update(update, 0, 8);
+        if (stream.getPacketHasher().getValue() != hash)
+        {
+          close();
+          return;
+        }
         close(type, channel);
       }
       else if (length == -3)
       {
+        update[0] = (byte) type;
+        update[1] = (byte) channel;
+        update[2] = (byte) (channel >> 8);
+        update[3] = (byte) (channel >> 16);
+        update[4] = (byte) -3;
+        update[5] = (byte) (-3 >> 8);
+        update[6] = (byte) (-3 >> 16);
+        update[7] = (byte) (-3 >> 24);
+        stream.getPacketHasher().update(update, 0, 8);
+        if (stream.getPacketHasher().getValue() != hash)
+        {
+          close();
+          return;
+        }
         open(type, channel);
       }
       else
@@ -364,12 +402,14 @@ public final class VTLinkableDynamicMultiplexingInputStream
     private VTByteArrayInputStream compressedPacketInputPipe;
     private InputStream compressedInputStream;
     private final List<Closeable> propagated;
-    private final Random packetSequencer;
+    //private final Random packetSequencer;
+    private final Checksum packetHasher;
     
     private VTLinkableDynamicMultiplexedInputStream(final int type, final int number, final int bufferSize, final SecureRandom packetSeed)
     {
       this.seed = packetSeed.nextLong();
-      this.packetSequencer = new VTSplitMix64Random(seed);
+      //this.packetSequencer = new VTSplitMix64Random(seed);
+      this.packetHasher = XXHashFactory.safeInstance().newStreamingHash64(seed).asChecksum();
       this.type = type;
       this.number = number;
       this.propagated = new ArrayList<Closeable>();
@@ -577,9 +617,14 @@ public final class VTLinkableDynamicMultiplexingInputStream
       return input.skip(count);
     }
     
-    private final Random getPacketSequencer()
+    //private final Random getPacketSequencer()
+    //{
+      //return packetSequencer;
+    //}
+    
+    private final Checksum getPacketHasher()
     {
-      return packetSequencer;
+      return packetHasher;
     }
   }
   

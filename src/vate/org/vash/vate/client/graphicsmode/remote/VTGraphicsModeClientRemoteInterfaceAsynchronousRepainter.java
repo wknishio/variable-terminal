@@ -106,7 +106,7 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
           {
             wait();
           }
-          wait(100);
+          wait(125);
           // System.out.println("async-cycle");
           // System.out.println("async-interrupted:" + interrupted);
           // System.out.println("async-updating:" +
