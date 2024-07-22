@@ -300,10 +300,28 @@ public class VTNanoHTTPD
     public HTTPSession( Socket s, ExecutorService executorService)
     {
       mySocket = s;
-      Thread t = new Thread( this );
-      t.setDaemon( true );
-      //t.start();
-      executorService.execute(t);
+      final HTTPSession session = this;
+      Thread sessionThread = new Thread()
+      {
+        public void run()
+        {
+          session.keepAlive = true;
+          while (mySocket.isConnected() && !mySocket.isClosed() && session.keepAlive)
+          {
+            session.run();
+          }
+          try
+          {
+            mySocket.close();
+          }
+          catch (IOException e)
+          {
+            
+          }
+        }
+      };
+      sessionThread.setDaemon( true );
+      executorService.execute(sessionThread);
     }
 
     public void run()
@@ -312,7 +330,8 @@ public class VTNanoHTTPD
       {
         InputStream is = mySocket.getInputStream();
         if ( is == null) return;
-
+        
+        keepAlive = false;
         // Read the first 8192 bytes.
         // The full header should fit in here.
         // Apache's default header limit is 8KB.
@@ -336,6 +355,7 @@ public class VTNanoHTTPD
         // Create a BufferedReader for parsing the header.
         ByteArrayInputStream hbis = new ByteArrayInputStream(buf, 0, rlen);
         BufferedReader hin = new BufferedReader( new InputStreamReader( hbis ));
+        
         Properties pre = new Properties();
         Properties parms = new Properties();
         Properties header = new Properties();
@@ -345,9 +365,11 @@ public class VTNanoHTTPD
         decodeHeader(hin, pre, parms, header);
         String method = pre.getProperty("method");
         String uri = pre.getProperty("uri");
+        
+        keepAlive = findProperty(header, "Connection").toLowerCase().startsWith("keep-alive");
 
         long size = 0x7FFFFFFFFFFFFFFFl;
-        String contentLength = header.getProperty("content-length");
+        String contentLength = findProperty(header, "Content-Length");
         if (contentLength != null)
         {
           try { size = Integer.parseInt(contentLength); }
@@ -392,7 +414,7 @@ public class VTNanoHTTPD
         if ( method.equalsIgnoreCase( "POST" ))
         {
           String contentType = "";
-          String contentTypeHeader = header.getProperty("content-type");
+          String contentTypeHeader = findProperty(header, "Content-Type");
           StringTokenizer st = null;
           if( contentTypeHeader != null) {
             st = new StringTokenizer( contentTypeHeader , "; " );
@@ -441,8 +463,8 @@ public class VTNanoHTTPD
         else
           sendResponse( r.status, r.mimeType, r.header, r.data );
 
-        in.close();
-        is.close();
+        //in.close();
+        //is.close();
       }
       catch ( IOException ioe )
       {
@@ -462,7 +484,7 @@ public class VTNanoHTTPD
      * Decodes the sent headers and loads the data into
      * java Properties' key - value pairs
     **/
-    private  void decodeHeader(BufferedReader in, Properties pre, Properties parms, Properties header)
+    private void decodeHeader(BufferedReader in, Properties pre, Properties parms, Properties header)
       throws InterruptedException
     {
       try {
@@ -501,7 +523,7 @@ public class VTNanoHTTPD
           {
             int p = line.indexOf( ':' );
             if ( p >= 0 )
-              header.put( line.substring(0,p).trim().toLowerCase(), line.substring(p+1).trim());
+              header.put( line.substring(0,p).trim(), line.substring(p+1).trim());
             line = in.readLine();
           }
         }
@@ -809,7 +831,7 @@ public class VTNanoHTTPD
           }
         }
         out.flush();
-        out.close();
+        //out.close();
         if ( data != null )
           data.close();
       }
@@ -821,6 +843,7 @@ public class VTNanoHTTPD
     }
 
     private Socket mySocket;
+    private boolean keepAlive;
   }
 
   /**
@@ -986,7 +1009,7 @@ public class VTNanoHTTPD
         // Support (simple) skipping:
         long startFrom = 0;
         long endAt = -1;
-        String range = header.getProperty( "range" );
+        String range = findProperty(header, "range" );
         if ( range != null )
         {
           if ( range.startsWith( "bytes=" ))
@@ -1039,7 +1062,7 @@ public class VTNanoHTTPD
         }
         else
         {
-          if (etag.equals(header.getProperty("if-none-match")))
+          if (etag.equals(findProperty(header, "if-none-match")))
             res = new Response( HTTP_NOTMODIFIED, mime, "");
           else
           {
@@ -1094,6 +1117,23 @@ public class VTNanoHTTPD
       "class    application/octet-stream " );
     while ( st.hasMoreTokens())
       theMimeTypes.put( st.nextToken(), st.nextToken());
+  }
+  
+  private static String findProperty(Properties properties, String property)
+  {
+    String data = properties.getProperty(property);
+    if (data == null)
+    {
+      for (Object key : properties.keySet())
+      {
+        if (key.toString().toLowerCase().equals(property.toLowerCase()))
+        {
+          data = properties.getProperty(key.toString());
+          break;
+        }
+      }
+    }
+    return data;
   }
 
   private static int theBufferSize = 16 * 1024;
