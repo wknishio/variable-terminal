@@ -324,7 +324,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
       //sequence = stream.getPacketSequencer().nextLong();
       if (length > 0)
       {
-        OutputStream out = stream.getOutputStream();
         lin.readFully(packetDataBuffer, 0, length);
         stream.getPacketHasher().update(packetDataBuffer, 0, length);
         if (stream.getPacketHasher().getValue() != hash)
@@ -332,6 +331,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
           close();
           return;
         }
+        OutputStream out = stream.getOutputStream();
         try
         {
           out.write(packetDataBuffer, 0, length);
