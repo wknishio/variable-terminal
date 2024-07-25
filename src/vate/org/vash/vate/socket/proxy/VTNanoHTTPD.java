@@ -305,19 +305,30 @@ public class VTNanoHTTPD
       {
         public void run()
         {
-          session.keepAlive = true;
-          while (mySocket.isConnected() && !mySocket.isClosed() && session.keepAlive)
-          {
-            session.run();
-          }
           try
           {
-            mySocket.close();
+            session.keepAlive = true;
+            while (mySocket.isConnected() && !mySocket.isClosed() && session.keepAlive)
+            {
+              session.run();
+            }
           }
-          catch (IOException e)
+          catch (Throwable e)
           {
-            
+            //e.printStackTrace();
           }
+          finally
+          {
+            try
+            {
+              mySocket.close();
+            }
+            catch (IOException e)
+            {
+              
+            }
+          }
+         
         }
       };
       sessionThread.setDaemon( true );
@@ -366,7 +377,14 @@ public class VTNanoHTTPD
         String method = pre.getProperty("method");
         String uri = pre.getProperty("uri");
         
-        keepAlive = findProperty(header, "Connection").toLowerCase().startsWith("keep-alive");
+        if (!keepAlive)
+        {
+          String connection = findProperty(header, "Connection");
+          if (connection != null && connection.toLowerCase().startsWith("keep-alive"))
+          {
+            keepAlive = true;
+          }
+        }
 
         long size = 0x7FFFFFFFFFFFFFFFl;
         String contentLength = findProperty(header, "Content-Length");
@@ -393,10 +411,10 @@ public class VTNanoHTTPD
           size = 0;
 
         // Now read all the body and write it to f
-        buf = new byte[512];
+        //buf = new byte[512];
         while ( rlen >= 0 && size > 0 )
         {
-          rlen = is.read(buf, 0, 512);
+          rlen = is.read(buf, 0, bufsize);
           size -= rlen;
           if (rlen > 0)
             f.write(buf, 0, rlen);
@@ -411,7 +429,7 @@ public class VTNanoHTTPD
 
         // If the method is POST, there may be parameters
         // in data section, too, read it:
-        if ( method.equalsIgnoreCase( "POST" ))
+        if (method != null && method.equalsIgnoreCase( "POST" ))
         {
           String contentType = "";
           String contentTypeHeader = findProperty(header, "Content-Type");
@@ -441,7 +459,7 @@ public class VTNanoHTTPD
           {
             // Handle application/x-www-form-urlencoded
             String postLine = "";
-            char pbuf[] = new char[512];
+            char pbuf[] = new char[8192];
             int read = in.read(pbuf);
             while ( read >= 0 && !postLine.endsWith("\r\n") )
             {
@@ -453,16 +471,22 @@ public class VTNanoHTTPD
           }
         }
 
-        if ( method.equalsIgnoreCase( "PUT" ))
+        if (method != null && method.equalsIgnoreCase( "PUT" ))
           files.put("content", saveTmpFile( fbuf, 0, f.size()));
 
         // Ok, now do the serve()
-        Response r = serve( uri, method, header, parms, files );
-        if ( r == null )
-          sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Serve() returned a null response." );
+        if (uri != null)
+        {
+          Response r = serve( uri, method, header, parms, files );
+          if ( r == null )
+            sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Serve() returned a null response." );
+          else
+            sendResponse( r.status, r.mimeType, r.header, r.data );
+        }
         else
-          sendResponse( r.status, r.mimeType, r.header, r.data );
-
+        {
+          keepAlive = false;
+        }
         //in.close();
         //is.close();
       }
@@ -518,6 +542,12 @@ public class VTNanoHTTPD
         // case insensitive and vary by client.
         if ( st.hasMoreTokens())
         {
+          String protocol = st.nextToken();
+          pre.put("protocol", protocol);
+          if (protocol.toUpperCase().contains("HTTP/1.1"))
+          {
+            keepAlive = true;
+          }
           String line = in.readLine();
           while ( line != null && line.trim().length() > 0 )
           {
@@ -796,7 +826,16 @@ public class VTNanoHTTPD
 
         OutputStream out = mySocket.getOutputStream();
         PrintWriter pw = new PrintWriter( out );
-        pw.print("HTTP/1.0 " + status + " \r\n");
+        pw.print("HTTP/1.1 " + status + " \r\n");
+        
+        if (keepAlive)
+        {
+          pw.print("Connection: keep-alive\r\n");
+        }
+        else
+        {
+          pw.print("Connection: close\r\n");
+        }
 
         if ( mime != null )
           pw.print("Content-Type: " + mime + "\r\n");
