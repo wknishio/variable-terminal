@@ -163,7 +163,7 @@ public class VTShellAdapter
       }
       else
       {
-        this.shellBuilder = new ProcessBuilder("/bin/sh", "-i", "-l", "-s");
+        this.shellBuilder = new ProcessBuilder("sh", "-i", "-s");
         this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
         this.shellEnvironment = this.shellBuilder.environment();
         if (this.shellEnvironment != null)
@@ -250,7 +250,7 @@ public class VTShellAdapter
     }
     else
     {
-      this.shellBuilder = new ProcessBuilder("/bin/sh", "-i", "-l", "-s");
+      this.shellBuilder = new ProcessBuilder("sh", "-i", "-s");
       this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
       this.shellEnvironment = this.shellBuilder.environment();
       if (this.shellEnvironment != null)
