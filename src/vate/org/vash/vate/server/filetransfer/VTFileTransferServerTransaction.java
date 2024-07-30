@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.vash.vate.VT;
 import org.vash.vate.filesystem.VTFileTransferSorter;
-import org.vash.vate.security.VTBlake3SecureRandom;
+import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 
@@ -77,7 +77,10 @@ public class VTFileTransferServerTransaction implements Runnable
     System.arraycopy(remoteNonce, 0, blake3Seed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
     System.arraycopy(localNonce, 0, blake3Seed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
     
-    long digestSeed = new VTBlake3SecureRandom(blake3Seed).nextLong();
+    VTBlake3MessageDigest blake3Digest = new VTBlake3MessageDigest(blake3Seed);
+    blake3Digest.update(session.getServer().getConnection().getEncryptionKey());
+    blake3Digest.update(session.getServer().getConnection().getDigestedCredentials());
+    long digestSeed = blake3Digest.digestLong();
     
     messageDigest = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(digestSeed));
   }

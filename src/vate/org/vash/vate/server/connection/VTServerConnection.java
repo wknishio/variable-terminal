@@ -48,6 +48,7 @@ public class VTServerConnection
   
   private int encryptionType;
   private byte[] encryptionKey;
+  private byte[] digestedCredentials;
   // private byte[] digestedClient;
   // private byte[] digestedServer;
   private final byte[] localNonce = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
@@ -181,6 +182,11 @@ public class VTServerConnection
   public byte[] getRemoteNonce()
   {
     return remoteNonce;
+  }
+  
+  public byte[] getDigestedCredentials()
+  {
+    return digestedCredentials;
   }
   
   public void setEncryptionType(int encryptionType)
@@ -576,6 +582,7 @@ public class VTServerConnection
     {
       return false;
     }
+    this.digestedCredentials = digestedCredentials;
     //cryptoEngine.initializeServerEngine(encryptionType, encryptionKey, remoteNonce, localNonce, digestedCredentials, user != null ? user.getBytes("UTF-8") : null, password != null ? password.getBytes("UTF-8") : null);
     cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey, digestedCredentials);
     //connectionInputStream = cryptoEngine.getDecryptedInputStream(connectionSocketInputStream);
@@ -607,13 +614,19 @@ public class VTServerConnection
   
   private void setMultiplexedStreams() throws IOException
   {
-    byte[] inputSeed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
-    System.arraycopy(remoteNonce, 0, inputSeed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
-    System.arraycopy(localNonce, 0, inputSeed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    blake3Digest.reset();
+    blake3Digest.update(remoteNonce);
+    blake3Digest.update(localNonce);
+    blake3Digest.update(encryptionKey);
+    blake3Digest.update(digestedCredentials);
+    byte[] inputSeed = blake3Digest.digest(VT.VT_SECURITY_SEED_SIZE_BYTES);
     
-    byte[] outputSeed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
-    System.arraycopy(localNonce, 0, outputSeed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
-    System.arraycopy(remoteNonce, 0, outputSeed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    blake3Digest.reset();
+    blake3Digest.update(localNonce);
+    blake3Digest.update(remoteNonce);
+    blake3Digest.update(encryptionKey);
+    blake3Digest.update(digestedCredentials);
+    byte[] outputSeed = blake3Digest.digest(VT.VT_SECURITY_SEED_SIZE_BYTES);
     
     VTBlake3SecureRandom secureInputputSeed = new VTBlake3SecureRandom(inputSeed);
     VTBlake3SecureRandom secureOutputSeed = new VTBlake3SecureRandom(outputSeed);

@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.zip.Checksum;
 
 import org.vash.vate.VT;
+import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -287,6 +289,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private volatile Object link = null;
     private final int number;
     private final long seed;
+    private long sequence;
     private volatile int type;
     private final int packetSize;
     private final byte[] single = new byte[1];
@@ -301,14 +304,14 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private OutputStream control;
     private OutputStream intermediatePacketStream;
     private final List<Closeable> propagated;
-    //private final Random packetSequencer;
+    private final Random packetSequencer;
     private final Checksum packetHasher;
     
     private VTLinkableDynamicMultiplexedOutputStream(final OutputStream output, final OutputStream control, final int type, final int number, final int packetSize, final SecureRandom packetSeed)
     {
       this.seed = packetSeed.nextLong();
-      //this.packetSequencer = new VTSplitMix64Random(seed);
-      this.packetHasher = XXHashFactory.safeInstance().newStreamingHash64(seed).asChecksum();
+      this.packetSequencer = new VTSplitMix64Random(seed);
+      this.packetHasher = XXHashFactory.safeInstance().newStreamingHash64(packetSequencer.nextLong()).asChecksum();
       this.output = output;
       this.control = control;
       this.type = type;
@@ -480,6 +483,16 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       intermediateDataPacketBuffer.reset();
       intermediatePacketStream.write(data, offset, length);
       intermediatePacketStream.flush();
+      sequence = packetSequencer.nextLong();
+      update[0] = (byte) sequence;
+      update[1] = (byte) (sequence >> 8);
+      update[2] = (byte) (sequence >> 16);
+      update[3] = (byte) (sequence >> 24);
+      update[4] = (byte) (sequence >> 32);
+      update[5] = (byte) (sequence >> 40);
+      update[6] = (byte) (sequence >> 48);
+      update[7] = (byte) (sequence >> 56);
+      packetHasher.update(update, 0, update.length);
       packetHasher.update(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
       dataPacketBuffer.reset();
       dataPacketStream.writeLong(packetHasher.getValue());
@@ -493,15 +506,16 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     private synchronized final void writeClosePacket(final int type, final int number) throws IOException
     {
-      update[0] = (byte) type;
-      update[1] = (byte) number;
-      update[2] = (byte) (number >> 8);
-      update[3] = (byte) (number >> 16);
-      update[4] = (byte) -2;
-      update[5] = (byte) (-2 >> 8);
-      update[6] = (byte) (-2 >> 16);
-      update[7] = (byte) (-2 >> 24);
-      packetHasher.update(update, 0, 8);
+      sequence = packetSequencer.nextLong();
+      update[0] = (byte) sequence;
+      update[1] = (byte) (sequence >> 8);
+      update[2] = (byte) (sequence >> 16);
+      update[3] = (byte) (sequence >> 24);
+      update[4] = (byte) (sequence >> 32);
+      update[5] = (byte) (sequence >> 40);
+      update[6] = (byte) (sequence >> 48);
+      update[7] = (byte) (sequence >> 56);
+      packetHasher.update(update, 0, update.length);
       controlPacketBuffer.reset();
       controlPacketStream.writeLong(packetHasher.getValue());
       controlPacketStream.writeByte(type);
@@ -513,15 +527,16 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     private synchronized final void writeOpenPacket(final int type, final int number) throws IOException
     {
-      update[0] = (byte) type;
-      update[1] = (byte) number;
-      update[2] = (byte) (number >> 8);
-      update[3] = (byte) (number >> 16);
-      update[4] = (byte) -3;
-      update[5] = (byte) (-3 >> 8);
-      update[6] = (byte) (-3 >> 16);
-      update[7] = (byte) (-3 >> 24);
-      packetHasher.update(update, 0, 8);
+      sequence = packetSequencer.nextLong();
+      update[0] = (byte) sequence;
+      update[1] = (byte) (sequence >> 8);
+      update[2] = (byte) (sequence >> 16);
+      update[3] = (byte) (sequence >> 24);
+      update[4] = (byte) (sequence >> 32);
+      update[5] = (byte) (sequence >> 40);
+      update[6] = (byte) (sequence >> 48);
+      update[7] = (byte) (sequence >> 56);
+      packetHasher.update(update, 0, update.length);
       controlPacketBuffer.reset();
       controlPacketStream.writeLong(packetHasher.getValue());
       controlPacketStream.writeByte(type);
