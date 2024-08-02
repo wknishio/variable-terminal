@@ -23,10 +23,8 @@ public final class VTGraphicalStart
     {
       VTConsole.initialize();
       VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
-      VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + "\n" + 
-      "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + 
-      "VT>This software is under MIT license, see license.txt!\n" + 
-      "VT>This software comes with no warranty, use at your own risk!\n");
+      VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Module - (c) " + VT.VT_YEAR + " wknishio@gmail.com\n" + 
+      "VT>This software is under MIT license with no warranty, use at your own risk!\n");
       VTConsole.print("VT>Enter module(client as C or server as S, default:C):");
       if (VTConsole.isGraphical())
       {
@@ -203,10 +201,8 @@ public final class VTGraphicalStart
       {
         VTConsole.initialize();
         VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
-        VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + "\n" + 
-        "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + 
-        "VT>This software is under MIT license, see license.txt!\n" + 
-        "VT>This software comes with no warranty, use at your own risk!\n");
+        VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Module - (c) " + VT.VT_YEAR + " wknishio@gmail.com\n" + 
+        "VT>This software is under MIT license with no warranty, use at your own risk!\n");
         VTConsole.print("VT>Enter module(client as C or server as S, default:C):");
         if (VTConsole.isGraphical())
         {

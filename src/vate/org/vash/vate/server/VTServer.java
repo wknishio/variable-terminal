@@ -2113,10 +2113,8 @@ public class VTServer implements Runnable
       VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Server - Console");
     }
     VTConsole.clear();
-    VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Server\n" + 
-    "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + 
-    "VT>This software is under MIT license, see license.txt!\n" + 
-    "VT>This software comes with no warranty, use at your own risk!\n");
+    VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Server - (c) " + VT.VT_YEAR + " wknishio@gmail.com\n" + 
+    "VT>This software is under MIT license with no warranty, use at your own risk!\n");
     if (!VTConsole.isDaemon() && !daemon)
     {
       configure();

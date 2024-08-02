@@ -1995,10 +1995,8 @@ public class VTClient implements Runnable
     {
       // System.setProperty("java.library.path", "lib/native");
     }
-    VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Client\n" + 
-    "VT>Copyright (c) " + VT.VT_YEAR + " - wknishio@gmail.com\n" + 
-    "VT>This software is under MIT license, see license.txt!\n" + 
-    "VT>This software comes with no warranty, use at your own risk!\n");
+    VTConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Client - (c) " + VT.VT_YEAR + " wknishio@gmail.com\n" + 
+    "VT>This software is under MIT license with no warranty, use at your own risk!\n");
     // + "VT>Press enter to start client:");
     if (!VTConsole.isDaemon() && !daemon)
     {
