@@ -37,10 +37,10 @@ public class VTShellProcessor
   private Thread shellThread;
   
   private InputStream shellInputStream;
-  private InputStream shellErrorStream;
+  //private InputStream shellErrorStream;
   private OutputStream shellOutputStream;
   private Reader shellOutputReader;
-  private Reader shellErrorReader;
+  //private Reader shellErrorReader;
   private Writer shellCommandExecutor;
   
   private Charset shellCharset;
@@ -88,13 +88,11 @@ public class VTShellProcessor
     {
       shellProcess.start();
       shellInputStream = shellProcess.getIn();
-      shellErrorStream = shellProcess.getErr();
       shellOutputStream = shellProcess.getOut();
       
       closeables.clear();
       closeables.add(shellOutputStream);
       closeables.add(shellInputStream);
-      closeables.add(shellErrorStream);
     }
     if (shellType == SHELL_TYPE_GROOVYSH)
     {
@@ -151,7 +149,6 @@ public class VTShellProcessor
       VTPipedInputStream pipeIn2 = new VTPipedInputStream(pipeOut2, VT.VT_REDUCED_BUFFER_SIZE_BYTES);
       
       shellInputStream = pipeIn1;
-      shellErrorStream = pipeIn1;
       shellOutputStream = new VTAutoFlushOutputStream(pipeOut2);
       final InputStreamReader in = new InputStreamReader(pipeIn2);
       final PrintStream out = new PrintStream(new VTAutoFlushOutputStream(pipeOut1));
@@ -187,14 +184,12 @@ public class VTShellProcessor
     {
       shellCommandExecutor = new OutputStreamWriter(shellOutputStream, shellCharset);
       shellOutputReader = new InputStreamReader(shellInputStream, shellCharset);
-      shellErrorReader = new InputStreamReader(shellErrorStream, shellCharset);
       return true;
     }
     else
     {
       shellCommandExecutor = new OutputStreamWriter(shellOutputStream);
       shellOutputReader = new InputStreamReader(shellInputStream);
-      shellErrorReader = new InputStreamReader(shellErrorStream);
       return true;
     }
   }
@@ -298,11 +293,6 @@ public class VTShellProcessor
     return shellInputStream;
   }
   
-  public InputStream getShellErrorStream()
-  {
-    return shellErrorStream;
-  }
-  
   public OutputStream getShellOutputStream()
   {
     return shellOutputStream;
@@ -311,11 +301,6 @@ public class VTShellProcessor
   public Reader getShellOutputReader()
   {
     return shellOutputReader;
-  }
-  
-  public Reader getShellErrorReader()
-  {
-    return shellErrorReader;
   }
   
   public Writer getShellCommandExecutor()

@@ -201,6 +201,7 @@ public class VTServerRemoteConsoleReader extends VTTask
         {
           try
           {
+            session.getOutputWriter().setCommandFilter(command);
             session.getShellCommandExecutor().write(command + "\n");
             session.getShellCommandExecutor().flush();
           }

@@ -83,11 +83,6 @@ public class VTShellAdapter
     return shellProcessor.getShellOutputReader();
   }
   
-  public Reader getShellErrorReader()
-  {
-    return shellProcessor.getShellErrorReader();
-  }
-  
   public Writer getShellCommandExecutor()
   {
     return shellProcessor.getShellCommandExecutor();

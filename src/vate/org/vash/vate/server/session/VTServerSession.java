@@ -260,11 +260,6 @@ public class VTServerSession
     return shellAdapter.getShellOutputReader();
   }
   
-  public Reader getShellErrorReader()
-  {
-    return shellAdapter.getShellErrorReader();
-  }
-  
   public Writer getShellCommandExecutor()
   {
     return shellAdapter.getShellCommandExecutor();

@@ -17,4 +17,15 @@ public class VTArrayComparator
     }
     return bits == 0;
   }
+  
+  public static boolean arrayEquals(char[] array1, char[] array2, int offset, int length)
+  {
+    int bits = 0;
+    int limit = offset + length;
+    for (int i = offset; i < limit; i++)
+    {
+      bits |= array1[i] ^ array2[i];
+    }
+    return bits == 0;
+  }
 }
