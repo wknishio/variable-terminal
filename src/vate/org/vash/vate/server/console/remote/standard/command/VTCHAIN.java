@@ -21,6 +21,7 @@ public class VTCHAIN extends VTServerStandardRemoteConsoleCommandProcessor
       connection.getResultWriter().flush();
       try
       {
+        session.getOutputWriter().setCommandFilter(command + " " + (level + 1));
         session.getShellCommandExecutor().write(command + " " + (level + 1) + "\n");
         session.getShellCommandExecutor().flush();
       }
@@ -36,6 +37,7 @@ public class VTCHAIN extends VTServerStandardRemoteConsoleCommandProcessor
       connection.getResultWriter().flush();
       try
       {
+        session.getOutputWriter().setCommandFilter(command + " " + (level + 1));
         session.getShellCommandExecutor().write(command + " " + (level + 1) + "\n");
         session.getShellCommandExecutor().flush();
       }
