@@ -66,6 +66,11 @@ public class VTServerShellOutputWriter extends VTTask
             firstCommandFilter = nullCommandFilter;
             secondCommandFilter = nullCommandFilter;
           }
+          else
+          {
+            firstCommandFilter = nullCommandFilter;
+            secondCommandFilter = nullCommandFilter;
+          }
           connection.getResultWriter().write(resultBuffer, offset, readChars - offset);
           connection.getResultWriter().flush();
         }
