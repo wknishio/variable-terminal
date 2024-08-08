@@ -480,9 +480,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     private synchronized final void writePacket(final byte[] data, final int offset, final int length, final int type, final int number) throws IOException
     {
-      intermediateDataPacketBuffer.reset();
-      intermediatePacketStream.write(data, offset, length);
-      intermediatePacketStream.flush();
       sequence = packetSequencer.nextLong();
       update[0] = (byte) sequence;
       update[1] = (byte) (sequence >> 8);
@@ -493,6 +490,9 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       update[6] = (byte) (sequence >> 48);
       update[7] = (byte) (sequence >> 56);
       packetHasher.update(update, 0, update.length);
+      intermediateDataPacketBuffer.reset();
+      intermediatePacketStream.write(data, offset, length);
+      intermediatePacketStream.flush();
       packetHasher.update(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
       dataPacketBuffer.reset();
       dataPacketStream.writeLong(packetHasher.getValue());
