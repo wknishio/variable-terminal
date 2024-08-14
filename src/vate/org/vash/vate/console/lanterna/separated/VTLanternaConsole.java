@@ -94,7 +94,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
   private static final int consoleOutputLines = 24;
   private static final int consoleInputColumns = 80;
   private static final int consoleInputLines = 1;
-  private static final int consoleOutputLinesMaxSize = consoleOutputLines * 45;
+  private static final int consoleOutputLinesMaxSize = consoleOutputLines * 50;
   private static final int commandHistoryMaxSize = 100;
   private final List<String> commandHistory = new ArrayList<String>();
   private int commandHistoryPosition;
@@ -1603,28 +1603,22 @@ public class VTLanternaConsole implements VTConsoleImplementation
   
   private void registerLine(String command)
   {
-    if (command == null || command.length() == 0)
-    // if (command == null)
+    if (echoInput
+    && (command != null && command.length() > 0)
+    && (commandHistory.size() == 0 || commandHistory.lastIndexOf(command) != commandHistory.size() - 1))
     {
-      return;
+      if (!(commandHistory.size() < commandHistoryMaxSize))
+      {
+        commandHistory.remove(0);
+      }
+      commandHistory.add(command.toString());
     }
-    if (!echoInput)
-    {
-      return;
-    }
-    if (!(commandHistory.size() < commandHistoryMaxSize))
-    {
-      commandHistory.remove(0);
-    }
-    commandHistory.remove(command.toString());
-    commandHistory.add(command.toString());
     commandHistoryPosition = commandHistory.size();
     // System.out.println("registerLine:[" + command + "]");
     // System.out.println("commandHistory.size():[" + commandHistory.size() +
     // "]");
     // System.out.println("commandHistoryPosition:[" + commandHistoryPosition +
     // "]");
-    
   }
   
   private void restoreCurrentLine(boolean echo)
