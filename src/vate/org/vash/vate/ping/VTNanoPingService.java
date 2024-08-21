@@ -68,19 +68,16 @@ public class VTNanoPingService extends VTTask
     this.out = new VTLittleEndianOutputStream(out);
   }
   
-  private void interval() throws IOException, InterruptedException
+  private void first() throws IOException, InterruptedException
   {
-    // wait first interval
-    // Thread.sleep(initial);
-    // first 2 cycles has no delays and are just to warmup
+    // first cycle has no delays and is just to warmup
     if (!stopped)
     {
+      // start timer
       startNanoTime = System.nanoTime();
       // startNanoTime = System.currentTimeMillis();
-      // send delay
       out.writeLong(localNanoDelay);
       out.flush();
-      // wait delay
       remoteNanoDelay = in.readLong();
       // end timer
       endNanoTime = System.nanoTime();
@@ -89,49 +86,19 @@ public class VTNanoPingService extends VTTask
       {
         localNanoDelay = endNanoTime - startNanoTime;
       }
-      // wait remote interval
-      
-      // wait delay
-      remoteNanoDelay = in.readLong();
-      // send delay
-      out.writeLong(localNanoDelay);
-      out.flush();
+      // wait interval
     }
-    
-    if (!stopped)
-    {
-      startNanoTime = System.nanoTime();
-      // startNanoTime = System.currentTimeMillis();
-      // send delay
-      out.writeLong(localNanoDelay);
-      out.flush();
-      // wait delay
-      remoteNanoDelay = in.readLong();
-      // end timer
-      endNanoTime = System.nanoTime();
-      // endNanoTime = System.currentTimeMillis();
-      if (endNanoTime >= startNanoTime)
-      {
-        localNanoDelay = endNanoTime - startNanoTime;
-      }
-      // wait remote interval
-      
-      // wait delay
-      remoteNanoDelay = in.readLong();
-      // send delay
-      out.writeLong(localNanoDelay);
-      out.flush();
-    }
-    
+  }
+  
+  private void client() throws IOException, InterruptedException
+  {
     while (!stopped)
     {
       // start timer
       startNanoTime = System.nanoTime();
       // startNanoTime = System.currentTimeMillis();
-      // send delay
       out.writeLong(localNanoDelay);
       out.flush();
-      // wait delay
       remoteNanoDelay = in.readLong();
       // end timer
       endNanoTime = System.nanoTime();
@@ -142,22 +109,9 @@ public class VTNanoPingService extends VTTask
       }
       for (VTNanoPingListener listener : listeners)
       {
-        listener.pingObtained(localNanoDelay, remoteNanoDelay);
+        listener.pingObtained(localNanoDelay);
       }
-      
-      // wait remote interval
-      
-      // wait delay
-      remoteNanoDelay = in.readLong();
-      // send delay
-      out.writeLong(localNanoDelay);
-      out.flush();
-      for (VTNanoPingListener listener : listeners)
-      {
-        listener.pingObtained(localNanoDelay, remoteNanoDelay);
-      }
-      
-      // wait local interval
+      // wait interval
       synchronized (this)
       {
         this.wait(interval);
@@ -165,47 +119,16 @@ public class VTNanoPingService extends VTTask
     }
   }
   
-  private void continuous() throws IOException, InterruptedException
+  private void server() throws IOException, InterruptedException
   {
     while (!stopped)
     {
-      // wait remote interval
-      
-      // wait delay
       remoteNanoDelay = in.readLong();
-      // send delay
       out.writeLong(localNanoDelay);
       out.flush();
       for (VTNanoPingListener listener : listeners)
       {
-        listener.pingObtained(localNanoDelay, remoteNanoDelay);
-      }
-      
-      // wait local interval
-      // Thread.sleep(interval);
-      //synchronized (this)
-      //{
-        //this.wait(interval);
-      //}
-      
-      // start timer
-      startNanoTime = System.nanoTime();
-      // startNanoTime = System.currentTimeMillis();
-      // send delay
-      out.writeLong(localNanoDelay);
-      out.flush();
-      // wait delay
-      remoteNanoDelay = in.readLong();
-      // end timer
-      endNanoTime = System.nanoTime();
-      // endNanoTime = System.currentTimeMillis();
-      if (endNanoTime >= startNanoTime)
-      {
-        localNanoDelay = endNanoTime - startNanoTime;
-      }
-      for (VTNanoPingListener listener : listeners)
-      {
-        listener.pingObtained(localNanoDelay, remoteNanoDelay);
+        listener.pingObtained(remoteNanoDelay);
       }
     }
   }
@@ -216,11 +139,12 @@ public class VTNanoPingService extends VTTask
     {
       if (!server)
       {
-        interval();
+        first();
+        client();
       }
       else
       {
-        continuous();
+        server();
       }
     }
     catch (Throwable e)

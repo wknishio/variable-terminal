@@ -14,7 +14,7 @@ public class VTPING extends VTServerStandardRemoteConsoleCommandProcessor
   
   public void execute(String command, String[] parsed) throws Exception
   {
-    session.getNanoPingService().ping();
+    session.ping();
   }
   
   public void close()

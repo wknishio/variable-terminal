@@ -86,7 +86,8 @@ public class VTServerSession
   private VTServerGraphicsDeviceResolver graphicsDeviceResolver;
   private VTTunnelConnectionHandler tunnelsHandler;
   // private VTTunnelConnectionHandler socksTunnelsHandler;
-  private VTNanoPingService pingService;
+  private VTNanoPingService pingServiceClient;
+  private VTNanoPingService pingServiceServer;
   private Collection<Closeable> sessionCloseables;
   private ExecutorService executorService;
   
@@ -140,15 +141,20 @@ public class VTServerSession
     this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executorService, sessionCloseables));
     // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
     // VTTunnelConnection(executor), executor);
-    this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, true, executorService);
-    this.pingService.addListener(new VTNanoPingListener()
+    this.pingServiceClient = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, false, executorService);
+    this.pingServiceClient.addListener(new VTNanoPingListener()
     {
-      public void pingObtained(long localNanoDelay, long remoteNanoDelay)
+      public void pingObtained(long nanoDelay)
       {
-        sessionLocalNanoDelay = localNanoDelay;
-        sessionRemoteNanoDelay = remoteNanoDelay;
-        //System.out.println("server localNanoDelay:" + localNanoDelay);
-        //System.out.println("server remoteNanoDelay:" + remoteNanoDelay);
+        sessionLocalNanoDelay = nanoDelay;
+      }
+    });
+    this.pingServiceServer = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, true, executorService);
+    this.pingServiceServer.addListener(new VTNanoPingListener()
+    {
+      public void pingObtained(long nanoDelay)
+      {
+        sessionRemoteNanoDelay = nanoDelay;
       }
     });
     setShellType(VTShellProcessor.SHELL_TYPE_PROCESS);
@@ -395,9 +401,19 @@ public class VTServerSession
     return graphicsDeviceResolver;
   }
   
-  public VTNanoPingService getNanoPingService()
+  public void ping()
   {
-    return pingService;
+    pingServiceClient.ping();
+  }
+  
+  public void addPingListener(VTNanoPingListener listener)
+  {
+    pingServiceClient.addListener(listener);
+  }
+  
+  public void removePingListener(VTNanoPingListener listener)
+  {
+    pingServiceClient.removeListener(listener);
   }
   
   public VTTunnelConnectionHandler getTunnelsHandler()
@@ -438,9 +454,10 @@ public class VTServerSession
     // printFileTask.setStopped(stopped);
     // System.out.println("printFileTask.setStopped");
     printDataTask.setStopped(true);
-    pingService.setStopped(true);
-//    urlInvoker.close();
-    pingService.ping();
+    pingServiceClient.setStopped(true);
+    pingServiceServer.setStopped(true);
+    pingServiceClient.ping();
+    pingServiceServer.ping();
     // System.out.println("pingService.setStopped");
     /*
      * if (fileCopyOperation != null) { fileCopyOperation.setStopped(stopped); }
@@ -610,14 +627,18 @@ public class VTServerSession
     // socksTunnelsHandler.getConnection().setControlInputStream(connection.getSocksControlInputStream());
     // socksTunnelsHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
     // socksTunnelsHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
-    pingService.setInputStream(connection.getPingInputStream());
-    pingService.setOutputStream(connection.getPingOutputStream());
+    pingServiceClient.setInputStream(connection.getPingClientInputStream());
+    pingServiceClient.setOutputStream(connection.getPingClientOutputStream());
+    pingServiceServer.setInputStream(connection.getPingServerInputStream());
+    pingServiceServer.setOutputStream(connection.getPingServerOutputStream());
     // tunnelHandler.getConnection().start();
   }
   
   public void startSessionThreads()
   {
-    pingService.startThread();
+    pingServiceServer.startThread();
+    pingServiceClient.startThread();
+    
     clientReader.startThread();
     shellOutputWriter.startThread();
     // shellErrorWriter.startThread();
@@ -793,11 +814,6 @@ public class VTServerSession
       opticalDriveOperation.interruptThread();
       opticalDriveOperation.stopThread();
     }
-    if (pingService.aliveThread())
-    {
-      pingService.interruptThread();
-      pingService.stopThread();
-    }
     tunnelsHandler.getConnection().close();
     // socksTunnelsHandler.getConnection().close();
     // System.out.println("tryStopSessionThreads end");
@@ -869,7 +885,8 @@ public class VTServerSession
       // System.out.println("clipboardTransferTask.joinThread()");
       tunnelsHandler.joinThread();
       // socksTunnelsHandler.joinThread();
-      pingService.joinThread();
+      pingServiceClient.joinThread();
+      pingServiceServer.joinThread();
       // System.out.println("pingService.joinThread()");
     }
     catch (Throwable e)
@@ -921,5 +938,4 @@ public class VTServerSession
   {
     this.shellAdapter.setShellType(shellType);
   }
-  
 }

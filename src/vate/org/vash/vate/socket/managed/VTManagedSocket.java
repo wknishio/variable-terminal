@@ -28,7 +28,7 @@ public class VTManagedSocket extends Socket implements Closeable
 //    return managedConnection.getConnectionSocket();
 //  }
   
-  public VTManagedConnection getManagedConnection()
+  public VTManagedConnection getConnection()
   {
     return managedConnection;
   }

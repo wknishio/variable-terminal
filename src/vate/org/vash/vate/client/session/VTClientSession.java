@@ -38,7 +38,8 @@ public class VTClientSession
   // private VTClientZipFileOperation zipFileOperation;
   private VTTunnelConnectionHandler tunnelsHandler;
   // private VTTunnelConnectionHandler socksTunnelsHandler;
-  private VTNanoPingService pingService;
+  private VTNanoPingService pingServiceClient;
+  private VTNanoPingService pingServiceServer;
   private Collection<Closeable> sessionCloseables;
   private ExecutorService executorService;
   
@@ -62,15 +63,20 @@ public class VTClientSession
     this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executorService, sessionCloseables));
     // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
     // VTTunnelConnection(executor), executor);
-    this.pingService = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, false, executorService);
-    this.pingService.addListener(new VTNanoPingListener()
+    this.pingServiceClient = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, false, executorService);
+    this.pingServiceClient.addListener(new VTNanoPingListener()
     {
-      public void pingObtained(long localNanoDelay, long remoteNanoDelay)
+      public void pingObtained(long nanoDelay)
       {
-        sessionLocalNanoDelay = localNanoDelay;
-        sessionRemoteNanoDelay = remoteNanoDelay;
-        //System.out.println("client localNanoDelay:" + localNanoDelay);
-        //System.out.println("client remoteNanoDelay:" + remoteNanoDelay);
+        sessionLocalNanoDelay = nanoDelay;
+      }
+    });
+    this.pingServiceServer = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, true, executorService);
+    this.pingServiceServer.addListener(new VTNanoPingListener()
+    {
+      public void pingObtained(long nanoDelay)
+      {
+        sessionRemoteNanoDelay = nanoDelay;
       }
     });
   }
@@ -156,9 +162,19 @@ public class VTClientSession
   // return zipFileOperation;
   // }
   
-  public VTNanoPingService getNanoPingService()
+  public void ping()
   {
-    return pingService;
+    pingServiceClient.ping();
+  }
+  
+  public void addPingListener(VTNanoPingListener listener)
+  {
+    pingServiceClient.addListener(listener);
+  }
+  
+  public void removePingListener(VTNanoPingListener listener)
+  {
+    pingServiceClient.removeListener(listener);
   }
   
   public VTTunnelConnectionHandler getTunnelsHandler()
@@ -192,8 +208,10 @@ public class VTClientSession
     clientWriter.setStopped(true);
     fileTransferClient.getHandler().getSession().getTransaction().setStopped(true);
     graphicsClient.setStopped(true);
-    pingService.setStopped(true);
-    pingService.ping();
+    pingServiceClient.setStopped(true);
+    pingServiceServer.setStopped(true);
+    pingServiceClient.ping();
+    pingServiceServer.ping();
   }
   
   public void startSession() throws UnsupportedEncodingException
@@ -209,15 +227,18 @@ public class VTClientSession
     // socksTunnelsHandler.getConnection().setControlOutputStream(connection.getSocksControlOutputStream());
     // socksTunnelsHandler.getConnection().setDataInputStream(connection.getMultiplexedConnectionInputStream());
     // socksTunnelsHandler.getConnection().setDataOutputStream(connection.getMultiplexedConnectionOutputStream());
-    pingService.setInputStream(connection.getPingInputStream());
-    pingService.setOutputStream(connection.getPingOutputStream());
+    pingServiceClient.setInputStream(connection.getPingClientInputStream());
+    pingServiceClient.setOutputStream(connection.getPingClientOutputStream());
+    pingServiceServer.setInputStream(connection.getPingServerInputStream());
+    pingServiceServer.setOutputStream(connection.getPingServerOutputStream());
     // tunnelHandler.getConnection().start();
   }
   
   public void startSessionThreads()
   {
     // session.getServerReader().setStopped(false);
-    pingService.startThread();
+    pingServiceServer.startThread();
+    pingServiceClient.startThread();
     serverReader.startThread();
     clientWriter.startThread();
     tunnelsHandler.startThread();
@@ -290,11 +311,6 @@ public class VTClientSession
     // zipFileOperation.interruptThread();
     // zipFileOperation.stopThread();
     // }
-    if (pingService.aliveThread())
-    {
-      pingService.interruptThread();
-      pingService.stopThread();
-    }
     tunnelsHandler.getConnection().close();
     // socksTunnelsHandler.getConnection().close();
   }
@@ -323,7 +339,8 @@ public class VTClientSession
       tunnelsHandler.joinThread();
       //System.out.println("tunnelsHandler.joinThread()");
       // socksTunnelsHandler.joinThread();
-      pingService.joinThread();
+      pingServiceClient.joinThread();
+      pingServiceServer.joinThread();
       //System.out.println("pingService.joinThread()");
     }
     catch (Throwable e)

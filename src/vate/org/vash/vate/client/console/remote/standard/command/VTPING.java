@@ -15,9 +15,9 @@ public class VTPING extends VTClientStandardRemoteConsoleCommandProcessor
   
   public void execute(String command, String[] parsed) throws Exception
   {
-    session.getNanoPingService().ping();
-    //connection.getCommandWriter().write(command + "\n");
-    //connection.getCommandWriter().flush();
+    session.ping();
+    connection.getCommandWriter().writeLine(command);
+    connection.getCommandWriter().flush();
     long clientTime = session.getLocalNanoDelay();
     long serverTime = session.getRemoteNanoDelay();
     long clientNanoseconds = clientTime;

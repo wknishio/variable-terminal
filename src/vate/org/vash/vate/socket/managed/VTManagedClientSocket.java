@@ -30,11 +30,14 @@ public class VTManagedClientSocket
   {
     private VTClientSession session;
     private VTClientConnection connection;
+    private VTManagedSocketPingListener pingListener;
     
     private VTCloseableClientConnection(VTClientSession session)
     {
       this.session = session;
       this.connection = session.getConnection();
+      this.pingListener = new VTManagedSocketPingListener(session.getExecutorService(), this);
+      this.session.addPingListener(pingListener);
     }
     
     public void close() throws IOException
@@ -63,7 +66,7 @@ public class VTManagedClientSocket
       {
         number = 0;
       }
-      VTLinkableDynamicMultiplexedInputStream stream = connection.getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 12 + number);
+      VTLinkableDynamicMultiplexedInputStream stream = connection.getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 13 + number);
       return stream;
     }
     
@@ -73,7 +76,7 @@ public class VTManagedClientSocket
       {
         number = 0;
       }
-      VTLinkableDynamicMultiplexedOutputStream stream = connection.getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 12 + number);
+      VTLinkableDynamicMultiplexedOutputStream stream = connection.getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 13 + number);
       return stream;
     }
     
@@ -83,7 +86,7 @@ public class VTManagedClientSocket
       {
         number = 0;
       }
-      VTLinkableDynamicMultiplexedInputStream stream = connection.getMultiplexedConnectionInputStream().linkInputStream(type, 12 + number);
+      VTLinkableDynamicMultiplexedInputStream stream = connection.getMultiplexedConnectionInputStream().linkInputStream(type, 13 + number);
       return stream;
     }
     
@@ -93,7 +96,7 @@ public class VTManagedClientSocket
       {
         number = 0;
       }
-      VTLinkableDynamicMultiplexedOutputStream stream = connection.getMultiplexedConnectionOutputStream().linkOutputStream(type, 12 + number);
+      VTLinkableDynamicMultiplexedOutputStream stream = connection.getMultiplexedConnectionOutputStream().linkOutputStream(type, 13 + number);
       return stream;
     }
     
@@ -106,6 +109,16 @@ public class VTManagedClientSocket
     {
       return null;
     }
+    
+    public void ping()
+    {
+      session.ping();
+    }
+    
+    public boolean ping(long timeout)
+    {
+      return pingListener.ping(timeout);
+    }
   }
   
   private class VTManagedClientSocketClientSessionListener implements VTClientSessionListener
@@ -113,8 +126,8 @@ public class VTManagedClientSocket
     public void sessionStarted(VTClientSession session)
     {
       // System.out.println("client.session.started()");
-      InputStream input = session.getConnection().getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 12);
-      OutputStream output = session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 12);
+      InputStream input = session.getConnection().getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 13);
+      OutputStream output = session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 13);
       VTManagedSocket socket = new VTManagedSocket(new VTCloseableClientConnection(session), input, output);
       session.addSessionCloseable(socket);
       sessions.put(session, socket);
@@ -219,10 +232,11 @@ public class VTManagedClientSocket
 //      
 //      while (socket.isConnected())
 //      {
+//        System.out.println("client.ping():" + socket.getConnection().ping(1));
 //        long time = System.currentTimeMillis();
 //        writer.write("client.message:" + time + "\r\n");
 //        writer.flush();
-//        System.out.println(reader.readLine());
+//        System.out.println("client.readLine():" + reader.readLine());
 //        Thread.sleep(1000);
 //      }
 //    }
