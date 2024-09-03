@@ -1451,11 +1451,12 @@ public class VTLanternaTextBoxModified extends AbstractInteractableComponent<VTL
       }
       
       TerminalPosition caretPosition;
+      TerminalPosition cursorLocation;
       String caretLine;
       
       caretPosition = component.getCaretPosition();
       caretLine = component.getLine(caretPosition.getRow());
-      caretPosition = this.getCursorLocation(component);
+      cursorLocation = this.getCursorLocation(component);
       
       int i = caretPosition.getColumn();
       int j = caretPosition.getColumn() + 1;
@@ -1470,16 +1471,14 @@ public class VTLanternaTextBoxModified extends AbstractInteractableComponent<VTL
       }
       
       String caretChar = caretLine.substring(i, j);
-      
       if (caretChar.length() == 0)
       {
-        i = caretPosition.getColumn();
         caretChar = " ";
       }
       
       EnumSet<SGR> modifiers = graphics.getActiveModifiers();
       modifiers.add(SGR.REVERSE);
-      graphics.putString(i, caretPosition.getRow(), caretChar, modifiers);
+      graphics.putString(cursorLocation.getColumn(), cursorLocation.getRow(), caretChar, modifiers);
       modifiers.remove(SGR.REVERSE);
     }
   }
