@@ -119,8 +119,8 @@ public class VTNanoPingService extends VTTask
       synchronized (this)
       {
         this.wait(interval + initial);
-        initial = 0;
       }
+      initial = 0;
     }
   }
   
