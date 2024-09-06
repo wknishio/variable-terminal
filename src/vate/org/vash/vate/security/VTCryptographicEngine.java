@@ -50,11 +50,11 @@ public class VTCryptographicEngine
     }
     byte[] second = blake3Digest.digest(VT.VT_SECURITY_SEED_SIZE_BYTES);
     
-    if (encryptionType == VT.VT_CONNECTION_ENCRYPT_NONE)
+    if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_NONE)
     {
       
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_VMPC)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_VMPC)
     {
       encryptionCipherBC = new VMPCKSA3Engine();
       decryptionCipherBC = new VMPCKSA3Engine();
@@ -65,7 +65,7 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ISAAC)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_ISAAC)
     {
       encryptionCipherBC = new ISAACEngine();
       decryptionCipherBC = new ISAACEngine();
@@ -74,7 +74,7 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionKeySpec);
       decryptionCipherBC.init(false, decryptionKeySpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_SALSA)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_SALSA)
     {
       encryptionCipherBC = new ChaChaEngine(16);
       decryptionCipherBC = new ChaChaEngine(16);
@@ -85,7 +85,7 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_HC256)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_HC256)
     {
       encryptionCipherBC = new HC256Engine();
       decryptionCipherBC = new HC256Engine();
@@ -96,7 +96,7 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_ZUC)
     {
       encryptionCipherBC = new Zuc256Engine();
       decryptionCipherBC = new Zuc256Engine();
@@ -138,11 +138,11 @@ public class VTCryptographicEngine
     }
     byte[] second = blake3Digest.digest(VT.VT_SECURITY_SEED_SIZE_BYTES);
     
-    if (encryptionType == VT.VT_CONNECTION_ENCRYPT_NONE)
+    if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_NONE)
     {
       
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_VMPC)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_VMPC)
     {
       encryptionCipherBC = new VMPCKSA3Engine();
       decryptionCipherBC = new VMPCKSA3Engine();
@@ -153,7 +153,7 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ISAAC)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_ISAAC)
     {
       encryptionCipherBC = new ISAACEngine();
       decryptionCipherBC = new ISAACEngine();
@@ -162,7 +162,7 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionKeySpec);
       decryptionCipherBC.init(false, decryptionKeySpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_SALSA)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_SALSA)
     {
       encryptionCipherBC = new ChaChaEngine(16);
       decryptionCipherBC = new ChaChaEngine(16);
@@ -173,7 +173,7 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_HC256)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_HC256)
     {
       encryptionCipherBC = new HC256Engine();
       decryptionCipherBC = new HC256Engine();
@@ -184,7 +184,7 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPT_ZUC)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_ZUC)
     {
       encryptionCipherBC = new Zuc256Engine();
       decryptionCipherBC = new Zuc256Engine();

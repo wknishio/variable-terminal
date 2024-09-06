@@ -1,8 +1,7 @@
 package org.vash.vate.socket.managed;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.net.Socket;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -36,6 +35,14 @@ public class VTManagedClientSocket
     {
       this.session = session;
       this.connection = session.getConnection();
+      try
+      {
+        connection.getConnectionSocket().setSoLinger(true, 0);
+      }
+      catch (Throwable t)
+      {
+        
+      }
       this.pingListener = new VTManagedSocketPingListener(session.getExecutorService(), this);
       this.session.addPingListener(pingListener);
     }
@@ -119,6 +126,11 @@ public class VTManagedClientSocket
     {
       return pingListener.ping(timeout);
     }
+    
+    public Socket getConnectionSocket()
+    {
+      return connection.getConnectionSocket();
+    }
   }
   
   private class VTManagedClientSocketClientSessionListener implements VTClientSessionListener
@@ -126,8 +138,8 @@ public class VTManagedClientSocket
     public void sessionStarted(VTClientSession session)
     {
       // System.out.println("client.session.started()");
-      InputStream input = session.getConnection().getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 13);
-      OutputStream output = session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 13);
+      VTLinkableDynamicMultiplexedInputStream input = session.getConnection().getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 13);
+      VTLinkableDynamicMultiplexedOutputStream output = session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 13);
       VTManagedSocket socket = new VTManagedSocket(new VTCloseableClientConnection(session), input, output);
       session.addSessionCloseable(socket);
       sessions.put(session, socket);
@@ -232,7 +244,7 @@ public class VTManagedClientSocket
 //      
 //      while (socket.isConnected())
 //      {
-//        System.out.println("client.ping():" + socket.getConnection().ping(1));
+//        System.out.println("client.ping():" + socket.getConnection().ping(500));
 //        long time = System.currentTimeMillis();
 //        writer.write("client.message:" + time + "\r\n");
 //        writer.flush();

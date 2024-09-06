@@ -14,8 +14,8 @@ import org.vash.vate.task.VTTask;
 public class VTNanoPingService extends VTTask
 {
   private boolean server;
-  // private int initial;
   private int interval;
+  private int initial;
   private VTLittleEndianInputStream in;
   private VTLittleEndianOutputStream out;
   private Queue<VTNanoPingListener> listeners;
@@ -24,12 +24,12 @@ public class VTNanoPingService extends VTTask
   private long localNanoDelay = 0;
   private long remoteNanoDelay = 0;
   
-  public VTNanoPingService(int interval, boolean server, ExecutorService executorService)
+  public VTNanoPingService(int interval, int initial, boolean server, ExecutorService executorService)
   {
     super(executorService);
     this.listeners = new ConcurrentLinkedQueue<VTNanoPingListener>();
-    // this.initial = initial;
     this.interval = interval;
+    this.initial = initial;
     this.server = server;
   }
   
@@ -68,7 +68,7 @@ public class VTNanoPingService extends VTTask
     this.out = new VTLittleEndianOutputStream(out);
   }
   
-  private void first() throws IOException, InterruptedException
+  private void initial() throws IOException, InterruptedException
   {
     // first cycle has no delays and is just to warmup
     if (!stopped)
@@ -85,6 +85,10 @@ public class VTNanoPingService extends VTTask
       if (endNanoTime >= startNanoTime)
       {
         localNanoDelay = endNanoTime - startNanoTime;
+      }
+      for (VTNanoPingListener listener : listeners)
+      {
+        listener.pingObtained(localNanoDelay);
       }
       // wait interval
     }
@@ -114,7 +118,8 @@ public class VTNanoPingService extends VTTask
       // wait interval
       synchronized (this)
       {
-        this.wait(interval);
+        this.wait(interval + initial);
+        initial = 0;
       }
     }
   }
@@ -139,7 +144,7 @@ public class VTNanoPingService extends VTTask
     {
       if (!server)
       {
-        first();
+        initial();
         client();
       }
       else

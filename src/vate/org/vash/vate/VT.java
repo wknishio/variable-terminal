@@ -45,7 +45,7 @@ public class VT
   public static final int VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS = 60000;
   public static final int VT_CONNECTION_ATTEMPT_TIMEOUT_MILLISECONDS = 60000;
   public static final int VT_CLIENT_RECONNECTION_TIMEOUT_MILLISECONDS = 60000;
-  public static final int VT_DAEMON_RECONNECTION_TIMEOUT_MILLISECONDS = 7500;
+  public static final int VT_DAEMON_RECONNECTION_TIMEOUT_MILLISECONDS = 3750;
   public static final int VT_PING_SERVICE_INTERVAL_MILLISECONDS = 15000;
   
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED = 0;
@@ -61,12 +61,12 @@ public class VT
   public static final int VT_CONNECTION_PROXY_SOCKS = 1;
   public static final int VT_CONNECTION_PROXY_HTTP = 2;
   
-  public static final int VT_CONNECTION_ENCRYPT_NONE = 0;
-  public static final int VT_CONNECTION_ENCRYPT_VMPC = 1;
-  public static final int VT_CONNECTION_ENCRYPT_ISAAC = 2;
-  public static final int VT_CONNECTION_ENCRYPT_SALSA = 3;
-  public static final int VT_CONNECTION_ENCRYPT_HC256 = 4;
-  public static final int VT_CONNECTION_ENCRYPT_ZUC = 5;
+  public static final int VT_CONNECTION_ENCRYPTION_NONE = 0;
+  public static final int VT_CONNECTION_ENCRYPTION_VMPC = 1;
+  public static final int VT_CONNECTION_ENCRYPTION_ISAAC = 2;
+  public static final int VT_CONNECTION_ENCRYPTION_SALSA = 3;
+  public static final int VT_CONNECTION_ENCRYPTION_HC256 = 4;
+  public static final int VT_CONNECTION_ENCRYPTION_ZUC = 5;
   
   public static final int VT_FILE_TRANSFER_SESSION_STARTED = 0;
   public static final int VT_FILE_TRANSFER_SESSION_FINISHED = 1;
@@ -149,6 +149,17 @@ public class VT
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_2097152 = 65;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16 = 66;
   public static final int VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_4 = 67;
+  
+  public static final String VT_CONNECTION_PROXY_NONE_STRING = "NONE";
+  public static final String VT_CONNECTION_PROXY_SOCKS_STRING = "SOCKS";
+  public static final String VT_CONNECTION_PROXY_HTTP_STRING = "HTTP";
+  
+  public static final String VT_CONNECTION_ENCRYPTION_NONE_STRING = "NONE";
+  public static final String VT_CONNECTION_ENCRYPTION_VMPC_STRING = "VMPC";
+  public static final String VT_CONNECTION_ENCRYPTION_ISAAC_STRING = "ISAAC";
+  public static final String VT_CONNECTION_ENCRYPTION_SALSA_STRING = "SALSA";
+  public static final String VT_CONNECTION_ENCRYPTION_HC256_STRING = "HC256";
+  public static final String VT_CONNECTION_ENCRYPTION_ZUC_STRING = "ZUC";
   
   private static final DateFormat VT_ERA_DATEFORMAT;
   private static final Calendar VT_YEAR_CALENDAR;

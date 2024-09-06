@@ -4,7 +4,9 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.SocketException;
 
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
@@ -13,10 +15,10 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.
 public class VTManagedSocket extends Socket implements Closeable
 {
   private VTManagedConnection managedConnection;
-  private InputStream in;
-  private OutputStream out;
+  private VTLinkableDynamicMultiplexedInputStream in;
+  private VTLinkableDynamicMultiplexedOutputStream out;
   
-  public VTManagedSocket(VTManagedConnection managedConnection, InputStream in, OutputStream out)
+  public VTManagedSocket(VTManagedConnection managedConnection, VTLinkableDynamicMultiplexedInputStream in, VTLinkableDynamicMultiplexedOutputStream out)
   {
     this.managedConnection = managedConnection;
     this.in = in;
@@ -99,38 +101,163 @@ public class VTManagedSocket extends Socket implements Closeable
     managedConnection.close();
   }
   
-  public boolean isConnected()
+  public InetAddress getInetAddress()
   {
-    return managedConnection.isConnected();
+    return managedConnection.getConnectionSocket().getInetAddress();
   }
   
-  public boolean isClosed()
+  public InetAddress getLocalAddress()
   {
-    return managedConnection.isClosed();
+    return managedConnection.getConnectionSocket().getLocalAddress();
   }
   
-  public boolean isBound()
+  public int getPort()
   {
-    return managedConnection.isBound();
+    return managedConnection.getConnectionSocket().getPort();
   }
   
-  public void setSoTimeout(int timeout) throws SocketException
+  public int getLocalPort()
   {
-    //super.setSoTimeout(timeout);
+    return managedConnection.getConnectionSocket().getLocalPort();
+  }
+  
+  public SocketAddress getRemoteSocketAddress()
+  {
+    return managedConnection.getConnectionSocket().getRemoteSocketAddress();
+  }
+  
+  public SocketAddress getLocalSocketAddress()
+  {
+    return managedConnection.getConnectionSocket().getLocalSocketAddress();
   }
   
   public void setTcpNoDelay(boolean on) throws SocketException
   {
-    //super.setTcpNoDelay(true);
+    managedConnection.getConnectionSocket().setTcpNoDelay(on);
+  }
+  
+  public boolean getTcpNoDelay() throws SocketException
+  {
+    return managedConnection.getConnectionSocket().getTcpNoDelay();
   }
   
   public void setSoLinger(boolean on, int linger) throws SocketException
   {
-    //super.setSoLinger(on, linger);
+    managedConnection.getConnectionSocket().setSoLinger(on, linger);
+  }
+  
+  public int getSoLinger() throws SocketException
+  {
+    return managedConnection.getConnectionSocket().getSoLinger();
+  }
+  
+  public void sendUrgentData (int data) throws IOException
+  {
+    managedConnection.getConnectionSocket().sendUrgentData(data);
+  }
+  
+  public void setOOBInline(boolean on) throws SocketException
+  {
+    managedConnection.getConnectionSocket().setOOBInline(on);
+  }
+  
+  public boolean getOOBInline() throws SocketException
+  {
+    return managedConnection.getConnectionSocket().getOOBInline();
+  }
+  
+  public synchronized void setSoTimeout(int timeout) throws SocketException
+  {
+    managedConnection.getConnectionSocket().setSoTimeout(timeout);
+  }
+  
+  public synchronized int getSoTimeout() throws SocketException
+  {
+    return managedConnection.getConnectionSocket().getSoTimeout();
+  }
+  
+  public synchronized void setSendBufferSize(int size) throws SocketException
+  {
+    managedConnection.getConnectionSocket().setSendBufferSize(size);
+  }
+  
+  public synchronized int getSendBufferSize() throws SocketException
+  {
+    return managedConnection.getConnectionSocket().getSendBufferSize();
+  }
+  
+  public synchronized void setReceiveBufferSize(int size) throws SocketException
+  {
+    managedConnection.getConnectionSocket().setReceiveBufferSize(size);
+  }
+  
+  public synchronized int getReceiveBufferSize() throws SocketException
+  {
+    return managedConnection.getConnectionSocket().getReceiveBufferSize();
   }
   
   public void setKeepAlive(boolean on) throws SocketException
   {
-    //super.setKeepAlive(false);
+    managedConnection.getConnectionSocket().setKeepAlive(on);
+  }
+  
+  public boolean getKeepAlive() throws SocketException
+  {
+    return managedConnection.getConnectionSocket().getKeepAlive();
+  }
+  
+  public void setTrafficClass(int tc) throws SocketException
+  {
+    managedConnection.getConnectionSocket().setTrafficClass(tc);
+  }
+  
+  public int getTrafficClass() throws SocketException
+  {
+    return managedConnection.getConnectionSocket().getTrafficClass();
+  }
+  
+  public void setReuseAddress(boolean on) throws SocketException
+  {
+    managedConnection.getConnectionSocket().setReuseAddress(on);
+  }
+  
+  public boolean getReuseAddress() throws SocketException
+  {
+    return managedConnection.getConnectionSocket().getReuseAddress();
+  }
+  
+  public String toString()
+  {
+    return managedConnection.getConnectionSocket().toString();
+  }
+  
+  public boolean isConnected()
+  {
+    return managedConnection.getConnectionSocket().isConnected();
+  }
+  
+  public boolean isBound()
+  {
+    return managedConnection.getConnectionSocket().isBound();
+  }
+  
+  public boolean isClosed()
+  {
+    return managedConnection.getConnectionSocket().isClosed();
+  }
+  
+  public boolean isInputShutdown()
+  {
+    return in.closed();
+  }
+  
+  public boolean isOutputShutdown()
+  {
+    return out.closed();
+  }
+  
+  public void setPerformancePreferences(int connectionTime, int latency, int bandwidth)
+  {
+    managedConnection.getConnectionSocket().setPerformancePreferences(connectionTime, latency, bandwidth);
   }
 }

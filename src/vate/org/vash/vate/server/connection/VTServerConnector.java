@@ -448,42 +448,38 @@ public class VTServerConnector implements Runnable
       connectionServerSocket.setSoTimeout(0);
 //      connecting = true;
       connection.setConnectionSocket(connectionServerSocket.accept());
-      //connection.getConnectionSocket().setSendBufferSize(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
       connection.getConnectionSocket().setTcpNoDelay(true);
-      //connection.getConnectionSocket().setSendBufferSize(1024 * 64);
-      //connection.getConnectionSocket().setReceiveBufferSize(1024 * 64);
-      //connection.getConnectionSocket().setSoLinger(true, 5);
-      // connection.getConnectionSocket().setReuseAddress(true);
-      // connection.getConnectionSocket().setKeepAlive(true);
+      //connection.getConnectionSocket().setSoLinger(true, 0);
+      //connection.getConnectionSocket().setKeepAlive(true);
       connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
 //      connecting = false;
       if (encryptionType == null)
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_NONE);
       }
       else if (encryptionType.toUpperCase().startsWith("Z"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_ZUC);
       }
       else if (encryptionType.toUpperCase().startsWith("V"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_VMPC);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_VMPC);
       }
       else if (encryptionType.toUpperCase().startsWith("S"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_SALSA);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_SALSA);
       }
       else if (encryptionType.toUpperCase().startsWith("H"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_HC256);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC256);
       }
       else if (encryptionType.toUpperCase().startsWith("I"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ISAAC);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_ISAAC);
       }
       else
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_NONE);
       }
       connection.setEncryptionKey(encryptionKey);
       //connectionServerSocket.close();
@@ -514,55 +510,40 @@ public class VTServerConnector implements Runnable
     try
     {
       resetSockets(connection);
-//      InetSocketAddress socketAddress = null;
-//      if (connection.getConnectionSocket() instanceof VTProxySocket)
-//      {
-//        socketAddress = InetSocketAddress.createUnresolved(address, port);
-//      }
-//      else
-//      {
-//        socketAddress = new InetSocketAddress(address, port);
-//      }
 //      connecting = true;
-      // connection.getShellSocket().setPerformancePreferences(1, 3, 2);
-      //connection.getConnectionSocket().setReceiveBufferSize(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
-      //connection.getConnectionSocket().setSendBufferSize(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
       VTProxy.connect(address, port, 0, connection.getConnectionSocket());
       connection.getConnectionSocket().setTcpNoDelay(true);
-      //connection.getConnectionSocket().setSendBufferSize(1024 * 64);
-      //connection.getConnectionSocket().setReceiveBufferSize(1024 * 64);
-      //connection.getConnectionSocket().setSoLinger(true, 5);
-      // connection.getConnectionSocket().setReuseAddress(true);
-      // connection.getConnectionSocket().setKeepAlive(true);
+      //connection.getConnectionSocket().setSoLinger(true, 0);
+      //connection.getConnectionSocket().setKeepAlive(true);
       connection.getConnectionSocket().setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
 //      connecting = false;
       if (encryptionType == null)
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_NONE);
       }
       else if (encryptionType.toUpperCase().startsWith("Z"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ZUC);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_ZUC);
       }
       else if (encryptionType.toUpperCase().startsWith("V"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_VMPC);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_VMPC);
       }
       else if (encryptionType.toUpperCase().startsWith("S"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_SALSA);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_SALSA);
       }
       else if (encryptionType.toUpperCase().startsWith("H"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_HC256);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC256);
       }
       else if (encryptionType.toUpperCase().startsWith("I"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_ISAAC);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_ISAAC);
       }
       else
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPT_NONE);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_NONE);
       }
       connection.setEncryptionKey(encryptionKey);
       VTConsole.print("\rVT>Connection with client established!\nVT>");
@@ -686,5 +667,4 @@ public class VTServerConnector implements Runnable
   {
     this.sessionShell = sessionShell;
   }
-  
 }
