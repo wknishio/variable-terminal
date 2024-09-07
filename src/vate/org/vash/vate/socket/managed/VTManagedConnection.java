@@ -11,9 +11,6 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.
 public interface VTManagedConnection extends Closeable
 {
   public Socket getConnectionSocket();
-  public boolean isBound();
-  public boolean isClosed();
-  public boolean isConnected();
   public VTLinkableDynamicMultiplexedInputStream getInputStream(int number);
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number);
   public VTLinkableDynamicMultiplexedInputStream getInputStream(int number, int type);

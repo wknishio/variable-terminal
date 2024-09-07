@@ -52,21 +52,6 @@ public class VTManagedServerSocket
       connection.closeSockets();
     }
     
-    public boolean isConnected()
-    {
-      return connection.isConnected();
-    }
-    
-    public boolean isClosed()
-    {
-      return !connection.isConnected();
-    }
-    
-    public boolean isBound()
-    {
-      return connection.isConnected();
-    }
-    
     public VTLinkableDynamicMultiplexedInputStream getInputStream(int number)
     {
       if (number < 0)
