@@ -74,10 +74,10 @@ public class VTServer implements Runnable
   private List<VTServerSessionListener> listeners = new ArrayList<VTServerSessionListener>();
   private static final String VT_SERVER_SETTINGS_COMMENTS = 
   "Variable-Terminal server settings file, supports UTF-8\r\n" + 
-  "#vate.server.connection.mode     values: default passive(P), active(A)\r\n" + 
-  "#vate.server.proxy.type          values: default none, DIRECT(D), SOCKS(S), HTTP(H), ANY(A)\r\n" + 
-  "#vate.server.encryption.type     values: default none/ISAAC(I)/VMPC(V)/SALSA(S)/HC256(H)/ZUC(Z)\r\n" + 
-  "#vate.server.session.accounts    format: user1/password1;user2/password2;...";
+  "#vate.server.connection.mode  values: default passive(P), active(A)\r\n" + 
+  "#vate.server.proxy.type       values: DIRECT(D)/SOCKS(S)/HTTP(H)/ANY(A)\r\n" + 
+  "#vate.server.encryption.type  values: ISAAC(I)/VMPC(V)/SALSA(S)/HC256(H)/ZUC(Z)\r\n" + 
+  "#vate.server.session.accounts format: user1/password1;user2/password2;...\r\n";
   
   static
   {
