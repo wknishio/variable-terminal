@@ -23,24 +23,13 @@ public class VTServerRemoteConsoleReader extends VTTask
     super(session.getExecutorService());
     this.session = session;
     this.connection = session.getConnection();
-    this.stopped = false;
     this.selector = new VTServerRemoteConsoleCommandSelector<VTServerRemoteConsoleCommandProcessor>(session);
-  }
-  
-  public boolean isStopped()
-  {
-    return stopped;
-  }
-  
-  public void setStopped(boolean stopped)
-  {
-    this.stopped = stopped;
   }
   
   public void task()
   {
     // int p = 0;
-    while (!stopped)
+    while (!isStopped())
     {
       try
       {
@@ -50,7 +39,7 @@ public class VTServerRemoteConsoleReader extends VTTask
       catch (Throwable e)
       {
         // e.printStackTrace();
-        stopped = true;
+        setStopped(true);
         break;
       }
     }
@@ -73,7 +62,7 @@ public class VTServerRemoteConsoleReader extends VTTask
     {
       reader = new BufferedReader(new StringReader(script));
       String line = "";
-      while (!stopped && (line = reader.readLine()) != null)
+      while (!isStopped() && (line = reader.readLine()) != null)
       {
         executeCommand(line.trim());
       }
@@ -111,7 +100,7 @@ public class VTServerRemoteConsoleReader extends VTTask
     {
       reader = new BufferedReader(new InputStreamReader(new FileInputStream(script), charset));
       String line = "";
-      while (!stopped && (line = reader.readLine()) != null)
+      while (!isStopped() && (line = reader.readLine()) != null)
       {
         executeCommand(line.trim());
       }
@@ -183,7 +172,7 @@ public class VTServerRemoteConsoleReader extends VTTask
     
     if (!selector.selectCommand(command, parsed))
     {
-      if (!stopped)
+      if (!isStopped())
       {
         if (command.startsWith("**") && command.toUpperCase().contains("**VT"))
         {

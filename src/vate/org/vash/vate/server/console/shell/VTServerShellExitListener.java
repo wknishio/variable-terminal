@@ -13,17 +13,6 @@ public class VTServerShellExitListener extends VTTask
   {
     super(session.getExecutorService());
     this.session = session;
-    this.stopped = false;
-  }
-  
-  public boolean isStopped()
-  {
-    return stopped;
-  }
-  
-  public void setStopped(boolean stopped)
-  {
-    this.stopped = stopped;
   }
   
   public void task()
@@ -49,8 +38,7 @@ public class VTServerShellExitListener extends VTTask
       {
         
       }
-      stopped = true;
-      
+      setStopped(true);
       try
       {
         if (session.isStoppingShell())

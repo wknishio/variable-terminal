@@ -71,7 +71,7 @@ public class VTNanoPingService extends VTTask
   private void initial() throws IOException, InterruptedException
   {
     // first cycle has no delays and is just to warmup
-    if (!stopped)
+    if (!isStopped())
     {
       // start timer
       startNanoTime = System.nanoTime();
@@ -96,7 +96,7 @@ public class VTNanoPingService extends VTTask
   
   private void client() throws IOException, InterruptedException
   {
-    while (!stopped)
+    while (!isStopped())
     {
       // start timer
       startNanoTime = System.nanoTime();
@@ -126,7 +126,7 @@ public class VTNanoPingService extends VTTask
   
   private void server() throws IOException, InterruptedException
   {
-    while (!stopped)
+    while (!isStopped())
     {
       remoteNanoDelay = in.readLong();
       out.writeLong(localNanoDelay);

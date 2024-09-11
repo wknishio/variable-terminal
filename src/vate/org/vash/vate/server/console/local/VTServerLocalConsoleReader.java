@@ -100,7 +100,7 @@ public class VTServerLocalConsoleReader extends VTTask
     {
       reader = new BufferedReader(new StringReader(script));
       String line = "";
-      while (!stopped && (line = reader.readLine()) != null)
+      while (!isStopped() && (line = reader.readLine()) != null)
       {
         executeCommand(line);
 //        String[] commands = line.split("\\*;");
@@ -147,7 +147,7 @@ public class VTServerLocalConsoleReader extends VTTask
     {
       reader = new BufferedReader(new InputStreamReader(new FileInputStream(script), charset));
       String line = "";
-      while (!stopped && (line = reader.readLine()) != null)
+      while (!isStopped() && (line = reader.readLine()) != null)
       {
         executeCommand(line);
 //        String[] commands = line.split("\\*;");

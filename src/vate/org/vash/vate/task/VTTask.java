@@ -6,7 +6,7 @@ import java.util.concurrent.ExecutorService;
 
 public abstract class VTTask implements Runnable, Closeable
 {
-  protected boolean stopped;
+  private volatile boolean stopped;
   private Thread taskThread;
   private Thread nextThread;
   private Runnable next;
@@ -87,7 +87,7 @@ public abstract class VTTask implements Runnable, Closeable
   
   public void close() throws IOException
   {
-    this.setStopped(true);
+    setStopped(true);
     if (taskThread != null)
     {
       try
@@ -124,6 +124,7 @@ public abstract class VTTask implements Runnable, Closeable
     }
     finally
     {
+      setStopped(true);
       if (next != null)
       {
         if (next instanceof VTTask)

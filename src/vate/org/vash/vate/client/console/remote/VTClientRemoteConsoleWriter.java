@@ -46,7 +46,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
   
   public void setStopped(boolean stopped)
   {
-    this.stopped = stopped;
+    super.setStopped(stopped);
     if (stopped)
     {
       if (sourceReader != null)
@@ -88,7 +88,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
   public void task()
   {
     // first run all commands in session commands parameter
-    if (!stopped)
+    if (!isStopped())
     {
       String commands = session.getClient().getClientConnector().getSessionCommands();
       if (commands != null && commands.length() > 0)
@@ -98,7 +98,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     }
     
     reading = true;
-    while (!stopped)
+    while (!isStopped())
     {
       // String[] lines;
       try
@@ -125,7 +125,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
           }
           else
           {
-            stopped = true;
+            setStopped(true);
             // Thread.sleep(1);
             //synchronized (session)
             //{
@@ -163,13 +163,13 @@ public class VTClientRemoteConsoleWriter extends VTTask
       catch (InterruptedException e)
       {
         // e.printStackTrace();
-        stopped = true;
+        setStopped(true);
         break;
       }
       catch (Throwable e)
       {
         // e.printStackTrace();
-        stopped = true;
+        setStopped(true);
         break;
       }
     }
@@ -198,7 +198,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     {
       reader = new BufferedReader(new StringReader(script));
       String line = "";
-      while (!stopped && (line = reader.readLine()) != null)
+      while (!isStopped() && (line = reader.readLine()) != null)
       {
         executeCommand(line.trim(), echo);
       }
@@ -255,7 +255,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     {
       reader = new BufferedReader(new InputStreamReader(new FileInputStream(script), charset));
       String line = "";
-      while (!stopped && (line = reader.readLine()) != null)
+      while (!isStopped() && (line = reader.readLine()) != null)
       {
         executeCommand(line.trim(), echo);
       }
@@ -285,7 +285,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     String parsed[];
     if (session.getClient().getClientConnector().isSkipConfiguration())
     {
-      stopped = true;
+      setStopped(true);
       return;
     }
     else if (command != null)

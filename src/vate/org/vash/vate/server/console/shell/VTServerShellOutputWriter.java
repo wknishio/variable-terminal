@@ -22,17 +22,6 @@ public class VTServerShellOutputWriter extends VTTask
     super(session.getExecutorService());
     this.session = session;
     this.connection = session.getConnection();
-    this.stopped = false;
-  }
-  
-  public boolean isStopped()
-  {
-    return stopped;
-  }
-  
-  public void setStopped(boolean stopped)
-  {
-    this.stopped = stopped;
   }
   
   public void setCommandFilter(String commandFilter)
@@ -46,13 +35,13 @@ public class VTServerShellOutputWriter extends VTTask
     // detectCharset();
     // shellInputStream = session.getShellInputStream();
     int offset = 0;
-    while (!stopped)
+    while (!isStopped())
     {
       try
       {
         offset = 0;
         readChars = session.getShellOutputReader().read(resultBuffer, 0, resultBufferSize);
-        if (readChars > 0 && !stopped)
+        if (readChars > 0 && !isStopped())
         {
           if (firstCommandFilter.length > 0 && readChars >= firstCommandFilter.length && VTArrayComparator.arrayEquals(firstCommandFilter, resultBuffer, 0, firstCommandFilter.length))
           {
@@ -76,13 +65,13 @@ public class VTServerShellOutputWriter extends VTTask
         }
         else
         {
-          stopped = true;
+          setStopped(true);
           break;
         }
       }
       catch (Throwable e)
       {
-        stopped = true;
+        setStopped(true);
         break;
       }
     }

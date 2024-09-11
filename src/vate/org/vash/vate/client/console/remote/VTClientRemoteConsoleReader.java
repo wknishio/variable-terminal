@@ -25,7 +25,7 @@ public class VTClientRemoteConsoleReader extends VTTask
   
   public void task()
   {
-    while (!stopped)
+    while (!isStopped())
     {
       try
       {
@@ -36,11 +36,11 @@ public class VTClientRemoteConsoleReader extends VTTask
       catch (Throwable e)
       {
         // e.printStackTrace();
-        stopped = true;
+        setStopped(true);
         break;
       }
     }
-    stopped = true;
+    setStopped(true);
     synchronized (session)
     {
       session.notifyAll();
