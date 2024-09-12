@@ -32,6 +32,7 @@ public class VTGraphicsModeClient extends VTTask
   public void setStopped(boolean stopped)
   {
     sessionHandler.setStopped(stopped);
+    super.setStopped(stopped);
   }
   
   public boolean isReadOnly()

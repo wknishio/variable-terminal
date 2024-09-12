@@ -2,6 +2,7 @@ package org.vash.vate.server.graphicsmode;
 
 import java.awt.Dimension;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import org.vash.vate.VT;
 import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII;
@@ -9,8 +10,8 @@ import org.vash.vate.server.session.VTServerSession;
 
 public class VTGraphicsModeServerSession
 {
-  private Thread readerThread;
-  private Thread writerThread;
+  private Future<?> readerThread;
+  private Future<?> writerThread;
   private Dimension initialScreenSize;
   private VTServerSession session;
   private VTGraphicsModeServerReader reader;
@@ -91,10 +92,10 @@ public class VTGraphicsModeServerSession
   {
     reader.setStopped(false);
     writer.setStopped(false);
-    readerThread = new Thread(null, reader, reader.getClass().getSimpleName());
-    readerThread.setDaemon(true);
-    writerThread = new Thread(null, writer, writer.getClass().getSimpleName());
-    writerThread.setDaemon(true);
+    //readerThread = new Thread(null, reader, reader.getClass().getSimpleName());
+    //readerThread.setDaemon(true);
+    //writerThread = new Thread(null, writer, writer.getClass().getSimpleName());
+    //writerThread.setDaemon(true);
     /*
      * try { if (reader.isReadOnly()) {
      * session.getConnection().getResultWriter().
@@ -107,8 +108,8 @@ public class VTGraphicsModeServerSession
      */
     //writerThread.start();
     //readerThread.start();
-    executorService.execute(writerThread);
-    executorService.execute(readerThread);
+    writerThread = executorService.submit(writer);
+    readerThread = executorService.submit(reader);
   }
   
   public boolean isStopped()
@@ -176,17 +177,17 @@ public class VTGraphicsModeServerSession
     session.getClipboardTransferTask().joinThread();
     try
     {
-      readerThread.join();
+      readerThread.get();
     }
-    catch (InterruptedException e)
+    catch (Throwable e)
     {
       
     }
     try
     {
-      writerThread.join();
+      writerThread.get();
     }
-    catch (InterruptedException e)
+    catch (Throwable e)
     {
       
     }

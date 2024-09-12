@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
@@ -128,6 +129,8 @@ public class VTClientConnection
   private VTLittleEndianInputStream fastImageDataInputStream;
   private VTLittleEndianOutputStream fastImageDataOutputStream;
   
+  private final ExecutorService executorService;
+  
   // private boolean zstdAvailable;
   
   // private ZstdInputStream zstdImageInputStream;
@@ -135,16 +138,9 @@ public class VTClientConnection
   // private ZstdInputStream zstdClipboardInputStream;
   // private ZstdOutputStream zstdClipboardOutputStream;
   
-  public VTClientConnection()
+  public VTClientConnection(final ExecutorService executorService)
   {
-    // try
-    // {
-    // this.sha256Digester = MessageDigest.getInstance("SHA-256");
-    // }
-    // catch (NoSuchAlgorithmException e)
-    // {
-    // e.printStackTrace();
-    // }
+    this.executorService = executorService;
     this.cryptoEngine = new VTCryptographicEngine();
     this.blake3Digest = new VTBlake3MessageDigest();
     this.authenticationReader = new VTLittleEndianInputStream(null);
@@ -672,8 +668,8 @@ public class VTClientConnection
     VTBlake3SecureRandom secureInputSeed = new VTBlake3SecureRandom(inputSeed);
     VTBlake3SecureRandom secureOutputSeed = new VTBlake3SecureRandom(outputSeed);
     
-    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, false, secureInputSeed);
-    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_PACKET_DATA_SIZE_BYTES, secureOutputSeed);
+    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, false, secureInputSeed, executorService);
+    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_PACKET_DATA_SIZE_BYTES, secureOutputSeed, executorService);
         
     pingClientInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, 0);
     pingClientOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, 0);

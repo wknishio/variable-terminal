@@ -71,11 +71,11 @@ public class VTAudioBeeper
     
     public void start()
     {
-      Thread drain = new Thread(this);
-      drain.setName(this.getClass().getSimpleName());
-      drain.setDaemon(true);
+      //Thread drain = new Thread(this);
+      //drain.setName(this.getClass().getSimpleName());
+      //drain.setDaemon(true);
       //drain.start();
-      executorService.execute(drain);
+      executorService.execute(this);
     }
     
     public void close()

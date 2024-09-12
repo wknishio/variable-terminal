@@ -1,12 +1,13 @@
 package org.vash.vate.client.graphicsmode.remote;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements Runnable
 {
   private boolean interrupted;
   private VTGraphicsModeClientRemoteInterface remoteInterface;
-  private Thread repainterThread;
+  private Future<?> repainterThread;
   private ExecutorService executorService;
   // private Object interruptSynchronizer;
   
@@ -28,10 +29,10 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
     {
       interrupted = false;
       remoteInterface.setUpdating(true);
-      repainterThread = new Thread(null, this, this.getClass().getSimpleName());
-      repainterThread.setDaemon(true);
+      //repainterThread = new Thread(null, this, this.getClass().getSimpleName());
+      //repainterThread.setDaemon(true);
       //repainterThread.start();
-      executorService.execute(repainterThread);
+      repainterThread = executorService.submit(this);
     }
   }
   
@@ -68,9 +69,9 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
     {
       try
       {
-        repainterThread.join();
+        repainterThread.get();
       }
-      catch (InterruptedException e)
+      catch (Throwable e)
       {
         
       }
@@ -84,7 +85,7 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
   
   public boolean isRunning()
   {
-    if (repainterThread != null && repainterThread.isAlive())
+    if (repainterThread != null && !repainterThread.isDone())
     {
       return true;
     }

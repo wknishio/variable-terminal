@@ -24,6 +24,7 @@ import java.util.Properties;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.Map.Entry;
 
 import org.apache.commons.codec.binary.Base64;
@@ -714,24 +715,26 @@ public class VTNanoHTTPDProxySession implements Runnable
     SocketPipe firstPipe = new SocketPipe(clientSocket, remoteSocket, remoteInput, clientOutput);
     SocketPipe secondPipe = new SocketPipe(remoteSocket, clientSocket, clientInput, remoteOutput);
     
-    Thread firstThread = new Thread(firstPipe);
-    firstThread.setName(firstPipe.getClass().getSimpleName());
-    firstThread.setDaemon(true);
+    Future<?> firstThread = executorService.submit(firstPipe);
+    Future<?> secondThread = executorService.submit(secondPipe);
     
-    Thread secondThread = new Thread(secondPipe);
-    secondThread.setName(secondPipe.getClass().getSimpleName());
-    secondThread.setDaemon(true);
+    try
+    {
+      firstThread.get();
+    }
+    catch (Throwable t)
+    {
+      
+    }
     
-//    firstPipe.setAnother(secondThread);
-//    secondPipe.setAnother(firstThread);
-    
-    //firstThread.start();
-    //secondThread.start();
-    executorService.execute(firstThread);
-    secondThread.run();
-    
-    firstThread.join();
-    //secondThread.join();
+    try
+    {
+      secondThread.get();
+    }
+    catch (Throwable t)
+    {
+      
+    }
   }
   
   protected static String removeQuotes(String quotedString, boolean quotesRequired)

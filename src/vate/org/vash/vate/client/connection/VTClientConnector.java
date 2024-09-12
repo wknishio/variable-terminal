@@ -55,7 +55,7 @@ public class VTClientConnector implements Runnable
   {
     this.client = client;
     this.secureRandom = secureRandom;
-    this.connection = new VTClientConnection();
+    this.connection = new VTClientConnection(client.getExecutorService());
     this.handler = new VTClientConnectionHandler(client, connection);
     portMappingManager = new VTNATSinglePortMappingManagerMKII(3, 300, client.getExecutorService());
     portMappingManager.start();

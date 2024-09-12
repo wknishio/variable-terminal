@@ -1,6 +1,7 @@
 package org.vash.vate.client.graphicsmode;
 
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import org.vash.vate.VT;
 import org.vash.vate.client.session.VTClientSession;
@@ -10,8 +11,8 @@ import org.vash.vate.reflection.VTReflectionUtils;
 public class VTGraphicsModeClientSession
 {
   private boolean finished;
-  private Thread readerThread;
-  private Thread writerThread;
+  private Future<?> readerThread;
+  private Future<?>  writerThread;
   // private VTGraphicsLinkRemoteGraphics remote;
   private VTClientSession session;
   private VTGraphicsModeClientReader reader;
@@ -106,10 +107,10 @@ public class VTGraphicsModeClientSession
   {
     writer.setStopped(false);
     reader.setStopped(false);
-    writerThread = new Thread(null, writer, writer.getClass().getSimpleName());
-    writerThread.setDaemon(true);
-    readerThread = new Thread(null, reader, reader.getClass().getSimpleName());
-    readerThread.setDaemon(true);
+    //writerThread = new Thread(null, writer, writer.getClass().getSimpleName());
+    //writerThread.setDaemon(true);
+    //readerThread = new Thread(null, reader, reader.getClass().getSimpleName());
+    //readerThread.setDaemon(true);
     if (writer.isReadOnly())
     {
       //VTConsole.print("\nVT>Starting remote graphics link in view mode...\nVT>");
@@ -120,8 +121,8 @@ public class VTGraphicsModeClientSession
     }
     //writerThread.start();
     //readerThread.start();
-    executorService.execute(writerThread);
-    executorService.execute(readerThread);
+    writerThread = executorService.submit(writer);
+    readerThread = executorService.submit(reader);
   }
   
   public boolean isStopped()
@@ -186,17 +187,17 @@ public class VTGraphicsModeClientSession
     session.getClipboardTransferTask().joinThread();
     try
     {
-      readerThread.join();
+      readerThread.get();
     }
-    catch (InterruptedException e)
+    catch (Throwable e)
     {
       
     }
     try
     {
-      writerThread.join();
+      writerThread.get();
     }
-    catch (InterruptedException e)
+    catch (Throwable e)
     {
       
     }

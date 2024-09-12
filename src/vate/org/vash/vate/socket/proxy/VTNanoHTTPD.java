@@ -328,11 +328,17 @@ public class VTNanoHTTPD
               
             }
           }
-         
         }
       };
       sessionThread.setDaemon( true );
-      executorService.execute(sessionThread);
+      try
+      {
+        executorService.submit(sessionThread).get();
+      }
+      catch (Throwable t)
+      {
+        
+      }
     }
 
     public void run()

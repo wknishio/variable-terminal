@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import com.offbynull.portmapper.PortMapperFactory;
 import com.offbynull.portmapper.gateway.Bus;
@@ -23,7 +24,7 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
   private boolean hooked;
   private int discoveryTime;
   private int intervalTime;
-  private Thread manager;
+  private Future<?> managerThread;
   // private String[] externalIPAddresses;
   private VTNATPortMapping deletedPortMapping;
   private VTNATPortMapping currentPortMapping;
@@ -86,15 +87,15 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
     {
       stop();
     }
-    manager = new Thread(null, this, this.getClass().getSimpleName());
-    manager.setDaemon(true);
+    //manager = new Thread(null, this, this.getClass().getSimpleName());
+    //manager.setDaemon(true);
     synchronized (currentMappedPorts)
     {
       this.running = true;
       currentMappedPorts.notify();
     }
     //manager.start();
-    executorService.execute(manager);
+    managerThread = executorService.submit(this);
   }
   
   public void stop()
@@ -106,9 +107,9 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
     }
     try
     {
-      if (manager != null)
+      if (managerThread != null)
       {
-        manager.join();
+        managerThread.get();
       }
     }
     catch (Throwable e)

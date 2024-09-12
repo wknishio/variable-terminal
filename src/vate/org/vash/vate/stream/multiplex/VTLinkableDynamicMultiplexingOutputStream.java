@@ -9,6 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
 import java.util.zip.Checksum;
 
 import org.vash.vate.VT;
@@ -34,11 +35,14 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> bufferedChannels;
   private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> directChannels;
   private final SecureRandom packetSeed;
+  @SuppressWarnings("unused")
+  private final ExecutorService executorService;
   //private final Random packetSequencer;
   
-  public VTLinkableDynamicMultiplexingOutputStream(final OutputStream out, final int packetSize, final SecureRandom packetSeed)
+  public VTLinkableDynamicMultiplexingOutputStream(final OutputStream out, final int packetSize, final SecureRandom packetSeed, final ExecutorService executorService)
   {
     this.packetSeed = packetSeed;
+    this.executorService = executorService;
     //this.packetSequencer = new VTSplitMix64Random(packetSequence.nextLong());
     this.throttler = new NanoThrottle(Long.MAX_VALUE, (1d / 8d), true);
     //this.packetSequencer = new VTMiddleSquareWeylSequenceDigestRandom(packetSeed);

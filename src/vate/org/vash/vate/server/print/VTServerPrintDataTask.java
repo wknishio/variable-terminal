@@ -114,6 +114,7 @@ public class VTServerPrintDataTask extends VTTask
         }
       }
     }
+    super.setStopped(stopped);
   }
   
   public boolean isFinished()

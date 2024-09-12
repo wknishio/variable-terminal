@@ -64,6 +64,7 @@ public class VTServerPrintFileTask extends VTTask
         }
       }
     }
+    super.setStopped(stopped);
   }
   
   public void setPrintServiceNumber(Integer printServiceNumber)

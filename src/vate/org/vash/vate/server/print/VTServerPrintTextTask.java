@@ -76,6 +76,7 @@ public class VTServerPrintTextTask extends VTTask
         }
       }
     }
+    super.setStopped(stopped);
   }
   
   public boolean isFinished()
@@ -376,7 +377,6 @@ public class VTServerPrintTextTask extends VTTask
     {
       // e.printStackTrace();
     }
-    
   }
   
   /*

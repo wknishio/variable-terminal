@@ -3,12 +3,13 @@ package org.vash.vate.task;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 public abstract class VTTask implements Runnable, Closeable
 {
   private volatile boolean stopped;
-  private Thread taskThread;
-  private Thread nextThread;
+  private Future<?> taskThread;
+  //private Thread nextThread;
   private Runnable next;
   private ExecutorService executorService;
   
@@ -31,7 +32,7 @@ public abstract class VTTask implements Runnable, Closeable
   {
     if (taskThread != null)
     {
-      taskThread.interrupt();
+      taskThread.cancel(true);
     }
   }
   
@@ -57,7 +58,7 @@ public abstract class VTTask implements Runnable, Closeable
     {
       try
       {
-        taskThread.join();
+        taskThread.get();
       }
       catch (Throwable e)
       {
@@ -70,29 +71,30 @@ public abstract class VTTask implements Runnable, Closeable
   {
     if (taskThread != null)
     {
-      return taskThread.isAlive();
+      return !taskThread.isDone();
     }
     return false;
   }
   
   public void startThread()
   {
-    // setStopped(false);
     stopped = false;
-    taskThread = new Thread(null, this, this.getClass().getSimpleName());
-    taskThread.setDaemon(true);
-    executorService.execute(taskThread);
+    setStopped(false);
+    //taskThread = new Thread(null, this, this.getClass().getSimpleName());
+    //taskThread.setDaemon(true);
+    taskThread = executorService.submit(this);
     //taskThread.start();
   }
   
   public void close() throws IOException
   {
+    stopped = true;
     setStopped(true);
     if (taskThread != null)
     {
       try
       {
-        taskThread.interrupt();
+        taskThread.cancel(true);
       }
       catch (Throwable t)
       {
@@ -124,6 +126,7 @@ public abstract class VTTask implements Runnable, Closeable
     }
     finally
     {
+      stopped = true;
       setStopped(true);
       if (next != null)
       {
@@ -133,23 +136,7 @@ public abstract class VTTask implements Runnable, Closeable
         }
         else
         {
-          nextThread = new Thread()
-          {
-            public void run()
-            {
-              try
-              {
-                next.run();
-              }
-              catch (Throwable t)
-              {
-                
-              }
-            }
-          };
-          nextThread.setDaemon(true);
-          nextThread.setName(next.getClass().getSimpleName());
-          executorService.execute(nextThread);
+          executorService.execute(next);
           //nextThread.start();
         }
       }

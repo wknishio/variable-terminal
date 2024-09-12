@@ -11,7 +11,9 @@ import java.io.Writer;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 
 import org.vash.vate.VT;
 //import org.codehaus.groovy.tools.shell.Groovysh;
@@ -34,7 +36,7 @@ public class VTShellProcessor
   
   private VTRuntimeProcess shellProcess;
   
-  private Thread shellThread;
+  private Future<?> shellThread;
   
   private InputStream shellInputStream;
   //private InputStream shellErrorStream;
@@ -162,22 +164,8 @@ public class VTShellProcessor
       // beanshell.set( "bsh.args", new String[] {});
       Interpreter.setShutdownOnExit(false);
       
-      shellThread = new Thread()
-      {
-        public void run()
-        {
-          try
-          {
-            beanshell.run();
-          }
-          catch (Throwable t)
-          {
-            
-          }
-        }
-      };
       //shellThread.start();
-      executorService.execute(shellThread);
+      shellThread = executorService.submit(beanshell);
     }
     
     if (shellCharset != null)
@@ -270,20 +258,20 @@ public class VTShellProcessor
     // System.out.println("stopShell(finished)");
   }
   
-  public int waitFor() throws InterruptedException
+  public int waitFor() throws InterruptedException, ExecutionException
   {
     int code = 0;
     if (shellType == SHELL_TYPE_PROCESS && shellProcess != null && shellProcess.isAlive())
     {
       code = shellProcess.waitFor();
     }
-    if (shellType == SHELL_TYPE_BEANSHELL && shellThread != null && shellThread.isAlive())
+    if (shellType == SHELL_TYPE_BEANSHELL && shellThread != null && !shellThread.isDone())
     {
-      shellThread.join();
+      shellThread.get();
     }
-    if (shellType == SHELL_TYPE_GROOVYSH && shellThread != null && shellThread.isAlive())
+    if (shellType == SHELL_TYPE_GROOVYSH && shellThread != null && !shellThread.isDone())
     {
-      shellThread.join();
+      shellThread.get();
     }
     return code;
   }

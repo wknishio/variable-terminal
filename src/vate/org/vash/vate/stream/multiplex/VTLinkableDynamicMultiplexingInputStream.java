@@ -10,6 +10,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import java.util.zip.Checksum;
 
 import org.vash.vate.VT;
@@ -36,7 +39,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private final byte[] packetDataBuffer;
   private final byte[] update = new byte[8];
   //private OutputStream out;
-  private final Thread packetReaderThread;
+  private Future<?> packetReaderThread;
   // private byte[] compressedBuffer = new byte[VT.VT_IO_BUFFFER_SIZE];
   private final VTLittleEndianInputStream lin;
   //private final VTLittleEndianInputStream hin;
@@ -45,6 +48,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> bufferedChannels;
   private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> directChannels;
   private final SecureRandom packetSeed;
+  private final ExecutorService executorService;
   //private final Random packetSequencer;
 //  private final VTPipedOutputStream pout;
 //  private final VTPipedInputStream pin;
@@ -54,9 +58,10 @@ public final class VTLinkableDynamicMultiplexingInputStream
 
   //private final SecureRandom packetSequencer;
   
-  public VTLinkableDynamicMultiplexingInputStream(final InputStream in, final int packetSize, final int bufferSize, final boolean startPacketReader, final SecureRandom packetSeed)
+  public VTLinkableDynamicMultiplexingInputStream(final InputStream in, final int packetSize, final int bufferSize, final boolean startPacketReader, final SecureRandom packetSeed, final ExecutorService executorService)
   {
     this.packetSeed = packetSeed;
+    this.executorService = executorService;
     //this.packetSequencer = new VTSplitMix64Random(packetSequence.nextLong());
     //this.packetSequencer = new VTMiddleSquareWeylSequenceDigestRandom(packetSeed);
     this.bufferSize = bufferSize;
@@ -70,8 +75,8 @@ public final class VTLinkableDynamicMultiplexingInputStream
     this.bufferedChannels = new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
     this.directChannels = new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
     this.packetReader = new VTLinkableDynamicMultiplexingInputStreamPacketReader(this);
-    this.packetReaderThread = new Thread(null, packetReader, packetReader.getClass().getSimpleName());
-    this.packetReaderThread.setDaemon(true);
+    //this.packetReaderThread = new Thread(null, packetReader, packetReader.getClass().getSimpleName());
+    //this.packetReaderThread.setDaemon(true);
     //this.packetReaderThread.setPriority((Thread.MAX_PRIORITY));
 //    this.pin = new VTPipedInputStream(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
 //    this.pout = new VTPipedOutputStream();
@@ -82,16 +87,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     //this.dataReaderThread.setPriority((Thread.MAX_PRIORITY));
     if (startPacketReader)
     {
-//      try
-//      {
-//        pout.connect(pin);
-//      }
-//      catch (Throwable e)
-//      {
-//        
-//      }
-//      this.dataReaderThread.start();
-      this.packetReaderThread.start();
+      packetReaderThread = executorService.submit(packetReader);
     }
   }
   
@@ -213,18 +209,9 @@ public final class VTLinkableDynamicMultiplexingInputStream
   
   public final void startPacketReader()
   {
-    if (!packetReaderThread.isAlive())
+    if (packetReaderThread == null || packetReaderThread.isDone())
     {
-//      try
-//      {
-//        pout.connect(pin);
-//      }
-//      catch (Throwable e)
-//      {
-//        
-//      }
-//      dataReaderThread.start();
-      packetReaderThread.start();
+      packetReaderThread = executorService.submit(packetReader);
     }
   }
   
@@ -232,15 +219,15 @@ public final class VTLinkableDynamicMultiplexingInputStream
   {
     if (packetReaderThread != null)
     {
-      return packetReaderThread.isAlive();
+      return !packetReaderThread.isDone();
     }
     return false;
   }
   
-  public final void stopPacketReader() throws IOException, InterruptedException
+  public final void stopPacketReader() throws IOException, InterruptedException, ExecutionException
   {
     close();
-    packetReaderThread.join();
+    packetReaderThread.get();
   }
   
   private final void open(final int type, final int number) throws IOException

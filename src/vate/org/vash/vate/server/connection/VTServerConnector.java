@@ -591,7 +591,7 @@ public class VTServerConnector implements Runnable
       }
       if (sessionsMaximum == null || sessionsMaximum <= 0 || connectionHandlers.size() < sessionsMaximum)
       {
-        VTServerConnection connection = new VTServerConnection();
+        VTServerConnection connection = new VTServerConnection(server.getExecutorService());
         byte[] secureSeed = new byte[64];
         secureRandom.nextBytes(secureSeed);
         connection.setSecureRandomSeed(secureSeed);
