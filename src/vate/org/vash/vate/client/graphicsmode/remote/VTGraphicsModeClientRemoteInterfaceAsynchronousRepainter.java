@@ -107,7 +107,6 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
           {
             wait();
           }
-          wait(125);
           // System.out.println("async-cycle");
           // System.out.println("async-interrupted:" + interrupted);
           // System.out.println("async-updating:" +
@@ -115,7 +114,7 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
           if (!interrupted && remoteInterface.isFocusOwner() && remoteInterface.isUpdating())
           {
             remoteInterface.repaint();
-            // remoteInterface.redraw();
+            wait(125);
           }
         }
       }
