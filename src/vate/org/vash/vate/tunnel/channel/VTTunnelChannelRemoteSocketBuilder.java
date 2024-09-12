@@ -43,7 +43,7 @@ public class VTTunnelChannelRemoteSocketBuilder
 //    return connect(channelType, host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword(), null);
 //  }
   
-  public Socket connect(String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy) throws IOException
+  public Socket connectSocket(String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy) throws IOException
   {
     if (host == null)
     {
@@ -51,12 +51,12 @@ public class VTTunnelChannelRemoteSocketBuilder
     }
     if (proxy == null)
     {
-      return connect(host, port, connectTimeout, dataTimeout, PROXY_NONE.getProxyType(), PROXY_NONE.getProxyHost(), PROXY_NONE.getProxyPort(), PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
+      return connectSocket(host, port, connectTimeout, dataTimeout, PROXY_NONE.getProxyType(), PROXY_NONE.getProxyHost(), PROXY_NONE.getProxyPort(), PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
     }
-    return connect(host, port, connectTimeout, dataTimeout, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+    return connectSocket(host, port, connectTimeout, dataTimeout, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
   }
   
-  public Socket connect(String host, int port, int connectTimeout, int dataTimeout, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
+  public Socket connectSocket(String host, int port, int connectTimeout, int dataTimeout, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
   {
     if (host == null)
     {
@@ -145,16 +145,16 @@ public class VTTunnelChannelRemoteSocketBuilder
     throw new IOException("Failed to connect remotely to: host " + host + " port " + port + "");
   }
   
-  public Socket accept(String host, int port, int connectTimeout, int dataTimeout) throws IOException
+  public Socket acceptSocket(String host, int port, int connectTimeout, int dataTimeout) throws IOException
   {
     if (host == null)
     {
       host = "";
     }
-    return accept(host, port, connectTimeout, dataTimeout, PROXY_NONE.getProxyHost(), PROXY_NONE.getProxyPort(), PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
+    return acceptSocket(host, port, connectTimeout, dataTimeout, PROXY_NONE.getProxyHost(), PROXY_NONE.getProxyPort(), PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
   }
   
-  private Socket accept(String host, int port, int connectTimeout, int dataTimeout, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
+  private Socket acceptSocket(String host, int port, int connectTimeout, int dataTimeout, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
   {
     if (host == null)
     {

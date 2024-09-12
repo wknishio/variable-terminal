@@ -111,7 +111,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
         
         try
         {
-          acceptedSocket = accept();
+          acceptedSocket = acceptSocket();
           socketInputStream = acceptedSocket.getInputStream();
           socketOutputStream = acceptedSocket.getOutputStream();
         }
@@ -231,7 +231,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
     //closed = true;
   }
   
-  private Socket accept()
+  private Socket acceptSocket()
   {
     Socket socket = null;
     try

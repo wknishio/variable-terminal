@@ -60,28 +60,28 @@ public class VTRemoteSocket extends Socket
     if (endpoint instanceof InetSocketAddress)
     {
       InetSocketAddress address = (InetSocketAddress) endpoint;
-      connect(address.getHostName(), address.getPort());
+      connect(address.getHostName(), address.getPort(), timeout);
     }
   }
   
   public void connect(String host, int port) throws IOException
   {
-    remoteSocket = remoteSocketFactory.createSocket(host, port, 0, 0, new VTProxy[] {});
+    remoteSocket = remoteSocketFactory.connectSocket(host, port, 0, 0, new VTProxy[] {});
   }
   
   public void connect(String host, int port, int connectTimeout) throws IOException
   {
-    remoteSocket = remoteSocketFactory.createSocket(host, port, connectTimeout, 0, new VTProxy[] {});
+    remoteSocket = remoteSocketFactory.connectSocket(host, port, connectTimeout, 0, new VTProxy[] {});
   }
   
   public void connect(String host, int port, int connectTimeout, int dataTimeout) throws IOException
   {
-    remoteSocket = remoteSocketFactory.createSocket(host, port, connectTimeout, dataTimeout, new VTProxy[] {});
+    remoteSocket = remoteSocketFactory.connectSocket(host, port, connectTimeout, dataTimeout, new VTProxy[] {});
   }
   
   public void connect(String host, int port, int connectTimeout, int dataTimeout, VTProxy... proxies) throws IOException
   {
-    remoteSocket = remoteSocketFactory.createSocket(host, port, connectTimeout, dataTimeout, proxies);
+    remoteSocket = remoteSocketFactory.connectSocket(host, port, connectTimeout, dataTimeout, proxies);
   }
   
   public void bind(SocketAddress bindpoint) throws IOException

@@ -17,18 +17,18 @@ public class VTTunnelRemoteSocketFactory extends VTRemoteSocketFactory
     this.socketBuilder = socketBuilder;
   }
   
-  public Socket createSocket(String host, int port, int connectTimeout, int dataTimeout, VTProxy... proxies) throws IOException, UnknownHostException
+  public Socket connectSocket(String host, int port, int connectTimeout, int dataTimeout, VTProxy... proxies) throws IOException, UnknownHostException
   {
     if (proxies != null && proxies.length >= 1)
     {
       VTProxy proxy = proxies[0];
-      return socketBuilder.connect(host, port, connectTimeout, dataTimeout, proxy);
+      return socketBuilder.connectSocket(host, port, connectTimeout, dataTimeout, proxy);
     }
-    return socketBuilder.connect(host, port, connectTimeout, dataTimeout, PROXY_NONE);
+    return socketBuilder.connectSocket(host, port, connectTimeout, dataTimeout, PROXY_NONE);
   }
   
   public Socket acceptSocket(String host, int port, int connectTimeout, int dataTimeout) throws IOException, UnknownHostException
   {
-    return socketBuilder.accept(host, port, connectTimeout, dataTimeout);
+    return socketBuilder.acceptSocket(host, port, connectTimeout, dataTimeout);
   }
 }

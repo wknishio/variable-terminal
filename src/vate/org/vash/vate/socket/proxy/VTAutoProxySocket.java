@@ -6,8 +6,8 @@ import java.net.SocketAddress;
 
 public class VTAutoProxySocket extends VTProxySocket
 {
-  private Socket httpProxySocket;
-  private Socket socksProxySocket;
+  private VTProxySocket httpProxySocket;
+  private VTProxySocket socksProxySocket;
   //private Socket directSocket;
   //private Socket globalSocket;
   
@@ -22,52 +22,13 @@ public class VTAutoProxySocket extends VTProxySocket
     //globalSocket = new Socket();
   }
   
-  public void connect(SocketAddress endpoint) throws IOException
+  public void connectSocket(String host, int port, int timeout) throws IOException
   {
     if (proxySocket == null)
     {
       try
       {
-        httpProxySocket.connect(endpoint);
-        proxySocket = httpProxySocket;
-      }
-      catch (Throwable t)
-      {
-        proxySocket = null;
-      }
-      if (proxySocket != null && proxySocket.isConnected() && !proxySocket.isClosed())
-      {
-        return;
-      }
-      
-      try
-      {
-        socksProxySocket.connect(endpoint);
-        proxySocket = socksProxySocket;
-      }
-      catch (Throwable t)
-      {
-        proxySocket = null;
-      }
-      if (proxySocket != null)
-      {
-        return;
-      }
-      
-      if (proxySocket == null)
-      {
-        throw new IOException("auto tunneling failed");
-      }
-    }
-  }
-  
-  public void connect(SocketAddress endpoint, int timeout) throws IOException
-  {
-    if (proxySocket == null)
-    {
-      try
-      {
-        httpProxySocket.connect(endpoint, timeout);
+        httpProxySocket.connectSocket(host, port, timeout);
         proxySocket = httpProxySocket;
       }
       catch (Throwable t)
@@ -81,7 +42,7 @@ public class VTAutoProxySocket extends VTProxySocket
       
       try
       {
-        socksProxySocket.connect(endpoint, timeout);
+        socksProxySocket.connectSocket(host, port, timeout);
         proxySocket = socksProxySocket;
       }
       catch (Throwable t)

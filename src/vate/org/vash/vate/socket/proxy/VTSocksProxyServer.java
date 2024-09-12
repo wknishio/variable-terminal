@@ -436,11 +436,11 @@ public class VTSocksProxyServer implements Runnable {
 		  {
 		    if (msg.ip != null)
         {
-		      s = VTProxy.connect(msg.ip.getHostAddress(), msg.port, connectTimeout, socket_factory == null ? null : new VTRemoteSocketAdapter(socket_factory), connect_proxy);
+		      s = VTProxy.connectSocket(msg.ip.getHostAddress(), msg.port, connectTimeout, socket_factory == null ? null : new VTRemoteSocketAdapter(socket_factory), connect_proxy);
         }
 		    else
 		    {
-		      s = VTProxy.connect(msg.host, msg.port, connectTimeout, socket_factory == null ? null : new VTRemoteSocketAdapter(socket_factory), connect_proxy);
+		      s = VTProxy.connectSocket(msg.host, msg.port, connectTimeout, socket_factory == null ? null : new VTRemoteSocketAdapter(socket_factory), connect_proxy);
 		    }
 		    s.setTcpNoDelay(true);
 		    s.setKeepAlive(true);
