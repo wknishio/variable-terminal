@@ -118,11 +118,11 @@ public class VTTunnelConnectionControlThread implements Runnable
                       {
                         if (connect)
                         {
-                          remoteSocket = connectSocket(host, port, connectTimeout, dataTimeout, proxy);
+                          remoteSocket = connect(host, port, connectTimeout, dataTimeout, proxy);
                         }
                         else
                         {
-                          remoteSocket = acceptSocket(host, port, connectTimeout, dataTimeout);
+                          remoteSocket = accept(host, port, connectTimeout, dataTimeout);
                         }
                         socketInputStream = remoteSocket.getInputStream();
                         socketOutputStream = remoteSocket.getOutputStream();
@@ -339,7 +339,7 @@ public class VTTunnelConnectionControlThread implements Runnable
     closed = true;
   }
   
-  public Socket connectSocket(String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy)
+  public Socket connect(String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy)
   {
     VTTunnelCloseableSocket clientSocket = null;
     Socket socket = null;
@@ -353,11 +353,11 @@ public class VTTunnelConnectionControlThread implements Runnable
       {
         
       }
-      socket = VTProxy.nextSocket(null, proxy);
+      socket = VTProxy.next(null, connectTimeout, proxy);
       clientSocket = new VTTunnelCloseableSocket(socket);
       connection.getCloseables().add(clientSocket);
       
-      socket = VTProxy.connectSocket(host, port, connectTimeout, socket);
+      socket = VTProxy.connect(host, port, connectTimeout, socket);
       if (dataTimeout > 0)
       {
         socket.setSoTimeout(dataTimeout);
@@ -377,7 +377,7 @@ public class VTTunnelConnectionControlThread implements Runnable
     return socket;
   }
   
-  public Socket acceptSocket(String host, int port, int connectTimeout, int dataTimeout)
+  public Socket accept(String host, int port, int connectTimeout, int dataTimeout)
   {
     VTTunnelCloseableServerSocket serverSocket = null;
     Socket socket = null;

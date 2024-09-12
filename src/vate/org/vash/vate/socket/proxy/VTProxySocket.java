@@ -27,7 +27,15 @@ public abstract class VTProxySocket extends Socket
   {
     if (currentProxy != null && currentSocket != null && currentSocket instanceof VTProxySocket)
     {
-      ((VTProxySocket)currentSocket).connectSocket(currentProxy.getProxyHost(), currentProxy.getProxyPort(), timeout);
+      InetSocketAddress proxyAddress = InetSocketAddress.createUnresolved(currentProxy.getProxyHost(), currentProxy.getProxyPort());
+      if (timeout > 0)
+      {
+        currentSocket.connect(proxyAddress, timeout);
+      }
+      else
+      {
+        currentSocket.connect(proxyAddress);
+      }
       currentSocket.setTcpNoDelay(true);
       currentSocket.setKeepAlive(true);
     }
@@ -47,26 +55,6 @@ public abstract class VTProxySocket extends Socket
       currentSocket.setKeepAlive(true);
     }
   }
-  
-  public void connect(SocketAddress endpoint) throws IOException
-  {
-    if (endpoint instanceof InetSocketAddress)
-    {
-      InetSocketAddress host = (InetSocketAddress) endpoint;
-      connectSocket(host.getHostName(), host.getPort(), 0);
-    }
-  }
-  
-  public void connect(SocketAddress endpoint, int timeout) throws IOException
-  {
-    if (endpoint instanceof InetSocketAddress)
-    {
-      InetSocketAddress host = (InetSocketAddress) endpoint;
-      connectSocket(host.getHostName(), host.getPort(), timeout);
-    }
-  }
-  
-  public abstract void connectSocket(String host, int port, int timeout) throws IOException;
   
   public InetAddress getInetAddress()
   {

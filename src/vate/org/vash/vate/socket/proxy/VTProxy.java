@@ -123,7 +123,7 @@ public class VTProxy
     //this.proxyConnection = proxyConnection;
   //}
   
-  public static Socket nextSocket(Socket currentSocket, VTProxy... proxies)
+  public static Socket next(Socket currentSocket, int timeout, VTProxy... proxies)
   {
     if (proxies == null || proxies.length <= 0)
     {
@@ -136,14 +136,14 @@ public class VTProxy
     //VTProxy parentProxy = null;
     for (VTProxy currentProxy : proxies)
     {
-      currentSocket = nextSocket(currentSocket, currentProxy);
+      currentSocket = nextSocket(currentSocket, timeout, currentProxy);
       //parentProxy = currentProxy;
     }
     return currentSocket;
   }
   
   @SuppressWarnings("all")
-  private static Socket nextSocket(Socket currentSocket, VTProxy currentProxy)
+  private static Socket nextSocket(Socket currentSocket, int timeout, VTProxy currentProxy)
   {
     Socket nextSocket = null;
     
@@ -196,7 +196,7 @@ public class VTProxy
     return nextSocket;
   }
   
-  public static Socket connectSocket(String host, int port, int timeout, Socket currentSocket, VTProxy... proxies) throws IOException
+  public static Socket connect(String host, int port, int timeout, Socket currentSocket, VTProxy... proxies) throws IOException
   {
     if (host == null || host.length() == 0 || host.equals("*"))
     {
@@ -206,30 +206,30 @@ public class VTProxy
     if (currentSocket instanceof VTRemoteSocketAdapter)
     {
       VTRemoteSocketAdapter proxySocket = (VTRemoteSocketAdapter)currentSocket;
-      return proxySocket.connectSocket(host, port, timeout, 0, proxies);
+      return proxySocket.connect(host, port, timeout, 0, proxies);
     }
     
     InetSocketAddress socketAddress = null;
     
-    Socket connectionSocket = nextSocket(currentSocket, proxies);
+    Socket connectionSocket = next(currentSocket, timeout, proxies);
     
     if (connectionSocket instanceof VTProxySocket)
     {
-      ((VTProxySocket)currentSocket).connectSocket(host, port, timeout);
+      socketAddress = InetSocketAddress.createUnresolved(host, port);
     }
     else
     {
       socketAddress = new InetSocketAddress(host, port);
-      if (timeout > 0)
-      {
-        connectionSocket.connect(socketAddress, timeout);
-      }
-      else
-      {
-        connectionSocket.connect(socketAddress);
-      }
     }
     
+    if (timeout > 0)
+    {
+      connectionSocket.connect(socketAddress, timeout);
+    }
+    else
+    {
+      connectionSocket.connect(socketAddress);
+    }
     connectionSocket.setTcpNoDelay(true);
     connectionSocket.setKeepAlive(true);
     //connectionSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);

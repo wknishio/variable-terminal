@@ -607,7 +607,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     
     //Socket remoteSocket = new Socket(host, port);
-    Socket remoteSocket = VTProxy.connectSocket(host, port, connectTimeout, socketFactory == null ? null : new VTRemoteSocketAdapter(socketFactory), connectProxy);
+    Socket remoteSocket = VTProxy.connect(host, port, connectTimeout, socketFactory == null ? null : new VTRemoteSocketAdapter(socketFactory), connectProxy);
     remoteSocket.setTcpNoDelay(true);
     remoteSocket.setKeepAlive(true);
     //remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
@@ -693,7 +693,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     requestData.write(bodyData);
     
     //Socket remoteSocket = new Socket(host, port);
-    Socket remoteSocket = VTProxy.connectSocket(host, port, 0, socketFactory == null ? null : new VTRemoteSocketAdapter(socketFactory), connectProxy);
+    Socket remoteSocket = VTProxy.connect(host, port, 0, socketFactory == null ? null : new VTRemoteSocketAdapter(socketFactory), connectProxy);
     remoteSocket.setTcpNoDelay(true);
     remoteSocket.setKeepAlive(true);
     //remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);

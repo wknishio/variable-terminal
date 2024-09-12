@@ -22,13 +22,13 @@ public class VTTunnelRemoteSocketFactory extends VTRemoteSocketFactory
     if (proxies != null && proxies.length >= 1)
     {
       VTProxy proxy = proxies[0];
-      return socketBuilder.connectSocket(host, port, connectTimeout, dataTimeout, proxy);
+      return socketBuilder.connect(host, port, connectTimeout, dataTimeout, proxy);
     }
-    return socketBuilder.connectSocket(host, port, connectTimeout, dataTimeout, PROXY_NONE);
+    return socketBuilder.connect(host, port, connectTimeout, dataTimeout, PROXY_NONE);
   }
   
   public Socket acceptSocket(String host, int port, int connectTimeout, int dataTimeout) throws IOException, UnknownHostException
   {
-    return socketBuilder.acceptSocket(host, port, connectTimeout, dataTimeout);
+    return socketBuilder.accept(host, port, connectTimeout, dataTimeout);
   }
 }

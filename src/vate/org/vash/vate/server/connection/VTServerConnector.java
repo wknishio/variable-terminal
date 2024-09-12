@@ -391,31 +391,31 @@ public class VTServerConnector implements Runnable
     }
     else if (proxyType.toUpperCase().startsWith("G") && proxyAddress != null && proxyPort != null)
     {
-      Socket socket = VTProxy.nextSocket(null, new VTProxy(VTProxyType.GLOBAL, proxyAddress, proxyPort, proxyUser, proxyPassword));
+      Socket socket = VTProxy.next(null, 0, new VTProxy(VTProxyType.GLOBAL, proxyAddress, proxyPort, proxyUser, proxyPassword));
       
       connection.setConnectionSocket(socket);
     }
     else if (proxyType.toUpperCase().startsWith("D") && proxyAddress != null && proxyPort != null)
     {
-      Socket socket = VTProxy.nextSocket(null, new VTProxy(VTProxyType.DIRECT, proxyAddress, proxyPort, proxyUser, proxyPassword));
+      Socket socket = VTProxy.next(null, 0, new VTProxy(VTProxyType.DIRECT, proxyAddress, proxyPort, proxyUser, proxyPassword));
       
       connection.setConnectionSocket(socket);
     }
     else if (proxyType.toUpperCase().startsWith("H") && proxyAddress != null && proxyPort != null)
     {
-      Socket socket = VTProxy.nextSocket(null, new VTProxy(VTProxyType.HTTP, proxyAddress, proxyPort, proxyUser, proxyPassword));
+      Socket socket = VTProxy.next(null, 0, new VTProxy(VTProxyType.HTTP, proxyAddress, proxyPort, proxyUser, proxyPassword));
       
       connection.setConnectionSocket(socket);
     }
     else if (proxyType.toUpperCase().startsWith("S") && proxyAddress != null && proxyPort != null)
     {
-      Socket socket = VTProxy.nextSocket(null, new VTProxy(VTProxyType.SOCKS, proxyAddress, proxyPort, proxyUser, proxyPassword));
+      Socket socket = VTProxy.next(null, 0, new VTProxy(VTProxyType.SOCKS, proxyAddress, proxyPort, proxyUser, proxyPassword));
       
       connection.setConnectionSocket(socket);
     }
     else if (proxyType.toUpperCase().startsWith("A") && proxyAddress != null && proxyPort != null)
     {
-      Socket socket = VTProxy.nextSocket(null, new VTProxy(VTProxyType.ANY, proxyAddress, proxyPort, proxyUser, proxyPassword));
+      Socket socket = VTProxy.next(null, 0, new VTProxy(VTProxyType.ANY, proxyAddress, proxyPort, proxyUser, proxyPassword));
       
       connection.setConnectionSocket(socket);
     }
@@ -511,7 +511,7 @@ public class VTServerConnector implements Runnable
     {
       resetSockets(connection);
 //      connecting = true;
-      VTProxy.connectSocket(address, port, 0, connection.getConnectionSocket());
+      VTProxy.connect(address, port, 0, connection.getConnectionSocket());
       connection.getConnectionSocket().setTcpNoDelay(true);
       //connection.getConnectionSocket().setSoLinger(true, 0);
       //connection.getConnectionSocket().setKeepAlive(true);
