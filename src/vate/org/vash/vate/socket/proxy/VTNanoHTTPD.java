@@ -301,7 +301,7 @@ public class VTNanoHTTPD
     {
       mySocket = s;
       final HTTPSession session = this;
-      Thread sessionThread = new Thread()
+      Runnable sessionThread = new Runnable()
       {
         public void run()
         {
@@ -330,15 +330,7 @@ public class VTNanoHTTPD
           }
         }
       };
-      sessionThread.setDaemon( true );
-      try
-      {
-        executorService.submit(sessionThread).get();
-      }
-      catch (Throwable t)
-      {
-        
-      }
+      executorService.execute(sessionThread);
     }
 
     public void run()
