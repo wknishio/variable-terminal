@@ -320,9 +320,15 @@ public final class VTLinkableDynamicMultiplexingInputStream
       update[6] = (byte) (sequence >> 48);
       update[7] = (byte) (sequence >> 56);
       stream.getPacketHasher().update(update, 0, update.length);
+      if (stream.getPacketHasher().getValue() != hash)
+      {
+        close();
+        return;
+      }
       if (length > 0)
       {
         lin.readFully(packetDataBuffer, 0, length);
+        hash = lin.readLong();
         stream.getPacketHasher().update(packetDataBuffer, 0, length);
         if (stream.getPacketHasher().getValue() != hash)
         {
@@ -342,6 +348,16 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       else if (length == -2)
       {
+        hash = lin.readLong();
+        update[0] = (byte) type;
+        update[1] = (byte) (channel);
+        update[2] = (byte) (channel >> 8);
+        update[3] = (byte) (channel >> 16);
+        update[4] = (byte) (-2);
+        update[5] = (byte) (-2 >> 8);
+        update[6] = (byte) (-2 >> 16);
+        update[7] = (byte) (-2 >> 24);
+        stream.getPacketHasher().update(update, 0, update.length);
         if (stream.getPacketHasher().getValue() != hash)
         {
           close();
@@ -351,6 +367,16 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       else if (length == -3)
       {
+        hash = lin.readLong();
+        update[0] = (byte) type;
+        update[1] = (byte) (channel);
+        update[2] = (byte) (channel >> 8);
+        update[3] = (byte) (channel >> 16);
+        update[4] = (byte) (-3);
+        update[5] = (byte) (-3 >> 8);
+        update[6] = (byte) (-3 >> 16);
+        update[7] = (byte) (-3 >> 24);
+        stream.getPacketHasher().update(update, 0, update.length);
         if (stream.getPacketHasher().getValue() != hash)
         {
           close();

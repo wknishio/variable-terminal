@@ -1,13 +1,12 @@
 package org.vash.vate.security;
 
 import java.security.MessageDigest;
-import org.bouncycastle.crypto.digests.Blake3Digest;
 import org.bouncycastle.crypto.params.Blake3Parameters;
 
 public class VTBlake3MessageDigest extends MessageDigest
 {
   // private static final Blake3Digest BLAKE3 = new Blake3Digest();
-  private final Blake3Digest blake3 = new Blake3Digest(64);
+  private final VTBlake3RoundsDigest blake3 = new VTBlake3RoundsDigest(64, 16);
   
   public VTBlake3MessageDigest()
   {

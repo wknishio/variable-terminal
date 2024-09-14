@@ -3,13 +3,12 @@ package org.vash.vate.security;
 import org.bouncycastle.crypto.prng.RandomGenerator;
 import org.bouncycastle.crypto.prng.DigestRandomGenerator;
 import java.security.SecureRandom;
-import org.bouncycastle.crypto.digests.Blake3Digest;
 import org.bouncycastle.crypto.params.Blake3Parameters;
 
 public class VTBlake3SecureRandom extends SecureRandom
 {
   private static final long serialVersionUID = 1L;
-  private final Blake3Digest blake3 = new Blake3Digest(64);
+  private final VTBlake3RoundsDigest blake3 = new VTBlake3RoundsDigest(64, 16);
   private final RandomGenerator generator = new DigestRandomGenerator(blake3);
   
   public VTBlake3SecureRandom()

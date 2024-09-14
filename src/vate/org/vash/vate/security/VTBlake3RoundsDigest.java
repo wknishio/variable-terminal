@@ -14,7 +14,7 @@ import org.bouncycastle.util.Pack;
 /**
  * Blake3 implementation.
  */
-public class VTBlake3HalfDigest
+public class VTBlake3RoundsDigest
     implements ExtendedDigest, Memoable, Xof
 {
     /**
@@ -30,7 +30,7 @@ public class VTBlake3HalfDigest
     /**
      * Number of Rounds.
      */
-    private static final int ROUNDS = 4;
+    private final int ROUNDS;
 
     /**
      * Buffer length.
@@ -257,9 +257,9 @@ public class VTBlake3HalfDigest
     /**
      * Constructor.
      */
-    public VTBlake3HalfDigest()
+    public VTBlake3RoundsDigest()
     {
-        this(BLOCKLEN >> 1);
+        this(BLOCKLEN >> 1, 7);
     }
 
     /**
@@ -267,8 +267,9 @@ public class VTBlake3HalfDigest
      *
      * @param pDigestLen the default digestLength
      */
-    public VTBlake3HalfDigest(final int pDigestLen)
+    public VTBlake3RoundsDigest(final int pDigestLen, final int pDigestRounds)
     {
+        ROUNDS = pDigestRounds;
         theDigestLen = pDigestLen;
         init(null);
     }
@@ -278,8 +279,9 @@ public class VTBlake3HalfDigest
      *
      * @param pSource the source digest.
      */
-    public VTBlake3HalfDigest(final VTBlake3HalfDigest pSource)
+    public VTBlake3RoundsDigest(final VTBlake3RoundsDigest pSource)
     {
+        ROUNDS = pSource.ROUNDS;
         /* Copy default digest length */
         theDigestLen = pSource.theDigestLen;
 
@@ -521,7 +523,7 @@ public class VTBlake3HalfDigest
     public void reset(final Memoable pSource)
     {
         /* Access source */
-        final VTBlake3HalfDigest mySource = (VTBlake3HalfDigest)pSource;
+        final VTBlake3RoundsDigest mySource = (VTBlake3RoundsDigest)pSource;
 
         /*  Reset counter */
         theCounter = mySource.theCounter;
@@ -553,7 +555,7 @@ public class VTBlake3HalfDigest
 
     public Memoable copy()
     {
-        return new VTBlake3HalfDigest(this);
+        return new VTBlake3RoundsDigest(this);
     }
 
     /**
