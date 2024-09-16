@@ -88,7 +88,7 @@ simple, medium, next, extra, high, vast, ultra, true
 * Added optional zstd compression in command *VTFILETRANSFER
 * Changed all encryption functions to use bouncycastle library
 * Added SALSA as encryption algorithm
-* Added HC256 as encryption algorithm
+* Added HC as encryption algorithm
 * Added ISAAC as encryption algorithm
 * Added ZUC as encryption algorithm
 * Added *VTPAUSE command to pause local console for a interval or until enter

@@ -39,8 +39,8 @@ public class VTServerConnection
   private static final byte[] VT_CLIENT_CHECK_STRING_ISAAC = ("/VARIABLE-TERMINAL/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_SALSA = ("/VARIABLE-TERMINAL/SERVER/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_SALSA = ("/VARIABLE-TERMINAL/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_SERVER_CHECK_STRING_HC256 = ("/VARIABLE-TERMINAL/SERVER/HC256/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_CLIENT_CHECK_STRING_HC256 = ("/VARIABLE-TERMINAL/CLIENT/HC256/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_HC = ("/VARIABLE-TERMINAL/SERVER/HC/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_HC = ("/VARIABLE-TERMINAL/CLIENT/HC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/SERVER/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/CLIENT/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
   
@@ -833,9 +833,9 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_HC256)))
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_HC)))
     {
-      return VT.VT_CONNECTION_ENCRYPTION_HC256;
+      return VT.VT_CONNECTION_ENCRYPTION_HC;
     }
     
     blake3Digest.reset();
@@ -928,12 +928,12 @@ public class VTServerConnection
         return true;
       }
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_HC256)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_HC)
     {
-      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_HC256, encryptionType);
+      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_HC, encryptionType);
       if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_NONE)
       {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC256);
+        setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC);
         return true;
       }
     }
@@ -976,9 +976,9 @@ public class VTServerConnection
       setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_SALSA);
       return true;
     }
-    if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_HC256)
+    if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_HC)
     {
-      setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC256);
+      setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC);
       return true;
     }
     if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_ISAAC)

@@ -65,7 +65,7 @@ public class VT
   public static final int VT_CONNECTION_ENCRYPTION_VMPC = 1;
   public static final int VT_CONNECTION_ENCRYPTION_ISAAC = 2;
   public static final int VT_CONNECTION_ENCRYPTION_SALSA = 3;
-  public static final int VT_CONNECTION_ENCRYPTION_HC256 = 4;
+  public static final int VT_CONNECTION_ENCRYPTION_HC = 4;
   public static final int VT_CONNECTION_ENCRYPTION_ZUC = 5;
   
   public static final int VT_FILE_TRANSFER_SESSION_STARTED = 0;
@@ -158,7 +158,7 @@ public class VT
   public static final String VT_CONNECTION_ENCRYPTION_VMPC_STRING = "VMPC";
   public static final String VT_CONNECTION_ENCRYPTION_ISAAC_STRING = "ISAAC";
   public static final String VT_CONNECTION_ENCRYPTION_SALSA_STRING = "SALSA";
-  public static final String VT_CONNECTION_ENCRYPTION_HC256_STRING = "HC256";
+  public static final String VT_CONNECTION_ENCRYPTION_HC_STRING = "HC";
   public static final String VT_CONNECTION_ENCRYPTION_ZUC_STRING = "ZUC";
   
   private static final DateFormat VT_ERA_DATEFORMAT;

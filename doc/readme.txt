@@ -9,7 +9,7 @@ but its incompatible with those tools/protocols/standards.
 
 Some of the available features are:
 
-* ISAAC, VMPC, SALSA, HC256 or ZUC encryption.
+* ISAAC, VMPC, SALSA, HC or ZUC encryption.
 * UPnP, NAT-PMP and PCP NAT port forwarding.
 * SOCKS and HTTP proxy network connections.
 * Multiple simultaneous sessions.
@@ -121,7 +121,7 @@ these are the available program arguments:
 * -PP: proxy port, default 1080 for SOCKS or default 8080 for HTTP
 * -PU: proxy user, default null
 * -PK: proxy password, default null
-* -ET: encryption type, none/ISAAC(I)/VMPC(R)/SALSA(S)/HC256(H)/ZUC(Z)
+* -ET: encryption type, none/ISAAC(I)/VMPC(R)/SALSA(S)/HC(H)/ZUC(Z)
 * -EK: encryption password, default null
 * -SS: session shell, default null
 * -SU: session user, default null

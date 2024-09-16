@@ -85,7 +85,7 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_HC256)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_HC)
     {
       encryptionCipherBC = new HC256Engine();
       decryptionCipherBC = new HC256Engine();
@@ -173,7 +173,7 @@ public class VTCryptographicEngine
       encryptionCipherBC.init(true, encryptionIvParameterSpec);
       decryptionCipherBC.init(false, decryptionIvParameterSpec);
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_HC256)
+    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_HC)
     {
       encryptionCipherBC = new HC256Engine();
       decryptionCipherBC = new HC256Engine();

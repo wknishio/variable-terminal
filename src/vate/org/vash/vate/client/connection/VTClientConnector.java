@@ -600,7 +600,7 @@ public class VTClientConnector implements Runnable
       }
       else if (encryptionType.toUpperCase().startsWith("H"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC256);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC);
       }
       else if (encryptionType.toUpperCase().startsWith("I"))
       {
@@ -676,7 +676,7 @@ public class VTClientConnector implements Runnable
       }
       else if (encryptionType.toUpperCase().startsWith("H"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC256);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC);
       }
       else if (encryptionType.toUpperCase().startsWith("I"))
       {
@@ -1005,7 +1005,7 @@ public class VTClientConnector implements Runnable
           }
           if (line.toUpperCase().startsWith("Y"))
           {
-            VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC256(H)/ZUC(Z)):");
+            VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)):");
             line = VTConsole.readLine(false);
             if (line == null)
             {
@@ -1026,7 +1026,7 @@ public class VTClientConnector implements Runnable
             }
             if (line.toUpperCase().startsWith("H"))
             {
-              encryptionType = "HC256";
+              encryptionType = "HC";
             }
             if (line.toUpperCase().startsWith("V"))
             {
@@ -1101,7 +1101,7 @@ public class VTClientConnector implements Runnable
         }
         if (line.toUpperCase().startsWith("Y"))
         {
-          VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC256(H)/ZUC(Z)):");
+          VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)):");
           line = VTConsole.readLine(false);
           if (line == null)
           {
@@ -1122,7 +1122,7 @@ public class VTClientConnector implements Runnable
           }
           if (line.toUpperCase().startsWith("H"))
           {
-            encryptionType = "HC256";
+            encryptionType = "HC";
           }
           if (line.toUpperCase().startsWith("V"))
           {

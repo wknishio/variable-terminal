@@ -471,7 +471,7 @@ public class VTServerConnector implements Runnable
       }
       else if (encryptionType.toUpperCase().startsWith("H"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC256);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC);
       }
       else if (encryptionType.toUpperCase().startsWith("I"))
       {
@@ -535,7 +535,7 @@ public class VTServerConnector implements Runnable
       }
       else if (encryptionType.toUpperCase().startsWith("H"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC256);
+        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC);
       }
       else if (encryptionType.toUpperCase().startsWith("I"))
       {

@@ -413,7 +413,7 @@ public class VTServerSettingsDialog extends Dialog
     encryptionTypeChoice.add("ISAAC");
     encryptionTypeChoice.add("VMPC");
     encryptionTypeChoice.add("SALSA");
-    encryptionTypeChoice.add("HC256");
+    encryptionTypeChoice.add("HC");
     //encryptionTypeChoice.add("GRAIN");
     encryptionTypeChoice.add("ZUC");
     // encryptionTypeChoice.add("BLOWFISH");
@@ -440,9 +440,9 @@ public class VTServerSettingsDialog extends Dialog
           {
             setEncryptionType("SALSA");
           }
-          else if (e.getItem().equals("HC256"))
+          else if (e.getItem().equals("HC"))
           {
-            setEncryptionType("HC256");
+            setEncryptionType("HC");
           }
           else if (e.getItem().equals("ISAAC"))
           {
@@ -1331,7 +1331,7 @@ public class VTServerSettingsDialog extends Dialog
     }
     else if (encryption.toUpperCase().startsWith("H"))
     {
-      encryptionType.setParameter("HC256");
+      encryptionType.setParameter("HC");
       // encryptionPassword.setEnabled(true);
     }
     else if (encryption.toUpperCase().startsWith("I"))
