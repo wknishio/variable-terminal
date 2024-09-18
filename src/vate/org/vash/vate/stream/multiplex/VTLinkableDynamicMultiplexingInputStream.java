@@ -294,7 +294,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     long hash;
     long sequence;
     int type; 
-    int channel;
+    int number;
     int length;
     
     while (!closed)
@@ -302,9 +302,9 @@ public final class VTLinkableDynamicMultiplexingInputStream
       //next = nextPacketSequencerLong();
       hash = lin.readLong();
       type = lin.readByte();
-      channel = lin.readSubInt();
+      number = lin.readSubInt();
       length = lin.readInt();
-      stream = getInputStream(type, channel);
+      stream = getInputStream(type, number);
       if (stream == null)
       {
         close();
@@ -320,15 +320,9 @@ public final class VTLinkableDynamicMultiplexingInputStream
       update[6] = (byte) (sequence >> 48);
       update[7] = (byte) (sequence >> 56);
       stream.getPacketHasher().update(update, 0, update.length);
-      if (stream.getPacketHasher().getValue() != hash)
-      {
-        close();
-        return;
-      }
       if (length > 0)
       {
         lin.readFully(packetDataBuffer, 0, length);
-        hash = lin.readLong();
         stream.getPacketHasher().update(packetDataBuffer, 0, length);
         if (stream.getPacketHasher().getValue() != hash)
         {
@@ -348,11 +342,10 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       else if (length == -2)
       {
-        hash = lin.readLong();
         update[0] = (byte) type;
-        update[1] = (byte) (channel);
-        update[2] = (byte) (channel >> 8);
-        update[3] = (byte) (channel >> 16);
+        update[1] = (byte) (number);
+        update[2] = (byte) (number >> 8);
+        update[3] = (byte) (number >> 16);
         update[4] = (byte) (-2);
         update[5] = (byte) (-2 >> 8);
         update[6] = (byte) (-2 >> 16);
@@ -363,15 +356,14 @@ public final class VTLinkableDynamicMultiplexingInputStream
           close();
           return;
         }
-        close(type, channel);
+        close(type, number);
       }
       else if (length == -3)
       {
-        hash = lin.readLong();
         update[0] = (byte) type;
-        update[1] = (byte) (channel);
-        update[2] = (byte) (channel >> 8);
-        update[3] = (byte) (channel >> 16);
+        update[1] = (byte) (number);
+        update[2] = (byte) (number >> 8);
+        update[3] = (byte) (number >> 16);
         update[4] = (byte) (-3);
         update[5] = (byte) (-3 >> 8);
         update[6] = (byte) (-3 >> 16);
@@ -382,7 +374,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
           close();
           return;
         }
-        open(type, channel);
+        open(type, number);
       }
       else
       {

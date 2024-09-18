@@ -485,6 +485,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private synchronized final void writePacket(final byte[] data, final int offset, final int length, final int type, final int number) throws IOException
     {
       dataPacketBuffer.reset();
+      intermediateDataPacketBuffer.reset();
       sequence = packetSequencer.nextLong();
       update[0] = (byte) sequence;
       update[1] = (byte) (sequence >> 8);
@@ -495,16 +496,14 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       update[6] = (byte) (sequence >> 48);
       update[7] = (byte) (sequence >> 56);
       packetHasher.update(update, 0, update.length);
-      dataPacketStream.writeLong(packetHasher.getValue());
-      intermediateDataPacketBuffer.reset();
       intermediatePacketStream.write(data, offset, length);
       intermediatePacketStream.flush();
       packetHasher.update(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
+      dataPacketStream.writeLong(packetHasher.getValue());
       dataPacketStream.writeByte(type);
       dataPacketStream.writeSubInt(number);
       dataPacketStream.writeInt(intermediateDataPacketBuffer.count());
       dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
-      dataPacketStream.writeLong(packetHasher.getValue());
       output.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
       output.flush();
     }
@@ -522,7 +521,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       update[6] = (byte) (sequence >> 48);
       update[7] = (byte) (sequence >> 56);
       packetHasher.update(update, 0, update.length);
-      controlPacketStream.writeLong(packetHasher.getValue());
       update[0] = (byte) type;
       update[1] = (byte) (number);
       update[2] = (byte) (number >> 8);
@@ -532,10 +530,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       update[6] = (byte) (-2 >> 16);
       update[7] = (byte) (-2 >> 24);
       packetHasher.update(update, 0, update.length);
+      controlPacketStream.writeLong(packetHasher.getValue());
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
       controlPacketStream.writeInt(-2);
-      controlPacketStream.writeLong(packetHasher.getValue());
       control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
       control.flush();
     }
@@ -553,7 +551,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       update[6] = (byte) (sequence >> 48);
       update[7] = (byte) (sequence >> 56);
       packetHasher.update(update, 0, update.length);
-      controlPacketStream.writeLong(packetHasher.getValue());
       update[0] = (byte) type;
       update[1] = (byte) (number);
       update[2] = (byte) (number >> 8);
@@ -563,10 +560,10 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       update[6] = (byte) (-3 >> 16);
       update[7] = (byte) (-3 >> 24);
       packetHasher.update(update, 0, update.length);
+      controlPacketStream.writeLong(packetHasher.getValue());
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
       controlPacketStream.writeInt(-3);
-      controlPacketStream.writeLong(packetHasher.getValue());
       control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
       control.flush();
     }
