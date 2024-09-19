@@ -526,8 +526,8 @@ public class VTServerSettingsDialog extends Dialog
     buttonLayout1.setHgap(1);
     buttonLayout1.setVgap(1);
     buttonPanel1.setLayout(buttonLayout1);
-    buttonPanel1.add(loadButton);
     buttonPanel1.add(saveButton);
+    buttonPanel1.add(loadButton);
     
     loadButton.addActionListener(new ActionListener()
     {
@@ -717,8 +717,8 @@ public class VTServerSettingsDialog extends Dialog
     buttonLayout2.setHgap(1);
     buttonLayout2.setVgap(1);
     buttonPanel2.setLayout(buttonLayout2);
-    buttonPanel2.add(okButton);
     buttonPanel2.add(closeButton);
+    buttonPanel2.add(okButton);
     
     // okButton.setEnabled(false);
     okButton.addActionListener(new ActionListener()
