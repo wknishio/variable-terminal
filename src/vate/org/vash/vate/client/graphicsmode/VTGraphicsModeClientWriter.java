@@ -43,7 +43,7 @@ public class VTGraphicsModeClientWriter implements Runnable
   public static final int TERMINAL_STATE_FOCUSED = 0;
   public static final int TERMINAL_STATE_VISIBLE = 1;
   public static final int TERMINAL_STATE_IGNORE = 2;
-  private boolean stopped;
+  private volatile boolean stopped;
   private boolean needRefresh;
   private boolean hasRefresh;
   private boolean hasDifference;
@@ -579,6 +579,10 @@ public class VTGraphicsModeClientWriter implements Runnable
     this.stopped = stopped;
     if (stopped)
     {
+      if (remoteInterface != null && remoteInterface.isAsynchronousRepainterRunning())
+      {
+        remoteInterface.stopAsynchronousRepainter();
+      }
       try
       {
         connection.closeGraphicsModeStreams();
@@ -1928,15 +1932,15 @@ public class VTGraphicsModeClientWriter implements Runnable
       {
         synchronized (this)
         {
-          while (!stopped && (!needRefresh || ((terminalRefreshPolicy == TERMINAL_STATE_VISIBLE) && (((frame.getExtendedState() & Frame.ICONIFIED)) != 0)) || ((terminalRefreshPolicy == TERMINAL_STATE_FOCUSED) && !remoteInterface.isFocusOwner())))
+          if (!stopped && (!needRefresh || ((terminalRefreshPolicy == TERMINAL_STATE_VISIBLE) && (((frame.getExtendedState() & Frame.ICONIFIED)) != 0)) || ((terminalRefreshPolicy == TERMINAL_STATE_FOCUSED) && !remoteInterface.isFocusOwner())))
           {
             wait();
           }
-          if (!stopped)
-          {
-            needRefresh = false;
-            EventQueue.invokeLater(graphicsRefresher);
-          }
+        }
+        if (!stopped)
+        {
+          needRefresh = false;
+          EventQueue.invokeLater(graphicsRefresher);
         }
       }
       catch (Throwable e)

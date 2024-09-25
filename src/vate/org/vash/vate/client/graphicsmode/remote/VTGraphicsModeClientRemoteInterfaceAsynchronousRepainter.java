@@ -5,7 +5,7 @@ import java.util.concurrent.Future;
 
 public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements Runnable
 {
-  private boolean interrupted;
+  private volatile boolean interrupted;
   private VTGraphicsModeClientRemoteInterface remoteInterface;
   private Future<?> repainterThread;
   private ExecutorService executorService;
@@ -65,16 +65,13 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
       remoteInterface.setUpdating(false);
       notify();
     }
-    if (isRunning())
+    try
     {
-      try
-      {
-        repainterThread.get();
-      }
-      catch (Throwable e)
-      {
-        
-      }
+      repainterThread.get();
+    }
+    catch (Throwable e)
+    {
+      
     }
   }
   
@@ -111,7 +108,7 @@ public class VTGraphicsModeClientRemoteInterfaceAsynchronousRepainter implements
           // System.out.println("async-interrupted:" + interrupted);
           // System.out.println("async-updating:" +
           // remoteInterface.isUpdating());
-          if (!interrupted && remoteInterface.isFocusOwner() && remoteInterface.isUpdating())
+          if (!interrupted && remoteInterface.isVisible() && remoteInterface.isUpdating())
           {
             remoteInterface.repaint();
             wait(125);

@@ -39,7 +39,7 @@ public class VTGraphicsModeServerWriter implements Runnable
 {
   private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.PADDING_SIZE;
   private static final int IMAGE_OUTPUT_BUFFER_SIZE = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
-  private boolean stopped;
+  private volatile boolean stopped;
   private boolean needRefresh;
   private boolean clearRequested;
   private boolean refreshInterrupted;

@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 public class VTGraphicsModeClientRemoteInterface extends Canvas
 {
   private static final long serialVersionUID = 1L;
-  private boolean updating;
+  private volatile boolean updating;
   @SuppressWarnings("unused")
   private boolean synchronousRefresh = false;
   private BufferedImage sourceImageDataBuffer;

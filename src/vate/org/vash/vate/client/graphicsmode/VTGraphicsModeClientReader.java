@@ -21,7 +21,7 @@ import com.sixlegs.png.iio.*;
 public class VTGraphicsModeClientReader implements Runnable
 {
   private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.PADDING_SIZE;
-  private boolean stopped;
+  private volatile boolean stopped;
   private boolean failed;
   private int currentDataType;
   private byte[] lastImageBufferByte;

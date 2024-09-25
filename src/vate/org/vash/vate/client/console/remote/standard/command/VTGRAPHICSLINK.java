@@ -102,10 +102,6 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
       }
       if (session.getGraphicsClient().aliveThread())
       {
-        // VTTerminal.print("\nVT>Remote graphics link is
-        // running!\nVT>");
-        connection.getCommandWriter().writeLine(command);
-        connection.getCommandWriter().flush();
         session.getGraphicsClient().setStopped(true);
         session.getGraphicsClient().joinThread();
         // System.out.println("session.getGraphicsClient().joinThread()");
