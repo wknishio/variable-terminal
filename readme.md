@@ -108,9 +108,11 @@ those files support UTF-8 encoding.
 The connection settings can also be set using program arguments at startup,<br>
 these are the available program arguments:
 
-* -H: show available program arguments
-* -C: client module | -S: server module |
-* -A: agent module | -D: daemon module 
+* -H: list parameters
+* -C: use client module
+* -S: use server module
+* -A: use agent module
+* -D: use daemon module
 * -LF: load settings file
 * -CM: connection mode, passive(P), active(A)
 * -CH: connection host, default null

@@ -9,25 +9,21 @@ public class VTHelpManager
   private static Properties helpMap = new Properties();
   
   private static String generalModeParameterHelp = 
-  ("\n mode parameters:") + 
+  ("-H: list parameters") +
   ("\n-C: use client module") + 
-  (" | -S: use server module | ") + 
+  ("\n-S: use server module | ") + 
   ("\n-A: use agent module") + 
-  (" | -D: use daemon module") + 
-  ("\n -H: list parameters");
+  ("\n-D: use daemon module");
   
   private static String clientModeParametersHelp = 
-  ("\n mode parameters:") + 
-  ("\n-A: use agent module") + 
-  ("\n-H: list parameters");
+  ("-H: list parameters") +
+  ("\n-A: use agent module");
   
   private static String serverModeParametersHelp = 
-  ("\n mode parameters:") + 
-  ("\n-D: use daemon module") + 
-  ("\n-H: list parameters");
+  ("-H: list parameters") +
+  ("\n-D: use daemon module");
   
   private static String connnectionParametersHelp = 
-  ("\n connection parameters:") + 
   ("\n-LF: load connection settings file") + 
   ("\n-CM: connection mode, passive(P), active(A)") + 
   ("\n-CH: connection host, default null") + 
