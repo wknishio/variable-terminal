@@ -123,7 +123,7 @@ these are the available program arguments:
 * -PP: proxy port, default 1080 for SOCKS or default 8080 for HTTP
 * -PU: proxy user, default null
 * -PK: proxy password, default null
-* -ET: encryption type, none/ISAAC(I)/VMPC(R)/SALSA(S)/HC(H)/ZUC(Z)
+* -ET: encryption type, default none/ISAAC(I)/VMPC(R)/SALSA(S)/HC(H)/ZUC(Z)
 * -EK: encryption password, default null
 * -SS: session shell, default null
 * -SU: session user, default null

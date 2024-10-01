@@ -58,7 +58,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       }
       if (proxyType == null)
       {
-        message.append("\nVT>Proxy type(PT): [None]");
+        message.append("\nVT>Proxy type(PT): []");
       }
       else if (proxyType.toUpperCase().startsWith("H"))
       {
@@ -74,7 +74,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       }
       else
       {
-        message.append("\nVT>Proxy type(PT): [None]");
+        message.append("\nVT>Proxy type(PT): []");
       }
       message.append("\nVT>Proxy host address(PH): [" + proxyAddress + "]");
       if (proxyPort != null)
@@ -125,7 +125,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       }
       else
       {
-        message.append("\nVT>Encryption type(ET): [None]");
+        message.append("\nVT>Encryption type(ET): []");
       }
       message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
       message.append("\nVT>Session shell(SS): [" + sessionShell + "]");
@@ -358,7 +358,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           String proxyType = server.getServerConnector().getProxyType();
           if (proxyType == null)
           {
-            VTConsole.print("\rVT>Proxy type(PT): [None]\nVT>");
+            VTConsole.print("\rVT>Proxy type(PT): []\nVT>");
           }
           else if (proxyType.toUpperCase().startsWith("H"))
           {
@@ -374,7 +374,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           }
           else
           {
-            VTConsole.print("\rVT>Proxy type(PT): [None]\nVT>");
+            VTConsole.print("\rVT>Proxy type(PT): []\nVT>");
           }
         }
         else if (parsed.length >= 3)
@@ -401,7 +401,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           }
           else
           {
-            VTConsole.print("\rVT>Proxy type(PT) set to: [None]\nVT>");
+            VTConsole.print("\rVT>Proxy type(PT) set to: []\nVT>");
           }
         }
         else
@@ -604,7 +604,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           }
           else
           {
-            VTConsole.print("\rVT>Encryption type(ET): [None]\nVT>");
+            VTConsole.print("\rVT>Encryption type(ET): []\nVT>");
           }
         }
         else if (parsed.length >= 3)
@@ -648,7 +648,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           }
           else
           {
-            VTConsole.print("\rVT>Encryption type(ET) set to: [None]\nVT>");
+            VTConsole.print("\rVT>Encryption type(ET) set to: []\nVT>");
           }
         }
         else

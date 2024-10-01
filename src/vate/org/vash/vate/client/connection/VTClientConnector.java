@@ -1046,7 +1046,7 @@ public class VTClientConnector implements Runnable
           }
           else
           {
-            encryptionType = "None";
+            encryptionType = "NONE";
           }
         }
       }
@@ -1142,7 +1142,7 @@ public class VTClientConnector implements Runnable
         }
         else
         {
-          encryptionType = "None";
+          encryptionType = "NONE";
         }
         VTConsole.print("VT>Use proxy in connection?(Y/N, default:N):");
         line = VTConsole.readLine(true);
@@ -1299,7 +1299,7 @@ public class VTClientConnector implements Runnable
         }
         else
         {
-          proxyType = "None";
+          proxyType = "NONE";
         }
       }
       VTConsole.print("VT>Repeat current session user and password?(Y/N, default:Y):");

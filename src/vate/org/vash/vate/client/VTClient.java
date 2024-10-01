@@ -30,13 +30,13 @@ public class VTClient implements Runnable
   private String hostAddress = "";
   private Integer hostPort = null;
   private Integer natPort = null;
-  private String proxyType = "None";
+  private String proxyType = "NONE";
   private String proxyAddress = "";
   private Integer proxyPort = null;
   //private boolean useProxyAuthentication = false;
   private String proxyUser = "";
   private String proxyPassword = "";
-  private String encryptionType = "None";
+  private String encryptionType = "NONE";
   private byte[] encryptionKey = new byte[] {};
   private String sessionUser = "";
   private String sessionPassword = "";
@@ -1445,7 +1445,7 @@ public class VTClient implements Runnable
             }
             else
             {
-              encryptionType = "None";
+              encryptionType = "NONE";
             }
           }
         }
@@ -1643,7 +1643,7 @@ public class VTClient implements Runnable
             }
             else
             {
-              proxyType = "None";
+              proxyType = "NONE";
             }
           }
           if (hostPort != null)
@@ -1701,7 +1701,7 @@ public class VTClient implements Runnable
             }
             else
             {
-              encryptionType = "None";
+              encryptionType = "NONE";
             }
           }
         }

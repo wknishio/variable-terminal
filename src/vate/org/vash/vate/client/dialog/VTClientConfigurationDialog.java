@@ -360,21 +360,21 @@ public class VTClientConfigurationDialog extends Dialog
       }
     });
     
-    proxyTypeChoice.add("None");
+    proxyTypeChoice.add("NONE");
     proxyTypeChoice.add("DIRECT");
     proxyTypeChoice.add("SOCKS");
     proxyTypeChoice.add("HTTP");
     proxyTypeChoice.add("ANY");
-    proxyTypeChoice.select("None");
+    proxyTypeChoice.select("NONE");
     proxyTypeChoice.addItemListener(new ItemListener()
     {
       public void itemStateChanged(ItemEvent e)
       {
         if (e.getStateChange() == ItemEvent.SELECTED)
         {
-          if (e.getItem().equals("None"))
+          if (e.getItem().equals("NONE"))
           {
-            setProxyType("None");
+            setProxyType("NONE");
           }
           else if (e.getItem().equals("DIRECT"))
           {
@@ -417,7 +417,7 @@ public class VTClientConfigurationDialog extends Dialog
 //      }
 //    });
     
-    encryptionTypeChoice.add("None");
+    encryptionTypeChoice.add("NONE");
     encryptionTypeChoice.add("ISAAC");
     encryptionTypeChoice.add("VMPC");
     encryptionTypeChoice.add("SALSA");
@@ -425,16 +425,16 @@ public class VTClientConfigurationDialog extends Dialog
     //encryptionTypeChoice.add("GRAIN");
     encryptionTypeChoice.add("ZUC");
     // encryptionTypeChoice.add("BLOWFISH");
-    encryptionTypeChoice.select("None");
+    encryptionTypeChoice.select("NONE");
     encryptionTypeChoice.addItemListener(new ItemListener()
     {
       public void itemStateChanged(ItemEvent e)
       {
         if (e.getStateChange() == ItemEvent.SELECTED)
         {
-          if (e.getItem().equals("None"))
+          if (e.getItem().equals("NONE"))
           {
-            setEncryptionType("None");
+            setEncryptionType("NONE");
           }
           else if (e.getItem().equals("VMPC"))
           {
@@ -1249,7 +1249,7 @@ public class VTClientConfigurationDialog extends Dialog
       // connectionHost.setEnabled(true);
       natPort.setEnabled(false);
       proxyType.setEnabled(true);
-      if (!proxyType.getParameter().equalsIgnoreCase("None"))
+      if (!proxyType.getParameter().equalsIgnoreCase("NONE"))
       {
         proxyHost.setEnabled(true);
         proxyPort.setEnabled(true);
@@ -1282,7 +1282,7 @@ public class VTClientConfigurationDialog extends Dialog
   {
     if (encryption == null)
     {
-      encryptionType.setParameter("None");
+      encryptionType.setParameter("NONE");
       // encryptionPassword.setEnabled(false);
     }
     else if (encryption.toUpperCase().startsWith("V"))
@@ -1312,7 +1312,7 @@ public class VTClientConfigurationDialog extends Dialog
     }
     else
     {
-      encryptionType.setParameter("None");
+      encryptionType.setParameter("NONE");
       // encryptionPassword.setEnabled(false);
     }
   }
@@ -1321,7 +1321,7 @@ public class VTClientConfigurationDialog extends Dialog
   {
     if (proxy == null)
     {
-      proxyType.setParameter("None");
+      proxyType.setParameter("NONE");
       proxyHost.setEnabled(false);
       proxyPort.setEnabled(false);
       proxyUser.setEnabled(false);
@@ -1361,7 +1361,7 @@ public class VTClientConfigurationDialog extends Dialog
     }
     else
     {
-      proxyType.setParameter("None");
+      proxyType.setParameter("NONE");
       proxyHost.setEnabled(false);
       proxyPort.setEnabled(false);
       proxyUser.setEnabled(false);
@@ -1421,7 +1421,7 @@ public class VTClientConfigurationDialog extends Dialog
         {
           
         }
-        connector.setProxyType(proxyType.isEnabled() ? proxyType.getParameter() : "None");
+        connector.setProxyType(proxyType.isEnabled() ? proxyType.getParameter() : "NONE");
         connector.setProxyAddress(proxyHost.getParameter());
         try
         {
@@ -1478,7 +1478,7 @@ public class VTClientConfigurationDialog extends Dialog
         {
           
         }
-        client.setProxyType(proxyType.isEnabled() ? proxyType.getParameter() : "None");
+        client.setProxyType(proxyType.isEnabled() ? proxyType.getParameter() : "NONE");
         client.setProxyAddress(proxyHost.getParameter());
         try
         {

@@ -57,7 +57,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       }
       if (proxyType == null)
       {
-        message.append("\nVT>Proxy type(PT): [None]");
+        message.append("\nVT>Proxy type(PT): []");
       }
       else if (proxyType.toUpperCase().startsWith("H"))
       {
@@ -73,7 +73,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else
       {
-        message.append("\nVT>Proxy type(PT): [None]");
+        message.append("\nVT>Proxy type(PT): []");
       }
       message.append("\nVT>Proxy host address(PH): [" + proxyAddress + "]");
       if (proxyPort != null)
@@ -124,7 +124,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else
       {
-        message.append("\nVT>Encryption type(ET): [None]");
+        message.append("\nVT>Encryption type(ET): []");
       }
       message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
       message.append("\nVT>Session shell(SS): [" + sessionShell + "]");
@@ -362,7 +362,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           String proxyType = session.getServer().getServerConnector().getProxyType();
           if (proxyType == null)
           {
-            connection.getResultWriter().write("\nVT>Proxy type(PT): [None]\nVT>");
+            connection.getResultWriter().write("\nVT>Proxy type(PT): []\nVT>");
             connection.getResultWriter().flush();
           }
           else if (proxyType.toUpperCase().startsWith("H"))
@@ -382,7 +382,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Proxy type(PT): [None]\nVT>");
+            connection.getResultWriter().write("\nVT>Proxy type(PT): []\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -413,7 +413,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Proxy type(PT) set to: [None]\nVT>");
+            connection.getResultWriter().write("\nVT>Proxy type(PT) set to: []\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -646,7 +646,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET): [None]\nVT>");
+            connection.getResultWriter().write("\nVT>Encryption type(ET): []\nVT>");
             connection.getResultWriter().flush();
           }
         }
@@ -698,7 +698,7 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            connection.getResultWriter().write("\nVT>Encryption type(ET) set to: [None]\nVT>");
+            connection.getResultWriter().write("\nVT>Encryption type(ET) set to: []\nVT>");
             connection.getResultWriter().flush();
           }
         }
