@@ -360,21 +360,21 @@ public class VTClientConfigurationDialog extends Dialog
       }
     });
     
-    proxyTypeChoice.add("NONE");
+    proxyTypeChoice.add("None");
     proxyTypeChoice.add("DIRECT");
     proxyTypeChoice.add("SOCKS");
     proxyTypeChoice.add("HTTP");
     proxyTypeChoice.add("ANY");
-    proxyTypeChoice.select("NONE");
+    proxyTypeChoice.select("None");
     proxyTypeChoice.addItemListener(new ItemListener()
     {
       public void itemStateChanged(ItemEvent e)
       {
         if (e.getStateChange() == ItemEvent.SELECTED)
         {
-          if (e.getItem().equals("NONE"))
+          if (e.getItem().equals("None"))
           {
-            setProxyType("NONE");
+            setProxyType("None");
           }
           else if (e.getItem().equals("DIRECT"))
           {
@@ -417,7 +417,7 @@ public class VTClientConfigurationDialog extends Dialog
 //      }
 //    });
     
-    encryptionTypeChoice.add("NONE");
+    encryptionTypeChoice.add("None");
     encryptionTypeChoice.add("ISAAC");
     encryptionTypeChoice.add("VMPC");
     encryptionTypeChoice.add("SALSA");
@@ -425,16 +425,16 @@ public class VTClientConfigurationDialog extends Dialog
     //encryptionTypeChoice.add("GRAIN");
     encryptionTypeChoice.add("ZUC");
     // encryptionTypeChoice.add("BLOWFISH");
-    encryptionTypeChoice.select("NONE");
+    encryptionTypeChoice.select("None");
     encryptionTypeChoice.addItemListener(new ItemListener()
     {
       public void itemStateChanged(ItemEvent e)
       {
         if (e.getStateChange() == ItemEvent.SELECTED)
         {
-          if (e.getItem().equals("NONE"))
+          if (e.getItem().equals("None"))
           {
-            setEncryptionType("NONE");
+            setEncryptionType("None");
           }
           else if (e.getItem().equals("VMPC"))
           {
@@ -1249,7 +1249,7 @@ public class VTClientConfigurationDialog extends Dialog
       // connectionHost.setEnabled(true);
       natPort.setEnabled(false);
       proxyType.setEnabled(true);
-      if (!proxyType.getParameter().equalsIgnoreCase("NONE"))
+      if (!proxyType.getParameter().equalsIgnoreCase("None"))
       {
         proxyHost.setEnabled(true);
         proxyPort.setEnabled(true);
@@ -1282,7 +1282,7 @@ public class VTClientConfigurationDialog extends Dialog
   {
     if (encryption == null)
     {
-      encryptionType.setParameter("NONE");
+      encryptionType.setParameter("None");
       // encryptionPassword.setEnabled(false);
     }
     else if (encryption.toUpperCase().startsWith("V"))
@@ -1312,7 +1312,7 @@ public class VTClientConfigurationDialog extends Dialog
     }
     else
     {
-      encryptionType.setParameter("NONE");
+      encryptionType.setParameter("None");
       // encryptionPassword.setEnabled(false);
     }
   }
@@ -1321,7 +1321,7 @@ public class VTClientConfigurationDialog extends Dialog
   {
     if (proxy == null)
     {
-      proxyType.setParameter("NONE");
+      proxyType.setParameter("None");
       proxyHost.setEnabled(false);
       proxyPort.setEnabled(false);
       proxyUser.setEnabled(false);
@@ -1361,7 +1361,7 @@ public class VTClientConfigurationDialog extends Dialog
     }
     else
     {
-      proxyType.setParameter("NONE");
+      proxyType.setParameter("None");
       proxyHost.setEnabled(false);
       proxyPort.setEnabled(false);
       proxyUser.setEnabled(false);
