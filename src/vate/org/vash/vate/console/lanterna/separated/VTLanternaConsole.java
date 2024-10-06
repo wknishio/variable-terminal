@@ -1791,17 +1791,17 @@ public class VTLanternaConsole implements VTConsoleImplementation
 //    return index;
 //  }
   
-  public void input(String string)
+  public void input(String text)
   {
-    string = string.replace('\u000b', '\n');
+    text = text.replace('\u000b', '\n');
     synchronized (inputSynchronizer)
     {
       if (readingInput)
       {
-        if (string.indexOf('\n') == -1)
+        if (text.indexOf('\n') == -1)
         // if (indexOfWhitespace(string) == -1)
         {
-          inputBox.handleDataInput(currentLineBuffer, string, replaceActivated);
+          inputBox.handleDataInput(currentLineBuffer, text, replaceActivated);
           // inputBox.setHiddenColumn(currentLineBuffer.length());
           if (echoInput)
           {
@@ -1813,23 +1813,23 @@ public class VTLanternaConsole implements VTConsoleImplementation
         else
         {
           int i = 0, j = 0;
-          i = string.indexOf('\n');
+          i = text.indexOf('\n');
           // i = indexOfWhitespace(string);
-          inputBuffer.append(string.substring(0, i) + "\n");
+          inputBuffer.append(text.substring(0, i) + "\n");
           // appendToPendingInputLine(string.substring(0, i));
           j = i + 1;
-          i = string.indexOf('\n', j);
+          i = text.indexOf('\n', j);
           // i = indexOfWhitespace(string, j);
           while (i != -1)
           {
-            appendToPendingInputLine(string.substring(j, i) + "\n");
+            appendToPendingInputLine(text.substring(j, i) + "\n");
             j = i + 1;
-            i = string.indexOf('\n', j);
+            i = text.indexOf('\n', j);
             // i = indexOfWhitespace(string, j);
           }
-          if (j < string.length())
+          if (j < text.length())
           {
-            appendToPendingInputLine(string.substring(j));
+            appendToPendingInputLine(text.substring(j));
           }
           // System.out.println("inputBuffer:[" + inputBuffer.toString() + "]");
           inputSynchronizer.notifyAll();
@@ -1837,30 +1837,30 @@ public class VTLanternaConsole implements VTConsoleImplementation
       }
       else
       {
-        if (string.indexOf('\n') == -1)
+        if (text.indexOf('\n') == -1)
         // if (indexOfWhitespace(string) == -1)
         {
-          appendToPendingInputLine(string);
+          appendToPendingInputLine(text);
         }
         else
         {
           int i = 0, j = 0;
           // i = indexOfWhitespace(string);
-          i = string.indexOf('\n');
-          appendToPendingInputLine(string.substring(0, i) + "\n");
+          i = text.indexOf('\n');
+          appendToPendingInputLine(text.substring(0, i) + "\n");
           j = i + 1;
-          i = string.indexOf('\n', j);
+          i = text.indexOf('\n', j);
           // i = indexOfWhitespace(string, j);
           while (i != -1)
           {
-            appendToPendingInputLine(string.substring(j, i) + "\n");
+            appendToPendingInputLine(text.substring(j, i) + "\n");
             j = i + 1;
-            i = string.indexOf('\n', j);
+            i = text.indexOf('\n', j);
             // i = indexOfWhitespace(string, j);
           }
-          if (j < string.length())
+          if (j < text.length())
           {
-            appendToPendingInputLine(string.substring(j));
+            appendToPendingInputLine(text.substring(j));
           }
         }
       }
@@ -2898,5 +2898,22 @@ public class VTLanternaConsole implements VTConsoleImplementation
       }
       logOutput = null;
     }
+  }
+  
+  public String getLastOutputLine()
+  {
+    if (outputBuffer.length() > 0)
+    {
+      String bufferData = outputBuffer.toString();
+      if (bufferData.indexOf('\n') >= 0)
+      {
+        return bufferData.substring(bufferData.lastIndexOf('\n'), bufferData.length());
+      }
+      else
+      {
+        return this.outputBox.getLastLine() + bufferData;
+      }
+    }
+    return this.outputBox.getLastLine();
   }
 }

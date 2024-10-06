@@ -66,6 +66,11 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
     this.echo = echo;
   }
   
+  public boolean getEcho()
+  {
+    return echo;
+  }
+  
   public synchronized String read() throws InterruptedException
   {
     if (buffer.size() == 0)
@@ -83,6 +88,35 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
       return data + "\n";
     }
     return null;
+  }
+  
+  public void input(String data)
+  {
+    if (data.indexOf('\n') == -1)
+    {
+      buffer.offer(data);
+    }
+    else
+    {
+      int i = 0, j = 0;
+      i = data.indexOf('\n');
+      // i = indexOfWhitespace(string);
+      buffer.offer(data.substring(0, i));
+      j = i + 1;
+      i = data.indexOf('\n', j);
+      // i = indexOfWhitespace(string, j);
+      while (i != -1)
+      {
+        buffer.offer(data.substring(j, i));
+        j = i + 1;
+        i = data.indexOf('\n', j);
+        // i = indexOfWhitespace(string, j);
+      }
+      if (j < data.length())
+      {
+        buffer.offer(data.substring(j));
+      }
+    }
   }
   
   public void run()
@@ -165,5 +199,4 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
     }
     requested = false;
   }
-  
 }

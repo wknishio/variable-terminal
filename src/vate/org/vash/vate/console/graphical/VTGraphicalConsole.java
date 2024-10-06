@@ -2416,6 +2416,11 @@ public class VTGraphicalConsole implements VTConsoleImplementation
     return doubledError;
   }
   
+  public String getLastOutputLine()
+  {
+    return "";
+  }
+  
   // public boolean isReadingLine()
   // {
   // return VTGraphicalConsoleReader.isReadingLine();

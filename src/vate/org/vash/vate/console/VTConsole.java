@@ -864,4 +864,13 @@ public final class VTConsole
     }
     return false;
   }
+  
+  public static String getLastOutputLine()
+  {
+    if (checkConsole())
+    {
+      return console.getLastOutputLine();
+    }
+    return null;
+  }
 }

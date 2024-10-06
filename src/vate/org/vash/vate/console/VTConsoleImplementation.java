@@ -95,4 +95,6 @@ public interface VTConsoleImplementation
   public abstract boolean setLogReadLine(String path);
   
   public abstract boolean setLogOutput(String path);
+  
+  public abstract String getLastOutputLine();
 }

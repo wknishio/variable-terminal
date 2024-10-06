@@ -1150,7 +1150,7 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     {
       return lines.get(lines.size() - 1);
     }
-    return null;
+    return "";
   }
   
   public synchronized void setLastLine(String line)
