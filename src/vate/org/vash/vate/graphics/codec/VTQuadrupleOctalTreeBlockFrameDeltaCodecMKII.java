@@ -2026,7 +2026,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     }
   }
   
-  public final void encodeFrame8(final OutputStream out, final byte[] oldPixelData, final byte[] newPixelData, final int width, final int height, final int areaX, final int areaY, final int areaWidth, final int areaHeight) throws IOException
+  public final void encodeFrame8(final OutputStream out, final byte[] oldPixelData, final byte[] newPixelData, final int frameWidth, final int frameHeight, final int areaX, final int areaY, final int areaWidth, final int areaHeight) throws IOException
   {
     c1 = 0;
     c2 = 0;
@@ -2043,22 +2043,22 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     block2DataBuffer.reset();
     block3DataBuffer.reset();
     pixelDataBuffer.reset();
-    pixelStepY = width + PADDING_SIZE;
+    pixelStepY = frameWidth + PADDING_SIZE;
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
-    offset = areaX + PADDING_SIZE + ((areaY + PADDING_SIZE) * (width + PADDING_SIZE));
+    offset = areaX + PADDING_SIZE + ((areaY + PADDING_SIZE) * (frameWidth + PADDING_SIZE));
     //int paddingOffset = PADDING_SIZE + (width * PADDING_SIZE);
-    int size = (width * areaHeight);
+    int size = (frameWidth * areaHeight);
     limitX = areaWidth;
     limitY = size;
-    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) & 7;
-    r2 = 8 - (((size) / width) & 7);
+    r1 = 8 - ((int) Math.ceil((((double) size) / frameWidth) / 8)) & 7;
+    r2 = 8 - (((size) / frameWidth) & 7);
     m1 = 0;
     transferArea.x = areaX + PADDING_SIZE;
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, blockBitSet, pixelBitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, frameWidth + PADDING_SIZE, frameHeight + PADDING_SIZE, transferArea, 64, 64, blockBitSet, pixelBitSet);
     lout.setOutputStream(out);
 //    lout.writeInt(MAGIC1);
     lout.writeInt(offset);
@@ -2067,12 +2067,12 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     lout.writeInt(areaWidth);
     encodeBlock0Tree8(lout, oldPixelData, newPixelData);
     lout.flush();
-    VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea);
+    VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, frameWidth + PADDING_SIZE, frameHeight + PADDING_SIZE, transferArea);
     //block1BitSet.clear();
     //pixelBitSet.clear();
   }
   
-  public final void decodeFrame8(final InputStream in, final byte[] oldPixelData, final byte[] newPixelData, final int width, final int height) throws IOException
+  public final void decodeFrame8(final InputStream in, final byte[] oldPixelData, final byte[] newPixelData, final int frameWidth, final int frameHeight) throws IOException
   {
     c1 = 0;
     c2 = 0;
@@ -2085,7 +2085,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     d2 = 0;
     d3 = 0;
     d4 = 0;
-    pixelStepY = width + PADDING_SIZE;
+    pixelStepY = frameWidth + PADDING_SIZE;
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
     lin.setIntputStream(in);
@@ -2099,13 +2099,13 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     int areaWidth = lin.readInt();
     limitX = areaWidth;
     limitY = size;
-    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) & 7;
-    r2 = 8 - (((size) / width) & 7);
+    r1 = 8 - ((int) Math.ceil((((double) size) / frameWidth) / 8)) & 7;
+    r2 = 8 - (((size) / frameWidth) & 7);
     decodeBlock0Tree8(lin, oldPixelData, newPixelData);
 //    VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width, height, transferArea);
   }
   
-  public final void encodeFrame15(final OutputStream out, final short[] oldPixelData, final short[] newPixelData, final int width, final int height, final int areaX, final int areaY, final int areaWidth, final int areaHeight) throws IOException
+  public final void encodeFrame15(final OutputStream out, final short[] oldPixelData, final short[] newPixelData, final int frameWidth, final int frameHeight, final int areaX, final int areaY, final int areaWidth, final int areaHeight) throws IOException
   {
     c1 = 0;
     c2 = 0;
@@ -2122,22 +2122,22 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     block2DataBuffer.reset();
     block3DataBuffer.reset();
     pixelDataBuffer.reset();
-    pixelStepY = width + PADDING_SIZE;
+    pixelStepY = frameWidth + PADDING_SIZE;
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
-    offset = areaX + PADDING_SIZE + ((areaY + PADDING_SIZE) * (width + PADDING_SIZE));
+    offset = areaX + PADDING_SIZE + ((areaY + PADDING_SIZE) * (frameWidth + PADDING_SIZE));
     //int paddingOffset = PADDING_SIZE + (width * PADDING_SIZE);
-    int size = (width * areaHeight);
+    int size = (frameWidth * areaHeight);
     limitX = areaWidth;
     limitY = size;
-    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) & 7;
-    r2 = 8 - (((size) / width) & 7);
+    r1 = 8 - ((int) Math.ceil((((double) size) / frameWidth) / 8)) & 7;
+    r2 = 8 - (((size) / frameWidth) & 7);
     m1 = 0;
     transferArea.x = areaX + PADDING_SIZE;
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, blockBitSet, pixelBitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, frameWidth + PADDING_SIZE, frameHeight + PADDING_SIZE, transferArea, 64, 64, blockBitSet, pixelBitSet);
     lout.setOutputStream(out);
 //    lout.writeInt(MAGIC2);
     lout.writeInt(offset);
@@ -2146,12 +2146,12 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     lout.writeInt(areaWidth);
     encodeBlock0Tree15(lout, oldPixelData, newPixelData);
     lout.flush();
-    VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea);
+    VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, frameWidth + PADDING_SIZE, frameHeight + PADDING_SIZE, transferArea);
     //block1BitSet.clear();
     //pixelBitSet.clear();
   }
   
-  public final void decodeFrame15(final InputStream in, final short[] oldPixelData, final short[] newPixelData, final int width, final int height) throws IOException
+  public final void decodeFrame15(final InputStream in, final short[] oldPixelData, final short[] newPixelData, final int frameWidth, final int frameHeight) throws IOException
   {
     c1 = 0;
     c2 = 0;
@@ -2164,7 +2164,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     d2 = 0;
     d3 = 0;
     d4 = 0;
-    pixelStepY = width + PADDING_SIZE;
+    pixelStepY = frameWidth + PADDING_SIZE;
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
     lin.setIntputStream(in);
@@ -2178,13 +2178,13 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     int areaWidth = lin.readInt();
     limitX = areaWidth;
     limitY = size;
-    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) & 7;
-    r2 = 8 - (((size) / width) & 7);
+    r1 = 8 - ((int) Math.ceil((((double) size) / frameWidth) / 8)) & 7;
+    r2 = 8 - (((size) / frameWidth) & 7);
     decodeBlock0Tree15(lin, oldPixelData, newPixelData);
 //    VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width, height, transferArea);
   }
   
-  public final void encodeFrame24(final OutputStream out, final int[] oldPixelData, final int[] newPixelData, final int width, final int height, final int areaX, final int areaY, final int areaWidth, final int areaHeight) throws IOException
+  public final void encodeFrame24(final OutputStream out, final int[] oldPixelData, final int[] newPixelData, final int frameWidth, final int frameHeight, final int areaX, final int areaY, final int areaWidth, final int areaHeight) throws IOException
   {
     c1 = 0;
     c2 = 0;
@@ -2201,22 +2201,22 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     block2DataBuffer.reset();
     block3DataBuffer.reset();
     pixelDataBuffer.reset();
-    pixelStepY = width + PADDING_SIZE;
+    pixelStepY = frameWidth + PADDING_SIZE;
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
-    offset = areaX + PADDING_SIZE + ((areaY + PADDING_SIZE) * (width + PADDING_SIZE));
+    offset = areaX + PADDING_SIZE + ((areaY + PADDING_SIZE) * (frameWidth + PADDING_SIZE));
     //int paddingOffset = PADDING_SIZE + (width * PADDING_SIZE);
-    int size = (width * areaHeight);
+    int size = (frameWidth * areaHeight);
     limitX = areaWidth;
     limitY = size;
-    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) & 7;
-    r2 = 8 - (((size) / width) & 7);
+    r1 = 8 - ((int) Math.ceil((((double) size) / frameWidth) / 8)) & 7;
+    r2 = 8 - (((size) / frameWidth) & 7);
     m1 = 0;
     transferArea.x = areaX + PADDING_SIZE;
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, blockBitSet, pixelBitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, frameWidth + PADDING_SIZE, frameHeight + PADDING_SIZE, transferArea, 64, 64, blockBitSet, pixelBitSet);
     lout.setOutputStream(out);
 //    lout.writeInt(MAGIC3);
     lout.writeInt(offset);
@@ -2225,12 +2225,12 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     lout.writeInt(areaWidth);
     encodeBlock0Tree24(lout, oldPixelData, newPixelData);
     lout.flush();
-    VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea);
+    VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, frameWidth + PADDING_SIZE, frameHeight + PADDING_SIZE, transferArea);
     //block1BitSet.clear();
     //pixelBitSet.clear();
   }
   
-  public final void decodeFrame24(final InputStream in, final int[] oldPixelData, final int[] newPixelData, final int width, final int height) throws IOException
+  public final void decodeFrame24(final InputStream in, final int[] oldPixelData, final int[] newPixelData, final int frameWidth, final int frameHeight) throws IOException
   {
     c1 = 0;
     c2 = 0;
@@ -2243,7 +2243,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     d2 = 0;
     d3 = 0;
     d4 = 0;
-    pixelStepY = width + PADDING_SIZE;
+    pixelStepY = frameWidth + PADDING_SIZE;
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
     lin.setIntputStream(in);
@@ -2257,13 +2257,13 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     int areaWidth = lin.readInt();
     limitX = areaWidth;
     limitY = size;
-    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) & 7;
-    r2 = 8 - (((size) / width) & 7);
+    r1 = 8 - ((int) Math.ceil((((double) size) / frameWidth) / 8)) & 7;
+    r2 = 8 - (((size) / frameWidth) & 7);
     decodeBlock0Tree24(lin, oldPixelData, newPixelData);
 //    VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width, height, transferArea);
   }
   
-  public final void encodeFrame30(final OutputStream out, final int[] oldPixelData, final int[] newPixelData, final int width, final int height, final int areaX, final int areaY, final int areaWidth, final int areaHeight) throws IOException
+  public final void encodeFrame30(final OutputStream out, final int[] oldPixelData, final int[] newPixelData, final int frameWidth, final int frameHeight, final int areaX, final int areaY, final int areaWidth, final int areaHeight) throws IOException
   {
     c1 = 0;
     c2 = 0;
@@ -2280,22 +2280,22 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     block2DataBuffer.reset();
     block3DataBuffer.reset();
     pixelDataBuffer.reset();
-    pixelStepY = width + PADDING_SIZE;
+    pixelStepY = frameWidth + PADDING_SIZE;
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
-    offset = areaX + PADDING_SIZE + ((areaY + PADDING_SIZE) * (width + PADDING_SIZE));
+    offset = areaX + PADDING_SIZE + ((areaY + PADDING_SIZE) * (frameWidth + PADDING_SIZE));
     //int paddingOffset = PADDING_SIZE + (width * PADDING_SIZE);
-    int size = (width * areaHeight);
+    int size = (frameWidth * areaHeight);
     limitX = areaWidth;
     limitY = size;
-    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) & 7;
-    r2 = 8 - (((size) / width) & 7);
+    r1 = 8 - ((int) Math.ceil((((double) size) / frameWidth) / 8)) & 7;
+    r2 = 8 - (((size) / frameWidth) & 7);
     m1 = 0;
     transferArea.x = areaX + PADDING_SIZE;
     transferArea.y = areaY + PADDING_SIZE;
     transferArea.width = areaWidth;
     transferArea.height = areaHeight;
-    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea, 64, 64, blockBitSet, pixelBitSet);
+    VTImageDataUtils.compareBlockArea(oldPixelData, newPixelData, 0, frameWidth + PADDING_SIZE, frameHeight + PADDING_SIZE, transferArea, 64, 64, blockBitSet, pixelBitSet);
     lout.setOutputStream(out);
 //    lout.writeInt(MAGIC4);
     lout.writeInt(offset);
@@ -2304,12 +2304,12 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     lout.writeInt(areaWidth);
     encodeBlock0Tree30(lout, oldPixelData, newPixelData);
     lout.flush();
-    VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width + PADDING_SIZE, height + PADDING_SIZE, transferArea);
+    VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, frameWidth + PADDING_SIZE, frameHeight + PADDING_SIZE, transferArea);
     //block1BitSet.clear();
     //pixelBitSet.clear();
   }
   
-  public final void decodeFrame30(final InputStream in, final int[] oldPixelData, final int[] newPixelData, final int width, final int height) throws IOException
+  public final void decodeFrame30(final InputStream in, final int[] oldPixelData, final int[] newPixelData, final int frameWidth, final int frameHeight) throws IOException
   {
     c1 = 0;
     c2 = 0;
@@ -2322,7 +2322,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     d2 = 0;
     d3 = 0;
     d4 = 0;
-    pixelStepY = width + PADDING_SIZE;
+    pixelStepY = frameWidth + PADDING_SIZE;
     microblockStepY = pixelStepY * 8;
     macroblockStepY = microblockStepY * 8;
     lin.setIntputStream(in);
@@ -2336,8 +2336,8 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     int areaWidth = lin.readInt();
     limitX = areaWidth;
     limitY = size;
-    r1 = 8 - ((int) Math.ceil((((double) size) / width) / 8)) & 7;
-    r2 = 8 - (((size) / width) & 7);
+    r1 = 8 - ((int) Math.ceil((((double) size) / frameWidth) / 8)) & 7;
+    r2 = 8 - (((size) / frameWidth) & 7);
     decodeBlock0Tree30(lin, oldPixelData, newPixelData);
 //    VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width, height, transferArea);
   }
