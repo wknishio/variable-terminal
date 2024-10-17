@@ -29,4 +29,9 @@ public abstract class VTServerRemoteConsoleCommandProcessor extends VTConsoleCom
   {
     VTServerRemoteConsoleCommandSelector.addCustomCommandProcessorClass(this.getClass().getName());
   }
+  
+  public void waitFor()
+  {
+    
+  }
 }

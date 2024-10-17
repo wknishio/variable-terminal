@@ -149,4 +149,6 @@ public abstract class VTConsoleCommandProcessor
   public abstract void register();
   
   public abstract boolean remote();
+  
+  public abstract void waitFor();
 }

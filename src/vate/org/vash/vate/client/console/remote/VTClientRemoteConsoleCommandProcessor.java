@@ -29,6 +29,11 @@ public abstract class VTClientRemoteConsoleCommandProcessor extends VTConsoleCom
     VTClientRemoteConsoleCommandSelector.addCustomCommandProcessorClass(this.getClass().getName());
   }
   
+  public void waitFor()
+  {
+    
+  }
+  
   // public String help(String name)
   // {
   // return VTHelpManager.getHelpForClientCommand(name);

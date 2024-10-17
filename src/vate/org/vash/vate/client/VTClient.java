@@ -64,7 +64,7 @@ public class VTClient implements Runnable
   "#vate.client.connection.mode  values: default active(A), passive(P)\r\n" + 
   "#vate.client.proxy.type       values: DIRECT(D)/SOCKS(S)/HTTP(H)/ANY(A)\r\n" + 
   "#vate.client.encryption.type  values: ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)\r\n" + 
-  "#vate.client.session.commands format: cmd1*;cmd2*;cmd3*;...\r\n";
+  "#vate.client.session.commands format: cmd1*&cmd2*&cmd3*&...\r\n";
   
   static
   {

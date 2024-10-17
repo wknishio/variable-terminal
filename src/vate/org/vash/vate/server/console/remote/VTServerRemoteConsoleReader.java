@@ -172,6 +172,10 @@ public class VTServerRemoteConsoleReader extends VTTask
     
     if (!selector.selectCommand(command, parsed))
     {
+//      if (waitFor)
+//      {
+//        command = command += "*;";
+//      }
       if (!isStopped())
       {
         if (command.startsWith("**") && command.toUpperCase().contains("**VT"))

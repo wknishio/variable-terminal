@@ -8,7 +8,7 @@ import java.util.concurrent.Future;
 public abstract class VTTask implements Runnable, Closeable
 {
   private volatile boolean stopped;
-  private Future<?> taskThread;
+  private volatile Future<?> taskThread;
   //private Thread nextThread;
   private Runnable next;
   private ExecutorService executorService;

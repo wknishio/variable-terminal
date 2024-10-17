@@ -22,4 +22,9 @@ public abstract class VTServerLocalConsoleCommandProcessor extends VTConsoleComm
   {
     VTServerLocalConsoleCommandSelector.addCustomCommandProcessorClass(this.getClass().getName());
   }
+  
+  public void waitFor()
+  {
+    
+  }
 }
