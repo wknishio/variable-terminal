@@ -98,7 +98,7 @@ TCP port is 6060.
 * Session user sets the session user for session.
 * Session password sets the session password for session.
 * Session maximum define a limit for simultaneous sessions in server.
-* Session commands set commands separated by *& to be run when session starts.
+* Session commands set commands separated by *; to be run when session starts.
 
 All connection settings can be set using the files  
 "vate-client.properties" for client instances and  
@@ -129,7 +129,7 @@ these are the available program arguments:
 * -SU: session user, default null
 * -SK: session password, default null
 * -SM: session maximum, default 0, only in server
-* -SC: session commands, separated by "*&", default null, only in client
+* -SC: session commands, separated by "*;", default null, only in client
 
 ## Console commands
 

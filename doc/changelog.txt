@@ -54,7 +54,7 @@ simple, medium, next, extra, high, vast, ultra, true
 * Changed passive mode in client and server to bind to specific host address
 * Replaced *VTSOCKSTUNNEL and *VTTCPTUNNEL commands by *VTTUNNEL command
 * Added options in tunnel commands to bind tunnels to specific host address
-* Added *& as optional command delimiter for multiple commands per line
+* Added *; as optional command delimiter for multiple commands per line
 * Added *VTCOVER command to show/hide server console interface
 * Removed command *VTFILEROOT from client console, usable in server console
 * Merged all external shell manipulation commands in new command *VTSHELL

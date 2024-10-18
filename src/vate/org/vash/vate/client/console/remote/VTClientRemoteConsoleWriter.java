@@ -93,7 +93,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
       String commands = session.getClient().getClientConnector().getSessionCommands();
       if (commands != null && commands.length() > 0)
       {
-        executeStringScript(commands.replace("*&", "\n"), false);
+        executeStringScript(commands.replace("*;", "\n"), false);
       }
     }
     
