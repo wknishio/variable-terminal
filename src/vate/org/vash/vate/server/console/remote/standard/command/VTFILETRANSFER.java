@@ -14,8 +14,13 @@ public class VTFILETRANSFER extends VTServerStandardRemoteConsoleCommandProcesso
   
   public void execute(String command, String[] parsed) throws Exception
   {
+    boolean waitFor = false;
     if (parsed.length == 2)
     {
+      if (parsed[1].toUpperCase().contains("W"))
+      {
+        waitFor = true;
+      }
       if (parsed[1].toUpperCase().startsWith("S"))
       {
         session.getFileTransferServer().getHandler().getSession().getTransaction().setStopped(true);
@@ -27,6 +32,10 @@ public class VTFILETRANSFER extends VTServerStandardRemoteConsoleCommandProcesso
     }
     else if (parsed.length >= 4)
     {
+      if (parsed[1].toUpperCase().contains("W"))
+      {
+        waitFor = true;
+      }
       if (parsed[1].toUpperCase().contains("G"))
       {
         if (session.getFileTransferServer().aliveThread())
@@ -58,6 +67,17 @@ public class VTFILETRANSFER extends VTServerStandardRemoteConsoleCommandProcesso
     {
       
     }
+    if (waitFor)
+    {
+      try
+      {
+        waitFor();
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
   }
   
   public void close()
@@ -68,5 +88,10 @@ public class VTFILETRANSFER extends VTServerStandardRemoteConsoleCommandProcesso
   public boolean remote()
   {
     return true;
+  }
+  
+  public void waitFor()
+  {
+    session.getFileTransferServer().joinThread();
   }
 }

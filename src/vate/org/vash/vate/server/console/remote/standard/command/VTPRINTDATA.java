@@ -16,6 +16,7 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
   
   public void execute(String command, String[] parsed) throws Exception
   {
+    boolean waitFor = false;
     try
     {
       if (parsed.length == 1)
@@ -37,6 +38,10 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else if (parsed.length == 2)
       {
+        if (parsed[1].toUpperCase().contains("W"))
+        {
+          waitFor = true;
+        }
         if (parsed[1].toUpperCase().startsWith("S"))
         {
           if (session.getPrintDataTask().isFinished())
@@ -63,6 +68,10 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else if (parsed.length == 3)
       {
+        if (parsed[1].toUpperCase().contains("W"))
+        {
+          waitFor = true;
+        }
         synchronized (session.getPrintDataTask())
         {
           // connection.getResultWriter().write(command);
@@ -134,6 +143,10 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else if (parsed.length >= 4)
       {
+        if (parsed[1].toUpperCase().contains("W"))
+        {
+          waitFor = true;
+        }
         synchronized (session.getPrintDataTask())
         {
           // connection.getResultWriter().write(command);
@@ -214,6 +227,17 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
       connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       connection.getResultWriter().flush();
     }
+    if (waitFor)
+    {
+      try
+      {
+        waitFor();
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
   }
   
   public void close()
@@ -224,5 +248,10 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
   public boolean remote()
   {
     return false;
+  }
+  
+  public void waitFor()
+  {
+    session.getPrintDataTask().joinThread();
   }
 }

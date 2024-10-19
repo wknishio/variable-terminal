@@ -18,10 +18,15 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
   
   public void execute(String command, String[] parsed) throws Exception
   {
+    boolean waitFor = false;
     synchronized (session.getFileModifyOperation())
     {
       if (parsed.length >= 4)
       {
+        if (parsed[1].toUpperCase().contains("W"))
+        {
+          waitFor = true;
+        }
         if (parsed[1].toUpperCase().startsWith("M"))
         {
           if (session.getFileModifyOperation().isFinished())
@@ -70,6 +75,10 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else if (parsed.length == 3)
       {
+        if (parsed[1].toUpperCase().contains("W"))
+        {
+          waitFor = true;
+        }
         if (parsed[1].toUpperCase().startsWith("F"))
         {
           if (session.getFileModifyOperation().isFinished())
@@ -135,6 +144,10 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else if (parsed.length == 2)
       {
+        if (parsed[1].toUpperCase().contains("W"))
+        {
+          waitFor = true;
+        }
         if (parsed[1].toUpperCase().startsWith("S"))
         {
           if (session.getFileModifyOperation().isFinished())
@@ -183,6 +196,17 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
         connection.getResultWriter().flush();
       }
     }
+    if (waitFor)
+    {
+      try
+      {
+        waitFor();
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
   }
   
   public void close()
@@ -193,5 +217,10 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
   public boolean remote()
   {
     return false;
+  }
+  
+  public void waitFor()
+  {
+    session.getFileModifyOperation().joinThread();
   }
 }

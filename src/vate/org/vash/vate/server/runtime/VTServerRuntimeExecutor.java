@@ -35,7 +35,7 @@ public class VTServerRuntimeExecutor extends VTTask
   private static int PROCESS_COMMAND_FREE = 2; // F
   private static int PROCESS_COMMAND_LIST = 3; // L
   private static int PROCESS_COMMAND_STOP = 4; // S
-  private static int PROCESS_COMMAND_DESTROY = 5; // D
+  private static int PROCESS_COMMAND_DROP = 5; // D
   private static int PROCESS_COMMAND_INPUT = 6; // I
   //private static int PROCESS_COMMAND_LINE = 7; // E
   private static int PROCESS_COMMAND_PATH = 7; // P
@@ -211,7 +211,7 @@ public class VTServerRuntimeExecutor extends VTTask
         && !main_command_string.contains("B")
         && !main_command_string.contains("U"))
         {
-          process_command = PROCESS_COMMAND_DESTROY;
+          process_command = PROCESS_COMMAND_DROP;
           need_managed_scope = true;
         }
         else if (!main_command_string.contains("M")
@@ -836,7 +836,7 @@ public class VTServerRuntimeExecutor extends VTTask
           return;
         }
         
-        if (process_command == PROCESS_COMMAND_DESTROY)
+        if (process_command == PROCESS_COMMAND_DROP)
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
@@ -845,7 +845,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               try
               {
-                connection.getResultWriter().write("\nVT>Destroyed all managed processes on session list!\nVT>");
+                connection.getResultWriter().write("\nVT>Dropped all managed processes on session list!\nVT>");
                 connection.getResultWriter().flush();
               }
               catch (Throwable e)
@@ -863,7 +863,7 @@ public class VTServerRuntimeExecutor extends VTTask
               managedProcessList.remove(Integer.parseInt(splitCommand[2])).setRestart(false);
               synchronized (this)
               {
-                connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] destroyed from list!\nVT>");
+                connection.getResultWriter().write("\nVT>Process with number [" + splitCommand[2] + "] dropped from list!\nVT>");
                 connection.getResultWriter().flush();
                 finished = true;
               }
@@ -943,7 +943,7 @@ public class VTServerRuntimeExecutor extends VTTask
               {
                 try
                 {
-                  connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] destroyed from list!\nVT>");
+                  connection.getResultWriter().write("\nVT>Processes with command [" + splitCommand[2] + "] dropped from list!\nVT>");
                   connection.getResultWriter().flush();
                 }
                 catch (Throwable e)

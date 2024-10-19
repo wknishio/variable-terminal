@@ -16,15 +16,10 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
   
   public void execute(String command, String[] parsed) throws Exception
   {
-    boolean waitFor = false;
     synchronized (session.getFileTransferClient().getHandler().getSession().getTransaction())
     {
       if (parsed.length == 2)
       {
-        if (parsed[1].toUpperCase().contains("W"))
-        {
-          waitFor = true;
-        }
         if (parsed[1].toUpperCase().startsWith("S"))
         {
           if (session.getFileTransferClient().getHandler().getSession().getTransaction().isFinished())
@@ -51,10 +46,6 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
       }
       else if (parsed.length >= 4)
       {
-        if (parsed[1].toUpperCase().contains("W"))
-        {
-          waitFor = true;
-        }
         if (parsed[1].toUpperCase().contains("G") && !parsed[1].toUpperCase().contains("P"))
         {
           if (session.getFileTransferClient().getHandler().getSession().getTransaction().isFinished())
@@ -120,17 +111,6 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
         VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       }
     }
-    if (waitFor)
-    {
-      try
-      {
-        waitFor();
-      }
-      catch (Throwable t)
-      {
-        
-      }
-    }
   }
   
   public void close()
@@ -141,10 +121,5 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
   public boolean remote()
   {
     return true;
-  }
-  
-  public void waitFor()
-  {
-    session.getFileTransferClient().joinThread();
   }
 }

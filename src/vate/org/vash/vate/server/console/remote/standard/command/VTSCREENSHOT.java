@@ -10,7 +10,7 @@ public class VTSCREENSHOT extends VTServerStandardRemoteConsoleCommandProcessor
     this.setFullName("*VTSCREENSHOT");
     this.setAbbreviatedName("*VTSS");
     this.setFullSyntax("*VTSCREENSHOT [MODE] [DISPLAY]");
-    this.setAbbreviatedSyntax("**VTSS [MD] [DP]");
+    this.setAbbreviatedSyntax("*VTSS [MD] [DP]");
   }
   
   public void execute(String command, String[] parsed) throws Exception
