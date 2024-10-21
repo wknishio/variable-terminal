@@ -171,6 +171,7 @@ public class VTFileTransferServerTransaction implements Runnable
           
         }
       }
+      session.endSession();
     }
     this.stopped = stopped;
   }

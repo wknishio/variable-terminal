@@ -27,9 +27,9 @@ public class VTFileTransferClientSession
   {
     try
     {
-      client.getConnection().getFileTransferControlDataOutputStream().write(VT.VT_FILE_TRANSFER_SESSION_STARTED);
-      client.getConnection().getFileTransferControlDataOutputStream().flush();
-      client.getConnection().getFileTransferControlDataInputStream().read();
+      client.getConnection().getFileTransferStartDataOutputStream().write(VT.VT_FILE_TRANSFER_SESSION_STARTED);
+      client.getConnection().getFileTransferStartDataOutputStream().flush();
+      client.getConnection().getFileTransferStartDataInputStream().read();
     }
     catch (Throwable e)
     {
@@ -42,9 +42,9 @@ public class VTFileTransferClientSession
     try
     {
       client.getConnection().closeFileTransferStreams();
-      client.getConnection().getFileTransferControlDataOutputStream().write(VT.VT_FILE_TRANSFER_SESSION_FINISHED);
-      client.getConnection().getFileTransferControlDataOutputStream().flush();
-      client.getConnection().getFileTransferControlDataInputStream().read();
+      //client.getConnection().getFileTransferStartDataOutputStream().write(VT.VT_FILE_TRANSFER_SESSION_FINISHED);
+      //client.getConnection().getFileTransferStartDataOutputStream().flush();
+      //client.getConnection().getFileTransferStartDataInputStream().read();
     }
     catch (Throwable e)
     {

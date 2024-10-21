@@ -23,7 +23,7 @@ public class VTFILETRANSFER extends VTServerStandardRemoteConsoleCommandProcesso
       }
       if (parsed[1].toUpperCase().startsWith("S"))
       {
-        session.getFileTransferServer().getHandler().getSession().getTransaction().setStopped(true);
+        //session.getFileTransferServer().getHandler().getSession().getTransaction().setStopped(true);
       }
       else
       {

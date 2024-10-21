@@ -180,6 +180,7 @@ public class VTFileTransferClientTransaction implements Runnable
           
         }
       }
+      session.endSession();
     }
     this.stopped = stopped;
   }

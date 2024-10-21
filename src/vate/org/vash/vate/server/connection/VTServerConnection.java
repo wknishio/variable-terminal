@@ -48,6 +48,8 @@ public class VTServerConnection
   private volatile boolean closed = true;
   
   private int encryptionType;
+  private int availableInputChannel;
+  private int availableOutputChannel;
   private byte[] encryptionKey;
   private byte[] digestedCredentials;
   // private byte[] digestedClient;
@@ -72,6 +74,7 @@ public class VTServerConnection
   
   // private InputStream authenticationInputStream;
   private VTLinkableDynamicMultiplexedInputStream shellInputStream;
+  private VTLinkableDynamicMultiplexedInputStream fileTransferStartInputStream;
   private VTLinkableDynamicMultiplexedInputStream fileTransferControlInputStream;
   private VTLinkableDynamicMultiplexedInputStream fileTransferDataInputStream;
   // private VTMultiplexedInputStream graphicsCheckInputStream;
@@ -90,6 +93,7 @@ public class VTServerConnection
   
   // private OutputStream authenticationOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream shellOutputStream;
+  private VTLinkableDynamicMultiplexedOutputStream fileTransferStartOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream fileTransferControlOutputStream;
   private VTLinkableDynamicMultiplexedOutputStream fileTransferDataOutputStream;
   // private VTMultiplexedOutputStream graphicsCheckOutputStream;
@@ -117,6 +121,8 @@ public class VTServerConnection
   private InputStream clipboardDataInputStream;
   private OutputStream clipboardDataOutputStream;
   
+  private VTLittleEndianInputStream fileTransferStartDataInputStream;
+  private VTLittleEndianOutputStream fileTransferStartDataOutputStream;
   private VTLittleEndianInputStream fileTransferControlDataInputStream;
   private VTLittleEndianOutputStream fileTransferControlDataOutputStream;
   // private VTLittleEndianInputStream graphicsCheckDataInputStream;
@@ -286,6 +292,16 @@ public class VTServerConnection
   public VTLittleEndianOutputStream getFileTransferControlDataOutputStream()
   {
     return fileTransferControlDataOutputStream;
+  }
+  
+  public VTLittleEndianInputStream getFileTransferStartDataInputStream()
+  {
+    return fileTransferStartDataInputStream;
+  }
+  
+  public VTLittleEndianOutputStream getFileTransferStartDataOutputStream()
+  {
+    return fileTransferStartDataOutputStream;
   }
   
   // public VTLittleEndianInputStream getGraphicsCheckDataInputStream()
@@ -639,33 +655,38 @@ public class VTServerConnection
     VTBlake3SecureRandom secureInputputSeed = new VTBlake3SecureRandom(inputSeed);
     VTBlake3SecureRandom secureOutputSeed = new VTBlake3SecureRandom(outputSeed);
     
+    int inputChannel = 0;
+    int outputChannel = 0;
+    
     multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, false, secureInputputSeed, executorService);
     multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_PACKET_DATA_SIZE_BYTES, secureOutputSeed, executorService);
     
-    pingServerInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, 0);
-    pingServerOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, 0);
+    pingServerInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, inputChannel++);
+    pingServerOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, outputChannel++);
     
-    pingClientInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, 1);
-    pingClientOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, 1);
+    pingClientInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, inputChannel++);
+    pingClientOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, outputChannel++);
     
-    shellInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 2);
-    shellOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 2);
+    shellInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    shellOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     
-    fileTransferControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 3);
-    fileTransferControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 3);
-    fileTransferDataInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 4);
-    fileTransferDataOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 4);
+    fileTransferStartInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    fileTransferStartOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    fileTransferControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    fileTransferControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    fileTransferDataInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    fileTransferDataOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     
-    graphicsControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 5);
-    graphicsControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 5);
-    graphicsDirectImageInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 6);
-    graphicsDirectImageOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 6);
-    graphicsHeavyImageInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 7);
-    graphicsHeavyImageOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 7);
-    graphicsFastImageInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 8);
-    graphicsFastImageOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 8);
-    graphicsClipboardInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 9);
-    graphicsClipboardOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 9);
+    graphicsControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    graphicsControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    graphicsDirectImageInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    graphicsDirectImageOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    graphicsHeavyImageInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    graphicsHeavyImageOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    graphicsFastImageInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    graphicsFastImageOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    graphicsClipboardInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    graphicsClipboardOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     
     //graphicsControlInputStream.addPropagated(graphicsControlOutputStream);
     //graphicsControlInputStream.addPropagated(graphicsDirectImageOutputStream);
@@ -674,16 +695,19 @@ public class VTServerConnection
     // graphicsControlInputStream.addPropagated(graphicsClipboardInputStream);
     // graphicsControlInputStream.addPropagated(graphicsClipboardOutputStream);
     
-    audioControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 10);
-    audioControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 10);
-    audioDataInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 11);
-    audioDataOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 11);
+    audioControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    audioControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    audioDataInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    audioDataOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     
     //audioDataOutputStream.addPropagated(audioDataInputStream);
     //audioDataInputStream.addPropagated(audioDataOutputStream);
     
-    tunnelControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 12);
-    tunnelControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, 12);
+    tunnelControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    tunnelControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    
+    availableInputChannel = inputChannel;
+    availableOutputChannel = outputChannel;
     
     // socksControlInputStream =
     // multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED,
@@ -720,8 +744,11 @@ public class VTServerConnection
     clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
     clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
     
-    fileTransferControlDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedLz4InputStream(fileTransferControlInputStream));
-    fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(fileTransferControlOutputStream));
+    fileTransferControlDataInputStream = new VTLittleEndianInputStream(fileTransferControlInputStream);
+    fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(fileTransferControlOutputStream);
+    
+    fileTransferStartDataInputStream = new VTLittleEndianInputStream(fileTransferStartInputStream);
+    fileTransferStartDataOutputStream = new VTLittleEndianOutputStream(fileTransferStartOutputStream);
     
     // closeAudioStreams();
     // audioDataInputStream.addPropagated(audioDataOutputStream);
@@ -1115,6 +1142,9 @@ public class VTServerConnection
   public void resetFileTransferStreams() throws IOException
   {
     fileTransferDataOutputStream.open();
+    fileTransferControlOutputStream.open();
+    fileTransferControlDataInputStream = new VTLittleEndianInputStream(fileTransferControlInputStream);
+    fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(fileTransferControlOutputStream);
     //fileTransferDataInputStream.open();
   }
   
@@ -1122,6 +1152,8 @@ public class VTServerConnection
   {
     fileTransferDataOutputStream.close();
     fileTransferDataInputStream.close();
+    fileTransferControlOutputStream.close();
+    fileTransferControlInputStream.close();
   }
   
   public void closeAudioStreams() throws IOException
@@ -1152,4 +1184,14 @@ public class VTServerConnection
   // {
   // return !audioDataOutputStream.closed() && !audioDataInputStream.closed();
   // }
+  
+  public int getAvailableInputChannel()
+  {
+    return this.availableInputChannel;
+  }
+  
+  public int getAvailableOutputChannel()
+  {
+    return this.availableOutputChannel;
+  }
 }
