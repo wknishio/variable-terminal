@@ -163,12 +163,12 @@ public class VTRuntimeProcess
     return this.restart;
   }
   
-  public boolean isRead()
+  public boolean hasOutputRedirect()
   {
     return outputRedirect != null;
   }
   
-  public boolean isWrite()
+  public boolean hasInputRedirect()
   {
     return inputRedirect != null;
   }

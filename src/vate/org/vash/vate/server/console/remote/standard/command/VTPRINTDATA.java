@@ -42,7 +42,7 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
         {
           waitFor = true;
         }
-        if (parsed[1].toUpperCase().startsWith("S"))
+        if (parsed[1].toUpperCase().contains("S"))
         {
           if (session.getPrintDataTask().isFinished())
           {
@@ -58,6 +58,14 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
             //connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
             //connection.getResultWriter().flush();
             session.getPrintDataTask().setStopped(true);
+          }
+        }
+        else if (waitFor)
+        {
+          if (!session.getPrintDataTask().aliveThread())
+          {
+            connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
+            connection.getResultWriter().flush();
           }
         }
         else
@@ -82,19 +90,19 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
           }
           if (!session.getPrintDataTask().aliveThread())
           {
-            if (parsed[1].toUpperCase().startsWith("S"))
+            if (parsed[1].toUpperCase().contains("S"))
             {
               connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
               connection.getResultWriter().flush();
             }
             else
             {
-              if (parsed[1].toUpperCase().startsWith("T") || parsed[1].toUpperCase().startsWith("F") || parsed[1].toUpperCase().startsWith("U") || parsed[1].toUpperCase().startsWith("N"))
+              if (parsed[1].toUpperCase().contains("T") || parsed[1].toUpperCase().contains("F") || parsed[1].toUpperCase().contains("U") || parsed[1].toUpperCase().contains("N"))
               {
                 session.getPrintDataTask().setFinished(false);
                 session.getPrintDataTask().setData(parsed[2]);
                 session.getPrintDataTask().setPrintServiceNumber(null);
-                if (parsed[1].toUpperCase().startsWith("T"))
+                if (parsed[1].toUpperCase().contains("T"))
                 {
                   session.getPrintDataTask().setMode(VTServerPrintDataTask.MODE_TEXT);
                 }
@@ -102,15 +110,15 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
                 {
                   session.getPrintDataTask().setMode(VTServerPrintDataTask.MODE_FILE);
                 }
-                if (parsed[1].toUpperCase().startsWith("F"))
+                if (parsed[1].toUpperCase().contains("F"))
                 {
                   session.getPrintDataTask().setFileEncoding("F");
                 }
-                if (parsed[1].toUpperCase().startsWith("U"))
+                if (parsed[1].toUpperCase().contains("U"))
                 {
                   session.getPrintDataTask().setFileEncoding("U");
                 }
-                if (parsed[1].toUpperCase().startsWith("N"))
+                if (parsed[1].toUpperCase().contains("N"))
                 {
                   session.getPrintDataTask().setFileEncoding("N");
                 }
@@ -127,7 +135,7 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            if (parsed[1].toUpperCase().startsWith("S"))
+            if (parsed[1].toUpperCase().contains("S"))
             {
               //connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
               //connection.getResultWriter().flush();
@@ -157,19 +165,19 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
           }
           if (!session.getPrintDataTask().aliveThread())
           {
-            if (parsed[1].toUpperCase().startsWith("S"))
+            if (parsed[1].toUpperCase().contains("S"))
             {
               connection.getResultWriter().write("\nVT>No print data task is running!\nVT>");
               connection.getResultWriter().flush();
             }
             else
             {
-              if (parsed[1].toUpperCase().startsWith("T") || parsed[1].toUpperCase().startsWith("F") || parsed[1].toUpperCase().startsWith("U") || parsed[1].toUpperCase().startsWith("N"))
+              if (parsed[1].toUpperCase().contains("T") || parsed[1].toUpperCase().contains("F") || parsed[1].toUpperCase().contains("U") || parsed[1].toUpperCase().contains("N"))
               {
                 session.getPrintDataTask().setFinished(false);
                 session.getPrintDataTask().setData(parsed[2]);
                 session.getPrintDataTask().setPrintServiceNumber(Integer.parseInt(parsed[3]));
-                if (parsed[1].toUpperCase().startsWith("T"))
+                if (parsed[1].toUpperCase().contains("T"))
                 {
                   session.getPrintDataTask().setMode(VTServerPrintDataTask.MODE_TEXT);
                 }
@@ -177,15 +185,15 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
                 {
                   session.getPrintDataTask().setMode(VTServerPrintDataTask.MODE_FILE);
                 }
-                if (parsed[1].toUpperCase().startsWith("F"))
+                if (parsed[1].toUpperCase().contains("F"))
                 {
                   session.getPrintDataTask().setFileEncoding("F");
                 }
-                if (parsed[1].toUpperCase().startsWith("U"))
+                if (parsed[1].toUpperCase().contains("U"))
                 {
                   session.getPrintDataTask().setFileEncoding("U");
                 }
-                if (parsed[1].toUpperCase().startsWith("N"))
+                if (parsed[1].toUpperCase().contains("N"))
                 {
                   session.getPrintDataTask().setFileEncoding("N");
                 }
@@ -202,7 +210,7 @@ public class VTPRINTDATA extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else
           {
-            if (parsed[1].toUpperCase().startsWith("S"))
+            if (parsed[1].toUpperCase().contains("S"))
             {
               //connection.getResultWriter().write("\nVT>Stopping current print data task...\nVT>");
               //connection.getResultWriter().flush();

@@ -19,7 +19,11 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
     boolean waitFor = false;
     if (parsed.length == 2)
     {
-      if (parsed[1].toUpperCase().startsWith("S"))
+      if (parsed[1].toUpperCase().contains("W"))
+      {
+        waitFor = true;
+      }
+      if (parsed[1].toUpperCase().contains("S"))
       {
         if (session.getFileTransferClient().getHandler().getSession().getTransaction().isFinished())
         {
@@ -32,6 +36,18 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
           connection.getCommandWriter().writeLine(command);
           connection.getCommandWriter().flush();
           session.getFileTransferClient().getHandler().getSession().getTransaction().setStopped(true);
+        }
+        else
+        {
+          VTConsole.print("\nVT>No file transfer is running!\nVT>");
+        }
+      }
+      else if (waitFor)
+      {
+        if (session.getFileTransferClient().aliveThread())
+        {
+          connection.getCommandWriter().writeLine(command);
+          connection.getCommandWriter().flush();
         }
         else
         {
@@ -59,6 +75,8 @@ public class VTFILETRANSFER extends VTClientStandardRemoteConsoleCommandProcesso
         {
           //t.printStackTrace();
         }
+        connection.getCommandWriter().writeLine(command);
+        connection.getCommandWriter().flush();
       }
       if (parsed[1].toUpperCase().contains("G") && !parsed[1].toUpperCase().contains("P"))
       {

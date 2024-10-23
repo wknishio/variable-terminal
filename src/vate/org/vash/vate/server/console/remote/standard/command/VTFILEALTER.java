@@ -27,7 +27,7 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
         {
           waitFor = true;
         }
-        if (parsed[1].toUpperCase().startsWith("M"))
+        if (parsed[1].toUpperCase().contains("M"))
         {
           if (session.getFileModifyOperation().isFinished())
           {
@@ -47,7 +47,7 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().flush();
           }
         }
-        else if (parsed[1].toUpperCase().startsWith("C"))
+        else if (parsed[1].toUpperCase().contains("C"))
         {
           if (session.getFileModifyOperation().isFinished())
           {
@@ -79,7 +79,7 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
         {
           waitFor = true;
         }
-        if (parsed[1].toUpperCase().startsWith("F"))
+        if (parsed[1].toUpperCase().contains("F"))
         {
           if (session.getFileModifyOperation().isFinished())
           {
@@ -98,7 +98,7 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().flush();
           }
         }
-        else if (parsed[1].toUpperCase().startsWith("D"))
+        else if (parsed[1].toUpperCase().contains("D"))
         {
           if (session.getFileModifyOperation().isFinished())
           {
@@ -117,7 +117,7 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
             connection.getResultWriter().flush();
           }
         }
-        else if (parsed[1].toUpperCase().startsWith("R"))
+        else if (parsed[1].toUpperCase().contains("R"))
         {
           if (session.getFileModifyOperation().isFinished())
           {
@@ -148,13 +148,13 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
         {
           waitFor = true;
         }
-        if (parsed[1].toUpperCase().startsWith("S"))
+        if (parsed[1].toUpperCase().contains("S"))
         {
           if (session.getFileModifyOperation().isFinished())
           {
             session.getFileModifyOperation().joinThread();
           }
-          if (!session.getFileModifyOperation().aliveThread())
+          if (session.getFileModifyOperation().aliveThread())
           {
             connection.getResultWriter().write("\nVT>Trying to interrupt remote file change!\nVT>");
             connection.getResultWriter().flush();
@@ -162,6 +162,14 @@ public class VTFILEALTER extends VTServerStandardRemoteConsoleCommandProcessor
             session.getFileModifyOperation().stopThread();
           }
           else
+          {
+            connection.getResultWriter().write("\nVT>No remote file change is running!\nVT>");
+            connection.getResultWriter().flush();
+          }
+        }
+        else if (waitFor)
+        {
+          if (!session.getFileModifyOperation().aliveThread())
           {
             connection.getResultWriter().write("\nVT>No remote file change is running!\nVT>");
             connection.getResultWriter().flush();

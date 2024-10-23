@@ -782,7 +782,7 @@ public class VTServerRuntimeExecutor extends VTTask
               try
               {
                 Integer exitValue = process.getExitValue();
-                message.append("\nVT>Number: [" + (i++) + "]" + "\nVT>Command: [" + process.getCommand() + "]" + "\nVT>Restart: [" + (process.isRestart() ? "Enabled" : "Disabled") + "]" + "\nVT>Timeout: [" + (process.getTimeout() > 0 ? process.getTimeout() : "Disabled") + "]" + "\nVT>Output: [" + (process.isWrite() ? "Enabled" : "Disabled") + "]" + "\nVT>State: [" + (exitValue == null ? "Running" : "Terminated]\nVT>Return Code: [" + exitValue) + "]" + "\nVT>");
+                message.append("\nVT>Number: [" + (i++) + "]" + "\nVT>Command: [" + process.getCommand() + "]" + "\nVT>Restart: [" + (process.isRestart() ? "Enabled" : "Disabled") + "]" + "\nVT>Timeout: [" + (process.getTimeout() > 0 ? process.getTimeout() : "Disabled") + "]" + "\nVT>State: [" + (exitValue == null ? "Running" : "Terminated]\nVT>Return Code: [" + exitValue) + "]" + "\nVT>");
               }
               catch (Throwable e)
               {
@@ -818,7 +818,7 @@ public class VTServerRuntimeExecutor extends VTTask
               }
               found = true;
               Integer exitValue = process.getExitValue();
-              message.append("\nVT>Number: [" + splitCommand[2] + "]" + "\nVT>Command: [" + process.getCommand() + "]" + "\nVT>Restart: [" + (process.isRestart() ? "Enabled" : "Disabled") + "]" + "\nVT>Timeout: [" + (process.getTimeout() > 0 ? process.getTimeout() : "Disabled") + "]" + "\nVT>Output: [" + (process.isWrite() ? "Enabled" : "Disabled") + "]" + "\nVT>State: [" + (exitValue == null ? "Running" : "Terminated]\nVT>Return Code: [" + exitValue) + "]" + "\nVT>");
+              message.append("\nVT>Number: [" + splitCommand[2] + "]" + "\nVT>Command: [" + process.getCommand() + "]" + "\nVT>Restart: [" + (process.isRestart() ? "Enabled" : "Disabled") + "]" + "\nVT>Timeout: [" + (process.getTimeout() > 0 ? process.getTimeout() : "Disabled") + "]" + "\nVT>State: [" + (exitValue == null ? "Running" : "Terminated]\nVT>Return Code: [" + exitValue) + "]" + "\nVT>");
               synchronized (this)
               {
                 try
@@ -889,7 +889,7 @@ public class VTServerRuntimeExecutor extends VTTask
                   }
                   found = true;
                   Integer exitValue = process.getExitValue();
-                  message.append("\nVT>Number: [" + (i++) + "]" + "\nVT>Command: [" + process.getCommand() + "]" + "\nVT>Restart: [" + (process.isRestart() ? "Enabled" : "Disabled") + "]" + "\nVT>Timeout: [" + (process.getTimeout() > 0 ? process.getTimeout() : "Disabled") + "]" + "\nVT>Output: [" + (process.isWrite() ? "Enabled" : "Disabled") + "]" + "\nVT>State: [" + (exitValue == null ? "Running" : "Terminated]\nVT>Return Code: [" + exitValue) + "]" + "\nVT>");
+                  message.append("\nVT>Number: [" + (i++) + "]" + "\nVT>Command: [" + process.getCommand() + "]" + "\nVT>Restart: [" + (process.isRestart() ? "Enabled" : "Disabled") + "]" + "\nVT>Timeout: [" + (process.getTimeout() > 0 ? process.getTimeout() : "Disabled") + "]" + "\nVT>State: [" + (exitValue == null ? "Running" : "Terminated]\nVT>Return Code: [" + exitValue) + "]" + "\nVT>");
                 }
                 else
                 {

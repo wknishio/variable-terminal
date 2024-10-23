@@ -21,13 +21,17 @@ public class VTFILETRANSFER extends VTServerStandardRemoteConsoleCommandProcesso
       {
         waitFor = true;
       }
-      if (parsed[1].toUpperCase().startsWith("S"))
+      if (parsed[1].toUpperCase().contains("S"))
       {
         //session.getFileTransferServer().getHandler().getSession().getTransaction().setStopped(true);
       }
-      else
+      else if (waitFor)
       {
-        
+//        if (!session.getFileTransferServer().aliveThread())
+//        {
+//          connection.getResultWriter().write("\nVT>No file transfer is running!\nVT>");
+//          connection.getResultWriter().flush();
+//        }
       }
     }
     else if (parsed.length >= 4)
