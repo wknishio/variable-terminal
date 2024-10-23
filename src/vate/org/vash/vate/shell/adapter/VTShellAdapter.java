@@ -314,7 +314,7 @@ public class VTShellAdapter
         javaBuilder.environment().putAll(shellBuilder.environment());
         commandBuilder = javaBuilder;
       }
-      VTRuntimeProcess runtimeProcess = new VTRuntimeProcess(null, commandBuilder, executorService, null, false, false, 0);
+      VTRuntimeProcess runtimeProcess = new VTRuntimeProcess(null, commandBuilder, executorService, null, null, false, false, false, 0);
       shellProcessor.setRuntimeProcess(runtimeProcess);
       if (shellType != VTShellProcessor.SHELL_TYPE_PROCESS)
       {

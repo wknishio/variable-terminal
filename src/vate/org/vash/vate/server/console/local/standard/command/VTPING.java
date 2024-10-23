@@ -39,12 +39,12 @@ public class VTPING extends VTServerStandardLocalConsoleCommandProcessor
             long clientTime = session.getRemoteNanoDelay();
             long serverTime = session.getLocalNanoDelay();
             long clientNanoseconds = clientTime;
-            long clientMillisseconds = clientTime / 1000000;
+            long clientMilliseconds = clientTime / 1000000;
             long serverNanoseconds = serverTime;
-            long serverMillisseconds = serverTime / 1000000;
+            long serverMilliseconds = serverTime / 1000000;
             message.append("\nVT>Host address: [" + hostAddress + "]" +
-            "\nVT>Client connection latency: [" + clientNanoseconds + "] ns or [" + clientMillisseconds + "] ms" +
-            "\nVT>Server connection latency: [" + serverNanoseconds + "] ns or [" + serverMillisseconds + "] ms" +
+            "\nVT>Client connection latency: [" + clientNanoseconds + "] ns or [" + clientMilliseconds + "] ms" +
+            "\nVT>Server connection latency: [" + serverNanoseconds + "] ns or [" + serverMilliseconds + "] ms" +
             "\nVT>");
           }
         }

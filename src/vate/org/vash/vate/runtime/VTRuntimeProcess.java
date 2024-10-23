@@ -21,24 +21,30 @@ public class VTRuntimeProcess
   private OutputStream out;
   
   // private VTRuntimeProcessKill killer = new VTRuntimeProcessKill();
-  private VTRuntimeProcessInputRedirector inputRedirector;
+  private VTRuntimeProcessDataRedirector outputDataRedirector;
+  private VTRuntimeProcessDataRedirector inputDataRedirector;
   // private VTRuntimeProcessOutputConsumer errorConsumer;
   private VTRuntimeProcessExitListener exitListener;
   private VTRuntimeProcessTimeoutKill timeoutKill;
   
   private ExecutorService executorService;
-  private OutputStream redirect;
-  private boolean verbose;
+  private InputStream inputRedirect;
+  private OutputStream outputRedirect;
+  private boolean closeInputRedirect;
+  private boolean closeOutputRedirect;
   private boolean restart;
   private long timeout;
   
-  public VTRuntimeProcess(String command, ProcessBuilder builder, ExecutorService executorService, OutputStream redirect, boolean verbose, boolean restart, long timeout)
+  public VTRuntimeProcess(String command, ProcessBuilder builder, ExecutorService executorService, InputStream inputRedirect, OutputStream outputRedirect, boolean closeInputRedirect, boolean closeOutputRedirect, boolean restart, long timeout)
   {
     this.command = command;
     this.builder = builder;
     this.executorService = executorService;
-    this.redirect = redirect;
-    this.verbose = verbose;
+    this.inputRedirect = inputRedirect;
+    this.outputRedirect = outputRedirect;
+    
+    this.closeOutputRedirect = closeOutputRedirect;
+    this.closeInputRedirect = closeInputRedirect;
     this.restart = restart;
     this.timeout = timeout;
   }
@@ -77,10 +83,17 @@ public class VTRuntimeProcess
     this.exitListener = new VTRuntimeProcessExitListener(this);
     executorService.execute(exitListener);
     
-    if (redirect != null)
+    if (inputRedirect != null)
     {
-      this.inputRedirector = new VTRuntimeProcessInputRedirector(in, redirect, verbose);
-      executorService.execute(inputRedirector);
+      this.inputDataRedirector = new VTRuntimeProcessDataRedirector(inputRedirect, out, closeInputRedirect);
+      executorService.execute(inputDataRedirector);
+      // executor.execute(errorConsumer);
+    }
+    
+    if (outputRedirect != null)
+    {
+      this.outputDataRedirector = new VTRuntimeProcessDataRedirector(in, outputRedirect, closeOutputRedirect);
+      executorService.execute(outputDataRedirector);
       // executor.execute(errorConsumer);
     }
     
@@ -150,14 +163,14 @@ public class VTRuntimeProcess
     return this.restart;
   }
   
-  public void setVerbose(boolean verbose)
+  public boolean isRead()
   {
-    this.verbose = verbose;
+    return outputRedirect != null;
   }
   
-  public boolean isVerbose()
+  public boolean isWrite()
   {
-    return this.verbose;
+    return inputRedirect != null;
   }
   
   public boolean isAlive()
@@ -193,11 +206,23 @@ public class VTRuntimeProcess
       killProcess(process, 1);
     }
     
-    if (inputRedirector != null)
+    if (inputDataRedirector != null)
     {
       try
       {
-        inputRedirector.stop();
+        inputDataRedirector.stop();
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    
+    if (outputDataRedirector != null)
+    {
+      try
+      {
+        outputDataRedirector.stop();
       }
       catch (Throwable e)
       {
