@@ -3,7 +3,10 @@ package org.vash.vate.runtime;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import org.vash.vate.reflection.VTReflectionUtils;
 
 import com.sun.jna.Pointer;
@@ -34,6 +37,22 @@ public class VTRuntimeProcess
   private boolean closeOutputRedirect;
   private boolean restart;
   private long timeout;
+  
+  private static Method processDestroyForciblyMethod;
+  private static Method processWaitForMethod;
+  
+  static
+  {
+    try
+    {
+      processDestroyForciblyMethod = Class.forName("java.lang.Process").getDeclaredMethod("destroyForcibly", (Class[])null);
+      processWaitForMethod = Class.forName("java.lang.Process").getDeclaredMethod("waitFor", new Class[] {Long.class, TimeUnit.class});
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
   
   public VTRuntimeProcess(String command, ProcessBuilder builder, ExecutorService executorService, InputStream inputRedirect, OutputStream outputRedirect, boolean closeInputRedirect, boolean closeOutputRedirect, boolean restart, long timeout)
   {
@@ -273,21 +292,30 @@ public class VTRuntimeProcess
     stop();
   }
   
-  private static void forceKillProcessID(long pid) throws Throwable
+  private static boolean forceKillProcessID(long pid)
   {
-    if (pid < 0)
+    try
     {
-      return;
+      if (pid < 0)
+      {
+        return false;
+      }
+      Runtime rt = Runtime.getRuntime();
+      if (VTReflectionUtils.detectWindows())
+      {
+        rt.exec(new String[] {"taskkill", "/f", "/PID", String.valueOf(pid)});
+      }
+      else
+      {
+        rt.exec(new String[] {"kill", "-9", String.valueOf(pid)});
+      }
+      return true;
     }
-    Runtime rt = Runtime.getRuntime();
-    if (VTReflectionUtils.detectWindows())
+    catch (Throwable t)
     {
-      rt.exec(new String[] {"taskkill", "/f", "/PID", String.valueOf(pid)});
+      
     }
-    else
-    {
-      rt.exec(new String[] {"kill", "-9", String.valueOf(pid)});
-    }
+    return false;
   }
   
   private static long getProcessID(Process p)
@@ -342,7 +370,33 @@ public class VTRuntimeProcess
     return alive;
   }
   
-  private static void killProcess(Process process, long delay)
+  private static boolean destroyForcibly(Process process)
+  {
+    if (processDestroyForciblyMethod == null || processWaitForMethod == null)
+    {
+      return false;
+    }
+    try
+    {
+      Object forced = processDestroyForciblyMethod.invoke(process, (Object[])null);
+      if (forced != null && forced instanceof Process)
+      {
+        Process destroyed = (Process) forced;
+        Object result = processWaitForMethod.invoke(destroyed, new Object[] {Long.valueOf(1000), TimeUnit.MILLISECONDS});
+        if (result instanceof Boolean)
+        {
+          return (Boolean)result;
+        }
+      }
+    }
+    catch (Throwable e)
+    {
+      
+    }
+    return false;
+  }
+  
+  private static boolean killProcess(Process process, long delay)
   {
     long pid = getProcessID(process);
     // int seconds = 0;
@@ -378,15 +432,13 @@ public class VTRuntimeProcess
       }
       if (!killed)
       {
-        try
-        {
-          forceKillProcessID(pid);
-        }
-        catch (Throwable e)
-        {
-          
-        }
+        killed = destroyForcibly(process);
+      }
+      if (!killed)
+      {
+        killed = forceKillProcessID(pid);
       }
     }
+    return killed;
   }
 }

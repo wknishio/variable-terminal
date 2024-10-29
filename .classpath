@@ -10,6 +10,7 @@
 	<classpathentry kind="src" path="src/compat"/>
 	<classpathentry kind="src" path="src/javapng"/>
 	<classpathentry kind="src" path="src/jna"/>
+	<classpathentry kind="src" path="src/jsap"/>
 	<classpathentry kind="src" path="src/jsocks"/>
 	<classpathentry kind="src" path="src/jzlib"/>
 	<classpathentry kind="src" path="src/lanterna"/>
@@ -25,7 +26,6 @@
 	<classpathentry kind="lib" path="lib/commons-lang3-3.1.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/concentus-opus.jar"/>
-	<classpathentry kind="lib" path="lib/jsap.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex.jar"/>
 	<classpathentry kind="lib" path="lib/png-encoder.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.25.jar"/>
