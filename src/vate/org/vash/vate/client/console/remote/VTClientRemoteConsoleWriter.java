@@ -121,7 +121,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
               sourceReader = null;
               continue;
             }
-            executeCommand(line.trim(), true);
+            executeCommand(line, true);
           }
           else
           {
@@ -151,12 +151,12 @@ public class VTClientRemoteConsoleWriter extends VTTask
               sourceReader = null;
               continue;
             }
-            executeCommand(line.trim(), true);
+            executeCommand(line, true);
           }
           else
           {
             String line = VTConsole.readLine(true);
-            executeCommand(line.trim(), false);
+            executeCommand(line, false);
           }
         }
       }
@@ -200,7 +200,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
       String line = "";
       while (!isStopped() && (line = reader.readLine()) != null)
       {
-        executeCommand(line.trim(), echo);
+        executeCommand(line, echo);
       }
     }
     catch (Throwable t)
@@ -239,7 +239,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     String[] scriptFilesArray = scriptFiles.split(";");
     for (String scriptFile : scriptFilesArray)
     {
-      executeFileScript(new File(scriptFile.trim()), charset, echo);
+      executeFileScript(new File(scriptFile), charset, echo);
     }
   }
   
@@ -257,7 +257,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
       String line = "";
       while (!isStopped() && (line = reader.readLine()) != null)
       {
-        executeCommand(line.trim(), echo);
+        executeCommand(line, echo);
       }
     }
     catch (Throwable t)

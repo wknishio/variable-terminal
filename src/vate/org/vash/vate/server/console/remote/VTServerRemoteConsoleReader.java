@@ -64,7 +64,7 @@ public class VTServerRemoteConsoleReader extends VTTask
       String line = "";
       while (!isStopped() && (line = reader.readLine()) != null)
       {
-        executeCommand(line.trim());
+        executeCommand(line);
       }
     }
     catch (Throwable t)
@@ -102,7 +102,7 @@ public class VTServerRemoteConsoleReader extends VTTask
       String line = "";
       while (!isStopped() && (line = reader.readLine()) != null)
       {
-        executeCommand(line.trim());
+        executeCommand(line);
       }
     }
     catch (Throwable t)

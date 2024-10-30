@@ -578,11 +578,12 @@ public class VTServerRuntimeExecutor extends VTTask
               outputRedirect = session.getConnection().getShellDataOutputStream();
             }
             
-            command = parseCommandParameter(command, parameterIndex, false);
+            String processCommand = parseCommandParameter(command, parameterIndex, false);
+            String parsedCommand = parseCommandParameter(command, parameterIndex, true);
             
-            String[] commands = CommandLineTokenizer.tokenize(command);
+            String[] processCommands = CommandLineTokenizer.tokenize(processCommand);
             
-            ProcessBuilder processBuilder = new ProcessBuilder(commands);
+            ProcessBuilder processBuilder = new ProcessBuilder(processCommands);
             //ProcessBuilder processBuilder = new ProcessBuilder(command);
             processBuilder.directory(getRuntimeBuilderWorkingDirectory());
             processBuilder.environment().clear();
@@ -590,7 +591,7 @@ public class VTServerRuntimeExecutor extends VTTask
             // processBuilder.environment().putAll(System.getenv());
             processBuilder.redirectErrorStream(true);
             
-            VTRuntimeProcess process = new VTRuntimeProcess(command, processBuilder, session.getExecutorService(), inputRedirect, outputRedirect, closeInputRedirect, closeOutputRedirect, process_restart, timeout_value);
+            VTRuntimeProcess process = new VTRuntimeProcess(parsedCommand, processBuilder, session.getExecutorService(), inputRedirect, outputRedirect, closeInputRedirect, closeOutputRedirect, process_restart, timeout_value);
             process.start();
             
             if (process_command == PROCESS_COMMAND_MANAGED)
@@ -598,7 +599,7 @@ public class VTServerRuntimeExecutor extends VTTask
               managedProcessList.add(process);
               synchronized (this)
               {
-                connection.getResultWriter().write("\nVT>Managed process with command [" + command + "] created!\nVT>");
+                connection.getResultWriter().write("\nVT>Managed process with command [" + parsedCommand + "] created!\nVT>");
                 connection.getResultWriter().flush();
                 finished = true;
               }
@@ -609,7 +610,7 @@ public class VTServerRuntimeExecutor extends VTTask
               freeProcessList.add(process);
               synchronized (this)
               {
-                connection.getResultWriter().write("\nVT>Free process with command [" + command + "] executed!\nVT>");
+                connection.getResultWriter().write("\nVT>Free process with command [" + parsedCommand + "] executed!\nVT>");
                 connection.getResultWriter().flush();
                 finished = true;
               }
@@ -1056,13 +1057,13 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            command = parseCommandParameter(command, 2, true);
+            String commandData = parseCommandParameter(command, 2, true);
             for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               try
               {
                 //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + 2);
-                process.getOut().write((command + "\n").getBytes());
+                process.getOut().write((commandData + "\n").getBytes());
                 process.getOut().flush();
               }
               catch (Throwable e)
@@ -1083,8 +1084,8 @@ public class VTServerRuntimeExecutor extends VTTask
             try
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
-              command = parseCommandParameter(command, 3, true);
-              managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().write((command + "\n").getBytes());
+              String processData = parseCommandParameter(command, 3, true);
+              managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().write((processData + "\n").getBytes());
               managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
               synchronized (this)
               {
@@ -1136,7 +1137,7 @@ public class VTServerRuntimeExecutor extends VTTask
             try
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
-              command = parseCommandParameter(command, 3, true);
+              String commandData = parseCommandParameter(command, 3, true);
               found = false;
               // VTTerminal.println(splitCommand[1]);
               for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
@@ -1144,7 +1145,7 @@ public class VTServerRuntimeExecutor extends VTTask
                 if (process.getCommand().contains(splitCommand[2]))
                 {
                   found = true;
-                  process.getOut().write((command + "\n").getBytes());
+                  process.getOut().write((commandData + "\n").getBytes());
                   process.getOut().flush();
                 }
               }
@@ -1192,7 +1193,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            command = parseCommandParameter(command, 2, true);
+            String commandData = parseCommandParameter(command, 2, true);
             for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               try
@@ -1203,7 +1204,7 @@ public class VTServerRuntimeExecutor extends VTTask
                 byte[] data = null;
                 try
                 {
-                  data = org.apache.commons.codec.binary.Base64.decodeBase64(command);
+                  data = org.apache.commons.codec.binary.Base64.decodeBase64(commandData);
                 }
                 catch (Throwable e)
                 {
@@ -1239,12 +1240,12 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               //command = command.substring(command.indexOf(splitCommand[3]));
-              command = parseCommandParameter(command, 3, true);
+              String commandData = parseCommandParameter(command, 3, true);
               
               byte[] data = null;
               try
               {
-                data = org.apache.commons.codec.binary.Base64.decodeBase64(command);
+                data = org.apache.commons.codec.binary.Base64.decodeBase64(commandData);
               }
               catch (Throwable e)
               {
@@ -1311,12 +1312,12 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               //command = command.substring(command.indexOf(splitCommand[3]));
-              command = parseCommandParameter(command, 3, true);
+              String commandData = parseCommandParameter(command, 3, true);
               
               byte[] data = null;
               try
               {
-                data = org.apache.commons.codec.binary.Base64.decodeBase64(command);
+                data = org.apache.commons.codec.binary.Base64.decodeBase64(commandData);
               }
               catch (Throwable e)
               {
@@ -1386,7 +1387,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            command = parseCommandParameter(command, 2, true);
+            String commandData = parseCommandParameter(command, 2, true);
             for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               try
@@ -1397,7 +1398,7 @@ public class VTServerRuntimeExecutor extends VTTask
                 byte[] data = null;
                 try
                 {
-                  data = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(command).getBytes("UTF-8");
+                  data = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(commandData).getBytes("UTF-8");
                 }
                 catch (Throwable e)
                 {
@@ -1433,12 +1434,12 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               //command = command.substring(command.indexOf(splitCommand[3]));
-              command = parseCommandParameter(command, 3, true);
+              String commandData = parseCommandParameter(command, 3, true);
               
               byte[] data = null;
               try
               {
-                data = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(command).getBytes("UTF-8");
+                data = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(commandData).getBytes("UTF-8");
               }
               catch (Throwable e)
               {
@@ -1505,12 +1506,12 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               //command = command.substring(command.indexOf(splitCommand[3]));
-              command = parseCommandParameter(command, 3, true);
+              String commandData = parseCommandParameter(command, 3, true);
               
               byte[] data = null;
               try
               {
-                data = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(command).getBytes("UTF-8");
+                data = org.apache.commons.lang3.StringEscapeUtils.unescapeJava(commandData).getBytes("UTF-8");
               }
               catch (Throwable e)
               {
