@@ -716,12 +716,12 @@ public class VTServerConnection
     // multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED,
     // 12);
     
-    shellDataOutputStream = VTCompressorSelector.createBufferedZlibOutputStreamFiltered(shellOutputStream);
+    shellDataOutputStream = VTCompressorSelector.createBufferedSyncFlushZlibOutputStreamFiltered(shellOutputStream);
     // shellDataOutputStream =
     // VTCompressorSelector.createFlushBufferedSyncFlushDeflaterOutputStream(shellOutputStream);
     // shellDataOutputStream = shellOutputStream;
     
-    shellDataInputStream = VTCompressorSelector.createBufferedZlibInputStream(shellInputStream);
+    shellDataInputStream = VTCompressorSelector.createBufferedSyncFlushZlibInputStream(shellInputStream);
     // shellDataInputStream =
     // VTCompressorSelector.createFlushBufferedSyncFlushInflaterInputStream(shellInputStream);
     // shellDataInputStream = shellInputStream;
@@ -739,7 +739,7 @@ public class VTServerConnection
     heavyImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedZstdOutputStream(graphicsHeavyImageOutputStream));
     
     fastImageDataInputStream = new VTLittleEndianInputStream(graphicsFastImageInputStream);
-    fastImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedZlibOutputStreamFiltered(graphicsFastImageOutputStream));
+    fastImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedNoFlushZlibOutputStreamFiltered(graphicsFastImageOutputStream));
     
     clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
     clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
@@ -1103,7 +1103,7 @@ public class VTServerConnection
     heavyImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedZstdOutputStream(graphicsHeavyImageOutputStream));
     
     fastImageDataInputStream = new VTLittleEndianInputStream(graphicsFastImageInputStream);
-    fastImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedZlibOutputStreamFiltered(graphicsFastImageOutputStream));
+    fastImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedNoFlushZlibOutputStreamFiltered(graphicsFastImageOutputStream));
     
     resetClipboardStreams();
   }

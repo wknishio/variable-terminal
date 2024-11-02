@@ -15,6 +15,7 @@
 	<classpathentry kind="src" path="src/jzlib"/>
 	<classpathentry kind="src" path="src/lanterna"/>
 	<classpathentry kind="src" path="src/lz4"/>
+	<classpathentry kind="src" path="src/pngencoder"/>
 	<classpathentry kind="src" path="src/portmapper"/>
 	<classpathentry kind="src" path="src/snappy"/>
 	<classpathentry kind="src" path="src/throttle"/>
@@ -27,7 +28,7 @@
 	<classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/concentus-opus.jar"/>
 	<classpathentry kind="lib" path="lib/jspeex.jar"/>
-	<classpathentry kind="lib" path="lib/png-encoder.jar"/>
+	<classpathentry kind="lib" path="lib/objectplanet-png-encoder.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-api-1.7.25.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j-nop-1.7.25.jar"/>
 	<classpathentry kind="output" path="bin"/>

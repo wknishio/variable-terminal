@@ -33,7 +33,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.objectplanet.image.PngEncoder;
+//import com.objectplanet.image.PngEncoder;
+import com.pngencoder.PngEncoder;
 
 public class VTGraphicsModeServerWriter implements Runnable
 {
@@ -298,8 +299,9 @@ public class VTGraphicsModeServerWriter implements Runnable
   public void sendImageRefresh() throws IOException
   {
     //System.out.println("sendImageRefresh");
+    //long startTime = System.nanoTime();
+    //long pixels = 0;
     needRefresh = false;
-    // startTime = System.currentTimeMillis();
     List<Rectangle> blockAreas = VTImageDataUtils.splitBlockArea(imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
     //System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourRectangles(blockAreas);
@@ -340,6 +342,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().flush();
       for (Rectangle blockArea : blockAreas)
       {
+        //pixels += blockArea.width * blockArea.height;
         imageOutputBuffer.reset();
         jpgWriter.setOutput(jpgImageOutputStream);
         BufferedImage subImage = imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height);
@@ -366,6 +369,7 @@ public class VTGraphicsModeServerWriter implements Runnable
         pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
         for (Rectangle blockArea : blockAreas)
         {
+          //pixels += blockArea.width * blockArea.height;
           imageOutputBuffer.reset();
           pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
           connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
@@ -382,9 +386,10 @@ public class VTGraphicsModeServerWriter implements Runnable
         convertedGraphics = convertedDataBuffer.createGraphics();
         convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
         convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
-        pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
+        //pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
         for (Rectangle blockArea : blockAreas)
         {
+          //pixels += blockArea.width * blockArea.height;
           imageOutputBuffer.reset();
           pngEncoder.encode(convertedDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
           connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
@@ -403,9 +408,10 @@ public class VTGraphicsModeServerWriter implements Runnable
           convertedGraphics = convertedDataBuffer.createGraphics();
           convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
           convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
-          pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
+          //pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
           for (Rectangle blockArea : blockAreas)
           {
+            //pixels += blockArea.width * blockArea.height;
             imageOutputBuffer.reset();
             pngEncoder.encode(convertedDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
             connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
@@ -416,9 +422,10 @@ public class VTGraphicsModeServerWriter implements Runnable
         }
         else
         {
-          pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
+          //pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
           for (Rectangle blockArea : blockAreas)
           {
+            //pixels += blockArea.width * blockArea.height;
             imageOutputBuffer.reset();
             pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
             connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
@@ -430,13 +437,14 @@ public class VTGraphicsModeServerWriter implements Runnable
         connection.getGraphicsDirectImageDataOutputStream().flush();
       }
     }
-    // endTime = System.currentTimeMillis();
-    // System.out.println("image encoding time: " + (endTime - startTime));
-    // System.out.println("image size:" + imageOutputBuffer.count());
+    //long endTime = System.nanoTime();
+    //System.out.println("image encoding time: " + (endTime - startTime) / 1000);
   }
   
   public void sendImageDifference() throws IOException
   {
+    //long startTime = System.nanoTime();
+    //long pixels = 0;
     needRefresh = false;
     List<Rectangle> blockAreas = null;
     if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
@@ -491,6 +499,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().flush();
       for (Rectangle blockArea : blockAreas)
       {
+        //pixels += blockArea.width * blockArea.height;
         imageOutputBuffer.reset();
         jpgWriter.setOutput(jpgImageOutputStream);
         BufferedImage subImage = imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height);
@@ -515,6 +524,7 @@ public class VTGraphicsModeServerWriter implements Runnable
         pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
         for (Rectangle blockArea : blockAreas)
         {
+          //pixels += blockArea.width * blockArea.height;
           imageOutputBuffer.reset();
           pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
           connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
@@ -537,6 +547,7 @@ public class VTGraphicsModeServerWriter implements Runnable
         pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
         for (Rectangle blockArea : blockAreas)
         {
+          //pixels += blockArea.width * blockArea.height;
           imageOutputBuffer.reset();
           pngEncoder.encode(convertedDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
           connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
@@ -561,6 +572,7 @@ public class VTGraphicsModeServerWriter implements Runnable
           pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
           for (Rectangle blockArea : blockAreas)
           {
+            //pixels += blockArea.width * blockArea.height;
             imageOutputBuffer.reset();
             pngEncoder.encode(convertedDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
             connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
@@ -574,6 +586,7 @@ public class VTGraphicsModeServerWriter implements Runnable
           pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
           for (Rectangle blockArea : blockAreas)
           {
+            //pixels += blockArea.width * blockArea.height;
             imageOutputBuffer.reset();
             pngEncoder.encode(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), imageOutputBuffer);
             connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
@@ -585,6 +598,8 @@ public class VTGraphicsModeServerWriter implements Runnable
         connection.getGraphicsDirectImageDataOutputStream().flush();
       }
     }
+    //long endTime = System.nanoTime();
+    //System.out.println("image encoding time: " + (endTime - startTime) / 1000);
   }
   
   public void sendCustomDifference() throws IOException
@@ -813,11 +828,15 @@ public class VTGraphicsModeServerWriter implements Runnable
   
   public void run()
   {
-    pngEncoder = new PngEncoder(PngEncoder.COLOR_INDEXED, PngEncoder.BEST_SPEED);
-    pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
     vtCustomCodec = new VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII();
+    
     try
     {
+      pngEncoder = new PngEncoder().withCompressionLevel(1);
+      
+      //pngEncoder = new PngEncoder(PngEncoder.COLOR_INDEXED, PngEncoder.BEST_SPEED);
+      //pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
+      
       jpgImageOutputStream = ImageIO.createImageOutputStream(imageOutputBuffer);
       jpgWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
       jpgWriterParam = jpgWriter.getDefaultWriteParam();
@@ -837,7 +856,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     }
     catch (Throwable e1)
     {
-      
+      //e1.printStackTrace();
     }
     while (!stopped)
     {
