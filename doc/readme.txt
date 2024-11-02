@@ -185,7 +185,7 @@ Those are the third party libraries used in this software:
 * Java Native Access by Todd Fast/Timothy Wall/Liang Chen, for native calls
 * jsocks by Kirill Kouzoubov/Robert Simac, for SOCKS tunneling support
 * JSAP by Martian Software, for command parsing
-* PngEncoder by ObjectPlanet, for better PNG image encoding
+* PngEncoder by ObjectPlanet, for faster PNG image encoding
 * ARGBPixelGrabber by pumpernickel, for image data extraction
 * UPNPLib by sbbi, for UPnP NAT port forwarding support
 * TomP2P by Thomas Bocek, for NAT-PMP NAT port forwarding support
@@ -204,6 +204,7 @@ Those are the third party libraries used in this software:
 * commons-httpclient by Apache Software Foundation, for client HTTP tunneling
 * commons-rng by Apache Software Foundation, for splitmix64 prng
 * Base85 by Sheep-y, for backported Base85 encoder/decoder
+* PngEncoder by Looklet, for better PNG image encoding
 
 ## Additional utilities
 

@@ -32,7 +32,7 @@ import org.vash.vate.task.VTTask;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import com.objectplanet.image.PngEncoder;
+import com.pngencoder.PngEncoder;
 
 // import org.eclipse.swt.SWT;
 
@@ -73,10 +73,12 @@ public class VTServerScreenshotTask extends VTTask
     this.finished = true;
     this.deviceNumber = null;
     this.useJPG = false;
-    this.pngEncoder = new PngEncoder(PngEncoder.COLOR_TRUECOLOR, PngEncoder.BEST_SPEED);
-    this.pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
     try
     {
+      this.pngEncoder = new PngEncoder().withCompressionLevel(1);
+      //this.pngEncoder = new PngEncoder(PngEncoder.COLOR_TRUECOLOR, PngEncoder.BEST_SPEED);
+      //this.pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
+      
       this.jpgWriter = ImageIO.getImageWritersByFormatName("jpeg").next();
       this.jpgWriterParam = jpgWriter.getDefaultWriteParam();
       if (jpgWriterParam.canWriteCompressed())
