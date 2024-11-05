@@ -102,19 +102,24 @@ public class VTManagedClientSocket
       return null;
     }
     
-    public void ping()
+    public Socket getConnectionSocket()
+    {
+      return connection.getConnectionSocket();
+    }
+    
+    public void pingConnection()
     {
       session.ping();
     }
     
-    public boolean ping(long timeout)
+    public long ping()
     {
-      return pingListener.ping(timeout);
+      return pingListener.ping();
     }
     
-    public Socket getConnectionSocket()
+    public long ping(long timeoutNanoSeconds)
     {
-      return connection.getConnectionSocket();
+      return pingListener.ping(timeoutNanoSeconds);
     }
   }
   
@@ -215,6 +220,16 @@ public class VTManagedClientSocket
   {
     this.socketListener = socketListener;
   }
+  
+//  public void setDataTimeout(int timeout)
+//  {
+//    vtclient.setDataTimeout(timeout);
+//  }
+//  
+//  public void setPingInterval(int interval)
+//  {
+//    vtclient.setPingInterval(interval);
+//  }
   
 //  public static void main(String[] args)
 //  {

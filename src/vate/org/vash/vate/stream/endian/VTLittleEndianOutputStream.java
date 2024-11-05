@@ -191,4 +191,16 @@ public final class VTLittleEndianOutputStream extends OutputStream implements Da
     byte[] utf = s.getBytes("UTF-8");
     writeData(utf);
   }
+  
+  public final void write(final String s) throws IOException
+  {
+    byte[] utf = s.getBytes("UTF-8");
+    writeData(utf);
+  }
+  
+  public final void write(char[] buf, int off, int len) throws IOException
+  {
+    byte[] utf = String.valueOf(buf, off, len).getBytes("UTF-8");
+    writeData(utf);
+  }
 }

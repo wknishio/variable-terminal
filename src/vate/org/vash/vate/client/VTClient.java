@@ -59,6 +59,10 @@ public class VTClient implements Runnable
   private boolean retry = false;
   private boolean manual = false;
   private List<VTClientSessionListener> listeners = new ArrayList<VTClientSessionListener>();
+  private int dataTimeout = VT.VT_DATA_TIMEOUT_MILLISECONDS;
+  private int pingInterval = VT.VT_PING_INTERVAL_MILLISECONDS;
+  private int reconnectTimeout = VT.VT_RECONNECT_TIMEOUT_MILLISECONDS;
+  
   private static final String VT_CLIENT_SETTINGS_COMMENTS = 
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
   "#vate.client.connection.mode  values: default active(A), passive(P)\r\n" + 
@@ -2135,4 +2139,35 @@ public class VTClient implements Runnable
 //      trayIconInterface.displayMessage(caption, text);
 //    }
 //  }
+  
+  public void setDataTimeout(int timeout)
+  {
+    this.dataTimeout = timeout;
+  }
+  
+  public int getDataTimeout()
+  {
+    return dataTimeout;
+  }
+  
+  public void setPingInterval(int interval)
+  {
+    this.pingInterval = interval;
+  }
+  
+  public int getPingInterval()
+  {
+    return pingInterval;
+  }
+  
+  public void setReconnectTimeout(int timeout)
+  {
+    this.reconnectTimeout = timeout;
+  }
+  
+  public int getReconnectTimeout()
+  {
+    return reconnectTimeout;
+  }
+
 }

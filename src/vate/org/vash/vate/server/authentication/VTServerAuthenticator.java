@@ -40,7 +40,7 @@ public class VTServerAuthenticator
         {
           synchronized (this)
           {
-            wait(VT.VT_AUTHENTICATION_TIMEOUT_MILLISECONDS);
+            wait(server.getDataTimeout());
           }
         }
       }

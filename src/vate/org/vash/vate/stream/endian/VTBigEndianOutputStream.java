@@ -6,8 +6,8 @@ import java.io.OutputStream;
 
 public final class VTBigEndianOutputStream extends OutputStream implements DataOutput
 {
-  private final byte[] ushortBuffer;
   private final byte[] shortBuffer;
+  private final byte[] ushortBuffer;
   private final byte[] charBuffer;
   private final byte[] subintBuffer;
   private final byte[] intBuffer;
@@ -180,6 +180,18 @@ public final class VTBigEndianOutputStream extends OutputStream implements DataO
   public final void writeLine(final String s) throws IOException
   {
     byte[] utf = s.getBytes("UTF-8");
+    writeData(utf);
+  }
+  
+  public final void write(final String s) throws IOException
+  {
+    byte[] utf = s.getBytes("UTF-8");
+    writeData(utf);
+  }
+  
+  public final void write(char[] buf, int off, int len) throws IOException
+  {
+    byte[] utf = String.valueOf(buf, off, len).getBytes("UTF-8");
     writeData(utf);
   }
 }

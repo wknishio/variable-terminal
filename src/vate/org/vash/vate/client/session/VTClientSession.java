@@ -10,7 +10,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutorService;
 
-import org.vash.vate.VT;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.console.remote.VTClientRemoteConsoleReader;
@@ -63,7 +62,7 @@ public class VTClientSession
     this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executorService, sessionCloseables));
     // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
     // VTTunnelConnection(executor), executor);
-    this.pingServiceClient = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, 0, false, executorService);
+    this.pingServiceClient = new VTNanoPingService(client.getPingInterval(), 0, false, executorService);
     this.pingServiceClient.addListener(new VTNanoPingListener()
     {
       public void pingObtained(long nanoDelay)
@@ -71,7 +70,7 @@ public class VTClientSession
         sessionLocalNanoDelay = nanoDelay;
       }
     });
-    this.pingServiceServer = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, 0, true, executorService);
+    this.pingServiceServer = new VTNanoPingService(client.getPingInterval(), 0, true, executorService);
     this.pingServiceServer.addListener(new VTNanoPingListener()
     {
       public void pingObtained(long nanoDelay)

@@ -13,7 +13,6 @@ import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 public class VTNoFlushInflaterInputStream extends InflaterInputStream
 {
   private VTLittleEndianInputStream lin;
-  //private int available = 0;
   
   public VTNoFlushInflaterInputStream(InputStream in, Inflater inflater, int size)
   {
@@ -35,9 +34,6 @@ public class VTNoFlushInflaterInputStream extends InflaterInputStream
   
   protected void fill() throws IOException
   {
-    //ensureOpen();
-    //System.out.println("inflate.fill()");
-    //available = lin.readInt();
     int len = lin.readInt();
     if (buf.length < len)
     {
@@ -49,14 +45,10 @@ public class VTNoFlushInflaterInputStream extends InflaterInputStream
     }
     lin.readFully(buf, 0, len);
     inf.setInput(buf, 0, len);
-    //System.out.println("inflate.fill(" + len + ")");
-    //System.out.println("inflate.compressed(" + Arrays.toString(VTArrays.copyOfRange(buf, 0, len)) + ")");
   }
   
   public int read(byte[] b, int off, int len) throws IOException
   {
-    //System.out.println("inflate.read()");
-    //ensureOpen();
     if (b == null)
     {
       throw new NullPointerException();
@@ -77,16 +69,12 @@ public class VTNoFlushInflaterInputStream extends InflaterInputStream
         if (inf.finished() || inf.needsDictionary())
         {
           inf.reset();
-          //System.out.println("inflate.reset()");
         }
         if (inf.needsInput())
         {
           fill();
         }
       }
-      //System.out.println("inflate.read(" + n + ")");
-      //System.out.println("inflate.read(" + Arrays.toString(VTArrays.copyOfRange(b, off, n)) + ")");
-      //available -= n;
       return n;
     }
     catch (DataFormatException e)

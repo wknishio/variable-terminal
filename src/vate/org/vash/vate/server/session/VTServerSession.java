@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
-import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vash.vate.graphics.clipboard.VTClipboardTransferTask;
@@ -141,7 +140,7 @@ public class VTServerSession
     this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executorService, sessionCloseables));
     // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
     // VTTunnelConnection(executor), executor);
-    this.pingServiceClient = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS / 2, false, executorService);
+    this.pingServiceClient = new VTNanoPingService(server.getPingInterval(), server.getPingInterval() / 2, false, executorService);
     this.pingServiceClient.addListener(new VTNanoPingListener()
     {
       public void pingObtained(long nanoDelay)
@@ -149,7 +148,7 @@ public class VTServerSession
         sessionLocalNanoDelay = nanoDelay;
       }
     });
-    this.pingServiceServer = new VTNanoPingService(VT.VT_PING_SERVICE_INTERVAL_MILLISECONDS, 0, true, executorService);
+    this.pingServiceServer = new VTNanoPingService(server.getPingInterval(), 0, true, executorService);
     this.pingServiceServer.addListener(new VTNanoPingListener()
     {
       public void pingObtained(long nanoDelay)

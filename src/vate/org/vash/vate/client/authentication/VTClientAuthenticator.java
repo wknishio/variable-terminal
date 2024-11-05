@@ -37,7 +37,7 @@ public class VTClientAuthenticator
         {
           synchronized (this)
           {
-            wait(VT.VT_AUTHENTICATION_TIMEOUT_MILLISECONDS);
+            wait(client.getDataTimeout());
           }
         }
       }

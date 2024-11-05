@@ -35,14 +35,19 @@ public class VTManagedSocket extends Socket implements Closeable
     return managedConnection;
   }
   
-  public void ping()
+  public void pingConnection()
   {
-    managedConnection.ping();
+    managedConnection.pingConnection();
   }
   
-  public boolean ping(long timeout)
+  public long ping()
   {
-    return managedConnection.ping(timeout);
+    return managedConnection.ping();
+  }
+  
+  public long ping(long timeoutNanoSeconds)
+  {
+    return managedConnection.ping(timeoutNanoSeconds);
   }
   
   public InputStream getInputStream()

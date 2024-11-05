@@ -72,6 +72,10 @@ public class VTServer implements Runnable
   private boolean running = true;
   private boolean reconfigure = false;
   private List<VTServerSessionListener> listeners = new ArrayList<VTServerSessionListener>();
+  private int dataTimeout = VT.VT_DATA_TIMEOUT_MILLISECONDS;
+  private int pingInterval = VT.VT_PING_INTERVAL_MILLISECONDS;
+  private int reconnectTimeout = VT.VT_RECONNECT_TIMEOUT_MILLISECONDS;
+  
   private static final String VT_SERVER_SETTINGS_COMMENTS = 
   "Variable-Terminal server settings file, supports UTF-8\r\n" + 
   "#vate.server.connection.mode  values: default passive(P), active(A)\r\n" + 
@@ -2253,5 +2257,35 @@ public class VTServer implements Runnable
   public void setSessionShell(String sessionShell)
   {
     this.sessionShell = sessionShell;
+  }
+  
+  public void setDataTimeout(int timeout)
+  {
+    this.dataTimeout = timeout;
+  }
+  
+  public int getDataTimeout()
+  {
+    return dataTimeout;
+  }
+  
+  public void setPingInterval(int interval)
+  {
+    this.pingInterval = interval;
+  }
+  
+  public int getPingInterval()
+  {
+    return pingInterval;
+  }
+  
+  public void setReconnectTimeout(int timeout)
+  {
+    this.reconnectTimeout = timeout;
+  }
+  
+  public int getReconnectTimeout()
+  {
+    return reconnectTimeout;
   }
 }

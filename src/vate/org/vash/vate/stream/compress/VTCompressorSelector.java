@@ -77,7 +77,7 @@ public class VTCompressorSelector
     try
     {
       ZInputStream jzlibInflater = new ZInputStream(in, true, VT.VT_COMPRESSION_BUFFER_SIZE_BYTES);
-      //jzlibInflater.setFlushMode(JZlib.Z_SYNC_FLUSH);
+      jzlibInflater.setFlushMode(JZlib.Z_SYNC_FLUSH);
       return jzlibInflater;
       //VTNoFlushInflaterInputStream javaInflaterInputStream = new VTNoFlushInflaterInputStream(in, new Inflater(true), VT.VT_COMPRESSION_BUFFER_SIZE_BYTES);
       //return javaInflaterInputStream;

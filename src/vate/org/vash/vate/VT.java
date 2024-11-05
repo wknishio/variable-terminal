@@ -41,12 +41,12 @@ public class VT
   public static final int VT_SECURITY_DIGEST_SIZE_BYTES = 64;
   public static final int VT_SECURITY_SEED_SIZE_BYTES = VT_SECURITY_DIGEST_SIZE_BYTES << 1;
   
-  public static final int VT_AUTHENTICATION_TIMEOUT_MILLISECONDS = 60000;
-  public static final int VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS = 60000;
-  public static final int VT_CONNECTION_ATTEMPT_TIMEOUT_MILLISECONDS = 60000;
-  public static final int VT_CLIENT_RECONNECTION_TIMEOUT_MILLISECONDS = 60000;
-  public static final int VT_DAEMON_RECONNECTION_TIMEOUT_MILLISECONDS = 3750;
-  public static final int VT_PING_SERVICE_INTERVAL_MILLISECONDS = 15000;
+  public static final int VT_CONNECT_TIMEOUT_MILLISECONDS = 60000;
+  public static final int VT_ACCEPT_TIMEOUT_MILLISECONDS = 60000;
+  public static final int VT_DATA_TIMEOUT_MILLISECONDS = 60000;
+  public static final int VT_PING_INTERVAL_MILLISECONDS = 15000;
+  public static final int VT_RECONNECT_TIMEOUT_MILLISECONDS = 60000;
+  public static final int VT_DAEMON_RECONNECT_TIMEOUT_MILLISECONDS = 3750;
   
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED = 0;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT = 1;

@@ -6,10 +6,11 @@ import java.util.concurrent.TimeUnit;
 
 import org.vash.vate.ping.VTNanoPingListener;
 
-public class VTManagedSocketPingListener implements VTNanoPingListener, Callable<Boolean>
+public class VTManagedSocketPingListener implements VTNanoPingListener, Callable<Long>
 {
   private ExecutorService executor;
   private VTManagedConnection connection;
+  private volatile Long pingResult = -1L;
   
   public VTManagedSocketPingListener(ExecutorService executor, VTManagedConnection connection)
   {
@@ -21,35 +22,56 @@ public class VTManagedSocketPingListener implements VTNanoPingListener, Callable
   {
     synchronized (this)
     {
+      pingResult = nanoDelay;
       notifyAll();
     }
   }
   
-  public boolean ping(long timeout)
+  public long ping(long timeoutNanoSeconds)
   {
-    boolean result = false;
+    synchronized (this)
+    {
+      if (pingResult == null)
+      {
+        pingResult = -1L;
+      }
+      notifyAll();
+    }
+    long result = -1;
     try
     {
-      result = executor.submit(this).get(timeout, TimeUnit.MILLISECONDS);
+      if (timeoutNanoSeconds > 0)
+      {
+        result = executor.submit(this).get(timeoutNanoSeconds, TimeUnit.NANOSECONDS);
+      }
+      else
+      {
+        result = executor.submit(this).get();
+      }
     } 
     catch (Throwable e)
     {
       
     }
-    synchronized (this)
-    {
-      notifyAll();
-    }
     return result;
   }
   
-  public Boolean call() throws Exception
+  public long ping()
+  {
+    return ping(0);
+  }
+  
+  public Long call() throws Exception
   {
     synchronized (this)
     {
-      connection.ping();
-      wait(0);
+      pingResult = null;
+      connection.pingConnection();
+      while (pingResult == null)
+      {
+        wait(0);
+      }
+      return pingResult;
     }
-    return true;
   }
 }
