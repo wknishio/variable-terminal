@@ -174,6 +174,11 @@ public class VTTunnelConnection
     return new VTTunnelRemoteSocketFactory(createRemoteSocketBuilder(channel));
   }
   
+  public VTTunnelRemoteSocketFactory createRemoteSocketFactory()
+  {
+    return createRemoteSocketFactory(responseChannel);
+  }
+  
   public Set<VTTunnelChannelBindSocketListener> getBindListeners()
   {
     return bindListeners;
