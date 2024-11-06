@@ -140,7 +140,7 @@ public class VTServerSession
     this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executorService, sessionCloseables));
     // this.socksTunnelsHandler = new VTTunnelConnectionHandler(new
     // VTTunnelConnection(executor), executor);
-    this.pingServiceClient = new VTNanoPingService(server.getPingInterval(), server.getPingInterval() / 2, false, executorService);
+    this.pingServiceClient = new VTNanoPingService(server.getPingIntervalMilliseconds(), server.getPingIntervalMilliseconds() / 2, false, executorService);
     this.pingServiceClient.addListener(new VTNanoPingListener()
     {
       public void pingObtained(long nanoDelay)
@@ -148,7 +148,7 @@ public class VTServerSession
         sessionLocalNanoDelay = nanoDelay;
       }
     });
-    this.pingServiceServer = new VTNanoPingService(server.getPingInterval(), 0, true, executorService);
+    this.pingServiceServer = new VTNanoPingService(server.getPingIntervalMilliseconds(), 0, true, executorService);
     this.pingServiceServer.addListener(new VTNanoPingListener()
     {
       public void pingObtained(long nanoDelay)

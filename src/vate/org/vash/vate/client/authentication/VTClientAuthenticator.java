@@ -37,7 +37,7 @@ public class VTClientAuthenticator
         {
           synchronized (this)
           {
-            wait(client.getDataTimeout());
+            wait(client.getPingLimitMilliseconds());
           }
         }
       }

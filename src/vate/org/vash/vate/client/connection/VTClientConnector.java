@@ -106,7 +106,7 @@ public class VTClientConnector implements Runnable
         {
           synchronized (this)
           {
-            wait(client.getReconnectTimeout());
+            wait(client.getReconnectTimeoutMilliseconds());
           }
         }
         // VTConsole.print("\nVT>AuthenticationTimeout");
@@ -580,7 +580,7 @@ public class VTClientConnector implements Runnable
       connection.getConnectionSocket().setTcpNoDelay(true);
       //connection.getConnectionSocket().setSoLinger(true, 0);
       //connection.getConnectionSocket().setKeepAlive(true);
-      connection.getConnectionSocket().setSoTimeout(client.getDataTimeout());
+      connection.getConnectionSocket().setSoTimeout(client.getPingLimitMilliseconds());
 //      connecting = false;
       if (encryptionType == null)
       {
@@ -656,7 +656,7 @@ public class VTClientConnector implements Runnable
       connection.getConnectionSocket().setTcpNoDelay(true);
       //connection.getConnectionSocket().setSoLinger(true, 0);
       //connection.getConnectionSocket().setKeepAlive(true);
-      connection.getConnectionSocket().setSoTimeout(client.getDataTimeout());
+      connection.getConnectionSocket().setSoTimeout(client.getPingLimitMilliseconds());
 //      connecting = false;
       if (encryptionType == null)
       {
@@ -822,7 +822,7 @@ public class VTClientConnector implements Runnable
       }
       if (!line.toUpperCase().startsWith("N"))
       {
-        VTConsole.print("VT>Repeat current session user and password?(Y/N, default:Y):");
+        VTConsole.print("VT>Repeat current session user and session password?(Y/N, default:Y):");
         line = VTConsole.readLine(true);
         if (line == null)
         {
@@ -840,17 +840,6 @@ public class VTClientConnector implements Runnable
         }
         else
         {
-          VTConsole.print("VT>Enter session shell(null for default):");
-          String shell = VTConsole.readLine(true);
-          if (shell == null)
-          {
-            VTRuntimeExit.exit(0);
-          }
-          else if (skipConfiguration)
-          {
-            return true;
-          }
-          setSessionShell(shell);
           VTConsole.print("VT>Enter session user:");
           String user = VTConsole.readLine(false);
           if (user == null)
@@ -943,7 +932,14 @@ public class VTClientConnector implements Runnable
         }
         if (line.length() > 0)
         {
-          hostPort = Integer.parseInt(line);
+          try
+          {
+            hostPort = Integer.parseInt(line);
+          }
+          catch (Throwable t)
+          {
+            hostPort = 6060;
+          }
         }
         else
         {
@@ -951,8 +947,7 @@ public class VTClientConnector implements Runnable
         }
         if (hostPort > 65535 || hostPort < 1)
         {
-          VTConsole.print("VT>Invalid port!");
-          return false;
+          hostPort = 6060;
         }
         else
         {
@@ -980,7 +975,14 @@ public class VTClientConnector implements Runnable
             }
             if (line.length() > 0)
             {
-              natPort = Integer.parseInt(line);
+              try
+              {
+                natPort = Integer.parseInt(line);
+              }
+              catch (Throwable t)
+              {
+                natPort = hostPort;
+              }
             }
             else
             {
@@ -988,11 +990,71 @@ public class VTClientConnector implements Runnable
             }
             if (natPort > 65535 || natPort < 1)
             {
-              VTConsole.print("VT>Invalid port!\n");
-              natPort = null;
-              hostPort = null;
+              natPort = hostPort;
             }
           }
+          int pingInterval = 0;
+          int pingLimit = 0;
+          VTConsole.print("VT>Enter ping interval(default:15000):");
+          line = VTConsole.readLine(true);
+          if (line == null)
+          {
+            VTRuntimeExit.exit(0);
+          }
+          else if (skipConfiguration)
+          {
+            return true;
+          }
+          if (line.length() > 0)
+          {
+            try
+            {
+              pingInterval = Integer.parseInt(line);
+            }
+            catch (Throwable t)
+            {
+              pingInterval = 0;
+            }
+          }
+          else
+          {
+            pingInterval = 0;
+          }
+          if (pingInterval < 0)
+          {
+            pingInterval = 0;
+          }
+          client.setPingInterval(pingInterval);
+          VTConsole.print("VT>Enter ping limit(default:60000):");
+          line = VTConsole.readLine(true);
+          if (line == null)
+          {
+            VTRuntimeExit.exit(0);
+          }
+          else if (skipConfiguration)
+          {
+            return true;
+          }
+          if (line.length() > 0)
+          {
+            try
+            {
+              pingLimit = Integer.parseInt(line);
+            }
+            catch (Throwable t)
+            {
+              pingLimit = 0;
+            }
+          }
+          else
+          {
+            pingLimit = 0;
+          }
+          if (pingLimit < 0)
+          {
+            pingLimit = 0;
+          }
+          client.setPingLimit(pingLimit);
           VTConsole.print("VT>Use encryption in connection?(Y/N, default:N):");
           line = VTConsole.readLine(true);
           if (line == null)
@@ -1078,7 +1140,14 @@ public class VTClientConnector implements Runnable
         }
         if (line.length() > 0)
         {
-          hostPort = Integer.parseInt(line);
+          try
+          {
+            hostPort = Integer.parseInt(line);
+          }
+          catch (Throwable t)
+          {
+            hostPort = 6060;
+          }
         }
         else
         {
@@ -1086,9 +1155,70 @@ public class VTClientConnector implements Runnable
         }
         if (hostPort > 65535 || hostPort < 1)
         {
-          VTConsole.print("VT>Invalid port!");
-          return false;
+          hostPort = 6060;
         }
+        int pingInterval = 0;
+        int pingLimit = 0;
+        VTConsole.print("VT>Enter ping interval(default:15000):");
+        line = VTConsole.readLine(true);
+        if (line == null)
+        {
+          VTRuntimeExit.exit(0);
+        }
+        else if (skipConfiguration)
+        {
+          return true;
+        }
+        if (line.length() > 0)
+        {
+          try
+          {
+            pingInterval = Integer.parseInt(line);
+          }
+          catch (Throwable t)
+          {
+            pingInterval = 0;
+          }
+        }
+        else
+        {
+          pingInterval = 0;
+        }
+        if (pingInterval < 0)
+        {
+          pingInterval = 0;
+        }
+        client.setPingInterval(pingInterval);
+        VTConsole.print("VT>Enter ping limit(default:60000):");
+        line = VTConsole.readLine(true);
+        if (line == null)
+        {
+          VTRuntimeExit.exit(0);
+        }
+        else if (skipConfiguration)
+        {
+          return true;
+        }
+        if (line.length() > 0)
+        {
+          try
+          {
+            pingLimit = Integer.parseInt(line);
+          }
+          catch (Throwable t)
+          {
+            pingLimit = 0;
+          }
+        }
+        else
+        {
+          pingLimit = 0;
+        }
+        if (pingLimit < 0)
+        {
+          pingLimit = 0;
+        }
+        client.setPingLimit(pingLimit);
         VTConsole.print("VT>Use encryption in connection?(Y/N, default:N):");
         line = VTConsole.readLine(true);
         if (line == null)
@@ -1210,9 +1340,20 @@ public class VTClientConnector implements Runnable
             }
             if (line.length() > 0)
             {
-              proxyPort = Integer.parseInt(line);
+              try
+              {
+                proxyPort = Integer.parseInt(line);
+              }
+              catch (Throwable t)
+              {
+                proxyPort = 1080;
+              }
             }
             else
+            {
+              proxyPort = 1080;
+            }
+            if (proxyPort > 65535 || proxyPort < 1)
             {
               proxyPort = 1080;
             }
@@ -1231,19 +1372,23 @@ public class VTClientConnector implements Runnable
             }
             if (line.length() > 0)
             {
-              proxyPort = Integer.parseInt(line);
+              try
+              {
+                proxyPort = Integer.parseInt(line);
+              }
+              catch (Throwable t)
+              {
+                proxyPort = 8080;
+              }
             }
             else
             {
               proxyPort = 8080;
             }
-          }
-          if (proxyPort > 65535 || proxyPort < 1)
-          {
-            VTConsole.print("VT>Invalid port!");
-            proxyPort = null;
-            //useProxyAuthentication = false;
-            return false;
+            if (proxyPort > 65535 || proxyPort < 1)
+            {
+              proxyPort = 8080;
+            }
           }
           if (("ANY".equals(proxyType) || "HTTP".equals(proxyType) || "SOCKS".equals(proxyType)) && proxyPort != null && hostPort != null)
           {
@@ -1302,7 +1447,29 @@ public class VTClientConnector implements Runnable
           proxyType = "NONE";
         }
       }
-      VTConsole.print("VT>Repeat current session user and password?(Y/N, default:Y):");
+      VTConsole.print("VT>Enter session shell(null for default):");
+      String shell = VTConsole.readLine(true);
+      if (shell == null)
+      {
+        VTRuntimeExit.exit(0);
+      }
+      else if (skipConfiguration)
+      {
+        return true;
+      }
+      setSessionShell(shell);
+      VTConsole.print("VT>Enter session commands:");
+      String commands = VTConsole.readLine(true);
+      if (commands == null)
+      {
+        VTRuntimeExit.exit(0);
+      }
+      else if (skipConfiguration)
+      {
+        return true;
+      }
+      setSessionCommands(commands);
+      VTConsole.print("VT>Repeat current session user and session password?(Y/N, default:Y):");
       line = VTConsole.readLine(true);
       if (line == null)
       {
@@ -1320,17 +1487,6 @@ public class VTClientConnector implements Runnable
       }
       else
       {
-        VTConsole.print("VT>Enter session shell(null for default):");
-        String shell = VTConsole.readLine(true);
-        if (shell == null)
-        {
-          VTRuntimeExit.exit(0);
-        }
-        else if (skipConfiguration)
-        {
-          return true;
-        }
-        setSessionShell(shell);
         VTConsole.print("VT>Enter session user:");
         String user = VTConsole.readLine(false);
         if (user == null)
@@ -1357,17 +1513,7 @@ public class VTClientConnector implements Runnable
         client.setPassword(password);
         retry = false;
       }
-      VTConsole.print("VT>Enter session commands:");
-      String commands = VTConsole.readLine(true);
-      if (commands == null)
-      {
-        VTRuntimeExit.exit(0);
-      }
-      else if (skipConfiguration)
-      {
-        return true;
-      }
-      setSessionCommands(commands);
+      
       // VTConsole.print("VT>Enter session lines:");
       // String lines = VTConsole.readLine(true);
       // if (lines == null)
@@ -1384,10 +1530,6 @@ public class VTClientConnector implements Runnable
     }
     catch (NumberFormatException e)
     {
-      VTConsole.print("VT>Invalid port!");
-      hostPort = null;
-      proxyPort = null;
-      //useProxyAuthentication = false;
       return false;
     }
     catch (Throwable e)

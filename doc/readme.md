@@ -109,15 +109,15 @@ The connection settings can also be set using program arguments at startup,<br>
 these are the available program arguments:
 
 * -H: list parameters
-* -C: use client module
-* -S: use server module
-* -A: use agent module
-* -D: use daemon module
+* -C: use client module, -A: use agent module
+* -S: use server module, -D: use daemon module
 * -LF: load settings file
 * -CM: connection mode, passive(P), active(A)
 * -CH: connection host, default null
 * -CP: connection port, default 6060
 * -CN: connection NAT port, default null
+* -PI: ping interval, default 15000 milliseconds
+* -PL: ping limit, default 60000 milliseconds
 * -PT: proxy type, default none, DIRECT(D), SOCKS(S), HTTP(H), ANY(A)
 * -PH: proxy host, default null
 * -PP: proxy port, default 1080 for SOCKS or default 8080 for HTTP

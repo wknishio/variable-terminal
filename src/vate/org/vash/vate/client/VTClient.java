@@ -59,9 +59,9 @@ public class VTClient implements Runnable
   private boolean retry = false;
   private boolean manual = false;
   private List<VTClientSessionListener> listeners = new ArrayList<VTClientSessionListener>();
-  private int dataTimeout = VT.VT_DATA_TIMEOUT_MILLISECONDS;
-  private int pingInterval = VT.VT_PING_INTERVAL_MILLISECONDS;
-  private int reconnectTimeout = VT.VT_RECONNECT_TIMEOUT_MILLISECONDS;
+  private int pingLimit = 0;
+  private int pingInterval = 0;
+  private int reconnectTimeout = 0;
   
   private static final String VT_CLIENT_SETTINGS_COMMENTS = 
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
@@ -433,17 +433,16 @@ public class VTClient implements Runnable
     fileClientSettings.setProperty("vate.client.proxy.type", proxyType);
     fileClientSettings.setProperty("vate.client.proxy.host", proxyAddress);
     fileClientSettings.setProperty("vate.client.proxy.port", proxyPort != null ? String.valueOf(proxyPort) : "");
-    //fileClientSettings.setProperty("vate.client.proxy.authentication", useProxyAuthentication ? "Enabled" : "Disabled");
     fileClientSettings.setProperty("vate.client.proxy.user", proxyUser);
     fileClientSettings.setProperty("vate.client.proxy.password", proxyPassword);
     fileClientSettings.setProperty("vate.client.encryption.type", encryptionType);
     fileClientSettings.setProperty("vate.client.encryption.password", new String(encryptionKey, "UTF-8"));
     fileClientSettings.setProperty("vate.client.session.commands", sessionCommands);
-    // fileClientSettings.setProperty("vate.client.session.lines",
-    // sessionLines);
     fileClientSettings.setProperty("vate.client.session.shell", sessionShell);
     fileClientSettings.setProperty("vate.client.session.user", sessionUser);
     fileClientSettings.setProperty("vate.client.session.password", sessionPassword);
+    fileClientSettings.setProperty("vate.client.ping.interval", pingInterval > 0 ? String.valueOf(pingInterval) : "");
+    fileClientSettings.setProperty("vate.client.ping.limit", pingLimit > 0 ? String.valueOf(pingLimit) : "");
     
     FileOutputStream out = new FileOutputStream(settingsFile);
     VTPropertiesBuilder.saveProperties(out, fileClientSettings, VT_CLIENT_SETTINGS_COMMENTS, "UTF-8");
@@ -696,6 +695,38 @@ public class VTClient implements Runnable
       try
       {
         sessionShell = fileClientSettings.getProperty("vate.client.session.shell");
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    
+    if (fileClientSettings.getProperty("vate.client.ping.interval") != null)
+    {
+      try
+      {
+        int filePingInterval = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.interval"));
+        if (filePingInterval > 0)
+        {
+          pingInterval = filePingInterval;
+        }
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    
+    if (fileClientSettings.getProperty("vate.client.ping.limit") != null)
+    {
+      try
+      {
+        int filePingLimit = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.limit"));
+        if (filePingLimit > 0)
+        {
+          pingLimit = filePingLimit;
+        }
       }
       catch (Throwable e)
       {
@@ -963,6 +994,38 @@ public class VTClient implements Runnable
           
         }
       }
+      
+      if (fileClientSettings.getProperty("vate.client.ping.interval") != null)
+      {
+        try
+        {
+          int filePingInterval = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.interval"));
+          if (filePingInterval > 0)
+          {
+            pingInterval = filePingInterval;
+          }
+        }
+        catch (Throwable e)
+        {
+          
+        }
+      }
+      
+      if (fileClientSettings.getProperty("vate.client.ping.limit") != null)
+      {
+        try
+        {
+          int filePingLimit = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.limit"));
+          if (filePingLimit > 0)
+          {
+            pingLimit = filePingLimit;
+          }
+        }
+        catch (Throwable e)
+        {
+          
+        }
+      }
     }
     catch (Throwable e)
     {
@@ -1205,6 +1268,38 @@ public class VTClient implements Runnable
       }
     }
     
+    if (fileClientSettings.getProperty("vate.client.ping.interval") != null)
+    {
+      try
+      {
+        int filePingInterval = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.interval"));
+        if (filePingInterval > 0)
+        {
+          pingInterval = filePingInterval;
+        }
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    
+    if (fileClientSettings.getProperty("vate.client.ping.limit") != null)
+    {
+      try
+      {
+        int filePingLimit = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.limit"));
+        if (filePingLimit > 0)
+        {
+          pingLimit = filePingLimit;
+        }
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    
     saveFromClientToConnector();
   }
   
@@ -1319,7 +1414,6 @@ public class VTClient implements Runnable
         if (line.toUpperCase().startsWith("P"))
         {
           active = false;
-          // hostAddress = "";
           VTConsole.print("VT>Enter host address(default:any):");
           line = VTConsole.readLine(true);
           if (line == null)
@@ -1343,7 +1437,14 @@ public class VTClient implements Runnable
           }
           if (line.length() > 0)
           {
-            hostPort = Integer.parseInt(line);
+            try
+            {
+              hostPort = Integer.parseInt(line);
+            }
+            catch (Throwable t)
+            {
+              hostPort = 6060;
+            }
           }
           else
           {
@@ -1351,8 +1452,7 @@ public class VTClient implements Runnable
           }
           if (hostPort > 65535 || hostPort < 1)
           {
-            VTConsole.print("VT>Invalid port!");
-            hostPort = null;
+            hostPort = 6060;
           }
           else
           {
@@ -1380,7 +1480,14 @@ public class VTClient implements Runnable
               }
               if (line.length() > 0)
               {
-                natPort = Integer.parseInt(line);
+                try
+                {
+                  natPort = Integer.parseInt(line);
+                }
+                catch (Throwable t)
+                {
+                  natPort = hostPort;
+                }
               }
               else
               {
@@ -1388,16 +1495,82 @@ public class VTClient implements Runnable
               }
               if (natPort > 65535 || natPort < 1)
               {
-                VTConsole.print("VT>Invalid port!\n");
-                natPort = null;
-                hostPort = null;
+                natPort = hostPort;
               }
             }
           }
-          if (hostPort != null)
+          VTConsole.print("VT>Enter ping interval(default:15000):");
+          line = VTConsole.readLine(true);
+          if (line == null)
           {
-            VTConsole.print("VT>Use encryption in connection?(Y/N, default:N):");
-            line = VTConsole.readLine(true);
+            VTRuntimeExit.exit(0);
+          }
+          else if (skipConfiguration)
+          {
+            return;
+          }
+          if (line.length() > 0)
+          {
+            try
+            {
+              pingInterval = Integer.parseInt(line);
+            }
+            catch (Throwable t)
+            {
+              pingInterval = 0;
+            }
+          }
+          else
+          {
+            pingInterval = 0;
+          }
+          if (pingInterval < 0)
+          {
+            pingInterval = 0;
+          }
+          VTConsole.print("VT>Enter ping limit(default:60000):");
+          line = VTConsole.readLine(true);
+          if (line == null)
+          {
+            VTRuntimeExit.exit(0);
+          }
+          else if (skipConfiguration)
+          {
+            return;
+          }
+          if (line.length() > 0)
+          {
+            try
+            {
+              pingLimit = Integer.parseInt(line);
+            }
+            catch (Throwable t)
+            {
+              pingLimit = 0;
+            }
+          }
+          else
+          {
+            pingLimit = 0;
+          }
+          if (pingLimit < 0)
+          {
+            pingLimit = 0;
+          }
+          VTConsole.print("VT>Use encryption in connection?(Y/N, default:N):");
+          line = VTConsole.readLine(true);
+          if (line == null)
+          {
+            VTRuntimeExit.exit(0);
+          }
+          else if (skipConfiguration)
+          {
+            return;
+          }
+          if (line.toUpperCase().startsWith("Y"))
+          {
+            VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)):");
+            line = VTConsole.readLine(false);
             if (line == null)
             {
               VTRuntimeExit.exit(0);
@@ -1406,51 +1579,38 @@ public class VTClient implements Runnable
             {
               return;
             }
-            if (line.toUpperCase().startsWith("Y"))
+            encryptionType = "ISAAC";
+            if (line.toUpperCase().startsWith("Z"))
             {
-              VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)):");
-              line = VTConsole.readLine(false);
-              if (line == null)
-              {
-                VTRuntimeExit.exit(0);
-              }
-              else if (skipConfiguration)
-              {
-                return;
-              }
-              encryptionType = "ISAAC";
-              if (line.toUpperCase().startsWith("Z"))
-              {
-                encryptionType = "ZUC";
-              }
-              if (line.toUpperCase().startsWith("S"))
-              {
-                encryptionType = "SALSA";
-              }
-              if (line.toUpperCase().startsWith("H"))
-              {
-                encryptionType = "HC";
-              }
-              if (line.toUpperCase().startsWith("V"))
-              {
-                encryptionType = "VMPC";
-              }
-              VTConsole.print("VT>Enter encryption password:");
-              line = VTConsole.readLine(false);
-              if (line == null)
-              {
-                VTRuntimeExit.exit(0);
-              }
-              else if (skipConfiguration)
-              {
-                return;
-              }
-              encryptionKey = line.getBytes("UTF-8");
+              encryptionType = "ZUC";
             }
-            else
+            if (line.toUpperCase().startsWith("S"))
             {
-              encryptionType = "NONE";
+              encryptionType = "SALSA";
             }
+            if (line.toUpperCase().startsWith("H"))
+            {
+              encryptionType = "HC";
+            }
+            if (line.toUpperCase().startsWith("V"))
+            {
+              encryptionType = "VMPC";
+            }
+            VTConsole.print("VT>Enter encryption password:");
+            line = VTConsole.readLine(false);
+            if (line == null)
+            {
+              VTRuntimeExit.exit(0);
+            }
+            else if (skipConfiguration)
+            {
+              return;
+            }
+            encryptionKey = line.getBytes("UTF-8");
+          }
+          else
+          {
+            encryptionType = "NONE";
           }
         }
         else
@@ -1479,7 +1639,14 @@ public class VTClient implements Runnable
           }
           if (line.length() > 0)
           {
-            hostPort = Integer.parseInt(line);
+            try
+            {
+              hostPort = Integer.parseInt(line);
+            }
+            catch (Throwable t)
+            {
+              hostPort = 6060;
+            }
           }
           else
           {
@@ -1487,12 +1654,79 @@ public class VTClient implements Runnable
           }
           if (hostPort > 65535 || hostPort < 1)
           {
-            VTConsole.print("VT>Invalid port!");
-            hostPort = null;
+            hostPort = 6060;
           }
-          if (hostPort != null)
+          VTConsole.print("VT>Enter ping interval(default:15000):");
+          line = VTConsole.readLine(true);
+          if (line == null)
           {
-            VTConsole.print("VT>Use proxy in connection?(Y/N, default:N):");
+            VTRuntimeExit.exit(0);
+          }
+          else if (skipConfiguration)
+          {
+            return;
+          }
+          if (line.length() > 0)
+          {
+            try
+            {
+              pingInterval = Integer.parseInt(line);
+            }
+            catch (Throwable t)
+            {
+              pingInterval = 0;
+            }
+          }
+          else
+          {
+            pingInterval = 0;
+          }
+          if (pingInterval < 0)
+          {
+            pingInterval = 0;
+          }
+          VTConsole.print("VT>Enter ping limit(default:60000):");
+          line = VTConsole.readLine(true);
+          if (line == null)
+          {
+            VTRuntimeExit.exit(0);
+          }
+          else if (skipConfiguration)
+          {
+            return;
+          }
+          if (line.length() > 0)
+          {
+            try
+            {
+              pingLimit = Integer.parseInt(line);
+            }
+            catch (Throwable t)
+            {
+              pingLimit = 0;
+            }
+          }
+          else
+          {
+            pingLimit = 0;
+          }
+          if (pingLimit < 0)
+          {
+            pingLimit = 0;
+          }
+          VTConsole.print("VT>Use proxy in connection?(Y/N, default:N):");
+          line = VTConsole.readLine(true);
+          if (line == null)
+          {
+            VTRuntimeExit.exit(0);
+          }
+          else if (skipConfiguration)
+          {
+            return;
+          }
+          if (line.toUpperCase().startsWith("Y"))
+          {
+            VTConsole.print("VT>Enter proxy type(DIRECT as D, SOCKS as S, HTTP as H, ANY as A, default:A):");
             line = VTConsole.readLine(true);
             if (line == null)
             {
@@ -1502,9 +1736,25 @@ public class VTClient implements Runnable
             {
               return;
             }
-            if (line.toUpperCase().startsWith("Y"))
+            if (line.toUpperCase().startsWith("D"))
             {
-              VTConsole.print("VT>Enter proxy type(DIRECT as D, SOCKS as S, HTTP as H, ANY as A, default:A):");
+              proxyType = "DIRECT";
+            }
+            else if (line.toUpperCase().startsWith("H"))
+            {
+              proxyType = "HTTP";
+            }
+            else if (line.toUpperCase().startsWith("S"))
+            {
+              proxyType = "SOCKS";
+            }
+            else
+            {
+              proxyType = "ANY";
+            }
+            if ("ANY".equals(proxyType) || "HTTP".equals(proxyType) || "SOCKS".equals(proxyType))
+            {
+              VTConsole.print("VT>Enter proxy host address(default:any):");
               line = VTConsole.readLine(true);
               if (line == null)
               {
@@ -1514,89 +1764,90 @@ public class VTClient implements Runnable
               {
                 return;
               }
-              if (line.toUpperCase().startsWith("D"))
+              proxyAddress = line;
+            }
+            if (proxyType.equals("SOCKS"))
+            {
+              VTConsole.print("VT>Enter proxy port(from 1 to 65535, default:1080):");
+              line = VTConsole.readLine(true);
+              if (line == null)
               {
-                proxyType = "DIRECT";
+                VTRuntimeExit.exit(0);
               }
-              else if (line.toUpperCase().startsWith("H"))
+              else if (skipConfiguration)
               {
-                proxyType = "HTTP";
+                return;
               }
-              else if (line.toUpperCase().startsWith("S"))
+              if (line.length() > 0)
               {
-                proxyType = "SOCKS";
-              }
-              else
-              {
-                proxyType = "ANY";
-              }
-              if ("ANY".equals(proxyType) || "HTTP".equals(proxyType) || "SOCKS".equals(proxyType))
-              {
-                VTConsole.print("VT>Enter proxy host address(default:any):");
-                line = VTConsole.readLine(true);
-                if (line == null)
-                {
-                  VTRuntimeExit.exit(0);
-                }
-                else if (skipConfiguration)
-                {
-                  return;
-                }
-                proxyAddress = line;
-              }
-              if (proxyType.equals("SOCKS"))
-              {
-                VTConsole.print("VT>Enter proxy port(from 1 to 65535, default:1080):");
-                line = VTConsole.readLine(true);
-                if (line == null)
-                {
-                  VTRuntimeExit.exit(0);
-                }
-                else if (skipConfiguration)
-                {
-                  return;
-                }
-                if (line.length() > 0)
+                try
                 {
                   proxyPort = Integer.parseInt(line);
                 }
-                else
+                catch (Throwable t)
                 {
                   proxyPort = 1080;
                 }
               }
-              else if (proxyType.equals("HTTP") || proxyType.equals("ANY"))
+              else
               {
-                VTConsole.print("VT>Enter proxy port(from 1 to 65535, default:8080):");
-                line = VTConsole.readLine(true);
-                if (line == null)
-                {
-                  VTRuntimeExit.exit(0);
-                }
-                else if (skipConfiguration)
-                {
-                  return;
-                }
-                if (line.length() > 0)
+                proxyPort = 1080;
+              }
+              if (proxyPort > 65535 || proxyPort < 1)
+              {
+                proxyPort = 1080;
+              }
+            }
+            else if (proxyType.equals("HTTP") || proxyType.equals("ANY"))
+            {
+              VTConsole.print("VT>Enter proxy port(from 1 to 65535, default:8080):");
+              line = VTConsole.readLine(true);
+              if (line == null)
+              {
+                VTRuntimeExit.exit(0);
+              }
+              else if (skipConfiguration)
+              {
+                return;
+              }
+              if (line.length() > 0)
+              {
+                try
                 {
                   proxyPort = Integer.parseInt(line);
                 }
-                else
+                catch (Throwable t)
                 {
                   proxyPort = 8080;
                 }
               }
+              else
+              {
+                proxyPort = 8080;
+              }
               if (proxyPort > 65535 || proxyPort < 1)
               {
-                VTConsole.print("VT>Invalid port!\n");
-                proxyPort = null;
-                //useProxyAuthentication = false;
-                hostPort = null;
+                proxyPort = 8080;
               }
-              if (("ANY".equals(proxyType) || "HTTP".equals(proxyType) || "SOCKS".equals(proxyType)) && proxyPort != null && hostPort != null)
+            }
+            
+            if (("ANY".equals(proxyType) || "HTTP".equals(proxyType) || "SOCKS".equals(proxyType)) && proxyPort != null && hostPort != null)
+            {
+              VTConsole.print("VT>Use authentication for proxy?(Y/N, default:N):");
+              line = VTConsole.readLine(true);
+              if (line == null)
               {
-                VTConsole.print("VT>Use authentication for proxy?(Y/N, default:N):");
-                line = VTConsole.readLine(true);
+                VTRuntimeExit.exit(0);
+              }
+              else if (skipConfiguration)
+              {
+                return;
+              }
+              if (line.toUpperCase().startsWith("Y"))
+              {
+                //useProxyAuthentication = true;
+                VTConsole.print("VT>Enter proxy username:");
+                line = VTConsole.readLine(false);
                 if (line == null)
                 {
                   VTRuntimeExit.exit(0);
@@ -1605,38 +1856,18 @@ public class VTClient implements Runnable
                 {
                   return;
                 }
-                if (line.toUpperCase().startsWith("Y"))
+                proxyUser = line;
+                VTConsole.print("VT>Enter proxy password:");
+                line = VTConsole.readLine(false);
+                if (line == null)
                 {
-                  //useProxyAuthentication = true;
-                  VTConsole.print("VT>Enter proxy username:");
-                  line = VTConsole.readLine(false);
-                  if (line == null)
-                  {
-                    VTRuntimeExit.exit(0);
-                  }
-                  else if (skipConfiguration)
-                  {
-                    return;
-                  }
-                  proxyUser = line;
-                  VTConsole.print("VT>Enter proxy password:");
-                  line = VTConsole.readLine(false);
-                  if (line == null)
-                  {
-                    VTRuntimeExit.exit(0);
-                  }
-                  else if (skipConfiguration)
-                  {
-                    return;
-                  }
-                  proxyPassword = line;
+                  VTRuntimeExit.exit(0);
                 }
-                else
+                else if (skipConfiguration)
                 {
-                  proxyUser = null;
-                  proxyPassword = null;
-                  //useProxyAuthentication = false;
+                  return;
                 }
+                proxyPassword = line;
               }
               else
               {
@@ -1647,13 +1878,29 @@ public class VTClient implements Runnable
             }
             else
             {
-              proxyType = "NONE";
+              proxyUser = null;
+              proxyPassword = null;
+              //useProxyAuthentication = false;
             }
           }
-          if (hostPort != null)
+          else
           {
-            VTConsole.print("VT>Use encryption in connection?(Y/N, default:N):");
-            line = VTConsole.readLine(true);
+            proxyType = "NONE";
+          }
+          VTConsole.print("VT>Use encryption in connection?(Y/N, default:N):");
+          line = VTConsole.readLine(true);
+          if (line == null)
+          {
+            VTRuntimeExit.exit(0);
+          }
+          else if (skipConfiguration)
+          {
+            return;
+          }
+          if (line.toUpperCase().startsWith("Y"))
+          {
+            VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)):");
+            line = VTConsole.readLine(false);
             if (line == null)
             {
               VTRuntimeExit.exit(0);
@@ -1662,66 +1909,64 @@ public class VTClient implements Runnable
             {
               return;
             }
-            if (line.toUpperCase().startsWith("Y"))
+            encryptionType = "ISAAC";
+            if (line.toUpperCase().startsWith("Z"))
             {
-              VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)):");
-              line = VTConsole.readLine(false);
-              if (line == null)
-              {
-                VTRuntimeExit.exit(0);
-              }
-              else if (skipConfiguration)
-              {
-                return;
-              }
-              encryptionType = "ISAAC";
-              if (line.toUpperCase().startsWith("Z"))
-              {
-                encryptionType = "ZUC";
-              }
-              if (line.toUpperCase().startsWith("S"))
-              {
-                encryptionType = "SALSA";
-              }
-              if (line.toUpperCase().startsWith("H"))
-              {
-                encryptionType = "HC";
-              }
-              if (line.toUpperCase().startsWith("V"))
-              {
-                encryptionType = "VMPC";
-              }
-              VTConsole.print("VT>Enter encryption password:");
-              line = VTConsole.readLine(false);
-              if (line == null)
-              {
-                VTRuntimeExit.exit(0);
-              }
-              else if (skipConfiguration)
-              {
-                return;
-              }
-              encryptionKey = line.getBytes("UTF-8");
+              encryptionType = "ZUC";
             }
-            else
+            if (line.toUpperCase().startsWith("S"))
             {
-              encryptionType = "NONE";
+              encryptionType = "SALSA";
             }
+            if (line.toUpperCase().startsWith("H"))
+            {
+              encryptionType = "HC";
+            }
+            if (line.toUpperCase().startsWith("V"))
+            {
+              encryptionType = "VMPC";
+            }
+            VTConsole.print("VT>Enter encryption password:");
+            line = VTConsole.readLine(false);
+            if (line == null)
+            {
+              VTRuntimeExit.exit(0);
+            }
+            else if (skipConfiguration)
+            {
+              return;
+            }
+            encryptionKey = line.getBytes("UTF-8");
+          }
+          else
+          {
+            encryptionType = "NONE";
           }
         }
-        if ((hostAddress != null && hostPort != null) && (sessionUser == null || sessionPassword == null || sessionUser.length() == 0 || sessionPassword.length() == 0))
+        VTConsole.print("VT>Enter session shell(null for default):");
+        String shell = VTConsole.readLine(true);
+        if (shell == null)
         {
-          VTConsole.print("VT>Enter session shell(null for default):");
-          String shell = VTConsole.readLine(true);
-          if (shell == null)
-          {
-            VTRuntimeExit.exit(0);
-          }
-          else if (skipConfiguration)
-          {
-            return;
-          }
-          setSessionShell(shell);
+          VTRuntimeExit.exit(0);
+        }
+        else if (skipConfiguration)
+        {
+          return;
+        }
+        setSessionShell(shell);
+        VTConsole.print("VT>Enter session commands:");
+        String command = VTConsole.readLine(true);
+        if (command == null)
+        {
+          VTRuntimeExit.exit(0);
+        }
+        else if (skipConfiguration)
+        {
+          return;
+        }
+        setSessionCommands(command);
+        if ((hostPort != null) && (sessionUser == null || sessionPassword == null || sessionUser.length() == 0 || sessionPassword.length() == 0))
+        {
           VTConsole.print("VT>Enter session user:");
           String user = VTConsole.readLine(false);
           if (user == null)
@@ -1745,38 +1990,10 @@ public class VTClient implements Runnable
           }
           setPassword(password);
         }
-        if (hostPort != null)
-        {
-          VTConsole.print("VT>Enter session commands:");
-          String command = VTConsole.readLine(true);
-          if (command == null)
-          {
-            VTRuntimeExit.exit(0);
-          }
-          else if (skipConfiguration)
-          {
-            return;
-          }
-          setSessionCommands(command);
-          // VTConsole.print("VT>Enter session lines:");
-          // String lines = VTConsole.readLine(true);
-          // if (lines == null)
-          // {
-          // VTExit.exit(0);
-          // }
-          // else if (skipConfiguration)
-          // {
-          // return;
-          // }
-          // setSessionLines(lines);
-        }
       }
       catch (NumberFormatException e)
       {
-        VTConsole.print("VT>Invalid port!");
-        hostPort = null;
-        proxyPort = null;
-        //useProxyAuthentication = false;
+        
       }
       catch (Throwable e)
       {
@@ -1947,6 +2164,38 @@ public class VTClient implements Runnable
       {
         parameterValue = parameters[++i];
         sessionShell = parameterValue;
+      }
+      if (parameterName.contains("-PI"))
+      {
+        parameterValue = parameters[++i];
+        try
+        {
+          int intValue = Integer.parseInt(parameterValue);
+          if (intValue > 0 && intValue < 65536)
+          {
+            pingInterval = intValue;
+          }
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
+      if (parameterName.contains("-PL"))
+      {
+        parameterValue = parameters[++i];
+        try
+        {
+          int intValue = Integer.parseInt(parameterValue);
+          if (intValue > 0 && intValue < 65536)
+          {
+            pingLimit = intValue;
+          }
+        }
+        catch (Throwable t)
+        {
+          
+        }
       }
     }
   }
@@ -2140,14 +2389,14 @@ public class VTClient implements Runnable
 //    }
 //  }
   
-  public void setDataTimeout(int timeout)
+  public void setPingLimit(int limit)
   {
-    this.dataTimeout = timeout;
+    this.pingLimit = limit;
   }
   
-  public int getDataTimeout()
+  public int getPingLimit()
   {
-    return dataTimeout;
+    return pingLimit;
   }
   
   public void setPingInterval(int interval)
@@ -2169,5 +2418,40 @@ public class VTClient implements Runnable
   {
     return reconnectTimeout;
   }
-
+  
+  public int getPingLimitMilliseconds()
+  {
+    if (pingLimit > 0)
+    {
+      return pingLimit;
+    }
+    else
+    {
+      return VT.VT_PING_LIMIT_MILLISECONDS;
+    }
+  }
+  
+  public int getPingIntervalMilliseconds()
+  {
+    if (pingInterval > 0)
+    {
+      return pingInterval;
+    }
+    else
+    {
+      return VT.VT_PING_INTERVAL_MILLISECONDS;
+    }
+  }
+  
+  public int getReconnectTimeoutMilliseconds()
+  {
+    if (reconnectTimeout > 0)
+    {
+      return reconnectTimeout;
+    }
+    else
+    {
+      return VT.VT_RECONNECT_TIMEOUT_MILLISECONDS;
+    }
+  }
 }

@@ -43,7 +43,7 @@ public class VT
   
   public static final int VT_CONNECT_TIMEOUT_MILLISECONDS = 60000;
   public static final int VT_ACCEPT_TIMEOUT_MILLISECONDS = 60000;
-  public static final int VT_DATA_TIMEOUT_MILLISECONDS = 60000;
+  public static final int VT_PING_LIMIT_MILLISECONDS = 60000;
   public static final int VT_PING_INTERVAL_MILLISECONDS = 15000;
   public static final int VT_RECONNECT_TIMEOUT_MILLISECONDS = 60000;
   public static final int VT_DAEMON_RECONNECT_TIMEOUT_MILLISECONDS = 3750;

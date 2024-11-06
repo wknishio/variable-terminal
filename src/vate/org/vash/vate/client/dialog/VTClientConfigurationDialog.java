@@ -51,6 +51,7 @@ import org.vash.vate.client.connection.VTClientConnector;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.dialog.VTFileDialog;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.server.dialog.VTServerSettingsDialogParameter;
 
 public class VTClientConfigurationDialog extends Dialog
 {
@@ -74,6 +75,9 @@ public class VTClientConfigurationDialog extends Dialog
   private VTClientConfigurationDialogParameter sessionShell;
   private VTClientConfigurationDialogParameter sessionUser;
   private VTClientConfigurationDialogParameter sessionPassword;
+  
+  private VTServerSettingsDialogParameter pingInterval;
+  private VTServerSettingsDialogParameter pingLimit;
   
   private Runnable application;
   private Frame owner;
@@ -478,6 +482,42 @@ public class VTClientConfigurationDialog extends Dialog
     connectionPasswordField.setEchoChar('*');
     sessionPassword = new VTClientConfigurationDialogParameter("Session Password:", connectionPasswordField, true);
     
+    TextField pingIntervalField = new TextField(16);
+    pingIntervalField.addTextListener(new TextListener()
+    {
+      public void textValueChanged(TextEvent e)
+      {
+        TextField field = ((TextField) e.getSource());
+        String value = field.getText();
+        
+        if (!value.matches("(\\d+?)|()"))
+        {
+          int position = field.getCaretPosition();
+          field.setText(value.replaceAll("\\D", ""));
+          field.setCaretPosition(position);
+        }
+      }
+    });
+    pingInterval = new VTServerSettingsDialogParameter("Ping Interval:", pingIntervalField, true);
+    
+    TextField pingLimitField = new TextField(16);
+    pingLimitField.addTextListener(new TextListener()
+    {
+      public void textValueChanged(TextEvent e)
+      {
+        TextField field = ((TextField) e.getSource());
+        String value = field.getText();
+        
+        if (!value.matches("(\\d+?)|()"))
+        {
+          int position = field.getCaretPosition();
+          field.setText(value.replaceAll("\\D", ""));
+          field.setCaretPosition(position);
+        }
+      }
+    });
+    pingLimit = new VTServerSettingsDialogParameter("Ping Limit:", pingLimitField, true);
+    
     addKeyListener(new KeyListener()
     {
       public void keyPressed(KeyEvent e)
@@ -782,11 +822,10 @@ public class VTClientConfigurationDialog extends Dialog
     closeButton.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardTraversalKeysButton);
     
     Panel centerPanel = new Panel();
-    GridLayout centerLayout = new GridLayout(17, 1);
+    GridLayout centerLayout = new GridLayout(19, 1);
     centerLayout.setHgap(1);
     centerLayout.setVgap(1);
     centerPanel.setLayout(centerLayout);
-    // centerPanel.getInsets().set(4, 4, 4, 4);
     
     Panel mainPanel = new Panel();
     mainPanel.setLayout(new BorderLayout());
@@ -801,6 +840,9 @@ public class VTClientConfigurationDialog extends Dialog
     centerPanel.add(connectionHost);
     centerPanel.add(connectionPort);
     centerPanel.add(natPort);
+    
+    centerPanel.add(pingInterval);
+    centerPanel.add(pingLimit);
     
     centerPanel.add(proxyType);
     centerPanel.add(proxyHost);
@@ -1209,6 +1251,8 @@ public class VTClientConfigurationDialog extends Dialog
         sessionCommands.setParameter(connector.getSessionCommands());
         // sessionLines.setParameter(connector.getSessionLines());
         sessionShell.setParameter(connector.getSessionShell());
+        pingInterval.setParameter(client.getPingInterval() > 0 ? client.getPingInterval() : "");
+        pingLimit.setParameter(client.getPingLimit() > 0 ? client.getPingLimit() : "");
       }
       else
       {
@@ -1237,6 +1281,8 @@ public class VTClientConfigurationDialog extends Dialog
         sessionCommands.setParameter(client.getSessionCommands());
         // sessionLines.setParameter(client.getSessionLines());
         sessionShell.setParameter(client.getSessionShell());
+        pingInterval.setParameter(client.getPingInterval() > 0 ? client.getPingInterval() : "");
+        pingLimit.setParameter(client.getPingLimit() > 0 ? client.getPingLimit() : "");
       }
     }
   }
@@ -1441,6 +1487,38 @@ public class VTClientConfigurationDialog extends Dialog
         connector.setSessionCommands(sessionCommands.getParameter());
         // connector.setSessionLines(sessionLines.getParameter());
         connector.setSessionShell(sessionShell.getParameter());
+        try
+        {
+          int interval = Integer.parseInt(pingInterval.getParameter());
+          if (interval > 0)
+          {
+            client.setPingInterval(interval);
+          }
+          else
+          {
+            client.setPingInterval(0);
+          }
+        }
+        catch (Throwable e)
+        {
+          client.setPingInterval(0);
+        }
+        try
+        {
+          int limit = Integer.parseInt(pingLimit.getParameter());
+          if (limit > 0)
+          {
+            client.setPingLimit(limit);
+          }
+          else
+          {
+            client.setPingLimit(0);
+          }
+        }
+        catch (Throwable e)
+        {
+          client.setPingLimit(0);
+        }
         /*
          * if (VTTerminal.isGraphical()) { try {
          * //connector.getHandler().getConnection().setSkipLine(true);
@@ -1498,6 +1576,38 @@ public class VTClientConfigurationDialog extends Dialog
         client.setSessionCommands(sessionCommands.getParameter());
         // client.setSessionLines(sessionLines.getParameter());
         client.setSessionShell(sessionShell.getParameter());
+        try
+        {
+          int interval = Integer.parseInt(pingInterval.getParameter());
+          if (interval > 0)
+          {
+            client.setPingInterval(interval);
+          }
+          else
+          {
+            client.setPingInterval(0);
+          }
+        }
+        catch (Throwable e)
+        {
+          client.setPingInterval(0);
+        }
+        try
+        {
+          int limit = Integer.parseInt(pingLimit.getParameter());
+          if (limit > 0)
+          {
+            client.setPingLimit(limit);
+          }
+          else
+          {
+            client.setPingLimit(0);
+          }
+        }
+        catch (Throwable e)
+        {
+          client.setPingLimit(0);
+        }
       }
     }
   }

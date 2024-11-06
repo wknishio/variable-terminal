@@ -10,10 +10,9 @@ public class VTHelpManager
   
   private static String generalModeParameterHelp = 
   ("-H: list parameters") +
-  ("\n-C: use client module") + 
-  ("\n-S: use server module | ") + 
-  ("\n-A: use agent module") + 
-  ("\n-D: use daemon module");
+  ("\n-C: use client module, -A: use agent module") + 
+  ("\n-S: use server module, -D: use daemon module") + 
+  ("\n");
   
   private static String clientModeParametersHelp = 
   ("-H: list parameters") +
@@ -29,6 +28,8 @@ public class VTHelpManager
   ("\n-CH: connection host, default null") + 
   ("\n-CP: connection port, default 6060") + 
   ("\n-CN: connection NAT port, default null") + 
+  ("\n-PI: ping interval, default 15000 milliseconds") + 
+  ("\n-PL: ping limit, default 60000 milliseconds") + 
   ("\n-PT: proxy type, default none, DIRECT(D), SOCKS(S), HTTP(H), ANY(A)") + 
   ("\n-PH: proxy host, default null") + 
   ("\n-PP: proxy port, default 1080 for SOCKS or 8080 for HTTP") + 

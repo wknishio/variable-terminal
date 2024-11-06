@@ -73,6 +73,9 @@ public class VTServerSettingsDialog extends Dialog
   private VTServerSettingsDialogParameter sessionUser;
   private VTServerSettingsDialogParameter sessionPassword;
   
+  private VTServerSettingsDialogParameter pingInterval;
+  private VTServerSettingsDialogParameter pingLimit;
+  
   private Runnable application;
   private Frame owner;
   
@@ -481,6 +484,42 @@ public class VTServerSettingsDialog extends Dialog
     connectionPasswordField.setEchoChar('*');
     sessionPassword = new VTServerSettingsDialogParameter("Session Password:", connectionPasswordField, true);
     
+    TextField pingIntervalField = new TextField(16);
+    pingIntervalField.addTextListener(new TextListener()
+    {
+      public void textValueChanged(TextEvent e)
+      {
+        TextField field = ((TextField) e.getSource());
+        String value = field.getText();
+        
+        if (!value.matches("(\\d+?)|()"))
+        {
+          int position = field.getCaretPosition();
+          field.setText(value.replaceAll("\\D", ""));
+          field.setCaretPosition(position);
+        }
+      }
+    });
+    pingInterval = new VTServerSettingsDialogParameter("Ping Interval:", pingIntervalField, true);
+    
+    TextField pingLimitField = new TextField(16);
+    pingLimitField.addTextListener(new TextListener()
+    {
+      public void textValueChanged(TextEvent e)
+      {
+        TextField field = ((TextField) e.getSource());
+        String value = field.getText();
+        
+        if (!value.matches("(\\d+?)|()"))
+        {
+          int position = field.getCaretPosition();
+          field.setText(value.replaceAll("\\D", ""));
+          field.setCaretPosition(position);
+        }
+      }
+    });
+    pingLimit = new VTServerSettingsDialogParameter("Ping Limit:", pingLimitField, true);
+    
     addKeyListener(new KeyListener()
     {
       public void keyPressed(KeyEvent e)
@@ -817,7 +856,7 @@ public class VTServerSettingsDialog extends Dialog
     closeButton.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, backwardTraversalKeysButton);
     
     Panel centerPanel = new Panel();
-    GridLayout centerLayout = new GridLayout(17, 1);
+    GridLayout centerLayout = new GridLayout(19, 1);
     centerLayout.setHgap(1);
     centerLayout.setVgap(1);
     centerPanel.setLayout(centerLayout);
@@ -835,6 +874,9 @@ public class VTServerSettingsDialog extends Dialog
     centerPanel.add(connectionHost);
     centerPanel.add(connectionPort);
     centerPanel.add(natPort);
+    
+    centerPanel.add(pingInterval);
+    centerPanel.add(pingLimit);
     
     centerPanel.add(proxyType);
     centerPanel.add(proxyHost);
@@ -1240,6 +1282,8 @@ public class VTServerSettingsDialog extends Dialog
         proxyPassword.setParameter(connector.getProxyPassword());
         sessionsMaximum.setParameter(String.valueOf(connector.getSessionsMaximum()));
         sessionShell.setParameter(connector.getSessionShell());
+        pingInterval.setParameter(server.getPingInterval() > 0 ? server.getPingInterval() : "");
+        pingLimit.setParameter(server.getPingLimit() > 0 ? server.getPingLimit() : "");
       }
       else
       {
@@ -1265,6 +1309,8 @@ public class VTServerSettingsDialog extends Dialog
         proxyPassword.setParameter(server.getProxyPassword());
         sessionsMaximum.setParameter(String.valueOf(server.getSessionsMaximum()));
         sessionShell.setParameter(server.getSessionShell());
+        pingInterval.setParameter(server.getPingInterval() > 0 ? server.getPingInterval() : "");
+        pingLimit.setParameter(server.getPingLimit() > 0 ? server.getPingLimit() : "");
       }
     }
   }
@@ -1478,6 +1524,38 @@ public class VTServerSettingsDialog extends Dialog
         }
         sessionUser.setParameter("");
         sessionPassword.setParameter("");
+        try
+        {
+          int interval = Integer.parseInt(pingInterval.getParameter());
+          if (interval > 0)
+          {
+            server.setPingInterval(interval);
+          }
+          else
+          {
+            server.setPingInterval(0);
+          }
+        }
+        catch (Throwable e)
+        {
+          server.setPingInterval(0);
+        }
+        try
+        {
+          int limit = Integer.parseInt(pingLimit.getParameter());
+          if (limit > 0)
+          {
+            server.setPingLimit(limit);
+          }
+          else
+          {
+            server.setPingLimit(0);
+          }
+        }
+        catch (Throwable e)
+        {
+          server.setPingLimit(0);
+        }
         // connector.setSkipConfig(true);
       }
       else
@@ -1540,6 +1618,38 @@ public class VTServerSettingsDialog extends Dialog
         }
         sessionUser.setParameter("");
         sessionPassword.setParameter("");
+        try
+        {
+          int interval = Integer.parseInt(pingInterval.getParameter());
+          if (interval > 0)
+          {
+            server.setPingInterval(interval);
+          }
+          else
+          {
+            server.setPingInterval(0);
+          }
+        }
+        catch (Throwable e)
+        {
+          server.setPingInterval(0);
+        }
+        try
+        {
+          int limit = Integer.parseInt(pingLimit.getParameter());
+          if (limit > 0)
+          {
+            server.setPingLimit(limit);
+          }
+          else
+          {
+            server.setPingLimit(0);
+          }
+        }
+        catch (Throwable e)
+        {
+          server.setPingLimit(0);
+        }
       }
     }
   }

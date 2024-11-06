@@ -40,7 +40,7 @@ public class VTServerAuthenticator
         {
           synchronized (this)
           {
-            wait(server.getDataTimeout());
+            wait(server.getPingLimitMilliseconds());
           }
         }
       }
