@@ -82,9 +82,16 @@ public class VTClientSessionHandler implements Runnable
       started = true;
       try
       {
-        for (VTClientSessionListener listener : listeners)
+        for (VTClientSessionListener listener : listeners.toArray(new VTClientSessionListener[] {}))
         {
-          listener.sessionStarted(session);
+          try
+          {
+            listener.sessionStarted(session);
+          }
+          catch (Throwable t)
+          {
+            
+          }
         }
       }
       catch (Throwable t)
@@ -104,9 +111,16 @@ public class VTClientSessionHandler implements Runnable
     {
       try
       {
-        for (VTClientSessionListener listener : listeners)
+        for (VTClientSessionListener listener : listeners.toArray(new VTClientSessionListener[] {}))
         {
-          listener.sessionFinished(session);
+          try
+          {
+            listener.sessionFinished(session);
+          }
+          catch (Throwable t)
+          {
+            
+          }
         }
       }
       catch (Throwable t)

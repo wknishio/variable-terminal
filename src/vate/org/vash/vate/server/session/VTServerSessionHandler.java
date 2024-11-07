@@ -87,12 +87,19 @@ public class VTServerSessionHandler implements Runnable
       session.startSession();
       session.startSessionThreads();
       authenticated = true;
-      started = false;
+      started = true;
       try
       {
-        for (VTServerSessionListener listener : listeners)
+        for (VTServerSessionListener listener : listeners.toArray(new VTServerSessionListener[] {}))
         {
-          listener.sessionStarted(session);
+          try
+          {
+            listener.sessionStarted(session);
+          }
+          catch (Throwable t)
+          {
+            
+          }
         }
       }
       catch (Throwable t)
@@ -113,9 +120,16 @@ public class VTServerSessionHandler implements Runnable
     {
       try
       {
-        for (VTServerSessionListener listener : listeners)
+        for (VTServerSessionListener listener : listeners.toArray(new VTServerSessionListener[] {}))
         {
-          listener.sessionFinished(session);
+          try
+          {
+            listener.sessionFinished(session);
+          }
+          catch (Throwable t)
+          {
+            
+          }
         }
       }
       catch (Throwable t)
