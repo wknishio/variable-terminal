@@ -2469,7 +2469,7 @@ public class VTServer implements Runnable
       consoleReader = new VTServerLocalConsoleReader(this);
       consoleReader.startThread();
     }
-    for (VTServerSessionListener listener : listeners)
+    for (VTServerSessionListener listener : listeners.toArray(new VTServerSessionListener[] {}))
     {
       serverConnector.addSessionListener(listener);
     }

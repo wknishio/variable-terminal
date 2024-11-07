@@ -92,7 +92,7 @@ public class VTServerPrintServiceResolver extends VTTask
           {
             message.append("\nVT>Supported MIME types:");
           }
-          for (String mime : mimeSet)
+          for (String mime : mimeSet.toArray(new String[] {}))
           {
             message.append("\nVT>MIME: [" + mime + "]");
           }

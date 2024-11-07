@@ -1161,7 +1161,7 @@ public class VTNanoHTTPD
     String data = properties.getProperty(property);
     if (data == null)
     {
-      for (Object key : properties.keySet())
+      for (Object key : properties.keySet().toArray(new Object[] {}))
       {
         if (key.toString().toLowerCase().equals(property.toLowerCase()))
         {

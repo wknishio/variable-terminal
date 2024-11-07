@@ -463,7 +463,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       return true;
     }
     String proxyAuthorization = null;
-    for (Object headerName : headers.keySet())
+    for (Object headerName : headers.keySet().toArray(new Object[] {}))
     {
       if (headerName != null && headerName.toString().equalsIgnoreCase("Proxy-Authorization"))
       {
@@ -500,7 +500,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       return 0;
     }
     String proxyAuthorization = null;
-    for (Object headerName : headers.keySet())
+    for (Object headerName : headers.keySet().toArray(new Object[] {}))
     {
       if (headerName != null && headerName.toString().equalsIgnoreCase("Proxy-Authorization"))
       {

@@ -188,7 +188,7 @@ public class VTTunnelConnection
   {
     if (bindHost == null || bindHost.length() == 0)
     {
-      for (VTTunnelChannelBindSocketListener channel : bindListeners)
+      for (VTTunnelChannelBindSocketListener channel : bindListeners.toArray(new VTTunnelChannelBindSocketListener[] {}))
       {
         if (channel.getChannel().getBindPort() == bindPort)
         {
@@ -202,7 +202,7 @@ public class VTTunnelConnection
     }
     else
     {
-      for (VTTunnelChannelBindSocketListener channel : bindListeners)
+      for (VTTunnelChannelBindSocketListener channel : bindListeners.toArray(new VTTunnelChannelBindSocketListener[] {}))
       {
         if (channel.getChannel().getBindPort() == bindPort)
         {

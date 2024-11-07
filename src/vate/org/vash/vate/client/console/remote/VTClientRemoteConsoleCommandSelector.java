@@ -72,7 +72,7 @@ public class VTClientRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
   {
     // additionalCustomCommandProcessorPackages.add(pkg);
     Set<Class<?>> customClasses = VTReflectionUtils.findClassesFromNames(VTReflectionUtils.findClassNamesFromPackage(pkg));
-    for (Class<?> clazz : customClasses)
+    for (Class<?> clazz : customClasses.toArray(new Class<?>[] {}))
     {
       if (VTClientRemoteConsoleCommandProcessor.class.isAssignableFrom(clazz))
       {
@@ -85,7 +85,7 @@ public class VTClientRemoteConsoleCommandSelector<T> extends VTConsoleCommandSel
   {
     this.session = session;
     Set<Object> instances = VTReflectionUtils.createClassInstancesFromClasses(installedCommandProcessorClasses);
-    for (Object instance : instances)
+    for (Object instance : instances.toArray())
     {
       try
       {

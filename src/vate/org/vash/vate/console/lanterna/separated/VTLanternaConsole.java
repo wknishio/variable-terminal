@@ -2575,7 +2575,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         {
           StringBuilder fileList = new StringBuilder();
           String fileListString = "";
-          for (File file : files)
+          for (File file : files.toArray(new File[] {}))
           {
             fileList.append(" " + file.getAbsolutePath());
           }
@@ -2673,7 +2673,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
       try
       {
         StringBuilder text = new StringBuilder();
-        for (String line : outputBox.lines)
+        for (String line : outputBox.lines.toArray(new String[] {}))
         {
           text.append(line + "\n");
         }

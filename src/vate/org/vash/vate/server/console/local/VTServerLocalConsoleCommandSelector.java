@@ -67,7 +67,7 @@ public class VTServerLocalConsoleCommandSelector<T> extends VTConsoleCommandSele
   public static void addCustomCommandProcessorPackage(String pkg)
   {
     Set<Class<?>> customClasses = VTReflectionUtils.findClassesFromNames(VTReflectionUtils.findClassNamesFromPackage(pkg));
-    for (Class<?> clazz : customClasses)
+    for (Class<?> clazz : customClasses.toArray(new Class<?>[] {}))
     {
       if (VTServerLocalConsoleCommandProcessor.class.isAssignableFrom(clazz))
       {
@@ -80,7 +80,7 @@ public class VTServerLocalConsoleCommandSelector<T> extends VTConsoleCommandSele
   {
     this.server = server;
     Set<Object> instances = VTReflectionUtils.createClassInstancesFromClasses(installedCommandProcessorClasses);
-    for (Object instance : instances)
+    for (Object instance : instances.toArray())
     {
       try
       {

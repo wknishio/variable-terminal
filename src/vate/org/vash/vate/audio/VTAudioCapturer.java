@@ -297,7 +297,7 @@ public class VTAudioCapturer
     
     public void close()
     {
-      for (VTLittleEndianOutputStream out : streams)
+      for (VTLittleEndianOutputStream out : streams.toArray(new VTLittleEndianOutputStream[] {}))
       {
         try
         {
@@ -352,8 +352,9 @@ public class VTAudioCapturer
       readSize = Math.max(VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
       while (running)
       {
+        VTLittleEndianOutputStream[] outs = streams.toArray(new VTLittleEndianOutputStream[] {});
         decodedFrameSize = line.read(inputBuffer, 0, readSize);
-        if (decodedFrameSize > 0 && streams.size() > 0)
+        if (decodedFrameSize > 0 && outs.length > 0)
         {
           frameStream.reset();
           for (offset = 0; offset < decodedFrameSize; offset += (frameSize))
@@ -362,7 +363,7 @@ public class VTAudioCapturer
             frameStream.writeUnsignedShort(encodedFrameSize);
             frameStream.write(outputBuffer, 0, encodedFrameSize);
           }
-          for (VTLittleEndianOutputStream out : streams.toArray(new VTLittleEndianOutputStream[] {}))
+          for (VTLittleEndianOutputStream out : outs)
           {
             try
             {
@@ -399,8 +400,9 @@ public class VTAudioCapturer
       readSize = Math.max(VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
       while (running)
       {
+        VTLittleEndianOutputStream[] outs = streams.toArray(new VTLittleEndianOutputStream[] {});
         decodedFrameSize = line.read(inputBuffer, 0, readSize);
-        if (decodedFrameSize > 0 && streams.size() > 0)
+        if (decodedFrameSize > 0 && outs.length > 0)
         {
           frameStream.reset();
           for (offset = 0; offset < decodedFrameSize; offset += frameSize)
@@ -410,7 +412,7 @@ public class VTAudioCapturer
             frameStream.writeUnsignedShort(encodedFrameSize);
             frameStream.write(outputBuffer, 0, encodedFrameSize);
           }
-          for (VTLittleEndianOutputStream out : streams.toArray(new VTLittleEndianOutputStream[] {}))
+          for (VTLittleEndianOutputStream out : outs)
           {
             try
             {
@@ -515,7 +517,7 @@ public class VTAudioCapturer
       setRunning(true);
       if (scheduled.size() > 0)
       {
-        for (Runnable runnable : scheduled)
+        for (Runnable runnable : scheduled.toArray(new Runnable[] {}))
         {
           executorService.execute(runnable);
         }

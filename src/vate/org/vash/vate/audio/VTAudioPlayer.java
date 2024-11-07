@@ -342,7 +342,7 @@ public class VTAudioPlayer
       setRunning(true);
       if (scheduled.size() > 0)
       {
-        for (Runnable runnable : scheduled)
+        for (Runnable runnable : scheduled.toArray(new Runnable[] {}))
         {
           executorService.execute(runnable);
         }
@@ -354,7 +354,7 @@ public class VTAudioPlayer
   public void close()
   {
     this.running = false;
-    for (VTLittleEndianInputStream in : streams)
+    for (VTLittleEndianInputStream in : streams.toArray(new VTLittleEndianInputStream[] {}))
     {
       try
       {

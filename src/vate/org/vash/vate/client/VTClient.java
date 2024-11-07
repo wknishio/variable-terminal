@@ -2324,7 +2324,7 @@ public class VTClient implements Runnable
     clientConnector.setSessionCommands(sessionCommands);
     // clientConnector.setSessionLines(sessionLines);
     clientConnector.setSessionShell(sessionShell);
-    for (VTClientSessionListener listener : listeners)
+    for (VTClientSessionListener listener : listeners.toArray(new VTClientSessionListener[] {}))
     {
       clientConnector.addSessionListener(listener);
     }
