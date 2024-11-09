@@ -116,8 +116,6 @@ these are the available program arguments:
 * -CH: connection host, default null
 * -CP: connection port, default 6060
 * -CN: connection NAT port, default null
-* -PI: ping interval, default 15000 milliseconds
-* -PL: ping limit, default 60000 milliseconds
 * -PT: proxy type, default none, DIRECT(D), SOCKS(S), HTTP(H), ANY(A)
 * -PH: proxy host, default null
 * -PP: proxy port, default 1080 for SOCKS or default 8080 for HTTP
@@ -126,10 +124,12 @@ these are the available program arguments:
 * -ET: encryption type, default none/ISAAC(I)/VMPC(R)/SALSA(S)/HC(H)/ZUC(Z)
 * -EK: encryption password, default null
 * -SS: session shell, default null
-* -SU: session user, default null
-* -SK: session password, default null
 * -SM: session maximum, default 0, only in server
 * -SC: session commands, separated by "*;", default null, only in client
+* -SU: session user, default null
+* -SK: session password, default null
+* -PI: ping interval, default 15000 milliseconds
+* -PL: ping limit, default 60000 milliseconds
 
 ## Console commands
 

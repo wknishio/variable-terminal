@@ -1499,64 +1499,6 @@ public class VTClient implements Runnable
               }
             }
           }
-          VTConsole.print("VT>Enter ping interval(default:15000):");
-          line = VTConsole.readLine(true);
-          if (line == null)
-          {
-            VTRuntimeExit.exit(0);
-          }
-          else if (skipConfiguration)
-          {
-            return;
-          }
-          if (line.length() > 0)
-          {
-            try
-            {
-              pingInterval = Integer.parseInt(line);
-            }
-            catch (Throwable t)
-            {
-              pingInterval = 0;
-            }
-          }
-          else
-          {
-            pingInterval = 0;
-          }
-          if (pingInterval < 0)
-          {
-            pingInterval = 0;
-          }
-          VTConsole.print("VT>Enter ping limit(default:60000):");
-          line = VTConsole.readLine(true);
-          if (line == null)
-          {
-            VTRuntimeExit.exit(0);
-          }
-          else if (skipConfiguration)
-          {
-            return;
-          }
-          if (line.length() > 0)
-          {
-            try
-            {
-              pingLimit = Integer.parseInt(line);
-            }
-            catch (Throwable t)
-            {
-              pingLimit = 0;
-            }
-          }
-          else
-          {
-            pingLimit = 0;
-          }
-          if (pingLimit < 0)
-          {
-            pingLimit = 0;
-          }
           VTConsole.print("VT>Use encryption in connection?(Y/N, default:N):");
           line = VTConsole.readLine(true);
           if (line == null)
@@ -1655,64 +1597,6 @@ public class VTClient implements Runnable
           if (hostPort > 65535 || hostPort < 1)
           {
             hostPort = 6060;
-          }
-          VTConsole.print("VT>Enter ping interval(default:15000):");
-          line = VTConsole.readLine(true);
-          if (line == null)
-          {
-            VTRuntimeExit.exit(0);
-          }
-          else if (skipConfiguration)
-          {
-            return;
-          }
-          if (line.length() > 0)
-          {
-            try
-            {
-              pingInterval = Integer.parseInt(line);
-            }
-            catch (Throwable t)
-            {
-              pingInterval = 0;
-            }
-          }
-          else
-          {
-            pingInterval = 0;
-          }
-          if (pingInterval < 0)
-          {
-            pingInterval = 0;
-          }
-          VTConsole.print("VT>Enter ping limit(default:60000):");
-          line = VTConsole.readLine(true);
-          if (line == null)
-          {
-            VTRuntimeExit.exit(0);
-          }
-          else if (skipConfiguration)
-          {
-            return;
-          }
-          if (line.length() > 0)
-          {
-            try
-            {
-              pingLimit = Integer.parseInt(line);
-            }
-            catch (Throwable t)
-            {
-              pingLimit = 0;
-            }
-          }
-          else
-          {
-            pingLimit = 0;
-          }
-          if (pingLimit < 0)
-          {
-            pingLimit = 0;
           }
           VTConsole.print("VT>Use proxy in connection?(Y/N, default:N):");
           line = VTConsole.readLine(true);
@@ -1989,6 +1873,64 @@ public class VTClient implements Runnable
             return;
           }
           setPassword(password);
+        }
+        VTConsole.print("VT>Enter ping interval(default:15000):");
+        line = VTConsole.readLine(true);
+        if (line == null)
+        {
+          VTRuntimeExit.exit(0);
+        }
+        else if (skipConfiguration)
+        {
+          return;
+        }
+        if (line.length() > 0)
+        {
+          try
+          {
+            pingInterval = Integer.parseInt(line);
+          }
+          catch (Throwable t)
+          {
+            pingInterval = 0;
+          }
+        }
+        else
+        {
+          pingInterval = 0;
+        }
+        if (pingInterval < 0)
+        {
+          pingInterval = 0;
+        }
+        VTConsole.print("VT>Enter ping limit(default:60000):");
+        line = VTConsole.readLine(true);
+        if (line == null)
+        {
+          VTRuntimeExit.exit(0);
+        }
+        else if (skipConfiguration)
+        {
+          return;
+        }
+        if (line.length() > 0)
+        {
+          try
+          {
+            pingLimit = Integer.parseInt(line);
+          }
+          catch (Throwable t)
+          {
+            pingLimit = 0;
+          }
+        }
+        else
+        {
+          pingLimit = 0;
+        }
+        if (pingLimit < 0)
+        {
+          pingLimit = 0;
         }
       }
       catch (NumberFormatException e)

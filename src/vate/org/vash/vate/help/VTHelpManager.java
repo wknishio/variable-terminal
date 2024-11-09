@@ -28,8 +28,6 @@ public class VTHelpManager
   ("\n-CH: connection host, default null") + 
   ("\n-CP: connection port, default 6060") + 
   ("\n-CN: connection NAT port, default null") + 
-  ("\n-PI: ping interval, default 15000 milliseconds") + 
-  ("\n-PL: ping limit, default 60000 milliseconds") + 
   ("\n-PT: proxy type, default none, DIRECT(D), SOCKS(S), HTTP(H), ANY(A)") + 
   ("\n-PH: proxy host, default null") + 
   ("\n-PP: proxy port, default 1080 for SOCKS or 8080 for HTTP") + 
@@ -39,10 +37,12 @@ public class VTHelpManager
   ("\n-ET: encryption type, default none/ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)") + 
   ("\n-EK: encryption password, default null") + 
   ("\n-SS: session shell, default null") + 
+  ("\n-SM: session maximum, default 0, only in server") + 
+  ("\n-SC: session commands, separated by \"*;\", default null, only in client") +
   ("\n-SU: session user, default null") + 
   ("\n-SK: session password, default null") + 
-  ("\n-SM: session maximum, default 0, only in server") + 
-  ("\n-SC: session commands, separated by \"*;\", default null, only in client");
+  ("\n-PI: ping interval, default 15000 milliseconds") + 
+  ("\n-PL: ping limit, default 60000 milliseconds");
   
   public static void initialize()
   {

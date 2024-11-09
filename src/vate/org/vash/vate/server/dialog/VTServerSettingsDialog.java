@@ -875,9 +875,6 @@ public class VTServerSettingsDialog extends Dialog
     centerPanel.add(connectionPort);
     centerPanel.add(natPort);
     
-    centerPanel.add(pingInterval);
-    centerPanel.add(pingLimit);
-    
     centerPanel.add(proxyType);
     centerPanel.add(proxyHost);
     centerPanel.add(proxyPort);
@@ -893,6 +890,9 @@ public class VTServerSettingsDialog extends Dialog
     
     centerPanel.add(sessionUser);
     centerPanel.add(sessionPassword);
+    
+    centerPanel.add(pingInterval);
+    centerPanel.add(pingLimit);
     
     centerPanel.add(buttonPanel1);
     
