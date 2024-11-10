@@ -275,4 +275,14 @@ public class VTManagedSocket extends Socket implements Closeable
   {
     managedConnection.getConnectionSocket().setPerformancePreferences(connectionTime, latency, bandwidth);
   }
+  
+  public long getOutputRateBytesPerSecond()
+  {
+    return managedConnection.getOutputRateBytesPerSecond();
+  }
+  
+  public void setOutputRateBytesPerSecond(long bytesPerSecond)
+  {
+    managedConnection.setOutputRateBytesPerSecond(bytesPerSecond);
+  }
 }

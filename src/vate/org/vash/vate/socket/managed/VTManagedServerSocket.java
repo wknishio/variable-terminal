@@ -121,6 +121,31 @@ public class VTManagedServerSocket
     {
       return pingListener.ping(timeoutNanoSeconds);
     }
+    
+    public long getOutputRateBytesPerSecond()
+    {
+      long bytesPerSecond = connection.getMultiplexedConnectionOutputStream().getBytesPerSecond();
+      if (bytesPerSecond < Long.MAX_VALUE)
+      {
+        return bytesPerSecond;
+      }
+      else
+      {
+        return 0;
+      }
+    }
+    
+    public void setOutputRateBytesPerSecond(long bytesPerSecond)
+    {
+      if (bytesPerSecond > 0)
+      {
+        connection.getMultiplexedConnectionOutputStream().setBytesPerSecond(bytesPerSecond);
+      }
+      else
+      {
+        connection.getMultiplexedConnectionOutputStream().setBytesPerSecond(Long.MAX_VALUE);
+      }
+    }
   }
   
   private class VTManagedServerSocketServerSessionListener implements VTServerSessionListener

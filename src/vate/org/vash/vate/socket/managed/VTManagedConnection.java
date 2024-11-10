@@ -20,4 +20,6 @@ public interface VTManagedConnection extends Closeable
   public void pingConnection();
   public long ping();
   public long ping(long timeoutNanoSeconds);
+  public long getOutputRateBytesPerSecond();
+  public void setOutputRateBytesPerSecond(long bytesPerSecond);
 }
