@@ -72,7 +72,7 @@ public class VTManagedClientSocket
       return stream;
     }
     
-    public VTLinkableDynamicMultiplexedInputStream getInputStream(int number, int type)
+    public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number)
     {
       if (number < 0)
       {
@@ -82,7 +82,7 @@ public class VTManagedClientSocket
       return stream;
     }
     
-    public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number, int type)
+    public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number)
     {
       if (number < 0)
       {
@@ -160,7 +160,14 @@ public class VTManagedClientSocket
       sessions.put(session, socket);
       if (socketListener != null)
       {
-        socketListener.connected(socket);
+        try
+        {
+          socketListener.connected(socket);
+        }
+        catch (Throwable t)
+        {
+          
+        }
       }
       else
       {
@@ -173,7 +180,14 @@ public class VTManagedClientSocket
       VTManagedSocket socket = sessions.remove(session);
       if (socketListener != null && socket != null)
       {
-        socketListener.disconnected(socket);
+        try
+        {
+          socketListener.disconnected(socket);
+        }
+        catch (Throwable t)
+        {
+          
+        }
       }
       // System.out.println("client.session.finished()");
     }

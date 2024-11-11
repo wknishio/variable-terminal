@@ -149,6 +149,39 @@ public final class VTBigEndianOutputStream extends OutputStream implements DataO
     writeUnsignedShort(v);
   }
   
+  public final void writeData(final byte[] b, int off, int len) throws IOException
+  {
+    byte[] data = new byte[4 + len];
+    data[0] = (byte) (len >> 24);
+    data[1] = (byte) (len >> 16);
+    data[2] = (byte) (len >> 8);
+    data[3] = (byte) len;
+    System.arraycopy(b, off, data, 4, len);
+    write(data, 0, data.length);
+  }
+  
+  public final void writeData(final byte[] b) throws IOException
+  {
+    writeData(b, 0, b.length);
+  }
+  
+  public final void write(char[] buf, int off, int len) throws IOException
+  {
+    byte[] utf = String.valueOf(buf, off, len).getBytes("UTF-8");
+    writeData(utf);
+  }
+  
+  public final void write(char[] buf) throws IOException
+  {
+    write(buf, 0, buf.length);
+  }
+  
+  public final void writeUTF(final String s) throws IOException
+  {
+    byte[] utf = s.getBytes("UTF-8");
+    writeData(utf);
+  }
+  
   public final void writeBytes(final String s) throws IOException
   {
     writeUTF(s);
@@ -159,39 +192,13 @@ public final class VTBigEndianOutputStream extends OutputStream implements DataO
     writeUTF(s);
   }
   
-  public final void writeData(final byte[] b) throws IOException
-  {
-    int size = b.length;
-    byte[] data = new byte[4 + size];
-    data[0] = (byte) (size >> 24);
-    data[1] = (byte) (size >> 16);
-    data[2] = (byte) (size >> 8);
-    data[3] = (byte) size;
-    System.arraycopy(b, 0, data, 4, b.length);
-    write(data, 0, data.length);
-  }
-  
-  public final void writeUTF(final String s) throws IOException
-  {
-    byte[] utf = s.getBytes("UTF-8");
-    writeData(utf);
-  }
-  
   public final void writeLine(final String s) throws IOException
   {
-    byte[] utf = s.getBytes("UTF-8");
-    writeData(utf);
+    writeUTF(s);
   }
   
   public final void write(final String s) throws IOException
   {
-    byte[] utf = s.getBytes("UTF-8");
-    writeData(utf);
-  }
-  
-  public final void write(char[] buf, int off, int len) throws IOException
-  {
-    byte[] utf = String.valueOf(buf, off, len).getBytes("UTF-8");
-    writeData(utf);
+    writeUTF(s);
   }
 }

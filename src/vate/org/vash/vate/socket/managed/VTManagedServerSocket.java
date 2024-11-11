@@ -72,7 +72,7 @@ public class VTManagedServerSocket
       return stream;
     }
     
-    public VTLinkableDynamicMultiplexedInputStream getInputStream(int number, int type)
+    public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number)
     {
       if (number < 0)
       {
@@ -82,7 +82,7 @@ public class VTManagedServerSocket
       return stream;
     }
     
-    public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number, int type)
+    public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number)
     {
       if (number < 0)
       {
@@ -160,7 +160,14 @@ public class VTManagedServerSocket
       sessions.put(session, socket);
       if (socketListener != null)
       {
-        socketListener.connected(socket);
+        try
+        {
+          socketListener.connected(socket);
+        }
+        catch (Throwable t)
+        {
+          
+        }
       }
       else
       {
@@ -174,7 +181,14 @@ public class VTManagedServerSocket
       VTManagedSocket socket = sessions.remove(session);
       if (socketListener != null && socket != null)
       {
-        socketListener.disconnected(socket);
+        try
+        {
+          socketListener.disconnected(socket);
+        }
+        catch (Throwable t)
+        {
+          
+        }
       }
     }
   }
@@ -197,7 +211,7 @@ public class VTManagedServerSocket
     vtserver.loadServerSettingsFile(settingsFile);
   }
   
-  public void loadServerSettings(Properties properties) throws Exception
+  public void loadServerSettingsProperties(Properties properties) throws Exception
   {
     vtserver.loadServerSettingsProperties(properties);
   }

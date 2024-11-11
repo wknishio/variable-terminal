@@ -70,16 +70,15 @@ public class VTManagedSocket extends Socket implements Closeable
     return managedConnection.getOutputStream(number);
   }
   
-  public VTLinkableDynamicMultiplexedInputStream getInputStream(int number, int type) throws IOException
+  public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number) throws IOException
   {
-    return managedConnection.getInputStream(number, type);
+    return managedConnection.getInputStream(type, number);
   }
   
-  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number, int type) throws IOException
+  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number) throws IOException
   {
-    return managedConnection.getOutputStream(number, type);
+    return managedConnection.getOutputStream(type, number);
   }
-
   
   public void shutdownOutput() throws IOException
   {

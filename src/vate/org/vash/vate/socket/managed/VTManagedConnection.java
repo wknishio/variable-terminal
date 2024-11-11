@@ -13,8 +13,8 @@ public interface VTManagedConnection extends Closeable
   public Socket getConnectionSocket();
   public VTLinkableDynamicMultiplexedInputStream getInputStream(int number);
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number);
-  public VTLinkableDynamicMultiplexedInputStream getInputStream(int number, int type);
-  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number, int type);
+  public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number);
+  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number);
   public VTClientSession getClientSession();
   public VTServerSession getServerSession();
   public void pingConnection();
