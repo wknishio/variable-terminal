@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import org.vash.vate.VT;
+
 public class VTHelpManager
 {
   private static Properties helpMap = new Properties();
@@ -41,8 +43,8 @@ public class VTHelpManager
   ("\n-SC: session commands, separated by \"*;\", default null, only in client") +
   ("\n-SU: session user, default null") + 
   ("\n-SK: session password, default null") + 
-  ("\n-PI: ping interval, default 15000 milliseconds") + 
-  ("\n-PL: ping limit, default 60000 milliseconds");
+  ("\n-PI: ping interval, default " + VT.VT_PING_INTERVAL_MILLISECONDS + " milliseconds") + 
+  ("\n-PL: ping limit, default " + VT.VT_PING_LIMIT_MILLISECONDS + " milliseconds");
   
   public static void initialize()
   {

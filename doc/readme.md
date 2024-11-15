@@ -129,7 +129,7 @@ these are the available program arguments:
 * -SU: session user, default null
 * -SK: session password, default null
 * -PI: ping interval, default 15000 milliseconds
-* -PL: ping limit, default 60000 milliseconds
+* -PL: ping limit, default 30000 milliseconds
 
 ## Console commands
 

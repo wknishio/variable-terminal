@@ -41,9 +41,9 @@ public class VT
   public static final int VT_SECURITY_DIGEST_SIZE_BYTES = 64;
   public static final int VT_SECURITY_SEED_SIZE_BYTES = VT_SECURITY_DIGEST_SIZE_BYTES << 1;
   
-  public static final int VT_CONNECT_TIMEOUT_MILLISECONDS = 60000;
-  public static final int VT_ACCEPT_TIMEOUT_MILLISECONDS = 60000;
-  public static final int VT_PING_LIMIT_MILLISECONDS = 60000;
+  public static final int VT_CONNECT_TIMEOUT_MILLISECONDS = 30000;
+  public static final int VT_ACCEPT_TIMEOUT_MILLISECONDS = 30000;
+  public static final int VT_PING_LIMIT_MILLISECONDS = 30000;
   public static final int VT_PING_INTERVAL_MILLISECONDS = 15000;
   public static final int VT_RECONNECT_TIMEOUT_MILLISECONDS = 60000;
   public static final int VT_DAEMON_RECONNECT_TIMEOUT_MILLISECONDS = 3750;

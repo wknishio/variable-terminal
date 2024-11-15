@@ -1392,7 +1392,7 @@ public class VTClientConnector implements Runnable
       }
       int pingInterval = 0;
       int pingLimit = 0;
-      VTConsole.print("VT>Enter ping interval(default:15000):");
+      VTConsole.print("VT>Enter ping interval(default:" + VT.VT_PING_INTERVAL_MILLISECONDS + "):");
       line = VTConsole.readLine(true);
       if (line == null)
       {
@@ -1422,7 +1422,7 @@ public class VTClientConnector implements Runnable
         pingInterval = 0;
       }
       client.setPingInterval(pingInterval);
-      VTConsole.print("VT>Enter ping limit(default:60000):");
+      VTConsole.print("VT>Enter ping limit(default:" + VT.VT_PING_LIMIT_MILLISECONDS + "):");
       line = VTConsole.readLine(true);
       if (line == null)
       {

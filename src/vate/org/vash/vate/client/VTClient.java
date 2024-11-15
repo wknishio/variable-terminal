@@ -1874,7 +1874,7 @@ public class VTClient implements Runnable
           }
           setPassword(password);
         }
-        VTConsole.print("VT>Enter ping interval(default:15000):");
+        VTConsole.print("VT>Enter ping interval(default:" + VT.VT_PING_INTERVAL_MILLISECONDS + "):");
         line = VTConsole.readLine(true);
         if (line == null)
         {
@@ -1903,7 +1903,7 @@ public class VTClient implements Runnable
         {
           pingInterval = 0;
         }
-        VTConsole.print("VT>Enter ping limit(default:60000):");
+        VTConsole.print("VT>Enter ping limit(default:" + VT.VT_PING_LIMIT_MILLISECONDS + "):");
         line = VTConsole.readLine(true);
         if (line == null)
         {
