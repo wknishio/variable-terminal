@@ -234,13 +234,11 @@ public class VTClientSession
   
   public void startSessionThreads()
   {
-    // session.getServerReader().setStopped(false);
     pingServiceServer.startThread();
     pingServiceClient.startThread();
     serverReader.startThread();
     clientWriter.startThread();
     tunnelsHandler.startThread();
-    // socksTunnelsHandler.startThread();
     client.enableInputMenuBar();
   }
   
