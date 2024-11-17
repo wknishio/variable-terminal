@@ -1,8 +1,8 @@
 package org.vash.vate.tunnel.channel;
 
 import java.net.InetSocketAddress;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.vash.vate.VT;
 import org.vash.vate.socket.proxy.VTProxy;
@@ -18,7 +18,7 @@ public class VTTunnelChannel
   private final int tunnelType;
   private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
   private final VTTunnelConnection connection;
-  private final List<VTTunnelSessionHandler> sessions;
+  private final Collection<VTTunnelSessionHandler> sessions;
   
   private int connectTimeout;
   private int dataTimeout;
@@ -65,7 +65,7 @@ public class VTTunnelChannel
     {
       this.bindAddress = new InetSocketAddress(bindPort);
     }
-    this.sessions = new ArrayList<VTTunnelSessionHandler>();
+    this.sessions = new ConcurrentLinkedQueue<VTTunnelSessionHandler>();
   }
   
   // SOCKS bind tunnel with authentication
@@ -89,7 +89,7 @@ public class VTTunnelChannel
     }
     this.socksUsername = socksUsername;
     this.socksPassword = socksPassword;
-    this.sessions = new ArrayList<VTTunnelSessionHandler>();
+    this.sessions = new ConcurrentLinkedQueue<VTTunnelSessionHandler>();
   }
   
   // TCP bind redirect tunnel
@@ -113,7 +113,7 @@ public class VTTunnelChannel
     {
       this.bindAddress = new InetSocketAddress(bindPort);
     }
-    this.sessions = new ArrayList<VTTunnelSessionHandler>();
+    this.sessions = new ConcurrentLinkedQueue<VTTunnelSessionHandler>();
   }
   
   //Generic response channel
@@ -122,7 +122,7 @@ public class VTTunnelChannel
     this.tunnelType = TUNNEL_TYPE_ANY;
     this.channelType = channelType;
     this.connection = connection;
-    this.sessions = new ArrayList<VTTunnelSessionHandler>();
+    this.sessions = new ConcurrentLinkedQueue<VTTunnelSessionHandler>();
   }
   
   public String toString()
@@ -140,7 +140,7 @@ public class VTTunnelChannel
     // closed = true;
     //synchronized (sessions)
     //{
-      for (VTTunnelSessionHandler handler : sessions.toArray(new VTTunnelSessionHandler[] {}))
+      for (VTTunnelSessionHandler handler : sessions)
       {
         try
         {
@@ -257,5 +257,5 @@ public class VTTunnelChannel
   public VTProxy getProxy()
   {
     return proxy;
-  }  
+  }
 }

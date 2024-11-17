@@ -3,7 +3,7 @@ package org.vash.vate.ping;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Queue;
+import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
@@ -18,7 +18,7 @@ public class VTNanoPingService extends VTTask
   private int initial;
   private VTLittleEndianInputStream in;
   private VTLittleEndianOutputStream out;
-  private Queue<VTNanoPingListener> listeners;
+  private Collection<VTNanoPingListener> listeners;
   private long startNanoTime = 0;
   private long endNanoTime = 0;
   private long localNanoDelay = 0;

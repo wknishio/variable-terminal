@@ -1,6 +1,6 @@
 package org.vash.vate.server.session;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.server.VTServer;
@@ -14,7 +14,7 @@ public class VTServerSessionHandler implements Runnable
   private VTServerConnection connection;
   private VTServerSession session;
   private VTServerAuthenticator authenticator;
-  private List<VTServerSessionListener> listeners;
+  private Collection<VTServerSessionListener> listeners;
   
   public VTServerSessionHandler(VTServer server, VTServerConnection connection)
   {
@@ -90,7 +90,7 @@ public class VTServerSessionHandler implements Runnable
       started = true;
       try
       {
-        for (VTServerSessionListener listener : listeners.toArray(new VTServerSessionListener[] {}))
+        for (VTServerSessionListener listener : listeners)
         {
           try
           {
@@ -120,7 +120,7 @@ public class VTServerSessionHandler implements Runnable
     {
       try
       {
-        for (VTServerSessionListener listener : listeners.toArray(new VTServerSessionListener[] {}))
+        for (VTServerSessionListener listener : listeners)
         {
           try
           {
@@ -140,7 +140,7 @@ public class VTServerSessionHandler implements Runnable
     session.clearSessionCloseables();
   }
   
-  public void setSessionListeners(List<VTServerSessionListener> listeners)
+  public void setSessionListeners(Collection<VTServerSessionListener> listeners)
   {
     this.listeners = listeners;
   }

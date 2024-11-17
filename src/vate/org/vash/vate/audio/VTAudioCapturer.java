@@ -3,11 +3,10 @@ package org.vash.vate.audio;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
@@ -31,9 +30,9 @@ public class VTAudioCapturer
   private ExecutorService executorService;
   private AudioFormat audioFormat;
 //  private Map<String, VTAudioCapturerThread> lines = Collections.synchronizedMap(new LinkedHashMap<String, VTAudioCapturerThread>());
-  private Map<String, VTAudioCapturerThread> lines = new LinkedHashMap<String, VTAudioCapturerThread>();
+  private Map<TargetDataLine, VTAudioCapturerThread> lines = new ConcurrentHashMap<TargetDataLine, VTAudioCapturerThread>();
   private VTAudioSystem system;
-  private List<Runnable> scheduled = new ArrayList<Runnable>();
+  private Collection<Runnable> scheduled = new ConcurrentLinkedQueue<Runnable>();
   
   public VTAudioCapturer(VTAudioSystem system, ExecutorService executorService)
   {
@@ -133,7 +132,7 @@ public class VTAudioCapturer
     private final byte[] outputBuffer;
     private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
     private final Queue<VTLittleEndianOutputStream> streams;
-    private final String id;
+    //private final String id;
     private TargetDataLine line;
     // private final VTLittleEndianOutputStream out;
     private SpeexEncoder speex;
@@ -145,13 +144,12 @@ public class VTAudioCapturer
     // private int maxFrameSize;
     // private int currentFrameSize;
     
-    private VTAudioCapturerThread(VTLittleEndianOutputStream out, TargetDataLine line, String id, int codec, int frameMilliseconds)
+    private VTAudioCapturerThread(VTLittleEndianOutputStream out, TargetDataLine line, int codec, int frameMilliseconds)
     {
       this.codec = codec;
       this.streams = new ConcurrentLinkedQueue<VTLittleEndianOutputStream>();
       // this.out = out;
       this.line = line;
-      this.id = id;
       this.lineBufferSize = line.getBufferSize();
       // System.out.println("capture.line.getBufferSize:" +
       // line.getBufferSize());
@@ -297,7 +295,7 @@ public class VTAudioCapturer
     
     public void close()
     {
-      for (VTLittleEndianOutputStream out : streams.toArray(new VTLittleEndianOutputStream[] {}))
+      for (VTLittleEndianOutputStream out : streams)
       {
         try
         {
@@ -337,7 +335,7 @@ public class VTAudioCapturer
           // e.printStackTrace();
         }
       }
-      lines.remove(id);
+      lines.remove(line);
       if (lines.size() == 0)
       {
         running = false;
@@ -352,9 +350,8 @@ public class VTAudioCapturer
       readSize = Math.max(VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
       while (running)
       {
-        VTLittleEndianOutputStream[] outs = streams.toArray(new VTLittleEndianOutputStream[] {});
         decodedFrameSize = line.read(inputBuffer, 0, readSize);
-        if (decodedFrameSize > 0 && outs.length > 0)
+        if (decodedFrameSize > 0)
         {
           frameStream.reset();
           for (offset = 0; offset < decodedFrameSize; offset += (frameSize))
@@ -363,7 +360,7 @@ public class VTAudioCapturer
             frameStream.writeUnsignedShort(encodedFrameSize);
             frameStream.write(outputBuffer, 0, encodedFrameSize);
           }
-          for (VTLittleEndianOutputStream out : outs)
+          for (VTLittleEndianOutputStream out : streams)
           {
             try
             {
@@ -400,9 +397,8 @@ public class VTAudioCapturer
       readSize = Math.max(VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
       while (running)
       {
-        VTLittleEndianOutputStream[] outs = streams.toArray(new VTLittleEndianOutputStream[] {});
         decodedFrameSize = line.read(inputBuffer, 0, readSize);
-        if (decodedFrameSize > 0 && outs.length > 0)
+        if (decodedFrameSize > 0)
         {
           frameStream.reset();
           for (offset = 0; offset < decodedFrameSize; offset += frameSize)
@@ -412,7 +408,7 @@ public class VTAudioCapturer
             frameStream.writeUnsignedShort(encodedFrameSize);
             frameStream.write(outputBuffer, 0, encodedFrameSize);
           }
-          for (VTLittleEndianOutputStream out : outs)
+          for (VTLittleEndianOutputStream out : streams)
           {
             try
             {
@@ -468,21 +464,11 @@ public class VTAudioCapturer
   
   public boolean addOutputStream(OutputStream out, Mixer.Info info, TargetDataLine line, int codec, int frameMilliseconds)
   {
-    // Mixer mixer = AudioSystem.getMixer(info);
-    String id = "";
-    if (info != null)
-    {
-      id = info.getName() + info.getDescription() + info.getVendor() + info.getVersion();
-    }
-    else
-    {
-      id = line.getLineInfo().toString();
-    }
-    VTAudioCapturerThread capturer = lines.get(id);
+    VTAudioCapturerThread capturer = lines.get(line);
     if (capturer == null)
     {
       VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new BufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
-      lines.put(id, new VTAudioCapturerThread(stream, line, id, codec, frameMilliseconds));
+      lines.put(line, new VTAudioCapturerThread(stream, line, codec, frameMilliseconds));
     }
     else
     {
@@ -495,7 +481,7 @@ public class VTAudioCapturer
   public void close()
   {
     this.running = false;
-    for (VTAudioCapturerThread capturerThread : lines.values().toArray(new VTAudioCapturerThread[] {}))
+    for (VTAudioCapturerThread capturerThread : lines.values())
     {
       try
       {
@@ -517,7 +503,7 @@ public class VTAudioCapturer
       setRunning(true);
       if (scheduled.size() > 0)
       {
-        for (Runnable runnable : scheduled.toArray(new Runnable[] {}))
+        for (Runnable runnable : scheduled)
         {
           executorService.execute(runnable);
         }

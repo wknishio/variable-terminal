@@ -463,7 +463,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       return true;
     }
     String proxyAuthorization = null;
-    for (Object headerName : headers.keySet().toArray(new Object[] {}))
+    for (Object headerName : headers.keySet())
     {
       if (headerName != null && headerName.toString().equalsIgnoreCase("Proxy-Authorization"))
       {
@@ -500,7 +500,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       return 0;
     }
     String proxyAuthorization = null;
-    for (Object headerName : headers.keySet().toArray(new Object[] {}))
+    for (Object headerName : headers.keySet())
     {
       if (headerName != null && headerName.toString().equalsIgnoreCase("Proxy-Authorization"))
       {
@@ -625,7 +625,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   private void servePipeRequest(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
   {
     ByteArrayOutputStream requestData = new ByteArrayOutputStream();
-    for (Object headerName : headers.keySet().toArray(new Object[] {}))
+    for (Object headerName : headers.keySet())
     {
       if (headerName != null)
       {
@@ -773,7 +773,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   
   private boolean searchHeaderIgnoreCase(String searchedHeader, Properties headers)
   {
-    for (Object headerName : headers.keySet().toArray(new Object[] {}))
+    for (Object headerName : headers.keySet())
     {
       if (headerName.toString().equalsIgnoreCase(searchedHeader))
       {

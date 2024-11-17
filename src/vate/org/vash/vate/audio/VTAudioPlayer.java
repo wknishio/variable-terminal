@@ -2,8 +2,7 @@ package org.vash.vate.audio;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -27,7 +26,7 @@ public class VTAudioPlayer
   private ExecutorService executorService;
   private AudioFormat audioFormat;
   private VTAudioSystem system;
-  private List<Runnable> scheduled = new ArrayList<Runnable>();
+  private Collection<Runnable> scheduled = new ConcurrentLinkedQueue<Runnable>();
   
   public VTAudioPlayer(VTAudioSystem system, ExecutorService executorService)
   {
@@ -342,7 +341,7 @@ public class VTAudioPlayer
       setRunning(true);
       if (scheduled.size() > 0)
       {
-        for (Runnable runnable : scheduled.toArray(new Runnable[] {}))
+        for (Runnable runnable : scheduled)
         {
           executorService.execute(runnable);
         }
@@ -354,7 +353,7 @@ public class VTAudioPlayer
   public void close()
   {
     this.running = false;
-    for (VTLittleEndianInputStream in : streams.toArray(new VTLittleEndianInputStream[] {}))
+    for (VTLittleEndianInputStream in : streams)
     {
       try
       {

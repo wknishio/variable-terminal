@@ -1,6 +1,6 @@
 package org.vash.vate.server.connection;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.server.VTServer;
@@ -82,7 +82,7 @@ public class VTServerConnectionHandler implements Runnable
     }
   }
   
-  public void setSessionListeners(List<VTServerSessionListener> listeners)
+  public void setSessionListeners(Collection<VTServerSessionListener> listeners)
   {
     handler.setSessionListeners(listeners);
   }

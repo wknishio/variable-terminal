@@ -317,7 +317,7 @@ public class VTServerPrintTextTask extends VTTask
                 lineBuilder.setLength(0);
               }
               
-              for (String line : lines.toArray(new String[] {}))
+              for (String line : lines)
               {
                 if (line.length() <= 0)
                 {

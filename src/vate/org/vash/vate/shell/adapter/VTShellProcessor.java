@@ -9,8 +9,8 @@ import java.io.PrintStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -52,7 +52,7 @@ public class VTShellProcessor
   private Interpreter beanshell;
   // private Groovysh groovyshell;
   
-  private List<Closeable> closeables = new ArrayList<Closeable>();
+  private Collection<Closeable> closeables = new ConcurrentLinkedQueue<Closeable>();
   
   public VTShellProcessor(ExecutorService executorService)
   {
@@ -187,7 +187,7 @@ public class VTShellProcessor
   {
     if (closeables != null && closeables.size() > 0)
     {
-      for (Closeable closeable : closeables.toArray(new Closeable[] {}))
+      for (Closeable closeable : closeables)
       {
         try
         {

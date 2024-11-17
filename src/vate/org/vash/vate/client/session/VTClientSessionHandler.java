@@ -1,6 +1,6 @@
 package org.vash.vate.client.session;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.authentication.VTClientAuthenticator;
@@ -14,7 +14,7 @@ public class VTClientSessionHandler implements Runnable
   private VTClientConnection connection;
   private VTClientSession session;
   private VTClientAuthenticator authenticator;
-  private List<VTClientSessionListener> listeners;
+  private Collection<VTClientSessionListener> listeners;
   
   public VTClientSessionHandler(VTClient client, VTClientConnection connection)
   {
@@ -82,7 +82,7 @@ public class VTClientSessionHandler implements Runnable
       started = true;
       try
       {
-        for (VTClientSessionListener listener : listeners.toArray(new VTClientSessionListener[] {}))
+        for (VTClientSessionListener listener : listeners)
         {
           try
           {
@@ -111,7 +111,7 @@ public class VTClientSessionHandler implements Runnable
     {
       try
       {
-        for (VTClientSessionListener listener : listeners.toArray(new VTClientSessionListener[] {}))
+        for (VTClientSessionListener listener : listeners)
         {
           try
           {
@@ -131,7 +131,7 @@ public class VTClientSessionHandler implements Runnable
     session.clearSessionCloseables();
   }
   
-  public void setSessionListeners(List<VTClientSessionListener> listeners)
+  public void setSessionListeners(Collection<VTClientSessionListener> listeners)
   {
     this.listeners = listeners;
   }

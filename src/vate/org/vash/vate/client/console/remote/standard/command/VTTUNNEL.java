@@ -43,7 +43,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
       message.setLength(0);
       message.append("\nVT>List of connection tunnels:\nVT>");
       //Set<VTTunnelChannelSocketListener> channels = session.getTunnelsHandler().getConnection().getChannels();
-      for (VTTunnelChannelBindSocketListener listener : session.getTunnelsHandler().getConnection().getBindListeners().toArray(new VTTunnelChannelBindSocketListener[] {}))
+      for (VTTunnelChannelBindSocketListener listener : session.getTunnelsHandler().getConnection().getBindListeners())
       {
         if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
         {
@@ -66,7 +66,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
         message.setLength(0);
         message.append("\nVT>List of client connection tunnels:\nVT>");
         //Set<VTTunnelChannelSocketListener> channels = session.getTunnelsHandler().getConnection().getChannels();
-        for (VTTunnelChannelBindSocketListener listener : session.getTunnelsHandler().getConnection().getBindListeners().toArray(new VTTunnelChannelBindSocketListener[] {}))
+        for (VTTunnelChannelBindSocketListener listener : session.getTunnelsHandler().getConnection().getBindListeners())
         {
           if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_TCP)
           {

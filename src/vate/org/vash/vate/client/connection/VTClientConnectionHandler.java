@@ -1,6 +1,6 @@
 package org.vash.vate.client.connection;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.session.VTClientSessionHandler;
@@ -68,7 +68,7 @@ public class VTClientConnectionHandler implements Runnable
     client.disableInputMenuBar();
   }
   
-  public void setSessionListeners(List<VTClientSessionListener> listeners)
+  public void setSessionListeners(Collection<VTClientSessionListener> listeners)
   {
     handler.setSessionListeners(listeners);
   }

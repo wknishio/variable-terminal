@@ -4,11 +4,11 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.zip.Checksum;
 
@@ -51,8 +51,8 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     this.throttled = new VTThrottledOutputStream(original, throttler);
 //    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
 //    this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
-    this.bufferedChannels = new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
-    this.directChannels = new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
+    this.bufferedChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
+    this.directChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
     this.packetSize = packetSize;
     
     //this.blockSize = blockSize;
@@ -229,7 +229,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   public final void close() throws IOException
   {
     throttled.close();
-    for (VTLinkableDynamicMultiplexedOutputStream stream : bufferedChannels.values().toArray(new VTLinkableDynamicMultiplexedOutputStream[] {}))
+    for (VTLinkableDynamicMultiplexedOutputStream stream : bufferedChannels.values())
     {
       try
       {
@@ -240,7 +240,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
         // e.printStackTrace();
       }
     }
-    for (VTLinkableDynamicMultiplexedOutputStream stream : directChannels.values().toArray(new VTLinkableDynamicMultiplexedOutputStream[] {}))
+    for (VTLinkableDynamicMultiplexedOutputStream stream : directChannels.values())
     {
       try
       {
@@ -307,7 +307,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private OutputStream output;
     private OutputStream control;
     private OutputStream intermediatePacketStream;
-    private final List<Closeable> propagated;
+    private final Collection<Closeable> propagated;
     private final Random packetSequencer;
     private final Checksum packetHasher;
     
@@ -333,7 +333,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       this.controlPacketStream = new VTLittleEndianOutputStream(controlPacketBuffer);
       this.closed = false;
       // this.link = null;
-      this.propagated = new ArrayList<Closeable>();
+      this.propagated = new ConcurrentLinkedQueue<Closeable>();
       
       if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
       {
@@ -437,7 +437,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       writeClosePacket(type, number);
       if (propagated.size() > 0)
       {
-        for (Closeable closeable : propagated.toArray(new Closeable[] {}))
+        for (Closeable closeable : propagated)
         {
           try
           {

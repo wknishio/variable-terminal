@@ -2,7 +2,7 @@ package org.vash.vate.server.session;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.List;
+import java.util.Collection;
 
 import org.vash.vate.server.connection.VTServerConnectionHandler;
 import org.vash.vate.task.VTTask;
@@ -37,9 +37,9 @@ public class VTServerSessionListViewer extends VTTask
     {
       message.setLength(0);
       int i = 0;
-      List<VTServerConnectionHandler> connections = session.getServer().getServerConnector().getConnectionHandlers();
+      Collection<VTServerConnectionHandler> connections = session.getServer().getServerConnector().getConnectionHandlers();
       message.append("\nVT>List of client connections with server:\nVT>");
-      for (VTServerConnectionHandler handler : connections.toArray(new VTServerConnectionHandler[] {}))
+      for (VTServerConnectionHandler handler : connections)
       {
         message.append("\nVT>Number: [" + i++ + "]");
         //message.append("\nVT>Authenticated: [" + (handler.getSessionHandler().isAuthenticated() ? "Yes" : "No") + "]");

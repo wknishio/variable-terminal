@@ -5,8 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.util.Collection;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
@@ -32,7 +31,7 @@ public class VTTunnelConnection
   // private VTLittleEndianOutputStream relayOutputStream;
   private VTTunnelChannel responseChannel;
 //  private VTTunnelChannelRemoteSocketBuilder remoteSocketBuilder;
-  private Set<VTTunnelChannelBindSocketListener> bindListeners;
+  private Collection<VTTunnelChannelBindSocketListener> bindListeners;
   // private int tunnelType;
   private ExecutorService executorService;
   private Collection<Closeable> closeables;
@@ -41,7 +40,7 @@ public class VTTunnelConnection
   public VTTunnelConnection(ExecutorService executorService, Collection<Closeable> closeables)
   {
     this.responseChannel = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this);
-    this.bindListeners = new LinkedHashSet<VTTunnelChannelBindSocketListener>();
+    this.bindListeners = new ConcurrentLinkedQueue<VTTunnelChannelBindSocketListener>();
     // this.tunnelType = tunnelType;
     this.executorService = executorService;
     this.closeables = closeables;
@@ -179,7 +178,7 @@ public class VTTunnelConnection
     return createRemoteSocketFactory(responseChannel);
   }
   
-  public Set<VTTunnelChannelBindSocketListener> getBindListeners()
+  public Collection<VTTunnelChannelBindSocketListener> getBindListeners()
   {
     return bindListeners;
   }
@@ -188,7 +187,7 @@ public class VTTunnelConnection
   {
     if (bindHost == null || bindHost.length() == 0)
     {
-      for (VTTunnelChannelBindSocketListener channel : bindListeners.toArray(new VTTunnelChannelBindSocketListener[] {}))
+      for (VTTunnelChannelBindSocketListener channel : bindListeners)
       {
         if (channel.getChannel().getBindPort() == bindPort)
         {
@@ -202,7 +201,7 @@ public class VTTunnelConnection
     }
     else
     {
-      for (VTTunnelChannelBindSocketListener channel : bindListeners.toArray(new VTTunnelChannelBindSocketListener[] {}))
+      for (VTTunnelChannelBindSocketListener channel : bindListeners)
       {
         if (channel.getChannel().getBindPort() == bindPort)
         {
@@ -259,7 +258,7 @@ public class VTTunnelConnection
     closed = true;
     //System.out.println("VTTunnelConnection.close()");
     responseChannel.close();
-    for (VTTunnelChannelBindSocketListener listener : bindListeners.toArray(new VTTunnelChannelBindSocketListener[] {}))
+    for (VTTunnelChannelBindSocketListener listener : bindListeners)
     {
       try
       {

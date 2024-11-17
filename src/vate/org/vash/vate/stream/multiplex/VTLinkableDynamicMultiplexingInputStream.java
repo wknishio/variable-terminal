@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -72,8 +72,8 @@ public final class VTLinkableDynamicMultiplexingInputStream
     //this.hin = new VTLittleEndianInputStream(packetHeaderBuffer);
 //    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
 //    this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
-    this.bufferedChannels = new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
-    this.directChannels = new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
+    this.bufferedChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
+    this.directChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
     this.packetReader = new VTLinkableDynamicMultiplexingInputStreamPacketReader(this);
     //this.packetReaderThread = new Thread(null, packetReader, packetReader.getClass().getSimpleName());
     //this.packetReaderThread.setDaemon(true);
@@ -251,7 +251,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     //packetReader.setRunning(false);
     //synchronized (pipedChannels)
     //{
-      for (VTLinkableDynamicMultiplexedInputStream stream : bufferedChannels.values().toArray(new VTLinkableDynamicMultiplexedInputStream[ ]{}))
+      for (VTLinkableDynamicMultiplexedInputStream stream : bufferedChannels.values())
       {
         try
         {
@@ -265,7 +265,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     //}
     //synchronized (directChannels)
     //{
-      for (VTLinkableDynamicMultiplexedInputStream stream : directChannels.values().toArray(new VTLinkableDynamicMultiplexedInputStream[] {}))
+      for (VTLinkableDynamicMultiplexedInputStream stream : directChannels.values())
       {
         try
         {
@@ -399,7 +399,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     private VTByteArrayOutputStream compressedPacketOutputPipe;
     private VTByteArrayInputStream compressedPacketInputPipe;
     private InputStream compressedInputStream;
-    private final List<Closeable> propagated;
+    private final Collection<Closeable> propagated;
     private final Random packetSequencer;
     private final Checksum packetHasher;
     
@@ -410,7 +410,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       this.packetHasher = XXHashFactory.safeInstance().newStreamingHash64(packetSequencer.nextLong()).asChecksum();
       this.type = type;
       this.number = number;
-      this.propagated = new ArrayList<Closeable>();
+      this.propagated = new ConcurrentLinkedQueue<Closeable>();
       if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
       {
         this.bufferedInputStream = new VTPipedInputStream(bufferSize);
@@ -575,7 +575,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       if (propagated.size() > 0)
       {
         // propagated.close();
-        for (Closeable closeable : propagated.toArray(new Closeable[] {}))
+        for (Closeable closeable : propagated)
         {
           try
           {

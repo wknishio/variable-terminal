@@ -1,7 +1,7 @@
 package org.vash.vate.server.console.local.standard.command;
 
 import java.net.InetAddress;
-import java.util.List;
+import java.util.Collection;
 
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.server.connection.VTServerConnectionHandler;
@@ -21,11 +21,11 @@ public class VTUSER extends VTServerStandardLocalConsoleCommandProcessor
   {
     int i = 0;
     message.setLength(0);
-    List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
+    Collection<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
     if (connections.size() > 0)
     {
       message.append("\rVT>List of client connections with server:\nVT>");
-      for (VTServerConnectionHandler handler : connections.toArray(new VTServerConnectionHandler[] {}))
+      for (VTServerConnectionHandler handler : connections)
       {
         message.append("\nVT>Number: [" + i++ + "]");
         //message.append("\nVT>Authenticated: [" + (handler.getSessionHandler().isAuthenticated() ? "Yes" : "No") + "]");

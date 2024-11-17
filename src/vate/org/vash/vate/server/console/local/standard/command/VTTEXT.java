@@ -1,6 +1,6 @@
 package org.vash.vate.server.console.local.standard.command;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.server.connection.VTServerConnectionHandler;
@@ -23,10 +23,10 @@ public class VTTEXT extends VTServerStandardLocalConsoleCommandProcessor
     {
       if (parsed.length >= 2)
       {
-        List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
+        Collection<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
         if (connections.size() > 0)
         {
-          for (VTServerConnectionHandler connectionHandler : connections.toArray(new VTServerConnectionHandler[] {}))
+          for (VTServerConnectionHandler connectionHandler : connections)
           {
             if (connectionHandler.getSessionHandler().isAuthenticated())
             {
@@ -55,10 +55,10 @@ public class VTTEXT extends VTServerStandardLocalConsoleCommandProcessor
       }
       else if (parsed.length == 1)
       {
-        List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
+        Collection<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
         if (connections.size() > 0)
         {
-          for (VTServerConnectionHandler connectionHandler : connections.toArray(new VTServerConnectionHandler[] {}))
+          for (VTServerConnectionHandler connectionHandler : connections)
           {
             if (connectionHandler.getSessionHandler().isAuthenticated())
             {
@@ -91,10 +91,10 @@ public class VTTEXT extends VTServerStandardLocalConsoleCommandProcessor
       if (command.toUpperCase().startsWith("*VTTEXT "))
       {
         // command = StringEscapeUtils.unescapeJava(command);
-        List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
+        Collection<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
         if (connections.size() > 0)
         {
-          for (VTServerConnectionHandler connectionHandler : connections.toArray(new VTServerConnectionHandler[] {}))
+          for (VTServerConnectionHandler connectionHandler : connections)
           {
             if (connectionHandler.getSessionHandler().isAuthenticated())
             {
@@ -124,10 +124,10 @@ public class VTTEXT extends VTServerStandardLocalConsoleCommandProcessor
       else if (command.toUpperCase().startsWith("*VTTX "))
       {
         // command = StringEscapeUtils.unescapeJava(command);
-        List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
+        Collection<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
         if (connections.size() > 0)
         {
-          for (VTServerConnectionHandler connectionHandler : connections.toArray(new VTServerConnectionHandler[] {}))
+          for (VTServerConnectionHandler connectionHandler : connections)
           {
             if (connectionHandler.getSessionHandler().isAuthenticated())
             {
@@ -156,10 +156,10 @@ public class VTTEXT extends VTServerStandardLocalConsoleCommandProcessor
       }
       else
       {
-        List<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
+        Collection<VTServerConnectionHandler> connections = server.getServerConnector().getConnectionHandlers();
         if (connections.size() > 0)
         {
-          for (VTServerConnectionHandler connectionHandler : connections.toArray(new VTServerConnectionHandler[] {}))
+          for (VTServerConnectionHandler connectionHandler : connections)
           {
             if (connectionHandler.getSessionHandler().isAuthenticated())
             {

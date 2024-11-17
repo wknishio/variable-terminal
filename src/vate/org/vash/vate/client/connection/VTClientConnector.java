@@ -4,8 +4,9 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.vash.vate.VT;
 import org.vash.vate.client.VTClient;
@@ -48,7 +49,7 @@ public class VTClientConnector implements Runnable
   private VTNATSinglePortMappingManagerMKII portMappingManager;
   private VTConnectionRetryTimeoutTask connectionRetryTimeoutTask = new VTConnectionRetryTimeoutTask();
   private VTClientConnectorNATPortMappingResultNotify natNotify = new VTClientConnectorNATPortMappingResultNotify();
-  private List<VTClientSessionListener> listeners = new ArrayList<VTClientSessionListener>();
+  private Collection<VTClientSessionListener> listeners = new ConcurrentLinkedQueue<VTClientSessionListener>();
   private final VTBlake3SecureRandom secureRandom;
   
   public VTClientConnector(VTClient client, VTBlake3SecureRandom secureRandom)

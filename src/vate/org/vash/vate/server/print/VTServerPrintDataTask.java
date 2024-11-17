@@ -475,7 +475,7 @@ public class VTServerPrintDataTask extends VTTask
           final StringBuilder lineBuilder = new StringBuilder();
           int limit = 80;
           
-          for (String fileLine : fileLines.toArray(new String[] {}))
+          for (String fileLine : fileLines)
           {
             String[] words = fileLine.split("\\s+");
             

@@ -358,7 +358,7 @@ public class VTShellAdapter
             // try again with cmd.exe if cannot start old DOS command.com shell
             List<String> commands = commandBuilder.command();
             boolean dosLegacyShellFound = false;
-            for (String command : commands.toArray(new String[] {}))
+            for (String command : commands)
             {
               if (command.toUpperCase().contains("COMMAND.COM"))
               {

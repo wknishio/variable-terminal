@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -58,7 +58,7 @@ public class VTClient implements Runnable
   private boolean skipConfiguration;
   private boolean retry = false;
   private boolean manual = false;
-  private List<VTClientSessionListener> listeners = new ArrayList<VTClientSessionListener>();
+  private Collection<VTClientSessionListener> listeners = new ConcurrentLinkedQueue<VTClientSessionListener>();
   private int pingLimit = 0;
   private int pingInterval = 0;
   private int reconnectTimeout = 0;
@@ -2266,7 +2266,7 @@ public class VTClient implements Runnable
     clientConnector.setSessionCommands(sessionCommands);
     // clientConnector.setSessionLines(sessionLines);
     clientConnector.setSessionShell(sessionShell);
-    for (VTClientSessionListener listener : listeners.toArray(new VTClientSessionListener[] {}))
+    for (VTClientSessionListener listener : listeners)
     {
       clientConnector.addSessionListener(listener);
     }

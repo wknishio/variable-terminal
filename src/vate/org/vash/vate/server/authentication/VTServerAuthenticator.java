@@ -129,7 +129,7 @@ public class VTServerAuthenticator
     
     if (server.getUserCredentials().size() > 0)
     {
-      for (Credential credential : server.getUserCredentials().toArray(new Credential[] {}))
+      for (Credential credential : server.getUserCredentials())
       {
         String credentialUser = credential.getUser();
         String credentialPassword = credential.getPassword();

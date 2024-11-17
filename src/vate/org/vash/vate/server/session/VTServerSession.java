@@ -7,9 +7,8 @@ import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.console.VTConsole;
@@ -95,7 +94,7 @@ public class VTServerSession
     this.server = server;
     this.connection = connection;
     this.executorService = server.getExecutorService();
-    this.sessionCloseables = Collections.synchronizedCollection(new LinkedList<Closeable>());
+    this.sessionCloseables = new ConcurrentLinkedQueue<Closeable>();
     this.shellAdapter = new VTShellAdapter(executorService);
   }
   
@@ -712,7 +711,7 @@ public class VTServerSession
     // System.out.println("tryStopSessionThreads middle");
     try
     {
-      for (Closeable closeable : sessionCloseables.toArray(new Closeable[] {}))
+      for (Closeable closeable : sessionCloseables)
       {
         try
         {

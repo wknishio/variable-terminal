@@ -6,8 +6,7 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.client.VTClient;
@@ -47,7 +46,7 @@ public class VTClientSession
     this.client = client;
     this.connection = connection;
     this.executorService = client.getExecutorService();
-    this.sessionCloseables = Collections.synchronizedCollection(new LinkedList<Closeable>());
+    this.sessionCloseables = new ConcurrentLinkedQueue<Closeable>();
   }
   
   public void initialize()
@@ -283,7 +282,7 @@ public class VTClientSession
     // }
     try
     {
-      for (Closeable closeable : sessionCloseables.toArray(new Closeable[] {}))
+      for (Closeable closeable : sessionCloseables)
       {
         try
         {
