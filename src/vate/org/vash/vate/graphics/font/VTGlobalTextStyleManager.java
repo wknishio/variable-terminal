@@ -448,7 +448,7 @@ public class VTGlobalTextStyleManager
   
   private static void boldScaleds()
   {
-    for (Component component : scaleds.toArray(new Component[] {}))
+    for (Component component : scaleds)
     {
       Font font = component.getFont();
       component.setFont(font.deriveFont(Font.BOLD, font.getSize2D()));
@@ -457,7 +457,7 @@ public class VTGlobalTextStyleManager
   
   private static void plainScaleds()
   {
-    for (Component component : scaleds.toArray(new Component[] {}))
+    for (Component component : scaleds)
     {
       Font font = component.getFont();
       component.setFont(font.deriveFont(Font.PLAIN, font.getSize2D()));
@@ -466,7 +466,7 @@ public class VTGlobalTextStyleManager
   
   private static void increaseScaleds()
   {
-    for (Component component : scaleds.toArray(new Component[] {}))
+    for (Component component : scaleds)
     {
       Font font = component.getFont();
       component.setFont(font.deriveFont((font.getSize2D() + 1.0F)));
@@ -475,7 +475,7 @@ public class VTGlobalTextStyleManager
   
   private static void decreaseScaleds()
   {
-    for (Component component : scaleds.toArray(new Component[] {}))
+    for (Component component : scaleds)
     {
       Font font = component.getFont();
       component.setFont(font.deriveFont((font.getSize2D() - 1.0F)));
@@ -564,7 +564,7 @@ public class VTGlobalTextStyleManager
   
   private static void updateComponents(boolean useDefaults)
   {
-    for (Component component : monospaceds.toArray(new Component[] {}))
+    for (Component component : monospaceds)
     {
       try
       {
@@ -575,7 +575,7 @@ public class VTGlobalTextStyleManager
         
       }
     }
-    for (Component component : texts.toArray(new Component[] {}))
+    for (Component component : texts)
     {
       try
       {
@@ -587,7 +587,7 @@ public class VTGlobalTextStyleManager
         
       }
     }
-    for (Window window : windows.toArray(new Window[] {}))
+    for (Window window : windows)
     {
       try
       {

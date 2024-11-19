@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Collection;
 import java.util.Map;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -131,7 +130,7 @@ public class VTAudioCapturer
     // private short[] inputBufferShort;
     private final byte[] outputBuffer;
     private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
-    private final Queue<VTLittleEndianOutputStream> streams;
+    private final Collection<VTLittleEndianOutputStream> streams;
     //private final String id;
     private TargetDataLine line;
     // private final VTLittleEndianOutputStream out;

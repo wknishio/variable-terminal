@@ -259,7 +259,7 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
         clear = true;
         List<PortMapper> natDevices = discoverNATDevices();
         nextMappedPorts.clear();
-        for (PortMapper natDevice : natDevices.toArray(new PortMapper[] {}))
+        for (PortMapper natDevice : natDevices)
         {
           try
           {

@@ -3,7 +3,6 @@ package org.vash.vate.audio;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
@@ -20,7 +19,7 @@ import org.xiph.speex.SpeexDecoder;
 
 public class VTAudioPlayer
 {
-  private final Queue<VTLittleEndianInputStream> streams;
+  private final Collection<VTLittleEndianInputStream> streams;
   // private final int maximumJitterLevel = 10;
   private boolean running = false;
   private ExecutorService executorService;
