@@ -259,11 +259,11 @@ public class VTNanoHTTPDProxySession implements Runnable
     //public boolean keepConnection = false;
   }
   
-  public VTNanoHTTPDProxySession(Socket s, InputStream in, ExecutorService executorService, boolean digestAuthentication, String username, String password, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout)
+  public VTNanoHTTPDProxySession(Socket socket, InputStream in, ExecutorService executorService, boolean digestAuthentication, String username, String password, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout)
   {
+    this.mySocket = socket;
+    this.myIn = in;
     this.executorService = executorService;
-    mySocket = s;
-    myIn = in;
     this.digestAuthentication = digestAuthentication;
     this.username = username;
     this.password = password;

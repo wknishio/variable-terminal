@@ -20,8 +20,8 @@ import com.offbynull.portmapper.mapper.PortType;
 
 public class VTNATSinglePortMappingManagerMKII implements Runnable
 {
-  private boolean running;
-  private boolean hooked;
+  private volatile boolean running;
+  private volatile boolean hooked;
   private int discoveryTime;
   private int intervalTime;
   private Future<?> managerThread;
@@ -83,7 +83,7 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
   public void start()
   {
     // System.out.println("started nat mapper");
-    if (this.running)
+    if (running)
     {
       stop();
     }
@@ -91,7 +91,7 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
     //manager.setDaemon(true);
     synchronized (currentMappedPorts)
     {
-      this.running = true;
+      running = true;
       currentMappedPorts.notify();
     }
     //manager.start();
@@ -102,7 +102,7 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
   {
     synchronized (currentMappedPorts)
     {
-      this.running = false;
+      running = false;
       currentMappedPorts.notify();
     }
     try
@@ -130,12 +130,12 @@ public class VTNATSinglePortMappingManagerMKII implements Runnable
   
   public void setPortMapping(int internalPort, String remoteHost, int externalPort, long leaseTime, String protocol, String description, VTNATPortMappingResultNotify resultNotify)
   {
+    this.resultNotify = resultNotify;
     if (!hooked)
     {
       Runtime.getRuntime().addShutdownHook(shutdownHook);
       hooked = true;
     }
-    this.resultNotify = resultNotify;
     VTNATPortMapping nextMapping = new VTNATPortMapping(internalPort, remoteHost, externalPort, leaseTime, protocol, description);
     synchronized (currentMappedPorts)
     {
