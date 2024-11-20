@@ -6,7 +6,6 @@ import java.awt.Frame;
 import java.lang.reflect.Method;
 
 import org.vash.vate.VT;
-import org.vash.vate.server.dialog.VTServerSettingsDialog;
 
 public class VTFileDialog extends FileDialog
 {
@@ -19,7 +18,7 @@ public class VTFileDialog extends FileDialog
   {
     try
     {
-      setIconImage = VTServerSettingsDialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
+      setIconImage = VTFileDialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
       // setIconImage.setAccessible(true);
     }
     catch (Throwable e)
