@@ -21,7 +21,6 @@ import java.lang.reflect.Method;
 import org.vash.vate.VT;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.graphics.image.VTIconDisplay;
-import org.vash.vate.server.dialog.VTServerSettingsDialog;
 
 public class VTGraphicalStartDialog extends Dialog
 {
@@ -34,7 +33,7 @@ public class VTGraphicalStartDialog extends Dialog
   {
     try
     {
-      setIconImage = VTServerSettingsDialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
+      setIconImage = Dialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
       // setIconImage.setAccessible(true);
     }
     catch (Throwable e)

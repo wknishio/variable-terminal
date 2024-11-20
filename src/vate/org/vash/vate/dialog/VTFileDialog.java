@@ -18,7 +18,7 @@ public class VTFileDialog extends FileDialog
   {
     try
     {
-      setIconImage = VTFileDialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
+      setIconImage = Dialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
       // setIconImage.setAccessible(true);
     }
     catch (Throwable e)

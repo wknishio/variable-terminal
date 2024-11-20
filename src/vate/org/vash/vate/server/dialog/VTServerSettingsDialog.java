@@ -86,7 +86,7 @@ public class VTServerSettingsDialog extends Dialog
   {
     try
     {
-      setIconImage = VTServerSettingsDialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
+      setIconImage = Dialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
       // setIconImage.setAccessible(true);
     }
     catch (Throwable e)
