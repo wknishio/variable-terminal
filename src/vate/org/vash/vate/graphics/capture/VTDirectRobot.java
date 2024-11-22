@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 public final class VTDirectRobot
 {
   public final GraphicsDevice device;
-  private final Object robotPeer;
+  private final Object robotPeerObject;
   
   private final int getRGBPixelsMethodType;
   private final Method getRGBPixelsMethod;
@@ -48,17 +48,17 @@ public final class VTDirectRobot
     
     Object cf = toolkit;
     
-    Method createRobot = null;
+    Method createRobotMethod = null;
     try
     {
-      createRobot = Class.forName("sun.awt.ComponentFactory").getDeclaredMethod("createRobot", Robot.class, GraphicsDevice.class);
+      createRobotMethod = Class.forName("sun.awt.ComponentFactory").getDeclaredMethod("createRobot", Robot.class, GraphicsDevice.class);
       parameterCount = 2;
     }
     catch (NoSuchMethodException e)
     {
       try
       {
-        createRobot = Class.forName("sun.awt.ComponentFactory").getDeclaredMethod("createRobot", GraphicsDevice.class);
+        createRobotMethod = Class.forName("sun.awt.ComponentFactory").getDeclaredMethod("createRobot", GraphicsDevice.class);
         parameterCount = 1;
       }
       catch (NoSuchMethodException e1)
@@ -70,17 +70,17 @@ public final class VTDirectRobot
     
     if (parameterCount == 1)
     {
-      createRobot.setAccessible(true);
-      robotPeer = createRobot.invoke(toolkit, device);
+      createRobotMethod.setAccessible(true);
+      robotPeerObject = createRobotMethod.invoke(toolkit, device);
     }
     else
     {
-      createRobot.setAccessible(true);
-      robotPeer = createRobot.invoke(toolkit, null, device);
+      createRobotMethod.setAccessible(true);
+      robotPeerObject = createRobotMethod.invoke(toolkit, null, device);
     }
     // peer = ((ComponentFactory) toolkit).createRobot(null, device);
     
-    Class<?> peerClass = robotPeer.getClass();
+    Class<?> peerClass = robotPeerObject.getClass();
     Method method = null;
     int methodType = -1;
     Object methodParam = null;
@@ -140,7 +140,7 @@ public final class VTDirectRobot
         try
         {
           field.setAccessible(true);
-          methodParam = field.get(robotPeer);
+          methodParam = field.get(robotPeerObject);
         }
         finally
         {
@@ -178,12 +178,12 @@ public final class VTDirectRobot
       {
         if (getRGBPixelsMethodType == 0)
         {
-          getRGBPixelsMethod.invoke(robotPeer, new Object[]
+          getRGBPixelsMethod.invoke(robotPeerObject, new Object[]
           { Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(width), Integer.valueOf(height), pixels });
         }
         else if (getRGBPixelsMethodType == 1)
         {
-          getRGBPixelsMethod.invoke(robotPeer, new Object[]
+          getRGBPixelsMethod.invoke(robotPeerObject, new Object[]
           { new Rectangle(x, y, width, height), pixels });
         }
         else if (getRGBPixelsMethodType == 2)
@@ -200,12 +200,12 @@ public final class VTDirectRobot
             }
           }
           getRGBPixelsMethodParam = methodParam;
-          getRGBPixelsMethod.invoke(robotPeer, new Object[]
+          getRGBPixelsMethod.invoke(robotPeerObject, new Object[]
           { getRGBPixelsMethodParam, new Rectangle(x, y, width, height), pixels });
         }
         else
         {
-          getRGBPixelsMethod.invoke(robotPeer, new Object[]
+          getRGBPixelsMethod.invoke(robotPeerObject, new Object[]
           { getRGBPixelsMethodParam, Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(width), Integer.valueOf(height), pixels });
         }
         available = true;
@@ -240,12 +240,12 @@ public final class VTDirectRobot
       {
         if (getRGBPixelsMethodType == 0)
         {
-          getRGBPixelsMethod.invoke(robotPeer, new Object[]
+          getRGBPixelsMethod.invoke(robotPeerObject, new Object[]
           { Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(width), Integer.valueOf(height), pixels });
         }
         else if (getRGBPixelsMethodType == 1)
         {
-          getRGBPixelsMethod.invoke(robotPeer, new Object[]
+          getRGBPixelsMethod.invoke(robotPeerObject, new Object[]
           { new Rectangle(x, y, width, height), pixels });
         }
         else if (getRGBPixelsMethodType == 2)
@@ -262,12 +262,12 @@ public final class VTDirectRobot
             }
           }
           getRGBPixelsMethodParam = methodParam;
-          getRGBPixelsMethod.invoke(robotPeer, new Object[]
+          getRGBPixelsMethod.invoke(robotPeerObject, new Object[]
           { getRGBPixelsMethodParam, new Rectangle(x, y, width, height), pixels });
         }
         else
         {
-          getRGBPixelsMethod.invoke(robotPeer, new Object[]
+          getRGBPixelsMethod.invoke(robotPeerObject, new Object[]
           { getRGBPixelsMethodParam, Integer.valueOf(x), Integer.valueOf(y), Integer.valueOf(width), Integer.valueOf(height), pixels });
         }
         return true;
@@ -301,7 +301,7 @@ public final class VTDirectRobot
     // (1.5)
     try
     {
-      robotPeer.getClass().getDeclaredMethod("dispose", new Class<?>[0]).invoke(robotPeer, (Object) null);
+      robotPeerObject.getClass().getDeclaredMethod("dispose", new Class<?>[0]).invoke(robotPeerObject, (Object) null);
     }
     catch (Throwable t)
     {

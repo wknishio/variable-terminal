@@ -11,13 +11,13 @@ import org.vash.vate.help.VTHelpManager;
 
 public class VTNETWORK extends VTClientStandardRemoteConsoleCommandProcessor
 {
-  private static Method getHardwareAddress;
+  private static Method getHardwareAddressMethod;
   
   static
   {
     try
     {
-      getHardwareAddress = NetworkInterface.class.getMethod("getHardwareAddress");
+      getHardwareAddressMethod = NetworkInterface.class.getMethod("getHardwareAddress");
       // getHardwareAddress.setAccessible(true);
     }
     catch (Throwable t)
@@ -63,9 +63,9 @@ public class VTNETWORK extends VTClientStandardRemoteConsoleCommandProcessor
             
             try
             {
-              if (getHardwareAddress != null)
+              if (getHardwareAddressMethod != null)
               {
-                byte[] hardwareAddress = (byte[]) getHardwareAddress.invoke(networkInterface);
+                byte[] hardwareAddress = (byte[]) getHardwareAddressMethod.invoke(networkInterface);
                 // byte[] hardwareAddress = networkInterface.getHardwareAddress();
                 if (hardwareAddress != null && hardwareAddress.length > 0)
                 {
@@ -126,9 +126,9 @@ public class VTNETWORK extends VTClientStandardRemoteConsoleCommandProcessor
           
           try
           {
-            if (getHardwareAddress != null)
+            if (getHardwareAddressMethod != null)
             {
-              byte[] hardwareAddress = (byte[]) getHardwareAddress.invoke(networkInterface);
+              byte[] hardwareAddress = (byte[]) getHardwareAddressMethod.invoke(networkInterface);
               // byte[] hardwareAddress = networkInterface.getHardwareAddress();
               if (hardwareAddress != null && hardwareAddress.length > 0)
               {

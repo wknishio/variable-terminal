@@ -12,13 +12,13 @@ public class VTFileDialog extends FileDialog
   private static final long serialVersionUID = 1L;
   // private Runnable application;
   // private Frame owner;
-  private static Method setIconImage;
+  private static Method setIconImageMethod;
   
   static
   {
     try
     {
-      setIconImage = Dialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
+      setIconImageMethod = Dialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
       // setIconImage.setAccessible(true);
     }
     catch (Throwable e)
@@ -34,9 +34,9 @@ public class VTFileDialog extends FileDialog
     // this.application = application;
     try
     {
-      if (setIconImage != null)
+      if (setIconImageMethod != null)
       {
-        setIconImage.invoke(this, VT.remoteIcon);
+        setIconImageMethod.invoke(this, VT.remoteIcon);
       }
     }
     catch (Throwable e)
@@ -52,9 +52,9 @@ public class VTFileDialog extends FileDialog
     // this.application = application;
     try
     {
-      if (setIconImage != null)
+      if (setIconImageMethod != null)
       {
-        setIconImage.invoke(this, VT.remoteIcon);
+        setIconImageMethod.invoke(this, VT.remoteIcon);
       }
     }
     catch (Throwable e)

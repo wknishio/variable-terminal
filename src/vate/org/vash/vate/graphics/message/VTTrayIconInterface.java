@@ -12,15 +12,15 @@ import org.vash.vate.runtime.VTRuntimeExit;
 public class VTTrayIconInterface
 {
   @SuppressWarnings("unused")
-  private Method isSupported;
-  private Method getSystemTray;
-  private Method add;
-  private Method remove;
+  private Method isSupportedMethod;
+  private Method getSystemTrayMethod;
+  private Method addMethod;
+  private Method removeMethod;
   
-  private Method addMouseListener;
-  private Method addActionListener;
-  private Method setImageAutoSize;
-  private Method displayMessage;
+  private Method addMouseListenerMethod;
+  private Method addActionListenerMethod;
+  private Method setImageAutoSizeMethod;
+  private Method displayMessageMethod;
   
   private Object systemTrayObject;
   private Object trayIconObject;
@@ -35,7 +35,7 @@ public class VTTrayIconInterface
     try
     {
       Class<?> systemTrayClass = Class.forName("java.awt.SystemTray");
-      isSupported = systemTrayClass.getDeclaredMethod("isSupported");
+      isSupportedMethod = systemTrayClass.getDeclaredMethod("isSupported");
       
       supported = false;
       //supported = ((Boolean) isSupported.invoke(null));
@@ -61,16 +61,16 @@ public class VTTrayIconInterface
   
   public void reset()
   {
-    isSupported = null;
+    isSupportedMethod = null;
     
-    getSystemTray = null;
-    add = null;
-    remove = null;
+    getSystemTrayMethod = null;
+    addMethod = null;
+    removeMethod = null;
     
-    addMouseListener = null;
-    addActionListener = null;
-    setImageAutoSize = null;
-    displayMessage = null;
+    addMouseListenerMethod = null;
+    addActionListenerMethod = null;
+    setImageAutoSizeMethod = null;
+    displayMessageMethod = null;
     
     systemTrayObject = null;
     trayIconObject = null;
@@ -107,19 +107,19 @@ public class VTTrayIconInterface
         }
       }
       
-      getSystemTray = systemTrayClass.getDeclaredMethod("getSystemTray");
-      add = systemTrayClass.getMethod("add", trayIconClass);
-      remove = systemTrayClass.getMethod("remove", trayIconClass);
+      getSystemTrayMethod = systemTrayClass.getDeclaredMethod("getSystemTray");
+      addMethod = systemTrayClass.getMethod("add", trayIconClass);
+      removeMethod = systemTrayClass.getMethod("remove", trayIconClass);
       
-      addMouseListener = trayIconClass.getMethod("addMouseListener", MouseListener.class);
-      addActionListener = trayIconClass.getMethod("addActionListener", ActionListener.class);
-      setImageAutoSize = trayIconClass.getMethod("setImageAutoSize", boolean.class);
-      displayMessage = trayIconClass.getMethod("displayMessage", String.class, String.class, messageTypeClass);
+      addMouseListenerMethod = trayIconClass.getMethod("addMouseListener", MouseListener.class);
+      addActionListenerMethod = trayIconClass.getMethod("addActionListener", ActionListener.class);
+      setImageAutoSizeMethod = trayIconClass.getMethod("setImageAutoSize", boolean.class);
+      displayMessageMethod = trayIconClass.getMethod("displayMessage", String.class, String.class, messageTypeClass);
       
-      systemTrayObject = getSystemTray.invoke(null);
+      systemTrayObject = getSystemTrayMethod.invoke(null);
       trayIconObject = trayIconClass.getConstructor(Class.forName("java.awt.Image"), String.class).newInstance(frame.getIconImage(), tooltip);
       
-      addMouseListener.invoke(trayIconObject, new MouseListener()
+      addMouseListenerMethod.invoke(trayIconObject, new MouseListener()
       {
         public void mouseClicked(MouseEvent e)
         {
@@ -161,7 +161,7 @@ public class VTTrayIconInterface
         }
       });
       
-      addActionListener.invoke(trayIconObject, new ActionListener()
+      addActionListenerMethod.invoke(trayIconObject, new ActionListener()
       {
         public void actionPerformed(ActionEvent e)
         {
@@ -177,9 +177,9 @@ public class VTTrayIconInterface
         }
       });
       
-      setImageAutoSize.invoke(trayIconObject, true);
+      setImageAutoSizeMethod.invoke(trayIconObject, true);
       
-      add.invoke(systemTrayObject, trayIconObject);
+      addMethod.invoke(systemTrayObject, trayIconObject);
       
       VTRuntimeExit.addHook(hook);
     }
@@ -193,9 +193,9 @@ public class VTTrayIconInterface
   {
     try
     {
-      if (displayMessage != null)
+      if (displayMessageMethod != null)
       {
-        displayMessage.invoke(trayIconObject, caption, text, messageTypeObject);
+        displayMessageMethod.invoke(trayIconObject, caption, text, messageTypeObject);
       }
       // if (trayIcon != null)
       // {
@@ -213,9 +213,9 @@ public class VTTrayIconInterface
     try
     {
       VTRuntimeExit.removeHook(hook);
-      if (remove != null)
+      if (removeMethod != null)
       {
-        remove.invoke(systemTrayObject, trayIconObject);
+        removeMethod.invoke(systemTrayObject, trayIconObject);
       }
       // if (trayIcon != null)
       // {

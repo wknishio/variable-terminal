@@ -64,9 +64,9 @@ public class VTGlobalTextStyleManager
     FONT_SCALING_FACTOR_MONOSPACED = 1;
     try
     {
-      Class<?> runtime = Class.forName("java.lang.Runtime");
-      Method version = runtime.getMethod("version");
-      version.toString();
+      Class<?> runtimeClass = Class.forName("java.lang.Runtime");
+      Method versionMethod = runtimeClass.getMethod("version");
+      versionMethod.toString();
       java9plus = true;
       // System.out.println("java > 9 detected!");
       // boolean java9 = version.invoke(Runtime.getRuntime(), null) instanceof

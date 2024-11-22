@@ -102,8 +102,8 @@ public class VTTLSVerificationDisabler
       HttpsURLConnection.setDefaultHostnameVerifier(new OverlyOptimisticHostnameVerifier());
       try
       {
-        Method setDefault = SSLContext.class.getDeclaredMethod("setDefault", SSLContext.class);
-        setDefault.invoke(null, unverifiedTLS);
+        Method setDefaultMethod = SSLContext.class.getDeclaredMethod("setDefault", SSLContext.class);
+        setDefaultMethod.invoke(null, unverifiedTLS);
         // SSLContext.setDefault(unverifiedSSL);
       }
       catch (Throwable ei)

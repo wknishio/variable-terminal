@@ -167,6 +167,13 @@ public class VTTunnelChannelBindSocketListener implements Runnable
             proxyPassword = "*" + SESSION_SEPARATOR + "*";
           }
           
+//          if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
+//          {
+//            handler = new VTTunnelSocksSessionHandler(session, channel, channel.getSocksUsername(), channel.getSocksPassword(), channel.getProxy(), channel.getConnection().createRemoteSocketFactory(channel), 0);
+//            channel.getConnection().getExecutorService().execute(handler);
+//            continue;
+//          }
+          
           handler = new VTTunnelSessionHandler(session, channel);
           
           VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
@@ -212,15 +219,6 @@ public class VTTunnelChannelBindSocketListener implements Runnable
               session.close();
             }
           }
-//          if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
-//          {
-//            handler = new VTTunnelSocksSessionHandler(session, channel, channel.getSocksUsername(), channel.getSocksPassword(), channel.getProxy(), channel.getConnection().createRemoteSocketFactory(channel));
-//            executor.execute(handler);
-//          }
-//          else
-//          {
-//            
-//          }
         }
       }
     }

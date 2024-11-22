@@ -28,7 +28,7 @@ public class VTGraphicsMessager
   private static BufferedImage warningIcon16;
   private static BufferedImage warningIcon32;
   // private static BufferedImage displayIcon;
-  private static Method setIconImage;
+  private static Method setIconImageMethod;
   
   static
   {
@@ -45,7 +45,7 @@ public class VTGraphicsMessager
     }
     try
     {
-      setIconImage = Dialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
+      setIconImageMethod = Dialog.class.getMethod("setIconImage", Class.forName("java.awt.Image"));
       // setIconImage.setAccessible(true);
     }
     catch (Throwable e)
@@ -111,9 +111,9 @@ public class VTGraphicsMessager
       final Dialog dialog = new Dialog(parent, false);
       try
       {
-        if (setIconImage != null)
+        if (setIconImageMethod != null)
         {
-          setIconImage.invoke(dialog, warningIcon16);
+          setIconImageMethod.invoke(dialog, warningIcon16);
         }
       }
       catch (Throwable e)
@@ -283,9 +283,9 @@ public class VTGraphicsMessager
       
       try
       {
-        if (setIconImage != null)
+        if (setIconImageMethod != null)
         {
-          setIconImage.invoke(dialog, warningIcon16);
+          setIconImageMethod.invoke(dialog, warningIcon16);
         }
       }
       catch (Throwable t)

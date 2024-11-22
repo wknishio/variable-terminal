@@ -45,7 +45,7 @@ public class VTRuntimeProcess
   {
     try
     {
-      processDestroyForciblyMethod = Class.forName("java.lang.Process").getDeclaredMethod("destroyForcibly", (Class[])null);
+      processDestroyForciblyMethod = Class.forName("java.lang.Process").getDeclaredMethod("destroyForcibly");
       processWaitForMethod = Class.forName("java.lang.Process").getDeclaredMethod("waitFor", new Class[] {Long.class, TimeUnit.class});
     }
     catch (Throwable t)
