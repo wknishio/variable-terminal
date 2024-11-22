@@ -13,7 +13,6 @@ import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
 import org.vash.vate.client.session.VTClientSessionListener;
-import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 
@@ -92,14 +91,9 @@ public class VTManagedClientSocket
       return stream;
     }
     
-    public VTClientSession getClientSession()
+    public VTClientSession getConnectionSession()
     {
       return session;
-    }
-    
-    public VTServerSession getServerSession()
-    {
-      return null;
     }
     
     public Socket getConnectionSocket()

@@ -9,7 +9,6 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.vash.vate.VT;
-import org.vash.vate.client.session.VTClientSession;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
@@ -92,12 +91,7 @@ public class VTManagedServerSocket
       return stream;
     }
     
-    public VTClientSession getClientSession()
-    {
-      return null;
-    }
-    
-    public VTServerSession getServerSession()
+    public VTServerSession getConnectionSession()
     {
       return session;
     }
