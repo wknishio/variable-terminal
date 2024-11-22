@@ -1,4 +1,4 @@
-package org.vash.vate.server.dialog;
+package org.vash.vate.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Choice;
@@ -8,13 +8,13 @@ import java.awt.Panel;
 import java.awt.TextField;
 import java.awt.event.KeyListener;
 
-public class VTServerSettingsDialogParameter extends Panel
+public class VTConfigurationDialogParameter extends Panel
 {
   private static final long serialVersionUID = 1L;
   private Label label;
   private Component parameter;
   
-  public VTServerSettingsDialogParameter(String label, Component parameter, boolean enabled)
+  public VTConfigurationDialogParameter(String label, Component parameter, boolean enabled)
   {
     this.parameter = parameter;
     this.label = new Label(label);

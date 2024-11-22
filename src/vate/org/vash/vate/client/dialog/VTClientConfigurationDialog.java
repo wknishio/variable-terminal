@@ -49,35 +49,35 @@ import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.connection.VTClientConnector;
 import org.vash.vate.console.VTConsole;
+import org.vash.vate.dialog.VTConfigurationDialogParameter;
 import org.vash.vate.dialog.VTFileDialog;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
-import org.vash.vate.server.dialog.VTServerSettingsDialogParameter;
 
 public class VTClientConfigurationDialog extends Dialog
 {
   private static final long serialVersionUID = 1L;
   
-  private VTClientConfigurationDialogParameter connectionMode;
-  private VTClientConfigurationDialogParameter connectionHost;
-  private VTClientConfigurationDialogParameter connectionPort;
-  private VTClientConfigurationDialogParameter natPort;
-  private VTClientConfigurationDialogParameter proxyType;
-  private VTClientConfigurationDialogParameter proxyHost;
-  private VTClientConfigurationDialogParameter proxyPort;
-  //private VTClientConfigurationDialogParameter proxySecurity;
-  private VTClientConfigurationDialogParameter proxyUser;
-  private VTClientConfigurationDialogParameter proxyPassword;
-  private VTClientConfigurationDialogParameter encryptionType;
-  private VTClientConfigurationDialogParameter encryptionPassword;
+  private VTConfigurationDialogParameter connectionMode;
+  private VTConfigurationDialogParameter connectionHost;
+  private VTConfigurationDialogParameter connectionPort;
+  private VTConfigurationDialogParameter natPort;
+  private VTConfigurationDialogParameter proxyType;
+  private VTConfigurationDialogParameter proxyHost;
+  private VTConfigurationDialogParameter proxyPort;
+  //private VTConfigurationDialogParameter proxySecurity;
+  private VTConfigurationDialogParameter proxyUser;
+  private VTConfigurationDialogParameter proxyPassword;
+  private VTConfigurationDialogParameter encryptionType;
+  private VTConfigurationDialogParameter encryptionPassword;
   
-  private VTClientConfigurationDialogParameter sessionCommands;
-  // private VTClientConfigurationDialogParameter sessionLines;
-  private VTClientConfigurationDialogParameter sessionShell;
-  private VTClientConfigurationDialogParameter sessionUser;
-  private VTClientConfigurationDialogParameter sessionPassword;
+  private VTConfigurationDialogParameter sessionCommands;
+  // private VTConfigurationDialogParameter sessionLines;
+  private VTConfigurationDialogParameter sessionShell;
+  private VTConfigurationDialogParameter sessionUser;
+  private VTConfigurationDialogParameter sessionPassword;
   
-  private VTServerSettingsDialogParameter pingInterval;
-  private VTServerSettingsDialogParameter pingLimit;
+  private VTConfigurationDialogParameter pingInterval;
+  private VTConfigurationDialogParameter pingLimit;
   
   private Runnable application;
   private Frame owner;
@@ -196,9 +196,9 @@ public class VTClientConfigurationDialog extends Dialog
     VTGlobalTextStyleManager.registerWindow(this);
     
     Choice connectionModeChoice = new Choice();
-    connectionMode = new VTClientConfigurationDialogParameter("Connection Mode:", connectionModeChoice, true);
+    connectionMode = new VTConfigurationDialogParameter("Connection Mode:", connectionModeChoice, true);
     TextField connectionHostField = new TextField(16);
-    connectionHost = new VTClientConfigurationDialogParameter("Connection Host:", connectionHostField, true);
+    connectionHost = new VTConfigurationDialogParameter("Connection Host:", connectionHostField, true);
     TextField connectionPortField = new TextField(5);
     connectionPortField.addTextListener(new TextListener()
     {
@@ -236,7 +236,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-    connectionPort = new VTClientConfigurationDialogParameter("Connection Port:", connectionPortField, true);
+    connectionPort = new VTConfigurationDialogParameter("Connection Port:", connectionPortField, true);
     TextField natPortField = new TextField(5);
     natPortField.addTextListener(new TextListener()
     {
@@ -270,11 +270,11 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-    natPort = new VTClientConfigurationDialogParameter("Connection NAT Port:", natPortField, false);
+    natPort = new VTConfigurationDialogParameter("Connection NAT Port:", natPortField, false);
     Choice proxyTypeChoice = new Choice();
-    proxyType = new VTClientConfigurationDialogParameter("Proxy Type:", proxyTypeChoice, true);
+    proxyType = new VTConfigurationDialogParameter("Proxy Type:", proxyTypeChoice, true);
     TextField proxyHostField = new TextField(16);
-    proxyHost = new VTClientConfigurationDialogParameter("Proxy Host:", proxyHostField, false);
+    proxyHost = new VTConfigurationDialogParameter("Proxy Host:", proxyHostField, false);
     TextField proxyPortField = new TextField(5);
     proxyPortField.addTextListener(new TextListener()
     {
@@ -308,27 +308,27 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-    proxyPort = new VTClientConfigurationDialogParameter("Proxy Port:", proxyPortField, false);
+    proxyPort = new VTConfigurationDialogParameter("Proxy Port:", proxyPortField, false);
     //Choice proxySecurityChoice = new Choice();
     //proxySecurity = new VTClientConfigurationDialogParameter("Proxy Authentication:", proxySecurityChoice, false);
     TextField proxyUserField = new TextField(16);
     proxyUserField.setEchoChar('*');
-    proxyUser = new VTClientConfigurationDialogParameter("Proxy User:", proxyUserField, false);
+    proxyUser = new VTConfigurationDialogParameter("Proxy User:", proxyUserField, false);
     TextField proxyPasswordField = new TextField(16);
     proxyPasswordField.setEchoChar('*');
-    proxyPassword = new VTClientConfigurationDialogParameter("Proxy Password:", proxyPasswordField, false);
+    proxyPassword = new VTConfigurationDialogParameter("Proxy Password:", proxyPasswordField, false);
     Choice encryptionTypeChoice = new Choice();
-    encryptionType = new VTClientConfigurationDialogParameter("Encryption Type:", encryptionTypeChoice, true);
+    encryptionType = new VTConfigurationDialogParameter("Encryption Type:", encryptionTypeChoice, true);
     TextField encryptionPasswordField = new TextField(16);
     encryptionPasswordField.setEchoChar('*');
-    encryptionPassword = new VTClientConfigurationDialogParameter("Encryption Password:", encryptionPasswordField, true);
+    encryptionPassword = new VTConfigurationDialogParameter("Encryption Password:", encryptionPasswordField, true);
     TextField sessionCommandField = new TextField(16);
-    sessionCommands = new VTClientConfigurationDialogParameter("Session Commands:", sessionCommandField, true);
+    sessionCommands = new VTConfigurationDialogParameter("Session Commands:", sessionCommandField, true);
     // TextField sessionLinesField = new TextField(16);
     // sessionLines = new VTClientConfigurationDialogParameter("Session Lines:",
     // sessionLinesField, true);
     TextField sessionShellField = new TextField(16);
-    sessionShell = new VTClientConfigurationDialogParameter("Session Shell:", sessionShellField, true);
+    sessionShell = new VTConfigurationDialogParameter("Session Shell:", sessionShellField, true);
     
     // BorderLayout dialogLayout = (BorderLayout)this.getLayout();
     
@@ -476,11 +476,11 @@ public class VTClientConfigurationDialog extends Dialog
     
     TextField connectionUserField = new TextField(16);
     connectionUserField.setEchoChar('*');
-    sessionUser = new VTClientConfigurationDialogParameter("Session User:", connectionUserField, true);
+    sessionUser = new VTConfigurationDialogParameter("Session User:", connectionUserField, true);
     
     TextField connectionPasswordField = new TextField(16);
     connectionPasswordField.setEchoChar('*');
-    sessionPassword = new VTClientConfigurationDialogParameter("Session Password:", connectionPasswordField, true);
+    sessionPassword = new VTConfigurationDialogParameter("Session Password:", connectionPasswordField, true);
     
     TextField pingIntervalField = new TextField(16);
     pingIntervalField.addTextListener(new TextListener()
@@ -498,7 +498,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-    pingInterval = new VTServerSettingsDialogParameter("Ping Interval:", pingIntervalField, true);
+    pingInterval = new VTConfigurationDialogParameter("Ping Interval:", pingIntervalField, true);
     
     TextField pingLimitField = new TextField(16);
     pingLimitField.addTextListener(new TextListener()
@@ -516,7 +516,7 @@ public class VTClientConfigurationDialog extends Dialog
         }
       }
     });
-    pingLimit = new VTServerSettingsDialogParameter("Ping Limit:", pingLimitField, true);
+    pingLimit = new VTConfigurationDialogParameter("Ping Limit:", pingLimitField, true);
     
     addKeyListener(new KeyListener()
     {

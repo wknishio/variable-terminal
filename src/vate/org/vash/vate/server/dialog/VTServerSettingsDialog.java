@@ -45,6 +45,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.vash.vate.VT;
+import org.vash.vate.dialog.VTConfigurationDialogParameter;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.dialog.VTFileDialog;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
@@ -55,26 +56,26 @@ public class VTServerSettingsDialog extends Dialog
 {
   private static final long serialVersionUID = 1L;
   
-  private VTServerSettingsDialogParameter connectionMode;
-  private VTServerSettingsDialogParameter connectionHost;
-  private VTServerSettingsDialogParameter connectionPort;
-  private VTServerSettingsDialogParameter natPort;
-  private VTServerSettingsDialogParameter proxyType;
-  private VTServerSettingsDialogParameter proxyHost;
-  private VTServerSettingsDialogParameter proxyPort;
+  private VTConfigurationDialogParameter connectionMode;
+  private VTConfigurationDialogParameter connectionHost;
+  private VTConfigurationDialogParameter connectionPort;
+  private VTConfigurationDialogParameter natPort;
+  private VTConfigurationDialogParameter proxyType;
+  private VTConfigurationDialogParameter proxyHost;
+  private VTConfigurationDialogParameter proxyPort;
   //private VTServerSettingsDialogParameter proxySecurity;
-  private VTServerSettingsDialogParameter proxyUser;
-  private VTServerSettingsDialogParameter proxyPassword;
-  private VTServerSettingsDialogParameter encryptionType;
-  private VTServerSettingsDialogParameter encryptionPassword;
+  private VTConfigurationDialogParameter proxyUser;
+  private VTConfigurationDialogParameter proxyPassword;
+  private VTConfigurationDialogParameter encryptionType;
+  private VTConfigurationDialogParameter encryptionPassword;
   
-  private VTServerSettingsDialogParameter sessionsMaximum;
-  private VTServerSettingsDialogParameter sessionShell;
-  private VTServerSettingsDialogParameter sessionUser;
-  private VTServerSettingsDialogParameter sessionPassword;
+  private VTConfigurationDialogParameter sessionsMaximum;
+  private VTConfigurationDialogParameter sessionShell;
+  private VTConfigurationDialogParameter sessionUser;
+  private VTConfigurationDialogParameter sessionPassword;
   
-  private VTServerSettingsDialogParameter pingInterval;
-  private VTServerSettingsDialogParameter pingLimit;
+  private VTConfigurationDialogParameter pingInterval;
+  private VTConfigurationDialogParameter pingLimit;
   
   private Runnable application;
   private Frame owner;
@@ -196,9 +197,9 @@ public class VTServerSettingsDialog extends Dialog
     // centerPanel.getInsets().set(4, 4, 4, 4);
     
     Choice connectionModeChoice = new Choice();
-    connectionMode = new VTServerSettingsDialogParameter("Connection Mode:", connectionModeChoice, true);
+    connectionMode = new VTConfigurationDialogParameter("Connection Mode:", connectionModeChoice, true);
     TextField connectionHostField = new TextField(16);
-    connectionHost = new VTServerSettingsDialogParameter("Connection Host:", connectionHostField, true);
+    connectionHost = new VTConfigurationDialogParameter("Connection Host:", connectionHostField, true);
     TextField connectionPortField = new TextField(5);
     connectionPortField.addTextListener(new TextListener()
     {
@@ -236,7 +237,7 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-    connectionPort = new VTServerSettingsDialogParameter("Connection Port:", connectionPortField, true);
+    connectionPort = new VTConfigurationDialogParameter("Connection Port:", connectionPortField, true);
     TextField natPortField = new TextField(5);
     natPortField.addTextListener(new TextListener()
     {
@@ -270,11 +271,11 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-    natPort = new VTServerSettingsDialogParameter("Connection NAT Port:", natPortField, false);
+    natPort = new VTConfigurationDialogParameter("Connection NAT Port:", natPortField, false);
     Choice proxyTypeChoice = new Choice();
-    proxyType = new VTServerSettingsDialogParameter("Proxy Type:", proxyTypeChoice, true);
+    proxyType = new VTConfigurationDialogParameter("Proxy Type:", proxyTypeChoice, true);
     TextField proxyHostField = new TextField(16);
-    proxyHost = new VTServerSettingsDialogParameter("Proxy Host:", proxyHostField, false);
+    proxyHost = new VTConfigurationDialogParameter("Proxy Host:", proxyHostField, false);
     TextField proxyPortField = new TextField(5);
     proxyPortField.addTextListener(new TextListener()
     {
@@ -308,20 +309,20 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-    proxyPort = new VTServerSettingsDialogParameter("Proxy Port:", proxyPortField, false);
+    proxyPort = new VTConfigurationDialogParameter("Proxy Port:", proxyPortField, false);
     //Choice proxySecurityChoice = new Choice();
     //proxySecurity = new VTServerSettingsDialogParameter("Proxy Authentication:", proxySecurityChoice, false);
     TextField proxyUserField = new TextField(16);
     proxyUserField.setEchoChar('*');
-    proxyUser = new VTServerSettingsDialogParameter("Proxy User:", proxyUserField, false);
+    proxyUser = new VTConfigurationDialogParameter("Proxy User:", proxyUserField, false);
     TextField proxyPasswordField = new TextField(16);
     proxyPasswordField.setEchoChar('*');
-    proxyPassword = new VTServerSettingsDialogParameter("Proxy Password:", proxyPasswordField, false);
+    proxyPassword = new VTConfigurationDialogParameter("Proxy Password:", proxyPasswordField, false);
     Choice encryptionTypeChoice = new Choice();
-    encryptionType = new VTServerSettingsDialogParameter("Encryption Type:", encryptionTypeChoice, true);
+    encryptionType = new VTConfigurationDialogParameter("Encryption Type:", encryptionTypeChoice, true);
     TextField encryptionPasswordField = new TextField(16);
     encryptionPasswordField.setEchoChar('*');
-    encryptionPassword = new VTServerSettingsDialogParameter("Encryption Password:", encryptionPasswordField, true);
+    encryptionPassword = new VTConfigurationDialogParameter("Encryption Password:", encryptionPasswordField, true);
     
     // try
     // {
@@ -471,18 +472,18 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-    sessionsMaximum = new VTServerSettingsDialogParameter("Session Maximum:", sessionsMaximumField, true);
+    sessionsMaximum = new VTConfigurationDialogParameter("Session Maximum:", sessionsMaximumField, true);
     
     TextField sessionShellField = new TextField(16);
-    sessionShell = new VTServerSettingsDialogParameter("Session Shell:", sessionShellField, true);
+    sessionShell = new VTConfigurationDialogParameter("Session Shell:", sessionShellField, true);
     
     TextField connectionUserField = new TextField(16);
     connectionUserField.setEchoChar('*');
-    sessionUser = new VTServerSettingsDialogParameter("Session User:", connectionUserField, true);
+    sessionUser = new VTConfigurationDialogParameter("Session User:", connectionUserField, true);
     
     TextField connectionPasswordField = new TextField(16);
     connectionPasswordField.setEchoChar('*');
-    sessionPassword = new VTServerSettingsDialogParameter("Session Password:", connectionPasswordField, true);
+    sessionPassword = new VTConfigurationDialogParameter("Session Password:", connectionPasswordField, true);
     
     TextField pingIntervalField = new TextField(16);
     pingIntervalField.addTextListener(new TextListener()
@@ -500,7 +501,7 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-    pingInterval = new VTServerSettingsDialogParameter("Ping Interval:", pingIntervalField, true);
+    pingInterval = new VTConfigurationDialogParameter("Ping Interval:", pingIntervalField, true);
     
     TextField pingLimitField = new TextField(16);
     pingLimitField.addTextListener(new TextListener()
@@ -518,7 +519,7 @@ public class VTServerSettingsDialog extends Dialog
         }
       }
     });
-    pingLimit = new VTServerSettingsDialogParameter("Ping Limit:", pingLimitField, true);
+    pingLimit = new VTConfigurationDialogParameter("Ping Limit:", pingLimitField, true);
     
     addKeyListener(new KeyListener()
     {
