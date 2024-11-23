@@ -63,13 +63,11 @@ public class UPSOCKS implements UserValidation{
       return password;
     }
 
-    public String[] getUsernames()
-    {
+    public String[] getUsernames() {
       return null;
     }
 
-    public String[] getPasswords()
-    {
+    public String[] getPasswords() {
       return null;
     }
 }

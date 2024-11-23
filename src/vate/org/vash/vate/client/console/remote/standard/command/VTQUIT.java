@@ -30,5 +30,4 @@ public class VTQUIT extends VTClientStandardRemoteConsoleCommandProcessor
   {
     return true;
   }
-
 }

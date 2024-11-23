@@ -89,8 +89,6 @@ public class VTServer implements Runnable
     VT.initialize();
   }
   
-  
-  
   public VTServer()
   {
     // VTServerLocalConsoleCommandSelector.initialize();

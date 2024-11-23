@@ -1,18 +1,13 @@
 package org.vash.vate.nativeutils;
 
-import java.io.FileDescriptor;
-import java.io.PrintStream;
-
-import org.vash.vate.console.standard.VTStandardConsoleOutputStream;
-
 public class VTNullNativeUtils implements VTNativeUtilsImplementation
 {
   /* public boolean beep(int freq, int dur) { return false; } */
-  private PrintStream out;
+  //private PrintStream out;
   
   public VTNullNativeUtils()
   {
-    out = new PrintStream(new VTStandardConsoleOutputStream(FileDescriptor.out));
+    //out = new PrintStream(new VTStandardConsoleOutputStream(FileDescriptor.out));
   }
   
   public boolean beep(int freq, int dur, boolean block)
@@ -37,7 +32,7 @@ public class VTNullNativeUtils implements VTNativeUtilsImplementation
   
   public void printf(String format, Object... args)
   {
-    out.printf(format, args);
+    //out.printf(format, args);
   }
   
   public int system(String command)

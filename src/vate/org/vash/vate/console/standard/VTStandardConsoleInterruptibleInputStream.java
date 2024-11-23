@@ -53,11 +53,6 @@ public class VTStandardConsoleInterruptibleInputStream extends InputStream
     }
   }
   
-  public void setInputBuffer()
-  {
-    
-  }
-  
   private int readInputBuffer() throws IOException
   {
     currentThread = Thread.currentThread();

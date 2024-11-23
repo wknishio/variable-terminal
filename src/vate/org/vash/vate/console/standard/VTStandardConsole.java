@@ -825,7 +825,6 @@ public class VTStandardConsole implements VTConsoleImplementation
   
   public String getSelectedText()
   {
-    
     return null;
   }
   
