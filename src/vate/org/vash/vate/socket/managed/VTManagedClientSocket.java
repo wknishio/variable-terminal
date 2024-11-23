@@ -98,7 +98,11 @@ public class VTManagedClientSocket
     
     public <T> T getConnectionSession(Class<T> clazz)
     {
-      return clazz.cast(session);
+      if (clazz.isAssignableFrom(session.getClass()))
+      {
+        return clazz.cast(session);
+      }
+      return null;
     }
     
     public Socket getConnectionSocket()
