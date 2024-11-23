@@ -5,8 +5,8 @@ import java.io.IOException;
 import org.vash.vate.VT;
 import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3MessageDigest;
+import org.vash.vate.security.VTCredential;
 import org.vash.vate.server.VTServer;
-import org.vash.vate.server.VTServer.Credential;
 import org.vash.vate.server.connection.VTServerConnection;
 
 public class VTServerAuthenticator
@@ -129,7 +129,7 @@ public class VTServerAuthenticator
     
     if (server.getUserCredentials().size() > 0)
     {
-      for (Credential credential : server.getUserCredentials())
+      for (VTCredential credential : server.getUserCredentials())
       {
         String credentialUser = credential.getUser();
         String credentialPassword = credential.getPassword();

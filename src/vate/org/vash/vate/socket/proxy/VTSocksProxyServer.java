@@ -70,8 +70,8 @@ public class VTSocksProxyServer implements Runnable {
 	Thread pipe_thread1, pipe_thread2;
 	long lastReadTime;
 
-	static int idleTimeout = 90000; // 90 seconds
-	static int acceptTimeout = 90000; // 90 seconds
+	private int idleTimeout = 90000; // 90 seconds
+	private int acceptTimeout = 90000; // 90 seconds
 
 	// private static final Logger LOG = Logger.getLogger(ProxyServer.class);
 
@@ -93,32 +93,46 @@ public class VTSocksProxyServer implements Runnable {
 	// Public Constructors
 	/////////////////////
 
-	/**
-	 * Creates a proxy server with given Authentication scheme.
-	 * 
-	 * @param auth
-	 *            Authentication scheme to be used.
-	 */
-	public VTSocksProxyServer(ServerAuthenticator auth) {
-		this.auth = auth;
-		// this.connectionId = newConnectionId();
-	}
+//	/**
+//	 * Creates a proxy server with given Authentication scheme.
+//	 * 
+//	 * @param auth
+//	 *            Authentication scheme to be used.
+//	 */
+//	public VTSocksProxyServer(ServerAuthenticator auth) {
+//		this.auth = auth;
+//		// this.connectionId = newConnectionId();
+//	}
+	
+	 public VTSocksProxyServer(ServerAuthenticator auth, ExecutorService executorService) {
+	    this.executorService = executorService;
+	    this.auth = auth;
+	  }
 
+	 public VTSocksProxyServer(ServerAuthenticator auth, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy, VTRemoteSocketFactory socket_factory, int connectTimeout) {
+	    this.executorService = executorService;
+	    this.auth = auth;
+	    this.disabled_bind = disabled_bind;
+	    this.disabled_udp_relay = disabled_udp_relay;
+	    this.connect_proxy = connect_proxy;
+	    this.socket_factory = socket_factory;
+	    this.connectTimeout = connectTimeout;
+	  }
 	// Other constructors
 	////////////////////
 
-	public VTSocksProxyServer(ServerAuthenticator auth, Socket s, ExecutorService executorService) {
+	public VTSocksProxyServer(ServerAuthenticator auth, Socket socket, ExecutorService executorService) {
 	  this.executorService = executorService;
 		this.auth = auth;
-		this.sock = s;
+		this.sock = socket;
 		// this.connectionId = connectionId;
 		mode = START_MODE;
 	}
 	
-	public VTSocksProxyServer(ServerAuthenticator auth, Socket s, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy, VTRemoteSocketFactory socket_factory, int connectTimeout) {
+	public VTSocksProxyServer(ServerAuthenticator auth, Socket socket, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy, VTRemoteSocketFactory socket_factory, int connectTimeout) {
     this.executorService = executorService;
     this.auth = auth;
-    this.sock = s;
+    this.sock = socket;
     this.disabled_bind = disabled_bind;
     this.disabled_udp_relay = disabled_udp_relay;
     this.connect_proxy = connect_proxy;
@@ -165,7 +179,7 @@ public class VTSocksProxyServer implements Runnable {
 	 * Zero timeout implies infinity.<br>
 	 * Default timeout is 3 minutes.
 	 */
-	public static void setIdleTimeout(int timeout) {
+	public void setIdleTimeout(int timeout) {
 		idleTimeout = timeout;
 	}
 
@@ -175,7 +189,7 @@ public class VTSocksProxyServer implements Runnable {
 	 * Zero timeout implies infinity.<br>
 	 * Default timeout is 3 minutes.
 	 */
-	public static void setAcceptTimeout(int timeout) {
+	public void setAcceptTimeout(int timeout) {
 		acceptTimeout = timeout;
 	}
 
@@ -203,6 +217,10 @@ public class VTSocksProxyServer implements Runnable {
 	public void start(int port) {
 		start(port, 5, null);
 	}
+	
+	public void start(int port, int backlog) {
+    start(port, backlog, null);
+  }
 
 	/**
 	 * Create a server with the specified port, listen backlog, and local IP address
@@ -212,9 +230,16 @@ public class VTSocksProxyServer implements Runnable {
 	 * addresses. The port must be between 0 and 65535, inclusive. <br>
 	 * This methods blocks.
 	 */
-	public void start(int port, int backlog, InetAddress localIP) {
+	public void start(int port, int backlog, String bindHost) {
 		try {
-			ss = new ServerSocket(port, backlog, localIP);
+		  if (bindHost != null)
+		  {
+		    ss = new ServerSocket(port, backlog, InetAddress.getByName(bindHost));
+		  }
+		  else
+		  {
+		    ss = new ServerSocket(port, backlog, null);
+		  }
 			//ss = new ServerSocket();
 			//ss.setReuseAddress(true);
 			//ss.bind(new InetSocketAddress(localIP, port), backlog);

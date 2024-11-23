@@ -4,8 +4,8 @@ import org.vash.vate.VT;
 import org.vash.vate.socket.proxy.VTProxy;
 import org.vash.vate.socket.proxy.VTSocksHttpProxyAuthenticatorNone;
 import org.vash.vate.socket.proxy.VTSocksHttpProxyAuthenticatorUsernamePassword;
+import org.vash.vate.socket.proxy.VTSocksMultipleUserValidation;
 import org.vash.vate.socket.proxy.VTSocksProxyServer;
-import org.vash.vate.socket.proxy.VTSocksSingleUserValidation;
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 
@@ -14,7 +14,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
   private static final int socksBufferSize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
   private final VTTunnelChannel channel;
   private final VTTunnelSession session;
-  private final VTSocksSingleUserValidation validation;
+  private final VTSocksMultipleUserValidation validation;
   private final VTProxy proxy;
   private final VTRemoteSocketFactory socketFactory;
   private final int connectTimeout;
@@ -36,7 +36,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
     this.connectTimeout = connectTimeout;
     if (socksUsername != null && socksPassword != null && socksUsername.length() > 0 && socksPassword.length() > 0)
     {
-      this.validation = new VTSocksSingleUserValidation(socksUsername, socksPassword);
+      this.validation = new VTSocksMultipleUserValidation(new String[] {socksUsername}, new String[] {socksPassword});
     }
     else
     {

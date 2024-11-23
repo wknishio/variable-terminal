@@ -26,10 +26,10 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
     this.executorService = executorService;
   }
   
-  public ServerAuthenticator startSession(Socket s) throws IOException
+  public ServerAuthenticator startSession(Socket socket) throws IOException
   {
-    PushbackInputStream in = new PushbackInputStream(s.getInputStream());
-    OutputStream out = s.getOutputStream();
+    PushbackInputStream in = new PushbackInputStream(socket.getInputStream());
+    OutputStream out = socket.getOutputStream();
     int version = in.read();
     //System.out.println("version=" + version);
     if (version == 5)
@@ -49,7 +49,7 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
       {
         in.unread(version);
         //fallback to use http proxy instead
-        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(s, in, executorService, true, null, null, connect_proxy, socket_factory, connectTimeout);
+        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, in, executorService, true, null, null, connect_proxy, socket_factory, connectTimeout);
         try
         {
           httpProxy.run();

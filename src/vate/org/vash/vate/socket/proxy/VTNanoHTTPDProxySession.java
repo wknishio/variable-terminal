@@ -259,14 +259,14 @@ public class VTNanoHTTPDProxySession implements Runnable
     //public boolean keepConnection = false;
   }
   
-  public VTNanoHTTPDProxySession(Socket socket, InputStream in, ExecutorService executorService, boolean digestAuthentication, String username, String password, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout)
+  public VTNanoHTTPDProxySession(Socket socket, InputStream in, ExecutorService executorService, boolean digestAuthentication, String[] usernames, String[] passwords, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout)
   {
     this.mySocket = socket;
     this.myIn = in;
     this.executorService = executorService;
     this.digestAuthentication = digestAuthentication;
-    this.username = username;
-    this.password = password;
+    this.usernames = usernames;
+    this.passwords = passwords;
     this.proxy = proxy;
     this.socketFactory = socketFactory;
     this.connectTimeout = connectTimeout;
@@ -395,7 +395,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       byte[] headerData = h.toByteArray();
       
       // Ok, now do the serve()
-      serve(uri, method, pre, headers, headerData, bodyData, username, password, mySocket, in, proxy );
+      serve(uri, method, pre, headers, headerData, bodyData, usernames, passwords, mySocket, in, proxy );
     }
     catch ( InterruptedException ie )
     {
@@ -427,19 +427,28 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
   }
   
-  public void serve(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, String username, String password, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
+  public void serve(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, String[] usernames, String[] passwords, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
   {
     if (digestAuthentication)
     {
-      int result = checkProxyAuthenticatedDigest(headers, method, username, password, "Proxy");
+      int result = checkProxyAuthenticatedDigest(headers, method, usernames, passwords, "Proxy");
       if (result != 0)
       {
-        requireProxyAuthenticationDigest("Proxy", generateNonce("Proxy", username, password), result == -2);
+        requireProxyAuthenticationDigest("Proxy", generateNonce("SocksPlusHttpProxy"), result == -2);
       }
     }
     else
     {
-      if (!checkProxyAuthenticatedBasic(headers, username, password))
+      boolean checked = false;
+      for (int i = 0; i < usernames.length; i++)
+      {
+        checked |= checkProxyAuthenticatedBasic(headers, usernames[i], passwords[i]);
+        if (checked)
+        {
+          break;
+        }
+      }
+      if (!checked)
       {
         requireProxyAuthenticationBasic("Proxy");
         return;
@@ -493,9 +502,9 @@ public class VTNanoHTTPDProxySession implements Runnable
     sendError(resp.status, MIME_PLAINTEXT, resp.headers, null);
   }
   
-  private int checkProxyAuthenticatedDigest(Properties headers, String method, String username, String password, String realm) throws UnsupportedEncodingException
+  private int checkProxyAuthenticatedDigest(Properties headers, String method, String[] usernames, String[] passwords, String realm) throws UnsupportedEncodingException
   {
-    if (username == null || password == null)
+    if (usernames == null || passwords == null)
     {
       return 0;
     }
@@ -509,7 +518,15 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     if (proxyAuthorization != null)
     {
-      return validateProxyAuthorizationDigest(proxyAuthorization, method, username, password, realm);
+      int validated = -1;
+      for (int i = 0; i < usernames.length; i++)
+      {
+        validated = validateProxyAuthorizationDigest(proxyAuthorization, method, usernames[i], passwords[i], realm);
+        if (validated == 0)
+        {
+          return validated;
+        }
+      }
     }
     return -1;
   }
@@ -759,11 +776,11 @@ public class VTNanoHTTPDProxySession implements Runnable
     return removeQuotes(quotedString, false);
   }
   
-  protected String generateNonce(String realm, String username, String password) throws UnsupportedEncodingException
+  protected String generateNonce(String realm) throws UnsupportedEncodingException
   {
     long currentTime = System.currentTimeMillis();
     
-    String nonceValue = realm + ":" + username + ":" + password + ":" + currentTime;
+    String nonceValue = realm + ":" + currentTime;
     nonceValue = Hex.toHexString(Blake3.hash(nonceValue.getBytes("ISO-8859-1")));
     //nonceValue = DigestUtils.sha256Hex(nonceValue.getBytes("ISO-8859-1"));
     
@@ -1118,8 +1135,8 @@ public class VTNanoHTTPDProxySession implements Runnable
   private Socket mySocket;
   private InputStream myIn;
   private boolean digestAuthentication;
-  private String username;
-  private String password;
+  private String[] usernames;
+  private String[] passwords;
   private VTProxy proxy;
   private VTRemoteSocketFactory socketFactory;
   private int connectTimeout;

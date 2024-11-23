@@ -297,9 +297,9 @@ public class VTNanoHTTPD
    */
   private class HTTPSession implements Runnable
   {
-    public HTTPSession( Socket s, ExecutorService executorService)
+    public HTTPSession( Socket socket, ExecutorService executorService)
     {
-      mySocket = s;
+      mySocket = socket;
       final HTTPSession session = this;
       Runnable sessionThread = new Runnable()
       {

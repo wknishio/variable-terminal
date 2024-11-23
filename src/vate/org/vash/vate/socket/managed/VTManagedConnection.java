@@ -13,7 +13,8 @@ public interface VTManagedConnection extends Closeable
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number);
   public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number);
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number);
-  public Object getConnectionSession();
+  public Class<?> getConnectionSessionClass();
+  public <T> T getConnectionSession(Class<T> clazz);
   public void pingConnection();
   public long ping();
   public long ping(long timeoutNanoSeconds);

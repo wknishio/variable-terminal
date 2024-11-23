@@ -33,6 +33,6 @@ public interface UserValidation{
     public boolean isUserValid(String username,String password,
                         java.net.Socket connection);
     
-    public String getUsername();
-    public String getPassword();
+    public String[] getUsernames();
+    public String[] getPasswords();
 }

@@ -91,9 +91,14 @@ public class VTManagedServerSocket
       return stream;
     }
     
-    public VTServerSession getConnectionSession()
+    public Class<VTServerSession> getConnectionSessionClass()
     {
-      return session;
+      return VTServerSession.class;
+    }
+    
+    public <T> T getConnectionSession(Class<T> clazz)
+    {
+      return clazz.cast(session);
     }
     
     public Socket getConnectionSocket()

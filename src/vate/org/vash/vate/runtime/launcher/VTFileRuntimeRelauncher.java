@@ -57,7 +57,6 @@ public class VTFileRuntimeRelauncher
         }
       }
     }
-    
     BufferedReader input = null;
     try
     {
@@ -96,7 +95,6 @@ public class VTFileRuntimeRelauncher
         }
       }
     }
-    
   }
   
   public static void command(String[] command)
