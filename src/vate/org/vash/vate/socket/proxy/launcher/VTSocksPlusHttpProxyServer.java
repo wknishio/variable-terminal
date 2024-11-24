@@ -138,7 +138,7 @@ public class VTSocksPlusHttpProxyServer
           
         }
       }
-      if (parameterName.contains("-L"))
+      if (parameterName.contains("-B"))
       {
         parameterValue = parameters[++i];
         try
