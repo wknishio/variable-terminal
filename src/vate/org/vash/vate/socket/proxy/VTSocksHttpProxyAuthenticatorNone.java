@@ -17,13 +17,15 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
   private VTRemoteSocketFactory socket_factory;
   private int connectTimeout;
   private ExecutorService executorService;
+  private String bind;
   
-  public VTSocksHttpProxyAuthenticatorNone(VTProxy proxy, VTRemoteSocketFactory socket_factory, int connectTimeout, ExecutorService executorService)
+  public VTSocksHttpProxyAuthenticatorNone(ExecutorService executorService, VTProxy proxy, VTRemoteSocketFactory socket_factory, int connectTimeout, String bind)
   {
+    this.executorService = executorService;
     this.connect_proxy = proxy;
     this.socket_factory = socket_factory;
     this.connectTimeout = connectTimeout;
-    this.executorService = executorService;
+    this.bind = bind;
   }
   
   public ServerAuthenticator startSession(Socket socket) throws IOException
@@ -49,7 +51,7 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
       {
         in.unread(version);
         //fallback to use http proxy instead
-        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, in, executorService, true, null, null, connect_proxy, socket_factory, connectTimeout);
+        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, in, executorService, true, null, null, connect_proxy, socket_factory, connectTimeout, bind);
         try
         {
           httpProxy.run();

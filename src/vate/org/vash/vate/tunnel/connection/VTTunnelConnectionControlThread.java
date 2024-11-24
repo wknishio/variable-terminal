@@ -353,11 +353,11 @@ public class VTTunnelConnectionControlThread implements Runnable
       {
         
       }
-      socket = VTProxy.next(null, connectTimeout, proxy);
+      socket = VTProxy.next(null, null, connectTimeout, proxy);
       clientSocket = new VTTunnelCloseableSocket(socket);
       connection.getCloseables().add(clientSocket);
       
-      socket = VTProxy.connect(host, port, connectTimeout, socket);
+      socket = VTProxy.connect(null, host, port, connectTimeout, socket);
       if (dataTimeout > 0)
       {
         socket.setSoTimeout(dataTimeout);

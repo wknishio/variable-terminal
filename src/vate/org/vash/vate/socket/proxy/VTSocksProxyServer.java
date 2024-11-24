@@ -87,6 +87,8 @@ public class VTSocksProxyServer implements Runnable {
 	private int connectTimeout;
 	
 	private ExecutorService executorService;
+	
+	private String bind;
 
 	// private String connectionId;
 
@@ -215,11 +217,11 @@ public class VTSocksProxyServer implements Runnable {
 	 * This methods blocks.
 	 */
 	public void start(int port) {
-		start(port, 5, null);
+		start(port, 5, null, null);
 	}
 	
 	public void start(int port, int backlog) {
-    start(port, backlog, null);
+    start(port, backlog, null, null);
   }
 
 	/**
@@ -230,11 +232,12 @@ public class VTSocksProxyServer implements Runnable {
 	 * addresses. The port must be between 0 and 65535, inclusive. <br>
 	 * This methods blocks.
 	 */
-	public void start(int port, int backlog, String bindHost) {
+	public void start(int port, int backlog, String host, String bind) {
+	  this.bind = bind;
 		try {
-		  if (bindHost != null)
+		  if (host != null)
 		  {
-		    ss = new ServerSocket(port, backlog, InetAddress.getByName(bindHost));
+		    ss = new ServerSocket(port, backlog, InetAddress.getByName(host));
 		  }
 		  else
 		  {
@@ -437,66 +440,66 @@ public class VTSocksProxyServer implements Runnable {
 		sendErrorMessage(error_code);
 	}
 
-	private void onConnect(ProxyMessage msg) throws IOException {
-		Socket s = null;
+  private void onConnect(ProxyMessage msg) throws IOException {
+		Socket socket = null;
 		ProxyMessage response = null;
+		
 
 		if (proxy == null) {
 		  if (connect_proxy == null)
 		  {
-		    s = new Socket(java.net.Proxy.NO_PROXY);
 		    if (msg.ip != null)
-		    {
-		      s.connect(new InetSocketAddress(msg.ip, msg.port), connectTimeout);
-		    }
-		    else
-		    {
-		      s.connect(new InetSocketAddress(msg.host, msg.port), connectTimeout);
-		    }
-	      s.setTcpNoDelay(true);
-	      s.setKeepAlive(true);
+        {
+          socket = VTProxy.connect(bind, msg.ip.getHostAddress(), msg.port, connectTimeout, null, connect_proxy);
+        }
+        else
+        {
+          socket = VTProxy.connect(bind, msg.host, msg.port, connectTimeout, null, connect_proxy);
+        }
+		    socket.setTcpNoDelay(true);
+		    socket.setKeepAlive(true);
 	      //s.setSoTimeout(90000);
 		  }
 		  else
 		  {
 		    if (msg.ip != null)
         {
-		      s = VTProxy.connect(msg.ip.getHostAddress(), msg.port, connectTimeout, socket_factory == null ? null : new VTRemoteSocketAdapter(socket_factory), connect_proxy);
+		      socket = VTProxy.connect(bind, msg.ip.getHostAddress(), msg.port, connectTimeout, socket_factory == null ? null : new VTRemoteSocketAdapter(socket_factory), connect_proxy);
         }
 		    else
 		    {
-		      s = VTProxy.connect(msg.host, msg.port, connectTimeout, socket_factory == null ? null : new VTRemoteSocketAdapter(socket_factory), connect_proxy);
+		      socket = VTProxy.connect(bind, msg.host, msg.port, connectTimeout, socket_factory == null ? null : new VTRemoteSocketAdapter(socket_factory), connect_proxy);
 		    }
-		    s.setTcpNoDelay(true);
-		    s.setKeepAlive(true);
+		    socket.setTcpNoDelay(true);
+		    socket.setKeepAlive(true);
         //s.setSoTimeout(90000);
 		  }
 			
 		} else {
 		  if (msg.ip != null)
 		  {
-		    s = new SocksSocket(proxy, msg.ip, msg.port, connectTimeout);
+		    socket = new SocksSocket(proxy, msg.ip, msg.port, connectTimeout);
 		  }
 		  else
 		  {
-		    s = new SocksSocket(proxy, msg.host, msg.port, connectTimeout);
+		    socket = new SocksSocket(proxy, msg.host, msg.port, connectTimeout);
 		  }
 			
-			s.setTcpNoDelay(true);
-			s.setKeepAlive(true);
+		  socket.setTcpNoDelay(true);
+		  socket.setKeepAlive(true);
 			//s.setSoTimeout(90000);
 		}
 		// LOG.info(connectionId + " Connected to " + s.getInetAddress() + ":" +
 		// s.getPort());
 
 		if (msg instanceof Socks5Message) {
-			response = new Socks5Message(Proxy.SOCKS_SUCCESS, s.getLocalAddress(), s.getLocalPort());
+			response = new Socks5Message(Proxy.SOCKS_SUCCESS, socket.getLocalAddress(), socket.getLocalPort());
 		} else {
-			response = new Socks4Message(Socks4Message.REPLY_OK, s.getLocalAddress(), s.getLocalPort());
+			response = new Socks4Message(Socks4Message.REPLY_OK, socket.getLocalAddress(), socket.getLocalPort());
 
 		}
 		response.write(out);
-		startPipe(s);
+		startPipe(socket);
 	}
 
 	private void onBind(ProxyMessage msg) throws IOException {

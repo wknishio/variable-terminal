@@ -123,7 +123,7 @@ public class VTProxy
     //this.proxyConnection = proxyConnection;
   //}
   
-  public static Socket next(Socket currentSocket, int timeout, VTProxy... proxies)
+  public static Socket next(Socket currentSocket, String bind, int timeout, VTProxy... proxies) throws IOException
   {
     if (proxies == null || proxies.length <= 0)
     {
@@ -131,19 +131,23 @@ public class VTProxy
       {
         currentSocket = new Socket();
       }
+      if (bind != null && bind.length() > 0)
+      {
+        currentSocket.bind(new InetSocketAddress(bind, 0));
+      }
       return currentSocket;
     }
     //VTProxy parentProxy = null;
     for (VTProxy currentProxy : proxies)
     {
-      currentSocket = nextSocket(currentSocket, timeout, currentProxy);
+      currentSocket = nextSocket(currentSocket, bind, timeout, currentProxy);
       //parentProxy = currentProxy;
     }
     return currentSocket;
   }
   
   @SuppressWarnings("all")
-  private static Socket nextSocket(Socket currentSocket, int timeout, VTProxy currentProxy)
+  private static Socket nextSocket(Socket currentSocket, String bind, int timeout, VTProxy currentProxy) throws IOException
   {
     Socket nextSocket = null;
     
@@ -152,10 +156,18 @@ public class VTProxy
       if (currentProxy.getProxyType() == VTProxyType.GLOBAL)
       {
         nextSocket = new Socket();
+        if (bind != null && bind.length() > 0)
+        {
+          currentSocket.bind(new InetSocketAddress(bind, 0));
+        }
       }
       else if (currentProxy.getProxyType() == VTProxyType.DIRECT)
       {
         nextSocket = new Socket(Proxy.NO_PROXY);
+        if (bind != null && bind.length() > 0)
+        {
+          currentSocket.bind(new InetSocketAddress(bind, 0));
+        }
       }
       else if (currentProxy.getProxyType() == VTProxyType.SOCKS)
       {
@@ -174,6 +186,10 @@ public class VTProxy
         if (currentSocket == null)
         {
           nextSocket = new Socket();
+          if (bind != null && bind.length() > 0)
+          {
+            currentSocket.bind(new InetSocketAddress(bind, 0));
+          }
         }
         else
         {
@@ -186,6 +202,10 @@ public class VTProxy
       if (currentSocket == null)
       {
         nextSocket = new Socket();
+        if (bind != null && bind.length() > 0)
+        {
+          currentSocket.bind(new InetSocketAddress(bind, 0));
+        }
       }
       else
       {
@@ -196,7 +216,7 @@ public class VTProxy
     return nextSocket;
   }
   
-  public static Socket connect(String host, int port, int timeout, Socket currentSocket, VTProxy... proxies) throws IOException
+  public static Socket connect(String bind, String host, int port, int timeout, Socket currentSocket, VTProxy... proxies) throws IOException
   {
     if (host == null || host.length() == 0 || host.equals("*"))
     {
@@ -211,7 +231,7 @@ public class VTProxy
     
     InetSocketAddress socketAddress = null;
     
-    Socket connectionSocket = next(currentSocket, timeout, proxies);
+    Socket connectionSocket = next(currentSocket, bind, timeout, proxies);
     
     if (connectionSocket instanceof VTProxySocket)
     {

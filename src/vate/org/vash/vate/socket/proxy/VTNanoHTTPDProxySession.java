@@ -259,7 +259,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     //public boolean keepConnection = false;
   }
   
-  public VTNanoHTTPDProxySession(Socket socket, InputStream in, ExecutorService executorService, boolean digestAuthentication, String[] usernames, String[] passwords, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout)
+  public VTNanoHTTPDProxySession(Socket socket, InputStream in, ExecutorService executorService, boolean digestAuthentication, String[] usernames, String[] passwords, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout, String bind)
   {
     this.mySocket = socket;
     this.myIn = in;
@@ -270,6 +270,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     this.proxy = proxy;
     this.socketFactory = socketFactory;
     this.connectTimeout = connectTimeout;
+    this.bind = bind;
     //Thread t = new Thread( this );
     //t.setDaemon( true );
     //t.start();
@@ -625,7 +626,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     
     //Socket remoteSocket = new Socket(host, port);
-    Socket remoteSocket = VTProxy.connect(host, port, connectTimeout, socketFactory == null ? null : new VTRemoteSocketAdapter(socketFactory), connectProxy);
+    Socket remoteSocket = VTProxy.connect(bind, host, port, connectTimeout, socketFactory == null ? null : new VTRemoteSocketAdapter(socketFactory), connectProxy);
     remoteSocket.setTcpNoDelay(true);
     remoteSocket.setKeepAlive(true);
     //remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
@@ -710,8 +711,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     requestData.write("\r\n".getBytes("ISO-8859-1"));
     requestData.write(bodyData);
     
-    //Socket remoteSocket = new Socket(host, port);
-    Socket remoteSocket = VTProxy.connect(host, port, 0, socketFactory == null ? null : new VTRemoteSocketAdapter(socketFactory), connectProxy);
+    Socket remoteSocket = VTProxy.connect(bind, host, port, connectTimeout, socketFactory == null ? null : new VTRemoteSocketAdapter(socketFactory), connectProxy);
     remoteSocket.setTcpNoDelay(true);
     remoteSocket.setKeepAlive(true);
     //remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
@@ -1140,6 +1140,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   private VTProxy proxy;
   private VTRemoteSocketFactory socketFactory;
   private int connectTimeout;
+  private String bind;
   private ExecutorService executorService;
   //private static final Map<String, Long> VALID_DIGEST_NONCES = new LinkedHashMap<String, Long>();
   

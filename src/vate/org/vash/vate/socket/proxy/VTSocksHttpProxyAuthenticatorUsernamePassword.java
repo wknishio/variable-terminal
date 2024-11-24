@@ -19,14 +19,16 @@ public class VTSocksHttpProxyAuthenticatorUsernamePassword extends UserPasswordA
   private VTRemoteSocketFactory socket_factory;
   private int connectTimeout;
   private ExecutorService executorService;
+  private String bind;
   
-  public VTSocksHttpProxyAuthenticatorUsernamePassword(UserValidation validator, VTProxy proxy, VTRemoteSocketFactory socket_factory, int connectTimeout, ExecutorService executorService)
+  public VTSocksHttpProxyAuthenticatorUsernamePassword(UserValidation validator, ExecutorService executorService, VTProxy proxy, VTRemoteSocketFactory socket_factory, int connectTimeout, String bind)
   {
     super(validator);
+    this.executorService = executorService;
     this.connect_proxy = proxy;
     this.socket_factory = socket_factory;
     this.connectTimeout = connectTimeout;
-    this.executorService = executorService;
+    this.bind = bind;
   }
 
   public ServerAuthenticator startSession(Socket socket) throws IOException
@@ -43,7 +45,7 @@ public class VTSocksHttpProxyAuthenticatorUsernamePassword extends UserPasswordA
         {
           in.unread(version);
           //fallback to use http proxy instead
-          VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, in, executorService, true, validator.getUsernames(), validator.getPasswords(), connect_proxy, socket_factory, connectTimeout);
+          VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, in, executorService, true, validator.getUsernames(), validator.getPasswords(), connect_proxy, socket_factory, connectTimeout, bind);
           try
           {
             httpProxy.run();
