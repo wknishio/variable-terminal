@@ -18,6 +18,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
   private final VTProxy proxy;
   private final VTRemoteSocketFactory socketFactory;
   private final int connectTimeout;
+  private final String bind;
   
   //public VTTunnelSocksSessionHandler(VTTunnelSession session, VTTunnelChannel channel)
   //{
@@ -26,7 +27,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
     //this.channel = channel;
   //}
   
-  public VTTunnelSocksSessionHandler(VTTunnelSession session, VTTunnelChannel channel, String socksUsername, String socksPassword, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout)
+  public VTTunnelSocksSessionHandler(VTTunnelSession session, VTTunnelChannel channel, String socksUsername, String socksPassword, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout, String bind)
   {
     super(session, channel);
     this.session = session;
@@ -34,6 +35,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
     this.proxy = proxy;
     this.socketFactory = socketFactory;
     this.connectTimeout = connectTimeout;
+    this.bind = bind;
     if (socksUsername != null && socksPassword != null && socksUsername.length() > 0 && socksPassword.length() > 0)
     {
       this.validation = new VTSocksMultipleUserValidation(new String[] {socksUsername}, new String[] {socksPassword});
@@ -57,7 +59,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
       {
         try
         {
-          VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, channel.getConnection().getExecutorService(), proxy, socketFactory, connectTimeout, null), session.getSocket(), channel.getConnection().getExecutorService(), false, true, proxy, socketFactory, connectTimeout);
+          VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, channel.getConnection().getExecutorService(), proxy, socketFactory, connectTimeout, bind), session.getSocket(), channel.getConnection().getExecutorService(), false, true, proxy, socketFactory, connectTimeout, bind);
           socksServer.setPipeBufferSize(socksBufferSize);
           socksServer.run();
         }
@@ -71,7 +73,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
       {
         try
         {
-          VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorNone(channel.getConnection().getExecutorService(), proxy, socketFactory, connectTimeout, null), session.getSocket(), channel.getConnection().getExecutorService(), false, true, proxy, socketFactory, connectTimeout);
+          VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorNone(channel.getConnection().getExecutorService(), proxy, socketFactory, connectTimeout, bind), session.getSocket(), channel.getConnection().getExecutorService(), false, true, proxy, socketFactory, connectTimeout, bind);
           socksServer.setPipeBufferSize(socksBufferSize);
           socksServer.run();
         }

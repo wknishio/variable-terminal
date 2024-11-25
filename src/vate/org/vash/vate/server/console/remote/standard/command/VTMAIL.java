@@ -89,7 +89,8 @@ public class VTMAIL extends VTServerStandardRemoteConsoleCommandProcessor
           }
           else if (parsed.length >= 2)
           {
-            mailMethodURI.invoke(desktopObject, new URI("mailto:" + command.substring(parsed[0].length() + 1)));
+            //mailMethodURI.invoke(desktopObject, new URI("mailto:" + command.substring(parsed[0].length() + 1)));
+            mailMethodURI.invoke(desktopObject, new URI("mailto:" + parsed[1]));
           }
           connection.getResultWriter().write("\nVT>Mail operation executed!\nVT>");
           connection.getResultWriter().flush();

@@ -578,8 +578,8 @@ public class VTServerRuntimeExecutor extends VTTask
               outputRedirect = session.getConnection().getShellDataOutputStream();
             }
             
-            String processCommand = parseCommandParameter(command, parameterIndex, false);
-            String parsedCommand = parseCommandParameter(command, parameterIndex, true);
+            String processCommand = CommandLineTokenizer.parseCommandParameter(command, parameterIndex, false);
+            String parsedCommand = CommandLineTokenizer.parseCommandParameter(command, parameterIndex, true);
             
             String[] processCommands = CommandLineTokenizer.tokenize(processCommand);
             
@@ -1057,7 +1057,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            String commandData = parseCommandParameter(command, 2, true);
+            String commandData = CommandLineTokenizer.parseCommandParameter(command, 2, true);
             for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               try
@@ -1084,7 +1084,7 @@ public class VTServerRuntimeExecutor extends VTTask
             try
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
-              String processData = parseCommandParameter(command, 3, true);
+              String processData = CommandLineTokenizer.parseCommandParameter(command, 3, true);
               managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().write((processData + "\n").getBytes());
               managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
               synchronized (this)
@@ -1137,7 +1137,7 @@ public class VTServerRuntimeExecutor extends VTTask
             try
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
-              String commandData = parseCommandParameter(command, 3, true);
+              String commandData = CommandLineTokenizer.parseCommandParameter(command, 3, true);
               found = false;
               // VTTerminal.println(splitCommand[1]);
               for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
@@ -1193,7 +1193,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            String commandData = parseCommandParameter(command, 2, true);
+            String commandData = CommandLineTokenizer.parseCommandParameter(command, 2, true);
             for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               try
@@ -1240,7 +1240,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               //command = command.substring(command.indexOf(splitCommand[3]));
-              String commandData = parseCommandParameter(command, 3, true);
+              String commandData = CommandLineTokenizer.parseCommandParameter(command, 3, true);
               
               byte[] data = null;
               try
@@ -1312,7 +1312,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               //command = command.substring(command.indexOf(splitCommand[3]));
-              String commandData = parseCommandParameter(command, 3, true);
+              String commandData = CommandLineTokenizer.parseCommandParameter(command, 3, true);
               
               byte[] data = null;
               try
@@ -1387,7 +1387,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            String commandData = parseCommandParameter(command, 2, true);
+            String commandData = CommandLineTokenizer.parseCommandParameter(command, 2, true);
             for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               try
@@ -1434,7 +1434,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               //command = command.substring(command.indexOf(splitCommand[3]));
-              String commandData = parseCommandParameter(command, 3, true);
+              String commandData = CommandLineTokenizer.parseCommandParameter(command, 3, true);
               
               byte[] data = null;
               try
@@ -1506,7 +1506,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               //command = command.substring(command.indexOf(splitCommand[3]));
-              String commandData = parseCommandParameter(command, 3, true);
+              String commandData = CommandLineTokenizer.parseCommandParameter(command, 3, true);
               
               byte[] data = null;
               try
@@ -1601,175 +1601,5 @@ public class VTServerRuntimeExecutor extends VTTask
     {
       
     }
-  }
-  
-  private static int findParameterStart(String commandLine, int parameterNumber)
-  {
-    //List resultBuffer = new java.util.ArrayList();
-    int currentParameterCount = -1;
-    int currentParameterSize = 0;
-    if (commandLine != null)
-    {
-      int z = commandLine.length();
-      boolean insideQuotes = false;
-      //StringBuffer buf = new StringBuffer();
-      char q = 'q';
-      char c = 'c';
-      char l = ' ';
-      char n = ' ';
-      for (int i = 0; i < z; i++)
-      {
-        c = commandLine.charAt(i);
-        n = z > i + 1 ? commandLine.charAt(i + 1) : ' ';
-        if (c == '"' || c == '\'')
-        {
-          if ((q == 'q' && Character.isWhitespace(l)) || (c == q && Character.isWhitespace(n)))
-          {
-            insideQuotes = !insideQuotes;
-            if (insideQuotes)
-            {
-              q = c;
-              //started argument if currentArgumentSize == 0
-              if (currentParameterSize == 0)
-              {
-                currentParameterCount++;
-                if (currentParameterCount == parameterNumber)
-                {
-                  return i;
-                }
-              }
-              currentParameterSize++;
-            }
-            else
-            {
-              q = 'q';
-              //terminated argument
-              currentParameterSize = 0;
-            }
-          }
-          else
-          {
-            //started argument if currentArgumentSize == 0
-            if (currentParameterSize == 0)
-            {
-              currentParameterCount++;
-              if (currentParameterCount == parameterNumber)
-              {
-                return i;
-              }
-            }
-            currentParameterSize++;
-          }
-        }
-        else if (insideQuotes && c == '\\')
-        {
-          if (n == q)
-          {
-            //started argument if currentArgumentSize == 0
-            if (currentParameterSize == 0)
-            {
-              currentParameterCount++;
-              if (currentParameterCount == parameterNumber)
-              {
-                return i;
-              }
-            }
-            currentParameterSize++;
-            i++;
-          }
-          else
-          {
-            //started argument if currentArgumentSize == 0
-            if (currentParameterSize == 0)
-            {
-              currentParameterCount++;
-              if (currentParameterCount == parameterNumber)
-              {
-                return i;
-              }
-            }
-            currentParameterSize++;
-          }
-        }
-        else
-        {
-          if (insideQuotes)
-          {
-            //started argument if currentArgumentSize == 0
-            if (currentParameterSize == 0)
-            {
-              currentParameterCount++;
-              if (currentParameterCount == parameterNumber)
-              {
-                return i;
-              }
-            }
-            currentParameterSize++;
-          }
-          else
-          {
-            if (Character.isWhitespace(c))
-            {
-              //terminated argument
-              currentParameterSize = 0;
-            }
-            else
-            {
-              //started argument if currentArgumentSize == 0
-              if (currentParameterSize == 0)
-              {
-                currentParameterCount++;
-                if (currentParameterCount == parameterNumber)
-                {
-                  return i;
-                }
-              }
-              currentParameterSize++;
-            }
-          }
-        }
-        l = c;
-      }
-      //terminated argument
-      currentParameterSize = 0;
-    }
-    return -1;
-  }
-  
-  private static String parseCommandParameter(String commandLine, int parameterIndex, boolean removeQuotes)
-  {
-    String result = "";
-    int parameterStart = findParameterStart(commandLine, parameterIndex);
-    
-    result = commandLine.substring(parameterStart);
-    
-    if (!removeQuotes)
-    {
-      return result;
-    }
-    
-    boolean startedWithSingleQuote = (parameterStart > 0) && (commandLine.charAt(parameterStart) == '\'') && (commandLine.charAt(parameterStart - 1) != '\\');
-    boolean startedWithDoubleQuote = (parameterStart > 0) && (commandLine.charAt(parameterStart) == '\"') && (commandLine.charAt(parameterStart - 1) != '\\');
-    
-    int singleQuoteIndex = result.lastIndexOf('\'');
-    int doubleQuoteIndex = result.lastIndexOf('\"');
-    int lastBackslashIndex = result.lastIndexOf('\\');
-    
-    if (startedWithSingleQuote && (singleQuoteIndex >= 0))
-    {
-      if (lastBackslashIndex < 0 || (lastBackslashIndex + 1 != singleQuoteIndex))
-      {
-        result = result.substring(1, singleQuoteIndex);
-      }
-    }
-    else if (startedWithDoubleQuote && (doubleQuoteIndex >= 0))
-    {
-      if (lastBackslashIndex < 0 || (lastBackslashIndex + 1 != doubleQuoteIndex))
-      {
-        result = result.substring(1, doubleQuoteIndex);
-      }
-    }
-    
-    return result;
-  }
+  }  
 }

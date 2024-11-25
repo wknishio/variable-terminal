@@ -21,8 +21,8 @@ import org.vash.vate.socket.proxy.VTSocksProxyServer;
 public class VTSocksPlusHttpProxyServer
 {
   private int port = 1080;
-  private String bind = null;
   private String host = null;
+  private String route = null;
   private final Collection<VTCredential> userCredentials = new ConcurrentLinkedQueue<VTCredential>();
   private final ExecutorService executorService;
   
@@ -59,14 +59,14 @@ public class VTSocksPlusHttpProxyServer
         
       }
     }
-    if (fileProxySettings.getProperty("proxy.bind") != null)
+    if (fileProxySettings.getProperty("proxy.route") != null)
     {
       try
       {
-        String proxyBind = fileProxySettings.getProperty("proxy.bind");
-        if (proxyBind != null && proxyBind.length() > 0)
+        String proxyRoute = fileProxySettings.getProperty("proxy.route");
+        if (proxyRoute != null && proxyRoute.length() > 0)
         {
-          bind = proxyBind;
+          route = proxyRoute;
         }
       }
       catch (Throwable e)
@@ -138,15 +138,15 @@ public class VTSocksPlusHttpProxyServer
           
         }
       }
-      if (parameterName.contains("-B"))
+      if (parameterName.contains("-R"))
       {
         parameterValue = parameters[++i];
         try
         {
-          String proxyBind = parameterValue;
-          if (proxyBind != null && proxyBind.length() > 0)
+          String proxyRoute = parameterValue;
+          if (proxyRoute != null && proxyRoute.length() > 0)
           {
-            bind = proxyBind;
+            route = proxyRoute;
           }
         }
         catch (Throwable e)
@@ -248,13 +248,13 @@ public class VTSocksPlusHttpProxyServer
     }
     if (validation != null)
     {
-      VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, socksPlusHttpProxyServer.executorService, null, null, 0, socksPlusHttpProxyServer.bind), socksPlusHttpProxyServer.executorService, false, true, null, null, 0);
-      socksServer.start(socksPlusHttpProxyServer.port, 5, socksPlusHttpProxyServer.host, socksPlusHttpProxyServer.bind);
+      VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, socksPlusHttpProxyServer.executorService, null, null, 0, socksPlusHttpProxyServer.route), socksPlusHttpProxyServer.executorService, false, true, null, null, 0);
+      socksServer.start(socksPlusHttpProxyServer.port, 5, socksPlusHttpProxyServer.host, socksPlusHttpProxyServer.route);
     }
     else
     {
-      VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorNone(socksPlusHttpProxyServer.executorService, null, null, 0, socksPlusHttpProxyServer.bind), socksPlusHttpProxyServer.executorService, false, true, null, null, 0);
-      socksServer.start(socksPlusHttpProxyServer.port, 5, socksPlusHttpProxyServer.host, socksPlusHttpProxyServer.bind);
+      VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorNone(socksPlusHttpProxyServer.executorService, null, null, 0, socksPlusHttpProxyServer.route), socksPlusHttpProxyServer.executorService, false, true, null, null, 0);
+      socksServer.start(socksPlusHttpProxyServer.port, 5, socksPlusHttpProxyServer.host, socksPlusHttpProxyServer.route);
     }
   }
 }

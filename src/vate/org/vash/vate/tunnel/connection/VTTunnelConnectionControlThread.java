@@ -56,15 +56,16 @@ public class VTTunnelConnectionControlThread implements Runnable
               
               if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
               {
-                final String host = parts[5];
-                final int port = Integer.parseInt(parts[6]);
-                String proxyTypeLetter = parts[7];
-                String proxyHost = parts[8];
-                int proxyPort = Integer.parseInt(parts[9]);
-                String proxyUser = parts[10];
-                String proxyPassword = parts[11];
+                final String bind = parts[5];
+                final String host = parts[6];
+                final int port = Integer.parseInt(parts[7]);
+                String proxyTypeLetter = parts[8];
+                String proxyHost = parts[9];
+                int proxyPort = Integer.parseInt(parts[10]);
+                String proxyUser = parts[11];
+                String proxyPassword = parts[12];
                 
-                if (parts.length > 12 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[12].equals("*"))
+                if (parts.length > 13 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[13].equals("*"))
                 {
                   proxyUser = null;
                   proxyPassword = null;
@@ -118,7 +119,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                       {
                         if (connect)
                         {
-                          remoteSocket = connect(host, port, connectTimeout, dataTimeout, proxy);
+                          remoteSocket = connect(bind, host, port, connectTimeout, dataTimeout, proxy);
                         }
                         else
                         {
@@ -181,15 +182,16 @@ public class VTTunnelConnectionControlThread implements Runnable
               }
               else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
               {
-                String socksUsername = parts[5];
-                String socksPassword = parts[6];
-                String proxyTypeLetter = parts[7];
-                String proxyHost = parts[8];
-                int proxyPort = Integer.parseInt(parts[9]);
-                String proxyUser = parts[10];
-                String proxyPassword = parts[11];
+                String bind = parts[5];
+                String socksUsername = parts[6];
+                String socksPassword = parts[7];
+                String proxyTypeLetter = parts[8];
+                String proxyHost = parts[9];
+                int proxyPort = Integer.parseInt(parts[10]);
+                String proxyUser = parts[11];
+                String proxyPassword = parts[12];
                 
-                if (parts.length > 12 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[12].equals("*"))
+                if (parts.length > 13 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[13].equals("*"))
                 {
                   proxyUser = null;
                   proxyPassword = null;
@@ -221,7 +223,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 VTTunnelSession session = new VTTunnelSession(connection, false);
                 VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(null);
                 session.setSocket(pipedSocket);
-                VTTunnelSocksSessionHandler handler = new VTTunnelSocksSessionHandler(session, connection.getResponseChannel(), socksUsername, socksPassword, proxy, null, connectTimeout);
+                VTTunnelSocksSessionHandler handler = new VTTunnelSocksSessionHandler(session, connection.getResponseChannel(), socksUsername, socksPassword, proxy, null, connectTimeout, bind);
                 
                 VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
                 VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
@@ -339,7 +341,7 @@ public class VTTunnelConnectionControlThread implements Runnable
     closed = true;
   }
   
-  public Socket connect(String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy)
+  public Socket connect(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy)
   {
     VTTunnelCloseableSocket clientSocket = null;
     Socket socket = null;
@@ -353,7 +355,7 @@ public class VTTunnelConnectionControlThread implements Runnable
       {
         
       }
-      socket = VTProxy.next(null, null, connectTimeout, proxy);
+      socket = VTProxy.next(null, bind, connectTimeout, proxy);
       clientSocket = new VTTunnelCloseableSocket(socket);
       connection.getCloseables().add(clientSocket);
       

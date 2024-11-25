@@ -17,7 +17,8 @@ public class VTOUT extends VTClientStandardRemoteConsoleCommandProcessor
   {
     if (parsed.length >= 2)
     {
-      String parameter = command.substring(parsed[0].length() + 1);
+      //String parameter = command.substring(parsed[0].length() + 1);
+      String parameter = parsed[1];
       boolean ok = VTConsole.setLogOutput(parameter);
       if (ok)
       {

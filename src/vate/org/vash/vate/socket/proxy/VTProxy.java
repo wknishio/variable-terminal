@@ -158,7 +158,7 @@ public class VTProxy
         nextSocket = new Socket();
         if (bind != null && bind.length() > 0)
         {
-          currentSocket.bind(new InetSocketAddress(bind, 0));
+          nextSocket.bind(new InetSocketAddress(bind, 0));
         }
       }
       else if (currentProxy.getProxyType() == VTProxyType.DIRECT)
@@ -166,7 +166,7 @@ public class VTProxy
         nextSocket = new Socket(Proxy.NO_PROXY);
         if (bind != null && bind.length() > 0)
         {
-          currentSocket.bind(new InetSocketAddress(bind, 0));
+          nextSocket.bind(new InetSocketAddress(bind, 0));
         }
       }
       else if (currentProxy.getProxyType() == VTProxyType.SOCKS)
@@ -188,7 +188,7 @@ public class VTProxy
           nextSocket = new Socket();
           if (bind != null && bind.length() > 0)
           {
-            currentSocket.bind(new InetSocketAddress(bind, 0));
+            nextSocket.bind(new InetSocketAddress(bind, 0));
           }
         }
         else
@@ -204,7 +204,7 @@ public class VTProxy
         nextSocket = new Socket();
         if (bind != null && bind.length() > 0)
         {
-          currentSocket.bind(new InetSocketAddress(bind, 0));
+          nextSocket.bind(new InetSocketAddress(bind, 0));
         }
       }
       else
@@ -226,7 +226,7 @@ public class VTProxy
     if (currentSocket instanceof VTRemoteSocketAdapter)
     {
       VTRemoteSocketAdapter proxySocket = (VTRemoteSocketAdapter)currentSocket;
-      return proxySocket.connect(host, port, timeout, 0, proxies);
+      return proxySocket.connect(bind, host, port, timeout, 0, proxies);
     }
     
     InetSocketAddress socketAddress = null;

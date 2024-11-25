@@ -131,7 +131,7 @@ public class VTSocksProxyServer implements Runnable {
 		mode = START_MODE;
 	}
 	
-	public VTSocksProxyServer(ServerAuthenticator auth, Socket socket, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy, VTRemoteSocketFactory socket_factory, int connectTimeout) {
+	public VTSocksProxyServer(ServerAuthenticator auth, Socket socket, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy, VTRemoteSocketFactory socket_factory, int connectTimeout, String bind) {
     this.executorService = executorService;
     this.auth = auth;
     this.sock = socket;
@@ -140,6 +140,7 @@ public class VTSocksProxyServer implements Runnable {
     this.connect_proxy = connect_proxy;
     this.socket_factory = socket_factory;
     this.connectTimeout = connectTimeout;
+    this.bind = bind;
     // this.connectionId = connectionId;
     mode = START_MODE;
   }
