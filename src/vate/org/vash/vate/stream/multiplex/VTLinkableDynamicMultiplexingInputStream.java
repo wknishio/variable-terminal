@@ -342,15 +342,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       else if (length == -2)
       {
-        update[0] = (byte) type;
-        update[1] = (byte) (number);
-        update[2] = (byte) (number >> 8);
-        update[3] = (byte) (number >> 16);
-        update[4] = (byte) (-2);
-        update[5] = (byte) (-2 >> 8);
-        update[6] = (byte) (-2 >> 16);
-        update[7] = (byte) (-2 >> 24);
-        stream.getPacketHasher().update(update, 0, update.length);
         if (stream.getPacketHasher().getValue() != hash)
         {
           close();
@@ -360,15 +351,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       else if (length == -3)
       {
-        update[0] = (byte) type;
-        update[1] = (byte) (number);
-        update[2] = (byte) (number >> 8);
-        update[3] = (byte) (number >> 16);
-        update[4] = (byte) (-3);
-        update[5] = (byte) (-3 >> 8);
-        update[6] = (byte) (-3 >> 16);
-        update[7] = (byte) (-3 >> 24);
-        stream.getPacketHasher().update(update, 0, update.length);
         if (stream.getPacketHasher().getValue() != hash)
         {
           close();
