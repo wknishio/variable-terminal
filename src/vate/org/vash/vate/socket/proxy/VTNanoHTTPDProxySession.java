@@ -643,7 +643,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   private void servePipeRequest(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
   {
     ByteArrayOutputStream requestData = new ByteArrayOutputStream();
-    for (Object headerName : headers.keySet())
+    for (Object headerName : headers.keySet().toArray())
     {
       if (headerName != null)
       {

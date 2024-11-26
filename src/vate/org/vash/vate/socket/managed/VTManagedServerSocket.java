@@ -155,7 +155,6 @@ public class VTManagedServerSocket
   {
     public void sessionStarted(VTServerSession session)
     {
-      // System.out.println("server.session.started()");
       VTLinkableDynamicMultiplexedInputStream input = session.getConnection().getMultiplexedConnectionInputStream().linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, session.getConnection().getAvailableInputChannel());
       VTLinkableDynamicMultiplexedOutputStream output = session.getConnection().getMultiplexedConnectionOutputStream().linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, session.getConnection().getAvailableOutputChannel());
       VTManagedSocket socket = new VTManagedSocket(new VTCloseableServerConnection(session), input, output);
@@ -180,7 +179,6 @@ public class VTManagedServerSocket
     
     public void sessionFinished(VTServerSession session)
     {
-      // System.out.println("server.session.finished()");
       VTManagedSocket socket = sessions.remove(session);
       if (socketListener != null && socket != null)
       {
