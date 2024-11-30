@@ -29,8 +29,8 @@ import com.googlecode.lanterna.input.KeyType;
 import java.awt.Adjustable;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
-import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -67,7 +67,7 @@ public class VTLanternaTextBoxModified extends AbstractInteractableComponent<VTL
     MULTI_LINE,;
   }
   
-  public final List<String> lines;
+  protected final List<String> lines;
   protected final Style style;
   
   protected TerminalPosition caretPosition;
@@ -95,7 +95,7 @@ public class VTLanternaTextBoxModified extends AbstractInteractableComponent<VTL
    */
   public VTLanternaTextBoxModified(TerminalSize preferredSize, String initialContent, Style style)
   {
-    this.lines = new ArrayList<String>();
+    this.lines = new LinkedList<String>();
     this.style = style;
     this.readOnly = false;
     this.caretWarp = false;

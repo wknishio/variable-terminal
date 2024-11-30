@@ -18,7 +18,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.print.CancelablePrintJob;
 import javax.print.Doc;
@@ -306,7 +306,7 @@ public class VTServerPrintDataTask extends VTTask
         // printRequestAttributes.add(OrientationRequested.PORTRAIT);
         
         String[] words = data.split("\\s+");
-        ArrayList<String> printLines = new ArrayList<String>();
+        LinkedList<String> printLines = new LinkedList<String>();
         StringBuilder lineBuilder = new StringBuilder();
         int limit = 80;
         
@@ -439,7 +439,7 @@ public class VTServerPrintDataTask extends VTTask
           docFlavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
           // printRequestAttributes.add(OrientationRequested.PORTRAIT);
           
-          final ArrayList<String> fileLines = new ArrayList<String>();
+          final LinkedList<String> fileLines = new LinkedList<String>();
           
           BufferedReader fileReader = null;
           try
@@ -471,7 +471,7 @@ public class VTServerPrintDataTask extends VTTask
             }
           }
           
-          final ArrayList<String> printLines = new ArrayList<String>();
+          final LinkedList<String> printLines = new LinkedList<String>();
           final StringBuilder lineBuilder = new StringBuilder();
           int limit = 80;
           

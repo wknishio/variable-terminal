@@ -9,7 +9,7 @@ import java.awt.print.PageFormat;
 import java.awt.print.Printable;
 import java.awt.print.PrinterException;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.LinkedList;
 
 import javax.print.CancelablePrintJob;
 import javax.print.Doc;
@@ -272,7 +272,7 @@ public class VTServerPrintTextTask extends VTTask
               int z = 0;
               int limit = 80;
               String[] words = text.split("\\s+");
-              ArrayList<String> lines = new ArrayList<String>();
+              LinkedList<String> lines = new LinkedList<String>();
               StringBuilder lineBuilder = new StringBuilder();
               for (int i = 0; i < limit; i++)
               {

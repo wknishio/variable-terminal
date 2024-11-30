@@ -69,8 +69,9 @@ public class VTTunnelConnection
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
     {
-      networkRoute = bindHost.substring(idx + 1);
-      bindHostValue = bindHost.substring(0, idx);
+      String[] split = bindHost.split(";");
+      bindHostValue = split[0];
+      networkRoute = split[1];
     }
     VTTunnelChannelBindSocketListener listener = getBindListener(bindHostValue, bindPort);
     if (listener != null)
@@ -112,8 +113,9 @@ public class VTTunnelConnection
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
     {
-      networkRoute = bindHost.substring(idx + 1);
-      bindHostValue = bindHost.substring(0, idx);
+      String[] split = bindHost.split(";");
+      bindHostValue = split[0];
+      networkRoute = split[1];
     }
     VTTunnelChannelBindSocketListener listener = getBindListener(bindHostValue, bindPort);
     if (listener != null)
@@ -155,8 +157,9 @@ public class VTTunnelConnection
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
     {
-      networkRoute = bindHost.substring(idx + 1);
-      bindHostValue = bindHost.substring(0, idx);
+      String[] split = bindHost.split(";");
+      bindHostValue = split[0];
+      networkRoute = split[1];
     }
     VTTunnelChannelBindSocketListener listener = getBindListener(bindHostValue, bindPort);
     if (listener != null)

@@ -125,13 +125,17 @@ public class VTProxy
   
   public static Socket next(Socket currentSocket, String bind, int timeout, VTProxy... proxies) throws IOException
   {
+    if (bind == null || bind.length() == 0 || bind.equals("*"))
+    {
+      bind = "";
+    }
     if (proxies == null || proxies.length <= 0)
     {
       if (currentSocket == null)
       {
         currentSocket = new Socket();
       }
-      if (bind != null && bind.length() > 0)
+      if (bind != null && bind.length() > 0 && !currentSocket.isBound())
       {
         currentSocket.bind(new InetSocketAddress(bind, 0));
       }
@@ -149,6 +153,10 @@ public class VTProxy
   @SuppressWarnings("all")
   private static Socket nextSocket(Socket currentSocket, String bind, int timeout, VTProxy currentProxy) throws IOException
   {
+    if (bind == null || bind.length() == 0 || bind.equals("*"))
+    {
+      bind = "";
+    }
     Socket nextSocket = null;
     
     if (currentProxy != null)
@@ -156,7 +164,7 @@ public class VTProxy
       if (currentProxy.getProxyType() == VTProxyType.GLOBAL)
       {
         nextSocket = new Socket();
-        if (bind != null && bind.length() > 0)
+        if (bind != null && bind.length() > 0 && !nextSocket.isBound())
         {
           nextSocket.bind(new InetSocketAddress(bind, 0));
         }
@@ -164,7 +172,7 @@ public class VTProxy
       else if (currentProxy.getProxyType() == VTProxyType.DIRECT)
       {
         nextSocket = new Socket(Proxy.NO_PROXY);
-        if (bind != null && bind.length() > 0)
+        if (bind != null && bind.length() > 0 && !nextSocket.isBound())
         {
           nextSocket.bind(new InetSocketAddress(bind, 0));
         }
@@ -186,7 +194,7 @@ public class VTProxy
         if (currentSocket == null)
         {
           nextSocket = new Socket();
-          if (bind != null && bind.length() > 0)
+          if (bind != null && bind.length() > 0 && !nextSocket.isBound())
           {
             nextSocket.bind(new InetSocketAddress(bind, 0));
           }
@@ -202,7 +210,7 @@ public class VTProxy
       if (currentSocket == null)
       {
         nextSocket = new Socket();
-        if (bind != null && bind.length() > 0)
+        if (bind != null && bind.length() > 0 && !nextSocket.isBound())
         {
           nextSocket.bind(new InetSocketAddress(bind, 0));
         }
@@ -218,6 +226,10 @@ public class VTProxy
   
   public static Socket connect(String bind, String host, int port, int timeout, Socket currentSocket, VTProxy... proxies) throws IOException
   {
+    if (bind == null || bind.length() == 0 || bind.equals("*"))
+    {
+      bind = "";
+    }
     if (host == null || host.length() == 0 || host.equals("*"))
     {
       host = "";
@@ -225,8 +237,8 @@ public class VTProxy
     
     if (currentSocket instanceof VTRemoteSocketAdapter)
     {
-      VTRemoteSocketAdapter proxySocket = (VTRemoteSocketAdapter)currentSocket;
-      return proxySocket.connect(bind, host, port, timeout, 0, proxies);
+      VTRemoteSocketAdapter remoteSocketAdapter = (VTRemoteSocketAdapter)currentSocket;
+      return remoteSocketAdapter.connect(bind, host, port, timeout, 0, proxies);
     }
     
     InetSocketAddress socketAddress = null;

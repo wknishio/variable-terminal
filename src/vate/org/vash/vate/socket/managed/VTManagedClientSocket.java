@@ -227,7 +227,7 @@ public class VTManagedClientSocket
     vtclient.stop();
   }
   
-  public VTManagedSocket connect() throws InterruptedException
+  public VTManagedSocket accept() throws InterruptedException
   {
     interruptible = Thread.currentThread();
     VTManagedSocket socket = queue.take();

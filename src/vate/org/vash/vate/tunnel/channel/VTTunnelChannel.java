@@ -54,8 +54,9 @@ public class VTTunnelChannel
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
     {
-      networkRoute = bindHost.substring(idx + 1);
-      bindHost = bindHost.substring(0, idx);
+      String[] split = bindHost.split(";");
+      bindHost = split[0];
+      networkRoute = split[1];
     }
     this.tunnelType = TUNNEL_TYPE_SOCKS;
     this.channelType = channelType;
@@ -84,8 +85,9 @@ public class VTTunnelChannel
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
     {
-      networkRoute = bindHost.substring(idx + 1);
-      bindHost = bindHost.substring(0, idx);
+      String[] split = bindHost.split(";");
+      bindHost = split[0];
+      networkRoute = split[1];
     }
     this.tunnelType = TUNNEL_TYPE_SOCKS;
     this.channelType = channelType;
@@ -116,8 +118,9 @@ public class VTTunnelChannel
     int idx = bindHost.indexOf(';');
     if (idx >= 0)
     {
-      networkRoute = bindHost.substring(idx + 1);
-      bindHost = bindHost.substring(0, idx);
+      String[] split = bindHost.split(";");
+      bindHost = split[0];
+      networkRoute = split[1];
     }
     this.tunnelType = TUNNEL_TYPE_TCP;
     this.channelType = channelType;

@@ -301,6 +301,12 @@ public class VTServerConnector implements Runnable
   
   public boolean setServerSocket(String address, Integer port)
   {
+    int idx = address.indexOf(';');
+    if (idx >= 0)
+    {
+      String[] split = address.split(";");
+      address = split[0];
+    }
     try
     {
       if (connectionServerSocket != null
@@ -500,6 +506,14 @@ public class VTServerConnector implements Runnable
   
   public boolean establishConnection(VTServerConnection connection, String address, Integer port)
   {
+    String bind = "";
+    int idx = address.indexOf(';');
+    if (idx >= 0)
+    {
+      String[] split = address.split(";");
+      bind = split[0];
+      address = split[1];
+    }
     if (port == null)
     {
       port = 6060;
@@ -511,7 +525,7 @@ public class VTServerConnector implements Runnable
     {
       resetSockets(connection);
 //      connecting = true;
-      VTProxy.connect(null, address, port, 0, connection.getConnectionSocket());
+      VTProxy.connect(bind, address, port, 0, connection.getConnectionSocket());
       connection.getConnectionSocket().setTcpNoDelay(true);
       //connection.getConnectionSocket().setSoLinger(true, 0);
       //connection.getConnectionSocket().setKeepAlive(true);
