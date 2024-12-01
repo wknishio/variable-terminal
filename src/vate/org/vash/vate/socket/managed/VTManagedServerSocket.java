@@ -91,12 +91,12 @@ public class VTManagedServerSocket
       return stream;
     }
     
-    public Class<VTServerSession> getConnectionSessionClass()
+    public Class<VTServerSession> getSessionClass()
     {
       return VTServerSession.class;
     }
     
-    public <T> T getConnectionSession(Class<T> clazz)
+    public <T> T getSession(Class<T> clazz)
     {
       if (clazz.isAssignableFrom(session.getClass()))
       {
@@ -105,24 +105,24 @@ public class VTManagedServerSocket
       return null;
     }
     
-    public Socket getConnectionSocket()
+    public Socket getSocket()
     {
       return connection.getConnectionSocket();
     }
     
-    public void pingConnection()
+    public void requestPing()
     {
       session.ping();
     }
     
-    public long ping()
+    public long checkPing()
     {
-      return pingListener.ping();
+      return pingListener.checkPing();
     }
     
-    public long ping(long timeoutNanoSeconds)
+    public long checkPing(long timeoutNanoSeconds)
     {
-      return pingListener.ping(timeoutNanoSeconds);
+      return pingListener.checkPing(timeoutNanoSeconds);
     }
     
     public long getOutputRateBytesPerSecond()

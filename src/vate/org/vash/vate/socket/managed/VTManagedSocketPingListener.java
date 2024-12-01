@@ -27,7 +27,7 @@ public class VTManagedSocketPingListener implements VTNanoPingListener, Callable
     }
   }
   
-  public long ping(long timeoutNanoSeconds)
+  public long checkPing(long timeoutNanoSeconds)
   {
     synchronized (this)
     {
@@ -56,9 +56,9 @@ public class VTManagedSocketPingListener implements VTNanoPingListener, Callable
     return result;
   }
   
-  public long ping()
+  public long checkPing()
   {
-    return ping(0);
+    return checkPing(0);
   }
   
   public Long call() throws Exception
@@ -66,7 +66,7 @@ public class VTManagedSocketPingListener implements VTNanoPingListener, Callable
     synchronized (this)
     {
       pingResult = null;
-      connection.pingConnection();
+      connection.requestPing();
       while (pingResult == null)
       {
         wait(0);

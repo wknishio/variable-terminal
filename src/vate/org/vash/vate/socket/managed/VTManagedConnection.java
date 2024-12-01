@@ -8,16 +8,16 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.
 
 public interface VTManagedConnection extends Closeable
 {
-  public Socket getConnectionSocket();
   public VTLinkableDynamicMultiplexedInputStream getInputStream(int number);
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number);
   public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number);
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number);
-  public Class<?> getConnectionSessionClass();
-  public <T> T getConnectionSession(Class<T> clazz);
-  public void pingConnection();
-  public long ping();
-  public long ping(long timeoutNanoSeconds);
+  public Socket getSocket();
+  public Class<?> getSessionClass();
+  public <T> T getSession(Class<T> clazz);
+  public void requestPing();
+  public long checkPing();
+  public long checkPing(long timeoutNanoSeconds);
   public long getOutputRateBytesPerSecond();
   public void setOutputRateBytesPerSecond(long bytesPerSecond);
 }
