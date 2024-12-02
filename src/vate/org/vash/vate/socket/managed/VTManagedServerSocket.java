@@ -98,7 +98,7 @@ public class VTManagedServerSocket
     
     public <T> T getSession(Class<T> clazz)
     {
-      if (clazz.isAssignableFrom(session.getClass()))
+      if (clazz != null && clazz.isAssignableFrom(VTServerSession.class))
       {
         return clazz.cast(session);
       }
