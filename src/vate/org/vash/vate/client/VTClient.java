@@ -9,6 +9,7 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
 import org.vash.vate.VT;
@@ -62,6 +63,7 @@ public class VTClient implements Runnable
   private int pingLimit = 0;
   private int pingInterval = 0;
   private int reconnectTimeout = 0;
+  private Future<?> startThread;
   
   private static final String VT_CLIENT_SETTINGS_COMMENTS = 
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
@@ -2144,7 +2146,7 @@ public class VTClient implements Runnable
   
   public void startThread()
   {
-    executorService.execute(new Runnable()
+    startThread = executorService.submit(new Runnable()
     {
       public void run()
       {
@@ -2395,5 +2397,14 @@ public class VTClient implements Runnable
     {
       return VT.VT_RECONNECT_TIMEOUT_MILLISECONDS;
     }
+  }
+  
+  public boolean isRunning()
+  {
+    if (startThread != null)
+    {
+      return !startThread.isDone();
+    }
+    return false;
   }
 }

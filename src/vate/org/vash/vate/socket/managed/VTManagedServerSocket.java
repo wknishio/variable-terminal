@@ -20,7 +20,7 @@ public class VTManagedServerSocket
 {
   private VTServer vtserver;
   private BlockingQueue<VTManagedSocket> queue = new LinkedBlockingQueue<VTManagedSocket>();
-  private Thread interruptible;
+  private Thread acceptThread;
   private VTManagedSocketListener socketListener;
   private Map<VTServerSession, VTManagedSocket> sessions = new LinkedHashMap<VTServerSession, VTManagedSocket>();
   
@@ -225,13 +225,18 @@ public class VTManagedServerSocket
   public void stop()
   {
     vtserver.stop();
+    interrupt();
   }
   
   public VTManagedSocket accept() throws InterruptedException
   {
-    interruptible = Thread.currentThread();
+    if (!vtserver.isRunning())
+    {
+      start();
+    }
+    acceptThread = Thread.currentThread();
     VTManagedSocket socket = queue.take();
-    interruptible = null;
+    acceptThread = null;
     return socket;
   }
   
@@ -239,9 +244,9 @@ public class VTManagedServerSocket
   {
     try
     {
-      if (interruptible != null)
+      if (acceptThread != null)
       {
-        interruptible.interrupt();
+        acceptThread.interrupt();
       }
     }
     catch (Throwable t)
@@ -252,13 +257,16 @@ public class VTManagedServerSocket
   
   public void close()
   {
-    interrupt();
     stop();
   }
   
   public void setManagedSocketListener(VTManagedSocketListener socketListener)
   {
     this.socketListener = socketListener;
+    if (!vtserver.isRunning())
+    {
+      start();
+    }
   }
   
 //  public void setDataTimeout(int timeout)
@@ -277,14 +285,14 @@ public class VTManagedServerSocket
 //    managed.start();
 //    try
 //    {
-//      VTManagedSocket socket = managed.connect();
+//      VTManagedSocket socket = managed.accept();
 //      System.out.println("server.socket.connected()");
 //      java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.OutputStreamWriter(socket.getOutputStream()));
 //      java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.InputStreamReader(socket.getInputStream()));
 //      int i = 5;
 //      while (socket.isConnected())
 //      {
-//        System.out.println("server.ping():" + socket.getConnection().ping(500));
+//        System.out.println("server.ping():" + socket.getConnection().checkPing(500));
 //        long time = System.currentTimeMillis();
 //        writer.write("server.message:" + time + "\r\n");
 //        writer.flush();

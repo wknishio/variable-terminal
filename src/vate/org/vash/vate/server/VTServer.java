@@ -9,6 +9,7 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
 import javax.sound.sampled.AudioFormat;
@@ -70,12 +71,13 @@ public class VTServer implements Runnable
   private VTTrayIconInterface trayIconInterface;
   private boolean skipConfiguration;
   private boolean echoCommands = false;
-  private boolean running = true;
+  //private boolean running = true;
   private boolean reconfigure = false;
   private Collection<VTServerSessionListener> listeners = new ConcurrentLinkedQueue<VTServerSessionListener>();
   private int pingLimit = 0;
   private int pingInterval = 0;
   private int reconnectTimeout = 0;
+  private Future<?> startThread;
   
   private static final String VT_SERVER_SETTINGS_COMMENTS = 
   "Variable-Terminal server settings file, supports UTF-8\r\n" + 
@@ -126,8 +128,6 @@ public class VTServer implements Runnable
   
   public void stop()
   {
-    running = false;
-    
     try
     {
       if (trayIconInterface != null)
@@ -157,11 +157,6 @@ public class VTServer implements Runnable
     {
       
     }
-  }
-  
-  public boolean isRunning()
-  {
-    return running;
   }
   
   public ExecutorService getExecutorService()
@@ -2264,7 +2259,7 @@ public class VTServer implements Runnable
   
   public void startThread()
   {
-    executorService.execute(new Runnable()
+    startThread = executorService.submit(new Runnable()
     {
       public void run()
       {
@@ -2510,5 +2505,14 @@ public class VTServer implements Runnable
     {
       return VT.VT_RECONNECT_TIMEOUT_MILLISECONDS;
     }
+  }
+  
+  public boolean isRunning()
+  {
+    if (startThread != null)
+    {
+      return !startThread.isDone();
+    }
+    return false;
   }
 }

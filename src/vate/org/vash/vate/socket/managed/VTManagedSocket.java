@@ -1,6 +1,5 @@
 package org.vash.vate.socket.managed;
 
-import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -12,15 +11,15 @@ import java.net.SocketException;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 
-public class VTManagedSocket extends Socket implements Closeable
+public class VTManagedSocket extends Socket
 {
-  private VTManagedConnection managedConnection;
+  private VTManagedConnection connection;
   private VTLinkableDynamicMultiplexedInputStream in;
   private VTLinkableDynamicMultiplexedOutputStream out;
   
-  public VTManagedSocket(VTManagedConnection managedConnection, VTLinkableDynamicMultiplexedInputStream in, VTLinkableDynamicMultiplexedOutputStream out)
+  public VTManagedSocket(VTManagedConnection connection, VTLinkableDynamicMultiplexedInputStream in, VTLinkableDynamicMultiplexedOutputStream out)
   {
-    this.managedConnection = managedConnection;
+    this.connection = connection;
     this.in = in;
     this.out = out;
   }
@@ -32,22 +31,22 @@ public class VTManagedSocket extends Socket implements Closeable
   
   public VTManagedConnection getConnection()
   {
-    return managedConnection;
+    return connection;
   }
   
   public void requestPing()
   {
-    managedConnection.requestPing();
+    connection.requestPing();
   }
   
   public long checkPing()
   {
-    return managedConnection.checkPing();
+    return connection.checkPing();
   }
   
   public long checkPing(long timeoutNanoSeconds)
   {
-    return managedConnection.checkPing(timeoutNanoSeconds);
+    return connection.checkPing(timeoutNanoSeconds);
   }
   
   public InputStream getInputStream()
@@ -62,22 +61,22 @@ public class VTManagedSocket extends Socket implements Closeable
   
   public VTLinkableDynamicMultiplexedInputStream getInputStream(int number) throws IOException
   {
-    return managedConnection.getInputStream(number);
+    return connection.getInputStream(number);
   }
   
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number) throws IOException
   {
-    return managedConnection.getOutputStream(number);
+    return connection.getOutputStream(number);
   }
   
   public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number) throws IOException
   {
-    return managedConnection.getInputStream(type, number);
+    return connection.getInputStream(type, number);
   }
   
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number) throws IOException
   {
-    return managedConnection.getOutputStream(type, number);
+    return connection.getOutputStream(type, number);
   }
   
   public void shutdownOutput() throws IOException
@@ -112,152 +111,152 @@ public class VTManagedSocket extends Socket implements Closeable
   
   public void close() throws IOException
   {
-    managedConnection.close();
+    connection.close();
   }
   
   public InetAddress getInetAddress()
   {
-    return managedConnection.getSocket().getInetAddress();
+    return connection.getSocket().getInetAddress();
   }
   
   public InetAddress getLocalAddress()
   {
-    return managedConnection.getSocket().getLocalAddress();
+    return connection.getSocket().getLocalAddress();
   }
   
   public int getPort()
   {
-    return managedConnection.getSocket().getPort();
+    return connection.getSocket().getPort();
   }
   
   public int getLocalPort()
   {
-    return managedConnection.getSocket().getLocalPort();
+    return connection.getSocket().getLocalPort();
   }
   
   public SocketAddress getRemoteSocketAddress()
   {
-    return managedConnection.getSocket().getRemoteSocketAddress();
+    return connection.getSocket().getRemoteSocketAddress();
   }
   
   public SocketAddress getLocalSocketAddress()
   {
-    return managedConnection.getSocket().getLocalSocketAddress();
+    return connection.getSocket().getLocalSocketAddress();
   }
   
   public void setTcpNoDelay(boolean on) throws SocketException
   {
-    managedConnection.getSocket().setTcpNoDelay(on);
+    connection.getSocket().setTcpNoDelay(on);
   }
   
   public boolean getTcpNoDelay() throws SocketException
   {
-    return managedConnection.getSocket().getTcpNoDelay();
+    return connection.getSocket().getTcpNoDelay();
   }
   
   public void setSoLinger(boolean on, int linger) throws SocketException
   {
-    managedConnection.getSocket().setSoLinger(on, linger);
+    connection.getSocket().setSoLinger(on, linger);
   }
   
   public int getSoLinger() throws SocketException
   {
-    return managedConnection.getSocket().getSoLinger();
+    return connection.getSocket().getSoLinger();
   }
   
   public void sendUrgentData (int data) throws IOException
   {
-    managedConnection.getSocket().sendUrgentData(data);
+    connection.getSocket().sendUrgentData(data);
   }
   
   public void setOOBInline(boolean on) throws SocketException
   {
-    managedConnection.getSocket().setOOBInline(on);
+    connection.getSocket().setOOBInline(on);
   }
   
   public boolean getOOBInline() throws SocketException
   {
-    return managedConnection.getSocket().getOOBInline();
+    return connection.getSocket().getOOBInline();
   }
   
   public synchronized void setSoTimeout(int timeout) throws SocketException
   {
-    managedConnection.getSocket().setSoTimeout(timeout);
+    connection.getSocket().setSoTimeout(timeout);
   }
   
   public synchronized int getSoTimeout() throws SocketException
   {
-    return managedConnection.getSocket().getSoTimeout();
+    return connection.getSocket().getSoTimeout();
   }
   
   public synchronized void setSendBufferSize(int size) throws SocketException
   {
-    managedConnection.getSocket().setSendBufferSize(size);
+    connection.getSocket().setSendBufferSize(size);
   }
   
   public synchronized int getSendBufferSize() throws SocketException
   {
-    return managedConnection.getSocket().getSendBufferSize();
+    return connection.getSocket().getSendBufferSize();
   }
   
   public synchronized void setReceiveBufferSize(int size) throws SocketException
   {
-    managedConnection.getSocket().setReceiveBufferSize(size);
+    connection.getSocket().setReceiveBufferSize(size);
   }
   
   public synchronized int getReceiveBufferSize() throws SocketException
   {
-    return managedConnection.getSocket().getReceiveBufferSize();
+    return connection.getSocket().getReceiveBufferSize();
   }
   
   public void setKeepAlive(boolean on) throws SocketException
   {
-    managedConnection.getSocket().setKeepAlive(on);
+    connection.getSocket().setKeepAlive(on);
   }
   
   public boolean getKeepAlive() throws SocketException
   {
-    return managedConnection.getSocket().getKeepAlive();
+    return connection.getSocket().getKeepAlive();
   }
   
   public void setTrafficClass(int tc) throws SocketException
   {
-    managedConnection.getSocket().setTrafficClass(tc);
+    connection.getSocket().setTrafficClass(tc);
   }
   
   public int getTrafficClass() throws SocketException
   {
-    return managedConnection.getSocket().getTrafficClass();
+    return connection.getSocket().getTrafficClass();
   }
   
   public void setReuseAddress(boolean on) throws SocketException
   {
-    managedConnection.getSocket().setReuseAddress(on);
+    connection.getSocket().setReuseAddress(on);
   }
   
   public boolean getReuseAddress() throws SocketException
   {
-    return managedConnection.getSocket().getReuseAddress();
+    return connection.getSocket().getReuseAddress();
   }
   
   public String toString()
   {
-    return managedConnection.getSocket().toString();
+    return connection.getSocket().toString();
   }
   
   public boolean isConnected()
   {
-    return managedConnection.getSocket().isConnected();
+    return connection.getSocket().isConnected();
   }
   
   public boolean isBound()
   {
-    return managedConnection.getSocket().isBound();
+    return connection.getSocket().isBound();
   }
   
   public boolean isClosed()
   {
-    return managedConnection.getSocket().isClosed();
+    return connection.getSocket().isClosed();
   }
   
   public boolean isInputShutdown()
@@ -272,16 +271,16 @@ public class VTManagedSocket extends Socket implements Closeable
   
   public void setPerformancePreferences(int connectionTime, int latency, int bandwidth)
   {
-    managedConnection.getSocket().setPerformancePreferences(connectionTime, latency, bandwidth);
+    connection.getSocket().setPerformancePreferences(connectionTime, latency, bandwidth);
   }
   
   public long getOutputRateBytesPerSecond()
   {
-    return managedConnection.getOutputRateBytesPerSecond();
+    return connection.getOutputRateBytesPerSecond();
   }
   
   public void setOutputRateBytesPerSecond(long bytesPerSecond)
   {
-    managedConnection.setOutputRateBytesPerSecond(bytesPerSecond);
+    connection.setOutputRateBytesPerSecond(bytesPerSecond);
   }
 }
