@@ -21,5 +21,4 @@ public interface VTManagedConnection
   public long checkPing(long timeoutNanoSeconds);
   public long getOutputRateBytesPerSecond();
   public void setOutputRateBytesPerSecond(long bytesPerSecond);
-  
 }

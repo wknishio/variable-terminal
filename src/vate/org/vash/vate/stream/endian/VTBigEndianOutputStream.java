@@ -149,7 +149,7 @@ public final class VTBigEndianOutputStream extends OutputStream implements DataO
     writeUnsignedShort(v);
   }
   
-  public final void writeData(final byte[] b, int off, int len) throws IOException
+  public final void writeData(final byte[] b, final int off, final int len) throws IOException
   {
     byte[] data = new byte[4 + len];
     data[0] = (byte) (len >> 24);
@@ -165,31 +165,15 @@ public final class VTBigEndianOutputStream extends OutputStream implements DataO
     writeData(b, 0, b.length);
   }
   
-  public final void write(char[] buf, int off, int len) throws IOException
-  {
-    byte[] utf = String.valueOf(buf, off, len).getBytes("UTF-8");
-    writeData(utf);
-  }
-  
-  public final void write(char[] buf) throws IOException
-  {
-    write(buf, 0, buf.length);
-  }
-  
-  public final void writeUTF(final String s) throws IOException
+  public final void writeUTF8(final String s) throws IOException
   {
     byte[] utf = s.getBytes("UTF-8");
     writeData(utf);
   }
   
-  public final void writeBytes(final String s) throws IOException
+  public final void writeUTF(final String s) throws IOException
   {
-    writeUTF(s);
-  }
-  
-  public final void writeChars(final String s) throws IOException
-  {
-    writeUTF(s);
+    writeUTF8(s);
   }
   
   public final void writeLine(final String s) throws IOException
@@ -200,5 +184,39 @@ public final class VTBigEndianOutputStream extends OutputStream implements DataO
   public final void write(final String s) throws IOException
   {
     writeUTF(s);
+  }
+  
+  public final void write(char[] buf, final int off, final int len) throws IOException
+  {
+    byte[] utf = String.valueOf(buf, off, len).getBytes("UTF-8");
+    writeData(utf);
+  }
+  
+  public final void write(char[] buf) throws IOException
+  {
+    write(buf, 0, buf.length);
+  }
+  
+  public final void writeBytes(final String s) throws IOException
+  {
+    char[] chars = s.toCharArray();
+    byte[] bytes = new byte[chars.length];
+    for (int i = 0; i < bytes.length; i++)
+    {
+      bytes[i] = (byte) chars[i];
+    }
+    write(bytes);
+  }
+  
+  public final void writeChars(final String s) throws IOException
+  {
+    char[] chars = s.toCharArray();
+    byte[] bytes = new byte[chars.length * 2];
+    for (int i = 0; i < bytes.length; i += 2)
+    {
+      bytes[i] = (byte) (chars[i / 2] >> 8);
+      bytes[i + 1] = (byte) (chars[i / 2]);
+    }
+    write(bytes);
   }
 }

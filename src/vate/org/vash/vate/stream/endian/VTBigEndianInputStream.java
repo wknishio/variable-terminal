@@ -142,21 +142,24 @@ public final class VTBigEndianInputStream extends InputStream implements DataInp
     readFully(b, 0, b.length);
   }
   
-  public final void readFully(final byte[] buf, int offset, int len) throws IOException
+  public final void readFully(final byte[] buf, final int off, final int len) throws IOException
   {
+    int offset = off;
+    int remaining = len;
+    int readed = 0;
     if (len < 0)
     {
       throw new IndexOutOfBoundsException("Negative length: " + len);
     }
     while (len > 0)
     {
-      int numread = in.read(buf, offset, len);
-      if (numread < 0)
+      readed = in.read(buf, offset, remaining);
+      if (readed < 0)
       {
         throw new EOFException();
       }
-      len -= numread;
-      offset += numread;
+      remaining -= readed;
+      offset += readed;
     }
   }
   
@@ -183,11 +186,16 @@ public final class VTBigEndianInputStream extends InputStream implements DataInp
     return data;
   }
   
-  public final String readUTF() throws IOException
+  public final String readUTF8() throws IOException
   {
     byte[] utf = readData();
     String data = new String(utf, "UTF-8");
     return data;
+  }
+  
+  public final String readUTF() throws IOException
+  {
+    return readUTF8();
   }
   
   public final String readLine() throws IOException
