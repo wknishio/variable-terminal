@@ -151,7 +151,7 @@ public final class VTBigEndianInputStream extends InputStream implements DataInp
     {
       throw new IndexOutOfBoundsException("Negative length: " + len);
     }
-    while (len > 0)
+    while (remaining > 0)
     {
       readed = in.read(buf, offset, remaining);
       if (readed < 0)
