@@ -2257,18 +2257,18 @@ public class VTServer implements Runnable
     }
   }
   
-  public void startThread()
+  public void start()
   {
     startThread = executorService.submit(new Runnable()
     {
       public void run()
       {
-        start();
+        startServer();
       }
     });
   }
   
-  public void start()
+  private void startServer()
   {
     Thread.setDefaultUncaughtExceptionHandler(new VTUncaughtExceptionHandler());
     // loadFileServerSettings();

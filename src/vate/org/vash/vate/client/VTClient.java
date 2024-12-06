@@ -2144,18 +2144,18 @@ public class VTClient implements Runnable
     }
   }
   
-  public void startThread()
+  public void start()
   {
     startThread = executorService.submit(new Runnable()
     {
       public void run()
       {
-        start();
+        startClient();
       }
     });
   }
   
-  public void start()
+  private void startClient()
   {
     Thread.setDefaultUncaughtExceptionHandler(new VTUncaughtExceptionHandler());
     // loadFileClientSettings();
