@@ -63,7 +63,7 @@ public class VTClient implements Runnable
   private int pingLimit = 0;
   private int pingInterval = 0;
   private int reconnectTimeout = 0;
-  private Future<?> startThread;
+  private Future<?> runThread;
   
   private static final String VT_CLIENT_SETTINGS_COMMENTS = 
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
@@ -2146,16 +2146,35 @@ public class VTClient implements Runnable
   
   public void start()
   {
-    startThread = executorService.submit(new Runnable()
+    runThread = executorService.submit(new Runnable()
     {
       public void run()
       {
-        startClient();
+        runClient();
+      }
+    });
+    try
+    {
+      runThread.get();
+    }
+    catch (Throwable t)
+    {
+      
+    }
+  }
+  
+  public void startThread()
+  {
+    runThread = executorService.submit(new Runnable()
+    {
+      public void run()
+      {
+        runClient();
       }
     });
   }
   
-  private void startClient()
+  private void runClient()
   {
     Thread.setDefaultUncaughtExceptionHandler(new VTUncaughtExceptionHandler());
     // loadFileClientSettings();
@@ -2401,9 +2420,9 @@ public class VTClient implements Runnable
   
   public boolean isRunning()
   {
-    if (startThread != null)
+    if (runThread != null)
     {
-      return !startThread.isDone();
+      return !runThread.isDone();
     }
     return false;
   }

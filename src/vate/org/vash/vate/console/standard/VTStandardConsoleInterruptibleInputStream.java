@@ -65,7 +65,7 @@ public class VTStandardConsoleInterruptibleInputStream extends InputStream
     }
     catch (InterruptedException e)
     {
-      
+      available = 0;
     }
     finally
     {

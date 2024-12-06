@@ -219,7 +219,7 @@ public class VTManagedServerSocket
   
   public void start()
   {
-    vtserver.start();
+    vtserver.startThread();
   }
   
   public void stop()
