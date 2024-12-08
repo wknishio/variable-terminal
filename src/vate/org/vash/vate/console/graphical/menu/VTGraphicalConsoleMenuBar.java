@@ -108,7 +108,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       public void actionPerformed(ActionEvent e)
       {
         VTConsole.requestFocus();
-        VTConsole.toggleScrollMode();
+        VTConsole.toggleFlushMode();
       }
     });
     
@@ -199,7 +199,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       public void actionPerformed(ActionEvent e)
       {
         VTConsole.requestFocus();
-        VTConsole.toggleScrollMode();
+        VTConsole.toggleFlushMode();
       }
     });
     flushStatusMenu.add(flushToggleMenu);

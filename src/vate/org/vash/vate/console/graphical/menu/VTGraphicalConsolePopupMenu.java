@@ -38,8 +38,8 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
     copy = new MenuItem("Copy ");
     paste = new MenuItem("Paste ");
     all = new MenuItem("All ");
-    insert = new MenuItem("Insert ");
-    scroll = new MenuItem("Break ");
+    insert = new MenuItem("Replace ");
+    scroll = new MenuItem("Pause ");
     // expand = new MenuItem("Expand");
     // reduce = new MenuItem("Reduce");
     // scroll = new CheckboxMenuItem("Scroll", false);
@@ -53,7 +53,7 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.toggleScrollMode();
+        VTConsole.toggleFlushMode();
       }
     });
     insert.addActionListener(new ActionListener()
@@ -95,6 +95,23 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
   
   public void show(Component origin, int x, int y)
   {
+    if (VTConsole.isFlushModePause())
+    {
+      scroll.setLabel("Resume ");
+    }
+    else
+    {
+      scroll.setLabel("Pause ");
+    }
+    
+    if (VTConsole.isInputModeReplace())
+    {
+      insert.setLabel("Insert ");
+    }
+    else
+    {
+      insert.setLabel("Replace ");
+    }
     frame.remove(this);
     frame.add(this);
     // scroll.setState(b)

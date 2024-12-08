@@ -786,7 +786,7 @@ public class VTStandardConsole implements VTConsoleImplementation
     inputStream.interruptRead();
   }
   
-  public void toggleScrollMode()
+  public void toggleFlushMode()
   {
     
   }
@@ -973,5 +973,15 @@ public class VTStandardConsole implements VTConsoleImplementation
   public Frame getFrame()
   {
     return null;
+  }
+  
+  public boolean isFlushModePause()
+  {
+    return false;
+  }
+  
+  public boolean isInputModeReplace()
+  {
+    return false;
   }
 }

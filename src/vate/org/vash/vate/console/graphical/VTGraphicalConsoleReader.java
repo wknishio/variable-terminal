@@ -311,7 +311,7 @@ public class VTGraphicalConsoleReader
           else if (character == '\u001A')
           {
             /* out.write('\n'); out.flush(); */
-            VTConsole.toggleScrollMode();
+            VTConsole.toggleFlushMode();
             // VTExit.exit(0);
           }
           else if (character == '\u0018')
@@ -533,7 +533,7 @@ public class VTGraphicalConsoleReader
           else if (character == '\u001A')
           {
             /* out.write('\n'); out.flush(); */
-            VTConsole.toggleScrollMode();
+            VTConsole.toggleFlushMode();
             // VTExit.exit(0);
           }
           else if (character == '\u0018')
@@ -628,7 +628,7 @@ public class VTGraphicalConsoleReader
     }
     if (currentLineBuffer.toString().startsWith("\u001A"))
     {
-      VTConsole.toggleScrollMode();
+      VTConsole.toggleFlushMode();
     }
     if (currentLineBuffer.toString().startsWith("\u0018"))
     {

@@ -27,7 +27,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     this.systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
   }
   
-  public void toggleScrollMode()
+  public void toggleFlushMode()
   {
     scrolled = !scrolled;
     if (scrolled)
@@ -153,7 +153,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_Z)
     {
       e.consume();
-      VTConsole.toggleScrollMode();
+      VTConsole.toggleFlushMode();
       return;
     }
     if (e.getKeyCode() == KeyEvent.VK_INSERT)
@@ -165,7 +165,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     if (e.getKeyCode() == KeyEvent.VK_PAUSE)
     {
       e.consume();
-      VTConsole.toggleScrollMode();
+      VTConsole.toggleFlushMode();
       return;
     }
     
@@ -309,7 +309,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     }
     else if (e.getKeyChar() == '\u001A')
     {
-      VTConsole.toggleScrollMode();
+      VTConsole.toggleFlushMode();
     }
     else if (e.getKeyChar() == '\u0018')
     {

@@ -608,11 +608,11 @@ public final class VTConsole
     return null;
   }
   
-  public static void toggleScrollMode()
+  public static void toggleFlushMode()
   {
     if (checkConsole())
     {
-      console.toggleScrollMode();
+      console.toggleFlushMode();
     }
   }
   
@@ -872,5 +872,23 @@ public final class VTConsole
       return console.getLastOutputLine();
     }
     return null;
+  }
+  
+  public static boolean isFlushModePause()
+  {
+    if (checkConsole())
+    {
+      return console.isFlushModePause();
+    }
+    return false;
+  }
+  
+  public static boolean isInputModeReplace()
+  {
+    if (checkConsole())
+    {
+      return console.isInputModeReplace();
+    }
+    return false;
   }
 }

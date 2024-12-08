@@ -15,7 +15,7 @@ public class VTGraphicalConsoleToggleScrollModeActionListener implements ActionL
   {
     try
     {
-      VTConsole.toggleScrollMode();
+      VTConsole.toggleFlushMode();
     }
     catch (Throwable ex)
     {

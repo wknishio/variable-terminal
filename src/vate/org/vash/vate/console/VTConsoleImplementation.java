@@ -56,7 +56,7 @@ public interface VTConsoleImplementation
   
   public abstract Frame getFrame();
   
-  public abstract void toggleScrollMode();
+  public abstract void toggleFlushMode();
   
   public abstract void toggleInputMode();
   
@@ -97,4 +97,8 @@ public interface VTConsoleImplementation
   public abstract boolean setLogOutput(String path);
   
   public abstract String getLastOutputLine();
+  
+  public abstract boolean isFlushModePause();
+  
+  public abstract boolean isInputModeReplace();
 }

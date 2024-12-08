@@ -2524,7 +2524,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
 //		}
 //	}
   
-  public void toggleScrollMode()
+  public void toggleFlushMode()
   {
     toggleFlush();
   }
@@ -2916,5 +2916,15 @@ public class VTLanternaConsole implements VTConsoleImplementation
       }
     }
     return this.outputBox.getLastLine();
+  }
+  
+  public boolean isFlushModePause()
+  {
+    return flushInterrupted;
+  }
+  
+  public boolean isInputModeReplace()
+  {
+    return replaceActivated;
   }
 }

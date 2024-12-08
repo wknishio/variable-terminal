@@ -800,7 +800,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
     }
     if (c == '\u001A')
     {
-      VTConsole.toggleScrollMode();
+      VTConsole.toggleFlushMode();
     }
     if (c == '\u0018')
     {
@@ -832,7 +832,7 @@ public class VTGraphicalConsole implements VTConsoleImplementation
     }
     if (c == '\u001A')
     {
-      VTConsole.toggleScrollMode();
+      VTConsole.toggleFlushMode();
     }
     if (c == '\u0018')
     {
@@ -1863,11 +1863,11 @@ public class VTGraphicalConsole implements VTConsoleImplementation
     return frame;
   }
   
-  public void toggleScrollMode()
+  public void toggleFlushMode()
   {
     if (keyListener != null)
     {
-      keyListener.toggleScrollMode();
+      keyListener.toggleFlushMode();
     }
   }
   
@@ -2237,13 +2237,12 @@ public class VTGraphicalConsole implements VTConsoleImplementation
   
   public boolean isCommandEcho()
   {
-    // TODO Auto-generated method stub
     return false;
   }
   
   public void setCommandEcho(boolean commandEcho)
   {
-    // TODO Auto-generated method stub
+    
   }
   
   public void copyAllText()
@@ -2419,6 +2418,16 @@ public class VTGraphicalConsole implements VTConsoleImplementation
   public String getLastOutputLine()
   {
     return "";
+  }
+  
+  public boolean isFlushModePause()
+  {
+    return isFlushInterrupted();
+  }
+  
+  public boolean isInputModeReplace()
+  {
+    return isReplaceActivated();
   }
   
   // public boolean isReadingLine()
