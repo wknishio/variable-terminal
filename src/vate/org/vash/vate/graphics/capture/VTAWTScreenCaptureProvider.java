@@ -3465,7 +3465,7 @@ public final class VTAWTScreenCaptureProvider
     return null;
   }
   
-  public final BufferedImage createScreenCapture(final Rectangle area, final int padding, final boolean drawPointer)
+  public final BufferedImage createScreenCapture(final int padding, final boolean drawPointer, final Rectangle area)
   {
     if (!isScreenCaptureInitialized(padding))
     {

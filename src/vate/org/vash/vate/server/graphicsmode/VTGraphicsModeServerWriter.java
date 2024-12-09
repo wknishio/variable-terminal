@@ -950,7 +950,7 @@ public class VTGraphicsModeServerWriter implements Runnable
             {
               try
               {
-                imageDataBuffer = viewProvider.createScreenCapture(captureArea, imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD || imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD ? CODEC_PADDING_SIZE : 0, drawPointer);
+                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD || imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD ? CODEC_PADDING_SIZE : 0, drawPointer, captureArea);
                 //imageDataBuffer = viewProvider.createScreenCapture(captureArea, CODEC_PADDING_SIZE, drawPointer);
               }
               catch (Throwable t)
