@@ -149,7 +149,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
               {
                 currentAudioFormat = VT.VT_AUDIO_FORMAT_16000;
               }
-              if (parsed[i].toUpperCase().contains("U"))
+              if (parsed[i].toUpperCase().contains("H"))
               {
                 currentAudioFormat = VT.VT_AUDIO_FORMAT_24000;
               }
