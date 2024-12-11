@@ -196,7 +196,7 @@ public class VTManagedClientSocket
   
   public VTManagedClientSocket()
   {
-    this.vtclient = new VTClient();
+    vtclient = new VTClient();
     vtclient.setDaemon(true);
     vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
     vtclient.setSessionShell("N");
