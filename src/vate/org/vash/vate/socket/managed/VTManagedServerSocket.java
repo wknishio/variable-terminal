@@ -2,10 +2,10 @@ package org.vash.vate.socket.managed;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.vash.vate.VT;
@@ -22,7 +22,7 @@ public class VTManagedServerSocket
   private BlockingQueue<VTManagedSocket> queue = new LinkedBlockingQueue<VTManagedSocket>();
   private Thread acceptThread;
   private VTManagedSocketListener socketListener;
-  private Map<VTServerSession, VTManagedSocket> sessions = new LinkedHashMap<VTServerSession, VTManagedSocket>();
+  private ConcurrentMap<VTServerSession, VTManagedSocket> sessions = new ConcurrentHashMap<VTServerSession, VTManagedSocket>();
   
   private class VTCloseableServerConnection implements VTManagedConnection
   {
@@ -202,6 +202,16 @@ public class VTManagedServerSocket
     vtserver.setSessionShell("N");
   }
   
+  public VTManagedServerSocket(String host, int port)
+  {
+    vtserver = new VTServer();
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(new VTManagedServerSocketServerSessionListener());
+    vtserver.setSessionShell("N");
+    vtserver.setAddress(host);
+    vtserver.setPort(port);
+  }
+  
   public VTServer getServer()
   {
     return vtserver;
@@ -258,6 +268,24 @@ public class VTManagedServerSocket
   public void close()
   {
     stop();
+    try
+    {
+      for (VTManagedSocket socket : sessions.values())
+      {
+        try
+        {
+          socket.close();
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
   }
   
   public void setManagedSocketListener(VTManagedSocketListener socketListener)
