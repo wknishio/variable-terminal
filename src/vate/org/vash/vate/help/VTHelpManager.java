@@ -39,8 +39,8 @@ public class VTHelpManager
   ("\n-ET: encryption type, default none/ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)") + 
   ("\n-EK: encryption password, default null") + 
   ("\n-SS: session shell, default null") + 
+  ("\n-SC: session commands, separated by \"*;\", default null, only in client") + 
   ("\n-SM: session maximum, default 0, only in server") + 
-  ("\n-SC: session commands, separated by \"*;\", default null, only in client") +
   ("\n-SU: session user, default null") + 
   ("\n-SK: session password, default null") + 
   ("\n-PI: ping interval, default " + VT.VT_PING_INTERVAL_MILLISECONDS + " milliseconds") + 

@@ -212,17 +212,35 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
   }
   
+  public VTManagedServerSocket(Properties properties)
+  {
+    vtserver = new VTServer();
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(new VTManagedServerSocketServerSessionListener());
+    vtserver.setSessionShell("N");
+    vtserver.loadServerSettingsProperties(properties);
+  }
+  
+  public VTManagedServerSocket(String settingsFile) throws IOException
+  {
+    vtserver = new VTServer();
+    vtserver.setDaemon(true);
+    vtserver.addSessionListener(new VTManagedServerSocketServerSessionListener());
+    vtserver.setSessionShell("N");
+    vtserver.loadServerSettingsFile(settingsFile);
+  }
+  
   public VTServer getServer()
   {
     return vtserver;
   }
   
-  public void loadServerSettingsFile(String settingsFile) throws Exception
+  public void loadServerSettingsFile(String settingsFile) throws IOException
   {
     vtserver.loadServerSettingsFile(settingsFile);
   }
   
-  public void loadServerSettingsProperties(Properties properties) throws Exception
+  public void loadServerSettingsProperties(Properties properties)
   {
     vtserver.loadServerSettingsProperties(properties);
   }
@@ -238,14 +256,22 @@ public class VTManagedServerSocket
     interrupt();
   }
   
-  public VTManagedSocket accept() throws InterruptedException
+  public VTManagedSocket accept() throws IOException
   {
     if (!vtserver.isRunning())
     {
       start();
     }
     acceptThread = Thread.currentThread();
-    VTManagedSocket socket = queue.take();
+    VTManagedSocket socket = null;
+    try 
+    {
+      socket = queue.take();
+    }
+    catch (InterruptedException e)
+    { 
+      throw new IOException(e.getMessage());
+    }
     acceptThread = null;
     return socket;
   }

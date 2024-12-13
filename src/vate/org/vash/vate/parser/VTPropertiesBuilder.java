@@ -2,18 +2,19 @@ package org.vash.vate.parser;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
 public class VTPropertiesBuilder
 {
-  public static VTConfigurationProperties loadProperties(InputStream is) throws Exception
+  public static VTConfigurationProperties loadProperties(InputStream is) throws IOException
   {
     return loadProperties(is, "UTF-8");
   }
   
-  public static VTConfigurationProperties loadProperties(InputStream in, String encoding) throws Exception
+  public static VTConfigurationProperties loadProperties(InputStream in, String encoding) throws IOException
   {
     if (!"UTF-8".equalsIgnoreCase(encoding) || !"UTF8".equalsIgnoreCase(encoding))
     {
@@ -39,12 +40,12 @@ public class VTPropertiesBuilder
     return properties;
   }
   
-  public static void saveProperties(OutputStream out, VTConfigurationProperties properties, String comments) throws Exception
+  public static void saveProperties(OutputStream out, VTConfigurationProperties properties, String comments) throws IOException
   {
     saveProperties(out, properties, comments, "UTF-8");
   }
   
-  public static void saveProperties(OutputStream out, VTConfigurationProperties properties, String comments, String encoding) throws Exception
+  public static void saveProperties(OutputStream out, VTConfigurationProperties properties, String comments, String encoding) throws IOException
   {
     if ("UTF-8".equalsIgnoreCase(encoding) || "UTF8".equalsIgnoreCase(encoding))
     {

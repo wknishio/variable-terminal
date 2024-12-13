@@ -94,11 +94,11 @@ instance will listen for connections, as in a TCP connection.
 * Proxy password controls the password for proxy authentication.
 * Encryption type enables connection encryption using encryption algorithms.
 * Encryption password sets the password for connection encryption.
+* Session shell sets the command to be used as remote shell in server.
+* Session commands set commands separated by *; to be run when session starts.
+* Session maximum define a limit for simultaneous sessions in server.
 * Session user sets the session user for session.
 * Session password sets the session password for session.
-* Session shell sets the command to be used as remote shell in server.
-* Session maximum define a limit for simultaneous sessions in server.
-* Session commands set commands separated by *; to be run when session starts.
 
 All connection settings can be set using the files<br>
 "vate-client.properties" for client instances and<br>
@@ -124,8 +124,8 @@ these are the available program arguments:
 * -ET: encryption type, default none/ISAAC(I)/VMPC(R)/SALSA(S)/HC(H)/ZUC(Z)
 * -EK: encryption password, default null
 * -SS: session shell, default null
-* -SM: session maximum, default 0, only in server
 * -SC: session commands, separated by "*;", default null, only in client
+* -SM: session maximum, default 0, only in server
 * -SU: session user, default null
 * -SK: session password, default null
 * -PI: ping interval, default 15000 milliseconds

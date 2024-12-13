@@ -3,6 +3,7 @@ package org.vash.vate.client;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Properties;
@@ -406,7 +407,7 @@ public class VTClient implements Runnable
     }
   }
   
-  public void saveClientSettingsFile(String settingsFile) throws Exception
+  public void saveClientSettingsFile(String settingsFile) throws IOException
   {
     loadFromConnectorToClient();
     if (vtURL != null)
@@ -452,7 +453,7 @@ public class VTClient implements Runnable
     out.close();
   }
   
-  public void loadClientSettingsFile(String settingsFile) throws Exception
+  public void loadClientSettingsFile(String settingsFile) throws IOException
   {
     loadFromConnectorToClient();
     if (vtURL != null)
