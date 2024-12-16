@@ -46,16 +46,12 @@ public class VTXXHash64MessageDigest extends MessageDigest
   
   public byte[] digest()
   {
-    byte[] digest = engineDigest();
-    reset();
-    return digest;
+    return engineDigest();
   }
   
   public long digestLong()
   {
-    long digest = xxhash64.getValue();
-    reset();
-    return digest;
+    return xxhash64.getValue();
   }
   
   protected void engineUpdate(byte input)

@@ -1357,6 +1357,7 @@ public class VTFileTransferServerTransaction implements Runnable
       }
       while (!stopped && maxOffset > currentOffset)
       {
+        messageDigest.reset();
         readedBytes = fileTransferChecksumInputStream.read(fileTransferBuffer, 0, (int) Math.min(fileTransferBufferSize, maxOffset - currentOffset));
         if (readedBytes < 0)
         {

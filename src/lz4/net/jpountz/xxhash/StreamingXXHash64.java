@@ -163,9 +163,7 @@ public abstract class StreamingXXHash64 {
       
       public byte[] digest()
       {
-        byte[] digest = engineDigest();
-        reset();
-        return digest;
+        return engineDigest();
       }
       
       protected void engineUpdate(byte input)
