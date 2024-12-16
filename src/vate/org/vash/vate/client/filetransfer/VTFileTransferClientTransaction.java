@@ -1338,7 +1338,6 @@ public class VTFileTransferClientTransaction implements Runnable
   private List<Long> readLocalFileChunkChecksums()
   {
     List<Long> checksums = new LinkedList<Long>();
-    messageDigest.reset();
     currentOffset = 0;
     try
     {
