@@ -1121,16 +1121,14 @@ public class VTGraphicsModeServerWriter implements Runnable
                   {
                     different = !VTImageDataUtils.deltaArea(previousImageBufferInt, lastImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
                   }
+                  resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
+                  resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
                   if (different)
                   {
-                    resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
-                    resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
                     sendCustomDifference();
                   }
                   else
                   {
-                    resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
-                    resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
                     sendRefreshNotNeeded();
                   }
                 }
