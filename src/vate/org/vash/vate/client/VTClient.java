@@ -2184,7 +2184,7 @@ public class VTClient implements Runnable
       VTConsole.initialize();
       VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Client - Console");
       connectionDialog = new VTClientConfigurationDialog(VTConsole.getFrame(), "Variable-Terminal " + VT.VT_VERSION + " - Client - Connection", true, this);
-      inputMenuBar = new VTClientRemoteGraphicalConsoleMenuBar(VTConsole.getConsoleImplementation(), connectionDialog);
+      inputMenuBar = new VTClientRemoteGraphicalConsoleMenuBar(VTConsole.getConsoleInstance(), connectionDialog);
       VTConsole.getFrame().setMenuBar(inputMenuBar);
       VTConsole.getFrame().pack();
 //      try

@@ -8,7 +8,7 @@ import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.vash.vate.console.VTConsoleImplementation;
+import org.vash.vate.console.VTConsoleInstance;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleCopyActionListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleCopyAllActionListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsolePasteActionListener;
@@ -31,10 +31,10 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
   private VTGraphicalConsoleCopyAllActionListener allActionListener;
   private VTGraphicalConsolePasteActionListener pasteActionListener;
   
-  private final VTConsoleImplementation console;
+  private final VTConsoleInstance console;
   private final Frame frame;
   
-  public VTGraphicalConsolePopupMenu(final VTConsoleImplementation console, final Frame frame)
+  public VTGraphicalConsolePopupMenu(final VTConsoleInstance console, final Frame frame)
   {
     this.console = console;
     this.frame = frame;

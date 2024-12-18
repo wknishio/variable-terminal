@@ -2299,7 +2299,7 @@ public class VTServer implements Runnable
       if (!VTConsole.isDaemon() && !daemon)
       {
         connectionDialog = new VTServerSettingsDialog(VTConsole.getFrame(), "Variable-Terminal " + VT.VT_VERSION + " - Server - Connection", true, this);
-        inputMenuBar = new VTServerLocalGraphicalConsoleMenuBar(VTConsole.getConsoleImplementation(), connectionDialog);
+        inputMenuBar = new VTServerLocalGraphicalConsoleMenuBar(VTConsole.getConsoleInstance(), connectionDialog);
         VTConsole.getFrame().setMenuBar(inputMenuBar);
         VTConsole.getFrame().pack();
         try

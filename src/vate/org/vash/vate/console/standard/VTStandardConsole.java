@@ -16,7 +16,7 @@ import java.io.PrintStream;
 import java.util.Locale;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
-import org.vash.vate.console.VTConsoleImplementation;
+import org.vash.vate.console.VTConsoleInstance;
 import org.vash.vate.nativeutils.VTNativeUtils;
 import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
@@ -26,7 +26,7 @@ import org.vash.vate.stream.filter.VTDoubledOutputStream;
 // import java.nio.channels.ClosedByInterruptException;
 // import java.nio.charset.Charset;
 
-public class VTStandardConsole implements VTConsoleImplementation
+public class VTStandardConsole implements VTConsoleInstance
 {
   private static VTStandardConsole instance;
   private static VTDoubledOutputStream output;

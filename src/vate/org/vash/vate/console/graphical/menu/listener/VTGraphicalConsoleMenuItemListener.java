@@ -2,13 +2,13 @@ package org.vash.vate.console.graphical.menu.listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.vash.vate.console.VTConsoleImplementation;
+import org.vash.vate.console.VTConsoleInstance;
 
 public class VTGraphicalConsoleMenuItemListener implements ActionListener
 {
-  private final VTConsoleImplementation console;
+  private final VTConsoleInstance console;
   
-  public VTGraphicalConsoleMenuItemListener(final VTConsoleImplementation console)
+  public VTGraphicalConsoleMenuItemListener(final VTConsoleInstance console)
   {
     this.console = console;
   }

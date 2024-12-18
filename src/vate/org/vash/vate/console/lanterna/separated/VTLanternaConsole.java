@@ -40,7 +40,7 @@ import java.util.Properties;
 import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
-import org.vash.vate.console.VTConsoleImplementation;
+import org.vash.vate.console.VTConsoleInstance;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleDropTargetListener;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsolePopupMenu;
 import org.vash.vate.console.lanterna.separated.VTLanternaTextBoxModified.DefaultTextBoxRenderer;
@@ -80,7 +80,7 @@ import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
 import com.googlecode.lanterna.terminal.swing.TerminalEmulatorColorConfiguration;
 import com.googlecode.lanterna.terminal.swing.TerminalEmulatorPalette;
 
-public class VTLanternaConsole implements VTConsoleImplementation
+public class VTLanternaConsole implements VTConsoleInstance
 {
   public static final TerminalEmulatorPalette CUSTOM_VGA = new TerminalEmulatorPalette(new java.awt.Color(170, 170, 170), new java.awt.Color(255, 255, 255), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(85, 85, 85), new java.awt.Color(170, 0, 0), new java.awt.Color(255, 85, 85), new java.awt.Color(0, 170, 0), new java.awt.Color(85, 255, 85), new java.awt.Color(170, 170, 0), new java.awt.Color(255, 255, 85), new java.awt.Color(0, 0, 170), new java.awt.Color(85, 85, 255), new java.awt.Color(170, 0, 170), new java.awt.Color(255, 85, 255), new java.awt.Color(0, 170, 170), new java.awt.Color(85, 255, 255), new java.awt.Color(170, 170, 170), new java.awt.Color(255, 255, 255));
   
@@ -96,8 +96,8 @@ public class VTLanternaConsole implements VTConsoleImplementation
   private static final int consoleOutputLines = 24;
   private static final int consoleInputColumns = 80;
   private static final int consoleInputLines = 1;
-  private static final int consoleOutputLinesMaxSize = consoleOutputLines * 50;
-  private static final int commandHistoryMaxSize = 100;
+  private static final int consoleOutputLinesMaxSize = consoleOutputLines * 40;
+  private static final int commandHistoryMaxSize = 80;
   private final List<String> commandHistory = new LinkedList<String>();
   private int commandHistoryPosition;
   private final List<String> inputLineBuffer = new LinkedList<String>();
@@ -134,7 +134,6 @@ public class VTLanternaConsole implements VTConsoleImplementation
   private PrintStream logOutput = null;
   private BufferedWriter logReadLine = null;
   private Color lastLineBackgroundDefault = new Color(85, 85, 85);
-  
   private PrintStream doubledOutput;
   private PrintStream doubledError;
   private final VTLanternaConsole console;

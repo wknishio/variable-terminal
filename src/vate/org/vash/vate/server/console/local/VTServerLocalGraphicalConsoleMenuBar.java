@@ -5,7 +5,7 @@ import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.vash.vate.console.VTConsoleImplementation;
+import org.vash.vate.console.VTConsoleInstance;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuBar;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuItem;
 import org.vash.vate.server.dialog.VTServerSettingsDialog;
@@ -36,7 +36,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
   private Menu sessionsSettingsMenu;
   private Menu helpMenu;
   
-  public VTServerLocalGraphicalConsoleMenuBar(final VTConsoleImplementation console, final VTServerSettingsDialog connectionDialog)
+  public VTServerLocalGraphicalConsoleMenuBar(final VTConsoleInstance console, final VTServerSettingsDialog connectionDialog)
   {
     super(console);
     removeAllMenus();

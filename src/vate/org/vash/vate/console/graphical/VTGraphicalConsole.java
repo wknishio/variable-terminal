@@ -17,7 +17,7 @@ import java.util.TooManyListenersException;
 
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
-import org.vash.vate.console.VTConsoleImplementation;
+import org.vash.vate.console.VTConsoleInstance;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleDropTargetListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleKeyListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleMouseListener;
@@ -27,7 +27,7 @@ import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
 
-public class VTGraphicalConsole implements VTConsoleImplementation
+public class VTGraphicalConsole implements VTConsoleInstance
 {
   public static final char VT_VK_LEFT = '\uFFFF';
   public static final char VT_VK_UP = '\uFFFE';

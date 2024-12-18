@@ -44,7 +44,7 @@ public final class VTConsole
   private static boolean daemon;
   private static boolean remoteIcon;
   // private static boolean split;
-  private static VTConsoleImplementation console;
+  private static VTConsoleInstance console;
   
   private static Object synchronizationObject = new Object();
   
@@ -892,7 +892,7 @@ public final class VTConsole
     return false;
   }
   
-  public static VTConsoleImplementation getConsoleImplementation()
+  public static VTConsoleInstance getConsoleInstance()
   {
     if (checkConsole())
     {

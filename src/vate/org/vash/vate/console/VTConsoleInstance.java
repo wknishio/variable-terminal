@@ -5,7 +5,7 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Locale;
 
-public interface VTConsoleImplementation
+public interface VTConsoleInstance
 {
   public abstract String readLine(boolean echo) throws InterruptedException;
   

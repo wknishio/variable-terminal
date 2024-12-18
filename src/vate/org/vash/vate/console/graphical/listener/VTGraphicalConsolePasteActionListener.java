@@ -9,14 +9,14 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import org.vash.vate.console.VTConsoleImplementation;
+import org.vash.vate.console.VTConsoleInstance;
 
 public class VTGraphicalConsolePasteActionListener implements ActionListener
 {
   private Clipboard systemClipboard;
-  private final VTConsoleImplementation console;
+  private final VTConsoleInstance console;
   
-  public VTGraphicalConsolePasteActionListener(final VTConsoleImplementation console)
+  public VTGraphicalConsolePasteActionListener(final VTConsoleInstance console)
   {
     this.console = console;
     systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

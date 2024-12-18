@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import org.vash.vate.VT;
 import org.vash.vate.client.dialog.VTClientConfigurationDialog;
 import org.vash.vate.console.VTConsole;
-import org.vash.vate.console.VTConsoleImplementation;
+import org.vash.vate.console.VTConsoleInstance;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuItem;
 import org.vash.vate.dialog.VTFileDialog;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuBar;
@@ -66,7 +66,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
   private Menu audioLinkSoundMenu;
   private Menu helpMenu;
   
-  public VTClientRemoteGraphicalConsoleMenuBar(final VTConsoleImplementation console, final VTClientConfigurationDialog connectionDialog)
+  public VTClientRemoteGraphicalConsoleMenuBar(final VTConsoleInstance console, final VTClientConfigurationDialog connectionDialog)
   {
     super(console);
     removeAllMenus();
