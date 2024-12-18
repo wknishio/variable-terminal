@@ -2405,7 +2405,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "black_bright";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.BLACK_BRIGHT, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.BLACK, false, false);
-        awtTerminalBackgroundColor = ANSI.ANSI.BLACK;
+        awtTerminalBackgroundColor = ANSI.BLACK;
         break;
       }
       default:
@@ -2414,7 +2414,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "black_bright";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.BLACK_BRIGHT, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.BLACK, false, false);
-        awtTerminalBackgroundColor = ANSI.ANSI.BLACK;
+        awtTerminalBackgroundColor = ANSI.BLACK;
         break;
       }
     }
