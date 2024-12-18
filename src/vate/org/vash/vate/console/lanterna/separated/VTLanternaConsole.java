@@ -52,6 +52,7 @@ import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.TextColor.ANSI;
 import com.googlecode.lanterna.graphics.PropertyTheme;
 import com.googlecode.lanterna.gui2.BasicWindow;
@@ -136,6 +137,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
   
   private PrintStream doubledOutput;
   private PrintStream doubledError;
+  private final VTLanternaConsole console;
   
   // support command history
   // support echo input
@@ -158,6 +160,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
     // this.commandHistory.add(null);
     this.graphical = graphical;
     this.remoteIcon = remoteIcon;
+    this.console = this;
     Thread builderThread = new Thread()
     {
       public void run()
@@ -812,7 +815,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
       VTGlobalTextStyleManager.registerWindow(frame);
       //VTGlobalTextStyleManager.registerMonospacedComponent(awtTerminal);
       VTGlobalTextStyleManager.registerFontList(awtTerminal.getTerminalFontConfiguration().getFontPriority());
-      popupMenu = new VTGraphicalConsolePopupMenu(frame);
+      popupMenu = new VTGraphicalConsolePopupMenu(this, frame);
     }
     else
     {
@@ -919,7 +922,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
       
       frame.setDropTarget(new DropTarget());
       frame.getDropTarget().setActive(true);
-      frame.getDropTarget().addDropTargetListener(new VTGraphicalConsoleDropTargetListener());
+      frame.getDropTarget().addDropTargetListener(new VTGraphicalConsoleDropTargetListener(this));
       
       // outputBox.setVerticalAdjustable(frame.getScrollPane().getVAdjustable());
       // outputBox.setHorizontalAdjustable(frame.getScrollPane().getHAdjustable());
@@ -1035,7 +1038,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         {
           if (keyStroke.getKeyType() == KeyType.Insert)
           {
-            VTConsole.pasteText();
+            console.pasteText();
             return false;
           }
           else
@@ -1072,12 +1075,12 @@ public class VTLanternaConsole implements VTConsoleImplementation
         {
           if (keyStroke.getKeyType() == KeyType.Insert)
           {
-            VTConsole.copyText();
+            console.copyText();
             return false;
           }
           if (keyStroke.getKeyType() == KeyType.Backspace)
           {
-            VTConsole.copyAllText();
+            console.copyAllText();
             return false;
           }
           if (keyStroke.getKeyType() == KeyType.Delete)
@@ -1300,7 +1303,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         {
           if (keyStroke.isCtrlDown())
           {
-            VTConsole.copyAllText();
+            console.copyAllText();
             return false;
           }
         }
@@ -1313,12 +1316,12 @@ public class VTLanternaConsole implements VTConsoleImplementation
           }
           if (!keyStroke.isCtrlDown() && keyStroke.isShiftDown())
           {
-            VTConsole.pasteText();
+            console.pasteText();
             return false;
           }
           if (keyStroke.isCtrlDown() && !keyStroke.isShiftDown())
           {
-            VTConsole.copyText();
+            console.copyText();
             return false;
           }
         }
@@ -2249,6 +2252,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
       }
     }
     
+    TextColor awtTerminalBackgroundColor = null;
     switch (backgroundColor)
     {
       case VTConsole.VT_CONSOLE_COLOR_DARK_BLACK:
@@ -2257,7 +2261,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "black_bright";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.BLACK_BRIGHT, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.BLACK, false, false);
-        awtTerminal.setBackgroundColor(ANSI.BLACK);
+        awtTerminalBackgroundColor = ANSI.BLACK;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_DARK_RED:
@@ -2266,7 +2270,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "red_bright";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.RED_BRIGHT, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.RED, false, false);
-        awtTerminal.setBackgroundColor(ANSI.RED);
+        awtTerminalBackgroundColor = ANSI.RED;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_DARK_GREEN:
@@ -2275,7 +2279,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "green_bright";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.GREEN_BRIGHT, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.GREEN, false, false);
-        awtTerminal.setBackgroundColor(ANSI.GREEN);
+        awtTerminalBackgroundColor = ANSI.GREEN;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_DARK_YELLOW:
@@ -2284,7 +2288,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "yellow_bright";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.YELLOW_BRIGHT, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.YELLOW, false, false);
-        awtTerminal.setBackgroundColor(ANSI.YELLOW);
+        awtTerminalBackgroundColor = ANSI.YELLOW;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_DARK_BLUE:
@@ -2293,7 +2297,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "blue_bright";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.BLUE_BRIGHT, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.BLUE, false, false);
-        awtTerminal.setBackgroundColor(ANSI.BLUE);
+        awtTerminalBackgroundColor = ANSI.BLUE;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_DARK_MAGENTA:
@@ -2302,7 +2306,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "magenta_bright";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.MAGENTA_BRIGHT, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.MAGENTA, false, false);
-        awtTerminal.setBackgroundColor(ANSI.MAGENTA);
+        awtTerminalBackgroundColor = ANSI.MAGENTA;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_DARK_CYAN:
@@ -2311,7 +2315,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "cyan_bright";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.CYAN_BRIGHT, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.CYAN, false, false);
-        awtTerminal.setBackgroundColor(ANSI.CYAN);
+        awtTerminalBackgroundColor = ANSI.CYAN;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_DARK_WHITE:
@@ -2320,7 +2324,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "white_bright";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.WHITE_BRIGHT, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.WHITE, false, false);
-        awtTerminal.setBackgroundColor(ANSI.WHITE);
+        awtTerminalBackgroundColor = ANSI.WHITE;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_LIGHT_BLACK:
@@ -2329,7 +2333,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "black";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.BLACK, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.BLACK_BRIGHT, false, false);
-        awtTerminal.setBackgroundColor(ANSI.BLACK_BRIGHT);
+        awtTerminalBackgroundColor = ANSI.BLACK_BRIGHT;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_LIGHT_RED:
@@ -2338,7 +2342,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "red";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.RED, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.RED_BRIGHT, false, false);
-        awtTerminal.setBackgroundColor(ANSI.RED_BRIGHT);
+        awtTerminalBackgroundColor = ANSI.RED_BRIGHT;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN:
@@ -2347,7 +2351,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "green";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.GREEN, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.GREEN_BRIGHT, false, false);
-        awtTerminal.setBackgroundColor(ANSI.GREEN_BRIGHT);
+        awtTerminalBackgroundColor = ANSI.GREEN_BRIGHT;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_LIGHT_YELLOW:
@@ -2356,7 +2360,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "yellow";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.YELLOW, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.YELLOW_BRIGHT, false, false);
-        awtTerminal.setBackgroundColor(ANSI.YELLOW_BRIGHT);
+        awtTerminalBackgroundColor = ANSI.YELLOW_BRIGHT;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_LIGHT_BLUE:
@@ -2365,7 +2369,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "blue";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.BLUE, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.BLUE_BRIGHT, false, false);
-        awtTerminal.setBackgroundColor(ANSI.BLUE_BRIGHT);
+        awtTerminalBackgroundColor = ANSI.BLUE_BRIGHT;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_LIGHT_MAGENTA:
@@ -2374,7 +2378,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "magenta";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.MAGENTA, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.MAGENTA_BRIGHT, false, false);
-        awtTerminal.setBackgroundColor(ANSI.MAGENTA_BRIGHT);
+        awtTerminalBackgroundColor = ANSI.MAGENTA_BRIGHT;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_LIGHT_CYAN:
@@ -2383,7 +2387,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "cyan";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.CYAN, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.CYAN_BRIGHT, false, false);
-        awtTerminal.setBackgroundColor(ANSI.CYAN_BRIGHT);
+        awtTerminalBackgroundColor = ANSI.CYAN_BRIGHT;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_LIGHT_WHITE:
@@ -2392,7 +2396,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "white";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.WHITE, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.WHITE_BRIGHT, false, false);
-        awtTerminal.setBackgroundColor(ANSI.WHITE_BRIGHT);
+        awtTerminalBackgroundColor = ANSI.WHITE_BRIGHT;
         break;
       }
       case VTConsole.VT_CONSOLE_COLOR_DEFAULT:
@@ -2401,7 +2405,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "black_bright";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.BLACK_BRIGHT, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.BLACK, false, false);
-        awtTerminal.setBackgroundColor(ANSI.BLACK);
+        awtTerminalBackgroundColor = ANSI.ANSI.BLACK;
         break;
       }
       default:
@@ -2410,9 +2414,14 @@ public class VTLanternaConsole implements VTConsoleImplementation
         backgroundColorStringInput = "black_bright";
         lastLineBackgroundColor = CUSTOM_VGA.get(ANSI.BLACK_BRIGHT, false, false);
         spacerBackgroundColor = CUSTOM_VGA.get(ANSI.BLACK, false, false);
-        awtTerminal.setBackgroundColor(ANSI.BLACK);
+        awtTerminalBackgroundColor = ANSI.ANSI.BLACK;
         break;
       }
+    }
+    
+    if (awtTerminal != null)
+    {
+      awtTerminal.setBackgroundColor(awtTerminalBackgroundColor);
     }
     
     for (Object inputKey : copyInputProperties.keySet().toArray())
@@ -2469,7 +2478,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
     inputBox.setTheme(inputTheme);
     outputBox.setTheme(outputTheme);
     
-    awtTerminal.getTerminalImplementation().setLastLineBackground(lastLineBackgroundDefault);
+    if (awtTerminal != null)
+    {
+      awtTerminal.getTerminalImplementation().setLastLineBackground(lastLineBackgroundDefault);
+    }
   }
   
   public void setSystemIn()
@@ -2566,7 +2578,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
       if (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor))
       {
         String text = systemClipboard.getData(DataFlavor.stringFlavor).toString();
-        VTConsole.input(text);
+        this.input(text);
       }
       else if (systemClipboard.isDataFlavorAvailable(DataFlavor.javaFileListFlavor))
       {
@@ -2581,7 +2593,7 @@ public class VTLanternaConsole implements VTConsoleImplementation
             fileList.append(" " + file.getAbsolutePath());
           }
           fileListString = fileList.substring(1);
-          VTConsole.input(fileListString);
+          this.input(fileListString);
         }
       }
     }
@@ -2732,12 +2744,12 @@ public class VTLanternaConsole implements VTConsoleImplementation
     this.remoteIcon = remoteIcon;
   }
   
-  public void addToggleFlushInterruptNotify(VTConsoleBooleanToggleNotify notifyFlushInterrupted)
+  public void addToggleFlushModePauseNotify(VTConsoleBooleanToggleNotify notifyFlushInterrupted)
   {
     this.notifyFlushInterrupted = notifyFlushInterrupted;
   }
   
-  public void addToggleReplaceInputNotify(VTConsoleBooleanToggleNotify notifyReplaceInput)
+  public void addToggleInputModeReplaceNotify(VTConsoleBooleanToggleNotify notifyReplaceInput)
   {
     this.notifyReplaceInput = notifyReplaceInput;
   }
@@ -2747,7 +2759,10 @@ public class VTLanternaConsole implements VTConsoleImplementation
     // System.out.println("console.requestFocus()");
     try
     {
-      awtTerminal.requestFocusInWindow();
+      if (awtTerminal != null)
+      {
+        awtTerminal.requestFocusInWindow();
+      }
     }
     catch (Throwable t)
     {

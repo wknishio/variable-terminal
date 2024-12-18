@@ -179,10 +179,10 @@ public class VTGraphicalConsole implements VTConsoleImplementation
     updatingTerminal = false;
     readingInput = false;
     // popupMenu = new VTGraphicalConsolePopupMenu();
-    VTGraphicalConsolePopupMenu popupMenu = new VTGraphicalConsolePopupMenu(frame);
+    VTGraphicalConsolePopupMenu popupMenu = new VTGraphicalConsolePopupMenu(this, frame);
     keyListener = new VTGraphicalConsoleKeyListener(popupMenu);
     mouseListener = new VTGraphicalConsoleMouseListener(popupMenu);
-    dropTargetListener = new VTGraphicalConsoleDropTargetListener();
+    dropTargetListener = new VTGraphicalConsoleDropTargetListener(this);
     // textListener = new VTGraphicalConsoleTextListener();
     textArea.addKeyListener(keyListener);
     // textArea.addTextListener(textListener);
@@ -2255,12 +2255,12 @@ public class VTGraphicalConsole implements VTConsoleImplementation
     return screenBuffer.substring(0).replace("\b", "").replace("\n", "").replaceAll("\\t{1," + tabSize + "}", "\t").replace('\r', '\n');
   }
   
-  public void addToggleFlushInterruptNotify(VTConsoleBooleanToggleNotify notifyFlushInterrupted)
+  public void addToggleFlushModePauseNotify(VTConsoleBooleanToggleNotify notifyFlushInterrupted)
   {
     VTGraphicalConsole.notifyFlushInterrupted = notifyFlushInterrupted;
   }
   
-  public void addToggleReplaceInputNotify(VTConsoleBooleanToggleNotify notifyReplaceInput)
+  public void addToggleInputModeReplaceNotify(VTConsoleBooleanToggleNotify notifyReplaceInput)
   {
     VTGraphicalConsole.notifyReplaceInput = notifyReplaceInput;
   }

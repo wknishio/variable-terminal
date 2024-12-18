@@ -9,10 +9,17 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import java.util.List;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTConsoleImplementation;
 
 public class VTGraphicalConsoleDropTargetListener implements DropTargetListener
 {
+  private final VTConsoleImplementation console;
+
+  public VTGraphicalConsoleDropTargetListener(final VTConsoleImplementation console)
+  {
+    this.console = console;
+  }
+  
   public void dragEnter(DropTargetDragEvent dtde)
   {
     // System.out.println("dragEnter!");
@@ -47,7 +54,7 @@ public class VTGraphicalConsoleDropTargetListener implements DropTargetListener
             fileList.append(" " + file.getAbsolutePath());
           }
           fileListString = fileList.substring(1);
-          VTConsole.input(fileListString);
+          console.input(fileListString);
         }
         dtde.dropComplete(true);
       }
@@ -55,7 +62,7 @@ public class VTGraphicalConsoleDropTargetListener implements DropTargetListener
       {
         dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
         String data = (String) transferable.getTransferData(DataFlavor.stringFlavor);
-        VTConsole.input(data);
+        console.input(data);
         dtde.dropComplete(true);
       }
       else

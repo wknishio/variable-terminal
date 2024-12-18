@@ -6,8 +6,8 @@ import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
+import org.vash.vate.console.VTConsoleImplementation;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 
 public class VTGraphicalConsoleMenuBar extends MenuBar
@@ -38,9 +38,12 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
   
   private boolean flushInterrupted = false;
   private boolean replaceInput = false;
+
+  private final VTConsoleImplementation console;
   
-  public VTGraphicalConsoleMenuBar()
+  public VTGraphicalConsoleMenuBar(final VTConsoleImplementation console)
   {
+    this.console = console;
     addStatusNotify();
     removeAllMenus();
     addBaseMenus();
@@ -65,8 +68,8 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.requestFocus();
-        VTConsole.copyText();
+        console.requestFocus();
+        console.copyText();
       }
     });
     
@@ -76,8 +79,8 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.requestFocus();
-        VTConsole.pasteText();
+        console.requestFocus();
+        console.pasteText();
       }
     });
     
@@ -86,8 +89,8 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.requestFocus();
-        VTConsole.copyAllText();
+        console.requestFocus();
+        console.copyAllText();
       }
     });
     
@@ -97,8 +100,8 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.requestFocus();
-        VTConsole.toggleInputMode();
+        console.requestFocus();
+        console.toggleInputMode();
       }
     });
     
@@ -107,8 +110,8 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.requestFocus();
-        VTConsole.toggleFlushMode();
+        console.requestFocus();
+        console.toggleFlushMode();
       }
     });
     
@@ -133,7 +136,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.requestFocus();
+        console.requestFocus();
         VTGlobalTextStyleManager.increaseFontSize();
       }
     });
@@ -142,7 +145,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.requestFocus();
+        console.requestFocus();
         VTGlobalTextStyleManager.decreaseFontSize();
       }
     });
@@ -151,7 +154,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.requestFocus();
+        console.requestFocus();
         if (VTGlobalTextStyleManager.isFontStyleBold())
         {
           VTGlobalTextStyleManager.disableFontStyleBold();
@@ -168,7 +171,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.requestFocus();
+        console.requestFocus();
         VTGlobalTextStyleManager.defaultComponentSize();
       }
     });
@@ -177,7 +180,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.requestFocus();
+        console.requestFocus();
         VTGlobalTextStyleManager.defaultFontSize();
       }
     });
@@ -198,8 +201,8 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.requestFocus();
-        VTConsole.toggleFlushMode();
+        console.requestFocus();
+        console.toggleFlushMode();
       }
     });
     flushStatusMenu.add(flushToggleMenu);
@@ -212,8 +215,8 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.requestFocus();
-        VTConsole.toggleInputMode();
+        console.requestFocus();
+        console.toggleInputMode();
       }
     });
     inputStatusMenu.add(inputToggleMenu);
@@ -262,13 +265,13 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
   
   public void addStatusNotify()
   {
-    VTConsole.addToggleFlushInterruptNotify(new VTGraphicalConsoleFlushInterruptedNotify());
-    VTConsole.addToggleReplaceInputNotify(new VTGraphicalConsoleReplaceInputNotify());
+    console.addToggleFlushModePauseNotify(new VTGraphicalConsoleFlushInterruptedNotify());
+    console.addToggleInputModeReplaceNotify(new VTGraphicalConsoleReplaceInputNotify());
   }
   
   public void updateStatusMenu()
   {
-    VTConsole.requestFocus();
+    console.requestFocus();
     if (flushInterrupted)
     {
       flushStatusMenu.setLabel("Pause");

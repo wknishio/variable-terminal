@@ -9,14 +9,16 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTConsoleImplementation;
 
 public class VTGraphicalConsolePasteActionListener implements ActionListener
 {
   private Clipboard systemClipboard;
+  private final VTConsoleImplementation console;
   
-  public VTGraphicalConsolePasteActionListener()
+  public VTGraphicalConsolePasteActionListener(final VTConsoleImplementation console)
   {
+    this.console = console;
     systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
   }
   
@@ -29,7 +31,7 @@ public class VTGraphicalConsolePasteActionListener implements ActionListener
       if (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor))
       {
         String text = systemClipboard.getData(DataFlavor.stringFlavor).toString();
-        VTConsole.input(text);
+        console.input(text);
         // System.out.println("paste:" + text);
       }
       else if (systemClipboard.isDataFlavorAvailable(DataFlavor.javaFileListFlavor))
@@ -44,7 +46,7 @@ public class VTGraphicalConsolePasteActionListener implements ActionListener
             fileList.append(" " + file.getAbsolutePath());
           }
           fileListString = fileList.substring(1);
-          VTConsole.input(fileListString);
+          console.input(fileListString);
           // System.out.println("paste:" + fileList.toString());
         }
       }

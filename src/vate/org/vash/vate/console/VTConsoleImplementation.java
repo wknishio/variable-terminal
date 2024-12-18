@@ -84,9 +84,9 @@ public interface VTConsoleImplementation
   
   public abstract void setRemoteIcon(boolean remoteIcon);
   
-  public abstract void addToggleFlushInterruptNotify(VTConsoleBooleanToggleNotify notifyFlushInterrupted);
+  public abstract void addToggleFlushModePauseNotify(VTConsoleBooleanToggleNotify notifyFlushInterrupted);
   
-  public abstract void addToggleReplaceInputNotify(VTConsoleBooleanToggleNotify notifyReplaceInput);
+  public abstract void addToggleInputModeReplaceNotify(VTConsoleBooleanToggleNotify notifyReplaceInput);
   
   public abstract void requestFocus();
   

@@ -8,7 +8,7 @@ import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTConsoleImplementation;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleCopyActionListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleCopyAllActionListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsolePasteActionListener;
@@ -16,7 +16,7 @@ import org.vash.vate.console.graphical.listener.VTGraphicalConsolePasteActionLis
 public class VTGraphicalConsolePopupMenu extends PopupMenu
 {
   private static final long serialVersionUID = 1L;
-  private Frame frame;
+  
   private MenuItem copy;
   private MenuItem paste;
   private MenuItem all;
@@ -31,8 +31,12 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
   private VTGraphicalConsoleCopyAllActionListener allActionListener;
   private VTGraphicalConsolePasteActionListener pasteActionListener;
   
-  public VTGraphicalConsolePopupMenu(Frame frame)
+  private final VTConsoleImplementation console;
+  private final Frame frame;
+  
+  public VTGraphicalConsolePopupMenu(final VTConsoleImplementation console, final Frame frame)
   {
+    this.console = console;
     this.frame = frame;
     // this.keyListener = keyListener;
     copy = new MenuItem("Copy ");
@@ -43,9 +47,9 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
     // expand = new MenuItem("Expand");
     // reduce = new MenuItem("Reduce");
     // scroll = new CheckboxMenuItem("Scroll", false);
-    copyActionListener = new VTGraphicalConsoleCopyActionListener();
-    allActionListener = new VTGraphicalConsoleCopyAllActionListener();
-    pasteActionListener = new VTGraphicalConsolePasteActionListener();
+    copyActionListener = new VTGraphicalConsoleCopyActionListener(console);
+    allActionListener = new VTGraphicalConsoleCopyAllActionListener(console);
+    pasteActionListener = new VTGraphicalConsolePasteActionListener(console);
     copy.addActionListener(copyActionListener);
     paste.addActionListener(pasteActionListener);
     all.addActionListener(allActionListener);
@@ -53,14 +57,14 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.toggleFlushMode();
+        console.toggleFlushMode();
       }
     });
     insert.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTConsole.toggleInputMode();
+        console.toggleInputMode();
       }
     });
 //		expand.addActionListener(new ActionListener()
@@ -95,7 +99,7 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
   
   public void show(Component origin, int x, int y)
   {
-    if (VTConsole.isFlushModePause())
+    if (console.isFlushModePause())
     {
       scroll.setLabel("Resume ");
     }
@@ -104,7 +108,7 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
       scroll.setLabel("Pause ");
     }
     
-    if (VTConsole.isInputModeReplace())
+    if (console.isInputModeReplace())
     {
       insert.setLabel("Insert ");
     }

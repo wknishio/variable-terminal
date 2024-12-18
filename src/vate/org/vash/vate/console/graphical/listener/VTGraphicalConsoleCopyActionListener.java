@@ -5,14 +5,16 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTConsoleImplementation;
 
 public class VTGraphicalConsoleCopyActionListener implements ActionListener
 {
   private Clipboard systemClipboard;
+  private final VTConsoleImplementation console;
   
-  public VTGraphicalConsoleCopyActionListener()
+  public VTGraphicalConsoleCopyActionListener(final VTConsoleImplementation console)
   {
+    this.console = console;
     systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
   }
   
@@ -21,7 +23,7 @@ public class VTGraphicalConsoleCopyActionListener implements ActionListener
     
     try
     {
-      StringSelection text = new StringSelection(VTConsole.getSelectedText());
+      StringSelection text = new StringSelection(console.getSelectedText());
       systemClipboard.setContents(text, null);
       // System.out.println("copy:" + text.toString());
       // VTConsole.flush();

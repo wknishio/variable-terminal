@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import org.vash.vate.VT;
 import org.vash.vate.client.dialog.VTClientConfigurationDialog;
 import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTConsoleImplementation;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuItem;
 import org.vash.vate.dialog.VTFileDialog;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuBar;
@@ -65,8 +66,9 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
   private Menu audioLinkSoundMenu;
   private Menu helpMenu;
   
-  public VTClientRemoteGraphicalConsoleMenuBar(final VTClientConfigurationDialog connectionDialog)
+  public VTClientRemoteGraphicalConsoleMenuBar(final VTConsoleImplementation console, final VTClientConfigurationDialog connectionDialog)
   {
+    super(console);
     removeAllMenus();
     // this.dialog = dialog;
     // this.frame = frame;
@@ -77,7 +79,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     // true));
     
     graphicalSystemsMenu = new Menu("Graphical ");
-    graphicalSystemsMenu.add(new VTGraphicalConsoleMenuItem("List Remote Display Devices", "*VTDISPLAY\n"));
+    graphicalSystemsMenu.add(new VTGraphicalConsoleMenuItem(console, "List Remote Display Devices", "*VTDISPLAY\n"));
     graphicsModeMenu = new Menu("Remote Graphics Link ");
     screenCaptureMenu = new Menu("Remote Screen Capture ");
     screenAlertMenu = new Menu("Remote Screen Alert ");
@@ -92,46 +94,46 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     graphicalSystemsMenu.add(printApplicationMenu);
     screenCaptureMenu.add(cleanScreenCaptureMenu);
     screenCaptureMenu.add(pointerScreenCaptureMenu);
-    graphicsModeMenu.add(new VTGraphicalConsoleMenuItem("Toggle Graphics Link", "*VTGRAPHICSLINK\n"));
-    graphicsModeMenu.add(new VTGraphicalConsoleMenuItem("View Graphics Link", "*VTGRAPHICSLINK V\n"));
-    graphicsModeMenu.add(new VTGraphicalConsoleMenuItem("Control Graphics Link", "*VTGRAPHICSLINK C\n"));
-    graphicsModeMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTGRAPHICSLINK\n"));
+    graphicsModeMenu.add(new VTGraphicalConsoleMenuItem(console, "Toggle Graphics Link", "*VTGRAPHICSLINK\n"));
+    graphicsModeMenu.add(new VTGraphicalConsoleMenuItem(console, "View Graphics Link", "*VTGRAPHICSLINK V\n"));
+    graphicsModeMenu.add(new VTGraphicalConsoleMenuItem(console, "Control Graphics Link", "*VTGRAPHICSLINK C\n"));
+    graphicsModeMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTGRAPHICSLINK\n"));
     
-    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("True-24-Bit Color Quality", "*VTSCREENSHOT CT "));
-    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Ultra-21-Bit Color Quality", "*VTSCREENSHOT CU "));
-    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Vast-18-Bit Color Quality", "*VTSCREENSHOT CV "));
-    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("High-15-Bit Color Quality", "*VTSCREENSHOT CH "));
-    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Extra-12-Bit Color Quality", "*VTSCREENSHOT CE "));
-    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Next-9-Bit Color Quality", "*VTSCREENSHOT CN "));
-    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Medium-8-Bit Color Quality", "*VTSCREENSHOT CM "));
-    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Simple-7-Bit Color Quality", "*VTSCREENSHOT CS "));
-    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Few-6-Bit Color Quality", "*VTSCREENSHOT CF "));
-    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Low-5-Bit Color Quality", "*VTSCREENSHOT CL "));
-    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Gray-4-Bit Color Quality", "*VTSCREENSHOT CG "));
-    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Dull-3-Bit Color Quality", "*VTSCREENSHOT CD "));
-    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Worst-2-Bit Color Quality", "*VTSCREENSHOT CW "));
+    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "True-24-Bit Color Quality", "*VTSCREENSHOT CT "));
+    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Ultra-21-Bit Color Quality", "*VTSCREENSHOT CU "));
+    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Vast-18-Bit Color Quality", "*VTSCREENSHOT CV "));
+    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "High-15-Bit Color Quality", "*VTSCREENSHOT CH "));
+    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Extra-12-Bit Color Quality", "*VTSCREENSHOT CE "));
+    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Next-9-Bit Color Quality", "*VTSCREENSHOT CN "));
+    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Medium-8-Bit Color Quality", "*VTSCREENSHOT CM "));
+    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Simple-7-Bit Color Quality", "*VTSCREENSHOT CS "));
+    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Few-6-Bit Color Quality", "*VTSCREENSHOT CF "));
+    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Low-5-Bit Color Quality", "*VTSCREENSHOT CL "));
+    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Gray-4-Bit Color Quality", "*VTSCREENSHOT CG "));
+    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Dull-3-Bit Color Quality", "*VTSCREENSHOT CD "));
+    pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Worst-2-Bit Color Quality", "*VTSCREENSHOT CW "));
     
-    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("True-24-Bit Color Quality", "*VTSCREENSHOT OT "));
-    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Ultra-21-Bit Color Quality", "*VTSCREENSHOT OU "));
-    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Vast-18-Bit Color Quality", "*VTSCREENSHOT OV "));
-    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("High-15-Bit Color Quality", "*VTSCREENSHOT OH "));
-    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Extra-12-Bit Color Quality", "*VTSCREENSHOT OE "));
-    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Next-9-Bit Color Quality", "*VTSCREENSHOT ON "));
-    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Medium-8-Bit Color Quality", "*VTSCREENSHOT OM "));
-    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Simple-7-Bit Color Quality", "*VTSCREENSHOT OS "));
-    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Few-6-Bit Color Quality", "*VTSCREENSHOT OF "));
-    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Low-5-Bit Color Quality", "*VTSCREENSHOT OL "));
-    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Gray-4-Bit Color Quality", "*VTSCREENSHOT OG "));
-    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Dull-3-Bit Color Quality", "*VTSCREENSHOT OD "));
-    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Worst-2-Bit Color Quality", "*VTSCREENSHOT OW "));
+    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "True-24-Bit Color Quality", "*VTSCREENSHOT OT "));
+    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Ultra-21-Bit Color Quality", "*VTSCREENSHOT OU "));
+    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Vast-18-Bit Color Quality", "*VTSCREENSHOT OV "));
+    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "High-15-Bit Color Quality", "*VTSCREENSHOT OH "));
+    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Extra-12-Bit Color Quality", "*VTSCREENSHOT OE "));
+    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Next-9-Bit Color Quality", "*VTSCREENSHOT ON "));
+    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Medium-8-Bit Color Quality", "*VTSCREENSHOT OM "));
+    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Simple-7-Bit Color Quality", "*VTSCREENSHOT OS "));
+    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Few-6-Bit Color Quality", "*VTSCREENSHOT OF "));
+    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Low-5-Bit Color Quality", "*VTSCREENSHOT OL "));
+    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Gray-4-Bit Color Quality", "*VTSCREENSHOT OG "));
+    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Dull-3-Bit Color Quality", "*VTSCREENSHOT OD "));
+    cleanScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Worst-2-Bit Color Quality", "*VTSCREENSHOT OW "));
     
-    screenCaptureMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSCREENSHOT\n"));
-    screenAlertMenu.add(new VTGraphicalConsoleMenuItem("Show Alert", "*VTSCREENALERT "));
-    screenAlertMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSCREENALERT\n"));
-    browseMenu.add(new VTGraphicalConsoleMenuItem("Browse URI", "*VTBROWSE "));
-    browseMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTBROWSE\n"));
-    printApplicationMenu.add(new VTGraphicalConsoleMenuItem("Compose Email", "*VTMAIL "));
-    printApplicationMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTMAIL\n"));
+    screenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTSCREENSHOT\n"));
+    screenAlertMenu.add(new VTGraphicalConsoleMenuItem(console, "Show Alert", "*VTSCREENALERT "));
+    screenAlertMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTSCREENALERT\n"));
+    browseMenu.add(new VTGraphicalConsoleMenuItem(console, "Browse URI", "*VTBROWSE "));
+    browseMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTBROWSE\n"));
+    printApplicationMenu.add(new VTGraphicalConsoleMenuItem(console, "Compose Email", "*VTMAIL "));
+    printApplicationMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTMAIL\n"));
     
     fileSystemMenu = new Menu("File ");
     fileTransferMenu = new Menu("File Transfer ");
@@ -154,34 +156,34 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     fileSystemMenu.add(fileMenu);
     // fileSystemMenu.add(zipFileMenu);
     
-    fileTransferMenu.add(new VTGraphicalConsoleMenuItem("Send File To Server", "*VTFILETRANSFER P"));
-    fileTransferMenu.add(new VTGraphicalConsoleMenuItem("Receive File From Server", "*VTFILETRANSFER G"));
-    fileTransferMenu.add(new VTGraphicalConsoleMenuItem("Report File Transfer", "*VTFILETRANSFER\n"));
-    fileTransferMenu.add(new VTGraphicalConsoleMenuItem("Stop File Transfer", "*VTFILETRANSFER S\n"));
-    fileTransferMenu.add(new VTGraphicalConsoleMenuItem("Wait File Transfer", "*VTFILETRANSFER W"));
-    fileTransferMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTFILETRANSFER\n"));
+    fileTransferMenu.add(new VTGraphicalConsoleMenuItem(console, "Send File To Server", "*VTFILETRANSFER P"));
+    fileTransferMenu.add(new VTGraphicalConsoleMenuItem(console, "Receive File From Server", "*VTFILETRANSFER G"));
+    fileTransferMenu.add(new VTGraphicalConsoleMenuItem(console, "Report File Transfer", "*VTFILETRANSFER\n"));
+    fileTransferMenu.add(new VTGraphicalConsoleMenuItem(console, "Stop File Transfer", "*VTFILETRANSFER S\n"));
+    fileTransferMenu.add(new VTGraphicalConsoleMenuItem(console, "Wait File Transfer", "*VTFILETRANSFER W"));
+    fileTransferMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTFILETRANSFER\n"));
     // clientFileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("Set
     // Working
     // Directory", "*VTWORKDIRECTORY L "));
     // remoteFileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("Set
     // Working
     // Directory", "*VTWORKDIRECTORY R "));
-    fileCheckMenu.add(new VTGraphicalConsoleMenuItem("List File System Roots", "*VTFILESEEK L\n"));
-    fileCheckMenu.add(new VTGraphicalConsoleMenuItem("Show File Information", "*VTFILESEEK I "));
-    fileCheckMenu.add(new VTGraphicalConsoleMenuItem("List Directory Contents", "*VTFILESEEK L "));
-    fileCheckMenu.add(new VTGraphicalConsoleMenuItem("Report File Seek", "*VTFILESEEK\n"));
-    fileCheckMenu.add(new VTGraphicalConsoleMenuItem("Stop File Seek", "*VTFILESEEK S\n"));
-    fileCheckMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTFILESEEK\n"));
+    fileCheckMenu.add(new VTGraphicalConsoleMenuItem(console, "List File System Roots", "*VTFILESEEK L\n"));
+    fileCheckMenu.add(new VTGraphicalConsoleMenuItem(console, "Show File Information", "*VTFILESEEK I "));
+    fileCheckMenu.add(new VTGraphicalConsoleMenuItem(console, "List Directory Contents", "*VTFILESEEK L "));
+    fileCheckMenu.add(new VTGraphicalConsoleMenuItem(console, "Report File Seek", "*VTFILESEEK\n"));
+    fileCheckMenu.add(new VTGraphicalConsoleMenuItem(console, "Stop File Seek", "*VTFILESEEK S\n"));
+    fileCheckMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTFILESEEK\n"));
     
-    fileModifyMenu.add(new VTGraphicalConsoleMenuItem("Create Empty Directory", "*VTFILEALTER D "));
-    fileModifyMenu.add(new VTGraphicalConsoleMenuItem("Create Empty File", "*VTFILEALTER F "));
-    fileModifyMenu.add(new VTGraphicalConsoleMenuItem("Remove File", "*VTFILEALTER R "));
-    fileModifyMenu.add(new VTGraphicalConsoleMenuItem("Move File", "*VTFILEALTER M "));
-    fileModifyMenu.add(new VTGraphicalConsoleMenuItem("Copy File", "*VTFILEALTER C "));
-    fileModifyMenu.add(new VTGraphicalConsoleMenuItem("Report File Change", "*VTFILEALTER\n"));
-    fileModifyMenu.add(new VTGraphicalConsoleMenuItem("Stop File Change", "*VTFILEALTER S\n"));
-    fileModifyMenu.add(new VTGraphicalConsoleMenuItem("Wait File Change", "*VTFILEALTER W"));
-    fileModifyMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTFILEALTER\n"));
+    fileModifyMenu.add(new VTGraphicalConsoleMenuItem(console, "Create Empty Directory", "*VTFILEALTER D "));
+    fileModifyMenu.add(new VTGraphicalConsoleMenuItem(console, "Create Empty File", "*VTFILEALTER F "));
+    fileModifyMenu.add(new VTGraphicalConsoleMenuItem(console, "Remove File", "*VTFILEALTER R "));
+    fileModifyMenu.add(new VTGraphicalConsoleMenuItem(console, "Move File", "*VTFILEALTER M "));
+    fileModifyMenu.add(new VTGraphicalConsoleMenuItem(console, "Copy File", "*VTFILEALTER C "));
+    fileModifyMenu.add(new VTGraphicalConsoleMenuItem(console, "Report File Change", "*VTFILEALTER\n"));
+    fileModifyMenu.add(new VTGraphicalConsoleMenuItem(console, "Stop File Change", "*VTFILEALTER S\n"));
+    fileModifyMenu.add(new VTGraphicalConsoleMenuItem(console, "Wait File Change", "*VTFILEALTER W"));
+    fileModifyMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTFILEALTER\n"));
     
     // zipFileLocalMenu.add(new VTGraphicalConsoleMenuItem("Compress Zip File",
     // "*VTZIP L C "));
@@ -206,36 +208,36 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     // Operation", "*VTZIP R S\n"));
     
     sessionMenu = new Menu("Session ");
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("Disconnect From Server", "*VTEXIT\n"));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Client Application", "*VTQUIT\n"));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("Close Server Application", "*VTSTOP\n"));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("Toggle Server Cover", "*VTCOVER\n"));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("Save Client Settings File", "*VTSAVE "));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("Detect Chained Sessions", "*VTCHAIN\n"));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("List Connected Clients", "*VTUSER\n"));
-    sessionMenu.add(new VTGraphicalConsoleMenuItem("Send Message To Server", "*VTTEXT "));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Disconnect From Server", "*VTEXIT\n"));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Close Client Application", "*VTQUIT\n"));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Close Server Application", "*VTSTOP\n"));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Toggle Server Cover", "*VTCOVER\n"));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Save Client Settings File", "*VTSAVE "));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Detect Chained Sessions", "*VTCHAIN\n"));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "List Connected Clients", "*VTUSER\n"));
+    sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Send Message To Server", "*VTTEXT "));
     
     consoleMenu = new Menu("Console ");
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Clear Remote Console", "*VTCLEAR\n"));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Toggle Console Echo", "*VTECHO\n"));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Show Remote System Time", "*VTDATE\n"));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Pause Local Console", "*VTPAUSE "));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Execute Commands In Files", "*VTREAD "));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Commands To File", "*VTLOG "));
-    consoleMenu.add(new VTGraphicalConsoleMenuItem("Record Console To File", "*VTOUT "));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Clear Remote Console", "*VTCLEAR\n"));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Toggle Console Echo", "*VTECHO\n"));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Show Remote System Time", "*VTDATE\n"));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Pause Local Console", "*VTPAUSE "));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Execute Commands In Files", "*VTREAD "));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Record Commands To File", "*VTLOG "));
+    consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Record Console To File", "*VTOUT "));
     // consoleMenu.add(new VTGraphicalConsoleMenuItem("Toggle Remote Console
     // Echo",
     // "*VTECHO\n"));
     shellMenu = new Menu("Shell ");
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Run Remote Shell", "*VTSHELL R\n"));
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Stop Remote Shell", "*VTSHELL S\n"));
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Set Custom Remote Shell", "*VTSHELL C "));
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Set Default Remote Shell", "*VTSHELL D\n"));
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Set BeanShell Remote Shell", "*VTSHELL B\n"));
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Disable Remote Shell", "*VTSHELL N\n"));
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Set Remote Shell Directory", "*VTSHELL P "));
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Set Remote Shell Encoding", "*VTSHELL E "));
-    shellMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSHELL\n"));
+    shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Run Remote Shell", "*VTSHELL R\n"));
+    shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Stop Remote Shell", "*VTSHELL S\n"));
+    shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Custom Remote Shell", "*VTSHELL C "));
+    shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Default Remote Shell", "*VTSHELL D\n"));
+    shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Set BeanShell Remote Shell", "*VTSHELL B\n"));
+    shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Disable Remote Shell", "*VTSHELL N\n"));
+    shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Remote Shell Directory", "*VTSHELL P "));
+    shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Remote Shell Encoding", "*VTSHELL E "));
+    shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTSHELL\n"));
     
     // settingsMenu = new Menu("Settings ");
     settingsMenu = new Menu("Setting ");
@@ -244,107 +246,107 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     proxySettingsMenu = new Menu("Proxy ");
     encryptionSettingsMenu = new Menu("Encryption ");
     sessionsSettingsMenu = new Menu("Session ");
-    settingsMenu.add(new VTGraphicalConsoleMenuItem("List Server Settings", "*VTSETTING\n"));
+    settingsMenu.add(new VTGraphicalConsoleMenuItem(console, "List Server Settings", "*VTSETTING\n"));
     settingsMenu.add(connectionSettingsMenu);
     // remoteSettingsMenu.add(remoteAuthenticationSettingsMenu);
     settingsMenu.add(proxySettingsMenu);
     settingsMenu.add(encryptionSettingsMenu);
     settingsMenu.add(sessionsSettingsMenu);
-    connectionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Mode", "*VTSETTING CM "));
-    connectionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Host", "*VTSETTING CH "));
-    connectionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Port", "*VTSETTING CP "));
-    connectionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Connection NAT Port", "*VTSETTING CN "));
-    proxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Type", "*VTSETTING PT "));
-    proxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Host", "*VTSETTING PH "));
-    proxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Port", "*VTSETTING PP "));
-    proxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Authentication", "*VTSETTING PA "));
-    proxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy User", "*VTSETTING PU "));
-    proxySettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Proxy Password", "*VTSETTING PK "));
-    encryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Type", "*VTSETTING ET "));
-    encryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Encryption Password", "*VTSETTING EK "));
-    sessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Shell", "*VTSETTING SS "));
-    sessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Maximum", "*VTSETTING SM "));
-    sessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem("Set Session Accounts", "*VTSETTING SA "));
-    settingsMenu.add(new VTGraphicalConsoleMenuItem("Save Settings File", "*VTSETTING SF "));
-    settingsMenu.add(new VTGraphicalConsoleMenuItem("Load Settings File", "*VTSETTING LF "));
-    settingsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTSETTING\n"));
+    connectionSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Mode", "*VTSETTING CM "));
+    connectionSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Host", "*VTSETTING CH "));
+    connectionSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Port", "*VTSETTING CP "));
+    connectionSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection NAT Port", "*VTSETTING CN "));
+    proxySettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Proxy Type", "*VTSETTING PT "));
+    proxySettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Proxy Host", "*VTSETTING PH "));
+    proxySettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Proxy Port", "*VTSETTING PP "));
+    proxySettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Proxy Authentication", "*VTSETTING PA "));
+    proxySettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Proxy User", "*VTSETTING PU "));
+    proxySettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Proxy Password", "*VTSETTING PK "));
+    encryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Encryption Type", "*VTSETTING ET "));
+    encryptionSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Encryption Password", "*VTSETTING EK "));
+    sessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Session Shell", "*VTSETTING SS "));
+    sessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Session Maximum", "*VTSETTING SM "));
+    sessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Session Accounts", "*VTSETTING SA "));
+    settingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Save Settings File", "*VTSETTING SF "));
+    settingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Load Settings File", "*VTSETTING LF "));
+    settingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTSETTING\n"));
     // settingsMenu.add(remoteSettingsMenu);
     
     runtimeMenu = new Menu("Runtime ");
     manageRuntimeMenu = new Menu("Remote Process Control ");
-    runtimeMenu.add(new VTGraphicalConsoleMenuItem("Set Remote Environment Variables", "*VTVARIABLE "));
-    runtimeMenu.add(new VTGraphicalConsoleMenuItem("Set Remote Java Properties", "*VTPROPERTY "));
+    runtimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Remote Environment Variables", "*VTVARIABLE "));
+    runtimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Remote Java Properties", "*VTPROPERTY "));
     runtimeMenu.add(manageRuntimeMenu);
-    manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Create Managed Process", "*VTRUNTIME M"));
-    manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Create Free Process", "*VTRUNTIME F"));
-    manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("List Managed Processes", "*VTRUNTIME LA\n"));
-    manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Stop Managed Processes", "*VTRUNTIME SA\n"));
-    manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Drop Managed Processes", "*VTRUNTIME DA\n"));
-    manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Set Runtime Path", "*VTRUNTIME P "));
-    manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTRUNTIME\n"));
+    manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Create Managed Process", "*VTRUNTIME M"));
+    manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Create Free Process", "*VTRUNTIME F"));
+    manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "List Managed Processes", "*VTRUNTIME LA\n"));
+    manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Stop Managed Processes", "*VTRUNTIME SA\n"));
+    manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Drop Managed Processes", "*VTRUNTIME DA\n"));
+    manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Runtime Path", "*VTRUNTIME P "));
+    manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTRUNTIME\n"));
     
     performanceMenu = new Menu("Rate ");
-    performanceMenu.add(new VTGraphicalConsoleMenuItem("Check Connection Latency", "*VTPING\n"));
-    performanceMenu.add(new VTGraphicalConsoleMenuItem("Set Connection Rate Limits", "*VTLIMIT "));
-    performanceMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTPING\n*VTHELP *VTLIMIT\n"));
+    performanceMenu.add(new VTGraphicalConsoleMenuItem(console, "Check Connection Latency", "*VTPING\n"));
+    performanceMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Rate Limits", "*VTLIMIT "));
+    performanceMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTPING\n*VTHELP *VTLIMIT\n"));
     
     networkMenu = new Menu("Network ");
     
     networkInterfacesMenu = new Menu("List Valid Network Interfaces ");
-    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Remote Network Interfaces", "*VTNETWORK R\n"));
-    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Local Network Interfaces", "*VTNETWORK L\n"));
-    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem("Any Network Interfaces", "*VTNETWORK\n"));
+    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem(console, "Remote Network Interfaces", "*VTNETWORK R\n"));
+    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem(console, "Local Network Interfaces", "*VTNETWORK L\n"));
+    networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem(console, "Any Network Interfaces", "*VTNETWORK\n"));
     
     networkTunnelsMenu = new Menu("Connection Network Tunnels ");
     // remoteSOCKSTunnelsMenu = new Menu("Connection SOCKS Tunnels ");
     
-    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("List Any Tunnels", "*VTTUNNEL\n"));
-    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Local To Remote", "*VTTUNNEL L "));
-    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Set Remote To Local", "*VTTUNNEL R "));
-    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTTUNNEL\n"));
+    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "List Any Tunnels", "*VTTUNNEL\n"));
+    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Local To Remote", "*VTTUNNEL L "));
+    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Remote To Local", "*VTTUNNEL R "));
+    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTTUNNEL\n"));
     
     networkMenu.add(networkInterfacesMenu);
-    networkMenu.add(new VTGraphicalConsoleMenuItem("Resolve Remote Network Host", "*VTHOST "));
+    networkMenu.add(new VTGraphicalConsoleMenuItem(console, "Resolve Remote Network Host", "*VTHOST "));
     networkMenu.add(networkTunnelsMenu);
     
     printMenu = new Menu("Print ");
-    printMenu.add(new VTGraphicalConsoleMenuItem("List Remote Printers", "*VTPRINTER\n"));
-    printMenu.add(new VTGraphicalConsoleMenuItem("Detail Remote Printer", "*VTPRINTER "));
-    printMenu.add(new VTGraphicalConsoleMenuItem("Print Text In Remote Printer", "*VTPRINTDATA T "));
-    printMenu.add(new VTGraphicalConsoleMenuItem("Print File In Remote Printer", "*VTPRINTDATA F "));
-    printMenu.add(new VTGraphicalConsoleMenuItem("Stop Remote Printer Task", "*VTPRINTDATA S\n"));
-    printMenu.add(new VTGraphicalConsoleMenuItem("Wait Remote Printer Task", "*VTPRINTDATA W"));
-    printMenu.add(new VTGraphicalConsoleMenuItem("Commands Usage", "*VTHELP *VTPRINTER\n*VTHELP *VTPRINTDATA\n"));
+    printMenu.add(new VTGraphicalConsoleMenuItem(console, "List Remote Printers", "*VTPRINTER\n"));
+    printMenu.add(new VTGraphicalConsoleMenuItem(console, "Detail Remote Printer", "*VTPRINTER "));
+    printMenu.add(new VTGraphicalConsoleMenuItem(console, "Print Text In Remote Printer", "*VTPRINTDATA T "));
+    printMenu.add(new VTGraphicalConsoleMenuItem(console, "Print File In Remote Printer", "*VTPRINTDATA F "));
+    printMenu.add(new VTGraphicalConsoleMenuItem(console, "Stop Remote Printer Task", "*VTPRINTDATA S\n"));
+    printMenu.add(new VTGraphicalConsoleMenuItem(console, "Wait Remote Printer Task", "*VTPRINTDATA W"));
+    printMenu.add(new VTGraphicalConsoleMenuItem(console, "Commands Usage", "*VTHELP *VTPRINTER\n*VTHELP *VTPRINTDATA\n"));
     
     audioSoundMenu = new Menu("Audio ");
     
     audioMixersSoundMenu = new Menu("List Valid Audio Mixers ");
-    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Remote Audio Mixers", "*VTMIXER R\n"));
-    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Local Audio Mixers", "*VTMIXER L\n"));
-    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem("Any Audio Mixers", "*VTMIXER\n"));
+    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem(console, "Remote Audio Mixers", "*VTMIXER R\n"));
+    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem(console, "Local Audio Mixers", "*VTMIXER L\n"));
+    audioMixersSoundMenu.add(new VTGraphicalConsoleMenuItem(console, "Any Audio Mixers", "*VTMIXER\n"));
     audioSoundMenu.add(audioMixersSoundMenu);
     
     //audioSoundMenu.add(new VTGraphicalConsoleMenuItem("Ring Remote Terminal Bell", "*VTBELL\n"));
     beepSoundMenu = new Menu("Remote Audio Beep ");
-    beepSoundMenu.add(new VTGraphicalConsoleMenuItem("Play Default Beep", "*VTBEEP\n"));
-    beepSoundMenu.add(new VTGraphicalConsoleMenuItem("Play Custom Beep", "*VTBEEP "));
-    beepSoundMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTBEEP\n"));
+    beepSoundMenu.add(new VTGraphicalConsoleMenuItem(console, "Play Default Beep", "*VTBEEP\n"));
+    beepSoundMenu.add(new VTGraphicalConsoleMenuItem(console, "Play Custom Beep", "*VTBEEP "));
+    beepSoundMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTBEEP\n"));
     audioSoundMenu.add(beepSoundMenu);
     
     audioLinkSoundMenu = new Menu("Remote Audio Link ");
-    audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Toggle Audio Link", "*VTAUDIOLINK\n"));
-    audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Configure Audio Link", "*VTAUDIOLINK "));
-    audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem("Command Usage", "*VTHELP *VTAUDIOLINK\n"));
+    audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem(console, "Toggle Audio Link", "*VTAUDIOLINK\n"));
+    audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem(console, "Configure Audio Link", "*VTAUDIOLINK "));
+    audioLinkSoundMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTAUDIOLINK\n"));
     audioSoundMenu.add(audioLinkSoundMenu);
     
     opticalDriveMenu = new Menu("Disc ");
-    opticalDriveMenu.add(new VTGraphicalConsoleMenuItem("Open Remote Disc Drive", "*VTDISCTRAY O\n"));
-    opticalDriveMenu.add(new VTGraphicalConsoleMenuItem("Close Remote Disc Drive", "*VTDISCTRAY C\n"));
+    opticalDriveMenu.add(new VTGraphicalConsoleMenuItem(console, "Open Remote Disc Drive", "*VTDISCTRAY O\n"));
+    opticalDriveMenu.add(new VTGraphicalConsoleMenuItem(console, "Close Remote Disc Drive", "*VTDISCTRAY C\n"));
     
     helpMenu = new Menu("Help ");
-    helpMenu.add(new VTGraphicalConsoleMenuItem("Complete Commands", "*VTHELP\n"));
-    helpMenu.add(new VTGraphicalConsoleMenuItem("Abbreviated Commands", "*VTHL\n"));
-    helpMenu.add(new VTGraphicalConsoleMenuItem("Specific Command", "*VTHELP "));
+    helpMenu.add(new VTGraphicalConsoleMenuItem(console, "Complete Commands", "*VTHELP\n"));
+    helpMenu.add(new VTGraphicalConsoleMenuItem(console, "Abbreviated Commands", "*VTHL\n"));
+    helpMenu.add(new VTGraphicalConsoleMenuItem(console, "Specific Command", "*VTHELP "));
     
     clientConsoleCommandsMenu.add(sessionMenu);
     // clientConsoleCommandsMenu.add(settingsMenu);
