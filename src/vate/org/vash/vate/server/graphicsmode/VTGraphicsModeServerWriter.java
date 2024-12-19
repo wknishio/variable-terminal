@@ -38,7 +38,7 @@ import com.pngencoder.PngEncoder;
 
 public class VTGraphicsModeServerWriter implements Runnable
 {
-  private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.PADDING_SIZE;
+  private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CODEC_PADDING_SIZE;
   private static final int IMAGE_OUTPUT_BUFFER_SIZE = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
   private volatile boolean stopped;
   private boolean needRefresh;
@@ -1121,8 +1121,8 @@ public class VTGraphicsModeServerWriter implements Runnable
                   {
                     different = !VTImageDataUtils.deltaArea(previousImageBufferInt, lastImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
                   }
-                  resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
-                  resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
+                  //resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
+                  //resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
                   if (different)
                   {
                     sendCustomDifference();
@@ -1188,8 +1188,8 @@ public class VTGraphicsModeServerWriter implements Runnable
                     VTImageIO.clearBuffer(previousImageBufferInt, BufferedImage.TYPE_INT_RGB, lastColors, 0);
                     VTImageDataUtils.deltaArea(lastImageBufferInt, previousImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
                   }
-                  resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
-                  resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
+                  //resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
+                  //resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
                   sendCustomRefresh();
                   System.runFinalization();
                   System.gc();

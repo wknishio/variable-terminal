@@ -2162,13 +2162,13 @@ public final class VTAWTScreenCaptureProvider
     //sectionPixelBufferShort = ((DataBufferUShort) screenCapture.getRaster().getDataBuffer()).getData();
     
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int minX = 0;
-    int minY = 0;
-    if (padding > 0)
-    {
-      minX = padding;
-      minY = padding;
-    }
+//    int minX = 0;
+//    int minY = 0;
+//    if (padding > 0)
+//    {
+//      minX = padding;
+//      minY = padding;
+//    }
 //    int destinationOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
 //    int destinationIndex = destinationOffset;
 //    int sourceIndex = 0;
@@ -2180,7 +2180,7 @@ public final class VTAWTScreenCaptureProvider
 //      destinationIndex += screenCurrentImage.getWidth() + minX;
 //    }
     
-    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+    int startOffset = captureArea.x + padding + (screenCurrentImage.getWidth() + padding) * (captureArea.y + padding);
     int currentWidth = 0;
     int currentHeight = 0;
     
@@ -2189,7 +2189,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth() + minX;
+        currentHeight += screenCurrentImage.getWidth() + padding;
       }
       
       //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
@@ -2244,13 +2244,13 @@ public final class VTAWTScreenCaptureProvider
     //sectionPixelBufferShort = ((DataBufferUShort) screenCapture.getRaster().getDataBuffer()).getData();
     
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int minX = 0;
-    int minY = 0;
-    if (padding > 0)
-    {
-      minX = padding;
-      minY = padding;
-    }
+//    int minX = 0;
+//    int minY = 0;
+//    if (padding > 0)
+//    {
+//      minX = padding;
+//      minY = padding;
+//    }
 //    int destinationOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
 //    int destinationIndex = destinationOffset;
 //    int sourceIndex = 0;
@@ -2262,7 +2262,7 @@ public final class VTAWTScreenCaptureProvider
 //      destinationIndex += screenCurrentImage.getWidth() + minX;
 //    }
     
-    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+    int startOffset = captureArea.x + padding + (screenCurrentImage.getWidth() + padding) * (captureArea.y + padding);
     int currentWidth = 0;
     int currentHeight = 0;
     
@@ -2271,7 +2271,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth() + minX;
+        currentHeight += screenCurrentImage.getWidth() + padding;
       }
       
       //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
@@ -2326,13 +2326,13 @@ public final class VTAWTScreenCaptureProvider
     //sectionPixelBufferShort = ((DataBufferUShort) screenCapture.getRaster().getDataBuffer()).getData();
     
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int minX = 0;
-    int minY = 0;
-    if (padding > 0)
-    {
-      minX = padding;
-      minY = padding;
-    }
+//    int minX = 0;
+//    int minY = 0;
+//    if (padding > 0)
+//    {
+//      minX = padding;
+//      minY = padding;
+//    }
 //    int destinationOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
 //    int destinationIndex = destinationOffset;
 //    int sourceIndex = 0;
@@ -2344,7 +2344,7 @@ public final class VTAWTScreenCaptureProvider
 //      destinationIndex += screenCurrentImage.getWidth() + minX;
 //    }
     
-    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+    int startOffset = captureArea.x + padding + (screenCurrentImage.getWidth() + padding) * (captureArea.y + padding);
     int currentWidth = 0;
     int currentHeight = 0;
     
@@ -2353,7 +2353,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth() + minX;
+        currentHeight += screenCurrentImage.getWidth() + padding;
       }
       
       //pixelBufferByte[startOffset + currentWidth + currentHeight] = (byte) ((sectionPixelBufferByte[i]));
@@ -2424,13 +2424,13 @@ public final class VTAWTScreenCaptureProvider
     }
     
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int minX = 0;
-    int minY = 0;
-    if (padding > 0)
-    {
-      minX = padding;
-      minY = padding;
-    }
+//    int minX = 0;
+//    int minY = 0;
+//    if (padding > 0)
+//    {
+//      minX = padding;
+//      minY = padding;
+//    }
 //    int destinationOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
 //    int destinationIndex = destinationOffset;
 //    int sourceIndex = 0;
@@ -2442,7 +2442,7 @@ public final class VTAWTScreenCaptureProvider
 //      destinationIndex += screenCurrentImage.getWidth() + minX;
 //    }
     
-    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+    int startOffset = captureArea.x + padding + (screenCurrentImage.getWidth() + padding) * (captureArea.y + padding);
     int currentWidth = 0;
     int currentHeight = 0;
     
@@ -2451,7 +2451,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth() + minX;
+        currentHeight += screenCurrentImage.getWidth() + padding;
       }
       
       red = (((((sectionPixelBufferInt[i] & RGB888_RED_MASK) >> 16) * 6) >> 8) * 36);
@@ -2523,14 +2523,14 @@ public final class VTAWTScreenCaptureProvider
     }
     
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int minX = 0;
-    int minY = 0;
-    if (padding > 0)
-    {
-      minX = padding;
-      minY = padding;
-    }
-    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+//    int minX = 0;
+//    int minY = 0;
+//    if (padding > 0)
+//    {
+//      minX = padding;
+//      minY = padding;
+//    }
+    int startOffset = captureArea.x + padding + (screenCurrentImage.getWidth() + padding) * (captureArea.y + padding);
     int currentWidth = 0;
     int currentHeight = 0;
     
@@ -2539,7 +2539,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth() + minX;
+        currentHeight += screenCurrentImage.getWidth() + padding;
       }
       
       red = ((sectionPixelBufferInt[i] & RGB222_RED_MASK) >> 18);
@@ -2610,14 +2610,14 @@ public final class VTAWTScreenCaptureProvider
     }
     
     pixelBufferShort = ((DataBufferUShort) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int minX = 0;
-    int minY = 0;
-    if (padding > 0)
-    {
-      minX = padding;
-      minY = padding;
-    }
-    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+//    int minX = 0;
+//    int minY = 0;
+//    if (padding > 0)
+//    {
+//      minX = padding;
+//      minY = padding;
+//    }
+    int startOffset = captureArea.x + padding + (screenCurrentImage.getWidth() + padding) * (captureArea.y + padding);
     int currentWidth = 0;
     int currentHeight = 0;
     
@@ -2626,7 +2626,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth() + minX;
+        currentHeight += screenCurrentImage.getWidth() + padding;
       }
       
       red = ((sectionPixelBufferInt[i] & RGB333_RED_MASK) >> 15);
@@ -2697,14 +2697,14 @@ public final class VTAWTScreenCaptureProvider
     }
     
     pixelBufferShort = ((DataBufferUShort) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int minX = 0;
-    int minY = 0;
-    if (padding > 0)
-    {
-      minX = padding;
-      minY = padding;
-    }
-    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+//    int minX = 0;
+//    int minY = 0;
+//    if (padding > 0)
+//    {
+//      minX = padding;
+//      minY = padding;
+//    }
+    int startOffset = captureArea.x + padding + (screenCurrentImage.getWidth() + padding) * (captureArea.y + padding);
     int currentWidth = 0;
     int currentHeight = 0;
     
@@ -2713,7 +2713,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth() + minX;
+        currentHeight += screenCurrentImage.getWidth() + padding;
       }
       
       red = ((sectionPixelBufferInt[i] & RGB444_RED_MASK) >> 12);
@@ -2784,14 +2784,14 @@ public final class VTAWTScreenCaptureProvider
     }
     
     pixelBufferShort = ((DataBufferUShort) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int minX = 0;
-    int minY = 0;
-    if (padding > 0)
-    {
-      minX = padding;
-      minY = padding;
-    }
-    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+//    int minX = 0;
+//    int minY = 0;
+//    if (padding > 0)
+//    {
+//      minX = padding;
+//      minY = padding;
+//    }
+    int startOffset = captureArea.x + padding + (screenCurrentImage.getWidth() + padding) * (captureArea.y + padding);
     int currentWidth = 0;
     int currentHeight = 0;
     
@@ -2800,7 +2800,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth() + minX;
+        currentHeight += screenCurrentImage.getWidth() + padding;
       }
       
       red = ((sectionPixelBufferInt[i] & RGB555_RED_MASK) >> 9);
@@ -2878,14 +2878,14 @@ public final class VTAWTScreenCaptureProvider
     }
     
     pixelBufferInt = ((DataBufferInt) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int minX = 0;
-    int minY = 0;
-    if (padding > 0)
-    {
-      minX = padding;
-      minY = padding;
-    }
-    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+//    int minX = 0;
+//    int minY = 0;
+//    if (padding > 0)
+//    {
+//      minX = padding;
+//      minY = padding;
+//    }
+    int startOffset = captureArea.x + padding + (screenCurrentImage.getWidth() + padding) * (captureArea.y + padding);
     int currentWidth = 0;
     int currentHeight = 0;
     
@@ -2894,7 +2894,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth() + minX;
+        currentHeight += screenCurrentImage.getWidth() + padding;
       }
       
       red = ((sectionPixelBufferInt[i] & RGB666_RED_MASK) >> 6);
@@ -2972,14 +2972,14 @@ public final class VTAWTScreenCaptureProvider
     }
     
     pixelBufferInt = ((DataBufferInt) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int minX = 0;
-    int minY = 0;
-    if (padding > 0)
-    {
-      minX = padding;
-      minY = padding;
-    }
-    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+//    int minX = 0;
+//    int minY = 0;
+//    if (padding > 0)
+//    {
+//      minX = padding;
+//      minY = padding;
+//    }
+    int startOffset = captureArea.x + padding + (screenCurrentImage.getWidth() + padding) * (captureArea.y + padding);
     int currentWidth = 0;
     int currentHeight = 0;
     
@@ -2988,7 +2988,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth() + minX;
+        currentHeight += screenCurrentImage.getWidth() + padding;
       }
       
       red = ((sectionPixelBufferInt[i] & RGB777_RED_MASK) >> 3);
@@ -3066,14 +3066,14 @@ public final class VTAWTScreenCaptureProvider
     }
     
     pixelBufferInt = ((DataBufferInt) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int minX = 0;
-    int minY = 0;
-    if (padding > 0)
-    {
-      minX = padding;
-      minY = padding;
-    }
-    int destinationOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+//    int minX = 0;
+//    int minY = 0;
+//    if (padding > 0)
+//    {
+//      minX = padding;
+//      minY = padding;
+//    }
+    int destinationOffset = captureArea.x + padding + (screenCurrentImage.getWidth() + padding) * (captureArea.y + padding);
     int destinationIndex = destinationOffset;
     int sourceIndex = 0;
     
@@ -3081,7 +3081,7 @@ public final class VTAWTScreenCaptureProvider
     {
       System.arraycopy(sectionPixelBufferInt, sourceIndex, pixelBufferInt, destinationIndex, captureArea.width);
       sourceIndex += captureArea.width;
-      destinationIndex += screenCurrentImage.getWidth() + minX;
+      destinationIndex += screenCurrentImage.getWidth() + padding;
     }
     
     if (sectionCurrentImageTrue != screenCapture && screenCapture != sectionCurrentImageGrayscale)
@@ -3145,14 +3145,14 @@ public final class VTAWTScreenCaptureProvider
     }
     
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int minX = 0;
-    int minY = 0;
-    if (padding > 0)
-    {
-      minX = padding;
-      minY = padding;
-    }
-    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+//    int minX = 0;
+//    int minY = 0;
+//    if (padding > 0)
+//    {
+//      minX = padding;
+//      minY = padding;
+//    }
+    int startOffset = captureArea.x + padding + (screenCurrentImage.getWidth() + padding) * (captureArea.y + padding);
     int currentWidth = 0;
     int currentHeight = 0;
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
@@ -3160,7 +3160,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth() + minX;
+        currentHeight += screenCurrentImage.getWidth() + padding;
       }
       
       red = (((((sectionPixelBufferInt[i] & RGB888_RED_MASK) >> 16) * 5) >> 8) * 25);
@@ -3231,14 +3231,14 @@ public final class VTAWTScreenCaptureProvider
     }
     
     pixelBufferByte = ((DataBufferByte) screenCurrentImage.getRaster().getDataBuffer()).getData();
-    int minX = 0;
-    int minY = 0;
-    if (padding > 0)
-    {
-      minX = padding;
-      minY = padding;
-    }
-    int startOffset = captureArea.x + minX + (screenCurrentImage.getWidth() + minX) * (captureArea.y + minY);
+//    int minX = 0;
+//    int minY = 0;
+//    if (padding > 0)
+//    {
+//      minX = padding;
+//      minY = padding;
+//    }
+    int startOffset = captureArea.x + padding + (screenCurrentImage.getWidth() + padding) * (captureArea.y + padding);
     int currentWidth = 0;
     int currentHeight = 0;
     for (i = 0; i < pixelDataLength; i++, currentWidth++)
@@ -3246,7 +3246,7 @@ public final class VTAWTScreenCaptureProvider
       if (currentWidth == captureArea.getWidth())
       {
         currentWidth = 0;
-        currentHeight += screenCurrentImage.getWidth() + minX;
+        currentHeight += screenCurrentImage.getWidth() + padding;
       }
       
       red = (((((sectionPixelBufferInt[i] & RGB888_RED_MASK) >> 16) * 3) >> 8) * 9);

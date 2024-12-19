@@ -39,7 +39,7 @@ public class VTGraphicsModeServerSession
     boolean controlProviderInitialized = false;
     try
     {
-      viewProviderInitialized = session.getViewProvider().isScreenCaptureInitialized(VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.PADDING_SIZE) || session.getViewProvider().initializeScreenCapture(VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.PADDING_SIZE);
+      viewProviderInitialized = session.getViewProvider().isScreenCaptureInitialized(VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CODEC_PADDING_SIZE) || session.getViewProvider().initializeScreenCapture(VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CODEC_PADDING_SIZE);
       controlProviderInitialized = session.getControlProvider().isInputControlInitialized() || session.getControlProvider().initializeInputControl();
     }
     catch (Throwable e)
