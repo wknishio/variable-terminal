@@ -10,6 +10,12 @@
 		<format property="build.time.date" pattern="yyyy-MM-dd HH:mm:ss:sss zzz"/>
 	</tstamp>
 	
+	<property name="build.name" value="org/vash/vate/"/>
+	<property name="build.package" value="org.vash.vate"/>
+	<property name="build.title" value="variable-terminal"/>
+	<property name="build.version" value="1.4.2"/>
+	<property name="build.vendor" value="http://github.com/wknishio/variable-terminal"/>
+	
 	<condition property="javac-spec" value="1.5" else="${java.specification.version}">
 		<or>
 			<contains string="${java.specification.version}" substring="1.5"/>
@@ -81,6 +87,14 @@
 				<attribute name="Build-Date" value="${build.time.era} ${build.time.date}"/>
 				<attribute name="Created-By" value="${java.version}"/>
 				<attribute name="Class-Path" value="."/>
+				<section name="${build.name}">
+					<attribute name="Specification-Title" value="${build.title}"/>
+					<attribute name="Specification-Version" value="${build.version}"/>
+					<attribute name="Specification-Vendor" value="${build.vendor}"/>
+					<attribute name="Implementation-Title" value="${build.title}"/>
+					<attribute name="Implementation-Version" value="${build.version}"/>
+					<attribute name="Implementation-Vendor" value="${build.vendor}"/>
+				</section>
 			</manifest>
 			<fileset dir="build"/>
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
@@ -107,6 +121,14 @@
 				<attribute name="Created-By" value="${java.version}"/>
 				<attribute name="Main-Class" value="org.vash.vate.startup.VTGraphicalStart"/>
 				<attribute name="Class-Path" value="."/>
+				<section name="${build.name}">
+					<attribute name="Specification-Title" value="${build.title}"/>
+					<attribute name="Specification-Version" value="${build.version}"/>
+					<attribute name="Specification-Vendor" value="${build.vendor}"/>
+					<attribute name="Implementation-Title" value="${build.title}"/>
+					<attribute name="Implementation-Version" value="${build.version}"/>
+					<attribute name="Implementation-Vendor" value="${build.vendor}"/>
+				</section>
 			</manifest>
 			<fileset dir="build"/>
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
@@ -119,6 +141,14 @@
 				<attribute name="Created-By" value="${java.version}"/>
 				<attribute name="Main-Class" value="org.vash.vate.startup.VTStandardStart"/>
 				<attribute name="Class-Path" value="."/>
+				<section name="${build.name}">
+					<attribute name="Specification-Title" value="${build.title}"/>
+					<attribute name="Specification-Version" value="${build.version}"/>
+					<attribute name="Specification-Vendor" value="${build.vendor}"/>
+					<attribute name="Implementation-Title" value="${build.title}"/>
+					<attribute name="Implementation-Version" value="${build.version}"/>
+					<attribute name="Implementation-Vendor" value="${build.vendor}"/>
+				</section>
 			</manifest>
 			<fileset dir="build"/>
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
@@ -140,6 +170,14 @@
 				<attribute name="Created-By" value="${java.version}"/>
 				<attribute name="Main-Class" value="org.vash.vate.client.startup.VTClientGraphicalStart"/>
 				<attribute name="Class-Path" value="."/>
+				<section name="${build.name}">
+					<attribute name="Specification-Title" value="${build.title}"/>
+					<attribute name="Specification-Version" value="${build.version}"/>
+					<attribute name="Specification-Vendor" value="${build.vendor}"/>
+					<attribute name="Implementation-Title" value="${build.title}"/>
+					<attribute name="Implementation-Version" value="${build.version}"/>
+					<attribute name="Implementation-Vendor" value="${build.vendor}"/>
+				</section>
 			</manifest>
 			<fileset dir="build" excludes="org/vash/vate/server/**,org/vash/vate/startup/**"/>
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
@@ -152,6 +190,14 @@
 				<attribute name="Created-By" value="${java.version}"/>
 				<attribute name="Main-Class" value="org.vash.vate.client.startup.VTClientStandardStart"/>
 				<attribute name="Class-Path" value="."/>
+				<section name="${build.name}">
+					<attribute name="Specification-Title" value="${build.title}"/>
+					<attribute name="Specification-Version" value="${build.version}"/>
+					<attribute name="Specification-Vendor" value="${build.vendor}"/>
+					<attribute name="Implementation-Title" value="${build.title}"/>
+					<attribute name="Implementation-Version" value="${build.version}"/>
+					<attribute name="Implementation-Vendor" value="${build.vendor}"/>
+				</section>
 			</manifest>
 			<fileset dir="build" excludes="org/vash/vate/server/**,org/vash/vate/startup/**"/>
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
@@ -164,6 +210,14 @@
 				<attribute name="Created-By" value="${java.version}"/>
 				<attribute name="Main-Class" value="org.vash.vate.client.startup.VTClientAgentStandardStart"/>
 				<attribute name="Class-Path" value="."/>
+				<section name="${build.name}">
+					<attribute name="Specification-Title" value="${build.title}"/>
+					<attribute name="Specification-Version" value="${build.version}"/>
+					<attribute name="Specification-Vendor" value="${build.vendor}"/>
+					<attribute name="Implementation-Title" value="${build.title}"/>
+					<attribute name="Implementation-Version" value="${build.version}"/>
+					<attribute name="Implementation-Vendor" value="${build.vendor}"/>
+				</section>
 			</manifest>
 			<fileset dir="build" excludes="org/vash/vate/server/**,org/vash/vate/startup/**"/>
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
@@ -185,6 +239,14 @@
 				<attribute name="Created-By" value="${java.version}"/>
 				<attribute name="Main-Class" value="org.vash.vate.server.startup.VTServerGraphicalStart"/>
 				<attribute name="Class-Path" value="."/>
+				<section name="${build.name}">
+					<attribute name="Specification-Title" value="${build.title}"/>
+					<attribute name="Specification-Version" value="${build.version}"/>
+					<attribute name="Specification-Vendor" value="${build.vendor}"/>
+					<attribute name="Implementation-Title" value="${build.title}"/>
+					<attribute name="Implementation-Version" value="${build.version}"/>
+					<attribute name="Implementation-Vendor" value="${build.vendor}"/>
+				</section>
 			</manifest>
 			<fileset dir="build" excludes="org/vash/vate/client/**,org/vash/vate/startup/**"/>
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
@@ -197,6 +259,14 @@
 				<attribute name="Created-By" value="${java.version}"/>
 				<attribute name="Main-Class" value="org.vash.vate.server.startup.VTServerStandardStart"/>
 				<attribute name="Class-Path" value="."/>
+				<section name="${build.name}">
+					<attribute name="Specification-Title" value="${build.title}"/>
+					<attribute name="Specification-Version" value="${build.version}"/>
+					<attribute name="Specification-Vendor" value="${build.vendor}"/>
+					<attribute name="Implementation-Title" value="${build.title}"/>
+					<attribute name="Implementation-Version" value="${build.version}"/>
+					<attribute name="Implementation-Vendor" value="${build.vendor}"/>
+				</section>
 			</manifest>
 			<fileset dir="build" excludes="org/vash/vate/client/**,org/vash/vate/startup/**"/>
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
@@ -209,6 +279,14 @@
 				<attribute name="Created-By" value="${java.version}"/>
 				<attribute name="Main-Class" value="org.vash.vate.server.startup.VTServerDaemonStandardStart"/>
 				<attribute name="Class-Path" value="."/>
+				<section name="${build.name}">
+					<attribute name="Specification-Title" value="${build.title}"/>
+					<attribute name="Specification-Version" value="${build.version}"/>
+					<attribute name="Specification-Vendor" value="${build.vendor}"/>
+					<attribute name="Implementation-Title" value="${build.title}"/>
+					<attribute name="Implementation-Version" value="${build.version}"/>
+					<attribute name="Implementation-Vendor" value="${build.vendor}"/>
+				</section>
 			</manifest>
 			<fileset dir="build" excludes="org/vash/vate/client/**,org/vash/vate/startup/**"/>
 			<zipgroupfileset dir="lib" excludes="META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA"/>
