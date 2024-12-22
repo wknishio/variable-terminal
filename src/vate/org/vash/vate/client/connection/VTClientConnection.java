@@ -717,20 +717,10 @@ public class VTClientConnection
     graphicsClipboardInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
     graphicsClipboardOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     
-    //graphicsControlInputStream.addPropagated(graphicsControlOutputStream);
-    //graphicsControlInputStream.addPropagated(graphicsDirectImageInputStream);
-    //graphicsControlInputStream.addPropagated(graphicsHeavyImageInputStream);
-    //graphicsControlInputStream.addPropagated(graphicsFastImageInputStream);
-    // graphicsControlInputStream.addPropagated(graphicsClipboardInputStream);
-    // graphicsControlInputStream.addPropagated(graphicsClipboardOutputStream);
-    
     audioControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
     audioControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     audioDataInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
     audioDataOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
-    
-    //audioDataOutputStream.addPropagated(audioDataInputStream);
-    //audioDataInputStream.addPropagated(audioDataOutputStream);
     
     tunnelControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
     tunnelControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
@@ -738,22 +728,15 @@ public class VTClientConnection
     availableInputChannel = inputChannel;
     availableOutputChannel = outputChannel;
     
-    // socksControlInputStream =
-    // multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED,
-    // 12);
-    // socksControlOutputStream =
-    // multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPED,
-    // 12);
+    shellDataInputStream = VTCompressorSelector.createBufferedSyncFlushZlibInputStream(shellInputStream);
+    // shellDataInputStream =
+    // VTCompressorSelector.createFlushBufferedSyncFlushInflaterInputStream(shellInputStream);
+    // shellDataInputStream = shellInputStream;
     
     shellDataOutputStream = VTCompressorSelector.createBufferedSyncFlushZlibOutputStreamFiltered(shellOutputStream);
     // shellDataOutputStream =
     // VTCompressorSelector.createFlushBufferedSyncFlushDeflaterOutputStream(shellOutputStream);
     // shellDataOutputStream = shellOutputStream;
-    
-    shellDataInputStream = VTCompressorSelector.createBufferedSyncFlushZlibInputStream(shellInputStream);
-    // shellDataInputStream =
-    // VTCompressorSelector.createFlushBufferedSyncFlushInflaterInputStream(shellInputStream);
-    // shellDataInputStream = shellInputStream;
     
     resultReader = new InputStreamReader(shellDataInputStream, "UTF-8");
     commandWriter = new VTLittleEndianOutputStream(shellDataOutputStream);
@@ -764,32 +747,20 @@ public class VTClientConnection
     directImageDataInputStream = new VTLittleEndianInputStream(new BufferedInputStream(graphicsDirectImageInputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
     directImageDataOutputStream = new VTLittleEndianOutputStream(graphicsDirectImageOutputStream);
     
-    // deflatedImageDataInputStream =
-    // VTCompressorSelector.createCompatibleSyncFlushInflaterInputStream(graphicsHeavyImageInputStream);
-    //deflatedImageDataInputStream = VTCompressorSelector.createBufferedZlibInputStream(graphicsHeavyImageInputStream);
     heavyImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedZstdInputStream(graphicsHeavyImageInputStream));
     heavyImageDataOutputStream = new VTLittleEndianOutputStream(graphicsHeavyImageOutputStream);
     
-    //fastImageDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(graphicsFastImageInputStream);
     fastImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedNoFlushZlibInputStream(graphicsFastImageInputStream));
     fastImageDataOutputStream = new VTLittleEndianOutputStream((graphicsFastImageOutputStream));
     
-    clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
     clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
+    clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
     
     fileTransferControlDataInputStream = new VTLittleEndianInputStream(fileTransferControlInputStream);
     fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(fileTransferControlOutputStream);
     
     fileTransferStartDataInputStream = new VTLittleEndianInputStream(fileTransferStartInputStream);
     fileTransferStartDataOutputStream = new VTLittleEndianOutputStream(fileTransferStartOutputStream);
-    
-    // graphicsControlInputStream.addPropagated(deflatedImageDataInputStream);
-    // graphicsControlInputStream.addPropagated(fastImageDataInputStream);
-    
-    // graphicsControlInputStream.addPropagated(clipboardDataOutputStream);
-    // graphicsControlInputStream.addPropagated(clipboardDataInputStream);
-    // closeAudioStreams();
-    // audioDataInputStream.addPropagated(audioDataOutputStream);
   }
   
 //  public boolean exchangeConnectionPadding() throws IOException
@@ -1177,8 +1148,8 @@ public class VTClientConnection
     graphicsClipboardOutputStream.open();
     //graphicsClipboardInputStream.open();
     
-    clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
     clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
+    clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
     
     // graphicsControlInputStream.addPropagated(clipboardDataOutputStream);
     // graphicsControlInputStream.addPropagated(clipboardDataInputStream);

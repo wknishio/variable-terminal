@@ -102,22 +102,23 @@ public class VTTunnelChannelRemoteSocketBuilder
     session.setSocket(pipedSocket);
     handler = new VTTunnelSessionHandler(session, channel);
     
-    VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
     VTLinkableDynamicMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
+    VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
     
     if (output != null && input != null)
     {
-      final int outputNumber = output.number();
       final int inputNumber = input.number();
+      final int outputNumber = output.number();
       
       pipedSocket.setOutputStream(output);
       session.setSocketInputStream(pipedSocket.getInputStream());
       session.setSocketOutputStream(pipedSocket.getOutputStream());
       
-      session.setTunnelOutputStream(output);
+      input.setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
+      output.open();
+      
       session.setTunnelInputStream(input);
-      session.getTunnelOutputStream().open();
-      session.getTunnelInputStream().setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
+      session.setTunnelOutputStream(output);
       
       if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
       {
@@ -182,22 +183,23 @@ public class VTTunnelChannelRemoteSocketBuilder
     session.setSocket(pipedSocket);
     handler = new VTTunnelSessionHandler(session, channel);
     
-    VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
     VTLinkableDynamicMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
+    VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
     
     if (output != null && input != null)
     {
-      final int outputNumber = output.number();
       final int inputNumber = input.number();
+      final int outputNumber = output.number();
       
       pipedSocket.setOutputStream(output);
       session.setSocketInputStream(pipedSocket.getInputStream());
       session.setSocketOutputStream(pipedSocket.getOutputStream());
       
-      session.setTunnelOutputStream(output);
+      input.setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
+      output.open();
+      
       session.setTunnelInputStream(input);
-      session.getTunnelOutputStream().open();
-      session.getTunnelInputStream().setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
+      session.setTunnelOutputStream(output);
       
       if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
       {

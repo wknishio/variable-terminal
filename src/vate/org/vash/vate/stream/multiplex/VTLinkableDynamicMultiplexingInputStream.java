@@ -481,8 +481,8 @@ public final class VTLinkableDynamicMultiplexingInputStream
       {
         if (compressedPacketOutputPipe == null || compressedPacketInputPipe == null)
         {
-          compressedPacketOutputPipe = new VTByteArrayOutputStream(packetDataBuffer.length);
           compressedPacketInputPipe = new VTByteArrayInputStream(compressedPacketOutputPipe.buf());
+          compressedPacketOutputPipe = new VTByteArrayOutputStream(packetDataBuffer.length);
         }
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY) != 0)
         {

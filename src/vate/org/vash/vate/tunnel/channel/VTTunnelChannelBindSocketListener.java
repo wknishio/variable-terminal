@@ -177,18 +177,19 @@ public class VTTunnelChannelBindSocketListener implements Runnable
           
           handler = new VTTunnelSessionHandler(session, channel);
           
-          VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
           VTLinkableDynamicMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
+          VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
           
           if (output != null && input != null)
           {
-            final int outputNumber = output.number();
             final int inputNumber = input.number();
+            final int outputNumber = output.number();
             
-            session.setTunnelOutputStream(output);
+            input.setOutputStream(session.getSocketOutputStream(), new VTTunnelCloseableSocket(acceptedSocket));
+            output.open();
+            
             session.setTunnelInputStream(input);
-            session.getTunnelOutputStream().open();
-            session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream(), new VTTunnelCloseableSocket(acceptedSocket));
+            session.setTunnelOutputStream(output);
             
             if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP)
             {
