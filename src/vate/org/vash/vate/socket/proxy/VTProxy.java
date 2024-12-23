@@ -15,7 +15,7 @@ public class VTProxy
     DIRECT,
     HTTP,
     SOCKS,
-    ANY
+    PLUS
   };
   
   private VTProxyType proxyType = VTProxyType.GLOBAL;
@@ -185,7 +185,7 @@ public class VTProxy
       {
         nextSocket = new VTHttpProxySocket(currentProxy, currentSocket);
       }
-      else if (currentProxy.getProxyType() == VTProxyType.ANY)
+      else if (currentProxy.getProxyType() == VTProxyType.PLUS)
       {
         nextSocket = new VTAutoProxySocket(currentProxy, currentSocket);
       }

@@ -88,13 +88,13 @@ public class VTTunnelConnectionControlThread implements Runnable
                 {
                   proxyType = VTProxyType.SOCKS;
                 }
-                else if (proxyTypeLetter.toUpperCase().startsWith("A"))
+                else if (proxyTypeLetter.toUpperCase().startsWith("P"))
                 {
-                  proxyType = VTProxyType.ANY;
+                  proxyType = VTProxyType.PLUS;
                 }
                 final VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
                 
-                final boolean connect = proxyTypeLetter.toUpperCase().startsWith("B") ? false : true;
+                final boolean connect = proxyTypeLetter.toUpperCase().startsWith("A") ? false : true;
                 
                 final VTTunnelSession session = new VTTunnelSession(connection, false);
                 final VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, connection.getResponseChannel());
@@ -214,9 +214,9 @@ public class VTTunnelConnectionControlThread implements Runnable
                 {
                   proxyType = VTProxyType.SOCKS;
                 }
-                else if (proxyTypeLetter.toUpperCase().startsWith("A"))
+                else if (proxyTypeLetter.toUpperCase().startsWith("P"))
                 {
-                  proxyType = VTProxyType.ANY;
+                  proxyType = VTProxyType.PLUS;
                 }
                 VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
                 

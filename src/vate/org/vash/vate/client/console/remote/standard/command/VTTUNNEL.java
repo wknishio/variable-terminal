@@ -181,14 +181,14 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
                 proxy.setProxyType(VTProxyType.SOCKS);
                 proxy.setProxyPort(1080);
               }
-              else if (values[0].toUpperCase().startsWith("A"))
+              else if (values[0].toUpperCase().startsWith("P"))
               {
-                proxy.setProxyType(VTProxyType.ANY);
+                proxy.setProxyType(VTProxyType.PLUS);
                 proxy.setProxyPort(8080);
               }
               else
               {
-                proxy.setProxyType(VTProxyType.ANY);
+                proxy.setProxyType(VTProxyType.PLUS);
                 proxy.setProxyPort(8080);
               }
               proxy.setProxyHost(values[1]);

@@ -30,7 +30,7 @@ public class VTHelpManager
   ("\n-CH: connection host, default null") + 
   ("\n-CP: connection port, default 6060") + 
   ("\n-CN: connection NAT port, default null") + 
-  ("\n-PT: proxy type, default none, DIRECT(D), SOCKS(S), HTTP(H), ANY(A)") + 
+  ("\n-PT: proxy type, default none, DIRECT(D), SOCKS(S), HTTP(H), PLUS(P)") + 
   ("\n-PH: proxy host, default null") + 
   ("\n-PP: proxy port, default 1080 for SOCKS or 8080 for HTTP") + 
   //("\n-PA: proxy authentication, default disabled(D), enabled(E)") + 

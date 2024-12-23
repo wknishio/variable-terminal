@@ -157,9 +157,9 @@ public class VTTunnelChannelBindSocketListener implements Runnable
           {
             proxyTypeLetter = "S";
           }
-          else if (proxyType == VTProxyType.ANY)
+          else if (proxyType == VTProxyType.PLUS)
           {
-            proxyTypeLetter = "A";
+            proxyTypeLetter = "P";
           }
           
           if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)

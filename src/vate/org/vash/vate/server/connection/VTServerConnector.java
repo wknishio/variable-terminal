@@ -419,9 +419,9 @@ public class VTServerConnector implements Runnable
       
       connection.setConnectionSocket(socket);
     }
-    else if (proxyType.toUpperCase().startsWith("A") && proxyAddress != null && proxyPort != null)
+    else if (proxyType.toUpperCase().startsWith("P") && proxyAddress != null && proxyPort != null)
     {
-      Socket socket = VTProxy.next(null, null, 0, new VTProxy(VTProxyType.ANY, proxyAddress, proxyPort, proxyUser, proxyPassword));
+      Socket socket = VTProxy.next(null, null, 0, new VTProxy(VTProxyType.PLUS, proxyAddress, proxyPort, proxyUser, proxyPassword));
       
       connection.setConnectionSocket(socket);
     }

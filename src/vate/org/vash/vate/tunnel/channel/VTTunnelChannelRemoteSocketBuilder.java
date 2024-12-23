@@ -92,9 +92,9 @@ public class VTTunnelChannelRemoteSocketBuilder
     {
       proxyTypeLetter = "S";
     }
-    else if (proxyType == VTProxyType.ANY)
+    else if (proxyType == VTProxyType.PLUS)
     {
-      proxyTypeLetter = "A";
+      proxyTypeLetter = "P";
     }
     
     session = new VTTunnelSession(channel.getConnection(), true);
@@ -176,7 +176,7 @@ public class VTTunnelChannelRemoteSocketBuilder
     VTTunnelSessionHandler handler = null;
     int channelType = channel.getChannelType();
     
-    String proxyTypeLetter = "B";
+    String proxyTypeLetter = "A";
     
     session = new VTTunnelSession(channel.getConnection(), true);
     VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);

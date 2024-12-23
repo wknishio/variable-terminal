@@ -2,7 +2,6 @@ package org.vash.vate.tunnel.channel;
 
 import java.io.IOException;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import org.vash.vate.socket.proxy.VTProxy;
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;
@@ -17,7 +16,7 @@ public class VTTunnelRemoteSocketFactory extends VTRemoteSocketFactory
     this.socketBuilder = socketBuilder;
   }
   
-  public Socket connectSocket(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxy... proxies) throws IOException, UnknownHostException
+  public Socket connectSocket(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxy... proxies) throws IOException
   {
     if (proxies != null && proxies.length >= 1)
     {
@@ -27,7 +26,7 @@ public class VTTunnelRemoteSocketFactory extends VTRemoteSocketFactory
     return socketBuilder.connect(bind, host, port, connectTimeout, dataTimeout, PROXY_NONE);
   }
   
-  public Socket acceptSocket(String host, int port, int connectTimeout, int dataTimeout) throws IOException, UnknownHostException
+  public Socket acceptSocket(String host, int port, int connectTimeout, int dataTimeout) throws IOException
   {
     return socketBuilder.accept(host, port, connectTimeout, dataTimeout);
   }
