@@ -2,6 +2,7 @@ package org.vash.vate.tunnel.connection;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -13,7 +14,9 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.session.VTTunnelCloseableServerSocket;
 import org.vash.vate.tunnel.session.VTTunnelCloseableSocket;
+import org.vash.vate.tunnel.session.VTTunnelDatagramSocket;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
+import org.vash.vate.tunnel.session.VTTunnelRunnableSessionHandler;
 import org.vash.vate.tunnel.session.VTTunnelSession;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 import org.vash.vate.tunnel.session.VTTunnelSocksSessionHandler;
@@ -41,11 +44,11 @@ public class VTTunnelConnectionControlThread implements Runnable
         {
           if (packet[1] == SESSION_MARK)
           {
-            final int tunnelType = packet[2] == 'S' ? VTTunnelChannel.TUNNEL_TYPE_SOCKS : VTTunnelChannel.TUNNEL_TYPE_TCP;
-            final String tunnelChar = tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS ? "S" : "T";
+            final int tunnelType = packet[2] == 'S' ? VTTunnelChannel.TUNNEL_TYPE_SOCKS : packet[2] == 'T' ? VTTunnelChannel.TUNNEL_TYPE_TCP : VTTunnelChannel.TUNNEL_TYPE_UDP;
+            final String tunnelChar = tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS ? "S" : tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP ? "T" : "U";
             String text = new String(packet, 3, packet.length - 3, "UTF-8");
             String[] parts = text.split(SESSION_SEPARATOR);
-            if (parts.length >= 5)
+            if (parts.length >= 8)
             {
               // request message received
               final int channelType = Integer.parseInt(parts[0]);
@@ -256,12 +259,77 @@ public class VTTunnelConnectionControlThread implements Runnable
                   connection.getControlOutputStream().flush();
                 }
               }
+              else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_UDP)
+              {
+                //final String bind = parts[5];
+                final String host = parts[6];
+                final int port = Integer.parseInt(parts[7]);
+                
+                VTTunnelSession session = new VTTunnelSession(connection, false);
+                VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(null);
+                session.setSocket(pipedSocket);
+                VTTunnelDatagramSocket datagramSocket;
+                if (host != null && host.length() > 0)
+                {
+                  datagramSocket = new VTTunnelDatagramSocket(pipedSocket, connection.getExecutorService(), InetAddress.getByName(host), port);
+                }
+                else
+                {
+                  datagramSocket = new VTTunnelDatagramSocket(pipedSocket, connection.getExecutorService());
+                }
+                VTTunnelRunnableSessionHandler handler = new VTTunnelRunnableSessionHandler(session, connection.getResponseChannel(), datagramSocket);
+                
+                VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
+                VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
+                
+                if (output != null && input != null)
+                {
+                  pipedSocket.setOutputStream(output);
+                  session.setSocketInputStream(pipedSocket.getInputStream());
+                  session.setSocketOutputStream(pipedSocket.getOutputStream());
+                  
+                  input.setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
+                  output.open();
+                  
+                  datagramSocket.setInputStream(pipedSocket.getInputStream());
+                  datagramSocket.setOutputStream(pipedSocket.getOutputStream());
+                  
+                  session.setTunnelInputStream(input);
+                  session.setTunnelOutputStream(output);
+                  
+                  int localPort = datagramSocket.getLocalPort();
+                  InetAddress localAddress = datagramSocket.getLocalAddress();
+                  
+                  if (localAddress.getHostAddress().equals("0.0.0.0") || localAddress.getHostAddress().equals("::")
+                  || localAddress.getHostAddress().equals("::0") || localAddress.getHostAddress().equals("0:0:0:0:0:0:0:0")
+                  || localAddress.getHostAddress().equals("00:00:00:00:00:00:00:00")
+                  || localAddress.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
+                  {
+                    localAddress = InetAddress.getLocalHost();
+                  }
+                  // response message sent with ok
+                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelChar + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + localAddress + SESSION_SEPARATOR + localPort).getBytes("UTF-8"));
+                  connection.getControlOutputStream().flush();
+                  connection.getExecutorService().execute(handler);
+                  session.setResult(true);
+                }
+                else
+                {
+                  if (session != null)
+                  {
+                    session.close();
+                  }
+                  // response message sent with error
+                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelChar + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                  connection.getControlOutputStream().flush();
+                }
+              }
               else
               {
                 //closed = true;
               }
             }
-            else if (parts.length == 3)
+            else if (parts.length >= 3)
             {
               // response message received
               final int channelType = Integer.parseInt(parts[0]);
@@ -279,6 +347,11 @@ public class VTTunnelConnectionControlThread implements Runnable
                 if (handler != null)
                 {
                   VTTunnelSession session = handler.getSession();
+                  if (parts.length >= 5)
+                  {
+                    session.setHost(parts[3]);
+                    session.setPort(Integer.parseInt(parts[4]));
+                  }
                   if (session.isOriginator())
                   {
                     // response message received ok

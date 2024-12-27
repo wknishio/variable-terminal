@@ -170,7 +170,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
           
 //          if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
 //          {
-//            handler = new VTTunnelSocksSessionHandler(session, channel, channel.getSocksUsername(), channel.getSocksPassword(), channel.getProxy(), channel.getConnection().createRemoteSocketFactory(channel), 0);
+//            handler = new VTTunnelSocksSessionHandler(session, channel, channel.getSocksUsername(), channel.getSocksPassword(), channel.getProxy(), channel.getConnection().createRemoteSocketFactory(channel), 0, bind);
 //            channel.getConnection().getExecutorService().execute(handler);
 //            continue;
 //          }

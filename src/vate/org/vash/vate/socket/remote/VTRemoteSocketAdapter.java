@@ -1,6 +1,8 @@
 package org.vash.vate.socket.remote;
 
 import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import org.vash.vate.socket.proxy.VTProxy;
@@ -34,5 +36,19 @@ public class VTRemoteSocketAdapter extends Socket
       host = "";
     }
     return remoteSocketFactory.acceptSocket(host, port, connectTimeout, dataTimeout);
+  }
+  
+  public DatagramSocket create(String host, int port, int dataTimeout) throws IOException
+  {
+    if (host == null)
+    {
+      host = "";
+    }
+    return remoteSocketFactory.createSocket(host, port, dataTimeout);
+  }
+  
+  public DatagramSocket create(InetAddress address, int port, int dataTimeout) throws IOException
+  {
+    return remoteSocketFactory.createSocket(address, port, dataTimeout);
   }
 }

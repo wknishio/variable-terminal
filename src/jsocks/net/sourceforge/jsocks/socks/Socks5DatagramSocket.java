@@ -51,6 +51,7 @@ public class Socks5DatagramSocket extends DatagramSocket {
 	Socks5Proxy proxy;
 	private boolean server_mode = false;
 	UDPEncapsulation encapsulation;
+	private DatagramSocket client_socket;
 
 	/**
 	 * Construct Datagram socket for communication over SOCKS5 proxy server. This
@@ -145,7 +146,7 @@ public class Socks5DatagramSocket extends DatagramSocket {
 	/**
 	 * Used by UDPRelayServer.
 	 */
-	Socks5DatagramSocket(boolean server_mode, UDPEncapsulation encapsulation, InetAddress relayIP, int relayPort)
+	protected Socks5DatagramSocket(boolean server_mode, UDPEncapsulation encapsulation, InetAddress relayIP, int relayPort)
 			throws IOException {
 		super();
 		this.server_mode = server_mode;
@@ -154,6 +155,17 @@ public class Socks5DatagramSocket extends DatagramSocket {
 		this.encapsulation = encapsulation;
 		this.proxy = null;
 	}
+	
+	protected Socks5DatagramSocket(boolean server_mode, UDPEncapsulation encapsulation, InetAddress relayIP, int relayPort, DatagramSocket client_socket)
+      throws IOException {
+    super();
+    this.server_mode = server_mode;
+    this.relayIP = relayIP;
+    this.relayPort = relayPort;
+    this.encapsulation = encapsulation;
+    this.proxy = null;
+    this.client_socket = client_socket;
+  }
 
 	/**
 	 * Sends the Datagram either through the proxy or directly depending on current
@@ -189,8 +201,16 @@ public class Socks5DatagramSocket extends DatagramSocket {
 
 		if (encapsulation != null)
 			buf = encapsulation.udpEncapsulate(buf, true);
-
-		super.send(new DatagramPacket(buf, buf.length, relayIP, relayPort));
+		
+		if (client_socket != null)
+		{
+		  client_socket.send(new DatagramPacket(buf, buf.length, relayIP, relayPort));
+		}
+		else
+		{
+		  super.send(new DatagramPacket(buf, buf.length, relayIP, relayPort));
+		}
+		
 	}
 
 	/**
@@ -250,7 +270,14 @@ public class Socks5DatagramSocket extends DatagramSocket {
 	 *            Datagram in which all relevent information will be copied.
 	 */
 	public void receive(DatagramPacket dp) throws IOException {
-		super.receive(dp);
+	  if (client_socket != null)
+    {
+	    client_socket.receive(dp);
+    }
+	  else
+	  {
+	    super.receive(dp);
+	  }
 
 		if (server_mode) {
 			// Drop all datagrams not from relayIP/relayPort
@@ -273,7 +300,14 @@ public class Socks5DatagramSocket extends DatagramSocket {
 					setSoTimeout(newTimeout);
 				}
 
-				super.receive(dp);
+				if (client_socket != null)
+		    {
+		      client_socket.receive(dp);
+		    }
+		    else
+		    {
+		      super.receive(dp);
+		    }
 			}
 
 			// Restore timeout settings
@@ -316,7 +350,13 @@ public class Socks5DatagramSocket extends DatagramSocket {
 	 */
 	public int getLocalPort() {
 		if (server_mode)
-			return super.getLocalPort();
+		{
+		  if (client_socket != null)
+	    {
+	      return client_socket.getLocalPort();
+	    }
+		  return super.getLocalPort();
+		}
 		return relayPort;
 	}
 
@@ -328,7 +368,13 @@ public class Socks5DatagramSocket extends DatagramSocket {
 	 */
 	public InetAddress getLocalAddress() {
 		if (server_mode)
+		{
+		  if (client_socket != null)
+      {
+        return client_socket.getLocalAddress();
+      }
 			return super.getLocalAddress();
+		}
 		return relayIP;
 	}
 
@@ -338,6 +384,11 @@ public class Socks5DatagramSocket extends DatagramSocket {
 	public void close() {
 		if (!server_mode)
 			proxy.endSession();
+		
+		if (client_socket != null)
+    {
+      client_socket.close();
+    }
 		super.close();
 	}
 
@@ -403,7 +454,7 @@ public class Socks5DatagramSocket extends DatagramSocket {
 		request.data[0] = 0;
 		return request.data;
 	}
-
+	
 	/*
 	 * ======================================================================
 	 * 

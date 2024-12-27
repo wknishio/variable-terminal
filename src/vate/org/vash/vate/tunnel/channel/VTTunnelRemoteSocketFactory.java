@@ -1,6 +1,8 @@
 package org.vash.vate.tunnel.channel;
 
 import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import org.vash.vate.socket.proxy.VTProxy;
@@ -30,4 +32,15 @@ public class VTTunnelRemoteSocketFactory extends VTRemoteSocketFactory
   {
     return socketBuilder.accept(host, port, connectTimeout, dataTimeout);
   }
+  
+  public DatagramSocket createSocket(String host, int port, int dataTimeout) throws IOException
+  {
+    return socketBuilder.create(host, port, dataTimeout);
+  }
+  
+  public DatagramSocket createSocket(InetAddress address, int port, int dataTimeout) throws IOException
+  {
+    return socketBuilder.create(address, port, dataTimeout);
+  }
+
 }

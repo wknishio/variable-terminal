@@ -1,12 +1,15 @@
 package org.vash.vate.tunnel.channel;
 
 import java.io.IOException;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.Socket;
 
 import org.vash.vate.socket.proxy.VTProxy;
 import org.vash.vate.socket.proxy.VTProxy.VTProxyType;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
+import org.vash.vate.tunnel.session.VTTunnelDatagramSocket;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
 import org.vash.vate.tunnel.session.VTTunnelSession;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
@@ -233,5 +236,80 @@ public class VTTunnelChannelRemoteSocketBuilder
       pipedSocket.close();
     }
     throw new IOException("Failed to accept remotely from: host " + host + " port " + port + "");
+  }
+  
+  public DatagramSocket create(InetAddress address, int port, int dataTimeout) throws IOException
+  {
+    return create(address.getHostAddress(), port, dataTimeout);
+  }
+  
+  public DatagramSocket create(String host, int port, int dataTimeout) throws IOException
+  {
+    if (host == null)
+    {
+      host = "";
+    }
+    
+    String bind = "";
+    
+    VTTunnelSession session = null;
+    VTTunnelSessionHandler handler = null;
+    int channelType = channel.getChannelType();
+    
+    session = new VTTunnelSession(channel.getConnection(), true);
+    VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
+    session.setSocket(pipedSocket);
+    handler = new VTTunnelSessionHandler(session, channel);
+    
+    VTLinkableDynamicMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
+    VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
+    
+    if (output != null && input != null)
+    {
+      final int inputNumber = input.number();
+      final int outputNumber = output.number();
+      
+      pipedSocket.setOutputStream(output);
+      session.setSocketInputStream(pipedSocket.getInputStream());
+      session.setSocketOutputStream(pipedSocket.getOutputStream());
+      
+      input.setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
+      output.open();
+      
+      session.setTunnelInputStream(input);
+      session.setTunnelOutputStream(output);
+      
+      // request message sent
+      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "U" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + 0 + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + bind + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port).getBytes("UTF-8"));
+      channel.getConnection().getControlOutputStream().flush();
+      //System.out.println("sent.request:output=" + outputNumber);
+      boolean result = false;
+      try
+      {
+        result = session.waitResult();
+      }
+      catch (Throwable t)
+      {
+        //t.printStackTrace();
+      }
+      if (result)
+      {
+        VTTunnelDatagramSocket datagramSocket = new VTTunnelDatagramSocket(pipedSocket, channel.getConnection().getExecutorService());
+        datagramSocket.setInputStream(pipedSocket.getInputStream());
+        datagramSocket.setOutputStream(pipedSocket.getOutputStream());
+        datagramSocket.setLocalAddress(session.getHost());
+        datagramSocket.setLocalPort(session.getPort());
+        return datagramSocket;
+      }
+    }
+    else
+    {
+      // cannot handle more sessions
+    }
+    if (session != null)
+    {
+      pipedSocket.close();
+    }
+    throw new IOException("Failed to create tunnel using host " + host + " port " + port + "");
   }
 }

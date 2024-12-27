@@ -13,7 +13,8 @@ public class VTTunnelChannel
 {
   public static final int TUNNEL_TYPE_TCP = 0;
   public static final int TUNNEL_TYPE_SOCKS = 1;
-  public static final int TUNNEL_TYPE_ANY = 2;
+  public static final int TUNNEL_TYPE_UDP = 2;
+  public static final int TUNNEL_TYPE_ANY = 3;
   
   private final int tunnelType;
   private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;

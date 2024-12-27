@@ -21,6 +21,8 @@ public class VTTunnelSession implements Closeable
   private final boolean originator;
   private Object waiter = new Object();
   private Boolean result = null;
+  private String host;
+  private int port;
   private volatile boolean closed;
   
 //  public VTTunnelSession(VTTunnelConnection connection, Socket socket, InputStream socketInputStream, OutputStream socketOutputStream, boolean originator)
@@ -182,5 +184,25 @@ public class VTTunnelSession implements Closeable
     {
       waiter.notifyAll();
     }
+  }
+  
+  public String getHost()
+  {
+    return host;
+  }
+  
+  public void setHost(String host)
+  {
+    this.host = host;
+  }
+  
+  public int getPort()
+  {
+    return port;
+  }
+  
+  public void setPort(int port)
+  {
+    this.port = port;
   }
 }

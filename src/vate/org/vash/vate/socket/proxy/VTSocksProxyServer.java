@@ -20,15 +20,19 @@ import net.sourceforge.jsocks.socks.Socks5Message;
 import net.sourceforge.jsocks.socks.SocksException;
 import net.sourceforge.jsocks.socks.SocksServerSocket;
 import net.sourceforge.jsocks.socks.SocksSocket;
-import net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import net.sourceforge.jsocks.socks.UDPRelayServer;
+import net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import net.sourceforge.jsocks.socks.Proxy;
 //import java.util.Random;
 
 import java.io.*;
+import java.net.ConnectException;
+import java.net.InetAddress;
+import java.net.NoRouteToHostException;
+import java.net.ServerSocket;
+import java.net.Socket;
 //import org.apache.commons.lang.RandomStringUtils;
 //import org.apache.log4j.Logger;
-import java.net.*;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
@@ -84,6 +88,7 @@ public class VTSocksProxyServer implements Runnable {
 	
 	private VTProxy connect_proxy;
 	private VTRemoteSocketFactory socket_factory;
+	private VTRemoteSocketFactory datagram_factory;
 	private int connectTimeout;
 	
 	private ExecutorService executorService;
@@ -144,6 +149,11 @@ public class VTSocksProxyServer implements Runnable {
     // this.connectionId = connectionId;
     mode = START_MODE;
   }
+	
+	public void setDatagramSocketFactory(VTRemoteSocketFactory socketFactory)
+	{
+	  datagram_factory = socketFactory;
+	}
 
 	// Public methods
 	/////////////////
@@ -202,7 +212,7 @@ public class VTSocksProxyServer implements Runnable {
 	 * Default timeout is 3 minutes.
 	 */
 	public static void setUDPTimeout(int timeout) {
-		UDPRelayServer.setTimeout(timeout);
+	  UDPRelayServer.setTimeout(timeout);
 	}
 
 	/**
@@ -210,7 +220,7 @@ public class VTSocksProxyServer implements Runnable {
 	 * Default size is 64K, a bit more than maximum possible size of the datagram.
 	 */
 	public static void setDatagramSize(int size) {
-		UDPRelayServer.setDatagramSize(size);
+	  UDPRelayServer.setDatagramSize(size);
 	}
 
 	/**
@@ -581,9 +591,18 @@ public class VTSocksProxyServer implements Runnable {
 				|| msg.ip.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
 
 			msg.ip = sock.getInetAddress();
+		//System.out.println("onUDP()");
 		// LOG.info(connectionId + " Creating UDP relay server for " + msg.ip +
 		// ":" + msg.port);
-		relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout);
+		if (datagram_factory != null)
+		{
+	    relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, datagram_factory.createSocket("", 0, 0));
+		}
+		else
+		{
+	    relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout);
+		}
+		
 
 		ProxyMessage response;
 
