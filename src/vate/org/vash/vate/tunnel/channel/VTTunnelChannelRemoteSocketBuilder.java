@@ -294,11 +294,9 @@ public class VTTunnelChannelRemoteSocketBuilder
       }
       if (result)
       {
-        VTTunnelDatagramSocket datagramSocket = new VTTunnelDatagramSocket(pipedSocket, channel.getConnection().getExecutorService());
-        datagramSocket.setInputStream(pipedSocket.getInputStream());
-        datagramSocket.setOutputStream(pipedSocket.getOutputStream());
-        datagramSocket.setLocalAddress(session.getHost());
-        datagramSocket.setLocalPort(session.getPort());
+        VTTunnelDatagramSocket datagramSocket = new VTTunnelDatagramSocket(pipedSocket, session.getRemoteHost(), session.getRemotePort());
+        datagramSocket.setTunnelInputStream(pipedSocket.getInputStream());
+        datagramSocket.setTunnelOutputStream(pipedSocket.getOutputStream());
         return datagramSocket;
       }
     }

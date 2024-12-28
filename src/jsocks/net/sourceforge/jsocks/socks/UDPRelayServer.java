@@ -44,7 +44,7 @@ public class UDPRelayServer implements Runnable {
 
 	private Proxy proxy = null;
 	static int datagramSize = 0xFFFF;// 64K, a bit more than max udp size
-	static int idleTimeout = 180000;// 3 minutes
+	static int idleTimeout = 300000;// 5 minutes
 
 	/**
 	 * Constructs UDP relay server to communicate with client on given ip and port.

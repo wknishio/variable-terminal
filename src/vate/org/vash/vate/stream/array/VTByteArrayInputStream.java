@@ -26,10 +26,10 @@ public final class VTByteArrayInputStream extends ByteArrayInputStream
     return this.count;
   }
   
-  public final int mark()
-  {
-    return this.mark;
-  }
+//  public final int mark()
+//  {
+//    return this.mark;
+//  }
   
   public final int pos()
   {
@@ -47,6 +47,13 @@ public final class VTByteArrayInputStream extends ByteArrayInputStream
     this.count = count;
   }
   
+  public final void buf(byte[] buf, int pos, int count)
+  {
+    this.buf = buf;
+    this.pos = pos;
+    this.count = count;
+  }
+  
   public final void count(int count)
   {
     this.count = count;
@@ -57,6 +64,12 @@ public final class VTByteArrayInputStream extends ByteArrayInputStream
     this.pos = pos;
   }
   
+  public final void pos_count(int pos, int count)
+  {
+    this.pos = pos;
+    this.count = count;
+  }
+  
   public final int readByte() throws IOException
   {
     int b = read();
@@ -65,5 +78,10 @@ public final class VTByteArrayInputStream extends ByteArrayInputStream
       throw new EOFException();
     }
     return b;
+  }
+  
+  public final void close() throws IOException
+  {
+    // super.close();
   }
 }
