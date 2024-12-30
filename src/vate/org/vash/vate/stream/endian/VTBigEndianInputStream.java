@@ -221,4 +221,9 @@ public final class VTBigEndianInputStream extends InputStream implements DataInp
   {
     return readUTF8(buf);
   }
+  
+  public final String readLine(byte[] buf) throws IOException
+  {
+    return readUTF(buf);
+  }
 }

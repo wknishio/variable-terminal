@@ -217,4 +217,9 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
   {
     return readUTF8(buf);
   }
+  
+  public final String readLine(byte[] buf) throws IOException
+  {
+    return readUTF(buf);
+  }
 }

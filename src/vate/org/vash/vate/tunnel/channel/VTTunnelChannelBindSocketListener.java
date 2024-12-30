@@ -122,7 +122,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
         
         if (socketInputStream != null && socketOutputStream != null)
         {
-          int tunnelType = channel.getTunnelType();
+          char tunnelType = channel.getTunnelType();
           int channelType = channel.getChannelType();
           int connectTimeout = channel.getConnectTimeout();
           int dataTimeout = channel.getDataTimeout();

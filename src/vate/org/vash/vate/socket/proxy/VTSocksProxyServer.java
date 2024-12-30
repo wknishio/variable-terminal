@@ -596,11 +596,25 @@ public class VTSocksProxyServer implements Runnable {
 		// ":" + msg.port);
 		if (datagram_factory != null)
 		{
-	    relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, datagram_factory.createSocket("", 0, 300000));
+		  if (socket_factory != null)
+		  {
+		    relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, null, socket_factory.createSocket("", 0, 300000));
+		  }
+		  else
+		  {
+	      relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, datagram_factory.createSocket("", 0, 300000));
+		  }
 		}
 		else
 		{
-	    relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout);
+		  if (socket_factory != null)
+      {
+		    relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, null, socket_factory.createSocket("", 0, 300000));
+      }
+		  else
+		  {
+		    relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout);
+		  }
 		}
 		
 

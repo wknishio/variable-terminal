@@ -11,12 +11,12 @@ import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 
 public class VTTunnelChannel
 {
-  public static final int TUNNEL_TYPE_TCP = 0;
-  public static final int TUNNEL_TYPE_SOCKS = 1;
-  public static final int TUNNEL_TYPE_UDP = 2;
-  public static final int TUNNEL_TYPE_ANY = 3;
+  public static final char TUNNEL_TYPE_TCP = 'T';
+  public static final char TUNNEL_TYPE_SOCKS = 'S';
+  public static final char TUNNEL_TYPE_UDP = 'U';
+  public static final char TUNNEL_TYPE_ANY = 'A';
   
-  private final int tunnelType;
+  private final char tunnelType;
   private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
   private final VTTunnelConnection connection;
   private final Collection<VTTunnelSessionHandler> sessions;
@@ -33,7 +33,7 @@ public class VTTunnelChannel
   private String socksPassword;
   private VTProxy proxy;
   
-  public int getTunnelType()
+  public char getTunnelType()
   {
     return tunnelType;
   }

@@ -637,7 +637,7 @@ public class VTFileTransferServerTransaction implements Runnable
   {
     try
     {
-      return session.getServer().getConnection().getFileTransferControlDataInputStream().readUTF();
+      return session.getServer().getConnection().getFileTransferControlDataInputStream().readUTF(fileTransferBuffer);
     }
     catch (Throwable e)
     {

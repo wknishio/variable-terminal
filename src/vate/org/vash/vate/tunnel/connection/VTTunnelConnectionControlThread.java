@@ -45,8 +45,9 @@ public class VTTunnelConnectionControlThread implements Runnable
         {
           if (packet[1] == SESSION_MARK)
           {
-            final int tunnelType = packet[2] == 'S' ? VTTunnelChannel.TUNNEL_TYPE_SOCKS : packet[2] == 'T' ? VTTunnelChannel.TUNNEL_TYPE_TCP : VTTunnelChannel.TUNNEL_TYPE_UDP;
-            final String tunnelChar = tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS ? "S" : tunnelType == VTTunnelChannel.TUNNEL_TYPE_TCP ? "T" : "U";
+            //final char tunnelChar = (char) packet[2];
+            final char tunnelType = (char) packet[2];
+            
             String text = new String(packet, 3, packetLength - 3, "UTF-8");
             String[] parts = text.split(SESSION_SEPARATOR);
             if (parts.length >= 8)
@@ -149,7 +150,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                           //session.getTunnelInputStream().open();
                           session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream(), new VTTunnelCloseableSocket(session.getSocket()));
                           // response message sent with ok
-                          connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelChar + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                          connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                           connection.getControlOutputStream().flush();
                           connection.getExecutorService().execute(handler);
                           session.setResult(true);
@@ -161,7 +162,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                             session.close();
                           }
                           // response message sent with error
-                          connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelChar + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                          connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                           connection.getControlOutputStream().flush();
                         }
                       }
@@ -180,7 +181,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                     session.close();
                   }
                   // response message sent with error
-                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelChar + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
                 }
               }
@@ -244,7 +245,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                   session.setTunnelInputStream(input);
                   session.setTunnelOutputStream(output);
                   // response message sent with ok
-                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelChar + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
                   connection.getExecutorService().execute(handler);
                   session.setResult(true);
@@ -256,7 +257,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                     session.close();
                   }
                   // response message sent with error
-                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelChar + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
                 }
               }
@@ -275,7 +276,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 {
                   if (host != null && host.length() > 0)
                   {
-                    datagramSocket = new VTTunnelDatagramSocket(pipedSocket, connection.getExecutorService(), InetAddress.getByName(host), port);
+                    datagramSocket = new VTTunnelDatagramSocket(pipedSocket, connection.getExecutorService(), host, port);
                   }
                   else
                   {
@@ -321,7 +322,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                       localAddress = InetAddress.getLocalHost();
                     }
                     // response message sent with ok
-                    connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelChar + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + localAddress + SESSION_SEPARATOR + localPort).getBytes("UTF-8"));
+                    connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + localAddress.getHostAddress() + SESSION_SEPARATOR + localPort).getBytes("UTF-8"));
                     connection.getControlOutputStream().flush();
                     connection.getExecutorService().execute(handler);
                     session.setResult(true);
@@ -333,7 +334,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                       session.close();
                     }
                     // response message sent with error
-                    connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelChar + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                    connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                     connection.getControlOutputStream().flush();
                   }
                 }
@@ -344,7 +345,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                     session.close();
                   }
                   // response message sent with error
-                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelChar + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
                 }
               }

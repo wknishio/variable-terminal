@@ -142,6 +142,52 @@ public class Socks5DatagramSocket extends DatagramSocket {
 		// debug("Datagram Socket:"+getLocalAddress()+":"+getLocalPort()+"\n");
 		// debug("Socks5Datagram: "+relayIP+":"+relayPort+"\n");
 	}
+	
+	public Socks5DatagramSocket(Proxy p, int port, InetAddress ip, int connectTimeout, DatagramSocket clientSocket) throws SocksException, IOException {
+    super(port, ip);
+    if (p == null)
+      throw new SocksException(Proxy.SOCKS_NO_PROXY);
+    if (!(p instanceof Socks5Proxy))
+      throw new SocksException(-1, "Datagram Socket needs Proxy version 5");
+
+    if (p.chainProxy != null)
+      throw new SocksException(Proxy.SOCKS_JUST_ERROR, "Datagram Sockets do not support proxy chaining.");
+
+    proxy = (Socks5Proxy) p.copy();
+
+    ProxyMessage msg = proxy.udpAssociate(super.getLocalAddress(), super.getLocalPort(), connectTimeout);
+    
+    if (msg.ip == null)
+    {
+      msg.ip = InetAddress.getByName(msg.host);
+    }
+    
+    relayIP = msg.ip;
+    
+    if (relayIP.getHostAddress().equals("0.0.0.0") || relayIP.getHostAddress().equals("::")
+        || relayIP.getHostAddress().equals("::0") || relayIP.getHostAddress().equals("0:0:0:0:0:0:0:0")
+        || relayIP.getHostAddress().equals("00:00:00:00:00:00:00:00")
+        || relayIP.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
+    {
+      try
+      {
+        relayIP = InetAddress.getByName(proxy.proxyHost);
+      }
+      catch (UnknownHostException e)
+      {
+         
+      }
+    }
+      //relayIP = proxy.proxyIP;
+    relayPort = msg.port;
+
+    encapsulation = proxy.udp_encapsulation;
+    
+    client_socket = clientSocket;
+
+    // debug("Datagram Socket:"+getLocalAddress()+":"+getLocalPort()+"\n");
+    // debug("Socks5Datagram: "+relayIP+":"+relayPort+"\n");
+  }
 
 	/**
 	 * Used by UDPRelayServer.
@@ -324,8 +370,8 @@ public class Socks5DatagramSocket extends DatagramSocket {
 		if (encapsulation != null)
 			data = encapsulation.udpEncapsulate(data, false);
 
-		int offset = 0; // Java 1.1
-		// int offset = dp.getOffset(); //Java 1.2
+		//int offset = 0; // Java 1.1
+		int offset = dp.getOffset(); //Java 1.2
 
 		ByteArrayInputStream bIn = new ByteArrayInputStream(data, offset, dp.getLength());
 
@@ -338,7 +384,8 @@ public class Socks5DatagramSocket extends DatagramSocket {
 		// Shift data to the left
 		System.arraycopy(data, offset + dp.getLength() - data_length, data, offset, data_length);
 
-		dp.setLength(data_length);
+		//dp.setLength(data_length);
+		dp.setData(data, offset, data_length);
 	}
 
 	/**

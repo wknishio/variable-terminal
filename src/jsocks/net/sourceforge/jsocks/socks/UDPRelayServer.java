@@ -108,6 +108,30 @@ public class UDPRelayServer implements Runnable {
     else
       remote_sock = new Socks5DatagramSocket(this.proxy, 0, null, connectTimeout);
   }
+	
+	 public UDPRelayServer(InetAddress clientIP, int clientPort, Thread master_thread, Socket controlConnection,
+	      ServerAuthenticator auth, Proxy proxy, int connectTimeout, DatagramSocket clientSocket, DatagramSocket remoteSocket) throws IOException {
+	    this.proxy = proxy;
+	    this.master_thread = master_thread;
+	    this.controlConnection = controlConnection;
+	    this.auth = auth;
+
+	    client_sock = new Socks5DatagramSocket(true, auth.getUdpEncapsulation(), clientIP, clientPort, clientSocket);
+	    relayPort = client_sock.getLocalPort();
+	    relayIP = client_sock.getLocalAddress();
+
+	    if (relayIP.getHostAddress().equals("0.0.0.0") || relayIP.getHostAddress().equals("::")
+	        || relayIP.getHostAddress().equals("::0") || relayIP.getHostAddress().equals("0:0:0:0:0:0:0:0")
+	        || relayIP.getHostAddress().equals("00:00:00:00:00:00:00:00")
+	        || relayIP.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
+	      relayIP = InetAddress.getLocalHost();
+
+	    if (this.proxy == null)
+	      remote_sock = remoteSocket;
+	    else
+	      remote_sock = new Socks5DatagramSocket(this.proxy, 0, null, connectTimeout, remoteSocket);
+	  }
+
 
 	// Public methods
 	/////////////////
