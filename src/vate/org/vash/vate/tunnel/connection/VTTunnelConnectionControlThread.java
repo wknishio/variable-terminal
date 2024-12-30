@@ -319,7 +319,15 @@ public class VTTunnelConnectionControlThread implements Runnable
                     || localAddress.getHostAddress().equals("00:00:00:00:00:00:00:00")
                     || localAddress.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
                     {
-                      localAddress = InetAddress.getLocalHost();
+                      try
+                      {
+                        InetAddress localHost = InetAddress.getLocalHost();
+                        localAddress = localHost;
+                      }
+                      catch (Throwable t)
+                      {
+                        
+                      }
                     }
                     // response message sent with ok
                     connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + localAddress.getHostAddress() + SESSION_SEPARATOR + localPort).getBytes("UTF-8"));

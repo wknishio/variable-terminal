@@ -78,7 +78,17 @@ public class UDPRelayServer implements Runnable {
 				|| relayIP.getHostAddress().equals("::0") || relayIP.getHostAddress().equals("0:0:0:0:0:0:0:0")
 				|| relayIP.getHostAddress().equals("00:00:00:00:00:00:00:00")
 				|| relayIP.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
-			relayIP = InetAddress.getLocalHost();
+		{
+      try
+      {
+        InetAddress localHost = InetAddress.getLocalHost();
+        relayIP = localHost;
+      }
+      catch (Throwable t)
+      {
+        
+      }
+    }
 
 		if (this.proxy == null)
 			remote_sock = new DatagramSocket();
@@ -97,11 +107,11 @@ public class UDPRelayServer implements Runnable {
     relayPort = client_sock.getLocalPort();
     relayIP = client_sock.getLocalAddress();
 
-    if (relayIP.getHostAddress().equals("0.0.0.0") || relayIP.getHostAddress().equals("::")
-        || relayIP.getHostAddress().equals("::0") || relayIP.getHostAddress().equals("0:0:0:0:0:0:0:0")
-        || relayIP.getHostAddress().equals("00:00:00:00:00:00:00:00")
-        || relayIP.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
-      relayIP = InetAddress.getLocalHost();
+//    if (relayIP.getHostAddress().equals("0.0.0.0") || relayIP.getHostAddress().equals("::")
+//        || relayIP.getHostAddress().equals("::0") || relayIP.getHostAddress().equals("0:0:0:0:0:0:0:0")
+//        || relayIP.getHostAddress().equals("00:00:00:00:00:00:00:00")
+//        || relayIP.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
+//      relayIP = InetAddress.getLocalHost();
 
     if (this.proxy == null)
       remote_sock = new DatagramSocket();
@@ -124,7 +134,17 @@ public class UDPRelayServer implements Runnable {
 	        || relayIP.getHostAddress().equals("::0") || relayIP.getHostAddress().equals("0:0:0:0:0:0:0:0")
 	        || relayIP.getHostAddress().equals("00:00:00:00:00:00:00:00")
 	        || relayIP.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
-	      relayIP = InetAddress.getLocalHost();
+	    {
+	      try
+	      {
+	        InetAddress localHost = InetAddress.getLocalHost();
+	        relayIP = localHost;
+	      }
+	      catch (Throwable t)
+	      {
+	        
+	      }
+	    }
 
 	    if (this.proxy == null)
 	      remote_sock = remoteSocket;
