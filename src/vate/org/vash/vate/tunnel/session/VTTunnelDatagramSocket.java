@@ -35,6 +35,8 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   private final String localAddress;
   private final int localPort;
   private final boolean client;
+  private final byte[] byteAddressIPv4 = new byte[4];
+  private final byte[] byteAddressIPv6 = new byte[16];
   
   public VTTunnelDatagramSocket(Socket tunnelSocket, String address, int port) throws IOException
   {
@@ -111,16 +113,24 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   public void receive(DatagramPacket packet) throws IOException
   {
     tunnelInputPacket.reset();
-    int dataLength = tunnelInputStream.readData(tunnelInputPacket.buf());
+    int frameLength = tunnelInputStream.readData(tunnelInputPacket.buf());
     int packetLength = tunnelPacketInputStream.readUnsignedShort();
     int packetPort = tunnelPacketInputStream.readUnsignedShort();
-    byte[] byteAddress = new byte[dataLength - 4 - packetLength];
+    byte[] byteAddress = null;
+    if (frameLength - 4 - packetLength == 4)
+    {
+      byteAddress = byteAddressIPv4;
+    }
+    else if (frameLength - 4 - packetLength == 16)
+    {
+      byteAddress = byteAddressIPv6;
+    }
+    else
+    {
+      byteAddress = new byte[frameLength - 4 - packetLength];
+    }
     tunnelPacketInputStream.readFully(byteAddress);
     byte[] packetData = packet.getData();
-//    if (packetData == null || packetData.length < packetLength)
-//    {
-//      packetData = new byte[packetLength];
-//    }
     tunnelPacketInputStream.readFully(packetData, 0, packetLength);
     packet.setPort(packetPort);
     packet.setAddress(InetAddress.getByAddress(byteAddress));
