@@ -277,10 +277,12 @@ public class VTTunnelConnectionControlThread implements Runnable
                   if (host != null && host.length() > 0)
                   {
                     datagramSocket = new VTTunnelDatagramSocket(pipedSocket, connection.getExecutorService(), host, port);
+                    datagramSocket.setSoTimeout(dataTimeout);
                   }
                   else
                   {
                     datagramSocket = new VTTunnelDatagramSocket(pipedSocket, connection.getExecutorService());
+                    datagramSocket.setSoTimeout(dataTimeout);
                   }
                 }
                 catch (Throwable t)
@@ -288,28 +290,27 @@ public class VTTunnelConnectionControlThread implements Runnable
                   
                 }
                 
-                if (datagramSocket != null)
+                VTTunnelRunnableSessionHandler handler = new VTTunnelRunnableSessionHandler(session, connection.getResponseChannel(), datagramSocket);
+                
+                VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
+                VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
+                  
+                if (output != null && input != null)
                 {
-                  datagramSocket.setSoTimeout(dataTimeout);
-                  VTTunnelRunnableSessionHandler handler = new VTTunnelRunnableSessionHandler(session, connection.getResponseChannel(), datagramSocket);
+                  pipedSocket.setOutputStream(output);
+                  session.setSocketInputStream(pipedSocket.getInputStream());
+                  session.setSocketOutputStream(pipedSocket.getOutputStream());
                   
-                  VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
-                  VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
+                  input.setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
+                  output.open();
                   
-                  if (output != null && input != null)
+                  session.setTunnelInputStream(input);
+                  session.setTunnelOutputStream(output);
+                  
+                  if (datagramSocket != null)
                   {
-                    pipedSocket.setOutputStream(output);
-                    session.setSocketInputStream(pipedSocket.getInputStream());
-                    session.setSocketOutputStream(pipedSocket.getOutputStream());
-                    
-                    input.setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
-                    output.open();
-                    
                     datagramSocket.setTunnelInputStream(pipedSocket.getInputStream());
                     datagramSocket.setTunnelOutputStream(pipedSocket.getOutputStream());
-                    
-                    session.setTunnelInputStream(input);
-                    session.setTunnelOutputStream(output);
                     
                     int localPort = datagramSocket.getLocalPort();
                     InetAddress localAddress = datagramSocket.getLocalAddress();
@@ -356,6 +357,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                   connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
                 }
+                
               }
               else
               {

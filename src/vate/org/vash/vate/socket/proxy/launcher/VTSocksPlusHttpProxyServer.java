@@ -249,12 +249,12 @@ public class VTSocksPlusHttpProxyServer
     if (validation != null)
     {
       VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, socksPlusHttpProxyServer.executorService, null, null, 0, socksPlusHttpProxyServer.bind), socksPlusHttpProxyServer.executorService, false, false, null, null, 0);
-      socksServer.start(socksPlusHttpProxyServer.port, 5, socksPlusHttpProxyServer.host, socksPlusHttpProxyServer.bind);
+      socksServer.start(socksPlusHttpProxyServer.port, socksPlusHttpProxyServer.host, socksPlusHttpProxyServer.bind);
     }
     else
     {
       VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorNone(socksPlusHttpProxyServer.executorService, null, null, 0, socksPlusHttpProxyServer.bind), socksPlusHttpProxyServer.executorService, false, false, null, null, 0);
-      socksServer.start(socksPlusHttpProxyServer.port, 5, socksPlusHttpProxyServer.host, socksPlusHttpProxyServer.bind);
+      socksServer.start(socksPlusHttpProxyServer.port, socksPlusHttpProxyServer.host, socksPlusHttpProxyServer.bind);
     }
   }
 }

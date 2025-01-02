@@ -59,8 +59,9 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
       {
         try
         {
-          VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, channel.getConnection().getExecutorService(), proxy, socketFactory, connectTimeout, bind), session.getSocket(), channel.getConnection().getExecutorService(), false, true, proxy, socketFactory, connectTimeout, bind);
-          //socksServer.setDatagramSocketFactory(channel.getConnection().createRemoteSocketFactory(channel));
+          VTSocksProxyServer.setUDPTimeout(VT.VT_PING_LIMIT_MILLISECONDS);
+          VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, channel.getConnection().getExecutorService(), proxy, socketFactory, connectTimeout, bind), session.getSocket(), channel.getConnection().getExecutorService(), false, false, proxy, socketFactory, connectTimeout, bind);
+          socksServer.setDatagramSocketFactory(channel.getConnection().createRemoteSocketFactory(channel));
           socksServer.setPipeBufferSize(socksBufferSize);
           socksServer.run();
         }
@@ -74,8 +75,9 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
       {
         try
         {
-          VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorNone(channel.getConnection().getExecutorService(), proxy, socketFactory, connectTimeout, bind), session.getSocket(), channel.getConnection().getExecutorService(), false, true, proxy, socketFactory, connectTimeout, bind);
-          //socksServer.setDatagramSocketFactory(channel.getConnection().createRemoteSocketFactory(channel));
+          VTSocksProxyServer.setUDPTimeout(VT.VT_PING_LIMIT_MILLISECONDS);
+          VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorNone(channel.getConnection().getExecutorService(), proxy, socketFactory, connectTimeout, bind), session.getSocket(), channel.getConnection().getExecutorService(), false, false, proxy, socketFactory, connectTimeout, bind);
+          socksServer.setDatagramSocketFactory(channel.getConnection().createRemoteSocketFactory(channel));
           socksServer.setPipeBufferSize(socksBufferSize);
           socksServer.run();
         }

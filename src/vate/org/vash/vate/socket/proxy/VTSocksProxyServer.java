@@ -228,13 +228,9 @@ public class VTSocksProxyServer implements Runnable {
 	 * This methods blocks.
 	 */
 	public void start(int port) {
-		start(port, 5, null, null);
+		start(port, null, null);
 	}
 	
-	public void start(int port, int backlog) {
-    start(port, backlog, null, null);
-  }
-
 	/**
 	 * Create a server with the specified port, listen backlog, and local IP address
 	 * to bind to. The localIP argument can be used on a multi-homed host for a
@@ -243,16 +239,16 @@ public class VTSocksProxyServer implements Runnable {
 	 * addresses. The port must be between 0 and 65535, inclusive. <br>
 	 * This methods blocks.
 	 */
-	public void start(int port, int backlog, String host, String bind) {
+	public void start(int port, String host, String bind) {
 	  this.bind = bind;
 		try {
 		  if (host != null)
 		  {
-		    ss = new ServerSocket(port, backlog, InetAddress.getByName(host));
+		    ss = new ServerSocket(port, 0, InetAddress.getByName(host));
 		  }
 		  else
 		  {
-		    ss = new ServerSocket(port, backlog, null);
+		    ss = new ServerSocket(port, 0, null);
 		  }
 			//ss = new ServerSocket();
 			//ss.setReuseAddress(true);
@@ -598,18 +594,18 @@ public class VTSocksProxyServer implements Runnable {
 		{
 		  if (socket_factory != null)
 		  {
-		    relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, null, socket_factory.createSocket("", 0, 300000));
+		    relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, null, socket_factory.createSocket("", 0, VT.VT_PING_LIMIT_MILLISECONDS));
 		  }
 		  else
 		  {
-	      relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, datagram_factory.createSocket("", 0, 300000));
+	      relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, datagram_factory.createSocket("", 0, VT.VT_PING_LIMIT_MILLISECONDS));
 		  }
 		}
 		else
 		{
 		  if (socket_factory != null)
       {
-		    relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, null, socket_factory.createSocket("", 0, 300000));
+		    relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, null, socket_factory.createSocket("", 0, VT.VT_PING_LIMIT_MILLISECONDS));
       }
 		  else
 		  {

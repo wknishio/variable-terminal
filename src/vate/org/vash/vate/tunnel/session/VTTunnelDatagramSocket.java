@@ -27,11 +27,11 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   private VTByteArrayOutputStream tunnelOutputPacket = new VTByteArrayOutputStream(new byte[65536]);
   private VTLittleEndianInputStream tunnelPacketInputStream = new VTLittleEndianInputStream(tunnelInputPacket);
   private VTLittleEndianOutputStream tunnelPacketOutputStream = new VTLittleEndianOutputStream(tunnelOutputPacket);
-  private DatagramPacket datagramInputPacket = new DatagramPacket(new byte[65536], 65535);
-  private DatagramPacket datagramOutputPacket = new DatagramPacket(new byte[65536], 65535);
+  private DatagramPacket datagramInputPacket = new DatagramPacket(new byte[65536], 65536);
+  private DatagramPacket datagramOutputPacket = new DatagramPacket(new byte[65536], 65536);
   private final Socket tunnelSocket;
   private final ExecutorService executorService;
-  private final DatagramSocket datagramSocket;
+  private final DatagramSocket remoteSocket;
   private final String localAddress;
   private final int localPort;
   private final boolean client;
@@ -43,7 +43,7 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     super((SocketAddress)null);
     this.tunnelSocket = tunnelSocket;
     this.executorService = null;
-    this.datagramSocket = null;
+    this.remoteSocket = null;
     this.localAddress = address;
     this.localPort = port;
     this.client = true;
@@ -54,8 +54,8 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     super((SocketAddress)null);
     this.tunnelSocket = tunnelSocket;
     this.executorService = executorService;
-    this.datagramSocket = null;
-    super.bind(null);
+    this.remoteSocket = new DatagramSocket((SocketAddress)null);
+    this.remoteSocket.bind(null);
     this.localAddress = null;
     this.localPort = 0;
     this.client = false;
@@ -66,8 +66,8 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     super((SocketAddress)null);
     this.tunnelSocket = tunnelSocket;
     this.executorService = executorService;
-    this.datagramSocket = null;
-    super.bind(new InetSocketAddress(address, port));
+    this.remoteSocket = new DatagramSocket((SocketAddress)null);
+    this.remoteSocket.bind(new InetSocketAddress(address, port));
     this.localAddress = null;
     this.localPort = 0;
     this.client = false;
@@ -78,22 +78,26 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     super((SocketAddress)null);
     this.tunnelSocket = tunnelSocket;
     this.executorService = executorService;
-    this.datagramSocket = null;
-    super.bind(new InetSocketAddress(address, port));
+    this.remoteSocket = new DatagramSocket((SocketAddress)null);
+    this.remoteSocket.bind(new InetSocketAddress(address, port));
     this.localAddress = null;
     this.localPort = 0;
     this.client = false;
   }
   
-  public VTTunnelDatagramSocket(Socket tunnelSocket, ExecutorService executorService, DatagramSocket datagramSocket) throws IOException
+  public VTTunnelDatagramSocket(Socket tunnelSocket, ExecutorService executorService, DatagramSocket remoteSocket) throws IOException
   {
     super((SocketAddress)null);
     this.tunnelSocket = tunnelSocket;
     this.executorService = executorService;
-    this.datagramSocket = datagramSocket;
-    if (datagramSocket == null)
+    if (remoteSocket != null)
     {
-      super.bind(null);
+      this.remoteSocket = remoteSocket;
+    }
+    else
+    {
+      this.remoteSocket = new DatagramSocket((SocketAddress)null);
+      this.remoteSocket.bind(null);
     }
     this.localAddress = null;
     this.localPort = 0;
@@ -150,13 +154,16 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public void close()
   {
-    try
+    if (remoteSocket != null)
     {
-      super.close();
-    }
-    catch (Throwable t)
-    {
-      
+      try
+      {
+        remoteSocket.close();
+      }
+      catch (Throwable t)
+      {
+        
+      }
     }
     try
     {
@@ -166,38 +173,14 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     {
       
     }
-  }
-  
-  private boolean processInputPacket() throws IOException
-  {
-    //receive from local and send to tunnel
-    if (datagramSocket != null)
+    try
     {
-      datagramSocket.receive(datagramInputPacket);
+      super.close();
     }
-    else
+    catch (Throwable t)
     {
-      super.receive(datagramInputPacket);
+      
     }
-    send(datagramInputPacket);
-    //System.out.println("processInputPacket()");
-    return true;
-  }
-  
-  private boolean processOutputPacket() throws IOException
-  {
-    //receive from tunnel and send to local
-    receive(datagramOutputPacket);
-    if (datagramSocket != null)
-    {
-      datagramSocket.send(datagramInputPacket);
-    }
-    else
-    {
-      super.send(datagramInputPacket);
-    }
-    //System.out.println("processOutputPacket()");
-    return true;
   }
   
   private Runnable getInputPacketRunnable()
@@ -208,9 +191,10 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
       {
         try
         {
-          while (processInputPacket())
+          while (true)
           {
-            
+            remoteSocket.receive(datagramInputPacket);
+            send(datagramInputPacket);
           }
         }
         catch (Throwable t)
@@ -230,9 +214,10 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
       {
         try
         {
-          while (processOutputPacket())
+          while (true)
           {
-            
+            receive(datagramOutputPacket);
+            remoteSocket.send(datagramOutputPacket);
           }
         }
         catch (Throwable t)
@@ -280,9 +265,9 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public InetAddress getLocalAddress()
   {
-    if (datagramSocket != null)
+    if (remoteSocket != null)
     {
-      return datagramSocket.getLocalAddress();
+      return remoteSocket.getLocalAddress();
     }
     if (localAddress != null)
     {
@@ -300,9 +285,9 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
   
   public int getLocalPort()
   {
-    if (datagramSocket != null)
+    if (remoteSocket != null)
     {
-      return datagramSocket.getLocalPort();
+      return remoteSocket.getLocalPort();
     }
     if (localPort != 0)
     {
@@ -317,9 +302,9 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     {
       return;
     }
-    if (datagramSocket != null)
+    if (remoteSocket != null)
     {
-      datagramSocket.setSoTimeout(timeout);
+      remoteSocket.setSoTimeout(timeout);
       return;
     }
     super.setSoTimeout(timeout);
@@ -331,9 +316,9 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     {
       return 0;
     }
-    if (datagramSocket != null)
+    if (remoteSocket != null)
     {
-      return datagramSocket.getSoTimeout();
+      return remoteSocket.getSoTimeout();
     }
     return super.getSoTimeout();
   }
@@ -344,9 +329,9 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     {
       return;
     }
-    if (datagramSocket != null)
+    if (remoteSocket != null)
     {
-      datagramSocket.setSendBufferSize(size);
+      remoteSocket.setSendBufferSize(size);
       return;
     }
     super.setSendBufferSize(size);
@@ -358,9 +343,9 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     {
       return 0;
     }
-    if (datagramSocket != null)
+    if (remoteSocket != null)
     {
-      return datagramSocket.getSendBufferSize();
+      return remoteSocket.getSendBufferSize();
     }
     return super.getSendBufferSize();
   }
@@ -371,9 +356,9 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     {
       return;
     }
-    if (datagramSocket != null)
+    if (remoteSocket != null)
     {
-      datagramSocket.setReceiveBufferSize(size);
+      remoteSocket.setReceiveBufferSize(size);
       return;
     }
     super.setReceiveBufferSize(size);
@@ -385,9 +370,9 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     {
       return 0;
     }
-    if (datagramSocket != null)
+    if (remoteSocket != null)
     {
-      return datagramSocket.getReceiveBufferSize();
+      return remoteSocket.getReceiveBufferSize();
     }
     return super.getReceiveBufferSize();
   }
@@ -398,9 +383,9 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     {
       return;
     }
-    if (datagramSocket != null)
+    if (remoteSocket != null)
     {
-      datagramSocket.setReuseAddress(on);
+      remoteSocket.setReuseAddress(on);
       return;
     }
     super.setReuseAddress(on);
@@ -412,9 +397,9 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     {
       return false;
     }
-    if (datagramSocket != null)
+    if (remoteSocket != null)
     {
-      return datagramSocket.getReuseAddress();
+      return remoteSocket.getReuseAddress();
     }
     return super.getReuseAddress();
   }
@@ -425,9 +410,9 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     {
       return;
     }
-    if (datagramSocket != null)
+    if (remoteSocket != null)
     {
-      datagramSocket.setBroadcast(on);
+      remoteSocket.setBroadcast(on);
       return;
     }
     super.setBroadcast(on);
@@ -439,9 +424,9 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     {
       return false;
     }
-    if (datagramSocket != null)
+    if (remoteSocket != null)
     {
-      return datagramSocket.getBroadcast();
+      return remoteSocket.getBroadcast();
     }
     return super.getBroadcast();
   }
@@ -452,9 +437,9 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     {
       return;
     }
-    if (datagramSocket != null)
+    if (remoteSocket != null)
     {
-      datagramSocket.setTrafficClass(tc);
+      remoteSocket.setTrafficClass(tc);
       return;
     }
     super.setTrafficClass(tc);
@@ -466,9 +451,9 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     {
       return 0;
     }
-    if (datagramSocket != null)
+    if (remoteSocket != null)
     {
-      return datagramSocket.getTrafficClass();
+      return remoteSocket.getTrafficClass();
     }
     return super.getTrafficClass();
   }
