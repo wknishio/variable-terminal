@@ -3,6 +3,7 @@ package org.vash.vate.console.graphical;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Panel;
 import java.awt.TextArea;
 import java.awt.Toolkit;
 import java.awt.dnd.DropTarget;
@@ -1853,11 +1854,6 @@ public class VTGraphicalConsole implements VTConsoleInstance
     }
   }
   
-  public VTGraphicalConsoleFrame getFrame()
-  {
-    return frame;
-  }
-  
   public static VTGraphicalConsoleFrame getStaticFrame()
   {
     return frame;
@@ -2428,6 +2424,16 @@ public class VTGraphicalConsole implements VTConsoleInstance
   public boolean isInputModeReplace()
   {
     return isReplaceActivated();
+  }
+  
+  public VTGraphicalConsoleFrame getFrame()
+  {
+    return frame;
+  }
+  
+  public Panel getPanel()
+  {
+    return null;
   }
   
   // public boolean isReadingLine()

@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.FileDescriptor;
 import java.io.FileOutputStream;
 import java.awt.Frame;
+import java.awt.Panel;
 // import java.io.FileInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -970,11 +971,6 @@ public class VTStandardConsole implements VTConsoleInstance
     return "";
   }
   
-  public Frame getFrame()
-  {
-    return null;
-  }
-  
   public boolean isFlushModePause()
   {
     return false;
@@ -983,5 +979,15 @@ public class VTStandardConsole implements VTConsoleInstance
   public boolean isInputModeReplace()
   {
     return false;
+  }
+  
+  public Frame getFrame()
+  {
+    return null;
+  }
+  
+  public Panel getPanel()
+  {
+    return null;
   }
 }

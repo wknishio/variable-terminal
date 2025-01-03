@@ -126,7 +126,7 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
 //        frameLayout.setVgap(0);
 //        setLayout(frameLayout);
         
-        terminalPanel = new AWTTerminalPanel(awtTerminal);
+        terminalPanel = new AWTTerminalPanel(awtTerminal, autoCloseTrigger);
         
         add(terminalPanel);
         

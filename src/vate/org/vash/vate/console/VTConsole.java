@@ -2,6 +2,7 @@ package org.vash.vate.console;
 
 import java.awt.EventQueue;
 import java.awt.Frame;
+import java.awt.Panel;
 import java.io.FileDescriptor;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -71,7 +72,7 @@ public final class VTConsole
           VTNativeUtils.hideConsole();
           if (lanterna)
           {
-            console = new VTLanternaConsole(graphical, remoteIcon);
+            console = new VTLanternaConsole(graphical, remoteIcon, null);
           }
           else
           {
@@ -88,7 +89,7 @@ public final class VTConsole
         {
           if (lanterna && ansi && VTNativeUtils.checkANSI())
           {
-            console = new VTLanternaConsole(graphical, remoteIcon);
+            console = new VTLanternaConsole(graphical, remoteIcon, null);
           }
           else
           {
@@ -599,15 +600,6 @@ public final class VTConsole
     return console != null;
   }
   
-  public static Frame getFrame()
-  {
-    if (console != null)
-    {
-      return console.getFrame();
-    }
-    return null;
-  }
-  
   public static void toggleFlushMode()
   {
     if (checkConsole())
@@ -897,6 +889,24 @@ public final class VTConsole
     if (checkConsole())
     {
       return console;
+    }
+    return null;
+  }
+  
+  public static Frame getFrame()
+  {
+    if (console != null)
+    {
+      return console.getFrame();
+    }
+    return null;
+  }
+  
+  public static Panel getPanel()
+  {
+    if (console != null)
+    {
+      return console.getPanel();
     }
     return null;
   }

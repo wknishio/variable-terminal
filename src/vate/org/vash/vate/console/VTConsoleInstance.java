@@ -1,6 +1,7 @@
 package org.vash.vate.console;
 
 import java.awt.Frame;
+import java.awt.Panel;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Locale;
@@ -54,8 +55,6 @@ public interface VTConsoleInstance
   
   public abstract PrintStream getSystemErr();
   
-  public abstract Frame getFrame();
-  
   public abstract void toggleFlushMode();
   
   public abstract void toggleInputMode();
@@ -101,4 +100,8 @@ public interface VTConsoleInstance
   public abstract boolean isFlushModePause();
   
   public abstract boolean isInputModeReplace();
+  
+  public abstract Frame getFrame();
+  
+  public abstract Panel getPanel();
 }

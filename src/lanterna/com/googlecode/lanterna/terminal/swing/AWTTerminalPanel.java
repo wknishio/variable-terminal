@@ -5,9 +5,22 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Panel;
 import java.awt.SystemColor;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.concurrent.TimeUnit;
+
+import com.googlecode.lanterna.SGR;
+import com.googlecode.lanterna.TerminalPosition;
+import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TextColor;
+import com.googlecode.lanterna.graphics.TextGraphics;
+import com.googlecode.lanterna.input.KeyStroke;
+import com.googlecode.lanterna.input.KeyType;
+import com.googlecode.lanterna.terminal.IOSafeTerminal;
+import com.googlecode.lanterna.terminal.TerminalResizeListener;
 
 @SuppressWarnings("serial")
-public class AWTTerminalPanel extends Panel
+public class AWTTerminalPanel extends Panel implements IOSafeTerminal
 {
   private static final long serialVersionUID = 1L;
   
@@ -19,10 +32,14 @@ public class AWTTerminalPanel extends Panel
   private Panel spacerPanelWest;
   private Panel spacerPanelEast;
   private AWTTerminal awtTerminal;
+  private boolean disposed;
+  private TerminalSize defaultTerminalSize;
+  private final EnumSet<TerminalEmulatorAutoCloseTrigger> autoCloseTriggers;
 
-  public AWTTerminalPanel(AWTTerminal awtTerminal)
+  public AWTTerminalPanel(AWTTerminal awtTerminal, TerminalEmulatorAutoCloseTrigger... autoCloseTrigger)
   {
     this.awtTerminal = awtTerminal;
+    this.autoCloseTriggers = EnumSet.copyOf(Arrays.asList(autoCloseTrigger));
     
     BorderLayout panelLayout = new BorderLayout();
     panelLayout.setHgap(0);
@@ -110,4 +127,202 @@ public class AWTTerminalPanel extends Panel
     centerPanel.setBackground(color);
     awtTerminal.setBackground(color);
   }
+  
+  public AWTTerminal getTerminal()
+  {
+    return awtTerminal;
+  }
+  
+  public void dispose()
+  {
+    //super.dispose();
+    disposed = true;
+  }
+  
+  public void close()
+  {
+      dispose();
+  }
+  
+  /**
+   * Takes a KeyStroke and puts it on the input queue of the terminal emulator. This way you can insert synthetic
+   * input events to be processed as if they came from the user typing on the keyboard.
+   * @param keyStroke Key stroke input event to put on the queue
+   */
+  public void addInput(KeyStroke keyStroke) {
+      awtTerminal.addInput(keyStroke);
+  }
+
+  ///////////
+  // Delegate all Terminal interface implementations to AWTTerminal
+  ///////////
+  
+  public KeyStroke pollInput() {
+      if(disposed) {
+          return new KeyStroke(KeyType.EOF);
+      }
+      KeyStroke keyStroke = awtTerminal.pollInput();
+      if(autoCloseTriggers.contains(TerminalEmulatorAutoCloseTrigger.CloseOnEscape) &&
+              keyStroke != null && 
+              keyStroke.getKeyType() == KeyType.Escape) {
+          dispose();
+      }
+      return keyStroke;
+  }
+
+  
+  public KeyStroke readInput() {
+      return awtTerminal.readInput();
+  }
+
+  
+  public void enterPrivateMode() {
+      awtTerminal.enterPrivateMode();
+  }
+
+  
+  public void exitPrivateMode() {
+      awtTerminal.exitPrivateMode();
+      if(autoCloseTriggers.contains(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode)) {
+          dispose();
+      }
+  }
+
+  
+  public void clearScreen() {
+      awtTerminal.clearScreen();
+  }
+
+  
+  public void setCursorPosition(int x, int y) {
+      awtTerminal.setCursorPosition(x, y);
+  }
+
+  
+  public void setCursorPosition(TerminalPosition position) {
+      awtTerminal.setCursorPosition(position);
+  }
+
+  
+  public TerminalPosition getCursorPosition() {
+      return awtTerminal.getCursorPosition();
+  }
+
+  
+  public void setCursorVisible(boolean visible) {
+      awtTerminal.setCursorVisible(visible);
+  }
+
+  
+  public void putCharacter(char c) {
+      awtTerminal.putCharacter(c);
+  }
+
+  
+  public TextGraphics newTextGraphics() {
+      return awtTerminal.newTextGraphics();
+  }
+
+  
+  public void enableSGR(SGR sgr) {
+      awtTerminal.enableSGR(sgr);
+  }
+
+  
+  public void disableSGR(SGR sgr) {
+      awtTerminal.disableSGR(sgr);
+  }
+
+  
+  public void resetColorAndSGR() {
+      awtTerminal.resetColorAndSGR();
+  }
+
+  
+  public void setForegroundColor(TextColor color) {
+      awtTerminal.setForegroundColor(color);
+  }
+
+  
+  public void setBackgroundColor(TextColor color) {
+      awtTerminal.setBackgroundColor(color);
+  }
+  
+  public TerminalSize getTerminalSize() {
+      return awtTerminal.getTerminalSize();
+  }
+
+  
+  public byte[] enquireTerminal(int timeout, TimeUnit timeoutUnit) {
+      return awtTerminal.enquireTerminal(timeout, timeoutUnit);
+  }
+
+  
+  public void bell() {
+      awtTerminal.bell();
+  }
+
+  
+  public void flush() {
+      awtTerminal.flush();
+  }
+
+  
+  public void addResizeListener(TerminalResizeListener listener) {
+      awtTerminal.addResizeListener(listener);
+  }
+
+  
+  public void removeResizeListener(TerminalResizeListener listener) {
+      awtTerminal.removeResizeListener(listener);
+  }
+  
+  public void setDefaultTerminalSize(TerminalSize size)
+  {
+    this.defaultTerminalSize = size;
+  }
+  
+  public void resetTerminalSize()
+  {
+    if (defaultTerminalSize != null)
+    {
+      awtTerminal.getTerminalImplementation().setTerminalSize(defaultTerminalSize);
+    }
+  }
+  
+  //public TerminalSize getTerminalSize()
+  //{
+    //return awtTerminal.getTerminalSize();
+  //}
+  
+  
+//  public ScrollPane getScrollPane()
+//  {
+//    return scrollpane;
+//  }
+
+public TerminalPosition getSelectionStartPosition()
+{
+  return awtTerminal.getSelectionStartPosition();
+}
+
+public void setSelectionStartPosition(TerminalPosition position)
+{
+  awtTerminal.setSelectionStartPosition(position);
+}
+
+public TerminalPosition getSelectionEndPosition()
+{
+  return awtTerminal.getSelectionEndPosition();
+}
+
+public void setSelectionEndPosition(TerminalPosition position)
+{
+  awtTerminal.setSelectionEndPosition(position);
+}
+
+public void putString(String string) {
+      awtTerminal.putString(string);
+  }
+
 }

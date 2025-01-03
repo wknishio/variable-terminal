@@ -85,7 +85,7 @@ public class VTLanternaConsole implements VTConsoleInstance
 {
   public static final TerminalEmulatorPalette CUSTOM_VGA = new TerminalEmulatorPalette(new java.awt.Color(170, 170, 170), new java.awt.Color(255, 255, 255), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(85, 85, 85), new java.awt.Color(170, 0, 0), new java.awt.Color(255, 85, 85), new java.awt.Color(0, 170, 0), new java.awt.Color(85, 255, 85), new java.awt.Color(170, 170, 0), new java.awt.Color(255, 255, 85), new java.awt.Color(0, 0, 170), new java.awt.Color(85, 85, 255), new java.awt.Color(170, 0, 170), new java.awt.Color(255, 85, 255), new java.awt.Color(0, 170, 170), new java.awt.Color(85, 255, 255), new java.awt.Color(170, 170, 170), new java.awt.Color(255, 255, 255));
   
-  private AWTTerminalFrame frame;
+  private Frame frame;
   private AWTTerminalPanel panel;
   private java.awt.Panel spacer1;
   // private java.awt.Panel spacer2;
@@ -155,12 +155,13 @@ public class VTLanternaConsole implements VTConsoleInstance
   // support command drag drop for awtframe
   // support keyboard shortcuts
   
-  public VTLanternaConsole(boolean graphical, boolean remoteIcon)
+  public VTLanternaConsole(boolean graphical, boolean remoteIcon, Frame frame)
   {
     // this.commandHistory.add("");
     // this.commandHistory.add(null);
     this.graphical = graphical;
     this.remoteIcon = remoteIcon;
+    this.frame = frame;
     this.console = this;
     Thread builderThread = new Thread()
     {
@@ -621,7 +622,14 @@ public class VTLanternaConsole implements VTConsoleInstance
     // final Scrollbar scrollBar = null;
     
     // factory.setForceTextTerminal(true);
-    terminal = factory.createTerminal();
+    if (graphical && frame != null)
+    {
+      terminal = factory.createAWTTerminalPanel(new java.awt.Color(85, 85, 85));
+    }
+    else
+    {
+      terminal = factory.createTerminal();
+    }
     
     outputBox = new VTLanternaOutputTextBox(new TerminalSize(consoleOutputColumns, consoleOutputLines), "", Style.MULTI_LINE, consoleOutputLinesMaxSize);
     inputBox = new VTLanternaOutputTextBox(new TerminalSize(consoleInputColumns, consoleInputLines), "", Style.SINGLE_LINE, consoleInputLines);
@@ -630,12 +638,25 @@ public class VTLanternaConsole implements VTConsoleInstance
     inputBox.setTerminal(terminal);
     
     // ScrollingAWTTerminal terminal = new ScrollingAWTTerminal();
-    if (terminal instanceof AWTTerminalFrame)
+    if (terminal instanceof AWTTerminalFrame || terminal instanceof AWTTerminalPanel)
     {
-      frame = (AWTTerminalFrame) terminal;
-      panel = frame.getTerminalPanel();
+      if (terminal instanceof AWTTerminalFrame)
+      {
+        frame = (AWTTerminalFrame) terminal;
+        panel = ((AWTTerminalFrame) terminal).getTerminalPanel();
+      }
+      else if (terminal instanceof AWTTerminalPanel)
+      {
+        panel = (AWTTerminalPanel) terminal;
+        if (frame != null)
+        {
+          frame.add(panel);
+          frame.pack();
+        }
+      }
+      
       // awtframe.setLocationByPlatform(true);
-      if (remoteIcon)
+      if (remoteIcon && frame != null)
       {
         // InputStream stream =
         // this.getClass().getResourceAsStream("/org/vash/vate/console/graphical/resource/remote.png");
@@ -649,7 +670,7 @@ public class VTLanternaConsole implements VTConsoleInstance
         }
         // stream.close();
       }
-      else
+      else if (frame != null)
       {
         // InputStream stream =
         // this.getClass().getResourceAsStream("/org/vash/vate/console/graphical/resource/terminal.png");
@@ -664,15 +685,18 @@ public class VTLanternaConsole implements VTConsoleInstance
         // stream.close();
       }
       
-      frame.addWindowListener(new VTLanternaConsoleWindowListener(this));
+      if (frame != null)
+      {
+        frame.addWindowListener(new VTLanternaConsoleWindowListener(this));
+      }
       
-      if (terminal instanceof AWTTerminalFrame)
+      if (frame != null && frame instanceof AWTTerminalFrame)
       {
         awtTerminal = ((AWTTerminalFrame) frame).getTerminal();
       }
-      else
+      else if (panel != null)
       {
-        awtTerminal = null;
+        awtTerminal = panel.getTerminal();
       }
       
       awtTerminal.addMouseListener(new MouseListener()
@@ -818,7 +842,10 @@ public class VTLanternaConsole implements VTConsoleInstance
         }
       });
       //
-      VTGlobalTextStyleManager.registerWindow(frame);
+      if (frame != null)
+      {
+        VTGlobalTextStyleManager.registerWindow(frame);
+      }
       //VTGlobalTextStyleManager.registerMonospacedComponent(awtTerminal);
       VTGlobalTextStyleManager.registerFontList(awtTerminal.getTerminalFontConfiguration().getFontPriority());
       popupMenu = new VTGraphicalConsolePopupMenu(this, panel);
@@ -1497,16 +1524,26 @@ public class VTLanternaConsole implements VTConsoleInstance
     
     setTitle("");
     
+    if (panel != null)
+    {
+      spacer1.setSize(verticalScrollbar.getPreferredSize().width, spacer1.getSize().height);
+      spacer1.setPreferredSize(new Dimension(verticalScrollbar.getPreferredSize().width, spacer1.getSize().height));
+      
+      panel.setDefaultTerminalSize(panel.getTerminalSize());
+    }
+    
     if (frame != null)
     {
       frame.setLocationByPlatform(true);
       frame.pack();
       
-      spacer1.setSize(verticalScrollbar.getPreferredSize().width, spacer1.getSize().height);
-      spacer1.setPreferredSize(new Dimension(verticalScrollbar.getPreferredSize().width, spacer1.getSize().height));
-      
       frame.setVisible(true);
-      frame.setDefaultTerminalSize(frame.getTerminalSize());
+      
+      if (frame instanceof AWTTerminalFrame)
+      {
+        AWTTerminalFrame awtTerminalFrame = (AWTTerminalFrame) frame;
+        awtTerminalFrame.setDefaultTerminalSize(awtTerminalFrame.getTerminalSize());
+      }
     }
     
     setColors(VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN, VTConsole.VT_CONSOLE_COLOR_DARK_BLACK);
@@ -1779,11 +1816,6 @@ public class VTLanternaConsole implements VTConsoleInstance
     {
       return inputLineBuffer.size();
     }
-  }
-  
-  public Frame getFrame()
-  {
-    return frame;
   }
   
 //  public int indexOfWhitespace(String data)
@@ -2464,13 +2496,18 @@ public class VTLanternaConsole implements VTConsoleInstance
     inputBox.setTheme(inputTheme);
     outputBox.setTheme(outputTheme);
     
-    if (frame != null)
+    if (panel != null)
     {
       awtTerminal.getTerminalImplementation().setLastLineBackground(lastLineBackgroundColor);
       awtTerminal.getTerminalImplementation().setDefaultBackground(spacerBackgroundColor);
       
-      frame.setBackground(spacerBackgroundColor);
-      frame.setSpacerBackgroundColor(spacerBackgroundColor);
+      panel.setBackground(spacerBackgroundColor);
+      panel.setSpacerBackgroundColor(spacerBackgroundColor);
+      
+      if (frame != null)
+      {
+        frame.setBackground(spacerBackgroundColor);
+      }
     }
   }
   
@@ -2790,22 +2827,37 @@ public class VTLanternaConsole implements VTConsoleInstance
       
     }
     
-    try
+    if (panel != null)
     {
-      frame.setVisible(false);
-    }
-    catch (Throwable t)
-    {
-      
+      try
+      {
+        panel.close();
+      }
+      catch (Throwable t)
+      {
+        
+      }
     }
     
-    try
+    if (frame != null)
     {
-      frame.dispose();
-    }
-    catch (Throwable t)
-    {
+      try
+      {
+        frame.setVisible(false);
+      }
+      catch (Throwable t)
+      {
+        
+      }
       
+      try
+      {
+        frame.dispose();
+      }
+      catch (Throwable t)
+      {
+        
+      }
     }
   }
   
@@ -2950,5 +3002,15 @@ public class VTLanternaConsole implements VTConsoleInstance
   public boolean isInputModeReplace()
   {
     return replaceActivated;
+  }
+  
+  public Frame getFrame()
+  {
+    return frame;
+  }
+  
+  public java.awt.Panel getPanel()
+  {
+    return panel;
   }
 }
