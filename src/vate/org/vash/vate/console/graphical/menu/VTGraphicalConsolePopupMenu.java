@@ -2,7 +2,6 @@ package org.vash.vate.console.graphical.menu;
 
 // import java.awt.CheckboxMenuItem;
 import java.awt.Component;
-import java.awt.Frame;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.event.ActionEvent;
@@ -32,12 +31,12 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
   private VTGraphicalConsolePasteActionListener pasteActionListener;
   
   private final VTConsoleInstance console;
-  private final Frame frame;
+  private final Component component;
   
-  public VTGraphicalConsolePopupMenu(final VTConsoleInstance console, final Frame frame)
+  public VTGraphicalConsolePopupMenu(final VTConsoleInstance console, final Component component)
   {
     this.console = console;
-    this.frame = frame;
+    this.component = component;
     // this.keyListener = keyListener;
     copy = new MenuItem("Copy ");
     paste = new MenuItem("Paste ");
@@ -92,7 +91,7 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
     // this.insert(expand, 4);
     // this.insert(reduce, 5);
     // this.insert(scroll, 2);
-    frame.add(this);
+    component.add(this);
   }
   
   /* public boolean getScroll() { return scroll.getState(); } */
@@ -116,8 +115,8 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
     {
       insert.setLabel("Replace ");
     }
-    frame.remove(this);
-    frame.add(this);
+    component.remove(this);
+    component.add(this);
     // scroll.setState(b)
     super.show(origin, x, y);
   }

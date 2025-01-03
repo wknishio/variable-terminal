@@ -77,6 +77,7 @@ import com.googlecode.lanterna.terminal.Terminal;
 import com.googlecode.lanterna.terminal.swing.AWTTerminal;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFontConfiguration;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
+import com.googlecode.lanterna.terminal.swing.AWTTerminalPanel;
 import com.googlecode.lanterna.terminal.swing.TerminalEmulatorColorConfiguration;
 import com.googlecode.lanterna.terminal.swing.TerminalEmulatorPalette;
 
@@ -85,6 +86,7 @@ public class VTLanternaConsole implements VTConsoleInstance
   public static final TerminalEmulatorPalette CUSTOM_VGA = new TerminalEmulatorPalette(new java.awt.Color(170, 170, 170), new java.awt.Color(255, 255, 255), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(85, 85, 85), new java.awt.Color(170, 0, 0), new java.awt.Color(255, 85, 85), new java.awt.Color(0, 170, 0), new java.awt.Color(85, 255, 85), new java.awt.Color(170, 170, 0), new java.awt.Color(255, 255, 85), new java.awt.Color(0, 0, 170), new java.awt.Color(85, 85, 255), new java.awt.Color(170, 0, 170), new java.awt.Color(255, 85, 255), new java.awt.Color(0, 170, 170), new java.awt.Color(85, 255, 255), new java.awt.Color(170, 170, 170), new java.awt.Color(255, 255, 255));
   
   private AWTTerminalFrame frame;
+  private AWTTerminalPanel panel;
   private java.awt.Panel spacer1;
   // private java.awt.Panel spacer2;
   private Terminal terminal;
@@ -631,6 +633,7 @@ public class VTLanternaConsole implements VTConsoleInstance
     if (terminal instanceof AWTTerminalFrame)
     {
       frame = (AWTTerminalFrame) terminal;
+      panel = frame.getTerminalPanel();
       // awtframe.setLocationByPlatform(true);
       if (remoteIcon)
       {
@@ -671,6 +674,7 @@ public class VTLanternaConsole implements VTConsoleInstance
       {
         awtTerminal = null;
       }
+      
       awtTerminal.addMouseListener(new MouseListener()
       {
         public void mouseClicked(MouseEvent e)
@@ -728,6 +732,7 @@ public class VTLanternaConsole implements VTConsoleInstance
           
         }
       });
+      
       awtTerminal.addMouseMotionListener(new MouseMotionListener()
       {
         public void mouseDragged(MouseEvent e)
@@ -773,7 +778,8 @@ public class VTLanternaConsole implements VTConsoleInstance
           // outputBox.handleInput(mouseAction);
         }
       });
-      frame.addMouseWheelListener(new MouseWheelListener()
+      
+      panel.addMouseWheelListener(new MouseWheelListener()
       {
         public void mouseWheelMoved(MouseWheelEvent e)
         {
@@ -787,7 +793,8 @@ public class VTLanternaConsole implements VTConsoleInstance
           outputBox.handleInput(mouseAction);
         }
       });
-      frame.addKeyListener(new KeyListener()
+      
+      panel.addKeyListener(new KeyListener()
       {
         public void keyTyped(KeyEvent e)
         {
@@ -814,7 +821,7 @@ public class VTLanternaConsole implements VTConsoleInstance
       VTGlobalTextStyleManager.registerWindow(frame);
       //VTGlobalTextStyleManager.registerMonospacedComponent(awtTerminal);
       VTGlobalTextStyleManager.registerFontList(awtTerminal.getTerminalFontConfiguration().getFontPriority());
-      popupMenu = new VTGraphicalConsolePopupMenu(this, frame);
+      popupMenu = new VTGraphicalConsolePopupMenu(this, panel);
     }
     else
     {
@@ -842,7 +849,7 @@ public class VTLanternaConsole implements VTConsoleInstance
     inputBox.setHorizontalFocusSwitching(false);
     inputBox.setVerticalFocusSwitching(false);
     
-    if (frame != null)
+    if (awtTerminal != null)
     {
       String java_specification_version = System.getProperty("java.specification.version");
       
@@ -915,13 +922,13 @@ public class VTLanternaConsole implements VTConsoleInstance
       spacer1 = new java.awt.Panel();
       spacer1.setBackground(SystemColor.control);
       
-      frame.add(verticalScrollbar, java.awt.BorderLayout.EAST);
-      frame.getBottomPanel().add(horizontalScrollbar, java.awt.BorderLayout.CENTER);
-      frame.getBottomPanel().add(spacer1, java.awt.BorderLayout.EAST);
+      panel.getCenterPanel().add(verticalScrollbar, java.awt.BorderLayout.EAST);
+      panel.getBottomPanel().add(horizontalScrollbar, java.awt.BorderLayout.CENTER);
+      panel.getBottomPanel().add(spacer1, java.awt.BorderLayout.EAST);
       
-      frame.setDropTarget(new DropTarget());
-      frame.getDropTarget().setActive(true);
-      frame.getDropTarget().addDropTargetListener(new VTGraphicalConsoleDropTargetListener(this));
+      panel.setDropTarget(new DropTarget());
+      panel.getDropTarget().setActive(true);
+      panel.getDropTarget().addDropTargetListener(new VTGraphicalConsoleDropTargetListener(this));
       
       // outputBox.setVerticalAdjustable(frame.getScrollPane().getVAdjustable());
       // outputBox.setHorizontalAdjustable(frame.getScrollPane().getHAdjustable());
@@ -2457,11 +2464,14 @@ public class VTLanternaConsole implements VTConsoleInstance
     inputBox.setTheme(inputTheme);
     outputBox.setTheme(outputTheme);
     
-    awtTerminal.getTerminalImplementation().setLastLineBackground(lastLineBackgroundColor);
-    awtTerminal.getTerminalImplementation().setDefaultBackground(spacerBackgroundColor);
-    
-    frame.setBackground(spacerBackgroundColor);
-    frame.setSpacerBackgroundColor(spacerBackgroundColor);
+    if (frame != null)
+    {
+      awtTerminal.getTerminalImplementation().setLastLineBackground(lastLineBackgroundColor);
+      awtTerminal.getTerminalImplementation().setDefaultBackground(spacerBackgroundColor);
+      
+      frame.setBackground(spacerBackgroundColor);
+      frame.setSpacerBackgroundColor(spacerBackgroundColor);
+    }
   }
   
   public void setBold(boolean bold)
