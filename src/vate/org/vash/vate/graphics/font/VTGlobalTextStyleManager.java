@@ -206,7 +206,7 @@ public class VTGlobalTextStyleManager
     windowFontPlain = windowFont;
     windowFontBold = windowFont.deriveFont(Font.BOLD, windowFontPlain.getSize2D());
     
-    inputFont = Font.decode("Monospaced").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 1F, FONT_SCALING_FACTOR_DIALOG));
+    inputFont = Font.decode("DialogInput").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 1F, FONT_SCALING_FACTOR_DIALOG));
     inputFontPlain = inputFont;
     inputFontBold = inputFont.deriveFont(Font.BOLD, inputFontPlain.getSize2D());
     

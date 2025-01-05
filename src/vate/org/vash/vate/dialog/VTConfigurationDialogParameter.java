@@ -21,7 +21,7 @@ public class VTConfigurationDialogParameter extends Panel
     this.parameter = parameter;
     this.label = new Label(name);
     this.label.setAlignment(Label.CENTER);
-    VTGlobalTextStyleManager.registerInputComponent(label);
+    //VTGlobalTextStyleManager.registerInputComponent(label);
     VTGlobalTextStyleManager.registerInputComponent(parameter);
     BorderLayout layout = new BorderLayout();
     setLayout(layout);
