@@ -202,11 +202,11 @@ public class VTGlobalTextStyleManager
       CUSTOM_MONOSPACED_FONT_BOLD = monospacedFontBold;
     }
     
-    windowFont = Font.decode("Dialog").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 1F, FONT_SCALING_FACTOR_DIALOG) - 1);
+    windowFont = Font.decode("Dialog").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 1F, FONT_SCALING_FACTOR_DIALOG));
     windowFontPlain = windowFont;
     windowFontBold = windowFont.deriveFont(Font.BOLD, windowFontPlain.getSize2D());
     
-    inputFont = Font.decode("Monospaced").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 1F, FONT_SCALING_FACTOR_DIALOG) - 1);
+    inputFont = Font.decode("Monospaced").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 1F, FONT_SCALING_FACTOR_DIALOG));
     inputFontPlain = inputFont;
     inputFontBold = inputFont.deriveFont(Font.BOLD, inputFontPlain.getSize2D());
     
