@@ -17,13 +17,14 @@ import org.vash.vate.console.VTConsole;
 import org.vash.vate.reflection.VTReflectionUtils;
 
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
+import com.googlecode.lanterna.terminal.swing.AWTTerminalPanel;
 
 public class VTGlobalTextStyleManager
 {
   private static final List<Window> windows = new ArrayList<Window>();
   private static final List<Component> monospaceds = new ArrayList<Component>();
-  private static final List<Component> texts = new ArrayList<Component>();
-  private static final List<Component> scaleds = new ArrayList<Component>();
+  private static final List<Component> inputs = new ArrayList<Component>();
+  //private static final List<Component> scaleds = new ArrayList<Component>();
   private static final List<List<Font>> lists = new ArrayList<List<Font>>();
   private static final List<List<Font>> defaultlists = new ArrayList<List<Font>>();
   
@@ -45,7 +46,6 @@ public class VTGlobalTextStyleManager
     {
       CUSTOM_MONOSPACED_FONT_PLAIN = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
       CUSTOM_MONOSPACED_FONT_BOLD = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono-Bold.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
-      //CUSTOM_MONOSPACED_FONT_BOLD = CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(Font.BOLD, CUSTOM_MONOSPACED_FONT_PLAIN.getSize2D());
       loadedCustomMonospacedFont = true;
     }
     catch (Throwable t)
@@ -202,65 +202,38 @@ public class VTGlobalTextStyleManager
       CUSTOM_MONOSPACED_FONT_BOLD = monospacedFontBold;
     }
     
-    windowFont = Font.decode("Dialog").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 1F, FONT_SCALING_FACTOR_DIALOG));
+    windowFont = Font.decode("Dialog").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 1F, FONT_SCALING_FACTOR_DIALOG) - 1);
     windowFontPlain = windowFont;
     windowFontBold = windowFont.deriveFont(Font.BOLD, windowFontPlain.getSize2D());
+    
+    inputFont = Font.decode("Monospaced").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 1F, FONT_SCALING_FACTOR_DIALOG) - 1);
+    inputFontPlain = inputFont;
+    inputFontBold = inputFont.deriveFont(Font.BOLD, inputFontPlain.getSize2D());
     
     defaultWindowFontSize = windowFont.getSize2D();
     defaultMonospacedFontSize = monospacedFont.getSize2D();
     
-//    System.out.println("monospacedFont:" + defaultMonospacedFontSize);
-//    System.out.println("windowFont:" + defaultWindowFontSize);
-    // System.out.println("FONT_SCALING_FACTOR_MONOSPACED:" +
-    // FONT_SCALING_FACTOR_MONOSPACED);
-    // System.out.println("FONT_SCALING_FACTOR_DIALOG:" +
-    // FONT_SCALING_FACTOR_DIALOG);
     checked = true;
   }
   
   static
   {
     //checkScaling();
-    // AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
+    //AWTTerminalFontConfiguration.setFontScalingFactor(FONT_SCALING_FACTOR);
   }
   
   private static Font windowFont;
   private static Font windowFontPlain;
   private static Font windowFontBold;
-  // Font.decode("Dialog").deriveFont((float) ((((Font.decode("Dialog
-  // 12").getSize2D())))));
-  // Font.decode("Monospaced").deriveFont(((float)
-  // Math.ceil((((BASE_FONT_SIZE_MONOSPACED)) *
-  // FONT_SCALING_FACTOR_MONOSPACED))));
+  private static Font inputFont;
+  private static Font inputFontPlain;
+  private static Font inputFontBold;
   private static Font monospacedFont;
   private static Font monospacedFontPlain;
   private static Font monospacedFontBold;
   private static float defaultWindowFontSize;
-  // private static float defaultWindowFontSize = (float) (12.0 *
-  // FONT_SCALING_FACTOR);
   private static float defaultMonospacedFontSize;
   private static boolean fontStyleBold = false;
-  // private static float windowFontSize = defaultWindowFontSize;
-  // private static List<Font> monospacedFonts;
-  // private static int currentMonospacedFontIndex = 0;
-  
-//	static
-//	{
-//		monospacedFonts = new LinkedList<Font>();
-//		Font allFonts[] = GraphicsEnvironment.getLocalGraphicsEnvironment().getAllFonts();
-//		FontRenderContext frc = new FontRenderContext(null, RenderingHints.VALUE_TEXT_ANTIALIAS_DEFAULT, RenderingHints.VALUE_FRACTIONALMETRICS_DEFAULT);
-//		
-//		for (Font font : allFonts)
-//		{
-//			Rectangle2D iBounds = font.getStringBounds("i", frc);
-//			Rectangle2D mBounds = font.getStringBounds("m", frc);
-//			if (iBounds.getWidth() == mBounds.getWidth())
-//			{
-//				monospacedFonts.add(font);
-//				//System.out.println("MonoSpacedFont: [" + font.getFontName() + "]");
-//			}
-//		}
-//	}
   
   public static boolean processKeyEvent(KeyEvent e)
   {
@@ -315,22 +288,20 @@ public class VTGlobalTextStyleManager
     monospaceds.remove(component);
   }
   
-  public static void registerTextComponent(Component component)
+  public static void registerInputComponent(Component component)
   {
-    component.setFont(windowFont);
-    // component.setFont(component.getFont().deriveFont(windowFontSize));
-    texts.add(component);
+    component.setFont(inputFont);
+    inputs.add(component);
   }
   
-  public static void unregisterTextComponent(Component component)
+  public static void unregisterInputComponent(Component component)
   {
-    texts.remove(component);
+    inputs.remove(component);
   }
   
   public static void registerWindow(Window window)
   {
     window.setFont(windowFont);
-    // window.setFont(window.getFont().deriveFont(windowFontSize));
     windows.add(window);
   }
   
@@ -339,15 +310,15 @@ public class VTGlobalTextStyleManager
     windows.remove(window);
   }
   
-  public static void registerScaledComponent(Component component)
-  {
-    scaleds.add(component);
-  }
-  
-  public static void unregisterScaledComponent(Component component)
-  {
-    scaleds.remove(component);
-  }
+//  public static void registerScaledComponent(Component component)
+//  {
+//    scaleds.add(component);
+//  }
+//  
+//  public static void unregisterScaledComponent(Component component)
+//  {
+//    scaleds.remove(component);
+//  }
   
   public static void registerFontList(List<Font> list)
   {
@@ -362,32 +333,20 @@ public class VTGlobalTextStyleManager
   
   public static void defaultComponentSize()
   {
-    // System.out.println("FONT_SCALING_FACTOR:" + FONT_SCALING_FACTOR);
-    // System.out.println("defaultMonospacedFontSize:" +
-    // defaultMonospacedFontSize);
-    // System.out.println("defaultWindowFontSize:" + defaultWindowFontSize);
     updateComponents(true);
   }
   
   public static void packComponentSize()
   {
-    // System.out.println("FONT_SCALING_FACTOR:" + FONT_SCALING_FACTOR);
-    // System.out.println("defaultMonospacedFontSize:" +
-    // defaultMonospacedFontSize);
-    // System.out.println("defaultWindowFontSize:" + defaultWindowFontSize);
     updateComponents(false);
   }
   
   public static void defaultFontSize()
   {
-    // System.out.println("FONT_SCALING_FACTOR:" + FONT_SCALING_FACTOR);
     fontStyleBold = false;
     monospacedFont = monospacedFont.deriveFont(Font.PLAIN, defaultMonospacedFontSize);
-    // windowFontSize = defaultWindowFontSize;
     windowFont = windowFont.deriveFont(Font.PLAIN, defaultWindowFontSize);
-    // System.out.println("monospacedFont:" + monospacedFont.getSize2D());
-    // System.out.println("windowFont:" + windowFont.getSize2D());
-    // plainScaleds();
+    inputFont = inputFont.deriveFont(Font.PLAIN, defaultWindowFontSize);
     defaultLists();
     updateComponents(true);
   }
@@ -403,9 +362,8 @@ public class VTGlobalTextStyleManager
     fontStyleBold = true;
     monospacedFont = monospacedFontBold.deriveFont(monospacedFont.getSize2D());
     windowFont = windowFontBold.deriveFont(windowFont.getSize2D());
-    // System.out.println("monospacedFont:" + monospacedFont.getSize2D());
-    // System.out.println("windowFont:" + windowFont.getSize2D());
-    boldScaleds();
+    inputFont = inputFontBold.deriveFont(inputFont.getSize2D());
+    //boldScaleds();
     boldLists();
     updateComponents(false);
   }
@@ -415,9 +373,8 @@ public class VTGlobalTextStyleManager
     fontStyleBold = false;
     monospacedFont = monospacedFontPlain.deriveFont(monospacedFont.getSize2D());
     windowFont = windowFontPlain.deriveFont(windowFont.getSize2D());
-    // System.out.println("monospacedFont:" + monospacedFont.getSize2D());
-    // System.out.println("windowFont:" + windowFont.getSize2D());
-    plainScaleds();
+    inputFont = inputFontPlain.deriveFont(inputFont.getSize2D());
+    //plainScaleds();
     plainLists();
     updateComponents(false);
   }
@@ -426,10 +383,8 @@ public class VTGlobalTextStyleManager
   {
     monospacedFont = monospacedFont.deriveFont((monospacedFont.getSize2D() + 1.0F));
     windowFont = windowFont.deriveFont((windowFont.getSize2D() + 1.0F));
-    // windowFontSize = windowFontSize + 1.0F;
-//    System.out.println("monospacedFont:" + monospacedFont.getSize2D());
-//    System.out.println("windowFont:" + windowFont.getSize2D());
-    increaseScaleds();
+    inputFont = inputFont.deriveFont((inputFont.getSize2D() + 1.0F));
+    //increaseScaleds();
     increaseLists();
     updateComponents(false);
   }
@@ -438,49 +393,47 @@ public class VTGlobalTextStyleManager
   {
     monospacedFont = monospacedFont.deriveFont((monospacedFont.getSize2D() - 1.0F));
     windowFont = windowFont.deriveFont((windowFont.getSize2D() - 1.0F));
-    // windowFontSize = windowFontSize - 1.0F;
-//    System.out.println("monospacedFont:" + monospacedFont.getSize2D());
-//    System.out.println("windowFont:" + windowFont.getSize2D());
-    decreaseScaleds();
+    inputFont = inputFont.deriveFont((inputFont.getSize2D() - 1.0F));
+    //decreaseScaleds();
     decreaseLists();
     updateComponents(false);
   }
   
-  private static void boldScaleds()
-  {
-    for (Component component : scaleds)
-    {
-      Font font = component.getFont();
-      component.setFont(font.deriveFont(Font.BOLD, font.getSize2D()));
-    }
-  }
-  
-  private static void plainScaleds()
-  {
-    for (Component component : scaleds)
-    {
-      Font font = component.getFont();
-      component.setFont(font.deriveFont(Font.PLAIN, font.getSize2D()));
-    }
-  }
-  
-  private static void increaseScaleds()
-  {
-    for (Component component : scaleds)
-    {
-      Font font = component.getFont();
-      component.setFont(font.deriveFont((font.getSize2D() + 1.0F)));
-    }
-  }
-  
-  private static void decreaseScaleds()
-  {
-    for (Component component : scaleds)
-    {
-      Font font = component.getFont();
-      component.setFont(font.deriveFont((font.getSize2D() - 1.0F)));
-    }
-  }
+//  private static void boldScaleds()
+//  {
+//    for (Component component : scaleds)
+//    {
+//      Font font = component.getFont();
+//      component.setFont(font.deriveFont(Font.BOLD, font.getSize2D()));
+//    }
+//  }
+//  
+//  private static void plainScaleds()
+//  {
+//    for (Component component : scaleds)
+//    {
+//      Font font = component.getFont();
+//      component.setFont(font.deriveFont(Font.PLAIN, font.getSize2D()));
+//    }
+//  }
+//  
+//  private static void increaseScaleds()
+//  {
+//    for (Component component : scaleds)
+//    {
+//      Font font = component.getFont();
+//      component.setFont(font.deriveFont((font.getSize2D() + 1.0F)));
+//    }
+//  }
+//  
+//  private static void decreaseScaleds()
+//  {
+//    for (Component component : scaleds)
+//    {
+//      Font font = component.getFont();
+//      component.setFont(font.deriveFont((font.getSize2D() - 1.0F)));
+//    }
+//  }
   
   private static void increaseLists()
   {
@@ -569,18 +522,25 @@ public class VTGlobalTextStyleManager
       try
       {
         component.setFont(monospacedFont);
+        if (useDefaults && component instanceof AWTTerminalPanel)
+        {
+          ((AWTTerminalPanel) component).resetTerminalSize();
+        }
       }
       catch (Throwable t)
       {
         
       }
     }
-    for (Component component : texts)
+    for (Component component : inputs)
     {
       try
       {
-        component.setFont(windowFont);
-        // component.setFont(component.getFont().deriveFont(windowFontSize));
+        component.setFont(inputFont);
+        if (useDefaults && component instanceof AWTTerminalPanel)
+        {
+          ((AWTTerminalPanel) component).resetTerminalSize();
+        }
       }
       catch (Throwable t)
       {

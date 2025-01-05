@@ -1,10 +1,10 @@
 package org.vash.vate.nativeutils.linux;
 
-import org.vash.vate.nativeutils.VTNativeUtilsImplementation;
+import org.vash.vate.nativeutils.VTNativeUtilsInstance;
 
 import com.sun.jna.Native;
 
-public class VTLinuxNativeUtils implements VTNativeUtilsImplementation
+public class VTLinuxNativeUtils implements VTNativeUtilsInstance
 {
   // Device opening flags
   private static int O_RDONLY = 0;

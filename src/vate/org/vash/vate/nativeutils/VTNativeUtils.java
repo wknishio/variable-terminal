@@ -23,7 +23,7 @@ public class VTNativeUtils
   private static String[] virtualEnvironmentVariablesBackup;
   private static String[] virtualEnvironmentVariables;
   private static Properties systemPropertiesBackup;
-  private static VTNativeUtilsImplementation nativeUtils;
+  private static VTNativeUtilsInstance nativeUtils;
   
   private static final int SAMPLE_RATE_HERTZ = 16000;
   private static final int SAMPLE_SIZE_BITS = 8;

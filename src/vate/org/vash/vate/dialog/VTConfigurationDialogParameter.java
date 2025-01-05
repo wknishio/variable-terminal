@@ -8,27 +8,27 @@ import java.awt.Panel;
 import java.awt.TextField;
 import java.awt.event.KeyListener;
 
+import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+
 public class VTConfigurationDialogParameter extends Panel
 {
   private static final long serialVersionUID = 1L;
   private Label label;
   private Component parameter;
   
-  public VTConfigurationDialogParameter(String label, Component parameter, boolean enabled)
+  public VTConfigurationDialogParameter(String name, Component parameter, boolean enabled)
   {
     this.parameter = parameter;
-    this.label = new Label(label);
+    this.label = new Label(name + " ");
     this.label.setAlignment(Label.CENTER);
+    //VTGlobalTextStyleManager.registerInputComponent(label);
+    VTGlobalTextStyleManager.registerInputComponent(parameter);
     BorderLayout layout = new BorderLayout();
-    layout.setHgap(1);
-    layout.setVgap(1);
     setLayout(layout);
-    Panel labelPanel = new Panel();
-    labelPanel.setLayout(new BorderLayout());
+    Panel labelPanel = new Panel(new BorderLayout());
     labelPanel.add(this.label, BorderLayout.NORTH);
     add(labelPanel, BorderLayout.WEST);
-    Panel parameterPanel = new Panel();
-    parameterPanel.setLayout(new BorderLayout());
+    Panel parameterPanel = new Panel(new BorderLayout());
     parameterPanel.add(this.parameter, BorderLayout.NORTH);
     add(parameterPanel, BorderLayout.CENTER);
     setEnabled(enabled);

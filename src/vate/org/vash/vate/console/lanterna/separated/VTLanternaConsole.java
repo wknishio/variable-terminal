@@ -3,6 +3,7 @@ package org.vash.vate.console.lanterna.separated;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.Panel;
 import java.awt.Scrollbar;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
@@ -61,7 +62,6 @@ import com.googlecode.lanterna.gui2.DefaultWindowManager;
 import com.googlecode.lanterna.gui2.InputFilter;
 import com.googlecode.lanterna.gui2.Interactable;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
-import com.googlecode.lanterna.gui2.Panel;
 import com.googlecode.lanterna.gui2.Window.Hint;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
@@ -124,7 +124,7 @@ public class VTLanternaConsole implements VTConsoleInstance
   private VTLanternaConsolePrintStream printStream;
   private VTLanternaConsoleInputStream inputStream;
   private boolean ignoreClose = false;
-  private boolean started = false;
+  private boolean build = false;
   private VTGraphicalConsolePopupMenu popupMenu;
   private boolean graphical;
   private Scrollbar horizontalScrollbar;
@@ -183,7 +183,7 @@ public class VTLanternaConsole implements VTConsoleInstance
     
     synchronized (this)
     {
-      while (!started)
+      while (!build)
       {
         try
         {
@@ -846,6 +846,8 @@ public class VTLanternaConsole implements VTConsoleInstance
       {
         VTGlobalTextStyleManager.registerWindow(frame);
       }
+      
+      //VTGlobalTextStyleManager.registerMonospacedComponent(panel);
       //VTGlobalTextStyleManager.registerMonospacedComponent(awtTerminal);
       VTGlobalTextStyleManager.registerFontList(awtTerminal.getTerminalFontConfiguration().getFontPriority());
       popupMenu = new VTGraphicalConsolePopupMenu(this, panel);
@@ -857,11 +859,7 @@ public class VTLanternaConsole implements VTConsoleInstance
     //terminal.setBackgroundColor(TextColor.ANSI.BLACK);
     //terminal.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
     
-    screen = new TerminalScreen(terminal);
-    screen.setTabBehaviour(TabBehaviour.CONVERT_TO_ONE_SPACE);
-    screen.startScreen();
-    
-    Panel mainPanel = new Panel();
+    com.googlecode.lanterna.gui2.Panel mainPanel = new com.googlecode.lanterna.gui2.Panel();
     mainPanel.setLayoutManager(new BorderLayout());
     
     // outputBox.setReadOnly(true);
@@ -1479,7 +1477,7 @@ public class VTLanternaConsole implements VTConsoleInstance
       }
     });
     
-    Panel bottonPanel = new Panel();
+    com.googlecode.lanterna.gui2.Panel bottonPanel = new com.googlecode.lanterna.gui2.Panel();
     bottonPanel.setLayoutManager(new BorderLayout());
     
     // bottonPanel.addComponent(promptLabel, BorderLayout.Location.LEFT);
@@ -1497,9 +1495,6 @@ public class VTLanternaConsole implements VTConsoleInstance
     
     window.setComponent(mainPanel);
     window.setHints(hints);
-    
-    // Create gui and start gui
-    gui = new MultiWindowTextGUI(screen, new DefaultWindowManager(), null);
     
     defaultInputProperties = new Properties();
     defaultInputProperties.load(this.getClass().getResourceAsStream("/org/vash/vate/console/lanterna/separated/vtlanternaconsole-input-theme.properties"));
@@ -1548,9 +1543,16 @@ public class VTLanternaConsole implements VTConsoleInstance
     
     setColors(VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN, VTConsole.VT_CONSOLE_COLOR_DARK_BLACK);
     
+    screen = new TerminalScreen(terminal);
+    screen.setTabBehaviour(TabBehaviour.CONVERT_TO_ONE_SPACE);
+    screen.startScreen();
+    
+    // Create gui and start gui
+    gui = new MultiWindowTextGUI(screen, new DefaultWindowManager(), null);
+    
     synchronized (this)
     {
-      this.started = true;
+      this.build = true;
       this.notifyAll();
     }
     
@@ -3009,7 +3011,7 @@ public class VTLanternaConsole implements VTConsoleInstance
     return frame;
   }
   
-  public java.awt.Panel getPanel()
+  public Panel getPanel()
   {
     return panel;
   }

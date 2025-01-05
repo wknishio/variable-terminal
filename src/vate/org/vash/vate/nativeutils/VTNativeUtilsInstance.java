@@ -1,6 +1,6 @@
 package org.vash.vate.nativeutils;
 
-public interface VTNativeUtilsImplementation
+public interface VTNativeUtilsInstance
 {
   public int system(String command);
   

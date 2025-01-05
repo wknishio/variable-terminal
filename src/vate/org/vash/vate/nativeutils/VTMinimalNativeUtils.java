@@ -2,7 +2,7 @@ package org.vash.vate.nativeutils;
 
 import com.sun.jna.Native;
 
-public class VTMinimalNativeUtils implements VTNativeUtilsImplementation
+public class VTMinimalNativeUtils implements VTNativeUtilsInstance
 {
   private VTCLibrary cLibrary = (VTCLibrary) Native.load("c", VTCLibrary.class);
   

@@ -1,6 +1,6 @@
 package org.vash.vate.nativeutils;
 
-public class VTNullNativeUtils implements VTNativeUtilsImplementation
+public class VTNullNativeUtils implements VTNativeUtilsInstance
 {
   /* public boolean beep(int freq, int dur) { return false; } */
   //private PrintStream out;
