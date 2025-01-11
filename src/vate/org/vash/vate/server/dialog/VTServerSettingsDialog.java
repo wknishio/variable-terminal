@@ -563,8 +563,8 @@ public class VTServerSettingsDialog extends Dialog
     
     Panel buttonPanel1 = new Panel();
     GridLayout buttonLayout1 = new GridLayout(1, 2);
-    //buttonLayout1.setHgap(1);
-    //buttonLayout1.setVgap(1);
+    buttonLayout1.setHgap(1);
+    buttonLayout1.setVgap(1);
     buttonPanel1.setLayout(buttonLayout1);
     buttonPanel1.add(saveButton);
     buttonPanel1.add(loadButton);
@@ -754,8 +754,8 @@ public class VTServerSettingsDialog extends Dialog
     Button closeButton = new Button("Cancel");
     Panel buttonPanel2 = new Panel();
     GridLayout buttonLayout2 = new GridLayout(1, 2);
-    //buttonLayout2.setHgap(1);
-    //buttonLayout2.setVgap(1);
+    buttonLayout2.setHgap(1);
+    buttonLayout2.setVgap(1);
     buttonPanel2.setLayout(buttonLayout2);
     buttonPanel2.add(okButton);
     buttonPanel2.add(closeButton);
@@ -858,8 +858,8 @@ public class VTServerSettingsDialog extends Dialog
     
     Panel centerPanel = new Panel();
     GridLayout centerLayout = new GridLayout(19, 1);
-    //centerLayout.setHgap(1);
-    //centerLayout.setVgap(1);
+    centerLayout.setHgap(1);
+    centerLayout.setVgap(1);
     centerPanel.setLayout(centerLayout);
     
     Panel mainPanel = new Panel();

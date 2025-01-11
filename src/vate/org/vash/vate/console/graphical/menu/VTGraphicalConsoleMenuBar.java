@@ -18,8 +18,8 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
   private MenuItem textActionCopyMenu;
   private MenuItem textActionPasteMenu;
   private MenuItem textActionAllMenu;
-  private MenuItem textActionInsertMenu;
-  private MenuItem textActionBreakMenu;
+  //private MenuItem textActionInsertMenu;
+  //private MenuItem textActionBreakMenu;
   
   private Menu sizesMenu;
   private MenuItem sizesExpandMenu;
@@ -84,7 +84,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     
-    textActionAllMenu = new MenuItem("All ");
+    textActionAllMenu = new MenuItem("Entire ");
     textActionAllMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
@@ -94,34 +94,32 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     
-    textActionInsertMenu = new MenuItem("Insert ");
-    textActionInsertMenu.addActionListener(new ActionListener()
-    {
-      
-      public void actionPerformed(ActionEvent e)
-      {
-        console.requestFocus();
-        console.toggleInputMode();
-      }
-    });
-    
-    textActionBreakMenu = new MenuItem("Break ");
-    textActionBreakMenu.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        console.requestFocus();
-        console.toggleFlushMode();
-      }
-    });
+//    textActionInsertMenu = new MenuItem("Insert ");
+//    textActionInsertMenu.addActionListener(new ActionListener()
+//    {
+//      
+//      public void actionPerformed(ActionEvent e)
+//      {
+//        console.requestFocus();
+//        console.toggleInputMode();
+//      }
+//    });
+//    
+//    textActionBreakMenu = new MenuItem("Break ");
+//    textActionBreakMenu.addActionListener(new ActionListener()
+//    {
+//      public void actionPerformed(ActionEvent e)
+//      {
+//        console.requestFocus();
+//        console.toggleFlushMode();
+//      }
+//    });
     
     textActionsMenu.add(textActionCopyMenu);
     textActionsMenu.add(textActionPasteMenu);
     textActionsMenu.add(textActionAllMenu);
-    textActionsMenu.add(textActionBreakMenu);
-    textActionsMenu.add(textActionInsertMenu);
-    
-    this.add(textActionsMenu);
+    //textActionsMenu.add(textActionInsertMenu);
+    //textActionsMenu.add(textActionBreakMenu);
     
     sizesMenu = new Menu("View");
     // textMenu.setShortcut(new MenuShortcut(KeyEvent.VK_F, true));
@@ -190,23 +188,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     sizesMenu.add(sizesBold);
     sizesMenu.add(sizesRepackMenu);
     sizesMenu.add(sizesDefaultMenu);
-    
-    this.add(sizesMenu);
     sizesMenu.setEnabled(true);
-    
-    flushStatusMenu = new Menu("Resume");
-    flushStatusMenu.setEnabled(true);
-    flushToggleMenu = new MenuItem("Pause");
-    flushToggleMenu.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        console.requestFocus();
-        console.toggleFlushMode();
-      }
-    });
-    flushStatusMenu.add(flushToggleMenu);
-    this.add(flushStatusMenu);
     
     inputStatusMenu = new Menu("Insert");
     inputStatusMenu.setEnabled(true);
@@ -220,23 +202,37 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     inputStatusMenu.add(inputToggleMenu);
-    this.add(inputStatusMenu);
+    
+    flushStatusMenu = new Menu("Resume");
+    flushStatusMenu.setEnabled(true);
+    flushToggleMenu = new MenuItem("Pause");
+    flushToggleMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        console.requestFocus();
+        console.toggleFlushMode();
+      }
+    });
+    flushStatusMenu.add(flushToggleMenu);
     
     keyboardShortcutsMenu = new Menu("Shortcut");
-    keyboardShortcutsMenu.add(new MenuItem("Break: Toggle Resume/Pause"));
-    keyboardShortcutsMenu.add(new MenuItem("Insert: Toggle Insert/Replace"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+C: Quit Application"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Z: Toggle Resume/Pause"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+X: Toggle Insert/Replace"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Z: Toggle Resume/Pause"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert: Copy Selected"));
     keyboardShortcutsMenu.add(new MenuItem("Shift+Insert: Paste Selected"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace: Copy All"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace: Copy Entire"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp: Expand View"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown: Reduce View"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+End: Bold View"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home: Pack View"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Delete: Reset View"));
     
+    this.add(textActionsMenu);
+    this.add(sizesMenu);
+    this.add(inputStatusMenu);
+    this.add(flushStatusMenu);
     this.add(keyboardShortcutsMenu);
     keyboardShortcutsMenu.setEnabled(true);
     
@@ -276,21 +272,25 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     {
       flushStatusMenu.setLabel("Pause");
       flushToggleMenu.setLabel("Resume");
+      //textActionBreakMenu.setLabel("Resume");
     }
     else
     {
       flushStatusMenu.setLabel("Resume");
       flushToggleMenu.setLabel("Pause");
+      //textActionBreakMenu.setLabel("Pause");
     }
     if (replaceInput)
     {
       inputStatusMenu.setLabel("Replace");
       inputToggleMenu.setLabel("Insert");
+      //textActionInsertMenu.setLabel("Insert");
     }
     else
     {
       inputStatusMenu.setLabel("Insert");
       inputToggleMenu.setLabel("Replace");
+      //textActionInsertMenu.setLabel("Replace");
     }
   }
 }

@@ -40,7 +40,7 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
     // this.keyListener = keyListener;
     copy = new MenuItem("Copy ");
     paste = new MenuItem("Paste ");
-    all = new MenuItem("All ");
+    all = new MenuItem("Entire ");
     insert = new MenuItem("Replace ");
     scroll = new MenuItem("Pause ");
     // expand = new MenuItem("Expand");
@@ -86,8 +86,8 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
     this.add(copy);
     this.add(paste);
     this.add(all);
-    this.add(scroll);
     this.add(insert);
+    this.add(scroll);
     // this.insert(expand, 4);
     // this.insert(reduce, 5);
     // this.insert(scroll, 2);
