@@ -8,16 +8,15 @@ import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 import java.util.zip.ZipException;
 
-import org.vash.vate.stream.endian.VTLittleEndianInputStream;
-
 public class VTNoFlushInflaterInputStream extends InflaterInputStream
 {
-  private VTLittleEndianInputStream lin;
+  //private VTLittleEndianInputStream lin;
+  private int end = 0;
   
   public VTNoFlushInflaterInputStream(InputStream in, Inflater inflater, int size)
   {
     super(in, inflater, size);
-    this.lin = new VTLittleEndianInputStream(in);
+    //this.lin = new VTLittleEndianInputStream(in);
   }
   
   public int available() throws IOException
@@ -34,16 +33,17 @@ public class VTNoFlushInflaterInputStream extends InflaterInputStream
   
   protected void fill() throws IOException
   {
-    int len = lin.readInt();
-    if (buf.length < len)
-    {
-      buf = new byte[len];
-    }
+    int len = in.read(buf, 0, buf.length);
+//    if (buf.length < len)
+//    {
+//      buf = new byte[len];
+//    }
     if (len == -1)
     {
       throw new EOFException("Unexpected end of ZLIB input stream");
     }
-    lin.readFully(buf, 0, len);
+    end = len;
+    //lin.readFully(buf, 0, len);
     inf.setInput(buf, 0, len);
   }
   
@@ -66,11 +66,16 @@ public class VTNoFlushInflaterInputStream extends InflaterInputStream
       int n;
       while ((n = inf.inflate(b, off, len)) == 0)
       {
-        if (inf.finished() || inf.needsDictionary())
+        if (inf.finished())
         {
+          n = inf.getRemaining();
           inf.reset();
+          if (n > 0)
+          {
+            inf.setInput(buf, end - n, n);
+          }
         }
-        if (inf.needsInput())
+        if (inf.needsInput() || inf.needsDictionary())
         {
           fill();
         }

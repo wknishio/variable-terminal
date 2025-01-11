@@ -5,16 +5,14 @@ import java.io.OutputStream;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 
-import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
-
 public class VTNoFlushDeflaterOutputStream extends DeflaterOutputStream
 {
-  private VTLittleEndianOutputStream lout;
+  //private VTLittleEndianOutputStream lout;
   
   public VTNoFlushDeflaterOutputStream(OutputStream out, Deflater deflater, int size)
   {
     super(out, deflater, size);
-    this.lout = new VTLittleEndianOutputStream(out);
+    //this.lout = new VTLittleEndianOutputStream(out);
   }
   
   protected void deflate() throws IOException
@@ -22,7 +20,7 @@ public class VTNoFlushDeflaterOutputStream extends DeflaterOutputStream
     int len = def.deflate(buf, 0, buf.length);
     if (len > 0)
     {
-      lout.writeInt(len);
+      //lout.writeInt(len);
       out.write(buf, 0, len);
     }
   }

@@ -18,10 +18,11 @@ import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTCryptographicEngine;
 import org.vash.vate.security.VTStreamCipherInputStream;
 import org.vash.vate.security.VTStreamCipherOutputStream;
+import org.vash.vate.stream.array.VTByteArrayOutputStream;
+import org.vash.vate.stream.array.VTFlushBufferedOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
-import org.vash.vate.stream.filter.VTBufferedOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
@@ -716,7 +717,7 @@ public class VTServerConnection
     graphicsControlDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsControlOutputStream));
     
     directImageDataInputStream = new VTLittleEndianInputStream(graphicsDirectImageInputStream);
-    directImageDataOutputStream = new VTLittleEndianOutputStream(new VTBufferedOutputStream(graphicsDirectImageOutputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES, false));
+    directImageDataOutputStream = new VTLittleEndianOutputStream(new VTFlushBufferedOutputStream(graphicsDirectImageOutputStream, new VTByteArrayOutputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES)));
     
     heavyImageDataInputStream = new VTLittleEndianInputStream(graphicsHeavyImageInputStream);
     heavyImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedZstdOutputStream(graphicsHeavyImageOutputStream));

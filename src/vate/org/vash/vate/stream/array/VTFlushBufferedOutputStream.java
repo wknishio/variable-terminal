@@ -6,17 +6,27 @@ import java.io.OutputStream;
 
 public final class VTFlushBufferedOutputStream extends FilterOutputStream
 {
-  private final VTByteArrayOutputStream buf;
   private final OutputStream out;
+  private final VTByteArrayOutputStream buf;
   
-  public VTFlushBufferedOutputStream(VTByteArrayOutputStream buf, OutputStream out)
+  public VTFlushBufferedOutputStream(OutputStream out, VTByteArrayOutputStream buf)
   {
     super(buf);
-    this.buf = buf;
     this.out = out;
+    this.buf = buf;
   }
   
-  public final void flush() throws IOException
+  public void write(int b)
+  {
+    buf.write(b);
+  }
+  
+  public void write(byte[] b, int off, int len)
+  {
+    buf.write(b, off, len);
+  }
+  
+  public void flush() throws IOException
   {
     if (buf.count() > 0)
     {
@@ -27,16 +37,8 @@ public final class VTFlushBufferedOutputStream extends FilterOutputStream
     }
   }
   
-  public final void close() throws IOException
+  public void close() throws IOException
   {
-//		try
-//		{
-//			flush();
-//		}
-//		catch (Throwable t)
-//		{
-//			
-//		}
     out.close();
   }
 }
