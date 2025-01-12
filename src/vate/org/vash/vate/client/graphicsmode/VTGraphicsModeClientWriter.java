@@ -44,7 +44,7 @@ public class VTGraphicsModeClientWriter implements Runnable
   public static final int TERMINAL_STATE_VISIBLE = 1;
   public static final int TERMINAL_STATE_IGNORE = 2;
   private volatile boolean stopped;
-  private boolean needRefresh;
+  private volatile boolean needRefresh;
   private boolean hasRefresh;
   private boolean hasDifference;
   private boolean open;
@@ -1930,9 +1930,9 @@ public class VTGraphicsModeClientWriter implements Runnable
     {
       try
       {
-        synchronized (this)
+        while (!stopped && (!needRefresh || ((terminalRefreshPolicy == TERMINAL_STATE_VISIBLE) && (((frame.getExtendedState() & Frame.ICONIFIED)) != 0)) || ((terminalRefreshPolicy == TERMINAL_STATE_FOCUSED) && !remoteInterface.isFocusOwner())))
         {
-          if (!stopped && (!needRefresh || ((terminalRefreshPolicy == TERMINAL_STATE_VISIBLE) && (((frame.getExtendedState() & Frame.ICONIFIED)) != 0)) || ((terminalRefreshPolicy == TERMINAL_STATE_FOCUSED) && !remoteInterface.isFocusOwner())))
+          synchronized (this)
           {
             wait();
           }
