@@ -60,7 +60,7 @@ public class ZstdOutputStream
         }
         else
         {
-          this.context = new CompressionContext(CompressionParameters.compute(DEFAULT_COMPRESSION_LEVEL + 1, MAX_BLOCK_SIZE), 0, Integer.MAX_VALUE);
+          this.context = new CompressionContext(CompressionParameters.compute(DEFAULT_COMPRESSION_LEVEL, MAX_BLOCK_SIZE), 0, Integer.MAX_VALUE);
         }
         this.maxBufferSize = context.parameters.getWindowSize() * 4;
 

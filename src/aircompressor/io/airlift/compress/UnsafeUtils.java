@@ -122,6 +122,11 @@ public final class UnsafeUtils {
     //return UNSAFE.getInt(src, BYTE_ARRAY_OFFSET + srcOff);
     return SafeUtils.readInt(src, srcOff);
   }
+  
+  public static int readSubInt(byte[] src, int srcOff) {
+    //return UNSAFE.getInt(src, BYTE_ARRAY_OFFSET + srcOff);
+    return SafeUtils.readSubInt(src, srcOff);
+  }
 
   public static int readIntLE(byte[] src, int srcOff) {
     int i = readInt(src, srcOff);
@@ -223,6 +228,11 @@ public final class UnsafeUtils {
   public static int getInt(byte[] src, long srcOff)
   {
     return readIntLE(src, (int)srcOff);
+  }
+  
+  public static int getSubInt(byte[] src, long srcOff)
+  {
+    return readSubInt(src, (int)srcOff);
   }
   
   public static void putInt(byte[] src, long srcOff, int value)
@@ -488,6 +498,25 @@ public final class UnsafeUtils {
 //    return readIntLE(src, (int)srcOff);
     return getInt((byte[]) src, srcOff);  
   }
+  
+  public static int getSubInt(Object src, long srcOff)
+  {
+//    if (src instanceof byte[])
+//    {
+//      return getInt((byte[]) src, srcOff);  
+//    }
+//    return readIntLE(src, (int)srcOff);
+    return getSubInt((byte[]) src, srcOff);  
+  }
+  
+//  public static int getInt(Object src, long srcOff, int length)
+//  {
+//    if (length == 3)
+//    {
+//      return getSubInt((byte[]) src, srcOff);
+//    }
+//    return getInt((byte[]) src, srcOff);  
+//  }
   
   public static void putInt(Object src, long srcOff, int value)
   {

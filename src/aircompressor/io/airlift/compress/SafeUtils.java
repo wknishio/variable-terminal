@@ -27,7 +27,7 @@ package io.airlift.compress;
  * limitations under the License.
  */
 
-import java.nio.ByteOrder;
+//import java.nio.ByteOrder;
 
 public enum SafeUtils {
 	;
@@ -63,6 +63,10 @@ public enum SafeUtils {
 	public static int readIntLE(byte[] buf, int i) {
 		return (buf[i] & 0xFF) | ((buf[i + 1] & 0xFF) << 8) | ((buf[i + 2] & 0xFF) << 16) | ((buf[i + 3] & 0xFF) << 24);
 	}
+	
+	public static int readSubIntLE(byte[] buf, int i) {
+    return (buf[i] & 0xFF) | ((buf[i + 1] & 0xFF) << 8) | ((buf[i + 2] & 0xFF) << 16);
+  }
 
 	public static int readInt(byte[] buf, int i) {
 		//if (Utils.NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN) {
@@ -72,7 +76,16 @@ public enum SafeUtils {
 		//}
 		return readIntLE(buf, i);
 	}
-
+	
+	public static int readSubInt(byte[] buf, int i) {
+    //if (Utils.NATIVE_BYTE_ORDER == ByteOrder.BIG_ENDIAN) {
+      //return readIntBE(buf, i);
+    //} else {
+      //return readIntLE(buf, i);
+    //}
+    return readSubIntLE(buf, i);
+  }
+	
 	public static long readLongLE(byte[] buf, int i) {
 		return (buf[i] & 0xFFL) | ((buf[i + 1] & 0xFFL) << 8) | ((buf[i + 2] & 0xFFL) << 16)
 				| ((buf[i + 3] & 0xFFL) << 24) | ((buf[i + 4] & 0xFFL) << 32) | ((buf[i + 5] & 0xFFL) << 40)

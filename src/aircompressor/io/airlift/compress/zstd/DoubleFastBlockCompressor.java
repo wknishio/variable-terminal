@@ -28,7 +28,171 @@ class DoubleFastBlockCompressor
 
     public int compressBlock(Object inputBase, final long inputAddress, int inputSize, SequenceStore output, BlockCompressionState state, RepeatedOffsets offsets, CompressionParameters parameters)
     {
-        int matchSearchLength = Math.max(parameters.getSearchLength(), 4);
+      final int matchSearchLength = parameters.getSearchLength();
+      if (matchSearchLength == 3)
+      {
+        return compressBlockMinMatch(inputBase, inputAddress, inputSize, output, state, offsets, parameters);
+      }
+      return compressBlockMaxMatch(inputBase, inputAddress, inputSize, output, state, offsets, parameters);
+    }
+    
+    public int compressBlockMinMatch(Object inputBase, final long inputAddress, int inputSize, SequenceStore output, BlockCompressionState state, RepeatedOffsets offsets, CompressionParameters parameters)
+    {
+        //final int matchSearchLength = 3;
+
+        // Offsets in hash tables are relative to baseAddress. Hash tables can be reused across calls to compressBlock as long as
+        // baseAddress is kept constant.
+        // We don't want to generate sequences that point before the current window limit, so we "filter" out all results from looking up in the hash tables
+        // beyond that point.
+        final long baseAddress = state.getBaseAddress();
+        final long windowBaseAddress = baseAddress + state.getWindowBaseOffset();
+
+        int[] longHashTable = state.hashTable;
+        int longHashBits = parameters.getHashLog();
+
+        int[] shortHashTable = state.chainTable;
+        int shortHashBits = parameters.getChainLog();
+
+        final long inputEnd = inputAddress + inputSize;
+        final long inputLimit = inputEnd - SIZE_OF_LONG; // We read a long at a time for computing the hashes
+
+        long input = inputAddress;
+        long anchor = inputAddress;
+
+        int offset1 = offsets.getOffset0();
+        int offset2 = offsets.getOffset1();
+
+        int savedOffset = 0;
+
+        if (input - windowBaseAddress == 0) {
+            input++;
+        }
+        int maxRep = (int) (input - windowBaseAddress);
+
+        if (offset2 > maxRep) {
+            savedOffset = offset2;
+            offset2 = 0;
+        }
+
+        if (offset1 > maxRep) {
+            savedOffset = offset1;
+            offset1 = 0;
+        }
+
+        while (input < inputLimit) {   // < instead of <=, because repcode check at (input+1)
+            int shortHash = hash(inputBase, input, shortHashBits, MIN_MATCH);
+            long shortMatchAddress = baseAddress + shortHashTable[shortHash];
+
+            int longHash = hash8(UnsafeUtils.getLong(inputBase, input), longHashBits);
+            long longMatchAddress = baseAddress + longHashTable[longHash];
+
+            // update hash tables
+            int current = (int) (input - baseAddress);
+            longHashTable[longHash] = current;
+            shortHashTable[shortHash] = current;
+
+            int matchLength;
+            int offset;
+
+            if (offset1 > 0 && UnsafeUtils.getSubInt(inputBase, input + 1 - offset1) == UnsafeUtils.getInt(inputBase, input + 1)) {
+                // found a repeated sequence of at least 3 bytes, separated by offset1
+                matchLength = count(inputBase, input + 1 + MIN_MATCH, inputEnd, input + 1 + MIN_MATCH - offset1) + MIN_MATCH;
+                input++;
+                output.storeSequence(inputBase, anchor, (int) (input - anchor), 0, matchLength - MIN_MATCH);
+            }
+            else {
+                // check prefix long match
+                if (longMatchAddress > windowBaseAddress && UnsafeUtils.getLong(inputBase, longMatchAddress) == UnsafeUtils.getLong(inputBase, input)) {
+                    matchLength = count(inputBase, input + SIZE_OF_LONG, inputEnd, longMatchAddress + SIZE_OF_LONG) + SIZE_OF_LONG;
+                    offset = (int) (input - longMatchAddress);
+                    while (input > anchor && longMatchAddress > windowBaseAddress && UnsafeUtils.getByte(inputBase, input - 1) == UnsafeUtils.getByte(inputBase, longMatchAddress - 1)) {
+                        input--;
+                        longMatchAddress--;
+                        matchLength++;
+                    }
+                }
+                else {
+                    // check prefix short match
+                    if (shortMatchAddress > windowBaseAddress && UnsafeUtils.getSubInt(inputBase, shortMatchAddress) == UnsafeUtils.getSubInt(inputBase, input)) {
+                        int nextOffsetHash = hash8(UnsafeUtils.getLong(inputBase, input + 1), longHashBits);
+                        long nextOffsetMatchAddress = baseAddress + longHashTable[nextOffsetHash];
+                        longHashTable[nextOffsetHash] = current + 1;
+
+                        // check prefix long +1 match
+                        if (nextOffsetMatchAddress > windowBaseAddress && UnsafeUtils.getLong(inputBase, nextOffsetMatchAddress) == UnsafeUtils.getLong(inputBase, input + 1)) {
+                            matchLength = count(inputBase, input + 1 + SIZE_OF_LONG, inputEnd, nextOffsetMatchAddress + SIZE_OF_LONG) + SIZE_OF_LONG;
+                            input++;
+                            offset = (int) (input - nextOffsetMatchAddress);
+                            while (input > anchor && nextOffsetMatchAddress > windowBaseAddress && UnsafeUtils.getByte(inputBase, input - 1) == UnsafeUtils.getByte(inputBase, nextOffsetMatchAddress - 1)) {
+                                input--;
+                                nextOffsetMatchAddress--;
+                                matchLength++;
+                            }
+                        }
+                        else {
+                            // if no long +1 match, explore the short match we found
+                            matchLength = count(inputBase, input + MIN_MATCH, inputEnd, shortMatchAddress + MIN_MATCH) + MIN_MATCH;
+                            offset = (int) (input - shortMatchAddress);
+                            while (input > anchor && shortMatchAddress > windowBaseAddress && UnsafeUtils.getByte(inputBase, input - 1) == UnsafeUtils.getByte(inputBase, shortMatchAddress - 1)) {
+                                input--;
+                                shortMatchAddress--;
+                                matchLength++;
+                            }
+                        }
+                    }
+                    else {
+                        input += ((input - anchor) >> SEARCH_STRENGTH) + 1;
+                        continue;
+                    }
+                }
+
+                offset2 = offset1;
+                offset1 = offset;
+
+                output.storeSequence(inputBase, anchor, (int) (input - anchor), offset + REP_MOVE, matchLength - MIN_MATCH);
+            }
+
+            input += matchLength;
+            anchor = input;
+
+            if (input <= inputLimit) {
+                // Fill Table
+                longHashTable[hash8(UnsafeUtils.getLong(inputBase, baseAddress + current + 2), longHashBits)] = current + 2;
+                shortHashTable[hash(inputBase, baseAddress + current + 2, shortHashBits, MIN_MATCH)] = current + 2;
+
+                longHashTable[hash8(UnsafeUtils.getLong(inputBase, input - 2), longHashBits)] = (int) (input - 2 - baseAddress);
+                shortHashTable[hash(inputBase, input - 2, shortHashBits, MIN_MATCH)] = (int) (input - 2 - baseAddress);
+
+                while (input <= inputLimit && offset2 > 0 && UnsafeUtils.getSubInt(inputBase, input) == UnsafeUtils.getSubInt(inputBase, input - offset2)) {
+                    int repetitionLength = count(inputBase, input + MIN_MATCH, inputEnd, input + MIN_MATCH - offset2) + MIN_MATCH;
+
+                    // swap offset2 <=> offset1
+                    int temp = offset2;
+                    offset2 = offset1;
+                    offset1 = temp;
+
+                    shortHashTable[hash(inputBase, input, shortHashBits, MIN_MATCH)] = (int) (input - baseAddress);
+                    longHashTable[hash8(UnsafeUtils.getLong(inputBase, input), longHashBits)] = (int) (input - baseAddress);
+
+                    output.storeSequence(inputBase, anchor, 0, 0, repetitionLength - MIN_MATCH);
+
+                    input += repetitionLength;
+                    anchor = input;
+                }
+            }
+        }
+
+        // save reps for next block
+        offsets.saveOffset0(offset1 != 0 ? offset1 : savedOffset);
+        offsets.saveOffset1(offset2 != 0 ? offset2 : savedOffset);
+
+        // return the last literals size
+        return (int) (inputEnd - anchor);
+    }
+    
+    public int compressBlockMaxMatch(Object inputBase, final long inputAddress, int inputSize, SequenceStore output, BlockCompressionState state, RepeatedOffsets offsets, CompressionParameters parameters)
+    {
+        final int matchSearchLength = Math.max(parameters.getSearchLength(), 4);
 
         // Offsets in hash tables are relative to baseAddress. Hash tables can be reused across calls to compressBlock as long as
         // baseAddress is kept constant.
@@ -225,16 +389,24 @@ class DoubleFastBlockCompressor
                 return hash6(UnsafeUtils.getLong(inputBase, inputAddress), bits);
             case 5:
                 return hash5(UnsafeUtils.getLong(inputBase, inputAddress), bits);
-            default:
+            case 4:
                 return hash4(UnsafeUtils.getInt(inputBase, inputAddress), bits);
+            default:
+                return hash3(UnsafeUtils.getInt(inputBase, inputAddress), bits);
         }
     }
 
+    private static final int PRIME_3_BYTES = 0x1E35A7BD;
     private static final int PRIME_4_BYTES = 0x9E3779B1;
     private static final long PRIME_5_BYTES = 0xCF1BBCDCBBL;
     private static final long PRIME_6_BYTES = 0xCF1BBCDCBF9BL;
     private static final long PRIME_7_BYTES = 0xCF1BBCDCBFA563L;
     private static final long PRIME_8_BYTES = 0xCF1BBCDCB7A56463L;
+    
+    private static int hash3(int value, int bits)
+    {
+      return ((value << (Integer.SIZE - 24)) * PRIME_3_BYTES) >>> (Integer.SIZE - bits);
+    }
 
     private static int hash4(int value, int bits)
     {
