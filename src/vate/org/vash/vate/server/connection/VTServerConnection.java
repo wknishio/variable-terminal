@@ -705,7 +705,7 @@ public class VTServerConnection
     // VTCompressorSelector.createFlushBufferedSyncFlushInflaterInputStream(shellInputStream);
     // shellDataInputStream = shellInputStream;
     
-    shellDataOutputStream = VTCompressorSelector.createBufferedSyncFlushZlibOutputStreamFiltered(shellOutputStream);
+    shellDataOutputStream = VTCompressorSelector.createBufferedSyncFlushZlibOutputStreamFilteredStrategy(shellOutputStream);
     // shellDataOutputStream =
     // VTCompressorSelector.createFlushBufferedSyncFlushDeflaterOutputStream(shellOutputStream);
     // shellDataOutputStream = shellOutputStream;
@@ -723,7 +723,7 @@ public class VTServerConnection
     heavyImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedZstdOutputStream(graphicsHeavyImageOutputStream));
     
     fastImageDataInputStream = new VTLittleEndianInputStream(graphicsFastImageInputStream);
-    fastImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedNoFlushZlibOutputStreamFiltered(graphicsFastImageOutputStream));
+    fastImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedNoFlushZlibOutputStreamFilteredStrategy(graphicsFastImageOutputStream));
     
     clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
     clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
@@ -1084,7 +1084,7 @@ public class VTServerConnection
     heavyImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedZstdOutputStream(graphicsHeavyImageOutputStream));
     
     fastImageDataInputStream = new VTLittleEndianInputStream(graphicsFastImageInputStream);
-    fastImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedNoFlushZlibOutputStreamFiltered(graphicsFastImageOutputStream));
+    fastImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedNoFlushZlibOutputStreamFilteredStrategy(graphicsFastImageOutputStream));
     
     resetClipboardStreams();
   }

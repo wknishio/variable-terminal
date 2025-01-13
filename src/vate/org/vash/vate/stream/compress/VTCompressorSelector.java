@@ -100,19 +100,19 @@ public class VTCompressorSelector
     return new VTHadoopInputStream(new ZstdHadoopInputStream(in));
   }
   
-  public static OutputStream createBufferedSyncFlushZlibOutputStreamDefault(OutputStream out)
+  public static OutputStream createBufferedSyncFlushZlibOutputStreamDefaultStrategy(OutputStream out)
   {
     return createFlushBufferedSyncFlushDeflaterOutputStreamDefaultStrategy(out);
   }
   
-  public static OutputStream createBufferedSyncFlushZlibOutputStreamFiltered(OutputStream out)
+  public static OutputStream createBufferedSyncFlushZlibOutputStreamFilteredStrategy(OutputStream out)
   {
     return createFlushBufferedSyncFlushDeflaterOutputStreamFilteredStrategy(out);
   }
   
-  public static OutputStream createBufferedSyncFlushZlibOutputStreamHuffmanOnly(OutputStream out)
+  public static OutputStream createBufferedSyncFlushZlibOutputStreamHuffmanStrategy(OutputStream out)
   {
-    return createFlushBufferedSyncFlushDeflaterOutputStreamHuffmanOnlyStrategy(out);
+    return createFlushBufferedSyncFlushDeflaterOutputStreamHuffmanStrategy(out);
   }
   
   public static InputStream createBufferedSyncFlushZlibInputStream(InputStream in)
@@ -120,19 +120,19 @@ public class VTCompressorSelector
     return createFlushBufferedSyncFlushInflaterInputStream(in);
   }
   
-  public static OutputStream createBufferedNoFlushZlibOutputStreamDefault(OutputStream out)
+  public static OutputStream createBufferedNoFlushZlibOutputStreamDefaultStrategy(OutputStream out)
   {
     return createFlushBufferedNoFlushDeflaterOutputStreamDefaultStrategy(out);
   }
   
-  public static OutputStream createBufferedNoFlushZlibOutputStreamFiltered(OutputStream out)
+  public static OutputStream createBufferedNoFlushZlibOutputStreamFilteredStrategy(OutputStream out)
   {
     return createFlushBufferedNoFlushDeflaterOutputStreamFilteredStrategy(out);
   }
   
-  public static OutputStream createBufferedNoFlushZlibOutputStreamHuffmanOnly(OutputStream out)
+  public static OutputStream createBufferedNoFlushZlibOutputStreamHuffmanStrategy(OutputStream out)
   {
-    return createFlushBufferedNoFlushDeflaterOutputStreamHuffmanOnlyStrategy(out);
+    return createFlushBufferedNoFlushDeflaterOutputStreamHuffmanStrategy(out);
   }
   
   public static InputStream createBufferedNoFlushZlibInputStream(InputStream in)
@@ -217,7 +217,7 @@ public class VTCompressorSelector
     return null;
   }
   
-  private static OutputStream createFlushBufferedSyncFlushDeflaterOutputStreamHuffmanOnlyStrategy(OutputStream out)
+  private static OutputStream createFlushBufferedSyncFlushDeflaterOutputStreamHuffmanStrategy(OutputStream out)
   {
     try
     {
@@ -310,7 +310,7 @@ public class VTCompressorSelector
     return null;
   }
   
-  private static OutputStream createFlushBufferedNoFlushDeflaterOutputStreamHuffmanOnlyStrategy(OutputStream out)
+  private static OutputStream createFlushBufferedNoFlushDeflaterOutputStreamHuffmanStrategy(OutputStream out)
   {
     try
     {

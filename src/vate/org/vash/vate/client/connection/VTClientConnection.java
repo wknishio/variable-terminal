@@ -733,7 +733,7 @@ public class VTClientConnection
     // VTCompressorSelector.createFlushBufferedSyncFlushInflaterInputStream(shellInputStream);
     // shellDataInputStream = shellInputStream;
     
-    shellDataOutputStream = VTCompressorSelector.createBufferedSyncFlushZlibOutputStreamFiltered(shellOutputStream);
+    shellDataOutputStream = VTCompressorSelector.createBufferedSyncFlushZlibOutputStreamFilteredStrategy(shellOutputStream);
     // shellDataOutputStream =
     // VTCompressorSelector.createFlushBufferedSyncFlushDeflaterOutputStream(shellOutputStream);
     // shellDataOutputStream = shellOutputStream;
