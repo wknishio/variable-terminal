@@ -75,7 +75,7 @@ public class VTServerScreenshotTask extends VTTask
     this.useJPG = false;
     try
     {
-      this.pngEncoder = new PngEncoder().withCompressionLevel(1);
+      this.pngEncoder = new PngEncoder();
       //this.pngEncoder = new PngEncoder(PngEncoder.COLOR_TRUECOLOR, PngEncoder.BEST_SPEED);
       //this.pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
       

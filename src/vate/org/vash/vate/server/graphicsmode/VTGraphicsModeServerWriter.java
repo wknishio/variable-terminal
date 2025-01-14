@@ -838,7 +838,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     
     try
     {
-      pngEncoder = new PngEncoder().withCompressionLevel(1);
+      pngEncoder = new PngEncoder();
       //pngEncoder = new PngEncoder(PngEncoder.COLOR_INDEXED, PngEncoder.BEST_SPEED);
       //pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
       
