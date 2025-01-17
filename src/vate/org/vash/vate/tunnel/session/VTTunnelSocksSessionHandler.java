@@ -102,10 +102,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
       {
         //e.printStackTrace();
       }
-      if (channel != null)
-      {
-        channel.removeSession(this);
-      }
+      close();
     }
   }
 }

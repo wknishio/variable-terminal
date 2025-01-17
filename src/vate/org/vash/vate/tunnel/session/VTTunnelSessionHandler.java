@@ -23,13 +23,32 @@ public class VTTunnelSessionHandler implements Runnable
     return session;
   }
   
+  public void close()
+  {
+    try
+    {
+      session.close();
+    }
+    catch (Throwable e)
+    {
+      //e.printStackTrace();
+    }
+    if (channel != null)
+    {
+      channel.removeSession(this);
+    }
+  }
+  
   public void run()
   {
     Thread.currentThread().setName(getClass().getSimpleName());
     try
     {
-      VTStreamRedirector redirector = new VTStreamRedirector(session.getSocketInputStream(), session.getTunnelOutputStream());
-      redirector.run();
+      if (session.getSocket() != null)
+      {
+        VTStreamRedirector redirector = new VTStreamRedirector(session.getSocketInputStream(), session.getTunnelOutputStream());
+        redirector.run();
+      }
     }
     catch (Throwable t)
     {
@@ -37,18 +56,7 @@ public class VTTunnelSessionHandler implements Runnable
     }
     finally
     {
-      try
-      {
-        session.close();
-      }
-      catch (Throwable e)
-      {
-        //e.printStackTrace();
-      }
-      if (channel != null)
-      {
-        channel.removeSession(this);
-      }
+      close();
     }
   }
 }

@@ -5,7 +5,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
-import net.sourceforge.jsocks.socks.Socks4Proxy;
 import net.sourceforge.jsocks.socks.Socks5Proxy;
 import net.sourceforge.jsocks.socks.SocksSocket;
 import net.sourceforge.jsocks.socks.UserPasswordAuthentication;
@@ -13,7 +12,7 @@ import net.sourceforge.jsocks.socks.UserPasswordAuthentication;
 public class VTSocksProxySocket extends VTProxySocket
 {
   private Socks5Proxy socks5Proxy;
-  private Socks4Proxy socks4Proxy;
+  //private Socks4Proxy socks4Proxy;
   //private Socket socket;
   
   public VTSocksProxySocket(VTProxy currentProxy, Socket currentSocket)
@@ -55,20 +54,18 @@ public class VTSocksProxySocket extends VTProxySocket
       {
         return;
       }
-      
-      try
-      {
-        connectProxy(0);
-        socks4Proxy = new Socks4Proxy(null, proxyHost, proxyPort, proxyUser != null ? proxyUser : "", currentSocket);
-        InetSocketAddress host = (InetSocketAddress) endpoint;
-        SocksSocket socksSocket = new SocksSocket(socks4Proxy, host.getHostName(), host.getPort(), 0);
-        proxySocket = socksSocket;
-      }
-      catch (Throwable t)
-      {
-        //t.printStackTrace();
-        proxySocket = null;
-      }
+//      try
+//      {
+//        connectProxy(0);
+//        socks4Proxy = new Socks4Proxy(null, proxyHost, proxyPort, proxyUser != null ? proxyUser : "", currentSocket);
+//        InetSocketAddress host = (InetSocketAddress) endpoint;
+//        SocksSocket socksSocket = new SocksSocket(socks4Proxy, host.getHostName(), host.getPort(), 0);
+//        proxySocket = socksSocket;
+//      }
+//      catch (Throwable t)
+//      {
+//        proxySocket = null;
+//      }
       if (proxySocket == null)
       {
         throw new IOException("socks tunneling failed");
@@ -111,19 +108,18 @@ public class VTSocksProxySocket extends VTProxySocket
       {
         return;
       }
-      try
-      {
-        connectProxy(timeout);
-        socks4Proxy = new Socks4Proxy(null, proxyHost, proxyPort, proxyUser != null ? proxyUser : "", currentSocket);
-        InetSocketAddress host = (InetSocketAddress) endpoint;
-        SocksSocket socksSocket = new SocksSocket(socks4Proxy, host.getHostName(), host.getPort(), timeout);
-        proxySocket = socksSocket;
-      }
-      catch (Throwable t)
-      {
-        //t.printStackTrace();
-        proxySocket = null;
-      }
+//      try
+//      {
+//        connectProxy(timeout);
+//        socks4Proxy = new Socks4Proxy(null, proxyHost, proxyPort, proxyUser != null ? proxyUser : "", currentSocket);
+//        InetSocketAddress host = (InetSocketAddress) endpoint;
+//        SocksSocket socksSocket = new SocksSocket(socks4Proxy, host.getHostName(), host.getPort(), timeout);
+//        proxySocket = socksSocket;
+//      }
+//      catch (Throwable t)
+//      {
+//        proxySocket = null;
+//      }
       if (proxySocket == null)
       {
         throw new IOException("socks tunneling failed");

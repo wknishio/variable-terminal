@@ -2,7 +2,7 @@ package org.vash.vate.tunnel.channel;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.vash.vate.socket.proxy.VTProxy;
@@ -22,15 +22,14 @@ public class VTTunnelRemoteSocketFactory extends VTRemoteSocketFactory
   {
     if (proxies != null && proxies.length >= 1)
     {
-      VTProxy proxy = proxies[0];
-      return socketBuilder.connect(bind, host, port, connectTimeout, dataTimeout, proxy);
+      return socketBuilder.connect(bind, host, port, connectTimeout, dataTimeout, proxies[0]);
     }
     return socketBuilder.connect(bind, host, port, connectTimeout, dataTimeout, PROXY_NONE);
   }
   
-  public Socket acceptSocket(String host, int port, int connectTimeout, int dataTimeout) throws IOException
+  public Socket acceptSocket(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException
   {
-    return socketBuilder.accept(host, port, connectTimeout, dataTimeout);
+    return socketBuilder.accept(bind, host, port, connectTimeout, dataTimeout);
   }
   
   public DatagramSocket createSocket(String host, int port, int dataTimeout) throws IOException
@@ -38,9 +37,18 @@ public class VTTunnelRemoteSocketFactory extends VTRemoteSocketFactory
     return socketBuilder.create(host, port, dataTimeout);
   }
   
-  public DatagramSocket createSocket(InetAddress address, int port, int dataTimeout) throws IOException
+  public ServerSocket bindSocket(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException
   {
-    return socketBuilder.create(address, port, dataTimeout);
+    return socketBuilder.bind(bind, host, port, connectTimeout, dataTimeout);
   }
-
+  
+  public void unbindSocket(String bind) throws IOException
+  {
+    socketBuilder.unbind(bind);
+  }
+  
+//  public DatagramSocket createSocket(InetAddress address, int port, int dataTimeout) throws IOException
+//  {
+//    return socketBuilder.create(address, port, dataTimeout);
+//  }
 }

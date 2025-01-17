@@ -6,7 +6,10 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+import org.vash.vate.VT;
 import org.vash.vate.socket.proxy.VTProxy;
 import org.vash.vate.socket.proxy.VTProxy.VTProxyType;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
@@ -27,7 +30,8 @@ public class VTTunnelConnectionControlThread implements Runnable
   private volatile boolean closed = false;
   private static final String SESSION_SEPARATOR = "\f";
   private static final char SESSION_MARK = '\b';
-  private final byte[] packet = new byte[8192];
+  private final byte[] packet = new byte[VT.VT_PACKET_DATA_SIZE_BYTES];
+  private final Map<String, VTTunnelCloseableServerSocket> sockets = new ConcurrentHashMap<String, VTTunnelCloseableServerSocket>();
   
   public VTTunnelConnectionControlThread(VTTunnelConnection connection)
   {
@@ -99,7 +103,15 @@ public class VTTunnelConnectionControlThread implements Runnable
                 }
                 final VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
                 
+                final boolean unbound = proxyTypeLetter.toUpperCase().startsWith("U") ? true : false;
+                final boolean bound = proxyTypeLetter.toUpperCase().startsWith("B") ? true : false;
                 final boolean connect = proxyTypeLetter.toUpperCase().startsWith("A") ? false : true;
+                
+                if (unbound)
+                {
+                  unbind(bind);
+                  continue;
+                }
                 
                 final VTTunnelSession session = new VTTunnelSession(connection, false);
                 final VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, connection.getResponseChannel());
@@ -122,13 +134,52 @@ public class VTTunnelConnectionControlThread implements Runnable
                       
                       try
                       {
+                        if (bound)
+                        {
+                          if (handler != null)
+                          {
+                            handler.close();
+                          }
+                          ServerSocket serverSocket = bind(bind, host, port);
+                          if (serverSocket != null)
+                          {
+                            int localPort = serverSocket.getLocalPort();
+                            InetAddress localAddress = serverSocket.getInetAddress();
+                            
+                            if (localAddress.getHostAddress().equals("0.0.0.0") || localAddress.getHostAddress().equals("::")
+                            || localAddress.getHostAddress().equals("::0") || localAddress.getHostAddress().equals("0:0:0:0:0:0:0:0")
+                            || localAddress.getHostAddress().equals("00:00:00:00:00:00:00:00")
+                            || localAddress.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
+                            {
+                              try
+                              {
+                                InetAddress localHost = InetAddress.getLocalHost();
+                                localAddress = localHost;
+                              }
+                              catch (Throwable t)
+                              {
+                                
+                              }
+                            }
+                            // response message sent with ok
+                            connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + localAddress.getHostAddress() + SESSION_SEPARATOR + localPort).getBytes("UTF-8"));
+                            connection.getControlOutputStream().flush();
+                          }
+                          else
+                          {
+                            connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                            connection.getControlOutputStream().flush();
+                          }
+                          return;
+                        }
+                        
                         if (connect)
                         {
                           remoteSocket = connect(bind, host, port, connectTimeout, dataTimeout, proxy);
                         }
                         else
                         {
-                          remoteSocket = accept(host, port, connectTimeout, dataTimeout);
+                          remoteSocket = accept(bind, host, port, connectTimeout, dataTimeout);
                         }
                         socketInputStream = remoteSocket.getInputStream();
                         socketOutputStream = remoteSocket.getOutputStream();
@@ -157,9 +208,9 @@ public class VTTunnelConnectionControlThread implements Runnable
                         }
                         else
                         {
-                          if (session != null)
+                          if (handler != null)
                           {
-                            session.close();
+                            handler.close();
                           }
                           // response message sent with error
                           connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
@@ -176,9 +227,9 @@ public class VTTunnelConnectionControlThread implements Runnable
                 }
                 else
                 {
-                  if (session != null)
+                  if (handler != null)
                   {
-                    session.close();
+                    handler.close();
                   }
                   // response message sent with error
                   connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
@@ -252,9 +303,9 @@ public class VTTunnelConnectionControlThread implements Runnable
                 }
                 else
                 {
-                  if (session != null)
+                  if (handler != null)
                   {
-                    session.close();
+                    handler.close();
                   }
                   // response message sent with error
                   connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
@@ -338,9 +389,9 @@ public class VTTunnelConnectionControlThread implements Runnable
                   }
                   else
                   {
-                    if (session != null)
+                    if (handler != null)
                     {
-                      session.close();
+                      handler.close();
                     }
                     // response message sent with error
                     connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
@@ -349,9 +400,9 @@ public class VTTunnelConnectionControlThread implements Runnable
                 }
                 else
                 {
-                  if (session != null)
+                  if (handler != null)
                   {
-                    session.close();
+                    handler.close();
                   }
                   // response message sent with error
                   connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
@@ -418,11 +469,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 }
                 if (handler != null)
                 {
-                  VTTunnelSession session = handler.getSession();
-                  if (session != null)
-                  {
-                    session.close();
-                  }
+                  handler.close();
                 }
               }
             }
@@ -450,10 +497,10 @@ public class VTTunnelConnectionControlThread implements Runnable
     closed = true;
   }
   
-  public Socket connect(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy)
+  private Socket connect(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy)
   {
     VTTunnelCloseableSocket clientSocket = null;
-    Socket socket = null;
+    Socket connectionSocket = null;
     try
     {
       if (host == null || host.length() == 0 || host.equals("*"))
@@ -464,31 +511,31 @@ public class VTTunnelConnectionControlThread implements Runnable
       {
         bind = "";
       }
-      socket = VTProxy.next(null, bind, connectTimeout, proxy);
-      clientSocket = new VTTunnelCloseableSocket(socket);
+      connectionSocket = VTProxy.next(null, bind, connectTimeout, proxy);
+      clientSocket = new VTTunnelCloseableSocket(connectionSocket);
       connection.getCloseables().add(clientSocket);
       
-      socket = VTProxy.connect(bind, host, port, connectTimeout, socket);
+      connectionSocket = VTProxy.connect(bind, host, port, connectTimeout, connectionSocket);
       if (dataTimeout > 0)
       {
-        socket.setSoTimeout(dataTimeout);
+        connectionSocket.setSoTimeout(dataTimeout);
       }
     }
     catch (Throwable t)
     {
       //t.printStackTrace();
-      if (socket != null)
+      if (connectionSocket != null)
       {
         try
         {
-          socket.close();
+          connectionSocket.close();
         }
         catch (Throwable e)
         {
           
         }
       }
-      socket = null;
+      connectionSocket = null;
     }
     finally
     {
@@ -497,13 +544,14 @@ public class VTTunnelConnectionControlThread implements Runnable
         connection.getCloseables().remove(clientSocket);
       }
     }
-    return socket;
+    return connectionSocket;
   }
   
-  public Socket accept(String host, int port, int connectTimeout, int dataTimeout)
+  private Socket accept(String bind, String host, int port, int connectTimeout, int dataTimeout)
   {
     VTTunnelCloseableServerSocket serverSocket = null;
-    Socket socket = null;
+    Socket connectionSocket = null;
+    boolean bound = false;
     try
     {
       if (host == null || host.length() == 0 || host.equals("*"))
@@ -514,8 +562,23 @@ public class VTTunnelConnectionControlThread implements Runnable
       {
         
       }
-      serverSocket = new VTTunnelCloseableServerSocket(new ServerSocket());
-      serverSocket.bind(new InetSocketAddress(host, port));
+      
+      if (bind != null && bind.length() > 0)
+      {
+        serverSocket = sockets.get(bind);
+      }
+      
+      if (serverSocket == null)
+      {
+        serverSocket = new VTTunnelCloseableServerSocket(new ServerSocket());
+        serverSocket.bind(new InetSocketAddress(host, port));
+        connection.getCloseables().add(serverSocket);
+      }
+      else
+      {
+        bound = true;
+      }
+      
       if (connectTimeout > 0)
       {
         serverSocket.setSoTimeout(connectTimeout);
@@ -524,22 +587,21 @@ public class VTTunnelConnectionControlThread implements Runnable
       {
         serverSocket.setSoTimeout(0);
       }
-      connection.getCloseables().add(serverSocket);
       
-      socket = serverSocket.accept();
+      connectionSocket = serverSocket.accept();
       if (dataTimeout > 0)
       {
-        socket.setSoTimeout(dataTimeout);
+        connectionSocket.setSoTimeout(dataTimeout);
       }
     }
     catch (Throwable t)
     {
       //t.printStackTrace();
-      if (socket != null)
+      if (connectionSocket != null)
       {
         try
         {
-          socket.close();
+          connectionSocket.close();
         }
         catch (Throwable e)
         {
@@ -549,7 +611,7 @@ public class VTTunnelConnectionControlThread implements Runnable
     }
     finally
     {
-      if (serverSocket != null)
+      if (!bound && serverSocket != null)
       {
         try
         {
@@ -562,6 +624,44 @@ public class VTTunnelConnectionControlThread implements Runnable
         connection.getCloseables().remove(serverSocket);
       }
     }
-    return socket;
+    return connectionSocket;
+  }
+  
+  private VTTunnelCloseableServerSocket bind(String bind, String host, int port)
+  {
+    try
+    {
+      VTTunnelCloseableServerSocket serverSocket = null;
+      serverSocket = new VTTunnelCloseableServerSocket(new ServerSocket());
+      serverSocket.bind(new InetSocketAddress(host, port));
+      connection.getCloseables().add(serverSocket);
+      sockets.put(bind, serverSocket);
+      return serverSocket;
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    return null;
+  }
+  
+  private boolean unbind(String bind)
+  {
+    try
+    {
+      VTTunnelCloseableServerSocket serverSocket = null;
+      serverSocket = sockets.remove(bind);
+      if (serverSocket != null)
+      {
+        connection.getCloseables().remove(serverSocket);
+        serverSocket.close();
+      }
+      return true;
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    return false;
   }
 }

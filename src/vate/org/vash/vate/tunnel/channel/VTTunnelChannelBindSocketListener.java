@@ -216,9 +216,9 @@ public class VTTunnelChannelBindSocketListener implements Runnable
           else
           {
             // cannot handle more sessions
-            if (session != null)
+            if (handler != null)
             {
-              session.close();
+              handler.close();
             }
           }
         }

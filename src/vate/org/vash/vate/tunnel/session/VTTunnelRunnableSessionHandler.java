@@ -4,7 +4,7 @@ import org.vash.vate.tunnel.channel.VTTunnelChannel;
 
 public class VTTunnelRunnableSessionHandler extends VTTunnelSessionHandler
 {
-  private final VTTunnelChannel channel;
+  //private final VTTunnelChannel channel;
   private final VTTunnelSession session;
   private final Runnable runnable;
   
@@ -12,12 +12,8 @@ public class VTTunnelRunnableSessionHandler extends VTTunnelSessionHandler
   {
     super(session, channel);
     this.session = session;
-    this.channel = channel;
+    //this.channel = channel;
     this.runnable = runnable;
-    if (channel != null)
-    {
-      channel.addSession(this);
-    }
   }
   
   public VTTunnelSession getSession()
@@ -46,10 +42,7 @@ public class VTTunnelRunnableSessionHandler extends VTTunnelSessionHandler
       {
         //e.printStackTrace();
       }
-      if (channel != null)
-      {
-        channel.removeSession(this);
-      }
+      close();
     }
   }
 }

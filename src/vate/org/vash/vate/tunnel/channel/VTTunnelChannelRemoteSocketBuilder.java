@@ -2,7 +2,7 @@ package org.vash.vate.tunnel.channel;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 import org.vash.vate.socket.proxy.VTProxy;
@@ -11,6 +11,7 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.V
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.session.VTTunnelDatagramSocket;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
+import org.vash.vate.tunnel.session.VTTunnelServerSocket;
 import org.vash.vate.tunnel.session.VTTunnelSession;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 
@@ -69,14 +70,11 @@ public class VTTunnelChannelRemoteSocketBuilder
     {
       host = "";
     }
-    if (bind ==  null)
+    
+    if (bind == null)
     {
       bind = "";
     }
-    
-    VTTunnelSession session = null;
-    VTTunnelSessionHandler handler = null;
-    int channelType = channel.getChannelType();
     
     String proxyTypeLetter = "G";
     if (proxyType == VTProxyType.GLOBAL)
@@ -100,6 +98,10 @@ public class VTTunnelChannelRemoteSocketBuilder
       proxyTypeLetter = "P";
     }
     
+    VTTunnelSession session = null;
+    VTTunnelSessionHandler handler = null;
+    int channelType = channel.getChannelType();
+    
     session = new VTTunnelSession(channel.getConnection(), true);
     VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
     session.setSocket(pipedSocket);
@@ -150,37 +152,41 @@ public class VTTunnelChannelRemoteSocketBuilder
     {
       // cannot handle more sessions
     }
-    if (session != null)
+    if (handler != null)
     {
-      pipedSocket.close();
+      handler.close();
     }
-    throw new IOException("Failed to connect remotely to: host " + host + " port " + port + "");
+    throw new IOException("Failed to connect remotely using: host " + host + " port " + port + "");
   }
   
-  public Socket accept(String host, int port, int connectTimeout, int dataTimeout) throws IOException
-  {
-    if (host == null)
-    {
-      host = "";
-    }
-    return accept(host, port, connectTimeout, dataTimeout, PROXY_NONE.getProxyHost(), PROXY_NONE.getProxyPort(), PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
-  }
-  
-  private Socket accept(String host, int port, int connectTimeout, int dataTimeout, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
+  public Socket accept(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException
   {
     if (host == null)
     {
       host = "";
     }
     
-    String bind = "";
+    if (bind == null)
+    {
+      bind = "";
+    }
+    
+    String proxyTypeLetter = "A";
+    String proxyHost = "";
+    int proxyPort = 0;
+    String proxyUser = "";
+    String proxyPassword = "";
+    
+    if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
+    {
+      proxyUser = "*";
+      proxyPassword = "*" + SESSION_SEPARATOR + "*";
+    }
     
     VTTunnelSession session = null;
     VTTunnelSessionHandler handler = null;
     int channelType = channel.getChannelType();
     
-    String proxyTypeLetter = "A";
-    
     session = new VTTunnelSession(channel.getConnection(), true);
     VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(session);
     session.setSocket(pipedSocket);
@@ -231,17 +237,129 @@ public class VTTunnelChannelRemoteSocketBuilder
     {
       // cannot handle more sessions
     }
-    if (session != null)
+    if (handler != null)
     {
-      pipedSocket.close();
+      handler.close();
     }
-    throw new IOException("Failed to accept remotely from: host " + host + " port " + port + "");
+    throw new IOException("Failed to accept remotely using: host " + host + " port " + port + "");
   }
   
-  public DatagramSocket create(InetAddress address, int port, int dataTimeout) throws IOException
+  public ServerSocket bind(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException
   {
-    return create(address.getHostAddress(), port, dataTimeout);
+    if (host == null)
+    {
+      host = "";
+    }
+    
+    if (bind == null)
+    {
+      bind = "";
+    }
+    
+    String proxyTypeLetter = "B";
+    String proxyHost = "";
+    int proxyPort = 0;
+    String proxyUser = "";
+    String proxyPassword = "";
+    
+    if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
+    {
+      proxyUser = "*";
+      proxyPassword = "*" + SESSION_SEPARATOR + "*";
+    }
+    
+    VTTunnelSession session = null;
+    VTTunnelSessionHandler handler = null;
+    int channelType = channel.getChannelType();
+    
+    session = new VTTunnelSession(channel.getConnection(), true);
+    handler = new VTTunnelSessionHandler(session, channel);
+    
+    VTLinkableDynamicMultiplexedInputStream input = channel.getConnection().getInputStream(channelType, handler);
+    VTLinkableDynamicMultiplexedOutputStream output = channel.getConnection().getOutputStream(channelType, handler);
+    
+    if (output != null && input != null)
+    {
+      final int inputNumber = input.number();
+      final int outputNumber = output.number();
+      
+      session.setTunnelInputStream(input);
+      session.setTunnelOutputStream(output);
+      
+      // request message sent
+      channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + connectTimeout + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + bind + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+      channel.getConnection().getControlOutputStream().flush();
+      //System.out.println("sent.request:output=" + outputNumber);
+      boolean result = false;
+      try
+      {
+        result = session.waitResult();
+      }
+      catch (Throwable t)
+      {
+        //t.printStackTrace();
+      }
+      if (result)
+      {
+        if (handler != null)
+        {
+          handler.close();
+        }
+        host = session.getRemoteHost();
+        port = session.getRemotePort();
+        VTTunnelServerSocket serverSocket = new VTTunnelServerSocket(channel.getConnection().createRemoteSocketFactory(channel), bind, host, port, connectTimeout, dataTimeout);
+        return serverSocket;
+      }
+    }
+    else
+    {
+      // cannot handle more sessions
+    }
+    if (handler != null)
+    {
+      handler.close();
+    }
+    throw new IOException("Failed to bind remotely using: host " + host + " port " + port + "");
   }
+  
+  public void unbind(String bind) throws IOException
+  {
+    if (bind == null)
+    {
+      bind = "";
+    }
+    
+    String host = "";
+    int port = 0;
+    int connectTimeout = 0;
+    int dataTimeout = 0;
+    String proxyTypeLetter = "U";
+    String proxyHost = "";
+    int proxyPort = 0;
+    String proxyUser = "";
+    String proxyPassword = "";
+    
+    if (proxyUser == null || proxyPassword == null || proxyUser.length() == 0 || proxyPassword.length() == 0)
+    {
+      proxyUser = "*";
+      proxyPassword = "*" + SESSION_SEPARATOR + "*";
+    }
+    
+    final int inputNumber = -1;
+    final int outputNumber = -1;
+    
+    //VTTunnelSession session = null;
+    //VTTunnelSessionHandler handler = null;
+    int channelType = channel.getChannelType();
+    
+    channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "T" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + connectTimeout + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + bind + SESSION_SEPARATOR + host + SESSION_SEPARATOR + port + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+    channel.getConnection().getControlOutputStream().flush();
+  }
+  
+//  public DatagramSocket create(InetAddress address, int port, int dataTimeout) throws IOException
+//  {
+//    return create(address.getHostAddress(), port, dataTimeout);
+//  }
   
   public DatagramSocket create(String host, int port, int dataTimeout) throws IOException
   {
@@ -304,10 +422,10 @@ public class VTTunnelChannelRemoteSocketBuilder
     {
       // cannot handle more sessions
     }
-    if (session != null)
+    if (handler != null)
     {
-      pipedSocket.close();
+      handler.close();
     }
-    throw new IOException("Failed to create tunnel using host " + host + " port " + port + "");
+    throw new IOException("Failed to create datagram tunnel using host " + host + " port " + port + "");
   }
 }
