@@ -94,14 +94,6 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
     }
     finally
     {
-      try
-      {
-        session.close();
-      }
-      catch (Throwable e)
-      {
-        //e.printStackTrace();
-      }
       close();
     }
   }

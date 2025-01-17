@@ -34,14 +34,6 @@ public class VTTunnelRunnableSessionHandler extends VTTunnelSessionHandler
     }
     finally
     {
-      try
-      {
-        session.close();
-      }
-      catch (Throwable e)
-      {
-        //e.printStackTrace();
-      }
       close();
     }
   }
