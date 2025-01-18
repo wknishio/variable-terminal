@@ -14,6 +14,8 @@
  *******************************************************************************/
 package net.sourceforge.jsocks.socks.server;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -50,7 +52,7 @@ public class UserPasswordAuthenticator extends ServerAuthenticatorNone {
 
 		if (!selectSocks5Authentication(in, out, METHOD_ID))
 			return null;
-		if (!doUserPasswordAuthentication(s, in, out))
+		if (!doUserPasswordAuthentication(s, new DataInputStream(in), new DataOutputStream(out)))
 			return null;
 
 		return new ServerAuthenticatorNone(in, out);
@@ -60,6 +62,7 @@ public class UserPasswordAuthenticator extends ServerAuthenticatorNone {
 	//////////////////
 
 	protected boolean doUserPasswordAuthentication(Socket s, InputStream in, OutputStream out) throws IOException {
+	  DataInputStream data_in = new DataInputStream(in);
 		int version = in.read();
 		if (version != 1)
 			return false;
@@ -67,14 +70,14 @@ public class UserPasswordAuthenticator extends ServerAuthenticatorNone {
 		if (ulen < 0)
 			return false;
 		byte[] user = new byte[ulen];
-		in.read(user);
+		data_in.readFully(user);
 		int plen = in.read();
 		if (plen < 0)
 			return false;
 		byte[] password = new byte[plen];
-		in.read(password);
+		data_in.readFully(password);
 
-		if (validator.isUserValid(new String(user), new String(password), s)) {
+		if (validator.isUserValid(new String(user, "ISO-8859-1"), new String(password, "ISO-8859-1"), s)) {
 			// System.out.println("user valid");
 			out.write(new byte[] { 1, 0 });
 			out.flush();

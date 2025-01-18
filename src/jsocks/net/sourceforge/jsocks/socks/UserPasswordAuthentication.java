@@ -14,6 +14,10 @@
  *******************************************************************************/
 package net.sourceforge.jsocks.socks;
 
+import java.io.UnsupportedEncodingException;
+
+import org.bouncycastle.util.Arrays;
+
 /**
  * SOCKS5 User Password authentication scheme.
  */
@@ -32,8 +36,9 @@ public class UserPasswordAuthentication implements Authentication {
 	 *            User Name to send to SOCKS server.
 	 * @param password
 	 *            Password to send to SOCKS server.
+	 * @throws UnsupportedEncodingException 
 	 */
-	public UserPasswordAuthentication(String userName, String password) {
+	public UserPasswordAuthentication(String userName, String password) throws UnsupportedEncodingException {
 		this.userName = userName;
 		this.password = password;
 		formRequest();
@@ -85,16 +90,27 @@ public class UserPasswordAuthentication implements Authentication {
 	// Private methods
 	//////////////////
 
-	/** Convert UserName password in to binary form, ready to be send to server */
-	private void formRequest() {
-		byte[] user_bytes = userName.getBytes();
-		byte[] password_bytes = password.getBytes();
-
+	/** Convert UserName password in to binary form, ready to be send to server 
+	 * @throws UnsupportedEncodingException */
+	private void formRequest() throws UnsupportedEncodingException {
+		byte[] user_bytes = userName.getBytes("ISO-8859-1");
+		byte[] password_bytes = password.getBytes("ISO-8859-1");
+		
+		if (user_bytes.length > 255)
+		{
+		  user_bytes = Arrays.copyOf(user_bytes, 255);
+		}
+		
+		if (password_bytes.length > 255)
+		{
+		  password_bytes = Arrays.copyOf(password_bytes, 255);
+		}
+		
 		request = new byte[3 + user_bytes.length + password_bytes.length];
 		request[0] = (byte) 1;
 		request[1] = (byte) user_bytes.length;
 		System.arraycopy(user_bytes, 0, request, 2, user_bytes.length);
 		request[2 + user_bytes.length] = (byte) password_bytes.length;
 		System.arraycopy(password_bytes, 0, request, 3 + user_bytes.length, password_bytes.length);
-	}
+	}	
 }
