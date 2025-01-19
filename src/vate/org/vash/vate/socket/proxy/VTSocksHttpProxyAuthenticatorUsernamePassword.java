@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PushbackInputStream;
 import java.net.Socket;
+import java.util.Collection;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;
@@ -20,10 +22,14 @@ public class VTSocksHttpProxyAuthenticatorUsernamePassword extends UserPasswordA
   private int connectTimeout;
   private ExecutorService executorService;
   private String bind;
+  private final Collection<String> nonces;
+  private final Random random;
   
-  public VTSocksHttpProxyAuthenticatorUsernamePassword(UserValidation validator, ExecutorService executorService, VTProxy proxy, VTRemoteSocketFactory socket_factory, int connectTimeout, String bind)
+  public VTSocksHttpProxyAuthenticatorUsernamePassword(UserValidation validator, Collection<String> nonces, Random random, ExecutorService executorService, VTProxy proxy, VTRemoteSocketFactory socket_factory, int connectTimeout, String bind)
   {
     super(validator);
+    this.nonces = nonces;
+    this.random = random;
     this.executorService = executorService;
     this.connect_proxy = proxy;
     this.socket_factory = socket_factory;
@@ -45,7 +51,7 @@ public class VTSocksHttpProxyAuthenticatorUsernamePassword extends UserPasswordA
         {
           in.unread(version);
           //fallback to use http proxy instead
-          VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, in, executorService, true, validator.getUsernames(), validator.getPasswords(), connect_proxy, socket_factory, connectTimeout, bind);
+          VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, in, nonces, random, executorService, true, validator.getUsernames(), validator.getPasswords(), connect_proxy, socket_factory, connectTimeout, bind);
           try
           {
             httpProxy.run();

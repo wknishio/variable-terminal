@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
@@ -12,7 +13,9 @@ import java.util.concurrent.ThreadFactory;
 
 import org.vash.vate.parser.VTArgumentParser;
 import org.vash.vate.parser.VTPropertiesBuilder;
+import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTCredential;
+import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.socket.proxy.VTSocksHttpProxyAuthenticatorNone;
 import org.vash.vate.socket.proxy.VTSocksHttpProxyAuthenticatorUsernamePassword;
 import org.vash.vate.socket.proxy.VTSocksMultipleUserValidation;
@@ -248,7 +251,7 @@ public class VTSocksPlusHttpProxyServer
     }
     if (validation != null)
     {
-      VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, socksPlusHttpProxyServer.executorService, null, null, 0, socksPlusHttpProxyServer.bind), socksPlusHttpProxyServer.executorService, false, false, null, null, 0);
+      VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, new LinkedHashSet<String>(), new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong()), socksPlusHttpProxyServer.executorService, null, null, 0, socksPlusHttpProxyServer.bind), socksPlusHttpProxyServer.executorService, false, false, null, null, 0);
       socksServer.start(socksPlusHttpProxyServer.port, socksPlusHttpProxyServer.host, socksPlusHttpProxyServer.bind);
     }
     else

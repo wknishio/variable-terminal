@@ -14,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -21,6 +22,7 @@ import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
@@ -28,13 +30,15 @@ import java.util.concurrent.Future;
 import java.util.Map.Entry;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.digest.Blake3;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bouncycastle.util.encoders.Hex;
 import org.vash.vate.VT;
 import org.vash.vate.parser.VTConfigurationProperties;
+import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.socket.remote.VTRemoteSocketAdapter;
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;
+
+import net.jpountz.xxhash.XXHashFactory;
 
 /**
  * A simple, tiny, nicely embeddable HTTP 1.0 (partially 1.1) server in Java
@@ -259,10 +263,12 @@ public class VTNanoHTTPDProxySession implements Runnable
     //public boolean keepConnection = false;
   }
   
-  public VTNanoHTTPDProxySession(Socket socket, InputStream in, ExecutorService executorService, boolean digestAuthentication, String[] usernames, String[] passwords, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout, String bind)
+  public VTNanoHTTPDProxySession(Socket socket, InputStream in, Collection<String> nonces, Random random, ExecutorService executorService, boolean digestAuthentication, String[] usernames, String[] passwords, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout, String bind)
   {
     this.mySocket = socket;
     this.myIn = in;
+    this.nonces = nonces;
+    this.random = random;
     this.executorService = executorService;
     this.digestAuthentication = digestAuthentication;
     this.usernames = usernames;
@@ -271,6 +277,14 @@ public class VTNanoHTTPDProxySession implements Runnable
     this.socketFactory = socketFactory;
     this.connectTimeout = connectTimeout;
     this.bind = bind;
+    if (usernames == null || passwords == null || usernames.length == 0 || passwords.length == 0)
+    {
+      xxhash64 = null;
+    }
+    else
+    {
+      xxhash64  = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(random.nextLong()));
+    }
     //Thread t = new Thread( this );
     //t.setDaemon( true );
     //t.start();
@@ -523,7 +537,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       for (int i = 0; i < usernames.length; i++)
       {
         validated = validateProxyAuthorizationDigest(proxyAuthorization, method, usernames[i], passwords[i], realm);
-        if (validated == 0)
+        if (validated == 0 || validated == -2)
         {
           return validated;
         }
@@ -569,7 +583,11 @@ public class VTNanoHTTPDProxySession implements Runnable
     
     if (serverDigest.equalsIgnoreCase(clientDigest))
     {
-      return 0;
+      if (nonces.remove(nonce))
+      {
+        return 0;
+      }
+      return -2;
 //      Long timestamp = VALID_DIGEST_NONCES.get(nOnce);
 //      if (timestamp != null)
 //      {
@@ -597,7 +615,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     Response resp = new Response();
     resp.headers.put("Proxy-Authenticate", "Digest realm=\"" + realm + "\", "
         +  "qop=\"auth\", nonce=\"" + nonce + "\", " + "opaque=\""
-        + Hex.toHexString(Blake3.hash(nonce.getBytes("ISO-8859-1"))) + "\"" + (stale ? ", stale=\"true\"" : ""));
+        + Hex.toHexString(xxhash64.digest(nonce.getBytes("ISO-8859-1"))) + "\"" + (stale ? ", stale=\"true\"" : ""));
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
     sendError(resp.status, MIME_PLAINTEXT, resp.headers, null);
   }
@@ -778,13 +796,15 @@ public class VTNanoHTTPDProxySession implements Runnable
   
   protected String generateNonce(String realm) throws UnsupportedEncodingException
   {
-    long currentTime = System.currentTimeMillis();
-    
-    String nonceValue = realm + ":" + currentTime;
-    nonceValue = Hex.toHexString(Blake3.hash(nonceValue.getBytes("ISO-8859-1")));
+    //long currentTime = System.currentTimeMillis();
+    byte[] randomBytes = new byte[64];
+    random.nextBytes(randomBytes);
+    String nonceValue = realm + ":" + Hex.toHexString(randomBytes);
+    nonceValue = Hex.toHexString(xxhash64.digest(nonceValue.getBytes("ISO-8859-1")));
     //nonceValue = DigestUtils.sha256Hex(nonceValue.getBytes("ISO-8859-1"));
     
     //VALID_DIGEST_NONCES.put(nOnceValue, currentTime + (1000 * 300));
+    nonces.add(nonceValue);
     return nonceValue;
   }
   
@@ -1142,6 +1162,9 @@ public class VTNanoHTTPDProxySession implements Runnable
   private int connectTimeout;
   private String bind;
   private ExecutorService executorService;
+  private final Collection<String> nonces;
+  private final VTXXHash64MessageDigest xxhash64;
+  private final Random random;
   //private static final Map<String, Long> VALID_DIGEST_NONCES = new LinkedHashMap<String, Long>();
   
   private static java.text.SimpleDateFormat gmtFrmt;

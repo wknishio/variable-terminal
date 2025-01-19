@@ -51,7 +51,7 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
       {
         in.unread(version);
         //fallback to use http proxy instead
-        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, in, executorService, true, null, null, connect_proxy, socket_factory, connectTimeout, bind);
+        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, in, null, null, executorService, true, null, null, connect_proxy, socket_factory, connectTimeout, bind);
         try
         {
           httpProxy.run();

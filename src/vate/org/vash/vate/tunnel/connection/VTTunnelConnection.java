@@ -5,10 +5,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
+import org.vash.vate.security.VTBlake3SecureRandom;
+import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.socket.proxy.VTProxy;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -35,6 +39,8 @@ public class VTTunnelConnection
   // private int tunnelType;
   private ExecutorService executorService;
   private Collection<Closeable> closeables;
+  private final Collection<String> nonces = new LinkedHashSet<String>();
+  private final Random random = new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong());
   private volatile boolean closed = false;
   
   public VTTunnelConnection(ExecutorService executorService, Collection<Closeable> closeables)
@@ -51,6 +57,16 @@ public class VTTunnelConnection
   // {
   // return tunnelType;
   // }
+  
+  public Collection<String> getNonces()
+  {
+    return nonces;
+  }
+  
+  public Random getRandom()
+  {
+    return random;
+  }
   
   public ExecutorService getExecutorService()
   {
