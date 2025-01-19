@@ -723,7 +723,7 @@ public class VTServerConnection
     heavyImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedZstdOutputStream(graphicsHeavyImageOutputStream));
     
     fastImageDataInputStream = new VTLittleEndianInputStream(graphicsFastImageInputStream);
-    fastImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedNoFlushZlibOutputStreamFilteredStrategy(graphicsFastImageOutputStream));
+    fastImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedSyncFlushZlibOutputStreamFilteredStrategy(graphicsFastImageOutputStream));
     
     clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
     clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
@@ -1084,7 +1084,7 @@ public class VTServerConnection
     heavyImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedZstdOutputStream(graphicsHeavyImageOutputStream));
     
     fastImageDataInputStream = new VTLittleEndianInputStream(graphicsFastImageInputStream);
-    fastImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedNoFlushZlibOutputStreamFilteredStrategy(graphicsFastImageOutputStream));
+    fastImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedSyncFlushZlibOutputStreamFilteredStrategy(graphicsFastImageOutputStream));
     
     resetClipboardStreams();
   }

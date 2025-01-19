@@ -1294,7 +1294,7 @@ final class Deflate{
 	       window[++scan] == window[++match] &&
 	       scan < strend);
 
-      len = MAX_MATCH - (int)(strend - scan);
+      len = MAX_MATCH - strend + scan;
       scan = strend - MAX_MATCH;
 
       if(len>best_len) {

@@ -750,7 +750,7 @@ public class VTClientConnection
     heavyImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedZstdInputStream(graphicsHeavyImageInputStream));
     heavyImageDataOutputStream = new VTLittleEndianOutputStream(graphicsHeavyImageOutputStream);
     
-    fastImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedNoFlushZlibInputStream(graphicsFastImageInputStream));
+    fastImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedSyncFlushZlibInputStream(graphicsFastImageInputStream));
     fastImageDataOutputStream = new VTLittleEndianOutputStream((graphicsFastImageOutputStream));
     
     clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
@@ -1115,7 +1115,7 @@ public class VTClientConnection
     heavyImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedZstdInputStream(graphicsHeavyImageInputStream));
     heavyImageDataOutputStream = new VTLittleEndianOutputStream(graphicsHeavyImageOutputStream);
     
-    fastImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedNoFlushZlibInputStream(graphicsFastImageInputStream));
+    fastImageDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedSyncFlushZlibInputStream(graphicsFastImageInputStream));
     fastImageDataOutputStream = new VTLittleEndianOutputStream(graphicsFastImageOutputStream);
     
     // graphicsControlInputStream.addPropagated(deflatedImageDataInputStream);
