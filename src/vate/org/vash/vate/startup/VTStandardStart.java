@@ -17,6 +17,10 @@ public final class VTStandardStart
     VTConsole.setLanterna(true);
     VTConsole.setGraphical(false);
     VTConsole.setRemoteIcon(true);
+    
+    VTClient client = new VTClient();
+    VTServer server = new VTServer();
+    
     if (args.length == 0)
     {
       VTConsole.initialize();
@@ -33,7 +37,6 @@ public final class VTStandardStart
         {
           try
           {
-            VTClient client = new VTClient();
             // client.initialize();
             // client.configure();
             client.start();
@@ -48,7 +51,6 @@ public final class VTStandardStart
         {
           try
           {
-            VTServer server = new VTServer();
             server.setDaemon(false);
             // server.initialize();
             // server.configure();
@@ -66,7 +68,6 @@ public final class VTStandardStart
         option = VTConsole.readLine(true);
         if (option.toUpperCase().startsWith("S"))
         {
-          VTServer server = new VTServer();
           server.setDaemon(false);
           // server.initialize();
           // server.configure();
@@ -74,7 +75,6 @@ public final class VTStandardStart
         }
         else if (option != null)
         {
-          VTClient client = new VTClient();
           // client.initialize();
           // client.configure();
           client.start();
@@ -98,26 +98,38 @@ public final class VTStandardStart
         {
           type = 1;
         }
-        if ("-S".equalsIgnoreCase(args[i]))
+        else if ("-S".equalsIgnoreCase(args[i]))
         {
           type = 2;
         }
-        if ("-D".equalsIgnoreCase(args[i]))
+        else if ("-D".equalsIgnoreCase(args[i]))
         {
           type = 3;
         }
-        if ("-H".equalsIgnoreCase(args[i]))
+        else if ("-H".equalsIgnoreCase(args[i]))
         {
           type = 4;
         }
-        if ("-A".equalsIgnoreCase(args[i]))
+        else if ("-A".equalsIgnoreCase(args[i]))
         {
           type = 5;
+        }
+        else
+        {
+          if (client.loadClientSettingsFile(args[i]))
+          {
+            client.start();
+            return;
+          }
+          if (server.loadServerSettingsFile(args[i]))
+          {
+            server.start();
+            return;
+          }
         }
       }
       if (type == 1)
       {
-        VTClient client = new VTClient();
         try
         {
           client.parseParameters(args);
@@ -131,7 +143,6 @@ public final class VTStandardStart
       }
       else if (type == 2)
       {
-        VTServer server = new VTServer();
         try
         {
           server.parseParameters(args);
@@ -147,7 +158,6 @@ public final class VTStandardStart
       else if (type == 3)
       {
         VTConsole.setDaemon(true);
-        VTServer server = new VTServer();
         try
         {
           server.parseParameters(args);
@@ -179,21 +189,10 @@ public final class VTStandardStart
             
           }
         }
-        // VTConsole.println("VT>Invalid parameter syntax!" + "\nVT>Mode
-        // parameter:" +
-        // "\nVT>c(client)|s(server)|d(daemon)" + "\nVT>Host parameter:" +
-        // "\nVT>[connectionhost/]connectionport[;natport]" + "\nVT>Settings
-        // file
-        // parameter:" + "\nVT>settingsfile" + "\nVT>Optional parameters:" +
-        // "\nVT>[login/password]" + "\nVT>[encryptiontype;encryptionpassword]"
-        // +
-        // "\nVT>[proxytype/proxyhost/proxyport[/proxyuser/proxypassword]]" +
-        // "\nVT>[sessionslimit]");
         VTRuntimeExit.exit(0);
       }
       else if (type == 5)
       {
-        VTClient client = new VTClient();
         try
         {
           client.parseParameters(args);
@@ -222,7 +221,6 @@ public final class VTStandardStart
           {
             try
             {
-              VTClient client = new VTClient();
               // client.initialize();
               // client.configure();
               try
@@ -245,7 +243,6 @@ public final class VTStandardStart
           {
             try
             {
-              VTServer server = new VTServer();
               server.setDaemon(false);
               // server.initialize();
               // server.configure();
@@ -271,7 +268,6 @@ public final class VTStandardStart
           option = VTConsole.readLine(true);
           if (option.toUpperCase().startsWith("S"))
           {
-            VTServer server = new VTServer();
             server.setDaemon(false);
             try
             {
@@ -287,7 +283,6 @@ public final class VTStandardStart
           }
           else
           {
-            VTClient client = new VTClient();
             try
             {
               client.parseParameters(args);

@@ -3,7 +3,6 @@ package org.vash.vate.client;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.Properties;
@@ -91,7 +90,8 @@ public class VTClient implements Runnable
       }
     });
     this.audioSystem = new VTAudioSystem(executorService);
-    loadClientSettingsFile();
+    
+    //loadClientSettingsFile();
   }
   
   public void stop()
@@ -407,74 +407,95 @@ public class VTClient implements Runnable
     }
   }
   
-  public void saveClientSettingsFile(String settingsFile) throws IOException
+  public boolean saveClientSettingsFile(String settingsFile)
   {
     loadFromConnectorToClient();
-    if (vtURL != null)
+    
+    try
     {
-      clientSettingsFile = new File(vtURL, settingsFile);
-      if (!clientSettingsFile.exists())
+      if (vtURL != null)
+      {
+        clientSettingsFile = new File(vtURL, settingsFile);
+        if (!clientSettingsFile.exists())
+        {
+          clientSettingsFile = new File(settingsFile);
+        }
+      }
+      else
       {
         clientSettingsFile = new File(settingsFile);
       }
+      
+      if (fileClientSettings == null)
+      {
+        fileClientSettings = new VTConfigurationProperties();
+      }
+      
+      fileClientSettings.clear();
+      fileClientSettings.setProperty("vate.client.connection.mode", active ? "Active" : "Passive");
+      fileClientSettings.setProperty("vate.client.connection.port", hostPort != null ? String.valueOf(hostPort) : "");
+      fileClientSettings.setProperty("vate.client.connection.host", hostAddress);
+      fileClientSettings.setProperty("vate.client.connection.nat.port", natPort != null ? String.valueOf(natPort) : "");
+      fileClientSettings.setProperty("vate.client.proxy.type", proxyType);
+      fileClientSettings.setProperty("vate.client.proxy.host", proxyAddress);
+      fileClientSettings.setProperty("vate.client.proxy.port", proxyPort != null ? String.valueOf(proxyPort) : "");
+      fileClientSettings.setProperty("vate.client.proxy.user", proxyUser);
+      fileClientSettings.setProperty("vate.client.proxy.password", proxyPassword);
+      fileClientSettings.setProperty("vate.client.encryption.type", encryptionType);
+      fileClientSettings.setProperty("vate.client.encryption.password", new String(encryptionKey, "UTF-8"));
+      fileClientSettings.setProperty("vate.client.session.commands", sessionCommands);
+      fileClientSettings.setProperty("vate.client.session.shell", sessionShell);
+      fileClientSettings.setProperty("vate.client.session.user", sessionUser);
+      fileClientSettings.setProperty("vate.client.session.password", sessionPassword);
+      fileClientSettings.setProperty("vate.client.ping.interval", pingInterval > 0 ? String.valueOf(pingInterval) : "");
+      fileClientSettings.setProperty("vate.client.ping.limit", pingLimit > 0 ? String.valueOf(pingLimit) : "");
+      
+      FileOutputStream out = new FileOutputStream(settingsFile);
+      VTPropertiesBuilder.saveProperties(out, fileClientSettings, VT_CLIENT_SETTINGS_COMMENTS, "UTF-8");
+      out.flush();
+      out.close();
+      
+      return true;
     }
-    else
+    catch (Throwable t)
     {
-      clientSettingsFile = new File(settingsFile);
+      
     }
-    
-    if (fileClientSettings == null)
-    {
-      fileClientSettings = new VTConfigurationProperties();
-    }
-    
-    fileClientSettings.clear();
-    fileClientSettings.setProperty("vate.client.connection.mode", active ? "Active" : "Passive");
-    fileClientSettings.setProperty("vate.client.connection.port", hostPort != null ? String.valueOf(hostPort) : "");
-    fileClientSettings.setProperty("vate.client.connection.host", hostAddress);
-    fileClientSettings.setProperty("vate.client.connection.nat.port", natPort != null ? String.valueOf(natPort) : "");
-    fileClientSettings.setProperty("vate.client.proxy.type", proxyType);
-    fileClientSettings.setProperty("vate.client.proxy.host", proxyAddress);
-    fileClientSettings.setProperty("vate.client.proxy.port", proxyPort != null ? String.valueOf(proxyPort) : "");
-    fileClientSettings.setProperty("vate.client.proxy.user", proxyUser);
-    fileClientSettings.setProperty("vate.client.proxy.password", proxyPassword);
-    fileClientSettings.setProperty("vate.client.encryption.type", encryptionType);
-    fileClientSettings.setProperty("vate.client.encryption.password", new String(encryptionKey, "UTF-8"));
-    fileClientSettings.setProperty("vate.client.session.commands", sessionCommands);
-    fileClientSettings.setProperty("vate.client.session.shell", sessionShell);
-    fileClientSettings.setProperty("vate.client.session.user", sessionUser);
-    fileClientSettings.setProperty("vate.client.session.password", sessionPassword);
-    fileClientSettings.setProperty("vate.client.ping.interval", pingInterval > 0 ? String.valueOf(pingInterval) : "");
-    fileClientSettings.setProperty("vate.client.ping.limit", pingLimit > 0 ? String.valueOf(pingLimit) : "");
-    
-    FileOutputStream out = new FileOutputStream(settingsFile);
-    VTPropertiesBuilder.saveProperties(out, fileClientSettings, VT_CLIENT_SETTINGS_COMMENTS, "UTF-8");
-    out.flush();
-    out.close();
+    return false;
   }
   
-  public void loadClientSettingsFile(String settingsFile) throws IOException
+  public boolean loadClientSettingsFile(String settingsFile)
   {
     loadFromConnectorToClient();
-    if (vtURL != null)
+    boolean found = false;
+    
+    try
     {
-      clientSettingsFile = new File(vtURL, settingsFile);
-      if (!clientSettingsFile.exists())
+      if (vtURL != null)
+      {
+        clientSettingsFile = new File(vtURL, settingsFile);
+        if (!clientSettingsFile.exists())
+        {
+          clientSettingsFile = new File(settingsFile);
+        }
+      }
+      else
       {
         clientSettingsFile = new File(settingsFile);
       }
+      clientSettingsReader = new FileInputStream(clientSettingsFile);
+      fileClientSettings = VTPropertiesBuilder.loadProperties(clientSettingsReader, "UTF-8");
+      // rawSecuritySettings.load(securitySettingsReader);
+      clientSettingsReader.close();
     }
-    else
+    catch (Throwable t)
     {
-      clientSettingsFile = new File(settingsFile);
+      return false;
     }
-    clientSettingsReader = new FileInputStream(clientSettingsFile);
-    fileClientSettings = VTPropertiesBuilder.loadProperties(clientSettingsReader, "UTF-8");
-    // rawSecuritySettings.load(securitySettingsReader);
-    clientSettingsReader.close();
     
     if (fileClientSettings.getProperty("vate.client.connection.mode") != null)
     {
+      found = true;
       try
       {
         String mode = fileClientSettings.getProperty("vate.client.connection.mode");
@@ -495,6 +516,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.connection.port") != null)
     {
+      found = true;
       try
       {
         int filePort = Integer.parseInt(fileClientSettings.getProperty("vate.client.connection.port"));
@@ -511,6 +533,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.connection.host") != null)
     {
+      found = true;
       try
       {
         hostAddress = fileClientSettings.getProperty("vate.client.connection.host", hostAddress);
@@ -523,6 +546,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.session.user") != null)
     {
+      found = true;
       try
       {
         sessionUser = fileClientSettings.getProperty("vate.client.session.user", sessionUser);
@@ -535,6 +559,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.session.password") != null)
     {
+      found = true;
       try
       {
         sessionPassword = fileClientSettings.getProperty("vate.client.session.password", sessionPassword);
@@ -547,6 +572,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.connection.nat.port") != null)
     {
+      found = true;
       try
       {
         int fileNatPort = Integer.parseInt(fileClientSettings.getProperty("vate.client.connection.nat.port"));
@@ -563,6 +589,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.encryption.type") != null)
     {
+      found = true;
       try
       {
         encryptionType = fileClientSettings.getProperty("vate.client.encryption.type", encryptionType);
@@ -575,6 +602,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.encryption.password") != null)
     {
+      found = true;
       try
       {
         encryptionKey = fileClientSettings.getProperty("vate.client.encryption.password", "").getBytes("UTF-8");
@@ -587,6 +615,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.proxy.type") != null)
     {
+      found = true;
       try
       {
         proxyType = fileClientSettings.getProperty("vate.client.proxy.type", proxyType);
@@ -599,6 +628,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.proxy.host") != null)
     {
+      found = true;
       try
       {
         proxyAddress = fileClientSettings.getProperty("vate.client.proxy.host", proxyAddress);
@@ -611,6 +641,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.proxy.port") != null)
     {
+      found = true;
       try
       {
         int fileProxyPort = Integer.parseInt(fileClientSettings.getProperty("vate.client.proxy.port"));
@@ -646,6 +677,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.proxy.user") != null)
     {
+      found = true;
       try
       {
         proxyUser = fileClientSettings.getProperty("vate.client.proxy.user");
@@ -658,6 +690,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.proxy.password") != null)
     {
+      found = true;
       try
       {
         proxyPassword = fileClientSettings.getProperty("vate.client.proxy.password");
@@ -670,6 +703,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.session.commands") != null)
     {
+      found = true;
       try
       {
         sessionCommands = fileClientSettings.getProperty("vate.client.session.commands");
@@ -695,6 +729,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.session.shell") != null)
     {
+      found = true;
       try
       {
         sessionShell = fileClientSettings.getProperty("vate.client.session.shell");
@@ -707,6 +742,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.ping.interval") != null)
     {
+      found = true;
       try
       {
         int filePingInterval = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.interval"));
@@ -723,6 +759,7 @@ public class VTClient implements Runnable
     
     if (fileClientSettings.getProperty("vate.client.ping.limit") != null)
     {
+      found = true;
       try
       {
         int filePingLimit = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.limit"));
@@ -738,6 +775,7 @@ public class VTClient implements Runnable
     }
     
     saveFromClientToConnector();
+    return found;
   }
   
   private void loadClientSettingsFile()
@@ -1394,8 +1432,10 @@ public class VTClient implements Runnable
         }
         else if (line.length() > 0)
         {
-          loadClientSettingsFile(line);
-          return;
+          if (loadClientSettingsFile(line))
+          {
+            return;
+          }
         }
       }
       catch (Throwable e)
@@ -2178,7 +2218,7 @@ public class VTClient implements Runnable
   private void runClient()
   {
     Thread.setDefaultUncaughtExceptionHandler(new VTUncaughtExceptionHandler());
-    // loadFileClientSettings();
+    loadClientSettingsFile();
     if (!VTConsole.isDaemon() && VTConsole.isGraphical())
     {
       VTConsole.initialize();

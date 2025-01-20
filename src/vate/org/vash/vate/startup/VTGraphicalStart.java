@@ -16,9 +16,10 @@ public final class VTGraphicalStart
     VTConsole.setLanterna(true);
     VTConsole.setGraphical(true);
     VTConsole.setRemoteIcon(true);
-    // VTConsole.setCommandEcho(false);
-    // VTLanternaConsole
-    // VTTerminal.setSplit(true);
+    
+    VTClient client = new VTClient();
+    VTServer server = new VTServer();
+    
     if (args.length == 0)
     {
       VTConsole.initialize();
@@ -34,7 +35,6 @@ public final class VTGraphicalStart
         {
           try
           {
-            VTClient client = new VTClient();
             // client.setDaemon(true);
             // client.initialize();
             // client.configure();
@@ -50,7 +50,6 @@ public final class VTGraphicalStart
         {
           try
           {
-            VTServer server = new VTServer();
             server.setDaemon(false);
             // server.initialize();
             // server.configure();
@@ -68,7 +67,6 @@ public final class VTGraphicalStart
         option = VTConsole.readLine(true);
         if (option.toUpperCase().startsWith("S"))
         {
-          VTServer server = new VTServer();
           server.setDaemon(false);
           // server.initialize();
           // server.configure();
@@ -76,7 +74,6 @@ public final class VTGraphicalStart
         }
         else if (option != null)
         {
-          VTClient client = new VTClient();
           // client.initialize();
           // client.configure();
           client.start();
@@ -100,26 +97,38 @@ public final class VTGraphicalStart
         {
           type = 1;
         }
-        if ("-S".equalsIgnoreCase(args[i]))
+        else if ("-S".equalsIgnoreCase(args[i]))
         {
           type = 2;
         }
-        if ("-D".equalsIgnoreCase(args[i]))
+        else if ("-D".equalsIgnoreCase(args[i]))
         {
           type = 3;
         }
-        if ("-H".equalsIgnoreCase(args[i]))
+        else if ("-H".equalsIgnoreCase(args[i]))
         {
           type = 4;
         }
-        if ("-A".equalsIgnoreCase(args[i]))
+        else if ("-A".equalsIgnoreCase(args[i]))
         {
           type = 5;
+        }
+        else
+        {
+          if (client.loadClientSettingsFile(args[i]))
+          {
+            client.start();
+            return;
+          }
+          if (server.loadServerSettingsFile(args[i]))
+          {
+            server.start();
+            return;
+          }
         }
       }
       if (type == 1)
       {
-        VTClient client = new VTClient();
         try
         {
           client.parseParameters(args);
@@ -133,7 +142,6 @@ public final class VTGraphicalStart
       }
       else if (type == 2)
       {
-        VTServer server = new VTServer();
         try
         {
           server.parseParameters(args);
@@ -149,7 +157,6 @@ public final class VTGraphicalStart
       else if (type == 3)
       {
         VTConsole.setDaemon(true);
-        VTServer server = new VTServer();
         try
         {
           server.parseParameters(args);
@@ -184,7 +191,6 @@ public final class VTGraphicalStart
       }
       else if (type == 5)
       {
-        VTClient client = new VTClient();
         try
         {
           client.parseParameters(args);
@@ -212,7 +218,6 @@ public final class VTGraphicalStart
           {
             try
             {
-              VTClient client = new VTClient();
               // client.initialize();
               // client.configure();
               try
@@ -235,7 +240,6 @@ public final class VTGraphicalStart
           {
             try
             {
-              VTServer server = new VTServer();
               server.setDaemon(false);
               // server.initialize();
               // server.configure();
@@ -261,7 +265,6 @@ public final class VTGraphicalStart
           option = VTConsole.readLine(true);
           if (option.toUpperCase().startsWith("S"))
           {
-            VTServer server = new VTServer();
             server.setDaemon(false);
             try
             {
@@ -277,7 +280,6 @@ public final class VTGraphicalStart
           }
           else
           {
-            VTClient client = new VTClient();
             try
             {
               client.parseParameters(args);

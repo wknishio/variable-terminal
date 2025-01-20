@@ -7,6 +7,8 @@ This software is a java remote computer administration tool.
 It has various functions inspired by TELNET, FTP, SSH, NETBUS, VNC,
 but its incompatible with those tools/protocols/standards.
 
+This is the full variant with jna native functions.
+
 Some of the available features are:
 
 * ISAAC, VMPC, SALSA, HC or ZUC encryption.
@@ -14,12 +16,12 @@ Some of the available features are:
 * SOCKS and HTTP proxy network connections.
 * Multiple simultaneous sessions.
 * Limited native process creation and control.
-* Integrated beanshell and groovysh remote shells.
+* Alternative integrated beanshell remote shell.
 * Both client and server can be run in background
 * Automatic client reconnection after disconnection.
 * Adjustable text font size.
 * Simple text messaging between client and server.
-* File transfer with compression, resume and verification.
+* File transfer with LZ4/ZSTD compression and resume/synchronization.
 * Remote screen capture.
 * Remote desktop view and control.
 * Remote clipboard control.
@@ -129,7 +131,7 @@ these are the available program arguments:
 * -SU: session user, default null
 * -SK: session password, default null
 * -PI: ping interval, default 15000 milliseconds
-* -PL: ping limit, default 30000 milliseconds
+* -PL: ping limit, default 60000 milliseconds
 
 ## Console commands
 
@@ -198,7 +200,6 @@ Those are the third party libraries used in this software:
 * Sixlegs Java PNG Decoder for PNG decoding
 * bouncycastle by Legion of the Bouncy Castle for encryption
 * beanshell2 by pejobo for alternative shell
-* groovy by codehaus for alternative shell
 * airlift-aircompressor by Martin Traverso for zstd and lzo compression
 * nanohttpd-1.1 by elonen, for server HTTP tunneling
 * commons-httpclient by Apache Software Foundation, for client HTTP tunneling
@@ -211,7 +212,6 @@ Those are the third party libraries used in this software:
 Some additional utilities are included with distributions:
 
 * beanshell2 by pejobo
-* groovy by codehaus
 * autologon for windows
 * lockstation for windows
 * logon for windows
