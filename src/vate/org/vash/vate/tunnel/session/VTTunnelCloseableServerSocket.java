@@ -2,6 +2,7 @@ package org.vash.vate.tunnel.session;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -49,5 +50,20 @@ public class VTTunnelCloseableServerSocket extends ServerSocket implements Close
   public void setSoTimeout(int timeout) throws SocketException
   {
     serverSocket.setSoTimeout(timeout);
+  }
+  
+  public int getLocalPort()
+  {
+    return serverSocket.getLocalPort();
+  }
+  
+  public InetAddress getInetAddress()
+  {
+    return serverSocket.getInetAddress();
+  }
+  
+  public SocketAddress getLocalSocketAddress()
+  {
+    return serverSocket.getLocalSocketAddress();
   }
 }
