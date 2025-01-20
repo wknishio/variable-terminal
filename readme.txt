@@ -11,9 +11,10 @@ This is the full variant with jna native functions.
 
 Some of the available features are:
 
-* ISAAC, VMPC, SALSA, HC or ZUC encryption.
-* UPnP, NAT-PMP and PCP NAT port forwarding.
-* SOCKS and HTTP proxy network connections.
+* Support for ISAAC, VMPC, SALSA, HC or ZUC encryption.
+* Support for UPnP, NAT-PMP and PCP NAT port forwarding.
+* Support for SOCKS and HTTP proxy network connections.
+* Support for LZ4 and ZSTD data compression.
 * Multiple simultaneous sessions.
 * Limited native process creation and control.
 * Alternative integrated beanshell remote shell.
@@ -21,13 +22,13 @@ Some of the available features are:
 * Automatic client reconnection after disconnection.
 * Adjustable text font size.
 * Simple text messaging between client and server.
-* File transfer with LZ4/ZSTD compression and resume/synchronization.
+* File transfer with compression and resume/synchronization.
 * Remote screen capture.
 * Remote desktop view and control.
 * Remote clipboard control.
 * Multiple display support.
 * Audio chat communication between client and server.
-* Network tunneling with TCP redirection and SOCKS/HTTP proxy.
+* Network tunneling with compression for TCP redirection and SOCKS/HTTP proxy.
 * Network usage rate limiter.
 * Network latency verification.
 * Remote popup alerts.

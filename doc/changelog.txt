@@ -59,7 +59,7 @@ simple, medium, next, extra, high, vast, ultra, true
 * Removed command *VTFILEROOT from client console, usable in server console
 * Merged all external shell manipulation commands in new command *VTSHELL
 * Added option to *VTSHELL command to change shell encoding and directory
-* Added option to *VTSHELL command to use beanshell or groovysh as shell
+* Added option to *VTSHELL command to use beanshell as shell
 * Added command *VTPRINTDATA to replace commands *VTPRINTTEXT and *VTPRINTFILE
 * Added options in command *VTSETTINGS to save and load server settings files
 * Changed application icon/logo
