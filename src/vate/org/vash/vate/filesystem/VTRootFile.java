@@ -171,7 +171,7 @@ public class VTRootFile extends File
   
   public long lastModified()
   {
-    return 1;
+    return super.lastModified();
   }
   
   public long length()
