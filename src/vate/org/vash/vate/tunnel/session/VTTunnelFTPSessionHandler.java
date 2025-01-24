@@ -39,11 +39,11 @@ public class VTTunnelFTPSessionHandler extends VTTunnelSessionHandler
     this.bind = bind;
     if (username != null && password != null && username.length() > 0 && password.length() > 0)
     {
-      this.validation = new VTFTPAuthenticator(new VTFTPNativeFileSystem(new File("/")), username, password);
+      this.validation = new VTFTPAuthenticator(new VTFTPNativeFileSystem(new File("/").getAbsoluteFile()), username, password);
     }
     else
     {
-      this.validation = new VTFTPAuthenticator(new VTFTPNativeFileSystem(new File("/")), null, null);
+      this.validation = new VTFTPAuthenticator(new VTFTPNativeFileSystem(new File("/").getAbsoluteFile()), null, null);
     }
   }
   
@@ -55,12 +55,13 @@ public class VTTunnelFTPSessionHandler extends VTTunnelSessionHandler
   @SuppressWarnings("all")
   public void run()
   {
+    VTFTPServer ftpserver = null;
     try
     {
       VTRemoteClientSocketFactory clientFactory = new VTRemoteClientSocketFactory(socketFactory, connectTimeout, 0, bind, proxy);
       VTRemoteServerSocketFactory serverFactory = new VTRemoteServerSocketFactory(socketFactory, 0, 0, bind);
-      VTFTPServer ftpserver = new VTFTPServer(validation, clientFactory, serverFactory);
-      ftpserver.startConnection(session.getSocket());
+      ftpserver = new VTFTPServer(validation, clientFactory, serverFactory);
+      ftpserver.runConnection(session.getSocket());
     }
     catch (Throwable t)
     {
@@ -68,6 +69,17 @@ public class VTTunnelFTPSessionHandler extends VTTunnelSessionHandler
     }
     finally
     {
+      try
+      {
+        if (ftpserver != null)
+        {
+          ftpserver.endConnection();
+        }
+      }
+      catch (Throwable t)
+      {
+        
+      }
       close();
     }
   }

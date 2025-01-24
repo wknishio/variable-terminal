@@ -219,7 +219,7 @@ public class VTRootList extends File
   
   public long lastModified()
   {
-    return 0;
+    return 1;
   }
   
   public long length()

@@ -29,6 +29,18 @@ public class VTFTPConnection extends FTPConnection
     this.conHandler.onConnected();
     this.thread = new ConnectionThread();
     this.thread.setDaemon(true);
+    this.thread.start();
+  }
+  
+  public void run() throws IOException
+  {
+    this.conHandler = new VTFTPConnectionHandler(this, clientFactory, serverFactory);
+    this.fileHandler = new VTFTPFileHandler(this);
+    this.conHandler.registerCommands();
+    this.fileHandler.registerCommands();
+    this.conHandler.onConnected();
+    this.thread = new ConnectionThread();
+    this.thread.setDaemon(true);
     this.thread.run();
   }
 }

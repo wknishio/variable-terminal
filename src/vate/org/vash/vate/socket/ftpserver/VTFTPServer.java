@@ -9,6 +9,7 @@ import javax.net.ServerSocketFactory;
 import javax.net.SocketFactory;
 
 import com.guichaguri.minimalftp.FTPServer;
+import com.guichaguri.minimalftp.api.IFTPListener;
 import com.guichaguri.minimalftp.api.IUserAuthenticator;
 
 public class VTFTPServer extends FTPServer
@@ -28,9 +29,23 @@ public class VTFTPServer extends FTPServer
     return null;
   }
   
-  public void startConnection(Socket socket) throws IOException
+  public void runConnection(Socket socket) throws IOException
   {
-    addConnection(socket);
+    VTFTPConnection con = createConnection(socket);
+    synchronized(listeners) {
+        for(IFTPListener l : listeners) {
+            l.onConnected(con);
+        }
+    }
+    synchronized(connections) {
+        connections.add(con);
+    }
+    con.run();
+  }
+  
+  public void endConnection() throws IOException
+  {
+    close();
   }
   
   protected VTFTPConnection createConnection(Socket socket) throws IOException
