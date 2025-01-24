@@ -119,4 +119,14 @@ public class VTTLSVerificationDisabler
     }
     return true;
   }
+  
+  public SSLContext createOverlyOptimisticTLSContext() throws Exception
+  {
+    TrustManager[] trustAnything = new TrustManager[]
+    { new OverlyOptimisticTrustManager() };
+    //KeyManager[] manageNothing = new KeyManager[] { new OverlyOptimisticKeyManager() };
+    SSLContext unverifiedTLS = SSLContext.getInstance("TLS");
+    unverifiedTLS.init(null, trustAnything, new java.security.SecureRandom());
+    return unverifiedTLS;
+  }
 }

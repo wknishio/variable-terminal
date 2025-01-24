@@ -18,6 +18,7 @@ import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.session.VTTunnelCloseableServerSocket;
 import org.vash.vate.tunnel.session.VTTunnelCloseableSocket;
 import org.vash.vate.tunnel.session.VTTunnelDatagramSocket;
+import org.vash.vate.tunnel.session.VTTunnelFTPSessionHandler;
 import org.vash.vate.tunnel.session.VTTunnelPipedSocket;
 import org.vash.vate.tunnel.session.VTTunnelRunnableSessionHandler;
 import org.vash.vate.tunnel.session.VTTunnelSession;
@@ -114,7 +115,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 }
                 
                 final VTTunnelSession session = new VTTunnelSession(connection, false);
-                final VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, connection.getResponseChannel());
+                final VTTunnelSessionHandler handler = new VTTunnelSessionHandler(session, connection.getResponseChannel(channelType));
                 
                 VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
                 VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
@@ -197,11 +198,10 @@ public class VTTunnelConnectionControlThread implements Runnable
                           session.setSocketInputStream(socketInputStream);
                           session.setSocketOutputStream(socketOutputStream);
                           
-                          session.getTunnelOutputStream().open();
-                          //session.getTunnelInputStream().open();
                           session.getTunnelInputStream().setOutputStream(session.getSocketOutputStream(), new VTTunnelCloseableSocket(session.getSocket()));
+                          session.getTunnelOutputStream().open();
                           // response message sent with ok
-                          connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                          connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + remoteSocket.getInetAddress().getHostAddress() + SESSION_SEPARATOR + remoteSocket.getPort()).getBytes("UTF-8"));
                           connection.getControlOutputStream().flush();
                           connection.getExecutorService().execute(handler);
                           session.setResult(true);
@@ -239,8 +239,8 @@ public class VTTunnelConnectionControlThread implements Runnable
               else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
               {
                 String bind = parts[5];
-                String socksUsername = parts[6];
-                String socksPassword = parts[7];
+                String username = parts[6];
+                String password = parts[7];
                 String proxyTypeLetter = parts[8];
                 String proxyHost = parts[9];
                 int proxyPort = Integer.parseInt(parts[10]);
@@ -279,7 +279,83 @@ public class VTTunnelConnectionControlThread implements Runnable
                 VTTunnelSession session = new VTTunnelSession(connection, false);
                 VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(null);
                 session.setSocket(pipedSocket);
-                VTTunnelSocksSessionHandler handler = new VTTunnelSocksSessionHandler(session, connection.getResponseChannel(), socksUsername, socksPassword, proxy, null, connectTimeout, bind);
+                VTTunnelSocksSessionHandler handler = new VTTunnelSocksSessionHandler(session, connection.getResponseChannel(channelType), username, password, bind, connectTimeout, null, proxy);
+                
+                VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
+                VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
+                
+                if (output != null && input != null)
+                {
+                  pipedSocket.setOutputStream(output);
+                  session.setSocketInputStream(pipedSocket.getInputStream());
+                  session.setSocketOutputStream(pipedSocket.getOutputStream());
+                  
+                  input.setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
+                  output.open();
+                  
+                  session.setTunnelInputStream(input);
+                  session.setTunnelOutputStream(output);
+                  // response message sent with ok
+                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                  connection.getControlOutputStream().flush();
+                  connection.getExecutorService().execute(handler);
+                  session.setResult(true);
+                }
+                else
+                {
+                  if (handler != null)
+                  {
+                    handler.close();
+                  }
+                  // response message sent with error
+                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                  connection.getControlOutputStream().flush();
+                }
+              }
+              else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_FTP)
+              {
+                String bind = parts[5];
+                String username = parts[6];
+                String password = parts[7];
+                String proxyTypeLetter = parts[8];
+                String proxyHost = parts[9];
+                int proxyPort = Integer.parseInt(parts[10]);
+                String proxyUser = parts[11];
+                String proxyPassword = parts[12];
+                
+                if (parts.length > 13 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[13].equals("*"))
+                {
+                  proxyUser = null;
+                  proxyPassword = null;
+                }
+                
+                VTProxyType proxyType = VTProxyType.GLOBAL;
+                if (proxyTypeLetter.toUpperCase().startsWith("G"))
+                {
+                  proxyType = VTProxyType.GLOBAL;
+                }
+                else if (proxyTypeLetter.toUpperCase().startsWith("D"))
+                {
+                  proxyType = VTProxyType.DIRECT;
+                }
+                else if (proxyTypeLetter.toUpperCase().startsWith("H"))
+                {
+                  proxyType = VTProxyType.HTTP;
+                }
+                else if (proxyTypeLetter.toUpperCase().startsWith("S"))
+                {
+                  proxyType = VTProxyType.SOCKS;
+                }
+                else if (proxyTypeLetter.toUpperCase().startsWith("P"))
+                {
+                  proxyType = VTProxyType.PLUS;
+                }
+                VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
+                
+                VTTunnelSession session = new VTTunnelSession(connection, false);
+                VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(null);
+                session.setSocket(pipedSocket);
+                VTTunnelFTPSessionHandler handler = new VTTunnelFTPSessionHandler(session, connection.getResponseChannel(channelType), username, password, bind, connectTimeout, connection.createRemoteSocketFactory(connection.getResponseChannel(channelType)), proxy);
                 
                 VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
                 VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
@@ -341,7 +417,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                   
                 }
                 
-                VTTunnelRunnableSessionHandler handler = new VTTunnelRunnableSessionHandler(session, connection.getResponseChannel(), datagramSocket);
+                VTTunnelRunnableSessionHandler handler = new VTTunnelRunnableSessionHandler(session, connection.getResponseChannel(channelType), datagramSocket);
                 
                 VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
                 VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
@@ -365,11 +441,12 @@ public class VTTunnelConnectionControlThread implements Runnable
                     
                     int localPort = datagramSocket.getLocalPort();
                     InetAddress localAddress = datagramSocket.getLocalAddress();
+                    String hostAddress = localAddress.getHostAddress();
                     
-                    if (localAddress.getHostAddress().equals("0.0.0.0") || localAddress.getHostAddress().equals("::")
-                    || localAddress.getHostAddress().equals("::0") || localAddress.getHostAddress().equals("0:0:0:0:0:0:0:0")
-                    || localAddress.getHostAddress().equals("00:00:00:00:00:00:00:00")
-                    || localAddress.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
+                    if (hostAddress.equals("0.0.0.0") || hostAddress.equals("::")
+                    || hostAddress.equals("::0") || hostAddress.equals("0:0:0:0:0:0:0:0")
+                    || hostAddress.equals("00:00:00:00:00:00:00:00")
+                    || hostAddress.equals("0000:0000:0000:0000:0000:0000:0000:0000"))
                     {
                       try
                       {

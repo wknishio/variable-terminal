@@ -16,8 +16,6 @@ public class VTAutoProxySocket extends VTProxySocket
   public VTAutoProxySocket(VTProxy currentProxy, Socket currentSocket)
   {
     super(currentProxy, currentSocket);
-    httpProxySocket = new VTHttpProxySocket(currentProxy, currentSocket);
-    socksProxySocket = new VTSocksProxySocket(currentProxy, currentSocket);
     //directSocket = new Socket(Proxy.NO_PROXY);
     //globalSocket = new Socket();
   }
@@ -28,6 +26,8 @@ public class VTAutoProxySocket extends VTProxySocket
     {
       try
       {
+        connectProxy(0);
+        httpProxySocket = new VTHttpProxySocket(currentProxy, currentSocket);
         httpProxySocket.connect(endpoint);
         proxySocket = httpProxySocket;
       }
@@ -42,6 +42,8 @@ public class VTAutoProxySocket extends VTProxySocket
       
       try
       {
+        connectProxy(0);
+        socksProxySocket = new VTSocksProxySocket(currentProxy, currentSocket);
         socksProxySocket.connect(endpoint);
         proxySocket = socksProxySocket;
       }
@@ -67,6 +69,8 @@ public class VTAutoProxySocket extends VTProxySocket
     {
       try
       {
+        connectProxy(0);
+        httpProxySocket = new VTHttpProxySocket(currentProxy, currentSocket);
         httpProxySocket.connect(endpoint, timeout);
         proxySocket = httpProxySocket;
       }
@@ -81,6 +85,8 @@ public class VTAutoProxySocket extends VTProxySocket
       
       try
       {
+        connectProxy(0);
+        socksProxySocket = new VTSocksProxySocket(currentProxy, currentSocket);
         socksProxySocket.connect(endpoint, timeout);
         proxySocket = socksProxySocket;
       }

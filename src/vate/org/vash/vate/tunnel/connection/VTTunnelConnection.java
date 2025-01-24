@@ -33,7 +33,9 @@ public class VTTunnelConnection
   private VTLittleEndianOutputStream controlOutputStream;
   // private VTLittleEndianInputStream relayInputStream;
   // private VTLittleEndianOutputStream relayOutputStream;
-  private VTTunnelChannel responseChannel;
+  private VTTunnelChannel responseChannelDirect;
+  private VTTunnelChannel responseChannelQuick;
+  private VTTunnelChannel responseChannelHeavy;
 //  private VTTunnelChannelRemoteSocketBuilder remoteSocketBuilder;
   private Collection<VTTunnelChannelBindSocketListener> bindListeners;
   // private int tunnelType;
@@ -45,7 +47,9 @@ public class VTTunnelConnection
   
   public VTTunnelConnection(ExecutorService executorService, Collection<Closeable> closeables)
   {
-    this.responseChannel = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this);
+    this.responseChannelDirect = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this);
+    this.responseChannelQuick = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_QUICK, this);
+    this.responseChannelHeavy = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY, this);
     this.bindListeners = new ConcurrentLinkedQueue<VTTunnelChannelBindSocketListener>();
     // this.tunnelType = tunnelType;
     this.executorService = executorService;
@@ -78,6 +82,94 @@ public class VTTunnelConnection
     return closeables;
   }
   
+  public boolean bindFTPListener(int channelType, int connectTimeout, int dataTimeout, String bindHost, int bindPort, VTProxy proxy)
+  {
+    String network = "";
+    String bindHostValue = bindHost;
+    int idx = bindHost.indexOf(';');
+    if (idx >= 0)
+    {
+      String[] split = bindHost.split(";");
+      bindHostValue = split[0];
+      network = split[1];
+    }
+    VTTunnelChannelBindSocketListener listener = getBindListener(bindHostValue, bindPort);
+    if (listener != null)
+    {
+      if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_FTP)
+      {
+        listener.getChannel().setChannelType(channelType);
+        listener.getChannel().setConnectTimeout(connectTimeout);
+        listener.getChannel().setDataTimeout(dataTimeout);
+        listener.getChannel().setNetwork(network);
+        listener.getChannel().setTunnelUsername(null);
+        listener.getChannel().setTunnelPassword(null);
+        listener.getChannel().setProxy(proxy);
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, true, proxy);
+    listener = new VTTunnelChannelBindSocketListener(channel);
+    if (listener.bind())
+    {
+      bindListeners.add(listener);
+      executorService.execute(listener);
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  
+  public boolean bindFTPListener(int channelType, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String username, String password, VTProxy proxy)
+  {
+    String network = "";
+    String bindHostValue = bindHost;
+    int idx = bindHost.indexOf(';');
+    if (idx >= 0)
+    {
+      String[] split = bindHost.split(";");
+      bindHostValue = split[0];
+      network = split[1];
+    }
+    VTTunnelChannelBindSocketListener listener = getBindListener(bindHostValue, bindPort);
+    if (listener != null)
+    {
+      if (listener.getChannel().getTunnelType() == VTTunnelChannel.TUNNEL_TYPE_FTP)
+      {
+        listener.getChannel().setChannelType(channelType);
+        listener.getChannel().setConnectTimeout(connectTimeout);
+        listener.getChannel().setDataTimeout(dataTimeout);
+        listener.getChannel().setNetwork(network);
+        listener.getChannel().setTunnelUsername(username);
+        listener.getChannel().setTunnelPassword(password);
+        listener.getChannel().setProxy(proxy);
+        return true;
+      }
+      else
+      {
+        return false;
+      }
+    }
+    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, username, password, true, proxy);
+    listener = new VTTunnelChannelBindSocketListener(channel);
+    if (listener.bind())
+    {
+      bindListeners.add(listener);
+      executorService.execute(listener);
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  
   public boolean bindSOCKSListener(int channelType, int connectTimeout, int dataTimeout, String bindHost, int bindPort, VTProxy proxy)
   {
     String network = "";
@@ -98,8 +190,8 @@ public class VTTunnelConnection
         listener.getChannel().setConnectTimeout(connectTimeout);
         listener.getChannel().setDataTimeout(dataTimeout);
         listener.getChannel().setNetwork(network);
-        listener.getChannel().setSocksUsername(null);
-        listener.getChannel().setSocksPassword(null);
+        listener.getChannel().setTunnelUsername(null);
+        listener.getChannel().setTunnelPassword(null);
         listener.getChannel().setProxy(proxy);
         return true;
       }
@@ -108,7 +200,7 @@ public class VTTunnelConnection
         return false;
       }
     }
-    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, proxy);
+    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, false, proxy);
     listener = new VTTunnelChannelBindSocketListener(channel);
     if (listener.bind())
     {
@@ -122,7 +214,7 @@ public class VTTunnelConnection
     }
   }
   
-  public boolean bindSOCKSListener(int channelType, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String socksUsername, String socksPassword, VTProxy proxy)
+  public boolean bindSOCKSListener(int channelType, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String username, String password, VTProxy proxy)
   {
     String network = "";
     String bindHostValue = bindHost;
@@ -142,8 +234,8 @@ public class VTTunnelConnection
         listener.getChannel().setConnectTimeout(connectTimeout);
         listener.getChannel().setDataTimeout(dataTimeout);
         listener.getChannel().setNetwork(network);
-        listener.getChannel().setSocksUsername(socksUsername);
-        listener.getChannel().setSocksPassword(socksPassword);
+        listener.getChannel().setTunnelUsername(username);
+        listener.getChannel().setTunnelPassword(password);
         listener.getChannel().setProxy(proxy);
         return true;
       }
@@ -152,7 +244,7 @@ public class VTTunnelConnection
         return false;
       }
     }
-    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, socksUsername, socksPassword, proxy);
+    VTTunnelChannel channel = new VTTunnelChannel(channelType, this, connectTimeout, dataTimeout, bindHost, bindPort, username, password, false, proxy);
     listener = new VTTunnelChannelBindSocketListener(channel);
     if (listener.bind())
     {
@@ -219,10 +311,10 @@ public class VTTunnelConnection
     return new VTTunnelRemoteSocketFactory(createRemoteSocketBuilder(channel));
   }
   
-  public VTTunnelRemoteSocketFactory createRemoteSocketFactory()
-  {
-    return createRemoteSocketFactory(responseChannel);
-  }
+//  public VTTunnelRemoteSocketFactory createRemoteSocketFactory()
+//  {
+//    return createRemoteSocketFactory(responseChannel);
+//  }
   
   public Collection<VTTunnelChannelBindSocketListener> getBindListeners()
   {
@@ -270,9 +362,17 @@ public class VTTunnelConnection
     return bindListeners.remove(listener);
   }
   
-  public VTTunnelChannel getResponseChannel()
+  public VTTunnelChannel getResponseChannel(int channelType)
   {
-    return responseChannel;
+    if ((channelType & responseChannelHeavy.getChannelType()) == responseChannelHeavy.getChannelType())
+    {
+      return responseChannelHeavy;
+    }
+    if ((channelType & responseChannelQuick.getChannelType()) == responseChannelQuick.getChannelType())
+    {
+      return responseChannelQuick;
+    }
+    return responseChannelDirect;
   }
   
   /* public OutputStream getDataOutputStream() { return dataOutputStream; } */
@@ -303,7 +403,9 @@ public class VTTunnelConnection
     }
     closed = true;
     //System.out.println("VTTunnelConnection.close()");
-    responseChannel.close();
+    responseChannelDirect.close();
+    responseChannelQuick.close();
+    responseChannelHeavy.close();
     for (VTTunnelChannelBindSocketListener listener : bindListeners)
     {
       try

@@ -69,7 +69,6 @@ public class VTFILESEEK extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else if (parsed.length == 2)
       {
-        
         if (parsed[1].toUpperCase().startsWith("S"))
         {
           if (session.getFileScanOperation().isFinished())

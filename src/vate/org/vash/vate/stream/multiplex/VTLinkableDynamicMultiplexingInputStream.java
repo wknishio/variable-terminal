@@ -481,8 +481,8 @@ public final class VTLinkableDynamicMultiplexingInputStream
       {
         if (compressedPacketOutputPipe == null || compressedPacketInputPipe == null)
         {
-          compressedPacketInputPipe = new VTByteArrayInputStream(compressedPacketOutputPipe.buf());
           compressedPacketOutputPipe = new VTByteArrayOutputStream(packetDataBuffer.length);
+          compressedPacketInputPipe = new VTByteArrayInputStream(compressedPacketOutputPipe.buf());
         }
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY) != 0)
         {
@@ -523,6 +523,10 @@ public final class VTLinkableDynamicMultiplexingInputStream
             compressedInputStream = VTCompressorSelector.createDirectLz4InputStream(bufferedInputStream);
           }
           input = compressedInputStream;
+        }
+        else
+        {
+          
         }
       }
       else

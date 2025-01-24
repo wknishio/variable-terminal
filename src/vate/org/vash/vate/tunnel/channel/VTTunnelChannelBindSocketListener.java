@@ -117,7 +117,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
         }
         catch (Throwable t)
         {
-          
+          //t.printStackTrace();
         }
         
         if (socketInputStream != null && socketOutputStream != null)
@@ -170,7 +170,7 @@ public class VTTunnelChannelBindSocketListener implements Runnable
           
 //          if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
 //          {
-//            handler = new VTTunnelSocksSessionHandler(session, channel, channel.getSocksUsername(), channel.getSocksPassword(), channel.getProxy(), channel.getConnection().createRemoteSocketFactory(channel), 0, bind);
+//            handler = new VTTunnelSocksSessionHandler(session, channel, channel.getTunnelUsername(), channel.getTunnelPassword(), bind, 0, channel.getConnection().createRemoteSocketFactory(channel), channel.getProxy());
 //            channel.getConnection().getExecutorService().execute(handler);
 //            continue;
 //          }
@@ -201,15 +201,28 @@ public class VTTunnelChannelBindSocketListener implements Runnable
             }
             else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_SOCKS)
             {
-              String socksUsername = channel.getSocksUsername();
-              String socksPassword = channel.getSocksPassword();
-              if (socksUsername == null || socksPassword == null || socksUsername.length() == 0 || socksPassword.length() == 0)
+              String username = channel.getTunnelUsername();
+              String password = channel.getTunnelPassword();
+              if (username == null || password == null || username.length() == 0 || password.length() == 0)
               {
-                socksUsername = "";
-                socksPassword = "";
+                username = "";
+                password = "";
               }
               // request message sent
-              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + connectTimeout + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + bind + SESSION_SEPARATOR + socksUsername + SESSION_SEPARATOR + socksPassword + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "S" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + connectTimeout + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + bind + SESSION_SEPARATOR + username + SESSION_SEPARATOR + password + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
+              channel.getConnection().getControlOutputStream().flush();
+            }
+            else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_FTP)
+            {
+              String username = channel.getTunnelUsername();
+              String password = channel.getTunnelPassword();
+              if (username == null || password == null || username.length() == 0 || password.length() == 0)
+              {
+                username = "";
+                password = "";
+              }
+              // request message sent
+              channel.getConnection().getControlOutputStream().writeData(("U" + SESSION_MARK + "F" + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber + SESSION_SEPARATOR + connectTimeout + SESSION_SEPARATOR + dataTimeout + SESSION_SEPARATOR + bind + SESSION_SEPARATOR + username + SESSION_SEPARATOR + password + SESSION_SEPARATOR + proxyTypeLetter + SESSION_SEPARATOR + proxyHost + SESSION_SEPARATOR + proxyPort + SESSION_SEPARATOR + proxyUser + SESSION_SEPARATOR + proxyPassword).getBytes("UTF-8"));
               channel.getConnection().getControlOutputStream().flush();
             }
           }

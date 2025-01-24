@@ -110,8 +110,6 @@ public class SocksSocket extends Socket{
     */
    public SocksSocket(Proxy p,String host,int port, int timeout)
 	  throws SocksException,UnknownHostException{
-
-
       if(p == null) throw new SocksException(Proxy.SOCKS_NO_PROXY);
       //proxy=p;
       proxy = p.copy();
@@ -126,7 +124,21 @@ public class SocksSocket extends Socket{
          processReply(proxy.connect(host,port,timeout));
    }
 
-
+   public SocksSocket(String host,int port, int timeout,Proxy p)
+       throws SocksException,UnknownHostException{
+         if(p == null) throw new SocksException(Proxy.SOCKS_NO_PROXY);
+         //proxy=p;
+         proxy = p;
+         remoteHost = host;
+         remotePort = port;
+         connectTimeout = timeout;
+         if(proxy.isDirect(host)){
+            remoteIP = InetAddress.getByName(host);
+            doDirect();
+         }
+         else
+            processReply(proxy.connect(host,port,timeout));
+      }
    /**
     * Tryies to connect to given ip and port
     * using default proxy. If no default proxy speciefied
@@ -157,7 +169,18 @@ public class SocksSocket extends Socket{
       else
         processReply(proxy.connect(ip,port,0));
    }
-
+   
+   public SocksSocket(InetAddress ip, int port, int connectTimeout,Proxy p) throws SocksException{
+     if(p == null) throw new SocksException(Proxy.SOCKS_NO_PROXY);
+     this.proxy = p;
+     this.remoteIP = ip;
+     this.remotePort = port;
+     this.remoteHost = ip.getHostAddress();
+     if(proxy.isDirect(remoteIP))
+       doDirect();
+     else
+       processReply(proxy.connect(ip,port,0));
+  }
 
    /**
     * These 2 constructors are used by the SocksServerSocket.

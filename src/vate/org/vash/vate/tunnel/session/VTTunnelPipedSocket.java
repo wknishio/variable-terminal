@@ -4,7 +4,10 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.SocketException;
 
 import org.vash.vate.VT;
@@ -18,6 +21,8 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
   private VTLinkableDynamicMultiplexedOutputStream out;
   private OutputStream pipe;
   private Closeable closeable;
+  private String host;
+  private int port;
   private volatile boolean closed = false;
   
   public VTTunnelPipedSocket(Closeable closeable)
@@ -158,5 +163,38 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
   public void setKeepAlive(boolean on) throws SocketException
   {
     //super.setKeepAlive(false);
+  }
+  
+  public void setRemotePort(int port)
+  {
+    this.port = port;
+  }
+  
+  public void setRemoteHost(String host)
+  {
+    this.host = host;
+  }
+  
+  public InetAddress getInetAddress()
+  {
+    try
+    {
+      return InetAddress.getByName(host);
+    }
+    catch (Throwable e)
+    {
+      
+    }
+    return null;
+  }
+  
+  public int getPort()
+  {
+    return port;
+  }
+  
+  public SocketAddress getRemoteSocketAddress()
+  {
+    return InetSocketAddress.createUnresolved(host, port);
   }
 }

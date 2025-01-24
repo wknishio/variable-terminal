@@ -19,7 +19,7 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
   private ExecutorService executorService;
   private String bind;
   
-  public VTSocksHttpProxyAuthenticatorNone(ExecutorService executorService, VTProxy proxy, VTRemoteSocketFactory socket_factory, int connectTimeout, String bind)
+  public VTSocksHttpProxyAuthenticatorNone(ExecutorService executorService, String bind, int connectTimeout, VTRemoteSocketFactory socket_factory, VTProxy proxy)
   {
     this.executorService = executorService;
     this.connect_proxy = proxy;

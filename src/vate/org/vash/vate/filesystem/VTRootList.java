@@ -24,10 +24,6 @@ public class VTRootList extends File
     List<File> rootList = new ArrayList<File>();
     for (File rootFile : list)
     {
-      // if (rootFile.exists())
-      // {
-      // rootList.add(new VTRootFile(rootFile.getPath(), this));
-      // }
       rootList.add(new VTRootFile(rootFile.getPath(), this));
     }
     File[] rootArray = new VTRootFile[rootList.size()];

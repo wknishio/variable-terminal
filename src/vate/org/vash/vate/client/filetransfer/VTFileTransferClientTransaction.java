@@ -1,10 +1,11 @@
 package org.vash.vate.client.filetransfer;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.RandomAccessFile;
-import java.nio.channels.Channels;
 import java.security.DigestInputStream;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -774,7 +775,8 @@ public class VTFileTransferClientTransaction implements Runnable
 //        {
 //          fileTransferRandomAccessFile.seek(remoteFileSize);
 //        }
-        fileTransferFileInputStream = Channels.newInputStream(fileTransferRandomAccessFile.getChannel());
+        //fileTransferFileInputStream = Channels.newInputStream(fileTransferRandomAccessFile.getChannel());
+        fileTransferFileInputStream = new FileInputStream(fileTransferRandomAccessFile.getFD());
       }
       return getContinueTransfer(true);
     }
@@ -1068,7 +1070,8 @@ public class VTFileTransferClientTransaction implements Runnable
 //        {
 //          fileTransferRandomAccessFile.seek(localFileSize);
 //        }
-        fileTransferFileOutputStream = Channels.newOutputStream(fileTransferRandomAccessFile.getChannel());
+        //fileTransferFileOutputStream = Channels.newOutputStream(fileTransferRandomAccessFile.getChannel());
+        fileTransferFileOutputStream = new FileOutputStream(fileTransferRandomAccessFile.getFD());
       }
       return getContinueTransfer(true);
     }
@@ -1351,7 +1354,8 @@ public class VTFileTransferClientTransaction implements Runnable
     {
       if (fileTransferChecksumInputStream == null)
       {
-        fileTransferChecksumInputStream = new DigestInputStream(Channels.newInputStream(fileTransferRandomAccessFile.getChannel()), messageDigest);
+        //fileTransferChecksumInputStream = new DigestInputStream(Channels.newInputStream(fileTransferRandomAccessFile.getChannel()), messageDigest);
+        fileTransferChecksumInputStream = new DigestInputStream(new FileInputStream(fileTransferRandomAccessFile.getFD()), messageDigest);
       }
       if (remoteFileSize < localFileSize)
       {
@@ -1484,12 +1488,12 @@ public class VTFileTransferClientTransaction implements Runnable
 //          verifying = false;
           heavier = false;
           
-          if (parameters.toUpperCase().contains("F"))
+          if (parameters.toUpperCase().contains("Q"))
           {
             compressing = true;
             heavier = false;
           }
-          if (parameters.toUpperCase().contains("M"))
+          if (parameters.toUpperCase().contains("H"))
           {
             compressing = true;
             heavier = true;
@@ -1590,12 +1594,12 @@ public class VTFileTransferClientTransaction implements Runnable
 //          verifying = false;
           heavier = false;
           
-          if (parameters.toUpperCase().contains("F"))
+          if (parameters.toUpperCase().contains("Q"))
           {
             compressing = true;
             heavier = false;
           }
-          if (parameters.toUpperCase().contains("M"))
+          if (parameters.toUpperCase().contains("H"))
           {
             compressing = true;
             heavier = true;

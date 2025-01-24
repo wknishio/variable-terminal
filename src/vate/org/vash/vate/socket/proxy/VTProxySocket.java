@@ -25,6 +25,10 @@ public abstract class VTProxySocket extends Socket
   
   public void connectProxy(int timeout) throws IOException
   {
+    if (currentSocket != null && currentSocket.isConnected() && !currentSocket.isClosed())
+    {
+      return;
+    }
     if (currentProxy != null && currentSocket != null && currentSocket instanceof VTProxySocket)
     {
       InetSocketAddress proxyAddress = InetSocketAddress.createUnresolved(currentProxy.getProxyHost(), currentProxy.getProxyPort());

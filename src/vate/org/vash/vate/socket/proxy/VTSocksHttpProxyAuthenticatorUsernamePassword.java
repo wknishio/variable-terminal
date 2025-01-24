@@ -25,7 +25,7 @@ public class VTSocksHttpProxyAuthenticatorUsernamePassword extends UserPasswordA
   private final Collection<String> nonces;
   private final Random random;
   
-  public VTSocksHttpProxyAuthenticatorUsernamePassword(UserValidation validator, Collection<String> nonces, Random random, ExecutorService executorService, VTProxy proxy, VTRemoteSocketFactory socket_factory, int connectTimeout, String bind)
+  public VTSocksHttpProxyAuthenticatorUsernamePassword(UserValidation validator, Collection<String> nonces, Random random, ExecutorService executorService, String bind, int connectTimeout, VTRemoteSocketFactory socket_factory, VTProxy proxy)
   {
     super(validator);
     this.nonces = nonces;

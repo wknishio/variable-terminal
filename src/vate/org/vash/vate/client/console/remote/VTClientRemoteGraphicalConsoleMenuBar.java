@@ -301,8 +301,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     // remoteSOCKSTunnelsMenu = new Menu("Connection SOCKS Tunnels ");
     
     networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "List Any Tunnels", "*VTTUNNEL\n"));
-    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Local To Remote", "*VTTUNNEL L "));
-    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Remote To Local", "*VTTUNNEL R "));
+    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Local To Remote", "*VTTUNNEL L"));
+    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Remote To Local", "*VTTUNNEL R"));
     networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTTUNNEL\n"));
     
     networkMenu.add(networkInterfacesMenu);

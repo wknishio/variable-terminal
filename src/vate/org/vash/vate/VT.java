@@ -54,7 +54,7 @@ public class VT
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED = 1 << 1;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_DISABLED = 0 << 2;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED = 1 << 2;
-  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_FAST = 0 << 3;
+  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_QUICK = 0 << 3;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY = 1 << 3;
   
   public static final int VT_CONNECTION_PROXY_NONE = 0;

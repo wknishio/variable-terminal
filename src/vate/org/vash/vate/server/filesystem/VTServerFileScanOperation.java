@@ -125,6 +125,7 @@ public class VTServerFileScanOperation extends VTTask
           {
             if (target.isDirectory())
             {
+              message.setLength(0);
               message.append("\nVT>List of files in directory [" + target.getPath() + "]:\nVT>");
               File[] files = target.listFiles();
               for (File file : files)

@@ -4,7 +4,7 @@
 
 This software is a java remote computer administration tool.
 
-It has various functions inspired by TELNET, FTP, SSH, NETBUS, VNC,
+It has various functions inspired by TELNET, RLOGIN, SSH, NETBUS, VNC,
 but its incompatible with those tools/protocols/standards.
 
 This is the full variant with jna native functions.
@@ -28,7 +28,7 @@ Some of the available features are:
 * Remote clipboard control.
 * Multiple display support.
 * Audio chat communication between client and server.
-* Network tunneling with compression for TCP redirection and SOCKS/HTTP proxy.
+* Network tunneling with SOCKS/HTTP/FTP/TCP tunnels and compression.
 * Network usage rate limiter.
 * Network latency verification.
 * Remote popup alerts.
@@ -186,7 +186,7 @@ Those are the third party libraries used in this software:
 * JZlib by Atsuhiko Yamanaka, for pure java zlib compression
 * jpountz lz4-java by Adrien Grand, for lz4 compression and xxhash checksum
 * Java Native Access by Todd Fast/Timothy Wall/Liang Chen, for native calls
-* jsocks by Kirill Kouzoubov/Robert Simac, for SOCKS tunneling support
+* jsocks by Kirill Kouzoubov/Robert Simac, for SOCKS proxy tunneling
 * JSAP by Martian Software, for command parsing
 * PngEncoder by ObjectPlanet, for faster PNG image encoding
 * ARGBPixelGrabber by pumpernickel, for image data extraction
@@ -202,11 +202,12 @@ Those are the third party libraries used in this software:
 * bouncycastle by Legion of the Bouncy Castle for encryption
 * beanshell2 by pejobo for alternative shell
 * airlift-aircompressor by Martin Traverso for zstd and lzo compression
-* nanohttpd-1.1 by elonen, for server HTTP tunneling
-* commons-httpclient by Apache Software Foundation, for client HTTP tunneling
+* nanohttpd-1.1 by elonen, for HTTP proxy tunneling
+* commons-httpclient by Apache Software Foundation, for HTTP proxy client
 * commons-rng by Apache Software Foundation, for splitmix64 prng
 * Base85 by Sheep-y, for backported Base85 encoder/decoder
 * PngEncoder by Looklet, for better PNG image encoding
+* MinimalFTP by Guilherme Chaguri, for FTP server tunneling
 
 ## Additional utilities
 

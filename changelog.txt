@@ -96,6 +96,7 @@ simple, medium, next, extra, high, vast, ultra, true
 * Added *VTREAD command to run text files commands in client console
 * Added *VTLOG command to record client commands to local client file
 * Added capability of SOCKS tunnels to also act as HTTP tunnels
+* Added option to create FTP server tunnels in *VTTUNNEL command.
 * Renamed various commands, check current commands with *VTHELP or *VTHL
 * Changed license from GPLv3 license to MIT license
 

@@ -14,6 +14,7 @@ public class VTTunnelChannel
   public static final char TUNNEL_TYPE_TCP = 'T';
   public static final char TUNNEL_TYPE_SOCKS = 'S';
   public static final char TUNNEL_TYPE_UDP = 'U';
+  public static final char TUNNEL_TYPE_FTP = 'F';
   public static final char TUNNEL_TYPE_ANY = 'A';
   
   private final char tunnelType;
@@ -29,8 +30,8 @@ public class VTTunnelChannel
   private int bindPort;
   private String redirectHost;
   private int redirectPort;
-  private String socksUsername;
-  private String socksPassword;
+  private String tunnelUsername;
+  private String tunnelPassword;
   private VTProxy proxy;
   
   public char getTunnelType()
@@ -48,8 +49,8 @@ public class VTTunnelChannel
     this.channelType = channelType;
   }
   
-  // SOCKS bind tunnel without authentication
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, VTProxy proxy)
+  // SOCKS/HTTP/FTP bind tunnel without authentication
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, boolean ftp, VTProxy proxy)
   {
     String network = "";
     int idx = bindHost.indexOf(';');
@@ -59,7 +60,14 @@ public class VTTunnelChannel
       bindHost = split[0];
       network = split[1];
     }
-    this.tunnelType = TUNNEL_TYPE_SOCKS;
+    if (ftp)
+    {
+      this.tunnelType = TUNNEL_TYPE_FTP;
+    }
+    else
+    {
+      this.tunnelType = TUNNEL_TYPE_SOCKS;
+    }
     this.channelType = channelType;
     this.connection = connection;
     this.connectTimeout = connectTimeout;
@@ -79,8 +87,8 @@ public class VTTunnelChannel
     this.sessions = new ConcurrentLinkedQueue<VTTunnelSessionHandler>();
   }
   
-  // SOCKS bind tunnel with authentication
-  public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String socksUsername, String socksPassword, VTProxy proxy)
+  // SOCKS/HTTP/FTP bind tunnel with authentication
+  public VTTunnelChannel(int channelType, VTTunnelConnection connection, int connectTimeout, int dataTimeout, String bindHost, int bindPort, String username, String password, boolean ftp, VTProxy proxy)
   {
     String network = "";
     int idx = bindHost.indexOf(';');
@@ -90,7 +98,14 @@ public class VTTunnelChannel
       bindHost = split[0];
       network = split[1];
     }
-    this.tunnelType = TUNNEL_TYPE_SOCKS;
+    if (ftp)
+    {
+      this.tunnelType = TUNNEL_TYPE_FTP;
+    }
+    else
+    {
+      this.tunnelType = TUNNEL_TYPE_SOCKS;
+    }
     this.channelType = channelType;
     this.connection = connection;
     this.connectTimeout = connectTimeout;
@@ -107,8 +122,8 @@ public class VTTunnelChannel
     {
       this.bindAddress = new InetSocketAddress(bindPort);
     }
-    this.socksUsername = socksUsername;
-    this.socksPassword = socksPassword;
+    this.tunnelUsername = username;
+    this.tunnelPassword = password;
     this.sessions = new ConcurrentLinkedQueue<VTTunnelSessionHandler>();
   }
   
@@ -194,24 +209,24 @@ public class VTTunnelChannel
     return bindAddress;
   }
   
-  public String getSocksUsername()
+  public String getTunnelUsername()
   {
-    return socksUsername;
+    return tunnelUsername;
   }
   
-  public String getSocksPassword()
+  public String getTunnelPassword()
   {
-    return socksPassword;
+    return tunnelPassword;
   }
   
-  public void setSocksUsername(String socksUsername)
+  public void setTunnelUsername(String username)
   {
-    this.socksUsername = socksUsername;
+    this.tunnelUsername = username;
   }
   
-  public void setSocksPassword(String socksPassword)
+  public void setTunnelPassword(String password)
   {
-    this.socksPassword = socksPassword;
+    this.tunnelPassword = password;
   }
   
   public void addSession(VTTunnelSessionHandler handler)

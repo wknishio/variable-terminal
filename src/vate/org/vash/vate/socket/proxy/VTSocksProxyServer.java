@@ -116,7 +116,7 @@ public class VTSocksProxyServer implements Runnable {
 	    this.auth = auth;
 	  }
 
-	 public VTSocksProxyServer(ServerAuthenticator auth, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy, VTRemoteSocketFactory socket_factory, int connectTimeout) {
+	 public VTSocksProxyServer(ServerAuthenticator auth, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, int connectTimeout, VTRemoteSocketFactory socket_factory, VTProxy connect_proxy) {
 	    this.executorService = executorService;
 	    this.auth = auth;
 	    this.disabled_bind = disabled_bind;
@@ -136,7 +136,7 @@ public class VTSocksProxyServer implements Runnable {
 		mode = START_MODE;
 	}
 	
-	public VTSocksProxyServer(ServerAuthenticator auth, Socket socket, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, VTProxy connect_proxy, VTRemoteSocketFactory socket_factory, int connectTimeout, String bind) {
+	public VTSocksProxyServer(ServerAuthenticator auth, Socket socket, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, String bind, int connectTimeout, VTRemoteSocketFactory socket_factory, VTProxy connect_proxy) {
     this.executorService = executorService;
     this.auth = auth;
     this.sock = socket;
@@ -452,7 +452,8 @@ public class VTSocksProxyServer implements Runnable {
 		ProxyMessage response = null;
 		
 
-		if (proxy == null) {
+		if (proxy == null)
+		{
 		  if (connect_proxy == null)
 		  {
 		    if (msg.ip != null)
@@ -585,7 +586,6 @@ public class VTSocksProxyServer implements Runnable {
 				|| msg.ip.getHostAddress().equals("::0") || msg.ip.getHostAddress().equals("0:0:0:0:0:0:0:0")
 				|| msg.ip.getHostAddress().equals("00:00:00:00:00:00:00:00")
 				|| msg.ip.getHostAddress().equals("0000:0000:0000:0000:0000:0000:0000:0000"))
-
 			msg.ip = sock.getInetAddress();
 		//System.out.println("onUDP()");
 		// LOG.info(connectionId + " Creating UDP relay server for " + msg.ip +

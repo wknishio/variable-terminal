@@ -43,29 +43,13 @@ public class VTSocksProxySocket extends VTProxySocket
           socks5Proxy.setAuthenticationMethod(UserPasswordAuthentication.METHOD_ID, authentication);
         }
         InetSocketAddress host = (InetSocketAddress) endpoint;
-        SocksSocket socksSocket = new SocksSocket(socks5Proxy, host.getHostName(), host.getPort(), 0);
+        SocksSocket socksSocket = new SocksSocket(host.getHostName(), host.getPort(), 0, socks5Proxy);
         proxySocket = socksSocket;
       }
       catch (Throwable t)
       {
         //t.printStackTrace();
       }
-      if (proxySocket != null)
-      {
-        return;
-      }
-//      try
-//      {
-//        connectProxy(0);
-//        socks4Proxy = new Socks4Proxy(null, proxyHost, proxyPort, proxyUser != null ? proxyUser : "", currentSocket);
-//        InetSocketAddress host = (InetSocketAddress) endpoint;
-//        SocksSocket socksSocket = new SocksSocket(socks4Proxy, host.getHostName(), host.getPort(), 0);
-//        proxySocket = socksSocket;
-//      }
-//      catch (Throwable t)
-//      {
-//        proxySocket = null;
-//      }
       if (proxySocket == null)
       {
         throw new IOException("socks tunneling failed");
@@ -104,22 +88,6 @@ public class VTSocksProxySocket extends VTProxySocket
         //t.printStackTrace();
         proxySocket = null;
       }
-      if (proxySocket != null)
-      {
-        return;
-      }
-//      try
-//      {
-//        connectProxy(timeout);
-//        socks4Proxy = new Socks4Proxy(null, proxyHost, proxyPort, proxyUser != null ? proxyUser : "", currentSocket);
-//        InetSocketAddress host = (InetSocketAddress) endpoint;
-//        SocksSocket socksSocket = new SocksSocket(socks4Proxy, host.getHostName(), host.getPort(), timeout);
-//        proxySocket = socksSocket;
-//      }
-//      catch (Throwable t)
-//      {
-//        proxySocket = null;
-//      }
       if (proxySocket == null)
       {
         throw new IOException("socks tunneling failed");

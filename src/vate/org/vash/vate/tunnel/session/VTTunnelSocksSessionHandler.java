@@ -27,7 +27,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
     //this.channel = channel;
   //}
   
-  public VTTunnelSocksSessionHandler(VTTunnelSession session, VTTunnelChannel channel, String socksUsername, String socksPassword, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout, String bind)
+  public VTTunnelSocksSessionHandler(VTTunnelSession session, VTTunnelChannel channel, String username, String password, String bind, int connectTimeout, VTRemoteSocketFactory socketFactory, VTProxy proxy)
   {
     super(session, channel);
     this.session = session;
@@ -36,9 +36,9 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
     this.socketFactory = socketFactory;
     this.connectTimeout = connectTimeout;
     this.bind = bind;
-    if (socksUsername != null && socksPassword != null && socksUsername.length() > 0 && socksPassword.length() > 0)
+    if (username != null && password != null && username.length() > 0 && password.length() > 0)
     {
-      this.validation = new VTSocksMultipleUserValidation(new String[] {socksUsername}, new String[] {socksPassword});
+      this.validation = new VTSocksMultipleUserValidation(new String[] {username}, new String[] {password});
     }
     else
     {
@@ -60,7 +60,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
         try
         {
           VTSocksProxyServer.setUDPTimeout(VT.VT_PING_LIMIT_MILLISECONDS);
-          VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, channel.getConnection().getNonces(), channel.getConnection().getRandom(), channel.getConnection().getExecutorService(), proxy, socketFactory, connectTimeout, bind), session.getSocket(), channel.getConnection().getExecutorService(), false, false, proxy, socketFactory, connectTimeout, bind);
+          VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, channel.getConnection().getNonces(), channel.getConnection().getRandom(), channel.getConnection().getExecutorService(), bind, connectTimeout, socketFactory, proxy), session.getSocket(), channel.getConnection().getExecutorService(), false, false, bind, connectTimeout, socketFactory, proxy);
           socksServer.setDatagramSocketFactory(channel.getConnection().createRemoteSocketFactory(channel));
           socksServer.setPipeBufferSize(socksBufferSize);
           socksServer.run();
@@ -76,7 +76,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
         try
         {
           VTSocksProxyServer.setUDPTimeout(VT.VT_PING_LIMIT_MILLISECONDS);
-          VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorNone(channel.getConnection().getExecutorService(), proxy, socketFactory, connectTimeout, bind), session.getSocket(), channel.getConnection().getExecutorService(), false, false, proxy, socketFactory, connectTimeout, bind);
+          VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorNone(channel.getConnection().getExecutorService(), bind, connectTimeout, socketFactory, proxy), session.getSocket(), channel.getConnection().getExecutorService(), false, false, bind, connectTimeout, socketFactory, proxy);
           socksServer.setDatagramSocketFactory(channel.getConnection().createRemoteSocketFactory(channel));
           socksServer.setPipeBufferSize(socksBufferSize);
           socksServer.run();

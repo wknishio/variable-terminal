@@ -145,6 +145,8 @@ public class VTTunnelChannelRemoteSocketBuilder
       }
       if (result)
       {
+        pipedSocket.setRemoteHost(session.getRemoteHost());
+        pipedSocket.setRemotePort(session.getRemotePort());
         return pipedSocket;
       }
     }
@@ -230,6 +232,8 @@ public class VTTunnelChannelRemoteSocketBuilder
       }
       if (result)
       {
+        pipedSocket.setRemoteHost(session.getRemoteHost());
+        pipedSocket.setRemotePort(session.getRemotePort());
         return pipedSocket;
       }
     }

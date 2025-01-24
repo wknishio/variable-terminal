@@ -14,6 +14,7 @@
 	<classpathentry kind="src" path="src/jzlib"/>
 	<classpathentry kind="src" path="src/lanterna"/>
 	<classpathentry kind="src" path="src/lz4"/>
+	<classpathentry kind="src" path="src/minimalftp"/>
 	<classpathentry kind="src" path="src/pngencoder"/>
 	<classpathentry kind="src" path="src/portmapper"/>
 	<classpathentry kind="src" path="src/snappy"/>
