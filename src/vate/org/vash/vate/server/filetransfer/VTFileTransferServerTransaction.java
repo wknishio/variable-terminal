@@ -1463,6 +1463,10 @@ public class VTFileTransferServerTransaction implements Runnable
         destination = splitCommand[splitCommand.length - 1];
         destination = normalizePath(destination);
         source = "";
+        compressing = false;
+        resuming = false;
+//        verifying = false;
+        heavier = false;
         for (int i = 2; i < splitCommand.length - 1; i++)
         {
           source += ";" + splitCommand[i].trim();
@@ -1471,11 +1475,6 @@ public class VTFileTransferServerTransaction implements Runnable
         if (parameters.toUpperCase().contains("P"))
         {
           filePaths = source;
-          compressing = false;
-          resuming = false;
-//          verifying = false;
-          heavier = false;
-          
           if (parameters.toUpperCase().contains("Q"))
           {
             compressing = true;
@@ -1486,10 +1485,10 @@ public class VTFileTransferServerTransaction implements Runnable
             compressing = true;
             heavier = true;
           }
-          if (parameters.toUpperCase().contains("D"))
-          {
-            compressing = false;
-          }
+//          if (parameters.toUpperCase().contains("D"))
+//          {
+//            compressing = false;
+//          }
           if (parameters.toUpperCase().contains("R"))
           {
             resuming = true;
@@ -1537,11 +1536,6 @@ public class VTFileTransferServerTransaction implements Runnable
         else if (splitCommand[1].toUpperCase().contains("G"))
         {
           filePaths = source;
-          compressing = false;
-          resuming = false;
-//          verifying = false;
-          heavier = false;
-          
           if (parameters.toUpperCase().contains("Q"))
           {
             compressing = true;
@@ -1552,10 +1546,10 @@ public class VTFileTransferServerTransaction implements Runnable
             compressing = true;
             heavier = true;
           }
-          if (parameters.toUpperCase().contains("D"))
-          {
-            compressing = false;
-          }
+//          if (parameters.toUpperCase().contains("D"))
+//          {
+//            compressing = false;
+//          }
           if (parameters.toUpperCase().contains("R"))
           {
             resuming = true;
