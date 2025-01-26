@@ -13,7 +13,7 @@ import org.vash.vate.tunnel.channel.VTTunnelChannel;
 
 public class VTTunnelFTPSessionHandler extends VTTunnelSessionHandler
 {
-  //private final VTTunnelChannel channel;
+  private final VTTunnelChannel channel;
   private final VTTunnelSession session;
   private final VTProxy proxy;
   private final VTRemoteSocketFactory socketFactory;
@@ -32,7 +32,7 @@ public class VTTunnelFTPSessionHandler extends VTTunnelSessionHandler
   {
     super(session, channel);
     this.session = session;
-    //this.channel = channel;
+    this.channel = channel;
     this.proxy = proxy;
     this.socketFactory = socketFactory;
     this.connectTimeout = connectTimeout;
@@ -60,7 +60,7 @@ public class VTTunnelFTPSessionHandler extends VTTunnelSessionHandler
     {
       VTRemoteClientSocketFactory clientFactory = new VTRemoteClientSocketFactory(socketFactory, connectTimeout, 0, bind, proxy);
       VTRemoteServerSocketFactory serverFactory = new VTRemoteServerSocketFactory(socketFactory, 0, 0, bind);
-      ftpserver = new VTFTPServer(validation, clientFactory, serverFactory);
+      ftpserver = new VTFTPServer(validation, clientFactory, serverFactory, channel.getConnection().getExecutorService());
       ftpserver.runConnection(session.getSocket());
     }
     catch (Throwable t)

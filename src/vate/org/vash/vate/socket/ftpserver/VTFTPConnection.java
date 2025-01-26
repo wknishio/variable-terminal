@@ -2,6 +2,7 @@ package org.vash.vate.socket.ftpserver;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
 
 import javax.net.ServerSocketFactory;
 import javax.net.SocketFactory;
@@ -12,12 +13,14 @@ public class VTFTPConnection extends FTPConnection
 {
   protected SocketFactory clientFactory;
   protected ServerSocketFactory serverFactory;
+  protected ExecutorService executorService;
   
   public VTFTPConnection(VTFTPServer server, Socket con, int idleTimeout, int bufferSize) throws IOException
   {
     super(server, con, idleTimeout, bufferSize);
     clientFactory = server.clientFactory;
     serverFactory = server.serverFactory;
+    executorService = server.executorService;
   }
   
   public void start() throws IOException
@@ -43,4 +46,14 @@ public class VTFTPConnection extends FTPConnection
     this.thread.setDaemon(true);
     this.thread.run();
   }
+  
+  protected void stop(boolean close) throws IOException
+  {
+    if(thread.isAlive() && !thread.isInterrupted())
+    {
+      thread.interrupt();
+    }
+    conHandler.onDisconnected();
+    if(close) con.close();
+}
 }

@@ -52,7 +52,7 @@ public class FTPConnection implements Closeable {
     protected Socket con;
     protected BufferedReader reader;
     protected BufferedWriter writer;
-    protected ConnectionThread thread;
+    protected Thread thread;
     protected final LinkedList<Socket> dataConnections = new LinkedList<Socket>();
 
     protected FTPConnectionHandler conHandler;

@@ -20,10 +20,10 @@ public class VTFTPNativeFileSystem extends NativeFileSystem
   
   public File getParent(File file) throws IOException
   {
-    if(file.getParentFile() == null) {
-        throw new FileNotFoundException("No parent found for this file");
+    if(file.getParentFile() == null)
+    {
+      throw new FileNotFoundException("No parent found for this file");
     }
-    
     return file.getParentFile();
   }
   
