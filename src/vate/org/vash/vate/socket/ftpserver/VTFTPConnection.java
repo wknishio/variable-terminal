@@ -54,6 +54,9 @@ public class VTFTPConnection extends FTPConnection
       thread.interrupt();
     }
     conHandler.onDisconnected();
-    if(close) con.close();
+    if(close)
+    {
+      con.close();
+    }
 }
 }

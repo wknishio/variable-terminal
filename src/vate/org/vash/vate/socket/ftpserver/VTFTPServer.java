@@ -44,7 +44,7 @@ public class VTFTPServer extends FTPServer
     }
     synchronized(connections)
     {
-        connections.add(con);
+      connections.add(con);
     }
     con.run();
   }
