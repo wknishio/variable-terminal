@@ -946,6 +946,7 @@ public class VTLanternaConsole implements VTConsoleInstance
       
       spacer1 = new java.awt.Panel();
       spacer1.setBackground(SystemColor.control);
+      spacer1.setFocusable(false);
       
       panel.getCenterPanel().add(verticalScrollbar, java.awt.BorderLayout.EAST);
       panel.getBottomPanel().add(horizontalScrollbar, java.awt.BorderLayout.CENTER);
