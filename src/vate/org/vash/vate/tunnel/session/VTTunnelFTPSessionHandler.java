@@ -2,10 +2,10 @@ package org.vash.vate.tunnel.session;
 
 import java.io.File;
 
-import org.vash.vate.socket.ftpserver.VTFTPAuthenticator;
-import org.vash.vate.socket.ftpserver.VTFTPServer;
-import org.vash.vate.socket.ftpserver.VTFTPNativeFileSystem;
-import org.vash.vate.socket.proxy.VTProxy;
+import org.vash.vate.ftp.server.VTFTPAuthenticator;
+import org.vash.vate.ftp.server.VTFTPNativeFileSystem;
+import org.vash.vate.ftp.server.VTFTPServer;
+import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.socket.remote.VTRemoteClientSocketFactory;
 import org.vash.vate.socket.remote.VTRemoteServerSocketFactory;
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;

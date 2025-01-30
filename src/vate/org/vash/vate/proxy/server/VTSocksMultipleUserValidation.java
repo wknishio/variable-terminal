@@ -1,4 +1,4 @@
-package org.vash.vate.socket.proxy;
+package org.vash.vate.proxy.server;
 
 import java.net.Socket;
 

@@ -10,7 +10,7 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.nio.channels.SocketChannel;
 
-import org.vash.vate.socket.proxy.VTProxy;
+import org.vash.vate.proxy.client.VTProxy;
 
 public class VTRemoteSocket extends Socket
 {

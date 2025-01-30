@@ -1,4 +1,4 @@
-package org.vash.vate.socket.ftpserver;
+package org.vash.vate.ftp.server;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

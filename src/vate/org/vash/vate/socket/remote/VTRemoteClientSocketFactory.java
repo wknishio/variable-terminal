@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 
 import javax.net.SocketFactory;
 
-import org.vash.vate.socket.proxy.VTProxy;
+import org.vash.vate.proxy.client.VTProxy;
 
 public class VTRemoteClientSocketFactory extends SocketFactory
 {

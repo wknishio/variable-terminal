@@ -1,4 +1,4 @@
-package org.vash.vate.socket.proxy;
+package org.vash.vate.proxy.server;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 
+import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 
 import net.sourceforge.jsocks.socks.server.ServerAuthenticator;

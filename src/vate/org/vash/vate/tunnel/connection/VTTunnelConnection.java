@@ -11,9 +11,9 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
+import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTSplitMix64Random;
-import org.vash.vate.socket.proxy.VTProxy;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;

@@ -12,7 +12,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *******************************************************************************/
-package org.vash.vate.socket.proxy;
+package org.vash.vate.proxy.server;
 
 import net.sourceforge.jsocks.socks.ProxyMessage;
 import net.sourceforge.jsocks.socks.Socks4Message;
@@ -36,6 +36,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
+import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.socket.remote.VTRemoteSocketAdapter;
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 

@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.vash.vate.VT;
-import org.vash.vate.socket.proxy.VTProxy;
+import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 

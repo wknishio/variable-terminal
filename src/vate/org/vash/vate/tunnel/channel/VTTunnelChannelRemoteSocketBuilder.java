@@ -5,8 +5,8 @@ import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.vash.vate.socket.proxy.VTProxy;
-import org.vash.vate.socket.proxy.VTProxy.VTProxyType;
+import org.vash.vate.proxy.client.VTProxy;
+import org.vash.vate.proxy.client.VTProxy.VTProxyType;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.tunnel.session.VTTunnelDatagramSocket;

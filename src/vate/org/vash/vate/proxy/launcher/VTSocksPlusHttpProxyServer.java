@@ -1,4 +1,4 @@
-package org.vash.vate.socket.proxy.launcher;
+package org.vash.vate.proxy.launcher;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,13 +13,13 @@ import java.util.concurrent.ThreadFactory;
 
 import org.vash.vate.parser.VTArgumentParser;
 import org.vash.vate.parser.VTPropertiesBuilder;
+import org.vash.vate.proxy.server.VTSocksHttpProxyAuthenticatorNone;
+import org.vash.vate.proxy.server.VTSocksHttpProxyAuthenticatorUsernamePassword;
+import org.vash.vate.proxy.server.VTSocksMultipleUserValidation;
+import org.vash.vate.proxy.server.VTSocksProxyServer;
 import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTCredential;
 import org.vash.vate.security.VTSplitMix64Random;
-import org.vash.vate.socket.proxy.VTSocksHttpProxyAuthenticatorNone;
-import org.vash.vate.socket.proxy.VTSocksHttpProxyAuthenticatorUsernamePassword;
-import org.vash.vate.socket.proxy.VTSocksMultipleUserValidation;
-import org.vash.vate.socket.proxy.VTSocksProxyServer;
 
 public class VTSocksPlusHttpProxyServer
 {

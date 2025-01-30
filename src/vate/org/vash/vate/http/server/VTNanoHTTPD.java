@@ -1,4 +1,4 @@
-package org.vash.vate.socket.proxy;
+package org.vash.vate.http.server;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;

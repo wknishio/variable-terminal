@@ -14,10 +14,10 @@ import org.vash.vate.client.session.VTClientSessionListener;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.nat.mapping.VTNATPortMappingResultNotify;
 import org.vash.vate.nat.mapping.VTNATSinglePortMappingManagerMKII;
+import org.vash.vate.proxy.client.VTProxy;
+import org.vash.vate.proxy.client.VTProxy.VTProxyType;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.security.VTBlake3SecureRandom;
-import org.vash.vate.socket.proxy.VTProxy;
-import org.vash.vate.socket.proxy.VTProxy.VTProxyType;
 
 public class VTClientConnector implements Runnable
 {

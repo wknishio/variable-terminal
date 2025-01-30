@@ -2,9 +2,9 @@ package org.vash.vate.server.console.remote.standard.command;
 
 import org.vash.vate.VT;
 import org.vash.vate.help.VTHelpManager;
+import org.vash.vate.proxy.client.VTProxy;
+import org.vash.vate.proxy.client.VTProxy.VTProxyType;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.socket.proxy.VTProxy;
-import org.vash.vate.socket.proxy.VTProxy.VTProxyType;
 import org.vash.vate.tunnel.channel.VTTunnelChannel;
 import org.vash.vate.tunnel.channel.VTTunnelChannelBindSocketListener;
 

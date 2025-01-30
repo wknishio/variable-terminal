@@ -1,4 +1,4 @@
-package org.vash.vate.socket.proxy;
+package org.vash.vate.proxy.client;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

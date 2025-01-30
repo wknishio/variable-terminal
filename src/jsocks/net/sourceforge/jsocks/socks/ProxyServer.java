@@ -22,7 +22,7 @@ import java.io.*;
 //import org.apache.log4j.Logger;
 import java.net.*;
 
-import org.vash.vate.socket.proxy.VTProxy;
+import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.socket.remote.VTRemoteSocketAdapter;
 /**
  * SOCKS4 and SOCKS5 proxy, handles both protocols simultaniously. Implements

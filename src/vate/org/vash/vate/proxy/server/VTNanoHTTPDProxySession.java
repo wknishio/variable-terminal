@@ -1,4 +1,4 @@
-package org.vash.vate.socket.proxy;
+package org.vash.vate.proxy.server;
 
 import java.io.BufferedReader;
 
@@ -34,6 +34,7 @@ import org.apache.commons.codec.digest.DigestUtils;
 import org.bouncycastle.util.encoders.Hex;
 import org.vash.vate.VT;
 import org.vash.vate.parser.VTConfigurationProperties;
+import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.socket.remote.VTRemoteSocketAdapter;
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;

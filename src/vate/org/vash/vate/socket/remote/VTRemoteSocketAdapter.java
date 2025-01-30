@@ -5,7 +5,7 @@ import java.net.DatagramSocket;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.vash.vate.socket.proxy.VTProxy;
+import org.vash.vate.proxy.client.VTProxy;
 
 public class VTRemoteSocketAdapter extends Socket
 {
