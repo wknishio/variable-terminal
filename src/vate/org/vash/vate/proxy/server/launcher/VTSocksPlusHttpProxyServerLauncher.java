@@ -1,4 +1,4 @@
-package org.vash.vate.proxy.launcher;
+package org.vash.vate.proxy.server.launcher;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,7 +21,7 @@ import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTCredential;
 import org.vash.vate.security.VTSplitMix64Random;
 
-public class VTSocksPlusHttpProxyServer
+public class VTSocksPlusHttpProxyServerLauncher
 {
   private int port = 1080;
   private String host = null;
@@ -29,7 +29,7 @@ public class VTSocksPlusHttpProxyServer
   private final Collection<VTCredential> userCredentials = new ConcurrentLinkedQueue<VTCredential>();
   private final ExecutorService executorService;
   
-  public VTSocksPlusHttpProxyServer()
+  public VTSocksPlusHttpProxyServerLauncher()
   {
     this.executorService = Executors.newCachedThreadPool(new ThreadFactory()
     {
@@ -222,7 +222,7 @@ public class VTSocksPlusHttpProxyServer
   
   public static void main(String[] args)
   {
-    VTSocksPlusHttpProxyServer socksPlusHttpProxyServer = new VTSocksPlusHttpProxyServer();
+    VTSocksPlusHttpProxyServerLauncher socksPlusHttpProxyServer = new VTSocksPlusHttpProxyServerLauncher();
     try
     {
       socksPlusHttpProxyServer.parseParameters(args);
