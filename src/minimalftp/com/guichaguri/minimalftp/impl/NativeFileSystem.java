@@ -334,10 +334,10 @@ public class NativeFileSystem implements IFileSystem<File> {
         }
     }
     
-    public byte[] getDigest(File file, String algorithm) throws IOException, NoSuchAlgorithmException {
+    public byte[] getDigest(File file, String algorithm, int bufferSize) throws IOException, NoSuchAlgorithmException {
       MessageDigest d = MessageDigest.getInstance(algorithm);
       InputStream in = readFile(file, 0);
-      byte[] bytes = new byte[1024 * 8];
+      byte[] bytes = new byte[bufferSize];
       int length;
 
       while((length = in.read(bytes)) != -1) {

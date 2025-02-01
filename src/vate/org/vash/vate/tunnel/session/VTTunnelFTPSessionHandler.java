@@ -2,6 +2,7 @@ package org.vash.vate.tunnel.session;
 
 import java.io.File;
 
+import org.vash.vate.VT;
 import org.vash.vate.ftp.server.VTFTPAuthenticator;
 import org.vash.vate.ftp.server.VTFTPNativeFileSystem;
 import org.vash.vate.ftp.server.VTFTPServer;
@@ -61,6 +62,7 @@ public class VTTunnelFTPSessionHandler extends VTTunnelSessionHandler
       VTRemoteClientSocketFactory clientFactory = new VTRemoteClientSocketFactory(socketFactory, connectTimeout, 0, bind, proxy);
       VTRemoteServerSocketFactory serverFactory = new VTRemoteServerSocketFactory(socketFactory, 0, 0, bind);
       ftpserver = new VTFTPServer(validation, clientFactory, serverFactory, channel.getConnection().getExecutorService());
+      ftpserver.setBufferSize(VT.VT_REDUCED_BUFFER_SIZE_BYTES);
       ftpserver.runConnection(session.getSocket());
     }
     catch (Throwable t)

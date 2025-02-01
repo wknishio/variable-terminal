@@ -28,7 +28,7 @@ public class VT
   public static final int VT_REVISION_VERSION = 2;
   
   public static final int VT_PACKET_HEADER_SIZE_BYTES = 16;
-  public static final int VT_PACKET_DATA_SIZE_BYTES = 1024 * 8;
+  public static final int VT_PACKET_DATA_SIZE_BYTES = 1024 * 16;
   public static final int VT_PACKET_TOTAL_SIZE_BYTES = VT_PACKET_HEADER_SIZE_BYTES + VT_PACKET_DATA_SIZE_BYTES;
   
   public static final int VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES = 1024 * 1024;
@@ -255,8 +255,8 @@ public class VT
   public static final int VT_AUDIO_CODEC_DEFAULT = VT_AUDIO_CODEC_OPUS;
   
   public static final int VT_AUDIO_CODEC_FRAME_MILLISECONDS = 20;
-  public static final int VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS = 320;
-  public static final int VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS = 320;
+  public static final int VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS = 500;
+  public static final int VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS = 500;
   
   public static final String VT_VERSION = "v" + VT.VT_MAJOR_VERSION + "." + VT.VT_MINOR_VERSION + "." + VT.VT_REVISION_VERSION;
   public static final String VT_YEAR = VT_ERA_DATEFORMAT.format(VT_YEAR_CALENDAR.getTime()) + " " + String.valueOf(VT_YEAR_CALENDAR.get(Calendar.YEAR));

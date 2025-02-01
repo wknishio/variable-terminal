@@ -114,7 +114,7 @@ public interface IFileSystem<F extends Object> {
      * @throws NoSuchAlgorithmException When the algorithm is not implement
      * @throws IOException When an error occurs
      */
-    byte[] getDigest(F file, String algorithm) throws IOException, NoSuchAlgorithmException;
+    byte[] getDigest(F file, String algorithm, int bufferSize) throws IOException, NoSuchAlgorithmException;
     /**
      * Gets the parent directory of a file.
      *

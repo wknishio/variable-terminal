@@ -573,7 +573,7 @@ public class FTPFileHandler {
           }
           try {
               Object file = getFile(p);
-              byte[] digest = fs.getDigest(file, "MD5");
+              byte[] digest = fs.getDigest(file, "MD5", con.getBufferSize());
               String md5 = new BigInteger(1, digest).toString(16);
               con.sendResponse(251, path + " " + md5);
           } catch(NoSuchAlgorithmException ex) {
@@ -604,7 +604,7 @@ public class FTPFileHandler {
                   }
 
                   Object file = getFile(p);
-                  byte[] digest = fs.getDigest(file, "MD5");
+                  byte[] digest = fs.getDigest(file, "MD5", con.getBufferSize());
                   String md5 = new BigInteger(1, digest).toString(16);
 
                   if(response.length() > 0) response.append(", ");
@@ -630,7 +630,7 @@ public class FTPFileHandler {
           try {
               Object file = getFile(path);
               String hash = con.getOption("HASH");
-              byte[] digest = fs.getDigest(file, hash);
+              byte[] digest = fs.getDigest(file, hash, con.getBufferSize());
               String hex = new BigInteger(1, digest).toString(16);
 
               // TODO RANG
