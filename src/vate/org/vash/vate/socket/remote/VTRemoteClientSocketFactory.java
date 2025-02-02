@@ -3,7 +3,6 @@ package org.vash.vate.socket.remote;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import javax.net.SocketFactory;
 
@@ -16,7 +15,7 @@ public class VTRemoteClientSocketFactory extends SocketFactory
   private final int remoteConnectTimeout;
   private final int remoteDataTimeout;
   private final VTProxy remoteProxy;
-  private final String remoteBind;
+  private final String bindHost;
   
   public VTRemoteClientSocketFactory(VTRemoteSocketFactory factory)
   {
@@ -24,7 +23,7 @@ public class VTRemoteClientSocketFactory extends SocketFactory
     this.remoteConnectTimeout = 0;
     this.remoteDataTimeout = 0;
     this.remoteProxy = PROXY_NONE;
-    this.remoteBind = "";
+    this.bindHost = "";
   }
   
   public VTRemoteClientSocketFactory(VTRemoteSocketFactory factory, int connectTimeout)
@@ -33,7 +32,7 @@ public class VTRemoteClientSocketFactory extends SocketFactory
     this.remoteConnectTimeout = connectTimeout;
     this.remoteDataTimeout = 0;
     this.remoteProxy = PROXY_NONE;
-    this.remoteBind = "";
+    this.bindHost = "";
   }
   
   public VTRemoteClientSocketFactory(VTRemoteSocketFactory factory, int connectTimeout, int dataTimeout)
@@ -42,7 +41,7 @@ public class VTRemoteClientSocketFactory extends SocketFactory
     this.remoteConnectTimeout = connectTimeout;
     this.remoteDataTimeout = dataTimeout;
     this.remoteProxy = PROXY_NONE;
-    this.remoteBind = "";
+    this.bindHost = "";
   }
   
   public VTRemoteClientSocketFactory(VTRemoteSocketFactory factory, int connectTimeout, int dataTimeout, VTProxy proxy)
@@ -51,7 +50,7 @@ public class VTRemoteClientSocketFactory extends SocketFactory
     this.remoteConnectTimeout = connectTimeout;
     this.remoteDataTimeout = dataTimeout;
     this.remoteProxy = proxy;
-    this.remoteBind = "";
+    this.bindHost = "";
   }
   
   public VTRemoteClientSocketFactory(VTRemoteSocketFactory factory, int connectTimeout, int dataTimeout, String bind, VTProxy proxy)
@@ -60,26 +59,36 @@ public class VTRemoteClientSocketFactory extends SocketFactory
     this.remoteConnectTimeout = connectTimeout;
     this.remoteDataTimeout = dataTimeout;
     this.remoteProxy = proxy;
-    this.remoteBind = bind;
+    this.bindHost = bind;
   }
   
-  public Socket createSocket(String host, int port) throws IOException, UnknownHostException
+  public Socket createSocket(String remoteHost, int remotePort) throws IOException
   {
-    return remoteSocketFactory.connectSocket(remoteBind, host, port, remoteConnectTimeout, remoteDataTimeout, remoteProxy);
+    return remoteSocketFactory.connectSocket(bindHost, remoteHost, remotePort, remoteConnectTimeout, remoteDataTimeout, remoteProxy);
   }
   
-  public Socket createSocket(InetAddress host, int port) throws IOException
+  public Socket createSocket(InetAddress remoteHost, int remotePort) throws IOException
   {
-    return remoteSocketFactory.connectSocket(remoteBind, host.getHostAddress(), port, remoteConnectTimeout, remoteDataTimeout, remoteProxy);
+    return remoteSocketFactory.connectSocket(bindHost, remoteHost.getHostAddress(), remotePort, remoteConnectTimeout, remoteDataTimeout, remoteProxy);
   }
   
-  public Socket createSocket(String host, int port, InetAddress localHost, int localPort) throws IOException, UnknownHostException
+  public Socket createSocket(String remoteHost, int remotePort, InetAddress bindHost, int bindPort) throws IOException
   {
-    return remoteSocketFactory.connectSocket(localHost.getHostAddress(), host, port, remoteConnectTimeout, remoteDataTimeout, remoteProxy);
+    return remoteSocketFactory.connectSocket(bindHost.getHostAddress(), remoteHost, remotePort, remoteConnectTimeout, remoteDataTimeout, remoteProxy);
   }
   
-  public Socket createSocket(InetAddress address, int port, InetAddress localAddress, int localPort) throws IOException
+  public Socket createSocket(InetAddress remoteHost, int remotePort, InetAddress bindHost, int bindPort) throws IOException
   {
-    return remoteSocketFactory.connectSocket(localAddress.getHostAddress(), address.getHostAddress(), port, remoteConnectTimeout, remoteDataTimeout, remoteProxy);
+    return remoteSocketFactory.connectSocket(bindHost.getHostAddress(), remoteHost.getHostAddress(), remotePort, remoteConnectTimeout, remoteDataTimeout, remoteProxy);
+  }
+  
+  public Socket createSocket(String remoteHost, int remotePort, String bindHost, int bindPort) throws IOException
+  {
+    return remoteSocketFactory.connectSocket(bindHost, remoteHost, remotePort, remoteConnectTimeout, remoteDataTimeout, remoteProxy);
+  }
+  
+  public Socket createSocket(String remoteHost, int remotePort, String bindHost) throws IOException
+  {
+    return remoteSocketFactory.connectSocket(bindHost, remoteHost, remotePort, remoteConnectTimeout, remoteDataTimeout, remoteProxy);
   }
 }

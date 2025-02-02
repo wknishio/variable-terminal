@@ -12,14 +12,14 @@ public class VTRemoteServerSocketFactory extends ServerSocketFactory
   private final VTRemoteSocketFactory remoteSocketFactory;
   private final int remoteConnectTimeout;
   private final int remoteDataTimeout;
-  private final String remoteBind;
+  private final String bindHost;
   
   public VTRemoteServerSocketFactory(VTRemoteSocketFactory factory)
   {
     this.remoteSocketFactory = factory;
     this.remoteConnectTimeout = 0;
     this.remoteDataTimeout = 0;
-    this.remoteBind = "";
+    this.bindHost = "";
   }
   
   public VTRemoteServerSocketFactory(VTRemoteSocketFactory factory, int connectTimeout)
@@ -27,7 +27,7 @@ public class VTRemoteServerSocketFactory extends ServerSocketFactory
     this.remoteSocketFactory = factory;
     this.remoteConnectTimeout = connectTimeout;
     this.remoteDataTimeout = 0;
-    this.remoteBind = "";
+    this.bindHost = "";
   }
   
   public VTRemoteServerSocketFactory(VTRemoteSocketFactory factory, int connectTimeout, int dataTimeout)
@@ -35,7 +35,7 @@ public class VTRemoteServerSocketFactory extends ServerSocketFactory
     this.remoteSocketFactory = factory;
     this.remoteConnectTimeout = connectTimeout;
     this.remoteDataTimeout = dataTimeout;
-    this.remoteBind = "";
+    this.bindHost = "";
   }
   
   public VTRemoteServerSocketFactory(VTRemoteSocketFactory factory, int connectTimeout, int dataTimeout, String bind)
@@ -43,26 +43,31 @@ public class VTRemoteServerSocketFactory extends ServerSocketFactory
     this.remoteSocketFactory = factory;
     this.remoteConnectTimeout = connectTimeout;
     this.remoteDataTimeout = dataTimeout;
-    this.remoteBind = bind;
+    this.bindHost = bind;
   }
   
   public ServerSocket createServerSocket() throws IOException
   {
-    return remoteSocketFactory.bindSocket(UUID.randomUUID().toString(), remoteBind, 0, remoteConnectTimeout, remoteDataTimeout);
+    return remoteSocketFactory.bindSocket(UUID.randomUUID().toString(), bindHost, 0, remoteConnectTimeout, remoteDataTimeout);
   }
 
-  public ServerSocket createServerSocket(int port) throws IOException
+  public ServerSocket createServerSocket(int bindPort) throws IOException
   {
-    return remoteSocketFactory.bindSocket(UUID.randomUUID().toString(), remoteBind, port, remoteConnectTimeout, remoteDataTimeout);
+    return remoteSocketFactory.bindSocket(UUID.randomUUID().toString(), bindHost, bindPort, remoteConnectTimeout, remoteDataTimeout);
   }
   
-  public ServerSocket createServerSocket(int port, int backlog) throws IOException
+  public ServerSocket createServerSocket(int bindPort, int backlog) throws IOException
   {
-    return remoteSocketFactory.bindSocket(UUID.randomUUID().toString(), remoteBind, port, remoteConnectTimeout, remoteDataTimeout);
+    return remoteSocketFactory.bindSocket(UUID.randomUUID().toString(), bindHost, bindPort, remoteConnectTimeout, remoteDataTimeout);
   }
   
-  public ServerSocket createServerSocket(int port, int backlog, InetAddress bind) throws IOException
+  public ServerSocket createServerSocket(int bindPort, int backlog, InetAddress bindHost) throws IOException
   {
-    return remoteSocketFactory.bindSocket(UUID.randomUUID().toString(), bind.getHostAddress(), port, remoteConnectTimeout, remoteDataTimeout);
+    return remoteSocketFactory.bindSocket(UUID.randomUUID().toString(), bindHost.getHostAddress(), bindPort, remoteConnectTimeout, remoteDataTimeout);
+  }
+  
+  public ServerSocket createServerSocket(int bindPort, int backlog, String bindHost) throws IOException
+  {
+    return remoteSocketFactory.bindSocket(UUID.randomUUID().toString(), bindHost, bindPort, remoteConnectTimeout, remoteDataTimeout);
   }
 }
