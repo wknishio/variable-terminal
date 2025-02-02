@@ -161,7 +161,7 @@ public class FTPFileHandler {
       {
         public void run(String parms) throws IOException
         {
-          String path = "/" + fs.getPath(cwd);
+          String path = fs.getPath(cwd);
           con.sendResponse(257, '"' + path + '"' + " CWD Name");
         }
       };
