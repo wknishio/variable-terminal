@@ -293,154 +293,175 @@ public class VTNanoHTTPDProxySession implements Runnable
   
   public void run()
   {
-    try
+    keepAlive = true;
+    while (mySocket.isConnected() && !mySocket.isClosed() && keepAlive)
     {
-      //InputStream is = mySocket.getInputStream();
-      InputStream in = myIn;
-      if ( in == null) return;
-      
-      // Read the first 16384 bytes.
-      // The full header should fit in here.
-      // Apache's default header limit is 8KB.
-      // Do NOT assume that a single read will get the entire header at once
-      boolean foundHeaderEnd = false;
-      final int bufsize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
-      final byte[] buf = new byte[bufsize];
-      int splitbyte = 0;
-      int rlen = 0;
+      //System.out.println("request received");
+      try
       {
-        int read = 1;
-        while (read > 0 && rlen < bufsize)
+        //InputStream is = mySocket.getInputStream();
+        keepAlive = false;
+        InputStream in = myIn;
+        if ( in == null) return;
+        
+        // Read the first 16384 bytes.
+        // The full header should fit in here.
+        // Apache's default header limit is 8KB.
+        // Do NOT assume that a single read will get the entire header at once
+        boolean foundHeaderEnd = false;
+        final int bufsize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
+        final byte[] buf = new byte[bufsize];
+        int splitbyte = 0;
+        int rlen = 0;
         {
-          read = in.read(buf, rlen, bufsize - rlen);
-          if (read > 0)
+          int read = 1;
+          while (read > 0 && rlen < bufsize)
           {
-            rlen += read;
-            splitbyte = findHeaderEnd(buf, rlen);
-            if (splitbyte > 0)
+            read = in.read(buf, rlen, bufsize - rlen);
+            if (read > 0)
             {
-              foundHeaderEnd = true;
-              break;
+              rlen += read;
+              splitbyte = findHeaderEnd(buf, rlen);
+              if (splitbyte > 0)
+              {
+                foundHeaderEnd = true;
+                break;
+              }
             }
           }
         }
-      }
-      if (rlen == 0)
-      {
-        sendError( HTTP_BADREQUEST, "BAD REQUEST: Empty request." );
-      }
-      
-      if (!foundHeaderEnd)
-      {
-        sendError(HTTP_PAYLOAD_TOO_LARGE, "PAYLOAD TOO LARGE: Malformed request or request headers too large.");
-      }
-      
-      // Create a BufferedReader for parsing the header.
-      ByteArrayInputStream hbis = new ByteArrayInputStream(buf, 0, rlen);
-      BufferedReader hin = new BufferedReader( new InputStreamReader( hbis, "ISO-8859-1" ));
-      Properties pre = new VTConfigurationProperties();
-      Properties parms = new VTConfigurationProperties();
-      Properties headers = new VTConfigurationProperties();
-      //Properties files = new VTConfigurationProperties();
-      
-      // Decode the header into parms and header java properties
-      long size = decodeHeader(hin, pre, parms, headers);
-      
-      if (size == -1)
-      {
-        sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing line terminator in request." );
-      }
-      
-      String method = pre.getProperty("method");
-      String uri = pre.getProperty("uri");
-      
-      if (method == null)
-      {
-        sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing method in request." );
-      }
-      
-      if (uri == null)
-      {
-        sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing URI in request." );
-      }
-      
-      if (size == 0)
-      {
-        size = 0x7FFFFFFFFFFFFFFFL;
-      }
-      
-      // Write the part of body already read to ByteArrayOutputStream b
-      ByteArrayOutputStream h = new ByteArrayOutputStream();
-      ByteArrayOutputStream b = new ByteArrayOutputStream();
-      
-      if (splitbyte < rlen)
-      {
-        b.write(buf, splitbyte, rlen-splitbyte);
-      }
-      
-      h.write(buf, 0, splitbyte);
-      
-      // While Firefox sends on the first read all the data fitting
-      // our buffer, Chrome and Opera send only the headers even if
-      // there is data for the body. We do some magic here to find
-      // out whether we have already consumed part of body, if we
-      // have reached the end of the data to be sent or we should
-      // expect the first byte of the body at the next read.
-      
-      if (splitbyte < rlen)
-        size -= rlen-splitbyte;
-      else if (splitbyte==0 || size == 0x7FFFFFFFFFFFFFFFl)
-        size = 0;
-      
-      // this is a http proxy so maybe theres no need to read all body data
-      
-      // Now read all the body and write it to f
-      //buf = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
-      while ( rlen >= 0 && size > 0 )
-      {
-        rlen = in.read(buf, 0, (int) Math.min(buf.length, size));
-        if (rlen > 0)
+        if (rlen == 0)
         {
-          size -= rlen;
-          b.write(buf, 0, rlen);
+          sendError( HTTP_BADREQUEST, "BAD REQUEST: Empty request." );
+        }
+        
+        if (!foundHeaderEnd)
+        {
+          sendError(HTTP_PAYLOAD_TOO_LARGE, "PAYLOAD TOO LARGE: Malformed request or request headers too large.");
+        }
+        
+        // Create a BufferedReader for parsing the header.
+        ByteArrayInputStream hbis = new ByteArrayInputStream(buf, 0, rlen);
+        BufferedReader hin = new BufferedReader( new InputStreamReader( hbis, "ISO-8859-1" ));
+        Properties pre = new VTConfigurationProperties();
+        Properties parms = new VTConfigurationProperties();
+        Properties headers = new VTConfigurationProperties();
+        //Properties files = new VTConfigurationProperties();
+        
+        // Decode the header into parms and header java properties
+        long size = decodeHeader(hin, pre, parms, headers);
+        
+        if (size == -1)
+        {
+          sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing line terminator in request." );
+        }
+        
+        String method = pre.getProperty("method");
+        String uri = pre.getProperty("uri");
+        
+        if (!keepAlive)
+        {
+          String connection = findProperty(headers, "Connection");
+          if (connection != null && connection.toLowerCase().startsWith("keep-alive"))
+          {
+            keepAlive = true;
+          }
+          connection = findProperty(headers, "Proxy-Connection");
+          if (connection != null && connection.toLowerCase().startsWith("keep-alive"))
+          {
+            keepAlive = true;
+          }
+        }
+        
+        if (method == null)
+        {
+          sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing method in request." );
+        }
+        
+        if (uri == null)
+        {
+          sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing URI in request." );
+        }
+        
+        if (size == 0)
+        {
+          size = 0x7FFFFFFFFFFFFFFFL;
+        }
+        
+        // Write the part of body already read to ByteArrayOutputStream b
+        ByteArrayOutputStream h = new ByteArrayOutputStream();
+        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        
+        if (splitbyte < rlen)
+        {
+          b.write(buf, splitbyte, rlen-splitbyte);
+        }
+        
+        h.write(buf, 0, splitbyte);
+        
+        // While Firefox sends on the first read all the data fitting
+        // our buffer, Chrome and Opera send only the headers even if
+        // there is data for the body. We do some magic here to find
+        // out whether we have already consumed part of body, if we
+        // have reached the end of the data to be sent or we should
+        // expect the first byte of the body at the next read.
+        
+        if (splitbyte < rlen)
+          size -= rlen-splitbyte;
+        else if (splitbyte==0 || size == 0x7FFFFFFFFFFFFFFFl)
+          size = 0;
+        
+        // this is a http proxy so maybe theres no need to read all body data
+        
+        // Now read all the body and write it to f
+        //buf = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
+        while ( rlen >= 0 && size > 0 )
+        {
+          rlen = in.read(buf, 0, (int) Math.min(buf.length, size));
+          if (rlen > 0)
+          {
+            size -= rlen;
+            b.write(buf, 0, rlen);
+          }
+        }
+        
+        // Get the raw body as a byte []
+        byte[] bodyData = b.toByteArray();
+        byte[] headerData = h.toByteArray();
+        
+        // Ok, now do the serve()
+        serve(uri, method, pre, headers, headerData, bodyData, usernames, passwords, mySocket, in, proxy );
+      }
+      catch ( InterruptedException ie )
+      {
+        // Thrown by sendError, ignore and exit the thread.
+      }
+      catch ( Throwable e )
+      {
+        //e.printStackTrace();
+        try
+        {
+          sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Exception: " + e.getMessage());
+        }
+        catch ( Throwable t ) 
+        {
+          
         }
       }
-      
-      // Get the raw body as a byte []
-      byte[] bodyData = b.toByteArray();
-      byte[] headerData = h.toByteArray();
-      
-      // Ok, now do the serve()
-      serve(uri, method, pre, headers, headerData, bodyData, usernames, passwords, mySocket, in, proxy );
-    }
-    catch ( InterruptedException ie )
-    {
-      // Thrown by sendError, ignore and exit the thread.
-    }
-    catch ( Throwable e )
-    {
-      //e.printStackTrace();
-      try
+      finally
       {
-        sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Exception: " + e.getMessage());
-      }
-      catch ( Throwable t ) 
-      {
-        
+        try
+        {
+          //mySocket.getOutputStream().close();
+          //mySocket.close();
+        }
+        catch ( Throwable t ) 
+        {
+          
+        }
       }
     }
-    finally
-    {
-      try
-      {
-        //mySocket.getOutputStream().close();
-        //mySocket.close();
-      }
-      catch ( Throwable t ) 
-      {
-        
-      }
-    }
+    //System.out.println("finished proxy");
   }
   
   public void serve(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, String[] usernames, String[] passwords, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
@@ -1107,6 +1128,17 @@ public class VTNanoHTTPDProxySession implements Runnable
       PrintWriter pw = new PrintWriter( new OutputStreamWriter(out, "ISO-8859-1") );
       pw.print("HTTP/1.1 " + status + " \r\n");
       
+      if (keepAlive)
+      {
+        pw.print("Proxy-Connection: keep-alive\r\n");
+        pw.print("Connection: keep-alive\r\n");
+      }
+      else
+      {
+        pw.print("Proxy-Connection: close\r\n");
+        pw.print("Connection: close\r\n");
+      }
+      
       if ( mime != null && mime.length() > 0)
         pw.print("Content-Type: " + mime + "\r\n");
       
@@ -1154,6 +1186,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   }
   
   private Socket mySocket;
+  private boolean keepAlive;
   private InputStream myIn;
   private boolean digestAuthentication;
   private String[] usernames;
@@ -1174,6 +1207,24 @@ public class VTNanoHTTPDProxySession implements Runnable
     gmtFrmt = new java.text.SimpleDateFormat( "E, d MMM yyyy HH:mm:ss 'GMT'", Locale.US);
     gmtFrmt.setTimeZone(TimeZone.getTimeZone("GMT"));
   }
+  
+  private static String findProperty(Properties properties, String property)
+  {
+    String data = properties.getProperty(property);
+    if (data == null)
+    {
+      for (Object key : properties.keySet())
+      {
+        if (key.toString().toLowerCase().equals(property.toLowerCase()))
+        {
+          data = properties.getProperty(key.toString());
+          break;
+        }
+      }
+    }
+    return data;
+  }
+  
   /**
    * The distribution licence
    */

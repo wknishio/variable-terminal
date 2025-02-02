@@ -42,6 +42,10 @@ public class VTFTPNativeFileSystem extends NativeFileSystem
   
   public File findFile(File cwd, String path) throws IOException
   {
+    if (path.length() == 2 && path.endsWith(":"))
+    {
+      return findFile(path + "/");
+    }
 //    File file;
 //    if (cwd == root)
 //    {
