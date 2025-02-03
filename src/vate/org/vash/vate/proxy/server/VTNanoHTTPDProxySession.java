@@ -468,10 +468,10 @@ public class VTNanoHTTPDProxySession implements Runnable
   {
     if (digestAuthentication)
     {
-      int result = checkProxyAuthenticatedDigest(headers, method, usernames, passwords, "Proxy");
+      int result = checkProxyAuthenticatedDigest(headers, method, usernames, passwords, "SocksPlusHttpProxy");
       if (result != 0)
       {
-        requireProxyAuthenticationDigest("Proxy", generateNonce("SocksPlusHttpProxy"), result == -2);
+        requireProxyAuthenticationDigest("SocksPlusHttpProxy", generateNonce("SocksPlusHttpProxy"), result == -2);
       }
     }
     else
@@ -487,7 +487,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       }
       if (!checked)
       {
-        requireProxyAuthenticationBasic("Proxy");
+        requireProxyAuthenticationBasic("SocksPlusHttpProxy");
         return;
       }
     }
@@ -579,10 +579,11 @@ public class VTNanoHTTPDProxySession implements Runnable
     {
       return -1;
     }
+    
     Map<String, String> values = parseHeader(proxyAuthorization);
     
-    String userName = values.get("username");
-    String realmName = values.get("realm");
+    String usernameValue = values.get("username");
+    String realmValue = values.get("realm");
     String nonce = values.get("nonce");
     String nc = values.get("nc");
     String cnonce = values.get("cnonce");
@@ -590,10 +591,15 @@ public class VTNanoHTTPDProxySession implements Runnable
     String uri = values.get("uri");
     String response = values.get("response");
     
+    if (!usernameValue.equals(username) || !realmValue.equals(realm))
+    {
+      return -1;
+    }
+    
     String a2 = method + ":" + uri;
     String md5a2 = DigestUtils.md5Hex(a2.getBytes("ISO-8859-1"));
     
-    String a1 = userName + ":" + realmName + ":" + password;
+    String a1 = usernameValue + ":" + realmValue + ":" + password;
     String md5a1 = DigestUtils.md5Hex(a1.getBytes("ISO-8859-1"));
     
     String serverDigestValue = md5a1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + qop + ":" + md5a2;
@@ -610,23 +616,6 @@ public class VTNanoHTTPDProxySession implements Runnable
         return 0;
       }
       return -2;
-//      Long timestamp = VALID_DIGEST_NONCES.get(nOnce);
-//      if (timestamp != null)
-//      {
-//        if (timestamp >= System.currentTimeMillis())
-//        {
-//          return 0;
-//        }
-//        else
-//        {
-//          VALID_DIGEST_NONCES.remove(nOnce);
-//          return -2;
-//        }
-//      }
-//      else
-//      {
-//        return -2;
-//      }
     }
     
     return -1;
