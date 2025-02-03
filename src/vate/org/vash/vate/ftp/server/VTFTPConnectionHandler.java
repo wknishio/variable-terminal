@@ -47,7 +47,6 @@ public class VTFTPConnectionHandler extends FTPConnectionHandler
       {
         return passiveServer.accept();
       }
-      
     }
     else if(secureData)
     {

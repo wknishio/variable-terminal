@@ -58,5 +58,5 @@ public class VTFTPConnection extends FTPConnection
     {
       con.close();
     }
-}
+  }
 }
