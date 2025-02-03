@@ -982,6 +982,12 @@ public class VTNanoHTTPDProxySession implements Runnable
       // case insensitive and vary by client.
       if ( st.hasMoreTokens())
       {
+        String protocol = st.nextToken();
+        pre.put("protocol", protocol);
+        if (protocol.toUpperCase().contains("HTTP/1.1"))
+        {
+          keepAlive = true;
+        }
         String line = in.readLine();
         //pre.put("version", line);
         while ( line != null && line.trim().length() > 0 )
