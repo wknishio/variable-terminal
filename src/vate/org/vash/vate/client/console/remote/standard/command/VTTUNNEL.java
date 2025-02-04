@@ -46,7 +46,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
     if (parsed.length == 1)
     {
       message.setLength(0);
-      message.append("\nVT>List of connection tunnels:\nVT>");
+      message.append("\nVT>List of connection network tunnels:\nVT>");
       //Set<VTTunnelChannelSocketListener> channels = session.getTunnelsHandler().getConnection().getChannels();
       for (VTTunnelChannelBindSocketListener listener : session.getTunnelsHandler().getConnection().getBindListeners())
       {
@@ -73,7 +73,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
       if (parsed[1].toUpperCase().contains("L") && !parsed[1].toUpperCase().contains("R"))
       {
         message.setLength(0);
-        message.append("\nVT>List of client connection tunnels:\nVT>");
+        message.append("\nVT>List of client connection network tunnels:\nVT>");
         //Set<VTTunnelChannelSocketListener> channels = session.getTunnelsHandler().getConnection().getChannels();
         for (VTTunnelChannelBindSocketListener listener : session.getTunnelsHandler().getConnection().getBindListeners())
         {
@@ -90,7 +90,7 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
             message.append("\nVT>Client FTP bind address: [" + listener.getChannel().getBindHost() + " " + listener.getChannel().getBindPort() + "]\nVT>");
           }
         }
-        message.append("\nVT>End of client connection tunnels list\nVT>");
+        message.append("\nVT>End of client connection network tunnels list\nVT>");
         VTConsole.print(message.toString());
       }
       else if (parsed[1].toUpperCase().contains("R"))

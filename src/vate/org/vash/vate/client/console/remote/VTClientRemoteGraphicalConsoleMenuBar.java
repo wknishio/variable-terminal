@@ -303,8 +303,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "List Any Tunnels", "*VTTUNNEL\n"));
     networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Local To Remote", "*VTTUNNEL L"));
     networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Remote To Local", "*VTTUNNEL R"));
-    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Local FTP Tunnel", "*VTTUNNEL LF"));
-    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Remote FTP Tunnel", "*VTTUNNEL RF"));
+    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Local To Remote FTP", "*VTTUNNEL LF"));
+    networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Remote To Local FTP", "*VTTUNNEL RF"));
     networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTTUNNEL\n"));
     
     networkMenu.add(networkInterfacesMenu);
