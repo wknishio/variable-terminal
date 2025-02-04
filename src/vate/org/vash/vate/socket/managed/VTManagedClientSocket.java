@@ -212,7 +212,7 @@ public class VTManagedClientSocket
     vtclient.setPort(port);
   }
   
-  public VTManagedClientSocket(String host, int port, String key)
+  public VTManagedClientSocket(String host, int port, String type, String key)
   {
     vtclient = new VTClient();
     vtclient.setDaemon(true);
@@ -220,6 +220,7 @@ public class VTManagedClientSocket
     vtclient.setSessionShell("N");
     vtclient.setAddress(host);
     vtclient.setPort(port);
+    vtclient.setEncryptionType(type);
     try
     {
       if (key != null)
@@ -233,7 +234,7 @@ public class VTManagedClientSocket
     }
   }
   
-  public VTManagedClientSocket(String host, int port, String user, String password)
+  public VTManagedClientSocket(String host, int port, String type, String key, String user, String password)
   {
     vtclient = new VTClient();
     vtclient.setDaemon(true);
@@ -243,18 +244,7 @@ public class VTManagedClientSocket
     vtclient.setPort(port);
     vtclient.setUser(user);
     vtclient.setPassword(password);
-  }
-  
-  public VTManagedClientSocket(String host, int port, String key, String user, String password)
-  {
-    vtclient = new VTClient();
-    vtclient.setDaemon(true);
-    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
-    vtclient.setSessionShell("N");
-    vtclient.setAddress(host);
-    vtclient.setPort(port);
-    vtclient.setUser(user);
-    vtclient.setPassword(password);
+    vtclient.setEncryptionType(type);
     try
     {
       if (key != null)
@@ -279,7 +269,7 @@ public class VTManagedClientSocket
     vtclient.setPort(port);
   }
   
-  public VTManagedClientSocket(boolean active, String host, int port, String key)
+  public VTManagedClientSocket(boolean active, String host, int port, String type, String key)
   {
     vtclient = new VTClient();
     vtclient.setActive(active);
@@ -288,6 +278,7 @@ public class VTManagedClientSocket
     vtclient.setSessionShell("N");
     vtclient.setAddress(host);
     vtclient.setPort(port);
+    vtclient.setEncryptionType(type);
     try
     {
       if (key != null)
@@ -301,7 +292,7 @@ public class VTManagedClientSocket
     }
   }
   
-  public VTManagedClientSocket(boolean active, String host, int port, String user, String password)
+  public VTManagedClientSocket(boolean active, String host, int port, String type, String key, String user, String password)
   {
     vtclient = new VTClient();
     vtclient.setActive(active);
@@ -312,19 +303,7 @@ public class VTManagedClientSocket
     vtclient.setPort(port);
     vtclient.setUser(user);
     vtclient.setPassword(password);
-  }
-  
-  public VTManagedClientSocket(boolean active, String host, int port, String key, String user, String password)
-  {
-    vtclient = new VTClient();
-    vtclient.setActive(active);
-    vtclient.setDaemon(true);
-    vtclient.addSessionListener(new VTManagedClientSocketClientSessionListener());
-    vtclient.setSessionShell("N");
-    vtclient.setAddress(host);
-    vtclient.setPort(port);
-    vtclient.setUser(user);
-    vtclient.setPassword(password);
+    vtclient.setEncryptionType(type);
     try
     {
       if (key != null)
@@ -369,6 +348,26 @@ public class VTManagedClientSocket
   public void loadClientSettingsProperties(Properties properties)
   {
     vtclient.loadClientSettingsProperties(properties);
+  }
+  
+  public int getPingInterval()
+  {
+    return vtclient.getPingIntervalMilliseconds();
+  }
+  
+  public void setPingInterval(int interval)
+  {
+    vtclient.setPingInterval(interval);
+  }
+  
+  public int getPingLimit()
+  {
+    return vtclient.getPingLimitMilliseconds();
+  }
+  
+  public void setPingLimit(int limit)
+  {
+    vtclient.setPingLimit(limit);
   }
   
   public void start()

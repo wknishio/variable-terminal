@@ -212,7 +212,7 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
   }
   
-  public VTManagedServerSocket(String host, int port, String key)
+  public VTManagedServerSocket(String host, int port, String type, String key)
   {
     vtserver = new VTServer();
     vtserver.setDaemon(true);
@@ -220,6 +220,7 @@ public class VTManagedServerSocket
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
+    vtserver.setEncryptionType(type);
     try
     {
       if (key != null)
@@ -233,7 +234,7 @@ public class VTManagedServerSocket
     }
   }
   
-  public VTManagedServerSocket(String host, int port, String user, String password)
+  public VTManagedServerSocket(String host, int port, String type, String key, String user, String password)
   {
     vtserver = new VTServer();
     vtserver.setDaemon(true);
@@ -242,17 +243,7 @@ public class VTManagedServerSocket
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setUniqueUserCredential(user, password);
-  }
-  
-  public VTManagedServerSocket(String host, int port, String key, String user, String password)
-  {
-    vtserver = new VTServer();
-    vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedServerSocketServerSessionListener());
-    vtserver.setSessionShell("N");
-    vtserver.setAddress(host);
-    vtserver.setPort(port);
-    vtserver.setUniqueUserCredential(user, password);
+    vtserver.setEncryptionType(type);
     try
     {
       if (key != null)
@@ -277,7 +268,7 @@ public class VTManagedServerSocket
     vtserver.setPort(port);
   }
   
-  public VTManagedServerSocket(boolean passive, String host, int port, String key)
+  public VTManagedServerSocket(boolean passive, String host, int port, String type, String key)
   {
     vtserver = new VTServer();
     vtserver.setPassive(passive);
@@ -286,6 +277,7 @@ public class VTManagedServerSocket
     vtserver.setSessionShell("N");
     vtserver.setAddress(host);
     vtserver.setPort(port);
+    vtserver.setEncryptionType(type);
     try
     {
       if (key != null)
@@ -299,7 +291,7 @@ public class VTManagedServerSocket
     }
   }
   
-  public VTManagedServerSocket(boolean passive, String host, int port, String user, String password)
+  public VTManagedServerSocket(boolean passive, String host, int port, String type, String key, String user, String password)
   {
     vtserver = new VTServer();
     vtserver.setPassive(passive);
@@ -309,18 +301,7 @@ public class VTManagedServerSocket
     vtserver.setAddress(host);
     vtserver.setPort(port);
     vtserver.setUniqueUserCredential(user, password);
-  }
-  
-  public VTManagedServerSocket(boolean passive, String host, int port, String key, String user, String password)
-  {
-    vtserver = new VTServer();
-    vtserver.setPassive(passive);
-    vtserver.setDaemon(true);
-    vtserver.addSessionListener(new VTManagedServerSocketServerSessionListener());
-    vtserver.setSessionShell("N");
-    vtserver.setAddress(host);
-    vtserver.setPort(port);
-    vtserver.setUniqueUserCredential(user, password);
+    vtserver.setEncryptionType(type);
     try
     {
       if (key != null)
@@ -365,6 +346,26 @@ public class VTManagedServerSocket
   public void loadServerSettingsProperties(Properties properties)
   {
     vtserver.loadServerSettingsProperties(properties);
+  }
+  
+  public int getPingInterval()
+  {
+    return vtserver.getPingIntervalMilliseconds();
+  }
+  
+  public void setPingInterval(int interval)
+  {
+    vtserver.setPingInterval(interval);
+  }
+  
+  public int getPingLimit()
+  {
+    return vtserver.getPingLimitMilliseconds();
+  }
+  
+  public void setPingLimit(int limit)
+  {
+    vtserver.setPingLimit(limit);
   }
   
   public void start()
