@@ -408,7 +408,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                   }
                   else
                   {
-                    datagramSocket = new VTTunnelDatagramSocket(pipedSocket, connection.getExecutorService());
+                    datagramSocket = new VTTunnelDatagramSocket(pipedSocket, connection.getExecutorService(), port);
                     datagramSocket.setSoTimeout(dataTimeout);
                   }
                 }

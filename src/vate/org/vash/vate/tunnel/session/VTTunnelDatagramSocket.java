@@ -61,6 +61,18 @@ public class VTTunnelDatagramSocket extends DatagramSocket implements Closeable,
     this.client = false;
   }
   
+  public VTTunnelDatagramSocket(Socket tunnelSocket, ExecutorService executorService, int port) throws IOException
+  {
+    super((SocketAddress)null);
+    this.tunnelSocket = tunnelSocket;
+    this.executorService = executorService;
+    this.remoteSocket = new DatagramSocket((SocketAddress)null);
+    this.remoteSocket.bind(new InetSocketAddress(port));
+    this.localAddress = null;
+    this.localPort = 0;
+    this.client = false;
+  }
+  
   public VTTunnelDatagramSocket(Socket tunnelSocket, ExecutorService executorService, String address, int port) throws IOException
   {
     super((SocketAddress)null);
