@@ -188,17 +188,17 @@ public class VTFileTransferServerTransaction implements Runnable
     this.directory = false;
   }
   
-  private boolean getFileStatus()
+  private boolean checkFileStatus()
   {
     return (writeLocalFileStatus() && readRemoteFileStatus());
   }
   
-  private boolean getFileAccess(boolean upload)
+  private boolean checkFileAccess(boolean upload)
   {
     return (writeLocalFileAccess(upload) && readRemoteFileAccess());
   }
   
-  private boolean getFileSizes()
+  private boolean checkFileSizes()
   {
     return (writeLocalFileSize() && readRemoteFileSize() && localFileSize >= 0);
   }
@@ -208,13 +208,13 @@ public class VTFileTransferServerTransaction implements Runnable
 //    return (writeLocalFileChecksum(calculate) && readRemoteFileChecksum());
 //  }
   
-  private boolean getNextFileChunkChecksum(long checksum)
+  private boolean checkNextFileChunkChecksum(long checksum)
   {
     localDigest = checksum;
     return (writeNextFileChunkChecksum(checksum) && readNextFileChunkChecksum());
   }
   
-  private boolean getNextFileChunkChecksum(byte[] data, int offset, int len)
+  private boolean checkNextFileChunkChecksum(byte[] data, int offset, int len)
   {
     messageDigest.reset();
     messageDigest.update(data, offset, len);
@@ -222,7 +222,7 @@ public class VTFileTransferServerTransaction implements Runnable
     return (writeNextFileChunkChecksum(localDigest) && readNextFileChunkChecksum());
   }
   
-  private boolean getContinueTransfer(boolean ok)
+  private boolean checkContinueTransfer(boolean ok)
   {
     return (writeContinueTransfer(ok) && readContinueTransfer() && ok);
   }
@@ -675,7 +675,7 @@ public class VTFileTransferServerTransaction implements Runnable
     fileTransferFile = new File(convertFilePath(currentPath));
     try
     {
-      if (getFileStatus())
+      if (checkFileStatus())
       {
         if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_DIRECTORY)
         {
@@ -716,7 +716,7 @@ public class VTFileTransferServerTransaction implements Runnable
             
           }
         }
-        if (checked && getFileAccess(true))
+        if (checked && checkFileAccess(true))
         {
           if (!(remoteFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE || remoteFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_WRITE_ONLY))
           {
@@ -729,7 +729,7 @@ public class VTFileTransferServerTransaction implements Runnable
           localFileSize = 0;
           remoteFileSize = 0;
           currentOffset = 0;
-          if (checked && !directory && getFileSizes())
+          if (checked && !directory && checkFileSizes())
           {
             if (resuming)
             {
@@ -770,7 +770,7 @@ public class VTFileTransferServerTransaction implements Runnable
         //fileTransferFileInputStream = Channels.newInputStream(fileTransferRandomAccessFile.getChannel());
         fileTransferFileInputStream = new FileInputStream(fileTransferRandomAccessFile.getFD());
       }
-      return getContinueTransfer(true);
+      return checkContinueTransfer(true);
     }
     catch (Throwable e)
     {
@@ -782,7 +782,7 @@ public class VTFileTransferServerTransaction implements Runnable
       {
         
       }
-      return getContinueTransfer(false);
+      return checkContinueTransfer(false);
     }
   }
   
@@ -808,7 +808,7 @@ public class VTFileTransferServerTransaction implements Runnable
         }
         for (String nextPath : subPaths)
         {
-          ok = getContinueTransfer(ok);
+          ok = checkContinueTransfer(ok);
           if (ok)
           {
             if (writeNextFilePath(nextPath))
@@ -830,7 +830,7 @@ public class VTFileTransferServerTransaction implements Runnable
         }
         if (ok)
         {
-          ok = getContinueTransfer(ok);
+          ok = checkContinueTransfer(ok);
           if (ok)
           {
             // folder ok
@@ -840,7 +840,7 @@ public class VTFileTransferServerTransaction implements Runnable
         else
         {
           // something wrong with last path
-          ok = getContinueTransfer(ok);
+          ok = checkContinueTransfer(ok);
         }
         return false;
       }
@@ -880,7 +880,7 @@ public class VTFileTransferServerTransaction implements Runnable
           {
             if (resumable && currentOffset < remoteFileSize)
             {
-              ok = getNextFileChunkChecksum(fileTransferBuffer, 0, readedBytes);
+              ok = checkNextFileChunkChecksum(fileTransferBuffer, 0, readedBytes);
               if (ok)
               {
                 if (localDigest != remoteDigest)
@@ -963,7 +963,7 @@ public class VTFileTransferServerTransaction implements Runnable
     fileTransferFile = new File(convertFilePath(currentPath));
     try
     {
-      if (getFileStatus())
+      if (checkFileStatus())
       {
         if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_NOT_FOUND)
         {
@@ -1011,7 +1011,7 @@ public class VTFileTransferServerTransaction implements Runnable
             }
           }
         }
-        if (checked && getFileAccess(false))
+        if (checked && checkFileAccess(false))
         {
           if (!(remoteFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE || remoteFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_ONLY))
           {
@@ -1024,7 +1024,7 @@ public class VTFileTransferServerTransaction implements Runnable
           localFileSize = 0;
           remoteFileSize = 0;
           currentOffset = 0;
-          if (checked && !directory && getFileSizes())
+          if (checked && !directory && checkFileSizes())
           {
             if (resuming)
             {
@@ -1065,7 +1065,7 @@ public class VTFileTransferServerTransaction implements Runnable
         //fileTransferFileOutputStream = Channels.newOutputStream(fileTransferRandomAccessFile.getChannel());
         fileTransferFileOutputStream = new FileOutputStream(fileTransferRandomAccessFile.getFD());
       }
-      return getContinueTransfer(true);
+      return checkContinueTransfer(true);
     }
     catch (Throwable e)
     {
@@ -1077,7 +1077,7 @@ public class VTFileTransferServerTransaction implements Runnable
       {
         
       }
-      return getContinueTransfer(false);
+      return checkContinueTransfer(false);
     }
   }
   
@@ -1113,7 +1113,7 @@ public class VTFileTransferServerTransaction implements Runnable
         String nextPath = " ";
         while (true)
         {
-          ok = getContinueTransfer(ok);
+          ok = checkContinueTransfer(ok);
           if (ok)
           {
             nextPath = readNextFilePath();
@@ -1193,7 +1193,7 @@ public class VTFileTransferServerTransaction implements Runnable
         {
           if (localFileChunkChecksums.size() > 0)
           {
-            ok = getNextFileChunkChecksum(localFileChunkChecksums.remove(0));
+            ok = checkNextFileChunkChecksum(localFileChunkChecksums.remove(0));
             if (ok)
             {
               if (localDigest == remoteDigest)
