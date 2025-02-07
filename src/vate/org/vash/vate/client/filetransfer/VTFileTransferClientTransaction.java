@@ -1101,10 +1101,10 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       else
       {
-        String rootFolder = null;
-        if (rootLevel && !currentPath.equals(currentRootPath))
+        String rootFolder = fileNameFromPath(currentRootPath);
+        String currentFolder = fileNameFromPath(currentPath);
+        if (rootLevel && !currentFolder.equals(rootFolder))
         {
-          rootFolder = fileNameFromPath(currentRootPath);
           File rootFile = new File(appendToPath(currentPath, rootFolder));
           if (!rootFile.exists())
           {
@@ -1130,7 +1130,7 @@ public class VTFileTransferClientTransaction implements Runnable
               if (!("".equals(nextPath)))
               {
                 // receive next path try subfile download
-                if (rootLevel)
+                if (rootLevel && !currentFolder.equals(rootFolder))
                 {
                   ok = tryDownload(appendToPath(appendToPath(currentPath, rootFolder), nextPath), false);
                 }

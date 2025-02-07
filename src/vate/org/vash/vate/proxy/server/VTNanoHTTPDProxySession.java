@@ -386,20 +386,11 @@ public class VTNanoHTTPDProxySession implements Runnable
           sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Missing URI in request." );
         }
         
-        if (!method.equalsIgnoreCase("CONNECT") && !uri.toLowerCase().contains("://"))
-        {
-          //ignore requests not intended for http proxy and disconnect
-          sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Malformed absolute form URI in request." );
-          return;
-        }
-        
         if (size == 0)
         {
           size = 0x7FFFFFFFFFFFFFFFL;
         }
-        
-        // Write the part of body already read to ByteArrayOutputStream b
-        //ByteArrayOutputStream head = new ByteArrayOutputStream();
+        // Write the part of body already read to ByteArrayOutputStream
         ByteArrayOutputStream body = new ByteArrayOutputStream();
         
         if (splitbyte < rlen)
@@ -407,40 +398,27 @@ public class VTNanoHTTPDProxySession implements Runnable
           body.write(buf, splitbyte, rlen-splitbyte);
         }
         
-        //head.write(buf, 0, splitbyte);
+        if (splitbyte < rlen)
+        {
+          size -= rlen-splitbyte;
+        }
+        else if (splitbyte==0 || size == 0x7FFFFFFFFFFFFFFFl)
+        {
+          size = 0;
+        }
         
-        // While Firefox sends on the first read all the data fitting
-        // our buffer, Chrome and Opera send only the headers even if
-        // there is data for the body. We do some magic here to find
-        // out whether we have already consumed part of body, if we
-        // have reached the end of the data to be sent or we should
-        // expect the first byte of the body at the next read.
+        byte[] partialBodyData = body.toByteArray();
         
-//        if (splitbyte < rlen)
-//          size -= rlen-splitbyte;
-//        else if (splitbyte==0 || size == 0x7FFFFFFFFFFFFFFFl)
-//          size = 0;
-        
-        // this is a http proxy so maybe theres no need to read all body data
-        
-        // Now read all the body and write it to f
-        //buf = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
-//        while ( rlen >= 0 && size > 0 )
-//        {
-//          rlen = is.read(buf, 0, (int) Math.min(buf.length, size));
-//          if (rlen > 0)
-//          {
-//            size -= rlen;
-//            body.write(buf, 0, rlen);
-//          }
-//        }
-        
-        // Get the raw body as a byte []
-        byte[] bodyData = body.toByteArray();
-        //byte[] headerData = head.toByteArray();
-        
-        // Ok, now do the serve()
-        serve(uri, method, pre, headers, files, bodyData, usernames, passwords, mySocket, is, proxy );
+        if (!method.equalsIgnoreCase("CONNECT") && !uri.toLowerCase().contains("://"))
+        {
+          //ignore requests not intended for http proxy and disconnect
+          sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Malformed absolute form URI in request." );
+          return;
+        }
+        else
+        {
+          serveProxy(uri, method, pre, headers, files, partialBodyData, usernames, passwords, mySocket, is, proxy);
+        }
       }
       catch ( InterruptedException ie )
       {
@@ -474,26 +452,26 @@ public class VTNanoHTTPDProxySession implements Runnable
     //System.out.println("finished proxy");
   }
   
-  public void serve(String uri, String method, Properties pre, Properties headers, Properties files, byte[] bodyData, String[] usernames, String[] passwords, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
-  {
-    if (method.equalsIgnoreCase("CONNECT") || uri.toLowerCase().contains("://"))
-    {
-      serveProxy(uri, method, pre, headers, files, bodyData, usernames, passwords, clientSocket, clientInput, connectProxy);
-    }
-    else
-    {
-      sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Malformed absolute form URI in request." );
-    }
-  }
+//  public void serve(String uri, String method, Properties pre, Properties headers, Properties files, byte[] bodyData, String[] usernames, String[] passwords, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
+//  {
+//    if (method.equalsIgnoreCase("CONNECT") || uri.toLowerCase().contains("://"))
+//    {
+//      serveProxy(uri, method, pre, headers, files, bodyData, usernames, passwords, clientSocket, clientInput, connectProxy);
+//    }
+//    else
+//    {
+//      sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Malformed absolute form URI in request." );
+//    }
+//  }
   
   public void serveProxy(String uri, String method, Properties pre, Properties headers, Properties files, byte[] bodyData, String[] usernames, String[] passwords, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
   {
     if (digestAuthentication)
     {
-      int result = checkProxyAuthenticatedDigest(headers, method, usernames, passwords, "SocksPlusHttpProxy");
+      int result = checkAuthenticatedDigest("Proxy-Authorization", headers, method, usernames, passwords, "SocksPlusHttpProxy");
       if (result != 0)
       {
-        requireProxyAuthenticationDigest("SocksPlusHttpProxy", generateNonce("SocksPlusHttpProxy"), result == -2);
+        requireAuthenticationDigest("Proxy-Authenticate", "SocksPlusHttpProxy", generateNonce("SocksPlusHttpProxy"), result == -2);
       }
     }
     else
@@ -501,7 +479,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       boolean checked = false;
       for (int i = 0; i < usernames.length; i++)
       {
-        checked |= checkProxyAuthenticatedBasic(headers, usernames[i], passwords[i]);
+        checked |= checkAuthenticatedBasic("Proxy-Authorization", headers, usernames[i], passwords[i]);
         if (checked)
         {
           break;
@@ -509,7 +487,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       }
       if (!checked)
       {
-        requireProxyAuthenticationBasic("SocksPlusHttpProxy");
+        requireAuthenticationBasic("Proxy-Authenticate", "SocksPlusHttpProxy");
         return;
       }
     }
@@ -528,7 +506,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
   }
   
-  private boolean checkProxyAuthenticatedBasic(Properties headers, String username, String password) throws UnsupportedEncodingException
+  private boolean checkAuthenticatedBasic(String authorizationHeader, Properties headers, String username, String password) throws UnsupportedEncodingException
   {
     if (username == null || password == null)
     {
@@ -537,7 +515,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     String proxyAuthorization = null;
     for (Object headerName : headers.keySet())
     {
-      if (headerName != null && headerName.toString().equalsIgnoreCase("Proxy-Authorization"))
+      if (headerName != null && headerName.toString().equalsIgnoreCase(authorizationHeader))
       {
         proxyAuthorization = headers.getProperty(headerName.toString());
       }
@@ -550,41 +528,41 @@ public class VTNanoHTTPDProxySession implements Runnable
     return false;
   }
   
-  private void requireProxyAuthenticationBasic(String realm) throws UnsupportedEncodingException, InterruptedException
+  private void requireAuthenticationBasic(String requireHeader, String realm) throws UnsupportedEncodingException, InterruptedException
   {
     Response resp = new Response();
     if (realm != null && realm.length() > 0)
     {
-      resp.headers.put("Proxy-Authenticate", "Basic realm=\"" + realm + "\"");
+      resp.headers.put(requireHeader, "Basic realm=\"" + realm + "\"");
     }
     else
     {
-      resp.headers.put("Proxy-Authenticate", "Basic");
+      resp.headers.put(requireHeader, "Basic");
     }
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
     sendError(resp.status, MIME_PLAINTEXT, resp.headers, null);
   }
   
-  private int checkProxyAuthenticatedDigest(Properties headers, String method, String[] usernames, String[] passwords, String realm) throws UnsupportedEncodingException
+  private int checkAuthenticatedDigest(String authorizationHeader, Properties headers, String method, String[] usernames, String[] passwords, String realm) throws UnsupportedEncodingException
   {
     if (usernames == null || passwords == null)
     {
       return 0;
     }
-    String proxyAuthorization = null;
+    String authorizationValue = null;
     for (Object headerName : headers.keySet())
     {
-      if (headerName != null && headerName.toString().equalsIgnoreCase("Proxy-Authorization"))
+      if (headerName != null && headerName.toString().equalsIgnoreCase(authorizationHeader))
       {
-        proxyAuthorization = headers.getProperty(headerName.toString());
+        authorizationValue = headers.getProperty(headerName.toString());
       }
     }
-    if (proxyAuthorization != null)
+    if (authorizationValue != null)
     {
       int validated = -1;
       for (int i = 0; i < usernames.length; i++)
       {
-        validated = validateProxyAuthorizationDigest(proxyAuthorization, method, usernames[i], passwords[i], realm);
+        validated = validateAuthorizationDigest(authorizationValue, method, usernames[i], passwords[i], realm);
         if (validated == 0 || validated == -2)
         {
           return validated;
@@ -594,19 +572,19 @@ public class VTNanoHTTPDProxySession implements Runnable
     return -1;
   }
   
-  private int validateProxyAuthorizationDigest(String proxyAuthorization, String method, String username, String password, String realm) throws UnsupportedEncodingException
+  private int validateAuthorizationDigest(String authorizationValue, String method, String username, String password, String realm) throws UnsupportedEncodingException
   {
     //System.out.println("proxyAuthorization=" + proxyAuthorization);
-    if (proxyAuthorization == null)
+    if (authorizationValue == null)
     {
       return -1;
     }
-    if (!proxyAuthorization.toLowerCase().startsWith("Digest ".toLowerCase()))
+    if (!authorizationValue.toLowerCase().startsWith("Digest ".toLowerCase()))
     {
       return -1;
     }
     
-    Map<String, String> values = parseHeader(proxyAuthorization);
+    Map<String, String> values = parseHeader(authorizationValue);
     
     String usernameValue = values.get("username");
     String realmValue = values.get("realm");
@@ -647,10 +625,10 @@ public class VTNanoHTTPDProxySession implements Runnable
     return -1;
   }
   
-  private void requireProxyAuthenticationDigest(String realm, String nonce, boolean stale) throws UnsupportedEncodingException, InterruptedException
+  private void requireAuthenticationDigest(String requireHeader, String realm, String nonce, boolean stale) throws UnsupportedEncodingException, InterruptedException
   {
     Response resp = new Response();
-    resp.headers.put("Proxy-Authenticate", "Digest realm=\"" + realm + "\", "
+    resp.headers.put(requireHeader, "Digest realm=\"" + realm + "\", "
         +  "qop=\"auth\", nonce=\"" + nonce + "\", " + "opaque=\""
         + Hex.toHexString(xxhash64.digest(nonce.getBytes("ISO-8859-1"))) + "\"" + (stale ? ", stale=\"true\"" : ""));
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
@@ -721,18 +699,6 @@ public class VTNanoHTTPDProxySession implements Runnable
     String host = "";
     int port = 80;
     String path = "/";
-    
-    //System.out.println("method=[" + method + "]");
-    //System.out.println("uri=[" + uri + "]");
-    //System.out.println("body=[" + new String(body) + "]");
-    
-//    Pattern pattern = Pattern.compile("[a-zA-Z0-9+.-]+://");
-//    Matcher matcher = pattern.matcher(uri);
-//    
-//    if (!matcher.find())
-//    {
-//      uri = "http://" + uri;
-//    }
     
     try
     {
