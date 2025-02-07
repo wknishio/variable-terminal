@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -33,6 +34,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bouncycastle.util.encoders.Hex;
 import org.vash.vate.VT;
+import org.vash.vate.filesystem.VTRootList;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.security.VTXXHash64MessageDigest;
@@ -94,15 +96,16 @@ public class VTNanoHTTPDProxySession implements Runnable
   
   public static final String
   HTTP_OK = "200 OK",
-  HTTP_PARTIALCONTENT = "206 Partial Content",
+  HTTP_PARTIAL_CONTENT = "206 Partial Content",
   HTTP_RANGE_NOT_SATISFIABLE = "416 Requested Range Not Satisfiable",
   HTTP_REDIRECT = "301 Moved Permanently",
-  HTTP_NOTMODIFIED = "304 Not Modified",
+  HTTP_NOT_MODIFIED = "304 Not Modified",
   HTTP_FORBIDDEN = "403 Forbidden",
-  HTTP_NOTFOUND = "404 Not Found",
-  HTTP_BADREQUEST = "400 Bad Request",
-  HTTP_INTERNALERROR = "500 Internal Server Error",
-  HTTP_NOTIMPLEMENTED = "501 Not Implemented",
+  HTTP_NOT_FOUND = "404 Not Found",
+  HTTP_METHOD_NOT_ALLOWED = "405 Method Not Allowed",
+  HTTP_BAD_REQUEST = "400 Bad Request",
+  HTTP_INTERNAL_SERVER_ERROR = "500 Internal Server Error",
+  HTTP_NOT_IMPLEMENTED = "501 Not Implemented",
   HTTP_REQUEST_TIMEOUT = "408 Request Timeout";
   
   public static final String HTTP_PROXY_AUTHENTICATION_REQUIRED = "407 Proxy Authentication Required";
@@ -301,8 +304,8 @@ public class VTNanoHTTPDProxySession implements Runnable
       {
         //InputStream is = mySocket.getInputStream();
         keepAlive = false;
-        InputStream in = myIn;
-        if ( in == null) return;
+        InputStream is = myIn;
+        if ( is == null) return;
         
         // Read the first 16384 bytes.
         // The full header should fit in here.
@@ -317,7 +320,7 @@ public class VTNanoHTTPDProxySession implements Runnable
           int read = 1;
           while (read > 0 && rlen < bufsize)
           {
-            read = in.read(buf, rlen, bufsize - rlen);
+            read = is.read(buf, rlen, bufsize - rlen);
             if (read > 0)
             {
               rlen += read;
@@ -332,7 +335,7 @@ public class VTNanoHTTPDProxySession implements Runnable
         }
         if (rlen == 0)
         {
-          sendError( HTTP_BADREQUEST, "BAD REQUEST: Empty request." );
+          sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Empty request." );
         }
         
         if (!foundHeaderEnd)
@@ -346,14 +349,14 @@ public class VTNanoHTTPDProxySession implements Runnable
         Properties pre = new VTConfigurationProperties();
         Properties parms = new VTConfigurationProperties();
         Properties headers = new VTConfigurationProperties();
-        //Properties files = new VTConfigurationProperties();
+        Properties files = new VTConfigurationProperties();
         
         // Decode the header into parms and header java properties
         long size = decodeHeader(hin, pre, parms, headers);
         
         if (size == -1)
         {
-          sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing line terminator in request." );
+          sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Missing line terminator in request." );
         }
         
         String method = pre.getProperty("method");
@@ -375,12 +378,19 @@ public class VTNanoHTTPDProxySession implements Runnable
         
         if (method == null)
         {
-          sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing method in request." );
+          sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Missing method in request." );
         }
         
         if (uri == null)
         {
-          sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing URI in request." );
+          sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Missing URI in request." );
+        }
+        
+        if (!method.equalsIgnoreCase("CONNECT") && !uri.toLowerCase().contains("://"))
+        {
+          //ignore requests not intended for http proxy and disconnect
+          sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Malformed absolute form URI in request." );
+          mySocket.close();
         }
         
         if (size == 0)
@@ -389,15 +399,15 @@ public class VTNanoHTTPDProxySession implements Runnable
         }
         
         // Write the part of body already read to ByteArrayOutputStream b
-        ByteArrayOutputStream h = new ByteArrayOutputStream();
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
+        //ByteArrayOutputStream head = new ByteArrayOutputStream();
+        ByteArrayOutputStream body = new ByteArrayOutputStream();
         
         if (splitbyte < rlen)
         {
-          b.write(buf, splitbyte, rlen-splitbyte);
+          body.write(buf, splitbyte, rlen-splitbyte);
         }
         
-        h.write(buf, 0, splitbyte);
+        //head.write(buf, 0, splitbyte);
         
         // While Firefox sends on the first read all the data fitting
         // our buffer, Chrome and Opera send only the headers even if
@@ -406,31 +416,31 @@ public class VTNanoHTTPDProxySession implements Runnable
         // have reached the end of the data to be sent or we should
         // expect the first byte of the body at the next read.
         
-        if (splitbyte < rlen)
-          size -= rlen-splitbyte;
-        else if (splitbyte==0 || size == 0x7FFFFFFFFFFFFFFFl)
-          size = 0;
+//        if (splitbyte < rlen)
+//          size -= rlen-splitbyte;
+//        else if (splitbyte==0 || size == 0x7FFFFFFFFFFFFFFFl)
+//          size = 0;
         
         // this is a http proxy so maybe theres no need to read all body data
         
         // Now read all the body and write it to f
         //buf = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
-        while ( rlen >= 0 && size > 0 )
-        {
-          rlen = in.read(buf, 0, (int) Math.min(buf.length, size));
-          if (rlen > 0)
-          {
-            size -= rlen;
-            b.write(buf, 0, rlen);
-          }
-        }
+//        while ( rlen >= 0 && size > 0 )
+//        {
+//          rlen = is.read(buf, 0, (int) Math.min(buf.length, size));
+//          if (rlen > 0)
+//          {
+//            size -= rlen;
+//            body.write(buf, 0, rlen);
+//          }
+//        }
         
         // Get the raw body as a byte []
-        byte[] bodyData = b.toByteArray();
-        byte[] headerData = h.toByteArray();
+        byte[] bodyData = body.toByteArray();
+        //byte[] headerData = head.toByteArray();
         
         // Ok, now do the serve()
-        serve(uri, method, pre, headers, headerData, bodyData, usernames, passwords, mySocket, in, proxy );
+        serve(uri, method, pre, headers, files, bodyData, usernames, passwords, mySocket, is, proxy );
       }
       catch ( InterruptedException ie )
       {
@@ -441,7 +451,7 @@ public class VTNanoHTTPDProxySession implements Runnable
         //e.printStackTrace();
         try
         {
-          sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Exception: " + e.getMessage());
+          sendError( HTTP_INTERNAL_SERVER_ERROR, "SERVER INTERNAL ERROR: Exception: " + e.getMessage());
         }
         catch ( Throwable t ) 
         {
@@ -464,7 +474,19 @@ public class VTNanoHTTPDProxySession implements Runnable
     //System.out.println("finished proxy");
   }
   
-  public void serve(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, String[] usernames, String[] passwords, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
+  public void serve(String uri, String method, Properties pre, Properties headers, Properties files, byte[] bodyData, String[] usernames, String[] passwords, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
+  {
+    if (method.equalsIgnoreCase("CONNECT") || uri.toLowerCase().contains("://"))
+    {
+      serveProxy(uri, method, pre, headers, files, bodyData, usernames, passwords, clientSocket, clientInput, connectProxy);
+    }
+    else
+    {
+      sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Malformed absolute form URI in request." );
+    }
+  }
+  
+  public void serveProxy(String uri, String method, Properties pre, Properties headers, Properties files, byte[] bodyData, String[] usernames, String[] passwords, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
   {
     if (digestAuthentication)
     {
@@ -494,11 +516,15 @@ public class VTNanoHTTPDProxySession implements Runnable
     
     if (method.equalsIgnoreCase("CONNECT"))
     {
-      serveConnectRequest(uri, method, pre, headers, headerData, bodyData, clientSocket, clientInput, connectProxy);
+      serveConnectRequest(uri, method, pre, headers, bodyData, clientSocket, clientInput, connectProxy);
+    }
+    else if (uri.toLowerCase().contains("://"))
+    {
+      servePipeRequest(uri, method, pre, headers, bodyData, clientSocket, clientInput, connectProxy);
     }
     else
     {
-      servePipeRequest(uri, method, pre, headers, headerData, bodyData, clientSocket, clientInput, connectProxy);
+      sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Malformed absolute form URI in request." );
     }
   }
   
@@ -631,7 +657,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     sendError(resp.status, MIME_PLAINTEXT, resp.headers, null);
   }
   
-  private void serveConnectRequest(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws URISyntaxException, IOException, InterruptedException
+  private void serveConnectRequest(String uri, String method, Properties pre, Properties headers, byte[] bodyData, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws URISyntaxException, IOException, InterruptedException
   {
     String host = "";
     int port = 80;
@@ -669,7 +695,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     pipeSockets(clientSocket, remoteSocket, clientInput, clientOutput, remoteInput, remoteOutput);
   }
   
-  private void servePipeRequest(String uri, String method, Properties pre, Properties headers, byte[] headerData, byte[] bodyData, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
+  private void servePipeRequest(String uri, String method, Properties pre, Properties headers, byte[] bodyData, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
   {
     ByteArrayOutputStream requestData = new ByteArrayOutputStream();
     for (Object headerName : headers.keySet().toArray())
@@ -691,6 +717,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       }
     }
     
+    String scheme = "";
     String host = "";
     int port = 80;
     String path = "/";
@@ -710,17 +737,25 @@ public class VTNanoHTTPDProxySession implements Runnable
     try
     {
       URI url = new URI(uri);
+      scheme = url.getScheme();
       host = url.getHost();
       port = url.getPort();
       if (port == -1)
       {
-        port = 80;
+        if (scheme.toLowerCase().startsWith("http"))
+        {
+          port = 80;
+        }
+        if (scheme.toLowerCase().startsWith("https"))
+        {
+          port = 443;
+        }
       }
       path = url.getPath();
     }
     catch (URISyntaxException e)
     {
-      sendError( HTTP_BADREQUEST, "BAD REQUEST: Malformed absolute form URI in request." );
+      sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Malformed absolute form URI in request." );
       //e.printStackTrace();
     }
     
@@ -749,8 +784,12 @@ public class VTNanoHTTPDProxySession implements Runnable
     OutputStream remoteOutput = remoteSocket.getOutputStream();
     OutputStream clientOutput = clientSocket.getOutputStream();
     
-    remoteOutput.write(requestData.toByteArray());
-    remoteOutput.flush();
+    if (scheme.toLowerCase().startsWith("http"))
+    {
+      remoteOutput.write(requestData.toByteArray());
+      remoteOutput.flush();
+    }
+    
     //System.out.println("pipe=" + uri);
     pipeSockets(clientSocket, remoteSocket, clientInput, clientOutput, remoteInput, remoteOutput);
     //System.out.println("finished=" + uri);
@@ -942,7 +981,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       pre.put("request", inLine);
       StringTokenizer st = new StringTokenizer( inLine );
       if ( !st.hasMoreTokens())
-        sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing method in request." );
+        sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Missing method in request." );
       
       String method = "";
       while (method.length() <= 0)
@@ -952,7 +991,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       pre.put("method", method);
       
       if ( !st.hasMoreTokens())
-        sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing URI in request." );
+        sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Missing URI in request." );
       
       String uri = st.nextToken();
       
@@ -999,7 +1038,6 @@ public class VTNanoHTTPDProxySession implements Runnable
               }
             }
           }
-            
           line = in.readLine();
         }
       }
@@ -1007,7 +1045,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     catch ( IOException ioe )
     {
-      sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: IOException: " + ioe.getMessage());
+      sendError( HTTP_INTERNAL_SERVER_ERROR, "SERVER INTERNAL ERROR: IOException: " + ioe.getMessage());
     }
     return contentLength;
   }
@@ -1060,7 +1098,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     catch( Exception e )
     {
-      sendError( HTTP_BADREQUEST, "BAD REQUEST: Bad percent-encoding." );
+      sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Bad percent-encoding." );
       return null;
     }
   }
@@ -1180,6 +1218,9 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
   }
   
+  @SuppressWarnings("unused")
+  private File myRootDir = new VTRootList();
+  
   private Socket mySocket;
   private boolean keepAlive;
   private InputStream myIn;
@@ -1223,30 +1264,31 @@ public class VTNanoHTTPDProxySession implements Runnable
   /**
    * The distribution licence
    */
-  public static final String LICENCE =
-    "Copyright (C) 2001,2005-2013 by Jarno Elonen <elonen@iki.fi>\n"+
-    "and Copyright (C) 2010 by Konstantinos Togias <info@ktogias.gr>\n"+
-    "\n"+
-    "Redistribution and use in source and binary forms, with or without\n"+
-    "modification, are permitted provided that the following conditions\n"+
-    "are met:\n"+
-    "\n"+
-    "Redistributions of source code must retain the above copyright notice,\n"+
-    "this list of conditions and the following disclaimer. Redistributions in\n"+
-    "binary form must reproduce the above copyright notice, this list of\n"+
-    "conditions and the following disclaimer in the documentation and/or other\n"+
-    "materials provided with the distribution. The name of the author may not\n"+
-    "be used to endorse or promote products derived from this software without\n"+
-    "specific prior written permission. \n"+
-    " \n"+
-    "THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR\n"+
-    "IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES\n"+
-    "OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.\n"+
-    "IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,\n"+
-    "INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT\n"+
-    "NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\n"+
-    "DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\n"+
-    "THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n"+
-    "(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\n"+
-    "OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.";
+  
+//  public static final String LICENCE =
+//    "Copyright (C) 2001,2005-2013 by Jarno Elonen <elonen@iki.fi>\n"+
+//    "and Copyright (C) 2010 by Konstantinos Togias <info@ktogias.gr>\n"+
+//    "\n"+
+//    "Redistribution and use in source and binary forms, with or without\n"+
+//    "modification, are permitted provided that the following conditions\n"+
+//    "are met:\n"+
+//    "\n"+
+//    "Redistributions of source code must retain the above copyright notice,\n"+
+//    "this list of conditions and the following disclaimer. Redistributions in\n"+
+//    "binary form must reproduce the above copyright notice, this list of\n"+
+//    "conditions and the following disclaimer in the documentation and/or other\n"+
+//    "materials provided with the distribution. The name of the author may not\n"+
+//    "be used to endorse or promote products derived from this software without\n"+
+//    "specific prior written permission. \n"+
+//    " \n"+
+//    "THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR\n"+
+//    "IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES\n"+
+//    "OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.\n"+
+//    "IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,\n"+
+//    "INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT\n"+
+//    "NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,\n"+
+//    "DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY\n"+
+//    "THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT\n"+
+//    "(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE\n"+
+//    "OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.";
 }
