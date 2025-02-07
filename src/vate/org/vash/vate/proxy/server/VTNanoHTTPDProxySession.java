@@ -390,7 +390,7 @@ public class VTNanoHTTPDProxySession implements Runnable
         {
           //ignore requests not intended for http proxy and disconnect
           sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Malformed absolute form URI in request." );
-          mySocket.close();
+          return;
         }
         
         if (size == 0)
