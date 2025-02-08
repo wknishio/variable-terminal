@@ -334,21 +334,20 @@ public class VTServerSettingsDialog extends Dialog
     // {
     
     // }
-    
-    connectionModeChoice.add("Active");
-    connectionModeChoice.add("Passive");
-    connectionModeChoice.select("Passive");
+    connectionModeChoice.add("PASSIVE");
+    connectionModeChoice.add("ACTIVE");
+    connectionModeChoice.select("PASSIVE");
     connectionModeChoice.addItemListener(new ItemListener()
     {
       public void itemStateChanged(ItemEvent e)
       {
         if (e.getStateChange() == ItemEvent.SELECTED)
         {
-          if (e.getItem().equals("Active"))
+          if (e.getItem().equals("ACTIVE"))
           {
             setConnectionMode(true);
           }
-          else if (e.getItem().equals("Passive"))
+          else if (e.getItem().equals("PASSIVE"))
           {
             setConnectionMode(false);
           }
@@ -356,21 +355,21 @@ public class VTServerSettingsDialog extends Dialog
       }
     });
     
-    proxyTypeChoice.add("None");
+    proxyTypeChoice.add("NONE");
     proxyTypeChoice.add("DIRECT");
     proxyTypeChoice.add("SOCKS");
     proxyTypeChoice.add("HTTP");
     proxyTypeChoice.add("PLUS");
-    proxyTypeChoice.select("None");
+    proxyTypeChoice.select("NONE");
     proxyTypeChoice.addItemListener(new ItemListener()
     {
       public void itemStateChanged(ItemEvent e)
       {
         if (e.getStateChange() == ItemEvent.SELECTED)
         {
-          if (e.getItem().equals("None"))
+          if (e.getItem().equals("NONE"))
           {
-            setProxyType("None");
+            setProxyType("NONE");
           }
           else if (e.getItem().equals("DIRECT"))
           {
@@ -413,7 +412,7 @@ public class VTServerSettingsDialog extends Dialog
 //      }
 //    });
     
-    encryptionTypeChoice.add("None");
+    encryptionTypeChoice.add("NONE");
     encryptionTypeChoice.add("ISAAC");
     encryptionTypeChoice.add("VMPC");
     encryptionTypeChoice.add("SALSA");
@@ -421,16 +420,16 @@ public class VTServerSettingsDialog extends Dialog
     //encryptionTypeChoice.add("GRAIN");
     encryptionTypeChoice.add("ZUC");
     // encryptionTypeChoice.add("BLOWFISH");
-    encryptionTypeChoice.select("None");
+    encryptionTypeChoice.select("NONE");
     encryptionTypeChoice.addItemListener(new ItemListener()
     {
       public void itemStateChanged(ItemEvent e)
       {
         if (e.getStateChange() == ItemEvent.SELECTED)
         {
-          if (e.getItem().equals("None"))
+          if (e.getItem().equals("NONE"))
           {
-            setEncryptionType("None");
+            setEncryptionType("NONE");
           }
           else if (e.getItem().equals("VMPC"))
           {
@@ -1320,11 +1319,11 @@ public class VTServerSettingsDialog extends Dialog
   {
     if (active)
     {
-      connectionMode.setParameter("Active");
+      connectionMode.setParameter("ACTIVE");
       // connectionHost.setEnabled(true);
       natPort.setEnabled(false);
       proxyType.setEnabled(true);
-      if (!proxyType.getParameter().equalsIgnoreCase("None"))
+      if (!proxyType.getParameter().equalsIgnoreCase("NONE"))
       {
         proxyHost.setEnabled(true);
         proxyPort.setEnabled(true);
@@ -1340,7 +1339,7 @@ public class VTServerSettingsDialog extends Dialog
     }
     else
     {
-      connectionMode.setParameter("Passive");
+      connectionMode.setParameter("PASSIVE");
       // connectionHost.setEnabled(false);
       natPort.setEnabled(true);
       setProxyType(null);
@@ -1357,7 +1356,7 @@ public class VTServerSettingsDialog extends Dialog
   {
     if (encryption == null)
     {
-      encryptionType.setParameter("None");
+      encryptionType.setParameter("NONE");
       // encryptionPassword.setEnabled(false);
     }
     else if (encryption.toUpperCase().startsWith("V"))
@@ -1387,7 +1386,7 @@ public class VTServerSettingsDialog extends Dialog
     }
     else
     {
-      encryptionType.setParameter("None");
+      encryptionType.setParameter("NONE");
       // encryptionPassword.setEnabled(false);
     }
   }
@@ -1396,7 +1395,7 @@ public class VTServerSettingsDialog extends Dialog
   {
     if (proxy == null)
     {
-      proxyType.setParameter("None");
+      proxyType.setParameter("NONE");
       proxyHost.setEnabled(false);
       proxyPort.setEnabled(false);
       proxyUser.setEnabled(false);
@@ -1436,7 +1435,7 @@ public class VTServerSettingsDialog extends Dialog
     }
     else
     {
-      proxyType.setParameter("None");
+      proxyType.setParameter("NONE");
       proxyHost.setEnabled(false);
       proxyPort.setEnabled(false);
       proxyUser.setEnabled(false);
@@ -1468,7 +1467,7 @@ public class VTServerSettingsDialog extends Dialog
       VTServerConnector connector = server.getServerConnector();
       if (connector != null)
       {
-        connector.setPassive(connectionMode.getParameter().equals("Passive"));
+        connector.setPassive(connectionMode.getParameter().equals("PASSIVE"));
         connector.setAddress(connectionHost.getParameter());
         try
         {
@@ -1561,7 +1560,7 @@ public class VTServerSettingsDialog extends Dialog
       }
       else
       {
-        server.setPassive(connectionMode.getParameter().equals("Passive"));
+        server.setPassive(connectionMode.getParameter().equals("PASSIVE"));
         server.setAddress(connectionHost.getParameter());
         try
         {

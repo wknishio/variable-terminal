@@ -72,6 +72,10 @@ import net.jpountz.xxhash.XXHashFactory;
  *    <li> File server serves also very long files without memory overhead </li>
  *    <li> Contains a built-in list of most common mime types </li>
  *    <li> All header names are converted lowercase so they don't vary between browsers/clients </li>
+ *    <li> Supports Basic Authentication
+ *    <li> Supports Digest Authentication
+ *    <li> Supports CONNECT method
+ *    <li> Supports proxying by using absolute form URI
  *
  * </ul>
  *
@@ -140,7 +144,9 @@ public class VTNanoHTTPDProxySession implements Runnable
       "exe    application/octet-stream "+
       "class    application/octet-stream " );
     while ( st.hasMoreTokens())
+    {
       theMimeTypes.put( st.nextToken(), st.nextToken());
+    }
   }
   
   private static int findHeaderEndSafe(final byte[] buf, int rlen)
@@ -149,7 +155,9 @@ public class VTNanoHTTPDProxySession implements Runnable
     while (splitbyte + 3 < rlen)
     {
       if (buf[splitbyte] == '\r' && buf[splitbyte + 1] == '\n' && buf[splitbyte + 2] == '\r' && buf[splitbyte + 3] == '\n')
+      {
         return splitbyte + 4;
+      }
       splitbyte++;
     }
     return 0;
@@ -302,8 +310,8 @@ public class VTNanoHTTPDProxySession implements Runnable
       //System.out.println("request received");
       try
       {
-        //InputStream is = mySocket.getInputStream();
         keepAlive = false;
+        proxyRequest = false;
         InputStream is = myIn;
         if ( is == null) return;
         
@@ -344,23 +352,23 @@ public class VTNanoHTTPDProxySession implements Runnable
         }
         
         // Create a BufferedReader for parsing the header.
-        ByteArrayInputStream hbis = new ByteArrayInputStream(buf, 0, rlen);
-        BufferedReader hin = new BufferedReader( new InputStreamReader( hbis, "ISO-8859-1" ));
-        Properties pre = new VTConfigurationProperties();
-        Properties parms = new VTConfigurationProperties();
+        ByteArrayInputStream bis = new ByteArrayInputStream(buf, 0, rlen);
+        BufferedReader hin = new BufferedReader( new InputStreamReader( bis, "ISO-8859-1" ));
+        Properties preambles = new VTConfigurationProperties();
+        Properties parameters = new VTConfigurationProperties();
         Properties headers = new VTConfigurationProperties();
         Properties files = new VTConfigurationProperties();
         
         // Decode the header into parms and header java properties
-        long size = decodeHeader(hin, pre, parms, headers);
+        long size = decodeHeader(hin, preambles, parameters, headers);
         
         if (size == -1)
         {
           sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Missing line terminator in request." );
         }
         
-        String method = pre.getProperty("method");
-        String uri = pre.getProperty("uri");
+        String method = preambles.getProperty("method");
+        String uri = preambles.getProperty("uri");
         
         if (!keepAlive)
         {
@@ -411,13 +419,13 @@ public class VTNanoHTTPDProxySession implements Runnable
         
         if (!method.equalsIgnoreCase("CONNECT") && !uri.toLowerCase().contains("://"))
         {
-          //ignore requests not intended for http proxy and disconnect
-          sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Malformed absolute form URI in request." );
+          //ignore requests not intended for http proxy and disconnect directly
           return;
         }
         else
         {
-          serveProxy(uri, method, pre, headers, files, partialBodyData, usernames, passwords, mySocket, is, proxy);
+          proxyRequest = true;
+          serveProxy(uri, method, preambles, headers, files, partialBodyData, usernames, passwords, mySocket, is, proxy);
         }
       }
       catch ( InterruptedException ie )
@@ -464,7 +472,7 @@ public class VTNanoHTTPDProxySession implements Runnable
 //    }
 //  }
   
-  public void serveProxy(String uri, String method, Properties pre, Properties headers, Properties files, byte[] bodyData, String[] usernames, String[] passwords, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
+  public void serveProxy(String uri, String method, Properties preambles, Properties headers, Properties files, byte[] bodyData, String[] usernames, String[] passwords, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
   {
     if (digestAuthentication)
     {
@@ -488,17 +496,16 @@ public class VTNanoHTTPDProxySession implements Runnable
       if (!checked)
       {
         requireAuthenticationBasic("Proxy-Authenticate", "SocksPlusHttpProxy");
-        return;
       }
     }
     
     if (method.equalsIgnoreCase("CONNECT"))
     {
-      serveConnectRequest(uri, method, pre, headers, bodyData, clientSocket, clientInput, connectProxy);
+      serveConnectRequest(uri, method, preambles, headers, bodyData, clientSocket, clientInput, connectProxy);
     }
     else if (uri.toLowerCase().contains("://"))
     {
-      servePipeRequest(uri, method, pre, headers, bodyData, clientSocket, clientInput, connectProxy);
+      servePipeRequest(uri, method, preambles, headers, bodyData, clientSocket, clientInput, connectProxy);
     }
     else
     {
@@ -629,7 +636,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   {
     Response resp = new Response();
     resp.headers.put(requireHeader, "Digest realm=\"" + realm + "\", "
-        +  "qop=\"auth\", nonce=\"" + nonce + "\", " + "opaque=\""
+        +  "qop=\"auth\", nonce=\"" + nonce + "\", opaque=\""
         + Hex.toHexString(xxhash64.digest(nonce.getBytes("ISO-8859-1"))) + "\"" + (stale ? ", stale=\"true\"" : ""));
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
     sendError(resp.status, MIME_PLAINTEXT, resp.headers, null);
@@ -858,14 +865,10 @@ public class VTNanoHTTPDProxySession implements Runnable
   {
     private Socket close1;
     private Socket close2;
-    //private Thread another;
-    //private Socket second;
     private InputStream source;
     private OutputStream destination;
     private final byte[] buffer = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
     private int readed;
-    //private boolean inClosed;
-    //private boolean outClosed;
     
     private SocketPipe(Socket close1, Socket close2, InputStream source, OutputStream destination)
     {
@@ -874,11 +877,6 @@ public class VTNanoHTTPDProxySession implements Runnable
       this.source = source;
       this.destination = destination;
     }
-    
-//    public void setAnother(Thread another)
-//    {
-//      this.another = another;
-//    }
     
     public void run()
     {
@@ -909,7 +907,6 @@ public class VTNanoHTTPDProxySession implements Runnable
         {
           
         }
-        
         try
         {
           close2.close();
@@ -918,15 +915,6 @@ public class VTNanoHTTPDProxySession implements Runnable
         {
           
         }
-        
-//        try
-//        {
-//          another.interrupt();
-//        }
-//        catch (Throwable t)
-//        {
-//          
-//        }
       }
     }
   }
@@ -936,18 +924,21 @@ public class VTNanoHTTPDProxySession implements Runnable
    * java Properties' key - value pairs
    * @throws UnsupportedEncodingException 
   **/
-  private long decodeHeader(BufferedReader in, Properties pre, Properties parms, Properties headers)
+  private long decodeHeader(BufferedReader in, Properties pre, Properties parameters, Properties headers)
     throws InterruptedException, UnsupportedEncodingException
   {
     long contentLength = 0;
-    try {
+    try
+    {
       // Read the request line
       String inLine = in.readLine();
       if (inLine == null) return -1;
       pre.put("request", inLine);
       StringTokenizer st = new StringTokenizer( inLine );
       if ( !st.hasMoreTokens())
+      {
         sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Missing method in request." );
+      }
       
       String method = "";
       while (method.length() <= 0)
@@ -957,7 +948,9 @@ public class VTNanoHTTPDProxySession implements Runnable
       pre.put("method", method);
       
       if ( !st.hasMoreTokens())
+      {
         sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Missing URI in request." );
+      }
       
       String uri = st.nextToken();
       
@@ -965,7 +958,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       int qmi = uri.indexOf( '?' );
       if ( qmi >= 0 )
       {
-        decodeParms( uri.substring( qmi+1 ), parms );
+        decodeParms( uri.substring( qmi+1 ), parameters );
         uri = decodePercent( uri.substring( 0, qmi ));
       }
       else uri = decodePercent(uri);
@@ -1026,7 +1019,9 @@ public class VTNanoHTTPDProxySession implements Runnable
     while (splitbyte + 3 < rlen)
     {
       if (buf[splitbyte] == '\r' && buf[splitbyte + 1] == '\n' && buf[splitbyte + 2] == '\r' && buf[splitbyte + 3] == '\n')
+      {
         return splitbyte + 4;
+      }
       splitbyte++;
     }
     return 0;
@@ -1048,15 +1043,21 @@ public class VTNanoHTTPDProxySession implements Runnable
         switch ( c )
         {
           case '+':
+          {
             baos.write( (int)' ' );
             break;
+          }
           case '%':
+          {
             baos.write(Integer.parseInt( str.substring(i+1,i+3), 16 ));
             i += 2;
             break;
+          }
           default:
+          {
             baos.write( (int)c );
             break;
+          }
         }
       }
       
@@ -1081,7 +1082,9 @@ public class VTNanoHTTPDProxySession implements Runnable
     throws InterruptedException, UnsupportedEncodingException
   {
     if ( parms == null )
+    {
       return;
+    }
     
     StringTokenizer st = new StringTokenizer( parms, "&" );
     while ( st.hasMoreTokens())
@@ -1089,10 +1092,14 @@ public class VTNanoHTTPDProxySession implements Runnable
       String e = st.nextToken();
       int sep = e.indexOf( '=' );
       if ( sep >= 0 )
+      {
         p.put( decodePercent( e.substring( 0, sep )).trim(),
              decodePercent( e.substring( sep+1 )));
+      }
       else
+      {
         p.put( decodePercent( e ).trim(), "" );
+      }
     }
   }
   
@@ -1121,7 +1128,9 @@ public class VTNanoHTTPDProxySession implements Runnable
     try
     {
       if ( status == null )
+      {
         throw new Error( "sendResponse(): Status can't be null." );
+      }
       
       OutputStream out = mySocket.getOutputStream();
       PrintWriter pw = new PrintWriter( new OutputStreamWriter(out, "ISO-8859-1") );
@@ -1129,20 +1138,30 @@ public class VTNanoHTTPDProxySession implements Runnable
       
       if (keepAlive)
       {
-        pw.print("Proxy-Connection: keep-alive\r\n");
+        if (proxyRequest)
+        {
+          pw.print("Proxy-Connection: keep-alive\r\n");
+        }
         pw.print("Connection: keep-alive\r\n");
       }
       else
       {
-        pw.print("Proxy-Connection: close\r\n");
+        if (proxyRequest)
+        {
+          pw.print("Proxy-Connection: close\r\n");
+        }
         pw.print("Connection: close\r\n");
       }
       
       if ( mime != null && mime.length() > 0)
+      {
         pw.print("Content-Type: " + mime + "\r\n");
+      }
       
       if ( header == null || header.getProperty( "Date" ) == null )
+      {
         pw.print( "Date: " + gmtFrmt.format( new Date()) + "\r\n");
+      }
       
       if ( header != null )
       {
@@ -1189,6 +1208,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   
   private Socket mySocket;
   private boolean keepAlive;
+  private boolean proxyRequest;
   private InputStream myIn;
   private boolean digestAuthentication;
   private String[] usernames;

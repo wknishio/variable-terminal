@@ -4,6 +4,7 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PushbackInputStream;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.Socket;
@@ -38,7 +39,7 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
     {
       
     }
-    this.in = pipeSink;
+    this.in = new PushbackInputStream(pipeSink);
     this.pipe = pipeSource;
   }
   

@@ -1,6 +1,7 @@
 package org.vash.vate.proxy.server;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PushbackInputStream;
 import java.net.Socket;
@@ -40,7 +41,16 @@ public class VTSocksHttpProxyAuthenticatorUsernamePassword extends UserPasswordA
 
   public ServerAuthenticator startSession(Socket socket) throws IOException
   {
-    PushbackInputStream in = new PushbackInputStream(socket.getInputStream());
+    InputStream socketInputStream = socket.getInputStream();
+    PushbackInputStream in = null;
+    if (socketInputStream instanceof PushbackInputStream)
+    {
+      in = (PushbackInputStream) socketInputStream;
+    }
+    else
+    {
+      in = new PushbackInputStream(socketInputStream);
+    }
     OutputStream out = socket.getOutputStream();
     int version = in.read();
     //System.out.println("version=" + version);

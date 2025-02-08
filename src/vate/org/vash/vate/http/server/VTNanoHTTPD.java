@@ -221,7 +221,9 @@ public class VTNanoHTTPD
           try
           {
             while( true )
+            {
               new HTTPSession( myServerSocket.accept(), executorService);
+            }
           }
           catch ( IOException ioe )
           {}
