@@ -45,6 +45,7 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     panelLayout.setHgap(0);
     panelLayout.setVgap(0);
     setLayout(panelLayout);
+    setFocusable(true);
     
     spacerPanelNorth = new Panel();
     spacerPanelNorth.setSize(0, 1);
@@ -52,6 +53,7 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     spacerPanelNorth.setMaximumSize(new Dimension(0, 1));
     spacerPanelNorth.setPreferredSize(new Dimension(0, 1));
     spacerPanelNorth.setBackground(Color.BLACK);
+    spacerPanelNorth.setFocusable(false);
     
     spacerPanelSouth = new Panel();
     spacerPanelSouth.setSize(0, 1);
@@ -59,6 +61,7 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     spacerPanelSouth.setMaximumSize(new Dimension(0, 1));
     spacerPanelSouth.setPreferredSize(new Dimension(0, 1));
     spacerPanelSouth.setBackground(Color.BLACK);
+    spacerPanelSouth.setFocusable(false);
     
     spacerPanelWest = new Panel();
     spacerPanelWest.setSize(1, 0);
@@ -66,6 +69,7 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     spacerPanelWest.setMaximumSize(new Dimension(1, 0));
     spacerPanelWest.setPreferredSize(new Dimension(1, 0));
     spacerPanelWest.setBackground(Color.BLACK);
+    spacerPanelWest.setFocusable(false);
     
     spacerPanelEast = new Panel();
     spacerPanelEast.setSize(1, 0);
@@ -73,6 +77,7 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     spacerPanelEast.setMaximumSize(new Dimension(1, 0));
     spacerPanelEast.setPreferredSize(new Dimension(1, 0));
     spacerPanelEast.setBackground(Color.BLACK);
+    spacerPanelEast.setFocusable(false);
     
     BorderLayout bottomLayout = new BorderLayout();
     bottomLayout.setHgap(0);
@@ -80,6 +85,7 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     bottomPanel = new Panel();
     bottomPanel.setLayout(bottomLayout);
     bottomPanel.setBackground(SystemColor.control);
+    bottomPanel.setFocusable(false);
     
     BorderLayout centerLayout = new BorderLayout();
     centerLayout.setHgap(0);
@@ -87,6 +93,7 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     centerPanel = new Panel();
     centerPanel.setLayout(centerLayout);
     centerPanel.setBackground(Color.BLACK);
+    centerPanel.setFocusable(true);
     
     BorderLayout terminalLayout = new BorderLayout();
     terminalLayout.setHgap(0);
