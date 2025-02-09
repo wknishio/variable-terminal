@@ -65,6 +65,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
   // private VTConnectionDialog dialog;
   private Menu audioLinkSoundMenu;
   private Menu helpMenu;
+  private Menu monitorMenu;
   
   public VTClientRemoteGraphicalConsoleMenuBar(final VTConsoleInstance console, final VTClientConfigurationDialog connectionDialog)
   {
@@ -422,10 +423,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     
     super.addBaseMenus();
     
-    // Menu helpMenu = new Menu("Resume/Insert");
-    // helpMenu.setEnabled(false);
-    // this.setHelpMenu(helpMenu);
-    // VTGlobalFontManager.registerMenu(this);
+    monitorMenu = new Menu("");
+    this.add(monitorMenu);
   }
   
   public void setEnabled(boolean enabled)
@@ -443,5 +442,10 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
   public void setEnabledDialogMenu(boolean enabled)
   {
     dialogMenu.setEnabled(enabled);
+  }
+  
+  public Menu getMonitorMenu()
+  {
+    return monitorMenu;
   }
 }

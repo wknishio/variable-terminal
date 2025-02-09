@@ -582,6 +582,8 @@ public class VTGlobalTextStyleManager
           // }
           frame.invalidate();
           frame.pack();
+          frame.invalidate();
+          frame.pack();
           // frame.validate();
         }
         if (window instanceof Dialog)

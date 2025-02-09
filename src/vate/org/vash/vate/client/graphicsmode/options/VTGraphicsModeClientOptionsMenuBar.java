@@ -13,6 +13,7 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
   private VTGraphicsModeClientOptionsMenuBarViewMenu viewMenu;
   private VTGraphicsModeClientOptionsMenuBarControlMenu controlMenu;
   private Menu keyboardShortcutsMenu;
+  private Menu monitorMenu;
   // private Menu refreshStatusMenu;
   // private Menu controlStatusMenu;
   private Frame frame;
@@ -56,8 +57,10 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
     
     this.add(keyboardShortcutsMenu);
     keyboardShortcutsMenu.setEnabled(true);
-    // this.add(refreshStatusMenu);
-    // this.add(controlStatusMenu);
+    
+    monitorMenu = new Menu("");
+    this.add(monitorMenu);
+    
     this.frame = frame;
     frame.setMenuBar(this);
     // VTGlobalFontManager.registerMenu(this);
@@ -221,5 +224,10 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
   public void setKeyboardShortcutsMenuEnabled(boolean enabled)
   {
     keyboardShortcutsMenu.setEnabled(enabled);
+  }
+  
+  public Menu getMonitorMenu()
+  {
+    return monitorMenu;
   }
 }

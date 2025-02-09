@@ -37,6 +37,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   private final SecureRandom packetSeed;
   @SuppressWarnings("unused")
   private final ExecutorService executorService;
+  private volatile long transferredBytes = 0;
   //private final Random packetSequencer;
   
   public VTLinkableDynamicMultiplexingOutputStream(final OutputStream out, final int packetSize, final SecureRandom packetSeed, final ExecutorService executorService)
@@ -57,6 +58,16 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     //this.blockSize = blockSize;
     //this.autoFlushPackets = autoFlushPackets;
+  }
+  
+  public long getTransferredBytes()
+  {
+    return transferredBytes;
+  }
+  
+  public void resetTransferredBytes()
+  {
+    transferredBytes = 0;
   }
   
 //  public synchronized final VTLinkableDynamicMultiplexedOutputStream linkOutputStream(int type, int number)
@@ -506,6 +517,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
       output.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
       output.flush();
+      transferredBytes += dataPacketBuffer.count();
     }
     
     private synchronized final void writeClosePacket(final int type, final int number) throws IOException
@@ -527,6 +539,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       controlPacketStream.writeInt(-2);
       control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
       control.flush();
+      transferredBytes += VT.VT_PACKET_HEADER_SIZE_BYTES;
     }
     
     private synchronized final void writeOpenPacket(final int type, final int number) throws IOException
@@ -548,6 +561,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       controlPacketStream.writeInt(-3);
       control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
       control.flush();
+      transferredBytes += VT.VT_PACKET_HEADER_SIZE_BYTES;
     }
   }
 }

@@ -6,6 +6,7 @@ import org.vash.vate.client.VTClient;
 import org.vash.vate.client.authentication.VTClientAuthenticator;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.console.VTConsole;
+import org.vash.vate.monitoring.VTDataMonitorConnection;
 
 public class VTClientSessionHandler implements Runnable
 {
@@ -71,6 +72,7 @@ public class VTClientSessionHandler implements Runnable
   private void processSession()
   {
     boolean started = false;
+    VTDataMonitorConnection dataConnection = null;
     try
     {
       connection.startConnection();
@@ -97,6 +99,11 @@ public class VTClientSessionHandler implements Runnable
       catch (Throwable t)
       {
         
+      }
+      dataConnection = new VTDataMonitorConnection(connection.getMultiplexedConnectionInputStream(), connection.getMultiplexedConnectionOutputStream());
+      if (session.getClient().getMonitorService() != null)
+      {
+        session.getClient().getMonitorService().addDataConnection(dataConnection);
       }
       session.waitSession();
       session.tryStopSessionThreads();
@@ -127,6 +134,10 @@ public class VTClientSessionHandler implements Runnable
       {
         
       }
+    }
+    if (dataConnection != null && session.getClient().getMonitorService() != null)
+    {
+      session.getClient().getMonitorService().removeDataConnection(dataConnection);
     }
     session.clearSessionCloseables();
   }

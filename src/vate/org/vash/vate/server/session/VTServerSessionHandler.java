@@ -3,6 +3,7 @@ package org.vash.vate.server.session;
 import java.util.Collection;
 
 import org.vash.vate.console.VTConsole;
+import org.vash.vate.monitoring.VTDataMonitorConnection;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.authentication.VTServerAuthenticator;
 import org.vash.vate.server.connection.VTServerConnection;
@@ -77,6 +78,7 @@ public class VTServerSessionHandler implements Runnable
   private void processSession()
   {
     boolean started = false;
+    VTDataMonitorConnection dataConnection = null;
     try
     {
       connection.startConnection();
@@ -105,6 +107,11 @@ public class VTServerSessionHandler implements Runnable
       catch (Throwable t)
       {
         
+      }
+      dataConnection = new VTDataMonitorConnection(connection.getMultiplexedConnectionInputStream(), connection.getMultiplexedConnectionOutputStream());
+      if (session.getServer().getMonitorService() != null)
+      {
+        session.getServer().getMonitorService().addDataConnection(dataConnection);
       }
       session.waitSession();
       session.stopShell();
@@ -136,6 +143,10 @@ public class VTServerSessionHandler implements Runnable
       {
         
       }
+    }
+    if (dataConnection != null && session.getServer().getMonitorService() != null)
+    {
+      session.getServer().getMonitorService().removeDataConnection(dataConnection);
     }
     session.clearSessionCloseables();
   }

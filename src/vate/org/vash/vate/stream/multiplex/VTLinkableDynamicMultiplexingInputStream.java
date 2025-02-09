@@ -48,6 +48,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> directChannels;
   private final SecureRandom packetSeed;
   private final ExecutorService executorService;
+  private volatile long transferredBytes = 0;
   //private final Random packetSequencer;
 //  private final VTPipedOutputStream pout;
 //  private final VTPipedInputStream pin;
@@ -88,6 +89,16 @@ public final class VTLinkableDynamicMultiplexingInputStream
     {
       packetReaderThread = executorService.submit(packetReader);
     }
+  }
+  
+  public long getTransferredBytes()
+  {
+    return transferredBytes;
+  }
+  
+  public void resetTransferredBytes()
+  {
+    transferredBytes = 0;
   }
   
 //  public synchronized final VTLinkableDynamicMultiplexedInputStream linkInputStream(int type, int number)
@@ -336,6 +347,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
         {
           //e.printStackTrace();
         }
+        transferredBytes += VT.VT_PACKET_HEADER_SIZE_BYTES + length;
       }
       else if (length == -2)
       {
@@ -345,6 +357,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
 //          return;
 //        }
         close(type, number);
+        transferredBytes += VT.VT_PACKET_HEADER_SIZE_BYTES;
       }
       else if (length == -3)
       {
@@ -354,6 +367,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
 //          return;
 //        }
         open(type, number);
+        transferredBytes += VT.VT_PACKET_HEADER_SIZE_BYTES;
       }
       else
       {

@@ -36,6 +36,7 @@ import org.vash.vate.graphics.control.VTAWTControlEvent;
 import org.vash.vate.graphics.control.VTAWTControlProvider;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.monitoring.VTDataMonitorMenu;
 
 public class VTGraphicsModeClientWriter implements Runnable
 {
@@ -1792,6 +1793,7 @@ public class VTGraphicsModeClientWriter implements Runnable
   public void run()
   {
     createCustomCursor();
+    VTDataMonitorMenu monitorMenu = null;
     try
     {
       if (VTConsole.isGraphical())
@@ -1819,6 +1821,11 @@ public class VTGraphicsModeClientWriter implements Runnable
       frame.setLayout(frameLayout);
       frame.getInsets().set(0, 0, 0, 0);
       menuBar = new VTGraphicsModeClientOptionsMenuBar(this, frame);
+      monitorMenu = new VTDataMonitorMenu(menuBar.getMonitorMenu());
+      if (session.getSession().getClient().getMonitorService() != null)
+      {
+        session.getSession().getClient().getMonitorService().addMonitorPanel(monitorMenu);
+      }
       scrolledMaybe = new VTGraphicsModeClientWriterScrollPane(VTGraphicsModeClientWriterScrollPane.SCROLLBARS_AS_NEEDED);
       scrolledMaybe.setBackground(Color.BLACK);
       //scrolledMaybe.setFocusable(false);
@@ -1954,6 +1961,10 @@ public class VTGraphicsModeClientWriter implements Runnable
     if (remoteInterface != null && remoteInterface.isAsynchronousRepainterRunning())
     {
       remoteInterface.stopAsynchronousRepainter();
+    }
+    if (monitorMenu != null && session.getSession().getClient().getMonitorService() != null)
+    {
+      session.getSession().getClient().getMonitorService().removeMonitorPanel(monitorMenu);
     }
     if (frame != null)
     {

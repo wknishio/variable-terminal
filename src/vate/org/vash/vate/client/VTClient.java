@@ -20,6 +20,8 @@ import org.vash.vate.client.dialog.VTClientConfigurationDialog;
 import org.vash.vate.client.session.VTClientSessionListener;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.exception.VTUncaughtExceptionHandler;
+import org.vash.vate.monitoring.VTDataMonitorMenu;
+import org.vash.vate.monitoring.VTDataMonitorService;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
 import org.vash.vate.runtime.VTRuntimeExit;
@@ -64,6 +66,7 @@ public class VTClient implements Runnable
   private int pingInterval = 0;
   private int reconnectTimeout = 0;
   private Future<?> runThread;
+  private VTDataMonitorService monitorService;
   
   private static final String VT_CLIENT_SETTINGS_COMMENTS = 
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
@@ -92,6 +95,11 @@ public class VTClient implements Runnable
     this.audioSystem = new VTAudioSystem(executorService);
     
     //loadClientSettingsFile();
+  }
+  
+  public VTDataMonitorService getMonitorService()
+  {
+    return monitorService;
   }
   
   public void stop()
@@ -2219,12 +2227,14 @@ public class VTClient implements Runnable
   {
     Thread.setDefaultUncaughtExceptionHandler(new VTUncaughtExceptionHandler());
     loadClientSettingsFile();
+    monitorService = new VTDataMonitorService(executorService);
     if (!VTConsole.isDaemon() && VTConsole.isGraphical())
     {
       VTConsole.initialize();
       VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Client - Console");
       connectionDialog = new VTClientConfigurationDialog(VTConsole.getFrame(), "Variable-Terminal " + VT.VT_VERSION + " - Client - Connection", true, this);
       inputMenuBar = new VTClientRemoteGraphicalConsoleMenuBar(VTConsole.getConsoleInstance(), connectionDialog);
+      monitorService.addMonitorPanel(new VTDataMonitorMenu(inputMenuBar.getMonitorMenu()));
       VTConsole.getFrame().setMenuBar(inputMenuBar);
       VTConsole.getFrame().pack();
 //      try
@@ -2312,6 +2322,10 @@ public class VTClient implements Runnable
   
   public void run()
   {
+    if (monitorService != null)
+    {
+      executorService.execute(monitorService);
+    }
     clientConnector = new VTClientConnector(this, new VTBlake3SecureRandom());
     clientConnector.setActive(active);
     clientConnector.setAddress(hostAddress);

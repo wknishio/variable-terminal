@@ -35,6 +35,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
   private Menu encryptionSettingsMenu;
   private Menu sessionsSettingsMenu;
   private Menu helpMenu;
+  private Menu monitorMenu;
   
   public VTServerLocalGraphicalConsoleMenuBar(final VTConsoleInstance console, final VTServerSettingsDialog connectionDialog)
   {
@@ -151,6 +152,8 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     
     super.addBaseMenus();
     
+    monitorMenu = new Menu("");
+    this.add(monitorMenu);
     // Menu helpMenu = new Menu("Resume/Insert");
     // helpMenu.setEnabled(false);
     // this.setHelpMenu(helpMenu);
@@ -169,5 +172,10 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
   public void setEnabledDialogMenu(boolean enabled)
   {
     dialogMenu.setEnabled(enabled);
+  }
+  
+  public Menu getMonitorMenu()
+  {
+    return monitorMenu;
   }
 }
