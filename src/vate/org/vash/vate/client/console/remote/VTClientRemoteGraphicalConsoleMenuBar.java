@@ -298,7 +298,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem(console, "Local Network Interfaces", "*VTNETWORK L\n"));
     networkInterfacesMenu.add(new VTGraphicalConsoleMenuItem(console, "Any Network Interfaces", "*VTNETWORK\n"));
     
-    networkTunnelsMenu = new Menu("Connection Network Tunnels ");
+    networkTunnelsMenu = new Menu("Network Connection Tunnels ");
     // remoteSOCKSTunnelsMenu = new Menu("Connection SOCKS Tunnels ");
     
     networkTunnelsMenu.add(new VTGraphicalConsoleMenuItem(console, "List Any Tunnels", "*VTTUNNEL\n"));
