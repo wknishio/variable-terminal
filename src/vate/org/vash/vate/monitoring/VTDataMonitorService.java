@@ -101,7 +101,7 @@ public class VTDataMonitorService extends VTTask
       }
       differenceInput = currentInput - lastInput;
       differenceOutput = currentOutput - lastOutput;
-      String message = "Tx:" + humanReadableByteCountSI(differenceOutput) + "/s Rx:" + humanReadableByteCountSI(differenceInput) + "/s";
+      String message = "Tx:" + humanReadableByteCount(differenceOutput) + "/s Rx:" + humanReadableByteCount(differenceInput) + "/s";
       for (VTDataMonitorPanel panel : panels)
       {
         try
@@ -139,22 +139,22 @@ public class VTDataMonitorService extends VTTask
     }
   }
   
-  public static String humanReadableByteCountSI(double bytes)
+  public static String humanReadableByteCount(double bytes)
   {
     if (bytes < 0)
     {
-      return "0000.00 B";
+      return "000.000 KB";
     }
-    if (bytes < 1024)
+    if (bytes < 1000)
     {
-      return String.format("%07.2f B", bytes);
+      return String.format("%07.3f KB", bytes / 1024);
     }
     CharacterIterator ci = new StringCharacterIterator(" KMGTPE");
-    while (bytes >= 1024)
+    while (bytes >= 1000)
     {
       bytes /= 1024;
       ci.next();
     }
-    return String.format("%07.2f%cB", bytes, ci.current());
+    return String.format("%07.3f %cB", bytes, ci.current());
   }
 }
