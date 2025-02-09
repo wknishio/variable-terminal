@@ -86,27 +86,16 @@ public class VTDataMonitorService extends VTTask
       {
         transferredInput = connection.getInput().getTransferredBytes();
         transferredOutput = connection.getOutput().getTransferredBytes();
-        if (transferredInput < 0)
+        if (transferredInput < 0 || transferredOutput < 0)
         {
-          connection.getInput().resetTransferredBytes();
-          transferredInput = 0;
-        }
-        if (transferredOutput < 0)
-        {
-          connection.getOutput().resetTransferredBytes();
-          transferredOutput = 0;
+          resetTransferredBytes();
+          continue;
         }
         currentInput += transferredInput;
         currentOutput += transferredOutput;
         if (currentInput < 0 || currentOutput < 0)
         {
-          lastInput = 0;
-          lastOutput = 0;
-          for (VTDataMonitorConnection reset : connections)
-          {
-            reset.getInput().resetTransferredBytes();
-            reset.getOutput().resetTransferredBytes();
-          }
+          resetTransferredBytes();
           continue;
         }
       }
@@ -134,14 +123,19 @@ public class VTDataMonitorService extends VTTask
       }
       if (currentInput < lastInput || currentOutput < lastOutput)
       {
-        lastInput = 0;
-        lastOutput = 0;
-        for (VTDataMonitorConnection reset : connections)
-        {
-          reset.getInput().resetTransferredBytes();
-          reset.getOutput().resetTransferredBytes();
-        }
+        resetTransferredBytes();
       }
+    }
+  }
+  
+  private void resetTransferredBytes()
+  {
+    lastInput = 0;
+    lastOutput = 0;
+    for (VTDataMonitorConnection reset : connections)
+    {
+      reset.getInput().resetTransferredBytes();
+      reset.getOutput().resetTransferredBytes();
     }
   }
   
