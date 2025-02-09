@@ -14,17 +14,17 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
 {
   private static final long serialVersionUID = 1L;
   
-  private Menu dialogMenu;
+  //private Menu dialogMenu;
   private MenuItem serverSettingsDialogMenu;
   private Menu serverConsoleCommandsMenu;
   // private Menu serverBasedCommandsMenu;
   private Menu sessionMenu;
   private Menu performanceMenu;
   private Menu consoleMenu;
-  private Menu fileSystemMenu;
+  private Menu filesMenu;
   private Menu runtimeMenu;
-  private Menu graphicalSystemsMenu;
-  private Menu audioSystemsMenu;
+  private Menu graphicalMenu;
+  private Menu audioMenu;
   private Menu networkMenu;
   private Menu printMenu;
   // private Menu settingsMenu;
@@ -97,17 +97,17 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     runtimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Local Environment Variables", "*VTVARIABLE "));
     runtimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Local Java Properties", "*VTPROPERTY "));
     
-    fileSystemMenu = new Menu("File ");
-    fileSystemMenu.add(new VTGraphicalConsoleMenuItem(console, "List Local File System Roots", "*VTFILEROOT\n"));
+    filesMenu = new Menu("File ");
+    filesMenu.add(new VTGraphicalConsoleMenuItem(console, "List Local File System Roots", "*VTFILEROOT\n"));
     
     networkMenu = new Menu("Network ");
     networkMenu.add(new VTGraphicalConsoleMenuItem(console, "List Local Network Interfaces", "*VTNETWORK\n"));
     
-    graphicalSystemsMenu = new Menu("Graphical ");
-    graphicalSystemsMenu.add(new VTGraphicalConsoleMenuItem(console, "List Local Display Devices", "*VTDISPLAY\n"));
+    graphicalMenu = new Menu("Graphical ");
+    graphicalMenu.add(new VTGraphicalConsoleMenuItem(console, "List Local Display Devices", "*VTDISPLAY\n"));
     
-    audioSystemsMenu = new Menu("Audio ");
-    audioSystemsMenu.add(new VTGraphicalConsoleMenuItem(console, "List Local Audio Mixers", "*VTMIXER\n"));
+    audioMenu = new Menu("Audio ");
+    audioMenu.add(new VTGraphicalConsoleMenuItem(console, "List Local Audio Mixers", "*VTMIXER\n"));
     
     printMenu = new Menu("Print ");
     printMenu.add(new VTGraphicalConsoleMenuItem(console, "List Local Printers", "*VTPRINTER\n"));
@@ -119,26 +119,9 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     helpMenu.add(new VTGraphicalConsoleMenuItem(console, "Abbreviated Commands", "*VTHL\n"));
     helpMenu.add(new VTGraphicalConsoleMenuItem(console, "Specific Command", "*VTHELP "));
     
-    serverConsoleCommandsMenu.add(sessionMenu);
-    // serverConsoleCommandsMenu.add(settingsMenu);
-    serverConsoleCommandsMenu.add(consoleMenu);
-    serverConsoleCommandsMenu.add(performanceMenu);
-    serverConsoleCommandsMenu.add(runtimeMenu);
-    serverConsoleCommandsMenu.add(fileSystemMenu);
-    serverConsoleCommandsMenu.add(graphicalSystemsMenu);
-    serverConsoleCommandsMenu.add(audioSystemsMenu);
-    serverConsoleCommandsMenu.add(networkMenu);
-    serverConsoleCommandsMenu.add(printMenu);
-    serverConsoleCommandsMenu.add(settingsMenu);
-    serverConsoleCommandsMenu.add(helpMenu);
-    
-    this.add(serverConsoleCommandsMenu);
-    serverConsoleCommandsMenu.setEnabled(false);
-    
-    dialogMenu = new Menu("Dialog");
     serverSettingsDialogMenu = new MenuItem("Connection");
     // dialogMenu.setShortcut(new MenuShortcut(KeyEvent.VK_D, true));
-    dialogMenu.add(serverSettingsDialogMenu);
+    //dialogMenu.add(serverSettingsDialogMenu);
     
     serverSettingsDialogMenu.addActionListener(new ActionListener()
     {
@@ -147,8 +130,38 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
         connectionDialog.open();
       }
     });
-    this.add(dialogMenu);
-    dialogMenu.setEnabled(true);
+    
+    serverConsoleCommandsMenu.add(serverSettingsDialogMenu);
+    serverConsoleCommandsMenu.add(sessionMenu);
+    serverConsoleCommandsMenu.add(consoleMenu);
+    serverConsoleCommandsMenu.add(performanceMenu);
+    serverConsoleCommandsMenu.add(runtimeMenu);
+    serverConsoleCommandsMenu.add(filesMenu);
+    serverConsoleCommandsMenu.add(graphicalMenu);
+    serverConsoleCommandsMenu.add(audioMenu);
+    serverConsoleCommandsMenu.add(networkMenu);
+    serverConsoleCommandsMenu.add(printMenu);
+    serverConsoleCommandsMenu.add(settingsMenu);
+    serverConsoleCommandsMenu.add(helpMenu);
+    
+    this.add(serverConsoleCommandsMenu);
+    serverConsoleCommandsMenu.setEnabled(true);
+    sessionMenu.setEnabled(false);
+    consoleMenu.setEnabled(false);
+    performanceMenu.setEnabled(false);
+    runtimeMenu.setEnabled(false);
+    filesMenu.setEnabled(false);
+    graphicalMenu.setEnabled(false);
+    audioMenu.setEnabled(false);
+    networkMenu.setEnabled(false);
+    printMenu.setEnabled(false);
+    settingsMenu.setEnabled(false);
+    helpMenu.setEnabled(false);
+    
+    //dialogMenu = new Menu("Dialog");
+    
+    //this.add(dialogMenu);
+    //dialogMenu.setEnabled(true);
     
     super.addBaseMenus();
     
@@ -162,16 +175,22 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
   
   public void setEnabled(boolean enabled)
   {
-    /*
-     * for (int i = 0;i < this.getMenuCount();i++) {
-     * this.getMenu(i).setEnabled(enabled); }
-     */
-    serverConsoleCommandsMenu.setEnabled(enabled);
+    sessionMenu.setEnabled(enabled);
+    consoleMenu.setEnabled(enabled);
+    performanceMenu.setEnabled(enabled);
+    runtimeMenu.setEnabled(enabled);
+    filesMenu.setEnabled(enabled);
+    graphicalMenu.setEnabled(enabled);
+    audioMenu.setEnabled(enabled);
+    networkMenu.setEnabled(enabled);
+    printMenu.setEnabled(enabled);
+    settingsMenu.setEnabled(enabled);
+    helpMenu.setEnabled(enabled);
   }
   
   public void setEnabledDialogMenu(boolean enabled)
   {
-    dialogMenu.setEnabled(enabled);
+    serverSettingsDialogMenu.setEnabled(enabled);
   }
   
   public Menu getMonitorMenu()
