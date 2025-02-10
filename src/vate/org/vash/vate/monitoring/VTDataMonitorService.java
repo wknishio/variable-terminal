@@ -78,7 +78,11 @@ public class VTDataMonitorService extends VTTask
     {
       synchronized (this)
       {
-        this.wait(1000);
+        wait(1000);
+      }
+      if (panels.size() <= 0)
+      {
+        continue;
       }
       currentInput = 0;
       currentOutput = 0;
@@ -101,7 +105,7 @@ public class VTDataMonitorService extends VTTask
       }
       differenceInput = currentInput - lastInput;
       differenceOutput = currentOutput - lastOutput;
-      String message = "Tx:" + humanReadableByteCount(differenceOutput) + "/s Rx:" + humanReadableByteCount(differenceInput) + "/s";
+      String message = "Tx: " + humanReadableByteCount(differenceOutput) + "/s Rx: " + humanReadableByteCount(differenceInput) + "/s";
       for (VTDataMonitorPanel panel : panels)
       {
         try
@@ -147,12 +151,12 @@ public class VTDataMonitorService extends VTTask
     }
     if (bytes < 1000)
     {
-      return String.format("%07.3f KB", bytes / 1024);
+      return String.format("%07.3f KB", bytes / 1000);
     }
     CharacterIterator ci = new StringCharacterIterator(" KMGTPE");
     while (bytes >= 1000)
     {
-      bytes /= 1024;
+      bytes /= 1000;
       ci.next();
     }
     return String.format("%07.3f %cB", bytes, ci.current());

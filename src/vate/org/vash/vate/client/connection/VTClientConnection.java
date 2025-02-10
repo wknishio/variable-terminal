@@ -18,6 +18,7 @@ import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTCryptographicEngine;
 import org.vash.vate.security.VTStreamCipherInputStream;
 import org.vash.vate.security.VTStreamCipherOutputStream;
+import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -25,6 +26,8 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
+
+import net.jpountz.xxhash.XXHashFactory;
 
 public class VTClientConnection
 {
@@ -672,17 +675,17 @@ public class VTClientConnection
     blake3Digest.update(localNonce);
     blake3Digest.update(encryptionKey);
     blake3Digest.update(digestedCredentials);
-    byte[] inputSeed = blake3Digest.digest(VT.VT_SECURITY_SEED_SIZE_BYTES);
+    long inputSeed = blake3Digest.digestLong();
     
     blake3Digest.reset();
     blake3Digest.update(localNonce);
     blake3Digest.update(remoteNonce);
     blake3Digest.update(encryptionKey);
     blake3Digest.update(digestedCredentials);
-    byte[] outputSeed = blake3Digest.digest(VT.VT_SECURITY_SEED_SIZE_BYTES);
+    long outputSeed = blake3Digest.digestLong();
     
-    VTBlake3SecureRandom secureInputSeed = new VTBlake3SecureRandom(inputSeed);
-    VTBlake3SecureRandom secureOutputSeed = new VTBlake3SecureRandom(outputSeed);
+    VTXXHash64MessageDigest secureInputSeed = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(inputSeed));
+    VTXXHash64MessageDigest secureOutputSeed = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(outputSeed));
     
     int inputChannel = 0;
     int outputChannel = 0;

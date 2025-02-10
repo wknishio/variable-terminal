@@ -3,7 +3,6 @@ package org.vash.vate.stream.multiplex;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.security.SecureRandom;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Random;
@@ -14,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
 import org.vash.vate.security.VTSplitMix64Random;
+import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -34,13 +34,13 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   //private final VTThrottlingOutputStream throttling;
   private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> bufferedChannels;
   private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> directChannels;
-  private final SecureRandom packetSeed;
+  private final VTXXHash64MessageDigest packetSeed;
   @SuppressWarnings("unused")
   private final ExecutorService executorService;
   private volatile long transferredBytes = 0;
   //private final Random packetSequencer;
   
-  public VTLinkableDynamicMultiplexingOutputStream(final OutputStream out, final int packetSize, final SecureRandom packetSeed, final ExecutorService executorService)
+  public VTLinkableDynamicMultiplexingOutputStream(final OutputStream out, final int packetSize, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
   {
     this.packetSeed = packetSeed;
     this.executorService = executorService;
@@ -322,9 +322,14 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private final Random packetSequencer;
     //private final Checksum packetHasher;
     
-    private VTLinkableDynamicMultiplexedOutputStream(final OutputStream output, final OutputStream control, final int type, final int number, final int packetSize, final SecureRandom packetSeed)
+    private VTLinkableDynamicMultiplexedOutputStream(final OutputStream output, final OutputStream control, final int type, final int number, final int packetSize, final VTXXHash64MessageDigest packetSeed)
     {
-      this.seed = packetSeed.nextLong();
+      packetSeed.reset();
+      packetSeed.update((byte)(number));
+      packetSeed.update((byte)(number >> 8));
+      packetSeed.update((byte)(number >> 16));
+      packetSeed.update((byte)(number >> 24));
+      this.seed = packetSeed.digestLong();
       this.packetSequencer = new VTSplitMix64Random(seed);
       //this.packetHasher = XXHashFactory.safeInstance().newStreamingHash64(packetSequencer.nextLong()).asChecksum();
       this.output = output;

@@ -18,6 +18,7 @@ import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTCryptographicEngine;
 import org.vash.vate.security.VTStreamCipherInputStream;
 import org.vash.vate.security.VTStreamCipherOutputStream;
+import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.array.VTFlushBufferedOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
@@ -27,6 +28,8 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
+
+import net.jpountz.xxhash.XXHashFactory;
 
 public class VTServerConnection
 {
@@ -644,22 +647,22 @@ public class VTServerConnection
     blake3Digest.update(localNonce);
     blake3Digest.update(encryptionKey);
     blake3Digest.update(digestedCredentials);
-    byte[] inputSeed = blake3Digest.digest(VT.VT_SECURITY_SEED_SIZE_BYTES);
+    long inputSeed = blake3Digest.digestLong();
     
     blake3Digest.reset();
     blake3Digest.update(localNonce);
     blake3Digest.update(remoteNonce);
     blake3Digest.update(encryptionKey);
     blake3Digest.update(digestedCredentials);
-    byte[] outputSeed = blake3Digest.digest(VT.VT_SECURITY_SEED_SIZE_BYTES);
+    long outputSeed = blake3Digest.digestLong();
     
-    VTBlake3SecureRandom secureInputputSeed = new VTBlake3SecureRandom(inputSeed);
-    VTBlake3SecureRandom secureOutputSeed = new VTBlake3SecureRandom(outputSeed);
+    VTXXHash64MessageDigest secureInputSeed = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(inputSeed));
+    VTXXHash64MessageDigest secureOutputSeed = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(outputSeed));
     
     int inputChannel = 0;
     int outputChannel = 0;
     
-    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, false, secureInputputSeed, executorService);
+    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, false, secureInputSeed, executorService);
     multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, VT.VT_PACKET_DATA_SIZE_BYTES, secureOutputSeed, executorService);
     
     pingServerInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, inputChannel++);

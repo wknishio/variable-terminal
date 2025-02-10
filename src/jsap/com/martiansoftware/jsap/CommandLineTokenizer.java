@@ -47,14 +47,16 @@ public class CommandLineTokenizer {
      * @param buf the StringBuffer storing the current argument.
      */
     private static void appendToBuffer(
-        List resultBuffer,
-        StringBuffer buf) {
-        if (buf.length() > 0) {
-            resultBuffer.add(buf.toString());
-            buf.setLength(0);
-        }
+    List<String> resultBuffer,
+    StringBuffer buf)
+    {
+      if (buf.length() > 0)
+      {
+        resultBuffer.add(buf.toString());
+        buf.setLength(0);
+      }
     }
-
+    
     /**
      * Parses the specified command line into an array of individual arguments.
      * Arguments containing spaces should be enclosed in quotes.
@@ -67,7 +69,7 @@ public class CommandLineTokenizer {
      */
   public static String[] tokenize(String commandLine)
   {
-    List resultBuffer = new java.util.ArrayList();
+    List<String> resultBuffer = new java.util.ArrayList<String>();
     if (commandLine != null)
     {
       int z = commandLine.length();
