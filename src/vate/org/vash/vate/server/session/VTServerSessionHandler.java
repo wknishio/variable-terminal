@@ -3,7 +3,7 @@ package org.vash.vate.server.session;
 import java.util.Collection;
 
 import org.vash.vate.console.VTConsole;
-import org.vash.vate.monitoring.VTDataMonitorConnection;
+import org.vash.vate.monitor.VTDataMonitorConnection;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.authentication.VTServerAuthenticator;
 import org.vash.vate.server.connection.VTServerConnection;

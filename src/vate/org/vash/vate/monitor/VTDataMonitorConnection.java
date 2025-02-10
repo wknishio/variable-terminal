@@ -1,4 +1,4 @@
-package org.vash.vate.monitoring;
+package org.vash.vate.monitor;
 
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;

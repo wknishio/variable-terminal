@@ -6,7 +6,7 @@ import org.vash.vate.client.VTClient;
 import org.vash.vate.client.authentication.VTClientAuthenticator;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.console.VTConsole;
-import org.vash.vate.monitoring.VTDataMonitorConnection;
+import org.vash.vate.monitor.VTDataMonitorConnection;
 
 public class VTClientSessionHandler implements Runnable
 {

@@ -1,4 +1,4 @@
-package org.vash.vate.monitoring;
+package org.vash.vate.monitor;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;

@@ -36,7 +36,7 @@ import org.vash.vate.graphics.control.VTAWTControlEvent;
 import org.vash.vate.graphics.control.VTAWTControlProvider;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
-import org.vash.vate.monitoring.VTDataMonitorMenu;
+import org.vash.vate.monitor.VTDataMonitorMenu;
 
 public class VTGraphicsModeClientWriter implements Runnable
 {
