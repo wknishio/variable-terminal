@@ -8,19 +8,19 @@ public abstract class VTConsoleCommandProcessor
   private String abbreviatedSyntax = "";
   private String resultCode = "";
   private String resultText = "";
-  private VTConsoleCommandSelector<?> selector;
+  private VTConsoleCommandSelector<? extends VTConsoleCommandProcessor> selector;
   
   public VTConsoleCommandProcessor()
   {
     
   }
   
-  public void setSelector(VTConsoleCommandSelector<?> selector)
+  public void setSelector(VTConsoleCommandSelector<? extends VTConsoleCommandProcessor> selector)
   {
     this.selector = selector;
   }
   
-  public VTConsoleCommandSelector<?> getSelector()
+  public VTConsoleCommandSelector<? extends VTConsoleCommandProcessor> getSelector()
   {
     return selector;
   }
