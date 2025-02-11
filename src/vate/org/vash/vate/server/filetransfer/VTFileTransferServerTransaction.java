@@ -40,6 +40,8 @@ public class VTFileTransferServerTransaction implements Runnable
   private int localFileStatus;
   private int remoteFileAccess;
   private int localFileAccess;
+  private long localFileTime;
+  private long remoteFileTime;
   //private byte[] localDigest = new byte[8];
   //private byte[] remoteDigest = new byte[8];
   private long localDigest = -1;
@@ -201,6 +203,11 @@ public class VTFileTransferServerTransaction implements Runnable
   private boolean checkFileSizes()
   {
     return (writeLocalFileSize() && readRemoteFileSize() && localFileSize >= 0);
+  }
+  
+  private boolean checkFileTimes()
+  {
+    return (writeLocalFileTime() && readRemoteFileTime());
   }
   
 //  private boolean getFileChecksums(boolean calculate)
@@ -406,6 +413,29 @@ public class VTFileTransferServerTransaction implements Runnable
     }
   }
   
+  private boolean writeLocalFileTime()
+  {
+    localFileTime = 0;
+    try
+    {
+      localFileTime = fileTransferFile.lastModified();
+    }
+    catch (Throwable e)
+    {
+      localFileTime = 0;
+    }
+    try
+    {
+      session.getServer().getConnection().getFileTransferControlDataOutputStream().writeLong(localFileTime);
+      session.getServer().getConnection().getFileTransferControlDataOutputStream().flush();
+      return true;
+    }
+    catch (Throwable e)
+    {
+      return false;
+    }
+  }
+  
 //  private boolean writeLocalFileChecksum(boolean calculate)
 //  {
 //    if (!calculate)
@@ -591,6 +621,19 @@ public class VTFileTransferServerTransaction implements Runnable
     }
   }
   
+  private boolean readRemoteFileTime()
+  {
+    try
+    {
+      remoteFileTime = session.getServer().getConnection().getFileTransferControlDataInputStream().readLong();
+      return true;
+    }
+    catch (Throwable e)
+    {
+      return false;
+    }
+  }
+  
 //  private boolean readRemoteFileChecksum()
 //  {
 //    try
@@ -729,7 +772,7 @@ public class VTFileTransferServerTransaction implements Runnable
           localFileSize = 0;
           remoteFileSize = 0;
           currentOffset = 0;
-          if (checked && !directory && checkFileSizes())
+          if (checked && !directory && checkFileSizes() && checkFileTimes())
           {
             if (resuming)
             {
@@ -1024,7 +1067,7 @@ public class VTFileTransferServerTransaction implements Runnable
           localFileSize = 0;
           remoteFileSize = 0;
           currentOffset = 0;
-          if (checked && !directory && checkFileSizes())
+          if (checked && !directory && checkFileSizes() && checkFileTimes())
           {
             if (resuming)
             {
@@ -1307,13 +1350,13 @@ public class VTFileTransferServerTransaction implements Runnable
       fileTransferCompletedFile = new File(convertFilePath(currentPath));
       if (fileTransferCompletedFile.equals(fileTransferFile))
       {
-        return true;
+        return fileTransferFile.setLastModified(remoteFileTime);
       }
       if (!fileTransferFile.renameTo(fileTransferCompletedFile))
       {
         if (fileTransferCompletedFile.delete())
         {
-          return fileTransferFile.renameTo(fileTransferCompletedFile);
+          return fileTransferFile.renameTo(fileTransferCompletedFile) && fileTransferFile.setLastModified(remoteFileTime);
         }
         else
         {
