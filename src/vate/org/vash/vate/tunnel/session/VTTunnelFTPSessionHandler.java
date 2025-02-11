@@ -62,7 +62,7 @@ public class VTTunnelFTPSessionHandler extends VTTunnelSessionHandler
       VTRemoteClientSocketFactory clientFactory = new VTRemoteClientSocketFactory(socketFactory, connectTimeout, 0, bind, proxy);
       VTRemoteServerSocketFactory serverFactory = new VTRemoteServerSocketFactory(socketFactory, 0, 0, bind);
       ftpserver = new VTFTPServer(validation, clientFactory, serverFactory, channel.getConnection().getExecutorService());
-      ftpserver.setBufferSize(VT.VT_REDUCED_BUFFER_SIZE_BYTES);
+      ftpserver.setBufferSize(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
       ftpserver.runConnection(session.getSocket());
     }
     catch (Throwable t)

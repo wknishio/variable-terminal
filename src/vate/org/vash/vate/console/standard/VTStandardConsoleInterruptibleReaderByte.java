@@ -6,13 +6,14 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
 
+import org.vash.vate.VT;
 import org.vash.vate.compatibility.VTArrays;
 
 public class VTStandardConsoleInterruptibleReaderByte implements Runnable
 {
   private boolean requested;
   // private BufferedReader standardTerminalReader;
-  private final byte[] readBuffer = new byte[1024 * 16];
+  private final byte[] readBuffer = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
   private BlockingQueue<byte[]> buffer;
   // private static final String ANSIDetectionPattern =
   // "(\\u001B)(\\[)([^R])*([R])";

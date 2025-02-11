@@ -69,7 +69,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     {
       return null;
     }
-    VTPipedInputStream in = new VTPipedInputStream(VT.VT_REDUCED_BUFFER_SIZE_BYTES);
+    VTPipedInputStream in = new VTPipedInputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
     VTPipedOutputStream out = new VTPipedOutputStream(in);
     // source = new VTInterruptibleInputStream(in, session.getSessionThreads());
     sourceReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));

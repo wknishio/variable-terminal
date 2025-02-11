@@ -2,6 +2,7 @@ package org.vash.vate.monitor;
 
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
+import java.util.Locale;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
@@ -151,7 +152,7 @@ public class VTDataMonitorService extends VTTask
     }
     if (bytes < 1000)
     {
-      return String.format("%07.3f KB", bytes / 1000);
+      return String.format(Locale.US, "%07.3f KB", bytes / 1000);
     }
     CharacterIterator ci = new StringCharacterIterator(" KMGTPE");
     while (bytes >= 1000)
@@ -159,6 +160,6 @@ public class VTDataMonitorService extends VTTask
       bytes /= 1000;
       ci.next();
     }
-    return String.format("%07.3f %cB", bytes, ci.current());
+    return String.format(Locale.US, "%07.3f %cB", bytes, ci.current());
   }
 }
