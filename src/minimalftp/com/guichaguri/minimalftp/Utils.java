@@ -17,7 +17,7 @@
 package com.guichaguri.minimalftp;
 
 import com.guichaguri.minimalftp.api.IFileSystem;
-import java.io.BufferedInputStream;
+//import java.io.BufferedInputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -155,44 +155,47 @@ public class Utils {
     }
 
     public static void write(OutputStream out, byte[] bytes, int len, boolean ascii) throws IOException {
-        if(ascii) {
-            // ASCII - Add \r before \n when necessary
-            byte lastByte = 0;
-            for(int i = 0; i < len; i++) {
-                byte b = bytes[i];
-
-                if(b == '\n' && lastByte != '\r') {
-                    out.write('\r');
-                }
-
-                out.write(b);
-                lastByte = b;
-            }
-        } else {
-            // Binary - Keep all \r\n as is
-            out.write(bytes, 0, len);
-        }
+      //removed huge performance hog because single byte writes are very really without nagle algorithm
+//        if(ascii) {
+//            // ASCII - Add \r before \n when necessary
+//            byte lastByte = 0;
+//            for(int i = 0; i < len; i++) {
+//                byte b = bytes[i];
+//
+//                if(b == '\n' && lastByte != '\r') {
+//                    out.write('\r');
+//                }
+//
+//                out.write(b);
+//                lastByte = b;
+//            }
+//        } else {
+//            // Binary - Keep all \r\n as is
+//            
+//        }
+      out.write(bytes, 0, len);
     }
 
     public static <F> InputStream readFileSystem(IFileSystem<F> fs, F file, long start, boolean ascii, int bufferSize) throws IOException {
-        if(ascii && start > 0) {
-            InputStream in = new BufferedInputStream(fs.readFile(file, 0), bufferSize);
-            long offset = 0;
-
-            // Count \n as two bytes for skipping
-            while(start >= offset++) {
-                int c = in.read();
-                if(c == -1) {
-                    throw new IOException("Couldn't skip this file. End of the file was reached");
-                } else if(c == '\n') {
-                    offset++;
-                }
-            }
-
-            return in;
-        } else {
-            return fs.readFile(file, start);
-        }
+//        if(ascii && start > 0) {
+//            InputStream in = new BufferedInputStream(fs.readFile(file, 0), bufferSize);
+//            long offset = 0;
+//
+//            // Count \n as two bytes for skipping
+//            while(start >= offset++) {
+//                int c = in.read();
+//                if(c == -1) {
+//                    throw new IOException("Couldn't skip this file. End of the file was reached");
+//                } else if(c == '\n') {
+//                    offset++;
+//                }
+//            }
+//
+//            return in;
+//        } else {
+//            return fs.readFile(file, start);
+//        }
+        return fs.readFile(file, start);
     }
 
     public static boolean hasPermission(int perms, int perm) {
