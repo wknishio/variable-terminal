@@ -445,7 +445,7 @@ public class FTPConnectionHandler {
           data += "Logged in " + user + "\r\n";
           data += "TYPE: " + type + ", STRUcture: File, MODE: Stream\r\n";
           data += "Total bytes transferred for session: " + con.getBytesTransferred() + "\r\n";
-          con.sendData(data.getBytes("UTF-8"));
+          con.sendData(data.getBytes("UTF-8"), false);
           con.sendResponse(211, "Status sent!");
         }
       };

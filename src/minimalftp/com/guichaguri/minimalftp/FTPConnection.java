@@ -231,7 +231,7 @@ public class FTPConnection implements Closeable {
      * @param data The data to be sent
      * @throws ResponseException When an error occurs
      */
-    public void sendData(byte[] data) throws ResponseException {
+    public void sendData(byte[] data, boolean convert) throws ResponseException {
         if(con.isClosed()) return;
 
         Socket socket = null;
@@ -240,7 +240,7 @@ public class FTPConnection implements Closeable {
             dataConnections.add(socket);
             OutputStream out = socket.getOutputStream();
 
-            Utils.write(out, data, data.length, conHandler.isAsciiMode());
+            Utils.write(out, data, data.length, convert ? conHandler.isAsciiMode() : false);
             bytesTransferred += data.length;
 
             out.flush();

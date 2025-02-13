@@ -343,7 +343,7 @@ public class FTPFileHandler {
           for(Object file : fs.listFiles(dir)) {
               data.append(Utils.format(fs, file));
           }
-          con.sendData(data.toString().getBytes("UTF-8"));
+          con.sendData(data.toString().getBytes("UTF-8"), false);
           con.sendResponse(226, "The list was sent");
         }
       };
@@ -375,7 +375,7 @@ public class FTPFileHandler {
           for(Object file : fs.listFiles(dir)) {
               data.append(fs.getName(file)).append("\r\n");
           }
-          con.sendData(data.toString().getBytes("UTF-8"));
+          con.sendData(data.toString().getBytes("UTF-8"), false);
           con.sendResponse(226, "The list was sent");
         }
       };
@@ -524,7 +524,7 @@ public class FTPFileHandler {
           for(Object f : fs.listFiles(file)) {
               data.append(Utils.getFacts(fs, f, options));
           }
-          con.sendData(data.toString().getBytes("UTF-8"));
+          con.sendData(data.toString().getBytes("UTF-8"), false);
           con.sendResponse(226, "The file list was sent!");
         }
       };
