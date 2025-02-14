@@ -307,7 +307,6 @@ public class VTNanoHTTPDProxySession implements Runnable
     keepAlive = true;
     while (mySocket.isConnected() && !mySocket.isClosed() && keepAlive)
     {
-      //System.out.println("request received");
       try
       {
         keepAlive = false;
@@ -339,8 +338,14 @@ public class VTNanoHTTPDProxySession implements Runnable
                 break;
               }
             }
+            else if (read < 0)
+            {
+              //cannot process request due to EOF
+              return;
+            }
           }
         }
+        
         if (rlen == 0)
         {
           sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Empty request." );
@@ -370,17 +375,28 @@ public class VTNanoHTTPDProxySession implements Runnable
         String method = preambles.getProperty("method");
         String uri = preambles.getProperty("uri");
         
-        if (!keepAlive)
+        String connection = findProperty(headers, "Connection");
+        if (connection != null)
         {
-          String connection = findProperty(headers, "Connection");
-          if (connection != null && connection.toLowerCase().startsWith("keep-alive"))
+          if (connection.toLowerCase().startsWith("keep-alive"))
           {
             keepAlive = true;
           }
-          connection = findProperty(headers, "Proxy-Connection");
-          if (connection != null && connection.toLowerCase().startsWith("keep-alive"))
+          else
+          {
+            keepAlive = false;
+          }
+        }
+        connection = findProperty(headers, "Proxy-Connection");
+        if (connection != null)
+        {
+          if (connection.toLowerCase().startsWith("keep-alive"))
           {
             keepAlive = true;
+          }
+          else
+          {
+            keepAlive = false;
           }
         }
         
@@ -457,7 +473,6 @@ public class VTNanoHTTPDProxySession implements Runnable
         }
       }
     }
-    //System.out.println("finished proxy");
   }
   
 //  public void serve(String uri, String method, Properties pre, Properties headers, Properties files, byte[] bodyData, String[] usernames, String[] passwords, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws IOException, URISyntaxException, InterruptedException
@@ -547,7 +562,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       resp.headers.put(requireHeader, "Basic");
     }
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
-    sendError(resp.status, MIME_PLAINTEXT, resp.headers, null);
+    sendError(resp.status, MIME_PLAINTEXT, resp.headers, HTTP_PROXY_AUTHENTICATION_REQUIRED);
   }
   
   private int checkAuthenticatedDigest(String authorizationHeader, Properties headers, String method, String[] usernames, String[] passwords, String realm) throws UnsupportedEncodingException
@@ -639,7 +654,7 @@ public class VTNanoHTTPDProxySession implements Runnable
         +  "qop=\"auth\", nonce=\"" + nonce + "\", opaque=\""
         + Hex.toHexString(xxhash64.digest(nonce.getBytes("ISO-8859-1"))) + "\"" + (stale ? ", stale=\"true\"" : ""));
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
-    sendError(resp.status, MIME_PLAINTEXT, resp.headers, null);
+    sendError(resp.status, MIME_PLAINTEXT, resp.headers, HTTP_PROXY_AUTHENTICATION_REQUIRED);
   }
   
   private void serveConnectRequest(String uri, String method, Properties pre, Properties headers, byte[] bodyData, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws URISyntaxException, IOException, InterruptedException
@@ -1105,25 +1120,32 @@ public class VTNanoHTTPDProxySession implements Runnable
   
   private void sendError( String status, String msg ) throws InterruptedException, UnsupportedEncodingException
   {
-    sendResponse( status, MIME_PLAINTEXT, null, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")));
+    sendResponse( status, MIME_PLAINTEXT, null, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")), msg.length());
     throw new InterruptedException(status);
   }
   
-  private void sendError( String status, String mime, Properties header, InputStream data ) throws InterruptedException, UnsupportedEncodingException
+  @SuppressWarnings("unused")
+  private void sendError( String status, String mime, Properties header, InputStream data, long length) throws InterruptedException, UnsupportedEncodingException
   {
-    sendResponse( status, mime, header, data);
+    sendResponse( status, mime, header, data, length);
+    throw new InterruptedException(status);
+  }
+  
+  private void sendError( String status, String mime, Properties header, String msg ) throws InterruptedException, UnsupportedEncodingException
+  {
+    sendResponse( status, mime, header, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")), msg.length());
     throw new InterruptedException(status);
   }
   
   private void sendResponse( String status, String msg ) throws UnsupportedEncodingException
   {
-    sendResponse( status, MIME_PLAINTEXT, null, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")));
+    sendResponse( status, MIME_PLAINTEXT, null, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")), msg.length());
   }
   
   /**
    * Sends given response to the socket.
    */
-  private void sendResponse( String status, String mime, Properties header, InputStream data )
+  private void sendResponse( String status, String mime, Properties header, InputStream data, long length)
   {
     try
     {
@@ -1131,7 +1153,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       {
         throw new Error( "sendResponse(): Status can't be null." );
       }
-      
+      //System.out.println("response.status="+status);
       OutputStream out = mySocket.getOutputStream();
       PrintWriter pw = new PrintWriter( new OutputStreamWriter(out, "ISO-8859-1") );
       pw.print("HTTP/1.1 " + status + " \r\n");
@@ -1161,6 +1183,11 @@ public class VTNanoHTTPDProxySession implements Runnable
       if ( header == null || header.getProperty( "Date" ) == null )
       {
         pw.print( "Date: " + gmtFrmt.format( new Date()) + "\r\n");
+      }
+      
+      if (length >= 0)
+      {
+        pw.print("Content-Length: " + length + "\r\n");
       }
       
       if ( header != null )
@@ -1198,6 +1225,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     catch( IOException ioe )
     {
+      //ioe.printStackTrace();
       // Couldn't write? No can do.
       try { mySocket.close(); } catch( Throwable t ) {}
     }
