@@ -46,25 +46,9 @@ public class VTFileTransferSorter implements Comparator<File>
       }
       else
       {
-        Long length1 = Long.valueOf(0);
-        Long length2 = Long.valueOf(0);
-        try
-        {
-          length1 = Long.valueOf(f1.length());
-        }
-        catch (Throwable t)
-        {
-          
-        }
-        try
-        {
-          length2 = Long.valueOf(f2.length());
-        }
-        catch (Throwable t)
-        {
-          
-        }
-        return length1.compareTo(length2);
+        String name1 = f1.getName().toUpperCase();
+        String name2 = f2.getName().toUpperCase();
+        return name1.compareTo(name2);
       }
     }
   }

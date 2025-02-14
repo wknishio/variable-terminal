@@ -780,7 +780,7 @@ public class VTFileTransferClientTransaction implements Runnable
           localFileSize = 0;
           remoteFileSize = 0;
           currentOffset = 0;
-          if (checked && !directory && checkFileSizes() && checkFileTimes())
+          if (checked && !directory && checkFileTimes() && checkFileSizes())
           {
             if (resuming)
             {
@@ -790,7 +790,7 @@ public class VTFileTransferClientTransaction implements Runnable
             }
             return true;
           }
-          else if (checked && directory)
+          else if (checked && directory && checkFileTimes())
           {
             return true;
           }
@@ -1075,7 +1075,7 @@ public class VTFileTransferClientTransaction implements Runnable
           localFileSize = 0;
           remoteFileSize = 0;
           currentOffset = 0;
-          if (checked && !directory && checkFileSizes() && checkFileTimes())
+          if (checked && !directory && checkFileTimes() && checkFileSizes())
           {
             if (resuming)
             {
@@ -1085,7 +1085,7 @@ public class VTFileTransferClientTransaction implements Runnable
             }
             return true;
           }
-          else if (checked && directory)
+          else if (checked && directory && checkFileTimes())
           {
             return true;
           }
@@ -1144,6 +1144,7 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       else
       {
+        long currentFileTime = remoteFileTime;
         String rootFolder = fileNameFromPath(currentRootPath);
         String currentFolder = fileNameFromPath(currentPath);
         if (rootLevel && !currentFolder.equals(rootFolder))
@@ -1161,6 +1162,7 @@ public class VTFileTransferClientTransaction implements Runnable
             ok = fileTransferFile.mkdirs();
           }
         }
+        //ok = fileTransferFile.setLastModified(remoteFileTime) && ok;
         String nextPath = " ";
         while (true)
         {
@@ -1185,6 +1187,19 @@ public class VTFileTransferClientTransaction implements Runnable
               else
               {
                 // folder ok
+                if (currentFileTime >= 0)
+                {
+                  if (rootLevel && !currentFolder.equals(rootFolder))
+                  {
+                    fileTransferCompletedFile = new File(convertFilePath(appendToPath(currentPath, rootFolder)));
+                    fileTransferCompletedFile.setLastModified(currentFileTime);
+                  }
+                  else
+                  {
+                    fileTransferCompletedFile = new File(convertFilePath(currentPath));
+                    fileTransferCompletedFile.setLastModified(currentFileTime);
+                  }
+                }
                 return true;
               }
             }
@@ -1357,13 +1372,26 @@ public class VTFileTransferClientTransaction implements Runnable
       fileTransferCompletedFile = new File(convertFilePath(currentPath));
       if (fileTransferCompletedFile.equals(fileTransferFile))
       {
-        return fileTransferFile.setLastModified(remoteFileTime);
+        if (remoteFileTime >= 0)
+        {
+          fileTransferCompletedFile.setLastModified(remoteFileTime);
+        }
+        return true;
       }
       if (!fileTransferFile.renameTo(fileTransferCompletedFile))
       {
         if (fileTransferCompletedFile.delete())
         {
-          return fileTransferFile.renameTo(fileTransferCompletedFile) && fileTransferFile.setLastModified(remoteFileTime);
+          if (fileTransferFile.renameTo(fileTransferCompletedFile))
+          {
+            if (remoteFileTime >= 0)
+            {
+              fileTransferCompletedFile = new File(convertFilePath(currentPath));
+              fileTransferCompletedFile.setLastModified(remoteFileTime);
+            }
+            return true;
+          }
+          return false;
         }
         else
         {
@@ -1372,6 +1400,10 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       else
       {
+        if (remoteFileTime >= 0)
+        {
+          fileTransferCompletedFile.setLastModified(remoteFileTime);
+        }
         return true;
       }
     }
