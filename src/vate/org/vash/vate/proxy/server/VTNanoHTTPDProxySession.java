@@ -353,7 +353,8 @@ public class VTNanoHTTPDProxySession implements Runnable
         
         if (!foundHeaderEnd)
         {
-          sendError(HTTP_PAYLOAD_TOO_LARGE, "PAYLOAD TOO LARGE: Malformed request or request headers too large.");
+          sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Malformed request." );
+          //sendError(HTTP_PAYLOAD_TOO_LARGE, "PAYLOAD TOO LARGE: Malformed request or request headers too large.");
         }
         
         // Create a BufferedReader for parsing the header.
@@ -365,12 +366,13 @@ public class VTNanoHTTPDProxySession implements Runnable
         Properties files = new VTConfigurationProperties();
         
         // Decode the header into parms and header java properties
-        long size = decodeHeader(hin, preambles, parameters, headers);
+        //long size = decodeHeader(hin, preambles, parameters, headers);
+        decodeHeader(hin, preambles, parameters, headers);
         
-        if (size == -1)
-        {
-          sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Missing line terminator in request." );
-        }
+//        if (size == -1)
+//        {
+//          sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Missing line terminator in request." );
+//        }
         
         String method = preambles.getProperty("method");
         String uri = preambles.getProperty("uri");
@@ -410,26 +412,26 @@ public class VTNanoHTTPDProxySession implements Runnable
           sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Missing URI in request." );
         }
         
-        if (size == 0)
-        {
-          size = 0x7FFFFFFFFFFFFFFFL;
-        }
+//        if (size == 0)
+//        {
+//          size = 0x7FFFFFFFFFFFFFFFL;
+//        }
         // Write the part of body already read to ByteArrayOutputStream
         ByteArrayOutputStream body = new ByteArrayOutputStream();
         
         if (splitbyte < rlen)
         {
-          body.write(buf, splitbyte, rlen-splitbyte);
+          body.write(buf, splitbyte, rlen - splitbyte);
         }
         
-        if (splitbyte < rlen)
-        {
-          size -= rlen-splitbyte;
-        }
-        else if (splitbyte==0 || size == 0x7FFFFFFFFFFFFFFFl)
-        {
-          size = 0;
-        }
+//        if (splitbyte < rlen)
+//        {
+//          size -= rlen-splitbyte;
+//        }
+//        else if (splitbyte==0 || size == 0x7FFFFFFFFFFFFFFFl)
+//        {
+//          size = 0;
+//        }
         
         byte[] partialBodyData = body.toByteArray();
         
@@ -562,7 +564,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       resp.headers.put(requireHeader, "Basic");
     }
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
-    sendError(resp.status, MIME_PLAINTEXT, resp.headers, HTTP_PROXY_AUTHENTICATION_REQUIRED);
+    sendError(resp.status, MIME_PLAINTEXT, resp.headers, "");
   }
   
   private int checkAuthenticatedDigest(String authorizationHeader, Properties headers, String method, String[] usernames, String[] passwords, String realm) throws UnsupportedEncodingException
@@ -654,7 +656,7 @@ public class VTNanoHTTPDProxySession implements Runnable
         +  "qop=\"auth\", nonce=\"" + nonce + "\", opaque=\""
         + Hex.toHexString(xxhash64.digest(nonce.getBytes("ISO-8859-1"))) + "\"" + (stale ? ", stale=\"true\"" : ""));
     resp.status = HTTP_PROXY_AUTHENTICATION_REQUIRED;
-    sendError(resp.status, MIME_PLAINTEXT, resp.headers, HTTP_PROXY_AUTHENTICATION_REQUIRED);
+    sendError(resp.status, MIME_PLAINTEXT, resp.headers, "");
   }
   
   private void serveConnectRequest(String uri, String method, Properties pre, Properties headers, byte[] bodyData, Socket clientSocket, InputStream clientInput, VTProxy connectProxy) throws URISyntaxException, IOException, InterruptedException
@@ -1182,7 +1184,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       
       if ( header == null || header.getProperty( "Date" ) == null )
       {
-        pw.print( "Date: " + gmtFrmt.format( new Date()) + "\r\n");
+        pw.print("Date: " + gmtFrmt.format( new Date()) + "\r\n");
       }
       
       if (length >= 0)
