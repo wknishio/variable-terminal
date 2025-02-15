@@ -118,15 +118,13 @@ public class VTDataMonitorService extends VTTask
           //t.printStackTrace();
         }
       }
-      if (currentInput < lastInput || currentOutput < lastOutput)
+      if (differenceInput < 0 || differenceOutput < 0)
       {
         resetTransferredBytes();
+        continue;
       }
-      else
-      {
-        lastInput = currentInput;
-        lastOutput = currentOutput;
-      }
+      lastInput = currentInput;
+      lastOutput = currentOutput;
     }
   }
   
