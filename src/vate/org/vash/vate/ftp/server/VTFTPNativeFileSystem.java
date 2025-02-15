@@ -3,12 +3,17 @@ package org.vash.vate.ftp.server;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
+
+import org.vash.vate.filesystem.VTFileSeekSorter;
 
 import com.guichaguri.minimalftp.impl.NativeFileSystem;
 
 public class VTFTPNativeFileSystem extends NativeFileSystem
 {
   protected final File root;
+  protected final Comparator<File> fileSorter = new VTFileSeekSorter();
   
   public VTFTPNativeFileSystem(File rootDir)
   {
@@ -72,4 +77,23 @@ public class VTFTPNativeFileSystem extends NativeFileSystem
   {
     return file.getAbsolutePath().replace(File.separatorChar, '/');
   }
+  
+  public File[] listFiles(File dir) throws IOException
+  {
+    if (!dir.isDirectory())
+    {
+      throw new IOException("Not a directory");
+    }
+    File[] files = dir.listFiles();
+    if (files != null)
+    {
+      Arrays.sort(files, fileSorter);
+    }
+    return files;
+  }
+  
+//  public boolean canExecute(File file)
+//  {
+//    return false;
+//  }
 }

@@ -29,9 +29,7 @@ public class VTFileTransferSorter implements Comparator<File>
     {
       if (f2IsDirectory)
       {
-        String name1 = f1.getName().toUpperCase();
-        String name2 = f2.getName().toUpperCase();
-        return name1.compareTo(name2);
+        return f1.getName().compareTo(f2.getName());
       }
       else
       {
@@ -46,9 +44,7 @@ public class VTFileTransferSorter implements Comparator<File>
       }
       else
       {
-        String name1 = f1.getName().toUpperCase();
-        String name2 = f2.getName().toUpperCase();
-        return name1.compareTo(name2);
+        return f1.getName().compareTo(f2.getName());
       }
     }
   }
