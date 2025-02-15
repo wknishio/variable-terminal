@@ -29,12 +29,7 @@ public class VTFTPFileHandler extends FTPFileHandler
     }
     else
     {
-      Object file = fs.findFile(cwd, path);
-      if (fs.exists(file))
-      {
-        return file;
-      }
-      return fs.findFile(path);
+      return fs.findFile(cwd, path);
     }
   }
   
