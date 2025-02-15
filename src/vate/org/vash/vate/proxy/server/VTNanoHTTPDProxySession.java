@@ -1164,17 +1164,17 @@ public class VTNanoHTTPDProxySession implements Runnable
       {
         if (proxyRequest)
         {
-          pw.print("Proxy-Connection: keep-alive\r\n");
+          pw.print("Proxy-Connection: Keep-Alive\r\n");
         }
-        pw.print("Connection: keep-alive\r\n");
+        pw.print("Connection: Keep-Alive\r\n");
       }
       else
       {
         if (proxyRequest)
         {
-          pw.print("Proxy-Connection: close\r\n");
+          pw.print("Proxy-Connection: Close\r\n");
         }
-        pw.print("Connection: close\r\n");
+        pw.print("Connection: Close\r\n");
       }
       
       if ( mime != null && mime.length() > 0)
