@@ -100,7 +100,12 @@ public class VTShellAdapter
   
   public boolean setShellDirectory(File shellDirectory)
   {
-    if (shellDirectory.exists() && shellDirectory.isDirectory())
+    if (shellDirectory == null)
+    {
+      this.shellDirectory = shellDirectory;
+      return true;
+    }
+    if (shellDirectory != null && shellDirectory.exists() && shellDirectory.isDirectory())
     {
       this.shellDirectory = shellDirectory;
       return true;

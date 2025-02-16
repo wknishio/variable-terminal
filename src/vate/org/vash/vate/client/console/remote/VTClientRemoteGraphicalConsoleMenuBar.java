@@ -280,9 +280,10 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     
     runtimeMenu = new Menu("Runtime ");
     manageRuntimeMenu = new Menu("Remote Process Control ");
+    runtimeMenu.add(manageRuntimeMenu);
     runtimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Remote Environment Variables", "*VTVARIABLE "));
     runtimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Remote Java Properties", "*VTPROPERTY "));
-    runtimeMenu.add(manageRuntimeMenu);
+    
     manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Create Managed Process", "*VTRUNTIME M"));
     manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Create Free Process", "*VTRUNTIME F"));
     manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "List Managed Processes", "*VTRUNTIME LA\n"));
@@ -291,7 +292,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Runtime Path", "*VTRUNTIME P "));
     manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTRUNTIME\n"));
     
-    performanceMenu = new Menu("Rate ");
+    performanceMenu = new Menu("Traffic ");
     performanceMenu.add(new VTGraphicalConsoleMenuItem(console, "Check Connection Latency", "*VTPING\n"));
     performanceMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Rate Limits", "*VTLIMIT "));
     performanceMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTPING\n*VTHELP *VTLIMIT\n"));
@@ -373,8 +374,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     // clientConsoleCommandsMenu.add(settingsMenu);
     clientConsoleCommandsMenu.add(consoleMenu);
     clientConsoleCommandsMenu.add(performanceMenu);
-    clientConsoleCommandsMenu.add(shellMenu);
     clientConsoleCommandsMenu.add(runtimeMenu);
+    clientConsoleCommandsMenu.add(shellMenu);
     clientConsoleCommandsMenu.add(filesMenu);
     clientConsoleCommandsMenu.add(graphicalMenu);
     clientConsoleCommandsMenu.add(audioMenu);
