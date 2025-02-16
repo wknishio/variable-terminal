@@ -76,8 +76,8 @@ public class VTClientConfigurationDialog extends Dialog
   private VTConfigurationDialogParameter sessionUser;
   private VTConfigurationDialogParameter sessionPassword;
   
-  private VTConfigurationDialogParameter pingInterval;
   private VTConfigurationDialogParameter pingLimit;
+  private VTConfigurationDialogParameter pingInterval;
   
   private Runnable application;
   private Frame owner;
@@ -858,8 +858,8 @@ public class VTClientConfigurationDialog extends Dialog
     centerPanel.add(sessionUser);
     centerPanel.add(sessionPassword);
     
-    centerPanel.add(pingInterval);
     centerPanel.add(pingLimit);
+    centerPanel.add(pingInterval);
     
     centerPanel.add(buttonPanel1);
     
@@ -1251,8 +1251,8 @@ public class VTClientConfigurationDialog extends Dialog
         sessionCommands.setParameter(connector.getSessionCommands());
         // sessionLines.setParameter(connector.getSessionLines());
         sessionShell.setParameter(connector.getSessionShell());
-        pingInterval.setParameter(client.getPingInterval() > 0 ? client.getPingInterval() : "");
         pingLimit.setParameter(client.getPingLimit() > 0 ? client.getPingLimit() : "");
+        pingInterval.setParameter(client.getPingInterval() > 0 ? client.getPingInterval() : "");
       }
       else
       {
@@ -1281,8 +1281,8 @@ public class VTClientConfigurationDialog extends Dialog
         sessionCommands.setParameter(client.getSessionCommands());
         // sessionLines.setParameter(client.getSessionLines());
         sessionShell.setParameter(client.getSessionShell());
-        pingInterval.setParameter(client.getPingInterval() > 0 ? client.getPingInterval() : "");
         pingLimit.setParameter(client.getPingLimit() > 0 ? client.getPingLimit() : "");
+        pingInterval.setParameter(client.getPingInterval() > 0 ? client.getPingInterval() : "");
       }
     }
   }
@@ -1489,22 +1489,6 @@ public class VTClientConfigurationDialog extends Dialog
         connector.setSessionShell(sessionShell.getParameter());
         try
         {
-          int interval = Integer.parseInt(pingInterval.getParameter());
-          if (interval > 0)
-          {
-            client.setPingInterval(interval);
-          }
-          else
-          {
-            client.setPingInterval(0);
-          }
-        }
-        catch (Throwable e)
-        {
-          client.setPingInterval(0);
-        }
-        try
-        {
           int limit = Integer.parseInt(pingLimit.getParameter());
           if (limit > 0)
           {
@@ -1518,6 +1502,22 @@ public class VTClientConfigurationDialog extends Dialog
         catch (Throwable e)
         {
           client.setPingLimit(0);
+        }
+        try
+        {
+          int interval = Integer.parseInt(pingInterval.getParameter());
+          if (interval > 0)
+          {
+            client.setPingInterval(interval);
+          }
+          else
+          {
+            client.setPingInterval(0);
+          }
+        }
+        catch (Throwable e)
+        {
+          client.setPingInterval(0);
         }
         /*
          * if (VTTerminal.isGraphical()) { try {

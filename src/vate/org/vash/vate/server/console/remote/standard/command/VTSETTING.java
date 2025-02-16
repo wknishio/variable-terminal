@@ -31,6 +31,8 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       String encryptionPassword = "";
       Integer sessionsMaximum = session.getServer().getServerConnector().getSessionsMaximum();
       String sessionShell = session.getServer().getServerConnector().getSessionShell();
+      String pingLimit = session.getServer().getPingLimit() > 0 ? "" + session.getServer().getPingLimit() : "";
+      String pingInterval = session.getServer().getPingInterval() > 0 ? "" + session.getServer().getPingInterval() : "";
       if (session.getServer().getServerConnector().getEncryptionKey() != null)
       {
         encryptionPassword = new String(session.getServer().getServerConnector().getEncryptionKey(), "UTF-8");
@@ -129,6 +131,8 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
       message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
       message.append("\nVT>Session shell(SS): [" + sessionShell + "]");
       message.append("\nVT>Session maximum(SM): [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]");
+      message.append("\nVT>Ping limit(PL): [" + pingLimit + "]");
+      message.append("\nVT>Ping interval(PI): [" + pingInterval + "]");
       message.append("\nVT>\nVT>End of server connection settings list\nVT>");
       connection.getResultWriter().write(message.toString());
       connection.getResultWriter().flush();
@@ -852,6 +856,84 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
         else
         {
           connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+          connection.getResultWriter().flush();
+        }
+      }
+      else if (parsed[1].equalsIgnoreCase("PL"))
+      {
+        if (parsed.length == 2)
+        {
+          String pingLimit = (session.getServer().getPingLimit() > 0 ? "" + session.getServer().getPingLimit() : "");
+          connection.getResultWriter().write("\nVT>Ping limit(PL): [" + pingLimit + "]\nVT>");
+          connection.getResultWriter().flush();
+        }
+        else if (parsed.length >= 3)
+        {
+          try
+          {
+            int pingLimit = Integer.parseInt(parsed[2]);
+            if (pingLimit > 0)
+            {
+              session.getServer().setPingLimit(pingLimit);
+              connection.getResultWriter().write("\nVT>Ping limit(PL) set to: [" + (session.getServer().getPingLimit() > 0 ? session.getServer().getPingLimit() : "") + "]\nVT>");
+              connection.getResultWriter().flush();
+            }
+            else
+            {
+              session.getServer().setPingLimit(0);
+              connection.getResultWriter().write("\nVT>Ping limit(PL) set to: [" + (session.getServer().getPingLimit() > 0 ? session.getServer().getPingLimit() : "") + "]\nVT>");
+              connection.getResultWriter().flush();
+            }
+          }
+          catch (NumberFormatException e)
+          {
+            session.getServer().setPingLimit(0);
+            connection.getResultWriter().write("\nVT>Ping limit(PL) set to: [" + (session.getServer().getPingLimit() > 0 ? session.getServer().getPingLimit() : "") + "]\nVT>");
+            connection.getResultWriter().flush();
+          }
+        }
+        else
+        {
+          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          connection.getResultWriter().flush();
+        }
+      }
+      else if (parsed[1].equalsIgnoreCase("PI"))
+      {
+        if (parsed.length == 2)
+        {
+          String pingInterval = (session.getServer().getPingInterval() > 0 ? "" + session.getServer().getPingInterval() : "");
+          connection.getResultWriter().write("\nVT>Ping interval(PI): [" + pingInterval + "]\nVT>");
+          connection.getResultWriter().flush();
+        }
+        else if (parsed.length >= 3)
+        {
+          try
+          {
+            int pingInterval = Integer.parseInt(parsed[2]);
+            if (pingInterval > 0)
+            {
+              session.getServer().setPingInterval(pingInterval);
+              connection.getResultWriter().write("\nVT>Ping interval(PI) set to: [" + (session.getServer().getPingInterval() > 0 ? session.getServer().getPingInterval() : "") + "]\nVT>");
+              connection.getResultWriter().flush();
+            }
+            else
+            {
+              session.getServer().setPingInterval(0);
+              connection.getResultWriter().write("\nVT>Ping interval(PI) set to: [" + (session.getServer().getPingInterval() > 0 ? session.getServer().getPingInterval() : "") + "]\nVT>");
+              connection.getResultWriter().flush();
+            }
+          }
+          catch (NumberFormatException e)
+          {
+            session.getServer().setPingInterval(0);
+            connection.getResultWriter().write("\nVT>Ping interval(PI) set to: [" + (session.getServer().getPingInterval() > 0 ? session.getServer().getPingInterval() : "") + "]\nVT>");
+            connection.getResultWriter().flush();
+          }
+        }
+        else
+        {
+          connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
           connection.getResultWriter().flush();
         }
       }

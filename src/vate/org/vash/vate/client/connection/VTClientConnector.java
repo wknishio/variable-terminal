@@ -1405,38 +1405,8 @@ public class VTClientConnector implements Runnable
         client.setPassword(password);
         retry = false;
       }
-      int pingInterval = 0;
       int pingLimit = 0;
-      VTConsole.print("VT>Enter ping interval(default:" + VT.VT_PING_INTERVAL_MILLISECONDS + "):");
-      line = VTConsole.readLine(true);
-      if (line == null)
-      {
-        VTRuntimeExit.exit(0);
-      }
-      else if (skipConfiguration)
-      {
-        return true;
-      }
-      if (line.length() > 0)
-      {
-        try
-        {
-          pingInterval = Integer.parseInt(line);
-        }
-        catch (Throwable t)
-        {
-          pingInterval = 0;
-        }
-      }
-      else
-      {
-        pingInterval = 0;
-      }
-      if (pingInterval < 0)
-      {
-        pingInterval = 0;
-      }
-      client.setPingInterval(pingInterval);
+      int pingInterval = 0;
       VTConsole.print("VT>Enter ping limit(default:" + VT.VT_PING_LIMIT_MILLISECONDS + "):");
       line = VTConsole.readLine(true);
       if (line == null)
@@ -1462,23 +1432,33 @@ public class VTClientConnector implements Runnable
       {
         pingLimit = 0;
       }
-      if (pingLimit < 0)
-      {
-        pingLimit = 0;
-      }
       client.setPingLimit(pingLimit);
-      
-      // VTConsole.print("VT>Enter session lines:");
-      // String lines = VTConsole.readLine(true);
-      // if (lines == null)
-      // {
-      // VTExit.exit(0);
-      // }
-      // else if (skipConfiguration)
-      // {
-      // return true;
-      // }
-      // setSessionLines(lines);
+      VTConsole.print("VT>Enter ping interval(default:" + VT.VT_PING_INTERVAL_MILLISECONDS + "):");
+      line = VTConsole.readLine(true);
+      if (line == null)
+      {
+        VTRuntimeExit.exit(0);
+      }
+      else if (skipConfiguration)
+      {
+        return true;
+      }
+      if (line.length() > 0)
+      {
+        try
+        {
+          pingInterval = Integer.parseInt(line);
+        }
+        catch (Throwable t)
+        {
+          pingInterval = 0;
+        }
+      }
+      else
+      {
+        pingInterval = 0;
+      }
+      client.setPingInterval(pingInterval);
       retry = false;
       return true;
     }

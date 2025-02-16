@@ -32,6 +32,8 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       String encryptionPassword = "";
       Integer sessionsMaximum = server.getServerConnector().getSessionsMaximum();
       String sessionShell = server.getServerConnector().getSessionShell();
+      String pingLimit = server.getPingLimit() > 0 ? "" + server.getPingLimit() : "";
+      String pingInterval = server.getPingInterval() > 0 ? "" + server.getPingInterval() : "";
       if (server.getServerConnector().getEncryptionKey() != null)
       {
         encryptionPassword = new String(server.getServerConnector().getEncryptionKey(), "UTF-8");
@@ -130,6 +132,8 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
       message.append("\nVT>Session shell(SS): [" + sessionShell + "]");
       message.append("\nVT>Session maximum(SM): [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]");
+      message.append("\nVT>Ping limit(PL): [" + pingLimit + "]");
+      message.append("\nVT>Ping interval(PI): [" + pingInterval + "]");
       message.append("\nVT>\nVT>End of server connection settings list\nVT>");
       VTConsole.print(message.toString());
       message.setLength(0);
@@ -779,6 +783,74 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           else
           {
             VTConsole.print("\rVT>Session accounts(SA) set to: []\nVT>");
+          }
+        }
+        else
+        {
+          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+        }
+      }
+      else if (parsed[1].equalsIgnoreCase("PL"))
+      {
+        if (parsed.length == 2)
+        {
+          String pingLimit = (server.getPingLimit() > 0 ? "" + server.getPingLimit() : "");
+          VTConsole.print("\rVT>Ping limit(PL): [" + pingLimit + "]\nVT>");
+        }
+        else if (parsed.length >= 3)
+        {
+          try
+          {
+            int pingLimit = Integer.parseInt(parsed[2]);
+            if (pingLimit > 0)
+            {
+              server.setPingLimit(pingLimit);
+              VTConsole.print("\rVT>Ping limit(PL) set to: [" + (server.getPingLimit() > 0 ? server.getPingLimit() : "") + "]\nVT>");
+            }
+            else
+            {
+              server.setPingLimit(0);
+              VTConsole.print("\rVT>Ping limit(PL) set to: [" + (server.getPingLimit() > 0 ? server.getPingLimit() : "") + "]\nVT>");
+            }
+          }
+          catch (NumberFormatException e)
+          {
+            server.setPingLimit(0);
+            VTConsole.print("\rVT>Ping limit(PL) set to: [" + (server.getPingLimit() > 0 ? server.getPingLimit() : "") + "]\nVT>");
+          }
+        }
+        else
+        {
+          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+        }
+      }
+      else if (parsed[1].equalsIgnoreCase("PI"))
+      {
+        if (parsed.length == 2)
+        {
+          String pingInterval = (server.getPingInterval() > 0 ? "" + server.getPingInterval() : "");
+          VTConsole.print("\rVT>Ping interval(PI): [" + pingInterval + "]\nVT>");
+        }
+        else if (parsed.length >= 3)
+        {
+          try
+          {
+            int pingInterval = Integer.parseInt(parsed[2]);
+            if (pingInterval > 0)
+            {
+              server.setPingInterval(pingInterval);
+              VTConsole.print("\rVT>Ping interval(PI) set to: [" + (server.getPingInterval() > 0 ? server.getPingInterval() : "") + "]\nVT>");
+            }
+            else
+            {
+              server.setPingInterval(0);
+              VTConsole.print("\rVT>Ping interval(PI) set to: [" + (server.getPingInterval() > 0 ? server.getPingInterval() : "") + "]\nVT>");
+            }
+          }
+          catch (NumberFormatException e)
+          {
+            server.setPingInterval(0);
+            VTConsole.print("\rVT>Ping interval(PI) set to: [" + (server.getPingInterval() > 0 ? server.getPingInterval() : "") + "]\nVT>");
           }
         }
         else

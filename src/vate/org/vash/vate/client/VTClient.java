@@ -748,23 +748,6 @@ public class VTClient implements Runnable
       }
     }
     
-    if (fileClientSettings.getProperty("vate.client.ping.interval") != null)
-    {
-      found = true;
-      try
-      {
-        int filePingInterval = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.interval"));
-        if (filePingInterval > 0)
-        {
-          pingInterval = filePingInterval;
-        }
-      }
-      catch (Throwable e)
-      {
-        
-      }
-    }
-    
     if (fileClientSettings.getProperty("vate.client.ping.limit") != null)
     {
       found = true;
@@ -773,7 +756,24 @@ public class VTClient implements Runnable
         int filePingLimit = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.limit"));
         if (filePingLimit > 0)
         {
-          pingLimit = filePingLimit;
+          setPingLimit(filePingLimit);
+        }
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    
+    if (fileClientSettings.getProperty("vate.client.ping.interval") != null)
+    {
+      found = true;
+      try
+      {
+        int filePingInterval = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.interval"));
+        if (filePingInterval > 0)
+        {
+          setPingInterval(filePingInterval);
         }
       }
       catch (Throwable e)
@@ -1044,14 +1044,14 @@ public class VTClient implements Runnable
         }
       }
       
-      if (fileClientSettings.getProperty("vate.client.ping.interval") != null)
+      if (fileClientSettings.getProperty("vate.client.ping.limit") != null)
       {
         try
         {
-          int filePingInterval = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.interval"));
-          if (filePingInterval > 0)
+          int filePingLimit = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.limit"));
+          if (filePingLimit > 0)
           {
-            pingInterval = filePingInterval;
+            setPingLimit(filePingLimit);
           }
         }
         catch (Throwable e)
@@ -1060,14 +1060,14 @@ public class VTClient implements Runnable
         }
       }
       
-      if (fileClientSettings.getProperty("vate.client.ping.limit") != null)
+      if (fileClientSettings.getProperty("vate.client.ping.interval") != null)
       {
         try
         {
-          int filePingLimit = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.limit"));
-          if (filePingLimit > 0)
+          int filePingInterval = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.interval"));
+          if (filePingInterval > 0)
           {
-            pingLimit = filePingLimit;
+            setPingInterval(filePingInterval);
           }
         }
         catch (Throwable e)
@@ -1317,14 +1317,14 @@ public class VTClient implements Runnable
       }
     }
     
-    if (fileClientSettings.getProperty("vate.client.ping.interval") != null)
+    if (fileClientSettings.getProperty("vate.client.ping.limit") != null)
     {
       try
       {
-        int filePingInterval = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.interval"));
-        if (filePingInterval > 0)
+        int filePingLimit = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.limit"));
+        if (filePingLimit > 0)
         {
-          pingInterval = filePingInterval;
+          setPingLimit(filePingLimit);
         }
       }
       catch (Throwable e)
@@ -1333,14 +1333,14 @@ public class VTClient implements Runnable
       }
     }
     
-    if (fileClientSettings.getProperty("vate.client.ping.limit") != null)
+    if (fileClientSettings.getProperty("vate.client.ping.interval") != null)
     {
       try
       {
-        int filePingLimit = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.limit"));
-        if (filePingLimit > 0)
+        int filePingInterval = Integer.parseInt(fileClientSettings.getProperty("vate.client.ping.interval"));
+        if (filePingInterval > 0)
         {
-          pingLimit = filePingLimit;
+          setPingInterval(filePingInterval);
         }
       }
       catch (Throwable e)
@@ -1925,35 +1925,6 @@ public class VTClient implements Runnable
           }
           setPassword(password);
         }
-        VTConsole.print("VT>Enter ping interval(default:" + VT.VT_PING_INTERVAL_MILLISECONDS + "):");
-        line = VTConsole.readLine(true);
-        if (line == null)
-        {
-          VTRuntimeExit.exit(0);
-        }
-        else if (skipConfiguration)
-        {
-          return;
-        }
-        if (line.length() > 0)
-        {
-          try
-          {
-            pingInterval = Integer.parseInt(line);
-          }
-          catch (Throwable t)
-          {
-            pingInterval = 0;
-          }
-        }
-        else
-        {
-          pingInterval = 0;
-        }
-        if (pingInterval < 0)
-        {
-          pingInterval = 0;
-        }
         VTConsole.print("VT>Enter ping limit(default:" + VT.VT_PING_LIMIT_MILLISECONDS + "):");
         line = VTConsole.readLine(true);
         if (line == null)
@@ -1968,7 +1939,7 @@ public class VTClient implements Runnable
         {
           try
           {
-            pingLimit = Integer.parseInt(line);
+            setPingLimit(Integer.parseInt(line));
           }
           catch (Throwable t)
           {
@@ -1979,9 +1950,30 @@ public class VTClient implements Runnable
         {
           pingLimit = 0;
         }
-        if (pingLimit < 0)
+        VTConsole.print("VT>Enter ping interval(default:" + VT.VT_PING_INTERVAL_MILLISECONDS + "):");
+        line = VTConsole.readLine(true);
+        if (line == null)
         {
-          pingLimit = 0;
+          VTRuntimeExit.exit(0);
+        }
+        else if (skipConfiguration)
+        {
+          return;
+        }
+        if (line.length() > 0)
+        {
+          try
+          {
+            setPingInterval(Integer.parseInt(line));
+          }
+          catch (Throwable t)
+          {
+            pingInterval = 0;
+          }
+        }
+        else
+        {
+          pingInterval = 0;
         }
       }
       catch (NumberFormatException e)
@@ -2158,22 +2150,6 @@ public class VTClient implements Runnable
         parameterValue = parameters[++i];
         sessionShell = parameterValue;
       }
-      if (parameterName.contains("-PI"))
-      {
-        parameterValue = parameters[++i];
-        try
-        {
-          int intValue = Integer.parseInt(parameterValue);
-          if (intValue > 0 && intValue < 65536)
-          {
-            pingInterval = intValue;
-          }
-        }
-        catch (Throwable t)
-        {
-          
-        }
-      }
       if (parameterName.contains("-PL"))
       {
         parameterValue = parameters[++i];
@@ -2182,7 +2158,23 @@ public class VTClient implements Runnable
           int intValue = Integer.parseInt(parameterValue);
           if (intValue > 0 && intValue < 65536)
           {
-            pingLimit = intValue;
+            setPingLimit(intValue);
+          }
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
+      if (parameterName.contains("-PI"))
+      {
+        parameterValue = parameters[++i];
+        try
+        {
+          int intValue = Integer.parseInt(parameterValue);
+          if (intValue > 0 && intValue < 65536)
+          {
+            setPingInterval(intValue);
           }
         }
         catch (Throwable t)
@@ -2410,6 +2402,18 @@ public class VTClient implements Runnable
   public void setPingLimit(int limit)
   {
     this.pingLimit = limit;
+    if (pingLimit < 0)
+    {
+      pingLimit = 0;
+    }
+    if (pingLimit > 0 && pingLimit < 5000)
+    {
+      pingLimit = 5000;
+    }
+    if (getPingIntervalMilliseconds() > (getPingLimitMilliseconds() / 4))
+    {
+      pingInterval = (getPingLimitMilliseconds() / 4);
+    }
   }
   
   public int getPingLimit()
@@ -2420,6 +2424,18 @@ public class VTClient implements Runnable
   public void setPingInterval(int interval)
   {
     this.pingInterval = interval;
+    if (pingInterval < 0)
+    {
+      pingInterval = 0;
+    }
+    if (pingInterval > 0 && pingInterval < 1250)
+    {
+      pingInterval = 1250;
+    }
+    if (getPingIntervalMilliseconds() > (getPingLimitMilliseconds() / 4))
+    {
+      pingInterval = (getPingLimitMilliseconds() / 4);
+    }
   }
   
   public int getPingInterval()

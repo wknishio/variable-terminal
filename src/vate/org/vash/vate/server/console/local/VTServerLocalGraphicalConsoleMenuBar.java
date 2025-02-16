@@ -34,6 +34,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
   private Menu proxySettingsMenu;
   private Menu encryptionSettingsMenu;
   private Menu sessionsSettingsMenu;
+  private Menu pingSettingsMenu;
   private Menu helpMenu;
   private Menu monitorMenu;
   
@@ -66,12 +67,14 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     proxySettingsMenu = new Menu("Proxy ");
     encryptionSettingsMenu = new Menu("Encryption ");
     sessionsSettingsMenu = new Menu("Session ");
+    pingSettingsMenu = new Menu("Ping ");
     settingsMenu.add(new VTGraphicalConsoleMenuItem(console, "List Server Settings", "*VTSETTING\n"));
     settingsMenu.add(connectionSettingsMenu);
     // serverSettingsMenu.add(serverAuthenticationSettingsMenu);
     settingsMenu.add(proxySettingsMenu);
     settingsMenu.add(encryptionSettingsMenu);
     settingsMenu.add(sessionsSettingsMenu);
+    settingsMenu.add(pingSettingsMenu);
     connectionSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Mode", "*VTSETTING CM "));
     connectionSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Host", "*VTSETTING CH "));
     connectionSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Port", "*VTSETTING CP "));
@@ -87,6 +90,8 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     sessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Session Shell", "*VTSETTING SS "));
     sessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Session Maximum", "*VTSETTING SM "));
     sessionsSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Session Accounts", "*VTSETTING SA "));
+    pingSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Ping Limit", "*VTSETTING PL "));
+    pingSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Ping Interval", "*VTSETTING PI "));
     settingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Save Settings File", "*VTSETTING SF "));
     settingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Load Settings File", "*VTSETTING LF "));
     settingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Reconfigure Settings", "*VTCONFIGURE\n"));
