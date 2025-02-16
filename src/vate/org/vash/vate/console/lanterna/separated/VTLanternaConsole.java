@@ -1017,7 +1017,7 @@ public class VTLanternaConsole implements VTConsoleInstance
           
           if (mouse.getActionType() == MouseActionType.SCROLL_UP)
           {
-            outputBox.takeFocus();
+            //outputBox.takeFocus();
             outputBox.scrollup();
             int row = outputBox.getRenderer().getViewTopLeft().getRow();
             if (row > 0)
@@ -1030,7 +1030,7 @@ public class VTLanternaConsole implements VTConsoleInstance
           
           if (mouse.getActionType() == MouseActionType.SCROLL_DOWN)
           {
-            outputBox.takeFocus();
+            //outputBox.takeFocus();
             outputBox.scrolldown();
             int row = outputBox.getRenderer().getViewTopLeft().getRow();
             if (row < outputBox.getLineCount())
@@ -1208,7 +1208,7 @@ public class VTLanternaConsole implements VTConsoleInstance
           
           if (mouse.getActionType() == MouseActionType.SCROLL_UP)
           {
-            outputBox.takeFocus();
+            //outputBox.takeFocus();
             outputBox.scrollup();
             outputBox.invalidate();
             return false;
@@ -1216,7 +1216,7 @@ public class VTLanternaConsole implements VTConsoleInstance
           
           if (mouse.getActionType() == MouseActionType.SCROLL_DOWN)
           {
-            outputBox.takeFocus();
+            //outputBox.takeFocus();
             outputBox.scrolldown();
             outputBox.invalidate();
             return false;
@@ -1303,8 +1303,9 @@ public class VTLanternaConsole implements VTConsoleInstance
             }
             return false;
           }
-          outputBox.takeFocus();
+          //outputBox.takeFocus();
           outputBox.handleInput(keyStroke);
+          outputBox.invalidate();
           return false;
         }
         if (keyStroke.getKeyType() == KeyType.ArrowUp)
