@@ -19,7 +19,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
   private Menu serverConsoleCommandsMenu;
   // private Menu serverBasedCommandsMenu;
   private Menu sessionMenu;
-  private Menu performanceMenu;
+  private Menu trafficMenu;
   private Menu consoleMenu;
   private Menu filesMenu;
   private Menu runtimeMenu;
@@ -54,8 +54,8 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Send Message To Clients", "*VTTEXT "));
     sessionMenu.add(new VTGraphicalConsoleMenuItem(console, "Disconnect Client", "*VTKICK "));
     
-    performanceMenu = new Menu("Traffic ");
-    performanceMenu.add(new VTGraphicalConsoleMenuItem(console, "Check Connection Latencies", "*VTPING\n"));
+    trafficMenu = new Menu("Traffic ");
+    trafficMenu.add(new VTGraphicalConsoleMenuItem(console, "Check Connection Latencies", "*VTPING\n"));
     
     consoleMenu = new Menu("Console ");
     consoleMenu.add(new VTGraphicalConsoleMenuItem(console, "Clear Local Console", "*VTCLEAR\n"));
@@ -139,7 +139,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     serverConsoleCommandsMenu.add(serverSettingsDialogMenu);
     serverConsoleCommandsMenu.add(sessionMenu);
     serverConsoleCommandsMenu.add(consoleMenu);
-    serverConsoleCommandsMenu.add(performanceMenu);
+    serverConsoleCommandsMenu.add(trafficMenu);
     serverConsoleCommandsMenu.add(runtimeMenu);
     serverConsoleCommandsMenu.add(filesMenu);
     serverConsoleCommandsMenu.add(graphicalMenu);
@@ -153,7 +153,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     serverConsoleCommandsMenu.setEnabled(true);
     sessionMenu.setEnabled(false);
     consoleMenu.setEnabled(false);
-    performanceMenu.setEnabled(false);
+    trafficMenu.setEnabled(false);
     runtimeMenu.setEnabled(false);
     filesMenu.setEnabled(false);
     graphicalMenu.setEnabled(false);
@@ -182,7 +182,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
   {
     sessionMenu.setEnabled(enabled);
     consoleMenu.setEnabled(enabled);
-    performanceMenu.setEnabled(enabled);
+    trafficMenu.setEnabled(enabled);
     runtimeMenu.setEnabled(enabled);
     filesMenu.setEnabled(enabled);
     graphicalMenu.setEnabled(enabled);

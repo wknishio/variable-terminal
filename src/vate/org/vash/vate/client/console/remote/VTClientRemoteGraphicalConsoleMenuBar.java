@@ -45,7 +45,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
   private Menu runtimeMenu;
   private Menu manageRuntimeMenu;
   private Menu networkMenu;
-  private Menu performanceMenu;
+  private Menu trafficMenu;
   private Menu networkTunnelsMenu;
   private Menu networkInterfacesMenu;
   // private Menu remoteSOCKSTunnelsMenu;
@@ -292,10 +292,10 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Runtime Path", "*VTRUNTIME P "));
     manageRuntimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTRUNTIME\n"));
     
-    performanceMenu = new Menu("Traffic ");
-    performanceMenu.add(new VTGraphicalConsoleMenuItem(console, "Check Connection Latency", "*VTPING\n"));
-    performanceMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Rate Limits", "*VTLIMIT "));
-    performanceMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTPING\n*VTHELP *VTLIMIT\n"));
+    trafficMenu = new Menu("Traffic ");
+    trafficMenu.add(new VTGraphicalConsoleMenuItem(console, "Check Connection Latency", "*VTPING\n"));
+    trafficMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Rate Limits", "*VTLIMIT "));
+    trafficMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usages", "*VTHELP *VTPING\n*VTHELP *VTLIMIT\n"));
     
     networkMenu = new Menu("Network ");
     
@@ -325,7 +325,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     printMenu.add(new VTGraphicalConsoleMenuItem(console, "Print File In Remote Printer", "*VTPRINTDATA F "));
     printMenu.add(new VTGraphicalConsoleMenuItem(console, "Stop Remote Printer Task", "*VTPRINTDATA S\n"));
     printMenu.add(new VTGraphicalConsoleMenuItem(console, "Wait Remote Printer Task", "*VTPRINTDATA W"));
-    printMenu.add(new VTGraphicalConsoleMenuItem(console, "Commands Usage", "*VTHELP *VTPRINTER\n*VTHELP *VTPRINTDATA\n"));
+    printMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usages", "*VTHELP *VTPRINTER\n*VTHELP *VTPRINTDATA\n"));
     
     audioMenu = new Menu("Audio ");
     
@@ -373,7 +373,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     clientConsoleCommandsMenu.add(sessionMenu);
     // clientConsoleCommandsMenu.add(settingsMenu);
     clientConsoleCommandsMenu.add(consoleMenu);
-    clientConsoleCommandsMenu.add(performanceMenu);
+    clientConsoleCommandsMenu.add(trafficMenu);
     clientConsoleCommandsMenu.add(runtimeMenu);
     clientConsoleCommandsMenu.add(shellMenu);
     clientConsoleCommandsMenu.add(filesMenu);
@@ -390,7 +390,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     clientConsoleCommandsMenu.setEnabled(true);
     sessionMenu.setEnabled(false);
     consoleMenu.setEnabled(false);
-    performanceMenu.setEnabled(false);
+    trafficMenu.setEnabled(false);
     shellMenu.setEnabled(false);
     runtimeMenu.setEnabled(false);
     filesMenu.setEnabled(false);
@@ -451,7 +451,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
   {
     sessionMenu.setEnabled(enabled);
     consoleMenu.setEnabled(enabled);
-    performanceMenu.setEnabled(enabled);
+    trafficMenu.setEnabled(enabled);
     shellMenu.setEnabled(enabled);
     runtimeMenu.setEnabled(enabled);
     filesMenu.setEnabled(enabled);
