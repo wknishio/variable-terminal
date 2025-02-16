@@ -525,6 +525,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     private final void open() throws IOException
     {
       closed = false;
+      packetSequencer.setSeed(seed);
       if (bufferedInputStream != null)
       {
         bufferedInputStream.open();

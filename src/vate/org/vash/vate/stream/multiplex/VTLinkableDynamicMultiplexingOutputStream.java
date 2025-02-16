@@ -471,6 +471,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     {
       closed = false;
       writeOpenPacket(type, number);
+      packetSequencer.setSeed(seed);
       if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
       {
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY) != 0)
