@@ -1300,31 +1300,12 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
     // System.out.println("inputBuffer:" + inputBuffer.toString());
     // System.out.println("keyStroke:" + keyStroke.toString());
     KeyType keyType = keyStroke.getKeyType();
+    int column = hiddenColumn;
     if (keyType == KeyType.Tab)
     {
       return handleDataInput(inputBuffer, '\t', replace);
     }
-    if (keyType == KeyType.ReverseTab)
-    {
-      int column = hiddenColumn;
-      if (selectingText())
-      {
-        hiddenColumn = replaceSelectedText(inputBuffer, "");
-        hiddenColumn = Math.min(hiddenColumn, inputBuffer.length());
-        this.setCaretPosition(hiddenColumn);
-        return inputBuffer;
-      }
-      else
-      {
-        if (inputBuffer.length() > 0 && column > 0)
-        {
-          inputBuffer.deleteCharAt(column - 1);
-          hiddenColumn--;
-        }
-      }
-    }
-    int column = hiddenColumn;
-    if (keyType == KeyType.Backspace)
+    if (keyType == KeyType.Backspace || keyType == KeyType.ReverseTab)
     {
       if (selectingText())
       {
