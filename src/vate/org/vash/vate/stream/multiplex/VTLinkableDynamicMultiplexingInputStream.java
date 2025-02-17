@@ -12,7 +12,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
-//import java.util.zip.Checksum;
 
 import org.vash.vate.VT;
 import org.vash.vate.security.VTSplitMix64Random;
@@ -24,7 +23,6 @@ import org.vash.vate.stream.compress.VTPacketDecompressor;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
-//import net.jpountz.xxhash.XXHashFactory;
 
 public final class VTLinkableDynamicMultiplexingInputStream
 {
