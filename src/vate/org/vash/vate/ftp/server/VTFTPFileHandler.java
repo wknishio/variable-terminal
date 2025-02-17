@@ -19,13 +19,25 @@ public class VTFTPFileHandler extends FTPFileHandler
   
   protected Object getFile(String path) throws IOException
   {
-    if(path.equals("...") || path.equals(".."))
+    if (path.equals("...") || path.equals(".."))
     {
-        return fs.getParent(cwd);
-//    } else if(path.equals("/")) {
-//        return fs.getRoot();
-//    } else if(path.startsWith("/")) {
-//        return fs.findFile(fs.getRoot(), path.substring(1));
+      return fs.getParent(cwd);
+    }
+    else if (path.equals("/"))
+    {
+      return fs.getRoot();
+    }
+    else if (path.equals("."))
+    {
+      return fs.findFile(fs.getPath(cwd));
+    }
+    else if (path.startsWith("/"))
+    {
+      return fs.findFile(path.substring(1));
+    }
+    else if (path.startsWith("./"))
+    {
+      return fs.findFile(cwd, path.substring(2));
     }
     else
     {

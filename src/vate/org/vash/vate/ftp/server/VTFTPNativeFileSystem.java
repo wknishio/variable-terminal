@@ -41,18 +41,29 @@ public class VTFTPNativeFileSystem extends NativeFileSystem
 //    {
 //      return root;
 //    }
+    if (path.length() >= 2 && path.length() <= 3 && path.charAt(1) == ':')
+    {
+      if (!(path.endsWith("/") || path.endsWith("\\")))
+      {
+        path += '/';
+      }
+    }
     File file = new File(path);
     return file.getAbsoluteFile();
   }
   
   public File findFile(File cwd, String path) throws IOException
   {
-    if (path.length() == 2 && path.charAt(1) == ':')
+    if (path.startsWith("/"))
     {
-      return findFile(path + "/");
+      return findFile(path.substring(1));
     }
-    if (path.length() >= 3 && path.charAt(1) == ':' && (path.charAt(2) == '/' || path.charAt(2) == '\\'))
+    if (path.length() >= 2 && path.length() <= 3 && path.charAt(1) == ':')
     {
+      if (!(path.endsWith("/") || path.endsWith("\\")))
+      {
+        path += '/';
+      }
       return findFile(path);
     }
 //    File file;
