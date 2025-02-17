@@ -18,11 +18,11 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.
 
 public class VTManagedServerSocket
 {
-  private VTServer vtserver;
-  private BlockingQueue<VTManagedSocket> queue = new LinkedBlockingQueue<VTManagedSocket>();
+  private final VTServer vtserver;
+  private final BlockingQueue<VTManagedSocket> queue = new LinkedBlockingQueue<VTManagedSocket>();
+  private final ConcurrentMap<VTServerSession, VTManagedSocket> sessions = new ConcurrentHashMap<VTServerSession, VTManagedSocket>();
   private Thread acceptThread;
   private VTManagedSocketListener socketListener;
-  private ConcurrentMap<VTServerSession, VTManagedSocket> sessions = new ConcurrentHashMap<VTServerSession, VTManagedSocket>();
   
   private class VTCloseableServerConnection implements VTManagedConnection
   {

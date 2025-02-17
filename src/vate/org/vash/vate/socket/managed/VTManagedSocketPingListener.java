@@ -8,8 +8,8 @@ import org.vash.vate.ping.VTNanoPingListener;
 
 public class VTManagedSocketPingListener implements VTNanoPingListener, Callable<Long>
 {
-  private ExecutorService executor;
-  private VTManagedConnection connection;
+  private final ExecutorService executor;
+  private final VTManagedConnection connection;
   private volatile Long pingResult = -1L;
   
   public VTManagedSocketPingListener(ExecutorService executor, VTManagedConnection connection)

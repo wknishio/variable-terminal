@@ -1,5 +1,7 @@
 package org.vash.vate.socket.managed;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -8,20 +10,25 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
 
+import org.vash.vate.VT;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 
 public class VTManagedSocket extends Socket
 {
-  private VTManagedConnection connection;
-  private VTLinkableDynamicMultiplexedInputStream in;
-  private VTLinkableDynamicMultiplexedOutputStream out;
+  private final VTManagedConnection connection;
+  private final VTLinkableDynamicMultiplexedInputStream in;
+  private final VTLinkableDynamicMultiplexedOutputStream out;
+  private final InputStream input;
+  private final OutputStream output;
   
   public VTManagedSocket(VTManagedConnection connection, VTLinkableDynamicMultiplexedInputStream in, VTLinkableDynamicMultiplexedOutputStream out)
   {
     this.connection = connection;
     this.in = in;
     this.out = out;
+    this.input = new BufferedInputStream(in, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+    this.output = new BufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
   }
   
 //  public Socket getConnectionSocket()
@@ -51,12 +58,12 @@ public class VTManagedSocket extends Socket
   
   public InputStream getInputStream()
   {
-    return in;
+    return input;
   }
   
   public OutputStream getOutputStream()
   {
-    return out;
+    return output;
   }
   
   public VTLinkableDynamicMultiplexedInputStream getInputStream(int number) throws IOException
