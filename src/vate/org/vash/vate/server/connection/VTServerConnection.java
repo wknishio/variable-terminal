@@ -703,12 +703,12 @@ public class VTServerConnection
     availableInputChannel = inputChannel;
     availableOutputChannel = outputChannel;
     
-    shellDataInputStream = VTCompressorSelector.createBufferedSyncFlushZlibInputStream(shellInputStream);
+    shellDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(shellInputStream);
     // shellDataInputStream =
     // VTCompressorSelector.createFlushBufferedSyncFlushInflaterInputStream(shellInputStream);
     // shellDataInputStream = shellInputStream;
     
-    shellDataOutputStream = VTCompressorSelector.createBufferedSyncFlushZlibOutputStreamFilteredStrategy(shellOutputStream);
+    shellDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(shellOutputStream);
     // shellDataOutputStream =
     // VTCompressorSelector.createFlushBufferedSyncFlushDeflaterOutputStream(shellOutputStream);
     // shellDataOutputStream = shellOutputStream;
