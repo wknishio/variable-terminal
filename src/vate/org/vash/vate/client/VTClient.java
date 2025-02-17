@@ -106,7 +106,22 @@ public class VTClient implements Runnable
   {
     try
     {
-      clientConnector.stop();
+      if (clientConnector != null)
+      {
+        clientConnector.stop();
+      }
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    
+    try
+    {
+      if (monitorService != null)
+      {
+        monitorService.close();
+      }
     }
     catch (Throwable t)
     {

@@ -150,11 +150,26 @@ public class VTServer implements Runnable
     
     try
     {
-      serverConnector.stop();
+      if (serverConnector != null)
+      {
+        serverConnector.stop();
+      }
     }
     catch (Throwable t)
     {
       // t.printStackTrace();
+    }
+    
+    try
+    {
+      if (monitorService != null)
+      {
+        monitorService.close();
+      }
+    }
+    catch (Throwable t)
+    {
+      
     }
     
     try
