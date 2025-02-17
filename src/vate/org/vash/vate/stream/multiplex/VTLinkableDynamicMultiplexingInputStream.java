@@ -28,63 +28,28 @@ import org.vash.vate.stream.pipe.VTPipedOutputStream;
 
 public final class VTLinkableDynamicMultiplexingInputStream
 {
-//  private int type;
-//  private int channel;
-//  private int length;
-//  private long sequence;
   private volatile boolean closed = false;
   private final int bufferSize;
-  //private final byte[] packetHeader;
   private final byte[] packetDataBuffer;
-  //private final byte[] update = new byte[8];
-  //private OutputStream out;
   private Future<?> packetReaderThread;
-  // private byte[] compressedBuffer = new byte[VT.VT_IO_BUFFFER_SIZE];
   private final VTLittleEndianInputStream lin;
-  //private final VTLittleEndianInputStream hin;
-  //private final VTByteArrayInputStream packetHeaderBuffer;
   private final VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
   private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> bufferedChannels;
   private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> directChannels;
   private final VTXXHash64MessageDigest packetSeed;
   private final ExecutorService executorService;
-  private volatile long transferredBytes = 0;
-  //private final Random packetSequencer;
-//  private final VTPipedOutputStream pout;
-//  private final VTPipedInputStream pin;
-//  private final VTLittleEndianInputStream lpin;
-//  private final VTStreamRedirector dataReader;
-//  private final Thread dataReaderThread;
-
-  //private final SecureRandom packetSequencer;
+  private long transferredBytes = 0;
   
   public VTLinkableDynamicMultiplexingInputStream(final InputStream in, final int packetSize, final int bufferSize, final boolean startPacketReader, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
   {
     this.packetSeed = packetSeed;
     this.executorService = executorService;
-    //this.packetSequencer = new VTSplitMix64Random(packetSequence.nextLong());
-    //this.packetSequencer = new VTMiddleSquareWeylSequenceDigestRandom(packetSeed);
     this.bufferSize = bufferSize;
     this.packetDataBuffer = new byte[packetSize * 2];
-    //this.packetHeaderBuffer = new VTByteArrayInputStream(new byte[VT.VT_PACKET_HEADER_SIZE_BYTES]);
-    //this.lin = new VTLittleEndianInputStream(new BufferedInputStream(in, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES));
     this.lin = new VTLittleEndianInputStream(in);
-    //this.hin = new VTLittleEndianInputStream(packetHeaderBuffer);
-//    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
-//    this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>());
     this.bufferedChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
     this.directChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
     this.packetReader = new VTLinkableDynamicMultiplexingInputStreamPacketReader(this);
-    //this.packetReaderThread = new Thread(null, packetReader, packetReader.getClass().getSimpleName());
-    //this.packetReaderThread.setDaemon(true);
-    //this.packetReaderThread.setPriority((Thread.MAX_PRIORITY));
-//    this.pin = new VTPipedInputStream(VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
-//    this.pout = new VTPipedOutputStream();
-//    this.lpin = new VTLittleEndianInputStream(pin);
-//    this.dataReader = new VTStreamRedirector(in, pout, pout, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
-//    this.dataReaderThread = new Thread(null, dataReader, dataReader.getClass().getSimpleName());
-//    this.dataReaderThread.setDaemon(true);
-    //this.dataReaderThread.setPriority((Thread.MAX_PRIORITY));
     if (startPacketReader)
     {
       packetReaderThread = executorService.submit(packetReader);
@@ -100,13 +65,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
   {
     transferredBytes = 0;
   }
-  
-//  public synchronized final VTLinkableDynamicMultiplexedInputStream linkInputStream(int type, int number)
-//  {
-//    VTLinkableDynamicMultiplexedInputStream stream = null;
-//    stream = getInputStream(type, number);
-//    return stream;
-//  }
   
   public synchronized final VTLinkableDynamicMultiplexedInputStream linkInputStream(final int type, final Object link)
   {
@@ -153,14 +111,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
     if (stream != null)
     {
       stream.setLink(null);
-//      if ((stream.type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
-//      {
-//        bufferedChannels.remove(stream.number());
-//      }
-//      else
-//      {
-//        directChannels.remove(stream.number());
-//      }
     }
   }
   
@@ -258,50 +208,36 @@ public final class VTLinkableDynamicMultiplexingInputStream
     }
     closed = true;
     lin.close();
-    //packetReader.setRunning(false);
-    //synchronized (pipedChannels)
-    //{
-      for (VTLinkableDynamicMultiplexedInputStream stream : bufferedChannels.values())
+    for (VTLinkableDynamicMultiplexedInputStream stream : bufferedChannels.values())
+    {
+      try
       {
-        try
-        {
-          stream.close();
-        }
-        catch (Throwable e)
-        {
-          // e.printStackTrace();
-        }
+        stream.close();
       }
-    //}
-    //synchronized (directChannels)
-    //{
-      for (VTLinkableDynamicMultiplexedInputStream stream : directChannels.values())
+      catch (Throwable e)
       {
-        try
-        {
-          stream.close();
-        }
-        catch (Throwable e)
-        {
-          // e.printStackTrace();
-        }
+        // e.printStackTrace();
       }
-    //}
+    }
+    for (VTLinkableDynamicMultiplexedInputStream stream : directChannels.values())
+    {
+      try
+      {
+        stream.close();
+      }
+      catch (Throwable e)
+      {
+        // e.printStackTrace();
+      }
+    }
     bufferedChannels.clear();
     directChannels.clear();
   }
-  
-//  public final long nextPacketSequencerLong()
-//  {
-//    return packetSequencer.nextLong();
-//  }
   
   // critical method, handle with care
   private final void readPackets() throws IOException
   {
     VTLinkableDynamicMultiplexedInputStream stream;
-    //long check;
-    //long hash;
     long sequence;
     int type; 
     int number;
@@ -309,7 +245,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
     
     while (!closed)
     {
-      //next = nextPacketSequencerLong();
       sequence = lin.readLong();
       type = lin.readByte();
       number = lin.readSubInt();
@@ -325,15 +260,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
         close();
         return;
       }
-//      update[0] = (byte) sequence;
-//      update[1] = (byte) (sequence >> 8);
-//      update[2] = (byte) (sequence >> 16);
-//      update[3] = (byte) (sequence >> 24);
-//      update[4] = (byte) (sequence >> 32);
-//      update[5] = (byte) (sequence >> 40);
-//      update[6] = (byte) (sequence >> 48);
-//      update[7] = (byte) (sequence >> 56);
-//      stream.getPacketHasher().update(update, 0, update.length);
       if (length > 0)
       {
         lin.readFully(packetDataBuffer, 0, length);
@@ -351,21 +277,11 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       else if (length == -2)
       {
-//        if (stream.getPacketHasher().getValue() != hash)
-//        {
-//          close();
-//          return;
-//        }
         close(type, number);
         transferredBytes += VT.VT_PACKET_HEADER_SIZE_BYTES;
       }
       else if (length == -3)
       {
-//        if (stream.getPacketHasher().getValue() != hash)
-//        {
-//          close();
-//          return;
-//        }
         open(type, number);
         transferredBytes += VT.VT_PACKET_HEADER_SIZE_BYTES;
       }
@@ -394,7 +310,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
     private InputStream compressedInputStream;
     private final Collection<Closeable> propagated;
     private final Random packetSequencer;
-    //private final Checksum packetHasher;
     
     private VTLinkableDynamicMultiplexedInputStream(final int type, final int number, final int bufferSize, final VTXXHash64MessageDigest packetSeed)
     {
@@ -405,7 +320,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
       packetSeed.update((byte)(number >> 24));
       this.seed = packetSeed.digestLong();
       this.packetSequencer = new VTSplitMix64Random(seed);
-      //this.packetHasher = XXHashFactory.safeInstance().newStreamingHash64(packetSequencer.nextLong()).asChecksum();
       this.type = type;
       this.number = number;
       this.propagated = new ConcurrentLinkedQueue<Closeable>();
@@ -474,7 +388,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
     public final boolean closed()
     {
       return closed;
-      //return pipedInputStream == null || pipedInputStream.isClosed() || pipedInputStream.isEof();
     }
     
     private final OutputStream getOutputStream()
@@ -577,7 +490,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       if (propagated.size() > 0)
       {
-        // propagated.close();
         for (Closeable closeable : propagated)
         {
           try
@@ -590,7 +502,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
           }
         }
       }
-      //propagated.clear();
     }
     
     public final int available() throws IOException
@@ -622,11 +533,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
     {
       return packetSequencer;
     }
-    
-//    private final Checksum getPacketHasher()
-//    {
-//      return packetHasher;
-//    }
   }
   
   private final class VTLinkableDynamicMultiplexingInputStreamPacketReader implements Runnable
@@ -636,7 +542,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
     private VTLinkableDynamicMultiplexingInputStreamPacketReader(VTLinkableDynamicMultiplexingInputStream multiplexingInputStream)
     {
       this.multiplexingInputStream = multiplexingInputStream;
-      //this.running = true;
     }
     
     public final void run()
@@ -648,15 +553,14 @@ public final class VTLinkableDynamicMultiplexingInputStream
       catch (Throwable e)
       {
         //e.printStackTrace();
-        //running = false;
       }
       try
       {
         multiplexingInputStream.close();
       }
-      catch (Throwable e1)
+      catch (Throwable e)
       {
-        // e1.printStackTrace();
+        //e.printStackTrace();
       }
     }
   }

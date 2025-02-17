@@ -45,10 +45,7 @@ public final class VTPacketDecompressor extends OutputStream
     packetOutputPipe.write(data, off, len);
     packetInputPipe.count(packetOutputPipe.count());
     readed = compressedInputStream.read(buffer, 0, bufferSize);
-    if (readed > 0)
-    {
-      decompressedOutputStream.write(buffer, 0, readed);
-    }
+    decompressedOutputStream.write(buffer, 0, readed);
   }
   
   public void flush() throws IOException

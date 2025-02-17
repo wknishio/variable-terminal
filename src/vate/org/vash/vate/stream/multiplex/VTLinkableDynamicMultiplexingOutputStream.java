@@ -9,7 +9,6 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
-//import java.util.zip.Checksum;
 
 import org.vash.vate.VT;
 import org.vash.vate.security.VTSplitMix64Random;
@@ -20,44 +19,30 @@ import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 import org.vash.vate.stream.limit.VTThrottledOutputStream;
 
 import engineering.clientside.throttle.NanoThrottle;
-//import net.jpountz.xxhash.XXHashFactory;
 
 public final class VTLinkableDynamicMultiplexingOutputStream
 {
-  //private final boolean autoFlushPackets;
   private final int packetSize;
-  //private final int blockSize;
   private final OutputStream original;
   private final OutputStream throttled;
   private final NanoThrottle throttler;
-  //private final OutputStream throttled;
-  //private final VTThrottlingOutputStream throttling;
   private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> bufferedChannels;
   private final Map<Integer, VTLinkableDynamicMultiplexedOutputStream> directChannels;
   private final VTXXHash64MessageDigest packetSeed;
   @SuppressWarnings("unused")
   private final ExecutorService executorService;
-  private volatile long transferredBytes = 0;
-  //private final Random packetSequencer;
+  private long transferredBytes = 0;
   
   public VTLinkableDynamicMultiplexingOutputStream(final OutputStream out, final int packetSize, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
   {
     this.packetSeed = packetSeed;
     this.executorService = executorService;
-    //this.packetSequencer = new VTSplitMix64Random(packetSequence.nextLong());
     this.throttler = new NanoThrottle(Long.MAX_VALUE, (1d / 8d), true);
-    //this.packetSequencer = new VTMiddleSquareWeylSequenceDigestRandom(packetSeed);
-    //this.original = new VTBufferedOutputStream(out, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES, false);
     this.original = out;
     this.throttled = new VTThrottledOutputStream(original, throttler);
-//    this.bufferedChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
-//    this.directChannels = Collections.synchronizedMap(new LinkedHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>());
     this.bufferedChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
     this.directChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
     this.packetSize = packetSize;
-    
-    //this.blockSize = blockSize;
-    //this.autoFlushPackets = autoFlushPackets;
   }
   
   public long getTransferredBytes()
@@ -69,13 +54,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   {
     transferredBytes = 0;
   }
-  
-//  public synchronized final VTLinkableDynamicMultiplexedOutputStream linkOutputStream(int type, int number)
-//  {
-//    VTLinkableDynamicMultiplexedOutputStream stream = null;
-//    stream = getOutputStream(type, number);
-//    return stream;
-//  }
   
   public synchronized final VTLinkableDynamicMultiplexedOutputStream linkOutputStream(final int type, final Object link)
   {
@@ -122,14 +100,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     if (stream != null)
     {
       stream.setLink(null);
-//      if ((stream.type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
-//      {
-//        bufferedChannels.remove(stream.number());
-//      }
-//      else
-//      {
-//        directChannels.remove(stream.number());
-//      }
     }
   }
   
@@ -248,7 +218,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       }
       catch (Throwable e)
       {
-        // e.printStackTrace();
+        //e.printStackTrace();
       }
     }
     for (VTLinkableDynamicMultiplexedOutputStream stream : directChannels.values())
@@ -259,7 +229,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       }
       catch (Throwable e)
       {
-        // e.printStackTrace();
+        //e.printStackTrace();
       }
     }
     bufferedChannels.clear();
@@ -276,51 +246,25 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     getOutputStream(type, number).close();
   }
   
-//  public final long nextPacketSequencerLong()
-//  {
-//    synchronized (packetSequencer)
-//    {
-//      return packetSequencer.nextLong();
-//    }
-//  }
-  
-//	private synchronized void writeBlocks(OutputStream out, byte[] data, int off, int length) throws IOException
-//	{
-//		int current = 0;
-//		int written = 0;
-//		int remaining = length;
-//		while (remaining > 0)
-//		{
-//			current = Math.min(blockSize, remaining);
-//			out.write(data, off + written, current);
-//			written += current;
-//			remaining -= current;
-//		}
-//	}
-  
   public final class VTLinkableDynamicMultiplexedOutputStream extends OutputStream
   {
     private volatile boolean closed;
     private volatile Object link = null;
     private final int number;
     private final long seed;
-    //private long sequence;
     private volatile int type;
     private final int packetSize;
     private final byte[] single = new byte[1];
-    //private final byte[] update = new byte[8];
     private final VTByteArrayOutputStream intermediateDataPacketBuffer;
     private final VTByteArrayOutputStream dataPacketBuffer;
     private final VTLittleEndianOutputStream dataPacketStream;
     private final VTByteArrayOutputStream controlPacketBuffer;
     private final VTLittleEndianOutputStream controlPacketStream;
-    //private final byte[] single = new byte[1];
     private OutputStream output;
     private OutputStream control;
     private OutputStream intermediatePacketStream;
     private final Collection<Closeable> propagated;
     private final Random packetSequencer;
-    //private final Checksum packetHasher;
     
     private VTLinkableDynamicMultiplexedOutputStream(final OutputStream output, final OutputStream control, final int type, final int number, final int packetSize, final VTXXHash64MessageDigest packetSeed)
     {
@@ -331,24 +275,17 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       packetSeed.update((byte)(number >> 24));
       this.seed = packetSeed.digestLong();
       this.packetSequencer = new VTSplitMix64Random(seed);
-      //this.packetHasher = XXHashFactory.safeInstance().newStreamingHash64(packetSequencer.nextLong()).asChecksum();
       this.output = output;
       this.control = control;
       this.type = type;
       this.number = number;
       this.packetSize = packetSize;
-      // this.blockSize = blockSize;
-      // this.blockBits = blockSize - 1;
-      // this.autoFlushPackets = autoFlushPackets;
-      // this.dataPaddingBuffer = new byte[blockSize];
       this.intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
       this.dataPacketBuffer = new VTByteArrayOutputStream(VT.VT_PACKET_HEADER_SIZE_BYTES + packetSize);
       this.dataPacketStream = new VTLittleEndianOutputStream(dataPacketBuffer);
-      // this.controlPaddingBuffer = new byte[blockSize];
       this.controlPacketBuffer = new VTByteArrayOutputStream(VT.VT_PACKET_HEADER_SIZE_BYTES);
       this.controlPacketStream = new VTLittleEndianOutputStream(controlPacketBuffer);
       this.closed = false;
-      // this.link = null;
       this.propagated = new ConcurrentLinkedQueue<Closeable>();
       
       if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
@@ -408,11 +345,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       return closed;
     }
     
-//    private final Random getPacketSequencer()
-//    {
-//      return packetSequencer;
-//    }
-    
     public final void write(final byte[] data, final int offset, final int length) throws IOException
     {
       int written = 0;
@@ -444,7 +376,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     public final void flush() throws IOException
     {
-//      output.flush();
+      
     }
     
     public final void close() throws IOException
@@ -503,19 +435,8 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     {
       dataPacketBuffer.reset();
       intermediateDataPacketBuffer.reset();
-//      sequence = packetSequencer.nextLong();
-//      update[0] = (byte) sequence;
-//      update[1] = (byte) (sequence >> 8);
-//      update[2] = (byte) (sequence >> 16);
-//      update[3] = (byte) (sequence >> 24);
-//      update[4] = (byte) (sequence >> 32);
-//      update[5] = (byte) (sequence >> 40);
-//      update[6] = (byte) (sequence >> 48);
-//      update[7] = (byte) (sequence >> 56);
-      //packetHasher.update(update, 0, update.length);
       intermediatePacketStream.write(data, offset, length);
       intermediatePacketStream.flush();
-      //packetHasher.update(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
       dataPacketStream.writeLong(packetSequencer.nextLong());
       dataPacketStream.writeByte(type);
       dataPacketStream.writeSubInt(number);
@@ -529,16 +450,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private synchronized final void writeClosePacket(final int type, final int number) throws IOException
     {
       controlPacketBuffer.reset();
-//      sequence = packetSequencer.nextLong();
-//      update[0] = (byte) sequence;
-//      update[1] = (byte) (sequence >> 8);
-//      update[2] = (byte) (sequence >> 16);
-//      update[3] = (byte) (sequence >> 24);
-//      update[4] = (byte) (sequence >> 32);
-//      update[5] = (byte) (sequence >> 40);
-//      update[6] = (byte) (sequence >> 48);
-//      update[7] = (byte) (sequence >> 56);
-//      packetHasher.update(update, 0, update.length);
       controlPacketStream.writeLong(packetSequencer.nextLong());
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
@@ -551,16 +462,6 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     private synchronized final void writeOpenPacket(final int type, final int number) throws IOException
     {
       controlPacketBuffer.reset();
-//      sequence = packetSequencer.nextLong();
-//      update[0] = (byte) sequence;
-//      update[1] = (byte) (sequence >> 8);
-//      update[2] = (byte) (sequence >> 16);
-//      update[3] = (byte) (sequence >> 24);
-//      update[4] = (byte) (sequence >> 32);
-//      update[5] = (byte) (sequence >> 40);
-//      update[6] = (byte) (sequence >> 48);
-//      update[7] = (byte) (sequence >> 56);
-//      packetHasher.update(update, 0, update.length);
       controlPacketStream.writeLong(packetSequencer.nextLong());
       controlPacketStream.writeByte(type);
       controlPacketStream.writeSubInt(number);
