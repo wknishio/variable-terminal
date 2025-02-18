@@ -85,7 +85,7 @@ public class VTCompressorSelector
   
   public static OutputStream createDirectZstdOutputStream(OutputStream out)
   {
-    return new VTHadoopOutputStream(new ZstdHadoopOutputStream(out, true));
+    return new VTHadoopOutputStream(new ZstdHadoopOutputStream(out, false));
   }
   
   public static InputStream createDirectZstdInputStream(InputStream in)
