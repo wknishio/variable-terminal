@@ -10,7 +10,6 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.DropTarget;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -1700,6 +1699,22 @@ public class VTLanternaConsole implements VTConsoleInstance
     }
   }
   
+  private void updateCurrentLine(String line, boolean echo)
+  {
+    currentLineBuffer.setLength(0);
+    currentLineBuffer.append(line);
+    inputBox.setHiddenColumn(currentLineBuffer.length());
+    if (echo)
+    {
+      inputBox.setSelectionStartPosition(null);
+      inputBox.setSelectionEndPosition(null);
+      inputBox.setText(currentLineBuffer.toString());
+      inputBox.setCaretPosition(inputBox.getHiddenColumn());
+      inputBox.invalidate();
+    }
+  }
+
+  
   private boolean scrollCommandHistoryUp(boolean echo)
   {
     if (commandHistory.size() > 0)
@@ -1745,6 +1760,10 @@ public class VTLanternaConsole implements VTConsoleInstance
   private void appendToPendingInputLine(String line)
   {
     // line = line.replace('\u000b', '\n');
+    if (line == null || line.length() == 0)
+    {
+      return;
+    }
     synchronized (inputLineBuffer)
     {
       if (inputLineBuffer.size() > 0)
@@ -1839,16 +1858,18 @@ public class VTLanternaConsole implements VTConsoleInstance
   
   public void input(String text)
   {
+    if (text == null || text.length() == 0)
+    {
+      return;
+    }
     text = text.replace('\u000b', '\n');
     synchronized (inputSynchronizer)
     {
       if (readingInput)
       {
         if (text.indexOf('\n') == -1)
-        // if (indexOfWhitespace(string) == -1)
         {
           inputBox.handleDataInput(currentLineBuffer, text, replaceActivated);
-          // inputBox.setHiddenColumn(currentLineBuffer.length());
           if (echoInput)
           {
             inputBox.setText(currentLineBuffer.toString());
@@ -1860,53 +1881,42 @@ public class VTLanternaConsole implements VTConsoleInstance
         {
           int i = 0, j = 0;
           i = text.indexOf('\n');
-          // i = indexOfWhitespace(string);
           inputBuffer.append(text.substring(0, i) + "\n");
-          // appendToPendingInputLine(string.substring(0, i));
           j = i + 1;
-          i = text.indexOf('\n', j);
-          // i = indexOfWhitespace(string, j);
-          while (i != -1)
+          while ((i = text.indexOf('\n', j)) != -1)
           {
             appendToPendingInputLine(text.substring(j, i) + "\n");
             j = i + 1;
-            i = text.indexOf('\n', j);
-            // i = indexOfWhitespace(string, j);
           }
           if (j < text.length())
           {
-            appendToPendingInputLine(text.substring(j));
+            text = text.substring(j);
+            updateCurrentLine(text, echoInput);
           }
-          // System.out.println("inputBuffer:[" + inputBuffer.toString() + "]");
           inputSynchronizer.notifyAll();
         }
       }
       else
       {
         if (text.indexOf('\n') == -1)
-        // if (indexOfWhitespace(string) == -1)
         {
           appendToPendingInputLine(text);
         }
         else
         {
           int i = 0, j = 0;
-          // i = indexOfWhitespace(string);
           i = text.indexOf('\n');
           appendToPendingInputLine(text.substring(0, i) + "\n");
           j = i + 1;
-          i = text.indexOf('\n', j);
-          // i = indexOfWhitespace(string, j);
-          while (i != -1)
+          while ((text.indexOf('\n', j)) != -1)
           {
             appendToPendingInputLine(text.substring(j, i) + "\n");
             j = i + 1;
-            i = text.indexOf('\n', j);
-            // i = indexOfWhitespace(string, j);
           }
           if (j < text.length())
           {
-            appendToPendingInputLine(text.substring(j));
+            text = text.substring(j);
+            updateCurrentLine(text, echoInput);
           }
         }
       }
@@ -2628,7 +2638,7 @@ public class VTLanternaConsole implements VTConsoleInstance
       if (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor))
       {
         String text = systemClipboard.getData(DataFlavor.stringFlavor).toString();
-        this.input(text);
+        input(text);
       }
       else if (systemClipboard.isDataFlavorAvailable(DataFlavor.javaFileListFlavor))
       {
@@ -2643,21 +2653,13 @@ public class VTLanternaConsole implements VTConsoleInstance
             fileList.append(" " + file.getAbsolutePath());
           }
           fileListString = fileList.substring(1);
-          this.input(fileListString);
+          input(fileListString);
         }
       }
     }
-    catch (UnsupportedFlavorException e1)
+    catch (Throwable t)
     {
-      
-    }
-    catch (IOException e1)
-    {
-      
-    }
-    catch (Throwable e1)
-    {
-      
+      //t.printStackTrace();
     }
   }
   
