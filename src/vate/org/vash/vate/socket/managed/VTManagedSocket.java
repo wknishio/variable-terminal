@@ -1,7 +1,5 @@
 package org.vash.vate.socket.managed;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -10,7 +8,6 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
 
-import org.vash.vate.VT;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
@@ -28,8 +25,8 @@ public class VTManagedSocket extends Socket
     this.connection = connection;
     this.in = in;
     this.out = out;
-    this.input = new BufferedInputStream(VTCompressorSelector.createDirectLz4InputStream(in), VT.VT_STANDARD_BUFFER_SIZE_BYTES);
-    this.output = new BufferedOutputStream(VTCompressorSelector.createDirectLz4OutputStream(out), VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+    this.input = VTCompressorSelector.createBufferedLz4InputStream(in);
+    this.output = VTCompressorSelector.createBufferedLz4OutputStream(out);
   }
   
 //  public Socket getConnectionSocket()
