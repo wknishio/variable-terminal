@@ -935,7 +935,7 @@ public class VTLanternaOutputTextBox extends VTLanternaTextBoxModified
   public synchronized void output(char data)
   {
     // System.out.println("control:[" + Integer.valueOf(data) + "]");
-    if (data != -'\n' && data != '\u000b')
+    if (data != '\n' && data != '\u000b')
     {
       // if (data == '\t')
       // {
