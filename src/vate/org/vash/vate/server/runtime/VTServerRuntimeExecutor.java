@@ -23,11 +23,9 @@ public class VTServerRuntimeExecutor extends VTTask
   private boolean finished;
   private boolean found;
   private int i;
-  /* private int x; private int y; private int z; */
   private String command;
   private String[] splitCommand;
   private StringBuilder message;
-  // private VTServer server;
   private VTServerSession session;
   private VTServerConnection connection;
   private List<VTRuntimeProcess> managedProcessList;
@@ -60,12 +58,9 @@ public class VTServerRuntimeExecutor extends VTTask
   public VTServerRuntimeExecutor(VTServerSession session)
   {
     super(session.getExecutorService());
-    // this.server = session.getServer();
     this.session = session;
     this.connection = session.getConnection();
     this.finished = true;
-//    this.processList = Collections.synchronizedList(new ArrayList<VTRuntimeProcess>());
-//    this.removedProcessStack = Collections.synchronizedList(new ArrayList<VTRuntimeProcess>());
     this.managedProcessList = new ArrayList<VTRuntimeProcess>();
     this.removedProcessStack = new ArrayList<VTRuntimeProcess>();
     this.message = new StringBuilder();
@@ -119,24 +114,12 @@ public class VTServerRuntimeExecutor extends VTTask
     managedProcessList.clear();
   }
   
-  /*
-   * private void split() { y = 0; z = 0; for (x = 0; x < command.length(); x++)
-   * { if (command.charAt(x) == '|') { y++; } } splitCommand = new String[++y];
-   * y = 0; for (x = 0; x <= command.length(); x++) { if ((x ==
-   * command.length()) || (command.charAt(x) == '|')) { splitCommand[y++] =
-   * command.substring(z, x); z = ++x; } } return; }
-   */
-  
   public void task()
   {
     try
     {
       splitCommand = CommandLineTokenizer.tokenize(command);
-      // i = 0;
-      /*
-       * for (String part : splitCommand) { splitCommand[i++] =
-       * StringEscapeUtils.unescapeJava(part); }
-       */
+      
       int process_command = PROCESS_COMMAND_UNKNOWN;
       int process_scope = PROCESS_SCOPE_NOT_FOUND;
       boolean process_input = false;
@@ -361,8 +344,9 @@ public class VTServerRuntimeExecutor extends VTTask
               
             }
             finished = true;
-            return;
           }
+          
+          return;
         }
         
         if (need_managed_scope)
@@ -418,8 +402,9 @@ public class VTServerRuntimeExecutor extends VTTask
               
             }
             finished = true;
-            return;
           }
+          
+          return;
         }
         
         if (process_command == PROCESS_COMMAND_PATH)
@@ -466,6 +451,8 @@ public class VTServerRuntimeExecutor extends VTTask
             connection.getResultWriter().write("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
             connection.getResultWriter().flush();
           }
+          
+          return;
         }
         
         if (process_command == PROCESS_COMMAND_MANAGED || process_command == PROCESS_COMMAND_FREE)
@@ -637,6 +624,7 @@ public class VTServerRuntimeExecutor extends VTTask
               return;
             }
           }
+          
           return;
         }
         

@@ -10,13 +10,11 @@ import java.util.zip.ZipException;
 
 public class VTNoFlushInflaterInputStream extends InflaterInputStream
 {
-  //private VTLittleEndianInputStream lin;
   private int end = 0;
   
   public VTNoFlushInflaterInputStream(InputStream in, Inflater inflater, int size)
   {
     super(in, inflater, size);
-    //this.lin = new VTLittleEndianInputStream(in);
   }
   
   public int available() throws IOException
@@ -34,16 +32,11 @@ public class VTNoFlushInflaterInputStream extends InflaterInputStream
   protected void fill() throws IOException
   {
     int len = in.read(buf, 0, buf.length);
-//    if (buf.length < len)
-//    {
-//      buf = new byte[len];
-//    }
     if (len == -1)
     {
       throw new EOFException("Unexpected end of ZLIB input stream");
     }
     end = len;
-    //lin.readFully(buf, 0, len);
     inf.setInput(buf, 0, len);
   }
   

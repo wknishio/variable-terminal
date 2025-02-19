@@ -7,12 +7,9 @@ import java.util.zip.DeflaterOutputStream;
 
 public class VTNoFlushDeflaterOutputStream extends DeflaterOutputStream
 {
-  //private VTLittleEndianOutputStream lout;
-  
   public VTNoFlushDeflaterOutputStream(OutputStream out, Deflater deflater, int size)
   {
     super(out, deflater, size);
-    //this.lout = new VTLittleEndianOutputStream(out);
   }
   
   protected void deflate() throws IOException

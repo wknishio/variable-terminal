@@ -399,10 +399,10 @@ public final class VTLinkableDynamicMultiplexingInputStream
     
     public final void setOutputStream(final OutputStream outputStream, final Closeable closeable)
     {
-      this.directCloseable = closeable;
+      directCloseable = closeable;
       if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
       {
-        this.directOutputStream = outputStream;
+        directOutputStream = outputStream;
       }
       else
       {
@@ -419,7 +419,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
         {
           compressedInputStream = VTCompressorSelector.createDirectLz4InputStream(compressedPacketInputPipe);
         }
-        this.directOutputStream = new VTPacketDecompressor(outputStream, compressedInputStream, compressedPacketOutputPipe, compressedPacketInputPipe);
+        directOutputStream = new VTPacketDecompressor(outputStream, compressedInputStream, compressedPacketOutputPipe, compressedPacketInputPipe);
       }
     }
     
