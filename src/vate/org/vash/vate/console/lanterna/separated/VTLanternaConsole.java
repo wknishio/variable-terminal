@@ -87,7 +87,6 @@ public class VTLanternaConsole implements VTConsoleInstance
   private Frame frame;
   private AWTTerminalPanel panel;
   private java.awt.Panel spacer1;
-  // private java.awt.Panel spacer2;
   private Terminal terminal;
   private Screen screen;
   private AWTTerminal awtTerminal;
@@ -119,7 +118,6 @@ public class VTLanternaConsole implements VTConsoleInstance
   // private final Object updateSynchronizer = new Object();
   private MultiWindowTextGUI gui;
   private BasicWindow window;
-  // private VTLanternaConsolePrintStream printStream;
   private VTLanternaConsolePrintStream printStream;
   private VTLanternaConsoleInputStream inputStream;
   private boolean ignoreClose = false;
@@ -654,11 +652,8 @@ public class VTLanternaConsole implements VTConsoleInstance
         }
       }
       
-      // awtframe.setLocationByPlatform(true);
       if (remoteIcon && frame != null)
       {
-        // InputStream stream =
-        // this.getClass().getResourceAsStream("/org/vash/vate/console/graphical/resource/remote.png");
         try
         {
           frame.setIconImage(VT.remoteIcon);
@@ -667,12 +662,9 @@ public class VTLanternaConsole implements VTConsoleInstance
         {
           
         }
-        // stream.close();
       }
       else if (frame != null)
       {
-        // InputStream stream =
-        // this.getClass().getResourceAsStream("/org/vash/vate/console/graphical/resource/terminal.png");
         try
         {
           frame.setIconImage(VT.terminalIcon);
@@ -681,7 +673,6 @@ public class VTLanternaConsole implements VTConsoleInstance
         {
           
         }
-        // stream.close();
       }
       
       if (frame != null)
@@ -707,12 +698,10 @@ public class VTLanternaConsole implements VTConsoleInstance
         
         public void mousePressed(MouseEvent e)
         {
-          // boolean popup = false;
           if (e.isPopupTrigger())
           {
             e.consume();
             popupMenu.show(awtTerminal, e.getX(), e.getY());
-            // popup = true;
             return;
           }
           e.consume();
@@ -727,12 +716,10 @@ public class VTLanternaConsole implements VTConsoleInstance
         
         public void mouseReleased(MouseEvent e)
         {
-          // boolean popup = false;
           if (e.isPopupTrigger())
           {
             e.consume();
             popupMenu.show(awtTerminal, e.getX(), e.getY());
-            // popup = true;
             return;
           }
           e.consume();
@@ -788,17 +775,6 @@ public class VTLanternaConsole implements VTConsoleInstance
             MouseAction mouseAction = new MouseAction(MouseActionType.MOVE, e.getButton(), pos);
             awtTerminal.addInput(mouseAction);
           }
-          // int x = e.getX();
-          // int y = e.getY();
-          // int fontWidth =
-          // awtterminal.getTerminalImplementation().getFontWidth();
-          // int fontHeight =
-          // awtterminal.getTerminalImplementation().getFontHeight();
-          // TerminalPosition pos = new TerminalPosition(x / fontWidth, y /
-          // fontHeight);
-          // MouseAction mouseAction = new MouseAction(MouseActionType.MOVE, 0,
-          // pos);
-          // outputBox.handleInput(mouseAction);
         }
       });
       
@@ -966,8 +942,6 @@ public class VTLanternaConsole implements VTConsoleInstance
       ((DefaultTextBoxRenderer) inputBox.getRenderer()).setHideScrollBars(true);
     }
     
-    // outputBox.setEnabled(false);
-    
     outputBox.setInputFilter(new InputFilter()
     {
       public boolean onInput(Interactable interactable, KeyStroke keyStroke)
@@ -1008,9 +982,7 @@ public class VTLanternaConsole implements VTConsoleInstance
           
           if (mouse.getActionType() == MouseActionType.CLICK_RELEASE)
           {
-            // selectingText = false;
             return false;
-            // selectingText = false;
             // outputBox.invalidate();
           }
           
@@ -1240,8 +1212,6 @@ public class VTLanternaConsole implements VTConsoleInstance
           {
             return false;
           }
-          
-          // return false;
         }
         if (keyStroke.isShiftDown())
         {
@@ -1508,13 +1478,6 @@ public class VTLanternaConsole implements VTConsoleInstance
     inputBox.setTheme(inputTheme);
     outputBox.setTheme(outputTheme);
     
-    //gui.setTheme(outputTheme);
-    //mainPanel.setTheme(outputTheme);
-    //bottonPanel.setTheme(inputTheme);
-    
-    //mainPanel.setFillColorOverride(TextColor.ANSI.BLACK_BRIGHT);
-    //bottonPanel.setFillColorOverride(TextColor.ANSI.BLACK_BRIGHT);
-    
     inputStream = new VTLanternaConsoleInputStream(this);
     printStream = new VTLanternaConsolePrintStream(this);
     
@@ -1594,7 +1557,6 @@ public class VTLanternaConsole implements VTConsoleInstance
     {
       notifyReplaceInput.notify(replaceActivated);
     }
-    // updateCaretPosition();
   }
   
   public void toggleFlush()
@@ -1622,7 +1584,6 @@ public class VTLanternaConsole implements VTConsoleInstance
       inputBox.setCaretPosition(0);
       inputBox.invalidate();
     }
-    // updateCaretPosition();
   }
   
   public void setEchoInput(boolean echo)
@@ -1664,11 +1625,6 @@ public class VTLanternaConsole implements VTConsoleInstance
       commandHistory.add(command.toString());
     }
     commandHistoryPosition = commandHistory.size();
-    // System.out.println("registerLine:[" + command + "]");
-    // System.out.println("commandHistory.size():[" + commandHistory.size() +
-    // "]");
-    // System.out.println("commandHistoryPosition:[" + commandHistoryPosition +
-    // "]");
   }
   
   private void restoreCurrentLine(boolean echo)
@@ -1713,7 +1669,17 @@ public class VTLanternaConsole implements VTConsoleInstance
       inputBox.invalidate();
     }
   }
-
+  
+  private void appendCurrentLine(String text, boolean echo)
+  {
+    inputBox.handleDataInput(currentLineBuffer, text, replaceActivated);
+    if (echo)
+    {
+      inputBox.setText(currentLineBuffer.toString());
+      inputBox.setCaretPosition(inputBox.getHiddenColumn());
+      inputBox.invalidate();
+    }
+  }
   
   private boolean scrollCommandHistoryUp(boolean echo)
   {
@@ -1768,10 +1734,6 @@ public class VTLanternaConsole implements VTConsoleInstance
     {
       if (inputLineBuffer.size() > 0)
       {
-        // if (inputLineBuffer.get(inputLineBuffer.size() - 1).contains("\n") ||
-        // inputLineBuffer.get(inputLineBuffer.size() - 1).contains("\u000b"))
-        // if (getFromPendingInputLine(inputLineBuffer.size() -
-        // 1).contains("\n"))
         if (inputLineBuffer.get(inputLineBuffer.size() - 1).contains("\n"))
         {
           inputLineBuffer.add(line);
@@ -1803,21 +1765,6 @@ public class VTLanternaConsole implements VTConsoleInstance
     }
   }
   
-//  private String getFromPendingInputLine(int index)
-//  {
-//    synchronized (inputLineBuffer)
-//    {
-//      if (inputLineBuffer.size() > 0)
-//      {
-//        return inputLineBuffer.get(index);
-//      }
-//      else
-//      {
-//        return null;
-//      }
-//    }
-//  }
-  
   private String removeFromPendingInputLine()
   {
     synchronized (inputLineBuffer)
@@ -1841,21 +1788,6 @@ public class VTLanternaConsole implements VTConsoleInstance
     }
   }
   
-//  public int indexOfWhitespace(String data)
-//  {
-//    return indexOfWhitespace(data, -1);
-//  }
-//  
-//  public int indexOfWhitespace(String data, int j)
-//  {
-//    int index = data.indexOf('\n', j);
-//    if (index < 0)
-//    {
-//      return data.indexOf('\u000b', j);
-//    }
-//    return index;
-//  }
-  
   public void input(String text)
   {
     if (text == null || text.length() == 0)
@@ -1869,13 +1801,7 @@ public class VTLanternaConsole implements VTConsoleInstance
       {
         if (text.indexOf('\n') == -1)
         {
-          inputBox.handleDataInput(currentLineBuffer, text, replaceActivated);
-          if (echoInput)
-          {
-            inputBox.setText(currentLineBuffer.toString());
-            inputBox.setCaretPosition(inputBox.getHiddenColumn());
-            inputBox.invalidate();
-          }
+          appendCurrentLine(text, echoInput);
         }
         else
         {
@@ -1891,6 +1817,7 @@ public class VTLanternaConsole implements VTConsoleInstance
           if (j < text.length())
           {
             text = text.substring(j);
+            //appendToPendingInputLine(text);
             updateCurrentLine(text, echoInput);
           }
           inputSynchronizer.notifyAll();
@@ -1916,6 +1843,7 @@ public class VTLanternaConsole implements VTConsoleInstance
           if (j < text.length())
           {
             text = text.substring(j);
+            //appendToPendingInputLine(text);
             updateCurrentLine(text, echoInput);
           }
         }
@@ -1946,9 +1874,6 @@ public class VTLanternaConsole implements VTConsoleInstance
     {
       readingInput = true;
       String data;
-      // while (inputBuffer.length() == 0 ||
-      // inputBuffer.charAt(inputBuffer.length() - 1) != '\n' ||
-      // inputBuffer.charAt(inputBuffer.length() - 1) != '\u000b')
       while (inputBuffer.length() == 0 || inputBuffer.charAt(inputBuffer.length() - 1) != '\n')
       {
         inputSynchronizer.wait();
@@ -1956,7 +1881,6 @@ public class VTLanternaConsole implements VTConsoleInstance
       data = inputBuffer.toString();
       inputBuffer.setLength(0);
       readingInput = false;
-      // System.out.println("readString():[" + data + "]");
       return data;
     }
   }
@@ -1967,17 +1891,11 @@ public class VTLanternaConsole implements VTConsoleInstance
     readingInput = true;
     setEchoInput(echo);
     String data = null;
-    // if (getPendingInputLineSize() > 0 &&
-    // (!getFromPendingInputLine().contains("\n") ||
-    // !getFromPendingInputLine().contains("\u000b")))
-    if (getPendingInputLineSize() > 0 && !getFromPendingInputLine().contains("\n"))
-    {
-      currentLineBuffer.append(removeFromPendingInputLine());
-    }
-    // else if (getPendingInputLineSize() > 0 &&
-    // (getFromPendingInputLine().contains("\n") ||
-    // getFromPendingInputLine().contains("\u000b")))
-    else if (getPendingInputLineSize() > 0 && getFromPendingInputLine().contains("\n"))
+//    if (getPendingInputLineSize() > 0 && !getFromPendingInputLine().contains("\n"))
+//    {
+//      updateCurrentLine(removeFromPendingInputLine(), echoInput);
+//    }
+    if (getPendingInputLineSize() > 0 && getFromPendingInputLine().contains("\n"))
     {
       data = removeFromPendingInputLine();
       data = data.substring(0, data.length() - 1);
@@ -2627,7 +2545,6 @@ public class VTLanternaConsole implements VTConsoleInstance
     {
       
     }
-    // VTConsole.flush();
   }
   
   public void pasteText()
@@ -2719,7 +2636,6 @@ public class VTLanternaConsole implements VTConsoleInstance
       inputBox.setSelectionStartPosition(null);
       inputBox.setSelectionEndPosition(null);
       inputBox.invalidate();
-      // fullRefresh();
     }
     
     if (outputBox.selectingText())
@@ -2788,7 +2704,6 @@ public class VTLanternaConsole implements VTConsoleInstance
     {
       
     }
-    // VTConsole.flush();
   }
   
   public void setRemoteIcon(boolean remoteIcon)
