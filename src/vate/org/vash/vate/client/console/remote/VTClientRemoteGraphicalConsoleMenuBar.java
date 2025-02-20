@@ -236,7 +236,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Custom Remote Shell", "*VTSHELL C "));
     shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Default Remote Shell", "*VTSHELL D\n"));
     shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Set BeanShell Remote Shell", "*VTSHELL B\n"));
-    shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Disable Remote Shell", "*VTSHELL N\n"));
+    shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Null Remote Shell", "*VTSHELL N\n"));
     shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Remote Shell Directory", "*VTSHELL P "));
     shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Remote Shell Encoding", "*VTSHELL E "));
     shellMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTSHELL\n"));

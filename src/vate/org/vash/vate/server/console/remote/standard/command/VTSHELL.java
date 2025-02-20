@@ -22,14 +22,14 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
     {
       if (parsed[1].toUpperCase().contains("R"))
       {
-        connection.getResultWriter().write("\nVT>Starting remote shell!\nVT>");
+        connection.getResultWriter().write("\nVT>Starting remote shell...\nVT>");
         connection.getResultWriter().flush();
         // session.setRestartingShell(true);
         session.restartShell();
       }
       else if (parsed[1].toUpperCase().contains("N"))
       {
-        connection.getResultWriter().write("\nVT>Disabling remote shell!\nVT>");
+        connection.getResultWriter().write("\nVT>Setting null remote shell...\nVT>");
         connection.getResultWriter().flush();
         session.stopShell();
         session.setShellBuilder(new String[] {}, null, null);
@@ -48,7 +48,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
       }
       else if (parsed[1].toUpperCase().contains("B"))
       {
-        connection.getResultWriter().write("\nVT>Using beanshell as remote shell!\nVT>");
+        connection.getResultWriter().write("\nVT>Setting beanshell remote shell...\nVT>");
         connection.getResultWriter().flush();
         session.stopShell();
         session.setShellBuilder(null, null, null);
@@ -63,7 +63,7 @@ public class VTSHELL extends VTServerStandardRemoteConsoleCommandProcessor
 //      }
       else if (parsed[1].toUpperCase().contains("S"))
       {
-        connection.getResultWriter().write("\nVT>Stopping remote shell!\nVT>");
+        connection.getResultWriter().write("\nVT>Stopping remote shell...\nVT>");
         connection.getResultWriter().flush();
         session.setStoppingShell(true);
         session.stopShell();
