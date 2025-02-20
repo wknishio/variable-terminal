@@ -93,6 +93,8 @@ public enum KeyType {
     Control,
     Shift,
     Alt,
-    AltGr
+    AltGr,
+    Windows,
+    Meta
     ;
 }

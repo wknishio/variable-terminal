@@ -710,8 +710,26 @@ public class VTLanternaConsole implements VTConsoleInstance
           int fontWidth = awtTerminal.getTerminalImplementation().getFontWidth();
           int fontHeight = awtTerminal.getTerminalImplementation().getFontHeight();
           TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
-          MouseAction mouseAction = new MouseAction(MouseActionType.CLICK_DOWN, e.getButton(), pos);
-          awtTerminal.addInput(mouseAction);
+          if (e.isShiftDown())
+          {
+            if (!inputBox.selectingText() && inputBox.getGlobalPosition().getRow() == pos.getRow())
+            {
+              MouseAction startAction = new MouseAction(MouseActionType.DRAG, e.getButton(), new TerminalPosition(inputBox.getCaretPosition().getColumn(), inputBox.getGlobalPosition().getRow()));
+              awtTerminal.addInput(startAction);
+            }
+            else if (!outputBox.selectingText())
+            {
+              MouseAction startAction = new MouseAction(MouseActionType.DRAG, e.getButton(), outputBox.getCursorLocation());
+              awtTerminal.addInput(startAction);
+            }
+            MouseAction endAction = new MouseAction(MouseActionType.DRAG, e.getButton(), pos);
+            awtTerminal.addInput(endAction);
+          }
+          else
+          {
+            MouseAction mouseAction = new MouseAction(MouseActionType.CLICK_DOWN, e.getButton(), pos);
+            awtTerminal.addInput(mouseAction);
+          }
         }
         
         public void mouseReleased(MouseEvent e)
@@ -765,16 +783,18 @@ public class VTLanternaConsole implements VTConsoleInstance
           int fontWidth = awtTerminal.getTerminalImplementation().getFontWidth();
           int fontHeight = awtTerminal.getTerminalImplementation().getFontHeight();
           TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
-          if (e.isShiftDown())
-          {
-            MouseAction mouseAction = new MouseAction(MouseActionType.DRAG, e.getButton(), pos);
-            awtTerminal.addInput(mouseAction);
-          }
-          else
-          {
-            MouseAction mouseAction = new MouseAction(MouseActionType.MOVE, e.getButton(), pos);
-            awtTerminal.addInput(mouseAction);
-          }
+          MouseAction mouseAction = new MouseAction(MouseActionType.MOVE, e.getButton(), pos);
+          awtTerminal.addInput(mouseAction);
+//          if (e.isShiftDown())
+//          {
+//            MouseAction mouseAction = new MouseAction(MouseActionType.DRAG, e.getButton(), pos);
+//            awtTerminal.addInput(mouseAction);
+//          }
+//          else
+//          {
+//            MouseAction mouseAction = new MouseAction(MouseActionType.MOVE, e.getButton(), pos);
+//            awtTerminal.addInput(mouseAction);
+//          }
         }
       });
       
@@ -963,7 +983,7 @@ public class VTLanternaConsole implements VTConsoleInstance
               {
                 if (pressedMouseButton == mouse.getButton())
                 {
-                  resetSelection();
+                  resetSelection(outputBox);
                 }
                 else
                 {
@@ -1032,6 +1052,19 @@ public class VTLanternaConsole implements VTConsoleInstance
           inputBox.takeFocus();
           return false;
         }
+        if (keyStroke.getKeyType() == KeyType.Pause)
+        {
+          toggleFlush();
+          return false;
+        }
+        if (keyStroke.getKeyType() == KeyType.ContextMenu)
+        {
+          if (popupMenu != null)
+          {
+            popupMenu.show(awtTerminal, 0, 0);
+          }
+          return false;
+        }
         // if (keyStroke.getKeyType() == KeyType.Tab)
         // {
         // outputBox.output("\t");
@@ -1053,26 +1086,26 @@ public class VTLanternaConsole implements VTConsoleInstance
             }
             else
             {
-              if (keyStroke.getKeyType() == KeyType.Shift)
-              {
-                if (outputBox.getSelectionStartPosition() != null)
-                {
-                  resetSelection();
-                }
-                return false;
-              }
+//              if (keyStroke.getKeyType() == KeyType.Shift)
+//              {
+//                if (outputBox.getSelectionStartPosition() != null)
+//                {
+//                  resetSelection();
+//                }
+//                return false;
+//              }
             }
           }
         }
         else
         {
-//          if (outputBox.isMovementKeyStroke(keyStroke))
-//          {
-//            if (outputBox.getSelectionStartPosition() != null)
-//            {
-//              resetSelection();
-//            }
-//          }
+          if (outputBox.isMovementKeyStroke(keyStroke))
+          {
+            if (outputBox.getSelectionStartPosition() != null)
+            {
+              resetSelection(outputBox);
+            }
+          }
         }
         if (keyStroke.isCtrlDown() && !keyStroke.isShiftDown())
         {
@@ -1119,7 +1152,7 @@ public class VTLanternaConsole implements VTConsoleInstance
             return false;
           }
         }
-        if (keyStroke.getKeyType() != KeyType.ArrowDown && keyStroke.getKeyType() != KeyType.ArrowUp && keyStroke.getKeyType() != KeyType.ArrowLeft && keyStroke.getKeyType() != KeyType.ArrowRight && keyStroke.getKeyType() != KeyType.PageDown && keyStroke.getKeyType() != KeyType.PageUp && keyStroke.getKeyType() != KeyType.Home && keyStroke.getKeyType() != KeyType.End)
+        if (keyStroke.getKeyType() != KeyType.AltGr && keyStroke.getKeyType() != KeyType.Windows && keyStroke.getKeyType() != KeyType.Meta && keyStroke.getKeyType() != KeyType.ArrowDown && keyStroke.getKeyType() != KeyType.ArrowUp && keyStroke.getKeyType() != KeyType.ArrowLeft && keyStroke.getKeyType() != KeyType.ArrowRight && keyStroke.getKeyType() != KeyType.PageDown && keyStroke.getKeyType() != KeyType.PageUp && keyStroke.getKeyType() != KeyType.Home && keyStroke.getKeyType() != KeyType.End)
         {
           inputBox.takeFocus();
           inputBox.handleInput(keyStroke);
@@ -1155,7 +1188,7 @@ public class VTLanternaConsole implements VTConsoleInstance
               {
                 if (pressedMouseButton == mouse.getButton())
                 {
-                  resetSelection();
+                  resetSelection(inputBox);
                 }
                 else
                 {
@@ -1222,25 +1255,25 @@ public class VTLanternaConsole implements VTConsoleInstance
           }
           else
           {
-            if (keyStroke.getKeyType() == KeyType.Shift)
-            {
-              if (inputBox.getSelectionStartPosition() != null)
-              {
-                resetSelection();
-              }
-              return false;
-            }
+//            if (keyStroke.getKeyType() == KeyType.Shift)
+//            {
+//              if (inputBox.getSelectionStartPosition() != null)
+//              {
+//                resetSelection();
+//              }
+//              return false;
+//            }
           }
         }
         else
         {
-//          if (inputBox.isMovementKeyStroke(keyStroke))
-//          {
-//            if (inputBox.getSelectionStartPosition() != null)
-//            {
-//              resetSelection();
-//            }
-//          }
+          if (inputBox.isMovementKeyStroke(keyStroke))
+          {
+            if (inputBox.getSelectionStartPosition() != null)
+            {
+              resetSelection(inputBox);
+            }
+          }
         }
         
         if (keyStroke.getKeyType() == KeyType.Enter)
@@ -2629,16 +2662,16 @@ public class VTLanternaConsole implements VTConsoleInstance
     this.commandEcho = commandEcho;
   }
   
-  private void resetSelection()
+  private void resetSelection(VTLanternaOutputTextBox element)
   {
-    if (inputBox.selectingText())
+    if (element == inputBox && inputBox.selectingText())
     {
       inputBox.setSelectionStartPosition(null);
       inputBox.setSelectionEndPosition(null);
       inputBox.invalidate();
     }
     
-    if (outputBox.selectingText())
+    if (element == outputBox && outputBox.selectingText())
     {
       outputBox.setSelectionStartPosition(null);
       outputBox.setSelectionEndPosition(null);
