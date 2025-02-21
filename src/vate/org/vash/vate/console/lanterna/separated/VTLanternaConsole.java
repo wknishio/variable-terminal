@@ -127,7 +127,7 @@ public class VTLanternaConsole implements VTConsoleInstance
   private Scrollbar horizontalScrollbar;
   private Scrollbar verticalScrollbar;
   private int pressedMouseButton;
-  private int menuMouseButton;
+  private int menuMouseButton = MouseEvent.BUTTON3;
   private boolean remoteIcon;
   private VTConsoleBooleanToggleNotify notifyFlushInterrupted;
   private VTConsoleBooleanToggleNotify notifyReplaceInput;
@@ -786,18 +786,18 @@ public class VTLanternaConsole implements VTConsoleInstance
           int fontWidth = awtTerminal.getTerminalImplementation().getFontWidth();
           int fontHeight = awtTerminal.getTerminalImplementation().getFontHeight();
           TerminalPosition pos = new TerminalPosition(x / fontWidth, y / fontHeight);
-          MouseAction mouseAction = new MouseAction(MouseActionType.MOVE, e.getButton(), pos);
-          awtTerminal.addInput(mouseAction);
-//          if (e.isShiftDown())
-//          {
-//            MouseAction mouseAction = new MouseAction(MouseActionType.DRAG, e.getButton(), pos);
-//            awtTerminal.addInput(mouseAction);
-//          }
-//          else
-//          {
-//            MouseAction mouseAction = new MouseAction(MouseActionType.MOVE, e.getButton(), pos);
-//            awtTerminal.addInput(mouseAction);
-//          }
+          if (e.isShiftDown())
+          {
+            MouseAction mouseAction = new MouseAction(MouseActionType.DRAG, e.getButton(), pos);
+            awtTerminal.addInput(mouseAction);
+          }
+          else
+          {
+            MouseAction mouseAction = new MouseAction(MouseActionType.MOVE, e.getButton(), pos);
+            awtTerminal.addInput(mouseAction);
+          }
+//          MouseAction mouseAction = new MouseAction(MouseActionType.MOVE, e.getButton(), pos);
+//          awtTerminal.addInput(mouseAction);
         }
       });
       
@@ -995,11 +995,22 @@ public class VTLanternaConsole implements VTConsoleInstance
                     pressedMouseButton = mouse.getButton();
                   }
                 }
+                else
+                {
+                  pressedMouseButton = 1;
+                }
               }
               else
               {
-                outputBox.setSelectionStartPosition(new TerminalPosition(topleft.getColumn() + mouse.getPosition().getColumn(), topleft.getRow() + mouse.getPosition().getRow()));
-                pressedMouseButton = mouse.getButton();
+                if (mouse.getButton() != menuMouseButton)
+                {
+                  outputBox.setSelectionStartPosition(new TerminalPosition(topleft.getColumn() + mouse.getPosition().getColumn(), topleft.getRow() + mouse.getPosition().getRow()));
+                  pressedMouseButton = mouse.getButton();
+                }
+                else
+                {
+                  pressedMouseButton = 1;
+                }
               }
               outputBox.invalidate();
             }
@@ -1197,18 +1208,29 @@ public class VTLanternaConsole implements VTConsoleInstance
                 {
                   if (pressedMouseButton == mouse.getButton())
                   {
-                    resetSelection(outputBox);
+                    resetSelection(inputBox);
                   }
                   else
                   {
                     pressedMouseButton = mouse.getButton();
                   }
                 }
+                else
+                {
+                  pressedMouseButton = 1;
+                }
               }
               else
               {
-                inputBox.setSelectionStartPosition(new TerminalPosition(position, 0));
-                pressedMouseButton = mouse.getButton();
+                if (mouse.getButton() != menuMouseButton)
+                {
+                  inputBox.setSelectionStartPosition(new TerminalPosition(position, 0));
+                  pressedMouseButton = mouse.getButton();
+                }
+                else
+                {
+                  pressedMouseButton = 1;
+                }
               }
               inputBox.invalidate();
             }
@@ -2626,7 +2648,7 @@ public class VTLanternaConsole implements VTConsoleInstance
   
   public String getSelectedText()
   {
-    if (outputBox.isFocused())
+    if (outputBox.isFocused() && outputBox.selectingText())
     {
       try
       {
@@ -2637,7 +2659,29 @@ public class VTLanternaConsole implements VTConsoleInstance
         
       }
     }
-    if (inputBox.isFocused())
+    else if (inputBox.isFocused() && inputBox.selectingText())
+    {
+      try
+      {
+        return inputBox.getSelectedText();
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    else if (outputBox.selectingText())
+    {
+      try
+      {
+        return outputBox.getSelectedText();
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    else if (inputBox.selectingText())
     {
       try
       {
