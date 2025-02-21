@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 
 import org.vash.vate.console.VTConsoleInstance;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleCopyActionListener;
-import org.vash.vate.console.graphical.listener.VTGraphicalConsoleCopyAllActionListener;
+import org.vash.vate.console.graphical.listener.VTGraphicalConsoleSelectAllActionListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsolePasteActionListener;
 
 public class VTGraphicalConsolePopupMenu extends PopupMenu
@@ -27,7 +27,7 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
   // private CheckboxMenuItem scroll;
   // private VTGraphicalConsoleKeyListener keyListener;
   private VTGraphicalConsoleCopyActionListener copyActionListener;
-  private VTGraphicalConsoleCopyAllActionListener allActionListener;
+  private VTGraphicalConsoleSelectAllActionListener allActionListener;
   private VTGraphicalConsolePasteActionListener pasteActionListener;
   
   private final VTConsoleInstance console;
@@ -40,14 +40,14 @@ public class VTGraphicalConsolePopupMenu extends PopupMenu
     // this.keyListener = keyListener;
     copy = new MenuItem("Copy ");
     paste = new MenuItem("Paste ");
-    all = new MenuItem("Entire ");
+    all = new MenuItem("All ");
     insert = new MenuItem("Replace ");
     scroll = new MenuItem("Pause ");
     // expand = new MenuItem("Expand");
     // reduce = new MenuItem("Reduce");
     // scroll = new CheckboxMenuItem("Scroll", false);
     copyActionListener = new VTGraphicalConsoleCopyActionListener(console);
-    allActionListener = new VTGraphicalConsoleCopyAllActionListener(console);
+    allActionListener = new VTGraphicalConsoleSelectAllActionListener(console);
     pasteActionListener = new VTGraphicalConsolePasteActionListener(console);
     copy.addActionListener(copyActionListener);
     paste.addActionListener(pasteActionListener);

@@ -127,6 +127,7 @@ public class VTLanternaConsole implements VTConsoleInstance
   private Scrollbar horizontalScrollbar;
   private Scrollbar verticalScrollbar;
   private int pressedMouseButton;
+  private int menuMouseButton;
   private boolean remoteIcon;
   private VTConsoleBooleanToggleNotify notifyFlushInterrupted;
   private VTConsoleBooleanToggleNotify notifyReplaceInput;
@@ -701,6 +702,7 @@ public class VTLanternaConsole implements VTConsoleInstance
           if (e.isPopupTrigger())
           {
             e.consume();
+            menuMouseButton = e.getButton();
             popupMenu.show(awtTerminal, e.getX(), e.getY());
             return;
           }
@@ -737,6 +739,7 @@ public class VTLanternaConsole implements VTConsoleInstance
           if (e.isPopupTrigger())
           {
             e.consume();
+            menuMouseButton = e.getButton();
             popupMenu.show(awtTerminal, e.getX(), e.getY());
             return;
           }
@@ -981,13 +984,16 @@ public class VTLanternaConsole implements VTConsoleInstance
               outputBox.setCaretPosition(topleft.getRow() + mouse.getPosition().getRow(), topleft.getColumn() + mouse.getPosition().getColumn());
               if (outputBox.selectingText())
               {
-                if (pressedMouseButton == mouse.getButton())
+                if (mouse.getButton() != menuMouseButton)
                 {
-                  resetSelection(outputBox);
-                }
-                else
-                {
-                  pressedMouseButton = mouse.getButton();
+                  if (pressedMouseButton == mouse.getButton())
+                  {
+                    resetSelection(outputBox);
+                  }
+                  else
+                  {
+                    pressedMouseButton = mouse.getButton();
+                  }
                 }
               }
               else
@@ -1116,7 +1122,8 @@ public class VTLanternaConsole implements VTConsoleInstance
           }
           if (keyStroke.getKeyType() == KeyType.Backspace)
           {
-            console.copyAllText();
+            //console.copyAllText();
+            console.selectAllText();
             return false;
           }
           if (keyStroke.getKeyType() == KeyType.Delete)
@@ -1186,13 +1193,16 @@ public class VTLanternaConsole implements VTConsoleInstance
               
               if (inputBox.selectingText())
               {
-                if (pressedMouseButton == mouse.getButton())
+                if (mouse.getButton() != menuMouseButton)
                 {
-                  resetSelection(inputBox);
-                }
-                else
-                {
-                  pressedMouseButton = mouse.getButton();
+                  if (pressedMouseButton == mouse.getButton())
+                  {
+                    resetSelection(outputBox);
+                  }
+                  else
+                  {
+                    pressedMouseButton = mouse.getButton();
+                  }
                 }
               }
               else
@@ -1338,7 +1348,8 @@ public class VTLanternaConsole implements VTConsoleInstance
         {
           if (keyStroke.isCtrlDown())
           {
-            console.copyAllText();
+            //console.copyAllText();
+            console.selectAllText();
             return false;
           }
         }
@@ -2736,6 +2747,36 @@ public class VTLanternaConsole implements VTConsoleInstance
     catch (Throwable e)
     {
       
+    }
+  }
+  
+  public void selectAllText()
+  {
+    if (outputBox.isFocused())
+    {
+      try
+      {
+        outputBox.setSelectionStartPosition(new TerminalPosition(0, 0));
+        outputBox.setSelectionEndPosition(new TerminalPosition(outputBox.longestRow, outputBox.getLineCount() - 1));
+        outputBox.invalidate();
+      }
+      catch (Throwable e)
+      {
+        
+      }
+    }
+    if (inputBox.isFocused())
+    {
+      try
+      {
+        inputBox.setSelectionStartPosition(new TerminalPosition(0, 0));
+        inputBox.setSelectionEndPosition(new TerminalPosition(inputBox.getLastLine().length(), 0));
+        inputBox.invalidate();
+      }
+      catch (Throwable e)
+      {
+        
+      }
     }
   }
   

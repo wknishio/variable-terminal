@@ -854,6 +854,11 @@ public class VTStandardConsole implements VTConsoleInstance
     
   }
   
+  public void selectAllText()
+  {
+    
+  }
+  
   public void setIgnoreClose(boolean ignoreClose)
   {
     

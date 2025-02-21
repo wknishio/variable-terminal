@@ -79,6 +79,8 @@ public interface VTConsoleInstance
   
   public abstract void copyAllText();
   
+  public abstract void selectAllText();
+  
   public abstract void setIgnoreClose(boolean ignoreClose);
   
   public abstract void setRemoteIcon(boolean remoteIcon);

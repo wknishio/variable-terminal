@@ -699,6 +699,14 @@ public final class VTConsole
     }
   }
   
+  public static void selectAllText()
+  {
+    if (checkConsole())
+    {
+      console.selectAllText();
+    }
+  }
+  
   public static void setIgnoreClose(boolean ignoreClose)
   {
     if (checkConsole())

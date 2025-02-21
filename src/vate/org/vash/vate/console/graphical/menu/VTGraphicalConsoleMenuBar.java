@@ -84,13 +84,14 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     
-    textActionAllMenu = new MenuItem("Entire ");
+    textActionAllMenu = new MenuItem("All ");
     textActionAllMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
         console.requestFocus();
-        console.copyAllText();
+        console.selectAllText();
+        //console.copyAllText();
       }
     });
     
@@ -222,7 +223,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Z: Toggle Resume/Pause"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert: Copy Selected"));
     keyboardShortcutsMenu.add(new MenuItem("Shift+Insert: Paste Selected"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace: Copy Entire"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace: Select All"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp: Expand View"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown: Reduce View"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+End: Bold View"));

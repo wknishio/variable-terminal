@@ -2246,6 +2246,11 @@ public class VTGraphicalConsole implements VTConsoleInstance
     textArea.copyAllText();
   }
   
+  public void selectAllText()
+  {
+    textArea.select(0, textArea.getText().length());
+  }
+  
   public String getAllText()
   {
     return screenBuffer.substring(0).replace("\b", "").replace("\n", "").replaceAll("\\t{1," + tabSize + "}", "\t").replace('\r', '\n');
