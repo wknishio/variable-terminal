@@ -28,7 +28,7 @@ public class VT
   public static final int VT_REVISION_VERSION = 2;
   
   public static final int VT_PACKET_HEADER_SIZE_BYTES = 16;
-  public static final int VT_PACKET_DATA_SIZE_BYTES = 1024 * 32;
+  public static final int VT_PACKET_DATA_SIZE_BYTES = 1024 * 16;
   public static final int VT_PACKET_TOTAL_SIZE_BYTES = VT_PACKET_HEADER_SIZE_BYTES + VT_PACKET_DATA_SIZE_BYTES;
   
   public static final int VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES = 1024 * 1024 * 8;
