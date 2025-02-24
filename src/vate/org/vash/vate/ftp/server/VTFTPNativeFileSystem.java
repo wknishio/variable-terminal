@@ -1,7 +1,6 @@
 package org.vash.vate.ftp.server;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -28,84 +27,116 @@ public class VTFTPNativeFileSystem extends NativeFileSystem
   
   public File getParent(File file) throws IOException
   {
-    if(file.getParentFile() == null)
+    if (file.getParentFile() == null)
     {
-      throw new FileNotFoundException("No parent found for this file");
+      return root;
     }
     return file.getParentFile();
   }
   
   public File findFile(String path) throws IOException
   {
-    path = path.replace(":\\/", ":/");
+    //path = path.replace(":\\/", ":/");
     //System.out.println("findFile(" + path + ")");
-    if (path.length() == 0 || path.equals("/"))
+    try
     {
-      return root;
-    }
-    if (path.length() >= 2 && path.length() <= 3 && path.charAt(1) == ':')
-    {
-      if (!(path.endsWith("/") || path.endsWith("\\")))
+      if (path.length() == 0 || path.equals("/"))
       {
-        path += '/';
+        return root;
       }
+      if (path.length() >= 2 && path.length() <= 3 && path.charAt(1) == ':')
+      {
+        if (!(path.endsWith("/") || path.endsWith("\\")))
+        {
+          path += '/';
+        }
+      }
+      File file = new File(path);
+      return file.getAbsoluteFile();
     }
-    File file = new File(path);
-    return file.getAbsoluteFile();
+    catch (Throwable t)
+    {
+      throw new IOException(t.getMessage());
+    }
   }
   
   public File findFile(File cwd, String path) throws IOException
   {
-    path = path.replace(":\\/", ":/");
+    //path = path.replace(":\\/", ":/");
     //System.out.println("findFile(" + cwd + "," + path + ")");
-    if (cwd.getAbsolutePath().equals(root.getAbsolutePath()))
+    try
     {
-      return findFile(path);
-    }
-//    if (path.length() == 0)
-//    {
-//      return findFile(cwd, path);
-//    }
-//    if (path.equals("/"))
-//    {
-//      return findFile(cwd, path);
-//    }
-    if (path.startsWith("/"))
-    {
-      return findFile(path.substring(1));
-    }
-    if (path.length() >= 2 && path.length() <= 3 && path.charAt(1) == ':')
-    {
-      if (!(path.endsWith("/") || path.endsWith("\\")))
+      if (cwd.getAbsolutePath().equals(root.getAbsolutePath()))
       {
-        path += '/';
+        return findFile(path);
       }
-      return findFile(path);
+      if (path.startsWith("/"))
+      {
+        return findFile(path.substring(1));
+      }
+      if (path.length() >= 2 && path.length() <= 3 && path.charAt(1) == ':')
+      {
+        if (!(path.endsWith("/") || path.endsWith("\\")))
+        {
+          path += '/';
+        }
+        return findFile(path);
+      }
+      File file = new File(cwd, path);
+      return file.getAbsoluteFile();
     }
-    File file = new File(cwd, path);
-    return file.getAbsoluteFile();
+    catch (Throwable t)
+    {
+      throw new IOException(t.getMessage());
+    }
   }
   
-//  public String getName(File file)
-//  {
-//    return file.getName();
-//  }
+  public String getName(File file)
+  {
+    String name = file.getName();
+    if (name.endsWith("\\") || name.endsWith("/"))
+    {
+      return name.substring(0, name.length() - 1);
+    }
+    return name;
+  }
   
   public String getPath(File file)
   {
-    return file.getAbsolutePath().replace(File.separatorChar, '/');
+    try
+    {
+      String path = file.getAbsolutePath().replace('\\', '/');
+      if (path.length() > 1 && path.endsWith("/"))
+      {
+        return path.substring(0, path.length() - 1);
+      }
+      return path;
+    }
+    catch (Throwable t)
+    {
+      
+    }
+    return "";
   }
   
   public File[] listFiles(File dir) throws IOException
   {
-    if (!dir.isDirectory())
+    File[] files = new File[] {};
+    try
     {
-      throw new IOException("Not a directory");
+      files = dir.listFiles();
+      if (files != null)
+      {
+        Arrays.sort(files, fileSorter);
+      }
+      else
+      {
+        throw new IOException("Inaccessible or not a directory");
+      }
     }
-    File[] files = dir.listFiles();
-    if (files != null)
+    catch (Throwable t)
     {
-      Arrays.sort(files, fileSorter);
+      throw new IOException(t.getMessage());
     }
     return files;
   }
