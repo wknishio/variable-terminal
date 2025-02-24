@@ -234,9 +234,22 @@ public class VTRootList extends File
   
   public String[] list(FilenameFilter filter)
   {
-    return super.list(filter);
+    String names[] = list();
+    if ((names == null) || (filter == null))
+    {
+      return names;
+    }
+    List<String> v = new ArrayList<String>();
+    for (int i = 0 ; i < names.length ; i++)
+    {
+      if (filter.accept(this, names[i]))
+      {
+        v.add(names[i]);
+      }
+    }
+    return v.toArray(new String[v.size()]);
   }
-  
+    
   public File[] listFiles()
   {
     return getRootFiles();
@@ -244,12 +257,39 @@ public class VTRootList extends File
   
   public File[] listFiles(FileFilter filter)
   {
-    return super.listFiles(filter);
+    String ss[] = list();
+    if (ss == null)
+    {
+      return null;
+    }
+    ArrayList<File> files = new ArrayList<File>();
+    for (String s : ss)
+    {
+      File f = new File(this, s);
+      if ((filter == null) || filter.accept(f))
+      {
+        files.add(f);
+      }
+    }
+    return files.toArray(new File[files.size()]);
   }
   
   public File[] listFiles(FilenameFilter filter)
   {
-    return super.listFiles(filter);
+    String ss[] = list();
+    if (ss == null)
+    {
+      return null;
+    }
+    ArrayList<File> files = new ArrayList<File>();
+    for (String s : ss)
+    {
+      if ((filter == null) || filter.accept(this, s))
+      {
+        files.add(new File(this, s));
+      }
+    }
+    return files.toArray(new File[files.size()]);
   }
   
   public boolean mkdir()

@@ -3,10 +3,12 @@ package org.vash.vate.tunnel.session;
 import java.io.File;
 
 import org.vash.vate.VT;
+import org.vash.vate.filesystem.VTRootList;
 import org.vash.vate.ftp.server.VTFTPAuthenticator;
 import org.vash.vate.ftp.server.VTFTPNativeFileSystem;
 import org.vash.vate.ftp.server.VTFTPServer;
 import org.vash.vate.proxy.client.VTProxy;
+import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.socket.remote.VTRemoteClientSocketFactory;
 import org.vash.vate.socket.remote.VTRemoteServerSocketFactory;
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;
@@ -40,11 +42,25 @@ public class VTTunnelFTPSessionHandler extends VTTunnelSessionHandler
     this.bind = bind;
     if (username != null && password != null && username.length() > 0 && password.length() > 0)
     {
-      this.validation = new VTFTPAuthenticator(new VTFTPNativeFileSystem(new File("/").getAbsoluteFile()), username, password);
+      if (VTReflectionUtils.detectWindows())
+      {
+        this.validation = new VTFTPAuthenticator(new VTFTPNativeFileSystem(new VTRootList()), username, password);
+      }
+      else
+      {
+        this.validation = new VTFTPAuthenticator(new VTFTPNativeFileSystem(new File("/").getAbsoluteFile()), username, password);
+      }
     }
     else
     {
-      this.validation = new VTFTPAuthenticator(new VTFTPNativeFileSystem(new File("/").getAbsoluteFile()), null, null);
+      if (VTReflectionUtils.detectWindows())
+      {
+        this.validation = new VTFTPAuthenticator(new VTFTPNativeFileSystem(new VTRootList()), null, null);
+      }
+      else
+      {
+        this.validation = new VTFTPAuthenticator(new VTFTPNativeFileSystem(new File("/").getAbsoluteFile()), null, null);
+      }
     }
   }
   
@@ -53,7 +69,6 @@ public class VTTunnelFTPSessionHandler extends VTTunnelSessionHandler
     return session;
   }
   
-  @SuppressWarnings("all")
   public void run()
   {
     VTFTPServer ftpserver = null;

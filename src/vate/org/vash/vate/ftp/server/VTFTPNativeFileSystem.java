@@ -37,10 +37,12 @@ public class VTFTPNativeFileSystem extends NativeFileSystem
   
   public File findFile(String path) throws IOException
   {
-//    if (path.length() == 0 || path.equals("/"))
-//    {
-//      return root;
-//    }
+    path = path.replace(":\\/", ":/");
+    //System.out.println("findFile(" + path + ")");
+    if (path.length() == 0 || path.equals("/"))
+    {
+      return root;
+    }
     if (path.length() >= 2 && path.length() <= 3 && path.charAt(1) == ':')
     {
       if (!(path.endsWith("/") || path.endsWith("\\")))
@@ -54,6 +56,20 @@ public class VTFTPNativeFileSystem extends NativeFileSystem
   
   public File findFile(File cwd, String path) throws IOException
   {
+    path = path.replace(":\\/", ":/");
+    //System.out.println("findFile(" + cwd + "," + path + ")");
+    if (cwd.getAbsolutePath().equals(root.getAbsolutePath()))
+    {
+      return findFile(path);
+    }
+//    if (path.length() == 0)
+//    {
+//      return findFile(cwd, path);
+//    }
+//    if (path.equals("/"))
+//    {
+//      return findFile(cwd, path);
+//    }
     if (path.startsWith("/"))
     {
       return findFile(path.substring(1));
@@ -66,23 +82,14 @@ public class VTFTPNativeFileSystem extends NativeFileSystem
       }
       return findFile(path);
     }
-//    File file;
-//    if (cwd == root)
-//    {
-//      if (path.length() == 0 || path.equals("/") || path.equals("."))
-//      {
-//        return root;
-//      }
-//    }
     File file = new File(cwd, path);
     return file.getAbsoluteFile();
-//    file = findFile(path);
-//    if (file.exists())
-//    {
-//      return file;
-//    }
-    //return null;
   }
+  
+//  public String getName(File file)
+//  {
+//    return file.getName();
+//  }
   
   public String getPath(File file)
   {
