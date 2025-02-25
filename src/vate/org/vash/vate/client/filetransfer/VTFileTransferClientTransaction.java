@@ -12,6 +12,7 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.filesystem.VTFileTransferSorter;
@@ -30,6 +31,7 @@ public class VTFileTransferClientTransaction implements Runnable
   private boolean finished;
   private boolean compressing;
   private boolean resuming;
+  private boolean deleting;
   //private boolean verifying;
   private boolean checked;
   private boolean resumable;
@@ -1144,6 +1146,7 @@ public class VTFileTransferClientTransaction implements Runnable
       }
       else
       {
+        List<String> remoteChildFiles = null;
         long currentFileTime = remoteFileTime;
         String rootFolder = fileNameFromPath(currentRootPath);
         String currentFolder = fileNameFromPath(currentPath);
@@ -1162,6 +1165,10 @@ public class VTFileTransferClientTransaction implements Runnable
             ok = fileTransferFile.mkdirs();
           }
         }
+        if (deleting)
+        {
+          remoteChildFiles = new LinkedList<String>();
+        }
         //ok = fileTransferFile.setLastModified(remoteFileTime) && ok;
         String nextPath = " ";
         while (true)
@@ -1174,6 +1181,10 @@ public class VTFileTransferClientTransaction implements Runnable
             {
               if (!("".equals(nextPath)))
               {
+                if (deleting)
+                {
+                  remoteChildFiles.add(nextPath);
+                }
                 // receive next path try subfile download
                 if (rootLevel && !currentFolder.equals(rootFolder))
                 {
@@ -1187,18 +1198,31 @@ public class VTFileTransferClientTransaction implements Runnable
               else
               {
                 // folder ok
+                if (rootLevel && !currentFolder.equals(rootFolder))
+                {
+                  fileTransferCompletedFile = new File(convertFilePath(appendToPath(currentPath, rootFolder)));
+                }
+                else
+                {
+                  fileTransferCompletedFile = new File(convertFilePath(currentPath));
+                }
+                if (deleting)
+                {
+                  List<String> localChildFiles = new LinkedList<String>();
+                  String[] localChildFilesArray = fileTransferCompletedFile.list();
+                  if (localChildFilesArray != null)
+                  {
+                    localChildFiles.addAll(Arrays.asList(localChildFilesArray));
+                  }
+                  localChildFiles.removeAll(remoteChildFiles);
+                  for (String localChildFile : localChildFiles)
+                  {
+                    FileUtils.deleteQuietly(new File(fileTransferCompletedFile, localChildFile));
+                  }
+                }
                 if (currentFileTime >= 0)
                 {
-                  if (rootLevel && !currentFolder.equals(rootFolder))
-                  {
-                    fileTransferCompletedFile = new File(convertFilePath(appendToPath(currentPath, rootFolder)));
-                    fileTransferCompletedFile.setLastModified(currentFileTime);
-                  }
-                  else
-                  {
-                    fileTransferCompletedFile = new File(convertFilePath(currentPath));
-                    fileTransferCompletedFile.setLastModified(currentFileTime);
-                  }
+                  fileTransferCompletedFile.setLastModified(currentFileTime);
                 }
                 return true;
               }
@@ -1552,6 +1576,7 @@ public class VTFileTransferClientTransaction implements Runnable
         source = "";
         compressing = false;
         resuming = false;
+        deleting = false;
 //        verifying = false;
         heavier = false;
         for (int i = 2; i < splitCommand.length - 1; i++)
@@ -1572,10 +1597,6 @@ public class VTFileTransferClientTransaction implements Runnable
             compressing = true;
             heavier = true;
           }
-//          if (parameters.toUpperCase().contains("D"))
-//          {
-//            compressing = false;
-//          }
           if (parameters.toUpperCase().contains("R"))
           {
             resuming = true;
@@ -1583,6 +1604,10 @@ public class VTFileTransferClientTransaction implements Runnable
           if (parameters.toUpperCase().contains("O"))
           {
             resuming = false;
+          }
+          if (parameters.toUpperCase().contains("D"))
+          {
+            deleting = true;
           }
 //          if (parameters.toUpperCase().contains("V"))
 //          {
@@ -1673,10 +1698,6 @@ public class VTFileTransferClientTransaction implements Runnable
             compressing = true;
             heavier = true;
           }
-//          if (parameters.toUpperCase().contains("D"))
-//          {
-//            compressing = false;
-//          }
           if (parameters.toUpperCase().contains("R"))
           {
             resuming = true;
@@ -1684,6 +1705,10 @@ public class VTFileTransferClientTransaction implements Runnable
           if (parameters.toUpperCase().contains("O"))
           {
             resuming = false;
+          }
+          if (parameters.toUpperCase().contains("D"))
+          {
+            deleting = true;
           }
 //          if (parameters.toUpperCase().contains("V"))
 //          {
