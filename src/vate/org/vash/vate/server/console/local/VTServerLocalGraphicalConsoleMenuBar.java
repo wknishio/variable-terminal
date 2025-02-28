@@ -103,7 +103,7 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     runtimeMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Local Java Properties", "*VTPROPERTY "));
     
     filesMenu = new Menu("File ");
-    filesMenu.add(new VTGraphicalConsoleMenuItem(console, "List Local File System Roots", "*VTFILEROOT\n"));
+    filesMenu.add(new VTGraphicalConsoleMenuItem(console, "List Local File Roots", "*VTFILEROOT\n"));
     
     networkMenu = new Menu("Network ");
     networkMenu.add(new VTGraphicalConsoleMenuItem(console, "List Local Network Interfaces", "*VTNETWORK\n"));

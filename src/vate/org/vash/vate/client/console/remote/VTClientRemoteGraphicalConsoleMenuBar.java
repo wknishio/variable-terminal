@@ -170,7 +170,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     // remoteFileSystemMenu.add(new VTGraphicalConsoleInputMenuItem("Set
     // Working
     // Directory", "*VTWORKDIRECTORY R "));
-    fileCheckMenu.add(new VTGraphicalConsoleMenuItem(console, "List File System Roots", "*VTFILESEEK L\n"));
+    fileCheckMenu.add(new VTGraphicalConsoleMenuItem(console, "List File Roots", "*VTFILESEEK L\n"));
     fileCheckMenu.add(new VTGraphicalConsoleMenuItem(console, "Show File Information", "*VTFILESEEK I "));
     fileCheckMenu.add(new VTGraphicalConsoleMenuItem(console, "List Directory Contents", "*VTFILESEEK L "));
     fileCheckMenu.add(new VTGraphicalConsoleMenuItem(console, "Report File Seek", "*VTFILESEEK\n"));

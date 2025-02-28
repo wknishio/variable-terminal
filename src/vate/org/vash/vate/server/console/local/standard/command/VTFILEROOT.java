@@ -3,6 +3,7 @@ package org.vash.vate.server.console.local.standard.command;
 import java.io.File;
 
 import org.vash.vate.console.VTConsole;
+import org.vash.vate.filesystem.VTRootList;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
 public class VTFILEROOT extends VTServerStandardLocalConsoleCommandProcessor
@@ -18,13 +19,14 @@ public class VTFILEROOT extends VTServerStandardLocalConsoleCommandProcessor
   public void execute(String command, String[] parsed) throws Exception
   {
     message.setLength(0);
-    File[] roots = File.listRoots();
-    message.append("\rVT>List of server file system roots:\nVT>");
+    File[] roots = new VTRootList().listFiles();
+    message.append("\rVT>List of server file roots:\nVT>");
     for (File root : roots)
     {
-      message.append("\nVT>Canonical path: [" + root.getCanonicalPath() + "]");
+      //message.append("\nVT>Canonical path: [" + root.getCanonicalPath() + "]");
+      message.append("\nVT>" + (root.isFile() ? "File" : "Directory") + ": [" + root.getName() + "]");
     }
-    message.append("\nVT>\nVT>End of server file system roots list\nVT>");
+    message.append("\nVT>\nVT>End of server file roots list\nVT>");
     VTConsole.print(message.toString());
   }
   
