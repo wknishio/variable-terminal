@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.proxy.client.VTProxy;
-import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 
 import net.sourceforge.jsocks.socks.server.ServerAuthenticator;
 import net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
@@ -16,18 +15,19 @@ import net.sourceforge.jsocks.socks.server.ServerAuthenticatorNone;
 public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
 {
   private VTProxy connect_proxy;
-  private VTRemoteSocketFactory socket_factory;
-  private int connectTimeout;
-  private ExecutorService executorService;
+  //private VTRemoteSocketFactory socket_factory;
   private String bind;
+  private int connectTimeout;
+  private int dataTimeout;
+  private ExecutorService executorService;
   
-  public VTSocksHttpProxyAuthenticatorNone(ExecutorService executorService, String bind, int connectTimeout, VTRemoteSocketFactory socket_factory, VTProxy proxy)
+  public VTSocksHttpProxyAuthenticatorNone(ExecutorService executorService, String bind, int connectTimeout, int dataTimeout, VTProxy proxy)
   {
     this.executorService = executorService;
-    this.connect_proxy = proxy;
-    this.socket_factory = socket_factory;
-    this.connectTimeout = connectTimeout;
     this.bind = bind;
+    this.connectTimeout = connectTimeout;
+    this.dataTimeout = dataTimeout;
+    this.connect_proxy = proxy;
   }
   
   public ServerAuthenticator startSession(Socket socket) throws IOException
@@ -62,7 +62,7 @@ public class VTSocksHttpProxyAuthenticatorNone extends ServerAuthenticatorNone
       {
         in.unread(version);
         //fallback to use http proxy instead
-        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, in, null, null, executorService, true, null, null, connect_proxy, socket_factory, connectTimeout, bind);
+        VTNanoHTTPDProxySession httpProxy = new VTNanoHTTPDProxySession(socket, in, null, null, executorService, true, null, null, bind, connectTimeout, dataTimeout, connect_proxy);
         try
         {
           httpProxy.run();

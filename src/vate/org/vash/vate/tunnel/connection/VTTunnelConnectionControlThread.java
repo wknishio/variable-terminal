@@ -279,7 +279,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 VTTunnelSession session = new VTTunnelSession(connection, false);
                 VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(null);
                 session.setSocket(pipedSocket);
-                VTTunnelSocksSessionHandler handler = new VTTunnelSocksSessionHandler(session, connection.getResponseChannel(channelType), username, password, bind, connectTimeout, null, proxy);
+                VTTunnelSocksSessionHandler handler = new VTTunnelSocksSessionHandler(session, connection.getResponseChannel(channelType), username, password, bind, connectTimeout, dataTimeout, proxy);
                 
                 VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
                 VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
@@ -355,7 +355,7 @@ public class VTTunnelConnectionControlThread implements Runnable
                 VTTunnelSession session = new VTTunnelSession(connection, false);
                 VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(null);
                 session.setSocket(pipedSocket);
-                VTTunnelFTPSessionHandler handler = new VTTunnelFTPSessionHandler(session, connection.getResponseChannel(channelType), username, password, bind, connectTimeout, connection.createRemoteSocketFactory(connection.getResponseChannel(channelType)), proxy);
+                VTTunnelFTPSessionHandler handler = new VTTunnelFTPSessionHandler(session, connection.getResponseChannel(channelType), username, password, bind, connectTimeout, dataTimeout, proxy);
                 
                 VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
                 VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);

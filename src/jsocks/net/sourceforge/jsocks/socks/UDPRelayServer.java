@@ -165,6 +165,10 @@ public class UDPRelayServer implements Runnable {
 	static public void setTimeout(int timeout) {
 		idleTimeout = timeout;
 	}
+	
+	 static public int getTimeout() {
+	    return idleTimeout;
+	  }
 
 	/**
 	 * Sets the size of the datagrams used in the UDPRelayServer.<br>

@@ -128,6 +128,11 @@ public class VTTunnelChannelBindSocketListener implements Runnable
           int dataTimeout = channel.getDataTimeout();
           String bind = channel.getNetwork();
           
+          if (dataTimeout > 0)
+          {
+            acceptedSocket.setSoTimeout(dataTimeout);
+          }
+          
           session = new VTTunnelSession(channel.getConnection(), true);
           session.setSocket(acceptedSocket);
           session.setSocketInputStream(socketInputStream);

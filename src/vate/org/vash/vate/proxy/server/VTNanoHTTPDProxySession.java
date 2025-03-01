@@ -38,8 +38,6 @@ import org.vash.vate.filesystem.VTRootList;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.security.VTXXHash64MessageDigest;
-import org.vash.vate.socket.remote.VTRemoteSocketAdapter;
-import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 
 import net.jpountz.xxhash.XXHashFactory;
 
@@ -275,7 +273,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     //public boolean keepConnection = false;
   }
   
-  public VTNanoHTTPDProxySession(Socket socket, InputStream in, Collection<String> nonces, Random random, ExecutorService executorService, boolean digestAuthentication, String[] usernames, String[] passwords, VTProxy proxy, VTRemoteSocketFactory socketFactory, int connectTimeout, String bind)
+  public VTNanoHTTPDProxySession(Socket socket, InputStream in, Collection<String> nonces, Random random, ExecutorService executorService, boolean digestAuthentication, String[] usernames, String[] passwords, String bind, int connectTimeout, int dataTimeout, VTProxy proxy)
   {
     this.mySocket = socket;
     this.myIn = in;
@@ -285,10 +283,11 @@ public class VTNanoHTTPDProxySession implements Runnable
     this.digestAuthentication = digestAuthentication;
     this.usernames = usernames;
     this.passwords = passwords;
-    this.proxy = proxy;
-    this.socketFactory = socketFactory;
+    //this.socketFactory = socketFactory;
     this.connectTimeout = connectTimeout;
+    this.dataTimeout = dataTimeout;
     this.bind = bind;
+    this.proxy = proxy;
     if (usernames == null || passwords == null || usernames.length == 0 || passwords.length == 0)
     {
       xxhash64 = null;
@@ -683,9 +682,13 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
     
     //Socket remoteSocket = new Socket(host, port);
-    Socket remoteSocket = VTProxy.connect(bind, host, port, connectTimeout, socketFactory == null ? null : new VTRemoteSocketAdapter(socketFactory), connectProxy);
+    Socket remoteSocket = VTProxy.connect(bind, host, port, connectTimeout, null, connectProxy);
     remoteSocket.setTcpNoDelay(true);
     remoteSocket.setKeepAlive(true);
+    if (dataTimeout > 0)
+    {
+      remoteSocket.setSoTimeout(dataTimeout);
+    }
     //remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     
     InputStream remoteInput = remoteSocket.getInputStream();
@@ -765,9 +768,13 @@ public class VTNanoHTTPDProxySession implements Runnable
     requestData.write("\r\n".getBytes("ISO-8859-1"));
     requestData.write(bodyData);
     
-    Socket remoteSocket = VTProxy.connect(bind, host, port, connectTimeout, socketFactory == null ? null : new VTRemoteSocketAdapter(socketFactory), connectProxy);
+    Socket remoteSocket = VTProxy.connect(bind, host, port, connectTimeout, null, connectProxy);
     remoteSocket.setTcpNoDelay(true);
     remoteSocket.setKeepAlive(true);
+    if (dataTimeout > 0)
+    {
+      remoteSocket.setSoTimeout(dataTimeout);
+    }
     //remoteSocket.setSoTimeout(VT.VT_CONNECTION_DATA_TIMEOUT_MILLISECONDS);
     
     InputStream remoteInput = remoteSocket.getInputStream();
@@ -1244,8 +1251,9 @@ public class VTNanoHTTPDProxySession implements Runnable
   private String[] usernames;
   private String[] passwords;
   private VTProxy proxy;
-  private VTRemoteSocketFactory socketFactory;
+  //private VTRemoteSocketFactory socketFactory;
   private int connectTimeout;
+  private int dataTimeout;
   private String bind;
   private ExecutorService executorService;
   private final Collection<String> nonces;

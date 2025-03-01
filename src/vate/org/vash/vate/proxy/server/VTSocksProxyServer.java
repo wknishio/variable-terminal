@@ -37,7 +37,6 @@ import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
 import org.vash.vate.proxy.client.VTProxy;
-import org.vash.vate.socket.remote.VTRemoteSocketAdapter;
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 
 /**
@@ -75,8 +74,8 @@ public class VTSocksProxyServer implements Runnable {
 	Thread pipe_thread1, pipe_thread2;
 	long lastReadTime;
 
-	private int idleTimeout = 90000; // 90 seconds
-	private int acceptTimeout = 90000; // 90 seconds
+	private int idleTimeout = 300000; // 300 seconds
+	private int acceptTimeout = 300000; // 300 seconds
 
 	// private static final Logger LOG = Logger.getLogger(ProxyServer.class);
 
@@ -88,7 +87,7 @@ public class VTSocksProxyServer implements Runnable {
 	private boolean disabled_bind = false;
 	
 	private VTProxy connect_proxy;
-	private VTRemoteSocketFactory socket_factory;
+	//private VTRemoteSocketFactory socket_factory;
 	private VTRemoteSocketFactory datagram_factory;
 	private int connectTimeout;
 	
@@ -117,13 +116,13 @@ public class VTSocksProxyServer implements Runnable {
 	    this.auth = auth;
 	  }
 
-	 public VTSocksProxyServer(ServerAuthenticator auth, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, int connectTimeout, VTRemoteSocketFactory socket_factory, VTProxy connect_proxy) {
+	 public VTSocksProxyServer(ServerAuthenticator auth, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, int connectTimeout, VTProxy connect_proxy) {
 	    this.executorService = executorService;
 	    this.auth = auth;
 	    this.disabled_bind = disabled_bind;
 	    this.disabled_udp_relay = disabled_udp_relay;
 	    this.connect_proxy = connect_proxy;
-	    this.socket_factory = socket_factory;
+	    //this.socket_factory = socket_factory;
 	    this.connectTimeout = connectTimeout;
 	  }
 	// Other constructors
@@ -137,14 +136,14 @@ public class VTSocksProxyServer implements Runnable {
 		mode = START_MODE;
 	}
 	
-	public VTSocksProxyServer(ServerAuthenticator auth, Socket socket, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, String bind, int connectTimeout, VTRemoteSocketFactory socket_factory, VTProxy connect_proxy) {
+	public VTSocksProxyServer(ServerAuthenticator auth, Socket socket, ExecutorService executorService, boolean disabled_bind, boolean disabled_udp_relay, String bind, int connectTimeout, VTProxy connect_proxy) {
     this.executorService = executorService;
     this.auth = auth;
     this.sock = socket;
     this.disabled_bind = disabled_bind;
     this.disabled_udp_relay = disabled_udp_relay;
     this.connect_proxy = connect_proxy;
-    this.socket_factory = socket_factory;
+    //this.socket_factory = socket_factory;
     this.connectTimeout = connectTimeout;
     this.bind = bind;
     // this.connectionId = connectionId;
@@ -353,7 +352,7 @@ public class VTSocksProxyServer implements Runnable {
 	// Private methods
 	/////////////////
 	private void startSession() throws IOException {
-		//sock.setSoTimeout(idleTimeout);
+		sock.setSoTimeout(idleTimeout);
 	  sock.setKeepAlive(true);
 
 		try {
@@ -473,11 +472,11 @@ public class VTSocksProxyServer implements Runnable {
 		  {
 		    if (msg.ip != null)
         {
-		      socket = VTProxy.connect(bind, msg.ip.getHostAddress(), msg.port, connectTimeout, socket_factory == null ? null : new VTRemoteSocketAdapter(socket_factory), connect_proxy);
+		      socket = VTProxy.connect(bind, msg.ip.getHostAddress(), msg.port, connectTimeout, null, connect_proxy);
         }
 		    else
 		    {
-		      socket = VTProxy.connect(bind, msg.host, msg.port, connectTimeout, socket_factory == null ? null : new VTRemoteSocketAdapter(socket_factory), connect_proxy);
+		      socket = VTProxy.connect(bind, msg.host, msg.port, connectTimeout, null, connect_proxy);
 		    }
 		    socket.setTcpNoDelay(true);
 		    socket.setKeepAlive(true);
@@ -593,25 +592,11 @@ public class VTSocksProxyServer implements Runnable {
 		// ":" + msg.port);
 		if (datagram_factory != null)
 		{
-		  if (socket_factory != null)
-		  {
-		    relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, null, socket_factory.createSocket("", 0, VT.VT_PING_LIMIT_MILLISECONDS));
-		  }
-		  else
-		  {
-	      relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, datagram_factory.createSocket("", 0, VT.VT_PING_LIMIT_MILLISECONDS));
-		  }
+		  relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, datagram_factory.createSocket("", 0, UDPRelayServer.getTimeout()));
 		}
 		else
 		{
-		  if (socket_factory != null)
-      {
-		    relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout, null, socket_factory.createSocket("", 0, VT.VT_PING_LIMIT_MILLISECONDS));
-      }
-		  else
-		  {
-		    relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout);
-		  }
+		  relayServer = new UDPRelayServer(msg.ip, msg.port, Thread.currentThread(), sock, auth, proxy, connectTimeout);
 		}
 		
 
@@ -687,7 +672,7 @@ public class VTSocksProxyServer implements Runnable {
 
 		// Set timeout
 		remote_sock.setKeepAlive(true);
-		//remote_sock.setSoTimeout(idleTimeout);
+		remote_sock.setSoTimeout(idleTimeout);
 
 		// LOG.info(connectionId + " Accepted from "+ s.getInetAddress() + ":" +
 		// s.getPort());

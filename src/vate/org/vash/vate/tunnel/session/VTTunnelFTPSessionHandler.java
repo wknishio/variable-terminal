@@ -19,8 +19,9 @@ public class VTTunnelFTPSessionHandler extends VTTunnelSessionHandler
   private final VTTunnelChannel channel;
   private final VTTunnelSession session;
   private final VTProxy proxy;
-  private final VTRemoteSocketFactory socketFactory;
+  //private final VTRemoteSocketFactory socketFactory;
   private final int connectTimeout;
+  private final int dataTimeout;
   private final String bind;
   private final VTFTPAuthenticator validation;
   
@@ -31,14 +32,15 @@ public class VTTunnelFTPSessionHandler extends VTTunnelSessionHandler
     //this.channel = channel;
   //}
   
-  public VTTunnelFTPSessionHandler(VTTunnelSession session, VTTunnelChannel channel, String username, String password, String bind, int connectTimeout, VTRemoteSocketFactory socketFactory, VTProxy proxy)
+  public VTTunnelFTPSessionHandler(VTTunnelSession session, VTTunnelChannel channel, String username, String password, String bind, int connectTimeout, int dataTimeout, VTProxy proxy)
   {
     super(session, channel);
     this.session = session;
     this.channel = channel;
     this.proxy = proxy;
-    this.socketFactory = socketFactory;
+    //this.socketFactory = socketFactory;
     this.connectTimeout = connectTimeout;
+    this.dataTimeout = dataTimeout;
     this.bind = bind;
     if (username != null && password != null && username.length() > 0 && password.length() > 0)
     {
@@ -74,10 +76,12 @@ public class VTTunnelFTPSessionHandler extends VTTunnelSessionHandler
     VTFTPServer ftpserver = null;
     try
     {
-      VTRemoteClientSocketFactory clientFactory = new VTRemoteClientSocketFactory(socketFactory, connectTimeout, 0, bind, proxy);
-      VTRemoteServerSocketFactory serverFactory = new VTRemoteServerSocketFactory(socketFactory, 0, 0, bind);
+      VTRemoteSocketFactory socketFactory = channel.getConnection().createRemoteSocketFactory(channel);
+      VTRemoteClientSocketFactory clientFactory = new VTRemoteClientSocketFactory(socketFactory, connectTimeout, dataTimeout, bind, proxy);
+      VTRemoteServerSocketFactory serverFactory = new VTRemoteServerSocketFactory(socketFactory, connectTimeout, dataTimeout, bind);
       ftpserver = new VTFTPServer(validation, clientFactory, serverFactory, channel.getConnection().getExecutorService());
       ftpserver.setBufferSize(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+      ftpserver.setTimeout(dataTimeout);
       ftpserver.runConnection(session.getSocket());
     }
     catch (Throwable t)
