@@ -615,11 +615,11 @@ public class VTServerConnection
     cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey, digestedCredentials);
     //connectionInputStream = cryptoEngine.getDecryptedInputStream(connectionSocketInputStream);
     //connectionOutputStream = cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream);
-    InputStream decrypted = cryptoEngine.getDecryptedInputStream(new BufferedInputStream(connectionSocketInputStream, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES));
-    OutputStream encrypted = cryptoEngine.getEncryptedOutputStream(new BufferedOutputStream(connectionSocketOutputStream, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES));
+    InputStream decrypted = cryptoEngine.getDecryptedInputStream(new BufferedInputStream(connectionSocketInputStream, VT.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES));
+    OutputStream encrypted = cryptoEngine.getEncryptedOutputStream(new BufferedOutputStream(connectionSocketOutputStream, VT.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES));
     if (decrypted instanceof VTStreamCipherInputStream)
     {
-      connectionInputStream = new BufferedInputStream(decrypted, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
+      connectionInputStream = new BufferedInputStream(decrypted, VT.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES);
     }
     else
     {
@@ -627,7 +627,7 @@ public class VTServerConnection
     }
     if (encrypted instanceof VTStreamCipherOutputStream)
     {
-      connectionOutputStream = new BufferedOutputStream(encrypted, VT.VT_CONNECTION_PACKET_BUFFER_SIZE_BYTES);
+      connectionOutputStream = new BufferedOutputStream(encrypted, VT.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES);
     }
     else
     {
