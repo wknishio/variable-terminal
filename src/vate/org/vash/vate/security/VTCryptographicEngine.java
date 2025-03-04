@@ -235,20 +235,20 @@ public class VTCryptographicEngine
     return blake3Digest.digest(size);
   }
   
-  public InputStream getDecryptedInputStream(final InputStream encrypted)
+  public InputStream getDecryptedInputStream(final InputStream encrypted, final int bufferSize)
   {
     if (decryptionCipherBC != null)
     {
-      return new VTStreamCipherInputStream(encrypted, decryptionCipherBC);
+      return new VTStreamCipherInputStream(encrypted, decryptionCipherBC, bufferSize);
     }
     return encrypted;
   }
   
-  public OutputStream getEncryptedOutputStream(final OutputStream decrypted)
+  public OutputStream getEncryptedOutputStream(final OutputStream decrypted, final int bufferSize)
   {
     if (encryptionCipherBC != null)
     {
-      return new VTStreamCipherOutputStream(decrypted, encryptionCipherBC);
+      return new VTStreamCipherOutputStream(decrypted, encryptionCipherBC, bufferSize);
     }
     return decrypted;
   }

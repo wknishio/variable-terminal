@@ -16,8 +16,6 @@ import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTCryptographicEngine;
-import org.vash.vate.security.VTStreamCipherInputStream;
-import org.vash.vate.security.VTStreamCipherOutputStream;
 import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
@@ -611,8 +609,8 @@ public class VTClientConnection
   private void setVerificationStreams() throws IOException
   {
     cryptoEngine.initializeClientEngine(VT.VT_CONNECTION_ENCRYPTION_NONE, localNonce, remoteNonce, encryptionKey);
-    authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream));
-    authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream));
+    authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
+    authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
     nonceReader.setIntputStream(authenticationReader.getInputStream());
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
   }
@@ -621,8 +619,8 @@ public class VTClientConnection
   {
     //exchangeNonces(true);
     cryptoEngine.initializeClientEngine(encryptionType, localNonce, remoteNonce, encryptionKey);
-    authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream));
-    authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream));
+    authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
+    authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
     nonceReader.setIntputStream(authenticationReader.getInputStream());
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
     //exchangeNonces(true);
@@ -643,24 +641,8 @@ public class VTClientConnection
     cryptoEngine.initializeClientEngine(encryptionType, localNonce, remoteNonce, encryptionKey, digestedCredentials);
     //connectionInputStream = cryptoEngine.getDecryptedInputStream(connectionSocketInputStream);
     //connectionOutputStream = cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream);
-    InputStream decrypted = cryptoEngine.getDecryptedInputStream(new BufferedInputStream(connectionSocketInputStream, VT.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES));
-    OutputStream encrypted = cryptoEngine.getEncryptedOutputStream(new BufferedOutputStream(connectionSocketOutputStream, VT.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES));
-    if (decrypted instanceof VTStreamCipherInputStream)
-    {
-      connectionInputStream = new BufferedInputStream(decrypted, VT.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES);
-    }
-    else
-    {
-      connectionInputStream = decrypted;
-    }
-    if (encrypted instanceof VTStreamCipherOutputStream)
-    {
-      connectionOutputStream = new BufferedOutputStream(encrypted, VT.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES);
-    }
-    else
-    {
-      connectionOutputStream = encrypted;
-    }
+    connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VT.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES), VT.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES);
+    connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VT.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES), VT.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES);
     //authenticationReader.setIntputStream(connectionInputStream);
     //authenticationWriter.setOutputStream(connectionOutputStream);
     //nonceReader.setIntputStream(authenticationReader.getInputStream());
