@@ -11,10 +11,10 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.Socket;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
@@ -38,6 +38,7 @@ import org.vash.vate.filesystem.VTRootList;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.security.VTXXHash64MessageDigest;
+import org.vash.vate.stream.array.VTByteArrayInputStream;
 
 import net.jpountz.xxhash.XXHashFactory;
 
@@ -235,7 +236,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       {
         this.data = new ByteArrayInputStream( txt.getBytes("ISO-8859-1"));
       }
-      catch ( java.io.UnsupportedEncodingException uee )
+      catch ( java.io.IOException uee )
       {
         //uee.printStackTrace();
       }
@@ -303,6 +304,11 @@ public class VTNanoHTTPDProxySession implements Runnable
   
   public void run()
   {
+    final InputStream is = myIn;
+    final int bufsize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
+    final byte[] buf = new byte[bufsize];
+    final VTByteArrayInputStream bis = new VTByteArrayInputStream(buf, 0, bufsize);
+    final BufferedReader hin = new BufferedReader( new InputStreamReader( bis, Charset.forName("ISO-8859-1") ));
     keepAlive = true;
     while (mySocket.isConnected() && !mySocket.isClosed() && keepAlive)
     {
@@ -310,16 +316,13 @@ public class VTNanoHTTPDProxySession implements Runnable
       {
         keepAlive = false;
         proxyRequest = false;
-        InputStream is = myIn;
         if ( is == null) return;
-        
         // Read the first 16384 bytes.
         // The full header should fit in here.
         // Apache's default header limit is 8KB.
         // Do NOT assume that a single read will get the entire header at once
         boolean foundHeaderEnd = false;
-        final int bufsize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
-        final byte[] buf = new byte[bufsize];
+        
         int splitbyte = 0;
         int rlen = 0;
         {
@@ -344,7 +347,8 @@ public class VTNanoHTTPDProxySession implements Runnable
             }
           }
         }
-        
+        bis.pos(0);
+        bis.count(rlen);
         if (rlen == 0)
         {
           sendError( HTTP_BAD_REQUEST, "BAD REQUEST: Empty request." );
@@ -357,8 +361,6 @@ public class VTNanoHTTPDProxySession implements Runnable
         }
         
         // Create a BufferedReader for parsing the header.
-        ByteArrayInputStream bis = new ByteArrayInputStream(buf, 0, rlen);
-        BufferedReader hin = new BufferedReader( new InputStreamReader( bis, "ISO-8859-1" ));
         Properties preambles = new VTConfigurationProperties();
         Properties parameters = new VTConfigurationProperties();
         Properties headers = new VTConfigurationProperties();
@@ -529,7 +531,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
   }
   
-  private boolean checkAuthenticatedBasic(String authorizationHeader, Properties headers, String username, String password) throws UnsupportedEncodingException
+  private boolean checkAuthenticatedBasic(String authorizationHeader, Properties headers, String username, String password) throws IOException
   {
     if (username == null || password == null)
     {
@@ -551,7 +553,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     return false;
   }
   
-  private void requireAuthenticationBasic(String requireHeader, String realm) throws UnsupportedEncodingException, InterruptedException
+  private void requireAuthenticationBasic(String requireHeader, String realm) throws IOException, InterruptedException
   {
     Response resp = new Response();
     if (realm != null && realm.length() > 0)
@@ -566,7 +568,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     sendError(resp.status, MIME_PLAINTEXT, resp.headers, "");
   }
   
-  private int checkAuthenticatedDigest(String authorizationHeader, Properties headers, String method, String[] usernames, String[] passwords, String realm) throws UnsupportedEncodingException
+  private int checkAuthenticatedDigest(String authorizationHeader, Properties headers, String method, String[] usernames, String[] passwords, String realm) throws IOException
   {
     if (usernames == null || passwords == null)
     {
@@ -595,7 +597,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     return -1;
   }
   
-  private int validateAuthorizationDigest(String authorizationValue, String method, String username, String password, String realm) throws UnsupportedEncodingException
+  private int validateAuthorizationDigest(String authorizationValue, String method, String username, String password, String realm) throws IOException
   {
     //System.out.println("proxyAuthorization=" + proxyAuthorization);
     if (authorizationValue == null)
@@ -648,7 +650,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     return -1;
   }
   
-  private void requireAuthenticationDigest(String requireHeader, String realm, String nonce, boolean stale) throws UnsupportedEncodingException, InterruptedException
+  private void requireAuthenticationDigest(String requireHeader, String realm, String nonce, boolean stale) throws IOException, InterruptedException
   {
     Response resp = new Response();
     resp.headers.put(requireHeader, "Digest realm=\"" + realm + "\", "
@@ -841,7 +843,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     return removeQuotes(quotedString, false);
   }
   
-  protected String generateNonce(String realm) throws UnsupportedEncodingException
+  protected String generateNonce(String realm) throws IOException
   {
     //long currentTime = System.currentTimeMillis();
     byte[] randomBytes = new byte[64];
@@ -949,7 +951,7 @@ public class VTNanoHTTPDProxySession implements Runnable
    * @throws UnsupportedEncodingException 
   **/
   private long decodeHeader(BufferedReader in, Properties pre, Properties parameters, Properties headers)
-    throws InterruptedException, UnsupportedEncodingException
+    throws InterruptedException, IOException
   {
     long contentLength = 0;
     try
@@ -1056,7 +1058,7 @@ public class VTNanoHTTPDProxySession implements Runnable
    * For example: "an+example%20string" -> "an example string"
    * @throws UnsupportedEncodingException 
    */
-  private String decodePercent( String str ) throws InterruptedException, UnsupportedEncodingException
+  private String decodePercent( String str ) throws InterruptedException, IOException
   {
     try
     {
@@ -1103,7 +1105,7 @@ public class VTNanoHTTPDProxySession implements Runnable
    * @throws UnsupportedEncodingException 
    */
   private void decodeParms( String parms, Properties p )
-    throws InterruptedException, UnsupportedEncodingException
+    throws InterruptedException, IOException
   {
     if ( parms == null )
     {
@@ -1127,26 +1129,26 @@ public class VTNanoHTTPDProxySession implements Runnable
     }
   }
   
-  private void sendError( String status, String msg ) throws InterruptedException, UnsupportedEncodingException
+  private void sendError( String status, String msg ) throws InterruptedException, IOException
   {
     sendResponse( status, MIME_PLAINTEXT, null, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")), msg.length());
     throw new InterruptedException(status);
   }
   
   @SuppressWarnings("unused")
-  private void sendError( String status, String mime, Properties header, InputStream data, long length) throws InterruptedException, UnsupportedEncodingException
+  private void sendError( String status, String mime, Properties header, InputStream data, long length) throws InterruptedException, IOException
   {
     sendResponse( status, mime, header, data, length);
     throw new InterruptedException(status);
   }
   
-  private void sendError( String status, String mime, Properties header, String msg ) throws InterruptedException, UnsupportedEncodingException
+  private void sendError( String status, String mime, Properties header, String msg ) throws InterruptedException, IOException
   {
     sendResponse( status, mime, header, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")), msg.length());
     throw new InterruptedException(status);
   }
   
-  private void sendResponse( String status, String msg ) throws UnsupportedEncodingException
+  private void sendResponse( String status, String msg ) throws IOException
   {
     sendResponse( status, MIME_PLAINTEXT, null, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")), msg.length());
   }
