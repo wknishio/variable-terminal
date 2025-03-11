@@ -12,18 +12,18 @@ public final class VTPacketDecompressor extends OutputStream
   private static final int bufferSize = VT.VT_COMPRESSION_BUFFER_SIZE_BYTES;
   private final InputStream compressedInputStream;
   private final OutputStream decompressedOutputStream;
-  private final VTByteArrayOutputStream packetOutputPipe;
   private final VTByteArrayInputStream packetInputPipe;
+  private final VTByteArrayOutputStream packetOutputPipe;
   private final byte[] buffer = new byte[bufferSize];
   private final byte[] single = new byte[1];
   private int readed;
   
-  public VTPacketDecompressor(final OutputStream decompressedOutputStream, final InputStream compressedInputStream, final VTByteArrayOutputStream packetOutputPipe, final VTByteArrayInputStream packetInputPipe)
+  public VTPacketDecompressor(final InputStream compressedInputStream, final OutputStream decompressedOutputStream, final VTByteArrayInputStream packetInputPipe, final VTByteArrayOutputStream packetOutputPipe)
   {
-    this.decompressedOutputStream = decompressedOutputStream;
     this.compressedInputStream = compressedInputStream;
-    this.packetOutputPipe = packetOutputPipe;
+    this.decompressedOutputStream = decompressedOutputStream;
     this.packetInputPipe = packetInputPipe;
+    this.packetOutputPipe = packetOutputPipe;
   }
   
   //this should not be called

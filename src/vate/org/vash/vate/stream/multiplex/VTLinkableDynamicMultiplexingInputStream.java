@@ -29,6 +29,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private volatile boolean closed = false;
   private final int bufferSize;
   private final byte[] packetDataBuffer;
+  private final byte[] compressedPacketDataBuffer;
   private Future<?> packetReaderThread;
   private final VTLittleEndianInputStream lin;
   private final VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
@@ -44,6 +45,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     this.executorService = executorService;
     this.bufferSize = bufferSize;
     this.packetDataBuffer = new byte[packetSize * 2];
+    this.compressedPacketDataBuffer = new byte[packetSize * 2];
     this.lin = new VTLittleEndianInputStream(in);
     this.bufferedChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
     this.directChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
@@ -408,8 +410,8 @@ public final class VTLinkableDynamicMultiplexingInputStream
       {
         if (compressedPacketOutputPipe == null || compressedPacketInputPipe == null)
         {
-          compressedPacketInputPipe = new VTByteArrayInputStream(packetDataBuffer);
-          compressedPacketOutputPipe = new VTByteArrayOutputStream(packetDataBuffer);
+          compressedPacketInputPipe = new VTByteArrayInputStream(compressedPacketDataBuffer);
+          compressedPacketOutputPipe = new VTByteArrayOutputStream(compressedPacketDataBuffer);
         }
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY) != 0)
         {
@@ -419,7 +421,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
         {
           compressedInputStream = VTCompressorSelector.createDirectLz4InputStream(compressedPacketInputPipe);
         }
-        directOutputStream = new VTPacketDecompressor(outputStream, compressedInputStream, compressedPacketOutputPipe, compressedPacketInputPipe);
+        directOutputStream = new VTPacketDecompressor(compressedInputStream, outputStream, compressedPacketInputPipe, compressedPacketOutputPipe);
       }
     }
     
