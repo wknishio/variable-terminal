@@ -60,7 +60,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
         try
         {
           //VTSocksProxyServer.setUDPTimeout(VT.VT_PING_LIMIT_MILLISECONDS);
-          VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, channel.getConnection().getNonces(), channel.getConnection().getRandom(), channel.getConnection().getExecutorService(), bind, connectTimeout, dataTimeout, proxy), session.getSocket(), channel.getConnection().getExecutorService(), false, false, bind, connectTimeout, proxy);
+          VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, channel.getConnection().getNonces(), channel.getRandom(), channel.getConnection().getExecutorService(), bind, connectTimeout, dataTimeout, proxy), session.getSocket(), channel.getConnection().getExecutorService(), false, false, bind, connectTimeout, proxy);
           socksServer.setDatagramSocketFactory(channel.getConnection().createRemoteSocketFactory(channel));
           socksServer.setPipeBufferSize(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
           socksServer.setIdleTimeout(dataTimeout);

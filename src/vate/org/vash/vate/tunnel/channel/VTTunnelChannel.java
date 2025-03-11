@@ -2,10 +2,13 @@ package org.vash.vate.tunnel.channel;
 
 import java.net.InetSocketAddress;
 import java.util.Collection;
+import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.vash.vate.VT;
 import org.vash.vate.proxy.client.VTProxy;
+import org.vash.vate.security.VTBlake3SecureRandom;
+import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.session.VTTunnelSessionHandler;
 
@@ -21,6 +24,7 @@ public class VTTunnelChannel
   private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
   private final VTTunnelConnection connection;
   private final Collection<VTTunnelSessionHandler> sessions;
+  private final Random random = new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong());
   
   private int connectTimeout;
   private int dataTimeout;
@@ -47,6 +51,11 @@ public class VTTunnelChannel
   public void setChannelType(int channelType)
   {
     this.channelType = channelType;
+  }
+  
+  public Random getRandom()
+  {
+    return random;
   }
   
   // SOCKS/HTTP/FTP bind tunnel without authentication

@@ -274,10 +274,10 @@ public class VTNanoHTTPDProxySession implements Runnable
     //public boolean keepConnection = false;
   }
   
-  public VTNanoHTTPDProxySession(Socket socket, InputStream in, Collection<String> nonces, Random random, ExecutorService executorService, boolean digestAuthentication, String[] usernames, String[] passwords, String bind, int connectTimeout, int dataTimeout, VTProxy proxy)
+  public VTNanoHTTPDProxySession(Socket socket, InputStream inputStream, Collection<String> nonces, Random random, ExecutorService executorService, boolean digestAuthentication, String[] usernames, String[] passwords, String bind, int connectTimeout, int dataTimeout, VTProxy proxy)
   {
-    this.mySocket = socket;
-    this.myIn = in;
+    this.socket = socket;
+    this.inputStream = inputStream;
     this.nonces = nonces;
     this.random = random;
     this.executorService = executorService;
@@ -304,19 +304,23 @@ public class VTNanoHTTPDProxySession implements Runnable
   
   public void run()
   {
-    final InputStream is = myIn;
     final int bufsize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
     final byte[] buf = new byte[bufsize];
     final VTByteArrayInputStream bis = new VTByteArrayInputStream(buf, 0, bufsize);
     final BufferedReader hin = new BufferedReader( new InputStreamReader( bis, Charset.forName("ISO-8859-1") ));
+    final Properties preambles = new VTConfigurationProperties();
+    final Properties parameters = new VTConfigurationProperties();
+    final Properties headers = new VTConfigurationProperties();
+    final Properties files = new VTConfigurationProperties();
+    final ByteArrayOutputStream body = new ByteArrayOutputStream();
     keepAlive = true;
-    while (mySocket.isConnected() && !mySocket.isClosed() && keepAlive)
+    while (socket.isConnected() && !socket.isClosed() && keepAlive)
     {
       try
       {
         keepAlive = false;
         proxyRequest = false;
-        if ( is == null) return;
+        if ( inputStream == null) return;
         // Read the first 16384 bytes.
         // The full header should fit in here.
         // Apache's default header limit is 8KB.
@@ -329,7 +333,7 @@ public class VTNanoHTTPDProxySession implements Runnable
           int read = 1;
           while (read > 0 && rlen < bufsize)
           {
-            read = is.read(buf, rlen, bufsize - rlen);
+            read = inputStream.read(buf, rlen, bufsize - rlen);
             if (read > 0)
             {
               rlen += read;
@@ -360,14 +364,12 @@ public class VTNanoHTTPDProxySession implements Runnable
           //sendError(HTTP_PAYLOAD_TOO_LARGE, "PAYLOAD TOO LARGE: Malformed request or request headers too large.");
         }
         
-        // Create a BufferedReader for parsing the header.
-        Properties preambles = new VTConfigurationProperties();
-        Properties parameters = new VTConfigurationProperties();
-        Properties headers = new VTConfigurationProperties();
-        Properties files = new VTConfigurationProperties();
-        
         // Decode the header into parms and header java properties
         //long size = decodeHeader(hin, preambles, parameters, headers);
+        preambles.clear();
+        parameters.clear();
+        headers.clear();
+        files.clear();
         decodeHeader(hin, preambles, parameters, headers);
         
 //        if (size == -1)
@@ -418,8 +420,8 @@ public class VTNanoHTTPDProxySession implements Runnable
 //          size = 0x7FFFFFFFFFFFFFFFL;
 //        }
         // Write the part of body already read to ByteArrayOutputStream
-        ByteArrayOutputStream body = new ByteArrayOutputStream();
         
+        body.reset();
         if (splitbyte < rlen)
         {
           body.write(buf, splitbyte, rlen - splitbyte);
@@ -434,7 +436,7 @@ public class VTNanoHTTPDProxySession implements Runnable
 //          size = 0;
 //        }
         
-        byte[] partialBodyData = body.toByteArray();
+        byte[] bodyData = body.toByteArray();
         
         if (!method.equalsIgnoreCase("CONNECT") && !uri.toLowerCase().contains("://"))
         {
@@ -444,7 +446,7 @@ public class VTNanoHTTPDProxySession implements Runnable
         else
         {
           proxyRequest = true;
-          serveProxy(uri, method, preambles, headers, files, partialBodyData, usernames, passwords, mySocket, is, proxy);
+          serveProxy(uri, method, preambles, headers, files, bodyData, usernames, passwords, socket, inputStream, proxy);
         }
       }
       catch ( InterruptedException ie )
@@ -1165,7 +1167,7 @@ public class VTNanoHTTPDProxySession implements Runnable
         throw new Error( "sendResponse(): Status can't be null." );
       }
       //System.out.println("response.status="+status);
-      OutputStream out = mySocket.getOutputStream();
+      OutputStream out = socket.getOutputStream();
       PrintWriter pw = new PrintWriter( new OutputStreamWriter(out, "ISO-8859-1") );
       pw.print("HTTP/1.1 " + status + " \r\n");
       
@@ -1238,17 +1240,17 @@ public class VTNanoHTTPDProxySession implements Runnable
     {
       //ioe.printStackTrace();
       // Couldn't write? No can do.
-      try { mySocket.close(); } catch( Throwable t ) {}
+      try { socket.close(); } catch( Throwable t ) {}
     }
   }
   
   @SuppressWarnings("unused")
   private File myRootDir = new VTRootList();
   
-  private Socket mySocket;
+  private Socket socket;
   private boolean keepAlive;
   private boolean proxyRequest;
-  private InputStream myIn;
+  private InputStream inputStream;
   private boolean digestAuthentication;
   private String[] usernames;
   private String[] passwords;
