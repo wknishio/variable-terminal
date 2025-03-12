@@ -119,24 +119,25 @@ public class Utils {
         return perm;
     }
 
-    public static <F> String getFacts(IFileSystem<F> fs, F file, String[] options) {
+    public static <F> void getFacts(IFileSystem<F> fs, F file, String[] options, StringBuilder facts) {
         // Intended Format
         // modify=20170808052431;size=7045120;type=file;perm=rfadw; video.mp4
         // modify=20170526215012;size=380;type=file;perm=rfadw; data.txt
         // modify=20171012082146;size=0;type=dir;perm=elfpcm; directory
 
-        String facts = "";
+        //String facts = "";
+        //facts.setLength(0);
         boolean dir = fs.isDirectory(file);
 
         for(String opt : options) {
             opt = opt.toLowerCase();
 
             if(opt.equals("modify")) {
-                facts += "modify=" + Utils.toMdtmTimestamp(fs.getLastModified(file)) + ";";
+                facts.append("modify=" + Utils.toMdtmTimestamp(fs.getLastModified(file)) + ";");
             } else if(opt.equals("size")) {
-                facts += "size=" + fs.getSize(file) + ";";
+              facts.append("size=" + fs.getSize(file) + ";");
             } else if(opt.equals("type")) {
-                facts += "type=" + (dir ? "dir" : "file") + ";";
+              facts.append("type=" + (dir ? "dir" : "file") + ";");
             } else if(opt.equals("perm")) {
                 int perms = fs.getPermissions(file);
                 String perm = "";
@@ -149,12 +150,12 @@ public class Utils {
                     perm += dir ? "pcm" : "adw";
                 }
 
-                facts += "perm=" + perm + ";";
+                facts.append("perm=" + perm + ";");
             }
         }
 
-        facts += " " + fs.getName(file) + "\r\n";
-        return facts;
+        facts.append(" " + fs.getName(file) + "\r\n");
+        //return facts.toString();
     }
 
     public static void write(OutputStream out, byte[] bytes, int len, boolean ascii) throws IOException

@@ -2,17 +2,13 @@ package org.vash.vate.ftp.server;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Comparator;
-
-import org.vash.vate.filesystem.VTFileSeekSorter;
 
 import com.guichaguri.minimalftp.impl.NativeFileSystem;
 
 public class VTFTPNativeFileSystem extends NativeFileSystem
 {
   protected final File root;
-  protected final Comparator<File> fileSorter = new VTFileSeekSorter();
+  //protected final Comparator<File> fileSorter = new VTFileSeekSorter();
   
   public VTFTPNativeFileSystem(File rootDir)
   {
@@ -127,7 +123,7 @@ public class VTFTPNativeFileSystem extends NativeFileSystem
       files = dir.listFiles();
       if (files != null)
       {
-        Arrays.sort(files, fileSorter);
+        //Arrays.sort(files, fileSorter);
       }
       else
       {

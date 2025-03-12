@@ -44,6 +44,9 @@ public class FTPFileHandler {
 
     protected Object rnFile = null;
     protected long start = 0;
+    
+    private StringBuilder data = new StringBuilder();
+    //private StringBuilder factsBuffer = new StringBuilder();
 
     public FTPFileHandler(FTPConnection connection) {
         this.con = connection;
@@ -339,9 +342,11 @@ public class FTPFileHandler {
               con.sendResponse(550, "Not a directory");
               return;
           }
-          StringBuilder data = new StringBuilder();
-          for(Object file : fs.listFiles(dir)) {
-              data.append(Utils.format(fs, file));
+          //StringBuilder data = new StringBuilder();
+          data.setLength(0);
+          for(Object file : fs.listFiles(dir))
+          {
+            data.append(Utils.format(fs, file));
           }
           con.sendData(data.toString().getBytes("UTF-8"), false);
           con.sendResponse(226, "The list was sent");
@@ -371,9 +376,11 @@ public class FTPFileHandler {
               con.sendResponse(550, "Not a directory");
               return;
           }
-          StringBuilder data = new StringBuilder();
-          for(Object file : fs.listFiles(dir)) {
-              data.append(fs.getName(file)).append("\r\n");
+          //StringBuilder data = new StringBuilder();
+          data.setLength(0);
+          for(Object file : fs.listFiles(dir))
+          {
+            data.append(fs.getName(file)).append("\r\n");
           }
           con.sendData(data.toString().getBytes("UTF-8"), false);
           con.sendResponse(226, "The list was sent");
@@ -499,8 +506,9 @@ public class FTPFileHandler {
               return;
           }
           String[] options = con.getOption("MLST").split(";");
-          String facts = Utils.getFacts(fs, file, options);
-          con.sendResponse(250, "- Listing " + fs.getName(file) + "\r\n" + facts);
+          data.setLength(0);
+          Utils.getFacts(fs, file, options, data);
+          con.sendResponse(250, "- Listing " + fs.getName(file) + "\r\n" + data.toString());
           con.sendResponse(250, "End");
         }
       };
@@ -520,9 +528,11 @@ public class FTPFileHandler {
           }
           con.sendResponse(150, "Sending file information list...");
           String[] options = con.getOption("MLST").split(";");
-          StringBuilder data = new StringBuilder();
-          for(Object f : fs.listFiles(file)) {
-              data.append(Utils.getFacts(fs, f, options));
+          //StringBuilder data = new StringBuilder();
+          data.setLength(0);
+          for(Object f : fs.listFiles(file))
+          {
+            Utils.getFacts(fs, f, options, data);
           }
           con.sendData(data.toString().getBytes("UTF-8"), false);
           con.sendResponse(226, "The file list was sent!");

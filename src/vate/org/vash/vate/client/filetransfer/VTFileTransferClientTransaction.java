@@ -8,14 +8,12 @@ import java.io.OutputStream;
 import java.io.RandomAccessFile;
 import java.security.DigestInputStream;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
-import org.vash.vate.filesystem.VTFileTransferSorter;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTXXHash64MessageDigest;
@@ -72,7 +70,7 @@ public class VTFileTransferClientTransaction implements Runnable
   private InputStream fileTransferFileInputStream;
   private OutputStream fileTransferFileOutputStream;
   private VTFileTransferClientSession session;
-  private final Comparator<File> fileSorter = new VTFileTransferSorter();
+  //private final Comparator<File> fileSorter = new VTFileTransferSorter();
    
   public VTFileTransferClientTransaction(VTFileTransferClientSession session)
   {
@@ -752,7 +750,7 @@ public class VTFileTransferClientTransaction implements Runnable
       else
       {
         File[] subFiles = fileTransferFile.listFiles();
-        Arrays.sort(subFiles, fileSorter);
+        //Arrays.sort(subFiles, fileSorter);
         String[] subPaths = new String[subFiles.length];
         int i = 0;
         for (File file : subFiles)

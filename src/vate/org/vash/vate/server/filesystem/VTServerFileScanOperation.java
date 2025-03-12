@@ -2,10 +2,7 @@ package org.vash.vate.server.filesystem;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Comparator;
 
-import org.vash.vate.filesystem.VTFileSeekSorter;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.task.VTTask;
 
@@ -19,7 +16,7 @@ public class VTServerFileScanOperation extends VTTask
   private File target;
   private StringBuilder message;
   private VTServerSession session;
-  private final Comparator<File> fileSorter = new VTFileSeekSorter();
+  //private final Comparator<File> fileSorter = new VTFileSeekSorter();
   
   public VTServerFileScanOperation(VTServerSession session)
   {
@@ -132,7 +129,7 @@ public class VTServerFileScanOperation extends VTTask
               message.setLength(0);
               message.append("\nVT>List of files in directory [" + target.getPath() + "]:\nVT>");
               File[] files = target.listFiles();
-              Arrays.sort(files, fileSorter);
+             // Arrays.sort(files, fileSorter);
               for (File file : files)
               {
                 message.append("\nVT>" + (file.isFile() ? "File" : "Directory") + ": [" + file.getName() + "]");
