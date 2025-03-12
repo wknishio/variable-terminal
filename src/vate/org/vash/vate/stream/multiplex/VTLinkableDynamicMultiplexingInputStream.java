@@ -17,7 +17,6 @@ import org.vash.vate.VT;
 import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
-import org.vash.vate.stream.array.VTByteArrayOutputStream;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 import org.vash.vate.stream.compress.VTPacketDecompressor;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
@@ -29,7 +28,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private volatile boolean closed = false;
   private final int bufferSize;
   private final byte[] packetDataBuffer;
-  private final byte[] compressedPacketDataBuffer;
   private Future<?> packetReaderThread;
   private final VTLittleEndianInputStream lin;
   private final VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
@@ -45,7 +43,6 @@ public final class VTLinkableDynamicMultiplexingInputStream
     this.executorService = executorService;
     this.bufferSize = bufferSize;
     this.packetDataBuffer = new byte[packetSize * 2];
-    this.compressedPacketDataBuffer = new byte[packetSize * 2];
     this.lin = new VTLittleEndianInputStream(in);
     this.bufferedChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
     this.directChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
@@ -305,8 +302,8 @@ public final class VTLinkableDynamicMultiplexingInputStream
     private InputStream input;
     private OutputStream directOutputStream;
     private Closeable directCloseable;
-    private VTByteArrayOutputStream compressedPacketOutputPipe;
-    private VTByteArrayInputStream compressedPacketInputPipe;
+    //private VTByteArrayOutputStream compressedPacketOutputPipe;
+    private VTByteArrayInputStream compressedInputPipe;
     private InputStream compressedInputStream;
     private final Collection<Closeable> propagated;
     private final Random packetSequencer;
@@ -408,20 +405,19 @@ public final class VTLinkableDynamicMultiplexingInputStream
       }
       else
       {
-        if (compressedPacketOutputPipe == null || compressedPacketInputPipe == null)
+        if (compressedInputPipe == null)
         {
-          compressedPacketInputPipe = new VTByteArrayInputStream(compressedPacketDataBuffer);
-          compressedPacketOutputPipe = new VTByteArrayOutputStream(compressedPacketDataBuffer);
+          compressedInputPipe = new VTByteArrayInputStream(new byte[packetDataBuffer.length]);
         }
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY) != 0)
         {
-          compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(compressedPacketInputPipe);
+          compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(compressedInputPipe);
         }
         else
         {
-          compressedInputStream = VTCompressorSelector.createDirectLz4InputStream(compressedPacketInputPipe);
+          compressedInputStream = VTCompressorSelector.createDirectLz4InputStream(compressedInputPipe);
         }
-        directOutputStream = new VTPacketDecompressor(compressedInputStream, outputStream, compressedPacketInputPipe, compressedPacketOutputPipe);
+        directOutputStream = new VTPacketDecompressor(compressedInputStream, outputStream, compressedInputPipe);
       }
     }
     
@@ -469,8 +465,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     {
       closed = true;
       compressedInputStream = null;
-      compressedPacketInputPipe = null;
-      compressedPacketOutputPipe = null;
+      compressedInputPipe = null;
       if (bufferedOutputStream != null)
       {
         bufferedOutputStream.close();

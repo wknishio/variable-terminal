@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import org.vash.vate.VT;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
-import org.vash.vate.stream.array.VTByteArrayOutputStream;
 
 public final class VTPacketDecompressor extends OutputStream
 {
@@ -13,17 +12,17 @@ public final class VTPacketDecompressor extends OutputStream
   private final InputStream compressedInputStream;
   private final OutputStream decompressedOutputStream;
   private final VTByteArrayInputStream packetInputPipe;
-  private final VTByteArrayOutputStream packetOutputPipe;
+  //private final VTByteArrayOutputStream packetOutputPipe;
   private final byte[] buffer = new byte[bufferSize];
   private final byte[] single = new byte[1];
   private int readed;
   
-  public VTPacketDecompressor(final InputStream compressedInputStream, final OutputStream decompressedOutputStream, final VTByteArrayInputStream packetInputPipe, final VTByteArrayOutputStream packetOutputPipe)
+  public VTPacketDecompressor(final InputStream compressedInputStream, final OutputStream decompressedOutputStream, final VTByteArrayInputStream packetInputPipe)
   {
     this.compressedInputStream = compressedInputStream;
     this.decompressedOutputStream = decompressedOutputStream;
     this.packetInputPipe = packetInputPipe;
-    this.packetOutputPipe = packetOutputPipe;
+    //this.packetOutputPipe = packetOutputPipe;
   }
   
   //this should not be called
@@ -40,10 +39,7 @@ public final class VTPacketDecompressor extends OutputStream
   
   public void write(final byte[] data, final int off, final int len) throws IOException
   {
-    packetOutputPipe.reset();
-    packetInputPipe.reset();
-    packetOutputPipe.write(data, off, len);
-    packetInputPipe.count(packetOutputPipe.count());
+    packetInputPipe.buf(data, off, len);
     readed = compressedInputStream.read(buffer, 0, bufferSize);
     decompressedOutputStream.write(buffer, 0, readed);
   }
