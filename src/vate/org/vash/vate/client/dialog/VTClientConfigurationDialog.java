@@ -851,6 +851,9 @@ public class VTClientConfigurationDialog extends Dialog
     centerPanel.add(encryptionType);
     centerPanel.add(encryptionPassword);
     
+    centerPanel.add(pingLimit);
+    centerPanel.add(pingInterval);
+    
     centerPanel.add(sessionShell);
     centerPanel.add(sessionCommands);
     // centerPanel.add(sessionLines);
@@ -858,11 +861,7 @@ public class VTClientConfigurationDialog extends Dialog
     centerPanel.add(sessionUser);
     centerPanel.add(sessionPassword);
     
-    centerPanel.add(pingLimit);
-    centerPanel.add(pingInterval);
-    
     centerPanel.add(buttonPanel1);
-    
     centerPanel.add(buttonPanel2);
     
     for (Component component : centerPanel.getComponents())

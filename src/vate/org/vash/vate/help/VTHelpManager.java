@@ -38,13 +38,13 @@ public class VTHelpManager
   ("\n-PK: proxy password, default null") + 
   ("\n-ET: encryption type, default none/ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)") + 
   ("\n-EK: encryption password, default null") + 
+  ("\n-PI: ping interval, default " + VT.VT_PING_INTERVAL_MILLISECONDS + " milliseconds") + 
+  ("\n-PL: ping limit, default " + VT.VT_PING_LIMIT_MILLISECONDS + " milliseconds") +
   ("\n-SS: session shell, default null") + 
   ("\n-SC: session commands, separated by \"*;\", default null, only in client") + 
   ("\n-SM: session maximum, default 0, only in server") + 
   ("\n-SU: session user, default null") + 
-  ("\n-SK: session password, default null") + 
-  ("\n-PI: ping interval, default " + VT.VT_PING_INTERVAL_MILLISECONDS + " milliseconds") + 
-  ("\n-PL: ping limit, default " + VT.VT_PING_LIMIT_MILLISECONDS + " milliseconds");
+  ("\n-SK: session password, default null");
   
   public static void initialize()
   {

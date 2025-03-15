@@ -129,10 +129,10 @@ public class VTSETTING extends VTServerStandardRemoteConsoleCommandProcessor
         message.append("\nVT>Encryption type(ET): []");
       }
       message.append("\nVT>Encryption password(EK): [" + encryptionPassword + "]");
-      message.append("\nVT>Session shell(SS): [" + sessionShell + "]");
-      message.append("\nVT>Session maximum(SM): [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]");
       message.append("\nVT>Ping limit(PL): [" + pingLimit + "]");
       message.append("\nVT>Ping interval(PI): [" + pingInterval + "]");
+      message.append("\nVT>Session shell(SS): [" + sessionShell + "]");
+      message.append("\nVT>Session maximum(SM): [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]");
       message.append("\nVT>\nVT>End of server connection settings list\nVT>");
       connection.getResultWriter().write(message.toString());
       connection.getResultWriter().flush();

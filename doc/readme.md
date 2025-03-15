@@ -97,6 +97,8 @@ instance will listen for connections, as in a TCP connection.
 * Proxy password controls the password for proxy authentication.
 * Encryption type enables connection encryption using encryption algorithms.
 * Encryption password sets the password for connection encryption.
+* Ping limit controls the connection ping timeout in milliseconds.
+* Ping interval controls the connection ping interval in milliseconds.
 * Session shell sets the command to be used as remote shell in server.
 * Session commands set commands separated by *; to be run when session starts.
 * Session maximum define a limit for simultaneous sessions in server.
@@ -126,13 +128,13 @@ these are the available program arguments:
 * -PK: proxy password, default null
 * -ET: encryption type, default none/ISAAC(I)/VMPC(R)/SALSA(S)/HC(H)/ZUC(Z)
 * -EK: encryption password, default null
+* -PL: ping limit, default 60000 milliseconds
+* -PI: ping interval, default 15000 milliseconds
 * -SS: session shell, default null
 * -SC: session commands, separated by "*;", default null, only in client
 * -SM: session maximum, default 0, only in server
 * -SU: session user, default null
 * -SK: session password, default null
-* -PL: ping limit, default 60000 milliseconds
-* -PI: ping interval, default 15000 milliseconds
 
 ## Console commands
 

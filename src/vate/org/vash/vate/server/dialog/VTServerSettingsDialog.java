@@ -885,14 +885,14 @@ public class VTServerSettingsDialog extends Dialog
     centerPanel.add(encryptionType);
     centerPanel.add(encryptionPassword);
     
+    centerPanel.add(pingLimit);
+    centerPanel.add(pingInterval);
+    
     centerPanel.add(sessionShell);
     centerPanel.add(sessionsMaximum);
     
     centerPanel.add(sessionUser);
     centerPanel.add(sessionPassword);
-    
-    centerPanel.add(pingLimit);
-    centerPanel.add(pingInterval);
     
     centerPanel.add(buttonPanel1);
     

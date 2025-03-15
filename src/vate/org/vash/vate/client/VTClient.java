@@ -466,12 +466,12 @@ public class VTClient implements Runnable
       fileClientSettings.setProperty("vate.client.proxy.password", proxyPassword);
       fileClientSettings.setProperty("vate.client.encryption.type", encryptionType);
       fileClientSettings.setProperty("vate.client.encryption.password", new String(encryptionKey, "UTF-8"));
+      fileClientSettings.setProperty("vate.client.ping.limit", pingLimit > 0 ? String.valueOf(pingLimit) : "");
+      fileClientSettings.setProperty("vate.client.ping.interval", pingInterval > 0 ? String.valueOf(pingInterval) : "");
       fileClientSettings.setProperty("vate.client.session.commands", sessionCommands);
       fileClientSettings.setProperty("vate.client.session.shell", sessionShell);
       fileClientSettings.setProperty("vate.client.session.user", sessionUser);
       fileClientSettings.setProperty("vate.client.session.password", sessionPassword);
-      fileClientSettings.setProperty("vate.client.ping.interval", pingInterval > 0 ? String.valueOf(pingInterval) : "");
-      fileClientSettings.setProperty("vate.client.ping.limit", pingLimit > 0 ? String.valueOf(pingLimit) : "");
       
       FileOutputStream out = new FileOutputStream(settingsFile);
       VTPropertiesBuilder.saveProperties(out, fileClientSettings, VT_CLIENT_SETTINGS_COMMENTS, "UTF-8");
@@ -1565,61 +1565,6 @@ public class VTClient implements Runnable
               }
             }
           }
-          VTConsole.print("VT>Use encryption in connection?(Y/N, default:N):");
-          line = VTConsole.readLine(true);
-          if (line == null)
-          {
-            VTRuntimeExit.exit(0);
-          }
-          else if (skipConfiguration)
-          {
-            return;
-          }
-          if (line.toUpperCase().startsWith("Y"))
-          {
-            VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)):");
-            line = VTConsole.readLine(false);
-            if (line == null)
-            {
-              VTRuntimeExit.exit(0);
-            }
-            else if (skipConfiguration)
-            {
-              return;
-            }
-            encryptionType = "ISAAC";
-            if (line.toUpperCase().startsWith("Z"))
-            {
-              encryptionType = "ZUC";
-            }
-            if (line.toUpperCase().startsWith("S"))
-            {
-              encryptionType = "SALSA";
-            }
-            if (line.toUpperCase().startsWith("H"))
-            {
-              encryptionType = "HC";
-            }
-            if (line.toUpperCase().startsWith("V"))
-            {
-              encryptionType = "VMPC";
-            }
-            VTConsole.print("VT>Enter encryption password:");
-            line = VTConsole.readLine(false);
-            if (line == null)
-            {
-              VTRuntimeExit.exit(0);
-            }
-            else if (skipConfiguration)
-            {
-              return;
-            }
-            encryptionKey = line.getBytes("UTF-8");
-          }
-          else
-          {
-            encryptionType = "NONE";
-          }
         }
         else
         {
@@ -1780,7 +1725,6 @@ public class VTClient implements Runnable
                 proxyPort = 8080;
               }
             }
-            
             if (("PLUS".equals(proxyType) || "HTTP".equals(proxyType) || "SOCKS".equals(proxyType)) && proxyPort != null && hostPort != null)
             {
               VTConsole.print("VT>Use authentication for proxy?(Y/N, default:N):");
@@ -1837,8 +1781,21 @@ public class VTClient implements Runnable
           {
             proxyType = "NONE";
           }
-          VTConsole.print("VT>Use encryption in connection?(Y/N, default:N):");
-          line = VTConsole.readLine(true);
+        }
+        VTConsole.print("VT>Use encryption in connection?(Y/N, default:N):");
+        line = VTConsole.readLine(true);
+        if (line == null)
+        {
+          VTRuntimeExit.exit(0);
+        }
+        else if (skipConfiguration)
+        {
+          return;
+        }
+        if (line.toUpperCase().startsWith("Y"))
+        {
+          VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)):");
+          line = VTConsole.readLine(false);
           if (line == null)
           {
             VTRuntimeExit.exit(0);
@@ -1847,79 +1804,26 @@ public class VTClient implements Runnable
           {
             return;
           }
-          if (line.toUpperCase().startsWith("Y"))
+          encryptionType = "ISAAC";
+          if (line.toUpperCase().startsWith("Z"))
           {
-            VTConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)):");
-            line = VTConsole.readLine(false);
-            if (line == null)
-            {
-              VTRuntimeExit.exit(0);
-            }
-            else if (skipConfiguration)
-            {
-              return;
-            }
-            encryptionType = "ISAAC";
-            if (line.toUpperCase().startsWith("Z"))
-            {
-              encryptionType = "ZUC";
-            }
-            if (line.toUpperCase().startsWith("S"))
-            {
-              encryptionType = "SALSA";
-            }
-            if (line.toUpperCase().startsWith("H"))
-            {
-              encryptionType = "HC";
-            }
-            if (line.toUpperCase().startsWith("V"))
-            {
-              encryptionType = "VMPC";
-            }
-            VTConsole.print("VT>Enter encryption password:");
-            line = VTConsole.readLine(false);
-            if (line == null)
-            {
-              VTRuntimeExit.exit(0);
-            }
-            else if (skipConfiguration)
-            {
-              return;
-            }
-            encryptionKey = line.getBytes("UTF-8");
+            encryptionType = "ZUC";
           }
-          else
+          if (line.toUpperCase().startsWith("S"))
           {
-            encryptionType = "NONE";
+            encryptionType = "SALSA";
           }
-        }
-        VTConsole.print("VT>Enter session shell(null for default):");
-        String shell = VTConsole.readLine(true);
-        if (shell == null)
-        {
-          VTRuntimeExit.exit(0);
-        }
-        else if (skipConfiguration)
-        {
-          return;
-        }
-        setSessionShell(shell);
-        VTConsole.print("VT>Enter session commands:");
-        String command = VTConsole.readLine(true);
-        if (command == null)
-        {
-          VTRuntimeExit.exit(0);
-        }
-        else if (skipConfiguration)
-        {
-          return;
-        }
-        setSessionCommands(command);
-        if ((hostPort != null) && (sessionUser == null || sessionPassword == null || sessionUser.length() == 0 || sessionPassword.length() == 0))
-        {
-          VTConsole.print("VT>Enter session user:");
-          String user = VTConsole.readLine(false);
-          if (user == null)
+          if (line.toUpperCase().startsWith("H"))
+          {
+            encryptionType = "HC";
+          }
+          if (line.toUpperCase().startsWith("V"))
+          {
+            encryptionType = "VMPC";
+          }
+          VTConsole.print("VT>Enter encryption password:");
+          line = VTConsole.readLine(false);
+          if (line == null)
           {
             VTRuntimeExit.exit(0);
           }
@@ -1927,18 +1831,11 @@ public class VTClient implements Runnable
           {
             return;
           }
-          setUser(user);
-          VTConsole.print("VT>Enter session password:");
-          String password = VTConsole.readLine(false);
-          if (password == null)
-          {
-            VTRuntimeExit.exit(0);
-          }
-          else if (skipConfiguration)
-          {
-            return;
-          }
-          setPassword(password);
+          encryptionKey = line.getBytes("UTF-8");
+        }
+        else
+        {
+          encryptionType = "NONE";
         }
         VTConsole.print("VT>Enter ping limit(default:" + VT.VT_PING_LIMIT_MILLISECONDS + "):");
         line = VTConsole.readLine(true);
@@ -1989,6 +1886,53 @@ public class VTClient implements Runnable
         else
         {
           pingInterval = 0;
+        }
+        VTConsole.print("VT>Enter session shell(null for default):");
+        String shell = VTConsole.readLine(true);
+        if (shell == null)
+        {
+          VTRuntimeExit.exit(0);
+        }
+        else if (skipConfiguration)
+        {
+          return;
+        }
+        setSessionShell(shell);
+        VTConsole.print("VT>Enter session commands:");
+        String command = VTConsole.readLine(true);
+        if (command == null)
+        {
+          VTRuntimeExit.exit(0);
+        }
+        else if (skipConfiguration)
+        {
+          return;
+        }
+        setSessionCommands(command);
+        if ((hostPort != null) && (sessionUser == null || sessionPassword == null || sessionUser.length() == 0 || sessionPassword.length() == 0))
+        {
+          VTConsole.print("VT>Enter session user:");
+          String user = VTConsole.readLine(false);
+          if (user == null)
+          {
+            VTRuntimeExit.exit(0);
+          }
+          else if (skipConfiguration)
+          {
+            return;
+          }
+          setUser(user);
+          VTConsole.print("VT>Enter session password:");
+          String password = VTConsole.readLine(false);
+          if (password == null)
+          {
+            VTRuntimeExit.exit(0);
+          }
+          else if (skipConfiguration)
+          {
+            return;
+          }
+          setPassword(password);
         }
       }
       catch (NumberFormatException e)

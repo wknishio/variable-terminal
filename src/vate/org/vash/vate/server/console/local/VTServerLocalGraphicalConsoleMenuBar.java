@@ -73,8 +73,8 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     // serverSettingsMenu.add(serverAuthenticationSettingsMenu);
     settingsMenu.add(proxySettingsMenu);
     settingsMenu.add(encryptionSettingsMenu);
-    settingsMenu.add(sessionsSettingsMenu);
     settingsMenu.add(pingSettingsMenu);
+    settingsMenu.add(sessionsSettingsMenu);
     connectionSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Mode", "*VTSETTING CM "));
     connectionSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Host", "*VTSETTING CH "));
     connectionSettingsMenu.add(new VTGraphicalConsoleMenuItem(console, "Set Connection Port", "*VTSETTING CP "));
