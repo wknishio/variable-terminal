@@ -19,6 +19,7 @@ import org.concentus.OpusEncoder;
 import org.concentus.OpusException;
 import org.concentus.OpusMode;
 import org.vash.vate.VT;
+import org.vash.vate.stream.endian.VTLittleEndianByteArrayInputOutputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 import org.xiph.speex.SpeexEncoder;
 
@@ -128,7 +129,7 @@ public class VTAudioCapturer
     private final byte[] inputBuffer;
     // private short[] inputBufferShort;
     private final byte[] outputBuffer;
-    //private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+    private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
     private final Collection<VTLittleEndianOutputStream> streams;
     //private final String id;
     private TargetDataLine line;
@@ -351,15 +352,18 @@ public class VTAudioCapturer
         decodedFrameSize = line.read(inputBuffer, 0, readSize);
         if (decodedFrameSize > 0)
         {
+          frameStream.reset();
           for (offset = 0; offset < decodedFrameSize; offset += (frameSize))
           {
             encodedFrameSize = opus.encode(inputBuffer, offset, (frameSize), outputBuffer, 0, (frameSize));
+            frameStream.writeUnsignedShort(encodedFrameSize);
+            frameStream.write(outputBuffer, 0, encodedFrameSize);
           }
           for (VTLittleEndianOutputStream out : streams)
           {
             try
             {
-              out.write(outputBuffer, 0, encodedFrameSize);
+              out.write(frameStream.getBuffer(), 0, frameStream.getOutputCount());
               out.flush();
             }
             catch (Throwable e)
@@ -395,16 +399,19 @@ public class VTAudioCapturer
         decodedFrameSize = line.read(inputBuffer, 0, readSize);
         if (decodedFrameSize > 0)
         {
+          frameStream.reset();
           for (offset = 0; offset < decodedFrameSize; offset += frameSize)
           {
             speex.processData(inputBuffer, offset, frameSize);
             encodedFrameSize = speex.getProcessedData(outputBuffer, 0);
+            frameStream.writeUnsignedShort(encodedFrameSize);
+            frameStream.write(outputBuffer, 0, encodedFrameSize);
           }
           for (VTLittleEndianOutputStream out : streams)
           {
             try
             {
-              out.write(outputBuffer, 0, encodedFrameSize);
+              out.write(frameStream.getBuffer(), 0, frameStream.getOutputCount());
               out.flush();
             }
             catch (Throwable e)
