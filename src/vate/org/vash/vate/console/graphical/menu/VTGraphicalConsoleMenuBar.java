@@ -18,8 +18,6 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
   private MenuItem textActionCopyMenu;
   private MenuItem textActionPasteMenu;
   private MenuItem textActionAllMenu;
-  //private MenuItem textActionInsertMenu;
-  //private MenuItem textActionBreakMenu;
   
   private Menu sizesMenu;
   private MenuItem sizesExpandMenu;
@@ -38,7 +36,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
   
   private boolean flushInterrupted = false;
   private boolean replaceInput = false;
-
+  
   private final VTConsoleInstance console;
   
   public VTGraphicalConsoleMenuBar(final VTConsoleInstance console)
@@ -60,6 +58,26 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
   
   public void addBaseMenus()
   {
+    inputToggleMenu = new MenuItem("Replace");
+    inputToggleMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        console.requestFocus();
+        console.toggleInputMode();
+      }
+    });
+    
+    flushToggleMenu = new MenuItem("Pause");
+    flushToggleMenu.addActionListener(new ActionListener()
+    {
+      public void actionPerformed(ActionEvent e)
+      {
+        console.requestFocus();
+        console.toggleFlushMode();
+      }
+    });
+    
     textActionsMenu = new Menu("Edit");
     
     textActionCopyMenu = new MenuItem("Copy ");
@@ -95,36 +113,11 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     
-//    textActionInsertMenu = new MenuItem("Insert ");
-//    textActionInsertMenu.addActionListener(new ActionListener()
-//    {
-//      
-//      public void actionPerformed(ActionEvent e)
-//      {
-//        console.requestFocus();
-//        console.toggleInputMode();
-//      }
-//    });
-//    
-//    textActionBreakMenu = new MenuItem("Break ");
-//    textActionBreakMenu.addActionListener(new ActionListener()
-//    {
-//      public void actionPerformed(ActionEvent e)
-//      {
-//        console.requestFocus();
-//        console.toggleFlushMode();
-//      }
-//    });
-    
     textActionsMenu.add(textActionCopyMenu);
     textActionsMenu.add(textActionPasteMenu);
     textActionsMenu.add(textActionAllMenu);
-    //textActionsMenu.add(textActionInsertMenu);
-    //textActionsMenu.add(textActionBreakMenu);
     
-    sizesMenu = new Menu("View");
-    // textMenu.setShortcut(new MenuShortcut(KeyEvent.VK_F, true));
-    
+    sizesMenu = new Menu("View");    
     sizesExpandMenu = new MenuItem("Expand ");
     sizesReduceMenu = new MenuItem("Reduce ");
     sizesRepackMenu = new MenuItem("Pack ");
@@ -193,28 +186,10 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     
     inputStatusMenu = new Menu("Insert");
     inputStatusMenu.setEnabled(true);
-    inputToggleMenu = new MenuItem("Replace");
-    inputToggleMenu.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        console.requestFocus();
-        console.toggleInputMode();
-      }
-    });
     inputStatusMenu.add(inputToggleMenu);
     
     flushStatusMenu = new Menu("Resume");
     flushStatusMenu.setEnabled(true);
-    flushToggleMenu = new MenuItem("Pause");
-    flushToggleMenu.addActionListener(new ActionListener()
-    {
-      public void actionPerformed(ActionEvent e)
-      {
-        console.requestFocus();
-        console.toggleFlushMode();
-      }
-    });
     flushStatusMenu.add(flushToggleMenu);
     
     keyboardShortcutsMenu = new Menu("Shortcut");
@@ -245,7 +220,6 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     public void notify(boolean state)
     {
       flushInterrupted = state;
-      // System.out.println("flushInterrupted:" + flushInterrupted);
       updateStatusMenu();
     }
   }
@@ -255,7 +229,6 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     public void notify(boolean state)
     {
       replaceInput = state;
-      // System.out.println("replaceInput:" + replaceInput);
       updateStatusMenu();
     }
   }
@@ -273,25 +246,21 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     {
       flushStatusMenu.setLabel("Pause");
       flushToggleMenu.setLabel("Resume");
-      //textActionBreakMenu.setLabel("Resume");
     }
     else
     {
       flushStatusMenu.setLabel("Resume");
       flushToggleMenu.setLabel("Pause");
-      //textActionBreakMenu.setLabel("Pause");
     }
     if (replaceInput)
     {
       inputStatusMenu.setLabel("Replace");
       inputToggleMenu.setLabel("Insert");
-      //textActionInsertMenu.setLabel("Insert");
     }
     else
     {
       inputStatusMenu.setLabel("Insert");
       inputToggleMenu.setLabel("Replace");
-      //textActionInsertMenu.setLabel("Replace");
     }
   }
 }
