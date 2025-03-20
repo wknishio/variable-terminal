@@ -27,6 +27,7 @@ import org.vash.vate.VT;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.graphics.image.VTImageIO;
+import org.vash.vate.graphics.image.VTRectangle;
 import org.vash.vate.reflection.VTReflectionUtils;
 
 public final class VTAWTScreenCaptureProvider
@@ -3467,6 +3468,75 @@ public final class VTAWTScreenCaptureProvider
   
   public final BufferedImage createScreenCapture(final int padding, final boolean drawPointer, final Rectangle area)
   {
+    if (!isScreenCaptureInitialized(padding))
+    {
+      if (!initializeScreenCapture(padding))
+      {
+        return null;
+      }
+    }
+    if (colorQuality == VT_COLOR_QUALITY_16777216)
+    {
+      return create16777216ScreenCapture(drawPointer, area);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_32768)
+    {
+      return create32768ScreenCapture(drawPointer, area);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_216)
+    {
+      return create216ScreenCapture(drawPointer, area);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_16)
+    {
+      return create16ScreenCapture(drawPointer, area);
+    }
+    //else if (colorQuality == VT_COLOR_QUALITY_32)
+    //{
+      //return create32ScreenCapture(drawPointer, area);
+    //}
+    else if (colorQuality == VT_COLOR_QUALITY_512)
+    {
+      return create512ScreenCapture(drawPointer, area);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_4096)
+    {
+      return create4096ScreenCapture(drawPointer, area);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_4)
+    {
+      return create4ScreenCapture(drawPointer, area);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_8)
+    {
+      return create8ScreenCapture(drawPointer, area);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_125)
+    {
+      return create125ScreenCapture(drawPointer, area);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_27)
+    {
+      return create27ScreenCapture(drawPointer, area);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_262144)
+    {
+      return create262144ScreenCapture(drawPointer, area);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_2097152)
+    {
+      return create2097152ScreenCapture(drawPointer, area);
+    }
+    else if (colorQuality == VT_COLOR_QUALITY_64)
+    {
+      return create64ScreenCapture(drawPointer, area);
+    }
+    return null;
+  }
+  
+  public final BufferedImage createScreenCapture(final int padding, final boolean drawPointer, final VTRectangle rectangle)
+  {
+    final Rectangle area = new Rectangle(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
     if (!isScreenCaptureInitialized(padding))
     {
       if (!initializeScreenCapture(padding))

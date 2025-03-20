@@ -2,7 +2,6 @@ package org.vash.vate.server.graphicsmode;
 
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
 import java.awt.datatransfer.Clipboard;
 import java.io.IOException;
 import java.util.LinkedHashSet;
@@ -14,6 +13,7 @@ import org.vash.vate.graphics.clipboard.VTEmptyTransferable;
 import org.vash.vate.graphics.control.VTAWTControlEvent;
 import org.vash.vate.graphics.control.VTAWTControlProvider;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
+import org.vash.vate.graphics.image.VTRectangle;
 import org.vash.vate.server.connection.VTServerConnection;
 
 public class VTGraphicsModeServerReader implements Runnable
@@ -336,12 +336,12 @@ public class VTGraphicsModeServerReader implements Runnable
             int width = connection.getGraphicsControlDataInputStream().readInt();
             int height = connection.getGraphicsControlDataInputStream().readInt();
             double captureScale = connection.getGraphicsControlDataInputStream().readDouble();
-            Rectangle area = new Rectangle();
+            VTRectangle area = new VTRectangle();
             area.x = x;
             area.y = y;
             area.width = width;
             area.height = height;
-            writer.setCaptureArea(new Rectangle(area), captureScale);
+            writer.setCaptureArea(area, captureScale);
             // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_AREA_CHANGE:
             // " + area.x + " " + area.y + " " + area.width + " " +
             // area.height);

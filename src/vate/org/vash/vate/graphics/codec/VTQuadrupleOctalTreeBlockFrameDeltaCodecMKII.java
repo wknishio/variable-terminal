@@ -1,6 +1,5 @@
 package org.vash.vate.graphics.codec;
 
-import java.awt.Rectangle;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +7,7 @@ import java.io.OutputStream;
 import java.util.BitSet;
 
 import org.vash.vate.graphics.image.VTImageDataUtils;
+import org.vash.vate.graphics.image.VTRectangle;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
@@ -93,7 +93,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
   private final VTLittleEndianOutputStream lout = new VTLittleEndianOutputStream(null);
   private final BitSet blockBitSet = new BitSet(1024 * 8);
   private final BitSet pixelBitSet = new BitSet(1024 * 8192);
-  private final Rectangle transferArea = new Rectangle(0, 0, 1, 1);
+  private final VTRectangle transferArea = new VTRectangle(0, 0, 1, 1);
   private int m1;
   private int limitX;
   private int limitY;

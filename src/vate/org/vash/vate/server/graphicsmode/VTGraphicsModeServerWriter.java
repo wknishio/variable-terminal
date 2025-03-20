@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBuffer;
 import java.awt.image.DataBufferByte;
@@ -26,6 +25,7 @@ import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII;
 import org.vash.vate.graphics.image.VTImageDataUtils;
 import org.vash.vate.graphics.image.VTImageIO;
+import org.vash.vate.graphics.image.VTRectangle;
 import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
@@ -61,8 +61,8 @@ public class VTGraphicsModeServerWriter implements Runnable
   private short[] previousImageBufferUShort;
   private int[] lastImageBufferInt;
   private int[] previousImageBufferInt;
-  private Rectangle captureArea;
-  private Rectangle resultArea;
+  private VTRectangle captureArea;
+  private VTRectangle resultArea;
   private double captureScale;
   private BufferedImage imageDataBuffer;
   private BufferedImage convertedDataBuffer;
@@ -84,7 +84,7 @@ public class VTGraphicsModeServerWriter implements Runnable
   
   public VTGraphicsModeServerWriter(VTGraphicsModeServerSession session)
   {
-    this.resultArea = new Rectangle(0, 0, 1, 1);
+    this.resultArea = new VTRectangle(0, 0, 1, 1);
     this.stopped = true;
     this.session = session;
     this.connection = session.getSession().getConnection();
@@ -268,7 +268,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     this.nextDevice = nextDevice;
   }
   
-  public void setCaptureArea(Rectangle captureArea, double captureScale)
+  public void setCaptureArea(VTRectangle captureArea, double captureScale)
   {
     this.captureArea = captureArea;
     this.captureScale = captureScale;
@@ -302,9 +302,9 @@ public class VTGraphicsModeServerWriter implements Runnable
     //long startTime = System.nanoTime();
     //long pixels = 0;
     needRefresh = false;
-    List<Rectangle> blockAreas = VTImageDataUtils.splitBlockArea(imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
+    List<VTRectangle> blockAreas = VTImageDataUtils.splitBlockArea(imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
     //System.out.println("blocks_before:" + blockAreas.size());
-    blockAreas = VTImageDataUtils.mergeNeighbourRectangles(blockAreas);
+    blockAreas = VTImageDataUtils.mergeNeighbourVTRectangles(blockAreas);
     //System.out.println("blocks_after:" + blockAreas.size());
     connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_IMAGE);
     if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
@@ -340,7 +340,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getHeight());
       connection.getGraphicsControlDataOutputStream().writeInt(blockAreas.size());
       connection.getGraphicsControlDataOutputStream().flush();
-      for (Rectangle blockArea : blockAreas)
+      for (VTRectangle blockArea : blockAreas)
       {
         //pixels += blockArea.width * blockArea.height;
         imageOutputBuffer.reset();
@@ -367,7 +367,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       {
         pngEncoder.setColorType(PngEncoder.COLOR_INDEXED);
         pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
-        for (Rectangle blockArea : blockAreas)
+        for (VTRectangle blockArea : blockAreas)
         {
           //pixels += blockArea.width * blockArea.height;
           imageOutputBuffer.reset();
@@ -387,7 +387,7 @@ public class VTGraphicsModeServerWriter implements Runnable
         convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
         convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
         //pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-        for (Rectangle blockArea : blockAreas)
+        for (VTRectangle blockArea : blockAreas)
         {
           //pixels += blockArea.width * blockArea.height;
           imageOutputBuffer.reset();
@@ -409,7 +409,7 @@ public class VTGraphicsModeServerWriter implements Runnable
           convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
           convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
           //pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-          for (Rectangle blockArea : blockAreas)
+          for (VTRectangle blockArea : blockAreas)
           {
             //pixels += blockArea.width * blockArea.height;
             imageOutputBuffer.reset();
@@ -423,7 +423,7 @@ public class VTGraphicsModeServerWriter implements Runnable
         else
         {
           //pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-          for (Rectangle blockArea : blockAreas)
+          for (VTRectangle blockArea : blockAreas)
           {
             //pixels += blockArea.width * blockArea.height;
             imageOutputBuffer.reset();
@@ -446,7 +446,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     //long startTime = System.nanoTime();
     //long pixels = 0;
     needRefresh = false;
-    List<Rectangle> blockAreas = null;
+    List<VTRectangle> blockAreas = null;
     if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
     {
       blockAreas = VTImageDataUtils.compareBlockArea(lastImageBufferByte, previousImageBufferByte, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
@@ -460,7 +460,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       blockAreas = VTImageDataUtils.compareBlockArea(lastImageBufferInt, previousImageBufferInt, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
     }
     //System.out.println("blocks_before:" + blockAreas.size());
-    blockAreas = VTImageDataUtils.mergeNeighbourRectangles(blockAreas);
+    blockAreas = VTImageDataUtils.mergeNeighbourVTRectangles(blockAreas);
     //System.out.println("blocks_after:" + blockAreas.size());
     connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE);
     if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
@@ -497,7 +497,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
       connection.getGraphicsControlDataOutputStream().writeInt(blockAreas.size());
       connection.getGraphicsControlDataOutputStream().flush();
-      for (Rectangle blockArea : blockAreas)
+      for (VTRectangle blockArea : blockAreas)
       {
         //pixels += blockArea.width * blockArea.height;
         imageOutputBuffer.reset();
@@ -522,7 +522,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       {
         pngEncoder.setColorType(PngEncoder.COLOR_INDEXED);
         pngEncoder.setIndexedColorMode(PngEncoder.INDEXED_COLORS_ORIGINAL);
-        for (Rectangle blockArea : blockAreas)
+        for (VTRectangle blockArea : blockAreas)
         {
           //pixels += blockArea.width * blockArea.height;
           imageOutputBuffer.reset();
@@ -545,7 +545,7 @@ public class VTGraphicsModeServerWriter implements Runnable
         }
         convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
         pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-        for (Rectangle blockArea : blockAreas)
+        for (VTRectangle blockArea : blockAreas)
         {
           //pixels += blockArea.width * blockArea.height;
           imageOutputBuffer.reset();
@@ -570,7 +570,7 @@ public class VTGraphicsModeServerWriter implements Runnable
           }
           convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
           pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-          for (Rectangle blockArea : blockAreas)
+          for (VTRectangle blockArea : blockAreas)
           {
             //pixels += blockArea.width * blockArea.height;
             imageOutputBuffer.reset();
@@ -584,7 +584,7 @@ public class VTGraphicsModeServerWriter implements Runnable
         else
         {
           pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
-          for (Rectangle blockArea : blockAreas)
+          for (VTRectangle blockArea : blockAreas)
           {
             //pixels += blockArea.width * blockArea.height;
             imageOutputBuffer.reset();
