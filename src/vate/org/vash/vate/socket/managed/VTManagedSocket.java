@@ -22,11 +22,11 @@ public class VTManagedSocket extends Socket
   private final InputStream input;
   private final OutputStream output;
   
-  public VTManagedSocket(VTManagedConnection connection, VTLinkableDynamicMultiplexedInputStream in, VTLinkableDynamicMultiplexedOutputStream out)
+  public VTManagedSocket(VTManagedConnection connection)
   {
     this.connection = connection;
-    this.in = in;
-    this.out = out;
+    this.in = connection.getInputStream(0);
+    this.out = connection.getOutputStream(0);
     this.input = new BufferedInputStream(in, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
     this.output = new VTBufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES, false);
   }
@@ -84,6 +84,15 @@ public class VTManagedSocket extends Socket
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number) throws IOException
   {
     return connection.getOutputStream(type, number);
+  }
+  
+  public InputStream createBufferedInputStream(int number)
+  {
+    return connection.createBufferedInputStream(number);
+  }
+  public OutputStream createBufferedOutputStream(int number)
+  {
+    return connection.createBufferedOutputStream(number);
   }
   
   public void shutdownOutput() throws IOException
