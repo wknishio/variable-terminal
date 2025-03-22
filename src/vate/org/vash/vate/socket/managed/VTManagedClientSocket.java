@@ -1,6 +1,9 @@
 package org.vash.vate.socket.managed;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Properties;
 import java.util.concurrent.BlockingQueue;
@@ -13,6 +16,7 @@ import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
 import org.vash.vate.client.session.VTClientSessionListener;
+import org.vash.vate.stream.filter.VTBufferedOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 
@@ -148,6 +152,16 @@ public class VTManagedClientSocket
       {
         connection.getMultiplexedConnectionOutputStream().setBytesPerSecond(Long.MAX_VALUE);
       }
+    }
+    
+    public InputStream createBufferedInputStream(int number)
+    {
+      return new BufferedInputStream(getInputStream(number), VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+    }
+    
+    public OutputStream createBufferedOutputStream(int number)
+    {
+      return new VTBufferedOutputStream(getOutputStream(number), VT.VT_STANDARD_BUFFER_SIZE_BYTES, false);
     }
   }
   
