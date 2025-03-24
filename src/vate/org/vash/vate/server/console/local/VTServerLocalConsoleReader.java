@@ -11,7 +11,7 @@ import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.task.VTTask;
 
-import com.martiansoftware.jsap.CommandLineTokenizer;
+import com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTServerLocalConsoleReader extends VTTask
 {
@@ -184,7 +184,7 @@ public class VTServerLocalConsoleReader extends VTTask
     {
       if (!(command.length() == 0))
       {
-        parsed = CommandLineTokenizer.tokenize(command);
+        parsed = CommandLineTokenizerMKII.tokenize(command);
         if (parsed.length < 1)
         {
           parsed = new String[]

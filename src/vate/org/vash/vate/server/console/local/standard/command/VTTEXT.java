@@ -6,7 +6,7 @@ import org.vash.vate.console.VTConsole;
 import org.vash.vate.server.connection.VTServerConnectionHandler;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
-import com.martiansoftware.jsap.CommandLineTokenizer;
+import com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTTEXT extends VTServerStandardLocalConsoleCommandProcessor
 {
@@ -34,7 +34,7 @@ public class VTTEXT extends VTServerStandardLocalConsoleCommandProcessor
             {
               try
               {
-                connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: [" + command.substring(CommandLineTokenizer.findParameterStart(command, 1)) + "]\nVT>");
+                connectionHandler.getConnection().getResultWriter().write("\u0007\nVT>Message from server: [" + command.substring(CommandLineTokenizerMKII.findParameterStart(command, 1)) + "]\nVT>");
                 connectionHandler.getConnection().getResultWriter().flush();
               }
               catch (Throwable e)

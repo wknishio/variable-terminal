@@ -17,7 +17,7 @@ import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.compress.VTCompressorSelector;
 
-import com.martiansoftware.jsap.CommandLineTokenizer;
+import com.martiansoftware.jsap.CommandLineTokenizerMKII;
 import net.jpountz.xxhash.XXHashFactory;
 
 public class VTFileTransferServerTransaction implements Runnable
@@ -1440,7 +1440,7 @@ public class VTFileTransferServerTransaction implements Runnable
   {
     try
     {
-      String[] splitCommand = CommandLineTokenizer.tokenize(command);
+      String[] splitCommand = CommandLineTokenizerMKII.tokenize(command);
       if (splitCommand.length < 4)
       {
         finished = true;

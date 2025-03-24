@@ -19,7 +19,7 @@ import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
 import org.vash.vate.task.VTTask;
 
-import com.martiansoftware.jsap.CommandLineTokenizer;
+import com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTClientRemoteConsoleWriter extends VTTask
 {
@@ -296,7 +296,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
       }
       if (!(command.length() == 0))
       {
-        parsed = CommandLineTokenizer.tokenize(command);
+        parsed = CommandLineTokenizerMKII.tokenize(command);
         if (parsed.length < 1)
         {
           parsed = new String[] { command };

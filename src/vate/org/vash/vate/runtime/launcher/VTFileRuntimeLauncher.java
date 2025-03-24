@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 
-import com.martiansoftware.jsap.CommandLineTokenizer;
+import com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTFileRuntimeLauncher
 {
@@ -31,7 +31,7 @@ public class VTFileRuntimeLauncher
           {
             public void run()
             {
-              command(CommandLineTokenizer.tokenize(currentCommand));
+              command(CommandLineTokenizerMKII.tokenize(currentCommand));
             }
           };
           commandThread.start();
@@ -70,7 +70,7 @@ public class VTFileRuntimeLauncher
         {
           public void run()
           {
-            command(CommandLineTokenizer.tokenize(currentCommand));
+            command(CommandLineTokenizerMKII.tokenize(currentCommand));
           }
         };
         commandThread.start();

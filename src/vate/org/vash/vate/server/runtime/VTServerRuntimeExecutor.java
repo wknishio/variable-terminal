@@ -16,7 +16,7 @@ import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.task.VTTask;
 
-import com.martiansoftware.jsap.CommandLineTokenizer;
+import com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTServerRuntimeExecutor extends VTTask
 {
@@ -118,7 +118,7 @@ public class VTServerRuntimeExecutor extends VTTask
   {
     try
     {
-      splitCommand = CommandLineTokenizer.tokenize(command);
+      splitCommand = CommandLineTokenizerMKII.tokenize(command);
       
       int process_command = PROCESS_COMMAND_UNKNOWN;
       int process_scope = PROCESS_SCOPE_NOT_FOUND;
@@ -566,10 +566,10 @@ public class VTServerRuntimeExecutor extends VTTask
               outputRedirect = session.getConnection().getShellDataOutputStream();
             }
             
-            String processCommand = CommandLineTokenizer.parseCommandParameter(command, parameterIndex, false);
-            String parsedCommand = CommandLineTokenizer.parseCommandParameter(command, parameterIndex, true);
+            String processCommand = CommandLineTokenizerMKII.parseCommandParameter(command, parameterIndex, false);
+            String parsedCommand = CommandLineTokenizerMKII.parseCommandParameter(command, parameterIndex, true);
             
-            String[] processCommands = CommandLineTokenizer.tokenize(processCommand);
+            String[] processCommands = CommandLineTokenizerMKII.tokenize(processCommand);
             
             ProcessBuilder processBuilder = new ProcessBuilder(processCommands);
             //ProcessBuilder processBuilder = new ProcessBuilder(command);
@@ -1046,7 +1046,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            String commandData = CommandLineTokenizer.parseCommandParameter(command, 2, true);
+            String commandData = CommandLineTokenizerMKII.parseCommandParameter(command, 2, true);
             for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               try
@@ -1073,7 +1073,7 @@ public class VTServerRuntimeExecutor extends VTTask
             try
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
-              String processData = CommandLineTokenizer.parseCommandParameter(command, 3, true);
+              String processData = CommandLineTokenizerMKII.parseCommandParameter(command, 3, true);
               managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().write((processData + "\n").getBytes());
               managedProcessList.get(Integer.parseInt(splitCommand[2])).getOut().flush();
               synchronized (this)
@@ -1126,7 +1126,7 @@ public class VTServerRuntimeExecutor extends VTTask
             try
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
-              String commandData = CommandLineTokenizer.parseCommandParameter(command, 3, true);
+              String commandData = CommandLineTokenizerMKII.parseCommandParameter(command, 3, true);
               found = false;
               // VTTerminal.println(splitCommand[1]);
               for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
@@ -1182,7 +1182,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            String commandData = CommandLineTokenizer.parseCommandParameter(command, 2, true);
+            String commandData = CommandLineTokenizerMKII.parseCommandParameter(command, 2, true);
             for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               try
@@ -1229,7 +1229,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               //command = command.substring(command.indexOf(splitCommand[3]));
-              String commandData = CommandLineTokenizer.parseCommandParameter(command, 3, true);
+              String commandData = CommandLineTokenizerMKII.parseCommandParameter(command, 3, true);
               
               byte[] data = null;
               try
@@ -1301,7 +1301,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               //command = command.substring(command.indexOf(splitCommand[3]));
-              String commandData = CommandLineTokenizer.parseCommandParameter(command, 3, true);
+              String commandData = CommandLineTokenizerMKII.parseCommandParameter(command, 3, true);
               
               byte[] data = null;
               try
@@ -1376,7 +1376,7 @@ public class VTServerRuntimeExecutor extends VTTask
         {
           if (process_scope == PROCESS_SCOPE_ALL)
           {
-            String commandData = CommandLineTokenizer.parseCommandParameter(command, 2, true);
+            String commandData = CommandLineTokenizerMKII.parseCommandParameter(command, 2, true);
             for (VTRuntimeProcess process : managedProcessList.toArray(new VTRuntimeProcess[] {}))
             {
               try
@@ -1423,7 +1423,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               //command = command.substring(command.indexOf(splitCommand[3]));
-              String commandData = CommandLineTokenizer.parseCommandParameter(command, 3, true);
+              String commandData = CommandLineTokenizerMKII.parseCommandParameter(command, 3, true);
               
               byte[] data = null;
               try
@@ -1495,7 +1495,7 @@ public class VTServerRuntimeExecutor extends VTTask
             {
               //command = command.substring(splitCommand[0].length() + splitCommand[1].length() + splitCommand[2].length() + 3);
               //command = command.substring(command.indexOf(splitCommand[3]));
-              String commandData = CommandLineTokenizer.parseCommandParameter(command, 3, true);
+              String commandData = CommandLineTokenizerMKII.parseCommandParameter(command, 3, true);
               
               byte[] data = null;
               try

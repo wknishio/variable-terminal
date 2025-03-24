@@ -41,7 +41,7 @@ import org.vash.vate.shell.adapter.VTShellProcessor;
 import org.vash.vate.tunnel.connection.VTTunnelConnection;
 import org.vash.vate.tunnel.connection.VTTunnelConnectionHandler;
 
-import com.martiansoftware.jsap.CommandLineTokenizer;
+import com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTServerSession
 {
@@ -488,7 +488,7 @@ public class VTServerSession
       }
       else
       {
-        setShellBuilder(CommandLineTokenizer.tokenize(clientShell), null, null);
+        setShellBuilder(CommandLineTokenizerMKII.tokenize(clientShell), null, null);
       }
     }
     else if (serverShell != null && serverShell.length() > 0)
@@ -503,7 +503,7 @@ public class VTServerSession
       }
       else
       {
-        setShellBuilder(CommandLineTokenizer.tokenize(serverShell), null, null);
+        setShellBuilder(CommandLineTokenizerMKII.tokenize(serverShell), null, null);
       }
     }
   }

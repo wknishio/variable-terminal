@@ -12,7 +12,7 @@ import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.task.VTTask;
 
-import com.martiansoftware.jsap.CommandLineTokenizer;
+import com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTServerRemoteConsoleReader extends VTTask
 {
@@ -133,7 +133,7 @@ public class VTServerRemoteConsoleReader extends VTTask
     String parsed[];
     if (!(command.length() == 0))
     {
-      parsed = CommandLineTokenizer.tokenize(command);
+      parsed = CommandLineTokenizerMKII.tokenize(command);
       if (parsed.length < 1)
       {
         parsed = new String[] { command };

@@ -29,12 +29,12 @@ import java.util.List;
  * @see com.martiansoftware.jsap.JSAP#parse(String)
  * @see com.martiansoftware.jsap.JSAP#parse(String[])
  */
-public class CommandLineTokenizer {
+public class CommandLineTokenizerMKII {
 
     /**
      * Hide the constructor.
      */
-    private CommandLineTokenizer() {
+    private CommandLineTokenizerMKII() {
     }
 
     /**
