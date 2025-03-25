@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLEncoder;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -21,6 +22,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 import org.vash.vate.console.VTConsole;
+import org.vash.vate.parser.VTConfigurationProperties;
+import org.vash.vate.stream.array.VTByteArrayInputStream;
 
 import java.util.Hashtable;
 import java.util.Locale;
@@ -215,20 +218,22 @@ public class VTNanoHTTPD
     this.myRootDir = wwwroot;
     myServerSocket = new ServerSocket( myTcpPort );
     myThread = new Thread( new Runnable()
+    {
+      public void run()
       {
-        public void run()
+        try
         {
-          try
+          while (true)
           {
-            while( true )
-            {
-              new HTTPSession( myServerSocket.accept(), executorService);
-            }
+            new HTTPSession( myServerSocket.accept(), executorService);
           }
-          catch ( IOException ioe )
-          {}
         }
-      });
+        catch ( IOException ioe )
+        {
+          
+        }
+      }
+    });
     myThread.setDaemon( true );
     myThread.start();
   }
@@ -243,8 +248,14 @@ public class VTNanoHTTPD
       myServerSocket.close();
       myThread.join();
     }
-    catch ( IOException ioe ) {}
-    catch ( InterruptedException e ) {}
+    catch ( IOException ioe )
+    {
+      
+    }
+    catch ( InterruptedException e )
+    {
+      
+    }
   }
 
 
@@ -309,11 +320,7 @@ public class VTNanoHTTPD
         {
           try
           {
-            session.keepAlive = true;
-            while (mySocket.isConnected() && !mySocket.isClosed() && session.keepAlive)
-            {
-              session.run();
-            }
+            session.run();
           }
           catch (Throwable e)
           {
@@ -337,168 +344,220 @@ public class VTNanoHTTPD
     
     public void run()
     {
+      final int bufsize = theBufferSize;
+      final byte[] buf = new byte[bufsize];
+      final VTByteArrayInputStream bis = new VTByteArrayInputStream(buf, 0, bufsize);
+      final BufferedReader hin = new BufferedReader( new InputStreamReader( bis, Charset.forName("ISO-8859-1") ));
+      final Properties preambles = new VTConfigurationProperties();
+      final Properties parameters = new VTConfigurationProperties();
+      final Properties headers = new VTConfigurationProperties();
+      final Properties files = new VTConfigurationProperties();
+      final ByteArrayOutputStream body = new ByteArrayOutputStream();
+      keepAlive = true;
+      InputStream inputStream = null;
       try
       {
-        InputStream is = mySocket.getInputStream();
-        if ( is == null) return;
-        
-        keepAlive = false;
-        // Read the first 8192 bytes.
-        // The full header should fit in here.
-        // Apache's default header limit is 8KB.
-        // Do NOT assume that a single read will get the entire header at once!
-        final int bufsize = 8192;
-        byte[] buf = new byte[bufsize];
-        int splitbyte = 0;
-        int rlen = 0;
-        {
-          int read = is.read(buf, 0, bufsize);
-          while (read > 0)
-          {
-            rlen += read;
-            splitbyte = findHeaderEnd(buf, rlen);
-            if (splitbyte > 0)
-              break;
-            read = is.read(buf, rlen, bufsize - rlen);
-          }
-        }
-        
-        // Create a BufferedReader for parsing the header.
-        ByteArrayInputStream hbis = new ByteArrayInputStream(buf, 0, rlen);
-        BufferedReader hin = new BufferedReader( new InputStreamReader( hbis ));
-        
-        Properties pre = new Properties();
-        Properties parms = new Properties();
-        Properties header = new Properties();
-        Properties files = new Properties();
-        
-        // Decode the header into parms and header java properties
-        decodeHeader(hin, pre, parms, header);
-        String method = pre.getProperty("method");
-        String uri = pre.getProperty("uri");
-        
-        if (!keepAlive)
-        {
-          String connection = findProperty(header, "Connection");
-          if (connection != null && connection.toLowerCase().startsWith("keep-alive"))
-          {
-            keepAlive = true;
-          }
-        }
-        
-        long size = 0x7FFFFFFFFFFFFFFFl;
-        String contentLength = findProperty(header, "Content-Length");
-        if (contentLength != null)
-        {
-          try { size = Integer.parseInt(contentLength); }
-          catch (NumberFormatException ex) {}
-        }
-        
-        // Write the part of body already read to ByteArrayOutputStream f
-        ByteArrayOutputStream f = new ByteArrayOutputStream();
-        if (splitbyte < rlen)
-          f.write(buf, splitbyte, rlen-splitbyte);
-        
-        // While Firefox sends on the first read all the data fitting
-        // our buffer, Chrome and Opera send only the headers even if
-        // there is data for the body. We do some magic here to find
-        // out whether we have already consumed part of body, if we
-        // have reached the end of the data to be sent or we should
-        // expect the first byte of the body at the next read.
-        if (splitbyte < rlen)
-          size -= rlen-splitbyte;
-        else if (splitbyte==0 || size == 0x7FFFFFFFFFFFFFFFl)
-          size = 0;
-        
-        // Now read all the body and write it to f
-        //buf = new byte[512];
-        while ( rlen >= 0 && size > 0 )
-        {
-          rlen = is.read(buf, 0, bufsize);
-          size -= rlen;
-          if (rlen > 0)
-            f.write(buf, 0, rlen);
-        }
-        
-        // Get the raw body as a byte []
-        byte [] fbuf = f.toByteArray();
-        
-        // If the method is POST, there may be parameters
-        // in data section, too, read it:
-        if (method != null && method.equalsIgnoreCase( "POST" ))
-        {
-          // Create a BufferedReader for easily reading it as string.
-          ByteArrayInputStream bin = new ByteArrayInputStream(fbuf);
-          BufferedReader in = new BufferedReader( new InputStreamReader(bin));
-          
-          String contentType = "";
-          String contentTypeHeader = findProperty(header, "Content-Type");
-          StringTokenizer st = null;
-          if( contentTypeHeader != null) {
-            st = new StringTokenizer( contentTypeHeader , "; " );
-            if ( st.hasMoreTokens()) {
-              contentType = st.nextToken();
-            }
-          }
-          if (contentType.equalsIgnoreCase("multipart/form-data"))
-          {
-            // Handle multipart/form-data
-            if ( !st.hasMoreTokens())
-              sendError( HTTP_BADREQUEST, "BAD REQUEST: Content type is multipart/form-data but boundary missing. Usage: GET /example/file.html" );
-            String boundaryExp = st.nextToken();
-            st = new StringTokenizer( boundaryExp , "=" );
-            if (st.countTokens() != 2)
-              sendError( HTTP_BADREQUEST, "BAD REQUEST: Content type is multipart/form-data but boundary syntax error. Usage: GET /example/file.html" );
-            st.nextToken();
-            String boundary = st.nextToken();
-            decodeMultipartData(boundary, fbuf, in, parms, files);
-          }
-          else
-          {
-            // Handle application/x-www-form-urlencoded
-            String postLine = "";
-            char pbuf[] = new char[8192];
-            int read = in.read(pbuf);
-            while ( read >= 0 && !postLine.endsWith("\r\n") )
-            {
-              postLine += String.valueOf(pbuf, 0, read);
-              read = in.read(pbuf);
-            }
-            postLine = postLine.trim();
-            decodeParms( postLine, parms );
-          }
-        }
-        if (method != null && method.equalsIgnoreCase( "PUT" ))
-        {
-          files.put("content", saveTmpFile( fbuf, 0, f.size()));
-        }
-        // Ok, now do the serve()
-        if (uri != null)
-        {
-          Response r = serve( uri, method, header, parms, files );
-          if ( r == null )
-            sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Serve() returned a null response." );
-          else
-            sendResponse( r.status, r.mimeType, r.header, r.data );
-        }
-        else
-        {
-          keepAlive = false;
-        }
-        //in.close();
-        //is.close();
+        inputStream = mySocket.getInputStream();
       }
-      catch ( IOException ioe )
+      catch (Throwable t)
       {
+        
+      }
+      while (mySocket.isConnected() && !mySocket.isClosed() && keepAlive)
+      {
+        if (inputStream == null)
+        {
+          return;
+        }
         try
         {
-          sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: IOException: " + ioe.getMessage());
+          keepAlive = false;
+          // Read the first 8192 bytes.
+          // The full header should fit in here.
+          // Apache's default header limit is 8KB.
+          // Do NOT assume that a single read will get the entire header at once!
+          //final int bufsize = 8192;
+          //byte[] buf = new byte[bufsize];
+          int splitbyte = 0;
+          int rlen = 0;
+          {
+            int read = inputStream.read(buf, 0, bufsize);
+            while (read > 0)
+            {
+              rlen += read;
+              splitbyte = findHeaderEnd(buf, rlen);
+              if (splitbyte > 0)
+              {
+                break;
+              }
+              read = inputStream.read(buf, rlen, bufsize - rlen);
+            }
+          }
+          
+          // Create a BufferedReader for parsing the header.
+          //ByteArrayInputStream hbis = new ByteArrayInputStream(buf, 0, rlen);
+          //BufferedReader hin = new BufferedReader( new InputStreamReader( hbis ));
+          
+          //Properties pre = new Properties();
+          //Properties parms = new Properties();
+          //Properties header = new Properties();
+          //Properties files = new Properties();
+          
+          // Decode the header into parms and header java properties
+          decodeHeader(hin, preambles, parameters, headers);
+          String method = preambles.getProperty("method");
+          String uri = preambles.getProperty("uri");
+          String connection = findProperty(headers, "Connection");
+          if (connection != null)
+          {
+            if (connection.toLowerCase().startsWith("keep-alive"))
+            {
+              keepAlive = true;
+            }
+            else
+            {
+              keepAlive = false;
+            }
+          }
+          long size = 0x7FFFFFFFFFFFFFFFL;
+          String contentLength = findProperty(headers, "Content-Length");
+          if (contentLength != null)
+          {
+            try
+            {
+              size = Integer.parseInt(contentLength);
+            }
+            catch (NumberFormatException ex)
+            {
+              
+            }
+          }
+          // Write the part of body already read to ByteArrayOutputStream f
+          //ByteArrayOutputStream f = new ByteArrayOutputStream();
+          body.reset();
+          if (splitbyte < rlen)
+          {
+            body.write(buf, splitbyte, rlen-splitbyte);
+          }
+          // While Firefox sends on the first read all the data fitting
+          // our buffer, Chrome and Opera send only the headers even if
+          // there is data for the body. We do some magic here to find
+          // out whether we have already consumed part of body, if we
+          // have reached the end of the data to be sent or we should
+          // expect the first byte of the body at the next read.
+          if (splitbyte < rlen)
+          {
+            size -= rlen-splitbyte;
+          }
+          else if (splitbyte==0 || size == 0x7FFFFFFFFFFFFFFFl)
+          {
+            size = 0;
+          }
+          // Now read all the body and write it to f
+          //buf = new byte[512];
+          while ( rlen >= 0 && size > 0 )
+          {
+            rlen = inputStream.read(buf, 0, bufsize);
+            size -= rlen;
+            if (rlen > 0)
+            {
+              body.write(buf, 0, rlen);
+            }
+          }
+          
+          // Get the raw body as a byte []
+          byte [] fbuf = body.toByteArray();
+          
+          // If the method is POST, there may be parameters
+          // in data section, too, read it:
+          if (method != null && method.equalsIgnoreCase( "POST" ))
+          {
+            // Create a BufferedReader for easily reading it as string.
+            ByteArrayInputStream bin = new ByteArrayInputStream(fbuf);
+            BufferedReader in = new BufferedReader( new InputStreamReader(bin));
+            
+            String contentType = "";
+            String contentTypeHeader = findProperty(headers, "Content-Type");
+            StringTokenizer st = null;
+            if( contentTypeHeader != null)
+            {
+              st = new StringTokenizer( contentTypeHeader , "; " );
+              if ( st.hasMoreTokens())
+              {
+                contentType = st.nextToken();
+              }
+            }
+            if (contentType.equalsIgnoreCase("multipart/form-data"))
+            {
+              // Handle multipart/form-data
+              if ( !st.hasMoreTokens())
+              {
+                sendError( HTTP_BADREQUEST, "BAD REQUEST: Content type is multipart/form-data but boundary missing. Usage: GET /example/file.html" );
+              }
+              String boundaryExp = st.nextToken();
+              st = new StringTokenizer( boundaryExp , "=" );
+              if (st.countTokens() != 2)
+              {
+                sendError( HTTP_BADREQUEST, "BAD REQUEST: Content type is multipart/form-data but boundary syntax error. Usage: GET /example/file.html" );
+              }
+              st.nextToken();
+              String boundary = st.nextToken();
+              decodeMultipartData(boundary, fbuf, in, parameters, files);
+            }
+            else
+            {
+              // Handle application/x-www-form-urlencoded
+              String postLine = "";
+              char pbuf[] = new char[8192];
+              int read = in.read(pbuf);
+              while ( read >= 0 && !postLine.endsWith("\r\n") )
+              {
+                postLine += String.valueOf(pbuf, 0, read);
+                read = in.read(pbuf);
+              }
+              postLine = postLine.trim();
+              decodeParms( postLine, parameters );
+            }
+          }
+          if (method != null && method.equalsIgnoreCase( "PUT" ))
+          {
+            files.put("content", saveTmpFile( fbuf, 0, body.size()));
+          }
+          // Ok, now do the serve()
+          if (uri != null)
+          {
+            Response r = serve( uri, method, headers, parameters, files );
+            if ( r == null )
+            {
+              sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Serve() returned a null response." );
+            }
+            else
+            {
+              sendResponse( r.status, r.mimeType, r.header, r.data );
+            }
+          }
+          else
+          {
+            keepAlive = false;
+          }
+          //in.close();
+          //is.close();
         }
-        catch ( Throwable t ) {}
-      }
-      catch ( InterruptedException ie )
-      {
-        // Thrown by sendError, ignore and exit the thread.
+        catch ( IOException ioe )
+        {
+          try
+          {
+            sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: IOException: " + ioe.getMessage());
+          }
+          catch ( Throwable t )
+          {
+            
+          }
+        }
+        catch ( InterruptedException ie )
+        {
+          // Thrown by sendError, ignore and exit the thread.
+        }
       }
     }
     
@@ -506,25 +565,28 @@ public class VTNanoHTTPD
      * Decodes the sent headers and loads the data into
      * java Properties' key - value pairs
     **/
-    private void decodeHeader(BufferedReader in, Properties pre, Properties parms, Properties header)
-      throws InterruptedException
+    private void decodeHeader(BufferedReader in, Properties pre, Properties parms, Properties header) throws InterruptedException
     {
-      try {
+      try
+      {
         // Read the request line
         String inLine = in.readLine();
-        if (inLine == null) return;
+        if (inLine == null)
+        {
+          return;
+        }
         StringTokenizer st = new StringTokenizer( inLine );
         if ( !st.hasMoreTokens())
+        {
           sendError( HTTP_BADREQUEST, "BAD REQUEST: Syntax error. Usage: GET /example/file.html" );
-        
+        }
         String method = st.nextToken();
         pre.put("method", method);
-        
         if ( !st.hasMoreTokens())
+        {
           sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing URI. Usage: GET /example/file.html" );
-        
+        }
         String uri = st.nextToken();
-        
         // Decode parameters from the URI
         int qmi = uri.indexOf( '?' );
         if ( qmi >= 0 )
@@ -532,8 +594,10 @@ public class VTNanoHTTPD
           decodeParms( uri.substring( qmi+1 ), parms );
           uri = decodePercent( uri.substring( 0, qmi ));
         }
-        else uri = decodePercent(uri);
-        
+        else
+        {
+          uri = decodePercent(uri);
+        }
         // If there's another token, it's protocol version,
         // followed by HTTP headers. Ignore version but parse headers.
         // NOTE: this now forces header names lowercase since they are
@@ -551,7 +615,9 @@ public class VTNanoHTTPD
           {
             int p = line.indexOf( ':' );
             if ( p >= 0 )
+            {
               header.put( line.substring(0,p).trim(), line.substring(p+1).trim());
+            }
             line = in.readLine();
           }
         }
@@ -568,8 +634,7 @@ public class VTNanoHTTPD
      * Decodes the Multipart Body data and put it
      * into java Properties' key - value pairs.
     **/
-    private void decodeMultipartData(String boundary, byte[] fbuf, BufferedReader in, Properties parms, Properties files)
-      throws InterruptedException
+    private void decodeMultipartData(String boundary, byte[] fbuf, BufferedReader in, Properties parms, Properties files) throws InterruptedException
     {
       try
       {
@@ -579,7 +644,9 @@ public class VTNanoHTTPD
         while ( mpline != null )
         {
           if (mpline.indexOf(boundary) == -1)
+          {
             sendError( HTTP_BADREQUEST, "BAD REQUEST: Content type is multipart/form-data but next chunk does not start with boundary. Usage: GET /example/file.html" );
+          }
           boundarycount++;
           Properties item = new Properties();
           mpline = in.readLine();
@@ -587,7 +654,9 @@ public class VTNanoHTTPD
           {
             int p = mpline.indexOf( ':' );
             if (p != -1)
+            {
               item.put( mpline.substring(0,p).trim().toLowerCase(), mpline.substring(p+1).trim());
+            }
             mpline = in.readLine();
           }
           if (mpline != null)
@@ -604,13 +673,16 @@ public class VTNanoHTTPD
               String token = st.nextToken().trim();
               int p = token.indexOf( '=' );
               if (p!=-1)
+              {
                 disposition.put( token.substring(0,p).trim().toLowerCase(), token.substring(p+1).trim());
+              }
             }
             String pname = disposition.getProperty("name");
             pname = pname.substring(1,pname.length()-1);
             
             String value = "";
-            if (item.getProperty("content-type") == null) {
+            if (item.getProperty("content-type") == null)
+            {
               while (mpline != null && mpline.indexOf(boundary) == -1)
               {
                 mpline = in.readLine();
@@ -618,24 +690,32 @@ public class VTNanoHTTPD
                 {
                   int d = mpline.indexOf(boundary);
                   if (d == -1)
+                  {
                     value+=mpline;
+                  }
                   else
+                  {
                     value+=mpline.substring(0,d-2);
+                  }
                 }
               }
             }
             else
             {
               if (boundarycount> bpositions.length)
+              {
                 sendError( HTTP_INTERNALERROR, "Error processing request" );
+              }
               int offset = stripMultipartHeaders(fbuf, bpositions[boundarycount-2]);
               String path = saveTmpFile(fbuf, offset, bpositions[boundarycount-1]-offset-4);
               files.put(pname, path);
               value = disposition.getProperty("filename");
               value = value.substring(1,value.length()-1);
-              do {
+              do
+              {
                 mpline = in.readLine();
-              } while (mpline != null && mpline.indexOf(boundary) == -1);
+              }
+              while (mpline != null && mpline.indexOf(boundary) == -1);
             }
             parms.put(pname, value);
           }
@@ -657,7 +737,9 @@ public class VTNanoHTTPD
       while (splitbyte + 3 < rlen)
       {
         if (buf[splitbyte] == '\r' && buf[splitbyte + 1] == '\n' && buf[splitbyte + 2] == '\r' && buf[splitbyte + 3] == '\n')
+        {
           return splitbyte + 4;
+        }
         splitbyte++;
       }
       return 0;
@@ -676,7 +758,9 @@ public class VTNanoHTTPD
         if (b[i] == boundary[matchcount])
         {
           if (matchcount == 0)
+          {
             matchbyte = i;
+          }
           matchcount++;
           if (matchcount==boundary.length)
           {
@@ -711,13 +795,16 @@ public class VTNanoHTTPD
       if (len > 0)
       {
         String tmpdir = System.getProperty("java.io.tmpdir");
-        try {
+        try
+        {
           File temp = File.createTempFile("NanoHTTPD", "", new File(tmpdir));
           OutputStream fstream = new FileOutputStream(temp);
           fstream.write(b, offset, len);
           fstream.close();
           path = temp.getAbsolutePath();
-        } catch (Exception e) { // Catch exception if any
+        }
+        catch (Exception e)
+        { // Catch exception if any
           //myErr.println("Error: " + e.getMessage());
         }
       }
@@ -734,7 +821,9 @@ public class VTNanoHTTPD
       for (i=offset; i<b.length; i++)
       {
         if (b[i] == '\r' && b[++i] == '\n' && b[++i] == '\r' && b[++i] == '\n')
+        {
           break;
+        }
       }
       return i+1;
     }
@@ -754,15 +843,21 @@ public class VTNanoHTTPD
           switch ( c )
           {
             case '+':
+            {
               baos.write( (int)' ' );
               break;
+            }
             case '%':
+            {
               baos.write(Integer.parseInt( str.substring(i+1,i+3), 16 ));
               i += 2;
               break;
+            }
             default:
+            {
               baos.write( (int)c );
               break;
+            }
           }
         }
         
@@ -786,18 +881,22 @@ public class VTNanoHTTPD
       throws InterruptedException
     {
       if ( parms == null )
+      {
         return;
-      
+      }
       StringTokenizer st = new StringTokenizer( parms, "&" );
       while ( st.hasMoreTokens())
       {
         String e = st.nextToken();
         int sep = e.indexOf( '=' );
         if ( sep >= 0 )
-          p.put( decodePercent( e.substring( 0, sep )).trim(),
-               decodePercent( e.substring( sep+1 )));
+        {
+          p.put( decodePercent( e.substring( 0, sep )).trim(), decodePercent( e.substring( sep+1 )));
+        }
         else
+        {
           p.put( decodePercent( e ).trim(), "" );
+        }
       }
     }
     
@@ -819,7 +918,9 @@ public class VTNanoHTTPD
       try
       {
         if ( status == null )
+        {
           throw new Error( "sendResponse(): Status can't be null." );
+        }
         
         OutputStream out = mySocket.getOutputStream();
         PrintWriter pw = new PrintWriter( out );
@@ -835,10 +936,14 @@ public class VTNanoHTTPD
         }
         
         if ( mime != null )
+        {
           pw.print("Content-Type: " + mime + "\r\n");
+        }
         
         if ( header == null || header.getProperty( "Date" ) == null )
+        {
           pw.print( "Date: " + gmtFrmt.format( new Date()) + "\r\n");
+        }
         
         if ( header != null )
         {
@@ -861,7 +966,10 @@ public class VTNanoHTTPD
           while (pending>0)
           {
             int read = data.read( buff, 0, ( (pending>theBufferSize) ?  theBufferSize : pending ));
-            if (read <= 0)  break;
+            if (read <= 0) 
+            {
+              break;
+            }
             out.write( buff, 0, read );
             pending -= read;
           }
@@ -869,12 +977,21 @@ public class VTNanoHTTPD
         out.flush();
         //out.close();
         if ( data != null )
+        {
           data.close();
+        }
       }
       catch( IOException ioe )
       {
         // Couldn't write? No can do.
-        try { mySocket.close(); } catch( Throwable t ) {}
+        try
+        {
+          mySocket.close();
+        }
+        catch( Throwable t )
+        {
+          
+        }
       }
     }
     
@@ -895,13 +1012,24 @@ public class VTNanoHTTPD
     {
       String tok = st.nextToken();
       if ( tok.equals( "/" ))
+      {
         newUri += "/";
+      }
       else if ( tok.equals( " " ))
+      {
         newUri += "%20";
+      }
       else
       {
         // For Java 1.4 you'll want to use this instead:
-        try { newUri += URLEncoder.encode( tok, "ISO-8859-1" ); } catch ( java.io.UnsupportedEncodingException uee ) {}
+        try
+        {
+          newUri += URLEncoder.encode( tok, "ISO-8859-1" );
+        }
+        catch ( java.io.UnsupportedEncodingException uee )
+        {
+          
+        }
       }
     }
     return newUri;
@@ -920,33 +1048,40 @@ public class VTNanoHTTPD
    * Serves file from homeDir and its' subdirectories (only).
    * Uses only URI, ignores all headers and HTTP parameters.
    */
-  public Response serveFile( String uri, Properties header, File homeDir,
-                 boolean allowDirectoryListing )
+  public Response serveFile( String uri, Properties header, File homeDir, boolean allowDirectoryListing )
   {
     Response res = null;
     
     // Make sure we won't die of an exception later
     if ( !homeDir.isDirectory())
+    {
       res = new Response( HTTP_INTERNALERROR, MIME_PLAINTEXT,
         "INTERNAL ERRROR: serveFile(): given homeDir is not a directory." );
+    }
     
     if ( res == null )
     {
       // Remove URL arguments
       uri = uri.trim().replace( File.separatorChar, '/' );
       if ( uri.indexOf( '?' ) >= 0 )
+      {
         uri = uri.substring(0, uri.indexOf( '?' ));
+      }
       
       // Prohibit getting out of current directory
       if ( uri.startsWith( ".." ) || uri.endsWith( ".." ) || uri.indexOf( "../" ) >= 0 )
+      {
         res = new Response( HTTP_FORBIDDEN, MIME_PLAINTEXT,
           "FORBIDDEN: Won't serve ../ for security reasons." );
+      }
     }
     
     File f = new File( homeDir, uri );
     if ( res == null && !f.exists())
+    {
       res = new Response( HTTP_NOTFOUND, MIME_PLAINTEXT,
         "Error 404, file not found." );
+    }
     
     // List the directory, if necessary
     if ( res == null && f.isDirectory())
@@ -966,9 +1101,13 @@ public class VTNanoHTTPD
       {
         // First try index.html and index.htm
         if ( new File( f, "index.html" ).exists())
+        {
           f = new File( homeDir, uri + "/index.html" );
+        }
         else if ( new File( f, "index.htm" ).exists())
+        {
           f = new File( homeDir, uri + "/index.htm" );
+        }
         // No index file, list the directory if it is readable
         else if ( allowDirectoryListing && f.canRead() )
         {
@@ -980,7 +1119,9 @@ public class VTNanoHTTPD
             String u = uri.substring( 0, uri.length()-1 );
             int slash = u.lastIndexOf( '/' );
             if ( slash >= 0 && slash  < u.length())
+            {
               msg += "<b><a href=\"" + uri.substring(0, slash+1) + "\">..</a></b><br/>";
+            }
           }
           
           if (files!=null)
@@ -1004,16 +1145,24 @@ public class VTNanoHTTPD
                 long len = curFile.length();
                 msg += " &nbsp;<font size=2>(";
                 if ( len < 1024 )
+                {
                   msg += len + " bytes";
+                }
                 else if ( len < 1024 * 1024 )
+                {
                   msg += len/1024 + "." + (len%1024/10%100) + " KB";
+                }
                 else
+                {
                   msg += len/(1024*1024) + "." + len%(1024*1024)/10%100 + " MB";
-                
+                }
                 msg += ")</font>";
               }
               msg += "<br/>";
-              if ( dir ) msg += "</b>";
+              if ( dir )
+              {
+                msg += "</b>";
+              }
             }
           }
           msg += "</body></html>";
@@ -1035,10 +1184,13 @@ public class VTNanoHTTPD
         String mime = null;
         int dot = f.getCanonicalPath().lastIndexOf( '.' );
         if ( dot >= 0 )
+        {
           mime = (String)theMimeTypes.get( f.getCanonicalPath().substring( dot + 1 ).toLowerCase());
+        }
         if ( mime == null )
+        {
           mime = MIME_DEFAULT_BINARY;
-        
+        }
         // Calculate etag
         String etag = Integer.toHexString((f.getAbsolutePath() + f.lastModified() + "" + f.length()).hashCode());
         
@@ -1052,7 +1204,8 @@ public class VTNanoHTTPD
           {
             range = range.substring( "bytes=".length());
             int minus = range.indexOf( '-' );
-            try {
+            try
+            {
               if ( minus > 0 )
               {
                 startFrom = Long.parseLong( range.substring( 0, minus ));
@@ -1072,19 +1225,30 @@ public class VTNanoHTTPD
             res = new Response( HTTP_RANGE_NOT_SATISFIABLE, MIME_PLAINTEXT, "" );
             res.addHeader( "Content-Range", "bytes 0-0/" + fileLen);
             if ( mime.startsWith( "application/" ))
+            {
               res.addHeader( "Content-Disposition", "attachment; filename=\"" + f.getName() + "\"");
+            }
             res.addHeader( "ETag", etag);
           }
           else
           {
             if ( endAt < 0 )
+            {
               endAt = fileLen-1;
+            }
             long newLen = endAt - startFrom + 1;
-            if ( newLen < 0 ) newLen = 0;
+            if ( newLen < 0 ) 
+            {
+              newLen = 0;
+            }
             
             final long dataLen = newLen;
-            FileInputStream fis = new FileInputStream( f ) {
-              public int available() throws IOException { return (int)dataLen; }
+            FileInputStream fis = new FileInputStream( f )
+            {
+              public int available() throws IOException
+              {
+                return (int)dataLen;
+              }
             };
             fis.skip( startFrom );
             
@@ -1092,20 +1256,26 @@ public class VTNanoHTTPD
             res.addHeader( "Content-Length", "" + dataLen);
             res.addHeader( "Content-Range", "bytes " + startFrom + "-" + endAt + "/" + fileLen);
             if ( mime.startsWith( "application/" ))
+            {
               res.addHeader( "Content-Disposition", "attachment; filename=\"" + f.getName() + "\"");
+            }
             res.addHeader( "ETag", etag);
           }
         }
         else
         {
           if (etag.equals(findProperty(header, "if-none-match")))
+          {
             res = new Response( HTTP_NOTMODIFIED, mime, "");
+          }
           else
           {
             res = new Response( HTTP_OK, mime, new FileInputStream( f ));
             res.addHeader( "Content-Length", "" + fileLen);
             if ( mime.startsWith( "application/" ))
+            {
               res.addHeader( "Content-Disposition", "attachment; filename=\"" + f.getName() + "\"");
+            }
             res.addHeader( "ETag", etag);
           }
         }
