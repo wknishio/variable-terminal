@@ -324,8 +324,6 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  
-  
   public static final boolean compareArea(final int[] array1, final int[] array2, int offset, final int width, final int height, final VTRectangle captureArea)
   {
     if (width * height == 0)
