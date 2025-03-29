@@ -5,6 +5,7 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
 
+import net.sourceforge.jsocks.socks.Socks4Proxy;
 import net.sourceforge.jsocks.socks.Socks5Proxy;
 import net.sourceforge.jsocks.socks.SocksSocket;
 import net.sourceforge.jsocks.socks.UserPasswordAuthentication;
@@ -12,7 +13,7 @@ import net.sourceforge.jsocks.socks.UserPasswordAuthentication;
 public class VTSocksProxySocket extends VTProxySocket
 {
   private Socks5Proxy socks5Proxy;
-  //private Socks4Proxy socks4Proxy;
+  private Socks4Proxy socks4Proxy;
   //private Socket socket;
   
   public VTSocksProxySocket(VTProxy currentProxy, Socket currentSocket)
@@ -50,6 +51,26 @@ public class VTSocksProxySocket extends VTProxySocket
       {
         //t.printStackTrace();
       }
+      
+      if (proxySocket != null)
+      {
+        return;
+      }
+      
+      try
+      {
+        connectProxy(0);
+        proxyUser = (proxyUser != null ? proxyUser : "");
+        socks4Proxy = new Socks4Proxy(null, proxyHost, proxyPort, proxyUser, currentSocket);
+        InetSocketAddress host = (InetSocketAddress) endpoint;
+        SocksSocket socksSocket = new SocksSocket(host.getHostName(), host.getPort(), 0, socks4Proxy);
+        proxySocket = socksSocket;
+      }
+      catch (Throwable t)
+      {
+        //t.printStackTrace();
+      }
+      
       if (proxySocket == null)
       {
         throw new IOException("socks tunneling failed");
@@ -80,7 +101,7 @@ public class VTSocksProxySocket extends VTProxySocket
           socks5Proxy.setAuthenticationMethod(UserPasswordAuthentication.METHOD_ID, authentication);
         }
         InetSocketAddress host = (InetSocketAddress) endpoint;
-        SocksSocket socksSocket = new SocksSocket(socks5Proxy, host.getHostName(), host.getPort(), timeout);
+        SocksSocket socksSocket = new SocksSocket(host.getHostName(), host.getPort(), timeout, socks5Proxy);
         proxySocket = socksSocket;
       }
       catch (Throwable t)
@@ -88,6 +109,21 @@ public class VTSocksProxySocket extends VTProxySocket
         //t.printStackTrace();
         proxySocket = null;
       }
+      
+      try
+      {
+        connectProxy(timeout);
+        proxyUser = (proxyUser != null ? proxyUser : "");
+        socks4Proxy = new Socks4Proxy(null, proxyHost, proxyPort, proxyUser, currentSocket);
+        InetSocketAddress host = (InetSocketAddress) endpoint;
+        SocksSocket socksSocket = new SocksSocket(host.getHostName(), host.getPort(), timeout, socks4Proxy);
+        proxySocket = socksSocket;
+      }
+      catch (Throwable t)
+      {
+        //t.printStackTrace();
+      }
+      
       if (proxySocket == null)
       {
         throw new IOException("socks tunneling failed");

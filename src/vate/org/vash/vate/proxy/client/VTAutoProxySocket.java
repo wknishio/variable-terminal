@@ -69,7 +69,7 @@ public class VTAutoProxySocket extends VTProxySocket
     {
       try
       {
-        connectProxy(0);
+        connectProxy(timeout);
         httpProxySocket = new VTHttpProxySocket(currentProxy, currentSocket);
         httpProxySocket.connect(endpoint, timeout);
         proxySocket = httpProxySocket;
@@ -85,7 +85,7 @@ public class VTAutoProxySocket extends VTProxySocket
       
       try
       {
-        connectProxy(0);
+        connectProxy(timeout);
         socksProxySocket = new VTSocksProxySocket(currentProxy, currentSocket);
         socksProxySocket.connect(endpoint, timeout);
         proxySocket = socksProxySocket;
