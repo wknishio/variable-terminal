@@ -28,7 +28,7 @@ public class VTManagedSocket extends Socket
     this.in = connection.getInputStream(0);
     this.out = connection.getOutputStream(0);
     this.input = new BufferedInputStream(in, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
-    this.output = new VTBufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES, false);
+    this.output = new VTBufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES, true);
   }
   
 //  public Socket getConnectionSocket()
@@ -90,9 +90,20 @@ public class VTManagedSocket extends Socket
   {
     return connection.createBufferedInputStream(number);
   }
+  
   public OutputStream createBufferedOutputStream(int number)
   {
     return connection.createBufferedOutputStream(number);
+  }
+  
+  public InputStream createBufferedInputStream(int type, int number)
+  {
+    return connection.createBufferedInputStream(type, number);
+  }
+  
+  public OutputStream createBufferedOutputStream(int type, int number)
+  {
+    return connection.createBufferedOutputStream(type, number);
   }
   
   public void shutdownOutput() throws IOException

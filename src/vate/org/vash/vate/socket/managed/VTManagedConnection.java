@@ -16,6 +16,8 @@ public interface VTManagedConnection
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number);
   public InputStream createBufferedInputStream(int number);
   public OutputStream createBufferedOutputStream(int number);
+  public InputStream createBufferedInputStream(int type, int number);
+  public OutputStream createBufferedOutputStream(int type, int number);
   public void close() throws IOException;
   public Socket getSocket();
   public Class<?> getSessionClass();

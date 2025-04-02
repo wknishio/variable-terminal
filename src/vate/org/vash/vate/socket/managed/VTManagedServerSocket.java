@@ -161,7 +161,17 @@ public class VTManagedServerSocket
     
     public OutputStream createBufferedOutputStream(int number)
     {
-      return new VTBufferedOutputStream(getOutputStream(number), VT.VT_STANDARD_BUFFER_SIZE_BYTES, false);
+      return new VTBufferedOutputStream(getOutputStream(number), VT.VT_STANDARD_BUFFER_SIZE_BYTES, true);
+    }
+    
+    public InputStream createBufferedInputStream(int type, int number)
+    {
+      return new BufferedInputStream(getInputStream(type & (VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY), number), VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+    }
+    
+    public OutputStream createBufferedOutputStream(int type, int number)
+    {
+      return new VTBufferedOutputStream(getOutputStream(type & (VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY), number), VT.VT_STANDARD_BUFFER_SIZE_BYTES, true);
     }
   }
   
