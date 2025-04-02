@@ -84,7 +84,7 @@ public class VTServerScreenshotTask extends VTTask
       if (jpgWriterParam.canWriteCompressed())
       {
         jpgWriterParam.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-        jpgWriterParam.setCompressionQuality(0.75f);
+        jpgWriterParam.setCompressionQuality(0.50f);
       }
       if (jpgWriterParam.canWriteProgressive())
       {
