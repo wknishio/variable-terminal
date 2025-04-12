@@ -96,8 +96,8 @@ public class VTLanternaConsole implements VTConsoleInstance
   private static final int consoleOutputLines = 24;
   private static final int consoleInputColumns = 80;
   private static final int consoleInputLines = 1;
-  private static final int consoleOutputLinesMaxSize = consoleOutputLines * 50;
-  private static final int commandHistoryMaxSize = 50;
+  private static final int consoleOutputLinesMaxSize = consoleOutputLines * 40;
+  private static final int commandHistoryMaxSize = 40;
   private final List<String> commandHistory = new LinkedList<String>();
   private int commandHistoryPosition;
   private final List<String> inputLineBuffer = new LinkedList<String>();
