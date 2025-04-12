@@ -404,6 +404,10 @@ public class VTNanoHTTPD
           //Properties files = new Properties();
           
           // Decode the header into parms and header java properties
+          preambles.clear();
+          parameters.clear();
+          headers.clear();
+          files.clear();
           decodeHeader(hin, preambles, parameters, headers);
           String method = preambles.getProperty("method");
           String uri = preambles.getProperty("uri");
