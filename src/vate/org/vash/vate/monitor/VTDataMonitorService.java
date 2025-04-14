@@ -106,7 +106,7 @@ public class VTDataMonitorService extends VTTask
       }
       differenceInput = (currentInput - lastInput);
       differenceOutput = (currentOutput - lastOutput);
-      String message = "Tx: " + humanReadableByteCount(differenceOutput) + "/s  Rx: " + humanReadableByteCount(differenceInput) + "/s";
+      String message = "Tx: " + humanReadableByteCount(differenceOutput) + "/s Rx: " + humanReadableByteCount(differenceInput) + "/s";
       for (VTDataMonitorPanel panel : panels)
       {
         try
