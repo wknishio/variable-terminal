@@ -1,5 +1,6 @@
 package org.vash.vate.monitor;
 
+import java.io.IOException;
 import java.text.CharacterIterator;
 import java.text.StringCharacterIterator;
 import java.util.Locale;
@@ -81,7 +82,7 @@ public class VTDataMonitorService extends VTTask
       {
         wait(1000);
       }
-      if (panels.size() <= 0)
+      if (panels.size() <= 0 || isStopped())
       {
         continue;
       }
@@ -126,6 +127,12 @@ public class VTDataMonitorService extends VTTask
       lastInput = currentInput;
       lastOutput = currentOutput;
     }
+  }
+  
+  public void close() throws IOException
+  {
+    setStopped(true);
+    ping();
   }
   
   private void resetTransferredBytes()
