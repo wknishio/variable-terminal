@@ -267,7 +267,7 @@ public class VTAudioCapturer
           this.opus.setUseVBR(false);
           this.opus.setUseDTX(false);
           this.opus.setComplexity(7);
-          this.opus.setBitrate(56000);
+          this.opus.setBitrate(96000);
         }
         catch (Throwable t)
         {
