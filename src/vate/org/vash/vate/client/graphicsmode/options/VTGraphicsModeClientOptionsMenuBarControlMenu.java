@@ -67,13 +67,13 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
   
   private VTGraphicsModeClientWriter writer;
   
-  public VTGraphicsModeClientOptionsMenuBarControlMenu(VTGraphicsModeClientWriter writer)
+  public VTGraphicsModeClientOptionsMenuBarControlMenu(VTGraphicsModeClientWriter writer, Menu keyboardShortcutsMenu)
   {
     super("Control");
     this.writer = writer;
+    this.localKeyIgnoreControlMenu = new Menu("Shortcut Support");
     this.remoteControlMenu = new Menu("Remote Control ");
-    this.localKeyIgnoreControlMenu = new Menu("Shortcut Support ");
-    this.controlStateClauseMenu = new Menu("Control Clause ");
+    this.controlStateClauseMenu = new Menu("Control Clause");
     this.localKeySuppressionControlMenu = new Menu("Combination Inhibition ");
     this.modifierKeyDownControlMenu = new Menu("Press Modifier Key ");
     this.modifierKeyUpControlMenu = new Menu("Release Modifier Key ");
@@ -183,8 +183,9 @@ public class VTGraphicsModeClientOptionsMenuBarControlMenu extends Menu
     this.clipboardControlMenu.add(clearLocalClipboardContents);
     this.clipboardControlMenu.add(cancelClipboardContentsTransfer);
     
-    this.add(remoteControlMenu);
     this.add(localKeyIgnoreControlMenu);
+    this.add(keyboardShortcutsMenu);
+    this.add(remoteControlMenu);
     this.add(controlStateClauseMenu);
     this.add(localKeySuppressionControlMenu);
     this.add(modifierKeyDownControlMenu);

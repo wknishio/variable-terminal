@@ -21,20 +21,7 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
   public VTGraphicsModeClientOptionsMenuBar(VTGraphicsModeClientWriter writer, Frame frame)
   {
     // this.setFont(new Font("Dialog", Font.PLAIN, 12));
-    this.viewMenu = new VTGraphicsModeClientOptionsMenuBarViewMenu(writer);
-    this.controlMenu = new VTGraphicsModeClientOptionsMenuBarControlMenu(writer);
-    // this.refreshStatusMenu = new Menu("Refresh");
-    // this.refreshStatusMenu.setEnabled(false);
-    // this.controlStatusMenu = new Menu("Command");
-    // this.controlStatusMenu.setEnabled(false);
-    this.add(viewMenu);
-    this.add(controlMenu);
-    
-    keyboardShortcutsMenu = new Menu("Shortcut");
-    // keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Del : Toggle Ignore
-    // Shortcut"));
-    // keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Tab : Toggle Suppress
-    // Shortcut"));
+    keyboardShortcutsMenu = new Menu("Key Shortcuts ");
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Backspace: Toggle Menu Bar"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Alt: Toggle Remote Control"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Space: Toggle Auto Scroll"));
@@ -55,7 +42,16 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+9: Receive Remote Clipboard"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+0: Send Local Clipboard"));
     
-    this.add(keyboardShortcutsMenu);
+    this.viewMenu = new VTGraphicsModeClientOptionsMenuBarViewMenu(writer);
+    this.controlMenu = new VTGraphicsModeClientOptionsMenuBarControlMenu(writer, keyboardShortcutsMenu);
+    // this.refreshStatusMenu = new Menu("Refresh");
+    // this.refreshStatusMenu.setEnabled(false);
+    // this.controlStatusMenu = new Menu("Command");
+    // this.controlStatusMenu.setEnabled(false);
+    this.add(viewMenu);
+    this.add(controlMenu);
+    
+    //this.add(keyboardShortcutsMenu);
     keyboardShortcutsMenu.setEnabled(true);
     
     monitorMenu = new Menu("");

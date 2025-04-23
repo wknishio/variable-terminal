@@ -14,17 +14,17 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
 {
   private static final long serialVersionUID = 1L;
   
-  private Menu textActionsMenu;
-  private MenuItem textActionCopyMenu;
-  private MenuItem textActionPasteMenu;
-  private MenuItem textActionAllMenu;
+  private Menu editMenu;
+  private MenuItem editCopyMenu;
+  private MenuItem editPasteMenu;
+  private MenuItem editAllMenu;
   
-  private Menu sizesMenu;
-  private MenuItem sizesExpandMenu;
-  private MenuItem sizesReduceMenu;
-  private MenuItem sizesRepackMenu;
-  private MenuItem sizesDefaultMenu;
-  private MenuItem sizesBold;
+  private Menu viewMenu;
+  private MenuItem viewExpandMenu;
+  private MenuItem viewReduceMenu;
+  private MenuItem viewRepackMenu;
+  private MenuItem viewDefaultMenu;
+  private MenuItem viewBold;
   
   private Menu keyboardShortcutsMenu;
   
@@ -58,6 +58,19 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
   
   public void addBaseMenus()
   {
+    keyboardShortcutsMenu = new Menu("Shortcuts ");
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+C: Quit Application"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+X: Toggle Insert/Replace"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Z: Toggle Resume/Pause"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert: Copy Selected"));
+    keyboardShortcutsMenu.add(new MenuItem("Shift+Insert: Paste Selected"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace: Select All"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp: Expand View"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown: Reduce View"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+End: Bold View"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home: Pack View"));
+    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Delete: Reset View"));
+    
     inputToggleMenu = new MenuItem("Replace");
     inputToggleMenu.addActionListener(new ActionListener()
     {
@@ -78,12 +91,11 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     
-    textActionsMenu = new Menu("Edit");
+    editMenu = new Menu("Edit");
     
-    textActionCopyMenu = new MenuItem("Copy ");
-    textActionCopyMenu.addActionListener(new ActionListener()
+    editCopyMenu = new MenuItem("Copy ");
+    editCopyMenu.addActionListener(new ActionListener()
     {
-      
       public void actionPerformed(ActionEvent e)
       {
         console.requestFocus();
@@ -91,10 +103,9 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     
-    textActionPasteMenu = new MenuItem("Paste ");
-    textActionPasteMenu.addActionListener(new ActionListener()
+    editPasteMenu = new MenuItem("Paste ");
+    editPasteMenu.addActionListener(new ActionListener()
     {
-      
       public void actionPerformed(ActionEvent e)
       {
         console.requestFocus();
@@ -102,8 +113,8 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     
-    textActionAllMenu = new MenuItem("All ");
-    textActionAllMenu.addActionListener(new ActionListener()
+    editAllMenu = new MenuItem("Select All");
+    editAllMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
@@ -113,18 +124,20 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     
-    textActionsMenu.add(textActionCopyMenu);
-    textActionsMenu.add(textActionPasteMenu);
-    textActionsMenu.add(textActionAllMenu);
+    editMenu.add(keyboardShortcutsMenu);
+    editMenu.add(editCopyMenu);
+    editMenu.add(editCopyMenu);
+    editMenu.add(editPasteMenu);
+    editMenu.add(editAllMenu);
     
-    sizesMenu = new Menu("View");    
-    sizesExpandMenu = new MenuItem("Expand ");
-    sizesReduceMenu = new MenuItem("Reduce ");
-    sizesRepackMenu = new MenuItem("Pack ");
-    sizesBold = new MenuItem("Bold ");
-    sizesDefaultMenu = new MenuItem("Reset ");
+    viewMenu = new Menu("View");    
+    viewExpandMenu = new MenuItem("Expand ");
+    viewReduceMenu = new MenuItem("Reduce ");
+    viewRepackMenu = new MenuItem("Pack ");
+    viewBold = new MenuItem("Bold ");
+    viewDefaultMenu = new MenuItem("Reset ");
     
-    sizesExpandMenu.addActionListener(new ActionListener()
+    viewExpandMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
@@ -133,7 +146,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     
-    sizesReduceMenu.addActionListener(new ActionListener()
+    viewReduceMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
@@ -142,7 +155,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     
-    sizesBold.addActionListener(new ActionListener()
+    viewBold.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
@@ -155,11 +168,10 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
         {
           VTGlobalTextStyleManager.enableFontStyleBold();
         }
-//				VTGlobalTextStyleManager.packComponents();
       }
     });
     
-    sizesRepackMenu.addActionListener(new ActionListener()
+    viewRepackMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
@@ -168,7 +180,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     
-    sizesDefaultMenu.addActionListener(new ActionListener()
+    viewDefaultMenu.addActionListener(new ActionListener()
     {
       public void actionPerformed(ActionEvent e)
       {
@@ -177,12 +189,12 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     
-    sizesMenu.add(sizesExpandMenu);
-    sizesMenu.add(sizesReduceMenu);
-    sizesMenu.add(sizesBold);
-    sizesMenu.add(sizesRepackMenu);
-    sizesMenu.add(sizesDefaultMenu);
-    sizesMenu.setEnabled(true);
+    viewMenu.add(viewExpandMenu);
+    viewMenu.add(viewReduceMenu);
+    viewMenu.add(viewBold);
+    viewMenu.add(viewRepackMenu);
+    viewMenu.add(viewDefaultMenu);
+    viewMenu.setEnabled(true);
     
     inputStatusMenu = new Menu("Insert");
     inputStatusMenu.setEnabled(true);
@@ -192,24 +204,11 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     flushStatusMenu.setEnabled(true);
     flushStatusMenu.add(flushToggleMenu);
     
-    keyboardShortcutsMenu = new Menu("Shortcut");
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+C: Quit Application"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+X: Toggle Insert/Replace"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Z: Toggle Resume/Pause"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Insert: Copy Selected"));
-    keyboardShortcutsMenu.add(new MenuItem("Shift+Insert: Paste Selected"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Backspace: Select All"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgUp: Expand View"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+PgDown: Reduce View"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+End: Bold View"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Home: Pack View"));
-    keyboardShortcutsMenu.add(new MenuItem("Ctrl+Delete: Reset View"));
-    
-    this.add(textActionsMenu);
-    this.add(sizesMenu);
+    this.add(editMenu);
+    this.add(viewMenu);
     this.add(inputStatusMenu);
     this.add(flushStatusMenu);
-    this.add(keyboardShortcutsMenu);
+    //this.add(keyboardShortcutsMenu);
     keyboardShortcutsMenu.setEnabled(true);
     
     updateStatusMenu();
