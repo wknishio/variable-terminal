@@ -389,11 +389,15 @@ public final class VTLinkableDynamicMultiplexingInputStream
     
     private final OutputStream getOutputStream()
     {
+      if (directOutputStream != null)
+      {
+        return directOutputStream;
+      }
       if (bufferedOutputStream != null)
       {
         return bufferedOutputStream;
       }
-      return directOutputStream;
+      return null;
     }
     
     public final void setOutputStream(final OutputStream outputStream, final Closeable closeable)
@@ -466,22 +470,19 @@ public final class VTLinkableDynamicMultiplexingInputStream
       closed = true;
       compressedInputStream = null;
       compressedInputPipe = null;
+      if (directCloseable != null)
+      {
+        directCloseable.close();
+        directCloseable = null;
+      }
+      if (directOutputStream != null)
+      {
+        //directOutputStream.close();
+        directOutputStream = null;
+      }
       if (bufferedOutputStream != null)
       {
         bufferedOutputStream.close();
-      }
-      else
-      {
-        if (directCloseable != null)
-        {
-          directCloseable.close();
-          directCloseable = null;
-        }
-        if (directOutputStream != null)
-        {
-          //directOutputStream.close();
-          directOutputStream = null;
-        }
       }
       if (propagated.size() > 0)
       {

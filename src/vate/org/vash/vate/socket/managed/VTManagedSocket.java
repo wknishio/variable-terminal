@@ -1,6 +1,7 @@
 package org.vash.vate.socket.managed;
 
 import java.io.BufferedInputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -84,6 +85,11 @@ public class VTManagedSocket extends Socket
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number) throws IOException
   {
     return connection.getOutputStream(type, number);
+  }
+  
+  public void setInputStreamOutputStream(int type, int number, OutputStream outputStream, Closeable closeable)
+  {
+    connection.setInputStreamOutputStream(type, number, outputStream, closeable);
   }
   
   public InputStream createBufferedInputStream(int number)

@@ -1,6 +1,7 @@
 package org.vash.vate.socket.managed;
 
 import java.io.BufferedInputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -93,6 +94,11 @@ public class VTManagedClientSocket
       }
       VTLinkableDynamicMultiplexedOutputStream stream = connection.getMultiplexedConnectionOutputStream().linkOutputStream(type, connection.getAvailableOutputChannel() + number);
       return stream;
+    }
+    
+    public void setInputStreamOutputStream(int type, int number, OutputStream outputStream, Closeable closeable)
+    {
+      getInputStream(type, number).setOutputStream(outputStream, closeable);
     }
     
     public Class<VTClientSession> getSessionClass()
