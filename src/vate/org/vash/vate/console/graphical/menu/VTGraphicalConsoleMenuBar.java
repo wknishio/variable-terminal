@@ -124,8 +124,6 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     
-    editMenu.add(keyboardShortcutsMenu);
-    editMenu.add(editCopyMenu);
     editMenu.add(editCopyMenu);
     editMenu.add(editPasteMenu);
     editMenu.add(editAllMenu);
@@ -189,6 +187,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       }
     });
     
+    viewMenu.add(keyboardShortcutsMenu);
     viewMenu.add(viewExpandMenu);
     viewMenu.add(viewReduceMenu);
     viewMenu.add(viewBold);
@@ -204,8 +203,8 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
     flushStatusMenu.setEnabled(true);
     flushStatusMenu.add(flushToggleMenu);
     
-    this.add(editMenu);
     this.add(viewMenu);
+    this.add(editMenu);
     this.add(inputStatusMenu);
     this.add(flushStatusMenu);
     //this.add(keyboardShortcutsMenu);
@@ -261,5 +260,10 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       inputStatusMenu.setLabel("Insert");
       inputToggleMenu.setLabel("Replace");
     }
+  }
+  
+  public Menu getKeyboardShortcutsMenu()
+  {
+    return keyboardShortcutsMenu;
   }
 }

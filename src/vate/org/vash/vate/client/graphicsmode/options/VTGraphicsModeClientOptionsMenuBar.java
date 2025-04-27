@@ -21,7 +21,7 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
   public VTGraphicsModeClientOptionsMenuBar(VTGraphicsModeClientWriter writer, Frame frame)
   {
     // this.setFont(new Font("Dialog", Font.PLAIN, 12));
-    keyboardShortcutsMenu = new Menu("Key Shortcuts ");
+    keyboardShortcutsMenu = new Menu("Shortcut Bindings ");
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Backspace: Toggle Menu Bar"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Alt: Toggle Remote Control"));
     keyboardShortcutsMenu.add(new MenuItem("Ctrl+Shift+Space: Toggle Auto Scroll"));
