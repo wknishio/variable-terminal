@@ -31,10 +31,12 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   private final VTXXHash64MessageDigest packetSeed;
   @SuppressWarnings("unused")
   private final ExecutorService executorService;
+  private final boolean server;
   private long transferredBytes = 0;
   
-  public VTLinkableDynamicMultiplexingOutputStream(final OutputStream out, final int packetSize, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
+  public VTLinkableDynamicMultiplexingOutputStream(final OutputStream out, final int packetSize, boolean server, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
   {
+    this.server = server;
     this.packetSeed = packetSeed;
     this.executorService = executorService;
     this.throttler = new NanoThrottle(Long.MAX_VALUE, (1d / 8d), true);
@@ -72,7 +74,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       return stream;
     }
     // search for a multiplexed outputstream that has no link
-    stream = getOutputStream(type);
+    stream = searchOutputStream(type);
     if (stream != null && stream.getLink() == null)
     {
       stream.setLink(link);
@@ -138,7 +140,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     return stream;
   }
   
-  private synchronized final VTLinkableDynamicMultiplexedOutputStream getOutputStream(final int type)
+  private synchronized final VTLinkableDynamicMultiplexedOutputStream searchOutputStream(final int type)
   {
     VTLinkableDynamicMultiplexedOutputStream stream = null;
     Map<Integer, VTLinkableDynamicMultiplexedOutputStream> channelMap;
@@ -160,7 +162,16 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     {
       channelMap = directChannels;
     }
-    for (int number = 0; number < 16777216; number++)
+    int start;
+    if (server)
+    {
+      start = 1;
+    }
+    else
+    {
+      start = 0;
+    }
+    for (int number = start; number < 16777216; number += 2)
     {
       stream = channelMap.get(number);
       if (stream != null && stream.getLink() == null)

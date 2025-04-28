@@ -22,29 +22,29 @@ public class VTTunnelRemoteSocketFactory extends VTRemoteSocketFactory
   {
     if (proxies != null && proxies.length >= 1)
     {
-      return socketBuilder.connect(bind, host, port, connectTimeout, dataTimeout, proxies[0]);
+      return socketBuilder.connectSocket(bind, host, port, connectTimeout, dataTimeout, proxies[0]);
     }
-    return socketBuilder.connect(bind, host, port, connectTimeout, dataTimeout, PROXY_NONE);
+    return socketBuilder.connectSocket(bind, host, port, connectTimeout, dataTimeout, PROXY_NONE);
   }
   
   public Socket acceptSocket(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException
   {
-    return socketBuilder.accept(bind, host, port, connectTimeout, dataTimeout);
-  }
-  
-  public DatagramSocket createSocket(String host, int port, int dataTimeout) throws IOException
-  {
-    return socketBuilder.create(host, port, dataTimeout);
+    return socketBuilder.acceptSocket(bind, host, port, connectTimeout, dataTimeout);
   }
   
   public ServerSocket bindSocket(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException
   {
-    return socketBuilder.bind(bind, host, port, connectTimeout, dataTimeout);
+    return socketBuilder.bindSocket(bind, host, port, connectTimeout, dataTimeout);
   }
   
   public void unbindSocket(String bind) throws IOException
   {
-    socketBuilder.unbind(bind);
+    socketBuilder.unbindSocket(bind);
+  }
+  
+  public DatagramSocket createSocket(String host, int port, int dataTimeout) throws IOException
+  {
+    return socketBuilder.createSocket(host, port, dataTimeout);
   }
   
 //  public DatagramSocket createSocket(InetAddress address, int port, int dataTimeout) throws IOException

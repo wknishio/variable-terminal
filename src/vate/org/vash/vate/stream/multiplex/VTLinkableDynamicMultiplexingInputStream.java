@@ -35,10 +35,12 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> directChannels;
   private final VTXXHash64MessageDigest packetSeed;
   private final ExecutorService executorService;
+  private final boolean server;
   private long transferredBytes = 0;
   
-  public VTLinkableDynamicMultiplexingInputStream(final InputStream in, final int packetSize, final int bufferSize, final boolean startPacketReader, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
+  public VTLinkableDynamicMultiplexingInputStream(final InputStream in, final int packetSize, final int bufferSize, boolean server, final boolean startPacketReader, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
   {
+    this.server = server;
     this.packetSeed = packetSeed;
     this.executorService = executorService;
     this.bufferSize = bufferSize;
@@ -80,7 +82,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       return stream;
     }
     // search for a multiplexed outputstream that has no link
-    stream = getInputStream(type);
+    stream = searchInputStream(type);
     if (stream != null && stream.getLink() == null)
     {
       stream.setLink(link);
@@ -134,7 +136,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     return stream;
   }
   
-  private synchronized final VTLinkableDynamicMultiplexedInputStream getInputStream(final int type)
+  private synchronized final VTLinkableDynamicMultiplexedInputStream searchInputStream(final int type)
   {
     VTLinkableDynamicMultiplexedInputStream stream = null;
     Map<Integer, VTLinkableDynamicMultiplexedInputStream> channelMap;
@@ -146,7 +148,16 @@ public final class VTLinkableDynamicMultiplexingInputStream
     {
       channelMap = directChannels;
     }
-    for (int number = 0; number < 16777216; number++)
+    int start;
+    if (server)
+    {
+      start = 1;
+    }
+    else
+    {
+      start = 0;
+    }
+    for (int number = start; number < 16777216; number += 2)
     {
       stream = channelMap.get(number);
       if (stream != null && stream.getLink() == null)

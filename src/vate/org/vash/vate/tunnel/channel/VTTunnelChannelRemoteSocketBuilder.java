@@ -47,7 +47,7 @@ public class VTTunnelChannelRemoteSocketBuilder
 //    return connect(channelType, host, port, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword(), null);
 //  }
   
-  public Socket connect(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy) throws IOException
+  public Socket connectSocket(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxy proxy) throws IOException
   {
     if (host == null)
     {
@@ -59,12 +59,12 @@ public class VTTunnelChannelRemoteSocketBuilder
     }
     if (proxy == null)
     {
-      return connect(bind, host, port, connectTimeout, dataTimeout, PROXY_NONE.getProxyType(), PROXY_NONE.getProxyHost(), PROXY_NONE.getProxyPort(), PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
+      return connectSocket(bind, host, port, connectTimeout, dataTimeout, PROXY_NONE.getProxyType(), PROXY_NONE.getProxyHost(), PROXY_NONE.getProxyPort(), PROXY_NONE.getProxyUser(), PROXY_NONE.getProxyPassword());
     }
-    return connect(bind, host, port, connectTimeout, dataTimeout, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
+    return connectSocket(bind, host, port, connectTimeout, dataTimeout, proxy.getProxyType(), proxy.getProxyHost(), proxy.getProxyPort(), proxy.getProxyUser(), proxy.getProxyPassword());
   }
   
-  public Socket connect(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
+  public Socket connectSocket(String bind, String host, int port, int connectTimeout, int dataTimeout, VTProxyType proxyType, String proxyHost, int proxyPort, String proxyUser, String proxyPassword) throws IOException
   {
     if (host == null)
     {
@@ -161,7 +161,7 @@ public class VTTunnelChannelRemoteSocketBuilder
     throw new IOException("Failed to connect remotely using: host " + host + " port " + port + "");
   }
   
-  public Socket accept(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException
+  public Socket acceptSocket(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException
   {
     if (host == null)
     {
@@ -248,7 +248,7 @@ public class VTTunnelChannelRemoteSocketBuilder
     throw new IOException("Failed to accept remotely using: host " + host + " port " + port + "");
   }
   
-  public ServerSocket bind(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException
+  public ServerSocket bindSocket(String bind, String host, int port, int connectTimeout, int dataTimeout) throws IOException
   {
     if (host == null)
     {
@@ -326,7 +326,7 @@ public class VTTunnelChannelRemoteSocketBuilder
     throw new IOException("Failed to bind remotely using: host " + host + " port " + port + "");
   }
   
-  public void unbind(String bind) throws IOException
+  public void unbindSocket(String bind) throws IOException
   {
     if (bind == null)
     {
@@ -365,7 +365,7 @@ public class VTTunnelChannelRemoteSocketBuilder
 //    return create(address.getHostAddress(), port, dataTimeout);
 //  }
   
-  public DatagramSocket create(String host, int port, int dataTimeout) throws IOException
+  public DatagramSocket createSocket(String host, int port, int dataTimeout) throws IOException
   {
     if (host == null)
     {

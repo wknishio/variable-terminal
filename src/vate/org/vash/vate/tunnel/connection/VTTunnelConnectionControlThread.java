@@ -312,82 +312,6 @@ public class VTTunnelConnectionControlThread implements Runnable
                   connection.getControlOutputStream().flush();
                 }
               }
-              else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_FTP)
-              {
-                String bind = parts[5];
-                String username = parts[6];
-                String password = parts[7];
-                String proxyTypeLetter = parts[8];
-                String proxyHost = parts[9];
-                int proxyPort = Integer.parseInt(parts[10]);
-                String proxyUser = parts[11];
-                String proxyPassword = parts[12];
-                
-                if (parts.length > 13 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[13].equals("*"))
-                {
-                  proxyUser = null;
-                  proxyPassword = null;
-                }
-                
-                VTProxyType proxyType = VTProxyType.GLOBAL;
-                if (proxyTypeLetter.toUpperCase().startsWith("G"))
-                {
-                  proxyType = VTProxyType.GLOBAL;
-                }
-                else if (proxyTypeLetter.toUpperCase().startsWith("D"))
-                {
-                  proxyType = VTProxyType.DIRECT;
-                }
-                else if (proxyTypeLetter.toUpperCase().startsWith("H"))
-                {
-                  proxyType = VTProxyType.HTTP;
-                }
-                else if (proxyTypeLetter.toUpperCase().startsWith("S"))
-                {
-                  proxyType = VTProxyType.SOCKS;
-                }
-                else if (proxyTypeLetter.toUpperCase().startsWith("P"))
-                {
-                  proxyType = VTProxyType.PLUS;
-                }
-                VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
-                
-                VTTunnelSession session = new VTTunnelSession(connection, false);
-                VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(null);
-                session.setSocket(pipedSocket);
-                VTTunnelFTPSessionHandler handler = new VTTunnelFTPSessionHandler(session, connection.getResponseChannel(channelType), username, password, bind, connectTimeout, dataTimeout, proxy);
-                
-                VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
-                VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
-                
-                if (output != null && input != null)
-                {
-                  pipedSocket.setOutputStream(output);
-                  session.setSocketInputStream(pipedSocket.getInputStream());
-                  session.setSocketOutputStream(pipedSocket.getOutputStream());
-                  
-                  input.setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
-                  output.open();
-                  
-                  session.setTunnelInputStream(input);
-                  session.setTunnelOutputStream(output);
-                  // response message sent with ok
-                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
-                  connection.getControlOutputStream().flush();
-                  connection.getExecutorService().execute(handler);
-                  session.setResult(true);
-                }
-                else
-                {
-                  if (handler != null)
-                  {
-                    handler.close();
-                  }
-                  // response message sent with error
-                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
-                  connection.getControlOutputStream().flush();
-                }
-              }
               else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_UDP)
               {
                 //final String bind = parts[5];
@@ -485,7 +409,82 @@ public class VTTunnelConnectionControlThread implements Runnable
                   connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
                   connection.getControlOutputStream().flush();
                 }
+              }
+              else if (tunnelType == VTTunnelChannel.TUNNEL_TYPE_FTP)
+              {
+                String bind = parts[5];
+                String username = parts[6];
+                String password = parts[7];
+                String proxyTypeLetter = parts[8];
+                String proxyHost = parts[9];
+                int proxyPort = Integer.parseInt(parts[10]);
+                String proxyUser = parts[11];
+                String proxyPassword = parts[12];
                 
+                if (parts.length > 13 && proxyUser.equals("*") && proxyPassword.equals("*") && parts[13].equals("*"))
+                {
+                  proxyUser = null;
+                  proxyPassword = null;
+                }
+                
+                VTProxyType proxyType = VTProxyType.GLOBAL;
+                if (proxyTypeLetter.toUpperCase().startsWith("G"))
+                {
+                  proxyType = VTProxyType.GLOBAL;
+                }
+                else if (proxyTypeLetter.toUpperCase().startsWith("D"))
+                {
+                  proxyType = VTProxyType.DIRECT;
+                }
+                else if (proxyTypeLetter.toUpperCase().startsWith("H"))
+                {
+                  proxyType = VTProxyType.HTTP;
+                }
+                else if (proxyTypeLetter.toUpperCase().startsWith("S"))
+                {
+                  proxyType = VTProxyType.SOCKS;
+                }
+                else if (proxyTypeLetter.toUpperCase().startsWith("P"))
+                {
+                  proxyType = VTProxyType.PLUS;
+                }
+                VTProxy proxy = new VTProxy(proxyType, proxyHost, proxyPort, proxyUser, proxyPassword);
+                
+                VTTunnelSession session = new VTTunnelSession(connection, false);
+                VTTunnelPipedSocket pipedSocket = new VTTunnelPipedSocket(null);
+                session.setSocket(pipedSocket);
+                VTTunnelFTPSessionHandler handler = new VTTunnelFTPSessionHandler(session, connection.getResponseChannel(channelType), username, password, bind, connectTimeout, dataTimeout, proxy);
+                
+                VTLinkableDynamicMultiplexedInputStream input = connection.getInputStream(channelType, inputNumber, handler);
+                VTLinkableDynamicMultiplexedOutputStream output = connection.getOutputStream(channelType, outputNumber, handler);
+                
+                if (output != null && input != null)
+                {
+                  pipedSocket.setOutputStream(output);
+                  session.setSocketInputStream(pipedSocket.getInputStream());
+                  session.setSocketOutputStream(pipedSocket.getOutputStream());
+                  
+                  input.setOutputStream(pipedSocket.getInputStreamSource(), pipedSocket);
+                  output.open();
+                  
+                  session.setTunnelInputStream(input);
+                  session.setTunnelOutputStream(output);
+                  // response message sent with ok
+                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + outputNumber).getBytes("UTF-8"));
+                  connection.getControlOutputStream().flush();
+                  connection.getExecutorService().execute(handler);
+                  session.setResult(true);
+                }
+                else
+                {
+                  if (handler != null)
+                  {
+                    handler.close();
+                  }
+                  // response message sent with error
+                  connection.getControlOutputStream().writeData(("U" + SESSION_MARK + tunnelType + channelType + SESSION_SEPARATOR + inputNumber + SESSION_SEPARATOR + "-1").getBytes("UTF-8"));
+                  connection.getControlOutputStream().flush();
+                }
               }
               else
               {
