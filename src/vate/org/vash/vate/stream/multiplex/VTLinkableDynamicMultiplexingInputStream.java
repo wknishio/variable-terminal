@@ -12,6 +12,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.vash.vate.VT;
 import org.vash.vate.security.VTSplitMix64Random;
@@ -36,7 +37,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private final VTXXHash64MessageDigest packetSeed;
   private final ExecutorService executorService;
   private final boolean server;
-  private volatile long transferredBytes = 0;
+  private AtomicLong transferredBytes = new AtomicLong(0);
   
   public VTLinkableDynamicMultiplexingInputStream(final InputStream in, final int packetSize, final int bufferSize, boolean server, final boolean startPacketReader, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
   {
@@ -57,12 +58,12 @@ public final class VTLinkableDynamicMultiplexingInputStream
   
   public long getTransferredBytes()
   {
-    return transferredBytes;
+    return transferredBytes.get();
   }
   
   public void resetTransferredBytes()
   {
-    transferredBytes = 0;
+    transferredBytes.set(0);
   }
   
   public synchronized final VTLinkableDynamicMultiplexedInputStream linkInputStream(final int type, final Object link)
@@ -281,17 +282,17 @@ public final class VTLinkableDynamicMultiplexingInputStream
         {
           //e.printStackTrace();
         }
-        transferredBytes += VT.VT_PACKET_HEADER_SIZE_BYTES + length;
+        transferredBytes.addAndGet(VT.VT_PACKET_HEADER_SIZE_BYTES + length);
       }
       else if (length == -2)
       {
         close(type, number);
-        transferredBytes += VT.VT_PACKET_HEADER_SIZE_BYTES;
+        transferredBytes.addAndGet(VT.VT_PACKET_HEADER_SIZE_BYTES);
       }
       else if (length == -3)
       {
         open(type, number);
-        transferredBytes += VT.VT_PACKET_HEADER_SIZE_BYTES;
+        transferredBytes.addAndGet(VT.VT_PACKET_HEADER_SIZE_BYTES);
       }
       else
       {

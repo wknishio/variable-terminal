@@ -110,7 +110,7 @@ public class VTDataMonitorService extends VTTask implements VTNanoPingListener
       }
       differenceInput = (currentInput - lastInput);
       differenceOutput = (currentOutput - lastOutput);
-      String message = "Rx: " + humanReadableByteCount(differenceInput) + "/s Tx: " + humanReadableByteCount(differenceOutput) + "/s";
+      String message = "Tx: " + humanReadableByteCount(differenceOutput) + "/s Rx: " + humanReadableByteCount(differenceInput) + "/s";
       if (monitorMilliDelay >= 0)
       {
         message += " Rtt: " + monitorMilliDelay + " ms";

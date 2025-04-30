@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.vash.vate.VT;
 import org.vash.vate.security.VTSplitMix64Random;
@@ -32,7 +33,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   @SuppressWarnings("unused")
   private final ExecutorService executorService;
   private final boolean server;
-  private volatile long transferredBytes = 0;
+  private AtomicLong transferredBytes = new AtomicLong(0);
   
   public VTLinkableDynamicMultiplexingOutputStream(final OutputStream out, final int packetSize, boolean server, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
   {
@@ -49,12 +50,12 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   
   public long getTransferredBytes()
   {
-    return transferredBytes;
+    return transferredBytes.get();
   }
   
   public void resetTransferredBytes()
   {
-    transferredBytes = 0;
+    transferredBytes.set(0);
   }
   
   public synchronized final VTLinkableDynamicMultiplexedOutputStream linkOutputStream(final int type, final Object link)
@@ -455,7 +456,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
       output.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
       output.flush();
-      transferredBytes += dataPacketBuffer.count();
+      transferredBytes.addAndGet(dataPacketBuffer.count());
     }
     
     private synchronized final void writeClosePacket(final int type, final int number) throws IOException
@@ -467,7 +468,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       controlPacketStream.writeInt(-2);
       control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
       control.flush();
-      transferredBytes += VT.VT_PACKET_HEADER_SIZE_BYTES;
+      transferredBytes.addAndGet(VT.VT_PACKET_HEADER_SIZE_BYTES);
     }
     
     private synchronized final void writeOpenPacket(final int type, final int number) throws IOException
@@ -479,7 +480,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       controlPacketStream.writeInt(-3);
       control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
       control.flush();
-      transferredBytes += VT.VT_PACKET_HEADER_SIZE_BYTES;
+      transferredBytes.addAndGet(VT.VT_PACKET_HEADER_SIZE_BYTES);
     }
   }
 }
