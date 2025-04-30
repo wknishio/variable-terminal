@@ -32,7 +32,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   @SuppressWarnings("unused")
   private final ExecutorService executorService;
   private final boolean server;
-  private long transferredBytes = 0;
+  private volatile long transferredBytes = 0;
   
   public VTLinkableDynamicMultiplexingOutputStream(final OutputStream out, final int packetSize, boolean server, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
   {

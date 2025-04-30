@@ -36,7 +36,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private final VTXXHash64MessageDigest packetSeed;
   private final ExecutorService executorService;
   private final boolean server;
-  private long transferredBytes = 0;
+  private volatile long transferredBytes = 0;
   
   public VTLinkableDynamicMultiplexingInputStream(final InputStream in, final int packetSize, final int bufferSize, boolean server, final boolean startPacketReader, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
   {

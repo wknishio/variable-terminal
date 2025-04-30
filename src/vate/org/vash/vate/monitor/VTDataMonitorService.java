@@ -7,9 +7,10 @@ import java.util.Locale;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
+import org.vash.vate.ping.VTNanoPingListener;
 import org.vash.vate.task.VTTask;
 
-public class VTDataMonitorService extends VTTask
+public class VTDataMonitorService extends VTTask implements VTNanoPingListener
 {
   private volatile long currentInput;
   private volatile long currentOutput;
@@ -19,6 +20,8 @@ public class VTDataMonitorService extends VTTask
   private volatile long lastOutput;
   private volatile long differenceInput;
   private volatile long differenceOutput;
+  private volatile long monitorNanoDelay = -1;
+  private volatile long monitorMilliDelay = -1;
   private final ConcurrentLinkedQueue<VTDataMonitorConnection> connections = new ConcurrentLinkedQueue<VTDataMonitorConnection>();
   private final ConcurrentLinkedQueue<VTDataMonitorPanel> panels = new ConcurrentLinkedQueue<VTDataMonitorPanel>();
       
@@ -107,7 +110,11 @@ public class VTDataMonitorService extends VTTask
       }
       differenceInput = (currentInput - lastInput);
       differenceOutput = (currentOutput - lastOutput);
-      String message = "Tx: " + humanReadableByteCount(differenceOutput) + "/s Rx: " + humanReadableByteCount(differenceInput) + "/s";
+      String message = "Rx: " + humanReadableByteCount(differenceInput) + "/s Tx: " + humanReadableByteCount(differenceOutput) + "/s";
+      if (monitorMilliDelay >= 0)
+      {
+        message += " Rtt: " + monitorMilliDelay + " ms";
+      }
       for (VTDataMonitorPanel panel : panels)
       {
         try
@@ -163,5 +170,11 @@ public class VTDataMonitorService extends VTTask
       ci.next();
     }
     return String.format(Locale.US, "%07.3f %cB", bytes, ci.current());
+  }
+  
+  public void pingObtained(long nanoDelay)
+  {
+    monitorNanoDelay = nanoDelay;
+    monitorMilliDelay = monitorNanoDelay / 1000000;
   }
 }
