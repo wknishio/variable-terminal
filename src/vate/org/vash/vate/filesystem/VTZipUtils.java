@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.channels.Channels;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -52,7 +51,7 @@ public class VTZipUtils
     VTZipOutputStream zipWriter = null;
     try
     {
-      fileStream = Channels.newOutputStream(new FileOutputStream(zipArchive).getChannel());
+      fileStream = new FileOutputStream(zipArchive);
       zipWriter = new VTZipOutputStream(fileStream);
       zipWriter.setLevel(level);
       zipWriter.setStrategy(strategy);
@@ -175,7 +174,7 @@ public class VTZipUtils
       {
         return false;
       }
-      fileInputStream = Channels.newInputStream(new FileInputStream(file).getChannel());
+      fileInputStream = new FileInputStream(file);
       ZipEntry fileEntry = new ZipEntry(currentPath + file.getName());
       // may treat timestamps here
       zipWriter.putNextEntry(fileEntry);
@@ -229,7 +228,7 @@ public class VTZipUtils
     ZipInputStream zipReader = null;
     try
     {
-      fileStream = Channels.newInputStream(new FileInputStream(file).getChannel());
+      fileStream = new FileInputStream(file);
       zipReader = new ZipInputStream(fileStream);
       ZipEntry zipEntry;
       while ((zipEntry = zipReader.getNextEntry()) != null)
@@ -314,7 +313,7 @@ public class VTZipUtils
     OutputStream fileOutputStream = null;
     try
     {
-      fileOutputStream = Channels.newOutputStream(new FileOutputStream(tempFile).getChannel());
+      fileOutputStream = new FileOutputStream(tempFile);
       int readBytes;
       while ((readBytes = zipReader.read(readBuffer)) > 0)
       {
