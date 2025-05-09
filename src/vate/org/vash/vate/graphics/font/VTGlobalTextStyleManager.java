@@ -559,6 +559,7 @@ public class VTGlobalTextStyleManager
         if (window instanceof Frame)
         {
           Frame frame = (Frame) window;
+          int frameState = frame.getExtendedState();
           MenuBar menubar = frame.getMenuBar();
           //frame.setMenuBar(null);
           //frame.invalidate();
@@ -570,23 +571,26 @@ public class VTGlobalTextStyleManager
           //frame.setMenuBar(menubar);
           //frame.invalidate();
           //frame.pack();
-          if (useDefaults && frame instanceof AWTTerminalFrame)
+          if ((frameState & Frame.MAXIMIZED_HORIZ) != 0 || (frameState & Frame.MAXIMIZED_VERT) != 0)
           {
-            ((AWTTerminalFrame) frame).resetTerminalSize();
+            frame.setExtendedState(Frame.NORMAL);
+            frame.setExtendedState(frameState);
+            frame.invalidate();
+            frame.validate();
           }
-          else if (frame instanceof AWTTerminalFrame)
+          else
           {
-            ((AWTTerminalFrame) frame).resetPaddingSize();
+            if (useDefaults && frame instanceof AWTTerminalFrame)
+            {
+              ((AWTTerminalFrame) frame).resetTerminalSize();
+            }
+            else if (frame instanceof AWTTerminalFrame)
+            {
+              ((AWTTerminalFrame) frame).resetPaddingSize();
+            }
+            frame.invalidate();
+            frame.pack();
           }
-          // if ((frameState & Frame.MAXIMIZED_BOTH) != 0)
-          // {
-          // frame.setBounds(frame.getBounds());
-          // frame.setExtendedState(Frame.NORMAL);
-          // frame.setBounds(frame.getGraphicsConfiguration().getDevice().getDefaultConfiguration().getBounds());
-          // frame.setLocation(frameLocation);
-          // }
-          frame.invalidate();
-          frame.pack();
         }
         if (window instanceof Dialog)
         {

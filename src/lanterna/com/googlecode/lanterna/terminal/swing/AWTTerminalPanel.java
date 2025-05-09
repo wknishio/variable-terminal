@@ -385,6 +385,7 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     paddingPanel.setMaximumSize(new Dimension(0, 0));
     paddingPanel.setPreferredSize(new Dimension(0, 0));
     paddingPanel.setSize(0, 0);
+    
     awtTerminal.invalidate();
   }
   
