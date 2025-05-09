@@ -624,7 +624,7 @@ public class VTLanternaConsole implements VTConsoleInstance
     // factory.setForceTextTerminal(true);
     if (graphical && frame != null)
     {
-      terminal = factory.createAWTTerminalPanel(new java.awt.Color(85, 85, 85));
+      terminal = factory.createAWTTerminalPanel(frame, new java.awt.Color(85, 85, 85));
     }
     else
     {
@@ -1149,7 +1149,7 @@ public class VTLanternaConsole implements VTConsoleInstance
           }
           if (keyStroke.getKeyType() == KeyType.Home)
           {
-            VTGlobalTextStyleManager.defaultComponentSize();
+            VTGlobalTextStyleManager.packComponentSize();
             return false;
           }
           if (keyStroke.getKeyType() == KeyType.End)
@@ -1398,7 +1398,7 @@ public class VTLanternaConsole implements VTConsoleInstance
           }
           if (keyStroke.getKeyType() == KeyType.Home && keyStroke.isCtrlDown())
           {
-            VTGlobalTextStyleManager.defaultComponentSize();
+            VTGlobalTextStyleManager.packComponentSize();
             return false;
           }
           if (keyStroke.getKeyType() == KeyType.End && keyStroke.isCtrlDown())

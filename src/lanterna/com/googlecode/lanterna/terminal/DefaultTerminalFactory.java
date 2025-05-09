@@ -27,6 +27,7 @@ import com.googlecode.lanterna.terminal.ansi.UnixLikeTTYTerminal;
 import com.googlecode.lanterna.terminal.ansi.UnixTerminal;
 import com.googlecode.lanterna.terminal.swing.*;
 
+import java.awt.Container;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.InputStream;
@@ -190,8 +191,8 @@ public class DefaultTerminalFactory implements TerminalFactory {
         return terminal;
     }
     
-    public AWTTerminalPanel createAWTTerminalPanel(java.awt.Color lastLineBackground) {
-      return new AWTTerminalPanel(
+    public AWTTerminalPanel createAWTTerminalPanel(Container parent, java.awt.Color lastLineBackground) {
+      return new AWTTerminalPanel(parent, 
           new AWTTerminal(initialTerminalSize, deviceConfiguration, fontConfiguration, colorConfiguration, lastLineBackground),
           autoCloseTriggers.toArray(new TerminalEmulatorAutoCloseTrigger[autoCloseTriggers.size()]));
   }

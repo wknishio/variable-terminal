@@ -2,9 +2,12 @@ package com.googlecode.lanterna.terminal.swing;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Panel;
 import java.awt.SystemColor;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.util.Arrays;
 import java.util.EnumSet;
 import java.util.concurrent.TimeUnit;
@@ -26,6 +29,8 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
   
   private Panel centerPanel;
   private Panel bottomPanel;
+  //private Panel topPanel;
+  private Panel paddingPanel;
   private Panel terminalPanel;
   private Panel spacerPanelNorth;
   private Panel spacerPanelSouth;
@@ -35,9 +40,13 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
   private boolean disposed;
   private TerminalSize defaultTerminalSize;
   private final EnumSet<TerminalEmulatorAutoCloseTrigger> autoCloseTriggers;
+  //private final AWTTerminalPanel itself;
+  //private final Container parent;
 
-  public AWTTerminalPanel(AWTTerminal awtTerminal, TerminalEmulatorAutoCloseTrigger... autoCloseTrigger)
+  public AWTTerminalPanel(final Container parent, final AWTTerminal awtTerminal, TerminalEmulatorAutoCloseTrigger... autoCloseTrigger)
   {
+    //this.itself = this;
+    //this.parent = parent;
     this.awtTerminal = awtTerminal;
     this.autoCloseTriggers = EnumSet.copyOf(Arrays.asList(autoCloseTrigger));
     
@@ -109,10 +118,75 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     
     centerPanel.add(terminalPanel, BorderLayout.CENTER);
     
+//    BorderLayout topLayout = new BorderLayout();
+//    topLayout.setHgap(0);
+//    topLayout.setVgap(0);
+//    topPanel = new Panel();
+//    topPanel.setLayout(topLayout);
+//    topPanel.setBackground(SystemColor.control);
+//    topPanel.setFocusable(false);
+    
+    paddingPanel = new Panel();
+    paddingPanel.setBackground(SystemColor.control);
+    paddingPanel.setFocusable(false);
+    paddingPanel.setMinimumSize(new Dimension(0, 0));
+    paddingPanel.setMaximumSize(new Dimension(0, 0));
+    paddingPanel.setPreferredSize(new Dimension(0, 0));
+    paddingPanel.setSize(0, 0);
+    
+    //topPanel.add(paddingPanel, BorderLayout.CENTER);
+    
     add(centerPanel, BorderLayout.CENTER);
     add(bottomPanel, BorderLayout.SOUTH);
+    add(paddingPanel, BorderLayout.NORTH);
     
     setBackground(Color.BLACK);
+    
+    if (parent != null)
+    {
+      parent.addComponentListener(new ComponentListener()
+      {
+        public void componentResized(ComponentEvent e) 
+        {
+          int fontHeight = awtTerminal.getTerminalImplementation().getFontHeight();
+          int terminalHeight = awtTerminal.getTerminalImplementation().getHeight();
+          int leftoverHeight = (terminalHeight + paddingPanel.getHeight()) % fontHeight;
+          
+          if (leftoverHeight != paddingPanel.getHeight())
+          {
+            paddingPanel.setMinimumSize(new Dimension(0, leftoverHeight));
+            paddingPanel.setMaximumSize(new Dimension(0, leftoverHeight));
+            paddingPanel.setPreferredSize(new Dimension(0, leftoverHeight));
+            paddingPanel.setSize(0, leftoverHeight);
+            parent.invalidate();
+            parent.validate();
+          }
+          else
+          {
+            
+          }
+        }
+        
+        public void componentMoved(ComponentEvent e)
+        {
+          
+        }
+        
+        public void componentShown(ComponentEvent e)
+        {
+          
+        }
+        
+        public void componentHidden(ComponentEvent e)
+        {
+          
+        }
+      });
+    }
+    else
+    {
+      
+    }
   }
   
   public Panel getBottomPanel()
@@ -125,7 +199,8 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     return centerPanel;
   }
 
-  public void setSpacerBackgroundColor(java.awt.Color color) {
+  public void setSpacerBackgroundColor(java.awt.Color color)
+  {
     spacerPanelNorth.setBackground(color);
     spacerPanelSouth.setBackground(color);
     spacerPanelWest.setBackground(color);
@@ -291,10 +366,26 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
   
   public void resetTerminalSize()
   {
+    paddingPanel.setMinimumSize(new Dimension(0, 0));
+    paddingPanel.setMaximumSize(new Dimension(0, 0));
+    paddingPanel.setPreferredSize(new Dimension(0, 0));
+    paddingPanel.setSize(0, 0);
+    
     if (defaultTerminalSize != null)
     {
       awtTerminal.getTerminalImplementation().setTerminalSize(defaultTerminalSize);
     }
+    
+    awtTerminal.invalidate();
+  }
+  
+  public void resetPaddingSize()
+  {
+    paddingPanel.setMinimumSize(new Dimension(0, 0));
+    paddingPanel.setMaximumSize(new Dimension(0, 0));
+    paddingPanel.setPreferredSize(new Dimension(0, 0));
+    paddingPanel.setSize(0, 0);
+    awtTerminal.invalidate();
   }
   
   //public TerminalSize getTerminalSize()
@@ -308,28 +399,28 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
 //    return scrollpane;
 //  }
 
-public TerminalPosition getSelectionStartPosition()
-{
-  return awtTerminal.getSelectionStartPosition();
-}
-
-public void setSelectionStartPosition(TerminalPosition position)
-{
-  awtTerminal.setSelectionStartPosition(position);
-}
-
-public TerminalPosition getSelectionEndPosition()
-{
-  return awtTerminal.getSelectionEndPosition();
-}
-
-public void setSelectionEndPosition(TerminalPosition position)
-{
-  awtTerminal.setSelectionEndPosition(position);
-}
-
-public void putString(String string) {
-      awtTerminal.putString(string);
+  public TerminalPosition getSelectionStartPosition()
+  {
+    return awtTerminal.getSelectionStartPosition();
   }
-
+  
+  public void setSelectionStartPosition(TerminalPosition position)
+  {
+    awtTerminal.setSelectionStartPosition(position);
+  }
+  
+  public TerminalPosition getSelectionEndPosition()
+  {
+    return awtTerminal.getSelectionEndPosition();
+  }
+  
+  public void setSelectionEndPosition(TerminalPosition position)
+  {
+    awtTerminal.setSelectionEndPosition(position);
+  }
+  
+  public void putString(String string)
+  {
+    awtTerminal.putString(string);
+  }
 }

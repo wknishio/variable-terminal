@@ -126,7 +126,7 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
 //        frameLayout.setVgap(0);
 //        setLayout(frameLayout);
         
-        terminalPanel = new AWTTerminalPanel(awtTerminal, autoCloseTrigger);
+        terminalPanel = new AWTTerminalPanel(this, awtTerminal, autoCloseTrigger);
         
         add(terminalPanel);
         
@@ -134,6 +134,69 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
         pack();
         //initialSize = this.getPreferredSize();
         //Put input focus on the terminal component by default
+        
+//        this.addWindowListener(new WindowListener()
+//        {
+//          public void windowOpened(WindowEvent e)
+//          {
+//            
+//          }
+//          
+//          public void windowClosing(WindowEvent e)
+//          {
+//            
+//          }
+//          
+//          public void windowClosed(WindowEvent e)
+//          {
+//            
+//          }
+//          
+//          public void windowIconified(WindowEvent e)
+//          {
+//            
+//          }
+//          
+//          public void windowDeiconified(WindowEvent e)
+//          {
+//            
+//          }
+//          
+//          public void windowActivated(WindowEvent e)
+//          {
+//            
+//          }
+//          
+//          public void windowDeactivated(WindowEvent e)
+//          {
+//            
+//          }
+//          
+//        });
+//        
+//        this.addComponentListener(new ComponentListener()
+//        {
+//          public void componentResized(ComponentEvent e)
+//          {
+//            //terminalPanel.resetPaddingSize();
+//          }
+//          
+//          public void componentMoved(ComponentEvent e)
+//          {
+//            
+//          }
+//          
+//          public void componentShown(ComponentEvent e)
+//          {
+//            
+//          }
+//          
+//          public void componentHidden(ComponentEvent e)
+//          {
+//            
+//          }
+//        });
+        
         awtTerminal.requestFocusInWindow();
     }
     
@@ -330,14 +393,22 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
     public void setDefaultTerminalSize(TerminalSize size)
     {
     	this.defaultTerminalSize = size;
+    	this.terminalPanel.setDefaultTerminalSize(size);
     }
     
     public void resetTerminalSize()
     {
-    	if (defaultTerminalSize != null)
-    	{
-    		awtTerminal.getTerminalImplementation().setTerminalSize(defaultTerminalSize);
-    	}
+      if (defaultTerminalSize != null)
+      {
+        awtTerminal.getTerminalImplementation().setTerminalSize(defaultTerminalSize);
+      }
+      
+      this.terminalPanel.resetTerminalSize();
+    }
+    
+    public void resetPaddingSize()
+    {
+      this.terminalPanel.resetPaddingSize();
     }
     
     //public TerminalSize getTerminalSize()

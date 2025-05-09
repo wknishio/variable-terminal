@@ -41,14 +41,14 @@ public class VTGlobalTextStyleManager
   public static Font CUSTOM_MONOSPACED_FONT_BOLD;
   
   private static Font windowFont;
-  private static Font windowFontPlain;
-  private static Font windowFontBold;
+  //private static Font windowFontPlain;
+  //private static Font windowFontBold;
   private static Font inputFont;
-  private static Font inputFontPlain;
-  private static Font inputFontBold;
+  //private static Font inputFontPlain;
+  //private static Font inputFontBold;
   private static Font monospacedFont;
-  private static Font monospacedFontPlain;
-  private static Font monospacedFontBold;
+  //private static Font monospacedFontPlain;
+  //private static Font monospacedFontBold;
   private static Font customMonospacedFont;
   private static Font customMonospacedFontPlain;
   private static Font customMonospacedFontBold;
@@ -210,16 +210,16 @@ public class VTGlobalTextStyleManager
     }
     
     monospacedFont = Font.decode("Monospaced").deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
-    monospacedFontPlain = monospacedFont;
-    monospacedFontBold = monospacedFont.deriveFont(Font.BOLD, monospacedFontPlain.getSize2D());
+    //monospacedFontPlain = monospacedFont;
+    //monospacedFontBold = monospacedFont.deriveFont(Font.BOLD, monospacedFontPlain.getSize2D());
     
     windowFont = Font.decode("Dialog").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 1F, FONT_SCALING_FACTOR_DIALOG));
-    windowFontPlain = windowFont;
-    windowFontBold = windowFont.deriveFont(Font.BOLD, windowFontPlain.getSize2D());
+    //windowFontPlain = windowFont;
+    //windowFontBold = windowFont.deriveFont(Font.BOLD, windowFontPlain.getSize2D());
     
     inputFont = Font.decode("DialogInput").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 1F, FONT_SCALING_FACTOR_DIALOG));
-    inputFontPlain = inputFont;
-    inputFontBold = inputFont.deriveFont(Font.BOLD, inputFontPlain.getSize2D());
+    //inputFontPlain = inputFont;
+    //inputFontBold = inputFont.deriveFont(Font.BOLD, inputFontPlain.getSize2D());
     
     defaultWindowFontSize = windowFont.getSize2D();
     defaultMonospacedFontSize = monospacedFont.getSize2D();
@@ -250,7 +250,7 @@ public class VTGlobalTextStyleManager
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_HOME)
     {
       e.consume();
-      VTGlobalTextStyleManager.defaultComponentSize();
+      VTGlobalTextStyleManager.packComponentSize();
       return true;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_DELETE)
@@ -329,21 +329,21 @@ public class VTGlobalTextStyleManager
     defaultlists.add(defaultList);
   }
   
-  public static void defaultComponentSize()
-  {
-    updateComponents(true);
-  }
+//  public static void defaultComponentSize()
+//  {
+//    updateComponents(false);
+//  }
   
   public static void packComponentSize()
   {
-    updateComponents(false);
+    updateComponents(true);
   }
   
   public static void defaultFontSize()
   {
     fontStyleBold = false;
+    customMonospacedFont = customMonospacedFontPlain.deriveFont(defaultMonospacedFontSize);
     monospacedFont = monospacedFont.deriveFont(Font.PLAIN, defaultMonospacedFontSize);
-    customMonospacedFont = customMonospacedFont.deriveFont(Font.PLAIN, defaultMonospacedFontSize);
     windowFont = windowFont.deriveFont(Font.PLAIN, defaultWindowFontSize);
     inputFont = inputFont.deriveFont(Font.PLAIN, defaultWindowFontSize);
     defaultLists();
@@ -359,10 +359,10 @@ public class VTGlobalTextStyleManager
   public static void enableFontStyleBold()
   {
     fontStyleBold = true;
-    monospacedFont = monospacedFontBold.deriveFont(monospacedFont.getSize2D());
     customMonospacedFont = customMonospacedFontBold.deriveFont(customMonospacedFont.getSize2D());
-    windowFont = windowFontBold.deriveFont(windowFont.getSize2D());
-    inputFont = inputFontBold.deriveFont(inputFont.getSize2D());
+    monospacedFont = monospacedFont.deriveFont(Font.BOLD, monospacedFont.getSize2D());
+    windowFont = windowFont.deriveFont(Font.BOLD, windowFont.getSize2D());
+    inputFont = inputFont.deriveFont(Font.BOLD, inputFont.getSize2D());
     //boldScaleds();
     boldLists();
     updateComponents(false);
@@ -371,10 +371,10 @@ public class VTGlobalTextStyleManager
   public static void disableFontStyleBold()
   {
     fontStyleBold = false;
-    monospacedFont = monospacedFontPlain.deriveFont(monospacedFont.getSize2D());
     customMonospacedFont = customMonospacedFontPlain.deriveFont(customMonospacedFont.getSize2D());
-    windowFont = windowFontPlain.deriveFont(windowFont.getSize2D());
-    inputFont = inputFontPlain.deriveFont(inputFont.getSize2D());
+    monospacedFont = monospacedFont.deriveFont(Font.PLAIN, monospacedFont.getSize2D());
+    windowFont = windowFont.deriveFont(Font.PLAIN, windowFont.getSize2D());
+    inputFont = inputFont.deriveFont(Font.PLAIN, inputFont.getSize2D());
     //plainScaleds();
     plainLists();
     updateComponents(false);
@@ -382,8 +382,8 @@ public class VTGlobalTextStyleManager
   
   public static void increaseFontSize()
   {
-    monospacedFont = monospacedFont.deriveFont((monospacedFont.getSize2D() + 1.0F));
     customMonospacedFont = customMonospacedFont.deriveFont((customMonospacedFont.getSize2D() + 1.0F));
+    monospacedFont = monospacedFont.deriveFont((monospacedFont.getSize2D() + 1.0F));
     windowFont = windowFont.deriveFont((windowFont.getSize2D() + 1.0F));
     inputFont = inputFont.deriveFont((inputFont.getSize2D() + 1.0F));
     //increaseScaleds();
@@ -393,8 +393,8 @@ public class VTGlobalTextStyleManager
   
   public static void decreaseFontSize()
   {
-    monospacedFont = monospacedFont.deriveFont((monospacedFont.getSize2D() - 1.0F));
     customMonospacedFont = customMonospacedFont.deriveFont((customMonospacedFont.getSize2D() - 1.0F));
+    monospacedFont = monospacedFont.deriveFont((monospacedFont.getSize2D() - 1.0F));
     windowFont = windowFont.deriveFont((windowFont.getSize2D() - 1.0F));
     inputFont = inputFont.deriveFont((inputFont.getSize2D() - 1.0F));
     //decreaseScaleds();
@@ -473,7 +473,7 @@ public class VTGlobalTextStyleManager
       List<Font> defaultList = defaultlists.get(i++);
       for (Font font : defaultList)
       {
-        list.add(font.deriveFont(defaultMonospacedFontSize));
+        list.add(font);
       }
     }
   }
@@ -482,18 +482,14 @@ public class VTGlobalTextStyleManager
   {
     for (List<Font> list : lists)
     {
-      Font[] fonts = VTArrays.copyOf(list.toArray(new Font[] {}), list.size());
+      float size2d = list.get(0).getSize2D();
+      list.remove(0);
+      Font[] copy = VTArrays.copyOf(list.toArray(new Font[] {}), list.size());
       list.clear();
-      for (Font font : fonts)
+      list.add(CUSTOM_MONOSPACED_FONT_BOLD.deriveFont(size2d));
+      for (Font font : copy)
       {
-        if (font.getFontName().equals(CUSTOM_MONOSPACED_FONT_PLAIN.getFontName()))
-        {
-          list.add(CUSTOM_MONOSPACED_FONT_BOLD.deriveFont(font.getSize2D()));
-        }
-        else
-        {
-          list.add(font.deriveFont(Font.BOLD, font.getSize2D()));
-        }
+        list.add(font.deriveFont(Font.BOLD, font.getSize2D()));
       }
     }
   }
@@ -502,18 +498,14 @@ public class VTGlobalTextStyleManager
   {
     for (List<Font> list : lists)
     {
-      Font[] fonts = VTArrays.copyOf(list.toArray(new Font[] {}), list.size());
+      float size2d = list.get(0).getSize2D();
+      list.remove(0);
+      Font[] copy = VTArrays.copyOf(list.toArray(new Font[] {}), list.size());
       list.clear();
-      for (Font font : fonts)
+      list.add(CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(size2d));
+      for (Font font : copy)
       {
-        if (font.getFontName().equals(CUSTOM_MONOSPACED_FONT_BOLD.getFontName()))
-        {
-          list.add(CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(font.getSize2D()));
-        }
-        else
-        {
-          list.add(font.deriveFont(Font.PLAIN, font.getSize2D()));
-        }
+        list.add(font.deriveFont(Font.PLAIN, font.getSize2D()));
       }
     }
   }
@@ -529,6 +521,10 @@ public class VTGlobalTextStyleManager
         {
           ((AWTTerminalPanel) component).resetTerminalSize();
         }
+        else if (component instanceof AWTTerminalPanel)
+        {
+          ((AWTTerminalPanel) component).resetPaddingSize();
+        }
       }
       catch (Throwable t)
       {
@@ -543,6 +539,10 @@ public class VTGlobalTextStyleManager
         if (useDefaults && component instanceof AWTTerminalPanel)
         {
           ((AWTTerminalPanel) component).resetTerminalSize();
+        }
+        else if (component instanceof AWTTerminalPanel)
+        {
+          ((AWTTerminalPanel) component).resetPaddingSize();
         }
       }
       catch (Throwable t)
@@ -560,18 +560,23 @@ public class VTGlobalTextStyleManager
         {
           Frame frame = (Frame) window;
           MenuBar menubar = frame.getMenuBar();
-          // int frameState = frame.getExtendedState();
-          // Point frameLocation = frame.getLocationOnScreen();
+          //frame.setMenuBar(null);
+          //frame.invalidate();
+          //frame.pack();
           if (menubar != null)
           {
             menubar.setFont(windowFont);
-            // menubar.setFont(menubar.getFont().deriveFont(windowFontSize));
           }
-          frame.setMenuBar(null);
-          frame.setMenuBar(menubar);
+          //frame.setMenuBar(menubar);
+          //frame.invalidate();
+          //frame.pack();
           if (useDefaults && frame instanceof AWTTerminalFrame)
           {
             ((AWTTerminalFrame) frame).resetTerminalSize();
+          }
+          else if (frame instanceof AWTTerminalFrame)
+          {
+            ((AWTTerminalFrame) frame).resetPaddingSize();
           }
           // if ((frameState & Frame.MAXIMIZED_BOTH) != 0)
           // {
@@ -582,9 +587,6 @@ public class VTGlobalTextStyleManager
           // }
           frame.invalidate();
           frame.pack();
-          frame.invalidate();
-          frame.pack();
-          // frame.validate();
         }
         if (window instanceof Dialog)
         {

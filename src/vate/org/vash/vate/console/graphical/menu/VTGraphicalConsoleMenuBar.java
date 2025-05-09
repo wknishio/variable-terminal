@@ -174,7 +174,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       public void actionPerformed(ActionEvent e)
       {
         console.requestFocus();
-        VTGlobalTextStyleManager.defaultComponentSize();
+        VTGlobalTextStyleManager.packComponentSize();
       }
     });
     

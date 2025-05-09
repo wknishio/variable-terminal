@@ -128,7 +128,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_HOME)
     {
       e.consume();
-      VTGlobalTextStyleManager.defaultComponentSize();
+      VTGlobalTextStyleManager.packComponentSize();
       return;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_END)
