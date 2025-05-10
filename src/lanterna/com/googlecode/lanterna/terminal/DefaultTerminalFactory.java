@@ -192,7 +192,7 @@ public class DefaultTerminalFactory implements TerminalFactory {
     }
     
     public AWTTerminalPanel createAWTTerminalPanel(Container parent, java.awt.Color lastLineBackground) {
-      return new AWTTerminalPanel(parent, 
+      return new AWTTerminalPanel(parent,
           new AWTTerminal(initialTerminalSize, deviceConfiguration, fontConfiguration, colorConfiguration, lastLineBackground),
           autoCloseTriggers.toArray(new TerminalEmulatorAutoCloseTrigger[autoCloseTriggers.size()]));
   }

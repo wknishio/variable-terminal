@@ -173,7 +173,7 @@ public class VTLanternaConsole implements VTConsoleInstance
         }
         catch (Throwable e)
         {
-          // e.printStackTrace();
+          e.printStackTrace();
         }
       }
     };
@@ -2482,8 +2482,9 @@ public class VTLanternaConsole implements VTConsoleInstance
       awtTerminal.getTerminalImplementation().setLastLineBackground(lastLineBackgroundColor);
       awtTerminal.getTerminalImplementation().setDefaultBackground(spacerBackgroundColor);
       
-      panel.setBackground(spacerBackgroundColor);
+      panel.setLastLineBackgroundColor(lastLineBackgroundColor);
       panel.setSpacerBackgroundColor(spacerBackgroundColor);
+      panel.setBackground(spacerBackgroundColor);
       
       if (frame != null)
       {

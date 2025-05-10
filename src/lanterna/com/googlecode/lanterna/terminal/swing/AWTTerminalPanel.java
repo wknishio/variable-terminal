@@ -28,6 +28,8 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
   private static final long serialVersionUID = 1L;
   
   private Panel centerPanel;
+  private Panel innerCenterPanel;
+  private Panel southInnerCenterPanel;
   private Panel bottomPanel;
   //private Panel topPanel;
   private Panel paddingPanel;
@@ -104,6 +106,22 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     centerPanel.setBackground(Color.BLACK);
     centerPanel.setFocusable(true);
     
+    BorderLayout innerCenterLayout = new BorderLayout();
+    innerCenterLayout.setHgap(0);
+    innerCenterLayout.setVgap(0);
+    innerCenterPanel = new Panel();
+    innerCenterPanel.setLayout(innerCenterLayout);
+    innerCenterPanel.setBackground(Color.BLACK);
+    innerCenterPanel.setFocusable(true);
+    
+    BorderLayout southInnerCenterLayout = new BorderLayout();
+    southInnerCenterLayout.setHgap(0);
+    southInnerCenterLayout.setVgap(0);
+    southInnerCenterPanel = new Panel();
+    southInnerCenterPanel.setLayout(southInnerCenterLayout);
+    southInnerCenterPanel.setBackground(Color.BLACK);
+    southInnerCenterPanel.setFocusable(true);
+    
     BorderLayout terminalLayout = new BorderLayout();
     terminalLayout.setHgap(0);
     terminalLayout.setVgap(0);
@@ -111,23 +129,11 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     terminalPanel.setLayout(terminalLayout);
     terminalPanel.add(awtTerminal, BorderLayout.CENTER);
     terminalPanel.add(spacerPanelNorth, BorderLayout.NORTH);
-    terminalPanel.add(spacerPanelSouth, BorderLayout.SOUTH);
     terminalPanel.add(spacerPanelWest, BorderLayout.WEST);
     terminalPanel.add(spacerPanelEast, BorderLayout.EAST);
     terminalPanel.setBackground(Color.BLACK);
     
-    centerPanel.add(terminalPanel, BorderLayout.CENTER);
-    
-//    BorderLayout topLayout = new BorderLayout();
-//    topLayout.setHgap(0);
-//    topLayout.setVgap(0);
-//    topPanel = new Panel();
-//    topPanel.setLayout(topLayout);
-//    topPanel.setBackground(SystemColor.control);
-//    topPanel.setFocusable(false);
-    
     paddingPanel = new Panel();
-    paddingPanel.setBackground(SystemColor.control);
     paddingPanel.setFocusable(false);
     paddingPanel.setMinimumSize(new Dimension(0, 0));
     paddingPanel.setMaximumSize(new Dimension(0, 0));
@@ -135,58 +141,59 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     paddingPanel.setSize(0, 0);
     
     //topPanel.add(paddingPanel, BorderLayout.CENTER);
+    southInnerCenterPanel.add(paddingPanel, BorderLayout.NORTH);
+    southInnerCenterPanel.add(spacerPanelSouth, BorderLayout.SOUTH);
+    
+    innerCenterPanel.add(terminalPanel, BorderLayout.CENTER);
+    innerCenterPanel.add(southInnerCenterPanel, BorderLayout.SOUTH);
+    
+    centerPanel.add(innerCenterPanel, BorderLayout.CENTER);
     
     add(centerPanel, BorderLayout.CENTER);
     add(bottomPanel, BorderLayout.SOUTH);
-    add(paddingPanel, BorderLayout.NORTH);
     
     setBackground(Color.BLACK);
     
-    if (parent != null)
+    parent.addComponentListener(new ComponentListener()
     {
-      parent.addComponentListener(new ComponentListener()
-      {
-        public void componentResized(ComponentEvent e) 
-        {
-          int fontHeight = awtTerminal.getTerminalImplementation().getFontHeight();
-          int terminalHeight = awtTerminal.getTerminalImplementation().getHeight();
-          int leftoverHeight = (terminalHeight + paddingPanel.getHeight()) % fontHeight;
-          
-          if (leftoverHeight != paddingPanel.getHeight())
-          {
-            paddingPanel.setMinimumSize(new Dimension(0, leftoverHeight));
-            paddingPanel.setMaximumSize(new Dimension(0, leftoverHeight));
-            paddingPanel.setPreferredSize(new Dimension(0, leftoverHeight));
-            paddingPanel.setSize(0, leftoverHeight);
-            parent.invalidate();
-            parent.validate();
-          }
-          else
-          {
-            
-          }
-        }
-        
-        public void componentMoved(ComponentEvent e)
-        {
-          
-        }
-        
-        public void componentShown(ComponentEvent e)
-        {
-          
-        }
-        
-        public void componentHidden(ComponentEvent e)
-        {
-          
-        }
-      });
-    }
-    else
-    {
+      //private int currentLeftoverHeight;
       
-    }
+      public void componentResized(ComponentEvent e) 
+      {
+        int fontHeight = awtTerminal.getTerminalImplementation().getFontHeight();
+        int terminalHeight = awtTerminal.getTerminalImplementation().getHeight();
+        int leftoverHeight = (terminalHeight + paddingPanel.getHeight()) % fontHeight;
+        
+        if (leftoverHeight != paddingPanel.getHeight())
+        {
+          paddingPanel.setMinimumSize(new Dimension(0, leftoverHeight));
+          paddingPanel.setMaximumSize(new Dimension(0, leftoverHeight));
+          paddingPanel.setPreferredSize(new Dimension(0, leftoverHeight));
+          paddingPanel.setSize(0, leftoverHeight);
+          parent.invalidate();
+          parent.validate();
+        }
+        else
+        {
+          
+        }
+      }
+      
+      public void componentMoved(ComponentEvent e)
+      {
+        
+      }
+      
+      public void componentShown(ComponentEvent e)
+      {
+        
+      }
+      
+      public void componentHidden(ComponentEvent e)
+      {
+        
+      }
+    });
   }
   
   public Panel getBottomPanel()
@@ -208,6 +215,13 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     terminalPanel.setBackground(color);
     centerPanel.setBackground(color);
     awtTerminal.setBackground(color);
+  }
+  
+  public void setLastLineBackgroundColor(java.awt.Color color)
+  {
+    innerCenterPanel.setBackground(color);
+    southInnerCenterPanel.setBackground(color);
+    paddingPanel.setBackground(color);
   }
   
   public AWTTerminal getTerminal()
