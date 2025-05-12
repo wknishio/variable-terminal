@@ -34,10 +34,10 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
   //private Panel topPanel;
   private Panel paddingPanel;
   private Panel terminalPanel;
-  private Panel spacerPanelNorth;
-  private Panel spacerPanelSouth;
-  private Panel spacerPanelWest;
-  private Panel spacerPanelEast;
+//  private Panel spacerPanelNorth;
+//  private Panel spacerPanelSouth;
+//  private Panel spacerPanelWest;
+//  private Panel spacerPanelEast;
   private AWTTerminal awtTerminal;
   private boolean disposed;
   private TerminalSize defaultTerminalSize;
@@ -58,37 +58,37 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     setLayout(panelLayout);
     setFocusable(true);
     
-    spacerPanelNorth = new Panel();
-    spacerPanelNorth.setSize(0, 1);
-    spacerPanelNorth.setMinimumSize(new Dimension(0, 1));
-    spacerPanelNorth.setMaximumSize(new Dimension(0, 1));
-    spacerPanelNorth.setPreferredSize(new Dimension(0, 1));
-    spacerPanelNorth.setBackground(Color.BLACK);
-    spacerPanelNorth.setFocusable(false);
-    
-    spacerPanelSouth = new Panel();
-    spacerPanelSouth.setSize(0, 1);
-    spacerPanelSouth.setMinimumSize(new Dimension(0, 1));
-    spacerPanelSouth.setMaximumSize(new Dimension(0, 1));
-    spacerPanelSouth.setPreferredSize(new Dimension(0, 1));
-    spacerPanelSouth.setBackground(Color.BLACK);
-    spacerPanelSouth.setFocusable(false);
-    
-    spacerPanelWest = new Panel();
-    spacerPanelWest.setSize(1, 0);
-    spacerPanelWest.setMinimumSize(new Dimension(1, 0));
-    spacerPanelWest.setMaximumSize(new Dimension(1, 0));
-    spacerPanelWest.setPreferredSize(new Dimension(1, 0));
-    spacerPanelWest.setBackground(Color.BLACK);
-    spacerPanelWest.setFocusable(false);
-    
-    spacerPanelEast = new Panel();
-    spacerPanelEast.setSize(1, 0);
-    spacerPanelEast.setMinimumSize(new Dimension(1, 0));
-    spacerPanelEast.setMaximumSize(new Dimension(1, 0));
-    spacerPanelEast.setPreferredSize(new Dimension(1, 0));
-    spacerPanelEast.setBackground(Color.BLACK);
-    spacerPanelEast.setFocusable(false);
+//    spacerPanelNorth = new Panel();
+//    spacerPanelNorth.setSize(0, 1);
+//    spacerPanelNorth.setMinimumSize(new Dimension(0, 1));
+//    spacerPanelNorth.setMaximumSize(new Dimension(0, 1));
+//    spacerPanelNorth.setPreferredSize(new Dimension(0, 1));
+//    spacerPanelNorth.setBackground(Color.BLACK);
+//    spacerPanelNorth.setFocusable(false);
+//    
+//    spacerPanelSouth = new Panel();
+//    spacerPanelSouth.setSize(0, 1);
+//    spacerPanelSouth.setMinimumSize(new Dimension(0, 1));
+//    spacerPanelSouth.setMaximumSize(new Dimension(0, 1));
+//    spacerPanelSouth.setPreferredSize(new Dimension(0, 1));
+//    spacerPanelSouth.setBackground(Color.BLACK);
+//    spacerPanelSouth.setFocusable(false);
+//    
+//    spacerPanelWest = new Panel();
+//    spacerPanelWest.setSize(1, 0);
+//    spacerPanelWest.setMinimumSize(new Dimension(1, 0));
+//    spacerPanelWest.setMaximumSize(new Dimension(1, 0));
+//    spacerPanelWest.setPreferredSize(new Dimension(1, 0));
+//    spacerPanelWest.setBackground(Color.BLACK);
+//    spacerPanelWest.setFocusable(false);
+//    
+//    spacerPanelEast = new Panel();
+//    spacerPanelEast.setSize(1, 0);
+//    spacerPanelEast.setMinimumSize(new Dimension(1, 0));
+//    spacerPanelEast.setMaximumSize(new Dimension(1, 0));
+//    spacerPanelEast.setPreferredSize(new Dimension(1, 0));
+//    spacerPanelEast.setBackground(Color.BLACK);
+//    spacerPanelEast.setFocusable(false);
     
     BorderLayout bottomLayout = new BorderLayout();
     bottomLayout.setHgap(0);
@@ -128,9 +128,9 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     terminalPanel = new Panel();
     terminalPanel.setLayout(terminalLayout);
     terminalPanel.add(awtTerminal, BorderLayout.CENTER);
-    terminalPanel.add(spacerPanelNorth, BorderLayout.NORTH);
-    terminalPanel.add(spacerPanelWest, BorderLayout.WEST);
-    terminalPanel.add(spacerPanelEast, BorderLayout.EAST);
+//    terminalPanel.add(spacerPanelNorth, BorderLayout.NORTH);
+//    terminalPanel.add(spacerPanelWest, BorderLayout.WEST);
+//    terminalPanel.add(spacerPanelEast, BorderLayout.EAST);
     terminalPanel.setBackground(Color.BLACK);
     
     paddingPanel = new Panel();
@@ -142,7 +142,7 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     
     //topPanel.add(paddingPanel, BorderLayout.CENTER);
     southInnerCenterPanel.add(paddingPanel, BorderLayout.NORTH);
-    southInnerCenterPanel.add(spacerPanelSouth, BorderLayout.SOUTH);
+//    southInnerCenterPanel.add(spacerPanelSouth, BorderLayout.SOUTH);
     
     innerCenterPanel.add(terminalPanel, BorderLayout.CENTER);
     innerCenterPanel.add(southInnerCenterPanel, BorderLayout.SOUTH);
@@ -170,8 +170,8 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
           paddingPanel.setMaximumSize(new Dimension(0, leftoverHeight));
           paddingPanel.setPreferredSize(new Dimension(0, leftoverHeight));
           paddingPanel.setSize(0, leftoverHeight);
-          parent.invalidate();
-          parent.validate();
+          centerPanel.invalidate();
+          centerPanel.validate();
         }
         else
         {
@@ -208,10 +208,10 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
 
   public void setSpacerBackgroundColor(java.awt.Color color)
   {
-    spacerPanelNorth.setBackground(color);
-    spacerPanelSouth.setBackground(color);
-    spacerPanelWest.setBackground(color);
-    spacerPanelEast.setBackground(color);
+//    spacerPanelNorth.setBackground(color);
+//    spacerPanelSouth.setBackground(color);
+//    spacerPanelWest.setBackground(color);
+//    spacerPanelEast.setBackground(color);
     terminalPanel.setBackground(color);
     centerPanel.setBackground(color);
     awtTerminal.setBackground(color);
@@ -390,7 +390,7 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
       awtTerminal.getTerminalImplementation().setTerminalSize(defaultTerminalSize);
     }
     
-    awtTerminal.invalidate();
+    centerPanel.invalidate();
   }
   
   public void resetPaddingSize()
@@ -400,7 +400,7 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
     paddingPanel.setPreferredSize(new Dimension(0, 0));
     paddingPanel.setSize(0, 0);
     
-    awtTerminal.invalidate();
+    centerPanel.invalidate();
   }
   
   //public TerminalSize getTerminalSize()
