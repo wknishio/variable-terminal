@@ -573,8 +573,12 @@ public class VTGlobalTextStyleManager
           //frame.pack();
           if ((frameState & Frame.MAXIMIZED_HORIZ) != 0 || (frameState & Frame.MAXIMIZED_VERT) != 0)
           {
-            frame.setExtendedState(Frame.NORMAL);
-            frame.setExtendedState(frameState);
+            //frame.setExtendedState(Frame.NORMAL);
+            //frame.setExtendedState(frameState);
+            if (frame instanceof AWTTerminalFrame)
+            {
+              ((AWTTerminalFrame) frame).resizePaddingSize();
+            }
             frame.invalidate();
             frame.validate();
           }

@@ -411,6 +411,11 @@ public class AWTTerminalFrame extends Frame implements IOSafeTerminal {
       this.terminalPanel.resetPaddingSize();
     }
     
+    public void resizePaddingSize()
+    {
+      this.terminalPanel.resizePaddingSize();
+    }
+    
     //public TerminalSize getTerminalSize()
     //{
     	//return awtTerminal.getTerminalSize();
