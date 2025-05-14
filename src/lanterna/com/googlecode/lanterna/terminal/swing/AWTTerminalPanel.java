@@ -217,7 +217,6 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
   public void setSpacerBackgroundColor(java.awt.Color color)
   {
     spacerPanelNorth.setBackground(color);
-    spacerPanelSouth.setBackground(color);
     spacerPanelWest.setBackground(color);
     spacerPanelEast.setBackground(color);
     terminalPanel.setBackground(color);
@@ -227,6 +226,7 @@ public class AWTTerminalPanel extends Panel implements IOSafeTerminal
   
   public void setLastLineBackgroundColor(java.awt.Color color)
   {
+    spacerPanelSouth.setBackground(color);
     paddingPanel.setBackground(color);
   }
   
