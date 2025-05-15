@@ -39,7 +39,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private final boolean server;
   private AtomicLong transferredBytes = new AtomicLong(0);
   
-  public VTLinkableDynamicMultiplexingInputStream(final InputStream in, final int packetSize, final int bufferSize, boolean server, final boolean startPacketReader, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
+  public VTLinkableDynamicMultiplexingInputStream(final InputStream in, final boolean server, final int packetSize, final int bufferSize, final boolean startPacketReader, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
   {
     this.server = server;
     this.packetSeed = packetSeed;
