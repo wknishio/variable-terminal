@@ -1870,7 +1870,7 @@ public class VTGraphicsModeClientWriter implements Runnable
       
       Rectangle screenSize = frame.getGraphicsConfiguration().getBounds();
       
-      if (initialWidth > 0 && initialHeight > 0 && (initialWidth < screenSize.width) && (initialHeight < screenSize.height))
+      if (initialWidth > 0 && initialHeight > 0 && (initialWidth < screenSize.width) || (initialHeight < screenSize.height))
       {
         frame.pack();
         Insets frameInsets = frame.getInsets();
@@ -1878,24 +1878,22 @@ public class VTGraphicsModeClientWriter implements Runnable
         
         int totalWidth = initialWidth + frameInsets.left + frameInsets.right + scrolledInsets.left + scrolledInsets.right;
         int totalHeight = initialHeight + frameInsets.top + frameInsets.bottom + scrolledInsets.top + scrolledInsets.bottom;
-        if ((totalWidth < screenSize.width) && (totalHeight < screenSize.height))
+        
+        if ((totalWidth >= screenSize.width))
         {
-          frame.setSize(totalWidth, totalHeight);
+          totalWidth = ((screenSize.width * 3) / 4);
         }
-        else
+        
+        if ((totalHeight >= screenSize.height))
         {
-          frame.setSize(((screenSize.width * 3) / 4), ((screenSize.height * 3) / 4));
-          // frame.setSize(((screenSize.width) / 2),
-          // ((screenSize.height) / 2));
+          totalHeight = ((screenSize.height * 3) / 4);
         }
-        // frame.setLocationRelativeTo(null);
+        
+        frame.setSize(totalWidth, totalHeight);
       }
       else
       {
         frame.setSize(((screenSize.width * 3) / 4), ((screenSize.height * 3) / 4));
-        // frame.setSize(((screenSize.width) / 2), ((screenSize.height)
-        // / 2));
-        // frame.setLocationRelativeTo(null);
       }
       // if (VTConsole.isGraphical())
       // {
