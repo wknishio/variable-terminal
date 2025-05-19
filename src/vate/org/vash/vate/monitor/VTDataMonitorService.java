@@ -21,10 +21,12 @@ public class VTDataMonitorService extends VTTask implements VTNanoPingListener
   private volatile long differenceInput;
   private volatile long differenceOutput;
   private volatile long monitorNanoDelay = -1;
+  @SuppressWarnings("unused")
   private volatile long monitorMilliDelay = -1;
   private final ConcurrentLinkedQueue<VTDataMonitorConnection> connections = new ConcurrentLinkedQueue<VTDataMonitorConnection>();
-  private final ConcurrentLinkedQueue<VTDataMonitorPanel> panels = new ConcurrentLinkedQueue<VTDataMonitorPanel>();
-      
+  private final ConcurrentLinkedQueue<VTDataMonitorPanel> uploadMonitorPanels = new ConcurrentLinkedQueue<VTDataMonitorPanel>();
+  private final ConcurrentLinkedQueue<VTDataMonitorPanel> downloadMonitorPanels = new ConcurrentLinkedQueue<VTDataMonitorPanel>();
+  
   public VTDataMonitorService(ExecutorService executorService)
   {
     super(executorService);
@@ -55,14 +57,24 @@ public class VTDataMonitorService extends VTTask implements VTNanoPingListener
     connections.remove(connection);
   }
   
-  public void addMonitorPanel(VTDataMonitorPanel panel)
+  public void addUploadMonitorPanel(VTDataMonitorPanel panel)
   {
-    panels.add(panel);
+    uploadMonitorPanels.add(panel);
   }
   
-  public void removeMonitorPanel(VTDataMonitorPanel panel)
+  public void removeUploadMonitorPanel(VTDataMonitorPanel panel)
   {
-    panels.remove(panel);
+    uploadMonitorPanels.remove(panel);
+  }
+  
+  public void addDownloadMonitorPanel(VTDataMonitorPanel panel)
+  {
+    downloadMonitorPanels.add(panel);
+  }
+  
+  public void removeDownloadMonitorPanel(VTDataMonitorPanel panel)
+  {
+    downloadMonitorPanels.remove(panel);
   }
   
   public void task()
@@ -85,7 +97,7 @@ public class VTDataMonitorService extends VTTask implements VTNanoPingListener
       {
         wait(1000);
       }
-      if (panels.size() <= 0 || isStopped())
+      if (uploadMonitorPanels.size() <= 0 || downloadMonitorPanels.size() <= 0 || isStopped())
       {
         continue;
       }
@@ -110,22 +122,39 @@ public class VTDataMonitorService extends VTTask implements VTNanoPingListener
       }
       differenceInput = (currentInput - lastInput);
       differenceOutput = (currentOutput - lastOutput);
-      String message = "Tx: " + humanReadableByteCount(differenceOutput) + "/s Rx: " + humanReadableByteCount(differenceInput) + "/s";
-      if (monitorMilliDelay >= 0)
+      
+      if (uploadMonitorPanels.size() > 0)
       {
-        message += " Rtt: " + monitorMilliDelay + " ms";
-      }
-      for (VTDataMonitorPanel panel : panels)
-      {
+        String uploadMessage = "Tx: " + humanReadableByteCount(differenceOutput) + "/s";
         try
         {
-          panel.setMessage(message);
+          for (VTDataMonitorPanel uploadMonitorPanel : uploadMonitorPanels)
+          {
+            uploadMonitorPanel.setMessage(uploadMessage);
+          }
         }
         catch (Throwable t)
         {
-          //t.printStackTrace();
+          
         }
       }
+      
+      if (downloadMonitorPanels != null)
+      {
+        String downloadMessage = "Rx: " + humanReadableByteCount(differenceInput) + "/s";
+        try
+        {
+          for (VTDataMonitorPanel downloadMonitorPanel : downloadMonitorPanels)
+          {
+            downloadMonitorPanel.setMessage(downloadMessage);
+          }
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
+      
       if (differenceInput < 0 || differenceOutput < 0)
       {
         resetTransferredBytes();

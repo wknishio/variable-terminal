@@ -36,7 +36,8 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
   private Menu sessionsSettingsMenu;
   private Menu pingSettingsMenu;
   private Menu helpMenu;
-  private Menu monitorMenu;
+  private Menu uploadMonitorMenu;
+  private Menu downloadMonitorMenu;
   
   public VTServerLocalGraphicalConsoleMenuBar(final VTConsoleInstance console, final VTServerSettingsDialog connectionDialog)
   {
@@ -170,12 +171,11 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     
     super.addBaseMenus();
     
-    monitorMenu = new Menu("");
-    this.add(monitorMenu);
-    // Menu helpMenu = new Menu("Resume/Insert");
-    // helpMenu.setEnabled(false);
-    // this.setHelpMenu(helpMenu);
-    // VTGlobalFontManager.registerMenu(this);
+    uploadMonitorMenu = new Menu("");
+    downloadMonitorMenu = new Menu("");
+    
+    this.add(uploadMonitorMenu);
+    this.add(downloadMonitorMenu);
   }
   
   public void setEnabled(boolean enabled)
@@ -198,8 +198,13 @@ public class VTServerLocalGraphicalConsoleMenuBar extends VTGraphicalConsoleMenu
     serverSettingsDialogMenu.setEnabled(enabled);
   }
   
-  public Menu getMonitorMenu()
+  public Menu getUploadMonitorMenu()
   {
-    return monitorMenu;
+    return uploadMonitorMenu;
+  }
+  
+  public Menu getDownloadMonitorMenu()
+  {
+    return downloadMonitorMenu;
   }
 }

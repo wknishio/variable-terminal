@@ -66,7 +66,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
   // private VTConnectionDialog dialog;
   private Menu audioLinkSoundMenu;
   private Menu helpMenu;
-  private Menu monitorMenu;
+  private Menu uploadMonitorMenu;
+  private Menu downloadMonitorMenu;
   
   public VTClientRemoteGraphicalConsoleMenuBar(final VTConsoleInstance console, final VTClientConfigurationDialog connectionDialog)
   {
@@ -443,8 +444,11 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     
     super.addBaseMenus();
     
-    monitorMenu = new Menu("");
-    this.add(monitorMenu);
+    uploadMonitorMenu = new Menu("");
+    downloadMonitorMenu = new Menu("");
+    
+    this.add(uploadMonitorMenu);
+    this.add(downloadMonitorMenu);
   }
   
   public void setEnabled(boolean enabled)
@@ -469,8 +473,13 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     clientConnectionDialogMenu.setEnabled(enabled);
   }
   
-  public Menu getMonitorMenu()
+  public Menu getUploadMonitorMenu()
   {
-    return monitorMenu;
+    return uploadMonitorMenu;
+  }
+  
+  public Menu getDownloadMonitorMenu()
+  {
+    return downloadMonitorMenu;
   }
 }

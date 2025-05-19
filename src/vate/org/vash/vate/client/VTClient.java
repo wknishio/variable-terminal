@@ -2185,7 +2185,8 @@ public class VTClient implements Runnable
       VTConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Client - Console");
       connectionDialog = new VTClientConfigurationDialog(VTConsole.getFrame(), "Variable-Terminal " + VT.VT_VERSION + " - Client - Connection", true, this);
       inputMenuBar = new VTClientRemoteGraphicalConsoleMenuBar(VTConsole.getConsoleInstance(), connectionDialog);
-      monitorService.addMonitorPanel(new VTDataMonitorMenu(inputMenuBar.getMonitorMenu()));
+      monitorService.addUploadMonitorPanel(new VTDataMonitorMenu(inputMenuBar.getUploadMonitorMenu()));
+      monitorService.addDownloadMonitorPanel(new VTDataMonitorMenu(inputMenuBar.getDownloadMonitorMenu()));
       VTConsole.getFrame().setMenuBar(inputMenuBar);
       VTConsole.getFrame().pack();
 //      try

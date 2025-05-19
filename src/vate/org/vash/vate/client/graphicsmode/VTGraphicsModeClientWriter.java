@@ -1793,7 +1793,8 @@ public class VTGraphicsModeClientWriter implements Runnable
   public void run()
   {
     createCustomCursor();
-    VTDataMonitorMenu monitorMenu = null;
+    VTDataMonitorMenu uploadMonitorPanel = null;
+    VTDataMonitorMenu downloadMonitorPanel = null;
     try
     {
       if (VTConsole.isGraphical())
@@ -1821,10 +1822,12 @@ public class VTGraphicsModeClientWriter implements Runnable
       frame.setLayout(frameLayout);
       frame.getInsets().set(0, 0, 0, 0);
       menuBar = new VTGraphicsModeClientOptionsMenuBar(this, frame);
-      monitorMenu = new VTDataMonitorMenu(menuBar.getMonitorMenu());
       if (session.getSession().getClient().getMonitorService() != null)
       {
-        session.getSession().getClient().getMonitorService().addMonitorPanel(monitorMenu);
+        uploadMonitorPanel = new VTDataMonitorMenu(menuBar.getUploadMonitorMenu());
+        downloadMonitorPanel = new VTDataMonitorMenu(menuBar.getDownloadMonitorMenu());
+        session.getSession().getClient().getMonitorService().addUploadMonitorPanel(uploadMonitorPanel);
+        session.getSession().getClient().getMonitorService().addDownloadMonitorPanel(downloadMonitorPanel);
       }
       scrolledMaybe = new VTGraphicsModeClientWriterScrollPane(VTGraphicsModeClientWriterScrollPane.SCROLLBARS_AS_NEEDED);
       scrolledMaybe.setBackground(Color.BLACK);
@@ -1960,9 +1963,13 @@ public class VTGraphicsModeClientWriter implements Runnable
     {
       remoteInterface.stopAsynchronousRepainter();
     }
-    if (monitorMenu != null && session.getSession().getClient().getMonitorService() != null)
+    if (uploadMonitorPanel != null && session.getSession().getClient().getMonitorService() != null)
     {
-      session.getSession().getClient().getMonitorService().removeMonitorPanel(monitorMenu);
+      session.getSession().getClient().getMonitorService().removeUploadMonitorPanel(uploadMonitorPanel);
+    }
+    if (downloadMonitorPanel != null && session.getSession().getClient().getMonitorService() != null)
+    {
+      session.getSession().getClient().getMonitorService().removeDownloadMonitorPanel(downloadMonitorPanel);
     }
     if (frame != null)
     {

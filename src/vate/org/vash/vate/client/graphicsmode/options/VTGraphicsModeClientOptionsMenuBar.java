@@ -13,7 +13,8 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
   private VTGraphicsModeClientOptionsMenuBarViewMenu viewMenu;
   private VTGraphicsModeClientOptionsMenuBarControlMenu controlMenu;
   private Menu keyboardShortcutsMenu;
-  private Menu monitorMenu;
+  private Menu uploadMonitorMenu;
+  private Menu downloadMonitorMenu;
   // private Menu refreshStatusMenu;
   // private Menu controlStatusMenu;
   private Frame frame;
@@ -54,8 +55,11 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
     //this.add(keyboardShortcutsMenu);
     keyboardShortcutsMenu.setEnabled(true);
     
-    monitorMenu = new Menu("");
-    this.add(monitorMenu);
+    uploadMonitorMenu = new Menu("");
+    downloadMonitorMenu = new Menu("");
+    
+    this.add(uploadMonitorMenu);
+    this.add(downloadMonitorMenu);
     
     this.frame = frame;
     frame.setMenuBar(this);
@@ -222,8 +226,13 @@ public class VTGraphicsModeClientOptionsMenuBar extends MenuBar
     keyboardShortcutsMenu.setEnabled(enabled);
   }
   
-  public Menu getMonitorMenu()
+  public Menu getUploadMonitorMenu()
   {
-    return monitorMenu;
+    return uploadMonitorMenu;
+  }
+  
+  public Menu getDownloadMonitorMenu()
+  {
+    return downloadMonitorMenu;
   }
 }
