@@ -198,17 +198,6 @@ public class VTGlobalTextStyleManager
       
     }
     
-    if (!loadedCustomMonospacedFont)
-    {
-      loadCustomMonospacedFont();
-      if (loadedCustomMonospacedFont)
-      {
-        customMonospacedFontPlain = CUSTOM_MONOSPACED_FONT_PLAIN;
-        customMonospacedFontBold = CUSTOM_MONOSPACED_FONT_BOLD;
-        customMonospacedFont = customMonospacedFontPlain;
-      }
-    }
-    
     monospacedFont = Font.decode("Monospaced").deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
     //monospacedFontPlain = monospacedFont;
     //monospacedFontBold = monospacedFont.deriveFont(Font.BOLD, monospacedFontPlain.getSize2D());
@@ -220,6 +209,19 @@ public class VTGlobalTextStyleManager
     inputFont = Font.decode("DialogInput").deriveFont(round(BASE_FONT_SIZE_DIALOG * FONT_SCALING_FACTOR_DIALOG, 1F, FONT_SCALING_FACTOR_DIALOG));
     //inputFontPlain = inputFont;
     //inputFontBold = inputFont.deriveFont(Font.BOLD, inputFontPlain.getSize2D());
+    
+    if (!loadedCustomMonospacedFont)
+    {
+      loadCustomMonospacedFont();
+      if (!loadedCustomMonospacedFont)
+      {
+        CUSTOM_MONOSPACED_FONT_PLAIN = monospacedFont;
+        CUSTOM_MONOSPACED_FONT_BOLD = monospacedFont.deriveFont(Font.BOLD);
+      }
+      customMonospacedFontPlain = CUSTOM_MONOSPACED_FONT_PLAIN;
+      customMonospacedFontBold = CUSTOM_MONOSPACED_FONT_BOLD;
+      customMonospacedFont = customMonospacedFontPlain;
+    }
     
     defaultWindowFontSize = windowFont.getSize2D();
     defaultMonospacedFontSize = monospacedFont.getSize2D();
