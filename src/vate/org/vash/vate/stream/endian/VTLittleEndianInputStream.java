@@ -145,7 +145,8 @@ public final class VTLittleEndianInputStream extends InputStream implements Data
     int readed = 0;
     if (len < 0)
     {
-      throw new IndexOutOfBoundsException("Negative length: " + len);
+      return;
+      //throw new IndexOutOfBoundsException("Negative length: " + len);
     }
     while (remaining > 0)
     {

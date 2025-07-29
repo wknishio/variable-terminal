@@ -149,7 +149,8 @@ public final class VTBigEndianInputStream extends InputStream implements DataInp
     int readed = 0;
     if (len < 0)
     {
-      throw new IndexOutOfBoundsException("Negative length: " + len);
+      return;
+      //throw new IndexOutOfBoundsException("Negative length: " + len);
     }
     while (remaining > 0)
     {

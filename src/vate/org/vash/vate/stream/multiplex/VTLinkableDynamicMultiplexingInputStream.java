@@ -258,20 +258,15 @@ public final class VTLinkableDynamicMultiplexingInputStream
       type = lin.readByte();
       number = lin.readSubInt();
       length = lin.readInt();
+      lin.readFully(packetDataBuffer, 0, length);
       stream = getInputStream(type, number);
-      if (stream == null)
-      {
-        close();
-        return;
-      }
-      if (sequence != stream.getPacketSequencer().nextLong())
+      if (stream == null || sequence != stream.getPacketSequencer().nextLong())
       {
         close();
         return;
       }
       if (length > 0)
       {
-        lin.readFully(packetDataBuffer, 0, length);
         OutputStream out = stream.getOutputStream();
         try
         {
