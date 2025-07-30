@@ -35,13 +35,13 @@ public final class VTLinkableDynamicMultiplexingOutputStream
   private final boolean server;
   private AtomicLong transferredBytes = new AtomicLong(0);
   
-  public VTLinkableDynamicMultiplexingOutputStream(final OutputStream out, final boolean server, final int packetSize, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
+  public VTLinkableDynamicMultiplexingOutputStream(final OutputStream output, final boolean server, final int packetSize, final int bufferSize, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
   {
     this.server = server;
     this.packetSeed = packetSeed;
     this.executorService = executorService;
     this.throttler = new NanoThrottle(Long.MAX_VALUE, (1d / 8d), true);
-    this.original = out;
+    this.original = output;
     this.throttled = new VTThrottledOutputStream(original, throttler);
     this.bufferedChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
     this.directChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedOutputStream>();
@@ -359,15 +359,15 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     
     public final void write(final byte[] data, final int offset, final int length) throws IOException
     {
+      if (closed)
+      {
+        throw new IOException("OutputStream closed");
+      }
       int written = 0;
       int position = offset;
       int remaining = length;
-      while (remaining > 0)
+      while (remaining > 0 && !closed)
       {
-        if (closed)
-        {
-          throw new IOException("OutputStream closed");
-        }
         written = Math.min(remaining, packetSize);
         writeDataPacket(data, position, written, type, number);
         position += written;
@@ -456,7 +456,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       dataPacketStream.write(intermediateDataPacketBuffer.buf(), 0, intermediateDataPacketBuffer.count());
       output.write(dataPacketBuffer.buf(), 0, dataPacketBuffer.count());
       output.flush();
-      transferredBytes.addAndGet(dataPacketBuffer.count());
+      transferredBytes.addAndGet(length);
     }
     
     private synchronized final void writeClosePacket(final int type, final int number) throws IOException

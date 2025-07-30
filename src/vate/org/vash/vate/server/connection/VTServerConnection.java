@@ -644,8 +644,8 @@ public class VTServerConnection
     int inputChannel = 0;
     int outputChannel = 0;
     
-    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, true, VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, false, secureInputSeed, executorService);
-    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, true, VT.VT_PACKET_DATA_SIZE_BYTES, secureOutputSeed, executorService);
+    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, true, VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, secureInputSeed, executorService, false);
+    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, true, VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES, secureOutputSeed, executorService);
     
     pingServerInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, inputChannel++);
     pingServerOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, outputChannel++);

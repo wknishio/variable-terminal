@@ -30,7 +30,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private final int bufferSize;
   private final byte[] packetDataBuffer;
   private Future<?> packetReaderThread;
-  private final VTLittleEndianInputStream lin;
+  private final VTLittleEndianInputStream input;
   private final VTLinkableDynamicMultiplexingInputStreamPacketReader packetReader;
   private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> bufferedChannels;
   private final Map<Integer, VTLinkableDynamicMultiplexedInputStream> directChannels;
@@ -39,14 +39,14 @@ public final class VTLinkableDynamicMultiplexingInputStream
   private final boolean server;
   private AtomicLong transferredBytes = new AtomicLong(0);
   
-  public VTLinkableDynamicMultiplexingInputStream(final InputStream in, final boolean server, final int packetSize, final int bufferSize, final boolean startPacketReader, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService)
+  public VTLinkableDynamicMultiplexingInputStream(final InputStream input, final boolean server, final int packetSize, final int bufferSize, final VTXXHash64MessageDigest packetSeed, final ExecutorService executorService, final boolean startPacketReader)
   {
     this.server = server;
     this.packetSeed = packetSeed;
     this.executorService = executorService;
     this.bufferSize = bufferSize;
     this.packetDataBuffer = new byte[packetSize * 2];
-    this.lin = new VTLittleEndianInputStream(in);
+    this.input = new VTLittleEndianInputStream(input);
     this.bufferedChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
     this.directChannels = new ConcurrentHashMap<Integer, VTLinkableDynamicMultiplexedInputStream>();
     this.packetReader = new VTLinkableDynamicMultiplexingInputStreamPacketReader(this);
@@ -216,7 +216,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       return;
     }
     closed = true;
-    lin.close();
+    input.close();
     for (VTLinkableDynamicMultiplexedInputStream stream : bufferedChannels.values())
     {
       try
@@ -254,11 +254,11 @@ public final class VTLinkableDynamicMultiplexingInputStream
     
     while (!closed)
     {
-      sequence = lin.readLong();
-      type = lin.readByte();
-      number = lin.readSubInt();
-      length = lin.readInt();
-      lin.readFully(packetDataBuffer, 0, length);
+      sequence = input.readLong();
+      type = input.readByte();
+      number = input.readSubInt();
+      length = input.readInt();
+      input.readFully(packetDataBuffer, 0, length);
       stream = getInputStream(type, number);
       if (stream == null || sequence != stream.getPacketSequencer().nextLong())
       {
