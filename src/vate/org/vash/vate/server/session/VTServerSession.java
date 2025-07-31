@@ -28,7 +28,7 @@ import org.vash.vate.server.filesystem.VTServerFileScanOperation;
 import org.vash.vate.server.filesystem.VTServerFileSystemRootsResolver;
 import org.vash.vate.server.filetransfer.VTFileTransferServer;
 import org.vash.vate.server.graphicsdevices.VTServerGraphicsDeviceResolver;
-import org.vash.vate.server.graphicsmode.VTGraphicsModeServer;
+import org.vash.vate.server.graphicslink.VTGraphicsLinkServer;
 import org.vash.vate.server.network.VTServerHostResolver;
 import org.vash.vate.server.network.VTServerNetworkInterfaceResolver;
 import org.vash.vate.server.opticaldrive.VTServerOpticalDriveOperation;
@@ -65,7 +65,7 @@ public class VTServerSession
   private VTFileTransferServer fileTransferServer;
   private VTServerScreenshotTask screenshotTask;
   private VTServerRuntimeExecutor runtimeExecutor;
-  private VTGraphicsModeServer graphicsServer;
+  private VTGraphicsLinkServer graphicsServer;
   private VTServerFileScanOperation fileScanOperation;
   private VTServerFileModifyOperation fileModifyOperation;
   // private VTServerZipFileOperation zipFileOperation;
@@ -120,7 +120,7 @@ public class VTServerSession
     this.fileTransferServer = new VTFileTransferServer(this);
     this.screenshotTask = new VTServerScreenshotTask(this);
     this.runtimeExecutor = new VTServerRuntimeExecutor(this);
-    this.graphicsServer = new VTGraphicsModeServer(this);
+    this.graphicsServer = new VTGraphicsLinkServer(this);
     this.fileScanOperation = new VTServerFileScanOperation(this);
     this.fileModifyOperation = new VTServerFileModifyOperation(this);
     // this.zipFileOperation = new VTServerZipFileOperation(this);
@@ -329,7 +329,7 @@ public class VTServerSession
     return screenshotTask;
   }
   
-  public VTGraphicsModeServer getGraphicsServer()
+  public VTGraphicsLinkServer getGraphicsServer()
   {
     return graphicsServer;
   }

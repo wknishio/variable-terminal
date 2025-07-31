@@ -14,7 +14,7 @@ import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.console.remote.VTClientRemoteConsoleReader;
 import org.vash.vate.client.console.remote.VTClientRemoteConsoleWriter;
 import org.vash.vate.client.filetransfer.VTFileTransferClient;
-import org.vash.vate.client.graphicsmode.VTGraphicsModeClient;
+import org.vash.vate.client.graphicslink.VTGraphicsLinkClient;
 import org.vash.vate.graphics.clipboard.VTClipboardTransferTask;
 import org.vash.vate.ping.VTNanoPingListener;
 import org.vash.vate.ping.VTNanoPingService;
@@ -31,7 +31,7 @@ public class VTClientSession
   private VTClientRemoteConsoleReader serverReader;
   private VTClientRemoteConsoleWriter clientWriter;
   private VTFileTransferClient fileTransferClient;
-  private VTGraphicsModeClient graphicsClient;
+  private VTGraphicsLinkClient graphicsClient;
   private VTClipboardTransferTask clipboardTransferTask;
   // private VTClientZipFileOperation zipFileOperation;
   private VTTunnelConnectionHandler tunnelsHandler;
@@ -55,7 +55,7 @@ public class VTClientSession
     this.serverReader = new VTClientRemoteConsoleReader(this);
     this.clientWriter = new VTClientRemoteConsoleWriter(this);
     this.fileTransferClient = new VTFileTransferClient(this);
-    this.graphicsClient = new VTGraphicsModeClient(this);
+    this.graphicsClient = new VTGraphicsLinkClient(this);
     this.clipboardTransferTask = new VTClipboardTransferTask(executorService);
     // this.zipFileOperation = new VTClientZipFileOperation(this);
     this.tunnelsHandler = new VTTunnelConnectionHandler(new VTTunnelConnection(executorService, sessionCloseables));
@@ -140,7 +140,7 @@ public class VTClientSession
     return fileTransferClient;
   }
   
-  public VTGraphicsModeClient getGraphicsClient()
+  public VTGraphicsLinkClient getGraphicsClient()
   {
     return graphicsClient;
   }

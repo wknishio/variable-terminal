@@ -35,7 +35,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
   private Menu fileModifyMenu;
   private Menu fileTransferMenu;
   private Menu graphicalMenu;
-  private Menu graphicsModeMenu;
+  private Menu graphicsLinkMenu;
   private Menu screenCaptureMenu;
   private Menu pointerScreenCaptureMenu;
   private Menu cleanScreenCaptureMenu;
@@ -83,7 +83,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     
     graphicalMenu = new Menu("Graphical ");
     graphicalMenu.add(new VTGraphicalConsoleMenuItem(console, "List Remote Display Devices", "*VTDISPLAY\n"));
-    graphicsModeMenu = new Menu("Remote Graphics Link ");
+    graphicsLinkMenu = new Menu("Remote Graphics Link ");
     screenCaptureMenu = new Menu("Remote Screen Capture ");
     screenAlertMenu = new Menu("Remote Screen Alert ");
     browseMenu = new Menu("Remote Browser Program ");
@@ -92,15 +92,15 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     cleanScreenCaptureMenu = new Menu("Hide Cursor ");
     graphicalMenu.add(screenCaptureMenu);
     graphicalMenu.add(screenAlertMenu);
-    graphicalMenu.add(graphicsModeMenu);
+    graphicalMenu.add(graphicsLinkMenu);
     graphicalMenu.add(browseMenu);
     graphicalMenu.add(printApplicationMenu);
     screenCaptureMenu.add(cleanScreenCaptureMenu);
     screenCaptureMenu.add(pointerScreenCaptureMenu);
-    graphicsModeMenu.add(new VTGraphicalConsoleMenuItem(console, "Toggle Graphics Link", "*VTGRAPHICSLINK\n"));
-    graphicsModeMenu.add(new VTGraphicalConsoleMenuItem(console, "View Graphics Link", "*VTGRAPHICSLINK V\n"));
-    graphicsModeMenu.add(new VTGraphicalConsoleMenuItem(console, "Control Graphics Link", "*VTGRAPHICSLINK C\n"));
-    graphicsModeMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTGRAPHICSLINK\n"));
+    graphicsLinkMenu.add(new VTGraphicalConsoleMenuItem(console, "Toggle Graphics Link", "*VTGRAPHICSLINK\n"));
+    graphicsLinkMenu.add(new VTGraphicalConsoleMenuItem(console, "View Graphics Link", "*VTGRAPHICSLINK V\n"));
+    graphicsLinkMenu.add(new VTGraphicalConsoleMenuItem(console, "Control Graphics Link", "*VTGRAPHICSLINK C\n"));
+    graphicsLinkMenu.add(new VTGraphicalConsoleMenuItem(console, "Command Usage", "*VTHELP *VTGRAPHICSLINK\n"));
     
     pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "True-24-Bit Color Quality", "*VTSCREENSHOT CT "));
     pointerScreenCaptureMenu.add(new VTGraphicalConsoleMenuItem(console, "Ultra-21-Bit Color Quality", "*VTSCREENSHOT CU "));

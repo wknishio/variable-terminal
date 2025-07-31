@@ -1000,7 +1000,7 @@ public class VTServerConnection
    * multiplexedConnectionInputStream.isPacketReaderStarted(); }
    */
   
-  public void closeGraphicsModeStreams() throws IOException
+  public void closeGraphicsLinkStreams() throws IOException
   {
     try
     {
@@ -1044,13 +1044,13 @@ public class VTServerConnection
     }
   }
   
-  // public void resetDirectGraphicsModeStreams() throws IOException
+  // public void resetDirectGraphicsLinkStreams() throws IOException
   // {
   // graphicsDirectImageOutputStream.open();
   // graphicsDirectImageInputStream.open();
   // }
   
-  public void resetGraphicsModeStreams() throws IOException
+  public void resetGraphicsLinkStreams() throws IOException
   {
     graphicsControlOutputStream.open();
     //graphicsControlInputStream.open();
