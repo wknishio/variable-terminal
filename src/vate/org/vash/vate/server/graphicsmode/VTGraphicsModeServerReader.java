@@ -184,107 +184,107 @@ public class VTGraphicsModeServerReader implements Runnable
             releaseAllPressedKeys();
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_REQUEST:
+          case VT.VT_GRAPHICS_MODE_IMAGE_REFRESH_REQUEST:
           {
             writer.requestRefresh();
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_CLEAR_REQUEST:
+          case VT.VT_GRAPHICS_MODE_IMAGE_CLEAR_REQUEST:
           {
             writer.requestClear();
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16:
+          case VT.VT_GRAPHICS_MODE_IMAGE_COLOR_QUALITY_16:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_216:
+          case VT.VT_GRAPHICS_MODE_IMAGE_COLOR_QUALITY_216:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_32768:
+          case VT.VT_GRAPHICS_MODE_IMAGE_COLOR_QUALITY_32768:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_32768);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_16777216:
+          case VT.VT_GRAPHICS_MODE_IMAGE_COLOR_QUALITY_16777216:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_16777216);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_4:
+          case VT.VT_GRAPHICS_MODE_IMAGE_COLOR_QUALITY_4:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_8:
+          case VT.VT_GRAPHICS_MODE_IMAGE_COLOR_QUALITY_8:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_8);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_64:
+          case VT.VT_GRAPHICS_MODE_IMAGE_COLOR_QUALITY_64:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_64);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_512:
+          case VT.VT_GRAPHICS_MODE_IMAGE_COLOR_QUALITY_512:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_512);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_4096:
+          case VT.VT_GRAPHICS_MODE_IMAGE_COLOR_QUALITY_4096:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_4096);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_125:
+          case VT.VT_GRAPHICS_MODE_IMAGE_COLOR_QUALITY_125:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_27:
+          case VT.VT_GRAPHICS_MODE_IMAGE_COLOR_QUALITY_27:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_27);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_262144:
+          case VT.VT_GRAPHICS_MODE_IMAGE_COLOR_QUALITY_262144:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_262144);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_COLOR_QUALITY_2097152:
+          case VT.VT_GRAPHICS_MODE_IMAGE_COLOR_QUALITY_2097152:
           {
             writer.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_2097152);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_MODE_ASYNCHRONOUS:
+          case VT.VT_GRAPHICS_MODE_IMAGE_REFRESH_MODE_ASYNCHRONOUS:
           {
             writer.setRefreshInterrupted(false);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_MODE_SYNCHRONOUS:
+          case VT.VT_GRAPHICS_MODE_IMAGE_REFRESH_MODE_SYNCHRONOUS:
           {
             writer.setRefreshInterrupted(false);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_DRAW_POINTER_ON:
+          case VT.VT_GRAPHICS_MODE_IMAGE_DRAW_POINTER_ON:
           {
             writer.setDrawPointer(true);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_DRAW_POINTER_OFF:
+          case VT.VT_GRAPHICS_MODE_IMAGE_DRAW_POINTER_OFF:
           {
             writer.setDrawPointer(false);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_INTERVAL_CHANGE:
+          case VT.VT_GRAPHICS_MODE_IMAGE_CAPTURE_INTERVAL_CHANGE:
           {
             writer.setScreenCaptureInterval(connection.getGraphicsControlDataInputStream().readInt());
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_MODE_INTERRUPTED:
+          case VT.VT_GRAPHICS_MODE_IMAGE_REFRESH_MODE_INTERRUPTED:
           {
             writer.setRefreshInterrupted(true);
             break;
@@ -329,7 +329,7 @@ public class VTGraphicsModeServerReader implements Runnable
             }
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_CAPTURE_AREA_CHANGE:
+          case VT.VT_GRAPHICS_MODE_IMAGE_CAPTURE_AREA_CHANGE:
           {
             int x = connection.getGraphicsControlDataInputStream().readInt();
             int y = connection.getGraphicsControlDataInputStream().readInt();
@@ -347,20 +347,20 @@ public class VTGraphicsModeServerReader implements Runnable
             // area.height);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_DEFAULT:
+          case VT.VT_GRAPHICS_MODE_IMAGE_SELECT_DEVICE_DEFAULT:
           {
             GraphicsDevice defaultDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
             controlProvider.setGraphicsDevice(defaultDevice);
             writer.setNextDevice(defaultDevice);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_UNIFIED:
+          case VT.VT_GRAPHICS_MODE_IMAGE_SELECT_DEVICE_UNIFIED:
           {
             controlProvider.setGraphicsDevice(null);
             writer.setNextDevice(null);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_NEXT:
+          case VT.VT_GRAPHICS_MODE_IMAGE_SELECT_DEVICE_NEXT:
           {
             GraphicsDevice currentDevice = controlProvider.getGraphicsDevice();
             if (currentDevice != null)
@@ -395,7 +395,7 @@ public class VTGraphicsModeServerReader implements Runnable
             }
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_SELECT_DEVICE_PREVIOUS:
+          case VT.VT_GRAPHICS_MODE_IMAGE_SELECT_DEVICE_PREVIOUS:
           {
             GraphicsDevice currentDevice = controlProvider.getGraphicsDevice();
             if (currentDevice != null)
@@ -433,37 +433,37 @@ public class VTGraphicsModeServerReader implements Runnable
             }
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD:
+          case VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_ZSD:
           {
-            writer.setImageCoding(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD);
+            writer.setImageCoding(VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_ZSD);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG:
+          case VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_PNG:
           {
-            writer.setImageCoding(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG);
+            writer.setImageCoding(VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_PNG);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG:
+          case VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_JPG:
           {
-            writer.setImageCoding(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
+            writer.setImageCoding(VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_JPG);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD:
+          case VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_GZD:
           {
-            writer.setImageCoding(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD);
+            writer.setImageCoding(VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_GZD);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_DRAW_POINTER_INCREASE:
+          case VT.VT_GRAPHICS_MODE_IMAGE_DRAW_POINTER_INCREASE:
           {
             writer.increaseDrawPointer();
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_DRAW_POINTER_DECREASE:
+          case VT.VT_GRAPHICS_MODE_IMAGE_DRAW_POINTER_DECREASE:
           {
             writer.decreaseDrawPointer();
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_DRAW_POINTER_NORMALIZE:
+          case VT.VT_GRAPHICS_MODE_IMAGE_DRAW_POINTER_NORMALIZE:
           {
             writer.normalizeDrawPointer();
             break;

@@ -240,7 +240,7 @@ public class VTGraphicsModeClientReader implements Runnable
       {
         switch (connection.getGraphicsControlDataInputStream().read())
         {
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_IMAGE:
+          case VT.VT_GRAPHICS_MODE_IMAGE_STANDARD_REFRESH_FRAME:
           {
             // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_IMAGE");
             writer.requestInterfaceRefresh();
@@ -254,7 +254,7 @@ public class VTGraphicsModeClientReader implements Runnable
               currentImageGraphics.dispose();
               currentImageGraphics = null;
             }
-            if (connection.getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
+            if (connection.getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_JPG)
             {
               currentImageReader = jpegImageReader;
               //currentImageReaderParam = jpgReaderParam;
@@ -318,11 +318,11 @@ public class VTGraphicsModeClientReader implements Runnable
             System.gc();
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE:
+          case VT.VT_GRAPHICS_MODE_IMAGE_STANDARD_DIFFERENTIAL_FRAME:
           {
             // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE");
             writer.requestInterfaceRefresh();
-            if (connection.getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
+            if (connection.getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_JPG)
             {
               currentImageReader = jpegImageReader;
               //currentImageReaderParam = jpgReaderParam;
@@ -375,7 +375,7 @@ public class VTGraphicsModeClientReader implements Runnable
             writer.differenceRemoteGraphics(currentImageDataBuffer);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_CUSTOM:
+          case VT.VT_GRAPHICS_MODE_IMAGE_CUSTOM_REFRESH_FRAME:
           {
             // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
             writer.requestInterfaceRefresh();
@@ -507,7 +507,7 @@ public class VTGraphicsModeClientReader implements Runnable
             }
             currentDataType = currentImageDataBuffer.getRaster().getDataBuffer().getDataType();
             // startTime = System.currentTimeMillis();
-            if (coding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD)
+            if (coding == VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_GZD)
             {
               if (currentDataType == DataBuffer.TYPE_BYTE)
               {
@@ -545,7 +545,7 @@ public class VTGraphicsModeClientReader implements Runnable
             System.gc();
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM:
+          case VT.VT_GRAPHICS_MODE_IMAGE_CUSTOM_DIFFERENTIAL_FRAME:
           {
             // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM");
             writer.requestInterfaceRefresh();
@@ -554,7 +554,7 @@ public class VTGraphicsModeClientReader implements Runnable
             {
               writer.notifyAsynchronousRepainter();
             }
-            if (connection.getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD)
+            if (connection.getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_GZD)
             {
               currentDataType = currentImageDataBuffer.getRaster().getDataBuffer().getDataType();
               if (currentDataType == DataBuffer.TYPE_BYTE)
@@ -597,7 +597,7 @@ public class VTGraphicsModeClientReader implements Runnable
             stopped = true;
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_REMOTE_INTERFACE_AREA_CHANGE:
+          case VT.VT_GRAPHICS_MODE_IMAGE_REMOTE_INTERFACE_AREA_CHANGE:
           {
             // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_REMOTE_INTERFACE_AREA_CHANGE");
             int width = connection.getGraphicsControlDataInputStream().readInt();
@@ -605,14 +605,14 @@ public class VTGraphicsModeClientReader implements Runnable
             writer.resizeRemoteGraphics(width, height);
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_NOT_NEEDED:
+          case VT.VT_GRAPHICS_MODE_IMAGE_REFRESH_NOT_NEEDED:
           {
             // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_REFRESH_NOT_NEEDED");
             writer.requestInterfaceRefresh();
             writer.notModifiedRemoteGraphics();
             break;
           }
-          case VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_MODE_INTERRUPTED:
+          case VT.VT_GRAPHICS_MODE_IMAGE_REFRESH_MODE_INTERRUPTED:
           {
             // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_REFRESH_MODE_INTERRUPTED");
             writer.requestInterfaceRefresh();

@@ -92,7 +92,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     this.drawPointer = true;
     this.screenCaptureInterval = 250;
     this.captureScale = 1;
-    this.imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD;
+    this.imageCoding = VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_ZSD;
     this.viewProvider.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216);
     this.refreshInterrupted = false;
     this.clearRequested = false;
@@ -114,7 +114,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     needRefresh = false;
     screenCaptureInterval = 250;
     captureScale = 1;
-    imageCoding = VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD;
+    imageCoding = VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_ZSD;
     viewProvider.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216);
     refreshInterrupted = false;
     clearRequested = false;
@@ -290,7 +290,7 @@ public class VTGraphicsModeServerWriter implements Runnable
   
   public void sendRemoteInterfaceAreaChange(int width, int height) throws IOException
   {
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REMOTE_INTERFACE_AREA_CHANGE);
+    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_REMOTE_INTERFACE_AREA_CHANGE);
     connection.getGraphicsControlDataOutputStream().writeInt(width);
     connection.getGraphicsControlDataOutputStream().writeInt(height);
     connection.getGraphicsControlDataOutputStream().flush();
@@ -306,8 +306,8 @@ public class VTGraphicsModeServerWriter implements Runnable
     //System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourVTRectangles(blockAreas);
     //System.out.println("blocks_after:" + blockAreas.size());
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_IMAGE);
-    if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
+    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_STANDARD_REFRESH_FRAME);
+    if (imageCoding == VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_JPG)
     {
       if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
@@ -326,7 +326,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       
       IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(imageDataBuffer), jpgWriterParam));
       
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
+      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_JPG);
       if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
         connection.getGraphicsControlDataOutputStream().writeInt(BufferedImage.TYPE_BYTE_GRAY);
@@ -356,7 +356,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     }
     else
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG);
+      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_PNG);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getType());
       connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getWidth());
@@ -462,8 +462,8 @@ public class VTGraphicsModeServerWriter implements Runnable
     //System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourVTRectangles(blockAreas);
     //System.out.println("blocks_after:" + blockAreas.size());
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE);
-    if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG)
+    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_STANDARD_DIFFERENTIAL_FRAME);
+    if (imageCoding == VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_JPG)
     {
       if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
@@ -485,7 +485,7 @@ public class VTGraphicsModeServerWriter implements Runnable
       
       IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(imageDataBuffer), jpgWriterParam));
       
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG);
+      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_JPG);
       if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
         connection.getGraphicsControlDataOutputStream().writeInt(BufferedImage.TYPE_BYTE_GRAY);
@@ -513,7 +513,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     }
     else
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG);
+      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_PNG);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getType());
       connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
       connection.getGraphicsControlDataOutputStream().writeInt(blockAreas.size());
@@ -609,10 +609,10 @@ public class VTGraphicsModeServerWriter implements Runnable
     // long startTime = System.currentTimeMillis();
     // System.out.println("VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM");
     //imageOutputBuffer.reset();
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM);
-    if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD)
+    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_CUSTOM_DIFFERENTIAL_FRAME);
+    if (imageCoding == VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_GZD)
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD);
+      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_GZD);
       connection.getGraphicsControlDataOutputStream().flush();
       if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
       {
@@ -631,7 +631,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     }
     else
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD);
+      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_ZSD);
       connection.getGraphicsControlDataOutputStream().flush();
       if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
       {
@@ -662,10 +662,10 @@ public class VTGraphicsModeServerWriter implements Runnable
     // long startTime = System.currentTimeMillis();
     //System.out.println("VT_GRAPHICS_MODE_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
     //imageOutputBuffer.reset();
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_FRAME_CUSTOM);
-    if (imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD)
+    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_CUSTOM_REFRESH_FRAME);
+    if (imageCoding == VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_GZD)
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD);
+      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_GZD);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getType());
       connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getWidth());
@@ -688,7 +688,7 @@ public class VTGraphicsModeServerWriter implements Runnable
     }
     else
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD);
+      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_ZSD);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getType());
       connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getWidth());
@@ -716,14 +716,14 @@ public class VTGraphicsModeServerWriter implements Runnable
   public void sendRefreshNotNeeded() throws IOException
   {
     needRefresh = false;
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_NOT_NEEDED);
+    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_REFRESH_NOT_NEEDED);
     connection.getGraphicsControlDataOutputStream().flush();
   }
   
   public void sendRefreshInterrupted() throws IOException
   {
     needRefresh = false;
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_GRAPHICS_REFRESH_MODE_INTERRUPTED);
+    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_MODE_IMAGE_REFRESH_MODE_INTERRUPTED);
     connection.getGraphicsControlDataOutputStream().flush();
   }
   
@@ -956,7 +956,7 @@ public class VTGraphicsModeServerWriter implements Runnable
             {
               try
               {
-                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD || imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD ? CODEC_PADDING_SIZE : 0, drawPointer, captureArea);
+                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_ZSD || imageCoding == VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_GZD ? CODEC_PADDING_SIZE : 0, drawPointer, captureArea);
                 //imageDataBuffer = viewProvider.createScreenCapture(captureArea, CODEC_PADDING_SIZE, drawPointer);
               }
               catch (Throwable t)
@@ -969,7 +969,7 @@ public class VTGraphicsModeServerWriter implements Runnable
             {
               try
               {
-                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD || imageCoding == VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD ? CODEC_PADDING_SIZE : 0, drawPointer);
+                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_ZSD || imageCoding == VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_GZD ? CODEC_PADDING_SIZE : 0, drawPointer);
                 //imageDataBuffer = viewProvider.createScreenCapture(CODEC_PADDING_SIZE, drawPointer);
               }
               catch (Throwable t)
@@ -980,14 +980,14 @@ public class VTGraphicsModeServerWriter implements Runnable
             }
             if (imageDataBuffer != null)
             {
-              if (imageCoding != VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD && imageCoding != VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD)
+              if (imageCoding != VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_ZSD && imageCoding != VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_GZD)
               {
                 if (imageDataBuffer.getWidth() == lastWidth
                 && imageDataBuffer.getHeight() == lastHeight
                 && imageDataBuffer.getColorModel().getPixelSize() == lastDepth
                 && viewProvider.getColorCount() == lastColors
                 && imageDataBuffer.getRaster().getDataBuffer().getDataType() == lastDataType
-                && (lastImageCoding != VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_JPG || lastImageCoding != VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_PNG))
+                && (lastImageCoding != VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_JPG || lastImageCoding != VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_PNG))
                 //&& imageCoding == lastImageCoding)
                 {
                   boolean different = false;
@@ -1110,7 +1110,7 @@ public class VTGraphicsModeServerWriter implements Runnable
                 && imageDataBuffer.getColorModel().getPixelSize() == lastDepth
                 && viewProvider.getColorCount() == lastColors
                 && imageDataBuffer.getRaster().getDataBuffer().getDataType() == lastDataType
-                && (lastImageCoding != VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_ZSD || lastImageCoding != VT.VT_GRAPHICS_MODE_GRAPHICS_IMAGE_CODING_GZD))
+                && (lastImageCoding != VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_ZSD || lastImageCoding != VT.VT_GRAPHICS_MODE_IMAGE_ENCODING_FORMAT_GZD))
                 //&& imageCoding == lastImageCoding)
                 {
                   // startTime = System.currentTimeMillis();

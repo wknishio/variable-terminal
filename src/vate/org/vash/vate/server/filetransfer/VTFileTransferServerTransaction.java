@@ -237,25 +237,25 @@ public class VTFileTransferServerTransaction implements Runnable
       {
         if (fileTransferFile.isFile())
         {
-          localFileStatus = VT.VT_FILE_TRANSFER_FILE_TYPE_NORMAL;
+          localFileStatus = VT.VT_FILE_TRANSFER_FILE_STATUS_NORMAL;
         }
         else if (fileTransferFile.isDirectory())
         {
-          localFileStatus = VT.VT_FILE_TRANSFER_FILE_TYPE_DIRECTORY;
+          localFileStatus = VT.VT_FILE_TRANSFER_FILE_STATUS_DIRECTORY;
         }
         else
         {
-          localFileStatus = VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER;
+          localFileStatus = VT.VT_FILE_TRANSFER_FILE_STATUS_ANOTHER;
         }
       }
       else
       {
-        localFileStatus = VT.VT_FILE_TRANSFER_FILE_NOT_FOUND;
+        localFileStatus = VT.VT_FILE_TRANSFER_FILE_STATUS_INEXISTENT;
       }
     }
     catch (Throwable e)
     {
-      localFileStatus = VT.VT_FILE_TRANSFER_FILE_ERROR;
+      localFileStatus = VT.VT_FILE_TRANSFER_FILE_STATUS_ERROR;
     }
     try
     {
@@ -624,31 +624,31 @@ public class VTFileTransferServerTransaction implements Runnable
     {
       if (checkFileStatus())
       {
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_DIRECTORY)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_DIRECTORY)
         {
           
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ANOTHER)
         {
           checked = false;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_ERROR)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ERROR)
         {
           checked = false;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_NOT_FOUND)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_INEXISTENT)
         {
           checked = false;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_DIRECTORY)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_DIRECTORY)
         {
           directory = true;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ANOTHER)
         {
           checked = false;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_ERROR)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ERROR)
         {
           checked = false;
         }
@@ -680,7 +680,7 @@ public class VTFileTransferServerTransaction implements Runnable
           {
             if (resuming)
             {
-              resumable = remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND &&
+              resumable = remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_STATUS_INEXISTENT &&
               ((localFileSize >= remoteFileSize && remoteFileSize > 0)
               || (remoteFileSize > localFileSize && remoteFileSize > 0));
             }
@@ -907,31 +907,31 @@ public class VTFileTransferServerTransaction implements Runnable
     {
       if (checkFileStatus())
       {
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_NOT_FOUND)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_INEXISTENT)
         {
           checked = false;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_DIRECTORY)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_DIRECTORY)
         {
           directory = true;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ANOTHER)
         {
           checked = false;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_ERROR)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ERROR)
         {
           checked = false;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_DIRECTORY)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_DIRECTORY)
         {
           
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_TYPE_ANOTHER)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ANOTHER)
         {
           checked = false;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_ERROR)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ERROR)
         {
           checked = false;
         }
@@ -970,7 +970,7 @@ public class VTFileTransferServerTransaction implements Runnable
           {
             if (resuming)
             {
-              resumable = localFileStatus != VT.VT_FILE_TRANSFER_FILE_NOT_FOUND &&
+              resumable = localFileStatus != VT.VT_FILE_TRANSFER_FILE_STATUS_INEXISTENT &&
               ((remoteFileSize >= localFileSize && localFileSize > 0)
               || (localFileSize > remoteFileSize && localFileSize > 0));
             }
