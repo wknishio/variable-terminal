@@ -6,20 +6,28 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 
+import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;
+import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 
 public interface VTManagedConnection
 {
-  public VTLinkableDynamicMultiplexedInputStream getInputStream(int number);
-  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number);
-  public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number);
-  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number);
-  public void setInputStreamOutputStream(int type, int number, OutputStream outputStream, Closeable closeable);
-  public InputStream createBufferedInputStream(int number);
-  public OutputStream createBufferedOutputStream(int number);
-  public InputStream createBufferedInputStream(int type, int number);
-  public OutputStream createBufferedOutputStream(int type, int number);
+  public VTLinkableDynamicMultiplexedInputStream getInputStream(Object link);
+  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(Object link);
+  public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, Object link);
+  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, Object link);
+  public int setInputStreamOutputStream(int type, Object link, OutputStream outputStream, Closeable closeable);
+  public InputStream createBufferedInputStream(Object link);
+  public OutputStream createBufferedOutputStream(Object link);
+  public InputStream createBufferedInputStream(int type, Object link);
+  public OutputStream createBufferedOutputStream(int type, Object link);
+  public void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream);
+  public void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream);
+  public VTLinkableDynamicMultiplexingInputStream getMultiplexedConnectionInputStream();
+  public VTLinkableDynamicMultiplexingOutputStream getMultiplexedConnectionOutputStream();
+  public int getInputStreamIndexStart();
+  public int getOutputStreamIndexStart();
   public void close() throws IOException;
   public Socket getSocket();
   public Class<?> getSessionClass();

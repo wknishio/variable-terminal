@@ -26,8 +26,8 @@ public class VTManagedSocket extends Socket
   public VTManagedSocket(VTManagedConnection connection)
   {
     this.connection = connection;
-    this.in = connection.getInputStream(0);
-    this.out = connection.getOutputStream(0);
+    this.in = connection.getInputStream(connection.getInputStreamIndexStart());
+    this.out = connection.getOutputStream(connection.getOutputStreamIndexStart());
     this.input = new BufferedInputStream(in, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
     this.output = new VTBufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES, true);
   }
@@ -67,29 +67,29 @@ public class VTManagedSocket extends Socket
     return output;
   }
   
-  public VTLinkableDynamicMultiplexedInputStream getInputStream(int number) throws IOException
+  public VTLinkableDynamicMultiplexedInputStream getInputStream(Object link)
   {
-    return connection.getInputStream(number);
+    return connection.getInputStream(link);
   }
   
-  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int number) throws IOException
+  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(Object link)
   {
-    return connection.getOutputStream(number);
+    return connection.getOutputStream(link);
   }
   
-  public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, int number) throws IOException
+  public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, Object link)
   {
-    return connection.getInputStream(type, number);
+    return connection.getInputStream(type, link);
   }
   
-  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, int number) throws IOException
+  public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, Object link)
   {
-    return connection.getOutputStream(type, number);
+    return connection.getOutputStream(type, link);
   }
   
-  public void setInputStreamOutputStream(int type, int number, OutputStream outputStream, Closeable closeable)
+  public int setInputStreamOutputStream(int type, Object link, OutputStream outputStream, Closeable closeable)
   {
-    connection.setInputStreamOutputStream(type, number, outputStream, closeable);
+    return connection.setInputStreamOutputStream(type, link, outputStream, closeable);
   }
   
   public InputStream createBufferedInputStream(int number)
@@ -110,6 +110,46 @@ public class VTManagedSocket extends Socket
   public OutputStream createBufferedOutputStream(int type, int number)
   {
     return connection.createBufferedOutputStream(type, number);
+  }
+  
+  public InputStream createBufferedInputStream(Object link)
+  {
+    return connection.createBufferedInputStream(link);
+  }
+  
+  public OutputStream createBufferedOutputStream(Object link)
+  {
+    return connection.createBufferedOutputStream(link);
+  }
+  
+  public InputStream createBufferedInputStream(int type, Object link)
+  {
+    return connection.createBufferedInputStream(type, link);
+  }
+  
+  public OutputStream createBufferedOutputStream(int type, Object link)
+  {
+    return connection.createBufferedOutputStream(type, link);
+  }
+  
+  public void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)
+  {
+    connection.releaseInputStream(stream);
+  }
+  
+  public void releaseOutputStream(VTLinkableDynamicMultiplexedOutputStream stream)
+  {
+    connection.releaseOutputStream(stream);
+  }
+  
+  public int getInputStreamIndexStart()
+  {
+    return connection.getInputStreamIndexStart();
+  }
+  
+  public int getOutputStreamIndexStart()
+  {
+    return connection.getOutputStreamIndexStart();
   }
   
   public void shutdownOutput() throws IOException
