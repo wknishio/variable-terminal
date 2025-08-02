@@ -78,6 +78,13 @@ public class VTManagedClientSocket
       return connection.getMultiplexedConnectionOutputStream().linkOutputStream(type, link);
     }
     
+    public int setInputStreamOutputStream(Object link, OutputStream outputStream, Closeable closeable)
+    {
+      VTLinkableDynamicMultiplexedInputStream stream = getInputStream(link);
+      stream.setOutputStream(outputStream, closeable);
+      return stream.number();
+    }
+    
     public int setInputStreamOutputStream(int type, Object link, OutputStream outputStream, Closeable closeable)
     {
       VTLinkableDynamicMultiplexedInputStream stream = getInputStream(type, link);

@@ -87,6 +87,11 @@ public class VTManagedSocket extends Socket
     return connection.getOutputStream(type, link);
   }
   
+  public int setInputStreamOutputStream(Object link, OutputStream outputStream, Closeable closeable)
+  {
+    return connection.setInputStreamOutputStream(link, outputStream, closeable);
+  }
+  
   public int setInputStreamOutputStream(int type, Object link, OutputStream outputStream, Closeable closeable)
   {
     return connection.setInputStreamOutputStream(type, link, outputStream, closeable);

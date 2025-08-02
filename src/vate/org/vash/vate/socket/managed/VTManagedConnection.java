@@ -17,6 +17,7 @@ public interface VTManagedConnection
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(Object link);
   public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, Object link);
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(int type, Object link);
+  public int setInputStreamOutputStream(Object link, OutputStream outputStream, Closeable closeable);
   public int setInputStreamOutputStream(int type, Object link, OutputStream outputStream, Closeable closeable);
   public InputStream createBufferedInputStream(Object link);
   public OutputStream createBufferedOutputStream(Object link);
