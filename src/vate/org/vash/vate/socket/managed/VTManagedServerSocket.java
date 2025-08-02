@@ -428,7 +428,7 @@ public class VTManagedServerSocket
     interrupt();
   }
   
-  public VTManagedSocket accept() throws IOException
+  public VTManagedSocket connect() throws IOException
   {
     if (!vtserver.isRunning())
     {

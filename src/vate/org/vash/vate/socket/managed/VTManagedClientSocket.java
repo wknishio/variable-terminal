@@ -430,7 +430,7 @@ public class VTManagedClientSocket
     interrupt();
   }
   
-  public VTManagedSocket accept() throws IOException
+  public VTManagedSocket connect() throws IOException
   {
     if (!vtclient.isRunning())
     {
