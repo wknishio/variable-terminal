@@ -6,10 +6,6 @@ public class VTUncaughtExceptionHandler implements Thread.UncaughtExceptionHandl
 {
   public void uncaughtException(Thread t, Throwable e)
   {
-    if (e instanceof ThreadDeath)
-    {
-      return;
-    }
     //StringBuilder message = new StringBuilder();
     //message.append("\nVT>Uncaught exception!");
     //message.append("\nVT>Thread: " + t.getName());
