@@ -11,7 +11,7 @@ import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 
-public interface VTManagedConnection
+public interface VTManagedConnection extends Closeable
 {
   public VTLinkableDynamicMultiplexedInputStream getInputStream(Object link);
   public VTLinkableDynamicMultiplexedOutputStream getOutputStream(Object link);

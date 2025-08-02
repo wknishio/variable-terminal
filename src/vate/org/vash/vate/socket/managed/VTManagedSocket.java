@@ -15,7 +15,7 @@ import org.vash.vate.stream.filter.VTBufferedOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 
-public class VTManagedSocket extends Socket
+public class VTManagedSocket extends Socket implements Closeable
 {
   private final VTManagedConnection connection;
   private final VTLinkableDynamicMultiplexedInputStream in;
