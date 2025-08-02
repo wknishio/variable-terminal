@@ -135,7 +135,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     this.toggleScrollBarsMenu.addActionListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuToggleScrollbarsOptionListener(writer));
     this.clearInterfaceMenu = new MenuItem("Reset Image Data");
     this.clearInterfaceMenu.addActionListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuClearInterfaceOptionListener(writer));
-    this.closeTerminalMenu = new MenuItem("Close View");
+    this.closeTerminalMenu = new MenuItem("Exit Graphics Link");
     this.closeTerminalMenu.addActionListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuCloseTerminalOptionListener(writer));
     
     this.trueColorOption = new CheckboxMenuItem("True-24-Bit", false);
