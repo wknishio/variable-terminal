@@ -192,7 +192,7 @@ public class VTDataMonitorService extends VTTask implements VTNanoPingListener
     {
       return String.format(Locale.US, "%07.3f KB", bytes / 1000);
     }
-    CharacterIterator ci = new StringCharacterIterator(" KMGTPE");
+    CharacterIterator ci = new StringCharacterIterator(" KMGTPEZYRQ");
     while (bytes >= 1000)
     {
       bytes /= 1000;
