@@ -68,7 +68,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
   private CheckboxMenuItem nextColorOption;
   private CheckboxMenuItem mediumColorOption;
   private CheckboxMenuItem simpleColorOption;
-  private CheckboxMenuItem fewColorOption;
+  private CheckboxMenuItem frugalColorOption;
   private CheckboxMenuItem lowColorOption;
   private CheckboxMenuItem grayColorOption;
   private CheckboxMenuItem dullColorOption;
@@ -154,8 +154,8 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     this.mediumColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, mediumColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216));
     this.simpleColorOption = new CheckboxMenuItem("Simple-7-Bit", false);
     this.simpleColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, simpleColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_125));
-    this.fewColorOption = new CheckboxMenuItem("Few-6-Bit", false);
-    this.fewColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, fewColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_64));
+    this.frugalColorOption = new CheckboxMenuItem("Frugal-6-Bit", false);
+    this.frugalColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, frugalColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_64));
     this.lowColorOption = new CheckboxMenuItem("Low-5-Bit", false);
     this.lowColorOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorOptionsListener(writer, lowColorOption, VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_27));
     this.grayColorOption = new CheckboxMenuItem("Gray-4-Bit", false);
@@ -256,7 +256,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     this.colorQualityMenu.add(nextColorOption);
     this.colorQualityMenu.add(mediumColorOption);
     this.colorQualityMenu.add(simpleColorOption);
-    this.colorQualityMenu.add(fewColorOption);
+    this.colorQualityMenu.add(frugalColorOption);
     this.colorQualityMenu.add(lowColorOption);
     this.colorQualityMenu.add(grayColorOption);
     this.colorQualityMenu.add(dullColorOption);
@@ -345,7 +345,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      frugalColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
       dullColorOption.setState(false);
@@ -361,7 +361,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      frugalColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
       dullColorOption.setState(false);
@@ -377,7 +377,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      frugalColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
       dullColorOption.setState(false);
@@ -393,7 +393,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      frugalColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
       dullColorOption.setState(false);
@@ -409,7 +409,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      frugalColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
       dullColorOption.setState(false);
@@ -425,7 +425,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       nextColorOption.setState(true);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      frugalColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
       dullColorOption.setState(false);
@@ -441,7 +441,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       nextColorOption.setState(false);
       mediumColorOption.setState(true);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      frugalColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
       dullColorOption.setState(false);
@@ -457,7 +457,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(true);
-      fewColorOption.setState(false);
+      frugalColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
       dullColorOption.setState(false);
@@ -473,7 +473,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(true);
+      frugalColorOption.setState(true);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
       dullColorOption.setState(false);
@@ -489,7 +489,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      frugalColorOption.setState(false);
       lowColorOption.setState(true);
       grayColorOption.setState(false);
       dullColorOption.setState(false);
@@ -505,7 +505,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      frugalColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(true);
       dullColorOption.setState(false);
@@ -521,7 +521,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      frugalColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
       dullColorOption.setState(true);
@@ -537,7 +537,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       nextColorOption.setState(false);
       mediumColorOption.setState(false);
       simpleColorOption.setState(false);
-      fewColorOption.setState(false);
+      frugalColorOption.setState(false);
       lowColorOption.setState(false);
       grayColorOption.setState(false);
       dullColorOption.setState(false);
@@ -819,15 +819,15 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       disable = lowColorOption;
       enable = grayColorOption;
     }
-    if (fewColorOption.getState())
+    if (frugalColorOption.getState())
     {
-      disable = fewColorOption;
+      disable = frugalColorOption;
       enable = lowColorOption;
     }
     if (simpleColorOption.getState())
     {
       disable = simpleColorOption;
-      enable = fewColorOption;
+      enable = frugalColorOption;
     }
     if (mediumColorOption.getState())
     {
@@ -895,11 +895,11 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     if (lowColorOption.getState())
     {
       disable = lowColorOption;
-      enable = fewColorOption;
+      enable = frugalColorOption;
     }
-    if (fewColorOption.getState())
+    if (frugalColorOption.getState())
     {
-      disable = fewColorOption;
+      disable = frugalColorOption;
       enable = simpleColorOption;
     }
     if (simpleColorOption.getState())
