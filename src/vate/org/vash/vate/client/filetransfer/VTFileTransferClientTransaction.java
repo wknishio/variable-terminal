@@ -246,25 +246,25 @@ public class VTFileTransferClientTransaction implements Runnable
       {
         if (fileTransferFile.isFile())
         {
-          localFileStatus = VT.VT_FILE_TRANSFER_FILE_STATUS_NORMAL;
+          localFileStatus = VT.VT_FILE_TRANSFER_STATUS_NORMAL;
         }
         else if (fileTransferFile.isDirectory())
         {
-          localFileStatus = VT.VT_FILE_TRANSFER_FILE_STATUS_DIRECTORY;
+          localFileStatus = VT.VT_FILE_TRANSFER_STATUS_DIRECTORY;
         }
         else
         {
-          localFileStatus = VT.VT_FILE_TRANSFER_FILE_STATUS_ANOTHER;
+          localFileStatus = VT.VT_FILE_TRANSFER_STATUS_ANOTHER;
         }
       }
       else
       {
-        localFileStatus = VT.VT_FILE_TRANSFER_FILE_STATUS_INEXISTENT;
+        localFileStatus = VT.VT_FILE_TRANSFER_STATUS_INEXISTENT;
       }
     }
     catch (Throwable e)
     {
-      localFileStatus = VT.VT_FILE_TRANSFER_FILE_STATUS_ERROR;
+      localFileStatus = VT.VT_FILE_TRANSFER_STATUS_ERROR;
     }
     try
     {
@@ -286,19 +286,19 @@ public class VTFileTransferClientTransaction implements Runnable
       {
         if (fileTransferFile.canRead())
         {
-          localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_ONLY;
+          localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_READ_ONLY;
           if (fileTransferFile.canWrite())
           {
-            localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE;
+            localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE;
           }
         }
         else if (fileTransferFile.canWrite())
         {
-          localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_WRITE_ONLY;
+          localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY;
         }
         else
         {
-          localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_DENIED;
+          localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_DENIED;
         }
       }
       else
@@ -313,25 +313,25 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             if (fileTransferFile.canRead())
             {
-              localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_ONLY;
+              localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_READ_ONLY;
               if (fileTransferFile.canWrite())
               {
-                localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE;
+                localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE;
               }
             }
             else if (fileTransferFile.canWrite())
             {
-              localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_WRITE_ONLY;
+              localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY;
             }
             else
             {
               fileTransferFile.delete();
-              localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_DENIED;
+              localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_DENIED;
             }
           }
           else
           {
-            localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_DENIED;
+            localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_DENIED;
           }
         }
         else
@@ -340,25 +340,25 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             if (fileTransferFile.canRead())
             {
-              localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_ONLY;
+              localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_READ_ONLY;
               if (fileTransferFile.canWrite())
               {
-                localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE;
+                localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE;
               }
             }
             else if (fileTransferFile.canWrite())
             {
-              localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_WRITE_ONLY;
+              localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY;
             }
             else
             {
               fileTransferFile.delete();
-              localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_DENIED;
+              localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_DENIED;
             }
           }
           else
           {
-            localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_DENIED;
+            localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_DENIED;
           }
         }
       }
@@ -376,7 +376,7 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     catch (Throwable e)
     {
-      localFileAccess = VT.VT_FILE_TRANSFER_FILE_ACCESS_ERROR;
+      localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_ERROR;
     }
     try
     {
@@ -633,31 +633,31 @@ public class VTFileTransferClientTransaction implements Runnable
     {
       if (checkFileStatus())
       {
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_INEXISTENT)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_STATUS_INEXISTENT)
         {
           checked = false;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_DIRECTORY)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_STATUS_DIRECTORY)
         {
           directory = true;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ANOTHER)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_STATUS_ANOTHER)
         {
           checked = false;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ERROR)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_STATUS_ERROR)
         {
           checked = false;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_DIRECTORY)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_STATUS_DIRECTORY)
         {
           
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ANOTHER)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_STATUS_ANOTHER)
         {
           checked = false;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ERROR)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_STATUS_ERROR)
         {
           checked = false;
         }
@@ -674,11 +674,11 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         if (checked && checkFileAccess(true))
         {
-          if (!(localFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE || localFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_ONLY))
+          if (!(localFileAccess == VT.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE || localFileAccess == VT.VT_FILE_TRANSFER_ACCESS_READ_ONLY))
           {
             checked = false;
           }
-          if (!(remoteFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE || remoteFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_WRITE_ONLY))
+          if (!(remoteFileAccess == VT.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE || remoteFileAccess == VT.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY))
           {
             checked = false;
           }
@@ -689,7 +689,7 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             if (resuming)
             {
-              resumable = remoteFileStatus != VT.VT_FILE_TRANSFER_FILE_STATUS_INEXISTENT &&
+              resumable = remoteFileStatus != VT.VT_FILE_TRANSFER_STATUS_INEXISTENT &&
               ((localFileSize >= remoteFileSize && remoteFileSize > 0)
               || (remoteFileSize > localFileSize && remoteFileSize > 0));
             }
@@ -916,31 +916,31 @@ public class VTFileTransferClientTransaction implements Runnable
     {
       if (checkFileStatus())
       {
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_DIRECTORY)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_STATUS_DIRECTORY)
         {
           
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ANOTHER)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_STATUS_ANOTHER)
         {
           checked = false;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ERROR)
+        if (localFileStatus == VT.VT_FILE_TRANSFER_STATUS_ERROR)
         {
           checked = false;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_INEXISTENT)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_STATUS_INEXISTENT)
         {
           checked = false;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_DIRECTORY)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_STATUS_DIRECTORY)
         {
           directory = true;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ANOTHER)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_STATUS_ANOTHER)
         {
           checked = false;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_FILE_STATUS_ERROR)
+        if (remoteFileStatus == VT.VT_FILE_TRANSFER_STATUS_ERROR)
         {
           checked = false;
         }
@@ -964,11 +964,11 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         if (checked && checkFileAccess(false))
         {
-          if (!(localFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE || localFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_WRITE_ONLY))
+          if (!(localFileAccess == VT.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE || localFileAccess == VT.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY))
           {
             checked = false;
           }
-          if (!(remoteFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE || remoteFileAccess == VT.VT_FILE_TRANSFER_FILE_ACCESS_READ_ONLY))
+          if (!(remoteFileAccess == VT.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE || remoteFileAccess == VT.VT_FILE_TRANSFER_ACCESS_READ_ONLY))
           {
             checked = false;
           }
@@ -979,7 +979,7 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             if (resuming)
             {
-              resumable = localFileStatus != VT.VT_FILE_TRANSFER_FILE_STATUS_INEXISTENT &&
+              resumable = localFileStatus != VT.VT_FILE_TRANSFER_STATUS_INEXISTENT &&
               ((remoteFileSize >= localFileSize && localFileSize > 0)
               || (localFileSize > remoteFileSize && localFileSize > 0));
             }

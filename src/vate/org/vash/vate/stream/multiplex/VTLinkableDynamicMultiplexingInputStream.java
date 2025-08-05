@@ -345,7 +345,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
         }
         else
         {
-          if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY) != 0)
+          if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
           {
             //this.compressedInputStream = VTCompressorSelector.createDirectZlibInputStream(bufferedInputStream);
             this.compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(bufferedInputStream);
@@ -420,7 +420,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
         {
           compressedInputPipe = new VTByteArrayInputStream(new byte[packetDataBuffer.length]);
         }
-        if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY) != 0)
+        if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
         {
           compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(compressedInputPipe);
         }
@@ -451,7 +451,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
         bufferedInputStream.open();
         if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
         {
-          if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY) != 0)
+          if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
           {
             compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(bufferedInputStream);
           }

@@ -45,8 +45,8 @@ public class VTTunnelConnection
   public VTTunnelConnection(ExecutorService executorService, Collection<Closeable> closeables)
   {
     this.responseChannelDirect = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT, this);
-    this.responseChannelQuick = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_QUICK, this);
-    this.responseChannelHeavy = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY, this);
+    this.responseChannelQuick = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_QUICK, this);
+    this.responseChannelHeavy = new VTTunnelChannel(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY, this);
     this.bindListeners = new ConcurrentLinkedQueue<VTTunnelChannelBindSocketListener>();
     // this.tunnelType = tunnelType;
     this.executorService = executorService;

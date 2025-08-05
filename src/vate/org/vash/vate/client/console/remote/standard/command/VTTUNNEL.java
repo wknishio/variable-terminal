@@ -32,11 +32,11 @@ public class VTTUNNEL extends VTClientStandardRemoteConsoleCommandProcessor
     {
       if (parsed[1].toUpperCase().contains("Q"))
       {
-        channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_QUICK;
+        channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_QUICK;
       }
       if (parsed[1].toUpperCase().contains("H"))
       {
-        channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY;
+        channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY;
       }
       if (parsed[1].toUpperCase().contains("F"))
       {

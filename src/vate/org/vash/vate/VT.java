@@ -55,8 +55,8 @@ public class VT
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED = 1 << 1;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_DISABLED = 0 << 2;
   public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED = 1 << 2;
-  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_QUICK = 0 << 3;
-  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_MODE_HEAVY = 1 << 3;
+  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_QUICK = 0 << 3;
+  public static final int VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY = 1 << 3;
   
   public static final int VT_CONNECTION_PROXY_NONE = 0;
   public static final int VT_CONNECTION_PROXY_SOCKS = 1;
@@ -71,16 +71,16 @@ public class VT
   
   public static final int VT_FILE_TRANSFER_SESSION_STARTED = 0;
   public static final int VT_FILE_TRANSFER_SESSION_FINISHED = 1;
-  public static final int VT_FILE_TRANSFER_FILE_STATUS_INEXISTENT = 2;
-  public static final int VT_FILE_TRANSFER_FILE_STATUS_NORMAL = 3;
-  public static final int VT_FILE_TRANSFER_FILE_STATUS_DIRECTORY = 4;
-  public static final int VT_FILE_TRANSFER_FILE_STATUS_ANOTHER = 5;
-  public static final int VT_FILE_TRANSFER_FILE_STATUS_ERROR = 6;
-  public static final int VT_FILE_TRANSFER_FILE_ACCESS_DENIED = 7;
-  public static final int VT_FILE_TRANSFER_FILE_ACCESS_READ_ONLY = 8;
-  public static final int VT_FILE_TRANSFER_FILE_ACCESS_WRITE_ONLY = 9;
-  public static final int VT_FILE_TRANSFER_FILE_ACCESS_READ_AND_WRITE = 10;
-  public static final int VT_FILE_TRANSFER_FILE_ACCESS_ERROR = 11;
+  public static final int VT_FILE_TRANSFER_STATUS_INEXISTENT = 2;
+  public static final int VT_FILE_TRANSFER_STATUS_NORMAL = 3;
+  public static final int VT_FILE_TRANSFER_STATUS_DIRECTORY = 4;
+  public static final int VT_FILE_TRANSFER_STATUS_ANOTHER = 5;
+  public static final int VT_FILE_TRANSFER_STATUS_ERROR = 6;
+  public static final int VT_FILE_TRANSFER_ACCESS_DENIED = 7;
+  public static final int VT_FILE_TRANSFER_ACCESS_READ_ONLY = 8;
+  public static final int VT_FILE_TRANSFER_ACCESS_WRITE_ONLY = 9;
+  public static final int VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE = 10;
+  public static final int VT_FILE_TRANSFER_ACCESS_ERROR = 11;
   
   public static final int VT_GRAPHICS_LINK_SESSION_STARTED = 0;
   public static final int VT_GRAPHICS_LINK_SESSION_UNSTARTED = 1;
