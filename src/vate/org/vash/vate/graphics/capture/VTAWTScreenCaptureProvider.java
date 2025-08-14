@@ -3466,7 +3466,7 @@ public final class VTAWTScreenCaptureProvider
     return null;
   }
   
-  public final BufferedImage createScreenCapture(final int padding, final boolean drawPointer, final Rectangle area)
+  public final BufferedImage createScreenCapture(final int padding, final boolean drawPointer, final Rectangle originalArea)
   {
     if (!isScreenCaptureInitialized(padding))
     {
@@ -3477,19 +3477,19 @@ public final class VTAWTScreenCaptureProvider
     }
     if (colorQuality == VT_COLOR_QUALITY_16777216)
     {
-      return create16777216ScreenCapture(drawPointer, area);
+      return create16777216ScreenCapture(drawPointer, originalArea);
     }
     else if (colorQuality == VT_COLOR_QUALITY_32768)
     {
-      return create32768ScreenCapture(drawPointer, area);
+      return create32768ScreenCapture(drawPointer, originalArea);
     }
     else if (colorQuality == VT_COLOR_QUALITY_216)
     {
-      return create216ScreenCapture(drawPointer, area);
+      return create216ScreenCapture(drawPointer, originalArea);
     }
     else if (colorQuality == VT_COLOR_QUALITY_16)
     {
-      return create16ScreenCapture(drawPointer, area);
+      return create16ScreenCapture(drawPointer, originalArea);
     }
     //else if (colorQuality == VT_COLOR_QUALITY_32)
     //{
@@ -3497,110 +3497,46 @@ public final class VTAWTScreenCaptureProvider
     //}
     else if (colorQuality == VT_COLOR_QUALITY_512)
     {
-      return create512ScreenCapture(drawPointer, area);
+      return create512ScreenCapture(drawPointer, originalArea);
     }
     else if (colorQuality == VT_COLOR_QUALITY_4096)
     {
-      return create4096ScreenCapture(drawPointer, area);
+      return create4096ScreenCapture(drawPointer, originalArea);
     }
     else if (colorQuality == VT_COLOR_QUALITY_4)
     {
-      return create4ScreenCapture(drawPointer, area);
+      return create4ScreenCapture(drawPointer, originalArea);
     }
     else if (colorQuality == VT_COLOR_QUALITY_8)
     {
-      return create8ScreenCapture(drawPointer, area);
+      return create8ScreenCapture(drawPointer, originalArea);
     }
     else if (colorQuality == VT_COLOR_QUALITY_125)
     {
-      return create125ScreenCapture(drawPointer, area);
+      return create125ScreenCapture(drawPointer, originalArea);
     }
     else if (colorQuality == VT_COLOR_QUALITY_27)
     {
-      return create27ScreenCapture(drawPointer, area);
+      return create27ScreenCapture(drawPointer, originalArea);
     }
     else if (colorQuality == VT_COLOR_QUALITY_262144)
     {
-      return create262144ScreenCapture(drawPointer, area);
+      return create262144ScreenCapture(drawPointer, originalArea);
     }
     else if (colorQuality == VT_COLOR_QUALITY_2097152)
     {
-      return create2097152ScreenCapture(drawPointer, area);
+      return create2097152ScreenCapture(drawPointer, originalArea);
     }
     else if (colorQuality == VT_COLOR_QUALITY_64)
     {
-      return create64ScreenCapture(drawPointer, area);
+      return create64ScreenCapture(drawPointer, originalArea);
     }
     return null;
   }
   
-  public final BufferedImage createScreenCapture(final int padding, final boolean drawPointer, final VTRectangle rectangle)
+  public final BufferedImage createScreenCapture(final int padding, final boolean drawPointer, final VTRectangle originalArea)
   {
-    final Rectangle area = new Rectangle(rectangle.x, rectangle.y, rectangle.width, rectangle.height);
-    if (!isScreenCaptureInitialized(padding))
-    {
-      if (!initializeScreenCapture(padding))
-      {
-        return null;
-      }
-    }
-    if (colorQuality == VT_COLOR_QUALITY_16777216)
-    {
-      return create16777216ScreenCapture(drawPointer, area);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_32768)
-    {
-      return create32768ScreenCapture(drawPointer, area);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_216)
-    {
-      return create216ScreenCapture(drawPointer, area);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_16)
-    {
-      return create16ScreenCapture(drawPointer, area);
-    }
-    //else if (colorQuality == VT_COLOR_QUALITY_32)
-    //{
-      //return create32ScreenCapture(drawPointer, area);
-    //}
-    else if (colorQuality == VT_COLOR_QUALITY_512)
-    {
-      return create512ScreenCapture(drawPointer, area);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_4096)
-    {
-      return create4096ScreenCapture(drawPointer, area);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_4)
-    {
-      return create4ScreenCapture(drawPointer, area);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_8)
-    {
-      return create8ScreenCapture(drawPointer, area);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_125)
-    {
-      return create125ScreenCapture(drawPointer, area);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_27)
-    {
-      return create27ScreenCapture(drawPointer, area);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_262144)
-    {
-      return create262144ScreenCapture(drawPointer, area);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_2097152)
-    {
-      return create2097152ScreenCapture(drawPointer, area);
-    }
-    else if (colorQuality == VT_COLOR_QUALITY_64)
-    {
-      return create64ScreenCapture(drawPointer, area);
-    }
-    return null;
+    return createScreenCapture(padding, drawPointer, new Rectangle(originalArea.x, originalArea.y, originalArea.width, originalArea.height));
   }
   
   private static final void drawPointer(final BufferedImage image, final Rectangle area, final GraphicsDevice graphicsDevice, final int drawnCursorSize)
