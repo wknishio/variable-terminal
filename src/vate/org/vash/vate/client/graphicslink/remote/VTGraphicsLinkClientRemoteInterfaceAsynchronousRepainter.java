@@ -25,31 +25,28 @@ public class VTGraphicsLinkClientRemoteInterfaceAsynchronousRepainter implements
     {
       stop();
     }
+    interrupted = false;
+    remoteInterface.setUpdating(true);
     synchronized (this)
     {
-      interrupted = false;
-      remoteInterface.setUpdating(true);
-      //repainterThread = new Thread(null, this, this.getClass().getSimpleName());
-      //repainterThread.setDaemon(true);
-      //repainterThread.start();
       repainterThread = executorService.submit(this);
     }
   }
   
   public void interrupt()
   {
+    interrupted = true;
     synchronized (this)
     {
-      interrupted = true;
       notify();
     }
   }
   
   public void resume()
   {
+    interrupted = false;
     synchronized (this)
     {
-      interrupted = false;
       notify();
     }
   }
@@ -60,9 +57,9 @@ public class VTGraphicsLinkClientRemoteInterfaceAsynchronousRepainter implements
     {
       resume();
     }
+    remoteInterface.setUpdating(false);
     synchronized (this)
     {
-      remoteInterface.setUpdating(false);
       notify();
     }
     try
@@ -96,25 +93,25 @@ public class VTGraphicsLinkClientRemoteInterfaceAsynchronousRepainter implements
   {
     try
     {
-      synchronized (this)
+      while (remoteInterface.isUpdating())
       {
-        while (remoteInterface.isUpdating())
+        while (interrupted)
         {
-          while (interrupted)
+          synchronized (this)
           {
             wait();
           }
-          // System.out.println("async-cycle");
-          // System.out.println("async-interrupted:" + interrupted);
-          // System.out.println("async-updating:" +
-          // remoteInterface.isUpdating());
-          if (!interrupted && remoteInterface.isVisible() && remoteInterface.isUpdating())
+        }
+        if (!interrupted && remoteInterface.isVisible() && remoteInterface.isUpdating())
+        {
+          remoteInterface.repaint();
+          synchronized (this)
           {
-            remoteInterface.repaint();
             wait(125);
           }
         }
       }
+      
     }
     catch (Throwable e)
     {

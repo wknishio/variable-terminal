@@ -647,7 +647,7 @@ public class VTGraphicsLinkClientWriter implements Runnable
   public void setSynchronousRefresh(boolean synchronousRefresh)
   {
     this.synchronousRefresh = synchronousRefresh;
-    this.remoteInterface.setSynchronousRefresh(synchronousRefresh);
+    //this.remoteInterface.setSynchronousRefresh(synchronousRefresh);
   }
   
   public boolean isDrawPointer()
@@ -1586,7 +1586,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
   {
     imageDataBuffer = newImageData;
     remoteInterface.setImage(imageDataBuffer);
-    remoteInterface.refreshImage();
     remoteInterface.repaint();
     scrolled.validate();
     scrolled.doLayout();
@@ -1688,7 +1687,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
           remoteInterface.interruptAsynchronousRepainter();
         }
         remoteInterface.setImage(imageDataBuffer);
-        remoteInterface.refreshImage();
         // scrolled.setPreferredSize(scrolled.getSize());
         remoteInterface.repaint();
         // remoteInterface.redraw();
@@ -1700,7 +1698,6 @@ public class VTGraphicsLinkClientWriter implements Runnable
           remoteInterface.interruptAsynchronousRepainter();
         }
         remoteInterface.setImage(imageDataBuffer);
-        remoteInterface.refreshImage();
         // scrolled.setPreferredSize(scrolled.getSize());
         remoteInterface.repaint();
         scrolled.validate();

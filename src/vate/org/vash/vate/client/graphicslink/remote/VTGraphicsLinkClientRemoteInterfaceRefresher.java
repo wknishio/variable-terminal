@@ -13,15 +13,6 @@ public class VTGraphicsLinkClientRemoteInterfaceRefresher implements Runnable
   
   public void run()
   {
-    /*
-     * synchronized (this) { while (!writer.isRemoteInterfaceLoaded()) { try {
-     * wait(); } catch (InterruptedException e) { } } }
-     */
-    /*
-     * if (!writer.isScreenCaptureModeComplete()) {
-     * writer.setScreenCaptureArea(writer.calculateScreenCaptureArea());
-     * writer.synchronizeScreenCaptureArea(); }
-     */
     writer.setScreenCaptureArea(writer.calculateScreenCaptureArea());
     writer.synchronizeScreenCaptureArea();
     writer.synchronizeColorQuality();
