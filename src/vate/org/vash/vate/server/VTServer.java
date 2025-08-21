@@ -24,6 +24,7 @@ import org.vash.vate.monitor.VTDataMonitorService;
 import org.vash.vate.parser.VTArgumentParser;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
+import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTCredential;
@@ -82,6 +83,7 @@ public class VTServer implements Runnable
   private int reconnectTimeout = 0;
   private Future<?> runThread;
   private VTDataMonitorService monitorService;
+  private VTProxy[] proxies = new VTProxy[] {};
   
   private static final String VT_SERVER_SETTINGS_COMMENTS = 
   "Variable-Terminal server settings file, supports UTF-8\r\n" + 
@@ -95,22 +97,9 @@ public class VTServer implements Runnable
     VT.initialize();
   }
   
-  public VTServer()
+  public VTServer(VTProxy... proxies)
   {
-    // VTServerLocalConsoleCommandSelector.initialize();
-    // VTServerRemoteConsoleCommandSelector.initialize();
-    // try
-    // {
-    // sha256Digester = MessageDigest.getInstance("SHA-256");
-    // }
-    // catch (NoSuchAlgorithmException e)
-    // {
-    // e.printStackTrace();
-    // }
-    //this.blake3Digest = new VTBlake3MessageDigest();
-    //byte[] seed = new byte[64];
-    //new SecureRandom().nextBytes(seed);
-    //this.blake3Digest.setSeed(seed);
+    this.proxies = proxies;
     this.executorService = Executors.newCachedThreadPool(new ThreadFactory()
     {
       public Thread newThread(Runnable runnable)
@@ -2379,13 +2368,18 @@ public class VTServer implements Runnable
     }
   }
   
+  public void setProxies(VTProxy... proxies)
+  {
+    this.proxies = proxies;
+  }
+  
   public void run()
   {
     if (monitorService != null)
     {
       executorService.execute(monitorService);
     }
-    serverConnector = new VTServerConnector(this, new VTBlake3SecureRandom());
+    serverConnector = new VTServerConnector(this, new VTBlake3SecureRandom(), proxies);
     serverConnector.setPassive(passive);
     serverConnector.setAddress(hostAddress);
     serverConnector.setPort(hostPort);

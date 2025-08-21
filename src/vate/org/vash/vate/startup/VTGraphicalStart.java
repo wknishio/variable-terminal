@@ -16,6 +16,7 @@ public final class VTGraphicalStart
     VTConsole.setLanterna(true);
     VTConsole.setGraphical(true);
     VTConsole.setRemoteIcon(true);
+    VTConsole.setDaemon(false);
     
     VTClient client = new VTClient();
     VTServer server = new VTServer();

@@ -51,11 +51,13 @@ public class VTClientConnector implements Runnable
   private VTClientConnectorNATPortMappingResultNotify natNotify = new VTClientConnectorNATPortMappingResultNotify();
   private Collection<VTClientSessionListener> listeners = new ConcurrentLinkedQueue<VTClientSessionListener>();
   private final VTBlake3SecureRandom secureRandom;
+  private final VTProxy[] proxies;
   
-  public VTClientConnector(VTClient client, VTBlake3SecureRandom secureRandom)
+  public VTClientConnector(VTClient client, VTBlake3SecureRandom secureRandom, VTProxy... proxies)
   {
     this.client = client;
     this.secureRandom = secureRandom;
+    this.proxies = proxies;
     this.connection = new VTClientConnection(client.getExecutorService());
     this.handler = new VTClientConnectionHandler(client, connection);
     portMappingManager = new VTNATSinglePortMappingManagerMKII(3, 300, client.getExecutorService());
@@ -495,6 +497,13 @@ public class VTClientConnector implements Runnable
   
   public void resetSockets(VTClientConnection connection) throws IOException
   {
+    if (proxies != null && proxies.length > 0)
+    {
+      Socket socket = VTProxy.next(null, null, 0, proxies);
+      
+      connection.setConnectionSocket(socket);
+      return;
+    }
     if (proxyType != null)
     {
       //Authenticator.setDefault(VTDefaultProxyAuthenticator.getInstance());

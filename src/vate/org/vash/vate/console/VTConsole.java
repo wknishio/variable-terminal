@@ -40,10 +40,10 @@ public final class VTConsole
   public static final int VT_CONSOLE_COLOR_DEFAULT = 9;
   
   private static boolean lanterna = true;
-  private static boolean graphical;
-  private static boolean ansi;
-  private static boolean daemon;
-  private static boolean remoteIcon;
+  private static boolean graphical = false;
+  private static boolean ansi = false;
+  private static boolean daemon = false;
+  private static boolean remoteIcon = false;
   // private static boolean split;
   private static VTConsoleInstance console;
   

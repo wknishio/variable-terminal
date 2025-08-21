@@ -267,6 +267,7 @@ public class VTNanoHTTPD
     VTConsole.setGraphical(true);
     VTConsole.setLanterna(true);
     VTConsole.setRemoteIcon(true);
+    VTConsole.setDaemon(false);
     VTConsole.initialize();
     VTConsole.setTitle("NanoHTTPD 1.27 - Console");
     VTConsole.println( "NanoHTTPD 1.27 (C) 2001,2005-2013 Jarno Elonen and (C) 2010 Konstantinos Togias\n" +

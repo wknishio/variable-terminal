@@ -13,6 +13,7 @@ public class VTClientStandardStart
     VTConsole.setLanterna(true);
     VTConsole.setGraphical(false);
     VTConsole.setRemoteIcon(true);
+    VTConsole.setDaemon(false);
     
     boolean help = false;
     boolean daemon = false;

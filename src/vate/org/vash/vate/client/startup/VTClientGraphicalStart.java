@@ -1,7 +1,5 @@
 package org.vash.vate.client.startup;
 
-// import org.vash.vate.VT;
-
 import org.vash.vate.VT;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.console.VTConsole;
@@ -15,7 +13,7 @@ public class VTClientGraphicalStart
     VTConsole.setLanterna(true);
     VTConsole.setGraphical(true);
     VTConsole.setRemoteIcon(true);
-    // VTConsole.setCommandEcho(false);
+    VTConsole.setDaemon(false);
     
     boolean help = false;
     boolean daemon = false;

@@ -108,6 +108,26 @@ public class VTClientSessionHandler implements Runnable
       session.waitSession();
       session.tryStopSessionThreads();
       connection.closeConnection();
+      if (started)
+      {
+        try
+        {
+          VTConsole.setLogOutput(null);
+          VTConsole.setLogReadLine(null);
+        }
+        catch (Throwable t)
+        {
+          
+        }
+        try
+        {
+          VTConsole.interruptReadLine();
+        }
+        catch (Throwable t)
+        {
+          
+        }
+      }
       session.waitThreads();
     }
     catch (Throwable e)

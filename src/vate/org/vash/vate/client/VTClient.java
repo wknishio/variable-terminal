@@ -24,6 +24,7 @@ import org.vash.vate.monitor.VTDataMonitorMenu;
 import org.vash.vate.monitor.VTDataMonitorService;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.parser.VTPropertiesBuilder;
+import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.security.VTBlake3SecureRandom;
 
@@ -68,6 +69,7 @@ public class VTClient implements Runnable
   private int reconnectTimeout = 0;
   private Future<?> runThread;
   private VTDataMonitorService monitorService;
+  private VTProxy[] proxies = new VTProxy[] {};
   
   private static final String VT_CLIENT_SETTINGS_COMMENTS = 
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
@@ -81,9 +83,9 @@ public class VTClient implements Runnable
     VT.initialize();
   }
   
-  public VTClient()
+  public VTClient(VTProxy... proxies)
   {
-    // VTClientRemoteConsoleCommandSelector.initialize();
+    this.proxies = proxies;
     this.executorService = Executors.newCachedThreadPool(new ThreadFactory()
     {
       public Thread newThread(Runnable runnable)
@@ -2273,13 +2275,18 @@ public class VTClient implements Runnable
     }
   }
   
+  public void setProxies(VTProxy... proxies)
+  {
+    this.proxies = proxies;
+  }
+  
   public void run()
   {
     if (monitorService != null)
     {
       executorService.execute(monitorService);
     }
-    clientConnector = new VTClientConnector(this, new VTBlake3SecureRandom());
+    clientConnector = new VTClientConnector(this, new VTBlake3SecureRandom(), proxies);
     clientConnector.setActive(active);
     clientConnector.setAddress(hostAddress);
     clientConnector.setPort(hostPort);

@@ -1,7 +1,5 @@
 package org.vash.vate.server.startup;
 
-// import org.vash.vate.VT;
-
 import org.vash.vate.VT;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.help.VTHelpManager;
@@ -12,13 +10,13 @@ public class VTServerGraphicalStart
 {
   public static void main(String[] args)
   {
-    boolean help = false;
-    boolean daemon = false;
-    
     VTConsole.setLanterna(true);
     VTConsole.setGraphical(true);
     VTConsole.setRemoteIcon(true);
-    // VTConsole.setCommandEcho(false);
+    VTConsole.setDaemon(false);
+    
+    boolean help = false;
+    boolean daemon = false;
     
     if (args.length >= 1)
     {

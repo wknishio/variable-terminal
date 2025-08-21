@@ -1659,17 +1659,17 @@ public class VTServerSettingsDialog extends Dialog
     update();
     close();
     // VTConsole.println("");
-    try
-    {
-      VTConsole.interruptReadLine();
-    }
-    catch (Throwable t)
-    {
-      
-    }
     if (application instanceof VTServer)
     {
       VTServer server = (VTServer) application;
+      try
+      {
+        VTConsole.interruptReadLine();
+      }
+      catch (Throwable t)
+      {
+        
+      }
       // server.setSkipConfiguration(true);
       VTServerConnector connector = server.getServerConnector();
       if (connector != null && !server.isReconfigure())

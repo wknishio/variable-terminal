@@ -518,26 +518,26 @@ public class VTClientConnection
     }
     // VTConsole.setCommandEcho(true);
     closeSockets();
-    if (connected)
-    {
-      try
-      {
-        VTConsole.interruptReadLine();
-      }
-      catch (Throwable t)
-      {
-        
-      }
-      try
-      {
-        VTConsole.setLogOutput(null);
-        VTConsole.setLogReadLine(null);
-      }
-      catch (Throwable t)
-      {
-        
-      }
-    }
+//    if (connected)
+//    {
+//      try
+//      {
+//        VTConsole.interruptReadLine(client);
+//      }
+//      catch (Throwable t)
+//      {
+//        
+//      }
+//      try
+//      {
+//        VTConsole.setLogOutput(null);
+//        VTConsole.setLogReadLine(null);
+//      }
+//      catch (Throwable t)
+//      {
+//        
+//      }
+//    }
     connected = false;
     synchronized (this)
     {
