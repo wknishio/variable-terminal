@@ -260,7 +260,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       length = input.readInt();
       input.readFully(packetDataBuffer, 0, length);
       stream = getInputStream(type, number);
-      if (stream == null || sequence != stream.getPacketSequencer().nextLong())
+      if (stream.getPacketSequencer().nextLong() != sequence || stream == null)
       {
         close();
         return;

@@ -369,7 +369,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       while (remaining > 0 && !closed)
       {
         written = Math.min(remaining, packetSize);
-        writeDataPacket(data, position, written, type, number);
+        writeDataPacket(type, number, data, position, written);
         position += written;
         remaining -= written;
       }
@@ -443,7 +443,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       this.propagated.remove(propagated);
     }
     
-    private synchronized final void writeDataPacket(final byte[] data, final int offset, final int length, final int type, final int number) throws IOException
+    private synchronized final void writeDataPacket(final int type, final int number, final byte[] data, final int offset, final int length) throws IOException
     {
       dataPacketBuffer.reset();
       intermediateDataPacketBuffer.reset();
