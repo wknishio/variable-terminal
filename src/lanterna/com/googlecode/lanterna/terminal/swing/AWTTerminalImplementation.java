@@ -34,7 +34,7 @@ import java.util.Collections;
 public class AWTTerminalImplementation extends GraphicalTerminalImplementation {
     private final Component component;
     private final AWTTerminalFontConfiguration fontConfiguration;
-    private MouseAdapter mouseListener;
+    private TerminalMouseListener mouseListener;
 
 	/**
      * Creates a new {@code AWTTerminalImplementation}

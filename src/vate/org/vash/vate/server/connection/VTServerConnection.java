@@ -685,12 +685,12 @@ public class VTServerConnection
     availableInputChannel = inputChannel;
     availableOutputChannel = outputChannel;
     
-    shellDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(shellInputStream);
+    shellDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(shellInputStream);
     // shellDataInputStream =
     // VTCompressorSelector.createFlushBufferedSyncFlushInflaterInputStream(shellInputStream);
     // shellDataInputStream = shellInputStream;
     
-    shellDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(shellOutputStream);
+    shellDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(shellOutputStream);
     // shellDataOutputStream =
     // VTCompressorSelector.createFlushBufferedSyncFlushDeflaterOutputStream(shellOutputStream);
     // shellDataOutputStream = shellOutputStream;
@@ -710,8 +710,8 @@ public class VTServerConnection
     fastImageDataInputStream = new VTLittleEndianInputStream(graphicsFastImageInputStream);
     fastImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedSyncFlushZlibOutputStreamFilteredStrategy(graphicsFastImageOutputStream));
     
-    clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
-    clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
+    clipboardDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(graphicsClipboardInputStream);
+    clipboardDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(graphicsClipboardOutputStream);
     
     fileTransferControlDataInputStream = new VTLittleEndianInputStream(fileTransferControlInputStream);
     fileTransferControlDataOutputStream = new VTLittleEndianOutputStream(fileTransferControlOutputStream);
@@ -1098,8 +1098,8 @@ public class VTServerConnection
     graphicsClipboardOutputStream.open();
     //graphicsClipboardInputStream.open();
     
-    clipboardDataInputStream = VTCompressorSelector.createBufferedZstdInputStream(graphicsClipboardInputStream);
-    clipboardDataOutputStream = VTCompressorSelector.createBufferedZstdOutputStream(graphicsClipboardOutputStream);
+    clipboardDataInputStream = VTCompressorSelector.createBufferedLz4InputStream(graphicsClipboardInputStream);
+    clipboardDataOutputStream = VTCompressorSelector.createBufferedLz4OutputStream(graphicsClipboardOutputStream);
     
     // graphicsControlInputStream.addPropagated(clipboardDataOutputStream);
     // graphicsControlInputStream.addPropagated(clipboardDataInputStream);

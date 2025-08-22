@@ -810,10 +810,22 @@ public final class VTSystemConsole
       Class.forName("java.io.Console");
       Class<?> systemClass = Class.forName("java.lang.System");
       Method consoleMethod = systemClass.getDeclaredMethod("console");
-      // consoleMethod.setAccessible(true);
-      Object consoleResult = consoleMethod.invoke(null);
-      if (consoleResult != null)
+      Object consoleObject = consoleMethod.invoke(null);
+      if (consoleObject != null)
       {
+        try
+        {
+          Method isTermninalMethod = consoleObject.getClass().getDeclaredMethod("isTerminal");
+          Object isTerminal = isTermninalMethod.invoke(consoleObject);
+          if (isTerminal instanceof Boolean)
+          {
+            return (Boolean) isTerminal;
+          }
+        }
+        catch (Throwable e)
+        {
+          
+        }
         return true;
       }
     }

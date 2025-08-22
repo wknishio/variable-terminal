@@ -1150,7 +1150,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
 //    }
     
     
-    protected class TerminalMouseListener extends MouseAdapter {
+    protected class TerminalMouseListener extends MouseAdapter implements MouseListener, MouseMotionListener, MouseWheelListener {
       private MouseCaptureMode mouseCaptureMode=null;
 
       public TerminalMouseListener() {

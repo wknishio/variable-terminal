@@ -21,6 +21,7 @@ package com.googlecode.lanterna.terminal.swing;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.terminal.MouseCaptureMode;
+import com.googlecode.lanterna.terminal.swing.GraphicalTerminalImplementation.TerminalMouseListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +35,7 @@ public class SwingTerminalImplementation extends GraphicalTerminalImplementation
 
     private final JComponent component;
     private final SwingTerminalFontConfiguration fontConfiguration;
-    private MouseAdapter mouseListener;
+    private TerminalMouseListener mouseListener;
 
     /**
      * Creates a new {@code SwingTerminalImplementation}
