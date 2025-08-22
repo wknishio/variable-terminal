@@ -6,7 +6,7 @@ import java.util.zip.Deflater;
 
 import org.vash.vate.VT;
 import org.vash.vate.client.session.VTClientSession;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.filesystem.VTZipUtils;
 //import org.vash.vate.filesystem.VTArchiveUtils;
 import org.vash.vate.task.VTTask;
@@ -82,7 +82,7 @@ public class VTClientZipFileOperation extends VTTask
           {
             synchronized (this)
             {
-              VTConsole.print("\nVT>Zip file [" + zipFilePath + "] compressed on client!\nVT>");
+              VTSystemConsole.print("\nVT>Zip file [" + zipFilePath + "] compressed on client!\nVT>");
               finished = true;
             }
           }
@@ -90,7 +90,7 @@ public class VTClientZipFileOperation extends VTTask
           {
             synchronized (this)
             {
-              VTConsole.print("\nVT>Zip file [" + zipFilePath + "] compression on client failed!\nVT>");
+              VTSystemConsole.print("\nVT>Zip file [" + zipFilePath + "] compression on client failed!\nVT>");
               finished = true;
             }
           }
@@ -99,7 +99,7 @@ public class VTClientZipFileOperation extends VTTask
         {
           synchronized (this)
           {
-            VTConsole.print("\nVT>Zip file [" + zipFilePath + "] compression on client interrupted!\nVT>");
+            VTSystemConsole.print("\nVT>Zip file [" + zipFilePath + "] compression on client interrupted!\nVT>");
             finished = true;
           }
         }
@@ -107,7 +107,7 @@ public class VTClientZipFileOperation extends VTTask
         {
           synchronized (this)
           {
-            VTConsole.print("\nVT>Zip file [" + zipFilePath + "] compression on client failed!\nVT>");
+            VTSystemConsole.print("\nVT>Zip file [" + zipFilePath + "] compression on client failed!\nVT>");
             finished = true;
           }
         }
@@ -120,7 +120,7 @@ public class VTClientZipFileOperation extends VTTask
           {
             synchronized (this)
             {
-              VTConsole.print("\nVT>Zip file [" + zipFilePath + "] uncompressed on client!\nVT>");
+              VTSystemConsole.print("\nVT>Zip file [" + zipFilePath + "] uncompressed on client!\nVT>");
               finished = true;
             }
           }
@@ -128,7 +128,7 @@ public class VTClientZipFileOperation extends VTTask
           {
             synchronized (this)
             {
-              VTConsole.print("\nVT>Zip file [" + zipFilePath + "] uncompression on client failed!\nVT>");
+              VTSystemConsole.print("\nVT>Zip file [" + zipFilePath + "] uncompression on client failed!\nVT>");
               finished = true;
             }
           }
@@ -137,7 +137,7 @@ public class VTClientZipFileOperation extends VTTask
         {
           synchronized (this)
           {
-            VTConsole.print("\nVT>Zip file [" + zipFilePath + "] uncompression on client interrupted!\nVT>");
+            VTSystemConsole.print("\nVT>Zip file [" + zipFilePath + "] uncompression on client interrupted!\nVT>");
             finished = true;
           }
         }
@@ -145,7 +145,7 @@ public class VTClientZipFileOperation extends VTTask
         {
           synchronized (this)
           {
-            VTConsole.print("\nVT>Zip file [" + zipFilePath + "] uncompression on client failed!\nVT>");
+            VTSystemConsole.print("\nVT>Zip file [" + zipFilePath + "] uncompression on client failed!\nVT>");
             finished = true;
           }
         }
@@ -158,7 +158,7 @@ public class VTClientZipFileOperation extends VTTask
           {
             synchronized (this)
             {
-              VTConsole.print("\nVT>Zip file [" + zipFilePath + "] decompressed to [" + sourcePaths[0] + "] on client!\nVT>");
+              VTSystemConsole.print("\nVT>Zip file [" + zipFilePath + "] decompressed to [" + sourcePaths[0] + "] on client!\nVT>");
               finished = true;
             }
           }
@@ -166,7 +166,7 @@ public class VTClientZipFileOperation extends VTTask
           {
             synchronized (this)
             {
-              VTConsole.print("\nVT>Zip file [" + zipFilePath + "] decompression on client failed!\nVT>");
+              VTSystemConsole.print("\nVT>Zip file [" + zipFilePath + "] decompression on client failed!\nVT>");
               finished = true;
             }
           }
@@ -175,7 +175,7 @@ public class VTClientZipFileOperation extends VTTask
         {
           synchronized (this)
           {
-            VTConsole.print("\nVT>Zip file [" + zipFilePath + "] decompression on client interrupted!\nVT>");
+            VTSystemConsole.print("\nVT>Zip file [" + zipFilePath + "] decompression on client interrupted!\nVT>");
             finished = true;
           }
         }
@@ -183,7 +183,7 @@ public class VTClientZipFileOperation extends VTTask
         {
           synchronized (this)
           {
-            VTConsole.print("\nVT>Zip file [" + zipFilePath + "] decompression on client failed!\nVT>");
+            VTSystemConsole.print("\nVT>Zip file [" + zipFilePath + "] decompression on client failed!\nVT>");
             finished = true;
           }
         }

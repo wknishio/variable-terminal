@@ -9,7 +9,7 @@ import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 
 public class VTGraphicalConsoleTextArea extends TextArea
 {
@@ -39,7 +39,7 @@ public class VTGraphicalConsoleTextArea extends TextArea
   {
     try
     {
-      StringSelection text = new StringSelection(VTConsole.getSelectedText());
+      StringSelection text = new StringSelection(VTSystemConsole.getSelectedText());
       systemClipboard.setContents(text, null);
       // VTConsole.flush();
 //			VTGraphicalConsole.updateCaretPosition();
@@ -58,7 +58,7 @@ public class VTGraphicalConsoleTextArea extends TextArea
   {
     try
     {
-      StringSelection text = new StringSelection(VTConsole.getAllText());
+      StringSelection text = new StringSelection(VTSystemConsole.getAllText());
       systemClipboard.setContents(text, null);
       // VTConsole.flush();
 //			VTGraphicalConsole.updateCaretPosition();
@@ -80,7 +80,7 @@ public class VTGraphicalConsoleTextArea extends TextArea
       if (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor))
       {
         String text = systemClipboard.getData(DataFlavor.stringFlavor).toString();
-        VTConsole.input(text);
+        VTSystemConsole.input(text);
       }
       else if (systemClipboard.isDataFlavorAvailable(DataFlavor.javaFileListFlavor))
       {
@@ -95,7 +95,7 @@ public class VTGraphicalConsoleTextArea extends TextArea
             fileList.append(" " + file.getAbsolutePath());
           }
           fileListString = fileList.substring(1);
-          VTConsole.input(fileListString);
+          VTSystemConsole.input(fileListString);
         }
       }
     }

@@ -1,6 +1,6 @@
 package org.vash.vate.server.console.local.standard.command;
 
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.connection.VTServerConnector;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
@@ -135,7 +135,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
       message.append("\nVT>Session shell(SS): [" + sessionShell + "]");
       message.append("\nVT>Session maximum(SM): [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]");
       message.append("\nVT>\nVT>End of server connection settings list\nVT>");
-      VTConsole.print(message.toString());
+      VTSystemConsole.print(message.toString());
       message.setLength(0);
     }
     else if (parsed.length >= 2)
@@ -147,11 +147,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           try
           {
             server.saveServerSettingsFile("vate-server.properties");
-            VTConsole.print("\rVT>Saved settings file:[vate-server.properties]\nVT>");
+            VTSystemConsole.print("\rVT>Saved settings file:[vate-server.properties]\nVT>");
           }
           catch (Throwable t)
           {
-            VTConsole.print("\rVT>Failed to save settings file:[vate-server.properties]\nVT>");
+            VTSystemConsole.print("\rVT>Failed to save settings file:[vate-server.properties]\nVT>");
           }
         }
         else if (parsed.length >= 3)
@@ -159,16 +159,16 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           try
           {
             server.saveServerSettingsFile(parsed[2]);
-            VTConsole.print("\rVT>Saved settings file:[" + parsed[2] + "]\nVT>");
+            VTSystemConsole.print("\rVT>Saved settings file:[" + parsed[2] + "]\nVT>");
           }
           catch (Throwable t)
           {
-            VTConsole.print("\rVT>Failed to save settings file:[" + parsed[2] + "]\nVT>");
+            VTSystemConsole.print("\rVT>Failed to save settings file:[" + parsed[2] + "]\nVT>");
           }
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("LF"))
@@ -179,12 +179,12 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           try
           {
             server.loadServerSettingsFile("vate-server.properties");
-            VTConsole.print("\rVT>Loaded settings file:[vate-server.properties]\nVT>");
+            VTSystemConsole.print("\rVT>Loaded settings file:[vate-server.properties]\nVT>");
             ok = true;
           }
           catch (Throwable t)
           {
-            VTConsole.print("\rVT>Failed to load settings file:[vate-server.properties]\nVT>");
+            VTSystemConsole.print("\rVT>Failed to load settings file:[vate-server.properties]\nVT>");
           }
           if (ok)
           {
@@ -202,12 +202,12 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           try
           {
             server.loadServerSettingsFile(parsed[2]);
-            VTConsole.print("\rVT>Loaded settings file:[" + parsed[2] + "]\nVT>");
+            VTSystemConsole.print("\rVT>Loaded settings file:[" + parsed[2] + "]\nVT>");
             ok = true;
           }
           catch (Throwable t)
           {
-            VTConsole.print("\rVT>Failed to load settings file:[" + parsed[2] + "]\nVT>");
+            VTSystemConsole.print("\rVT>Failed to load settings file:[" + parsed[2] + "]\nVT>");
           }
           if (ok)
           {
@@ -221,7 +221,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
 //      else if (parsed[1].equalsIgnoreCase("RC"))
@@ -240,7 +240,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
         if (parsed.length == 2)
         {
           Integer sessionsMaximum = server.getServerConnector().getSessionsMaximum();
-          VTConsole.print("\rVT>Session maximum(SM): [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]\nVT>");
+          VTSystemConsole.print("\rVT>Session maximum(SM): [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]\nVT>");
         }
         else if (parsed.length >= 3)
         {
@@ -256,11 +256,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          VTConsole.print("\rVT>Session maximum(SM) set to: [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]\nVT>");
+          VTSystemConsole.print("\rVT>Session maximum(SM) set to: [" + (sessionsMaximum == null ? "" : sessionsMaximum) + "]\nVT>");
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("CM"))
@@ -269,11 +269,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
         {
           if (server.getServerConnector().isPassive())
           {
-            VTConsole.print("\rVT>Connection mode(CM): [Passive]\nVT>");
+            VTSystemConsole.print("\rVT>Connection mode(CM): [Passive]\nVT>");
           }
           else
           {
-            VTConsole.print("\rVT>Connection mode(CM): [Active]\nVT>");
+            VTSystemConsole.print("\rVT>Connection mode(CM): [Active]\nVT>");
           }
         }
         else if (parsed.length >= 3)
@@ -286,11 +286,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          VTConsole.print("\rVT>Connection mode(CM) set to: [" + (passive ? "Passive" : "Active") + "]\nVT>");
+          VTSystemConsole.print("\rVT>Connection mode(CM) set to: [" + (passive ? "Passive" : "Active") + "]\nVT>");
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("CH"))
@@ -298,7 +298,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String hostAddress = server.getServerConnector().getAddress();
-          VTConsole.print("\rVT>Connection host address(CH): [" + hostAddress + "]\nVT>");
+          VTSystemConsole.print("\rVT>Connection host address(CH): [" + hostAddress + "]\nVT>");
         }
         else if (parsed.length >= 3)
         {
@@ -310,11 +310,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          VTConsole.print("\rVT>Connection host address(CH) set to: [" + hostAddress + "]\nVT>");
+          VTSystemConsole.print("\rVT>Connection host address(CH) set to: [" + hostAddress + "]\nVT>");
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("CP"))
@@ -322,7 +322,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
         if (parsed.length == 2)
         {
           Integer port = server.getServerConnector().getPort();
-          VTConsole.print("\rVT>Connection host port(CP): [" + port + "]\nVT>");
+          VTSystemConsole.print("\rVT>Connection host port(CP): [" + port + "]\nVT>");
         }
         else if (parsed.length >= 3)
         {
@@ -331,7 +331,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             int port = Integer.parseInt(parsed[2]);
             if (port < 1 || port > 65535)
             {
-              VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+              VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
             }
             else
             {
@@ -342,17 +342,17 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
                 connector.interruptConnector();
                 connector.notify();
               }
-              VTConsole.print("\rVT>Connection host port(CP) set to: [" + port + "]\nVT>");
+              VTSystemConsole.print("\rVT>Connection host port(CP) set to: [" + port + "]\nVT>");
             }
           }
           catch (NumberFormatException e)
           {
-            VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+            VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
           }
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("PT"))
@@ -362,23 +362,23 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           String proxyType = server.getServerConnector().getProxyType();
           if (proxyType == null)
           {
-            VTConsole.print("\rVT>Proxy type(PT): []\nVT>");
+            VTSystemConsole.print("\rVT>Proxy type(PT): []\nVT>");
           }
           else if (proxyType.toUpperCase().startsWith("H"))
           {
-            VTConsole.print("\rVT>Proxy type(PT): [HTTP]\nVT>");
+            VTSystemConsole.print("\rVT>Proxy type(PT): [HTTP]\nVT>");
           }
           else if (proxyType.toUpperCase().startsWith("S"))
           {
-            VTConsole.print("\rVT>Proxy type(PT): [SOCKS]\nVT>");
+            VTSystemConsole.print("\rVT>Proxy type(PT): [SOCKS]\nVT>");
           }
           else if (proxyType.toUpperCase().startsWith("P"))
           {
-            VTConsole.print("\rVT>Proxy type(PT): [PLUS]\nVT>");
+            VTSystemConsole.print("\rVT>Proxy type(PT): [PLUS]\nVT>");
           }
           else
           {
-            VTConsole.print("\rVT>Proxy type(PT): []\nVT>");
+            VTSystemConsole.print("\rVT>Proxy type(PT): []\nVT>");
           }
         }
         else if (parsed.length >= 3)
@@ -393,24 +393,24 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           }
           if (proxyType.toUpperCase().startsWith("H"))
           {
-            VTConsole.print("\rVT>Proxy type(PT) set to: [HTTP]\nVT>");
+            VTSystemConsole.print("\rVT>Proxy type(PT) set to: [HTTP]\nVT>");
           }
           else if (proxyType.toUpperCase().startsWith("S"))
           {
-            VTConsole.print("\rVT>Proxy type(PT) set to: [SOCKS]\nVT>");
+            VTSystemConsole.print("\rVT>Proxy type(PT) set to: [SOCKS]\nVT>");
           }
           else if (proxyType.toUpperCase().startsWith("P"))
           {
-            VTConsole.print("\rVT>Proxy type(PT) set to: [PLUS]\nVT>");
+            VTSystemConsole.print("\rVT>Proxy type(PT) set to: [PLUS]\nVT>");
           }
           else
           {
-            VTConsole.print("\rVT>Proxy type(PT) set to: []\nVT>");
+            VTSystemConsole.print("\rVT>Proxy type(PT) set to: []\nVT>");
           }
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("PH"))
@@ -418,7 +418,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String proxyAddress = server.getServerConnector().getProxyAddress();
-          VTConsole.print("\rVT>Proxy host address(PH): [" + proxyAddress + "]\nVT>");
+          VTSystemConsole.print("\rVT>Proxy host address(PH): [" + proxyAddress + "]\nVT>");
         }
         else if (parsed.length >= 3)
         {
@@ -430,11 +430,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          VTConsole.print("\rVT>Proxy host address set to: [" + proxyAddress + "]\nVT>");
+          VTSystemConsole.print("\rVT>Proxy host address set to: [" + proxyAddress + "]\nVT>");
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("PP"))
@@ -444,11 +444,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           Integer proxyPort = server.getServerConnector().getProxyPort();
           if (proxyPort != null)
           {
-            VTConsole.print("\rVT>Proxy host port(PP): [" + proxyPort + "]\nVT>");
+            VTSystemConsole.print("\rVT>Proxy host port(PP): [" + proxyPort + "]\nVT>");
           }
           else
           {
-            VTConsole.print("\rVT>Proxy host port(PP): []\nVT>");
+            VTSystemConsole.print("\rVT>Proxy host port(PP): []\nVT>");
           }
         }
         else if (parsed.length >= 3)
@@ -458,7 +458,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             int proxyPort = Integer.parseInt(parsed[2]);
             if (proxyPort < 1 || proxyPort > 65535)
             {
-              VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+              VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
             }
             else
             {
@@ -469,17 +469,17 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
                 connector.interruptConnector();
                 connector.notify();
               }
-              VTConsole.print("\rVT>Proxy host port(PP) set to: [" + proxyPort + "]\nVT>");
+              VTSystemConsole.print("\rVT>Proxy host port(PP) set to: [" + proxyPort + "]\nVT>");
             }
           }
           catch (NumberFormatException e)
           {
-            VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+            VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
           }
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
 //      else if (parsed[1].equalsIgnoreCase("PA"))
@@ -530,7 +530,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String proxyUser = server.getServerConnector().getProxyUser();
-          VTConsole.print("\rVT>Proxy user(PU): [" + proxyUser + "]\nVT>");
+          VTSystemConsole.print("\rVT>Proxy user(PU): [" + proxyUser + "]\nVT>");
         }
         else if (parsed.length >= 3)
         {
@@ -542,11 +542,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          VTConsole.print("\rVT>Proxy user(PU) set to: [" + proxyUser + "]\nVT>");
+          VTSystemConsole.print("\rVT>Proxy user(PU) set to: [" + proxyUser + "]\nVT>");
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("PK"))
@@ -554,7 +554,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String proxyPassword = server.getServerConnector().getProxyPassword();
-          VTConsole.print("\rVT>Proxy password(PK): [" + proxyPassword + "]\nVT>");
+          VTSystemConsole.print("\rVT>Proxy password(PK): [" + proxyPassword + "]\nVT>");
         }
         else if (parsed.length >= 3)
         {
@@ -566,11 +566,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          VTConsole.print("\rVT>Proxy password(PK) set to: [" + proxyPassword + "]\nVT>");
+          VTSystemConsole.print("\rVT>Proxy password(PK) set to: [" + proxyPassword + "]\nVT>");
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("ET"))
@@ -580,11 +580,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           String encryptionType = server.getServerConnector().getEncryptionType();
           if (encryptionType.toUpperCase().startsWith("V"))
           {
-            VTConsole.print("\rVT>Encryption type(ET): [VMPC]\nVT>");
+            VTSystemConsole.print("\rVT>Encryption type(ET): [VMPC]\nVT>");
           }
           else if (encryptionType.toUpperCase().startsWith("Z"))
           {
-            VTConsole.print("\rVT>Encryption type(ET): [ZUC]\nVT>");
+            VTSystemConsole.print("\rVT>Encryption type(ET): [ZUC]\nVT>");
           }
           // else if (encryptionType.toUpperCase().startsWith("B"))
           // {
@@ -592,11 +592,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           // }
           else if (encryptionType.toUpperCase().startsWith("S"))
           {
-            VTConsole.print("\rVT>Encryption type(ET): [SALSA]\nVT>");
+            VTSystemConsole.print("\rVT>Encryption type(ET): [SALSA]\nVT>");
           }
           else if (encryptionType.toUpperCase().startsWith("H"))
           {
-            VTConsole.print("\rVT>Encryption type(ET): [HC]\nVT>");
+            VTSystemConsole.print("\rVT>Encryption type(ET): [HC]\nVT>");
           }
 //          else if (encryptionType.toUpperCase().startsWith("G"))
 //          {
@@ -604,11 +604,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
 //          }
           else if (encryptionType.toUpperCase().startsWith("I"))
           {
-            VTConsole.print("\rVT>Encryption type(ET): [ISAAC]\nVT>");
+            VTSystemConsole.print("\rVT>Encryption type(ET): [ISAAC]\nVT>");
           }
           else
           {
-            VTConsole.print("\rVT>Encryption type(ET): []\nVT>");
+            VTSystemConsole.print("\rVT>Encryption type(ET): []\nVT>");
           }
         }
         else if (parsed.length >= 3)
@@ -623,11 +623,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           }
           if (encryptionType.toUpperCase().startsWith("V"))
           {
-            VTConsole.print("\rVT>Encryption type(ET) set to: [VMPC]\nVT>");
+            VTSystemConsole.print("\rVT>Encryption type(ET) set to: [VMPC]\nVT>");
           }
           else if (encryptionType.toUpperCase().startsWith("Z"))
           {
-            VTConsole.print("\rVT>Encryption type(ET) set to: [ZUC]\nVT>");
+            VTSystemConsole.print("\rVT>Encryption type(ET) set to: [ZUC]\nVT>");
           }
           // else if (encryptionType.toUpperCase().startsWith("B"))
           // {
@@ -636,11 +636,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           // }
           else if (encryptionType.toUpperCase().startsWith("S"))
           {
-            VTConsole.print("\rVT>Encryption type(ET) set to: [SALSA]\nVT>");
+            VTSystemConsole.print("\rVT>Encryption type(ET) set to: [SALSA]\nVT>");
           }
           else if (encryptionType.toUpperCase().startsWith("H"))
           {
-            VTConsole.print("\rVT>Encryption type(ET) set to: [HC]\nVT>");
+            VTSystemConsole.print("\rVT>Encryption type(ET) set to: [HC]\nVT>");
           }
 //          else if (encryptionType.toUpperCase().startsWith("G"))
 //          {
@@ -648,16 +648,16 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
 //          }
           else if (encryptionType.toUpperCase().startsWith("I"))
           {
-            VTConsole.print("\rVT>Encryption type(ET) set to: [ISAAC]\nVT>");
+            VTSystemConsole.print("\rVT>Encryption type(ET) set to: [ISAAC]\nVT>");
           }
           else
           {
-            VTConsole.print("\rVT>Encryption type(ET) set to: []\nVT>");
+            VTSystemConsole.print("\rVT>Encryption type(ET) set to: []\nVT>");
           }
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("EK"))
@@ -669,7 +669,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           {
             encryptionPassword = new String(server.getServerConnector().getEncryptionKey(), "UTF-8");
           }
-          VTConsole.print("\rVT>Encryption password(EK): [" + encryptionPassword + "]\nVT>");
+          VTSystemConsole.print("\rVT>Encryption password(EK): [" + encryptionPassword + "]\nVT>");
         }
         else if (parsed.length >= 3)
         {
@@ -681,11 +681,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          VTConsole.print("\rVT>Encryption password(EK) set to: [" + encryptionPassword + "]\nVT>");
+          VTSystemConsole.print("\rVT>Encryption password(EK) set to: [" + encryptionPassword + "]\nVT>");
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("CN"))
@@ -695,11 +695,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           Integer natPort = server.getServerConnector().getNatPort();
           if (natPort != null)
           {
-            VTConsole.print("\rVT>Connection nat port(CN): [" + natPort + "]\nVT>");
+            VTSystemConsole.print("\rVT>Connection nat port(CN): [" + natPort + "]\nVT>");
           }
           else
           {
-            VTConsole.print("\rVT>Connection nat port(CN): []\nVT>");
+            VTSystemConsole.print("\rVT>Connection nat port(CN): []\nVT>");
           }
         }
         else if (parsed.length >= 3)
@@ -709,7 +709,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             int natPort = Integer.parseInt(parsed[2]);
             if (natPort < 1 || natPort > 65535)
             {
-              VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+              VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
             }
             else
             {
@@ -720,7 +720,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
                 {
                   connector.setNatPort(null);
                 }
-                VTConsole.print("\rVT>Connection nat port(CN) set to: []\nVT>");
+                VTSystemConsole.print("\rVT>Connection nat port(CN) set to: []\nVT>");
               }
               else
               {
@@ -728,7 +728,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
                 {
                   connector.setNatPort(natPort);
                 }
-                VTConsole.print("\rVT>Connection nat port(CN) set to: [" + natPort + "]\nVT>");
+                VTSystemConsole.print("\rVT>Connection nat port(CN) set to: [" + natPort + "]\nVT>");
               }
             }
           }
@@ -739,12 +739,12 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             {
               connector.setNatPort(null);
             }
-            VTConsole.print("\rVT>Connection nat port(CN) set to: []\nVT>");
+            VTSystemConsole.print("\rVT>Connection nat port(CN) set to: []\nVT>");
           }
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("SS"))
@@ -752,7 +752,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String sessionShell = server.getServerConnector().getSessionShell();
-          VTConsole.print("\rVT>Session shell(SS): [" + sessionShell + "]\nVT>");
+          VTSystemConsole.print("\rVT>Session shell(SS): [" + sessionShell + "]\nVT>");
         }
         else if (parsed.length >= 3)
         {
@@ -764,11 +764,11 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             connector.interruptConnector();
             connector.notify();
           }
-          VTConsole.print("\rVT>Session shell(SS) set to: [" + sessionShell + "]\nVT>");
+          VTSystemConsole.print("\rVT>Session shell(SS) set to: [" + sessionShell + "]\nVT>");
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("SA"))
@@ -778,16 +778,16 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
           String sessionUsers = parsed[2];
           if (server.setMultipleUserCredentials(sessionUsers))
           {
-            VTConsole.print("\rVT>Session accounts(SA) set to: [" + sessionUsers + "]\nVT>");
+            VTSystemConsole.print("\rVT>Session accounts(SA) set to: [" + sessionUsers + "]\nVT>");
           }
           else
           {
-            VTConsole.print("\rVT>Session accounts(SA) set to: []\nVT>");
+            VTSystemConsole.print("\rVT>Session accounts(SA) set to: []\nVT>");
           }
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("PL"))
@@ -795,7 +795,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String pingLimit = (server.getPingLimit() > 0 ? "" + server.getPingLimit() : "");
-          VTConsole.print("\rVT>Ping limit(PL): [" + pingLimit + "]\nVT>");
+          VTSystemConsole.print("\rVT>Ping limit(PL): [" + pingLimit + "]\nVT>");
         }
         else if (parsed.length >= 3)
         {
@@ -805,23 +805,23 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             if (pingLimit > 0)
             {
               server.setPingLimit(pingLimit);
-              VTConsole.print("\rVT>Ping limit(PL) set to: [" + (server.getPingLimit() > 0 ? server.getPingLimit() : "") + "]\nVT>");
+              VTSystemConsole.print("\rVT>Ping limit(PL) set to: [" + (server.getPingLimit() > 0 ? server.getPingLimit() : "") + "]\nVT>");
             }
             else
             {
               server.setPingLimit(0);
-              VTConsole.print("\rVT>Ping limit(PL) set to: [" + (server.getPingLimit() > 0 ? server.getPingLimit() : "") + "]\nVT>");
+              VTSystemConsole.print("\rVT>Ping limit(PL) set to: [" + (server.getPingLimit() > 0 ? server.getPingLimit() : "") + "]\nVT>");
             }
           }
           catch (NumberFormatException e)
           {
             server.setPingLimit(0);
-            VTConsole.print("\rVT>Ping limit(PL) set to: [" + (server.getPingLimit() > 0 ? server.getPingLimit() : "") + "]\nVT>");
+            VTSystemConsole.print("\rVT>Ping limit(PL) set to: [" + (server.getPingLimit() > 0 ? server.getPingLimit() : "") + "]\nVT>");
           }
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else if (parsed[1].equalsIgnoreCase("PI"))
@@ -829,7 +829,7 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
         if (parsed.length == 2)
         {
           String pingInterval = (server.getPingInterval() > 0 ? "" + server.getPingInterval() : "");
-          VTConsole.print("\rVT>Ping interval(PI): [" + pingInterval + "]\nVT>");
+          VTSystemConsole.print("\rVT>Ping interval(PI): [" + pingInterval + "]\nVT>");
         }
         else if (parsed.length >= 3)
         {
@@ -839,28 +839,28 @@ public class VTSETTING extends VTServerStandardLocalConsoleCommandProcessor
             if (pingInterval > 0)
             {
               server.setPingInterval(pingInterval);
-              VTConsole.print("\rVT>Ping interval(PI) set to: [" + (server.getPingInterval() > 0 ? server.getPingInterval() : "") + "]\nVT>");
+              VTSystemConsole.print("\rVT>Ping interval(PI) set to: [" + (server.getPingInterval() > 0 ? server.getPingInterval() : "") + "]\nVT>");
             }
             else
             {
               server.setPingInterval(0);
-              VTConsole.print("\rVT>Ping interval(PI) set to: [" + (server.getPingInterval() > 0 ? server.getPingInterval() : "") + "]\nVT>");
+              VTSystemConsole.print("\rVT>Ping interval(PI) set to: [" + (server.getPingInterval() > 0 ? server.getPingInterval() : "") + "]\nVT>");
             }
           }
           catch (NumberFormatException e)
           {
             server.setPingInterval(0);
-            VTConsole.print("\rVT>Ping interval(PI) set to: [" + (server.getPingInterval() > 0 ? server.getPingInterval() : "") + "]\nVT>");
+            VTSystemConsole.print("\rVT>Ping interval(PI) set to: [" + (server.getPingInterval() > 0 ? server.getPingInterval() : "") + "]\nVT>");
           }
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       else
       {
-        VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+        VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
       }
     }
   }

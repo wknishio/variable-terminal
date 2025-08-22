@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.session.VTClientSessionHandler;
 import org.vash.vate.client.session.VTClientSessionListener;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 
 public class VTClientConnectionHandler implements Runnable
 {
@@ -42,14 +42,14 @@ public class VTClientConnectionHandler implements Runnable
       //VTConsole.print("\nVT>Verifying connection with server...");
       if (connection.verifyConnection())
       {
-        VTConsole.print("\nVT>Connection with server validated!");
+        VTSystemConsole.print("\nVT>Connection with server validated!");
         // connection.setMultiplexedStreams();
         // connection.startConnection();
         handler.run();
       }
       else
       {
-        VTConsole.print("\nVT>Connection with server invalidated!");
+        VTSystemConsole.print("\nVT>Connection with server invalidated!");
         // connection.setSkipLine(true);
         connection.closeConnection();
       }
@@ -58,7 +58,7 @@ public class VTClientConnectionHandler implements Runnable
     {
       // VTTerminal.print(e.toString());
       // e.printStackTrace();
-      VTConsole.print("\nVT>Connection with server failed!");
+      VTSystemConsole.print("\nVT>Connection with server failed!");
       // connection.setSkipLine(true);
       connection.closeConnection();
     }

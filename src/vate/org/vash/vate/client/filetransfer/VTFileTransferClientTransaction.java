@@ -13,7 +13,7 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.vash.vate.VT;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTXXHash64MessageDigest;
@@ -1454,7 +1454,7 @@ public class VTFileTransferClientTransaction implements Runnable
       {
         synchronized (this)
         {
-          VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+          VTSystemConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
           finished = true;
           return;
         }
@@ -1545,11 +1545,11 @@ public class VTFileTransferClientTransaction implements Runnable
               {
                 if (interrupted)
                 {
-                  VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
+                  VTSystemConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
                 }
                 else
                 {
-                  VTConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
+                  VTSystemConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
                 }
                 finished = true;
               }
@@ -1562,16 +1562,16 @@ public class VTFileTransferClientTransaction implements Runnable
             {
               if (interrupted)
               {
-                VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
+                VTSystemConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
               }
               else
               {
-                VTConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
+                VTSystemConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
               }
             }
             else
             {
-              VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
+              VTSystemConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
             }
             finished = true;
           }
@@ -1647,11 +1647,11 @@ public class VTFileTransferClientTransaction implements Runnable
                 {
                   if (interrupted)
                   {
-                    VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                    VTSystemConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
                   }
                   else
                   {
-                    VTConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                    VTSystemConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
                   }
                 }
                 finished = true;
@@ -1667,16 +1667,16 @@ public class VTFileTransferClientTransaction implements Runnable
               {
                 if (interrupted)
                 {
-                  VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                  VTSystemConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
                 }
                 else
                 {
-                  VTConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                  VTSystemConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
                 }
               }
               else
               {
-                VTConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                VTSystemConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
               }
             }
             finished = true;
@@ -1688,7 +1688,7 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             if (session.getClient().getConnection().isConnected())
             {
-              VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+              VTSystemConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
             }
             finished = true;
           }
@@ -1700,7 +1700,7 @@ public class VTFileTransferClientTransaction implements Runnable
         {
           if (session.getClient().getConnection().isConnected())
           {
-            VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+            VTSystemConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
           }
           finished = true;
         }

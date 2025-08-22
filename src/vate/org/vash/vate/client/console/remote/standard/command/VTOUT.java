@@ -1,7 +1,7 @@
 package org.vash.vate.client.console.remote.standard.command;
 
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 
 public class VTOUT extends VTClientStandardRemoteConsoleCommandProcessor
 {
@@ -19,20 +19,20 @@ public class VTOUT extends VTClientStandardRemoteConsoleCommandProcessor
     {
       //String parameter = command.substring(parsed[0].length() + 1);
       String parameter = parsed[1];
-      boolean ok = VTConsole.setLogOutput(parameter);
+      boolean ok = VTSystemConsole.setLogOutput(parameter);
       if (ok)
       {
-        VTConsole.print("\nVT>Enabled recording of client console to file: [" + parameter + "]\nVT>");
+        VTSystemConsole.print("\nVT>Enabled recording of client console to file: [" + parameter + "]\nVT>");
       }
       else
       {
-        VTConsole.print("\nVT>Failed recording of client console to file: [" + parameter + "]\nVT>");
+        VTSystemConsole.print("\nVT>Failed recording of client console to file: [" + parameter + "]\nVT>");
       }
     }
     else
     {
-      VTConsole.print("\nVT>Disabled recording of client console\nVT>");
-      VTConsole.setLogOutput(null);
+      VTSystemConsole.print("\nVT>Disabled recording of client console\nVT>");
+      VTSystemConsole.setLogOutput(null);
     }
   }
   

@@ -16,9 +16,9 @@ import java.io.PrintStream;
 import java.util.Locale;
 import java.util.TooManyListenersException;
 
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
-import org.vash.vate.console.VTConsoleInstance;
+import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleDropTargetListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleKeyListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleMouseListener;
@@ -28,7 +28,7 @@ import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
 
-public class VTGraphicalConsole implements VTConsoleInstance
+public class VTGraphicalConsole implements VTConsole
 {
   public static final char VT_VK_LEFT = '\uFFFF';
   public static final char VT_VK_UP = '\uFFFE';
@@ -801,11 +801,11 @@ public class VTGraphicalConsole implements VTConsoleInstance
     }
     if (c == '\u001A')
     {
-      VTConsole.toggleFlushMode();
+      VTSystemConsole.toggleFlushMode();
     }
     if (c == '\u0018')
     {
-      VTConsole.toggleInputMode();
+      VTSystemConsole.toggleInputMode();
     }
     if (c != VT_VK_DELETE && c != VT_VK_RIGHT && c != VT_VK_LEFT && c != VT_VK_UP && c != VT_VK_DOWN && c != VT_VK_HOME && c != VT_VK_END)
     {
@@ -833,11 +833,11 @@ public class VTGraphicalConsole implements VTConsoleInstance
     }
     if (c == '\u001A')
     {
-      VTConsole.toggleFlushMode();
+      VTSystemConsole.toggleFlushMode();
     }
     if (c == '\u0018')
     {
-      VTConsole.toggleInputMode();
+      VTSystemConsole.toggleInputMode();
     }
     synchronized (inputSynchronizer)
     {

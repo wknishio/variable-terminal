@@ -9,7 +9,7 @@ import javax.sound.sampled.TargetDataLine;
 import org.vash.vate.VT;
 import org.vash.vate.audio.VTAudioSystem;
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 
 public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
 {
@@ -64,7 +64,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
                   }
                   catch (Throwable t)
                   {
-                    VTConsole.print("\nVT>Invalid local input audio mixer number [" + mixer + "]!");
+                    VTSystemConsole.print("\nVT>Invalid local input audio mixer number [" + mixer + "]!");
                     // ok = false;
                   }
                 }
@@ -77,7 +77,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
                   }
                   catch (Throwable t)
                   {
-                    VTConsole.print("\nVT>Invalid local output audio mixer number [" + mixer + "]!");
+                    VTSystemConsole.print("\nVT>Invalid local output audio mixer number [" + mixer + "]!");
                     // ok = false;
                   }
                 }
@@ -182,7 +182,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
         {
           connection.closeAudioStreams();
           formatAudioSystem.stop();
-          VTConsole.print("\nVT>Remote audio link start on client failed!\nVT>");
+          VTSystemConsole.print("\nVT>Remote audio link start on client failed!\nVT>");
           return;
         }
         
@@ -202,7 +202,7 @@ public class VTAUDIOLINK extends VTClientStandardRemoteConsoleCommandProcessor
           }
           connection.closeAudioStreams();
           formatAudioSystem.stop();
-          VTConsole.print("\nVT>Remote audio link start on client failed!\nVT>");
+          VTSystemConsole.print("\nVT>Remote audio link start on client failed!\nVT>");
           return;
         }
         

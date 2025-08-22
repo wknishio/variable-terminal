@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 
@@ -264,13 +264,13 @@ public class VTNanoHTTPD
    */
   public static void main( String[] args )
   {
-    VTConsole.setGraphical(true);
-    VTConsole.setLanterna(true);
-    VTConsole.setRemoteIcon(true);
-    VTConsole.setDaemon(false);
-    VTConsole.initialize();
-    VTConsole.setTitle("NanoHTTPD 1.27 - Console");
-    VTConsole.println( "NanoHTTPD 1.27 (C) 2001,2005-2013 Jarno Elonen and (C) 2010 Konstantinos Togias\n" +
+    VTSystemConsole.setGraphical(true);
+    VTSystemConsole.setLanterna(true);
+    VTSystemConsole.setRemoteIcon(true);
+    VTSystemConsole.setDaemon(false);
+    VTSystemConsole.initialize();
+    VTSystemConsole.setTitle("NanoHTTPD 1.27 - Console");
+    VTSystemConsole.println( "NanoHTTPD 1.27 (C) 2001,2005-2013 Jarno Elonen and (C) 2010 Konstantinos Togias\n" +
         "(Command line options: [-p port] [-d root-dir] [--licence])\n" );
 
     // Defaults
@@ -285,7 +285,7 @@ public class VTNanoHTTPD
       wwwroot = new File( args[i+1] ).getAbsoluteFile();
     else if ( args[i].toLowerCase().endsWith( "licence" ))
     {
-      VTConsole.println( LICENCE + "\n" );
+      VTSystemConsole.println( LICENCE + "\n" );
       break;
     }
 
@@ -295,14 +295,14 @@ public class VTNanoHTTPD
     }
     catch( IOException ioe )
     {
-      VTConsole.println( "Couldn't start server:\n" + ioe );
+      VTSystemConsole.println( "Couldn't start server:\n" + ioe );
       System.exit( -1 );
     }
 
-    VTConsole.println( "Now serving files in port " + port + " from \"" + wwwroot + "\"" );
-    VTConsole.println( "Hit Enter to stop.\n" );
+    VTSystemConsole.println( "Now serving files in port " + port + " from \"" + wwwroot + "\"" );
+    VTSystemConsole.println( "Hit Enter to stop.\n" );
 
-    try { VTConsole.readLine(false); } catch( Throwable t ) {}
+    try { VTSystemConsole.readLine(false); } catch( Throwable t ) {}
   }
 
   /**

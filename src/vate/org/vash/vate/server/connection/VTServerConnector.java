@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.vash.vate.VT;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.nat.mapping.VTNATPortMappingResultNotify;
 import org.vash.vate.nat.mapping.VTNATSinglePortMappingManagerMKII;
 import org.vash.vate.proxy.client.VTProxy;
@@ -374,7 +374,7 @@ public class VTServerConnector implements Runnable
     }
     catch (Throwable e)
     {
-      VTConsole.print("\rVT>Awaiting connection in port [" + port + "] failed!\nVT>");
+      VTSystemConsole.print("\rVT>Awaiting connection in port [" + port + "] failed!\nVT>");
     }
     try
     {
@@ -443,7 +443,7 @@ public class VTServerConnector implements Runnable
   
   public boolean listenConnection(VTServerConnection connection)
   {
-    VTConsole.print("\rVT>Awaiting connection with client...\nVT>");
+    VTSystemConsole.print("\rVT>Awaiting connection with client...\nVT>");
     connection.closeSockets();
     if (!setServerSocket(hostAddress, hostPort != null && hostPort > 0 ? hostPort : 6060))
     {
@@ -498,7 +498,7 @@ public class VTServerConnector implements Runnable
       }
       connection.setEncryptionKey(encryptionKey);
       //connectionServerSocket.close();
-      VTConsole.print("\rVT>Connection with client established!\nVT>");
+      VTSystemConsole.print("\rVT>Connection with client established!\nVT>");
       return true;
     }
     catch (Throwable e)
@@ -527,7 +527,7 @@ public class VTServerConnector implements Runnable
     {
       port = 6060;
     }
-    VTConsole.print("\rVT>Establishing connection with client...\nVT>");
+    VTSystemConsole.print("\rVT>Establishing connection with client...\nVT>");
     portMappingManager.deletePortMapping();
     connection.closeSockets();
     try
@@ -569,7 +569,7 @@ public class VTServerConnector implements Runnable
         connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_NONE);
       }
       connection.setEncryptionKey(encryptionKey);
-      VTConsole.print("\rVT>Connection with client established!\nVT>");
+      VTSystemConsole.print("\rVT>Connection with client established!\nVT>");
       return true;
     }
     catch (Throwable e)

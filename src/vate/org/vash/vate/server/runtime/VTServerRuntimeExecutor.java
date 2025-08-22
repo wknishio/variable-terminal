@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.vash.vate.help.VTHelpManager;
-import org.vash.vate.nativeutils.VTNativeUtils;
+import org.vash.vate.nativeutils.VTSystemNativeUtils;
 import org.vash.vate.runtime.VTRuntimeProcess;
 import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
@@ -575,7 +575,7 @@ public class VTServerRuntimeExecutor extends VTTask
             //ProcessBuilder processBuilder = new ProcessBuilder(command);
             processBuilder.directory(getRuntimeBuilderWorkingDirectory());
             processBuilder.environment().clear();
-            processBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+            processBuilder.environment().putAll(VTSystemNativeUtils.getvirtualenv());
             // processBuilder.environment().putAll(System.getenv());
             processBuilder.redirectErrorStream(true);
             

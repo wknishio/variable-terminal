@@ -3,7 +3,7 @@ package org.vash.vate.server.console.local.standard.command;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.connection.VTServerConnectionHandler;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
@@ -30,11 +30,11 @@ public class VTKICK extends VTServerStandardLocalConsoleCommandProcessor
         {
           connectionHandler.getConnection().closeSockets();
         }
-        VTConsole.print("\rVT>Disconnected all clients from server!\nVT>");
+        VTSystemConsole.print("\rVT>Disconnected all clients from server!\nVT>");
       }
       else
       {
-        VTConsole.print("\rVT>Not connected with clients!\nVT>");
+        VTSystemConsole.print("\rVT>Not connected with clients!\nVT>");
       }
     }
     else if (parsed.length >= 2)
@@ -58,35 +58,35 @@ public class VTKICK extends VTServerStandardLocalConsoleCommandProcessor
               }
               handler.getConnection().closeSockets();
               //connections.get(number).getConnection().closeSockets();
-              VTConsole.print("\rVT>Disconnected client of number [" + number + "] from server!\nVT>");
+              VTSystemConsole.print("\rVT>Disconnected client of number [" + number + "] from server!\nVT>");
             }
             else
             {
-              VTConsole.print("\rVT>Client number [" + parsed[1] + "] is not valid!\nVT>");
+              VTSystemConsole.print("\rVT>Client number [" + parsed[1] + "] is not valid!\nVT>");
             }
           }
           else
           {
-            VTConsole.print("\rVT>Not connected with clients!\nVT>");
+            VTSystemConsole.print("\rVT>Not connected with clients!\nVT>");
           }
         }
         else
         {
-          VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+          VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
         }
       }
       catch (NumberFormatException e)
       {
-        VTConsole.print("\rVT>Client number [" + parsed[1] + "] is not valid!\nVT>");
+        VTSystemConsole.print("\rVT>Client number [" + parsed[1] + "] is not valid!\nVT>");
       }
       catch (Throwable t)
       {
-        VTConsole.print("\rVT>Client number [" + parsed[1] + "] is not valid!\nVT>");
+        VTSystemConsole.print("\rVT>Client number [" + parsed[1] + "] is not valid!\nVT>");
       }
     }
     else
     {
-      VTConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+      VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
     }
   }
   

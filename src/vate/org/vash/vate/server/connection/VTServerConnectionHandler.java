@@ -2,7 +2,7 @@ package org.vash.vate.server.connection;
 
 import java.util.Collection;
 
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.session.VTServerSessionHandler;
 import org.vash.vate.server.session.VTServerSessionListener;
@@ -47,14 +47,14 @@ public class VTServerConnectionHandler implements Runnable
       //VTConsole.print("\rVT>Verifying connection with client...\nVT>");
       if (connection.verifyConnection())
       {
-        VTConsole.print("\rVT>Connection with client validated!\nVT>");
+        VTSystemConsole.print("\rVT>Connection with client validated!\nVT>");
         // connection.setMultiplexedStreams();
         // connection.startConnection();
         handler.run();
       }
       else
       {
-        VTConsole.print("\rVT>Connection with client invalidated!\nVT>");
+        VTSystemConsole.print("\rVT>Connection with client invalidated!\nVT>");
         connection.closeConnection();
       }
     }
@@ -62,7 +62,7 @@ public class VTServerConnectionHandler implements Runnable
     {
       // VTTerminal.print(e.toString());
       // e.printStackTrace();
-      VTConsole.print("\rVT>Connection with client failed!\nVT>");
+      VTSystemConsole.print("\rVT>Connection with client failed!\nVT>");
       connection.closeConnection();
     }
     handler.getAuthenticator().stopTimeoutThread();

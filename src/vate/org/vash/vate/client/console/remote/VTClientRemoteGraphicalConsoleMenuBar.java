@@ -8,8 +8,8 @@ import java.awt.event.ActionListener;
 
 import org.vash.vate.VT;
 import org.vash.vate.client.dialog.VTClientConfigurationDialog;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.console.VTConsole;
-import org.vash.vate.console.VTConsoleInstance;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuItem;
 import org.vash.vate.dialog.VTFileDialog;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuBar;
@@ -69,14 +69,14 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
   private Menu uploadMonitorMenu;
   private Menu downloadMonitorMenu;
   
-  public VTClientRemoteGraphicalConsoleMenuBar(final VTConsoleInstance console, final VTClientConfigurationDialog connectionDialog)
+  public VTClientRemoteGraphicalConsoleMenuBar(final VTConsole console, final VTClientConfigurationDialog connectionDialog)
   {
     super(console);
     removeAllMenus();
     // this.dialog = dialog;
     // this.frame = frame;
-    final VTFileDialog loadFileDialog = new VTFileDialog(VTConsole.getFrame(), "Variable-Terminal " + VT.VT_VERSION + " - Client - Load File", FileDialog.LOAD);
-    final VTFileDialog saveFileDialog = new VTFileDialog(VTConsole.getFrame(), "Variable-Terminal " + VT.VT_VERSION + " - Client - Save File", FileDialog.SAVE);
+    final VTFileDialog loadFileDialog = new VTFileDialog(VTSystemConsole.getFrame(), "Variable-Terminal " + VT.VT_VERSION + " - Client - Load File", FileDialog.LOAD);
+    final VTFileDialog saveFileDialog = new VTFileDialog(VTSystemConsole.getFrame(), "Variable-Terminal " + VT.VT_VERSION + " - Client - Save File", FileDialog.SAVE);
     clientConsoleCommandsMenu = new Menu("Command");
     // clientConsoleCommandsMenu.setShortcut(new MenuShortcut(KeyEvent.VK_C,
     // true));
@@ -416,7 +416,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
         loadFileDialog.setVisible(true);
         if (loadFileDialog.getFile() != null)
         {
-          VTConsole.input(loadFileDialog.getDirectory() + loadFileDialog.getFile());
+          VTSystemConsole.input(loadFileDialog.getDirectory() + loadFileDialog.getFile());
         }
       }
     });
@@ -428,7 +428,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
         saveFileDialog.setVisible(true);
         if (saveFileDialog.getFile() != null)
         {
-          VTConsole.input(saveFileDialog.getDirectory() + saveFileDialog.getFile());
+          VTSystemConsole.input(saveFileDialog.getDirectory() + saveFileDialog.getFile());
         }
       }
     });

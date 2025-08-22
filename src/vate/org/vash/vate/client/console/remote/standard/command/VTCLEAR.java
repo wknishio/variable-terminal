@@ -1,7 +1,7 @@
 package org.vash.vate.client.console.remote.standard.command;
 
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 
 public class VTCLEAR extends VTClientStandardRemoteConsoleCommandProcessor
 {
@@ -15,8 +15,8 @@ public class VTCLEAR extends VTClientStandardRemoteConsoleCommandProcessor
   
   public void execute(String command, String[] parsed) throws Exception
   {
-    VTConsole.clear();
-    VTConsole.print("VT>");
+    VTSystemConsole.clear();
+    VTSystemConsole.print("VT>");
   }
   
   public void close()

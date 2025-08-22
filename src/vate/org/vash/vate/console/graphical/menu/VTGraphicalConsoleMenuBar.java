@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
-import org.vash.vate.console.VTConsoleInstance;
+import org.vash.vate.console.VTConsole;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 
 public class VTGraphicalConsoleMenuBar extends MenuBar
@@ -37,9 +37,9 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
   private boolean flushInterrupted = false;
   private boolean replaceInput = false;
   
-  private final VTConsoleInstance console;
+  private final VTConsole console;
   
-  public VTGraphicalConsoleMenuBar(final VTConsoleInstance console)
+  public VTGraphicalConsoleMenuBar(final VTConsole console)
   {
     this.console = console;
     addStatusNotify();

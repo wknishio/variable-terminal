@@ -13,7 +13,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.vash.vate.compatibility.VTArrays;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.reflection.VTReflectionUtils;
 
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
@@ -622,7 +622,7 @@ public class VTGlobalTextStyleManager
         
       }
     }
-    VTConsole.refreshText();
+    VTSystemConsole.refreshText();
   }
   
   private static float round(float num, float step, float factor)

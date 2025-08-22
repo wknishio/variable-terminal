@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vash.vate.graphics.clipboard.VTClipboardTransferTask;
 import org.vash.vate.graphics.control.VTAWTControlProvider;
@@ -536,7 +536,7 @@ public class VTServerSession
     catch (IOException e)
     {
       // e.printStackTrace();
-      VTConsole.print("\rVT>Remote shell not available!");
+      VTSystemConsole.print("\rVT>Remote shell not available!");
       try
       {
         if (restartingShell)
@@ -559,7 +559,7 @@ public class VTServerSession
     catch (SecurityException e)
     {
       // e.printStackTrace();
-      VTConsole.print("\rVT>Security error detected!");
+      VTSystemConsole.print("\rVT>Security error detected!");
       try
       {
         if (restartingShell)

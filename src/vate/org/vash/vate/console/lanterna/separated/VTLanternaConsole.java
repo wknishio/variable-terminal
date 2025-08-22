@@ -38,15 +38,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import org.vash.vate.VT;
-import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
-import org.vash.vate.console.VTConsoleInstance;
+import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleDropTargetListener;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsolePopupMenu;
 import org.vash.vate.console.lanterna.separated.VTLanternaTextBoxModified.DefaultTextBoxRenderer;
 import org.vash.vate.console.lanterna.separated.VTLanternaTextBoxModified.Style;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
-import org.vash.vate.nativeutils.VTNativeUtils;
+import org.vash.vate.nativeutils.VTSystemNativeUtils;
 import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
@@ -80,7 +79,7 @@ import com.googlecode.lanterna.terminal.swing.AWTTerminalPanel;
 import com.googlecode.lanterna.terminal.swing.TerminalEmulatorColorConfiguration;
 import com.googlecode.lanterna.terminal.swing.TerminalEmulatorPalette;
 
-public class VTLanternaConsole implements VTConsoleInstance
+public class VTLanternaConsole implements VTConsole
 {
   public static final TerminalEmulatorPalette CUSTOM_PALETTE = new TerminalEmulatorPalette(
   new java.awt.Color(188, 188, 188), //defaultColor
@@ -2166,7 +2165,7 @@ public class VTLanternaConsole implements VTConsoleInstance
       if (VTReflectionUtils.detectWindows())
       {
         // System.out.print("\u001B]0;" + title + "\u0007");
-        VTNativeUtils.system("title " + title);
+        VTSystemNativeUtils.system("title " + title);
       }
       else
       {
@@ -2174,7 +2173,7 @@ public class VTLanternaConsole implements VTConsoleInstance
         // VTNativeUtils.printf("\u001B]0;" + title + "\u0007");
         // VTNativeUtils.printf("\u001B]1;" + title + "\u0007");
         // VTNativeUtils.printf("\u001B]2;" + title + "\u0007");
-        VTNativeUtils.printf("\u001B]0;" + title + "\u0007");
+        VTSystemNativeUtils.printf("\u001B]0;" + title + "\u0007");
         // System.out.print("\u001B]0;" + title + "\u0007");
         // System.out.print("\u001B]1;" + title + "\u0007");
         // System.out.print("\u001B]2;" + title + "\u0007");

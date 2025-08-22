@@ -1,10 +1,10 @@
 package org.vash.vate.nativeutils.win32;
 
-import org.vash.vate.nativeutils.VTNativeUtilsInstance;
+import org.vash.vate.nativeutils.VTNativeUtils;
 
 import com.sun.jna.Native;
 
-public class VTWin32NativeUtils implements VTNativeUtilsInstance
+public class VTWin32NativeUtils implements VTNativeUtils
 {
   private class VTWin32AsynchronousBeeper implements Runnable
   {

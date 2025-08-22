@@ -6,7 +6,7 @@ import java.io.Writer;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-import org.vash.vate.nativeutils.VTNativeUtils;
+import org.vash.vate.nativeutils.VTSystemNativeUtils;
 import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.runtime.VTRuntimeProcess;
 
@@ -123,7 +123,7 @@ public class VTShellAdapter
         {
           // almost impossible to enter here now
           this.shellBuilder = new ProcessBuilder("command.com", "/A", "/E:1900");
-          this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+          this.shellBuilder.environment().putAll(VTSystemNativeUtils.getvirtualenv());
           this.shellEnvironment = this.shellBuilder.environment();
           if (this.shellEnvironment != null)
           {
@@ -148,7 +148,7 @@ public class VTShellAdapter
           // this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON",
           // "/A");
           this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
-          this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+          this.shellBuilder.environment().putAll(VTSystemNativeUtils.getvirtualenv());
           this.shellEnvironment = this.shellBuilder.environment();
           if (this.shellEnvironment != null)
           {
@@ -164,7 +164,7 @@ public class VTShellAdapter
       else
       {
         this.shellBuilder = new ProcessBuilder("sh", "-i", "-s");
-        this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+        this.shellBuilder.environment().putAll(VTSystemNativeUtils.getvirtualenv());
         this.shellEnvironment = this.shellBuilder.environment();
         if (this.shellEnvironment != null)
         {
@@ -184,7 +184,7 @@ public class VTShellAdapter
         return;
       }
       this.shellBuilder = new ProcessBuilder(command);
-      this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+      this.shellBuilder.environment().putAll(VTSystemNativeUtils.getvirtualenv());
       this.shellEnvironment = this.shellBuilder.environment();
       if (names != null && values != null && (names.length <= values.length))
       {
@@ -211,7 +211,7 @@ public class VTShellAdapter
       {
         // almost impossible to enter here now
         this.shellBuilder = new ProcessBuilder("command.com", "/A", "/E:1900");
-        this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+        this.shellBuilder.environment().putAll(VTSystemNativeUtils.getvirtualenv());
         this.shellEnvironment = this.shellBuilder.environment();
         if (this.shellEnvironment != null)
         {
@@ -235,7 +235,7 @@ public class VTShellAdapter
 //      }
         // this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/A");
         this.shellBuilder = new ProcessBuilder("cmd", "/E:ON", "/F:ON", "/Q", "/A");
-        this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+        this.shellBuilder.environment().putAll(VTSystemNativeUtils.getvirtualenv());
         this.shellEnvironment = this.shellBuilder.environment();
         if (this.shellEnvironment != null)
         {
@@ -251,7 +251,7 @@ public class VTShellAdapter
     else
     {
       this.shellBuilder = new ProcessBuilder("sh", "-i", "-s");
-      this.shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+      this.shellBuilder.environment().putAll(VTSystemNativeUtils.getvirtualenv());
       this.shellEnvironment = this.shellBuilder.environment();
       if (this.shellEnvironment != null)
       {
@@ -300,7 +300,7 @@ public class VTShellAdapter
         {
           shellBuilder.directory(null);
         }
-        shellBuilder.environment().putAll(VTNativeUtils.getvirtualenv());
+        shellBuilder.environment().putAll(VTSystemNativeUtils.getvirtualenv());
         shellEnvironment = shellBuilder.environment();
         commandBuilder = shellBuilder;
       }

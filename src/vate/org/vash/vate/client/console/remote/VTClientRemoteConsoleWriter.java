@@ -13,7 +13,7 @@ import java.nio.charset.Charset;
 import org.vash.vate.VT;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
@@ -103,7 +103,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
       // String[] lines;
       try
       {
-        if (VTConsole.isDaemon())
+        if (VTSystemConsole.isDaemon())
         {
           if (sourceReader != null)
           {
@@ -155,7 +155,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
           }
           else
           {
-            String line = VTConsole.readLine(true);
+            String line = VTSystemConsole.readLine(true);
             executeCommand(line, false);
           }
         }
@@ -292,7 +292,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     {
       if (echo)
       {
-        VTConsole.println(command);
+        VTSystemConsole.println(command);
       }
       if (!(command.length() == 0))
       {
@@ -307,13 +307,13 @@ public class VTClientRemoteConsoleWriter extends VTTask
         parsed = new String[] { "" };
       }
       
-      if (!VTConsole.isCommandEcho())
+      if (!VTSystemConsole.isCommandEcho())
       {
         if (command != null && command.length() > 0)
         {
           if (selector.matchCommand(parsed[0]))
           {
-            VTConsole.println(command);
+            VTSystemConsole.println(command);
           }
         }
       }

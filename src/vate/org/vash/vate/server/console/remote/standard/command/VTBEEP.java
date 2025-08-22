@@ -3,9 +3,9 @@ package org.vash.vate.server.console.remote.standard.command;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.SourceDataLine;
 import org.vash.vate.audio.VTAudioBeeper;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.help.VTHelpManager;
-import org.vash.vate.nativeutils.VTNativeUtils;
+import org.vash.vate.nativeutils.VTSystemNativeUtils;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
 public class VTBEEP extends VTServerStandardRemoteConsoleCommandProcessor
@@ -25,7 +25,7 @@ public class VTBEEP extends VTServerStandardRemoteConsoleCommandProcessor
   {
     if (parsed.length == 1)
     {
-      VTConsole.bell();
+      VTSystemConsole.bell();
       connection.getResultWriter().write("\nVT>Beep played on server!\nVT>");
       connection.getResultWriter().flush();
     }
@@ -49,7 +49,7 @@ public class VTBEEP extends VTServerStandardRemoteConsoleCommandProcessor
       {
         if (sdl == null)
         {
-          if (VTNativeUtils.beep(Integer.parseInt(parsed[1]), Integer.parseInt(parsed[2]), false, session.getExecutorService()))
+          if (VTSystemNativeUtils.beep(Integer.parseInt(parsed[1]), Integer.parseInt(parsed[2]), false, session.getExecutorService()))
           {
             connection.getResultWriter().write("\nVT>Beep is playing on server!\nVT>");
             connection.getResultWriter().flush();

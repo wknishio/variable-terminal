@@ -46,7 +46,7 @@ import java.util.Set;
 
 import org.vash.vate.VT;
 import org.vash.vate.dialog.VTConfigurationDialogParameter;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.dialog.VTFileDialog;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.server.VTServer;
@@ -1664,7 +1664,7 @@ public class VTServerSettingsDialog extends Dialog
       VTServer server = (VTServer) application;
       try
       {
-        VTConsole.interruptReadLine();
+        VTSystemConsole.interruptReadLine();
       }
       catch (Throwable t)
       {

@@ -12,7 +12,7 @@ import javax.imageio.event.IIOReadUpdateListener;
 import javax.imageio.stream.ImageInputStream;
 import org.vash.vate.VT;
 import org.vash.vate.client.connection.VTClientConnection;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII;
 import org.vash.vate.graphics.image.VTImageIO;
 import org.vash.vate.stream.limit.VTLimitedInputStream;
@@ -214,11 +214,11 @@ public class VTGraphicsLinkClientReader implements Runnable
     {
       if (failed)
       {
-        VTConsole.print("\nVT>Remote graphics link failed to start on client!\nVT>");
+        VTSystemConsole.print("\nVT>Remote graphics link failed to start on client!\nVT>");
       }
       else
       {
-        VTConsole.print("\nVT>Remote graphics link started!\nVT>");
+        VTSystemConsole.print("\nVT>Remote graphics link started!\nVT>");
         vtCustomCodec = new VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII();
         // pngImageReader = ImageIO.getImageReadersByFormatName("PNG").next();
         pngImageReader = new PngImageReader(new PngImageReaderSpi());

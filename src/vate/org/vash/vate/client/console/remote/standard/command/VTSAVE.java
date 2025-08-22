@@ -1,7 +1,7 @@
 package org.vash.vate.client.console.remote.standard.command;
 
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 
 public class VTSAVE extends VTClientStandardRemoteConsoleCommandProcessor
 {
@@ -20,11 +20,11 @@ public class VTSAVE extends VTClientStandardRemoteConsoleCommandProcessor
       try
       {
         session.getClient().saveClientSettingsFile("vate-client.properties");
-        VTConsole.print("\nVT>Saved client settings file [vate-client.properties]\nVT>");
+        VTSystemConsole.print("\nVT>Saved client settings file [vate-client.properties]\nVT>");
       }
       catch (Throwable t)
       {
-        VTConsole.print("\nVT>Cannot save client settings file [vate-client.properties]\nVT>");
+        VTSystemConsole.print("\nVT>Cannot save client settings file [vate-client.properties]\nVT>");
       }
     }
     else if (parsed.length >= 2)
@@ -32,11 +32,11 @@ public class VTSAVE extends VTClientStandardRemoteConsoleCommandProcessor
       try
       {
         session.getClient().saveClientSettingsFile(parsed[1]);
-        VTConsole.print("\nVT>Saved client settings file [" + parsed[1] + "]\nVT>");
+        VTSystemConsole.print("\nVT>Saved client settings file [" + parsed[1] + "]\nVT>");
       }
       catch (Throwable t)
       {
-        VTConsole.print("\nVT>Cannot save client settings file [" + parsed[1] + "]\nVT>");
+        VTSystemConsole.print("\nVT>Cannot save client settings file [" + parsed[1] + "]\nVT>");
       }
     }
   }

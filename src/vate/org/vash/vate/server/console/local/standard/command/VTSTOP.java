@@ -1,6 +1,6 @@
 package org.vash.vate.server.console.local.standard.command;
 
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
 public class VTSTOP extends VTServerStandardLocalConsoleCommandProcessor
@@ -16,7 +16,7 @@ public class VTSTOP extends VTServerStandardLocalConsoleCommandProcessor
   public void execute(String command, String[] parsed) throws Exception
   {
     // VTConsole.print("\rVT>Client finalizing server...\nVT>");
-    VTConsole.closeConsole();
+    VTSystemConsole.closeConsole();
     server.stop();
     // VTExit.exit(0);
   }

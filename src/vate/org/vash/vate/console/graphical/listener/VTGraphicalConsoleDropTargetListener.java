@@ -9,13 +9,13 @@ import java.awt.dnd.DropTargetEvent;
 import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import java.util.List;
-import org.vash.vate.console.VTConsoleInstance;
+import org.vash.vate.console.VTConsole;
 
 public class VTGraphicalConsoleDropTargetListener implements DropTargetListener
 {
-  private final VTConsoleInstance console;
+  private final VTConsole console;
 
-  public VTGraphicalConsoleDropTargetListener(final VTConsoleInstance console)
+  public VTGraphicalConsoleDropTargetListener(final VTConsole console)
   {
     this.console = console;
   }

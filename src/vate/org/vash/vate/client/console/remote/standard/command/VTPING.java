@@ -1,7 +1,7 @@
 package org.vash.vate.client.console.remote.standard.command;
 
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 
 public class VTPING extends VTClientStandardRemoteConsoleCommandProcessor
 {
@@ -24,7 +24,7 @@ public class VTPING extends VTClientStandardRemoteConsoleCommandProcessor
     long clientMilliseconds = clientTime / 1000000;
     long serverNanoseconds = serverTime;
     long serverMilliseconds = serverTime / 1000000;
-    VTConsole.printf("\nVT>Client connection latency: [%d] ns or [%d] ms" +
+    VTSystemConsole.printf("\nVT>Client connection latency: [%d] ns or [%d] ms" +
     "\nVT>Server connection latency: [%d] ns or [%d] ms" +
     "\nVT>", clientNanoseconds, clientMilliseconds, serverNanoseconds, serverMilliseconds);
   }

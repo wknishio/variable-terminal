@@ -2,7 +2,7 @@ package org.vash.vate.console.graphical.listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 
 public class VTGraphicalConsoleToggleScrollModeActionListener implements ActionListener
 {
@@ -15,7 +15,7 @@ public class VTGraphicalConsoleToggleScrollModeActionListener implements ActionL
   {
     try
     {
-      VTConsole.toggleFlushMode();
+      VTSystemConsole.toggleFlushMode();
     }
     catch (Throwable ex)
     {

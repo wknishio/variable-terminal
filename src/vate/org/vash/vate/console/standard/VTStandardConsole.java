@@ -15,10 +15,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 // import java.nio.channels.ClosedByInterruptException;
 import java.util.Locale;
-import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
-import org.vash.vate.console.VTConsoleInstance;
-import org.vash.vate.nativeutils.VTNativeUtils;
+import org.vash.vate.console.VTConsole;
+import org.vash.vate.nativeutils.VTSystemNativeUtils;
 import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
 
@@ -27,7 +26,7 @@ import org.vash.vate.stream.filter.VTDoubledOutputStream;
 // import java.nio.channels.ClosedByInterruptException;
 // import java.nio.charset.Charset;
 
-public class VTStandardConsole implements VTConsoleInstance
+public class VTStandardConsole implements VTConsole
 {
   private static VTStandardConsole instance;
   private static VTDoubledOutputStream output;
@@ -59,7 +58,7 @@ public class VTStandardConsole implements VTConsoleInstance
     // InputStreamReader(System.in));
     
     // bright = true;
-    isatty = VTNativeUtils.isatty(1) != 0;
+    isatty = VTSystemNativeUtils.isatty(1) != 0;
     // System.out.println(isatty);
 //		if (!isatty)
 //		{
@@ -276,7 +275,7 @@ public class VTStandardConsole implements VTConsoleInstance
     {
       // System.out.print("\u001B[2J");
       // System.out.print("\u001B[H");
-      VTNativeUtils.system("cls");
+      VTSystemNativeUtils.system("cls");
     }
     else
     {
@@ -302,7 +301,7 @@ public class VTStandardConsole implements VTConsoleInstance
     if (VTReflectionUtils.detectWindows())
     {
       // System.out.print("\u001B]0;" + title + "\u0007");
-      VTNativeUtils.system("title " + title);
+      VTSystemNativeUtils.system("title " + title);
     }
     else
     {
@@ -492,7 +491,7 @@ public class VTStandardConsole implements VTConsoleInstance
           break;
         }
       }
-      VTNativeUtils.system("color " + colorCode.toString());
+      VTSystemNativeUtils.system("color " + colorCode.toString());
       // System.out.print("\u001B[" + getUnixForegroundColor(foregroundColor) +
       // "m");
       // System.out.print("\u001B[" + getUnixBackgroundColor(backgroundColor) +
@@ -735,7 +734,7 @@ public class VTStandardConsole implements VTConsoleInstance
       // setColors(VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN,
       // VTConsole.VT_CONSOLE_COLOR_NORMAL_BLACK);
       // setBold(true);
-      VTNativeUtils.system("color");
+      VTSystemNativeUtils.system("color");
       // System.out.print("\u001B[0m");
     }
     else

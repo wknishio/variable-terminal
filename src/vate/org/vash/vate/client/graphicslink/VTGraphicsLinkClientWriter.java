@@ -29,7 +29,7 @@ import org.vash.vate.client.graphicslink.remote.listener.VTGraphicsLinkClientRem
 import org.vash.vate.client.graphicslink.remote.listener.VTGraphicsLinkClientRemoteInterfaceMouseListener;
 import org.vash.vate.client.graphicslink.remote.listener.VTGraphicsLinkClientRemoteInterfaceMouseMoveListener;
 import org.vash.vate.client.graphicslink.remote.listener.VTGraphicsLinkClientRemoteInterfaceMouseWheelListener;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vash.vate.graphics.clipboard.VTEmptyTransferable;
 import org.vash.vate.graphics.control.VTAWTControlEvent;
@@ -1794,9 +1794,9 @@ public class VTGraphicsLinkClientWriter implements Runnable
     VTDataMonitorMenu downloadMonitorPanel = null;
     try
     {
-      if (VTConsole.isGraphical())
+      if (VTSystemConsole.isGraphical())
       {
-        GraphicsDevice device = VTGraphicalDeviceResolver.getCurrentDevice(VTConsole.getFrame());
+        GraphicsDevice device = VTGraphicalDeviceResolver.getCurrentDevice(VTSystemConsole.getFrame());
         if (device != null)
         {
           frame = new VTGraphicsLinkClientWriterFrame(device.getDefaultConfiguration());

@@ -3,7 +3,7 @@ package org.vash.vate.server.console.remote.standard.command;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.graphics.message.VTGraphicsMessager;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.reflection.VTReflectionUtils;
@@ -33,7 +33,7 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
           title = parsed[1].substring(0, idx);
           alert = parsed[1].substring(idx + 1);
         }
-        VTGraphicsMessager.showAlert(VTConsole.getFrame(), title, alert);
+        VTGraphicsMessager.showAlert(VTSystemConsole.getFrame(), title, alert);
         session.getServer().displayTrayIconMessage(title, "[" + alert + "]");
         connection.getResultWriter().write("\nVT>Graphical alert sent to server!\nVT>");
         connection.getResultWriter().flush();
@@ -58,7 +58,7 @@ public class VTSCREENALERT extends VTServerStandardRemoteConsoleCommandProcessor
             {
               number = 0;
             }
-            VTGraphicsMessager.showAlert(devices[number], VTConsole.getFrame(), title, alert);
+            VTGraphicsMessager.showAlert(devices[number], VTSystemConsole.getFrame(), title, alert);
             session.getServer().displayTrayIconMessage(title, "[" + alert + "]");
             connection.getResultWriter().write("\nVT>Graphical alert sent to server!\nVT>");
             connection.getResultWriter().flush();

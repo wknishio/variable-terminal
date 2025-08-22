@@ -1,6 +1,6 @@
 package org.vash.vate.server.console.remote.standard.command;
 
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
 public class VTSTOP extends VTServerStandardRemoteConsoleCommandProcessor
@@ -17,7 +17,7 @@ public class VTSTOP extends VTServerStandardRemoteConsoleCommandProcessor
   {
     //VTConsole.print("\rVT>Client finalizing server...\nVT>");
     connection.closeSockets();
-    VTConsole.closeConsole();
+    VTSystemConsole.closeConsole();
     session.getServer().stop();
     // VTExit.exit(0);
   }

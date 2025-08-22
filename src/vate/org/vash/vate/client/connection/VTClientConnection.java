@@ -11,7 +11,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTBlake3MessageDigest;
@@ -443,7 +443,7 @@ public class VTClientConnection
 //      message.append(stackStrace[i].toString() + "\n");
 //    }
 //    System.err.println(message.toString());
-    VTConsole.setCommandEcho(true);
+    VTSystemConsole.setCommandEcho(true);
     if (connectionSocket != null)
     {
       try
@@ -514,7 +514,7 @@ public class VTClientConnection
     // VTConsole.setLogOutput(null);
     if (!closed || connected)
     {
-      VTConsole.print("\nVT>Connection with server closed!");
+      VTSystemConsole.print("\nVT>Connection with server closed!");
     }
     // VTConsole.setCommandEcho(true);
     closeSockets();

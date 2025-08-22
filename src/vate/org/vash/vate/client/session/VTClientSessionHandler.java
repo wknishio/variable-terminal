@@ -5,7 +5,7 @@ import java.util.Collection;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.authentication.VTClientAuthenticator;
 import org.vash.vate.client.connection.VTClientConnection;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.monitor.VTDataMonitorConnection;
 
 public class VTClientSessionHandler implements Runnable
@@ -48,13 +48,13 @@ public class VTClientSessionHandler implements Runnable
       connection.setAuthenticationStreams();
       if (authenticator.tryAuthentication() && connection.setConnectionStreams(authenticator.getDigestedCredential()))
       {
-        VTConsole.print("\nVT>Session with server accepted!");
+        VTSystemConsole.print("\nVT>Session with server accepted!");
         processSession();
       }
       else
       {
         // connection.setSkipLine(true);
-        VTConsole.print("\nVT>Session with server rejected!");
+        VTSystemConsole.print("\nVT>Session with server rejected!");
         connection.closeConnection();
       }
     }
@@ -62,7 +62,7 @@ public class VTClientSessionHandler implements Runnable
     {
       // e.printStackTrace();
       // connection.setSkipLine(true);
-      VTConsole.print("\nVT>Session with server failed!");
+      VTSystemConsole.print("\nVT>Session with server failed!");
       connection.closeConnection();
     }
     System.runFinalization();
@@ -112,8 +112,8 @@ public class VTClientSessionHandler implements Runnable
       {
         try
         {
-          VTConsole.setLogOutput(null);
-          VTConsole.setLogReadLine(null);
+          VTSystemConsole.setLogOutput(null);
+          VTSystemConsole.setLogReadLine(null);
         }
         catch (Throwable t)
         {
@@ -121,7 +121,7 @@ public class VTClientSessionHandler implements Runnable
         }
         try
         {
-          VTConsole.interruptReadLine();
+          VTSystemConsole.interruptReadLine();
         }
         catch (Throwable t)
         {

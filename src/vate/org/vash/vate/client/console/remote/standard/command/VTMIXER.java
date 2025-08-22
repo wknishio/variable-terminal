@@ -4,7 +4,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Mixer;
 
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.help.VTHelpManager;
 
 public class VTMIXER extends VTClientStandardRemoteConsoleCommandProcessor
@@ -40,11 +40,11 @@ public class VTMIXER extends VTClientStandardRemoteConsoleCommandProcessor
           message.append("\nVT>");
         }
         message.append("\nVT>End of client audio mixers list\nVT>");
-        VTConsole.print(message.toString());
+        VTSystemConsole.print(message.toString());
       }
       else
       {
-        VTConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        VTSystemConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       }
     }
     else
@@ -61,7 +61,7 @@ public class VTMIXER extends VTClientStandardRemoteConsoleCommandProcessor
         message.append("\nVT>");
       }
       message.append("\nVT>End of client audio mixers list\nVT>");
-      VTConsole.print(message.toString());
+      VTSystemConsole.print(message.toString());
       connection.getCommandWriter().writeLine(command);
       connection.getCommandWriter().flush();
     }

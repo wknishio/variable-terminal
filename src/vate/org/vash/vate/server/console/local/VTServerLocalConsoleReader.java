@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.task.VTTask;
@@ -30,12 +30,12 @@ public class VTServerLocalConsoleReader extends VTTask
   public void task()
   {
     // int p = 0;
-    VTConsole.print("\rVT>Enter *VTHELP or *VTHL to list available commands in server console\nVT>");
+    VTSystemConsole.print("\rVT>Enter *VTHELP or *VTHL to list available commands in server console\nVT>");
     while (server.isRunning())
     {
       try
       {
-        String line = VTConsole.readLine(true);
+        String line = VTSystemConsole.readLine(true);
         executeCommand(line);
 //        String[] commands = line.split("\\*;");
 //        for (String command : commands)
@@ -50,7 +50,7 @@ public class VTServerLocalConsoleReader extends VTTask
       catch (Throwable e)
       {
         // e.printStackTrace();
-        VTConsole.print("\rVT>Error while processing command!\nVT>");
+        VTSystemConsole.print("\rVT>Error while processing command!\nVT>");
         // e.printStackTrace(VTConsole.getSystemOut());
         // return;
         /*
@@ -58,12 +58,12 @@ public class VTServerLocalConsoleReader extends VTTask
          * VTTerminal.setSystemIn(); e.printStackTrace();
          */
       }
-      if (server.isRunning() && VTConsole.isDaemon())
+      if (server.isRunning() && VTSystemConsole.isDaemon())
       {
-        Object waiter = VTConsole.getSynchronizationObject();
+        Object waiter = VTSystemConsole.getSynchronizationObject();
         synchronized (waiter)
         {
-          while (VTConsole.isDaemon())
+          while (VTSystemConsole.isDaemon())
           {
             try
             {
@@ -203,11 +203,11 @@ public class VTServerLocalConsoleReader extends VTTask
       }
       if (server.isEchoCommands())
       {
-        VTConsole.print("VT>" + command + "\n");
+        VTSystemConsole.print("VT>" + command + "\n");
       }
       if (!selector.selectCommand(command, parsed))
       {
-        VTConsole.print("\rVT>");
+        VTSystemConsole.print("\rVT>");
       }
     }
     else

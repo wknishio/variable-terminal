@@ -3,7 +3,7 @@ package org.vash.vate.server.console.remote.standard.command;
 import java.util.Map.Entry;
 
 import org.vash.vate.help.VTHelpManager;
-import org.vash.vate.nativeutils.VTNativeUtils;
+import org.vash.vate.nativeutils.VTSystemNativeUtils;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
 public class VTVARIABLE extends VTServerStandardRemoteConsoleCommandProcessor
@@ -22,7 +22,7 @@ public class VTVARIABLE extends VTServerStandardRemoteConsoleCommandProcessor
     {
       message.setLength(0);
       message.append("\nVT>List of server environment variables:\nVT>");
-      for (Entry<String, String> variable : VTNativeUtils.getvirtualenv().entrySet())
+      for (Entry<String, String> variable : VTSystemNativeUtils.getvirtualenv().entrySet())
       {
         message.append("\nVT>[" + variable.getKey() + "]=[" + variable.getValue() + "]");
       }
@@ -32,7 +32,7 @@ public class VTVARIABLE extends VTServerStandardRemoteConsoleCommandProcessor
     }
     else if (parsed.length == 2)
     {
-      String value = VTNativeUtils.getvirtualenv(parsed[1]);
+      String value = VTSystemNativeUtils.getvirtualenv(parsed[1]);
       if (value != null)
       {
         connection.getResultWriter().write("\nVT>[" + parsed[1] + "]=[" + value + "]\nVT>");
@@ -46,7 +46,7 @@ public class VTVARIABLE extends VTServerStandardRemoteConsoleCommandProcessor
     }
     else if (parsed.length >= 3)
     {
-      if (VTNativeUtils.putvirtualenv(parsed[1], parsed[2]) == 0)
+      if (VTSystemNativeUtils.putvirtualenv(parsed[1], parsed[2]) == 0)
       {
         connection.getResultWriter().write("\nVT>[" + parsed[1] + "]=[" + parsed[2] + "]\nVT>");
         connection.getResultWriter().flush();

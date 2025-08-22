@@ -2,7 +2,7 @@ package org.vash.vate.server.session;
 
 import java.util.Collection;
 
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.monitor.VTDataMonitorConnection;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.authentication.VTServerAuthenticator;
@@ -56,19 +56,19 @@ public class VTServerSessionHandler implements Runnable
       connection.setAuthenticationStreams();
       if (authenticator.tryAuthentication() && connection.setConnectionStreams(authenticator.getDigestedCredential()))
       {
-        VTConsole.print("\rVT>Session with client accepted!\nVT>");
+        VTSystemConsole.print("\rVT>Session with client accepted!\nVT>");
         processSession();
       }
       else
       {
-        VTConsole.print("\rVT>Session with client rejected!\nVT>");
+        VTSystemConsole.print("\rVT>Session with client rejected!\nVT>");
         connection.closeConnection();
       }
     }
     catch (Throwable e)
     {
       // e.printStackTrace();
-      VTConsole.print("\rVT>Session with client failed!\nVT>");
+      VTSystemConsole.print("\rVT>Session with client failed!\nVT>");
       connection.closeConnection();
     }
     System.runFinalization();

@@ -48,7 +48,7 @@ import org.vash.vate.VT;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.connection.VTClientConnector;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.dialog.VTConfigurationDialogParameter;
 import org.vash.vate.dialog.VTFileDialog;
 import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
@@ -1646,8 +1646,8 @@ public class VTClientConfigurationDialog extends Dialog
         if (client.isManual())
         {
           // System.out.println("manual");
-          VTConsole.println("");
-          VTConsole.interruptReadLine();
+          VTSystemConsole.println("");
+          VTSystemConsole.interruptReadLine();
         }
         // VTConsole.println("");
       }

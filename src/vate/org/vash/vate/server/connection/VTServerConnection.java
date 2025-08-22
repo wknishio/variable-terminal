@@ -11,7 +11,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
 import org.vash.vate.VT;
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTBlake3MessageDigest;
@@ -511,7 +511,7 @@ public class VTServerConnection
   {
     if (!closed || connected)
     {
-      VTConsole.print("\rVT>Connection with client closed!\nVT>");
+      VTSystemConsole.print("\rVT>Connection with client closed!\nVT>");
     }
     closeSockets();
     connected = false;

@@ -1,6 +1,6 @@
 package org.vash.vate.server.console.remote.standard.command;
 
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
 public class VTBELL extends VTServerStandardRemoteConsoleCommandProcessor
@@ -17,7 +17,7 @@ public class VTBELL extends VTServerStandardRemoteConsoleCommandProcessor
   {
     connection.getResultWriter().write("\nVT>Invoking server terminal bell!\nVT>");
     connection.getResultWriter().flush();
-    VTConsole.bell();
+    VTSystemConsole.bell();
   }
   
   public void close()

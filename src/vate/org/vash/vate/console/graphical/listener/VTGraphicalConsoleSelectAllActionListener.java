@@ -2,14 +2,14 @@ package org.vash.vate.console.graphical.listener;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import org.vash.vate.console.VTConsoleInstance;
+import org.vash.vate.console.VTConsole;
 
 public class VTGraphicalConsoleSelectAllActionListener implements ActionListener
 {
   //private Clipboard systemClipboard;
-  private final VTConsoleInstance console;
+  private final VTConsole console;
   
-  public VTGraphicalConsoleSelectAllActionListener(final VTConsoleInstance console)
+  public VTGraphicalConsoleSelectAllActionListener(final VTConsole console)
   {
     this.console = console;
     //systemClipboard = Toolkit.getDefaultToolkit().getSystemClipboard();

@@ -2,7 +2,7 @@ package org.vash.vate.server.console.remote.standard.command;
 
 import java.util.Collection;
 
-import org.vash.vate.console.VTConsole;
+import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.server.connection.VTServerConnectionHandler;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
@@ -49,7 +49,7 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
         }
       }
       session.getServer().displayTrayIconMessage("Variable-Terminal - Server", "[" + command.substring(8) + "]");
-      VTConsole.print("\u0007\rVT>Message from client: [" + command.substring(8) + "]\nVT>");
+      VTSystemConsole.print("\u0007\rVT>Message from client: [" + command.substring(8) + "]\nVT>");
       // VTConsole.bell();
       connection.getResultWriter().write("\nVT>Message received by server!\nVT>");
       connection.getResultWriter().flush();
@@ -82,7 +82,7 @@ public class VTTEXT extends VTServerStandardRemoteConsoleCommandProcessor
         }
       }
       session.getServer().displayTrayIconMessage("Variable-Terminal - Server", "[]");
-      VTConsole.print("\u0007\rVT>Message from client: []\nVT>");
+      VTSystemConsole.print("\u0007\rVT>Message from client: []\nVT>");
       // VTConsole.bell();
       connection.getResultWriter().write("\nVT>Message received by server!\nVT>");
       connection.getResultWriter().flush();
