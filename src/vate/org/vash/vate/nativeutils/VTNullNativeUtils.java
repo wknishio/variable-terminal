@@ -1,5 +1,7 @@
 package org.vash.vate.nativeutils;
 
+import org.vash.vate.reflection.VTReflectionUtils;
+
 public class VTNullNativeUtils implements VTNativeUtils
 {
   /* public boolean beep(int freq, int dur) { return false; } */
@@ -112,6 +114,6 @@ public class VTNullNativeUtils implements VTNativeUtils
   
   public boolean checkANSI()
   {
-    return false;
+    return !VTReflectionUtils.detectWindows();
   }
 }

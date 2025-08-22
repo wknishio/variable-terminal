@@ -454,14 +454,14 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
 
     private Result handleReadOnlyCBKeyStroke(KeyStroke keyStroke) {
         switch(keyStroke.getKeyType()) {
-            case Character:
-            case Enter:
+            case CHARACTER:
+            case ENTER:
                 if (isKeyboardActivationStroke(keyStroke)) {
                     showPopup(keyStroke);
                 }
                 return super.handleKeyStroke(keyStroke);
             
-            case MouseEvent:
+            case MOUSE_EVENT:
                 if (isMouseActivationStroke(keyStroke)) {
                     showPopup(keyStroke);
                 }
@@ -483,8 +483,8 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
         //First check if we are in drop-down focused mode, treat keystrokes a bit differently then
         if(isDropDownFocused()) {
             switch(keyStroke.getKeyType()) {
-                case ReverseTab:
-                case ArrowLeft:
+                case REVERSE_TAB:
+                case ARROW_LEFT:
                     dropDownFocused = false;
                     textInputPosition = text.length();
                     return Result.HANDLED;
@@ -496,29 +496,29 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
         }
 
         switch(keyStroke.getKeyType()) {
-            case Character:
+            case CHARACTER:
                 text = text.substring(0, textInputPosition) + keyStroke.getCharacter() + text.substring(textInputPosition);
                 textInputPosition++;
                 return Result.HANDLED;
 
-            case Tab:
+            case TAB:
                 dropDownFocused = true;
                 return Result.HANDLED;
 
-            case Backspace:
+            case BACKSPACE:
                 if(textInputPosition > 0) {
                     text = text.substring(0, textInputPosition - 1) + text.substring(textInputPosition);
                     textInputPosition--;
                 }
                 return Result.HANDLED;
 
-            case Delete:
+            case DELETE:
                 if(textInputPosition < text.length()) {
                     text = text.substring(0, textInputPosition) + text.substring(textInputPosition + 1);
                 }
                 return Result.HANDLED;
 
-            case ArrowLeft:
+            case ARROW_LEFT:
                 if(textInputPosition > 0) {
                     textInputPosition--;
                 }
@@ -527,7 +527,7 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
                 }
                 return Result.HANDLED;
 
-            case ArrowRight:
+            case ARROW_RIGHT:
                 if(textInputPosition < text.length()) {
                     textInputPosition++;
                 }
@@ -537,13 +537,13 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
                 }
                 return Result.HANDLED;
 
-            case ArrowDown:
+            case ARROW_DOWN:
                 if(selectedIndex < items.size() - 1) {
                     setSelectedIndex(selectedIndex + 1);
                 }
                 return Result.HANDLED;
 
-            case ArrowUp:
+            case ARROW_UP:
                 if(selectedIndex > 0) {
                     setSelectedIndex(selectedIndex - 1);
                 }
@@ -595,7 +595,7 @@ public class ComboBox<V> extends AbstractInteractableComponent<ComboBox<V>> {
         }
         @Override
         public synchronized boolean handleInput(KeyStroke keyStroke) {
-            if (keyStroke.getKeyType() == KeyType.Escape) {
+            if (keyStroke.getKeyType() == KeyType.ESCAPE) {
                 close();
                 return true;
             }

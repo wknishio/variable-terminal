@@ -19,7 +19,6 @@
 package com.googlecode.lanterna.input;
 
 import java.util.List;
-import com.googlecode.lanterna.TerminalTextUtils;
 
 /**
  * Character pattern that matches one character as one KeyStroke with the character that was read
@@ -48,7 +47,6 @@ public class NormalCharacterPattern implements CharacterPattern {
      */
     private static boolean isPrintableChar(char c) {
         if (Character.isISOControl(c)) { return false; }
-        //if (TerminalTextUtils.isPrintableCharacter(c)) { return false; }
         Character.UnicodeBlock block = Character.UnicodeBlock.of(c);
         return block != null && block != Character.UnicodeBlock.SPECIALS;
     }

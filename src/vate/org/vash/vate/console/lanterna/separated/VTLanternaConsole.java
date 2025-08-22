@@ -993,7 +993,7 @@ public class VTLanternaConsole implements VTConsole
       {
         TerminalPosition topleft = outputBox.getTopLeft();
         
-        if (keyStroke.getKeyType() == KeyType.MouseEvent)
+        if (keyStroke.getKeyType() == KeyType.MOUSE_EVENT)
         {
           MouseAction mouse = (MouseAction) keyStroke;
           // System.out.println(mouse.toString());
@@ -1077,17 +1077,17 @@ public class VTLanternaConsole implements VTConsole
             return false;
           }
         }
-        if (keyStroke.getKeyType() == KeyType.Escape)
+        if (keyStroke.getKeyType() == KeyType.ESCAPE)
         {
           inputBox.takeFocus();
           return false;
         }
-        if (keyStroke.getKeyType() == KeyType.Pause)
+        if (keyStroke.getKeyType() == KeyType.PAUSE)
         {
           toggleFlush();
           return false;
         }
-        if (keyStroke.getKeyType() == KeyType.ContextMenu)
+        if (keyStroke.getKeyType() == KeyType.CONTEXT_MENU)
         {
           if (popupMenu != null)
           {
@@ -1102,7 +1102,7 @@ public class VTLanternaConsole implements VTConsole
         // }
         if (keyStroke.isShiftDown() && !keyStroke.isCtrlDown())
         {
-          if (keyStroke.getKeyType() == KeyType.Insert)
+          if (keyStroke.getKeyType() == KeyType.INSERT)
           {
             console.pasteText();
             return false;
@@ -1139,38 +1139,38 @@ public class VTLanternaConsole implements VTConsole
         }
         if (keyStroke.isCtrlDown() && !keyStroke.isShiftDown())
         {
-          if (keyStroke.getKeyType() == KeyType.Insert)
+          if (keyStroke.getKeyType() == KeyType.INSERT)
           {
             console.copyText();
             return false;
           }
-          if (keyStroke.getKeyType() == KeyType.Backspace)
+          if (keyStroke.getKeyType() == KeyType.BACKSPACE)
           {
             //console.copyAllText();
             console.selectAllText();
             return false;
           }
-          if (keyStroke.getKeyType() == KeyType.Delete)
+          if (keyStroke.getKeyType() == KeyType.DELETE)
           {
             VTGlobalTextStyleManager.defaultFontSize();
             return false;
           }
-          if (keyStroke.getKeyType() == KeyType.PageUp)
+          if (keyStroke.getKeyType() == KeyType.PAGE_UP)
           {
             VTGlobalTextStyleManager.increaseFontSize();
             return false;
           }
-          if (keyStroke.getKeyType() == KeyType.PageDown)
+          if (keyStroke.getKeyType() == KeyType.PAGE_DOWN)
           {
             VTGlobalTextStyleManager.decreaseFontSize();
             return false;
           }
-          if (keyStroke.getKeyType() == KeyType.Home)
+          if (keyStroke.getKeyType() == KeyType.HOME)
           {
             VTGlobalTextStyleManager.packComponentSize();
             return false;
           }
-          if (keyStroke.getKeyType() == KeyType.End)
+          if (keyStroke.getKeyType() == KeyType.END)
           {
             if (VTGlobalTextStyleManager.isFontStyleBold())
             {
@@ -1183,7 +1183,7 @@ public class VTLanternaConsole implements VTConsole
             return false;
           }
         }
-        if (keyStroke.getKeyType() != KeyType.AltGr && keyStroke.getKeyType() != KeyType.Windows && keyStroke.getKeyType() != KeyType.Meta && keyStroke.getKeyType() != KeyType.ArrowDown && keyStroke.getKeyType() != KeyType.ArrowUp && keyStroke.getKeyType() != KeyType.ArrowLeft && keyStroke.getKeyType() != KeyType.ArrowRight && keyStroke.getKeyType() != KeyType.PageDown && keyStroke.getKeyType() != KeyType.PageUp && keyStroke.getKeyType() != KeyType.Home && keyStroke.getKeyType() != KeyType.End)
+        if (keyStroke.getKeyType() != KeyType.ALT_GRAPH && keyStroke.getKeyType() != KeyType.WINDOWS && keyStroke.getKeyType() != KeyType.META && keyStroke.getKeyType() != KeyType.ARROW_DOWN && keyStroke.getKeyType() != KeyType.ARROW_UP && keyStroke.getKeyType() != KeyType.ARROW_LEFT && keyStroke.getKeyType() != KeyType.ARROW_RIGHT && keyStroke.getKeyType() != KeyType.PAGE_DOWN && keyStroke.getKeyType() != KeyType.PAGE_UP && keyStroke.getKeyType() != KeyType.HOME && keyStroke.getKeyType() != KeyType.END)
         {
           inputBox.takeFocus();
           inputBox.handleInput(keyStroke);
@@ -1199,7 +1199,7 @@ public class VTLanternaConsole implements VTConsole
       {
         TerminalPosition topleft = inputBox.getTopLeft();
         
-        if (keyStroke.getKeyType() == KeyType.MouseEvent)
+        if (keyStroke.getKeyType() == KeyType.MOUSE_EVENT)
         {
           MouseAction mouse = (MouseAction) keyStroke;
           // System.out.println(mouse.toString());
@@ -1309,7 +1309,7 @@ public class VTLanternaConsole implements VTConsole
           }
         }
         
-        if (keyStroke.getKeyType() == KeyType.Enter)
+        if (keyStroke.getKeyType() == KeyType.ENTER)
         {
           String command = currentLineBuffer.toString();
           currentLineBuffer.setLength(0);
@@ -1324,11 +1324,11 @@ public class VTLanternaConsole implements VTConsole
           // terminal.getTerminalSize();
           return false;
         }
-        if (keyStroke.getKeyType() == KeyType.PageDown || keyStroke.getKeyType() == KeyType.PageUp)
+        if (keyStroke.getKeyType() == KeyType.PAGE_DOWN || keyStroke.getKeyType() == KeyType.PAGE_UP)
         {
           if (keyStroke.isCtrlDown())
           {
-            if (keyStroke.getKeyType() == KeyType.PageUp)
+            if (keyStroke.getKeyType() == KeyType.PAGE_UP)
             {
               VTGlobalTextStyleManager.increaseFontSize();
             }
@@ -1343,21 +1343,21 @@ public class VTLanternaConsole implements VTConsole
           outputBox.invalidate();
           return false;
         }
-        if (keyStroke.getKeyType() == KeyType.ArrowUp)
+        if (keyStroke.getKeyType() == KeyType.ARROW_UP)
         {
           if (scrollCommandHistoryUp(echoInput))
           {
             return false;
           }
         }
-        if (keyStroke.getKeyType() == KeyType.ArrowDown)
+        if (keyStroke.getKeyType() == KeyType.ARROW_DOWN)
         {
           if (scrollCommandHistoryDown(echoInput))
           {
             return false;
           }
         }
-        if (keyStroke.getKeyType() == KeyType.Escape)
+        if (keyStroke.getKeyType() == KeyType.ESCAPE)
         {
           outputBox.takeFocus();
           return false;
@@ -1367,7 +1367,7 @@ public class VTLanternaConsole implements VTConsole
         // inputBox.output("\t");
         // return false;
         // }
-        if (keyStroke.getKeyType() == KeyType.Backspace)
+        if (keyStroke.getKeyType() == KeyType.BACKSPACE)
         {
           if (keyStroke.isCtrlDown())
           {
@@ -1376,7 +1376,7 @@ public class VTLanternaConsole implements VTConsole
             return false;
           }
         }
-        if (keyStroke.getKeyType() == KeyType.Insert)
+        if (keyStroke.getKeyType() == KeyType.INSERT)
         {
           if (!keyStroke.isCtrlDown() && !keyStroke.isShiftDown())
           {
@@ -1394,12 +1394,12 @@ public class VTLanternaConsole implements VTConsole
             return false;
           }
         }
-        if (keyStroke.getKeyType() == KeyType.Pause)
+        if (keyStroke.getKeyType() == KeyType.PAUSE)
         {
           toggleFlush();
           return false;
         }
-        if (keyStroke.getKeyType() == KeyType.ContextMenu)
+        if (keyStroke.getKeyType() == KeyType.CONTEXT_MENU)
         {
           if (popupMenu != null)
           {
@@ -1407,19 +1407,19 @@ public class VTLanternaConsole implements VTConsole
           }
           return false;
         }
-        if (keyStroke.getKeyType() == KeyType.ArrowLeft || keyStroke.getKeyType() == KeyType.ArrowRight || keyStroke.getKeyType() == KeyType.Backspace || keyStroke.getKeyType() == KeyType.Delete || keyStroke.getKeyType() == KeyType.Home || keyStroke.getKeyType() == KeyType.End || keyStroke.getKeyType() == KeyType.Tab || keyStroke.getKeyType() == KeyType.ReverseTab)
+        if (keyStroke.getKeyType() == KeyType.ARROW_LEFT || keyStroke.getKeyType() == KeyType.ARROW_RIGHT || keyStroke.getKeyType() == KeyType.BACKSPACE || keyStroke.getKeyType() == KeyType.DELETE || keyStroke.getKeyType() == KeyType.HOME || keyStroke.getKeyType() == KeyType.END || keyStroke.getKeyType() == KeyType.TAB || keyStroke.getKeyType() == KeyType.REVERSE_TAB)
         {
-          if (keyStroke.getKeyType() == KeyType.Delete && keyStroke.isCtrlDown())
+          if (keyStroke.getKeyType() == KeyType.DELETE && keyStroke.isCtrlDown())
           {
             VTGlobalTextStyleManager.defaultFontSize();
             return false;
           }
-          if (keyStroke.getKeyType() == KeyType.Home && keyStroke.isCtrlDown())
+          if (keyStroke.getKeyType() == KeyType.HOME && keyStroke.isCtrlDown())
           {
             VTGlobalTextStyleManager.packComponentSize();
             return false;
           }
-          if (keyStroke.getKeyType() == KeyType.End && keyStroke.isCtrlDown())
+          if (keyStroke.getKeyType() == KeyType.END && keyStroke.isCtrlDown())
           {
             if (VTGlobalTextStyleManager.isFontStyleBold())
             {
@@ -1443,7 +1443,7 @@ public class VTLanternaConsole implements VTConsole
             return false;
           }
         }
-        if (keyStroke.getKeyType() == KeyType.Character)
+        if (keyStroke.getKeyType() == KeyType.CHARACTER)
         {
           if (keyStroke.getCharacter() == '\u001A')
           {

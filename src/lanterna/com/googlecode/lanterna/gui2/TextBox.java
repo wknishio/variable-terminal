@@ -677,7 +677,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
 //                    }
 //                }
 //                return Result.HANDLED;
-            case Character:
+            case CHARACTER:
                 if(getMaxLineLength() == -1 || getMaxLineLength() > line.length() + 1) {
                     line = line.substring(0, caretPosition.getColumn()) + keyStroke.getCharacter() + line.substring(caretPosition.getColumn());
                     if(validated(line)) {
@@ -686,7 +686,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
                     }
                 }
                 return Result.HANDLED;
-            case Backspace:
+            case BACKSPACE:
                 if(caretPosition.getColumn() > 0) {
                     line = line.substring(0, caretPosition.getColumn() - 1) + line.substring(caretPosition.getColumn());
                     if(validated(line)) {
@@ -704,7 +704,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
                     }
                 }
                 return Result.HANDLED;
-            case Delete:
+            case DELETE:
                 if(caretPosition.getColumn() < line.length()) {
                     line = line.substring(0, caretPosition.getColumn()) + line.substring(caretPosition.getColumn() + 1);
                     if(validated(line)) {
@@ -719,7 +719,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
                     }
                 }
                 return Result.HANDLED;
-            case ArrowLeft:
+            case ARROW_LEFT:
                 if(caretPosition.getColumn() > 0) {
                     caretPosition = caretPosition.withRelativeColumn(-1);
                 }
@@ -731,7 +731,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
                     return Result.MOVE_FOCUS_LEFT;
                 }
                 return Result.HANDLED;
-            case ArrowRight:
+            case ARROW_RIGHT:
                 if(caretPosition.getColumn() < lines.get(caretPosition.getRow()).length()) {
                     caretPosition = caretPosition.withRelativeColumn(1);
                 }
@@ -743,7 +743,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
                     return Result.MOVE_FOCUS_RIGHT;
                 }
                 return Result.HANDLED;
-            case ArrowUp:
+            case ARROW_UP:
                 if(caretPosition.getRow() > 0) {
                     int trueColumnPosition = TerminalTextUtils.getColumnIndex(lines.get(caretPosition.getRow()), caretPosition.getColumn());
                     caretPosition = caretPosition.withRelativeRow(-1);
@@ -759,7 +759,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
                     return Result.MOVE_FOCUS_UP;
                 }
                 return Result.HANDLED;
-            case ArrowDown:
+            case ARROW_DOWN:
                 if(caretPosition.getRow() < lines.size() - 1) {
                     int trueColumnPosition = TerminalTextUtils.getColumnIndex(lines.get(caretPosition.getRow()), caretPosition.getColumn());
                     caretPosition = caretPosition.withRelativeRow(1);
@@ -775,10 +775,10 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
                     return Result.MOVE_FOCUS_DOWN;
                 }
                 return Result.HANDLED;
-            case End:
+            case END:
                 caretPosition = caretPosition.withColumn(line.length());
                 return Result.HANDLED;
-            case Enter:
+            case ENTER:
                 if(style == Style.SINGLE_LINE) {
                     return Result.MOVE_FOCUS_NEXT;
                 }
@@ -790,10 +790,10 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
                     caretPosition = caretPosition.withColumn(0).withRelativeRow(1);
                 }
                 return Result.HANDLED;
-            case Home:
+            case HOME:
                 caretPosition = caretPosition.withColumn(0);
                 return Result.HANDLED;
-            case PageDown:
+            case PAGE_DOWN:
                 caretPosition = caretPosition.withRelativeRow(getSize().getRows());
                 if(caretPosition.getRow() > lines.size() - 1) {
                     caretPosition = caretPosition.withRow(lines.size() - 1);
@@ -802,7 +802,7 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
                     caretPosition = caretPosition.withColumn(lines.get(caretPosition.getRow()).length());
                 }
                 return Result.HANDLED;
-            case PageUp:
+            case PAGE_UP:
                 caretPosition = caretPosition.withRelativeRow(-getSize().getRows());
                 if(caretPosition.getRow() < 0) {
                     caretPosition = caretPosition.withRow(0);
@@ -822,40 +822,40 @@ public class TextBox extends AbstractInteractableComponent<TextBox> {
 
     protected Result handleKeyStrokeReadOnly(KeyStroke keyStroke) {
         switch (keyStroke.getKeyType()) {
-            case ArrowLeft:
+            case ARROW_LEFT:
                 if(getRenderer().getViewTopLeft().getColumn() == 0 && horizontalFocusSwitching) {
                     return Result.MOVE_FOCUS_LEFT;
                 }
                 getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeColumn(-1));
                 return Result.HANDLED;
-            case ArrowRight:
+            case ARROW_RIGHT:
                 if(getRenderer().getViewTopLeft().getColumn() + getSize().getColumns() == longestRow && horizontalFocusSwitching) {
                     return Result.MOVE_FOCUS_RIGHT;
                 }
                 getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeColumn(1));
                 return Result.HANDLED;
-            case ArrowUp:
+            case ARROW_UP:
                 if(getRenderer().getViewTopLeft().getRow() == 0 && verticalFocusSwitching) {
                     return Result.MOVE_FOCUS_UP;
                 }
                 getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeRow(-1));
                 return Result.HANDLED;
-            case ArrowDown:
+            case ARROW_DOWN:
                 if(getRenderer().getViewTopLeft().getRow() + getSize().getRows() == lines.size() && verticalFocusSwitching) {
                     return Result.MOVE_FOCUS_DOWN;
                 }
                 getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeRow(1));
                 return Result.HANDLED;
-            case Home:
+            case HOME:
                 getRenderer().setViewTopLeft(TerminalPosition.TOP_LEFT_CORNER);
                 return Result.HANDLED;
-            case End:
+            case END:
                 getRenderer().setViewTopLeft(TerminalPosition.TOP_LEFT_CORNER.withRow(getLineCount() - getSize().getRows()));
                 return Result.HANDLED;
-            case PageDown:
+            case PAGE_DOWN:
                 getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeRow(getSize().getRows()));
                 return Result.HANDLED;
-            case PageUp:
+            case PAGE_UP:
                 getRenderer().setViewTopLeft(getRenderer().getViewTopLeft().withRelativeRow(-getSize().getRows()));
                 return Result.HANDLED;
             default:

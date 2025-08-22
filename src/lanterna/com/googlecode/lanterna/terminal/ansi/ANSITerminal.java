@@ -296,7 +296,7 @@ public abstract class ANSITerminal extends StreamBasedTerminal implements Extend
 
     private KeyStroke filterMouseEvents(KeyStroke keyStroke) {
         //Remove bad input events from terminals that are not following the xterm protocol properly
-        if(keyStroke == null || keyStroke.getKeyType() != KeyType.MouseEvent) {
+        if(keyStroke == null || keyStroke.getKeyType() != KeyType.MOUSE_EVENT) {
             return keyStroke;
         }
 
@@ -369,6 +369,12 @@ public abstract class ANSITerminal extends StreamBasedTerminal implements Extend
             writeCSISequenceToTerminal((byte)'?', (byte)'1', (byte)'0', (byte)'0', (byte)'2', (byte)l_or_h);
             break;
         case CLICK_RELEASE_DRAG_MOVE:
+            writeCSISequenceToTerminal((byte)'?', (byte)'1', (byte)'0', (byte)'0', (byte)'3', (byte)l_or_h);
+            break;
+        case CLICK_AUTODETECT:
+            writeCSISequenceToTerminal((byte)'?', (byte)'9', (byte)l_or_h);
+            writeCSISequenceToTerminal((byte)'?', (byte)'1', (byte)'0', (byte)'0', (byte)'0', (byte)l_or_h);
+            writeCSISequenceToTerminal((byte)'?', (byte)'1', (byte)'0', (byte)'0', (byte)'2', (byte)l_or_h);
             writeCSISequenceToTerminal((byte)'?', (byte)'1', (byte)'0', (byte)'0', (byte)'3', (byte)l_or_h);
             break;
         }

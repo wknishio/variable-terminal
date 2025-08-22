@@ -53,28 +53,6 @@ public class VTServerLocalConsoleReader extends VTTask
         VTSystemConsole.print("\rVT>Error while processing command!\nVT>");
         // e.printStackTrace(VTConsole.getSystemOut());
         // return;
-        /*
-         * VTTerminal.setSystemErr(); VTTerminal.setSystemOut();
-         * VTTerminal.setSystemIn(); e.printStackTrace();
-         */
-      }
-      if (server.isRunning() && VTSystemConsole.isDaemon())
-      {
-        Object waiter = VTSystemConsole.getSynchronizationObject();
-        synchronized (waiter)
-        {
-          while (VTSystemConsole.isDaemon())
-          {
-            try
-            {
-              waiter.wait();
-            }
-            catch (Throwable e)
-            {
-              
-            }
-          }
-        }
       }
     }
 //    try

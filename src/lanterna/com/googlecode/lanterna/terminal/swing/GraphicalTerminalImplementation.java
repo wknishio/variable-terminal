@@ -25,7 +25,10 @@ import com.googlecode.lanterna.input.DefaultKeyDecodingProfile;
 import com.googlecode.lanterna.input.InputDecoder;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
+import com.googlecode.lanterna.input.MouseAction;
+import com.googlecode.lanterna.input.MouseActionType;
 import com.googlecode.lanterna.terminal.IOSafeTerminal;
+import com.googlecode.lanterna.terminal.MouseCaptureMode;
 import com.googlecode.lanterna.terminal.TerminalResizeListener;
 import com.googlecode.lanterna.terminal.virtual.DefaultVirtualTerminal;
 import com.googlecode.lanterna.terminal.virtual.VirtualTerminal;
@@ -78,6 +81,8 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
     private int lastBufferUpdateScrollPosition;
     private int lastComponentWidth;
     private int lastComponentHeight;
+    
+    protected MouseCaptureMode mouseCaptureMode;
 
     // We use two different data structures to optimize drawing
     //  * A list of modified characters since the last draw (stored in VirtualTerminal)
@@ -913,6 +918,15 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
     public void removeResizeListener(TerminalResizeListener listener) {
         virtualTerminal.removeResizeListener(listener);
     }
+    
+    public void setMouseCaptureMode(MouseCaptureMode mouseCaptureMode) {
+      this.mouseCaptureMode = mouseCaptureMode;
+      updateMouseCaptureMode(mouseCaptureMode);
+    }
+
+    protected void updateMouseCaptureMode(MouseCaptureMode mouseCaptureMode) {
+      // Let the AWT and Swing implementations do the job here
+    }
 
     ///////////
     // Remaining are private internal classes used by SwingTerminal
@@ -985,25 +999,25 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
             boolean ctrlDown = (e.getModifiersEx() & InputEvent.CTRL_DOWN_MASK) != 0;
             boolean shiftDown = (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0;
             if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-                keyQueue.add(new KeyStroke(KeyType.Enter, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.ENTER, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-                keyQueue.add(new KeyStroke(KeyType.Escape, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.ESCAPE, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-                keyQueue.add(new KeyStroke(KeyType.Backspace, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.BACKSPACE, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_LEFT) {
-                keyQueue.add(new KeyStroke(KeyType.ArrowLeft, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.ARROW_LEFT, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                keyQueue.add(new KeyStroke(KeyType.ArrowRight, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.ARROW_RIGHT, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_UP) {
-                keyQueue.add(new KeyStroke(KeyType.ArrowUp, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.ARROW_UP, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_DOWN) {
-                keyQueue.add(new KeyStroke(KeyType.ArrowDown, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.ARROW_DOWN, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_INSERT) {
                 // This could be a paste (shift+insert) if the clipboard is available
@@ -1011,23 +1025,23 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
                     pasteClipboardContent();
                 }
                 else {
-                    keyQueue.add(new KeyStroke(KeyType.Insert, ctrlDown, altDown, shiftDown));
+                    keyQueue.add(new KeyStroke(KeyType.INSERT, ctrlDown, altDown, shiftDown));
                 }
             }
             else if(e.getKeyCode() == KeyEvent.VK_DELETE) {
-                keyQueue.add(new KeyStroke(KeyType.Delete, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.DELETE, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_HOME) {
-                keyQueue.add(new KeyStroke(KeyType.Home, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.HOME, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_END) {
-                keyQueue.add(new KeyStroke(KeyType.End, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.END, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_PAGE_UP) {
-                keyQueue.add(new KeyStroke(KeyType.PageUp, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.PAGE_UP, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_PAGE_DOWN) {
-                keyQueue.add(new KeyStroke(KeyType.PageDown, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.PAGE_DOWN, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_F1) {
                 keyQueue.add(new KeyStroke(KeyType.F1, ctrlDown, altDown, shiftDown));
@@ -1066,29 +1080,29 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
                 keyQueue.add(new KeyStroke(KeyType.F12, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_PAUSE) {
-                keyQueue.add(new KeyStroke(KeyType.Pause, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.PAUSE, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_CONTEXT_MENU) {
-                keyQueue.add(new KeyStroke(KeyType.ContextMenu, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.CONTEXT_MENU, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_SPACE) {
-                keyQueue.add(new KeyStroke(KeyType.Space, ctrlDown, altDown, shiftDown));
+                keyQueue.add(new KeyStroke(KeyType.SPACE, ctrlDown, altDown, shiftDown));
             }
             else if(e.getKeyCode() == KeyEvent.VK_TAB) {
                 if(e.isShiftDown()) {
-                    keyQueue.add(new KeyStroke(KeyType.ReverseTab, ctrlDown, altDown, false));
+                    keyQueue.add(new KeyStroke(KeyType.REVERSE_TAB, ctrlDown, altDown, false));
                 }
                 else {
-                    keyQueue.add(new KeyStroke(KeyType.Tab, ctrlDown, altDown, shiftDown));
+                    keyQueue.add(new KeyStroke(KeyType.TAB, ctrlDown, altDown, shiftDown));
                 }
             }
             else if (e.getKeyCode() == KeyEvent.VK_WINDOWS)
             {
-              keyQueue.add(new KeyStroke(KeyType.Windows, ctrlDown, altDown, shiftDown));
+              keyQueue.add(new KeyStroke(KeyType.WINDOWS, ctrlDown, altDown, shiftDown));
             }
             else if (e.getKeyCode() == KeyEvent.VK_META)
             {
-              keyQueue.add(new KeyStroke(KeyType.Meta, ctrlDown, altDown, shiftDown));
+              keyQueue.add(new KeyStroke(KeyType.META, ctrlDown, altDown, shiftDown));
             }
 //            else if (e.getKeyCode() == KeyEvent.VK_CONTROL)
 //            {
@@ -1108,7 +1122,7 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
 //            }
             else if (e.getKeyCode() == KeyEvent.VK_ALT_GRAPH)
             {
-              keyQueue.add(new KeyStroke(KeyType.AltGr, ctrlDown, altDown, shiftDown));
+              keyQueue.add(new KeyStroke(KeyType.ALT_GRAPH, ctrlDown, altDown, shiftDown));
             }
             else {
                 //keyTyped doesn't catch this scenario (for whatever reason...) so we have to do it here
@@ -1124,16 +1138,98 @@ abstract class GraphicalTerminalImplementation implements IOSafeTerminal {
     }
 
     // This is mostly unimplemented, we could hook more of this into ExtendedTerminal's mouse functions
+//    protected class TerminalMouseListener extends MouseAdapter {
+//        
+//        public void mouseClicked(MouseEvent e) {
+//            if(MouseInfo.getNumberOfButtons() > 2 &&
+//                    e.getButton() == MouseEvent.BUTTON2 &&
+//                    deviceConfiguration.isClipboardAvailable()) {
+//                pasteSelectionContent();
+//            }
+//        }
+//    }
+    
+    
     protected class TerminalMouseListener extends MouseAdapter {
-        
-        public void mouseClicked(MouseEvent e) {
-            if(MouseInfo.getNumberOfButtons() > 2 &&
-                    e.getButton() == MouseEvent.BUTTON2 &&
-                    deviceConfiguration.isClipboardAvailable()) {
-                pasteSelectionContent();
+      private MouseCaptureMode mouseCaptureMode=null;
+
+      public TerminalMouseListener() {
+          super();
+      }
+
+      public TerminalMouseListener(MouseCaptureMode mouseCaptureMode)
+      {
+          super();
+          this.mouseCaptureMode=mouseCaptureMode;
+      }
+
+      private int convertButton(int awtButton)
+      {
+          int button=0;
+          switch (awtButton) {
+              case MouseEvent.BUTTON1:
+                  button=1;
+                  break;
+              case MouseEvent.BUTTON2:
+                  button=3;
+                  break;
+              case MouseEvent.BUTTON3:
+                  button=2;
+                  break;
+              default:
+                  break;
+          }
+          return button;
+      }
+
+      public void mouseClicked(MouseEvent e)
+      {
+          
+      }
+
+      public void mousePressed(MouseEvent e)
+      {
+          if(mouseCaptureMode!=null)
+          {
+              keyQueue.add(new MouseAction(MouseActionType.CLICK_DOWN, convertButton(e.getButton()), new TerminalPosition(e.getX()/getFontWidth(), e.getY()/getFontHeight()),e.isControlDown(),e.isAltDown(),e.isShiftDown()));
+          }
+      }
+
+      public void mouseReleased(MouseEvent e)
+      {
+          if(mouseCaptureMode!=null)
+          {
+              keyQueue.add(new MouseAction(MouseActionType.CLICK_RELEASE, convertButton(e.getButton()), new TerminalPosition(e.getX()/getFontWidth(), e.getY()/getFontHeight()),e.isControlDown(),e.isAltDown(),e.isShiftDown()));
+          }
+      }
+
+      public void mouseWheelMoved(MouseWheelEvent e)
+      {
+        if(mouseCaptureMode!=null)
+        {
+            int rotation = e.getWheelRotation();
+            if(rotation > 0){
+                keyQueue.add(new MouseAction(MouseActionType.SCROLL_DOWN, 5, new TerminalPosition(e.getX()/getFontWidth(), e.getY()/getFontHeight()),e.isControlDown(),e.isAltDown(),e.isShiftDown()));
+            } else {
+                keyQueue.add(new MouseAction(MouseActionType.SCROLL_UP, 4, new TerminalPosition(e.getX()/getFontWidth(), e.getY()/getFontHeight()),e.isControlDown(),e.isAltDown(),e.isShiftDown()));
             }
         }
-    }
+      }
+
+      public void mouseMoved(MouseEvent e) {
+          if(mouseCaptureMode==MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE || mouseCaptureMode==MouseCaptureMode.CLICK_AUTODETECT)
+          {
+              keyQueue.add(new MouseAction(MouseActionType.MOVE, 0, new TerminalPosition(e.getX()/getFontWidth(), e.getY()/getFontHeight()),e.isControlDown(),e.isAltDown(),e.isShiftDown()));
+          }
+      }
+
+      public void mouseDragged(MouseEvent e) {
+          if(mouseCaptureMode==MouseCaptureMode.CLICK_RELEASE_DRAG || mouseCaptureMode==MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE || mouseCaptureMode==MouseCaptureMode.CLICK_AUTODETECT)
+          {
+              keyQueue.add(new MouseAction(MouseActionType.DRAG, convertButton(e.getButton()), new TerminalPosition(e.getX()/getFontWidth(), e.getY()/getFontHeight()),e.isControlDown(),e.isAltDown(),e.isShiftDown()));
+          }
+      }
+  }
 
     private void pasteClipboardContent() {
         try {

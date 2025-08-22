@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2020 Martin Berglund
+ * Copyright (C) 2010-2024 Martin Berglund
  */
 package com.googlecode.lanterna.input;
 
@@ -85,26 +85,26 @@ public class EscapeSequenceCharacterPattern implements CharacterPattern {
      * Create an instance with a standard set of mappings.
      */
     public EscapeSequenceCharacterPattern() {
-        finMap.put('A', KeyType.ArrowUp);
-        finMap.put('B', KeyType.ArrowDown);
-        finMap.put('C', KeyType.ArrowRight);
-        finMap.put('D', KeyType.ArrowLeft);
-        finMap.put('E', KeyType.Unknown); // gnome-terminal center key on numpad
-        finMap.put('G', KeyType.Unknown); // putty center key on numpad
-        finMap.put('H', KeyType.Home);
-        finMap.put('F', KeyType.End);
+        finMap.put('A', KeyType.ARROW_UP);
+        finMap.put('B', KeyType.ARROW_DOWN);
+        finMap.put('C', KeyType.ARROW_RIGHT);
+        finMap.put('D', KeyType.ARROW_LEFT);
+        finMap.put('E', KeyType.KEY_TYPE); // gnome-terminal center key on numpad
+        finMap.put('G', KeyType.KEY_TYPE); // putty center key on numpad
+        finMap.put('H', KeyType.HOME);
+        finMap.put('F', KeyType.END);
         finMap.put('P', KeyType.F1);
         finMap.put('Q', KeyType.F2);
         finMap.put('R', KeyType.F3);
         finMap.put('S', KeyType.F4);
-        finMap.put('Z', KeyType.ReverseTab);
+        finMap.put('Z', KeyType.REVERSE_TAB);
 
-        stdMap.put(1,  KeyType.Home);
-        stdMap.put(2,  KeyType.Insert);
-        stdMap.put(3,  KeyType.Delete);
-        stdMap.put(4,  KeyType.End);
-        stdMap.put(5,  KeyType.PageUp);
-        stdMap.put(6,  KeyType.PageDown);
+        stdMap.put(1,  KeyType.HOME);
+        stdMap.put(2,  KeyType.INSERT);
+        stdMap.put(3,  KeyType.DELETE);
+        stdMap.put(4,  KeyType.END);
+        stdMap.put(5,  KeyType.PAGE_UP);
+        stdMap.put(6,  KeyType.PAGE_DOWN);
         stdMap.put(11, KeyType.F1);
         stdMap.put(12, KeyType.F2);
         stdMap.put(13, KeyType.F3);
@@ -144,7 +144,6 @@ public class EscapeSequenceCharacterPattern implements CharacterPattern {
             bShift = (mods & SHIFT) != 0;
             bAlt   = (mods & ALT)   != 0;
             bCtrl  = (mods & CTRL)  != 0;
-            
         } else if (mods == -1 && key == KeyType.F3) {
             return new KeyStroke.RealF3();
         }
@@ -194,6 +193,7 @@ public class EscapeSequenceCharacterPattern implements CharacterPattern {
         }
         return getKeyStroke( kt, mods );
     }
+
     
     public Matching match(List<Character> cur) {
         State state = State.START;

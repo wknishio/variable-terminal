@@ -46,11 +46,11 @@ public class MenuItemListBox extends AbstractListBox<Runnable, MenuItemListBox> 
 		Runnable selectedItem = getSelectedItem();
 		KeyType keyType = keyStroke.getKeyType();
 		if (selectedItem != null
-				&& (keyType == KeyType.Enter || (keyType == KeyType.Character && keyStroke.getCharacter() == ' '))) {
+				&& (keyType == KeyType.ENTER || (keyType == KeyType.CHARACTER && keyStroke.getCharacter() == ' '))) {
 			selectedItem.run();
 			return Result.HANDLED;
 		}
-		if (keyType == KeyType.Escape) {
+		if (keyType == KeyType.ESCAPE) {
 			closeListener.run();
 			return Result.HANDLED;
 		}

@@ -6,6 +6,9 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import org.vash.vate.nativeutils.VTSystemNativeUtils;
+
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.input.BasicCharacterPattern;
@@ -14,6 +17,7 @@ import com.googlecode.lanterna.input.KeyDecodingProfile;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.terminal.win32.WinDef.CONSOLE_SCREEN_BUFFER_INFO;
+import com.googlecode.lanterna.terminal.win32.WinDef.MOUSE_EVENT_RECORD;
 import com.googlecode.lanterna.terminal.win32.WinDef.WINDOW_BUFFER_SIZE_RECORD;
 import com.googlecode.lanterna.terminal.ansi.UnixLikeTerminal;
 import com.sun.jna.ptr.IntByReference;
@@ -47,25 +51,25 @@ public class WindowsTerminal extends UnixLikeTerminal {
 			}
 		});
 		
-//		CONSOLE_INPUT.onMouseEvent(new Consumer<MOUSE_EVENT_RECORD>()
-//		{
-//			void accept(MOUSE_EVENT_RECORD evt)
-//			{
-//				onMouseEventRecord(evt);
-//				Consumer<? super MOUSE_EVENT_RECORD> after = getAfter();
-//				if (after != null)
-//				{
-//					after.accept(evt);
-//				}
-//			}
-//		});
+		CONSOLE_INPUT.onMouseEvent(new Consumer<MOUSE_EVENT_RECORD>()
+		{
+			void accept(MOUSE_EVENT_RECORD evt)
+			{
+				onMouseEventRecord(evt);
+				Consumer<? super MOUSE_EVENT_RECORD> after = getAfter();
+				if (after != null)
+				{
+					after.accept(evt);
+				}
+			}
+		});
 	}
 
 	
 	protected KeyDecodingProfile getDefaultKeyDecodingProfile() {
 		final ArrayList<CharacterPattern> keyDecodingProfile = new ArrayList<CharacterPattern>();
 		// handle Key Code 13 as ENTER
-		keyDecodingProfile.add(new BasicCharacterPattern(new KeyStroke(KeyType.Enter), '\r'));
+		keyDecodingProfile.add(new BasicCharacterPattern(new KeyStroke(KeyType.ENTER), '\r'));
 		// handle everything else as per default
 		keyDecodingProfile.addAll(super.getDefaultKeyDecodingProfile().getPatterns());
 		return new KeyDecodingProfile()
@@ -177,9 +181,8 @@ public class WindowsTerminal extends UnixLikeTerminal {
 		return lpMode.getValue();
 	}
 	
-//	private void onMouseEventRecord(MOUSE_EVENT_RECORD evt)
-//	{
-//		COORD position = evt.dwMousePosition;
-//		int button = evt.dwButtonState;
-//	}
+	private void onMouseEventRecord(MOUSE_EVENT_RECORD evt)
+	{
+	  //
+	}
 }

@@ -25,6 +25,7 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.terminal.IOSafeTerminal;
+import com.googlecode.lanterna.terminal.MouseCaptureMode;
 import com.googlecode.lanterna.terminal.TerminalResizeListener;
 
 import java.awt.*;
@@ -416,4 +417,9 @@ public class AWTTerminal extends Panel implements IOSafeTerminal {
 	public void putString(String string) {
         terminalImplementation.putString(string);
     }
+	
+  public void setMouseCaptureMode(MouseCaptureMode mouseCaptureMode)
+  {
+      terminalImplementation.setMouseCaptureMode(mouseCaptureMode);
+  }
 }

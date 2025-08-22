@@ -179,11 +179,25 @@ public class DefaultTerminalFactory implements TerminalFactory {
      */
     public Terminal createTerminalEmulator(java.awt.Color lastLineBackground) {
         Terminal terminal;
-        if (!forceAWTOverSwing && hasSwing()) {
-            terminal = createSwingTerminal();
-        } else {
-            terminal = createAWTTerminal(lastLineBackground);
+        if (!forceAWTOverSwing && hasSwing())
+        {
+          SwingTerminalFrame swingTerminal = createSwingTerminal();
+          if (this.mouseCaptureMode != null)
+          {
+            swingTerminal.getTerminal().getTerminalImplementation().setMouseCaptureMode(mouseCaptureMode);
+          }
+          terminal = swingTerminal;
         }
+        else
+        {
+          AWTTerminalFrame awtTerminal = createAWTTerminal(lastLineBackground);
+          if (this.mouseCaptureMode != null)
+          {
+            awtTerminal.getTerminal().getTerminalImplementation().setMouseCaptureMode(mouseCaptureMode);
+          }
+          terminal = awtTerminal;
+        }
+        
 
         if (autoOpenTerminalFrame) {
             makeWindowVisible(terminal);

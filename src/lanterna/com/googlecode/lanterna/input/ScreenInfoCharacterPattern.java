@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * Copyright (C) 2010-2020 Martin Berglund
+ * Copyright (C) 2010-2024 Martin Berglund
  */
 package com.googlecode.lanterna.input;
 
@@ -47,7 +47,7 @@ public class ScreenInfoCharacterPattern extends EscapeSequenceCharacterPattern {
             return null;
         }
         switch (ks.getKeyType()) {
-        case CursorLocation: return (ScreenInfoAction)ks;
+        case CURSOR_LOCATION: return (ScreenInfoAction)ks;
         case F3: // reconstruct position from F3's modifiers.
             if (ks instanceof KeyStroke.RealF3) { return null; }
             int col = 1 + (ks.isAltDown()  ? ALT  : 0)
