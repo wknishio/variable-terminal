@@ -4,9 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.Reader;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
@@ -113,7 +111,7 @@ public class VTClientConnection
   private VTLittleEndianInputStream authenticationReader;
   private VTLittleEndianOutputStream authenticationWriter;
   
-  private Reader resultReader;
+  private VTLittleEndianInputStream resultReader;
   private VTLittleEndianOutputStream commandWriter;
   private InputStream shellDataInputStream;
   private OutputStream shellDataOutputStream;
@@ -325,7 +323,7 @@ public class VTClientConnection
     return authenticationReader;
   }
   
-  public Reader getResultReader()
+  public VTLittleEndianInputStream getResultReader()
   {
     return resultReader;
   }
@@ -723,7 +721,7 @@ public class VTClientConnection
     // VTCompressorSelector.createFlushBufferedSyncFlushDeflaterOutputStream(shellOutputStream);
     // shellDataOutputStream = shellOutputStream;
     
-    resultReader = new InputStreamReader(shellDataInputStream, "UTF-8");
+    resultReader = new VTLittleEndianInputStream(shellDataInputStream);
     commandWriter = new VTLittleEndianOutputStream(shellDataOutputStream);
     
     graphicsControlDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsControlInputStream));

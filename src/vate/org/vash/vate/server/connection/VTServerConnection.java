@@ -2,11 +2,9 @@ package org.vash.vate.server.connection;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
@@ -117,7 +115,7 @@ public class VTServerConnection
   private VTLittleEndianInputStream authenticationReader;
   private VTLittleEndianOutputStream authenticationWriter;
   private VTLittleEndianInputStream commandReader;
-  private BufferedWriter resultWriter;
+  private VTLittleEndianOutputStream resultWriter;
   private InputStream shellDataInputStream;
   private OutputStream shellDataOutputStream;
   private InputStream clipboardDataInputStream;
@@ -276,7 +274,7 @@ public class VTServerConnection
     return authenticationReader;
   }
   
-  public BufferedWriter getResultWriter()
+  public VTLittleEndianOutputStream getResultWriter()
   {
     return resultWriter;
   }
@@ -696,7 +694,7 @@ public class VTServerConnection
     // shellDataOutputStream = shellOutputStream;
     
     commandReader = new VTLittleEndianInputStream(shellDataInputStream);
-    resultWriter = new BufferedWriter(new OutputStreamWriter(shellDataOutputStream, "UTF-8"));
+    resultWriter = new VTLittleEndianOutputStream(shellDataOutputStream);
     
     graphicsControlDataInputStream = new VTLittleEndianInputStream(VTCompressorSelector.createBufferedLz4InputStream(graphicsControlInputStream));
     graphicsControlDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsControlOutputStream));
