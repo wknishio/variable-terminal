@@ -623,7 +623,6 @@ public class VTLanternaConsole implements VTConsole
     factory.setLastLineBackground(new java.awt.Color(85, 85, 85));
     factory.setForceAWTOverSwing(true);
     // factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
-    factory.setMouseCaptureMode(MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE);
     factory.setInitialTerminalSize(new TerminalSize(consoleOutputColumns, consoleOutputLines + consoleInputLines));
     // factory.setTerminalEmulatorColorConfiguration(TerminalEmulatorColorConfiguration.newInstance(TerminalEmulatorPalette.STANDARD_VGA));
     factory.setTerminalEmulatorColorConfiguration(TerminalEmulatorColorConfiguration.newInstance(VTLanternaConsole.CUSTOM_PALETTE));
@@ -636,6 +635,7 @@ public class VTLanternaConsole implements VTConsole
     else
     {
       factory.setForceTextTerminal(true);
+      factory.setMouseCaptureMode(MouseCaptureMode.CLICK_RELEASE_DRAG_MOVE);
     }
     // final Scrollbar scrollBar = null;
     
@@ -842,21 +842,18 @@ public class VTLanternaConsole implements VTConsole
       {
         public void keyTyped(KeyEvent e)
         {
-          // System.out.println("keyTyped:" + e.toString());
           awtTerminal.requestFocusInWindow();
           awtTerminal.dispatchEvent(e);
         }
         
         public void keyReleased(KeyEvent e)
         {
-          // System.out.println("keyReleased:" + e.toString());
           awtTerminal.requestFocusInWindow();
           awtTerminal.dispatchEvent(e);
         }
         
         public void keyPressed(KeyEvent e)
         {
-          // System.out.println("keyPressed:" + e.toString());
           awtTerminal.requestFocusInWindow();
           awtTerminal.dispatchEvent(e);
         }
