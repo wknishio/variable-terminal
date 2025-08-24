@@ -26,7 +26,7 @@ import org.vash.vate.stream.filter.VTDoubledOutputStream;
 // import java.nio.channels.ClosedByInterruptException;
 // import java.nio.charset.Charset;
 
-public class VTStandardConsole implements VTConsole
+public class VTStandardConsole extends VTConsole
 {
   private static VTStandardConsole instance;
   private static VTDoubledOutputStream output;

@@ -10,8 +10,8 @@ public class VTClientGraphicalStart
 {
   public static void main(String[] args)
   {
-    VTSystemConsole.setLanterna(true);
     VTSystemConsole.setGraphical(true);
+    VTSystemConsole.setSeparated(false);
     VTSystemConsole.setRemoteIcon(true);
     VTSystemConsole.setDaemon(false);
     

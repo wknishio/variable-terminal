@@ -14,8 +14,8 @@ public final class VTStandardStart
   public static final void main(String[] args)
   {
     // System.setProperty("java.awt.headless", "true");
-    VTSystemConsole.setLanterna(true);
     VTSystemConsole.setGraphical(false);
+    VTSystemConsole.setSeparated(false);
     VTSystemConsole.setRemoteIcon(true);
     VTSystemConsole.setDaemon(false);
     

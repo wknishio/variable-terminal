@@ -51,7 +51,7 @@ public class VTServerConnector implements Runnable
     this.secureRandom = secureRandom;
     this.proxies = proxies;
     this.connectionHandlers = new ConcurrentLinkedQueue<VTServerConnectionHandler>();
-    portMappingManager = new VTNATSinglePortMappingManagerMKII(3, 300, server.getExecutorService());
+    portMappingManager = new VTNATSinglePortMappingManagerMKII(5, 300, server.getExecutorService());
     portMappingManager.start();
   }
   

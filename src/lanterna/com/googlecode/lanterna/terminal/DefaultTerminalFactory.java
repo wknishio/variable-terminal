@@ -123,9 +123,11 @@ public class DefaultTerminalFactory implements TerminalFactory {
 	            if( telnetPort > 0) {
 	                return createTelnetTerminal();
 	            }
-	            if(isOperatingSystemWindows()) {
+	            if(isOperatingSystemWindows())
+	            {
 	            	//System.out.println("createWindowsTerminal()");
-	                return createWindowsTerminal();
+	              //return createWindowsTerminal();
+	              return createUnixTerminal(outputStream, inputStream, charset);
 	            	//return createUnixTerminal(outputStream, inputStream, charset);
 	            }
 	            else {

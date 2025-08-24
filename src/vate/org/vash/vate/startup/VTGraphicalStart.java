@@ -13,8 +13,8 @@ public final class VTGraphicalStart
   
   public static final void main(String[] args)
   {
-    VTSystemConsole.setLanterna(true);
     VTSystemConsole.setGraphical(true);
+    VTSystemConsole.setSeparated(false);
     VTSystemConsole.setRemoteIcon(true);
     VTSystemConsole.setDaemon(false);
     

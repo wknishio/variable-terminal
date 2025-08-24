@@ -10,8 +10,8 @@ public class VTServerStandardStart
 {
   public static void main(String[] args)
   {
-    VTSystemConsole.setLanterna(true);
     VTSystemConsole.setGraphical(false);
+    VTSystemConsole.setSeparated(false);
     VTSystemConsole.setRemoteIcon(true);
     VTSystemConsole.setDaemon(false);
     

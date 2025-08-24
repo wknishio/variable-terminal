@@ -79,7 +79,7 @@ import com.googlecode.lanterna.terminal.swing.AWTTerminalPanel;
 import com.googlecode.lanterna.terminal.swing.TerminalEmulatorColorConfiguration;
 import com.googlecode.lanterna.terminal.swing.TerminalEmulatorPalette;
 
-public class VTLanternaConsole implements VTConsole
+public class VTLanternaConsole extends VTConsole
 {
   public static final TerminalEmulatorPalette CUSTOM_PALETTE = new TerminalEmulatorPalette(
   new java.awt.Color(188, 188, 188), //defaultColor
@@ -843,19 +843,19 @@ public class VTLanternaConsole implements VTConsole
         public void keyTyped(KeyEvent e)
         {
           awtTerminal.requestFocusInWindow();
-          awtTerminal.dispatchEvent(e);
+          //awtTerminal.dispatchEvent(e);
         }
         
         public void keyReleased(KeyEvent e)
         {
           awtTerminal.requestFocusInWindow();
-          awtTerminal.dispatchEvent(e);
+          //awtTerminal.dispatchEvent(e);
         }
         
         public void keyPressed(KeyEvent e)
         {
           awtTerminal.requestFocusInWindow();
-          awtTerminal.dispatchEvent(e);
+          //awtTerminal.dispatchEvent(e);
         }
       });
       //

@@ -60,7 +60,7 @@ public class VTClientConnector implements Runnable
     this.proxies = proxies;
     this.connection = new VTClientConnection(client.getExecutorService());
     this.handler = new VTClientConnectionHandler(client, connection);
-    portMappingManager = new VTNATSinglePortMappingManagerMKII(3, 300, client.getExecutorService());
+    portMappingManager = new VTNATSinglePortMappingManagerMKII(5, 300, client.getExecutorService());
     portMappingManager.start();
   }
   

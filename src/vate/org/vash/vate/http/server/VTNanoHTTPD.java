@@ -265,7 +265,7 @@ public class VTNanoHTTPD
   public static void main( String[] args )
   {
     VTSystemConsole.setGraphical(true);
-    VTSystemConsole.setLanterna(true);
+    VTSystemConsole.setSeparated(false);
     VTSystemConsole.setRemoteIcon(true);
     VTSystemConsole.setDaemon(false);
     VTSystemConsole.initialize();

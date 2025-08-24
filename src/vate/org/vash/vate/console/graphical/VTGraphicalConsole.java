@@ -28,7 +28,7 @@ import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
 
-public class VTGraphicalConsole implements VTConsole
+public class VTGraphicalConsole extends VTConsole
 {
   public static final char VT_VK_LEFT = '\uFFFF';
   public static final char VT_VK_UP = '\uFFFE';

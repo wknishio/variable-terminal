@@ -21,9 +21,8 @@ import org.vash.vate.reflection.VTReflectionUtils;
 public final class VTSystemConsole
 {
   // private static boolean initialized;
-  private static volatile boolean lanterna = true;
   private static volatile boolean graphical = false;
-  private static volatile boolean ansi = false;
+  private static volatile boolean separated = false;
   private static volatile boolean daemon = false;
   private static volatile boolean remoteIcon = false;
   private static VTConsole console;
@@ -56,6 +55,10 @@ public final class VTSystemConsole
           return false;
         }
       }
+      else
+      {
+        return true;
+      }
     }
     catch (Throwable e)
     {
@@ -83,60 +86,6 @@ public final class VTSystemConsole
     return VTReflectionUtils.isAWTHeadless();
   }
   
-  public static VTConsole createConsole(boolean graphical, boolean ansi)
-  {
-    VTConsole console = null;
-    boolean headless = isHeadless();
-    boolean terminal = hasTerminal();
-    if (!headless)
-    {
-      if (graphical)
-      {
-        console = new VTLanternaConsole(true, true, null);
-        console.getFrame().setMenuBar(new VTGraphicalConsoleMenuBar(console));
-        console.getFrame().pack();
-      }
-      else
-      {
-        if (!terminal)
-        {
-          console = new VTLanternaConsole(true, true, null);
-          console.getFrame().setMenuBar(new VTGraphicalConsoleMenuBar(console));
-          console.getFrame().pack();
-        }
-        else
-        {
-          if (terminal && ansi && VTSystemNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
-          {
-            console = new VTLanternaConsole(false, true, null);
-          }
-          else
-          {
-            console = VTStandardConsole.getInstance();
-            console.setRemoteIcon(true);
-            resetAttributes();
-            setColors(VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN, VTConsole.VT_CONSOLE_COLOR_DARK_BLACK);
-          }
-        }
-      }
-    }
-    else
-    {
-      if (terminal && ansi && VTSystemNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
-      {
-        console = new VTLanternaConsole(false, true, null);
-      }
-      else
-      {
-        console = VTStandardConsole.getInstance();
-        console.setRemoteIcon(true);
-        resetAttributes();
-        setColors(VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN, VTConsole.VT_CONSOLE_COLOR_DARK_BLACK);
-      }
-    }
-    return console;
-  }
-  
   public synchronized static void initialize()
   {
     if (console == null)
@@ -145,26 +94,13 @@ public final class VTSystemConsole
       {
         if (graphical)
         {
-          // VTGraphicalConsole.setSplit(split);
-          //VTSystemNativeUtils.hideConsole();
-          if (lanterna)
-          {
-            console = new VTLanternaConsole(graphical, remoteIcon, null);
-          }
-          else
-          {
-            console = VTGraphicalConsole.getInstance(remoteIcon);
-          }
+          console = new VTLanternaConsole(graphical, remoteIcon, null);
           console.getFrame().setMenuBar(new VTGraphicalConsoleMenuBar(console));
           console.getFrame().pack();
-          // console = VTGraphicalConsole.getInstance();
-          // setBold(true);
-          // VTGraphicalConsole.setTitle(title);
-          // initialized = true;
         }
         else
         {
-          if (lanterna && ansi && VTSystemNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
+          if (separated && hasTerminal() && VTSystemNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
           {
             console = new VTLanternaConsole(graphical, remoteIcon, null);
           }
@@ -172,8 +108,8 @@ public final class VTSystemConsole
           {
             console = VTStandardConsole.getInstance();
             console.setRemoteIcon(remoteIcon);
-            resetAttributes();
-            setColors(VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN, VTConsole.VT_CONSOLE_COLOR_DARK_BLACK);
+            console.resetAttributes();
+            console.setColors(VTConsole.VT_CONSOLE_COLOR_LIGHT_GREEN, VTConsole.VT_CONSOLE_COLOR_DARK_BLACK);
           }
         }
       }
@@ -189,20 +125,20 @@ public final class VTSystemConsole
     return graphical;
   }
   
-  public synchronized static boolean isANSI()
+  public synchronized static boolean isSeparated()
   {
-    return ansi;
+    return separated;
   }
   
-  public synchronized static void setANSI(boolean ansi)
+  public synchronized static void setSeparated(boolean separated)
   {
-    VTSystemConsole.ansi = ansi;
+    VTSystemConsole.separated = separated;
   }
   
-  public synchronized static void setLanterna(boolean lanterna)
-  {
-    VTSystemConsole.lanterna = lanterna;
-  }
+//  public synchronized static void setLanterna(boolean lanterna)
+//  {
+//    VTSystemConsole.lanterna = lanterna;
+//  }
   
   public synchronized static void setGraphical(boolean graphical)
   {
@@ -803,7 +739,7 @@ public final class VTSystemConsole
     }
   }
   
-  public static boolean checkIOConsole()
+  private static boolean checkIOConsole()
   {
     try
     {
