@@ -32,7 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.graphics.font.VTSystemFontManager;
 
 /**
  * This class encapsulates the font information used by an {@link AWTTerminal}. By customizing this class, you can
@@ -41,7 +41,7 @@ import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
  */
 public class AWTTerminalFontConfiguration {
 
-	private static float baseFontSize = VTGlobalTextStyleManager.BASE_FONT_SIZE_MONOSPACED;
+	private static float baseFontSize = VTSystemFontManager.BASE_FONT_SIZE_MONOSPACED;
     /**
      * Controls how the SGR bold will take effect when enabled on a character. Mainly this is controlling if the 
      * character should be rendered with a bold font or not. The reason for this is that some characters, notably the
@@ -75,7 +75,7 @@ public class AWTTerminalFontConfiguration {
             "AR PL UMing CN"
     )));
     
-	private static float FONT_SCALING_FACTOR = VTGlobalTextStyleManager.FONT_SCALING_FACTOR_MONOSPACED;
+	private static float FONT_SCALING_FACTOR = VTSystemFontManager.FONT_SCALING_FACTOR_MONOSPACED;
 
     private static List<Font> getDefaultWindowsFonts() {
         float fontSize = getDefaultFontSize();
@@ -88,7 +88,7 @@ public class AWTTerminalFontConfiguration {
         //Monospaced can look pretty bad on Windows, so let's override it
         return (Arrays.asList(
                 //new Font(VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_NAME, Font.PLAIN, 12).deriveFont(fontSize),
-                VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(fontSize),
+                VTSystemFontManager.CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(fontSize),
                 //new Font("Consolas", Font.PLAIN, 12).deriveFont(fontSize),
                 new Font("Courier New", Font.PLAIN, 12).deriveFont(fontSize),
                 new Font("Monospaced", Font.PLAIN, 12).deriveFont(fontSize)
@@ -104,7 +104,7 @@ public class AWTTerminalFontConfiguration {
         //return fonts;
         return (Arrays.asList(
                 //new Font(VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_NAME, Font.PLAIN, 12).deriveFont(fontSize),
-                VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(fontSize),
+                VTSystemFontManager.CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(fontSize),
                 new Font("Monospaced", Font.PLAIN, 12).deriveFont(fontSize),
                 //Below, these should be redundant (Monospaced is supposed to catch-all)
                 // but Java 6 seems to have issues with finding monospaced fonts sometimes
@@ -130,7 +130,7 @@ public class AWTTerminalFontConfiguration {
         
         return (Arrays.asList(
             //new Font(VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_NAME, Font.PLAIN, 12).deriveFont(fontSize),
-            VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(fontSize),
+            VTSystemFontManager.CUSTOM_MONOSPACED_FONT_PLAIN.deriveFont(fontSize),
             new Font("Monospaced", Font.PLAIN, 12).deriveFont(fontSize)));
     }
     
@@ -151,7 +151,7 @@ public class AWTTerminalFontConfiguration {
         //System.out.println("getFontSize():" + (int)(baseFontSize * FONT_SCALING_FACTOR));
         //return (int) Math.ceil(baseFontSize * FONT_SCALING_FACTOR);
         //return (float) (baseFontSize * FONT_SCALING_FACTOR);
-        return VTGlobalTextStyleManager.CUSTOM_MONOSPACED_FONT_PLAIN.getSize2D();
+        return VTSystemFontManager.CUSTOM_MONOSPACED_FONT_PLAIN.getSize2D();
 //        String[] javaVersion = System.getProperty("java.version", "1").split("\\.");
 //        if (System.getProperty("os.name", "").startsWith("Windows") && Integer.parseInt(javaVersion[0]) >= 9) {
 //            // Java 9+ reports itself as HiDPI-unaware on Windows and will be scaled by the OS

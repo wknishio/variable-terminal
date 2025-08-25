@@ -4,7 +4,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import org.vash.vate.client.graphicslink.VTGraphicsLinkClientWriter;
-import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.graphics.font.VTSystemFontManager;
 
 public class VTGraphicsLinkClientWindowListener implements WindowListener
 {
@@ -29,7 +29,7 @@ public class VTGraphicsLinkClientWindowListener implements WindowListener
   public void windowClosing(WindowEvent e)
   {
     writer.setStopped(true);
-    VTGlobalTextStyleManager.unregisterWindow(e.getWindow());
+    VTSystemFontManager.unregisterWindow(e.getWindow());
     // writer.dispose();
   }
   

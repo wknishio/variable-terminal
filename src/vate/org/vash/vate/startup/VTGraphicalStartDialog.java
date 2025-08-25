@@ -19,7 +19,7 @@ import java.awt.event.WindowListener;
 import java.lang.reflect.Method;
 
 import org.vash.vate.VT;
-import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.graphics.font.VTSystemFontManager;
 import org.vash.vate.graphics.image.VTIconDisplay;
 
 public class VTGraphicalStartDialog extends Dialog
@@ -59,7 +59,7 @@ public class VTGraphicalStartDialog extends Dialog
       
     }
     
-    VTGlobalTextStyleManager.registerWindow(this);
+    VTSystemFontManager.registerWindow(this);
     
     final Panel mainPanel = new Panel();
     final Panel titlePanel = new Panel();
@@ -78,7 +78,7 @@ public class VTGraphicalStartDialog extends Dialog
     
     VTIconDisplay display = new VTIconDisplay();
     display.setFocusable(false);
-    float fontScaling = VTGlobalTextStyleManager.FONT_SCALING_FACTOR_MONOSPACED;
+    float fontScaling = VTSystemFontManager.FONT_SCALING_FACTOR_MONOSPACED;
     int imageScaling = (int)Math.ceil(4 * fontScaling);
     //System.out.println("fontScaling:" + fontScaling);
     //System.out.println("imageScaling:" + imageScaling);
@@ -144,7 +144,7 @@ public class VTGraphicalStartDialog extends Dialog
       
       public void keyPressed(KeyEvent e)
       {
-        if (VTGlobalTextStyleManager.processKeyEvent(e))
+        if (VTSystemFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -271,7 +271,7 @@ public class VTGraphicalStartDialog extends Dialog
       
       public void keyPressed(KeyEvent e)
       {
-        if (VTGlobalTextStyleManager.processKeyEvent(e))
+        if (VTSystemFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -324,7 +324,7 @@ public class VTGraphicalStartDialog extends Dialog
       
       public void keyPressed(KeyEvent e)
       {
-        if (VTGlobalTextStyleManager.processKeyEvent(e))
+        if (VTSystemFontManager.processKeyEvent(e))
         {
           return;
         }

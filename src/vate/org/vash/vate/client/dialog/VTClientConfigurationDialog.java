@@ -51,7 +51,7 @@ import org.vash.vate.client.connection.VTClientConnector;
 import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.dialog.VTConfigurationDialogParameter;
 import org.vash.vate.dialog.VTFileDialog;
-import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.graphics.font.VTSystemFontManager;
 
 public class VTClientConfigurationDialog extends Dialog
 {
@@ -110,8 +110,8 @@ public class VTClientConfigurationDialog extends Dialog
     this.application = application;
     final VTFileDialog loadFileDialog = new VTFileDialog(this, "Variable-Terminal " + VT.VT_VERSION + " - Client - Load File", FileDialog.LOAD);
     final VTFileDialog saveFileDialog = new VTFileDialog(this, "Variable-Terminal " + VT.VT_VERSION + " - Client - Save File", FileDialog.SAVE);
-    VTGlobalTextStyleManager.registerWindow(loadFileDialog);
-    VTGlobalTextStyleManager.registerWindow(saveFileDialog);
+    VTSystemFontManager.registerWindow(loadFileDialog);
+    VTSystemFontManager.registerWindow(saveFileDialog);
     
     Set<AWTKeyStroke> forwardTraversalKeysGeneral = new HashSet<AWTKeyStroke>();
     Set<AWTKeyStroke> backwardTraversalKeysGeneral = new HashSet<AWTKeyStroke>();
@@ -193,7 +193,7 @@ public class VTClientConfigurationDialog extends Dialog
       }
     });
     
-    VTGlobalTextStyleManager.registerWindow(this);
+    VTSystemFontManager.registerWindow(this);
     
     Choice connectionModeChoice = new Choice();
     connectionMode = new VTConfigurationDialogParameter("Connection Mode:", connectionModeChoice, true);
@@ -522,7 +522,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTGlobalTextStyleManager.processKeyEvent(e))
+        if (VTSystemFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -626,7 +626,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTGlobalTextStyleManager.processKeyEvent(e))
+        if (VTSystemFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -672,7 +672,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTGlobalTextStyleManager.processKeyEvent(e))
+        if (VTSystemFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -744,7 +744,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTGlobalTextStyleManager.processKeyEvent(e))
+        if (VTSystemFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -785,7 +785,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTGlobalTextStyleManager.processKeyEvent(e))
+        if (VTSystemFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -880,7 +880,7 @@ public class VTClientConfigurationDialog extends Dialog
               {
                 public void keyPressed(KeyEvent e)
                 {
-                  if (VTGlobalTextStyleManager.processKeyEvent(e))
+                  if (VTSystemFontManager.processKeyEvent(e))
                   {
                     return;
                   }
@@ -1120,7 +1120,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTGlobalTextStyleManager.increaseFontSize();
+        VTSystemFontManager.increaseFontSize();
       }
     });
     
@@ -1128,7 +1128,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTGlobalTextStyleManager.decreaseFontSize();
+        VTSystemFontManager.decreaseFontSize();
       }
     });
     
@@ -1136,7 +1136,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTGlobalTextStyleManager.defaultFontSize();
+        VTSystemFontManager.defaultFontSize();
       }
     });
     
@@ -1144,13 +1144,13 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void actionPerformed(ActionEvent e)
       {
-        if (VTGlobalTextStyleManager.isFontStyleBold())
+        if (VTSystemFontManager.isFontStyleBold())
         {
-          VTGlobalTextStyleManager.disableFontStyleBold();
+          VTSystemFontManager.disableFontStyleBold();
         }
         else
         {
-          VTGlobalTextStyleManager.enableFontStyleBold();
+          VTSystemFontManager.enableFontStyleBold();
         }
 //				VTGlobalTextStyleManager.packComponents();
       }

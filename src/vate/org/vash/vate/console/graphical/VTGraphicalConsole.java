@@ -24,7 +24,7 @@ import org.vash.vate.console.graphical.listener.VTGraphicalConsoleKeyListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleMouseListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleWindowListener;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsolePopupMenu;
-import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.graphics.font.VTSystemFontManager;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
 
@@ -219,8 +219,8 @@ public class VTGraphicalConsole extends VTConsole
     textArea.setText(replacedBlankArea);
     screenBuffer.append(trueBlankArea);
     textArea.setCaretPosition(0);
-    VTGlobalTextStyleManager.registerWindow(frame);
-    VTGlobalTextStyleManager.registerMonospacedComponent(textArea);
+    VTSystemFontManager.registerWindow(frame);
+    VTSystemFontManager.registerMonospacedComponent(textArea);
     frame.pack();
     frame.toFront();
     updateTask.start();

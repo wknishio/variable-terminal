@@ -44,7 +44,7 @@ import org.vash.vate.console.graphical.listener.VTGraphicalConsoleDropTargetList
 import org.vash.vate.console.graphical.menu.VTGraphicalConsolePopupMenu;
 import org.vash.vate.console.lanterna.separated.VTLanternaTextBoxModified.DefaultTextBoxRenderer;
 import org.vash.vate.console.lanterna.separated.VTLanternaTextBoxModified.Style;
-import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.graphics.font.VTSystemFontManager;
 import org.vash.vate.nativeutils.VTSystemNativeUtils;
 import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.runtime.VTRuntimeExit;
@@ -617,8 +617,8 @@ public class VTLanternaConsole extends VTConsole
   
   public void build() throws Exception
   {
-    AWTTerminalFontConfiguration.setBaseFontSize(VTGlobalTextStyleManager.BASE_FONT_SIZE_MONOSPACED);
-    AWTTerminalFontConfiguration.setFontScalingFactor(VTGlobalTextStyleManager.FONT_SCALING_FACTOR_MONOSPACED);
+    AWTTerminalFontConfiguration.setBaseFontSize(VTSystemFontManager.BASE_FONT_SIZE_MONOSPACED);
+    AWTTerminalFontConfiguration.setFontScalingFactor(VTSystemFontManager.FONT_SCALING_FACTOR_MONOSPACED);
     DefaultTerminalFactory factory = new DefaultTerminalFactory();
     factory.setLastLineBackground(new java.awt.Color(85, 85, 85));
     factory.setForceAWTOverSwing(true);
@@ -861,12 +861,13 @@ public class VTLanternaConsole extends VTConsole
       //
       if (frame != null)
       {
-        VTGlobalTextStyleManager.registerWindow(frame);
+        VTSystemFontManager.registerWindow(frame);
       }
       
       //VTGlobalTextStyleManager.registerMonospacedComponent(panel);
       //VTGlobalTextStyleManager.registerMonospacedComponent(awtTerminal);
-      VTGlobalTextStyleManager.registerFontList(awtTerminal.getTerminalFontConfiguration().getFontPriority());
+      VTSystemFontManager.registerFontList(awtTerminal.getTerminalFontConfiguration().getFontPriority());
+      VTSystemFontManager.registerConsole(this);
       popupMenu = new VTGraphicalConsolePopupMenu(this, panel);
     }
     else
@@ -1149,33 +1150,33 @@ public class VTLanternaConsole extends VTConsole
           }
           if (keyStroke.getKeyType() == KeyType.DELETE)
           {
-            VTGlobalTextStyleManager.defaultFontSize();
+            VTSystemFontManager.defaultFontSize();
             return false;
           }
           if (keyStroke.getKeyType() == KeyType.PAGE_UP)
           {
-            VTGlobalTextStyleManager.increaseFontSize();
+            VTSystemFontManager.increaseFontSize();
             return false;
           }
           if (keyStroke.getKeyType() == KeyType.PAGE_DOWN)
           {
-            VTGlobalTextStyleManager.decreaseFontSize();
+            VTSystemFontManager.decreaseFontSize();
             return false;
           }
           if (keyStroke.getKeyType() == KeyType.HOME)
           {
-            VTGlobalTextStyleManager.packComponentSize();
+            VTSystemFontManager.packComponentSize();
             return false;
           }
           if (keyStroke.getKeyType() == KeyType.END)
           {
-            if (VTGlobalTextStyleManager.isFontStyleBold())
+            if (VTSystemFontManager.isFontStyleBold())
             {
-              VTGlobalTextStyleManager.disableFontStyleBold();
+              VTSystemFontManager.disableFontStyleBold();
             }
             else
             {
-              VTGlobalTextStyleManager.enableFontStyleBold();
+              VTSystemFontManager.enableFontStyleBold();
             }
             return false;
           }
@@ -1327,11 +1328,11 @@ public class VTLanternaConsole extends VTConsole
           {
             if (keyStroke.getKeyType() == KeyType.PAGE_UP)
             {
-              VTGlobalTextStyleManager.increaseFontSize();
+              VTSystemFontManager.increaseFontSize();
             }
             else
             {
-              VTGlobalTextStyleManager.decreaseFontSize();
+              VTSystemFontManager.decreaseFontSize();
             }
             return false;
           }
@@ -1408,23 +1409,23 @@ public class VTLanternaConsole extends VTConsole
         {
           if (keyStroke.getKeyType() == KeyType.DELETE && keyStroke.isCtrlDown())
           {
-            VTGlobalTextStyleManager.defaultFontSize();
+            VTSystemFontManager.defaultFontSize();
             return false;
           }
           if (keyStroke.getKeyType() == KeyType.HOME && keyStroke.isCtrlDown())
           {
-            VTGlobalTextStyleManager.packComponentSize();
+            VTSystemFontManager.packComponentSize();
             return false;
           }
           if (keyStroke.getKeyType() == KeyType.END && keyStroke.isCtrlDown())
           {
-            if (VTGlobalTextStyleManager.isFontStyleBold())
+            if (VTSystemFontManager.isFontStyleBold())
             {
-              VTGlobalTextStyleManager.disableFontStyleBold();
+              VTSystemFontManager.disableFontStyleBold();
             }
             else
             {
-              VTGlobalTextStyleManager.enableFontStyleBold();
+              VTSystemFontManager.enableFontStyleBold();
             }
           }
           inputBox.handleDataInput(currentLineBuffer, keyStroke, replaceActivated);
@@ -2915,6 +2916,8 @@ public class VTLanternaConsole extends VTConsole
       {
         
       }
+      
+      VTSystemFontManager.unregisterConsole(this);
     }
   }
   

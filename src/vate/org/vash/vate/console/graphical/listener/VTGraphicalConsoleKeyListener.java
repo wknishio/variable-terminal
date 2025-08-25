@@ -11,7 +11,7 @@ import java.io.File;
 import java.util.List;
 import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.console.graphical.VTGraphicalConsole;
-import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.graphics.font.VTSystemFontManager;
 import org.vash.vate.runtime.VTRuntimeExit;
 
 public class VTGraphicalConsoleKeyListener implements KeyListener
@@ -51,7 +51,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
      * if (e.getKeyCode() == KeyEvent.VK_CONTEXT_MENU) {
      * popupMenu.show(e.getComponent(), 0, 0); e.consume(); }
      */
-    if (VTGlobalTextStyleManager.processKeyEvent(e))
+    if (VTSystemFontManager.processKeyEvent(e))
     {
       return;
     }
@@ -122,25 +122,25 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_DELETE)
     {
       e.consume();
-      VTGlobalTextStyleManager.defaultFontSize();
+      VTSystemFontManager.defaultFontSize();
       return;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_HOME)
     {
       e.consume();
-      VTGlobalTextStyleManager.packComponentSize();
+      VTSystemFontManager.packComponentSize();
       return;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_END)
     {
       e.consume();
-      if (VTGlobalTextStyleManager.isFontStyleBold())
+      if (VTSystemFontManager.isFontStyleBold())
       {
-        VTGlobalTextStyleManager.disableFontStyleBold();
+        VTSystemFontManager.disableFontStyleBold();
       }
       else
       {
-        VTGlobalTextStyleManager.enableFontStyleBold();
+        VTSystemFontManager.enableFontStyleBold();
       }
       return;
     }

@@ -16,7 +16,7 @@ import java.util.logging.LogManager;
 import javax.imageio.ImageIO;
 import javax.sound.sampled.AudioFormat;
 
-import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.graphics.font.VTSystemFontManager;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.tls.VTTLSVerificationDisabler;
 
@@ -208,7 +208,7 @@ public class VT
   
   public static void initialize()
   {
-    VTGlobalTextStyleManager.checkScaling();
+    VTSystemFontManager.checkScaling();
     
     try
     {

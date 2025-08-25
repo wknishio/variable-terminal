@@ -48,7 +48,7 @@ import org.vash.vate.VT;
 import org.vash.vate.dialog.VTConfigurationDialogParameter;
 import org.vash.vate.console.VTSystemConsole;
 import org.vash.vate.dialog.VTFileDialog;
-import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.graphics.font.VTSystemFontManager;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.server.connection.VTServerConnector;
 
@@ -109,8 +109,8 @@ public class VTServerSettingsDialog extends Dialog
     this.application = application;
     final VTFileDialog loadFileDialog = new VTFileDialog(this, "Variable-Terminal " + VT.VT_VERSION + " - Server - Load File", FileDialog.LOAD);
     final VTFileDialog saveFileDialog = new VTFileDialog(this, "Variable-Terminal " + VT.VT_VERSION + " - Server - Save File", FileDialog.SAVE);
-    VTGlobalTextStyleManager.registerWindow(loadFileDialog);
-    VTGlobalTextStyleManager.registerWindow(saveFileDialog);
+    VTSystemFontManager.registerWindow(loadFileDialog);
+    VTSystemFontManager.registerWindow(saveFileDialog);
     
     Set<AWTKeyStroke> forwardTraversalKeysGeneral = new HashSet<AWTKeyStroke>();
     Set<AWTKeyStroke> backwardTraversalKeysGeneral = new HashSet<AWTKeyStroke>();
@@ -192,7 +192,7 @@ public class VTServerSettingsDialog extends Dialog
       }
     });
     
-    VTGlobalTextStyleManager.registerWindow(this);
+    VTSystemFontManager.registerWindow(this);
     
     // centerPanel.getInsets().set(4, 4, 4, 4);
     
@@ -624,7 +624,7 @@ public class VTServerSettingsDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTGlobalTextStyleManager.processKeyEvent(e))
+        if (VTSystemFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -664,7 +664,7 @@ public class VTServerSettingsDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTGlobalTextStyleManager.processKeyEvent(e))
+        if (VTSystemFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -707,7 +707,7 @@ public class VTServerSettingsDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTGlobalTextStyleManager.processKeyEvent(e))
+        if (VTSystemFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -779,7 +779,7 @@ public class VTServerSettingsDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTGlobalTextStyleManager.processKeyEvent(e))
+        if (VTSystemFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -819,7 +819,7 @@ public class VTServerSettingsDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTGlobalTextStyleManager.processKeyEvent(e))
+        if (VTSystemFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -914,7 +914,7 @@ public class VTServerSettingsDialog extends Dialog
               {
                 public void keyPressed(KeyEvent e)
                 {
-                  if (VTGlobalTextStyleManager.processKeyEvent(e))
+                  if (VTSystemFontManager.processKeyEvent(e))
                   {
                     return;
                   }
@@ -1154,7 +1154,7 @@ public class VTServerSettingsDialog extends Dialog
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTGlobalTextStyleManager.increaseFontSize();
+        VTSystemFontManager.increaseFontSize();
       }
     });
     
@@ -1162,7 +1162,7 @@ public class VTServerSettingsDialog extends Dialog
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTGlobalTextStyleManager.decreaseFontSize();
+        VTSystemFontManager.decreaseFontSize();
       }
     });
     
@@ -1170,7 +1170,7 @@ public class VTServerSettingsDialog extends Dialog
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTGlobalTextStyleManager.defaultFontSize();
+        VTSystemFontManager.defaultFontSize();
       }
     });
     
@@ -1178,13 +1178,13 @@ public class VTServerSettingsDialog extends Dialog
     {
       public void actionPerformed(ActionEvent e)
       {
-        if (VTGlobalTextStyleManager.isFontStyleBold())
+        if (VTSystemFontManager.isFontStyleBold())
         {
-          VTGlobalTextStyleManager.disableFontStyleBold();
+          VTSystemFontManager.disableFontStyleBold();
         }
         else
         {
-          VTGlobalTextStyleManager.enableFontStyleBold();
+          VTSystemFontManager.enableFontStyleBold();
         }
 //				VTGlobalTextStyleManager.packComponents();
       }

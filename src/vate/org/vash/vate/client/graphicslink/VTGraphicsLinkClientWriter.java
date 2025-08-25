@@ -35,7 +35,7 @@ import org.vash.vate.graphics.clipboard.VTEmptyTransferable;
 import org.vash.vate.graphics.control.VTAWTControlEvent;
 import org.vash.vate.graphics.control.VTAWTControlProvider;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
-import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.graphics.font.VTSystemFontManager;
 import org.vash.vate.monitor.VTDataMonitorMenu;
 
 public class VTGraphicsLinkClientWriter implements Runnable
@@ -1720,7 +1720,7 @@ public class VTGraphicsLinkClientWriter implements Runnable
   
   private void createCustomCursor()
   {
-    int dpi = VTGlobalTextStyleManager.BASE_FONT_DPI;
+    int dpi = VTSystemFontManager.BASE_FONT_DPI;
     int calculatedSize = Math.max(32, dpi / 3);
     Dimension bestSize = toolkit.getBestCursorSize(calculatedSize, calculatedSize);
     if (bestSize.width != 0 && bestSize.height != 0)
@@ -1810,7 +1810,7 @@ public class VTGraphicsLinkClientWriter implements Runnable
       {
         frame = new VTGraphicsLinkClientWriterFrame();
       }
-      VTGlobalTextStyleManager.registerWindow(frame);
+      VTSystemFontManager.registerWindow(frame);
       
       frame.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Client - Remote Graphics Link");
       BorderLayout frameLayout = new BorderLayout();

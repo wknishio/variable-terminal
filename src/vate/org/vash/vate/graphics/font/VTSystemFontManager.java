@@ -13,13 +13,13 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.vash.vate.compatibility.VTArrays;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTConsole;
 import org.vash.vate.reflection.VTReflectionUtils;
 
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalPanel;
 
-public class VTGlobalTextStyleManager
+public class VTSystemFontManager
 {
   private static final List<Window> windows = new ArrayList<Window>();
   private static final List<Component> monospaceds = new ArrayList<Component>();
@@ -27,6 +27,7 @@ public class VTGlobalTextStyleManager
   //private static final List<Component> scaleds = new ArrayList<Component>();
   private static final List<List<Font>> lists = new ArrayList<List<Font>>();
   private static final List<List<Font>> defaultlists = new ArrayList<List<Font>>();
+  private static final List<VTConsole> consoles = new ArrayList<VTConsole>();
   
   public static float FONT_SCALING_FACTOR_DIALOG;
   public static float FONT_SCALING_FACTOR_MONOSPACED;
@@ -60,8 +61,8 @@ public class VTGlobalTextStyleManager
   {
     try
     {
-      CUSTOM_MONOSPACED_FONT_PLAIN = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
-      CUSTOM_MONOSPACED_FONT_BOLD = Font.createFont(Font.TRUETYPE_FONT, VTGlobalTextStyleManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono-Bold.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
+      CUSTOM_MONOSPACED_FONT_PLAIN = Font.createFont(Font.TRUETYPE_FONT, VTSystemFontManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
+      CUSTOM_MONOSPACED_FONT_BOLD = Font.createFont(Font.TRUETYPE_FONT, VTSystemFontManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono-Bold.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
       loadedCustomMonospacedFont = true;
     }
     catch (Throwable t)
@@ -240,37 +241,37 @@ public class VTGlobalTextStyleManager
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_PAGE_DOWN)
     {
       e.consume();
-      VTGlobalTextStyleManager.decreaseFontSize();
+      VTSystemFontManager.decreaseFontSize();
       return true;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_PAGE_UP)
     {
       e.consume();
-      VTGlobalTextStyleManager.increaseFontSize();
+      VTSystemFontManager.increaseFontSize();
       return true;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_HOME)
     {
       e.consume();
-      VTGlobalTextStyleManager.packComponentSize();
+      VTSystemFontManager.packComponentSize();
       return true;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_DELETE)
     {
       e.consume();
-      VTGlobalTextStyleManager.defaultFontSize();
+      VTSystemFontManager.defaultFontSize();
       return true;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_END)
     {
       e.consume();
-      if (VTGlobalTextStyleManager.isFontStyleBold())
+      if (VTSystemFontManager.isFontStyleBold())
       {
-        VTGlobalTextStyleManager.disableFontStyleBold();
+        VTSystemFontManager.disableFontStyleBold();
       }
       else
       {
-        VTGlobalTextStyleManager.enableFontStyleBold();
+        VTSystemFontManager.enableFontStyleBold();
       }
       return true;
     }
@@ -329,6 +330,16 @@ public class VTGlobalTextStyleManager
       defaultList.add(font.deriveFont(defaultMonospacedFontSize));
     }
     defaultlists.add(defaultList);
+  }
+  
+  public static void registerConsole(VTConsole console)
+  {
+    consoles.add(console);
+  }
+  
+  public static void unregisterConsole(VTConsole console)
+  {
+    consoles.remove(console);
   }
   
 //  public static void defaultComponentSize()
@@ -622,7 +633,11 @@ public class VTGlobalTextStyleManager
         
       }
     }
-    VTSystemConsole.refreshText();
+    //VTSystemConsole.refreshText();
+    for (VTConsole console : consoles.toArray(new VTConsole[] {}))
+    {
+      console.refreshText();
+    }
   }
   
   private static float round(float num, float step, float factor)

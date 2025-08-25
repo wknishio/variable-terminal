@@ -25,7 +25,7 @@ import java.awt.image.DataBufferUShort;
 
 import org.vash.vate.VT;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
-import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.graphics.font.VTSystemFontManager;
 import org.vash.vate.graphics.image.VTImageIO;
 import org.vash.vate.graphics.image.VTRectangle;
 import org.vash.vate.reflection.VTReflectionUtils;
@@ -335,8 +335,8 @@ public final class VTAWTScreenCaptureProvider
       return;
     }
     
-    VTGlobalTextStyleManager.checkScaling();
-    int dpi = VTGlobalTextStyleManager.BASE_FONT_DPI;
+    VTSystemFontManager.checkScaling();
+    int dpi = VTSystemFontManager.BASE_FONT_DPI;
     
     drawnCursorSize = Math.max(32, dpi / 3);
     initialDrawnCursorSize = roundUp(drawnCursorSize, 8);

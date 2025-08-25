@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
 import org.vash.vate.console.VTConsole;
-import org.vash.vate.graphics.font.VTGlobalTextStyleManager;
+import org.vash.vate.graphics.font.VTSystemFontManager;
 
 public class VTGraphicalConsoleMenuBar extends MenuBar
 {
@@ -140,7 +140,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       public void actionPerformed(ActionEvent e)
       {
         console.requestFocus();
-        VTGlobalTextStyleManager.increaseFontSize();
+        VTSystemFontManager.increaseFontSize();
       }
     });
     
@@ -149,7 +149,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       public void actionPerformed(ActionEvent e)
       {
         console.requestFocus();
-        VTGlobalTextStyleManager.decreaseFontSize();
+        VTSystemFontManager.decreaseFontSize();
       }
     });
     
@@ -158,13 +158,13 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       public void actionPerformed(ActionEvent e)
       {
         console.requestFocus();
-        if (VTGlobalTextStyleManager.isFontStyleBold())
+        if (VTSystemFontManager.isFontStyleBold())
         {
-          VTGlobalTextStyleManager.disableFontStyleBold();
+          VTSystemFontManager.disableFontStyleBold();
         }
         else
         {
-          VTGlobalTextStyleManager.enableFontStyleBold();
+          VTSystemFontManager.enableFontStyleBold();
         }
       }
     });
@@ -174,7 +174,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       public void actionPerformed(ActionEvent e)
       {
         console.requestFocus();
-        VTGlobalTextStyleManager.packComponentSize();
+        VTSystemFontManager.packComponentSize();
       }
     });
     
@@ -183,7 +183,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       public void actionPerformed(ActionEvent e)
       {
         console.requestFocus();
-        VTGlobalTextStyleManager.defaultFontSize();
+        VTSystemFontManager.defaultFontSize();
       }
     });
     
