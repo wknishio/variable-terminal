@@ -33,50 +33,59 @@ public final class VTSystemConsole
     VTSystemNativeUtils.initialize();
   }
   
-  public static boolean hasTerminal()
+  private static boolean checkIOConsole()
   {
     try
     {
-      if (!checkIOConsole())
+      Class.forName("java.io.Console");
+      Class<?> systemClass = Class.forName("java.lang.System");
+      Method consoleMethod = systemClass.getDeclaredMethod("console");
+      Object consoleObject = consoleMethod.invoke(null);
+      if (consoleObject != null)
       {
         try
         {
-          if (FileDescriptor.in.valid())
+          Method isTermninalMethod = consoleObject.getClass().getDeclaredMethod("isTerminal");
+          Object isTerminal = isTermninalMethod.invoke(consoleObject);
+          if (isTerminal instanceof Boolean)
           {
-            FileDescriptor.in.sync();
-          }
-          else
-          {
-            return false;
+            return (Boolean) isTerminal;
           }
         }
         catch (Throwable e)
         {
-          return false;
+          
         }
-      }
-      else
-      {
         return true;
       }
     }
     catch (Throwable e)
     {
-      try
+      
+    }
+    return false;
+  }
+  
+  public static boolean hasTerminal()
+  {
+    if (VTReflectionUtils.getJavaVersion() >= 6)
+    {
+      return checkIOConsole();
+    }
+    try
+    {
+      if (FileDescriptor.in.valid())
       {
-        if (FileDescriptor.in.valid())
-        {
-          FileDescriptor.in.sync();
-        }
-        else
-        {
-          return false;
-        }
+        FileDescriptor.in.sync();
       }
-      catch (Throwable e2)
+      else
       {
         return false;
       }
+    }
+    catch (Throwable e)
+    {
+      return false;
     }
     return true;
   }
@@ -153,46 +162,9 @@ public final class VTSystemConsole
       {
         if (!graphical)
         {
-          try
+          if (!hasTerminal())
           {
-            if (!checkIOConsole())
-            {
-              // VTTerminal.graphical = true;
-              // File in = new File(FileDescriptor.in);
-              try
-              {
-                if (FileDescriptor.in.valid())
-                {
-                  FileDescriptor.in.sync();
-                }
-                else
-                {
-                  VTSystemConsole.graphical = true;
-                }
-              }
-              catch (Throwable e)
-              {
-                VTSystemConsole.graphical = true;
-              }
-            }
-          }
-          catch (Throwable e)
-          {
-            try
-            {
-              if (FileDescriptor.in.valid())
-              {
-                FileDescriptor.in.sync();
-              }
-              else
-              {
-                VTSystemConsole.graphical = true;
-              }
-            }
-            catch (Throwable e2)
-            {
-              VTSystemConsole.graphical = true;
-            }
+            VTSystemConsole.graphical = true;
           }
         }
       }
@@ -737,39 +709,6 @@ public final class VTSystemConsole
     {
       console.addToggleInputModeReplaceNotify(notifyInputModeReplace);
     }
-  }
-  
-  private static boolean checkIOConsole()
-  {
-    try
-    {
-      Class.forName("java.io.Console");
-      Class<?> systemClass = Class.forName("java.lang.System");
-      Method consoleMethod = systemClass.getDeclaredMethod("console");
-      Object consoleObject = consoleMethod.invoke(null);
-      if (consoleObject != null)
-      {
-        try
-        {
-          Method isTermninalMethod = consoleObject.getClass().getDeclaredMethod("isTerminal");
-          Object isTerminal = isTermninalMethod.invoke(consoleObject);
-          if (isTerminal instanceof Boolean)
-          {
-            return (Boolean) isTerminal;
-          }
-        }
-        catch (Throwable e)
-        {
-          
-        }
-        return true;
-      }
-    }
-    catch (Throwable e)
-    {
-      
-    }
-    return false;
   }
   
   public static Object getIOConsole()

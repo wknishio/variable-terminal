@@ -69,48 +69,24 @@ public abstract class VTConsole
   
   public static boolean hasTerminal()
   {
+    if (VTReflectionUtils.getJavaVersion() >= 6)
+    {
+      return checkIOConsole();
+    }
     try
     {
-      if (!checkIOConsole())
+      if (FileDescriptor.in.valid())
       {
-        try
-        {
-          if (FileDescriptor.in.valid())
-          {
-            FileDescriptor.in.sync();
-          }
-          else
-          {
-            return false;
-          }
-        }
-        catch (Throwable e)
-        {
-          return false;
-        }
+        FileDescriptor.in.sync();
       }
       else
       {
-        return true;
+        return false;
       }
     }
     catch (Throwable e)
     {
-      try
-      {
-        if (FileDescriptor.in.valid())
-        {
-          FileDescriptor.in.sync();
-        }
-        else
-        {
-          return false;
-        }
-      }
-      catch (Throwable e2)
-      {
-        return false;
-      }
+      return false;
     }
     return true;
   }
