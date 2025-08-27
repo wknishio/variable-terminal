@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.Robot;
 import java.awt.datatransfer.Clipboard;
+
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.reflection.VTReflectionUtils;
 
@@ -201,26 +202,40 @@ public final class VTAWTControlProvider
   {
     try
     {
-      // windows hack for slash keycode
-      if ((keychar == '/') && VTReflectionUtils.detectWindows())
-      {
-        winAltNumpadASCIIKeyType('/');
-        return;
-      }
-      if ((keychar == '?') && VTReflectionUtils.detectWindows())
-      {
-        winAltNumpadASCIIKeyType('?');
-        return;
-      }
+      //this problem with win32 is supposed to be fixed in jdk22
+//      if ((keychar == '/') && VTReflectionUtils.detectWindows())
+//      {
+//        winAltNumpadASCIIKeyType('/');
+//        return;
+//      }
+//      if ((keychar == '?') && VTReflectionUtils.detectWindows())
+//      {
+//        winAltNumpadASCIIKeyType('?');
+//        return;
+//      }
       if (keycode == VK_UNDEFINED)
       {
-        return;
+        if (keychar != CHAR_UNDEFINED)
+        {
+          keycode = keychar;
+          if (keychar == '?')
+          {
+            keycode = VK_SLASH;
+          }
+          if (keychar == '|')
+          {
+            keycode = VK_BACK_SLASH;
+          }
+        }
       }
-      interfaceInputRobot.keyPress(keycode);
+      if (keycode != VK_UNDEFINED)
+      {
+        interfaceInputRobot.keyPress(keycode);
+      }
     }
     catch (Throwable t)
     {
-      
+      //t.printStackTrace();
     }
   }
   
@@ -230,13 +245,27 @@ public final class VTAWTControlProvider
     {
       if (keycode == VK_UNDEFINED)
       {
-        return;
+        if (keychar != CHAR_UNDEFINED)
+        {
+          keycode = keychar;
+          if (keychar == '?')
+          {
+            keycode = VK_SLASH;
+          }
+          if (keychar == '|')
+          {
+            keycode = VK_BACK_SLASH;
+          }
+        }
       }
-      interfaceInputRobot.keyRelease(keycode);
+      if (keycode != VK_UNDEFINED)
+      {
+        interfaceInputRobot.keyRelease(keycode);
+      }
     }
     catch (Throwable t)
     {
-      
+      //t.printStackTrace();
     }
   }
   
