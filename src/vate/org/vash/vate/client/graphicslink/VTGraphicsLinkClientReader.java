@@ -10,9 +10,9 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.event.IIOReadUpdateListener;
 import javax.imageio.stream.ImageInputStream;
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.client.connection.VTClientConnection;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII;
 import org.vash.vate.graphics.image.VTImageIO;
 import org.vash.vate.stream.limit.VTLimitedInputStream;
@@ -214,11 +214,11 @@ public class VTGraphicsLinkClientReader implements Runnable
     {
       if (failed)
       {
-        VTSystemConsole.print("\nVT>Remote graphics link failed to start on client!\nVT>");
+        VTMainConsole.print("\nVT>Remote graphics link failed to start on client!\nVT>");
       }
       else
       {
-        VTSystemConsole.print("\nVT>Remote graphics link started!\nVT>");
+        VTMainConsole.print("\nVT>Remote graphics link started!\nVT>");
         vtCustomCodec = new VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII();
         // pngImageReader = ImageIO.getImageReadersByFormatName("PNG").next();
         pngImageReader = new PngImageReader(new PngImageReaderSpi());
@@ -240,7 +240,7 @@ public class VTGraphicsLinkClientReader implements Runnable
       {
         switch (connection.getGraphicsControlDataInputStream().read())
         {
-          case VT.VT_GRAPHICS_LINK_IMAGE_STANDARD_REFRESH_FRAME:
+          case VTSystem.VT_GRAPHICS_LINK_IMAGE_STANDARD_REFRESH_FRAME:
           {
             // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_INDEPENDENT_FRAME_IMAGE");
             writer.requestInterfaceRefresh();
@@ -254,7 +254,7 @@ public class VTGraphicsLinkClientReader implements Runnable
               currentImageGraphics.dispose();
               currentImageGraphics = null;
             }
-            if (connection.getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
+            if (connection.getGraphicsControlDataInputStream().read() == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
             {
               currentImageReader = jpegImageReader;
               //currentImageReaderParam = jpgReaderParam;
@@ -272,7 +272,7 @@ public class VTGraphicsLinkClientReader implements Runnable
             currentImageDataBuffer = VTImageIO.createImage(0, 0, width, height, type, colors, recyclableDataBuffer);
             recyclableDataBuffer = currentImageDataBuffer.getRaster().getDataBuffer();
             currentImageGraphics = currentImageDataBuffer.createGraphics();
-            currentImageGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+            currentImageGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
             writer.setRemoteGraphics(currentImageDataBuffer);
             
             boolean synchronous = writer.isSynchronousRefresh();
@@ -318,11 +318,11 @@ public class VTGraphicsLinkClientReader implements Runnable
             System.gc();
             break;
           }
-          case VT.VT_GRAPHICS_LINK_IMAGE_STANDARD_DIFFERENTIAL_FRAME:
+          case VTSystem.VT_GRAPHICS_LINK_IMAGE_STANDARD_DIFFERENTIAL_FRAME:
           {
             // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_DIFFERENTIAL_FRAME_IMAGE");
             writer.requestInterfaceRefresh();
-            if (connection.getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
+            if (connection.getGraphicsControlDataInputStream().read() == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
             {
               currentImageReader = jpegImageReader;
               //currentImageReaderParam = jpgReaderParam;
@@ -375,7 +375,7 @@ public class VTGraphicsLinkClientReader implements Runnable
             writer.differenceRemoteGraphics(currentImageDataBuffer);
             break;
           }
-          case VT.VT_GRAPHICS_LINK_IMAGE_CUSTOM_REFRESH_FRAME:
+          case VTSystem.VT_GRAPHICS_LINK_IMAGE_CUSTOM_REFRESH_FRAME:
           {
             // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
             writer.requestInterfaceRefresh();
@@ -507,7 +507,7 @@ public class VTGraphicsLinkClientReader implements Runnable
             }
             currentDataType = currentImageDataBuffer.getRaster().getDataBuffer().getDataType();
             // startTime = System.currentTimeMillis();
-            if (coding == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
+            if (coding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
             {
               if (currentDataType == DataBuffer.TYPE_BYTE)
               {
@@ -545,7 +545,7 @@ public class VTGraphicsLinkClientReader implements Runnable
             System.gc();
             break;
           }
-          case VT.VT_GRAPHICS_LINK_IMAGE_CUSTOM_DIFFERENTIAL_FRAME:
+          case VTSystem.VT_GRAPHICS_LINK_IMAGE_CUSTOM_DIFFERENTIAL_FRAME:
           {
             // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM");
             writer.requestInterfaceRefresh();
@@ -554,7 +554,7 @@ public class VTGraphicsLinkClientReader implements Runnable
             {
               writer.notifyAsynchronousRepainter();
             }
-            if (connection.getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
+            if (connection.getGraphicsControlDataInputStream().read() == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
             {
               currentDataType = currentImageDataBuffer.getRaster().getDataBuffer().getDataType();
               if (currentDataType == DataBuffer.TYPE_BYTE)
@@ -592,12 +592,12 @@ public class VTGraphicsLinkClientReader implements Runnable
             // (endTime - startTime));
             break;
           }
-          case VT.VT_GRAPHICS_LINK_SESSION_FINISHED:
+          case VTSystem.VT_GRAPHICS_LINK_SESSION_FINISHED:
           {
             stopped = true;
             break;
           }
-          case VT.VT_GRAPHICS_LINK_IMAGE_REMOTE_INTERFACE_AREA_CHANGE:
+          case VTSystem.VT_GRAPHICS_LINK_IMAGE_REMOTE_INTERFACE_AREA_CHANGE:
           {
             // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_REMOTE_INTERFACE_AREA_CHANGE");
             int width = connection.getGraphicsControlDataInputStream().readInt();
@@ -605,14 +605,14 @@ public class VTGraphicsLinkClientReader implements Runnable
             writer.resizeRemoteGraphics(width, height);
             break;
           }
-          case VT.VT_GRAPHICS_LINK_IMAGE_REFRESH_NOT_NEEDED:
+          case VTSystem.VT_GRAPHICS_LINK_IMAGE_REFRESH_NOT_NEEDED:
           {
             // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_REFRESH_NOT_NEEDED");
             writer.requestInterfaceRefresh();
             writer.notModifiedRemoteGraphics();
             break;
           }
-          case VT.VT_GRAPHICS_LINK_IMAGE_REFRESH_MODE_INTERRUPTED:
+          case VTSystem.VT_GRAPHICS_LINK_IMAGE_REFRESH_MODE_INTERRUPTED:
           {
             // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_REFRESH_MODE_INTERRUPTED");
             writer.requestInterfaceRefresh();

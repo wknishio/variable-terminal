@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII;
 import org.vash.vate.server.session.VTServerSession;
 
@@ -50,9 +50,9 @@ public class VTGraphicsLinkServerSession
     {
       if (viewProviderInitialized && controlProviderInitialized)
       {
-        session.getConnection().getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_SESSION_STARTED);
+        session.getConnection().getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_SESSION_STARTED);
         session.getConnection().getGraphicsControlDataOutputStream().flush();
-        if (session.getConnection().getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_LINK_SESSION_STARTED)
+        if (session.getConnection().getGraphicsControlDataInputStream().read() == VTSystem.VT_GRAPHICS_LINK_SESSION_STARTED)
         {
           initialScreenSize = session.getViewProvider().getCurrentScaledSize();
           return true;
@@ -60,7 +60,7 @@ public class VTGraphicsLinkServerSession
       }
       else
       {
-        session.getConnection().getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_SESSION_UNSTARTED);
+        session.getConnection().getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_SESSION_UNSTARTED);
         session.getConnection().getGraphicsControlDataOutputStream().flush();
         session.getConnection().getGraphicsControlDataInputStream().read();
         //System.out.println("return false");

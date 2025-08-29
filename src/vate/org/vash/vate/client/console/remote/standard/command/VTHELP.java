@@ -1,7 +1,7 @@
 package org.vash.vate.client.console.remote.standard.command;
 
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.help.VTHelpManager;
 
 public class VTHELP extends VTClientStandardRemoteConsoleCommandProcessor
@@ -20,16 +20,16 @@ public class VTHELP extends VTClientStandardRemoteConsoleCommandProcessor
     {
       if (command.toUpperCase().contains("*VTHELP"))
       {
-        VTSystemConsole.print(VTHelpManager.getMainHelpForClientCommands());
+        VTMainConsole.print(VTHelpManager.getMainHelpForClientCommands());
       }
       else
       {
-        VTSystemConsole.print(VTHelpManager.getMinHelpForClientCommands());
+        VTMainConsole.print(VTHelpManager.getMinHelpForClientCommands());
       }
     }
     else if (parsed.length > 1)
     {
-      VTSystemConsole.print(VTHelpManager.getHelpForClientCommand(parsed[1]));
+      VTMainConsole.print(VTHelpManager.getHelpForClientCommand(parsed[1]));
     }
   }
   

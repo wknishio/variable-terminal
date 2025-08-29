@@ -5,7 +5,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
 
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
 public class VTNETWORK extends VTServerStandardLocalConsoleCommandProcessor
@@ -89,7 +89,7 @@ public class VTNETWORK extends VTServerStandardLocalConsoleCommandProcessor
     {
       message.append("\rVT>No network interfaces found on server!\nVT>");
     }
-    VTSystemConsole.print(message.toString());
+    VTMainConsole.print(message.toString());
   }
   
   public void close()

@@ -6,7 +6,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
 public class VTDATE extends VTServerStandardLocalConsoleCommandProcessor
@@ -26,7 +26,7 @@ public class VTDATE extends VTServerStandardLocalConsoleCommandProcessor
   public void execute(String command, String[] parsed) throws Exception
   {
     clock.setTime(Calendar.getInstance().getTime());
-    VTSystemConsole.print("\rVT>Current server date/time ([ER-Y-MM-DD][HH:MM:SS:MS-TZ]):\nVT>[" + firstDateTimeFormat.format(clock.getTime()) + "-" + clock.get(GregorianCalendar.YEAR) + "-" + secondDateTimeFormat.format(clock.getTime()) + "\nVT>");
+    VTMainConsole.print("\rVT>Current server date/time ([ER-Y-MM-DD][HH:MM:SS:MS-TZ]):\nVT>[" + firstDateTimeFormat.format(clock.getTime()) + "-" + clock.get(GregorianCalendar.YEAR) + "-" + secondDateTimeFormat.format(clock.getTime()) + "\nVT>");
   }
   
   public void close()

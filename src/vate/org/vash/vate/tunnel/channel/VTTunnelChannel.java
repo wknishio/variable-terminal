@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTSplitMix64Random;
@@ -21,7 +21,7 @@ public class VTTunnelChannel
   public static final char TUNNEL_TYPE_ANY = 'A';
   
   private final char tunnelType;
-  private int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
+  private int channelType = VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
   private final VTTunnelConnection connection;
   private final Collection<VTTunnelSessionHandler> sessions;
   private final Random random = new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong());

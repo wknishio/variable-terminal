@@ -17,7 +17,7 @@ import org.vash.vate.reflection.VTReflectionUtils;
 
 import com.sun.jna.Platform;
 
-public class VTSystemNativeUtils
+public class VTMainNativeUtils
 {
   // private static String[] realEnvironmentVariablesBackup;
   private static String[] virtualEnvironmentVariablesBackup;

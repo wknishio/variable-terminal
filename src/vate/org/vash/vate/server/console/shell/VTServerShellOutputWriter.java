@@ -1,6 +1,6 @@
 package org.vash.vate.server.console.shell;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
@@ -8,7 +8,7 @@ import org.vash.vate.task.VTTask;
 
 public class VTServerShellOutputWriter extends VTTask
 {
-  private static final int resultBufferSize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
+  private static final int resultBufferSize = VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES;
   private int readChars;
   private final char[] resultBuffer = new char[resultBufferSize];
   private final char[] nullCommandFilter = new char[0];

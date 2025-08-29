@@ -11,7 +11,7 @@ import java.util.Locale;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuBar;
 import org.vash.vate.console.lanterna.separated.VTLanternaConsole;
 import org.vash.vate.console.standard.VTStandardConsole;
-import org.vash.vate.nativeutils.VTSystemNativeUtils;
+import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.reflection.VTReflectionUtils;
 
 public abstract class VTConsole
@@ -119,7 +119,7 @@ public abstract class VTConsole
         }
         else
         {
-          if (separated && terminal && VTSystemNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
+          if (separated && terminal && VTMainNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
           {
             console = new VTLanternaConsole(false, true, null);
           }
@@ -135,7 +135,7 @@ public abstract class VTConsole
     }
     else
     {
-      if (separated && terminal && VTSystemNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
+      if (separated && terminal && VTMainNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
       {
         console = new VTLanternaConsole(false, true, null);
       }

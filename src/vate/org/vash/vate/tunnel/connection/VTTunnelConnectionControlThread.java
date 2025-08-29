@@ -9,7 +9,7 @@ import java.net.Socket;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.proxy.client.VTProxy.VTProxyType;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
@@ -31,7 +31,7 @@ public class VTTunnelConnectionControlThread implements Runnable
   private volatile boolean closed = false;
   private static final String SESSION_SEPARATOR = "\f";
   private static final char SESSION_MARK = '\b';
-  private final byte[] packet = new byte[VT.VT_PACKET_DATA_SIZE_BYTES];
+  private final byte[] packet = new byte[VTSystem.VT_PACKET_DATA_SIZE_BYTES];
   private final Map<String, VTTunnelCloseableServerSocket> sockets = new ConcurrentHashMap<String, VTTunnelCloseableServerSocket>();
   
   public VTTunnelConnectionControlThread(VTTunnelConnection connection)

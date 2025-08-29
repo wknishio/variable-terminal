@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 //import org.codehaus.groovy.tools.shell.Groovysh;
 //import org.codehaus.groovy.tools.shell.IO;
 import org.vash.vate.runtime.VTRuntimeProcess;
@@ -146,9 +146,9 @@ public class VTShellProcessor
     if (shellType == SHELL_TYPE_BEANSHELL)
     {
       VTPipedOutputStream pipeOut1 = new VTPipedOutputStream();
-      VTPipedInputStream pipeIn1 = new VTPipedInputStream(pipeOut1, VT.VT_REDUCED_BUFFER_SIZE_BYTES);
+      VTPipedInputStream pipeIn1 = new VTPipedInputStream(pipeOut1, VTSystem.VT_REDUCED_BUFFER_SIZE_BYTES);
       VTPipedOutputStream pipeOut2 = new VTPipedOutputStream();
-      VTPipedInputStream pipeIn2 = new VTPipedInputStream(pipeOut2, VT.VT_REDUCED_BUFFER_SIZE_BYTES);
+      VTPipedInputStream pipeIn2 = new VTPipedInputStream(pipeOut2, VTSystem.VT_REDUCED_BUFFER_SIZE_BYTES);
       
       shellInputStream = pipeIn1;
       shellOutputStream = new VTAutoFlushOutputStream(pipeOut2);

@@ -1,7 +1,7 @@
 package org.vash.vate.client.console.remote.standard.command;
 
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.reflection.VTReflectionUtils;
 
@@ -19,7 +19,7 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
   {
     if (VTReflectionUtils.isAWTHeadless())
     {
-      VTSystemConsole.print("\nVT>Remote graphics link start on client failed!\nVT>");
+      VTMainConsole.print("\nVT>Remote graphics link start on client failed!\nVT>");
       return;
     }
     if (parsed.length >= 2)
@@ -55,7 +55,7 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
         else
         {
           session.getGraphicsClient().setReadOnly(true);
-          VTSystemConsole.print("\nVT>Remote graphics link set to view mode!\nVT>");
+          VTMainConsole.print("\nVT>Remote graphics link set to view mode!\nVT>");
         }
       }
       else if (parsed[1].toUpperCase().startsWith("C"))
@@ -81,12 +81,12 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
         else
         {
           session.getGraphicsClient().setReadOnly(false);
-          VTSystemConsole.print("\nVT>Remote graphics link set to control mode!\nVT>");
+          VTMainConsole.print("\nVT>Remote graphics link set to control mode!\nVT>");
         }
       }
       else
       {
-        VTSystemConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       }
     }
     else if (parsed.length == 1)
@@ -118,7 +118,7 @@ public class VTGRAPHICSLINK extends VTClientStandardRemoteConsoleCommandProcesso
     }
     else
     {
-      VTSystemConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+      VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
     }
   }
   

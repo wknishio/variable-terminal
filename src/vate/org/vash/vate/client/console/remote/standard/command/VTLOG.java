@@ -1,7 +1,7 @@
 package org.vash.vate.client.console.remote.standard.command;
 
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 
 public class VTLOG extends VTClientStandardRemoteConsoleCommandProcessor
 {
@@ -19,20 +19,20 @@ public class VTLOG extends VTClientStandardRemoteConsoleCommandProcessor
     {
       //String parameter = command.substring(parsed[0].length() + 1);
       String parameter = parsed[1];
-      boolean ok = VTSystemConsole.setLogReadLine(parameter);
+      boolean ok = VTMainConsole.setLogReadLine(parameter);
       if (ok)
       {
-        VTSystemConsole.print("\nVT>Enabled recording of client commands to file: [" + parameter + "]\nVT>");
+        VTMainConsole.print("\nVT>Enabled recording of client commands to file: [" + parameter + "]\nVT>");
       }
       else
       {
-        VTSystemConsole.print("\nVT>Failed recording of client commands to file: [" + parameter + "]\nVT>");
+        VTMainConsole.print("\nVT>Failed recording of client commands to file: [" + parameter + "]\nVT>");
       }
     }
     else
     {
-      VTSystemConsole.print("\nVT>Disabled recording of client commands\nVT>");
-      VTSystemConsole.setLogReadLine(null);
+      VTMainConsole.print("\nVT>Disabled recording of client commands\nVT>");
+      VTMainConsole.setLogReadLine(null);
     }
   }
   

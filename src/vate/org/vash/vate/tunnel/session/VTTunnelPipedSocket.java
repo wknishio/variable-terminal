@@ -11,7 +11,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
@@ -29,7 +29,7 @@ public class VTTunnelPipedSocket extends Socket implements Closeable
   public VTTunnelPipedSocket(Closeable closeable)
   {
     this.closeable = closeable;
-    VTPipedInputStream pipeSink = new VTPipedInputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+    VTPipedInputStream pipeSink = new VTPipedInputStream(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
     VTPipedOutputStream pipeSource = new VTPipedOutputStream();
     try
     {

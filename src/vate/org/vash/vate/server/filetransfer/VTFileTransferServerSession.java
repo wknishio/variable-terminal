@@ -1,6 +1,6 @@
 package org.vash.vate.server.filetransfer;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 
 public class VTFileTransferServerSession
 {
@@ -27,7 +27,7 @@ public class VTFileTransferServerSession
   {
     try
     {
-      server.getConnection().getFileTransferStartDataOutputStream().write(VT.VT_FILE_TRANSFER_SESSION_STARTED);
+      server.getConnection().getFileTransferStartDataOutputStream().write(VTSystem.VT_FILE_TRANSFER_SESSION_STARTED);
       server.getConnection().getFileTransferStartDataOutputStream().flush();
       server.getConnection().getFileTransferStartDataInputStream().read();
     }

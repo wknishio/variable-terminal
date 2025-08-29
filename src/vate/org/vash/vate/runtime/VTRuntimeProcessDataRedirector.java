@@ -3,11 +3,11 @@ package org.vash.vate.runtime;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 
 public class VTRuntimeProcessDataRedirector implements Runnable
 {
-  private static final int inputBufferSize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
+  private static final int inputBufferSize = VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES;
   private boolean running;
   private boolean close;
   private int readBytes;

@@ -6,7 +6,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.server.VTServer;
 import org.vash.vate.task.VTTask;
@@ -30,12 +30,12 @@ public class VTServerLocalConsoleReader extends VTTask
   public void task()
   {
     // int p = 0;
-    VTSystemConsole.print("\rVT>Enter *VTHELP or *VTHL to list available commands in server console\nVT>");
+    VTMainConsole.print("\rVT>Enter *VTHELP or *VTHL to list available commands in server console\nVT>");
     while (server.isRunning())
     {
       try
       {
-        String line = VTSystemConsole.readLine(true);
+        String line = VTMainConsole.readLine(true);
         executeCommand(line);
 //        String[] commands = line.split("\\*;");
 //        for (String command : commands)
@@ -50,7 +50,7 @@ public class VTServerLocalConsoleReader extends VTTask
       catch (Throwable e)
       {
         // e.printStackTrace();
-        VTSystemConsole.print("\rVT>Error while processing command!\nVT>");
+        VTMainConsole.print("\rVT>Error while processing command!\nVT>");
         // e.printStackTrace(VTConsole.getSystemOut());
         // return;
       }
@@ -181,11 +181,11 @@ public class VTServerLocalConsoleReader extends VTTask
       }
       if (server.isEchoCommands())
       {
-        VTSystemConsole.print("VT>" + command + "\n");
+        VTMainConsole.print("VT>" + command + "\n");
       }
       if (!selector.selectCommand(command, parsed))
       {
-        VTSystemConsole.print("\rVT>");
+        VTMainConsole.print("\rVT>");
       }
     }
     else

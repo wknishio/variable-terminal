@@ -22,7 +22,7 @@ import javax.imageio.ImageWriteParam;
 import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageOutputStream;
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.graphics.image.VTImageIO;
@@ -38,7 +38,7 @@ import com.pngencoder.PngEncoder;
 
 public class VTServerScreenshotTask extends VTTask
 {
-  private static final int fileScreenshotBufferSize = VT.VT_FILE_BUFFER_SIZE_BYTES;
+  private static final int fileScreenshotBufferSize = VTSystem.VT_FILE_BUFFER_SIZE_BYTES;
   private boolean finished;
   private boolean drawPointer;
   private boolean useJPG;
@@ -244,7 +244,7 @@ public class VTServerScreenshotTask extends VTTask
           convertedImage = VTImageIO.createImage(0, 0, screenCapture.getWidth(), screenCapture.getHeight(), BufferedImage.TYPE_BYTE_GRAY, 0, recyclableDataBuffer);
           recyclableDataBuffer = convertedImage.getRaster().getDataBuffer();
           convertedGraphics = convertedImage.createGraphics();
-          convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+          convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
           convertedGraphics.drawImage(screenCapture, 0, 0, null);
           jpgImageOutputStream = ImageIO.createImageOutputStream(photoOutputStream);
           jpgWriter.setOutput(jpgImageOutputStream);
@@ -274,7 +274,7 @@ public class VTServerScreenshotTask extends VTTask
           convertedImage = VTImageIO.createImage(0, 0, screenCapture.getWidth(), screenCapture.getHeight(), BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
           recyclableDataBuffer = convertedImage.getRaster().getDataBuffer();
           convertedGraphics = convertedImage.createGraphics();
-          convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+          convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
           convertedGraphics.drawImage(screenCapture, 0, 0, null);
           pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
           pngEncoder.encode(convertedImage, photoOutputStream);
@@ -286,7 +286,7 @@ public class VTServerScreenshotTask extends VTTask
             convertedImage = VTImageIO.createImage(0, 0, screenCapture.getWidth(), screenCapture.getHeight(), BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
             recyclableDataBuffer = convertedImage.getRaster().getDataBuffer();
             convertedGraphics = convertedImage.createGraphics();
-            convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+            convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
             convertedGraphics.drawImage(screenCapture, 0, 0, null);
             pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
             pngEncoder.encode(convertedImage, photoOutputStream);

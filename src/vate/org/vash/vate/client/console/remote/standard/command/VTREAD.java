@@ -3,7 +3,7 @@ package org.vash.vate.client.console.remote.standard.command;
 import java.nio.charset.Charset;
 
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 
 public class VTREAD extends VTClientStandardRemoteConsoleCommandProcessor
 {
@@ -23,7 +23,7 @@ public class VTREAD extends VTClientStandardRemoteConsoleCommandProcessor
       String parameter = parsed[1];
       try
       {
-        VTSystemConsole.print("\nVT>Running client text files commands: [" + parameter + "]\nVT>");
+        VTMainConsole.print("\nVT>Running client text files commands: [" + parameter + "]\nVT>");
         session.getClientWriter().executeFileScriptsSpaces(parameter, Charset.forName("UTF-8"), true);
       }
       catch (Throwable t)

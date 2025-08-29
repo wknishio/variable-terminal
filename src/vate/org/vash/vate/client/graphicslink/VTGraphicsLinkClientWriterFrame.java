@@ -6,7 +6,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 
 public class VTGraphicsLinkClientWriterFrame extends Frame
 {
@@ -57,7 +57,7 @@ public class VTGraphicsLinkClientWriterFrame extends Frame
     this.setBackground(new Color(0x00555555));
     try
     {
-      this.setIconImage(VT.desktopIcon);
+      this.setIconImage(VTSystem.desktopIcon);
     }
     catch (Throwable t)
     {
@@ -72,7 +72,7 @@ public class VTGraphicsLinkClientWriterFrame extends Frame
     this.setBackground(new Color(0x00555555));
     try
     {
-      this.setIconImage(VT.desktopIcon);
+      this.setIconImage(VTSystem.desktopIcon);
     }
     catch (Throwable t)
     {

@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
@@ -118,7 +118,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   {
     VTLinkableDynamicMultiplexedInputStream stream = null;
     Map<Integer, VTLinkableDynamicMultiplexedInputStream> channelMap;
-    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
+    if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
     {
       channelMap = bufferedChannels;
     }
@@ -141,7 +141,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
   {
     VTLinkableDynamicMultiplexedInputStream stream = null;
     Map<Integer, VTLinkableDynamicMultiplexedInputStream> channelMap;
-    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
+    if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
     {
       channelMap = bufferedChannels;
     }
@@ -277,17 +277,17 @@ public final class VTLinkableDynamicMultiplexingInputStream
         {
           //e.printStackTrace();
         }
-        transferredBytes.addAndGet(VT.VT_PACKET_HEADER_SIZE_BYTES + length);
+        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + length);
       }
       else if (length == -2)
       {
         close(type, number);
-        transferredBytes.addAndGet(VT.VT_PACKET_HEADER_SIZE_BYTES);
+        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
       }
       else if (length == -3)
       {
         open(type, number);
-        transferredBytes.addAndGet(VT.VT_PACKET_HEADER_SIZE_BYTES);
+        transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
       }
       else
       {
@@ -327,7 +327,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
       this.type = type;
       this.number = number;
       this.propagated = new ConcurrentLinkedQueue<Closeable>();
-      if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
+      if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
       {
         this.bufferedInputStream = new VTPipedInputStream(bufferSize);
         this.bufferedOutputStream = new VTPipedOutputStream();
@@ -339,13 +339,13 @@ public final class VTLinkableDynamicMultiplexingInputStream
         {
           
         }
-        if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
+        if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
         {
           this.input = bufferedInputStream;
         }
         else
         {
-          if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
+          if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
           {
             //this.compressedInputStream = VTCompressorSelector.createDirectZlibInputStream(bufferedInputStream);
             this.compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(bufferedInputStream);
@@ -410,7 +410,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
     public final void setOutputStream(final OutputStream outputStream, final Closeable closeable)
     {
       directCloseable = closeable;
-      if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
+      if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
       {
         directOutputStream = outputStream;
       }
@@ -420,7 +420,7 @@ public final class VTLinkableDynamicMultiplexingInputStream
         {
           compressedInputPipe = new VTByteArrayInputStream(new byte[packetDataBuffer.length]);
         }
-        if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
+        if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
         {
           compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(compressedInputPipe);
         }
@@ -449,9 +449,9 @@ public final class VTLinkableDynamicMultiplexingInputStream
       if (bufferedInputStream != null)
       {
         bufferedInputStream.open();
-        if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
+        if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
         {
-          if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
+          if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
           {
             compressedInputStream = VTCompressorSelector.createDirectZstdInputStream(bufferedInputStream);
           }

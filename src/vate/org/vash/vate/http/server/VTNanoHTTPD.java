@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 
@@ -264,13 +264,13 @@ public class VTNanoHTTPD
    */
   public static void main( String[] args )
   {
-    VTSystemConsole.setGraphical(true);
-    VTSystemConsole.setSeparated(false);
-    VTSystemConsole.setRemoteIcon(true);
-    VTSystemConsole.setDaemon(false);
-    VTSystemConsole.initialize();
-    VTSystemConsole.setTitle("NanoHTTPD 1.27 - Console");
-    VTSystemConsole.println( "NanoHTTPD 1.27 (C) 2001,2005-2013 Jarno Elonen and (C) 2010 Konstantinos Togias\n" +
+    VTMainConsole.setGraphical(true);
+    VTMainConsole.setSeparated(false);
+    VTMainConsole.setRemoteIcon(true);
+    VTMainConsole.setDaemon(false);
+    VTMainConsole.initialize();
+    VTMainConsole.setTitle("NanoHTTPD 1.27 - Console");
+    VTMainConsole.println( "NanoHTTPD 1.27 (C) 2001,2005-2013 Jarno Elonen and (C) 2010 Konstantinos Togias\n" +
         "(Command line options: [-p port] [-d root-dir] [--licence])\n" );
 
     // Defaults
@@ -285,7 +285,7 @@ public class VTNanoHTTPD
       wwwroot = new File( args[i+1] ).getAbsoluteFile();
     else if ( args[i].toLowerCase().endsWith( "licence" ))
     {
-      VTSystemConsole.println( LICENCE + "\n" );
+      VTMainConsole.println( LICENCE + "\n" );
       break;
     }
 
@@ -295,14 +295,14 @@ public class VTNanoHTTPD
     }
     catch( IOException ioe )
     {
-      VTSystemConsole.println( "Couldn't start server:\n" + ioe );
+      VTMainConsole.println( "Couldn't start server:\n" + ioe );
       System.exit( -1 );
     }
 
-    VTSystemConsole.println( "Now serving files in port " + port + " from \"" + wwwroot + "\"" );
-    VTSystemConsole.println( "Hit Enter to stop.\n" );
+    VTMainConsole.println( "Now serving files in port " + port + " from \"" + wwwroot + "\"" );
+    VTMainConsole.println( "Hit Enter to stop.\n" );
 
-    try { VTSystemConsole.readLine(false); } catch( Throwable t ) {}
+    try { VTMainConsole.readLine(false); } catch( Throwable t ) {}
   }
 
   /**

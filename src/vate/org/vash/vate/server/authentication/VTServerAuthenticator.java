@@ -2,7 +2,7 @@ package org.vash.vate.server.authentication;
 
 import java.io.IOException;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTCredential;
@@ -12,8 +12,8 @@ import org.vash.vate.server.connection.VTServerConnection;
 public class VTServerAuthenticator
 {
   private boolean accepted = false;
-  private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
-  private byte[] receivedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private byte[] digestedCredential = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private byte[] receivedCredential = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] localNonce;
   private byte[] remoteNonce;
   private byte[] encryptionKey;
@@ -116,9 +116,9 @@ public class VTServerAuthenticator
     encryptionKey = connection.getEncryptionKey();
     
     blake3Digest.reset();
-    byte[] seed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
-    System.arraycopy(remoteNonce, 0, seed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
-    System.arraycopy(localNonce, 0, seed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    byte[] seed = new byte[VTSystem.VT_SECURITY_SEED_SIZE_BYTES];
+    System.arraycopy(remoteNonce, 0, seed, 0, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
+    System.arraycopy(localNonce, 0, seed, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
     blake3Digest.setSeed(seed);
     blake3Digest.reset();
     
@@ -139,7 +139,7 @@ public class VTServerAuthenticator
         blake3Digest.update(encryptionKey);
         blake3Digest.update(credentialUser.getBytes("UTF-8"));
         blake3Digest.update(credentialPassword.getBytes("UTF-8"));
-        digestedCredential = blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+        digestedCredential = blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
         
         if (VTArrayComparator.arrayEquals(digestedCredential, receivedCredential))
         {
@@ -157,7 +157,7 @@ public class VTServerAuthenticator
       blake3Digest.update(localNonce);
       blake3Digest.update(remoteNonce);
       blake3Digest.update(encryptionKey);
-      digestedCredential = blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+      digestedCredential = blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
       
       if (VTArrayComparator.arrayEquals(digestedCredential, receivedCredential))
       {

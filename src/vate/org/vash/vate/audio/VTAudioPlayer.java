@@ -13,7 +13,7 @@ import javax.sound.sampled.SourceDataLine;
 
 import org.concentus.OpusDecoder;
 import org.concentus.OpusException;
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
 import org.xiph.speex.SpeexDecoder;
 
@@ -164,7 +164,7 @@ public class VTAudioPlayer
       }
       else if (sampleRate == 12000)
       {
-        this.codec = VT.VT_AUDIO_CODEC_OPUS;
+        this.codec = VTSystem.VT_AUDIO_CODEC_OPUS;
         try
         {
           this.opus = new OpusDecoder(sampleRate, audioFormat.getChannels());
@@ -188,7 +188,7 @@ public class VTAudioPlayer
       }
       else if (sampleRate == 24000)
       {
-        this.codec = VT.VT_AUDIO_CODEC_OPUS;
+        this.codec = VTSystem.VT_AUDIO_CODEC_OPUS;
         try
         {
           this.opus = new OpusDecoder(sampleRate, audioFormat.getChannels());
@@ -200,12 +200,12 @@ public class VTAudioPlayer
       }
       else if (sampleRate == 32000)
       {
-        this.codec = VT.VT_AUDIO_CODEC_SPEEX;
+        this.codec = VTSystem.VT_AUDIO_CODEC_SPEEX;
         this.speex.init(2, sampleRate, audioFormat.getChannels(), true);
       }
       else if (sampleRate == 48000)
       {
-        this.codec = VT.VT_AUDIO_CODEC_OPUS;
+        this.codec = VTSystem.VT_AUDIO_CODEC_OPUS;
         try
         {
           this.opus = new OpusDecoder(sampleRate, audioFormat.getChannels());
@@ -254,7 +254,7 @@ public class VTAudioPlayer
       // bufferedFrameSize = 0;
       try
       {
-        if (codec == VT.VT_AUDIO_CODEC_OPUS)
+        if (codec == VTSystem.VT_AUDIO_CODEC_OPUS)
         {
           loopOpus();
         }

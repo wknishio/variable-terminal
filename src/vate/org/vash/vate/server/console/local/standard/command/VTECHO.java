@@ -1,6 +1,6 @@
 package org.vash.vate.server.console.local.standard.command;
 
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
 public class VTECHO extends VTServerStandardLocalConsoleCommandProcessor
@@ -18,12 +18,12 @@ public class VTECHO extends VTServerStandardLocalConsoleCommandProcessor
     if (server.isEchoCommands())
     {
       server.setEchoCommands(false);
-      VTSystemConsole.println("\rVT>Server command echo disabled\nVT>");
+      VTMainConsole.println("\rVT>Server command echo disabled\nVT>");
     }
     else
     {
       server.setEchoCommands(true);
-      VTSystemConsole.println("\rVT>Server command echo enabled\nVT>");
+      VTMainConsole.println("\rVT>Server command echo enabled\nVT>");
     }
   }
   

@@ -6,7 +6,7 @@ import javax.sound.sampled.Mixer;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.audio.VTAudioSystem;
 import org.vash.vate.server.console.remote.standard.VTServerStandardRemoteConsoleCommandProcessor;
 
@@ -28,8 +28,8 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
       
       if (state == 1)
       {
-        int currentAudioCodec = VT.VT_AUDIO_CODEC_DEFAULT;
-        AudioFormat currentAudioFormat = VT.VT_AUDIO_FORMAT_DEFAULT;
+        int currentAudioCodec = VTSystem.VT_AUDIO_CODEC_DEFAULT;
+        AudioFormat currentAudioFormat = VTSystem.VT_AUDIO_FORMAT_DEFAULT;
         Mixer.Info inputMixer = null;
         Mixer.Info outputMixer = null;
         if (parsed.length >= 2)
@@ -103,37 +103,37 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
               // detect narrowband or wideband or superwideband or fullband
               if (parsed[i].toUpperCase().contains("N"))
               {
-                currentAudioFormat = VT.VT_AUDIO_FORMAT_8000;
+                currentAudioFormat = VTSystem.VT_AUDIO_FORMAT_8000;
               }
               if (parsed[i].toUpperCase().contains("W"))
               {
-                currentAudioFormat = VT.VT_AUDIO_FORMAT_16000;
+                currentAudioFormat = VTSystem.VT_AUDIO_FORMAT_16000;
               }
               if (parsed[i].toUpperCase().contains("H"))
               {
-                currentAudioFormat = VT.VT_AUDIO_FORMAT_24000;
+                currentAudioFormat = VTSystem.VT_AUDIO_FORMAT_24000;
               }
               if (parsed[i].toUpperCase().contains("F"))
               {
-                currentAudioFormat = VT.VT_AUDIO_FORMAT_48000;
+                currentAudioFormat = VTSystem.VT_AUDIO_FORMAT_48000;
               }
               if (parsed[i].toUpperCase().contains("S"))
               {
-                currentAudioCodec = VT.VT_AUDIO_CODEC_SPEEX;
+                currentAudioCodec = VTSystem.VT_AUDIO_CODEC_SPEEX;
               }
               if (parsed[i].toUpperCase().contains("O"))
               {
-                currentAudioCodec = VT.VT_AUDIO_CODEC_OPUS;
+                currentAudioCodec = VTSystem.VT_AUDIO_CODEC_OPUS;
               }
             }
           }
         }
         
-        if (currentAudioCodec == VT.VT_AUDIO_CODEC_SPEEX)
+        if (currentAudioCodec == VTSystem.VT_AUDIO_CODEC_SPEEX)
         {
-          if (currentAudioFormat == VT.VT_AUDIO_FORMAT_48000 || currentAudioFormat == VT.VT_AUDIO_FORMAT_24000)
+          if (currentAudioFormat == VTSystem.VT_AUDIO_FORMAT_48000 || currentAudioFormat == VTSystem.VT_AUDIO_FORMAT_24000)
           {
-            currentAudioFormat = VT.VT_AUDIO_FORMAT_32000;
+            currentAudioFormat = VTSystem.VT_AUDIO_FORMAT_32000;
           }
         }
         
@@ -156,7 +156,7 @@ public class VTAUDIOLINK extends VTServerStandardRemoteConsoleCommandProcessor
         
         TargetDataLine target = null;
         SourceDataLine source = null;
-        ok = (target = formatAudioSystem.searchTargetDataLine(currentAudioFormat, inputMixer, VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS)) != null && (source = formatAudioSystem.searchSourceDataLine(currentAudioFormat, outputMixer, VT.VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS)) != null && formatAudioSystem.addAudioCapture(connection.getAudioDataOutputStream(), inputMixer, target, currentAudioCodec, VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS) && formatAudioSystem.addAudioPlay(connection.getAudioDataInputStream(), outputMixer, source, currentAudioCodec, VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS);
+        ok = (target = formatAudioSystem.searchTargetDataLine(currentAudioFormat, inputMixer, VTSystem.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS)) != null && (source = formatAudioSystem.searchSourceDataLine(currentAudioFormat, outputMixer, VTSystem.VT_AUDIO_LINE_PLAYBACK_BUFFER_MILLISECONDS)) != null && formatAudioSystem.addAudioCapture(connection.getAudioDataOutputStream(), inputMixer, target, currentAudioCodec, VTSystem.VT_AUDIO_CODEC_FRAME_MILLISECONDS) && formatAudioSystem.addAudioPlay(connection.getAudioDataInputStream(), outputMixer, source, currentAudioCodec, VTSystem.VT_AUDIO_CODEC_FRAME_MILLISECONDS);
         
         if (ok)
         {

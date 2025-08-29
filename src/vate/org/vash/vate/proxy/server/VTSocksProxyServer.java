@@ -35,7 +35,7 @@ import java.net.Socket;
 //import org.apache.log4j.Logger;
 import java.util.concurrent.ExecutorService;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.socket.remote.VTRemoteSocketFactory;
 
@@ -69,7 +69,7 @@ public class VTSocksProxyServer implements Runnable {
 	static final int PIPE_MODE = 2;
 	static final int ABORT_MODE = 3;
 
-	static final int DEFAULT_BUF_SIZE = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
+	static final int DEFAULT_BUF_SIZE = VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES;
 
 	Thread pipe_thread1, pipe_thread2;
 	long lastReadTime;

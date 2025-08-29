@@ -3,7 +3,7 @@ package org.vash.vate.server.console.local.standard.command;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Mixer;
 
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
 public class VTMIXER extends VTServerStandardLocalConsoleCommandProcessor
@@ -40,7 +40,7 @@ public class VTMIXER extends VTServerStandardLocalConsoleCommandProcessor
       message.append("\nVT>");
     }
     message.append("\nVT>End of server audio mixers list\nVT>");
-    VTSystemConsole.print(message.toString());
+    VTMainConsole.print(message.toString());
   }
   
   public void close()

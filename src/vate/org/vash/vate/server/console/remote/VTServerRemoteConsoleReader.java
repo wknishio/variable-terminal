@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.task.VTTask;
@@ -19,7 +19,7 @@ public class VTServerRemoteConsoleReader extends VTTask
   private VTServerSession session;
   private VTServerConnection connection;
   private VTServerRemoteConsoleCommandSelector<VTServerRemoteConsoleCommandProcessor> selector;
-  private final byte[] buffer = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
+  private final byte[] buffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES];
   
   public VTServerRemoteConsoleReader(VTServerSession session)
   {

@@ -1,7 +1,7 @@
 package org.vash.vate.client.startup;
 
 import org.vash.vate.client.VTClient;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.runtime.VTRuntimeExit;
 
 public class VTClientAgentStandardStart
@@ -9,10 +9,10 @@ public class VTClientAgentStandardStart
   public static void main(String[] args)
   {
     // System.setProperty("java.awt.headless", "true");
-    VTSystemConsole.setGraphical(false);
-    VTSystemConsole.setSeparated(false);
-    VTSystemConsole.setRemoteIcon(true);
-    VTSystemConsole.setDaemon(true);
+    VTMainConsole.setGraphical(false);
+    VTMainConsole.setSeparated(false);
+    VTMainConsole.setRemoteIcon(true);
+    VTMainConsole.setDaemon(true);
     
     if (args.length >= 1)
     {

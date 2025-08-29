@@ -2,9 +2,9 @@ package org.vash.vate.server.console.local.standard.command;
 
 import java.util.Map.Entry;
 
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.help.VTHelpManager;
-import org.vash.vate.nativeutils.VTSystemNativeUtils;
+import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
 public class VTVARIABLE extends VTServerStandardLocalConsoleCommandProcessor
@@ -23,39 +23,39 @@ public class VTVARIABLE extends VTServerStandardLocalConsoleCommandProcessor
     {
       message.setLength(0);
       message.append("\rVT>List of server environment variables:\nVT>");
-      for (Entry<String, String> variable : VTSystemNativeUtils.getvirtualenv().entrySet())
+      for (Entry<String, String> variable : VTMainNativeUtils.getvirtualenv().entrySet())
       {
         message.append("\nVT>[" + variable.getKey() + "]=[" + variable.getValue() + "]");
       }
       message.append("\nVT>\nVT>End of server environment variables list\nVT>");
-      VTSystemConsole.print(message.toString());
+      VTMainConsole.print(message.toString());
     }
     else if (parsed.length == 2)
     {
-      String value = VTSystemNativeUtils.getvirtualenv(parsed[1]);
+      String value = VTMainNativeUtils.getvirtualenv(parsed[1]);
       if (value != null)
       {
-        VTSystemConsole.print("\rVT>[" + parsed[1] + "]=[" + value + "]\nVT>");
+        VTMainConsole.print("\rVT>[" + parsed[1] + "]=[" + value + "]\nVT>");
       }
       else
       {
-        VTSystemConsole.print("\rVT>Environment variable [" + parsed[1] + "] not found on server!\nVT>");
+        VTMainConsole.print("\rVT>Environment variable [" + parsed[1] + "] not found on server!\nVT>");
       }
     }
     else if (parsed.length >= 3)
     {
-      if (VTSystemNativeUtils.putvirtualenv(parsed[1], parsed[2]) == 0)
+      if (VTMainNativeUtils.putvirtualenv(parsed[1], parsed[2]) == 0)
       {
-        VTSystemConsole.print("\rVT>[" + parsed[1] + "]=[" + parsed[2] + "]\nVT>");
+        VTMainConsole.print("\rVT>[" + parsed[1] + "]=[" + parsed[2] + "]\nVT>");
       }
       else
       {
-        VTSystemConsole.print("\rVT>Environment variable [" + parsed[1] + "] failed to be set to [" + parsed[2] + "] on server!\nVT>");
+        VTMainConsole.print("\rVT>Environment variable [" + parsed[1] + "] failed to be set to [" + parsed[2] + "] on server!\nVT>");
       }
     }
     else
     {
-      VTSystemConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
+      VTMainConsole.print("\rVT>Invalid command syntax!" + VTHelpManager.getHelpForServerCommand(parsed[0]));
     }
   }
   

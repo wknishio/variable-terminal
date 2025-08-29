@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.security.VTSplitMix64Random;
 import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.array.VTByteArrayOutputStream;
@@ -111,7 +111,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     VTLinkableDynamicMultiplexedOutputStream stream = null;
     Map<Integer, VTLinkableDynamicMultiplexedOutputStream> channelMap;
     OutputStream output = null;
-    boolean unlimited = ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED) != 0);
+    boolean unlimited = ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED) != 0);
     if (unlimited)
     {
       output = original;
@@ -120,7 +120,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     {
       output = throttled;
     }
-    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
+    if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
     {
       channelMap = bufferedChannels;
     }
@@ -146,7 +146,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     VTLinkableDynamicMultiplexedOutputStream stream = null;
     Map<Integer, VTLinkableDynamicMultiplexedOutputStream> channelMap;
     OutputStream output = null;
-    boolean unlimited = ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED) != 0);
+    boolean unlimited = ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED) != 0);
     if (unlimited)
     {
       output = original;
@@ -155,7 +155,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
     {
       output = throttled;
     }
-    if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
+    if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT) == VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED)
     {
       channelMap = bufferedChannels;
     }
@@ -292,21 +292,21 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       this.type = type;
       this.number = number;
       this.packetSize = packetSize;
-      this.intermediateDataPacketBuffer = new VTByteArrayOutputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
-      this.dataPacketBuffer = new VTByteArrayOutputStream(VT.VT_PACKET_HEADER_SIZE_BYTES + packetSize);
+      this.intermediateDataPacketBuffer = new VTByteArrayOutputStream(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
+      this.dataPacketBuffer = new VTByteArrayOutputStream(VTSystem.VT_PACKET_HEADER_SIZE_BYTES + packetSize);
       this.dataPacketStream = new VTLittleEndianOutputStream(dataPacketBuffer);
-      this.controlPacketBuffer = new VTByteArrayOutputStream(VT.VT_PACKET_HEADER_SIZE_BYTES);
+      this.controlPacketBuffer = new VTByteArrayOutputStream(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
       this.controlPacketStream = new VTLittleEndianOutputStream(controlPacketBuffer);
       this.closed = false;
       this.propagated = new ConcurrentLinkedQueue<Closeable>();
       
-      if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
+      if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) == 0)
       {
         intermediatePacketStream = intermediateDataPacketBuffer;
       }
       else
       {
-        if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
+        if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
         {
           intermediatePacketStream = VTCompressorSelector.createDirectZstdOutputStream(intermediateDataPacketBuffer);
         }
@@ -416,9 +416,9 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       closed = false;
       writeOpenPacket(type, number);
       packetSequencer.setSeed(seed);
-      if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
+      if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED) != 0)
       {
-        if ((type & VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
+        if ((type & VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY) != 0)
         {
           intermediatePacketStream = VTCompressorSelector.createDirectZstdOutputStream(intermediateDataPacketBuffer);
         }
@@ -468,7 +468,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       controlPacketStream.writeInt(-2);
       control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
       control.flush();
-      transferredBytes.addAndGet(VT.VT_PACKET_HEADER_SIZE_BYTES);
+      transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
     }
     
     private synchronized final void writeOpenPacket(final int type, final int number) throws IOException
@@ -480,7 +480,7 @@ public final class VTLinkableDynamicMultiplexingOutputStream
       controlPacketStream.writeInt(-3);
       control.write(controlPacketBuffer.buf(), 0, controlPacketBuffer.count());
       control.flush();
-      transferredBytes.addAndGet(VT.VT_PACKET_HEADER_SIZE_BYTES);
+      transferredBytes.addAndGet(VTSystem.VT_PACKET_HEADER_SIZE_BYTES);
     }
   }
 }

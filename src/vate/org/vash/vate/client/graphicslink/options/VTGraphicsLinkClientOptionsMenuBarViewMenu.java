@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.Map.Entry;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.client.graphicslink.VTGraphicsLinkClientWriter;
 import org.vash.vate.client.graphicslink.options.listener.VTGraphicsLinkClientOptionsMenuBarViewMenuClearInterfaceOptionListener;
 import org.vash.vate.client.graphicslink.options.listener.VTGraphicsLinkClientOptionsMenuBarViewMenuCloseTerminalOptionListener;
@@ -202,19 +202,19 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     this.captureIntervalOptions.put(60000, new CheckboxMenuItem());
     this.captureIntervalOptions.put(120000, new CheckboxMenuItem());
     this.scaledPartialCaptureOption = new CheckboxMenuItem("Viewport", true);
-    this.scaledPartialCaptureOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuScreenCaptureModeOptionsListener(writer, scaledPartialCaptureOption, VT.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_SCALED_VIEWPORT));
+    this.scaledPartialCaptureOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuScreenCaptureModeOptionsListener(writer, scaledPartialCaptureOption, VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_SCALED_VIEWPORT));
     this.scaledCompleteCaptureOption = new CheckboxMenuItem("Entire", false);
-    this.scaledCompleteCaptureOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuScreenCaptureModeOptionsListener(writer, scaledCompleteCaptureOption, VT.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_SCALED_ENTIRE));
+    this.scaledCompleteCaptureOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuScreenCaptureModeOptionsListener(writer, scaledCompleteCaptureOption, VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_SCALED_ENTIRE));
     this.resetCaptureFactorMenu = new MenuItem("Normalize");
-    this.resetCaptureFactorMenu.addActionListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuScreenCaptureScaleOptionsListener(writer, VT.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_DEFAULT_SCALE));
+    this.resetCaptureFactorMenu.addActionListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuScreenCaptureScaleOptionsListener(writer, VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_DEFAULT_SCALE));
     this.increaseCaptureFactorMenu = new MenuItem("Increase");
-    this.increaseCaptureFactorMenu.addActionListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuScreenCaptureScaleOptionsListener(writer, VT.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_INCREASE_SCALE));
+    this.increaseCaptureFactorMenu.addActionListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuScreenCaptureScaleOptionsListener(writer, VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_INCREASE_SCALE));
     this.decreaseCaptureFactorMenu = new MenuItem("Decrease");
-    this.decreaseCaptureFactorMenu.addActionListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuScreenCaptureScaleOptionsListener(writer, VT.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_DECREASE_SCALE));
+    this.decreaseCaptureFactorMenu.addActionListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuScreenCaptureScaleOptionsListener(writer, VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_DECREASE_SCALE));
     this.adjustedKeepRatioCaptureOption = new CheckboxMenuItem("Proportional", false);
-    this.adjustedKeepRatioCaptureOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuScreenCaptureModeOptionsListener(writer, adjustedKeepRatioCaptureOption, VT.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_ADJUSTED_KEEP_RATIO));
+    this.adjustedKeepRatioCaptureOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuScreenCaptureModeOptionsListener(writer, adjustedKeepRatioCaptureOption, VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_ADJUSTED_KEEP_RATIO));
     this.adjustedIgnoreRatioCaptureOption = new CheckboxMenuItem("Independent", false);
-    this.adjustedIgnoreRatioCaptureOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuScreenCaptureModeOptionsListener(writer, adjustedIgnoreRatioCaptureOption, VT.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_ADJUSTED_IGNORE_RATIO));
+    this.adjustedIgnoreRatioCaptureOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuScreenCaptureModeOptionsListener(writer, adjustedIgnoreRatioCaptureOption, VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_ADJUSTED_IGNORE_RATIO));
     //this.directCodingOption = new CheckboxMenuItem("Direct", true);
     //this.directCodingOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuColorCodingOptionsListener(writer, directCodingOption));
     //this.dynamicCodingOption = new CheckboxMenuItem("Dynamic", false);
@@ -230,13 +230,13 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     this.ignoreStateOption = new CheckboxMenuItem("Always", false);
     this.ignoreStateOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuTerminalRefreshPolicyOptionsListener(writer, ignoreStateOption, VTGraphicsLinkClientWriter.TERMINAL_STATE_IGNORE));
     this.imageCodingZSTDOption = new CheckboxMenuItem("ZSD", true);
-    this.imageCodingZSTDOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingZSTDOption, VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD));
+    this.imageCodingZSTDOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingZSTDOption, VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD));
     this.imageCodingDEFLATEOption = new CheckboxMenuItem("GZD", false);
-    this.imageCodingDEFLATEOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingDEFLATEOption, VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD));
+    this.imageCodingDEFLATEOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingDEFLATEOption, VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD));
     this.imageCodingPNGOption = new CheckboxMenuItem("PNG", false);
-    this.imageCodingPNGOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingPNGOption, VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_PNG));
+    this.imageCodingPNGOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingPNGOption, VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_PNG));
     this.imageCodingJPGOption = new CheckboxMenuItem("JPG", false);
-    this.imageCodingJPGOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingJPGOption, VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG));
+    this.imageCodingJPGOption.addItemListener(new VTGraphicsLinkClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer, imageCodingJPGOption, VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG));
     // this.imageCodingGIFOption = new CheckboxMenuItem("GIF", false);
     // this.imageCodingGIFOption.addItemListener(new
     // VTGraphicsLinkClientOptionsMenuBarViewMenuImageCodingOptionsListener(writer,
@@ -611,28 +611,28 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
   
   public void setScreenCaptureMode(int mode)
   {
-    if (mode == VT.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_SCALED_VIEWPORT)
+    if (mode == VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_SCALED_VIEWPORT)
     {
       scaledPartialCaptureOption.setState(true);
       scaledCompleteCaptureOption.setState(false);
       adjustedKeepRatioCaptureOption.setState(false);
       adjustedIgnoreRatioCaptureOption.setState(false);
     }
-    else if (mode == VT.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_SCALED_ENTIRE)
+    else if (mode == VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_SCALED_ENTIRE)
     {
       scaledPartialCaptureOption.setState(false);
       scaledCompleteCaptureOption.setState(true);
       adjustedKeepRatioCaptureOption.setState(false);
       adjustedIgnoreRatioCaptureOption.setState(false);
     }
-    else if (mode == VT.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_ADJUSTED_KEEP_RATIO)
+    else if (mode == VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_ADJUSTED_KEEP_RATIO)
     {
       scaledPartialCaptureOption.setState(false);
       scaledCompleteCaptureOption.setState(false);
       adjustedKeepRatioCaptureOption.setState(true);
       adjustedIgnoreRatioCaptureOption.setState(false);
     }
-    else if (mode == VT.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_ADJUSTED_IGNORE_RATIO)
+    else if (mode == VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_ADJUSTED_IGNORE_RATIO)
     {
       scaledPartialCaptureOption.setState(false);
       scaledCompleteCaptureOption.setState(false);
@@ -719,7 +719,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
   
   public void setImageCoding(int imageCoding)
   {
-    if (imageCoding == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_PNG)
+    if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_PNG)
     {
       imageCodingZSTDOption.setState(false);
       imageCodingDEFLATEOption.setState(false);
@@ -727,7 +727,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       imageCodingJPGOption.setState(false);
       // imageFormatGIFOption.setState(false);
     }
-    else if (imageCoding == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
+    else if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
     {
       imageCodingZSTDOption.setState(false);
       imageCodingDEFLATEOption.setState(false);
@@ -735,7 +735,7 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
       imageCodingJPGOption.setState(true);
       // imageFormatGIFOption.setState(false);
     }
-    else if (imageCoding == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
+    else if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
     {
       imageCodingZSTDOption.setState(false);
       imageCodingDEFLATEOption.setState(true);

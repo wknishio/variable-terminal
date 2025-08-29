@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
@@ -61,12 +61,12 @@ public class VTManagedClientSocket
     
     public VTLinkableDynamicMultiplexedInputStream getInputStream(Object link)
     {
-      return getInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, link);
+      return getInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, link);
     }
     
     public VTLinkableDynamicMultiplexedOutputStream getOutputStream(Object link)
     {
-      return getOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, link);
+      return getOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, link);
     }
     
     public VTLinkableDynamicMultiplexedInputStream getInputStream(int type, Object link)
@@ -154,22 +154,22 @@ public class VTManagedClientSocket
     
     public InputStream createBufferedInputStream(Object link)
     {
-      return new BufferedInputStream(getInputStream(link), VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+      return new BufferedInputStream(getInputStream(link), VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
     }
     
     public OutputStream createBufferedOutputStream(Object link)
     {
-      return new VTBufferedOutputStream(getOutputStream(link), VT.VT_STANDARD_BUFFER_SIZE_BYTES, true);
+      return new VTBufferedOutputStream(getOutputStream(link), VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES, true);
     }
     
     public InputStream createBufferedInputStream(int type, Object link)
     {
-      return new BufferedInputStream(getInputStream(type, link), VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+      return new BufferedInputStream(getInputStream(type, link), VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
     }
     
     public OutputStream createBufferedOutputStream(int type, Object link)
     {
-      return new VTBufferedOutputStream(getOutputStream(type, link), VT.VT_STANDARD_BUFFER_SIZE_BYTES, true);
+      return new VTBufferedOutputStream(getOutputStream(type, link), VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES, true);
     }
     
     public void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)

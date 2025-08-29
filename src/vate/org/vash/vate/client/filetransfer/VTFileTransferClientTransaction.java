@@ -12,8 +12,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.vash.vate.VT;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.VTSystem;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTXXHash64MessageDigest;
@@ -24,7 +24,7 @@ import net.jpountz.xxhash.XXHashFactory;
 
 public class VTFileTransferClientTransaction implements Runnable
 {
-  private static final int fileTransferBufferSize = VT.VT_FILE_BUFFER_SIZE_BYTES;
+  private static final int fileTransferBufferSize = VTSystem.VT_FILE_BUFFER_SIZE_BYTES;
   private volatile boolean stopped;
   private boolean finished;
   private boolean compressing;
@@ -79,9 +79,9 @@ public class VTFileTransferClientTransaction implements Runnable
     
     byte[] localNonce = session.getClient().getConnection().getLocalNonce();
     byte[] remoteNonce = session.getClient().getConnection().getRemoteNonce();
-    byte[] blake3Seed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
-    System.arraycopy(localNonce, 0, blake3Seed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
-    System.arraycopy(remoteNonce, 0, blake3Seed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    byte[] blake3Seed = new byte[VTSystem.VT_SECURITY_SEED_SIZE_BYTES];
+    System.arraycopy(localNonce, 0, blake3Seed, 0, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
+    System.arraycopy(remoteNonce, 0, blake3Seed, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
     
     VTBlake3MessageDigest blake3Digest = new VTBlake3MessageDigest(blake3Seed);
     blake3Digest.update(session.getClient().getConnection().getEncryptionKey());
@@ -246,25 +246,25 @@ public class VTFileTransferClientTransaction implements Runnable
       {
         if (fileTransferFile.isFile())
         {
-          localFileStatus = VT.VT_FILE_TRANSFER_STATUS_NORMAL;
+          localFileStatus = VTSystem.VT_FILE_TRANSFER_STATUS_NORMAL;
         }
         else if (fileTransferFile.isDirectory())
         {
-          localFileStatus = VT.VT_FILE_TRANSFER_STATUS_DIRECTORY;
+          localFileStatus = VTSystem.VT_FILE_TRANSFER_STATUS_DIRECTORY;
         }
         else
         {
-          localFileStatus = VT.VT_FILE_TRANSFER_STATUS_ANOTHER;
+          localFileStatus = VTSystem.VT_FILE_TRANSFER_STATUS_ANOTHER;
         }
       }
       else
       {
-        localFileStatus = VT.VT_FILE_TRANSFER_STATUS_INEXISTENT;
+        localFileStatus = VTSystem.VT_FILE_TRANSFER_STATUS_INEXISTENT;
       }
     }
     catch (Throwable e)
     {
-      localFileStatus = VT.VT_FILE_TRANSFER_STATUS_ERROR;
+      localFileStatus = VTSystem.VT_FILE_TRANSFER_STATUS_ERROR;
     }
     try
     {
@@ -286,19 +286,19 @@ public class VTFileTransferClientTransaction implements Runnable
       {
         if (fileTransferFile.canRead())
         {
-          localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_READ_ONLY;
+          localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_READ_ONLY;
           if (fileTransferFile.canWrite())
           {
-            localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE;
+            localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE;
           }
         }
         else if (fileTransferFile.canWrite())
         {
-          localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY;
+          localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY;
         }
         else
         {
-          localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_DENIED;
+          localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_DENIED;
         }
       }
       else
@@ -313,25 +313,25 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             if (fileTransferFile.canRead())
             {
-              localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_READ_ONLY;
+              localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_READ_ONLY;
               if (fileTransferFile.canWrite())
               {
-                localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE;
+                localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE;
               }
             }
             else if (fileTransferFile.canWrite())
             {
-              localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY;
+              localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY;
             }
             else
             {
               fileTransferFile.delete();
-              localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_DENIED;
+              localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_DENIED;
             }
           }
           else
           {
-            localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_DENIED;
+            localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_DENIED;
           }
         }
         else
@@ -340,25 +340,25 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             if (fileTransferFile.canRead())
             {
-              localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_READ_ONLY;
+              localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_READ_ONLY;
               if (fileTransferFile.canWrite())
               {
-                localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE;
+                localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE;
               }
             }
             else if (fileTransferFile.canWrite())
             {
-              localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY;
+              localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY;
             }
             else
             {
               fileTransferFile.delete();
-              localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_DENIED;
+              localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_DENIED;
             }
           }
           else
           {
-            localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_DENIED;
+            localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_DENIED;
           }
         }
       }
@@ -376,7 +376,7 @@ public class VTFileTransferClientTransaction implements Runnable
     }
     catch (Throwable e)
     {
-      localFileAccess = VT.VT_FILE_TRANSFER_ACCESS_ERROR;
+      localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_ERROR;
     }
     try
     {
@@ -633,31 +633,31 @@ public class VTFileTransferClientTransaction implements Runnable
     {
       if (checkFileStatus())
       {
-        if (localFileStatus == VT.VT_FILE_TRANSFER_STATUS_INEXISTENT)
+        if (localFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_INEXISTENT)
         {
           checked = false;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_STATUS_DIRECTORY)
+        if (localFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_DIRECTORY)
         {
           directory = true;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_STATUS_ANOTHER)
+        if (localFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_ANOTHER)
         {
           checked = false;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_STATUS_ERROR)
+        if (localFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_ERROR)
         {
           checked = false;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_STATUS_DIRECTORY)
+        if (remoteFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_DIRECTORY)
         {
           
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_STATUS_ANOTHER)
+        if (remoteFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_ANOTHER)
         {
           checked = false;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_STATUS_ERROR)
+        if (remoteFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_ERROR)
         {
           checked = false;
         }
@@ -674,11 +674,11 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         if (checked && checkFileAccess(true))
         {
-          if (!(localFileAccess == VT.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE || localFileAccess == VT.VT_FILE_TRANSFER_ACCESS_READ_ONLY))
+          if (!(localFileAccess == VTSystem.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE || localFileAccess == VTSystem.VT_FILE_TRANSFER_ACCESS_READ_ONLY))
           {
             checked = false;
           }
-          if (!(remoteFileAccess == VT.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE || remoteFileAccess == VT.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY))
+          if (!(remoteFileAccess == VTSystem.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE || remoteFileAccess == VTSystem.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY))
           {
             checked = false;
           }
@@ -689,7 +689,7 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             if (resuming)
             {
-              resumable = remoteFileStatus != VT.VT_FILE_TRANSFER_STATUS_INEXISTENT &&
+              resumable = remoteFileStatus != VTSystem.VT_FILE_TRANSFER_STATUS_INEXISTENT &&
               ((localFileSize >= remoteFileSize && remoteFileSize > 0)
               || (remoteFileSize > localFileSize && remoteFileSize > 0));
             }
@@ -916,31 +916,31 @@ public class VTFileTransferClientTransaction implements Runnable
     {
       if (checkFileStatus())
       {
-        if (localFileStatus == VT.VT_FILE_TRANSFER_STATUS_DIRECTORY)
+        if (localFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_DIRECTORY)
         {
           
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_STATUS_ANOTHER)
+        if (localFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_ANOTHER)
         {
           checked = false;
         }
-        if (localFileStatus == VT.VT_FILE_TRANSFER_STATUS_ERROR)
+        if (localFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_ERROR)
         {
           checked = false;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_STATUS_INEXISTENT)
+        if (remoteFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_INEXISTENT)
         {
           checked = false;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_STATUS_DIRECTORY)
+        if (remoteFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_DIRECTORY)
         {
           directory = true;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_STATUS_ANOTHER)
+        if (remoteFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_ANOTHER)
         {
           checked = false;
         }
-        if (remoteFileStatus == VT.VT_FILE_TRANSFER_STATUS_ERROR)
+        if (remoteFileStatus == VTSystem.VT_FILE_TRANSFER_STATUS_ERROR)
         {
           checked = false;
         }
@@ -964,11 +964,11 @@ public class VTFileTransferClientTransaction implements Runnable
         }
         if (checked && checkFileAccess(false))
         {
-          if (!(localFileAccess == VT.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE || localFileAccess == VT.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY))
+          if (!(localFileAccess == VTSystem.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE || localFileAccess == VTSystem.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY))
           {
             checked = false;
           }
-          if (!(remoteFileAccess == VT.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE || remoteFileAccess == VT.VT_FILE_TRANSFER_ACCESS_READ_ONLY))
+          if (!(remoteFileAccess == VTSystem.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE || remoteFileAccess == VTSystem.VT_FILE_TRANSFER_ACCESS_READ_ONLY))
           {
             checked = false;
           }
@@ -979,7 +979,7 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             if (resuming)
             {
-              resumable = localFileStatus != VT.VT_FILE_TRANSFER_STATUS_INEXISTENT &&
+              resumable = localFileStatus != VTSystem.VT_FILE_TRANSFER_STATUS_INEXISTENT &&
               ((remoteFileSize >= localFileSize && localFileSize > 0)
               || (localFileSize > remoteFileSize && localFileSize > 0));
             }
@@ -1454,7 +1454,7 @@ public class VTFileTransferClientTransaction implements Runnable
       {
         synchronized (this)
         {
-          VTSystemConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+          VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
           finished = true;
           return;
         }
@@ -1545,11 +1545,11 @@ public class VTFileTransferClientTransaction implements Runnable
               {
                 if (interrupted)
                 {
-                  VTSystemConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
+                  VTMainConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
                 }
                 else
                 {
-                  VTSystemConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
+                  VTMainConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
                 }
                 finished = true;
               }
@@ -1562,16 +1562,16 @@ public class VTFileTransferClientTransaction implements Runnable
             {
               if (interrupted)
               {
-                VTSystemConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
+                VTMainConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
               }
               else
               {
-                VTSystemConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
+                VTMainConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
               }
             }
             else
             {
-              VTSystemConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
+              VTMainConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + source + "]" + "\nVT>Remote file: [" + destination + "]\nVT>");
             }
             finished = true;
           }
@@ -1647,11 +1647,11 @@ public class VTFileTransferClientTransaction implements Runnable
                 {
                   if (interrupted)
                   {
-                    VTSystemConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                    VTMainConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
                   }
                   else
                   {
-                    VTSystemConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                    VTMainConsole.print("\nVT>File transfer failed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
                   }
                 }
                 finished = true;
@@ -1667,16 +1667,16 @@ public class VTFileTransferClientTransaction implements Runnable
               {
                 if (interrupted)
                 {
-                  VTSystemConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                  VTMainConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
                 }
                 else
                 {
-                  VTSystemConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                  VTMainConsole.print("\nVT>File transfer completed!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
                 }
               }
               else
               {
-                VTSystemConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
+                VTMainConsole.print("\nVT>File transfer interrupted!" + "\nVT>Local file: [" + destination + "]" + "\nVT>Remote file: [" + source + "]\nVT>");
               }
             }
             finished = true;
@@ -1688,7 +1688,7 @@ public class VTFileTransferClientTransaction implements Runnable
           {
             if (session.getClient().getConnection().isConnected())
             {
-              VTSystemConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+              VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
             }
             finished = true;
           }
@@ -1700,7 +1700,7 @@ public class VTFileTransferClientTransaction implements Runnable
         {
           if (session.getClient().getConnection().isConnected())
           {
-            VTSystemConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
+            VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(splitCommand[0]));
           }
           finished = true;
         }

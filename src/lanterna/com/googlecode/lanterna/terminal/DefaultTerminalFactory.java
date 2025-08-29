@@ -37,7 +37,7 @@ import java.lang.reflect.Method;
 import java.nio.charset.Charset;
 import java.util.EnumSet;
 
-import org.vash.vate.nativeutils.VTSystemNativeUtils;
+import org.vash.vate.nativeutils.VTMainNativeUtils;
 
 /**
  * This TerminalFactory implementation uses a simple auto-detection mechanism for figuring out which terminal 
@@ -597,14 +597,14 @@ public class DefaultTerminalFactory implements TerminalFactory {
 			Object consoleResult = consoleMethod.invoke(null);
 			if (consoleResult != null)
 			{
-				return VTSystemNativeUtils.isatty(0) != 0 && VTSystemNativeUtils.isatty(1) != 0;
+				return VTMainNativeUtils.isatty(0) != 0 && VTMainNativeUtils.isatty(1) != 0;
 			}
 			try
 			{
 				if (FileDescriptor.in.valid())
 				{
 					FileDescriptor.in.sync();
-					return VTSystemNativeUtils.isatty(0) != 0 && VTSystemNativeUtils.isatty(1) != 0;
+					return VTMainNativeUtils.isatty(0) != 0 && VTMainNativeUtils.isatty(1) != 0;
 				}
 				else
 				{
@@ -623,7 +623,7 @@ public class DefaultTerminalFactory implements TerminalFactory {
         if (FileDescriptor.in.valid())
         {
           FileDescriptor.in.sync();
-          return VTSystemNativeUtils.isatty(0) != 0 && VTSystemNativeUtils.isatty(1) != 0;
+          return VTMainNativeUtils.isatty(0) != 0 && VTMainNativeUtils.isatty(1) != 0;
         }
         else
         {

@@ -10,7 +10,7 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.tls.VTTLSVerificationDisabler;
 
 public class VTURLInvoker
@@ -73,7 +73,7 @@ public class VTURLInvoker
   public static VTURLResult invokeURL(String urlString, Proxy proxy, int connectTimeout, int dataTimeout, Map<String, String> requestHeaders, String requestMethod, InputStream requestInputStream, OutputStream resultOutputStream)
   {
     //System.setProperty("http.keepAlive", "false");
-    final byte[] readBuffer = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
+    final byte[] readBuffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES];
     VTURLResult urlResult = new VTURLResult(-1, null, null, true);
     int readed = 1;
     URLConnection urlConnection = null;
@@ -184,7 +184,7 @@ public class VTURLInvoker
         InputStream inputStream = urlConnection.getInputStream();
         if (inputStream != null)
         {
-          connectionInputStream = new BufferedInputStream(inputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+          connectionInputStream = new BufferedInputStream(inputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
         }
       }
       catch (Throwable t)
@@ -221,7 +221,7 @@ public class VTURLInvoker
             connectionErrorStream = httpConnection.getErrorStream();
             if (connectionErrorStream != null)
             {
-              connectionInputStream = new BufferedInputStream(connectionErrorStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+              connectionInputStream = new BufferedInputStream(connectionErrorStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
               while ((readed = connectionInputStream.read(readBuffer)) > 0)
               {
                 resultOutputStream.write(readBuffer, 0, readed);

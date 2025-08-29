@@ -1,7 +1,7 @@
 package org.vash.vate.client.authentication;
 
 import java.io.IOException;
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.security.VTBlake3MessageDigest;
@@ -9,8 +9,8 @@ import org.vash.vate.security.VTBlake3MessageDigest;
 public class VTClientAuthenticator
 {
   private boolean accepted = false;
-  private byte[] digestedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
-  private byte[] receivedCredential = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private byte[] digestedCredential = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private byte[] receivedCredential = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
   private byte[] localNonce;
   private byte[] remoteNonce;
   private byte[] encryptionKey;
@@ -113,9 +113,9 @@ public class VTClientAuthenticator
     encryptionKey = connection.getEncryptionKey();
     
     blake3Digest.reset();
-    byte[] seed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
-    System.arraycopy(localNonce, 0, seed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
-    System.arraycopy(remoteNonce, 0, seed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    byte[] seed = new byte[VTSystem.VT_SECURITY_SEED_SIZE_BYTES];
+    System.arraycopy(localNonce, 0, seed, 0, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
+    System.arraycopy(remoteNonce, 0, seed, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
     blake3Digest.setSeed(seed);
     blake3Digest.reset();
     
@@ -150,7 +150,7 @@ public class VTClientAuthenticator
     
     blake3Digest.update(line.getBytes("UTF-8"));
     
-    digestedCredential = blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    digestedCredential = blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
     
     connection.getAuthenticationWriter().write(digestedCredential);
     connection.getAuthenticationWriter().flush();

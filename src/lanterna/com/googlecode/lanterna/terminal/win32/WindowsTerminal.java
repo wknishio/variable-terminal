@@ -7,7 +7,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.vash.vate.nativeutils.VTSystemNativeUtils;
+import org.vash.vate.nativeutils.VTMainNativeUtils;
 
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;

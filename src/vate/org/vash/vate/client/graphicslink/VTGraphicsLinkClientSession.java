@@ -3,9 +3,9 @@ package org.vash.vate.client.graphicslink;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.client.session.VTClientSession;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.reflection.VTReflectionUtils;
 
 public class VTGraphicsLinkClientSession
@@ -60,25 +60,25 @@ public class VTGraphicsLinkClientSession
     {
       if (headless)
       {
-        session.getConnection().getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_SESSION_UNSTARTED);
+        session.getConnection().getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_SESSION_UNSTARTED);
         session.getConnection().getGraphicsControlDataOutputStream().flush();
-        VTSystemConsole.print("\nVT>Remote graphics link start on client failed!\nVT>");
-        if (session.getConnection().getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_LINK_SESSION_UNSTARTED)
+        VTMainConsole.print("\nVT>Remote graphics link start on client failed!\nVT>");
+        if (session.getConnection().getGraphicsControlDataInputStream().read() == VTSystem.VT_GRAPHICS_LINK_SESSION_UNSTARTED)
         {
           //VTConsole.print("\nVT>Remote graphics link start on server failed!\nVT>");
         }
       }
       else
       {
-        session.getConnection().getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_SESSION_STARTED);
+        session.getConnection().getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_SESSION_STARTED);
         session.getConnection().getGraphicsControlDataOutputStream().flush();
-        if (session.getConnection().getGraphicsControlDataInputStream().read() == VT.VT_GRAPHICS_LINK_SESSION_STARTED)
+        if (session.getConnection().getGraphicsControlDataInputStream().read() == VTSystem.VT_GRAPHICS_LINK_SESSION_STARTED)
         {
           return true;
         }
         else
         {
-          VTSystemConsole.print("\nVT>Remote graphics link start on server failed!\nVT>");
+          VTMainConsole.print("\nVT>Remote graphics link start on server failed!\nVT>");
         }
       }
     }
@@ -217,7 +217,7 @@ public class VTGraphicsLinkClientSession
     {
       //e.printStackTrace();
     }
-    VTSystemConsole.print("\nVT>Remote graphics link stopped!\nVT>");
+    VTMainConsole.print("\nVT>Remote graphics link stopped!\nVT>");
     finished = true;
   }
 }

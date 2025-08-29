@@ -2,7 +2,7 @@ package org.vash.vate.server.console.local.standard.command;
 
 import java.util.Collection;
 
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.server.connection.VTServerConnectionHandler;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
@@ -46,11 +46,11 @@ public class VTTEXT extends VTServerStandardLocalConsoleCommandProcessor
             }
           }
         }
-        VTSystemConsole.print("\rVT>Message sent to clients!\nVT>");
+        VTMainConsole.print("\rVT>Message sent to clients!\nVT>");
       }
       else
       {
-        VTSystemConsole.print("\rVT>Not connected with clients!\nVT>");
+        VTMainConsole.print("\rVT>Not connected with clients!\nVT>");
       }
     }
     else
@@ -78,11 +78,11 @@ public class VTTEXT extends VTServerStandardLocalConsoleCommandProcessor
             }
           }
         }
-        VTSystemConsole.print("\rVT>Message sent to clients!\nVT>");
+        VTMainConsole.print("\rVT>Message sent to clients!\nVT>");
       }
       else
       {
-        VTSystemConsole.print("\rVT>Not connected with clients!\nVT>");
+        VTMainConsole.print("\rVT>Not connected with clients!\nVT>");
       }
     }
   }

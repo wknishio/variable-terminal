@@ -1,6 +1,6 @@
 package org.vash.vate.server.console.remote.standard.command;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.proxy.client.VTProxy.VTProxyType;
@@ -24,18 +24,18 @@ public class VTTUNNEL extends VTServerStandardRemoteConsoleCommandProcessor
     //String proxyHost = "";
     //int proxyPort = 0;
     VTProxy proxy = new VTProxy(VTProxyType.GLOBAL, "", 0, null, null);
-    int channelType = VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
+    int channelType = VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_DIRECT;
     boolean FTP = false;
     
     if (parsed.length > 1)
     {
       if (parsed[1].toUpperCase().contains("Q"))
       {
-        channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_QUICK;
+        channelType |= VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_QUICK;
       }
       if (parsed[1].toUpperCase().contains("H"))
       {
-        channelType |= VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY;
+        channelType |= VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_ENABLED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_COMPRESSION_HEAVY;
       }
       if (parsed[1].toUpperCase().contains("F"))
       {

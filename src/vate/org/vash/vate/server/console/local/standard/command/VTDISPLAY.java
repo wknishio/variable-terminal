@@ -4,7 +4,7 @@ import java.awt.DisplayMode;
 import java.awt.GraphicsDevice;
 import java.awt.Rectangle;
 
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
@@ -43,7 +43,7 @@ public class VTDISPLAY extends VTServerStandardLocalConsoleCommandProcessor
     {
       message.append("\rVT>No graphical display devices found on server!\nVT>");
     }
-    VTSystemConsole.print(message.toString());
+    VTMainConsole.print(message.toString());
   }
   
   public void close()

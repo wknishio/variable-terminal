@@ -3,7 +3,7 @@ package org.vash.vate.server.console.local.standard.command;
 import java.net.InetAddress;
 import java.util.Collection;
 
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.server.connection.VTServerConnectionHandler;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 import org.vash.vate.server.session.VTServerSession;
@@ -54,13 +54,13 @@ public class VTPING extends VTServerStandardLocalConsoleCommandProcessor
         }
       }
       message.append("\nVT>End of client connection latencies with server list\nVT>");
-      VTSystemConsole.print(message.toString());
+      VTMainConsole.print(message.toString());
     }
     else
     {
-      VTSystemConsole.print("\rVT>Not connected with clients!\nVT>");
+      VTMainConsole.print("\rVT>Not connected with clients!\nVT>");
     }
-    VTSystemConsole.print("\nVT>");
+    VTMainConsole.print("\nVT>");
   }
   
   public void close()

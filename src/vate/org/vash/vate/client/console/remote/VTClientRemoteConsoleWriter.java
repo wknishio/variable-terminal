@@ -10,10 +10,10 @@ import java.io.OutputStream;
 import java.io.StringReader;
 import java.nio.charset.Charset;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.pipe.VTPipedInputStream;
 import org.vash.vate.stream.pipe.VTPipedOutputStream;
@@ -69,7 +69,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     {
       return null;
     }
-    VTPipedInputStream in = new VTPipedInputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+    VTPipedInputStream in = new VTPipedInputStream(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
     VTPipedOutputStream out = new VTPipedOutputStream(in);
     // source = new VTInterruptibleInputStream(in, session.getSessionThreads());
     sourceReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
@@ -103,7 +103,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
       // String[] lines;
       try
       {
-        if (VTSystemConsole.isDaemon())
+        if (VTMainConsole.isDaemon())
         {
           if (sourceReader != null)
           {
@@ -155,7 +155,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
           }
           else
           {
-            String line = VTSystemConsole.readLine(true);
+            String line = VTMainConsole.readLine(true);
             executeCommand(line, false);
           }
         }
@@ -292,7 +292,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     {
       if (echo)
       {
-        VTSystemConsole.println(command);
+        VTMainConsole.println(command);
       }
       if (!(command.length() == 0))
       {
@@ -307,13 +307,13 @@ public class VTClientRemoteConsoleWriter extends VTTask
         parsed = new String[] { "" };
       }
       
-      if (!VTSystemConsole.isCommandEcho())
+      if (!VTMainConsole.isCommandEcho())
       {
         if (command != null && command.length() > 0)
         {
           if (selector.matchCommand(parsed[0]))
           {
-            VTSystemConsole.println(command);
+            VTMainConsole.println(command);
           }
         }
       }

@@ -8,8 +8,8 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 
-import org.vash.vate.VT;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.VTSystem;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.security.VTArrayComparator;
 import org.vash.vate.security.VTBlake3SecureRandom;
 import org.vash.vate.security.VTBlake3MessageDigest;
@@ -29,7 +29,7 @@ import net.jpountz.xxhash.XXHashFactory;
 
 public class VTServerConnection
 {
-  private static final String MAJOR_MINOR_VERSION = VT.VT_MAJOR_VERSION + "/" + VT.VT_MINOR_VERSION;
+  private static final String MAJOR_MINOR_VERSION = VTSystem.VT_MAJOR_VERSION + "/" + VTSystem.VT_MINOR_VERSION;
   
   private static final byte[] VT_SERVER_CHECK_STRING_NONE = ("/VARIABLE-TERMINAL/SERVER/NONE/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_NONE = ("/VARIABLE-TERMINAL/CLIENT/NONE/" + MAJOR_MINOR_VERSION).getBytes();
@@ -54,9 +54,9 @@ public class VTServerConnection
   private byte[] digestedCredentials;
   // private byte[] digestedClient;
   // private byte[] digestedServer;
-  private final byte[] localNonce = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
-  private final byte[] remoteNonce = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
-  private final byte[] randomData = new byte[VT.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private final byte[] localNonce = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private final byte[] remoteNonce = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
+  private final byte[] randomData = new byte[VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES];
   // private byte[] paddingData = new byte[1024];
   // private MessageDigest sha256Digester;
   private final VTCryptographicEngine cryptoEngine;
@@ -509,7 +509,7 @@ public class VTServerConnection
   {
     if (!closed || connected)
     {
-      VTSystemConsole.print("\rVT>Connection with client closed!\nVT>");
+      VTMainConsole.print("\rVT>Connection with client closed!\nVT>");
     }
     closeSockets();
     connected = false;
@@ -568,9 +568,9 @@ public class VTServerConnection
     }
     
     blake3Digest.reset();
-    byte[] seed = new byte[VT.VT_SECURITY_SEED_SIZE_BYTES];
-    System.arraycopy(remoteNonce, 0, seed, 0, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
-    System.arraycopy(localNonce, 0, seed, VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT.VT_SECURITY_DIGEST_SIZE_BYTES);
+    byte[] seed = new byte[VTSystem.VT_SECURITY_SEED_SIZE_BYTES];
+    System.arraycopy(remoteNonce, 0, seed, 0, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
+    System.arraycopy(localNonce, 0, seed, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES);
     //secureRandom.setSeed(seed);
     blake3Digest.setSeed(seed);
     blake3Digest.reset();
@@ -578,9 +578,9 @@ public class VTServerConnection
   
   private void setVerificationStreams() throws IOException
   {
-    cryptoEngine.initializeServerEngine(VT.VT_CONNECTION_ENCRYPTION_NONE, remoteNonce, localNonce, encryptionKey);
-    authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
-    authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
+    cryptoEngine.initializeServerEngine(VTSystem.VT_CONNECTION_ENCRYPTION_NONE, remoteNonce, localNonce, encryptionKey);
+    authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
+    authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
     nonceReader.setIntputStream(authenticationReader.getInputStream());
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
   }
@@ -589,8 +589,8 @@ public class VTServerConnection
   {
     //exchangeNonces(true);
     cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey);
-    authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
-    authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
+    authenticationReader.setIntputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
+    authenticationWriter.setOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
     nonceReader.setIntputStream(authenticationReader.getInputStream());
     nonceWriter.setOutputStream(authenticationWriter.getOutputStream());
     //exchangeNonces(true);
@@ -611,8 +611,8 @@ public class VTServerConnection
     cryptoEngine.initializeServerEngine(encryptionType, remoteNonce, localNonce, encryptionKey, digestedCredentials);
     //connectionInputStream = cryptoEngine.getDecryptedInputStream(connectionSocketInputStream);
     //connectionOutputStream = cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream);
-    connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VT.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES), VT.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES);
-    connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VT.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES), VT.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES);
+    connectionInputStream = new BufferedInputStream(cryptoEngine.getDecryptedInputStream(connectionSocketInputStream, VTSystem.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_INPUT_PACKET_BUFFER_SIZE_BYTES);
+    connectionOutputStream = new BufferedOutputStream(cryptoEngine.getEncryptedOutputStream(connectionSocketOutputStream, VTSystem.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES), VTSystem.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES);
     //authenticationReader.setIntputStream(connectionInputStream);
     //authenticationWriter.setOutputStream(connectionOutputStream);
     //nonceReader.setIntputStream(authenticationReader.getInputStream());
@@ -642,43 +642,43 @@ public class VTServerConnection
     int inputChannel = 0;
     int outputChannel = 0;
     
-    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, true, VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, secureInputSeed, executorService, false);
-    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, true, VT.VT_PACKET_DATA_SIZE_BYTES, VT.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES, secureOutputSeed, executorService);
+    multiplexedConnectionInputStream = new VTLinkableDynamicMultiplexingInputStream(connectionInputStream, true, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_CHANNEL_PACKET_BUFFER_SIZE_BYTES, secureInputSeed, executorService, false);
+    multiplexedConnectionOutputStream = new VTLinkableDynamicMultiplexingOutputStream(connectionOutputStream, true, VTSystem.VT_PACKET_DATA_SIZE_BYTES, VTSystem.VT_CONNECTION_OUTPUT_PACKET_BUFFER_SIZE_BYTES, secureOutputSeed, executorService);
     
-    pingServerInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, inputChannel++);
-    pingServerOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, outputChannel++);
+    pingServerInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, inputChannel++);
+    pingServerOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, outputChannel++);
     
-    pingClientInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, inputChannel++);
-    pingClientOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VT.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, outputChannel++);
+    pingClientInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, inputChannel++);
+    pingClientOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED | VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_RATE_UNLIMITED, outputChannel++);
     
-    shellInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
-    shellOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    shellInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    shellOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     
-    fileTransferStartInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
-    fileTransferStartOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
-    fileTransferControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
-    fileTransferControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
-    fileTransferDataInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
-    fileTransferDataOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    fileTransferStartInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    fileTransferStartOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    fileTransferControlInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    fileTransferControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    fileTransferDataInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    fileTransferDataOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     
-    graphicsControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
-    graphicsControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
-    graphicsDirectImageInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
-    graphicsDirectImageOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
-    graphicsHeavyImageInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
-    graphicsHeavyImageOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
-    graphicsFastImageInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
-    graphicsFastImageOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
-    graphicsClipboardInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
-    graphicsClipboardOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    graphicsControlInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    graphicsControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    graphicsDirectImageInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    graphicsDirectImageOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    graphicsHeavyImageInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    graphicsHeavyImageOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    graphicsFastImageInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    graphicsFastImageOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    graphicsClipboardInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    graphicsClipboardOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     
-    audioControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
-    audioControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
-    audioDataInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
-    audioDataOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    audioControlInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    audioControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    audioDataInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    audioDataOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     
-    tunnelControlInputStream = multiplexedConnectionInputStream.linkInputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
-    tunnelControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VT.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
+    tunnelControlInputStream = multiplexedConnectionInputStream.linkInputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, inputChannel++);
+    tunnelControlOutputStream = multiplexedConnectionOutputStream.linkOutputStream(VTSystem.VT_MULTIPLEXED_CHANNEL_TYPE_PIPE_BUFFERED, outputChannel++);
     
     availableInputChannel = inputChannel;
     availableOutputChannel = outputChannel;
@@ -700,7 +700,7 @@ public class VTServerConnection
     graphicsControlDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedLz4OutputStream(graphicsControlOutputStream));
     
     directImageDataInputStream = new VTLittleEndianInputStream(graphicsDirectImageInputStream);
-    directImageDataOutputStream = new VTLittleEndianOutputStream(new VTFlushBufferedOutputStream(graphicsDirectImageOutputStream, new VTByteArrayOutputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES)));
+    directImageDataOutputStream = new VTLittleEndianOutputStream(new VTFlushBufferedOutputStream(graphicsDirectImageOutputStream, new VTByteArrayOutputStream(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES)));
     
     heavyImageDataInputStream = new VTLittleEndianInputStream(graphicsHeavyImageInputStream);
     heavyImageDataOutputStream = new VTLittleEndianOutputStream(VTCompressorSelector.createBufferedZstdOutputStream(graphicsHeavyImageOutputStream));
@@ -745,7 +745,7 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    byte[] data = blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, localCheckString);
+    byte[] data = blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, localCheckString);
     authenticationWriter.write(data);
     authenticationWriter.flush();
     authenticationReader.readFully(data);
@@ -763,9 +763,9 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_NONE)))
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_NONE)))
     {
-      return VT.VT_CONNECTION_ENCRYPTION_NONE;
+      return VTSystem.VT_CONNECTION_ENCRYPTION_NONE;
     }
     
     blake3Digest.reset();
@@ -775,9 +775,9 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_VMPC)))
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_VMPC)))
     {
-      return VT.VT_CONNECTION_ENCRYPTION_VMPC;
+      return VTSystem.VT_CONNECTION_ENCRYPTION_VMPC;
     }
     
     blake3Digest.reset();
@@ -787,9 +787,9 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_ZUC)))
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_ZUC)))
     {
-      return VT.VT_CONNECTION_ENCRYPTION_ZUC;
+      return VTSystem.VT_CONNECTION_ENCRYPTION_ZUC;
     }
     
     // sha256Digester.reset();
@@ -812,9 +812,9 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_SALSA)))
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_SALSA)))
     {
-      return VT.VT_CONNECTION_ENCRYPTION_SALSA;
+      return VTSystem.VT_CONNECTION_ENCRYPTION_SALSA;
     }
     
     blake3Digest.reset();
@@ -824,9 +824,9 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_HC)))
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_HC)))
     {
-      return VT.VT_CONNECTION_ENCRYPTION_HC;
+      return VTSystem.VT_CONNECTION_ENCRYPTION_HC;
     }
     
     blake3Digest.reset();
@@ -836,9 +836,9 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VT.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_ISAAC)))
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_ISAAC)))
     {
-      return VT.VT_CONNECTION_ENCRYPTION_ISAAC;
+      return VTSystem.VT_CONNECTION_ENCRYPTION_ISAAC;
     }
     
 //    blake3Digest.reset();
@@ -873,30 +873,30 @@ public class VTServerConnection
     // setVerificationStreams(true);
     
     int remoteEncryptionType = 0;
-    if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_NONE)
+    if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
     {
       remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_NONE, encryptionType);
-      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_NONE)
+      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
       {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_NONE);
+        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
         return true;
       }
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_VMPC)
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_VMPC)
     {
       remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_VMPC, encryptionType);
-      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_NONE)
+      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
       {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_VMPC);
+        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_VMPC);
         return true;
       }
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_ZUC)
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ZUC)
     {
       remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_ZUC, encryptionType);
-      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_NONE)
+      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
       {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_ZUC);
+        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ZUC);
         return true;
       }
     }
@@ -910,30 +910,30 @@ public class VTServerConnection
     // return true;
     // }
     // }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_SALSA)
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_SALSA)
     {
       remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_SALSA, encryptionType);
-      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_NONE)
+      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
       {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_SALSA);
+        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_SALSA);
         return true;
       }
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_HC)
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_HC)
     {
       remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_HC, encryptionType);
-      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_NONE)
+      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
       {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC);
+        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
         return true;
       }
     }
-    else if (encryptionType == VT.VT_CONNECTION_ENCRYPTION_ISAAC)
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ISAAC)
     {
       remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_ISAAC, encryptionType);
-      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_NONE)
+      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
       {
-        setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_ISAAC);
+        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ISAAC);
         return true;
       }
     }
@@ -947,14 +947,14 @@ public class VTServerConnection
 //      }
 //    }
     
-    if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_VMPC)
+    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_VMPC)
     {
-      setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_VMPC);
+      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_VMPC);
       return true;
     }
-    if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_ZUC)
+    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ZUC)
     {
-      setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_ZUC);
+      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ZUC);
       return true;
     }
     // if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_BLOWFISH)
@@ -962,19 +962,19 @@ public class VTServerConnection
     // setEncryptionType(VT.VT_CONNECTION_ENCRYPT_BLOWFISH);
     // return true;
     // }
-    if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_SALSA)
+    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_SALSA)
     {
-      setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_SALSA);
+      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_SALSA);
       return true;
     }
-    if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_HC)
+    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_HC)
     {
-      setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC);
+      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
       return true;
     }
-    if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPTION_ISAAC)
+    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ISAAC)
     {
-      setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_ISAAC);
+      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ISAAC);
       return true;
     }
 //    if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)

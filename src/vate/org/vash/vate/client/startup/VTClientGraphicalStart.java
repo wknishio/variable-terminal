@@ -1,8 +1,8 @@
 package org.vash.vate.client.startup;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.client.VTClient;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.runtime.VTRuntimeExit;
 
@@ -10,10 +10,10 @@ public class VTClientGraphicalStart
 {
   public static void main(String[] args)
   {
-    VTSystemConsole.setGraphical(true);
-    VTSystemConsole.setSeparated(false);
-    VTSystemConsole.setRemoteIcon(true);
-    VTSystemConsole.setDaemon(false);
+    VTMainConsole.setGraphical(true);
+    VTMainConsole.setSeparated(false);
+    VTMainConsole.setRemoteIcon(true);
+    VTMainConsole.setDaemon(false);
     
     boolean help = false;
     boolean daemon = false;
@@ -33,15 +33,15 @@ public class VTClientGraphicalStart
       }
       if (help && !daemon)
       {
-        VTSystemConsole.initialize();
-        VTSystemConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Client - Console");
-        VTSystemConsole.print(VTHelpManager.printClientModeParametersHelp());
-        VTSystemConsole.print(VTHelpManager.printConnnectionParametersHelp());
-        if (VTSystemConsole.isGraphical())
+        VTMainConsole.initialize();
+        VTMainConsole.setTitle("Variable-Terminal " + VTSystem.VT_VERSION + " - Client - Console");
+        VTMainConsole.print(VTHelpManager.printClientModeParametersHelp());
+        VTMainConsole.print(VTHelpManager.printConnnectionParametersHelp());
+        if (VTMainConsole.isGraphical())
         {
           try
           {
-            VTSystemConsole.readLine();
+            VTMainConsole.readLine();
           }
           catch (Throwable e)
           {
@@ -50,7 +50,7 @@ public class VTClientGraphicalStart
         }
         VTRuntimeExit.exit(0);
       }
-      VTSystemConsole.setDaemon(daemon);
+      VTMainConsole.setDaemon(daemon);
       VTClient client = new VTClient();
       try
       {
@@ -66,7 +66,7 @@ public class VTClientGraphicalStart
     }
     else
     {
-      VTSystemConsole.setDaemon(daemon);
+      VTMainConsole.setDaemon(daemon);
       VTClient client = new VTClient();
       // client.initialize();
       // client.configure();

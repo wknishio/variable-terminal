@@ -1,6 +1,6 @@
 package org.vash.vate.server.opticaldrive;
 
-import org.vash.vate.nativeutils.VTSystemNativeUtils;
+import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.task.VTTask;
 
@@ -38,7 +38,7 @@ public class VTServerOpticalDriveOperation extends VTTask
     {
       if (open)
       {
-        if (VTSystemNativeUtils.openDiscDrive())
+        if (VTMainNativeUtils.openDiscDrive())
         {
           synchronized (this)
           {
@@ -59,7 +59,7 @@ public class VTServerOpticalDriveOperation extends VTTask
       }
       else
       {
-        if (VTSystemNativeUtils.closeDiscDrive())
+        if (VTMainNativeUtils.closeDiscDrive())
         {
           synchronized (this)
           {

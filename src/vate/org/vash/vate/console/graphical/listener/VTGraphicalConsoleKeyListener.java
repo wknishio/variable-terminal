@@ -9,9 +9,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.util.List;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.console.graphical.VTGraphicalConsole;
-import org.vash.vate.graphics.font.VTSystemFontManager;
+import org.vash.vate.graphics.font.VTFontManager;
 import org.vash.vate.runtime.VTRuntimeExit;
 
 public class VTGraphicalConsoleKeyListener implements KeyListener
@@ -51,7 +51,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
      * if (e.getKeyCode() == KeyEvent.VK_CONTEXT_MENU) {
      * popupMenu.show(e.getComponent(), 0, 0); e.consume(); }
      */
-    if (VTSystemFontManager.processKeyEvent(e))
+    if (VTFontManager.processKeyEvent(e))
     {
       return;
     }
@@ -63,7 +63,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
         if (systemClipboard.isDataFlavorAvailable(DataFlavor.stringFlavor))
         {
           String text = systemClipboard.getData(DataFlavor.stringFlavor).toString();
-          VTSystemConsole.input(text);
+          VTMainConsole.input(text);
         }
         else if (systemClipboard.isDataFlavorAvailable(DataFlavor.javaFileListFlavor))
         {
@@ -77,7 +77,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
               fileList.append(" " + file.getAbsolutePath());
             }
             fileListString = fileList.substring(1);
-            VTSystemConsole.input(fileListString);
+            VTMainConsole.input(fileListString);
           }
         }
       }
@@ -90,7 +90,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     if (e.isControlDown() && !e.isShiftDown() && !e.isAltDown() && e.getKeyCode() == KeyEvent.VK_INSERT)
     {
       e.consume();
-      String selectedText = VTSystemConsole.getSelectedText();
+      String selectedText = VTMainConsole.getSelectedText();
       StringSelection text = null;
       if (selectedText != null)
       {
@@ -106,7 +106,7 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     if (e.isControlDown() && !e.isShiftDown() && !e.isAltDown() && e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
     {
       e.consume();
-      String selectedText = VTSystemConsole.getAllText();
+      String selectedText = VTMainConsole.getAllText();
       StringSelection text = null;
       if (selectedText != null)
       {
@@ -122,50 +122,50 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_DELETE)
     {
       e.consume();
-      VTSystemFontManager.defaultFontSize();
+      VTFontManager.defaultFontSize();
       return;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_HOME)
     {
       e.consume();
-      VTSystemFontManager.packComponentSize();
+      VTFontManager.packComponentSize();
       return;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_END)
     {
       e.consume();
-      if (VTSystemFontManager.isFontStyleBold())
+      if (VTFontManager.isFontStyleBold())
       {
-        VTSystemFontManager.disableFontStyleBold();
+        VTFontManager.disableFontStyleBold();
       }
       else
       {
-        VTSystemFontManager.enableFontStyleBold();
+        VTFontManager.enableFontStyleBold();
       }
       return;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_X)
     {
       e.consume();
-      VTSystemConsole.toggleInputMode();
+      VTMainConsole.toggleInputMode();
       return;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_Z)
     {
       e.consume();
-      VTSystemConsole.toggleFlushMode();
+      VTMainConsole.toggleFlushMode();
       return;
     }
     if (e.getKeyCode() == KeyEvent.VK_INSERT)
     {
       e.consume();
-      VTSystemConsole.toggleInputMode();
+      VTMainConsole.toggleInputMode();
       return;
     }
     if (e.getKeyCode() == KeyEvent.VK_PAUSE)
     {
       e.consume();
-      VTSystemConsole.toggleFlushMode();
+      VTMainConsole.toggleFlushMode();
       return;
     }
     
@@ -309,11 +309,11 @@ public class VTGraphicalConsoleKeyListener implements KeyListener
     }
     else if (e.getKeyChar() == '\u001A')
     {
-      VTSystemConsole.toggleFlushMode();
+      VTMainConsole.toggleFlushMode();
     }
     else if (e.getKeyChar() == '\u0018')
     {
-      VTSystemConsole.toggleInputMode();
+      VTMainConsole.toggleInputMode();
     }
     else
     {

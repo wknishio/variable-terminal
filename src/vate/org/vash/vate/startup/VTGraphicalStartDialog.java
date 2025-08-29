@@ -18,8 +18,8 @@ import java.awt.event.WindowListener;
 //import java.awt.image.BufferedImage;
 import java.lang.reflect.Method;
 
-import org.vash.vate.VT;
-import org.vash.vate.graphics.font.VTSystemFontManager;
+import org.vash.vate.VTSystem;
+import org.vash.vate.graphics.font.VTFontManager;
 import org.vash.vate.graphics.image.VTIconDisplay;
 
 public class VTGraphicalStartDialog extends Dialog
@@ -46,12 +46,12 @@ public class VTGraphicalStartDialog extends Dialog
   {
     super(owner, true);
     // setFont(new Font("Dialog", Font.PLAIN, 12));
-    setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
+    setTitle("Variable-Terminal " + VTSystem.VT_VERSION + " - Console");
     try
     {
       if (setIconImageMethod != null)
       {
-        setIconImageMethod.invoke(this, VT.remoteIcon);
+        setIconImageMethod.invoke(this, VTSystem.remoteIcon);
       }
     }
     catch (Throwable e)
@@ -59,7 +59,7 @@ public class VTGraphicalStartDialog extends Dialog
       
     }
     
-    VTSystemFontManager.registerWindow(this);
+    VTFontManager.registerWindow(this);
     
     final Panel mainPanel = new Panel();
     final Panel titlePanel = new Panel();
@@ -68,7 +68,7 @@ public class VTGraphicalStartDialog extends Dialog
     final Panel buttonsPanel = new Panel();
     final Panel buttonsRow = new Panel();
     final Label choose = new Label("Choose the module:");
-    final Label title = new Label("Variable-Terminal " + VT.VT_VERSION);
+    final Label title = new Label("Variable-Terminal " + VTSystem.VT_VERSION);
     
     mainPanel.setLayout(new BorderLayout());
     titlePanel.setLayout(new BorderLayout());
@@ -78,12 +78,12 @@ public class VTGraphicalStartDialog extends Dialog
     
     VTIconDisplay display = new VTIconDisplay();
     display.setFocusable(false);
-    float fontScaling = VTSystemFontManager.FONT_SCALING_FACTOR_MONOSPACED;
+    float fontScaling = VTFontManager.FONT_SCALING_FACTOR_MONOSPACED;
     int imageScaling = (int)Math.ceil(4 * fontScaling);
     //System.out.println("fontScaling:" + fontScaling);
     //System.out.println("imageScaling:" + imageScaling);
     //System.out.println("imageSize:" + 16 * imageScaling);
-    display.setImage(VT.remoteIcon, 16 * imageScaling, 16 * imageScaling);
+    display.setImage(VTSystem.remoteIcon, 16 * imageScaling, 16 * imageScaling);
     
     final Button client = new Button(" Client ");
     final Button server = new Button(" Server ");
@@ -144,7 +144,7 @@ public class VTGraphicalStartDialog extends Dialog
       
       public void keyPressed(KeyEvent e)
       {
-        if (VTSystemFontManager.processKeyEvent(e))
+        if (VTFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -271,7 +271,7 @@ public class VTGraphicalStartDialog extends Dialog
       
       public void keyPressed(KeyEvent e)
       {
-        if (VTSystemFontManager.processKeyEvent(e))
+        if (VTFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -324,7 +324,7 @@ public class VTGraphicalStartDialog extends Dialog
       
       public void keyPressed(KeyEvent e)
       {
-        if (VTSystemFontManager.processKeyEvent(e))
+        if (VTFontManager.processKeyEvent(e))
         {
           return;
         }

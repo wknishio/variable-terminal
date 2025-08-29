@@ -2,7 +2,7 @@ package org.vash.vate.client.console.remote;
 
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.session.VTClientSession;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.task.VTTask;
 
 public class VTClientRemoteConsoleReader extends VTTask
@@ -29,8 +29,8 @@ public class VTClientRemoteConsoleReader extends VTTask
       try
       {
         //readChars = connection.getResultReader().read(resultBuffer, 0, resultBufferSize);
-        VTSystemConsole.print(connection.getResultReader().readUTF());
-        VTSystemConsole.flush();
+        VTMainConsole.print(connection.getResultReader().readUTF());
+        VTMainConsole.flush();
       }
       catch (Throwable e)
       {

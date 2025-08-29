@@ -3,7 +3,7 @@ package org.vash.vate.server.console.local.standard.command;
 import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
 public class VTPRINTER extends VTServerStandardLocalConsoleCommandProcessor
@@ -38,11 +38,11 @@ public class VTPRINTER extends VTServerStandardLocalConsoleCommandProcessor
       }
       message.append("\nVT>End of server print services list\nVT>");
       
-      VTSystemConsole.print(message.toString());
+      VTMainConsole.print(message.toString());
     }
     else
     {
-      VTSystemConsole.print("\rVT>No print services found on server!\nVT>");
+      VTMainConsole.print("\rVT>No print services found on server!\nVT>");
     }
   }
   

@@ -6,9 +6,9 @@ import java.awt.MenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.client.dialog.VTClientConfigurationDialog;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuItem;
 import org.vash.vate.dialog.VTFileDialog;
@@ -75,8 +75,8 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
     removeAllMenus();
     // this.dialog = dialog;
     // this.frame = frame;
-    final VTFileDialog loadFileDialog = new VTFileDialog(VTSystemConsole.getFrame(), "Variable-Terminal " + VT.VT_VERSION + " - Client - Load File", FileDialog.LOAD);
-    final VTFileDialog saveFileDialog = new VTFileDialog(VTSystemConsole.getFrame(), "Variable-Terminal " + VT.VT_VERSION + " - Client - Save File", FileDialog.SAVE);
+    final VTFileDialog loadFileDialog = new VTFileDialog(VTMainConsole.getFrame(), "Variable-Terminal " + VTSystem.VT_VERSION + " - Client - Load File", FileDialog.LOAD);
+    final VTFileDialog saveFileDialog = new VTFileDialog(VTMainConsole.getFrame(), "Variable-Terminal " + VTSystem.VT_VERSION + " - Client - Save File", FileDialog.SAVE);
     clientConsoleCommandsMenu = new Menu("Command");
     // clientConsoleCommandsMenu.setShortcut(new MenuShortcut(KeyEvent.VK_C,
     // true));
@@ -416,7 +416,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
         loadFileDialog.setVisible(true);
         if (loadFileDialog.getFile() != null)
         {
-          VTSystemConsole.input(loadFileDialog.getDirectory() + loadFileDialog.getFile());
+          VTMainConsole.input(loadFileDialog.getDirectory() + loadFileDialog.getFile());
         }
       }
     });
@@ -428,7 +428,7 @@ public class VTClientRemoteGraphicalConsoleMenuBar extends VTGraphicalConsoleMen
         saveFileDialog.setVisible(true);
         if (saveFileDialog.getFile() != null)
         {
-          VTSystemConsole.input(saveFileDialog.getDirectory() + saveFileDialog.getFile());
+          VTMainConsole.input(saveFileDialog.getDirectory() + saveFileDialog.getFile());
         }
       }
     });

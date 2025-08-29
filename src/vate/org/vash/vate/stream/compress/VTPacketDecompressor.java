@@ -3,12 +3,12 @@ package org.vash.vate.stream.compress;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
 
 public final class VTPacketDecompressor extends OutputStream
 {
-  private static final int bufferSize = VT.VT_COMPRESSION_BUFFER_SIZE_BYTES;
+  private static final int bufferSize = VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES;
   private final InputStream compressedInputStream;
   private final OutputStream decompressedOutputStream;
   private final VTByteArrayInputStream packetInputPipe;

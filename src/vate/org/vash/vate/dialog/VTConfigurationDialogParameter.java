@@ -8,7 +8,7 @@ import java.awt.Panel;
 import java.awt.TextField;
 import java.awt.event.KeyListener;
 
-import org.vash.vate.graphics.font.VTSystemFontManager;
+import org.vash.vate.graphics.font.VTFontManager;
 
 public class VTConfigurationDialogParameter extends Panel
 {
@@ -22,7 +22,7 @@ public class VTConfigurationDialogParameter extends Panel
     this.label = new Label(name);
     this.label.setAlignment(Label.CENTER);
     //VTGlobalTextStyleManager.registerInputComponent(label);
-    VTSystemFontManager.registerInputComponent(parameter);
+    VTFontManager.registerInputComponent(parameter);
     BorderLayout layout = new BorderLayout();
     setLayout(layout);
     Panel labelPanel = new Panel(new BorderLayout());

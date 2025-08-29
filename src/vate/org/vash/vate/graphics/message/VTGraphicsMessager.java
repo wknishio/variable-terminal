@@ -21,7 +21,7 @@ import java.lang.reflect.Method;
 import javax.imageio.ImageIO;
 
 import org.vash.vate.graphics.device.VTGraphicalDeviceResolver;
-import org.vash.vate.graphics.font.VTSystemFontManager;
+import org.vash.vate.graphics.font.VTFontManager;
 import org.vash.vate.graphics.image.VTIconDisplay;
 import org.vash.vate.reflection.VTReflectionUtils;
 
@@ -140,7 +140,7 @@ public class VTGraphicsMessager
       
       // Panel main = new Panel();
       // main.setLayout(new GridLayout(2, 1));
-      float fontScaling = VTSystemFontManager.FONT_SCALING_FACTOR_MONOSPACED;
+      float fontScaling = VTFontManager.FONT_SCALING_FACTOR_MONOSPACED;
       int imageScaling = (int)Math.ceil(2 * fontScaling);
       
       Panel p0 = new Panel();
@@ -190,7 +190,7 @@ public class VTGraphicsMessager
           {
             if (pressed)
             {
-              VTSystemFontManager.unregisterWindow(dialog);
+              VTFontManager.unregisterWindow(dialog);
               dialog.setVisible(false);
               dialog.dispose();
               if (frame.isUndecorated())
@@ -238,7 +238,7 @@ public class VTGraphicsMessager
           {
             if (pressed)
             {
-              VTSystemFontManager.unregisterWindow(dialog);
+              VTFontManager.unregisterWindow(dialog);
               dialog.setVisible(false);
               dialog.dispose();
               if (frame.isUndecorated())
@@ -267,7 +267,7 @@ public class VTGraphicsMessager
       {
         public void actionPerformed(ActionEvent e)
         {
-          VTSystemFontManager.unregisterWindow(dialog);
+          VTFontManager.unregisterWindow(dialog);
           dialog.setVisible(false);
           dialog.dispose();
           if (frame.isUndecorated())
@@ -298,7 +298,7 @@ public class VTGraphicsMessager
       {
         
       }
-      VTSystemFontManager.registerWindow(dialog);
+      VTFontManager.registerWindow(dialog);
       dialog.setResizable(true);
       dialog.pack();
       // dialog.setUndecorated(true);
@@ -322,7 +322,7 @@ public class VTGraphicsMessager
         
         public void windowClosing(WindowEvent e)
         {
-          VTSystemFontManager.unregisterWindow(dialog);
+          VTFontManager.unregisterWindow(dialog);
           dialog.setVisible(false);
           dialog.dispose();
           if (frame.isUndecorated())
@@ -416,7 +416,7 @@ public class VTGraphicsMessager
       
       // Panel main = new Panel();
       // main.setLayout(new GridLayout(2, 1));
-      float fontScaling = VTSystemFontManager.FONT_SCALING_FACTOR_MONOSPACED;
+      float fontScaling = VTFontManager.FONT_SCALING_FACTOR_MONOSPACED;
       int imageScaling = (int)Math.ceil(2 * fontScaling);
       
       Panel p1 = new Panel();
@@ -463,7 +463,7 @@ public class VTGraphicsMessager
           {
             if (pressed)
             {
-              VTSystemFontManager.unregisterWindow(dialog);
+              VTFontManager.unregisterWindow(dialog);
               dialog.setVisible(false);
               dialog.dispose();
               if (frame.isUndecorated())
@@ -511,7 +511,7 @@ public class VTGraphicsMessager
           {
             if (pressed)
             {
-              VTSystemFontManager.unregisterWindow(dialog);
+              VTFontManager.unregisterWindow(dialog);
               dialog.setVisible(false);
               dialog.dispose();
               if (frame.isUndecorated())
@@ -540,7 +540,7 @@ public class VTGraphicsMessager
       {
         public void actionPerformed(ActionEvent e)
         {
-          VTSystemFontManager.unregisterWindow(dialog);
+          VTFontManager.unregisterWindow(dialog);
           dialog.setVisible(false);
           dialog.dispose();
           if (frame.isUndecorated())
@@ -570,7 +570,7 @@ public class VTGraphicsMessager
       {
         
       }
-      VTSystemFontManager.registerWindow(dialog);
+      VTFontManager.registerWindow(dialog);
       dialog.setResizable(true);
       dialog.pack();
       // dialog.setUndecorated(true);
@@ -592,7 +592,7 @@ public class VTGraphicsMessager
         
         public void windowClosing(WindowEvent e)
         {
-          VTSystemFontManager.unregisterWindow(dialog);
+          VTFontManager.unregisterWindow(dialog);
           dialog.setVisible(false);
           dialog.dispose();
           if (frame.isUndecorated())

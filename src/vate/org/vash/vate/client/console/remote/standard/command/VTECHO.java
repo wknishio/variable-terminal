@@ -1,7 +1,7 @@
 package org.vash.vate.client.console.remote.standard.command;
 
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 
 public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
 {
@@ -24,13 +24,13 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
       session.getConnection().getCommandWriter().writeLine(command + " " + state);
       session.getConnection().getCommandWriter().flush();
       
-      if (VTSystemConsole.isCommandEcho())
+      if (VTMainConsole.isCommandEcho())
       {
-        VTSystemConsole.setCommandEcho(false);
+        VTMainConsole.setCommandEcho(false);
       }
       else
       {
-        VTSystemConsole.setCommandEcho(true);
+        VTMainConsole.setCommandEcho(true);
       }
     }
     else if (state == 1)
@@ -47,13 +47,13 @@ public class VTECHO extends VTClientStandardRemoteConsoleCommandProcessor
       session.getConnection().getCommandWriter().writeLine(command + " " + state);
       session.getConnection().getCommandWriter().flush();
       
-      if (VTSystemConsole.isCommandEcho())
+      if (VTMainConsole.isCommandEcho())
       {
-        VTSystemConsole.setCommandEcho(false);
+        VTMainConsole.setCommandEcho(false);
       }
       else
       {
-        VTSystemConsole.setCommandEcho(true);
+        VTMainConsole.setCommandEcho(true);
       }
     }
     else if (state == 3)

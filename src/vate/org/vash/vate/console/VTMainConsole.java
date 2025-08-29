@@ -10,15 +10,15 @@ import java.lang.reflect.Method;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.console.graphical.VTGraphicalConsole;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsoleMenuBar;
 import org.vash.vate.console.lanterna.separated.VTLanternaConsole;
 import org.vash.vate.console.standard.VTStandardConsole;
-import org.vash.vate.nativeutils.VTSystemNativeUtils;
+import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.reflection.VTReflectionUtils;
 
-public final class VTSystemConsole
+public final class VTMainConsole
 {
   // private static boolean initialized;
   private static volatile boolean graphical = false;
@@ -29,8 +29,8 @@ public final class VTSystemConsole
   
   static
   {
-    VT.initialize();
-    VTSystemNativeUtils.initialize();
+    VTSystem.initialize();
+    VTMainNativeUtils.initialize();
   }
   
   private static boolean checkIOConsole()
@@ -109,7 +109,7 @@ public final class VTSystemConsole
         }
         else
         {
-          if (separated && hasTerminal() && VTSystemNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
+          if (separated && hasTerminal() && VTMainNativeUtils.checkANSI() && !VTReflectionUtils.detectWindows())
           {
             console = new VTLanternaConsole(graphical, remoteIcon, null);
           }
@@ -141,7 +141,7 @@ public final class VTSystemConsole
   
   public synchronized static void setSeparated(boolean separated)
   {
-    VTSystemConsole.separated = separated;
+    VTMainConsole.separated = separated;
   }
   
 //  public synchronized static void setLanterna(boolean lanterna)
@@ -153,10 +153,10 @@ public final class VTSystemConsole
   {
     if (console == null)
     {
-      VTSystemConsole.graphical = graphical;
+      VTMainConsole.graphical = graphical;
       if (VTReflectionUtils.isAWTHeadless())
       {
-        VTSystemConsole.graphical = false;
+        VTMainConsole.graphical = false;
       }
       else
       {
@@ -164,7 +164,7 @@ public final class VTSystemConsole
         {
           if (!hasTerminal())
           {
-            VTSystemConsole.graphical = true;
+            VTMainConsole.graphical = true;
           }
         }
       }
@@ -182,7 +182,7 @@ public final class VTSystemConsole
     {
       try
       {
-        VTSystemConsole.getFrame().setVisible(false);
+        VTMainConsole.getFrame().setVisible(false);
       }
       catch (Throwable t)
       {
@@ -197,7 +197,7 @@ public final class VTSystemConsole
     {
       try
       {
-        VTSystemConsole.getFrame().setVisible(true);
+        VTMainConsole.getFrame().setVisible(true);
       }
       catch (Throwable t)
       {
@@ -211,13 +211,13 @@ public final class VTSystemConsole
   
   public synchronized static void setDaemon(boolean daemon)
   {
-    if (VTSystemConsole.daemon == daemon)
+    if (VTMainConsole.daemon == daemon)
     {
       return;
     }
     if (console == null)
     {
-      VTSystemConsole.daemon = daemon;
+      VTMainConsole.daemon = daemon;
     }
     else
     {
@@ -225,12 +225,12 @@ public final class VTSystemConsole
       {
         if (daemon == true)
         {
-          VTSystemConsole.daemon = daemon;
+          VTMainConsole.daemon = daemon;
           EventQueue.invokeLater(daemonizeThread);
         }
         else
         {
-          VTSystemConsole.daemon = daemon;
+          VTMainConsole.daemon = daemon;
           EventQueue.invokeLater(undaemonizeThread);
         }
       }
@@ -238,12 +238,12 @@ public final class VTSystemConsole
       {
         if (daemon == true)
         {
-          VTSystemConsole.daemon = daemon;
+          VTMainConsole.daemon = daemon;
           //VTSystemNativeUtils.hideConsole();
         }
         else
         {
-          VTSystemConsole.daemon = daemon;
+          VTMainConsole.daemon = daemon;
           //VTSystemNativeUtils.attachConsole();
           // if using a tty console, it may be unable to reattach
         }
@@ -442,7 +442,7 @@ public final class VTSystemConsole
         }
         else
         {
-          VTSystemNativeUtils.printf("\u0007");
+          VTMainNativeUtils.printf("\u0007");
           // System.out.print("\u0007");
         }
       }
@@ -692,7 +692,7 @@ public final class VTSystemConsole
   
   public static void setRemoteIcon(boolean remoteIcon)
   {
-    VTSystemConsole.remoteIcon = remoteIcon;
+    VTMainConsole.remoteIcon = remoteIcon;
   }
   
   public static void addToggleFlushModePauseNotify(VTConsoleBooleanToggleNotify notifyFlushModePause)
@@ -743,14 +743,14 @@ public final class VTSystemConsole
       Object consoleResult = consoleMethod.invoke(null);
       if (consoleResult != null)
       {
-        return VTSystemNativeUtils.isatty(0) != 0 && VTSystemNativeUtils.isatty(1) != 0;
+        return VTMainNativeUtils.isatty(0) != 0 && VTMainNativeUtils.isatty(1) != 0;
       }
       try
       {
         if (FileDescriptor.in.valid())
         {
           FileDescriptor.in.sync();
-          return VTSystemNativeUtils.isatty(0) != 0 && VTSystemNativeUtils.isatty(1) != 0;
+          return VTMainNativeUtils.isatty(0) != 0 && VTMainNativeUtils.isatty(1) != 0;
         }
         else
         {
@@ -769,7 +769,7 @@ public final class VTSystemConsole
         if (FileDescriptor.in.valid())
         {
           FileDescriptor.in.sync();
-          return VTSystemNativeUtils.isatty(0) != 0 && VTSystemNativeUtils.isatty(1) != 0;
+          return VTMainNativeUtils.isatty(0) != 0 && VTMainNativeUtils.isatty(1) != 0;
         }
         else
         {

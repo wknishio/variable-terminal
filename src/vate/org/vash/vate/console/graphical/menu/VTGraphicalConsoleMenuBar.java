@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
 import org.vash.vate.console.VTConsole;
-import org.vash.vate.graphics.font.VTSystemFontManager;
+import org.vash.vate.graphics.font.VTFontManager;
 
 public class VTGraphicalConsoleMenuBar extends MenuBar
 {
@@ -140,7 +140,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       public void actionPerformed(ActionEvent e)
       {
         console.requestFocus();
-        VTSystemFontManager.increaseFontSize();
+        VTFontManager.increaseFontSize();
       }
     });
     
@@ -149,7 +149,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       public void actionPerformed(ActionEvent e)
       {
         console.requestFocus();
-        VTSystemFontManager.decreaseFontSize();
+        VTFontManager.decreaseFontSize();
       }
     });
     
@@ -158,13 +158,13 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       public void actionPerformed(ActionEvent e)
       {
         console.requestFocus();
-        if (VTSystemFontManager.isFontStyleBold())
+        if (VTFontManager.isFontStyleBold())
         {
-          VTSystemFontManager.disableFontStyleBold();
+          VTFontManager.disableFontStyleBold();
         }
         else
         {
-          VTSystemFontManager.enableFontStyleBold();
+          VTFontManager.enableFontStyleBold();
         }
       }
     });
@@ -174,7 +174,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       public void actionPerformed(ActionEvent e)
       {
         console.requestFocus();
-        VTSystemFontManager.packComponentSize();
+        VTFontManager.packComponentSize();
       }
     });
     
@@ -183,7 +183,7 @@ public class VTGraphicalConsoleMenuBar extends MenuBar
       public void actionPerformed(ActionEvent e)
       {
         console.requestFocus();
-        VTSystemFontManager.defaultFontSize();
+        VTFontManager.defaultFontSize();
       }
     });
     

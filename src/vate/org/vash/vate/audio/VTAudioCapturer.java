@@ -18,7 +18,7 @@ import org.concentus.OpusApplication;
 import org.concentus.OpusEncoder;
 import org.concentus.OpusException;
 import org.concentus.OpusMode;
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.stream.endian.VTLittleEndianByteArrayInputOutputStream;
 import org.vash.vate.stream.endian.VTLittleEndianOutputStream;
 import org.xiph.speex.SpeexEncoder;
@@ -129,7 +129,7 @@ public class VTAudioCapturer
     private final byte[] inputBuffer;
     // private short[] inputBufferShort;
     private final byte[] outputBuffer;
-    private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VT.VT_STANDARD_BUFFER_SIZE_BYTES);
+    private VTLittleEndianByteArrayInputOutputStream frameStream = new VTLittleEndianByteArrayInputOutputStream(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
     private final Collection<VTLittleEndianOutputStream> streams;
     //private final String id;
     private TargetDataLine line;
@@ -185,7 +185,7 @@ public class VTAudioCapturer
       }
       else if (sampleRate == 12000)
       {
-        this.codec = VT.VT_AUDIO_CODEC_OPUS;
+        this.codec = VTSystem.VT_AUDIO_CODEC_OPUS;
         try
         {
           this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
@@ -228,7 +228,7 @@ public class VTAudioCapturer
       }
       else if (sampleRate == 24000)
       {
-        this.codec = VT.VT_AUDIO_CODEC_OPUS;
+        this.codec = VTSystem.VT_AUDIO_CODEC_OPUS;
         try
         {
           this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
@@ -247,7 +247,7 @@ public class VTAudioCapturer
       }
       else if (sampleRate == 32000)
       {
-        this.codec = VT.VT_AUDIO_CODEC_SPEEX;
+        this.codec = VTSystem.VT_AUDIO_CODEC_SPEEX;
         this.speex.init(2, 7, sampleRate, audioFormat.getChannels());
         this.speex.getEncoder().setQuality(7);
         this.speex.getEncoder().setComplexity(7);
@@ -257,7 +257,7 @@ public class VTAudioCapturer
       }
       else if (sampleRate == 48000)
       {
-        this.codec = VT.VT_AUDIO_CODEC_OPUS;
+        this.codec = VTSystem.VT_AUDIO_CODEC_OPUS;
         try
         {
           this.opus = new OpusEncoder(sampleRate, audioFormat.getChannels(), OpusApplication.OPUS_APPLICATION_RESTRICTED_LOWDELAY);
@@ -346,7 +346,7 @@ public class VTAudioCapturer
     {
       int offset = 0;
       int readSize = 0;
-      readSize = Math.max(VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
+      readSize = Math.max(VTSystem.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VTSystem.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
       while (running)
       {
         decodedFrameSize = line.read(inputBuffer, 0, readSize);
@@ -393,7 +393,7 @@ public class VTAudioCapturer
     {
       int offset = 0;
       int readSize = 0;
-      readSize = Math.max(VT.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VT.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
+      readSize = Math.max(VTSystem.VT_AUDIO_LINE_CAPTURE_BUFFER_MILLISECONDS / (VTSystem.VT_AUDIO_CODEC_FRAME_MILLISECONDS * 2), line.available() / frameSize) * frameSize;
       while (running)
       {
         decodedFrameSize = line.read(inputBuffer, 0, readSize);
@@ -444,7 +444,7 @@ public class VTAudioCapturer
       
       try
       {
-        if (codec == VT.VT_AUDIO_CODEC_OPUS)
+        if (codec == VTSystem.VT_AUDIO_CODEC_OPUS)
         {
           loopOpus();
         }
@@ -466,12 +466,12 @@ public class VTAudioCapturer
     VTAudioCapturerThread capturer = lines.get(line);
     if (capturer == null)
     {
-      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new BufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
+      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new BufferedOutputStream(out, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
       lines.put(line, new VTAudioCapturerThread(stream, line, codec, frameMilliseconds));
     }
     else
     {
-      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new BufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES));
+      VTLittleEndianOutputStream stream = new VTLittleEndianOutputStream(new BufferedOutputStream(out, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES));
       capturer.addOutput(stream);
     }
     return true;

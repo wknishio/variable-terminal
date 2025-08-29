@@ -16,7 +16,7 @@ import java.io.PrintStream;
 import java.util.Locale;
 import java.util.TooManyListenersException;
 
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleDropTargetListener;
@@ -24,7 +24,7 @@ import org.vash.vate.console.graphical.listener.VTGraphicalConsoleKeyListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleMouseListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleWindowListener;
 import org.vash.vate.console.graphical.menu.VTGraphicalConsolePopupMenu;
-import org.vash.vate.graphics.font.VTSystemFontManager;
+import org.vash.vate.graphics.font.VTFontManager;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.stream.filter.VTDoubledOutputStream;
 
@@ -219,8 +219,8 @@ public class VTGraphicalConsole extends VTConsole
     textArea.setText(replacedBlankArea);
     screenBuffer.append(trueBlankArea);
     textArea.setCaretPosition(0);
-    VTSystemFontManager.registerWindow(frame);
-    VTSystemFontManager.registerMonospacedComponent(textArea);
+    VTFontManager.registerWindow(frame);
+    VTFontManager.registerMonospacedComponent(textArea);
     frame.pack();
     frame.toFront();
     updateTask.start();
@@ -801,11 +801,11 @@ public class VTGraphicalConsole extends VTConsole
     }
     if (c == '\u001A')
     {
-      VTSystemConsole.toggleFlushMode();
+      VTMainConsole.toggleFlushMode();
     }
     if (c == '\u0018')
     {
-      VTSystemConsole.toggleInputMode();
+      VTMainConsole.toggleInputMode();
     }
     if (c != VT_VK_DELETE && c != VT_VK_RIGHT && c != VT_VK_LEFT && c != VT_VK_UP && c != VT_VK_DOWN && c != VT_VK_HOME && c != VT_VK_END)
     {
@@ -833,11 +833,11 @@ public class VTGraphicalConsole extends VTConsole
     }
     if (c == '\u001A')
     {
-      VTSystemConsole.toggleFlushMode();
+      VTMainConsole.toggleFlushMode();
     }
     if (c == '\u0018')
     {
-      VTSystemConsole.toggleInputMode();
+      VTMainConsole.toggleInputMode();
     }
     synchronized (inputSynchronizer)
     {

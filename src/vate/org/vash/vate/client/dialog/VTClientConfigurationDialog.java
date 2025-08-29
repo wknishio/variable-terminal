@@ -44,14 +44,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.client.VTClient;
 import org.vash.vate.client.connection.VTClientConnection;
 import org.vash.vate.client.connection.VTClientConnector;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.dialog.VTConfigurationDialogParameter;
 import org.vash.vate.dialog.VTFileDialog;
-import org.vash.vate.graphics.font.VTSystemFontManager;
+import org.vash.vate.graphics.font.VTFontManager;
 
 public class VTClientConfigurationDialog extends Dialog
 {
@@ -108,10 +108,10 @@ public class VTClientConfigurationDialog extends Dialog
     // super(title, gc);
     this.owner = owner;
     this.application = application;
-    final VTFileDialog loadFileDialog = new VTFileDialog(this, "Variable-Terminal " + VT.VT_VERSION + " - Client - Load File", FileDialog.LOAD);
-    final VTFileDialog saveFileDialog = new VTFileDialog(this, "Variable-Terminal " + VT.VT_VERSION + " - Client - Save File", FileDialog.SAVE);
-    VTSystemFontManager.registerWindow(loadFileDialog);
-    VTSystemFontManager.registerWindow(saveFileDialog);
+    final VTFileDialog loadFileDialog = new VTFileDialog(this, "Variable-Terminal " + VTSystem.VT_VERSION + " - Client - Load File", FileDialog.LOAD);
+    final VTFileDialog saveFileDialog = new VTFileDialog(this, "Variable-Terminal " + VTSystem.VT_VERSION + " - Client - Save File", FileDialog.SAVE);
+    VTFontManager.registerWindow(loadFileDialog);
+    VTFontManager.registerWindow(saveFileDialog);
     
     Set<AWTKeyStroke> forwardTraversalKeysGeneral = new HashSet<AWTKeyStroke>();
     Set<AWTKeyStroke> backwardTraversalKeysGeneral = new HashSet<AWTKeyStroke>();
@@ -146,7 +146,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       if (setIconImageMethod != null)
       {
-        setIconImageMethod.invoke(this, VT.remoteIcon);
+        setIconImageMethod.invoke(this, VTSystem.remoteIcon);
       }
     }
     catch (Throwable e)
@@ -193,7 +193,7 @@ public class VTClientConfigurationDialog extends Dialog
       }
     });
     
-    VTSystemFontManager.registerWindow(this);
+    VTFontManager.registerWindow(this);
     
     Choice connectionModeChoice = new Choice();
     connectionMode = new VTConfigurationDialogParameter("Connection Mode:", connectionModeChoice, true);
@@ -522,7 +522,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTSystemFontManager.processKeyEvent(e))
+        if (VTFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -626,7 +626,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTSystemFontManager.processKeyEvent(e))
+        if (VTFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -672,7 +672,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTSystemFontManager.processKeyEvent(e))
+        if (VTFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -744,7 +744,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTSystemFontManager.processKeyEvent(e))
+        if (VTFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -785,7 +785,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void keyPressed(KeyEvent e)
       {
-        if (VTSystemFontManager.processKeyEvent(e))
+        if (VTFontManager.processKeyEvent(e))
         {
           return;
         }
@@ -880,7 +880,7 @@ public class VTClientConfigurationDialog extends Dialog
               {
                 public void keyPressed(KeyEvent e)
                 {
-                  if (VTSystemFontManager.processKeyEvent(e))
+                  if (VTFontManager.processKeyEvent(e))
                   {
                     return;
                   }
@@ -1120,7 +1120,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTSystemFontManager.increaseFontSize();
+        VTFontManager.increaseFontSize();
       }
     });
     
@@ -1128,7 +1128,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTSystemFontManager.decreaseFontSize();
+        VTFontManager.decreaseFontSize();
       }
     });
     
@@ -1136,7 +1136,7 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void actionPerformed(ActionEvent e)
       {
-        VTSystemFontManager.defaultFontSize();
+        VTFontManager.defaultFontSize();
       }
     });
     
@@ -1144,13 +1144,13 @@ public class VTClientConfigurationDialog extends Dialog
     {
       public void actionPerformed(ActionEvent e)
       {
-        if (VTSystemFontManager.isFontStyleBold())
+        if (VTFontManager.isFontStyleBold())
         {
-          VTSystemFontManager.disableFontStyleBold();
+          VTFontManager.disableFontStyleBold();
         }
         else
         {
-          VTSystemFontManager.enableFontStyleBold();
+          VTFontManager.enableFontStyleBold();
         }
 //				VTGlobalTextStyleManager.packComponents();
       }
@@ -1646,8 +1646,8 @@ public class VTClientConfigurationDialog extends Dialog
         if (client.isManual())
         {
           // System.out.println("manual");
-          VTSystemConsole.println("");
-          VTSystemConsole.interruptReadLine();
+          VTMainConsole.println("");
+          VTMainConsole.interruptReadLine();
         }
         // VTConsole.println("");
       }

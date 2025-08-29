@@ -1,6 +1,6 @@
 package org.vash.vate.server.console.local.standard.command;
 
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
 public class VTCLEAR extends VTServerStandardLocalConsoleCommandProcessor
@@ -15,8 +15,8 @@ public class VTCLEAR extends VTServerStandardLocalConsoleCommandProcessor
   
   public void execute(String command, String[] parsed) throws Exception
   {
-    VTSystemConsole.clear();
-    VTSystemConsole.print("VT>");
+    VTMainConsole.clear();
+    VTMainConsole.print("VT>");
   }
   
   public void close()

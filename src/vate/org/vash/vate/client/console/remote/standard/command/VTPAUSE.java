@@ -1,7 +1,7 @@
 package org.vash.vate.client.console.remote.standard.command;
 
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.help.VTHelpManager;
 
 public class VTPAUSE extends VTClientStandardRemoteConsoleCommandProcessor
@@ -29,34 +29,34 @@ public class VTPAUSE extends VTClientStandardRemoteConsoleCommandProcessor
       }
       catch (Throwable t)
       {
-        VTSystemConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
         return;
       }
     }
     
     try
     {
-      if (VTSystemConsole.isDaemon() && pause == 0)
+      if (VTMainConsole.isDaemon() && pause == 0)
       {
         return;
       }
-      if (!VTSystemConsole.isDaemon())
+      if (!VTMainConsole.isDaemon())
       {
         if (pause > 0)
         {
-          VTSystemConsole.print("\nVT>Pausing local console for: [" + pause + "] ms, wait or resume with enter\nVT>");
+          VTMainConsole.print("\nVT>Pausing local console for: [" + pause + "] ms, wait or resume with enter\nVT>");
         }
         else
         {
-          VTSystemConsole.print("\nVT>Pausing local console, resume with enter\nVT>");
+          VTMainConsole.print("\nVT>Pausing local console, resume with enter\nVT>");
         }
       }
       else
       {
-        VTSystemConsole.print("\nVT>Pausing local console for: [" + pause + "] ms\nVT>");
+        VTMainConsole.print("\nVT>Pausing local console for: [" + pause + "] ms\nVT>");
       }
       long start = System.nanoTime();
-      VTSystemConsole.createInterruptibleReadline(false, session.getExecutorService(), new Runnable()
+      VTMainConsole.createInterruptibleReadline(false, session.getExecutorService(), new Runnable()
       {
         public void run()
         {
@@ -72,7 +72,7 @@ public class VTPAUSE extends VTClientStandardRemoteConsoleCommandProcessor
       }
       try
       {
-        VTSystemConsole.interruptReadLine();
+        VTMainConsole.interruptReadLine();
       }
       catch (Throwable t)
       {
@@ -86,7 +86,7 @@ public class VTPAUSE extends VTClientStandardRemoteConsoleCommandProcessor
       }
       if (!session.isStopped())
       {
-        VTSystemConsole.print("\nVT>Resuming local console after: [" + elapsed + "] ms\nVT>");
+        VTMainConsole.print("\nVT>Resuming local console after: [" + elapsed + "] ms\nVT>");
       }
     }
     catch (Throwable t)

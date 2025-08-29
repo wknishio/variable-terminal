@@ -4,7 +4,7 @@ import java.io.File;
 import java.nio.channels.ClosedByInterruptException;
 import java.util.zip.Deflater;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.filesystem.VTZipUtils;
 //import org.vash.vate.filesystem.VTArchiveUtils;
 import org.vash.vate.server.session.VTServerSession;
@@ -12,7 +12,7 @@ import org.vash.vate.task.VTTask;
 
 public class VTServerZipFileOperation extends VTTask
 {
-  private static final int fileZipBufferSize = VT.VT_FILE_BUFFER_SIZE_BYTES;
+  private static final int fileZipBufferSize = VTSystem.VT_FILE_BUFFER_SIZE_BYTES;
   private boolean finished;
   private int operation;
   private String zipFilePath;
@@ -74,7 +74,7 @@ public class VTServerZipFileOperation extends VTTask
   {
     try
     {
-      if (operation == VT.VT_ZIP_FILE_COMPRESS)
+      if (operation == VTSystem.VT_ZIP_FILE_COMPRESS)
       {
         try
         {
@@ -116,7 +116,7 @@ public class VTServerZipFileOperation extends VTTask
           }
         }
       }
-      else if (operation == VT.VT_ZIP_FILE_UNCOMPRESS)
+      else if (operation == VTSystem.VT_ZIP_FILE_UNCOMPRESS)
       {
         try
         {

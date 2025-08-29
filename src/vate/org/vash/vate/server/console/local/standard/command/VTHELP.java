@@ -1,6 +1,6 @@
 package org.vash.vate.server.console.local.standard.command;
 
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.server.console.local.standard.VTServerStandardLocalConsoleCommandProcessor;
 
@@ -20,16 +20,16 @@ public class VTHELP extends VTServerStandardLocalConsoleCommandProcessor
     {
       if (command.toUpperCase().contains("*VTHELP"))
       {
-        VTSystemConsole.print(VTHelpManager.getMainHelpForServerCommands());
+        VTMainConsole.print(VTHelpManager.getMainHelpForServerCommands());
       }
       else
       {
-        VTSystemConsole.print(VTHelpManager.getMinHelpForServerCommands());
+        VTMainConsole.print(VTHelpManager.getMinHelpForServerCommands());
       }
     }
     else if (parsed.length > 1)
     {
-      VTSystemConsole.print(VTHelpManager.getHelpForServerCommand(parsed[1]));
+      VTMainConsole.print(VTHelpManager.getHelpForServerCommand(parsed[1]));
     }
   }
   

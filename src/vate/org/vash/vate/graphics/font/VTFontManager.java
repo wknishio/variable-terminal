@@ -19,7 +19,7 @@ import org.vash.vate.reflection.VTReflectionUtils;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalFrame;
 import com.googlecode.lanterna.terminal.swing.AWTTerminalPanel;
 
-public class VTSystemFontManager
+public class VTFontManager
 {
   private static final List<Window> windows = new ArrayList<Window>();
   private static final List<Component> monospaceds = new ArrayList<Component>();
@@ -61,8 +61,8 @@ public class VTSystemFontManager
   {
     try
     {
-      CUSTOM_MONOSPACED_FONT_PLAIN = Font.createFont(Font.TRUETYPE_FONT, VTSystemFontManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
-      CUSTOM_MONOSPACED_FONT_BOLD = Font.createFont(Font.TRUETYPE_FONT, VTSystemFontManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono-Bold.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
+      CUSTOM_MONOSPACED_FONT_PLAIN = Font.createFont(Font.TRUETYPE_FONT, VTFontManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
+      CUSTOM_MONOSPACED_FONT_BOLD = Font.createFont(Font.TRUETYPE_FONT, VTFontManager.class.getResourceAsStream("/org/vash/vate/graphics/font/DejaVuSansMono-Bold.ttf")).deriveFont(round(BASE_FONT_SIZE_MONOSPACED * FONT_SCALING_FACTOR_MONOSPACED, 1F, FONT_SCALING_FACTOR_MONOSPACED));
       loadedCustomMonospacedFont = true;
     }
     catch (Throwable t)
@@ -241,37 +241,37 @@ public class VTSystemFontManager
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_PAGE_DOWN)
     {
       e.consume();
-      VTSystemFontManager.decreaseFontSize();
+      VTFontManager.decreaseFontSize();
       return true;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_PAGE_UP)
     {
       e.consume();
-      VTSystemFontManager.increaseFontSize();
+      VTFontManager.increaseFontSize();
       return true;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_HOME)
     {
       e.consume();
-      VTSystemFontManager.packComponentSize();
+      VTFontManager.packComponentSize();
       return true;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_DELETE)
     {
       e.consume();
-      VTSystemFontManager.defaultFontSize();
+      VTFontManager.defaultFontSize();
       return true;
     }
     if (e.isControlDown() && e.getKeyCode() == KeyEvent.VK_END)
     {
       e.consume();
-      if (VTSystemFontManager.isFontStyleBold())
+      if (VTFontManager.isFontStyleBold())
       {
-        VTSystemFontManager.disableFontStyleBold();
+        VTFontManager.disableFontStyleBold();
       }
       else
       {
-        VTSystemFontManager.enableFontStyleBold();
+        VTFontManager.enableFontStyleBold();
       }
       return true;
     }

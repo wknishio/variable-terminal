@@ -5,7 +5,7 @@ import java.awt.FileDialog;
 import java.awt.Frame;
 import java.lang.reflect.Method;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 
 public class VTFileDialog extends FileDialog
 {
@@ -36,7 +36,7 @@ public class VTFileDialog extends FileDialog
     {
       if (setIconImageMethod != null)
       {
-        setIconImageMethod.invoke(this, VT.remoteIcon);
+        setIconImageMethod.invoke(this, VTSystem.remoteIcon);
       }
     }
     catch (Throwable e)
@@ -54,7 +54,7 @@ public class VTFileDialog extends FileDialog
     {
       if (setIconImageMethod != null)
       {
-        setIconImageMethod.invoke(this, VT.remoteIcon);
+        setIconImageMethod.invoke(this, VTSystem.remoteIcon);
       }
     }
     catch (Throwable e)

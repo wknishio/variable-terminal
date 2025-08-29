@@ -7,7 +7,7 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import org.vash.vate.compatibility.VTArrays;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 
 import com.googlecode.lanterna.terminal.win32.WinDef.INPUT_RECORD;
 import com.googlecode.lanterna.terminal.win32.WinDef.KEY_EVENT_RECORD;

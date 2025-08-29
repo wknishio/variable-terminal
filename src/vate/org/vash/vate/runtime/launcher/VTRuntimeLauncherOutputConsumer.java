@@ -2,11 +2,11 @@ package org.vash.vate.runtime.launcher;
 
 import java.io.InputStream;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 
 public class VTRuntimeLauncherOutputConsumer implements Runnable
 {
-  private final byte[] buffer = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
+  private final byte[] buffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES];
   private InputStream in;
   
   public VTRuntimeLauncherOutputConsumer(InputStream in)

@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 
 public class VTHelpManager
 {
@@ -38,8 +38,8 @@ public class VTHelpManager
   ("\n-PK: proxy password, default null") + 
   ("\n-ET: encryption type, default none/ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)") + 
   ("\n-EK: encryption password, default null") + 
-  ("\n-PI: ping interval, default " + VT.VT_PING_INTERVAL_MILLISECONDS + " milliseconds") + 
-  ("\n-PL: ping limit, default " + VT.VT_PING_LIMIT_MILLISECONDS + " milliseconds") +
+  ("\n-PI: ping interval, default " + VTSystem.VT_PING_INTERVAL_MILLISECONDS + " milliseconds") + 
+  ("\n-PL: ping limit, default " + VTSystem.VT_PING_LIMIT_MILLISECONDS + " milliseconds") +
   ("\n-SS: session shell, default null") + 
   ("\n-SC: session commands, separated by \"*;\", default null, only in client") + 
   ("\n-SM: session maximum, default 0, only in server") + 

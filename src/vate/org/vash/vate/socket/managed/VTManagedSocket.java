@@ -10,7 +10,7 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.SocketException;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.stream.filter.VTBufferedOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
@@ -28,8 +28,8 @@ public class VTManagedSocket extends Socket implements Closeable
     this.connection = connection;
     this.in = connection.getInputStream(connection.getInputStreamIndexStart());
     this.out = connection.getOutputStream(connection.getOutputStreamIndexStart());
-    this.input = new BufferedInputStream(in, VT.VT_STANDARD_BUFFER_SIZE_BYTES);
-    this.output = new VTBufferedOutputStream(out, VT.VT_STANDARD_BUFFER_SIZE_BYTES, true);
+    this.input = new BufferedInputStream(in, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
+    this.output = new VTBufferedOutputStream(out, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES, true);
   }
   
 //  public Socket getConnectionSocket()

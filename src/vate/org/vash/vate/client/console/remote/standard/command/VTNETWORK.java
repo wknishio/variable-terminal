@@ -6,7 +6,7 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.help.VTHelpManager;
 
 public class VTNETWORK extends VTClientStandardRemoteConsoleCommandProcessor
@@ -99,11 +99,11 @@ public class VTNETWORK extends VTClientStandardRemoteConsoleCommandProcessor
         {
           message.append("\nVT>No network interfaces found on client!\nVT>");
         }
-        VTSystemConsole.print(message.toString());
+        VTMainConsole.print(message.toString());
       }
       else
       {
-        VTSystemConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       }
     }
     else
@@ -162,7 +162,7 @@ public class VTNETWORK extends VTClientStandardRemoteConsoleCommandProcessor
       {
         message.append("\nVT>No network interfaces found on client!\nVT>");
       }
-      VTSystemConsole.print(message.toString());
+      VTMainConsole.print(message.toString());
       connection.getCommandWriter().writeLine(command);
       connection.getCommandWriter().flush();
     }

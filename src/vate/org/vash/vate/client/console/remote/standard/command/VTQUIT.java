@@ -1,7 +1,7 @@
 package org.vash.vate.client.console.remote.standard.command;
 
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 
 public class VTQUIT extends VTClientStandardRemoteConsoleCommandProcessor
 {
@@ -17,7 +17,7 @@ public class VTQUIT extends VTClientStandardRemoteConsoleCommandProcessor
   {
     connection.getCommandWriter().writeLine(command);
     connection.getCommandWriter().flush();
-    VTSystemConsole.closeConsole();
+    VTMainConsole.closeConsole();
     session.getClient().stop();
   }
   

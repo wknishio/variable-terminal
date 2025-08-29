@@ -1,8 +1,8 @@
 package org.vash.vate.startup;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.client.VTClient;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.server.VTServer;
@@ -13,24 +13,24 @@ public final class VTGraphicalStart
   
   public static final void main(String[] args)
   {
-    VTSystemConsole.setGraphical(true);
-    VTSystemConsole.setSeparated(false);
-    VTSystemConsole.setRemoteIcon(true);
-    VTSystemConsole.setDaemon(false);
+    VTMainConsole.setGraphical(true);
+    VTMainConsole.setSeparated(false);
+    VTMainConsole.setRemoteIcon(true);
+    VTMainConsole.setDaemon(false);
     
     VTClient client = new VTClient();
     VTServer server = new VTServer();
     
     if (args.length == 0)
     {
-      VTSystemConsole.initialize();
-      VTSystemConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
-      VTSystemConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Module - (c) " + VT.VT_YEAR + " wknishio@gmail.com\n" + 
+      VTMainConsole.initialize();
+      VTMainConsole.setTitle("Variable-Terminal " + VTSystem.VT_VERSION + " - Console");
+      VTMainConsole.print("VT>Variable-Terminal " + VTSystem.VT_VERSION + " - Module - (c) " + VTSystem.VT_YEAR + " wknishio@gmail.com\n" + 
       "VT>This software is under MIT license with no warranty, use at your own risk!\n");
-      VTSystemConsole.print("VT>Enter module(client as C or server as S, default:C):");
-      if (VTSystemConsole.isGraphical())
+      VTMainConsole.print("VT>Enter module(client as C or server as S, default:C):");
+      if (VTMainConsole.isGraphical())
       {
-        VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTSystemConsole.getFrame());
+        VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTMainConsole.getFrame());
         dialog.setVisible(true);
         if (dialog.getMode() == 1)
         {
@@ -65,7 +65,7 @@ public final class VTGraphicalStart
       }
       try
       {
-        option = VTSystemConsole.readLine(true);
+        option = VTMainConsole.readLine(true);
         if (option.toUpperCase().startsWith("S"))
         {
           server.setDaemon(false);
@@ -157,7 +157,7 @@ public final class VTGraphicalStart
       }
       else if (type == 3)
       {
-        VTSystemConsole.setDaemon(true);
+        VTMainConsole.setDaemon(true);
         try
         {
           server.parseParameters(args);
@@ -172,16 +172,16 @@ public final class VTGraphicalStart
       }
       else if (type == 4)
       {
-        VTSystemConsole.initialize();
-        VTSystemConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
+        VTMainConsole.initialize();
+        VTMainConsole.setTitle("Variable-Terminal " + VTSystem.VT_VERSION + " - Console");
         // VTConsole.print(VTHelpManager.printApplicationParametersHelp());
-        VTSystemConsole.print(VTHelpManager.printGeneralModeParameterHelp());
-        VTSystemConsole.print(VTHelpManager.printConnnectionParametersHelp());
-        if (VTSystemConsole.isGraphical())
+        VTMainConsole.print(VTHelpManager.printGeneralModeParameterHelp());
+        VTMainConsole.print(VTHelpManager.printConnnectionParametersHelp());
+        if (VTMainConsole.isGraphical())
         {
           try
           {
-            VTSystemConsole.readLine();
+            VTMainConsole.readLine();
           }
           catch (Throwable e)
           {
@@ -206,14 +206,14 @@ public final class VTGraphicalStart
       }
       else
       {
-        VTSystemConsole.initialize();
-        VTSystemConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Console");
-        VTSystemConsole.print("VT>Variable-Terminal " + VT.VT_VERSION + " - Module - (c) " + VT.VT_YEAR + " wknishio@gmail.com\n" + 
+        VTMainConsole.initialize();
+        VTMainConsole.setTitle("Variable-Terminal " + VTSystem.VT_VERSION + " - Console");
+        VTMainConsole.print("VT>Variable-Terminal " + VTSystem.VT_VERSION + " - Module - (c) " + VTSystem.VT_YEAR + " wknishio@gmail.com\n" + 
         "VT>This software is under MIT license with no warranty, use at your own risk!\n");
-        VTSystemConsole.print("VT>Enter module(client as C or server as S, default:C):");
-        if (VTSystemConsole.isGraphical())
+        VTMainConsole.print("VT>Enter module(client as C or server as S, default:C):");
+        if (VTMainConsole.isGraphical())
         {
-          VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTSystemConsole.getFrame());
+          VTGraphicalStartDialog dialog = new VTGraphicalStartDialog(VTMainConsole.getFrame());
           dialog.setVisible(true);
           if (dialog.getMode() == 1)
           {
@@ -263,7 +263,7 @@ public final class VTGraphicalStart
         }
         try
         {
-          option = VTSystemConsole.readLine(true);
+          option = VTMainConsole.readLine(true);
           if (option.toUpperCase().startsWith("S"))
           {
             server.setDaemon(false);

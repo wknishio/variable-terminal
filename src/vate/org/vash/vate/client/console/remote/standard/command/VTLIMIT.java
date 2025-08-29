@@ -1,8 +1,8 @@
 package org.vash.vate.client.console.remote.standard.command;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.client.console.remote.standard.VTClientStandardRemoteConsoleCommandProcessor;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.help.VTHelpManager;
 
 public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
@@ -22,11 +22,11 @@ public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
       long rate = connection.getRateInBytesPerSecond();
       if (rate > 0)
       {
-        VTSystemConsole.print("\nVT>Connection upload rate limit: [" + rate + "] bytes per second\nVT>");
+        VTMainConsole.print("\nVT>Connection upload rate limit: [" + rate + "] bytes per second\nVT>");
       }
       else
       {
-        VTSystemConsole.print("\nVT>Connection upload rate limit: [Unlimited] bytes per second\nVT>");
+        VTMainConsole.print("\nVT>Connection upload rate limit: [Unlimited] bytes per second\nVT>");
       }
       connection.getCommandWriter().writeLine(command);
       connection.getCommandWriter().flush();
@@ -41,25 +41,25 @@ public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
         {
           rate = 0;
         }
-        else if (rate < (VT.VT_PACKET_TOTAL_SIZE_BYTES << 1))
+        else if (rate < (VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 1))
         {
-          rate = (VT.VT_PACKET_TOTAL_SIZE_BYTES << 1);
+          rate = (VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 1);
         }
         connection.setRateInBytesPerSecond(rate);
         if (rate > 0)
         {
-          VTSystemConsole.print("\nVT>Connection upload rate limit set to: [" + rate + "] bytes per second\nVT>");
+          VTMainConsole.print("\nVT>Connection upload rate limit set to: [" + rate + "] bytes per second\nVT>");
         }
         else
         {
-          VTSystemConsole.print("\nVT>Connection upload rate limit set to: [Unlimited] bytes per second\nVT>");
+          VTMainConsole.print("\nVT>Connection upload rate limit set to: [Unlimited] bytes per second\nVT>");
         }
         connection.getCommandWriter().writeLine(command);
         connection.getCommandWriter().flush();
       }
       catch (NumberFormatException e)
       {
-        VTSystemConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       }
     }
     else if (parsed.length >= 3)
@@ -72,9 +72,9 @@ public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
         {
           rate = 0;
         }
-        else if (rate < (VT.VT_PACKET_TOTAL_SIZE_BYTES << 1))
+        else if (rate < (VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 1))
         {
-          rate = (VT.VT_PACKET_TOTAL_SIZE_BYTES << 1);
+          rate = (VTSystem.VT_PACKET_TOTAL_SIZE_BYTES << 1);
         }
         if (parsed[2].toUpperCase().startsWith("D"))
         {
@@ -86,11 +86,11 @@ public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
           connection.setRateInBytesPerSecond(rate);
           if (rate > 0)
           {
-            VTSystemConsole.print("\nVT>Connection upload rate limit set to: [" + rate + "] bytes per second\nVT>");
+            VTMainConsole.print("\nVT>Connection upload rate limit set to: [" + rate + "] bytes per second\nVT>");
           }
           else
           {
-            VTSystemConsole.print("\nVT>Connection upload rate limit set to: [Unlimited] bytes per second\nVT>");
+            VTMainConsole.print("\nVT>Connection upload rate limit set to: [Unlimited] bytes per second\nVT>");
           }
           connection.getCommandWriter().writeLine(command);
           connection.getCommandWriter().flush();
@@ -98,7 +98,7 @@ public class VTLIMIT extends VTClientStandardRemoteConsoleCommandProcessor
       }
       catch (NumberFormatException e)
       {
-        VTSystemConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
+        VTMainConsole.print("\nVT>Invalid command syntax!" + VTHelpManager.getHelpForClientCommand(parsed[0]));
       }
     }
   }

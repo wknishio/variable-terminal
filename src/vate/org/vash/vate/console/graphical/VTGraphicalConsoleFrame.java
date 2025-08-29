@@ -2,7 +2,7 @@ package org.vash.vate.console.graphical;
 
 import java.awt.Frame;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 
 public class VTGraphicalConsoleFrame extends Frame
 {
@@ -19,7 +19,7 @@ public class VTGraphicalConsoleFrame extends Frame
     {
       try
       {
-        this.setIconImage(VT.remoteIcon);
+        this.setIconImage(VTSystem.remoteIcon);
       }
       catch (Throwable t)
       {
@@ -30,7 +30,7 @@ public class VTGraphicalConsoleFrame extends Frame
     {
       try
       {
-        this.setIconImage(VT.terminalIcon);
+        this.setIconImage(VTSystem.terminalIcon);
       }
       catch (Throwable t)
       {

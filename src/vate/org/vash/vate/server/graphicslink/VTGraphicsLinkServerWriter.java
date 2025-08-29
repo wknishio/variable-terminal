@@ -20,7 +20,7 @@ import javax.imageio.ImageWriter;
 import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.stream.ImageOutputStream;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.graphics.capture.VTAWTScreenCaptureProvider;
 import org.vash.vate.graphics.codec.VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII;
 import org.vash.vate.graphics.image.VTImageDataUtils;
@@ -39,7 +39,7 @@ import com.pngencoder.PngEncoder;
 public class VTGraphicsLinkServerWriter implements Runnable
 {
   private static final int CODEC_PADDING_SIZE = VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII.CODEC_PADDING_SIZE;
-  private static final int IMAGE_OUTPUT_BUFFER_SIZE = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
+  private static final int IMAGE_OUTPUT_BUFFER_SIZE = VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES;
   private volatile boolean stopped;
   private boolean needRefresh;
   private boolean clearRequested;
@@ -92,7 +92,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
     this.drawPointer = true;
     this.screenCaptureInterval = 250;
     this.captureScale = 1;
-    this.imageCoding = VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD;
+    this.imageCoding = VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD;
     this.viewProvider.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216);
     this.refreshInterrupted = false;
     this.clearRequested = false;
@@ -114,7 +114,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
     needRefresh = false;
     screenCaptureInterval = 250;
     captureScale = 1;
-    imageCoding = VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD;
+    imageCoding = VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD;
     viewProvider.setColorQuality(VTAWTScreenCaptureProvider.VT_COLOR_QUALITY_216);
     refreshInterrupted = false;
     clearRequested = false;
@@ -290,7 +290,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
   
   public void sendRemoteInterfaceAreaChange(int width, int height) throws IOException
   {
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_REMOTE_INTERFACE_AREA_CHANGE);
+    connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_REMOTE_INTERFACE_AREA_CHANGE);
     connection.getGraphicsControlDataOutputStream().writeInt(width);
     connection.getGraphicsControlDataOutputStream().writeInt(height);
     connection.getGraphicsControlDataOutputStream().flush();
@@ -306,15 +306,15 @@ public class VTGraphicsLinkServerWriter implements Runnable
     //System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourVTRectangles(blockAreas);
     //System.out.println("blocks_after:" + blockAreas.size());
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_STANDARD_REFRESH_FRAME);
-    if (imageCoding == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
+    connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_STANDARD_REFRESH_FRAME);
+    if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
     {
       if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
         convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_BYTE_GRAY, 0, recyclableDataBuffer);
         recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
         convertedGraphics = convertedDataBuffer.createGraphics();
-        convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+        convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
         convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
         imageDataBuffer = convertedDataBuffer;
         jpgWriterParam.setDestinationType(ImageTypeSpecifier.createFromBufferedImageType(BufferedImage.TYPE_BYTE_GRAY));
@@ -326,7 +326,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
       
       IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(imageDataBuffer), jpgWriterParam));
       
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG);
+      connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG);
       if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
         connection.getGraphicsControlDataOutputStream().writeInt(BufferedImage.TYPE_BYTE_GRAY);
@@ -356,7 +356,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
     }
     else
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_PNG);
+      connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_PNG);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getType());
       connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getWidth());
@@ -384,7 +384,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
         convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
         recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
         convertedGraphics = convertedDataBuffer.createGraphics();
-        convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+        convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
         convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
         //pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
         for (VTRectangle blockArea : blockAreas)
@@ -406,7 +406,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
           convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
           recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
           convertedGraphics = convertedDataBuffer.createGraphics();
-          convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+          convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
           convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
           //pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
           for (VTRectangle blockArea : blockAreas)
@@ -462,8 +462,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
     //System.out.println("blocks_before:" + blockAreas.size());
     blockAreas = VTImageDataUtils.mergeNeighbourVTRectangles(blockAreas);
     //System.out.println("blocks_after:" + blockAreas.size());
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_STANDARD_DIFFERENTIAL_FRAME);
-    if (imageCoding == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
+    connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_STANDARD_DIFFERENTIAL_FRAME);
+    if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
     {
       if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
@@ -472,7 +472,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
           convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_BYTE_GRAY, 0, recyclableDataBuffer);
           recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
           convertedGraphics = convertedDataBuffer.createGraphics();
-          convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+          convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
         }
         convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
         imageDataBuffer = convertedDataBuffer;
@@ -485,7 +485,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
       
       IIOMetadata jpgWriterMetadata = setJpegSubsamplingMode444(jpgWriter.getDefaultImageMetadata(ImageTypeSpecifier.createFromRenderedImage(imageDataBuffer), jpgWriterParam));
       
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG);
+      connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG);
       if (lastColors == 16 || lastColors == 8 || lastColors == 4)
       {
         connection.getGraphicsControlDataOutputStream().writeInt(BufferedImage.TYPE_BYTE_GRAY);
@@ -513,7 +513,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
     }
     else
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_PNG);
+      connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_PNG);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getType());
       connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
       connection.getGraphicsControlDataOutputStream().writeInt(blockAreas.size());
@@ -541,7 +541,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
           convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
           recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
           convertedGraphics = convertedDataBuffer.createGraphics();
-          convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+          convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
         }
         convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
         pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
@@ -566,7 +566,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
             convertedDataBuffer = VTImageIO.createImage(0, 0, lastWidth, lastHeight, BufferedImage.TYPE_INT_RGB, 0, recyclableDataBuffer);
             recyclableDataBuffer = convertedDataBuffer.getRaster().getDataBuffer();
             convertedGraphics = convertedDataBuffer.createGraphics();
-            convertedGraphics.setRenderingHints(VT.VT_GRAPHICS_RENDERING_HINTS);
+            convertedGraphics.setRenderingHints(VTSystem.VT_GRAPHICS_RENDERING_HINTS);
           }
           convertedGraphics.drawImage(imageDataBuffer, 0, 0, null);
           pngEncoder.setColorType(PngEncoder.COLOR_TRUECOLOR);
@@ -609,10 +609,10 @@ public class VTGraphicsLinkServerWriter implements Runnable
     // long startTime = System.currentTimeMillis();
     // System.out.println("VT_GRAPHICS_LINK_GRAPHICS_DIFFERENTIAL_FRAME_CUSTOM");
     //imageOutputBuffer.reset();
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_CUSTOM_DIFFERENTIAL_FRAME);
-    if (imageCoding == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
+    connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_CUSTOM_DIFFERENTIAL_FRAME);
+    if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD);
+      connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD);
       connection.getGraphicsControlDataOutputStream().flush();
       if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
       {
@@ -631,7 +631,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
     }
     else
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD);
+      connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD);
       connection.getGraphicsControlDataOutputStream().flush();
       if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
       {
@@ -662,10 +662,10 @@ public class VTGraphicsLinkServerWriter implements Runnable
     // long startTime = System.currentTimeMillis();
     //System.out.println("VT_GRAPHICS_LINK_GRAPHICS_INDEPENDENT_FRAME_CUSTOM");
     //imageOutputBuffer.reset();
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_CUSTOM_REFRESH_FRAME);
-    if (imageCoding == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
+    connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_CUSTOM_REFRESH_FRAME);
+    if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD);
+      connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getType());
       connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getWidth());
@@ -688,7 +688,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
     }
     else
     {
-      connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD);
+      connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getType());
       connection.getGraphicsControlDataOutputStream().writeInt(lastColors);
       connection.getGraphicsControlDataOutputStream().writeInt(imageDataBuffer.getWidth());
@@ -716,14 +716,14 @@ public class VTGraphicsLinkServerWriter implements Runnable
   public void sendRefreshNotNeeded() throws IOException
   {
     needRefresh = false;
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_REFRESH_NOT_NEEDED);
+    connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_REFRESH_NOT_NEEDED);
     connection.getGraphicsControlDataOutputStream().flush();
   }
   
   public void sendRefreshInterrupted() throws IOException
   {
     needRefresh = false;
-    connection.getGraphicsControlDataOutputStream().write(VT.VT_GRAPHICS_LINK_IMAGE_REFRESH_MODE_INTERRUPTED);
+    connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_REFRESH_MODE_INTERRUPTED);
     connection.getGraphicsControlDataOutputStream().flush();
   }
   
@@ -956,7 +956,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
             {
               try
               {
-                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD || imageCoding == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD ? CODEC_PADDING_SIZE : 0, drawPointer, captureArea);
+                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD || imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD ? CODEC_PADDING_SIZE : 0, drawPointer, captureArea);
                 //imageDataBuffer = viewProvider.createScreenCapture(captureArea, CODEC_PADDING_SIZE, drawPointer);
               }
               catch (Throwable t)
@@ -969,7 +969,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
             {
               try
               {
-                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD || imageCoding == VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD ? CODEC_PADDING_SIZE : 0, drawPointer);
+                imageDataBuffer = viewProvider.createScreenCapture(imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD || imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD ? CODEC_PADDING_SIZE : 0, drawPointer);
                 //imageDataBuffer = viewProvider.createScreenCapture(CODEC_PADDING_SIZE, drawPointer);
               }
               catch (Throwable t)
@@ -980,14 +980,14 @@ public class VTGraphicsLinkServerWriter implements Runnable
             }
             if (imageDataBuffer != null)
             {
-              if (imageCoding != VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD && imageCoding != VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
+              if (imageCoding != VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD && imageCoding != VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD)
               {
                 if (imageDataBuffer.getWidth() == lastWidth
                 && imageDataBuffer.getHeight() == lastHeight
                 && imageDataBuffer.getColorModel().getPixelSize() == lastDepth
                 && viewProvider.getColorCount() == lastColors
                 && imageDataBuffer.getRaster().getDataBuffer().getDataType() == lastDataType
-                && (lastImageCoding != VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG || lastImageCoding != VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_PNG))
+                && (lastImageCoding != VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG || lastImageCoding != VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_PNG))
                 //&& imageCoding == lastImageCoding)
                 {
                   boolean different = false;
@@ -1110,7 +1110,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
                 && imageDataBuffer.getColorModel().getPixelSize() == lastDepth
                 && viewProvider.getColorCount() == lastColors
                 && imageDataBuffer.getRaster().getDataBuffer().getDataType() == lastDataType
-                && (lastImageCoding != VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD || lastImageCoding != VT.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD))
+                && (lastImageCoding != VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_ZSD || lastImageCoding != VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_GZD))
                 //&& imageCoding == lastImageCoding)
                 {
                   // startTime = System.currentTimeMillis();

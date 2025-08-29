@@ -8,8 +8,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import org.vash.vate.VT;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.VTSystem;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.nat.mapping.VTNATPortMappingResultNotify;
 import org.vash.vate.nat.mapping.VTNATSinglePortMappingManagerMKII;
 import org.vash.vate.proxy.client.VTProxy;
@@ -374,7 +374,7 @@ public class VTServerConnector implements Runnable
     }
     catch (Throwable e)
     {
-      VTSystemConsole.print("\rVT>Awaiting connection in port [" + port + "] failed!\nVT>");
+      VTMainConsole.print("\rVT>Awaiting connection in port [" + port + "] failed!\nVT>");
     }
     try
     {
@@ -443,7 +443,7 @@ public class VTServerConnector implements Runnable
   
   public boolean listenConnection(VTServerConnection connection)
   {
-    VTSystemConsole.print("\rVT>Awaiting connection with client...\nVT>");
+    VTMainConsole.print("\rVT>Awaiting connection with client...\nVT>");
     connection.closeSockets();
     if (!setServerSocket(hostAddress, hostPort != null && hostPort > 0 ? hostPort : 6060))
     {
@@ -470,35 +470,35 @@ public class VTServerConnector implements Runnable
 //      connecting = false;
       if (encryptionType == null)
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_NONE);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
       }
       else if (encryptionType.toUpperCase().startsWith("Z"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_ZUC);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ZUC);
       }
       else if (encryptionType.toUpperCase().startsWith("V"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_VMPC);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_VMPC);
       }
       else if (encryptionType.toUpperCase().startsWith("S"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_SALSA);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_SALSA);
       }
       else if (encryptionType.toUpperCase().startsWith("H"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
       }
       else if (encryptionType.toUpperCase().startsWith("I"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_ISAAC);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ISAAC);
       }
       else
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_NONE);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
       }
       connection.setEncryptionKey(encryptionKey);
       //connectionServerSocket.close();
-      VTSystemConsole.print("\rVT>Connection with client established!\nVT>");
+      VTMainConsole.print("\rVT>Connection with client established!\nVT>");
       return true;
     }
     catch (Throwable e)
@@ -527,7 +527,7 @@ public class VTServerConnector implements Runnable
     {
       port = 6060;
     }
-    VTSystemConsole.print("\rVT>Establishing connection with client...\nVT>");
+    VTMainConsole.print("\rVT>Establishing connection with client...\nVT>");
     portMappingManager.deletePortMapping();
     connection.closeSockets();
     try
@@ -542,34 +542,34 @@ public class VTServerConnector implements Runnable
 //      connecting = false;
       if (encryptionType == null)
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_NONE);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
       }
       else if (encryptionType.toUpperCase().startsWith("Z"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_ZUC);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ZUC);
       }
       else if (encryptionType.toUpperCase().startsWith("V"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_VMPC);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_VMPC);
       }
       else if (encryptionType.toUpperCase().startsWith("S"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_SALSA);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_SALSA);
       }
       else if (encryptionType.toUpperCase().startsWith("H"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_HC);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
       }
       else if (encryptionType.toUpperCase().startsWith("I"))
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_ISAAC);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ISAAC);
       }
       else
       {
-        connection.setEncryptionType(VT.VT_CONNECTION_ENCRYPTION_NONE);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_NONE);
       }
       connection.setEncryptionKey(encryptionKey);
-      VTSystemConsole.print("\rVT>Connection with client established!\nVT>");
+      VTMainConsole.print("\rVT>Connection with client established!\nVT>");
       return true;
     }
     catch (Throwable e)

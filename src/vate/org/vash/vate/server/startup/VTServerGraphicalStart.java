@@ -1,7 +1,7 @@
 package org.vash.vate.server.startup;
 
-import org.vash.vate.VT;
-import org.vash.vate.console.VTSystemConsole;
+import org.vash.vate.VTSystem;
+import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.help.VTHelpManager;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.server.VTServer;
@@ -10,10 +10,10 @@ public class VTServerGraphicalStart
 {
   public static void main(String[] args)
   {
-    VTSystemConsole.setGraphical(true);
-    VTSystemConsole.setSeparated(false);
-    VTSystemConsole.setRemoteIcon(true);
-    VTSystemConsole.setDaemon(false);
+    VTMainConsole.setGraphical(true);
+    VTMainConsole.setSeparated(false);
+    VTMainConsole.setRemoteIcon(true);
+    VTMainConsole.setDaemon(false);
     
     boolean help = false;
     boolean daemon = false;
@@ -33,15 +33,15 @@ public class VTServerGraphicalStart
       }
       if (help && !daemon)
       {
-        VTSystemConsole.initialize();
-        VTSystemConsole.setTitle("Variable-Terminal " + VT.VT_VERSION + " - Server - Console");
-        VTSystemConsole.print(VTHelpManager.printServerModeParametersHelp());
-        VTSystemConsole.print(VTHelpManager.printConnnectionParametersHelp());
-        if (VTSystemConsole.isGraphical())
+        VTMainConsole.initialize();
+        VTMainConsole.setTitle("Variable-Terminal " + VTSystem.VT_VERSION + " - Server - Console");
+        VTMainConsole.print(VTHelpManager.printServerModeParametersHelp());
+        VTMainConsole.print(VTHelpManager.printConnnectionParametersHelp());
+        if (VTMainConsole.isGraphical())
         {
           try
           {
-            VTSystemConsole.readLine();
+            VTMainConsole.readLine();
           }
           catch (Throwable e)
           {
@@ -50,7 +50,7 @@ public class VTServerGraphicalStart
         }
         VTRuntimeExit.exit(0);
       }
-      VTSystemConsole.setDaemon(daemon);
+      VTMainConsole.setDaemon(daemon);
       VTServer server = new VTServer();
       try
       {
@@ -66,7 +66,7 @@ public class VTServerGraphicalStart
     }
     else
     {
-      VTSystemConsole.setDaemon(daemon);
+      VTMainConsole.setDaemon(daemon);
       VTServer server = new VTServer();
       // server.initialize();
       // server.configure();

@@ -13,7 +13,7 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.graphics.image.VTTransferableImage;
 import org.vash.vate.reflection.VTReflectionUtils;
 import org.vash.vate.stream.endian.VTLittleEndianInputStream;
@@ -113,12 +113,12 @@ public class VTClipboardTransferTask extends VTTask
       {
         if (checkTransfer())
         {
-          out.write(VT.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_STARTABLE);
+          out.write(VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_STARTABLE);
           out.flush();
         }
         else
         {
-          out.write(VT.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_UNSTARTABLE);
+          out.write(VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_UNSTARTABLE);
           out.flush();
           in.read();
           return;
@@ -129,7 +129,7 @@ public class VTClipboardTransferTask extends VTTask
         transferable = null;
         return;
       }
-      if (in.read() == VT.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_STARTABLE)
+      if (in.read() == VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_STARTABLE)
       {
         if (sending)
         {
@@ -146,17 +146,17 @@ public class VTClipboardTransferTask extends VTTask
               {
                 
               }
-              out.write(VT.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_EMPTY);
+              out.write(VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_EMPTY);
               out.flush();
             }
             else if (transferable == null)
             {
-              out.write(VT.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_EMPTY);
+              out.write(VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_EMPTY);
               out.flush();
             }
             else if (transferable.isDataFlavorSupported(DataFlavor.stringFlavor))
             {
-              out.write(VT.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_TEXT);
+              out.write(VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_TEXT);
               byte[] data = ((String) transferable.getTransferData(DataFlavor.stringFlavor)).getBytes("UTF-8");
               out.writeInt(data.length);
               out.write(data);
@@ -164,7 +164,7 @@ public class VTClipboardTransferTask extends VTTask
             }
             else if (transferable.isDataFlavorSupported(DataFlavor.imageFlavor))
             {
-              out.write(VT.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_IMAGE);
+              out.write(VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_IMAGE);
               VTTransferableImage image = new VTTransferableImage((Image) transferable.getTransferData(DataFlavor.imageFlavor), recyclableDataBuffer);
               recyclableDataBuffer = image.getRecyclableDataBuffer();
               image.write(out);
@@ -185,14 +185,14 @@ public class VTClipboardTransferTask extends VTTask
                 fileListString = fileList.substring(1);
               }
               byte[] data = fileListString.getBytes("UTF-8");
-              out.write(VT.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_TEXT);
+              out.write(VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_TEXT);
               out.writeInt(data.length);
               out.write(data);
               out.flush();
             }
             else
             {
-              out.write(VT.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_UNSUPPORTED);
+              out.write(VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_UNSUPPORTED);
               out.flush();
             }
           }
@@ -201,7 +201,7 @@ public class VTClipboardTransferTask extends VTTask
             // e.printStackTrace();
             try
             {
-              out.write(VT.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_UNSUPPORTED);
+              out.write(VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_UNSUPPORTED);
               out.flush();
             }
             catch (Throwable e1)
@@ -215,18 +215,18 @@ public class VTClipboardTransferTask extends VTTask
           try
           {
             int type = in.read();
-            if (type == VT.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_EMPTY)
+            if (type == VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_EMPTY)
             {
               systemClipboard.setContents(new VTEmptyTransferable(), null);
             }
-            else if (type == VT.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_TEXT)
+            else if (type == VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_TEXT)
             {
               int length = in.readInt();
               byte[] data = new byte[length];
               in.readFully(data);
               systemClipboard.setContents(new StringSelection(new String(data, "UTF-8")), null);
             }
-            else if (type == VT.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_IMAGE)
+            else if (type == VTSystem.VT_GRAPHICS_LINK_CLIPBOARD_TRANSFER_TYPE_IMAGE)
             {
               VTTransferableImage image = new VTTransferableImage(recyclableDataBuffer);
               recyclableDataBuffer = image.getRecyclableDataBuffer();

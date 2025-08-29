@@ -33,7 +33,7 @@ import java.util.Map.Entry;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.bouncycastle.util.encoders.Hex;
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 import org.vash.vate.filesystem.VTRootList;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.proxy.client.VTProxy;
@@ -304,7 +304,7 @@ public class VTNanoHTTPDProxySession implements Runnable
   
   public void run()
   {
-    final int bufsize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
+    final int bufsize = VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES;
     final byte[] buf = new byte[bufsize];
     final VTByteArrayInputStream bis = new VTByteArrayInputStream(buf, 0, bufsize);
     final BufferedReader hin = new BufferedReader( new InputStreamReader( bis, Charset.forName("ISO-8859-1") ));
@@ -895,7 +895,7 @@ public class VTNanoHTTPDProxySession implements Runnable
     private Socket close2;
     private InputStream source;
     private OutputStream destination;
-    private final byte[] buffer = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
+    private final byte[] buffer = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES];
     private int readed;
     
     private SocketPipe(Socket close1, Socket close2, InputStream source, OutputStream destination)
@@ -1220,7 +1220,7 @@ public class VTNanoHTTPDProxySession implements Runnable
       if ( data != null )
       {
         int pending = data.available(); // This is to support partial sends, see serveFile()
-        byte[] buf = new byte[VT.VT_STANDARD_BUFFER_SIZE_BYTES];
+        byte[] buf = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES];
         while (pending>0)
         {
           int read = data.read( buf, 0, Math.min(buf.length, pending));

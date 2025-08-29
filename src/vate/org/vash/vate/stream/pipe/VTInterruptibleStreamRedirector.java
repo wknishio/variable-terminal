@@ -2,11 +2,11 @@ package org.vash.vate.stream.pipe;
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import org.vash.vate.VT;
+import org.vash.vate.VTSystem;
 
 public final class VTInterruptibleStreamRedirector implements Runnable
 {
-  private static final int redirectorBufferSize = VT.VT_STANDARD_BUFFER_SIZE_BYTES;
+  private static final int redirectorBufferSize = VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES;
   private volatile boolean stopped;
   // private int available;
   private int readed;
