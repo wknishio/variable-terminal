@@ -423,11 +423,11 @@ public class VTClientConfigurationDialog extends Dialog
     
     encryptionTypeChoice.add("NONE");
     encryptionTypeChoice.add("ISAAC");
-    encryptionTypeChoice.add("VMPC");
+    //encryptionTypeChoice.add("VMPC");
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC");
-    //encryptionTypeChoice.add("GRAIN");
     encryptionTypeChoice.add("ZUC");
+    encryptionTypeChoice.add("GRAIN");
     // encryptionTypeChoice.add("BLOWFISH");
     encryptionTypeChoice.select("NONE");
     encryptionTypeChoice.addItemListener(new ItemListener()
@@ -440,10 +440,10 @@ public class VTClientConfigurationDialog extends Dialog
           {
             setEncryptionType("NONE");
           }
-          else if (e.getItem().equals("VMPC"))
-          {
-            setEncryptionType("VMPC");
-          }
+//          else if (e.getItem().equals("VMPC"))
+//          {
+//            setEncryptionType("VMPC");
+//          }
           else if (e.getItem().equals("ZUC"))
           {
             setEncryptionType("ZUC");
@@ -460,10 +460,10 @@ public class VTClientConfigurationDialog extends Dialog
           {
             setEncryptionType("HC");
           }
-//          else if (e.getItem().equals("GRAIN"))
-//          {
-//            setEncryptionType("GRAIN");
-//          }
+          else if (e.getItem().equals("GRAIN"))
+          {
+            setEncryptionType("GRAIN");
+          }
           else if (e.getItem().equals("ISAAC"))
           {
             setEncryptionType("ISAAC");
@@ -1330,9 +1330,9 @@ public class VTClientConfigurationDialog extends Dialog
       encryptionType.setParameter("NONE");
       // encryptionPassword.setEnabled(false);
     }
-    else if (encryption.toUpperCase().startsWith("V"))
+    else if (encryption.toUpperCase().startsWith("G"))
     {
-      encryptionType.setParameter("VMPC");
+      encryptionType.setParameter("GRAIN");
       // encryptionPassword.setEnabled(true);
     }
     else if (encryption.toUpperCase().startsWith("Z"))

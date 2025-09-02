@@ -33,12 +33,14 @@ public class VTServerConnection
   
   private static final byte[] VT_SERVER_CHECK_STRING_NONE = ("/VARIABLE-TERMINAL/SERVER/NONE/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_NONE = ("/VARIABLE-TERMINAL/CLIENT/NONE/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_SERVER_CHECK_STRING_VMPC = ("/VARIABLE-TERMINAL/SERVER/VMPC/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_CLIENT_CHECK_STRING_VMPC = ("/VARIABLE-TERMINAL/CLIENT/VMPC/" + MAJOR_MINOR_VERSION).getBytes();
+//  private static final byte[] VT_SERVER_CHECK_STRING_VMPC = ("/VARIABLE-TERMINAL/SERVER/VMPC/" + MAJOR_MINOR_VERSION).getBytes();
+//  private static final byte[] VT_CLIENT_CHECK_STRING_VMPC = ("/VARIABLE-TERMINAL/CLIENT/VMPC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_ISAAC = ("/VARIABLE-TERMINAL/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_ISAAC = ("/VARIABLE-TERMINAL/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_SALSA = ("/VARIABLE-TERMINAL/SERVER/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_SALSA = ("/VARIABLE-TERMINAL/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_GRAIN = ("/VARIABLE-TERMINAL/SERVER/GRAIN/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_GRAIN = ("/VARIABLE-TERMINAL/CLIENT/GRAIN/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_HC = ("/VARIABLE-TERMINAL/SERVER/HC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_HC = ("/VARIABLE-TERMINAL/CLIENT/HC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/SERVER/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
@@ -775,9 +777,13 @@ public class VTServerConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_VMPC)))
+//    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_VMPC)))
+//    {
+//      return VTSystem.VT_CONNECTION_ENCRYPTION_VMPC;
+//    }
+    if (VTArrayComparator.arrayEquals(digestedClient, blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VT_CLIENT_CHECK_STRING_GRAIN)))
     {
-      return VTSystem.VT_CONNECTION_ENCRYPTION_VMPC;
+      return VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN;
     }
     
     blake3Digest.reset();
@@ -882,12 +888,21 @@ public class VTServerConnection
         return true;
       }
     }
-    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_VMPC)
+//    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_VMPC)
+//    {
+//      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_VMPC, encryptionType);
+//      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
+//      {
+//        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_VMPC);
+//        return true;
+//      }
+//    }
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN)
     {
-      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_VMPC, encryptionType);
+      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_SERVER_CHECK_STRING_GRAIN, encryptionType);
       if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_NONE)
       {
-        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_VMPC);
+        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
         return true;
       }
     }
@@ -947,9 +962,14 @@ public class VTServerConnection
 //      }
 //    }
     
-    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_VMPC)
+//    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_VMPC)
+//    {
+//      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_VMPC);
+//      return true;
+//    }
+    if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN)
     {
-      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_VMPC);
+      setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
       return true;
     }
     if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ZUC)

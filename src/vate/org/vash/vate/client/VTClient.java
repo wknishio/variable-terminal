@@ -75,7 +75,7 @@ public class VTClient implements Runnable
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
   "#vate.client.connection.mode  values: default active(A), passive(P)\r\n" + 
   "#vate.client.proxy.type       values: DIRECT(D)/SOCKS(S)/HTTP(H)/PLUS(P)\r\n" + 
-  "#vate.client.encryption.type  values: ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)\r\n" + 
+  "#vate.client.encryption.type  values: ISAAC(I)/SALSA(S)/HC(H)/ZUC(Z)/GRAIN(G)\r\n" + 
   "#vate.client.session.commands format: cmd1*;cmd2*;cmd3*;...\r\n";
   
   static
@@ -1798,7 +1798,7 @@ public class VTClient implements Runnable
         }
         if (line.toUpperCase().startsWith("Y"))
         {
-          VTMainConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)):");
+          VTMainConsole.print("VT>Enter encryption type(ISAAC(I)/SALSA(S)/HC(H)/ZUC(Z)/GRAIN(G)):");
           line = VTMainConsole.readLine(false);
           if (line == null)
           {
@@ -1821,9 +1821,9 @@ public class VTClient implements Runnable
           {
             encryptionType = "HC";
           }
-          if (line.toUpperCase().startsWith("V"))
+          if (line.toUpperCase().startsWith("G"))
           {
-            encryptionType = "VMPC";
+            encryptionType = "GRAIN";
           }
           VTMainConsole.print("VT>Enter encryption password:");
           line = VTMainConsole.readLine(false);

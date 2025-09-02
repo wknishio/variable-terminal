@@ -606,9 +606,13 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ZUC);
       }
-      else if (encryptionType.toUpperCase().startsWith("V"))
+//      else if (encryptionType.toUpperCase().startsWith("V"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_VMPC);
+//      }
+      else if (encryptionType.toUpperCase().startsWith("G"))
       {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_VMPC);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
       }
       else if (encryptionType.toUpperCase().startsWith("S"))
       {
@@ -690,9 +694,13 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ZUC);
       }
-      else if (encryptionType.toUpperCase().startsWith("V"))
+//      else if (encryptionType.toUpperCase().startsWith("V"))
+//      {
+//        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_VMPC);
+//      }
+      else if (encryptionType.toUpperCase().startsWith("G"))
       {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_VMPC);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_GRAIN);
       }
       else if (encryptionType.toUpperCase().startsWith("S"))
       {
@@ -1247,7 +1255,7 @@ public class VTClientConnector implements Runnable
       }
       if (line.toUpperCase().startsWith("Y"))
       {
-        VTMainConsole.print("VT>Enter encryption type(ISAAC(I)/VMPC(V)/SALSA(S)/HC(H)/ZUC(Z)):");
+        VTMainConsole.print("VT>Enter encryption type(ISAAC(I)/SALSA(S)/HC(H)/ZUC(Z)/GRAIN(G)):");
         line = VTMainConsole.readLine(false);
         if (line == null)
         {
@@ -1270,9 +1278,9 @@ public class VTClientConnector implements Runnable
         {
           encryptionType = "HC";
         }
-        if (line.toUpperCase().startsWith("V"))
+        if (line.toUpperCase().startsWith("G"))
         {
-          encryptionType = "VMPC";
+          encryptionType = "GRAIN";
         }
         VTMainConsole.print("VT>Enter encryption password:");
         line = VTMainConsole.readLine(false);
