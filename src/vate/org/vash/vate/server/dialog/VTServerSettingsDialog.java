@@ -413,12 +413,12 @@ public class VTServerSettingsDialog extends Dialog
 //    });
     
     encryptionTypeChoice.add("NONE");
-    encryptionTypeChoice.add("ISAAC");
     //encryptionTypeChoice.add("VMPC");
     encryptionTypeChoice.add("SALSA");
     encryptionTypeChoice.add("HC");
     encryptionTypeChoice.add("ZUC");
     encryptionTypeChoice.add("GRAIN");
+    encryptionTypeChoice.add("ISAAC");
     // encryptionTypeChoice.add("BLOWFISH");
     encryptionTypeChoice.select("NONE");
     encryptionTypeChoice.addItemListener(new ItemListener()

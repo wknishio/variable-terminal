@@ -75,7 +75,7 @@ public class VTClient implements Runnable
   "Variable-Terminal client settings file, supports UTF-8\r\n" + 
   "#vate.client.connection.mode  values: default active(A), passive(P)\r\n" + 
   "#vate.client.proxy.type       values: DIRECT(D)/SOCKS(S)/HTTP(H)/PLUS(P)\r\n" + 
-  "#vate.client.encryption.type  values: ISAAC(I)/SALSA(S)/HC(H)/ZUC(Z)/GRAIN(G)\r\n" + 
+  "#vate.client.encryption.type  values: SALSA(S)/HC(H)/ZUC(Z)/GRAIN(G)/ISAAC(I)\r\n" + 
   "#vate.client.session.commands format: cmd1*;cmd2*;cmd3*;...\r\n";
   
   static
@@ -1798,7 +1798,7 @@ public class VTClient implements Runnable
         }
         if (line.toUpperCase().startsWith("Y"))
         {
-          VTMainConsole.print("VT>Enter encryption type(ISAAC(I)/SALSA(S)/HC(H)/ZUC(Z)/GRAIN(G)):");
+          VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/ZUC(Z)/GRAIN(G)/ISAAC(I)):");
           line = VTMainConsole.readLine(false);
           if (line == null)
           {
@@ -1808,14 +1808,14 @@ public class VTClient implements Runnable
           {
             return;
           }
-          encryptionType = "ISAAC";
+          encryptionType = "SALSA";
           if (line.toUpperCase().startsWith("Z"))
           {
             encryptionType = "ZUC";
           }
-          if (line.toUpperCase().startsWith("S"))
+          if (line.toUpperCase().startsWith("I"))
           {
-            encryptionType = "SALSA";
+            encryptionType = "ISAAC";
           }
           if (line.toUpperCase().startsWith("H"))
           {

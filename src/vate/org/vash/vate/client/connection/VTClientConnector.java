@@ -1255,7 +1255,7 @@ public class VTClientConnector implements Runnable
       }
       if (line.toUpperCase().startsWith("Y"))
       {
-        VTMainConsole.print("VT>Enter encryption type(ISAAC(I)/SALSA(S)/HC(H)/ZUC(Z)/GRAIN(G)):");
+        VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/ZUC(Z)/GRAIN(G)/ISAAC(I)):");
         line = VTMainConsole.readLine(false);
         if (line == null)
         {
@@ -1265,14 +1265,14 @@ public class VTClientConnector implements Runnable
         {
           return true;
         }
-        encryptionType = "ISAAC";
+        encryptionType = "SALSA";
         if (line.toUpperCase().startsWith("Z"))
         {
           encryptionType = "ZUC";
         }
-        if (line.toUpperCase().startsWith("S"))
+        if (line.toUpperCase().startsWith("I"))
         {
-          encryptionType = "SALSA";
+          encryptionType = "ISAAC";
         }
         if (line.toUpperCase().startsWith("H"))
         {
