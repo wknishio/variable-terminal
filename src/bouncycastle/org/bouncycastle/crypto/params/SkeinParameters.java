@@ -20,14 +20,14 @@ import org.bouncycastle.util.Integers;
  * Parameters for the Skein hash function - a series of byte[] strings identified by integer tags.
  * <p>
  * Parameterised Skein can be used for:
- *  
- *  MAC generation, by providing a {@link SkeinParameters.Builder#setKey(byte[]) key}.</li>
- *  Randomised hashing, by providing a {@link SkeinParameters.Builder#setNonce(byte[]) nonce}.</li>
- *  A hash function for digital signatures, associating a
+ * <ul>
+ * <li>MAC generation, by providing a {@link SkeinParameters.Builder#setKey(byte[]) key}.</li>
+ * <li>Randomised hashing, by providing a {@link SkeinParameters.Builder#setNonce(byte[]) nonce}.</li>
+ * <li>A hash function for digital signatures, associating a
  * {@link SkeinParameters.Builder#setPublicKey(byte[]) public key} with the message digest.</li>
- *  A key derivation function, by providing a
+ * <li>A key derivation function, by providing a
  * {@link SkeinParameters.Builder#setKeyIdentifier(byte[]) key identifier}.</li>
- *  Personalised hashing, by providing a
+ * <li>Personalised hashing, by providing a
  * {@link SkeinParameters.Builder#setPersonalisation(Date, String, String) recommended format} or
  * {@link SkeinParameters.Builder#setPersonalisation(byte[]) arbitrary} personalisation string.</li>
  * </ul>
@@ -101,7 +101,7 @@ public class SkeinParameters
     }
 
     /**
-     * Obtains the value of the {@link #PARAM_TYPE_KEY key parameter}, or  null</code> if not
+     * Obtains the value of the {@link #PARAM_TYPE_KEY key parameter}, or <code>null</code> if not
      * set.
      */
     public byte[] getKey()
@@ -111,7 +111,7 @@ public class SkeinParameters
 
     /**
      * Obtains the value of the {@link #PARAM_TYPE_PERSONALISATION personalisation parameter}, or
-     *  null</code> if not set.
+     * <code>null</code> if not set.
      */
     public byte[] getPersonalisation()
     {
@@ -120,7 +120,7 @@ public class SkeinParameters
 
     /**
      * Obtains the value of the {@link #PARAM_TYPE_PUBLIC_KEY public key parameter}, or
-     *  null</code> if not set.
+     * <code>null</code> if not set.
      */
     public byte[] getPublicKey()
     {
@@ -129,7 +129,7 @@ public class SkeinParameters
 
     /**
      * Obtains the value of the {@link #PARAM_TYPE_KEY_IDENTIFIER key identifier parameter}, or
-     *  null</code> if not set.
+     * <code>null</code> if not set.
      */
     public byte[] getKeyIdentifier()
     {
@@ -137,7 +137,7 @@ public class SkeinParameters
     }
 
     /**
-     * Obtains the value of the {@link #PARAM_TYPE_NONCE nonce parameter}, or  null</code> if
+     * Obtains the value of the {@link #PARAM_TYPE_NONCE nonce parameter}, or <code>null</code> if
      * not set.
      */
     public byte[] getNonce()
@@ -177,7 +177,7 @@ public class SkeinParameters
         }
 
         /**
-         * Sets a parameters to apply to the Skein hash function. 
+         * Sets a parameters to apply to the Skein hash function.<br>
          * Parameter types must be in the range 0,5..62, and cannot use the value {@link
          * #PARAM_TYPE_MESSAGE} (reserved for message body).
          * <p>
@@ -229,7 +229,7 @@ public class SkeinParameters
          * Implements the recommended personalisation format for Skein defined in Section 4.11 of
          * the Skein 1.3 specification.
          * <p>
-         * The format is  YYYYMMDD email@address distinguisher</code>, encoded to a byte
+         * The format is <code>YYYYMMDD email@address distinguisher</code>, encoded to a byte
          * sequence using UTF-8 encoding.
          *
          * @param date          the date the personalised application of the Skein was defined.
@@ -243,7 +243,7 @@ public class SkeinParameters
             {
                 final ByteArrayOutputStream bout = new ByteArrayOutputStream();
                 final OutputStreamWriter out = new OutputStreamWriter(bout, "UTF-8");
-                final DateFormat format = new SimpleDateFormat("YYYYMMDD");
+                final DateFormat format = new SimpleDateFormat("yyyyMMdd");
                 out.write(format.format(date));
                 out.write(" ");
                 out.write(emailAddress);
@@ -263,7 +263,7 @@ public class SkeinParameters
           * the Skein 1.3 specification. You may need to use this method if the default locale
           * doesn't use a Gregorian calender so that the GeneralizedTime produced is compatible implementations.
           * <p>
-          * The format is  YYYYMMDD email@address distinguisher</code>, encoded to a byte
+          * The format is <code>YYYYMMDD email@address distinguisher</code>, encoded to a byte
           * sequence using UTF-8 encoding.
           *
           * @param date          the date the personalised application of the Skein was defined.
@@ -278,7 +278,7 @@ public class SkeinParameters
              {
                  final ByteArrayOutputStream bout = new ByteArrayOutputStream();
                  final OutputStreamWriter out = new OutputStreamWriter(bout, "UTF-8");
-                 final DateFormat format = new SimpleDateFormat("YYYYMMDD", dateLocale);
+                 final DateFormat format = new SimpleDateFormat("yyyyMMdd", dateLocale);
                  out.write(format.format(date));
                  out.write(" ");
                  out.write(emailAddress);

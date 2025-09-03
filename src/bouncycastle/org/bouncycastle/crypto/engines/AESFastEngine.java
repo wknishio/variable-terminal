@@ -2,8 +2,10 @@ package org.bouncycastle.crypto.engines;
 
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.CipherParameters;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
+import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.util.Pack;
 
@@ -750,6 +752,7 @@ public class AESFastEngine
      */
     public AESFastEngine()
     {
+        CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), 256));
     }
 
     /**
@@ -768,6 +771,7 @@ public class AESFastEngine
         {
             WorkingKey = generateWorkingKey(((KeyParameter)params).getKey(), forEncryption);
             this.forEncryption = forEncryption;
+            CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), bitsOfSecurity(), params, Utils.getPurpose(forEncryption)));
             return;
         }
 
@@ -1000,5 +1004,15 @@ public class AESFastEngine
         Pack.intToLittleEndian(C1, out, outOff +  4);
         Pack.intToLittleEndian(C2, out, outOff +  8);
         Pack.intToLittleEndian(C3, out, outOff + 12);
+    }
+
+    // Service Definitions
+    private int bitsOfSecurity()
+    {
+        if (WorkingKey == null)
+        {
+            return 256;
+        }
+        return (WorkingKey.length - 7) << 5;
     }
 }

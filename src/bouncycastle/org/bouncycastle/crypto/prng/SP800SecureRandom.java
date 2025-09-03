@@ -59,7 +59,7 @@ public class SP800SecureRandom
                 drbg = drbgProvider.get(entropySource);
             }
 
-            // check if a reseed is required[]
+            // check if a reseed is required...
             if (drbg.generate(bytes, null, predictionResistant) < 0)
             {
                 drbg.reseed(null);

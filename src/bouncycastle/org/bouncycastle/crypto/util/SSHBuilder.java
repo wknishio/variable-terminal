@@ -10,12 +10,12 @@ class SSHBuilder
 {
     private final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-    public void u32(long value)
+    public void u32(int value)
     {
-        bos.write((int)((value >>> 24) & 0xFF));
-        bos.write((int)((value >>> 16) & 0xFF));
-        bos.write((int)((value >>> 8) & 0xFF));
-        bos.write((int)(value & 0xFF));
+        bos.write((value >>> 24) & 0xFF);
+        bos.write((value >>> 16) & 0xFF);
+        bos.write((value >>> 8) & 0xFF);
+        bos.write(value & 0xFF);
     }
 
     public void writeBigNum(BigInteger n)
@@ -32,7 +32,7 @@ class SSHBuilder
         }
         catch (IOException e)
         {
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e.getMessage(), e);
         }
     }
 
@@ -44,7 +44,7 @@ class SSHBuilder
         }
         catch (IOException e)
         {
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e.getMessage(), e);
         }
     }
 

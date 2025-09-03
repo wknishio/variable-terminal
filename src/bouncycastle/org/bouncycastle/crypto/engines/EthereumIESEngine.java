@@ -251,7 +251,7 @@ public class EthereumIESEngine
         // Ethereum change:
         // Instead of initializing the mac with the bytes, we initialize with the hash of the bytes.
         // Old code: mac.init(new KeyParameter(K2));
-        Digest hash = new SHA256Digest();
+        Digest hash = SHA256Digest.newInstance();
         byte[] K2hash = new byte[hash.getDigestSize()];
         hash.reset();
         hash.update(K2, 0, K2.length);
@@ -367,7 +367,7 @@ public class EthereumIESEngine
         // Ethereum change:
         // Instead of initializing the mac with the bytes, we initialize with the hash of the bytes.
         // Old code: mac.init(new KeyParameter(K2));
-        Digest hash = new SHA256Digest();
+        Digest hash = SHA256Digest.newInstance();
         byte[] K2hash = new byte[hash.getDigestSize()];
         hash.reset();
         hash.update(K2, 0, K2.length);
@@ -485,10 +485,10 @@ public class EthereumIESEngine
     }
 
     /**
-     * Basic KDF generator for derived keys and ivs as defined by IEEE P1363a/ISO 18033  
+     * Basic KDF generator for derived keys and ivs as defined by IEEE P1363a/ISO 18033 <br>
      * This implementation is based on ISO 18033/P1363a.
      * <p>
-     * This class has been adapted from the  BaseKDFBytesGenerator</tt> implementation of Bouncy Castle. Only one
+     * This class has been adapted from the <tt>BaseKDFBytesGenerator</tt> implementation of Bouncy Castle. Only one
      * change is present specifically for Ethereum.
      */
     public static class HandshakeKDFFunction
@@ -563,7 +563,7 @@ public class EthereumIESEngine
             // this is at odds with the standard implementation, the
             // maximum value should be hBits * (2^32 - 1) where hBits
             // is the digest output size in bits. We can't have an
-            // array with a long index at the moment[]
+            // array with a long index at the moment...
             //
             if (oBytes > ((2L << 32) - 1))
             {

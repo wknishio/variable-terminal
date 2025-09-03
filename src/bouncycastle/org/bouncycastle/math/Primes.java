@@ -247,8 +247,8 @@ public abstract class Primes
      * @param candidate
      *            the {@link BigInteger} instance to test for division by small factors.
      *
-     * @return  true</code> if the candidate is found to have any small factors,
-     *          false</code> otherwise.
+     * @return <code>true</code> if the candidate is found to have any small factors,
+     *         <code>false</code> otherwise.
      */
     public static boolean hasAnySmallFactors(BigInteger candidate)
     {
@@ -268,8 +268,8 @@ public abstract class Primes
      *            the source of randomness to use to choose bases.
      * @param iterations
      *            the number of randomly-chosen bases to perform the test for.
-     * @return  false</code> if any witness to compositeness is found amongst the chosen bases
-     *         (so  candidate</code> is definitely NOT prime), or else  true</code>
+     * @return <code>false</code> if any witness to compositeness is found amongst the chosen bases
+     *         (so <code>candidate</code> is definitely NOT prime), or else <code>true</code>
      *         (indicating primality with some probability dependent on the number of iterations
      *         that were performed).
      */
@@ -324,8 +324,8 @@ public abstract class Primes
      *            the {@link BigInteger} instance to test for primality.
      * @param base
      *            the base value to use for this iteration.
-     * @return  false</code> if the specified base is a witness to compositeness (so
-     *          candidate</code> is definitely NOT prime), or else  true</code>.
+     * @return <code>false</code> if the specified base is a witness to compositeness (so
+     *         <code>candidate</code> is definitely NOT prime), or else <code>true</code>.
      */
     public static boolean isMRProbablePrimeToBase(BigInteger candidate, BigInteger base)
     {

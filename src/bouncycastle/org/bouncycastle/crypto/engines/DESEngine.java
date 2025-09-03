@@ -2,8 +2,10 @@ package org.bouncycastle.crypto.engines;
 
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.CipherParameters;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
+import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.util.Pack;
 
@@ -11,10 +13,12 @@ import org.bouncycastle.util.Pack;
  * a class that provides a basic DES engine.
  */
 public class DESEngine
+    extends DESBase
     implements BlockCipher
 {
     protected static final int  BLOCK_SIZE = 8;
 
+    private boolean             forEncryption;
     private int[]               workingKey = null;
 
     /**
@@ -22,6 +26,7 @@ public class DESEngine
      */
     public DESEngine()
     {
+        CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), 56));
     }
 
     /**
@@ -38,13 +43,16 @@ public class DESEngine
     {
         if (params instanceof KeyParameter)
         {
-            if (((KeyParameter)params).getKey().length > 8)
+            if (((KeyParameter)params).getKeyLength() > 8)
             {
                 throw new IllegalArgumentException("DES key too long - should be 8 bytes");
             }
-            
+
+            forEncryption = encrypting;
             workingKey = generateWorkingKey(encrypting,
                                   ((KeyParameter)params).getKey());
+
+            CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), 56, params, Utils.getPurpose(forEncryption)));
 
             return;
         }
@@ -95,7 +103,7 @@ public class DESEngine
     /**
      * what follows is mainly taken from "Applied Cryptography", by
      * Bruce Schneier, however it also bears great resemblance to Richard
-     * Outerbridge's D3DES[]
+     * Outerbridge's D3DES...
      */
 
 //    private static final short[]    Df_Key =

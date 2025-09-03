@@ -1,10 +1,12 @@
 package org.bouncycastle.crypto.engines;
 
 import org.bouncycastle.crypto.CipherParameters;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.MaxBytesExceededException;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.SkippingStreamCipher;
+import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.util.Integers;
@@ -90,9 +92,8 @@ public class Salsa20Engine
         CipherParameters     params)
     {
         /* 
-        * Salsa20 encryption and decryption is completely
-        * symmetrical, so the 'forEncryption' is 
-        * irrelevant. (Like 90% of stream ciphers)
+        * Salsa20 encryption and decryption is completely symmetrical, so the 'forEncryption' is
+        * irrelevant for implementation purposes. (Like 90% of stream ciphers)
         */
 
         if (!(params instanceof ParametersWithIV))
@@ -121,7 +122,12 @@ public class Salsa20Engine
         }
         else if (keyParam instanceof KeyParameter)
         {
-            setKey(((KeyParameter)keyParam).getKey(), iv);
+            byte[] key = ((KeyParameter)keyParam).getKey();
+
+            setKey(key, iv);
+
+            CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(
+                        this.getAlgorithmName(), key.length * 8, params, Utils.getPurpose(forEncryption)));
         }
         else
         {

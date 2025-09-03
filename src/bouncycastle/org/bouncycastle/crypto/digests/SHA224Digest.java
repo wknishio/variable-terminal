@@ -1,13 +1,16 @@
 package org.bouncycastle.crypto.digests;
 
 
+import org.bouncycastle.crypto.CryptoServiceProperties;
+import org.bouncycastle.crypto.CryptoServicePurpose;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.util.Memoable;
 import org.bouncycastle.util.Pack;
 
 
 /**
  * SHA-224 as described in RFC 3874
- *  
+ * <pre>
  *         block  word  digest
  * SHA-1   512    32    160
  * SHA-224 512    32    224
@@ -32,6 +35,18 @@ public class SHA224Digest
      */
     public SHA224Digest()
     {
+        this(CryptoServicePurpose.ANY);
+    }
+
+    /**
+     * Standard constructor, with purpose
+     */
+    public SHA224Digest(CryptoServicePurpose purpose)
+    {
+        super(purpose);
+
+        CryptoServicesRegistrar.checkConstraints(cryptoServiceProperties());
+
         reset();
     }
 
@@ -42,6 +57,8 @@ public class SHA224Digest
     public SHA224Digest(SHA224Digest t)
     {
         super(t);
+
+        CryptoServicesRegistrar.checkConstraints(cryptoServiceProperties());
 
         doCopy(t);
     }
@@ -72,6 +89,8 @@ public class SHA224Digest
     {
         super(encodedState);
 
+        CryptoServicesRegistrar.checkConstraints(cryptoServiceProperties());
+
         H1 = Pack.bigEndianToInt(encodedState, 16);
         H2 = Pack.bigEndianToInt(encodedState, 20);
         H3 = Pack.bigEndianToInt(encodedState, 24);
@@ -98,17 +117,9 @@ public class SHA224Digest
         return DIGEST_LENGTH;
     }
 
-    protected void processWord(
-        byte[]  in,
-        int     inOff)
+    protected void processWord(byte[] in, int inOff)
     {
-        // Note: Inlined for performance
-//        X[xOff] = Pack.bigEndianToInt(in, inOff);
-        int n = in[  inOff] << 24;
-        n |= (in[++inOff] & 0xff) << 16;
-        n |= (in[++inOff] & 0xff) << 8;
-        n |= (in[++inOff] & 0xff);
-        X[xOff] = n;
+        X[xOff] = Pack.bigEndianToInt(in, inOff);
 
         if (++xOff == 16)
         {
@@ -128,9 +139,7 @@ public class SHA224Digest
         X[15] = (int)(bitLength & 0xffffffff);
     }
 
-    public int doFinal(
-        byte[]  out,
-        int     outOff)
+    public int doFinal(byte[] out, int outOff)
     {
         finish();
 
@@ -336,7 +345,7 @@ public class SHA224Digest
 
     public byte[] getEncodedState()
     {
-        byte[] state = new byte[52 + xOff * 4];
+        byte[] state = new byte[52 + xOff * 4 + 1];
 
         super.populateState(state);
 
@@ -355,7 +364,14 @@ public class SHA224Digest
             Pack.intToBigEndian(X[i], state, 52 + (i * 4));
         }
 
+        state[state.length - 1] = (byte)purpose.ordinal();
+
         return state;
+    }
+
+    protected CryptoServiceProperties cryptoServiceProperties()
+    {
+        return Utils.getDefaultProperties(this, 192, purpose);
     }
 }
 

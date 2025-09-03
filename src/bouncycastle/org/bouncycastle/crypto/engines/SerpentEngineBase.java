@@ -2,13 +2,15 @@ package org.bouncycastle.crypto.engines;
 
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.CipherParameters;
+import org.bouncycastle.crypto.CryptoServicePurpose;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
-import org.bouncycastle.crypto.StatelessProcessing;
+import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
 
 public abstract class SerpentEngineBase
-    implements BlockCipher, StatelessProcessing
+    implements BlockCipher
 {
     protected static final int BLOCK_SIZE = 16;
 
@@ -17,10 +19,11 @@ public abstract class SerpentEngineBase
 
     protected boolean encrypting;
     protected int[] wKey;
+    protected int keyBits;
 
     SerpentEngineBase()
     {
-
+        CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), 256));
     }
 
     /**
@@ -38,7 +41,10 @@ public abstract class SerpentEngineBase
         if (params instanceof KeyParameter)
         {
             this.encrypting = encrypting;
-            this.wKey = makeWorkingKey(((KeyParameter)params).getKey());
+            byte[] keyBytes = ((KeyParameter)params).getKey();
+            this.wKey = makeWorkingKey(keyBytes);
+
+            CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), keyBytes.length * 8, params, getPurpose()));
             return;
         }
 
@@ -482,4 +488,15 @@ public abstract class SerpentEngineBase
     protected abstract void encryptBlock(byte[] input, int inOff, byte[] output, int outOff);
 
     protected abstract void decryptBlock(byte[] input, int inOff, byte[] output, int outOff);
+
+    // Service Definitions
+    private CryptoServicePurpose getPurpose()
+    {
+        if (wKey == null)
+        {
+            return CryptoServicePurpose.ANY;
+        }
+
+        return encrypting ? CryptoServicePurpose.ENCRYPTION : CryptoServicePurpose.DECRYPTION;
+    }
 }

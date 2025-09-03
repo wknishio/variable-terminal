@@ -11,6 +11,7 @@ import org.bouncycastle.crypto.params.SkeinParameters;
 import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.Integers;
 import org.bouncycastle.util.Memoable;
+import org.bouncycastle.util.Pack;
 
 /**
  * Implementation of the Skein family of parameterised hash functions in 256, 512 and 1024 bit block
@@ -23,23 +24,23 @@ import org.bouncycastle.util.Memoable;
  * Bellare - Tadayoshi Kohno - Jon Callas - Jesse Walker.
  * <p>
  * This implementation is the basis for {@link SkeinDigest} and {@link SkeinMac}, implementing the
- * parameter based configuration system that allows Skein to be adapted to multiple applications.  
+ * parameter based configuration system that allows Skein to be adapted to multiple applications. <br>
  * Initialising the engine with {@link SkeinParameters} allows standard and arbitrary parameters to
  * be applied during the Skein hash function.
  * <p>
  * Implemented:
- *  
- *  256, 512 and 1024 bit internal states.</li>
- *  Full 96 bit input length.</li>
- *  Parameters defined in the Skein specification, and arbitrary other pre and post message
+ * <ul>
+ * <li>256, 512 and 1024 bit internal states.</li>
+ * <li>Full 96 bit input length.</li>
+ * <li>Parameters defined in the Skein specification, and arbitrary other pre and post message
  * parameters.</li>
- *  Arbitrary output size in 1 byte intervals.</li>
+ * <li>Arbitrary output size in 1 byte intervals.</li>
  * </ul>
  * <p>
  * Not implemented:
- *  
- *  Sub-byte length input (bit padding).</li>
- *  Tree hashing.</li>
+ * <ul>
+ * <li>Sub-byte length input (bit padding).</li>
+ * <li>Tree hashing.</li>
  * </ul>
  *
  * @see SkeinParameters
@@ -78,14 +79,13 @@ public class SkeinEngine
             bytes[5] = 0;
 
             // 8..15 = output length
-            ThreefishEngine.wordToBytes(outputSizeBits, bytes, 8);
+            Pack.longToLittleEndian(outputSizeBits, bytes, 8);
         }
 
         public byte[] getBytes()
         {
             return bytes;
         }
-
     }
 
     public static class Parameter
@@ -108,7 +108,6 @@ public class SkeinEngine
         {
             return value;
         }
-
     }
 
     /**
@@ -360,13 +359,12 @@ public class SkeinEngine
         {
             return getType() + " first: " + isFirst() + ", final: " + isFinal();
         }
-
     }
 
     /**
      * The Unique Block Iteration chaining mode.
      */
-    // TODO: This might be better as methods[]
+    // TODO: This might be better as methods...
     private class UBI
     {
         private final UbiTweak tweak = new UbiTweak();
@@ -434,10 +432,7 @@ public class SkeinEngine
         private void processBlock(long[] output)
         {
             threefish.init(true, chain, tweak.getWords());
-            for (int i = 0; i < message.length; i++)
-            {
-                message[i] = ThreefishEngine.bytesToWord(currentBlock, i * 8);
-            }
+            Pack.littleEndianToLong(currentBlock, 0, message);
 
             threefish.processBlock(message, output);
 
@@ -589,7 +584,7 @@ public class SkeinEngine
      * Initialises the Skein engine with the provided parameters. See {@link SkeinParameters} for
      * details on the parameterisation of the Skein hash function.
      *
-     * @param params the parameters to apply to this engine, or  null</code> to use no parameters.
+     * @param params the parameters to apply to this engine, or <code>null</code> to use no parameters.
      */
     public void init(SkeinParameters params)
     {
@@ -790,7 +785,7 @@ public class SkeinEngine
     private void output(long outputSequence, byte[] out, int outOff, int outputBytes)
     {
         byte[] currentBytes = new byte[8];
-        ThreefishEngine.wordToBytes(outputSequence, currentBytes, 0);
+        Pack.longToLittleEndian(outputSequence, currentBytes, 0);
 
         // Output is a sequence of UBI invocations all of which use and preserve the pre-output
         // state
@@ -805,14 +800,13 @@ public class SkeinEngine
             int toWrite = Math.min(8, outputBytes - (i * 8));
             if (toWrite == 8)
             {
-                ThreefishEngine.wordToBytes(outputWords[i], out, outOff + (i * 8));
+                Pack.longToLittleEndian(outputWords[i], out, outOff + (i * 8));
             }
             else
             {
-                ThreefishEngine.wordToBytes(outputWords[i], currentBytes, 0);
+                Pack.longToLittleEndian(outputWords[i], currentBytes, 0);
                 System.arraycopy(currentBytes, 0, out, outOff + (i * 8), toWrite);
             }
         }
     }
-
 }

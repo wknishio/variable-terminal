@@ -11,19 +11,26 @@ import org.bouncycastle.crypto.params.AEADParameters;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.util.Arrays;
+import org.bouncycastle.util.Bytes;
+import org.bouncycastle.util.Longs;
 
 /**
  * An implementation of <a href="https://tools.ietf.org/html/rfc7253">RFC 7253 on The OCB
- * Authenticated-Encryption Algorithm</a>, licensed per:
+ * Authenticated-Encryption Algorithm</a>. For those still concerned about the original patents
+ * around this, please see:
  * <p>
- *   <a href="https://www.cs.ucdavis.edu/~rogaway/ocb/license1.pdf">License for
- * Open-Source Software Implementations of OCB</a> (Jan 9, 2013) &mdash; &ldquo;License 1&rdquo;  
- * Under this license, you are authorized to make, use, and distribute open-source software
- * implementations of OCB. This license terminates for you if you sue someone over their open-source
- * software implementation of OCB claiming that you have a patent covering their implementation.
- * <p>
- * This is a non-binding summary of a legal document (the link above). The parameters of the license
- * are specified in the license document and that document is controlling. </blockquote>
+ * https://mailarchive.ietf.org/arch/msg/cfrg/qLTveWOdTJcLn4HP3ev-vrj05Vg/
+ * </p>
+ * Text reproduced below.
+ * <blockquote>
+ * Phillip Rogaway &gt;rogaway@cs.ucdavis.edu&lt; Sat, 27 February 2021 02:46 UTCShow header
+ *
+ * I can confirm that I have abandoned all OCB patents
+ * and placed into the public domain all OCB-related IP of mine.
+ * While I have been telling people this for quite some time, I don't
+ * think I ever made a proper announcement to the CFRG or on the
+ * OCB webpage. Consider that done.
+ * </blockquote>
  */
 public class OCBBlockCipher
     implements AEADBlockCipher
@@ -326,7 +333,12 @@ public class OCBBlockCipher
             throw new DataLengthException("Input buffer too short");
         }
         int resultLen = 0;
-
+        if (input == output && Arrays.segmentsOverlap(inOff, len, outOff, getUpdateOutputSize(len)))
+        {
+            input = new byte[len];
+            System.arraycopy(output, inOff, input, 0, len);
+            inOff = 0;
+        }
         for (int i = 0; i < len; ++i)
         {
             mainBlock[mainBlockPos] = input[inOff + i];
@@ -565,18 +577,7 @@ public class OCBBlockCipher
 
     protected static int OCB_ntz(long x)
     {
-        if (x == 0)
-        {
-            return 64;
-        }
-
-        int n = 0;
-        while ((x & 1L) == 0L)
-        {
-            ++n;
-            x >>>= 1;
-        }
-        return n;
+        return Longs.numberOfTrailingZeros(x);
     }
 
     protected static int shiftLeft(byte[] block, byte[] output)
@@ -594,9 +595,6 @@ public class OCBBlockCipher
 
     protected static void xor(byte[] block, byte[] val)
     {
-        for (int i = 15; i >= 0; --i)
-        {
-            block[i] ^= val[i];
-        }
+        Bytes.xorTo(16, val, block);
     }
 }

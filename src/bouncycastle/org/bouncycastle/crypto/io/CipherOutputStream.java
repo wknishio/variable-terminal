@@ -26,7 +26,7 @@ public class CipherOutputStream
     private AEADBlockCipher aeadBlockCipher;
 
     private final byte[] oneByte = new byte[1];
-    private byte[] buf = new byte[1024 * 8];
+    private byte[] buf;
 
     /**
      * Constructs a CipherOutputStream from an OutputStream and a
@@ -64,7 +64,7 @@ public class CipherOutputStream
     /**
      * Writes the specified byte to this output stream.
      *
-     * @param b the  byte</code>.
+     * @param b the <code>byte</code>.
      * @throws java.io.IOException if an I/O error occurs.
      */
     public void write(
@@ -84,13 +84,13 @@ public class CipherOutputStream
     }
 
     /**
-     * Writes  b.length</code> bytes from the specified byte array
+     * Writes <code>b.length</code> bytes from the specified byte array
      * to this output stream.
      * <p>
-     * The  write</code> method of
-     *  CipherOutputStream</code> calls the  write</code>
+     * The <code>write</code> method of
+     * <code>CipherOutputStream</code> calls the <code>write</code>
      * method of three arguments with the three arguments
-     *  b</code>,  0</code>, and  b.length</code>.
+     * <code>b</code>, <code>0</code>, and <code>b.length</code>.
      *
      * @param b the data.
      * @throws java.io.IOException if an I/O error occurs.
@@ -104,8 +104,8 @@ public class CipherOutputStream
     }
 
     /**
-     * Writes  len</code> bytes from the specified byte array
-     * starting at offset  off</code> to this output stream.
+     * Writes <code>len</code> bytes from the specified byte array
+     * starting at offset <code>off</code> to this output stream.
      *
      * @param b   the data.
      * @param off the start offset in the data.
@@ -150,7 +150,7 @@ public class CipherOutputStream
      * Ensure the ciphertext buffer has space sufficient to accept an upcoming output.
      *
      * @param updateSize the size of the pending update.
-     * @param finalOutput  true</code> iff this the cipher is to be finalised.
+     * @param finalOutput <code>true</code> iff this the cipher is to be finalised.
      */
     private void ensureCapacity(int updateSize, boolean finalOutput)
     {
@@ -192,7 +192,7 @@ public class CipherOutputStream
      * Any bytes buffered by the encapsulated cipher
      * and waiting to be processed by it will not be written out. For example,
      * if the encapsulated cipher is a block cipher, and the total number of
-     * bytes written using one of the  write</code> methods is less than
+     * bytes written using one of the <code>write</code> methods is less than
      * the cipher's block size, no bytes will be written out.
      *
      * @throws java.io.IOException if an I/O error occurs.
@@ -207,13 +207,13 @@ public class CipherOutputStream
      * Closes this output stream and releases any system resources
      * associated with this stream.
      * <p>
-     * This method invokes the  doFinal</code> method of the encapsulated
+     * This method invokes the <code>doFinal</code> method of the encapsulated
      * cipher object, which causes any bytes buffered by the encapsulated
      * cipher to be processed. The result is written out by calling the
-     *  flush</code> method of this output stream.
+     * <code>flush</code> method of this output stream.
      * <p>
      * This method resets the encapsulated cipher object to its initial state
-     * and calls the  close</code> method of the underlying output
+     * and calls the <code>close</code> method of the underlying output
      * stream.
      *
      * @throws java.io.IOException if an I/O error occurs.

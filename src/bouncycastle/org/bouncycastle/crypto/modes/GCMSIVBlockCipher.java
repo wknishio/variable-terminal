@@ -21,10 +21,10 @@ import org.bouncycastle.util.Pack;
 
 /**
  * GCM-SIV Mode.
- * <p>It should be noted that the specified limit of 2 36</sup> bytes is not supported. This is because all bytes are
- * cached in a <b>ByteArrayOutputStream</b> object (which has a limit of a little less than 2 31</sup> bytes),
- * and are output on the <b>doFinal</b>() call (which can only process a maximum of 2 31</sup> bytes).</p>
- * <p>The practical limit of 2 31</sup> - 24 bytes is policed, and attempts to breach the limit will be rejected</p>
+ * <p>It should be noted that the specified limit of 2<sup>36</sup> bytes is not supported. This is because all bytes are
+ * cached in a <b>ByteArrayOutputStream</b> object (which has a limit of a little less than 2<sup>31</sup> bytes),
+ * and are output on the <b>doFinal</b>() call (which can only process a maximum of 2<sup>31</sup> bytes).</p>
+ * <p>The practical limit of 2<sup>31</sup> - 24 bytes is policed, and attempts to breach the limit will be rejected</p>
  * <p>In order to properly support the higher limit, an extended form of <b>ByteArrayOutputStream</b> would be needed
  * which would use multiple arrays to store the data. In addition, a new <b>doOutput</b> method would be required (similar
  * to that in <b>XOF</b> digests), which would allow the data to be output over multiple calls. Alternatively an extended
@@ -142,7 +142,7 @@ public class GCMSIVBlockCipher
       */
      public GCMSIVBlockCipher()
      {
-         this(new AESEngine());
+         this(AESEngine.newInstance());
      }
 
      /**
@@ -217,8 +217,8 @@ public class GCMSIVBlockCipher
 
          /* Check keysize */
          if (myKey == null
-             || (myKey.getKey().length != BUFLEN
-                 && myKey.getKey().length != (BUFLEN << 1)))
+             || (myKey.getKeyLength() != BUFLEN
+                 && myKey.getKeyLength() != (BUFLEN << 1)))
          {
              throw new IllegalArgumentException("Invalid key");
          }
@@ -766,7 +766,7 @@ public class GCMSIVBlockCipher
          final byte[] myIn = new byte[BUFLEN];
          final byte[] myOut = new byte[BUFLEN];
          final byte[] myResult = new byte[BUFLEN];
-         final byte[] myEncKey = new byte[pKey.getKey().length];
+         final byte[] myEncKey = new byte[pKey.getKeyLength()];
 
          /* Prepare for encryption */
          System.arraycopy(theNonce, 0, myIn, BUFLEN - NONCELEN, NONCELEN);
@@ -935,8 +935,8 @@ public class GCMSIVBlockCipher
                  gHASH(theReverse);
 
                  /* Adjust counters */
-                 numProcessed += mySpace;
-                 myRemaining -= mySpace;
+                 numProcessed += BUFLEN;
+                 myRemaining -= BUFLEN;
              }
 
              /* If we have remaining data */

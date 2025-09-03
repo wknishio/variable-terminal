@@ -1,6 +1,9 @@
 package org.bouncycastle.crypto.digests;
 
 
+import org.bouncycastle.crypto.CryptoServiceProperties;
+import org.bouncycastle.crypto.CryptoServicePurpose;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.util.Memoable;
 import org.bouncycastle.util.Pack;
 
@@ -23,6 +26,15 @@ public class MD5Digest
      */
     public MD5Digest()
     {
+        this(CryptoServicePurpose.ANY);
+    }
+
+    public MD5Digest(CryptoServicePurpose purpose)
+    {
+        super(purpose);
+
+        CryptoServicesRegistrar.checkConstraints(Utils.getDefaultProperties(this, DIGEST_LENGTH * 4, purpose));
+
         reset();
     }
 
@@ -76,12 +88,9 @@ public class MD5Digest
         return DIGEST_LENGTH;
     }
 
-    protected void processWord(
-        byte[]  in,
-        int     inOff)
+    protected void processWord(byte[] in, int inOff)
     {
-        X[xOff++] = (in[inOff] & 0xff) | ((in[inOff + 1] & 0xff) << 8)
-            | ((in[inOff + 2] & 0xff) << 16) | ((in[inOff + 3] & 0xff) << 24); 
+        X[xOff++] = Pack.littleEndianToInt(in, inOff);
 
         if (xOff == 16)
         {
@@ -101,27 +110,14 @@ public class MD5Digest
         X[15] = (int)(bitLength >>> 32);
     }
 
-    private void unpackWord(
-        int     word,
-        byte[]  out,
-        int     outOff)
-    {
-        out[outOff]     = (byte)word;
-        out[outOff + 1] = (byte)(word >>> 8);
-        out[outOff + 2] = (byte)(word >>> 16);
-        out[outOff + 3] = (byte)(word >>> 24);
-    }
-
-    public int doFinal(
-        byte[]  out,
-        int     outOff)
+    public int doFinal(byte[] out, int outOff)
     {
         finish();
 
-        unpackWord(H1, out, outOff);
-        unpackWord(H2, out, outOff + 4);
-        unpackWord(H3, out, outOff + 8);
-        unpackWord(H4, out, outOff + 12);
+        Pack.intToLittleEndian(H1, out, outOff);
+        Pack.intToLittleEndian(H2, out, outOff + 4);
+        Pack.intToLittleEndian(H3, out, outOff + 8);
+        Pack.intToLittleEndian(H4, out, outOff + 12);
 
         reset();
 
@@ -341,7 +337,7 @@ public class MD5Digest
 
     public byte[] getEncodedState()
     {
-        byte[] state = new byte[36 + xOff * 4];
+        byte[] state = new byte[36 + xOff * 4 + 1];
 
         super.populateState(state);
 
@@ -356,6 +352,13 @@ public class MD5Digest
             Pack.intToBigEndian(X[i], state, 36 + (i * 4));
         }
 
+        state[state.length - 1] = (byte)purpose.ordinal();
+
         return state;
+    }
+
+    protected CryptoServiceProperties cryptoServiceProperties()
+    {
+        return Utils.getDefaultProperties(this, purpose);
     }
 }

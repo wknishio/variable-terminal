@@ -26,12 +26,12 @@ public class JPAKEPrimeOrderGroup
      * {@link JPAKEPrimeOrderGroups}, rather than manually constructing one.
      * <p>
      * The following basic checks are performed:
-     *  
-     *  p-1 must be evenly divisible by q</li>
-     *  g must be in [2, p-1]</li>
-     *  g^q mod p must equal 1</li>
-     *  p must be prime (within reasonably certainty)</li>
-     *  q must be prime (within reasonably certainty)</li>
+     * <ul>
+     * <li>p-1 must be evenly divisible by q</li>
+     * <li>g must be in [2, p-1]</li>
+     * <li>g^q mod p must equal 1</li>
+     * <li>p must be prime (within reasonably certainty)</li>
+     * <li>q must be prime (within reasonably certainty)</li>
      * </ul>
      * <p>
      * The prime checks are performed using {@link BigInteger#isProbablePrime(int)},

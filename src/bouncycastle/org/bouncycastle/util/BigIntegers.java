@@ -79,7 +79,7 @@ public final class BigIntegers
      *
      * @param value the value to be converted.
      * @param buf   the buffer to which the value is written.
-     * @param off   the start offset in array  buf</code> at which the data is written.
+     * @param off   the start offset in array <code>buf</code> at which the data is written.
      * @param len   the fixed length of data written (possibly padded with leading zeros).
      */
     public static void asUnsignedByteArray(BigInteger value, byte[] buf, int off, int len)
@@ -218,7 +218,7 @@ public final class BigIntegers
         {
             throw new ArithmeticException("BigInteger: modulus not positive");
         }
-        if (X.signum() < 0 || X.compareTo(M) >= 0)
+        if (X.signum() < 0 || X.bitLength() > M.bitLength())
         {
             X = X.mod(M);
         }
@@ -249,7 +249,7 @@ public final class BigIntegers
         {
             return ZERO;
         }
-        if (X.signum() < 0 || X.compareTo(M) >= 0)
+        if (X.signum() < 0 || X.bitLength() > M.bitLength())
         {
             X = X.mod(M);
         }
@@ -268,6 +268,52 @@ public final class BigIntegers
             throw new ArithmeticException("BigInteger not invertible.");
         }
         return Nat.toBigInteger(len, z);
+    }
+
+    public static boolean modOddIsCoprime(BigInteger M, BigInteger X)
+    {
+        if (!M.testBit(0))
+        {
+            throw new IllegalArgumentException("'M' must be odd");
+        }
+        if (M.signum() != 1)
+        {
+            throw new ArithmeticException("BigInteger: modulus not positive");
+        }
+        if (X.signum() < 0 || X.bitLength() > M.bitLength())
+        {
+            X = X.mod(M);
+        }
+
+        int bits = M.bitLength();
+        int[] m = Nat.fromBigInteger(bits, M);
+        int[] x = Nat.fromBigInteger(bits, X);
+        return 0 != Mod.modOddIsCoprime(m, x);
+    }
+
+    public static boolean modOddIsCoprimeVar(BigInteger M, BigInteger X)
+    {
+        if (!M.testBit(0))
+        {
+            throw new IllegalArgumentException("'M' must be odd");
+        }
+        if (M.signum() != 1)
+        {
+            throw new ArithmeticException("BigInteger: modulus not positive");
+        }
+        if (X.signum() < 0 || X.bitLength() > M.bitLength())
+        {
+            X = X.mod(M);
+        }
+        if (X.equals(ONE))
+        {
+            return true;
+        }
+
+        int bits = M.bitLength();
+        int[] m = Nat.fromBigInteger(bits, M);
+        int[] x = Nat.fromBigInteger(bits, X);
+        return Mod.modOddIsCoprimeVar(m, x);
     }
 
     public static int getUnsignedByteLength(BigInteger n)
@@ -370,7 +416,7 @@ public final class BigIntegers
 
     public static class Cache
     {
-        private final Map  values = new WeakHashMap ();
+        private final Map<BigInteger, Boolean> values = new WeakHashMap<BigInteger, Boolean>();
         private final BigInteger[] preserve = new BigInteger[8];
 
         private int preserveCounter = 0;

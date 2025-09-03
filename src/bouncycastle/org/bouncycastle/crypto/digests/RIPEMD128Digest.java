@@ -1,7 +1,10 @@
 package org.bouncycastle.crypto.digests;
 
-
+import org.bouncycastle.crypto.CryptoServiceProperties;
+import org.bouncycastle.crypto.CryptoServicePurpose;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.util.Memoable;
+import org.bouncycastle.util.Pack;
 
 /**
  * implementation of RIPEMD128
@@ -16,11 +19,20 @@ public class RIPEMD128Digest
     private int[] X = new int[16];
     private int xOff;
 
+
     /**
      * Standard constructor
      */
     public RIPEMD128Digest()
     {
+        this(CryptoServicePurpose.ANY);
+    }
+    public RIPEMD128Digest(CryptoServicePurpose purpose)
+    {
+        super(purpose);
+
+        CryptoServicesRegistrar.checkConstraints(Utils.getDefaultProperties(this, 128, purpose));
+
         reset();
     }
 
@@ -30,7 +42,9 @@ public class RIPEMD128Digest
      */
     public RIPEMD128Digest(RIPEMD128Digest t)
     {
-        super(t);
+        super(t.purpose);
+
+        CryptoServicesRegistrar.checkConstraints(Utils.getDefaultProperties(this, 128, purpose));
 
         copyIn(t);
     }
@@ -58,12 +72,9 @@ public class RIPEMD128Digest
         return DIGEST_LENGTH;
     }
 
-    protected void processWord(
-        byte[] in,
-        int inOff)
+    protected void processWord(byte[] in, int inOff)
     {
-        X[xOff++] = (in[inOff] & 0xff) | ((in[inOff + 1] & 0xff) << 8)
-            | ((in[inOff + 2] & 0xff) << 16) | ((in[inOff + 3] & 0xff) << 24); 
+        X[xOff++] = Pack.littleEndianToInt(in, inOff);
 
         if (xOff == 16)
         {
@@ -76,34 +87,21 @@ public class RIPEMD128Digest
     {
         if (xOff > 14)
         {
-        processBlock();
+            processBlock();
         }
 
         X[14] = (int)(bitLength & 0xffffffff);
         X[15] = (int)(bitLength >>> 32);
     }
 
-    private void unpackWord(
-        int word,
-        byte[] out,
-        int outOff)
-    {
-        out[outOff]     = (byte)word;
-        out[outOff + 1] = (byte)(word >>> 8);
-        out[outOff + 2] = (byte)(word >>> 16);
-        out[outOff + 3] = (byte)(word >>> 24);
-    }
-
-    public int doFinal(
-        byte[] out,
-        int outOff)
+    public int doFinal(byte[] out, int outOff)
     {
         finish();
 
-        unpackWord(H0, out, outOff);
-        unpackWord(H1, out, outOff + 4);
-        unpackWord(H2, out, outOff + 8);
-        unpackWord(H3, out, outOff + 12);
+        Pack.intToLittleEndian(H0, out, outOff);
+        Pack.intToLittleEndian(H1, out, outOff + 4);
+        Pack.intToLittleEndian(H2, out, outOff + 8);
+        Pack.intToLittleEndian(H3, out, outOff + 12);
 
         reset();
 
@@ -478,5 +476,10 @@ public class RIPEMD128Digest
         RIPEMD128Digest d = (RIPEMD128Digest)other;
 
         copyIn(d);
+    }
+
+    protected CryptoServiceProperties cryptoServiceProperties()
+    {
+        return Utils.getDefaultProperties(this, purpose);
     }
 }

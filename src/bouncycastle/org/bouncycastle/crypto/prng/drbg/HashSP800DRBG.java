@@ -192,7 +192,7 @@ public class HashSP800DRBG
 
     // this will always add the shorter length byte array mathematically to the
     // longer length byte array.
-    // be careful[].
+    // be careful....
     private void addTo(byte[] longer, byte[] shorter)
     {
         int carry = 0;

@@ -1,5 +1,7 @@
 package org.bouncycastle.crypto.digests;
 
+import org.bouncycastle.crypto.CryptoServicePurpose;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.Xof;
@@ -30,27 +32,42 @@ public class ParallelHash
     private int nCount;
     private int bufOff;
 
+    private final CryptoServicePurpose purpose;
+
     /**
      * Base constructor.
      *
      * @param bitLength security strength (bits) of the underlying SHAKE function, 128 or 256.
-     * @param S the customization string - available for local use.
-     * @param B the blocksize (in bytes) for hashing.
+     * @param S         the customization string - available for local use.
+     * @param B         the blocksize (in bytes) for hashing.
      */
     public ParallelHash(int bitLength, byte[] S, int B)
     {
-        this(bitLength, S, B, bitLength * 2);
+        this(bitLength, S, B, bitLength * 2, CryptoServicePurpose.ANY);
     }
 
     public ParallelHash(int bitLength, byte[] S, int B, int outputSize)
     {
+        this(bitLength, S, B, outputSize, CryptoServicePurpose.ANY);
+    }
+
+    public ParallelHash(int bitLength, byte[] S, int B, int outputSize, CryptoServicePurpose purpose)
+    {
+        if (B <= 0)
+        {
+            throw new IllegalArgumentException("block size should be greater than 0");
+        }
         this.cshake = new CSHAKEDigest(bitLength, N_PARALLEL_HASH, S);
         this.compressor = new CSHAKEDigest(bitLength, new byte[0], new byte[0]);
         this.bitLength = bitLength;
         this.B = B;
+
         this.outputLength = (outputSize + 7) / 8;
         this.buffer = new byte[B];
         this.compressorBuffer = new byte[bitLength * 2 / 8];
+        this.purpose = purpose;
+
+        CryptoServicesRegistrar.checkConstraints(Utils.getDefaultProperties(this, bitLength, purpose));
 
         reset();
     }
@@ -64,6 +81,13 @@ public class ParallelHash
         this.outputLength = source.outputLength;
         this.buffer = Arrays.clone(source.buffer);
         this.compressorBuffer = Arrays.clone(source.compressorBuffer);
+        this.purpose = source.purpose;
+
+        this.firstOutput = source.firstOutput;
+        this.nCount = source.nCount;
+        this.bufOff = source.bufOff;
+
+        CryptoServicesRegistrar.checkConstraints(Utils.getDefaultProperties(this, bitLength, purpose));
     }
 
     public String getAlgorithmName()
@@ -94,7 +118,7 @@ public class ParallelHash
     public void update(byte[] in, int inOff, int len)
         throws DataLengthException, IllegalStateException
     {
-        len = Math.max(0,  len);
+        len = Math.max(0, len);
 
         //
         // fill the current word
@@ -115,7 +139,7 @@ public class ParallelHash
 
         if (i < len)
         {
-            while (len - i > B)
+            while (len - i >= B)
             {
                 compress(in, inOff + i, B);
                 i += B;
@@ -180,7 +204,7 @@ public class ParallelHash
         {
             wrapUp(outputLength);
         }
-        
+
         int rv = cshake.doFinal(out, outOff, outLen);
 
         reset();

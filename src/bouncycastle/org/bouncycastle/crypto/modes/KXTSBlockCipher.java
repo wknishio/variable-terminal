@@ -1,18 +1,19 @@
 package org.bouncycastle.crypto.modes;
 
 import org.bouncycastle.crypto.BlockCipher;
-import org.bouncycastle.crypto.BufferedBlockCipher;
 import org.bouncycastle.crypto.CipherParameters;
 import org.bouncycastle.crypto.DataLengthException;
+import org.bouncycastle.crypto.DefaultBufferedBlockCipher;
 import org.bouncycastle.crypto.OutputLengthException;
 import org.bouncycastle.crypto.params.ParametersWithIV;
+import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.Pack;
 
 /**
  * Implementation of DSTU7624 XTS mode
  */
 public class KXTSBlockCipher
-    extends BufferedBlockCipher
+    extends DefaultBufferedBlockCipher
 {
     /*
      * Constants for GF(2^m) operations
@@ -123,7 +124,12 @@ public class KXTSBlockCipher
         {
             throw new IllegalArgumentException("Partial blocks not supported");
         }
-
+        if (input == output && Arrays.segmentsOverlap(inOff, len, outOff, len))
+        {
+            input = new byte[len];
+            System.arraycopy(output, inOff, input, 0, len);
+            inOff = 0;
+        }
         for (int pos = 0; pos < len; pos += blockSize)
         {
             processBlock(input, inOff + pos, output, outOff + pos);

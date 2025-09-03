@@ -13,7 +13,7 @@ import org.bouncycastle.util.Pack;
  * "SipHash is a family of PRFs SipHash-c-d where the integer parameters c and d are the number of
  * compression rounds and the number of finalization rounds. A compression round is identical to a
  * finalization round and this round function is called SipRound. Given a 128-bit key k and a
- * (possibly empty) byte string m, SipHash-c-d returns a 64-bit value[]"
+ * (possibly empty) byte string m, SipHash-c-d returns a 64-bit value..."
  */
 public class SipHash
     implements Mac

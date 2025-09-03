@@ -125,8 +125,8 @@ public class G3413CFBBlockCipher
     }
 
     /**
-     * this method sets default values to <b>s</b> and <b>m</b> parameters: 
-     * s = <b>blockSize</b>;  
+     * this method sets default values to <b>s</b> and <b>m</b> parameters:<br>
+     * s = <b>blockSize</b>; <br>
      * m = <b>2 * blockSize</b>
      */
     private void setupDefaultParams()

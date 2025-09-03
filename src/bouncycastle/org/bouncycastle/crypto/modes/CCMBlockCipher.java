@@ -20,7 +20,7 @@ import org.bouncycastle.util.Arrays;
  * <b>Note</b>: this mode is a packet mode - it needs all the data up front.
  */
 public class CCMBlockCipher
-    implements AEADBlockCipher
+    implements CCMModeCipher
 {
     private BlockCipher           cipher;
     private int                   blockSize;
@@ -34,9 +34,20 @@ public class CCMBlockCipher
     private ExposedByteArrayOutputStream data = new ExposedByteArrayOutputStream();
 
     /**
+     * Return a new CCM mode cipher based on the passed in base cipher
+     *
+     * @param cipher the base cipher for the CCM mode.
+     */
+    public static CCMModeCipher newInstance(BlockCipher cipher)
+    {
+        return new CCMBlockCipher(cipher);
+    }
+
+    /**
      * Basic constructor.
      *
      * @param c the block cipher to be used.
+     * @deprecated use the CCMBlockCipher.newInstance() static method.
      */
     public CCMBlockCipher(BlockCipher c)
     {
@@ -250,9 +261,19 @@ public class CCMBlockCipher
         if (q < 4)
         {
             int limitLen = 1 << (8 * q);
-            if (inLen >= limitLen)
+
+            // no input length adjustment for encryption
+            int inputAdjustment = 0;
+
+            if (!forEncryption)
             {
-                throw new IllegalStateException("CCM packet too large for choice of q.");
+                // input includes 16 additional bytes: CCM flags and n+q values.
+                inputAdjustment = 1 /* flags */ + 15 /* n + q */;
+            }
+
+            if ((inLen-inputAdjustment) >= limitLen)
+            {
+                throw new IllegalStateException("CCM packet too large for choice of q");
             }
         }
 
@@ -260,7 +281,7 @@ public class CCMBlockCipher
         iv[0] = (byte)((q - 1) & 0x7);
         System.arraycopy(nonce, 0, iv, 1, nonce.length);
 
-        BlockCipher ctrCipher = new SICBlockCipher(cipher);
+        BlockCipher ctrCipher = SICBlockCipher.newInstance(cipher);
         ctrCipher.init(forEncryption, new ParametersWithIV(keyParam, iv));
 
         int outputLen;
@@ -281,7 +302,7 @@ public class CCMBlockCipher
 
             ctrCipher.processBlock(macBlock, 0, encMac, 0);   // S0
 
-            while (inIndex < (inOff + inLen - blockSize))                 // S1[]
+            while (inIndex < (inOff + inLen - blockSize))                 // S1...
             {
                 ctrCipher.processBlock(in, inIndex, output, outIndex);
                 outIndex += blockSize;
@@ -454,7 +475,7 @@ public class CCMBlockCipher
         return getAssociatedTextLength() > 0;
     }
 
-    private class ExposedByteArrayOutputStream
+    private static class ExposedByteArrayOutputStream
         extends ByteArrayOutputStream
     {
         public ExposedByteArrayOutputStream()

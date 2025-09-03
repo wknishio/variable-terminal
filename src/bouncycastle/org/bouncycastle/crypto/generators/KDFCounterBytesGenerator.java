@@ -13,27 +13,27 @@ import org.bouncycastle.crypto.params.KeyParameter;
  * This KDF has been defined by the publicly available NIST SP 800-108 specification.
  * NIST SP800-108 allows for alternative orderings of the input fields, meaning that the input can be formated in multiple ways.
  * There are 3 supported formats:  - Below [i]_2 is a counter of r-bits length concatenated to the fixedInputData.
- *  
- *  1: K(i) := PRF( KI, [i]_2 || Label || 0x00 || Context || [L]_2 ) with the counter at the very beginning of the fixedInputData (The default implementation has this format)</li>
- *  2: K(i) := PRF( KI, Label || 0x00 || Context || [L]_2 || [i]_2 ) with the counter at the very end of the fixedInputData</li>
- *  3a: K(i) := PRF( KI, Label || 0x00 || [i]_2 || Context || [L]_2 ) OR:</li>
- *  3b: K(i) := PRF( KI, Label || 0x00 || [i]_2 || [L]_2 || Context ) OR:</li>
- *  3c: K(i) := PRF( KI, Label || [i]_2 || 0x00 || Context || [L]_2 ) etc[] with the counter somewhere in the 'middle' of the fixedInputData.</li>
+ * <ul>
+ * <li>1: K(i) := PRF( KI, [i]_2 || Label || 0x00 || Context || [L]_2 ) with the counter at the very beginning of the fixedInputData (The default implementation has this format)</li>
+ * <li>2: K(i) := PRF( KI, Label || 0x00 || Context || [L]_2 || [i]_2 ) with the counter at the very end of the fixedInputData</li>
+ * <li>3a: K(i) := PRF( KI, Label || 0x00 || [i]_2 || Context || [L]_2 ) OR:</li>
+ * <li>3b: K(i) := PRF( KI, Label || 0x00 || [i]_2 || [L]_2 || Context ) OR:</li>
+ * <li>3c: K(i) := PRF( KI, Label || [i]_2 || 0x00 || Context || [L]_2 ) etc... with the counter somewhere in the 'middle' of the fixedInputData.</li>
  * </ul>
  * This function must be called with the following KDFCounterParameters():
- *  
- *   KI</li>
- *   The part of the fixedInputData that comes BEFORE the counter OR null</li>
- *   the part of the fixedInputData that comes AFTER the counter OR null </li>
- *   the length of the counter in bits (not bytes)</li>
+ * <ul>
+ *  <li>KI</li>
+ *  <li>The part of the fixedInputData that comes BEFORE the counter OR null</li>
+ *  <li>the part of the fixedInputData that comes AFTER the counter OR null </li>
+ *  <li>the length of the counter in bits (not bytes)</li>
  * </ul>
  * Resulting function calls assuming an 8 bit counter.
- *  
- *  1.  KDFCounterParameters(ki,     null,                                     "Label || 0x00 || Context || [L]_2]",    8);</li>
- *  2.  KDFCounterParameters(ki,     "Label || 0x00 || Context || [L]_2]",     null,                                    8);</li>
- *  3a. KDFCounterParameters(ki,     "Label || 0x00",                        "Context || [L]_2]",                    8);</li>
- *  3b. KDFCounterParameters(ki,     "Label || 0x00",                        "[L]_2] || Context",                    8);</li>
- *  3c. KDFCounterParameters(ki,     "Label",                                 "0x00 || Context || [L]_2]",            8);</li>
+ * <ul>
+ * <li>1.  KDFCounterParameters(ki,     null,                                     "Label || 0x00 || Context || [L]_2]",    8);</li>
+ * <li>2.  KDFCounterParameters(ki,     "Label || 0x00 || Context || [L]_2]",     null,                                    8);</li>
+ * <li>3a. KDFCounterParameters(ki,     "Label || 0x00",                        "Context || [L]_2]",                    8);</li>
+ * <li>3b. KDFCounterParameters(ki,     "Label || 0x00",                        "[L]_2] || Context",                    8);</li>
+ * <li>3c. KDFCounterParameters(ki,     "Label",                                 "0x00 || Context || [L]_2]",            8);</li>
  * </ul>
  */
 public class KDFCounterBytesGenerator

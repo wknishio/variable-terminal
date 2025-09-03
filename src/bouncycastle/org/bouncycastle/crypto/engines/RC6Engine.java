@@ -1,9 +1,7 @@
 package org.bouncycastle.crypto.engines;
 
-import org.bouncycastle.crypto.BlockCipher;
-import org.bouncycastle.crypto.CipherParameters;
-import org.bouncycastle.crypto.DataLengthException;
-import org.bouncycastle.crypto.OutputLengthException;
+import org.bouncycastle.crypto.*;
+import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
 
 /**
@@ -31,8 +29,8 @@ public class RC6Engine
      * Pw = Odd((e-2) * 2^wordsize)
      * Qw = Odd((o-2) * 2^wordsize)
      *
-     * where e is the base of natural logarithms (2.718281828[])
-     * and o is the golden ratio (1.61803398[])
+     * where e is the base of natural logarithms (2.718281828...)
+     * and o is the golden ratio (1.61803398...)
      */
     private static final int    P32 = 0xb7e15163;
     private static final int    Q32 = 0x9e3779b9;
@@ -79,7 +77,10 @@ public class RC6Engine
 
         KeyParameter       p = (KeyParameter)params;
         this.forEncryption = forEncryption;
-        setKey(p.getKey());
+        byte[] key = p.getKey();
+        setKey(key);
+
+        CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), key.length * 8, params, Utils.getPurpose(forEncryption)));
     }
 
     public int processBlock(
@@ -126,7 +127,7 @@ public class RC6Engine
         // There are 3 phases to the key expansion.
         //
         // Phase 1:
-        //   Copy the secret key K[0[]b-1] into an array L[0..c-1] of
+        //   Copy the secret key K[0...b-1] into an array L[0..c-1] of
         //   c = ceil(b/u), where u = wordSize/8 in little-endian order.
         //   In other words, we fill up L using u consecutive key bytes
         //   of K. Any unfilled byte positions in L are zeroed. In the
@@ -206,7 +207,7 @@ public class RC6Engine
         B += _S[0];
         D += _S[1];
 
-        // perform round #1,#2 [] #ROUNDS of encryption 
+        // perform round #1,#2 ... #ROUNDS of encryption 
         for (int i = 1; i <= _noRounds; i++)
         {
             int t = 0,u = 0;
@@ -307,8 +308,8 @@ public class RC6Engine
 
     /**
      * Perform a left "spin" of the word. The rotation of the given
-     * word  x</em> is rotated left by  y</em> bits.
-     * Only the  lg(wordSize)</em> low-order bits of  y</em>
+     * word <em>x</em> is rotated left by <em>y</em> bits.
+     * Only the <em>lg(wordSize)</em> low-order bits of <em>y</em>
      * are used to determine the rotation amount. Here it is 
      * assumed that the wordsize used is 32.
      * <p>
@@ -322,8 +323,8 @@ public class RC6Engine
 
     /**
      * Perform a right "spin" of the word. The rotation of the given
-     * word  x</em> is rotated left by  y</em> bits.
-     * Only the  lg(wordSize)</em> low-order bits of  y</em>
+     * word <em>x</em> is rotated left by <em>y</em> bits.
+     * Only the <em>lg(wordSize)</em> low-order bits of <em>y</em>
      * are used to determine the rotation amount. Here it is 
      * assumed that the wordsize used is a power of 2.
      * <p>

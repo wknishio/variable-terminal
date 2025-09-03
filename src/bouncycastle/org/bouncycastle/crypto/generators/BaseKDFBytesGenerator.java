@@ -11,7 +11,7 @@ import org.bouncycastle.util.Pack;
 
 /**
  * Basic KDF generator for derived keys and ivs as defined by IEEE P1363a/ISO
- * 18033  
+ * 18033 <br>
  * This implementation is based on ISO 18033/P1363a.
  */
 public class BaseKDFBytesGenerator
@@ -91,7 +91,7 @@ public class BaseKDFBytesGenerator
         // this is at odds with the standard implementation, the
         // maximum value should be hBits * (2^32 - 1) where hBits
         // is the digest output size in bits. We can't have an
-        // array with a long index at the moment[]
+        // array with a long index at the moment...
         //
         if (oBytes > ((2L << 32) - 1))
         {

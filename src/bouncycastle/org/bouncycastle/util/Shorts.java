@@ -6,10 +6,10 @@ package org.bouncycastle.util;
 public class Shorts
 {
     public static final int BYTES = 2;
-    public static final int SIZE = 16;
+    public static final int SIZE = Short.SIZE;
 
     public static Short valueOf(short value)
     {
-        return new Short(value);
+        return Short.valueOf(value);
     }
 }

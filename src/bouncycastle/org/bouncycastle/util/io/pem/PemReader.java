@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bouncycastle.util.encoders.Base64;
 
@@ -14,8 +16,11 @@ import org.bouncycastle.util.encoders.Base64;
 public class PemReader
     extends BufferedReader
 {
+    public static final String LAX_PEM_PARSING_SYSTEM_PROPERTY_NAME = "org.bouncycastle.pemreader.lax";
+
     private static final String BEGIN = "-----BEGIN ";
     private static final String END = "-----END ";
+    private static final Logger LOG = Logger.getLogger(PemReader.class.getName());
 
     public PemReader(Reader reader)
     {
@@ -40,7 +45,7 @@ public class PemReader
 
         if (line != null)
         {
-            line = line.substring(BEGIN.length());
+            line = line.substring(BEGIN.length()).trim();
             int index = line.indexOf('-');
 
             if (index > 0 && line.endsWith("-----") && (line.length() - index) == 5)
@@ -58,7 +63,7 @@ public class PemReader
         throws IOException
     {
         String          line;
-        String          endMarker = END + type;
+        String          endMarker = END + type + "-----";
         StringBuffer    buf = new StringBuffer();
         List            headers = new ArrayList();
 
@@ -75,7 +80,17 @@ public class PemReader
                 continue;
             }
 
-            if (line.indexOf(endMarker) != -1)
+            if (System.getProperty(LAX_PEM_PARSING_SYSTEM_PROPERTY_NAME, "false").equalsIgnoreCase("true"))
+            {
+                String trimmedLine = line.trim();
+                if (!trimmedLine.equals(line) && LOG.isLoggable(Level.WARNING))
+                {
+                    LOG.log(Level.WARNING, "PEM object contains whitespaces on -----END line", new Exception("trace"));
+                }
+                line = trimmedLine;
+            }
+
+            if (line.indexOf(endMarker) == 0)
             {
                 break;
             }

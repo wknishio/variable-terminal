@@ -15,7 +15,7 @@ import org.bouncycastle.util.BigIntegers;
  * X9.31-1998 - signing using a hash.
  * <p>
  * The message digest hash, H, is encapsulated to form a byte string as follows
- *  
+ * <pre>
  * EB = 06 || PS || 0xBA || H || TRAILER
  * </pre>
  * where PS is a string of bytes all of value 0xBB of length such that |EB|=|n|, and TRAILER is the ISO/IEC 10118 part number† for the digest. The byte string, EB, is converted to an integer value, the message representative, f.

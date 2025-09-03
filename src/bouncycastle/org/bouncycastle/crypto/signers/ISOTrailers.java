@@ -9,7 +9,7 @@ import org.bouncycastle.util.Integers;
 
 public class ISOTrailers
 {
-    private static final Map  trailerMap;
+    private static final Map<String, Integer> trailerMap;
 
     static final public int   TRAILER_IMPLICIT    = 0xBC;
 
@@ -26,7 +26,7 @@ public class ISOTrailers
 
     static
     {
-        Map  trailers = new HashMap ();
+        Map<String, Integer> trailers = new HashMap<String, Integer>();
 
         trailers.put("RIPEMD128", Integers.valueOf(TRAILER_RIPEMD128));
         trailers.put("RIPEMD160", Integers.valueOf(TRAILER_RIPEMD160));

@@ -39,7 +39,7 @@ public interface AEADCipher
 
     /**
      * Add a single byte to the associated data check.
-     *  If the implementation supports it, this will be an online operation and will not retain the associated data.
+     * <br>If the implementation supports it, this will be an online operation and will not retain the associated data.
      *
      * @param in the byte to be processed.
      */
@@ -47,7 +47,7 @@ public interface AEADCipher
 
     /**
      * Add a sequence of bytes to the associated data check.
-     *  If the implementation supports it, this will be an online operation and will not retain the associated data.
+     * <br>If the implementation supports it, this will be an online operation and will not retain the associated data.
      *
      * @param in the input byte array.
      * @param inOff the offset into the in array where the data to be processed starts.

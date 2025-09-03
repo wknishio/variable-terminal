@@ -30,7 +30,7 @@ public class JPAKEUtil
     /**
      * Return a value that can be used as x1 or x3 during round 1.
      * <p>
-     * The returned value is a random value in the range  [0, q-1]</tt>.
+     * The returned value is a random value in the range <tt>[0, q-1]</tt>.
      */
     public static BigInteger generateX1(
         BigInteger q,
@@ -44,7 +44,7 @@ public class JPAKEUtil
     /**
      * Return a value that can be used as x2 or x4 during round 1.
      * <p>
-     * The returned value is a random value in the range  [1, q-1]</tt>.
+     * The returned value is a random value in the range <tt>[1, q-1]</tt>.
      */
     public static BigInteger generateX2(
         BigInteger q,
@@ -58,10 +58,35 @@ public class JPAKEUtil
     /**
      * Converts the given password to a {@link BigInteger}
      * for use in arithmetic calculations.
+     * 
+     * @deprecated Use version including the modulus instead.
      */
     public static BigInteger calculateS(char[] password)
     {
-        return new BigInteger(Strings.toUTF8ByteArray(password));
+        return new BigInteger(1, Strings.toUTF8ByteArray(password));
+    }
+
+    /**
+     * Converts the given password to a {@link BigInteger} mod q.
+     */
+    public static BigInteger calculateS(BigInteger q, byte[] password)
+        throws CryptoException
+    {
+        BigInteger s = new BigInteger(1, password).mod(q);
+        if (s.signum() == 0)
+        {
+            throw new CryptoException("MUST ensure s is not equal to 0 modulo q");
+        }
+        return s;
+    }
+
+    /**
+     * Converts the given password to a {@link BigInteger} mod q.
+     */
+    public static BigInteger calculateS(BigInteger q, char[] password)
+        throws CryptoException
+    {
+        return calculateS(q, Strings.toUTF8ByteArray(password));
     }
 
     /**
@@ -185,9 +210,9 @@ public class JPAKEUtil
     /**
      * Validates that ga is not 1.
      * <p>
-     * As described by Feng Hao[]
+     * As described by Feng Hao...
      * <p>
-     *  
+     * <blockquote>
      * Alice could simply check ga != 1 to ensure it is a generator.
      * In fact, as we will explain in Section 3, (x1 + x3 + x4 ) is random over Zq even in the face of active attacks.
      * Hence, the probability for ga = 1 is extremely small - on the order of 2^160 for 160-bit q.
@@ -245,7 +270,7 @@ public class JPAKEUtil
      * Calculates the keying material, which can be done after round 2 has completed.
      * A session key must be derived from this key material using a secure key derivation function (KDF).
      * The KDF used to derive the key is handled externally (i.e. not by {@link JPAKEParticipant}).
-     *  
+     * <pre>
      * KeyingMaterial = (B/g^{x2*x4*s})^x2
      * </pre>
      */
@@ -319,7 +344,7 @@ public class JPAKEUtil
      * Calculates the MacTag (to be used for key confirmation), as defined by
      * <a href="https://csrc.nist.gov/publications/nistpubs/800-56A/SP800-56A_Revision1_Mar08-2007.pdf">NIST SP 800-56A Revision 1</a>,
      * Section 8.2 Unilateral Key Confirmation for Key Agreement Schemes.
-     *  
+     * <pre>
      * MacTag = HMAC(MacKey, MacLen, MacData)
      *
      * MacKey = H(K || "JPAKE_KC")
@@ -373,7 +398,7 @@ public class JPAKEUtil
 
     /**
      * Calculates the MacKey (i.e. the key to use when calculating the MagTag for key confirmation).
-     *  
+     * <pre>
      * MacKey = H(K || "JPAKE_KC")
      * </pre>
      */

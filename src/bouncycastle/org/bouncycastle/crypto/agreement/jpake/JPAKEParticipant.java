@@ -8,6 +8,7 @@ import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.Digest;
 import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.util.Arrays;
+import org.bouncycastle.util.Exceptions;
 
 /**
  * A participant in a Password Authenticated Key Exchange by Juggling (J-PAKE) exchange.
@@ -24,14 +25,14 @@ import org.bouncycastle.util.Arrays;
  * To execute an exchange, construct a {@link JPAKEParticipant} on each end,
  * and call the following 7 methods
  * (once and only once, in the given order, for each participant, sending messages between them as described):
- *  
- *  {@link #createRound1PayloadToSend()} - and send the payload to the other participant</li>
- *  {@link #validateRound1PayloadReceived(JPAKERound1Payload)} - use the payload received from the other participant</li>
- *  {@link #createRound2PayloadToSend()} - and send the payload to the other participant</li>
- *  {@link #validateRound2PayloadReceived(JPAKERound2Payload)} - use the payload received from the other participant</li>
- *  {@link #calculateKeyingMaterial()}</li>
- *  {@link #createRound3PayloadToSend(BigInteger)} - and send the payload to the other participant</li>
- *  {@link #validateRound3PayloadReceived(JPAKERound3Payload, BigInteger)} - use the payload received from the other participant</li>
+ * <ol>
+ * <li>{@link #createRound1PayloadToSend()} - and send the payload to the other participant</li>
+ * <li>{@link #validateRound1PayloadReceived(JPAKERound1Payload)} - use the payload received from the other participant</li>
+ * <li>{@link #createRound2PayloadToSend()} - and send the payload to the other participant</li>
+ * <li>{@link #validateRound2PayloadReceived(JPAKERound2Payload)} - use the payload received from the other participant</li>
+ * <li>{@link #calculateKeyingMaterial()}</li>
+ * <li>{@link #createRound3PayloadToSend(BigInteger)} - and send the payload to the other participant</li>
+ * <li>{@link #validateRound3PayloadReceived(JPAKERound3Payload, BigInteger)} - use the payload received from the other participant</li>
  * </ol>
  * <p>
  * Each side should derive a session key from the keying material returned by {@link #calculateKeyingMaterial()}.
@@ -138,7 +139,7 @@ public class JPAKEParticipant
 
     /**
      * The current state.
-     * See the  STATE_*</tt> constants for possible values.
+     * See the <tt>STATE_*</tt> constants for possible values.
      */
     private int state;
 
@@ -193,7 +194,7 @@ public class JPAKEParticipant
             participantId,
             password,
             group,
-            new SHA256Digest(),
+            SHA256Digest.newInstance(),
             CryptoServicesRegistrar.getSecureRandom());
     }
 
@@ -260,7 +261,7 @@ public class JPAKEParticipant
 
     /**
      * Gets the current state of this participant.
-     * See the  STATE_*</tt> constants for possible values.
+     * See the <tt>STATE_*</tt> constants for possible values.
      */
     public int getState()
     {
@@ -344,7 +345,7 @@ public class JPAKEParticipant
             throw new IllegalStateException("Round1 payload must be validated prior to creating Round2 payload for " + this.participantId);
         }
         BigInteger gA = JPAKEUtil.calculateGA(p, gx1, gx3, gx4);
-        BigInteger s = JPAKEUtil.calculateS(password);
+        BigInteger s = calculateS();
         BigInteger x2s = JPAKEUtil.calculateX2s(q, x2, s);
         BigInteger A = JPAKEUtil.calculateA(p, q, gA, x2s);
         BigInteger[] knowledgeProofForX2s = JPAKEUtil.calculateZeroKnowledgeProof(p, q, gA, A, x2s, participantId, digest, random);
@@ -405,7 +406,7 @@ public class JPAKEParticipant
      * rounds 3 and 4.  See {@link JPAKEParticipant} for details on how to execute
      * rounds 3 and 4.
      * <p>
-     * The keying material will be in the range  [0, p-1]</tt>.
+     * The keying material will be in the range <tt>[0, p-1]</tt>.
      * <p>
      * {@link #validateRound2PayloadReceived(JPAKERound2Payload)} must be called prior to this method.
      * <p>
@@ -426,7 +427,7 @@ public class JPAKEParticipant
         {
             throw new IllegalStateException("Round2 payload must be validated prior to creating key for " + participantId);
         }
-        BigInteger s = JPAKEUtil.calculateS(password);
+        BigInteger s = calculateS();
         
         /*
          * Clear the password array from memory, since we don't need it anymore.
@@ -545,4 +546,15 @@ public class JPAKEParticipant
         this.state = STATE_ROUND_3_VALIDATED;
     }
 
+    private BigInteger calculateS()
+    {
+        try
+        {
+            return JPAKEUtil.calculateS(q, password);
+        }
+        catch (CryptoException e)
+        {
+            throw Exceptions.illegalStateException(e.getMessage(), e);
+        }
+    }
 }

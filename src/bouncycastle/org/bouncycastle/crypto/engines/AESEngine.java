@@ -1,10 +1,12 @@
 package org.bouncycastle.crypto.engines;
 
-import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.CipherParameters;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.DataLengthException;
+import org.bouncycastle.crypto.DefaultMultiBlockCipher;
+import org.bouncycastle.crypto.MultiBlockCipher;
 import org.bouncycastle.crypto.OutputLengthException;
-import org.bouncycastle.crypto.StatelessProcessing;
+import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.util.Arrays;
 import org.bouncycastle.util.Pack;
@@ -33,7 +35,7 @@ import org.bouncycastle.util.Pack;
  *
  */
 public class AESEngine
-    implements BlockCipher, StatelessProcessing
+    extends DefaultMultiBlockCipher
 {
     // The S box
     private static final byte[] S = {
@@ -420,10 +422,22 @@ private static final int[] Tinv0 =
     private static final int BLOCK_SIZE = 16;
 
     /**
+      * Return an AESEngine.
+      *
+      * @return an AES ECB mode cipher.
+      */
+     public static MultiBlockCipher newInstance()
+     {
+         return new AESEngine();
+     }
+
+    /**
      * default constructor - 128 bit block size.
+     * @deprecated use AESEngine.newInstance()
      */
     public AESEngine()
     {
+        CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), 256));
     }
 
     /**
@@ -450,6 +464,9 @@ private static final int[] Tinv0 =
             {
                 s = Arrays.clone(Si);
             }
+
+            CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), bitsOfSecurity(), params, Utils.getPurpose(forEncryption)));
+
             return;
         }
 
@@ -583,8 +600,12 @@ private static final int[] Tinv0 =
         Pack.intToLittleEndian(C3, out, outOff + 12);
     }
 
-    public BlockCipher newInstance()
+    private int bitsOfSecurity()
     {
-        return new AESEngine();
+        if (WorkingKey == null)
+        {
+            return 256;
+        }
+        return (WorkingKey.length - 7) << 5;
     }
 }

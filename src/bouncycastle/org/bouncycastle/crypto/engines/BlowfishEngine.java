@@ -2,8 +2,11 @@ package org.bouncycastle.crypto.engines;
 
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.CipherParameters;
+import org.bouncycastle.crypto.CryptoServicePurpose;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
+import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
 
 /**
@@ -315,6 +318,7 @@ implements BlockCipher
         S2 = new int[SBOX_SK];
         S3 = new int[SBOX_SK];
         P = new int[P_SZ];
+        CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), bitsOfSecurity()));
     }
 
     /**
@@ -335,6 +339,7 @@ implements BlockCipher
             this.workingKey = ((KeyParameter)params).getKey();
             setKey(this.workingKey);
 
+            CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), bitsOfSecurity(), params, getPurpose()));
             return;
         }
 
@@ -443,7 +448,7 @@ implements BlockCipher
          *
          * (1)
          * Initialise the S-boxes and the P-array, with a fixed string
-         * This string contains the hexadecimal digits of pi (3.141[])
+         * This string contains the hexadecimal digits of pi (3.141...)
          */
         System.arraycopy(KS0, 0, S0, 0, SBOX_SK);
         System.arraycopy(KS1, 0, S1, 0, SBOX_SK);
@@ -579,5 +584,23 @@ implements BlockCipher
         b[offset + 2] = (byte)(in >> 8);
         b[offset + 1] = (byte)(in >> 16);
         b[offset]     = (byte)(in >> 24);
+    }
+
+    private int bitsOfSecurity()
+    {
+        if (workingKey == null)
+        {
+            return 256;
+        }
+        return (workingKey.length > 32) ? 256 : workingKey.length * 8;
+    }
+
+    private CryptoServicePurpose getPurpose()
+    {
+        if (workingKey == null)
+        {
+            return CryptoServicePurpose.ANY;
+        }
+        return encrypting ? CryptoServicePurpose.ENCRYPTION : CryptoServicePurpose.DECRYPTION;
     }
 }

@@ -2,9 +2,10 @@ package org.bouncycastle.crypto.engines;
 
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.CipherParameters;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
-import org.bouncycastle.crypto.StatelessProcessing;
+import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
 
 /**
@@ -12,12 +13,13 @@ import org.bouncycastle.crypto.params.KeyParameter;
  */
 
 public class CamelliaLightEngine
-    implements BlockCipher, StatelessProcessing
+    implements BlockCipher
 {
     private static final int BLOCK_SIZE = 16;
     private static final int MASK8 = 0xff;
-    private boolean initialized;
-    private boolean _keyis128;
+    private boolean initialized = false;
+    private int _keySize;
+    private boolean forEncryption;
 
     private int[] subkey = new int[24 * 4];
     private int[] kw = new int[4 * 2]; // for whitening
@@ -33,10 +35,10 @@ public class CamelliaLightEngine
     };
 
     /*
-    *
-    * S-box data
-    *
-    */
+     *
+     * S-box data
+     *
+     */
     private static final byte SBOX1[] = {
         (byte)112, (byte)130, (byte)44, (byte)236,
         (byte)179, (byte)39, (byte)192, (byte)229,
@@ -115,7 +117,7 @@ public class CamelliaLightEngine
     }
 
     private static void roldq(int rot, int[] ki, int ioff,
-                                    int[] ko, int ooff)
+                              int[] ko, int ooff)
     {
         ko[0 + ooff] = (ki[0 + ioff] << rot) | (ki[1 + ioff] >>> (32 - rot));
         ko[1 + ooff] = (ki[1 + ioff] << rot) | (ki[2 + ioff] >>> (32 - rot));
@@ -128,7 +130,7 @@ public class CamelliaLightEngine
     }
 
     private static void decroldq(int rot, int[] ki, int ioff,
-                                       int[] ko, int ooff)
+                                 int[] ko, int ooff)
     {
         ko[2 + ooff] = (ki[0 + ioff] << rot) | (ki[1 + ioff] >>> (32 - rot));
         ko[3 + ooff] = (ki[1 + ioff] << rot) | (ki[2 + ioff] >>> (32 - rot));
@@ -141,7 +143,7 @@ public class CamelliaLightEngine
     }
 
     private static void roldqo32(int rot, int[] ki, int ioff,
-                                       int[] ko, int ooff)
+                                 int[] ko, int ooff)
     {
         ko[0 + ooff] = (ki[1 + ioff] << (rot - 32)) | (ki[2 + ioff] >>> (64 - rot));
         ko[1 + ooff] = (ki[2 + ioff] << (rot - 32)) | (ki[3 + ioff] >>> (64 - rot));
@@ -154,7 +156,7 @@ public class CamelliaLightEngine
     }
 
     private static void decroldqo32(int rot, int[] ki, int ioff,
-                                          int[] ko, int ooff)
+                                    int[] ko, int ooff)
     {
         ko[2 + ooff] = (ki[1 + ioff] << (rot - 32)) | (ki[2 + ioff] >>> (64 - rot));
         ko[3 + ooff] = (ki[2 + ioff] << (rot - 32)) | (ki[3 + ioff] >>> (64 - rot));
@@ -261,46 +263,45 @@ public class CamelliaLightEngine
 
     private void setKey(boolean forEncryption, byte[] key)
     {
+        this.forEncryption = forEncryption;
         int[] k = new int[8];
         int[] ka = new int[4];
         int[] kb = new int[4];
         int[] t = new int[4];
+        _keySize = key.length;
 
         switch (key.length)
         {
-            case 16:
-                _keyis128 = true;
-                k[0] = bytes2int(key, 0);
-                k[1] = bytes2int(key, 4);
-                k[2] = bytes2int(key, 8);
-                k[3] = bytes2int(key, 12);
-                k[4] = k[5] = k[6] = k[7] = 0;
-                break;
-            case 24:
-                k[0] = bytes2int(key, 0);
-                k[1] = bytes2int(key, 4);
-                k[2] = bytes2int(key, 8);
-                k[3] = bytes2int(key, 12);
-                k[4] = bytes2int(key, 16);
-                k[5] = bytes2int(key, 20);
-                k[6] = ~k[4];
-                k[7] = ~k[5];
-                _keyis128 = false;
-                break;
-            case 32:
-                k[0] = bytes2int(key, 0);
-                k[1] = bytes2int(key, 4);
-                k[2] = bytes2int(key, 8);
-                k[3] = bytes2int(key, 12);
-                k[4] = bytes2int(key, 16);
-                k[5] = bytes2int(key, 20);
-                k[6] = bytes2int(key, 24);
-                k[7] = bytes2int(key, 28);
-                _keyis128 = false;
-                break;
-            default:
-                throw new
-                    IllegalArgumentException("key sizes are only 16/24/32 bytes.");
+        case 16:
+            k[0] = bytes2int(key, 0);
+            k[1] = bytes2int(key, 4);
+            k[2] = bytes2int(key, 8);
+            k[3] = bytes2int(key, 12);
+            k[4] = k[5] = k[6] = k[7] = 0;
+            break;
+        case 24:
+            k[0] = bytes2int(key, 0);
+            k[1] = bytes2int(key, 4);
+            k[2] = bytes2int(key, 8);
+            k[3] = bytes2int(key, 12);
+            k[4] = bytes2int(key, 16);
+            k[5] = bytes2int(key, 20);
+            k[6] = ~k[4];
+            k[7] = ~k[5];
+            break;
+        case 32:
+            k[0] = bytes2int(key, 0);
+            k[1] = bytes2int(key, 4);
+            k[2] = bytes2int(key, 8);
+            k[3] = bytes2int(key, 12);
+            k[4] = bytes2int(key, 16);
+            k[5] = bytes2int(key, 20);
+            k[6] = bytes2int(key, 24);
+            k[7] = bytes2int(key, 28);
+            break;
+        default:
+            throw new
+                IllegalArgumentException("key sizes are only 16/24/32 bytes.");
         }
 
         for (int i = 0; i < 4; i++)
@@ -315,7 +316,7 @@ public class CamelliaLightEngine
         }
         camelliaF2(ka, SIGMA, 4);
 
-        if (_keyis128)
+        if (_keySize == 16)
         {
             if (forEncryption)
             {
@@ -461,7 +462,7 @@ public class CamelliaLightEngine
     }
 
     private int processBlock128(byte[] in, int inOff,
-                                      byte[] out, int outOff)
+                                byte[] out, int outOff)
     {
         int[] state = new int[4];
 
@@ -496,7 +497,7 @@ public class CamelliaLightEngine
     }
 
     private int processBlock192or256(byte[] in, int inOff,
-                                           byte[] out, int outOff)
+                                     byte[] out, int outOff)
     {
         int[] state = new int[4];
 
@@ -536,6 +537,7 @@ public class CamelliaLightEngine
 
     public CamelliaLightEngine()
     {
+        CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), bitsOfSecurity()));
     }
 
     public String getAlgorithmName()
@@ -557,6 +559,8 @@ public class CamelliaLightEngine
 
         setKey(forEncryption, ((KeyParameter)params).getKey());
         initialized = true;
+
+        CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), bitsOfSecurity(), params, Utils.getPurpose(forEncryption)));
     }
 
     public int processBlock(byte[] in, int inOff,
@@ -578,8 +582,8 @@ public class CamelliaLightEngine
         {
             throw new OutputLengthException("output buffer too short");
         }
-        
-        if (_keyis128)
+
+        if (_keySize == 16)
         {
             return processBlock128(in, inOff, out, outOff);
         }
@@ -593,8 +597,8 @@ public class CamelliaLightEngine
     {
     }
 
-    public BlockCipher newInstance()
+    private int bitsOfSecurity()
     {
-        return new CamelliaLightEngine();
+        return _keySize * 8;
     }
 }

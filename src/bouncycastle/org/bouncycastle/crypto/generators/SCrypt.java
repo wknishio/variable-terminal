@@ -27,10 +27,10 @@ public class SCrypt
      * @param P     the bytes of the pass phrase.
      * @param S     the salt to use for this invocation.
      * @param N     CPU/Memory cost parameter. Must be larger than 1, a power of 2 and less than
-     *               2^(128 * r / 8)</code>.
+     *              <code>2^(128 * r / 8)</code>.
      * @param r     the block size, must be &gt;= 1.
      * @param p     Parallelization parameter. Must be a positive integer less than or equal to
-     *               Integer.MAX_VALUE / (128 * r * 8)</code>.
+     *              <code>Integer.MAX_VALUE / (128 * r * 8)</code>.
      * @param dkLen the length of the key to generate.
      * @return the generated key.
      */
@@ -115,7 +115,7 @@ public class SCrypt
 
     private static byte[] SingleIterationPBKDF2(byte[] P, byte[] S, int dkLen)
     {
-        PBEParametersGenerator pGen = new PKCS5S2ParametersGenerator(new SHA256Digest());
+        PBEParametersGenerator pGen = new PKCS5S2ParametersGenerator(SHA256Digest.newInstance());
         pGen.init(P, S, 1);
         KeyParameter key = (KeyParameter)pGen.generateDerivedMacParameters(dkLen * 8);
         return key.getKey();

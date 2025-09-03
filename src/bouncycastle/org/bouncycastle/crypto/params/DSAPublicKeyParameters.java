@@ -33,7 +33,7 @@ public class DSAPublicKeyParameters
         }
         else
         {
-            return y;         // we can't validate without params, fortunately we can't use the key either[]
+            return y;         // we can't validate without params, fortunately we can't use the key either...
         }
     }
 

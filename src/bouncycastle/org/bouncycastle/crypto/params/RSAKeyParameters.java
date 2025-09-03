@@ -20,8 +20,6 @@ public class RSAKeyParameters
             + "f3cfd51e474afb6bc6974f78db8aba8e9e517fded658591ab7502bd41849462f",
         16);
 
-    private static final BigInteger ONE = BigInteger.valueOf(1);
-
     private BigInteger      modulus;
     private BigInteger      exponent;
 
@@ -53,7 +51,19 @@ public class RSAKeyParameters
         this.exponent = exponent;
     }
 
-    private BigInteger validate(BigInteger modulus, boolean isInternal)
+    private static boolean hasAnySmallFactors(BigInteger modulus)
+    {
+        BigInteger M = modulus, X = SMALL_PRIMES_PRODUCT;
+        if (modulus.bitLength() < SMALL_PRIMES_PRODUCT.bitLength())
+        {
+            M = SMALL_PRIMES_PRODUCT;
+            X = modulus;
+        }
+
+        return !BigIntegers.modOddIsCoprimeVar(M, X);
+    }
+
+    private static BigInteger validate(BigInteger modulus, boolean isInternal)
     {
         if (isInternal)
         {
@@ -74,34 +84,42 @@ public class RSAKeyParameters
             return modulus;
         }
 
-        int maxBitLength = Properties.asInteger("org.bouncycastle.rsa.max_size", 15360);
-
-        int modBitLength = modulus.bitLength();
-        if (maxBitLength < modBitLength)
+        int maxBitLength = Properties.asInteger("org.bouncycastle.rsa.max_size", 16384);
+        if (maxBitLength < modulus.bitLength())
         {
-            throw new IllegalArgumentException("modulus value out of range");
+            throw new IllegalArgumentException("RSA modulus out of range");
         }
 
-        if (!modulus.gcd(SMALL_PRIMES_PRODUCT).equals(ONE))
+        if (hasAnySmallFactors(modulus))
         {
             throw new IllegalArgumentException("RSA modulus has a small prime factor");
         }
 
         int bits = modulus.bitLength() / 2;
-        int iterations = bits >= 1536 ? 3
-            : bits >= 1024 ? 4
-            : bits >= 512 ? 7
-            : 50;
+        int iterations = Properties.asInteger("org.bouncycastle.rsa.max_mr_tests", getMRIterations(bits));
 
-        Primes.MROutput mr = Primes.enhancedMRProbablePrimeTest(modulus, CryptoServicesRegistrar.getSecureRandom(), iterations);
-        if (!mr.isProvablyComposite())
+        if (iterations > 0)
         {
-            throw new IllegalArgumentException("RSA modulus is not composite");
+            Primes.MROutput mr = Primes.enhancedMRProbablePrimeTest(modulus, CryptoServicesRegistrar.getSecureRandom(),
+                iterations);
+            if (!mr.isProvablyComposite())
+            {
+                throw new IllegalArgumentException("RSA modulus is not composite");
+            }
         }
 
         validated.add(modulus);
         
         return modulus;
+    }
+
+    private static int getMRIterations(int bits)
+    {
+        int iterations = bits >= 1536 ? 3
+            : bits >= 1024 ? 4
+            : bits >= 512 ? 7
+            : 50;
+        return iterations;
     }
 
     public BigInteger getModulus()

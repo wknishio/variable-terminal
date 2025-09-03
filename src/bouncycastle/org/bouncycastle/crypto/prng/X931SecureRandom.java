@@ -43,7 +43,7 @@ public class X931SecureRandom
     {
         synchronized (this)
         {
-            // check if a reseed is required[]
+            // check if a reseed is required...
             if (drbg.generate(bytes, predictionResistant) < 0)
             {
                 drbg.reseed();

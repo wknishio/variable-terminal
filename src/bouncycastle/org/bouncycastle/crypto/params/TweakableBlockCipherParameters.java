@@ -21,7 +21,7 @@ public class TweakableBlockCipherParameters
     /**
      * Gets the key.
      *
-     * @return the key to use, or  null</code> to use the current key.
+     * @return the key to use, or <code>null</code> to use the current key.
      */
     public KeyParameter getKey()
     {
@@ -31,7 +31,7 @@ public class TweakableBlockCipherParameters
     /**
      * Gets the tweak value.
      *
-     * @return the tweak to use, or  null</code> to use the current tweak.
+     * @return the tweak to use, or <code>null</code> to use the current tweak.
      */
     public byte[] getTweak()
     {

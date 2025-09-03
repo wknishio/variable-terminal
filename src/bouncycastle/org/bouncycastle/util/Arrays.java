@@ -1,14 +1,14 @@
 package org.bouncycastle.util;
 
 import java.math.BigInteger;
-import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 /**
  * General array utilities.
  */
 public final class Arrays
 {
-    private Arrays() 
+    private Arrays()
     {
         // static class, hide constructor
     }
@@ -81,10 +81,11 @@ public final class Arrays
 
     /**
      * A constant time equals comparison - does not terminate early if
-     * test will fail.
+     * test will fail. For best results always pass the expected value
+     * as the first parameter.
      *
-     * @param a first array
-     * @param b second array
+     * @param expected first array
+     * @param supplied second array
      * @return true if arrays equal, false otherwise.
      */
     public static boolean constantTimeAreEqual(
@@ -146,6 +147,47 @@ public final class Arrays
             d |= (a[aOff + i] ^ b[bOff + i]);
         }
         return 0 == d;
+    }
+
+    /**
+     * A constant time equals comparison - does not terminate early if
+     * comparison fails. For best results always pass the expected value
+     * as the first parameter.
+     *
+     * @param expected first array
+     * @param supplied second array
+     * @return true if arrays equal, false otherwise.
+     */
+    public static boolean constantTimeAreEqual(
+        char[] expected,
+        char[] supplied)
+    {
+        if (expected == null || supplied == null)
+        {
+            return false;
+        }
+
+        if (expected == supplied)
+        {
+            return true;
+        }
+
+        int len = Math.min(expected.length, supplied.length);
+
+        int nonEqual = expected.length ^ supplied.length;
+
+        // do the char-wise comparison
+        for (int i = 0; i != len; i++)
+        {
+            nonEqual |= (expected[i] ^ supplied[i]);
+        }
+        // If supplied is longer than expected, iterate over rest of supplied with NOPs
+        for (int i = len; i < supplied.length; i++)
+        {
+            nonEqual |= ((byte)supplied[i] ^ (byte)~supplied[i]);
+        }
+
+        return nonEqual == 0;
     }
 
     public static int compareUnsigned(byte[] a, byte[] b)
@@ -535,7 +577,7 @@ public final class Arrays
         while (--i >= 0)
         {
             hc *= 257;
-            hc ^= data[i].hashCode();
+            hc ^= Objects.hashCode(data[i]);
         }
 
         return hc;
@@ -543,37 +585,37 @@ public final class Arrays
 
     public static boolean[] clone(boolean[] data)
     {
-        return null == data ? null : (boolean[])data.clone();
+        return null == data ? null : data.clone();
     }
 
     public static byte[] clone(byte[] data)
     {
-        return null == data ? null : (byte[])data.clone();
+        return null == data ? null : data.clone();
     }
 
     public static char[] clone(char[] data)
     {
-        return null == data ? null : (char[])data.clone();
+        return null == data ? null : data.clone();
     }
 
     public static int[] clone(int[] data)
     {
-        return null == data ? null : (int[])data.clone();
+        return null == data ? null : data.clone();
     }
 
     public static long[] clone(long[] data)
     {
-        return null == data ? null : (long[])data.clone();
+        return null == data ? null : data.clone();
     }
 
     public static short[] clone(short[] data)
     {
-        return null == data ? null : (short[])data.clone();
+        return null == data ? null : data.clone();
     }
 
     public static BigInteger[] clone(BigInteger[] data)
     {
-        return null == data ? null : (BigInteger[])data.clone();
+        return null == data ? null : data.clone();
     }
 
     public static byte[] clone(byte[] data, byte[] existing)
@@ -761,9 +803,7 @@ public final class Arrays
         int newLength = to - from;
         if (newLength < 0)
         {
-            StringBuffer sb = new StringBuffer(from);
-            sb.append(" > ").append(to);
-            throw new IllegalArgumentException(sb.toString());
+            throw new IllegalArgumentException(from + " > " + to);
         }
         return newLength;
     }
@@ -810,14 +850,30 @@ public final class Arrays
         return result;
     }
 
+    public static String[] append(String[] a, String b)
+    {
+        if (a == null)
+        {
+            return new String[]{ b };
+        }
+
+        int length = a.length;
+        String[] result = new String[length + 1];
+        System.arraycopy(a, 0, result, 0, length);
+        result[length] = b;
+        return result;
+    }
+
     public static byte[] concatenate(byte[] a, byte[] b)
     {
         if (null == a)
         {
+            // b might also be null
             return clone(b);
         }
         if (null == b)
         {
+            // a might also be null
             return clone(a);
         }
 
@@ -845,7 +901,7 @@ public final class Arrays
         System.arraycopy(b, 0, r, a.length, b.length);
         return r;
     }
-    
+
     public static byte[] concatenate(byte[] a, byte[] b, byte[] c)
     {
         if (null == a)
@@ -921,10 +977,12 @@ public final class Arrays
     {
         if (null == a)
         {
+            // b might also be null
             return clone(b);
         }
         if (null == b)
         {
+            // a might also be null
             return clone(a);
         }
 
@@ -985,7 +1043,7 @@ public final class Arrays
 
         int p1 = 0, p2 = a.length;
         byte[] result = new byte[p2];
-        
+
         while (--p2 >= 0)
         {
             result[p2] = a[p1++];
@@ -1012,6 +1070,15 @@ public final class Arrays
         return result;
     }
 
+    public static void reverse(byte[] input, byte[] output)
+    {
+        int last = input.length - 1;
+        for (int i = 0; i <= last; ++i)
+        {
+            output[i] = input[last - i];
+        }
+    }
+
     public static byte[] reverseInPlace(byte[] a)
     {
         if (null == a)
@@ -1023,6 +1090,35 @@ public final class Arrays
         while (p1 < p2)
         {
             byte t1 = a[p1], t2 = a[p2];
+            a[p1++] = t2;
+            a[p2--] = t1;
+        }
+
+        return a;
+    }
+
+    public static void reverseInPlace(byte[] a, int aOff, int aLen)
+    {
+        int p1 = aOff, p2 = aOff + aLen - 1;
+        while (p1 < p2)
+        {
+            byte t1 = a[p1], t2 = a[p2];
+            a[p1++] = t2;
+            a[p2--] = t1;
+        }
+    }
+
+    public static short[] reverseInPlace(short[] a)
+    {
+        if (null == a)
+        {
+            return null;
+        }
+
+        int p1 = 0, p2 = a.length - 1;
+        while (p1 < p2)
+        {
+            short t1 = a[p1], t2 = a[p2];
             a[p1++] = t2;
             a[p2--] = t1;
         }
@@ -1049,6 +1145,50 @@ public final class Arrays
     }
 
     /**
+     * Iterator backed by a specific array.
+     */
+    public static class Iterator<T>
+        implements java.util.Iterator<T>
+    {
+        private final T[] dataArray;
+
+        private int position = 0;
+
+        /**
+         * Base constructor.
+         * <p>
+         * Note: the array is not cloned, changes to it will affect the values returned by next().
+         * </p>
+         *
+         * @param dataArray array backing the iterator.
+         */
+        public Iterator(T[] dataArray)
+        {
+            this.dataArray = dataArray;
+        }
+
+        public boolean hasNext()
+        {
+            return position < dataArray.length;
+        }
+
+        public T next()
+        {
+            if (position == dataArray.length)
+            {
+                throw new NoSuchElementException("Out of elements: " + position);
+            }
+
+            return dataArray[position++];
+        }
+
+        public void remove()
+        {
+            throw new UnsupportedOperationException("Cannot remove element from an Array.");
+        }
+    }
+
+    /**
      * Fill input array by zeros
      *
      * @param data input array
@@ -1068,7 +1208,15 @@ public final class Arrays
             java.util.Arrays.fill(data, 0);
         }
     }
-    
+
+    public static void clear(long[] data)
+    {
+        if (null != data)
+        {
+            java.util.Arrays.fill(data, 0);
+        }
+    }
+
     public static boolean isNullOrContainsNull(Object[] array)
     {
         if (null == array)
@@ -1100,43 +1248,38 @@ public final class Arrays
     {
         return null == array || array.length < 1;
     }
-        
-    /**
-     * Iterator backed by a specific array.
-     */
-    public static class Iterator
-        implements java.util.Iterator
+
+    public static boolean segmentsOverlap(int aOff, int aLen, int bOff, int bLen)
     {
-        private final Object[] dataArray;
+        return aLen > 0
+            && bLen > 0
+            && aOff - bOff < bLen
+            && bOff - aOff < aLen;
+    }
 
-        private int position = 0;
-
-        /**
-         * Base constructor.
-         * <p>
-         * Note: the array is not cloned, changes to it will affect the values returned by next().
-         * </p>
-         *
-         * @param dataArray array backing the iterator.
-         */
-        public Iterator(Object[] dataArray)
+    public static void validateRange(byte[] buf, int from, int to)
+    {
+        if (buf == null)
         {
-            this.dataArray = dataArray;
+            throw new NullPointerException("'buf' cannot be null");
         }
-
-        public boolean hasNext()
+        if ((from | (buf.length - from) | (to - from) | (buf.length - to)) < 0)
         {
-            return position < dataArray.length;
+            throw new IndexOutOfBoundsException("buf.length: " + buf.length + ", from: " + from + ", to: " + to);
         }
+    }
 
-        public Object next()
+    public static void validateSegment(byte[] buf, int off, int len)
+    {
+        if (buf == null)
         {
-            return dataArray[position++];
+            throw new NullPointerException("'buf' cannot be null");
         }
-
-        public void remove()
+        int available = buf.length - off;
+        int remaining = available - len;
+        if ((off | len | available | remaining) < 0)
         {
-            throw new UnsupportedOperationException("Cannot remove element from an Array.");
+            throw new IndexOutOfBoundsException("buf.length: " + buf.length + ", off: " + off + ", len: " + len);
         }
     }
 }

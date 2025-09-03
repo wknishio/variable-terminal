@@ -23,7 +23,7 @@ import org.bouncycastle.util.Arrays;
 public class CipherInputStream
     extends FilterInputStream
 {
-    private static final int INPUT_BUF_SIZE = 1024 * 8;
+    private static final int INPUT_BUF_SIZE = 2048;
 
     private SkippingCipher skippingCipher;
     private byte[] inBuf;
@@ -32,7 +32,7 @@ public class CipherInputStream
     private StreamCipher streamCipher;
     private AEADBlockCipher aeadBlockCipher;
 
-    private byte[] buf = new byte[1024 * 8];
+    private byte[] buf;
     private byte[] markBuf;
 
 
@@ -231,12 +231,12 @@ public class CipherInputStream
 
     /**
      * Reads data from the underlying stream and processes it with the cipher until the cipher
-     * outputs data, and then returns up to  b.length</code> bytes in the provided array.
+     * outputs data, and then returns up to <code>b.length</code> bytes in the provided array.
      * <p>
      * If the underlying stream is exhausted by this call, the cipher will be finalised.
      * </p>
      * @param b the buffer into which the data is read.
-     * @return the total number of bytes read into the buffer, or  -1</code> if there is no
+     * @return the total number of bytes read into the buffer, or <code>-1</code> if there is no
      *         more data because the end of the stream has been reached.
      * @throws IOException if there was an error closing the input stream.
      * @throws InvalidCipherTextIOException if the data read from the stream was invalid ciphertext
@@ -251,14 +251,14 @@ public class CipherInputStream
 
     /**
      * Reads data from the underlying stream and processes it with the cipher until the cipher
-     * outputs data, and then returns up to  len</code> bytes in the provided array.
+     * outputs data, and then returns up to <code>len</code> bytes in the provided array.
      * <p>
      * If the underlying stream is exhausted by this call, the cipher will be finalised.
      * </p>
      * @param b   the buffer into which the data is read.
-     * @param off the start offset in the destination array  b</code>
+     * @param off the start offset in the destination array <code>b</code>
      * @param len the maximum number of bytes read.
-     * @return the total number of bytes read into the buffer, or  -1</code> if there is no
+     * @return the total number of bytes read into the buffer, or <code>-1</code> if there is no
      *         more data because the end of the stream has been reached.
      * @throws IOException if there was an error closing the input stream.
      * @throws InvalidCipherTextIOException if the data read from the stream was invalid ciphertext
@@ -335,7 +335,7 @@ public class CipherInputStream
      * Ensure the cipher text buffer has space sufficient to accept an upcoming output.
      *
      * @param updateSize the size of the pending update.
-     * @param finalOutput  true</code> iff this the cipher is to be finalised.
+     * @param finalOutput <code>true</code> iff this the cipher is to be finalised.
      */
     private void ensureCapacity(int updateSize, boolean finalOutput)
     {

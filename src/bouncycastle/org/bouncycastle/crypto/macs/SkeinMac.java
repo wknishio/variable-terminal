@@ -61,7 +61,7 @@ public class SkeinMac
     }
 
     /**
-     * Initialises the Skein digest with the provided parameters. 
+     * Initialises the Skein digest with the provided parameters.<br>
      * See {@link SkeinParameters} for details on the parameterisation of the Skein hash function.
      *
      * @param params an instance of {@link SkeinParameters} or {@link KeyParameter}.

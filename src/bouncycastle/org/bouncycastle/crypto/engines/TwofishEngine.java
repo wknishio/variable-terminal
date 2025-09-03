@@ -2,8 +2,10 @@ package org.bouncycastle.crypto.engines;
 
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.CipherParameters;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
+import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.util.Integers;
 import org.bouncycastle.util.Pack;
@@ -226,6 +228,8 @@ public final class TwofishEngine
 
     public TwofishEngine()
     {
+        CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), 256));
+
         // calculate the MDS matrix
         int[] m1 = new int[2];
         int[] mX = new int[2];
@@ -285,6 +289,8 @@ public final class TwofishEngine
             default:
                 throw new IllegalArgumentException("Key length not 128/192/256 bits.");
             }
+
+            CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), keyBits, params, Utils.getPurpose(encrypting)));
 
             this.k64Cnt = this.workingKey.length / 8;
             setKey(this.workingKey);
@@ -590,7 +596,7 @@ public final class TwofishEngine
 
     /**
      * Reed-Solomon code parameters: (12,8) reversible code:<p>
-     *  
+     * <pre>
      * g(x) = x^4 + (a+1/a)x^3 + ax^2 + (a+1/a)x + 1
      * </pre>
      * where a = primitive root of field generator 0x14D

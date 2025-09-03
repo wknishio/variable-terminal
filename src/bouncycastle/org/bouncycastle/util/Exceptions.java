@@ -1,26 +1,22 @@
 package org.bouncycastle.util;
 
+import java.io.IOException;
+
 public class Exceptions
 {
-    public static IllegalArgumentException illegalArgumentException(String message, final Throwable cause)
+    public static IllegalArgumentException illegalArgumentException(String message, Throwable cause)
     {
-        return new IllegalArgumentException(message)
-        {
-            public Throwable getCause()
-            {
-                return cause;
-            }
-        };
+        return new IllegalArgumentException(message, cause);
     }
 
-    public static IllegalStateException illegalStateException(String message, final Throwable cause)
+    public static IllegalStateException illegalStateException(String message, Throwable cause)
     {
-        return new IllegalStateException(message)
-        {
-            public Throwable getCause()
-            {
-                return cause;
-            }
-        };
+        return new IllegalStateException(message, cause);
     }
+
+    public static IOException ioException(String message, Throwable cause)
+    {
+        return new IOException(message + "-" + cause.getMessage());
+    }
+
 }

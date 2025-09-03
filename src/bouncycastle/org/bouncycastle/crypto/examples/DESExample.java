@@ -25,7 +25,7 @@ import org.bouncycastle.util.encoders.Hex;
  * <p>
  * The program is command line driven, with the input
  * and output files specified on the command line.
- *  
+ * <pre>
  * java org.bouncycastle.crypto.examples.DESExample infile outfile [keyfile]
  * </pre>
  * A new key is generated for each encryption, if key is not specified,
@@ -35,16 +35,16 @@ import org.bouncycastle.util.encoders.Hex;
  * file is Hex encoded, 60 characters wide text file.
  * <p>
  * When encrypting;
- *  
- *   the infile is expected to be a byte stream (text or binary)
- *   there is no keyfile specified on the input line
+ * <ul>
+ *  <li>the infile is expected to be a byte stream (text or binary)
+ *  <li>there is no keyfile specified on the input line
  * </ul>
  * <p>
  * When decrypting;
- *  
- *   the infile is expected to be the 60 character wide base64 
+ * <ul>
+ *  <li>the infile is expected to be the 60 character wide base64 
  *    encoded file
- *   the keyfile is expected to be a base64 encoded file
+ *  <li>the keyfile is expected to be a base64 encoded file
  * </ul>
  * <p>
  * This example shows how to use the light-weight API, DES and

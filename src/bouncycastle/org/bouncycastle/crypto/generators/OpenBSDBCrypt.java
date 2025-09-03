@@ -12,7 +12,10 @@ import org.bouncycastle.util.Strings;
  * Password hashing scheme BCrypt,
  * designed by Niels Provos and David Mazières, using the
  * String format and the Base64 encoding
- * of the reference implementation on OpenBSD
+ * of the reference implementation on OpenBSD.
+ * <p>
+ * Passwords are encoded using UTF-8 when provided as char[]. Encoded passwords longer than
+ * 72 bytes are truncated and all remaining bytes are ignored.
  */
 public class OpenBSDBCrypt
 {
@@ -35,11 +38,13 @@ public class OpenBSDBCrypt
      */
     private static final byte[] decodingTable = new byte[128];
     private static final String defaultVersion = "2y";
-    private static final Set  allowedVersions = new HashSet ();
+    private static final Set<String> allowedVersions = new HashSet<String>();
 
     static
     {
         // Presently just the Bcrypt versions.
+        allowedVersions.add("2");
+        allowedVersions.add("2x");
         allowedVersions.add("2a");
         allowedVersions.add("2y");
         allowedVersions.add("2b");
@@ -332,12 +337,7 @@ public class OpenBSDBCrypt
 
         String newBcryptString = doGenerate(version, password, salt, cost);
 
-        boolean isEqual = sLength == newBcryptString.length();
-        for (int i = 0; i != sLength; i++)
-        {
-            isEqual &= (bcryptString.charAt(i) == newBcryptString.charAt(i));
-        }
-        return isEqual;
+        return Strings.constantTimeAreEqual(bcryptString, newBcryptString);
     }
 
     /**
@@ -360,7 +360,7 @@ public class OpenBSDBCrypt
             throw new IllegalArgumentException("Version " + version + " is not accepted by this implementation.");
         }
         
-        StringBuffer sb = new StringBuffer(60);
+        StringBuilder sb = new StringBuilder(60);
         sb.append('$');
         sb.append(version);
         sb.append('$');
@@ -378,11 +378,11 @@ public class OpenBSDBCrypt
     /*
      * encode the input data producing a Bcrypt base 64 String.
      *
-     * @param 	a byte representation of the salt or the password
-     * @return 	the Bcrypt base64 String
+     * @param     a byte representation of the salt or the password
+     * @return     the Bcrypt base64 String
      */
     private static void encodeData(
-        StringBuffer sb,
+        StringBuilder sb,
         byte[] data)
     {
         if (data.length != 24 && data.length != 16) // 192 bit key or 128 bit salt expected
@@ -409,8 +409,8 @@ public class OpenBSDBCrypt
         for (i = 0; i < len; i += 3)
         {
             a1 = data[i] & 0xff;
-            a2 = data[i + 1] & 0xff;
-            a3 = data[i + 2] & 0xff;
+            a2 = data[i + 1] & 0xff;    // lgtm [java/index-out-of-bounds]
+            a3 = data[i + 2] & 0xff;    // lgtm [java/index-out-of-bounds]
 
             sb.append((char)encodingTable[(a1 >>> 2) & 0x3f]);
             sb.append((char)encodingTable[((a1 << 4) | (a2 >>> 4)) & 0x3f]);
@@ -431,12 +431,12 @@ public class OpenBSDBCrypt
     /*
      * decodes the bcrypt base 64 encoded SaltString
      *
-     * @param 		a 22 character Bcrypt base 64 encoded String 
-     * @return 		the 16 byte salt
-     * @exception 	DataLengthException if the length 
-     * 				of parameter is not 22
-     * @exception 	InvalidArgumentException if the parameter
-     * 				contains a value other than from Bcrypts base 64 encoding table
+     * @param         a 22 character Bcrypt base 64 encoded String 
+     * @return         the 16 byte salt
+     * @exception     DataLengthException if the length 
+     *                 of parameter is not 22
+     * @exception     InvalidArgumentException if the parameter
+     *                 contains a value other than from Bcrypts base 64 encoding table
      */
     private static byte[] decodeSaltString(
         String saltString)
@@ -470,10 +470,11 @@ public class OpenBSDBCrypt
 
         for (int i = 0; i < len; i += 4)
         {
+            // suppress LGTM warnings index-out-of-bounds since the loop increments i by 4
             b1 = decodingTable[saltChars[i]];
-            b2 = decodingTable[saltChars[i + 1]];
-            b3 = decodingTable[saltChars[i + 2]];
-            b4 = decodingTable[saltChars[i + 3]];
+            b2 = decodingTable[saltChars[i + 1]];   // lgtm [java/index-out-of-bounds]
+            b3 = decodingTable[saltChars[i + 2]];   // lgtm [java/index-out-of-bounds]
+            b4 = decodingTable[saltChars[i + 3]];   // lgtm [java/index-out-of-bounds]
 
             out.write((b1 << 2) | (b2 >> 4));
             out.write((b2 << 4) | (b3 >> 2));

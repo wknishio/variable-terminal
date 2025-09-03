@@ -1,5 +1,7 @@
 package org.bouncycastle.crypto.digests;
 
+import org.bouncycastle.crypto.CryptoServiceProperties;
+import org.bouncycastle.crypto.CryptoServicePurpose;
 import org.bouncycastle.crypto.Xof;
 
 
@@ -12,15 +14,15 @@ public class SHAKEDigest
     extends KeccakDigest
     implements Xof
 {
-    private static int checkBitLength(int bitLength)
+    private static int checkBitLength(int bitStrength)
     {
-        switch (bitLength)
+        switch (bitStrength)
         {
         case 128:
         case 256:
-            return bitLength;
+            return bitStrength;
         default:
-            throw new IllegalArgumentException("'bitLength' " + bitLength + " not supported for SHAKE");
+            throw new IllegalArgumentException("'bitStrength' " + bitStrength + " not supported for SHAKE");
         }
     }
 
@@ -29,14 +31,30 @@ public class SHAKEDigest
         this(128);
     }
 
+    public SHAKEDigest(CryptoServicePurpose purpose)
+    {
+        this(128, purpose);
+    }
+
     /**
      * Base constructor.
      *
-     * @param bitLength the security strength in bits of the XOF.
+     * @param bitStrength the security strength in bits of the XOF.
      */
-    public SHAKEDigest(int bitLength)
+    public SHAKEDigest(int bitStrength)
     {
-        super(checkBitLength(bitLength));
+        super(checkBitLength(bitStrength), CryptoServicePurpose.ANY);
+    }
+
+    /**
+     * Base constructor.
+     *
+     * @param bitStrength the security strength in bits of the XOF.
+     * @param purpose the purpose of the digest will be used for.
+     */
+    public SHAKEDigest(int bitStrength, CryptoServicePurpose purpose)
+    {
+        super(checkBitLength(bitStrength), purpose);
     }
 
     /**
@@ -123,5 +141,10 @@ public class SHAKEDigest
         reset();
 
         return outLen;
+    }
+
+    protected CryptoServiceProperties cryptoServiceProperties()
+    {
+        return Utils.getDefaultProperties(this, purpose);
     }
 }

@@ -24,7 +24,7 @@ public class DSTU7624WrapEngine
 
     private byte[] B, intArray;
     private byte[] checkSumArray, zeroArray;
-    private ArrayList  Btemp;
+    private ArrayList<byte[]> Btemp;
 
 
     public DSTU7624WrapEngine(int blockBitLength)
@@ -34,7 +34,7 @@ public class DSTU7624WrapEngine
         this.B = new byte[engine.getBlockSize() / 2];
         this.checkSumArray = new byte[engine.getBlockSize()];
         this.zeroArray = new byte[engine.getBlockSize()];
-        this.Btemp = new ArrayList ();
+        this.Btemp = new ArrayList<byte[]>();
         this.intArray = new byte[BYTES_IN_INTEGER];
 
     }

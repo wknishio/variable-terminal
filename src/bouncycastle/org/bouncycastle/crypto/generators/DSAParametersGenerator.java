@@ -109,7 +109,7 @@ public class DSAParametersGenerator
      * which generates the p and g values from the given parameters,
      * returning the DSAParameters object.
      * <p>
-     * Note: can take a while[]
+     * Note: can take a while...
      * @return a generated DSA parameters object.
      */
     public DSAParameters generateParameters()
@@ -272,7 +272,7 @@ public class DSAParametersGenerator
             {
 // 11.1 For j = 0 to n do
 //      Vj = Hash ((domain_parameter_seed + offset + j) mod 2^seedlen).
-// 11.2 W = V0 + (V1 ∗ 2^outlen) + [] + (V^(n–1) ∗ 2^((n–1) ∗ outlen)) + ((Vn mod 2^b) ∗ 2^(n ∗ outlen)).
+// 11.2 W = V0 + (V1 ∗ 2^outlen) + ... + (V^(n–1) ∗ 2^((n–1) ∗ outlen)) + ((Vn mod 2^b) ∗ 2^(n ∗ outlen)).
                 {
                     for (int j = 1; j <= n; ++j)
                     {

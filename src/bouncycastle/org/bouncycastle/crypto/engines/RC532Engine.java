@@ -2,17 +2,17 @@ package org.bouncycastle.crypto.engines;
 
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.CipherParameters;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
+import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
 import org.bouncycastle.crypto.params.RC5Parameters;
 
 /**
- * The specification for RC5 came from the  RC5 Encryption Algorithm</code>
+ * The specification for RC5 came from the <code>RC5 Encryption Algorithm</code>
  * publication in RSA CryptoBytes, Spring of 1995. 
- *  https://www.rsasecurity.com/rsalabs/cryptobytes</em>.
+ * <em>https://www.rsasecurity.com/rsalabs/cryptobytes</em>.
  * <p>
  * This implementation has a word size of 32 bits.
- * <p>
- * Implementation courtesy of Tito Pena.
  */
 public class RC532Engine
     implements BlockCipher
@@ -33,8 +33,8 @@ public class RC532Engine
      * Pw = Odd((e-2) * 2^wordsize)
      * Qw = Odd((o-2) * 2^wordsize)
      *
-     * where e is the base of natural logarithms (2.718281828[])
-     * and o is the golden ratio (1.61803398[])
+     * where e is the base of natural logarithms (2.718281828...)
+     * and o is the golden ratio (1.61803398...)
      */
     private static final int P32 = 0xb7e15163;
     private static final int Q32 = 0x9e3779b9;
@@ -73,19 +73,22 @@ public class RC532Engine
         boolean             forEncryption,
         CipherParameters    params)
     {
+        byte[] key;
         if (params instanceof RC5Parameters)
         {
             RC5Parameters       p = (RC5Parameters)params;
 
             _noRounds     = p.getRounds();
 
-            setKey(p.getKey());
+            key = p.getKey();
+            setKey(key);
         }
         else if (params instanceof KeyParameter)
         {
             KeyParameter       p = (KeyParameter)params;
 
-            setKey(p.getKey());
+            key = p.getKey();
+            setKey(key);
         }
         else
         {
@@ -93,6 +96,7 @@ public class RC532Engine
         }
 
         this.forEncryption = forEncryption;
+        CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), key.length * 8, params, Utils.getPurpose(forEncryption)));
     }
 
     public int processBlock(
@@ -123,7 +127,7 @@ public class RC532Engine
         // There are 3 phases to the key expansion.
         //
         // Phase 1:
-        //   Copy the secret key K[0[]b-1] into an array L[0..c-1] of
+        //   Copy the secret key K[0...b-1] into an array L[0..c-1] of
         //   c = ceil(b/u), where u = 32/8 in little-endian order.
         //   In other words, we fill up L using u consecutive key bytes
         //   of K. Any unfilled byte positions in L are zeroed. In the
@@ -238,8 +242,8 @@ public class RC532Engine
 
     /**
      * Perform a left "spin" of the word. The rotation of the given
-     * word  x</em> is rotated left by  y</em> bits.
-     * Only the  lg(32)</em> low-order bits of  y</em>
+     * word <em>x</em> is rotated left by <em>y</em> bits.
+     * Only the <em>lg(32)</em> low-order bits of <em>y</em>
      * are used to determine the rotation amount. Here it is 
      * assumed that the wordsize used is a power of 2.
      * <p>
@@ -253,8 +257,8 @@ public class RC532Engine
 
     /**
      * Perform a right "spin" of the word. The rotation of the given
-     * word  x</em> is rotated left by  y</em> bits.
-     * Only the  lg(32)</em> low-order bits of  y</em>
+     * word <em>x</em> is rotated left by <em>y</em> bits.
+     * Only the <em>lg(32)</em> low-order bits of <em>y</em>
      * are used to determine the rotation amount. Here it is 
      * assumed that the wordsize used is a power of 2.
      * <p>

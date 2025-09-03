@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.bouncycastle.util.Arrays;
+
 /**
  * Utility methods to assist with stream processing.
  */
@@ -25,6 +27,64 @@ public final class Streams
         while (inStr.read(bs, 0, bs.length) >= 0)
         {
         }
+    }
+
+    /**
+     * Write the full contents of inStr to the destination stream outStr.
+     *
+     * @param inStr source input stream.
+     * @param outStr destination output stream.
+     * @throws IOException in case of underlying IOException.
+     */
+    public static void pipeAll(InputStream inStr, OutputStream outStr)
+        throws IOException
+    {
+        pipeAll(inStr, outStr, BUFFER_SIZE);
+    }
+
+    /**
+     * Write the full contents of inStr to the destination stream outStr.
+     *
+     * @param inStr source input stream.
+     * @param outStr destination output stream.
+     * @param bufferSize the size of temporary buffer to use.
+     * @throws IOException in case of underlying IOException.
+     */
+    public static void pipeAll(InputStream inStr, OutputStream outStr, int bufferSize)
+        throws IOException
+    {
+        byte[] bs = new byte[bufferSize];
+        int numRead;
+        while ((numRead = inStr.read(bs, 0, bs.length)) >= 0)
+        {
+            outStr.write(bs, 0, numRead);
+        }
+    }
+
+    /**
+     * Write up to limit bytes of data from inStr to the destination stream outStr.
+     *
+     * @param inStr source input stream.
+     * @param limit the maximum number of bytes allowed to be read.
+     * @param outStr destination output stream.
+     * @throws IOException in case of underlying IOException, or if limit is reached on inStr still has data in it.
+     */
+    public static long pipeAllLimited(InputStream inStr, long limit, OutputStream outStr)
+        throws IOException
+    {
+        long total = 0;
+        byte[] bs = new byte[BUFFER_SIZE];
+        int numRead;
+        while ((numRead = inStr.read(bs, 0, bs.length)) >= 0)
+        {
+            if ((limit - total) < numRead)
+            {
+                throw new StreamOverflowException("Data Overflow");
+            }
+            total += numRead;
+            outStr.write(bs, 0, numRead);
+        }
+        return total;
     }
 
     /**
@@ -96,65 +156,13 @@ public final class Streams
             }
             totalRead += numRead;
         }
+        
         return totalRead;
     }
 
-    /**
-     * Write the full contents of inStr to the destination stream outStr.
-     *
-     * @param inStr source input stream.
-     * @param outStr destination output stream.
-     * @throws IOException in case of underlying IOException.
-     */
-    public static void pipeAll(InputStream inStr, OutputStream outStr)
-        throws IOException
+    public static void validateBufferArguments(byte[] buf, int off, int len)
     {
-        pipeAll(inStr, outStr, BUFFER_SIZE);
-    }
-
-    /**
-     * Write the full contents of inStr to the destination stream outStr.
-     *
-     * @param inStr source input stream.
-     * @param outStr destination output stream.
-     * @param bufferSize the size of temporary buffer to use.
-     * @throws IOException in case of underlying IOException.
-     */
-    public static void pipeAll(InputStream inStr, OutputStream outStr, int bufferSize)
-        throws IOException
-    {
-        byte[] bs = new byte[bufferSize];
-        int numRead;
-        while ((numRead = inStr.read(bs, 0, bs.length)) >= 0)
-        {
-            outStr.write(bs, 0, numRead);
-        }
-    }
-
-    /**
-     * Write up to limit bytes of data from inStr to the destination stream outStr.
-     *
-     * @param inStr source input stream.
-     * @param limit the maximum number of bytes allowed to be read.
-     * @param outStr destination output stream.
-     * @throws IOException in case of underlying IOException, or if limit is reached on inStr still has data in it.
-     */
-    public static long pipeAllLimited(InputStream inStr, long limit, OutputStream outStr)
-        throws IOException
-    {
-        long total = 0;
-        byte[] bs = new byte[BUFFER_SIZE];
-        int numRead;
-        while ((numRead = inStr.read(bs, 0, bs.length)) >= 0)
-        {
-            if ((limit - total) < numRead)
-            {
-                throw new StreamOverflowException("Data Overflow");
-            }
-            total += numRead;
-            outStr.write(bs, 0, numRead);
-        }
-        return total;
+        Arrays.validateSegment(buf, off, len);
     }
 
     public static void writeBufTo(ByteArrayOutputStream buf, OutputStream output)

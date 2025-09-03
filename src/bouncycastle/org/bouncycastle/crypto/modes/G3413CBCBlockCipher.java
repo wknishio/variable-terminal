@@ -85,7 +85,7 @@ public class G3413CBCBlockCipher
     }
 
     /**
-     * this method sets default values to <b>m</b> parameter: 
+     * this method sets default values to <b>m</b> parameter:<br>
      * m = <b>blockSize</b>
      */
     private void setupDefaultParams()

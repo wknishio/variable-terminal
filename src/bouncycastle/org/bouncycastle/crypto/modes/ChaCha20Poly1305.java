@@ -125,7 +125,7 @@ public class ChaCha20Poly1305
         }
         else
         {
-            if (KEY_SIZE != initKeyParam.getKey().length)
+            if (KEY_SIZE != initKeyParam.getKeyLength())
             {
                 throw new IllegalArgumentException("Key must be 256 bits");
             }
@@ -148,7 +148,7 @@ public class ChaCha20Poly1305
 
         if (null != initKeyParam)
         {
-            System.arraycopy(initKeyParam.getKey(), 0, key, 0, KEY_SIZE);
+            initKeyParam.copyTo(key, 0, KEY_SIZE);
         }
 
         System.arraycopy(initNonce, 0, nonce, 0, NONCE_SIZE);
@@ -306,6 +306,12 @@ public class ChaCha20Poly1305
         if (outOff < 0)
         {
             throw new IllegalArgumentException("'outOff' cannot be negative");
+        }
+        if (in == out && Arrays.segmentsOverlap(inOff, len, outOff, getUpdateOutputSize(len)))
+        {
+            in = new byte[len];
+            System.arraycopy(out, inOff, in, 0, len);
+            inOff = 0;
         }
 
         checkData();

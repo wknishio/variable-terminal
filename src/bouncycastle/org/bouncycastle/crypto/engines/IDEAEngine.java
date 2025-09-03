@@ -2,8 +2,10 @@ package org.bouncycastle.crypto.engines;
 
 import org.bouncycastle.crypto.BlockCipher;
 import org.bouncycastle.crypto.CipherParameters;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.OutputLengthException;
+import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.KeyParameter;
 
 /**
@@ -24,11 +26,14 @@ public class IDEAEngine
 
     private int[]               workingKey = null;
 
+    private boolean forEncryption;
+
     /**
      * standard constructor.
      */
     public IDEAEngine()
     {
+        CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), 128));
     }
 
     /**
@@ -45,8 +50,12 @@ public class IDEAEngine
     {
         if (params instanceof KeyParameter)
         {
+            byte[] key = ((KeyParameter)params).getKey();
             workingKey = generateWorkingKey(forEncryption,
-                                  ((KeyParameter)params).getKey());
+                                  key);
+            this.forEncryption = forEncryption;
+
+            CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(getAlgorithmName(), key.length * 8, params, Utils.getPurpose(forEncryption)));
             return;
         }
 

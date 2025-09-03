@@ -5,8 +5,11 @@ import java.util.Vector;
 
 import org.bouncycastle.crypto.AsymmetricBlockCipher;
 import org.bouncycastle.crypto.CipherParameters;
+import org.bouncycastle.crypto.CryptoServicesRegistrar;
 import org.bouncycastle.crypto.DataLengthException;
 import org.bouncycastle.crypto.InvalidCipherTextException;
+import org.bouncycastle.crypto.constraints.ConstraintUtils;
+import org.bouncycastle.crypto.constraints.DefaultServiceProperties;
 import org.bouncycastle.crypto.params.NaccacheSternKeyParameters;
 import org.bouncycastle.crypto.params.NaccacheSternPrivateKeyParameters;
 import org.bouncycastle.crypto.params.ParametersWithRandom;
@@ -82,6 +85,9 @@ public class NaccacheSternEngine
                 }
             }
         }
+
+        CryptoServicesRegistrar.checkConstraints(new DefaultServiceProperties(
+                "NaccacheStern", ConstraintUtils.bitsOfSecurityFor(key.getModulus()), param, Utils.getPurpose(forEncryption)));
     }
 
     public void setDebug(boolean debug)
@@ -320,8 +326,8 @@ public class NaccacheSternEngine
         if (debug)
         {
             // -DM 3 System.out.print
-            System.out.println("c(m1) as BigInteger:[][]. " + m1Crypt);
-            System.out.println("c(m2) as BigInteger:[][]. " + m2Crypt);
+            System.out.println("c(m1) as BigInteger:....... " + m1Crypt);
+            System.out.println("c(m2) as BigInteger:....... " + m2Crypt);
             System.out.println("c(m1)*c(m2)%n = c(m1+m2)%n: " + m1m2Crypt);
         }
 
@@ -359,7 +365,7 @@ public class NaccacheSternEngine
                 // -DM 3 System.out.print
                 System.out.println("Input blocksize is:  " + inBlocksize + " bytes");
                 System.out.println("Output blocksize is: " + outBlocksize + " bytes");
-                System.out.println("Data has length:[]. " + data.length + " bytes");
+                System.out.println("Data has length:.... " + data.length + " bytes");
             }
             int datapos = 0;
             int retpos = 0;

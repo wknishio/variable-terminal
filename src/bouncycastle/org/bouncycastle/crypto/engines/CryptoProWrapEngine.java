@@ -63,8 +63,8 @@ public class CryptoProWrapEngine
            A) K[i] is split into components k[i,j]:
               K[i] = k[i,0]|k[i,1]|..|k[i,7] (k[i,j] - 32-bit integer)
            B) Vector S[i] is calculated:
-              S[i] = ((a[i,0]*k[i,0] + [] + a[i,7]*k[i,7]) mod 2^32) |
-              (((~a[i,0])*k[i,0] + [] + (~a[i,7])*k[i,7]) mod 2^32);
+              S[i] = ((a[i,0]*k[i,0] + ... + a[i,7]*k[i,7]) mod 2^32) |
+              (((~a[i,0])*k[i,0] + ... + (~a[i,7])*k[i,7]) mod 2^32);
            C) K[i+1] = encryptCFB (S[i], K[i], K[i])
            D) i = i + 1
           5) Let K(UKM) be K[8].
