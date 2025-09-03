@@ -17,7 +17,9 @@ import static io.airlift.compress.zstd.Constants.MAX_LITERALS_LENGTH_SYMBOL;
 import static io.airlift.compress.zstd.Constants.MAX_MATCH_LENGTH_SYMBOL;
 import static io.airlift.compress.zstd.Constants.MAX_OFFSET_CODE_SYMBOL;
 
-import java.util.Arrays;
+
+
+import org.vash.vate.compatibility.VTArrays;
 
 public class SequenceEncodingContext
 {
@@ -35,7 +37,7 @@ public class SequenceEncodingContext
       literalLengthTable.reset();
       offsetCodeTable.reset();
       matchLengthTable.reset();
-      Arrays.fill(counts, 0);
-      Arrays.fill(normalizedCounts, (short)0);
+      VTArrays.fill(counts, 0);
+      VTArrays.fill(normalizedCounts, (short)0);
     }
 }

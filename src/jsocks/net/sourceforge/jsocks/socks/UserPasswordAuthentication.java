@@ -16,7 +16,7 @@ package net.sourceforge.jsocks.socks;
 
 import java.io.UnsupportedEncodingException;
 
-import org.vtbouncycastle.util.Arrays;
+import org.vash.vate.compatibility.VTArrays;
 
 /**
  * SOCKS5 User Password authentication scheme.
@@ -98,12 +98,12 @@ public class UserPasswordAuthentication implements Authentication {
 		
 		if (user_bytes.length > 255)
 		{
-		  user_bytes = Arrays.copyOf(user_bytes, 255);
+		  user_bytes = VTArrays.copyOf(user_bytes, 255);
 		}
 		
 		if (password_bytes.length > 255)
 		{
-		  password_bytes = Arrays.copyOf(password_bytes, 255);
+		  password_bytes = VTArrays.copyOf(password_bytes, 255);
 		}
 		
 		request = new byte[3 + user_bytes.length + password_bytes.length];

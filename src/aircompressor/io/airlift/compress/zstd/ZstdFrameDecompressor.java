@@ -54,7 +54,7 @@ import static io.airlift.compress.zstd.Util.mask;
 import static io.airlift.compress.zstd.Util.verify;
 import static java.lang.String.format;
 
-import org.vtbouncycastle.util.Arrays;
+import org.vash.vate.compatibility.VTArrays;
 
 class ZstdFrameDecompressor
 {
@@ -816,7 +816,7 @@ class ZstdFrameDecompressor
         verify(outputSize <= MAX_BLOCK_SIZE, input, "Output exceeds maximum block size");
 
         byte value = UnsafeUtils.getByte(inputBase, input++);
-        Arrays.fill(literals, 0, outputSize + SIZE_OF_LONG, value);
+        VTArrays.fill(literals, 0, outputSize + SIZE_OF_LONG, value);
 
         literalsBase = literals;
         literalsAddress = 0;
@@ -863,7 +863,7 @@ class ZstdFrameDecompressor
             literalsLimit = 0 + literalSize;
 
             UnsafeUtils.copyMemory(inputBase, input, literals, literalsAddress, literalSize);
-            Arrays.fill(literals, literalSize, literalSize + SIZE_OF_LONG, (byte) 0);
+            VTArrays.fill(literals, literalSize, literalSize + SIZE_OF_LONG, (byte) 0);
         }
         else {
             literalsBase = inputBase;

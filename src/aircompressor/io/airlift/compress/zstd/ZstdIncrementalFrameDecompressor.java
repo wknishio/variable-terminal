@@ -16,7 +16,7 @@ package io.airlift.compress.zstd;
 import io.airlift.compress.MalformedInputException;
 import io.airlift.compress.UnsafeUtils;
 
-//import java.util.Arrays;
+//
 
 import static io.airlift.compress.zstd.Constants.COMPRESSED_BLOCK;
 import static io.airlift.compress.zstd.Constants.MAX_BLOCK_SIZE;
@@ -37,7 +37,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.String.format;
 
-import org.vtbouncycastle.util.Arrays;
+import org.vash.vate.compatibility.VTArrays;
 
 public class ZstdIncrementalFrameDecompressor
 {
@@ -337,7 +337,7 @@ public class ZstdIncrementalFrameDecompressor
                     newWindowSize = max(windowContentsSize + maxBlockOutput, newWindowSize);
                     checkState(windowContentsSize + maxBlockOutput <= newWindowSize, "Computed new window size buffer is not large enough");
                 }
-                windowBase = Arrays.copyOf(windowBase, newWindowSize);
+                windowBase = VTArrays.copyOf(windowBase, newWindowSize);
                 windowLimit = newWindowSize + 0;
             }
 

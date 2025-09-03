@@ -13,7 +13,7 @@
  */
 package io.airlift.compress.zstd;
 
-import org.vtbouncycastle.util.Arrays;
+import org.vash.vate.compatibility.VTArrays;
 
 class HuffmanCompressionTableWorkspace
 {
@@ -27,15 +27,15 @@ class HuffmanCompressionTableWorkspace
 
     public void reset()
     {
-        Arrays.fill(entriesPerRank, (short) 0);
-        Arrays.fill(valuesPerRank, (short) 0);
+        VTArrays.fill(entriesPerRank, (short) 0);
+        VTArrays.fill(valuesPerRank, (short) 0);
     }
     
     public void resetFull()
     {
       nodeTable.reset();
-      Arrays.fill(entriesPerRank, (short) 0);
-      Arrays.fill(valuesPerRank, (short) 0);
-      Arrays.fill(rankLast, 0);
+      VTArrays.fill(entriesPerRank, (short) 0);
+      VTArrays.fill(valuesPerRank, (short) 0);
+      VTArrays.fill(rankLast, 0);
     }
 }

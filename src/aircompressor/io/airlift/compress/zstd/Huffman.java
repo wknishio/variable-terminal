@@ -23,7 +23,7 @@ import static io.airlift.compress.zstd.Constants.SIZE_OF_SHORT;
 import static io.airlift.compress.zstd.Util.isPowerOf2;
 import static io.airlift.compress.zstd.Util.verify;
 
-import org.vtbouncycastle.util.Arrays;
+import org.vash.vate.compatibility.VTArrays;
 
 import io.airlift.compress.UnsafeUtils;
 
@@ -55,7 +55,7 @@ class Huffman
 
     public int readTable(final Object inputBase, final long inputAddress, final int size)
     {
-        Arrays.fill(ranks, 0);
+        VTArrays.fill(ranks, 0);
         long input = inputAddress;
 
         // read table header

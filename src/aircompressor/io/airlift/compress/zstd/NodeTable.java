@@ -13,7 +13,7 @@
  */
 package io.airlift.compress.zstd;
 
-import org.vtbouncycastle.util.Arrays;
+import org.vash.vate.compatibility.VTArrays;
 
 
 class NodeTable
@@ -33,10 +33,10 @@ class NodeTable
 
     public void reset()
     {
-        Arrays.fill(count, 0);
-        Arrays.fill(parents, (short) 0);
-        Arrays.fill(symbols, 0);
-        Arrays.fill(numberOfBits, (byte) 0);
+        VTArrays.fill(count, 0);
+        VTArrays.fill(parents, (short) 0);
+        VTArrays.fill(symbols, 0);
+        VTArrays.fill(numberOfBits, (byte) 0);
     }
 
     public void copyNode(int from, int to)

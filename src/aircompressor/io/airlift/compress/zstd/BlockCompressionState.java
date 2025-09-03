@@ -13,7 +13,7 @@
  */
 package io.airlift.compress.zstd;
 
-import org.vtbouncycastle.util.Arrays;
+import org.vash.vate.compatibility.VTArrays;
 
 class BlockCompressionState
 {
@@ -50,14 +50,14 @@ class BlockCompressionState
 
     public void reset()
     {
-       Arrays.fill(hashTable, 0);
-       Arrays.fill(chainTable, 0);
+       VTArrays.fill(hashTable, 0);
+       VTArrays.fill(chainTable, 0);
     }
     
     public void resetFull()
     {
-      Arrays.fill(hashTable, 0);
-      Arrays.fill(chainTable, 0);
+      VTArrays.fill(hashTable, 0);
+      VTArrays.fill(chainTable, 0);
       baseAddress = 0;
       windowBaseOffset = 0;
     }

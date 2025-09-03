@@ -15,7 +15,7 @@ package io.airlift.compress.zstd;
 
 import static io.airlift.compress.zstd.FiniteStateEntropy.MAX_SYMBOL;
 
-import java.util.Arrays;
+import org.vash.vate.compatibility.VTArrays;
 
 class FseCompressionTable
 {
@@ -35,9 +35,9 @@ class FseCompressionTable
     public void reset()
     {
       log2Size = 0;
-      Arrays.fill(nextState, (short)0);
-      Arrays.fill(deltaNumberOfBits, 0);
-      Arrays.fill(deltaFindState, 0);
+      VTArrays.fill(nextState, (short)0);
+      VTArrays.fill(deltaNumberOfBits, 0);
+      VTArrays.fill(deltaFindState, 0);
     }
 
     public static FseCompressionTable newInstance(short[] normalizedCounts, int maxSymbol, int tableLog)

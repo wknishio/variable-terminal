@@ -15,9 +15,9 @@ package io.airlift.compress.zstd;
 
 import java.io.IOException;
 import java.io.OutputStream;
-//import java.util.Arrays;
+//
 
-import org.vtbouncycastle.util.Arrays;
+import org.vash.vate.compatibility.VTArrays;
 
 import static io.airlift.compress.zstd.CompressionParameters.DEFAULT_COMPRESSION_LEVEL;
 import static io.airlift.compress.zstd.Constants.SIZE_OF_BLOCK_HEADER;
@@ -127,7 +127,7 @@ public class ZstdOutputStream
         newSize = min(newSize, maxBufferSize);
         // allocate at least a minimal buffer to start;
         newSize = max(newSize, context.parameters.getBlockSize());
-        uncompressed = Arrays.copyOf(uncompressed, newSize);
+        uncompressed = VTArrays.copyOf(uncompressed, newSize);
     }
     
     public void flush() throws IOException
@@ -145,8 +145,8 @@ public class ZstdOutputStream
       uncompressedPosition = 0;
       uncompressedOffset = 0;
       context.reset();
-      Arrays.fill(compressed, (byte)0);
-      Arrays.fill(uncompressed, (byte)0);
+      VTArrays.fill(compressed, (byte)0);
+      VTArrays.fill(uncompressed, (byte)0);
       framed = false;
     }
 

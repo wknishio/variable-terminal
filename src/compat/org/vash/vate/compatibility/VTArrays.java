@@ -168,4 +168,74 @@ public class VTArrays
             eq = e1.equals(e2);
         return eq;
     }
+	
+  public static void fill(boolean[] a, boolean val)
+  {
+      java.util.Arrays.fill(a, val);
+  }
+
+  public static void fill(boolean[] a, int fromIndex, int toIndex, boolean val)
+  {
+      java.util.Arrays.fill(a, fromIndex, toIndex, val);
+  }
+
+  public static void fill(byte[] a, byte val)
+  {
+      java.util.Arrays.fill(a, val);
+  }
+
+  public static void fill(byte[] a, int fromIndex, int toIndex, byte val)
+  {
+      java.util.Arrays.fill(a, fromIndex, toIndex, val);
+  }
+
+  public static void fill(char[] a, char val)
+  {
+      java.util.Arrays.fill(a, val);
+  }
+
+  public static void fill(char[] a, int fromIndex, int toIndex, char val)
+  {
+      java.util.Arrays.fill(a, fromIndex, toIndex, val);
+  }
+
+  public static void fill(int[] a, int val)
+  {
+      java.util.Arrays.fill(a, val);
+  }
+
+  public static void fill(int[] a, int fromIndex, int toIndex, int val)
+  {
+      java.util.Arrays.fill(a, fromIndex, toIndex, val);
+  }
+
+  public static void fill(long[] a, long val)
+  {
+      java.util.Arrays.fill(a, val);
+  }
+
+  public static void fill(long[] a, int fromIndex, int toIndex, long val)
+  {
+      java.util.Arrays.fill(a, fromIndex, toIndex, val);
+  }
+
+  public static void fill(Object[] a, Object val)
+  {
+      java.util.Arrays.fill(a, val);
+  }
+
+  public static void fill(Object[] a, int fromIndex, int toIndex, Object val)
+  {
+      java.util.Arrays.fill(a, fromIndex, toIndex, val);
+  }
+
+  public static void fill(short[] a, short val)
+  {
+      java.util.Arrays.fill(a, val);
+  }
+
+  public static void fill(short[] a, int fromIndex, int toIndex, short val)
+  {
+      java.util.Arrays.fill(a, fromIndex, toIndex, val);
+  }
 }

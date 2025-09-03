@@ -24,7 +24,7 @@ import static io.airlift.compress.zstd.Huffman.MIN_TABLE_LOG;
 import static io.airlift.compress.zstd.Util.checkArgument;
 import static io.airlift.compress.zstd.Util.minTableLog;
 
-import org.vtbouncycastle.util.Arrays;
+import org.vash.vate.compatibility.VTArrays;
 
 import io.airlift.compress.UnsafeUtils;
 
@@ -46,8 +46,8 @@ final class HuffmanCompressionTable
     {
       maxSymbol = 0;
       maxNumberOfBits = 0;
-      Arrays.fill(numberOfBits, (byte)0);
-      Arrays.fill(values, (short)0);
+      VTArrays.fill(numberOfBits, (byte)0);
+      VTArrays.fill(values, (short)0);
     }
 
     public static int optimalNumberOfBits(int maxNumberOfBits, int inputSize, int maxSymbol)
@@ -332,7 +332,7 @@ final class HuffmanCompressionTable
         // repay normalized cost
         int noSymbol = 0xF0F0F0F0;
         int[] rankLast = workspace.rankLast;
-        Arrays.fill(rankLast, noSymbol);
+        VTArrays.fill(rankLast, noSymbol);
 
         // Get pos of last (smallest) symbol per rank
         int currentNbBits = maxNumberOfBits;

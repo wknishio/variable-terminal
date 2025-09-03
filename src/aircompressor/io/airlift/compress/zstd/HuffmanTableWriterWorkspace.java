@@ -17,7 +17,9 @@ import static io.airlift.compress.zstd.Huffman.MAX_FSE_TABLE_LOG;
 import static io.airlift.compress.zstd.Huffman.MAX_SYMBOL;
 import static io.airlift.compress.zstd.Huffman.MAX_TABLE_LOG;
 
-import java.util.Arrays;
+
+
+import org.vash.vate.compatibility.VTArrays;
 
 public class HuffmanTableWriterWorkspace
 {
@@ -31,9 +33,9 @@ public class HuffmanTableWriterWorkspace
     
     public void reset()
     {
-      Arrays.fill(weights, (byte)0);
-      Arrays.fill(counts, 0);
-      Arrays.fill(normalizedCounts, (short)0);
+      VTArrays.fill(weights, (byte)0);
+      VTArrays.fill(counts, 0);
+      VTArrays.fill(normalizedCounts, (short)0);
       fseTable.reset();
     }
 }

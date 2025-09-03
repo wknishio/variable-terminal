@@ -15,7 +15,7 @@ package io.airlift.compress.zstd;
 
 
 
-import org.vtbouncycastle.util.Arrays;
+import org.vash.vate.compatibility.VTArrays;
 
 import io.airlift.compress.UnsafeUtils;
 
@@ -30,7 +30,7 @@ class Histogram
     {
         long input = inputAddress;
 
-        Arrays.fill(counts, 0);
+        VTArrays.fill(counts, 0);
 
         for (int i = 0; i < inputSize; i++) {
             int symbol = UnsafeUtils.getByte(inputBase, input) & 0xFF;

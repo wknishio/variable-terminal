@@ -16,7 +16,7 @@ package io.airlift.compress.zstd;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.vtbouncycastle.util.Arrays;
+import org.vash.vate.compatibility.VTArrays;
 
 import static io.airlift.compress.zstd.Util.checkPositionIndexes;
 import static io.airlift.compress.zstd.Util.checkState;
@@ -123,7 +123,7 @@ public class ZstdInputStream
         }
 
         if (inputBuffer.length < requiredSize) {
-            inputBuffer = Arrays.copyOf(inputBuffer, max(requiredSize, MIN_BUFFER_SIZE));
+            inputBuffer = VTArrays.copyOf(inputBuffer, max(requiredSize, MIN_BUFFER_SIZE));
         }
 
         while (inputBufferLimit < requiredSize) {
