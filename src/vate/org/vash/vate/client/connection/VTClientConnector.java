@@ -1255,7 +1255,7 @@ public class VTClientConnector implements Runnable
       }
       if (line.toUpperCase().startsWith("Y"))
       {
-        VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/ZUC(Z)/GRAIN(G)/ISAAC(I)):");
+        VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/GRAIN(G)/ZUC(Z)/ISAAC(I)):");
         line = VTMainConsole.readLine(false);
         if (line == null)
         {
