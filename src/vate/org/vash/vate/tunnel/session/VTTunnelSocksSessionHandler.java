@@ -63,6 +63,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
           VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorUsernamePassword(validation, channel.getConnection().getNonces(), channel.getRandom(), channel.getConnection().getExecutorService(), bind, connectTimeout, dataTimeout, proxy), session.getSocket(), channel.getConnection().getExecutorService(), false, false, bind, connectTimeout, proxy);
           socksServer.setDatagramSocketFactory(channel.getConnection().createRemoteSocketFactory(channel));
           socksServer.setPipeBufferSize(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
+          socksServer.setAcceptTimeout(connectTimeout);
           socksServer.setIdleTimeout(dataTimeout);
           socksServer.run();
         }
@@ -80,6 +81,7 @@ public class VTTunnelSocksSessionHandler extends VTTunnelSessionHandler
           VTSocksProxyServer socksServer = new VTSocksProxyServer(new VTSocksHttpProxyAuthenticatorNone(channel.getConnection().getExecutorService(), bind, connectTimeout, dataTimeout, proxy), session.getSocket(), channel.getConnection().getExecutorService(), false, false, bind, connectTimeout, proxy);
           socksServer.setDatagramSocketFactory(channel.getConnection().createRemoteSocketFactory(channel));
           socksServer.setPipeBufferSize(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
+          socksServer.setAcceptTimeout(connectTimeout);
           socksServer.setIdleTimeout(dataTimeout);
           socksServer.run();
         }
