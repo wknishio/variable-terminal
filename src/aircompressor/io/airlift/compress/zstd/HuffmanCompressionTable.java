@@ -24,7 +24,7 @@ import static io.airlift.compress.zstd.Huffman.MIN_TABLE_LOG;
 import static io.airlift.compress.zstd.Util.checkArgument;
 import static io.airlift.compress.zstd.Util.minTableLog;
 
-import org.bouncycastle.util.Arrays;
+import org.vtbouncycastle.util.Arrays;
 
 import io.airlift.compress.UnsafeUtils;
 

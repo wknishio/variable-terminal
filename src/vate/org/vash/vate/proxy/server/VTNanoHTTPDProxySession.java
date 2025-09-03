@@ -32,13 +32,13 @@ import java.util.Map.Entry;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.bouncycastle.util.encoders.Hex;
 import org.vash.vate.VTSystem;
 import org.vash.vate.filesystem.VTRootList;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.proxy.client.VTProxy;
 import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
+import org.vtbouncycastle.util.encoders.Hex;
 
 import net.jpountz.xxhash.XXHashFactory;
 

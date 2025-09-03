@@ -16,7 +16,7 @@ package io.airlift.compress.zstd;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.bouncycastle.util.Arrays;
+import org.vtbouncycastle.util.Arrays;
 
 import static io.airlift.compress.zstd.Util.checkPositionIndexes;
 import static io.airlift.compress.zstd.Util.checkState;

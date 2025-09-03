@@ -23,7 +23,7 @@ import static io.airlift.compress.zstd.Constants.SIZE_OF_SHORT;
 import static io.airlift.compress.zstd.Util.isPowerOf2;
 import static io.airlift.compress.zstd.Util.verify;
 
-import org.bouncycastle.util.Arrays;
+import org.vtbouncycastle.util.Arrays;
 
 import io.airlift.compress.UnsafeUtils;
 

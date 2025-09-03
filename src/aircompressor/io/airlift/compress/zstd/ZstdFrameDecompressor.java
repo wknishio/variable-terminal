@@ -54,8 +54,7 @@ import static io.airlift.compress.zstd.Util.mask;
 import static io.airlift.compress.zstd.Util.verify;
 import static java.lang.String.format;
 
-
-import org.bouncycastle.util.Arrays;
+import org.vtbouncycastle.util.Arrays;
 
 class ZstdFrameDecompressor
 {

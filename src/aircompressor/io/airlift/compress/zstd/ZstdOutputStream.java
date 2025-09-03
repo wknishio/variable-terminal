@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 //import java.util.Arrays;
 
-import org.bouncycastle.util.Arrays;
+import org.vtbouncycastle.util.Arrays;
 
 import static io.airlift.compress.zstd.CompressionParameters.DEFAULT_COMPRESSION_LEVEL;
 import static io.airlift.compress.zstd.Constants.SIZE_OF_BLOCK_HEADER;

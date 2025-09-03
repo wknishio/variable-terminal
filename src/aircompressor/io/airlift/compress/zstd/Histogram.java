@@ -15,10 +15,7 @@ package io.airlift.compress.zstd;
 
 
 
-//import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
-
-
-import org.bouncycastle.util.Arrays;
+import org.vtbouncycastle.util.Arrays;
 
 import io.airlift.compress.UnsafeUtils;
 

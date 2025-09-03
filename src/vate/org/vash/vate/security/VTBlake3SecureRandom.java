@@ -1,9 +1,10 @@
 package org.vash.vate.security;
 
-import org.bouncycastle.crypto.prng.RandomGenerator;
-import org.bouncycastle.crypto.prng.DigestRandomGenerator;
 import java.security.SecureRandom;
-import org.bouncycastle.crypto.params.Blake3Parameters;
+
+import org.vtbouncycastle.crypto.params.Blake3Parameters;
+import org.vtbouncycastle.crypto.prng.DigestRandomGenerator;
+import org.vtbouncycastle.crypto.prng.RandomGenerator;
 
 public class VTBlake3SecureRandom extends SecureRandom
 {

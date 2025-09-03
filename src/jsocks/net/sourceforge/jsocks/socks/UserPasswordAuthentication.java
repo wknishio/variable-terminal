@@ -16,7 +16,7 @@ package net.sourceforge.jsocks.socks;
 
 import java.io.UnsupportedEncodingException;
 
-import org.bouncycastle.util.Arrays;
+import org.vtbouncycastle.util.Arrays;
 
 /**
  * SOCKS5 User Password authentication scheme.

@@ -3,13 +3,13 @@ package org.vash.vate.security;
 import java.util.Iterator;
 import java.util.Stack;
 
-import org.bouncycastle.crypto.ExtendedDigest;
-import org.bouncycastle.crypto.Xof;
-import org.bouncycastle.crypto.params.Blake3Parameters;
-import org.bouncycastle.util.Arrays;
-import org.bouncycastle.util.Integers;
-import org.bouncycastle.util.Memoable;
-import org.bouncycastle.util.Pack;
+import org.vtbouncycastle.crypto.ExtendedDigest;
+import org.vtbouncycastle.crypto.Xof;
+import org.vtbouncycastle.crypto.params.Blake3Parameters;
+import org.vtbouncycastle.util.Arrays;
+import org.vtbouncycastle.util.Integers;
+import org.vtbouncycastle.util.Memoable;
+import org.vtbouncycastle.util.Pack;
 
 /**
  * Blake3 implementation.

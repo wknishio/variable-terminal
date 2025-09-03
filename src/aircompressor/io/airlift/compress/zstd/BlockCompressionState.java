@@ -13,7 +13,7 @@
  */
 package io.airlift.compress.zstd;
 
-import org.bouncycastle.util.Arrays;
+import org.vtbouncycastle.util.Arrays;
 
 class BlockCompressionState
 {
