@@ -2,7 +2,6 @@ package org.vtbouncycastle.crypto.engines;
 
 import org.vtbouncycastle.crypto.CipherParameters;
 import org.vtbouncycastle.crypto.DataLengthException;
-import org.vtbouncycastle.crypto.OutputLengthException;
 import org.vtbouncycastle.crypto.StreamCipher;
 import org.vtbouncycastle.crypto.params.KeyParameter;
 import org.vtbouncycastle.crypto.params.ParametersWithIV;
@@ -32,7 +31,7 @@ public class Grain128Engine
     private int output;
     private int index = 4;
 
-    private boolean initialised = false;
+    //private boolean initialised = false;
 
     public String getAlgorithmName()
     {
@@ -103,7 +102,7 @@ public class Grain128Engine
             nfsr = shift(nfsr, getOutputNFSR() ^ lfsr[0] ^ output);
             lfsr = shift(lfsr, getOutputLFSR() ^ output);
         }
-        initialised = true;
+        //initialised = true;
     }
 
     /**
@@ -236,21 +235,21 @@ public class Grain128Engine
                              int outOff)
         throws DataLengthException
     {
-        if (!initialised)
-        {
-            throw new IllegalStateException(getAlgorithmName()
-                + " not initialised");
-        }
-
-        if ((inOff + len) > in.length)
-        {
-            throw new DataLengthException("input buffer too short");
-        }
-
-        if ((outOff + len) > out.length)
-        {
-            throw new OutputLengthException("output buffer too short");
-        }
+//        if (!initialised)
+//        {
+//            throw new IllegalStateException(getAlgorithmName()
+//                + " not initialised");
+//        }
+//
+//        if ((inOff + len) > in.length)
+//        {
+//            throw new DataLengthException("input buffer too short");
+//        }
+//
+//        if ((outOff + len) > out.length)
+//        {
+//            throw new OutputLengthException("output buffer too short");
+//        }
 
         for (int i = 0; i < len; i++)
         {
@@ -284,11 +283,11 @@ public class Grain128Engine
 
     public byte returnByte(byte in)
     {
-        if (!initialised)
-        {
-            throw new IllegalStateException(getAlgorithmName()
-                + " not initialised");
-        }
+//        if (!initialised)
+//        {
+//            throw new IllegalStateException(getAlgorithmName()
+//                + " not initialised");
+//        }
         return (byte)(in ^ getKeyStream());
     }
 

@@ -1,9 +1,6 @@
 package org.vtbouncycastle.crypto.engines;
 
 import org.vtbouncycastle.crypto.CipherParameters;
-import org.vtbouncycastle.crypto.DataLengthException;
-import org.vtbouncycastle.crypto.MaxBytesExceededException;
-import org.vtbouncycastle.crypto.OutputLengthException;
 import org.vtbouncycastle.crypto.SkippingStreamCipher;
 import org.vtbouncycastle.crypto.params.KeyParameter;
 import org.vtbouncycastle.crypto.params.ParametersWithIV;
@@ -48,12 +45,12 @@ public class Salsa20Engine
     protected int[]     engineState = new int[STATE_SIZE]; // state
     protected int[]     x = new int[STATE_SIZE] ; // internal buffer
     private byte[]      keyStream   = new byte[STATE_SIZE * 4]; // expanded state, 64 bytes
-    private boolean     initialised = false;
+    //private boolean     initialised = false;
 
     /*
      * internal counter
      */
-    private int cW0, cW1, cW2;
+//    private int cW0, cW1, cW2;
 
     /**
      * Creates a 20 round Salsa20 engine.
@@ -112,10 +109,10 @@ public class Salsa20Engine
         CipherParameters keyParam = ivParams.getParameters();
         if (keyParam == null)
         {
-            if (!initialised)
-            {
-                throw new IllegalStateException(getAlgorithmName() + " KeyParameter can not be null for first initialisation");
-            }
+//            if (!initialised)
+//            {
+//                throw new IllegalStateException(getAlgorithmName() + " KeyParameter can not be null for first initialisation");
+//            }
 
             setKey(null, iv);
         }
@@ -130,7 +127,7 @@ public class Salsa20Engine
 
         reset();
 
-        initialised = true;
+        //initialised = true;
     }
 
     protected int getNonceSize()
@@ -150,10 +147,10 @@ public class Salsa20Engine
 
     public byte returnByte(byte in)
     {
-        if (limitExceeded())
-        {
-            throw new MaxBytesExceededException("2^70 byte limit per IV; Change IV");
-        }
+//        if (limitExceeded())
+//        {
+//            throw new MaxBytesExceededException("2^70 byte limit per IV; Change IV");
+//        }
 
         byte out = (byte)(keyStream[index]^in);
         index = (index + 1) & 63;
@@ -250,25 +247,25 @@ public class Salsa20Engine
         byte[]     out, 
         int     outOff)
     {
-        if (!initialised)
-        {
-            throw new IllegalStateException(getAlgorithmName() + " not initialised");
-        }
-
-        if ((inOff + len) > in.length)
-        {
-            throw new DataLengthException("input buffer too short");
-        }
-
-        if ((outOff + len) > out.length)
-        {
-            throw new OutputLengthException("output buffer too short");
-        }
-
-        if (limitExceeded(len))
-        {
-            throw new MaxBytesExceededException("2^70 byte limit per IV would be exceeded; Change IV");
-        }
+//        if (!initialised)
+//        {
+//            throw new IllegalStateException(getAlgorithmName() + " not initialised");
+//        }
+//
+//        if ((inOff + len) > in.length)
+//        {
+//            throw new DataLengthException("input buffer too short");
+//        }
+//
+//        if ((outOff + len) > out.length)
+//        {
+//            throw new OutputLengthException("output buffer too short");
+//        }
+//
+//        if (limitExceeded(len))
+//        {
+//            throw new MaxBytesExceededException("2^70 byte limit per IV would be exceeded; Change IV");
+//        }
 
         for (int i = 0; i < len; i++)
         {
@@ -406,18 +403,18 @@ public class Salsa20Engine
      */    
     public static void salsaCore(int rounds, int[] input, int[] x)
     {
-        if (input.length != 16)
-        {
-            throw new IllegalArgumentException();
-        }
-        if (x.length != 16)
-        {
-            throw new IllegalArgumentException();
-        }
-        if (rounds % 2 != 0)
-        {
-            throw new IllegalArgumentException("Number of rounds must be even");
-        }
+//        if (input.length != 16)
+//        {
+//            throw new IllegalArgumentException();
+//        }
+//        if (x.length != 16)
+//        {
+//            throw new IllegalArgumentException();
+//        }
+//        if (rounds % 2 != 0)
+//        {
+//            throw new IllegalArgumentException("Number of rounds must be even");
+//        }
 
         int x00 = input[ 0];
         int x01 = input[ 1];
@@ -493,38 +490,38 @@ public class Salsa20Engine
 
     private void resetLimitCounter()
     {
-        cW0 = 0;
-        cW1 = 0;
-        cW2 = 0;
+//        cW0 = 0;
+//        cW1 = 0;
+//        cW2 = 0;
     }
 
-    private boolean limitExceeded()
-    {
-        if (++cW0 == 0)
-        {
-            if (++cW1 == 0)
-            {
-                return (++cW2 & 0x20) != 0;          // 2^(32 + 32 + 6)
-            }
-        }
-
-        return false;
-    }
-
-    /*
-     * this relies on the fact len will always be positive.
-     */
-    private boolean limitExceeded(int len)
-    {
-        cW0 += len;
-        if (cW0 < len && cW0 >= 0)
-        {
-            if (++cW1 == 0)
-            {
-                return (++cW2 & 0x20) != 0;          // 2^(32 + 32 + 6)
-            }
-        }
-
-        return false;
-    }
+//    private boolean limitExceeded()
+//    {
+//        if (++cW0 == 0)
+//        {
+//            if (++cW1 == 0)
+//            {
+//                return (++cW2 & 0x20) != 0;          // 2^(32 + 32 + 6)
+//            }
+//        }
+//
+//        return false;
+//    }
+//
+//    /*
+//     * this relies on the fact len will always be positive.
+//     */
+//    private boolean limitExceeded(int len)
+//    {
+//        cW0 += len;
+//        if (cW0 < len && cW0 >= 0)
+//        {
+//            if (++cW1 == 0)
+//            {
+//                return (++cW2 & 0x20) != 0;          // 2^(32 + 32 + 6)
+//            }
+//        }
+//
+//        return false;
+//    }
 }

@@ -2,7 +2,6 @@ package org.vtbouncycastle.crypto.engines;
 
 import org.vtbouncycastle.crypto.CipherParameters;
 import org.vtbouncycastle.crypto.DataLengthException;
-import org.vtbouncycastle.crypto.OutputLengthException;
 import org.vtbouncycastle.crypto.StreamCipher;
 import org.vtbouncycastle.crypto.params.KeyParameter;
 import org.vtbouncycastle.crypto.params.ParametersWithIV;
@@ -108,7 +107,7 @@ public class HC128Engine
     }
 
     private byte[] key, iv;
-    private boolean initialised;
+    //private boolean initialised;
 
     private void init()
     {
@@ -196,7 +195,7 @@ public class HC128Engine
                     + params.getClass().getName());
         }
 
-        initialised = true;
+        //initialised = true;
     }
 
     private byte[] buf = new byte[4];
@@ -223,21 +222,21 @@ public class HC128Engine
     public int processBytes(byte[] in, int inOff, int len, byte[] out,
                              int outOff) throws DataLengthException
     {
-        if (!initialised)
-        {
-            throw new IllegalStateException(getAlgorithmName()
-                + " not initialised");
-        }
-
-        if ((inOff + len) > in.length)
-        {
-            throw new DataLengthException("input buffer too short");
-        }
-
-        if ((outOff + len) > out.length)
-        {
-            throw new OutputLengthException("output buffer too short");
-        }
+//        if (!initialised)
+//        {
+//            throw new IllegalStateException(getAlgorithmName()
+//                + " not initialised");
+//        }
+//
+//        if ((inOff + len) > in.length)
+//        {
+//            throw new DataLengthException("input buffer too short");
+//        }
+//
+//        if ((outOff + len) > out.length)
+//        {
+//            throw new OutputLengthException("output buffer too short");
+//        }
 
         for (int i = 0; i < len; i++)
         {

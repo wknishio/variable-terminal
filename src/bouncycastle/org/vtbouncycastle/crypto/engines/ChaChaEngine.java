@@ -69,10 +69,10 @@ public class ChaChaEngine extends Salsa20Engine
             {
                 engineState[13] -= hi;
             }
-            else
-            {
-                throw new IllegalStateException("attempt to reduce counter past zero.");
-            }
+//            else
+//            {
+//                throw new IllegalStateException("attempt to reduce counter past zero.");
+//            }
         }
 
         if ((engineState[12] & 0xffffffffL) >= (lo & 0xffffffffL))
@@ -86,19 +86,19 @@ public class ChaChaEngine extends Salsa20Engine
                 --engineState[13];
                 engineState[12] -= lo;
             }
-            else
-            {
-                throw new IllegalStateException("attempt to reduce counter past zero.");
-            }
+//            else
+//            {
+//                throw new IllegalStateException("attempt to reduce counter past zero.");
+//            }
         }
     }
 
     protected void retreatCounter()
     {
-        if (engineState[12] == 0 && engineState[13] == 0)
-        {
-            throw new IllegalStateException("attempt to reduce counter past zero.");
-        }
+//        if (engineState[12] == 0 && engineState[13] == 0)
+//        {
+//            throw new IllegalStateException("attempt to reduce counter past zero.");
+//        }
 
         if (--engineState[12] == -1)
         {
@@ -149,18 +149,18 @@ public class ChaChaEngine extends Salsa20Engine
      */    
     public static void chachaCore(int rounds, int[] input, int[] x)
     {
-        if (input.length != 16)
-        {
-            throw new IllegalArgumentException();
-        }
-        if (x.length != 16)
-        {
-            throw new IllegalArgumentException();
-        }
-        if (rounds % 2 != 0)
-        {
-            throw new IllegalArgumentException("Number of rounds must be even");
-        }
+//        if (input.length != 16)
+//        {
+//            throw new IllegalArgumentException();
+//        }
+//        if (x.length != 16)
+//        {
+//            throw new IllegalArgumentException();
+//        }
+//        if (rounds % 2 != 0)
+//        {
+//            throw new IllegalArgumentException("Number of rounds must be even");
+//        }
 
         int x00 = input[ 0];
         int x01 = input[ 1];

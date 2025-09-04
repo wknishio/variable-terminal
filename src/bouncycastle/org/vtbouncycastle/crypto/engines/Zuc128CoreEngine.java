@@ -1,8 +1,6 @@
 package org.vtbouncycastle.crypto.engines;
 
 import org.vtbouncycastle.crypto.CipherParameters;
-import org.vtbouncycastle.crypto.DataLengthException;
-import org.vtbouncycastle.crypto.OutputLengthException;
 import org.vtbouncycastle.crypto.StreamCipher;
 import org.vtbouncycastle.crypto.params.KeyParameter;
 import org.vtbouncycastle.crypto.params.ParametersWithIV;
@@ -181,18 +179,18 @@ public class Zuc128CoreEngine
                             final int outOff)
     {
         /* Check for errors */
-        if (theResetState == null)
-        {
-            throw new IllegalStateException(getAlgorithmName() + " not initialised");
-        }
-        if ((inOff + len) > in.length)
-        {
-            throw new DataLengthException("input buffer too short");
-        }
-        if ((outOff + len) > out.length)
-        {
-            throw new OutputLengthException("output buffer too short");
-        }
+//        if (theResetState == null)
+//        {
+//            throw new IllegalStateException(getAlgorithmName() + " not initialised");
+//        }
+//        if ((inOff + len) > in.length)
+//        {
+//            throw new DataLengthException("input buffer too short");
+//        }
+//        if ((outOff + len) > out.length)
+//        {
+//            throw new OutputLengthException("output buffer too short");
+//        }
 
         /* Loop through the input bytes */
         for (int i = 0; i < len; i++)
@@ -229,7 +227,7 @@ public class Zuc128CoreEngine
 
         /* Map the next byte and adjust index */
         final byte out = (byte)(keyStream[theIndex] ^ in);
-        theIndex = (theIndex + 1) % 4; // Integer.BYTES
+        theIndex = (theIndex + 1) & 0x3; // Integer.BYTES
 
         /* Return the mapped character */
         return out;

@@ -1,8 +1,6 @@
 package org.vtbouncycastle.crypto.engines;
 
 import org.vtbouncycastle.crypto.CipherParameters;
-import org.vtbouncycastle.crypto.DataLengthException;
-import org.vtbouncycastle.crypto.OutputLengthException;
 import org.vtbouncycastle.crypto.StreamCipher;
 import org.vtbouncycastle.crypto.params.KeyParameter;
 import org.vtbouncycastle.util.Pack;
@@ -27,7 +25,7 @@ public class ISAACEngine
     private int     index         = 0;
     private byte[]  keyStream     = new byte[stateArraySize<<2], // results expanded into bytes
                     workingKey    = null;
-    private boolean initialised   = false;
+    //private boolean initialised   = false;
     
     /**
      * initialise an ISAAC cipher.
@@ -76,20 +74,20 @@ public class ISAACEngine
         byte[]  out, 
         int     outOff)
     {
-        if (!initialised)
-        {
-            throw new IllegalStateException(getAlgorithmName()+" not initialised");
-        }
-        
-        if ((inOff + len) > in.length)
-        {
-            throw new DataLengthException("input buffer too short");
-        }
-        
-        if ((outOff + len) > out.length)
-        {
-            throw new OutputLengthException("output buffer too short");
-        }
+//        if (!initialised)
+//        {
+//            throw new IllegalStateException(getAlgorithmName()+" not initialised");
+//        }
+//        
+//        if ((inOff + len) > in.length)
+//        {
+//            throw new DataLengthException("input buffer too short");
+//        }
+//        
+//        if ((outOff + len) > out.length)
+//        {
+//            throw new OutputLengthException("output buffer too short");
+//        }
         
         for (int i = 0; i < len; i++)
         {
@@ -183,7 +181,7 @@ public class ISAACEngine
         
         isaac();
         
-        initialised = true;
+        //initialised = true;
     }    
     
     private void isaac()
