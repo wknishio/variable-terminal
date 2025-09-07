@@ -1,8 +1,6 @@
 package org.vtbouncycastle.crypto.engines;
 
 import org.vtbouncycastle.crypto.CipherParameters;
-import org.vtbouncycastle.crypto.DataLengthException;
-import org.vtbouncycastle.crypto.OutputLengthException;
 import org.vtbouncycastle.crypto.StreamCipher;
 import org.vtbouncycastle.crypto.params.KeyParameter;
 import org.vtbouncycastle.crypto.params.ParametersWithIV;
@@ -94,15 +92,15 @@ public class VMPCEngine implements StreamCipher
     public int processBytes(byte[] in, int inOff, int len, byte[] out,
         int outOff)
     {
-        if ((inOff + len) > in.length)
-        {
-            throw new DataLengthException("input buffer too short");
-        }
-
-        if ((outOff + len) > out.length)
-        {
-            throw new OutputLengthException("output buffer too short");
-        }
+//        if ((inOff + len) > in.length)
+//        {
+//            throw new DataLengthException("input buffer too short");
+//        }
+//
+//        if ((outOff + len) > out.length)
+//        {
+//            throw new OutputLengthException("output buffer too short");
+//        }
 
         for (int i = 0; i < len; i++)
         {
