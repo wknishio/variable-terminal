@@ -66,8 +66,8 @@ public class VTSystem
   public static final int VT_CONNECTION_ENCRYPTION_SALSA = 1;
   public static final int VT_CONNECTION_ENCRYPTION_HC = 2;
   public static final int VT_CONNECTION_ENCRYPTION_GRAIN = 3;
-  public static final int VT_CONNECTION_ENCRYPTION_ZUC = 4;
-  public static final int VT_CONNECTION_ENCRYPTION_ISAAC = 5;
+  public static final int VT_CONNECTION_ENCRYPTION_RABBIT = 4;
+  public static final int VT_CONNECTION_ENCRYPTION_ZUC = 5;
   
   public static final int VT_FILE_TRANSFER_SESSION_STARTED = 0;
   public static final int VT_FILE_TRANSFER_SESSION_FINISHED = 1;
@@ -159,8 +159,8 @@ public class VTSystem
   public static final String VT_CONNECTION_ENCRYPTION_SALSA_STRING = "SALSA";
   public static final String VT_CONNECTION_ENCRYPTION_HC_STRING = "HC";
   public static final String VT_CONNECTION_ENCRYPTION_GRAIN_STRING = "GRAIN";
+  public static final String VT_CONNECTION_ENCRYPTION_RABBIT_STRING = "RABBIT";
   public static final String VT_CONNECTION_ENCRYPTION_ZUC_STRING = "ZUC";
-  public static final String VT_CONNECTION_ENCRYPTION_ISAAC_STRING = "ISAAC";
   
   private static final DateFormat VT_ERA_DATEFORMAT;
   private static final Calendar VT_YEAR_CALENDAR;

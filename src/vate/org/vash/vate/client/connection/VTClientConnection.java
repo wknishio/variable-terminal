@@ -33,14 +33,16 @@ public class VTClientConnection
   private static final byte[] VT_CLIENT_CHECK_STRING_NONE = ("/VARIABLE-TERMINAL/CLIENT/NONE/" + MAJOR_MINOR_VERSION).getBytes();
 //  private static final byte[] VT_SERVER_CHECK_STRING_VMPC = ("/VARIABLE-TERMINAL/SERVER/VMPC/" + MAJOR_MINOR_VERSION).getBytes();
 //  private static final byte[] VT_CLIENT_CHECK_STRING_VMPC = ("/VARIABLE-TERMINAL/CLIENT/VMPC/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_SERVER_CHECK_STRING_ISAAC = ("/VARIABLE-TERMINAL/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
-  private static final byte[] VT_CLIENT_CHECK_STRING_ISAAC = ("/VARIABLE-TERMINAL/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
+//  private static final byte[] VT_SERVER_CHECK_STRING_ISAAC = ("/VARIABLE-TERMINAL/SERVER/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
+//  private static final byte[] VT_CLIENT_CHECK_STRING_ISAAC = ("/VARIABLE-TERMINAL/CLIENT/ISAAC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_SALSA = ("/VARIABLE-TERMINAL/SERVER/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_SALSA = ("/VARIABLE-TERMINAL/CLIENT/SALSA/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_GRAIN = ("/VARIABLE-TERMINAL/SERVER/GRAIN/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_GRAIN = ("/VARIABLE-TERMINAL/CLIENT/GRAIN/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_HC = ("/VARIABLE-TERMINAL/SERVER/HC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_HC = ("/VARIABLE-TERMINAL/CLIENT/HC/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_SERVER_CHECK_STRING_RABBIT = ("/VARIABLE-TERMINAL/SERVER/RABBIT/" + MAJOR_MINOR_VERSION).getBytes();
+  private static final byte[] VT_CLIENT_CHECK_STRING_RABBIT = ("/VARIABLE-TERMINAL/CLIENT/RABBIT/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_SERVER_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/SERVER/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
   private static final byte[] VT_CLIENT_CHECK_STRING_ZUC = ("/VARIABLE-TERMINAL/CLIENT/ZUC/" + MAJOR_MINOR_VERSION).getBytes();
   
@@ -870,9 +872,9 @@ public class VTClientConnection
     {
       blake3Digest.update(encryptionKey);
     }
-    if (VTArrayComparator.arrayEquals(digestedServer, blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VT_SERVER_CHECK_STRING_ISAAC)))
+    if (VTArrayComparator.arrayEquals(digestedServer, blake3Digest.digest(VTSystem.VT_SECURITY_DIGEST_SIZE_BYTES, VT_SERVER_CHECK_STRING_RABBIT)))
     {
-      return VTSystem.VT_CONNECTION_ENCRYPTION_ISAAC;
+      return VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT;
     }
     
 //    blake3Digest.reset();
@@ -945,9 +947,9 @@ public class VTClientConnection
         setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
         return true;
       }
-      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ISAAC)
+      if (remoteEncryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT)
       {
-        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ISAAC);
+        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
         return true;
       }
 //      if (remoteEncryptionType == VT.VT_CONNECTION_ENCRYPT_GRAIN)
@@ -1011,12 +1013,12 @@ public class VTClientConnection
         return true;
       }
     }
-    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_ISAAC)
+    else if (encryptionType == VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT)
     {
-      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_ISAAC, encryptionType);
+      remoteEncryptionType = discoverRemoteEncryptionType(localNonce, remoteNonce, encryptionKey, VT_CLIENT_CHECK_STRING_RABBIT, encryptionType);
       if (remoteEncryptionType != -1)
       {
-        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ISAAC);
+        setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
         return true;
       }
     }

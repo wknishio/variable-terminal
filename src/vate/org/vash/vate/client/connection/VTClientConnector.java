@@ -622,9 +622,9 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
       }
-      else if (encryptionType.toUpperCase().startsWith("I"))
+      else if (encryptionType.toUpperCase().startsWith("R"))
       {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ISAAC);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
       }
       else
       {
@@ -710,9 +710,9 @@ public class VTClientConnector implements Runnable
       {
         connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_HC);
       }
-      else if (encryptionType.toUpperCase().startsWith("I"))
+      else if (encryptionType.toUpperCase().startsWith("R"))
       {
-        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_ISAAC);
+        connection.setEncryptionType(VTSystem.VT_CONNECTION_ENCRYPTION_RABBIT);
       }
       else
       {
@@ -1255,7 +1255,7 @@ public class VTClientConnector implements Runnable
       }
       if (line.toUpperCase().startsWith("Y"))
       {
-        VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/GRAIN(G)/ZUC(Z)/ISAAC(I)):");
+        VTMainConsole.print("VT>Enter encryption type(SALSA(S)/HC(H)/GRAIN(G)/RABBIT(R)/ZUC(Z)):");
         line = VTMainConsole.readLine(false);
         if (line == null)
         {
@@ -1270,9 +1270,9 @@ public class VTClientConnector implements Runnable
         {
           encryptionType = "ZUC";
         }
-        if (line.toUpperCase().startsWith("I"))
+        if (line.toUpperCase().startsWith("R"))
         {
-          encryptionType = "ISAAC";
+          encryptionType = "RABBIT";
         }
         if (line.toUpperCase().startsWith("H"))
         {
