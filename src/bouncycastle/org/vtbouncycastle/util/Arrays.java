@@ -1139,4 +1139,12 @@ public final class Arrays
             throw new UnsupportedOperationException("Cannot remove element from an Array.");
         }
     }
+    
+    public static boolean segmentsOverlap(int aOff, int aLen, int bOff, int bLen)
+    {
+        return aLen > 0
+            && bLen > 0
+            && aOff - bOff < bLen
+            && bOff - aOff < aLen;
+    }
 }
