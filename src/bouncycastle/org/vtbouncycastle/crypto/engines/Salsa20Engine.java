@@ -21,7 +21,7 @@ public class Salsa20Engine
 
     private final static int[] TAU_SIGMA = Pack.littleEndianToInt(Strings.toByteArray("expand 16-byte k" + "expand 32-byte k"), 0, 8);
 
-    protected void packTauOrSigma(int keyLength, int[] state, int stateOffset)
+    protected final void packTauOrSigma(int keyLength, int[] state, int stateOffset)
     {
         int tsOff = (keyLength - 16) / 4;
         state[stateOffset    ] = TAU_SIGMA[tsOff    ];
@@ -35,16 +35,16 @@ public class Salsa20Engine
         sigma = Strings.toByteArray("expand 32-byte k"),
         tau   = Strings.toByteArray("expand 16-byte k");
 
-    protected int rounds;
+    protected final int rounds;
 
     /*
      * variables to hold the state of the engine
      * during encryption and decryption
      */
     private int         index = 0;
-    protected int[]     engineState = new int[STATE_SIZE]; // state
-    protected int[]     x = new int[STATE_SIZE] ; // internal buffer
-    private byte[]      keyStream   = new byte[STATE_SIZE * 4]; // expanded state, 64 bytes
+    protected final int[]     engineState = new int[STATE_SIZE]; // state
+    protected final int[]     x = new int[STATE_SIZE] ; // internal buffer
+    private final byte[]      keyStream   = new byte[STATE_SIZE * 4]; // expanded state, 64 bytes
     //private boolean     initialised = false;
 
     /*
@@ -401,7 +401,7 @@ public class Salsa20Engine
      *
      * @param   input   input data
      */    
-    public static void salsaCore(int rounds, int[] input, int[] x)
+    public static final void salsaCore(int rounds, int[] input, int[] x)
     {
 //        if (input.length != 16)
 //        {

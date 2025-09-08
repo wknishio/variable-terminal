@@ -1,5 +1,7 @@
 package org.vtbouncycastle.crypto.engines;
 
+import java.util.Arrays;
+
 import org.vtbouncycastle.crypto.CipherParameters;
 import org.vtbouncycastle.crypto.StreamCipher;
 import org.vtbouncycastle.crypto.params.KeyParameter;
@@ -17,14 +19,14 @@ public class ISAACEngine
                       stateArraySize = sizeL<<5; // 256
     
     // Cipher's internal state
-    private int[]   engineState   = null, // mm                
-                    results       = null; // randrsl
+    private final int[] engineState   = new int [stateArraySize]; // mm                
+    private final int[] results       = new int [stateArraySize]; // randrsl
     private int     a = 0, b = 0, c = 0;
     
     // Engine state
     private int     index         = 0;
-    private byte[]  keyStream     = new byte[stateArraySize<<2], // results expanded into bytes
-                    workingKey    = null;
+    private byte[]  keyStream     = new byte[stateArraySize<<2]; // results expanded into bytes
+    private byte[]  workingKey    = null;
     //private boolean initialised   = false;
     
     /**
@@ -35,7 +37,7 @@ public class ISAACEngine
      * @exception IllegalArgumentException if the params argument is
      * inappropriate.
      */
-    public void init(
+    public final void init(
         boolean             forEncryption, 
         CipherParameters    params)
     {
@@ -54,7 +56,7 @@ public class ISAACEngine
         return;
     }
                     
-    public byte returnByte(byte in)
+    public final byte returnByte(byte in)
     {
         if (index == 0) 
         {
@@ -67,7 +69,7 @@ public class ISAACEngine
         return out;
     }
     
-    public int processBytes(
+    public final int processBytes(
         byte[]  in, 
         int     inOff, 
         int     len, 
@@ -103,30 +105,31 @@ public class ISAACEngine
         return len;
     }
     
-    public String getAlgorithmName()
+    public final String getAlgorithmName()
     {
         return "ISAAC";
     }
     
-    public void reset()
+    public final void reset()
     {
         setKey(workingKey);
     }
     
     // Private implementation
-    private void setKey(byte[] keyBytes)
+    private final void setKey(byte[] keyBytes)
     {
         workingKey = keyBytes;
-        
-        if (engineState == null)
-        {
-            engineState = new int[stateArraySize];
-        }
-        
-        if (results == null)
-        {
-            results = new int[stateArraySize];
-        }
+        Arrays.fill(engineState, 0);
+        Arrays.fill(results, 0);
+//        if (engineState == null)
+//        {
+//            //engineState = new int[stateArraySize];
+//        }
+//        
+//        if (results == null)
+//        {
+//            //results = new int[stateArraySize];
+//        }
         
         int i, j, k;
         
@@ -184,7 +187,7 @@ public class ISAACEngine
         //initialised = true;
     }    
     
-    private void isaac()
+    private final void isaac()
     {
         int i, x, y;
         
@@ -205,7 +208,7 @@ public class ISAACEngine
         }
     }
     
-    private void mix(int[] x)
+    private static void mix(int[] x)
     {
         x[0]^=x[1]<< 11; x[3]+=x[0]; x[1]+=x[2];
         x[1]^=x[2]>>> 2; x[4]+=x[1]; x[2]+=x[3];

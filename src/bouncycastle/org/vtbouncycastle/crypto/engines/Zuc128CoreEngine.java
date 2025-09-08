@@ -78,7 +78,7 @@ public class Zuc128CoreEngine
     /**
      * The iterations.
      */
-    private int theIterations;
+    //private int theIterations;
 
     /**
      * Reset state.
@@ -109,7 +109,7 @@ public class Zuc128CoreEngine
      * @param params        the parameters required to set up the cipher.
      * @throws IllegalArgumentException if the params argument is inappropriate.
      */
-    public void init(final boolean forEncryption,
+    public final void init(final boolean forEncryption,
                      final CipherParameters params)
     {
         /*
@@ -135,7 +135,7 @@ public class Zuc128CoreEngine
 
         /* Initialise engine and mark as initialised */
         theIndex = 0;
-        theIterations = 0;
+        //theIterations = 0;
         setKeyAndIV(newKey, newIV);
 
         /* Save reset state */
@@ -172,26 +172,12 @@ public class Zuc128CoreEngine
      * @param outOff the starting offset in the output buffer
      * @return the number of bytes returned in the output buffer
      */
-    public int processBytes(final byte[] in,
+    public final int processBytes(final byte[] in,
                             final int inOff,
                             final int len,
                             final byte[] out,
                             final int outOff)
     {
-        /* Check for errors */
-//        if (theResetState == null)
-//        {
-//            throw new IllegalStateException(getAlgorithmName() + " not initialised");
-//        }
-//        if ((inOff + len) > in.length)
-//        {
-//            throw new DataLengthException("input buffer too short");
-//        }
-//        if ((outOff + len) > out.length)
-//        {
-//            throw new OutputLengthException("output buffer too short");
-//        }
-
         /* Loop through the input bytes */
         for (int i = 0; i < len; i++)
         {
@@ -203,7 +189,7 @@ public class Zuc128CoreEngine
     /**
      * Reset the engine.
      */
-    public void reset()
+    public final void reset()
     {
         if (theResetState != null)
         {
@@ -217,7 +203,7 @@ public class Zuc128CoreEngine
      * @param in the input byte
      * @return the output byte
      */
-    public byte returnByte(final byte in)
+    public final byte returnByte(final byte in)
     {
         /* Make the keyStream if required */
         if (theIndex == 0)
@@ -266,7 +252,7 @@ public class Zuc128CoreEngine
      * @param b value B
      * @return the result
      */
-    private int AddM(final int a, final int b)
+    private static int AddM(final int a, final int b)
     {
         final int c = a + b;
         return (c & 0x7FFFFFFF) + (c >>> 31);
@@ -289,7 +275,7 @@ public class Zuc128CoreEngine
      *
      * @param u
      */
-    private void LFSRWithInitialisationMode(final int u)
+    private final void LFSRWithInitialisationMode(final int u)
     {
         int f = LFSR[0];
         int v = MulByPow2(LFSR[0], 8);
@@ -326,7 +312,7 @@ public class Zuc128CoreEngine
     /**
      * LFSR with work mode.
      */
-    private void LFSRWithWorkMode()
+    private final void LFSRWithWorkMode()
     {
         int f, v;
         f = LFSR[0];
@@ -363,7 +349,7 @@ public class Zuc128CoreEngine
     /**
      * BitReorganization.
      */
-    private void BitReorganization()
+    private final void BitReorganization()
     {
         BRC[0] = ((LFSR[15] & 0x7FFF8000) << 1) | (LFSR[14] & 0xFFFF);
         BRC[1] = ((LFSR[11] & 0xFFFF) << 16) | (LFSR[9] >>> 15);
@@ -378,7 +364,7 @@ public class Zuc128CoreEngine
      * @param k the shift
      * @return the result
      */
-    static int ROT(int a, int k)
+    private static int ROT(int a, int k)
     {
         return (((a) << k) | ((a) >>> (32 - k)));
     }
@@ -425,7 +411,7 @@ public class Zuc128CoreEngine
     /**
      * F.
      */
-    int F()
+    private final int F()
     {
         int W, W1, W2, u, v;
         W = (BRC[0] ^ F[0]) + F[1];
@@ -501,7 +487,7 @@ public class Zuc128CoreEngine
      * @param k  the key
      * @param iv the IV
      */
-    private void setKeyAndIV(final byte[] k,
+    private final void setKeyAndIV(final byte[] k,
                              final byte[] iv)
     {
         /* Initialise LFSR */
@@ -526,7 +512,7 @@ public class Zuc128CoreEngine
     /**
      * Create the next byte keyStream.
      */
-    protected void makeKeyStream()
+    protected final void makeKeyStream()
     {
         encode32le(makeKeyStreamWord(), keyStream, 0);
     }
@@ -536,7 +522,7 @@ public class Zuc128CoreEngine
      *
      * @return the next word
      */
-    protected int makeKeyStreamWord()
+    protected final int makeKeyStreamWord()
     {
 //        if (theIterations++ >= getMaxIterations())
 //        {
@@ -586,7 +572,7 @@ public class Zuc128CoreEngine
         System.arraycopy(e.BRC, 0, BRC, 0, BRC.length);
         System.arraycopy(e.keyStream, 0, keyStream, 0, keyStream.length);
         theIndex = e.theIndex;
-        theIterations = e.theIterations;
+        //theIterations = e.theIterations;
         theResetState = e;
     }
 }

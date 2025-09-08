@@ -22,8 +22,10 @@ import org.vtbouncycastle.crypto.params.ParametersWithIV;
 public class HC128Engine
     implements StreamCipher
 {
-    private int[] p = new int[512];
-    private int[] q = new int[512];
+    private final int[] p = new int[512];
+    private final int[] q = new int[512];
+    private final byte[] key = new byte[16];
+    private final byte[] iv = new byte[16];
     private int cnt = 0;
 
     private static int f1(int x)
@@ -38,13 +40,13 @@ public class HC128Engine
             ^ (x >>> 10);
     }
 
-    private int g1(int x, int y, int z)
+    private static int g1(int x, int y, int z)
     {
         return (rotateRight(x, 10) ^ rotateRight(z, 23))
             + rotateRight(y, 8);
     }
 
-    private int g2(int x, int y, int z)
+    private static int g2(int x, int y, int z)
     {
         return (rotateLeft(x, 10) ^ rotateLeft(z, 23)) + rotateLeft(y, 8);
     }
@@ -63,12 +65,12 @@ public class HC128Engine
         return (x >>> bits) | (x << -bits);
     }
 
-    private int h1(int x)
+    private final int h1(int x)
     {
         return q[x & 0xFF] + q[((x >> 16) & 0xFF) + 256];
     }
 
-    private int h2(int x)
+    private final int h2(int x)
     {
         return p[x & 0xFF] + p[((x >> 16) & 0xFF) + 256];
     }
@@ -88,7 +90,7 @@ public class HC128Engine
         return mod512(x - y);
     }
 
-    private int step()
+    private final int step()
     {
         int j = mod512(cnt);
         int ret;
@@ -106,10 +108,10 @@ public class HC128Engine
         return ret;
     }
 
-    private byte[] key, iv;
+    
     //private boolean initialised;
 
-    private void init()
+    private final void init()
     {
         if (key.length != 16)
         {
@@ -154,7 +156,7 @@ public class HC128Engine
         cnt = 0;
     }
 
-    public String getAlgorithmName()
+    public final String getAlgorithmName()
     {
         return "HC-128";
     }
@@ -168,24 +170,27 @@ public class HC128Engine
      * @throws IllegalArgumentException if the params argument is
      *                                  inappropriate (ie. the key is not 128 bit long).
      */
-    public void init(boolean forEncryption, CipherParameters params)
+    public final void init(boolean forEncryption, CipherParameters params)
         throws IllegalArgumentException
     {
         CipherParameters keyParam = params;
-
+        byte[] paramIV = null;
+        byte[] paramKey = null;
         if (params instanceof ParametersWithIV)
         {
-            iv = ((ParametersWithIV)params).getIV();
+            paramIV = ((ParametersWithIV)params).getIV();
             keyParam = ((ParametersWithIV)params).getParameters();
         }
         else
         {
-            iv = new byte[0];
+            paramIV = new byte[0];
         }
 
         if (keyParam instanceof KeyParameter)
         {
-            key = ((KeyParameter)keyParam).getKey();
+            paramKey = ((KeyParameter)keyParam).getKey();
+            System.arraycopy(paramIV, 0, iv, 0, paramIV.length);
+            System.arraycopy(paramKey, 0, key, 0, paramKey.length);
             init();
         }
         else
@@ -194,14 +199,15 @@ public class HC128Engine
                 "Invalid parameter passed to HC128 init - "
                     + params.getClass().getName());
         }
-
+        
+        
         //initialised = true;
     }
 
-    private byte[] buf = new byte[4];
+    private final byte[] buf = new byte[4];
     private int idx = 0;
 
-    private byte getByte()
+    private final byte getByte()
     {
         if (idx == 0)
         {
@@ -219,25 +225,9 @@ public class HC128Engine
         return ret;
     }
 
-    public int processBytes(byte[] in, int inOff, int len, byte[] out,
+    public final int processBytes(byte[] in, int inOff, int len, byte[] out,
                              int outOff) throws DataLengthException
     {
-//        if (!initialised)
-//        {
-//            throw new IllegalStateException(getAlgorithmName()
-//                + " not initialised");
-//        }
-//
-//        if ((inOff + len) > in.length)
-//        {
-//            throw new DataLengthException("input buffer too short");
-//        }
-//
-//        if ((outOff + len) > out.length)
-//        {
-//            throw new OutputLengthException("output buffer too short");
-//        }
-
         for (int i = 0; i < len; i++)
         {
             out[outOff + i] = (byte)(in[inOff + i] ^ getByte());
@@ -246,12 +236,12 @@ public class HC128Engine
         return len;
     }
 
-    public void reset()
+    public final void reset()
     {
         init();
     }
 
-    public byte returnByte(byte in)
+    public final byte returnByte(byte in)
     {
         return (byte)(in ^ getByte());
     }

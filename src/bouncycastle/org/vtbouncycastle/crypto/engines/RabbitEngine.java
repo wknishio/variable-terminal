@@ -44,7 +44,7 @@ public class RabbitEngine implements StreamCipher
   private final int[] G = new int[8];
   private final byte[] S = new byte[16];
 	
-	byte[] nextBlock()
+	private final byte[] nextBlock()
 	{
     nextState();
     
@@ -86,7 +86,7 @@ public class RabbitEngine implements StreamCipher
 	/**
 	 * Clears all internal data. You must set the key again to use this cypher.
 	 */
-	public void reset()
+	public final void reset()
 	{
 		B = 0;
 		I = 16;
@@ -100,7 +100,7 @@ public class RabbitEngine implements StreamCipher
 	 * @param IV
 	 *            An array of 8 bytes
 	 */
-	public void setupIV(final byte[] IV)
+	public final void setupIV(final byte[] IV)
 	{
 		short[] sIV = new short[IV.length>>1];
 		for(int i=0;i<sIV.length;++i) {
@@ -114,7 +114,7 @@ public class RabbitEngine implements StreamCipher
 	 * @param iv
 	 *            array of 4 short values
 	 */
-	public void setupIV(final short[] iv) {
+	public final void setupIV(final short[] iv) {
 		/* unroll */
 		C[0] ^= iv[1] << 16 | iv[0] & 0xFFFF;
 		C[1] ^= iv[3] << 16 | iv[1] & 0xFFFF;
@@ -135,7 +135,7 @@ public class RabbitEngine implements StreamCipher
 	 * @param key
 	 *            An array of 16 bytes
 	 */
-	public void setupKey(final byte[] key)
+	public final void setupKey(final byte[] key)
 	{
 		short[] sKey = new short[key.length>>1];
 		Pack.littleEndianToShort(key, 0, sKey, 0, 8);
@@ -146,7 +146,7 @@ public class RabbitEngine implements StreamCipher
 	 * @param key
 	 *            An array of 8 short values
 	 */
-	public void setupKey(final short[] key) {
+	public final void setupKey(final short[] key) {
 		/* unroll */
 		X[0] = key[1] << 16 | key[0] & 0xFFFF;
 		X[1] = key[6] << 16 | key[5] & 0xFFFF;
@@ -180,7 +180,7 @@ public class RabbitEngine implements StreamCipher
 		C[7] ^= X[3];
 	}
 
-  public void init(boolean forEncryption, CipherParameters params) throws IllegalArgumentException
+  public final void init(boolean forEncryption, CipherParameters params) throws IllegalArgumentException
   {
     CipherParameters keyParam = params;
     byte[] key = null;
@@ -206,22 +206,22 @@ public class RabbitEngine implements StreamCipher
     init();
   }
   
-  private void init()
+  private final void init()
   {
     I = 16;
   }
 
-  public String getAlgorithmName()
+  public final String getAlgorithmName()
   {
     return "Rabbit";
   }
 
-  public byte returnByte(byte in)
+  public final byte returnByte(byte in)
   {
     return in ^= getByte();
   }
 
-  public int processBytes(byte[] in, int inOff, int len, byte[] out, int outOff) throws DataLengthException
+  public final int processBytes(byte[] in, int inOff, int len, byte[] out, int outOff) throws DataLengthException
   {
     for (int i = 0; i < len; i++)
     {
@@ -230,7 +230,7 @@ public class RabbitEngine implements StreamCipher
     return len;
   }
   
-  private byte getByte()
+  private final byte getByte()
   {
     if (I == KEYSTREAM_LENGTH)
     {
@@ -240,7 +240,7 @@ public class RabbitEngine implements StreamCipher
     return S[I++];
   }
   
-  private void nextState()
+  private final void nextState()
   {
     long temp;
     for (int i = 0; i < 8; i++)
