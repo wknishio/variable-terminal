@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
 import org.vash.vate.VTSystem;
+import org.vash.vate.filesystem.VTFileUtils;
 import org.vash.vate.security.VTBlake3MessageDigest;
 import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.compress.VTCompressorSelector;
@@ -273,26 +273,7 @@ public class VTFileTransferServerTransaction implements Runnable
   {
     try
     {
-      if (fileTransferFile.exists())
-      {
-        if (fileTransferFile.canRead())
-        {
-          localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_READ_ONLY;
-          if (fileTransferFile.canWrite())
-          {
-            localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE;
-          }
-        }
-        else if (fileTransferFile.canWrite())
-        {
-          localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY;
-        }
-        else
-        {
-          localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_DENIED;
-        }
-      }
-      else
+      if (!fileTransferFile.exists())
       {
         if (fileTransferFile.getParentFile() != null)
         {
@@ -300,58 +281,32 @@ public class VTFileTransferServerTransaction implements Runnable
         }
         if (directory)
         {
-          if (fileTransferFile.mkdirs())
-          {
-            if (fileTransferFile.canRead())
-            {
-              localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_READ_ONLY;
-              if (fileTransferFile.canWrite())
-              {
-                localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE;
-              }
-            }
-            else if (fileTransferFile.canWrite())
-            {
-              localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY;
-            }
-            else
-            {
-              fileTransferFile.delete();
-              localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_DENIED;
-            }
-          }
-          else
-          {
-            localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_DENIED;
-          }
+          fileTransferFile.mkdirs();
         }
         else
         {
-          if (fileTransferFile.createNewFile())
-          {
-            if (fileTransferFile.canRead())
-            {
-              localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_READ_ONLY;
-              if (fileTransferFile.canWrite())
-              {
-                localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE;
-              }
-            }
-            else if (fileTransferFile.canWrite())
-            {
-              localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY;
-            }
-            else
-            {
-              fileTransferFile.delete();
-              localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_DENIED;
-            }
-          }
-          else
-          {
-            localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_DENIED;
-          }
+          fileTransferFile.createNewFile();
         }
+      }
+      if (!fileTransferFile.exists())
+      {
+        localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_DENIED;
+      }
+      else if (fileTransferFile.canRead())
+      {
+        localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_READ_ONLY;
+        if (fileTransferFile.canWrite())
+        {
+          localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_READ_AND_WRITE;
+        }
+      }
+      else if (fileTransferFile.canWrite())
+      {
+        localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_WRITE_ONLY;
+      }
+      else
+      {
+        localFileAccess = VTSystem.VT_FILE_TRANSFER_ACCESS_DENIED;
       }
       if (!directory)
       {
@@ -949,7 +904,9 @@ public class VTFileTransferServerTransaction implements Runnable
             fileTransferFile = new File(convertFilePath(currentPath));
             if (fileTransferFile.exists() && !fileTransferFile.isDirectory())
             {
-              fileTransferFile.delete();
+              //VTFileUtils.truncateFile(fileTransferFile);
+              VTFileUtils.deleteQuietly(fileTransferFile);
+              //fileTransferFile.delete();
             }
           }
         }
@@ -1100,7 +1057,7 @@ public class VTFileTransferServerTransaction implements Runnable
                   localChildFiles.removeAll(remoteChildFiles);
                   for (String localChildFile : localChildFiles)
                   {
-                    FileUtils.deleteQuietly(new File(fileTransferCompletedFile, localChildFile));
+                    VTFileUtils.truncateThenDeleteQuietly(new File(fileTransferCompletedFile, localChildFile));
                   }
                 }
                 if (currentFileTime >= 0)
@@ -1288,23 +1245,17 @@ public class VTFileTransferServerTransaction implements Runnable
       }
       if (!fileTransferFile.renameTo(fileTransferCompletedFile))
       {
-        if (fileTransferCompletedFile.delete())
+        VTFileUtils.truncateThenDeleteQuietly(fileTransferCompletedFile);
+        if (fileTransferFile.renameTo(fileTransferCompletedFile))
         {
-          if (fileTransferFile.renameTo(fileTransferCompletedFile))
+          if (remoteFileTime >= 0)
           {
-            if (remoteFileTime >= 0)
-            {
-              fileTransferCompletedFile = new File(convertFilePath(currentPath));
-              fileTransferCompletedFile.setLastModified(remoteFileTime);
-            }
-            return true;
+            fileTransferCompletedFile = new File(convertFilePath(currentPath));
+            fileTransferCompletedFile.setLastModified(remoteFileTime);
           }
-          return false;
+          return true;
         }
-        else
-        {
-          return false;
-        }
+        return false;
       }
       else
       {

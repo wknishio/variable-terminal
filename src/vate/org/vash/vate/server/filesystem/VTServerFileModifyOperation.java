@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.channels.ClosedByInterruptException;
 
-import org.apache.commons.io.FileUtils;
+import org.vash.vate.filesystem.VTFileUtils;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.task.VTTask;
 
@@ -77,7 +77,7 @@ public class VTServerFileModifyOperation extends VTTask
           {
             if (sourceFile.isFile())
             {
-              FileUtils.moveFile(sourceFile, destinationFile);
+              VTFileUtils.moveFile(sourceFile, destinationFile);
               synchronized (this)
               {
                 session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] moved to [" + destinationFile.getPath() + "] on server!\nVT>");
@@ -87,7 +87,7 @@ public class VTServerFileModifyOperation extends VTTask
             }
             else if (sourceFile.isDirectory())
             {
-              FileUtils.moveDirectory(sourceFile, destinationFile);
+              VTFileUtils.moveDirectory(sourceFile, destinationFile);
               synchronized (this)
               {
                 session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] moved to [" + destinationFile.getPath() + "] on server!\nVT>");
@@ -141,11 +141,11 @@ public class VTServerFileModifyOperation extends VTTask
         {
           if (sourceFile.isFile())
           {
-            FileUtils.copyFile(sourceFile, destinationFile, false);
+            VTFileUtils.copyFile(sourceFile, destinationFile, false);
           }
           else
           {
-            FileUtils.copyDirectory(sourceFile, destinationFile, false);
+            VTFileUtils.copyDirectory(sourceFile, destinationFile, false);
           }
           synchronized (this)
           {
@@ -198,7 +198,7 @@ public class VTServerFileModifyOperation extends VTTask
         {
           if (sourceFile.exists())
           {
-            if (FileUtils.deleteQuietly(sourceFile))
+            if (VTFileUtils.truncateThenDeleteQuietly(sourceFile))
             {
               synchronized (this)
               {
@@ -211,7 +211,7 @@ public class VTServerFileModifyOperation extends VTTask
             {
               synchronized (this)
               {
-                session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] remotion on server failed!\nVT>");
+                session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] removal on server failed!\nVT>");
                 session.getConnection().getResultWriter().flush();
                 finished = true;
               }
@@ -240,7 +240,7 @@ public class VTServerFileModifyOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] remotion on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] removal on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }
@@ -249,7 +249,7 @@ public class VTServerFileModifyOperation extends VTTask
         {
           synchronized (this)
           {
-            session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] remotion on server failed!\nVT>");
+            session.getConnection().getResultWriter().write("\nVT>File [" + sourceFile.getPath() + "] removal on server failed!\nVT>");
             session.getConnection().getResultWriter().flush();
             finished = true;
           }

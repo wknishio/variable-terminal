@@ -196,7 +196,7 @@ public interface IFileSystem<F extends Object> {
      * @param file The file object
      * @throws IOException When an error occurs
      */
-    void delete(F file) throws IOException;
+    boolean delete(F file) throws IOException;
 
     /**
      * Renames or moves a file

@@ -8,6 +8,7 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.Map.Entry;
 import org.vash.vate.audio.VTAudioBeeper;
+import org.vash.vate.filesystem.VTFileUtils;
 import org.vash.vate.nativeutils.bsd.VTBSDNativeUtils;
 import org.vash.vate.nativeutils.linux.VTLinuxNativeUtils;
 import org.vash.vate.nativeutils.mac.VTMacNativeUtils;
@@ -163,7 +164,6 @@ public class VTMainNativeUtils
           try
           {
             tmpedtvbsFile = File.createTempFile("vate_w32_tedt", ".vbs");
-            //tmpdtvbsFile.deleteOnExit();
             FileOutputStream output = new FileOutputStream(tmpedtvbsFile);
             output.write(WIN32_EJECT_DISC_TRAY_VBS.getBytes());
             output.flush();
@@ -176,7 +176,8 @@ public class VTMainNativeUtils
           }
           if (tmpedtvbsFile != null)
           {
-            tmpedtvbsFile.delete();
+            VTFileUtils.truncateThenDeleteQuietly(tmpedtvbsFile);
+            //tmpedtvbsFile.delete();
           }
           return status == 0;
         }
@@ -209,7 +210,6 @@ public class VTMainNativeUtils
         try
         {
           tmpedtvbsFile = File.createTempFile("vate_w32_tedt", ".vbs");
-          //tmpdtvbsFile.deleteOnExit();
           FileOutputStream output = new FileOutputStream(tmpedtvbsFile);
           output.write(WIN32_EJECT_DISC_TRAY_VBS.getBytes());
           output.flush();
@@ -222,7 +222,8 @@ public class VTMainNativeUtils
         }
         if (tmpedtvbsFile != null)
         {
-          tmpedtvbsFile.delete();
+          VTFileUtils.truncateThenDeleteQuietly(tmpedtvbsFile);
+          //tmpedtvbsFile.delete();
         }
         return status == 0;
       }
@@ -259,7 +260,6 @@ public class VTMainNativeUtils
           try
           {
             tmpedtvbsFile = File.createTempFile("vate_w32_tedt", ".vbs");
-            //tmpdtvbsFile.deleteOnExit();
             FileOutputStream output = new FileOutputStream(tmpedtvbsFile);
             output.write(WIN32_EJECT_DISC_TRAY_VBS.getBytes());
             output.flush();
@@ -272,7 +272,8 @@ public class VTMainNativeUtils
           }
           if (tmpedtvbsFile != null)
           {
-            tmpedtvbsFile.delete();
+            VTFileUtils.truncateThenDeleteQuietly(tmpedtvbsFile);
+            //tmpedtvbsFile.delete();
           }
           return status == 0;
         }
@@ -305,7 +306,6 @@ public class VTMainNativeUtils
         try
         {
           tmpedtvbsFile = File.createTempFile("vate_w32_tedt", ".vbs");
-          //tmpdtvbsFile.deleteOnExit();
           FileOutputStream output = new FileOutputStream(tmpedtvbsFile);
           output.write(WIN32_EJECT_DISC_TRAY_VBS.getBytes());
           output.flush();
@@ -318,7 +318,8 @@ public class VTMainNativeUtils
         }
         if (tmpedtvbsFile != null)
         {
-          tmpedtvbsFile.delete();
+          VTFileUtils.truncateThenDeleteQuietly(tmpedtvbsFile);
+          //tmpedtvbsFile.delete();
         }
         return status == 0;
       }

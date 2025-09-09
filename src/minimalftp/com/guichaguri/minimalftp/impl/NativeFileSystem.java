@@ -23,6 +23,8 @@ import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.vash.vate.filesystem.VTFileUtils;
+
 /**
  * Native File System
  *
@@ -280,23 +282,22 @@ public class NativeFileSystem implements IFileSystem<File> {
     }
 
     
-    public void delete(File file) throws IOException {
-        if(file.isDirectory()) {
-//            Files.walk(file.toPath()) // Walks through all files, except links
-//            .sorted(Comparator.reverseOrder()) // Reverse order, so it deletes from the highest depth to the lowest one
-//            .map(Path::toFile) // Converts the Path objects to File objects
-//            .forEach(File::delete); // Deletes it
-            File[] childs = file.listFiles();
-            for (File child : childs)
-            {
-                delete(child);
-            }
-            file.delete();
-        } else {
-            // Deletes a single file
-            file.delete();
-            //if(!file.delete()) throw new IOException("Couldn't delete the file");
-        }
+    public boolean delete(File file) throws IOException {
+//        if(file.isDirectory())
+//        {
+//            File[] childs = file.listFiles();
+//            for (File child : childs)
+//            {
+//                delete(child);
+//            }
+//            return VTFileUtils.deleteQuietly(file);
+//        }
+//        else
+//        {
+//            // Deletes a single file
+//            return VTFileUtils.truncateThenDeleteQuietly(file);
+//        }
+      return VTFileUtils.truncateThenDeleteQuietly(file);
     }
 
     

@@ -42,10 +42,7 @@ public class VTZipUtils
     }
     else if (!zipArchive.createNewFile())
     {
-      if (!zipArchive.delete() || !zipArchive.createNewFile())
-      {
-        return false;
-      }
+      return false;
     }
     OutputStream fileStream = null;
     VTZipOutputStream zipWriter = null;
@@ -109,20 +106,8 @@ public class VTZipUtils
     File trueZipArchive = new File(zipFilePath);
     if (!zipArchive.renameTo(trueZipArchive))
     {
-      if (trueZipArchive.delete())
-      {
-        if (!zipArchive.renameTo(trueZipArchive))
-        {
-          // zipArchive.delete();
-          return false;
-        }
-        // may treat timestamps here
-        return true;
-      }
-      else
-      {
-        return false;
-      }
+      VTFileUtils.truncateThenDeleteQuietly(trueZipArchive);
+      return zipArchive.renameTo(trueZipArchive);
     }
     // may treat timestamps here
     return true;
@@ -305,10 +290,7 @@ public class VTZipUtils
     }
     else if (!finalFile.createNewFile())
     {
-      if (!finalFile.delete() || !finalFile.createNewFile())
-      {
-        return false;
-      }
+      return false;
     }
     OutputStream fileOutputStream = null;
     try
@@ -330,22 +312,8 @@ public class VTZipUtils
     }
     if (!tempFile.renameTo(finalFile))
     {
-      if (finalFile.delete())
-      {
-        if (!tempFile.renameTo(finalFile))
-        {
-          return false;
-        }
-        else
-        {
-          // may treat timestamps here
-          return true;
-        }
-      }
-      else
-      {
-        return false;
-      }
+      VTFileUtils.truncateThenDeleteQuietly(finalFile);
+      return tempFile.renameTo(finalFile);
     }
     // may treat timestamps here
     return true;

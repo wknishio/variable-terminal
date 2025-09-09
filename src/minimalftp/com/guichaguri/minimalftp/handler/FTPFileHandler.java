@@ -400,8 +400,15 @@ public class FTPFileHandler {
               con.sendResponse(550, "Not a directory");
               return;
           }
-          fs.delete(file);
-          con.sendResponse(250, '"' + path + '"' + " Directory Deleted");
+          //fs.delete(file);
+          if (fs.delete(file))
+          {
+            con.sendResponse(250, '"' + path + '"' + " Directory Deleted");
+          }
+          else
+          {
+            con.sendResponse(451, '"' + path + '"' + " Directory Not Deleted");
+          }
         }
       };
     }
@@ -418,8 +425,14 @@ public class FTPFileHandler {
               con.sendResponse(550, "Not a file");
               return;
           }
-          fs.delete(file);
-          con.sendResponse(250, '"' + path + '"' + " File Deleted");
+          if (fs.delete(file))
+          {
+            con.sendResponse(250, '"' + path + '"' + " File Deleted");
+          }
+          else
+          {
+            con.sendResponse(451, '"' + path + '"' + " File Not Deleted");
+          }
         }
       };
     }
