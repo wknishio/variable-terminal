@@ -106,7 +106,7 @@ public class VTZipUtils
     File trueZipArchive = new File(zipFilePath);
     if (!zipArchive.renameTo(trueZipArchive))
     {
-      VTFileUtils.truncateThenDeleteQuietly(trueZipArchive);
+      VTFileUtils.truncateDeleteQuietly(trueZipArchive);
       return zipArchive.renameTo(trueZipArchive);
     }
     // may treat timestamps here
@@ -312,7 +312,7 @@ public class VTZipUtils
     }
     if (!tempFile.renameTo(finalFile))
     {
-      VTFileUtils.truncateThenDeleteQuietly(finalFile);
+      VTFileUtils.truncateDeleteQuietly(finalFile);
       return tempFile.renameTo(finalFile);
     }
     // may treat timestamps here

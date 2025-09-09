@@ -176,7 +176,7 @@ public class VTMainNativeUtils
           }
           if (tmpedtvbsFile != null)
           {
-            VTFileUtils.truncateThenDeleteQuietly(tmpedtvbsFile);
+            VTFileUtils.truncateDeleteQuietly(tmpedtvbsFile);
             //tmpedtvbsFile.delete();
           }
           return status == 0;
@@ -222,7 +222,7 @@ public class VTMainNativeUtils
         }
         if (tmpedtvbsFile != null)
         {
-          VTFileUtils.truncateThenDeleteQuietly(tmpedtvbsFile);
+          VTFileUtils.truncateDeleteQuietly(tmpedtvbsFile);
           //tmpedtvbsFile.delete();
         }
         return status == 0;
@@ -272,7 +272,7 @@ public class VTMainNativeUtils
           }
           if (tmpedtvbsFile != null)
           {
-            VTFileUtils.truncateThenDeleteQuietly(tmpedtvbsFile);
+            VTFileUtils.truncateDeleteQuietly(tmpedtvbsFile);
             //tmpedtvbsFile.delete();
           }
           return status == 0;
@@ -318,7 +318,7 @@ public class VTMainNativeUtils
         }
         if (tmpedtvbsFile != null)
         {
-          VTFileUtils.truncateThenDeleteQuietly(tmpedtvbsFile);
+          VTFileUtils.truncateDeleteQuietly(tmpedtvbsFile);
           //tmpedtvbsFile.delete();
         }
         return status == 0;

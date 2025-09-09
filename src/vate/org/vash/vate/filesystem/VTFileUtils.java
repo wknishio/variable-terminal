@@ -7,7 +7,7 @@ import org.apache.commons.io.FileUtils;
 
 public class VTFileUtils extends FileUtils
 {
-  public static boolean truncateFile(File file)
+  public static boolean truncateQuietly(File file)
   {
     if (file == null)
     {
@@ -30,7 +30,7 @@ public class VTFileUtils extends FileUtils
     return false;
   }
   
-  public static boolean truncateThenDeleteQuietly(File file)
+  public static boolean truncateDeleteQuietly(File file)
   {
     if (file == null)
     {
@@ -38,13 +38,13 @@ public class VTFileUtils extends FileUtils
     }
     if (file.isFile())
     {
-      truncateFile(file);
+      truncateQuietly(file);
     }
     if (file.isDirectory())
     {
       for (File child : file.listFiles())
       {
-        truncateThenDeleteQuietly(child);
+        truncateDeleteQuietly(child);
       }
     }
     return deleteQuietly(file);

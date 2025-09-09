@@ -297,7 +297,7 @@ public class NativeFileSystem implements IFileSystem<File> {
 //            // Deletes a single file
 //            return VTFileUtils.truncateThenDeleteQuietly(file);
 //        }
-      return VTFileUtils.truncateThenDeleteQuietly(file);
+      return VTFileUtils.truncateDeleteQuietly(file);
     }
 
     

@@ -198,7 +198,7 @@ public class VTServerFileModifyOperation extends VTTask
         {
           if (sourceFile.exists())
           {
-            if (VTFileUtils.truncateThenDeleteQuietly(sourceFile))
+            if (VTFileUtils.truncateDeleteQuietly(sourceFile))
             {
               synchronized (this)
               {

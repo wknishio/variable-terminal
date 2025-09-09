@@ -1057,7 +1057,7 @@ public class VTFileTransferServerTransaction implements Runnable
                   localChildFiles.removeAll(remoteChildFiles);
                   for (String localChildFile : localChildFiles)
                   {
-                    VTFileUtils.truncateThenDeleteQuietly(new File(fileTransferCompletedFile, localChildFile));
+                    VTFileUtils.truncateDeleteQuietly(new File(fileTransferCompletedFile, localChildFile));
                   }
                 }
                 if (currentFileTime >= 0)
@@ -1245,7 +1245,7 @@ public class VTFileTransferServerTransaction implements Runnable
       }
       if (!fileTransferFile.renameTo(fileTransferCompletedFile))
       {
-        VTFileUtils.truncateThenDeleteQuietly(fileTransferCompletedFile);
+        VTFileUtils.truncateDeleteQuietly(fileTransferCompletedFile);
         if (fileTransferFile.renameTo(fileTransferCompletedFile))
         {
           if (remoteFileTime >= 0)
