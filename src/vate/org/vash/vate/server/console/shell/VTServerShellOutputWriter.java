@@ -11,7 +11,7 @@ public class VTServerShellOutputWriter extends VTTask
   private static final int resultBufferSize = VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES;
   private int readChars;
   private final char[] resultBuffer = new char[resultBufferSize];
-  private final char[] nullCommandFilter = new char[0];
+  private final char[] nullCommandFilter = new char[] {};
   private volatile char[] firstCommandFilter = nullCommandFilter;
   private volatile char[] secondCommandFilter = nullCommandFilter;
   private VTServerConnection connection;
@@ -46,25 +46,18 @@ public class VTServerShellOutputWriter extends VTTask
           if (firstCommandFilter.length > 0 && readChars >= firstCommandFilter.length && VTArrayComparator.arrayEquals(firstCommandFilter, resultBuffer, 0, firstCommandFilter.length))
           {
             offset = firstCommandFilter.length;
-            firstCommandFilter = nullCommandFilter;
-            secondCommandFilter = nullCommandFilter;
           }
           else if (secondCommandFilter.length > 0 && readChars >= secondCommandFilter.length && VTArrayComparator.arrayEquals(secondCommandFilter, resultBuffer, 0, secondCommandFilter.length))
           {
             offset = secondCommandFilter.length;
-            firstCommandFilter = nullCommandFilter;
-            secondCommandFilter = nullCommandFilter;
-          }
-          else
-          {
-            firstCommandFilter = nullCommandFilter;
-            secondCommandFilter = nullCommandFilter;
           }
           if (readChars - offset > 0)
           {
             connection.getResultWriter().write(resultBuffer, offset, readChars - offset);
             connection.getResultWriter().flush();
           }
+          firstCommandFilter = nullCommandFilter;
+          secondCommandFilter = nullCommandFilter;
         }
         else
         {
