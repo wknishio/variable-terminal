@@ -29,8 +29,11 @@ public class VTClientRemoteConsoleReader extends VTTask
       try
       {
         //readChars = connection.getResultReader().read(resultBuffer, 0, resultBufferSize);
-        VTMainConsole.print(connection.getResultReader().readUTF());
-        VTMainConsole.flush();
+        String result = connection.getResultReader().readUTF();
+        if (result.length() > 0)
+        {
+          VTMainConsole.print(result);
+        }
       }
       catch (Throwable e)
       {

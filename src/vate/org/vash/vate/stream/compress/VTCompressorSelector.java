@@ -22,6 +22,8 @@ import io.airlift.compress.zstd.ZstdCompressor;
 import io.airlift.compress.zstd.ZstdDecompressor;
 import io.airlift.compress.zstd.ZstdHadoopInputStream;
 import io.airlift.compress.zstd.ZstdHadoopOutputStream;
+import io.airlift.compress.zstd.ZstdInputStream;
+import io.airlift.compress.zstd.ZstdOutputStream;
 import net.jpountz.lz4.LZ4BlockInputStream;
 import net.jpountz.lz4.LZ4BlockOutputStream;
 import net.jpountz.lz4.LZ4Factory;
@@ -85,12 +87,16 @@ public class VTCompressorSelector
   
   public static OutputStream createDirectZstdOutputStream(OutputStream out)
   {
-    return new VTHadoopOutputStream(new ZstdHadoopOutputStream(out, false));
+    //return new VTHadoopOutputStream(new ZstdHadoopOutputStream(out, false));
+    return new ZstdOutputStream(out, false);
+    //return new VTAirliftOutputStream(out, new ZstdCompressor());
   }
   
   public static InputStream createDirectZstdInputStream(InputStream in)
   {
-    return new VTHadoopInputStream(new ZstdHadoopInputStream(in));
+    //return new VTHadoopInputStream(new ZstdHadoopInputStream(in));
+    return new ZstdInputStream(in);
+    //return new VTAirliftInputStream(in, new ZstdDecompressor());
   }
   
   public static OutputStream createBufferedSyncFlushDefaultZlibOutputStream(OutputStream out)
@@ -136,12 +142,16 @@ public class VTCompressorSelector
   public static OutputStream createBufferedZstdOutputStream(OutputStream out)
   {
     //return new VTFlushBufferedOutputStream(new VTHadoopOutputStream(new ZstdHadoopOutputStream(out, false)), new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-    return new VTBufferedOutputStream(new VTHadoopOutputStream(new ZstdHadoopOutputStream(out, false)), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+    //return new VTBufferedOutputStream(new VTHadoopOutputStream(new ZstdHadoopOutputStream(out, false)), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+    return new VTBufferedOutputStream(new ZstdOutputStream(out, false), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+    //return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
   }
   
   public static InputStream createBufferedZstdInputStream(InputStream in)
   {
-    return new BufferedInputStream(new VTHadoopInputStream(new ZstdHadoopInputStream(in)), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
+    //return new BufferedInputStream(new VTHadoopInputStream(new ZstdHadoopInputStream(in)), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
+    return new BufferedInputStream(new ZstdInputStream(in), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
+    //return new BufferedInputStream(new VTAirliftInputStream(in, new ZstdDecompressor()), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
   }
   
   private static OutputStream createFlushBufferedSyncFlushFilteredDeflaterOutputStream(OutputStream out)

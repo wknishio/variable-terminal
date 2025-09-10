@@ -31,7 +31,7 @@ public class ZstdCompressor
     
     public ZstdCompressor()
     {
-      parameters = CompressionParameters.compute(CompressionParameters.DEFAULT_COMPRESSION_LEVEL + 1, MAX_BLOCK_SIZE);
+      parameters = CompressionParameters.compute(CompressionParameters.DEFAULT_COMPRESSION_LEVEL, MAX_BLOCK_SIZE);
       context = new CompressionContext(parameters, 0, MAX_BLOCK_SIZE);
     }
 
