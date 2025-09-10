@@ -8,7 +8,7 @@ import org.vash.vate.task.VTTask;
 
 public class VTServerShellOutputWriter extends VTTask
 {
-  private static final int resultBufferSize = VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES;
+  private static final int resultBufferSize = VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES / 2;
   private int readChars;
   private final char[] resultBuffer = new char[resultBufferSize];
   private final char[] nullCommandFilter = new char[] {};

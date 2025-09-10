@@ -151,13 +151,12 @@ public final class VTBigEndianOutputStream extends OutputStream implements DataO
   
   public final void writeData(final byte[] b, final int off, final int len) throws IOException
   {
-    byte[] data = new byte[4 + len];
-    data[0] = (byte) (len >> 24);
-    data[1] = (byte) (len >> 16);
-    data[2] = (byte) (len >> 8);
-    data[3] = (byte) len;
-    System.arraycopy(b, off, data, 4, len);
-    write(data, 0, data.length);
+    if (len < 0)
+    {
+      return;
+    }
+    writeInt(len);
+    write(b, off, len);
   }
   
   public final void writeData(final byte[] b) throws IOException
@@ -192,6 +191,10 @@ public final class VTBigEndianOutputStream extends OutputStream implements DataO
   
   public final void write(char[] buf, final int off, final int len) throws IOException
   {
+    if (len < 0)
+    {
+      return;
+    }
     byte[] utf = String.valueOf(buf, off, len).getBytes("UTF-8");
     writeData(utf);
   }
