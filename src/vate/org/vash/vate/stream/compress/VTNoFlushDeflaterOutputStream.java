@@ -28,4 +28,10 @@ public class VTNoFlushDeflaterOutputStream extends DeflaterOutputStream
     def.reset();
     out.flush();
   }
+  
+  public void close() throws IOException
+  {
+    flush();
+    out.close();
+  }
 }

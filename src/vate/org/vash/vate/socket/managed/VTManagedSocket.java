@@ -1,6 +1,7 @@
 package org.vash.vate.socket.managed;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,7 +12,6 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 
 import org.vash.vate.VTSystem;
-import org.vash.vate.stream.filter.VTBufferedOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream.VTLinkableDynamicMultiplexedOutputStream;
 
@@ -29,7 +29,7 @@ public class VTManagedSocket extends Socket implements Closeable
     this.in = connection.getInputStream(connection.getInputStreamIndexStart());
     this.out = connection.getOutputStream(connection.getOutputStreamIndexStart());
     this.input = new BufferedInputStream(in, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
-    this.output = new VTBufferedOutputStream(out, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES, true);
+    this.output = new BufferedOutputStream(out, VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
   }
   
 //  public Socket getConnectionSocket()

@@ -1,6 +1,7 @@
 package org.vash.vate.stream.compress;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -143,7 +144,7 @@ public class VTCompressorSelector
   {
     //return new VTFlushBufferedOutputStream(new VTHadoopOutputStream(new ZstdHadoopOutputStream(out, false)), new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
     //return new VTBufferedOutputStream(new VTHadoopOutputStream(new ZstdHadoopOutputStream(out, false)), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
-    return new VTBufferedOutputStream(new ZstdOutputStream(out, false), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+    return new BufferedOutputStream(new ZstdOutputStream(out, false), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
     //return new VTBufferedOutputStream(new VTAirliftOutputStream(out, new ZstdCompressor()), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
   }
   
@@ -163,7 +164,7 @@ public class VTCompressorSelector
       javaDeflater.setLevel(Deflater.BEST_SPEED);
       VTSyncFlushDeflaterOutputStream javaDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(out, javaDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
       //return new VTFlushBufferedOutputStream(javaDeflaterOutputStream, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-      return new VTBufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+      return new BufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
     }
     catch (Throwable t)
     {
@@ -173,7 +174,7 @@ public class VTCompressorSelector
         jzlibDeflater.setFlushMode(JZlib.Z_SYNC_FLUSH);
         jzlibDeflater.getZStream().deflateParams(JZlib.Z_BEST_SPEED, JZlib.Z_FILTERED);
         //return new VTFlushBufferedOutputStream(jzlibDeflater, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-        return new VTBufferedOutputStream(jzlibDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+        return new BufferedOutputStream(jzlibDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
       }
       catch (Throwable e)
       {
@@ -196,7 +197,7 @@ public class VTCompressorSelector
       javaDeflater.setLevel(Deflater.BEST_SPEED);
       VTSyncFlushDeflaterOutputStream javaDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(out, javaDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
       //return new VTFlushBufferedOutputStream(javaDeflaterOutputStream, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-      return new VTBufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+      return new BufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
     }
     catch (Throwable t)
     {
@@ -206,7 +207,7 @@ public class VTCompressorSelector
         jzlibDeflater.setFlushMode(JZlib.Z_SYNC_FLUSH);
         jzlibDeflater.getZStream().deflateParams(JZlib.Z_BEST_SPEED, JZlib.Z_DEFAULT_STRATEGY);
         //return new VTFlushBufferedOutputStream(jzlibDeflater, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-        return new VTBufferedOutputStream(jzlibDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+        return new BufferedOutputStream(jzlibDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
       }
       catch (Throwable e)
       {
@@ -229,7 +230,7 @@ public class VTCompressorSelector
       javaDeflater.setLevel(Deflater.BEST_SPEED);
       VTSyncFlushDeflaterOutputStream javaDeflaterOutputStream = new VTSyncFlushDeflaterOutputStream(out, javaDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
       //return new VTFlushBufferedOutputStream(javaDeflaterOutputStream, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-      return new VTBufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+      return new BufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
     }
     catch (Throwable t)
     {
@@ -239,7 +240,7 @@ public class VTCompressorSelector
         jzlibDeflater.setFlushMode(JZlib.Z_SYNC_FLUSH);
         jzlibDeflater.getZStream().deflateParams(JZlib.Z_BEST_SPEED, JZlib.Z_HUFFMAN_ONLY);
         //return new VTFlushBufferedOutputStream(jzlibDeflater, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-        return new VTBufferedOutputStream(jzlibDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+        return new BufferedOutputStream(jzlibDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
       }
       catch (Throwable e)
       {
@@ -278,7 +279,7 @@ public class VTCompressorSelector
       javaDeflater.setLevel(Deflater.BEST_SPEED);
       VTNoFlushDeflaterOutputStream javaDeflaterOutputStream = new VTNoFlushDeflaterOutputStream(out, javaDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
       //return new VTFlushBufferedOutputStream(javaDeflaterOutputStream, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-      return new VTBufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+      return new BufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
     }
     catch (Throwable t)
     {
@@ -300,7 +301,7 @@ public class VTCompressorSelector
       javaDeflater.setLevel(Deflater.BEST_SPEED);
       VTNoFlushDeflaterOutputStream javaDeflaterOutputStream = new VTNoFlushDeflaterOutputStream(out, javaDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
       //return new VTFlushBufferedOutputStream(javaDeflaterOutputStream, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-      return new VTBufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+      return new BufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
     }
     catch (Throwable t)
     {
@@ -322,7 +323,7 @@ public class VTCompressorSelector
       javaDeflater.setLevel(Deflater.BEST_SPEED);
       VTNoFlushDeflaterOutputStream javaDeflaterOutputStream = new VTNoFlushDeflaterOutputStream(out, javaDeflater, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
       //return new VTFlushBufferedOutputStream(javaDeflaterOutputStream, new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-      return new VTBufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+      return new BufferedOutputStream(javaDeflaterOutputStream, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
     }
     catch (Throwable t)
     {
@@ -363,7 +364,7 @@ public class VTCompressorSelector
   public static OutputStream createBufferedLz4OutputStream(OutputStream out)
   {
     //return new VTFlushBufferedOutputStream(new LZ4BlockOutputStream(out, VT.VT_COMPRESSION_BUFFER_SIZE_BYTES, LZ4Factory.safeInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-    return new VTBufferedOutputStream(new LZ4BlockOutputStream(out, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, LZ4Factory.safeInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+    return new BufferedOutputStream(new LZ4BlockOutputStream(out, VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, LZ4Factory.safeInstance().fastCompressor(), XXHashFactory.disabledInstance().newStreamingHash32(0x9747b28c).asChecksum(), true), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
   }
   
   public static InputStream createBufferedLz4InputStream(InputStream in)
@@ -376,7 +377,7 @@ public class VTCompressorSelector
     try
     {
       //return new VTFlushBufferedOutputStream(new SnappyFramedOutputStream(out, false), new VTByteArrayOutputStream(VT.VT_COMPRESSION_BUFFER_SIZE_BYTES));
-      return new VTBufferedOutputStream(new SnappyFramedOutputStream(out, false), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES, false);
+      return new BufferedOutputStream(new SnappyFramedOutputStream(out, false), VTSystem.VT_COMPRESSION_BUFFER_SIZE_BYTES);
     }
     catch (Throwable t)
     {

@@ -1,6 +1,7 @@
 package org.vash.vate.socket.managed;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -18,7 +19,6 @@ import org.vash.vate.server.VTServer;
 import org.vash.vate.server.connection.VTServerConnection;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.server.session.VTServerSessionListener;
-import org.vash.vate.stream.filter.VTBufferedOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingOutputStream;
 import org.vash.vate.stream.multiplex.VTLinkableDynamicMultiplexingInputStream.VTLinkableDynamicMultiplexedInputStream;
@@ -159,7 +159,7 @@ public class VTManagedServerSocket
     
     public OutputStream createBufferedOutputStream(Object link)
     {
-      return new VTBufferedOutputStream(getOutputStream(link), VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES, true);
+      return new BufferedOutputStream(getOutputStream(link), VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
     }
     
     public InputStream createBufferedInputStream(int type, Object link)
@@ -169,7 +169,7 @@ public class VTManagedServerSocket
     
     public OutputStream createBufferedOutputStream(int type, Object link)
     {
-      return new VTBufferedOutputStream(getOutputStream(type, link), VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES, true);
+      return new BufferedOutputStream(getOutputStream(type, link), VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
     }
     
     public void releaseInputStream(VTLinkableDynamicMultiplexedInputStream stream)

@@ -81,4 +81,9 @@ public class VTNoFlushInflaterInputStream extends InflaterInputStream
       throw new ZipException(s != null ? s : "Invalid ZLIB data format");
     }
   }
+  
+  public void close() throws IOException
+  {
+    in.close();
+  }
 }
