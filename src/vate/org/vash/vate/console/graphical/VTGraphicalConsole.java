@@ -18,6 +18,7 @@ import java.util.TooManyListenersException;
 
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
+import org.vash.vate.VTSystem;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleDropTargetListener;
 import org.vash.vate.console.graphical.listener.VTGraphicalConsoleKeyListener;
@@ -2318,7 +2319,7 @@ public class VTGraphicalConsole extends VTConsole
     {
       try
       {
-        readLineLog = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path, true), "UTF-8"));
+        readLineLog = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path, true), VTSystem.getCharsetEncoder("UTF-8")));
         return true;
       }
       catch (Throwable t)

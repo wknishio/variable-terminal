@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 
+import org.vash.vate.VTSystem;
+
 import com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTFileRuntimeLauncher
@@ -60,7 +62,7 @@ public class VTFileRuntimeLauncher
     BufferedReader input = null;
     try
     {
-      input = new BufferedReader(new InputStreamReader(System.in));
+      input = new BufferedReader(new InputStreamReader(System.in, VTSystem.getCharsetDecoder(null)));
       String command = "";
       while (command != null)
       {

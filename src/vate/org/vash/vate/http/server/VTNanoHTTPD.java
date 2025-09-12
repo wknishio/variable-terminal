@@ -13,7 +13,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -21,6 +20,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
+import org.vash.vate.VTSystem;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.parser.VTConfigurationProperties;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
@@ -348,7 +348,7 @@ public class VTNanoHTTPD
       final int bufsize = theBufferSize;
       final byte[] buf = new byte[bufsize];
       final VTByteArrayInputStream bis = new VTByteArrayInputStream(buf, 0, bufsize);
-      final BufferedReader hin = new BufferedReader( new InputStreamReader( bis, Charset.forName("ISO-8859-1") ));
+      final BufferedReader hin = new BufferedReader( new InputStreamReader( bis, VTSystem.getCharsetDecoder("ISO-8859-1")));
       final Properties preambles = new VTConfigurationProperties();
       final Properties parameters = new VTConfigurationProperties();
       final Properties headers = new VTConfigurationProperties();
@@ -479,7 +479,7 @@ public class VTNanoHTTPD
           {
             // Create a BufferedReader for easily reading it as string.
             ByteArrayInputStream bin = new ByteArrayInputStream(fbuf);
-            BufferedReader in = new BufferedReader( new InputStreamReader(bin));
+            BufferedReader in = new BufferedReader( new InputStreamReader(bin, VTSystem.getCharsetDecoder("ISO-8859-1")));
             
             String contentType = "";
             String contentTypeHeader = findProperty(headers, "Content-Type");

@@ -5,7 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
-import java.nio.charset.Charset;
+
+import org.vash.vate.VTSystem;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.runtime.VTRuntimeExit;
 import org.vash.vate.server.VTServer;
@@ -113,7 +114,7 @@ public class VTServerLocalConsoleReader extends VTTask
   }
   
   @SuppressWarnings("unused")
-  private void executeFileScript(File script, Charset charset)
+  private void executeFileScript(File script, String charsetName)
   {
     if (script == null || !script.exists())
     {
@@ -123,7 +124,7 @@ public class VTServerLocalConsoleReader extends VTTask
     BufferedReader reader = null;
     try
     {
-      reader = new BufferedReader(new InputStreamReader(new FileInputStream(script), charset));
+      reader = new BufferedReader(new InputStreamReader(new FileInputStream(script), VTSystem.getCharsetDecoder(charsetName)));
       String line = "";
       while (!isStopped() && (line = reader.readLine()) != null)
       {

@@ -2949,7 +2949,7 @@ public class VTLanternaConsole extends VTConsole
     {
       try
       {
-        logReadLine = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path, true), "UTF-8"));
+        logReadLine = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path, true), VTSystem.getCharsetEncoder("UTF-8")));
         return true;
       }
       catch (Throwable t)

@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.StringReader;
-import java.nio.charset.Charset;
 
 import org.vash.vate.VTSystem;
 import org.vash.vate.client.connection.VTClientConnection;
@@ -72,17 +71,17 @@ public class VTClientRemoteConsoleWriter extends VTTask
     VTPipedInputStream in = new VTPipedInputStream(VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES);
     VTPipedOutputStream out = new VTPipedOutputStream(in);
     // source = new VTInterruptibleInputStream(in, session.getSessionThreads());
-    sourceReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
+    sourceReader = new BufferedReader(new InputStreamReader(in, VTSystem.getCharsetDecoder("UTF-8")));
     return out;
   }
   
-  public void setCommandInputStream(InputStream in, Charset charset)
+  public void setCommandInputStream(InputStream in, String charsetName)
   {
     if (sourceReader != null)
     {
       return;
     }
-    sourceReader = new BufferedReader(new InputStreamReader(in, charset));
+    sourceReader = new BufferedReader(new InputStreamReader(in, VTSystem.getCharsetDecoder(charsetName)));
   }
   
   public void task()
@@ -223,27 +222,27 @@ public class VTClientRemoteConsoleWriter extends VTTask
     }
   }
   
-  public void executeFileScriptsSpaces(String scriptFiles, Charset charset, boolean echo)
+  public void executeFileScriptsSpaces(String scriptFiles, String charsetName, boolean echo)
   {
     // System.out.println("scripts:" + scripts);
     String[] scriptFilesArray = scriptFiles.split(" ");
     for (String scriptFile : scriptFilesArray)
     {
-      executeFileScriptsCommas(scriptFile, charset, echo);
+      executeFileScriptsCommas(scriptFile, charsetName, echo);
     }
   }
   
-  public void executeFileScriptsCommas(String scriptFiles, Charset charset, boolean echo)
+  public void executeFileScriptsCommas(String scriptFiles, String charsetName, boolean echo)
   {
     // System.out.println("scripts:" + scripts);
     String[] scriptFilesArray = scriptFiles.split(";");
     for (String scriptFile : scriptFilesArray)
     {
-      executeFileScript(new File(scriptFile), charset, echo);
+      executeFileScript(new File(scriptFile), charsetName, echo);
     }
   }
   
-  private void executeFileScript(File script, Charset charset, boolean echo)
+  private void executeFileScript(File script, String charsetName, boolean echo)
   {
     if (script == null || !script.exists())
     {
@@ -253,7 +252,7 @@ public class VTClientRemoteConsoleWriter extends VTTask
     BufferedReader reader = null;
     try
     {
-      reader = new BufferedReader(new InputStreamReader(new FileInputStream(script), charset));
+      reader = new BufferedReader(new InputStreamReader(new FileInputStream(script), VTSystem.getCharsetDecoder(charsetName)));
       String line = "";
       while (!isStopped() && (line = reader.readLine()) != null)
       {

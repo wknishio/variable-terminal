@@ -9,6 +9,8 @@ import java.io.PrintStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CharsetEncoder;
 import java.util.Collection;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
@@ -45,7 +47,7 @@ public class VTShellProcessor
   //private Reader shellErrorReader;
   private Writer shellCommandExecutor;
   
-  private Charset shellCharset;
+  private String shellCharsetName;
   
   private ExecutorService executorService;
   
@@ -86,6 +88,20 @@ public class VTShellProcessor
   
   public boolean startShell() throws Throwable
   {
+    CharsetEncoder encoder = null;
+    CharsetDecoder decoder = null;
+    
+    if (shellCharsetName != null)
+    {
+      encoder = VTSystem.getCharsetEncoder(shellCharsetName);
+      decoder = VTSystem.getCharsetDecoder(shellCharsetName);
+    }
+    else
+    {
+      encoder = VTSystem.getCharsetEncoder(null);
+      decoder = VTSystem.getCharsetDecoder(null);
+    }
+    
     if (shellType == SHELL_TYPE_PROCESS)
     {
       shellProcess.start();
@@ -152,7 +168,7 @@ public class VTShellProcessor
       
       shellInputStream = pipeIn1;
       shellOutputStream = new VTAutoFlushOutputStream(pipeOut2);
-      final InputStreamReader in = new InputStreamReader(pipeIn2);
+      final InputStreamReader in = new InputStreamReader(pipeIn2, decoder);
       final PrintStream out = new PrintStream(new VTAutoFlushOutputStream(pipeOut1));
       
       closeables.clear();
@@ -168,18 +184,9 @@ public class VTShellProcessor
       shellThread = executorService.submit(beanshell);
     }
     
-    if (shellCharset != null)
-    {
-      shellCommandExecutor = new OutputStreamWriter(shellOutputStream, shellCharset);
-      shellOutputReader = new InputStreamReader(shellInputStream, shellCharset);
-      return true;
-    }
-    else
-    {
-      shellCommandExecutor = new OutputStreamWriter(shellOutputStream);
-      shellOutputReader = new InputStreamReader(shellInputStream);
-      return true;
-    }
+    shellCommandExecutor = new OutputStreamWriter(shellOutputStream, encoder);
+    shellOutputReader = new InputStreamReader(shellInputStream, decoder);
+    return true;
   }
   
   @SuppressWarnings("deprecation")
@@ -300,27 +307,26 @@ public class VTShellProcessor
   {
     if (shellEncoding == null)
     {
-      shellCharset = null;
-      return true;
+      return false;
     }
     try
     {
-      shellCharset = Charset.forName(shellEncoding);
-      return true;
+      if (Charset.forName(shellEncoding) != null)
+      {
+        shellCharsetName = shellEncoding;
+        return true;
+      }
     }
-    catch (Throwable e)
+    catch (Throwable t)
     {
       
     }
+    shellCharsetName = null;
     return false;
   }
   
   public String getShellEncoding()
   {
-    if (shellCharset != null)
-    {
-      return shellCharset.name();
-    }
-    return null;
+    return shellCharsetName;
   }
 }

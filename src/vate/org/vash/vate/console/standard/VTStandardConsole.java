@@ -16,6 +16,7 @@ import java.io.PrintStream;
 // import java.nio.channels.ClosedByInterruptException;
 import java.util.Locale;
 import org.vash.vate.console.VTConsoleBooleanToggleNotify;
+import org.vash.vate.VTSystem;
 import org.vash.vate.console.VTConsole;
 import org.vash.vate.nativeutils.VTMainNativeUtils;
 import org.vash.vate.reflection.VTReflectionUtils;
@@ -94,8 +95,8 @@ public class VTStandardConsole extends VTConsole
     
     inputStream = new VTStandardConsoleInterruptibleInputStream();
     
-    standardTerminalReader = new BufferedReader(new InputStreamReader(inputStream));
-    standardTerminalWriter = new BufferedWriter(new OutputStreamWriter(output));
+    standardTerminalReader = new BufferedReader(new InputStreamReader(inputStream, VTSystem.getCharsetDecoder(null)));
+    standardTerminalWriter = new BufferedWriter(new OutputStreamWriter(output, VTSystem.getCharsetEncoder(null)));
     
     colorCode = new StringBuilder();
     // jlineConsoleSupport = false;
@@ -155,42 +156,6 @@ public class VTStandardConsole extends VTConsole
       return "";
     }
     // String line = null;
-    /*
-     * if (jlineConsoleSupport) { if (echo) { try { line =
-     * jlineConsole.readLine(); } catch (Throwable e) { //e.printStackTrace(); }
-     * } else { try { line = jlineConsole.readLine('\0'); } catch (Throwable e)
-     * { //e.printStackTrace(); } } }
-     */
-    /*
-     * if (systemConsoleSupport) { if (!echo) { try { //return
-     * console.getClass().getMethod("readPassword").invoke(console).toString ();
-     * line = new String(systemConsole.readPassword()); } catch (Throwable e) {
-     * //e.printStackTrace(); } } else { try { //return
-     * console.getClass().getMethod("readPassword").invoke(console).toString ();
-     * line = systemConsole.readLine(); } catch (Throwable e) {
-     * //e.printStackTrace(); } } }
-     */
-    /*
-     * if (line != null) { return line; } else { try { line =
-     * standardTerminalReader.readLine(); } catch (ClosedByInterruptException e)
-     * { //e.printStackTrace(); Thread.interrupted(); //standardTerminalReader =
-     * new BufferedReader(new InputStreamReader(Channels.newInputStream((new
-     * FileInputStream(FileDescriptor.in)).getChannel()))); throw new
-     * InterruptedException(e.getMessage()); } catch (IOException e) {
-     * //e.printStackTrace(); //throw new InterruptedException(e.getMessage());
-     * //standardTerminalReader = new BufferedReader(new
-     * InputStreamReader(Channels.newInputStream((new
-     * FileInputStream(FileDescriptor.in)).getChannel())));
-     * //e.printStackTrace(); return ""; } catch (Throwable e) {
-     * //e.printStackTrace(); //standardTerminalReader = new BufferedReader(new
-     * InputStreamReader(Channels.newInputStream((new
-     * FileInputStream(FileDescriptor.in)).getChannel())));
-     * //e.printStackTrace(); return ""; } catch (Throwable e) {
-     * //e.printStackTrace(); //standardTerminalReader = new BufferedReader(new
-     * InputStreamReader(Channels.newInputStream((new
-     * FileInputStream(FileDescriptor.in)).getChannel())));
-     * //e.printStackTrace(); return ""; } return line; }
-     */
   }
   
   public void print(String str)
@@ -919,7 +884,7 @@ public class VTStandardConsole extends VTConsole
     {
       try
       {
-        readLineLog = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path, true), "UTF-8"));
+        readLineLog = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path, true), VTSystem.getCharsetEncoder("UTF-8")));
         return true;
       }
       catch (Throwable t)

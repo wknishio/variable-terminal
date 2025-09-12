@@ -7,6 +7,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 
+import org.vash.vate.VTSystem;
+
 public class VTPropertiesBuilder
 {
   public static VTConfigurationProperties loadProperties(InputStream is) throws IOException
@@ -23,7 +25,7 @@ public class VTPropertiesBuilder
       return properties;
     }
     StringBuilder sb = new StringBuilder();
-    InputStreamReader isr = new InputStreamReader(in, encoding);
+    InputStreamReader isr = new InputStreamReader(in, VTSystem.getCharsetDecoder(encoding));
     char[] buf = new char[1024];
     while (true)
     {

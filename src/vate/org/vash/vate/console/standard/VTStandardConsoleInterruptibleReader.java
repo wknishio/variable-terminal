@@ -11,6 +11,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
+
+import org.vash.vate.VTSystem;
 import org.vash.vate.console.VTMainConsole;
 
 public class VTStandardConsoleInterruptibleReader implements Runnable
@@ -41,7 +43,7 @@ public class VTStandardConsoleInterruptibleReader implements Runnable
         return created;
       }
     });
-    standardTerminalReader = new BufferedReader(new InputStreamReader(new FileInputStream(FileDescriptor.in)));
+    standardTerminalReader = new BufferedReader(new InputStreamReader(new FileInputStream(FileDescriptor.in), VTSystem.getCharsetDecoder(null)));
     try
     {
       systemConsoleObject = VTMainConsole.getIOConsole();

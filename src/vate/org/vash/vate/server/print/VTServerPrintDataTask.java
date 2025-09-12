@@ -36,6 +36,7 @@ import javax.print.attribute.PrintRequestAttributeSet;
 import javax.print.event.PrintJobEvent;
 import javax.print.event.PrintJobListener;
 
+import org.vash.vate.VTSystem;
 import org.vash.vate.server.session.VTServerSession;
 import org.vash.vate.task.VTTask;
 
@@ -446,11 +447,11 @@ public class VTServerPrintDataTask extends VTTask
           {
             if (encoding == FILE_ENCODING_TEXT_UTF8)
             {
-              fileReader = new BufferedReader(new InputStreamReader(stream, "UTF-8"));
+              fileReader = new BufferedReader(new InputStreamReader(stream, VTSystem.getCharsetDecoder("UTF-8")));
             }
             else
             {
-              fileReader = new BufferedReader(new InputStreamReader(stream));
+              fileReader = new BufferedReader(new InputStreamReader(stream, VTSystem.getCharsetDecoder(null)));
             }
             String fileLine = null;
             
