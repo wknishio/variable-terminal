@@ -301,7 +301,7 @@ public final class VTDirectRobot
     // (1.5)
     try
     {
-      robotPeerObject.getClass().getDeclaredMethod("dispose", new Class<?>[0]).invoke(robotPeerObject, (Object) null);
+      robotPeerObject.getClass().getDeclaredMethod("dispose").invoke(robotPeerObject);
     }
     catch (Throwable t)
     {

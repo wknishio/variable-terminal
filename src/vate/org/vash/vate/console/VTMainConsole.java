@@ -45,8 +45,8 @@ public final class VTMainConsole
       {
         try
         {
-          Method isTermninalMethod = consoleObject.getClass().getDeclaredMethod("isTerminal");
-          Object isTerminal = isTermninalMethod.invoke(consoleObject);
+          Method isTerminalMethod = consoleObject.getClass().getDeclaredMethod("isTerminal");
+          Object isTerminal = isTerminalMethod.invoke(consoleObject);
           if (isTerminal instanceof Boolean)
           {
             return (Boolean) isTerminal;
