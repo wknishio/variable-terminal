@@ -219,12 +219,13 @@ public class FTPFileHandler {
       {
         public void run(String parms) throws IOException
         {
+          long index = start;
+          start = 0;
           String path = parms;
           Object file = getFile(path);
-          OutputStream fileStream = fs.writeFile(file, start);
+          OutputStream fileStream = fs.writeFile(file, index);
           con.sendResponse(150, "Receiving a file stream for " + path);
           receiveStream(fileStream);
-          start = 0;
         }
       };
     }
@@ -235,6 +236,7 @@ public class FTPFileHandler {
       {
         public void run(String parms) throws IOException
         {
+          start = 0;
           String[] args = parms.split("\\s+");
           Object file = null;
           String ext = ".tmp";
@@ -263,9 +265,23 @@ public class FTPFileHandler {
       {
         public void run(String parms) throws IOException
         {
+          long index = start;
+          start = 0;
           String path = parms;
+          long size = 0;
+          
           Object file = getFile(path);
-          OutputStream outputStream = fs.writeFile(file, fs.exists(file) ? fs.getSize(file) : 0);
+          
+          if (fs.exists(file))
+          {
+            size = fs.getSize(file);
+          }
+          if (index <= 0)
+          {
+            index = size;
+          }
+          
+          OutputStream outputStream = fs.writeFile(file, index);
           con.sendResponse(150, "Receiving a file stream for " + path);
           receiveStream(outputStream);
         }
@@ -278,13 +294,13 @@ public class FTPFileHandler {
       {
         public void run(String parms) throws IOException
         {
+          long index = start;
+          start = 0;
           String path = parms;
           Object file = getFile(path);
-
-          InputStream inputStream = Utils.readFileSystem(fs, file, start, con.isAsciiMode(), con.getBufferSize());
+          InputStream inputStream = Utils.readFileSystem(fs, file, index, con.isAsciiMode(), con.getBufferSize());
           con.sendResponse(150, "Sending the file stream for " + path + " (" + fs.getSize(file) + " bytes)");
           sendStream(inputStream);
-          start = 0;
         }
       };
     }
