@@ -15,13 +15,10 @@ public class VTFileUtils extends FileUtils
     }
     try
     {
-      if (file.isFile())
-      {
-        RandomAccessFile raf = new RandomAccessFile(file, "rw");
-        raf.setLength(0);
-        raf.close();
-        return true;
-      }
+      RandomAccessFile raf = new RandomAccessFile(file, "rw");
+      raf.setLength(0);
+      raf.close();
+      return true;
     }
     catch (Throwable t)
     {
