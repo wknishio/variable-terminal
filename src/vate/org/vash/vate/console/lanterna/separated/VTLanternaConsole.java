@@ -153,7 +153,7 @@ public class VTLanternaConsole extends VTConsole
   private VTConsoleBooleanToggleNotify notifyReplaceInput;
   private PrintStream logOutput = null;
   private BufferedWriter logReadLine = null;
-  private Color lastLineBackgroundDefault = new Color(85, 85, 85);
+  private Color lastLineBackgroundDefault = new Color(94, 94, 94);
   private PrintStream doubledOutput;
   private PrintStream doubledError;
   private final VTLanternaConsole console;
@@ -620,7 +620,7 @@ public class VTLanternaConsole extends VTConsole
     AWTTerminalFontConfiguration.setBaseFontSize(VTFontManager.BASE_FONT_SIZE_MONOSPACED);
     AWTTerminalFontConfiguration.setFontScalingFactor(VTFontManager.FONT_SCALING_FACTOR_MONOSPACED);
     DefaultTerminalFactory factory = new DefaultTerminalFactory();
-    factory.setLastLineBackground(new java.awt.Color(85, 85, 85));
+    factory.setLastLineBackground(new java.awt.Color(94, 94, 94));
     factory.setForceAWTOverSwing(true);
     // factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
     factory.setInitialTerminalSize(new TerminalSize(consoleOutputColumns, consoleOutputLines + consoleInputLines));
@@ -642,7 +642,7 @@ public class VTLanternaConsole extends VTConsole
     // factory.setForceTextTerminal(true);
     if (graphical && frame != null)
     {
-      terminal = factory.createAWTTerminalPanel(frame, new java.awt.Color(85, 85, 85));
+      terminal = factory.createAWTTerminalPanel(frame, new java.awt.Color(94, 94, 94));
     }
     else
     {
