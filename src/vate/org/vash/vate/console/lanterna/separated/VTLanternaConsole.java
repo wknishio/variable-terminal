@@ -88,17 +88,17 @@ public class VTLanternaConsole extends VTConsole
   new java.awt.Color(0, 0, 0), //normalBlack
   new java.awt.Color(94, 94, 94), //brightBlack
   new java.awt.Color(188, 0, 0), //normalRed
-  new java.awt.Color(255, 94, 94), //brightRed
+  new java.awt.Color(255, 47, 47), //brightRed
   new java.awt.Color(0, 188, 0), //normalGreen
-  new java.awt.Color(94, 255, 94), //brightGreen
+  new java.awt.Color(47, 255, 47), //brightGreen
   new java.awt.Color(188, 188, 0), //normalYellow
-  new java.awt.Color(255, 255, 94), //brightYellow
+  new java.awt.Color(255, 255, 47), //brightYellow
   new java.awt.Color(0, 0, 188), //normalBlue
-  new java.awt.Color(94, 94, 255), //brightBlue
+  new java.awt.Color(47, 47, 255), //brightBlue
   new java.awt.Color(188, 0, 188), //normalMagenta
-  new java.awt.Color(255, 94, 255), //brightMagenta
+  new java.awt.Color(255, 47, 255), //brightMagenta
   new java.awt.Color(0, 188, 188), //normalCyan
-  new java.awt.Color(94, 255, 255), //brightCyan
+  new java.awt.Color(47, 255, 255), //brightCyan
   new java.awt.Color(188, 188, 188), //normalWhite
   new java.awt.Color(255, 255, 255)); //brightWhite
   
