@@ -3598,152 +3598,43 @@ public final class VTAWTScreenCaptureProvider
       // Center area
       x = pointerLocation.x;
       y = pointerLocation.y;
+      invertPixel(image, area, x + 2, y);
+      invertPixel(image, area, x + 3, y);
+      invertPixel(image, area, x + 4, y);
+      invertPixel(image, area, x - 2, y);
+      invertPixel(image, area, x - 3, y);
+      invertPixel(image, area, x - 4, y);
+      invertPixel(image, area, x, y + 2);
+      invertPixel(image, area, x, y + 3);
+      invertPixel(image, area, x, y + 4);
+      invertPixel(image, area, x, y - 2);
+      invertPixel(image, area, x, y - 3);
+      invertPixel(image, area, x, y - 4);
       
-      if (area.contains(x + 2, y))
-      {
-        image.setRGB(x + 2, y, (image.getRGB(x + 2, y) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 3, y))
-      {
-        image.setRGB(x + 3, y, (image.getRGB(x + 3, y) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 4, y))
-      {
-        image.setRGB(x + 4, y, (image.getRGB(x + 4, y) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 2, y))
-      {
-        image.setRGB(x - 2, y, (image.getRGB(x - 2, y) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 3, y))
-      {
-        image.setRGB(x - 3, y, (image.getRGB(x - 3, y) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 4, y))
-      {
-        image.setRGB(x - 4, y, (image.getRGB(x - 4, y) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x, y + 2))
-      {
-        image.setRGB(x, y + 2, (image.getRGB(x, y + 2) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x, y + 3))
-      {
-        image.setRGB(x, y + 3, (image.getRGB(x, y + 3) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x, y + 4))
-      {
-        image.setRGB(x, y + 4, (image.getRGB(x, y + 4) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x, y - 2))
-      {
-        image.setRGB(x, y - 2, (image.getRGB(x, y - 2) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x, y - 3))
-      {
-        image.setRGB(x, y - 3, (image.getRGB(x, y - 3) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x, y - 4))
-      {
-        image.setRGB(x, y - 4, (image.getRGB(x, y - 4) ^ RGB888_XOR_MASK));
-      }
-      
-      if (area.contains(x + 2, y + 1))
-      {
-        image.setRGB(x + 2, y + 1, (image.getRGB(x + 2, y + 1) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 3, y + 1))
-      {
-        image.setRGB(x + 3, y + 1, (image.getRGB(x + 3, y + 1) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 4, y + 1))
-      {
-        image.setRGB(x + 4, y + 1, (image.getRGB(x + 4, y + 1) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 2, y - 1))
-      {
-        image.setRGB(x + 2, y - 1, (image.getRGB(x + 2, y - 1) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 3, y - 1))
-      {
-        image.setRGB(x + 3, y - 1, (image.getRGB(x + 3, y - 1) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 4, y - 1))
-      {
-        image.setRGB(x + 4, y - 1, (image.getRGB(x + 4, y - 1) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 2, y + 1))
-      {
-        image.setRGB(x - 2, y + 1, (image.getRGB(x - 2, y + 1) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 3, y + 1))
-      {
-        image.setRGB(x - 3, y + 1, (image.getRGB(x - 3, y + 1) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 4, y + 1))
-      {
-        image.setRGB(x - 4, y + 1, (image.getRGB(x - 4, y + 1) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 2, y - 1))
-      {
-        image.setRGB(x - 2, y - 1, (image.getRGB(x - 2, y - 1) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 3, y - 1))
-      {
-        image.setRGB(x - 3, y - 1, (image.getRGB(x - 3, y - 1) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 4, y - 1))
-      {
-        image.setRGB(x - 4, y - 1, (image.getRGB(x - 4, y - 1) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 1, y + 2))
-      {
-        image.setRGB(x + 1, y + 2, (image.getRGB(x + 1, y + 2) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 1, y + 3))
-      {
-        image.setRGB(x + 1, y + 3, (image.getRGB(x + 1, y + 3) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 1, y + 4))
-      {
-        image.setRGB(x + 1, y + 4, (image.getRGB(x + 1, y + 4) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 1, y - 2))
-      {
-        image.setRGB(x + 1, y - 2, (image.getRGB(x + 1, y - 2) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 1, y - 3))
-      {
-        image.setRGB(x + 1, y - 3, (image.getRGB(x + 1, y - 3) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 1, y - 4))
-      {
-        image.setRGB(x + 1, y - 4, (image.getRGB(x + 1, y - 4) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 1, y + 2))
-      {
-        image.setRGB(x - 1, y + 2, (image.getRGB(x - 1, y + 2) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 1, y + 3))
-      {
-        image.setRGB(x - 1, y + 3, (image.getRGB(x - 1, y + 3) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 1, y + 4))
-      {
-        image.setRGB(x - 1, y + 4, (image.getRGB(x - 1, y + 4) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 1, y - 2))
-      {
-        image.setRGB(x - 1, y - 2, (image.getRGB(x - 1, y - 2) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 1, y - 3))
-      {
-        image.setRGB(x - 1, y - 3, (image.getRGB(x - 1, y - 3) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 1, y - 4))
-      {
-        image.setRGB(x - 1, y - 4, (image.getRGB(x - 1, y - 4) ^ RGB888_XOR_MASK));
-      }
+      invertPixel(image, area, x + 2, y + 1);
+      invertPixel(image, area, x + 3, y + 1);
+      invertPixel(image, area, x + 4, y + 1);
+      invertPixel(image, area, x + 2, y - 1);
+      invertPixel(image, area, x + 3, y - 1);
+      invertPixel(image, area, x + 4, y - 1);
+      invertPixel(image, area, x - 2, y + 1);
+      invertPixel(image, area, x - 3, y + 1);
+      invertPixel(image, area, x - 4, y + 1);
+      invertPixel(image, area, x - 2, y - 1);
+      invertPixel(image, area, x - 3, y - 1);
+      invertPixel(image, area, x - 4, y - 1);
+      invertPixel(image, area, x + 1, y + 2);
+      invertPixel(image, area, x + 1, y + 3);
+      invertPixel(image, area, x + 1, y + 4);
+      invertPixel(image, area, x + 1, y - 2);
+      invertPixel(image, area, x + 1, y - 3);
+      invertPixel(image, area, x + 1, y - 4);
+      invertPixel(image, area, x - 1, y + 2);
+      invertPixel(image, area, x - 1, y + 3);
+      invertPixel(image, area, x - 1, y + 4);
+      invertPixel(image, area, x - 1, y - 2);
+      invertPixel(image, area, x - 1, y - 3);
+      invertPixel(image, area, x - 1, y - 4);
       
       if (o > 24)
       {
@@ -3757,86 +3648,50 @@ public final class VTAWTScreenCaptureProvider
       // First quadrant
       x = pointerLocation.x - 2;
       y = pointerLocation.y + 2;
-      if (area.contains(x, y))
+      invertPixel(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+        invertPixel(image, area, x - m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y + m);
       }
       // Second quadrant
       x = pointerLocation.x + 2;
       y = pointerLocation.y + 2;
-      if (area.contains(x, y))
+      invertPixel(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+        invertPixel(image, area, x + m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y + m);
       }
       // Third quadrant
       x = pointerLocation.x + 2;
       y = pointerLocation.y - 2;
-      if (area.contains(x, y))
+      invertPixel(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+        invertPixel(image, area, x + m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y - m);
       }
       // Fourth quadrant
       x = pointerLocation.x - 2;
       y = pointerLocation.y - 2;
-      if (area.contains(x, y))
+      invertPixel(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+        invertPixel(image, area, x - m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y - m);
       }
       
       if (o > 24)
@@ -3853,86 +3708,50 @@ public final class VTAWTScreenCaptureProvider
       // First quadrant
       x = pointerLocation.x - 3;
       y = pointerLocation.y + 3;
-      if (area.contains(x, y))
+      invertPixel(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+        invertPixel(image, area, x - m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y + m);
       }
       // Second quadrant
       x = pointerLocation.x + 3;
       y = pointerLocation.y + 3;
-      if (area.contains(x, y))
+      invertPixel(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+        invertPixel(image, area, x + m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y + m);
       }
       // Third quadrant
       x = pointerLocation.x + 3;
       y = pointerLocation.y - 3;
-      if (area.contains(x, y))
+      invertPixel(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+        invertPixel(image, area, x + m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y - m);
       }
       // Fourth quadrant
       x = pointerLocation.x - 3;
       y = pointerLocation.y - 3;
-      if (area.contains(x, y))
+      invertPixel(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+        invertPixel(image, area, x - m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y - m);
       }
       
       // n = n / 2;
@@ -3940,269 +3759,127 @@ public final class VTAWTScreenCaptureProvider
       // First quadrant
       x = pointerLocation.x - 4;
       y = pointerLocation.y + 4;
-      
-      if (area.contains(x, y))
+      invertPixel(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+        invertPixel(image, area, x - m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y + m);
       }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_XOR_MASK));
-        }
-      }
-      
       // Second quadrant
       x = pointerLocation.x + 4;
       y = pointerLocation.y + 4;
-      
-      if (area.contains(x, y))
+      invertPixel(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+        invertPixel(image, area, x + m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y + m);
       }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_XOR_MASK));
-        }
-      }
-      
       // Third quadrant
       x = pointerLocation.x + 4;
       y = pointerLocation.y - 4;
-      
-      if (area.contains(x, y))
+      invertPixel(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+        invertPixel(image, area, x + m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y - m);
       }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_XOR_MASK));
-        }
-      }
-      
       // Fourth quadrant
       x = pointerLocation.x - 4;
       y = pointerLocation.y - 4;
-      
-      if (area.contains(x, y))
+      invertPixel(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+        invertPixel(image, area, x - m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y - m);
       }
       
       // First quadrant
       x = pointerLocation.x - (3 + n);
       y = pointerLocation.y + (3 + n);
-      
       for (m = 0; (m < 3); m++)
       {
-        if (area.contains(x + m, y - m))
-        {
-          image.setRGB(x + m, y - m, (image.getRGB(x + m, y - m) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x + m, y - m);
       }
-      
       for (m = 1; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + 1, y - m))
-        {
-          image.setRGB(x + 1, y - m, (image.getRGB(x + 1, y - m) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y - 1))
-        {
-          image.setRGB(x + m, y - 1, (image.getRGB(x + m, y - 1) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y - m);
+        invertPixel(image, area, x + m, y);
+        invertPixel(image, area, x + 1, y - m);
+        invertPixel(image, area, x + m, y - 1);
       }
-      
       for (m = 3; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x + 2, y - m))
-        {
-          image.setRGB(x + 2, y - m, (image.getRGB(x + 2, y - m) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y - 2))
-        {
-          image.setRGB(x + m, y - 2, (image.getRGB(x + m, y - 2) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x + 2, y - m);
+        invertPixel(image, area, x + m, y - 2);
       }
-      
       // Second quadrant
       x = pointerLocation.x + (3 + n);
       y = pointerLocation.y + (3 + n);
-      
       for (m = 0; (m < 3); m++)
       {
-        if (area.contains(x - m, y - m))
-        {
-          image.setRGB(x - m, y - m, (image.getRGB(x - m, y - m) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x - m, y - m);
       }
-      
       for (m = 1; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x - 1, y - m))
-        {
-          image.setRGB(x - 1, y - m, (image.getRGB(x - 1, y - m) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x - m, y - 1))
-        {
-          image.setRGB(x - m, y - 1, (image.getRGB(x - m, y - 1) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y - m);
+        invertPixel(image, area, x - m, y);
+        invertPixel(image, area, x - 1, y - m);
+        invertPixel(image, area, x - m, y - 1);
       }
-      
       for (m = 3; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x - 2, y - m))
-        {
-          image.setRGB(x - 2, y - m, (image.getRGB(x - 2, y - m) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y - 2))
-        {
-          image.setRGB(x - m, y - 2, (image.getRGB(x - m, y - 2) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x - 2, y - m);
+        invertPixel(image, area, x - m, y - 2);
       }
-      
       // Third quadrant
       x = pointerLocation.x + (3 + n);
       y = pointerLocation.y - (3 + n);
-      
       for (m = 0; (m < 3); m++)
       {
-        if (area.contains(x - m, y + m))
-        {
-          image.setRGB(x - m, y + m, (image.getRGB(x - m, y + m) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x - m, y + m);
       }
-      
       for (m = 1; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x - 1, y + m))
-        {
-          image.setRGB(x - 1, y + m, (image.getRGB(x - 1, y + m) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x - m, y + 1))
-        {
-          image.setRGB(x - m, y + 1, (image.getRGB(x - m, y + 1) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y + m);
+        invertPixel(image, area, x - m, y);
+        invertPixel(image, area, x - 1, y + m);
+        invertPixel(image, area, x - m, y + 1);
       }
-      
       for (m = 3; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x - 2, y + m))
-        {
-          image.setRGB(x - 2, y + m, (image.getRGB(x - 2, y + m) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y + 2))
-        {
-          image.setRGB(x - m, y + 2, (image.getRGB(x - m, y + 2) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x - 2, y + m);
+        invertPixel(image, area, x - m, y + 2);
       }
-      
       // Fourth quadrant
       x = pointerLocation.x - (3 + n);
       y = pointerLocation.y - (3 + n);
-      
       for (m = 0; (m < 3); m++)
       {
-        if (area.contains(x + m, y + m))
-        {
-          image.setRGB(x + m, y + m, (image.getRGB(x + m, y + m) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x + m, y + m);
       }
-      
       for (m = 1; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + 1, y + m))
-        {
-          image.setRGB(x + 1, y + m, (image.getRGB(x + 1, y + m) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y + 1))
-        {
-          image.setRGB(x + m, y + 1, (image.getRGB(x + m, y + 1) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x, y + m);
+        invertPixel(image, area, x + m, y);
+        invertPixel(image, area, x + 1, y + m);
+        invertPixel(image, area, x + m, y + 1);
       }
-      
       for (m = 3; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x + 2, y + m))
-        {
-          image.setRGB(x + 2, y + m, (image.getRGB(x + 2, y + m) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y + 2))
-        {
-          image.setRGB(x + m, y + 2, (image.getRGB(x + m, y + 2) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x + 2, y + m);
+        invertPixel(image, area, x + m, y + 2);
       }
       
       int t = 1;
@@ -4215,269 +3892,110 @@ public final class VTAWTScreenCaptureProvider
         x = pointerLocation.x;
         y = pointerLocation.y;
         
-        if (area.contains(x - 4 - t, y))
-        {
-          image.setRGB(x - 4 - t, y, (image.getRGB(x - 4 - t, y) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x - 4 - t, y + 1))
-        {
-          image.setRGB(x - 4 - t, y + 1, (image.getRGB(x - 4 - t, y + 1) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x - 4 - t, y - 1))
-        {
-          image.setRGB(x - 4 - t, y - 1, (image.getRGB(x - 4 - t, y - 1) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x + 4 + t, y))
-        {
-          image.setRGB(x + 4 + t, y, (image.getRGB(x + 4 + t, y) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x + 4 + t, y + 1))
-        {
-          image.setRGB(x + 4 + t, y + 1, (image.getRGB(x + 4 + t, y + 1) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x + 4 + t, y - 1))
-        {
-          image.setRGB(x + 4 + t, y - 1, (image.getRGB(x + 4 + t, y - 1) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x, y - 4 - t))
-        {
-          image.setRGB(x, y - 4 - t, (image.getRGB(x, y - 4 - t) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x + 1, y - 4 - t))
-        {
-          image.setRGB(x + 1, y - 4 - t, (image.getRGB(x + 1, y - 4 - t) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x - 1, y - 4 - t))
-        {
-          image.setRGB(x - 1, y - 4 - t, (image.getRGB(x - 1, y - 4 - t) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x, y + 4 + t))
-        {
-          image.setRGB(x, y + 4 + t, (image.getRGB(x, y + 4 + t) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x + 1, y + 4 + t))
-        {
-          image.setRGB(x + 1, y + 4 + t, (image.getRGB(x + 1, y + 4 + t) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x - 1, y + 4 + t))
-        {
-          image.setRGB(x - 1, y + 4 + t, (image.getRGB(x - 1, y + 4 + t) ^ RGB888_XOR_MASK));
-        }
+        invertPixel(image, area, x - 4 - t, y);
+        invertPixel(image, area, x - 4 - t, y + 1);
+        invertPixel(image, area, x - 4 - t, y - 1);
+        invertPixel(image, area, x + 4 + t, y);
+        invertPixel(image, area, x + 4 + t, y + 1);
+        invertPixel(image, area, x + 4 + t, y - 1);
+        invertPixel(image, area, x, y - 4 - t);
+        invertPixel(image, area, x + 1, y - 4 - t);
+        invertPixel(image, area, x - 1, y - 4 - t);
+        invertPixel(image, area, x, y + 4 + t);
+        invertPixel(image, area, x + 1, y + 4 + t);
+        invertPixel(image, area, x - 1, y + 4 + t);
         
         // First quadrant
         x = pointerLocation.x - 4 - t;
         y = pointerLocation.y + 4 + t;
-        
-        if (area.contains(x, y))
+        invertPixel(image, area, x, y);
+        for (m = 1; (m < n); m++)
         {
-          image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+          invertPixel(image, area, x - m, y);
         }
         for (m = 1; (m < n); m++)
         {
-          if (area.contains(x - m, y))
-          {
-            image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_XOR_MASK));
-          }
+          invertPixel(image, area, x, y + m);
         }
-        for (m = 1; (m < n); m++)
-        {
-          if (area.contains(x, y + m))
-          {
-            image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_XOR_MASK));
-          }
-        }
-        
         // Second quadrant
         x = pointerLocation.x + 4 + t;
         y = pointerLocation.y + 4 + t;
-        
-        if (area.contains(x, y))
+        invertPixel(image, area, x, y);
+        for (m = 1; (m < n); m++)
         {
-          image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+          invertPixel(image, area, x + m, y);
         }
         for (m = 1; (m < n); m++)
         {
-          if (area.contains(x + m, y))
-          {
-            image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_XOR_MASK));
-          }
+          invertPixel(image, area, x, y + m);
         }
-        for (m = 1; (m < n); m++)
-        {
-          if (area.contains(x, y + m))
-          {
-            image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_XOR_MASK));
-          }
-        }
-        
         // Third quadrant
         x = pointerLocation.x + 4 + t;
         y = pointerLocation.y - 4 - t;
-        
-        if (area.contains(x, y))
+        invertPixel(image, area, x, y);
+        for (m = 1; (m < n); m++)
         {
-          image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+          invertPixel(image, area, x + m, y);
         }
         for (m = 1; (m < n); m++)
         {
-          if (area.contains(x + m, y))
-          {
-            image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_XOR_MASK));
-          }
+          invertPixel(image, area, x, y - m);
         }
-        for (m = 1; (m < n); m++)
-        {
-          if (area.contains(x, y - m))
-          {
-            image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_XOR_MASK));
-          }
-        }
-        
         // Fourth quadrant
         x = pointerLocation.x - 4 - t;
         y = pointerLocation.y - 4 - t;
-        
-        if (area.contains(x, y))
+        invertPixel(image, area, x, y);
+        for (m = 1; (m < n); m++)
         {
-          image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+          invertPixel(image, area, x - m, y);
         }
         for (m = 1; (m < n); m++)
         {
-          if (area.contains(x - m, y))
-          {
-            image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_XOR_MASK));
-          }
+          invertPixel(image, area, x, y - m);
         }
-        for (m = 1; (m < n); m++)
-        {
-          if (area.contains(x, y - m))
-          {
-            image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_XOR_MASK));
-          }
-        }
-        
         // First quadrant
         x = pointerLocation.x - (1 + n);
         y = pointerLocation.y + (1 + n);
-        
-        if (area.contains(x, y))
-        {
-          image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
-        }
-        
+        invertPixel(image, area, x, y);
         for (m = 1; m < (((n - 1 - t) / 2)); m++)
         {
-          if (area.contains(x, y - m))
-          {
-            image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_XOR_MASK));
-          }
-          if (area.contains(x + m, y))
-          {
-            image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_XOR_MASK));
-          }
+          invertPixel(image, area, x, y - m);
+          invertPixel(image, area, x + m, y);
         }
-        
         // Second quadrant
         x = pointerLocation.x + (1 + n);
         y = pointerLocation.y + (1 + n);
-        
-        if (area.contains(x, y))
-        {
-          image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
-        }
-        
+        invertPixel(image, area, x, y);
         for (m = 1; m < (((n - 1 - t) / 2)); m++)
         {
-          if (area.contains(x, y - m))
-          {
-            image.setRGB(x, y - m, (image.getRGB(x, y - m) ^ RGB888_XOR_MASK));
-          }
-          if (area.contains(x - m, y))
-          {
-            image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_XOR_MASK));
-          }
+          invertPixel(image, area, x, y - m);
+          invertPixel(image, area, x - m, y);
         }
-        
         // Third quadrant
         x = pointerLocation.x + (1 + n);
         y = pointerLocation.y - (1 + n);
-        
-        if (area.contains(x, y))
-        {
-          image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
-        }
-        
+        invertPixel(image, area, x, y);
         for (m = 1; m < (((n - 1 - t) / 2)); m++)
         {
-          if (area.contains(x, y + m))
-          {
-            image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_XOR_MASK));
-          }
-          if (area.contains(x - m, y))
-          {
-            image.setRGB(x - m, y, (image.getRGB(x - m, y) ^ RGB888_XOR_MASK));
-          }
+          invertPixel(image, area, x, y + m);
+          invertPixel(image, area, x - m, y);
         }
-        
         // Fourth quadrant
         x = pointerLocation.x - (1 + n);
         y = pointerLocation.y - (1 + n);
-        
-        if (area.contains(x, y))
-        {
-          image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
-        }
-        
+        invertPixel(image, area, x, y);
         for (m = 1; m < (((n - 1 - t) / 2)); m++)
         {
-          if (area.contains(x, y + m))
-          {
-            image.setRGB(x, y + m, (image.getRGB(x, y + m) ^ RGB888_XOR_MASK));
-          }
-          if (area.contains(x + m, y))
-          {
-            image.setRGB(x + m, y, (image.getRGB(x + m, y) ^ RGB888_XOR_MASK));
-          }
+          invertPixel(image, area, x, y + m);
+          invertPixel(image, area, x + m, y);
         }
-        
       }
-      
     }
     catch (Throwable e)
     {
-      // e.printStackTrace(VTTerminal.getSystemOut());
-      // e.printStackTrace();
+      
     }
   }
-  
-  /*
-   * public final BufferedImage createScreenCapture() { return
-   * createScreenCapture(false); }
-   */
-  
-  /*
-   * public final BufferedImage createScreenCapture(Rectangle area) { return
-   * createScreenCapture(false, area, 1.0); }
-   */
-  
-  
-  
-  // private final void drawPointerFilterGray(BufferedImage image)
-  // {
-  // drawPointerFilterGray(image, new Rectangle(0, 0, image.getWidth(),
-  // image.getHeight()));
-  // }
   
   private static final void drawPointerFilterGray(final BufferedImage image, final Rectangle area, final GraphicsDevice graphicsDevice, final int drawnCursorSize)
   {
@@ -4492,6 +4010,7 @@ public final class VTAWTScreenCaptureProvider
     Rectangle deviceBounds = new Rectangle();
     if (pointerDevice == null)
     {
+      // VTTerminal.println("infoDevice = null");
       return;
     }
     else
@@ -4537,150 +4056,43 @@ public final class VTAWTScreenCaptureProvider
       // Center area
       x = pointerLocation.x;
       y = pointerLocation.y;
-      if (area.contains(x + 2, y))
-      {
-        image.setRGB(x + 2, y, (filterGray(image.getRGB(x + 2, y)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 3, y))
-      {
-        image.setRGB(x + 3, y, (filterGray(image.getRGB(x + 3, y)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 4, y))
-      {
-        image.setRGB(x + 4, y, (filterGray(image.getRGB(x + 4, y)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 2, y))
-      {
-        image.setRGB(x - 2, y, (filterGray(image.getRGB(x - 2, y)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 3, y))
-      {
-        image.setRGB(x - 3, y, (filterGray(image.getRGB(x - 3, y)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 4, y))
-      {
-        image.setRGB(x - 4, y, (filterGray(image.getRGB(x - 4, y)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x, y + 2))
-      {
-        image.setRGB(x, y + 2, (filterGray(image.getRGB(x, y + 2)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x, y + 3))
-      {
-        image.setRGB(x, y + 3, (filterGray(image.getRGB(x, y + 3)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x, y + 4))
-      {
-        image.setRGB(x, y + 4, (filterGray(image.getRGB(x, y + 4)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x, y - 2))
-      {
-        image.setRGB(x, y - 2, (filterGray(image.getRGB(x, y - 2)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x, y - 3))
-      {
-        image.setRGB(x, y - 3, (filterGray(image.getRGB(x, y - 3)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x, y - 4))
-      {
-        image.setRGB(x, y - 4, (filterGray(image.getRGB(x, y - 4)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 2, y + 1))
-      {
-        image.setRGB(x + 2, y + 1, (filterGray(image.getRGB(x + 2, y + 1)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 3, y + 1))
-      {
-        image.setRGB(x + 3, y + 1, (filterGray(image.getRGB(x + 3, y + 1)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 4, y + 1))
-      {
-        image.setRGB(x + 4, y + 1, (filterGray(image.getRGB(x + 4, y + 1)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 2, y - 1))
-      {
-        image.setRGB(x + 2, y - 1, (filterGray(image.getRGB(x + 2, y - 1)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 3, y - 1))
-      {
-        image.setRGB(x + 3, y - 1, (filterGray(image.getRGB(x + 3, y - 1)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 4, y - 1))
-      {
-        image.setRGB(x + 4, y - 1, (filterGray(image.getRGB(x + 4, y - 1)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 2, y + 1))
-      {
-        image.setRGB(x - 2, y + 1, (filterGray(image.getRGB(x - 2, y + 1)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 3, y + 1))
-      {
-        image.setRGB(x - 3, y + 1, (filterGray(image.getRGB(x - 3, y + 1)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 4, y + 1))
-      {
-        image.setRGB(x - 4, y + 1, (filterGray(image.getRGB(x - 4, y + 1)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 2, y - 1))
-      {
-        image.setRGB(x - 2, y - 1, (filterGray(image.getRGB(x - 2, y - 1)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 3, y - 1))
-      {
-        image.setRGB(x - 3, y - 1, (filterGray(image.getRGB(x - 3, y - 1)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 4, y - 1))
-      {
-        image.setRGB(x - 4, y - 1, (filterGray(image.getRGB(x - 4, y - 1)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 1, y + 2))
-      {
-        image.setRGB(x + 1, y + 2, (filterGray(image.getRGB(x + 1, y + 2)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 1, y + 3))
-      {
-        image.setRGB(x + 1, y + 3, (filterGray(image.getRGB(x + 1, y + 3)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 1, y + 4))
-      {
-        image.setRGB(x + 1, y + 4, (filterGray(image.getRGB(x + 1, y + 4)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 1, y - 2))
-      {
-        image.setRGB(x + 1, y - 2, (filterGray(image.getRGB(x + 1, y - 2)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 1, y - 3))
-      {
-        image.setRGB(x + 1, y - 3, (filterGray(image.getRGB(x + 1, y - 3)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x + 1, y - 4))
-      {
-        image.setRGB(x + 1, y - 4, (filterGray(image.getRGB(x + 1, y - 4)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 1, y + 2))
-      {
-        image.setRGB(x - 1, y + 2, (filterGray(image.getRGB(x - 1, y + 2)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 1, y + 3))
-      {
-        image.setRGB(x - 1, y + 3, (filterGray(image.getRGB(x - 1, y + 3)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 1, y + 4))
-      {
-        image.setRGB(x - 1, y + 4, (filterGray(image.getRGB(x - 1, y + 4)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 1, y - 2))
-      {
-        image.setRGB(x - 1, y - 2, (filterGray(image.getRGB(x - 1, y - 2)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 1, y - 3))
-      {
-        image.setRGB(x - 1, y - 3, (filterGray(image.getRGB(x - 1, y - 3)) ^ RGB888_XOR_MASK));
-      }
-      if (area.contains(x - 1, y - 4))
-      {
-        image.setRGB(x - 1, y - 4, (filterGray(image.getRGB(x - 1, y - 4)) ^ RGB888_XOR_MASK));
-      }
+      invertPixelFilterGray(image, area, x + 2, y);
+      invertPixelFilterGray(image, area, x + 3, y);
+      invertPixelFilterGray(image, area, x + 4, y);
+      invertPixelFilterGray(image, area, x - 2, y);
+      invertPixelFilterGray(image, area, x - 3, y);
+      invertPixelFilterGray(image, area, x - 4, y);
+      invertPixelFilterGray(image, area, x, y + 2);
+      invertPixelFilterGray(image, area, x, y + 3);
+      invertPixelFilterGray(image, area, x, y + 4);
+      invertPixelFilterGray(image, area, x, y - 2);
+      invertPixelFilterGray(image, area, x, y - 3);
+      invertPixelFilterGray(image, area, x, y - 4);
+      
+      invertPixelFilterGray(image, area, x + 2, y + 1);
+      invertPixelFilterGray(image, area, x + 3, y + 1);
+      invertPixelFilterGray(image, area, x + 4, y + 1);
+      invertPixelFilterGray(image, area, x + 2, y - 1);
+      invertPixelFilterGray(image, area, x + 3, y - 1);
+      invertPixelFilterGray(image, area, x + 4, y - 1);
+      invertPixelFilterGray(image, area, x - 2, y + 1);
+      invertPixelFilterGray(image, area, x - 3, y + 1);
+      invertPixelFilterGray(image, area, x - 4, y + 1);
+      invertPixelFilterGray(image, area, x - 2, y - 1);
+      invertPixelFilterGray(image, area, x - 3, y - 1);
+      invertPixelFilterGray(image, area, x - 4, y - 1);
+      invertPixelFilterGray(image, area, x + 1, y + 2);
+      invertPixelFilterGray(image, area, x + 1, y + 3);
+      invertPixelFilterGray(image, area, x + 1, y + 4);
+      invertPixelFilterGray(image, area, x + 1, y - 2);
+      invertPixelFilterGray(image, area, x + 1, y - 3);
+      invertPixelFilterGray(image, area, x + 1, y - 4);
+      invertPixelFilterGray(image, area, x - 1, y + 2);
+      invertPixelFilterGray(image, area, x - 1, y + 3);
+      invertPixelFilterGray(image, area, x - 1, y + 4);
+      invertPixelFilterGray(image, area, x - 1, y - 2);
+      invertPixelFilterGray(image, area, x - 1, y - 3);
+      invertPixelFilterGray(image, area, x - 1, y - 4);
       
       if (o > 24)
       {
@@ -4694,86 +4106,50 @@ public final class VTAWTScreenCaptureProvider
       // First quadrant
       x = pointerLocation.x - 2;
       y = pointerLocation.y + 2;
-      if (area.contains(x, y))
+      invertPixelFilterGray(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+        invertPixelFilterGray(image, area, x - m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (filterGray(image.getRGB(x - m, y)) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (filterGray(image.getRGB(x, y + m)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y + m);
       }
       // Second quadrant
       x = pointerLocation.x + 2;
       y = pointerLocation.y + 2;
-      if (area.contains(x, y))
+      invertPixelFilterGray(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+        invertPixelFilterGray(image, area, x + m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (filterGray(image.getRGB(x + m, y)) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (filterGray(image.getRGB(x, y + m)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y + m);
       }
       // Third quadrant
       x = pointerLocation.x + 2;
       y = pointerLocation.y - 2;
-      if (area.contains(x, y))
+      invertPixelFilterGray(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+        invertPixelFilterGray(image, area, x + m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (filterGray(image.getRGB(x + m, y)) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (filterGray(image.getRGB(x, y - m)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y - m);
       }
       // Fourth quadrant
       x = pointerLocation.x - 2;
       y = pointerLocation.y - 2;
-      if (area.contains(x, y))
+      invertPixelFilterGray(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+        invertPixelFilterGray(image, area, x - m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (filterGray(image.getRGB(x - m, y)) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (filterGray(image.getRGB(x, y - m)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y - m);
       }
       
       if (o > 24)
@@ -4790,86 +4166,50 @@ public final class VTAWTScreenCaptureProvider
       // First quadrant
       x = pointerLocation.x - 3;
       y = pointerLocation.y + 3;
-      if (area.contains(x, y))
+      invertPixelFilterGray(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+        invertPixelFilterGray(image, area, x - m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (filterGray(image.getRGB(x - m, y)) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (filterGray(image.getRGB(x, y + m)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y + m);
       }
       // Second quadrant
       x = pointerLocation.x + 3;
       y = pointerLocation.y + 3;
-      if (area.contains(x, y))
+      invertPixelFilterGray(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+        invertPixelFilterGray(image, area, x + m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (filterGray(image.getRGB(x + m, y)) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (filterGray(image.getRGB(x, y + m)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y + m);
       }
       // Third quadrant
       x = pointerLocation.x + 3;
       y = pointerLocation.y - 3;
-      if (area.contains(x, y))
+      invertPixelFilterGray(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+        invertPixelFilterGray(image, area, x + m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (filterGray(image.getRGB(x + m, y)) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (filterGray(image.getRGB(x, y - m)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y - m);
       }
       // Fourth quadrant
       x = pointerLocation.x - 3;
       y = pointerLocation.y - 3;
-      if (area.contains(x, y))
+      invertPixelFilterGray(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+        invertPixelFilterGray(image, area, x - m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (filterGray(image.getRGB(x - m, y)) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (filterGray(image.getRGB(x, y - m)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y - m);
       }
       
       // n = n / 2;
@@ -4877,265 +4217,127 @@ public final class VTAWTScreenCaptureProvider
       // First quadrant
       x = pointerLocation.x - 4;
       y = pointerLocation.y + 4;
-      
-      if (area.contains(x, y))
+      invertPixelFilterGray(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+        invertPixelFilterGray(image, area, x - m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (filterGray(image.getRGB(x - m, y)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y + m);
       }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (filterGray(image.getRGB(x, y + m)) ^ RGB888_XOR_MASK));
-        }
-      }
-      
       // Second quadrant
       x = pointerLocation.x + 4;
       y = pointerLocation.y + 4;
-      
-      if (area.contains(x, y))
+      invertPixelFilterGray(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+        invertPixelFilterGray(image, area, x + m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (filterGray(image.getRGB(x + m, y)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y + m);
       }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (filterGray(image.getRGB(x, y + m)) ^ RGB888_XOR_MASK));
-        }
-      }
-      
       // Third quadrant
       x = pointerLocation.x + 4;
       y = pointerLocation.y - 4;
-      
-      if (area.contains(x, y))
+      invertPixelFilterGray(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+        invertPixelFilterGray(image, area, x + m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (filterGray(image.getRGB(x + m, y)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y - m);
       }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (filterGray(image.getRGB(x, y - m)) ^ RGB888_XOR_MASK));
-        }
-      }
-      
       // Fourth quadrant
       x = pointerLocation.x - 4;
       y = pointerLocation.y - 4;
-      
-      if (area.contains(x, y))
+      invertPixelFilterGray(image, area, x, y);
+      for (m = 1; (m < n); m++)
       {
-        image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+        invertPixelFilterGray(image, area, x - m, y);
       }
       for (m = 1; (m < n); m++)
       {
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (filterGray(image.getRGB(x - m, y)) ^ RGB888_XOR_MASK));
-        }
-      }
-      for (m = 1; (m < n); m++)
-      {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (filterGray(image.getRGB(x, y - m)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y - m);
       }
       
-      x = pointerLocation.x - (4 + n - 1);
-      y = pointerLocation.y + (4 + n - 1);
-      
+      // First quadrant
+      x = pointerLocation.x - (3 + n);
+      y = pointerLocation.y + (3 + n);
       for (m = 0; (m < 3); m++)
       {
-        if (area.contains(x + m, y - m))
-        {
-          image.setRGB(x + m, y - m, (filterGray(image.getRGB(x + m, y - m)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x + m, y - m);
       }
-      
       for (m = 1; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (filterGray(image.getRGB(x, y - m)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (filterGray(image.getRGB(x + m, y)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + 1, y - m))
-        {
-          image.setRGB(x + 1, y - m, (filterGray(image.getRGB(x + 1, y - m)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y - 1))
-        {
-          image.setRGB(x + m, y - 1, (filterGray(image.getRGB(x + m, y - 1)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y - m);
+        invertPixelFilterGray(image, area, x + m, y);
+        invertPixelFilterGray(image, area, x + 1, y - m);
+        invertPixelFilterGray(image, area, x + m, y - 1);
       }
-      
       for (m = 3; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x + 2, y - m))
-        {
-          image.setRGB(x + 2, y - m, (filterGray(image.getRGB(x + 2, y - m)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y - 2))
-        {
-          image.setRGB(x + m, y - 2, (filterGray(image.getRGB(x + m, y - 2)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x + 2, y - m);
+        invertPixelFilterGray(image, area, x + m, y - 2);
       }
-      
-      x = pointerLocation.x + (4 + n - 1);
-      y = pointerLocation.y + (4 + n - 1);
-      
+      // Second quadrant
+      x = pointerLocation.x + (3 + n);
+      y = pointerLocation.y + (3 + n);
       for (m = 0; (m < 3); m++)
       {
-        if (area.contains(x - m, y - m))
-        {
-          image.setRGB(x - m, y - m, (filterGray(image.getRGB(x - m, y - m)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x - m, y - m);
       }
-      
       for (m = 1; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x, y - m))
-        {
-          image.setRGB(x, y - m, (filterGray(image.getRGB(x, y - m)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (filterGray(image.getRGB(x - m, y)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x - 1, y - m))
-        {
-          image.setRGB(x - 1, y - m, (filterGray(image.getRGB(x - 1, y - m)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x - m, y - 1))
-        {
-          image.setRGB(x - m, y - 1, (filterGray(image.getRGB(x - m, y - 1)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y - m);
+        invertPixelFilterGray(image, area, x - m, y);
+        invertPixelFilterGray(image, area, x - 1, y - m);
+        invertPixelFilterGray(image, area, x - m, y - 1);
       }
-      
       for (m = 3; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x - 2, y - m))
-        {
-          image.setRGB(x - 2, y - m, (filterGray(image.getRGB(x - 2, y - m)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y - 2))
-        {
-          image.setRGB(x - m, y - 2, (filterGray(image.getRGB(x - m, y - 2)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x - 2, y - m);
+        invertPixelFilterGray(image, area, x - m, y - 2);
       }
-      
-      x = pointerLocation.x + (4 + n - 1);
-      y = pointerLocation.y - (4 + n - 1);
-      
+      // Third quadrant
+      x = pointerLocation.x + (3 + n);
+      y = pointerLocation.y - (3 + n);
       for (m = 0; (m < 3); m++)
       {
-        if (area.contains(x - m, y + m))
-        {
-          image.setRGB(x - m, y + m, (filterGray(image.getRGB(x - m, y + m)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x - m, y + m);
       }
-      
       for (m = 1; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (filterGray(image.getRGB(x, y + m)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x - m, y))
-        {
-          image.setRGB(x - m, y, (filterGray(image.getRGB(x - m, y)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x - 1, y + m))
-        {
-          image.setRGB(x - 1, y + m, (filterGray(image.getRGB(x - 1, y + m)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x - m, y + 1))
-        {
-          image.setRGB(x - m, y + 1, (filterGray(image.getRGB(x - m, y + 1)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y + m);
+        invertPixelFilterGray(image, area, x - m, y);
+        invertPixelFilterGray(image, area, x - 1, y + m);
+        invertPixelFilterGray(image, area, x - m, y + 1);
       }
-      
       for (m = 3; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x - 2, y + m))
-        {
-          image.setRGB(x - 2, y + m, (filterGray(image.getRGB(x - 2, y + m)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y + 2))
-        {
-          image.setRGB(x - m, y + 2, (filterGray(image.getRGB(x - m, y + 2)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x - 2, y + m);
+        invertPixelFilterGray(image, area, x - m, y + 2);
       }
-      
-      x = pointerLocation.x - (4 + n - 1);
-      y = pointerLocation.y - (4 + n - 1);
-      
+      // Fourth quadrant
+      x = pointerLocation.x - (3 + n);
+      y = pointerLocation.y - (3 + n);
       for (m = 0; (m < 3); m++)
       {
-        if (area.contains(x + m, y + m))
-        {
-          image.setRGB(x + m, y + m, (filterGray(image.getRGB(x + m, y + m)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x + m, y + m);
       }
-      
       for (m = 1; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x, y + m))
-        {
-          image.setRGB(x, y + m, (filterGray(image.getRGB(x, y + m)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y))
-        {
-          image.setRGB(x + m, y, (filterGray(image.getRGB(x + m, y)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + 1, y + m))
-        {
-          image.setRGB(x + 1, y + m, (filterGray(image.getRGB(x + 1, y + m)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y + 1))
-        {
-          image.setRGB(x + m, y + 1, (filterGray(image.getRGB(x + m, y + 1)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x, y + m);
+        invertPixelFilterGray(image, area, x + m, y);
+        invertPixelFilterGray(image, area, x + 1, y + m);
+        invertPixelFilterGray(image, area, x + m, y + 1);
       }
-      
       for (m = 3; (m < (n / 2) + 1); m++)
       {
-        if (area.contains(x + 2, y + m))
-        {
-          image.setRGB(x + 2, y + m, (filterGray(image.getRGB(x + 2, y + m)) ^ RGB888_XOR_MASK));
-        }
-        if (area.contains(x + m, y + 2))
-        {
-          image.setRGB(x + m, y + 2, (filterGray(image.getRGB(x + m, y + 2)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x + 2, y + m);
+        invertPixelFilterGray(image, area, x + m, y + 2);
       }
       
       int t = 1;
@@ -5148,249 +4350,124 @@ public final class VTAWTScreenCaptureProvider
         x = pointerLocation.x;
         y = pointerLocation.y;
         
-        if (area.contains(x - 4 - t, y))
-        {
-          image.setRGB(x - 4 - t, y, (filterGray(image.getRGB(x - 4 - t, y)) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x - 4 - t, y + 1))
-        {
-          image.setRGB(x - 4 - t, y + 1, (filterGray(image.getRGB(x - 4 - t, y + 1)) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x - 4 - t, y - 1))
-        {
-          image.setRGB(x - 4 - t, y - 1, (filterGray(image.getRGB(x - 4 - t, y - 1)) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x + 4 + t, y))
-        {
-          image.setRGB(x + 4 + t, y, (filterGray(image.getRGB(x + 4 + t, y)) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x + 4 + t, y + 1))
-        {
-          image.setRGB(x + 4 + t, y + 1, (filterGray(image.getRGB(x + 4 + t, y + 1)) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x + 4 + t, y - 1))
-        {
-          image.setRGB(x + 4 + t, y - 1, (filterGray(image.getRGB(x + 4 + t, y - 1)) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x, y - 4 - t))
-        {
-          image.setRGB(x, y - 4 - t, (filterGray(image.getRGB(x, y - 4 - t)) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x + 1, y - 4 - t))
-        {
-          image.setRGB(x + 1, y - 4 - t, (filterGray(image.getRGB(x + 1, y - 4 - t)) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x - 1, y - 4 - t))
-        {
-          image.setRGB(x - 1, y - 4 - t, (filterGray(image.getRGB(x - 1, y - 4 - t)) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x, y + 4 + t))
-        {
-          image.setRGB(x, y + 4 + t, (filterGray(image.getRGB(x, y + 4 + t)) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x + 1, y + 4 + t))
-        {
-          image.setRGB(x + 1, y + 4 + t, (filterGray(image.getRGB(x + 1, y + 4 + t)) ^ RGB888_XOR_MASK));
-        }
-        
-        if (area.contains(x - 1, y + 4 + t))
-        {
-          image.setRGB(x - 1, y + 4 + t, (filterGray(image.getRGB(x - 1, y + 4 + t)) ^ RGB888_XOR_MASK));
-        }
+        invertPixelFilterGray(image, area, x - 4 - t, y);
+        invertPixelFilterGray(image, area, x - 4 - t, y + 1);
+        invertPixelFilterGray(image, area, x - 4 - t, y - 1);
+        invertPixelFilterGray(image, area, x + 4 + t, y);
+        invertPixelFilterGray(image, area, x + 4 + t, y + 1);
+        invertPixelFilterGray(image, area, x + 4 + t, y - 1);
+        invertPixelFilterGray(image, area, x, y - 4 - t);
+        invertPixelFilterGray(image, area, x + 1, y - 4 - t);
+        invertPixelFilterGray(image, area, x - 1, y - 4 - t);
+        invertPixelFilterGray(image, area, x, y + 4 + t);
+        invertPixelFilterGray(image, area, x + 1, y + 4 + t);
+        invertPixelFilterGray(image, area, x - 1, y + 4 + t);
         
         // First quadrant
         x = pointerLocation.x - 4 - t;
         y = pointerLocation.y + 4 + t;
-        
-        if (area.contains(x, y))
+        invertPixelFilterGray(image, area, x, y);
+        for (m = 1; (m < n); m++)
         {
-          image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+          invertPixelFilterGray(image, area, x - m, y);
         }
         for (m = 1; (m < n); m++)
         {
-          if (area.contains(x - m, y))
-          {
-            image.setRGB(x - m, y, (filterGray(image.getRGB(x - m, y)) ^ RGB888_XOR_MASK));
-          }
+          invertPixelFilterGray(image, area, x, y + m);
         }
-        for (m = 1; (m < n); m++)
-        {
-          if (area.contains(x, y + m))
-          {
-            image.setRGB(x, y + m, (filterGray(image.getRGB(x, y + m)) ^ RGB888_XOR_MASK));
-          }
-        }
-        
         // Second quadrant
         x = pointerLocation.x + 4 + t;
         y = pointerLocation.y + 4 + t;
-        
-        if (area.contains(x, y))
+        invertPixelFilterGray(image, area, x, y);
+        for (m = 1; (m < n); m++)
         {
-          image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+          invertPixelFilterGray(image, area, x + m, y);
         }
         for (m = 1; (m < n); m++)
         {
-          if (area.contains(x + m, y))
-          {
-            image.setRGB(x + m, y, (filterGray(image.getRGB(x + m, y)) ^ RGB888_XOR_MASK));
-          }
+          invertPixelFilterGray(image, area, x, y + m);
         }
-        for (m = 1; (m < n); m++)
-        {
-          if (area.contains(x, y + m))
-          {
-            image.setRGB(x, y + m, (filterGray(image.getRGB(x, y + m)) ^ RGB888_XOR_MASK));
-          }
-        }
-        
         // Third quadrant
         x = pointerLocation.x + 4 + t;
         y = pointerLocation.y - 4 - t;
-        
-        if (area.contains(x, y))
+        invertPixelFilterGray(image, area, x, y);
+        for (m = 1; (m < n); m++)
         {
-          image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+          invertPixelFilterGray(image, area, x + m, y);
         }
         for (m = 1; (m < n); m++)
         {
-          if (area.contains(x + m, y))
-          {
-            image.setRGB(x + m, y, (filterGray(image.getRGB(x + m, y)) ^ RGB888_XOR_MASK));
-          }
+          invertPixelFilterGray(image, area, x, y - m);
         }
-        for (m = 1; (m < n); m++)
-        {
-          if (area.contains(x, y - m))
-          {
-            image.setRGB(x, y - m, (filterGray(image.getRGB(x, y - m)) ^ RGB888_XOR_MASK));
-          }
-        }
-        
         // Fourth quadrant
         x = pointerLocation.x - 4 - t;
         y = pointerLocation.y - 4 - t;
-        
-        if (area.contains(x, y))
+        invertPixelFilterGray(image, area, x, y);
+        for (m = 1; (m < n); m++)
         {
-          image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
+          invertPixelFilterGray(image, area, x - m, y);
         }
         for (m = 1; (m < n); m++)
         {
-          if (area.contains(x - m, y))
-          {
-            image.setRGB(x - m, y, (filterGray(image.getRGB(x - m, y)) ^ RGB888_XOR_MASK));
-          }
+          invertPixelFilterGray(image, area, x, y - m);
         }
-        for (m = 1; (m < n); m++)
-        {
-          if (area.contains(x, y - m))
-          {
-            image.setRGB(x, y - m, (filterGray(image.getRGB(x, y - m)) ^ RGB888_XOR_MASK));
-          }
-        }
-        
         // First quadrant
         x = pointerLocation.x - (1 + n);
         y = pointerLocation.y + (1 + n);
-        
-        if (area.contains(x, y))
-        {
-          image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
-        }
-        
+        invertPixelFilterGray(image, area, x, y);
         for (m = 1; m < (((n - 1 - t) / 2)); m++)
         {
-          if (area.contains(x, y - m))
-          {
-            image.setRGB(x, y - m, (filterGray(image.getRGB(x, y - m)) ^ RGB888_XOR_MASK));
-          }
-          if (area.contains(x + m, y))
-          {
-            image.setRGB(x + m, y, (filterGray(image.getRGB(x + m, y)) ^ RGB888_XOR_MASK));
-          }
+          invertPixelFilterGray(image, area, x, y - m);
+          invertPixelFilterGray(image, area, x + m, y);
         }
-        
         // Second quadrant
         x = pointerLocation.x + (1 + n);
         y = pointerLocation.y + (1 + n);
-        
-        if (area.contains(x, y))
-        {
-          image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
-        }
-        
+        invertPixelFilterGray(image, area, x, y);
         for (m = 1; m < (((n - 1 - t) / 2)); m++)
         {
-          if (area.contains(x, y - m))
-          {
-            image.setRGB(x, y - m, (filterGray(image.getRGB(x, y - m)) ^ RGB888_XOR_MASK));
-          }
-          if (area.contains(x - m, y))
-          {
-            image.setRGB(x - m, y, (filterGray(image.getRGB(x - m, y)) ^ RGB888_XOR_MASK));
-          }
+          invertPixelFilterGray(image, area, x, y - m);
+          invertPixelFilterGray(image, area, x - m, y);
         }
-        
         // Third quadrant
         x = pointerLocation.x + (1 + n);
         y = pointerLocation.y - (1 + n);
-        
-        if (area.contains(x, y))
-        {
-          image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
-        }
-        
+        invertPixelFilterGray(image, area, x, y);
         for (m = 1; m < (((n - 1 - t) / 2)); m++)
         {
-          if (area.contains(x, y + m))
-          {
-            image.setRGB(x, y + m, (filterGray(image.getRGB(x, y + m)) ^ RGB888_XOR_MASK));
-          }
-          if (area.contains(x - m, y))
-          {
-            image.setRGB(x - m, y, (filterGray(image.getRGB(x - m, y)) ^ RGB888_XOR_MASK));
-          }
+          invertPixelFilterGray(image, area, x, y + m);
+          invertPixelFilterGray(image, area, x - m, y);
         }
-        
         // Fourth quadrant
         x = pointerLocation.x - (1 + n);
         y = pointerLocation.y - (1 + n);
-        
-        if (area.contains(x, y))
-        {
-          image.setRGB(x, y, (filterGray(image.getRGB(x, y)) ^ RGB888_XOR_MASK));
-        }
-        
+        invertPixelFilterGray(image, area, x, y);
         for (m = 1; m < (((n - 1 - t) / 2)); m++)
         {
-          if (area.contains(x, y + m))
-          {
-            image.setRGB(x, y + m, (filterGray(image.getRGB(x, y + m)) ^ RGB888_XOR_MASK));
-          }
-          if (area.contains(x + m, y))
-          {
-            image.setRGB(x + m, y, (filterGray(image.getRGB(x + m, y)) ^ RGB888_XOR_MASK));
-          }
+          invertPixelFilterGray(image, area, x, y + m);
+          invertPixelFilterGray(image, area, x + m, y);
         }
-        
       }
-      
     }
     catch (Throwable e)
     {
-      // e.printStackTrace(VTTerminal.getSystemOut());
-      // e.printStackTrace();
+      
+    }
+  }
+  
+  private static final void invertPixel(final BufferedImage image, final Rectangle area, final int x, final int y)
+  {
+    if (area.contains(x, y))
+    {
+      image.setRGB(x, y, (image.getRGB(x, y) ^ RGB888_XOR_MASK));
+    }
+  }
+  
+  private static final void invertPixelFilterGray(final BufferedImage image, final Rectangle area, final int x, final int y)
+  {
+    if (area.contains(x, y))
+    {
+      image.setRGB(x, y, filterGray(image.getRGB(x, y) ^ RGB888_XOR_MASK));
     }
   }
   
