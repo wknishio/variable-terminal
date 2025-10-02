@@ -327,9 +327,9 @@ public class VTGraphicsLinkClientOptionsMenuBarViewMenu extends Menu
     this.add(imageFormatMenu);
     this.add(drawPointerMenu);
     this.add(graphicalDeviceMenu);
-    this.add(clearInterfaceMenu);
     this.add(toggleScrollBarsMenu);
     this.add(toggleFullScreenMenu);
+    this.add(clearInterfaceMenu);
     this.add(closeTerminalMenu);
   }
   
