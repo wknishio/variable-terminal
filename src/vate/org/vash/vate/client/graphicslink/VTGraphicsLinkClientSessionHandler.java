@@ -64,6 +64,6 @@ public class VTGraphicsLinkClientSessionHandler implements Runnable
       // e.printStackTrace();
     }
 //    System.runFinalization();
-//    System.gc();
+    System.gc();
   }
 }
