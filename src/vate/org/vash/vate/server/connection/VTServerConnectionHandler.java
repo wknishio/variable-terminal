@@ -66,20 +66,9 @@ public class VTServerConnectionHandler implements Runnable
       connection.closeConnection();
     }
     handler.getAuthenticator().stopTimeoutThread();
-//    System.runFinalization();
-//    System.gc();
-    /*
-     * catch (InterruptedException e) { }
-     */
     connector.unregisterConnectionHandler(this);
-    try
-    {
-      // Thread.sleep(1000);
-    }
-    catch (Throwable t)
-    {
-      
-    }
+//  System.runFinalization();
+//  System.gc();
   }
   
   public void setSessionListeners(Collection<VTServerSessionListener> listeners)
