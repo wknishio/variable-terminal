@@ -65,8 +65,8 @@ public class VTClientSessionHandler implements Runnable
       VTMainConsole.print("\nVT>Session with server failed!");
       connection.closeConnection();
     }
-    System.runFinalization();
-    System.gc();
+//    System.runFinalization();
+//    System.gc();
   }
   
   private void processSession()

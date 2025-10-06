@@ -545,8 +545,9 @@ public final class VTAWTScreenCaptureProvider
     }
     catch (Throwable e)
     {
-      initialized16ScreenCapture = false;
+      
     }
+    initialized16ScreenCapture = false;
     return false;
   }
   
@@ -597,8 +598,9 @@ public final class VTAWTScreenCaptureProvider
     }
     catch (Throwable e)
     {
-      initialized4ScreenCapture = false;
+      
     }
+    initialized4ScreenCapture = false;
     return false;
   }
   
@@ -623,8 +625,9 @@ public final class VTAWTScreenCaptureProvider
     }
     catch (Throwable e)
     {
-      initialized8ScreenCapture = false;
+      
     }
+    initialized8ScreenCapture = false;
     return false;
   }
   
@@ -649,8 +652,9 @@ public final class VTAWTScreenCaptureProvider
     }
     catch (Throwable e)
     {
-      initialized512ScreenCapture = false;
+      
     }
+    initialized512ScreenCapture = false;
     return false;
   }
   
@@ -675,8 +679,9 @@ public final class VTAWTScreenCaptureProvider
     }
     catch (Throwable e)
     {
-      initialized4096ScreenCapture = false;
+      
     }
+    initialized4096ScreenCapture = false;
     return false;
   }
   
@@ -701,8 +706,9 @@ public final class VTAWTScreenCaptureProvider
     }
     catch (Throwable e)
     {
-      initialized64ScreenCapture = false;
+      
     }
+    initialized64ScreenCapture = false;
     return false;
   }
   
@@ -727,8 +733,9 @@ public final class VTAWTScreenCaptureProvider
     }
     catch (Throwable e)
     {
-      initialized216ScreenCapture = false;
+      
     }
+    initialized216ScreenCapture = false;
     return false;
   }
   
@@ -753,8 +760,9 @@ public final class VTAWTScreenCaptureProvider
     }
     catch (Throwable e)
     {
-      initialized32768ScreenCapture = false;
+      
     }
+    initialized32768ScreenCapture = false;
     return false;
   }
   
@@ -779,8 +787,9 @@ public final class VTAWTScreenCaptureProvider
     }
     catch (Throwable e)
     {
-      initialized16777216ScreenCapture = false;
+      
     }
+    initialized16777216ScreenCapture = false;
     return false;
   }
   
@@ -805,8 +814,9 @@ public final class VTAWTScreenCaptureProvider
     }
     catch (Throwable e)
     {
-      initialized125ScreenCapture = false;
+      
     }
+    initialized125ScreenCapture = false;
     return false;
   }
   
@@ -831,8 +841,9 @@ public final class VTAWTScreenCaptureProvider
     }
     catch (Throwable e)
     {
-      initialized27ScreenCapture = false;
+      
     }
+    initialized27ScreenCapture = false;
     return false;
   }
   
@@ -857,8 +868,9 @@ public final class VTAWTScreenCaptureProvider
     }
     catch (Throwable e)
     {
-      initialized262144ScreenCapture = false;
+      
     }
+    initialized262144ScreenCapture = false;
     return false;
   }
   
@@ -883,8 +895,9 @@ public final class VTAWTScreenCaptureProvider
     }
     catch (Throwable e)
     {
-      initialized2097152ScreenCapture = false;
+      
     }
+    initialized2097152ScreenCapture = false;
     return false;
   }
   
@@ -1150,8 +1163,8 @@ public final class VTAWTScreenCaptureProvider
   public final synchronized void reset()
   {
     disposeScreenCaptureResources();
-    System.runFinalization();
-    System.gc();
+//    System.runFinalization();
+//    System.gc();
   }
   
   public final synchronized void dispose()
@@ -1178,8 +1191,8 @@ public final class VTAWTScreenCaptureProvider
     recyclableSectionDataBufferGrayscale = null;
     //recyclableSectionDataBufferConverted = null;
     
-    System.runFinalization();
-    System.gc();
+//    System.runFinalization();
+//    System.gc();
   }
   
   private final void disposeScreenCaptureResources()

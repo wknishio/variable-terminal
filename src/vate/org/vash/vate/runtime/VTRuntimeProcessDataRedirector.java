@@ -23,10 +23,10 @@ public class VTRuntimeProcessDataRedirector implements Runnable
     this.running = true;
   }
   
-  public void finalize()
-  {
-    //stop();
-  }
+//  public void finalize()
+//  {
+//    stop();
+//  }
   
   public void close()
   {

@@ -541,18 +541,18 @@ public class VTGraphicsLinkClientWriter implements Runnable
     keyListener.clearAllPressedKeys();
   }
   
-  protected void finalize()
-  {
-    if (remoteInterface != null && remoteInterface.isAsynchronousRepainterRunning())
-    {
-      remoteInterface.stopAsynchronousRepainter();
-    }
-    if (frame != null)
-    {
-      frame.setVisible(false);
-      frame.dispose();
-    }
-  }
+//  protected void finalize()
+//  {
+//    if (remoteInterface != null && remoteInterface.isAsynchronousRepainterRunning())
+//    {
+//      remoteInterface.stopAsynchronousRepainter();
+//    }
+//    if (frame != null)
+//    {
+//      frame.setVisible(false);
+//      frame.dispose();
+//    }
+//  }
   
   public void notifyAsynchronousRepainter()
   {
@@ -1615,22 +1615,22 @@ public class VTGraphicsLinkClientWriter implements Runnable
   
   public void increaseCaptureScale()
   {
+    captureScale = captureScale * IMAGE_SCALE_MULTIPLIER_FACTOR;
     if (screenCaptureMode == VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_ADJUSTED_KEEP_RATIO || screenCaptureMode == VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_ADJUSTED_IGNORE_RATIO)
     {
       setScreenCaptureMode(VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_SCALED_VIEWPORT);
       captureScale = 1;
     }
-    captureScale = captureScale * IMAGE_SCALE_MULTIPLIER_FACTOR;
   }
   
   public void decreaseCaptureScale()
   {
+    captureScale = captureScale / IMAGE_SCALE_MULTIPLIER_FACTOR;
     if (screenCaptureMode == VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_ADJUSTED_KEEP_RATIO || screenCaptureMode == VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_ADJUSTED_IGNORE_RATIO)
     {
       setScreenCaptureMode(VTSystem.VT_GRAPHICS_LINK_IMAGE_CAPTURE_MODE_SCALED_VIEWPORT);
       captureScale = 1;
     }
-    captureScale = captureScale / IMAGE_SCALE_MULTIPLIER_FACTOR;
   }
   
   public void resetCaptureScale()

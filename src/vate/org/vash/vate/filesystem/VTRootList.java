@@ -367,10 +367,10 @@ public class VTRootList extends File
     return super.clone();
   }
   
-  protected void finalize() throws Throwable
-  {
-    super.finalize();
-  }
+//  protected void finalize() throws Throwable
+//  {
+//    super.finalize();
+//  }
   
   private static final long serialVersionUID = 1L;
   

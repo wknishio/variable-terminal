@@ -131,20 +131,10 @@ public final class VTAWTControlProvider
     }
     catch (Throwable e)
     {
-      // e.printStackTrace(VTTerminal.getSystemOut());
-      inputControlInitialized = false;
-      this.toolkit = Toolkit.getDefaultToolkit();
-      try
-      {
-        this.graphicsDevice = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        this.systemClipboard = toolkit.getSystemClipboard();
-      }
-      catch (Throwable ex)
-      {
-        // e.printStackTrace(VTTerminal.getSystemOut());
-      }
-      return false;
+      //e.printStackTrace();
     }
+    inputControlInitialized = false;
+    return false;
   }
   
   public final boolean isInputControlInitialized()
@@ -203,21 +193,15 @@ public final class VTAWTControlProvider
     try
     {
       //this problem with win32 is supposed to be fixed in jdk22
-//      if ((keychar == '/') && VTReflectionUtils.detectWindows())
-//      {
-//        winAltNumpadASCIIKeyType('/');
-//        return;
-//      }
-//      if ((keychar == '?') && VTReflectionUtils.detectWindows())
-//      {
-//        winAltNumpadASCIIKeyType('?');
-//        return;
-//      }
       if (keycode == VK_UNDEFINED)
       {
         if (keychar != CHAR_UNDEFINED)
         {
           keycode = keychar;
+          if (keychar == '/')
+          {
+            keycode = VK_DIVIDE;
+          }
           if (keychar == '?')
           {
             keycode = VK_SLASH;
@@ -248,6 +232,10 @@ public final class VTAWTControlProvider
         if (keychar != CHAR_UNDEFINED)
         {
           keycode = keychar;
+          if (keychar == '/')
+          {
+            keycode = VK_DIVIDE;
+          }
           if (keychar == '?')
           {
             keycode = VK_SLASH;

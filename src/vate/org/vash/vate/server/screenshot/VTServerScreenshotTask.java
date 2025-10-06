@@ -358,8 +358,8 @@ public class VTServerScreenshotTask extends VTTask
       convertedGraphics.dispose();
       convertedGraphics = null;
     }
-    System.runFinalization();
-    System.gc();
+//    System.runFinalization();
+//    System.gc();
     finished = true;
   }
   

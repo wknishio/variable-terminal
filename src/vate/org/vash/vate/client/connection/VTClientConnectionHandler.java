@@ -63,9 +63,9 @@ public class VTClientConnectionHandler implements Runnable
       connection.closeConnection();
     }
     handler.getAuthenticator().stopTimeoutThread();
-    System.runFinalization();
-    System.gc();
     client.disableInputMenuBar();
+//    System.runFinalization();
+//    System.gc();
   }
   
   public void setSessionListeners(Collection<VTClientSessionListener> listeners)

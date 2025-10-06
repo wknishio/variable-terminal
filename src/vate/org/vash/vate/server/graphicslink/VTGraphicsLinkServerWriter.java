@@ -1099,8 +1099,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
                   {
                     VTImageDataUtils.copyArea(lastImageBufferInt, previousImageBufferInt, 0, lastWidth, lastHeight, resultArea);
                   }
-                  System.runFinalization();
-                  System.gc();
+//                  System.runFinalization();
+//                  System.gc();
                 }
               }
               else
@@ -1197,8 +1197,8 @@ public class VTGraphicsLinkServerWriter implements Runnable
                   //resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
                   //resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
                   sendCustomRefresh();
-                  System.runFinalization();
-                  System.gc();
+//                  System.runFinalization();
+//                  System.gc();
                 }
               }
             }

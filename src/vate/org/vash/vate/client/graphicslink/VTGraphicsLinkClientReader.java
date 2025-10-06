@@ -314,8 +314,8 @@ public class VTGraphicsLinkClientReader implements Runnable
               nextImageDataBuffer = null;
             }
             writer.refreshRemoteGraphics(currentImageDataBuffer);
-            System.runFinalization();
-            System.gc();
+//            System.runFinalization();
+//            System.gc();
             break;
           }
           case VTSystem.VT_GRAPHICS_LINK_IMAGE_STANDARD_DIFFERENTIAL_FRAME:
@@ -541,8 +541,8 @@ public class VTGraphicsLinkClientReader implements Runnable
             // endTime = System.currentTimeMillis();
             // System.out.println("new frame decoding time: " + (endTime
             // - startTime));
-            System.runFinalization();
-            System.gc();
+//            System.runFinalization();
+//            System.gc();
             break;
           }
           case VTSystem.VT_GRAPHICS_LINK_IMAGE_CUSTOM_DIFFERENTIAL_FRAME:

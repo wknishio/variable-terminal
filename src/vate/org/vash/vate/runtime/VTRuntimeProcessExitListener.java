@@ -9,13 +9,13 @@ public class VTRuntimeProcessExitListener implements Runnable
     this.process = process;
   }
   
-  public void finalize()
-  {
-    //if (process != null && process.isAlive())
-    //{
-      //process.destroy();
-    //}
-  }
+//  public void finalize()
+//  {
+//    if (process != null && process.isAlive())
+//    {
+//      process.destroy();
+//    }
+//  }
   
   public void run()
   {

@@ -14,10 +14,10 @@ public class VTRuntimeProcessTimeoutKill implements Runnable
     this.timeout = timeout;
   }
   
-  public void finalize()
-  {
-    //stop();
-  }
+//  public void finalize()
+//  {
+//    stop();
+//  }
   
   public void stop()
   {

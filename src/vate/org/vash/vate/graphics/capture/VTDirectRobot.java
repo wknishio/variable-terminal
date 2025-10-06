@@ -310,16 +310,16 @@ public final class VTDirectRobot
     disposed = true;
   }
   
-  @SuppressWarnings("all")
-  protected final void finalize() throws Throwable
-  {
-    try
-    {
-      dispose();
-    }
-    finally
-    {
-      super.finalize();
-    }
-  }
+//  @SuppressWarnings("all")
+//  protected final void finalize() throws Throwable
+//  {
+//    try
+//    {
+//      dispose();
+//    }
+//    finally
+//    {
+//      super.finalize();
+//    }
+//  }
 }

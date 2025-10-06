@@ -62,16 +62,16 @@ public class VTTransferableImage implements Transferable, ClipboardOwner
   {
     bufferedImage.flush();
     bufferedImage = null;
-    System.runFinalization();
-    System.gc();
+//    System.runFinalization();
+//    System.gc();
   }
   
   public void flush()
   {
     bufferedImage.flush();
     bufferedImage = null;
-    System.runFinalization();
-    System.gc();
+//    System.runFinalization();
+//    System.gc();
   }
   
   public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException
