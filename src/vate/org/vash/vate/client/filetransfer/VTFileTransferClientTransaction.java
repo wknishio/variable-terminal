@@ -734,21 +734,17 @@ public class VTFileTransferClientTransaction implements Runnable
             return false;
           }
         }
+        ok = checkContinueTransfer(ok);
         if (ok)
         {
-          ok = checkContinueTransfer(ok);
-          if (ok)
-          {
-            // folder ok
-            return writeNextFilePath("");
-          }
+          // folder ok
+          return writeNextFilePath("");
         }
         else
         {
           // something wrong with last path
-          ok = checkContinueTransfer(ok);
+          return false;
         }
-        return false;
       }
     }
     catch (Throwable e)
