@@ -538,18 +538,18 @@ public class VTNanoHTTPDProxySession implements Runnable
     {
       return true;
     }
-    String proxyAuthorization = null;
+    String authorizationValue = null;
     for (Object headerName : headers.keySet())
     {
       if (headerName != null && headerName.toString().equalsIgnoreCase(authorizationHeader))
       {
-        proxyAuthorization = headers.getProperty(headerName.toString());
+        authorizationValue = headers.getProperty(headerName.toString());
       }
     }
-    if (proxyAuthorization != null)
+    if (authorizationValue != null)
     {
       String expected = "Basic " + Base64.encodeBase64String((username + ":" + password).getBytes("ISO-8859-1"));
-      return proxyAuthorization.toLowerCase().startsWith(expected.toLowerCase());
+      return authorizationValue.toLowerCase().startsWith(expected.toLowerCase());
     }
     return false;
   }

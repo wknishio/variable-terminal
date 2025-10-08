@@ -8,11 +8,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLEncoder;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.Vector;
@@ -20,14 +22,26 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.vash.vate.VTSystem;
 import org.vash.vate.console.VTMainConsole;
 import org.vash.vate.parser.VTConfigurationProperties;
+import org.vash.vate.security.VTBlake3SecureRandom;
+import org.vash.vate.security.VTSplitMix64Random;
+import org.vash.vate.security.VTXXHash64MessageDigest;
 import org.vash.vate.stream.array.VTByteArrayInputStream;
+import org.vtbouncycastle.util.encoders.Hex;
+
+import net.jpountz.xxhash.XXHashFactory;
 
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
+import java.util.Random;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
 
@@ -96,7 +110,7 @@ public class VTNanoHTTPD
    */
   public Response serve( String uri, String method, Properties header, Properties parms, Properties files )
   {
-    return serveFile( uri, header, myRootDir, true );
+    return serveFile( uri, header, serverRootDir, true );
   }
 
   /**
@@ -146,7 +160,7 @@ public class VTNanoHTTPD
      */
     public void addHeader( String name, String value )
     {
-      header.put( name, value );
+      headers.put( name, value );
     }
 
     /**
@@ -168,7 +182,7 @@ public class VTNanoHTTPD
      * Headers for the HTTP response. Use addHeader()
      * to add lines.
      */
-    public Properties header = new Properties();
+    public Properties headers = new Properties();
   }
 
   /**
@@ -185,6 +199,10 @@ public class VTNanoHTTPD
     HTTP_BADREQUEST = "400 Bad Request",
     HTTP_INTERNALERROR = "500 Internal Server Error",
     HTTP_NOTIMPLEMENTED = "501 Not Implemented";
+  
+  public static final String HTTP_UNAUTHORIZED = "401 Unauthorized";
+  public static final String HTTP_PAYLOAD_TOO_LARGE = "413 Payload Too Large";
+
 
   /**
    * Common mime types for dynamic content
@@ -194,6 +212,14 @@ public class VTNanoHTTPD
     MIME_HTML = "text/html",
     MIME_DEFAULT_BINARY = "application/octet-stream",
     MIME_XML = "text/xml";
+  
+  private final Collection<String> nonces;
+  private final VTXXHash64MessageDigest xxhash64;
+  private final Random random;
+  private final boolean digest;
+  private final String[] usernames;
+  private final String[] passwords;
+
 
   // ==================================================
   // Socket & server code
@@ -203,21 +229,37 @@ public class VTNanoHTTPD
    * Starts a HTTP server to given port.<p>
    * Throws an IOException if the socket is already in use
    */
-  public VTNanoHTTPD( int port, File wwwroot ) throws IOException
+  public VTNanoHTTPD(ServerSocket connectionServerSocket, File wwwroot, boolean authDigest, String[] authUsernames, String[] authPasswords ) throws IOException
   {
+    digest = authDigest;
+    usernames = authUsernames;
+    passwords = authPasswords;
+    
+    nonces = new LinkedHashSet<String>();
+    random = new VTSplitMix64Random(new VTBlake3SecureRandom().nextLong());
+    
+    if (usernames == null || passwords == null || usernames.length == 0 || passwords.length == 0)
+    {
+      xxhash64 = null;
+    }
+    else
+    {
+      xxhash64  = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(random.nextLong()));
+    }
+    
     final ExecutorService executorService = Executors.newCachedThreadPool(new ThreadFactory()
     {
-      public Thread newThread(Runnable r)
+      public Thread newThread(Runnable runnable)
       {
-        Thread thread = new Thread(r);
+        Thread thread = new Thread(runnable);
         thread.setDaemon(true);
         return thread;
       }
     });
-    myTcpPort = port;
-    this.myRootDir = wwwroot;
-    myServerSocket = new ServerSocket( myTcpPort );
-    myThread = new Thread( new Runnable()
+    //myTcpPort = server.getLocalPort();
+    serverRootDir = wwwroot;
+    serverSocket = connectionServerSocket;
+    serverThread = new Thread( new Runnable()
     {
       public void run()
       {
@@ -225,7 +267,7 @@ public class VTNanoHTTPD
         {
           while (true)
           {
-            new HTTPSession( myServerSocket.accept(), executorService);
+            new HTTPSession( serverSocket.accept(), executorService);
           }
         }
         catch ( IOException ioe )
@@ -234,8 +276,8 @@ public class VTNanoHTTPD
         }
       }
     });
-    myThread.setDaemon( true );
-    myThread.start();
+    serverThread.setDaemon( true );
+    serverThread.start();
   }
 
   /**
@@ -245,8 +287,8 @@ public class VTNanoHTTPD
   {
     try
     {
-      myServerSocket.close();
-      myThread.join();
+      serverSocket.close();
+      serverThread.join();
     }
     catch ( IOException ioe )
     {
@@ -269,8 +311,8 @@ public class VTNanoHTTPD
     VTMainConsole.setRemoteIcon(true);
     VTMainConsole.setDaemon(false);
     VTMainConsole.initialize();
-    VTMainConsole.setTitle("NanoHTTPD 1.27 - Console");
-    VTMainConsole.println( "NanoHTTPD 1.27 (C) 2001,2005-2013 Jarno Elonen and (C) 2010 Konstantinos Togias\n" +
+    VTMainConsole.setTitle("VTNanoHTTPD 1.27 - Console");
+    VTMainConsole.println( "VTNanoHTTPD 1.27 (C) 2001,2005-2013 Jarno Elonen and (C) 2010 Konstantinos Togias\n" +
         "(Command line options: [-p port] [-d root-dir] [--licence])\n" );
 
     // Defaults
@@ -291,7 +333,7 @@ public class VTNanoHTTPD
 
     try
     {
-      new VTNanoHTTPD( port, wwwroot );
+      new VTNanoHTTPD( new ServerSocket(port), wwwroot, true, null, null);
     }
     catch( IOException ioe )
     {
@@ -311,9 +353,9 @@ public class VTNanoHTTPD
    */
   private class HTTPSession implements Runnable
   {
-    public HTTPSession( Socket socket, ExecutorService executorService)
+    public HTTPSession( Socket sessionSocket, ExecutorService executorService)
     {
-      mySocket = socket;
+      socket = sessionSocket;
       final HTTPSession session = this;
       Runnable sessionThread = new Runnable()
       {
@@ -331,9 +373,9 @@ public class VTNanoHTTPD
           {
             try
             {
-              mySocket.close();
+              socket.close();
             }
-            catch (IOException e)
+            catch (Throwable e)
             {
               
             }
@@ -358,13 +400,13 @@ public class VTNanoHTTPD
       InputStream inputStream = null;
       try
       {
-        inputStream = mySocket.getInputStream();
+        inputStream = socket.getInputStream();
       }
       catch (Throwable t)
       {
         
       }
-      while (mySocket.isConnected() && !mySocket.isClosed() && keepAlive)
+      while (socket.isConnected() && !socket.isClosed() && keepAlive)
       {
         if (inputStream == null)
         {
@@ -531,14 +573,25 @@ public class VTNanoHTTPD
           // Ok, now do the serve()
           if (uri != null)
           {
-            Response r = serve( uri, method, headers, parameters, files );
-            if ( r == null )
+            if (!authenticated)
             {
-              sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Serve() returned a null response." );
+              authenticated = checkAuthentication(headers, method, usernames, passwords);
+            }
+            if (authenticated)
+            {
+              Response response = serve( uri, method, headers, parameters, files );
+              if ( response == null )
+              {
+                sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Serve() returned a null response." );
+              }
+              else
+              {
+                sendResponse( response.status, response.mimeType, response.headers, response.data );
+              }
             }
             else
             {
-              sendResponse( r.status, r.mimeType, r.header, r.data );
+              //dont serve
             }
           }
           else
@@ -915,6 +968,100 @@ public class VTNanoHTTPD
       throw new InterruptedException();
     }
     
+    @SuppressWarnings("unused")
+    private void sendError( String status, String mime, Properties header, InputStream data, long length) throws InterruptedException, IOException
+    {
+      sendResponse( status, mime, header, data, length);
+      throw new InterruptedException(status);
+    }
+    
+    private void sendError( String status, String mime, Properties header, String msg ) throws InterruptedException, IOException
+    {
+      sendResponse( status, mime, header, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")), msg.length());
+      throw new InterruptedException(status);
+    }
+    
+    /**
+     * Sends given response to the socket.
+     */
+    private void sendResponse( String status, String mime, Properties header, InputStream data, long length)
+    {
+      try
+      {
+        if ( status == null )
+        {
+          throw new Error( "sendResponse(): Status can't be null." );
+        }
+        //System.out.println("response.status="+status);
+        OutputStream out = socket.getOutputStream();
+        PrintWriter pw = new PrintWriter( new OutputStreamWriter(out, VTSystem.getCharsetEncoder("ISO-8859-1")) );
+        pw.print("HTTP/1.1 " + status + " \r\n");
+        
+        if (keepAlive)
+        {
+          pw.print("Connection: Keep-Alive\r\n");
+        }
+        else
+        {
+          pw.print("Connection: Close\r\n");
+        }
+        
+        if ( mime != null && mime.length() > 0)
+        {
+          pw.print("Content-Type: " + mime + "\r\n");
+        }
+        
+        if ( header == null || header.getProperty( "Date" ) == null )
+        {
+          pw.print("Date: " + gmtFrmt.format( new Date()) + "\r\n");
+        }
+        
+        if (length >= 0)
+        {
+          pw.print("Content-Length: " + length + "\r\n");
+        }
+        
+        if ( header != null )
+        {
+          Enumeration<?> e = header.keys();
+          while ( e.hasMoreElements())
+          {
+            String key = (String)e.nextElement();
+            String value = header.getProperty( key );
+            pw.print( key + ": " + value + "\r\n");
+          }
+        }
+        
+        pw.print("\r\n");
+        pw.flush();
+        
+        if ( data != null )
+        {
+          int pending = data.available(); // This is to support partial sends, see serveFile()
+          byte[] buf = new byte[VTSystem.VT_STANDARD_BUFFER_SIZE_BYTES];
+          while (pending>0)
+          {
+            int read = data.read( buf, 0, Math.min(buf.length, pending));
+            if (read <= 0)  break;
+            out.write( buf, 0, read );
+            pending -= read;
+          }
+        }
+        out.flush();
+        
+        if ( data != null )
+        {
+          data.close();
+        }
+      }
+      catch( IOException ioe )
+      {
+        //ioe.printStackTrace();
+        // Couldn't write? No can do.
+        try { socket.close(); } catch( Throwable t ) {}
+      }
+    }
+    
     /**
      * Sends given response to the socket.
      */
@@ -927,7 +1074,7 @@ public class VTNanoHTTPD
           throw new Error( "sendResponse(): Status can't be null." );
         }
         
-        OutputStream out = mySocket.getOutputStream();
+        OutputStream out = socket.getOutputStream();
         PrintWriter pw = new PrintWriter( out );
         pw.print("HTTP/1.1 " + status + " \r\n");
         
@@ -991,7 +1138,7 @@ public class VTNanoHTTPD
         // Couldn't write? No can do.
         try
         {
-          mySocket.close();
+          socket.close();
         }
         catch( Throwable t )
         {
@@ -1000,8 +1147,209 @@ public class VTNanoHTTPD
       }
     }
     
-    private Socket mySocket;
+    private Map<String, String> parseHeader(String headerString)
+    {
+      // seperte out the part of the string which tells you which Auth scheme is it
+      String headerStringWithoutScheme = headerString.substring(headerString.indexOf(" ") + 1).trim();
+      LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+      String keyValueArray[] = headerStringWithoutScheme.split(",");
+      for (String keyval : keyValueArray)
+      {
+        if (keyval.contains("="))
+        {
+          String key = keyval.substring(0, keyval.indexOf("=")).toLowerCase();
+          String value = keyval.substring(keyval.indexOf("=") + 1);
+          values.put(key.trim(), value.replaceAll("\"", "").trim());
+        }
+      }
+      return values;
+    }
+    
+    protected String generateNonce(String realm) throws IOException
+    {
+      //long currentTime = System.currentTimeMillis();
+      byte[] randomBytes = new byte[64];
+      random.nextBytes(randomBytes);
+      String nonceValue = realm + ":" + Hex.toHexString(randomBytes);
+      nonceValue = Hex.toHexString(xxhash64.digest(nonceValue.getBytes("ISO-8859-1")));
+      //nonceValue = DigestUtils.sha256Hex(nonceValue.getBytes("ISO-8859-1"));
+      
+      //VALID_DIGEST_NONCES.put(nOnceValue, currentTime + (1000 * 300));
+      nonces.add(nonceValue);
+      return nonceValue;
+    }
+    
+    private boolean checkAuthentication(Properties headers, String method, String[] usernames, String[] passwords) throws IOException, InterruptedException
+    {
+      if (usernames == null || passwords == null || usernames.length == 0 || passwords.length == 0)
+      {
+        return true;
+      }
+      if (digest)
+      {
+        int result = checkAuthenticatedDigest("Authorization", headers, method, usernames, passwords, "VTNanoHTTPD");
+        if (result != 0)
+        {
+          requireAuthenticationDigest("WWW-Authenticate", "VTNanoHTTPD", generateNonce("VTNanoHTTPD"), result == -2);
+          return false;
+        }
+        return true;
+      }
+      else
+      {
+        boolean checked = false;
+        for (int i = 0; i < usernames.length; i++)
+        {
+          checked |= checkAuthenticatedBasic("Authorization", headers, usernames[i], passwords[i]);
+          if (checked)
+          {
+            break;
+          }
+        }
+        if (!checked)
+        {
+          requireAuthenticationBasic("WWW-Authenticate", "VTNanoHTTPD");
+        }
+        else
+        {
+          return true;
+        }
+      }
+      return false;
+    }
+    
+    private boolean checkAuthenticatedBasic(String authorizationHeader, Properties headers, String username, String password) throws IOException
+    {
+      if (username == null || password == null)
+      {
+        return true;
+      }
+      String proxyAuthorization = null;
+      for (Object headerName : headers.keySet())
+      {
+        if (headerName != null && headerName.toString().equalsIgnoreCase(authorizationHeader))
+        {
+          proxyAuthorization = headers.getProperty(headerName.toString());
+        }
+      }
+      if (proxyAuthorization != null)
+      {
+        String expected = "Basic " + Base64.encodeBase64String((username + ":" + password).getBytes("ISO-8859-1"));
+        return proxyAuthorization.toLowerCase().startsWith(expected.toLowerCase());
+      }
+      return false;
+    }
+    
+    private void requireAuthenticationBasic(String requireHeader, String realm) throws IOException, InterruptedException
+    {
+      Response resp = new Response();
+      if (realm != null && realm.length() > 0)
+      {
+        resp.headers.put(requireHeader, "Basic realm=\"" + realm + "\"");
+      }
+      else
+      {
+        resp.headers.put(requireHeader, "Basic");
+      }
+      resp.status = HTTP_UNAUTHORIZED;
+      sendError(resp.status, MIME_PLAINTEXT, resp.headers, "");
+    }
+    
+    private int checkAuthenticatedDigest(String authorizationHeader, Properties headers, String method, String[] usernames, String[] passwords, String realm) throws IOException
+    {
+      if (usernames == null || passwords == null)
+      {
+        return 0;
+      }
+      String authorizationValue = null;
+      for (Object headerName : headers.keySet())
+      {
+        if (headerName != null && headerName.toString().equalsIgnoreCase(authorizationHeader))
+        {
+          authorizationValue = headers.getProperty(headerName.toString());
+        }
+      }
+      if (authorizationValue != null)
+      {
+        int validated = -1;
+        for (int i = 0; i < usernames.length; i++)
+        {
+          validated = validateAuthorizationDigest(authorizationValue, method, usernames[i], passwords[i], realm);
+          if (validated == 0 || validated == -2)
+          {
+            return validated;
+          }
+        }
+      }
+      return -1;
+    }
+    
+    private int validateAuthorizationDigest(String authorizationValue, String method, String username, String password, String realm) throws IOException
+    {
+      //System.out.println("proxyAuthorization=" + proxyAuthorization);
+      if (authorizationValue == null)
+      {
+        return -1;
+      }
+      if (!authorizationValue.toLowerCase().startsWith("Digest ".toLowerCase()))
+      {
+        return -1;
+      }
+      
+      Map<String, String> values = parseHeader(authorizationValue);
+      
+      String usernameValue = values.get("username");
+      String realmValue = values.get("realm");
+      String nonce = values.get("nonce");
+      String nc = values.get("nc");
+      String cnonce = values.get("cnonce");
+      String qop = values.get("qop");
+      String uri = values.get("uri");
+      String response = values.get("response");
+      
+      if (!usernameValue.equals(username) || !realmValue.equals(realm))
+      {
+        return -1;
+      }
+      
+      String a2 = method + ":" + uri;
+      String md5a2 = DigestUtils.md5Hex(a2.getBytes("ISO-8859-1"));
+      
+      String a1 = usernameValue + ":" + realmValue + ":" + password;
+      String md5a1 = DigestUtils.md5Hex(a1.getBytes("ISO-8859-1"));
+      
+      String serverDigestValue = md5a1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + qop + ":" + md5a2;
+      
+      String serverDigest = DigestUtils.md5Hex(serverDigestValue.getBytes("ISO-8859-1"));
+      String clientDigest = response;
+      
+      //System.out.println("serverDigest=" + serverDigest);
+      
+      if (serverDigest.equalsIgnoreCase(clientDigest))
+      {
+        if (nonces.remove(nonce))
+        {
+          return 0;
+        }
+        return -2;
+      }
+      
+      return -1;
+    }
+    
+    private void requireAuthenticationDigest(String requireHeader, String realm, String nonce, boolean stale) throws IOException, InterruptedException
+    {
+      Response resp = new Response();
+      resp.headers.put(requireHeader, "Digest realm=\"" + realm + "\", "
+          +  "qop=\"auth\", nonce=\"" + nonce + "\", opaque=\""
+          + Hex.toHexString(xxhash64.digest(nonce.getBytes("ISO-8859-1"))) + "\"" + (stale ? ", stale=\"true\"" : ""));
+      resp.status = HTTP_UNAUTHORIZED;
+      sendError(resp.status, MIME_PLAINTEXT, resp.headers, "");
+    }
+    
+    private Socket socket;
     private boolean keepAlive;
+    private boolean authenticated;
   }
 
   /**
@@ -1040,10 +1388,10 @@ public class VTNanoHTTPD
     return newUri;
   }
   
-  private int myTcpPort;
-  private final ServerSocket myServerSocket;
-  private Thread myThread;
-  private File myRootDir;
+  //private int myTcpPort;
+  private final ServerSocket serverSocket;
+  private Thread serverThread;
+  private File serverRootDir;
   
   // ==================================================
   // File server code
