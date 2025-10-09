@@ -47,14 +47,14 @@ public class VTServerConnectionHandler implements Runnable
       //VTConsole.print("\rVT>Verifying connection with client...\nVT>");
       if (connection.verifyConnection())
       {
-        VTMainConsole.print("\rVT>Connection with client validated!\nVT>");
+        //VTMainConsole.print("\rVT>Connection with client validated!\nVT>");
         // connection.setMultiplexedStreams();
         // connection.startConnection();
         handler.run();
       }
       else
       {
-        VTMainConsole.print("\rVT>Connection with client invalidated!\nVT>");
+        VTMainConsole.print("\rVT>Session with client invalidated!\nVT>");
         connection.closeConnection();
       }
     }
@@ -62,7 +62,7 @@ public class VTServerConnectionHandler implements Runnable
     {
       // VTTerminal.print(e.toString());
       // e.printStackTrace();
-      VTMainConsole.print("\rVT>Connection with client failed!\nVT>");
+      VTMainConsole.print("\rVT>Session with client failed!\nVT>");
       connection.closeConnection();
     }
     handler.getAuthenticator().stopTimeoutThread();

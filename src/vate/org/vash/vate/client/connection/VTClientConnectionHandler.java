@@ -42,14 +42,14 @@ public class VTClientConnectionHandler implements Runnable
       //VTConsole.print("\nVT>Verifying connection with server...");
       if (connection.verifyConnection())
       {
-        VTMainConsole.print("\nVT>Connection with server validated!");
+        //VTMainConsole.print("\nVT>Connection with server validated!");
         // connection.setMultiplexedStreams();
         // connection.startConnection();
         handler.run();
       }
       else
       {
-        VTMainConsole.print("\nVT>Connection with server invalidated!");
+        VTMainConsole.print("\nVT>Session with server invalidated!");
         // connection.setSkipLine(true);
         connection.closeConnection();
       }
@@ -58,7 +58,7 @@ public class VTClientConnectionHandler implements Runnable
     {
       // VTTerminal.print(e.toString());
       // e.printStackTrace();
-      VTMainConsole.print("\nVT>Connection with server failed!");
+      VTMainConsole.print("\nVT>Session with server failed!");
       // connection.setSkipLine(true);
       connection.closeConnection();
     }
