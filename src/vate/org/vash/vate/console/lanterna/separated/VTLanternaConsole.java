@@ -104,7 +104,7 @@ public class VTLanternaConsole extends VTConsole
   
   private Frame frame;
   private AWTTerminalPanel panel;
-  private java.awt.Panel spacer1;
+  private Panel spacer1;
   private Terminal terminal;
   private Screen screen;
   private AWTTerminal awtTerminal;
@@ -962,7 +962,7 @@ public class VTLanternaConsole extends VTConsole
         }
       });
       
-      spacer1 = new java.awt.Panel();
+      spacer1 = new Panel();
       spacer1.setBackground(SystemColor.control);
       spacer1.setFocusable(false);
       
