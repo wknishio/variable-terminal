@@ -20,6 +20,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
 import org.apache.commons.codec.binary.Base64;
@@ -91,7 +92,7 @@ import java.io.FileOutputStream;
  * See the end of the source file for distribution license
  * (Modified BSD licence)
  */
-public class VTNanoHTTPD
+public class VTNanoHTTPD implements Runnable
 {
   // ==================================================
   // API parts
@@ -219,6 +220,15 @@ public class VTNanoHTTPD
   private final boolean digest;
   private final String[] usernames;
   private final String[] passwords;
+  private final ExecutorService executorService = Executors.newCachedThreadPool(new ThreadFactory()
+  {
+    public Thread newThread(Runnable runnable)
+    {
+      Thread thread = new Thread(runnable);
+      thread.setDaemon(true);
+      return thread;
+    }
+  });
 
 
   // ==================================================
@@ -229,7 +239,7 @@ public class VTNanoHTTPD
    * Starts a HTTP server to given port.<p>
    * Throws an IOException if the socket is already in use
    */
-  public VTNanoHTTPD(ServerSocket connectionServerSocket, File wwwroot, boolean authDigest, String[] authUsernames, String[] authPasswords ) throws IOException
+  public VTNanoHTTPD(ServerSocket connector, File wwwroot, boolean authDigest, String[] authUsernames, String[] authPasswords ) throws IOException
   {
     digest = authDigest;
     usernames = authUsernames;
@@ -247,39 +257,46 @@ public class VTNanoHTTPD
       xxhash64  = new VTXXHash64MessageDigest(XXHashFactory.safeInstance().newStreamingHash64(random.nextLong()));
     }
     
-    final ExecutorService executorService = Executors.newCachedThreadPool(new ThreadFactory()
-    {
-      public Thread newThread(Runnable runnable)
-      {
-        Thread thread = new Thread(runnable);
-        thread.setDaemon(true);
-        return thread;
-      }
-    });
     //myTcpPort = server.getLocalPort();
     serverRootDir = wwwroot;
-    serverSocket = connectionServerSocket;
-    serverThread = new Thread( new Runnable()
-    {
-      public void run()
-      {
-        try
-        {
-          while (true)
-          {
-            new HTTPSession( serverSocket.accept(), executorService);
-          }
-        }
-        catch ( IOException ioe )
-        {
-          
-        }
-      }
-    });
-    serverThread.setDaemon( true );
-    serverThread.start();
+    serverSocket = connector;
   }
-
+  
+  public void run()
+  {
+    try
+    {
+      while (true)
+      {
+        new HTTPSession( serverSocket.accept(), executorService);
+      }
+    }
+    catch ( Throwable t )
+    {
+      
+    }
+  }
+  
+  public void start()
+  {
+    serverThread = executorService.submit(this);
+  }
+  
+  public void await()
+  {
+    try
+    {
+      if (serverThread != null)
+      {
+        serverThread.get();
+      }
+    }
+    catch (Throwable e)
+    {
+      
+    }
+  }
+  
   /**
    * Stops the server.
    */
@@ -288,13 +305,12 @@ public class VTNanoHTTPD
     try
     {
       serverSocket.close();
-      serverThread.join();
+      if (serverThread != null)
+      {
+        serverThread.get();
+      }
     }
-    catch ( IOException ioe )
-    {
-      
-    }
-    catch ( InterruptedException e )
+    catch ( Throwable e )
     {
       
     }
@@ -1390,7 +1406,8 @@ public class VTNanoHTTPD
   
   //private int myTcpPort;
   private final ServerSocket serverSocket;
-  private Thread serverThread;
+  //private Runnable serverRunnable;
+  private Future<?> serverThread;
   private File serverRootDir;
   
   // ==================================================
