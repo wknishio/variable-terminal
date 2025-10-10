@@ -245,10 +245,7 @@ public class VTLanternaConsole extends VTConsole
     {
       if (console.getIgnoreClose())
       {
-        if (console.getFrame() != null)
-        {
-          console.getFrame().setExtendedState(Frame.ICONIFIED);
-        }
+        console.getFrame().setExtendedState(Frame.ICONIFIED);
         return;
       }
       VTRuntimeExit.exit(0);
