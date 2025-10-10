@@ -306,15 +306,12 @@ public class VTNanoHTTPD implements Runnable, Closeable
     try
     {
       serverSocket.close();
-      if (serverFuture != null)
-      {
-        serverFuture.get();
-      }
     }
     catch ( Throwable e )
     {
       
     }
+    await();
   }
 
 
