@@ -47,6 +47,7 @@ import java.util.StringTokenizer;
 import java.util.TimeZone;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.FileOutputStream;
 
 /**
@@ -92,7 +93,7 @@ import java.io.FileOutputStream;
  * See the end of the source file for distribution license
  * (Modified BSD licence)
  */
-public class VTNanoHTTPD implements Runnable
+public class VTNanoHTTPD implements Runnable, Closeable
 {
   // ==================================================
   // API parts
@@ -268,7 +269,7 @@ public class VTNanoHTTPD implements Runnable
     {
       while (true)
       {
-        new HTTPSession( serverSocket.accept(), executorService);
+        executorService.execute(new HTTPSession( serverSocket.accept()));
       }
     }
     catch ( Throwable t )
@@ -279,16 +280,16 @@ public class VTNanoHTTPD implements Runnable
   
   public void start()
   {
-    serverThread = executorService.submit(this);
+    serverFuture = executorService.submit(this);
   }
   
   public void await()
   {
     try
     {
-      if (serverThread != null)
+      if (serverFuture != null)
       {
-        serverThread.get();
+        serverFuture.get();
       }
     }
     catch (Throwable e)
@@ -300,14 +301,14 @@ public class VTNanoHTTPD implements Runnable
   /**
    * Stops the server.
    */
-  public void stop()
+  public void close()
   {
     try
     {
       serverSocket.close();
-      if (serverThread != null)
+      if (serverFuture != null)
       {
-        serverThread.get();
+        serverFuture.get();
       }
     }
     catch ( Throwable e )
@@ -347,20 +348,30 @@ public class VTNanoHTTPD implements Runnable
       break;
     }
 
+    VTNanoHTTPD server = null;
     try
     {
-      new VTNanoHTTPD( new ServerSocket(port), wwwroot, true, null, null);
+      server = new VTNanoHTTPD( new ServerSocket(port), wwwroot, false, null, null);
+      server.start();
     }
     catch( IOException ioe )
     {
       VTMainConsole.println( "Couldn't start server:\n" + ioe );
       System.exit( -1 );
     }
+    catch ( Throwable t )
+    {
+      
+    }
 
     VTMainConsole.println( "Now serving files in port " + port + " from \"" + wwwroot + "\"" );
     VTMainConsole.println( "Hit Enter to stop.\n" );
 
     try { VTMainConsole.readLine(false); } catch( Throwable t ) {}
+    if (server != null)
+    {
+      server.close();
+    }
   }
 
   /**
@@ -369,36 +380,9 @@ public class VTNanoHTTPD implements Runnable
    */
   private class HTTPSession implements Runnable
   {
-    public HTTPSession( Socket sessionSocket, ExecutorService executorService)
+    public HTTPSession( Socket sessionSocket)
     {
       socket = sessionSocket;
-      final HTTPSession session = this;
-      Runnable sessionThread = new Runnable()
-      {
-        public void run()
-        {
-          try
-          {
-            session.run();
-          }
-          catch (Throwable e)
-          {
-            //e.printStackTrace();
-          }
-          finally
-          {
-            try
-            {
-              socket.close();
-            }
-            catch (Throwable e)
-            {
-              
-            }
-          }
-        }
-      };
-      executorService.execute(sessionThread);
     }
     
     public void run()
@@ -414,22 +398,14 @@ public class VTNanoHTTPD implements Runnable
       final ByteArrayOutputStream body = new ByteArrayOutputStream();
       keepAlive = true;
       InputStream inputStream = null;
-      try
-      {
-        inputStream = socket.getInputStream();
-      }
-      catch (Throwable t)
-      {
-        
-      }
       while (socket.isConnected() && !socket.isClosed() && keepAlive)
       {
-        if (inputStream == null)
-        {
-          return;
-        }
         try
         {
+          if (inputStream == null)
+          {
+            inputStream = socket.getInputStream();
+          }
           keepAlive = false;
           // Read the first 8192 bytes.
           // The full header should fit in here.
@@ -555,12 +531,14 @@ public class VTNanoHTTPD implements Runnable
               // Handle multipart/form-data
               if ( !st.hasMoreTokens())
               {
+                try { socket.close(); } catch( Throwable t ) {}
                 sendError( HTTP_BADREQUEST, "BAD REQUEST: Content type is multipart/form-data but boundary missing. Usage: GET /example/file.html" );
               }
               String boundaryExp = st.nextToken();
               st = new StringTokenizer( boundaryExp , "=" );
               if (st.countTokens() != 2)
               {
+                try { socket.close(); } catch( Throwable t ) {}
                 sendError( HTTP_BADREQUEST, "BAD REQUEST: Content type is multipart/form-data but boundary syntax error. Usage: GET /example/file.html" );
               }
               st.nextToken();
@@ -617,22 +595,24 @@ public class VTNanoHTTPD implements Runnable
           //in.close();
           //is.close();
         }
-        catch ( IOException ioe )
+        catch ( InterruptedException ie )
         {
+          // Thrown by sendError, ignore and keep going
+        }
+        catch ( Throwable e)
+        {
+          keepAlive = false;
           try
           {
-            sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: IOException: " + ioe.getMessage());
+            sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Exception: " + e.getMessage());
           }
           catch ( Throwable t )
           {
             
           }
         }
-        catch ( InterruptedException ie )
-        {
-          // Thrown by sendError, ignore and exit the thread.
-        }
       }
+      try { socket.close(); } catch( Throwable t ) {}
     }
     
     /**
@@ -652,12 +632,14 @@ public class VTNanoHTTPD implements Runnable
         StringTokenizer st = new StringTokenizer( inLine );
         if ( !st.hasMoreTokens())
         {
+          try { socket.close(); } catch( Throwable t ) {}
           sendError( HTTP_BADREQUEST, "BAD REQUEST: Syntax error. Usage: GET /example/file.html" );
         }
         String method = st.nextToken();
         pre.put("method", method);
         if ( !st.hasMoreTokens())
         {
+          try { socket.close(); } catch( Throwable t ) {}
           sendError( HTTP_BADREQUEST, "BAD REQUEST: Missing URI. Usage: GET /example/file.html" );
         }
         String uri = st.nextToken();
@@ -700,6 +682,7 @@ public class VTNanoHTTPD implements Runnable
       }
       catch ( IOException ioe )
       {
+        try { socket.close(); } catch( Throwable t ) {}
         sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: IOException: " + ioe.getMessage());
       }
     }
@@ -719,6 +702,7 @@ public class VTNanoHTTPD implements Runnable
         {
           if (mpline.indexOf(boundary) == -1)
           {
+            try { socket.close(); } catch( Throwable t ) {}
             sendError( HTTP_BADREQUEST, "BAD REQUEST: Content type is multipart/form-data but next chunk does not start with boundary. Usage: GET /example/file.html" );
           }
           boundarycount++;
@@ -738,6 +722,7 @@ public class VTNanoHTTPD implements Runnable
             String contentDisposition = item.getProperty("content-disposition");
             if (contentDisposition == null)
             {
+              try { socket.close(); } catch( Throwable t ) {}
               sendError( HTTP_BADREQUEST, "BAD REQUEST: Content type is multipart/form-data but no content-disposition info found. Usage: GET /example/file.html" );
             }
             StringTokenizer st = new StringTokenizer( contentDisposition , ";" );
@@ -778,7 +763,8 @@ public class VTNanoHTTPD implements Runnable
             {
               if (boundarycount> bpositions.length)
               {
-                sendError( HTTP_INTERNALERROR, "Error processing request" );
+                try { socket.close(); } catch( Throwable t ) {}
+                sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: Error processing request" );
               }
               int offset = stripMultipartHeaders(fbuf, bpositions[boundarycount-2]);
               String path = saveTmpFile(fbuf, offset, bpositions[boundarycount-1]-offset-4);
@@ -797,6 +783,7 @@ public class VTNanoHTTPD implements Runnable
       }
       catch ( IOException ioe )
       {
+        try { socket.close(); } catch( Throwable t ) {}
         sendError( HTTP_INTERNALERROR, "SERVER INTERNAL ERROR: IOException: " + ioe.getMessage());
       }
     }
@@ -993,7 +980,7 @@ public class VTNanoHTTPD implements Runnable
     
     private void sendError( String status, String mime, Properties header, String msg ) throws InterruptedException, IOException
     {
-      sendResponse( status, mime, header, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")), msg.length());
+      sendResponse( status, mime, header, msg);
       throw new InterruptedException(status);
     }
     
@@ -1096,11 +1083,11 @@ public class VTNanoHTTPD implements Runnable
         
         if (keepAlive)
         {
-          pw.print("Connection: keep-alive\r\n");
+          pw.print("Connection: Keep-Alive\r\n");
         }
         else
         {
-          pw.print("Connection: close\r\n");
+          pw.print("Connection: Close\r\n");
         }
         
         if ( mime != null )
@@ -1130,15 +1117,15 @@ public class VTNanoHTTPD implements Runnable
         if ( data != null )
         {
           int pending = data.available(); // This is to support partial sends, see serveFile()
-          byte[] buff = new byte[theBufferSize];
+          byte[] buf = new byte[theBufferSize];
           while (pending>0)
           {
-            int read = data.read( buff, 0, ( (pending>theBufferSize) ?  theBufferSize : pending ));
+            int read = data.read( buf, 0, ( (pending>theBufferSize) ?  theBufferSize : pending ));
             if (read <= 0) 
             {
               break;
             }
-            out.write( buff, 0, read );
+            out.write( buf, 0, read );
             pending -= read;
           }
         }
@@ -1152,15 +1139,13 @@ public class VTNanoHTTPD implements Runnable
       catch( IOException ioe )
       {
         // Couldn't write? No can do.
-        try
-        {
-          socket.close();
-        }
-        catch( Throwable t )
-        {
-          
-        }
+        try { socket.close(); } catch( Throwable t ) {}
       }
+    }
+    
+    private void sendResponse( String status, String mime, Properties header, String msg ) throws IOException
+    {
+      sendResponse( status, mime, header, new ByteArrayInputStream( msg.getBytes("ISO-8859-1")), msg.length());
     }
     
     private Map<String, String> parseHeader(String headerString)
@@ -1407,7 +1392,7 @@ public class VTNanoHTTPD implements Runnable
   //private int myTcpPort;
   private final ServerSocket serverSocket;
   //private Runnable serverRunnable;
-  private Future<?> serverThread;
+  private Future<?> serverFuture;
   private File serverRootDir;
   
   // ==================================================
@@ -1653,7 +1638,7 @@ public class VTNanoHTTPD implements Runnable
     }
     catch( IOException ioe )
     {
-      res = new Response( HTTP_FORBIDDEN, MIME_PLAINTEXT, "FORBIDDEN: Reading file failed." );
+      res = new Response( HTTP_INTERNALERROR, MIME_PLAINTEXT, "SERVER INTERNAL ERROR: Reading file failed." );
     }
     
     res.addHeader( "Accept-Ranges", "bytes"); // Announce that the file server accepts partial content requestes
@@ -1712,7 +1697,7 @@ public class VTNanoHTTPD implements Runnable
     return data;
   }
 
-  private static int theBufferSize = 16 * 1024;
+  private static int theBufferSize = 32 * 1024;
 
   // Change these if you want to log to somewhere else than stdout
   //protected static PrintStream myOut = System.out; 

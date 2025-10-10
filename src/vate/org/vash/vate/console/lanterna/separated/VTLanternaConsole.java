@@ -1,5 +1,6 @@
 package org.vash.vate.console.lanterna.separated;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -55,7 +56,6 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.TextColor.ANSI;
 import com.googlecode.lanterna.graphics.PropertyTheme;
 import com.googlecode.lanterna.gui2.BasicWindow;
-import com.googlecode.lanterna.gui2.BorderLayout;
 import com.googlecode.lanterna.gui2.DefaultWindowManager;
 import com.googlecode.lanterna.gui2.InputFilter;
 import com.googlecode.lanterna.gui2.Interactable;
@@ -82,25 +82,25 @@ import com.googlecode.lanterna.terminal.swing.TerminalEmulatorPalette;
 public class VTLanternaConsole extends VTConsole
 {
   public static final TerminalEmulatorPalette CUSTOM_PALETTE = new TerminalEmulatorPalette(
-  new java.awt.Color(188, 188, 188), //defaultColor
-  new java.awt.Color(255, 255, 255), //defaultBrightColor
-  new java.awt.Color(0, 0, 0), //defaultBackgroundColor
-  new java.awt.Color(0, 0, 0), //normalBlack
-  new java.awt.Color(94, 94, 94), //brightBlack
-  new java.awt.Color(188, 0, 0), //normalRed
-  new java.awt.Color(255, 47, 47), //brightRed
-  new java.awt.Color(0, 188, 0), //normalGreen
-  new java.awt.Color(47, 255, 47), //brightGreen
-  new java.awt.Color(188, 188, 0), //normalYellow
-  new java.awt.Color(255, 255, 47), //brightYellow
-  new java.awt.Color(0, 0, 188), //normalBlue
-  new java.awt.Color(47, 47, 255), //brightBlue
-  new java.awt.Color(188, 0, 188), //normalMagenta
-  new java.awt.Color(255, 47, 255), //brightMagenta
-  new java.awt.Color(0, 188, 188), //normalCyan
-  new java.awt.Color(47, 255, 255), //brightCyan
-  new java.awt.Color(188, 188, 188), //normalWhite
-  new java.awt.Color(255, 255, 255)); //brightWhite
+  new Color(188, 188, 188), //defaultColor
+  new Color(255, 255, 255), //defaultBrightColor
+  new Color(0, 0, 0), //defaultBackgroundColor
+  new Color(0, 0, 0), //normalBlack
+  new Color(94, 94, 94), //brightBlack
+  new Color(188, 0, 0), //normalRed
+  new Color(255, 47, 47), //brightRed
+  new Color(0, 188, 0), //normalGreen
+  new Color(47, 255, 47), //brightGreen
+  new Color(188, 188, 0), //normalYellow
+  new Color(255, 255, 47), //brightYellow
+  new Color(0, 0, 188), //normalBlue
+  new Color(47, 47, 255), //brightBlue
+  new Color(188, 0, 188), //normalMagenta
+  new Color(255, 47, 255), //brightMagenta
+  new Color(0, 188, 188), //normalCyan
+  new Color(47, 255, 255), //brightCyan
+  new Color(188, 188, 188), //normalWhite
+  new Color(255, 255, 255)); //brightWhite
   
   private Frame frame;
   private AWTTerminalPanel panel;
@@ -620,7 +620,7 @@ public class VTLanternaConsole extends VTConsole
     AWTTerminalFontConfiguration.setBaseFontSize(VTFontManager.BASE_FONT_SIZE_MONOSPACED);
     AWTTerminalFontConfiguration.setFontScalingFactor(VTFontManager.FONT_SCALING_FACTOR_MONOSPACED);
     DefaultTerminalFactory factory = new DefaultTerminalFactory();
-    factory.setLastLineBackground(new java.awt.Color(94, 94, 94));
+    factory.setLastLineBackground(new Color(94, 94, 94));
     factory.setForceAWTOverSwing(true);
     // factory.addTerminalEmulatorFrameAutoCloseTrigger(TerminalEmulatorAutoCloseTrigger.CloseOnExitPrivateMode);
     factory.setInitialTerminalSize(new TerminalSize(consoleOutputColumns, consoleOutputLines + consoleInputLines));
@@ -642,7 +642,7 @@ public class VTLanternaConsole extends VTConsole
     // factory.setForceTextTerminal(true);
     if (graphical && frame != null)
     {
-      terminal = factory.createAWTTerminalPanel(frame, new java.awt.Color(94, 94, 94));
+      terminal = factory.createAWTTerminalPanel(frame, new Color(94, 94, 94));
     }
     else
     {
@@ -878,7 +878,7 @@ public class VTLanternaConsole extends VTConsole
     //terminal.setForegroundColor(TextColor.ANSI.GREEN_BRIGHT);
     
     com.googlecode.lanterna.gui2.Panel mainPanel = new com.googlecode.lanterna.gui2.Panel();
-    mainPanel.setLayoutManager(new BorderLayout());
+    mainPanel.setLayoutManager(new com.googlecode.lanterna.gui2.BorderLayout());
     
     // outputBox.setReadOnly(true);
     outputBox.setTerminal(terminal);
@@ -966,9 +966,9 @@ public class VTLanternaConsole extends VTConsole
       spacer1.setBackground(SystemColor.control);
       spacer1.setFocusable(false);
       
-      panel.getCenterPanel().add(verticalScrollbar, java.awt.BorderLayout.EAST);
-      panel.getBottomPanel().add(horizontalScrollbar, java.awt.BorderLayout.CENTER);
-      panel.getBottomPanel().add(spacer1, java.awt.BorderLayout.EAST);
+      panel.getCenterPanel().add(verticalScrollbar, BorderLayout.EAST);
+      panel.getBottomPanel().add(horizontalScrollbar, BorderLayout.CENTER);
+      panel.getBottomPanel().add(spacer1, BorderLayout.EAST);
       
       panel.setDropTarget(new DropTarget());
       panel.getDropTarget().setActive(true);
@@ -1514,13 +1514,13 @@ public class VTLanternaConsole extends VTConsole
     });
     
     com.googlecode.lanterna.gui2.Panel bottonPanel = new com.googlecode.lanterna.gui2.Panel();
-    bottonPanel.setLayoutManager(new BorderLayout());
+    bottonPanel.setLayoutManager(new com.googlecode.lanterna.gui2.BorderLayout());
     
     // bottonPanel.addComponent(promptLabel, BorderLayout.Location.LEFT);
-    bottonPanel.addComponent(inputBox, BorderLayout.Location.CENTER);
+    bottonPanel.addComponent(inputBox, com.googlecode.lanterna.gui2.BorderLayout.Location.CENTER);
     
-    mainPanel.addComponent(outputBox, BorderLayout.Location.CENTER);
-    mainPanel.addComponent(bottonPanel, BorderLayout.Location.BOTTOM);
+    mainPanel.addComponent(outputBox, com.googlecode.lanterna.gui2.BorderLayout.Location.CENTER);
+    mainPanel.addComponent(bottonPanel, com.googlecode.lanterna.gui2.BorderLayout.Location.BOTTOM);
     
     // Create window to hold the panel
     window = new BasicWindow();
