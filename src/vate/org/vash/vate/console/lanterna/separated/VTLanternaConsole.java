@@ -2,6 +2,7 @@ package org.vash.vate.console.lanterna.separated;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Panel;
@@ -103,6 +104,7 @@ public class VTLanternaConsole extends VTConsole
   new Color(255, 255, 255)); //brightWhite
   
   private Frame frame;
+  private Container container;
   private AWTTerminalPanel panel;
   private Panel spacer1;
   private Terminal terminal;
@@ -173,13 +175,17 @@ public class VTLanternaConsole extends VTConsole
   // support command drag drop for awtframe
   // support keyboard shortcuts
   
-  public VTLanternaConsole(boolean graphical, boolean remoteIcon, Frame frame)
+  public VTLanternaConsole(boolean graphical, boolean remoteIcon, Container container)
   {
     // this.commandHistory.add("");
     // this.commandHistory.add(null);
     this.graphical = graphical;
     this.remoteIcon = remoteIcon;
-    this.frame = frame;
+    this.container = container;
+    if (container instanceof Frame)
+    {
+      this.frame = (Frame) container;
+    }
     this.console = this;
     Thread builderThread = new Thread()
     {
@@ -239,7 +245,10 @@ public class VTLanternaConsole extends VTConsole
     {
       if (console.getIgnoreClose())
       {
-        console.getFrame().setExtendedState(Frame.ICONIFIED);
+        if (console.getFrame() != null)
+        {
+          console.getFrame().setExtendedState(Frame.ICONIFIED);
+        }
         return;
       }
       VTRuntimeExit.exit(0);
@@ -640,9 +649,9 @@ public class VTLanternaConsole extends VTConsole
     // final Scrollbar scrollBar = null;
     
     // factory.setForceTextTerminal(true);
-    if (graphical && frame != null)
+    if (graphical && container != null)
     {
-      terminal = factory.createAWTTerminalPanel(frame, new Color(94, 94, 94));
+      terminal = factory.createAWTTerminalPanel(container, new Color(94, 94, 94));
     }
     else
     {
@@ -3066,7 +3075,23 @@ public class VTLanternaConsole extends VTConsole
   
   public Frame getFrame()
   {
-    return frame;
+    if (frame != null)
+    {
+      return frame;
+    }
+    if (container != null)
+    {
+      Container parent = container;
+      while (parent != null)
+      {
+        if (parent instanceof Frame)
+        {
+          return (Frame) parent;
+        }
+        parent = parent.getParent();
+      }
+    }
+    return null;
   }
   
   public Panel getPanel()
