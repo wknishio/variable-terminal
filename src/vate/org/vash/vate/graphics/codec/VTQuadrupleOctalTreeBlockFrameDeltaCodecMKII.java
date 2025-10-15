@@ -1997,8 +1997,8 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     offset = areaX + ((areaY) * (pixelStepY));
     //int paddingOffset = PADDING_SIZE + (width * PADDING_SIZE);
     limitX = areaWidth;
-    limitY = (pixelStepY * areaHeight);
-    r1 = 8 - ((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7;
+    limitY = pixelStepY * areaHeight;
+    r1 = 8 - (((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7);
     r2 = 8 - (((limitY) / pixelStepY) & 7);
     transferArea.x = areaX;
     transferArea.y = areaY;
@@ -2037,7 +2037,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     offset = lin.readInt();
     limitX = lin.readInt();
     limitY = lin.readInt();
-    r1 = 8 - ((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7;
+    r1 = 8 - (((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7);
     r2 = 8 - (((limitY) / pixelStepY) & 7);
     decodeBlock0Tree8(lin, oldPixelData, newPixelData);
     //VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width, height, transferArea);
@@ -2066,8 +2066,8 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     offset = areaX + ((areaY) * (pixelStepY));
     //int paddingOffset = PADDING_SIZE + (width * PADDING_SIZE);
     limitX = areaWidth;
-    limitY = (pixelStepY * areaHeight);
-    r1 = 8 - ((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7;
+    limitY = pixelStepY * areaHeight;
+    r1 = 8 - (((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7);
     r2 = 8 - (((limitY) / pixelStepY) & 7);
     transferArea.x = areaX;
     transferArea.y = areaY;
@@ -2105,7 +2105,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     offset = lin.readInt();
     limitX = lin.readInt();
     limitY = lin.readInt();
-    r1 = 8 - ((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7;
+    r1 = 8 - (((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7);
     r2 = 8 - (((limitY) / pixelStepY) & 7);
     decodeBlock0Tree15(lin, oldPixelData, newPixelData);
     //VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width, height, transferArea);
@@ -2134,8 +2134,8 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     offset = areaX + ((areaY) * (pixelStepY));
     //int paddingOffset = PADDING_SIZE + (width * PADDING_SIZE);
     limitX = areaWidth;
-    limitY = (pixelStepY * areaHeight);
-    r1 = 8 - ((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7;
+    limitY = pixelStepY * areaHeight;
+    r1 = 8 - (((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7);
     r2 = 8 - (((limitY) / pixelStepY) & 7);
     transferArea.x = areaX;
     transferArea.y = areaY;
@@ -2173,7 +2173,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     offset = lin.readInt();
     limitX = lin.readInt();
     limitY = lin.readInt();
-    r1 = 8 - ((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7;
+    r1 = 8 - (((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7);
     r2 = 8 - (((limitY) / pixelStepY) & 7);
     decodeBlock0Tree24(lin, oldPixelData, newPixelData);
     //VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width, height, transferArea);
@@ -2202,8 +2202,8 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     offset = areaX + ((areaY) * (pixelStepY));
     //int paddingOffset = PADDING_SIZE + (width * PADDING_SIZE);
     limitX = areaWidth;
-    limitY = (pixelStepY * areaHeight);
-    r1 = 8 - ((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7;
+    limitY = pixelStepY * areaHeight;
+    r1 = 8 - (((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7);
     r2 = 8 - (((limitY) / pixelStepY) & 7);
     transferArea.x = areaX;
     transferArea.y = areaY;
@@ -2241,7 +2241,7 @@ public final class VTQuadrupleOctalTreeBlockFrameDeltaCodecMKII
     offset = lin.readInt();
     limitX = lin.readInt();
     limitY = lin.readInt();
-    r1 = 8 - ((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7;
+    r1 = 8 - (((int) Math.ceil((((double) limitY) / pixelStepY) / 8)) & 7);
     r2 = 8 - (((limitY) / pixelStepY) & 7);
     decodeBlock0Tree30(lin, oldPixelData, newPixelData);
     //VTImageDataUtils.copyArea(newPixelData, oldPixelData, 0, width, height, transferArea);
