@@ -304,7 +304,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
     needRefresh = false;
     List<VTRectangle> blockAreas = VTImageDataUtils.splitBlockArea(imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
     //System.out.println("blocks_before:" + blockAreas.size());
-    blockAreas = VTImageDataUtils.mergeNeighbourVTRectangles(blockAreas);
+    blockAreas = VTImageDataUtils.mergeNeighbourAreas(blockAreas);
     //System.out.println("blocks_after:" + blockAreas.size());
     connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_STANDARD_REFRESH_FRAME);
     if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
@@ -460,7 +460,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
       blockAreas = VTImageDataUtils.compareBlockArea(lastImageBufferInt, previousImageBufferInt, 0, imageDataBuffer.getWidth(), imageDataBuffer.getHeight(), resultArea, 64, 64);
     }
     //System.out.println("blocks_before:" + blockAreas.size());
-    blockAreas = VTImageDataUtils.mergeNeighbourVTRectangles(blockAreas);
+    blockAreas = VTImageDataUtils.mergeNeighbourAreas(blockAreas);
     //System.out.println("blocks_after:" + blockAreas.size());
     connection.getGraphicsControlDataOutputStream().write(VTSystem.VT_GRAPHICS_LINK_IMAGE_STANDARD_DIFFERENTIAL_FRAME);
     if (imageCoding == VTSystem.VT_GRAPHICS_LINK_IMAGE_ENCODING_FORMAT_JPG)
@@ -993,15 +993,15 @@ public class VTGraphicsLinkServerWriter implements Runnable
                   boolean different = false;
                   if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
                   {
-                    different = !VTImageDataUtils.deltaArea(lastImageBufferByte, previousImageBufferByte, 0, lastWidth, lastHeight, null, resultArea);
+                    different = !VTImageDataUtils.compareArea(lastImageBufferByte, previousImageBufferByte, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
                   {
-                    different = !VTImageDataUtils.deltaArea(lastImageBufferUShort, previousImageBufferUShort, 0, lastWidth, lastHeight, null, resultArea);
+                    different = !VTImageDataUtils.compareArea(lastImageBufferUShort, previousImageBufferUShort, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
                   {
-                    different = !VTImageDataUtils.deltaArea(lastImageBufferInt, previousImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
+                    different = !VTImageDataUtils.compareArea(lastImageBufferInt, previousImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   if (different)
                   {
@@ -1056,7 +1056,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
                     lastImageBufferInt = null;
                     previousImageBufferInt = null;
                     VTImageIO.clearBuffer(previousImageBufferByte, BufferedImage.TYPE_BYTE_INDEXED, lastColors, 0);
-                    VTImageDataUtils.deltaArea(lastImageBufferByte, previousImageBufferByte, 0, lastWidth, lastHeight, null, resultArea);
+                    VTImageDataUtils.compareArea(lastImageBufferByte, previousImageBufferByte, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
                   {
@@ -1070,7 +1070,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
                     lastImageBufferInt = null;
                     previousImageBufferInt = null;
                     VTImageIO.clearBuffer(previousImageBufferUShort, BufferedImage.TYPE_USHORT_555_RGB, lastColors, 0);
-                    VTImageDataUtils.deltaArea(lastImageBufferUShort, previousImageBufferUShort, 0, lastWidth, lastHeight, null, resultArea);
+                    VTImageDataUtils.compareArea(lastImageBufferUShort, previousImageBufferUShort, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
                   {
@@ -1084,7 +1084,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
                       previousImageBufferInt = new int[lastWidth * lastHeight];
                     }
                     VTImageIO.clearBuffer(previousImageBufferInt, BufferedImage.TYPE_INT_RGB, lastColors, 0);
-                    VTImageDataUtils.deltaArea(lastImageBufferInt, previousImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
+                    VTImageDataUtils.compareArea(lastImageBufferInt, previousImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   sendImageRefresh();
                   if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
@@ -1117,15 +1117,15 @@ public class VTGraphicsLinkServerWriter implements Runnable
                   boolean different = false;
                   if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_BYTE)
                   {
-                    different = !VTImageDataUtils.deltaArea(previousImageBufferByte, lastImageBufferByte, 0, lastWidth, lastHeight, null, resultArea);
+                    different = !VTImageDataUtils.compareArea(previousImageBufferByte, lastImageBufferByte, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
                   {
-                    different = !VTImageDataUtils.deltaArea(previousImageBufferUShort, lastImageBufferUShort, 0, lastWidth, lastHeight, null, resultArea);
+                    different = !VTImageDataUtils.compareArea(previousImageBufferUShort, lastImageBufferUShort, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
                   {
-                    different = !VTImageDataUtils.deltaArea(previousImageBufferInt, lastImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
+                    different = !VTImageDataUtils.compareArea(previousImageBufferInt, lastImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   //resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
                   //resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);
@@ -1164,7 +1164,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
                     lastImageBufferInt = null;
                     previousImageBufferInt = null;
                     VTImageIO.clearBuffer(previousImageBufferByte, BufferedImage.TYPE_BYTE_INDEXED, lastColors, 0);
-                    VTImageDataUtils.deltaArea(lastImageBufferByte, previousImageBufferByte, 0, lastWidth, lastHeight, null, resultArea);
+                    VTImageDataUtils.compareArea(lastImageBufferByte, previousImageBufferByte, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_USHORT)
                   {
@@ -1178,7 +1178,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
                     lastImageBufferInt = null;
                     previousImageBufferInt = null;
                     VTImageIO.clearBuffer(previousImageBufferUShort, BufferedImage.TYPE_USHORT_555_RGB, lastColors, 0);
-                    VTImageDataUtils.deltaArea(lastImageBufferUShort, previousImageBufferUShort, 0, lastWidth, lastHeight, null, resultArea);
+                    VTImageDataUtils.compareArea(lastImageBufferUShort, previousImageBufferUShort, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   else if (imageDataBuffer.getRaster().getDataBuffer().getDataType() == DataBuffer.TYPE_INT)
                   {
@@ -1192,7 +1192,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
                       previousImageBufferInt = new int[lastWidth * lastHeight];
                     }
                     VTImageIO.clearBuffer(previousImageBufferInt, BufferedImage.TYPE_INT_RGB, lastColors, 0);
-                    VTImageDataUtils.deltaArea(lastImageBufferInt, previousImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
+                    VTImageDataUtils.compareArea(lastImageBufferInt, previousImageBufferInt, 0, lastWidth, lastHeight, null, resultArea);
                   }
                   //resultArea.x = Math.max(resultArea.x - CODEC_PADDING_SIZE, 0);
                   //resultArea.y = Math.max(resultArea.y - CODEC_PADDING_SIZE, 0);

@@ -63,7 +63,7 @@ public final class VTImageDataUtils
     return blockAreas;
   }
   
-  public static final List<VTRectangle> mergeNeighbourVTRectangles(final List<VTRectangle> rectangles)
+  public static final List<VTRectangle> mergeNeighbourAreas(final List<VTRectangle> areas)
   {
     //Collections.sort(rectangles, rectangleComparator);
     boolean found = false;
@@ -73,7 +73,7 @@ public final class VTImageDataUtils
     do
     {
       found = false;
-      iterator = rectangles.listIterator();
+      iterator = areas.listIterator();
       current = null;
       next = null;
       if (iterator.hasNext())
@@ -101,7 +101,7 @@ public final class VTImageDataUtils
       }
     }
     while (found);
-    return rectangles;
+    return areas;
   }
   
   public static final void copyArea(final byte[] source, final byte[] destination, final int offset, final int width, final int height, final VTRectangle transferArea)
@@ -843,7 +843,7 @@ public final class VTImageDataUtils
     }
   }
   
-  public static final boolean deltaArea(final byte[] array1, final byte[] array2, int offset, final int width, final int height, final VTRectangle captureArea, final VTRectangle resultArea)
+  public static final boolean compareArea(final byte[] array1, final byte[] array2, int offset, final int width, final int height, final VTRectangle captureArea, final VTRectangle resultArea)
   {
     if (width * height == 0)
     {
@@ -927,7 +927,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean deltaArea(final short[] array1, final short[] array2, int offset, final int width, final int height, final VTRectangle captureArea, final VTRectangle resultArea)
+  public static final boolean compareArea(final short[] array1, final short[] array2, int offset, final int width, final int height, final VTRectangle captureArea, final VTRectangle resultArea)
   {
     if (width * height == 0)
     {
@@ -1011,7 +1011,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean deltaArea(final int[] array1, final int[] array2, int offset, final int width, final int height, final VTRectangle captureArea, final VTRectangle resultArea)
+  public static final boolean compareArea(final int[] array1, final int[] array2, int offset, final int width, final int height, final VTRectangle captureArea, final VTRectangle resultArea)
   {
     if (width * height == 0)
     {
@@ -1095,7 +1095,7 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final boolean deltaArea(final long[] array1, final long[] array2, int offset, final int width, final int height, final VTRectangle captureArea, final VTRectangle resultArea)
+  public static final boolean compareArea(final long[] array1, final long[] array2, int offset, final int width, final int height, final VTRectangle captureArea, final VTRectangle resultArea)
   {
     if (width * height == 0)
     {
@@ -1179,97 +1179,97 @@ public final class VTImageDataUtils
     return bits == 0;
   }
   
-  public static final List<VTRectangle> deltaBlockArea(final byte[] array1, final byte[] array2, final int offset, final int width, final int height, final VTRectangle captureArea, final int blockWidth, final int blockHeight)
-  {
-    List<VTRectangle> deltaAreas = new LinkedList<VTRectangle>();
-    VTRectangle blockArea = new VTRectangle(0, 0, 1, 1);
-    int i, j;
-    for (i = 0; i < captureArea.height; i += blockHeight)
-    {
-      for (j = 0; j < captureArea.width; j += blockWidth)
-      {
-        blockArea.x = captureArea.x + j;
-        blockArea.y = captureArea.y + i;
-        blockArea.width = Math.min(blockWidth, captureArea.width - j);
-        blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        VTRectangle deltaArea = new VTRectangle(0, 0, 1, 1);
-        if (!deltaArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
-        {
-          deltaAreas.add(deltaArea);
-        }
-      }
-    }
-    return deltaAreas;
-  }
-  
-  public static final List<VTRectangle> deltaBlockArea(final short[] array1, final short[] array2, final int offset, final int width, final int height, final VTRectangle captureArea, final int blockWidth, final int blockHeight)
-  {
-    List<VTRectangle> deltaAreas = new LinkedList<VTRectangle>();
-    VTRectangle blockArea = new VTRectangle(0, 0, 1, 1);
-    int i, j;
-    for (i = 0; i < captureArea.height; i += blockHeight)
-    {
-      for (j = 0; j < captureArea.width; j += blockWidth)
-      {
-        blockArea.x = captureArea.x + j;
-        blockArea.y = captureArea.y + i;
-        blockArea.width = Math.min(blockWidth, captureArea.width - j);
-        blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        VTRectangle deltaArea = new VTRectangle(0, 0, 1, 1);
-        if (!deltaArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
-        {
-          deltaAreas.add(deltaArea);
-        }
-      }
-    }
-    return deltaAreas;
-  }
-  
-  public static final List<VTRectangle> deltaBlockArea(final int[] array1, final int[] array2, final int offset, final int width, final int height, final VTRectangle captureArea, final int blockWidth, final int blockHeight)
-  {
-    List<VTRectangle> deltaAreas = new LinkedList<VTRectangle>();
-    VTRectangle blockArea = new VTRectangle(0, 0, 1, 1);
-    int i, j;
-    for (i = 0; i < captureArea.height; i += blockHeight)
-    {
-      for (j = 0; j < captureArea.width; j += blockWidth)
-      {
-        blockArea.x = captureArea.x + j;
-        blockArea.y = captureArea.y + i;
-        blockArea.width = Math.min(blockWidth, captureArea.width - j);
-        blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        VTRectangle deltaArea = new VTRectangle(0, 0, 1, 1);
-        if (!deltaArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
-        {
-          deltaAreas.add(deltaArea);
-        }
-      }
-    }
-    return deltaAreas;
-  }
-  
-  public static final List<VTRectangle> deltaBlockArea(final long[] array1, final long[] array2, final int offset, final int width, final int height, final VTRectangle captureArea, final int blockWidth, final int blockHeight)
-  {
-    List<VTRectangle> deltaAreas = new LinkedList<VTRectangle>();
-    VTRectangle blockArea = new VTRectangle(0, 0, 1, 1);
-    int i, j;
-    for (i = 0; i < captureArea.height; i += blockHeight)
-    {
-      for (j = 0; j < captureArea.width; j += blockWidth)
-      {
-        blockArea.x = captureArea.x + j;
-        blockArea.y = captureArea.y + i;
-        blockArea.width = Math.min(blockWidth, captureArea.width - j);
-        blockArea.height = Math.min(blockHeight, captureArea.height - i);
-        VTRectangle deltaArea = new VTRectangle(0, 0, 1, 1);
-        if (!deltaArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
-        {
-          deltaAreas.add(deltaArea);
-        }
-      }
-    }
-    return deltaAreas;
-  }
+//  public static final List<VTRectangle> deltaBlockArea(final byte[] array1, final byte[] array2, final int offset, final int width, final int height, final VTRectangle captureArea, final int blockWidth, final int blockHeight)
+//  {
+//    List<VTRectangle> deltaAreas = new LinkedList<VTRectangle>();
+//    VTRectangle blockArea = new VTRectangle(0, 0, 1, 1);
+//    int i, j;
+//    for (i = 0; i < captureArea.height; i += blockHeight)
+//    {
+//      for (j = 0; j < captureArea.width; j += blockWidth)
+//      {
+//        blockArea.x = captureArea.x + j;
+//        blockArea.y = captureArea.y + i;
+//        blockArea.width = Math.min(blockWidth, captureArea.width - j);
+//        blockArea.height = Math.min(blockHeight, captureArea.height - i);
+//        VTRectangle deltaArea = new VTRectangle(0, 0, 1, 1);
+//        if (!compareArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
+//        {
+//          deltaAreas.add(deltaArea);
+//        }
+//      }
+//    }
+//    return deltaAreas;
+//  }
+//  
+//  public static final List<VTRectangle> deltaBlockArea(final short[] array1, final short[] array2, final int offset, final int width, final int height, final VTRectangle captureArea, final int blockWidth, final int blockHeight)
+//  {
+//    List<VTRectangle> deltaAreas = new LinkedList<VTRectangle>();
+//    VTRectangle blockArea = new VTRectangle(0, 0, 1, 1);
+//    int i, j;
+//    for (i = 0; i < captureArea.height; i += blockHeight)
+//    {
+//      for (j = 0; j < captureArea.width; j += blockWidth)
+//      {
+//        blockArea.x = captureArea.x + j;
+//        blockArea.y = captureArea.y + i;
+//        blockArea.width = Math.min(blockWidth, captureArea.width - j);
+//        blockArea.height = Math.min(blockHeight, captureArea.height - i);
+//        VTRectangle deltaArea = new VTRectangle(0, 0, 1, 1);
+//        if (!compareArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
+//        {
+//          deltaAreas.add(deltaArea);
+//        }
+//      }
+//    }
+//    return deltaAreas;
+//  }
+//  
+//  public static final List<VTRectangle> deltaBlockArea(final int[] array1, final int[] array2, final int offset, final int width, final int height, final VTRectangle captureArea, final int blockWidth, final int blockHeight)
+//  {
+//    List<VTRectangle> deltaAreas = new LinkedList<VTRectangle>();
+//    VTRectangle blockArea = new VTRectangle(0, 0, 1, 1);
+//    int i, j;
+//    for (i = 0; i < captureArea.height; i += blockHeight)
+//    {
+//      for (j = 0; j < captureArea.width; j += blockWidth)
+//      {
+//        blockArea.x = captureArea.x + j;
+//        blockArea.y = captureArea.y + i;
+//        blockArea.width = Math.min(blockWidth, captureArea.width - j);
+//        blockArea.height = Math.min(blockHeight, captureArea.height - i);
+//        VTRectangle deltaArea = new VTRectangle(0, 0, 1, 1);
+//        if (!compareArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
+//        {
+//          deltaAreas.add(deltaArea);
+//        }
+//      }
+//    }
+//    return deltaAreas;
+//  }
+//  
+//  public static final List<VTRectangle> deltaBlockArea(final long[] array1, final long[] array2, final int offset, final int width, final int height, final VTRectangle captureArea, final int blockWidth, final int blockHeight)
+//  {
+//    List<VTRectangle> deltaAreas = new LinkedList<VTRectangle>();
+//    VTRectangle blockArea = new VTRectangle(0, 0, 1, 1);
+//    int i, j;
+//    for (i = 0; i < captureArea.height; i += blockHeight)
+//    {
+//      for (j = 0; j < captureArea.width; j += blockWidth)
+//      {
+//        blockArea.x = captureArea.x + j;
+//        blockArea.y = captureArea.y + i;
+//        blockArea.width = Math.min(blockWidth, captureArea.width - j);
+//        blockArea.height = Math.min(blockHeight, captureArea.height - i);
+//        VTRectangle deltaArea = new VTRectangle(0, 0, 1, 1);
+//        if (!compareArea(array1, array2, offset, width, height, blockArea, deltaArea) && deltaArea.width != 0 && deltaArea.height != 0)
+//        {
+//          deltaAreas.add(deltaArea);
+//        }
+//      }
+//    }
+//    return deltaAreas;
+//  }
   
   // private static final int DCM_RED_MASK = 0x00ff0000;
   // private static final int DCM_GREEN_MASK = 0x0000ff00;
