@@ -16,8 +16,8 @@ package io.airlift.compress.zstd;
 import static io.airlift.compress.zstd.Constants.MAX_BLOCK_SIZE;
 import static io.airlift.compress.zstd.Constants.MAX_WINDOW_LOG;
 import static io.airlift.compress.zstd.Constants.MIN_WINDOW_LOG;
-import static io.airlift.compress.zstd.Util.cycleLog;
-import static io.airlift.compress.zstd.Util.highestBit;
+import static io.airlift.compress.zstd.ZstdUtil.cycleLog;
+import static io.airlift.compress.zstd.ZstdUtil.highestBit;
 
 class CompressionParameters
 {

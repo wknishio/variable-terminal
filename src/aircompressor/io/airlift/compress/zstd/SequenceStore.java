@@ -141,7 +141,7 @@ class SequenceStore
     {
         for (int i = 0; i < sequenceCount; ++i) {
             literalLengthCodes[i] = (byte) literalLengthToCode(literalLengths[i]);
-            offsetCodes[i] = (byte) Util.highestBit(offsets[i]);
+            offsetCodes[i] = (byte) ZstdUtil.highestBit(offsets[i]);
             matchLengthCodes[i] = (byte) matchLengthToCode(matchLengths[i]);
         }
 
@@ -156,7 +156,7 @@ class SequenceStore
     private static int literalLengthToCode(int literalLength)
     {
         if (literalLength >= 64) {
-            return Util.highestBit(literalLength) + 19;
+            return ZstdUtil.highestBit(literalLength) + 19;
         }
         else {
             return LITERAL_LENGTH_CODE[literalLength];
@@ -170,7 +170,7 @@ class SequenceStore
     private static int matchLengthToCode(int matchLengthBase)
     {
         if (matchLengthBase >= 128) {
-            return Util.highestBit(matchLengthBase) + 36;
+            return ZstdUtil.highestBit(matchLengthBase) + 36;
         }
         else {
             return MATCH_LENGTH_CODE[matchLengthBase];

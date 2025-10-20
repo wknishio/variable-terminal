@@ -20,7 +20,7 @@ import io.airlift.compress.UnsafeUtils;
 
 import static io.airlift.compress.zstd.Constants.SIZE_OF_LONG;
 //import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
-import static io.airlift.compress.zstd.Util.checkPositionIndexes;
+import static io.airlift.compress.zstd.ZstdUtil.checkPositionIndexes;
 import static java.lang.Long.rotateLeft;
 import static java.lang.Math.min;
 

@@ -18,8 +18,8 @@ import java.io.InputStream;
 
 import org.vash.vate.compatibility.VTArrays;
 
-import static io.airlift.compress.zstd.Util.checkPositionIndexes;
-import static io.airlift.compress.zstd.Util.checkState;
+import static io.airlift.compress.zstd.ZstdUtil.checkPositionIndexes;
+import static io.airlift.compress.zstd.ZstdUtil.checkState;
 import static java.lang.Math.max;
 import static org.vash.vate.compatibility.VTObjects.requireNonNull;
 //import static sun.misc.Unsafe.ARRAY_BYTE_BASE_OFFSET;

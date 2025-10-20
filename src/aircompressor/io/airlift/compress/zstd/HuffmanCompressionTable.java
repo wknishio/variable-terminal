@@ -21,8 +21,8 @@ import static io.airlift.compress.zstd.Huffman.MAX_SYMBOL_COUNT;
 import static io.airlift.compress.zstd.Huffman.MAX_TABLE_LOG;
 import static io.airlift.compress.zstd.Huffman.MIN_TABLE_LOG;
 //import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
-import static io.airlift.compress.zstd.Util.checkArgument;
-import static io.airlift.compress.zstd.Util.minTableLog;
+import static io.airlift.compress.zstd.ZstdUtil.checkArgument;
+import static io.airlift.compress.zstd.ZstdUtil.minTableLog;
 
 import org.vash.vate.compatibility.VTArrays;
 
@@ -58,7 +58,7 @@ final class HuffmanCompressionTable
 
         int result = maxNumberOfBits;
 
-        result = Math.min(result, Util.highestBit((inputSize - 1)) - 1); // we may be able to reduce accuracy if input is small
+        result = Math.min(result, ZstdUtil.highestBit((inputSize - 1)) - 1); // we may be able to reduce accuracy if input is small
 
         // Need a minimum to safely represent all symbol values
         result = Math.max(result, minTableLog(inputSize, maxSymbol));
@@ -345,7 +345,7 @@ final class HuffmanCompressionTable
         }
 
         while (totalCost > 0) {
-            int numberOfBitsToDecrease = Util.highestBit(totalCost) + 1;
+            int numberOfBitsToDecrease = ZstdUtil.highestBit(totalCost) + 1;
             for (; numberOfBitsToDecrease > 1; numberOfBitsToDecrease--) {
                 int highPosition = rankLast[numberOfBitsToDecrease];
                 int lowPosition = rankLast[numberOfBitsToDecrease - 1];

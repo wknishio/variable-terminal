@@ -44,10 +44,10 @@ import net.jpountz.xxhash.XXHashFactory;
  */
 public final class LZ4BlockOutputStream extends FilterOutputStream {
 
-  static final byte[] MAGIC = new byte[] { 'L', 'Z', '4', 'B', 'l', 'o', 'c', 'k' };
+  static final byte[] MAGIC = new byte[] { 'L', 'Z', '4'};
   static final int MAGIC_LENGTH = MAGIC.length;
 
-  static final int HEADER_LENGTH =
+  public static final int HEADER_LENGTH =
       MAGIC_LENGTH // magic bytes
       + 1          // token
       + 4          // compressed length

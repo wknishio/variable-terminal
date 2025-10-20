@@ -37,12 +37,12 @@ import static net.jpountz.lz4.LZ4Constants.ML_MASK;
 import static net.jpountz.lz4.LZ4Constants.RUN_MASK;
 import net.jpountz.util.SafeUtils;
 
-enum LZ4Utils {
+public enum LZ4Utils {
   ;
 
   private static final int MAX_INPUT_SIZE = 0x7E000000;
 
-  static int maxCompressedLength(int length) {
+  public static int maxCompressedLength(int length) {
     if (length < 0) {
       throw new IllegalArgumentException("length must be >= 0, got " + length);
     } else if (length >= MAX_INPUT_SIZE) {

@@ -48,10 +48,10 @@ import static io.airlift.compress.zstd.Constants.SIZE_OF_LONG;
 import static io.airlift.compress.zstd.Constants.SIZE_OF_SHORT;
 import static io.airlift.compress.zstd.Constants.TREELESS_LITERALS_BLOCK;
 //import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
-import static io.airlift.compress.zstd.Util.fail;
-import static io.airlift.compress.zstd.Util.get24BitLittleEndian;
-import static io.airlift.compress.zstd.Util.mask;
-import static io.airlift.compress.zstd.Util.verify;
+import static io.airlift.compress.zstd.ZstdUtil.fail;
+import static io.airlift.compress.zstd.ZstdUtil.get24BitLittleEndian;
+import static io.airlift.compress.zstd.ZstdUtil.mask;
+import static io.airlift.compress.zstd.ZstdUtil.verify;
 import static java.lang.String.format;
 
 import org.vash.vate.compatibility.VTArrays;

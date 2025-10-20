@@ -206,7 +206,12 @@ public class SocksSocket extends Socket{
     * when https needs socket, *somewhere* in its flow, it calls this method
     * to make sure it has a connected socket.
     */
-   public boolean isConnected() {
+   public boolean isConnected()
+   {
+     if (proxy == null || proxy.proxySocket == null)
+     {
+       return false;
+     }
      return proxy.proxySocket.isConnected();
    }
    

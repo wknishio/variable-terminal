@@ -28,8 +28,8 @@ import static io.airlift.compress.zstd.Constants.TREELESS_LITERALS_BLOCK;
 import static io.airlift.compress.zstd.Huffman.MAX_SYMBOL;
 import static io.airlift.compress.zstd.Huffman.MAX_SYMBOL_COUNT;
 //import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
-import static io.airlift.compress.zstd.Util.checkArgument;
-import static io.airlift.compress.zstd.Util.put24BitLittleEndian;
+import static io.airlift.compress.zstd.ZstdUtil.checkArgument;
+import static io.airlift.compress.zstd.ZstdUtil.put24BitLittleEndian;
 
 import io.airlift.compress.UnsafeUtils;
 

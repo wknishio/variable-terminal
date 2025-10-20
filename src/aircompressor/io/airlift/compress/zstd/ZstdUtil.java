@@ -16,13 +16,25 @@ package io.airlift.compress.zstd;
 import io.airlift.compress.MalformedInputException;
 import io.airlift.compress.UnsafeUtils;
 
+import static io.airlift.compress.zstd.Constants.MAX_BLOCK_SIZE;
 import static io.airlift.compress.zstd.Constants.SIZE_OF_SHORT;
 //import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
 
-final class Util
+public final class ZstdUtil
 {
-    private Util()
+    private ZstdUtil()
     {
+    }
+    
+    public static int maxCompressedLength(int uncompressedSize)
+    {
+        int result = uncompressedSize + (uncompressedSize >>> 8);
+
+        if (uncompressedSize < MAX_BLOCK_SIZE) {
+            result += (MAX_BLOCK_SIZE - uncompressedSize) >>> 11;
+        }
+
+        return result;
     }
 
     public static int highestBit(int value)

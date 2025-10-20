@@ -14,7 +14,7 @@
 package io.airlift.compress.zstd;
 
 import static io.airlift.compress.zstd.Constants.MAX_BLOCK_SIZE;
-import static io.airlift.compress.zstd.Util.checkArgument;
+import static io.airlift.compress.zstd.ZstdUtil.checkArgument;
 
 class CompressionContext
 {

@@ -113,7 +113,7 @@ class FseCompressionTable
                     total++;
                     break;
                 default:
-                    int maxBitsOut = tableLog - Util.highestBit(normalizedCounts[symbol] - 1);
+                    int maxBitsOut = tableLog - ZstdUtil.highestBit(normalizedCounts[symbol] - 1);
                     int minStatePlus = normalizedCounts[symbol] << maxBitsOut;
                     deltaNumberOfBits[symbol] = (maxBitsOut << 16) - minStatePlus;
                     deltaFindState[symbol] = total - normalizedCounts[symbol];

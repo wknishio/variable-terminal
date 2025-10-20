@@ -18,8 +18,8 @@ import static io.airlift.compress.zstd.Constants.SIZE_OF_INT;
 import static io.airlift.compress.zstd.Constants.SIZE_OF_LONG;
 import static io.airlift.compress.zstd.Constants.SIZE_OF_SHORT;
 //import static io.airlift.compress.zstd.UnsafeUtil.UNSAFE;
-import static io.airlift.compress.zstd.Util.checkArgument;
-import static io.airlift.compress.zstd.Util.verify;
+import static io.airlift.compress.zstd.ZstdUtil.checkArgument;
+import static io.airlift.compress.zstd.ZstdUtil.verify;
 
 import io.airlift.compress.UnsafeUtils;
 
@@ -245,10 +245,10 @@ class FiniteStateEntropy
 
         int result = maxTableLog;
 
-        result = Math.min(result, Util.highestBit((inputSize - 1)) - 2); // we may be able to reduce accuracy if input is small
+        result = Math.min(result, ZstdUtil.highestBit((inputSize - 1)) - 2); // we may be able to reduce accuracy if input is small
 
         // Need a minimum to safely represent all symbol values
-        result = Math.max(result, Util.minTableLog(inputSize, maxSymbol));
+        result = Math.max(result, ZstdUtil.minTableLog(inputSize, maxSymbol));
 
         result = Math.max(result, MIN_TABLE_LOG);
         result = Math.min(result, MAX_TABLE_LOG);
@@ -260,7 +260,7 @@ class FiniteStateEntropy
     {
         checkArgument(tableLog >= MIN_TABLE_LOG, "Unsupported FSE table size");
         checkArgument(tableLog <= MAX_TABLE_LOG, "FSE table size too large");
-        checkArgument(tableLog >= Util.minTableLog(total, maxSymbol), "FSE table size too small");
+        checkArgument(tableLog >= ZstdUtil.minTableLog(total, maxSymbol), "FSE table size too small");
 
         long scale = 62 - tableLog;
         long step = (1L << 62) / total;

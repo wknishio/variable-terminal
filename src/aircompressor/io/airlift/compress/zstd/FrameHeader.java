@@ -15,7 +15,7 @@ package io.airlift.compress.zstd;
 
 import org.vash.vate.compatibility.VTObjects;
 
-import static io.airlift.compress.zstd.Util.checkState;
+import static io.airlift.compress.zstd.ZstdUtil.checkState;
 import static java.lang.Math.min;
 
 class FrameHeader

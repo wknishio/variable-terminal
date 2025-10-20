@@ -23,7 +23,7 @@ public class PngEncoder {
      * It produces images with a size comparable to ImageIO.
      */
     public static int DEFAULT_COMPRESSION_LEVEL = Deflater.BEST_SPEED;
-    public static int DEFAULT_COMPRESSION_STRATEGY = Deflater.FILTERED;
+    public static int DEFAULT_COMPRESSION_STRATEGY = Deflater.DEFAULT_STRATEGY;
 
     private BufferedImage bufferedImage;
     private final int compressionLevel;

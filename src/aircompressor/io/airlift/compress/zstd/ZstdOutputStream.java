@@ -23,7 +23,7 @@ import static io.airlift.compress.zstd.CompressionParameters.DEFAULT_COMPRESSION
 import static io.airlift.compress.zstd.Constants.SIZE_OF_BLOCK_HEADER;
 import static io.airlift.compress.zstd.Constants.MAX_BLOCK_SIZE;
 import static io.airlift.compress.zstd.Constants.SIZE_OF_LONG;
-import static io.airlift.compress.zstd.Util.checkState;
+import static io.airlift.compress.zstd.ZstdUtil.checkState;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static org.vash.vate.compatibility.VTObjects.requireNonNull;
