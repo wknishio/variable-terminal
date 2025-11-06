@@ -345,8 +345,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
         //pixels += blockArea.width * blockArea.height;
         imageOutputBuffer.reset();
         jpgWriter.setOutput(jpgImageOutputStream);
-        BufferedImage subImage = imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height);
-        jpgWriter.write(jpgWriterMetadata, new IIOImage(subImage, null, jpgWriterMetadata), jpgWriterParam);
+        jpgWriter.write(jpgWriterMetadata, new IIOImage(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), null, jpgWriterMetadata), jpgWriterParam);
         connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
         connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
         connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
@@ -502,8 +501,7 @@ public class VTGraphicsLinkServerWriter implements Runnable
         //pixels += blockArea.width * blockArea.height;
         imageOutputBuffer.reset();
         jpgWriter.setOutput(jpgImageOutputStream);
-        BufferedImage subImage = imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height);
-        jpgWriter.write(jpgWriterMetadata, new IIOImage(subImage, null, jpgWriterMetadata), jpgWriterParam);
+        jpgWriter.write(jpgWriterMetadata, new IIOImage(imageDataBuffer.getSubimage(blockArea.x, blockArea.y, blockArea.width, blockArea.height), null, jpgWriterMetadata), jpgWriterParam);
         connection.getGraphicsDirectImageDataOutputStream().writeInt(imageOutputBuffer.size());
         connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.x);
         connection.getGraphicsDirectImageDataOutputStream().writeInt(blockArea.y);
