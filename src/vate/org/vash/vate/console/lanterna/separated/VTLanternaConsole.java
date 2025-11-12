@@ -3060,6 +3060,16 @@ public class VTLanternaConsole extends VTConsole
     return this.outputBox.getLastLine();
   }
   
+  public int getLastOutputLineLength()
+  {
+    String lastOutputLine = getLastOutputLine();
+    if (lastOutputLine != null)
+    {
+      return lastOutputLine.length();
+    }
+    return -1;
+  }
+  
   public boolean isFlushModePause()
   {
     return flushInterrupted;

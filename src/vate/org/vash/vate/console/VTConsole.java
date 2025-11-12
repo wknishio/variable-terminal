@@ -241,6 +241,8 @@ public abstract class VTConsole
   
   public abstract String getLastOutputLine();
   
+  public abstract int getLastOutputLineLength();
+  
   public abstract boolean isFlushModePause();
   
   public abstract boolean isInputModeReplace();

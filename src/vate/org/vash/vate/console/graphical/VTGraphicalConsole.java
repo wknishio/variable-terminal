@@ -2422,6 +2422,11 @@ public class VTGraphicalConsole extends VTConsole
     return "";
   }
   
+  public int getLastOutputLineLength()
+  {
+    return -1;
+  }
+  
   public boolean isFlushModePause()
   {
     return isFlushInterrupted();

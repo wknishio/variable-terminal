@@ -940,6 +940,11 @@ public class VTStandardConsole extends VTConsole
     return "";
   }
   
+  public int getLastOutputLineLength()
+  {
+    return -1;
+  }
+  
   public boolean isFlushModePause()
   {
     return false;
