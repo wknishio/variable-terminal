@@ -2291,15 +2291,15 @@ public class VTServer implements Runnable
         monitorService.addDownloadMonitorPanel(new VTDataMonitorMenu(inputMenuBar.getDownloadMonitorMenu()));
         VTMainConsole.getFrame().setMenuBar(inputMenuBar);
         VTMainConsole.getFrame().pack();
-        try
-        {
-          trayIconInterface = new VTTrayIconInterface();
-          trayIconInterface.install(VTMainConsole.getFrame(), "Variable-Terminal - Server");
-        }
-        catch (Throwable t)
-        {
-          trayIconInterface = null;
-        }
+//        try
+//        {
+//          trayIconInterface = new VTTrayIconInterface();
+//          trayIconInterface.install(VTMainConsole.getFrame(), "Variable-Terminal - Server");
+//        }
+//        catch (Throwable t)
+//        {
+//          trayIconInterface = null;
+//        }
       }
     }
     else

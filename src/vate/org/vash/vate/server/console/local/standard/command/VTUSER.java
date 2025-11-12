@@ -43,7 +43,6 @@ public class VTUSER extends VTServerStandardLocalConsoleCommandProcessor
     {
       VTMainConsole.print("\rVT>Not connected with clients!\nVT>");
     }
-    VTMainConsole.print("\nVT>");
   }
   
   public void close()

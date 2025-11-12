@@ -16,8 +16,6 @@ import com.martiansoftware.jsap.CommandLineTokenizerMKII;
 
 public class VTServerLocalConsoleReader extends VTTask
 {
-  // private String command;
-  // private String[] splitCommand;
   private VTServer server;
   private VTServerLocalConsoleCommandSelector<VTServerLocalConsoleCommandProcessor> selector;
   
@@ -30,7 +28,6 @@ public class VTServerLocalConsoleReader extends VTTask
   
   public void task()
   {
-    // int p = 0;
     VTMainConsole.print("\rVT>Enter *VTHELP or *VTHL to list available commands in server console\nVT>");
     while (server.isRunning())
     {
@@ -38,32 +35,16 @@ public class VTServerLocalConsoleReader extends VTTask
       {
         String line = VTMainConsole.readLine(true);
         executeCommand(line);
-//        String[] commands = line.split("\\*;");
-//        for (String command : commands)
-//        {
-//          executeCommand(command);
-//        }
       }
       catch (InterruptedException e)
       {
-        // e.printStackTrace();
+        
       }
       catch (Throwable e)
       {
-        // e.printStackTrace();
         VTMainConsole.print("\rVT>Error while processing command!\nVT>");
-        // e.printStackTrace(VTConsole.getSystemOut());
-        // return;
       }
     }
-//    try
-//    {
-//      selector.closeSelector();
-//    }
-//    catch (Throwable e)
-//    {
-//      
-//    }
   }
   
   @SuppressWarnings("unused")
@@ -82,11 +63,6 @@ public class VTServerLocalConsoleReader extends VTTask
       while (!isStopped() && (line = reader.readLine()) != null)
       {
         executeCommand(line);
-//        String[] commands = line.split("\\*;");
-//        for (String command : commands)
-//        {
-//          executeCommand(command);
-//        }
       }
     }
     catch (Throwable t)
@@ -95,10 +71,6 @@ public class VTServerLocalConsoleReader extends VTTask
     }
     finally
     {
-//      if (script != null)
-//      {
-//        stack.remove(script);
-//      }
       if (reader != null)
       {
         try
@@ -129,11 +101,6 @@ public class VTServerLocalConsoleReader extends VTTask
       while (!isStopped() && (line = reader.readLine()) != null)
       {
         executeCommand(line);
-//        String[] commands = line.split("\\*;");
-//        for (String command : commands)
-//        {
-//          executeCommand(command);
-//        }
       }
     }
     catch (Throwable t)
@@ -166,19 +133,12 @@ public class VTServerLocalConsoleReader extends VTTask
         parsed = CommandLineTokenizerMKII.tokenize(command);
         if (parsed.length < 1)
         {
-          parsed = new String[]
-          { command };
-          // p = 0;
-          /*
-           * for (String part : splitCommand) { splitCommand[p++] =
-           * StringEscapeUtils.unescapeJava(part); }
-           */
+          parsed = new String[] { command };
         }
       }
       else
       {
-        parsed = new String[]
-        { "" };
+        parsed = new String[] { "" };
       }
       if (server.isEchoCommands())
       {
@@ -191,8 +151,6 @@ public class VTServerLocalConsoleReader extends VTTask
     }
     else
     {
-      // System.out.println("bug?");
-      // return;
       VTRuntimeExit.exit(0);
     }
   }
